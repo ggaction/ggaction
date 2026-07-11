@@ -39,5 +39,9 @@ test("renders the cars scatterplot with manually authored axes", () => {
       "Miles per Gallon"
     ]
   );
+  assert.deepEqual(
+    new Set(program.trace.children.map(node => node.op)),
+    new Set(["editSemantic", "createGraphics", "editGraphics"])
+  );
   assert.deepEqual(program.actionStack, []);
 });
