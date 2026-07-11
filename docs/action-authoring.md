@@ -89,5 +89,23 @@ drawable type creates a homogeneous collection with generated child IDs such
 as `points:0` and `points:1`. Repeating an equivalent creation is idempotent;
 reusing an ID with a conflicting definition throws an error.
 
-`editGraphics` remains part of the STEP 1 contract and will be documented when
-its implementation becomes available.
+### `editGraphics`
+
+`editGraphics` creates or replaces one concrete property on an existing
+graphic:
+
+```javascript
+const next = program.editGraphics({
+  target: "points",
+  property: "x",
+  value: [32.5, 81.4]
+});
+```
+
+For a collection, an outer array distributes values by child index and must
+match the collection length. Any non-array value is broadcast to every child.
+Nested arrays and objects remain intact as individual child values. A generated
+child ID such as `points:1` may also be targeted directly.
+
+All edits return a new program, copy caller-owned values, validate properties
+against the graphic type, and record an `editGraphics` trace node.
