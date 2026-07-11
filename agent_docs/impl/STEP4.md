@@ -21,8 +21,8 @@ const program = chart()
 - [x] `createData`
 - [x] Dataset immutability와 duplicate 검사
 - [x] Nested trace와 context test
-- [ ] `carsScatterplotActions`의 dataset primitive 교체
-- [ ] Acceptance 및 PNG render test
+- [x] `carsScatterplotActions`의 dataset primitive 교체
+- [x] Acceptance 및 PNG render test
 - [x] 영어 사용자 문서
 - [ ] 브라우저와 고해상도 PNG 확인
 

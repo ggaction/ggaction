@@ -21,7 +21,7 @@ export function createCarsScatterplotActions(cars) {
       background: "white",
       margin
     })
-    .editSemantic({ property: "dataset[cars].values", value: validCars })
+    .createData({ id: "cars", values: validCars })
     .editSemantic({ property: "layer[points].mark.type", value: "point" })
     .editSemantic({ property: "layer[points].data", value: "cars" })
     .createGraphics({ id: "xAxis", type: "line" })

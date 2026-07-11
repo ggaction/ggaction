@@ -38,6 +38,8 @@ test("renders the cars scatterplot created with the canvas action", () => {
     width: 540,
     height: 310
   });
+  assert.equal(program.context.currentData, "cars");
+  assert.equal(program.semanticSpec.datasets[0].values.length, 392);
   assert.equal(findCanvasCalls(context, "arc").length, 392);
   assert.equal(findCanvasCalls(context, "stroke").length, 10);
   assert.equal(findCanvasCalls(context, "fillText").length, 10);
@@ -52,5 +54,15 @@ test("renders the cars scatterplot created with the canvas action", () => {
     createCanvas.children[1].children.map(node => node.op),
     ["editGraphics", "editGraphics", "editGraphics"]
   );
+
+  const createData = program.trace.children[1];
+  assert.equal(createData.op, "createData");
+  assert.deepEqual(createData.args, { id: "cars", valuesCount: 392 });
+  assert.equal(createData.children.length, 1);
+  assert.equal(createData.children[0].op, "editSemantic");
+  assert.deepEqual(createData.children[0].args, {
+    property: "dataset[cars].values",
+    valueCount: 392
+  });
   assert.deepEqual(program.actionStack, []);
 });
