@@ -1,4 +1,4 @@
-const ID_PATTERN = "[A-Za-z0-9_-]+";
+import { USER_ID_SOURCE } from "./identifiers.js";
 
 const ENTITY_PATHS = Object.freeze({
   dataset: {
@@ -69,7 +69,9 @@ export function parseSemanticPath(property) {
   }
 
   const entityMatch = property.match(
-    new RegExp(`^(${Object.keys(ENTITY_PATHS).join("|")})\\[(${ID_PATTERN})\\]\\.(.+)$`)
+    new RegExp(
+      `^(${Object.keys(ENTITY_PATHS).join("|")})\\[(${USER_ID_SOURCE})\\]\\.(.+)$`
+    )
   );
 
   if (entityMatch) {

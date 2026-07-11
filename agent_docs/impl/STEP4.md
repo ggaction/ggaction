@@ -16,7 +16,7 @@ const program = chart()
 
 ## 진행 상태
 
-- [ ] Dataset ID validation
+- [x] Dataset ID validation
 - [ ] Dataset values validation
 - [ ] `createData`
 - [ ] Dataset immutability와 duplicate 검사
