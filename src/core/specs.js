@@ -1,11 +1,28 @@
+import { cloneAndFreeze } from "./immutable.js";
+
 export function createEmptySemanticSpec() {
-  throw new Error("createEmptySemanticSpec() is not implemented yet.");
+  return cloneAndFreeze({
+    datasets: [],
+    layers: [],
+    scales: [],
+    coordinates: [],
+    guides: {}
+  });
 }
 
 export function createEmptyGraphicSpec() {
-  throw new Error("createEmptyGraphicSpec() is not implemented yet.");
+  return cloneAndFreeze({
+    objects: {},
+    order: []
+  });
 }
 
 export function createTraceRoot() {
-  throw new Error("createTraceRoot() is not implemented yet.");
+  return cloneAndFreeze({
+    id: "program",
+    op: "program",
+    description: "Program action trace root.",
+    args: {},
+    children: []
+  });
 }

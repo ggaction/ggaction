@@ -3,9 +3,16 @@
 `ggaction` is a JavaScript library for representing chart authoring as immutable,
 traceable actions.
 
-The repository currently contains the project skeleton for
-[STEP 1](./agent_docs/impl/STEP1.md). The `chart()` and `render()` module
-boundaries exist, but their runtime behavior has not been implemented yet.
+The repository is currently implementing
+[STEP 1](./agent_docs/impl/STEP1.md). Immutable chart programs and hierarchical
+action tracing are available. The primitive actions and Canvas renderer are not
+implemented yet.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart();
+```
 
 ## Development
 
