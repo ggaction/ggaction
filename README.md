@@ -17,7 +17,3 @@ npm test
 
 - [Documentation home](./docs/index.md)
 - [Core concepts](./docs/core-concepts.md)
-- [Initial architecture](./agent_docs/INITIAL_ARCHITECTURE.md)
-
-The initial architecture is a historical design reference. The public
-documentation describes the current implementation contract.

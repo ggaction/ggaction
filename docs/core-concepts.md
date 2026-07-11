@@ -7,9 +7,9 @@ title: Core Concepts
 
 # Core Concepts
 
-This page describes the intended contract for the first implementation slice.
-The module boundaries exist, but the behavior below has not been implemented
-yet.
+This page gives users the minimum conceptual model needed to understand the
+library. It is not an implementation reference. The module boundaries exist,
+but the behavior below has not been implemented yet.
 
 ## `ChartProgram`
 
