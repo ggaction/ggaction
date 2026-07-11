@@ -1,15 +1,14 @@
-# STEP 1 — Core primitives and Canvas scatterplot
+# STEP 1 — 핵심 primitive와 Canvas scatterplot
 
-## Goal
+## 목표
 
-Build the smallest end-to-end slice that creates an immutable `ChartProgram`,
-materializes a cars scatterplot through the three primitive actions, and renders
-the concrete result with Canvas.
+Immutable `ChartProgram`을 만들고, 세 primitive action으로 cars scatterplot을
+구체화한 뒤 Canvas에 렌더링하는 가장 작은 end-to-end 구현을 완성한다.
 
-This step intentionally uses precomputed x, y, and color values. Scale,
-encoding, guide, and higher-level domain actions belong to later steps.
+이번 단계에서는 x, y, color 값을 미리 계산한다. Scale, encoding, guide와
+상위 domain action은 이후 STEP에서 구현한다.
 
-## Project structure
+## 프로젝트 구조
 
 ```text
 src/
@@ -18,43 +17,40 @@ src/
   actions/     # editSemantic, createGraphics, editGraphics
   renderers/   # Canvas renderer
 test/
-  acceptance/  # complete cars scatterplot program
-  unit/        # core, primitive, and renderer tests
-  helpers/     # mock Canvas and precomputed scatterplot values
-examples/      # browser Canvas example
-docs/          # current public and core concepts
+  acceptance/  # 전체 cars scatterplot program
+  unit/        # core, primitive, renderer test
+  helpers/     # mock Canvas와 scatterplot 값 계산
+examples/      # 브라우저 Canvas 예제
+docs/          # 현재 public API와 core concept
 data/cars.json
 ```
 
-Use JavaScript ESM and Node's built-in test runner. Avoid runtime dependencies
-unless the implementation demonstrates a current need.
+JavaScript ESM과 Node 내장 test runner를 사용한다. 현재 필요성이 확인되기
+전에는 runtime dependency를 추가하지 않는다.
 
-## Implementation sequence
+## 구현 순서
 
-1. **Create the project skeleton.** Set up the package, module boundaries, test
-   command, and placeholder exports without implementing behavior.
-2. **Write the complete test program first.** Load `cars.json`, remove rows with
-   missing x or y values, precompute x/y/color arrays, build the full primitive
-   chain, and define the expected semantic spec, graphic spec, trace, and Canvas
-   calls. Keep this acceptance test skipped until integration is complete.
-3. **Implement the immutable program and action trace.** Add canonical empty
-   specs, structural copying, frozen stored values, the virtual trace root,
-   `action()`, and nested action recording.
-4. **Implement the primitives one at a time.** Implement and test
-   `editSemantic`, then `createGraphics`, then `editGraphics`. Each operation
-   returns a new program, validates its input, and records a trace node.
-5. **Implement the minimal Canvas renderer.** Support concrete `canvas` and
-   `circle` graphics only. The renderer reads only `graphicSpec` and applies
-   width, height, background, x, y, radius, fill, opacity, and visibility.
-6. **Complete the vertical slice.** Enable the acceptance test, verify 392
-   rendered circles and three Origin colors, and add a browser example using
-   the same primitive program.
+1. **프로젝트 기반을 만든다.** Package, module 경계, test command와
+   placeholder export를 만들되 실제 동작은 구현하지 않는다.
+2. **전체 test program을 먼저 작성한다.** `cars.json`을 읽고 x 또는 y가
+   없는 행을 제거한 뒤 x/y/color를 미리 계산한다. 전체 primitive chain과
+   예상 semanticSpec, graphicSpec, trace, Canvas 호출을 정의하고 acceptance
+   test는 통합이 끝날 때까지 skip한다.
+3. **Immutable program과 action trace를 구현한다.** Canonical empty spec,
+   structural copy, 저장 값 freeze, virtual trace root, `action()`과 nested
+   action 기록을 구현한다.
+4. **Primitive를 하나씩 구현한다.** `editSemantic`, `createGraphics`,
+   `editGraphics` 순서로 구현하고 각각 validation, immutability, trace를
+   test한다.
+5. **최소 Canvas renderer를 구현한다.** Concrete `canvas`와 `circle`만
+   지원하며 renderer는 `graphicSpec`만 읽는다.
+6. **Vertical slice를 완성한다.** Acceptance test를 활성화하고 392개 circle,
+   세 가지 Origin 색상과 브라우저 Canvas 예제를 확인한다.
 
-Each numbered item is completed with relevant tests, a focused commit, and a
-push before the next conceptual change begins. The three primitives should be
-committed separately.
+각 항목은 관련 test와 문서를 함께 갱신하고, 하나의 집중된 commit으로
+push한 뒤 다음 변경을 시작한다. 세 primitive는 각각 별도로 commit한다.
 
-## Test program shape
+## Test program 구조
 
 ```text
 chart()
@@ -66,44 +62,42 @@ chart()
 ├─ editGraphics(canvas.height)
 ├─ editGraphics(canvas.background)
 ├─ createGraphics(points, circle, length = 392)
-├─ editGraphics(points.x = precomputed values)
-├─ editGraphics(points.y = precomputed values)
-├─ editGraphics(points.fill = precomputed values)
+├─ editGraphics(points.x = 미리 계산된 값)
+├─ editGraphics(points.y = 미리 계산된 값)
+├─ editGraphics(points.fill = 미리 계산된 값)
 └─ editGraphics(points.radius = 3)
 
 render(program, canvasContext)
 ```
 
-The precomputation helpers belong to the test/example layer and are not library
-APIs. `render()` is not an authoring action and does not appear in the trace.
+값 계산 helper는 test와 example에만 두고 library API로 노출하지 않는다.
+`render()`는 authoring action이 아니므로 trace에 기록하지 않는다.
 
-## Documentation
+## 문서화
 
-- `README.md` documents the project purpose, setup, cars example, and the
-  user-facing `chart()` and `render()` functions.
-- `docs/CORE_CONCEPTS.md` documents `ChartProgram`, `action()`, the three
-  primitives, trace behavior, immutability, and the semantic/graphic boundary.
-- Internal helpers do not need individual API documentation.
-- `agent_docs/INITIAL_ARCHITECTURE.md` remains a historical design reference.
+- `README.md`: 프로젝트 목적, 설정, cars 예제, user-facing `chart()`와
+  `render()`를 설명한다.
+- `docs/CORE_CONCEPTS.md`: `ChartProgram`, `action()`, 세 primitive, trace,
+  immutability와 semantic/graphic 경계를 설명한다.
+- 모든 내부 helper를 개별 문서화하지 않는다.
+- `agent_docs/INITIAL_ARCHITECTURE.md`는 초기 설계 기록으로 유지한다.
+- 구현과 관련 문서의 갱신은 항상 같은 conceptual change에서 병행한다.
 
-Documentation is updated alongside the implementation it describes rather
-than added after the code has diverged.
+## 제외 범위
 
-## Out of scope
+- `createCanvas`와 다른 domain-specific authoring action
+- Scale과 encoding action
+- Axis, legend, guide
+- Semantic-to-graphic 자동 컴파일
+- SVG와 다른 rendering backend
 
-- `createCanvas` and other domain-specific authoring actions
-- Scale and encoding actions
-- Axes, legends, and guides
-- Automatic semantic-to-graphic compilation
-- SVG or other rendering backends
+## 완료 조건
 
-## Completion criteria
-
-- All tests pass with no skipped acceptance test.
-- Every update preserves earlier `ChartProgram` instances and caller input.
-- Trace order matches the primitive program and excludes large value arrays.
-- `graphicSpec` contains fully concrete circle properties.
-- The renderer works without reading semantic state, context, or trace.
-- The browser example renders 392 circles in three colors.
-- All focused commits are pushed and the worktree is clean except for explicitly
-  preserved user changes.
+- Skip된 acceptance test 없이 모든 test가 통과한다.
+- 모든 update가 이전 `ChartProgram`과 caller input을 보존한다.
+- Trace 순서가 primitive program과 일치하고 큰 값 배열은 기록하지 않는다.
+- `graphicSpec`에 circle의 최종 concrete property가 저장된다.
+- Renderer가 semantic state, context, trace를 읽지 않는다.
+- 브라우저 예제에 392개 circle이 세 가지 색상으로 렌더링된다.
+- 모든 집중된 commit이 push되고 명시적으로 보존한 사용자 변경 외에는
+  worktree가 clean하다.
