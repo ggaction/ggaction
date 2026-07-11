@@ -57,6 +57,8 @@
 ## Change Scope
 
 - Implement one coherent conceptual change at a time.
+- After completing and verifying each small coherent conceptual change, commit it and push the current branch before beginning the next change, unless the user explicitly asks otherwise.
+- Use a terse commit message that describes that conceptual change, and never include unrelated work in the same commit.
 - Do not combine requested work with unrelated large refactors.
 - Preserve unrelated user changes and avoid modifying files outside the task's scope.
 - Do not introduce speculative abstractions, compatibility layers, or extension points without a present requirement.
