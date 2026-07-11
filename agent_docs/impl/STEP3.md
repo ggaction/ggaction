@@ -29,7 +29,7 @@ const program = chart()
 - [x] `createCanvas`
 - [x] Nested trace, validation, immutability test
 - [x] `carsScatterplotActions` 프로그램
-- [ ] Acceptance 및 PNG render test
+- [x] Acceptance 및 PNG render test
 - [x] 영어 사용자 문서
 - [ ] 브라우저와 고해상도 PNG 확인
 
