@@ -3,7 +3,12 @@ import {
   countActionNodes,
   createActionNode
 } from "./action.js";
-import { cloneAndFreeze, isOwned } from "./immutable.js";
+import {
+  cloneAndFreeze,
+  freezeOwned,
+  isOwned,
+  isPlainObject
+} from "./immutable.js";
 import {
   createEmptyGraphicSpec,
   createEmptySemanticSpec,
@@ -49,6 +54,21 @@ export class ChartProgram {
       context,
       trace,
       actionStack
+    });
+  }
+
+  _withContext(patch = {}) {
+    if (!isPlainObject(patch)) {
+      throw new TypeError("Context patch must be a plain object.");
+    }
+
+    const ownedPatch = cloneAndFreeze(patch);
+
+    return this._clone({
+      context: freezeOwned({
+        ...this.context,
+        ...ownedPatch
+      })
     });
   }
 

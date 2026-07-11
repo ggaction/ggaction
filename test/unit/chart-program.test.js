@@ -86,3 +86,26 @@ test("takes ownership of shallow-frozen constructor input", () => {
 
   assert.equal(program.semanticSpec.guides.custom.title, "Before");
 });
+
+test("updates private context immutably without changing the trace", () => {
+  const margin = { top: 10, right: 20, bottom: 30, left: 40 };
+  const original = chart()._withContext({ currentData: "cars" });
+  const next = original._withContext({ currentMargin: margin });
+
+  margin.left = 99;
+
+  assert.deepEqual(original.context, { currentData: "cars" });
+  assert.deepEqual(next.context, {
+    currentData: "cars",
+    currentMargin: { top: 10, right: 20, bottom: 30, left: 40 }
+  });
+  assert.equal(next.semanticSpec, original.semanticSpec);
+  assert.equal(next.graphicSpec, original.graphicSpec);
+  assert.equal(next.trace, original.trace);
+  assert.equal(Object.isFrozen(next.context.currentMargin), true);
+});
+
+test("rejects non-object private context patches", () => {
+  assert.throws(() => chart()._withContext(null), /plain object/);
+  assert.throws(() => chart()._withContext([]), /plain object/);
+});
