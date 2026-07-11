@@ -14,7 +14,8 @@ to a PNG file without opening a browser.
 import { renderToPNG } from "ggaction/png";
 
 const result = await renderToPNG(program, {
-  output: "./output/chart.png"
+  output: "./output/chart.png",
+  pixelRatio: 2
 });
 
 console.log(result.output, result.width, result.height, result.bytes);
@@ -23,6 +24,12 @@ console.log(result.output, result.width, result.height, result.bytes);
 `renderToPNG` creates missing output directories and uses the same Canvas
 renderer as browser output. It therefore reads only the program's fully
 materialized `graphicSpec`.
+
+`pixelRatio` controls output density without changing the logical dimensions or
+coordinates stored in `graphicSpec`. For example, a 640×400 chart rendered at
+`pixelRatio: 2` produces a 1280×800 PNG. The default is `1`; use `2` for crisp
+screen output or `3` for higher-resolution export. Returned `width` and
+`height` report the physical PNG dimensions.
 
 ## Render test programs
 

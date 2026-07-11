@@ -14,15 +14,17 @@ test("writes the cars scatterplot program as a PNG", async () => {
   const cars = JSON.parse(await readFile(carsPath, "utf8"));
   const program = createCarsScatterplot(cars);
   const result = await renderToPNG(program, {
-    output: fileURLToPath(outputPath)
+    output: fileURLToPath(outputPath),
+    pixelRatio: 2
   });
   const png = await readFile(result.output);
 
   assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
-  assert.equal(png.readUInt32BE(16), 640);
-  assert.equal(png.readUInt32BE(20), 400);
-  assert.equal(result.width, 640);
-  assert.equal(result.height, 400);
+  assert.equal(png.readUInt32BE(16), 1280);
+  assert.equal(png.readUInt32BE(20), 800);
+  assert.equal(result.width, 1280);
+  assert.equal(result.height, 800);
+  assert.equal(result.pixelRatio, 2);
   assert.equal(result.bytes, png.length);
   assert.equal(png.length > 1_000, true);
 });

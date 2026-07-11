@@ -58,6 +58,7 @@
 - A semantic point mark may be realized by a graphical `circle` primitive.
 - User-specified scale domains and ranges are semantic. Resolved primitive values such as x, y, radius, and color are graphical.
 - Canvas properties, themes, fonts, strokes, and other appearance-only values are graphical.
+- Output density such as PNG `pixelRatio` is a renderer option and must not rewrite logical values in `graphicSpec`.
 - When a semantic change affects existing concrete output, the responsible domain action must explicitly rematerialize every affected graphical consumer.
 
 ## Documentation and Implementation Consistency

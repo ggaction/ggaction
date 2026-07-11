@@ -22,7 +22,10 @@ Completed programs can also be exported directly in Node.js:
 ```javascript
 import { renderToPNG } from "ggaction/png";
 
-await renderToPNG(program, { output: "./output/chart.png" });
+await renderToPNG(program, {
+  output: "./output/chart.png",
+  pixelRatio: 2
+});
 ```
 
 ## Development

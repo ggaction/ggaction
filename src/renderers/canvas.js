@@ -18,7 +18,8 @@ function requireCanvasContext(context) {
     "fillRect",
     "beginPath",
     "arc",
-    "fill"
+    "fill",
+    "scale"
   ];
 
   if (context === null || typeof context !== "object" || !context.canvas) {
@@ -83,7 +84,7 @@ function drawCircleGraphic(context, id, graphic) {
   drawCircle(context, { id, properties: graphic.properties }, id);
 }
 
-export function render(program, context) {
+export function render(program, context, { pixelRatio = 1 } = {}) {
   const graphicSpec = program?.graphicSpec;
 
   if (
@@ -98,6 +99,10 @@ export function render(program, context) {
 
   requireCanvasContext(context);
 
+  if (!Number.isFinite(pixelRatio) || pixelRatio <= 0) {
+    throw new RangeError("render pixelRatio must be a positive finite number.");
+  }
+
   const { id: canvasId, graphic: canvas } = findCanvas(graphicSpec);
   const width = requireFiniteProperty(canvas.properties ?? {}, "width", canvasId);
   const height = requireFiniteProperty(
@@ -110,11 +115,12 @@ export function render(program, context) {
     throw new Error("Canvas width and height must not be negative.");
   }
 
-  context.canvas.width = width;
-  context.canvas.height = height;
+  context.canvas.width = Math.round(width * pixelRatio);
+  context.canvas.height = Math.round(height * pixelRatio);
   context.save();
 
   try {
+    context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
 
     if (canvas.properties.background !== undefined) {

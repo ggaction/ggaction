@@ -41,6 +41,10 @@ export function createMockCanvasContext() {
       calls.push({ op: "fillRect", args, fillStyle, globalAlpha });
     },
 
+    scale(...args) {
+      calls.push({ op: "scale", args });
+    },
+
     beginPath() {
       calls.push({ op: "beginPath" });
     },

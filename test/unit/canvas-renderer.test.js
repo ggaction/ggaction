@@ -80,6 +80,23 @@ test("reads only graphicSpec from the supplied program", () => {
   assert.doesNotThrow(() => render(program, createMockCanvasContext()));
 });
 
+test("renders at a higher pixel density without changing logical coordinates", () => {
+  const context = createMockCanvasContext();
+
+  render({ graphicSpec: createGraphicSpec() }, context, { pixelRatio: 2 });
+
+  assert.equal(context.canvas.width, 200);
+  assert.equal(context.canvas.height, 160);
+  assert.deepEqual(findCanvasCalls(context, "scale")[0].args, [2, 2]);
+  assert.deepEqual(findCanvasCalls(context, "arc")[0].args, [
+    10,
+    20,
+    3,
+    0,
+    Math.PI * 2
+  ]);
+});
+
 test("rejects incomplete and unsupported concrete graphics", () => {
   const missingRadius = createGraphicSpec();
   delete missingRadius.objects.points.children[0].properties.radius;
@@ -103,5 +120,15 @@ test("rejects incomplete and unsupported concrete graphics", () => {
   assert.throws(
     () => render({ graphicSpec: invalidOpacity }, createMockCanvasContext()),
     /requires opacity from 0 to 1/
+  );
+});
+
+test("rejects invalid pixel ratios", () => {
+  assert.throws(
+    () =>
+      render({ graphicSpec: createGraphicSpec() }, createMockCanvasContext(), {
+        pixelRatio: 0
+      }),
+    /pixelRatio must be a positive finite number/
   );
 });
