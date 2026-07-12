@@ -33,7 +33,8 @@ export function createCarsLineChartActions(cars) {
       fieldType: "nominal"
     })
     .createGuides({
-      axes: { y: { ticksAndLabels: { count: 6 } } }
+      axes: { y: { ticksAndLabels: { count: 6 } } },
+      grid: false
     })
     .createTitle({
       text: "The trend of acceleration by year",

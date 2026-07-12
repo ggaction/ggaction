@@ -124,3 +124,6 @@ createLegend
 
 Continuous legends, point-mark legends, multiple legend blocks, and
 interactive legends are not currently supported.
+
+`createGuides()` selects line-series and histogram color legends automatically.
+Pass `createGuides({ legend: false })` to opt out.

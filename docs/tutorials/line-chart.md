@@ -65,7 +65,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 | `encodeY` | Quantitative mean aggregation | Sorted concrete series paths |
 | `encodeColor` | Nominal series identity and color scale | One concrete stroke per origin |
 | `encodeStrokeDash` | Nominal dash scale | One concrete dash pattern per origin |
-| `createGuides` | Axis and combined legend definitions | Lines, ticks, labels, titles, legend symbols |
+| `createGuides` | Axis, horizontal-grid, and combined legend definitions | Grid/axis lines, ticks, labels, titles, legend symbols |
 | `createTitle` | Chart title and subtitle text | Plot-aligned text graphics |
 
 The source rows remain immutable. Aggregation creates derived series values;

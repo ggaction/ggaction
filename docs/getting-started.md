@@ -63,7 +63,8 @@ const program = chart()
 
 `createPointMark` uses the most recently created dataset. Encoding actions use
 the most recently created mark. Pass `data` or `target` explicitly when a
-program contains more than one candidate.
+program contains more than one candidate. `createGuides` infers the applicable
+axes, a horizontal grid, and a categorical legend from those encodings.
 
 ## 3. Render it
 

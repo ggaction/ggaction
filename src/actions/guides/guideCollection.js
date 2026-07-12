@@ -1,7 +1,7 @@
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 
-const OPTIONS = Object.freeze(["axes", "legend"]);
+const OPTIONS = Object.freeze(["axes", "grid", "legend"]);
 
 function validateGuideOption(value, label) {
   if (value !== undefined && value !== false && !isPlainObject(value)) {
@@ -19,6 +19,7 @@ function validateOptions(args) {
     }
   }
   validateGuideOption(args.axes, "createGuides axes");
+  validateGuideOption(args.grid, "createGuides grid");
   validateGuideOption(args.legend, "createGuides legend");
 }
 
@@ -28,13 +29,21 @@ function hasCartesianEncoding(program) {
   );
 }
 
-function hasLineSeriesEncoding(program) {
+function hasGridEncoding(program) {
+  return program.semanticSpec.layers.some(
+    layer => layer.encoding?.y?.scale !== undefined
+  );
+}
+
+function hasCategoricalLegendEncoding(program) {
   return program.semanticSpec.layers.some(
     layer =>
-      layer.mark?.type === "line" &&
-      ["color", "strokeDash"].some(
-        channel => layer.encoding?.[channel]?.scale !== undefined
-      )
+      (layer.mark?.type === "line" &&
+        ["color", "strokeDash"].some(
+          channel => layer.encoding?.[channel]?.scale !== undefined
+        )) ||
+      (layer.mark?.type === "bar" &&
+        layer.encoding?.color?.scale !== undefined)
   );
 }
 
@@ -47,19 +56,24 @@ function selectOption(explicit, applicable) {
 const createGuides = action(
   {
     op: "createGuides",
-    description: "Create the applicable axes and line-series legend."
+    description: "Create applicable axes, grid, and categorical legend."
   },
   function (args = {}) {
     validateOptions(args);
     const axes = selectOption(args.axes, hasCartesianEncoding(this));
-    const legend = selectOption(args.legend, hasLineSeriesEncoding(this));
+    const grid = selectOption(args.grid, hasGridEncoding(this));
+    const legend = selectOption(
+      args.legend,
+      hasCategoricalLegendEncoding(this)
+    );
 
-    if (axes === undefined && legend === undefined) {
+    if (axes === undefined && grid === undefined && legend === undefined) {
       throw new Error("createGuides requires at least one selected guide.");
     }
 
     let next = this;
     if (axes !== undefined) next = next.createAxes(axes);
+    if (grid !== undefined) next = next.createGrid(grid);
     if (legend !== undefined) next = next.createLegend(legend);
     return next;
   }

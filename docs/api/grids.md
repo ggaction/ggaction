@@ -66,3 +66,6 @@ createGrid
 
 Use `false` to disable a direction. If scale or coordinate inference is
 ambiguous, provide its ID explicitly.
+
+`createGuides()` selects this default horizontal grid automatically when a y
+encoding is present. Pass `createGuides({ grid: false })` to opt out.

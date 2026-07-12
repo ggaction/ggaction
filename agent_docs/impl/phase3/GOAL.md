@@ -52,7 +52,7 @@ chart는 별도 grid option 없이 horizontal grid를 가진다.
 - [x] Atomic `encodeHistogram`
 - [x] Histogram axes
 - [x] Horizontal/vertical grid
-- [ ] `createGuides` default horizontal grid
+- [x] `createGuides` default horizontal grid
 - [x] Bottom bar legend
 - [ ] Centered title
 - [ ] Browser example, tutorial, PNG regression

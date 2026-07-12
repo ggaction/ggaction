@@ -25,12 +25,13 @@ function createSeriesLine() {
     .encodeStrokeDash({ field: "origin" });
 }
 
-test("automatically creates axes and a line-series legend", () => {
+test("automatically creates axes, grid, and a line-series legend", () => {
   const program = createSeriesLine().createGuides();
   const node = program.trace.children.at(-1);
 
   assert.deepEqual(node.children.map(child => child.op), [
     "createAxes",
+    "createGrid",
     "createLegend"
   ]);
   assert.deepEqual(program.semanticSpec.guides.legend.series.channels, [
@@ -39,7 +40,13 @@ test("automatically creates axes and a line-series legend", () => {
   ]);
   assert.equal(program.semanticSpec.guides.axis.x.scale, "x");
   assert.equal(program.semanticSpec.guides.axis.y.scale, "y");
+  assert.equal(program.semanticSpec.guides.grid.horizontal.scale, "y");
   assert.equal(program.graphicSpec.objects.seriesLegendTitle.type, "text");
+  assert.equal(
+    program.graphicSpec.order.indexOf("horizontalGridLines") <
+      program.graphicSpec.order.indexOf("trends"),
+    true
+  );
 });
 
 test("forwards explicit child options", () => {
@@ -47,6 +54,9 @@ test("forwards explicit child options", () => {
     axes: {
       x: false,
       y: { ticksAndLabels: { count: 3 } }
+    },
+    grid: {
+      horizontal: { color: "#cbd5e1", lineWidth: 2 }
     },
     legend: {
       title: "Series",
@@ -59,19 +69,36 @@ test("forwards explicit child options", () => {
   assert.equal(program.semanticSpec.guides.legend.series.title, "Series");
   assert.equal(program.graphicSpec.objects.seriesLegendBackground.type, "rect");
   assert.equal(program.guideConfigs.axis.y.ticks.count, 3);
+  assert.equal(
+    program.graphicSpec.objects.horizontalGridLines.children[0].properties
+      .strokeWidth,
+    2
+  );
 });
 
-test("supports explicit axes and legend opt-out", () => {
-  const axesOnly = createSeriesLine().createGuides({ legend: false });
-  const legendOnly = createSeriesLine().createGuides({ axes: false });
+test("supports explicit guide opt-out", () => {
+  const axesAndGrid = createSeriesLine().createGuides({ legend: false });
+  const legendOnly = createSeriesLine().createGuides({
+    axes: false,
+    grid: false
+  });
+  const gridOnly = createSeriesLine().createGuides({
+    axes: false,
+    legend: false
+  });
 
-  assert.equal(axesOnly.semanticSpec.guides.axis.x.scale, "x");
-  assert.equal(axesOnly.semanticSpec.guides.legend, undefined);
+  assert.equal(axesAndGrid.semanticSpec.guides.axis.x.scale, "x");
+  assert.equal(axesAndGrid.semanticSpec.guides.grid.horizontal.scale, "y");
+  assert.equal(axesAndGrid.semanticSpec.guides.legend, undefined);
   assert.equal(legendOnly.semanticSpec.guides.axis, undefined);
+  assert.equal(legendOnly.semanticSpec.guides.grid, undefined);
   assert.deepEqual(legendOnly.semanticSpec.guides.legend.series.scales, [
     "color",
     "strokeDash"
   ]);
+  assert.equal(gridOnly.semanticSpec.guides.axis, undefined);
+  assert.equal(gridOnly.semanticSpec.guides.grid.horizontal.scale, "y");
+  assert.equal(gridOnly.semanticSpec.guides.legend, undefined);
 });
 
 test("does not infer the unsupported point legend", () => {
@@ -92,17 +119,54 @@ test("does not infer the unsupported point legend", () => {
 
   assert.equal(program.semanticSpec.guides.axis.x.scale, "x");
   assert.equal(program.semanticSpec.guides.axis.y.scale, "y");
+  assert.equal(program.semanticSpec.guides.grid.horizontal.scale, "y");
   assert.equal(program.semanticSpec.guides.legend, undefined);
   assert.deepEqual(program.trace.children.at(-1).children.map(child => child.op), [
-    "createAxes"
+    "createAxes",
+    "createGrid"
   ]);
+});
+
+test("automatically selects a histogram color legend", () => {
+  const program = chart()
+    .createCanvas({
+      width: 432,
+      height: 460,
+      margin: { top: 80, right: 60, bottom: 130, left: 80 }
+    })
+    .createData({
+      id: "cars",
+      values: [
+        { value: 60, origin: "A" },
+        { value: 100, origin: "B" }
+      ]
+    })
+    .createBarMark({ id: "bars" })
+    .encodeHistogram({ field: "value" })
+    .encodeColor({ field: "origin" })
+    .createGuides();
+
+  assert.deepEqual(
+    program.trace.children.at(-1).children.map(child => child.op),
+    ["createAxes", "createGrid", "createLegend"]
+  );
+  assert.equal(program.semanticSpec.guides.legend.color.scale, "color");
+  assert.equal(program.graphicSpec.objects.colorLegendSymbols.type, "rect");
 });
 
 test("validates options and requires a selected guide", () => {
   assert.throws(() => chart().createGuides(), /at least one selected guide/);
   assert.throws(
-    () => createSeriesLine().createGuides({ axes: false, legend: false }),
+    () => createSeriesLine().createGuides({
+      axes: false,
+      grid: false,
+      legend: false
+    }),
     /at least one selected guide/
+  );
+  assert.throws(
+    () => createSeriesLine().createGuides({ grid: true }),
+    /false or a plain object/
   );
   assert.throws(
     () => createSeriesLine().createGuides({ axes: "auto" }),

@@ -127,10 +127,11 @@ Apply a constant point radius. [Constant appearance](../api/appearance.md)
 ### `createGuides`
 
 ```javascript
-createGuides({ axes?, legend? })
+createGuides({ axes?, grid?, legend? })
 ```
 
-Create applicable axes and a line-series legend. [Guides](../api/guides.md)
+Create applicable axes, Cartesian grid, and categorical legend.
+[Guides](../api/guides.md)
 
 ### `createAxes`
 

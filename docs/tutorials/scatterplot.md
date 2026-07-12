@@ -56,10 +56,11 @@ render(program, context);
 | `encodeX`, `encodeY` | Fields, scales, Cartesian coordinate | Concrete x/y values |
 | `encodeColor` | Nominal color field and scale | Concrete fill colors |
 | `encodeRadius` | — | Constant circle radius |
-| `createGuides` | Axis scale/title guides | Concrete lines, ticks, labels, titles |
+| `createGuides` | Axis, horizontal-grid, and title guides | Concrete grid/axis lines, ticks, labels, titles |
 
-Position encodings create the default `main` Cartesian coordinate before axes
-are requested. `createGuides` calls the axis action, which reads that stored relationship and creates guide
-graphics; it does not create or repair coordinates.
+Position encodings create the default `main` Cartesian coordinate before guides
+are requested. `createGuides` calls the axis and grid actions, which read that
+stored relationship and create guide graphics; they do not create or repair
+coordinates.
 
 See [Encodings](../api/encodings.md) and [Guides](../api/guides.md) for customization.

@@ -64,7 +64,7 @@ and language models.
 - createGrid defaults to horizontal lines, supports optional vertical lines, reuses compatible axis ticks, and inserts concrete lines before related marks.
 - createLegend materializes a categorical right-side line-series or bottom histogram color legend; layered symbol recipes support line, point, swatch, and line-plus-point compositions.
 - createTitle stores semantic title text and materializes a plot-aligned top title with an optional subtitle.
-- createGuides calls the applicable createAxes and createLegend wrapped actions; it never creates chart titles.
+- createGuides calls applicable createAxes, createGrid, and createLegend wrapped actions in that order; it never creates chart titles.
 
 ## Current scope
 
@@ -85,9 +85,7 @@ Temporal line `encodeX` resolves a time scale; aggregate line `encodeY`
 materializes sorted series paths. Line `encodeColor` and `encodeStrokeDash`
 group and style series through ordinal scales. `createGuides` composes time or
 linear axes, including bin-aligned histogram axes, with the compatible
-right-side line-series legend. Histogram legends remain separate until
-`createGuides` gains bar applicability. A plot-aligned
+right-side line-series legend or bottom histogram color legend. A plot-aligned
 top title and optional subtitle are available separately through `createTitle`.
-Cartesian grids are available separately through `createGrid`; automatic grid
-selection in `createGuides` is not yet implemented.
+Cartesian grids are also available separately through `createGrid`.
 Do not assume roadmap features are implemented.

@@ -73,7 +73,15 @@ test("authors histogram mark and encodings through chart actions", () => {
     ["rematerializeScale", "rematerializeScale", "rematerializeScale"]
   );
 
-  const grid = program.trace.children.find(node => node.op === "createGrid");
+  const guides = program.trace.children.find(node => node.op === "createGuides");
+  assert.deepEqual(guides.args, {});
+  assert.deepEqual(guides.children.map(node => node.op), [
+    "createAxes",
+    "createGrid",
+    "createLegend"
+  ]);
+
+  const grid = guides.children.find(node => node.op === "createGrid");
   assert.deepEqual(grid.args, {});
   assert.deepEqual(grid.children.map(node => node.op), [
     "createHorizontalGrid"
@@ -90,7 +98,7 @@ test("authors histogram mark and encodings through chart actions", () => {
     "bars"
   ]);
 
-  const axes = program.trace.children.find(node => node.op === "createAxes");
+  const axes = guides.children.find(node => node.op === "createAxes");
   assert.deepEqual(axes.args, {});
   assert.deepEqual(axes.children.map(node => node.op), [
     "createXAxis",
@@ -109,7 +117,7 @@ test("authors histogram mark and encodings through chart actions", () => {
     ["0", "30", "60", "90", "120"]
   );
 
-  const legend = program.trace.children.find(node => node.op === "createLegend");
+  const legend = guides.children.find(node => node.op === "createLegend");
   assert.deepEqual(legend.args, {});
   assert.deepEqual(legend.children.map(node => node.op), [
     "createCategoricalLegend"
@@ -139,6 +147,12 @@ test("authors histogram mark and encodings through chart actions", () => {
           "scale[color].domain",
           "scale[color].range"
         ].includes(node.args.property)
+    ),
+    false
+  );
+  assert.equal(
+    program.trace.children.some(
+      node => ["createAxes", "createGrid", "createLegend"].includes(node.op)
     ),
     false
   );
