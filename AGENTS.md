@@ -76,6 +76,8 @@
 - When behavior, APIs, stored structures, or implementation contracts change, update the relevant README or current documentation before considering the change complete.
 - Write public-facing files such as `README.md` and pages under `docs/` in English.
 - Treat `docs/` as user documentation: prioritize installation, user-facing APIs, observable behavior, examples, and the minimum core concepts users need.
+- Organize public documentation by audience and task: getting started and tutorials first, then chart API, advanced chart API, and extension API. Keep one canonical action reference with exact signatures for discovery by users and language models.
+- Keep unimplemented roadmap ideas out of current API documentation except where a concise limitation is required to explain an accepted value or error.
 - Do not exhaustively document internal modules, helper functions, data structures, or implementation mechanics in public docs unless users must understand them to use the library correctly.
 - Group implementation step plans by phase under paths such as `agent_docs/impl/phase1/STEP1.md` and `agent_docs/impl/phase2/STEP1.md`. Write every STEP document in Korean.
 - Every STEP document must place a `진행 상태` checklist near the beginning, immediately after the goal, and keep it updated as each implementation unit is completed.

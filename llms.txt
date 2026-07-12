@@ -1,0 +1,3 @@
+# ggaction
+
+Canonical LLM documentation index: ./docs/llms.txt

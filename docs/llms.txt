@@ -1,0 +1,51 @@
+# ggaction
+
+ggaction is a JavaScript chart-authoring library built around immutable,
+hierarchical actions. This file points to canonical documentation for humans
+and language models.
+
+## Start
+
+- Documentation index: ./index.md
+- Getting started: ./getting-started.md
+- Complete scatterplot tutorial: ./tutorials/scatterplot.md
+- Complete action reference: ./reference/actions.md
+- Supported features: ./supported-features.md
+
+## Core concepts
+
+- ChartProgram and immutability: ./concepts/chart-program.md
+- Semantic and graphical state: ./concepts/semantic-and-graphics.md
+- Actions and trace trees: ./concepts/actions-and-trace.md
+
+## API
+
+- Canvas: ./api/canvas.md
+- Data: ./api/data.md
+- Point marks: ./api/point-mark.md
+- Encodings: ./api/encodings.md
+- Coordinates: ./api/coordinates.md
+- Axes: ./api/axes.md
+- Rendering: ./api/rendering.md
+- Advanced axis components: ./advanced/axis-components.md
+- Action authoring: ./extension/action-authoring.md
+- Primitive extension API: ./extension/primitives.md
+
+## Architectural invariants
+
+- Every action accepts one plain option object and returns a new ChartProgram.
+- Existing programs and caller-owned inputs are never mutated.
+- semanticSpec records chart meaning.
+- graphicSpec stores fully materialized backend-neutral graphics.
+- There is no automatic semantic-to-graphic compiler.
+- Domain actions explicitly invoke every required graphical materialization.
+- Renderers read graphicSpec only; they do not infer from semanticSpec.
+- Nested wrapped actions form the hierarchical trace.
+- Positional encodings create and attach coordinates; guide actions only read them.
+- encodeRadius is fixed circle appearance, not a Polar radial encoding.
+
+## Current scope
+
+The implemented end-to-end chart is a Cartesian point scatterplot with
+quantitative x/y, nominal color, fixed radius, complete axes, browser Canvas,
+and PNG output. Do not assume roadmap features are implemented.
