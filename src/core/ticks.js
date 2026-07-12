@@ -1,5 +1,7 @@
 import { cloneAndFreeze } from "./immutable.js";
 
+const LINEAR_FACTORS = Object.freeze([1, 2, 3, 5]);
+
 export function niceTicks(domain, count) {
   if (!Number.isInteger(count) || count <= 0) throw new RangeError("Tick count must be a positive integer.");
   const low = Math.min(...domain);
@@ -8,7 +10,7 @@ export function niceTicks(domain, count) {
   const rough = (high - low) / count;
   const power = 10 ** Math.floor(Math.log10(rough));
   const error = rough / power;
-  const factor = error >= 5 ? 10 : error >= 2 ? 5 : error >= 1 ? 2 : 1;
+  const factor = LINEAR_FACTORS.find(candidate => candidate >= error) ?? 10;
   const step = factor * power;
   const start = Math.ceil(low / step) * step;
   const end = Math.floor(high / step) * step;

@@ -61,11 +61,15 @@ program.editXAxisTicks({ length: 8, color: "black" });
 | --- | --- |
 | `scale` | Create-only scale ID; defaults to channel |
 | `position` | `bottom` for x, `left` for y |
-| `count` | Positive requested tick density; default `5` |
+| `count` | Positive requested tick density; default `5` except inferred binned x boundaries |
 | `values` | Exact finite data-space values or timestamps; mutually exclusive with `count` |
 | `length` | Non-negative tick length; default `6` |
 | `color` | Stroke color; default `#64748b` |
 | `lineWidth` | Non-negative width; default `1` |
+
+When both `count` and `values` are omitted for a binned histogram x scale,
+ticks default to the inferred bin boundaries. Passing either option disables
+that inference.
 
 ## Labels
 

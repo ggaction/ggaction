@@ -72,6 +72,25 @@ test("authors histogram mark and encodings through chart actions", () => {
     color.children.at(-1).children.slice(0, 3).map(node => node.op),
     ["rematerializeScale", "rematerializeScale", "rematerializeScale"]
   );
+
+  const axes = program.trace.children.find(node => node.op === "createAxes");
+  assert.deepEqual(axes.args, {});
+  assert.deepEqual(axes.children.map(node => node.op), [
+    "createXAxis",
+    "createYAxis"
+  ]);
+  assert.deepEqual(
+    program.graphicSpec.objects.xAxisLabels.children.map(
+      child => child.properties.text
+    ),
+    ["50", "100", "150", "200", "250", "300", "350", "400", "450", "500"]
+  );
+  assert.deepEqual(
+    program.graphicSpec.objects.yAxisLabels.children.map(
+      child => child.properties.text
+    ),
+    ["0", "30", "60", "90", "120"]
+  );
   assert.equal(
     program.trace.children.some(
       node =>
@@ -90,6 +109,31 @@ test("authors histogram mark and encodings through chart actions", () => {
   assert.equal(
     program.trace.children.some(
       node => node.op === "editGraphics" && node.args.target === "bars"
+    ),
+    false
+  );
+  assert.equal(
+    program.trace.children.some(
+      node =>
+        node.op === "editSemantic" &&
+        node.args.property.startsWith("guide.axis.")
+    ),
+    false
+  );
+  assert.equal(
+    program.trace.children.some(
+      node =>
+        node.op === "createGraphics" &&
+        [
+          "xAxisLine",
+          "xAxisTicks",
+          "xAxisLabels",
+          "xAxisTitle",
+          "yAxisLine",
+          "yAxisTicks",
+          "yAxisLabels",
+          "yAxisTitle"
+        ].includes(node.args.id)
     ),
     false
   );

@@ -1,10 +1,50 @@
 import { action } from "../../../core/action.js";
+import { resolveHistogramBins } from "../../../core/histogram.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { mapLinearValues } from "../../../core/scale.js";
+import {
+  mapLinearValues,
+  readQuantitativeField
+} from "../../../core/scale.js";
 import { niceTicks, timeTicks } from "../../../core/ticks.js";
 
 const OPTIONS = Object.freeze(["scale", "position", "count", "values", "length", "color", "lineWidth"]);
 const DEFAULTS = Object.freeze({ count: 5, length: 6, color: "#64748b", lineWidth: 1 });
+
+function inferHistogramBoundaries(program, channel, scaleId) {
+  if (channel !== "x") return undefined;
+
+  const consumers = program.semanticSpec.layers.filter(
+    layer =>
+      layer.encoding?.x?.scale === scaleId &&
+      layer.encoding.x.bin !== undefined
+  );
+  if (consumers.length === 0) return undefined;
+  if (consumers.length > 1) {
+    throw new Error(
+      `Axis ticks cannot infer shared histogram bins for scale "${scaleId}".`
+    );
+  }
+
+  const [layer] = consumers;
+  const encoding = layer.encoding.x;
+  const dataset = program.semanticSpec.datasets.find(
+    item => item.id === layer.data
+  );
+  const scale = program.semanticSpec.scales.find(item => item.id === scaleId);
+  if (dataset === undefined || scale === undefined) {
+    throw new Error(
+      `Axis ticks require histogram data and scale "${scaleId}".`
+    );
+  }
+
+  return resolveHistogramBins({
+    values: readQuantitativeField(dataset.values, encoding.field),
+    maxBins: encoding.bin.maxBins,
+    domain: scale.domain,
+    nice: scale.nice ?? true,
+    zero: scale.zero ?? false
+  }).boundaries;
+}
 
 function validateOptions(args, operation, create) {
   for (const key of Object.keys(args)) if (!OPTIONS.includes(key) || (!create && key === "scale")) throw new Error(`Unknown ${operation} option "${key}".`);
@@ -71,7 +111,13 @@ function makeCreate(channel) {
     if (existingGuide && existingGuide !== scale) throw new Error(`${op} conflicts with the existing axis scale.`);
     const id = `${channel}AxisTicks`;
     if (this.graphicSpec.objects[id]) throw new Error(`${op} requires missing axis ticks.`);
-    const config = { scale, position: channel === "x" ? "bottom" : "left", length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...args, mode: Object.hasOwn(args, "values") ? "values" : "count" };
+    const inferredValues =
+      Object.hasOwn(args, "count") || Object.hasOwn(args, "values")
+        ? undefined
+        : inferHistogramBoundaries(this, channel, scale);
+    const options =
+      inferredValues === undefined ? args : { ...args, values: inferredValues };
+    const config = { scale, position: channel === "x" ? "bottom" : "left", length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, mode: Object.hasOwn(options, "values") ? "values" : "count" };
     if (config.mode === "values") delete config.count; else config.count ??= DEFAULTS.count;
     validateConfig(channel, config); geometry(this, channel, config);
     return this.editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })

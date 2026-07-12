@@ -59,7 +59,7 @@ and language models.
 - Bar encodeY infers the binned x field, stores count/zero-stack, resolves both scales, and materializes concrete rects for non-empty bins.
 - encodeHistogram is a thin aggregate whose direct children are binned bar encodeX and count/zero-stack encodeY.
 - Bar encodeColor resolves an ordinal scale and rematerializes each bin as zero-stacked category rects in color-domain order; the y domain remains based on total bin counts.
-- createAxes supports linear and UTC time scales plus aggregate-aware title inference.
+- createAxes supports linear and UTC time scales, histogram bin-boundary x ticks, and aggregate-aware title inference.
 - createLegend combines compatible line color and strokeDash encodings into one concrete series legend.
 - createTitle stores semantic title text and materializes a plot-aligned top title with an optional subtitle.
 - createGuides calls the applicable createAxes and createLegend wrapped actions; it never creates chart titles.
@@ -82,6 +82,7 @@ duplicating their validation, inference, or materialization behavior.
 Temporal line `encodeX` resolves a time scale; aggregate line `encodeY`
 materializes sorted series paths. Line `encodeColor` and `encodeStrokeDash`
 group and style series through ordinal scales. `createGuides` composes time or
-linear axes with the compatible right-side line-series legend. A plot-aligned
+linear axes, including bin-aligned histogram axes, with the compatible
+right-side line-series legend. A plot-aligned
 top title and optional subtitle are available separately through `createTitle`.
 Do not assume roadmap features are implemented.

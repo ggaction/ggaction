@@ -44,6 +44,11 @@ interval near the requested count and format labels automatically. For example,
 a 1970–1982 domain produces labels such as `1970`, `1972`, ..., `1982`.
 Explicit time values are finite timestamps.
 
+For a binned histogram x encoding, omitted tick options use the inferred bin
+boundaries. This keeps the axis aligned with every rect edge. Explicit
+`ticksAndLabels.count` or `ticksAndLabels.values` takes precedence. Count y
+axes use numeric nice ticks and infer titles such as `count(Displacement)`.
+
 Titles are inferred from the unique encoding consuming each scale. Aggregate
 encodings include their operation, so `mean` on `Acceleration` becomes
 `mean(Acceleration)`. Pass `title.text` when inference is ambiguous or a custom

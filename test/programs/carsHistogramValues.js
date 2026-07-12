@@ -236,7 +236,7 @@ export function createCarsHistogramValues(
         },
         ticks: yTicks,
         title: {
-          x: 22,
+          x: bounds.x - 52,
           y: bounds.y + bounds.height / 2,
           text: "count(Displacement)",
           rotation: -Math.PI / 2

@@ -138,7 +138,8 @@ Create applicable axes and a line-series legend. [Guides](../api/guides.md)
 createAxes({ coordinate?, x?, y? })
 ```
 
-Create Cartesian axes directly. [Axes](../api/axes.md)
+Create Cartesian axes directly, including inferred histogram bin-boundary
+ticks. [Axes](../api/axes.md)
 
 ### `createLegend`
 

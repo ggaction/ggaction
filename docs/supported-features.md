@@ -19,7 +19,7 @@ This page describes implemented behavior only.
 | Stroke dash | Nominal line series with explicit or automatic ten-pattern range |
 | Constant appearance | Circle radius |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
-| Guides | Automatic axes/line-legend collection; bottom/left linear or UTC time axes; one right-side combined line-series legend |
+| Guides | Automatic axes/line-legend collection; bottom/left linear, UTC time, or bin-aligned histogram axes; one right-side combined line-series legend |
 | Titles | One plot-aligned top title with an optional single-line subtitle |
 | Rendering | Browser Canvas and Node PNG |
 | Graphics | Concrete canvas, circle, line, rect, text, and point-array path nodes |
