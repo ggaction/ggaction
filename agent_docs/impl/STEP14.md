@@ -16,11 +16,11 @@ Encoding channels와 coordinate를 해석해 필요한 complete-axis action을
 
 - [x] Coordinate type/channel schema
 - [x] `createCoordinate`
-- [ ] Coordinate ID/type inference
-- [ ] Axis channel과 scale inference
-- [ ] Selective x/y dispatch와 false opt-out
-- [ ] Polar/mixed channel validation
-- [ ] `createAxes`
+- [x] Coordinate ID/type inference
+- [x] Axis channel과 scale inference
+- [x] Selective x/y dispatch와 false opt-out
+- [x] Polar/mixed channel validation
+- [x] `createAxes`
 - [ ] 대표 프로그램 x/y axis 호출 교체
 - [ ] Unit, trace, immutability test
 - [ ] Acceptance 및 PNG render test
