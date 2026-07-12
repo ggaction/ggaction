@@ -10,6 +10,8 @@
       url: /tutorials/scatterplot/
     - title: Line Chart Tutorial
       url: /tutorials/line-chart/
+    - title: Histogram Tutorial
+      url: /tutorials/histogram/
 
 - title: Chart API
   items:

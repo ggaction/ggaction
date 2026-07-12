@@ -22,3 +22,9 @@ render three Origin paths, axes, a combined color/dash legend, and chart title.
 Open <http://localhost:8000/examples/cars-line-chart/>. This is the ordinary
 chart-authoring example: it creates the same aggregate line chart entirely with
 `createLineMark`, encoding, guide, and title actions.
+
+## Cars histogram
+
+Open <http://localhost:8000/examples/cars-histogram/>. This chart uses
+`createBarMark`, atomic histogram encoding, color stacking, inferred guides,
+and a centered title.

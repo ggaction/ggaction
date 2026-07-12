@@ -10,6 +10,7 @@ and language models.
 - Getting started: ./getting-started.md
 - Complete scatterplot tutorial: ./tutorials/scatterplot.md
 - Complete line chart tutorial: ./tutorials/line-chart.md
+- Complete histogram tutorial: ./tutorials/histogram.md
 - Complete action reference: ./reference/actions.md
 - Supported features: ./supported-features.md
 
@@ -71,8 +72,9 @@ and language models.
 The documented build is version 0.0.0-dev and is not published to npm. Use the
 repository source directly.
 
-The implemented end-to-end Chart API covers Cartesian point scatterplots and
-temporal mean-aggregate line charts with browser Canvas and PNG output.
+The implemented end-to-end Chart API covers Cartesian point scatterplots,
+temporal mean-aggregate line charts, and stacked histograms with browser Canvas
+and PNG output.
 `createBarMark` creates an empty rect collection, and binned bar `encodeX`
 stores the horizontal histogram meaning plus a resolved x scale. Bar
 `encodeY()` infers count/zero-stack and resolves the y scale from total bin

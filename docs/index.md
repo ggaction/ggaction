@@ -22,7 +22,9 @@ example, then use the API pages when you need to customize one part.
    fields to points.
 3. [Cars line chart tutorial](./tutorials/line-chart.md) — aggregate temporal
    series and add guides and a title.
-4. [Chart API reference](./reference/actions.md#chart-authoring-api) — find an
+4. [Cars histogram tutorial](./tutorials/histogram.md) — bin, count, and stack
+   values by category.
+5. [Chart API reference](./reference/actions.md#chart-authoring-api) — find an
    action and its exact signature.
 
 ## Understand the model

@@ -54,9 +54,9 @@ chart는 별도 grid option 없이 horizontal grid를 가진다.
 - [x] Horizontal/vertical grid
 - [x] `createGuides` default horizontal grid
 - [x] Bottom bar legend
-- [ ] Centered title
-- [ ] Browser example, tutorial, PNG regression
-- [ ] 사용자 문서와 LLM reference
+- [x] Centered title
+- [x] Browser example, tutorial, PNG regression
+- [x] 사용자 문서와 LLM reference
 
 ## Semantic 목표
 
