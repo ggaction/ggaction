@@ -46,7 +46,7 @@ chart()
 
 ## 진행 상태
 
-- [ ] Line mark와 concrete line-segment graphics
+- [ ] Line mark와 series별 concrete path graphics
 - [ ] Temporal x encoding과 scale
 - [ ] Quantitative mean aggregation
 - [ ] Series grouping과 시간순 정렬
@@ -91,12 +91,13 @@ explicit range  > inferred range
 
 ## Graphical 목표
 
-- 각 series를 정렬된 concrete line segment collection으로 materialize한다.
-- 모든 segment는 최종 `x1`, `y1`, `x2`, `y2`, stroke color, strokeDash를 가진다.
-- Canvas renderer는 `graphicSpec`만 읽어 solid/dashed line을 렌더링한다.
+- 각 series를 정렬된 concrete point 배열을 가진 하나의 graphical path로
+  materialize한다.
+- 모든 path는 최종 `points`, stroke color, strokeWidth, strokeDash를 가진다.
+- Canvas renderer는 `graphicSpec`만 읽어 solid/dashed path를 렌더링한다.
 - Dataset, field, scale expression, aggregation instruction은 `graphicSpec`에 남지
   않는다.
-- Semantic 또는 scale 변경은 관련된 모든 segment와 guide consumer를 wrapped
+- Semantic 또는 scale 변경은 관련된 모든 path와 guide consumer를 wrapped
   action으로 명시적으로 rematerialize한다.
 
 ## Guides와 title
