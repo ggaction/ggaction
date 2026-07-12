@@ -3,113 +3,22 @@ import { getPositionCoordinateDefaults } from "../../core/coordinate.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
-  readNominalField,
   readQuantitativeField,
   readTemporalField,
-  validateColorRange,
   validateFieldType,
   validateLinearScaleType,
-  validateNominalFieldType,
-  validateOrdinalDomain,
-  validateOrdinalScaleType,
   validatePositionChannel,
   validateScaleDomain,
   validateScaleRange,
-  validateStrokeDashRange,
   validateTimeScaleType
 } from "../../core/scale.js";
+import { resolveTarget, validateOptions } from "./shared.js";
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([
-  "field",
-  "target",
-  "fieldType",
-  "scale",
-  "coordinate",
-  "aggregate",
-  "bin",
-  "stack"
+  "field", "target", "fieldType", "scale", "coordinate", "aggregate", "bin", "stack"
 ]);
 const BIN_OPTIONS = Object.freeze(["maxBins"]);
-const COLOR_ENCODING_OPTIONS = Object.freeze([
-  "field",
-  "target",
-  "fieldType",
-  "scale"
-]);
-const STROKE_DASH_ENCODING_OPTIONS = COLOR_ENCODING_OPTIONS;
-const SCALE_OPTIONS = Object.freeze([
-  "id",
-  "type",
-  "domain",
-  "range",
-  "nice",
-  "zero"
-]);
-const ORDINAL_SCALE_OPTIONS = Object.freeze(["id", "type", "domain", "range"]);
-const COLOR_SCALE_OPTIONS = Object.freeze([...ORDINAL_SCALE_OPTIONS, "palette"]);
-const RADIUS_OPTIONS = Object.freeze(["value", "target"]);
-const HISTOGRAM_OPTIONS = Object.freeze([
-  "field",
-  "target",
-  "coordinate",
-  "maxBins",
-  "stack",
-  "xScale",
-  "yScale"
-]);
-
-function validateOptions(args, supported, operation) {
-  for (const key of Object.keys(args)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${operation} option "${key}".`);
-    }
-  }
-}
-
-function rematerializeExistingLegend(program) {
-  if (
-    (program.semanticSpec.guides.legend?.series === undefined ||
-      program.guideConfigs.legend?.series === undefined) &&
-    (program.semanticSpec.guides.legend?.color === undefined ||
-      program.guideConfigs.legend?.color === undefined)
-  ) {
-    return program;
-  }
-
-  return program.rematerializeLegend();
-}
-
-function resolveTarget(
-  program,
-  target,
-  supportedTypes = ["point", "line"],
-  label = "position mark"
-) {
-  const id = validateUserId(target ?? program.context.currentMark, "Mark id");
-  const layer = program.semanticSpec.layers.find(item => item.id === id);
-
-  if (layer === undefined || !supportedTypes.includes(layer.mark?.type)) {
-    throw new Error(`Unknown ${label} "${id}".`);
-  }
-
-  const dataset = program.semanticSpec.datasets.find(item => item.id === layer.data);
-
-  if (dataset === undefined) {
-    throw new Error(`Mark "${id}" requires an existing dataset.`);
-  }
-
-  const expectedGraphic = {
-    point: "circle",
-    line: "path",
-    bar: "rect"
-  }[layer.mark.type];
-
-  if (program.graphicSpec.objects[id]?.type !== expectedGraphic) {
-    throw new Error(`Mark "${id}" requires ${expectedGraphic} graphics.`);
-  }
-
-  return { id, dataset, layer };
-}
+const SCALE_OPTIONS = Object.freeze(["id", "type", "domain", "range", "nice", "zero"]);
 
 function resolvePositionCoordinate(program, channel, layer, requestedId) {
   const defaults = getPositionCoordinateDefaults(channel);
@@ -196,56 +105,6 @@ function resolveBinDefinition(bin) {
     throw new TypeError("Histogram maxBins must be a positive integer.");
   }
   return { maxBins };
-}
-
-function resolveColorScaleDefinition(program, options) {
-  if (!isPlainObject(options)) {
-    throw new TypeError("Encoding scale must be a plain object.");
-  }
-
-  validateOptions(options, COLOR_SCALE_OPTIONS, "scale");
-  if (options.palette !== undefined && options.range !== undefined) {
-    throw new Error("Color scale cannot specify both palette and range.");
-  }
-  const id = validateUserId(options.id ?? "color", "Scale id");
-  const existing = program.semanticSpec.scales.find(item => item.id === id);
-  const requestedRange = options.palette === undefined
-    ? options.range
-    : { palette: options.palette };
-
-  return {
-    id,
-    type: validateOrdinalScaleType(
-      options.type ?? existing?.type ?? "ordinal"
-    ),
-    domain: validateOrdinalDomain(
-      options.domain ?? existing?.domain ?? "auto"
-    ),
-    range: validateColorRange(requestedRange ?? existing?.range ?? "auto")
-  };
-}
-
-function resolveStrokeDashScaleDefinition(program, options) {
-  if (!isPlainObject(options)) {
-    throw new TypeError("Encoding scale must be a plain object.");
-  }
-
-  validateOptions(options, ORDINAL_SCALE_OPTIONS, "scale");
-  const id = validateUserId(options.id ?? "strokeDash", "Scale id");
-  const existing = program.semanticSpec.scales.find(item => item.id === id);
-
-  return {
-    id,
-    type: validateOrdinalScaleType(
-      options.type ?? existing?.type ?? "ordinal"
-    ),
-    domain: validateOrdinalDomain(
-      options.domain ?? existing?.domain ?? "auto"
-    ),
-    range: validateStrokeDashRange(
-      options.range ?? existing?.range ?? "auto"
-    )
-  };
 }
 
 function encodePosition(program, channel, args, operation) {
@@ -445,162 +304,7 @@ const encodeY = action(
   }
 );
 
-const encodeHistogram = action(
-  {
-    op: "encodeHistogram",
-    description: "Encode a binned count/zero-stack histogram."
-  },
-  function (args = {}) {
-    validateOptions(args, HISTOGRAM_OPTIONS, "encodeHistogram");
-    const x = {
-      field: args.field,
-      bin: { maxBins: args.maxBins ?? 10 }
-    };
-    const y = { stack: args.stack ?? "zero" };
-
-    for (const key of ["target", "coordinate"]) {
-      if (Object.hasOwn(args, key)) x[key] = args[key];
-    }
-    if (Object.hasOwn(args, "target")) y.target = args.target;
-    if (Object.hasOwn(args, "xScale")) x.scale = args.xScale;
-    if (Object.hasOwn(args, "yScale")) y.scale = args.yScale;
-
-    return this.encodeX(x).encodeY(y);
-  }
-);
-
-const encodeColor = action(
-  {
-    op: "encodeColor",
-    description: "Encode a nominal field as graphical color."
-  },
-  function (args = {}) {
-    validateOptions(args, COLOR_ENCODING_OPTIONS, "encodeColor");
-    const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
-    const { id: target, dataset, layer } = resolveTarget(
-      this,
-      args.target,
-      ["point", "line", "bar"],
-      "color mark"
-    );
-    if (
-      layer.mark.type === "bar" &&
-      (layer.encoding?.x?.bin === undefined ||
-        layer.encoding?.y?.aggregate !== "count" ||
-        layer.encoding.y.stack !== "zero")
-    ) {
-      throw new Error(
-        "Bar color encoding requires a complete histogram encoding."
-      );
-    }
-    readNominalField(dataset.values, args.field);
-    const scale = resolveColorScaleDefinition(this, args.scale ?? {});
-
-    const next = this
-      .editSemantic({
-        property: `layer[${target}].encoding.color.field`,
-        value: args.field
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.color.fieldType`,
-        value: fieldType
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.color.scale`,
-        value: scale.id
-      })
-      .createScale(scale);
-
-    if (layer.mark.type === "line") {
-      return rematerializeExistingLegend(
-        next.rematerializeLineMark({ id: target })
-      );
-    }
-
-    if (layer.mark.type === "bar") {
-      return rematerializeExistingLegend(
-        next.rematerializeBarMark({ id: target })
-      );
-    }
-
-    return next.rematerializeScale({ id: scale.id });
-  }
-);
-
-const encodeStrokeDash = action(
-  {
-    op: "encodeStrokeDash",
-    description: "Encode a nominal field as line stroke dash."
-  },
-  function (args = {}) {
-    validateOptions(
-      args,
-      STROKE_DASH_ENCODING_OPTIONS,
-      "encodeStrokeDash"
-    );
-    const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
-    const { id: target, dataset } = resolveTarget(
-      this,
-      args.target,
-      ["line"],
-      "line mark"
-    );
-    readNominalField(dataset.values, args.field);
-    const scale = resolveStrokeDashScaleDefinition(this, args.scale ?? {});
-
-    const next = this
-      .editSemantic({
-        property: `layer[${target}].encoding.strokeDash.field`,
-        value: args.field
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.strokeDash.fieldType`,
-        value: fieldType
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.strokeDash.scale`,
-        value: scale.id
-      })
-      .createScale(scale)
-      .rematerializeLineMark({ id: target });
-
-    return rematerializeExistingLegend(next);
-  }
-);
-
-const encodeRadius = action(
-  {
-    op: "encodeRadius",
-    description: "Set a constant graphical radius on a point mark."
-  },
-  function (args = {}) {
-    validateOptions(args, RADIUS_OPTIONS, "encodeRadius");
-    const { id: target } = resolveTarget(
-      this,
-      args.target,
-      ["point"],
-      "point mark"
-    );
-
-    if (!Number.isFinite(args.value) || args.value < 0) {
-      throw new RangeError(
-        "encodeRadius requires a non-negative finite value."
-      );
-    }
-
-    return this.editGraphics({
-      target,
-      property: "radius",
-      value: args.value
-    });
-  }
-);
-
-export function registerEncodingActions(ProgramClass) {
+export function registerPositionEncodingActions(ProgramClass) {
   ProgramClass.prototype.encodeX = encodeX;
   ProgramClass.prototype.encodeY = encodeY;
-  ProgramClass.prototype.encodeHistogram = encodeHistogram;
-  ProgramClass.prototype.encodeColor = encodeColor;
-  ProgramClass.prototype.encodeStrokeDash = encodeStrokeDash;
-  ProgramClass.prototype.encodeRadius = encodeRadius;
 }
