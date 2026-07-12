@@ -201,6 +201,14 @@ const rematerializeScale = action(
       });
     }
 
+    if (next.semanticSpec.guides.axis?.x?.scale === id) {
+      next = next.editXAxisLine();
+    }
+
+    if (next.semanticSpec.guides.axis?.y?.scale === id) {
+      next = next.editYAxisLine();
+    }
+
     return next;
   }
 );

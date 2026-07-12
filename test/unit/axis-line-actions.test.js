@@ -62,3 +62,38 @@ test("validates positions, style, scale state, duplicates, and missing edits", (
   const created = program.createXAxisLine();
   assert.throws(() => created.createXAxisLine(), /missing x-axis line/);
 });
+
+test("rematerializes axis lines after Canvas bounds change", () => {
+  const created = encodedProgram().createXAxisLine().createYAxisLine();
+  const resized = created.editCanvas({ width: 300, height: 180, margin: 20 });
+  const node = resized.trace.children.at(-1);
+
+  assert.deepEqual(resized.graphicSpec.objects.xAxisLine.properties, {
+    x1: 20, y1: 160, x2: 280, y2: 160, stroke: "#334155", strokeWidth: 1
+  });
+  assert.deepEqual(resized.graphicSpec.objects.yAxisLine.properties, {
+    x1: 20, y1: 160, x2: 20, y2: 20, stroke: "#334155", strokeWidth: 1
+  });
+  assert.deepEqual(
+    node.children.map(child => child.op),
+    ["editGraphics", "editGraphics", "rematerializeScale", "rematerializeScale"]
+  );
+});
+
+test("rematerializes an explicit-range axis baseline after margin change", () => {
+  const created = chart()
+    .createCanvas({ width: 200, height: 120, margin: 10 })
+    .createData({ id: "data", values: [{ x: 0 }, { x: 10 }] })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x", scale: { range: [30, 170] } })
+    .createXAxisLine();
+  const resized = created.editCanvas({ margin: 20 });
+
+  assert.deepEqual(resized.graphicSpec.objects.xAxisLine.properties, {
+    x1: 30, y1: 100, x2: 170, y2: 100, stroke: "#334155", strokeWidth: 1
+  });
+  assert.equal(
+    resized.trace.children.at(-1).children.at(-1).op,
+    "rematerializeScale"
+  );
+});

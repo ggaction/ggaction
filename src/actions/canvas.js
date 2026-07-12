@@ -67,12 +67,14 @@ function usesPositionalScale(program, id) {
   );
 }
 
-function rematerializeAutoPositionScales(program) {
+function rematerializePositionScales(program) {
   let next = program;
 
   for (const scale of program.semanticSpec.scales) {
     if (
-      scale.range === "auto" &&
+      (scale.range === "auto" ||
+        program.semanticSpec.guides.axis?.x?.scale === scale.id ||
+        program.semanticSpec.guides.axis?.y?.scale === scale.id) &&
       program.resolvedScales[scale.id] !== undefined &&
       usesPositionalScale(program, scale.id)
     ) {
@@ -113,7 +115,7 @@ const editCanvas = action(
       Object.hasOwn(args, "height") ||
       Object.hasOwn(args, "margin")
     ) {
-      next = rematerializeAutoPositionScales(next);
+      next = rematerializePositionScales(next);
     }
 
     return next;
