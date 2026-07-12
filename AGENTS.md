@@ -55,6 +55,7 @@
 
 - Write source code, test descriptions, fixtures, and example-program code in English. Implementation step documents remain in Korean.
 - Keep representative user-authored programs in separate files under `test/programs/` and execute those files from acceptance tests.
+- When progressively replacing a primitive contract with higher-level actions, preserve the earlier representative program and its tests. Copy it into a new progression program and apply the new abstraction only there.
 - Pair each representative program with a PNG export test under `test/render/`; write generated images to the gitignored `test/output/` directory.
 - When a representative program is intended to demonstrate primitive usage, write one explicit method chain and do not hide primitive calls behind batching helpers or other syntactic sugar.
 - Keep the user program focused on realistic library usage. Assertions, mocks, and test-only inspection belong in the importing test file rather than in the user program.

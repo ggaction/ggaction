@@ -19,7 +19,8 @@ These are the recommended actions for building a scatterplot.
 | Canvas | `createCanvas({ width?, height?, background?, margin? })` | [Canvas](../api/canvas.md) |
 | Canvas | `editCanvas({ width?, height?, background?, margin? })` | [Canvas](../api/canvas.md) |
 | Data | `createData({ id, values })` | [Data](../api/data.md) |
-| Mark | `createPointMark({ id, data?, shape? })` | [Point mark](../api/point-mark.md) |
+| Mark | `createPointMark({ id, data?, shape? })` | [Marks](../api/marks.md) |
+| Mark | `createLineMark({ id, data? })` | [Marks](../api/marks.md) |
 | Encoding | `encodeX({ field, target?, fieldType?, coordinate?, scale? })` | [Encodings](../api/encodings.md) |
 | Encoding | `encodeY({ field, target?, fieldType?, coordinate?, scale? })` | [Encodings](../api/encodings.md) |
 | Encoding | `encodeColor({ field, target?, fieldType?, scale? })` | [Encodings](../api/encodings.md) |

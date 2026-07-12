@@ -28,7 +28,7 @@ lower-level control.
 
 - [Canvas](./api/canvas.md)
 - [Data](./api/data.md)
-- [Point marks](./api/point-mark.md)
+- [Marks](./api/marks.md)
 - [Encodings](./api/encodings.md)
 - [Coordinates](./api/coordinates.md)
 - [Axes](./api/axes.md)

@@ -15,15 +15,15 @@ Action은 semantic `line` mark와 dataset reference를 저장하고, graphical
 
 ## 진행 상태
 
-- [ ] `createLineMark` API와 option validation
-- [ ] Dataset/currentData 해석
-- [ ] Semantic line mark와 data reference
-- [ ] 빈 graphical path collection
-- [ ] Duplicate/conflict validation
-- [ ] Nested trace와 immutability test
-- [ ] Primitive line-chart program의 mark block 교체
-- [ ] Acceptance와 PNG regression
-- [ ] 영어 Mark API, action reference, `llms.txt`
+- [x] `createLineMark` API와 option validation
+- [x] Dataset/currentData 해석
+- [x] Semantic line mark와 data reference
+- [x] 빈 graphical path collection
+- [x] Duplicate/conflict validation
+- [x] Nested trace와 immutability test
+- [x] 별도 line-chart actions program의 mark block 교체
+- [x] Acceptance와 PNG regression
+- [x] 영어 Mark API, action reference, `llms.txt`
 
 ## API
 
@@ -81,7 +81,15 @@ series encoding -> path collection length 결정
 `createLineMark`는 임의로 one-series를 추론하지 않는다. 이후 encoding action이
 grouping을 해석하고 path collection length와 points를 명시적으로 materialize한다.
 
-## Primitive program 교체
+## Test program 보존과 actions program
+
+STEP1의 primitive program과 test는 변경하지 않는다. 이를 복사한 별도 진행용
+program에서 mark block만 교체한다.
+
+```text
+carsLineChartPrimitives.js  # STEP1 contract, 계속 보존
+carsLineChartActions.js     # STEP2부터 domain action을 누적 적용
+```
 
 교체 전:
 
@@ -110,10 +118,11 @@ STEP2에서는 test helper가 계산한 series 수로 `length`를 primitive edit
 2. `createLineMark`를 wrapped action으로 등록한다.
 3. Semantic line과 빈 path collection을 unit test한다.
 4. Duplicate, invalid input, trace, immutability를 test한다.
-5. Primitive line-chart program의 raw mark block을 교체한다.
-6. Acceptance trace expectation을 갱신한다.
-7. 전체 test와 Phase 1/2 PNG regression을 실행한다.
-8. 영어 Mark API, action reference, supported features, `llms.txt`를 갱신한다.
+5. Primitive program/test를 복사해 actions program/test를 만든다.
+6. Actions program의 raw mark block만 교체한다.
+7. Actions acceptance trace expectation을 갱신한다.
+8. Primitive와 actions PNG를 모두 regression test한다.
+9. 영어 Mark API, action reference, supported features, `llms.txt`를 갱신한다.
 
 각 conceptual change는 관련 test와 문서를 포함해 commit/push한다.
 
@@ -126,12 +135,21 @@ STEP2에서는 test helper가 계산한 series 수로 `length`를 primitive edit
 - `encodeStrokeDash`
 - Axis, legend, title domain action
 
+## 검증 결과
+
+- Unit/acceptance test 156개 통과
+- PNG render regression 5개 통과
+- STEP1 primitive program과 test 변경 없음
+- Actions program이 primitive program과 동일한 최종 semantic/graphic 결과 생성
+- `createLineMark` trace에 세 wrapped child action 기록
+
 ## 완료 조건
 
 - 사용자가 raw mark/data semantic path 없이 line mark를 생성한다.
 - Action 직후 semantic line과 빈 path collection이 존재한다.
 - Trace에 세 wrapped child action이 기록된다.
-- Primitive line chart의 최종 semanticSpec과 graphicSpec은 STEP1과 동일하다.
+- Primitive program/test는 수정되지 않는다.
+- Actions line chart의 최종 semanticSpec과 graphicSpec은 STEP1과 동일하다.
 - Phase 1 scatterplot과 Phase 2 primitive PNG가 유지된다.
 - 관련 public/LLM 문서가 현재 API와 일치한다.
 - 모든 변경이 push되고 worktree가 clean하다.

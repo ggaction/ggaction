@@ -3,7 +3,7 @@ layout: default
 title: Encoding API
 ---
 
-[Documentation home](../index.md) · [Point marks](./point-mark.md) · [Coordinates](./coordinates.md)
+[Documentation home](../index.md) · [Marks](./marks.md) · [Coordinates](./coordinates.md)
 
 # Encoding API
 

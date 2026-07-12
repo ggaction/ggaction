@@ -14,7 +14,7 @@ This page describes implemented behavior only.
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects |
-| Marks | Semantic point mark with circle graphics |
+| Marks | Semantic point/circle mark and semantic line/empty-path mark |
 | Position | Quantitative x/y fields with linear scales |
 | Color | Nominal field with ordinal scale and `tableau10` palette |
 | Constant appearance | Circle radius |
