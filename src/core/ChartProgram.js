@@ -17,8 +17,7 @@ import {
 import { registerPrimitiveActions } from "../actions/primitives.js";
 import { registerCanvasActions } from "../actions/canvas.js";
 import { registerDataActions } from "../actions/data.js";
-import { registerMarkActions } from "../actions/marks.js";
-import { registerLineMarkActions } from "../actions/lineMarks.js";
+import { registerMarkActions } from "../actions/marks/index.js";
 import { registerScaleActions } from "../actions/scales.js";
 import { registerEncodingActions } from "../actions/encodings.js";
 import { registerCoordinateActions } from "../actions/coordinates.js";
@@ -186,7 +185,6 @@ registerCanvasActions(ChartProgram);
 registerDataActions(ChartProgram);
 registerMarkActions(ChartProgram);
 registerScaleActions(ChartProgram);
-registerLineMarkActions(ChartProgram);
 registerEncodingActions(ChartProgram);
 registerCoordinateActions(ChartProgram);
 registerGuideActions(ChartProgram);

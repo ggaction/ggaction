@@ -1,19 +1,45 @@
-import { action } from "../core/action.js";
-import { deriveLineSeries } from "../core/lineSeries.js";
-import { mapLinearValues, mapOrdinalValues } from "../core/scale.js";
-import { validateUserId } from "../core/identifiers.js";
+import { action } from "../../core/action.js";
+import { deriveLineSeries } from "../../core/lineSeries.js";
+import { mapLinearValues, mapOrdinalValues } from "../../core/scale.js";
+import { validateUserId } from "../../core/identifiers.js";
+import {
+  assertMarkAvailable,
+  resolveMarkData,
+  validateMarkOptions
+} from "./shared.js";
 
 const DEFAULT_LINE_STROKE = "#4c78a8";
 const DEFAULT_LINE_WIDTH = 2;
+const CREATE_OPTIONS = Object.freeze(["id", "data"]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
-function validateOptions(args) {
-  for (const key of Object.keys(args)) {
-    if (!REMATERIALIZE_OPTIONS.includes(key)) {
-      throw new Error(`Unknown rematerializeLineMark option "${key}".`);
-    }
+const createLineMark = action(
+  {
+    op: "createLineMark",
+    description: "Create a semantic line mark and empty path collection."
+  },
+  function (args = {}) {
+    validateMarkOptions(args, CREATE_OPTIONS, "createLineMark");
+    const id = validateUserId(args.id, "Line mark id");
+    const { data } = resolveMarkData(this, args);
+    assertMarkAvailable(this, id);
+
+    return this
+      .editSemantic({
+        property: `layer[${id}].mark.type`,
+        value: "line"
+      })
+      .editSemantic({
+        property: `layer[${id}].data`,
+        value: data
+      })
+      .createGraphics({
+        id,
+        type: "path",
+        length: 0
+      });
   }
-}
+);
 
 function requireLine(program, id) {
   const layer = program.semanticSpec.layers.find(item => item.id === id);
@@ -41,7 +67,11 @@ const rematerializeLineMark = action(
     description: "Recompute aggregate series and concrete line paths."
   },
   function (args = {}) {
-    validateOptions(args);
+    validateMarkOptions(
+      args,
+      REMATERIALIZE_OPTIONS,
+      "rematerializeLineMark"
+    );
     const id = validateUserId(args.id, "Line mark id");
     const { dataset, layer } = requireLine(this, id);
     const existingChildren = this.graphicSpec.objects[id].children;
@@ -120,5 +150,6 @@ const rematerializeLineMark = action(
 );
 
 export function registerLineMarkActions(ProgramClass) {
+  ProgramClass.prototype.createLineMark = createLineMark;
   ProgramClass.prototype.rematerializeLineMark = rematerializeLineMark;
 }
