@@ -108,6 +108,6 @@ test("validates scale actions and materialization requirements", () => {
   assert.throws(() => chart().rematerializeScale({ id: "x" }), /Unknown scale/);
   assert.throws(
     () => chart().createScale({ id: "x" }).rematerializeScale({ id: "x" }),
-    /no positional consumers/
+    /no supported consumers/
   );
 });

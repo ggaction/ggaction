@@ -21,10 +21,10 @@ const program = chart()
 - [x] Nominal field와 ordinal scale validation
 - [x] `tableau10` palette
 - [x] Ordinal domain과 range resolution
-- [ ] Color scale materialization
-- [ ] `encodeColor`
+- [x] Color scale materialization
+- [x] `encodeColor`
 - [ ] `encodeRadius`
-- [ ] Shared color scale rematerialization
+- [x] Shared color scale rematerialization
 - [ ] `carsScatterplotActions`의 수동 fill/radius 제거
 - [ ] Unit, trace, immutability test
 - [ ] Acceptance 및 PNG render test

@@ -2,12 +2,17 @@ import { action } from "../core/action.js";
 import { validateUserId } from "../core/identifiers.js";
 import { isPlainObject } from "../core/immutable.js";
 import {
+  readNominalField,
   readQuantitativeField,
+  validateColorRange,
   validateFieldType,
+  validateLinearScaleType,
+  validateNominalFieldType,
+  validateOrdinalDomain,
+  validateOrdinalScaleType,
   validatePositionChannel,
   validateScaleDomain,
-  validateScaleRange,
-  validateScaleType
+  validateScaleRange
 } from "../core/scale.js";
 
 const ENCODING_OPTIONS = Object.freeze([
@@ -58,9 +63,30 @@ function resolveScaleDefinition(program, channel, options) {
 
   return {
     id,
-    type: validateScaleType(options.type ?? existing?.type ?? "linear"),
+    type: validateLinearScaleType(options.type ?? existing?.type ?? "linear"),
     domain: validateScaleDomain(options.domain ?? existing?.domain ?? "auto"),
     range: validateScaleRange(options.range ?? existing?.range ?? "auto")
+  };
+}
+
+function resolveColorScaleDefinition(program, options) {
+  if (!isPlainObject(options)) {
+    throw new TypeError("Encoding scale must be a plain object.");
+  }
+
+  validateOptions(options, SCALE_OPTIONS, "scale");
+  const id = validateUserId(options.id ?? "color", "Scale id");
+  const existing = program.semanticSpec.scales.find(item => item.id === id);
+
+  return {
+    id,
+    type: validateOrdinalScaleType(
+      options.type ?? existing?.type ?? "ordinal"
+    ),
+    domain: validateOrdinalDomain(
+      options.domain ?? existing?.domain ?? "auto"
+    ),
+    range: validateColorRange(options.range ?? existing?.range ?? "auto")
   };
 }
 
@@ -109,7 +135,38 @@ const encodeY = action(
   }
 );
 
+const encodeColor = action(
+  {
+    op: "encodeColor",
+    description: "Encode a nominal field as point color."
+  },
+  function (args = {}) {
+    validateOptions(args, ENCODING_OPTIONS, "encodeColor");
+    const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
+    const { id: target, dataset } = resolveTarget(this, args.target);
+    readNominalField(dataset.values, args.field);
+    const scale = resolveColorScaleDefinition(this, args.scale ?? {});
+
+    return this
+      .editSemantic({
+        property: `layer[${target}].encoding.color.field`,
+        value: args.field
+      })
+      .editSemantic({
+        property: `layer[${target}].encoding.color.fieldType`,
+        value: fieldType
+      })
+      .editSemantic({
+        property: `layer[${target}].encoding.color.scale`,
+        value: scale.id
+      })
+      .createScale(scale)
+      .rematerializeScale({ id: scale.id });
+  }
+);
+
 export function registerEncodingActions(ProgramClass) {
   ProgramClass.prototype.encodeX = encodeX;
   ProgramClass.prototype.encodeY = encodeY;
+  ProgramClass.prototype.encodeColor = encodeColor;
 }

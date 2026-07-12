@@ -2,12 +2,20 @@ import { action } from "../core/action.js";
 import { validateUserId } from "../core/identifiers.js";
 import {
   mapLinearValues,
+  mapOrdinalValues,
+  readNominalField,
   readQuantitativeField,
+  resolveColorRange,
+  resolveOrdinalDomain,
   resolveScaleDomain,
   resolveScaleRange,
   validateScaleDomain,
   validateScaleRange,
-  validateScaleType
+  validateScaleType,
+  validateOrdinalDomain,
+  validateColorRange,
+  validateLinearScaleType,
+  validateOrdinalScaleType
 } from "../core/scale.js";
 
 const CREATE_SCALE_OPTIONS = Object.freeze(["id", "type", "domain", "range"]);
@@ -21,13 +29,13 @@ function validateOptions(args, supported, operation) {
   }
 }
 
-function samePairOrAuto(left, right) {
+function sameScaleSetting(left, right) {
   if (left === right) {
     return true;
   }
 
   if (!Array.isArray(left) || !Array.isArray(right)) {
-    return left === right;
+    return left?.palette !== undefined && left.palette === right?.palette;
   }
 
   return left.length === right.length && left.every((value, i) => value === right[i]);
@@ -36,8 +44,8 @@ function samePairOrAuto(left, right) {
 function assertEquivalentScale(existing, expected) {
   if (
     existing.type !== expected.type ||
-    !samePairOrAuto(existing.domain, expected.domain) ||
-    !samePairOrAuto(existing.range, expected.range)
+    !sameScaleSetting(existing.domain, expected.domain) ||
+    !sameScaleSetting(existing.range, expected.range)
   ) {
     throw new Error(`Scale "${existing.id}" already exists with a different definition.`);
   }
@@ -57,7 +65,7 @@ function findScaleConsumers(program, id) {
   const consumers = [];
 
   for (const layer of program.semanticSpec.layers) {
-    for (const channel of ["x", "y"]) {
+    for (const channel of ["x", "y", "color"]) {
       const encoding = layer.encoding?.[channel];
 
       if (encoding?.scale === id) {
@@ -80,6 +88,16 @@ function resolveConsumerValues(program, consumer) {
     );
   }
 
+  if (consumer.channel === "color") {
+    if (consumer.encoding.fieldType !== "nominal") {
+      throw new Error(
+        `Color scale materialization requires a nominal encoding on mark "${consumer.layer.id}".`
+      );
+    }
+
+    return readNominalField(dataset.values, consumer.encoding.field);
+  }
+
   if (consumer.encoding.fieldType !== "quantitative") {
     throw new Error(
       `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
@@ -97,10 +115,17 @@ const createScale = action(
   function (args = {}) {
     validateOptions(args, CREATE_SCALE_OPTIONS, "createScale");
     const id = validateUserId(args.id, "Scale id");
+    const type = validateScaleType(args.type ?? "linear");
     const definition = {
-      type: validateScaleType(args.type ?? "linear"),
-      domain: validateScaleDomain(args.domain ?? "auto"),
-      range: validateScaleRange(args.range ?? "auto")
+      type,
+      domain:
+        type === "linear"
+          ? validateScaleDomain(args.domain ?? "auto")
+          : validateOrdinalDomain(args.domain ?? "auto"),
+      range:
+        type === "linear"
+          ? validateScaleRange(args.range ?? "auto")
+          : validateColorRange(args.range ?? "auto")
     };
     const existing = this.semanticSpec.scales.find(item => item.id === id);
 
@@ -132,13 +157,13 @@ const rematerializeScale = action(
     const consumers = findScaleConsumers(this, id);
 
     if (consumers.length === 0) {
-      throw new Error(`Scale "${id}" has no positional consumers.`);
+      throw new Error(`Scale "${id}" has no supported consumers.`);
     }
 
     const channels = new Set(consumers.map(consumer => consumer.channel));
 
     if (channels.size !== 1) {
-      throw new Error(`Scale "${id}" cannot be shared across x and y channels.`);
+      throw new Error(`Scale "${id}" cannot be shared across channels.`);
     }
 
     const channel = consumers[0].channel;
@@ -147,14 +172,21 @@ const rematerializeScale = action(
       values: resolveConsumerValues(this, consumer)
     }));
     const allValues = valuesByConsumer.flatMap(item => item.values);
-    const domain = resolveScaleDomain(scale.domain, allValues);
-    const range = resolveScaleRange(
-      scale.range,
-      channel,
-      this.context.currentGraphicBounds
-    );
+    const isColor = channel === "color";
+    const domain = isColor
+      ? resolveOrdinalDomain(scale.domain, allValues)
+      : resolveScaleDomain(scale.domain, allValues);
+    const range = isColor
+      ? resolveColorRange(scale.range)
+      : resolveScaleRange(
+          scale.range,
+          channel,
+          this.context.currentGraphicBounds
+        );
     let next = this._withResolvedScale(id, {
-      type: validateScaleType(scale.type),
+      type: isColor
+        ? validateOrdinalScaleType(scale.type)
+        : validateLinearScaleType(scale.type),
       domain,
       range
     });
@@ -162,8 +194,10 @@ const rematerializeScale = action(
     for (const { consumer, values } of valuesByConsumer) {
       next = next.editGraphics({
         target: consumer.layer.id,
-        property: channel,
-        value: mapLinearValues(values, domain, range)
+        property: isColor ? "fill" : channel,
+        value: isColor
+          ? mapOrdinalValues(values, domain, range)
+          : mapLinearValues(values, domain, range)
       });
     }
 

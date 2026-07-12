@@ -116,7 +116,7 @@ test("validates position encoding inputs before changing the program", () => {
   );
   assert.throws(
     () => program.encodeX({ field: "horsepower", scale: { type: "log" } }),
-    /Unsupported scale type/
+    /Unsupported position scale type/
   );
   assert.throws(
     () => program.encodeX({ field: "horsepower", extra: true }),
@@ -136,6 +136,6 @@ test("rejects sharing one scale across x and y channels", () => {
 
   assert.throws(
     () => withX.encodeY({ field: "mpg", scale: { id: "position" } }),
-    /cannot be shared across x and y/
+    /cannot be shared across channels/
   );
 });
