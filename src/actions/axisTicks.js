@@ -1,0 +1,83 @@
+import { action } from "../core/action.js";
+import { validateUserId } from "../core/identifiers.js";
+import { mapLinearValues } from "../core/scale.js";
+import { niceTicks } from "../core/ticks.js";
+
+const OPTIONS = Object.freeze(["scale", "position", "count", "values", "length", "color", "lineWidth"]);
+const DEFAULTS = Object.freeze({ count: 5, length: 6, color: "#64748b", lineWidth: 1 });
+
+function validateOptions(args, operation, create) {
+  for (const key of Object.keys(args)) if (!OPTIONS.includes(key) || (!create && key === "scale")) throw new Error(`Unknown ${operation} option "${key}".`);
+  if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) throw new Error(`${operation} cannot use count and values together.`);
+}
+
+function validateConfig(channel, config) {
+  const position = channel === "x" ? "bottom" : "left";
+  if (config.position !== position) throw new Error(`Unsupported ${channel}-axis position "${config.position}".`);
+  if (config.mode === "count" && (!Number.isInteger(config.count) || config.count <= 0)) throw new RangeError("Tick count must be a positive integer.");
+  if (config.mode === "values" && (!Array.isArray(config.values) || !config.values.every(Number.isFinite))) throw new TypeError("Tick values must be finite numbers.");
+  if (!Number.isFinite(config.length) || config.length < 0) throw new RangeError("Tick length must be non-negative.");
+  if (!Number.isFinite(config.lineWidth) || config.lineWidth < 0) throw new RangeError("Tick lineWidth must be non-negative.");
+  if (typeof config.color !== "string" || !config.color.length) throw new TypeError("Tick color must be non-empty.");
+}
+
+function geometry(program, channel, config) {
+  const scale = program.resolvedScales[config.scale];
+  const bounds = program.context.currentGraphicBounds;
+  if (scale?.type !== "linear" || !bounds) throw new Error("Axis ticks require a resolved linear scale and Canvas bounds.");
+  const domain = scale.domain;
+  const values = config.mode === "values" ? config.values : niceTicks(domain, config.count);
+  const low = Math.min(...domain), high = Math.max(...domain);
+  if (!values.every(value => value >= low && value <= high)) throw new RangeError("Tick values must be inside the scale domain.");
+  const positions = mapLinearValues(values, domain, scale.range);
+  const baseline = channel === "x" ? bounds.y + bounds.height : bounds.x;
+  return channel === "x"
+    ? { values, x1: positions, y1: baseline, x2: positions, y2: baseline + config.length }
+    : { values, x1: baseline - config.length, y1: positions, x2: baseline, y2: positions };
+}
+
+function makeEdit(channel) {
+  const op = channel === "x" ? "editXAxisTicks" : "editYAxisTicks";
+  return action({ op, description: `Edit concrete ${channel}-axis ticks.` }, function (args = {}) {
+    validateOptions(args, op, false);
+    const id = `${channel}AxisTicks`;
+    if (this.graphicSpec.objects[id]?.type !== "line") throw new Error(`${op} requires existing axis ticks.`);
+    const previous = this.guideConfigs.axis?.[channel]?.ticks;
+    if (!previous) throw new Error(`${op} requires tick configuration.`);
+    const mode = Object.hasOwn(args, "values") ? "values" : Object.hasOwn(args, "count") ? "count" : previous.mode;
+    const config = { ...previous, ...args, mode };
+    if (mode === "values") delete config.count; else delete config.values;
+    validateConfig(channel, config);
+    const resolved = geometry(this, channel, config);
+    let next = this._withGuideConfig(channel, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
+    for (const property of ["x1", "y1", "x2", "y2"]) next = next.editGraphics({ target: id, property, value: resolved[property] });
+    return next.editGraphics({ target: id, property: "stroke", value: config.color }).editGraphics({ target: id, property: "strokeWidth", value: config.lineWidth });
+  });
+}
+
+const editXAxisTicks = makeEdit("x"), editYAxisTicks = makeEdit("y");
+
+function makeCreate(channel) {
+  const op = channel === "x" ? "createXAxisTicks" : "createYAxisTicks";
+  const edit = channel === "x" ? "editXAxisTicks" : "editYAxisTicks";
+  return action({ op, description: `Create concrete ${channel}-axis ticks.` }, function (args = {}) {
+    validateOptions(args, op, true);
+    const scale = validateUserId(args.scale ?? channel, "Scale id");
+    const existingGuide = this.semanticSpec.guides.axis?.[channel]?.scale;
+    if (existingGuide && existingGuide !== scale) throw new Error(`${op} conflicts with the existing axis scale.`);
+    const id = `${channel}AxisTicks`;
+    if (this.graphicSpec.objects[id]) throw new Error(`${op} requires missing axis ticks.`);
+    const config = { scale, position: channel === "x" ? "bottom" : "left", length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...args, mode: Object.hasOwn(args, "values") ? "values" : "count" };
+    if (config.mode === "values") delete config.count; else config.count ??= DEFAULTS.count;
+    validateConfig(channel, config); geometry(this, channel, config);
+    return this.editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
+      .createGraphics({ id, type: "line", length: 0 })
+      ._withGuideConfig(channel, config)[edit]();
+  });
+}
+
+const createXAxisTicks = makeCreate("x"), createYAxisTicks = makeCreate("y");
+export function registerAxisTickActions(Class) {
+  Class.prototype.editXAxisTicks = editXAxisTicks; Class.prototype.editYAxisTicks = editYAxisTicks;
+  Class.prototype.createXAxisTicks = createXAxisTicks; Class.prototype.createYAxisTicks = createYAxisTicks;
+}

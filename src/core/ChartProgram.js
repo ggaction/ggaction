@@ -21,6 +21,7 @@ import { registerMarkActions } from "../actions/marks.js";
 import { registerScaleActions } from "../actions/scales.js";
 import { registerEncodingActions } from "../actions/encodings.js";
 import { registerAxisLineActions } from "../actions/axisLines.js";
+import { registerAxisTickActions } from "../actions/axisTicks.js";
 
 function ownState(value) {
   return isOwned(value) ? value : cloneAndFreeze(value);
@@ -31,6 +32,7 @@ export class ChartProgram {
     semanticSpec = createEmptySemanticSpec(),
     graphicSpec = createEmptyGraphicSpec(),
     resolvedScales = {},
+    guideConfigs = {},
     children = {},
     context = {},
     trace = createTraceRoot(),
@@ -39,6 +41,7 @@ export class ChartProgram {
     this.semanticSpec = ownState(semanticSpec);
     this.graphicSpec = ownState(graphicSpec);
     this.resolvedScales = ownState(resolvedScales);
+    this.guideConfigs = ownState(guideConfigs);
     this.children = ownState(children);
     this.context = ownState(context);
     this.trace = ownState(trace);
@@ -51,6 +54,7 @@ export class ChartProgram {
     semanticSpec = this.semanticSpec,
     graphicSpec = this.graphicSpec,
     resolvedScales = this.resolvedScales,
+    guideConfigs = this.guideConfigs,
     children = this.children,
     context = this.context,
     trace = this.trace,
@@ -60,6 +64,7 @@ export class ChartProgram {
       semanticSpec,
       graphicSpec,
       resolvedScales,
+      guideConfigs,
       children,
       context,
       trace,
@@ -101,6 +106,22 @@ export class ChartProgram {
     });
   }
 
+  _withGuideConfig(channel, config) {
+    const owned = cloneAndFreeze(config);
+    return this._clone({
+      guideConfigs: freezeOwned({
+        ...this.guideConfigs,
+        axis: freezeOwned({
+          ...this.guideConfigs.axis,
+          [channel]: freezeOwned({
+            ...this.guideConfigs.axis?.[channel],
+            ticks: owned
+          })
+        })
+      })
+    });
+  }
+
   _enterAction({ op, description, args }) {
     const id = `a${countActionNodes(this.trace) + 1}`;
     const parentId = this.actionStack.at(-1) ?? this.trace.id;
@@ -129,6 +150,7 @@ registerMarkActions(ChartProgram);
 registerScaleActions(ChartProgram);
 registerEncodingActions(ChartProgram);
 registerAxisLineActions(ChartProgram);
+registerAxisTickActions(ChartProgram);
 
 export function chart() {
   return new ChartProgram();

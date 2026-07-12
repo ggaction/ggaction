@@ -201,13 +201,16 @@ const rematerializeScale = action(
       });
     }
 
-    if (next.semanticSpec.guides.axis?.x?.scale === id) {
+    if (next.graphicSpec.objects.xAxisLine && next.semanticSpec.guides.axis?.x?.scale === id) {
       next = next.editXAxisLine();
     }
 
-    if (next.semanticSpec.guides.axis?.y?.scale === id) {
+    if (next.graphicSpec.objects.yAxisLine && next.semanticSpec.guides.axis?.y?.scale === id) {
       next = next.editYAxisLine();
     }
+
+    if (next.guideConfigs.axis?.x?.ticks?.scale === id) next = next.editXAxisTicks();
+    if (next.guideConfigs.axis?.y?.ticks?.scale === id) next = next.editYAxisTicks();
 
     return next;
   }

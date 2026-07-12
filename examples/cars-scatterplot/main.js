@@ -16,7 +16,9 @@ const program = chart()
   .encodeColor({ field: "Origin" })
   .encodeRadius({ value: 3 })
   .createXAxisLine()
-  .createYAxisLine();
+  .createYAxisLine()
+  .createXAxisTicks()
+  .createYAxisTicks();
 
 const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));

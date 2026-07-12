@@ -29,36 +29,8 @@ export function createCarsScatterplotActions(cars) {
     .encodeRadius({ value: 3 })
     .createXAxisLine()
     .createYAxisLine()
-    .createGraphics({
-      id: "xTicks",
-      type: "line",
-      length: xTicks.positions.length
-    })
-    .editGraphics({ target: "xTicks", property: "x1", value: xTicks.positions })
-    .editGraphics({ target: "xTicks", property: "y1", value: bounds.bottom })
-    .editGraphics({ target: "xTicks", property: "x2", value: xTicks.positions })
-    .editGraphics({
-      target: "xTicks",
-      property: "y2",
-      value: bounds.bottom + 6
-    })
-    .editGraphics({ target: "xTicks", property: "stroke", value: "#64748b" })
-    .editGraphics({ target: "xTicks", property: "strokeWidth", value: 1 })
-    .createGraphics({
-      id: "yTicks",
-      type: "line",
-      length: yTicks.positions.length
-    })
-    .editGraphics({
-      target: "yTicks",
-      property: "x1",
-      value: bounds.left - 6
-    })
-    .editGraphics({ target: "yTicks", property: "y1", value: yTicks.positions })
-    .editGraphics({ target: "yTicks", property: "x2", value: bounds.left })
-    .editGraphics({ target: "yTicks", property: "y2", value: yTicks.positions })
-    .editGraphics({ target: "yTicks", property: "stroke", value: "#64748b" })
-    .editGraphics({ target: "yTicks", property: "strokeWidth", value: 1 })
+    .createXAxisTicks()
+    .createYAxisTicks()
     .createGraphics({
       id: "xLabels",
       type: "text",

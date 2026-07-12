@@ -47,3 +47,13 @@ Editing Canvas bounds or rematerializing a connected scale explicitly updates
 axis geometry while preserving its color and line width. Calling a leaf axis
 line action without a matching resolved scale or Canvas bounds throws an error
 instead of silently producing no graphic.
+
+## Axis ticks
+
+```javascript
+program.createXAxisTicks({ count: 5, length: 6 });
+program.createYAxisTicks({ values: [10, 20, 30, 40] });
+```
+
+`count` requests readable nice ticks and may produce a different actual count.
+Use `values` for exact data-space ticks; the options are mutually exclusive.
