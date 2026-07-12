@@ -20,6 +20,7 @@ import { registerDataActions } from "../actions/data.js";
 import { registerMarkActions } from "../actions/marks.js";
 import { registerScaleActions } from "../actions/scales.js";
 import { registerEncodingActions } from "../actions/encodings.js";
+import { registerAxisLineActions } from "../actions/axisLines.js";
 
 function ownState(value) {
   return isOwned(value) ? value : cloneAndFreeze(value);
@@ -127,6 +128,7 @@ registerDataActions(ChartProgram);
 registerMarkActions(ChartProgram);
 registerScaleActions(ChartProgram);
 registerEncodingActions(ChartProgram);
+registerAxisLineActions(ChartProgram);
 
 export function chart() {
   return new ChartProgram();

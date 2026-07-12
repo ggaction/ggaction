@@ -12,12 +12,12 @@ endpoint를 resolved scale과 Canvas bounds에서 추론한다.
 
 ## 진행 상태
 
-- [ ] Axis line option과 position validation
-- [ ] Axis line geometry inference
-- [ ] `editXAxisLine`
-- [ ] `editYAxisLine`
-- [ ] `createXAxisLine`
-- [ ] `createYAxisLine`
+- [x] Axis line option과 position validation
+- [x] Axis line geometry inference
+- [x] `editXAxisLine`
+- [x] `editYAxisLine`
+- [x] `createXAxisLine`
+- [x] `createYAxisLine`
 - [ ] Scale·Canvas 변경 시 rematerialization
 - [ ] `carsScatterplotActions`의 수동 axis line 제거
 - [ ] Unit, trace, immutability test
