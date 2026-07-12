@@ -43,7 +43,7 @@ chart는 별도 grid option 없이 horizontal grid를 가진다.
 
 ## 진행 상태
 
-- [ ] Primitive histogram contract
+- [x] Primitive histogram contract
 - [ ] `createBarMark`
 - [ ] Bar binned `encodeX`
 - [ ] Bar count/stack `encodeY`

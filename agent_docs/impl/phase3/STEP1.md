@@ -23,18 +23,18 @@ editGraphics()
 
 ## 진행 상태
 
-- [ ] Primitive histogram program/test skeleton
-- [ ] Deterministic histogram values helper
-- [ ] Histogram semantic path와 primitive validation
-- [ ] Bar/bin/count/stack semantic state
-- [ ] Concrete stacked rect collection
-- [ ] Raw x/y axes
-- [ ] Raw horizontal grid
-- [ ] Raw bottom rect legend
-- [ ] Existing centered `createTitle` 적용
-- [ ] Acceptance test와 immutability 검증
-- [ ] 2× PNG regression과 직접 확인
-- [ ] 기존 test와 PNG regression 유지
+- [x] Primitive histogram program/test skeleton
+- [x] Deterministic histogram values helper
+- [x] Histogram semantic path와 primitive validation
+- [x] Bar/bin/count/stack semantic state
+- [x] Concrete stacked rect collection
+- [x] Raw x/y axes
+- [x] Raw horizontal grid
+- [x] Raw bottom rect legend
+- [x] Existing centered `createTitle` 적용
+- [x] Acceptance test와 immutability 검증
+- [x] 2× PNG regression과 직접 확인
+- [x] 기존 test와 PNG regression 유지
 
 ## 제외 범위
 
@@ -402,3 +402,11 @@ createGuides
 - 기존 scatterplot과 line-chart program/test/PNG를 변경하지 않는다.
 - STEP1 진행 상태와 검증 결과가 문서에 반영된다.
 - 변경이 하나의 conceptual commit으로 push된다.
+
+## 검증 결과
+
+- Unit/acceptance: 215 tests passed
+- PNG regression: 6 tests passed
+- 신규 output: `test/output/cars-histogram-primitives.png` (2×, 1440×920)
+- 직접 확인: stacked bars, horizontal grid, raw axes, bottom legend,
+  centered title/subtitle의 layout과 graphical order 확인

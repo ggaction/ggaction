@@ -140,8 +140,22 @@ function validateSemanticValue(program, parsed, value) {
       validateSemanticFieldType(value);
     }
 
-    if (property.endsWith(".aggregate") && value !== "mean") {
+    if (
+      property.endsWith(".aggregate") &&
+      !["mean", "count"].includes(value)
+    ) {
       throw new Error(`Unsupported aggregate "${value}".`);
+    }
+
+    if (
+      property.endsWith(".bin.maxBins") &&
+      (!Number.isInteger(value) || value <= 0)
+    ) {
+      throw new TypeError("Histogram bin maxBins must be a positive integer.");
+    }
+
+    if (property.endsWith(".stack") && value !== "zero") {
+      throw new Error(`Unsupported stack "${value}".`);
     }
   }
 
@@ -186,6 +200,11 @@ function validateSemanticValue(program, parsed, value) {
 
   if (parsed.kind === "guide" && parsed.id === "legend.series") {
     validateSeriesLegendValue(parsed.path.at(-1), value);
+  }
+
+  if (parsed.kind === "guide" && parsed.id.startsWith("grid.")) {
+    const property = parsed.path.at(-1);
+    validateUserId(value, `Grid ${property} id`);
   }
 
   if (parsed.kind === "title") {

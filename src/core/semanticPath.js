@@ -16,11 +16,13 @@ const ENTITY_PATHS = Object.freeze({
       "encoding.x.datum",
       "encoding.x.fieldType",
       "encoding.x.scale",
+      "encoding.x.bin.maxBins",
       "encoding.y.field",
       "encoding.y.datum",
       "encoding.y.fieldType",
       "encoding.y.scale",
       "encoding.y.aggregate",
+      "encoding.y.stack",
       "encoding.theta.field",
       "encoding.theta.datum",
       "encoding.theta.fieldType",
@@ -72,7 +74,11 @@ const GUIDE_PATHS = new Set([
   "legend.opacity.title",
   "legend.series.channels",
   "legend.series.scales",
-  "legend.series.title"
+  "legend.series.title",
+  "grid.horizontal.scale",
+  "grid.horizontal.coordinate",
+  "grid.vertical.scale",
+  "grid.vertical.coordinate"
 ]);
 
 const TITLE_PATHS = new Set(["text", "subtitle"]);
