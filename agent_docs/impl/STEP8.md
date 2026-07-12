@@ -20,10 +20,23 @@ endpoint를 resolved scale과 Canvas bounds에서 추론한다.
 - [x] `createYAxisLine`
 - [x] Scale·Canvas 변경 시 rematerialization
 - [x] `carsScatterplotActions`의 수동 axis line 제거
-- [ ] Unit, trace, immutability test
-- [ ] Acceptance 및 PNG render test
+- [x] Unit, trace, immutability test
+- [x] Acceptance 및 PNG render test
 - [x] 영어 사용자 문서
-- [ ] 브라우저와 고해상도 PNG 확인
+- [x] 브라우저와 고해상도 PNG 확인
+
+## 검증 결과
+
+- 일반 unit/acceptance test 109개 통과
+- PNG render test 3개 통과
+- x-axis geometry `(70, 340) → (610, 340)` 확인
+- y-axis geometry `(70, 340) → (70, 30)` 확인
+- semantic guide scale reference와 concrete line 분리 확인
+- create → edit → six `editGraphics` nested trace 확인
+- auto/explicit scale과 Canvas bounds rematerialization 확인
+- Chromium Canvas 640×400, 392개 point와 bottom/left axis line 렌더링
+- 브라우저 console error 0개
+- `pixelRatio: 2` PNG 1280×800 확인
 
 ## API
 
