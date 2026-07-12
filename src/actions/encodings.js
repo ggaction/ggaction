@@ -475,7 +475,22 @@ const encodeColor = action(
   function (args = {}) {
     validateOptions(args, COLOR_ENCODING_OPTIONS, "encodeColor");
     const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
-    const { id: target, dataset, layer } = resolveTarget(this, args.target);
+    const { id: target, dataset, layer } = resolveTarget(
+      this,
+      args.target,
+      ["point", "line", "bar"],
+      "color mark"
+    );
+    if (
+      layer.mark.type === "bar" &&
+      (layer.encoding?.x?.bin === undefined ||
+        layer.encoding?.y?.aggregate !== "count" ||
+        layer.encoding.y.stack !== "zero")
+    ) {
+      throw new Error(
+        "Bar color encoding requires a complete histogram encoding."
+      );
+    }
     readNominalField(dataset.values, args.field);
     const scale = resolveColorScaleDefinition(this, args.scale ?? {});
 
@@ -498,6 +513,10 @@ const encodeColor = action(
       return rematerializeExistingLegend(
         next.rematerializeLineMark({ id: target })
       );
+    }
+
+    if (layer.mark.type === "bar") {
+      return next.rematerializeBarMark({ id: target });
     }
 
     return next.rematerializeScale({ id: scale.id });

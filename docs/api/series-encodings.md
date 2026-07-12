@@ -7,13 +7,13 @@ title: Series Encodings
 
 ## `encodeColor(options)`
 
-Map a nominal field to point fills or line-series strokes. On line marks the
-field also participates in series grouping.
+Map a nominal field to point fills, line-series strokes, or stacked histogram
+fills. On line and bar marks the field also participates in grouping.
 
 | Option | Type | Default |
 | --- | --- | --- |
 | `field` | non-empty string | required |
-| `target` | point or line mark ID | current mark |
+| `target` | point, line, or bar mark ID | current mark |
 | `fieldType` | `"nominal"` | `"nominal"` |
 | `scale.id` | scale ID | `"color"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
@@ -31,6 +31,21 @@ program.encodeColor({
 `scale.palette` is the concise form of
 `scale.range: { palette: "tableau10" }`. Do not provide both. Automatic domains
 preserve first-appearance order.
+
+On a complete histogram, `encodeColor` rematerializes each non-empty bin as
+zero-stacked category rects. Stack and fill order follow the resolved color
+domain. The y scale continues to use each bin's total count, and an explicit
+domain must contain every observed category.
+
+```javascript
+histogram.encodeColor({
+  field: "Origin",
+  scale: {
+    domain: ["USA", "Europe", "Japan"],
+    palette: "tableau10"
+  }
+});
+```
 
 ## `encodeStrokeDash(options)`
 

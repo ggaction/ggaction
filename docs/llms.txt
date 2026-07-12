@@ -58,6 +58,7 @@ and language models.
 - Binned bar encodeX stores maxBins, resolves a nice linear x domain/range, and deliberately leaves rect materialization for later y encoding.
 - Bar encodeY infers the binned x field, stores count/zero-stack, resolves both scales, and materializes concrete rects for non-empty bins.
 - encodeHistogram is a thin aggregate whose direct children are binned bar encodeX and count/zero-stack encodeY.
+- Bar encodeColor resolves an ordinal scale and rematerializes each bin as zero-stacked category rects in color-domain order; the y domain remains based on total bin counts.
 - createAxes supports linear and UTC time scales plus aggregate-aware title inference.
 - createLegend combines compatible line color and strokeDash encodings into one concrete series legend.
 - createTitle stores semantic title text and materializes a plot-aligned top title with an optional subtitle.
@@ -73,8 +74,9 @@ temporal mean-aggregate line charts with browser Canvas and PNG output.
 `createBarMark` creates an empty rect collection, and binned bar `encodeX`
 stores the horizontal histogram meaning plus a resolved x scale. Bar
 `encodeY()` infers count/zero-stack and resolves the y scale from total bin
-counts, then materializes concrete uncolored histogram rects. Public bar color
-encoding and automatic histogram legend generation are not yet implemented.
+counts, then materializes concrete histogram rects. Bar `encodeColor` splits
+those rects into zero-stacked categories. Automatic histogram legend generation
+is not yet implemented.
 The equivalent `encodeHistogram` action composes those x/y actions without
 duplicating their validation, inference, or materialization behavior.
 Temporal line `encodeX` resolves a time scale; aggregate line `encodeY`

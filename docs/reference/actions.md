@@ -104,7 +104,7 @@ histogram action. `maxBins` defaults to `10`; `stack` defaults to `"zero"`.
 encodeColor({ field, target?, fieldType?, scale? })
 ```
 
-Create nominal point color or line-series color.
+Create nominal point fill, line-series color, or stacked histogram color.
 [Series encodings](../api/series-encodings.md)
 
 ### `encodeStrokeDash`

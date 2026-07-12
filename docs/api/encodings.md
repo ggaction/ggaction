@@ -53,7 +53,8 @@ steps. Both forms produce the same semantic and graphical result.
 
 [`encodeColor` and `encodeStrokeDash`](./series-encodings.md) create nominal
 series identity and concrete colors or dash patterns. On line marks they can
-split one aggregate path into multiple series.
+split one aggregate path into multiple series. On complete histograms,
+`encodeColor` splits every bin into category-stacked rects.
 
 ```javascript
 program

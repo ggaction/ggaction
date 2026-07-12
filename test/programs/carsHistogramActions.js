@@ -27,6 +27,10 @@ export function createCarsHistogramActions(cars) {
       maxBins: 10,
       xScale: { nice: true, zero: false }
     })
+    .encodeColor({
+      field: "Origin",
+      scale: { palette: "tableau10" }
+    })
     .createGraphics({
       id: "horizontalGridLines",
       type: "line",
@@ -67,24 +71,6 @@ export function createCarsHistogramActions(cars) {
       property: "strokeDash",
       value: horizontalGrid.map(() => [])
     })
-    .editSemantic({
-      property: "layer[bars].encoding.color.field",
-      value: "Origin"
-    })
-    .editSemantic({
-      property: "layer[bars].encoding.color.fieldType",
-      value: "nominal"
-    })
-    .editSemantic({
-      property: "layer[bars].encoding.color.scale",
-      value: "color"
-    })
-    .editSemantic({ property: "scale[color].type", value: "ordinal" })
-    .editSemantic({ property: "scale[color].domain", value: "auto" })
-    .editSemantic({
-      property: "scale[color].range",
-      value: { palette: "tableau10" }
-    })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
     .editSemantic({ property: "guide.axis.x.title", value: "Displacement" })
@@ -101,34 +87,6 @@ export function createCarsHistogramActions(cars) {
     })
     .editSemantic({ property: "guide.legend.color.scale", value: "color" })
     .editSemantic({ property: "guide.legend.color.title", value: "Origin" })
-    .editGraphics({ target: "bars", property: "length", value: values.rects.length })
-    .editGraphics({
-      target: "bars",
-      property: "x",
-      value: values.rects.map(rect => rect.x)
-    })
-    .editGraphics({
-      target: "bars",
-      property: "y",
-      value: values.rects.map(rect => rect.y)
-    })
-    .editGraphics({
-      target: "bars",
-      property: "width",
-      value: values.rects.map(rect => rect.width)
-    })
-    .editGraphics({
-      target: "bars",
-      property: "height",
-      value: values.rects.map(rect => rect.height)
-    })
-    .editGraphics({
-      target: "bars",
-      property: "fill",
-      value: values.rects.map(rect => rect.fill)
-    })
-    .editGraphics({ target: "bars", property: "stroke", value: "white" })
-    .editGraphics({ target: "bars", property: "strokeWidth", value: 0.5 })
     .createGraphics({ id: "xAxisLine", type: "line" })
     .editGraphics({ target: "xAxisLine", property: "x1", value: xAxis.line.x1 })
     .editGraphics({ target: "xAxisLine", property: "y1", value: xAxis.line.y1 })
@@ -301,4 +259,3 @@ export function createCarsHistogramActions(cars) {
 export function renderCarsHistogramActions(program, canvasContext) {
   render(program, canvasContext);
 }
-

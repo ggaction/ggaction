@@ -130,6 +130,7 @@ function deriveSegments({
     );
   }
   const colorValues = readNominalField(dataset.values, colorEncoding.field);
+  mapOrdinalValues(colorValues, colorScale.domain, colorScale.range);
   const categoryIndex = new Map(
     colorScale.domain.map((value, index) => [value, index])
   );

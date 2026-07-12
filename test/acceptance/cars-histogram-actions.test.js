@@ -16,16 +16,28 @@ const cars = JSON.parse(
   readFileSync(new URL("../../data/cars.json", import.meta.url), "utf8")
 );
 
-test("replaces explicit x/y calls with encodeHistogram", () => {
+test("authors histogram mark and encodings through chart actions", () => {
   const explicit = createCarsHistogramEncodings(cars);
   const program = createCarsHistogramActions(cars);
 
   assert.deepEqual(program.semanticSpec, explicit.semanticSpec);
-  assert.deepEqual(program.resolvedScales, explicit.resolvedScales);
+  assert.deepEqual(program.resolvedScales.x, explicit.resolvedScales.x);
+  assert.deepEqual(program.resolvedScales.y, explicit.resolvedScales.y);
+  assert.deepEqual(program.resolvedScales.color, {
+    type: "ordinal",
+    domain: ["USA", "Europe", "Japan"],
+    range: [
+      "#4c78a8", "#f58518", "#e45756", "#72b7b2", "#54a24b",
+      "#eeca3b", "#b279a2", "#ff9da6", "#9d755d", "#bab0ac"
+    ]
+  });
   assert.deepEqual(program.graphicSpec, explicit.graphicSpec);
   assert.deepEqual(
-    program.trace.children.slice(0, 4).map(node => node.op),
-    ["createCanvas", "createData", "createBarMark", "encodeHistogram"]
+    program.trace.children.slice(0, 5).map(node => node.op),
+    [
+      "createCanvas", "createData", "createBarMark", "encodeHistogram",
+      "encodeColor"
+    ]
   );
 
   const histogram = program.trace.children.find(
@@ -43,6 +55,41 @@ test("replaces explicit x/y calls with encodeHistogram", () => {
   assert.equal(
     program.trace.children.some(
       node => node.op === "encodeX" || node.op === "encodeY"
+    ),
+    false
+  );
+
+  const color = program.trace.children.find(node => node.op === "encodeColor");
+  assert.deepEqual(color.args, {
+    field: "Origin",
+    scale: { palette: "tableau10" }
+  });
+  assert.deepEqual(color.children.map(node => node.op), [
+    "editSemantic", "editSemantic", "editSemantic", "createScale",
+    "rematerializeBarMark"
+  ]);
+  assert.deepEqual(
+    color.children.at(-1).children.slice(0, 3).map(node => node.op),
+    ["rematerializeScale", "rematerializeScale", "rematerializeScale"]
+  );
+  assert.equal(
+    program.trace.children.some(
+      node =>
+        node.op === "editSemantic" &&
+        [
+          "layer[bars].encoding.color.field",
+          "layer[bars].encoding.color.fieldType",
+          "layer[bars].encoding.color.scale",
+          "scale[color].type",
+          "scale[color].domain",
+          "scale[color].range"
+        ].includes(node.args.property)
+    ),
+    false
+  );
+  assert.equal(
+    program.trace.children.some(
+      node => node.op === "editGraphics" && node.args.target === "bars"
     ),
     false
   );
