@@ -76,8 +76,8 @@ those concrete graphical values.
 Editing Canvas width, height, or margin explicitly rematerializes existing
 auto-range position encodings. Explicit ranges remain unchanged.
 
-Every encoded field value must currently be a finite number. Filter or prepare
-missing values before creating the dataset.
+Every x/y encoded field value must currently be a finite number. Filter or
+prepare missing values before creating the dataset.
 
 ## Color
 

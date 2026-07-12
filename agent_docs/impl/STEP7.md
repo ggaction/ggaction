@@ -26,10 +26,26 @@ const program = chart()
 - [x] `encodeRadius`
 - [x] Shared color scale rematerialization
 - [x] `carsScatterplotActions`의 수동 fill/radius 제거
-- [ ] Unit, trace, immutability test
-- [ ] Acceptance 및 PNG render test
+- [x] Unit, trace, immutability test
+- [x] Acceptance 및 PNG render test
 - [x] 영어 사용자 문서
-- [ ] 브라우저와 고해상도 PNG 확인
+- [x] 브라우저와 고해상도 PNG 확인
+
+## 검증 결과
+
+- 일반 unit/acceptance test 103개 통과
+- PNG render test 3개 통과
+- `carsScatterplotActions`의 point raw `editGraphics` 제거 확인
+- nominal `Origin`과 ordinal `color` scale 저장 확인
+- resolved color domain `["USA", "Japan", "Europe"]` 확인
+- `tableau10` resolved range와 concrete fill 확인
+- constant radius 3의 graphical broadcast 확인
+- shared color scale 전체 consumer rematerialization 확인
+- nested `encodeColor`, `createScale`, `rematerializeScale` trace 확인
+- `encodeRadius` 아래 단일 `editGraphics` trace 확인
+- Chromium Canvas 640×400, 392개 point 렌더링
+- 브라우저 console error 0개
+- `pixelRatio: 2` PNG 1280×800 확인
 
 ## API
 
@@ -139,4 +155,4 @@ scale state를 읽지 않는다.
 - Resolved domain과 실제 palette가 별도 derived state에 저장된다.
 - Shared color consumer가 함께 rematerialize된다.
 - `carsScatterplotActions`에 point property raw edit가 남지 않는다.
-- 기존과 동일한 고해상도 PNG가 생성된다.
+- 기본 `tableau10`이 적용된 고해상도 PNG가 생성된다.
