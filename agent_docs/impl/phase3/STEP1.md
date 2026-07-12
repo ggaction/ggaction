@@ -159,7 +159,7 @@ fixture helper를 import하거나 호출해서는 안 된다.
         x: {
           field: "Displacement",
           fieldType: "quantitative",
-          bin: { maxBins: 7 },
+          bin: { maxBins: 10 },
           scale: "x"
         },
         y: {
@@ -330,6 +330,7 @@ Grid graphic을 bars보다 먼저 생성하여 Canvas renderer가 grid를 뒤에
 - Items는 plot 아래에서 horizontal layout으로 배치한다.
 - Label은 symbol 오른쪽에 배치한다.
 - Legend title은 `Origin`이다.
+- Legend item row와 title은 Canvas의 가로 중앙에 정렬한다.
 
 ## Acceptance test
 
@@ -407,6 +408,6 @@ createGuides
 
 - Unit/acceptance: 215 tests passed
 - PNG regression: 6 tests passed
-- 신규 output: `test/output/cars-histogram-primitives.png` (2×, 1440×920)
+- 신규 output: `test/output/cars-histogram-primitives.png` (2×, 864×920)
 - 직접 확인: stacked bars, horizontal grid, raw axes, bottom legend,
   centered title/subtitle의 layout과 graphical order 확인

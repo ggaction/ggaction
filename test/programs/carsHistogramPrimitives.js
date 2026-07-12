@@ -3,14 +3,14 @@ import { chart, render } from "../../src/index.js";
 import { createCarsHistogramValues } from "./carsHistogramValues.js";
 
 export function createCarsHistogramPrimitives(cars) {
-  const width = 720;
+  const width = 432;
   const height = 460;
   const margin = { top: 80, right: 60, bottom: 130, left: 80 };
   const values = createCarsHistogramValues(cars, {
     width,
     height,
     margin,
-    maxBins: 7
+    maxBins: 10
   });
   const { x: xAxis, y: yAxis } = values.axes;
   const xTickPositions = xAxis.ticks.map(tick => tick.position);
@@ -34,7 +34,7 @@ export function createCarsHistogramPrimitives(cars) {
     })
     .editSemantic({
       property: "layer[bars].encoding.x.bin.maxBins",
-      value: 7
+      value: 10
     })
     .editSemantic({ property: "layer[bars].encoding.x.scale", value: "x" })
     .editSemantic({
@@ -326,7 +326,7 @@ export function createCarsHistogramPrimitives(cars) {
     .editGraphics({ target: "colorLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "colorLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "colorLegendTitle", property: "fontWeight", value: 600 })
-    .editGraphics({ target: "colorLegendTitle", property: "textAlign", value: "left" })
+    .editGraphics({ target: "colorLegendTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "middle" })
     .createTitle({
       text: values.title.text,

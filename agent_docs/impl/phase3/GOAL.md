@@ -10,7 +10,7 @@ Chart API와 내부 materialization 연산을 구현한다.
 ```javascript
 chart()
   .createCanvas({
-    width: 720,
+    width: 432,
     height: 460,
     margin: { top: 80, right: 60, bottom: 130, left: 80 }
   })
@@ -18,7 +18,7 @@ chart()
   .createBarMark({ id: "bars" })
   .encodeHistogram({
     field: "Displacement",
-    maxBins: 7,
+    maxBins: 10,
     xScale: {
       nice: true,
       zero: false
@@ -69,7 +69,7 @@ Histogram layer는 다음 의미를 저장한다.
     x: {
       field: "Displacement",
       fieldType: "quantitative",
-      bin: { maxBins: 7 },
+      bin: { maxBins: 10 },
       scale: "x"
     },
     y: {
@@ -115,7 +115,7 @@ Bin, count, stack은 semantic 의미다. 계산된 bin 경계, count, 누적 위
 .createBarMark({ id: "bars" })
 .encodeX({
   field: "Displacement",
-  bin: { maxBins: 7 },
+  bin: { maxBins: 10 },
   scale: { nice: true, zero: false }
 })
 .encodeY({
@@ -348,6 +348,7 @@ Histogram legend는 bar color channel 하나를 표현한다.
 - Category 순서는 color scale domain 순서를 따른다.
 - 초기 위치는 `"bottom"`이다.
 - Items는 horizontal layout으로 배치한다.
+- Bottom legend의 item row와 title은 Canvas 중앙에 정렬한다.
 - 기존 line-series legend 동작은 유지한다.
 - `createLegend`가 target mark type에 따라 line 또는 rect symbol을 선택한다.
 

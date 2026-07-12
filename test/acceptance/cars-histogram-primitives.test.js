@@ -16,10 +16,10 @@ const cars = JSON.parse(
   readFileSync(new URL("../../data/cars.json", import.meta.url), "utf8")
 );
 const layout = {
-  width: 720,
+  width: 432,
   height: 460,
   margin: { top: 80, right: 60, bottom: 130, left: 80 },
-  maxBins: 7
+  maxBins: 10
 };
 
 test("authors and renders the complete primitive cars histogram", () => {
@@ -40,7 +40,7 @@ test("authors and renders the complete primitive cars histogram", () => {
         x: {
           field: "Displacement",
           fieldType: "quantitative",
-          bin: { maxBins: 7 },
+          bin: { maxBins: 10 },
           scale: "x"
         },
         y: {
@@ -108,7 +108,7 @@ test("authors and renders the complete primitive cars histogram", () => {
   const bars = program.graphicSpec.objects.bars;
   assert.equal(bars.type, "rect");
   assert.equal(values.bins.length <= layout.maxBins, true);
-  assert.equal(bars.children.length, 9);
+  assert.equal(bars.children.length, 15);
   assert.deepEqual(
     bars.children.map(child => child.properties),
     values.rects.map(rect => ({
@@ -161,7 +161,19 @@ test("authors and renders the complete primitive cars histogram", () => {
     ),
     ["#4c78a8", "#f58518", "#e45756"]
   );
-  assert.equal(program.graphicSpec.objects.chartTitle.properties.x, 370);
+  assert.equal(
+    program.graphicSpec.objects.colorLegendTitle.properties.x,
+    layout.width / 2
+  );
+  assert.equal(
+    program.graphicSpec.objects.colorLegendTitle.properties.textAlign,
+    "center"
+  );
+  assert.equal(
+    values.legend.items[0].x + values.legend.width / 2,
+    layout.width / 2
+  );
+  assert.equal(program.graphicSpec.objects.chartTitle.properties.x, 226);
   assert.equal(program.graphicSpec.objects.chartTitle.properties.textAlign, "center");
   assert.equal(
     program.graphicSpec.objects.chartSubtitle.properties.text,
@@ -186,11 +198,11 @@ test("authors and renders the complete primitive cars histogram", () => {
     "chartSubtitle"
   ]);
 
-  assert.equal(findCanvasCalls(context, "stroke").length, 28);
-  assert.equal(findCanvasCalls(context, "fillRect").length, 13);
-  assert.equal(findCanvasCalls(context, "fillText").length, 18);
-  assert.equal(findCanvasCalls(context, "moveTo").length, 28);
-  assert.equal(findCanvasCalls(context, "lineTo").length, 64);
+  assert.equal(findCanvasCalls(context, "stroke").length, 38);
+  assert.equal(findCanvasCalls(context, "fillRect").length, 19);
+  assert.equal(findCanvasCalls(context, "fillText").length, 22);
+  assert.equal(findCanvasCalls(context, "moveTo").length, 38);
+  assert.equal(findCanvasCalls(context, "lineTo").length, 92);
 
   const topLevelOps = new Set(program.trace.children.map(node => node.op));
   assert.deepEqual([...topLevelOps], [
@@ -230,7 +242,7 @@ test("owns histogram input and renders from graphicSpec alone", () => {
   assert.equal(program.semanticSpec.datasets[0].values[0].Displacement, stored);
   const context = createMockCanvasContext();
   renderCarsHistogramPrimitives({ graphicSpec: program.graphicSpec }, context);
-  assert.equal(findCanvasCalls(context, "stroke").length, 28);
-  assert.equal(findCanvasCalls(context, "fillRect").length, 13);
-  assert.equal(findCanvasCalls(context, "fillText").length, 18);
+  assert.equal(findCanvasCalls(context, "stroke").length, 38);
+  assert.equal(findCanvasCalls(context, "fillRect").length, 19);
+  assert.equal(findCanvasCalls(context, "fillText").length, 22);
 });

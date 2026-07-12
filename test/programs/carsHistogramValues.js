@@ -166,18 +166,32 @@ export function createCarsHistogramValues(
     position: mapValue(value, yScale.domain, yRange),
     label: String(value)
   }));
-  const legendStartX = bounds.x;
+  const legendSymbolWidth = 14;
+  const legendLabelGap = 8;
+  const legendItemGap = 20;
+  const legendItemWidths = origins.map(
+    origin => legendSymbolWidth + legendLabelGap + origin.length * 7
+  );
+  const legendWidth =
+    legendItemWidths.reduce((sum, itemWidth) => sum + itemWidth, 0) +
+    legendItemGap * (origins.length - 1);
+  let legendItemX = (width - legendWidth) / 2;
   const legendY = height - 28;
-  const legendItems = origins.map((origin, index) => ({
-    origin,
-    color: COLORS[index % COLORS.length],
-    x: legendStartX + index * 130,
-    y: legendY - 6,
-    width: 14,
-    height: 12,
-    labelX: legendStartX + index * 130 + 22,
-    labelY: legendY
-  }));
+  const legendItems = origins.map((origin, index) => {
+    const x = legendItemX;
+    legendItemX += legendItemWidths[index] + legendItemGap;
+    return {
+      origin,
+      color: COLORS[index % COLORS.length],
+      x,
+      y: legendY - 6,
+      width: legendSymbolWidth,
+      height: 12,
+      labelX: x + legendSymbolWidth + legendLabelGap,
+      labelY: legendY,
+      itemWidth: legendItemWidths[index]
+    };
+  });
 
   return {
     validCars,
@@ -230,8 +244,9 @@ export function createCarsHistogramValues(
       }
     },
     legend: {
-      title: { x: bounds.x, y: height - 52, text: "Origin" },
-      items: legendItems
+      title: { x: width / 2, y: height - 52, text: "Origin" },
+      items: legendItems,
+      width: legendWidth
     },
     title: {
       text: "Displacement distribution",
