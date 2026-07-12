@@ -18,7 +18,7 @@ const program = chart()
 
 ## 진행 상태
 
-- [ ] Point shape validation
+- [x] Point shape validation
 - [ ] Dataset과 `currentData` 조회
 - [ ] Mark ID와 duplicate validation
 - [ ] `createPointMark`
