@@ -117,12 +117,10 @@ test("renders the cars scatterplot created with the canvas action", () => {
   );
   assert.equal(program.guideConfigs.axis.x.labels.mode, "count");
   assert.equal(program.guideConfigs.axis.y.labels.mode, "count");
-  const xTickGroup = program.trace.children.find(
-    node => node.op === "createXAxisTicksAndLabels"
-  );
-  const yTickGroup = program.trace.children.find(
-    node => node.op === "createYAxisTicksAndLabels"
-  );
+  const xAxis = program.trace.children.find(node => node.op === "createXAxis");
+  const yAxis = program.trace.children.find(node => node.op === "createYAxis");
+  const xTickGroup = xAxis.children[1];
+  const yTickGroup = yAxis.children[1];
   assert.deepEqual(xTickGroup.children.map(node => node.op), [
     "createXAxisTicks",
     "createXAxisLabels"
@@ -130,6 +128,16 @@ test("renders the cars scatterplot created with the canvas action", () => {
   assert.deepEqual(yTickGroup.children.map(node => node.op), [
     "createYAxisTicks",
     "createYAxisLabels"
+  ]);
+  assert.deepEqual(xAxis.children.map(node => node.op), [
+    "createXAxisLine",
+    "createXAxisTicksAndLabels",
+    "createXAxisTitle"
+  ]);
+  assert.deepEqual(yAxis.children.map(node => node.op), [
+    "createYAxisLine",
+    "createYAxisTicksAndLabels",
+    "createYAxisTitle"
   ]);
 
   const createCanvas = program.trace.children[0];

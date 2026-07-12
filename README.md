@@ -36,15 +36,11 @@ const program = chart()
   .encodeRadius({
     value: 3
   })
-  .createXAxisLine()
-  .createYAxisLine()
-  .createXAxisTicksAndLabels()
-  .createYAxisTicksAndLabels()
-  .createXAxisTitle({
-    text: "Horsepower"
+  .createXAxis({
+    title: { text: "Horsepower" }
   })
-  .createYAxisTitle({
-    text: "Miles per Gallon"
+  .createYAxis({
+    title: { text: "Miles per Gallon" }
   });
 ```
 

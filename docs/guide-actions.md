@@ -128,3 +128,24 @@ program.editXAxisTitle({
 
 Rotation uses radians. Placement and font settings are rematerialized after
 scale or Canvas changes, while the title text remains semantic guide state.
+
+## Complete axes
+
+Create every component for one channel with a single aggregate action:
+
+```javascript
+program.createXAxis({
+  line: { lineWidth: 1 },
+  ticksAndLabels: {
+    count: 5,
+    ticks: { length: 6 },
+    labels: { fontSize: 12 }
+  },
+  title: { text: "Horsepower" }
+});
+```
+
+`createYAxis` has the same structure. Scale and position are supplied once at
+the top level and routed to the line, tick group, and title child actions. The
+current release intentionally provides create-only complete-axis aggregates;
+leaf edit actions remain available for focused changes.
