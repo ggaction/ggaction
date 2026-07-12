@@ -71,3 +71,44 @@ test("rejects invalid editCanvas calls", () => {
     /horizontal margins/
   );
 });
+
+test("rematerializes auto-range position scales after bounds change", () => {
+  const encoded = chart()
+    .createCanvas({ width: 200, height: 120, margin: 10 })
+    .createData({ id: "data", values: [{ x: 0 }, { x: 10 }] })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x" });
+  const resized = encoded.editCanvas({ width: 300, margin: 20 });
+  const node = resized.trace.children.at(-1);
+
+  assert.deepEqual(encoded.resolvedScales.x.range, [10, 190]);
+  assert.deepEqual(resized.resolvedScales.x.range, [20, 280]);
+  assert.deepEqual(
+    resized.graphicSpec.objects.points.children.map(child => child.properties.x),
+    [20, 280]
+  );
+  assert.deepEqual(
+    node.children.map(child => child.op),
+    ["editGraphics", "rematerializeScale"]
+  );
+});
+
+test("does not rematerialize explicit ranges or background-only edits", () => {
+  const encoded = chart()
+    .createCanvas({ width: 200, height: 120, margin: 10 })
+    .createData({ id: "data", values: [{ x: 0 }, { x: 10 }] })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x", scale: { range: [0, 100] } });
+  const resized = encoded.editCanvas({ width: 300 });
+  const recolored = encoded.editCanvas({ background: "black" });
+
+  assert.deepEqual(resized.resolvedScales.x.range, [0, 100]);
+  assert.deepEqual(
+    resized.trace.children.at(-1).children.map(child => child.op),
+    ["editGraphics"]
+  );
+  assert.deepEqual(
+    recolored.trace.children.at(-1).children.map(child => child.op),
+    ["editGraphics"]
+  );
+});

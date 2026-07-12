@@ -23,7 +23,7 @@ const program = chart()
 - [x] `rematerializeScale`
 - [x] `encodeX`
 - [x] `encodeY`
-- [ ] Canvas 변경 시 positional scale rematerialization
+- [x] Canvas 변경 시 positional scale rematerialization
 - [ ] `carsScatterplotActions`의 수동 x/y 계산 제거
 - [ ] Unit, trace, immutability test
 - [ ] Acceptance 및 PNG render test

@@ -61,6 +61,28 @@ function resolveCanvasState(program, args) {
   return cloneAndFreeze(state);
 }
 
+function usesPositionalScale(program, id) {
+  return program.semanticSpec.layers.some(layer =>
+    ["x", "y"].some(channel => layer.encoding?.[channel]?.scale === id)
+  );
+}
+
+function rematerializeAutoPositionScales(program) {
+  let next = program;
+
+  for (const scale of program.semanticSpec.scales) {
+    if (
+      scale.range === "auto" &&
+      program.resolvedScales[scale.id] !== undefined &&
+      usesPositionalScale(program, scale.id)
+    ) {
+      next = next.rematerializeScale({ id: scale.id });
+    }
+  }
+
+  return next;
+}
+
 const editCanvas = action(
   {
     op: "editCanvas",
@@ -81,10 +103,20 @@ const editCanvas = action(
       }
     }
 
-    return next._withContext({
+    next = next._withContext({
       currentMargin: state.margin,
       currentGraphicBounds: createGraphicBounds(state)
     });
+
+    if (
+      Object.hasOwn(args, "width") ||
+      Object.hasOwn(args, "height") ||
+      Object.hasOwn(args, "margin")
+    ) {
+      next = rematerializeAutoPositionScales(next);
+    }
+
+    return next;
   }
 );
 
