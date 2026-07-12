@@ -167,7 +167,7 @@ test("validates bar bin and x scale options before changing the program", () => 
   );
   assert.throws(
     () => program.encodeY({ field: "Displacement", bin: {} }),
-    /not implemented/
+    /requires a binned x encoding/
   );
   assert.equal(program.semanticSpec.layers[0].encoding, undefined);
 });

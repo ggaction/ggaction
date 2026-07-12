@@ -72,6 +72,7 @@ test("authors and renders the complete primitive cars histogram", () => {
       type: "linear",
       domain: "auto",
       range: "auto",
+      nice: true,
       zero: true
     },
     {

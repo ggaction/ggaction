@@ -81,10 +81,11 @@ encoding.
 ### `encodeY`
 
 ```javascript
-encodeY({ field, target?, fieldType?, aggregate?, coordinate?, scale? })
+encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
 ```
 
-Create a quantitative point or aggregate line y encoding.
+Create a quantitative point, aggregate line, or inferred count/zero-stack bar
+y encoding.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeColor`

@@ -79,5 +79,6 @@ program.graphicSpec.objects.bars;
 
 Bar mark creation does not assign coordinates, encodings, bins, or concrete
 rectangles. A subsequent binned `encodeX` can store the horizontal histogram
-meaning and resolve its scale. Bar y encoding and concrete rectangle
-materialization are not yet implemented.
+meaning and resolve its scale. `encodeY()` then infers count/zero-stack meaning
+and resolves its scale. Concrete rectangle materialization is not yet
+implemented.

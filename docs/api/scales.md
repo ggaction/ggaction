@@ -42,6 +42,11 @@ The resolved scale domain contains the outer bin boundaries. Concrete bin
 counts and rect geometry are deferred until the remaining histogram encodings
 are present.
 
+A histogram count y scale defaults to `nice: true` and `zero: true`. Its
+automatic domain uses total counts per x bin rather than raw source values.
+The x and y scale actions both leave concrete rect geometry unchanged until
+bar materialization is available.
+
 ## Ordinal scales
 
 Color and stroke-dash encodings use ordinal scales. Automatic domains preserve

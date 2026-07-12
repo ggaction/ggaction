@@ -134,3 +134,39 @@ export function resolveHistogramBins({
     : equalBins([minimum, maximum], maxBins);
   return cloneAndFreeze(resolved);
 }
+
+export function countHistogramBins(values, boundaries) {
+  validateValues(values);
+
+  if (
+    !Array.isArray(boundaries) ||
+    boundaries.length < 2 ||
+    !boundaries.every(Number.isFinite) ||
+    boundaries.some(
+      (value, index) => index > 0 && value <= boundaries[index - 1]
+    )
+  ) {
+    throw new TypeError(
+      "Histogram boundaries must be ascending finite numbers."
+    );
+  }
+
+  const counts = Array(boundaries.length - 1).fill(0);
+  const start = boundaries[0];
+  const stop = boundaries.at(-1);
+
+  for (const value of values) {
+    if (value < start || value > stop) continue;
+
+    let low = 0;
+    let high = boundaries.length - 1;
+    while (low + 1 < high) {
+      const middle = Math.floor((low + high) / 2);
+      if (value < boundaries[middle]) high = middle;
+      else low = middle;
+    }
+    counts[Math.min(low, counts.length - 1)] += 1;
+  }
+
+  return cloneAndFreeze(counts);
+}

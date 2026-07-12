@@ -27,7 +27,7 @@ program
 barProgram.encodeX({
   field: "Displacement",
   bin: { maxBins: 10 }
-});
+}).encodeY();
 ```
 
 ## Series

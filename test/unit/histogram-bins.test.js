@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { resolveHistogramBins } from "../../src/core/histogram.js";
+import {
+  countHistogramBins,
+  resolveHistogramBins
+} from "../../src/core/histogram.js";
 
 test("resolves deterministic nice histogram bins", () => {
   const bins = resolveHistogramBins({
@@ -99,5 +102,19 @@ test("validates histogram bin inputs", () => {
   assert.throws(
     () => resolveHistogramBins({ values: [1, Number.NaN], maxBins: 2 }),
     /finite/
+  );
+});
+
+test("counts half-open histogram intervals and includes the final maximum", () => {
+  assert.deepEqual(
+    countHistogramBins(
+      [-1, 0, 9.9, 10, 19.9, 20, 30, 31],
+      [0, 10, 20, 30]
+    ),
+    [2, 2, 2]
+  );
+  assert.throws(
+    () => countHistogramBins([1], [0, 10, 5]),
+    /ascending/
   );
 });

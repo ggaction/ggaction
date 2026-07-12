@@ -27,6 +27,7 @@ export function createCarsHistogramEncodings(cars) {
       bin: { maxBins: 10 },
       scale: { nice: true, zero: false }
     })
+    .encodeY()
     .createGraphics({
       id: "horizontalGridLines",
       type: "line",
@@ -68,23 +69,6 @@ export function createCarsHistogramEncodings(cars) {
       value: horizontalGrid.map(() => [])
     })
     .editSemantic({
-      property: "layer[bars].encoding.y.field",
-      value: "Displacement"
-    })
-    .editSemantic({
-      property: "layer[bars].encoding.y.fieldType",
-      value: "quantitative"
-    })
-    .editSemantic({
-      property: "layer[bars].encoding.y.aggregate",
-      value: "count"
-    })
-    .editSemantic({
-      property: "layer[bars].encoding.y.stack",
-      value: "zero"
-    })
-    .editSemantic({ property: "layer[bars].encoding.y.scale", value: "y" })
-    .editSemantic({
       property: "layer[bars].encoding.color.field",
       value: "Origin"
     })
@@ -96,10 +80,6 @@ export function createCarsHistogramEncodings(cars) {
       property: "layer[bars].encoding.color.scale",
       value: "color"
     })
-    .editSemantic({ property: "scale[y].type", value: "linear" })
-    .editSemantic({ property: "scale[y].domain", value: "auto" })
-    .editSemantic({ property: "scale[y].range", value: "auto" })
-    .editSemantic({ property: "scale[y].zero", value: true })
     .editSemantic({ property: "scale[color].type", value: "ordinal" })
     .editSemantic({ property: "scale[color].domain", value: "auto" })
     .editSemantic({

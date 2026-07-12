@@ -26,7 +26,8 @@ const POSITION_ENCODING_OPTIONS = Object.freeze([
   "scale",
   "coordinate",
   "aggregate",
-  "bin"
+  "bin",
+  "stack"
 ]);
 const BIN_OPTIONS = Object.freeze(["maxBins"]);
 const COLOR_ENCODING_OPTIONS = Object.freeze([
@@ -246,6 +247,12 @@ function encodePosition(program, channel, args, operation) {
     ["point", "line", "bar"]
   );
   let bin;
+  let aggregate;
+  let stack;
+  const field =
+    layer.mark.type === "bar" && channel === "y" && args.field === undefined
+      ? layer.encoding?.x?.field
+      : args.field;
 
   if (layer.mark.type === "point") {
     if (fieldType !== "quantitative") {
@@ -257,6 +264,9 @@ function encodePosition(program, channel, args, operation) {
     if (args.bin !== undefined) {
       throw new Error("Point position encoding does not support bin.");
     }
+    if (args.stack !== undefined) {
+      throw new Error("Point position encoding does not support stack.");
+    }
   } else if (layer.mark.type === "line" && channel === "x") {
     if (fieldType !== "temporal") {
       throw new Error("Line x encoding currently requires a temporal field.");
@@ -267,6 +277,9 @@ function encodePosition(program, channel, args, operation) {
     if (args.bin !== undefined) {
       throw new Error("Line x encoding does not support bin.");
     }
+    if (args.stack !== undefined) {
+      throw new Error("Line x encoding does not support stack.");
+    }
   } else if (layer.mark.type === "line") {
     if (args.bin !== undefined) {
       throw new Error("Line y encoding does not support bin.");
@@ -276,9 +289,10 @@ function encodePosition(program, channel, args, operation) {
         'Line y encoding currently requires a quantitative field and aggregate "mean".'
       );
     }
-  } else if (channel !== "x") {
-    throw new Error("Bar y encoding is not implemented yet.");
-  } else {
+    if (args.stack !== undefined) {
+      throw new Error("Line y encoding does not support stack.");
+    }
+  } else if (channel === "x") {
     if (fieldType !== "quantitative") {
       throw new Error("Bar x encoding currently requires a quantitative field.");
     }
@@ -288,13 +302,39 @@ function encodePosition(program, channel, args, operation) {
     if (args.bin === undefined) {
       throw new Error("Bar x encoding requires bin.");
     }
+    if (args.stack !== undefined) {
+      throw new Error("Bar x encoding does not support stack.");
+    }
     bin = resolveBinDefinition(args.bin);
+  } else {
+    const xEncoding = layer.encoding?.x;
+
+    if (xEncoding?.bin === undefined || xEncoding.field === undefined) {
+      throw new Error("Bar y encoding requires a binned x encoding.");
+    }
+    if (fieldType !== "quantitative") {
+      throw new Error("Bar y encoding currently requires a quantitative field.");
+    }
+    if (field !== xEncoding.field) {
+      throw new Error("Bar y field must match the binned x field.");
+    }
+    if (args.bin !== undefined) {
+      throw new Error("Bar y encoding does not support bin.");
+    }
+    aggregate = args.aggregate ?? "count";
+    stack = args.stack ?? "zero";
+    if (aggregate !== "count") {
+      throw new Error('Bar y aggregate must be "count".');
+    }
+    if (stack !== "zero") {
+      throw new Error('Bar y stack must be "zero".');
+    }
   }
 
   if (fieldType === "temporal") {
-    readTemporalField(dataset.values, args.field);
+    readTemporalField(dataset.values, field);
   } else {
-    readQuantitativeField(dataset.values, args.field);
+    readQuantitativeField(dataset.values, field);
   }
 
   const scale = resolveScaleDefinition(
@@ -302,7 +342,11 @@ function encodePosition(program, channel, args, operation) {
     channel,
     fieldType,
     args.scale ?? {},
-    layer.mark.type === "bar" ? { nice: true, zero: false } : {}
+    layer.mark.type === "bar"
+      ? channel === "x"
+        ? { nice: true, zero: false }
+        : { nice: true, zero: true }
+      : {}
   );
   const coordinate = resolvePositionCoordinate(
     program,
@@ -319,7 +363,7 @@ function encodePosition(program, channel, args, operation) {
     })
     .editSemantic({
       property: `layer[${target}].encoding.${channel}.field`,
-      value: args.field
+      value: field
     })
     .editSemantic({
       property: `layer[${target}].encoding.${channel}.fieldType`,
@@ -333,11 +377,23 @@ function encodePosition(program, channel, args, operation) {
     });
   }
 
-  if (layer.mark.type === "bar") {
+  if (layer.mark.type === "bar" && channel === "x") {
     next = next.editSemantic({
       property: `layer[${target}].encoding.x.bin.maxBins`,
       value: bin.maxBins
     });
+  }
+
+  if (layer.mark.type === "bar" && channel === "y") {
+    next = next
+      .editSemantic({
+        property: `layer[${target}].encoding.y.aggregate`,
+        value: aggregate
+      })
+      .editSemantic({
+        property: `layer[${target}].encoding.y.stack`,
+        value: stack
+      });
   }
 
   next = next

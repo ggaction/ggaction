@@ -74,6 +74,7 @@ export function createCarsHistogramPrimitives(cars) {
     .editSemantic({ property: "scale[y].type", value: "linear" })
     .editSemantic({ property: "scale[y].domain", value: "auto" })
     .editSemantic({ property: "scale[y].range", value: "auto" })
+    .editSemantic({ property: "scale[y].nice", value: true })
     .editSemantic({ property: "scale[y].zero", value: true })
     .editSemantic({ property: "scale[color].type", value: "ordinal" })
     .editSemantic({ property: "scale[color].domain", value: "auto" })

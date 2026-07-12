@@ -64,9 +64,43 @@ Automatic nice bins use `1, 2, 3, 5 × 10ⁿ` steps and never exceed
 `nice` and `zero`. The resolved x domain spans bin boundaries, while the
 automatic range uses current plot bounds.
 
-This action intentionally leaves the bar's rect collection empty. Bar y
-count/stack encoding and automatic rectangle materialization are not yet
-implemented.
+This action intentionally leaves the bar's rect collection empty. Add
+`encodeY()` to resolve count/zero-stack meaning and the y scale; automatic
+rectangle materialization remains deferred.
+
+## Count/stack bar `encodeY(options?)`
+
+After binned bar x is encoded, create the histogram count meaning and resolve
+its vertical scale.
+
+```javascript
+program
+  .encodeX({ field: "Displacement", bin: { maxBins: 10 } })
+  .encodeY();
+```
+
+| Option | Type | Default |
+| --- | --- | --- |
+| `field` | binned x field | inferred from x |
+| `target` | bar mark ID | current mark |
+| `fieldType` | `"quantitative"` | `"quantitative"` |
+| `coordinate` | coordinate ID | layer coordinate, then `"main"` |
+| `aggregate` | `"count"` | `"count"` |
+| `stack` | `"zero"` | `"zero"` |
+| `scale.id` | scale ID | `"y"` |
+| `scale.type` | `"linear"` | `"linear"` |
+| `scale.domain` | `"auto"` or two finite numbers | `"auto"` |
+| `scale.range` | `"auto"` or two finite numbers | `"auto"` |
+| `scale.nice` | boolean | `true` |
+| `scale.zero` | boolean | `true` |
+
+An explicit field must match the binned x field. The automatic y domain uses
+the largest total bin count, applies zero, and then applies a nice boundary.
+Values outside an explicit x domain are not counted.
+
+This action resolves the y scale but deliberately leaves the rect collection
+empty. Automatic bar geometry is added by a later histogram materialization
+action.
 
 ## Temporal line `encodeX(options)`
 

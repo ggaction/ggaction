@@ -1,5 +1,8 @@
 import { action } from "../core/action.js";
-import { resolveHistogramBins } from "../core/histogram.js";
+import {
+  countHistogramBins,
+  resolveHistogramBins
+} from "../core/histogram.js";
 import { validateUserId } from "../core/identifiers.js";
 import { deriveLineSeries } from "../core/lineSeries.js";
 import {
@@ -146,6 +149,37 @@ function resolveConsumerValues(program, consumer) {
   return readQuantitativeField(dataset.values, consumer.encoding.field);
 }
 
+function resolveHistogramCountValues(program, consumer) {
+  const xEncoding = consumer.layer.encoding?.x;
+  const xScale = xEncoding?.scale === undefined
+    ? undefined
+    : findScale(program, xEncoding.scale);
+  const dataset = program.semanticSpec.datasets.find(
+    item => item.id === consumer.layer.data
+  );
+
+  if (xEncoding?.bin === undefined || xScale === undefined) {
+    throw new Error(
+      `Histogram mark "${consumer.layer.id}" requires a binned x scale.`
+    );
+  }
+  if (dataset === undefined) {
+    throw new Error(
+      `Histogram mark "${consumer.layer.id}" requires an existing dataset.`
+    );
+  }
+
+  const xValues = readQuantitativeField(dataset.values, xEncoding.field);
+  const bins = resolveHistogramBins({
+    values: xValues,
+    maxBins: xEncoding.bin.maxBins,
+    domain: xScale.domain,
+    nice: xScale.nice ?? true,
+    zero: xScale.zero ?? false
+  });
+  return countHistogramBins(xValues, bins.boundaries);
+}
+
 const createScale = action(
   {
     op: "createScale",
@@ -253,6 +287,13 @@ const rematerializeScale = action(
         consumer.layer.mark?.type === "bar" &&
         consumer.encoding.bin !== undefined
     );
+    const countBars = valuesByConsumer.filter(
+      ({ consumer }) =>
+        consumer.layer.mark?.type === "bar" &&
+        consumer.channel === "y" &&
+        consumer.encoding.aggregate === "count" &&
+        consumer.encoding.stack === "zero"
+    );
     let domain;
 
     if (binnedBars.length > 0) {
@@ -276,6 +317,22 @@ const rematerializeScale = action(
         nice: scale.nice ?? true,
         zero: scale.zero ?? false
       }).domain;
+    } else if (countBars.length > 0) {
+      if (channel !== "y" || countBars.length !== valuesByConsumer.length) {
+        throw new Error(
+          `Histogram count scale "${id}" cannot be shared with another policy.`
+        );
+      }
+      const counts = countBars.flatMap(({ consumer }) =>
+        resolveHistogramCountValues(this, consumer)
+      );
+      domain = resolveContinuousDomain({
+        domain: scale.domain,
+        values: counts,
+        type: scale.type,
+        nice: scale.nice,
+        zero: scale.zero
+      });
     } else {
       domain = isOrdinal
         ? resolveOrdinalDomain(scale.domain, allValues)
@@ -314,7 +371,8 @@ const rematerializeScale = action(
       if (
         consumer.layer.mark?.type === "line" ||
         (consumer.layer.mark?.type === "bar" &&
-          consumer.encoding.bin !== undefined)
+          (consumer.encoding.bin !== undefined ||
+            consumer.encoding.aggregate === "count"))
       ) {
         continue;
       }

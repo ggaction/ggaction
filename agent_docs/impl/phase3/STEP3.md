@@ -164,7 +164,7 @@ bar x only   -> resolved binned scale 저장, rect materialization 유예
 ```
 
 `rematerializeScale`은 binned bar consumer를 발견하면 raw values를 rect property로
-쓰지 않는다. STEP4의 bar materialization이 x/y encoding을 함께 읽어 rect 개수와
+쓰지 않는다. STEP5의 bar materialization이 x/y encoding을 함께 읽어 rect 개수와
 concrete geometry를 만든다.
 
 초기 범위에서는 binned bar scale을 unbinned mark와 공유하거나 서로 다른

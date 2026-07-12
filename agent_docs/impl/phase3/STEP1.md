@@ -192,6 +192,7 @@ fixture helper를 import하거나 호출해서는 안 된다.
       type: "linear",
       domain: "auto",
       range: "auto",
+      nice: true,
       zero: true
     },
     {

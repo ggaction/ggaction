@@ -18,7 +18,7 @@ const cars = JSON.parse(
   readFileSync(new URL("../../data/cars.json", import.meta.url), "utf8")
 );
 
-test("replaces raw bar and x blocks with chart actions", () => {
+test("replaces raw bar and position blocks with chart actions", () => {
   const primitive = createCarsHistogramPrimitives(cars);
   const program = createCarsHistogramEncodings(cars);
 
@@ -30,8 +30,8 @@ test("replaces raw bar and x blocks with chart actions", () => {
     "horizontalGridLines"
   ]);
   assert.deepEqual(
-    program.trace.children.slice(0, 4).map(node => node.op),
-    ["createCanvas", "createData", "createBarMark", "encodeX"]
+    program.trace.children.slice(0, 5).map(node => node.op),
+    ["createCanvas", "createData", "createBarMark", "encodeX", "encodeY"]
   );
 
   const createBarMark = program.trace.children.find(
@@ -68,6 +68,23 @@ test("replaces raw bar and x blocks with chart actions", () => {
     domain: [50, 500],
     range: [80, 372]
   });
+  const encodeY = program.trace.children.find(node => node.op === "encodeY");
+  assert.deepEqual(encodeY.args, {});
+  assert.deepEqual(encodeY.children.map(node => node.op), [
+    "createCoordinate",
+    "editSemantic",
+    "editSemantic",
+    "editSemantic",
+    "editSemantic",
+    "editSemantic",
+    "createScale",
+    "rematerializeScale"
+  ]);
+  assert.deepEqual(program.resolvedScales.y, {
+    type: "linear",
+    domain: [0, 120],
+    range: [330, 80]
+  });
   assert.equal(
     program.trace.children.some(
       node =>
@@ -76,7 +93,7 @@ test("replaces raw bar and x blocks with chart actions", () => {
     ),
     false
   );
-  const replacedXPaths = new Set([
+  const replacedEncodingPaths = new Set([
     "layer[bars].coordinate",
     "layer[bars].encoding.x.field",
     "layer[bars].encoding.x.fieldType",
@@ -89,10 +106,25 @@ test("replaces raw bar and x blocks with chart actions", () => {
     "scale[x].zero",
     "coordinate[main].type"
   ]);
+  for (const property of [
+    "layer[bars].encoding.y.field",
+    "layer[bars].encoding.y.fieldType",
+    "layer[bars].encoding.y.aggregate",
+    "layer[bars].encoding.y.stack",
+    "layer[bars].encoding.y.scale",
+    "scale[y].type",
+    "scale[y].domain",
+    "scale[y].range",
+    "scale[y].nice",
+    "scale[y].zero"
+  ]) {
+    replacedEncodingPaths.add(property);
+  }
   assert.equal(
     program.trace.children.some(
       node =>
-        node.op === "editSemantic" && replacedXPaths.has(node.args.property)
+        node.op === "editSemantic" &&
+        replacedEncodingPaths.has(node.args.property)
     ),
     false
   );

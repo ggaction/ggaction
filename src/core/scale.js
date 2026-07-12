@@ -379,7 +379,15 @@ function niceLinearStep(span, count = 5) {
   const rough = span / Math.max(1, count);
   const power = 10 ** Math.floor(Math.log10(rough));
   const fraction = rough / power;
-  const factor = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10;
+  const factor = fraction <= 1
+    ? 1
+    : fraction <= 2
+      ? 2
+      : fraction <= 3
+        ? 3
+        : fraction <= 5
+          ? 5
+          : 10;
   return factor * power;
 }
 

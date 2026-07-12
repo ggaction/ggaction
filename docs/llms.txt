@@ -56,6 +56,7 @@ and language models.
 - Line encodeColor and encodeStrokeDash regroup and style concrete series paths.
 - createBarMark stores a semantic bar and creates an empty rect collection.
 - Binned bar encodeX stores maxBins, resolves a nice linear x domain/range, and deliberately leaves rect materialization for later y encoding.
+- Bar encodeY infers the binned x field, stores count/zero-stack, resolves the y scale from bin totals, and still leaves rect materialization deferred.
 - createAxes supports linear and UTC time scales plus aggregate-aware title inference.
 - createLegend combines compatible line color and strokeDash encodings into one concrete series legend.
 - createTitle stores semantic title text and materializes a plot-aligned top title with an optional subtitle.
@@ -69,8 +70,9 @@ repository source directly.
 The implemented end-to-end Chart API covers Cartesian point scatterplots and
 temporal mean-aggregate line charts with browser Canvas and PNG output.
 `createBarMark` creates an empty rect collection, and binned bar `encodeX`
-stores the horizontal histogram meaning plus a resolved x scale. Bar y
-count/stack encoding and automatic rect materialization are not yet implemented.
+stores the horizontal histogram meaning plus a resolved x scale. Bar
+`encodeY()` infers count/zero-stack and resolves the y scale from total bin
+counts. Automatic rect materialization is not yet implemented.
 Temporal line `encodeX` resolves a time scale; aggregate line `encodeY`
 materializes sorted series paths. Line `encodeColor` and `encodeStrokeDash`
 group and style series through ordinal scales. `createGuides` composes time or

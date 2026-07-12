@@ -46,7 +46,7 @@ chart는 별도 grid option 없이 horizontal grid를 가진다.
 - [x] Primitive histogram contract
 - [x] `createBarMark`
 - [x] Bar binned `encodeX`
-- [ ] Bar count/stack `encodeY`
+- [x] Bar count/stack `encodeY`
 - [ ] Histogram rect materialization
 - [ ] Bar `encodeColor`
 - [ ] Atomic `encodeHistogram`
