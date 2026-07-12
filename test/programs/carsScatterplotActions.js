@@ -27,8 +27,10 @@ export function createCarsScatterplotActions(cars) {
     .encodeY({ field: "Miles_per_Gallon" })
     .encodeColor({ field: "Origin" })
     .encodeRadius({ value: 3 })
-    .createXAxis({ title: { text: "Horsepower" } })
-    .createYAxis({ title: { text: "Miles per Gallon" } });
+    .createAxes({
+      x: { title: { text: "Horsepower" } },
+      y: { title: { text: "Miles per Gallon" } }
+    });
 }
 
 export function renderCarsScatterplotActions(program, canvasContext) {

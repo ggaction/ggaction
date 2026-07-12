@@ -19,8 +19,10 @@ const program = chart()
   .encodeY({ field: "Miles_per_Gallon" })
   .encodeColor({ field: "Origin" })
   .encodeRadius({ value: 3 })
-  .createXAxis({ title: { text: "Horsepower" } })
-  .createYAxis({ title: { text: "Miles per Gallon" } });
+  .createAxes({
+    x: { title: { text: "Horsepower" } },
+    y: { title: { text: "Miles per Gallon" } }
+  });
 
 const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));

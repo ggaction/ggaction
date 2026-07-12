@@ -46,6 +46,7 @@ test("renders the cars scatterplot created with the canvas action", () => {
       id: "points",
       mark: { type: "point" },
       data: "cars",
+      coordinate: "main",
       encoding: {
         x: {
           field: "Horsepower",
@@ -69,6 +70,9 @@ test("renders the cars scatterplot created with the canvas action", () => {
     { id: "x", type: "linear", domain: "auto", range: "auto" },
     { id: "y", type: "linear", domain: "auto", range: "auto" },
     { id: "color", type: "ordinal", domain: "auto", range: "auto" }
+  ]);
+  assert.deepEqual(program.semanticSpec.coordinates, [
+    { id: "main", type: "cartesian" }
   ]);
   assert.deepEqual(program.semanticSpec.guides, {
     axis: {
@@ -117,8 +121,14 @@ test("renders the cars scatterplot created with the canvas action", () => {
   );
   assert.equal(program.guideConfigs.axis.x.labels.mode, "count");
   assert.equal(program.guideConfigs.axis.y.labels.mode, "count");
-  const xAxis = program.trace.children.find(node => node.op === "createXAxis");
-  const yAxis = program.trace.children.find(node => node.op === "createYAxis");
+  const createAxes = program.trace.children.find(node => node.op === "createAxes");
+  assert.deepEqual(createAxes.children.map(node => node.op), [
+    "createCoordinate",
+    "createXAxis",
+    "createYAxis"
+  ]);
+  const xAxis = createAxes.children[1];
+  const yAxis = createAxes.children[2];
   const xTickGroup = xAxis.children[1];
   const yTickGroup = yAxis.children[1];
   assert.deepEqual(xTickGroup.children.map(node => node.op), [

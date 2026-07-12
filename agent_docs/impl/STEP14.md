@@ -21,11 +21,11 @@ Encoding channels와 coordinate를 해석해 필요한 complete-axis action을
 - [x] Selective x/y dispatch와 false opt-out
 - [x] Polar/mixed channel validation
 - [x] `createAxes`
-- [ ] 대표 프로그램 x/y axis 호출 교체
-- [ ] Unit, trace, immutability test
-- [ ] Acceptance 및 PNG render test
-- [ ] 영어 사용자 문서
-- [ ] 브라우저와 고해상도 PNG 확인
+- [x] 대표 프로그램 x/y axis 호출 교체
+- [x] Unit, trace, immutability test
+- [x] Acceptance 및 PNG render test
+- [x] 영어 사용자 문서
+- [x] 브라우저와 고해상도 PNG 확인
 
 ## API
 
@@ -59,3 +59,10 @@ createAxes
 - Polar/mixed channels가 잘못 Cartesian으로 처리되지 않는다.
 - 대표 프로그램이 `createAxes` 하나만 사용한다.
 - 기존 고해상도 PNG가 유지된다.
+
+## 구현 결과
+
+- Unit/acceptance test 137개 통과
+- 고해상도 PNG render test 3개 통과
+- 브라우저에서 640×400 Canvas와 392개 데이터 렌더링 확인
+- 브라우저 warning/error 없음

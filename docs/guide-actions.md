@@ -7,6 +7,53 @@ title: Axis Component Actions
 
 # Axis Component Actions
 
+## Coordinate-aware axes
+
+For a standard chart, create all encoded axes with one action:
+
+```javascript
+program.createAxes({
+  x: { title: { text: "Horsepower" } },
+  y: { title: { text: "Miles per Gallon" } }
+});
+```
+
+`createAxes` inspects the program's encodings. It creates a Cartesian coordinate,
+attaches the relevant layers, infers each channel's scale, and calls
+`createXAxis` and `createYAxis` only for channels that exist. Use `false` to
+exclude an encoded channel:
+
+```javascript
+program.createAxes({ y: false });
+```
+
+The default coordinate ID is `main`. An explicit descriptor can select another
+coordinate or require a particular type:
+
+```javascript
+program.createAxes({
+  coordinate: { id: "detail", type: "cartesian" }
+});
+```
+
+If one channel uses multiple scales, select the desired scale with `x.scale` or
+`y.scale`. Ambiguous coordinates and scales produce errors instead of choosing
+silently. Theta/radius channels are recognized as Polar, but Polar axis graphics
+are not implemented in this release.
+
+Extension authors can create semantic coordinates directly without creating
+guide graphics:
+
+```javascript
+program.createCoordinate({
+  id: "main",
+  type: "cartesian",
+  layers: ["points"]
+});
+```
+
+## Axis lines
+
 Create bottom and left axis lines after position encodings have resolved their
 scales:
 
