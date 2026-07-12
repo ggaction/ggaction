@@ -2,31 +2,9 @@ import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
 
-const TOP_OPTIONS = Object.freeze([
-  "scale",
-  "coordinate",
-  "position",
-  "line",
-  "ticksAndLabels",
-  "title"
-]);
-const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
-const TICK_GROUP_OPTIONS = Object.freeze([
-  "count",
-  "values",
-  "ticks",
-  "labels"
-]);
-const TITLE_OPTIONS = Object.freeze([
-  "text",
-  "at",
-  "offset",
-  "rotation",
-  "color",
-  "fontSize",
-  "fontFamily",
-  "fontWeight"
-]);
+const TOP_OPTIONS = Object.freeze(["coordinate", "x", "y"]);
+const COORDINATE_OPTIONS = Object.freeze(["id", "type"]);
+const COORDINATE_API_TYPES = new Set(["auto", "cartesian", "polar"]);
 
 function validateKeys(value, supported, label) {
   for (const key of Object.keys(value)) {
@@ -36,104 +14,197 @@ function validateKeys(value, supported, label) {
   }
 }
 
-function validateNested(value, supported, label) {
-  if (!isPlainObject(value)) {
-    throw new TypeError(`${label} must be a plain object.`);
+function validateAxisOption(value, channel) {
+  if (value !== undefined && value !== false && !isPlainObject(value)) {
+    throw new TypeError(`createAxes ${channel} must be false or a plain object.`);
   }
-
-  validateKeys(value, supported, label);
 }
 
-function validateArgs(args, operation) {
-  validateKeys(args, TOP_OPTIONS, operation);
-
-  if (Object.hasOwn(args, "line")) {
-    validateNested(args.line, LINE_OPTIONS, `${operation}.line`);
+function validateArgs(args) {
+  if (!isPlainObject(args)) {
+    throw new TypeError("createAxes options must be a plain object.");
   }
 
-  if (Object.hasOwn(args, "ticksAndLabels")) {
-    validateNested(
-      args.ticksAndLabels,
-      TICK_GROUP_OPTIONS,
-      `${operation}.ticksAndLabels`
+  validateKeys(args, TOP_OPTIONS, "createAxes");
+  validateAxisOption(args.x, "x");
+  validateAxisOption(args.y, "y");
+
+  const coordinate = args.coordinate ?? {};
+  if (!isPlainObject(coordinate)) {
+    throw new TypeError("createAxes coordinate must be a plain object.");
+  }
+
+  validateKeys(coordinate, COORDINATE_OPTIONS, "createAxes.coordinate");
+  const type = coordinate.type ?? "auto";
+
+  if (!COORDINATE_API_TYPES.has(type)) {
+    throw new Error(`Unknown createAxes coordinate type "${type}".`);
+  }
+
+  return coordinate;
+}
+
+function inspectChannels(layers) {
+  const cartesianLayers = layers.filter(
+    layer => layer.encoding?.x !== undefined || layer.encoding?.y !== undefined
+  );
+  const polarLayers = layers.filter(
+    layer =>
+      layer.encoding?.theta !== undefined || layer.encoding?.radius !== undefined
+  );
+  const hasMixedLayer = layers.some(layer => {
+    const hasCartesian =
+      layer.encoding?.x !== undefined || layer.encoding?.y !== undefined;
+    const hasPolar =
+      layer.encoding?.theta !== undefined || layer.encoding?.radius !== undefined;
+    return hasCartesian && hasPolar;
+  });
+
+  if (hasMixedLayer) {
+    throw new Error(
+      "createAxes cannot infer a coordinate from mixed Cartesian and Polar channels."
     );
   }
 
-  if (Object.hasOwn(args, "title")) {
-    validateNested(args.title, TITLE_OPTIONS, `${operation}.title`);
+  return { cartesianLayers, hasPolar: polarLayers.length > 0 };
+}
+
+function resolveCoordinate(program, descriptor, cartesianLayers, hasPolar) {
+  if (hasPolar && cartesianLayers.length === 0) {
+    throw new Error("createAxes does not yet support Polar axes.");
   }
-}
 
-function names(channel) {
-  const prefix = channel === "x" ? "X" : "Y";
-  return {
-    create: `create${prefix}Axis`,
-    line: `create${prefix}AxisLine`,
-    ticksAndLabels: `create${prefix}AxisTicksAndLabels`,
-    title: `create${prefix}AxisTitle`
-  };
-}
+  if (cartesianLayers.length === 0) {
+    throw new Error("createAxes requires an x or y encoding.");
+  }
 
-function makeCreateAxis(channel) {
-  const operation = names(channel);
+  const referencedIds = [
+    ...new Set(
+      cartesianLayers
+        .map(layer => layer.coordinate)
+        .filter(id => id !== undefined)
+    )
+  ];
 
-  return action(
-    {
-      op: operation.create,
-      description: `Create the complete ${channel}-axis.`
-    },
-    function (args = {}) {
-      validateArgs(args, operation.create);
-      const shared = {};
-      if (Object.hasOwn(args, "scale")) shared.scale = args.scale;
-      if (Object.hasOwn(args, "position")) shared.position = args.position;
-      let next = this;
+  if (cartesianLayers.some(layer => layer.coordinate === undefined)) {
+    throw new Error(
+      "createAxes requires every positional layer to have a stored coordinate."
+    );
+  }
 
-      if (Object.hasOwn(args, "coordinate")) {
-        const coordinate = validateUserId(args.coordinate, "Coordinate id");
-        const scale = args.scale ?? channel;
-        const exists = next.semanticSpec.coordinates.some(
-          item => item.id === coordinate
-        );
-        const hasConsumer = next.semanticSpec.layers.some(
-          layer =>
-            layer.coordinate === coordinate &&
-            layer.encoding?.[channel]?.scale === scale
-        );
+  if (descriptor.id === undefined && referencedIds.length > 1) {
+    throw new Error(
+      "createAxes found multiple coordinates; provide coordinate.id explicitly."
+    );
+  }
 
-        if (!exists) {
-          throw new Error(`Unknown coordinate "${coordinate}".`);
-        }
-        if (!hasConsumer) {
-          throw new Error(
-            `${operation.create} found no ${channel} encoding for coordinate "${coordinate}" and scale "${scale}".`
-          );
-        }
+  const id = validateUserId(descriptor.id ?? referencedIds[0], "Coordinate id");
+  const existing = program.semanticSpec.coordinates.find(item => item.id === id);
 
-        next = next.editSemantic({
-          property: `guide.axis.${channel}.coordinate`,
-          value: coordinate
-        });
-      }
+  if (existing === undefined) {
+    throw new Error(`Unknown coordinate "${id}".`);
+  }
 
-      return next[operation.line]({
-        ...shared,
-        ...(args.line ?? {})
-      })[operation.ticksAndLabels]({
-        ...shared,
-        ...(args.ticksAndLabels ?? {})
-      })[operation.title]({
-        ...shared,
-        ...(args.title ?? {})
-      });
-    }
+  if (
+    descriptor.type !== undefined &&
+    descriptor.type !== "auto" &&
+    descriptor.type !== existing.type
+  ) {
+    throw new Error(
+      `Coordinate "${id}" has type "${existing.type}", not "${descriptor.type}".`
+    );
+  }
+
+  const layers = cartesianLayers.filter(
+    layer => layer.coordinate === id
   );
+
+  if (layers.length === 0) {
+    throw new Error(`createAxes found no layers for coordinate "${id}".`);
+  }
+
+  if (existing.type !== "cartesian") {
+    throw new Error("createAxes does not yet support Polar axes.");
+  }
+
+  return { id, layers };
 }
 
-const createXAxis = makeCreateAxis("x");
-const createYAxis = makeCreateAxis("y");
+function hasChannel(layers, channel) {
+  return layers.some(layer => layer.encoding?.[channel] !== undefined);
+}
 
-export function registerAxisActions(Class) {
-  Class.prototype.createXAxis = createXAxis;
-  Class.prototype.createYAxis = createYAxis;
+function resolveAxisArgs(layers, channel, option) {
+  const selected = option === false
+    ? false
+    : option !== undefined || hasChannel(layers, channel);
+
+  if (!selected) return undefined;
+
+  const args = option ?? {};
+  const encodedScaleIds = [
+    ...new Set(
+      layers
+        .map(layer => layer.encoding?.[channel]?.scale)
+        .filter(id => id !== undefined)
+    )
+  ];
+  let scale = args.scale;
+
+  if (scale === undefined) {
+    if (encodedScaleIds.length === 0) {
+      throw new Error(`createAxes cannot infer the ${channel}-axis scale.`);
+    }
+
+    if (encodedScaleIds.length > 1) {
+      throw new Error(
+        `createAxes found multiple ${channel}-axis scales; provide ${channel}.scale explicitly.`
+      );
+    }
+
+    [scale] = encodedScaleIds;
+  }
+
+  validateUserId(scale, `${channel}-axis scale id`);
+  return { ...args, scale };
+}
+
+const createAxes = action(
+  {
+    op: "createAxes",
+    description: "Read a semantic coordinate and create its Cartesian axes."
+  },
+  function (args = {}) {
+    const coordinateDescriptor = validateArgs(args);
+    const { cartesianLayers, hasPolar } = inspectChannels(
+      this.semanticSpec.layers
+    );
+    const coordinate = resolveCoordinate(
+      this,
+      coordinateDescriptor,
+      cartesianLayers,
+      hasPolar
+    );
+    const x = resolveAxisArgs(coordinate.layers, "x", args.x);
+    const y = resolveAxisArgs(coordinate.layers, "y", args.y);
+
+    if (x === undefined && y === undefined) {
+      throw new Error("createAxes requires at least one selected axis.");
+    }
+
+    let program = this;
+
+    if (x !== undefined) {
+      program = program.createXAxis({ ...x, coordinate: coordinate.id });
+    }
+    if (y !== undefined) {
+      program = program.createYAxis({ ...y, coordinate: coordinate.id });
+    }
+
+    return program;
+  }
+);
+
+export function registerAxisCollectionActions(ProgramClass) {
+  ProgramClass.prototype.createAxes = createAxes;
 }

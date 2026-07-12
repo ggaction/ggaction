@@ -1,12 +1,12 @@
-import { action } from "../core/action.js";
+import { action } from "../../core/action.js";
 import {
   createGraphicBounds,
   DEFAULT_CANVAS,
   DEFAULT_MARGIN,
   normalizeMargin,
   validateCanvasState
-} from "../core/canvasLayout.js";
-import { cloneAndFreeze } from "../core/immutable.js";
+} from "../../core/canvasLayout.js";
+import { cloneAndFreeze } from "../../core/immutable.js";
 
 const CANVAS_OPTIONS = Object.freeze([
   "width",

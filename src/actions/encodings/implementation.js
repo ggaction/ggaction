@@ -1,7 +1,7 @@
-import { action } from "../core/action.js";
-import { getPositionCoordinateDefaults } from "../core/coordinate.js";
-import { validateUserId } from "../core/identifiers.js";
-import { isPlainObject } from "../core/immutable.js";
+import { action } from "../../core/action.js";
+import { getPositionCoordinateDefaults } from "../../core/coordinate.js";
+import { validateUserId } from "../../core/identifiers.js";
+import { isPlainObject } from "../../core/immutable.js";
 import {
   readNominalField,
   readQuantitativeField,
@@ -17,7 +17,7 @@ import {
   validateScaleRange,
   validateStrokeDashRange,
   validateTimeScaleType
-} from "../core/scale.js";
+} from "../../core/scale.js";
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([
   "field",

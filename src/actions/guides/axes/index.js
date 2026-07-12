@@ -1,10 +1,10 @@
-import { registerAxisCollectionActions } from "./axisCollections.js";
-import { registerAxisLabelActions } from "./axisLabels.js";
-import { registerAxisLineActions } from "./axisLines.js";
-import { registerAxisTickGroupActions } from "./axisTickGroups.js";
-import { registerAxisTickActions } from "./axisTicks.js";
-import { registerAxisTitleActions } from "./axisTitles.js";
-import { registerAxisActions } from "./axes.js";
+import { registerAxisCollectionActions } from "./axes.js";
+import { registerAxisLabelActions } from "./labels.js";
+import { registerAxisLineActions } from "./lines.js";
+import { registerAxisTickGroupActions } from "./tickGroups.js";
+import { registerAxisTickActions } from "./ticks.js";
+import { registerAxisTitleActions } from "./titles.js";
+import { registerAxisActions } from "./axis.js";
 
 export function registerGuideAxisActions(ProgramClass) {
   registerAxisLineActions(ProgramClass);

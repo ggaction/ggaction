@@ -1,6 +1,6 @@
-import { registerBarMarkActions } from "./barMarks.js";
-import { registerLineMarkActions } from "./lineMarks.js";
-import { registerPointMarkActions } from "./pointMarks.js";
+import { registerBarMarkActions } from "./bar.js";
+import { registerLineMarkActions } from "./line.js";
+import { registerPointMarkActions } from "./point.js";
 
 export function registerMarkActions(ProgramClass) {
   registerPointMarkActions(ProgramClass);

@@ -1,6 +1,6 @@
-import { action } from "../core/action.js";
-import { validateUserId } from "../core/identifiers.js";
-import { isPlainObject } from "../core/immutable.js";
+import { action } from "../../core/action.js";
+import { validateUserId } from "../../core/identifiers.js";
+import { isPlainObject } from "../../core/immutable.js";
 
 const DATA_OPTIONS = Object.freeze(["id", "values"]);
 

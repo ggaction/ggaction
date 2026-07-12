@@ -14,15 +14,7 @@ import {
   createEmptySemanticSpec,
   createTraceRoot
 } from "./specs.js";
-import { registerPrimitiveActions } from "../actions/primitives.js";
-import { registerCanvasActions } from "../actions/canvas.js";
-import { registerDataActions } from "../actions/data.js";
-import { registerMarkActions } from "../actions/marks/index.js";
-import { registerScaleActions } from "../actions/scales.js";
-import { registerEncodingActions } from "../actions/encodings.js";
-import { registerCoordinateActions } from "../actions/coordinates.js";
-import { registerGuideActions } from "../actions/guides/index.js";
-import { registerTitleActions } from "../actions/titles.js";
+import { registerActions } from "../actions/index.js";
 
 function ownState(value) {
   return isOwned(value) ? value : cloneAndFreeze(value);
@@ -207,15 +199,7 @@ export class ChartProgram {
   }
 }
 
-registerPrimitiveActions(ChartProgram);
-registerCanvasActions(ChartProgram);
-registerDataActions(ChartProgram);
-registerMarkActions(ChartProgram);
-registerScaleActions(ChartProgram);
-registerEncodingActions(ChartProgram);
-registerCoordinateActions(ChartProgram);
-registerGuideActions(ChartProgram);
-registerTitleActions(ChartProgram);
+registerActions(ChartProgram);
 
 export function chart() {
   return new ChartProgram();

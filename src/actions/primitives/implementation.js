@@ -1,24 +1,24 @@
-import { action } from "../core/action.js";
+import { action } from "../../core/action.js";
 import {
   cloneAndFreeze,
   freezeOwned,
   isPlainObject
-} from "../core/immutable.js";
-import { parseSemanticPath } from "../core/semanticPath.js";
-import { validateCoordinateType } from "../core/coordinate.js";
+} from "../../core/immutable.js";
+import { parseSemanticPath } from "../../core/semanticPath.js";
+import { validateCoordinateType } from "../../core/coordinate.js";
 import {
   validateSemanticScaleDomain,
   validateSemanticScaleRange,
   validateSemanticFieldType,
   validateSemanticScaleType
-} from "../core/scale.js";
-import { validateUserId } from "../core/identifiers.js";
+} from "../../core/scale.js";
+import { validateUserId } from "../../core/identifiers.js";
 import {
   isDrawableGraphicType,
   isStructuralGraphicType,
   validateGraphicProperty,
   validateGraphicType
-} from "../core/graphicSchema.js";
+} from "../../core/graphicSchema.js";
 
 const CONTEXT_KEYS = Object.freeze({
   dataset: "currentData",

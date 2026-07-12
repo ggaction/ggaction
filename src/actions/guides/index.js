@@ -1,5 +1,5 @@
 import { registerGuideAxisActions } from "./axes/index.js";
-import { registerGuideCollectionActions } from "./guideCollection.js";
+import { registerGuideCollectionActions } from "./guides.js";
 import { registerGridActions } from "./grids/index.js";
 import { registerLegendActions } from "./legends/index.js";
 

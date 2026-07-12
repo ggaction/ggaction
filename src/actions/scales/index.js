@@ -1,10 +1,10 @@
-import { action } from "../core/action.js";
+import { action } from "../../core/action.js";
 import {
   countHistogramBins,
   resolveHistogramBins
-} from "../core/histogram.js";
-import { validateUserId } from "../core/identifiers.js";
-import { deriveLineSeries } from "../core/lineSeries.js";
+} from "../../core/histogram.js";
+import { validateUserId } from "../../core/identifiers.js";
+import { deriveLineSeries } from "../../core/lineSeries.js";
 import {
   mapLinearValues,
   mapOrdinalValues,
@@ -24,7 +24,7 @@ import {
   validateLinearScaleType,
   validateTimeScaleType,
   validateOrdinalScaleType
-} from "../core/scale.js";
+} from "../../core/scale.js";
 
 const CREATE_SCALE_OPTIONS = Object.freeze([
   "id",
