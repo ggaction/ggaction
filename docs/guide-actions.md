@@ -57,3 +57,26 @@ program.createYAxisTicks({ values: [10, 20, 30, 40] });
 
 `count` requests readable nice ticks and may produce a different actual count.
 Use `values` for exact data-space ticks; the options are mutually exclusive.
+
+## Tick labels
+
+```javascript
+program.createXAxisLabels();
+program.createYAxisLabels({ format: { decimals: 1 } });
+```
+
+Labels reuse the existing tick count or values by default, keeping both
+collections aligned. Without ticks they may define their own `count` or
+`values`. Style options include `offset`, `color`, `fontSize`, `fontFamily`, and
+`fontWeight`. Formatting supports `"auto"` and `{ decimals }`.
+
+```javascript
+program.editXAxisLabels({
+  offset: 20,
+  fontSize: 13,
+  color: "black"
+});
+```
+
+Scale and Canvas rematerialization recomputes label values, strings, positions,
+and collection length.

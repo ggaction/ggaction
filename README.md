@@ -39,7 +39,9 @@ const program = chart()
   .createXAxisLine()
   .createYAxisLine()
   .createXAxisTicks()
-  .createYAxisTicks();
+  .createYAxisTicks()
+  .createXAxisLabels()
+  .createYAxisLabels();
 ```
 
 See the runnable [cars scatterplot example](./examples/cars-scatterplot/),

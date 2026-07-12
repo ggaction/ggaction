@@ -104,6 +104,16 @@ test("renders the cars scatterplot created with the canvas action", () => {
   assert.deepEqual(program.graphicSpec.objects.yAxisLine.properties, {
     x1: 70, y1: 340, x2: 70, y2: 30, stroke: "#334155", strokeWidth: 1
   });
+  assert.deepEqual(
+    program.graphicSpec.objects.xAxisLabels.children.map(child => child.properties.text),
+    ["50", "100", "150", "200"]
+  );
+  assert.deepEqual(
+    program.graphicSpec.objects.yAxisLabels.children.map(child => child.properties.text),
+    ["10", "20", "30", "40"]
+  );
+  assert.equal(program.guideConfigs.axis.x.labels.mode, "count");
+  assert.equal(program.guideConfigs.axis.y.labels.mode, "count");
 
   const createCanvas = program.trace.children[0];
   assert.equal(createCanvas.op, "createCanvas");
@@ -169,5 +179,7 @@ test("renders the cars scatterplot created with the canvas action", () => {
     ),
     false
   );
+  assert.equal(program.graphicSpec.objects.xLabels, undefined);
+  assert.equal(program.graphicSpec.objects.yLabels, undefined);
   assert.deepEqual(program.actionStack, []);
 });

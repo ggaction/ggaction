@@ -18,7 +18,9 @@ const program = chart()
   .createXAxisLine()
   .createYAxisLine()
   .createXAxisTicks()
-  .createYAxisTicks();
+  .createYAxisTicks()
+  .createXAxisLabels()
+  .createYAxisLabels();
 
 const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));

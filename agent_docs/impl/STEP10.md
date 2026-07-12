@@ -13,10 +13,10 @@ configuration을 기본 source로 공유한다.
 - [x] `createXAxisLabels` / `editXAxisLabels`
 - [x] `createYAxisLabels` / `editYAxisLabels`
 - [x] Scale·Canvas rematerialization
-- [ ] 대표 프로그램 primitive 교체
+- [x] 대표 프로그램 primitive 교체
 - [ ] Unit, trace, immutability test
 - [ ] Acceptance 및 PNG render test
-- [ ] 영어 사용자 문서
+- [x] 영어 사용자 문서
 - [ ] 브라우저와 고해상도 PNG 확인
 
 ## API
