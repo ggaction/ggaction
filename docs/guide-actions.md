@@ -106,3 +106,25 @@ program.editYAxisTicksAndLabels({
 
 Shared count or values edits update ticks first and labels second. Component-only
 appearance edits invoke only the affected leaf action.
+
+## Axis titles
+
+```javascript
+program.createXAxisTitle({ text: "Horsepower" });
+program.createYAxisTitle({ text: "Miles per Gallon" });
+```
+
+Omitting `text` infers a single field connected to the axis scale. `at` controls
+placement along the scale and accepts `"start"`, `"center"`, `"end"`, or a
+numeric data-space value.
+
+```javascript
+program.editXAxisTitle({
+  text: "Engine horsepower",
+  at: "start",
+  offset: 42
+});
+```
+
+Rotation uses radians. Placement and font settings are rematerialized after
+scale or Canvas changes, while the title text remains semantic guide state.

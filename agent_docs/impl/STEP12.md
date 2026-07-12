@@ -13,10 +13,10 @@ X/Y axis title의 semantic text와 concrete text graphic을 domain action으로
 - [x] `createXAxisTitle` / `editXAxisTitle`
 - [x] `createYAxisTitle` / `editYAxisTitle`
 - [x] Scale·Canvas rematerialization
-- [ ] 대표 프로그램 title primitive 제거
+- [x] 대표 프로그램 title primitive 제거
 - [ ] Unit, trace, immutability test
 - [ ] Acceptance 및 PNG render test
-- [ ] 영어 사용자 문서
+- [x] 영어 사용자 문서
 - [ ] 브라우저와 고해상도 PNG 확인
 
 ## API

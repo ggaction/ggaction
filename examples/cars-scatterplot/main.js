@@ -8,7 +8,11 @@ const rows = cars.filter(
     Number.isFinite(car.Miles_per_Gallon)
 );
 const program = chart()
-  .createCanvas({ width: 640, height: 400, margin: 30 })
+  .createCanvas({
+    width: 640,
+    height: 400,
+    margin: { top: 30, right: 30, bottom: 60, left: 70 }
+  })
   .createData({ id: "cars", values: rows })
   .createPointMark({ id: "points" })
   .encodeX({ field: "Horsepower" })
@@ -18,7 +22,9 @@ const program = chart()
   .createXAxisLine()
   .createYAxisLine()
   .createXAxisTicksAndLabels()
-  .createYAxisTicksAndLabels();
+  .createYAxisTicksAndLabels()
+  .createXAxisTitle({ text: "Horsepower" })
+  .createYAxisTitle({ text: "Miles per Gallon" });
 
 const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));

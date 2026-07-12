@@ -71,7 +71,10 @@ test("renders the cars scatterplot created with the canvas action", () => {
     { id: "color", type: "ordinal", domain: "auto", range: "auto" }
   ]);
   assert.deepEqual(program.semanticSpec.guides, {
-    axis: { x: { scale: "x" }, y: { scale: "y" } }
+    axis: {
+      x: { scale: "x", title: "Horsepower" },
+      y: { scale: "y", title: "Miles per Gallon" }
+    }
   });
   assert.deepEqual(program.resolvedScales, {
     x: { type: "linear", domain: [46, 230], range: [70, 610] },
@@ -195,5 +198,21 @@ test("renders the cars scatterplot created with the canvas action", () => {
   );
   assert.equal(program.graphicSpec.objects.xLabels, undefined);
   assert.equal(program.graphicSpec.objects.yLabels, undefined);
+  assert.equal(program.graphicSpec.objects.xTitle, undefined);
+  assert.equal(program.graphicSpec.objects.yTitle, undefined);
+  assert.deepEqual(program.graphicSpec.objects.xAxisTitle.properties, {
+    x: 340, y: 382, text: "Horsepower", fill: "#334155", fontSize: 13,
+    fontFamily: "sans-serif", fontWeight: 600, textAlign: "center",
+    textBaseline: "middle", rotation: 0
+  });
+  assert.equal(program.graphicSpec.objects.yAxisTitle.properties.x, 18);
+  assert.equal(program.graphicSpec.objects.yAxisTitle.properties.y, 185);
+  assert.equal(program.graphicSpec.objects.yAxisTitle.properties.rotation, -Math.PI / 2);
+  assert.equal(
+    program.trace.children.some(node =>
+      ["editSemantic", "createGraphics", "editGraphics"].includes(node.op)
+    ),
+    false
+  );
   assert.deepEqual(program.actionStack, []);
 });

@@ -39,7 +39,13 @@ const program = chart()
   .createXAxisLine()
   .createYAxisLine()
   .createXAxisTicksAndLabels()
-  .createYAxisTicksAndLabels();
+  .createYAxisTicksAndLabels()
+  .createXAxisTitle({
+    text: "Horsepower"
+  })
+  .createYAxisTitle({
+    text: "Miles per Gallon"
+  });
 ```
 
 See the runnable [cars scatterplot example](./examples/cars-scatterplot/),
