@@ -3,14 +3,14 @@ import {
   countHistogramBins,
   findHistogramBinIndex,
   resolveHistogramBins
-} from "../../core/histogram.js";
+} from "../../grammar/histogram.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
   mapLinearValues,
   mapOrdinalValues,
   readNominalField,
   readQuantitativeField
-} from "../../core/scale.js";
+} from "../../grammar/scales.js";
 import {
   assertMarkAvailable,
   resolveMarkData,

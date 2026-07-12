@@ -4,7 +4,7 @@ import test from "node:test";
 import {
   countHistogramBins,
   resolveHistogramBins
-} from "../../src/core/histogram.js";
+} from "../../src/grammar/histogram.js";
 
 test("resolves deterministic nice histogram bins", () => {
   const bins = resolveHistogramBins({

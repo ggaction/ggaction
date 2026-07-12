@@ -1,9 +1,9 @@
-import { cloneAndFreeze } from "./immutable.js";
+import { cloneAndFreeze } from "../core/immutable.js";
 import {
   readNominalField,
   readQuantitativeField,
   readTemporalField
-} from "./scale.js";
+} from "./scales.js";
 
 const SERIES_CHANNELS = Object.freeze(["color", "strokeDash"]);
 

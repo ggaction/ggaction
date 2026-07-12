@@ -1,4 +1,4 @@
-import { cloneAndFreeze, isPlainObject } from "./immutable.js";
+import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 
 const POSITION_CHANNELS = new Set(["x", "y"]);
 

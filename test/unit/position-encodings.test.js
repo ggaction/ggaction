@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../src/core/ChartProgram.js";
-import { getPositionCoordinateDefaults } from "../../src/core/coordinate.js";
+import { getPositionCoordinateDefaults } from "../../src/grammar/coordinates.js";
 
 function createPointProgram(values = [
   { horsepower: 50, mpg: 40 },

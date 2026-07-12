@@ -1,5 +1,5 @@
 import { isPlainObject } from "../../../../core/immutable.js";
-import { mapOrdinalValues } from "../../../../core/scale.js";
+import { mapOrdinalValues } from "../../../../grammar/scales.js";
 
 export function activeConfig(program) {
   const entries = ["series", "color"]

@@ -7,7 +7,7 @@ import {
   DEFAULT_MARGIN,
   normalizeMargin,
   validateCanvasState
-} from "../../src/core/canvasLayout.js";
+} from "../../src/layout/canvas.js";
 
 test("defines immutable canvas defaults", () => {
   assert.deepEqual(DEFAULT_CANVAS, {

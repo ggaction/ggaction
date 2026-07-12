@@ -1,7 +1,7 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { isPlainObject } from "../../../core/immutable.js";
-import { mapLinearValues } from "../../../core/scale.js";
+import { mapLinearValues } from "../../../grammar/scales.js";
 import {
   inferGridTickConfig,
   valuesFromTickConfig

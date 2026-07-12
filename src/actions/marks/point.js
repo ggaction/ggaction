@@ -1,6 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { getPointGraphicType } from "../../core/markSchema.js";
+import { getPointGraphicType } from "../../grammar/schemas/mark.js";
 import {
   assertMarkAvailable,
   resolveMarkData,

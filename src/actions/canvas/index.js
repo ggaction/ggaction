@@ -5,7 +5,7 @@ import {
   DEFAULT_MARGIN,
   normalizeMargin,
   validateCanvasState
-} from "../../core/canvasLayout.js";
+} from "../../layout/canvas.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 
 const CANVAS_OPTIONS = Object.freeze([

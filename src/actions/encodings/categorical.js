@@ -8,7 +8,7 @@ import {
   validateOrdinalDomain,
   validateOrdinalScaleType,
   validateStrokeDashRange
-} from "../../core/scale.js";
+} from "../../grammar/scales.js";
 import {
   rematerializeExistingLegend,
   resolveTarget,

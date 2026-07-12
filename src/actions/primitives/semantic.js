@@ -1,14 +1,14 @@
 import { action } from "../../core/action.js";
-import { validateCoordinateType } from "../../core/coordinate.js";
+import { validateCoordinateType } from "../../grammar/coordinates.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
-import { parseSemanticPath } from "../../core/semanticPath.js";
+import { parseSemanticPath } from "../../grammar/schemas/semanticPath.js";
 import {
   validateSemanticFieldType,
   validateSemanticScaleDomain,
   validateSemanticScaleRange,
   validateSemanticScaleType
-} from "../../core/scale.js";
+} from "../../grammar/scales.js";
 
 const CONTEXT_KEYS = Object.freeze({
   dataset: "currentData",

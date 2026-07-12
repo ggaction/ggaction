@@ -4,7 +4,7 @@ import test from "node:test";
 import {
   getPointGraphicType,
   validatePointShape
-} from "../../src/core/markSchema.js";
+} from "../../src/grammar/schemas/mark.js";
 
 test("maps the supported point shape to its graphic primitive", () => {
   assert.equal(validatePointShape("circle"), "circle");

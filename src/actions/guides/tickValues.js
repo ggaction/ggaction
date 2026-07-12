@@ -1,6 +1,6 @@
-import { resolveHistogramBins } from "../../core/histogram.js";
-import { readQuantitativeField } from "../../core/scale.js";
-import { niceTicks, timeTicks } from "../../core/ticks.js";
+import { resolveHistogramBins } from "../../grammar/histogram.js";
+import { readQuantitativeField } from "../../grammar/scales.js";
+import { niceTicks, timeTicks } from "../../grammar/ticks.js";
 
 export const DEFAULT_TICK_COUNT = 5;
 

@@ -2,7 +2,7 @@ import { action } from "../../core/action.js";
 import {
   isDrawableGraphicType,
   validateGraphicType
-} from "../../core/graphicSchema.js";
+} from "../../grammar/schemas/graphic.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { freezeOwned } from "../../core/immutable.js";
 

@@ -1,5 +1,5 @@
 import { action } from "../../core/action.js";
-import { getPositionCoordinateDefaults } from "../../core/coordinate.js";
+import { getPositionCoordinateDefaults } from "../../grammar/coordinates.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
@@ -11,7 +11,7 @@ import {
   validateScaleDomain,
   validateScaleRange,
   validateTimeScaleType
-} from "../../core/scale.js";
+} from "../../grammar/scales.js";
 import { resolveTarget, validateOptions } from "./shared.js";
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([

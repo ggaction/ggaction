@@ -1,6 +1,6 @@
 import { action } from "../../core/action.js";
-import { deriveLineSeries } from "../../core/lineSeries.js";
-import { mapLinearValues, mapOrdinalValues } from "../../core/scale.js";
+import { deriveLineSeries } from "../../grammar/lineSeries.js";
+import { mapLinearValues, mapOrdinalValues } from "../../grammar/scales.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
   assertMarkAvailable,

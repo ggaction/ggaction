@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { formatTimeTick, timeTicks } from "../../src/core/ticks.js";
+import { formatTimeTick, timeTicks } from "../../src/grammar/ticks.js";
 
 test("creates UTC calendar-aligned year ticks near the requested density", () => {
   const domain = [Date.UTC(1970, 0, 1), Date.UTC(1982, 0, 1)];

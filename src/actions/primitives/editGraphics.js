@@ -2,7 +2,7 @@ import { action } from "../../core/action.js";
 import {
   isStructuralGraphicType,
   validateGraphicProperty
-} from "../../core/graphicSchema.js";
+} from "../../grammar/schemas/graphic.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
 
 function findGraphicTarget(graphicSpec, target) {

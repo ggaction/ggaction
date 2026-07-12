@@ -1,4 +1,4 @@
-import { USER_ID_SOURCE } from "./identifiers.js";
+import { USER_ID_SOURCE } from "../../core/identifiers.js";
 
 const ENTITY_PATHS = Object.freeze({
   dataset: {

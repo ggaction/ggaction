@@ -1,4 +1,4 @@
-import { cloneAndFreeze, isPlainObject } from "./immutable.js";
+import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 
 const MARGIN_KEYS = Object.freeze(["top", "right", "bottom", "left"]);
 

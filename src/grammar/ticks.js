@@ -1,4 +1,4 @@
-import { cloneAndFreeze } from "./immutable.js";
+import { cloneAndFreeze } from "../core/immutable.js";
 
 const LINEAR_FACTORS = Object.freeze([1, 2, 3, 5]);
 

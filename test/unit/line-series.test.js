@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { deriveLineSeries } from "../../src/core/lineSeries.js";
+import { deriveLineSeries } from "../../src/grammar/lineSeries.js";
 
 const rows = [
   { year: "2021-01-01", value: 10, origin: "A" },

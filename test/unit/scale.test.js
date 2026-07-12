@@ -22,7 +22,7 @@ import {
   validateScaleRange,
   validateScaleType,
   validateStrokeDashRange
-} from "../../src/core/scale.js";
+} from "../../src/grammar/scales.js";
 
 test("reads finite quantitative field values", () => {
   const values = readQuantitativeField([{ value: 1 }, { value: 4 }], "value");

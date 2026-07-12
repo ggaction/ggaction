@@ -1,5 +1,5 @@
 import { action } from "../../core/action.js";
-import { validateCoordinateType } from "../../core/coordinate.js";
+import { validateCoordinateType } from "../../grammar/coordinates.js";
 import { validateUserId } from "../../core/identifiers.js";
 
 const COORDINATE_OPTIONS = Object.freeze(["id", "type", "layers"]);
