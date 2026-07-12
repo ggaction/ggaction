@@ -5,6 +5,7 @@ import {
   isPlainObject
 } from "../core/immutable.js";
 import { parseSemanticPath } from "../core/semanticPath.js";
+import { validateCoordinateType } from "../core/coordinate.js";
 import {
   validateSemanticScaleDomain,
   validateSemanticScaleRange,
@@ -102,6 +103,10 @@ function validateSemanticValue(parsed, value) {
     } else if (property === "range") {
       validateSemanticScaleRange(value);
     }
+  }
+
+  if (parsed.kind === "coordinate" && parsed.path[0] === "type") {
+    validateCoordinateType(value);
   }
 }
 

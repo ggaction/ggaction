@@ -14,8 +14,8 @@ Encoding channels와 coordinate를 해석해 필요한 complete-axis action을
 
 ## 진행 상태
 
-- [ ] Coordinate type/channel schema
-- [ ] `createCoordinate`
+- [x] Coordinate type/channel schema
+- [x] `createCoordinate`
 - [ ] Coordinate ID/type inference
 - [ ] Axis channel과 scale inference
 - [ ] Selective x/y dispatch와 false opt-out
