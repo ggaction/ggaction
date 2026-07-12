@@ -47,6 +47,8 @@
 ## Actions and Trace
 
 - Define every authoring action through the shared `action()` wrapper.
+- Provide an atomic domain action when multiple semantic operations are interdependent and separately authoring them would leave an incomplete or misleading chart state.
+- Implement an atomic action by orchestrating the existing wrapped child actions that own the relevant validation, inference, and materialization; do not duplicate their behavior inside the aggregate.
 - Component actions invoked by higher-level actions must also be wrapped actions when they represent meaningful authoring steps.
 - Aggregate actions must orchestrate wrapped child actions instead of duplicating their behavior or hiding meaningful authoring steps inside untraced helpers.
 - Keep aggregate actions thin: they may decide child applicability and call order, but inference and validation owned by a child action must remain in that child rather than being reimplemented by the aggregate.
@@ -67,6 +69,8 @@
 - When a representative program is intended to demonstrate primitive usage, write one explicit method chain and do not hide primitive calls behind batching helpers or other syntactic sugar.
 - Keep the user program focused on realistic library usage. Assertions, mocks, and test-only inspection belong in the importing test file rather than in the user program.
 - For every high-level user-facing action, test its shortest valid call after the required prerequisites are present so the default API does not become progressively more verbose.
+- Complete each chart phase with one public vertical slice whose browser example, standalone user program, acceptance test, PNG regression, and tutorial use the same chart-authoring API flow.
+- Verify browser Canvas and PNG output separately. Browser checks must cover logical Canvas dimensions and console/page errors; PNG checks must cover `pixelRatio` and physical output dimensions.
 
 ## Semantic and Graphical Boundary
 
@@ -82,6 +86,9 @@
 - When a semantic change affects existing concrete output, the responsible domain action must explicitly rematerialize every affected graphical consumer.
 - Positional encoding actions own coordinate inference and layer attachment. Guide actions read stored coordinates and must not create or repair them.
 - Once scale consumers exist, canvas width, height, or margin edits must explicitly invoke wrapped rematerialization actions for every affected scale, mark, and guide; never leave stale concrete coordinates or rely on automatic compilation.
+- Treat concrete rendering order as explicit graphical state rather than an accidental consequence of action call order. Use graphic placement to preserve relationships such as grids behind marks and axes or legends above them.
+- Design shared guides around their semantic role, such as a categorical legend, and express mark-specific symbols through graphical recipes instead of forking the complete guide implementation by mark type.
+- Generic aggregate actions must select only semantic combinations that their child actions currently support. Determine applicability from persisted mark, encoding, scale, and coordinate state rather than from resource presence alone.
 
 ## Documentation and Implementation Consistency
 
