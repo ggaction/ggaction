@@ -20,6 +20,9 @@ const program = chart()
   .createData({
     id: "cars",
     values: cars
+  })
+  .createPointMark({
+    id: "points"
   });
 ```
 
@@ -51,5 +54,6 @@ npm run test:render
 - [Core concepts](./docs/core-concepts.md)
 - [Canvas actions](./docs/canvas-actions.md)
 - [Data actions](./docs/data-actions.md)
+- [Mark actions](./docs/mark-actions.md)
 - [Action authoring](./docs/action-authoring.md)
 - [PNG rendering](./docs/png-rendering.md)

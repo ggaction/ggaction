@@ -19,15 +19,15 @@ const program = chart()
 ## 진행 상태
 
 - [x] Point shape validation
-- [ ] Dataset과 `currentData` 조회
-- [ ] Mark ID와 duplicate validation
-- [ ] `createPointMark`
-- [ ] Semantic point와 graphical circle 생성
-- [ ] Collection length와 빈 dataset 처리
-- [ ] Nested trace와 context test
+- [x] Dataset과 `currentData` 조회
+- [x] Mark ID와 duplicate validation
+- [x] `createPointMark`
+- [x] Semantic point와 graphical circle 생성
+- [x] Collection length와 빈 dataset 처리
+- [x] Nested trace와 context test
 - [ ] `carsScatterplotActions`의 mark primitive 교체
 - [ ] Acceptance 및 PNG render test
-- [ ] 영어 사용자 문서
+- [x] 영어 사용자 문서
 - [ ] 브라우저와 고해상도 PNG 확인
 
 ## API
