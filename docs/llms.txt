@@ -43,11 +43,13 @@ and language models.
 - Nested wrapped actions form the hierarchical trace.
 - Positional encodings create and attach coordinates; guide actions only read them.
 - encodeRadius is fixed circle appearance, not a Polar radial encoding.
+- Temporal line encodeX resolves a time scale but does not yet materialize path points.
 
 ## Current scope
 
 The implemented end-to-end Chart API is a Cartesian point scatterplot with
 quantitative x/y, nominal color, fixed radius, complete axes, browser Canvas,
-and PNG output. `createLineMark` also creates semantic line identity and an
-empty path collection; later line-chart domain actions are not implemented yet.
-Do not assume roadmap features are implemented.
+and PNG output. `createLineMark` creates semantic line identity and an empty
+path collection. Temporal line `encodeX` records its encoding and resolves a
+time scale; y aggregation, series grouping, and automatic path materialization
+are not implemented yet. Do not assume roadmap features are implemented.

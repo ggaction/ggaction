@@ -16,13 +16,11 @@ export function createCarsLineChartActions(cars) {
     .createCanvas({ width, height, margin, background: "white" })
     .createData({ id: "cars", values: values.validCars })
     .createLineMark({ id: "trends" })
-    .editSemantic({ property: "layer[trends].coordinate", value: "main" })
-    .editSemantic({ property: "layer[trends].encoding.x.field", value: "Year" })
-    .editSemantic({
-      property: "layer[trends].encoding.x.fieldType",
-      value: "temporal"
+    .encodeX({
+      field: "Year",
+      fieldType: "temporal",
+      scale: { nice: true }
     })
-    .editSemantic({ property: "layer[trends].encoding.x.scale", value: "x" })
     .editSemantic({
       property: "layer[trends].encoding.y.field",
       value: "Acceleration"
@@ -60,10 +58,6 @@ export function createCarsLineChartActions(cars) {
       property: "layer[trends].encoding.strokeDash.scale",
       value: "strokeDash"
     })
-    .editSemantic({ property: "scale[x].type", value: "time" })
-    .editSemantic({ property: "scale[x].domain", value: "auto" })
-    .editSemantic({ property: "scale[x].range", value: "auto" })
-    .editSemantic({ property: "scale[x].nice", value: true })
     .editSemantic({ property: "scale[y].type", value: "linear" })
     .editSemantic({ property: "scale[y].domain", value: "auto" })
     .editSemantic({ property: "scale[y].range", value: "auto" })
@@ -78,7 +72,6 @@ export function createCarsLineChartActions(cars) {
     .editSemantic({ property: "scale[strokeDash].type", value: "ordinal" })
     .editSemantic({ property: "scale[strokeDash].domain", value: "auto" })
     .editSemantic({ property: "scale[strokeDash].range", value: "auto" })
-    .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
     .editSemantic({ property: "guide.axis.x.title", value: "Year" })

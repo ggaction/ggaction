@@ -36,7 +36,7 @@ export function validatePositionChannel(channel) {
 }
 
 export function validateFieldType(fieldType) {
-  if (fieldType !== "quantitative") {
+  if (fieldType !== "quantitative" && fieldType !== "temporal") {
     throw new Error(`Unsupported field type "${fieldType}".`);
   }
 
@@ -52,7 +52,7 @@ export function validateNominalFieldType(fieldType) {
 }
 
 export function validateScaleType(type) {
-  if (type !== "linear" && type !== "ordinal") {
+  if (type !== "linear" && type !== "ordinal" && type !== "time") {
     throw new Error(`Unsupported scale type "${type}".`);
   }
 
@@ -78,6 +78,14 @@ export function validateSemanticFieldType(fieldType) {
 export function validateLinearScaleType(type) {
   if (type !== "linear") {
     throw new Error(`Unsupported position scale type "${type}".`);
+  }
+
+  return type;
+}
+
+export function validateTimeScaleType(type) {
+  if (type !== "time") {
+    throw new Error(`Unsupported temporal scale type "${type}".`);
   }
 
   return type;
@@ -199,6 +207,36 @@ export function readQuantitativeField(rows, field) {
   );
 }
 
+function normalizeTemporalValue(value, field, index) {
+  const timestamp = typeof value === "string" ? Date.parse(value) : value;
+
+  if (!Number.isFinite(timestamp)) {
+    throw new TypeError(
+      `Field "${field}" must contain a temporal string or finite timestamp at row ${index}.`
+    );
+  }
+
+  return timestamp;
+}
+
+export function readTemporalField(rows, field) {
+  if (typeof field !== "string" || field.length === 0) {
+    throw new TypeError("Encoding field must be a non-empty string.");
+  }
+
+  return cloneAndFreeze(
+    rows.map((row, index) => {
+      if (!Object.hasOwn(row, field)) {
+        throw new TypeError(
+          `Field "${field}" must contain a temporal string or finite timestamp at row ${index}.`
+        );
+      }
+
+      return normalizeTemporalValue(row[field], field, index);
+    })
+  );
+}
+
 export function readNominalField(rows, field) {
   if (typeof field !== "string" || field.length === 0) {
     throw new TypeError("Encoding field must be a non-empty string.");
@@ -277,6 +315,124 @@ export function resolveScaleDomain(domain, values) {
   }
 
   return cloneAndFreeze([minimum, maximum]);
+}
+
+function niceLinearStep(span, count = 5) {
+  const rough = span / Math.max(1, count);
+  const power = 10 ** Math.floor(Math.log10(rough));
+  const fraction = rough / power;
+  const factor = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10;
+  return factor * power;
+}
+
+function niceLinearDomain(domain) {
+  const [minimum, maximum] = domain;
+
+  if (minimum === maximum) {
+    return domain;
+  }
+
+  const step = niceLinearStep(maximum - minimum);
+  return cloneAndFreeze([
+    Math.floor(minimum / step) * step,
+    Math.ceil(maximum / step) * step
+  ]);
+}
+
+const TIME_UNITS = [
+  { span: 2 * 365 * 24 * 60 * 60 * 1000, unit: "year" },
+  { span: 60 * 24 * 60 * 60 * 1000, unit: "month" },
+  { span: 2 * 24 * 60 * 60 * 1000, unit: "day" },
+  { span: 2 * 60 * 60 * 1000, unit: "hour" },
+  { span: 2 * 60 * 1000, unit: "minute" },
+  { span: 0, unit: "second" }
+];
+
+function floorUtc(timestamp, unit) {
+  const date = new Date(timestamp);
+
+  if (unit === "year") return Date.UTC(date.getUTCFullYear(), 0, 1);
+  if (unit === "month") return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1);
+  if (unit === "day") {
+    return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  }
+  if (unit === "hour") {
+    return Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours()
+    );
+  }
+  if (unit === "minute") {
+    return Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes()
+    );
+  }
+
+  return Math.floor(timestamp / 1000) * 1000;
+}
+
+function offsetUtc(timestamp, unit) {
+  const date = new Date(timestamp);
+
+  if (unit === "year") return Date.UTC(date.getUTCFullYear() + 1, 0, 1);
+  if (unit === "month") {
+    return Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 1);
+  }
+  if (unit === "day") return timestamp + 24 * 60 * 60 * 1000;
+  if (unit === "hour") return timestamp + 60 * 60 * 1000;
+  if (unit === "minute") return timestamp + 60 * 1000;
+  return timestamp + 1000;
+}
+
+function niceTimeDomain(domain) {
+  const [minimum, maximum] = domain;
+
+  if (minimum === maximum) {
+    return domain;
+  }
+
+  const unit = TIME_UNITS.find(item => maximum - minimum >= item.span).unit;
+  const start = floorUtc(minimum, unit);
+  const endFloor = floorUtc(maximum, unit);
+  const end = endFloor === maximum ? maximum : offsetUtc(endFloor, unit);
+
+  return cloneAndFreeze([start, end]);
+}
+
+export function resolveContinuousDomain({
+  domain,
+  values,
+  type,
+  nice,
+  zero
+}) {
+  const explicit = domain !== "auto";
+  let resolved = resolveScaleDomain(domain, values);
+
+  if (explicit) {
+    return resolved;
+  }
+
+  if (zero === true) {
+    resolved = cloneAndFreeze([
+      Math.min(0, resolved[0]),
+      Math.max(0, resolved[1])
+    ]);
+  }
+
+  if (nice === true) {
+    resolved = type === "time"
+      ? niceTimeDomain(resolved)
+      : niceLinearDomain(resolved);
+  }
+
+  return resolved;
 }
 
 export function resolveScaleRange(range, channel, bounds) {

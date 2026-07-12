@@ -6,6 +6,7 @@ import {
   mapOrdinalValues,
   readQuantitativeField,
   readNominalField,
+  readTemporalField,
   resolveColorRange,
   resolveOrdinalDomain,
   resolveScaleDomain,
@@ -28,6 +29,20 @@ test("reads finite quantitative field values", () => {
   assert.throws(
     () => readQuantitativeField([{ value: 1 }, {}], "value"),
     /finite number at row 1/
+  );
+});
+
+test("normalizes temporal field values to timestamps", () => {
+  const values = readTemporalField(
+    [{ value: "1970-01-01" }, { value: Date.UTC(1980, 0, 1) }],
+    "value"
+  );
+
+  assert.deepEqual(values, [Date.UTC(1970, 0, 1), Date.UTC(1980, 0, 1)]);
+  assert.equal(Object.isFrozen(values), true);
+  assert.throws(
+    () => readTemporalField([{ value: "not-a-date" }], "value"),
+    /temporal string or finite timestamp/
   );
 });
 
@@ -54,10 +69,12 @@ test("maps linear values and centers a constant domain", () => {
   );
 });
 
-test("validates the STEP6 scale vocabulary and bounds", () => {
+test("validates the continuous scale vocabulary and bounds", () => {
   assert.equal(validatePositionChannel("x"), "x");
   assert.equal(validateFieldType("quantitative"), "quantitative");
+  assert.equal(validateFieldType("temporal"), "temporal");
   assert.equal(validateScaleType("linear"), "linear");
+  assert.equal(validateScaleType("time"), "time");
   assert.equal(validateScaleDomain("auto"), "auto");
   assert.equal(validateScaleRange("auto"), "auto");
 

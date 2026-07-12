@@ -14,15 +14,15 @@ Line mark의 raw x encoding과 time scale block을 `encodeX` Chart API로 교체
 
 ## 진행 상태
 
-- [ ] Point/line mark 공용 position target 해석
-- [ ] Temporal field 검증과 timestamp 정규화
-- [ ] `temporal → time`, `quantitative → linear` scale 추론
-- [ ] `nice`/`zero` option validation과 time-domain resolution
-- [ ] Cartesian coordinate와 resolved x scale 저장
-- [ ] Incomplete line path의 graphical materialization 유예
-- [ ] 별도 actions program의 raw x block 교체
-- [ ] Unit, acceptance, PNG regression
-- [ ] 영어 Encoding/scale/action/LLM 문서 갱신
+- [x] Point/line mark 공용 position target 해석
+- [x] Temporal field 검증과 timestamp 정규화
+- [x] `temporal → time`, `quantitative → linear` scale 추론
+- [x] `nice`/`zero` option validation과 time-domain resolution
+- [x] Cartesian coordinate와 resolved x scale 저장
+- [x] Incomplete line path의 graphical materialization 유예
+- [x] 별도 actions program의 raw x block 교체
+- [x] Unit, acceptance, PNG regression
+- [x] 영어 Encoding/scale/action/LLM 문서 갱신
 
 ## Action 구조
 
@@ -84,6 +84,16 @@ STEP1 primitive program과 test는 변경하지 않는다.
 - Line path points 자동 materialization
 - Color와 strokeDash encoding
 - Time axis domain action
+
+## 검증 결과
+
+- Unit/acceptance test 163개 통과
+- PNG render regression 5개 통과
+- STEP1 primitive line program과 test 변경 없음
+- 기존 quantitative point x/y encoding 결과 유지
+- Actions program의 최종 semantic/graphic chart contract 유지
+- Temporal x scale은 UTC timestamp domain과 Canvas x range로 resolve
+- `createLineMark().encodeX()` 직후 path collection은 빈 상태 유지
 
 ## 완료 조건
 

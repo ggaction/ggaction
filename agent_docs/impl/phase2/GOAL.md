@@ -47,7 +47,7 @@ chart()
 ## 진행 상태
 
 - [ ] Line mark와 series별 concrete path graphics
-- [ ] Temporal x encoding과 scale
+- [x] Temporal x encoding과 scale
 - [ ] Quantitative mean aggregation
 - [ ] Series grouping과 시간순 정렬
 - [ ] Color와 strokeDash encoding

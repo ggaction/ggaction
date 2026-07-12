@@ -12,7 +12,7 @@ All actions accept one plain option object and return a new immutable
 
 ## Chart Authoring API
 
-These are the recommended actions for building a scatterplot.
+These are the recommended chart-authoring actions currently supported.
 
 | Action | Signature | Documentation |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ are available on `ChartProgram` instances used by extension actions.
 | Semantic primitive | `editSemantic({ property, value })` |
 | Graphic primitive | `createGraphics({ id, type, length? })` |
 | Graphic primitive | `editGraphics({ target, property, value })` |
-| Scale action | `createScale({ id, type?, domain?, range? })` |
+| Scale action | `createScale({ id, type?, domain?, range?, nice?, zero? })` |
 | Scale action | `rematerializeScale({ id })` |
 
 See [Action authoring](../extension/action-authoring.md) and

@@ -15,7 +15,7 @@ This page describes implemented behavior only.
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects |
 | Marks | Semantic point/circle mark and semantic line/empty-path mark |
-| Position | Quantitative x/y fields with linear scales |
+| Position | Quantitative point x/y with linear scales; temporal line x with a resolved time scale |
 | Color | Nominal field with ordinal scale and `tableau10` palette |
 | Constant appearance | Circle radius |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
@@ -23,6 +23,7 @@ This page describes implemented behavior only.
 | Rendering | Browser Canvas and Node PNG |
 | Graphics | Concrete canvas, circle, line, text, and point-array path nodes |
 
-Polar guide graphics, additional mark types, transforms, facets, legends, and
-program composition are not implemented in the current phase. They are not
-part of the current API reference.
+Line y aggregation, automatic line-series path materialization, Polar guide
+graphics, additional mark types, transforms, facets, legends, and program
+composition are not implemented in the current phase. They are not part of the
+current API reference.

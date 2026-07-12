@@ -7,7 +7,7 @@ title: Encoding API
 
 # Encoding API
 
-## `encodeX(options)` and `encodeY(options)`
+## Point `encodeX(options)` and `encodeY(options)`
 
 Map a quantitative field to concrete point positions.
 
@@ -27,6 +27,8 @@ Scale options are:
 | `type` | `"linear"` | `"linear"` |
 | `domain` | `"auto"` or two finite numbers | `"auto"` |
 | `range` | `"auto"` or two finite numbers | `"auto"` |
+| `nice` | boolean | omitted |
+| `zero` | boolean | omitted |
 
 ```javascript
 program.encodeX({
@@ -37,11 +39,47 @@ program.encodeX({
 
 An automatic domain combines every field consuming the same scale. An automatic
 range uses current Canvas bounds; y runs bottom-to-top. Every encoded value must
-currently be finite.
+currently be finite. For an automatic linear domain, `zero: true` expands the
+domain to include zero and `nice: true` then expands it to rounded boundaries.
+An explicit domain overrides both policies.
 
 x/y encodings ensure a Cartesian coordinate exists and attach it to the layer.
 An explicitly selected coordinate is created if missing. A conflicting layer
 coordinate or non-Cartesian coordinate produces an error.
+
+## Temporal line `encodeX(options)`
+
+`encodeX` also maps a temporal field to the horizontal position scale of a
+line mark.
+
+```javascript
+program.encodeX({
+  field: "Year",
+  fieldType: "temporal",
+  scale: { nice: true }
+});
+```
+
+| Option | Type | Default |
+| --- | --- | --- |
+| `field` | non-empty string | required |
+| `target` | line mark ID | current mark |
+| `fieldType` | `"temporal"` | required for the current line API |
+| `coordinate` | coordinate ID | layer coordinate, then `"main"` |
+| `scale.id` | scale ID | `"x"` |
+| `scale.type` | `"time"` | `"time"` |
+| `scale.domain` | `"auto"` or two finite timestamps | `"auto"` |
+| `scale.range` | `"auto"` or two finite numbers | `"auto"` |
+| `scale.nice` | boolean | omitted |
+
+Temporal fields contain parseable date strings or finite timestamps. Values
+are normalized to timestamps for scale resolution without changing the source
+dataset. An automatic `nice` domain expands outward to UTC calendar boundaries;
+an explicit domain remains unchanged. Time scales reject `zero`.
+
+At this stage x encoding resolves and stores the time scale but leaves the line
+path empty. Later line actions materialize paths after y and series grouping are
+known.
 
 ## `encodeColor(options)`
 

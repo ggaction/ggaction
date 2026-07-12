@@ -150,6 +150,7 @@ test("authors and renders the cars line chart with the line mark action", () => 
     "createCanvas",
     "createData",
     "createLineMark",
+    "encodeX",
     "editSemantic",
     "editGraphics",
     "createGraphics"

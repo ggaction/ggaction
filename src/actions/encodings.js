@@ -5,6 +5,7 @@ import { isPlainObject } from "../core/immutable.js";
 import {
   readNominalField,
   readQuantitativeField,
+  readTemporalField,
   validateColorRange,
   validateFieldType,
   validateLinearScaleType,
@@ -13,7 +14,8 @@ import {
   validateOrdinalScaleType,
   validatePositionChannel,
   validateScaleDomain,
-  validateScaleRange
+  validateScaleRange,
+  validateTimeScaleType
 } from "../core/scale.js";
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([
@@ -29,7 +31,14 @@ const COLOR_ENCODING_OPTIONS = Object.freeze([
   "fieldType",
   "scale"
 ]);
-const SCALE_OPTIONS = Object.freeze(["id", "type", "domain", "range"]);
+const SCALE_OPTIONS = Object.freeze([
+  "id",
+  "type",
+  "domain",
+  "range",
+  "nice",
+  "zero"
+]);
 const RADIUS_OPTIONS = Object.freeze(["value", "target"]);
 
 function validateOptions(args, supported, operation) {
@@ -40,22 +49,29 @@ function validateOptions(args, supported, operation) {
   }
 }
 
-function resolveTarget(program, target) {
+function resolveTarget(
+  program,
+  target,
+  supportedTypes = ["point", "line"],
+  label = "position mark"
+) {
   const id = validateUserId(target ?? program.context.currentMark, "Mark id");
   const layer = program.semanticSpec.layers.find(item => item.id === id);
 
-  if (layer === undefined || layer.mark?.type !== "point") {
-    throw new Error(`Unknown point mark "${id}".`);
+  if (layer === undefined || !supportedTypes.includes(layer.mark?.type)) {
+    throw new Error(`Unknown ${label} "${id}".`);
   }
 
   const dataset = program.semanticSpec.datasets.find(item => item.id === layer.data);
 
   if (dataset === undefined) {
-    throw new Error(`Point mark "${id}" requires an existing dataset.`);
+    throw new Error(`Mark "${id}" requires an existing dataset.`);
   }
 
-  if (program.graphicSpec.objects[id]?.type !== "circle") {
-    throw new Error(`Point mark "${id}" requires circle graphics.`);
+  const expectedGraphic = layer.mark.type === "point" ? "circle" : "path";
+
+  if (program.graphicSpec.objects[id]?.type !== expectedGraphic) {
+    throw new Error(`Mark "${id}" requires ${expectedGraphic} graphics.`);
   }
 
   return { id, dataset, layer };
@@ -87,7 +103,7 @@ function resolvePositionCoordinate(program, channel, layer, requestedId) {
   return { id, type: defaults.type };
 }
 
-function resolveScaleDefinition(program, channel, options) {
+function resolveScaleDefinition(program, channel, fieldType, options) {
   if (!isPlainObject(options)) {
     throw new TypeError("Encoding scale must be a plain object.");
   }
@@ -95,13 +111,38 @@ function resolveScaleDefinition(program, channel, options) {
   validateOptions(options, SCALE_OPTIONS, "scale");
   const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = program.semanticSpec.scales.find(item => item.id === id);
+  const expectedType = fieldType === "temporal" ? "time" : "linear";
+  const type = options.type ?? existing?.type ?? expectedType;
 
-  return {
+  if (fieldType === "temporal") validateTimeScaleType(type);
+  else validateLinearScaleType(type);
+
+  if (options.nice !== undefined && typeof options.nice !== "boolean") {
+    throw new TypeError("Scale nice must be a boolean.");
+  }
+
+  if (options.zero !== undefined && typeof options.zero !== "boolean") {
+    throw new TypeError("Scale zero must be a boolean.");
+  }
+
+  if (fieldType === "temporal" && options.zero !== undefined) {
+    throw new Error('Scale type "time" does not support zero.');
+  }
+
+  const scale = {
     id,
-    type: validateLinearScaleType(options.type ?? existing?.type ?? "linear"),
+    type,
     domain: validateScaleDomain(options.domain ?? existing?.domain ?? "auto"),
     range: validateScaleRange(options.range ?? existing?.range ?? "auto")
   };
+
+  const nice = options.nice ?? existing?.nice;
+  const zero = options.zero ?? existing?.zero;
+
+  if (nice !== undefined) scale.nice = nice;
+  if (zero !== undefined) scale.zero = zero;
+
+  return scale;
 }
 
 function resolveColorScaleDefinition(program, options) {
@@ -130,8 +171,27 @@ function encodePosition(program, channel, args, operation) {
   validatePositionChannel(channel);
   const fieldType = validateFieldType(args.fieldType ?? "quantitative");
   const { id: target, dataset, layer } = resolveTarget(program, args.target);
-  readQuantitativeField(dataset.values, args.field);
-  const scale = resolveScaleDefinition(program, channel, args.scale ?? {});
+
+  if (layer.mark.type === "line" && (channel !== "x" || fieldType !== "temporal")) {
+    throw new Error("Line position encoding currently supports temporal x only.");
+  }
+
+  if (layer.mark.type === "point" && fieldType !== "quantitative") {
+    throw new Error("Point position encoding currently requires quantitative fields.");
+  }
+
+  if (fieldType === "temporal") {
+    readTemporalField(dataset.values, args.field);
+  } else {
+    readQuantitativeField(dataset.values, args.field);
+  }
+
+  const scale = resolveScaleDefinition(
+    program,
+    channel,
+    fieldType,
+    args.scale ?? {}
+  );
   const coordinate = resolvePositionCoordinate(
     program,
     channel,
@@ -189,7 +249,12 @@ const encodeColor = action(
   function (args = {}) {
     validateOptions(args, COLOR_ENCODING_OPTIONS, "encodeColor");
     const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
-    const { id: target, dataset } = resolveTarget(this, args.target);
+    const { id: target, dataset } = resolveTarget(
+      this,
+      args.target,
+      ["point"],
+      "point mark"
+    );
     readNominalField(dataset.values, args.field);
     const scale = resolveColorScaleDefinition(this, args.scale ?? {});
 
@@ -218,7 +283,12 @@ const encodeRadius = action(
   },
   function (args = {}) {
     validateOptions(args, RADIUS_OPTIONS, "encodeRadius");
-    const { id: target } = resolveTarget(this, args.target);
+    const { id: target } = resolveTarget(
+      this,
+      args.target,
+      ["point"],
+      "point mark"
+    );
 
     if (!Number.isFinite(args.value) || args.value < 0) {
       throw new RangeError(

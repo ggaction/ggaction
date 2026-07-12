@@ -5,9 +5,10 @@ import {
   mapOrdinalValues,
   readNominalField,
   readQuantitativeField,
+  readTemporalField,
   resolveColorRange,
+  resolveContinuousDomain,
   resolveOrdinalDomain,
-  resolveScaleDomain,
   resolveScaleRange,
   validateScaleDomain,
   validateScaleRange,
@@ -15,10 +16,18 @@ import {
   validateOrdinalDomain,
   validateColorRange,
   validateLinearScaleType,
+  validateTimeScaleType,
   validateOrdinalScaleType
 } from "../core/scale.js";
 
-const CREATE_SCALE_OPTIONS = Object.freeze(["id", "type", "domain", "range"]);
+const CREATE_SCALE_OPTIONS = Object.freeze([
+  "id",
+  "type",
+  "domain",
+  "range",
+  "nice",
+  "zero"
+]);
 const REMATERIALIZE_SCALE_OPTIONS = Object.freeze(["id"]);
 
 function validateOptions(args, supported, operation) {
@@ -45,7 +54,9 @@ function assertEquivalentScale(existing, expected) {
   if (
     existing.type !== expected.type ||
     !sameScaleSetting(existing.domain, expected.domain) ||
-    !sameScaleSetting(existing.range, expected.range)
+    !sameScaleSetting(existing.range, expected.range) ||
+    existing.nice !== expected.nice ||
+    existing.zero !== expected.zero
   ) {
     throw new Error(`Scale "${existing.id}" already exists with a different definition.`);
   }
@@ -98,6 +109,10 @@ function resolveConsumerValues(program, consumer) {
     return readNominalField(dataset.values, consumer.encoding.field);
   }
 
+  if (consumer.encoding.fieldType === "temporal") {
+    return readTemporalField(dataset.values, consumer.encoding.field);
+  }
+
   if (consumer.encoding.fieldType !== "quantitative") {
     throw new Error(
       `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
@@ -119,14 +134,34 @@ const createScale = action(
     const definition = {
       type,
       domain:
-        type === "linear"
+        type !== "ordinal"
           ? validateScaleDomain(args.domain ?? "auto")
           : validateOrdinalDomain(args.domain ?? "auto"),
       range:
-        type === "linear"
+        type !== "ordinal"
           ? validateScaleRange(args.range ?? "auto")
           : validateColorRange(args.range ?? "auto")
     };
+
+    if (args.nice !== undefined) {
+      if (typeof args.nice !== "boolean") {
+        throw new TypeError("Scale nice must be a boolean.");
+      }
+      if (type === "ordinal") {
+        throw new Error('Scale type "ordinal" does not support nice.');
+      }
+      definition.nice = args.nice;
+    }
+
+    if (args.zero !== undefined) {
+      if (typeof args.zero !== "boolean") {
+        throw new TypeError("Scale zero must be a boolean.");
+      }
+      if (type !== "linear") {
+        throw new Error(`Scale type "${type}" does not support zero.`);
+      }
+      definition.zero = args.zero;
+    }
     const existing = this.semanticSpec.scales.find(item => item.id === id);
 
     if (existing !== undefined) {
@@ -134,10 +169,26 @@ const createScale = action(
       return this;
     }
 
-    return this
+    let next = this
       .editSemantic({ property: `scale[${id}].type`, value: definition.type })
       .editSemantic({ property: `scale[${id}].domain`, value: definition.domain })
       .editSemantic({ property: `scale[${id}].range`, value: definition.range });
+
+    if (definition.nice !== undefined) {
+      next = next.editSemantic({
+        property: `scale[${id}].nice`,
+        value: definition.nice
+      });
+    }
+
+    if (definition.zero !== undefined) {
+      next = next.editSemantic({
+        property: `scale[${id}].zero`,
+        value: definition.zero
+      });
+    }
+
+    return next;
   }
 );
 
@@ -175,7 +226,13 @@ const rematerializeScale = action(
     const isColor = channel === "color";
     const domain = isColor
       ? resolveOrdinalDomain(scale.domain, allValues)
-      : resolveScaleDomain(scale.domain, allValues);
+      : resolveContinuousDomain({
+          domain: scale.domain,
+          values: allValues,
+          type: scale.type,
+          nice: scale.nice,
+          zero: scale.zero
+        });
     const range = isColor
       ? resolveColorRange(scale.range)
       : resolveScaleRange(
@@ -186,12 +243,18 @@ const rematerializeScale = action(
     let next = this._withResolvedScale(id, {
       type: isColor
         ? validateOrdinalScaleType(scale.type)
-        : validateLinearScaleType(scale.type),
+        : scale.type === "time"
+          ? validateTimeScaleType(scale.type)
+          : validateLinearScaleType(scale.type),
       domain,
       range
     });
 
     for (const { consumer, values } of valuesByConsumer) {
+      if (consumer.layer.mark?.type === "line") {
+        continue;
+      }
+
       next = next.editGraphics({
         target: consumer.layer.id,
         property: isColor ? "fill" : channel,

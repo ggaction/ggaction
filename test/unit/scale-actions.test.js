@@ -102,6 +102,23 @@ test("combines every consumer of a shared scale", () => {
   );
 });
 
+test("applies zero before nice only to an automatic linear domain", () => {
+  const automatic = createEncodedMark([{ value: 3.7 }, { value: 18.2 }])
+    .createScale({ id: "x", zero: true, nice: true })
+    .rematerializeScale({ id: "x" });
+  const explicit = createEncodedMark([{ value: 3.7 }, { value: 18.2 }])
+    .createScale({
+      id: "x",
+      domain: [4, 18],
+      zero: true,
+      nice: true
+    })
+    .rematerializeScale({ id: "x" });
+
+  assert.deepEqual(automatic.resolvedScales.x.domain, [0, 20]);
+  assert.deepEqual(explicit.resolvedScales.x.domain, [4, 18]);
+});
+
 test("validates scale actions and materialization requirements", () => {
   assert.throws(() => chart().createScale({ id: "x", type: "log" }), /Unsupported/);
   assert.throws(() => chart().createScale({ id: "x", extra: true }), /Unknown/);
@@ -109,5 +126,17 @@ test("validates scale actions and materialization requirements", () => {
   assert.throws(
     () => chart().createScale({ id: "x" }).rematerializeScale({ id: "x" }),
     /no supported consumers/
+  );
+  assert.throws(
+    () => chart().createScale({ id: "x", type: "time", zero: false }),
+    /does not support zero/
+  );
+  assert.throws(
+    () => chart().createScale({ id: "x", type: "ordinal", nice: true }),
+    /does not support nice/
+  );
+  assert.throws(
+    () => chart().createScale({ id: "x", nice: 1 }),
+    /nice must be a boolean/
   );
 });
