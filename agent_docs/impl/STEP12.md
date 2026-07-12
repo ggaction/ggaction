@@ -7,12 +7,12 @@ X/Y axis title의 semantic text와 concrete text graphic을 domain action으로
 
 ## 진행 상태
 
-- [ ] Title text inference와 validation
-- [ ] `at` validation과 위치 계산
-- [ ] Font/style validation과 immutable config
-- [ ] `createXAxisTitle` / `editXAxisTitle`
-- [ ] `createYAxisTitle` / `editYAxisTitle`
-- [ ] Scale·Canvas rematerialization
+- [x] Title text inference와 validation
+- [x] `at` validation과 위치 계산
+- [x] Font/style validation과 immutable config
+- [x] `createXAxisTitle` / `editXAxisTitle`
+- [x] `createYAxisTitle` / `editYAxisTitle`
+- [x] Scale·Canvas rematerialization
 - [ ] 대표 프로그램 title primitive 제거
 - [ ] Unit, trace, immutability test
 - [ ] Acceptance 및 PNG render test
