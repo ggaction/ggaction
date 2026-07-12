@@ -9,7 +9,7 @@ title: ggaction Documentation
 retaining both semantic intent and fully materialized graphics.
 
 > **Current status:** Canvas, immutable data, semantic point marks, quantitative
-> x/y encodings, hierarchical action traces, and Canvas rendering for concrete
+> x/y/color encodings, constant radius, hierarchical action traces, and Canvas rendering for concrete
 > canvas, circle, line, and text graphics are implemented.
 
 ## Start here
@@ -20,7 +20,7 @@ retaining both semantic intent and fully materialized graphics.
 | [Canvas actions](./canvas-actions.md) | Create and edit chart canvases and their authoring bounds |
 | [Data actions](./data-actions.md) | Create immutable named datasets |
 | [Mark actions](./mark-actions.md) | Create semantic marks and their concrete graphical collections |
-| [Position encodings](./encoding-actions.md) | Map quantitative fields to concrete x and y positions |
+| [Visual encodings](./encoding-actions.md) | Map fields and constants to concrete point properties |
 | [Action authoring](./action-authoring.md) | Extend ggaction with custom, traceable actions |
 | [PNG rendering](./png-rendering.md) | Export completed programs to PNG files in Node.js |
 | [Repository README](https://github.com/hj-n/ggaction#readme) | Project status and development commands |

@@ -56,17 +56,39 @@ test("renders the cars scatterplot created with the canvas action", () => {
           field: "Miles_per_Gallon",
           fieldType: "quantitative",
           scale: "y"
+        },
+        color: {
+          field: "Origin",
+          fieldType: "nominal",
+          scale: "color"
         }
       }
     }
   ]);
   assert.deepEqual(program.semanticSpec.scales, [
     { id: "x", type: "linear", domain: "auto", range: "auto" },
-    { id: "y", type: "linear", domain: "auto", range: "auto" }
+    { id: "y", type: "linear", domain: "auto", range: "auto" },
+    { id: "color", type: "ordinal", domain: "auto", range: "auto" }
   ]);
   assert.deepEqual(program.resolvedScales, {
     x: { type: "linear", domain: [46, 230], range: [70, 610] },
-    y: { type: "linear", domain: [9, 46.6], range: [340, 30] }
+    y: { type: "linear", domain: [9, 46.6], range: [340, 30] },
+    color: {
+      type: "ordinal",
+      domain: ["USA", "Japan", "Europe"],
+      range: [
+        "#4c78a8",
+        "#f58518",
+        "#e45756",
+        "#72b7b2",
+        "#54a24b",
+        "#eeca3b",
+        "#b279a2",
+        "#ff9da6",
+        "#9d755d",
+        "#bab0ac"
+      ]
+    }
   });
   assert.equal(program.graphicSpec.objects.points.type, "circle");
   assert.equal(program.graphicSpec.objects.points.children.length, 392);
@@ -131,6 +153,12 @@ test("renders the cars scatterplot created with the canvas action", () => {
       "createScale",
       "rematerializeScale"
     ]
+  );
+  assert.equal(
+    program.trace.children.some(
+      node => node.op === "editGraphics" && node.args.target === "points"
+    ),
+    false
   );
   assert.deepEqual(program.actionStack, []);
 });

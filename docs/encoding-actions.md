@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Position Encodings
+title: Visual Encodings
 ---
 
 [Documentation home](./index.md) · [Mark actions](./mark-actions.md)
 
-# Position Encodings
+# Visual Encodings
 
 `encodeX` and `encodeY` map quantitative dataset fields to concrete point
 positions.
@@ -20,7 +20,9 @@ const program = chart()
   .createData({ id: "cars", values: cars })
   .createPointMark({ id: "points" })
   .encodeX({ field: "Horsepower" })
-  .encodeY({ field: "Miles_per_Gallon" });
+  .encodeY({ field: "Miles_per_Gallon" })
+  .encodeColor({ field: "Origin" })
+  .encodeRadius({ value: 3 });
 ```
 
 The current point mark is used by default. Select another mark with `target`:
@@ -76,3 +78,46 @@ auto-range position encodings. Explicit ranges remain unchanged.
 
 Every encoded field value must currently be a finite number. Filter or prepare
 missing values before creating the dataset.
+
+## Color
+
+`encodeColor` maps a nominal field to concrete point fill colors. It uses an
+ordinal scale named `color` and the `tableau10` palette by default.
+
+```javascript
+program.encodeColor({ field: "Origin" });
+```
+
+The automatic domain preserves category first-appearance order across every
+mark sharing the scale. Choose explicit categories and colors when needed:
+
+```javascript
+program.encodeColor({
+  field: "Origin",
+  scale: {
+    domain: ["USA", "Europe", "Japan"],
+    range: ["#4c78a8", "#f58518", "#54a24b"]
+  }
+});
+```
+
+A named palette is expressed as a range descriptor:
+
+```javascript
+scale: { range: { palette: "tableau10" } }
+```
+
+`"auto"` selects the same palette. Nominal values may be strings, finite
+numbers, or booleans. Missing, null, array, and object values are rejected.
+
+## Constant radius
+
+`encodeRadius` broadcasts a non-negative finite radius to the current point
+mark, or to an explicit `target`:
+
+```javascript
+program.encodeRadius({ value: 3 });
+```
+
+Constant radius is graphical appearance. It does not create a semantic
+encoding or scale.

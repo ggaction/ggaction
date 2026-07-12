@@ -29,13 +29,18 @@ const program = chart()
   })
   .encodeY({
     field: "Miles_per_Gallon"
+  })
+  .encodeColor({
+    field: "Origin"
+  })
+  .encodeRadius({
+    value: 3
   });
 ```
 
 See the runnable [cars scatterplot example](./examples/cars-scatterplot/),
-which renders 392 rows from `data/cars.json`. The example uses chart actions
-for Canvas, data, mark, and position authoring; constant point appearance still
-uses the extension primitives until dedicated appearance actions are added.
+which renders 392 rows from `data/cars.json` using chart actions for Canvas,
+data, point marks, position, color, and radius.
 
 Completed programs can also be exported directly in Node.js:
 

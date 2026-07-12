@@ -25,10 +25,10 @@ const program = chart()
 - [x] `encodeColor`
 - [x] `encodeRadius`
 - [x] Shared color scale rematerialization
-- [ ] `carsScatterplotActions`의 수동 fill/radius 제거
+- [x] `carsScatterplotActions`의 수동 fill/radius 제거
 - [ ] Unit, trace, immutability test
 - [ ] Acceptance 및 PNG render test
-- [ ] 영어 사용자 문서
+- [x] 영어 사용자 문서
 - [ ] 브라우저와 고해상도 PNG 확인
 
 ## API
