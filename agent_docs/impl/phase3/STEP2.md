@@ -14,16 +14,16 @@ Action은 semantic `bar` mark와 dataset reference를 저장하고, 아직 cardi
 
 ## 진행 상태
 
-- [ ] `createBarMark` API와 option validation
-- [ ] Dataset/currentData 추론
-- [ ] Semantic bar mark와 data reference
-- [ ] 빈 graphical rect collection
-- [ ] Duplicate/conflict validation
-- [ ] Nested trace와 immutability test
-- [ ] 별도 histogram progression program의 raw mark block 교체
-- [ ] Primitive/action progression acceptance와 PNG regression
-- [ ] 영어 Mark API, action reference, `llms.txt`
-- [ ] 전체 regression, conceptual commit, push
+- [x] `createBarMark` API와 option validation
+- [x] Dataset/currentData 추론
+- [x] Semantic bar mark와 data reference
+- [x] 빈 graphical rect collection
+- [x] Duplicate/conflict validation
+- [x] Nested trace와 immutability test
+- [x] 별도 histogram progression program의 raw mark block 교체
+- [x] Primitive/action progression acceptance와 PNG regression
+- [x] 영어 Mark API, action reference, `llms.txt`
+- [x] 전체 regression, conceptual commit, push
 
 ## API
 
@@ -152,3 +152,11 @@ canvas -> horizontalGridLines -> bars -> axes -> legend -> title
 - 관련 public/LLM 문서가 현재 API와 일치한다.
 - 전체 test와 두 histogram PNG regression이 통과한다.
 - 변경이 하나의 conceptual commit으로 push된다.
+
+## 검증 결과
+
+- Unit/acceptance: 221 tests passed
+- PNG regression: 7 tests passed
+- 신규 output: `test/output/cars-histogram-encodings.png` (2×, 864×920)
+- Primitive와 progression의 `semanticSpec`, `graphicSpec`, Canvas draw calls 일치
+- 직접 확인: horizontal grid가 bars 뒤에 있고 STEP1과 동일한 layout 유지

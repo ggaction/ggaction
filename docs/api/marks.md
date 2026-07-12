@@ -54,3 +54,29 @@ the collection empty. Aggregate line `encodeY` then derives the currently known
 series, resizes the collection, and materializes sorted concrete point arrays.
 `encodeColor` and `encodeStrokeDash` can further regroup those paths and apply
 semantic series styles.
+
+## `createBarMark({ id, data? })`
+
+| Option | Type | Default |
+| --- | --- | --- |
+| `id` | valid user-defined ID | required |
+| `data` | existing dataset ID | current dataset |
+
+```javascript
+const program = chart()
+  .createData({ id: "cars", values: cars })
+  .createBarMark({ id: "bars" });
+```
+
+The semantic mark type is `bar`. Its graphical realization starts as an empty
+`rect` collection because binning, aggregation, stacking, and optional grouping
+determine the eventual rectangle count.
+
+```javascript
+program.graphicSpec.objects.bars;
+// { type: "rect", children: [] }
+```
+
+Bar mark creation does not assign coordinates, encodings, bins, or concrete
+rectangles. Public histogram encodings and bar materialization are not yet
+implemented.

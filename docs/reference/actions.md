@@ -60,6 +60,14 @@ createLineMark({ id, data? })
 
 Create a semantic line mark and empty path collection. [Marks](../api/marks.md)
 
+### `createBarMark`
+
+```javascript
+createBarMark({ id, data? })
+```
+
+Create a semantic bar mark and empty rect collection. [Marks](../api/marks.md)
+
 ### `encodeX`
 
 ```javascript
