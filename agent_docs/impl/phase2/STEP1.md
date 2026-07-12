@@ -18,7 +18,7 @@ acceptance contract로 사용한다.
 - [x] 최종 semanticSpec contract
 - [x] Primitive semantic path와 value validation 확장
 - [ ] Cars line-chart 값 계산 helper
-- [ ] Series별 concrete path와 strokeDash rendering
+- [x] Series별 concrete path와 strokeDash rendering
 - [ ] Primitive x/y axes
 - [ ] Primitive combined series legend
 - [ ] Primitive chart title과 subtitle

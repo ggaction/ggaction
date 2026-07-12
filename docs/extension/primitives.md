@@ -42,6 +42,11 @@ Supported types are `canvas`, `container`, `circle`, `rect`, `line`, `text`,
 and `path`. `length` is a non-negative integer accepted only for drawable types.
 Equivalent repeated creation is idempotent.
 
+Line-chart series use backend-neutral `path.points` arrays rather than SVG `d`
+strings. Each point is a finite `{ x, y }` object. `path.strokeDash` and
+`line.strokeDash` accept non-negative finite number arrays; an empty array is a
+solid stroke.
+
 ## `editGraphics({ target, property, value })`
 
 Sets one validated concrete property.

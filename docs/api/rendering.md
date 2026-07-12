@@ -43,4 +43,5 @@ Missing output directories are created. A logical 640×400 chart at ratio 2
 produces a 1280×800 image. The result contains the absolute `output`, physical
 `width` and `height`, `pixelRatio`, and byte count.
 
-The current renderer supports concrete canvas, circle, line, and text graphics.
+The current renderer supports concrete canvas, circle, line, text, and
+point-array path graphics. Path and line strokes may use concrete dash arrays.

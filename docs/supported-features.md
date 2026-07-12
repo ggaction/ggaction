@@ -21,7 +21,7 @@ This page describes implemented behavior only.
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
 | Guides | Bottom x-axis and left y-axis, including lines, ticks, labels, titles |
 | Rendering | Browser Canvas and Node PNG |
-| Graphics | Concrete canvas, circle, line, and text nodes |
+| Graphics | Concrete canvas, circle, line, text, and point-array path nodes |
 
 Polar guide graphics, additional mark types, transforms, facets, legends, and
 program composition are not implemented in the current phase. They are not

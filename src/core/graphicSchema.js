@@ -42,6 +42,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "y2",
     "stroke",
     "strokeWidth",
+    "strokeDash",
     "opacity",
     "style",
     "length"
@@ -63,9 +64,11 @@ const GRAPHIC_PROPERTIES = Object.freeze({
   ]),
   path: new Set([
     "d",
+    "points",
     "fill",
     "stroke",
     "strokeWidth",
+    "strokeDash",
     "opacity",
     "style",
     "length"

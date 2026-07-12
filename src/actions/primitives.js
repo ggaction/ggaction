@@ -359,6 +359,34 @@ function validateConcreteGraphicValue(type, property, value) {
   if (property === "opacity" && (value < 0 || value > 1)) {
     throw new RangeError(`${type}.opacity must be between 0 and 1.`);
   }
+
+  if (property === "strokeDash") {
+    if (
+      !Array.isArray(value) ||
+      !value.every(item => Number.isFinite(item) && item >= 0)
+    ) {
+      throw new TypeError(
+        `${type}.strokeDash must be an array of non-negative finite numbers.`
+      );
+    }
+  }
+
+  if (type === "path" && property === "points") {
+    if (
+      !Array.isArray(value) ||
+      value.length < 2 ||
+      !value.every(point =>
+        isPlainObject(point) &&
+        Object.keys(point).length === 2 &&
+        Number.isFinite(point.x) &&
+        Number.isFinite(point.y)
+      )
+    ) {
+      throw new TypeError(
+        "path.points must contain at least two finite { x, y } points."
+      );
+    }
+  }
 }
 
 function editDirectChild(object, childIndex, property, value) {
