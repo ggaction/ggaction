@@ -34,15 +34,22 @@
 - Name chart-authoring actions after semantic concepts such as `createPointMark`; keep concrete realizations such as `circle` inside action implementations and `graphicSpec`.
 - Public actions accept meaningful option objects, such as `editXAxisLine({ lineWidth: 3 })`.
 - Every public action accepts one parameter object and returns a new `ChartProgram`.
+- Require only inputs that the user must decide and that cannot be inferred safely. User-facing actions should infer or default the remaining options whenever the stored program state determines them unambiguously.
+- Resolve omitted options in this order: an explicit option, a unique inference from stored semantic state, a documented library default, then an error when no safe decision remains. Never choose arbitrarily among multiple candidates.
+- Treat documented defaults and inference behavior as part of the public API contract. Cover them in user documentation and tests, and persist inferred semantic decisions in `semanticSpec`.
+- Use omission, an empty object, and `false` consistently in aggregate APIs: omission requests automatic applicability and inference, `{}` explicitly selects the component with inferred details, and `false` explicitly disables it.
 - Keep create and edit contracts consistent. A create action requires a missing resource, may treat an equivalent repeated definition as idempotent when explicitly intended, and must reject conflicting definitions. An edit action requires an existing resource and must reject an empty edit.
 - Validate library-defined closed vocabularies such as channels and types.
 - Treat user-defined IDs as names: validate their basic form, uniqueness when creating, and existence when referencing rather than checking them against a library vocabulary.
+- Infer layout coordinates from Canvas or plot bounds when possible instead of requiring raw x/y values. Do not make non-overlap a global invariant; individual actions and explicit user options may intentionally produce overlapping graphics.
+- Do not create placeholder semantic or graphical components for omitted optional content. Create optional subtitles, borders, backgrounds, and similar components only when they are actually requested or inferred as present.
 
 ## Actions and Trace
 
 - Define every authoring action through the shared `action()` wrapper.
 - Component actions invoked by higher-level actions must also be wrapped actions when they represent meaningful authoring steps.
 - Aggregate actions must orchestrate wrapped child actions instead of duplicating their behavior or hiding meaningful authoring steps inside untraced helpers.
+- Keep aggregate actions thin: they may decide child applicability and call order, but inference and validation owned by a child action must remain in that child rather than being reimplemented by the aggregate.
 - Do not hide meaningful action decomposition inside untraced helpers.
 - Every trace has a virtual `program` root, and nested wrapped calls form its action hierarchy.
 - Context updates are part of successful immutable state transitions; they are not separate actions or trace nodes.
@@ -59,6 +66,7 @@
 - Pair each representative program with a PNG export test under `test/render/`; write generated images to the gitignored `test/output/` directory.
 - When a representative program is intended to demonstrate primitive usage, write one explicit method chain and do not hide primitive calls behind batching helpers or other syntactic sugar.
 - Keep the user program focused on realistic library usage. Assertions, mocks, and test-only inspection belong in the importing test file rather than in the user program.
+- For every high-level user-facing action, test its shortest valid call after the required prerequisites are present so the default API does not become progressively more verbose.
 
 ## Semantic and Graphical Boundary
 
