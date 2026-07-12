@@ -25,8 +25,10 @@ const POSITION_ENCODING_OPTIONS = Object.freeze([
   "fieldType",
   "scale",
   "coordinate",
-  "aggregate"
+  "aggregate",
+  "bin"
 ]);
+const BIN_OPTIONS = Object.freeze(["maxBins"]);
 const COLOR_ENCODING_OPTIONS = Object.freeze([
   "field",
   "target",
@@ -84,7 +86,11 @@ function resolveTarget(
     throw new Error(`Mark "${id}" requires an existing dataset.`);
   }
 
-  const expectedGraphic = layer.mark.type === "point" ? "circle" : "path";
+  const expectedGraphic = {
+    point: "circle",
+    line: "path",
+    bar: "rect"
+  }[layer.mark.type];
 
   if (program.graphicSpec.objects[id]?.type !== expectedGraphic) {
     throw new Error(`Mark "${id}" requires ${expectedGraphic} graphics.`);
@@ -119,7 +125,13 @@ function resolvePositionCoordinate(program, channel, layer, requestedId) {
   return { id, type: defaults.type };
 }
 
-function resolveScaleDefinition(program, channel, fieldType, options) {
+function resolveScaleDefinition(
+  program,
+  channel,
+  fieldType,
+  options,
+  defaults = {}
+) {
   if (!isPlainObject(options)) {
     throw new TypeError("Encoding scale must be a plain object.");
   }
@@ -152,13 +164,26 @@ function resolveScaleDefinition(program, channel, fieldType, options) {
     range: validateScaleRange(options.range ?? existing?.range ?? "auto")
   };
 
-  const nice = options.nice ?? existing?.nice;
-  const zero = options.zero ?? existing?.zero;
+  const nice = options.nice ?? existing?.nice ?? defaults.nice;
+  const zero = options.zero ?? existing?.zero ?? defaults.zero;
 
   if (nice !== undefined) scale.nice = nice;
   if (zero !== undefined) scale.zero = zero;
 
   return scale;
+}
+
+function resolveBinDefinition(bin) {
+  if (!isPlainObject(bin)) {
+    throw new TypeError("Bar x bin must be a plain object.");
+  }
+  validateOptions(bin, BIN_OPTIONS, "bin");
+  const maxBins = bin.maxBins ?? 10;
+
+  if (!Number.isInteger(maxBins) || maxBins <= 0) {
+    throw new TypeError("Histogram maxBins must be a positive integer.");
+  }
+  return { maxBins };
 }
 
 function resolveColorScaleDefinition(program, options) {
@@ -215,7 +240,12 @@ function encodePosition(program, channel, args, operation) {
   validateOptions(args, POSITION_ENCODING_OPTIONS, operation);
   validatePositionChannel(channel);
   const fieldType = validateFieldType(args.fieldType ?? "quantitative");
-  const { id: target, dataset, layer } = resolveTarget(program, args.target);
+  const { id: target, dataset, layer } = resolveTarget(
+    program,
+    args.target,
+    ["point", "line", "bar"]
+  );
+  let bin;
 
   if (layer.mark.type === "point") {
     if (fieldType !== "quantitative") {
@@ -224,17 +254,41 @@ function encodePosition(program, channel, args, operation) {
     if (args.aggregate !== undefined) {
       throw new Error("Point position encoding does not support aggregate.");
     }
-  } else if (channel === "x") {
+    if (args.bin !== undefined) {
+      throw new Error("Point position encoding does not support bin.");
+    }
+  } else if (layer.mark.type === "line" && channel === "x") {
     if (fieldType !== "temporal") {
       throw new Error("Line x encoding currently requires a temporal field.");
     }
     if (args.aggregate !== undefined) {
       throw new Error("Line x encoding does not support aggregate.");
     }
-  } else if (fieldType !== "quantitative" || args.aggregate !== "mean") {
-    throw new Error(
-      'Line y encoding currently requires a quantitative field and aggregate "mean".'
-    );
+    if (args.bin !== undefined) {
+      throw new Error("Line x encoding does not support bin.");
+    }
+  } else if (layer.mark.type === "line") {
+    if (args.bin !== undefined) {
+      throw new Error("Line y encoding does not support bin.");
+    }
+    if (fieldType !== "quantitative" || args.aggregate !== "mean") {
+      throw new Error(
+        'Line y encoding currently requires a quantitative field and aggregate "mean".'
+      );
+    }
+  } else if (channel !== "x") {
+    throw new Error("Bar y encoding is not implemented yet.");
+  } else {
+    if (fieldType !== "quantitative") {
+      throw new Error("Bar x encoding currently requires a quantitative field.");
+    }
+    if (args.aggregate !== undefined) {
+      throw new Error("Bar x encoding does not support aggregate.");
+    }
+    if (args.bin === undefined) {
+      throw new Error("Bar x encoding requires bin.");
+    }
+    bin = resolveBinDefinition(args.bin);
   }
 
   if (fieldType === "temporal") {
@@ -247,7 +301,8 @@ function encodePosition(program, channel, args, operation) {
     program,
     channel,
     fieldType,
-    args.scale ?? {}
+    args.scale ?? {},
+    layer.mark.type === "bar" ? { nice: true, zero: false } : {}
   );
   const coordinate = resolvePositionCoordinate(
     program,
@@ -275,6 +330,13 @@ function encodePosition(program, channel, args, operation) {
     next = next.editSemantic({
       property: `layer[${target}].encoding.y.aggregate`,
       value: args.aggregate
+    });
+  }
+
+  if (layer.mark.type === "bar") {
+    next = next.editSemantic({
+      property: `layer[${target}].encoding.x.bin.maxBins`,
+      value: bin.maxBins
     });
   }
 

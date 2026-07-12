@@ -22,6 +22,11 @@ export function createCarsHistogramEncodings(cars) {
     .createCanvas({ width, height, margin, background: "white" })
     .createData({ id: "cars", values: values.validCars })
     .createBarMark({ id: "bars" })
+    .encodeX({
+      field: "Displacement",
+      bin: { maxBins: 10 },
+      scale: { nice: true, zero: false }
+    })
     .createGraphics({
       id: "horizontalGridLines",
       type: "line",
@@ -62,20 +67,6 @@ export function createCarsHistogramEncodings(cars) {
       property: "strokeDash",
       value: horizontalGrid.map(() => [])
     })
-    .editSemantic({ property: "layer[bars].coordinate", value: "main" })
-    .editSemantic({
-      property: "layer[bars].encoding.x.field",
-      value: "Displacement"
-    })
-    .editSemantic({
-      property: "layer[bars].encoding.x.fieldType",
-      value: "quantitative"
-    })
-    .editSemantic({
-      property: "layer[bars].encoding.x.bin.maxBins",
-      value: 10
-    })
-    .editSemantic({ property: "layer[bars].encoding.x.scale", value: "x" })
     .editSemantic({
       property: "layer[bars].encoding.y.field",
       value: "Displacement"
@@ -105,11 +96,6 @@ export function createCarsHistogramEncodings(cars) {
       property: "layer[bars].encoding.color.scale",
       value: "color"
     })
-    .editSemantic({ property: "scale[x].type", value: "linear" })
-    .editSemantic({ property: "scale[x].domain", value: "auto" })
-    .editSemantic({ property: "scale[x].range", value: "auto" })
-    .editSemantic({ property: "scale[x].nice", value: true })
-    .editSemantic({ property: "scale[x].zero", value: false })
     .editSemantic({ property: "scale[y].type", value: "linear" })
     .editSemantic({ property: "scale[y].domain", value: "auto" })
     .editSemantic({ property: "scale[y].range", value: "auto" })
@@ -120,7 +106,6 @@ export function createCarsHistogramEncodings(cars) {
       property: "scale[color].range",
       value: { palette: "tableau10" }
     })
-    .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
     .editSemantic({ property: "guide.axis.x.title", value: "Displacement" })

@@ -1,4 +1,5 @@
 import { action } from "../core/action.js";
+import { resolveHistogramBins } from "../core/histogram.js";
 import { validateUserId } from "../core/identifiers.js";
 import { deriveLineSeries } from "../core/lineSeries.js";
 import {
@@ -247,15 +248,45 @@ const rematerializeScale = action(
     }));
     const allValues = valuesByConsumer.flatMap(item => item.values);
     const isOrdinal = channel === "color" || channel === "strokeDash";
-    const domain = isOrdinal
-      ? resolveOrdinalDomain(scale.domain, allValues)
-      : resolveContinuousDomain({
-          domain: scale.domain,
-          values: allValues,
-          type: scale.type,
-          nice: scale.nice,
-          zero: scale.zero
-        });
+    const binnedBars = valuesByConsumer.filter(
+      ({ consumer }) =>
+        consumer.layer.mark?.type === "bar" &&
+        consumer.encoding.bin !== undefined
+    );
+    let domain;
+
+    if (binnedBars.length > 0) {
+      if (channel !== "x" || binnedBars.length !== valuesByConsumer.length) {
+        throw new Error(
+          `Binned scale "${id}" cannot be shared with an unbinned consumer.`
+        );
+      }
+      const maxBins = new Set(
+        binnedBars.map(({ consumer }) => consumer.encoding.bin.maxBins)
+      );
+      if (maxBins.size !== 1) {
+        throw new Error(
+          `Binned scale "${id}" requires one shared maxBins value.`
+        );
+      }
+      domain = resolveHistogramBins({
+        values: allValues,
+        maxBins: [...maxBins][0],
+        domain: scale.domain,
+        nice: scale.nice ?? true,
+        zero: scale.zero ?? false
+      }).domain;
+    } else {
+      domain = isOrdinal
+        ? resolveOrdinalDomain(scale.domain, allValues)
+        : resolveContinuousDomain({
+            domain: scale.domain,
+            values: allValues,
+            type: scale.type,
+            nice: scale.nice,
+            zero: scale.zero
+          });
+    }
     let range;
 
     if (channel === "color") {
@@ -280,7 +311,11 @@ const rematerializeScale = action(
     });
 
     for (const { consumer, values } of valuesByConsumer) {
-      if (consumer.layer.mark?.type === "line") {
+      if (
+        consumer.layer.mark?.type === "line" ||
+        (consumer.layer.mark?.type === "bar" &&
+          consumer.encoding.bin !== undefined)
+      ) {
         continue;
       }
 

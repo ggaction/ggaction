@@ -32,6 +32,42 @@ x/y encodings ensure a Cartesian coordinate exists and attach it to the layer.
 An explicitly selected coordinate is created if missing. A conflicting layer
 coordinate or non-Cartesian coordinate produces an error.
 
+## Binned bar `encodeX(options)`
+
+Create a quantitative histogram bin encoding and resolve its horizontal scale.
+
+```javascript
+program.encodeX({
+  field: "Displacement",
+  bin: { maxBins: 10 },
+  scale: { nice: true, zero: false }
+});
+```
+
+| Option | Type | Default |
+| --- | --- | --- |
+| `field` | non-empty string | required |
+| `target` | bar mark ID | current mark |
+| `fieldType` | `"quantitative"` | `"quantitative"` |
+| `coordinate` | coordinate ID | layer coordinate, then `"main"` |
+| `bin` | `{ maxBins? }` | required |
+| `bin.maxBins` | positive integer | `10` |
+| `scale.id` | scale ID | `"x"` |
+| `scale.type` | `"linear"` | `"linear"` |
+| `scale.domain` | `"auto"` or two ascending finite numbers | `"auto"` |
+| `scale.range` | `"auto"` or two finite numbers | `"auto"` |
+| `scale.nice` | boolean | `true` |
+| `scale.zero` | boolean | `false` |
+
+Automatic nice bins use `1, 2, 3, 5 × 10ⁿ` steps and never exceed
+`maxBins`. An explicit domain is kept exactly and takes precedence over
+`nice` and `zero`. The resolved x domain spans bin boundaries, while the
+automatic range uses current plot bounds.
+
+This action intentionally leaves the bar's rect collection empty. Bar y
+count/stack encoding and automatic rectangle materialization are not yet
+implemented.
+
 ## Temporal line `encodeX(options)`
 
 Map a temporal field to the horizontal position scale of a line mark.

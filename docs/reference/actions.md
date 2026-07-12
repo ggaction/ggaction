@@ -71,10 +71,11 @@ Create a semantic bar mark and empty rect collection. [Marks](../api/marks.md)
 ### `encodeX`
 
 ```javascript
-encodeX({ field, target?, fieldType?, coordinate?, scale? })
+encodeX({ field, target?, fieldType?, coordinate?, bin?, scale? })
 ```
 
-Create a quantitative point or temporal line x encoding.
+Create a quantitative point, temporal line, or binned quantitative bar x
+encoding.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeY`

@@ -18,7 +18,7 @@ const cars = JSON.parse(
   readFileSync(new URL("../../data/cars.json", import.meta.url), "utf8")
 );
 
-test("replaces raw bar creation with createBarMark", () => {
+test("replaces raw bar and x blocks with chart actions", () => {
   const primitive = createCarsHistogramPrimitives(cars);
   const program = createCarsHistogramEncodings(cars);
 
@@ -29,6 +29,10 @@ test("replaces raw bar creation with createBarMark", () => {
     "bars",
     "horizontalGridLines"
   ]);
+  assert.deepEqual(
+    program.trace.children.slice(0, 4).map(node => node.op),
+    ["createCanvas", "createData", "createBarMark", "encodeX"]
+  );
 
   const createBarMark = program.trace.children.find(
     node => node.op === "createBarMark"
@@ -44,11 +48,51 @@ test("replaces raw bar creation with createBarMark", () => {
     type: "rect",
     length: 0
   });
+  const encodeX = program.trace.children.find(node => node.op === "encodeX");
+  assert.deepEqual(encodeX.args, {
+    field: "Displacement",
+    bin: { maxBins: 10 },
+    scale: { nice: true, zero: false }
+  });
+  assert.deepEqual(encodeX.children.map(node => node.op), [
+    "createCoordinate",
+    "editSemantic",
+    "editSemantic",
+    "editSemantic",
+    "editSemantic",
+    "createScale",
+    "rematerializeScale"
+  ]);
+  assert.deepEqual(program.resolvedScales.x, {
+    type: "linear",
+    domain: [50, 500],
+    range: [80, 372]
+  });
   assert.equal(
     program.trace.children.some(
       node =>
         node.op === "createGraphics" &&
         node.args.id === "bars"
+    ),
+    false
+  );
+  const replacedXPaths = new Set([
+    "layer[bars].coordinate",
+    "layer[bars].encoding.x.field",
+    "layer[bars].encoding.x.fieldType",
+    "layer[bars].encoding.x.bin.maxBins",
+    "layer[bars].encoding.x.scale",
+    "scale[x].type",
+    "scale[x].domain",
+    "scale[x].range",
+    "scale[x].nice",
+    "scale[x].zero",
+    "coordinate[main].type"
+  ]);
+  assert.equal(
+    program.trace.children.some(
+      node =>
+        node.op === "editSemantic" && replacedXPaths.has(node.args.property)
     ),
     false
   );

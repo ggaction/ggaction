@@ -13,13 +13,21 @@ defaults.
 ## Position
 
 [`encodeX` and `encodeY`](./position-encodings.md) create quantitative point
-positions or temporal/aggregate line positions. They also establish the
-Cartesian coordinate and continuous scales used by axes.
+positions, temporal/aggregate line positions, or a binned quantitative bar x
+encoding. They also establish the Cartesian coordinate and continuous scales
+used by axes.
 
 ```javascript
 program
   .encodeX({ field: "Horsepower" })
   .encodeY({ field: "Miles_per_Gallon" });
+```
+
+```javascript
+barProgram.encodeX({
+  field: "Displacement",
+  bin: { maxBins: 10 }
+});
 ```
 
 ## Series

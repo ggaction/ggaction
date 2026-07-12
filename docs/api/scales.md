@@ -31,6 +31,17 @@ explicit domain > nice / zero > inferred domain
 explicit range  > inferred range
 ```
 
+### Binned bar x scales
+
+A binned bar x encoding defaults to `nice: true` and `zero: false`. Automatic
+nice bin boundaries use `1, 2, 3, 5 × 10ⁿ` steps and never create more than
+`bin.maxBins` intervals. Explicit domains remain unchanged; `nice` and `zero`
+do not expand them.
+
+The resolved scale domain contains the outer bin boundaries. Concrete bin
+counts and rect geometry are deferred until the remaining histogram encodings
+are present.
+
 ## Ordinal scales
 
 Color and stroke-dash encodings use ordinal scales. Automatic domains preserve
