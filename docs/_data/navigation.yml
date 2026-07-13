@@ -6,14 +6,8 @@
       url: /getting-started/
     - title: Tutorials
       url: /tutorials/
-    - title: Scatterplot Tutorial
-      url: /tutorials/scatterplot/
-    - title: Line Chart Tutorial
-      url: /tutorials/line-chart/
-    - title: Histogram Tutorial
-      url: /tutorials/histogram/
 
-- title: Chart API
+- title: Chart Building
   items:
     - title: Canvas
       url: /api/canvas/
@@ -23,6 +17,15 @@
       url: /api/marks/
     - title: Encodings
       url: /api/encodings/
+    - title: Guides
+      url: /api/guides/
+    - title: Titles
+      url: /api/titles/
+    - title: Rendering
+      url: /api/rendering/
+
+- title: Customization
+  items:
     - title: Position Encodings
       url: /api/position-encodings/
     - title: Series Encodings
@@ -33,16 +36,12 @@
       url: /api/scales/
     - title: Coordinates
       url: /api/coordinates/
-    - title: Guides
-      url: /api/guides/
     - title: Axes
       url: /api/axes/
+    - title: Grids
+      url: /api/grids/
     - title: Legends
       url: /api/legends/
-    - title: Titles
-      url: /api/titles/
-    - title: Rendering
-      url: /api/rendering/
 
 - title: Concepts
   items:

@@ -20,9 +20,16 @@ npm install
 python3 -m http.server 4173
 ```
 
-Open `http://localhost:4173/examples/cars-scatterplot/` or
-`http://localhost:4173/examples/cars-line-chart/`. Documentation examples use
-package-style imports to show the intended consumer API.
+Open one of the runnable repository examples:
+
+- `http://localhost:4173/examples/cars-scatterplot/`
+- `http://localhost:4173/examples/cars-line-chart/`
+- `http://localhost:4173/examples/cars-histogram/`
+
+Those browser examples import `../../src/index.js` directly. The code below
+uses the intended package import, `ggaction`, to document the consumer API that
+will be available after publication; it is not a standalone browser import in
+the current repository build.
 
 ## 1. Add a canvas
 
@@ -64,7 +71,8 @@ const program = chart()
 `createPointMark` uses the most recently created dataset. Encoding actions use
 the most recently created mark. Pass `data` or `target` explicitly when a
 program contains more than one candidate. `createGuides` infers the applicable
-axes, a horizontal grid, and a categorical legend from those encodings.
+axes and horizontal grid from these point encodings. Point-mark legends are not
+supported yet, so the color encoding does not create a legend.
 
 ## 3. Render it
 
@@ -82,5 +90,7 @@ actions. It does not compile `semanticSpec` during rendering.
   repository dataset.
 - Build temporal aggregate series in the
   [cars line chart tutorial](./tutorials/line-chart.md).
+- Bin and stack quantitative values in the
+  [cars histogram tutorial](./tutorials/histogram.md).
 - Check the [action index](./reference/actions.md) for signatures and defaults.
 - Export the same program with [PNG rendering](./api/rendering.md#png-output).

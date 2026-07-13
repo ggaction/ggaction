@@ -39,13 +39,15 @@ state is never automatically compiled during rendering.
 - [Getting started](./docs/getting-started.md)
 - [Cars scatterplot tutorial](./docs/tutorials/scatterplot.md)
 - [Cars line chart tutorial](./docs/tutorials/line-chart.md)
+- [Cars histogram tutorial](./docs/tutorials/histogram.md)
 - [Chart concepts](./docs/concepts/chart-program.md)
 - [Complete action reference](./docs/reference/actions.md)
 - [Supported features](./docs/supported-features.md)
 - [Documentation index](./docs/index.md)
 
-The runnable [cars scatterplot](./examples/cars-scatterplot/) and
-[aggregate line chart](./examples/cars-line-chart/) use `data/cars.json`.
+The runnable [cars scatterplot](./examples/cars-scatterplot/),
+[aggregate line chart](./examples/cars-line-chart/), and
+[stacked histogram](./examples/cars-histogram/) use `data/cars.json`.
 Completed programs can also be exported through
 [`ggaction/png`](./docs/api/rendering.md#png-output).
 
