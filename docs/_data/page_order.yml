@@ -28,6 +28,16 @@
   url: /api/rendering/
 - title: Position Encodings
   url: /api/position-encodings/
+- title: Quantitative Positions
+  url: /api/position/quantitative/
+- title: Temporal Line Positions
+  url: /api/position/temporal/
+- title: Ordinal Bar Positions
+  url: /api/position/ordinal-bars/
+- title: Histogram Positions
+  url: /api/position/histogram/
+- title: Ordinal Offsets
+  url: /api/position/offsets/
 - title: Series Encodings
   url: /api/series-encodings/
 - title: Constant Appearance

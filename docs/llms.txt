@@ -28,6 +28,11 @@ and language models.
 - Marks: ./api/marks.md
 - Encodings: ./api/encodings.md
 - Position encodings: ./api/position-encodings.md
+- Quantitative point positions: ./api/position/quantitative.md
+- Temporal line positions: ./api/position/temporal.md
+- Ordinal bar positions: ./api/position/ordinal-bars.md
+- Histogram positions: ./api/position/histogram.md
+- Advanced ordinal offsets: ./api/position/offsets.md
 - Series encodings: ./api/series-encodings.md
 - Constant appearance: ./api/appearance.md
 - Scale options: ./api/scales.md
