@@ -36,10 +36,6 @@ body {
   top: 0.5rem;
 }
 
-.nav-toggle {
-  display: none;
-}
-
 .docs-topbar {
   position: sticky;
   top: 0;
@@ -106,6 +102,9 @@ body {
 .nav-toggle-button {
   display: none;
   width: 2rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
   cursor: pointer;
 }
 
@@ -114,6 +113,11 @@ body {
   height: 2px;
   margin: 4px 0;
   background: #334155;
+}
+
+.nav-backdrop,
+.docs-sidebar-close {
+  display: none;
 }
 
 .docs-shell {
@@ -182,6 +186,14 @@ body {
   padding: 0.45rem 0.5rem;
   border-radius: 0.3rem;
   font-size: 0.82rem;
+}
+
+.docs-search-snippet {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--docs-muted);
+  font-size: 0.74rem;
+  line-height: 1.35;
 }
 
 .docs-search-results a:hover {
@@ -458,8 +470,39 @@ body {
     box-shadow: 8px 0 24px rgba(15, 23, 42, 0.12);
   }
 
-  .nav-toggle:checked ~ .docs-shell .docs-sidebar {
+  body.is-navigation-open {
+    overflow: hidden;
+  }
+
+  body.is-navigation-open .docs-sidebar {
     transform: translateX(0);
+  }
+
+  .nav-backdrop {
+    position: fixed;
+    z-index: 14;
+    inset: var(--docs-topbar) 0 0;
+    width: 100%;
+    border: 0;
+    background: rgba(15, 23, 42, 0.32);
+  }
+
+  body.is-navigation-open .nav-backdrop {
+    display: block;
+  }
+
+  .docs-sidebar-close {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.8rem;
+    padding: 0.5rem 0.65rem;
+    color: #334155;
+    border: 1px solid var(--docs-border);
+    border-radius: 0.4rem;
+    background: #f8fafc;
+    font: inherit;
+    font-size: 0.8rem;
+    text-align: left;
   }
 
   .docs-content {

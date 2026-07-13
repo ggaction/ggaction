@@ -210,8 +210,21 @@ test("indexes documentation headings for section search", () => {
   assert.match(index, /entry\.content \| markdownify/);
   assert.match(search, /querySelectorAll\("h2\[id\], h3\[id\]"\)/);
   assert.match(search, /sectionTitle/);
+  assert.match(search, /seenPages/);
+  assert.match(search, /docs-search-snippet/);
+  assert.match(search, /event\.metaKey \|\| event\.ctrlKey/);
   assert.match(layout, /docs-toc\.js/);
   assert.match(layout, /page-navigation\.html/);
+  assert.match(layout, /docs-navigation\.js/);
+
+  const sidebar = read("docs/_includes/sidebar.html");
+  assert.match(sidebar, /role="combobox"/);
+  assert.match(sidebar, /role="listbox"/);
+
+  const navigation = read("docs/assets/js/docs-navigation.js");
+  assert.match(navigation, /aria-expanded/);
+  assert.match(navigation, /event\.key === "Escape"/);
+  assert.match(navigation, /restoreFocus/);
 });
 
 test("keeps one generated gallery image for every public chart", () => {

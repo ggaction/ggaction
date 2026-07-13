@@ -3,7 +3,6 @@
   {%- include head.html -%}
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <input class="nav-toggle" id="nav-toggle" type="checkbox" />
 
     <header class="docs-topbar">
       <div class="docs-topbar__inner">
@@ -19,11 +18,20 @@
           <a href="{{ site.repository_url }}">GitHub</a>
         </nav>
 
-        <label class="nav-toggle-button" for="nav-toggle" aria-label="Toggle documentation navigation">
+        <button
+          class="nav-toggle-button"
+          id="nav-toggle-button"
+          type="button"
+          aria-label="Open documentation navigation"
+          aria-controls="docs-sidebar"
+          aria-expanded="false"
+        >
           <span></span><span></span><span></span>
-        </label>
+        </button>
       </div>
     </header>
+
+    <button class="nav-backdrop" type="button" aria-label="Close documentation navigation"></button>
 
     <div class="docs-shell">
       {%- include sidebar.html -%}
@@ -36,6 +44,7 @@
 
     {%- include docs-footer.html -%}
     {%- include search-index.html -%}
+    <script src="{{ '/assets/js/docs-navigation.js' | relative_url }}"></script>
     <script src="{{ '/assets/js/docs-toc.js' | relative_url }}"></script>
     <script src="{{ '/assets/js/docs-search.js' | relative_url }}"></script>
   </body>

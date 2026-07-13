@@ -44,6 +44,16 @@
   function clearResults() {
     results.replaceChildren();
     results.hidden = true;
+    input.setAttribute("aria-expanded", "false");
+  }
+
+  function excerpt(content, query) {
+    const normalized = content.replace(/\s+/g, " ").trim();
+    const index = normalized.toLowerCase().indexOf(query);
+    if (index === -1) return normalized.slice(0, 110);
+    const start = Math.max(0, index - 42);
+    const end = Math.min(normalized.length, index + query.length + 68);
+    return `${start > 0 ? "…" : ""}${normalized.slice(start, end)}${end < normalized.length ? "…" : ""}`;
   }
 
   input.addEventListener("input", () => {
@@ -53,7 +63,7 @@
       return;
     }
 
-    const matches = sections
+    const ranked = sections
       .map(section => {
         const pageTitle = section.pageTitle.toLowerCase();
         const sectionTitle = section.sectionTitle?.toLowerCase();
@@ -76,8 +86,14 @@
         right.score - left.score ||
         left.pageTitle.localeCompare(right.pageTitle) ||
         (left.sectionTitle ?? "").localeCompare(right.sectionTitle ?? "")
-      )
-      .slice(0, 8);
+      );
+
+    const seenPages = new Set();
+    const matches = ranked.filter(section => {
+      if (seenPages.has(section.url.split("#")[0])) return false;
+      seenPages.add(section.url.split("#")[0]);
+      return true;
+    }).slice(0, 8);
 
     results.replaceChildren();
     if (matches.length === 0) {
@@ -89,15 +105,21 @@
       for (const match of matches) {
         const item = document.createElement("li");
         const link = document.createElement("a");
+        link.setAttribute("role", "option");
         link.href = match.url;
         link.textContent = match.sectionTitle
           ? `${match.pageTitle} › ${match.sectionTitle}`
           : match.pageTitle;
+        const preview = document.createElement("span");
+        preview.className = "docs-search-snippet";
+        preview.textContent = excerpt(match.content, query);
+        link.append(preview);
         item.append(link);
         results.append(item);
       }
     }
     results.hidden = false;
+    input.setAttribute("aria-expanded", "true");
   });
 
   input.addEventListener("keydown", event => {
@@ -134,5 +156,13 @@
 
   document.addEventListener("click", event => {
     if (!event.target.closest(".docs-search")) clearResults();
+  });
+
+  document.addEventListener("keydown", event => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      input.focus();
+      input.select();
+    }
   });
 })();

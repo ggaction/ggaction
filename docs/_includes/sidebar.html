@@ -1,4 +1,5 @@
-<aside class="docs-sidebar" aria-label="Documentation navigation">
+<aside class="docs-sidebar" id="docs-sidebar" aria-label="Documentation navigation">
+  <button class="docs-sidebar-close" type="button">Close navigation</button>
   <div class="docs-search">
     <label for="docs-search-input">Search documentation</label>
     <input
@@ -6,9 +7,17 @@
       type="search"
       placeholder="Search docs"
       autocomplete="off"
+      role="combobox"
+      aria-autocomplete="list"
+      aria-expanded="false"
       aria-controls="docs-search-results"
     />
-    <ul id="docs-search-results" class="docs-search-results" hidden></ul>
+    <ul
+      id="docs-search-results"
+      class="docs-search-results"
+      role="listbox"
+      hidden
+    ></ul>
   </div>
 
   <nav class="docs-sidenav">
