@@ -65,13 +65,13 @@
 
 - Write source code, test descriptions, fixtures, and example-program code in English. Implementation step documents remain in Korean.
 - Keep representative user-authored programs in separate files under `test/programs/` and execute those files from acceptance tests.
-- When progressively replacing a primitive contract with higher-level actions, preserve the primitive baseline and maintain one evolving high-level action program per chart phase. Do not create separate representative program files for every implementation step unless the user explicitly requests snapshots.
+- When progressively replacing a primitive contract with higher-level actions, preserve the primitive baseline and maintain one evolving high-level action program per chart development cycle. Do not create separate representative program files for every implementation unit unless the user explicitly requests snapshots.
 - Require a representative high-level program and its primitive baseline to converge on the same concrete `graphicSpec`, explicit rendering order, and renderer calls when they describe the same chart. Visual similarity alone is not sufficient regression evidence.
 - Pair each representative program with a PNG export test under `test/render/`; write generated images to the gitignored `test/output/` directory.
 - When a representative program is intended to demonstrate primitive usage, write one explicit method chain and do not hide primitive calls behind batching helpers or other syntactic sugar.
 - Keep the user program focused on realistic library usage. Assertions, mocks, and test-only inspection belong in the importing test file rather than in the user program.
 - For every high-level user-facing action, test its shortest valid call after the required prerequisites are present so the default API does not become progressively more verbose.
-- Complete each chart phase with one public vertical slice whose browser example, standalone user program, acceptance test, PNG regression, and tutorial use the same chart-authoring API flow.
+- Complete each chart development cycle with one public vertical slice whose browser example, standalone user program, acceptance test, PNG regression, and tutorial use the same chart-authoring API flow.
 - Verify browser Canvas and PNG output separately. Browser checks must cover logical Canvas dimensions and console/page errors; PNG checks must cover `pixelRatio` and physical output dimensions.
 
 ## Semantic and Graphical Boundary
@@ -108,8 +108,8 @@
 - Whenever a public action is added, removed, renamed, or changes signature, update `docs/reference/actions.md`, its relevant API page, and the current scope in `docs/llms.txt` in the same conceptual commit.
 - Keep unimplemented roadmap ideas out of current API documentation except where a concise limitation is required to explain an accepted value or error.
 - Do not exhaustively document internal modules, helper functions, data structures, or implementation mechanics in public docs unless users must understand them to use the library correctly.
-- Group implementation step plans by phase under paths such as `agent_docs/impl/phase1/STEP1.md` and `agent_docs/impl/phase2/STEP1.md`. Write every STEP document in Korean.
-- Every STEP document must place a `진행 상태` checklist near the beginning, immediately after the goal, and keep it updated as each implementation unit is completed.
+- Write each new chart implementation contract in Korean at `agent_docs/impl/chart/<chart-name>.md`. One phase may contain multiple chart development cycles, so track goals, the final user-facing API, important action hierarchy, implementation order, and status by chart rather than in a phase-level `GOAL.md`.
+- Every chart implementation document must place a `진행 상태` checklist near the beginning and keep it updated as each implementation unit is completed. Historical phase and STEP documents may remain as design records, but they are not the required structure for new chart work.
 - Preserve `agent_docs/INITIAL_ARCHITECTURE.md` as an initial design record unless the user explicitly asks to revise it; it does not need to mirror every later implementation decision.
 - Keep historical design references distinct from documentation of the current behavior.
 
@@ -125,6 +125,7 @@
 ## Handling Unclear Design
 
 - Do not silently choose one side when documentation or requirements conflict.
+- When a decision is important, difficult to reverse, or likely to affect later public API or schema design, pause the current implementation path and ask the user. State the decision, viable options, and tradeoffs concisely, and do not implement, document, commit, or push work that depends on it until the user responds. When unsure whether a decision is important, treat it as important.
 - For minor, reversible details that do not affect public contracts, proceed with the simplest consistent choice and state the assumption.
 - Ask the user before making costly or difficult-to-reverse decisions involving public APIs, persisted schemas, or immutability semantics.
 - Keep unresolved architectural questions explicit rather than concealing them in implementation details.
