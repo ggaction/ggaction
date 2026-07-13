@@ -6,6 +6,8 @@ import {
   validateGraphicProperty
 } from "../../grammar/schemas/graphic.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
+import { validateConcreteGraphicValue } from
+  "../../grammar/schemas/concreteGraphic.js";
 
 function findGraphicTarget(graphicSpec, target) {
   const object = graphicSpec.objects[target];
@@ -30,74 +32,6 @@ function setGraphicProperty(properties, property, value) {
     ...properties,
     [property]: cloneAndFreeze(value)
   });
-}
-
-function validateConcreteGraphicValue(type, property, value) {
-  const finiteProperties = new Set([
-    "x",
-    "y",
-    "x1",
-    "y1",
-    "x2",
-    "y2",
-    "width",
-    "height",
-    "radius",
-    "strokeWidth",
-    "fontSize",
-    "rotation",
-    "opacity",
-    "gap"
-  ]);
-
-  if (finiteProperties.has(property) && !Number.isFinite(value)) {
-    throw new TypeError(`${type}.${property} must be a finite number.`);
-  }
-
-  if (
-    ["width", "height", "radius", "strokeWidth", "fontSize", "gap"].includes(
-      property
-    ) &&
-    value < 0
-  ) {
-    throw new RangeError(`${type}.${property} must not be negative.`);
-  }
-
-  if (property === "opacity" && (value < 0 || value > 1)) {
-    throw new RangeError(`${type}.opacity must be between 0 and 1.`);
-  }
-
-  if (property === "closed" && typeof value !== "boolean") {
-    throw new TypeError(`${type}.closed must be a boolean.`);
-  }
-
-  if (property === "strokeDash") {
-    if (
-      !Array.isArray(value) ||
-      !value.every(item => Number.isFinite(item) && item >= 0)
-    ) {
-      throw new TypeError(
-        `${type}.strokeDash must be an array of non-negative finite numbers.`
-      );
-    }
-  }
-
-  if (type === "path" && property === "points") {
-    if (
-      !Array.isArray(value) ||
-      value.length < 2 ||
-      !value.every(point =>
-        isPlainObject(point) &&
-        Object.keys(point).length === 2 &&
-        Number.isFinite(point.x) &&
-        Number.isFinite(point.y)
-      )
-    ) {
-      throw new TypeError(
-        "path.points must contain at least two finite { x, y } points."
-      );
-    }
-  }
 }
 
 function validateCollectionChild(child, collectionId, index) {

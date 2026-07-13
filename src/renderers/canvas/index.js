@@ -5,6 +5,14 @@ import { drawRectGraphic } from "./rect.js";
 import { drawTextGraphic } from "./text.js";
 import { requireFiniteProperty } from "./validation.js";
 
+const DRAWERS = Object.freeze({
+  circle: drawCircleGraphic,
+  rect: drawRectGraphic,
+  line: drawLineGraphic,
+  text: drawTextGraphic,
+  path: drawPathGraphic
+});
+
 function requireCanvasContext(context) {
   const methods = [
     "save",
@@ -122,17 +130,11 @@ function drawConcreteGraphic(context, id, graphic) {
     for (const child of graphic.children ?? []) {
       drawConcreteGraphic(context, child.id ?? id, child);
     }
-  } else if (graphic.type === "circle") {
-    drawCircleGraphic(context, id, graphic);
-  } else if (graphic.type === "rect") {
-    drawRectGraphic(context, id, graphic);
-  } else if (graphic.type === "line") {
-    drawLineGraphic(context, id, graphic);
-  } else if (graphic.type === "text") {
-    drawTextGraphic(context, id, graphic);
-  } else if (graphic.type === "path") {
-    drawPathGraphic(context, id, graphic);
-  } else {
+    return;
+  }
+  const draw = DRAWERS[graphic.type];
+  if (draw === undefined) {
     throw new Error(`Canvas renderer does not support "${graphic.type}" yet.`);
   }
+  draw(context, id, graphic);
 }

@@ -1,8 +1,11 @@
 import { requireFiniteProperty } from "./validation.js";
+import { validateConcreteGraphicProperties } from
+  "../../grammar/schemas/concreteGraphic.js";
 
 function drawLine(context, child, collectionId) {
   const properties = child.properties ?? {};
   const graphicId = child.id ?? collectionId;
+  validateConcreteGraphicProperties("line", properties);
   const x1 = requireFiniteProperty(properties, "x1", graphicId);
   const y1 = requireFiniteProperty(properties, "y1", graphicId);
   const x2 = requireFiniteProperty(properties, "x2", graphicId);

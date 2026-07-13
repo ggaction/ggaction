@@ -1,8 +1,11 @@
 import { requireFiniteProperty } from "./validation.js";
+import { validateConcreteGraphicProperties } from
+  "../../grammar/schemas/concreteGraphic.js";
 
 function drawCircle(context, child, collectionId) {
   const properties = child.properties ?? {};
   const graphicId = child.id ?? collectionId;
+  validateConcreteGraphicProperties("circle", properties);
   const x = requireFiniteProperty(properties, "x", graphicId);
   const y = requireFiniteProperty(properties, "y", graphicId);
   const radius = requireFiniteProperty(properties, "radius", graphicId);

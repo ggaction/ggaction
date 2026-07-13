@@ -1,8 +1,11 @@
 import { requireFiniteProperty } from "./validation.js";
+import { validateConcreteGraphicProperties } from
+  "../../grammar/schemas/concreteGraphic.js";
 
 function drawPath(context, child, collectionId) {
   const properties = child.properties ?? {};
   const graphicId = child.id ?? collectionId;
+  validateConcreteGraphicProperties("path", properties);
   const points = properties.points;
 
   if (

@@ -196,21 +196,21 @@ test("rejects incomplete and unsupported concrete graphics", () => {
 
   assert.throws(
     () => render({ graphicSpec: invalidOpacity }, createMockCanvasContext()),
-    /requires opacity from 0 to 1/
+    /circle\.opacity must be between 0 and 1/
   );
 
   const negativeRadius = createGraphicSpec();
   negativeRadius.objects.points.children[0].properties.radius = -1;
   assert.throws(
     () => render({ graphicSpec: negativeRadius }, createMockCanvasContext()),
-    /non-negative radius/
+    /circle\.radius must not be negative/
   );
 
   const invalidFill = createGraphicSpec();
   invalidFill.objects.points.children[0].properties.fill = null;
   assert.throws(
     () => render({ graphicSpec: invalidFill }, createMockCanvasContext()),
-    /string fill/
+    /circle\.fill must be a non-empty string/
   );
 });
 
@@ -232,10 +232,10 @@ test("rejects invalid concrete rect appearance and dimensions", () => {
   };
 
   for (const [patch, message] of [
-    [{ width: -1 }, /non-negative rect dimensions/],
-    [{ fill: null }, /string fill/],
-    [{ stroke: null }, /string stroke/],
-    [{ opacity: 2 }, /opacity from 0 to 1/]
+    [{ width: -1 }, /rect\.width must not be negative/],
+    [{ fill: null }, /rect\.fill must be a non-empty string/],
+    [{ stroke: null }, /rect\.stroke must be a non-empty string/],
+    [{ opacity: 2 }, /rect\.opacity must be between 0 and 1/]
   ]) {
     assert.throws(
       () => render(

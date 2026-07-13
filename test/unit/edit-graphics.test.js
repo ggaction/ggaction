@@ -235,3 +235,25 @@ test("rejects unknown targets, properties, and mismatched value arrays", () => {
     /requires 2 values/
   );
 });
+
+test("shares concrete value validation with renderers", () => {
+  const circle = chart().createGraphics({ id: "point", type: "circle" });
+  assert.throws(
+    () => circle.editGraphics({
+      target: "point",
+      property: "fill",
+      value: 3
+    }),
+    /circle\.fill must be a non-empty string/
+  );
+
+  const text = chart().createGraphics({ id: "label", type: "text" });
+  assert.throws(
+    () => text.editGraphics({
+      target: "label",
+      property: "textAlign",
+      value: "diagonal"
+    }),
+    /Unsupported text\.textAlign/
+  );
+});

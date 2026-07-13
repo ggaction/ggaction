@@ -146,6 +146,12 @@ values by index and must match its length. A non-array value is broadcast to
 every child that supports the property. Nested arrays and objects remain one
 value per child. Generated child IDs such as `points:1` can be targeted.
 
+Authoring and rendering share the same concrete value contract. Numeric
+geometry must be finite, dimensions and stroke widths cannot be negative,
+opacity stays between `0` and `1`, text alignment uses the Canvas vocabulary,
+and appearance strings must be non-empty. Rendering additionally requires all
+properties needed to draw the primitive to be present.
+
 ## Scale materialization
 
 `createScale({ id, type?, domain?, range?, nice?, zero? })` creates an
