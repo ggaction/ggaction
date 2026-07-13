@@ -1096,6 +1096,34 @@ registrar를 한 번 조립하고 `ChartProgram`에 등록한다.
 
 ## Test architecture
 
+현재 test tree는 source filename이나 구현 Phase를 그대로 복제하지 않고 검증 책임을
+기준으로 나눈다.
+
+```text
+test/
+├─ unit/
+│  ├─ core/
+│  ├─ grammar/{layout,scales,schemas,transforms}/
+│  ├─ actions/{canvas,coordinates,data,encodings,guides,marks,primitives,regression,scales}/
+│  ├─ materialization/
+│  └─ renderers/
+├─ contracts/                  cross-cutting architecture invariants
+├─ charts/<chart>/             chart별 vertical slice
+│  ├─ primitive.program.js
+│  ├─ primitive.test.js
+│  ├─ public.test.js
+│  ├─ reference-values.js      필요할 때만 존재
+│  └─ png.render.js
+├─ docs/                       public documentation contracts
+└─ support/                    여러 suite가 공유하는 test infrastructure
+```
+
+Public user program의 canonical owner는 `examples/<chart>/program.js`다. `public.test.js`와
+`png.render.js`는 이를 import하여 실제 example flow를 검증한다. 반대로
+`primitive.program.js`는 extension-level executable oracle이므로 해당 chart test와 함께
+둔다. 통계 reference 계산은 production materializer와 독립적으로 유지하며, 의미가
+불분명한 범용 fixture가 아니라 `reference-values.js`로 이름을 드러낸다.
+
 ### Unit test
 
 Pure grammar, validation, selector, immutable state transition, action hierarchy,
@@ -1119,7 +1147,7 @@ Selector, package boundary, shared validation, materialization plan처럼 기계
 수 있는 아키텍처 규칙은 prose 문서만으로 유지하지 않는다. 각각 focused contract test로
 고정하고 구조 리팩토링에서도 계속 실행한다.
 
-### Primitive baseline과 acceptance
+### Chart vertical slice
 
 지원 차트마다 low-level primitive baseline과 high-level public action program을 비교한다.
 같은 차트라면 다음이 일치해야 한다.
@@ -1140,7 +1168,15 @@ Markdown link, anchor, navigation order, tutorial action flow, public example in
 ### Render regression
 
 각 대표 public/primitive program을 2× PNG로 렌더링한다. Physical dimensions, ink,
-대표 색과 output 존재를 확인하며 generated PNG는 git에 commit하지 않는다.
+대표 색과 output 존재를 확인하며 generated PNG는 git에 commit하지 않는다. Render test는
+chart directory의 `png.render.js`에 두고 생성물은 source tree 밖의
+`.artifacts/test/png/`에 쓴다.
+
+일반 test는 `.test.js`, 고비용 renderer regression은 `.render.js` suffix를 사용한다.
+Package script는 suite별 glob을 명시하여 support module이나 executable program이 Node의
+자동 test discovery에 우연히 포함되지 않게 한다. `test:unit`, `test:contracts`,
+`test:charts`, `test:docs`, `test:render`를 독립적으로 실행할 수 있고 `test`와
+`test:coverage`는 모든 일반 suite를 함께 검증한다.
 
 ### Coverage gate
 

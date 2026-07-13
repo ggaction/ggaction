@@ -79,10 +79,13 @@
 
 - Encode mechanically verifiable architectural rules in focused contract tests rather than relying on prose documentation alone. At minimum, keep selector behavior, public package boundaries, shared concrete-graphic validation, and materialization-plan ordering and deduplication executable.
 - Write source code, test descriptions, fixtures, and example-program code in English. Implementation step documents remain in Korean.
-- Keep representative user-authored programs in separate files under `test/programs/` and execute those files from acceptance tests.
+- Keep each public user-authored program under `examples/<chart>/program.js`; chart tests must import that same program instead of copying its action chain.
+- Keep each chart's primitive baseline, public contract tests, deterministic reference values, and PNG regression together under `test/charts/<chart>/`. Name the explicit primitive chain `primitive.program.js`.
+- Organize unit tests by reusable capability under `test/unit/`, not by implementation phase or a mechanically mirrored source tree. Keep cross-cutting architecture invariants under `test/contracts/`.
 - When progressively replacing a primitive contract with higher-level actions, preserve the primitive baseline and maintain one evolving high-level action program per chart development cycle. Do not create separate representative program files for every implementation unit unless the user explicitly requests snapshots.
 - Require a representative high-level program and its primitive baseline to converge on the same concrete `graphicSpec`, explicit rendering order, and renderer calls when they describe the same chart. Visual similarity alone is not sufficient regression evidence.
-- Pair each representative program with a PNG export test under `test/render/`; write generated images to the gitignored `test/output/` directory.
+- Co-locate each chart's PNG export test as `test/charts/<chart>/png.render.js`; write generated images to the gitignored `.artifacts/test/png/` directory.
+- Use `.test.js` for the normal fast suite and `.render.js` for expensive renderer regressions. Keep both suites explicitly selected by package scripts so helper and program modules are never discovered as tests accidentally.
 - When a representative program is intended to demonstrate primitive usage, write one explicit method chain and do not hide primitive calls behind batching helpers or other syntactic sugar.
 - Keep the user program focused on realistic library usage. Assertions, mocks, and test-only inspection belong in the importing test file rather than in the user program.
 - For every high-level user-facing action, test its shortest valid call after the required prerequisites are present so the default API does not become progressively more verbose.
