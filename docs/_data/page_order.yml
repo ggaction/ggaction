@@ -12,6 +12,8 @@
   url: /tutorials/histogram/
 - title: Bar Chart Tutorial
   url: /tutorials/grouped-bar/
+- title: Regression Scatterplot Tutorial
+  url: /tutorials/regression-scatterplot/
 - title: Chart Recipes
   url: /recipes/
 - title: Scatterplot Recipe
@@ -22,6 +24,8 @@
   url: /recipes/histogram/
 - title: Bar Chart Recipe
   url: /recipes/bar-chart/
+- title: Regression Scatterplot Recipe
+  url: /recipes/regression-scatterplot/
 - title: Troubleshooting
   url: /troubleshooting/
 - title: Canvas

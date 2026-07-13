@@ -34,3 +34,10 @@ and a centered title.
 Open <http://localhost:8000/examples/jobs-grouped-bar/>. This chart aggregates
 job percentages by year, groups bars by sex, and infers ordinal axes, a
 horizontal grid, and a right-side legend.
+
+## Cars regression scatterplot
+
+Open <http://localhost:8000/examples/cars-regression-scatterplot/>. This chart
+filters to Japan and the USA, varies point size and shape, layers grouped linear
+fits and 95% mean-response confidence bands, and creates shared axes, grid, and
+composite legends.

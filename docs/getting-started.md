@@ -26,6 +26,7 @@ Open one of the runnable repository examples:
 - `http://localhost:4173/examples/cars-line-chart/`
 - `http://localhost:4173/examples/cars-histogram/`
 - `http://localhost:4173/examples/jobs-grouped-bar/`
+- `http://localhost:4173/examples/cars-regression-scatterplot/`
 
 Those browser examples import `../../src/index.js` directly. The code below
 uses the intended package import, `ggaction`, to document the consumer API that
@@ -72,8 +73,8 @@ const program = chart()
 `createPointMark` uses the most recently created dataset. Encoding actions use
 the most recently created mark. Pass `data` or `target` explicitly when a
 program contains more than one candidate. `createGuides` infers the applicable
-axes and horizontal grid from these point encodings. Point-mark legends are not
-supported yet, so the color encoding does not create a legend.
+axes and horizontal grid from these point encodings. A nominal point color
+encoding also produces a compatible categorical legend.
 
 ## 3. Render it
 
@@ -95,6 +96,8 @@ actions. It does not compile `semanticSpec` during rendering.
   [cars histogram tutorial](./tutorials/histogram.md).
 - Aggregate and group ordinal categories in the
   [jobs grouped bar tutorial](./tutorials/grouped-bar.md).
+- Layer grouped linear fits and confidence bands in the
+  [regression scatterplot tutorial](./tutorials/regression-scatterplot.md).
 - Check the [action index](./reference/actions.md) for signatures and defaults.
 - Copy a minimal flow from the [chart recipes](./recipes/index.md).
 - Resolve common inference and layout errors with

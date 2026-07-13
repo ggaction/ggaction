@@ -99,7 +99,12 @@ test("keeps tutorial action flows aligned with public examples", () => {
     ["scatterplot", "examples/cars-scatterplot/program.js", "return chart()"],
     ["line-chart", "examples/cars-line-chart/program.js", "return chart()"],
     ["histogram", "examples/cars-histogram/program.js", "return chart()"],
-    ["grouped-bar", "examples/jobs-grouped-bar/program.js", "return chart()"]
+    ["grouped-bar", "examples/jobs-grouped-bar/program.js", "return chart()"],
+    [
+      "regression-scatterplot",
+      "examples/cars-regression-scatterplot/program.js",
+      "return chart()"
+    ]
   ];
 
   for (const [tutorial, example, exampleStart] of cases) {
@@ -123,19 +128,32 @@ test("links every public chart example from entry documentation", () => {
     "cars-scatterplot",
     "cars-line-chart",
     "cars-histogram",
-    "jobs-grouped-bar"
+    "jobs-grouped-bar",
+    "cars-regression-scatterplot"
   ]) {
     assert.match(readme, new RegExp(`examples/${name}`));
     assert.match(gettingStarted, new RegExp(`examples/${name}`));
   }
-  for (const name of ["scatterplot", "line-chart", "histogram", "grouped-bar"]) {
+  for (const name of [
+    "scatterplot",
+    "line-chart",
+    "histogram",
+    "grouped-bar",
+    "regression-scatterplot"
+  ]) {
     assert.match(tutorials, new RegExp(`\\./${name}\\.md`));
   }
   const recipes = read("docs/recipes/index.md");
-  for (const name of ["scatterplot", "line-chart", "histogram", "bar-chart"]) {
+  for (const name of [
+    "scatterplot",
+    "line-chart",
+    "histogram",
+    "bar-chart",
+    "regression-scatterplot"
+  ]) {
     assert.match(recipes, new RegExp(`\\./${name}\\.md`));
   }
-  assert.match(gettingStarted, /Point-mark legends are not\s+supported yet/);
+  assert.match(gettingStarted, /point color\s+encoding also produces/);
 });
 
 test("indexes documentation headings for section search", () => {

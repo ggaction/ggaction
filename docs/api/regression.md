@@ -60,5 +60,6 @@ createRegression
 
 ## Related
 
+[Regression scatterplot tutorial](../tutorials/regression-scatterplot.md) ·
 [Data](./data.md) · [Marks](./marks.md) · [Encodings](./encodings.md) ·
 [Guides](./guides.md)

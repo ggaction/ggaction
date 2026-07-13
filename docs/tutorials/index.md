@@ -13,6 +13,7 @@ Build complete charts before exploring individual API options.
 | Line chart | line | temporal `encodeX`, aggregate `encodeY` | Mean series over time |
 | Histogram | bar | `encodeHistogram`, stacked `encodeColor` | Binned counts |
 | Bar chart | bar | ordinal `encodeX`, aggregate `encodeY`, grouped `encodeColor` | Side-by-side aggregate bars |
+| Regression scatterplot | point + area + line | `filterData`, appearance encodings, `createRegression` | Grouped fits and confidence bands |
 
 Choose the chart whose semantic relationship matches the question you want to
 answer. The bar tutorial uses grouped bars as its current example; grouping is
@@ -45,3 +46,10 @@ Aggregate an ordinal x category and build a bar chart. The current example uses
 a nominal color field to place groups side by side.
 
 [Build a bar chart with grouped bars](./grouped-bar.md)
+
+## Regression scatterplot
+
+Filter rows, vary point size and shape, and layer grouped linear fits with 95%
+mean-response confidence bands.
+
+[Build the cars regression scatterplot](./regression-scatterplot.md)

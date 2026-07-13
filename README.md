@@ -41,6 +41,7 @@ state is never automatically compiled during rendering.
 - [Cars line chart tutorial](./docs/tutorials/line-chart.md)
 - [Cars histogram tutorial](./docs/tutorials/histogram.md)
 - [Bar chart tutorial](./docs/tutorials/grouped-bar.md)
+- [Regression scatterplot tutorial](./docs/tutorials/regression-scatterplot.md)
 - [Chart concepts](./docs/concepts/chart-program.md)
 - [Complete action reference](./docs/reference/actions.md)
 - [Supported features](./docs/supported-features.md)
@@ -49,7 +50,9 @@ state is never automatically compiled during rendering.
 The runnable [cars scatterplot](./examples/cars-scatterplot/),
 [aggregate line chart](./examples/cars-line-chart/), and
 [stacked histogram](./examples/cars-histogram/) use `data/cars.json`. The
-[grouped bar chart](./examples/jobs-grouped-bar/) uses `data/jobs.json`.
+[regression scatterplot](./examples/cars-regression-scatterplot/) also uses the
+cars data and layers grouped fits with confidence bands. The [grouped bar
+chart](./examples/jobs-grouped-bar/) uses `data/jobs.json`.
 Completed programs can also be exported through
 [`ggaction/png`](./docs/api/rendering.md#png-output).
 

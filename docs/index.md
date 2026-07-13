@@ -43,7 +43,9 @@ example, then use the API pages when you need to customize one part.
    values by category.
 5. [Bar chart tutorial](./tutorials/grouped-bar.md) — aggregate ordinal
    categories; the example places nominal groups side by side.
-6. [Chart API reference](./reference/actions.md#chart-authoring-api) — find an
+6. [Regression scatterplot tutorial](./tutorials/regression-scatterplot.md) —
+   filter points and add grouped fits with confidence bands.
+7. [Chart API reference](./reference/actions.md#chart-authoring-api) — find an
    action and its exact signature.
 
 Already know the chart type? Start from the concise

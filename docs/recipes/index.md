@@ -15,6 +15,7 @@ required author decisions from library inference.
 | Line chart | temporal x, quantitative y | mean aggregation, sorted paths, guides | [Line chart](./line-chart.md) |
 | Histogram | quantitative field | bins, count y, zero stack, guides | [Histogram](./histogram.md) |
 | Bar chart | ordinal x, quantitative y | mean y and band geometry | [Bar chart](./bar-chart.md) |
+| Regression scatterplot | point x/y and optional group | grouped OLS, confidence bands, shared guides | [Regression scatterplot](./regression-scatterplot.md) |
 
 Every flow begins with `createCanvas`, `createData`, and a semantic mark. Add
 explicit IDs only when the current program state contains multiple compatible

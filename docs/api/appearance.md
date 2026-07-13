@@ -92,4 +92,4 @@ requires complete ordinal x, aggregate y, color, and xOffset semantics.
 ## Related
 
 [Marks](./marks.md) · [Position encodings](./position-encodings.md) ·
-[Series encodings](./series-encodings.md)
+[Series encodings](./series-encodings.md) · [Legends](./legends.md)

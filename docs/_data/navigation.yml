@@ -8,6 +8,8 @@
       url: /tutorials/
     - title: Chart Recipes
       url: /recipes/
+    - title: Regression Tutorial
+      url: /tutorials/regression-scatterplot/
     - title: Troubleshooting
       url: /troubleshooting/
 
