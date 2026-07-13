@@ -1165,6 +1165,21 @@ Markdown link, anchor, navigation order, tutorial action flow, public example in
 검증한다. Public API가 바뀌면 action reference, 관련 API page, tutorial,
 `docs/llms.txt`가 함께 바뀌어야 한다.
 
+Public chart image는 `examples/<chart>/program.js`에서 `npm run docs:images`로 2× PNG를
+생성한다. Font rasterization과 antialiasing은 OS에 따라 달라지므로 CI는 PNG byte
+equality를 요구하지 않는다. 대신 public program, data, 전체 source/renderer와 lockfile을
+hash한 `docs/assets/images/manifest.json`의 freshness, PNG signature, dimensions와 chart
+catalog 연결을 검증한다.
+
+`docs/llms.txt`는 짧은 routing index다. `docs/llms-full.txt`는
+`docs/_data/page_order.yml`에 있는 canonical Markdown을 `npm run docs:llms`로 결합한
+generated artifact이며 직접 수정하지 않는다.
+
+CI documentation job은 generated artifact drift를 검사한 뒤 GitHub Pages와 같은 공식
+Jekyll action으로 site를 build한다. Built HTML의 local link/asset과 미처리 Liquid를
+검사하고, headless Chromium에서 desktop search와 mobile navigation, focus recovery,
+horizontal overflow, console/page error를 검증한다.
+
 ### Render regression
 
 각 대표 public/primitive program을 2× PNG로 렌더링한다. Physical dimensions, ink,

@@ -131,6 +131,9 @@
 - Treat `docs/` as user documentation: prioritize installation, user-facing APIs, observable behavior, examples, and the minimum core concepts users need.
 - Organize public documentation by audience and task: getting started and tutorials first, then chart API, advanced chart API, and extension API. Keep one canonical action reference with exact signatures for discovery by users and language models.
 - Whenever a public action is added, removed, renamed, or changes signature, update `docs/reference/actions.md`, its relevant API page, and the current scope in `docs/llms.txt` in the same conceptual commit.
+- Treat `examples/<chart>/program.js` as the canonical source for public chart images. Regenerate images with `npm run docs:images`; do not hand-edit chart screenshots. Validate freshness through the platform-independent image manifest rather than cross-platform PNG byte equality.
+- Keep `docs/llms.txt` as a concise routing index and regenerate `docs/llms-full.txt` from the canonical page order with `npm run docs:llms`.
+- A documentation change is not complete until Markdown contracts, the Jekyll build, built-link checks, and desktop/mobile browser smoke tests pass.
 - Keep unimplemented roadmap ideas out of current API documentation except where a concise limitation is required to explain an accepted value or error.
 - Do not exhaustively document internal modules, helper functions, data structures, or implementation mechanics in public docs unless users must understand them to use the library correctly.
 - Write each new chart implementation contract in Korean at `agent_docs/impl/chart/<chart-name>.md`. Keep the complete chart description, final user-facing API, important action hierarchy, and stored-result contract readable in that one chart document.
