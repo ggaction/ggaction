@@ -25,7 +25,8 @@
     "test:charts": "node --test test/charts/*/*.test.js",
     "test:docs": "node --test test/docs/*.test.js",
     "test:coverage": "node --test --experimental-test-coverage --test-coverage-include=src/**/*.js --test-coverage-lines=94 --test-coverage-branches=89 --test-coverage-functions=98 test/unit/*/*.test.js test/unit/*/*/*.test.js test/contracts/*.test.js test/charts/*/*.test.js test/docs/*.test.js",
-    "test:render": "node test/support/artifacts.js && node --test test/charts/*/*.render.js"
+    "test:render": "node test/support/artifacts.js && node --test test/charts/*/*.render.js",
+    "docs:images": "node scripts/generate-doc-images.js"
   },
   "engines": {
     "node": ">=20"

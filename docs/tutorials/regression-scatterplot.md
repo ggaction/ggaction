@@ -5,6 +5,8 @@ title: Regression Scatterplot Tutorial
 
 # Regression Scatterplot Tutorial
 
+![Acceleration by displacement with grouped regression](../assets/images/cars-regression-scatterplot.png)
+
 This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete repository-mode module

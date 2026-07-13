@@ -5,6 +5,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { chartImages } from "../../scripts/generate-doc-images.js";
+
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const docsRoot = path.join(root, "docs");
 
@@ -194,4 +196,29 @@ test("indexes documentation headings for section search", () => {
   assert.match(search, /sectionTitle/);
   assert.match(layout, /docs-toc\.js/);
   assert.match(layout, /page-navigation\.html/);
+});
+
+test("keeps one generated gallery image for every public chart", () => {
+  const index = read("docs/index.md");
+  const tutorials = read("docs/tutorials/index.md");
+
+  assert.equal(chartImages.length, 6);
+  for (const { id, width, height } of chartImages) {
+    const image = readFileSync(path.join(root, `docs/assets/images/${id}.png`));
+    assert.deepEqual([...image.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+    assert.equal(image.readUInt32BE(16), width * 2, `${id} width`);
+    assert.equal(image.readUInt32BE(20), height * 2, `${id} height`);
+    assert.match(index, new RegExp(`assets/images/${id}\\.png`));
+  }
+
+  for (const tutorial of [
+    "scatterplot",
+    "line-chart",
+    "histogram",
+    "grouped-bar",
+    "regression-scatterplot",
+    "density-area"
+  ]) {
+    assert.match(tutorials, new RegExp(`\\./${tutorial}\\.md`));
+  }
 });

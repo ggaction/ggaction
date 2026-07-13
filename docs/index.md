@@ -26,6 +26,10 @@ The main, extension, and PNG entry points include TypeScript declarations.
     <img src="{{ '/assets/images/jobs-grouped-bar.png' | relative_url }}" alt="Jobs grouped bar example">
     <span>Bar chart</span>
   </a>
+  <a href="{{ '/tutorials/regression-scatterplot/' | relative_url }}">
+    <img src="{{ '/assets/images/cars-regression-scatterplot.png' | relative_url }}" alt="Cars regression scatterplot with confidence bands">
+    <span>Regression scatterplot</span>
+  </a>
   <a href="{{ '/tutorials/density-area/' | relative_url }}">
     <img src="{{ '/assets/images/cars-density-area.png' | relative_url }}" alt="Cars density area chart">
     <span>Density area</span>
