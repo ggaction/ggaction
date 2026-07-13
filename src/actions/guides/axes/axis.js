@@ -1,6 +1,7 @@
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
+import { validateKeys } from "../../../core/validation.js";
 
 const TOP_OPTIONS = Object.freeze([
   "scale",
@@ -27,14 +28,6 @@ const TITLE_OPTIONS = Object.freeze([
   "fontFamily",
   "fontWeight"
 ]);
-
-function validateKeys(value, supported, label) {
-  for (const key of Object.keys(value)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${label} option "${key}".`);
-    }
-  }
-}
 
 function validateNested(value, supported, label) {
   if (!isPlainObject(value)) {

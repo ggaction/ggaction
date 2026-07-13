@@ -1,18 +1,11 @@
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
+import { validateKeys } from "../../../core/validation.js";
 
 const TOP_OPTIONS = Object.freeze(["coordinate", "x", "y"]);
 const COORDINATE_OPTIONS = Object.freeze(["id", "type"]);
 const COORDINATE_API_TYPES = new Set(["auto", "cartesian", "polar"]);
-
-function validateKeys(value, supported, label) {
-  for (const key of Object.keys(value)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${label} option "${key}".`);
-    }
-  }
-}
 
 function validateAxisOption(value, channel) {
   if (value !== undefined && value !== false && !isPlainObject(value)) {

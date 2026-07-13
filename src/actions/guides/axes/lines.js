@@ -1,17 +1,10 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
+import { validateKeys } from "../../../core/validation.js";
 
 const DEFAULT_STYLE = Object.freeze({ color: "#334155", lineWidth: 1 });
 const CREATE_OPTIONS = Object.freeze(["scale", "position", "color", "lineWidth"]);
 const EDIT_OPTIONS = Object.freeze(["position", "color", "lineWidth"]);
-
-function validateOptions(args, supported, operation) {
-  for (const key of Object.keys(args)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${operation} option "${key}".`);
-    }
-  }
-}
 
 function validatePosition(channel, position) {
   const supported = channel === "x" ? "bottom" : "left";
@@ -76,7 +69,7 @@ function createEditAxisLine(channel) {
   return action(
     { op: operation, description: `Edit the concrete ${channel}-axis line.` },
     function (args = {}) {
-      validateOptions(args, EDIT_OPTIONS, operation);
+      validateKeys(args, EDIT_OPTIONS, operation);
       validatePosition(channel, args.position ?? (channel === "x" ? "bottom" : "left"));
       const { graphic } = axisIds(channel);
       const line = this.graphicSpec.objects[graphic];
@@ -113,7 +106,7 @@ function createAxisLine(channel) {
   return action(
     { op: operation, description: `Create the concrete ${channel}-axis line.` },
     function (args = {}) {
-      validateOptions(args, CREATE_OPTIONS, operation);
+      validateKeys(args, CREATE_OPTIONS, operation);
       const scale = validateUserId(args.scale ?? channel, "Scale id");
       const position = validatePosition(
         channel,

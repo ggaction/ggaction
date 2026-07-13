@@ -1,5 +1,6 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
+import { sameOrderedValues } from "../../../core/validation.js";
 import {
   mapLinearValues,
   mapOrdinalPositionValues
@@ -50,15 +51,11 @@ function validateConfig(channel, config) {
   if (config.format !== "auto" && (!config.format || !Number.isInteger(config.format.decimals) || config.format.decimals < 0)) throw new TypeError('Label format must be "auto" or { decimals }.');
 }
 
-function sameValues(left, right) {
-  return left?.length === right?.length && left.every((value, index) => value === right[index]);
-}
-
 function assertTickCompatibility(ticks, config, operation) {
   if (!ticks) return;
   if (ticks.scale !== config.scale || ticks.mode !== config.mode) throw new Error(`${operation} conflicts with axis ticks.`);
   if (config.mode === "count" && ticks.count !== config.count) throw new Error(`${operation} conflicts with axis ticks.`);
-  if (config.mode === "values" && !sameValues(ticks.values, config.values)) throw new Error(`${operation} conflicts with axis ticks.`);
+  if (config.mode === "values" && !sameOrderedValues(ticks.values, config.values)) throw new Error(`${operation} conflicts with axis ticks.`);
 }
 
 function resolve(program, channel, config) {

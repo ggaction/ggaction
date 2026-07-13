@@ -1,12 +1,7 @@
 import { isPlainObject } from "../../../../core/immutable.js";
+import { validateKeys } from "../../../../core/validation.js";
 
-export function validateKeys(value, supported, label) {
-  for (const key of Object.keys(value)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${label} option "${key}".`);
-    }
-  }
-}
+export { validateKeys };
 
 export function validateObject(value, supported, label) {
   if (!isPlainObject(value)) {

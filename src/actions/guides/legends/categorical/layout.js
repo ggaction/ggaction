@@ -1,4 +1,5 @@
 import { isPlainObject } from "../../../../core/immutable.js";
+import { noOptions } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales.js";
 
 export function activeConfig(program) {
@@ -139,11 +140,7 @@ export function resolveAppearance(program, config) {
   return { colors, dashes };
 }
 
-export function noOptions(args, operation) {
-  if (!isPlainObject(args) || Object.keys(args).length > 0) {
-    throw new Error(`${operation} does not accept options.`);
-  }
-}
+export { noOptions };
 
 export function layerFor(config, type) {
   const layer = config.symbol.layers.find(item => item.type === type);

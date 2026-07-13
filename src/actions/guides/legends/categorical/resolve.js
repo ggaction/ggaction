@@ -1,4 +1,5 @@
 import { validateUserId } from "../../../../core/identifiers.js";
+import { sameOrderedValues } from "../../../../core/validation.js";
 import { CHANNELS } from "./options.js";
 import { nonEmptyString } from "./validation.js";
 
@@ -35,11 +36,7 @@ export function resolveTarget(program, requested) {
   return candidates[0];
 }
 
-export function sameValues(left, right) {
-  return left.length === right.length && left.every(
-    (value, index) => value === right[index]
-  );
-}
+export const sameValues = sameOrderedValues;
 
 function resolveOrdinalScales(program, scaleIds) {
   const scales = scaleIds.map(id => {

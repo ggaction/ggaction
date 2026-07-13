@@ -1,11 +1,8 @@
 import { validateUserId } from "../../core/identifiers.js";
+import { validateKeys } from "../../core/validation.js";
 
 export function validateOptions(args, supported, operation) {
-  for (const key of Object.keys(args)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${operation} option "${key}".`);
-    }
-  }
+  validateKeys(args, supported, operation);
 }
 
 export function rematerializeExistingLegend(program) {

@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
+import { validateKeys } from "../../core/validation.js";
 import { resolveHistogramBins } from "../../grammar/histogram.js";
 import {
   mapLinearValues,
@@ -29,11 +30,7 @@ import {
 const OPTIONS = Object.freeze(["id"]);
 
 function validateOptions(args) {
-  for (const key of Object.keys(args)) {
-    if (!OPTIONS.includes(key)) {
-      throw new Error(`Unknown rematerializeScale option "${key}".`);
-    }
-  }
+  validateKeys(args, OPTIONS, "rematerializeScale");
 }
 
 export const rematerializeScale = action(

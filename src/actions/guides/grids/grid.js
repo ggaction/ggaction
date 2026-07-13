@@ -1,6 +1,7 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { isPlainObject } from "../../../core/immutable.js";
+import { validateKeys } from "../../../core/validation.js";
 import { mapLinearValues } from "../../../grammar/scales.js";
 import {
   inferGridTickConfig,
@@ -31,14 +32,6 @@ function names(direction) {
     rematerialize: `rematerialize${prefix}Grid`,
     graphic: `${direction}GridLines`
   };
-}
-
-function validateKeys(args, supported, operation) {
-  for (const key of Object.keys(args)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${operation} option "${key}".`);
-    }
-  }
 }
 
 function validateStrokeDash(value) {

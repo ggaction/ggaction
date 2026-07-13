@@ -1,5 +1,6 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
+import { validateKeys } from "../../../core/validation.js";
 import {
   mapLinearValues,
   mapOrdinalPositionValues
@@ -16,14 +17,6 @@ const DEFAULTS = Object.freeze({
   fontFamily: "sans-serif",
   fontWeight: 600
 });
-
-function validateOptions(args, supported, operation) {
-  for (const key of Object.keys(args)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${operation} option "${key}".`);
-    }
-  }
-}
 
 function validateText(text) {
   if (typeof text !== "string" || text.length === 0) {
@@ -96,7 +89,7 @@ function names(channel) {
 function makeEdit(channel) {
   const operation = names(channel);
   return action({ op: operation.edit, description: `Edit the ${channel}-axis title.` }, function (args = {}) {
-    validateOptions(args, EDIT_OPTIONS, operation.edit);
+      validateKeys(args, EDIT_OPTIONS, operation.edit);
     if (this.graphicSpec.objects[operation.graphic]?.type !== "text") throw new Error(`${operation.edit} requires an existing axis title.`);
     const previous = this.guideConfigs.axis?.[channel]?.title;
     if (!previous) throw new Error(`${operation.edit} requires title configuration.`);
@@ -125,7 +118,7 @@ const editYAxisTitle = makeEdit("y");
 function makeCreate(channel) {
   const operation = names(channel);
   return action({ op: operation.create, description: `Create the ${channel}-axis title.` }, function (args = {}) {
-    validateOptions(args, CREATE_OPTIONS, operation.create);
+      validateKeys(args, CREATE_OPTIONS, operation.create);
     const scale = validateUserId(args.scale ?? channel, "Scale id");
     const guideScale = this.semanticSpec.guides.axis?.[channel]?.scale;
     if (guideScale && guideScale !== scale) throw new Error(`${operation.create} conflicts with the existing axis scale.`);

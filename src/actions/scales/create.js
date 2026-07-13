@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
+import { validateKeys } from "../../core/validation.js";
 import {
   validateOrdinalDomain,
   validateOrdinalRange,
@@ -18,11 +19,7 @@ const CREATE_SCALE_OPTIONS = Object.freeze([
 ]);
 
 function validateOptions(args) {
-  for (const key of Object.keys(args)) {
-    if (!CREATE_SCALE_OPTIONS.includes(key)) {
-      throw new Error(`Unknown createScale option "${key}".`);
-    }
-  }
+  validateKeys(args, CREATE_SCALE_OPTIONS, "createScale");
 }
 
 function sameScaleSetting(left, right) {

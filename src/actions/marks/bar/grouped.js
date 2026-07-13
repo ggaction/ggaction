@@ -1,15 +1,10 @@
 import { deriveBarMeans } from "../../../grammar/barAggregate.js";
 import { mapLinearValues } from "../../../grammar/scales.js";
+import { sameOrderedValues } from "../../../core/validation.js";
 import {
   DEFAULT_BAR_STROKE,
   DEFAULT_BAR_STROKE_WIDTH
 } from "./resolve.js";
-
-function sameValues(left, right) {
-  return left.length === right.length && left.every(
-    (value, index) => value === right[index]
-  );
-}
 
 export function deriveGroupedRectangles(required, resolved, band) {
   const { dataset, layer } = required;
@@ -30,7 +25,7 @@ export function deriveGroupedRectangles(required, resolved, band) {
       `Grouped bar mark "${layer.id}" requires matching color and xOffset scales.`
     );
   }
-  if (!sameValues(colorScale.domain, offsetScale.domain)) {
+  if (!sameOrderedValues(colorScale.domain, offsetScale.domain)) {
     throw new Error(
       `Grouped bar mark "${layer.id}" requires matching color and xOffset domains.`
     );

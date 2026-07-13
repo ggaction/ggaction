@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
+import { noOptions, validateKeys } from "../../core/validation.js";
 
 const OPTIONS = Object.freeze([
   "text",
@@ -35,14 +36,6 @@ const DEFAULTS = Object.freeze({
     fontWeight: "normal"
   })
 });
-
-function validateKeys(value, supported, label) {
-  for (const key of Object.keys(value)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${label} option "${key}".`);
-    }
-  }
-}
 
 function validateString(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -168,12 +161,6 @@ function resolveLayout(program, config) {
   }
 
   return { x, titleY, subtitleY, textAlign: config.align };
-}
-
-function noOptions(args, operation) {
-  if (!isPlainObject(args) || Object.keys(args).length > 0) {
-    throw new Error(`${operation} does not accept options.`);
-  }
 }
 
 function editText(program, id, text, style, x, y, textAlign) {

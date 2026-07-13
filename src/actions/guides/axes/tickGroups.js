@@ -1,5 +1,6 @@
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
+import { validateKeys } from "../../../core/validation.js";
 
 const CREATE_OPTIONS = Object.freeze([
   "scale",
@@ -27,14 +28,6 @@ const LABEL_OPTIONS = Object.freeze([
 ]);
 const SHARED_CREATE = Object.freeze(["scale", "position", "count", "values"]);
 const SHARED_EDIT = Object.freeze(["position", "count", "values"]);
-
-function validateKeys(value, supported, operation) {
-  for (const key of Object.keys(value)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${operation} option "${key}".`);
-    }
-  }
-}
 
 function validateNested(value, supported, label) {
   if (!isPlainObject(value)) {
