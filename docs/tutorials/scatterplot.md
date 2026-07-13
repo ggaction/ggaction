@@ -63,6 +63,25 @@ are requested. `createGuides` calls the axis and grid actions, which read that
 stored relationship and create guide graphics; they do not create or repair
 coordinates.
 
+## Key action trace
+
+The trace keeps the user flow and meaningful guide decomposition. Primitive
+property edits remain available deeper in the same tree.
+
+```text
+program
+├─ createPointMark
+├─ encodeX
+├─ encodeY
+├─ encodeColor
+├─ encodeRadius
+└─ createGuides
+   ├─ createAxes
+   │  ├─ createXAxis
+   │  └─ createYAxis
+   └─ createGrid
+```
+
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.

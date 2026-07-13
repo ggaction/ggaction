@@ -68,6 +68,27 @@ are derived and materialized separately.
 Legends default to the right for every supported chart. This example passes
 `position: "bottom"` because its horizontal layout is intentional.
 
+## Key action trace
+
+The atomic histogram action exposes its interdependent position actions as
+children, while guide selection remains a separate aggregate.
+
+```text
+program
+├─ createBarMark
+├─ encodeHistogram
+│  ├─ encodeX
+│  └─ encodeY
+│     └─ rematerializeBarMark
+├─ encodeColor
+│  └─ rematerializeBarMark
+├─ createGuides
+│  ├─ createAxes
+│  ├─ createGrid
+│  └─ createLegend
+└─ createTitle
+```
+
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.

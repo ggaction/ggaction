@@ -110,6 +110,7 @@ test("keeps tutorial action flows aligned with public examples", () => {
       actionFlow(exampleSource, exampleStart),
       tutorial
     );
+    assert.match(tutorialSource, /^## Key action trace$/m, tutorial);
   }
 });
 

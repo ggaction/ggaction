@@ -74,6 +74,28 @@ The source rows remain immutable. Aggregation creates derived series values;
 it does not replace the dataset. Because color and stroke dash encode the same
 field and ordered domain, `createGuides` combines them into one legend.
 
+## Key action trace
+
+Aggregate and series actions explicitly rematerialize the path; the renderer
+does not infer those relationships later.
+
+```text
+program
+├─ createLineMark
+├─ encodeX
+├─ encodeY
+│  └─ rematerializeLineMark
+├─ encodeColor
+│  └─ rematerializeLineMark
+├─ encodeStrokeDash
+│  └─ rematerializeLineMark
+├─ createGuides
+│  ├─ createAxes
+│  ├─ createGrid
+│  └─ createLegend
+└─ createTitle
+```
+
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.

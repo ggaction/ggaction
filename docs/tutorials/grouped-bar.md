@@ -65,6 +65,27 @@ invokes the advanced xOffset encoding for the same field. `encodeBarWidth`
 then has enough stored information to materialize one concrete rectangle for
 each observed year/sex cell. Missing cells are omitted.
 
+## Key action trace
+
+Grouped color owns the matching offset encoding. Width is the final graphical
+decision that makes concrete grouped rectangles possible.
+
+```text
+program
+├─ createBarMark
+├─ encodeX
+├─ encodeY
+├─ encodeColor
+│  ├─ encodeXOffset
+│  └─ rematerializeBarMark
+├─ encodeBarWidth
+│  └─ rematerializeBarMark
+└─ createGuides
+   ├─ createAxes
+   ├─ createGrid
+   └─ createLegend
+```
+
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
