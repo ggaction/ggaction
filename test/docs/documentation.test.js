@@ -158,6 +158,30 @@ test("links every public chart example from entry documentation", () => {
     assert.match(recipes, new RegExp(`\\./${name}\\.md`));
   }
   assert.match(gettingStarted, /point color\s+encoding can produce/);
+  assert.match(gettingStarted, /examples\/getting-started/);
+});
+
+test("keeps tutorial modules runnable from a repository checkout", () => {
+  const tutorials = {
+    "scatterplot": "cars",
+    "line-chart": "cars",
+    "histogram": "cars",
+    "grouped-bar": "jobs",
+    "regression-scatterplot": "cars",
+    "density-area": "cars"
+  };
+
+  for (const [name, dataset] of Object.entries(tutorials)) {
+    const source = read(`docs/tutorials/${name}.md`);
+    assert.match(source, /from "\.\.\/\.\.\/src\/index\.js"/);
+    assert.match(source, new RegExp(`const ${dataset} = await response\\.json\\(\\)`));
+    assert.match(source, /if \(!response\.ok\) throw new Error/);
+  }
+
+  assert.doesNotMatch(
+    read("docs/recipes/scatterplot.md"),
+    /Point legends are not supported/
+  );
 });
 
 test("indexes documentation headings for section search", () => {

@@ -11,10 +11,16 @@ python3 -m http.server 8000
 Then open <http://localhost:8000/examples/cars-scatterplot/>. The example uses
 the Chart API to materialize 392 circles and the Canvas renderer to draw them.
 
+## Getting started
+
+Open <http://localhost:8000/examples/getting-started/> for the small inline-data
+example used by the Getting Started guide.
+
 ## Primitive cars line chart
 
 Open <http://localhost:8000/examples/cars-line-chart-primitives/>. This
-low-level chart uses the explicit primitive program under `test/programs/` to
+low-level chart uses the explicit primitive program under
+`test/charts/cars-line-chart/` to
 render three Origin paths, axes, a combined color/dash legend, and chart title.
 
 ## Cars line chart

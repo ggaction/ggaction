@@ -7,15 +7,17 @@ title: Cars Scatterplot Tutorial
 
 ![Horsepower versus miles per gallon](../assets/images/cars-scatterplot.png)
 
-This tutorial uses the intended package API. The repository contains a
+This tutorial uses the chart-authoring API directly from the repository build.
+After npm publication, only the import path changes to `"ggaction"`. The
+repository contains a
 [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-scatterplot)
-and its [complete source](https://github.com/hj-n/ggaction/blob/main/examples/cars-scatterplot/main.js),
-which import the local source build instead.
+and its [canonical program](https://github.com/hj-n/ggaction/blob/main/examples/cars-scatterplot/program.js).
 
 ```javascript
-import { chart, render } from "ggaction";
+import { chart, render } from "../../src/index.js";
 
 const response = await fetch("../../data/cars.json");
+if (!response.ok) throw new Error(`Failed to load cars: ${response.status}`);
 const cars = await response.json();
 const rows = cars.filter(
   car =>

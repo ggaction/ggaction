@@ -7,13 +7,18 @@ title: Regression Scatterplot Tutorial
 
 This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
-mean-response confidence band per Origin. The complete program uses only the
-chart-authoring API. The repository contains a
+mean-response confidence band per Origin. The complete repository-mode module
+uses only the chart-authoring API. After npm publication, replace the relative
+import with `"ggaction"`. The repository contains a
 [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-regression-scatterplot)
 and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-regression-scatterplot/program.js).
 
 ```javascript
-import { chart, render } from "ggaction";
+import { chart, render } from "../../src/index.js";
+
+const response = await fetch("../../data/cars.json");
+if (!response.ok) throw new Error(`Failed to load cars: ${response.status}`);
+const cars = await response.json();
 
 const program = chart()
   .createCanvas({

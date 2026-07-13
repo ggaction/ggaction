@@ -8,6 +8,8 @@ title: Regression Scatterplot Recipe
 Use this pattern to layer grouped linear fits and mean-response confidence
 bands over a point chart.
 
+## Minimal flow
+
 ```javascript
 const program = chart()
   .createCanvas({
@@ -32,8 +34,24 @@ const program = chart()
   .createGuides();
 ```
 
-`createRegression()` infers the current point layer, quantitative x/y fields,
-and the single nominal grouping field used by color or shape. Pass `target`,
-`x`, `y`, or `groupBy` only when inference is ambiguous. See the
-[full tutorial](../tutorials/regression-scatterplot.md) and
-[regression API](../api/regression.md).
+## You must decide
+
+- Point x and y fields
+- Optional nominal color or shape grouping field
+- Optional source filter
+
+## The library infers
+
+- The current eligible point layer
+- Quantitative x/y fields and their shared coordinate and scales
+- One grouping field when color and shape agree
+- Immutable OLS rows, one 95% mean-response confidence band, and one line per group
+- Shared axes, grid, categorical legend, and quantitative size legend
+
+Pass `target`, `x`, `y`, or `groupBy` only when inference is ambiguous.
+
+## Continue
+
+[Regression scatterplot tutorial](../tutorials/regression-scatterplot.md) ·
+[Regression API](../api/regression.md) ·
+[Appearance encodings](../api/appearance.md)

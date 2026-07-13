@@ -8,12 +8,17 @@ title: Cars Line Chart Tutorial
 ![Mean acceleration by year, grouped by origin](../assets/images/cars-line-chart.png)
 
 This chart shows mean acceleration over time for each origin. The complete
-program uses only the chart-authoring API. The repository contains a
+repository-mode module below uses only the chart-authoring API. After npm
+publication, replace the relative import with `"ggaction"`. The repository contains a
 [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-line-chart)
 and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-line-chart/program.js).
 
 ```javascript
-import { chart, render } from "ggaction";
+import { chart, render } from "../../src/index.js";
+
+const response = await fetch("../../data/cars.json");
+if (!response.ok) throw new Error(`Failed to load cars: ${response.status}`);
+const cars = await response.json();
 
 const rows = cars.filter(
   car =>

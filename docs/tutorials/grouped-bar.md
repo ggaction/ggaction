@@ -9,12 +9,17 @@ title: Bar Chart Tutorial
 
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
-by side. The complete program uses only the chart-authoring API. The repository contains a
+by side. The complete repository-mode module uses only the chart-authoring API.
+After npm publication, replace the relative import with `"ggaction"`. The repository contains a
 [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/jobs-grouped-bar)
 and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
 
 ```javascript
-import { chart, render } from "ggaction";
+import { chart, render } from "../../src/index.js";
+
+const response = await fetch("../../data/jobs.json");
+if (!response.ok) throw new Error(`Failed to load jobs: ${response.status}`);
+const jobs = await response.json();
 
 const rows = jobs.filter(
   row =>

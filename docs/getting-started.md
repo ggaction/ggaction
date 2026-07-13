@@ -5,8 +5,8 @@ title: Getting Started
 
 # Getting Started
 
-This example creates and renders a complete scatterplot. Every method returns a
-new `ChartProgram`, so the calls can be chained.
+This example creates and renders a complete scatterplot from a small inline
+dataset. Every method returns a new `ChartProgram`, so the calls can be chained.
 
 ## Use the repository build
 
@@ -22,6 +22,7 @@ python3 -m http.server 4173
 
 Open one of the runnable repository examples:
 
+- `http://localhost:4173/examples/getting-started/`
 - `http://localhost:4173/examples/cars-scatterplot/`
 - `http://localhost:4173/examples/cars-line-chart/`
 - `http://localhost:4173/examples/cars-histogram/`
@@ -29,10 +30,10 @@ Open one of the runnable repository examples:
 - `http://localhost:4173/examples/cars-regression-scatterplot/`
 - `http://localhost:4173/examples/cars-density-area/`
 
-Those browser examples import `../../src/index.js` directly. The code below
-uses the intended package import, `ggaction`, to document the consumer API that
-will be available after publication; it is not a standalone browser import in
-the current repository build.
+Those browser examples import `../../src/index.js` directly. The code below is
+the complete module used by `examples/getting-started/`, so it runs immediately
+from the repository checkout. After the package is published, replace the
+relative import with `from "ggaction"`; the action chain stays the same.
 
 ## 1. Add a canvas
 
@@ -43,7 +44,7 @@ the current repository build.
 ## 2. Build the program
 
 ```javascript
-import { chart, render } from "ggaction";
+import { chart, render } from "../../src/index.js";
 
 const cars = [
   { horsepower: 88, mpg: 27, origin: "USA" },
@@ -84,6 +85,9 @@ encoding is also present.
 const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));
 ```
+
+The runnable page and module are available in
+[`examples/getting-started/`](https://github.com/hj-n/ggaction/tree/main/examples/getting-started).
 
 The renderer reads only concrete `graphicSpec` values already produced by the
 actions. It does not compile `semanticSpec` during rendering.

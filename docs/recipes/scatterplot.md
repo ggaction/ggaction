@@ -34,8 +34,9 @@ Add `encodeColor({ field })` for nominal fill.
 - The `main` Cartesian coordinate
 - Plot-bound ranges, axes, and horizontal grid
 
-Point legends are not supported. Multiple compatible marks or scales require
-explicit `target` or scale IDs.
+Point color, shape, and size legends are created when those encodings are
+present. Multiple compatible marks or scales require explicit `target` or
+scale IDs.
 
 ## Continue
 
