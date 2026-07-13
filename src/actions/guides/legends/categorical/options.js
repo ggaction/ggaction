@@ -78,7 +78,7 @@ function normalizeBorder(border) {
   return normalized;
 }
 
-export function normalizeOptions(args, kind) {
+export function normalizeOptions(args, kind, preferredPosition) {
   if (!isPlainObject(args)) {
     throw new TypeError("createLegend options must be a plain object.");
   }
@@ -94,9 +94,15 @@ export function normalizeOptions(args, kind) {
     );
   }
 
-  const defaults = kind === "series"
-    ? { position: "right", align: "center", offset: 10, itemGap: 28 }
-    : { position: "bottom", align: "center", offset: 8, itemGap: 20 };
+  const positionDefault = preferredPosition ?? (
+    kind === "series" ? "right" : "bottom"
+  );
+  const defaults = {
+    position: positionDefault,
+    align: "center",
+    offset: kind === "series" ? 10 : 8,
+    itemGap: positionDefault === "right" ? 28 : 20
+  };
   const labels = {
     ...COMMON_DEFAULTS.labels,
     offset: defaults.offset,
@@ -111,8 +117,7 @@ export function normalizeOptions(args, kind) {
   const itemGap = args.itemGap ?? defaults.itemGap;
 
   if (
-    (kind === "series" && position !== "right") ||
-    (kind === "color" && position !== "bottom")
+    position !== positionDefault
   ) {
     throw new Error(`Unsupported legend position "${position}".`);
   }

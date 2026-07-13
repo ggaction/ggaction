@@ -64,6 +64,7 @@ and language models.
 - Ordinal mean bars require encodeColor layout "group"; it stores stack null, calls encodeXOffset as a wrapped child, and recomputes y from x/color means while rects remain empty until width is authored.
 - encodeBarWidth defaults band to 0.72, stores immutable graphical materialization config outside semanticSpec, and materializes concrete grouped rects in x-domain then color-domain order; Canvas changes explicitly rebuild them.
 - Ordinal x axes default to every domain value at band centers, reject count-based sampling, support explicit domain subsets, and rematerialize after Canvas changes.
+- Grouped ordinal bars infer a right-side color swatch legend; histograms retain their bottom legend default, and both reuse the same categorical legend components.
 - Bar encodeY infers the binned x field, stores count/zero-stack, resolves both scales, and materializes concrete rects for non-empty bins.
 - encodeHistogram is a thin aggregate whose direct children are binned bar encodeX and count/zero-stack encodeY.
 - Bar encodeColor resolves an ordinal scale and rematerializes each bin as zero-stacked category rects in color-domain order; the y domain remains based on total bin counts.

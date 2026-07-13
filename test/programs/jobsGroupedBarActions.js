@@ -15,7 +15,6 @@ export function createJobsGroupedBarActions(jobs) {
   const { y: yAxis } = values.axes;
   const yTickPositions = yAxis.ticks.map(tick => tick.position);
   const horizontalGrid = values.grid.horizontal;
-  const legendItems = values.legend.items;
 
   return chart()
     .createCanvas({ width, height, margin, background: "white" })
@@ -46,8 +45,6 @@ export function createJobsGroupedBarActions(jobs) {
       property: "guide.grid.horizontal.coordinate",
       value: "main"
     })
-    .editSemantic({ property: "guide.legend.color.scale", value: "color" })
-    .editSemantic({ property: "guide.legend.color.title", value: "sex" })
     .createGraphics({
       id: "horizontalGridLines",
       type: "line",
@@ -123,66 +120,7 @@ export function createJobsGroupedBarActions(jobs) {
     .editGraphics({ target: "yAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "yAxisTitle", property: "textBaseline", value: "middle" })
     .editGraphics({ target: "yAxisTitle", property: "rotation", value: yAxis.title.rotation })
-    .createGraphics({ id: "colorLegendSymbols", type: "rect", length: legendItems.length })
-    .editGraphics({
-      target: "colorLegendSymbols",
-      property: "x",
-      value: legendItems.map(item => item.x)
-    })
-    .editGraphics({
-      target: "colorLegendSymbols",
-      property: "y",
-      value: legendItems.map(item => item.y)
-    })
-    .editGraphics({
-      target: "colorLegendSymbols",
-      property: "width",
-      value: legendItems.map(item => item.width)
-    })
-    .editGraphics({
-      target: "colorLegendSymbols",
-      property: "height",
-      value: legendItems.map(item => item.height)
-    })
-    .editGraphics({
-      target: "colorLegendSymbols",
-      property: "fill",
-      value: legendItems.map(item => item.color)
-    })
-    .editGraphics({ target: "colorLegendSymbols", property: "stroke", value: "white" })
-    .editGraphics({ target: "colorLegendSymbols", property: "strokeWidth", value: 0.5 })
-    .createGraphics({ id: "colorLegendLabels", type: "text", length: legendItems.length })
-    .editGraphics({
-      target: "colorLegendLabels",
-      property: "x",
-      value: legendItems.map(item => item.labelX)
-    })
-    .editGraphics({
-      target: "colorLegendLabels",
-      property: "y",
-      value: legendItems.map(item => item.labelY)
-    })
-    .editGraphics({
-      target: "colorLegendLabels",
-      property: "text",
-      value: legendItems.map(item => item.sex)
-    })
-    .editGraphics({ target: "colorLegendLabels", property: "fill", value: "#334155" })
-    .editGraphics({ target: "colorLegendLabels", property: "fontSize", value: 12 })
-    .editGraphics({ target: "colorLegendLabels", property: "fontFamily", value: "sans-serif" })
-    .editGraphics({ target: "colorLegendLabels", property: "fontWeight", value: "normal" })
-    .editGraphics({ target: "colorLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "middle" })
-    .createGraphics({ id: "colorLegendTitle", type: "text" })
-    .editGraphics({ target: "colorLegendTitle", property: "x", value: values.legend.title.x })
-    .editGraphics({ target: "colorLegendTitle", property: "y", value: values.legend.title.y })
-    .editGraphics({ target: "colorLegendTitle", property: "text", value: values.legend.title.text })
-    .editGraphics({ target: "colorLegendTitle", property: "fill", value: "#334155" })
-    .editGraphics({ target: "colorLegendTitle", property: "fontSize", value: 13 })
-    .editGraphics({ target: "colorLegendTitle", property: "fontFamily", value: "sans-serif" })
-    .editGraphics({ target: "colorLegendTitle", property: "fontWeight", value: 600 })
-    .editGraphics({ target: "colorLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "middle" });
+    .createLegend();
 }
 
 export function renderJobsGroupedBarActions(program, canvasContext) {

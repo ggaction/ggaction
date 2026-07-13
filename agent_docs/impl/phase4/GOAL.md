@@ -49,7 +49,7 @@ chart()
 - [x] Band-based `encodeBarWidth`
 - [x] Grouped/stacked bar materialization
 - [x] Ordinal x axis
-- [ ] Grouped bar legend
+- [x] Grouped bar legend
 - [ ] `createGuides` integration
 - [ ] Browser example, tutorial, PNG regression
 - [ ] 사용자 문서와 LLM reference

@@ -7,8 +7,8 @@ title: Legends
 
 ## `createLegend(options?)`
 
-Creates one inferred categorical legend. It supports combined line-series
-legends and color-grouped histogram legends.
+Creates one inferred categorical legend. It supports combined line-series,
+color-grouped histogram, and grouped ordinal-bar legends.
 
 ~~~javascript
 program.createLegend();
@@ -20,6 +20,7 @@ Defaults depend on the selected mark:
 | --- | --- | --- | --- |
 | line | encoded `color` and/or `strokeDash` | `right` | line |
 | bar histogram | `color` | `bottom`, centered | swatch |
+| grouped ordinal bar | `color` | `right` | swatch |
 
 | Option | Type | Default |
 | --- | --- | --- |
@@ -31,11 +32,11 @@ Defaults depend on the selected mark:
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
-| `itemGap` | positive number | `28` for line, `20` for histogram |
+| `itemGap` | positive number | `28` for right legends, `20` for histogram |
 | `border` | boolean or border style object | `false` |
 
-Current line legends support right position. Histogram legends support bottom
-position and can use left, center, or right alignment.
+Current line and grouped-bar legends support right position. Histogram legends
+support bottom position and can use left, center, or right alignment.
 
 ## Layered symbols
 
@@ -48,8 +49,8 @@ lineProgram.createLegend({
 });
 ~~~
 
-Histogram swatch shorthand supports `width`, `height`, `stroke`, and
-`strokeWidth`.
+Histogram and grouped-bar swatch shorthand supports `width`, `height`,
+`stroke`, and `strokeWidth`.
 
 Use layers for a composite symbol:
 
@@ -125,5 +126,6 @@ createLegend
 Continuous legends, point-mark legends, multiple legend blocks, and
 interactive legends are not currently supported.
 
-`createGuides()` selects line-series and histogram color legends automatically.
+`createGuides()` selects line-series, histogram color, and grouped-bar color
+legends automatically.
 Pass `createGuides({ legend: false })` to opt out.
