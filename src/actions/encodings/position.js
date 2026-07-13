@@ -349,10 +349,19 @@ function encodePosition(program, channel, args, operation) {
   next = next.rematerializeScale({ id: scale.id });
   if (layer.mark.type === "area") {
     const updated = next.semanticSpec.layers.find(item => item.id === target);
+    const updatedDataset = next.semanticSpec.datasets.find(
+      item => item.id === updated.data
+    );
+    const isDensity = updatedDataset?.transform?.length === 1 &&
+      updatedDataset.transform[0].type === "density";
+    const densityGroup = updatedDataset?.transform?.[0]?.groupBy;
+    const isCompleteDensity = isDensity && (
+      densityGroup === undefined || updated.encoding?.group?.field === densityGroup
+    );
     return (
       updated.encoding?.x?.scale !== undefined &&
       updated.encoding?.y?.scale !== undefined &&
-      updated.encoding?.y2?.scale === updated.encoding.y.scale
+      (isCompleteDensity || updated.encoding?.y2?.scale === updated.encoding.y.scale)
     )
       ? next.rematerializeAreaMark({ id: target })
       : next;

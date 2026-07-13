@@ -96,6 +96,17 @@ const encodeGroup = action(
     if ((args.fieldType ?? "nominal") !== "nominal") {
       throw new Error("encodeGroup requires a nominal field.");
     }
+    const densityTransform = dataset.transform?.length === 1 &&
+      dataset.transform[0].type === "density"
+      ? dataset.transform[0]
+      : undefined;
+    if (densityTransform !== undefined && densityTransform.groupBy !== args.field) {
+      throw new Error(
+        densityTransform.groupBy === undefined
+          ? `Ungrouped density area mark "${target}" cannot encode group.`
+          : `Density area mark "${target}" must group by "${densityTransform.groupBy}".`
+      );
+    }
     readNominalField(dataset.values, args.field);
     const next = this
       .editSemantic({
@@ -108,7 +119,20 @@ const encodeGroup = action(
       });
     if (layer.mark.type === "area") {
       const updated = next.semanticSpec.layers.find(item => item.id === target);
-      return updated.encoding?.y2?.scale === updated.encoding?.y?.scale
+      const updatedDataset = next.semanticSpec.datasets.find(
+        item => item.id === updated.data
+      );
+      const isDensity = updatedDataset?.transform?.length === 1 &&
+        updatedDataset.transform[0].type === "density";
+      const densityGroup = updatedDataset?.transform?.[0]?.groupBy;
+      const isCompleteDensity = isDensity && (
+        densityGroup === undefined || updated.encoding?.group?.field === densityGroup
+      );
+      return (
+        updated.encoding?.x?.scale !== undefined &&
+        updated.encoding?.y?.scale !== undefined &&
+        (isCompleteDensity || updated.encoding?.y2?.scale === updated.encoding.y.scale)
+      )
         ? next.rematerializeAreaMark({ id: target })
         : next;
     }

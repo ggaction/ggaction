@@ -1,6 +1,9 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { deriveAreaSeries } from "../../grammar/areaSeries.js";
+import {
+  deriveAreaSeries,
+  deriveDensityAreaSeries
+} from "../../grammar/areaSeries.js";
 import { mapLinearValues } from "../../grammar/scales.js";
 import {
   assertMarkAvailable,
@@ -53,16 +56,26 @@ const rematerializeAreaMark = action(
     if (dataset === undefined) {
       throw new Error(`Area mark "${id}" requires an existing dataset.`);
     }
+    const densityTransform = dataset.transform?.length === 1 &&
+      dataset.transform[0].type === "density"
+      ? dataset.transform[0]
+      : undefined;
     const xScaleId = layer.encoding?.x?.scale;
     const yScaleId = layer.encoding?.y?.scale;
     if (
       xScaleId === undefined ||
       yScaleId === undefined ||
-      layer.encoding?.y2?.scale !== yScaleId
+      (densityTransform === undefined && layer.encoding?.y2?.scale !== yScaleId)
     ) {
-      throw new Error(`Area mark "${id}" requires shared x, y, and y2 scales.`);
+      throw new Error(
+        densityTransform === undefined
+          ? `Area mark "${id}" requires shared x, y, and y2 scales.`
+          : `Density area mark "${id}" requires x and y scales.`
+      );
     }
-    const derived = deriveAreaSeries(dataset.values, layer);
+    const derived = densityTransform === undefined
+      ? deriveAreaSeries(dataset.values, layer)
+      : deriveDensityAreaSeries(dataset.values, layer, densityTransform);
     const resolved = this
       .rematerializeScale({ id: xScaleId })
       .rematerializeScale({ id: yScaleId });
@@ -79,6 +92,28 @@ const rematerializeAreaMark = action(
         yScale.domain,
         yScale.range
       );
+      if (densityTransform !== undefined) {
+        const densityScale = derived.mode === "y-density" ? yScale : xScale;
+        if (densityScale.domain[0] > 0 || densityScale.domain[1] < 0) {
+          throw new Error(`Density area mark "${id}" requires a scale domain containing zero.`);
+        }
+        const baseline = mapLinearValues(
+          [0],
+          densityScale.domain,
+          densityScale.range
+        )[0];
+        return derived.mode === "y-density"
+          ? [
+              { x: x[0], y: baseline },
+              ...x.map((value, index) => ({ x: value, y: lower[index] })),
+              { x: x.at(-1), y: baseline }
+            ]
+          : [
+              { x: baseline, y: lower[0] },
+              ...x.map((value, index) => ({ x: value, y: lower[index] })),
+              { x: baseline, y: lower.at(-1) }
+            ];
+      }
       const upper = mapLinearValues(
         series.values.map(value => value.y2),
         yScale.domain,

@@ -7,16 +7,16 @@ baseline만으로 closed path를 만들 수 있도록 area materialization을 �
 
 ## 진행 상태
 
-- [ ] Existing ranged-area mode 보존
-- [ ] y-density zero-baseline mode
-- [ ] x-density zero-baseline mode
-- [ ] Value-order sorting과 group path separation
-- [ ] Density scale zero-domain validation
-- [ ] Default/fixed fill과 opacity 유지
-- [ ] Canvas/scale edit rematerialization
-- [ ] Primitive geometry equivalence
-- [ ] Invalid mode와 incomplete encoding tests
-- [ ] Area docs, full regression, commit, push
+- [x] Existing ranged-area mode 보존
+- [x] y-density zero-baseline mode
+- [x] x-density zero-baseline mode
+- [x] Value-order sorting과 group path separation
+- [x] Density scale zero-domain validation
+- [x] Default/fixed fill과 opacity 유지
+- [x] Canvas/scale edit rematerialization
+- [x] Primitive geometry equivalence
+- [x] Invalid mode와 incomplete encoding tests
+- [x] Area docs, full regression, commit, push
 
 ## Materialization mode
 
@@ -44,3 +44,11 @@ transform provenance가 완전한 source of truth다.
 
 Regression confidence band의 y/y2 geometry, fill-only rendering, Canvas resize behavior와
 public regression scatterplot `graphicSpec`이 변하지 않아야 한다.
+
+## 구현 결과
+
+- Density transform의 `as`와 `groupBy`를 source of truth로 사용해 mode와 series를 판별한다.
+- y-density와 x-density 모두 resolved zero 위치를 baseline으로 사용한다.
+- Grouped y-density 결과는 Phase 6 primitive fixture의 3개 path, 각 102개 point와 정확히 일치한다.
+- Canvas 변경은 positional scales와 density area path를 함께 rematerialize한다.
+- 전체 381개 테스트와 coverage gate를 통과했다 (`lines 94.40%`, `branches 89.38%`, `functions 98.50%`).

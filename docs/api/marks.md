@@ -45,7 +45,10 @@ defaults to `0.2`. The fixed fill and opacity are graphical appearance.
 
 An area becomes renderable after quantitative x and atomic `encodeYRange`
 encodings exist. Optional `encodeGroup` creates one closed filled path per
-nominal group without creating a scale or legend.
+nominal group without creating a scale or legend. A density-derived dataset may
+instead use value/density x and y encodings: the density axis is closed against
+zero, while the value axis determines sample order. Both horizontal-density and
+vertical-density orientations are supported.
 
 ## `createLineMark({ id, data?, strokeWidth? })`
 

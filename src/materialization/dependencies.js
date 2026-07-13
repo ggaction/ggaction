@@ -37,12 +37,19 @@ function isCompletePoint(layer) {
   );
 }
 
-function isCompleteArea(layer) {
+function isCompleteArea(program, layer) {
+  const dataset = program.semanticSpec.datasets.find(item => item.id === layer.data);
+  const isDensity = dataset?.transform?.length === 1 &&
+    dataset.transform[0].type === "density";
+  const densityGroup = dataset?.transform?.[0]?.groupBy;
+  const isCompleteDensity = isDensity && (
+    densityGroup === undefined || layer.encoding?.group?.field === densityGroup
+  );
   return (
     layer.mark?.type === "area" &&
     layer.encoding?.x?.scale !== undefined &&
     layer.encoding?.y?.scale !== undefined &&
-    layer.encoding?.y2?.scale === layer.encoding.y.scale
+    (isCompleteDensity || layer.encoding?.y2?.scale === layer.encoding.y.scale)
   );
 }
 
@@ -90,7 +97,7 @@ export function planCanvasRematerialization(program) {
     }
   }
   for (const layer of program.semanticSpec.layers) {
-    if (isCompleteArea(layer)) {
+    if (isCompleteArea(program, layer)) {
       plan.push({ op: "rematerializeAreaMark", args: { id: layer.id } });
     }
   }
