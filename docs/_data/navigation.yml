@@ -8,6 +8,8 @@
       url: /tutorials/
     - title: Chart Recipes
       url: /recipes/
+    - title: Troubleshooting
+      url: /troubleshooting/
 
 - title: Chart Building
   items:

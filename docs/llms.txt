@@ -17,6 +17,7 @@ and language models.
 - Line chart recipe: ./recipes/line-chart.md
 - Histogram recipe: ./recipes/histogram.md
 - Bar chart recipe (grouped example): ./recipes/bar-chart.md
+- Troubleshooting inference, layout, and scale errors: ./troubleshooting.md
 - Complete action reference: ./reference/actions.md
 - Supported features: ./supported-features.md
 

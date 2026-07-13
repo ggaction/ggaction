@@ -22,6 +22,8 @@
   url: /recipes/histogram/
 - title: Bar Chart Recipe
   url: /recipes/bar-chart/
+- title: Troubleshooting
+  url: /troubleshooting/
 - title: Canvas
   url: /api/canvas/
 - title: Data

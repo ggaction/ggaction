@@ -97,4 +97,6 @@ actions. It does not compile `semanticSpec` during rendering.
   [jobs grouped bar tutorial](./tutorials/grouped-bar.md).
 - Check the [action index](./reference/actions.md) for signatures and defaults.
 - Copy a minimal flow from the [chart recipes](./recipes/index.md).
+- Resolve common inference and layout errors with
+  [Troubleshooting](./troubleshooting.md).
 - Export the same program with [PNG rendering](./api/rendering.md#png-output).

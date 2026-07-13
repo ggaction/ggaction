@@ -146,4 +146,4 @@ requested explicitly and requires sufficient bottom margin.
 ## Related
 
 [Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
-[Canvas](./canvas.md)
+[Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)

@@ -97,4 +97,5 @@ contain every observed value required by the connected consumers.
 ## Related
 
 [Position encodings](./position-encodings.md) ·
-[Series encodings](./series-encodings.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md)
+[Series encodings](./series-encodings.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·
+[Troubleshooting](../troubleshooting.md)

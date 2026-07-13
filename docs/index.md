@@ -48,6 +48,8 @@ example, then use the API pages when you need to customize one part.
 
 Already know the chart type? Start from the concise
 [chart recipes](./recipes/index.md) instead of a full tutorial.
+If an inferred resource or layout fails, use
+[Troubleshooting](./troubleshooting.md) to make the missing decision explicit.
 
 ## Understand the model
 
