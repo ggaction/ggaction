@@ -1,220 +1,18 @@
 import { action } from "../../../core/action.js";
-import { validateUserId } from "../../../core/identifiers.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateKeys } from "../../../core/validation.js";
-import { mapLinearValues } from "../../../grammar/scales.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
-  inferGridTickConfig,
-  valuesFromTickConfig
-} from "../tickValues.js";
-import { DEFAULT_COLORS } from "../../../theme/defaults.js";
+  gridNames,
+  resolveGridConfig,
+  resolveGridGeometry,
+  resolveGridResources,
+  validateGridCreateArgs
+} from "./resolve.js";
 
-const GRID_OPTIONS = Object.freeze([
-  "scale",
-  "coordinate",
-  "count",
-  "values",
-  "color",
-  "lineWidth",
-  "strokeDash"
-]);
 const AGGREGATE_OPTIONS = Object.freeze(["horizontal", "vertical"]);
-const DEFAULT_STYLE = Object.freeze({
-  color: DEFAULT_COLORS.grid,
-  lineWidth: 1,
-  strokeDash: Object.freeze([])
-});
-
-function names(direction) {
-  const prefix = direction === "horizontal" ? "Horizontal" : "Vertical";
-  return {
-    channel: direction === "horizontal" ? "y" : "x",
-    create: `create${prefix}Grid`,
-    rematerialize: `rematerialize${prefix}Grid`,
-    graphic: `${direction}GridLines`
-  };
-}
-
-function validateStrokeDash(value) {
-  if (
-    !Array.isArray(value) ||
-    value.length % 2 !== 0 ||
-    !value.every(item => Number.isFinite(item) && item >= 0)
-  ) {
-    throw new TypeError(
-      "Grid strokeDash must be an even-length array of non-negative finite numbers."
-    );
-  }
-  return value;
-}
-
-function validateCreateArgs(args, operation) {
-  if (!isPlainObject(args)) {
-    throw new TypeError(`${operation} options must be a plain object.`);
-  }
-  validateKeys(args, GRID_OPTIONS, operation);
-  if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
-    throw new Error(`${operation} cannot use count and values together.`);
-  }
-  if (
-    Object.hasOwn(args, "count") &&
-    (!Number.isInteger(args.count) || args.count <= 0)
-  ) {
-    throw new RangeError("Grid count must be a positive integer.");
-  }
-  if (
-    Object.hasOwn(args, "values") &&
-    (!Array.isArray(args.values) ||
-      args.values.length === 0 ||
-      !args.values.every(Number.isFinite))
-  ) {
-    throw new TypeError("Grid values must be a non-empty finite number array.");
-  }
-  if (
-    Object.hasOwn(args, "color") &&
-    (typeof args.color !== "string" || args.color.length === 0)
-  ) {
-    throw new TypeError("Grid color must be a non-empty string.");
-  }
-  if (
-    Object.hasOwn(args, "lineWidth") &&
-    (!Number.isFinite(args.lineWidth) || args.lineWidth < 0)
-  ) {
-    throw new RangeError("Grid lineWidth must be non-negative.");
-  }
-  if (Object.hasOwn(args, "strokeDash")) {
-    validateStrokeDash(args.strokeDash);
-  }
-}
-
-function resolveResources(program, direction, args) {
-  const { channel } = names(direction);
-  let layers = program.semanticSpec.layers.filter(
-    layer => layer.encoding?.[channel]?.scale !== undefined
-  );
-  if (layers.length === 0) {
-    throw new Error(`${direction} grid requires a ${channel} encoding.`);
-  }
-
-  const requestedCoordinate = args.coordinate === undefined
-    ? undefined
-    : validateUserId(args.coordinate, "Grid coordinate id");
-  const requestedScale = args.scale === undefined
-    ? undefined
-    : validateUserId(args.scale, "Grid scale id");
-  if (requestedCoordinate !== undefined) {
-    layers = layers.filter(layer => layer.coordinate === requestedCoordinate);
-  }
-  if (requestedScale !== undefined) {
-    layers = layers.filter(
-      layer => layer.encoding[channel].scale === requestedScale
-    );
-  }
-  if (layers.length === 0) {
-    throw new Error(`${direction} grid found no matching encoded layers.`);
-  }
-  const coordinateIds = [
-    ...new Set(layers.map(layer => layer.coordinate).filter(Boolean))
-  ];
-  if (layers.some(layer => layer.coordinate === undefined)) {
-    throw new Error(`${direction} grid requires a stored coordinate.`);
-  }
-  if (coordinateIds.length === 0) {
-    throw new Error(`Unknown grid coordinate "${requestedCoordinate}".`);
-  }
-  if (coordinateIds.length > 1) {
-    throw new Error(
-      `${direction} grid found multiple coordinates; provide coordinate explicitly.`
-    );
-  }
-  const coordinateId = requestedCoordinate ?? coordinateIds[0];
-  const coordinateDefinition = program.semanticSpec.coordinates.find(
-    item => item.id === coordinateId
-  );
-  if (coordinateDefinition?.type !== "cartesian") {
-    throw new Error(`${direction} grid requires a Cartesian coordinate.`);
-  }
-
-  const scaleIds = [
-    ...new Set(layers.map(layer => layer.encoding[channel].scale))
-  ];
-  if (scaleIds.length === 0) {
-    throw new Error(`Unknown grid scale "${requestedScale}".`);
-  }
-  if (scaleIds.length > 1) {
-    throw new Error(
-      `${direction} grid found multiple ${channel} scales; provide scale explicitly.`
-    );
-  }
-  const scaleId = requestedScale ?? scaleIds[0];
-  const resolvedScale = program.resolvedScales[scaleId];
-  if (!["linear", "time"].includes(resolvedScale?.type)) {
-    throw new Error(
-      `${direction} grid requires resolved continuous scale "${scaleId}".`
-    );
-  }
-
-  const related = new Set(layers.map(layer => layer.id));
-  const before = program.graphicSpec.order.find(id => related.has(id));
-  if (before === undefined) {
-    throw new Error(`${direction} grid requires related mark graphics.`);
-  }
-
-  return { channel, coordinate: coordinateId, scale: scaleId, before };
-}
-
-function resolveConfig(program, direction, args, resources) {
-  const explicit = Object.hasOwn(args, "values")
-    ? { mode: "values", values: args.values }
-    : Object.hasOwn(args, "count")
-      ? { mode: "count", count: args.count }
-      : inferGridTickConfig(program, resources.channel, resources.scale);
-
-  return {
-    direction,
-    scale: resources.scale,
-    coordinate: resources.coordinate,
-    ...explicit,
-    color: args.color ?? DEFAULT_STYLE.color,
-    lineWidth: args.lineWidth ?? DEFAULT_STYLE.lineWidth,
-    strokeDash: args.strokeDash ?? DEFAULT_STYLE.strokeDash
-  };
-}
-
-function resolveGeometry(program, config) {
-  const scale = program.resolvedScales[config.scale];
-  const bounds = resolveGraphicBounds(program);
-  if (!["linear", "time"].includes(scale?.type) || bounds === undefined) {
-    throw new Error("Grid materialization requires a continuous scale and Canvas bounds.");
-  }
-
-  const values = valuesFromTickConfig(program, config);
-  const low = Math.min(...scale.domain);
-  const high = Math.max(...scale.domain);
-  if (!values.every(value => value >= low && value <= high)) {
-    throw new RangeError("Grid values must be inside the scale domain.");
-  }
-  const positions = mapLinearValues(values, scale.domain, scale.range);
-  return config.direction === "horizontal"
-    ? {
-        values,
-        x1: bounds.x,
-        y1: positions,
-        x2: bounds.x + bounds.width,
-        y2: positions
-      }
-    : {
-        values,
-        x1: positions,
-        y1: bounds.y,
-        x2: positions,
-        y2: bounds.y + bounds.height
-      };
-}
 
 function makeRematerialize(direction) {
-  const operation = names(direction);
+  const operation = gridNames(direction);
   return action(
     {
       op: operation.rematerialize,
@@ -237,7 +35,7 @@ function makeRematerialize(direction) {
         );
       }
 
-      const geometry = resolveGeometry(this, config);
+      const geometry = resolveGridGeometry(this, config);
       let next = this.editGraphics({
         target: operation.graphic,
         property: "length",
@@ -271,23 +69,23 @@ function makeRematerialize(direction) {
 }
 
 function makeCreate(direction) {
-  const operation = names(direction);
+  const operation = gridNames(direction);
   return action(
     {
       op: operation.create,
       description: `Create a semantic and concrete ${direction} grid.`
     },
     function (args = {}) {
-      validateCreateArgs(args, operation.create);
+      validateGridCreateArgs(args, operation.create);
       if (
         this.semanticSpec.guides.grid?.[direction] !== undefined ||
         this.graphicSpec.objects[operation.graphic] !== undefined
       ) {
         throw new Error(`${operation.create} requires a missing grid.`);
       }
-      const resources = resolveResources(this, direction, args);
-      const config = resolveConfig(this, direction, args, resources);
-      resolveGeometry(this, config);
+      const resources = resolveGridResources(this, direction, args);
+      const config = resolveGridConfig(this, direction, args, resources);
+      resolveGridGeometry(this, config);
 
       return this
         .editSemantic({
