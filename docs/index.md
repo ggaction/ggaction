@@ -16,15 +16,15 @@ The main, extension, and PNG entry points include TypeScript declarations.
 ## Start here
 
 <div class="docs-entry-grid">
-  <a href="{{ '/getting-started/' | relative_url }}">
+  <a href="./getting-started/">
     <strong>Build your first chart</strong>
     <span>Run a complete repository example and understand the action chain.</span>
   </a>
-  <a href="{{ '/recipes/' | relative_url }}">
+  <a href="./recipes/">
     <strong>Start from a chart type</strong>
     <span>Copy the shortest supported scatterplot, line, bar, or area flow.</span>
   </a>
-  <a href="{{ '/reference/actions/' | relative_url }}">
+  <a href="./reference/actions/">
     <strong>Find an action</strong>
     <span>Look up exact signatures, defaults, inference, and related guides.</span>
   </a>
@@ -33,28 +33,28 @@ The main, extension, and PNG entry points include TypeScript declarations.
 ## Choose a chart
 
 <div class="docs-chart-gallery">
-  <a href="{{ '/tutorials/scatterplot/' | relative_url }}">
-    <img src="{{ '/assets/images/cars-scatterplot.png' | relative_url }}" alt="Cars scatterplot">
+  <a href="./tutorials/scatterplot/">
+    <img src="./assets/images/cars-scatterplot.png" alt="Cars scatterplot">
     <span>Scatterplot</span>
   </a>
-  <a href="{{ '/tutorials/line-chart/' | relative_url }}">
-    <img src="{{ '/assets/images/cars-line-chart.png' | relative_url }}" alt="Cars aggregate line chart">
+  <a href="./tutorials/line-chart/">
+    <img src="./assets/images/cars-line-chart.png" alt="Cars aggregate line chart">
     <span>Line chart</span>
   </a>
-  <a href="{{ '/tutorials/histogram/' | relative_url }}">
-    <img src="{{ '/assets/images/cars-histogram.png' | relative_url }}" alt="Cars stacked histogram">
+  <a href="./tutorials/histogram/">
+    <img src="./assets/images/cars-histogram.png" alt="Cars stacked histogram">
     <span>Histogram</span>
   </a>
-  <a href="{{ '/tutorials/grouped-bar/' | relative_url }}">
-    <img src="{{ '/assets/images/jobs-grouped-bar.png' | relative_url }}" alt="Jobs grouped bar example">
+  <a href="./tutorials/grouped-bar/">
+    <img src="./assets/images/jobs-grouped-bar.png" alt="Jobs grouped bar example">
     <span>Bar chart</span>
   </a>
-  <a href="{{ '/tutorials/regression-scatterplot/' | relative_url }}">
-    <img src="{{ '/assets/images/cars-regression-scatterplot.png' | relative_url }}" alt="Cars regression scatterplot with confidence bands">
+  <a href="./tutorials/regression-scatterplot/">
+    <img src="./assets/images/cars-regression-scatterplot.png" alt="Cars regression scatterplot with confidence bands">
     <span>Regression scatterplot</span>
   </a>
-  <a href="{{ '/tutorials/density-area/' | relative_url }}">
-    <img src="{{ '/assets/images/cars-density-area.png' | relative_url }}" alt="Cars density area chart">
+  <a href="./tutorials/density-area/">
+    <img src="./assets/images/cars-density-area.png" alt="Cars density area chart">
     <span>Density area</span>
   </a>
 </div>
