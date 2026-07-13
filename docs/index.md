@@ -7,6 +7,7 @@ title: ggaction Documentation
 
 Build charts as immutable, traceable action programs. Start with a complete
 example, then use the API pages when you need to customize one part.
+The main, extension, and PNG entry points include TypeScript declarations.
 
 <div class="docs-chart-gallery">
   <a href="{{ '/tutorials/scatterplot/' | relative_url }}">

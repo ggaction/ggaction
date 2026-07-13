@@ -3,10 +3,20 @@
   "version": "0.0.0",
   "description": "A chart-authoring action library.",
   "type": "module",
+  "types": "./types/index.d.ts",
   "exports": {
-    ".": "./src/index.js",
-    "./extension": "./src/extension.js",
-    "./png": "./src/renderers/png.js"
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./extension": {
+      "types": "./types/extension.d.ts",
+      "default": "./src/extension.js"
+    },
+    "./png": {
+      "types": "./types/png.d.ts",
+      "default": "./src/renderers/png.js"
+    }
   },
   "scripts": {
     "test": "node --test test/unit/*.test.js test/acceptance/*.test.js test/docs/*.test.js",
