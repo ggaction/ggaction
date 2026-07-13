@@ -42,6 +42,7 @@ state is never automatically compiled during rendering.
 - [Cars histogram tutorial](./docs/tutorials/histogram.md)
 - [Bar chart tutorial](./docs/tutorials/grouped-bar.md)
 - [Regression scatterplot tutorial](./docs/tutorials/regression-scatterplot.md)
+- [Density area chart tutorial](./docs/tutorials/density-area.md)
 - [Chart concepts](./docs/concepts/chart-program.md)
 - [Complete action reference](./docs/reference/actions.md)
 - [Supported features](./docs/supported-features.md)
@@ -52,7 +53,9 @@ The runnable [cars scatterplot](./examples/cars-scatterplot/),
 [stacked histogram](./examples/cars-histogram/) use `data/cars.json`. The
 [regression scatterplot](./examples/cars-regression-scatterplot/) also uses the
 cars data and layers grouped fits with confidence bands. The [grouped bar
-chart](./examples/jobs-grouped-bar/) uses `data/jobs.json`.
+chart](./examples/jobs-grouped-bar/) uses `data/jobs.json`. The [density area
+chart](./examples/cars-density-area/) derives grouped Acceleration
+distributions from the cars data.
 Completed programs can also be exported through
 [`ggaction/png`](./docs/api/rendering.md#png-output).
 

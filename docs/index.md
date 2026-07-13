@@ -25,6 +25,10 @@ example, then use the API pages when you need to customize one part.
     <img src="{{ '/assets/images/jobs-grouped-bar.png' | relative_url }}" alt="Jobs grouped bar example">
     <span>Bar chart</span>
   </a>
+  <a href="{{ '/tutorials/density-area/' | relative_url }}">
+    <img src="{{ '/assets/images/cars-density-area.png' | relative_url }}" alt="Cars density area chart">
+    <span>Density area</span>
+  </a>
 </div>
 
 > **Development status:** `ggaction` is currently used directly from this
@@ -45,7 +49,9 @@ example, then use the API pages when you need to customize one part.
    categories; the example places nominal groups side by side.
 6. [Regression scatterplot tutorial](./tutorials/regression-scatterplot.md) —
    filter points and add grouped fits with confidence bands.
-7. [Chart API reference](./reference/actions.md#chart-authoring-api) — find an
+7. [Density area tutorial](./tutorials/density-area.md) — estimate grouped
+   distributions and customize a top legend.
+8. [Chart API reference](./reference/actions.md#chart-authoring-api) — find an
    action and its exact signature.
 
 Already know the chart type? Start from the concise

@@ -25,7 +25,7 @@ architecture에 통합한다.
 - [x] Top legend layout와 area swatch applicability
 - [x] `createGuides`와 title/top-margin integration
 - [x] Public vertical slice
-- [ ] Documentation, browser verification, cleanup
+- [x] Documentation, browser verification, cleanup
 
 ## 최종 public flow
 
@@ -72,6 +72,18 @@ STEP10 browser, PNG, docs, cleanup, Phase closure
 - Title, legend와 plot이 충분한 top margin에서 겹치지 않고 부족하면 오류를 낸다.
 - Primitive/public `graphicSpec`, order와 renderer calls가 정확히 같다.
 - Browser Canvas, 2× PNG, unit, acceptance, docs, coverage와 full regression이 통과한다.
+
+## 완료 결과
+
+Phase 6의 public/primitive 결과는 동일한 semantic/graphic state와 Canvas 호출을 만든다.
+최종 chart는 406개 source row에서 Origin별 100개 sample, 총 300개 derived row와 3개
+baseline-closed area path를 생성한다. Browser Canvas는 `720×500`, PNG는 pixel ratio 2에서
+`1440×1000`이며 title, subtitle, top legend와 plot이 겹치지 않는다.
+
+- Unit/acceptance/docs: 403 passed
+- Representative PNG regression: 6 passed
+- Coverage: lines 94.46%, branches 89.62%, functions 98.56%
+- Browser console warning/error와 page error: 0건
 
 ## 참고 의미
 

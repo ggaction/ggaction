@@ -104,7 +104,8 @@ test("keeps tutorial action flows aligned with public examples", () => {
       "regression-scatterplot",
       "examples/cars-regression-scatterplot/program.js",
       "return chart()"
-    ]
+    ],
+    ["density-area", "examples/cars-density-area/program.js", "return chart()"]
   ];
 
   for (const [tutorial, example, exampleStart] of cases) {
@@ -129,7 +130,8 @@ test("links every public chart example from entry documentation", () => {
     "cars-line-chart",
     "cars-histogram",
     "jobs-grouped-bar",
-    "cars-regression-scatterplot"
+    "cars-regression-scatterplot",
+    "cars-density-area"
   ]) {
     assert.match(readme, new RegExp(`examples/${name}`));
     assert.match(gettingStarted, new RegExp(`examples/${name}`));
@@ -139,7 +141,8 @@ test("links every public chart example from entry documentation", () => {
     "line-chart",
     "histogram",
     "grouped-bar",
-    "regression-scatterplot"
+    "regression-scatterplot",
+    "density-area"
   ]) {
     assert.match(tutorials, new RegExp(`\\./${name}\\.md`));
   }
@@ -149,7 +152,8 @@ test("links every public chart example from entry documentation", () => {
     "line-chart",
     "histogram",
     "bar-chart",
-    "regression-scatterplot"
+    "regression-scatterplot",
+    "density-area"
   ]) {
     assert.match(recipes, new RegExp(`\\./${name}\\.md`));
   }

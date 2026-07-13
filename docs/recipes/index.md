@@ -16,6 +16,7 @@ required author decisions from library inference.
 | Histogram | quantitative field | bins, count y, zero stack, guides | [Histogram](./histogram.md) |
 | Bar chart | ordinal x, quantitative y | mean y and band geometry | [Bar chart](./bar-chart.md) |
 | Regression scatterplot | point x/y and optional group | grouped OLS, confidence bands, shared guides | [Regression scatterplot](./regression-scatterplot.md) |
+| Density area | quantitative value and optional group | KDE data, scales, closed paths | [Density area](./density-area.md) |
 
 Every flow begins with `createCanvas`, `createData`, and a semantic mark. Add
 explicit IDs only when the current program state contains multiple compatible

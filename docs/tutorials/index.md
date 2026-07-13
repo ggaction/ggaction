@@ -14,6 +14,7 @@ Build complete charts before exploring individual API options.
 | Histogram | bar | `encodeHistogram`, stacked `encodeColor` | Binned counts |
 | Bar chart | bar | ordinal `encodeX`, aggregate `encodeY`, grouped `encodeColor` | Side-by-side aggregate bars |
 | Regression scatterplot | point + area + line | `filterData`, appearance encodings, `createRegression` | Grouped fits and confidence bands |
+| Density area | area | `encodeDensity`, grouped `encodeColor` | Overlaid probability densities |
 
 Choose the chart whose semantic relationship matches the question you want to
 answer. The bar tutorial uses grouped bars as its current example; grouping is
@@ -53,3 +54,10 @@ Filter rows, vary point size and shape, and layer grouped linear fits with 95%
 mean-response confidence bands.
 
 [Build the cars regression scatterplot](./regression-scatterplot.md)
+
+## Density area chart
+
+Derive grouped Gaussian kernel-density values and overlay translucent,
+zero-baseline areas with a top multi-column legend.
+
+[Build the cars density area chart](./density-area.md)

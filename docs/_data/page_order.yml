@@ -14,6 +14,8 @@
   url: /tutorials/grouped-bar/
 - title: Regression Scatterplot Tutorial
   url: /tutorials/regression-scatterplot/
+- title: Density Area Tutorial
+  url: /tutorials/density-area/
 - title: Chart Recipes
   url: /recipes/
 - title: Scatterplot Recipe
@@ -26,6 +28,8 @@
   url: /recipes/bar-chart/
 - title: Regression Scatterplot Recipe
   url: /recipes/regression-scatterplot/
+- title: Density Area Recipe
+  url: /recipes/density-area/
 - title: Troubleshooting
   url: /troubleshooting/
 - title: Canvas

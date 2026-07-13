@@ -10,6 +10,8 @@
       url: /recipes/
     - title: Regression Tutorial
       url: /tutorials/regression-scatterplot/
+    - title: Density Tutorial
+      url: /tutorials/density-area/
     - title: Troubleshooting
       url: /troubleshooting/
 

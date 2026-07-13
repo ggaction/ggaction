@@ -279,6 +279,17 @@ canvas
 - Area color scale 변경: all area fills와 legend symbols
 - Density channel 변경: positional encoding, baseline orientation, axes, grid
 
+## 최종 검증 결과
+
+- 406개 source row에서 Origin별 100개 sample, 총 300개 immutable density row를 만든다.
+- `Japan`, `USA`, `Europe` 순서로 3개 baseline-closed path를 materialize한다.
+- Public action program과 primitive oracle의 `semanticSpec`, `graphicSpec`, graphic order,
+  Canvas calls가 일치한다.
+- Browser Canvas는 logical `720×500`, PNG는 pixel ratio 2에서 `1440×1000`이다.
+- Browser console warning/error와 page error는 0건이다.
+- Unit/acceptance/docs 403개와 representative PNG regression 6개가 통과한다.
+- Coverage는 lines 94.46%, branches 89.62%, functions 98.56%다.
+
 각 변경 action이 affected consumer를 wrapped action으로 명시적으로 다시 materialize한다.
 Semantic-to-graphic 자동 compiler는 두지 않는다.
 

@@ -41,3 +41,9 @@ Open <http://localhost:8000/examples/cars-regression-scatterplot/>. This chart
 filters to Japan and the USA, varies point size and shape, layers grouped linear
 fits and 95% mean-response confidence bands, and creates shared axes, grid, and
 composite legends.
+
+## Cars density area chart
+
+Open <http://localhost:8000/examples/cars-density-area/>. This chart derives
+Gaussian kernel-density values for acceleration by Origin, overlays three
+translucent area paths, and uses two-direction grids with a top legend.

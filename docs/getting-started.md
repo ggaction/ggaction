@@ -27,6 +27,7 @@ Open one of the runnable repository examples:
 - `http://localhost:4173/examples/cars-histogram/`
 - `http://localhost:4173/examples/jobs-grouped-bar/`
 - `http://localhost:4173/examples/cars-regression-scatterplot/`
+- `http://localhost:4173/examples/cars-density-area/`
 
 Those browser examples import `../../src/index.js` directly. The code below
 uses the intended package import, `ggaction`, to document the consumer API that

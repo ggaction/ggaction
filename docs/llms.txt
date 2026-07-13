@@ -13,12 +13,14 @@ and language models.
 - Complete histogram tutorial: ./tutorials/histogram.md
 - Complete bar chart tutorial (grouped example): ./tutorials/grouped-bar.md
 - Complete regression scatterplot tutorial: ./tutorials/regression-scatterplot.md
+- Complete density area tutorial: ./tutorials/density-area.md
 - Chart recipe index: ./recipes/index.md
 - Scatterplot recipe: ./recipes/scatterplot.md
 - Line chart recipe: ./recipes/line-chart.md
 - Histogram recipe: ./recipes/histogram.md
 - Bar chart recipe (grouped example): ./recipes/bar-chart.md
 - Regression scatterplot recipe: ./recipes/regression-scatterplot.md
+- Density area recipe: ./recipes/density-area.md
 - Troubleshooting inference, layout, and scale errors: ./troubleshooting.md
 - Complete action reference: ./reference/actions.md
 - Supported features: ./supported-features.md
@@ -132,7 +134,8 @@ repository source directly.
 
 The implemented end-to-end Chart API covers Cartesian point scatterplots,
 temporal mean-aggregate line charts, stacked histograms, and ordinal bar charts
-with a grouped layout, plus layered grouped linear-regression scatterplots.
+with a grouped layout, layered grouped linear-regression scatterplots, and
+grouped density area charts.
 Every public example supports browser Canvas and PNG output.
 
 - Scatterplots use quantitative x/y, nominal color/shape, quantitative size,
