@@ -10,6 +10,8 @@
   url: /tutorials/line-chart/
 - title: Histogram Tutorial
   url: /tutorials/histogram/
+- title: Grouped Bar Tutorial
+  url: /tutorials/grouped-bar/
 - title: Canvas
   url: /api/canvas/
 - title: Data

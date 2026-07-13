@@ -25,6 +25,7 @@ Open one of the runnable repository examples:
 - `http://localhost:4173/examples/cars-scatterplot/`
 - `http://localhost:4173/examples/cars-line-chart/`
 - `http://localhost:4173/examples/cars-histogram/`
+- `http://localhost:4173/examples/jobs-grouped-bar/`
 
 Those browser examples import `../../src/index.js` directly. The code below
 uses the intended package import, `ggaction`, to document the consumer API that
@@ -92,5 +93,7 @@ actions. It does not compile `semanticSpec` during rendering.
   [cars line chart tutorial](./tutorials/line-chart.md).
 - Bin and stack quantitative values in the
   [cars histogram tutorial](./tutorials/histogram.md).
+- Aggregate and group ordinal categories in the
+  [jobs grouped bar tutorial](./tutorials/grouped-bar.md).
 - Check the [action index](./reference/actions.md) for signatures and defaults.
 - Export the same program with [PNG rendering](./api/rendering.md#png-output).

@@ -98,7 +98,8 @@ test("keeps tutorial action flows aligned with public examples", () => {
   const cases = [
     ["scatterplot", "examples/cars-scatterplot/main.js", "const program = chart()"],
     ["line-chart", "examples/cars-line-chart/program.js", "return chart()"],
-    ["histogram", "examples/cars-histogram/program.js", "return chart()"]
+    ["histogram", "examples/cars-histogram/program.js", "return chart()"],
+    ["grouped-bar", "examples/jobs-grouped-bar/program.js", "return chart()"]
   ];
 
   for (const [tutorial, example, exampleStart] of cases) {
@@ -117,11 +118,16 @@ test("links every public chart example from entry documentation", () => {
   const gettingStarted = read("docs/getting-started.md");
   const tutorials = read("docs/tutorials/index.md");
 
-  for (const name of ["cars-scatterplot", "cars-line-chart", "cars-histogram"]) {
+  for (const name of [
+    "cars-scatterplot",
+    "cars-line-chart",
+    "cars-histogram",
+    "jobs-grouped-bar"
+  ]) {
     assert.match(readme, new RegExp(`examples/${name}`));
     assert.match(gettingStarted, new RegExp(`examples/${name}`));
   }
-  for (const name of ["scatterplot", "line-chart", "histogram"]) {
+  for (const name of ["scatterplot", "line-chart", "histogram", "grouped-bar"]) {
     assert.match(tutorials, new RegExp(`\\./${name}\\.md`));
   }
   assert.match(gettingStarted, /Point-mark legends are not\s+supported yet/);

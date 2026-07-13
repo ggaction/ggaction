@@ -28,3 +28,9 @@ chart-authoring example: it creates the same aggregate line chart entirely with
 Open <http://localhost:8000/examples/cars-histogram/>. This chart uses
 `createBarMark`, atomic histogram encoding, color stacking, inferred guides,
 and a centered title.
+
+## Jobs grouped bar chart
+
+Open <http://localhost:8000/examples/jobs-grouped-bar/>. This chart aggregates
+job percentages by year, groups bars by sex, and infers ordinal axes, a
+horizontal grid, and a right-side legend.

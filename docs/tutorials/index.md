@@ -27,3 +27,10 @@ Bin a quantitative field, count and stack rows by category, infer histogram
 guides, and center a chart title.
 
 [Build the cars histogram](./histogram.md)
+
+## Grouped bar chart
+
+Aggregate an ordinal x category, group bars by a nominal color field, and infer
+ordinal axes, a grid, and a categorical legend.
+
+[Build the jobs grouped bar chart](./grouped-bar.md)

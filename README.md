@@ -40,6 +40,7 @@ state is never automatically compiled during rendering.
 - [Cars scatterplot tutorial](./docs/tutorials/scatterplot.md)
 - [Cars line chart tutorial](./docs/tutorials/line-chart.md)
 - [Cars histogram tutorial](./docs/tutorials/histogram.md)
+- [Jobs grouped bar tutorial](./docs/tutorials/grouped-bar.md)
 - [Chart concepts](./docs/concepts/chart-program.md)
 - [Complete action reference](./docs/reference/actions.md)
 - [Supported features](./docs/supported-features.md)
@@ -47,7 +48,8 @@ state is never automatically compiled during rendering.
 
 The runnable [cars scatterplot](./examples/cars-scatterplot/),
 [aggregate line chart](./examples/cars-line-chart/), and
-[stacked histogram](./examples/cars-histogram/) use `data/cars.json`.
+[stacked histogram](./examples/cars-histogram/) use `data/cars.json`. The
+[grouped bar chart](./examples/jobs-grouped-bar/) uses `data/jobs.json`.
 Completed programs can also be exported through
 [`ggaction/png`](./docs/api/rendering.md#png-output).
 

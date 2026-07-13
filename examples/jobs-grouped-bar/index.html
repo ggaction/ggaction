@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ggaction Jobs Grouped Bar Chart</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        color: #1f2937;
+        background: #f3f4f6;
+        font: 16px/1.5 system-ui, sans-serif;
+      }
+
+      main {
+        max-width: calc(100vw - 32px);
+        padding: 24px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 12px 36px rgb(15 23 42 / 12%);
+      }
+
+      h1 {
+        margin: 0 0 4px;
+        font-size: 20px;
+      }
+
+      p {
+        margin: 0 0 16px;
+        color: #64748b;
+      }
+
+      canvas {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #e2e8f0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Jobs grouped bar chart</h1>
+      <p id="status">Loading jobs…</p>
+      <canvas id="chart" aria-label="Mean job percentage by year and sex"></canvas>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

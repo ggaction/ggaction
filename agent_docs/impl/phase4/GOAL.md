@@ -1,5 +1,7 @@
 # Phase 4 Goal — Grouped Bar Chart
 
+**상태: 완료**
+
 ## 목표
 
 `jobs.json`의 `year`, `perc`, `sex`를 사용해 year별 mean percentage를 sex에
@@ -51,8 +53,8 @@ chart()
 - [x] Ordinal x axis
 - [x] Grouped bar legend
 - [x] `createGuides` integration
-- [ ] Browser example, tutorial, PNG regression
-- [ ] 사용자 문서와 LLM reference
+- [x] Browser example, tutorial, PNG regression
+- [x] 사용자 문서와 LLM reference
 
 ## Semantic 목표
 
