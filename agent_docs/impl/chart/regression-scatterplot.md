@@ -1,5 +1,11 @@
 # Regression Scatterplot 구현 계약
 
+## 구현 상태
+
+Phase 5에서 완료했다. Public browser example, primitive baseline, full `graphicSpec`
+equivalence, Canvas renderer call equivalence, 2× PNG, immutable data와 action hierarchy를
+acceptance test로 고정했다.
+
 ## 목표
 
 `cars` 데이터의 `Displacement`, `Acceleration`, `Origin`을 사용해 다음 layer를

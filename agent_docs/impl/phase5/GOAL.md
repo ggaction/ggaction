@@ -21,7 +21,7 @@ band를 겹친 regression scatterplot을 구현한다.
 - [x] Area mark와 ranged y encoding
 - [x] `createRegression` aggregate action
 - [x] Composite Origin legend와 size legend
-- [ ] Public vertical slice, documentation, regression cleanup
+- [x] Public vertical slice, documentation, regression cleanup
 
 ## 실행 순서
 
