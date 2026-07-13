@@ -302,6 +302,11 @@ export function createCarsRegressionScatterplotPrimitives(cars) {
       property: "strokeWidth",
       value: 1
     })
+    .editGraphics({
+      target: "horizontalGridLines",
+      property: "strokeDash",
+      value: values.grid.horizontal.map(() => [])
+    })
     .createGraphics({ id: "points", type: "collection" })
     .editGraphics({
       target: "points",

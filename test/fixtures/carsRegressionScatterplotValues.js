@@ -556,7 +556,7 @@ export function createCarsRegressionScatterplotValues(
         ticks: xTicks,
         title: {
           x: bounds.x + bounds.width / 2,
-          y: height - 24,
+          y: bounds.y + bounds.height + 42,
           text: xField
         }
       },
@@ -569,7 +569,7 @@ export function createCarsRegressionScatterplotValues(
         },
         ticks: yTicks,
         title: {
-          x: 24,
+          x: bounds.x - 52,
           y: bounds.y + bounds.height / 2,
           text: yField,
           rotation: -Math.PI / 2
