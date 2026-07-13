@@ -96,9 +96,9 @@ test("validates Phase 2 semantic closed vocabularies", () => {
   assert.throws(
     () => chart().editSemantic({
       property: "guide.legend.series.channels",
-      value: ["color", "shape"]
+      value: ["color", "size"]
     }),
-    /only color and strokeDash/
+    /only color, strokeDash, and shape/
   );
   assert.throws(
     () => chart().editSemantic({ property: "title.text", value: "" }),

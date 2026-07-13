@@ -83,6 +83,82 @@ function validateNonEmptyString(value, label) {
   }
 }
 
+function validateFilterTransform(transform) {
+  const unknown = Object.keys(transform).find(
+    key => !["type", "field", "oneOf"].includes(key)
+  );
+  if (unknown !== undefined) {
+    throw new Error(`Unknown filter transform property "${unknown}".`);
+  }
+  validateNonEmptyString(transform.field, "Filter field");
+  if (
+    !Array.isArray(transform.oneOf) ||
+    transform.oneOf.length === 0 ||
+    transform.oneOf.some(value =>
+      value !== null &&
+      typeof value !== "string" &&
+      typeof value !== "boolean" &&
+      !(typeof value === "number" && Number.isFinite(value))
+    )
+  ) {
+    throw new TypeError(
+      "Filter oneOf must be a non-empty array of scalar values."
+    );
+  }
+}
+
+function validateRegressionTransform(transform) {
+  const supported = [
+    "type",
+    "method",
+    "x",
+    "y",
+    "groupBy",
+    "confidence",
+    "interval"
+  ];
+  const unknown = Object.keys(transform).find(key => !supported.includes(key));
+  if (unknown !== undefined) {
+    throw new Error(`Unknown regression transform property "${unknown}".`);
+  }
+  if (transform.method !== "linear") {
+    throw new Error(`Unsupported regression method "${transform.method}".`);
+  }
+  validateNonEmptyString(transform.x, "Regression x field");
+  validateNonEmptyString(transform.y, "Regression y field");
+  if (transform.groupBy !== undefined) {
+    validateNonEmptyString(transform.groupBy, "Regression groupBy field");
+  }
+  if (
+    !Number.isFinite(transform.confidence) ||
+    transform.confidence <= 0 ||
+    transform.confidence >= 1
+  ) {
+    throw new RangeError("Regression confidence must be between 0 and 1.");
+  }
+  if (transform.interval !== "mean") {
+    throw new Error(`Unsupported regression interval "${transform.interval}".`);
+  }
+}
+
+function validateDatasetTransforms(value) {
+  if (!Array.isArray(value) || value.length === 0 || !value.every(isPlainObject)) {
+    throw new TypeError(
+      "Dataset transform must be a non-empty array of plain objects."
+    );
+  }
+
+  for (const transform of value) {
+    if (transform.type === "filter") {
+      validateFilterTransform(transform);
+    } else if (transform.type === "regression") {
+      validateRegressionTransform(transform);
+    } else {
+      throw new Error(`Unsupported dataset transform "${transform.type}".`);
+    }
+  }
+}
+
 function validateSeriesLegendValue(property, value) {
   if (property === "title") {
     validateNonEmptyString(value, "Legend title");
@@ -98,9 +174,11 @@ function validateSeriesLegendValue(property, value) {
   }
 
   if (property === "channels") {
-    const supported = new Set(["color", "strokeDash"]);
+    const supported = new Set(["color", "strokeDash", "shape"]);
     if (!value.every(channel => supported.has(channel))) {
-      throw new Error("Legend channels support only color and strokeDash.");
+      throw new Error(
+        "Legend channels support only color, strokeDash, and shape."
+      );
     }
     return;
   }
@@ -113,6 +191,17 @@ function validateSemanticValue(program, parsed, value) {
     if (!Array.isArray(value) || !value.every(isPlainObject)) {
       throw new TypeError("Dataset values must be an array of plain row objects.");
     }
+  }
+
+  if (parsed.kind === "dataset" && parsed.path[0] === "source") {
+    validateUserId(value, "Dataset source id");
+    if (!program.semanticSpec.datasets.some(dataset => dataset.id === value)) {
+      throw new Error(`Unknown source dataset "${value}".`);
+    }
+  }
+
+  if (parsed.kind === "dataset" && parsed.path[0] === "transform") {
+    validateDatasetTransforms(value);
   }
 
   if (

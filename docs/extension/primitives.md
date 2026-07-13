@@ -28,6 +28,14 @@ The primitive semantic grammar also supports the current line-chart contract,
 including temporal field types, `mean` aggregation, `strokeDash` encodings,
 scale `nice`/`zero` policies, combined series legends, and chart title text.
 
+Derived dataset primitives may store an immutable `source`, a validated
+`filter` or linear `regression` transform, and materialized `values`. Regression
+transforms currently describe Student-t mean-response intervals. Layer paths
+also support `encoding.y2`, field-driven `encoding.shape`, and scale-free
+`encoding.group` for primitive area and grouped-path contracts. These are
+extension-level building blocks; the corresponding chart-authoring actions are
+introduced separately when their complete materialization behavior is ready.
+
 ## `createGraphics({ id, type, length?, before?, after? })`
 
 Creates one concrete object, a homogeneous drawable collection, or an empty
@@ -111,6 +119,11 @@ The complete low-level line-chart example is available in
 [`carsLineChartPrimitives.js`](https://github.com/hj-n/ggaction/blob/main/test/programs/carsLineChartPrimitives.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
+
+The regression scatterplot baseline in
+[`carsRegressionScatterplotPrimitives.js`](https://github.com/hj-n/ggaction/blob/main/test/programs/carsRegressionScatterplotPrimitives.js)
+uses a heterogeneous point collection, grouped filled confidence-band paths,
+grouped line paths, and two concrete legends.
 
 ## `editGraphics({ target, property, value })`
 

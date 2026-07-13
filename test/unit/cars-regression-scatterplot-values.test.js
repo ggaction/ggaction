@@ -87,6 +87,53 @@ test("matches representative OLS and confidence interval values", () => {
   assertApproximately(lastJapan.__regression_ci_upper, 14.338531496533529);
 });
 
+test("maps points, confidence bands, lines, axes, and legends concretely", () => {
+  const result = createCarsRegressionScatterplotValues(loadCars());
+
+  assert.deepEqual(result.bounds, { x: 80, y: 40, width: 490, height: 370 });
+  assert.deepEqual(result.scales, {
+    x: { domain: [0, 500], range: [80, 570] },
+    y: { domain: [6, 24], range: [410, 40] },
+    color: {
+      domain: ["USA", "Japan"],
+      range: ["#4c78a8", "#f58518"]
+    },
+    size: { domain: [8, 22.2], range: [24, 196] },
+    shape: { domain: ["USA", "Japan"], range: ["circle", "square"] }
+  });
+  assert.deepEqual(
+    result.pointChildren.map(child => child.type).reduce(
+      (counts, type) => ({ ...counts, [type]: (counts[type] ?? 0) + 1 }),
+      {}
+    ),
+    { circle: 254, rect: 79 }
+  );
+  assert.deepEqual(
+    result.regressionBands.map(band => [band.group, band.points.length]),
+    [["USA", 96], ["Japan", 50]]
+  );
+  assert.deepEqual(
+    result.regressionLines.map(line => [line.group, line.points.length]),
+    [["USA", 48], ["Japan", 25]]
+  );
+  assert.deepEqual(
+    result.axes.x.ticks.map(tick => tick.value),
+    [0, 100, 200, 300, 400, 500]
+  );
+  assert.deepEqual(
+    result.axes.y.ticks.map(tick => tick.value),
+    [10, 15, 20]
+  );
+  assert.deepEqual(
+    result.legends.origin.items.map(item => [item.group, item.shape]),
+    [["USA", "circle"], ["Japan", "square"]]
+  );
+  assert.deepEqual(
+    result.legends.size.items.map(item => item.value),
+    [8, 15.1, 22.2]
+  );
+});
+
 test("rejects invalid options and degenerate regression groups", () => {
   assert.throws(
     () => createCarsRegressionScatterplotValues({}, {}),
@@ -118,6 +165,16 @@ test("rejects invalid options and degenerate regression groups", () => {
       { Displacement: 10, Acceleration: 3, Origin: "USA" }
     ]),
     /requires varying x values/
+  );
+  assert.throws(
+    () => createCarsRegressionScatterplotValues(loadCars(), { width: 0 }),
+    /positive finite dimensions/
+  );
+  assert.throws(
+    () => createCarsRegressionScatterplotValues(loadCars(), {
+      margin: { top: 40, right: 500, bottom: 70, left: 500 }
+    }),
+    /must leave positive plot bounds/
   );
 });
 

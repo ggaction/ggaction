@@ -3,7 +3,7 @@ import { USER_ID_SOURCE } from "../../core/identifiers.js";
 const ENTITY_PATHS = Object.freeze({
   dataset: {
     collection: "datasets",
-    properties: new Set(["values"])
+    properties: new Set(["source", "transform", "values"])
   },
   layer: {
     collection: "layers",
@@ -23,6 +23,10 @@ const ENTITY_PATHS = Object.freeze({
       "encoding.y.scale",
       "encoding.y.aggregate",
       "encoding.y.stack",
+      "encoding.y2.field",
+      "encoding.y2.datum",
+      "encoding.y2.fieldType",
+      "encoding.y2.scale",
       "encoding.xOffset.field",
       "encoding.xOffset.datum",
       "encoding.xOffset.fieldType",
@@ -47,6 +51,13 @@ const ENTITY_PATHS = Object.freeze({
       "encoding.size.datum",
       "encoding.size.fieldType",
       "encoding.size.scale",
+      "encoding.shape.field",
+      "encoding.shape.datum",
+      "encoding.shape.fieldType",
+      "encoding.shape.scale",
+      "encoding.group.field",
+      "encoding.group.datum",
+      "encoding.group.fieldType",
       "encoding.opacity.field",
       "encoding.opacity.datum",
       "encoding.opacity.fieldType",
