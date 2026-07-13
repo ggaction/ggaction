@@ -5,7 +5,10 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { chartImages } from "../../scripts/generate-doc-images.js";
+import {
+  buildDocImageManifest,
+  chartImages
+} from "../../scripts/generate-doc-images.js";
 import { buildFullLlmDocumentation } from "../../scripts/generate-llm-docs.js";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
@@ -228,7 +231,7 @@ test("indexes documentation headings for section search", () => {
   assert.match(navigation, /restoreFocus/);
 });
 
-test("keeps one generated gallery image for every public chart", () => {
+test("keeps one generated gallery image for every public chart", async () => {
   const index = read("docs/index.md");
   const tutorials = read("docs/tutorials/index.md");
 
@@ -251,6 +254,11 @@ test("keeps one generated gallery image for every public chart", () => {
   ]) {
     assert.match(tutorials, new RegExp(`\\./${tutorial}\\.md`));
   }
+
+  assert.deepEqual(
+    JSON.parse(read("docs/assets/images/manifest.json")),
+    await buildDocImageManifest()
+  );
 });
 
 test("classifies every declared ChartProgram action in the reference", () => {

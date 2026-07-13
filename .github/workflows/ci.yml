@@ -65,7 +65,8 @@ jobs:
         run: |
           npm run docs:images
           npm run docs:llms
-          git diff --exit-code -- docs/assets/images docs/llms-full.txt
+          npm run test:docs
+          git diff --exit-code -- docs/assets/images/manifest.json docs/llms-full.txt
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Build documentation with Jekyll

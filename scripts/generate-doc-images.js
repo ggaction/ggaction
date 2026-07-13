@@ -1,5 +1,6 @@
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { createHash } from "node:crypto";
+import { readFile, readdir, writeFile } from "node:fs/promises";
+import { relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { renderToPNG } from "ggaction/png";
@@ -24,39 +25,93 @@ export const chartImages = [
     id: "cars-scatterplot",
     width: 640,
     height: 400,
+    programFile: new URL("../examples/cars-scatterplot/program.js", import.meta.url),
+    dataFile: new URL("../data/cars.json", import.meta.url),
     createProgram: () => createCarsScatterplot(cars)
   },
   {
     id: "cars-line-chart",
     width: 720,
     height: 460,
+    programFile: new URL("../examples/cars-line-chart/program.js", import.meta.url),
+    dataFile: new URL("../data/cars.json", import.meta.url),
     createProgram: () => createCarsLineChart(cars)
   },
   {
     id: "cars-histogram",
     width: 432,
     height: 460,
+    programFile: new URL("../examples/cars-histogram/program.js", import.meta.url),
+    dataFile: new URL("../data/cars.json", import.meta.url),
     createProgram: () => createCarsHistogram(cars)
   },
   {
     id: "jobs-grouped-bar",
     width: 720,
     height: 460,
+    programFile: new URL("../examples/jobs-grouped-bar/program.js", import.meta.url),
+    dataFile: new URL("../data/jobs.json", import.meta.url),
     createProgram: () => createJobsGroupedBar(jobs)
   },
   {
     id: "cars-regression-scatterplot",
     width: 760,
     height: 480,
+    programFile: new URL(
+      "../examples/cars-regression-scatterplot/program.js",
+      import.meta.url
+    ),
+    dataFile: new URL("../data/cars.json", import.meta.url),
     createProgram: () => createCarsRegressionScatterplot(cars)
   },
   {
     id: "cars-density-area",
     width: 720,
     height: 500,
+    programFile: new URL("../examples/cars-density-area/program.js", import.meta.url),
+    dataFile: new URL("../data/cars.json", import.meta.url),
     createProgram: () => createCarsDensityArea(cars)
   }
 ];
+
+async function sourceFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const nested = await Promise.all(entries.map(entry => {
+    const target = resolve(directory, entry.name);
+    return entry.isDirectory() ? sourceFiles(target) : [target];
+  }));
+  return nested.flat().filter(file => file.endsWith(".js")).sort();
+}
+
+export async function buildDocImageManifest() {
+  const root = fileURLToPath(new URL("../", import.meta.url));
+  const sharedFiles = [
+    ...(await sourceFiles(resolve(root, "src"))),
+    resolve(root, "package-lock.json")
+  ];
+  const shared = createHash("sha256");
+  for (const file of sharedFiles) {
+    shared.update(relative(root, file));
+    shared.update(await readFile(file));
+  }
+  const sharedHash = shared.digest("hex");
+
+  const charts = {};
+  for (const chart of chartImages) {
+    const hash = createHash("sha256");
+    hash.update(sharedHash);
+    hash.update(`${chart.width}x${chart.height}@2`);
+    hash.update(await readFile(chart.programFile));
+    hash.update(await readFile(chart.dataFile));
+    charts[chart.id] = {
+      width: chart.width * 2,
+      height: chart.height * 2,
+      sourceHash: hash.digest("hex")
+    };
+  }
+
+  return { version: 1, pixelRatio: 2, charts };
+}
 
 export async function generateDocImages() {
   for (const chart of chartImages) {
@@ -66,6 +121,11 @@ export async function generateDocImages() {
     await renderToPNG(chart.createProgram(), { output, pixelRatio: 2 });
     process.stdout.write(`generated ${chart.id}.png\n`);
   }
+  const manifest = fileURLToPath(
+    new URL("../docs/assets/images/manifest.json", import.meta.url)
+  );
+  await writeFile(manifest, `${JSON.stringify(await buildDocImageManifest(), null, 2)}\n`);
+  process.stdout.write("generated docs image manifest\n");
 }
 
 if (
