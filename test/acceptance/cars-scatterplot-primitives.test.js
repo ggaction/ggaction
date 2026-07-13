@@ -6,18 +6,18 @@ import {
   findCanvasCalls
 } from "../helpers/mockCanvasContext.js";
 import {
-  createCarsScatterplotAxes,
-  renderCarsScatterplotAxes
-} from "../programs/carsScatterplotAxes.js";
+  createCarsScatterplotPrimitives,
+  renderCarsScatterplotPrimitives
+} from "../programs/carsScatterplotPrimitives.js";
 import { loadCars } from "../fixtures/data.js";
 
 const cars = loadCars();
 
 test("renders the cars scatterplot with manually authored axes", () => {
-  const program = createCarsScatterplotAxes(cars);
+  const program = createCarsScatterplotPrimitives(cars);
   const context = createMockCanvasContext();
 
-  renderCarsScatterplotAxes(program, context);
+  renderCarsScatterplotPrimitives(program, context);
 
   assert.equal(findCanvasCalls(context, "arc").length, 392);
   assert.equal(findCanvasCalls(context, "stroke").length, 10);

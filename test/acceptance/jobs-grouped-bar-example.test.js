@@ -3,6 +3,7 @@ import test from "node:test";
 
 import { createJobsGroupedBar } from "../../examples/jobs-grouped-bar/program.js";
 import { loadJobs } from "../fixtures/data.js";
+import { createJobsGroupedBarPrimitives } from "../programs/jobsGroupedBarPrimitives.js";
 
 const jobs = loadJobs();
 
@@ -39,4 +40,15 @@ test("builds the public jobs grouped bar chart with chart actions", () => {
     "encodeBarWidth",
     "createGuides"
   ]);
+});
+
+test("matches primitive grouped-bar semantics and concrete bars", () => {
+  const program = createJobsGroupedBar(jobs);
+  const primitive = createJobsGroupedBarPrimitives(jobs);
+
+  assert.deepEqual(program.semanticSpec, primitive.semanticSpec);
+  assert.deepEqual(
+    program.graphicSpec.objects.bars,
+    primitive.graphicSpec.objects.bars
+  );
 });

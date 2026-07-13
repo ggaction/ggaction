@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { chart } from "../../src/index.js";
 
-test("stores the Phase 2 line-chart semantic contract immutably", () => {
+test("stores the line-chart semantic contract immutably", () => {
   const before = chart();
   const program = before
     .editSemantic({

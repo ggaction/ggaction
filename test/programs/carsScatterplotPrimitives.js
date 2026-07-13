@@ -44,7 +44,7 @@ function extent(values) {
   return [Math.min(...values), Math.max(...values)];
 }
 
-export function createCarsScatterplotAxesValues(
+export function createCarsScatterplotPrimitiveValues(
   cars,
   {
     width = DEFAULT_LAYOUT.width,
@@ -94,9 +94,9 @@ export function createCarsScatterplotAxesValues(
   };
 }
 
-export function createCarsScatterplotAxes(cars) {
+export function createCarsScatterplotPrimitives(cars) {
   const { validCars, bounds, x, y, fill, xTicks, yTicks } =
-    createCarsScatterplotAxesValues(cars);
+    createCarsScatterplotPrimitiveValues(cars);
 
   return chart()
     .editSemantic({ property: "dataset[cars].values", value: validCars })
@@ -266,6 +266,6 @@ export function createCarsScatterplotAxes(cars) {
     });
 }
 
-export function renderCarsScatterplotAxes(program, canvasContext) {
+export function renderCarsScatterplotPrimitives(program, canvasContext) {
   render(program, canvasContext);
 }

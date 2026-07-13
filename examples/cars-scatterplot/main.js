@@ -1,4 +1,6 @@
-import { chart, render } from "../../src/index.js";
+import { render } from "../../src/index.js";
+
+import { createCarsScatterplot } from "./program.js";
 
 const response = await fetch("../../data/cars.json");
 const cars = await response.json();
@@ -7,24 +9,7 @@ const rows = cars.filter(
     Number.isFinite(car.Horsepower) &&
     Number.isFinite(car.Miles_per_Gallon)
 );
-const program = chart()
-  .createCanvas({
-    width: 640,
-    height: 400,
-    margin: { top: 30, right: 30, bottom: 60, left: 70 }
-  })
-  .createData({ id: "cars", values: rows })
-  .createPointMark({ id: "points" })
-  .encodeX({ field: "Horsepower" })
-  .encodeY({ field: "Miles_per_Gallon" })
-  .encodeColor({ field: "Origin" })
-  .encodeRadius({ value: 3 })
-  .createGuides({
-    axes: {
-      x: { title: { text: "Horsepower" } },
-      y: { title: { text: "Miles per Gallon" } }
-    }
-  });
+const program = createCarsScatterplot(rows);
 
 const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));

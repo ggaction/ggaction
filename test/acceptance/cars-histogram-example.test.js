@@ -3,6 +3,7 @@ import test from "node:test";
 
 import { createCarsHistogram } from "../../examples/cars-histogram/program.js";
 import { loadCars } from "../fixtures/data.js";
+import { createCarsHistogramPrimitives } from "../programs/carsHistogramPrimitives.js";
 
 const cars = loadCars();
 
@@ -41,4 +42,12 @@ test("builds the public cars histogram with chart actions", () => {
     "createGuides",
     "createTitle"
   ]);
+});
+
+test("matches the complete histogram primitive baseline", () => {
+  const program = createCarsHistogram(cars);
+  const primitive = createCarsHistogramPrimitives(cars);
+
+  assert.deepEqual(program.semanticSpec, primitive.semanticSpec);
+  assert.deepEqual(program.graphicSpec, primitive.graphicSpec);
 });

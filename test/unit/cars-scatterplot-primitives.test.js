@@ -2,15 +2,15 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  createCarsScatterplotAxes,
-  createCarsScatterplotAxesValues
-} from "../programs/carsScatterplotAxes.js";
+  createCarsScatterplotPrimitives,
+  createCarsScatterplotPrimitiveValues
+} from "../programs/carsScatterplotPrimitives.js";
 import { loadCars } from "../fixtures/data.js";
 
 const cars = loadCars();
 
 test("precomputes point, tick, and label values for the axes program", () => {
-  const values = createCarsScatterplotAxesValues(cars);
+  const values = createCarsScatterplotPrimitiveValues(cars);
 
   assert.equal(values.validCars.length, 392);
   assert.deepEqual(values.bounds, {
@@ -28,7 +28,7 @@ test("precomputes point, tick, and label values for the axes program", () => {
 });
 
 test("derives plot bounds from canvas dimensions and margins", () => {
-  const values = createCarsScatterplotAxesValues(cars, {
+  const values = createCarsScatterplotPrimitiveValues(cars, {
     width: 800,
     height: 500,
     margin: { top: 40, right: 50, bottom: 70, left: 80 }
@@ -43,7 +43,7 @@ test("derives plot bounds from canvas dimensions and margins", () => {
 });
 
 test("authors axes in a separate concrete scatterplot program", () => {
-  const program = createCarsScatterplotAxes(cars);
+  const program = createCarsScatterplotPrimitives(cars);
 
   assert.equal(program.graphicSpec.objects.points.children.length, 392);
   assert.equal(program.graphicSpec.objects.xTicks.children.length, 4);

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import { renderToPNG } from "ggaction/png";
 
-import { createCarsScatterplotAxes } from "../programs/carsScatterplotAxes.js";
+import { createCarsScatterplotPrimitives } from "../programs/carsScatterplotPrimitives.js";
 
 const carsPath = new URL("../../data/cars.json", import.meta.url);
 const outputPath = new URL(
@@ -15,7 +15,7 @@ const outputPath = new URL(
 
 test("writes the cars scatterplot with axes as a PNG", async () => {
   const cars = JSON.parse(await readFile(carsPath, "utf8"));
-  const program = createCarsScatterplotAxes(cars);
+  const program = createCarsScatterplotPrimitives(cars);
   const result = await renderToPNG(program, {
     output: fileURLToPath(outputPath),
     pixelRatio: 2

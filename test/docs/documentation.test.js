@@ -96,7 +96,7 @@ test("keeps navigation and page order complete", async () => {
 
 test("keeps tutorial action flows aligned with public examples", () => {
   const cases = [
-    ["scatterplot", "examples/cars-scatterplot/main.js", "const program = chart()"],
+    ["scatterplot", "examples/cars-scatterplot/program.js", "return chart()"],
     ["line-chart", "examples/cars-line-chart/program.js", "return chart()"],
     ["histogram", "examples/cars-histogram/program.js", "return chart()"],
     ["grouped-bar", "examples/jobs-grouped-bar/program.js", "return chart()"]
