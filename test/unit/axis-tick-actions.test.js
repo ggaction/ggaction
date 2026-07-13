@@ -21,5 +21,10 @@ test("validates mutually exclusive options and rematerializes after Canvas edits
   const created = program().createXAxisTicks();
   const resized = created.editCanvas({ width: 300, margin: 20 });
   assert.equal(resized.graphicSpec.objects.xAxisTicks.children[0].properties.y1, 100);
-  assert.equal(resized.trace.children.at(-1).children.at(-1).op, "rematerializeScale");
+  assert.equal(
+    resized.trace.children.at(-1).children.some(
+      child => child.op === "rematerializeScale"
+    ),
+    true
+  );
 });

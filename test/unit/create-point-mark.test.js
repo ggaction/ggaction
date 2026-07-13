@@ -80,17 +80,17 @@ test("records resolved semantic and graphical child actions", () => {
   assert.deepEqual(program.actionStack, []);
 });
 
-test("rejects missing data, unsupported shapes, and unknown datasets", () => {
+test("supports square points and rejects missing or unknown data", () => {
   assert.throws(
     () => chart().createPointMark({ id: "points" }),
     /requires data or a current dataset/
   );
-  assert.throws(
-    () =>
-      chart()
-        .createData({ id: "cars", values: [] })
-        .createPointMark({ id: "points", shape: "square" }),
-    /Unsupported point shape/
+  assert.equal(
+    chart()
+      .createData({ id: "cars", values: [] })
+      .createPointMark({ id: "points", shape: "square" })
+      .graphicSpec.objects.points.type,
+    "rect"
   );
   assert.throws(
     () =>

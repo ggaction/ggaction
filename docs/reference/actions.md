@@ -59,7 +59,7 @@ source defaults to current data. [Data](../api/data.md)
 createPointMark({ id, data?, shape? })
 ```
 
-Create a semantic point mark with a circle realization. [Marks](../api/marks.md)
+Create a semantic point mark with a circle or square realization. [Marks](../api/marks.md)
 
 ### `createLineMark`
 
@@ -147,6 +147,33 @@ encodeRadius({ value, target? })
 ```
 
 Apply a constant point radius. [Constant appearance](../api/appearance.md)
+
+### `encodeSize`
+
+```javascript
+encodeSize({ field, target?, fieldType?, scale? })
+```
+
+Encode a quantitative field as equal-area point size. The automatic area range
+is `[24, 196]`. [Appearance encodings](../api/appearance.md)
+
+### `encodeShape`
+
+```javascript
+encodeShape({ field, target?, fieldType?, scale? })
+```
+
+Encode a nominal field as point shape using circle and square symbols.
+[Appearance encodings](../api/appearance.md)
+
+### `encodeOpacity`
+
+```javascript
+encodeOpacity({ value, target? })
+```
+
+Apply a constant point opacity from `0` to `1`.
+[Appearance encodings](../api/appearance.md)
 
 ### `encodeBarWidth`
 

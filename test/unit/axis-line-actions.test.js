@@ -76,7 +76,13 @@ test("rematerializes axis lines after Canvas bounds change", () => {
   });
   assert.deepEqual(
     node.children.map(child => child.op),
-    ["editGraphics", "editGraphics", "rematerializeScale", "rematerializeScale"]
+    [
+      "editGraphics",
+      "editGraphics",
+      "rematerializeScale",
+      "rematerializeScale",
+      "rematerializePointMark"
+    ]
   );
 });
 

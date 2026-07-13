@@ -30,7 +30,10 @@ test("records encodeRadius with one graphical child action", () => {
 
   assert.equal(node.op, "encodeRadius");
   assert.deepEqual(node.args, { value: 4 });
-  assert.deepEqual(node.children.map(child => child.op), ["editGraphics"]);
+  assert.deepEqual(
+    node.children.map(child => child.op),
+    ["rematerializePointMark"]
+  );
 });
 
 test("supports an explicit point target", () => {

@@ -49,7 +49,8 @@ test("records color encoding through explicit nested actions", () => {
       "editSemantic",
       "editSemantic",
       "createScale",
-      "rematerializeScale"
+      "rematerializeScale",
+      "rematerializePointMark"
     ]
   );
   assert.deepEqual(

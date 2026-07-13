@@ -138,8 +138,11 @@ test("rematerializes grid values when a shared scale domain changes", () => {
     before.graphicSpec.objects.horizontalGridLines
   );
   const encodeY = after.trace.children.at(-1);
+  const scaleAction = encodeY.children.find(
+    child => child.op === "rematerializeScale"
+  );
   assert.equal(
-    encodeY.children.at(-1).children.some(
+    scaleAction.children.some(
       child => child.op === "rematerializeHorizontalGrid"
     ),
     true

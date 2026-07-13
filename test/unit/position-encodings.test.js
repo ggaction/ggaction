@@ -64,7 +64,8 @@ test("records the explicit nested encoding action hierarchy", () => {
       "editSemantic",
       "editSemantic",
       "createScale",
-      "rematerializeScale"
+      "rematerializeScale",
+      "rematerializePointMark"
     ]
   );
   assert.deepEqual(

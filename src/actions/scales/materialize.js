@@ -11,6 +11,8 @@ import {
   resolveOrdinalOffsetScale,
   resolveOrdinalPositionScale,
   resolveScaleRange,
+  resolveShapeRange,
+  resolveSizeRange,
   resolveStrokeDashRange,
   validateLinearScaleType,
   validateOrdinalScaleType,
@@ -58,7 +60,7 @@ export const rematerializeScale = action(
       values: resolveConsumerValues(this, consumer)
     }));
     const allValues = valuesByConsumer.flatMap(item => item.values);
-    const isOrdinalAppearance = channel === "color" || channel === "strokeDash";
+    const isOrdinalAppearance = ["color", "strokeDash", "shape"].includes(channel);
     const isOrdinalOffset = channel === "xOffset";
     const isOrdinalPosition =
       !isOrdinalAppearance && !isOrdinalOffset && scale.type === "ordinal";
@@ -128,6 +130,8 @@ export const rematerializeScale = action(
     let range;
     if (channel === "color") range = resolveColorRange(scale.range);
     else if (channel === "strokeDash") range = resolveStrokeDashRange(scale.range);
+    else if (channel === "shape") range = resolveShapeRange(scale.range);
+    else if (channel === "size") range = resolveSizeRange(scale.range);
     else if (isOrdinalOffset) range = undefined;
     else {
       range = resolveScaleRange(
@@ -178,7 +182,10 @@ export const rematerializeScale = action(
     let next = this._withResolvedScale(id, resolvedScale);
 
     for (const { consumer, values } of valuesByConsumer) {
-      if (["line", "bar"].includes(consumer.layer.mark?.type)) continue;
+      if (
+        ["line", "bar"].includes(consumer.layer.mark?.type) ||
+        (consumer.layer.mark?.type === "point" && ["size", "shape"].includes(channel))
+      ) continue;
       next = next.editGraphics({
         target: consumer.layer.id,
         property: channel === "color" ? "fill" : channel,

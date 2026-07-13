@@ -27,6 +27,14 @@ function isCompleteLine(layer) {
   );
 }
 
+function isCompletePoint(layer) {
+  return (
+    layer.mark?.type === "point" &&
+    layer.encoding?.x?.scale !== undefined &&
+    layer.encoding?.y?.scale !== undefined
+  );
+}
+
 function isCompleteBar(program, layer) {
   return (
     layer.mark?.type === "bar" &&
@@ -61,6 +69,11 @@ export function planCanvasRematerialization(program) {
   for (const scale of program.semanticSpec.scales) {
     if (needsCanvasScaleRematerialization(program, scale)) {
       plan.push({ op: "rematerializeScale", args: { id: scale.id } });
+    }
+  }
+  for (const layer of program.semanticSpec.layers) {
+    if (isCompletePoint(layer)) {
+      plan.push({ op: "rematerializePointMark", args: { id: layer.id } });
     }
   }
   for (const layer of program.semanticSpec.layers) {

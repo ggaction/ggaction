@@ -169,7 +169,9 @@ const encodeColor = action(
       );
     }
 
-    return next.rematerializeScale({ id: scale.id });
+    return next
+      .rematerializeScale({ id: scale.id })
+      .rematerializePointMark({ id: target });
   }
 );
 

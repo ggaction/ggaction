@@ -1,5 +1,6 @@
 const POINT_SHAPE_GRAPHICS = Object.freeze({
-  circle: "circle"
+  circle: "circle",
+  square: "rect"
 });
 
 export function validatePointShape(shape) {

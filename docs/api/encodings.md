@@ -16,8 +16,9 @@ defaults.
 | --- | --- | --- |
 | Position | `encodeX`, `encodeY`, `encodeXOffset` | Quantitative, temporal, binned, or ordinal placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
+| Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
 | Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
-| Constant appearance | `encodeRadius`, `encodeBarWidth` | Fixed graphical values |
+| Constant appearance | `encodeRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
 
 ## Position
 
@@ -86,13 +87,18 @@ program
   .encodeStrokeDash({ field: "Origin" });
 ```
 
-## Constant appearance
+## Point appearance
 
-[`encodeRadius`](./appearance.md) broadcasts a graphical radius to point marks.
-It does not create a semantic field encoding.
+[`encodeSize` and `encodeShape`](./appearance.md) create semantic field
+encodings. `encodeOpacity` and `encodeRadius` store graphical constants. A
+single point materializer combines the stored channels, so their call order
+does not change the resulting graphics.
 
 ```javascript
-program.encodeRadius({ value: 3 });
+program
+  .encodeSize({ field: "Acceleration" })
+  .encodeShape({ field: "Origin" })
+  .encodeOpacity({ value: 0.27 });
 ```
 
 ## Scale options

@@ -7,16 +7,16 @@ Point mark에 field-driven size/shape와 constant opacity를 적용하고 action
 
 ## 진행 상태
 
-- [ ] Unified `rematerializePointMark`
-- [ ] Quantitative `encodeSize`와 size scale
-- [ ] Nominal `encodeShape`와 shape scale
-- [ ] Constant graphical `encodeOpacity`
-- [ ] Circle/square equal-area materialization
-- [ ] Shared field domain과 automatic range resolution
-- [ ] Canvas/scale edit consumer rematerialization
-- [ ] Shortest valid call, order independence, trace tests
-- [ ] Mark/encoding/reference documentation
-- [ ] Primitive/action equivalence, commit, push
+- [x] Unified `rematerializePointMark`
+- [x] Quantitative `encodeSize`와 size scale
+- [x] Nominal `encodeShape`와 shape scale
+- [x] Constant graphical `encodeOpacity`
+- [x] Circle/square equal-area materialization
+- [x] Shared field domain과 automatic range resolution
+- [x] Canvas/scale edit consumer rematerialization
+- [x] Shortest valid call, order independence, trace tests
+- [x] Mark/encoding/reference documentation
+- [x] Primitive/action equivalence, commit, push
 
 ## 의미 경계
 

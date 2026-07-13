@@ -69,6 +69,12 @@ and language models.
 - Nested wrapped actions form the hierarchical trace.
 - Positional encodings create and attach coordinates; guide actions only read them.
 - encodeRadius is fixed circle appearance, not a Polar radial encoding.
+- encodeSize stores a quantitative semantic encoding and maps its automatic
+  domain to point areas `[24, 196]`; circles and squares use equal areas.
+- encodeShape stores a nominal semantic encoding and materializes circle/square
+  typed children. encodeOpacity is a fixed graphical constant.
+- One rematerializePointMark action combines x, y, color, size, shape, and
+  opacity independently of authoring call order and after Canvas changes.
 - Temporal line encodeX resolves a time scale but does not yet materialize path points.
 - Aggregate line encodeY computes mean groups and explicitly materializes sorted paths.
 - Line encodeColor and encodeStrokeDash regroup and style concrete series paths.
@@ -103,7 +109,8 @@ temporal mean-aggregate line charts, stacked histograms, and ordinal bar charts
 with a grouped layout. Every public example supports browser Canvas and PNG
 output.
 
-- Scatterplots use quantitative x/y, nominal point color, and fixed radius.
+- Scatterplots use quantitative x/y, nominal color/shape, quantitative size,
+  and fixed radius or opacity.
 - Line charts use temporal x, mean-aggregate y, color/strokeDash series, guides,
   and an optional chart title.
 - Histograms use atomic `encodeHistogram`, optional color stacking, inferred

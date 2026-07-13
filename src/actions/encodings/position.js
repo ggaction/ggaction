@@ -323,7 +323,10 @@ function encodePosition(program, channel, args, operation) {
     return next.rematerializeBarMark({ id: target });
   }
 
-  return next.rematerializeScale({ id: scale.id });
+  next = next.rematerializeScale({ id: scale.id });
+  return layer.mark.type === "point"
+    ? next.rematerializePointMark({ id: target })
+    : next;
 }
 
 const encodeX = action(

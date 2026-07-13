@@ -10,6 +10,9 @@ export const DASH10 = cloneAndFreeze([
   [12, 3, 3, 3], [2, 2], [10, 3, 2, 3, 2, 3], [14, 4, 4, 4], [6, 2, 2, 2]
 ]);
 
+export const POINT_SHAPES = cloneAndFreeze(["circle", "square"]);
+export const DEFAULT_SIZE_RANGE = cloneAndFreeze([24, 196]);
+
 export function validateColorRange(range) {
   if (range === "auto") return range;
   if (Array.isArray(range)) {
@@ -49,6 +52,33 @@ export function validateStrokeDashRange(range) {
   return cloneAndFreeze(range);
 }
 
+export function validateShapeRange(range) {
+  if (range === "auto") return range;
+  if (
+    !Array.isArray(range) ||
+    range.length === 0 ||
+    !range.every(shape => POINT_SHAPES.includes(shape))
+  ) {
+    throw new TypeError('Shape range must contain only "circle" or "square".');
+  }
+  return cloneAndFreeze(range);
+}
+
+export function validateSizeRange(range) {
+  if (range === "auto") return range;
+  if (
+    !Array.isArray(range) ||
+    range.length !== 2 ||
+    !range.every(value => Number.isFinite(value) && value >= 0) ||
+    range[0] > range[1]
+  ) {
+    throw new TypeError(
+      "Size range must be an ascending pair of non-negative finite areas."
+    );
+  }
+  return cloneAndFreeze(range);
+}
+
 export function validateSemanticScaleRange(range) {
   if (range === "auto") return range;
   if (Array.isArray(range) && range.length > 0) return cloneAndFreeze(range);
@@ -68,6 +98,16 @@ export function resolveColorRange(range) {
 export function resolveStrokeDashRange(range) {
   const validated = validateStrokeDashRange(range);
   return validated === "auto" ? DASH10 : validated;
+}
+
+export function resolveShapeRange(range) {
+  const validated = validateShapeRange(range);
+  return validated === "auto" ? POINT_SHAPES : validated;
+}
+
+export function resolveSizeRange(range) {
+  const validated = validateSizeRange(range);
+  return validated === "auto" ? DEFAULT_SIZE_RANGE : validated;
 }
 
 export function mapOrdinalValues(values, domain, range) {

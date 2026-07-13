@@ -16,7 +16,9 @@ export function findScale(program, id) {
 export function findScaleConsumers(program, id) {
   const consumers = [];
   for (const layer of program.semanticSpec.layers) {
-    for (const channel of ["x", "y", "xOffset", "color", "strokeDash"]) {
+    for (const channel of [
+      "x", "y", "xOffset", "color", "strokeDash", "size", "shape"
+    ]) {
       const encoding = layer.encoding?.[channel];
       if (encoding?.scale === id) consumers.push({ layer, channel, encoding });
     }
@@ -34,7 +36,7 @@ export function resolveConsumerValues(program, consumer) {
     );
   }
 
-  if (["color", "strokeDash", "xOffset"].includes(consumer.channel)) {
+  if (["color", "strokeDash", "xOffset", "shape"].includes(consumer.channel)) {
     if (
       consumer.channel === "strokeDash" &&
       consumer.layer.mark?.type !== "line"

@@ -258,10 +258,22 @@ const editGraphics = action(
     }
 
     const found = findGraphicTarget(this.graphicSpec, target);
-    const validatedProperty = validateGraphicProperty(found.object.type, property);
+    const convertsToCollection =
+      found.childIndex === undefined &&
+      property === "children" &&
+      found.object.children !== undefined &&
+      found.object.type !== "collection";
+    const validatedProperty = convertsToCollection
+      ? "children"
+      : validateGraphicProperty(found.object.type, property);
     let updated;
 
-    if (found.childIndex !== undefined) {
+    if (convertsToCollection) {
+      updated = freezeOwned({
+        type: "collection",
+        children: replaceCollectionChildren(value, found.id)
+      });
+    } else if (found.childIndex !== undefined) {
       if (validatedProperty === "length") {
         throw new Error("length can only target a graphic collection.");
       }

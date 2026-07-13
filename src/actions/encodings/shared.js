@@ -38,13 +38,20 @@ export function resolveTarget(
   }
 
   const expectedGraphic = {
-    point: "circle",
+    point: ["circle", "rect", "collection"],
     line: "path",
     bar: "rect"
   }[layer.mark.type];
 
-  if (program.graphicSpec.objects[id]?.type !== expectedGraphic) {
-    throw new Error(`Mark "${id}" requires ${expectedGraphic} graphics.`);
+  const graphicType = program.graphicSpec.objects[id]?.type;
+  const matches = Array.isArray(expectedGraphic)
+    ? expectedGraphic.includes(graphicType)
+    : graphicType === expectedGraphic;
+  if (!matches) {
+    const label = Array.isArray(expectedGraphic)
+      ? expectedGraphic.join(" or ")
+      : expectedGraphic;
+    throw new Error(`Mark "${id}" requires ${label} graphics.`);
   }
 
   return { id, dataset, layer };

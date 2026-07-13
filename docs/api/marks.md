@@ -9,7 +9,7 @@ title: Marks
 
 | Action | Shortest call | Inference/defaults | Initial graphic |
 | --- | --- | --- | --- |
-| `createPointMark` | `createPointMark({ id: "points" })` | Current dataset; circle shape | Empty/concrete circle collection |
+| `createPointMark` | `createPointMark({ id: "points" })` | Current dataset; circle shape | Empty/concrete point collection |
 | `createLineMark` | `createLineMark({ id: "lines" })` | Current dataset | Empty path collection |
 | `createBarMark` | `createBarMark({ id: "bars" })` | Current dataset | Empty rect collection |
 
@@ -19,7 +19,7 @@ title: Marks
 | --- | --- | --- |
 | `id` | valid user-defined ID | required |
 | `data` | existing dataset ID | current dataset |
-| `shape` | `"circle"` | `"circle"` |
+| `shape` | `"circle"` or `"square"` | `"circle"` |
 
 ```javascript
 const program = chart()
@@ -27,9 +27,11 @@ const program = chart()
   .createPointMark({ id: "points" });
 ```
 
-The semantic mark type is `point`; its current graphical realization is a
-circle collection with one empty child per dataset row. The circles are not
-renderable until later actions assign x, y, radius, and fill.
+The semantic mark type is `point`; a fixed shape is graphical appearance.
+Circle is the default, while square creates a rect realization. A later
+field-driven `encodeShape` converts the mark into one typed mixed collection.
+Points are not renderable until later actions assign the required position,
+size, and fill properties.
 
 Point creation does not assign a coordinate or scale. Position encodings create
 and attach the appropriate semantic coordinate when needed.
