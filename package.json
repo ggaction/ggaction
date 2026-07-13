@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "node --test test/unit/*.test.js test/acceptance/*.test.js test/docs/*.test.js",
-    "test:render": "node --test test/render/*.test.js"
+    "test:render": "node test/helpers/cleanRenderOutput.js && node --test test/render/*.test.js"
   },
   "engines": {
     "node": ">=20"
