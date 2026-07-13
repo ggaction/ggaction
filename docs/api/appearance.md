@@ -5,6 +5,13 @@ title: Constant Appearance
 
 # Constant Appearance
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `encodeRadius` | `encodeRadius({ value: 3 })` | Current point mark | Concrete circle radius |
+| `encodeBarWidth` | `encodeBarWidth()` | Current grouped bar; band `0.72` | Concrete grouped rectangles |
+
 ## `encodeRadius({ value, target? })`
 
 Broadcast a non-negative finite graphical radius to a point mark.
@@ -44,3 +51,13 @@ by placeholder rects.
 `semanticSpec`. The action stores immutable materialization config and writes
 fully concrete `x`, `y`, `width`, `height`, and `fill` values to `graphicSpec`.
 Canvas geometry changes explicitly rematerialize the scales and rectangles.
+
+## Errors and limitations
+
+Radius and bar band are graphical constants, not field encodings. Bar width
+requires complete ordinal x, aggregate y, color, and xOffset semantics.
+
+## Related
+
+[Marks](./marks.md) · [Position encodings](./position-encodings.md) ·
+[Series encodings](./series-encodings.md)

@@ -5,6 +5,14 @@ title: Scale Options
 
 # Scale Options
 
+## At a glance
+
+| Scale family | Default domain | Default range | Common controls |
+| --- | --- | --- | --- |
+| Linear/time position | `"auto"` | Plot bounds | `nice`, `zero` |
+| Ordinal position/xOffset | First-appearance order | Plot or parent band | explicit domain/range |
+| Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
+
 Encoding actions accept a nested `scale` object. Omitted properties use channel
 defaults and stored program state.
 
@@ -80,3 +88,13 @@ program.encodeColor({
 
 User-specified domains and ranges are semantic state. Resolved coordinates,
 colors, and dash patterns are stored as concrete graphical values.
+
+## Errors and limitations
+
+One scale cannot be shared across different channels. Explicit domains must
+contain every observed value required by the connected consumers.
+
+## Related
+
+[Position encodings](./position-encodings.md) ·
+[Series encodings](./series-encodings.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md)

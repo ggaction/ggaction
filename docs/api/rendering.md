@@ -5,6 +5,13 @@ title: Rendering
 
 # Rendering
 
+## At a glance
+
+| Target | Shortest call | Density | Result |
+| --- | --- | --- | --- |
+| Browser Canvas | `render(program, context)` | Device/Canvas context | Draws concrete `graphicSpec` |
+| Node PNG | `renderToPNG(program, { output })` | `pixelRatio`, default `1` | PNG file and physical dimensions |
+
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
 
@@ -43,3 +50,13 @@ produces a 1280×800 image. The result contains the absolute `output`, physical
 
 The current renderer supports concrete canvas, circle, line, text, and
 point-array path graphics. Path and line strokes may use concrete dash arrays.
+
+## Errors and limitations
+
+Rendering never reads `semanticSpec`. Every drawable property must already be
+concrete, and `pixelRatio` must be a positive finite number.
+
+## Related
+
+[Canvas](./canvas.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·
+[Primitive extension API](../extension/primitives.md)

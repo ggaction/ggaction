@@ -5,6 +5,12 @@ title: Data
 
 # Data
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `createData` | `createData({ id: "rows", values })` | No ID or value inference | Immutable semantic dataset and current-data context |
+
 ## `createData({ id, values })`
 
 | Option | Type | Required |
@@ -29,3 +35,12 @@ be created twice, and source values cannot be replaced after creation.
 The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
 and produces no graphics.
+
+## Errors and limitations
+
+Values must be an array. Dataset IDs are unique, and an existing source dataset
+cannot be replaced or mutated.
+
+## Related
+
+[Marks](./marks.md) · [ChartProgram and immutability](../concepts/chart-program.md)

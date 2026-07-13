@@ -5,6 +5,12 @@ title: Titles
 
 # Titles
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `createTitle` | `createTitle({ text: "Title" })` | Top, plot-left alignment, default styles | Semantic text and concrete title graphics |
+
 ## `createTitle(options)`
 
 Creates a chart title and an optional subtitle above the plot.
@@ -60,3 +66,13 @@ Canvas size and margin changes explicitly rematerialize their positions.
 
 The current scope supports one top-positioned chart title, one optional
 single-line subtitle, and no automatic text wrapping or measurement.
+
+## Errors and limitations
+
+The top margin must contain the requested text block. Additional positions,
+multiple subtitles, wrapping, and measurement are unsupported.
+
+## Related
+
+[Canvas](./canvas.md) · [Guides](./guides.md) ·
+[Semantic and graphical state](../concepts/semantic-and-graphics.md)

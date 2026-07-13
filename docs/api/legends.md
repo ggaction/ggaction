@@ -5,6 +5,12 @@ title: Legends
 
 # Legends
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical symbols, labels, and title |
+
 ## `createLegend(options?)`
 
 Creates one inferred categorical legend. It supports combined line-series,
@@ -130,3 +136,14 @@ interactive legends are not currently supported.
 `createGuides()` selects line-series, histogram color, and grouped-bar color
 legends automatically.
 Pass `createGuides({ legend: false })` to opt out.
+
+## Errors and limitations
+
+Continuous, point-mark, multiple, and interactive legends are unsupported.
+Right-side layout requires sufficient right margin; bottom layout must be
+requested explicitly and requires sufficient bottom margin.
+
+## Related
+
+[Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
+[Canvas](./canvas.md)

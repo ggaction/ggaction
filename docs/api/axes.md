@@ -5,6 +5,12 @@ title: Axes
 
 # Axes
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `createAxes` | `createAxes()` | Encoded Cartesian channels, scales, coordinate, titles | Complete selected x/y axes |
+
 ## `createAxes(options?)`
 
 Creates complete axes for encoded x/y channels. This is the recommended axis
@@ -75,3 +81,13 @@ createAxes
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
+
+## Errors and limitations
+
+Ambiguous scale or coordinate candidates require explicit IDs. Current axis
+positions are bottom for x and left for y; Polar axes are unsupported.
+
+## Related
+
+[Guides](./guides.md) · [Grids](./grids.md) ·
+[Advanced axis components](../advanced/axis-components.md)

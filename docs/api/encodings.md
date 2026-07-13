@@ -10,6 +10,15 @@ Only values that cannot be inferred safely are required; most target, scale,
 coordinate, and type options use the current program state or documented
 defaults.
 
+## At a glance
+
+| Family | Core actions | Use it for |
+| --- | --- | --- |
+| Position | `encodeX`, `encodeY`, `encodeXOffset` | Quantitative, temporal, binned, or ordinal placement |
+| Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
+| Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
+| Constant appearance | `encodeRadius`, `encodeBarWidth` | Fixed graphical values |
+
 ## Position
 
 [`encodeX` and `encodeY`](./position-encodings.md) create quantitative point
@@ -90,3 +99,15 @@ program.encodeRadius({ value: 3 });
 
 [Scale options](./scales.md) explains automatic and explicit domains, ranges,
 `nice`, `zero`, palettes, and dash-pattern ranges.
+
+## Errors and limitations
+
+Inference fails instead of selecting arbitrarily when multiple marks, scales,
+datasets, or coordinates are valid. Unsupported field/mark/channel
+combinations are rejected before partial state is authored.
+
+## Related
+
+[Position encodings](./position-encodings.md) ·
+[Series encodings](./series-encodings.md) ·
+[Constant appearance](./appearance.md) · [Scale options](./scales.md)

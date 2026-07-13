@@ -5,6 +5,13 @@ title: Canvas
 
 # Canvas
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `createCanvas` | `createCanvas()` | Default size, background, and margin | Concrete Canvas and plot bounds |
+| `editCanvas` | `editCanvas({ width: 800 })` | Unspecified properties remain unchanged | Updated Canvas and affected consumers |
+
 ## `createCanvas(options?)`
 
 Creates the program's single canvas and establishes bounds for later position
@@ -44,3 +51,13 @@ edits do not.
 
 Margin is authoring context used to derive plot bounds; it is not a drawable
 node in `graphicSpec`.
+
+## Errors and limitations
+
+Only one Canvas can exist in a program. Dimensions must remain positive and
+margins must leave positive plot bounds.
+
+## Related
+
+[Rendering](./rendering.md) · [Coordinates](./coordinates.md) ·
+[Scale options](./scales.md)

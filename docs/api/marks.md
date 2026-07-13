@@ -5,6 +5,14 @@ title: Marks
 
 # Marks
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Initial graphic |
+| --- | --- | --- | --- |
+| `createPointMark` | `createPointMark({ id: "points" })` | Current dataset; circle shape | Empty/concrete circle collection |
+| `createLineMark` | `createLineMark({ id: "lines" })` | Current dataset | Empty path collection |
+| `createBarMark` | `createBarMark({ id: "bars" })` | Current dataset | Empty rect collection |
+
 ## `createPointMark({ id, data?, shape? })`
 
 | Option | Type | Default |
@@ -86,3 +94,14 @@ bin.
 `encodeColor({ field })` can then split each non-empty bin into category rects.
 The color scale domain controls stack and fill order, while the y scale remains
 based on total bin counts.
+
+## Errors and limitations
+
+Mark IDs must be unique and the selected dataset must exist. Current semantic
+marks are point, line, and bar; additional shapes and mark types are not
+implemented.
+
+## Related
+
+[Encodings](./encodings.md) · [Position encodings](./position-encodings.md) ·
+[Constant appearance](./appearance.md)

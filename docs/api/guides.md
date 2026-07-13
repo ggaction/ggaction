@@ -5,6 +5,12 @@ title: Guides
 
 # Guides
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `createGuides` | `createGuides()` | Applicable axes, horizontal grid, categorical legend | Wrapped guide child actions in deterministic order |
+
 ## `createGuides(options?)`
 
 Creates the applicable axes, Cartesian grid, and categorical legend supported
@@ -86,3 +92,14 @@ Chart titles are not guides. Create them separately with
 Call [`createGrid`](./grids.md), [`createAxes`](./axes.md), or
 [`createLegend`](./legends.md) directly when only one focused guide action is
 desired.
+
+## Errors and limitations
+
+An explicit child object selects that guide, `false` disables it, and omission
+requests automatic applicability. The action fails when no supported guide can
+be selected.
+
+## Related
+
+[Axes](./axes.md) · [Grids](./grids.md) · [Legends](./legends.md) ·
+[Titles](./titles.md)

@@ -5,6 +5,12 @@ title: Grids
 
 # Grids
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `createGrid` | `createGrid()` | Horizontal direction from y; vertical off | Concrete lines behind related marks |
+
 ## `createGrid(options?)`
 
 Creates Cartesian grid lines from encoded continuous scales. With no options,
@@ -69,3 +75,13 @@ ambiguous, provide its ID explicitly.
 
 `createGuides()` selects this default horizontal grid automatically when a y
 encoding is present. Pass `createGuides({ grid: false })` to opt out.
+
+## Errors and limitations
+
+Each selected direction requires one compatible resolved scale and Cartesian
+coordinate. Ambiguous resources require explicit IDs.
+
+## Related
+
+[Guides](./guides.md) · [Axes](./axes.md) ·
+[Advanced axis components](../advanced/axis-components.md)

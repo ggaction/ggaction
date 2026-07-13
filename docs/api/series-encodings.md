@@ -5,6 +5,13 @@ title: Series Encodings
 
 # Series Encodings
 
+## At a glance
+
+| Action | Shortest call | Inference/defaults | Result |
+| --- | --- | --- | --- |
+| `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal field type, color scale | Semantic grouping and concrete color |
+| `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line mark and dash scale | Semantic series grouping and concrete dash |
+
 ## `encodeColor(options)`
 
 Map a nominal field to point fills, line-series strokes, or stacked histogram
@@ -93,3 +100,13 @@ the series key and can be represented by one combined legend. Canvas changes
 explicitly rematerialize both styles.
 
 See [Scale options](./scales.md) and [Legends](./legends.md).
+
+## Errors and limitations
+
+Series fields must be nominal. Combined line legends require color and
+strokeDash to use the same field and ordered domain.
+
+## Related
+
+[Scale options](./scales.md) · [Legends](./legends.md) ·
+[Position encodings](./position-encodings.md)
