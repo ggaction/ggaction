@@ -14,6 +14,33 @@
     return;
   }
 
+  const sections = pages.flatMap(page => {
+    const documentFragment = new DOMParser().parseFromString(page.html, "text/html");
+    const pageText = documentFragment.body.textContent.replace(/\s+/g, " ").trim();
+    const entries = [{
+      pageTitle: page.title,
+      sectionTitle: undefined,
+      url: page.url,
+      content: pageText
+    }];
+
+    for (const heading of documentFragment.querySelectorAll("h2[id], h3[id]")) {
+      const content = [];
+      let sibling = heading.nextElementSibling;
+      while (sibling && !["H2", "H3"].includes(sibling.tagName)) {
+        content.push(sibling.textContent);
+        sibling = sibling.nextElementSibling;
+      }
+      entries.push({
+        pageTitle: page.title,
+        sectionTitle: heading.textContent.trim(),
+        url: `${page.url}#${heading.id}`,
+        content: content.join(" ").replace(/\s+/g, " ").trim()
+      });
+    }
+    return entries;
+  });
+
   function clearResults() {
     results.replaceChildren();
     results.hidden = true;
@@ -26,21 +53,30 @@
       return;
     }
 
-    const matches = pages
-      .map(page => {
-        const title = page.title.toLowerCase();
-        const content = page.content.toLowerCase();
-        const score = title === query
-          ? 3
-          : title.includes(query)
-            ? 2
-            : content.includes(query)
-              ? 1
-              : 0;
-        return { ...page, score };
+    const matches = sections
+      .map(section => {
+        const pageTitle = section.pageTitle.toLowerCase();
+        const sectionTitle = section.sectionTitle?.toLowerCase();
+        const content = section.content.toLowerCase();
+        const score = sectionTitle === query
+          ? 5
+          : sectionTitle?.includes(query)
+            ? 4
+            : pageTitle === query
+              ? 3
+              : pageTitle.includes(query)
+                ? 2
+                : content.includes(query)
+                  ? 1
+                  : 0;
+        return { ...section, score };
       })
-      .filter(page => page.score > 0)
-      .sort((left, right) => right.score - left.score || left.title.localeCompare(right.title))
+      .filter(section => section.score > 0)
+      .sort((left, right) =>
+        right.score - left.score ||
+        left.pageTitle.localeCompare(right.pageTitle) ||
+        (left.sectionTitle ?? "").localeCompare(right.sectionTitle ?? "")
+      )
       .slice(0, 8);
 
     results.replaceChildren();
@@ -54,7 +90,9 @@
         const item = document.createElement("li");
         const link = document.createElement("a");
         link.href = match.url;
-        link.textContent = match.title;
+        link.textContent = match.sectionTitle
+          ? `${match.pageTitle} › ${match.sectionTitle}`
+          : match.pageTitle;
         item.append(link);
         results.append(item);
       }
@@ -66,7 +104,32 @@
     if (event.key === "Escape") {
       input.value = "";
       clearResults();
+      return;
     }
+
+    if (["ArrowDown", "ArrowUp"].includes(event.key)) {
+      const links = [...results.querySelectorAll("a")];
+      if (links.length === 0) return;
+      event.preventDefault();
+      const target = event.key === "ArrowDown" ? links[0] : links.at(-1);
+      target.focus();
+    }
+  });
+
+  results.addEventListener("keydown", event => {
+    if (!["ArrowDown", "ArrowUp", "Escape"].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === "Escape") {
+      input.focus();
+      input.value = "";
+      clearResults();
+      return;
+    }
+    const links = [...results.querySelectorAll("a")];
+    const index = links.indexOf(document.activeElement);
+    const offset = event.key === "ArrowDown" ? 1 : -1;
+    const next = links[(index + offset + links.length) % links.length];
+    next.focus();
   });
 
   document.addEventListener("click", event => {

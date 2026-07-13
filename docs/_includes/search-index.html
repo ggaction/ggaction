@@ -8,7 +8,7 @@
       {
         "title": {{ entry.title | jsonify }},
         "url": {{ entry.url | relative_url | jsonify }},
-        "content": {{ entry.content | strip_html | strip_newlines | jsonify }}
+        "html": {{ entry.content | markdownify | jsonify }}
       }
       {% assign first_searchable_page = false %}
     {% endif %}
