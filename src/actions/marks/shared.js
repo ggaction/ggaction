@@ -1,4 +1,6 @@
 import { validateUserId } from "../../core/identifiers.js";
+import { findDataset } from "../../selectors/datasets.js";
+import { hasLayer } from "../../selectors/layers.js";
 
 export function validateMarkOptions(args, supported, operation) {
   for (const key of Object.keys(args)) {
@@ -17,7 +19,7 @@ export function resolveMarkData(program, requested) {
     throw new Error("Mark creation requires data or a current dataset.");
   }
 
-  const dataset = program.semanticSpec.datasets.find(item => item.id === data);
+  const dataset = findDataset(program, data);
 
   if (dataset === undefined) {
     throw new Error(`Unknown dataset "${data}".`);
@@ -27,7 +29,7 @@ export function resolveMarkData(program, requested) {
 }
 
 export function assertMarkAvailable(program, id) {
-  if (program.semanticSpec.layers.some(layer => layer.id === id)) {
+  if (hasLayer(program, id)) {
     throw new Error(`Mark "${id}" already exists.`);
   }
 

@@ -1,21 +1,18 @@
 import { validateUserId } from "../../core/identifiers.js";
+import { findDataset } from "../../selectors/datasets.js";
 
 export const MATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
 export function requireDerivedDataset(program, id, type) {
   const validatedId = validateUserId(id, "Derived dataset id");
-  const dataset = program.semanticSpec.datasets.find(
-    item => item.id === validatedId
-  );
+  const dataset = findDataset(program, validatedId);
   if (dataset === undefined || dataset.source === undefined) {
     throw new Error(`Unknown derived dataset "${validatedId}".`);
   }
   if (dataset.values !== undefined) {
     throw new Error(`Derived dataset "${validatedId}" is already materialized.`);
   }
-  const source = program.semanticSpec.datasets.find(
-    item => item.id === dataset.source
-  );
+  const source = findDataset(program, dataset.source);
   if (source?.values === undefined) {
     throw new Error(`Source dataset "${dataset.source}" has no values.`);
   }

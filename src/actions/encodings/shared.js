@@ -1,4 +1,6 @@
 import { validateUserId } from "../../core/identifiers.js";
+import { findDataset } from "../../selectors/datasets.js";
+import { findLayer } from "../../selectors/layers.js";
 import { validateKeys } from "../../core/validation.js";
 
 export function validateOptions(args, supported, operation) {
@@ -27,13 +29,13 @@ export function resolveTarget(
   label = "position mark"
 ) {
   const id = validateUserId(target ?? program.context.currentMark, "Mark id");
-  const layer = program.semanticSpec.layers.find(item => item.id === id);
+  const layer = findLayer(program, id);
 
   if (layer === undefined || !supportedTypes.includes(layer.mark?.type)) {
     throw new Error(`Unknown ${label} "${id}".`);
   }
 
-  const dataset = program.semanticSpec.datasets.find(item => item.id === layer.data);
+  const dataset = findDataset(program, layer.data);
 
   if (dataset === undefined) {
     throw new Error(`Mark "${id}" requires an existing dataset.`);

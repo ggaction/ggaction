@@ -6,11 +6,11 @@ import {
   readQuantitativeField,
   readTemporalField
 } from "../../grammar/scales.js";
+import { findDataset } from "../../selectors/datasets.js";
+import { requireSemanticScale } from "../../selectors/scales.js";
 
 export function findScale(program, id) {
-  const scale = program.semanticSpec.scales.find(item => item.id === id);
-  if (scale === undefined) throw new Error(`Unknown scale "${id}".`);
-  return scale;
+  return requireSemanticScale(program, id);
 }
 
 export function findScaleConsumers(program, id) {
@@ -27,9 +27,7 @@ export function findScaleConsumers(program, id) {
 }
 
 export function resolveConsumerValues(program, consumer) {
-  const dataset = program.semanticSpec.datasets.find(
-    item => item.id === consumer.layer.data
-  );
+  const dataset = findDataset(program, consumer.layer.data);
   if (dataset === undefined) {
     throw new Error(
       `Mark "${consumer.layer.id}" references unknown dataset "${consumer.layer.data}".`
@@ -88,9 +86,7 @@ export function resolveHistogramCountValues(program, consumer) {
   const xScale = xEncoding?.scale === undefined
     ? undefined
     : findScale(program, xEncoding.scale);
-  const dataset = program.semanticSpec.datasets.find(
-    item => item.id === consumer.layer.data
-  );
+  const dataset = findDataset(program, consumer.layer.data);
 
   if (xEncoding?.bin === undefined || xScale === undefined) {
     throw new Error(
