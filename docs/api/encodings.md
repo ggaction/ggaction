@@ -68,7 +68,8 @@ split one aggregate path into multiple series. On complete histograms,
 `encodeColor` splits every bin into category-stacked rects.
 On ordinal mean bars, `encodeColor({ layout: "group" })` records non-stacked
 color meaning and invokes `encodeXOffset` for the same field. Rectangles remain
-empty until bar width is authored.
+empty until `encodeBarWidth({ band? })` authors slot occupancy and materializes
+concrete grouped rectangles.
 
 ```javascript
 program

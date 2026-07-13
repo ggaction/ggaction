@@ -20,6 +20,7 @@ test("creates an immutable program with canonical empty state", () => {
     order: []
   });
   assert.deepEqual(program.resolvedScales, {});
+  assert.deepEqual(program.markConfigs, {});
   assert.deepEqual(program.guideConfigs, {});
   assert.equal(program.titleConfig, undefined);
   assert.deepEqual(program.children, {});
@@ -36,6 +37,7 @@ test("creates an immutable program with canonical empty state", () => {
   assert.equal(Object.isFrozen(program.semanticSpec), true);
   assert.equal(Object.isFrozen(program.semanticSpec.datasets), true);
   assert.equal(Object.isFrozen(program.resolvedScales), true);
+  assert.equal(Object.isFrozen(program.markConfigs), true);
   assert.equal(Object.isFrozen(program.guideConfigs), true);
   assert.equal(Object.isFrozen(program.trace.children), true);
 });
@@ -48,6 +50,7 @@ test("creates independent empty programs", () => {
   assert.notEqual(first.semanticSpec, second.semanticSpec);
   assert.notEqual(first.graphicSpec, second.graphicSpec);
   assert.notEqual(first.resolvedScales, second.resolvedScales);
+  assert.notEqual(first.markConfigs, second.markConfigs);
   assert.notEqual(first.guideConfigs, second.guideConfigs);
   assert.equal(first.titleConfig, undefined);
   assert.equal(second.titleConfig, undefined);
@@ -65,6 +68,7 @@ test("clones only the supplied program branches", () => {
   assert.equal(next.semanticSpec, original.semanticSpec);
   assert.equal(next.graphicSpec, original.graphicSpec);
   assert.equal(next.resolvedScales, original.resolvedScales);
+  assert.equal(next.markConfigs, original.markConfigs);
   assert.equal(next.guideConfigs, original.guideConfigs);
   assert.equal(next.titleConfig, original.titleConfig);
   assert.equal(next.trace, original.trace);
@@ -158,4 +162,18 @@ test("validates private resolved scale updates", () => {
     () => chart()._withResolvedScale("x", []),
     /plain object/
   );
+});
+
+test("stores private mark materialization config immutably", () => {
+  const config = { barWidth: { band: 0.72 } };
+  const original = chart();
+  const next = original._withMarkConfig("bars", config);
+  config.barWidth.band = 0.2;
+
+  assert.deepEqual(original.markConfigs, {});
+  assert.deepEqual(next.markConfigs, { bars: { barWidth: { band: 0.72 } } });
+  assert.equal(Object.isFrozen(next.markConfigs.bars.barWidth), true);
+  assert.equal(next.trace, original.trace);
+  assert.throws(() => chart()._withMarkConfig("", {}), /non-empty string/);
+  assert.throws(() => chart()._withMarkConfig("bars", []), /plain object/);
 });

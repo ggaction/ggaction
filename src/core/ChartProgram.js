@@ -25,6 +25,7 @@ export class ChartProgram {
     semanticSpec = createEmptySemanticSpec(),
     graphicSpec = createEmptyGraphicSpec(),
     resolvedScales = {},
+    markConfigs = {},
     guideConfigs = {},
     titleConfig,
     children = {},
@@ -35,6 +36,7 @@ export class ChartProgram {
     this.semanticSpec = ownState(semanticSpec);
     this.graphicSpec = ownState(graphicSpec);
     this.resolvedScales = ownState(resolvedScales);
+    this.markConfigs = ownState(markConfigs);
     this.guideConfigs = ownState(guideConfigs);
     this.titleConfig = titleConfig === undefined
       ? undefined
@@ -51,6 +53,7 @@ export class ChartProgram {
     semanticSpec = this.semanticSpec,
     graphicSpec = this.graphicSpec,
     resolvedScales = this.resolvedScales,
+    markConfigs = this.markConfigs,
     guideConfigs = this.guideConfigs,
     titleConfig = this.titleConfig,
     children = this.children,
@@ -62,6 +65,7 @@ export class ChartProgram {
       semanticSpec,
       graphicSpec,
       resolvedScales,
+      markConfigs,
       guideConfigs,
       titleConfig,
       children,
@@ -101,6 +105,22 @@ export class ChartProgram {
       resolvedScales: freezeOwned({
         ...this.resolvedScales,
         [id]: ownedScale
+      })
+    });
+  }
+
+  _withMarkConfig(id, config) {
+    if (typeof id !== "string" || id.length === 0) {
+      throw new TypeError("Mark config id must be a non-empty string.");
+    }
+    if (!isPlainObject(config)) {
+      throw new TypeError("Mark config must be a plain object.");
+    }
+
+    return this._clone({
+      markConfigs: freezeOwned({
+        ...this.markConfigs,
+        [id]: cloneAndFreeze(config)
       })
     });
   }

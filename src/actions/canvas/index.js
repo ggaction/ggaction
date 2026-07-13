@@ -112,9 +112,13 @@ function rematerializeCompleteBarMarks(program) {
   for (const layer of program.semanticSpec.layers) {
     if (
       layer.mark?.type === "bar" &&
-      layer.encoding?.x?.bin !== undefined &&
-      layer.encoding?.y?.aggregate === "count" &&
-      layer.encoding.y.stack === "zero"
+      ((layer.encoding?.x?.bin !== undefined &&
+        layer.encoding?.y?.aggregate === "count" &&
+        layer.encoding.y.stack === "zero") ||
+        (layer.encoding?.x?.fieldType === "ordinal" &&
+          layer.encoding?.y?.aggregate === "mean" &&
+          layer.encoding.y.stack === null &&
+          program.markConfigs[layer.id]?.barWidth !== undefined))
     ) {
       next = next.rematerializeBarMark({ id: layer.id });
     }

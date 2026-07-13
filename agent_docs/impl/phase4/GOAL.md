@@ -46,8 +46,8 @@ chart()
 - [x] Aggregate bar `encodeY`
 - [x] Bar color `layout: "stack" | "group"`
 - [x] Internal `encodeXOffset`
-- [ ] Band-based `encodeBarWidth`
-- [ ] Grouped/stacked bar materialization
+- [x] Band-based `encodeBarWidth`
+- [x] Grouped/stacked bar materialization
 - [ ] Ordinal x axis
 - [ ] Grouped bar legend
 - [ ] `createGuides` integration

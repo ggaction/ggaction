@@ -62,6 +62,7 @@ and language models.
 - Ordinal bar encodeY requires a quantitative field, defaults to mean with stack null, resolves y from x-category means, and keeps rects empty until grouping semantics exist.
 - encodeXOffset is an advanced action that resolves nominal slots inside one ordinal x bandwidth; grouped color layout is expected to call it for ordinary chart authors.
 - Ordinal mean bars require encodeColor layout "group"; it stores stack null, calls encodeXOffset as a wrapped child, and recomputes y from x/color means while rects remain empty until width is authored.
+- encodeBarWidth defaults band to 0.72, stores immutable graphical materialization config outside semanticSpec, and materializes concrete grouped rects in x-domain then color-domain order; Canvas changes explicitly rebuild them.
 - Bar encodeY infers the binned x field, stores count/zero-stack, resolves both scales, and materializes concrete rects for non-empty bins.
 - encodeHistogram is a thin aggregate whose direct children are binned bar encodeX and count/zero-stack encodeY.
 - Bar encodeColor resolves an ordinal scale and rematerializes each bin as zero-stacked category rects in color-domain order; the y domain remains based on total bin counts.
@@ -94,6 +95,9 @@ those rects into zero-stacked categories. `createLegend()` infers its bottom
 color legend from the stored color encoding and resolved ordinal scale.
 The equivalent `encodeHistogram` action composes those x/y actions without
 duplicating their validation, inference, or materialization behavior.
+The grouped-bar progression now covers ordinal x, mean y, group-aware color,
+band-local xOffset, and concrete bar width/materialization. Its axes, legend,
+guide integration, and final public tutorial remain later Phase 4 work.
 Temporal line `encodeX` resolves a time scale; aggregate line `encodeY`
 materializes sorted series paths. Line `encodeColor` and `encodeStrokeDash`
 group and style series through ordinal scales. `createGuides` composes time or

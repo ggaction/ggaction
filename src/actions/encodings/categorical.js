@@ -148,9 +148,12 @@ const encodeColor = action(
         .encodeXOffset({
           field: args.field,
           target,
-          ...(layer.encoding?.xOffset?.scale === undefined
-            ? {}
-            : { scale: { id: layer.encoding.xOffset.scale } })
+          scale: {
+            ...(layer.encoding?.xOffset?.scale === undefined
+              ? {}
+              : { id: layer.encoding.xOffset.scale }),
+            domain: scale.domain
+          }
         });
     }
 

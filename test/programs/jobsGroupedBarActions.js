@@ -33,6 +33,7 @@ export function createJobsGroupedBarActions(jobs) {
       layout: "group",
       scale: { palette: "tableau10" }
     })
+    .encodeBarWidth({ band: 0.72 })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
     .editSemantic({ property: "guide.axis.x.title", value: "year" })
@@ -46,34 +47,6 @@ export function createJobsGroupedBarActions(jobs) {
     })
     .editSemantic({ property: "guide.legend.color.scale", value: "color" })
     .editSemantic({ property: "guide.legend.color.title", value: "sex" })
-    .editGraphics({ target: "bars", property: "length", value: values.rects.length })
-    .editGraphics({
-      target: "bars",
-      property: "x",
-      value: values.rects.map(rect => rect.x)
-    })
-    .editGraphics({
-      target: "bars",
-      property: "y",
-      value: values.rects.map(rect => rect.y)
-    })
-    .editGraphics({
-      target: "bars",
-      property: "width",
-      value: values.rects.map(rect => rect.width)
-    })
-    .editGraphics({
-      target: "bars",
-      property: "height",
-      value: values.rects.map(rect => rect.height)
-    })
-    .editGraphics({
-      target: "bars",
-      property: "fill",
-      value: values.rects.map(rect => rect.fill)
-    })
-    .editGraphics({ target: "bars", property: "stroke", value: "white" })
-    .editGraphics({ target: "bars", property: "strokeWidth", value: 0.5 })
     .createGraphics({
       id: "horizontalGridLines",
       type: "line",
@@ -252,4 +225,3 @@ export function createJobsGroupedBarActions(jobs) {
 export function renderJobsGroupedBarActions(program, canvasContext) {
   render(program, canvasContext);
 }
-

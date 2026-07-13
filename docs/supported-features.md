@@ -12,12 +12,12 @@ This page describes implemented behavior only.
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects |
-| Marks | Semantic point/circle mark; semantic line with aggregate path materialization; semantic bar with histogram rect materialization |
+| Marks | Semantic point/circle mark; semantic line with aggregate path materialization; semantic bar with histogram or grouped-mean rect materialization |
 | Position | Quantitative point x/y; temporal line x and aggregate quantitative line y; explicit or atomic binned/count bar encodings; ordinal bar x and band-local xOffset scale resolution |
 | Aggregation | Immutable line mean aggregation; ordinal bar mean scale resolution; derived histogram bin totals and concrete zero-stacked rects |
 | Color | Nominal point fill, line stroke, stacked histogram fill, or grouped ordinal-bar color/xOffset semantics with ordinal scale and `tableau10` palette |
 | Stroke dash | Nominal line series with explicit or automatic ten-pattern range |
-| Constant appearance | Circle radius |
+| Constant appearance | Circle radius; grouped bar band width |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
 | Guides | Automatic axes/grid/categorical-legend collection; bottom/left linear, UTC time, or bin-aligned histogram axes; horizontal/vertical Cartesian grids; right-side line or bottom histogram legend |
 | Titles | One plot-aligned top title with an optional single-line subtitle |

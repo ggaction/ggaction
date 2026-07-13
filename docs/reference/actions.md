@@ -139,6 +139,16 @@ encodeRadius({ value, target? })
 
 Apply a constant point radius. [Constant appearance](../api/appearance.md)
 
+### `encodeBarWidth`
+
+```javascript
+encodeBarWidth({ band?, target? })
+```
+
+Set grouped-bar slot occupancy and materialize concrete rectangles. `band`
+defaults to `0.72` and must be greater than `0` and at most `1`.
+[Constant appearance](../api/appearance.md)
+
 ### `createGuides`
 
 ```javascript
