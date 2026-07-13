@@ -6,6 +6,8 @@
       url: /getting-started/
     - title: Tutorials
       url: /tutorials/
+    - title: Chart Recipes
+      url: /recipes/
 
 - title: Chart Building
   items:

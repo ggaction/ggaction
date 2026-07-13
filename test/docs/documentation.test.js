@@ -130,6 +130,10 @@ test("links every public chart example from entry documentation", () => {
   for (const name of ["scatterplot", "line-chart", "histogram", "grouped-bar"]) {
     assert.match(tutorials, new RegExp(`\\./${name}\\.md`));
   }
+  const recipes = read("docs/recipes/index.md");
+  for (const name of ["scatterplot", "line-chart", "histogram", "bar-chart"]) {
+    assert.match(recipes, new RegExp(`\\./${name}\\.md`));
+  }
   assert.match(gettingStarted, /Point-mark legends are not\s+supported yet/);
 });
 

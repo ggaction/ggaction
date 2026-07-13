@@ -96,4 +96,5 @@ actions. It does not compile `semanticSpec` during rendering.
 - Aggregate and group ordinal categories in the
   [jobs grouped bar tutorial](./tutorials/grouped-bar.md).
 - Check the [action index](./reference/actions.md) for signatures and defaults.
+- Copy a minimal flow from the [chart recipes](./recipes/index.md).
 - Export the same program with [PNG rendering](./api/rendering.md#png-output).

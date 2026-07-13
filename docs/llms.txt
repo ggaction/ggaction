@@ -12,6 +12,11 @@ and language models.
 - Complete line chart tutorial: ./tutorials/line-chart.md
 - Complete histogram tutorial: ./tutorials/histogram.md
 - Complete bar chart tutorial (grouped example): ./tutorials/grouped-bar.md
+- Chart recipe index: ./recipes/index.md
+- Scatterplot recipe: ./recipes/scatterplot.md
+- Line chart recipe: ./recipes/line-chart.md
+- Histogram recipe: ./recipes/histogram.md
+- Bar chart recipe (grouped example): ./recipes/bar-chart.md
 - Complete action reference: ./reference/actions.md
 - Supported features: ./supported-features.md
 

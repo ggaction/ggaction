@@ -46,6 +46,9 @@ example, then use the API pages when you need to customize one part.
 6. [Chart API reference](./reference/actions.md#chart-authoring-api) — find an
    action and its exact signature.
 
+Already know the chart type? Start from the concise
+[chart recipes](./recipes/index.md) instead of a full tutorial.
+
 ## Understand the model
 
 - [ChartProgram and immutability](./concepts/chart-program.md)
