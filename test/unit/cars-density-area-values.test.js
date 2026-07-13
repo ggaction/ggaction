@@ -80,6 +80,52 @@ test("matches representative densities and group peaks", () => {
   assertApproximately(japan.peak.Acceleration_density, 0.17664749130605972);
 });
 
+test("maps density areas, two-direction grids, axes, and top legend", () => {
+  const values = createCarsDensityAreaValues(loadCars());
+
+  assert.deepEqual(values.bounds, { x: 80, y: 130, width: 600, height: 300 });
+  assert.deepEqual(values.scales, {
+    x: { domain: [8, 24.8], range: [80, 680] },
+    y: { domain: [0, 0.25], range: [430, 130] },
+    color: {
+      domain: ["USA", "Europe", "Japan"],
+      range: ["#4c78a8", "#f58518", "#e45756"]
+    }
+  });
+  assert.deepEqual(
+    values.axes.x.ticks.map(tick => tick.value),
+    [10, 15, 20]
+  );
+  assert.deepEqual(
+    values.axes.y.ticks.map(tick => tick.value),
+    [0, 0.05, 0.1, 0.15, 0.2, 0.25]
+  );
+  assert.deepEqual(values.areas.map(area => area.points.length), [102, 102, 102]);
+  assert.ok(values.areas.every(area =>
+    area.points[0].y === 430 && area.points.at(-1).y === 430
+  ));
+  assert.deepEqual(
+    values.grid.horizontal.map(line => line.y1),
+    values.axes.y.ticks.map(tick => tick.position)
+  );
+  assert.deepEqual(
+    values.grid.vertical.map(line => line.x1),
+    values.axes.x.ticks.map(tick => tick.position)
+  );
+  assert.deepEqual(
+    values.legend.items.map(item => [item.group, item.color]),
+    [
+      ["USA", "#4c78a8"],
+      ["Europe", "#f58518"],
+      ["Japan", "#e45756"]
+    ]
+  );
+  assert.deepEqual(
+    [values.legend.position, values.legend.direction, values.legend.columns],
+    ["top", "vertical", 3]
+  );
+});
+
 test("resolves deterministic positive auto bandwidth", () => {
   const rows = [
     { value: 1, group: "a" },
@@ -121,6 +167,16 @@ test("rejects invalid density inputs and degenerate automatic resolution", () =>
   assert.throws(
     () => createCarsDensityAreaValues(loadCars(), { as: ["value", "value"] }),
     /two distinct/
+  );
+  assert.throws(
+    () => createCarsDensityAreaValues(loadCars(), { width: 0 }),
+    /positive finite dimensions/
+  );
+  assert.throws(
+    () => createCarsDensityAreaValues(loadCars(), {
+      margin: { top: 130, right: 400, bottom: 70, left: 400 }
+    }),
+    /must leave positive plot bounds/
   );
   assert.throws(
     () => createCarsDensityAreaValues([

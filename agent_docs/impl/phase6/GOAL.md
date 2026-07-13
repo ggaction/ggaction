@@ -17,7 +17,7 @@ architecture에 통합한다.
 - [x] `densityChannel: "x" | "y"`와 y default 확정
 - [x] Phase 6 chart contract와 STEP 계획
 - [x] Deterministic grouped KDE fixture
-- [ ] Primitive density-area baseline
+- [x] Primitive density-area baseline
 - [ ] Density grammar와 immutable derived-data actions
 - [ ] Baseline-oriented area materialization
 - [ ] Atomic `encodeDensity`

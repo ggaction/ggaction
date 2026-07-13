@@ -124,6 +124,15 @@ f(x) = sum(K((x - x_i) / h)) / (n * h)
 resolution 방향을 참고하되, 초기 ggaction은 adaptive min/max steps 대신 명시적인
 chart-independent default `steps: 100`을 사용한다.
 
+## Scale resolution 기본값
+
+- Value scale은 shared sampling extent를 그대로 domain으로 사용한다(`nice: false`,
+  `zero: false`).
+- Density scale은 반드시 zero를 포함하고 계산된 최대 density를 readable boundary로
+  올림한다(`nice: true`, `zero: true`).
+- Value와 density ranges는 선택된 `densityChannel`과 Canvas plot bounds에서 결정한다.
+- Explicit scale domain/range가 이후 지원될 때에는 이 자동 규칙보다 우선한다.
+
 ## 중요한 action hierarchy
 
 ```text
