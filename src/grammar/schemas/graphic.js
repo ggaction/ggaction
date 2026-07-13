@@ -9,19 +9,9 @@ const DRAWABLE_TYPES = new Set([
   ...PRIMITIVE_DRAWABLE_TYPES,
   "collection"
 ]);
-const STRUCTURAL_TYPES = new Set(["canvas", "container"]);
+const STRUCTURAL_TYPES = new Set(["canvas"]);
 const GRAPHIC_PROPERTIES = Object.freeze({
-  canvas: new Set(["width", "height", "background", "children"]),
-  container: new Set([
-    "x",
-    "y",
-    "width",
-    "height",
-    "children",
-    "direction",
-    "gap",
-    "align"
-  ]),
+  canvas: new Set(["width", "height", "background"]),
   collection: new Set([
     "children",
     "x",
@@ -46,8 +36,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "rotation",
     "points",
     "closed",
-    "opacity",
-    "style"
+    "opacity"
   ]),
   circle: new Set([
     "x",
@@ -57,7 +46,6 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "stroke",
     "strokeWidth",
     "opacity",
-    "style",
     "length"
   ]),
   rect: new Set([
@@ -69,7 +57,6 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "stroke",
     "strokeWidth",
     "opacity",
-    "style",
     "length"
   ]),
   line: new Set([
@@ -81,7 +68,6 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "strokeWidth",
     "strokeDash",
     "opacity",
-    "style",
     "length"
   ]),
   text: new Set([
@@ -96,11 +82,9 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "textBaseline",
     "rotation",
     "opacity",
-    "style",
     "length"
   ]),
   path: new Set([
-    "d",
     "points",
     "fill",
     "stroke",
@@ -108,7 +92,6 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "strokeDash",
     "closed",
     "opacity",
-    "style",
     "length"
   ])
 });

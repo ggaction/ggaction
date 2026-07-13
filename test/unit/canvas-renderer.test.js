@@ -28,7 +28,9 @@ function createGraphicSpec() {
               y: 40,
               radius: 4,
               fill: "blue",
-              opacity: 0.5
+              opacity: 0.5,
+              stroke: "black",
+              strokeWidth: 2
             }
           }
         ]
@@ -60,6 +62,13 @@ test("renders a concrete canvas and circle collection", () => {
       ["red", 1],
       ["blue", 0.5]
     ]
+  );
+  assert.deepEqual(
+    findCanvasCalls(context, "stroke").map(call => [
+      call.strokeStyle,
+      call.lineWidth
+    ]),
+    [["black", 2]]
   );
 });
 

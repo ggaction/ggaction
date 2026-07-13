@@ -217,25 +217,7 @@ function editGraphicCollection(object, property, value, id) {
   return freezeOwned({ ...object, children: freezeOwned(children) });
 }
 
-function validateStructuralChildren(program, type, value) {
-  if (!Array.isArray(value) || value.some(id => typeof id !== "string")) {
-    throw new TypeError(`${type}.children must be an array of string IDs.`);
-  }
-
-  const scope = type === "canvas" ? program.graphicSpec.objects : program.children;
-  const unknown = value.find(id => !Object.hasOwn(scope, id));
-
-  if (unknown !== undefined) {
-    throw new Error(`Unknown ${type} child "${unknown}".`);
-  }
-}
-
-function editStructuralGraphic(program, object, property, value) {
-  if (property === "children") {
-    validateStructuralChildren(program, object.type, value);
-    return freezeOwned({ ...object, children: cloneAndFreeze(value) });
-  }
-
+function editStructuralGraphic(object, property, value) {
   validateConcreteGraphicValue(object.type, property, value);
   return freezeOwned({
     ...object,
@@ -284,7 +266,7 @@ const editGraphics = action(
         value
       );
     } else if (isStructuralGraphicType(found.object.type)) {
-      updated = editStructuralGraphic(this, found.object, validatedProperty, value);
+      updated = editStructuralGraphic(found.object, validatedProperty, value);
     } else if (found.object.children) {
       updated = editGraphicCollection(
         found.object,

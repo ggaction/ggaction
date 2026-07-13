@@ -45,8 +45,8 @@ heterogeneous drawable `collection`.
 program.createGraphics({ id: "points", type: "circle", length: 2 });
 ```
 
-Supported types are `canvas`, `container`, `collection`, `circle`, `rect`,
-`line`, `text`, and `path`. `length` is a non-negative integer accepted by
+Supported types are `canvas`, `collection`, `circle`, `rect`, `line`, `text`,
+and `path`. `length` is a non-negative integer accepted by
 homogeneous drawable types. A heterogeneous `collection` is populated through
 one `editGraphics({ property: "children" })` call instead. Equivalent repeated
 creation is idempotent.
@@ -80,8 +80,8 @@ program
 
 Collection child IDs are generated as `symbols:0`, `symbols:1`, and so on.
 Each child stores its own concrete primitive type. Shared properties such as
-`opacity` can then be broadcast to every compatible child. Layout/composition
-`container` nodes retain their separate string-reference child contract.
+`opacity` can then be broadcast to every compatible child. Program composition
+is not part of the current primitive graphic contract.
 
 `before` or `after` can place a new top-level graphic relative to an existing
 top-level graphic. They are mutually exclusive, the referenced graphic must
@@ -101,6 +101,10 @@ Line-chart series use backend-neutral `path.points` arrays rather than SVG `d`
 strings. Each point is a finite `{ x, y }` object. `path.strokeDash` and
 `line.strokeDash` accept non-negative finite number arrays; an empty array is a
 solid stroke.
+
+Circle graphics support a required fill and an optional concrete
+`stroke`/`strokeWidth` pair. Accepted graphic properties have Canvas rendering
+semantics; opaque style bags are not stored in `graphicSpec`.
 
 A path can be open and stroked or closed and filled. Filled paths require
 `closed: true`; their stroke is optional. When both fill and stroke are present,

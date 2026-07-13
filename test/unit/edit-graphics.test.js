@@ -44,28 +44,28 @@ test("distributes arrays and broadcasts scalar values to collection children", (
   assert.deepEqual(points.graphicSpec.objects.points.children[0].properties, {});
 });
 
-test("stores each outer array item intact and can target one child", () => {
-  const styles = [
-    { fill: "red", dash: [4, 2] },
-    { fill: "blue", dash: [1, 1] }
+test("stores nested path arrays intact and can target one child", () => {
+  const paths = [
+    [{ x: 0, y: 1 }, { x: 2, y: 3 }],
+    [{ x: 4, y: 5 }, { x: 6, y: 7 }]
   ];
   const program = chart()
-    .createGraphics({ id: "points", type: "circle", length: 2 })
-    .editGraphics({ target: "points", property: "style", value: styles })
-    .editGraphics({ target: "points:1", property: "radius", value: 4 });
+    .createGraphics({ id: "paths", type: "path", length: 2 })
+    .editGraphics({ target: "paths", property: "points", value: paths })
+    .editGraphics({ target: "paths:1", property: "opacity", value: 0.4 });
 
-  styles[0].fill = "black";
+  paths[0][0].x = 99;
 
-  assert.deepEqual(program.graphicSpec.objects.points.children[0].properties.style, {
-    fill: "red",
-    dash: [4, 2]
-  });
-  assert.equal(
-    program.graphicSpec.objects.points.children[1].properties.radius,
-    4
+  assert.deepEqual(
+    program.graphicSpec.objects.paths.children[0].properties.points,
+    [{ x: 0, y: 1 }, { x: 2, y: 3 }]
   );
   assert.equal(
-    "radius" in program.graphicSpec.objects.points.children[0].properties,
+    program.graphicSpec.objects.paths.children[1].properties.opacity,
+    0.4
+  );
+  assert.equal(
+    "opacity" in program.graphicSpec.objects.paths.children[0].properties,
     false
   );
 });
@@ -149,7 +149,7 @@ test("validates heterogeneous child types and type-specific properties", () => {
   });
 
   for (const [children, message] of [
-    [[{ type: "container", properties: {} }], /primitive drawable type/],
+    [[{ type: "canvas", properties: {} }], /primitive drawable type/],
     [[{ type: "circle", properties: { width: 4 } }], /Unknown circle graphic property/],
     [[{ type: "circle", properties: null }], /requires plain properties/],
     [[{ type: "circle", properties: {}, id: "custom" }], /Unknown collection child property/]

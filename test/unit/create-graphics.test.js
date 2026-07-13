@@ -139,6 +139,10 @@ test("rejects invalid and conflicting graphic definitions", () => {
     /Unknown graphic type/
   );
   assert.throws(
+    () => chart().createGraphics({ id: "layout", type: "container" }),
+    /Unknown graphic type/
+  );
+  assert.throws(
     () => chart().createGraphics({ id: "bad id", type: "circle" }),
     /requires an id/
   );

@@ -69,6 +69,7 @@ and language models.
 - Canvas margin is canonical materialization configuration; plot bounds are derived from it and the concrete Canvas dimensions rather than stored only in transient context.
 - Primitive graphics support heterogeneous drawable collections whose children
   each carry a concrete circle, rect, line, text, or path type.
+- The current graphic contract has no structural container nodes or opaque style bags; every accepted concrete property has renderer semantics.
 - Backend-neutral paths may be open/stroked or `closed: true` and filled; a
   closed path may combine fill and stroke.
 - Nested wrapped actions form the hierarchical trace.

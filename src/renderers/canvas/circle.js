@@ -26,6 +26,25 @@ function drawCircle(context, child, collectionId) {
   context.beginPath();
   context.arc(x, y, radius, 0, Math.PI * 2);
   context.fill();
+  if (properties.stroke !== undefined) {
+    if (typeof properties.stroke !== "string") {
+      throw new Error(`Graphic "${graphicId}" requires a string stroke property.`);
+    }
+    const strokeWidth = requireFiniteProperty(
+      properties,
+      "strokeWidth",
+      graphicId
+    );
+    if (strokeWidth < 0) {
+      throw new Error(
+        `Graphic "${graphicId}" requires a non-negative strokeWidth.`
+      );
+    }
+    context.strokeStyle = properties.stroke;
+    context.lineWidth = strokeWidth;
+    context.setLineDash([]);
+    context.stroke();
+  }
 }
 
 export function drawCircleGraphic(context, id, graphic) {
