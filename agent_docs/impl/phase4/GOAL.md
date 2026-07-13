@@ -41,7 +41,7 @@ chart()
 
 ## 진행 상태
 
-- [ ] Primitive grouped bar contract
+- [x] Primitive grouped bar contract
 - [ ] Ordinal bar `encodeX`
 - [ ] Aggregate bar `encodeY`
 - [ ] Bar color `layout: "stack" | "group"`

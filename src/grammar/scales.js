@@ -81,7 +81,7 @@ export function validateSemanticScaleType(type) {
 }
 
 export function validateSemanticFieldType(fieldType) {
-  if (!new Set(["quantitative", "nominal", "temporal"]).has(fieldType)) {
+  if (!new Set(["quantitative", "nominal", "ordinal", "temporal"]).has(fieldType)) {
     throw new Error(`Unsupported semantic field type "${fieldType}".`);
   }
 

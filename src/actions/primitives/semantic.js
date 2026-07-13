@@ -144,7 +144,7 @@ function validateSemanticValue(program, parsed, value) {
       throw new TypeError("Histogram bin maxBins must be a positive integer.");
     }
 
-    if (property.endsWith(".stack") && value !== "zero") {
+    if (property.endsWith(".stack") && value !== "zero" && value !== null) {
       throw new Error(`Unsupported stack "${value}".`);
     }
   }
