@@ -1,4 +1,4 @@
-import { registerBarMarkActions } from "./bar.js";
+import { registerBarMarkActions } from "./bar/index.js";
 import { registerLineMarkActions } from "./line.js";
 import { registerPointMarkActions } from "./point.js";
 
