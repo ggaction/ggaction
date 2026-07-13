@@ -11,7 +11,7 @@ and language models.
 - Complete scatterplot tutorial: ./tutorials/scatterplot.md
 - Complete line chart tutorial: ./tutorials/line-chart.md
 - Complete histogram tutorial: ./tutorials/histogram.md
-- Complete grouped bar tutorial: ./tutorials/grouped-bar.md
+- Complete bar chart tutorial (grouped example): ./tutorials/grouped-bar.md
 - Complete action reference: ./reference/actions.md
 - Supported features: ./supported-features.md
 
@@ -82,33 +82,19 @@ The documented build is version 0.0.0-dev and is not published to npm. Use the
 repository source directly.
 
 The implemented end-to-end Chart API covers Cartesian point scatterplots,
-temporal mean-aggregate line charts, stacked histograms, and ordinal grouped
-bar charts with browser Canvas and PNG output.
-Ordinal bar `encodeX({ field, fieldType: "ordinal" })` is also available as the
-first grouped-bar progression action. It resolves an ordinal x domain, range,
-step, and bandwidth while leaving the rect collection empty until aggregate y
-and grouping semantics are authored.
-Ordinal bar `encodeY({ field, aggregate: "mean" })` is the next progression
-action. It stores mean/non-stacked semantics and resolves the linear y scale
-from x-category aggregate means; concrete rects still wait for grouping.
-`createBarMark` creates an empty rect collection, and binned bar `encodeX`
-stores the horizontal histogram meaning plus a resolved x scale. Bar
-`encodeY()` infers count/zero-stack and resolves the y scale from total bin
-counts, then materializes concrete histogram rects. Bar `encodeColor` splits
-those rects into zero-stacked categories. `createLegend()` infers its
-right-side color legend from the stored color encoding and resolved ordinal
-scale; the public histogram example explicitly requests bottom placement.
-The equivalent `encodeHistogram` action composes those x/y actions without
-duplicating their validation, inference, or materialization behavior.
-The grouped-bar vertical slice covers ordinal x, mean y, group-aware color,
-band-local xOffset, concrete bar width/materialization, ordinal axes, a
-right-side color legend, createGuides integration, and a public browser/PNG
-example.
-Temporal line `encodeX` resolves a time scale; aggregate line `encodeY`
-materializes sorted series paths. Line `encodeColor` and `encodeStrokeDash`
-group and style series through ordinal scales. `createGuides` composes time or
-linear axes, including bin-aligned histogram axes, with a compatible
-right-side categorical legend by default. A plot-aligned
-top title and optional subtitle are available separately through `createTitle`.
-Cartesian grids are also available separately through `createGrid`.
+temporal mean-aggregate line charts, stacked histograms, and ordinal bar charts
+with a grouped layout. Every public example supports browser Canvas and PNG
+output.
+
+- Scatterplots use quantitative x/y, nominal point color, and fixed radius.
+- Line charts use temporal x, mean-aggregate y, color/strokeDash series, guides,
+  and an optional chart title.
+- Histograms use atomic `encodeHistogram`, optional color stacking, inferred
+  guides, and explicit bottom legend placement in the public example.
+- Bar charts use ordinal x, mean-aggregate y, grouped color/xOffset layout,
+  band-based width, inferred guides, and a right-side legend.
+
+`createGuides` composes compatible axes, grid, and categorical legend actions.
+`createTitle` remains separate. Cartesian grids are also available directly
+through `createGrid`.
 Do not assume roadmap features are implemented.

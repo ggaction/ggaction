@@ -1,15 +1,15 @@
 ---
 layout: default
-title: Jobs Grouped Bar Chart Tutorial
+title: Bar Chart Tutorial
 ---
 
-# Jobs Grouped Bar Chart Tutorial
+# Bar Chart Tutorial
 
 ![Mean job percentage by year and sex](../assets/images/jobs-grouped-bar.png)
 
-This chart aggregates job percentages by year and places the mean for men and
-women side by side. The complete program uses only the chart-authoring API. The
-repository contains a
+This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
+aggregates job percentages by year and places the mean for men and women side
+by side. The complete program uses only the chart-authoring API. The repository contains a
 [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/jobs-grouped-bar)
 and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
 

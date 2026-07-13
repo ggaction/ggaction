@@ -28,9 +28,9 @@ guides, and center a chart title.
 
 [Build the cars histogram](./histogram.md)
 
-## Grouped bar chart
+## Bar chart
 
-Aggregate an ordinal x category, group bars by a nominal color field, and infer
-ordinal axes, a grid, and a categorical legend.
+Aggregate an ordinal x category and build a bar chart. The current example uses
+a nominal color field to place groups side by side.
 
-[Build the jobs grouped bar chart](./grouped-bar.md)
+[Build a bar chart with grouped bars](./grouped-bar.md)

@@ -8,7 +8,7 @@ title: Legends
 ## `createLegend(options?)`
 
 Creates one inferred categorical legend. It supports combined line-series,
-color-grouped histogram, and grouped ordinal-bar legends.
+color-stacked histogram, and grouped ordinal-bar legends.
 
 ~~~javascript
 program.createLegend();

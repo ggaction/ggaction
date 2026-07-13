@@ -24,8 +24,8 @@ example, then use the API pages when you need to customize one part.
    series and add guides and a title.
 4. [Cars histogram tutorial](./tutorials/histogram.md) — bin, count, and stack
    values by category.
-5. [Jobs grouped bar tutorial](./tutorials/grouped-bar.md) — aggregate ordinal
-   categories and place nominal groups side by side.
+5. [Bar chart tutorial](./tutorials/grouped-bar.md) — aggregate ordinal
+   categories; the example places nominal groups side by side.
 6. [Chart API reference](./reference/actions.md#chart-authoring-api) — find an
    action and its exact signature.
 

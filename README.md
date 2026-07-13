@@ -40,7 +40,7 @@ state is never automatically compiled during rendering.
 - [Cars scatterplot tutorial](./docs/tutorials/scatterplot.md)
 - [Cars line chart tutorial](./docs/tutorials/line-chart.md)
 - [Cars histogram tutorial](./docs/tutorials/histogram.md)
-- [Jobs grouped bar tutorial](./docs/tutorials/grouped-bar.md)
+- [Bar chart tutorial](./docs/tutorials/grouped-bar.md)
 - [Chart concepts](./docs/concepts/chart-program.md)
 - [Complete action reference](./docs/reference/actions.md)
 - [Supported features](./docs/supported-features.md)
