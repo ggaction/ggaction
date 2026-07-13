@@ -268,6 +268,7 @@ export function createCarsDensityAreaValues(
   const areas = groups.map((group, index) => ({
     group: group.group,
     fill: COLORS[index % COLORS.length],
+    opacity: 0.5,
     points: [
       { x: xRange[0], y: baseline },
       ...group.rows.map(row => ({

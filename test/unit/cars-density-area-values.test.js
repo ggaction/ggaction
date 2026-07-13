@@ -101,6 +101,7 @@ test("maps density areas, two-direction grids, axes, and top legend", () => {
     [0, 0.05, 0.1, 0.15, 0.2, 0.25]
   );
   assert.deepEqual(values.areas.map(area => area.points.length), [102, 102, 102]);
+  assert.deepEqual(values.areas.map(area => area.opacity), [0.5, 0.5, 0.5]);
   assert.ok(values.areas.every(area =>
     area.points[0].y === 430 && area.points.at(-1).y === 430
   ));

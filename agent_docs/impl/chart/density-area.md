@@ -29,7 +29,7 @@ const program = chart()
     margin: { top: 130, right: 40, bottom: 70, left: 80 }
   })
   .createData({ id: "cars", values: cars })
-  .createAreaMark({ id: "densities" })
+  .createAreaMark({ id: "densities", opacity: 0.5 })
   .encodeDensity({
     field: "Acceleration",
     groupBy: "Origin",
@@ -233,7 +233,7 @@ legend가 함께 사용한다.
         points: [/* baseline start, density samples, baseline end */],
         closed: true,
         fill: "#4c78a8",
-        opacity: 1
+        opacity: 0.5
       }
     }
   ]

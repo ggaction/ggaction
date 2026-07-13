@@ -18,7 +18,7 @@ export function createCarsDensityAreaPrimitives(cars) {
   return chart()
     .createCanvas({ width, height, margin, background: "white" })
     .createData({ id: "cars", values: cars })
-    .createAreaMark({ id: "densities", opacity: 1 })
+    .createAreaMark({ id: "densities", opacity: 0.5 })
     .editSemantic({
       property: "dataset[densitiesDensityData].source",
       value: "cars"
@@ -212,7 +212,11 @@ export function createCarsDensityAreaPrimitives(cars) {
       property: "fill",
       value: values.areas.map(area => area.fill)
     })
-    .editGraphics({ target: "densities", property: "opacity", value: 1 })
+    .editGraphics({
+      target: "densities",
+      property: "opacity",
+      value: values.areas.map(area => area.opacity)
+    })
     .createGraphics({ id: "xAxisLine", type: "line" })
     .editGraphics({ target: "xAxisLine", property: "x1", value: xAxis.line.x1 })
     .editGraphics({ target: "xAxisLine", property: "y1", value: xAxis.line.y1 })

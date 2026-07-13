@@ -98,7 +98,7 @@ test("authors and renders the complete primitive density area chart", () => {
       points: area.points,
       closed: true,
       fill: area.fill,
-      opacity: 1
+      opacity: 0.5
     }))
   );
   assert.deepEqual(
