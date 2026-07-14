@@ -4,9 +4,135 @@ import {
 import {
   createCategoricalPalettePrimitiveValues,
   createDiamondPrimitiveValues,
+  createEncodingReassignmentPrimitiveValues,
   createScaleReversePrimitiveValues,
   createShapeVocabularyPrimitiveValues
 } from "./phase1-reference-values.js";
+
+export function createEncodingReassignmentPrimitives(cars) {
+  const values = createEncodingReassignmentPrimitiveValues(cars);
+  const xLabels = values.xTicks.values.map(String);
+  const yLabels = values.yTicks.values.map(String);
+
+  return createCarsScatterplotPrimitives(cars)
+    .editSemantic({
+      property: "layer[points].encoding.x.field",
+      value: "Displacement"
+    })
+    .editSemantic({
+      property: "layer[points].encoding.x.fieldType",
+      value: "quantitative"
+    })
+    .editSemantic({ property: "layer[points].encoding.x.scale", value: "x" })
+    .editSemantic({
+      property: "layer[points].encoding.y.field",
+      value: "Acceleration"
+    })
+    .editSemantic({
+      property: "layer[points].encoding.y.fieldType",
+      value: "quantitative"
+    })
+    .editSemantic({ property: "layer[points].encoding.y.scale", value: "y" })
+    .editSemantic({
+      property: "layer[points].encoding.color.field",
+      value: "Cylinders"
+    })
+    .editSemantic({
+      property: "layer[points].encoding.color.fieldType",
+      value: "nominal"
+    })
+    .editSemantic({
+      property: "layer[points].encoding.color.scale",
+      value: "color"
+    })
+    .editSemantic({
+      property: "layer[points].encoding.size.field",
+      value: "Weight_in_lbs"
+    })
+    .editSemantic({
+      property: "layer[points].encoding.size.fieldType",
+      value: "quantitative"
+    })
+    .editSemantic({ property: "layer[points].encoding.size.scale", value: "size" })
+    .editSemantic({
+      property: "layer[points].encoding.shape.field",
+      value: "Origin"
+    })
+    .editSemantic({
+      property: "layer[points].encoding.shape.fieldType",
+      value: "nominal"
+    })
+    .editSemantic({ property: "layer[points].encoding.shape.scale", value: "shape" })
+    .editSemantic({ property: "scale[x].type", value: "linear" })
+    .editSemantic({ property: "scale[x].domain", value: "auto" })
+    .editSemantic({ property: "scale[x].range", value: "auto" })
+    .editSemantic({ property: "scale[y].type", value: "linear" })
+    .editSemantic({ property: "scale[y].domain", value: "auto" })
+    .editSemantic({ property: "scale[y].range", value: "auto" })
+    .editSemantic({ property: "scale[color].type", value: "ordinal" })
+    .editSemantic({ property: "scale[color].domain", value: "auto" })
+    .editSemantic({ property: "scale[color].range", value: "auto" })
+    .editSemantic({ property: "scale[size].type", value: "linear" })
+    .editSemantic({ property: "scale[size].domain", value: "auto" })
+    .editSemantic({ property: "scale[size].range", value: "auto" })
+    .editSemantic({ property: "scale[shape].type", value: "ordinal" })
+    .editSemantic({ property: "scale[shape].domain", value: "auto" })
+    .editSemantic({ property: "scale[shape].range", value: "auto" })
+    .editSemantic({ property: "guide.axis.x.title", value: "Displacement" })
+    .editSemantic({ property: "guide.axis.y.title", value: "Acceleration" })
+    .editGraphics({ target: "points", property: "children", value: values.children })
+    .editGraphics({
+      target: "horizontalGridLines",
+      property: "length",
+      value: values.yTicks.values.length
+    })
+    .editGraphics({
+      target: "horizontalGridLines",
+      property: "y1",
+      value: values.yTicks.positions
+    })
+    .editGraphics({
+      target: "horizontalGridLines",
+      property: "y2",
+      value: values.yTicks.positions
+    })
+    .editGraphics({
+      target: "xAxisTicks",
+      property: "x1",
+      value: values.xTicks.positions
+    })
+    .editGraphics({
+      target: "xAxisTicks",
+      property: "x2",
+      value: values.xTicks.positions
+    })
+    .editGraphics({ target: "xAxisLabels", property: "x", value: values.xTicks.positions })
+    .editGraphics({ target: "xAxisLabels", property: "text", value: xLabels })
+    .editGraphics({ target: "xAxisTitle", property: "text", value: "Displacement" })
+    .editGraphics({
+      target: "yAxisTicks",
+      property: "length",
+      value: values.yTicks.values.length
+    })
+    .editGraphics({
+      target: "yAxisTicks",
+      property: "y1",
+      value: values.yTicks.positions
+    })
+    .editGraphics({
+      target: "yAxisTicks",
+      property: "y2",
+      value: values.yTicks.positions
+    })
+    .editGraphics({
+      target: "yAxisLabels",
+      property: "length",
+      value: values.yTicks.values.length
+    })
+    .editGraphics({ target: "yAxisLabels", property: "y", value: values.yTicks.positions })
+    .editGraphics({ target: "yAxisLabels", property: "text", value: yLabels })
+    .editGraphics({ target: "yAxisTitle", property: "text", value: "Acceleration" });
+}
 
 export function createScaleReversePrimitives(cars) {
   const values = createScaleReversePrimitiveValues(cars);

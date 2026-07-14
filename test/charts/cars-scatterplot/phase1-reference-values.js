@@ -32,6 +32,11 @@ const SET2_ORIGIN_COLORS = Object.freeze({
   Europe: SET2_COLORS[2]
 });
 
+const DEFAULT_COLORS = Object.freeze([
+  "#4c78a8", "#f58518", "#e45756", "#72b7b2", "#54a24b",
+  "#eeca3b", "#b279a2", "#ff9da6", "#9d755d", "#bab0ac"
+]);
+
 function polygonArea(points) {
   let twiceArea = 0;
   for (let index = 0; index < points.length; index += 1) {
@@ -274,5 +279,85 @@ export function createCategoricalPalettePrimitiveValues(cars) {
         text: value
       })))
     })
+  });
+}
+
+function firstAppearance(values) {
+  return [...new Set(values)];
+}
+
+function mapLinear(value, domain, range) {
+  const ratio = (value - domain[0]) / (domain[1] - domain[0]);
+  return range[0] + ratio * (range[1] - range[0]);
+}
+
+export function createEncodingReassignmentPrimitiveValues(cars) {
+  const baseline = createCarsScatterplotPrimitiveValues(cars);
+  const rows = baseline.validCars;
+  const xDomain = [
+    Math.min(...rows.map(row => row.Displacement)),
+    Math.max(...rows.map(row => row.Displacement))
+  ];
+  const yDomain = [
+    Math.min(...rows.map(row => row.Acceleration)),
+    Math.max(...rows.map(row => row.Acceleration))
+  ];
+  const sizeDomain = [
+    Math.min(...rows.map(row => row.Weight_in_lbs)),
+    Math.max(...rows.map(row => row.Weight_in_lbs))
+  ];
+  const colorDomain = firstAppearance(rows.map(row => row.Cylinders));
+  const shapeDomain = firstAppearance(rows.map(row => row.Origin));
+  const colorByValue = new Map(colorDomain.map(
+    (value, index) => [value, DEFAULT_COLORS[index]]
+  ));
+  const shapeByValue = new Map(shapeDomain.map(
+    (value, index) => [value, POINT_SHAPES[index]]
+  ));
+  const xTickValues = [100, 200, 300, 400];
+  const yTickValues = [10, 15, 20];
+  const x = rows.map(row => mapLinear(
+    row.Displacement,
+    xDomain,
+    [baseline.bounds.left, baseline.bounds.right]
+  ));
+  const y = rows.map(row => mapLinear(
+    row.Acceleration,
+    yDomain,
+    [baseline.bounds.bottom, baseline.bounds.top]
+  ));
+
+  return Object.freeze({
+    baseline,
+    rows,
+    xDomain: Object.freeze(xDomain),
+    yDomain: Object.freeze(yDomain),
+    sizeDomain: Object.freeze(sizeDomain),
+    colorDomain: Object.freeze(colorDomain),
+    shapeDomain: Object.freeze(shapeDomain),
+    xTicks: Object.freeze({
+      values: Object.freeze(xTickValues),
+      positions: Object.freeze(xTickValues.map(value => mapLinear(
+        value,
+        xDomain,
+        [baseline.bounds.left, baseline.bounds.right]
+      )))
+    }),
+    yTicks: Object.freeze({
+      values: Object.freeze(yTickValues),
+      positions: Object.freeze(yTickValues.map(value => mapLinear(
+        value,
+        yDomain,
+        [baseline.bounds.bottom, baseline.bounds.top]
+      )))
+    }),
+    children: Object.freeze(rows.map((row, index) =>
+      createShapeGraphic(shapeByValue.get(row.Origin), {
+        x: x[index],
+        y: y[index],
+        area: mapLinear(row.Weight_in_lbs, sizeDomain, [24, 196]),
+        fill: colorByValue.get(row.Cylinders)
+      })
+    ))
   });
 }

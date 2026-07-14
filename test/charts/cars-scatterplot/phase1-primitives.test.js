@@ -13,6 +13,7 @@ import {
 import { loadCars } from "../../support/data.js";
 import {
   createCategoricalPalettePrimitives,
+  createEncodingReassignmentPrimitives,
   createPointShapeDiamondPrimitives,
   createScaleReversePrimitives,
   createShapeVocabularyPrimitives
@@ -22,6 +23,7 @@ import {
   POINT_SHAPES,
   SET2_COLORS,
   createDiamondPrimitiveValues,
+  createEncodingReassignmentPrimitiveValues,
   createScaleReversePrimitiveValues,
   createShapeVocabularyPrimitiveValues
 } from "./phase1-reference-values.js";
@@ -174,4 +176,48 @@ test("matches every approved primitive with a user-facing action flow", () => {
     assert.equal(publicProgram.trace.children.at(-1).op, finalAction);
     assert.equal(publicProgram.actionStack.length, 0);
   }
+});
+
+test("authors the encoding-reassignment target as concrete primitive state", () => {
+  const values = createEncodingReassignmentPrimitiveValues(cars);
+  const program = createEncodingReassignmentPrimitives(cars);
+  const layer = program.semanticSpec.layers[0];
+  const children = program.graphicSpec.objects.points.children;
+
+  assert.equal(values.rows.length, 392);
+  assert.deepEqual(values.xDomain, [68, 455]);
+  assert.deepEqual(values.yDomain, [8, 24.8]);
+  assert.deepEqual(values.sizeDomain, [1613, 5140]);
+  assert.deepEqual(values.colorDomain, [8, 4, 6, 3, 5]);
+  assert.deepEqual(values.shapeDomain, ["USA", "Japan", "Europe"]);
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(layer.encoding).map(
+      ([channel, encoding]) => [channel, encoding.field]
+    )),
+    {
+      x: "Displacement",
+      y: "Acceleration",
+      color: "Cylinders",
+      size: "Weight_in_lbs",
+      shape: "Origin"
+    }
+  );
+  assert.equal(children.length, 392);
+  assert.deepEqual(new Set(children.map(child => child.type)), new Set([
+    "circle", "rect", "path"
+  ]));
+  assert.deepEqual(
+    program.graphicSpec.objects.xAxisLabels.children.map(
+      child => child.properties.text
+    ),
+    ["100", "200", "300", "400"]
+  );
+  assert.deepEqual(
+    program.graphicSpec.objects.yAxisLabels.children.map(
+      child => child.properties.text
+    ),
+    ["10", "15", "20"]
+  );
+  assert.equal(program.graphicSpec.objects.xAxisTitle.properties.text, "Displacement");
+  assert.equal(program.graphicSpec.objects.yAxisTitle.properties.text, "Acceleration");
 });

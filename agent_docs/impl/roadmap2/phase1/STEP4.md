@@ -6,20 +6,20 @@
 
 ## 진행 상태
 
-- [ ] Reassignment input row validation과 independent reference values
-- [ ] X=`Displacement`, Y=`Acceleration` concrete positions
-- [ ] Color=`Cylinders`, size=`Weight_in_lbs`, shape=`Origin` concrete appearance
-- [ ] Reused scale IDs와 replacement semantic binding fixture
-- [ ] Inferred guide title 갱신과 custom title 보존 fixture
-- [ ] `encoding-reassignment/primitive.png`
-- [ ] Expanded target user-facing call chain metadata
-- [ ] Browser/high-resolution PNG 확인
+- [x] Reassignment input row validation과 independent reference values
+- [x] X=`Displacement`, Y=`Acceleration` concrete positions
+- [x] Color=`Cylinders`, size=`Weight_in_lbs`, shape=`Origin` concrete appearance
+- [x] Reused scale IDs와 replacement semantic binding fixture
+- [x] Inferred guide title 갱신 target; custom title 보존은 STEP5 machine fixture로 검증
+- [x] `encoding-reassignment/primitive.png`
+- [x] Expanded target user-facing call chain metadata
+- [x] Browser/high-resolution PNG 확인
 - [ ] Gate B 사용자 visual confirmation
-- [ ] STEP 상태, conceptual commit와 push
+- [x] STEP 상태, conceptual commit와 push
 
 ## Target flow
 
-Canonical baseline encoding 뒤에 다음 action을 호출한다.
+Canonical baseline과 같은 concrete output을 inferred axis titles로 만든 뒤 다음 action을 호출한다.
 
 ```javascript
 program
@@ -44,3 +44,15 @@ Primitive semantic state는 기존 channel을 대체하고 각 child의 graphica
 ## 승인 게이트
 
 Gate B 승인 전에는 existing encoding action behavior를 변경하거나 user-facing PNG를 만들지 않는다.
+
+## Primitive 결과
+
+- Rows: canonical baseline과 같은 392개
+- X domain/ticks: `[68, 455]`, `100 / 200 / 300 / 400`
+- Y domain/ticks: `[8, 24.8]`, `10 / 15 / 20`
+- Color domain: Cylinders first appearance `[8, 4, 6, 3, 5]`
+- Size domain/range: Weight `[1613, 5140]` → logical area `[24, 196]`
+- Shape domain/range prefix: `USA / Japan / Europe` → `circle / square / diamond`
+- Axis titles: `Displacement`, `Acceleration`
+- Gallery: primitive-only, `Awaiting visual confirmation`; desktop/mobile Chromium에서 image와 responsive
+  layout을 확인했다.

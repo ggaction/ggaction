@@ -12,6 +12,7 @@ import { assertRenderedPNG } from "../../support/png.js";
 import { createCarsScatterplotPrimitives } from "./primitive.program.js";
 import {
   createCategoricalPalettePrimitives,
+  createEncodingReassignmentPrimitives,
   createPointShapeDiamondPrimitives,
   createScaleReversePrimitives,
   createShapeVocabularyPrimitives
@@ -192,6 +193,36 @@ const phase1Artifacts = Object.freeze([
     width: 760,
     height: 400,
     colors: ["#66c2a5", "#fc8d62", "#8da0cb"]
+  }),
+  Object.freeze({
+    artifact: Object.freeze({
+      roadmap: "roadmap2",
+      chart: "cars-scatterplot",
+      variant: "encoding-reassignment",
+      title: "Encoding Reassignment",
+      userFacingCallChain: `chart()
+  .createCanvas({
+    width: 640,
+    height: 400,
+    margin: { top: 30, right: 30, bottom: 60, left: 70 }
+  })
+  .createData({ id: "cars", values: rows })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "Horsepower" })
+  .encodeY({ field: "Miles_per_Gallon" })
+  .encodeColor({ field: "Origin" })
+  .encodeRadius({ value: 3 })
+  .createGuides({ axes: { x: {}, y: {} } })
+  .encodeX({ field: "Displacement" })
+  .encodeY({ field: "Acceleration" })
+  .encodeColor({ field: "Cylinders", fieldType: "nominal" })
+  .encodeSize({ field: "Weight_in_lbs" })
+  .encodeShape({ field: "Origin" });`
+    }),
+    primitive: createEncodingReassignmentPrimitives(cars),
+    width: 640,
+    height: 400,
+    colors: ["#4c78a8", "#f58518", "#e45756", "#72b7b2", "#54a24b"]
   })
 ]);
 
@@ -233,10 +264,11 @@ test("renders the public and primitive scatterplots with visible points", async 
   }
 
   for (const { primitive, userFacing, ...options } of phase1Artifacts) {
-    for (const [kind, program] of [
-      ["primitive", primitive],
-      ["user-facing", userFacing]
-    ]) {
+    const programsByKind = [["primitive", primitive]];
+    if (userFacing !== undefined) {
+      programsByKind.push(["user-facing", userFacing]);
+    }
+    for (const [kind, program] of programsByKind) {
       await assertRenderedPNG(program, {
         ...options,
         artifact: { ...options.artifact, kind }

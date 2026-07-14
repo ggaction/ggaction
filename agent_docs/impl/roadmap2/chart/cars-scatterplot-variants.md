@@ -84,7 +84,7 @@ legend는 explicit `channels: ["color"]`로 생성한다. Legend가 있는 varia
 
 ### Encoding reassignment
 
-Baseline을 만든 뒤 같은 action을 다시 호출한다.
+Baseline과 같은 visual을 inferred axis titles로 만든 뒤 같은 action을 다시 호출한다.
 
 ```javascript
 program
