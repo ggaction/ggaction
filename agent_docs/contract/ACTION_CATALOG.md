@@ -481,6 +481,7 @@ editTitle({
 | Area outline | `createAreaMark`, `editAreaMark`, `createRegression`, `createRegressionBand`, `editRegressionBand` | Planned | Accepted |
 | Bar width modes | `encodeBarWidth` | Planned | Accepted |
 | Aggregate vocabulary | `encodeY` | Planned | Accepted |
+| Color layout vocabulary | `encodeColor`, `encodeXOffset`, `encodeY` | Planned | Accepted |
 
 ### Planned contract: point shape vocabulary
 
@@ -572,6 +573,37 @@ type AggregateOperation =
   `argmin`/`argmax`는 이 closed string vocabulary에 포함하지 않는다.
 - Status: Planned, NOT IMPLEMENTED. 각 operation의 representative/empty/singleton/missing-value
   fixtures와 line/bar grain, title/domain/rematerialization coverage가 필요하다.
+
+### Planned contract: color layout vocabulary
+
+```typescript
+type ColorLayout =
+  | "stack" | "fill" | "group" | "overlay" | "center" | "diverging";
+```
+
+- `encodeColor.layout`이 color series의 graphical arrangement를 소유한다. 기존 `"stack"`과
+  `"group"`은 Implemented이며 나머지 네 값이 이 Planned extension의 구현 대상이다.
+- `"stack"`은 각 x/category에서 series의 absolute quantitative value를 zero baseline부터
+  누적한다. `"fill"`은 같은 stack partition의 non-negative values를 합계 1로 정규화해 누적하며
+  auto y domain은 `[0, 1]`이다. partition 합계가 0인 위치에는 graphic을 합성하지 않는다.
+- `"group"`은 bar에만 적용하고 wrapped `encodeXOffset`으로 series를 나란히 배치한다. 이것은
+  line/area path를 field별로 나누는 별도 action `encodeGroup`과 다른 개념이다.
+- `"overlay"`는 bar 또는 area series를 같은 baseline과 coordinate에 겹쳐 그린다. series domain의
+  deterministic order를 rendering order로 사용하며 library가 opacity를 임의로 바꾸거나 overlap을
+  오류로 만들지 않는다.
+- `"center"`는 stacked area에만 적용한다. 각 x sample에서 전체 stack 두께의 절반을 zero 양쪽에
+  배치하는 silhouette baseline을 사용한다. `"diverging"`은 stackable bar 또는 area에서 positive
+  values는 zero 위로, negative values는 zero 아래로 각각 누적한다.
+- 첫 구현의 compatibility matrix는 bar에 `"stack" | "fill" | "group" | "overlay" |
+  "diverging"`, area에 `"stack" | "fill" | "overlay" | "center" | "diverging"`를 허용한다.
+  point/line에는 layout을 허용하지 않으며 series 분리는 기존 color/group materialization을 사용한다.
+- resolved layout은 semantic color encoding에 저장한다. `"group"`은 xOffset companion, 나머지
+  stack layouts는 y stack policy를 explicit wrapped child action으로 설정한다. y scale, mark geometry,
+  axes와 grids를 deterministic plan으로 rematerialize하고 color scale과 legend domain order는 유지한다.
+- 기존 layout에서 다른 layout으로 재할당하는 전환은 companion 제거, y policy cleanup과 scale
+  conflict를 원자적으로 처리하는 별도 reassignment contract가 구현될 때까지 지원하지 않는다.
+- Status: Planned, NOT IMPLEMENTED. mark compatibility, positive/negative/zero partitions, deterministic
+  overlap order, normalized/centered domains와 rejected layout-transition coverage가 필요하다.
 
 ## Internal materialization inventory
 
@@ -926,8 +958,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `field`: 필수 nominal field.
 - `target`: point, line, bar 또는 area ID; current/unique inference를 지원한다.
 - `fieldType`: 유일한 값 `"nominal"`, 기본값도 nominal이다.
-- `layout`: bar에서 `"stack" | "group"`; histogram default는 stack이고 ordinal grouped bar는 group이다.
-  다른 mark에서는 생략해야 한다.
+- `layout`: 현재 bar에서 `"stack" | "group"`; histogram default는 stack이고 ordinal grouped bar는
+  group이다. Planned vocabulary는 bar/area별 `"fill" | "overlay" | "center" | "diverging"`
+  compatibility를 추가한다. 다른 mark에서는 생략해야 한다.
 - `scale`: ordinal color scale. `palette` 또는 explicit `range` 중 하나를 사용할 수 있다.
 - Effect: color semantic과 scale을 저장한다. point fill, line stroke, bar fill, area fill로 materialize한다.
   group layout은 wrapped `encodeXOffset`, stack layout은 zero-stack bar geometry를 사용한다.
@@ -1647,7 +1680,8 @@ type TextStyle = {
 ### Formal values — `encodeColor`
 
 - Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal"; layout?: "stack" | "group"; scale?: ColorScale })`
-- Proposed (NOT IMPLEMENTED): `{ layout?: "overlay"; scale?: { palette?: "category10" | "set2" | "dark2"; interpolate?: "rgb" | "lab" | "hcl" } }`
+- Planned (NOT IMPLEMENTED): `{ layout?: "fill" | "overlay" | "center" | "diverging" }`; full accepted `ColorLayout`은 existing `"stack" | "group"`을 포함한다.
+- Proposed (NOT IMPLEMENTED): `{ scale?: { palette?: "category10" | "set2" | "dark2"; interpolate?: "rgb" | "lab" | "hcl" } }`
 
 ### Formal values — `encodeStrokeDash`
 
@@ -2211,7 +2245,8 @@ type LegendBorder = false | true | {
   - ✅ Covered: `"nominal"`와 invalid alternatives.
 - `layout`
   - ✅ Covered: omission, `"stack"`, `"group"`, incompatible mark/layout rejection.
-  - 🟣 Proposed: `"overlay"` area/bar policy; overlap order/opacity contract가 필요하다.
+  - 🟡 Planned: `"fill" | "overlay" | "center" | "diverging"` with mark compatibility, normalized,
+    centered and signed baseline policies; `encodeGroup`과 distinct ownership을 유지한다.
 - `scale.id/type/domain`
   - ✅ Covered: ordinal default, explicit ID/order, incomplete explicit domain rejection.
 - `scale.range/palette`

@@ -449,7 +449,8 @@ test("keeps accepted parameter extensions explicit and non-public", () => {
     { capability: "Point shape vocabulary", readiness: "Accepted" },
     { capability: "Area outline", readiness: "Accepted" },
     { capability: "Bar width modes", readiness: "Accepted" },
-    { capability: "Aggregate vocabulary", readiness: "Accepted" }
+    { capability: "Aggregate vocabulary", readiness: "Accepted" },
+    { capability: "Color layout vocabulary", readiness: "Accepted" }
   ]);
   assert.match(catalog, /type PointShape =/);
   assert.match(catalog, /"plus" \| "cross" \| "star" \| "hexagon" \| "wye"/);
@@ -459,6 +460,9 @@ test("keeps accepted parameter extensions explicit and non-public", () => {
   assert.match(catalog, /paddingInner\?: UnitIntervalLessThan1/);
   assert.match(catalog, /type AggregateOperation =/);
   assert.match(catalog, /two-sided 95% normal interval endpoint/);
+  assert.match(catalog, /type ColorLayout =/);
+  assert.match(catalog, /"stack" \| "fill" \| "group" \| "overlay" \| "center" \| "diverging"/);
+  assert.match(catalog, /별도 action `encodeGroup`과 다른 개념/);
 });
 
 test("keeps catalog coverage evidence paths executable", () => {
