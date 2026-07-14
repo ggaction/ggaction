@@ -13,10 +13,10 @@ Quantitative color와 field-driven opacity의 목표 graphic/guide 결과를 두
 - [x] Rendering order, margin fit과 background interaction
 - [x] 두 variant의 exact target user-facing call chain metadata
 - [x] Primitive-only PNG와 responsive gallery verification
-- [ ] Gate C 사용자 visual confirmation
+- [x] Gate C 사용자 visual confirmation
 - [x] STEP 상태, conceptual commit와 push
 
-현재 상태: primitive 구현과 기계적/시각 검증 완료. Gate C 사용자 승인 대기.
+현재 상태: primitive 구현과 기계적/시각 검증 완료. Gate C 사용자 승인 완료.
 
 ## `continuous-color-gradient`
 
