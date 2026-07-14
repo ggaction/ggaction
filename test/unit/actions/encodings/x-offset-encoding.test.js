@@ -116,7 +116,7 @@ test("validates xOffset prerequisites, fields, and scale options", () => {
     .encodeX({ field: "year", fieldType: "ordinal" });
   assert.throws(
     () => incomplete.encodeXOffset({ field: "sex" }),
-    /scalar aggregate\/non-stacked y/
+    /aggregate\/non-stacked y/
   );
   assert.equal(program.semanticSpec.layers[0].encoding.xOffset, undefined);
 });

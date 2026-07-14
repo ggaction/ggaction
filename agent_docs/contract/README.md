@@ -80,6 +80,18 @@ type ScalarAggregateOperation =
   | "distinct" | "valid" | "missing"
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
+
+type ParameterizedAggregateOperation =
+  | { op: "quantile"; probability: UnitInterval }
+  | {
+      op: "first" | "last";
+      orderBy: FieldName;
+      order?: "ascending" | "descending";
+    };
+
+type AggregateOperation =
+  | ScalarAggregateOperation
+  | ParameterizedAggregateOperation;
 type ScaleType = "linear" | "time" | "ordinal";
 type ContinuousDomain = "auto" | readonly [unknown, unknown];
 type OrdinalDomain = "auto" | readonly unknown[];

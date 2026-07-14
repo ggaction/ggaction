@@ -20,7 +20,7 @@ import {
   validateLineSeriesCompatibility,
   validateOptions
 } from "./shared.js";
-import { isScalarAggregate } from "../../grammar/aggregate.js";
+import { isAggregate } from "../../grammar/aggregate.js";
 
 const COLOR_ENCODING_OPTIONS = Object.freeze([
   "field", "target", "fieldType", "scale", "layout"
@@ -127,7 +127,7 @@ const encodeColor = action(
     const isOrdinalAggregate =
       layer.mark.type === "bar" &&
       layer.encoding?.x?.fieldType === "ordinal" &&
-      isScalarAggregate(layer.encoding?.y?.aggregate) &&
+      isAggregate(layer.encoding?.y?.aggregate) &&
       layer.encoding.y.stack === null;
     const layout = args.layout ?? (
       layer.encoding?.color === undefined

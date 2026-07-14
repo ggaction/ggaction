@@ -10,7 +10,7 @@ title: Ordinal Bar Positions
 | Action | Shortest call | Required state | Result |
 | --- | --- | --- | --- |
 | ordinal `encodeX` | `encodeX({ field: "category", fieldType: "ordinal" })` | bar mark | Ordered x bands |
-| aggregate `encodeY` | `encodeY({ field: "value" })` | ordinal bar x | Scalar-aggregate/non-stacked y scale |
+| aggregate `encodeY` | `encodeY({ field: "value" })` | ordinal bar x | Aggregate/non-stacked y scale |
 
 ## Ordinal bar `encodeX(options)`
 
@@ -39,7 +39,7 @@ leaves the rect collection empty because aggregate y and layout are incomplete.
 | --- | --- | --- |
 | `field` | non-empty string | required |
 | `fieldType` | `"quantitative"`, or `"nominal"` for count operations | `"quantitative"` |
-| `aggregate` | scalar aggregate operation | `"mean"` |
+| `aggregate` | scalar name or parameterized aggregate object | `"mean"` |
 | `stack` | `null` | `null` |
 | `target` | bar mark ID | current mark |
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
@@ -58,14 +58,16 @@ program.encodeY({
 });
 ```
 
-The automatic domain uses scalar summaries at the final available grouping grain.
+The automatic domain uses aggregate summaries at the final available grouping
+grain. Parameterized quantile and ordered `first`/`last` use the same contract
+as temporal line y encodings.
 Grouping and `encodeBarWidth` later supply enough information to materialize
 concrete rectangles.
 
 ## Errors and limitations
 
 Ordinal position does not accept `nice` or `zero`. The current bar slice
-supports scalar aggregate y and grouped color layout; negative baselines and
+supports aggregate y and grouped color layout; negative baselines and
 horizontal bars are unsupported.
 
 ## Related

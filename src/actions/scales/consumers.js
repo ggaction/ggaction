@@ -8,7 +8,7 @@ import {
 } from "../../grammar/scales.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { requireSemanticScale } from "../../selectors/scales.js";
-import { isScalarAggregate } from "../../grammar/aggregate.js";
+import { isAggregate } from "../../grammar/aggregate.js";
 
 export function findScale(program, id) {
   return requireSemanticScale(program, id);
@@ -51,7 +51,7 @@ export function resolveConsumerValues(program, consumer) {
 
   if (
     consumer.layer.mark?.type === "line" &&
-    isScalarAggregate(consumer.layer.encoding?.y?.aggregate)
+    isAggregate(consumer.layer.encoding?.y?.aggregate)
   ) {
     const derived = deriveLineSeries(dataset.values, consumer.layer);
     return consumer.channel === "x" ? derived.xValues : derived.yValues;
@@ -60,7 +60,7 @@ export function resolveConsumerValues(program, consumer) {
   if (
     consumer.layer.mark?.type === "bar" &&
     consumer.layer.encoding?.x?.fieldType === "ordinal" &&
-    isScalarAggregate(consumer.layer.encoding?.y?.aggregate) &&
+    isAggregate(consumer.layer.encoding?.y?.aggregate) &&
     consumer.layer.encoding.y.stack === null
   ) {
     const derived = deriveBarAggregates(dataset.values, consumer.layer);

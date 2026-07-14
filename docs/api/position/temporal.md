@@ -53,7 +53,7 @@ program.encodeY({
 | `field` | non-empty string | required |
 | `target` | line mark ID | current mark |
 | `fieldType` | `"quantitative"`, or `"nominal"` for count operations | `"quantitative"` |
-| `aggregate` | scalar aggregate operation | required for temporal line marks |
+| `aggregate` | scalar name or parameterized aggregate object | required for temporal line marks |
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
 | `scale.id` | scale ID | `"y"` |
 | `scale.type` | `"linear"` | `"linear"` |
@@ -74,11 +74,34 @@ Missing finite samples are omitted instead of becoming zero-valued points.
 Sample dispersion, standard error, and confidence endpoints require at least
 two finite values per final group.
 
+Parameterized aggregates accept either a quantile probability or an ordered
+row selection:
+
+```javascript
+program.encodeY({
+  field: "Acceleration",
+  aggregate: { op: "quantile", probability: 0.75 }
+});
+
+program.encodeY({
+  field: "Acceleration",
+  aggregate: { op: "first", orderBy: "Horsepower" }
+});
+```
+
+`probability` is required and may range from `0` through `1`; those endpoints
+equal the minimum and maximum. Ordered aggregates accept `op: "first"` or
+`"last"`, require `orderBy`, and default `order` to `"ascending"`. Ties retain
+source-row order. Rows with missing or incomparable order keys are skipped,
+and a final group with no selectable finite result is omitted. The normalized
+order is stored in `semanticSpec`, so inferred titles such as
+`first(Acceleration, Horsepower ascending)` remain reproducible.
+
 ## Errors and limitations
 
-The current line slice requires temporal x, a compatible scalar aggregate y,
-and at least two complete points per materialized series. Parameterized
-quantiles and ordered selection are not yet public.
+The current line slice requires temporal x, a compatible aggregate y, and at
+least two complete points per materialized series. Parameterized aggregate
+outputs must be quantitative.
 
 ## Related
 

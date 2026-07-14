@@ -289,31 +289,6 @@ type PlannedPositionFieldType = "quantitative" | "temporal" | "ordinal";
 - Status: Planned, NOT IMPLEMENTED. 전체 mark × channel × fieldType compatibility matrix와
   orientation, shared-scale conflict, guide inference coverage가 필요하다.
 
-## Parameterized aggregate operations
-
-```typescript
-type ParameterizedAggregate =
-  | { op: "quantile"; probability: UnitInterval }
-  | {
-      op: "first" | "last";
-      orderBy: FieldName;
-      order?: "ascending" | "descending";
-    };
-```
-
-- `quantile`은 grouping grain의 sorted finite values에 linear interpolation을 적용한다.
-  probability `0`과 `1`은 각각 min과 max이며 기본 probability를 추론하지 않는다.
-- `first | last`는 같은 grouping grain을 `orderBy` field와 stable source order로 정렬한 뒤
-  선택한 row의 encoded field value를 반환한다. `order` 기본값은 `"ascending"`이다.
-- Missing/invalid order key, empty group과 incompatible output field는 aggregate value를 만들지
-  않으며 library가 임의의 대체 row를 선택하지 않는다.
-- Guide title, scale domain, mark geometry와 downstream guides는 existing aggregate vocabulary와
-  같은 ownership 및 rematerialization 규칙을 사용한다.
-- Row 전체를 선택하는 min/max operation은 aggregate가 아니라 accepted `selectRows` transform이
-  소유한다.
-- Status: Planned, NOT IMPLEMENTED. probability boundaries, ties, stable ordering, missing values,
-  grouped grain과 rematerialization coverage가 필요하다.
-
 ## Normalized stack mode
 
 ```typescript

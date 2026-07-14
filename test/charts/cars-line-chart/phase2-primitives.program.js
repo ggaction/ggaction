@@ -326,6 +326,12 @@ export function createAggregateOrderedPrimitives(cars) {
   return createCarsLineChartPrimitiveProgram(
     cars,
     createOrderedPrimitiveValues(cars),
-    { aggregate: { op: "first", orderBy: "Horsepower" } }
+    {
+      aggregate: {
+        op: "first",
+        orderBy: "Horsepower",
+        order: "ascending"
+      }
+    }
   );
 }

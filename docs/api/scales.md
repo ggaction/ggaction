@@ -71,9 +71,10 @@ materializes concrete histogram rectangles.
 
 ### Aggregate ordinal bar y scales
 
-An ordinal bar scalar-aggregate y scale defaults to `nice: true` and `zero: false`.
+An ordinal bar aggregate y scale defaults to `nice: true` and `zero: false`.
 Its automatic domain uses one final aggregate value per ordinal x/category and
-series cell rather than raw source values. Explicit domain and range values remain authoritative.
+series cell rather than raw source values. This includes parameterized quantile
+and ordered `first`/`last` results. Explicit domain and range values remain authoritative.
 The y action resolves the scale but leaves rectangles empty until grouping
 semantics are available.
 

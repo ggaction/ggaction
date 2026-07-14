@@ -181,6 +181,66 @@ export function createDispersionCarsLineChart(cars) {
     });
 }
 
+export function createQuantileCarsLineChart(cars) {
+  const rows = validRows(cars);
+
+  return chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 80, right: 170, bottom: 60, left: 80 }
+    })
+    .createData({ id: "cars", values: rows })
+    .createLineMark({ id: "trends" })
+    .encodeX({
+      field: "Year",
+      fieldType: "temporal",
+      scale: { nice: true }
+    })
+    .encodeY({
+      field: "Acceleration",
+      aggregate: { op: "quantile", probability: 0.75 },
+      scale: { nice: true, zero: false }
+    })
+    .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
+    .encodeStrokeDash({ field: "Origin" })
+    .createGuides({ axes: { y: { ticksAndLabels: { count: 6 } } } })
+    .createTitle({
+      text: "The trend of acceleration by year",
+      subtitle: "from 1970 to 1982"
+    });
+}
+
+export function createOrderedCarsLineChart(cars) {
+  const rows = validRows(cars);
+
+  return chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 80, right: 170, bottom: 60, left: 80 }
+    })
+    .createData({ id: "cars", values: rows })
+    .createLineMark({ id: "trends" })
+    .encodeX({
+      field: "Year",
+      fieldType: "temporal",
+      scale: { nice: true }
+    })
+    .encodeY({
+      field: "Acceleration",
+      aggregate: { op: "first", orderBy: "Horsepower" },
+      scale: { nice: true, zero: false }
+    })
+    .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
+    .encodeStrokeDash({ field: "Origin" })
+    .createGuides({ axes: { y: { ticksAndLabels: { count: 6 } } } })
+    .createTitle({
+      text: "The trend of acceleration by year",
+      subtitle: "from 1970 to 1982"
+    });
+}
+
 function validDashRows(cars) {
   return validRows(cars).filter(car => Number.isFinite(car.Cylinders));
 }

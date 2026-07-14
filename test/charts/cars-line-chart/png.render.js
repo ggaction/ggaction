@@ -9,6 +9,8 @@ import {
   createMedianCarsLineChart,
   createMonotoneEditCarsLineChart,
   createNamedDashVocabularyCarsLineChart,
+  createOrderedCarsLineChart,
+  createQuantileCarsLineChart,
   createStepCarsLineChart
 } from "../../../examples/cars-line-chart/program.js";
 import { loadCars } from "../../support/data.js";
@@ -312,7 +314,8 @@ const aggregatePrimitiveArtifacts = Object.freeze([
         '{ op: "quantile", probability: 0.75 }'
       )
     }),
-    primitive: createAggregateQuantilePrimitives(cars)
+    primitive: createAggregateQuantilePrimitives(cars),
+    userFacing: createQuantileCarsLineChart(cars)
   }),
   Object.freeze({
     artifact: Object.freeze({
@@ -324,7 +327,8 @@ const aggregatePrimitiveArtifacts = Object.freeze([
         '{ op: "first", orderBy: "Horsepower" }'
       )
     }),
-    primitive: createAggregateOrderedPrimitives(cars)
+    primitive: createAggregateOrderedPrimitives(cars),
+    userFacing: createOrderedCarsLineChart(cars)
   })
 ]);
 

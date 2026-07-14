@@ -92,18 +92,109 @@ test("replaces aggregate semantics and rematerializes inferred guide text atomic
 
   const custom = mean
     .editYAxisTitle({ text: "Custom summary" })
-    .encodeY({ field: "value", aggregate: "stdev" });
+    .encodeY({
+      field: "value",
+      aggregate: { op: "quantile", probability: 0.25 }
+    });
   assert.equal(custom.semanticSpec.guides.axis.y.title, "Custom summary");
   assert.equal(custom.graphicSpec.objects.yAxisTitle.properties.text, "Custom summary");
 
-  assert.throws(
-    () => median.encodeY({
-      field: "value",
-      aggregate: { op: "quantile", probability: 0.75 }
-    }),
-    /supported scalar aggregate/
+  const quantile = median.encodeY({
+    field: "value",
+    aggregate: { op: "quantile", probability: 0.75 }
+  });
+  assert.deepEqual(
+    quantile.semanticSpec.layers[0].encoding.y.aggregate,
+    { op: "quantile", probability: 0.75 }
   );
-  assert.equal(median.semanticSpec.layers[0].encoding.y.aggregate, "median");
+  assert.equal(
+    quantile.semanticSpec.guides.axis.y.title,
+    "quantile(value, 0.75)"
+  );
+});
+
+test("normalizes parameterized aggregates and isolates caller-owned objects", () => {
+  const rows = [
+    { year: "2020-01-01", value: 10, rank: 2 },
+    { year: "2020-01-01", value: 20, rank: 1 },
+    { year: "2021-01-01", value: 30, rank: 2 },
+    { year: "2021-01-01", value: 40, rank: 1 }
+  ];
+  const aggregate = { op: "first", orderBy: "rank" };
+  const encoded = xEncodedLine(rows).encodeY({ field: "value", aggregate });
+  const program = encoded.createGuides();
+
+  aggregate.op = "last";
+  aggregate.orderBy = "other";
+  assert.deepEqual(
+    program.semanticSpec.layers[0].encoding.y.aggregate,
+    { op: "first", orderBy: "rank", order: "ascending" }
+  );
+  assert.equal(
+    program.semanticSpec.guides.axis.y.title,
+    "first(value, rank ascending)"
+  );
+  assert.equal(
+    program.graphicSpec.objects.yAxisTitle.properties.text,
+    "first(value, rank ascending)"
+  );
+  assert.equal(encoded.trace.children.at(-1).op, "encodeY");
+  assert.deepEqual(encoded.actionStack, []);
+});
+
+test("supports ordered direction, last selection, and incomplete-group omission", () => {
+  const rows = [
+    { year: "2020-01-01", value: 1, rank: null },
+    { year: "2021-01-01", value: 2, rank: 1 },
+    { year: "2021-01-01", value: 3, rank: 2 },
+    { year: "2022-01-01", value: 4, rank: 1 },
+    { year: "2022-01-01", value: 5, rank: 2 }
+  ];
+  const program = xEncodedLine(rows).encodeY({
+    field: "value",
+    aggregate: {
+      op: "last",
+      orderBy: "rank",
+      order: "descending"
+    }
+  });
+
+  assert.deepEqual(
+    program.semanticSpec.layers[0].encoding.y.aggregate,
+    { op: "last", orderBy: "rank", order: "descending" }
+  );
+  assert.equal(
+    program.graphicSpec.objects.trends.children[0].properties.commands.length,
+    2
+  );
+});
+
+test("rejects invalid parameterized aggregates without changing the earlier program", () => {
+  const base = xEncodedLine().encodeY({ field: "value", aggregate: "mean" });
+  const before = base.semanticSpec;
+
+  for (const aggregate of [
+    { op: "quantile", probability: -0.1 },
+    { op: "quantile", probability: 1.1 },
+    { op: "first", orderBy: "" },
+    { op: "last", orderBy: "category", order: "sideways" }
+  ]) {
+    assert.throws(
+      () => base.encodeY({ field: "value", aggregate }),
+      /aggregate|probability|orderBy|order/i
+    );
+    assert.strictEqual(base.semanticSpec, before);
+    assert.equal(base.semanticSpec.layers[0].encoding.y.aggregate, "mean");
+  }
+
+  assert.throws(
+    () => xEncodedLine().encodeY({
+      field: "category",
+      fieldType: "nominal",
+      aggregate: { op: "quantile", probability: 0.5 }
+    }),
+    /does not support field type/
+  );
 });
 
 test("materializes scalar aggregate grouped bars at the final category grain", () => {
@@ -133,4 +224,33 @@ test("materializes scalar aggregate grouped bars at the final category grain", (
     ),
     true
   );
+});
+
+test("materializes parameterized grouped bars at the final category grain", () => {
+  const rows = [
+    { year: 2020, group: "A", value: 1, rank: 2 },
+    { year: 2020, group: "A", value: 5, rank: 1 },
+    { year: 2020, group: "B", value: 8, rank: 1 },
+    { year: 2021, group: "A", value: 2, rank: 1 },
+    { year: 2021, group: "B", value: 4, rank: 2 },
+    { year: 2021, group: "B", value: 10, rank: 1 }
+  ];
+  const program = chart()
+    .createCanvas({ width: 420, height: 300, margin: 40 })
+    .createData({ id: "data", values: rows })
+    .createBarMark({ id: "bars" })
+    .encodeX({ field: "year", fieldType: "ordinal" })
+    .encodeY({
+      field: "value",
+      aggregate: { op: "first", orderBy: "rank" }
+    })
+    .encodeColor({ field: "group", layout: "group" })
+    .encodeBarWidth();
+
+  assert.deepEqual(
+    program.semanticSpec.layers[0].encoding.y.aggregate,
+    { op: "first", orderBy: "rank", order: "ascending" }
+  );
+  assert.deepEqual(program.resolvedScales.y.domain, [2, 10]);
+  assert.equal(program.graphicSpec.objects.bars.children.length, 4);
 });

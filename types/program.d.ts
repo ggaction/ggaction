@@ -37,6 +37,16 @@ export type ScalarAggregateOperation =
   | "distinct" | "valid" | "missing"
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
+export type ParameterizedAggregateOperation =
+  | { op: "quantile"; probability: number }
+  | {
+      op: "first" | "last";
+      orderBy: string;
+      order?: "ascending" | "descending";
+    };
+export type AggregateOperation =
+  | ScalarAggregateOperation
+  | ParameterizedAggregateOperation;
 export type ContinuousColorInterpolation =
   | "rgb"
   | "hsl"
@@ -151,7 +161,7 @@ export interface PositionEncodingOptions {
   fieldType?: FieldType;
   scale?: ScaleOptions;
   coordinate?: string;
-  aggregate?: ScalarAggregateOperation;
+  aggregate?: AggregateOperation;
   bin?: { maxBins?: number };
   stack?: "zero" | null;
 }

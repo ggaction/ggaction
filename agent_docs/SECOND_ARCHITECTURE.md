@@ -773,7 +773,7 @@ semantic definition을 받아 deterministic result를 반환한다.
 - linear mapping과 ordinal mapping
 - nice numeric ticks와 calendar-aligned time ticks
 - histogram bin boundary와 count
-- grouped scalar line/bar aggregation
+- grouped scalar and parameterized line/bar aggregation
 - line/area series grouping과 stable ordering
 - OLS coefficient와 Student-t mean-response confidence interval
 - Gaussian KDE bandwidth, shared sample grid와 density
@@ -828,7 +828,7 @@ materialization policy에 정의한다.
 
 ### Line
 
-- x/y와 supported raw quantitative 또는 scalar-aggregate semantics가 필요하다.
+- x/y와 supported raw quantitative 또는 scalar/parameterized aggregate semantics가 필요하다.
 - group/color/strokeDash에 따라 series를 나눈다.
 - group, color, field-driven strokeDash가 함께 series identity에 참여하면 같은 field여야 한다.
 - `encodeGroup`과 `encodeStrokeDash` 재호출은 기존 assignment를 원자적으로 교체한다.
@@ -850,9 +850,16 @@ materialization policy에 정의한다.
 ### Bar
 
 - Histogram은 binned x, count y, zero stack이 함께 있어야 한다.
-- Grouped bar는 ordinal x, scalar aggregate y, null stack, xOffset group과 bar width가 필요하다.
+- Grouped bar는 ordinal x, supported aggregate y, null stack, xOffset group과 bar width가 필요하다.
 - final grouping grain에서 aggregate하고 observed cell만 rect로 만든다.
 - Missing categorical combination을 자동으로 zero rect로 합성하지 않는다.
+
+Aggregate grammar는 scalar operation과 parameter object를 한 canonical owner에서 검증한다.
+Parameterized quantile은 finite output sample에 linear interpolation을 적용하고, ordered
+`first | last`는 valid comparable `orderBy` key와 stable source-order fallback으로 row value를
+선택한다. Public encoding action은 omitted ordered direction을 `"ascending"`으로 normalize해
+semantic state에 저장한다. 계산 가능한 candidate가 없는 final group은 zero나 임의 row로
+대체하지 않고 생략한다.
 
 Mark가 incomplete한 중간 상태일 때 empty graphic collection은 존재할 수 있지만 잘못된
 임시 geometry를 만들지 않는다. 이후 responsible encoding action이 completeness를

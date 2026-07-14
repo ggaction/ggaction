@@ -40,7 +40,7 @@ function encodePosition(program, channel, args, operation) {
   if (layer.mark.type === "line" && channel === "y" && args.aggregate !== undefined) {
     next = next.editSemantic({
       property: `layer[${target}].encoding.y.aggregate`,
-      value: args.aggregate
+      value: aggregate
     });
   }
 

@@ -16,10 +16,10 @@ import {
   validateOptions
 } from "../shared.js";
 import {
-  isScalarAggregate,
+  isAggregate,
   validateAggregate,
+  validateAggregateFieldType,
   validateAggregateFieldValues,
-  validateScalarAggregateFieldType
 } from "../../../grammar/aggregate.js";
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([
@@ -91,15 +91,11 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
     if (regression && args.aggregate !== undefined) {
       throw new Error(regression
         ? "Regression line y encoding does not support aggregate."
-        : "Line y encoding requires a supported scalar aggregate.");
+        : "Line y encoding requires a supported aggregate.");
     }
     if (!regression) {
-      validateAggregate(args.aggregate);
-      if (!isScalarAggregate(args.aggregate)) {
-        throw new Error("Line y encoding requires a supported scalar aggregate.");
-      }
-      validateScalarAggregateFieldType(args.aggregate, fieldType);
-      aggregate = args.aggregate;
+      aggregate = validateAggregate(args.aggregate);
+      validateAggregateFieldType(aggregate, fieldType);
     }
     if (args.stack !== undefined) throw new Error("Line y encoding does not support stack.");
   } else if (channel === "x") {
@@ -128,11 +124,8 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
     } else if (xEncoding.fieldType === "ordinal") {
       aggregate = args.aggregate ?? "mean";
       stack = Object.hasOwn(args, "stack") ? args.stack : null;
-      validateAggregate(aggregate);
-      if (!isScalarAggregate(aggregate)) {
-        throw new Error("Ordinal bar y requires a supported scalar aggregate.");
-      }
-      validateScalarAggregateFieldType(aggregate, fieldType);
+      aggregate = validateAggregate(aggregate);
+      validateAggregateFieldType(aggregate, fieldType);
       if (stack !== null) throw new Error("Ordinal bar y stack must be null.");
     } else {
       throw new Error("Bar y encoding requires a binned quantitative or ordinal x encoding.");
@@ -179,9 +172,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     throw new TypeError(`${operation} field must be a non-empty string.`);
   }
 
-  const scalarAggregate = isScalarAggregate(policy.aggregate);
-  if (scalarAggregate) {
-    validateScalarAggregateFieldType(policy.aggregate, fieldType);
+  const aggregateOutput = isAggregate(policy.aggregate);
+  if (aggregateOutput) {
+    validateAggregateFieldType(policy.aggregate, fieldType);
     validateAggregateFieldValues(dataset.values, field, fieldType);
   } else if (fieldType === "temporal") readTemporalField(dataset.values, field);
   else if (["ordinal", "nominal"].includes(fieldType)) {
@@ -195,7 +188,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   const scale = resolvePositionScaleDefinition(
     program,
     channel,
-    scalarAggregate ? "quantitative" : fieldType,
+    aggregateOutput ? "quantitative" : fieldType,
     requestedScale,
     layer.mark.type === "bar" && fieldType !== "ordinal"
       ? channel === "x" || policy.stack === null

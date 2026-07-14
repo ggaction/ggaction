@@ -1318,9 +1318,9 @@ Omit an ID only when the current state has one unambiguous candidate.
 Some actions intentionally leave empty graphics until the semantic relationship
 is complete:
 
-- A line needs temporal x and a compatible scalar aggregate y.
+- A line needs temporal x and a compatible aggregate y.
 - A histogram needs binned x and count/zero-stack y; prefer `encodeHistogram`.
-- The current grouped bar flow needs ordinal x, scalar aggregate y, grouped color/xOffset,
+- The current grouped bar flow needs ordinal x, a compatible aggregate y, grouped color/xOffset,
   then `encodeBarWidth`.
 - Points need concrete x/y and a radius to be visible.
 
@@ -1787,8 +1787,9 @@ groupedBarProgram.encodeX({ field: "year", fieldType: "ordinal" });
 Ordinal bar x resolves its domain and band geometry but leaves concrete rects
 empty until aggregate y and group layout are authored. On an ordinal bar,
 `encodeY({ field, aggregate })` computes its automatic scale domain from the
-selected scalar summary at each final x/category and series grain. `aggregate`
-defaults to `"mean"`. It still leaves rects empty until grouping is authored.
+selected summary at each final x/category and series grain. `aggregate`
+defaults to `"mean"` and may also use a parameterized quantile or ordered
+`first`/`last` object. It still leaves rects empty until grouping is authored.
 The advanced `encodeXOffset({ field })` action resolves nominal slots within
 each x band; grouped color layout normally calls it on the author's behalf.
 
@@ -2369,7 +2370,7 @@ program.encodeY({
 | `field` | non-empty string | required |
 | `target` | line mark ID | current mark |
 | `fieldType` | `"quantitative"`, or `"nominal"` for count operations | `"quantitative"` |
-| `aggregate` | scalar aggregate operation | required for temporal line marks |
+| `aggregate` | scalar name or parameterized aggregate object | required for temporal line marks |
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
 | `scale.id` | scale ID | `"y"` |
 | `scale.type` | `"linear"` | `"linear"` |
@@ -2390,11 +2391,34 @@ Missing finite samples are omitted instead of becoming zero-valued points.
 Sample dispersion, standard error, and confidence endpoints require at least
 two finite values per final group.
 
+Parameterized aggregates accept either a quantile probability or an ordered
+row selection:
+
+```javascript
+program.encodeY({
+  field: "Acceleration",
+  aggregate: { op: "quantile", probability: 0.75 }
+});
+
+program.encodeY({
+  field: "Acceleration",
+  aggregate: { op: "first", orderBy: "Horsepower" }
+});
+```
+
+`probability` is required and may range from `0` through `1`; those endpoints
+equal the minimum and maximum. Ordered aggregates accept `op: "first"` or
+`"last"`, require `orderBy`, and default `order` to `"ascending"`. Ties retain
+source-row order. Rows with missing or incomparable order keys are skipped,
+and a final group with no selectable finite result is omitted. The normalized
+order is stored in `semanticSpec`, so inferred titles such as
+`first(Acceleration, Horsepower ascending)` remain reproducible.
+
 ## Errors and limitations
 
-The current line slice requires temporal x, a compatible scalar aggregate y,
-and at least two complete points per materialized series. Parameterized
-quantiles and ordered selection are not yet public.
+The current line slice requires temporal x, a compatible aggregate y, and at
+least two complete points per materialized series. Parameterized aggregate
+outputs must be quantitative.
 
 ## Related
 
@@ -2411,7 +2435,7 @@ quantiles and ordered selection are not yet public.
 | Action | Shortest call | Required state | Result |
 | --- | --- | --- | --- |
 | ordinal `encodeX` | `encodeX({ field: "category", fieldType: "ordinal" })` | bar mark | Ordered x bands |
-| aggregate `encodeY` | `encodeY({ field: "value" })` | ordinal bar x | Scalar-aggregate/non-stacked y scale |
+| aggregate `encodeY` | `encodeY({ field: "value" })` | ordinal bar x | Aggregate/non-stacked y scale |
 
 ## Ordinal bar `encodeX(options)`
 
@@ -2440,7 +2464,7 @@ leaves the rect collection empty because aggregate y and layout are incomplete.
 | --- | --- | --- |
 | `field` | non-empty string | required |
 | `fieldType` | `"quantitative"`, or `"nominal"` for count operations | `"quantitative"` |
-| `aggregate` | scalar aggregate operation | `"mean"` |
+| `aggregate` | scalar name or parameterized aggregate object | `"mean"` |
 | `stack` | `null` | `null` |
 | `target` | bar mark ID | current mark |
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
@@ -2459,14 +2483,16 @@ program.encodeY({
 });
 ```
 
-The automatic domain uses scalar summaries at the final available grouping grain.
+The automatic domain uses aggregate summaries at the final available grouping
+grain. Parameterized quantile and ordered `first`/`last` use the same contract
+as temporal line y encodings.
 Grouping and `encodeBarWidth` later supply enough information to materialize
 concrete rectangles.
 
 ## Errors and limitations
 
 Ordinal position does not accept `nice` or `zero`. The current bar slice
-supports scalar aggregate y and grouped color layout; negative baselines and
+supports aggregate y and grouped color layout; negative baselines and
 horizontal bars are unsupported.
 
 ## Related
@@ -2847,7 +2873,7 @@ program.encodeBarWidth({ band: 0.72 });
 | `band` | finite number greater than `0` and at most `1` | `0.72` |
 | `target` | grouped bar mark ID | current mark |
 
-The action requires ordinal x, scalar-aggregate/non-stacked y, grouped color, and matching
+The action requires ordinal x, aggregate/non-stacked y, grouped color, and matching
 xOffset semantics. Concrete width is `xOffset.bandwidth * band`; each bar is
 centered in its slot. Missing x/color cells are omitted rather than represented
 by placeholder rects.
@@ -2940,9 +2966,10 @@ materializes concrete histogram rectangles.
 
 ### Aggregate ordinal bar y scales
 
-An ordinal bar scalar-aggregate y scale defaults to `nice: true` and `zero: false`.
+An ordinal bar aggregate y scale defaults to `nice: true` and `zero: false`.
 Its automatic domain uses one final aggregate value per ordinal x/category and
-series cell rather than raw source values. Explicit domain and range values remain authoritative.
+series cell rather than raw source values. This includes parameterized quantile
+and ordered `first`/`last` results. Explicit domain and range values remain authoritative.
 The y action resolves the scale but leaves rectangles empty until grouping
 semantics are available.
 
@@ -3766,7 +3793,7 @@ chart-authoring API does not support that combination.
 | Capability | Scatterplot | Line chart | Histogram | Bar chart | Regression scatterplot | Density area |
 | --- | --- | --- | --- | --- | --- | --- |
 | Semantic mark | point | line | bar | bar | point + area + line | area |
-| Position | quantitative x/y | temporal x, scalar aggregate y | binned x, count y | ordinal x, scalar aggregate y | shared quantitative x/y | value + density x/y |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y |
 | Nominal color | point fill | series stroke | zero-stacked fill | grouped fill and xOffset | point fill + fit stroke | grouped area fill |
 | Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — |
 | Constant appearance | radius | stroke width, 8 curves | — | band width | opacity, band fill, line width | opacity |
@@ -3786,7 +3813,7 @@ chart-authoring API does not support that combination.
 | Data | Immutable arrays of plain row objects, named filters, grouped linear regression, and grouped Gaussian KDE derivations |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
 | Scales | Linear, UTC time, ordinal position, color, named/direct stroke dash, and band-local xOffset |
-| Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, and normal 95% mean endpoints |
+| Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic axes, horizontal/vertical Cartesian grids, and categorical legends |
 | Titles | One plot-aligned top title with one optional single-line subtitle |
 | Rendering | Browser Canvas and Node PNG |
@@ -3945,10 +3972,11 @@ materialize rects until their remaining layout semantics exist.
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
 ```
 
-Create or compatibly replace a quantitative point, scalar-aggregate line, or inferred count/zero-stack bar
-y encoding. With ordinal bar x, it also creates a scalar-aggregate/non-stacked y encoding
+Create or compatibly replace a quantitative point, aggregate line, or inferred count/zero-stack bar
+y encoding. With ordinal bar x, it also creates an aggregate/non-stacked y encoding
 and resolves its scale while waiting for grouping semantics before rect
-materialization. A complete histogram x/y pair materializes concrete rects.
+materialization. Aggregate values may be scalar names or parameterized quantile
+and ordered first/last objects. A complete histogram x/y pair materializes concrete rects.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeY2`

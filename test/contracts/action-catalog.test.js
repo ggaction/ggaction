@@ -305,7 +305,6 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     "Area outline",
     "Bar width modes",
     "Offset padding controls",
-    "Parameterized aggregate operations",
     "Color layout vocabulary",
     "Continuous color bar consumer",
     "Histogram bin controls",
@@ -358,9 +357,9 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /pixels\?: PositiveFinite/);
   assert.match(plannedCorpus, /paddingInner\?: UnitIntervalLessThan1/);
   assert.match(currentCorpus, /type ScalarAggregateOperation =/);
-  assert.match(plannedCorpus, /type ParameterizedAggregate =/);
-  assert.match(plannedCorpus, /op: "quantile"; probability: UnitInterval/);
-  assert.match(plannedCorpus, /op: "first" \| "last"/);
+  assert.match(currentCorpus, /type ParameterizedAggregateOperation =/);
+  assert.match(currentCorpus, /op: "quantile"; probability: UnitInterval/);
+  assert.match(currentCorpus, /op: "first" \| "last"/);
   assert.match(currentCorpus, /mean ± 1\.96 \* stderr/);
   assert.match(plannedCorpus, /type ColorLayout =/);
   assert.match(plannedCorpus, /"stack" \| "fill" \| "group" \| "overlay" \| "diverging"/);
@@ -470,12 +469,9 @@ test("keeps accepted planned capabilities linked and non-public", () => {
 
 test("keeps implemented and planned formal values distinct", () => {
   const encodeY = owningSection("encodeY").source;
-  assert.match(
-    encodeY,
-    /aggregate\?: "count" \| "sum" \| "mean" \| "median" \| "min" \| "max" \| "distinct" \| "valid" \| "missing" \| "variance" \| "varianceP" \| "stdev" \| "stdevP" \| "stderr" \| "q1" \| "q3" \| "ciLower" \| "ciUpper"/
-  );
+  assert.match(encodeY, /aggregate\?: AggregateOperation/);
   assert.match(encodeY, /op: "quantile"; probability: UnitInterval/);
-  assert.match(encodeY, /op: "first" \| "last"; orderBy: FieldName/);
+  assert.match(encodeY, /op: "first" \| "last";[\s\S]*orderBy: FieldName/);
 
   const point = owningSection("createPointMark").source;
   assert.match(point, /shape\?: PointShape/);

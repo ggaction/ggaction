@@ -146,10 +146,11 @@ materialize rects until their remaining layout semantics exist.
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
 ```
 
-Create or compatibly replace a quantitative point, scalar-aggregate line, or inferred count/zero-stack bar
-y encoding. With ordinal bar x, it also creates a scalar-aggregate/non-stacked y encoding
+Create or compatibly replace a quantitative point, aggregate line, or inferred count/zero-stack bar
+y encoding. With ordinal bar x, it also creates an aggregate/non-stacked y encoding
 and resolves its scale while waiting for grouping semantics before rect
-materialization. A complete histogram x/y pair materializes concrete rects.
+materialization. Aggregate values may be scalar names or parameterized quantile
+and ordered first/last objects. A complete histogram x/y pair materializes concrete rects.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeY2`

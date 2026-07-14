@@ -2,7 +2,7 @@ import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
-import { isScalarAggregate } from "../../../grammar/aggregate.js";
+import { isAggregate } from "../../../grammar/aggregate.js";
 
 export const DEFAULT_BAR_FILL = DEFAULT_COLORS.mark;
 export const DEFAULT_BAR_STROKE = "white";
@@ -30,7 +30,7 @@ export function requireCompleteBar(program, id) {
     yEncoding.stack === "zero";
   const isOrdinalAggregate =
     xEncoding?.fieldType === "ordinal" &&
-    isScalarAggregate(yEncoding?.aggregate) &&
+    isAggregate(yEncoding?.aggregate) &&
     yEncoding.stack === null;
 
   if (
@@ -39,7 +39,7 @@ export function requireCompleteBar(program, id) {
     (!isHistogram && !isOrdinalAggregate)
   ) {
     throw new Error(
-      `Bar mark "${id}" requires binned x/count y or ordinal x/scalar aggregate y encodings.`
+      `Bar mark "${id}" requires binned x/count y or ordinal x/aggregate y encodings.`
     );
   }
   const xScale = findSemanticScale(program, xEncoding.scale);

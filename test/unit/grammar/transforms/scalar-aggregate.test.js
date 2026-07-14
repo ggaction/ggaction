@@ -2,9 +2,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  aggregateRows,
   aggregateScalarValues,
+  formatAggregateTitle,
   SCALAR_AGGREGATE_OPERATIONS,
   validateAggregate,
+  validateAggregateFieldType,
   validateAggregateFieldValues,
   validateScalarAggregateFieldType
 } from "../../../../src/grammar/aggregate.js";
@@ -82,6 +85,10 @@ test("validates scalar field compatibility and parameter aggregate schemas", () 
     validateAggregate({ op: "quantile", probability: 0.75 }),
     { op: "quantile", probability: 0.75 }
   );
+  assert.deepEqual(
+    validateAggregate({ op: "first", orderBy: "rank" }),
+    { op: "first", orderBy: "rank", order: "ascending" }
+  );
   assert.throws(() => validateAggregate("mode"), /Unsupported aggregate/);
   assert.throws(() => aggregateScalarValues({}, "mean"), /must be an array/);
   assert.doesNotThrow(() => validateAggregateFieldValues(
@@ -101,5 +108,136 @@ test("validates scalar field compatibility and parameter aggregate schemas", () 
   assert.throws(
     () => validateAggregateFieldValues([{ value: {} }], "value", "nominal"),
     /nominal or missing/
+  );
+});
+
+test("computes parameterized quantiles at inclusive boundaries", () => {
+  const rows = [{ value: 10 }, { value: 0 }, { value: 30 }, { value: 20 }];
+
+  assert.equal(
+    aggregateRows(rows, "value", { op: "quantile", probability: 0 }),
+    0
+  );
+  assert.equal(
+    aggregateRows(rows, "value", { op: "quantile", probability: 0.25 }),
+    7.5
+  );
+  assert.equal(
+    aggregateRows(rows, "value", { op: "quantile", probability: 1 }),
+    30
+  );
+  assert.equal(
+    aggregateRows([{ value: null }, { value: Infinity }], "value", {
+      op: "quantile",
+      probability: 0.5
+    }),
+    undefined
+  );
+});
+
+test("selects ordered values with stable source-order ties", () => {
+  const rows = [
+    { value: 10, rank: 2 },
+    { value: 20, rank: 1 },
+    { value: 30, rank: 1 },
+    { value: 40, rank: null },
+    { value: Infinity, rank: 0 }
+  ];
+
+  assert.equal(
+    aggregateRows(rows, "value", { op: "first", orderBy: "rank" }),
+    20
+  );
+  assert.equal(
+    aggregateRows(rows, "value", { op: "last", orderBy: "rank" }),
+    10
+  );
+  assert.equal(
+    aggregateRows(rows, "value", {
+      op: "first",
+      orderBy: "rank",
+      order: "descending"
+    }),
+    10
+  );
+  assert.equal(
+    aggregateRows(rows, "value", {
+      op: "last",
+      orderBy: "rank",
+      order: "descending"
+    }),
+    30
+  );
+  assert.equal(
+    aggregateRows([
+      { value: 1, rank: "B" },
+      { value: 2, rank: "A" }
+    ], "value", { op: "first", orderBy: "rank" }),
+    2
+  );
+  assert.equal(
+    aggregateRows([
+      { value: 1, rank: false },
+      { value: 2, rank: true }
+    ], "value", { op: "last", orderBy: "rank" }),
+    2
+  );
+  assert.equal(
+    aggregateRows([{ value: 1, rank: null }], "value", {
+      op: "first",
+      orderBy: "rank"
+    }),
+    undefined
+  );
+  assert.equal(
+    aggregateRows([
+      { value: 1, rank: 1 },
+      { value: 2, rank: "2" }
+    ], "value", { op: "first", orderBy: "rank" }),
+    undefined
+  );
+});
+
+test("validates and formats parameterized aggregate contracts", () => {
+  assert.equal(
+    validateAggregateFieldType(
+      { op: "quantile", probability: 0.5 },
+      "quantitative"
+    ),
+    "quantitative"
+  );
+  assert.throws(
+    () => validateAggregateFieldType(
+      { op: "first", orderBy: "rank" },
+      "nominal"
+    ),
+    /does not support field type/
+  );
+  assert.equal(
+    formatAggregateTitle({ op: "quantile", probability: 0.75 }, "value"),
+    "quantile(value, 0.75)"
+  );
+  assert.equal(
+    formatAggregateTitle({ op: "last", orderBy: "rank" }, "value"),
+    "last(value, rank ascending)"
+  );
+
+  for (const probability of [-0.01, 1.01, NaN, Infinity, undefined]) {
+    assert.throws(
+      () => validateAggregate({ op: "quantile", probability }),
+      /between 0 and 1/
+    );
+  }
+  assert.throws(
+    () => validateAggregate({ op: "quantile", probability: 0.5, extra: true }),
+    /Unknown quantile aggregate property/
+  );
+  assert.throws(
+    () => validateAggregate({ op: "first", orderBy: "" }),
+    /non-empty string/
+  );
+  assert.throws(
+    () => validateAggregate({ op: "last", orderBy: "rank", order: "sideways" }),
+    /Unsupported ordered aggregate order/
   );
 });

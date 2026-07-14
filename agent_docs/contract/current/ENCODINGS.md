@@ -85,6 +85,18 @@ type ScalarAggregateOperation =
   | "distinct" | "valid" | "missing"
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
+
+type ParameterizedAggregateOperation =
+  | { op: "quantile"; probability: UnitInterval }
+  | {
+      op: "first" | "last";
+      orderBy: FieldName;
+      order?: "ascending" | "descending";
+    };
+
+type AggregateOperation =
+  | ScalarAggregateOperation
+  | ParameterizedAggregateOperation;
 ```
 
 - Signature: `encodeY({ field?, target?, fieldType?, scale?, coordinate?, aggregate?, bin?, stack? })`
@@ -100,6 +112,12 @@ type ScalarAggregateOperation =
 - 나머지 연산은 finite quantitative sample만 사용한다. Sample variance/stdev/stderr와 CI는 `n < 2`,
   다른 quantitative 연산은 finite sample이 없으면 해당 final group을 생략한다. Quartile은 linear
   interpolation, CI endpoint는 `mean ± 1.96 * stderr`다.
+- `{ op: "quantile", probability }`는 finite quantitative sample을 정렬해 linear interpolation한다.
+  Probability는 필수 `[0, 1]` 값이며 `0`/`1`은 min/max다.
+- `{ op: "first" | "last", orderBy, order? }`는 valid comparable order key를 가진 row를 stable
+  source order fallback으로 정렬한 뒤 encoded finite quantitative value를 선택한다. `order`는
+  `"ascending"`으로 normalize되어 semantic state에 저장된다. 유효한 candidate가 없거나 order-key
+  type이 한 group 안에서 섞이면 해당 group을 생략한다.
 - `stack`: Implemented values `"zero" | null`. histogram color series는 zero stack, grouped ordinal
   bar는 `null`이다.
 - `bin`: 현재 y에서는 지원되지 않는다.
@@ -113,8 +131,8 @@ type ScalarAggregateOperation =
 
 ### Formal values — `encodeY`
 
-- Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: "count" | "sum" | "mean" | "median" | "min" | "max" | "distinct" | "valid" | "missing" | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr" | "q1" | "q3" | "ciLower" | "ciUpper"; stack?: "zero" | null })`; mark/x policy와 aggregate compatibility가 조합을 제한한다.
-- Planned (NOT IMPLEMENTED): `{ fieldType?: "temporal" | "ordinal"; aggregate?: { op: "quantile"; probability: UnitInterval } | { op: "first" | "last"; orderBy: FieldName; order?: "ascending" | "descending" }; stack?: "normalize"; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
+- Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | null })`; parameterized aggregate는 quantitative output field만 허용하며 mark/x policy와 aggregate compatibility가 조합을 제한한다.
+- Planned (NOT IMPLEMENTED): `{ fieldType?: "temporal" | "ordinal"; stack?: "normalize"; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
 - Proposed (NOT IMPLEMENTED): `{ stack?: "center" }`; extreme-row selection은 Planned `selectRows`가 소유한다.
 
 ### Value coverage — `encodeY`
@@ -127,7 +145,8 @@ type ScalarAggregateOperation =
 - `aggregate`
   - ✅ Covered: full scalar vocabulary, final line/bar grain, missing/sample boundary, inferred/custom title,
     domain/rematerialization과 incompatible aggregate rejection.
-  - 🟡 Planned: parameterized quantile과 ordered first/last.
+  - ✅ Covered: parameterized quantile boundaries, ordered first/last direction, stable ties, missing/invalid
+    candidates, final grain, inferred title, rematerialization과 caller-owned object isolation.
   - 🟡 Planned: full-row min/max selection은 scalar aggregate가 아닌 `selectRows` transform으로 제공한다.
 - `stack`
   - ✅ Covered: `"zero"`, `null`, incompatible policy rejection.

@@ -9,6 +9,7 @@ import {
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
+import { formatAggregateTitle } from "../../../grammar/aggregate.js";
 
 const CREATE_OPTIONS = Object.freeze([
   "text", "scale", "position", "at", "offset", "rotation", "color",
@@ -65,7 +66,7 @@ function inferText(program, channel, scaleId) {
             : undefined;
       const title = densityTitle ?? (encoding.aggregate === undefined
         ? encoding.field
-        : `${encoding.aggregate}(${encoding.field})`);
+        : formatAggregateTitle(encoding.aggregate, encoding.field));
       titles.add(title);
       if (layer.mark?.type === "point") primaryTitles.add(title);
     }

@@ -50,9 +50,9 @@ Omit an ID only when the current state has one unambiguous candidate.
 Some actions intentionally leave empty graphics until the semantic relationship
 is complete:
 
-- A line needs temporal x and a compatible scalar aggregate y.
+- A line needs temporal x and a compatible aggregate y.
 - A histogram needs binned x and count/zero-stack y; prefer `encodeHistogram`.
-- The current grouped bar flow needs ordinal x, scalar aggregate y, grouped color/xOffset,
+- The current grouped bar flow needs ordinal x, a compatible aggregate y, grouped color/xOffset,
   then `encodeBarWidth`.
 - Points need concrete x/y and a radius to be visible.
 

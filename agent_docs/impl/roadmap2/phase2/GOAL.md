@@ -17,7 +17,7 @@ legend를 구현한다.
 - [x] Concrete path-command 기반과 기존 path chart parity
 - [x] Curve primitive 승인과 public implementation
 - [x] Dash/reassignment primitive 승인과 public implementation
-- [ ] Aggregate scalar implementation 완료, parameterized implementation 대기
+- [x] Aggregate scalar와 parameterized operation 구현
 - [ ] Composite legend primitive 승인과 public implementation
 - [ ] Public docs, contract 승격과 Phase closeout
 

@@ -1,6 +1,6 @@
 import { action } from "../../core/action.js";
 import { resolveTarget, validateOptions } from "./shared.js";
-import { isScalarAggregate } from "../../grammar/aggregate.js";
+import { isAggregate } from "../../grammar/aggregate.js";
 
 const OPTIONS = Object.freeze(["band", "target"]);
 
@@ -24,7 +24,7 @@ const encodeBarWidth = action(
     );
     if (
       layer.encoding?.x?.fieldType !== "ordinal" ||
-      !isScalarAggregate(layer.encoding?.y?.aggregate) ||
+      !isAggregate(layer.encoding?.y?.aggregate) ||
       layer.encoding.y.stack !== null ||
       layer.encoding?.color?.field === undefined ||
       layer.encoding?.xOffset?.field !== layer.encoding.color.field

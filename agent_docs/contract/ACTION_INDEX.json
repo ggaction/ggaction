@@ -1470,17 +1470,6 @@
       }
     },
     {
-      "id": "parameterized-aggregate-operations",
-      "kind": "parameter",
-      "name": "Parameterized aggregate operations",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "parameterized-aggregate-operations"
-      }
-    },
-    {
       "id": "color-layout-vocabulary",
       "kind": "parameter",
       "name": "Color layout vocabulary",

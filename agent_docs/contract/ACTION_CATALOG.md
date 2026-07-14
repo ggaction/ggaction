@@ -112,7 +112,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | parameter | Area outline | accepted | [Open](planned/ENCODINGS.md#area-outline) |
 | parameter | Bar width modes | accepted | [Open](planned/ENCODINGS.md#bar-width-modes) |
 | parameter | Offset padding controls | accepted | [Open](planned/ENCODINGS.md#offset-padding-controls) |
-| parameter | Parameterized aggregate operations | accepted | [Open](planned/ENCODINGS.md#parameterized-aggregate-operations) |
 | parameter | Color layout vocabulary | accepted | [Open](planned/ENCODINGS.md#color-layout-vocabulary) |
 | parameter | Continuous color bar consumer | accepted | [Open](planned/ENCODINGS.md#continuous-color-bar-consumer) |
 | parameter | Histogram bin controls | accepted | [Open](planned/ENCODINGS.md#histogram-bin-controls) |

@@ -1,10 +1,10 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { readNominalField } from "./scales.js";
 import {
-  aggregateScalarValues,
-  isScalarAggregate,
+  aggregateRows,
+  isAggregate,
+  validateAggregateFieldType,
   validateAggregateFieldValues,
-  validateScalarAggregateFieldType
 } from "./aggregate.js";
 
 function requireAggregateBarEncoding(layer) {
@@ -19,14 +19,14 @@ function requireAggregateBarEncoding(layer) {
     throw new Error(`Bar mark "${layer.id}" requires an ordinal x encoding.`);
   }
   if (
-    !isScalarAggregate(y?.aggregate) ||
+    !isAggregate(y?.aggregate) ||
     y.stack !== null
   ) {
     throw new Error(
-      `Bar mark "${layer.id}" requires a supported scalar aggregate/non-stacked y encoding.`
+      `Bar mark "${layer.id}" requires a supported aggregate/non-stacked y encoding.`
     );
   }
-  validateScalarAggregateFieldType(y.aggregate, y.fieldType);
+  validateAggregateFieldType(y.aggregate, y.fieldType);
 
   return { x, y };
 }
@@ -35,7 +35,6 @@ export function deriveBarAggregates(rows, layer) {
   const { x, y } = requireAggregateBarEncoding(layer);
   validateAggregateFieldValues(rows, y.field, y.fieldType);
   const xValues = readNominalField(rows, x.field);
-  const yValues = rows.map(row => row[y.field]);
   const color = layer.encoding?.color;
   let colorValues;
 
@@ -54,9 +53,9 @@ export function deriveBarAggregates(rows, layer) {
     const group = groups.get(key) ?? {
       x: xValue,
       ...(colorValues === undefined ? {} : { color: colorValue }),
-      values: []
+      rows: []
     };
-    group.values.push(yValues[index]);
+    group.rows.push(rows[index]);
     groups.set(key, group);
   }
 
@@ -65,12 +64,12 @@ export function deriveBarAggregates(rows, layer) {
   }
 
   const values = [...groups.values()].flatMap(group => {
-    const value = aggregateScalarValues(group.values, y.aggregate);
+    const value = aggregateRows(group.rows, y.field, y.aggregate);
     return value === undefined ? [] : [{
       x: group.x,
       ...(Object.hasOwn(group, "color") ? { color: group.color } : {}),
       y: value,
-      count: group.values.length
+      count: group.rows.length
     }];
   });
 

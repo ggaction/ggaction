@@ -9,6 +9,8 @@ import {
   createMedianCarsLineChart,
   createMonotoneEditCarsLineChart,
   createNamedDashVocabularyCarsLineChart,
+  createOrderedCarsLineChart,
+  createQuantileCarsLineChart,
   createStepCarsLineChart
 } from "../../../examples/cars-line-chart/program.js";
 import {
@@ -458,7 +460,7 @@ test("authors the four aggregate targets with concrete paths and inferred guides
     ],
     [
       createAggregateOrderedPrimitives(cars),
-      { op: "first", orderBy: "Horsepower" },
+      { op: "first", orderBy: "Horsepower", order: "ascending" },
       "first(Acceleration, Horsepower ascending)",
       [12, 15, 18, 21, 24, 27]
     ]
@@ -488,10 +490,12 @@ test("authors the four aggregate targets with concrete paths and inferred guides
   }
 });
 
-test("matches approved median and dispersion primitives with public programs", () => {
+test("matches approved aggregate primitives with public programs", () => {
   for (const [primitive, publicProgram] of [
     [createAggregateMedianPrimitives(cars), createMedianCarsLineChart(cars)],
-    [createAggregateDispersionPrimitives(cars), createDispersionCarsLineChart(cars)]
+    [createAggregateDispersionPrimitives(cars), createDispersionCarsLineChart(cars)],
+    [createAggregateQuantilePrimitives(cars), createQuantileCarsLineChart(cars)],
+    [createAggregateOrderedPrimitives(cars), createOrderedCarsLineChart(cars)]
   ]) {
     const primitiveContext = createMockCanvasContext();
     const publicContext = createMockCanvasContext();
@@ -503,22 +507,5 @@ test("matches approved median and dispersion primitives with public programs", (
     assert.deepEqual(publicProgram.graphicSpec.order, primitive.graphicSpec.order);
     assert.deepEqual(publicContext.calls, primitiveContext.calls);
     assert.deepEqual(publicProgram.actionStack, []);
-  }
-});
-
-test("keeps parameterized aggregate targets primitive-only until Step 9", () => {
-  for (const program of [
-    createAggregateQuantilePrimitives(cars),
-    createAggregateOrderedPrimitives(cars)
-  ]) {
-    const operations = program.trace.children.map(node => node.op);
-    for (const futureAction of [
-      "createLineMark", "encodeX", "encodeY", "encodeColor",
-      "encodeStrokeDash", "createGuides", "createTitle"
-    ]) {
-      assert.equal(operations.includes(futureAction), false, futureAction);
-    }
-    assert.equal(operations.at(-1), "editGraphics");
-    assert.deepEqual(program.actionStack, []);
   }
 });
