@@ -1134,7 +1134,7 @@ src/
 │  ├─ guides/          axes, grids, legends와 aggregate guides
 │  ├─ marks/           point, line, bar, area create/rematerialize
 │  ├─ primitives/      editSemantic/createGraphics/editGraphics와 stateful semantic validation
-│  ├─ regression/      regression aggregate and component actions
+│  ├─ regression/      regression aggregate, component actions와 inference policy
 │  ├─ scales/          semantic scale create/resolve/materialize
 │  └─ titles/          chart title actions
 ├─ core/               action-free ChartProgram, action wrapper, immutable ownership, empty specs
@@ -1162,6 +1162,10 @@ registrar를 한 번 조립하고 top-level `ChartProgram.js`가 이를 core pro
 서로 다른 closed vocabulary와 reassignment lifecycle을 가진 encoding은 한 파일에 묶지 않는다.
 예를 들어 color와 stroke-dash는 같은 categorical scale 계열을 일부 공유하더라도 각각 독립된
 action module과 registrar를 가진다.
+
+Composite domain action도 registrar에 구현을 두지 않는다. Regression은 target/group inference,
+band·line component action, top-level orchestration을 별도 module로 유지하고 `index.js`는 등록과
+re-export만 담당한다.
 
 ## Test architecture
 
