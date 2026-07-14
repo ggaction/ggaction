@@ -518,3 +518,454 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - 오류: ordinal x, mean/non-stacked y, matching color/xOffset가 완성되지 않으면 거부한다.
 - Coverage: grouped-bar semantic/reference tests가 default, explicit value, invalid range와 geometry를 검증한다.
 
+### Statistical layers
+
+#### `createRegression`
+
+- Signature: `createRegression({ target?, x?, y?, groupBy?, confidence?, band?, line? })`
+- `target`: quantitative x/y point mark ID. 생략하면 current mark, 아니면 유일한 eligible point를 추론한다.
+- `x`, `y`: non-empty field names. 생략하면 target의 x/y encoding field를 사용한다.
+- `groupBy`: nominal field 또는 explicit `undefined`. 생략하면 matching color/shape field가 하나일 때
+  추론한다. 후보가 둘 이상이면 오류이며 explicit undefined는 ungrouped regression을 요청한다.
+- `confidence`: `(0, 1)` finite number, 기본값 `0.95`.
+- `band.color`: non-empty color string, 기본 theme regression-band color `"#111111"`.
+- `band.opacity`: `[0, 1]` finite number, 기본값 `0.18`.
+- `line.strokeWidth`: non-negative finite number, 기본값 `3`.
+- Effect: target ID로 namespace한 derived data, area band와 line layer를 만들고 point layer의 coordinate와
+  x/y scales를 공유한다. group field가 point color와 같으면 color scale도 공유한다.
+- Coverage: `test/unit/actions/regression/create-regression.test.js`와 regression chart tests가 inference,
+  ambiguity, grouped/ungrouped, namespacing, geometry와 Canvas rematerialization을 검증한다. confidence와
+  appearance boundary의 전체 조합은 부분적이다.
+
+#### `createRegressionBand`
+
+- Signature: `createRegressionBand({ id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale, color?, opacity? })`
+- `id`, `data`: 필수 새 area layer ID와 regression derived dataset ID.
+- `x`, `lower`, `upper`: 필수 quantitative result fields.
+- `groupBy`: optional nominal series field.
+- `coordinate`, `xScale`, `yScale`: 필수 existing shared resource IDs.
+- `color`, `opacity`: `createAreaMark` appearance contract; defaults는 regression band theme와 `0.18`.
+- Effect: wrapped area mark, x, y/y2, optional group actions을 호출하고 shared-scale closed paths를 만든다.
+- Coverage: regression unit/chart tests가 aggregate child hierarchy와 primitive equivalence를 검증하지만
+  이 advanced action의 각 missing resource 오류는 부분적이다.
+
+#### `createRegressionLine`
+
+- Signature: `createRegressionLine({ id, data, x, y, groupBy?, coordinate, xScale, yScale, colorScale?, strokeWidth? })`
+- `id`, `data`, `x`, `y`: 새 line ID, regression data와 fitted field names다.
+- `groupBy`: optional nominal series field. 있으면 `colorScale`도 existing/shared ID여야 한다.
+- `coordinate`, `xScale`, `yScale`: 필수 shared resource IDs.
+- `strokeWidth`: non-negative finite number, 기본값 `3`.
+- Effect: line mark와 x/y, optional color/group encoding을 만들고 fitted paths를 materialize한다.
+- Coverage: regression unit/chart tests가 grouped/ungrouped와 shared resource 결과를 검증하며
+  direct invalid combination matrix는 부분적이다.
+
+### Axes
+
+#### Shared complete-axis contract
+
+`createXAxis`와 `createYAxis`는 같은 option shape를 사용한다.
+
+- `scale`: optional scale ID. 생략하면 channel ID를 사용하거나 parent `createAxes`가 유일한 scale을 전달한다.
+- `coordinate`: optional existing coordinate ID. 선택 channel/scale을 소비하는 layer가 실제로 연결돼야 한다.
+- `position`: x는 현재 `"bottom"`, y는 `"left"`만 지원한다.
+- `line`: `{ color?, lineWidth? }`; axis-line child에 전달한다.
+- `ticksAndLabels`: `{ count?, values?, ticks?, labels? }`; shared tick/label child에 전달한다.
+- `title`: `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }`.
+- Effect: line → ticks/labels → title wrapped action 순서로 semantic guide와 concrete graphics를 만든다.
+- Proposed: x top, y right positions는 현재 API로 확정되지 않았다.
+
+#### `createAxes`
+
+- Signature: `createAxes({ coordinate?, x?, y? })`
+- `coordinate.id`: existing coordinate ID. 생략하면 encoded Cartesian layers가 참조하는 유일한 ID를 추론한다.
+- `coordinate.type`: `"auto" | "cartesian" | "polar"`, 기본값 `"auto"`; stored type assertion이다.
+- `x`, `y`: `false`, `{}`, 또는 complete-axis options. 생략하면 해당 encoded channel을 자동 선택하고,
+  `false`는 명시적으로 끈다.
+- Effect: coordinate를 만들거나 고치지 않고 stored positional layers를 읽어 selected complete axes를 만든다.
+- 오류: mixed Cartesian/Polar channel, ambiguous coordinate/scale, missing stored coordinate, no selected axis를 거부한다.
+- Coverage: `test/unit/actions/guides/create-axes.test.js`와 temporal/ordinal/histogram axis tests가 inference,
+  opt-out, ambiguity, stored coordinate와 rematerialization을 검증한다.
+- Planned: Polar semantics는 Implemented지만 Polar guide graphics는 Planned capability다. theta/radial action
+  이름과 concrete guide contract는 아직 Proposed 상태라 현재 API로 노출하지 않는다.
+
+#### `createXAxis`
+
+- Signature: `createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })`
+- Parameter contract와 effect는 Shared complete-axis contract를 따른다. x position은 bottom이다.
+- Coverage: `test/unit/actions/guides/axis-actions.test.js`가 defaults, routing, coordinate와 duplicates를 검증한다.
+
+#### `createYAxis`
+
+- Signature: `createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })`
+- Parameter contract와 effect는 Shared complete-axis contract를 따른다. y position은 left다.
+- Coverage: `test/unit/actions/guides/axis-actions.test.js`가 symmetric behavior를 검증한다.
+
+#### Shared axis-line contract
+
+- Create parameters: `scale?`, `position?`, `color?`, `lineWidth?`.
+- Edit parameters: `position?`, `color?`, `lineWidth?`; scale은 semantic guide에서 읽는다.
+- `scale`: create-only ID, 기본 channel ID.
+- `position`: x=`"bottom"`, y=`"left"`만 Implemented.
+- `color`: non-empty string, 기본 theme text color.
+- `lineWidth`: non-negative finite number, 기본값 `1`; 0은 보이지 않는 line을 허용한다.
+- Effect: endpoint는 resolved scale range와 Canvas plot bounds에서 항상 재추론한다. semantic guide에는
+  scale만 저장하고 style과 endpoints는 graphical state다.
+
+#### `createXAxisLine`
+
+- Signature: `createXAxisLine({ scale?, position?, color?, lineWidth? })`.
+- Shared axis-line contract를 따르며 missing graphic을 만든다.
+- Coverage: `test/unit/actions/guides/axis-line-actions.test.js`.
+
+#### `createYAxisLine`
+
+- Signature와 contract는 x와 같고 position/geometry가 left y-axis 기준이다.
+- Coverage: `test/unit/actions/guides/axis-line-actions.test.js`.
+
+#### `editXAxisLine`
+
+- Signature: `editXAxisLine({ position?, color?, lineWidth? })`.
+- 기존 x-axis line이 필요하고 geometry를 다시 추론한 뒤 appearance를 적용한다.
+- Coverage: axis-line tests가 partial edit, invalid style와 Canvas rematerialization을 검증한다.
+
+#### `editYAxisLine`
+
+- Signature와 edit contract는 x와 같고 y geometry를 사용한다.
+- Coverage: `test/unit/actions/guides/axis-line-actions.test.js`.
+
+#### Shared axis-tick contract
+
+- Create parameters: `scale?`, `position?`, `count?`, `values?`, `length?`, `color?`, `lineWidth?`.
+- Edit parameters는 `scale`을 제외하고 동일하다.
+- `count`: positive integer, 기본값 `5`; `values`와 mutually exclusive다.
+- `values`: scale domain 안의 finite number/timestamp 또는 ordinal scalar array. histogram x는 둘 다
+  생략하면 bin boundaries, ordinal x는 domain 전체를 사용한다.
+- `length`: non-negative finite number, 기본 `6`.
+- `color`: non-empty string, 기본 `"#64748b"`.
+- `lineWidth`: non-negative finite number, 기본 `1`.
+- Effect: tick values/config는 private guide config, scale reference는 semantic guide, concrete endpoints는
+  line collection에 저장한다. Canvas/scale 변화는 values 정책을 유지한 채 positions를 다시 계산한다.
+
+#### `createXAxisTicks`
+
+- Shared tick create contract를 사용하며 bottom ticks를 만든다.
+- Coverage: axis-tick, histogram-axis, ordinal-axis, temporal-axis tests.
+
+#### `createYAxisTicks`
+
+- Shared tick create contract를 사용하며 left ticks를 만든다.
+- Coverage: axis-tick와 chart axis tests.
+
+#### `editXAxisTicks`
+
+- Shared tick edit contract를 사용한다. existing tick config가 필요하다.
+- Coverage: `test/unit/actions/guides/axis-tick-actions.test.js`.
+
+#### `editYAxisTicks`
+
+- x와 같은 edit contract를 y scale에 적용한다.
+- Coverage: `test/unit/actions/guides/axis-tick-actions.test.js`.
+
+#### Shared axis-label contract
+
+- Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
+  `fontSize?`, `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
+- `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
+- `offset`: non-negative finite number; x default `18`, y default `12`.
+- `format`: `"auto" | { decimals: nonNegativeInteger }`. time/ordinal은 auto만 허용한다.
+- `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
+  `fontWeight`: string 또는 finite number.
+- Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
+  ticks와 count/values 정책이 충돌하면 거부한다.
+
+#### `createXAxisLabels`
+
+- Shared label create contract를 사용한다.
+- Coverage: axis-label, temporal/ordinal/histogram axis tests.
+
+#### `createYAxisLabels`
+
+- Shared label create contract를 y channel에 적용한다.
+- Coverage: axis-label 및 chart tests.
+
+#### `editXAxisLabels`
+
+- Shared label edit contract를 사용하며 existing config/graphic이 필요하다.
+- Coverage: `test/unit/actions/guides/axis-label-actions.test.js`.
+
+#### `editYAxisLabels`
+
+- x와 같은 edit contract를 y channel에 적용한다.
+- Coverage: `test/unit/actions/guides/axis-label-actions.test.js`.
+
+#### Shared ticks-and-labels contract
+
+- Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
+- Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
+- `ticks`: `{ length?, color?, lineWidth? }`.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight? }`.
+- Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
+
+#### `createXAxisTicksAndLabels`
+
+- Shared aggregate create contract를 x에 적용한다.
+- Coverage: `test/unit/actions/guides/axis-tick-group-actions.test.js`.
+
+#### `createYAxisTicksAndLabels`
+
+- Shared aggregate create contract를 y에 적용한다.
+- Coverage: axis-tick-group tests.
+
+#### `editXAxisTicksAndLabels`
+
+- Shared aggregate edit contract를 x에 적용한다.
+- Coverage: axis-tick-group tests가 shared/nested edit와 trace를 검증한다.
+
+#### `editYAxisTicksAndLabels`
+
+- Shared aggregate edit contract를 y에 적용한다.
+- Coverage: axis-tick-group tests.
+
+#### Shared axis-title contract
+
+- Create: `text?`, `scale?`, `position?`, `at?`, `offset?`, `rotation?`, `color?`, `fontSize?`,
+  `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
+- `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
+- `at`: `"start" | "center" | "end"` 또는 scale domain 안의 data value; 기본 center.
+- `offset`: non-negative finite; x default `42`, y default `52`.
+- `rotation`: finite radians; x default `0`, y default `-Math.PI / 2`.
+- font/color contract는 labels와 같고 default font size는 `13`, weight는 `600`이다.
+- Effect: semantic axis title text와 graphical layout/style을 분리 저장한다.
+
+#### `createXAxisTitle`
+
+- Shared title create contract를 bottom x-axis에 적용한다.
+- Coverage: `test/unit/actions/guides/axis-title-actions.test.js`.
+
+#### `createYAxisTitle`
+
+- Shared title create contract를 left y-axis에 적용한다.
+- Coverage: axis-title tests.
+
+#### `editXAxisTitle`
+
+- Shared title edit contract를 사용하며 text 또는 appearance를 immutable하게 편집한다.
+- Coverage: axis-title tests가 data-space `at`, rematerialization과 invalid values를 검증한다.
+
+#### `editYAxisTitle`
+
+- x와 같은 edit contract를 y-axis에 적용한다.
+- Coverage: axis-title tests.
+
+### Grids
+
+#### Shared grid-direction contract
+
+- `scale`: optional continuous scale ID; horizontal은 y, vertical은 x에서 유일하게 추론한다.
+- `coordinate`: optional Cartesian coordinate ID; encoded layers에서 추론한다.
+- `count`: positive integer, `values`와 mutually exclusive다.
+- `values`: non-empty finite number array이며 scale domain 안에 있어야 한다.
+- `color`: non-empty string, 기본 `"#e2e8f0"`.
+- `lineWidth`: non-negative finite number, 기본 `1`.
+- `strokeDash`: even-length non-negative finite number array, 기본 `[]`.
+- Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
+  collection에는 endpoints를 저장한다. 관련 mark보다 앞에 graphic을 배치한다.
+
+#### `createGrid`
+
+- Signature: `createGrid({ horizontal?, vertical? })`.
+- `horizontal`: boolean 또는 direction options, 기본 `true`.
+- `vertical`: boolean 또는 direction options, 기본 `false`.
+- `false`는 끄고 `true`/`{}`는 inference로 생성한다. 최소 한 방향이 필요하다.
+- Coverage: `test/unit/actions/guides/grid-actions.test.js`가 default/both directions, tick reuse,
+  explicit values, rendering order와 rematerialization을 검증한다.
+
+#### `createHorizontalGrid`
+
+- Signature: `createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })`.
+- Shared direction contract를 y scale에 적용한다.
+- Coverage: grid tests; style boundary 조합은 부분적이다.
+
+#### `createVerticalGrid`
+
+- Signature는 horizontal과 같고 x scale을 사용한다.
+- Coverage: grid와 density-guide tests; style boundary 조합은 부분적이다.
+
+### Legends
+
+#### `createLegend`
+
+- Signature: `createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count? })`.
+- `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다.
+- `channels`: unique subset of `"color" | "strokeDash" | "shape"`; 생략하면 target의 compatible
+  categorical channels를 추론한다.
+- `position`: `"right" | "bottom" | "top"`, chart-independent default `"right"`.
+- `align`: `"left" | "center" | "right"`, 기본 center. right position은 현재 center만 허용한다.
+- `direction`: `"horizontal" | "vertical"`; top item-grid fill order를 결정하며 기본 horizontal이다.
+- `columns`: positive integer; top grid의 최대 열 수. 생략하면 한 row에 가능한 item을 둔다.
+- `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
+- `titlePosition`: `"top" | "left"`, 기본 top.
+- `title`: non-empty string; 생략하면 encoded source field를 사용한다.
+- `symbol`: `"auto"`, mark-specific shorthand, 또는 `{ layers: [...] }`. layer type은 `line | point | swatch`;
+  각 layer는 non-negative size/stroke parameters와 supported point shape를 사용한다.
+- `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object.
+- `itemGap`: positive finite number; position별 default spacing을 override한다.
+- `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
+  default bordered background를 만든다.
+- `count`: size legend symbol count, integer `>= 2`, point composite default `5`.
+- Effect: categorical semantics에는 scale/channel/title만 저장하고 placement, recipe, fonts, border는
+  graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용한다.
+- Coverage: series/histogram/grouped-bar/top/regression legend tests가 주요 layouts, recipes,
+  borders, rematerialization과 invalid values를 검증한다. 모든 symbol-layer parameter pair는 부분적이다.
+- Proposed: left legend와 non-right point composite/size layout, continuous color legend와 interactive
+  legend는 현재 확정된 public contract가 아니다.
+
+#### `createSizeLegend`
+
+- Signature: `createSizeLegend({ target?, count? })`.
+- `target`: color+shape+size가 compatible한 point mark ID; 생략 시 유일한 eligible point를 사용한다.
+- `count`: integer `>= 2`, 기본 `5`.
+- Effect: quantitative size domain에서 evenly spaced 값을 sampling해 equal-area circles, labels와 title을
+  right-side block으로 만든다.
+- Coverage: regression-guide tests가 default 5와 explicit count, primitive equivalence를 검증한다.
+
+#### `rematerializeSizeLegend`
+
+- Signature: `rematerializeSizeLegend({})`; options를 받지 않는다.
+- Effect: stored size legend config와 최신 resolved scale/Canvas bounds에서 symbol size, label과 위치를
+  다시 계산한다.
+- Coverage: regression-guide tests에서 Canvas edit와 scale results를 검증한다.
+
+### Aggregate guides and chart title
+
+#### `createGuides`
+
+- Signature: `createGuides({ axes?, grid?, legend? })`.
+- `axes`, `grid`, `legend`: 해당 child option object, `false`, 또는 생략. 생략은 semantic applicability
+  inference, `{}`는 명시적 선택+inference, false는 opt-out이다.
+- Effect: applicable axes → grid → legend wrapped actions을 deterministic order로 호출한다. title은 guide가
+  아니므로 포함하지 않는다.
+- 오류: explicit/automatic selection 결과가 하나도 없거나 child resource inference가 ambiguous하면 거부한다.
+- Coverage: `test/unit/actions/guides/guide-collection-actions.test.js`와 regression/density guide tests가
+  chart-type applicability, forwarding, opt-out, ambiguity와 trace를 검증한다.
+
+#### `createTitle`
+
+- Signature: `createTitle({ text, subtitle?, position?, align?, offset?, gap?, titleStyle?, subtitleStyle? })`.
+- `text`: 필수 non-empty string; `subtitle`은 optional non-empty single-line string.
+- `position`: 현재 유일한 값 `"top"`, 기본 top.
+- `align`: `"left" | "center" | "right"`, 기본 left; plot bounds 기준이다.
+- `offset`: finite number, 기본 `0`; top block의 vertical origin을 이동한다.
+- `gap`: non-negative finite number, 기본 `8`; title/subtitle 사이 거리다.
+- `titleStyle`, `subtitleStyle`: `{ color?, fontSize?, fontFamily?, fontWeight? }`; positive fontSize,
+  non-empty strings와 string/finite weight를 사용한다.
+- Effect: text만 semanticSpec에 저장하고 geometry/style은 concrete text graphics와 title config에 저장한다.
+  top legend와 실제 occupied bounds가 겹치거나 margin에 맞지 않으면 오류다.
+- Coverage: `test/unit/actions/guides/title-actions.test.js`가 optional subtitle, alignment, style,
+  insufficient layout, duplicates와 Canvas rematerialization을 검증한다.
+- Proposed: additional title positions, wrapping과 text measurement는 아직 API가 확정되지 않았다.
+
+### Coordinates and scales
+
+#### `createCoordinate`
+
+- Signature: `createCoordinate({ id?, type?, layers? })`.
+- `id`: valid user ID, 기본 `"main"`.
+- `type`: `"cartesian" | "polar"`, 기본 cartesian.
+- `layers`: existing unique layer ID array, 기본 `[]`.
+- Effect: named semantic coordinate를 만들고 coordinate가 없는 selected layers에 reference를 저장한다.
+  equivalent repeated definition은 idempotent이고 기존 layer를 다른 coordinate로 이동시키지 않는다.
+- Coverage: `test/unit/actions/coordinates/create-coordinate.test.js`가 both types, attachments,
+  idempotence, conflicts와 validation을 검증한다.
+- Planned: Polar resource storage는 Implemented, Polar positional materialization과 guides는 Planned capability다.
+
+#### `createScale`
+
+- Signature: `createScale({ id, type?, domain?, range?, nice?, zero? })`.
+- `id`: 필수 user-defined scale ID.
+- `type`: `"linear" | "time" | "ordinal"`, 기본 linear.
+- `domain`: `"auto"` 또는 type-valid array. continuous는 두 finite/temporal values, ordinal은 non-empty
+  unique values를 사용한다.
+- `range`: `"auto"` 또는 consumer-compatible array. continuous position은 finite pair, ordinal은
+  channel에 따라 colors, shapes 또는 dash patterns가 될 수 있다.
+- `nice`: boolean, linear/time only; auto domain에 적용된다.
+- `zero`: boolean, linear only; auto domain에 적용된다.
+- Effect: semantic definition만 저장한다. equivalent repeated call은 idempotent, conflicting definition은 오류다.
+- Coverage: `test/unit/actions/scales/scale-actions.test.js`와 grammar scale tests가 types,
+  auto/explicit values, idempotence와 conflicts를 검증한다. raw `createScale`의 consumer별 ordinal range
+  compatibility는 부분적이다.
+
+#### `rematerializeScale`
+
+- Signature: `rematerializeScale({ id })`.
+- `id`: existing semantic scale ID with compatible consumers.
+- Effect: 모든 connected consumer에서 domain/range를 deterministic하게 resolve해 private resolved scale을
+  갱신하고 registered mark/guide consumer action을 명시적으로 호출한다.
+- Coverage: scale-actions, consumers와 materialization-plan contract tests가 shared consumers,
+  zero-before-nice, ordering/deduplication과 errors를 검증한다.
+
+## Primitives
+
+### `editSemantic`
+
+- Signature: `editSemantic({ property, value })`.
+- `property`: 필수 supported semantic path string. user ID selector는 `dataset[id]`, `layer[id]`,
+  `scale[id]`, `coordinate[id]`; system guide keys는 `guide.axis.x` 같은 closed path를 사용한다.
+- `value`: selected path schema에 맞는 scalar, object 또는 array. caller-owned nested value를 복사/freeze한다.
+- Effect: 해당 path만 structural copy하고 기존 program을 보존한다. path가 dataset/layer/scale/coordinate를
+  가리키면 current context를 내부적으로 갱신할 수 있다. graphic rematerialization은 자동으로 하지 않는다.
+- 오류: unknown path, closed vocabulary 위반, invalid transform/scale/guide value, existing source dataset
+  values 교체를 거부한다.
+- Coverage: `test/unit/actions/primitives/edit-semantic.test.js`가 structural copy, ownership,
+  dataset immutability, path/schema validation과 trace summary를 검증한다.
+
+### `createGraphics`
+
+- Signature: `createGraphics({ id, type, length?, before?, after? })`.
+- `id`: 필수 새 top-level graphic ID. equivalent repeated definition은 idempotent하다.
+- `type`: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"`.
+- `length`: non-negative integer. homogeneous drawable type에 지정하면 generated child collection을 만들며
+  생략 시 single graphic, `0`이면 empty collection이다. heterogeneous `collection`은 children edit로 채운다.
+- `before`, `after`: existing top-level graphic ID; mutually exclusive다. concrete rendering order를
+  명시하며 Canvas 앞 배치는 허용하지 않는다.
+- Effect: backend-neutral concrete object와 order를 structural copy로 추가한다. visual property는 아직 없다.
+- 오류: invalid ID/type/length, conflicting repeated definition/placement, unknown anchor를 거부한다.
+- Coverage: `test/unit/actions/primitives/create-graphics.test.js`가 all creation modes, idempotence,
+  placement와 invalid definitions를 검증한다.
+
+### `editGraphics`
+
+- Signature: `editGraphics({ target, property, value })`.
+- `target`: existing top-level graphic ID 또는 generated child ID(`points:1`).
+- `property`: selected graphic type가 지원하는 concrete property. 공통 opaque style bag은 허용하지 않는다.
+- `value`
+  - single graphic: property schema에 맞는 scalar, nested array 또는 object.
+  - collection + scalar/non-distributed value: compatible children 모두에 broadcast.
+  - collection + outer array: child count와 길이가 같으면 index별 distribute. path `points`처럼 property
+    자체가 nested array인 경우 한 child value 단위를 보존한다.
+  - `children`: heterogeneous collection의 typed child object array를 원자적으로 교체한다.
+- Effect: concrete graphic path만 structural copy한다. semantic state나 automatic compiler는 관여하지 않는다.
+- 오류: unknown target/property, incompatible child type, mismatched distributed length, non-finite geometry,
+  negative dimensions/strokes, opacity 밖의 값과 invalid Canvas text vocabulary를 거부한다.
+- Coverage: `test/unit/actions/primitives/edit-graphics.test.js`와
+  `test/contracts/shared-graphic-validation.test.js`가 distribution, broadcast, nested paths,
+  heterogeneous children, resize, structural copy와 renderer-shared validation을 검증한다.
+
+## Planned and proposed contract index
+
+현재 Catalog에 기록할 수 있는 future surface는 아래처럼 구분한다.
+
+- Planned capability
+  - Polar semantic resource 이후 positional materialization과 guide graphics. 구체 action 이름과 parameter는
+    아직 Proposed이므로 current action table에는 추가하지 않는다.
+- Proposed capability
+  - Polar theta/radial encoding 이름과 radial constant `encodeRadius` 충돌 해결
+  - top/right axis positions
+  - left categorical legend와 point composite/size legend의 top/bottom layouts
+  - additional chart-title positions, wrapping과 text measurement
+  - continuous color 및 interactive legends
+
+Faceting, h/v program composition과 additional transforms는 현재 limitations이지만, 구체 action contract를
+사용자와 합의하지 않았으므로 Planned로 표시하지 않는다.
+
