@@ -23,6 +23,8 @@ import {
   createAggregateMedianPrimitives,
   createAggregateOrderedPrimitives,
   createAggregateQuantilePrimitives,
+  createCompositeLegendBottomPrimitives,
+  createCompositeLegendTopPrimitives,
   createConstantDashPrimitives,
   createCurveMonotoneEditPrimitives,
   createCurveStepPrimitives,
@@ -35,6 +37,7 @@ import {
   NAMED_DASH_PATTERNS,
   createAggregatePrimitiveValues,
   createCarsLineCurvePrimitiveValues,
+  createCompositeLegendPrimitiveValues,
   createConstantDashPrimitiveValues,
   createDashReassignmentPrimitiveValues,
   createDispersionPrimitiveValues,
@@ -508,4 +511,110 @@ test("matches approved aggregate primitives with public programs", () => {
     assert.deepEqual(publicContext.calls, primitiveContext.calls);
     assert.deepEqual(publicProgram.actionStack, []);
   }
+});
+
+test("locks composite legend item-local anchors and occupied bounds", () => {
+  for (const position of ["top", "bottom"]) {
+    const values = createCompositeLegendPrimitiveValues(cars, { position });
+    const { background } = values.legend;
+
+    assert.equal(values.legend.items.length, 3);
+    assert.equal(background.x >= 0, true);
+    assert.equal(background.y >= 0, true);
+    assert.equal(background.x + background.width <= values.canvas.width, true);
+    assert.equal(background.y + background.height <= values.canvas.height, true);
+    for (const item of values.legend.items) {
+      assert.equal(item.pointX, (item.x1 + item.x2) / 2);
+      assert.equal(item.labelX - item.x2, 10);
+      assert.equal(item.x1 >= background.x, true);
+      assert.equal(item.labelX <= background.x + background.width, true);
+    }
+  }
+});
+
+test("authors top and bottom layered legend primitives in declared order", () => {
+  for (const [position, program] of [
+    ["top", createCompositeLegendTopPrimitives(cars)],
+    ["bottom", createCompositeLegendBottomPrimitives(cars)]
+  ]) {
+    const values = createCompositeLegendPrimitiveValues(cars, { position });
+    const context = createMockCanvasContext();
+    renderCarsLineChartPrimitives(program, context);
+    const order = program.graphicSpec.order;
+    const background = order.indexOf("seriesLegendBackground");
+    const lines = order.indexOf("seriesLegendSymbolLines");
+    const points = order.indexOf("seriesLegendSymbolPoints");
+    const labels = order.indexOf("seriesLegendLabels");
+    const title = order.indexOf("seriesLegendTitle");
+
+    assert.equal(background < lines && lines < points, true);
+    assert.equal(points < labels && labels < title, true);
+    assert.deepEqual(
+      program.graphicSpec.objects.seriesLegendSymbolLines.children.map(
+        child => [child.properties.x1, child.properties.y1,
+          child.properties.x2, child.properties.y2]
+      ),
+      values.legend.items.map(item => [item.x1, item.y, item.x2, item.y])
+    );
+    assert.deepEqual(
+      program.graphicSpec.objects.seriesLegendSymbolPoints.children.map(
+        child => [child.properties.x, child.properties.y]
+      ),
+      values.legend.items.map(item => [item.pointX, item.y])
+    );
+    assert.deepEqual(
+      program.graphicSpec.objects.seriesLegendLabels.children.map(
+        child => child.properties.x
+      ),
+      values.legend.items.map(item => item.labelX)
+    );
+    assert.equal(
+      program.graphicSpec.objects.seriesLegendSymbolLines.children.every(
+        child => child.properties.strokeWidth === 3
+      ),
+      true
+    );
+    assert.equal(
+      program.graphicSpec.objects.seriesLegendSymbolPoints.children.every(
+        child => child.properties.radius === 5
+      ),
+      true
+    );
+    assert.equal(findCanvasCalls(context, "arc").length >= 3, true);
+    assert.deepEqual(program.actionStack, []);
+  }
+});
+
+test("keeps composite legend targets primitive-only until Step 11", () => {
+  for (const program of [
+    createCompositeLegendTopPrimitives(cars),
+    createCompositeLegendBottomPrimitives(cars)
+  ]) {
+    const operations = program.trace.children.map(node => node.op);
+    for (const futureAction of ["createLegend", "createGuides", "createTitle"]) {
+      assert.equal(operations.includes(futureAction), false, futureAction);
+    }
+    assert.equal(operations.at(-1), "editGraphics");
+  }
+});
+
+test("rejects composite legend layouts that do not fit their margin", () => {
+  assert.throws(
+    () => createCompositeLegendPrimitiveValues(cars, {
+      position: "top",
+      margin: { top: 100, right: 40, bottom: 60, left: 80 }
+    }),
+    /more top-margin space/
+  );
+  assert.throws(
+    () => createCompositeLegendPrimitiveValues(cars, {
+      position: "bottom",
+      margin: { top: 80, right: 40, bottom: 100, left: 80 }
+    }),
+    /more bottom-margin space/
+  );
+  assert.throws(
+    () => createCompositeLegendPrimitiveValues(cars, { position: "left" }),
+    /must be "top" or "bottom"/
+  );
 });

@@ -6,17 +6,18 @@ import { linearPathCommands } from "../../support/path.js";
 export function createCarsLineChartPrimitiveProgram(
   cars,
   values,
-  { aggregate = "mean" } = {}
+  { aggregate = "mean", compositeLegend = false } = {}
 ) {
-  const width = 720;
-  const height = 460;
-  const margin = { top: 80, right: 170, bottom: 60, left: 80 };
+  const width = values.canvas?.width ?? 720;
+  const height = values.canvas?.height ?? 460;
+  const margin = values.canvas?.margin ??
+    { top: 80, right: 170, bottom: 60, left: 80 };
   const { x: xAxis, y: yAxis } = values.axes;
   const xTickPositions = xAxis.ticks.map(tick => tick.position);
   const yTickPositions = yAxis.ticks.map(tick => tick.position);
   const legendY = values.legend.items.map(item => item.y);
 
-  return chart()
+  let program = chart()
     .createCanvas({ width, height, margin, background: "white" })
     .createData({ id: "cars", values: values.validCars })
     .editSemantic({ property: "layer[trends].mark.type", value: "line" })
@@ -230,35 +231,98 @@ export function createCarsLineChartPrimitiveProgram(
     .editGraphics({ target: "yAxisTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "yAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "yAxisTitle", property: "textBaseline", value: "middle" })
-    .editGraphics({ target: "yAxisTitle", property: "rotation", value: yAxis.title.rotation })
+    .editGraphics({ target: "yAxisTitle", property: "rotation", value: yAxis.title.rotation });
+
+  if (values.legend.background !== undefined) {
+    const background = values.legend.background;
+    program = program
+      .createGraphics({ id: "seriesLegendBackground", type: "rect" })
+      .editGraphics({ target: "seriesLegendBackground", property: "x", value: background.x })
+      .editGraphics({ target: "seriesLegendBackground", property: "y", value: background.y })
+      .editGraphics({ target: "seriesLegendBackground", property: "width", value: background.width })
+      .editGraphics({ target: "seriesLegendBackground", property: "height", value: background.height })
+      .editGraphics({ target: "seriesLegendBackground", property: "fill", value: background.fill })
+      .editGraphics({ target: "seriesLegendBackground", property: "stroke", value: background.stroke })
+      .editGraphics({ target: "seriesLegendBackground", property: "strokeWidth", value: background.strokeWidth });
+  }
+
+  const lineId = compositeLegend
+    ? "seriesLegendSymbolLines"
+    : "seriesLegendSymbols";
+  program = program
     .createGraphics({
-      id: "seriesLegendSymbols",
+      id: lineId,
       type: "line",
       length: values.legend.items.length
     })
     .editGraphics({
-      target: "seriesLegendSymbols",
+      target: lineId,
       property: "x1",
       value: values.legend.items.map(item => item.x1)
     })
-    .editGraphics({ target: "seriesLegendSymbols", property: "y1", value: legendY })
+    .editGraphics({ target: lineId, property: "y1", value: legendY })
     .editGraphics({
-      target: "seriesLegendSymbols",
+      target: lineId,
       property: "x2",
       value: values.legend.items.map(item => item.x2)
     })
-    .editGraphics({ target: "seriesLegendSymbols", property: "y2", value: legendY })
+    .editGraphics({ target: lineId, property: "y2", value: legendY })
     .editGraphics({
-      target: "seriesLegendSymbols",
+      target: lineId,
       property: "stroke",
       value: values.legend.items.map(item => item.color)
     })
-    .editGraphics({ target: "seriesLegendSymbols", property: "strokeWidth", value: 2 })
     .editGraphics({
-      target: "seriesLegendSymbols",
+      target: lineId,
+      property: "strokeWidth",
+      value: values.legend.symbol?.lineWidth ?? 2
+    })
+    .editGraphics({
+      target: lineId,
       property: "strokeDash",
       value: values.legend.items.map(item => item.strokeDash)
-    })
+    });
+
+  if (compositeLegend) {
+    program = program
+      .createGraphics({
+        id: "seriesLegendSymbolPoints",
+        type: "circle",
+        length: values.legend.items.length
+      })
+      .editGraphics({
+        target: "seriesLegendSymbolPoints",
+        property: "x",
+        value: values.legend.items.map(item => item.pointX)
+      })
+      .editGraphics({
+        target: "seriesLegendSymbolPoints",
+        property: "y",
+        value: legendY
+      })
+      .editGraphics({
+        target: "seriesLegendSymbolPoints",
+        property: "radius",
+        value: values.legend.symbol.pointRadius
+      })
+      .editGraphics({
+        target: "seriesLegendSymbolPoints",
+        property: "fill",
+        value: values.legend.items.map(item => item.color)
+      })
+      .editGraphics({
+        target: "seriesLegendSymbolPoints",
+        property: "stroke",
+        value: values.legend.symbol.pointStroke
+      })
+      .editGraphics({
+        target: "seriesLegendSymbolPoints",
+        property: "strokeWidth",
+        value: values.legend.symbol.pointStrokeWidth
+      });
+  }
+
+  return program
     .createGraphics({
       id: "seriesLegendLabels",
       type: "text",
@@ -289,7 +353,13 @@ export function createCarsLineChartPrimitiveProgram(
     .editGraphics({ target: "seriesLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "seriesLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
-    .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
+    .editGraphics({
+      target: "seriesLegendTitle",
+      property: "textAlign",
+      value: compositeLegend && values.legend.position === "bottom"
+        ? "center"
+        : "left"
+    })
     .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" })
     .createGraphics({ id: "chartTitle", type: "text" })
     .editGraphics({ target: "chartTitle", property: "x", value: values.title.x })

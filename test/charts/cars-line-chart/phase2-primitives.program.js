@@ -5,6 +5,7 @@ import {
 } from "./primitive.program.js";
 import {
   createCarsLineCurvePrimitiveValues,
+  createCompositeLegendPrimitiveValues,
   createConstantDashPrimitiveValues,
   createDashReassignmentPrimitiveValues,
   createDispersionPrimitiveValues,
@@ -14,6 +15,22 @@ import {
   createOrderedPrimitiveValues,
   createQuantilePrimitiveValues
 } from "./phase2-reference-values.js";
+
+export function createCompositeLegendTopPrimitives(cars) {
+  return createCarsLineChartPrimitiveProgram(
+    cars,
+    createCompositeLegendPrimitiveValues(cars, { position: "top" }),
+    { compositeLegend: true }
+  );
+}
+
+export function createCompositeLegendBottomPrimitives(cars) {
+  return createCarsLineChartPrimitiveProgram(
+    cars,
+    createCompositeLegendPrimitiveValues(cars, { position: "bottom" }),
+    { compositeLegend: true }
+  );
+}
 
 export function createCurveStepPrimitives(cars) {
   const values = createCarsLineCurvePrimitiveValues(cars);

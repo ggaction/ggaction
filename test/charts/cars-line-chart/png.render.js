@@ -21,6 +21,8 @@ import {
   createAggregateMedianPrimitives,
   createAggregateOrderedPrimitives,
   createAggregateQuantilePrimitives,
+  createCompositeLegendBottomPrimitives,
+  createCompositeLegendTopPrimitives,
   createConstantDashPrimitives,
   createCurveMonotoneEditPrimitives,
   createCurveStepPrimitives,
@@ -332,6 +334,91 @@ const aggregatePrimitiveArtifacts = Object.freeze([
   })
 ]);
 
+function compositeLegendTargetCallChain(position) {
+  const top = position === "top";
+  return `chart()
+  .createCanvas({
+    width: 720,
+    height: ${top ? 520 : 560},
+    margin: ${top
+      ? "{ top: 170, right: 40, bottom: 60, left: 80 }"
+      : "{ top: 80, right: 40, bottom: 160, left: 80 }"}
+  })
+  .createData({ id: "cars", values: rows })
+  .createLineMark({ id: "trends" })
+  .encodeX({ field: "Year", fieldType: "temporal", scale: { nice: true } })
+  .encodeY({
+    field: "Acceleration",
+    aggregate: "mean",
+    scale: { nice: true, zero: false }
+  })
+  .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
+  .encodeStrokeDash({ field: "Origin" })
+  .createGuides({
+    axes: { y: { ticksAndLabels: { count: 6 } } },
+    legend: false
+  })
+  .createLegend({
+    position: "${position}",
+    align: "${top ? "center" : "right"}",
+    direction: "${top ? "vertical" : "horizontal"}",
+    columns: 2,
+    offset: ${top ? 10 : 70},
+    titlePosition: "${top ? "left" : "top"}",
+    labels: { offset: 10 },
+    itemGap: 18,
+    border: {
+      color: "#94a3b8",
+      lineWidth: 1,
+      padding: 10,
+      background: "${top ? "white" : "#f8fafc"}"
+    },
+    symbol: {
+      layers: [
+        { type: "line", length: 36, lineWidth: 3 },
+        {
+          type: "point",
+          shape: "circle",
+          size: 5,
+          stroke: "white",
+          strokeWidth: 1
+        }
+      ]
+    }
+  })
+  .createTitle({
+    text: "The trend of acceleration by year",
+    subtitle: "from 1970 to 1982"
+  });`;
+}
+
+const compositeLegendPrimitiveArtifacts = Object.freeze([
+  Object.freeze({
+    artifact: Object.freeze({
+      roadmap: "roadmap2",
+      chart: "cars-line-chart",
+      variant: "composite-legend-top",
+      title: "Top Composite Line and Point Legend",
+      userFacingCallChain: compositeLegendTargetCallChain("top")
+    }),
+    primitive: createCompositeLegendTopPrimitives(cars),
+    width: 720,
+    height: 520
+  }),
+  Object.freeze({
+    artifact: Object.freeze({
+      roadmap: "roadmap2",
+      chart: "cars-line-chart",
+      variant: "composite-legend-bottom",
+      title: "Bottom Composite Line and Point Legend",
+      userFacingCallChain: compositeLegendTargetCallChain("bottom")
+    }),
+    primitive: createCompositeLegendBottomPrimitives(cars),
+    width: 720,
+    height: 560
+  })
+]);
+
 test("renders the public and primitive line charts with visible series", async () => {
   const programs = [
     ["cars-line-chart", "user-facing", createCarsLineChart(cars)],
@@ -396,5 +483,15 @@ test("renders the public and primitive line charts with visible series", async (
         colors: ["#4c78a8", "#f58518", "#e45756"]
       });
     }
+  }
+
+  for (const { artifact, primitive, width, height } of
+    compositeLegendPrimitiveArtifacts) {
+    await assertRenderedPNG(primitive, {
+      artifact: { ...artifact, kind: "primitive" },
+      width,
+      height,
+      colors: ["#4c78a8", "#f58518", "#e45756"]
+    });
   }
 });

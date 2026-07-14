@@ -461,4 +461,208 @@ export function createOrderedPrimitiveValues(cars) {
   });
 }
 
+const COMPOSITE_SYMBOL = Object.freeze({
+  lineLength: 36,
+  lineWidth: 3,
+  pointRadius: 5,
+  pointStroke: "white",
+  pointStrokeWidth: 1,
+  labelOffset: 10,
+  itemGap: 18
+});
+
+function compositeCells(count, columns, direction) {
+  const columnCount = Math.min(columns, count);
+  const rowCount = Math.ceil(count / columnCount);
+  return Object.freeze(Array.from({ length: count }, (_, index) =>
+    direction === "horizontal"
+      ? Object.freeze({
+          column: index % columnCount,
+          row: Math.floor(index / columnCount)
+        })
+      : Object.freeze({
+          column: Math.floor(index / rowCount),
+          row: index % rowCount
+        })
+  ));
+}
+
+function alignedStart(bounds, width, align) {
+  if (align === "left") return bounds.x;
+  if (align === "right") return bounds.x + bounds.width - width;
+  return bounds.x + (bounds.width - width) / 2;
+}
+
+function createCompositeLegendLayout(baseline, canvas, config) {
+  const labels = baseline.origins.map(String);
+  const cells = compositeCells(labels.length, config.columns, config.direction);
+  const columnCount = Math.max(...cells.map(cell => cell.column)) + 1;
+  const rowCount = Math.max(...cells.map(cell => cell.row)) + 1;
+  const itemWidths = labels.map(label =>
+    COMPOSITE_SYMBOL.lineLength + COMPOSITE_SYMBOL.labelOffset + label.length * 7
+  );
+  const columnWidths = Array.from({ length: columnCount }, (_, column) =>
+    Math.max(...cells.map((cell, index) =>
+      cell.column === column ? itemWidths[index] : 0
+    ))
+  );
+  const rowHeight = 12;
+  const gridWidth = columnWidths.reduce((sum, value) => sum + value, 0) +
+    COMPOSITE_SYMBOL.itemGap * Math.max(0, columnCount - 1);
+  const gridHeight = rowHeight * rowCount +
+    COMPOSITE_SYMBOL.itemGap * Math.max(0, rowCount - 1);
+  const titleWidth = 6 * 7;
+  const titleGap = config.titlePosition === "left" ? 20 : 12;
+  const totalWidth = config.titlePosition === "left"
+    ? titleWidth + titleGap + gridWidth
+    : Math.max(titleWidth, gridWidth);
+  const start = alignedStart(baseline.bounds, totalWidth, config.align);
+  const gridStart = config.titlePosition === "left"
+    ? start + titleWidth + titleGap
+    : start + (totalWidth - gridWidth) / 2;
+  let gridTop;
+  let blockTop;
+  let blockBottom;
+  let titleX;
+  let titleY;
+
+  if (config.position === "top") {
+    blockBottom = baseline.bounds.y - config.offset;
+    gridTop = blockBottom - gridHeight;
+    blockTop = gridTop;
+    titleX = start;
+    titleY = gridTop + gridHeight / 2;
+  } else {
+    blockTop = baseline.bounds.y + baseline.bounds.height + config.offset;
+    titleX = start + totalWidth / 2;
+    titleY = blockTop + 13 / 2;
+    gridTop = blockTop + 13 + titleGap;
+    blockBottom = gridTop + gridHeight;
+  }
+
+  const columnX = [];
+  let cursor = gridStart;
+  for (const width of columnWidths) {
+    columnX.push(cursor);
+    cursor += width + COMPOSITE_SYMBOL.itemGap;
+  }
+  const items = cells.map((cell, index) => {
+    const x1 = columnX[cell.column];
+    const y = gridTop + rowHeight / 2 +
+      cell.row * (rowHeight + COMPOSITE_SYMBOL.itemGap);
+    return Object.freeze({
+      origin: baseline.origins[index],
+      color: baseline.series[index].color,
+      strokeDash: baseline.series[index].strokeDash,
+      x1,
+      x2: x1 + COMPOSITE_SYMBOL.lineLength,
+      pointX: x1 + COMPOSITE_SYMBOL.lineLength / 2,
+      y,
+      labelX: x1 + COMPOSITE_SYMBOL.lineLength +
+        COMPOSITE_SYMBOL.labelOffset
+    });
+  });
+  const padding = 10;
+  const background = Object.freeze({
+    x: start - padding,
+    y: blockTop - padding,
+    width: totalWidth + padding * 2,
+    height: blockBottom - blockTop + padding * 2,
+    fill: config.position === "top" ? "white" : "#f8fafc",
+    stroke: "#94a3b8",
+    strokeWidth: 1
+  });
+  const backgroundBottom = background.y + background.height;
+  const titleBottom = baseline.title.subtitleY + 14 / 2;
+  const xAxisTitleBottom = baseline.axes.x.title.y + 13 / 2;
+  if (
+    background.x < 0 ||
+    background.x + background.width > canvas.width
+  ) {
+    throw new Error("Composite legend requires more horizontal Canvas space.");
+  }
+  if (config.position === "top" &&
+      (background.y <= titleBottom || backgroundBottom > baseline.bounds.y)) {
+    throw new Error("Composite legend requires more top-margin space.");
+  }
+  if (config.position === "bottom" &&
+      (background.y <= xAxisTitleBottom || backgroundBottom > canvas.height)) {
+    throw new Error("Composite legend requires more bottom-margin space.");
+  }
+
+  return Object.freeze({
+    position: config.position,
+    align: config.align,
+    direction: config.direction,
+    columns: config.columns,
+    offset: config.offset,
+    titlePosition: config.titlePosition,
+    symbol: COMPOSITE_SYMBOL,
+    title: Object.freeze({ x: titleX, y: titleY, text: "Origin" }),
+    items: Object.freeze(items),
+    background,
+    occupiedBounds: background
+  });
+}
+
+export function createCompositeLegendPrimitiveValues(
+  cars,
+  {
+    position,
+    width = 720,
+    height = position === "top" ? 520 : 560,
+    margin = position === "top"
+      ? { top: 170, right: 40, bottom: 60, left: 80 }
+      : { top: 80, right: 40, bottom: 160, left: 80 }
+  } = {}
+) {
+  if (!["top", "bottom"].includes(position)) {
+    throw new Error('Composite legend position must be "top" or "bottom".');
+  }
+  const baseline = createCarsLineChartValues(cars, { width, height, margin });
+  const axes = {
+    ...baseline.axes,
+    x: {
+      ...baseline.axes.x,
+      title: {
+        ...baseline.axes.x.title,
+        y: baseline.bounds.y + baseline.bounds.height + 42
+      }
+    }
+  };
+  const adjusted = { ...baseline, axes };
+  const canvas = Object.freeze({ width, height, margin: Object.freeze({ ...margin }) });
+  const config = position === "top"
+    ? {
+        position,
+        align: "center",
+        direction: "vertical",
+        columns: 2,
+        offset: 10,
+        titlePosition: "left"
+      }
+    : {
+        position,
+        align: "right",
+        direction: "horizontal",
+        columns: 2,
+        offset: 70,
+        titlePosition: "top"
+      };
+  const legend = createCompositeLegendLayout(adjusted, canvas, config);
+
+  return Object.freeze({
+    ...adjusted,
+    canvas,
+    axes: Object.freeze({
+      x: Object.freeze({
+        ...axes.x,
+        title: Object.freeze(axes.x.title)
+      }),
+      y: Object.freeze(axes.y)
+    }),
+    legend
+  });
+}
+
 export { DEFAULT_DASH_PATTERNS, NAMED_DASH_PATTERNS };
