@@ -20,9 +20,9 @@ Phase 2의 모든 variant, vocabulary, cross-feature dependency와 public docume
 - [x] Examples/tutorials/API/recipes/reference/LLM docs freshness
 - [x] ACTION_INDEX evidence와 Planned → Implemented promotion
 - [x] Intermediate files와 generated artifact cleanup
-- [ ] Unit, contract, chart, docs, coverage, render와 remote CI
+- [x] Unit, contract, chart, docs, coverage, render와 remote CI
 - [x] Desktop/mobile gallery browser verification
-- [ ] Roadmap/GOAL/STEP final status, conceptual commit와 push
+- [x] Roadmap/GOAL/STEP final status, conceptual commit와 push
 
 ## Closeout evidence
 
@@ -32,7 +32,8 @@ Phase 2의 모든 variant, vocabulary, cross-feature dependency와 public docume
 - Roadmap 2 전체 21개 variant gallery와 PNG render suite가 통과한다.
 - Headless Chromium 1440×900과 390×844에서 21개 call chain과 42개 image, responsive pair layout,
   horizontal overflow와 console/page error 부재를 확인했다.
-- 최종 closeout commit의 GitHub Actions test/coverage/documentation 결과만 원격 확인 대상으로 남긴다.
+- GitHub Actions run `29354553747`에서 test/PNG render, coverage, Jekyll build, built-doc checks와
+  desktop/mobile documentation browser test가 모두 통과했다.
 
 ## 통합 검증
 
