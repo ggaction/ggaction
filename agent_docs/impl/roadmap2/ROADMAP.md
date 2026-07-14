@@ -110,6 +110,9 @@ Phase 10에 유지한다.
 
 현재 line chart를 사용해 path grammar, series reassignment와 aggregate expansion을 구현한다.
 
+- Phase goal: [`phase2/GOAL.md`](phase2/GOAL.md)
+- Complete variant contract: [`chart/cars-line-chart-variants.md`](chart/cars-line-chart-variants.md)
+
 - Direct action: `editLineMark`
 - Capability: `encodeGroup-reassignment`
 - Capability: `encodeStrokeDash-reassignment`
