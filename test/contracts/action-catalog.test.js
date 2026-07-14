@@ -69,6 +69,23 @@ function valueCoverageSections() {
   }));
 }
 
+function formalValueSections() {
+  const headings = [...catalog.matchAll(
+    /^### Formal values — `([A-Za-z][A-Za-z0-9]*)`$/gm
+  )];
+
+  return headings.map((heading, index) => ({
+    action: heading[1],
+    source: catalog.slice(
+      heading.index,
+      headings[index + 1]?.index ?? catalog.indexOf(
+        "## Parameter value coverage and proposals",
+        heading.index
+      )
+    )
+  }));
+}
+
 function expectedTestStatus(source) {
   if (source.includes("❌ Missing")) return "❌";
   if (source.includes("⚠️ Partial")) return "⚠️";
@@ -158,6 +175,40 @@ test("keeps one value coverage and proposal ledger for every direct action", () 
       `${section.action} summary does not reflect its value ledger`
     );
   }
+});
+
+test("separates implemented and proposed values for every direct action", () => {
+  const declared = declaredProgramMethods();
+  const sections = formalValueSections();
+  const actions = sections.map(section => section.action);
+
+  assert.equal(new Set(actions).size, actions.length);
+  assert.deepEqual(new Set(actions), new Set(declared));
+
+  for (const section of sections) {
+    assert.match(
+      section.source,
+      /^- Implemented: /m,
+      `${section.action} has no formal implemented signature`
+    );
+    assert.match(
+      section.source,
+      /^- Proposed \(NOT IMPLEMENTED\): /m,
+      `${section.action} has no explicit unimplemented proposal state`
+    );
+  }
+
+  const encodeY = sections.find(section => section.action === "encodeY").source;
+  assert.match(encodeY, /aggregate\?: "mean" \| "count"/);
+  assert.match(
+    encodeY,
+    /aggregate\?: "sum" \| "min" \| "max" \| "median"/
+  );
+  const point = sections.find(
+    section => section.action === "createPointMark"
+  ).source;
+  assert.match(point, /shape\?: "circle" \| "square"/);
+  assert.match(point, /shape\?: "triangle" \| "diamond"/);
 });
 
 test("keeps catalog coverage evidence paths executable", () => {

@@ -969,6 +969,540 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 Faceting, h/v program composition과 additional transforms는 현재 limitations이지만, 구체 action contract를
 사용자와 합의하지 않았으므로 Planned로 표시하지 않는다.
 
+## Formal parameter value registry
+
+이 registry는 현재 호출 가능한 값과 future candidate를 문법적으로 분리한다.
+
+- **Implemented** code block만 현재 API 계약이다.
+- **Proposed (NOT IMPLEMENTED)** code block은 구현, TypeScript declaration, public docs 또는 runtime
+  validation에 아직 존재하지 않는다.
+- `—`는 현재 proposed parameter/value가 없다는 뜻이다.
+- 아래 type alias는 문서용 formal notation이며 새로운 runtime export가 아니다.
+
+```typescript
+type UserId = string;                 // non-empty, identifier grammar 통과
+type FieldName = string;              // non-empty dataset field name
+type NonEmptyString = string;
+type Finite = number;                 // Number.isFinite(value)
+type PositiveFinite = number;         // finite && value > 0
+type NonNegativeFinite = number;      // finite && value >= 0
+type UnitInterval = number;           // finite && 0 <= value <= 1
+type UnitIntervalExclusive = number;  // finite && 0 < value < 1
+type PositiveInteger = number;        // Number.isInteger(value) && value > 0
+type IntegerAtLeast2 = number;        // Number.isInteger(value) && value >= 2
+type NonNegativeInteger = number;     // Number.isInteger(value) && value >= 0
+type FontWeight = NonEmptyString | Finite;
+type Margin = NonNegativeFinite | {
+  top?: NonNegativeFinite;
+  right?: NonNegativeFinite;
+  bottom?: NonNegativeFinite;
+  left?: NonNegativeFinite;
+};
+type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
+type ScaleType = "linear" | "time" | "ordinal";
+type ContinuousDomain = "auto" | readonly [unknown, unknown];
+type OrdinalDomain = "auto" | readonly unknown[];
+type NumericRange = "auto" | readonly [Finite, Finite];
+type OrderedFinitePair = readonly [Finite, Finite]; // first <= second
+type ColorRange = readonly NonEmptyString[] | { palette: "tableau10" };
+type ShapeRange = readonly ("circle" | "square")[];
+type GeneratedChildId = `${UserId}:${NonNegativeInteger}`;
+type FilterTransform = {
+  type: "filter";
+  field: FieldName;
+  oneOf: readonly unknown[];
+};
+type LinearRegressionTransform = {
+  type: "regression";
+  method: "linear";
+  x: FieldName;
+  y: FieldName;
+  groupBy?: FieldName;
+  confidence: UnitIntervalExclusive;
+  interval: "mean";
+};
+type GaussianDensityTransform = {
+  type: "density";
+  field: FieldName;
+  groupBy?: FieldName;
+  bandwidth: "auto" | PositiveFinite;
+  extent: "auto" | OrderedFinitePair;
+  steps: IntegerAtLeast2;
+  as: readonly [FieldName, FieldName];
+};
+type PositionScale = {
+  id?: UserId;
+  type?: "linear" | "time" | "ordinal";
+  domain?: ContinuousDomain | OrdinalDomain;
+  range?: NumericRange;
+  nice?: boolean;
+  zero?: boolean;
+};
+type ColorScale = {
+  id?: UserId;
+  type?: "ordinal";
+  domain?: OrdinalDomain;
+  range?: "auto" | readonly NonEmptyString[];
+  palette?: "tableau10";
+};
+type DashPattern = readonly NonNegativeFinite[]; // even length
+type DashScale = {
+  id?: UserId;
+  type?: "ordinal";
+  domain?: OrdinalDomain;
+  range?: "auto" | readonly DashPattern[];
+};
+type DatasetProperty = "source" | "transform" | "values";
+type ScaledEncodingChannel = "x" | "y" | "y2" | "xOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "opacity";
+type LayerProperty =
+  | "data" | "coordinate" | "transform" | "mark.type"
+  | `encoding.${ScaledEncodingChannel}.${"field" | "datum" | "fieldType" | "scale"}`
+  | `encoding.group.${"field" | "datum" | "fieldType"}`
+  | "encoding.x.bin.maxBins" | "encoding.y.aggregate" | "encoding.y.stack";
+type ScaleProperty = "type" | "domain" | "range" | "nice" | "zero";
+type GuideProperty =
+  | `axis.${"x" | "y"}.${"scale" | "coordinate" | "title"}`
+  | `legend.${"color" | "size" | "opacity"}.${"scale" | "title"}`
+  | "legend.series.channels" | "legend.series.scales" | "legend.series.title"
+  | `grid.${"horizontal" | "vertical"}.${"scale" | "coordinate"}`;
+type SemanticPropertyPath =
+  | `dataset[${UserId}].${DatasetProperty}`
+  | `layer[${UserId}].${LayerProperty}`
+  | `scale[${UserId}].${ScaleProperty}`
+  | `coordinate[${UserId}].type`
+  | `guide.${GuideProperty}`
+  | `title.${"text" | "subtitle"}`;
+type ValueForSemanticPath<P extends SemanticPropertyPath> = unknown; // P별 semantic value schema
+type CanvasProperty = "width" | "height" | "background";
+type CircleProperty = "x" | "y" | "radius" | "fill" | "stroke" | "strokeWidth" | "opacity" | "length";
+type RectProperty = "x" | "y" | "width" | "height" | "fill" | "stroke" | "strokeWidth" | "opacity" | "length";
+type LineProperty = "x1" | "y1" | "x2" | "y2" | "stroke" | "strokeWidth" | "strokeDash" | "opacity" | "length";
+type TextProperty = "x" | "y" | "text" | "fill" | "fontSize" | "fontFamily" | "fontWeight" | "textAlign" | "textBaseline" | "rotation" | "opacity" | "length";
+type PathProperty = "points" | "fill" | "stroke" | "strokeWidth" | "strokeDash" | "closed" | "opacity" | "length";
+type CollectionProperty = "children" | Exclude<CircleProperty | RectProperty | LineProperty | TextProperty | PathProperty, "length">;
+type GraphicPropertyForTarget = CanvasProperty | CircleProperty | RectProperty | LineProperty | TextProperty | PathProperty | CollectionProperty;
+type GraphicValueForProperty = unknown; // target type + property별 concrete graphic value schema
+type TextStyle = {
+  color?: NonEmptyString;
+  fontSize?: PositiveFinite;
+  fontFamily?: NonEmptyString;
+  fontWeight?: FontWeight;
+};
+```
+
+### Formal values — `createCanvas`
+
+- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin } = {})`
+- Proposed (NOT IMPLEMENTED): `{ width?: "auto"; height?: "auto"; margin?: "auto" }`
+
+### Formal values — `editCanvas`
+
+- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin })`; 최소 한 property가 필요하다.
+- Proposed (NOT IMPLEMENTED): `createCanvas`의 `"auto"` dimension/margin과 동일하다.
+
+### Formal values — `createData`
+
+- Implemented: `createData({ id: UserId; values: readonly Record<string, unknown>[] })`
+- Proposed (NOT IMPLEMENTED): `{ values: AsyncIterable<Record<string, unknown>> | Readonly<Record<FieldName, readonly unknown[]>> }`
+
+### Formal values — `filterData`
+
+- Implemented: `filterData({ id: UserId; source?: UserId; field: FieldName; oneOf: readonly unknown[] })`
+- Proposed (NOT IMPLEMENTED): `{ range?: readonly [unknown, unknown]; predicate?: { op: "lt" | "lte" | "gt" | "gte" | "eq" | "neq"; value: unknown } }`
+
+### Formal values — `createRegressionData`
+
+- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName; method?: "linear"; confidence?: UnitIntervalExclusive; interval?: "mean" })`
+- Proposed (NOT IMPLEMENTED): `{ method?: "polynomial" | "loess"; degree?: PositiveInteger; span?: UnitInterval; interval?: "prediction" }`
+
+### Formal values — `createDensityData`
+
+- Implemented: `createDensityData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; as?: readonly [FieldName, FieldName] })`
+- Proposed (NOT IMPLEMENTED): `{ kernel?: "epanechnikov" | "uniform" | "triangular" }`; Gaussian은 현재 implicit implemented kernel이다.
+
+### Formal values — `createDerivedData`
+
+- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [FilterTransform | LinearRegressionTransform | GaussianDensityTransform] })`
+- Proposed (NOT IMPLEMENTED): `{ transform: readonly (FilterTransform | LinearRegressionTransform | GaussianDensityTransform)[] }`의 ordered multi-transform pipeline.
+
+### Formal values — `materializeFilteredData`
+
+- Implemented: `materializeFilteredData({ id: UserId })`
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `materializeRegressionData`
+
+- Implemented: `materializeRegressionData({ id: UserId })`
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `materializeDensityData`
+
+- Implemented: `materializeDensityData({ id: UserId })`
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `createPointMark`
+
+- Implemented: `createPointMark({ id: UserId; data?: UserId; shape?: "circle" | "square" })`
+- Proposed (NOT IMPLEMENTED): `{ shape?: "triangle" | "diamond" }`
+
+### Formal values — `createLineMark`
+
+- Implemented: `createLineMark({ id: UserId; data?: UserId; strokeWidth?: NonNegativeFinite })`
+- Proposed (NOT IMPLEMENTED): `{ curve?: "linear" | "step" | "basis" }`; 현재 path는 implicit linear다.
+
+### Formal values — `createBarMark`
+
+- Implemented: `createBarMark({ id: UserId; data?: UserId })`
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `createAreaMark`
+
+- Implemented: `createAreaMark({ id: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval })`
+- Proposed (NOT IMPLEMENTED): `{ stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite }`
+
+### Formal values — `encodeX`
+
+- Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; bin?: { maxBins?: PositiveInteger } })`; 실제 fieldType/bin 조합은 mark policy가 제한한다.
+- Proposed (NOT IMPLEMENTED): `{ fieldType?: broader mark-specific temporal/ordinal combinations; scale?: { type?: "log" | "sqrt" | "symlog"; clamp?: boolean; reverse?: boolean } }` 및 Polar positional action.
+
+### Formal values — `encodeY`
+
+- Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: PositionScale; coordinate?: UserId; aggregate?: "mean" | "count"; stack?: "zero" | null })`; mark/x policy가 가능한 조합을 제한한다.
+- Proposed (NOT IMPLEMENTED): `{ fieldType?: "temporal" | "ordinal"; aggregate?: "sum" | "min" | "max" | "median"; stack?: "normalize" | "center"; scale?: { type?: "log" | "sqrt" | "symlog" } }`
+
+### Formal values — `encodeXOffset`
+
+- Implemented: `encodeXOffset({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: NumericRange } })`
+- Proposed (NOT IMPLEMENTED): `{ paddingInner?: UnitInterval; paddingOuter?: NonNegativeFinite }`
+
+### Formal values — `encodeY2`
+
+- Implemented: `encodeY2({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId } })`
+- Proposed (NOT IMPLEMENTED): —; y2는 y scale 공유를 유지한다.
+
+### Formal values — `encodeYRange`
+
+- Implemented: `encodeYRange({ lower: FieldName; upper: FieldName; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`
+- Proposed (NOT IMPLEMENTED): 별도 `encodeXRange({ lower; upper; ... })` action; 현재 action parameter 추가는 아니다.
+
+### Formal values — `encodeGroup`
+
+- Implemented: `encodeGroup({ field: FieldName; target?: UserId; fieldType?: "nominal" })`
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `encodeHistogram`
+
+- Implemented: `encodeHistogram({ field: FieldName; target?: UserId; coordinate?: UserId; maxBins?: PositiveInteger; stack?: "zero" | null; xScale?: PositionScale; yScale?: PositionScale })`
+- Proposed (NOT IMPLEMENTED): `{ binStep?: PositiveFinite; binBoundaries?: readonly Finite[] }`; `maxBins`와 mutually exclusive.
+
+### Formal values — `encodeDensity`
+
+- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale })`
+- Proposed (NOT IMPLEMENTED): `{ kernel?: "epanechnikov" | "uniform" | "triangular"; normalization?: "probability" | "count" }`
+
+### Formal values — `encodeColor`
+
+- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal"; layout?: "stack" | "group"; scale?: ColorScale })`
+- Proposed (NOT IMPLEMENTED): `{ layout?: "overlay"; scale?: { palette?: "category10" | "set2" | "dark2"; interpolate?: "rgb" | "lab" | "hcl" } }`
+
+### Formal values — `encodeStrokeDash`
+
+- Implemented: `encodeStrokeDash({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: DashScale })`
+- Proposed (NOT IMPLEMENTED): 별도 constant dash action `{ value: DashPattern; target?: UserId }`.
+
+### Formal values — `encodeSize`
+
+- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId; type?: "linear"; domain?: ContinuousDomain; range?: "auto" | readonly [NonNegativeFinite, NonNegativeFinite] } })`
+- Proposed (NOT IMPLEMENTED): `{ minArea?: NonNegativeFinite; maxArea?: NonNegativeFinite }`; explicit range와 precedence 결정 필요.
+
+### Formal values — `encodeShape`
+
+- Implemented: `encodeShape({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: "auto" | readonly ("circle" | "square")[] } })`
+- Proposed (NOT IMPLEMENTED): `range`에 `"triangle" | "diamond"` 추가.
+
+### Formal values — `encodeOpacity`
+
+- Implemented: `encodeOpacity({ value: UnitInterval; target?: UserId })`
+- Proposed (NOT IMPLEMENTED): 별도 field-driven action `{ field: FieldName; target?: UserId; scale?: PositionScale }`.
+
+### Formal values — `encodeRadius`
+
+- Implemented: `encodeRadius({ value: NonNegativeFinite; target?: UserId })`
+- Proposed (NOT IMPLEMENTED): `{ unit?: "radius" | "area" }`; Polar radial action 이름과도 분리 필요.
+
+### Formal values — `encodeBarWidth`
+
+- Implemented: `encodeBarWidth({ band?: number; target?: UserId })`, `0 < band <= 1`, default `0.72`.
+- Proposed (NOT IMPLEMENTED): `{ pixels?: PositiveFinite; paddingInner?: UnitInterval }`; `band`와 mutually exclusive.
+
+### Formal values — `createRegression`
+
+- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName; confidence?: UnitIntervalExclusive; band?: { color?: NonEmptyString; opacity?: UnitInterval }; line?: { strokeWidth?: NonNegativeFinite } })`
+- Proposed (NOT IMPLEMENTED): `{ method?: "polynomial" | "loess"; degree?: PositiveInteger; span?: UnitInterval; interval?: "prediction"; line?: { curve?: "step" | "basis" }; band?: { stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } }`
+
+### Formal values — `createRegressionBand`
+
+- Implemented: `createRegressionBand({ id: UserId; data: UserId; x: FieldName; lower: FieldName; upper: FieldName; groupBy?: FieldName; coordinate: UserId; xScale: UserId; yScale: UserId; color?: NonEmptyString; opacity?: UnitInterval })`
+- Proposed (NOT IMPLEMENTED): `{ stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite }`
+
+### Formal values — `createRegressionLine`
+
+- Implemented: `createRegressionLine({ id: UserId; data: UserId; x: FieldName; y: FieldName; groupBy?: FieldName; coordinate: UserId; xScale: UserId; yScale: UserId; colorScale?: UserId; strokeWidth?: NonNegativeFinite })`
+- Proposed (NOT IMPLEMENTED): `{ curve?: "step" | "basis" }`
+
+```typescript
+type AxisPositionX = "bottom";
+type AxisPositionY = "left";
+type TickValue = string | boolean | Finite;
+type TickOptions = {
+  length?: NonNegativeFinite;
+  color?: NonEmptyString;
+  lineWidth?: NonNegativeFinite;
+};
+type LabelOptions = {
+  offset?: NonNegativeFinite;
+  format?: "auto" | { decimals: NonNegativeInteger };
+  color?: NonEmptyString;
+  fontSize?: PositiveFinite;
+  fontFamily?: NonEmptyString;
+  fontWeight?: FontWeight;
+};
+type TickAndLabelOptions = {
+  count?: PositiveInteger;
+  values?: readonly TickValue[];
+  ticks?: TickOptions;
+  labels?: LabelOptions;
+};
+type AxisTitleOptions<P extends string> = TextStyle & {
+  text?: NonEmptyString;
+  position?: P;
+  at?: "start" | "center" | "end" | TickValue;
+  offset?: NonNegativeFinite;
+  rotation?: Finite;
+};
+type CompleteAxisOptions<P extends string> = {
+  scale?: UserId;
+  coordinate?: UserId;
+  position?: P;
+  line?: { color?: NonEmptyString; lineWidth?: NonNegativeFinite };
+  ticksAndLabels?: TickAndLabelOptions;
+  title?: AxisTitleOptions<P>;
+};
+```
+
+### Formal values — `createAxes`
+
+- Implemented: `createAxes({ coordinate?: { id?: UserId; type?: "auto" | "cartesian" | "polar" }; x?: false | CompleteAxisOptions<"bottom">; y?: false | CompleteAxisOptions<"left"> } = {})`; Polar 선택은 현재 validation error다.
+- Proposed (NOT IMPLEMENTED): Polar axis option schema; x/y에 Polar 값을 억지로 추가하지 않는다.
+
+### Formal values — `createXAxis`
+
+- Implemented: `createXAxis(options?: CompleteAxisOptions<"bottom">)`
+- Proposed (NOT IMPLEMENTED): `CompleteAxisOptions<"top">`
+
+### Formal values — `createYAxis`
+
+- Implemented: `createYAxis(options?: CompleteAxisOptions<"left">)`
+- Proposed (NOT IMPLEMENTED): `CompleteAxisOptions<"right">`
+
+### Formal values — `createXAxisLine`
+
+- Implemented: `createXAxisLine({ scale?: UserId; position?: "bottom"; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`
+- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`
+
+### Formal values — `createYAxisLine`
+
+- Implemented: `createYAxisLine({ scale?: UserId; position?: "left"; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`
+- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`
+
+### Formal values — `editXAxisLine`
+
+- Implemented: `editXAxisLine({ position?: "bottom"; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`
+- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`
+
+### Formal values — `editYAxisLine`
+
+- Implemented: `editYAxisLine({ position?: "left"; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`
+- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`
+
+### Formal values — `createXAxisTicks`
+
+- Implemented: `createXAxisTicks({ scale?: UserId; position?: "bottom"; count?: PositiveInteger; values?: readonly TickValue[]; length?: NonNegativeFinite; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`; `count | values` 중 최대 하나.
+- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`
+
+### Formal values — `createYAxisTicks`
+
+- Implemented: x tick schema와 같고 `position?: "left"`.
+- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`
+
+### Formal values — `editXAxisTicks`
+
+- Implemented: create x tick schema에서 `scale`을 제외한다.
+- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`
+
+### Formal values — `editYAxisTicks`
+
+- Implemented: create y tick schema에서 `scale`을 제외한다.
+- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`
+
+### Formal values — `createXAxisLabels`
+
+- Implemented: `createXAxisLabels({ scale?: UserId; position?: "bottom"; count?: PositiveInteger; values?: readonly TickValue[]; ...LabelOptions } = {})`; `count | values` 중 최대 하나.
+- Proposed (NOT IMPLEMENTED): `{ position?: "top"; format?: NonEmptyString }`
+
+### Formal values — `createYAxisLabels`
+
+- Implemented: x label schema와 같고 `position?: "left"`.
+- Proposed (NOT IMPLEMENTED): `{ position?: "right"; format?: NonEmptyString }`
+
+### Formal values — `editXAxisLabels`
+
+- Implemented: create x label schema에서 `scale`을 제외한다.
+- Proposed (NOT IMPLEMENTED): `{ position?: "top"; format?: NonEmptyString }`
+
+### Formal values — `editYAxisLabels`
+
+- Implemented: create y label schema에서 `scale`을 제외한다.
+- Proposed (NOT IMPLEMENTED): `{ position?: "right"; format?: NonEmptyString }`
+
+### Formal values — `createXAxisTicksAndLabels`
+
+- Implemented: `createXAxisTicksAndLabels({ scale?: UserId; position?: "bottom"; ...TickAndLabelOptions } = {})`
+- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`와 proposed label format values.
+
+### Formal values — `createYAxisTicksAndLabels`
+
+- Implemented: x aggregate schema와 같고 `position?: "left"`.
+- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`와 proposed label format values.
+
+### Formal values — `editXAxisTicksAndLabels`
+
+- Implemented: create x aggregate schema에서 `scale`을 제외하며 최소 한 option이 필요하다.
+- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`와 proposed label format values.
+
+### Formal values — `editYAxisTicksAndLabels`
+
+- Implemented: create y aggregate schema에서 `scale`을 제외하며 최소 한 option이 필요하다.
+- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`와 proposed label format values.
+
+### Formal values — `createXAxisTitle`
+
+- Implemented: `createXAxisTitle({ scale?: UserId; ...AxisTitleOptions<"bottom"> } = {})`
+- Proposed (NOT IMPLEMENTED): `AxisTitleOptions<"top">`
+
+### Formal values — `createYAxisTitle`
+
+- Implemented: `createYAxisTitle({ scale?: UserId; ...AxisTitleOptions<"left"> } = {})`
+- Proposed (NOT IMPLEMENTED): `AxisTitleOptions<"right">`
+
+### Formal values — `editXAxisTitle`
+
+- Implemented: create x title schema에서 `scale`을 제외한다.
+- Proposed (NOT IMPLEMENTED): `AxisTitleOptions<"top">`
+
+### Formal values — `editYAxisTitle`
+
+- Implemented: create y title schema에서 `scale`을 제외한다.
+- Proposed (NOT IMPLEMENTED): `AxisTitleOptions<"right">`
+
+```typescript
+type GridDirectionOptions = {
+  scale?: UserId;
+  coordinate?: UserId;
+  count?: PositiveInteger;
+  values?: readonly Finite[];
+  color?: NonEmptyString;
+  lineWidth?: NonNegativeFinite;
+  strokeDash?: DashPattern;
+};
+```
+
+### Formal values — `createGrid`
+
+- Implemented: `createGrid({ horizontal?: boolean | GridDirectionOptions; vertical?: boolean | GridDirectionOptions } = {})`; horizontal default true, vertical default false.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `createHorizontalGrid`
+
+- Implemented: `createHorizontalGrid(options?: GridDirectionOptions)`
+- Proposed (NOT IMPLEMENTED): ordinal grid positioning `{ placement?: "center" | "boundary" }`.
+
+### Formal values — `createVerticalGrid`
+
+- Implemented: `createVerticalGrid(options?: GridDirectionOptions)`
+- Proposed (NOT IMPLEMENTED): ordinal grid positioning `{ placement?: "center" | "boundary" }`.
+
+```typescript
+type LegendPosition = "right" | "bottom" | "top";
+type LegendAlign = "left" | "center" | "right";
+type LegendDirection = "horizontal" | "vertical";
+type LegendSymbolLayer =
+  | { type: "line"; length?: NonNegativeFinite; lineWidth?: NonNegativeFinite }
+  | { type: "point"; shape?: "circle"; size?: NonNegativeFinite; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite }
+  | { type: "swatch"; width?: NonNegativeFinite; height?: NonNegativeFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite };
+type LegendBorder = false | true | {
+  color?: NonEmptyString;
+  lineWidth?: NonNegativeFinite;
+  padding?: NonNegativeFinite;
+  background?: NonEmptyString;
+};
+```
+
+### Formal values — `createLegend`
+
+- Implemented: `createLegend({ target?: UserId; channels?: readonly ("color" | "strokeDash" | "shape")[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2 } = {})`
+- Proposed (NOT IMPLEMENTED): `{ position?: "left"; symbol.point.shape?: "triangle" | "diamond"; interactive?: boolean }` plus continuous-color symbol contract.
+
+### Formal values — `createSizeLegend`
+
+- Implemented: `createSizeLegend({ target?: UserId; count?: IntegerAtLeast2 } = {})`
+- Proposed (NOT IMPLEMENTED): `{ position?: "right" | "bottom" | "top" | "left"; align?: LegendAlign; title?: NonEmptyString; format?: NonEmptyString }`
+
+### Formal values — `rematerializeSizeLegend`
+
+- Implemented: `rematerializeSizeLegend({} = {})`
+- Proposed (NOT IMPLEMENTED): —; future layout values belong to `createSizeLegend` config.
+
+### Formal values — `createGuides`
+
+- Implemented: `createGuides({ axes?: false | Parameters<ChartProgram["createAxes"]>[0]; grid?: false | Parameters<ChartProgram["createGrid"]>[0]; legend?: false | Parameters<ChartProgram["createLegend"]>[0] } = {})`
+- Proposed (NOT IMPLEMENTED): —; new guide type requires an approved child action first.
+
+### Formal values — `createTitle`
+
+- Implemented: `createTitle({ text: NonEmptyString; subtitle?: NonEmptyString; position?: "top"; align?: "left" | "center" | "right"; offset?: Finite; gap?: NonNegativeFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
+- Proposed (NOT IMPLEMENTED): `{ position?: "bottom" | "left" | "right"; maxWidth?: PositiveFinite; lineHeight?: PositiveFinite; wrap?: "word" | "character" }`
+
+### Formal values — `createCoordinate`
+
+- Implemented: `createCoordinate({ id?: UserId; type?: "cartesian" | "polar"; layers?: readonly UserId[] } = {})`; Polar resource storage만 현재 materialized behavior다.
+- Proposed (NOT IMPLEMENTED): Polar positional/guide options; `clip`/transform options는 아직 미결정이다.
+
+### Formal values — `createScale`
+
+- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean })`; type별 validation이 값을 제한한다.
+- Proposed (NOT IMPLEMENTED): `{ type?: "log" | "sqrt" | "symlog"; clamp?: boolean; reverse?: boolean; unknown?: unknown }`
+
+### Formal values — `rematerializeScale`
+
+- Implemented: `rematerializeScale({ id: UserId })`
+- Proposed (NOT IMPLEMENTED): —; proposed scale types가 구현되면 resolver coverage가 추가된다.
+
+### Formal values — `editSemantic`
+
+- Implemented: `editSemantic({ property: SemanticPropertyPath; value: ValueForSemanticPath<typeof property> })`; path/value pair는 semantic grammar의 closed schema다.
+- Proposed (NOT IMPLEMENTED): wildcard path, multi-property object 또는 batch edit.
+
+### Formal values — `createGraphics`
+
+- Implemented: `createGraphics({ id: UserId; type: "canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"; length?: NonNegativeInteger; before?: UserId; after?: UserId })`; `before | after` 중 최대 하나.
+- Proposed (NOT IMPLEMENTED): `{ parent?: UserId }` for approved container/program composition; renderer-specific `svg | g` types는 제안하지 않는다.
+
+### Formal values — `editGraphics`
+
+- Implemented: `editGraphics({ target: UserId | GeneratedChildId; property: GraphicPropertyForTarget; value: GraphicValueForProperty })`; one property per action, collection scalar broadcast 또는 exact-length distribution.
+- Proposed (NOT IMPLEMENTED): multi-property dictionary/batch edit는 현재 one-change trace invariant와 충돌하므로 제안하지 않는다.
+
 ## Parameter value coverage and proposals
 
 이 section은 앞의 action 계약을 **값 단위**로 펼친 coverage ledger다. 각 action에서 parameter를
