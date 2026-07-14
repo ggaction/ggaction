@@ -80,6 +80,9 @@ test로 exhaustive하게 검증하고, 실제 모양이 달라지는 대표 equi
 
 현재 scatterplot을 사용해 point appearance, reassignment와 continuous appearance scales를 구현한다.
 
+- Phase goal: [`phase1/GOAL.md`](phase1/GOAL.md)
+- Complete variant contract: [`chart/cars-scatterplot-variants.md`](chart/cars-scatterplot-variants.md)
+
 - Direct action: `editPointMark`
 - Direct action: `editScale`
 - Capability: `encodeColor-reassignment`
@@ -97,6 +100,11 @@ test로 exhaustive하게 검증하고, 실제 모양이 달라지는 대표 equi
 field, scale replacement, Canvas resize와 invalid shared-consumer combinations를 함께 검증한다.
 `editScale`은 우선 현재 scale vocabulary에 대해 구현하고 Phase 10에서 새 type/policy로 같은 contract를
 확장한다.
+
+실행은 canonical baseline 교정, scale/shape/palette primitive batch, reassignment primitive batch,
+continuous appearance primitive batch와 final integration의 세 visual approval gate로 나눈다. Phase 1의
+sequential scale은 `encodeColor` 내부 shared grammar로만 먼저 사용하며 general public scale vocabulary는
+Phase 10에 유지한다.
 
 ## Phase 2 — Existing cars line-chart variants
 
