@@ -403,6 +403,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /같은 parent의 direct sibling/);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /placement\?: "center" \| "boundary"/);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /interactive\??:/i);
+  assert.doesNotMatch(currentCorpus + plannedCorpus, /coordinate-level `clip`\/transform options/);
 });
 
 test("keeps implemented and planned formal values distinct", () => {

@@ -281,7 +281,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `createCoordinate`
 
 - Implemented: `createCoordinate({ id?: UserId; type?: "cartesian" | "polar"; layers?: readonly UserId[] } = {})`; Polar resource storage만 현재 materialized behavior다.
-- Proposed (NOT IMPLEMENTED): Polar positional/guide options; `clip`/transform options는 아직 미결정이다.
+- Proposed (NOT IMPLEMENTED): Polar positional/guide options.
 
 ### Value coverage — `createCoordinate`
 
@@ -291,7 +291,6 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Planned capability: Polar resource는 저장되지만 positional/guide materialization은 아직 없다.
 - `layers`
   - ✅ Covered: omission/empty, one/multiple existing IDs, duplicates, unknown layer, reattachment conflict.
-- Proposed: coordinate-level `clip`/transform options는 semantic vs graphical ownership 결정 전까지 추가하지 않는다.
 - Evidence: `test/unit/actions/coordinates/create-coordinate.test.js`.
 
 ## `createScale`
