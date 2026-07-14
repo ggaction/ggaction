@@ -2,6 +2,48 @@
 
 These contracts are accepted or pending future API work; they are not current public behavior.
 
+## rule position and appearance assignments
+
+```typescript
+type RulePositionAssignment =
+  | {
+      field: FieldName;
+      datum?: never;
+      target?: UserId;
+      fieldType: FieldType;
+      scale?: PositionScale;
+      coordinate?: UserId;
+    }
+  | {
+      field?: never;
+      datum: unknown;
+      target?: UserId;
+      fieldType: FieldType;
+      scale?: PositionScale;
+      coordinate?: UserId;
+    };
+
+encodeStroke({ target?: UserId; value: NonEmptyString }): ChartProgram;
+encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
+```
+
+- Rule은 별도 `encodeRule`을 만들지 않는다. `encodeX`, `encodeX2`, `encodeY`, `encodeY2`가
+  `RulePositionAssignment`의 field 또는 datum 중 정확히 하나를 받아 independent endpoint를
+  할당한다. Existing non-rule positional contracts에는 mark-specific compatibility가 계속 적용된다.
+- `encodeX2`/`encodeY2`는 primary channel의 scale과 coordinate를 반드시 공유한다. Primary channel
+  없이 secondary channel만 할당할 수 없다. 같은 action을 다시 호출하면 해당 endpoint만 atomic하게
+  교체하고 dependent rule/composite consumers를 rematerialize한다.
+- `encodeStroke`와 `encodeStrokeWidth`는 constant graphical assignment다. Field-driven series color는
+  `encodeColor`, field-driven width는 기존 `encodeSize` contract가 소유하므로 첫 rule contract에서
+  중복 field mode를 만들지 않는다.
+- `encodeStrokeDash`와 `encodeOpacity`는 existing field/value contracts를 그대로 재사용한다.
+  Constant assignment는 scale이나 legend를 만들지 않고, field assignment는 해당 action의 scale 및
+  guide contract를 따른다.
+- Rule create action은 position/style을 받지 않으며 `editRuleMark`도 만들지 않는다. 위치 또는 style
+  변경은 owning encode action의 reassignment다.
+- Status: Planned, NOT IMPLEMENTED. field/datum exclusivity, constant style boundaries, endpoint
+  reassignment, shared scale/coordinate errors, existing appearance action reuse와 rematerialization coverage가 필요하다.
+
 ## scale-backed appearance reassignment
 
 - 같은 target의 `encodeSize`, `encodeShape`, `encodeStrokeDash`를 다시 호출하면 기존 field와

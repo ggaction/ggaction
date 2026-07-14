@@ -2,6 +2,73 @@
 
 These contracts are accepted or pending future API work; they are not current public behavior.
 
+## interval summary data
+
+```typescript
+type IntervalSummary =
+  | {
+      center?: "mean";
+      extent?: "stderr" | "stdev" | "ci";
+      level?: UnitIntervalExclusive;
+    }
+  | {
+      center: "median";
+      extent: "iqr";
+      level?: never;
+    };
+
+createIntervalData({
+  id: UserId;
+  source?: UserId;
+  field: FieldName;
+  groupBy?: FieldName | readonly FieldName[];
+  center?: "mean" | "median";
+  extent?: "stderr" | "stdev" | "ci" | "iqr";
+  level?: UnitIntervalExclusive;
+  as?: {
+    center: FieldName;
+    lower: FieldName;
+    upper: FieldName;
+  };
+}): ChartProgram;
+```
+
+- Defaults are `center: "mean"`, `extent: "ci"`, and `level: 0.95`. `level` is accepted only for
+  `extent: "ci"`; median is compatible only with IQR, and mean is compatible only with stderr, sample
+  stdev, or CI.
+- stderr means `mean ± sampleStdev / sqrt(n)`, stdev means `mean ± sampleStdev`, CI uses a two-sided
+  Student-t critical value with `n - 1` degrees of freedom, and IQR returns q1/median/q3. Quantiles use one
+  shared deterministic quantile grammar.
+- `groupBy` may be one field or a non-empty unique field array. Output preserves group first-appearance
+  order. Missing/non-finite measure rows are excluded; a group without the sample size required by the
+  selected statistic emits no row.
+- Omitted `as` uses namespaced internal fields. Provenance stores source, input field, ordered grouping,
+  resolved center/extent/level, output fields, and statistical conventions. Source data remains immutable.
+- `createIntervalData` is immutable create-only and makes no graphics. Consumers bind the derived dataset
+  explicitly through wrapped semantic actions.
+- Status: Planned, NOT IMPLEMENTED. exact stderr/stdev/t fixtures, quartiles, grouped order, missing values,
+  invalid combinations, custom outputs, provenance, ownership and trace coverage가 필요하다.
+
+## box summary and outlier data
+
+```typescript
+type BoxWhisker =
+  | { type?: "tukey"; factor?: PositiveFinite }
+  | { type: "minmax"; factor?: never };
+```
+
+- `createBoxPlot` owns two internal wrapped derived-data operations: a box summary and optional outlier
+  selection. They remain trace-visible but are not separate direct public actions in the first contract.
+- The summary stores q1, median, q3, lower whisker and upper whisker for each observed group. Tukey is the
+  default with `factor: 1.5`; whiskers are the most extreme observed finite values within
+  `[q1 - factor × IQR, q3 + factor × IQR]`. `minmax` uses observed finite minimum and maximum.
+- Outliers are original owned row copies strictly outside Tukey whiskers. `minmax` produces no outliers.
+  Group order follows first appearance and rows inside each outlier group retain source order.
+- Provenance records source, category and measure fields, optional grouping, quantile convention, resolved
+  whisker policy, generated fields and the owning box ID. Source data and old derived revisions are immutable.
+- Status: Planned, NOT IMPLEMENTED. quartile/whisker fixtures, even/odd/duplicate samples, missing values,
+  grouped order, empty/singleton groups, Tukey factor, minmax, outlier ownership and deterministic IDs가 필요하다.
+
 ## density kernel vocabulary
 
 ```typescript

@@ -222,6 +222,11 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   const names = index.plannedActions.map(action => action.name);
   assert.equal(new Set(names).size, names.length);
   assert.deepEqual(new Set(names), new Set([
+    "createBoxPlot",
+    "createErrorBand",
+    "createErrorBar",
+    "createIntervalData",
+    "createRuleMark",
     "editAreaMark",
     "editDensity",
     "editHorizontalGrid",
@@ -233,10 +238,13 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
     "editScale",
     "editTitle",
     "editVerticalGrid",
+    "encodeStroke",
+    "encodeStrokeWidth",
     "encodeX2",
     "encodeXRange",
     "selectRows"
   ]));
+  assert.equal(names.includes("editRuleMark"), false);
 
   for (const action of index.plannedActions) {
     assert.equal(action.status, "planned");
@@ -311,6 +319,15 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   }
 
   assert.match(plannedCorpus, /type PointShape =/);
+  assert.match(plannedCorpus, /createRuleMark\(\{/);
+  assert.match(plannedCorpus, /별도 `encodeRule`\/`editRuleMark`가 아니라/);
+  assert.match(plannedCorpus, /encodeStroke\(\{ target\?: UserId; value: NonEmptyString \}\)/);
+  assert.match(plannedCorpus, /createIntervalData\(\{/);
+  assert.match(plannedCorpus, /createErrorBar\(\{/);
+  assert.match(plannedCorpus, /createErrorBand\(\{/);
+  assert.match(plannedCorpus, /createBoxPlot\(\{/);
+  assert.match(plannedCorpus, /createRegressionBand[\s\S]*createErrorBand \(explicit interval mode\)/);
+  assert.match(plannedCorpus, /No `semanticSpec\.composites` registry is introduced/);
   assert.match(plannedCorpus, /"plus" \| "cross" \| "star" \| "hexagon" \| "wye"/);
   assert.match(plannedCorpus, /type CurveInterpolation =/);
   assert.match(plannedCorpus, /"step-before"[\s\S]*"step-after"/);

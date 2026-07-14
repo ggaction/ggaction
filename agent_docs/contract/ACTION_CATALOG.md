@@ -76,6 +76,13 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
+| `createRuleMark` | accepted | [Open](planned/MARKS_AND_PATHS.md#rule-mark-geometry) |
+| `encodeStroke` | accepted | [Open](planned/ENCODINGS.md#rule-position-and-appearance-assignments) |
+| `encodeStrokeWidth` | accepted | [Open](planned/ENCODINGS.md#rule-position-and-appearance-assignments) |
+| `createIntervalData` | accepted | [Open](planned/DATA_AND_STATISTICS.md#interval-summary-data) |
+| `createErrorBar` | accepted | [Open](planned/COMPOSITE_MARKS.md#createerrorbar) |
+| `createErrorBand` | accepted | [Open](planned/COMPOSITE_MARKS.md#createerrorband) |
+| `createBoxPlot` | accepted | [Open](planned/COMPOSITE_MARKS.md#createboxplot) |
 | `editAreaMark` | accepted | [Open](planned/EDITING.md#mark-edits) |
 | `editDensity` | accepted | [Open](planned/EDITING.md#editdensity) |
 | `editHorizontalGrid` | accepted | [Open](planned/EDITING.md#directional-grid-edits) |
@@ -95,6 +102,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
+| composition | Regression band delegation through error band | accepted | [Open](planned/COMPOSITE_MARKS.md#regression-band-delegation) |
+| composition | Composite mark ownership and storage | accepted | [Open](planned/COMPOSITE_MARKS.md#composite-ownership-and-storage) |
 | behavior | encodeColor reassignment | accepted | [Open](planned/ENCODINGS.md#scale-backed-appearance-reassignment) |
 | behavior | encodeGroup reassignment | accepted | [Open](planned/ENCODINGS.md#grouping-reassignment) |
 | behavior | encodeShape reassignment | accepted | [Open](planned/ENCODINGS.md#scale-backed-appearance-reassignment) |
