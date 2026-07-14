@@ -83,7 +83,15 @@ Scott-rule estimate. [Data](../api/data.md)
 createPointMark({ id, data?, shape? })
 ```
 
-Create a semantic point mark with a circle or square realization. [Marks](../api/marks.md)
+Create a semantic point mark with one of 12 equal-area shape realizations. [Marks](../api/marks.md)
+
+### `editPointMark`
+
+```javascript
+editPointMark({ target?, shape })
+```
+
+Change constant point shape and rematerialize its concrete children. [Marks](../api/marks.md)
 
 ### `createLineMark`
 
@@ -239,7 +247,7 @@ is `[24, 196]`. [Appearance encodings](../api/appearance.md)
 encodeShape({ field, target?, fieldType?, scale? })
 ```
 
-Encode a nominal field as point shape using circle and square symbols.
+Encode a nominal field with the shared 12-value point-shape vocabulary.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeOpacity`

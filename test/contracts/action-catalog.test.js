@@ -236,7 +236,6 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
     "editHorizontalGrid",
     "editLegend",
     "editLineMark",
-    "editPointMark",
     "editRegressionBand",
     "editRegressionLine",
     "editTitle",
@@ -299,7 +298,6 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     .map(capability => capability.name);
 
   assert.deepEqual(parameterNames, [
-    "Point shape vocabulary",
     "Curve interpolation and concrete path commands",
     "Area outline",
     "Bar width modes",
@@ -338,7 +336,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     assertContractTarget(capability.contract);
   }
 
-  assert.match(plannedCorpus, /type PointShape =/);
+  assert.match(currentCorpus, /type PointShape =/);
   assert.match(currentCorpus, /type EditableCurrentScale =/);
   assert.match(plannedCorpus, /createRuleMark\(\{/);
   assert.match(plannedCorpus, /별도 `encodeRule`\/`editRuleMark`가 아니라/);
@@ -349,7 +347,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /createBoxPlot\(\{/);
   assert.match(plannedCorpus, /createRegressionBand[\s\S]*createErrorBand \(explicit interval mode\)/);
   assert.match(plannedCorpus, /No `semanticSpec\.composites` registry is introduced/);
-  assert.match(plannedCorpus, /"plus" \| "cross" \| "star" \| "hexagon" \| "wye"/);
+  assert.match(currentCorpus, /"plus" \| "cross" \| "star" \| "hexagon" \| "wye"/);
   assert.match(plannedCorpus, /type CurveInterpolation =/);
   assert.match(plannedCorpus, /"step-before"[\s\S]*"step-after"/);
   assert.match(plannedCorpus, /"basis"[\s\S]*"cardinal"[\s\S]*"monotone"[\s\S]*"natural"/);
@@ -482,8 +480,8 @@ test("keeps implemented and planned formal values distinct", () => {
   assert.match(encodeY, /op: "first" \| "last"; orderBy: FieldName/);
 
   const point = owningSection("createPointMark").source;
-  assert.match(point, /shape\?: "circle" \| "square"/);
   assert.match(point, /shape\?: PointShape/);
+  assert.doesNotMatch(point, /shape\?: "circle" \| "square"/);
 });
 
 test("keeps maybe-future ideas outside the active proposal queue", () => {

@@ -1,4 +1,5 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
+import { POINT_SHAPES } from "../pointShapes.js";
 
 export const TABLEAU10 = cloneAndFreeze([
   "#4c78a8", "#f58518", "#e45756", "#72b7b2", "#54a24b",
@@ -10,7 +11,7 @@ export const DASH10 = cloneAndFreeze([
   [12, 3, 3, 3], [2, 2], [10, 3, 2, 3, 2, 3], [14, 4, 4, 4], [6, 2, 2, 2]
 ]);
 
-export const POINT_SHAPES = cloneAndFreeze(["circle", "square"]);
+export { POINT_SHAPES } from "../pointShapes.js";
 export const DEFAULT_SIZE_RANGE = cloneAndFreeze([24, 196]);
 
 export function validateColorRange(range) {
@@ -57,9 +58,12 @@ export function validateShapeRange(range) {
   if (
     !Array.isArray(range) ||
     range.length === 0 ||
-    !range.every(shape => POINT_SHAPES.includes(shape))
+    !range.every(shape => POINT_SHAPES.includes(shape)) ||
+    new Set(range).size !== range.length
   ) {
-    throw new TypeError('Shape range must contain only "circle" or "square".');
+    throw new TypeError(
+      "Shape range must contain unique supported point shapes."
+    );
   }
   return cloneAndFreeze(range);
 }

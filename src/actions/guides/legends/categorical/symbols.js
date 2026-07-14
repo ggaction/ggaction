@@ -8,6 +8,7 @@ import {
   symbolGraphic,
   symbolWidth
 } from "./layout.js";
+import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 
 function makeEditSymbol(type) {
   const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
@@ -58,37 +59,15 @@ function makeEditSymbol(type) {
         if (dynamicPoint) {
           const children = config.domain.map((_, index) => {
             const fill = layer.fill ?? appearance.colors[index];
-            if (appearance.shapes[index] === "circle") {
-              return {
-                type: "circle",
-                properties: {
-                  x: x[index],
-                  y: layout.itemY[index],
-                  radius: layer.size,
-                  fill,
-                  stroke: layer.stroke,
-                  strokeWidth: layer.strokeWidth
-                }
-              };
-            }
-            if (appearance.shapes[index] !== "square") {
-              throw new Error(
-                `Unsupported resolved legend point shape "${appearance.shapes[index]}".`
-              );
-            }
-            const side = layer.size * Math.sqrt(Math.PI);
-            return {
-              type: "rect",
-              properties: {
-                x: x[index] - side / 2,
-                y: layout.itemY[index] - side / 2,
-                width: side,
-                height: side,
-                fill,
-                stroke: layer.stroke,
-                strokeWidth: layer.strokeWidth
-              }
-            };
+            return createPointShapeGraphic({
+              shape: appearance.shapes[index],
+              x: x[index],
+              y: layout.itemY[index],
+              area: Math.PI * layer.size ** 2,
+              fill,
+              stroke: layer.stroke,
+              strokeWidth: layer.strokeWidth
+            });
           });
           return next.editGraphics({
             target: id,

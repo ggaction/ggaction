@@ -11,6 +11,7 @@ export type {
   GraphicSpec,
   GraphicType,
   LegendOptions,
+  PointShape,
   PositionEncodingOptions,
   RegressionOptions,
   ScaleOptions,

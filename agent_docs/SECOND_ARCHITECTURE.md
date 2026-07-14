@@ -466,14 +466,17 @@ points: {
 }
 ```
 
-서로 다른 point shape를 한 collection에 저장해야 하면 각 child가 자신의 type을 가진다.
+서로 다른 point shape를 한 collection에 저장해야 하면 각 child가 자신의 concrete type을 가진다.
+Shared point-shape grammar가 12-value vocabulary, validation과 equal-area geometry를 한 번 소유한다.
+Circle은 `circle`, square는 `rect`, 나머지 shape는 renderer-neutral closed `path`가 된다.
 
 ```javascript
 points: {
   type: "collection",
   children: [
     { id: "points:0", type: "circle", properties: { ... } },
-    { id: "points:1", type: "rect", properties: { ... } }
+    { id: "points:1", type: "rect", properties: { ... } },
+    { id: "points:2", type: "path", properties: { points: [...], closed: true, ... } }
   ]
 }
 ```
@@ -814,8 +817,8 @@ materialization policy에 정의한다.
 
 - x/y resolved scale이 있으면 geometry를 materialize할 수 있다.
 - color, size, shape field encoding을 함께 적용한다.
-- size는 equal-area 값이며 circle은 `sqrt(area / π)`, square는 `sqrt(area)`로 변환한다.
-- field-driven mixed shape는 heterogeneous circle/rect collection을 만든다.
+- size는 equal-area 값이며 모든 12개 shape recipe가 같은 target area로 정규화된다.
+- field-driven mixed shape는 heterogeneous circle/rect/path collection을 만든다.
 - constant radius와 opacity는 mark materialization config에서 다시 적용한다.
 
 ### Line

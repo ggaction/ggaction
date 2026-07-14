@@ -8,6 +8,19 @@ export type GraphicType =
   | "text"
   | "path";
 export type ScaleType = "linear" | "time" | "ordinal";
+export type PointShape =
+  | "circle"
+  | "square"
+  | "diamond"
+  | "triangle-up"
+  | "triangle-down"
+  | "triangle-left"
+  | "triangle-right"
+  | "plus"
+  | "cross"
+  | "star"
+  | "hexagon"
+  | "wye";
 export type ActionOptions = Record<string, unknown>;
 
 export interface TraceNode {
@@ -124,7 +137,8 @@ export class ChartProgram {
   createDensityData(options: ActionOptions): ChartProgram;
   createRegressionData(options: ActionOptions): ChartProgram;
 
-  createPointMark(options: { id: string; data?: string; shape?: "circle" | "square" }): ChartProgram;
+  createPointMark(options: { id: string; data?: string; shape?: PointShape }): ChartProgram;
+  editPointMark(options: { target?: string; shape: PointShape }): ChartProgram;
   createLineMark(options: { id: string; data?: string; strokeWidth?: number }): ChartProgram;
   createBarMark(options: { id: string; data?: string }): ChartProgram;
   createAreaMark(options: { id: string; data?: string; fill?: string; opacity?: number }): ChartProgram;

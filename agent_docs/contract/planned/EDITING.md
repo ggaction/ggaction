@@ -5,11 +5,6 @@ These contracts are accepted or pending future API work; they are not current pu
 ## mark edits
 
 ```typescript
-editPointMark({
-  target?: UserId;
-  shape: "circle" | "square";
-}): ChartProgram;
-
 editLineMark({
   target?: UserId;
   strokeWidth?: NonNegativeFinite;
@@ -25,12 +20,11 @@ editAreaMark({
 ```
 
 - `target`은 existing compatible mark selector이며 수정 property가 아니다. compatible mark가
-  유일하면 생략할 수 있고 여러 개면 explicit target이 필요하다. target 외 최소 한 변경값을
-  요구하며 `editPointMark`는 현재 하나의 editable property만 가진다.
+  유일하면 생략할 수 있고 여러 개면 explicit target이 필요하다. target 외 최소 한 변경값을 요구한다.
 - 이 action들은 mark가 직접 소유한 graphical materialization config만 수정한다. dataset
   binding, field encoding, scale과 coordinate는 변경하지 않는다.
-- `editPointMark.shape`는 field-driven `encodeShape`가 있으면 충돌하므로 오류다.
-  `editAreaMark.fill`도 field-driven `encodeColor`가 있으면 오류지만 opacity는 독립적으로
+- `editPointMark`는 구현되어 current mark contract로 이동했다. `editAreaMark.fill`은 field-driven
+  `encodeColor`가 있으면 오류지만 opacity는 독립적으로
   수정할 수 있다.
 - 각 action은 대응하는 내부 wrapped `rematerializePointMark`, `rematerializeLineMark`,
   `rematerializeAreaMark`를 호출한다. 기존 legend recipe가 변경된 mark property에서 파생되면

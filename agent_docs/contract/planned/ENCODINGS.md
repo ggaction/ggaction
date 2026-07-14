@@ -103,28 +103,6 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
   바뀌지 않는다. 별도 positional edit action은 만들지 않는다.
 - Status: Planned, NOT IMPLEMENTED. 구현은 `editScale` parameter contract가 Accepted된 뒤 진행한다.
 
-## point shape vocabulary
-
-```typescript
-type PointShape =
-  | "circle" | "square" | "diamond"
-  | "triangle-up" | "triangle-down" | "triangle-left" | "triangle-right"
-  | "plus" | "cross" | "star" | "hexagon" | "wye";
-```
-
-- 이 closed vocabulary의 canonical owner는 shared point-shape grammar다. `createPointMark.shape`,
-  `editPointMark.shape`, `encodeShape.scale.range`, point materialization과 legend symbol recipe가
-  같은 type, validation과 geometry recipe를 사용한다.
-- automatic ordinal shape range는 위 순서를 사용한다. domain은 최대 12 distinct category이며
-  shape를 자동 반복하지 않는다. explicit range도 vocabulary 안의 distinct shapes로 모든 domain
-  value를 모호하지 않게 표현해야 한다.
-- `plus`는 `+`, `cross`는 `×` geometry다. circle은 concrete circle, square는 rect, 나머지는
-  backend-neutral concrete path로 저장하고 renderer는 semantic shape name을 해석하지 않는다.
-- size encoding은 모든 recipe를 동일 target area로 정규화해 shape가 달라도 quantitative area
-  의미를 유지한다. legend는 mark와 같은 normalized recipe를 사용한다.
-- Status: Planned, NOT IMPLEMENTED. 12 shapes의 mark/encoding/legend/rendering parity와 category
-  overflow coverage가 필요하다.
-
 ## area outline
 
 - `createAreaMark`와 `createRegressionBand`는 `stroke?: NonEmptyString`과

@@ -2,6 +2,10 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { getPointGraphicType } from "../../grammar/schemas/mark.js";
 import {
+  createPointShapeGraphic,
+  validatePointShape
+} from "../../grammar/pointShapes.js";
+import {
   mapLinearValues,
   mapOrdinalValues,
   readNominalField,
@@ -15,8 +19,10 @@ import {
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
+import { rematerializeExistingLegend } from "../encodings/shared.js";
 
 const POINT_MARK_OPTIONS = Object.freeze(["id", "data", "shape"]);
+const EDIT_POINT_OPTIONS = Object.freeze(["target", "shape"]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
 
@@ -30,7 +36,9 @@ const createPointMark = action(
     const id = validateUserId(args.id, "Point mark id");
     const { data, dataset } = resolveMarkData(this, args);
     const shape = Object.hasOwn(args, "shape") ? args.shape : "circle";
-    const graphicType = getPointGraphicType(shape);
+    validatePointShape(shape);
+    const resolvedType = getPointGraphicType(shape);
+    const graphicType = resolvedType === "path" ? "circle" : resolvedType;
 
     assertMarkAvailable(this, id);
 
@@ -77,6 +85,26 @@ function compactProperties(properties) {
   );
 }
 
+function incompleteShapeGraphic(shape, properties) {
+  const type = getPointGraphicType(shape);
+  return { type, properties: compactProperties(properties) };
+}
+
+function existingArea(child, parentType) {
+  const type = child?.type ?? parentType;
+  if (type === "circle" && Number.isFinite(child?.properties?.radius)) {
+    return Math.PI * child.properties.radius ** 2;
+  }
+  if (
+    type === "rect" &&
+    Number.isFinite(child.properties?.width) &&
+    Number.isFinite(child.properties?.height)
+  ) {
+    return child.properties.width * child.properties.height;
+  }
+  return undefined;
+}
+
 const rematerializePointMark = action(
   {
     op: "rematerializePointMark",
@@ -91,7 +119,7 @@ const rematerializePointMark = action(
     if (layer?.mark?.type !== "point") {
       throw new Error(`Unknown point mark "${id}".`);
     }
-    if (!["circle", "rect", "collection"].includes(graphic?.type)) {
+    if (!["circle", "rect", "path", "collection"].includes(graphic?.type)) {
       throw new Error(`Point mark "${id}" requires point graphics.`);
     }
     const dataset = findDataset(this, layer.data);
@@ -107,7 +135,11 @@ const rematerializePointMark = action(
     const config = this.markConfigs[id] ?? {};
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
     const existingChildren = graphic.children ?? [];
-    const requiresMixedCollection = encodedShape !== undefined || graphic.type === "collection";
+    const constantShape = validatePointShape(config.shape ?? "circle");
+    const requiresMixedCollection =
+      encodedShape !== undefined ||
+      graphic.type === "collection" ||
+      getPointGraphicType(constantShape) !== graphic.type;
 
     if (requiresMixedCollection) {
       const children = dataset.values.map((_, index) => {
@@ -115,46 +147,33 @@ const rematerializePointMark = action(
         const existing = existingChildren[index]?.properties ?? {};
         const color = fill?.[index] ?? existing.fill ?? DEFAULT_POINT_FILL;
         const opacity = config.opacity ?? existing.opacity;
-        const size = area?.[index];
-        const radius = size === undefined
-          ? config.radius ?? existing.radius
-          : Math.sqrt(size / Math.PI);
-
-        if (shape === "circle") {
-          return {
-            type: "circle",
-            properties: compactProperties({
-              x: x?.[index] ?? existing.x,
-              y: y?.[index] ?? existing.y,
-              radius,
-              fill: color,
-              opacity
-            })
-          };
-        }
-        if (shape !== "square") {
-          throw new Error(`Unsupported resolved point shape "${shape}".`);
-        }
-        const side = size === undefined
-          ? config.radius === undefined
-            ? existing.width
-            : config.radius * 2
-          : Math.sqrt(size);
-        const centerX = x?.[index];
-        const centerY = y?.[index];
-        return {
-          type: "rect",
-          properties: compactProperties({
-            x: centerX === undefined ? existing.x : centerX - (side ?? 0) / 2,
-            y: centerY === undefined ? existing.y : centerY - (side ?? 0) / 2,
-            width: side,
-            height: side,
+        const resolvedArea = area?.[index] ??
+          (config.radius === undefined
+            ? existingArea(existingChildren[index], graphic.type)
+            :
+            Math.PI * config.radius ** 2);
+        const centerX = x?.[index] ?? existing.x;
+        const centerY = y?.[index] ?? existing.y;
+        if (
+          resolvedArea === undefined ||
+          !Number.isFinite(centerX) ||
+          !Number.isFinite(centerY)
+        ) {
+          return incompleteShapeGraphic(shape, {
+            x: centerX,
+            y: centerY,
             fill: color,
-            stroke: color,
-            strokeWidth: 0,
             opacity
-          })
-        };
+          });
+        }
+        return createPointShapeGraphic({
+          shape,
+          x: centerX,
+          y: centerY,
+          area: resolvedArea,
+          fill: color,
+          opacity
+        });
       });
       return this.editGraphics({ target: id, property: "children", value: children });
     }
@@ -174,7 +193,7 @@ const rematerializePointMark = action(
       }
     } else if (area !== undefined || config.radius !== undefined) {
       const sides = area === undefined
-        ? config.radius * 2
+        ? config.radius * Math.sqrt(Math.PI)
         : area.map(value => Math.sqrt(value));
       const centersX = x ?? existingChildren.map(child => child.properties.x);
       const centersY = y ?? existingChildren.map(child => child.properties.y);
@@ -205,7 +224,48 @@ const rematerializePointMark = action(
   }
 );
 
+const editPointMark = action(
+  {
+    op: "editPointMark",
+    description: "Edit constant point-mark appearance."
+  },
+  function (args = {}) {
+    validateMarkOptions(args, EDIT_POINT_OPTIONS, "editPointMark");
+    if (!Object.hasOwn(args, "shape")) {
+      throw new Error("editPointMark requires shape.");
+    }
+    const candidates = this.semanticSpec.layers.filter(
+      layer => layer.mark?.type === "point"
+    );
+    const current = findLayer(this, this.context.currentMark);
+    const requested = args.target ??
+      (current?.mark?.type === "point" ? current.id : undefined);
+    const inferred = requested ?? (candidates.length === 1
+      ? candidates[0].id
+      : undefined);
+    const id = validateUserId(inferred, "Point mark id");
+    const layer = findLayer(this, id);
+    if (layer?.mark?.type !== "point") {
+      throw new Error(`Unknown point mark "${id}".`);
+    }
+    if (layer.encoding?.shape !== undefined) {
+      throw new Error(
+        "editPointMark shape cannot be combined with a shape encoding."
+      );
+    }
+    const shape = validatePointShape(args.shape);
+    const next = this
+      ._withMarkConfig(id, { ...this.markConfigs[id], shape })
+      .rematerializePointMark({ id });
+    const legend = next.guideConfigs.legend?.series;
+    return legend?.target === id && legend.channels.includes("shape")
+      ? rematerializeExistingLegend(next)
+      : next;
+  }
+);
+
 export function registerPointMarkActions(ProgramClass) {
   ProgramClass.prototype.createPointMark = createPointMark;
+  ProgramClass.prototype.editPointMark = editPointMark;
   ProgramClass.prototype.rematerializePointMark = rematerializePointMark;
 }

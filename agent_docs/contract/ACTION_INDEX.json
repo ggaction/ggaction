@@ -114,9 +114,9 @@
       "layer": "user-facing",
       "domain": "marks",
       "status": "implemented",
-      "lifecycle": "Stable resource, edit gap",
-      "update": "Encoding actions only; no base-mark edit",
-      "audit": "`editPointMark` — Planned",
+      "lifecycle": "Mutable resource",
+      "update": "`editPointMark` and encoding actions",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -125,6 +125,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createpointmark"
+      }
+    },
+    {
+      "name": "editPointMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits constant point shape",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editpointmark"
       }
     },
     {
@@ -1264,15 +1282,6 @@
       }
     },
     {
-      "name": "editPointMark",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/EDITING.md",
-        "anchor": "mark-edits"
-      }
-    },
-    {
       "name": "editRegressionBand",
       "status": "planned",
       "readiness": "accepted",
@@ -1489,17 +1498,6 @@
       "contract": {
         "file": "agent_docs/contract/planned/ENCODINGS.md",
         "anchor": "positional-reassignment"
-      }
-    },
-    {
-      "id": "point-shape-vocabulary",
-      "kind": "parameter",
-      "name": "Point shape vocabulary",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "point-shape-vocabulary"
       }
     },
     {

@@ -10,10 +10,10 @@ Gate A에서 승인된 네 primitive를 재현하도록 `editScale`, shared poin
 - [x] `editScale` selector, patch normalization과 atomic validation
 - [x] Linear/time/ordinal domain/range/policy editing
 - [x] Scale materialization plan과 deterministic consumer deduplication
-- [ ] Shared `PointShape` 12종 validation과 geometry recipes
-- [ ] Shape target-area normalization과 Canvas path parity
-- [ ] `createPointMark`, `editPointMark`, `encodeShape`, legend symbol 공유
-- [ ] `editPointMark` inference/conflict/rematerialization
+- [x] Shared `PointShape` 12종 validation과 geometry recipes
+- [x] Shape target-area normalization과 Canvas path parity
+- [x] `createPointMark`, `editPointMark`, `encodeShape`, legend symbol 공유
+- [x] `editPointMark` inference/conflict/rematerialization
 - [ ] Frozen 68-name Vega palette registry와 sampling
 - [ ] Palette count/extent/range conflict/cycling/reverse coverage
 - [ ] 네 approved variant의 user-facing programs와 PNG pair

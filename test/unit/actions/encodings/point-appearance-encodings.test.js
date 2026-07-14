@@ -132,6 +132,58 @@ test("records field encodings and validates appearance contracts", () => {
   );
 });
 
+test("materializes all twelve shapes in marks and a shape-only legend", () => {
+  const shapes = [
+    "circle", "square", "diamond", "triangle-up", "triangle-down",
+    "triangle-left", "triangle-right", "plus", "cross", "star",
+    "hexagon", "wye"
+  ];
+  const rows = shapes.map((shape, index) => ({
+    x: index,
+    y: index,
+    shape
+  }));
+  const program = chart()
+    .createCanvas({
+      width: 520,
+      height: 400,
+      margin: { top: 20, right: 170, bottom: 40, left: 40 }
+    })
+    .createData({ id: "shapes", values: rows })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeRadius({ value: 5 })
+    .encodeShape({ field: "shape", scale: { range: shapes } })
+    .createLegend({ channels: ["shape"] });
+
+  assert.deepEqual(program.resolvedScales.shape.range, shapes);
+  assert.deepEqual(
+    program.graphicSpec.objects.points.children.map(child => child.type),
+    ["circle", "rect", ...Array(10).fill("path")]
+  );
+  assert.deepEqual(
+    program.graphicSpec.objects.seriesLegendSymbolPoints.children.map(
+      child => child.type
+    ),
+    ["circle", "rect", ...Array(10).fill("path")]
+  );
+
+  const overflowRows = [...rows, { x: 12, y: 12, shape: "thirteenth" }];
+  assert.throws(
+    () => chart()
+      .createCanvas({ width: 200, height: 120, margin: 10 })
+      .createData({ id: "overflow", values: overflowRows })
+      .createPointMark({ id: "points" })
+      .encodeShape({ field: "shape" }),
+    /one distinct shape per domain value/
+  );
+  assert.throws(
+    () => base().encodeShape({ field: "group", scale: { range: ["circle", "circle"] } }),
+    /unique supported point shapes/
+  );
+});
+
 test("matches the regression scatterplot primitive point collection", () => {
   const cars = JSON.parse(fs.readFileSync("./data/cars.json", "utf8"));
   const expected = createCarsRegressionScatterplotValues(cars);

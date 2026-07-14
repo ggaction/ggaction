@@ -143,6 +143,11 @@ export const rematerializeScale = action(
         resolveGraphicBounds(this)
       );
     }
+    if (channel === "shape" && domain.length > range.length) {
+      throw new Error(
+        `Shape scale "${id}" requires at least one distinct shape per domain value.`
+      );
+    }
 
     let resolvedScale = isOrdinalOffset
       ? resolveOrdinalOffsetScale({

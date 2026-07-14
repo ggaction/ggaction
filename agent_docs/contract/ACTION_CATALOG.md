@@ -14,7 +14,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`filterData`](current/CORE.md#filterdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
-| user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Stable resource, edit gap | `editPointMark` — Planned | ✅ / ✅ / ✅ |
+| user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editPointMark`](current/MARKS.md#editpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createLineMark`](current/MARKS.md#createlinemark) | marks | Stable resource, edit gap | `editLineMark` — Planned | ✅ / ✅ / ✅ |
 | user-facing | [`createBarMark`](current/MARKS.md#createbarmark) | marks | Stable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createAreaMark`](current/MARKS.md#createareamark) | marks | Stable resource, edit gap | `editAreaMark` — Planned | ✅ / ✅ / ⚠️ |
@@ -89,7 +90,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | `editHorizontalGrid` | accepted | [Open](planned/EDITING.md#directional-grid-edits) |
 | `editLegend` | accepted | [Open](planned/EDITING.md#editlegend) |
 | `editLineMark` | accepted | [Open](planned/EDITING.md#mark-edits) |
-| `editPointMark` | accepted | [Open](planned/EDITING.md#mark-edits) |
 | `editRegressionBand` | accepted | [Open](planned/EDITING.md#regression-component-edits) |
 | `editRegressionLine` | accepted | [Open](planned/EDITING.md#regression-component-edits) |
 | `editTitle` | accepted | [Open](planned/EDITING.md#edittitle) |
@@ -115,7 +115,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | behavior | encodeY2 reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | behavior | encodeYRange reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | behavior | encodeHistogram reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
-| parameter | Point shape vocabulary | accepted | [Open](planned/ENCODINGS.md#point-shape-vocabulary) |
 | parameter | Curve interpolation and concrete path commands | accepted | [Open](planned/MARKS_AND_PATHS.md#curve-interpolation-and-concrete-path-commands) |
 | parameter | Area outline | accepted | [Open](planned/ENCODINGS.md#area-outline) |
 | parameter | Bar width modes | accepted | [Open](planned/ENCODINGS.md#bar-width-modes) |

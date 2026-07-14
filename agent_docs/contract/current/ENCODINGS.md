@@ -403,16 +403,15 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - Signature: `encodeShape({ field, target?, fieldType?, scale? })`
 - `field`, `target`, `fieldType`: nominal field, optional point ID, nominal-only type다.
-- `scale`: ordinal shape scale. 현재 resolved symbol vocabulary는 `"circle" | "square"`다.
-- Planned: shared `PointShape` 12종과 non-repeating automatic range를 사용한다.
+- `scale`: ordinal shape scale. Shared `PointShape` 12종을 non-repeating automatic range로 사용한다.
 - Effect: point graphic을 heterogeneous collection으로 바꾸고 각 datum의 concrete primitive type과
   legend symbol을 rematerialize한다.
 - Coverage: regression scatterplot과 point/legend tests가 circle/square mapping을 검증한다.
 
 ### Formal values — `encodeShape`
 
-- Implemented: `encodeShape({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: "auto" | readonly ("circle" | "square")[] } })`
-- Planned (NOT IMPLEMENTED): `range?: "auto" | readonly PointShape[]` with 12 distinct shared values.
+- Implemented: `encodeShape({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: "auto" | readonly PointShape[] } })`
+- Planned (NOT IMPLEMENTED): reassignment behavior is tracked separately.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeShape`
@@ -420,10 +419,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `field`, `target`, `fieldType`
   - ✅ Covered: nominal point field와 invalid alternatives.
 - `scale.domain/range`
-  - ✅ Covered: auto domain, circle/square result, heterogeneous collection and legend symbol materialization.
-  - ⚠️ Partial: explicit shape range order와 incomplete domain/range direct cases.
-  - 🟡 Planned: shared 12-shape range, distinct-domain capacity, mark/legend/render parity.
-- Evidence: point appearance and regression chart/guide tests.
+  - ✅ Covered: automatic and explicit 12-shape range, unique validation, capacity error and heterogeneous output.
+  - ✅ Covered: equal-area mark/legend recipes and Canvas path-ready concrete geometry.
+- Evidence: point appearance, mark-schema and regression chart/guide tests.
 
 ## `encodeOpacity`
 

@@ -11,7 +11,7 @@ title: Appearance Encodings
 | --- | --- | --- | --- |
 | `encodeRadius` | `encodeRadius({ value: 3 })` | Current point mark | Concrete circle radius |
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
-| `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; ordinal circle/square range | Semantic shape and mixed concrete symbols |
+| `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Concrete opacity |
 | `encodeBarWidth` | `encodeBarWidth()` | Current grouped bar; band `0.72` | Concrete grouped rectangles |
 
@@ -46,9 +46,11 @@ range is `[24, 196]`. Circles use `sqrt(area / PI)` as radius and squares use
 `sqrt(area)` as side length, so the two shapes represent equal visual area.
 
 `encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
-Its ordinal scale accepts circle and square values and defaults to alternating
-those two shapes. Mixed symbols are stored as typed children in one graphical
-collection.
+Its ordinal scale accepts the 12 shared point shapes documented under
+[Marks](./marks.md). The automatic range uses each shape once and rejects more
+than 12 distinct categories rather than silently repeating symbols. Explicit
+ranges must contain unique supported shapes. Mixed circle, rect, and closed-path
+symbols are stored as typed children in one graphical collection.
 
 `encodeOpacity({ value, target? })` accepts a constant from `0` to `1`. It is
 graphical and does not add a semantic field encoding. Size and shape are
@@ -86,7 +88,8 @@ Canvas geometry changes explicitly rematerialize the scales and rectangles.
 ## Errors and limitations
 
 Radius, opacity, and bar band are graphical constants, not field encodings.
-Size cannot be combined with a constant radius. Bar width
+Size cannot be combined with a constant radius. A constant `editPointMark`
+shape cannot be combined with field-driven `encodeShape`. Bar width
 requires complete ordinal x, aggregate y, color, and xOffset semantics.
 
 ## Related

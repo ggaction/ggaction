@@ -114,10 +114,11 @@ export const createLegend = action(
     if (!isPlainObject(args)) {
       throw new TypeError("createLegend options must be a plain object.");
     }
+    const wantsShape = args.channels?.includes("shape") === true;
     const pointCandidates = this.semanticSpec.layers.filter(layer =>
       layer.mark?.type === "point" &&
-      layer.encoding?.color?.scale !== undefined &&
-      layer.encoding?.shape?.scale !== undefined
+      layer.encoding?.shape?.scale !== undefined &&
+      (wantsShape || layer.encoding?.color?.scale !== undefined)
     );
     const requestedPoint = args.target === undefined
       ? pointCandidates.length === 1 ? pointCandidates[0] : undefined
@@ -151,10 +152,13 @@ export const createLegend = action(
           }
         ]
       };
+      const inferredChannels = ["color", "shape"].filter(
+        channel => requestedPoint.encoding?.[channel]?.scale !== undefined
+      );
       let next = this.createCategoricalLegend({
         ...categoricalArgs,
         target: requestedPoint.id,
-        channels: categoricalArgs.channels ?? ["color", "shape"],
+        channels: categoricalArgs.channels ?? inferredChannels,
         symbol
       });
       if (requestedPoint.encoding?.size?.scale !== undefined) {

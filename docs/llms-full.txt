@@ -1456,6 +1456,7 @@ extent or bandwidth, invalid output fields, and fewer than two sample steps.
 | Action | Shortest call | Inference/defaults | Initial graphic |
 | --- | --- | --- | --- |
 | `createPointMark` | `createPointMark({ id: "points" })` | Current dataset; circle shape | Empty/concrete point collection |
+| `editPointMark` | `editPointMark({ shape: "diamond" })` | Current or unique point mark | Rematerialized equal-area symbols |
 | `createLineMark` | `createLineMark({ id: "lines" })` | Current dataset | Empty path collection |
 | `createBarMark` | `createBarMark({ id: "bars" })` | Current dataset | Empty rect collection |
 | `createAreaMark` | `createAreaMark({ id: "band" })` | Current dataset; blue fill; opacity `0.2` | Empty path collection |
@@ -1466,7 +1467,7 @@ extent or bandwidth, invalid output fields, and fewer than two sample steps.
 | --- | --- | --- |
 | `id` | valid user-defined ID | required |
 | `data` | existing dataset ID | current dataset |
-| `shape` | `"circle"` or `"square"` | `"circle"` |
+| `shape` | supported point shape | `"circle"` |
 
 ```javascript
 const program = chart()
@@ -1475,13 +1476,31 @@ const program = chart()
 ```
 
 The semantic mark type is `point`; a fixed shape is graphical appearance.
-Circle is the default, while square creates a rect realization. A later
-field-driven `encodeShape` converts the mark into one typed mixed collection.
+Circle is the default. Square uses a rect, while the remaining shapes use
+backend-neutral closed paths. A later field-driven `encodeShape` converts the
+mark into one typed mixed collection.
 Points are not renderable until later actions assign the required position,
 size, and fill properties.
 
 Point creation does not assign a coordinate or scale. Position encodings create
 and attach the appropriate semantic coordinate when needed.
+
+## `editPointMark({ target?, shape })`
+
+Change a point mark's constant shape without changing its data or encodings:
+
+```javascript
+const diamonds = program.editPointMark({
+  target: "points",
+  shape: "diamond"
+});
+```
+
+`target` may be omitted when the current or only point mark is unambiguous.
+Supported shapes are `circle`, `square`, `diamond`, the four directional
+triangles, `plus`, `cross`, `star`, `hexagon`, and `wye`. All recipes preserve
+the same logical target area. A constant edit is rejected when the mark already
+has a field-driven shape encoding.
 
 ## `createAreaMark({ id, data?, fill?, opacity? })`
 
@@ -2532,7 +2551,7 @@ ordered domain.
 | --- | --- | --- | --- |
 | `encodeRadius` | `encodeRadius({ value: 3 })` | Current point mark | Concrete circle radius |
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
-| `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; ordinal circle/square range | Semantic shape and mixed concrete symbols |
+| `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Concrete opacity |
 | `encodeBarWidth` | `encodeBarWidth()` | Current grouped bar; band `0.72` | Concrete grouped rectangles |
 
@@ -2567,9 +2586,11 @@ range is `[24, 196]`. Circles use `sqrt(area / PI)` as radius and squares use
 `sqrt(area)` as side length, so the two shapes represent equal visual area.
 
 `encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
-Its ordinal scale accepts circle and square values and defaults to alternating
-those two shapes. Mixed symbols are stored as typed children in one graphical
-collection.
+Its ordinal scale accepts the 12 shared point shapes documented under
+[Marks](./marks.md). The automatic range uses each shape once and rejects more
+than 12 distinct categories rather than silently repeating symbols. Explicit
+ranges must contain unique supported shapes. Mixed circle, rect, and closed-path
+symbols are stored as typed children in one graphical collection.
 
 `encodeOpacity({ value, target? })` accepts a constant from `0` to `1`. It is
 graphical and does not add a semantic field encoding. Size and shape are
@@ -2607,7 +2628,8 @@ Canvas geometry changes explicitly rematerialize the scales and rectangles.
 ## Errors and limitations
 
 Radius, opacity, and bar band are graphical constants, not field encodings.
-Size cannot be combined with a constant radius. Bar width
+Size cannot be combined with a constant radius. A constant `editPointMark`
+shape cannot be combined with field-driven `encodeShape`. Bar width
 requires complete ordinal x, aggregate y, color, and xOffset semantics.
 
 ## Related
@@ -3526,7 +3548,15 @@ Scott-rule estimate. [Data](../api/data.md)
 createPointMark({ id, data?, shape? })
 ```
 
-Create a semantic point mark with a circle or square realization. [Marks](../api/marks.md)
+Create a semantic point mark with one of 12 equal-area shape realizations. [Marks](../api/marks.md)
+
+### `editPointMark`
+
+```javascript
+editPointMark({ target?, shape })
+```
+
+Change constant point shape and rematerialize its concrete children. [Marks](../api/marks.md)
 
 ### `createLineMark`
 
@@ -3682,7 +3712,7 @@ is `[24, 196]`. [Appearance encodings](../api/appearance.md)
 encodeShape({ field, target?, fieldType?, scale? })
 ```
 
-Encode a nominal field as point shape using circle and square symbols.
+Encode a nominal field with the shared 12-value point-shape vocabulary.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeOpacity`

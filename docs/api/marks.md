@@ -10,6 +10,7 @@ title: Marks
 | Action | Shortest call | Inference/defaults | Initial graphic |
 | --- | --- | --- | --- |
 | `createPointMark` | `createPointMark({ id: "points" })` | Current dataset; circle shape | Empty/concrete point collection |
+| `editPointMark` | `editPointMark({ shape: "diamond" })` | Current or unique point mark | Rematerialized equal-area symbols |
 | `createLineMark` | `createLineMark({ id: "lines" })` | Current dataset | Empty path collection |
 | `createBarMark` | `createBarMark({ id: "bars" })` | Current dataset | Empty rect collection |
 | `createAreaMark` | `createAreaMark({ id: "band" })` | Current dataset; blue fill; opacity `0.2` | Empty path collection |
@@ -20,7 +21,7 @@ title: Marks
 | --- | --- | --- |
 | `id` | valid user-defined ID | required |
 | `data` | existing dataset ID | current dataset |
-| `shape` | `"circle"` or `"square"` | `"circle"` |
+| `shape` | supported point shape | `"circle"` |
 
 ```javascript
 const program = chart()
@@ -29,13 +30,31 @@ const program = chart()
 ```
 
 The semantic mark type is `point`; a fixed shape is graphical appearance.
-Circle is the default, while square creates a rect realization. A later
-field-driven `encodeShape` converts the mark into one typed mixed collection.
+Circle is the default. Square uses a rect, while the remaining shapes use
+backend-neutral closed paths. A later field-driven `encodeShape` converts the
+mark into one typed mixed collection.
 Points are not renderable until later actions assign the required position,
 size, and fill properties.
 
 Point creation does not assign a coordinate or scale. Position encodings create
 and attach the appropriate semantic coordinate when needed.
+
+## `editPointMark({ target?, shape })`
+
+Change a point mark's constant shape without changing its data or encodings:
+
+```javascript
+const diamonds = program.editPointMark({
+  target: "points",
+  shape: "diamond"
+});
+```
+
+`target` may be omitted when the current or only point mark is unambiguous.
+Supported shapes are `circle`, `square`, `diamond`, the four directional
+triangles, `plus`, `cross`, `star`, `hexagon`, and `wye`. All recipes preserve
+the same logical target area. A constant edit is rejected when the mark already
+has a field-driven shape encoding.
 
 ## `createAreaMark({ id, data?, fill?, opacity? })`
 
