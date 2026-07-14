@@ -272,6 +272,8 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     "Aggregate vocabulary",
     "Color layout vocabulary",
     "Histogram bin controls",
+    "Scale type vocabulary",
+    "Scale mapping policies",
     "Density kernel vocabulary",
     "Filter predicate modes",
     "Regression method vocabulary",
@@ -302,6 +304,14 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /별도 action `encodeGroup`과 다른 개념/);
   assert.match(plannedCorpus, /binBoundaries\?: readonly \[Finite, Finite, \.\.\.Finite\[\]\]/);
   assert.match(plannedCorpus, /zero를 anchor로/);
+  assert.match(plannedCorpus, /type PlannedScaleType =/);
+  assert.match(plannedCorpus, /"log"[\s\S]*"pow"[\s\S]*"sqrt"[\s\S]*"symlog"/);
+  assert.match(plannedCorpus, /"utc"[\s\S]*"band"[\s\S]*"point"/);
+  assert.match(plannedCorpus, /"quantize"[\s\S]*"quantile"[\s\S]*"threshold"/);
+  assert.match(plannedCorpus, /type PlannedScalePolicies =/);
+  assert.match(plannedCorpus, /clamp\?: boolean/);
+  assert.match(plannedCorpus, /reverse\?: boolean/);
+  assert.match(plannedCorpus, /unknown\?: unknown/);
   assert.match(plannedCorpus, /type DensityKernel =/);
   assert.match(plannedCorpus, /sum\(K\(u\)\) \/ \(n \* bandwidth\)/);
   assert.match(plannedCorpus, /type FilterComparison =/);

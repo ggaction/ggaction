@@ -313,14 +313,18 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `createScale`
 
 - Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean })`; type별 validation이 값을 제한한다.
-- Proposed (NOT IMPLEMENTED): `{ type?: "log" | "sqrt" | "symlog"; clamp?: boolean; reverse?: boolean; unknown?: unknown }`
+- Planned (NOT IMPLEMENTED): `{ type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point" | "quantize" | "quantile" | "threshold"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown }`
+- Proposed (NOT IMPLEMENTED): `{ type?: "identity" | "sequential" | "bin-ordinal"; interpolate?: unknown }`
 
 ### Value coverage — `createScale`
 
 - `id`: ✅ Covered valid/invalid IDs, equivalent idempotence and conflicting duplicate.
 - `type`
   - ✅ Covered: omission→`"linear"`, `"linear" | "time" | "ordinal"`, unknown value.
-  - 🟣 Proposed: `"log" | "sqrt" | "symlog"`; domain restrictions와 tick mapping이 필요하다.
+  - 🟡 Planned: `"log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point" |
+    "quantize" | "quantile" | "threshold"`; type-specific domain, range, mapping and tick contracts는
+    `planned/SCALES.md`가 소유한다.
+  - 🟣 Proposed: `"identity" | "sequential" | "bin-ordinal"`.
 - `domain`
   - ✅ Covered: `"auto"`, continuous pair, ordinal unique array, reversed pair and invalid arrays.
   - ⚠️ Partial: temporal Date/string/timestamp normalization at direct action boundary.
@@ -333,6 +337,5 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: omitted, true, false, non-boolean and time/ordinal rejection.
 - Precedence
   - ✅ Covered: explicit domain overrides nice/zero; zero applies before nice on auto linear domain.
-- 🟣 Proposed: clamp, reverse and unknown/missing policies.
+- 🟡 Planned: clamp, reverse and channel-valid unknown/missing policies.
 - Evidence: `test/unit/actions/scales/scale-actions.test.js` and grammar scale tests.
-

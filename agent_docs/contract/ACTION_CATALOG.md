@@ -109,6 +109,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | parameter | Aggregate vocabulary | accepted | [Open](planned/ENCODINGS.md#aggregate-vocabulary) |
 | parameter | Color layout vocabulary | accepted | [Open](planned/ENCODINGS.md#color-layout-vocabulary) |
 | parameter | Histogram bin controls | accepted | [Open](planned/ENCODINGS.md#histogram-bin-controls) |
+| parameter | Scale type vocabulary | accepted | [Open](planned/SCALES.md#scale-type-vocabulary) |
+| parameter | Scale mapping policies | accepted | [Open](planned/SCALES.md#scale-mapping-policies) |
 | parameter | Density kernel vocabulary | accepted | [Open](planned/DATA_AND_STATISTICS.md#density-kernel-vocabulary) |
 | parameter | Filter predicate modes | accepted | [Open](planned/DATA_AND_STATISTICS.md#filter-predicate-modes) |
 | parameter | Regression method vocabulary | accepted | [Open](planned/DATA_AND_STATISTICS.md#regression-method-vocabulary) |

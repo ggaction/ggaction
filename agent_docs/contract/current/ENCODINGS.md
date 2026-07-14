@@ -19,7 +19,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `zero`: Implemented for linear scale. boolean이며 auto domain에만 zero를 포함한다. explicit domain이
   있으면 적용되지 않는다.
 - `palette`: Implemented for color scale. palette name이며 `range`와 동시에 사용할 수 없다.
-- Planned/Proposed: 추가 palette vocabulary와 interpolated color scale은 아직 확정되지 않았다.
+- Planned: transformed quantitative, UTC, explicit band/point, discretizing scale types와
+  clamp/reverse/unknown mapping policies는 `planned/SCALES.md`가 소유한다.
+- Proposed: 추가 palette vocabulary와 interpolated/sequential color scale은 아직 확정되지 않았다.
 
 ## `encodeX`
 
@@ -43,8 +45,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeX`
 
 - Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; bin?: { maxBins?: PositiveInteger } })`; 실제 fieldType/bin 조합은 mark policy가 제한한다.
-- Planned (NOT IMPLEMENTED): `{ bin?: { step: PositiveFinite } | { boundaries: readonly [Finite, Finite, ...Finite[]] } }`
-- Proposed (NOT IMPLEMENTED): `{ fieldType?: broader mark-specific temporal/ordinal combinations; scale?: { type?: "log" | "sqrt" | "symlog"; clamp?: boolean; reverse?: boolean } }` 및 Polar positional action.
+- Planned (NOT IMPLEMENTED): `{ bin?: { step: PositiveFinite } | { boundaries: readonly [Finite, Finite, ...Finite[]] }; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
+- Proposed (NOT IMPLEMENTED): broader mark-specific temporal/ordinal combinations 및 Polar positional action.
 
 ### Value coverage — `encodeX`
 
@@ -67,7 +69,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: auto/explicit linear, time, ordinal definitions; explicit domain/range precedence;
     wrong type and shared-channel conflicts.
   - ⚠️ Partial: 모든 fieldType × nice × zero × explicit bound pairwise 조합.
-  - 🟣 Proposed: `log`, `sqrt`, `symlog` scale types and reverse/clamp options.
+  - 🟡 Planned: compatible transformed/UTC/band/point scale types and clamp/reverse/unknown policies.
 - Evidence: position, temporal, histogram-bin and ordinal-bar action tests.
 
 ## `encodeY`
@@ -91,8 +93,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeY`
 
 - Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: PositionScale; coordinate?: UserId; aggregate?: "mean" | "count"; stack?: "zero" | null })`; mark/x policy가 가능한 조합을 제한한다.
-- Planned (NOT IMPLEMENTED): `{ aggregate?: "sum" | "median" | "min" | "max" | "distinct" | "valid" | "missing" | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr" | "q1" | "q3" | "ciLower" | "ciUpper" }`
-- Proposed (NOT IMPLEMENTED): `{ fieldType?: "temporal" | "ordinal"; aggregate?: { op: "quantile"; probability: UnitInterval } | { op: "first" | "last"; orderBy: FieldName; order?: "ascending" | "descending" }; stack?: "normalize" | "center"; scale?: { type?: "log" | "sqrt" | "symlog" } }`; `argmin`/`argmax`는 row-selecting transform 후보다.
+- Planned (NOT IMPLEMENTED): `{ aggregate?: "sum" | "median" | "min" | "max" | "distinct" | "valid" | "missing" | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr" | "q1" | "q3" | "ciLower" | "ciUpper"; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
+- Proposed (NOT IMPLEMENTED): `{ fieldType?: "temporal" | "ordinal"; aggregate?: { op: "quantile"; probability: UnitInterval } | { op: "first" | "last"; orderBy: FieldName; order?: "ascending" | "descending" }; stack?: "normalize" | "center" }`; `argmin`/`argmax`는 row-selecting transform 후보다.
 
 ### Value coverage — `encodeY`
 
@@ -113,6 +115,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `scale`
   - ✅ Covered: auto/explicit domain/range, nice/zero precedence, shared consumer conflicts.
   - ⚠️ Partial: aggregate/stack/scale option pairwise matrix.
+  - 🟡 Planned: compatible transformed/UTC/band/point scale types and clamp/reverse/unknown policies.
 - Evidence: point position, line aggregate, histogram y and ordinal aggregate bar tests.
 
 ## `encodeXOffset`
@@ -493,4 +496,3 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: same action replaces the stored band and concrete rect widths immutably.
 - 🟡 Planned: mutually exclusive fixed pixels/band modes and `[0,1)` inner padding with responsive behavior.
 - Evidence: grouped-bar width and chart reference tests.
-
