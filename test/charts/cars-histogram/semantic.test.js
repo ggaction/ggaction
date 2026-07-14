@@ -56,7 +56,7 @@ test("validates histogram and grid primitive values", () => {
   assert.throws(
     () => chart().editSemantic({
       property: "layer[bars].encoding.y.aggregate",
-      value: "sum"
+      value: "average"
     }),
     /Unsupported aggregate/
   );

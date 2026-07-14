@@ -1,11 +1,18 @@
 import { chart } from "../../../src/index.js";
-import { createCarsLineChartPrimitives } from "./primitive.program.js";
+import {
+  createCarsLineChartPrimitiveProgram,
+  createCarsLineChartPrimitives
+} from "./primitive.program.js";
 import {
   createCarsLineCurvePrimitiveValues,
   createConstantDashPrimitiveValues,
   createDashReassignmentPrimitiveValues,
+  createDispersionPrimitiveValues,
   createGroupReassignmentPrimitiveValues,
-  createNamedDashPrimitiveValues
+  createMedianPrimitiveValues,
+  createNamedDashPrimitiveValues,
+  createOrderedPrimitiveValues,
+  createQuantilePrimitiveValues
 } from "./phase2-reference-values.js";
 
 export function createCurveStepPrimitives(cars) {
@@ -289,4 +296,36 @@ export function createDashReassignmentPrimitives(cars) {
     .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
     .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" });
+}
+
+export function createAggregateMedianPrimitives(cars) {
+  return createCarsLineChartPrimitiveProgram(
+    cars,
+    createMedianPrimitiveValues(cars),
+    { aggregate: "median" }
+  );
+}
+
+export function createAggregateDispersionPrimitives(cars) {
+  return createCarsLineChartPrimitiveProgram(
+    cars,
+    createDispersionPrimitiveValues(cars),
+    { aggregate: "stdev" }
+  );
+}
+
+export function createAggregateQuantilePrimitives(cars) {
+  return createCarsLineChartPrimitiveProgram(
+    cars,
+    createQuantilePrimitiveValues(cars),
+    { aggregate: { op: "quantile", probability: 0.75 } }
+  );
+}
+
+export function createAggregateOrderedPrimitives(cars) {
+  return createCarsLineChartPrimitiveProgram(
+    cars,
+    createOrderedPrimitiveValues(cars),
+    { aggregate: { op: "first", orderBy: "Horsepower" } }
+  );
 }

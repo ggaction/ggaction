@@ -3,11 +3,14 @@ import { chart, render } from "../../../src/index.js";
 import { createCarsLineChartValues } from "./reference-values.js";
 import { linearPathCommands } from "../../support/path.js";
 
-export function createCarsLineChartPrimitives(cars) {
+export function createCarsLineChartPrimitiveProgram(
+  cars,
+  values,
+  { aggregate = "mean" } = {}
+) {
   const width = 720;
   const height = 460;
   const margin = { top: 80, right: 170, bottom: 60, left: 80 };
-  const values = createCarsLineChartValues(cars, { width, height, margin });
   const { x: xAxis, y: yAxis } = values.axes;
   const xTickPositions = xAxis.ticks.map(tick => tick.position);
   const yTickPositions = yAxis.ticks.map(tick => tick.position);
@@ -35,7 +38,7 @@ export function createCarsLineChartPrimitives(cars) {
     })
     .editSemantic({
       property: "layer[trends].encoding.y.aggregate",
-      value: "mean"
+      value: aggregate
     })
     .editSemantic({ property: "layer[trends].encoding.y.scale", value: "y" })
     .editSemantic({
@@ -88,7 +91,7 @@ export function createCarsLineChartPrimitives(cars) {
     .editSemantic({ property: "guide.axis.y.coordinate", value: "main" })
     .editSemantic({
       property: "guide.axis.y.title",
-      value: "mean(Acceleration)"
+      value: yAxis.title.text
     })
     .editSemantic({ property: "guide.grid.horizontal.scale", value: "y" })
     .editSemantic({
@@ -308,6 +311,15 @@ export function createCarsLineChartPrimitives(cars) {
     .editGraphics({ target: "chartSubtitle", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "chartSubtitle", property: "textAlign", value: "left" })
     .editGraphics({ target: "chartSubtitle", property: "textBaseline", value: "middle" });
+}
+
+export function createCarsLineChartPrimitives(cars) {
+  const values = createCarsLineChartValues(cars, {
+    width: 720,
+    height: 460,
+    margin: { top: 80, right: 170, bottom: 60, left: 80 }
+  });
+  return createCarsLineChartPrimitiveProgram(cars, values);
 }
 
 export function renderCarsLineChartPrimitives(program, canvasContext) {

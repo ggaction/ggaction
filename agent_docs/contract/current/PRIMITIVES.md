@@ -8,6 +8,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `property`: 필수 supported semantic path string. user ID selector는 `dataset[id]`, `layer[id]`,
   `scale[id]`, `coordinate[id]`; system guide keys는 `guide.axis.x` 같은 closed path를 사용한다.
 - `value`: selected path schema에 맞는 scalar, object 또는 array. caller-owned nested value를 복사/freeze한다.
+  `encoding.y.aggregate`는 accepted scalar aggregate token과 parameterized quantile/ordered object를
+  primitive authoring state로 저장할 수 있다. 이 primitive validation은 aggregate 계산이나 graphical
+  materialization을 수행하지 않는다.
 - Effect: 해당 path만 structural copy하고 기존 program을 보존한다. path가 dataset/layer/scale/coordinate를
   가리키면 current context를 내부적으로 갱신할 수 있다. graphic rematerialization은 자동으로 하지 않는다.
 - 오류: unknown path, closed vocabulary 위반, invalid transform/scale/guide value, existing source dataset
@@ -29,6 +32,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Maybe Future: wildcard/batch paths; current primitive remains one-property-per-action by design.
 - `value`
   - ✅ Covered: scalar, nested object/array ownership, closed vocabulary/schema validation, trace summarization.
+  - ✅ Covered: scalar aggregate vocabulary, quantile probability, ordered first/last options와 invalid forms.
   - ✅ Covered: source dataset values cannot be replaced.
   - ⚠️ Partial: every transform schema leaf and every guide semantic leaf direct coverage.
 - Effect

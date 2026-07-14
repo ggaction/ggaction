@@ -13,6 +13,10 @@ import { loadCars } from "../../support/data.js";
 import { assertRenderedPNG } from "../../support/png.js";
 import { createCarsLineChartPrimitives } from "./primitive.program.js";
 import {
+  createAggregateDispersionPrimitives,
+  createAggregateMedianPrimitives,
+  createAggregateOrderedPrimitives,
+  createAggregateQuantilePrimitives,
   createConstantDashPrimitives,
   createCurveMonotoneEditPrimitives,
   createCurveStepPrimitives,
@@ -245,6 +249,81 @@ const dashPrimitiveArtifacts = Object.freeze([
   })
 ]);
 
+function aggregateTargetCallChain(aggregate) {
+  return `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 80, right: 170, bottom: 60, left: 80 }
+  })
+  .createData({ id: "cars", values: rows })
+  .createLineMark({ id: "trends" })
+  .encodeX({
+    field: "Year",
+    fieldType: "temporal",
+    scale: { nice: true }
+  })
+  .encodeY({
+    field: "Acceleration",
+    aggregate: ${aggregate},
+    scale: { nice: true, zero: false }
+  })
+  .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
+  .encodeStrokeDash({ field: "Origin" })
+  .createGuides({ axes: { y: { ticksAndLabels: { count: 6 } } } })
+  .createTitle({
+    text: "The trend of acceleration by year",
+    subtitle: "from 1970 to 1982"
+  });`;
+}
+
+const aggregatePrimitiveArtifacts = Object.freeze([
+  Object.freeze({
+    artifact: Object.freeze({
+      roadmap: "roadmap2",
+      chart: "cars-line-chart",
+      variant: "aggregate-median",
+      title: "Median Acceleration",
+      userFacingCallChain: aggregateTargetCallChain('"median"')
+    }),
+    primitive: createAggregateMedianPrimitives(cars)
+  }),
+  Object.freeze({
+    artifact: Object.freeze({
+      roadmap: "roadmap2",
+      chart: "cars-line-chart",
+      variant: "aggregate-dispersion",
+      title: "Acceleration Dispersion",
+      userFacingCallChain: aggregateTargetCallChain('"stdev"')
+    }),
+    primitive: createAggregateDispersionPrimitives(cars)
+  }),
+  Object.freeze({
+    artifact: Object.freeze({
+      roadmap: "roadmap2",
+      chart: "cars-line-chart",
+      variant: "aggregate-quantile",
+      title: "75th Percentile Acceleration",
+      userFacingCallChain: aggregateTargetCallChain(
+        '{ op: "quantile", probability: 0.75 }'
+      )
+    }),
+    primitive: createAggregateQuantilePrimitives(cars)
+  }),
+  Object.freeze({
+    artifact: Object.freeze({
+      roadmap: "roadmap2",
+      chart: "cars-line-chart",
+      variant: "aggregate-ordered",
+      title: "Acceleration at Lowest Horsepower",
+      userFacingCallChain: aggregateTargetCallChain(
+        '{ op: "first", orderBy: "Horsepower" }'
+      )
+    }),
+    primitive: createAggregateOrderedPrimitives(cars)
+  })
+]);
+
 test("renders the public and primitive line charts with visible series", async () => {
   const programs = [
     ["cars-line-chart", "user-facing", createCarsLineChart(cars)],
@@ -295,5 +374,14 @@ test("renders the public and primitive line charts with visible series", async (
         colors: ["#4c78a8"]
       });
     }
+  }
+
+  for (const { artifact, primitive } of aggregatePrimitiveArtifacts) {
+    await assertRenderedPNG(primitive, {
+      artifact: { ...artifact, kind: "primitive" },
+      width: 720,
+      height: 460,
+      colors: ["#4c78a8", "#f58518", "#e45756"]
+    });
   }
 });

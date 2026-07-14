@@ -15,6 +15,10 @@ import {
 } from "../../support/canvas.js";
 import { loadCars } from "../../support/data.js";
 import {
+  createAggregateDispersionPrimitives,
+  createAggregateMedianPrimitives,
+  createAggregateOrderedPrimitives,
+  createAggregateQuantilePrimitives,
   createConstantDashPrimitives,
   createCurveMonotoneEditPrimitives,
   createCurveStepPrimitives,
@@ -25,12 +29,17 @@ import {
 import {
   DEFAULT_DASH_PATTERNS,
   NAMED_DASH_PATTERNS,
+  createAggregatePrimitiveValues,
   createCarsLineCurvePrimitiveValues,
   createConstantDashPrimitiveValues,
   createDashReassignmentPrimitiveValues,
+  createDispersionPrimitiveValues,
   createGroupReassignmentPrimitiveValues,
+  createMedianPrimitiveValues,
   createNamedDashPrimitiveValues,
   createMonotoneReferenceCommands,
+  createOrderedPrimitiveValues,
+  createQuantilePrimitiveValues,
   createStepReferenceCommands
 } from "./phase2-reference-values.js";
 import {
@@ -366,5 +375,132 @@ test("matches approved dash and reassignment primitives with public actions", ()
     assert.deepEqual(publicContext.calls, primitiveContext.calls);
     assert.equal(publicProgram.trace.children.at(-1).op, finalAction);
     assert.deepEqual(publicProgram.actionStack, []);
+  }
+});
+
+test("locks aggregate reference values at the Year by Origin grain", () => {
+  const median = createMedianPrimitiveValues(cars);
+  const dispersion = createDispersionPrimitiveValues(cars);
+  const quantile = createQuantilePrimitiveValues(cars);
+  const ordered = createOrderedPrimitiveValues(cars);
+
+  for (const values of [median, dispersion, quantile, ordered]) {
+    assert.equal(values.validCars.length, 406);
+    assert.equal(values.aggregates.length, 36);
+    assert.deepEqual(values.origins, ["USA", "Europe", "Japan"]);
+    assert.deepEqual(values.series.map(series => series.values.length), [12, 12, 12]);
+  }
+  assert.deepEqual(
+    median.aggregates.slice(0, 6).map(item => item.value),
+    [11, 17.5, 14.75, 16.25, 14.25, 19]
+  );
+  assert.deepEqual(
+    dispersion.aggregates.slice(0, 6).map(item => item.value),
+    [
+      2.77401454487115,
+      2.786873995477131,
+      0.3535533905932738,
+      2.4958298553119898,
+      2.5663562127121624,
+      2.9025850547399985
+    ]
+  );
+  assert.deepEqual(
+    quantile.aggregates.slice(0, 6).map(item => item.value),
+    [13.75, 17.5, 14.875, 18.25, 15.5, 19.5]
+  );
+  assert.deepEqual(
+    ordered.aggregates.slice(0, 6).map(item => item.value),
+    [16, 20.5, 14.5, 19, 20.5, 20]
+  );
+});
+
+test("omits aggregate groups that do not have a required valid sample", () => {
+  const rows = [
+    { Year: "2020-01-01", Origin: "A", Acceleration: 1, Horsepower: null },
+    { Year: "2021-01-01", Origin: "A", Acceleration: 2, Horsepower: 20 },
+    { Year: "2021-01-01", Origin: "A", Acceleration: 4, Horsepower: 10 },
+    { Year: "2022-01-01", Origin: "A", Acceleration: 3, Horsepower: 30 },
+    { Year: "2022-01-01", Origin: "A", Acceleration: 5, Horsepower: 40 }
+  ];
+  const dispersion = createAggregatePrimitiveValues(rows, "stdev");
+  const ordered = createAggregatePrimitiveValues(rows, {
+    op: "first",
+    orderBy: "Horsepower"
+  });
+
+  assert.deepEqual(dispersion.aggregates.map(item => item.year), [2021, 2022]);
+  assert.deepEqual(ordered.aggregates.map(item => item.year), [2021, 2022]);
+  assert.deepEqual(ordered.aggregates.map(item => item.value), [4, 3]);
+});
+
+test("authors the four aggregate targets with concrete paths and inferred guides", () => {
+  const cases = [
+    [
+      createAggregateMedianPrimitives(cars),
+      "median",
+      "median(Acceleration)",
+      [10, 12, 14, 16, 18, 20]
+    ],
+    [
+      createAggregateDispersionPrimitives(cars),
+      "stdev",
+      "stdev(Acceleration)",
+      [0, 1, 2, 3, 4, 5, 6]
+    ],
+    [
+      createAggregateQuantilePrimitives(cars),
+      { op: "quantile", probability: 0.75 },
+      "quantile(Acceleration, 0.75)",
+      [12, 14, 16, 18, 20, 22]
+    ],
+    [
+      createAggregateOrderedPrimitives(cars),
+      { op: "first", orderBy: "Horsepower" },
+      "first(Acceleration, Horsepower ascending)",
+      [12, 15, 18, 21, 24, 27]
+    ]
+  ];
+
+  for (const [program, aggregate, title, ticks] of cases) {
+    const context = createMockCanvasContext();
+    renderCarsLineChartPrimitives(program, context);
+
+    assert.deepEqual(program.semanticSpec.layers[0].encoding.y.aggregate, aggregate);
+    assert.equal(program.semanticSpec.guides.axis.y.title, title);
+    assert.equal(program.graphicSpec.objects.yAxisTitle.properties.text, title);
+    assert.equal(program.graphicSpec.objects.trends.children.length, 3);
+    assert.deepEqual(
+      program.graphicSpec.objects.trends.children.map(child => child.properties.commands.length),
+      [12, 12, 12]
+    );
+    assert.deepEqual(
+      program.graphicSpec.objects.yAxisLabels.children.map(child => Number(child.properties.text)),
+      ticks
+    );
+    assert.equal(findCanvasCalls(context, "stroke").length > 0, true);
+    const yValues = program.graphicSpec.objects.trends.children.flatMap(child =>
+      child.properties.commands.map(command => command.y)
+    );
+    assert.equal(yValues.every(Number.isFinite), true);
+  }
+});
+
+test("keeps aggregate targets primitive-only until Gate C approval", () => {
+  for (const program of [
+    createAggregateMedianPrimitives(cars),
+    createAggregateDispersionPrimitives(cars),
+    createAggregateQuantilePrimitives(cars),
+    createAggregateOrderedPrimitives(cars)
+  ]) {
+    const operations = program.trace.children.map(node => node.op);
+    for (const futureAction of [
+      "createLineMark", "encodeX", "encodeY", "encodeColor",
+      "encodeStrokeDash", "createGuides", "createTitle"
+    ]) {
+      assert.equal(operations.includes(futureAction), false, futureAction);
+    }
+    assert.equal(operations.at(-1), "editGraphics");
+    assert.deepEqual(program.actionStack, []);
   }
 });

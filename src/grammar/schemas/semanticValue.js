@@ -11,11 +11,62 @@ import {
 } from "../scales.js";
 
 const MARK_TYPES = new Set(["point", "line", "bar", "area"]);
+const AGGREGATE_OPERATIONS = new Set([
+  "count", "sum", "mean", "median", "min", "max",
+  "distinct", "valid", "missing",
+  "variance", "varianceP", "stdev", "stdevP", "stderr",
+  "q1", "q3", "ciLower", "ciUpper"
+]);
 
 function nonEmptyString(value, label) {
   if (typeof value !== "string" || value.length === 0) {
     throw new TypeError(`${label} must be a non-empty string.`);
   }
+}
+
+function validateAggregate(value) {
+  if (typeof value === "string") {
+    if (!AGGREGATE_OPERATIONS.has(value)) {
+      throw new Error(`Unsupported aggregate "${value}".`);
+    }
+    return;
+  }
+  if (!isPlainObject(value)) {
+    throw new TypeError("Aggregate must be a supported operation or parameter object.");
+  }
+  if (value.op === "quantile") {
+    const unknown = Object.keys(value).find(
+      key => !["op", "probability"].includes(key)
+    );
+    if (unknown !== undefined) {
+      throw new Error(`Unknown quantile aggregate property "${unknown}".`);
+    }
+    if (
+      !Number.isFinite(value.probability) ||
+      value.probability < 0 ||
+      value.probability > 1
+    ) {
+      throw new RangeError("Quantile probability must be between 0 and 1.");
+    }
+    return;
+  }
+  if (value.op === "first" || value.op === "last") {
+    const unknown = Object.keys(value).find(
+      key => !["op", "orderBy", "order"].includes(key)
+    );
+    if (unknown !== undefined) {
+      throw new Error(`Unknown ordered aggregate property "${unknown}".`);
+    }
+    nonEmptyString(value.orderBy, "Ordered aggregate orderBy");
+    if (
+      value.order !== undefined &&
+      !["ascending", "descending"].includes(value.order)
+    ) {
+      throw new Error(`Unsupported ordered aggregate order "${value.order}".`);
+    }
+    return;
+  }
+  throw new Error(`Unsupported aggregate "${value.op}".`);
 }
 
 function validateFilter(transform) {
@@ -173,9 +224,7 @@ export function validateSemanticValue(program, parsed, value) {
   if (parsed.kind === "layer") {
     const property = parsed.path.join(".");
     if (property.endsWith(".fieldType")) validateSemanticFieldType(value);
-    if (property.endsWith(".aggregate") && !["mean", "count"].includes(value)) {
-      throw new Error(`Unsupported aggregate "${value}".`);
-    }
+    if (property.endsWith(".aggregate")) validateAggregate(value);
     if (
       property.endsWith(".bin.maxBins") &&
       (!Number.isInteger(value) || value <= 0)

@@ -75,7 +75,7 @@ test("validates Phase 2 semantic closed vocabularies", () => {
   assert.throws(
     () => chart().editSemantic({
       property: "layer[trends].encoding.y.aggregate",
-      value: "median"
+      value: "average"
     }),
     /Unsupported aggregate/
   );

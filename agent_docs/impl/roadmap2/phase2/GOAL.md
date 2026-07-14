@@ -16,7 +16,7 @@ legend를 구현한다.
 - [x] Canonical baseline audit와 gallery pair
 - [x] Concrete path-command 기반과 기존 path chart parity
 - [x] Curve primitive 승인과 public implementation
-- [ ] Dash/reassignment primitive 승인과 public implementation
+- [x] Dash/reassignment primitive 승인과 public implementation
 - [ ] Aggregate primitive 승인과 scalar/parameterized implementation
 - [ ] Composite legend primitive 승인과 public implementation
 - [ ] Public docs, contract 승격과 Phase closeout

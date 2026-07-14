@@ -156,6 +156,18 @@ function niceDomain(values) {
   ]);
 }
 
+function niceTicks(domain, count = 6) {
+  if (domain[0] === domain[1]) return Object.freeze([domain[0]]);
+  const step = niceStep(domain[1] - domain[0], count);
+  const ticks = [];
+  const start = Math.ceil(domain[0] / step) * step;
+  const end = Math.floor(domain[1] / step) * step;
+  for (let value = start; value <= end + step * 1e-10; value += step) {
+    ticks.push(+value.toPrecision(12));
+  }
+  return Object.freeze(ticks);
+}
+
 function linearCommands(points) {
   return freezeCommands(points.map((point, index) => ({
     op: index === 0 ? "M" : "L",
@@ -295,6 +307,157 @@ export function createDashReassignmentPrimitiveValues(cars) {
   return createSeriesValues(cars, {
     seriesField: "Cylinders",
     dashPatterns: DEFAULT_DASH_PATTERNS
+  });
+}
+
+function quantileReference(values, probability) {
+  const sorted = [...values].sort((left, right) => left - right);
+  const position = (sorted.length - 1) * probability;
+  const lower = Math.floor(position);
+  const upper = Math.ceil(position);
+  return sorted[lower] + (sorted[upper] - sorted[lower]) * (position - lower);
+}
+
+function aggregateGroup(items, aggregate) {
+  const values = items.map(item => item.row.Acceleration);
+  if (aggregate === "median") return quantileReference(values, 0.5);
+  if (aggregate === "stdev") {
+    if (values.length < 2) return undefined;
+    const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+    const variance = values.reduce(
+      (sum, value) => sum + (value - mean) ** 2,
+      0
+    ) / (values.length - 1);
+    return Math.sqrt(variance);
+  }
+  if (aggregate?.op === "quantile") {
+    return quantileReference(values, aggregate.probability);
+  }
+  if (aggregate?.op === "first") {
+    const direction = aggregate.order === "descending" ? -1 : 1;
+    const ordered = items
+      .filter(item => Number.isFinite(item.row[aggregate.orderBy]))
+      .sort((left, right) =>
+        direction * (left.row[aggregate.orderBy] - right.row[aggregate.orderBy]) ||
+        left.sourceIndex - right.sourceIndex
+      );
+    return ordered[0]?.row.Acceleration;
+  }
+  throw new Error("Unknown aggregate primitive reference.");
+}
+
+function aggregateTitle(aggregate) {
+  if (typeof aggregate === "string") return `${aggregate}(Acceleration)`;
+  if (aggregate.op === "quantile") {
+    return `quantile(Acceleration, ${aggregate.probability})`;
+  }
+  return `${aggregate.op}(Acceleration, ${aggregate.orderBy} ${aggregate.order ?? "ascending"})`;
+}
+
+export function createAggregatePrimitiveValues(
+  cars,
+  aggregate,
+  {
+    width = 720,
+    height = 460,
+    margin = { top: 80, right: 170, bottom: 60, left: 80 }
+  } = {}
+) {
+  const baseline = createCarsLineChartValues(cars, { width, height, margin });
+  const normalized = baseline.validCars.map((row, sourceIndex) => ({
+    row,
+    sourceIndex,
+    time: Date.parse(row.Year),
+    year: new Date(Date.parse(row.Year)).getUTCFullYear()
+  }));
+  const groups = new Map();
+  for (const item of normalized) {
+    const id = JSON.stringify([item.row.Origin, item.time]);
+    const group = groups.get(id) ?? [];
+    group.push(item);
+    groups.set(id, group);
+  }
+  const aggregates = [...groups.values()].flatMap(items => {
+    const value = aggregateGroup(items, aggregate);
+    return Number.isFinite(value)
+      ? [Object.freeze({
+          origin: items[0].row.Origin,
+          time: items[0].time,
+          year: items[0].year,
+          value
+        })]
+      : [];
+  });
+  if (aggregates.length === 0) {
+    throw new Error("Aggregate primitive requires at least one complete group.");
+  }
+
+  const yDomain = niceDomain(aggregates.map(item => item.value));
+  const yRange = Object.freeze([height - margin.bottom, margin.top]);
+  const yTicks = niceTicks(yDomain).map(value => Object.freeze({
+    value,
+    position: mapValue(value, yDomain, yRange),
+    label: String(value)
+  }));
+  const series = baseline.origins.flatMap(origin => {
+    const values = aggregates
+      .filter(item => item.origin === origin)
+      .sort((left, right) => left.time - right.time);
+    if (values.length < 2) return [];
+    const baselineSeries = baseline.series.find(item => item.origin === origin);
+    return [Object.freeze({
+      origin,
+      color: baselineSeries.color,
+      strokeDash: baselineSeries.strokeDash,
+      values: Object.freeze(values),
+      points: Object.freeze(values.map(item => Object.freeze({
+        x: mapValue(item.time, baseline.scales.x.domain, baseline.scales.x.range),
+        y: mapValue(item.value, yDomain, yRange)
+      })))
+    })];
+  });
+
+  return Object.freeze({
+    ...baseline,
+    aggregates: Object.freeze(aggregates),
+    series: Object.freeze(series),
+    scales: Object.freeze({
+      ...baseline.scales,
+      y: Object.freeze({ domain: yDomain, range: yRange })
+    }),
+    axes: Object.freeze({
+      ...baseline.axes,
+      y: Object.freeze({
+        ...baseline.axes.y,
+        ticks: Object.freeze(yTicks),
+        title: Object.freeze({
+          ...baseline.axes.y.title,
+          text: aggregateTitle(aggregate)
+        })
+      })
+    })
+  });
+}
+
+export function createMedianPrimitiveValues(cars) {
+  return createAggregatePrimitiveValues(cars, "median");
+}
+
+export function createDispersionPrimitiveValues(cars) {
+  return createAggregatePrimitiveValues(cars, "stdev");
+}
+
+export function createQuantilePrimitiveValues(cars) {
+  return createAggregatePrimitiveValues(cars, {
+    op: "quantile",
+    probability: 0.75
+  });
+}
+
+export function createOrderedPrimitiveValues(cars) {
+  return createAggregatePrimitiveValues(cars, {
+    op: "first",
+    orderBy: "Horsepower"
   });
 }
 

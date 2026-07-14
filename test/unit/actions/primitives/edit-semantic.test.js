@@ -117,3 +117,46 @@ test("validates semantic scale values through the primitive API", () => {
     /Unknown palette/
   );
 });
+
+test("validates aggregate semantic values needed by primitive authoring", () => {
+  const scalarOperations = [
+    "count", "sum", "mean", "median", "min", "max",
+    "distinct", "valid", "missing",
+    "variance", "varianceP", "stdev", "stdevP", "stderr",
+    "q1", "q3", "ciLower", "ciUpper"
+  ];
+  for (const aggregate of scalarOperations) {
+    const program = chart().editSemantic({
+      property: "layer[lines].encoding.y.aggregate",
+      value: aggregate
+    });
+    assert.equal(program.semanticSpec.layers[0].encoding.y.aggregate, aggregate);
+  }
+  for (const aggregate of [
+    { op: "quantile", probability: 0.75 },
+    { op: "first", orderBy: "Horsepower" },
+    { op: "last", orderBy: "Horsepower", order: "descending" }
+  ]) {
+    const program = chart().editSemantic({
+      property: "layer[lines].encoding.y.aggregate",
+      value: aggregate
+    });
+    assert.deepEqual(program.semanticSpec.layers[0].encoding.y.aggregate, aggregate);
+  }
+
+  for (const value of [
+    "average",
+    { op: "quantile", probability: -0.1 },
+    { op: "quantile", probability: 0.5, orderBy: "x" },
+    { op: "first", orderBy: "" },
+    { op: "last", orderBy: "x", order: "sideways" }
+  ]) {
+    assert.throws(
+      () => chart().editSemantic({
+        property: "layer[lines].encoding.y.aggregate",
+        value
+      }),
+      /aggregate|probability|orderBy|property|order/i
+    );
+  }
+});

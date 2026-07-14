@@ -128,6 +128,11 @@ No-valid-sample group은 graphic을 만들지 않는다. Sample dispersion/CI는
 Explicit axis title은 보존하고 inferred title은 aggregate 표현으로 갱신한다. Full-row min/max selection은 이
 scalar aggregate가 아니라 Roadmap 2 Phase 9의 `selectRows`가 소유한다.
 
+Gate C primitive의 inferred title target은 scalar operation에 `${op}(Acceleration)`, quantile에
+`quantile(Acceleration, 0.75)`, ordered selection에
+`first(Acceleration, Horsepower ascending)`을 사용한다. Parameter를 title에 남겨 같은 field의 서로 다른
+aggregate semantics를 구분한다.
+
 ## Composite legend 계약
 
 Line과 point layer는 item-local origin을 공유하고 declared layer order로 겹친다. Item bounds는 모든 layer의
