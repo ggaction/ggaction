@@ -155,6 +155,7 @@
 - Every Phase STEP document must place a `진행 상태` checklist near the beginning and keep it updated. Phase documents should link the chart contracts they coordinate, but must not split one chart's complete specification across STEP files.
 - For Roadmap 2 visual work, author the graphical primitive variant first, render its browser/PNG result, and pause for user confirmation before implementing the corresponding user-facing action flow. Revise and reconfirm the primitive when feedback changes the intended appearance.
 - Store Roadmap 2 visual pairs under `.artifacts/test/png/roadmap2/<chart>/<variant>/primitive.png` and `user-facing.png`. Generate a hierarchical Roadmap 2 gallery from those artifacts; keep the entire artifact tree gitignored.
+- Give every Roadmap 2 visual variant one generated `variant.json` containing its display title and exact target user-facing action call chain. Show that chain beside the primitive/public pair in the gallery, and reject metadata drift between the two render paths.
 - Preserve `agent_docs/INITIAL_ARCHITECTURE.md` as an initial design record unless the user explicitly asks to revise it; it does not need to mirror every later implementation decision.
 - Keep historical design references distinct from documentation of the current behavior.
 

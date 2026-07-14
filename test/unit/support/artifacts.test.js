@@ -6,8 +6,10 @@ import test from "node:test";
 
 import {
   PNG_ARTIFACT_ROOT,
+  createRoadmap2VariantMetadata,
   resolvePngArtifactPath
 } from "../../support/artifact-paths.js";
+import { ensureRoadmap2VariantMetadata } from "../../support/artifact-metadata.js";
 import { resetPngArtifacts } from "../../support/artifacts.js";
 import {
   collectRoadmap2Variants,
@@ -24,6 +26,21 @@ async function temporaryDirectory(t) {
 async function createArtifact(root, chart, variant, kind) {
   const directory = path.join(root, chart, variant);
   await mkdir(directory, { recursive: true });
+  try {
+    await writeFile(
+      path.join(directory, "variant.json"),
+      `${JSON.stringify({
+        version: 1,
+        chart,
+        variant,
+        title: `${chart} ${variant}`,
+        userFacingCallChain: `chart().createPointMark({ id: "${chart}" });`
+      }, null, 2)}\n`,
+      { flag: "wx" }
+    );
+  } catch (error) {
+    if (error.code !== "EEXIST") throw error;
+  }
   await writeFile(path.join(directory, `${kind}.png`), "png");
 }
 
@@ -93,6 +110,46 @@ test("rejects ambiguous, unknown, and unsafe artifact paths", () => {
   );
 });
 
+test("requires and preserves target call-chain metadata", async t => {
+  const root = await temporaryDirectory(t);
+  const artifact = {
+    roadmap: "roadmap2",
+    chart: "cars-scatterplot",
+    variant: "scale-policies",
+    kind: "primitive",
+    title: "Scale Policies",
+    userFacingCallChain: "chart().editScale({ id: \"x\", reverse: true });"
+  };
+  assert.deepEqual(createRoadmap2VariantMetadata(artifact), {
+    version: 1,
+    chart: "cars-scatterplot",
+    variant: "scale-policies",
+    title: "Scale Policies",
+    userFacingCallChain: "chart().editScale({ id: \"x\", reverse: true });"
+  });
+  assert.throws(
+    () => createRoadmap2VariantMetadata({
+      ...artifact,
+      userFacingCallChain: " "
+    }),
+    /userFacingCallChain must be a non-empty string/
+  );
+
+  const first = await ensureRoadmap2VariantMetadata(artifact, { root });
+  const repeated = await ensureRoadmap2VariantMetadata(
+    { ...artifact, kind: "user-facing" },
+    { root }
+  );
+  assert.deepEqual(repeated.metadata, first.metadata);
+  await assert.rejects(
+    ensureRoadmap2VariantMetadata(
+      { ...artifact, kind: "user-facing", title: "Conflicting title" },
+      { root }
+    ),
+    /Conflicting Roadmap 2 metadata/
+  );
+});
+
 test("recursively resets nested PNG artifacts", async t => {
   const root = await temporaryDirectory(t);
   await createArtifact(root, "chart", "variant", "primitive");
@@ -137,17 +194,34 @@ test("rejects a user-facing artifact without its primitive", async t => {
   );
 });
 
+test("requires metadata beside every visible primitive", async t => {
+  const root = await temporaryDirectory(t);
+  const directory = path.join(root, "chart", "variant");
+  await mkdir(directory, { recursive: true });
+  await writeFile(path.join(directory, "primitive.png"), "png");
+
+  await assert.rejects(
+    collectRoadmap2Variants(root),
+    /missing variant\.json/
+  );
+});
+
 test("renders an escaped responsive gallery and writes relative image paths", async t => {
   const escaped = renderRoadmap2Gallery([{
     chart: "<unsafe>",
     variant: "a&b",
+    title: "<Title>",
+    userFacingCallChain: "chart().encodeX({ field: \"a&b\" });",
     primitive: "./a&b/primitive.png",
     userFacing: null,
     status: "Awaiting visual confirmation"
   }]);
   assert.doesNotMatch(escaped, /<unsafe>/);
   assert.match(escaped, /&lt;unsafe&gt;/);
+  assert.match(escaped, /&lt;Title&gt;/);
   assert.match(escaped, /a&amp;b/);
+  assert.match(escaped, /Target user-facing call chain/);
+  assert.match(escaped, /chart\(\)\.encodeX/);
   assert.match(escaped, /@media \(max-width: 760px\)/);
 
   const root = await temporaryDirectory(t);
@@ -162,4 +236,5 @@ test("renders an escaped responsive gallery and writes relative image paths", as
   assert.match(html, /Roadmap 2 Visual Gallery/);
   assert.match(html, /\.\/cars-scatterplot\/baseline\/primitive\.png/);
   assert.match(html, /\.\/cars-scatterplot\/baseline\/user-facing\.png/);
+  assert.match(html, /Target user-facing call chain/);
 });

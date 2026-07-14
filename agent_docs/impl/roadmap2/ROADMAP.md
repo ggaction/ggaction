@@ -51,13 +51,15 @@ test로 exhaustive하게 검증하고, 실제 모양이 달라지는 대표 equi
 .artifacts/test/png/roadmap2/
 ├─ <chart>/
 │  ├─ <variant>/
+│  │  ├─ variant.json
 │  │  ├─ primitive.png
 │  │  └─ user-facing.png
 │  └─ ...
 └─ index.html
 ```
 
-- `index.html`은 chart → variant 순서로 그룹화하고 primitive/user-facing을 나란히 보여준다.
+- `variant.json`은 display title과 목표 user-facing action call chain을 보관한다.
+- `index.html`은 chart → variant 순서로 그룹화하고 목표 call chain과 primitive/user-facing을 함께 보여준다.
 - PNG helper는 안전한 relative artifact path와 recursive directory creation을 지원한다.
 - Artifact tree 전체는 gitignore하며 test가 재현 가능하게 생성한다.
 - Primitive만 존재하면 `Awaiting visual confirmation`, 두 파일이 있으면 equivalence 상태를 표시한다.
@@ -66,7 +68,8 @@ test로 exhaustive하게 검증하고, 실제 모양이 달라지는 대표 equi
 
 - Hierarchical Roadmap 2 PNG output helper와 cleanup을 구현한다.
 - Primitive/public pair를 읽는 deterministic static gallery generator를 구현한다.
-- Variant metadata는 test/chart/variant의 canonical ID에서 생성하고 별도 수동 registry를 두지 않는다.
+- Variant metadata는 render test가 canonical ID, title과 목표 user-facing call chain에서 생성하고
+  별도 수동 registry를 두지 않는다. 같은 variant의 primitive/public metadata는 반드시 일치한다.
 - Roadmap의 모든 Planned action/capability가 빠짐없이 named implementation Phase에 배치됐는지
   contract test로 검증한다.
 - `editScale` parameter, conflict와 rematerialization contract를 사용자와 확정한다. 이 결정 전에는

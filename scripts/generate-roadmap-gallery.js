@@ -1,10 +1,11 @@
-import { access, mkdir, readdir, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import {
   ROADMAP2_ARTIFACT_ROOT,
-  resolvePngArtifactPath
+  resolvePngArtifactPath,
+  validateRoadmap2VariantMetadata
 } from "../test/support/artifact-paths.js";
 
 function compareText(left, right) {
@@ -54,6 +55,7 @@ export async function collectRoadmap2Variants(
       });
       const primitive = path.join(root, chart, variant, "primitive.png");
       const userFacing = path.join(root, chart, variant, "user-facing.png");
+      const metadataFile = path.join(root, chart, variant, "variant.json");
       const hasPrimitive = await exists(primitive);
       const hasUserFacing = await exists(userFacing);
       if (!hasPrimitive && !hasUserFacing) continue;
@@ -62,10 +64,29 @@ export async function collectRoadmap2Variants(
           `Roadmap 2 artifact ${chart}/${variant} has user-facing.png without primitive.png.`
         );
       }
+      if (!(await exists(metadataFile))) {
+        throw new Error(
+          `Roadmap 2 artifact ${chart}/${variant} is missing variant.json.`
+        );
+      }
+      let metadata;
+      try {
+        metadata = validateRoadmap2VariantMetadata(
+          JSON.parse(await readFile(metadataFile, "utf8")),
+          { chart, variant }
+        );
+      } catch (error) {
+        throw new Error(
+          `Invalid Roadmap 2 metadata for ${chart}/${variant}.`,
+          { cause: error }
+        );
+      }
 
       variants.push(Object.freeze({
         chart,
         variant,
+        title: metadata.title,
+        userFacingCallChain: metadata.userFacingCallChain,
         primitive: `./${chart}/${variant}/primitive.png`,
         userFacing: hasUserFacing
           ? `./${chart}/${variant}/user-facing.png`
@@ -95,10 +116,14 @@ export function renderRoadmap2Gallery(variants) {
         : `<div class="placeholder"><span>User-facing</span><strong>Waiting for primitive approval</strong></div>`;
       return `<article class="variant">
         <div class="variant-heading">
-          <h3>${escapeHtml(displayName(item.variant))}</h3>
+          <h3>${escapeHtml(item.title)}</h3>
           <span class="status ${ready ? "ready" : "awaiting"}">${escapeHtml(item.status)}</span>
         </div>
         <code>${escapeHtml(`${chart}/${item.variant}`)}</code>
+        <div class="call-chain">
+          <div class="call-chain-label">Target user-facing call chain</div>
+          <pre><code>${escapeHtml(item.userFacingCallChain)}</code></pre>
+        </div>
         <div class="pair">
           <figure><figcaption>Primitive</figcaption><img src="${escapeHtml(item.primitive)}" alt="${escapeHtml(`${chart} ${item.variant} primitive`)}"></figure>
           ${publicFigure}
@@ -132,6 +157,10 @@ export function renderRoadmap2Gallery(variants) {
     .variant-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .variant h3 { margin: 0; font-size: 19px; }
     code { display: inline-block; margin: 8px 0 16px; color: #526078; }
+    .call-chain { margin: 0 0 18px; overflow: hidden; border: 1px solid #dce2eb; border-radius: 12px; background: #111827; }
+    .call-chain-label { padding: 9px 12px; border-bottom: 1px solid #334155; color: #cbd5e1; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    .call-chain pre { margin: 0; padding: 14px; overflow-x: auto; color: #e2e8f0; font: 13px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .call-chain code { display: inline; margin: 0; color: inherit; }
     .status { padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
     .status.ready { color: #166534; background: #dcfce7; }
     .status.awaiting { color: #92400e; background: #fef3c7; }

@@ -35,6 +35,15 @@ try {
   if (await desktop.locator(".status.ready").count() === 0) {
     throw new Error("Roadmap 2 gallery has no complete primitive/public pair.");
   }
+  const callChains = desktop.locator(".call-chain pre code");
+  if (await callChains.count() !== await desktop.locator("article.variant").count()) {
+    throw new Error("Every Roadmap 2 variant must show one target call chain.");
+  }
+  for (let index = 0; index < await callChains.count(); index += 1) {
+    if ((await callChains.nth(index).textContent()).trim().length === 0) {
+      throw new Error(`Gallery call chain ${index} is empty.`);
+    }
+  }
   const images = desktop.locator("img");
   for (let index = 0; index < await images.count(); index += 1) {
     const loaded = await images.nth(index).evaluate(
@@ -62,6 +71,10 @@ try {
   );
   if (mobileColumns !== 1) {
     throw new Error("Mobile gallery must render a one-column pair.");
+  }
+  const mobileCallChain = mobile.locator(".call-chain pre").first();
+  if (await mobileCallChain.count() !== 1) {
+    throw new Error("Mobile gallery must retain the target call chain.");
   }
   await mobile.screenshot({
     path: path.join(screenshots, "mobile.png"),

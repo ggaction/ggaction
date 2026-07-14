@@ -28,7 +28,14 @@ function assertArtifactKeys(artifact) {
   ) {
     throw new TypeError("artifact must be an object.");
   }
-  const allowed = new Set(["roadmap", "chart", "variant", "kind"]);
+  const allowed = new Set([
+    "roadmap",
+    "chart",
+    "variant",
+    "kind",
+    "title",
+    "userFacingCallChain"
+  ]);
   for (const key of Object.keys(artifact)) {
     if (!allowed.has(key)) {
       throw new TypeError(`Unknown artifact option "${key}".`);
@@ -66,4 +73,69 @@ export function resolvePngArtifactPath({ name, artifact } = {}) {
     variant,
     `${artifact.kind}.png`
   );
+}
+
+function assertNonEmptyText(value, label) {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw new TypeError(`${label} must be a non-empty string.`);
+  }
+  return value;
+}
+
+export function createRoadmap2VariantMetadata(artifact) {
+  resolvePngArtifactPath({ artifact });
+  return Object.freeze({
+    version: 1,
+    chart: artifact.chart,
+    variant: artifact.variant,
+    title: assertNonEmptyText(artifact.title, "artifact.title"),
+    userFacingCallChain: assertNonEmptyText(
+      artifact.userFacingCallChain,
+      "artifact.userFacingCallChain"
+    )
+  });
+}
+
+export function validateRoadmap2VariantMetadata(
+  metadata,
+  { chart, variant }
+) {
+  if (
+    metadata === null ||
+    typeof metadata !== "object" ||
+    Array.isArray(metadata)
+  ) {
+    throw new TypeError("Roadmap 2 variant metadata must be an object.");
+  }
+  const expectedKeys = [
+    "version",
+    "chart",
+    "variant",
+    "title",
+    "userFacingCallChain"
+  ];
+  const keys = Object.keys(metadata).sort();
+  if (
+    keys.length !== expectedKeys.length ||
+    !expectedKeys.every(key => keys.includes(key))
+  ) {
+    throw new TypeError("Roadmap 2 variant metadata has unknown or missing keys.");
+  }
+  if (metadata.version !== 1) {
+    throw new TypeError("Roadmap 2 variant metadata version must be 1.");
+  }
+  if (metadata.chart !== chart || metadata.variant !== variant) {
+    throw new TypeError(
+      `Roadmap 2 metadata identity must match ${chart}/${variant}.`
+    );
+  }
+
+  return createRoadmap2VariantMetadata({
+    roadmap: "roadmap2",
+    chart,
+    variant,
+    kind: "primitive",
+    title: metadata.title,
+    userFacingCallChain: metadata.userFacingCallChain
+  });
 }
