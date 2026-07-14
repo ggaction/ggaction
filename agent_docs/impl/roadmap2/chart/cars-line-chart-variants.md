@@ -169,3 +169,9 @@ encodeY(aggregate replacement)
 - Reassignment와 edit는 target inference, ambiguity, conflict, immutability와 atomic failure를 검증한다.
 - Aggregate numeric reference는 production materializer와 독립적이다.
 - Public declarations, examples, tutorials, API reference와 contract catalog가 일치한다.
+
+## Phase 2 closeout
+
+2026-07-15에 13개 variant의 primitive/public pair, exact Canvas-call equivalence, numeric aggregate fixtures,
+action-order convergence, rematerialization, inference, immutability, catalog와 public documentation 검증을
+완료했다. Roadmap 2 gallery에서 모든 line-chart variant는 pair-complete 상태다.

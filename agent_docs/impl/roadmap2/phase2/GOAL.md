@@ -18,8 +18,8 @@ legend를 구현한다.
 - [x] Curve primitive 승인과 public implementation
 - [x] Dash/reassignment primitive 승인과 public implementation
 - [x] Aggregate scalar와 parameterized operation 구현
-- [ ] Composite legend primitive 승인과 public implementation
-- [ ] Public docs, contract 승격과 Phase closeout
+- [x] Composite legend primitive 승인과 public implementation
+- [x] Public docs, contract 승격과 Phase closeout
 
 ## 구현 범위
 
