@@ -121,6 +121,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | parameter | Position field-type compatibility | accepted | [Open](planned/ENCODINGS.md#position-field-type-compatibility) |
 | parameter | Normalized stack mode | accepted | [Open](planned/ENCODINGS.md#normalized-stack-mode) |
 | parameter | Density kernel vocabulary | accepted | [Open](planned/DATA_AND_STATISTICS.md#density-kernel-vocabulary) |
+| parameter | Density normalization modes | accepted | [Open](planned/DATA_AND_STATISTICS.md#density-normalization-modes) |
 | parameter | Filter predicate modes | accepted | [Open](planned/DATA_AND_STATISTICS.md#filter-predicate-modes) |
 | parameter | Regression method vocabulary | accepted | [Open](planned/DATA_AND_STATISTICS.md#regression-method-vocabulary) |
 | parameter | Regression prediction interval | accepted | [Open](planned/DATA_AND_STATISTICS.md#regression-prediction-interval) |

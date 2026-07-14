@@ -286,6 +286,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     "Position field-type compatibility",
     "Normalized stack mode",
     "Density kernel vocabulary",
+    "Density normalization modes",
     "Filter predicate modes",
     "Regression method vocabulary",
     "Regression prediction interval",
@@ -378,6 +379,8 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /unknown\?: unknown/);
   assert.match(plannedCorpus, /type DensityKernel =/);
   assert.match(plannedCorpus, /sum\(K\(u\)\) \/ \(n \* bandwidth\)/);
+  assert.match(plannedCorpus, /type DensityNormalization = "unit" \| "count"/);
+  assert.match(plannedCorpus, /`"count"` estimate는 `sum\(K\(u\)\) \/ bandwidth`/);
   assert.match(plannedCorpus, /type FilterComparison =/);
   assert.match(plannedCorpus, /oneOf.*predicate.*range.*정확히 하나/);
   assert.match(plannedCorpus, /type RegressionMethod = "linear" \| "polynomial" \| "loess"/);

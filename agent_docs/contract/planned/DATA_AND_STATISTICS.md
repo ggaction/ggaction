@@ -25,6 +25,28 @@ type DensityKernel =
 - Status: Planned, NOT IMPLEMENTED. kernel formula fixtures, default/invalid values, grouped/ungrouped
   estimates, provenance, edit revision과 browser/PNG path parity coverage가 필요하다.
 
+## density normalization modes
+
+```typescript
+type DensityNormalization = "unit" | "count";
+```
+
+- `createDensityData.normalization`, `encodeDensity.normalization`과 `editDensity.normalization`은 같은
+  closed vocabulary를 사용하며 생략 default는 `"unit"`이다. Resolved value는 transform provenance에
+  저장하고 downstream action이 다시 추론하지 않는다.
+- 한 group의 valid finite sample 수를 `n`, kernel input을 `u = (x - sample) / bandwidth`라고 할 때
+  `"unit"` estimate는 `sum(K(u)) / (n * bandwidth)`다. 전체 실수축에서 적분이 1인 group-local
+  probability-density scaling이며 y 값 자체를 probability로 해석하지 않는다.
+- `"count"` estimate는 `sum(K(u)) / bandwidth`, 즉 같은 sample grid의 unit estimate에 `n`을 곱한다.
+  전체 실수축 적분은 group의 valid sample count이며 grouped density는 각 group의 own count를 사용한다.
+- Extent는 output sample grid만 제한하고 normalization denominator를 바꾸지 않는다. Truncated extent에서
+  materialized path의 visible area가 target integral보다 작아도 남은 sample을 다시 renormalize하지 않는다.
+- `encodeDensity`는 값을 wrapped `createDensityData`로 전달하고 resulting density scale, area path,
+  axes와 grids를 materialize한다. Planned `editDensity` 변경은 immutable derived-data revision을 만들고
+  같은 consumers를 deterministic plan으로 rematerialize한다.
+- Status: Planned, NOT IMPLEMENTED. grouped/ungrouped exact formulas, default/invalid value, truncated extent,
+  provenance, edit revision, density scale/guide updates와 browser/PNG parity coverage가 필요하다.
+
 ## filter predicate modes
 
 ```typescript

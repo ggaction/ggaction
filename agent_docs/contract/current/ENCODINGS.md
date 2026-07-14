@@ -260,7 +260,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 ## `encodeDensity`
 
-- Signature: `encodeDensity({ field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?, as?, densityChannel?, coordinate?, valueScale?, densityScale? })`
+- Signature: `encodeDensity({ field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, coordinate?, valueScale?, densityScale? })`
 - `field`, `source`, `groupBy`, `bandwidth`, `extent`, `steps`, `as`: `createDensityData`와 같은 계약이며
   derived ID는 `${target}DensityData`로 namespace된다.
 - `kernel`: Planned shared density kernel이며 생략 시 Gaussian이다.
@@ -278,8 +278,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeDensity`
 
 - Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale })`
-- Planned (NOT IMPLEMENTED): `{ kernel?: DensityKernel }`; default는 `"gaussian"`이다.
-- Proposed (NOT IMPLEMENTED): `{ normalization?: "density" | "count" }`
+- Planned (NOT IMPLEMENTED): `{ kernel?: DensityKernel; normalization?: "unit" | "count" }`; defaults는 `"gaussian"`과 `"unit"`이다.
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeDensity`
 
@@ -297,7 +297,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ⚠️ Partial: reversed ranges and explicit density domain excluding zero across both orientations.
 - 🟡 Planned: shared `"gaussian" | "epanechnikov" | "uniform" | "triangular"` kernel grammar,
   provenance and derived revision behavior.
-- 🟣 Proposed: `"density" | "count"` normalization mode.
+- 🟡 Planned: `"unit" | "count"` normalization forwarding, provenance and density-scale rematerialization.
 - Evidence: density encoding/data/mark/chart tests.
 
 ## `encodeColor`

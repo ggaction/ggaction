@@ -187,7 +187,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createDensityData`
 
-- Signature: `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, as? })`
+- Signature: `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as? })`
 - `id`, `source`, `field`, `groupBy`: Implemented. 새 derived ID, existing source, 필수 quantitative
   field와 optional grouping field다.
 - `bandwidth`
@@ -216,8 +216,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `createDensityData`
 
 - Implemented: `createDensityData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; as?: readonly [FieldName, FieldName] })`
-- Planned (NOT IMPLEMENTED): `{ kernel?: DensityKernel }`; default는 `"gaussian"`이다.
-- Proposed (NOT IMPLEMENTED): `{ normalization?: "density" | "count" }`
+- Planned (NOT IMPLEMENTED): `{ kernel?: DensityKernel; normalization?: "unit" | "count" }`; defaults는 `"gaussian"`과 `"unit"`이다.
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createDensityData`
 
@@ -235,7 +235,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `as`
   - ✅ Covered: inferred names, two explicit names, wrong cardinality/invalid names rejection.
 - 🟡 Planned: shared `DensityKernel`, Gaussian default, alternate formula fixtures와 provenance.
-- 🟣 Proposed: `"density" | "count"` normalization mode.
+- 🟡 Planned: `"unit" | "count"` normalization, unit default, group-local scaling과 provenance.
 - Evidence: `test/unit/actions/data/density-data.test.js`,
   `test/charts/density-area/reference-values.test.js`.
 

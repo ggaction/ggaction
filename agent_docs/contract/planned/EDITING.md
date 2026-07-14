@@ -46,13 +46,14 @@ editDensity({
   extent?: "auto" | OrderedFinitePair;
   steps?: IntegerAtLeast2;
   kernel?: DensityKernel;
+  normalization?: DensityNormalization;
 }): ChartProgram;
 ```
 
 - `target`은 existing density-encoded area layer selector다. eligible layer가 유일하면 생략할
   수 있고 여러 개면 explicit target이 필요하다. target 외 최소 한 변경값을 요구한다.
 - 기존 density transform provenance에서 source, input field, groupBy와 output fields를 유지하고
-  bandwidth/extent/steps/kernel 중 전달된 값만 교체한다. densityChannel, coordinate와
+  bandwidth/extent/steps/kernel/normalization 중 전달된 값만 교체한다. densityChannel, coordinate와
   value/density scale binding도 유지한다.
 - 기존 derived dataset values를 덮어쓰지 않는다. `${target}DensityDataRevision${n}` 형태의
   deterministic namespaced 새 ID로 `createDensityData`를 호출하고 area layer를 explicit wrapped
