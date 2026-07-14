@@ -340,7 +340,7 @@ editVerticalGrid(options: EditGridOptions): ChartProgram;
 ```typescript
 editLegend({
   target?: UserId;
-  position?: "right" | "bottom" | "top";
+  position?: "right" | "bottom" | "top" | "left";
   align?: "left" | "center" | "right";
   direction?: "horizontal" | "vertical";
   columns?: PositiveInteger;
@@ -362,8 +362,9 @@ editLegend({
   부분 수정하며 nested text style은 전달된 leaf를 기존 stored style에 merge한다.
 - title 생략은 기존 값을 유지하고, string은 custom title, `"auto"`는 encoding provenance 기반
   inference 복원, `false`는 title graphic을 숨긴다.
-- position과 layout 값은 기존 legend kind가 지원해야 한다. categorical legend는 현재
-  right/bottom/top을 지원하지만 point composite legend는 right만 지원한다.
+- position과 layout 값은 기존 legend kind가 지원해야 한다. Planned left position은 categorical,
+  point composite와 size legend를 지원하고 right-side layout을 mirror한다. point composite의
+  top/bottom position은 계속 지원하지 않는다.
 - action은 내부 wrapped `rematerializeLegend`를 호출한다. compatible point size block에서
   `count`가 바뀌면 stored count를 갱신하고 `rematerializeSizeLegend`도 호출한다.
 - overlap, margin 부족, incompatible option과 없는/ambiguous target은 명확한 오류다.
@@ -375,6 +376,7 @@ editLegend({
 editTitle({
   text?: NonEmptyString;
   subtitle?: NonEmptyString | false;
+  position?: "top" | "bottom" | "left" | "right";
   align?: "left" | "center" | "right";
   offset?: Finite;
   gap?: NonNegativeFinite;
@@ -389,8 +391,8 @@ editTitle({
   교체하며 `subtitle: false`는 semantic subtitle과 concrete subtitle graphic을 제거한다.
 - `titleStyle`과 `subtitleStyle`은 전달한 style leaf만 기존 stored style에 merge한다.
   생략한 style leaf는 유지한다.
-- `align`, `offset`, `gap`과 style은 graphical materialization config를 갱신한다. 현재 유일한
-  title position이 `"top"`이므로 `position`은 edit parameter에 포함하지 않는다.
+- `position`, `align`, `offset`, `gap`과 style은 graphical materialization config를 갱신한다.
+  position 변경은 같은 title resource를 새 edge에서 rematerialize하며 semantic text는 유지한다.
 - action은 내부 wrapped `rematerializeTitle`을 호출해 최신 Canvas, margin, title config로
   concrete text를 다시 만든다. title/legend overlap이나 margin 부족은 layout error다.
 - 기존 `ChartProgram`은 변경하지 않고 새로운 program을 반환하며 `editTitle` 아래에 semantic,
@@ -488,6 +490,11 @@ editTitle({
 | Filter predicate modes | `filterData` | Planned | Accepted |
 | Regression method vocabulary | `createRegressionData`, `createRegression` | Planned | Accepted |
 | Regression prediction interval | `createRegressionData`, `createRegression` | Planned | Accepted |
+| Top x axis position | `createAxes`, x-axis create/edit actions | Planned | Accepted |
+| Right y axis position | `createAxes`, y-axis create/edit actions | Planned | Accepted |
+| Axis label format strings | axis label create/edit actions | Planned | Accepted |
+| Left legend position | `createLegend`, `editLegend`, `createGuides` | Planned | Accepted |
+| Chart title positions | `createTitle`, `editTitle` | Planned | Accepted |
 
 ### Planned contract: point shape vocabulary
 
@@ -732,6 +739,80 @@ type RegressionMethod = "linear" | "polynomial" | "loess";
   line-only를 의미하며 false도 허용하지만 object band는 오류다.
 - Status: Planned, NOT IMPLEMENTED. mean/prediction inequality, confidence boundaries, polynomial
   leverage, band opt-out, LOESS rejection과 semantic/graphic provenance coverage가 필요하다.
+
+### Planned contract: mirrored Cartesian axis positions
+
+- x-axis position은 existing `"bottom"`과 Planned `"top"`, y-axis position은 existing `"left"`와
+  Planned `"right"`를 사용한다. 생략 default는 bottom/left를 유지한다.
+- `createXAxis`/`createYAxis`와 parent `createAxes`는 선택한 position을 line, ticks/labels와 title
+  child에 전달한다. 모든 대응 leaf create/edit action도 같은 channel vocabulary를 공유한다.
+- top tick은 plot에서 위쪽, right tick은 오른쪽을 향한다. label/title offset은 해당 edge에서
+  바깥쪽으로 적용한다. top x title 기본 rotation은 `0`, right y title 기본 rotation은
+  `Math.PI / 2`이며 explicit rotation은 항상 우선한다.
+- 현재 channel당 semantic axis 하나라는 제한은 유지한다. position은 기존 axis resource의 edge를
+  정하며 한 channel에 top+bottom 또는 left+right axis를 동시에 생성하지 않는다.
+- leaf action을 직접 사용하면 component별 edge를 명시할 수 있지만 complete-axis action은 모든 child에
+  한 position을 적용한다. component occupied bounds는 해당 Canvas margin 안에 들어가야 한다.
+- Canvas 또는 scale 변경과 position edit은 line, ticks, labels와 title의 concrete geometry를
+  deterministic plan으로 rematerialize한다. coordinate와 scale binding은 바뀌지 않는다.
+- Status: Planned, NOT IMPLEMENTED. complete/leaf create/edit, outward geometry, default rotations,
+  insufficient top/right margins와 Canvas/scale rematerialization coverage가 필요하다.
+
+### Planned contract: axis label format strings
+
+```typescript
+type AxisFormatString =
+  | ".0f" | ".1f" | ".2f"
+  | ".0%" | ".1%"
+  | ".2e"
+  | "%Y" | "%Y-%m" | "%Y-%m-%d";
+```
+
+- existing `"auto"`와 `{ decimals: NonNegativeInteger }`를 유지하고 shared axis-label formatter가
+  Planned strings를 추가한다. create/edit label leaf와 ticks-and-labels aggregate가 같은 grammar를 쓴다.
+- `.nf`는 locale-independent fixed decimals, `.n%`는 value에 100을 곱한 fixed decimals와 `%`,
+  `.2e`는 두 자리 exponential notation을 만든다. quantitative scale에서만 허용한다.
+- `%Y`, `%Y-%m`, `%Y-%m-%d`는 UTC calendar fields를 zero-pad해 조합하며 time scale에서만 허용한다.
+  ordinal scale은 계속 `"auto"`만 허용한다.
+- arbitrary format string과 formatter callback은 허용하지 않는다. stored format token은 graphical guide
+  config에 남고 browser/Node renderer가 아니라 shared formatter가 concrete text를 생성한다.
+- format edit은 tick values와 semantic guide를 바꾸지 않고 label text와 occupied bounds만
+  rematerialize한다. 새 text가 margin에 맞지 않으면 layout error다.
+- Status: Planned, NOT IMPLEMENTED. 각 token, negative/zero/large number, UTC boundary, wrong-scale,
+  edit switching과 browser/PNG text parity coverage가 필요하다.
+
+### Planned contract: left legend position
+
+- `createLegend.position`과 Planned `editLegend.position`은 existing `"right" | "bottom" | "top"`에
+  `"left"`를 추가한다. chart-independent default는 계속 `"right"`다.
+- left는 right-side block geometry를 mirror하고 plot left edge에서 `offset`만큼 바깥에 둔다.
+  item 내부 symbol→label order와 domain order는 유지하며 multiple legend block은 deterministic
+  top-to-bottom order를 사용한다.
+- categorical, point composite와 quantitative size block을 지원한다. 첫 left contract는 side-layout
+  parity를 위해 `align: "center"`, vertical flow만 허용하며 point composite top/bottom은 여전히 지원하지 않는다.
+- titlePosition, symbol recipes, labels/titleStyle, itemGap, border와 count는 기존 계약을 그대로 사용한다.
+  left margin의 actual occupied bounds를 검증하고 title/chart/다른 legend와 겹치면 오류다.
+- Canvas resize, scale/domain, symbol recipe 또는 position edit은 legend와 size block을 rematerialize한다.
+  semantic channels, scale binding과 item order는 유지한다.
+- Status: Planned, NOT IMPLEMENTED. categorical/composite/size parity, position edits, border/title variants,
+  multiple blocks, insufficient margin와 Canvas rematerialization coverage가 필요하다.
+
+### Planned contract: chart title positions
+
+- `createTitle.position`과 Planned `editTitle.position`은 `"top" | "bottom" | "left" | "right"`를
+  사용하며 default는 existing `"top"`이다.
+- top/bottom은 rotation 0, left는 `-Math.PI / 2`, right는 `Math.PI / 2`를 사용한다. title과 subtitle은
+  하나의 rotated block으로 배치하고 gap/style contract는 유지한다.
+- top/bottom에서 align left/center/right는 plot x start/center/end다. left/right에서는 같은 vocabulary를
+  edge 진행 방향의 start(top)/center/end(bottom)로 해석한다.
+- offset은 existing top behavior를 보존하는 signed Canvas-axis translation이다. top/bottom에서는 y,
+  left/right에서는 x에 더한다. position edit은 semantic text를 유지하고 graphical config와 concrete
+  title/subtitle coordinates만 갱신한다.
+- actual rotated occupied bounds가 해당 margin 안에 들어가야 하며 같은 edge의 legend 또는 다른 reserved
+  block과 겹치면 오류다. library가 Canvas나 margin을 자동 확장하거나 다른 edge로 이동하지 않는다.
+- wrapping, maxWidth와 lineHeight는 이 position contract에 포함하지 않고 Proposed로 유지한다.
+- Status: Planned, NOT IMPLEMENTED. four positions, align/offset/rotation, subtitle blocks, edit transitions,
+  collision/margin errors와 Canvas rematerialization coverage가 필요하다.
 
 ## Internal materialization inventory
 
@@ -1225,12 +1306,13 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - `scale`: optional scale ID. 생략하면 channel ID를 사용하거나 parent `createAxes`가 유일한 scale을 전달한다.
 - `coordinate`: optional existing coordinate ID. 선택 channel/scale을 소비하는 layer가 실제로 연결돼야 한다.
-- `position`: x는 현재 `"bottom"`, y는 `"left"`만 지원한다.
+- `position`: x는 Implemented `"bottom"`과 Planned `"top"`, y는 Implemented `"left"`와 Planned
+  `"right"`를 사용하며 defaults는 bottom/left다.
 - `line`: `{ color?, lineWidth? }`; axis-line child에 전달한다.
 - `ticksAndLabels`: `{ count?, values?, ticks?, labels? }`; shared tick/label child에 전달한다.
 - `title`: `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }`.
 - Effect: line → ticks/labels → title wrapped action 순서로 semantic guide와 concrete graphics를 만든다.
-- Proposed: x top, y right positions는 현재 API로 확정되지 않았다.
+- Planned: complete axis는 선택한 top/right position을 모든 child action에 전달한다.
 
 #### `createAxes`
 
@@ -1249,13 +1331,13 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 #### `createXAxis`
 
 - Signature: `createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })`
-- Parameter contract와 effect는 Shared complete-axis contract를 따른다. x position은 bottom이다.
+- Parameter contract와 effect는 Shared complete-axis contract를 따른다. x default는 bottom이고 top은 Planned다.
 - Coverage: `test/unit/actions/guides/axis-actions.test.js`가 defaults, routing, coordinate와 duplicates를 검증한다.
 
 #### `createYAxis`
 
 - Signature: `createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })`
-- Parameter contract와 effect는 Shared complete-axis contract를 따른다. y position은 left다.
+- Parameter contract와 effect는 Shared complete-axis contract를 따른다. y default는 left이고 right는 Planned다.
 - Coverage: `test/unit/actions/guides/axis-actions.test.js`가 symmetric behavior를 검증한다.
 
 #### Shared axis-line contract
@@ -1263,7 +1345,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Create parameters: `scale?`, `position?`, `color?`, `lineWidth?`.
 - Edit parameters: `position?`, `color?`, `lineWidth?`; scale은 semantic guide에서 읽는다.
 - `scale`: create-only ID, 기본 channel ID.
-- `position`: x=`"bottom"`, y=`"left"`만 Implemented.
+- `position`: x=`"bottom"`, y=`"left"`는 Implemented이고 x=`"top"`, y=`"right"`는 Planned다.
 - `color`: non-empty string, 기본 theme text color.
 - `lineWidth`: non-negative finite number, 기본값 `1`; 0은 보이지 않는 line을 허용한다.
 - Effect: endpoint는 resolved scale range와 Canvas plot bounds에서 항상 재추론한다. semantic guide에는
@@ -1306,12 +1388,12 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 #### `createXAxisTicks`
 
-- Shared tick create contract를 사용하며 bottom ticks를 만든다.
+- Shared tick create contract를 사용하며 bottom ticks를 만들고 Planned top ticks는 바깥쪽 위를 향한다.
 - Coverage: axis-tick, histogram-axis, ordinal-axis, temporal-axis tests.
 
 #### `createYAxisTicks`
 
-- Shared tick create contract를 사용하며 left ticks를 만든다.
+- Shared tick create contract를 사용하며 left ticks를 만들고 Planned right ticks는 바깥쪽 오른쪽을 향한다.
 - Coverage: axis-tick와 chart axis tests.
 
 #### `editXAxisTicks`
@@ -1330,7 +1412,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   `fontSize?`, `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
 - `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
-- `format`: `"auto" | { decimals: nonNegativeInteger }`. time/ordinal은 auto만 허용한다.
+- `format`: Implemented `"auto" | { decimals: nonNegativeInteger }`와 Planned `AxisFormatString`.
+  Planned numeric tokens는 quantitative, UTC tokens는 time에서만 허용하고 ordinal은 auto만 허용한다.
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
@@ -1391,18 +1474,19 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
 - `at`: `"start" | "center" | "end"` 또는 scale domain 안의 data value; 기본 center.
 - `offset`: non-negative finite; x default `42`, y default `52`.
-- `rotation`: finite radians; x default `0`, y default `-Math.PI / 2`.
+- `rotation`: finite radians; x bottom/top default `0`, y left default `-Math.PI / 2`, Planned right
+  default `Math.PI / 2`.
 - font/color contract는 labels와 같고 default font size는 `13`, weight는 `600`이다.
 - Effect: semantic axis title text와 graphical layout/style을 분리 저장한다.
 
 #### `createXAxisTitle`
 
-- Shared title create contract를 bottom x-axis에 적용한다.
+- Shared title create contract를 bottom x-axis에 적용하며 top은 Planned다.
 - Coverage: `test/unit/actions/guides/axis-title-actions.test.js`.
 
 #### `createYAxisTitle`
 
-- Shared title create contract를 left y-axis에 적용한다.
+- Shared title create contract를 left y-axis에 적용하며 right는 Planned다.
 - Coverage: axis-title tests.
 
 #### `editXAxisTitle`
@@ -1457,8 +1541,10 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다.
 - `channels`: unique subset of `"color" | "strokeDash" | "shape"`; 생략하면 target의 compatible
   categorical channels를 추론한다.
-- `position`: `"right" | "bottom" | "top"`, chart-independent default `"right"`.
-- `align`: `"left" | "center" | "right"`, 기본 center. right position은 현재 center만 허용한다.
+- `position`: Implemented `"right" | "bottom" | "top"`와 Planned `"left"`; chart-independent
+  default는 `"right"`다.
+- `align`: `"left" | "center" | "right"`, 기본 center. right와 Planned left side position은
+  첫 계약에서 center만 허용한다.
 - `direction`: `"horizontal" | "vertical"`; top item-grid fill order를 결정하며 기본 horizontal이다.
 - `columns`: positive integer; top grid의 최대 열 수. 생략하면 한 row에 가능한 item을 둔다.
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
@@ -1475,8 +1561,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용한다.
 - Coverage: series/histogram/grouped-bar/top/regression legend tests가 주요 layouts, recipes,
   borders, rematerialization과 invalid values를 검증한다. 모든 symbol-layer parameter pair는 부분적이다.
-- Proposed: left legend와 non-right point composite/size layout, continuous color legend와 interactive
-  legend는 현재 확정된 public contract가 아니다.
+- Planned: left categorical/point-composite/size side layout. Proposed: point composite top/bottom,
+  continuous color와 interactive legend.
 
 ### Aggregate guides and chart title
 
@@ -1495,7 +1581,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - Signature: `createTitle({ text, subtitle?, position?, align?, offset?, gap?, titleStyle?, subtitleStyle? })`.
 - `text`: 필수 non-empty string; `subtitle`은 optional non-empty single-line string.
-- `position`: 현재 유일한 값 `"top"`, 기본 top.
+- `position`: Implemented `"top"`, Planned `"bottom" | "left" | "right"`; 기본 top.
 - `align`: `"left" | "center" | "right"`, 기본 left; plot bounds 기준이다.
 - `offset`: finite number, 기본 `0`; top block의 vertical origin을 이동한다.
 - `gap`: non-negative finite number, 기본 `8`; title/subtitle 사이 거리다.
@@ -1505,7 +1591,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   top legend와 실제 occupied bounds가 겹치거나 margin에 맞지 않으면 오류다.
 - Coverage: `test/unit/actions/guides/title-actions.test.js`가 optional subtitle, alignment, style,
   insufficient layout, duplicates와 Canvas rematerialization을 검증한다.
-- Proposed: additional title positions, wrapping과 text measurement는 아직 API가 확정되지 않았다.
+- Planned: bottom/left/right positions. Proposed: wrapping, maxWidth, lineHeight와 text measurement.
 
 ### Coordinates and scales
 
@@ -1591,11 +1677,14 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Planned capability
   - Polar semantic resource 이후 positional materialization과 guide graphics. 구체 action 이름과 parameter는
     아직 Proposed이므로 current action table에는 추가하지 않는다.
+  - top/right Cartesian axis positions와 모든 component create/edit parity
+  - deterministic axis label format strings
+  - left categorical/point-composite/size legend layout
+  - bottom/left/right chart-title positions
 - Proposed capability
   - Polar theta/radial encoding 이름과 radial constant `encodeRadius` 충돌 해결
-  - top/right axis positions
-  - left categorical legend와 point composite/size legend의 top/bottom layouts
-  - additional chart-title positions, wrapping과 text measurement
+  - point composite/size legend의 top/bottom layouts
+  - chart-title wrapping과 text measurement
   - continuous color 및 interactive legends
 
 Faceting, h/v program composition과 additional transforms는 현재 limitations이지만, 구체 action contract를
@@ -1606,6 +1695,7 @@ Faceting, h/v program composition과 additional transforms는 현재 limitations
 이 registry는 현재 호출 가능한 값과 future candidate를 문법적으로 분리한다.
 
 - **Implemented** code block만 현재 API 계약이다.
+- **Planned (NOT IMPLEMENTED)**는 사용자와 계약이 합의됐지만 아직 public type/runtime에는 없다.
 - **Proposed (NOT IMPLEMENTED)** code block은 구현, TypeScript declaration, public docs 또는 runtime
   validation에 아직 존재하지 않는다.
 - `—`는 현재 proposed parameter/value가 없다는 뜻이다.
@@ -1924,117 +2014,140 @@ type CompleteAxisOptions<P extends string> = {
 ### Formal values — `createAxes`
 
 - Implemented: `createAxes({ coordinate?: { id?: UserId; type?: "auto" | "cartesian" | "polar" }; x?: false | CompleteAxisOptions<"bottom">; y?: false | CompleteAxisOptions<"left"> } = {})`; Polar 선택은 현재 validation error다.
+- Planned (NOT IMPLEMENTED): `{ x?: false | CompleteAxisOptions<"bottom" | "top">; y?: false | CompleteAxisOptions<"left" | "right"> }`
 - Proposed (NOT IMPLEMENTED): Polar axis option schema; x/y에 Polar 값을 억지로 추가하지 않는다.
 
 ### Formal values — `createXAxis`
 
 - Implemented: `createXAxis(options?: CompleteAxisOptions<"bottom">)`
-- Proposed (NOT IMPLEMENTED): `CompleteAxisOptions<"top">`
+- Planned (NOT IMPLEMENTED): `CompleteAxisOptions<"bottom" | "top">`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createYAxis`
 
 - Implemented: `createYAxis(options?: CompleteAxisOptions<"left">)`
-- Proposed (NOT IMPLEMENTED): `CompleteAxisOptions<"right">`
+- Planned (NOT IMPLEMENTED): `CompleteAxisOptions<"left" | "right">`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createXAxisLine`
 
 - Implemented: `createXAxisLine({ scale?: UserId; position?: "bottom"; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`
-- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "bottom" | "top" }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createYAxisLine`
 
 - Implemented: `createYAxisLine({ scale?: UserId; position?: "left"; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`
-- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "left" | "right" }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editXAxisLine`
 
 - Implemented: `editXAxisLine({ position?: "bottom"; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`
-- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "bottom" | "top" }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editYAxisLine`
 
 - Implemented: `editYAxisLine({ position?: "left"; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`
-- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "left" | "right" }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createXAxisTicks`
 
 - Implemented: `createXAxisTicks({ scale?: UserId; position?: "bottom"; count?: PositiveInteger; values?: readonly TickValue[]; length?: NonNegativeFinite; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`; `count | values` 중 최대 하나.
-- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "bottom" | "top" }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createYAxisTicks`
 
 - Implemented: x tick schema와 같고 `position?: "left"`.
-- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "left" | "right" }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editXAxisTicks`
 
 - Implemented: create x tick schema에서 `scale`을 제외한다.
-- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "bottom" | "top" }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editYAxisTicks`
 
 - Implemented: create y tick schema에서 `scale`을 제외한다.
-- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "left" | "right" }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createXAxisLabels`
 
 - Implemented: `createXAxisLabels({ scale?: UserId; position?: "bottom"; count?: PositiveInteger; values?: readonly TickValue[]; ...LabelOptions } = {})`; `count | values` 중 최대 하나.
-- Proposed (NOT IMPLEMENTED): `{ position?: "top"; format?: NonEmptyString }`
+- Planned (NOT IMPLEMENTED): `{ position?: "bottom" | "top"; format?: AxisFormatString }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createYAxisLabels`
 
 - Implemented: x label schema와 같고 `position?: "left"`.
-- Proposed (NOT IMPLEMENTED): `{ position?: "right"; format?: NonEmptyString }`
+- Planned (NOT IMPLEMENTED): `{ position?: "left" | "right"; format?: AxisFormatString }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editXAxisLabels`
 
 - Implemented: create x label schema에서 `scale`을 제외한다.
-- Proposed (NOT IMPLEMENTED): `{ position?: "top"; format?: NonEmptyString }`
+- Planned (NOT IMPLEMENTED): `{ position?: "bottom" | "top"; format?: AxisFormatString }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editYAxisLabels`
 
 - Implemented: create y label schema에서 `scale`을 제외한다.
-- Proposed (NOT IMPLEMENTED): `{ position?: "right"; format?: NonEmptyString }`
+- Planned (NOT IMPLEMENTED): `{ position?: "left" | "right"; format?: AxisFormatString }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createXAxisTicksAndLabels`
 
 - Implemented: `createXAxisTicksAndLabels({ scale?: UserId; position?: "bottom"; ...TickAndLabelOptions } = {})`
-- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`와 proposed label format values.
+- Planned (NOT IMPLEMENTED): `{ position?: "bottom" | "top"; labels?: { format?: AxisFormatString } }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createYAxisTicksAndLabels`
 
 - Implemented: x aggregate schema와 같고 `position?: "left"`.
-- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`와 proposed label format values.
+- Planned (NOT IMPLEMENTED): `{ position?: "left" | "right"; labels?: { format?: AxisFormatString } }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editXAxisTicksAndLabels`
 
 - Implemented: create x aggregate schema에서 `scale`을 제외하며 최소 한 option이 필요하다.
-- Proposed (NOT IMPLEMENTED): `{ position?: "top" }`와 proposed label format values.
+- Planned (NOT IMPLEMENTED): `{ position?: "bottom" | "top"; labels?: { format?: AxisFormatString } }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editYAxisTicksAndLabels`
 
 - Implemented: create y aggregate schema에서 `scale`을 제외하며 최소 한 option이 필요하다.
-- Proposed (NOT IMPLEMENTED): `{ position?: "right" }`와 proposed label format values.
+- Planned (NOT IMPLEMENTED): `{ position?: "left" | "right"; labels?: { format?: AxisFormatString } }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createXAxisTitle`
 
 - Implemented: `createXAxisTitle({ scale?: UserId; ...AxisTitleOptions<"bottom"> } = {})`
-- Proposed (NOT IMPLEMENTED): `AxisTitleOptions<"top">`
+- Planned (NOT IMPLEMENTED): `AxisTitleOptions<"bottom" | "top">`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `createYAxisTitle`
 
 - Implemented: `createYAxisTitle({ scale?: UserId; ...AxisTitleOptions<"left"> } = {})`
-- Proposed (NOT IMPLEMENTED): `AxisTitleOptions<"right">`
+- Planned (NOT IMPLEMENTED): `AxisTitleOptions<"left" | "right">`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editXAxisTitle`
 
 - Implemented: create x title schema에서 `scale`을 제외한다.
-- Proposed (NOT IMPLEMENTED): `AxisTitleOptions<"top">`
+- Planned (NOT IMPLEMENTED): `AxisTitleOptions<"bottom" | "top">`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editYAxisTitle`
 
 - Implemented: create y title schema에서 `scale`을 제외한다.
-- Proposed (NOT IMPLEMENTED): `AxisTitleOptions<"right">`
+- Planned (NOT IMPLEMENTED): `AxisTitleOptions<"left" | "right">`
+- Proposed (NOT IMPLEMENTED): —
 
 ```typescript
 type GridDirectionOptions = {
@@ -2065,6 +2178,7 @@ type GridDirectionOptions = {
 
 ```typescript
 type LegendPosition = "right" | "bottom" | "top";
+type PlannedLegendPosition = LegendPosition | "left";
 type LegendAlign = "left" | "center" | "right";
 type LegendDirection = "horizontal" | "vertical";
 type LegendSymbolLayer =
@@ -2082,17 +2196,20 @@ type LegendBorder = false | true | {
 ### Formal values — `createLegend`
 
 - Implemented: `createLegend({ target?: UserId; channels?: readonly ("color" | "strokeDash" | "shape")[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2 } = {})`
-- Proposed (NOT IMPLEMENTED): `{ position?: "left"; symbol.point.shape?: "triangle" | "diamond"; interactive?: boolean }` plus continuous-color symbol contract.
+- Planned (NOT IMPLEMENTED): `{ position?: PlannedLegendPosition }`; left supports categorical, point-composite and size side layouts.
+- Proposed (NOT IMPLEMENTED): point-composite top/bottom, `interactive?: boolean` and continuous-color symbol contract.
 
 ### Formal values — `createGuides`
 
 - Implemented: `createGuides({ axes?: false | Parameters<ChartProgram["createAxes"]>[0]; grid?: false | Parameters<ChartProgram["createGrid"]>[0]; legend?: false | Parameters<ChartProgram["createLegend"]>[0] } = {})`
+- Planned (NOT IMPLEMENTED): nested axes가 top/right positions, nested legend가 left position을 전달한다.
 - Proposed (NOT IMPLEMENTED): —; new guide type requires an approved child action first.
 
 ### Formal values — `createTitle`
 
 - Implemented: `createTitle({ text: NonEmptyString; subtitle?: NonEmptyString; position?: "top"; align?: "left" | "center" | "right"; offset?: Finite; gap?: NonNegativeFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
-- Proposed (NOT IMPLEMENTED): `{ position?: "bottom" | "left" | "right"; maxWidth?: PositiveFinite; lineHeight?: PositiveFinite; wrap?: "word" | "character" }`
+- Planned (NOT IMPLEMENTED): `{ position?: "top" | "bottom" | "left" | "right" }`
+- Proposed (NOT IMPLEMENTED): `{ maxWidth?: PositiveFinite; lineHeight?: PositiveFinite; wrap?: "word" | "character" }`
 
 ### Formal values — `createCoordinate`
 
@@ -2522,6 +2639,7 @@ type LegendBorder = false | true | {
 - `x`, `y`
   - ✅ Covered: omission inference, `{}` explicit selection, `false` opt-out, nested options, neither selected error.
   - ⚠️ Partial: multi-layer shared coordinate with one disabled axis and multiple candidate scales pairwise cases.
+  - 🟡 Planned: x top/y right complete-axis forwarding while preserving channel defaults.
 - Proposed: future Polar axes should use coordinate channels rather than force x/y objects into Polar semantics.
 - Evidence: `test/unit/actions/guides/create-axes.test.js`.
 
@@ -2531,7 +2649,7 @@ type LegendBorder = false | true | {
   - ✅ Covered: defaults, explicit IDs, missing/unused/conflicting resources.
 - `position`
   - ✅ Covered: omission→`"bottom"`, explicit bottom, unsupported value rejection.
-  - 🟣 Proposed: `"top"`; baseline, tick direction, label/title offsets와 margin ownership이 필요하다.
+  - 🟡 Planned: `"top"`; outward baseline/ticks, labels/title offsets와 top-margin validation.
 - `line`, `ticksAndLabels`, `title`
   - ✅ Covered: omission/default objects, nested representative overrides, unknown nested keys, partial duplicate failure.
   - ⚠️ Partial: all three nested appearance objects customized simultaneously.
@@ -2543,7 +2661,7 @@ type LegendBorder = false | true | {
   - ✅ Covered: defaults, explicit IDs and conflicts.
 - `position`
   - ✅ Covered: omission→`"left"`, explicit left, unsupported value rejection.
-  - 🟣 Proposed: `"right"`; mirrored tick/label/title geometry와 right-margin reservation이 필요하다.
+  - 🟡 Planned: `"right"`; mirrored tick/label/title geometry와 right-margin validation.
 - `line`, `ticksAndLabels`, `title`
   - ✅ Covered: defaults, representative nested overrides and invalid nested keys.
 - Evidence: `test/unit/actions/guides/axis-actions.test.js`.
@@ -2551,7 +2669,7 @@ type LegendBorder = false | true | {
 ### Value coverage — `createXAxisLine`
 
 - `scale`: ✅ Covered default `"x"`, explicit ID, unknown/unconsumed/unresolved scale.
-- `position`: ✅ Covered `"bottom"`, invalid; 🟣 Proposed `"top"`.
+- `position`: ✅ Covered `"bottom"`, invalid; 🟡 Planned `"top"`.
 - `color`: ✅ Covered default, explicit non-empty, empty/non-string rejection.
 - `lineWidth`: ✅ Covered default `1`, zero, positive, negative/non-finite rejection.
 - Evidence: `test/unit/actions/guides/axis-line-actions.test.js`.
@@ -2559,13 +2677,13 @@ type LegendBorder = false | true | {
 ### Value coverage — `createYAxisLine`
 
 - `scale`: ✅ Covered default `"y"`, explicit and invalid resources.
-- `position`: ✅ Covered `"left"`, invalid; 🟣 Proposed `"right"`.
+- `position`: ✅ Covered `"left"`, invalid; 🟡 Planned `"right"`.
 - `color`, `lineWidth`: ✅ Covered default/representative/boundary/invalid classes shared with x.
 - Evidence: `test/unit/actions/guides/axis-line-actions.test.js`.
 
 ### Value coverage — `editXAxisLine`
 
-- `position`: ✅ Covered omitted/existing and `"bottom"`; 🟣 Proposed `"top"` only with create support.
+- `position`: ✅ Covered omitted/existing and `"bottom"`; 🟡 Planned `"top"` with create/edit parity.
 - `color`, `lineWidth`: ✅ Covered partial edits, unchanged omissions and invalid values.
 - Empty options: ⚠️ Partial. 현재 geometry re-inference 용도로 `{}`가 허용되는 동작을 더 명시적으로 고정할 필요가 있다.
 - Evidence: `test/unit/actions/guides/axis-line-actions.test.js`.
@@ -2573,13 +2691,13 @@ type LegendBorder = false | true | {
 ### Value coverage — `editYAxisLine`
 
 - `position`, `color`, `lineWidth`: ✅ Covered symmetric left-side partial edit and errors.
-- 🟣 Proposed: right-side edit after right axis creation exists.
+- 🟡 Planned: right-side edit with mirrored create/edit geometry.
 - Evidence: `test/unit/actions/guides/axis-line-actions.test.js`.
 
 ### Value coverage — `createXAxisTicks`
 
 - `scale`: ✅ Covered default/explicit and invalid resources.
-- `position`: ✅ Covered `"bottom"`/invalid; 🟣 Proposed `"top"`.
+- `position`: ✅ Covered `"bottom"`/invalid; 🟡 Planned `"top"`.
 - `count`: ✅ Covered omission→5, positive integer, zero/negative/non-integer, count+values conflict.
 - `values`: ✅ Covered finite values/timestamps, histogram boundaries, ordinal domain/subset, out-of-domain/invalid values.
 - `length`: ✅ Covered default `6`, zero, positive and negative rejection.
@@ -2591,7 +2709,7 @@ type LegendBorder = false | true | {
 - `scale`, `position`, `count`, `values`, `length`, `color`, `lineWidth`
   - ✅ Covered: linear y defaults, explicit values and shared invalid classes.
   - ⚠️ Partial: reversed y domain with explicit values and very dense count.
-- 🟣 Proposed: right position after right-axis contract.
+- 🟡 Planned: right position after mirrored y-axis contract.
 - Evidence: axis-tick and chart guide tests.
 
 ### Value coverage — `editXAxisTicks`
@@ -2599,7 +2717,7 @@ type LegendBorder = false | true | {
 - `position`: ✅ Covered bottom/invalid.
 - `count`, `values`: ✅ Covered mode switch, mutually exclusive inputs, rematerialization and invalid domains.
 - `length`, `color`, `lineWidth`: ✅ Covered partial appearance edits and invalid values.
-- 🟣 Proposed: top-position geometry only after `createXAxisTicks` supports top.
+- 🟡 Planned: top-position geometry with create/edit parity.
 - Evidence: `test/unit/actions/guides/axis-tick-actions.test.js`.
 
 ### Value coverage — `editYAxisTicks`
@@ -2607,7 +2725,7 @@ type LegendBorder = false | true | {
 - 모든 parameter는 x edit과 같은 value classes를 사용한다.
   - ✅ Covered: representative values, mode policy and invalid options.
   - ⚠️ Partial: repeated count↔values switching sequence.
-- 🟣 Proposed: right-position geometry only after `createYAxisTicks` supports right.
+- 🟡 Planned: right-position geometry with create/edit parity.
 - Evidence: axis-tick and tick-group tests.
 
 ### Value coverage — `createXAxisLabels`
@@ -2618,7 +2736,7 @@ type LegendBorder = false | true | {
 - `format`
   - ✅ Covered: `"auto"`, `{ decimals: 0 }`, positive decimals, invalid object.
   - ✅ Covered: non-auto time/ordinal rejection.
-  - 🟣 Proposed: date/number format string or formatter callback; deterministic serialization과 browser/Node parity가 필요하다.
+  - 🟡 Planned: closed `AxisFormatString` numeric/UTC tokens with deterministic browser/Node parity.
 - `color`, `fontSize`, `fontFamily`, `fontWeight`
   - ✅ Covered: defaults, representative string/numeric weight and invalid classes.
 - Evidence: `test/unit/actions/guides/axis-label-actions.test.js`, temporal/ordinal axis tests.
@@ -2628,14 +2746,14 @@ type LegendBorder = false | true | {
 - `scale`, `position`, `count`, `values`, `offset`, `format`, font style
   - ✅ Covered: linear y defaults, explicit/derived values, decimal formatting and conflicts.
   - ⚠️ Partial: numeric fontWeight boundaries and reversed range alignment.
-- 🟣 Proposed: right-side label alignment after right axis support.
+- 🟡 Planned: right-side label alignment and shared format tokens.
 - Evidence: axis-label and chart guide tests.
 
 ### Value coverage — `editXAxisLabels`
 
 - `position`, `count`, `values`, `offset`, `format`, color/font parameters
   - ✅ Covered: partial style edit, decimal format, tick conflict and Canvas rematerialization.
-- 🟣 Proposed formatter values follow create labels.
+- 🟡 Planned: top position and shared format tokens follow create labels.
 - Evidence: `test/unit/actions/guides/axis-label-actions.test.js`.
 
 ### Value coverage — `editYAxisLabels`
@@ -2643,7 +2761,7 @@ type LegendBorder = false | true | {
 - 모든 edit parameter
   - ✅ Covered: representative partial edits and shared invalid classes.
   - ⚠️ Partial: switching between auto and decimal format across repeated edits.
-- 🟣 Proposed: right-side alignment and formatter values follow `createYAxisLabels`.
+- 🟡 Planned: right-side alignment and shared format tokens follow `createYAxisLabels`.
 - Evidence: axis-label tests.
 
 ### Value coverage — `createXAxisTicksAndLabels`
@@ -2653,7 +2771,7 @@ type LegendBorder = false | true | {
 - `ticks.length/color/lineWidth`, `labels.offset/format/color/fontSize/fontFamily/fontWeight`
   - ✅ Covered: representative nested overrides, unknown nested keys and independent child effects.
   - ⚠️ Partial: all nested properties explicitly set in one call.
-- Proposed values follow leaf tick/label actions.
+- 🟡 Planned: top position and label format tokens follow leaf actions.
 - Evidence: `test/unit/actions/guides/axis-tick-group-actions.test.js`.
 
 ### Value coverage — `createYAxisTicksAndLabels`
@@ -2661,7 +2779,7 @@ type LegendBorder = false | true | {
 - shared and nested parameters
   - ✅ Covered: y defaults, explicit values and trace hierarchy.
   - ⚠️ Partial: full nested option object.
-- 🟣 Proposed: new leaf values are inherited only after both y tick and label actions support them.
+- 🟡 Planned: right position and label format tokens follow both y leaf actions.
 - Evidence: axis-tick-group tests.
 
 ### Value coverage — `editXAxisTicksAndLabels`
@@ -2670,21 +2788,21 @@ type LegendBorder = false | true | {
   - ✅ Covered: atomic policy changes and invalid mutual use.
 - `ticks`, `labels`
   - ✅ Covered: only requested child edit, both child edit and empty edit rejection.
-- Proposed values follow leaf actions.
+- 🟡 Planned: top position and label format tokens follow leaf actions.
 - Evidence: `test/unit/actions/guides/axis-tick-group-actions.test.js`.
 
 ### Value coverage — `editYAxisTicksAndLabels`
 
 - shared/nested edit parameters
   - ✅ Covered: representative values, child selection and invalid options.
-- 🟣 Proposed: right-position aggregate edit follows both leaf actions.
+- 🟡 Planned: right-position aggregate edit follows both leaf actions.
 - Evidence: axis-tick-group tests.
 
 ### Value coverage — `createXAxisTitle`
 
 - `text`: ✅ Covered inferred field/aggregate/density text, explicit non-empty, ambiguous/empty rejection.
 - `scale`: ✅ Covered default/explicit/conflicting scale.
-- `position`: ✅ Covered `"bottom"`/invalid; 🟣 Proposed `"top"`.
+- `position`: ✅ Covered `"bottom"`/invalid; 🟡 Planned `"top"`.
 - `at`: ✅ Covered `"start" | "center" | "end"`, in-domain number/category and out-of-domain/invalid.
 - `offset`: ✅ Covered default `42`, zero/positive, negative rejection.
 - `rotation`: ✅ Covered default `0`, finite explicit and non-finite rejection.
@@ -2694,7 +2812,7 @@ type LegendBorder = false | true | {
 ### Value coverage — `createYAxisTitle`
 
 - `text`, `scale`, `at`, style: ✅ Covered symmetric inference, data positions and invalid values.
-- `position`: ✅ Covered `"left"`; 🟣 Proposed `"right"`.
+- `position`: ✅ Covered `"left"`; 🟡 Planned `"right"` with default positive half-turn rotation.
 - `offset`: ✅ Covered default `52`; `rotation`: ✅ Covered default `-Math.PI / 2` and explicit finite values.
 - Evidence: axis-title tests.
 
@@ -2702,7 +2820,7 @@ type LegendBorder = false | true | {
 
 - `text`, `position`, `at`, `offset`, `rotation`, style
   - ✅ Covered: semantic text edit, graphical-only appearance edit, data-space relocation, invalid values.
-- 🟣 Proposed: top position follows `createXAxisTitle`.
+- 🟡 Planned: top position follows `createXAxisTitle`.
 - Evidence: axis-title tests.
 
 ### Value coverage — `editYAxisTitle`
@@ -2710,7 +2828,7 @@ type LegendBorder = false | true | {
 - 모든 edit parameter
   - ✅ Covered: representative semantic/graphical edits and rematerialization.
   - ⚠️ Partial: repeated rotation/at interactions.
-- 🟣 Proposed: right position follows `createYAxisTitle`.
+- 🟡 Planned: right position follows `createYAxisTitle`.
 - Evidence: axis-title tests.
 
 ### Value coverage — `createGrid`
@@ -2751,7 +2869,7 @@ type LegendBorder = false | true | {
   - ✅ Covered: color, strokeDash, color+strokeDash, point color+shape, duplicates/incompatible combinations.
 - `position`
   - ✅ Covered: omission→`"right"`, `"right"`, `"bottom"`, `"top"`, invalid value.
-  - 🟣 Proposed: `"left"`; left margin and point/size block geometry가 필요하다.
+  - 🟡 Planned: `"left"`; categorical, point-composite/size parity and left-margin geometry.
 - `align`
   - ✅ Covered: top/bottom `"left" | "center" | "right"`, right center-only and invalid combinations.
 - `direction`
@@ -2767,7 +2885,8 @@ type LegendBorder = false | true | {
 - `symbol`
   - ✅ Covered: `"auto"`, line shorthand, swatch shorthand, layered line+point recipes.
   - ⚠️ Partial: every layer type's zero/max dimensions, fill/stroke combinations and invalid nested keys.
-  - 🟣 Proposed: triangle/diamond point layers and area-gradient/continuous symbols.
+  - 🟡 Planned: shared 12-shape point layers through the point-shape vocabulary.
+  - 🟣 Proposed: area-gradient/continuous symbols.
 - `labels`, `titleStyle`
   - ✅ Covered: representative color/font overrides and invalid styles.
   - ⚠️ Partial: numeric/string fontWeight boundaries across every position.
@@ -2777,7 +2896,8 @@ type LegendBorder = false | true | {
   - ✅ Covered: omission/`false`, `true`, explicit color/lineWidth/padding/background and invalid objects.
 - `count`
   - ✅ Covered: omission→5, integer `>=2`, `<2`/non-integer rejection for size block.
-- 🟣 Proposed: non-right point composite/size layout, continuous color and interactive legends.
+- 🟡 Planned: left point-composite/size side layout.
+- 🟣 Proposed: point-composite top/bottom, continuous color and interactive legends.
 - Evidence: series, histogram, grouped-bar, top categorical and regression legend tests.
 
 ### Value coverage — `createGuides`
@@ -2786,6 +2906,7 @@ type LegendBorder = false | true | {
   - ✅ Covered: omission/applicability inference, `{}` explicit selection, nested options, `false` opt-out.
   - ✅ Covered: unsupported/non-object values, no selected guide and ambiguous child errors.
   - ⚠️ Partial: explicit selection of all three with every nested option family simultaneously.
+- 🟡 Planned: nested top/right axes와 left legend forwarding.
 - No proposal: title remains intentionally separate. New guide types should be added only with a concrete domain action.
 - Evidence: `test/unit/actions/guides/guide-collection-actions.test.js` and density/regression guide tests.
 
@@ -2795,7 +2916,7 @@ type LegendBorder = false | true | {
   - ✅ Covered: required non-empty title, subtitle omitted/present, empty/non-string rejection.
 - `position`
   - ✅ Covered: omission→`"top"`, explicit top, invalid value.
-  - 🟣 Proposed: `"bottom" | "left" | "right"`; occupied bounds, rotation과 guide collision contract가 필요하다.
+  - 🟡 Planned: `"bottom" | "left" | "right"`; occupied bounds, rotation과 guide collision contract.
 - `align`
   - ✅ Covered: `"left" | "center" | "right"`, default left and invalid value.
 - `offset`

@@ -455,7 +455,12 @@ test("keeps accepted parameter extensions explicit and non-public", () => {
     { capability: "Density kernel vocabulary", readiness: "Accepted" },
     { capability: "Filter predicate modes", readiness: "Accepted" },
     { capability: "Regression method vocabulary", readiness: "Accepted" },
-    { capability: "Regression prediction interval", readiness: "Accepted" }
+    { capability: "Regression prediction interval", readiness: "Accepted" },
+    { capability: "Top x axis position", readiness: "Accepted" },
+    { capability: "Right y axis position", readiness: "Accepted" },
+    { capability: "Axis label format strings", readiness: "Accepted" },
+    { capability: "Left legend position", readiness: "Accepted" },
+    { capability: "Chart title positions", readiness: "Accepted" }
   ]);
   assert.match(catalog, /type PointShape =/);
   assert.match(catalog, /"plus" \| "cross" \| "star" \| "hexagon" \| "wye"/);
@@ -480,6 +485,15 @@ test("keeps accepted parameter extensions explicit and non-public", () => {
   assert.match(catalog, /tricube-weighted local-linear fit/);
   assert.match(catalog, /residualVariance \* \(1 \+ leverage\)/);
   assert.doesNotMatch(catalog, /ordered multi-transform pipeline/);
+  assert.match(catalog, /### Planned contract: mirrored Cartesian axis positions/);
+  assert.match(catalog, /top x title 기본 rotation은 `0`/);
+  assert.match(catalog, /right y title 기본 rotation은/);
+  assert.match(catalog, /type AxisFormatString =/);
+  assert.match(catalog, /"\.0f" \| "\.1f" \| "\.2f"/);
+  assert.match(catalog, /### Planned contract: left legend position/);
+  assert.match(catalog, /point composite와 quantitative size block을 지원/);
+  assert.match(catalog, /### Planned contract: chart title positions/);
+  assert.match(catalog, /"top" \| "bottom" \| "left" \| "right"/);
 });
 
 test("keeps catalog coverage evidence paths executable", () => {
