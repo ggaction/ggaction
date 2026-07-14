@@ -19,7 +19,7 @@ appearance vocabulary, encoding reassignment, continuous color와 field-driven o
 - [x] `editScale`, point shape, `editPointMark`, palette 구현
 - [x] Reassignment primitive 승인과 구현
 - [x] Continuous appearance primitive 승인과 구현
-- [ ] Public docs, contract 승격과 Phase closeout
+- [x] Public docs, contract 승격과 Phase closeout
 
 ## 실행 순서
 

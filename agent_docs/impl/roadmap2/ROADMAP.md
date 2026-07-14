@@ -13,7 +13,7 @@ encoding reassignment의 선행 조건으로 Phase 1의 첫 implementation slice
 ## 진행 상태
 
 - [x] Phase 0 — Roadmap 2 artifact/gallery, coverage tracking과 `editScale` contract
-- [ ] Phase 1 — 기존 scatterplot variants
+- [x] Phase 1 — 기존 scatterplot variants
 - [ ] Phase 2 — 기존 line-chart variants
 - [ ] Phase 3 — 기존 histogram/grouped-bar variants
 - [ ] Phase 4 — 기존 density/regression variants
