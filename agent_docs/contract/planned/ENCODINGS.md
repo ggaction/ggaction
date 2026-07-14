@@ -231,10 +231,57 @@ type VegaPalette =
   있으면 final resolved range를 다시 뒤집는다.
 - Resolved palette는 concrete CSS color array로 graphical scale state에 저장한다. Mark와 categorical
   legend는 semantic scheme name을 해석하지 않고 해당 array만 사용한다.
-- Quantitative/temporal color encoding, continuous interpolation options, gradient legend와 custom
-  scheme registration은 Proposed로 유지한다.
+- Quantitative/temporal color encoding, continuous interpolation and gradient legend는 아래 accepted
+  vertical contract가 소유한다. Custom scheme registration만 Proposed로 유지한다.
 - Status: Planned, NOT IMPLEMENTED. 68-name validation, family-specific sampling, count/extent boundaries,
   range conflict, cycling, reverse, mark/legend parity와 deterministic registry snapshot coverage가 필요하다.
+
+## continuous color vertical contract
+
+```typescript
+type ContinuousColorInterpolation =
+  | "rgb"
+  | "hsl" | "hsl-long"
+  | "lab"
+  | "hcl" | "hcl-long"
+  | "cubehelix" | "cubehelix-long";
+
+type ContinuousColorScale = {
+  id?: UserId;
+  type?: "sequential";
+  domain?: "auto" | OrderedQuantitativePair | OrderedTemporalPair;
+  range?: readonly [NonEmptyString, NonEmptyString, ...NonEmptyString[]];
+  palette?: VegaPaletteName | {
+    name: VegaPaletteName;
+    extent?: readonly [UnitInterval, UnitInterval];
+  };
+  interpolate?: ContinuousColorInterpolation;
+  clamp?: boolean;
+  reverse?: boolean;
+  unknown?: NonEmptyString;
+};
+```
+
+- `encodeColor.fieldType` accepts `"quantitative" | "temporal"` in addition to existing nominal.
+  Continuous color is first accepted for point and bar marks, whose concrete children each own one fill.
+  Line and area paths remain unsupported until a segment/gradient-path materialization contract exists.
+- The scale type is `"sequential"` whether inferred or explicit. Auto quantitative domain is the finite
+  field extent; auto temporal domain is the normalized timestamp extent. The first contract rejects
+  `nice`, `zero` and color layout because those choices do not define continuous color grouping.
+- `range` and `palette` are mutually exclusive. If both are omitted, palette defaults to `"viridis"`.
+  Explicit range has at least two valid CSS colors. Named palette resolution uses the accepted frozen Vega
+  registry, but continuous palette objects reject discrete `count`; `extent` may crop or reverse the scheme.
+- `interpolate` defaults to `"rgb"` and resolves every mapped mark color into a concrete CSS string during
+  materialization. Renderers never interpret the interpolation token. `reverse`, `clamp` and `unknown` follow
+  the accepted shared scale policies, and an explicit domain remains ahead of automatic inference.
+- A sequential color scale may be shared only by compatible continuous-color consumers with the same field
+  type and complete definition. Encoding or scale edits rematerialize all marks and its gradient legend in a
+  deterministic plan while preserving earlier programs.
+- `createLegend({ channels: ["color"] })` infers the gradient form from the sequential scale; the concrete
+  layout contract is owned by [continuous color gradient legend](GUIDES_AND_LAYOUT.md#continuous-color-gradient-legend).
+- Status: Planned, NOT IMPLEMENTED. quantitative/temporal domains, default and explicit palettes/ranges,
+  every interpolation token, policies, invalid mark/layout combinations, shared consumers, mark/legend
+  rematerialization and browser/PNG color parity coverage가 필요하다.
 
 ## histogram bin controls
 

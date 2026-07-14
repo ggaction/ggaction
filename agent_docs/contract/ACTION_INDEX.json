@@ -1474,6 +1474,17 @@
       }
     },
     {
+      "id": "continuous-color-vertical-contract",
+      "kind": "parameter",
+      "name": "Continuous color vertical contract",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/ENCODINGS.md",
+        "anchor": "continuous-color-vertical-contract"
+      }
+    },
+    {
       "id": "named-and-constant-stroke-dash-vocabulary",
       "kind": "parameter",
       "name": "Named and constant stroke dash vocabulary",

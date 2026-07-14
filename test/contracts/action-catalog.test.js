@@ -278,6 +278,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     "Parameterized aggregate operations",
     "Color layout vocabulary",
     "Vega named palette vocabulary",
+    "Continuous color vertical contract",
     "Named and constant stroke dash vocabulary",
     "Field-driven opacity",
     "Histogram bin controls",
@@ -352,7 +353,14 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   );
   assert.match(plannedCorpus, /count\?: PositiveInteger/);
   assert.match(plannedCorpus, /extent\?: readonly \[UnitInterval, UnitInterval\]/);
-  assert.match(plannedCorpus, /Quantitative\/temporal color encoding[\s\S]*Proposed/);
+  assert.match(plannedCorpus, /type ContinuousColorInterpolation =/);
+  assert.match(plannedCorpus, /"cubehelix" \| "cubehelix-long"/);
+  assert.match(plannedCorpus, /type ContinuousColorScale =/);
+  assert.match(plannedCorpus, /type\?: "sequential"/);
+  assert.match(plannedCorpus, /palette defaults to `"viridis"`/);
+  assert.match(plannedCorpus, /## continuous color gradient legend/);
+  assert.match(plannedCorpus, /length\?: PositiveFinite/);
+  assert.match(plannedCorpus, /adjacent rect strips/);
   assert.match(plannedCorpus, /type DashStyle = "solid" \| "dashed" \| "dotted" \| "dashdot"/);
   assert.match(plannedCorpus, /solid → \[\]/);
   assert.match(plannedCorpus, /dashed → \[6, 4\]/);
@@ -372,6 +380,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /type PlannedScaleType =/);
   assert.match(plannedCorpus, /"log"[\s\S]*"pow"[\s\S]*"sqrt"[\s\S]*"symlog"/);
   assert.match(plannedCorpus, /"utc"[\s\S]*"band"[\s\S]*"point"/);
+  assert.match(plannedCorpus, /"point"[\s\S]*"sequential"[\s\S]*"quantize"/);
   assert.match(plannedCorpus, /"quantize"[\s\S]*"quantile"[\s\S]*"threshold"/);
   assert.match(plannedCorpus, /type PlannedScalePolicies =/);
   assert.match(plannedCorpus, /clamp\?: boolean/);

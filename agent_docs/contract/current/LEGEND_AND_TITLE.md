@@ -26,7 +26,8 @@ type LegendBorder = false | true | {
 - Signature: `createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count? })`.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다.
 - `channels`: unique subset of `"color" | "strokeDash" | "shape"`; 생략하면 target의 compatible
-  categorical channels를 추론한다.
+  channels를 추론한다. Current legends require categorical channels; Planned sequential color selects
+  the gradient contract instead of categorical items.
 - `position`: Implemented `"right" | "bottom" | "top"`와 Planned `"left"`; chart-independent
   default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 Planned left side position은
@@ -42,19 +43,20 @@ type LegendBorder = false | true | {
 - `itemGap`: positive finite number; position별 default spacing을 override한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
-- `count`: size legend symbol count, integer `>= 2`, point composite default `5`.
+- `count`: integer `>= 2`; size legend symbol count 또는 Planned gradient tick-label count이며 default `5`.
 - Effect: categorical semantics에는 scale/channel/title만 저장하고 placement, recipe, fonts, border는
   graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용한다.
 - Coverage: series/histogram/grouped-bar/top/regression legend tests가 주요 layouts, recipes,
   borders, rematerialization과 invalid values를 검증한다. 모든 symbol-layer parameter pair는 부분적이다.
-- Planned: left categorical/point-composite/size side layout and point-composite top/bottom layout.
-  Proposed: continuous color legend.
+- Planned: left categorical/point-composite/size side layout, point-composite top/bottom layout and
+  continuous-color gradient legend.
+- Proposed: —
 
 ### Formal values — `createLegend`
 
 - Implemented: `createLegend({ target?: UserId; channels?: readonly ("color" | "strokeDash" | "shape")[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2 } = {})`
-- Planned (NOT IMPLEMENTED): `{ position?: PlannedLegendPosition }`; left supports categorical, point-composite and size side layouts, while top/bottom support layered point-composite symbols.
-- Proposed (NOT IMPLEMENTED): continuous-color symbol contract.
+- Planned (NOT IMPLEMENTED): `{ position?: PlannedLegendPosition; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite } }`; left supports categorical, point-composite and size side layouts, top/bottom support layered point-composite symbols, and sequential color uses a continuous gradient block.
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createLegend`
 
@@ -82,7 +84,7 @@ type LegendBorder = false | true | {
   - ⚠️ Partial: every layer type's zero/max dimensions, fill/stroke combinations and invalid nested keys.
   - 🟡 Planned: shared 12-shape point layers through the point-shape vocabulary.
   - 🟡 Planned: point-composite symbols in top/bottom item grids.
-  - 🟣 Proposed: area-gradient/continuous symbols.
+  - 🟡 Planned: sequential-color gradient block; categorical symbol recipes remain unchanged.
 - `labels`, `titleStyle`
   - ✅ Covered: representative color/font overrides and invalid styles.
   - ⚠️ Partial: numeric/string fontWeight boundaries across every position.
@@ -92,8 +94,10 @@ type LegendBorder = false | true | {
   - ✅ Covered: omission/`false`, `true`, explicit color/lineWidth/padding/background and invalid objects.
 - `count`
   - ✅ Covered: omission→5, integer `>=2`, `<2`/non-integer rejection for size block.
-- 🟡 Planned: left point-composite/size side layout and point-composite top/bottom layout.
-- 🟣 Proposed: continuous color legends.
+  - 🟡 Planned: gradient tick-label count with the same boundary contract.
+- `gradient`
+  - 🟡 Planned: positive length/thickness, position-derived orientation and categorical-option conflicts.
+- 🟡 Planned: left point-composite/size side layout, point-composite top/bottom layout and continuous color legends.
 - Evidence: series, histogram, grouped-bar, top categorical and regression legend tests.
 
 ## `createGuides`

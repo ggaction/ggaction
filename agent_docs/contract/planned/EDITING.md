@@ -139,6 +139,10 @@ editLegend({
   itemGap?: PositiveFinite;
   border?: LegendBorder;
   count?: IntegerAtLeast2;
+  gradient?: {
+    length?: PositiveFinite;
+    thickness?: PositiveFinite;
+  };
 }): ChartProgram;
 ```
 
@@ -151,6 +155,8 @@ editLegend({
 - position과 layout 값은 기존 legend kind가 지원해야 한다. Planned left position은 categorical,
   point composite와 size legend를 지원하고 right-side layout을 mirror한다. Accepted top/bottom
   point-composite contract는 existing top/bottom item grid 안에서 같은 symbol recipe를 유지한다.
+- Sequential color legend에서 `gradient`와 `count`는 concrete block geometry와 tick labels를 갱신한다.
+  Categorical-only symbol/grid options과 gradient options를 섞으면 오류다.
 - action은 내부 wrapped `rematerializeLegend`를 호출한다. compatible point size block에서
   `count`가 바뀌면 stored count를 갱신하고 `rematerializeSizeLegend`도 호출한다.
 - overlap, margin 부족, incompatible option과 없는/ambiguous target은 명확한 오류다.

@@ -312,8 +312,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `createScale`
 
 - Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean })`; type별 validation이 값을 제한한다.
-- Planned (NOT IMPLEMENTED): `{ type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point" | "quantize" | "quantile" | "threshold"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown }`
-- Proposed (NOT IMPLEMENTED): `{ type?: "identity" | "sequential" | "bin-ordinal"; interpolate?: unknown }`
+- Planned (NOT IMPLEMENTED): `{ type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point" | "sequential" | "quantize" | "quantile" | "threshold"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown }`
+- Proposed (NOT IMPLEMENTED): `{ type?: "identity" | "bin-ordinal" }`
 
 ### Value coverage — `createScale`
 
@@ -321,9 +321,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `type`
   - ✅ Covered: omission→`"linear"`, `"linear" | "time" | "ordinal"`, unknown value.
   - 🟡 Planned: `"log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point" |
-    "quantize" | "quantile" | "threshold"`; type-specific domain, range, mapping and tick contracts는
+    "sequential" | "quantize" | "quantile" | "threshold"`; type-specific domain, range, mapping and tick contracts는
     `planned/SCALES.md`가 소유한다.
-  - 🟣 Proposed: `"identity" | "sequential" | "bin-ordinal"`.
+  - 🟣 Proposed: `"identity" | "bin-ordinal"`.
 - `domain`
   - ✅ Covered: `"auto"`, continuous pair, ordinal unique array, reversed pair and invalid arrays.
   - ⚠️ Partial: temporal Date/string/timestamp normalization at direct action boundary.

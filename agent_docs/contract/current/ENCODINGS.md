@@ -21,8 +21,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `palette`: Implemented for color scale. palette name이며 `range`와 동시에 사용할 수 없다.
 - Planned: transformed quantitative, UTC, explicit band/point, discretizing scale types와
   clamp/reverse/unknown mapping policies는 `planned/SCALES.md`, Vega named palette vocabulary는
-  이 domain의 planned palette contract가 소유한다.
-- Proposed: quantitative/temporal color, interpolation과 continuous gradient legend.
+  이 domain의 planned palette contract가 소유한다. Quantitative/temporal color, sequential scale,
+  interpolation과 continuous gradient legend도 하나의 accepted vertical contract다.
+- Proposed: custom palette registration.
 
 ## `encodeX`
 
@@ -318,8 +319,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeColor`
 
 - Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal"; layout?: "stack" | "group"; scale?: ColorScale })`
-- Planned (NOT IMPLEMENTED): `{ layout?: "fill" | "overlay" | "diverging"; scale?: { palette?: VegaPalette } }`; full accepted `ColorLayout`은 existing `"stack" | "group"`을 포함한다.
-- Proposed (NOT IMPLEMENTED): `{ layout?: "center"; fieldType?: "quantitative" | "temporal"; scale?: { interpolate?: "rgb" | "hsl" | "hsl-long" | "lab" | "hcl" | "hcl-long" | "cubehelix" | "cubehelix-long" } }` 및 continuous gradient legend.
+- Planned (NOT IMPLEMENTED): `{ layout?: "fill" | "overlay" | "diverging"; fieldType?: "quantitative" | "temporal"; scale?: { type?: "sequential"; palette?: VegaPalette; interpolate?: ContinuousColorInterpolation } }`; full accepted `ColorLayout`은 existing `"stack" | "group"`을 포함하고 continuous field에서는 layout을 허용하지 않는다.
+- Proposed (NOT IMPLEMENTED): `{ layout?: "center" }` 및 custom palette registration.
 
 ### Value coverage — `encodeColor`
 
@@ -338,7 +339,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: explicit color array, `{ palette: "tableau10" }`, range+palette conflict, invalid colors.
   - 🟡 Planned: all 68 Vega named schemes plus `{ name, count?, extent? }`, resolved as discrete
     categorical colors without a Vega runtime dependency.
-  - 🟣 Proposed: quantitative/temporal continuous color, interpolation, gradient legend and custom schemes.
+  - 🟡 Planned: quantitative/temporal continuous color, sequential mapping, interpolation and gradient legend.
+  - 🟣 Proposed: custom schemes.
 - Evidence: color, line-series, bar-color, area-color and grouped-bar tests.
 
 ## `encodeStrokeDash`

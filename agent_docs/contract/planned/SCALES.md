@@ -17,6 +17,7 @@ type PlannedScaleType =
   | "utc"
   | "band"
   | "point"
+  | "sequential"
   | "quantize"
   | "quantile"
   | "threshold";
@@ -43,6 +44,8 @@ type PlannedScaleOptions = {
 - `band` maps a unique ordered discrete domain to contiguous numeric bands and exposes bandwidth.
   `point` maps the same domain to zero-width centers. Their padding and alignment vocabulary remains
   owned by the accepted bar-width and offset geometry contracts.
+- `sequential` maps a quantitative or temporal domain to concrete colors. Its range, palette,
+  interpolation and gradient-guide behavior are owned by the accepted continuous-color vertical contract.
 - `quantize` divides one finite continuous domain pair into equal intervals for a discrete range.
   A range of length `n` creates `n` intervals.
 - `quantile` infers thresholds from a non-empty finite sample domain for a discrete range. A range of
@@ -56,9 +59,8 @@ type PlannedScaleOptions = {
   valid only where zero is representable and is rejected for `log`, temporal and discrete scales.
 - Automatic domains, explicit-domain precedence, shared-consumer compatibility and deterministic
   rematerialization follow the existing scale contract.
-- `identity`, `sequential` and `bin-ordinal` remain Proposed. Identity bypasses normal mapping,
-  sequential needs the continuous-color interpolation contract, and bin-ordinal overlaps the current
-  histogram bin owner.
+- `identity` and `bin-ordinal` remain Proposed. Identity bypasses normal mapping, while bin-ordinal
+  overlaps the current histogram bin owner.
 - Status: Planned, NOT IMPLEMENTED. Each type needs domain/range validation, mapping, ticks where
   applicable, mark and guide rematerialization, TypeScript declarations, and representative boundary
   coverage before becoming Implemented.
