@@ -12,11 +12,11 @@
 - [x] Raw primitive chain으로 canonical baseline 재작성
 - [x] `baseline/primitive.png`와 target call chain metadata 갱신
 - [x] Browser와 high-resolution PNG 확인
-- [ ] Gate 0 사용자 visual confirmation
-- [ ] Canonical public program을 승인된 primitive와 일치시킴
+- [x] Gate 0 사용자 visual confirmation
+- [x] Canonical public program을 승인된 primitive와 일치시킴
 - [x] Provisional exact graphic/order/Canvas-call equivalence test
 - [x] Immutability와 existing scatterplot regression
-- [ ] STEP 상태, conceptual commit와 push
+- [x] STEP 상태, conceptual commit와 push
 
 ## Baseline audit
 
@@ -34,9 +34,9 @@ Canonical primitive는 existing public의 완성된 visual contract를 목표로
 resolver를 호출하지 않고 independent extent, tick, categorical first-appearance color와 concrete grid 값을
 raw `editSemantic`, `createGraphics`, `editGraphics` chain에 저장한다.
 
-현재 provisional test에서 두 program의 전체 `graphicSpec`, graphic order와 Canvas spy calls는 정확히
-같다. Gate 0 승인 전이므로 Roadmap 2 gallery에는 `primitive.png`만 생성하고 `user-facing.png`는
-의도적으로 보류한다. 기존 flat public/primitive PNG regression은 계속 실행한다.
+Gate 0에서 이 primitive가 승인되었다. 두 program의 전체 `graphicSpec`, graphic order와 Canvas spy
+calls는 정확히 같으며 Roadmap 2 gallery에 `primitive.png`와 `user-facing.png` pair를 생성한다.
+기존 flat public/primitive PNG regression도 계속 실행한다.
 
 ## 작업 순서
 
@@ -63,5 +63,15 @@ raw `editSemantic`, `createGraphics`, `editGraphics` chain에 저장한다.
 
 ## 승인 게이트
 
-승인 전에는 corrected `user-facing.png`를 확정하지 않는다. 승인된 baseline pair가 완성되어야 STEP2로
-진행한다.
+승인 전에는 corrected `user-facing.png`를 확정하지 않는다. Gate 0 승인 뒤 exact pair를 복원했으며
+STEP2의 primitive batch를 시작할 수 있다.
+
+## 완료 결과
+
+- Rows/points: 392
+- Horizontal grid lines: 4
+- X/Y ticks: 각 4
+- Origin domain/color: `USA → Japan → Europe`, `#4c78a8 → #f58518 → #e45756`
+- Logical Canvas: `640×400`, PNG pixel ratio 2
+- Primitive/public `graphicSpec`, order와 Canvas spy calls: exact match
+- Gallery status: `Ready for equivalence review`

@@ -56,9 +56,7 @@ test("renders the public and primitive scatterplots with visible points", async 
     });
   }
 
-  for (const [, kind, program, colors] of programs.filter(
-    ([, artifactKind]) => artifactKind === "primitive"
-  )) {
+  for (const [, kind, program, colors] of programs) {
     await assertRenderedPNG(program, {
       artifact: {
         ...baselineArtifact,

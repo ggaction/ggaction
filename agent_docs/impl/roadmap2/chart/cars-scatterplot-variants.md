@@ -32,9 +32,10 @@ chart()
   });
 ```
 
-현재 Roadmap 2 gallery의 baseline primitive/public pair는 point color와 grid가 다르다. Phase 1은
-새 기능을 추가하기 전에 하나의 승인된 primitive를 다시 만들고, public program의 concrete
-`graphicSpec`, rendering order와 Canvas calls가 그 primitive와 정확히 같도록 고정한다.
+Phase 1 Step 1 audit에서 기존 baseline primitive/public의 point color와 grid 차이를 확인했다.
+Canonical primitive는 horizontal grid와 first-appearance Origin color order를 포함하도록 다시 작성해
+Gate 0 승인을 받았으며, public program의 concrete `graphicSpec`, rendering order와 Canvas calls는
+그 primitive와 정확히 같다.
 
 ## Variant 목록
 
