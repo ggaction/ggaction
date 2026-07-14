@@ -1232,6 +1232,24 @@
         "file": "agent_docs/contract/planned/EDITING.md",
         "anchor": "directional-grid-edits"
       }
+    },
+    {
+      "name": "encodeX2",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/ENCODINGS.md",
+        "anchor": "horizontal-ranged-position"
+      }
+    },
+    {
+      "name": "encodeXRange",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/ENCODINGS.md",
+        "anchor": "horizontal-ranged-position"
+      }
     }
   ],
   "plannedCapabilities": [
@@ -1401,6 +1419,17 @@
       }
     },
     {
+      "id": "offset-padding-controls",
+      "kind": "parameter",
+      "name": "Offset padding controls",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/ENCODINGS.md",
+        "anchor": "offset-padding-controls"
+      }
+    },
+    {
       "id": "aggregate-vocabulary",
       "kind": "parameter",
       "name": "Aggregate vocabulary",
@@ -1409,6 +1438,17 @@
       "contract": {
         "file": "agent_docs/contract/planned/ENCODINGS.md",
         "anchor": "aggregate-vocabulary"
+      }
+    },
+    {
+      "id": "parameterized-aggregate-operations",
+      "kind": "parameter",
+      "name": "Parameterized aggregate operations",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/ENCODINGS.md",
+        "anchor": "parameterized-aggregate-operations"
       }
     },
     {
@@ -1453,6 +1493,28 @@
       "contract": {
         "file": "agent_docs/contract/planned/SCALES.md",
         "anchor": "scale-mapping-policies"
+      }
+    },
+    {
+      "id": "position-field-type-compatibility",
+      "kind": "parameter",
+      "name": "Position field-type compatibility",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/ENCODINGS.md",
+        "anchor": "position-field-type-compatibility"
+      }
+    },
+    {
+      "id": "normalized-stack-mode",
+      "kind": "parameter",
+      "name": "Normalized stack mode",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/ENCODINGS.md",
+        "anchor": "normalized-stack-mode"
       }
     },
     {

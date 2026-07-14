@@ -87,6 +87,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | `editScale` | pending-parameter-review | Pending |
 | `editTitle` | accepted | [Open](planned/EDITING.md#edittitle) |
 | `editVerticalGrid` | accepted | [Open](planned/EDITING.md#directional-grid-edits) |
+| `encodeX2` | accepted | [Open](planned/ENCODINGS.md#horizontal-ranged-position) |
+| `encodeXRange` | accepted | [Open](planned/ENCODINGS.md#horizontal-ranged-position) |
 
 ## Planned capabilities
 
@@ -106,11 +108,15 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | parameter | Point shape vocabulary | accepted | [Open](planned/ENCODINGS.md#point-shape-vocabulary) |
 | parameter | Area outline | accepted | [Open](planned/ENCODINGS.md#area-outline) |
 | parameter | Bar width modes | accepted | [Open](planned/ENCODINGS.md#bar-width-modes) |
+| parameter | Offset padding controls | accepted | [Open](planned/ENCODINGS.md#offset-padding-controls) |
 | parameter | Aggregate vocabulary | accepted | [Open](planned/ENCODINGS.md#aggregate-vocabulary) |
+| parameter | Parameterized aggregate operations | accepted | [Open](planned/ENCODINGS.md#parameterized-aggregate-operations) |
 | parameter | Color layout vocabulary | accepted | [Open](planned/ENCODINGS.md#color-layout-vocabulary) |
 | parameter | Histogram bin controls | accepted | [Open](planned/ENCODINGS.md#histogram-bin-controls) |
 | parameter | Scale type vocabulary | accepted | [Open](planned/SCALES.md#scale-type-vocabulary) |
 | parameter | Scale mapping policies | accepted | [Open](planned/SCALES.md#scale-mapping-policies) |
+| parameter | Position field-type compatibility | accepted | [Open](planned/ENCODINGS.md#position-field-type-compatibility) |
+| parameter | Normalized stack mode | accepted | [Open](planned/ENCODINGS.md#normalized-stack-mode) |
 | parameter | Density kernel vocabulary | accepted | [Open](planned/DATA_AND_STATISTICS.md#density-kernel-vocabulary) |
 | parameter | Filter predicate modes | accepted | [Open](planned/DATA_AND_STATISTICS.md#filter-predicate-modes) |
 | parameter | Regression method vocabulary | accepted | [Open](planned/DATA_AND_STATISTICS.md#regression-method-vocabulary) |

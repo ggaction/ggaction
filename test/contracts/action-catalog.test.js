@@ -232,7 +232,9 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
     "editRegressionLine",
     "editScale",
     "editTitle",
-    "editVerticalGrid"
+    "editVerticalGrid",
+    "encodeX2",
+    "encodeXRange"
   ]));
 
   for (const action of index.plannedActions) {
@@ -249,7 +251,9 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
     .map(action => action.audit.match(/\`([A-Za-z][A-Za-z0-9]*)\` — Planned/))
     .filter(Boolean)
     .map(match => match[1]);
-  assert.deepEqual(new Set(names), new Set(expectedFromAudit));
+  for (const expected of expectedFromAudit) {
+    assert.equal(names.includes(expected), true, expected);
+  }
 
   const plannedReassignments = index.actions
     .filter(action => action.audit === "Reassignment — Planned")
@@ -269,11 +273,15 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     "Point shape vocabulary",
     "Area outline",
     "Bar width modes",
+    "Offset padding controls",
     "Aggregate vocabulary",
+    "Parameterized aggregate operations",
     "Color layout vocabulary",
     "Histogram bin controls",
     "Scale type vocabulary",
     "Scale mapping policies",
+    "Position field-type compatibility",
+    "Normalized stack mode",
     "Density kernel vocabulary",
     "Filter predicate modes",
     "Regression method vocabulary",
@@ -298,10 +306,19 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /pixels\?: PositiveFinite/);
   assert.match(plannedCorpus, /paddingInner\?: UnitIntervalLessThan1/);
   assert.match(plannedCorpus, /type AggregateOperation =/);
+  assert.match(plannedCorpus, /type ParameterizedAggregate =/);
+  assert.match(plannedCorpus, /op: "quantile"; probability: UnitInterval/);
+  assert.match(plannedCorpus, /op: "first" \| "last"/);
   assert.match(plannedCorpus, /two-sided 95% normal interval endpoint/);
   assert.match(plannedCorpus, /type ColorLayout =/);
-  assert.match(plannedCorpus, /"stack" \| "fill" \| "group" \| "overlay" \| "center" \| "diverging"/);
+  assert.match(plannedCorpus, /"stack" \| "fill" \| "group" \| "overlay" \| "diverging"/);
+  assert.match(plannedCorpus, /`"center"` streamgraph layout은 Proposed/);
   assert.match(plannedCorpus, /별도 action `encodeGroup`과 다른 개념/);
+  assert.match(plannedCorpus, /type PlannedPositionFieldType =/);
+  assert.match(plannedCorpus, /type PlannedStackMode = "normalize"/);
+  assert.match(plannedCorpus, /paddingOuter\?: NonNegativeFinite/);
+  assert.match(plannedCorpus, /encodeX2\(\{/);
+  assert.match(plannedCorpus, /encodeXRange\(\{/);
   assert.match(plannedCorpus, /binBoundaries\?: readonly \[Finite, Finite, \.\.\.Finite\[\]\]/);
   assert.match(plannedCorpus, /zero를 anchor로/);
   assert.match(plannedCorpus, /type PlannedScaleType =/);

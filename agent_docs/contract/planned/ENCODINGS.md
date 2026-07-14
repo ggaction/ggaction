@@ -105,16 +105,15 @@ encodeBarWidth({
   target?: UserId;
   band?: UnitIntervalExclusiveZero;
   pixels?: PositiveFinite;
-  paddingInner?: UnitIntervalLessThan1;
 }): ChartProgram;
 ```
 
-- `band`와 `pixels`는 mutually exclusive다. 첫 assignment에서 둘 다 생략하면 `band: 0.72`,
-  `paddingInner: 0`을 사용한다. reassignment에서 width mode를 생략하면 현재 mode/value를 유지한다.
+- `band`와 `pixels`는 mutually exclusive다. 첫 assignment에서 둘 다 생략하면 `band: 0.72`를
+  사용한다. reassignment에서 width mode를 생략하면 현재 mode/value를 유지한다.
 - band는 resolved inner slot width의 fraction이라 Canvas resize에 반응한다. pixels는 logical Canvas
   pixel의 고정 width이며 slot 중앙에 배치되고 output pixelRatio와 무관하다.
-- paddingInner는 `[0, 1)`이며 grouped xOffset slots 사이의 spacing을 결정한다. width보다 큰 bar나
-  명시적 overlap을 전역 오류로 만들지 않는다.
+- Group slot 사이의 padding은 `encodeXOffset`이 소유한다. `encodeBarWidth`는 resolved slot 안의
+  실제 bar width만 소유하며 width보다 큰 bar나 명시적 overlap을 전역 오류로 만들지 않는다.
 - 변경 시 xOffset band geometry와 bar x/width를 함께 rematerialize한다. outer x band, category
   centers와 legend domain order는 유지한다.
 - Status: Planned, NOT IMPLEMENTED. mode switching, padding boundaries, Canvas resize와 overlap
@@ -156,11 +155,11 @@ type AggregateOperation =
 
 ```typescript
 type ColorLayout =
-  | "stack" | "fill" | "group" | "overlay" | "center" | "diverging";
+  | "stack" | "fill" | "group" | "overlay" | "diverging";
 ```
 
 - `encodeColor.layout`이 color series의 graphical arrangement를 소유한다. 기존 `"stack"`과
-  `"group"`은 Implemented이며 나머지 네 값이 이 Planned extension의 구현 대상이다.
+  `"group"`은 Implemented이며 나머지 세 값이 이 Planned extension의 구현 대상이다.
 - `"stack"`은 각 x/category에서 series의 absolute quantitative value를 zero baseline부터
   누적한다. `"fill"`은 같은 stack partition의 non-negative values를 합계 1로 정규화해 누적하며
   auto y domain은 `[0, 1]`이다. partition 합계가 0인 위치에는 graphic을 합성하지 않는다.
@@ -169,11 +168,10 @@ type ColorLayout =
 - `"overlay"`는 bar 또는 area series를 같은 baseline과 coordinate에 겹쳐 그린다. series domain의
   deterministic order를 rendering order로 사용하며 library가 opacity를 임의로 바꾸거나 overlap을
   오류로 만들지 않는다.
-- `"center"`는 stacked area에만 적용한다. 각 x sample에서 전체 stack 두께의 절반을 zero 양쪽에
-  배치하는 silhouette baseline을 사용한다. `"diverging"`은 stackable bar 또는 area에서 positive
-  values는 zero 위로, negative values는 zero 아래로 각각 누적한다.
+- `"diverging"`은 stackable bar 또는 area에서 positive values는 zero 위로, negative values는
+  zero 아래로 각각 누적한다. `"center"` streamgraph layout은 Proposed로 유지한다.
 - 첫 구현의 compatibility matrix는 bar에 `"stack" | "fill" | "group" | "overlay" |
-  "diverging"`, area에 `"stack" | "fill" | "overlay" | "center" | "diverging"`를 허용한다.
+  "diverging"`, area에 `"stack" | "fill" | "overlay" | "diverging"`를 허용한다.
   point/line에는 layout을 허용하지 않으며 series 분리는 기존 color/group materialization을 사용한다.
 - resolved layout은 semantic color encoding에 저장한다. `"group"`은 xOffset companion, 나머지
   stack layouts는 y stack policy를 explicit wrapped child action으로 설정한다. y scale, mark geometry,
@@ -181,7 +179,7 @@ type ColorLayout =
 - 기존 layout에서 다른 layout으로 재할당하는 전환은 companion 제거, y policy cleanup과 scale
   conflict를 원자적으로 처리하는 별도 reassignment contract가 구현될 때까지 지원하지 않는다.
 - Status: Planned, NOT IMPLEMENTED. mark compatibility, positive/negative/zero partitions, deterministic
-  overlap order, normalized/centered domains와 rejected layout-transition coverage가 필요하다.
+  overlap order, normalized/diverging domains와 rejected layout-transition coverage가 필요하다.
 
 ## histogram bin controls
 
@@ -213,3 +211,121 @@ encodeHistogram({
   ticks, vertical grid와 color stack consumers를 deterministic plan으로 rematerialize한다.
 - Status: Planned, NOT IMPLEMENTED. exclusivity/defaults, negative/constant data, exact and irregular
   boundaries, explicit domain conflicts, empty bins와 guide/rematerialization coverage가 필요하다.
+
+## Position field-type compatibility
+
+```typescript
+type PlannedPositionFieldType = "quantitative" | "temporal" | "ordinal";
+```
+
+- Point x/y는 세 field type을 모두 허용한다. Line과 area의 independent axis는 세 type을 모두
+  허용하고 measure 또는 ranged axis는 quantitative를 요구한다.
+- Bar는 vertical `ordinal | temporal x + quantitative y`와 horizontal
+  `quantitative x + ordinal | temporal y` 조합을 지원한다. Orientation은 compatible channel
+  pair에서 추론하며 사용자가 별도 mark orientation을 중복 지정하지 않는다.
+- Temporal은 `time | utc`, ordinal position은 `ordinal | band | point`, quantitative는 compatible
+  continuous scale type을 사용한다. Explicit incompatible field/scale 조합은 오류다.
+- Aggregate, bin, stack, ranged channel과 mark grain이 허용 조합을 더 좁힐 수 있다. Library는
+  unsupported pair를 다른 field type으로 자동 변환하지 않는다.
+- 새 조합은 scale, mark geometry, axes, grids와 existing guides를 같은 materialization plan에서
+  갱신한다.
+- Status: Planned, NOT IMPLEMENTED. 전체 mark × channel × fieldType compatibility matrix와
+  orientation, shared-scale conflict, guide inference coverage가 필요하다.
+
+## Parameterized aggregate operations
+
+```typescript
+type ParameterizedAggregate =
+  | { op: "quantile"; probability: UnitInterval }
+  | {
+      op: "first" | "last";
+      orderBy: FieldName;
+      order?: "ascending" | "descending";
+    };
+```
+
+- `quantile`은 grouping grain의 sorted finite values에 linear interpolation을 적용한다.
+  probability `0`과 `1`은 각각 min과 max이며 기본 probability를 추론하지 않는다.
+- `first | last`는 같은 grouping grain을 `orderBy` field와 stable source order로 정렬한 뒤
+  선택한 row의 encoded field value를 반환한다. `order` 기본값은 `"ascending"`이다.
+- Missing/invalid order key, empty group과 incompatible output field는 aggregate value를 만들지
+  않으며 library가 임의의 대체 row를 선택하지 않는다.
+- Guide title, scale domain, mark geometry와 downstream guides는 existing aggregate vocabulary와
+  같은 ownership 및 rematerialization 규칙을 사용한다.
+- Row 전체를 선택하는 `argmin | argmax`는 aggregate가 아니라 row-selection transform 후보이므로
+  Proposed로 유지한다.
+- Status: Planned, NOT IMPLEMENTED. probability boundaries, ties, stable ordering, missing values,
+  grouped grain과 rematerialization coverage가 필요하다.
+
+## Normalized stack mode
+
+```typescript
+type PlannedStackMode = "normalize";
+```
+
+- `encodeY({ stack: "normalize" })`는 각 x/category partition의 non-negative series 합계를
+  `1`로 정규화하고 zero baseline부터 누적한다. Auto y domain은 `[0, 1]`이다.
+- Partition 합계가 zero이거나 valid value가 없으면 graphic을 합성하지 않는다. Negative values는
+  첫 contract에서 오류이며 diverging normalization은 별도 계약이다.
+- `encodeColor({ layout: "fill" })`은 wrapped y assignment로 이 mode를 사용한다. `fill`과
+  `normalize`는 각각 high-level series layout과 low-level y stack vocabulary다.
+- Stack change는 y scale, mark geometry, axes와 horizontal grid를 atomic하게 rematerialize한다.
+- Centered/silhouette stack과 `encodeColor.layout: "center"`는 streamgraph 계약까지 Proposed다.
+- Status: Planned, NOT IMPLEMENTED. positive/zero/negative partitions, shared scales, guide domains,
+  fill hierarchy와 reassignment coverage가 필요하다.
+
+## Offset padding controls
+
+```typescript
+type UnitIntervalLessThan1 = number; // finite && 0 <= value && value < 1
+
+encodeXOffset({
+  field: FieldName;
+  target?: UserId;
+  paddingInner?: UnitIntervalLessThan1;
+  paddingOuter?: NonNegativeFinite;
+  // existing fieldType and scale options
+}): ChartProgram;
+```
+
+- `paddingInner`은 sibling offset bands 사이 step fraction이며 `[0, 1)`, `paddingOuter`는
+  첫/마지막 band 바깥의 non-negative step fraction이다. 둘의 기본값은 `0`이다.
+- Padding은 group slot의 centers와 bandwidth를 소유한다. `encodeBarWidth`는 각 resolved slot
+  안의 concrete width만 결정하고 padding을 받지 않는다.
+- Explicit offset range와 padding은 함께 사용할 수 있으며 range endpoints는 유지한 채 내부 step과
+  bandwidth를 계산한다. Excessive padding이 zero bandwidth를 만들면 오류다.
+- 변경은 xOffset scale과 dependent bar geometry를 rematerialize하되 outer x band, color domain,
+  legend order를 유지한다.
+- Status: Planned, NOT IMPLEMENTED. boundary values, explicit/reversed ranges, grouped-bar Canvas resize,
+  bar-width interaction과 invalid zero-bandwidth coverage가 필요하다.
+
+## Horizontal ranged position
+
+```typescript
+encodeX2({
+  field: FieldName;
+  target?: UserId;
+  fieldType?: "quantitative";
+  scale?: { id?: UserId };
+}): ChartProgram;
+
+encodeXRange({
+  lower: FieldName;
+  upper: FieldName;
+  target?: UserId;
+  fieldType?: "quantitative";
+  coordinate?: UserId;
+  scale?: PositionScale;
+}): ChartProgram;
+```
+
+- `encodeX2`는 existing x와 같은 scale 및 coordinate를 공유하는 upper horizontal bound다.
+  독립 scale 생성이나 incompatible field type은 허용하지 않는다.
+- `encodeXRange`는 wrapped `encodeX`와 `encodeX2`를 순서대로 호출하는 atomic action이다.
+  중간 incomplete area 상태를 public workflow에 노출하지 않는다.
+- Area materialization은 x lower/upper와 y independent values를 concrete closed path로 만든다.
+  Horizontal interval, confidence band와 density/ribbon 표현이 이 contract를 재사용한다.
+- Scale, area path, x axis와 vertical grid consumer를 deterministic plan으로 rematerialize하며
+  validation 실패 시 이전 program을 그대로 유지한다.
+- Status: Planned, NOT IMPLEMENTED. direct child actions, semantic x2 path validation, horizontal path
+  geometry, shared scale, Canvas edit와 renderer parity coverage가 필요하다.

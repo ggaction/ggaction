@@ -45,8 +45,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeX`
 
 - Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; bin?: { maxBins?: PositiveInteger } })`; 실제 fieldType/bin 조합은 mark policy가 제한한다.
-- Planned (NOT IMPLEMENTED): `{ bin?: { step: PositiveFinite } | { boundaries: readonly [Finite, Finite, ...Finite[]] }; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
-- Proposed (NOT IMPLEMENTED): broader mark-specific temporal/ordinal combinations 및 Polar positional action.
+- Planned (NOT IMPLEMENTED): broader mark-specific `fieldType?: "quantitative" | "temporal" | "ordinal"` compatibility; `{ bin?: { step: PositiveFinite } | { boundaries: readonly [Finite, Finite, ...Finite[]] }; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
+- Proposed (NOT IMPLEMENTED): Polar positional action.
 
 ### Value coverage — `encodeX`
 
@@ -55,7 +55,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `fieldType`
   - ✅ Covered: point/area `"quantitative"`, line `"temporal"`, bar `"quantitative"` bin과 `"ordinal"`.
   - ✅ Covered: unsupported mark/type pairs rejection.
-  - 🟣 Proposed: broader raw temporal/ordinal combinations per mark; each needs scale and mark grain policy.
+  - 🟡 Planned: broader raw temporal/ordinal combinations with an explicit mark × channel compatibility matrix.
 - `coordinate`
   - ✅ Covered: omitted Cartesian default, explicit/reused coordinate, incompatible coordinate rejection.
   - 🟣 Proposed: Polar theta/radial mapping; action naming unresolved.
@@ -93,8 +93,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeY`
 
 - Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: PositionScale; coordinate?: UserId; aggregate?: "mean" | "count"; stack?: "zero" | null })`; mark/x policy가 가능한 조합을 제한한다.
-- Planned (NOT IMPLEMENTED): `{ aggregate?: "sum" | "median" | "min" | "max" | "distinct" | "valid" | "missing" | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr" | "q1" | "q3" | "ciLower" | "ciUpper"; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
-- Proposed (NOT IMPLEMENTED): `{ fieldType?: "temporal" | "ordinal"; aggregate?: { op: "quantile"; probability: UnitInterval } | { op: "first" | "last"; orderBy: FieldName; order?: "ascending" | "descending" }; stack?: "normalize" | "center" }`; `argmin`/`argmax`는 row-selecting transform 후보다.
+- Planned (NOT IMPLEMENTED): `{ fieldType?: "temporal" | "ordinal"; aggregate?: "sum" | "median" | "min" | "max" | "distinct" | "valid" | "missing" | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr" | "q1" | "q3" | "ciLower" | "ciUpper" | { op: "quantile"; probability: UnitInterval } | { op: "first" | "last"; orderBy: FieldName; order?: "ascending" | "descending" }; stack?: "normalize"; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
+- Proposed (NOT IMPLEMENTED): `{ stack?: "center" }`; `argmin`/`argmax`는 row-selecting transform 후보다.
 
 ### Value coverage — `encodeY`
 
@@ -102,16 +102,18 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: raw quantitative point/area, aggregate line/bar, inferred histogram count and target ambiguity.
 - `fieldType`
   - ✅ Covered: current quantitative combinations와 invalid types.
-  - 🟣 Proposed: temporal/ordinal y mark combinations.
+  - 🟡 Planned: temporal/ordinal y combinations allowed by the mark × channel compatibility matrix.
 - `aggregate`
   - ✅ Covered: omission, `"mean"`, `"count"`, incompatible aggregate rejection.
   - 🟡 Planned: `"sum" | "median" | "min" | "max" | "distinct" | "valid" | "missing" |
     "variance" | "varianceP" | "stdev" | "stdevP" | "stderr" | "q1" | "q3" | "ciLower" |
     "ciUpper"`; final visual grain, sample validity, title/domain inference가 필요하다.
-  - 🟣 Proposed: parameterized quantile과 ordered first/last; `argmin`/`argmax` row transform.
+  - 🟡 Planned: parameterized quantile과 ordered first/last.
+  - 🟣 Proposed: `argmin`/`argmax` row-selection transform.
 - `stack`
   - ✅ Covered: `"zero"`, `null`, incompatible policy rejection.
-  - 🟣 Proposed: `"normalize" | "center"`; y scale domain과 baseline semantics가 필요하다.
+  - 🟡 Planned: `"normalize"`; non-negative partition과 auto `[0, 1]` domain을 사용한다.
+  - 🟣 Proposed: `"center"`; streamgraph baseline contract가 필요하다.
 - `scale`
   - ✅ Covered: auto/explicit domain/range, nice/zero precedence, shared consumer conflicts.
   - ⚠️ Partial: aggregate/stack/scale option pairwise matrix.
@@ -133,7 +135,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeXOffset`
 
 - Implemented: `encodeXOffset({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: NumericRange } })`
-- Proposed (NOT IMPLEMENTED): `{ paddingInner?: UnitInterval; paddingOuter?: NonNegativeFinite }`
+- Planned (NOT IMPLEMENTED): `{ paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite }`
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeXOffset`
 
@@ -143,7 +146,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: `"nominal"`와 invalid alternatives.
 - `scale.id/type/domain/range`
   - ✅ Covered: defaults, explicit order, reversed range, auto range rematerialization, invalid definitions.
-  - 🟣 Proposed: padding controls between sub-bands; parent/child band geometry ownership이 필요하다.
+  - 🟡 Planned: `encodeXOffset`-owned inner/outer padding; `encodeBarWidth`는 slot 내부 width만 소유한다.
 - Evidence: `test/unit/actions/encodings/x-offset-encoding.test.js`.
 
 ## `encodeY2`
@@ -185,7 +188,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeYRange`
 
 - Implemented: `encodeYRange({ lower: FieldName; upper: FieldName; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`
-- Proposed (NOT IMPLEMENTED): 별도 `encodeXRange({ lower; upper; ... })` action; 현재 action parameter 추가는 아니다.
+- Planned (NOT IMPLEMENTED): 별도 `encodeX2({ field; ... })`와 atomic `encodeXRange({ lower; upper; ... })` actions.
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeYRange`
 
@@ -194,7 +198,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `target`, `fieldType`, `coordinate`, `scale`
   - ✅ Covered: inferred/explicit target와 shared y/y2 child hierarchy.
   - ⚠️ Partial: explicit coordinate/scale option combinations direct test.
-- 🟣 Proposed: horizontal ranged area의 atomic `encodeXRange`; x2 semantic channel이 먼저 필요하다.
+- 🟡 Planned: `encodeX2`를 wrapped child로 사용하는 horizontal ranged area의 atomic `encodeXRange`.
 - Evidence: ranged-area and regression tests.
 
 ## `encodeGroup`
