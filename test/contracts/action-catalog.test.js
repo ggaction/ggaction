@@ -274,6 +274,7 @@ test("classifies every direct action lifecycle and keeps edit gaps explicit", ()
   );
   for (const action of [
     "editAreaMark",
+    "editDensity",
     "editHorizontalGrid",
     "editLegend",
     "editLineMark",
@@ -293,6 +294,9 @@ test("classifies every direct action lifecycle and keeps edit gaps explicit", ()
   assert.match(catalog, /shape: "circle" \| "square"/);
   assert.match(catalog, /strokeWidth: NonNegativeFinite/);
   assert.match(catalog, /opacity\?: UnitInterval/);
+  assert.match(catalog, /### Planned contract: editDensity/);
+  assert.match(catalog, /DensityDataRevision\$\{n\}/);
+  assert.match(catalog, /`releaseDerivedData`/);
   assert.match(catalog, /### Planned contract: regression component edits/);
   assert.match(catalog, /editRegressionBand\(\{/);
   assert.match(catalog, /editRegressionLine\(\{/);

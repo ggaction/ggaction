@@ -108,6 +108,7 @@
 - A constant point shape is graphical appearance, while a field-driven shape is semantic encoding that must be explicitly materialized.
 - User-specified scale domains and ranges are semantic. Resolved primitive values such as x, y, radius, and color are graphical.
 - Dataset values are immutable after creation; filtering, aggregation, and other data changes must create transforms or derived datasets rather than replace source values.
+- Editing a stored transform parameter must create a new deterministic namespaced derived-dataset revision and explicitly rebind its consumers; never overwrite an existing dataset's values. An unreferenced old derived revision may be released from the new program through a visible internal wrapped action, while earlier programs retain it unchanged.
 - Canvas properties, themes, fonts, strokes, and other appearance-only values are graphical.
 - Keep appearance-only materialization settings such as a grouped-bar band fraction outside `semanticSpec`; store them in immutable graphical configuration and materialize their concrete results into `graphicSpec`.
 - Output density such as PNG `pixelRatio` is a renderer option and must not rewrite logical values in `graphicSpec`.

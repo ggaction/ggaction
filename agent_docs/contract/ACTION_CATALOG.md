@@ -157,7 +157,7 @@ properties, rematerialization ownership과 conflict behavior를 정해야 한다
 | `encodeYRange` | Assignment | Same action will atomically replace lower/upper fields | Reassignment — Planned |
 | `encodeGroup` | Assignment | Same action will replace compatible path grouping | Reassignment — Planned |
 | `encodeHistogram` | Assignment | Same action will replace atomic bin/count encodings | Reassignment — Planned |
-| `encodeDensity` | Assignment | Atomic child encodings; no replacement contract | Reassignment — Proposed |
+| `encodeDensity` | Assignment | `editDensity` will create and rebind a derived revision | `editDensity` — Planned |
 | `encodeBarWidth` | Assignment | Same action replaces the band fraction | Reassignment — Implemented |
 | `createRegression` | Aggregate create-only | Owned data/layer/encoding children | Intentional |
 | `createAxes` | Aggregate create-only | Channel axis or component edits | Intentional |
@@ -206,6 +206,7 @@ action이다. Contract readiness가 `Accepted`인 action만 구현을 시작할 
 | Planned action | Status | Contract readiness |
 | --- | --- | --- |
 | `editAreaMark` | Planned | Accepted |
+| `editDensity` | Planned | Accepted |
 | `editHorizontalGrid` | Planned | Accepted |
 | `editLegend` | Planned | Accepted |
 | `editLineMark` | Planned | Accepted |
@@ -250,6 +251,35 @@ editAreaMark({
 - `createBarMark`는 현재 직접 소유한 editable parameter가 없으므로 `editBarMark`를 계획하지
   않는다. width, color, grouping, stack과 position은 기존 encoding action이 소유한다.
 - Status: Planned, NOT IMPLEMENTED. 실행 가능한 coverage는 구현 단계에서 추가한다.
+
+### Planned contract: editDensity
+
+```typescript
+editDensity({
+  target?: UserId;
+  bandwidth?: "auto" | PositiveFinite;
+  extent?: "auto" | OrderedFinitePair;
+  steps?: IntegerAtLeast2;
+}): ChartProgram;
+```
+
+- `target`은 existing density-encoded area layer selector다. eligible layer가 유일하면 생략할
+  수 있고 여러 개면 explicit target이 필요하다. target 외 최소 한 변경값을 요구한다.
+- 기존 density transform provenance에서 source, input field, groupBy, output fields와 kernel을
+  유지하고 bandwidth/extent/steps 중 전달된 값만 교체한다. densityChannel, coordinate와
+  value/density scale binding도 유지한다.
+- 기존 derived dataset values를 덮어쓰지 않는다. `${target}DensityDataRevision${n}` 형태의
+  deterministic namespaced 새 ID로 `createDensityData`를 호출하고 area layer를 explicit wrapped
+  semantic action으로 rebind한다.
+- rebind 뒤 이전 derived dataset을 참조하는 layer가 없으면 새 program에서 internal wrapped
+  `releaseDerivedData`로 제거한다. source dataset이나 아직 참조되는 derived dataset은 제거하지
+  않으며 이전 `ChartProgram`은 기존 dataset과 binding을 그대로 유지한다.
+- affected value/density scales, area paths, axes와 grids를 deterministic materialization plan으로
+  갱신한다. validation, derivation 또는 layout 실패 시 어느 branch도 바뀌지 않는다.
+- source/field/groupBy/output names/densityChannel 변경은 accepted parameter가 아니다. 이 구조적
+  변경은 새 area mark에 `encodeDensity`를 적용한다.
+- Status: Planned, NOT IMPLEMENTED. 실행 가능한 derivation, ownership, orphan-release,
+  rematerialization coverage는 구현 단계에서 추가한다.
 
 ### Planned contract: regression component edits
 
