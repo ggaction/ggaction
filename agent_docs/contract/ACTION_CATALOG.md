@@ -111,6 +111,91 @@ Coverage 퍼센트는 사용하지 않는다. 체크된 case는 반드시 아래
 | Primitive | [`createGraphics`](#creategraphics) | Implemented | ✅ | ✅ | ✅ |
 | Primitive | [`editGraphics`](#editgraphics) | Implemented | ✅ | ✅ | ⚠️ |
 
+## Action lifecycle audit
+
+`create*` 이름이 모든 경우에 `edit*` counterpart를 요구하지는 않는다. 각 direct action은
+아래 lifecycle 중 하나를 가져야 한다.
+
+- **Immutable create-only**: source/derived data처럼 새 ID로만 다시 만들 수 있다.
+- **Mutable resource**: stable identity가 있고 현재 대응 create/edit action이 모두 있다.
+- **Assignment**: encoding처럼 semantic 또는 appearance property를 할당한다. 별도의
+  `edit*` 이름을 기계적으로 만들지 않으며 replacement/reassignment 계약은 별도로 정한다.
+- **Aggregate create-only**: wrapped child action을 조합한다. aggregate 자체의 edit은 만들지
+  않고 지원되는 child edit으로 수정한다.
+- **Stable resource, edit gap**: independently addressable한 resource지만 아직 public edit 또는
+  replacement 계약이 없다. 합의된 `editScale`만 Planned이고 나머지는 Proposed다.
+- **Primitive**: extension authoring의 low-level create/edit/assignment 연산이다.
+
+`Gap`은 edit action을 즉시 추가한다는 뜻이 아니다. 먼저 resource identity, editable
+properties, rematerialization ownership과 conflict behavior를 정해야 한다.
+
+| Action | Lifecycle | Current update path | Audit |
+| --- | --- | --- | --- |
+| `createCanvas` | Mutable resource | `editCanvas` | Complete |
+| `editCanvas` | Mutable resource | Edits the Canvas | Complete |
+| `createData` | Immutable create-only | Create a new dataset ID | Intentional |
+| `filterData` | Immutable create-only | Create a new derived dataset ID | Intentional |
+| `createDensityData` | Immutable create-only | Create a new derived dataset ID | Intentional |
+| `createRegressionData` | Immutable create-only | Create a new derived dataset ID | Intentional |
+| `createPointMark` | Stable resource, edit gap | Encoding actions only; no base-mark edit | Gap — Proposed |
+| `createLineMark` | Stable resource, edit gap | Encoding actions only; no base-mark edit | Gap — Proposed |
+| `createBarMark` | Stable resource, edit gap | Encoding actions only; no base-mark edit | Gap — Proposed |
+| `createAreaMark` | Stable resource, edit gap | Encoding actions only; no base-mark edit | Gap — Proposed |
+| `encodeX` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeY` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeColor` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeStrokeDash` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeSize` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeShape` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeOpacity` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeRadius` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeXOffset` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeY2` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeYRange` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeGroup` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeHistogram` | Assignment | Atomic child encodings; no replacement contract | Reassignment — Proposed |
+| `encodeDensity` | Assignment | Atomic child encodings; no replacement contract | Reassignment — Proposed |
+| `encodeBarWidth` | Assignment | No replacement contract | Reassignment — Proposed |
+| `createRegression` | Aggregate create-only | Owned data/layer/encoding children | Intentional |
+| `createAxes` | Aggregate create-only | Channel axis or component edits | Intentional |
+| `createXAxis` | Aggregate create-only | X-axis component edits | Intentional |
+| `createYAxis` | Aggregate create-only | Y-axis component edits | Intentional |
+| `createXAxisLine` | Mutable resource | `editXAxisLine` | Complete |
+| `createYAxisLine` | Mutable resource | `editYAxisLine` | Complete |
+| `editXAxisLine` | Mutable resource | Edits the x-axis line | Complete |
+| `editYAxisLine` | Mutable resource | Edits the y-axis line | Complete |
+| `createXAxisTicks` | Mutable resource | `editXAxisTicks` | Complete |
+| `createYAxisTicks` | Mutable resource | `editYAxisTicks` | Complete |
+| `editXAxisTicks` | Mutable resource | Edits x-axis ticks | Complete |
+| `editYAxisTicks` | Mutable resource | Edits y-axis ticks | Complete |
+| `createXAxisLabels` | Mutable resource | `editXAxisLabels` | Complete |
+| `createYAxisLabels` | Mutable resource | `editYAxisLabels` | Complete |
+| `editXAxisLabels` | Mutable resource | Edits x-axis labels | Complete |
+| `editYAxisLabels` | Mutable resource | Edits y-axis labels | Complete |
+| `createXAxisTicksAndLabels` | Mutable resource | `editXAxisTicksAndLabels` | Complete |
+| `createYAxisTicksAndLabels` | Mutable resource | `editYAxisTicksAndLabels` | Complete |
+| `editXAxisTicksAndLabels` | Mutable resource | Edits x-axis ticks and labels | Complete |
+| `editYAxisTicksAndLabels` | Mutable resource | Edits y-axis ticks and labels | Complete |
+| `createXAxisTitle` | Mutable resource | `editXAxisTitle` | Complete |
+| `createYAxisTitle` | Mutable resource | `editYAxisTitle` | Complete |
+| `editXAxisTitle` | Mutable resource | Edits the x-axis title | Complete |
+| `editYAxisTitle` | Mutable resource | Edits the y-axis title | Complete |
+| `createGrid` | Aggregate create-only | Directional grid children | Intentional; child edit gaps remain |
+| `createHorizontalGrid` | Stable resource, edit gap | Internal rematerialization only | Gap — Proposed |
+| `createVerticalGrid` | Stable resource, edit gap | Internal rematerialization only | Gap — Proposed |
+| `createLegend` | Stable resource, edit gap | Internal rematerialization only | Gap — Proposed |
+| `createSizeLegend` | Stable resource, edit gap | Internal rematerialization only | Gap — Proposed |
+| `createGuides` | Aggregate create-only | Guide child actions | Intentional; child edit gaps remain |
+| `createTitle` | Stable resource, edit gap | Internal rematerialization only | Gap — Proposed |
+| `createCoordinate` | Stable resource, edit gap | Equivalent recreation only | Replacement contract — Proposed |
+| `createScale` | Stable resource, edit gap | Equivalent recreation only | `editScale` — Planned |
+| `createDerivedData` | Immutable create-only | Create a new derived dataset ID | Intentional |
+| `createRegressionBand` | Stable resource, edit gap | Owning regression action only | Gap — Proposed |
+| `createRegressionLine` | Stable resource, edit gap | Owning regression action only | Gap — Proposed |
+| `editSemantic` | Primitive | Assigns one semantic property | Complete |
+| `createGraphics` | Primitive | `editGraphics` | Complete |
+| `editGraphics` | Primitive | Edits one graphical property | Complete |
+
 ## Internal materialization inventory
 
 이 표는 runtime과 trace에 존재하지만 public type과 direct action 계약에서 제외되는 wrapped

@@ -38,6 +38,8 @@
 ## User-Facing API Design
 
 - Maintain three clear layers: the default Chart Authoring API, the public Action Authoring API, and private library internals.
+- Assign every public action an explicit lifecycle in the action catalog: immutable create-only, mutable resource, assignment, aggregate create-only, stable resource with an edit gap, or primitive. Do not infer that every `create*` action mechanically requires an `edit*` counterpart.
+- A stable independently addressable resource must either have a supported edit path or an explicit cataloged gap. Define editable properties, rematerialization ownership, and conflict behavior before adding its edit action; aggregate actions remain create-only and delegate updates to child actions.
 - The default `ggaction` entry point serves chart authors through domain-specific actions and rendering.
 - The `ggaction/extension` entry point serves action authors through `ChartProgram`, `action()`, primitive actions, and trace inspection.
 - The Node-only `ggaction/png` entry point exports completed programs without adding Node dependencies to the browser entry point.
@@ -154,6 +156,7 @@
 ## Action Contract Catalog
 
 - Keep `agent_docs/contract/ACTION_CATALOG.md` as the canonical engineering catalog for every supported direct user-facing action and every public primitive action.
+- Keep the lifecycle audit exhaustive: every declared direct action must appear exactly once, and every stable resource without an edit path must remain visibly marked Planned or Proposed.
 - Record each action parameter's implementation status, type, required state, accepted values or value partitions, default and inference rules, option interactions, semantic effect, graphical and rendering effect, rematerialization impact, error conditions, and executable coverage evidence.
 - Distinguish `Implemented`, `Planned`, and `Proposed` contracts. Only behavior present in the implementation may be marked `Implemented`; only behavior explicitly agreed with the user may be marked `Planned`; unresolved candidates remain `Proposed` and must not appear as current public API.
 - Mark a coverage case complete only when a matching executable test exists. Keep missing and partial cases visible rather than estimating a coverage percentage.

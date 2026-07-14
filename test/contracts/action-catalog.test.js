@@ -114,6 +114,22 @@ function internalMaterializationInventory() {
   )].map(match => match[1]);
 }
 
+function lifecycleRows() {
+  const heading = "## Action lifecycle audit";
+  const start = catalog.indexOf(heading);
+  const end = catalog.indexOf("\n## ", start + heading.length);
+  const section = catalog.slice(start, end === -1 ? catalog.length : end);
+
+  return [...section.matchAll(
+    /^\| `([A-Za-z][A-Za-z0-9]*)` \| (Immutable create-only|Mutable resource|Assignment|Aggregate create-only|Stable resource, edit gap|Primitive) \| ([^|]+) \| ([^|]+) \|$/gm
+  )].map(match => ({
+    action: match[1],
+    lifecycle: match[2],
+    update: match[3].trim(),
+    audit: match[4].trim()
+  }));
+}
+
 test("keeps the action catalog aligned with every declared direct action", () => {
   const declared = declaredProgramMethods();
   const rows = summaryRows();
@@ -166,6 +182,35 @@ test("keeps primitive and runtime-only actions out of the wrong catalog layer", 
   for (const action of materialization) {
     assert.equal(declared.has(action), false, action);
   }
+});
+
+test("classifies every direct action lifecycle and keeps edit gaps explicit", () => {
+  const declared = declaredProgramMethods();
+  const rows = lifecycleRows();
+  const actions = rows.map(row => row.action);
+
+  assert.equal(new Set(actions).size, actions.length);
+  assert.deepEqual(new Set(actions), new Set(declared));
+
+  for (const row of rows) {
+    if (row.lifecycle === "Stable resource, edit gap") {
+      assert.match(row.audit, /Planned|Proposed/, row.action);
+    }
+    if (row.lifecycle === "Aggregate create-only") {
+      assert.match(row.action, /^create/, row.action);
+    }
+    if (row.lifecycle === "Immutable create-only") {
+      assert.doesNotMatch(row.action, /^edit/, row.action);
+    }
+    if (row.lifecycle === "Assignment") {
+      assert.match(row.action, /^encode/, row.action);
+    }
+  }
+
+  assert.equal(
+    rows.find(row => row.action === "createScale")?.audit,
+    "`editScale` — Planned"
+  );
 });
 
 test("keeps one value coverage and proposal ledger for every direct action", () => {
