@@ -189,6 +189,19 @@ export function resolvePalette(value, domainCount) {
   }));
 }
 
+export function resolveContinuousPalette(value, count = 256) {
+  if (!Number.isInteger(count) || count < 2) {
+    throw new RangeError("Continuous palette count must be an integer of at least 2.");
+  }
+  const palette = normalizePalette(value);
+  if (palette.count !== undefined) {
+    throw new Error("Continuous palette does not accept count.");
+  }
+  const discrete = DISCRETE[palette.name];
+  if (discrete !== undefined) return discrete;
+  return resolvePalette({ ...palette, count }, count);
+}
+
 export function paletteFamily(name) {
   const validated = validatePaletteName(name);
   return DISCRETE[validated] === undefined ? "continuous" : "categorical";

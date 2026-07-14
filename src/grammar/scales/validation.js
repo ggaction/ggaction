@@ -27,7 +27,10 @@ export function validateScaleType(type) {
   return type;
 }
 
-export const validateSemanticScaleType = validateScaleType;
+export function validateSemanticScaleType(type) {
+  if (type === "sequential") return type;
+  return validateScaleType(type);
+}
 
 export function validateLinearScaleType(type) {
   if (type !== "linear") {
