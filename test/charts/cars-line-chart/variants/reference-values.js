@@ -1,4 +1,4 @@
-import { createCarsLineChartValues } from "./reference-values.js";
+import { createCarsLineChartValues } from "../reference-values.js";
 
 const LINE_COLOR = "#4c78a8";
 const NAMED_DASH_PATTERNS = Object.freeze({

@@ -1,6 +1,6 @@
 import {
   createCarsScatterplotPrimitives
-} from "./primitive.program.js";
+} from "../primitive.program.js";
 import {
   createCategoricalPalettePrimitiveValues,
   createContinuousColorPrimitiveValues,
@@ -9,7 +9,7 @@ import {
   createFieldOpacityPrimitiveValues,
   createScaleReversePrimitiveValues,
   createShapeVocabularyPrimitiveValues
-} from "./phase1-reference-values.js";
+} from "./reference-values.js";
 
 function editLegendText(program, id, values) {
   return program

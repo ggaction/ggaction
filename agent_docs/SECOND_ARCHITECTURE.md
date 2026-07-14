@@ -1212,7 +1212,8 @@ test/
 │  ├─ primitive.test.js
 │  ├─ public.test.js
 │  ├─ reference-values.js      필요할 때만 존재
-│  └─ png.render.js
+│  ├─ png.render.js
+│  └─ variants/                capability별 approved visual/API variants
 ├─ docs/                       public documentation contracts
 └─ support/                    여러 suite가 공유하는 test infrastructure
 ```
@@ -1290,8 +1291,10 @@ chart directory의 `png.render.js`에 두고 생성물은 source tree 밖의
 `.artifacts/test/png/`에 쓴다.
 
 일반 test는 `.test.js`, 고비용 renderer regression은 `.render.js` suffix를 사용한다.
-Package script는 suite별 glob을 명시하여 support module이나 executable program이 Node의
-자동 test discovery에 우연히 포함되지 않게 한다. `test:unit`, `test:contracts`,
+Package script는 Node 기반 collector로 suite directory를 재귀 탐색하여 깊어진 capability
+directory도 누락하지 않고, support module이나 executable program은 test로 선택하지 않는다.
+Discovery contract는 모든 `.test.js`와 `.render.js`가 정확히 한 suite에 속하는지 검증한다.
+`test:unit`, `test:contracts`,
 `test:charts`, `test:docs`, `test:render`를 독립적으로 실행할 수 있고 `test`와
 `test:coverage`는 모든 일반 suite를 함께 검증한다.
 

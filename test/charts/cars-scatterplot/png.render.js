@@ -21,10 +21,10 @@ import {
   createPointShapeDiamondPrimitives,
   createScaleReversePrimitives,
   createShapeVocabularyPrimitives
-} from "./phase1-primitives.program.js";
+} from "./variants/primitive-programs.js";
 import {
   createShapeVocabularyPrimitiveValues
-} from "./phase1-reference-values.js";
+} from "./variants/reference-values.js";
 
 const cars = loadCars();
 const shapeRows = createShapeVocabularyPrimitiveValues(cars).rows;

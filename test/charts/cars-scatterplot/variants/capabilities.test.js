@@ -9,11 +9,11 @@ import {
   createPaletteCarsScatterplot,
   createScaleReverseCarsScatterplot,
   createShapeVocabularyCarsScatterplot
-} from "../../../examples/cars-scatterplot/program.js";
+} from "../../../../examples/cars-scatterplot/program.js";
 import {
   createMockCanvasContext
-} from "../../support/canvas.js";
-import { loadCars } from "../../support/data.js";
+} from "../../../support/canvas.js";
+import { loadCars } from "../../../support/data.js";
 import {
   createCategoricalPalettePrimitives,
   createContinuousColorPrimitives,
@@ -22,9 +22,9 @@ import {
   createPointShapeDiamondPrimitives,
   createScaleReversePrimitives,
   createShapeVocabularyPrimitives
-} from "./phase1-primitives.program.js";
-import { renderCarsScatterplotPrimitives } from "./primitive.program.js";
-import { linearCommandPoints } from "../../support/path.js";
+} from "./primitive-programs.js";
+import { renderCarsScatterplotPrimitives } from "../primitive.program.js";
+import { linearCommandPoints } from "../../../support/path.js";
 import {
   POINT_SHAPES,
   SET2_COLORS,
@@ -34,7 +34,7 @@ import {
   createFieldOpacityPrimitiveValues,
   createScaleReversePrimitiveValues,
   createShapeVocabularyPrimitiveValues
-} from "./phase1-reference-values.js";
+} from "./reference-values.js";
 
 const cars = loadCars();
 

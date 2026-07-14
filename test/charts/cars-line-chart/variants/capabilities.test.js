@@ -14,12 +14,12 @@ import {
   createOrderedCarsLineChart,
   createQuantileCarsLineChart,
   createStepCarsLineChart
-} from "../../../examples/cars-line-chart/program.js";
+} from "../../../../examples/cars-line-chart/program.js";
 import {
   createMockCanvasContext,
   findCanvasCalls
-} from "../../support/canvas.js";
-import { loadCars } from "../../support/data.js";
+} from "../../../support/canvas.js";
+import { loadCars } from "../../../support/data.js";
 import {
   createAggregateDispersionPrimitives,
   createAggregateMedianPrimitives,
@@ -33,7 +33,7 @@ import {
   createDashReassignmentPrimitives,
   createGroupReassignmentPrimitives,
   createNamedDashVocabularyPrimitives
-} from "./phase2-primitives.program.js";
+} from "./primitive-programs.js";
 import {
   DEFAULT_DASH_PATTERNS,
   NAMED_DASH_PATTERNS,
@@ -50,11 +50,11 @@ import {
   createOrderedPrimitiveValues,
   createQuantilePrimitiveValues,
   createStepReferenceCommands
-} from "./phase2-reference-values.js";
+} from "./reference-values.js";
 import {
   createCarsLineChartPrimitives,
   renderCarsLineChartPrimitives
-} from "./primitive.program.js";
+} from "../primitive.program.js";
 
 const cars = loadCars();
 

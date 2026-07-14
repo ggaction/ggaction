@@ -1,8 +1,8 @@
-import { chart } from "../../../src/index.js";
+import { chart } from "../../../../src/index.js";
 import {
   createCarsLineChartPrimitiveProgram,
   createCarsLineChartPrimitives
-} from "./primitive.program.js";
+} from "../primitive.program.js";
 import {
   createCarsLineCurvePrimitiveValues,
   createCompositeLegendPrimitiveValues,
@@ -14,7 +14,7 @@ import {
   createNamedDashPrimitiveValues,
   createOrderedPrimitiveValues,
   createQuantilePrimitiveValues
-} from "./phase2-reference-values.js";
+} from "./reference-values.js";
 
 export function createCompositeLegendTopPrimitives(cars) {
   return createCarsLineChartPrimitiveProgram(

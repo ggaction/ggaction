@@ -64,7 +64,7 @@ test("stores the line-chart semantic contract immutably", () => {
   assert.equal(Object.isFrozen(program.semanticSpec.title), true);
 });
 
-test("validates Phase 2 semantic closed vocabularies", () => {
+test("validates line-chart semantic closed vocabularies", () => {
   assert.throws(
     () => chart().editSemantic({
       property: "layer[trends].encoding.x.fieldType",

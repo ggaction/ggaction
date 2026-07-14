@@ -1,5 +1,5 @@
-import { createCarsScatterplotPrimitiveValues } from "./primitive.program.js";
-import { linearPathCommands } from "../../support/path.js";
+import { createCarsScatterplotPrimitiveValues } from "../primitive.program.js";
+import { linearPathCommands } from "../../../support/path.js";
 
 export const POINT_SHAPES = Object.freeze([
   "circle",

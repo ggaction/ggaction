@@ -98,7 +98,7 @@ shape encoding, concrete materialization, and legend symbols.
   - ✅ Covered: 전체 8-value vocabulary, omission→linear, exact straight/step/cubic commands, short smooth-series fallback와 invalid rejection.
   - ✅ Covered: create-time config persistence, Canvas/scale/group rematerialization과 approved step primitive/public pair.
 - Evidence: `test/unit/actions/marks/create-line-mark.test.js`, `test/unit/grammar/curve-commands.test.js`,
-  `test/charts/cars-line-chart/phase2-primitives.test.js`.
+  `test/charts/cars-line-chart/variants/capabilities.test.js`.
 
 ## `editLineMark`
 
@@ -121,7 +121,7 @@ shape encoding, concrete materialization, and legend symbols.
 - ✅ Covered: empty edit, unknown option/target, ambiguity, invalid width/curve와 earlier-program immutability.
 - ✅ Covered: Canvas resize, group rematerialization, deterministic nested trace and approved monotone primitive/public pair.
 - Evidence: `test/unit/actions/marks/edit-line-mark.test.js` and
-  `test/charts/cars-line-chart/phase2-primitives.test.js`.
+  `test/charts/cars-line-chart/variants/capabilities.test.js`.
 
 ## `createBarMark`
 

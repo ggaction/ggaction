@@ -31,7 +31,7 @@ import {
   createDashReassignmentPrimitives,
   createGroupReassignmentPrimitives,
   createNamedDashVocabularyPrimitives
-} from "./phase2-primitives.program.js";
+} from "./variants/primitive-programs.js";
 
 const cars = loadCars();
 const baselineArtifact = Object.freeze({
