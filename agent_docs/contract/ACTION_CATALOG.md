@@ -123,7 +123,7 @@ Coverage 퍼센트는 사용하지 않는다. 체크된 case는 반드시 아래
 - **Aggregate create-only**: wrapped child action을 조합한다. aggregate 자체의 edit은 만들지
   않고 지원되는 child edit으로 수정한다.
 - **Stable resource, edit gap**: independently addressable한 resource지만 아직 public edit 또는
-  replacement 계약이 없다. 합의된 `editScale`만 Planned이고 나머지는 Proposed다.
+  replacement 계약이 없다. 합의된 action만 Planned이고 나머지는 Proposed다.
 - **Primitive**: extension authoring의 low-level create/edit/assignment 연산이다.
 
 `Gap`은 edit action을 즉시 추가한다는 뜻이 아니다. 먼저 resource identity, editable
@@ -186,7 +186,7 @@ properties, rematerialization ownership과 conflict behavior를 정해야 한다
 | `createLegend` | Stable resource, edit gap | Internal rematerialization only | Gap — Proposed |
 | `createSizeLegend` | Stable resource, edit gap | Internal rematerialization only | Gap — Proposed |
 | `createGuides` | Aggregate create-only | Guide child actions | Intentional; child edit gaps remain |
-| `createTitle` | Stable resource, edit gap | Internal rematerialization only | Gap — Proposed |
+| `createTitle` | Stable resource, edit gap | Internal rematerialization only | `editTitle` — Planned |
 | `createCoordinate` | Stable resource, edit gap | Equivalent recreation only | Replacement contract — Proposed |
 | `createScale` | Stable resource, edit gap | Equivalent recreation only | `editScale` — Planned |
 | `createDerivedData` | Immutable create-only | Create a new derived dataset ID | Intentional |
@@ -195,6 +195,44 @@ properties, rematerialization ownership과 conflict behavior를 정해야 한다
 | `editSemantic` | Primitive | Assigns one semantic property | Complete |
 | `createGraphics` | Primitive | `editGraphics` | Complete |
 | `editGraphics` | Primitive | Edits one graphical property | Complete |
+
+## Planned direct actions
+
+Planned action은 사용자와 필요성 및 방향을 합의했지만 public type과 runtime에는 아직 없는
+action이다. Contract readiness가 `Accepted`인 action만 구현을 시작할 수 있다.
+
+| Planned action | Status | Contract readiness |
+| --- | --- | --- |
+| `editScale` | Planned | Pending parameter review |
+| `editTitle` | Planned | Accepted |
+
+### Planned contract: editTitle
+
+```typescript
+editTitle({
+  text?: NonEmptyString;
+  subtitle?: NonEmptyString | false;
+  align?: "left" | "center" | "right";
+  offset?: Finite;
+  gap?: NonNegativeFinite;
+  titleStyle?: TextStyle;
+  subtitleStyle?: TextStyle;
+}): ChartProgram;
+```
+
+- 기존 chart title이 필수이며 최소 한 option을 요구한다. unknown option과 invalid value는
+  program을 변경하기 전에 거부한다.
+- 생략한 property는 기존 값을 유지한다. `text`와 string `subtitle`은 semantic text를
+  교체하며 `subtitle: false`는 semantic subtitle과 concrete subtitle graphic을 제거한다.
+- `titleStyle`과 `subtitleStyle`은 전달한 style leaf만 기존 stored style에 merge한다.
+  생략한 style leaf는 유지한다.
+- `align`, `offset`, `gap`과 style은 graphical materialization config를 갱신한다. 현재 유일한
+  title position이 `"top"`이므로 `position`은 edit parameter에 포함하지 않는다.
+- action은 내부 wrapped `rematerializeTitle`을 호출해 최신 Canvas, margin, title config로
+  concrete text를 다시 만든다. title/legend overlap이나 margin 부족은 layout error다.
+- 기존 `ChartProgram`은 변경하지 않고 새로운 program을 반환하며 `editTitle` 아래에 semantic,
+  graphic, rematerialization child action이 trace로 남는다.
+- Status: Planned, NOT IMPLEMENTED. 실행 가능한 coverage는 구현 단계에서 추가한다.
 
 ## Internal materialization inventory
 

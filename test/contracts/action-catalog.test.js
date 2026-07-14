@@ -130,6 +130,20 @@ function lifecycleRows() {
   }));
 }
 
+function plannedActionRows() {
+  const heading = "## Planned direct actions";
+  const start = catalog.indexOf(heading);
+  const end = catalog.indexOf("\n## ", start + heading.length);
+  const section = catalog.slice(start, end === -1 ? catalog.length : end);
+
+  return [...section.matchAll(
+    /^\| `([A-Za-z][A-Za-z0-9]*)` \| Planned \| ([^|]+) \|$/gm
+  )].map(match => ({
+    action: match[1],
+    readiness: match[2].trim()
+  }));
+}
+
 test("keeps the action catalog aligned with every declared direct action", () => {
   const declared = declaredProgramMethods();
   const rows = summaryRows();
@@ -211,6 +225,24 @@ test("classifies every direct action lifecycle and keeps edit gaps explicit", ()
     rows.find(row => row.action === "createScale")?.audit,
     "`editScale` — Planned"
   );
+
+  const expectedPlanned = rows
+    .map(row => row.audit.match(/`([A-Za-z][A-Za-z0-9]*)` — Planned/))
+    .filter(Boolean)
+    .map(match => match[1]);
+  const planned = plannedActionRows();
+
+  assert.deepEqual(
+    new Set(planned.map(row => row.action)),
+    new Set(expectedPlanned)
+  );
+  assert.equal(
+    planned.find(row => row.action === "editTitle")?.readiness,
+    "Accepted"
+  );
+  assert.match(catalog, /### Planned contract: editTitle/);
+  assert.match(catalog, /subtitle\?: NonEmptyString \| false/);
+  assert.match(catalog, /wrapped `rematerializeTitle`/);
 });
 
 test("keeps one value coverage and proposal ledger for every direct action", () => {
