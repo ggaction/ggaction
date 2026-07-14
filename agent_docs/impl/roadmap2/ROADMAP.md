@@ -13,7 +13,7 @@ contract가 아직 pending이며 encoding reassignment의 선행 조건이므로
 
 ## 진행 상태
 
-- [ ] Phase 0 — Roadmap 2 artifact/gallery와 coverage tracking 기반
+- [ ] Phase 0 — Roadmap 2 artifact/gallery와 coverage tracking 기반 (infrastructure complete; `editScale` approval pending)
 - [ ] Phase 1 — 기존 scatterplot variants
 - [ ] Phase 2 — 기존 line-chart variants
 - [ ] Phase 3 — 기존 histogram/grouped-bar variants

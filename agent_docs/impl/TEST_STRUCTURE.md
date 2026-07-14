@@ -45,6 +45,17 @@ test/
 .artifacts/test/png/            # gitignored generated output
 ```
 
+Roadmap 2 visual variants는 flat output과 분리된 다음 hierarchy를 사용한다.
+
+```text
+.artifacts/test/png/roadmap2/<chart>/<variant>/primitive.png
+.artifacts/test/png/roadmap2/<chart>/<variant>/user-facing.png
+.artifacts/test/png/roadmap2/index.html
+```
+
+`index.html`은 filesystem에서 pair를 발견해 생성하며 별도 수동 registry를 두지 않는다. Primitive가
+항상 먼저 존재해야 하며 user-facing-only pair는 invalid test state다.
+
 ## 배치 규칙
 
 ### Unit

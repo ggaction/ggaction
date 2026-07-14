@@ -1,14 +1,11 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { renderToPNG } from "ggaction/png";
 
-const outputDirectory = fileURLToPath(
-  new URL("../../.artifacts/test/png/", import.meta.url)
-);
+import { resolvePngArtifactPath } from "./artifact-paths.js";
+
 const signature = [137, 80, 78, 71, 13, 10, 26, 10];
 
 function parseHex(color) {
@@ -20,6 +17,7 @@ export async function assertRenderedPNG(
   program,
   {
     name,
+    artifact,
     width,
     height,
     pixelRatio = 2,
@@ -27,7 +25,7 @@ export async function assertRenderedPNG(
     minimumInkPixels = 100
   }
 ) {
-  const output = path.join(outputDirectory, `${name}.png`);
+  const output = resolvePngArtifactPath({ name, artifact });
   const result = await renderToPNG(program, { output, pixelRatio });
   const png = await readFile(result.output);
 
@@ -59,9 +57,10 @@ export async function assertRenderedPNG(
     }
   }
 
-  assert.equal(inkPixels >= minimumInkPixels, true, `${name} is unexpectedly blank`);
+  const label = name ?? `${artifact.chart}/${artifact.variant}/${artifact.kind}`;
+  assert.equal(inkPixels >= minimumInkPixels, true, `${label} is unexpectedly blank`);
   for (const [color, count] of colorCounts) {
-    assert.equal(count > 0, true, `${name} does not contain ${color}`);
+    assert.equal(count > 0, true, `${label} does not contain ${color}`);
   }
 
   return { ...result, inkPixels, colorCounts };
