@@ -117,10 +117,25 @@ function makeEdit(channel) {
     const previous = this.guideConfigs.axis?.[channel]?.title;
     if (!previous) throw new Error(`${operation.edit} requires title configuration.`);
     const { text, ...appearance } = args;
-    const config = { ...previous, ...appearance };
+    const explicitText = Object.hasOwn(args, "text");
+    const config = {
+      ...previous,
+      ...appearance,
+      ...(explicitText ? { inferredText: false } : {})
+    };
     validateConfig(channel, config);
     let next = this;
-    if (Object.hasOwn(args, "text")) next = next.editSemantic({ property: `guide.axis.${channel}.title`, value: validateText(text) });
+    const resolvedTitle = explicitText
+      ? validateText(text)
+      : config.inferredText === true
+        ? inferText(this, channel, config.scale)
+        : this.semanticSpec.guides.axis?.[channel]?.title;
+    if (resolvedTitle !== this.semanticSpec.guides.axis?.[channel]?.title) {
+      next = next.editSemantic({
+        property: `guide.axis.${channel}.title`,
+        value: validateText(resolvedTitle)
+      });
+    }
     const resolvedText = validateText(next.semanticSpec.guides.axis?.[channel]?.title);
     const geometry = resolveGeometry(next, channel, config);
     next = next._withGuideConfig(channel, "title", config);
@@ -146,9 +161,11 @@ function makeCreate(channel) {
     const guideScale = this.semanticSpec.guides.axis?.[channel]?.scale;
     if (guideScale && guideScale !== scale) throw new Error(`${operation.create} conflicts with the existing axis scale.`);
     if (this.graphicSpec.objects[operation.graphic]) throw new Error(`${operation.create} requires a missing axis title.`);
+    const inferredText = !Object.hasOwn(args, "text");
     const text = validateText(args.text ?? inferText(this, channel, scale));
     const config = {
       scale,
+      inferredText,
       position: channel === "x" ? "bottom" : "left",
       at: "center",
       offset: channel === "x" ? 42 : 52,

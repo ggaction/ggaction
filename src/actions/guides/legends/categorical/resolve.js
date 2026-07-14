@@ -122,10 +122,10 @@ export function resolveCurrentDefinition(program, config) {
     throw new Error("Legend rematerialization requires semantic guide state.");
   }
   const channels = config.kind === "series" ? guide.channels : ["color"];
-  const definition = resolveDefinition(program, layer, channels, guide.title);
-  const storedScales = config.kind === "series" ? guide.scales : [guide.scale];
-  if (!sameValues(definition.scales, storedScales)) {
-    throw new Error("Legend encodings no longer use the stored guide scales.");
-  }
-  return definition;
+  return resolveDefinition(
+    program,
+    layer,
+    channels,
+    config.inferredTitle === true ? undefined : guide.title
+  );
 }

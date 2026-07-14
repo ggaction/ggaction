@@ -21,12 +21,48 @@ export const rematerializeLegend = action(
     if (hasCategorical) {
       const { kind, config } = activeConfig(this);
       const definition = resolveCurrentDefinition(this, config);
-      next = sameValues(config.domain, definition.domain)
-        ? this
-        : this._withLegendConfig(kind, {
+      const changed =
+        !sameValues(config.domain, definition.domain) ||
+        !sameValues(config.scales, definition.scales) ||
+        config.title !== definition.title;
+      next = changed
+        ? this._withLegendConfig(kind, {
             ...config,
+            scales: definition.scales,
+            title: definition.title,
             domain: definition.domain
+          })
+        : this;
+      if (kind === "series") {
+        if (!sameValues(
+          this.semanticSpec.guides.legend.series.scales,
+          definition.scales
+        )) {
+          next = next.editSemantic({
+            property: "guide.legend.series.scales",
+            value: definition.scales
           });
+        }
+        if (this.semanticSpec.guides.legend.series.title !== definition.title) {
+          next = next.editSemantic({
+            property: "guide.legend.series.title",
+            value: definition.title
+          });
+        }
+      } else {
+        if (this.semanticSpec.guides.legend.color.scale !== definition.scales[0]) {
+          next = next.editSemantic({
+            property: "guide.legend.color.scale",
+            value: definition.scales[0]
+          });
+        }
+        if (this.semanticSpec.guides.legend.color.title !== definition.title) {
+          next = next.editSemantic({
+            property: "guide.legend.color.title",
+            value: definition.title
+          });
+        }
+      }
       if (config.border !== false) next = next.editLegendBackground();
       next = next
         .editLegendSymbols()
@@ -61,6 +97,7 @@ export const createCategoricalLegend = action(
     const config = {
       target: layer.id,
       ...definition,
+      inferredTitle: !Object.hasOwn(args, "title"),
       position: options.position,
       align: options.align,
       direction: options.direction,

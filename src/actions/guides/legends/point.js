@@ -73,21 +73,36 @@ export const rematerializeSizeLegend = action(
     validateKeys(args, [], "rematerializeSizeLegend");
     const config = this.guideConfigs.legend?.size;
     if (config === undefined) throw new Error("Size legend requires stored configuration.");
-    const scale = requireScale(this, config.scale, "linear");
+    const layer = this.semanticSpec.layers.find(item => item.id === config.target);
+    const encoding = layer?.encoding?.size;
+    if (encoding?.scale === undefined) {
+      throw new Error("Size legend target requires a size encoding.");
+    }
+    const scale = requireScale(this, encoding.scale, "linear");
+    const title = config.inferredTitle === true ? encoding.field : config.title;
+    const currentConfig = {
+      ...config,
+      scale: encoding.scale,
+      title,
+      domain: scale.domain
+    };
     const plot = bounds(this);
     const originX = plot.x + plot.width + 30;
     const seriesCount = this.guideConfigs.legend?.series?.domain.length ?? 0;
     const titleY = plot.y + 56 + seriesCount * 34 + 22;
     const values = Array.from(
-      { length: config.count },
+      { length: currentConfig.count },
       (_, index) => scale.domain[0] +
-        index / (config.count - 1) * (scale.domain[1] - scale.domain[0])
+        index / (currentConfig.count - 1) * (scale.domain[1] - scale.domain[0])
     );
     const areas = mapLinearValues(values, scale.domain, scale.range, {
       clamp: scale.clamp ?? false
     });
     const itemY = values.map((_, index) => titleY + 34 + index * 40);
     let next = this
+      .editSemantic({ property: "guide.legend.size.scale", value: encoding.scale })
+      .editSemantic({ property: "guide.legend.size.title", value: title })
+      ._withLegendConfig("size", currentConfig)
       .editGraphics({ target: "sizeLegendSymbols", property: "length", value: values.length })
       .editGraphics({ target: "sizeLegendSymbols", property: "x", value: originX + 16 })
       .editGraphics({ target: "sizeLegendSymbols", property: "y", value: itemY })
@@ -112,7 +127,7 @@ export const rematerializeSizeLegend = action(
       })
       .editGraphics({ target: "sizeLegendTitle", property: "x", value: originX })
       .editGraphics({ target: "sizeLegendTitle", property: "y", value: titleY })
-      .editGraphics({ target: "sizeLegendTitle", property: "text", value: config.title });
+      .editGraphics({ target: "sizeLegendTitle", property: "text", value: title });
     next = styleText(next, "sizeLegendLabels");
     return styleText(next, "sizeLegendTitle", { title: true });
   }
@@ -142,6 +157,7 @@ export const createSizeLegend = action(
         target: layer.id,
         scale: encoding.scale,
         title: encoding.field,
+        inferredTitle: true,
         domain: scale.domain,
         count
       })

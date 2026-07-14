@@ -125,7 +125,7 @@ Create a semantic area mark and empty path collection. Fixed fill defaults to
 encodeX({ field, target?, fieldType?, coordinate?, bin?, scale? })
 ```
 
-Create a quantitative point/area, temporal line, binned quantitative bar, or
+Create or compatibly replace a quantitative point/area, temporal line, binned quantitative bar, or
 ordinal bar x encoding. Ordinal bars require `fieldType: "ordinal"` and do not
 materialize rects until their remaining layout semantics exist.
 [Position encodings](../api/position-encodings.md)
@@ -136,7 +136,7 @@ materialize rects until their remaining layout semantics exist.
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
 ```
 
-Create a quantitative point, aggregate line, or inferred count/zero-stack bar
+Create or compatibly replace a quantitative point, aggregate line, or inferred count/zero-stack bar
 y encoding. With ordinal bar x, it also creates a mean/non-stacked y encoding
 and resolves its scale while waiting for grouping semantics before rect
 materialization. A complete histogram x/y pair materializes concrete rects.
@@ -209,7 +209,7 @@ the y channel; pass `densityChannel: "x"` for a horizontal orientation.
 encodeColor({ field, target?, fieldType?, layout?, scale? })
 ```
 
-Create nominal point fill, line-series color, grouped area fill, stacked
+Create or compatibly replace nominal point fill, line-series color, grouped area fill, stacked
 histogram color, or grouped ordinal-bar color. Area color must match an
 existing group field. Grouped bars require `layout: "group"` and record
 `encodeXOffset` as a child action.
@@ -238,7 +238,7 @@ Apply a constant point radius. [Constant appearance](../api/appearance.md)
 encodeSize({ field, target?, fieldType?, scale? })
 ```
 
-Encode a quantitative field as equal-area point size. The automatic area range
+Encode or replace a quantitative field as equal-area point size. The automatic area range
 is `[24, 196]`. [Appearance encodings](../api/appearance.md)
 
 ### `encodeShape`
@@ -247,7 +247,7 @@ is `[24, 196]`. [Appearance encodings](../api/appearance.md)
 encodeShape({ field, target?, fieldType?, scale? })
 ```
 
-Encode a nominal field with the shared 12-value point-shape vocabulary.
+Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeOpacity`

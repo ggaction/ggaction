@@ -120,3 +120,25 @@ export function createPaletteCarsScatterplot(cars) {
       legend: { channels: ["color"] }
     });
 }
+
+export function createEncodingReassignmentCarsScatterplot(cars) {
+  const rows = validCars(cars);
+
+  return chart()
+    .createCanvas({
+      width: 640,
+      height: 400,
+      margin: { top: 30, right: 30, bottom: 60, left: 70 }
+    })
+    .createData({ id: "cars", values: rows })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "Horsepower" })
+    .encodeY({ field: "Miles_per_Gallon" })
+    .encodeColor({ field: "Origin" })
+    .createGuides({ axes: { x: {}, y: {} } })
+    .encodeX({ field: "Displacement" })
+    .encodeY({ field: "Acceleration" })
+    .encodeColor({ field: "Cylinders", fieldType: "nominal" })
+    .encodeSize({ field: "Weight_in_lbs" })
+    .encodeShape({ field: "Origin" });
+}

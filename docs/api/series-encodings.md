@@ -41,6 +41,12 @@ program.encodeColor({
 `scale.range: { palette: "tableau10" }`. Do not provide both. Automatic domains
 preserve first-appearance order.
 
+Calling `encodeColor` again for the same target replaces the nominal field.
+Without `scale.id`, the current color scale is reused and its domain, marks,
+and existing legend are recomputed. An explicit new ID retains the previous
+named scale. Inferred legend titles follow the new field; explicit titles and
+legend appearance remain unchanged.
+
 Named palettes use a frozen 68-name vocabulary. Categorical palettes keep their
 native order; `count` selects or deterministically cycles colors. Continuous,
 diverging, and cyclical palettes are sampled to the domain size unless `count`

@@ -10,7 +10,11 @@ import {
 } from "../../../grammar/scales.js";
 import { resolvePositionScaleDefinition } from "../../scales/definitions.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
-import { resolveTarget, validateOptions } from "../shared.js";
+import {
+  resolveReassignmentScaleOptions,
+  resolveTarget,
+  validateOptions
+} from "../shared.js";
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([
   "field", "target", "fieldType", "scale", "coordinate", "aggregate", "bin", "stack"
@@ -122,28 +126,49 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
 export function resolvePositionEncoding(program, channel, args, operation) {
   validateOptions(args, POSITION_ENCODING_OPTIONS, operation);
   validatePositionChannel(channel);
-  const fieldType = validateFieldType(args.fieldType ?? "quantitative");
   const { id: target, dataset, layer } = resolveTarget(
     program,
     args.target,
     ["point", "line", "bar", "area"]
+  );
+  const previous = layer.encoding?.[channel];
+  const fieldType = validateFieldType(
+    args.fieldType ?? previous?.fieldType ?? "quantitative"
   );
   const xEncoding = layer.encoding?.x;
   const field = layer.mark.type === "bar" && channel === "y" &&
     xEncoding?.bin !== undefined && args.field === undefined
     ? xEncoding.field
     : args.field;
-  const policy = validateMarkPolicy(layer, dataset, channel, args, fieldType, field);
+  const effectiveArgs = { ...args };
+  for (const property of ["aggregate", "bin", "stack"]) {
+    if (!Object.hasOwn(effectiveArgs, property) && previous !== undefined &&
+      Object.hasOwn(previous, property)) {
+      effectiveArgs[property] = previous[property];
+    }
+  }
+  const policy = validateMarkPolicy(
+    layer,
+    dataset,
+    channel,
+    effectiveArgs,
+    fieldType,
+    field
+  );
 
   if (fieldType === "temporal") readTemporalField(dataset.values, field);
   else if (fieldType === "ordinal") readNominalField(dataset.values, field);
   else readQuantitativeField(dataset.values, field);
 
+  const requestedScale = resolveReassignmentScaleOptions(
+    previous,
+    Object.hasOwn(args, "scale") ? args.scale : {}
+  );
   const scale = resolvePositionScaleDefinition(
     program,
     channel,
     fieldType,
-    Object.hasOwn(args, "scale") ? args.scale : {},
+    requestedScale,
     layer.mark.type === "bar" && fieldType !== "ordinal"
       ? channel === "x" || policy.stack === null
         ? { nice: true, zero: false }
@@ -153,6 +178,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   return {
     target,
     layer,
+    previous,
+    requestedScale,
     field,
     fieldType,
     scale,

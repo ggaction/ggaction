@@ -205,8 +205,8 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action will replace a compatible x field and scale",
-      "audit": "Reassignment — Planned",
+      "update": "Same action replaces a compatible x field and scale",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -223,8 +223,8 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action will replace a compatible y field and scale",
-      "audit": "Reassignment — Planned",
+      "update": "Same action replaces a compatible y field and scale",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -241,8 +241,8 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action will replace compatible color grouping",
-      "audit": "Reassignment — Planned",
+      "update": "Same action replaces compatible color grouping",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -277,8 +277,8 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action will replace field and scale binding",
-      "audit": "Reassignment — Planned",
+      "update": "Same action replaces field and scale binding",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -295,8 +295,8 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action will replace field and scale binding",
-      "audit": "Reassignment — Planned",
+      "update": "Same action replaces field and scale binding",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1369,18 +1369,6 @@
       }
     },
     {
-      "id": "encodeColor-reassignment",
-      "kind": "behavior",
-      "action": "encodeColor",
-      "name": "encodeColor reassignment",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "scale-backed-appearance-reassignment"
-      }
-    },
-    {
       "id": "encodeGroup-reassignment",
       "kind": "behavior",
       "action": "encodeGroup",
@@ -1390,30 +1378,6 @@
       "contract": {
         "file": "agent_docs/contract/planned/ENCODINGS.md",
         "anchor": "grouping-reassignment"
-      }
-    },
-    {
-      "id": "encodeShape-reassignment",
-      "kind": "behavior",
-      "action": "encodeShape",
-      "name": "encodeShape reassignment",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "scale-backed-appearance-reassignment"
-      }
-    },
-    {
-      "id": "encodeSize-reassignment",
-      "kind": "behavior",
-      "action": "encodeSize",
-      "name": "encodeSize reassignment",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "scale-backed-appearance-reassignment"
       }
     },
     {
@@ -1433,30 +1397,6 @@
       "kind": "behavior",
       "action": "encodeXOffset",
       "name": "encodeXOffset reassignment",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "positional-reassignment"
-      }
-    },
-    {
-      "id": "encodeX-reassignment",
-      "kind": "behavior",
-      "action": "encodeX",
-      "name": "encodeX reassignment",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "positional-reassignment"
-      }
-    },
-    {
-      "id": "encodeY-reassignment",
-      "kind": "behavior",
-      "action": "encodeY",
-      "name": "encodeY reassignment",
       "status": "planned",
       "readiness": "accepted",
       "contract": {

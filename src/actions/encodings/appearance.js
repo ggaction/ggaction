@@ -6,7 +6,9 @@ import {
 import { resolveAppearanceScaleDefinition } from "../scales/definitions.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
+  applyEncodingScale,
   rematerializeExistingLegend,
+  resolveReassignmentScaleOptions,
   resolveTarget,
   validateOptions
 } from "./shared.js";
@@ -32,13 +34,18 @@ function encodeAppearanceField(program, channel, args, operation) {
   }
   if (channel === "shape") readNominalField(dataset.values, args.field);
   else readQuantitativeField(dataset.values, args.field);
+  const previous = layer.encoding?.[channel];
+  const requestedScale = resolveReassignmentScaleOptions(
+    previous,
+    args.scale ?? {}
+  );
   const scale = resolveAppearanceScaleDefinition(
     program,
     channel,
-    args.scale ?? {}
+    requestedScale
   );
 
-  const next = program
+  let next = program
     .editSemantic({
       property: `layer[${target}].encoding.${channel}.field`,
       value: args.field
@@ -50,8 +57,10 @@ function encodeAppearanceField(program, channel, args, operation) {
     .editSemantic({
       property: `layer[${target}].encoding.${channel}.scale`,
       value: scale.id
-    })
-    .createScale(scale)
+    });
+  next = applyEncodingScale(next, scale, requestedScale, {
+    reassignment: previous?.scale === scale.id
+  })
     .rematerializeScale({ id: scale.id })
     .rematerializePointMark({ id: target });
   return rematerializeExistingLegend(next);

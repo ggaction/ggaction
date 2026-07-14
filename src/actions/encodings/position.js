@@ -2,11 +2,17 @@ import { action } from "../../core/action.js";
 import { canMaterializeArea } from "../marks/materialization.js";
 import { resolvePositionEncoding } from "./position/resolve.js";
 import { findLayer } from "../../selectors/layers.js";
+import {
+  applyEncodingScale,
+  rebindPositionGuides
+} from "./shared.js";
 
 function encodePosition(program, channel, args, operation) {
   const {
     target,
     layer,
+    previous,
+    requestedScale,
     field,
     fieldType,
     scale,
@@ -57,12 +63,20 @@ function encodePosition(program, channel, args, operation) {
       });
   }
 
-  next = next
-    .editSemantic({
+  next = next.editSemantic({
       property: `layer[${target}].encoding.${channel}.scale`,
       value: scale.id
-    })
-    .createScale(scale);
+    });
+  next = applyEncodingScale(next, scale, requestedScale, {
+    reassignment: previous?.scale === scale.id
+  });
+  next = rebindPositionGuides(
+    next,
+    channel,
+    previous?.scale,
+    scale.id,
+    target
+  );
 
   if (layer.mark.type === "line" && channel === "y") {
     return next.rematerializeLineMark({ id: target });

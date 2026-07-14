@@ -19,12 +19,12 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`createLineMark`](current/MARKS.md#createlinemark) | marks | Stable resource, edit gap | `editLineMark` — Planned | ✅ / ✅ / ✅ |
 | user-facing | [`createBarMark`](current/MARKS.md#createbarmark) | marks | Stable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createAreaMark`](current/MARKS.md#createareamark) | marks | Stable resource, edit gap | `editAreaMark` — Planned | ✅ / ✅ / ⚠️ |
-| user-facing | [`encodeX`](current/ENCODINGS.md#encodex) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ⚠️ |
-| user-facing | [`encodeY`](current/ENCODINGS.md#encodey) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ⚠️ |
-| user-facing | [`encodeColor`](current/ENCODINGS.md#encodecolor) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ✅ |
+| user-facing | [`encodeX`](current/ENCODINGS.md#encodex) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeY`](current/ENCODINGS.md#encodey) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeColor`](current/ENCODINGS.md#encodecolor) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeStrokeDash`](current/ENCODINGS.md#encodestrokedash) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ⚠️ |
-| user-facing | [`encodeSize`](current/ENCODINGS.md#encodesize) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ⚠️ |
-| user-facing | [`encodeShape`](current/ENCODINGS.md#encodeshape) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeSize`](current/ENCODINGS.md#encodesize) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeShape`](current/ENCODINGS.md#encodeshape) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeOpacity`](current/ENCODINGS.md#encodeopacity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeRadius`](current/ENCODINGS.md#encoderadius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeXOffset`](current/ENCODINGS.md#encodexoffset) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ✅ |
@@ -104,14 +104,9 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | --- | --- | --- | --- |
 | composition | Regression band delegation through error band | accepted | [Open](planned/COMPOSITE_MARKS.md#regression-band-delegation) |
 | composition | Composite mark ownership and storage | accepted | [Open](planned/COMPOSITE_MARKS.md#composite-ownership-and-storage) |
-| behavior | encodeColor reassignment | accepted | [Open](planned/ENCODINGS.md#scale-backed-appearance-reassignment) |
 | behavior | encodeGroup reassignment | accepted | [Open](planned/ENCODINGS.md#grouping-reassignment) |
-| behavior | encodeShape reassignment | accepted | [Open](planned/ENCODINGS.md#scale-backed-appearance-reassignment) |
-| behavior | encodeSize reassignment | accepted | [Open](planned/ENCODINGS.md#scale-backed-appearance-reassignment) |
 | behavior | encodeStrokeDash reassignment | accepted | [Open](planned/ENCODINGS.md#scale-backed-appearance-reassignment) |
 | behavior | encodeXOffset reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
-| behavior | encodeX reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
-| behavior | encodeY reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | behavior | encodeY2 reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | behavior | encodeYRange reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | behavior | encodeHistogram reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |

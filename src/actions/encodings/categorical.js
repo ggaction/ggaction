@@ -8,7 +8,9 @@ import {
   resolveStrokeDashScaleDefinition
 } from "../scales/definitions.js";
 import {
+  applyEncodingScale,
   rematerializeExistingLegend,
+  resolveReassignmentScaleOptions,
   resolveTarget,
   validateOptions
 } from "./shared.js";
@@ -61,12 +63,21 @@ const encodeColor = action(
       layer.encoding?.x?.fieldType === "ordinal" &&
       layer.encoding?.y?.aggregate === "mean" &&
       layer.encoding.y.stack === null;
+    const layout = args.layout ?? (
+      layer.encoding?.color === undefined
+        ? undefined
+        : isHistogram
+          ? "stack"
+          : isOrdinalMean
+            ? "group"
+            : undefined
+    );
 
     if (layer.mark.type === "bar") {
-      if (isHistogram && args.layout !== undefined && args.layout !== "stack") {
+      if (isHistogram && layout !== undefined && layout !== "stack") {
         throw new Error('Histogram color layout must be "stack".');
       }
-      if (isOrdinalMean && args.layout !== "group") {
+      if (isOrdinalMean && layout !== "group") {
         throw new Error('Ordinal mean bar color layout must be "group".');
       }
       if (!isHistogram && !isOrdinalMean) {
@@ -76,7 +87,11 @@ const encodeColor = action(
       }
     }
     readNominalField(dataset.values, args.field);
-    const scale = resolveColorScaleDefinition(this, args.scale ?? {});
+    const requestedScale = resolveReassignmentScaleOptions(
+      layer.encoding?.color,
+      args.scale ?? {}
+    );
+    const scale = resolveColorScaleDefinition(this, requestedScale);
 
     let next = this
       .editSemantic({
@@ -90,8 +105,10 @@ const encodeColor = action(
       .editSemantic({
         property: `layer[${target}].encoding.color.scale`,
         value: scale.id
-      })
-      .createScale(scale);
+      });
+    next = applyEncodingScale(next, scale, requestedScale, {
+      reassignment: layer.encoding?.color?.scale === scale.id
+    });
 
     if (isOrdinalMean) {
       next = next
@@ -135,9 +152,11 @@ const encodeColor = action(
       return rematerializeExistingLegend(next);
     }
 
-    return next
-      .rematerializeScale({ id: scale.id })
-      .rematerializePointMark({ id: target });
+    return rematerializeExistingLegend(
+      next
+        .rematerializeScale({ id: scale.id })
+        .rematerializePointMark({ id: target })
+    );
   }
 );
 

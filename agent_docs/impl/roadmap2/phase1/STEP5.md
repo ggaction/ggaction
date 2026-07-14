@@ -6,18 +6,18 @@ Gate B primitive를 재현하도록 X/Y/color/size/shape encoding의 atomic reas
 
 ## 진행 상태
 
-- [ ] Shared reassignment selector와 current-binding resolution
-- [ ] `encodeX` reassignment와 x guide/grid rematerialization
-- [ ] `encodeY` reassignment와 y guide/grid rematerialization
-- [ ] `encodeColor` reassignment와 categorical legend rematerialization
-- [ ] `encodeSize` reassignment와 size legend consumer handling
-- [ ] `encodeShape` reassignment와 heterogeneous children/legend rematerialization
-- [ ] Current scale reuse와 explicit new-scale rebind
-- [ ] Inferred/custom guide title rules
-- [ ] Shared scale incompatibility와 atomic failure coverage
-- [ ] Canvas resize와 deterministic materialization order
-- [ ] Approved user-facing program과 PNG pair
-- [ ] Public declarations/docs와 conceptual commits/push
+- [x] Shared reassignment selector와 current-binding resolution
+- [x] `encodeX` reassignment와 x guide/grid rematerialization
+- [x] `encodeY` reassignment와 y guide/grid rematerialization
+- [x] `encodeColor` reassignment와 categorical legend rematerialization
+- [x] `encodeSize` reassignment와 size legend consumer handling
+- [x] `encodeShape` reassignment와 heterogeneous children/legend rematerialization
+- [x] Current scale reuse와 explicit new-scale rebind
+- [x] Inferred/custom guide title rules
+- [x] Shared scale incompatibility와 atomic failure coverage
+- [x] Canvas resize와 deterministic materialization order
+- [x] Approved user-facing program과 PNG pair
+- [x] Public declarations/docs와 conceptual commits/push
 
 ## Reassignment 규칙
 

@@ -65,6 +65,33 @@ are requested. `createGuides` calls the axis and grid actions, which read that
 stored relationship and create guide graphics; they do not create or repair
 coordinates.
 
+## Reassign encodings
+
+The same encoding actions can replace compatible bindings. For a field-sized
+variant, omit the earlier constant `encodeRadius` and author the chain without
+that conflicting graphical constant:
+
+```javascript
+const reassigned = chart()
+  .createCanvas({ width: 640, height: 400, margin: 30 })
+  .createData({ id: "cars", values: rows })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "Horsepower" })
+  .encodeY({ field: "Miles_per_Gallon" })
+  .encodeColor({ field: "Origin" })
+  .createGuides({ axes: { x: {}, y: {} } })
+  .encodeX({ field: "Displacement" })
+  .encodeY({ field: "Acceleration" })
+  .encodeColor({ field: "Cylinders" })
+  .encodeSize({ field: "Weight_in_lbs" })
+  .encodeShape({ field: "Origin" });
+```
+
+The calls reuse the current channel scales, recompute every concrete point and
+connected guide, update inferred titles, and preserve explicit guide styling.
+`encodeSize` remains incompatible with a stored constant radius; it does not
+silently delete that graphical choice.
+
 ## Key action trace
 
 The trace keeps the user flow and meaningful guide decomposition. Primitive

@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   createDiamondCarsScatterplot,
+  createEncodingReassignmentCarsScatterplot,
   createPaletteCarsScatterplot,
   createScaleReverseCarsScatterplot,
   createShapeVocabularyCarsScatterplot
@@ -162,6 +163,11 @@ test("matches every approved primitive with a user-facing action flow", () => {
       createCategoricalPalettePrimitives(cars),
       createPaletteCarsScatterplot(cars),
       "createGuides"
+    ],
+    [
+      createEncodingReassignmentPrimitives(cars),
+      createEncodingReassignmentCarsScatterplot(cars),
+      "encodeShape"
     ]
   ];
 

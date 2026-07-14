@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   createCarsScatterplot,
   createDiamondCarsScatterplot,
+  createEncodingReassignmentCarsScatterplot,
   createPaletteCarsScatterplot,
   createScaleReverseCarsScatterplot,
   createShapeVocabularyCarsScatterplot
@@ -211,7 +212,6 @@ const phase1Artifacts = Object.freeze([
   .encodeX({ field: "Horsepower" })
   .encodeY({ field: "Miles_per_Gallon" })
   .encodeColor({ field: "Origin" })
-  .encodeRadius({ value: 3 })
   .createGuides({ axes: { x: {}, y: {} } })
   .encodeX({ field: "Displacement" })
   .encodeY({ field: "Acceleration" })
@@ -220,6 +220,7 @@ const phase1Artifacts = Object.freeze([
   .encodeShape({ field: "Origin" });`
     }),
     primitive: createEncodingReassignmentPrimitives(cars),
+    userFacing: createEncodingReassignmentCarsScatterplot(cars),
     width: 640,
     height: 400,
     colors: ["#4c78a8", "#f58518", "#e45756", "#72b7b2", "#54a24b"]

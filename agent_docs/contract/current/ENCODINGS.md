@@ -41,6 +41,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `aggregate`, `stack`: x의 현재 supported combinations에는 사용되지 않으며 잘못된 combination은 거부된다.
 - Effect: x encoding과 scale을 semantic state에 저장하고 scale 및 compatible mark/guide consumers를
   rematerialize한다.
+- Reassignment: 같은 target에 다시 호출하면 compatible field와 scale binding을 교체한다. scale ID를
+  생략하면 현재 x scale을 재사용하고, explicit new ID는 이전 scale을 남긴 채 axis/vertical grid를
+  새 scale에 rebind한다. inferred title은 새 field로 바뀌고 custom title/style은 유지된다.
 - Coverage: position, histogram, ordinal bar, temporal chart tests가 주요 mark 조합을 검증한다.
   explicit scale option의 전체 교차조합은 부분적이다.
 
@@ -89,6 +92,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `bin`: 현재 y에서는 지원되지 않는다.
 - Effect: y semantic, scale, bar aggregate grain 또는 line mean grain을 저장하고 mark geometry와
   existing guides를 rematerialize한다.
+- Reassignment: 같은 target의 existing fieldType, aggregate/bin/stack mode와 coordinate를 유지하며
+  compatible field를 교체한다. current scale reuse, explicit new-scale rebind, inferred/custom title
+  규칙은 x와 같다.
 - Coverage: supported charts가 raw/mean/count, zero/null 조합을 검증한다. unsupported 조합과
   scale override의 pairwise coverage는 부분적이다.
 
@@ -314,6 +320,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   [`PALETTES.md`](PALETTES.md)의 frozen 68-name vocabulary와 `{ name, count?, extent? }` object를 받는다.
 - Effect: color semantic과 scale을 저장한다. point fill, line stroke, bar fill, area fill로 materialize한다.
   group layout은 wrapped `encodeXOffset`, stack layout은 zero-stack bar geometry를 사용한다.
+- Reassignment: 같은 target의 nominal color field를 교체한다. omitted scale ID는 current color scale을
+  재사용하고 explicit new ID는 새 scale을 만든다. Existing compatible legend의 domain, symbols,
+  labels와 inferred title을 갱신하며 custom title/layout/style은 보존한다.
 - Coverage: 모든 대표 chart와 legend tests가 mark별 materialization을 검증한다. palette vocabulary,
   explicit ranges와 layout 오류의 전체 matrix는 부분적이다.
 
@@ -379,6 +388,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `scale`: linear size-area scale; auto range는 `[24, 196]`이다.
 - Effect: semantic size를 concrete area로 mapping하고 circle radius=`sqrt(area/pi)`, square side=`sqrt(area)`로
   materialize한다. constant `encodeRadius`와 함께 사용할 수 없다.
+- Reassignment: 다시 호출하면 size field와 compatible scale binding을 교체하고 point 및 existing
+  size legend를 rematerialize한다. constant radius conflict는 자동 제거하지 않는다.
 - Coverage: regression scatterplot과 size legend tests가 representative mapping을 검증한다. explicit
   domain/range와 constant-size conflict의 값 matrix는 부분적이다.
 
@@ -411,7 +422,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeShape`
 
 - Implemented: `encodeShape({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: "auto" | readonly PointShape[] } })`
-- Planned (NOT IMPLEMENTED): reassignment behavior is tracked separately.
+- Reassignment: 다시 호출하면 shape field와 compatible scale binding을 교체하고 heterogeneous point
+  children 및 existing shape legend를 rematerialize한다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeShape`

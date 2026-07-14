@@ -99,6 +99,9 @@ Omitted scale ID는 해당 channel의 현재 scale ID를 재사용한다. 새 fi
 다시 계산하고 inferred guide title은 갱신한다. Explicit custom guide title과 appearance config는
 보존한다. 이전 named scale은 자동 삭제하지 않는다.
 
+이 variant는 마지막 `encodeSize`가 field-driven size를 소유하므로 initial constant
+`encodeRadius`를 호출하지 않는다. 두 action의 conflict contract를 우회하거나 자동 삭제하지 않는다.
+
 ### Continuous color
 
 `Acceleration`의 quantitative extent를 sequential color domain으로 사용한다. Default palette는

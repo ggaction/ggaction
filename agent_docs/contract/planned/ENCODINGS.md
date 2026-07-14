@@ -46,16 +46,14 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 
 ## scale-backed appearance reassignment
 
-- 같은 target의 `encodeSize`, `encodeShape`, `encodeStrokeDash`를 다시 호출하면 기존 field와
-  scale binding을 atomic하게 교체한다. 별도 `editSize`, `editShape`, `editStrokeDash` action은
-  만들지 않는다.
+- 같은 target의 `encodeStrokeDash`를 다시 호출하면 기존 field와 scale binding을 atomic하게
+  교체한다. 별도 `editStrokeDash` action은 만들지 않는다. `encodeSize`와 `encodeShape`
+  reassignment는 current contract에 구현되어 있다.
 - omitted scale ID는 현재 channel scale ID를 재사용한다. explicit new scale ID는 새 scale을
   만들고 encoding을 rebind하며 이전 named scale은 삭제하지 않는다. 같은 scale ID의
   domain/range/policy 변경은 accepted `editScale` contract를 wrapped child로 사용한다.
 - semantic encoding, scale, mark, existing legend 순서로 explicit rematerialization한다.
   inferred legend title은 새 field로 갱신하고 custom title과 appearance config는 유지한다.
-- `encodeSize`는 constant `encodeRadius`를 자동 제거하지 않고 기존 conflict를 유지한다.
-  `encodeShape`는 새 domain/range로 heterogeneous point children과 symbols를 다시 만든다.
 - `encodeStrokeDash`는 color/group series field와 compatible해야 한다. 서로 다른 field가 하나의
   line grouping을 요구하면 오류이며 기존 program은 유지한다.
 - explicit ordinal range가 새 domain을 표현할 수 없거나 shared consumer가 incompatible하면
@@ -64,9 +62,6 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 
 ## grouping reassignment
 
-- `encodeColor` 재호출은 같은 target의 color field와 scale binding을 교체한다. point는 fill,
-  line/area는 compatible path grouping, stacked bar는 stack groups, grouped bar는 owning
-  `encodeXOffset` child까지 함께 갱신한다.
 - reassignment에서 `layout`을 생략하면 현재 `"stack" | "group"` 결정을 유지한다. 첫 계약은
   stack/group 전환을 지원하지 않으며 explicit 다른 layout은 오류다. 전환은 companion 제거와
   scale cleanup 계약을 별도로 정한 뒤 추가한다.
@@ -84,15 +79,6 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 
 ## positional reassignment
 
-- `encodeX`와 `encodeY` 재호출은 같은 target의 field와 compatible scale binding을 교체한다.
-  coordinate는 유지하며 explicit 다른 coordinate는 오류다. 첫 계약은 기존 fieldType,
-  aggregate, bin과 stack mode를 유지하고 incompatible mode 전환을 지원하지 않는다.
-- quantitative/temporal/ordinal position과 mean/count aggregate는 새 field에서 domain과
-  aggregate values를 다시 계산한다. 같은 scale ID의 policy는 `editScale`, explicit new ID는
-  `createScale`을 wrapped child로 사용한다.
-- x reassignment는 mark, x axis와 vertical grid, y reassignment는 mark, y axis와 horizontal
-  grid를 rematerialize한다. inferred guide title은 새 field로 갱신하고 custom title/appearance는
-  유지한다.
 - `encodeY2` 재호출은 ranged area의 upper field만 교체하며 existing lower y와 같은 scale,
   coordinate를 요구한다. `encodeYRange`는 lower/upper를 함께 요구하고 wrapped `encodeY`와
   `encodeY2`를 한 atomic hierarchy에서 호출한다.

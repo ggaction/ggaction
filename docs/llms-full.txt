@@ -315,6 +315,33 @@ are requested. `createGuides` calls the axis and grid actions, which read that
 stored relationship and create guide graphics; they do not create or repair
 coordinates.
 
+## Reassign encodings
+
+The same encoding actions can replace compatible bindings. For a field-sized
+variant, omit the earlier constant `encodeRadius` and author the chain without
+that conflicting graphical constant:
+
+```javascript
+const reassigned = chart()
+  .createCanvas({ width: 640, height: 400, margin: 30 })
+  .createData({ id: "cars", values: rows })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "Horsepower" })
+  .encodeY({ field: "Miles_per_Gallon" })
+  .encodeColor({ field: "Origin" })
+  .createGuides({ axes: { x: {}, y: {} } })
+  .encodeX({ field: "Displacement" })
+  .encodeY({ field: "Acceleration" })
+  .encodeColor({ field: "Cylinders" })
+  .encodeSize({ field: "Weight_in_lbs" })
+  .encodeShape({ field: "Origin" });
+```
+
+The calls reuse the current channel scales, recompute every concrete point and
+connected guide, update inferred titles, and preserve explicit guide styling.
+`encodeSize` remains incompatible with a stored constant radius; it does not
+silently delete that graphical choice.
+
 ## Key action trace
 
 The trace keeps the user flow and meaningful guide decomposition. Primitive
@@ -2143,10 +2170,17 @@ Automatic domains combine compatible fields that share a scale. Automatic
 ranges use plot bounds, and every encoded value must be finite. The actions
 ensure a Cartesian coordinate exists and attach it to the point layer.
 
+Calling the same action again on the same target replaces that channel's
+field. If `scale.id` is omitted, the current channel scale is reused and all
+connected marks, axes, and grids are recomputed. An explicit new scale ID
+rebinds a non-shared guide while retaining the old named scale. Inferred axis
+titles follow the new field; explicit titles and appearance stay unchanged.
+
 ## Errors and limitations
 
 A conflicting layer coordinate, non-Cartesian coordinate, cross-channel scale,
-or non-finite field value is rejected before partial output is retained.
+or non-finite field value is rejected before partial output is retained. A
+guide cannot be rebound away from a scale that still has another consumer.
 
 ## Related
 
@@ -2455,6 +2489,12 @@ program.encodeColor({
 `scale.range: { palette: "tableau10" }`. Do not provide both. Automatic domains
 preserve first-appearance order.
 
+Calling `encodeColor` again for the same target replaces the nominal field.
+Without `scale.id`, the current color scale is reused and its domain, marks,
+and existing legend are recomputed. An explicit new ID retains the previous
+named scale. Inferred legend titles follow the new field; explicit titles and
+legend appearance remain unchanged.
+
 Named palettes use a frozen 68-name vocabulary. Categorical palettes keep their
 native order; `count` selects or deterministically cycles colors. Continuous,
 diverging, and cyclical palettes are sampled to the domain size unless `count`
@@ -2614,6 +2654,12 @@ fully concrete in `graphicSpec`.
 All point appearance actions invoke the same point materializer. Existing x,
 y, color, size, shape, and opacity state is recombined after each change and
 after Canvas bounds change, making action order irrelevant.
+
+Calling `encodeSize` or `encodeShape` again replaces its existing field and
+compatible scale binding. Omitting `scale.id` reuses the current scale;
+providing a new ID retains the previous named scale. Existing legends are
+recomputed, inferred legend titles follow the new field, and explicit legend
+titles and styles remain unchanged.
 
 ## `encodeBarWidth({ band?, target? })`
 
@@ -3636,7 +3682,7 @@ Create a semantic area mark and empty path collection. Fixed fill defaults to
 encodeX({ field, target?, fieldType?, coordinate?, bin?, scale? })
 ```
 
-Create a quantitative point/area, temporal line, binned quantitative bar, or
+Create or compatibly replace a quantitative point/area, temporal line, binned quantitative bar, or
 ordinal bar x encoding. Ordinal bars require `fieldType: "ordinal"` and do not
 materialize rects until their remaining layout semantics exist.
 [Position encodings](../api/position-encodings.md)
@@ -3647,7 +3693,7 @@ materialize rects until their remaining layout semantics exist.
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
 ```
 
-Create a quantitative point, aggregate line, or inferred count/zero-stack bar
+Create or compatibly replace a quantitative point, aggregate line, or inferred count/zero-stack bar
 y encoding. With ordinal bar x, it also creates a mean/non-stacked y encoding
 and resolves its scale while waiting for grouping semantics before rect
 materialization. A complete histogram x/y pair materializes concrete rects.
@@ -3720,7 +3766,7 @@ the y channel; pass `densityChannel: "x"` for a horizontal orientation.
 encodeColor({ field, target?, fieldType?, layout?, scale? })
 ```
 
-Create nominal point fill, line-series color, grouped area fill, stacked
+Create or compatibly replace nominal point fill, line-series color, grouped area fill, stacked
 histogram color, or grouped ordinal-bar color. Area color must match an
 existing group field. Grouped bars require `layout: "group"` and record
 `encodeXOffset` as a child action.
@@ -3749,7 +3795,7 @@ Apply a constant point radius. [Constant appearance](../api/appearance.md)
 encodeSize({ field, target?, fieldType?, scale? })
 ```
 
-Encode a quantitative field as equal-area point size. The automatic area range
+Encode or replace a quantitative field as equal-area point size. The automatic area range
 is `[24, 196]`. [Appearance encodings](../api/appearance.md)
 
 ### `encodeShape`
@@ -3758,7 +3804,7 @@ is `[24, 196]`. [Appearance encodings](../api/appearance.md)
 encodeShape({ field, target?, fieldType?, scale? })
 ```
 
-Encode a nominal field with the shared 12-value point-shape vocabulary.
+Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeOpacity`

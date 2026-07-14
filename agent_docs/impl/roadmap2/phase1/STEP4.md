@@ -14,7 +14,7 @@
 - [x] `encoding-reassignment/primitive.png`
 - [x] Expanded target user-facing call chain metadata
 - [x] Browser/high-resolution PNG 확인
-- [ ] Gate B 사용자 visual confirmation
+- [x] Gate B 사용자 visual confirmation
 - [x] STEP 상태, conceptual commit와 push
 
 ## Target flow

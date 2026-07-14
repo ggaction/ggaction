@@ -61,6 +61,12 @@ All point appearance actions invoke the same point materializer. Existing x,
 y, color, size, shape, and opacity state is recombined after each change and
 after Canvas bounds change, making action order irrelevant.
 
+Calling `encodeSize` or `encodeShape` again replaces its existing field and
+compatible scale binding. Omitting `scale.id` reuses the current scale;
+providing a new ID retains the previous named scale. Existing legends are
+recomputed, inferred legend titles follow the new field, and explicit legend
+titles and styles remain unchanged.
+
 ## `encodeBarWidth({ band?, target? })`
 
 Set the fraction of each resolved xOffset slot occupied by a grouped bar and

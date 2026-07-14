@@ -37,10 +37,17 @@ Automatic domains combine compatible fields that share a scale. Automatic
 ranges use plot bounds, and every encoded value must be finite. The actions
 ensure a Cartesian coordinate exists and attach it to the point layer.
 
+Calling the same action again on the same target replaces that channel's
+field. If `scale.id` is omitted, the current channel scale is reused and all
+connected marks, axes, and grids are recomputed. An explicit new scale ID
+rebinds a non-shared guide while retaining the old named scale. Inferred axis
+titles follow the new field; explicit titles and appearance stay unchanged.
+
 ## Errors and limitations
 
 A conflicting layer coordinate, non-Cartesian coordinate, cross-channel scale,
-or non-finite field value is rejected before partial output is retained.
+or non-finite field value is rejected before partial output is retained. A
+guide cannot be rebound away from a scale that still has another consumer.
 
 ## Related
 
