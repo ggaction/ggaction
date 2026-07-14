@@ -40,7 +40,7 @@ guide order와 title theme에서 뒤처진 것을 확인했다. Canonical baseli
 theme을 사용하는 public result로 선택했다. Primitive는 406개 valid row, first-appearance
 `USA → Europe → Japan` order와 36개 `Year × Origin` mean group을 독립적으로 계산해 같은 concrete state를
 명시한다. 두 program의 complete `semanticSpec`, `graphicSpec`, order와 463개 Canvas calls는 정확히 같으며
-현재 Gate 0 visual confirmation을 기다린다.
+Gate 0 visual confirmation을 통과했다.
 
 ## Variant 목록
 

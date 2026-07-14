@@ -13,7 +13,7 @@ executable chart contract를 고정한다.
 - [x] `baseline` metadata와 expanded target chain 확인
 - [x] Roadmap 2 gallery pair 재생성
 - [x] Browser와 high-resolution PNG 확인
-- [ ] Gate 0 사용자 baseline confirmation
+- [x] Gate 0 사용자 baseline confirmation
 - [x] Phase 2 chart/variant contract link와 status 갱신
 - [x] Conceptual commit와 push
 
@@ -45,7 +45,7 @@ contract이므로 canonical baseline은 public 결과로 선택했다. Raw primi
 - Logical Canvas: `720×460`; PNG는 pixel ratio 2의 `1440×920`
 
 Baseline primitive/public의 complete `semanticSpec`, `graphicSpec`, order와 463개 Canvas spy call은 정확히 같다.
-Roadmap 2 gallery는 expanded public chain과 두 PNG를 보유하며 현재 Gate 0 사용자 확인을 기다린다.
+Roadmap 2 gallery의 expanded public chain과 두 PNG가 Gate 0 사용자 승인을 받았다.
 
 ## 작업 범위
 
