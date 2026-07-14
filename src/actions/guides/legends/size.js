@@ -168,7 +168,7 @@ export const createSizeLegend = action(
   }
 );
 
-export function registerPointLegendActions(ProgramClass) {
+export function registerSizeLegendActions(ProgramClass) {
   ProgramClass.prototype.createSizeLegend = createSizeLegend;
   ProgramClass.prototype.rematerializeSizeLegend = rematerializeSizeLegend;
 }

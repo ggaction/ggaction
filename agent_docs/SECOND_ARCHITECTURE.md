@@ -1131,7 +1131,7 @@ src/
 │  ├─ coordinates/     coordinate authoring
 │  ├─ data/            source/derived data actions
 │  ├─ encodings/       position, color, stroke-dash, ranged, atomic encoding actions
-│  ├─ guides/          axes, grids, legends와 aggregate guides
+│  ├─ guides/          axes, grids, categorical/continuous/size legends와 aggregate guides
 │  ├─ marks/           point, line, bar, area create/rematerialize
 │  ├─ primitives/      editSemantic/createGraphics/editGraphics와 stateful semantic validation
 │  ├─ regression/      regression aggregate, component actions와 inference policy
@@ -1166,6 +1166,10 @@ action module과 registrar를 가진다.
 Composite domain action도 registrar에 구현을 두지 않는다. Regression은 target/group inference,
 band·line component action, top-level orchestration을 별도 module로 유지하고 `index.js`는 등록과
 re-export만 담당한다.
+
+Guide module은 concrete recipe 기준으로 나눈다. Continuous legend의 공통 validation/layout
+utility, gradient strip recipe, opacity symbol recipe를 분리하며, quantitative size legend는 generic
+`point`가 아니라 `size`라는 실제 책임 이름을 사용한다.
 
 ## Test architecture
 
