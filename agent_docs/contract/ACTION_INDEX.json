@@ -1646,17 +1646,6 @@
       }
     },
     {
-      "id": "point-composite-top-and-bottom-legends",
-      "kind": "parameter",
-      "name": "Point-composite top and bottom legends",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/GUIDES_AND_LAYOUT.md",
-        "anchor": "point-composite-top-and-bottom-legends"
-      }
-    },
-    {
       "id": "chart-title-positions",
       "kind": "parameter",
       "name": "Chart title positions",

@@ -128,7 +128,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | parameter | Right y axis position | accepted | [Open](planned/GUIDES_AND_LAYOUT.md#mirrored-cartesian-axis-positions) |
 | parameter | Axis label format strings | accepted | [Open](planned/GUIDES_AND_LAYOUT.md#axis-label-format-strings) |
 | parameter | Left legend position | accepted | [Open](planned/GUIDES_AND_LAYOUT.md#left-legend-position) |
-| parameter | Point-composite top and bottom legends | accepted | [Open](planned/GUIDES_AND_LAYOUT.md#point-composite-top-and-bottom-legends) |
 | parameter | Chart title positions | accepted | [Open](planned/GUIDES_AND_LAYOUT.md#chart-title-positions) |
 | parameter | Title wrapping and measurement | accepted | [Open](planned/GUIDES_AND_LAYOUT.md#title-wrapping-and-measurement) |
 | parameter | Graphic parent attachment | accepted | [Open](planned/PRIMITIVES.md#graphic-parent-attachment) |

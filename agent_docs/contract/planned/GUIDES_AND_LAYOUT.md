@@ -60,22 +60,6 @@ type AxisFormatString =
 - Status: Planned, NOT IMPLEMENTED. categorical/composite/size parity, position edits, border/title variants,
   multiple blocks, insufficient margin와 Canvas rematerialization coverage가 필요하다.
 
-## point-composite top and bottom legends
-
-- `createLegend`과 Planned `editLegend`는 layered line+point, color+shape point와 other accepted
-  point-composite symbol recipes를 existing `"top" | "bottom"` positions에서 지원한다.
-- Composite layers share one item-local origin. The item symbol box is the union of every layer's concrete
-  bounds and the label begins after that box plus `itemGap`; layer order remains the declared rendering order.
-- `direction`, `columns`, align, titlePosition, labels/title styles, border와 domain order는 existing
-  top/bottom categorical layout contract를 사용한다. Library가 columns를 초과한 item을 자동으로
-  축소하거나 symbol layer를 제거하지 않는다.
-- 첫 contract는 text/item wrapping을 포함하지 않는다. Resolved grid가 available top/bottom margin에
-  맞지 않으면 명확한 layout error이며 Canvas를 자동 확장하지 않는다.
-- Canvas resize, domain/order, shape vocabulary, size range 또는 edit는 symbol box와 item grid 전체를
-  deterministic plan으로 rematerialize한다.
-- Status: Planned, NOT IMPLEMENTED. line+point, color+shape, multi-column/direction, title/border,
-  insufficient margin와 Canvas/scale rematerialization coverage가 필요하다.
-
 ## continuous color gradient legend
 
 ```typescript

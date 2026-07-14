@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  createCompositeLegendBottomCarsLineChart,
+  createCompositeLegendTopCarsLineChart,
   createConstantDashCarsLineChart,
   createDashReassignmentCarsLineChart,
   createDispersionCarsLineChart,
@@ -585,7 +587,7 @@ test("authors top and bottom layered legend primitives in declared order", () =>
   }
 });
 
-test("keeps composite legend targets primitive-only until Step 11", () => {
+test("keeps approved composite legend targets primitive-only", () => {
   for (const program of [
     createCompositeLegendTopPrimitives(cars),
     createCompositeLegendBottomPrimitives(cars)
@@ -595,6 +597,31 @@ test("keeps composite legend targets primitive-only until Step 11", () => {
       assert.equal(operations.includes(futureAction), false, futureAction);
     }
     assert.equal(operations.at(-1), "editGraphics");
+  }
+});
+
+test("matches approved composite legend primitives with public actions", () => {
+  for (const [primitive, publicProgram] of [
+    [
+      createCompositeLegendTopPrimitives(cars),
+      createCompositeLegendTopCarsLineChart(cars)
+    ],
+    [
+      createCompositeLegendBottomPrimitives(cars),
+      createCompositeLegendBottomCarsLineChart(cars)
+    ]
+  ]) {
+    const primitiveContext = createMockCanvasContext();
+    const publicContext = createMockCanvasContext();
+    renderCarsLineChartPrimitives(primitive, primitiveContext);
+    renderCarsLineChartPrimitives(publicProgram, publicContext);
+
+    assert.deepEqual(publicProgram.semanticSpec, primitive.semanticSpec);
+    assert.deepEqual(publicProgram.graphicSpec, primitive.graphicSpec);
+    assert.deepEqual(publicProgram.graphicSpec.order, primitive.graphicSpec.order);
+    assert.deepEqual(publicContext.calls, primitiveContext.calls);
+    assert.equal(publicProgram.trace.children.at(-1).op, "createTitle");
+    assert.deepEqual(publicProgram.actionStack, []);
   }
 });
 

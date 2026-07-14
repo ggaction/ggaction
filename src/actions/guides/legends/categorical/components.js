@@ -61,8 +61,7 @@ export const editLegendTitle = action(
       .editGraphics({
         target: id,
         property: "textAlign",
-        value: config.position === "bottom" ||
-          (config.position === "top" && config.titlePosition === "top")
+        value: config.position !== "right" && config.titlePosition === "top"
           ? "center"
           : "left"
       })

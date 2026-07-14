@@ -118,6 +118,7 @@ export const createCategoricalLegend = action(
       labels: options.labels,
       titleStyle: options.titleStyle,
       itemGap: options.itemGap,
+      bottomGrid: options.bottomGrid,
       border: options.border
     };
     resolveLayout(this, config);

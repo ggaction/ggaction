@@ -121,6 +121,13 @@ export function normalizeOptions(args, kind) {
   const offset = args.offset ?? 8;
   const titlePosition = args.titlePosition ?? "top";
   const itemGap = args.itemGap ?? (position === "right" ? 28 : position === "top" ? 24 : 20);
+  const bottomGrid = position !== "bottom" || [
+    "columns",
+    "direction",
+    "offset",
+    "titlePosition",
+    "itemGap"
+  ].some(key => Object.hasOwn(args, key));
 
   if (!["right", "bottom", "top"].includes(position)) {
     throw new Error(`Unsupported legend position "${position}".`);
@@ -166,6 +173,7 @@ export function normalizeOptions(args, kind) {
     labels,
     titleStyle,
     itemGap,
+    bottomGrid,
     border: normalizeBorder(args.border)
   };
 }

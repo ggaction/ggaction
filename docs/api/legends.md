@@ -54,11 +54,16 @@ Every categorical legend uses the same right-side default:
 | `count` | size-legend symbol count of at least `2` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
-Pass `position: "bottom"` explicitly for a horizontal legend. Bottom legends
-can use left, center, or right alignment; right legends require center
-alignment.
+Pass `position: "bottom"` explicitly to place the legend below the plot.
+Bottom legends use the same item grid as top legends and can use left, center,
+or right alignment; right legends require center alignment.
 
-Top legends use a general item grid. `columns` caps the column count;
+For compatibility, `createLegend({ position: "bottom" })` keeps the compact
+single-row layout anchored near the Canvas bottom edge. Supplying any grid
+control such as `columns`, `direction`, `offset`, `titlePosition`, or `itemGap`
+selects the general reserved-margin grid.
+
+Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns
 first. `align` positions the complete title-plus-items block within plot
 bounds. The title appears above the grid by default, or beside it with
@@ -130,6 +135,23 @@ lineProgram.createLegend({
 });
 ~~~
 
+The same recipe works in top and bottom item grids:
+
+~~~javascript
+lineProgram.createLegend({
+  position: "bottom",
+  align: "right",
+  direction: "horizontal",
+  columns: 2,
+  symbol: {
+    layers: [
+      { type: "line", length: 36, lineWidth: 3 },
+      { type: "point", shape: "circle", size: 5 }
+    ]
+  }
+});
+~~~
+
 Supported layers are:
 
 ~~~javascript
@@ -139,8 +161,10 @@ Supported layers are:
 ~~~
 
 Every layer shares the same item anchors. A line and point therefore overlap
-as one composite symbol. Recipes are private appearance configuration; the
-final `graphicSpec` contains only concrete line, circle, and rect primitives.
+as one composite symbol. The union of their bounds determines label placement,
+and layers retain their declared rendering order. Recipes are private
+appearance configuration; the final `graphicSpec` contains only concrete line,
+circle, and rect primitives.
 
 ## Items and semantics
 
@@ -206,7 +230,8 @@ Combined point-series and quantitative-size legends currently require right
 position so both blocks remain in one vertical stack.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
-item grid, offset, and optional border.
+item grid, offset, and optional border. The library reports a layout error
+instead of resizing the Canvas or dropping symbol layers.
 
 ## Related
 

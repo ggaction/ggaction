@@ -27,6 +27,39 @@ function createSeriesLine({ color = true, dash = true } = {}) {
   return program;
 }
 
+function createBottomSeriesLine() {
+  return chart()
+    .createCanvas({
+      width: 500,
+      height: 340,
+      margin: { top: 30, right: 30, bottom: 140, left: 40 }
+    })
+    .createData({ id: "data", values: rows })
+    .createLineMark({ id: "trends" })
+    .encodeX({ field: "year", fieldType: "temporal" })
+    .encodeY({ field: "value", aggregate: "mean" })
+    .encodeColor({ field: "origin" })
+    .encodeStrokeDash({ field: "origin" });
+}
+
+function createTopPointSeries() {
+  return chart()
+    .createCanvas({
+      width: 500,
+      height: 300,
+      margin: { top: 130, right: 30, bottom: 40, left: 40 }
+    })
+    .createData({
+      id: "data",
+      values: rows.map((row, index) => ({ ...row, x: index }))
+    })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "value" })
+    .encodeColor({ field: "origin" })
+    .encodeShape({ field: "origin" });
+}
+
 test("creates a combined series legend from color and strokeDash", () => {
   const before = createSeriesLine();
   const program = before.createLegend();
@@ -125,6 +158,119 @@ test("supports composite line and point symbol recipes", () => {
     "createLegendSymbolLines",
     "createLegendSymbolPoints"
   ]);
+});
+
+test("lays out bordered bottom composite symbols in a deterministic grid", () => {
+  const program = createBottomSeriesLine().createLegend({
+    position: "bottom",
+    align: "right",
+    direction: "horizontal",
+    columns: 1,
+    offset: 40,
+    titlePosition: "top",
+    labels: { offset: 10 },
+    itemGap: 18,
+    border: true,
+    symbol: {
+      layers: [
+        { type: "line", length: 36, lineWidth: 3 },
+        { type: "point", size: 5, strokeWidth: 1 }
+      ]
+    }
+  });
+  const lines = program.graphicSpec.objects.seriesLegendSymbolLines.children;
+  const points = program.graphicSpec.objects.seriesLegendSymbolPoints.children;
+  const labels = program.graphicSpec.objects.seriesLegendLabels.children;
+  const background = program.graphicSpec.objects.seriesLegendBackground;
+
+  assert.equal(lines[0].properties.y1 < lines[1].properties.y1, true);
+  assert.deepEqual(
+    points.map(child => [child.properties.x, child.properties.y]),
+    lines.map(child => [
+      (child.properties.x1 + child.properties.x2) / 2,
+      child.properties.y1
+    ])
+  );
+  assert.deepEqual(
+    labels.map((child, index) => child.properties.x - lines[index].properties.x2),
+    [10, 10]
+  );
+  assert.deepEqual(program.graphicSpec.order.slice(-5), [
+    "seriesLegendBackground",
+    "seriesLegendSymbolLines",
+    "seriesLegendSymbolPoints",
+    "seriesLegendLabels",
+    "seriesLegendTitle"
+  ]);
+  assert.equal(background.properties.y + background.properties.height <= 340, true);
+});
+
+test("rematerializes bottom composite layout and fails atomically when cramped", () => {
+  const before = createBottomSeriesLine().createLegend({
+    position: "bottom",
+    align: "right",
+    columns: 2,
+    border: true,
+    symbol: {
+      layers: [
+        { type: "line" },
+        { type: "point" }
+      ]
+    }
+  });
+  const after = before.editCanvas({ width: 560 });
+
+  assert.notEqual(
+    after.graphicSpec.objects.seriesLegendSymbolLines.children[0].properties.x1,
+    before.graphicSpec.objects.seriesLegendSymbolLines.children[0].properties.x1
+  );
+  assert.equal(
+    after.trace.children.at(-1).children.some(
+      child => child.op === "rematerializeLegend"
+    ),
+    true
+  );
+  assert.throws(
+    () => createBottomSeriesLine()
+      .editCanvas({ margin: { top: 30, right: 30, bottom: 40, left: 40 } })
+      .createLegend({ position: "bottom", border: true }),
+    /bottom-margin space/
+  );
+  assert.equal(before.graphicSpec.objects.canvas.properties.width, 500);
+});
+
+test("keeps color and shape point composites compatible with top grids", () => {
+  const before = createTopPointSeries().createLegend({
+    position: "top",
+    columns: 2,
+    border: true
+  });
+  const symbols = before.graphicSpec.objects.seriesLegendSymbolPoints.children;
+
+  assert.deepEqual(symbols.map(child => child.type), ["circle", "rect"]);
+  assert.deepEqual(
+    symbols.map(child => child.properties.fill),
+    ["#4c78a8", "#f58518"]
+  );
+  const color = before.resolvedScales.color;
+  const shape = before.resolvedScales.shape;
+  const after = before
+    ._withResolvedScale("color", { ...color, domain: ["B", "A"] })
+    ._withResolvedScale("shape", { ...shape, domain: ["B", "A"] })
+    .rematerializeLegend();
+
+  assert.deepEqual(
+    after.graphicSpec.objects.seriesLegendLabels.children.map(
+      child => child.properties.text
+    ),
+    ["B", "A"]
+  );
+  assert.deepEqual(
+    after.graphicSpec.objects.seriesLegendSymbolPoints.children.map(
+      child => child.properties.fill
+    ),
+    ["#4c78a8", "#f58518"]
+  );
 });
 
 test("supports single-channel series legends", () => {

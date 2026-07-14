@@ -321,7 +321,6 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     "Right y axis position",
     "Axis label format strings",
     "Left legend position",
-    "Point-composite top and bottom legends",
     "Chart title positions",
     "Title wrapping and measurement",
     "Graphic parent attachment"
@@ -452,8 +451,8 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /type AxisFormatString =/);
   assert.match(plannedCorpus, /"\.0f" \| "\.1f" \| "\.2f"/);
   assert.match(plannedCorpus, /point composite와 quantitative size block을 지원/);
-  assert.match(plannedCorpus, /## point-composite top and bottom legends/);
-  assert.match(plannedCorpus, /Composite layers share one item-local origin/);
+  assert.match(currentCorpus, /point-composite symbols in top\/bottom item grids/);
+  assert.match(currentCorpus, /Composite layers share one item-local origin/);
   assert.match(plannedCorpus, /"top" \| "bottom" \| "left" \| "right"/);
   assert.match(plannedCorpus, /type PlannedTitleWrapping =/);
   assert.match(plannedCorpus, /maxWidth\?: PositiveFinite/);

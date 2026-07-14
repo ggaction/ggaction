@@ -250,7 +250,53 @@ export interface RegressionOptions {
   line?: { strokeWidth?: number };
 }
 
-export interface LegendOptions extends ActionOptions {
+export interface LegendTextOptions {
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+}
+
+export interface LegendTitleStyleOptions {
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+}
+
+export type LegendSymbolLayer =
+  | { type: "line"; length?: number; lineWidth?: number }
+  | {
+      type: "point";
+      shape?: "circle";
+      size?: number;
+      fill?: string;
+      stroke?: string;
+      strokeWidth?: number;
+    }
+  | {
+      type: "swatch";
+      width?: number;
+      height?: number;
+      stroke?: string;
+      strokeWidth?: number;
+    };
+
+export type LegendSymbolRecipe =
+  | "auto"
+  | { length?: number; lineWidth?: number }
+  | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
+  | { layers: readonly LegendSymbolLayer[] };
+
+export interface LegendBorderOptions {
+  color?: string;
+  lineWidth?: number;
+  padding?: number;
+  background?: string;
+}
+
+export interface LegendOptions {
   target?: string;
   channels?: readonly ("color" | "strokeDash" | "shape" | "opacity")[];
   position?: "right" | "left" | "bottom" | "top";
@@ -262,11 +308,11 @@ export interface LegendOptions extends ActionOptions {
   title?: string;
   count?: number;
   gradient?: { length?: number; thickness?: number };
-  symbol?: ActionOptions;
-  labels?: ActionOptions;
-  titleStyle?: ActionOptions;
+  symbol?: LegendSymbolRecipe;
+  labels?: LegendTextOptions;
+  titleStyle?: LegendTitleStyleOptions;
   itemGap?: number;
-  border?: boolean | ActionOptions;
+  border?: boolean | LegendBorderOptions;
 }
 
 export class ChartProgram {

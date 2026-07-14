@@ -338,7 +338,8 @@ createLegend({
 
 Create categorical, point-size, continuous-color gradient, or field-opacity
 sample legends. Continuous legends support right, left, top, and bottom
-placement; categorical layouts retain their documented position constraints.
+placement. Categorical top and bottom layouts support deterministic item grids
+and layered line/point/swatch symbol recipes.
 [Legends](../api/legends.md)
 
 ### `createTitle`

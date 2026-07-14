@@ -2,6 +2,8 @@ import test from "node:test";
 
 import {
   createCarsLineChart,
+  createCompositeLegendBottomCarsLineChart,
+  createCompositeLegendTopCarsLineChart,
   createConstantDashCarsLineChart,
   createDashReassignmentCarsLineChart,
   createDispersionCarsLineChart,
@@ -402,6 +404,7 @@ const compositeLegendPrimitiveArtifacts = Object.freeze([
       userFacingCallChain: compositeLegendTargetCallChain("top")
     }),
     primitive: createCompositeLegendTopPrimitives(cars),
+    userFacing: createCompositeLegendTopCarsLineChart(cars),
     width: 720,
     height: 520
   }),
@@ -414,6 +417,7 @@ const compositeLegendPrimitiveArtifacts = Object.freeze([
       userFacingCallChain: compositeLegendTargetCallChain("bottom")
     }),
     primitive: createCompositeLegendBottomPrimitives(cars),
+    userFacing: createCompositeLegendBottomCarsLineChart(cars),
     width: 720,
     height: 560
   })
@@ -485,13 +489,18 @@ test("renders the public and primitive line charts with visible series", async (
     }
   }
 
-  for (const { artifact, primitive, width, height } of
+  for (const { artifact, primitive, userFacing, width, height } of
     compositeLegendPrimitiveArtifacts) {
-    await assertRenderedPNG(primitive, {
-      artifact: { ...artifact, kind: "primitive" },
-      width,
-      height,
-      colors: ["#4c78a8", "#f58518", "#e45756"]
-    });
+    for (const [kind, program] of [
+      ["primitive", primitive],
+      ["user-facing", userFacing]
+    ]) {
+      await assertRenderedPNG(program, {
+        artifact: { ...artifact, kind },
+        width,
+        height,
+        colors: ["#4c78a8", "#f58518", "#e45756"]
+      });
+    }
   }
 });

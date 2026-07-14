@@ -33,8 +33,10 @@ type LegendBorder = false | true | {
   네 방향을 지원한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 Planned left side position은
   첫 계약에서 center만 허용한다.
-- `direction`: `"horizontal" | "vertical"`; top item-grid fill order를 결정하며 기본 horizontal이다.
-- `columns`: positive integer; top grid의 최대 열 수. 생략하면 한 row에 가능한 item을 둔다.
+- `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order를 결정하며 기본 horizontal이다.
+- `columns`: positive integer; top/bottom grid의 최대 열 수. 생략하면 한 row에 가능한 item을 둔다.
+- `position: "bottom"`만 지정한 기존 호출은 Canvas bottom에 고정된 compact single-row layout을 유지한다.
+  `columns`, `direction`, `offset`, `titlePosition`, `itemGap` 중 하나를 명시하면 reserved-margin grid를 사용한다.
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
 - `titlePosition`: `"top" | "left"`, 기본 top.
 - `title`: non-empty string; 생략하면 encoded source field를 사용한다.
@@ -48,15 +50,17 @@ type LegendBorder = false | true | {
 - `gradient`: sequential color 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
 - Effect: categorical semantics에는 scale/channel/title만 저장하고 placement, recipe, fonts, border는
   graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용한다.
-- Coverage: series/histogram/grouped-bar/top/regression legend tests가 주요 layouts, recipes,
+- Composite layers share one item-local origin. Their concrete union bounds determine label placement and
+  declared layer order determines rendering order in right, top, and bottom layouts.
+- Coverage: series/histogram/grouped-bar/top/bottom/regression legend tests가 주요 layouts, recipes,
   borders, rematerialization과 invalid values를 검증한다. 모든 symbol-layer parameter pair는 부분적이다.
-- Planned: left categorical/point-composite/size side layout and point-composite top/bottom layout.
+- Planned: left categorical/point-composite/size side layout.
 - Proposed: —
 
 ### Formal values — `createLegend`
 
 - Implemented: `createLegend({ target?: UserId; channels?: readonly ("color" | "strokeDash" | "shape" | "opacity")[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite } } = {})`
-- Planned (NOT IMPLEMENTED): left categorical/point-composite/size layout and top/bottom point composites.
+- Planned (NOT IMPLEMENTED): left categorical/point-composite/size layout.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createLegend`
@@ -73,7 +77,7 @@ type LegendBorder = false | true | {
 - `align`
   - ✅ Covered: top/bottom `"left" | "center" | "right"`, right center-only and invalid combinations.
 - `direction`
-  - ✅ Covered: `"horizontal" | "vertical"` top fill order and invalid value.
+  - ✅ Covered: `"horizontal" | "vertical"` top/bottom fill order and invalid value.
 - `columns`
   - ✅ Covered: omitted, positive integer representative, invalid zero/non-integer.
 - `offset`
@@ -86,7 +90,7 @@ type LegendBorder = false | true | {
   - ✅ Covered: `"auto"`, line shorthand, swatch shorthand, layered line+point recipes.
   - ⚠️ Partial: every layer type's zero/max dimensions, fill/stroke combinations and invalid nested keys.
   - ✅ Covered: shared 12-shape point layers through the point-shape vocabulary.
-  - 🟡 Planned: point-composite symbols in top/bottom item grids.
+  - ✅ Covered: point-composite symbols in top/bottom item grids with shared anchors and declared layer order.
   - ✅ Covered: sequential-color gradient block and opacity sample points with auto/explicit recipe.
 - `labels`, `titleStyle`
   - ✅ Covered: representative color/font overrides and invalid styles.
@@ -100,8 +104,8 @@ type LegendBorder = false | true | {
   - ✅ Covered: gradient tick-label and opacity sample count with the same boundary contract.
 - `gradient`
   - ✅ Covered: positive length/thickness, four position-derived orientations and categorical-option conflicts.
-- 🟡 Planned: left point-composite/size side layout and point-composite top/bottom layout.
-- Evidence: series, histogram, grouped-bar, top categorical and regression legend tests.
+- 🟡 Planned: left point-composite/size side layout.
+- Evidence: series, histogram, grouped-bar, top categorical, Phase 2 composite and regression legend tests.
 
 ## `createGuides`
 
