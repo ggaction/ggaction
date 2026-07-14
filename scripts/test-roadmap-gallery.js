@@ -15,6 +15,16 @@ await mkdir(screenshots, { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
 const errors = [];
+const phase1Variants = Object.freeze([
+  "cars-scatterplot/baseline",
+  "cars-scatterplot/categorical-palette",
+  "cars-scatterplot/continuous-color-gradient",
+  "cars-scatterplot/encoding-reassignment",
+  "cars-scatterplot/field-opacity-legend",
+  "cars-scatterplot/point-shape-diamond",
+  "cars-scatterplot/scale-reverse",
+  "cars-scatterplot/shape-vocabulary"
+]);
 
 try {
   const desktop = await browser.newPage({
@@ -36,6 +46,23 @@ try {
   const statuses = desktop.locator(".status.ready, .status.awaiting");
   if (await statuses.count() !== await variants.count()) {
     throw new Error("Every Roadmap 2 variant must show one review status.");
+  }
+  const renderedPhase1Variants = await variants.locator(":scope > code")
+    .allTextContents();
+  for (const variant of phase1Variants) {
+    if (!renderedPhase1Variants.includes(variant)) {
+      throw new Error(`Roadmap 2 gallery is missing Phase 1 variant ${variant}.`);
+    }
+    const card = variants.filter({ hasText: variant });
+    if (await card.count() !== 1) {
+      throw new Error(`Phase 1 variant ${variant} must have exactly one card.`);
+    }
+    if (await card.locator(".status.ready").count() !== 1) {
+      throw new Error(`Phase 1 variant ${variant} is not ready for review.`);
+    }
+    if (await card.locator("img").count() !== 2) {
+      throw new Error(`Phase 1 variant ${variant} must show one primitive/public pair.`);
+    }
   }
   const callChains = desktop.locator(".call-chain pre code");
   if (await callChains.count() !== await desktop.locator("article.variant").count()) {
@@ -59,6 +86,12 @@ try {
   if (desktopColumns !== 2) {
     throw new Error("Desktop gallery must render a two-column pair.");
   }
+  const desktopOverflows = await desktop.evaluate(
+    () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+  );
+  if (desktopOverflows) {
+    throw new Error("Desktop gallery must not overflow horizontally.");
+  }
   await desktop.screenshot({
     path: path.join(screenshots, "desktop.png"),
     fullPage: true
@@ -77,6 +110,12 @@ try {
   const mobileCallChain = mobile.locator(".call-chain pre").first();
   if (await mobileCallChain.count() !== 1) {
     throw new Error("Mobile gallery must retain the target call chain.");
+  }
+  const mobileOverflows = await mobile.evaluate(
+    () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+  );
+  if (mobileOverflows) {
+    throw new Error("Mobile gallery must not overflow horizontally.");
   }
   await mobile.screenshot({
     path: path.join(screenshots, "mobile.png"),
