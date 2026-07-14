@@ -150,6 +150,15 @@
 - Preserve `agent_docs/INITIAL_ARCHITECTURE.md` as an initial design record unless the user explicitly asks to revise it; it does not need to mirror every later implementation decision.
 - Keep historical design references distinct from documentation of the current behavior.
 
+## Action Contract Catalog
+
+- Keep `agent_docs/contract/ACTION_CATALOG.md` as the canonical engineering catalog for every supported direct user-facing action and every public primitive action.
+- Record each action parameter's implementation status, type, required state, accepted values or value partitions, default and inference rules, option interactions, semantic effect, graphical and rendering effect, rematerialization impact, error conditions, and executable coverage evidence.
+- Distinguish `Implemented`, `Planned`, and `Proposed` contracts. Only behavior present in the implementation may be marked `Implemented`; only behavior explicitly agreed with the user may be marked `Planned`; unresolved candidates remain `Proposed` and must not appear as current public API.
+- Mark a coverage case complete only when a matching executable test exists. Keep missing and partial cases visible rather than estimating a coverage percentage.
+- Update the catalog in the same conceptual commit whenever a supported action, parameter, accepted value, default, inference rule, precedence rule, effect, or public/private classification changes.
+- Keep the catalog summary synchronized with its detailed action sections, and enforce mechanically verifiable inventory, classification, link, and test-evidence rules through contract tests.
+
 ## Change Scope
 
 - Implement one coherent conceptual change at a time.
