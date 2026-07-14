@@ -155,6 +155,20 @@ function plannedActionRows() {
   }));
 }
 
+function plannedBehaviorRows() {
+  const heading = "## Planned behavior extensions";
+  const start = catalog.indexOf(heading);
+  const end = catalog.indexOf("\n## ", start + heading.length);
+  const section = catalog.slice(start, end === -1 ? catalog.length : end);
+
+  return [...section.matchAll(
+    /^\| `([A-Za-z][A-Za-z0-9]*)` reassignment \| Planned \| ([^|]+) \|$/gm
+  )].map(match => ({
+    action: match[1],
+    readiness: match[2].trim()
+  }));
+}
+
 test("keeps the action catalog aligned with every declared direct action", () => {
   const declared = declaredProgramMethods();
   const rows = summaryRows();
@@ -297,6 +311,24 @@ test("classifies every direct action lifecycle and keeps edit gaps explicit", ()
       action
     );
   }
+  const expectedPlannedBehaviors = rows
+    .filter(row => row.audit === "Reassignment — Planned")
+    .map(row => row.action);
+  const plannedBehaviors = plannedBehaviorRows();
+
+  assert.deepEqual(
+    new Set(plannedBehaviors.map(row => row.action)),
+    new Set(expectedPlannedBehaviors)
+  );
+  for (const action of ["encodeShape", "encodeSize", "encodeStrokeDash"]) {
+    assert.equal(
+      plannedBehaviors.find(row => row.action === action)?.readiness,
+      "Accepted",
+      action
+    );
+  }
+  assert.match(catalog, /### Planned contract: scale-backed appearance reassignment/);
+  assert.match(catalog, /accepted `editScale` contract/);
   assert.equal(
     rows.find(row => row.action === "createCoordinate")?.lifecycle,
     "Structural create-only"

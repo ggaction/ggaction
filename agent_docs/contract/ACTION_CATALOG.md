@@ -147,9 +147,9 @@ properties, rematerialization ownership과 conflict behavior를 정해야 한다
 | `encodeX` | Assignment | No replacement contract | Reassignment — Proposed |
 | `encodeY` | Assignment | No replacement contract | Reassignment — Proposed |
 | `encodeColor` | Assignment | No replacement contract | Reassignment — Proposed |
-| `encodeStrokeDash` | Assignment | No replacement contract | Reassignment — Proposed |
-| `encodeSize` | Assignment | No replacement contract | Reassignment — Proposed |
-| `encodeShape` | Assignment | No replacement contract | Reassignment — Proposed |
+| `encodeStrokeDash` | Assignment | Same action will replace field and scale binding | Reassignment — Planned |
+| `encodeSize` | Assignment | Same action will replace field and scale binding | Reassignment — Planned |
+| `encodeShape` | Assignment | Same action will replace field and scale binding | Reassignment — Planned |
 | `encodeOpacity` | Assignment | Same action replaces the constant value | Reassignment — Implemented |
 | `encodeRadius` | Assignment | Same action replaces the constant value | Reassignment — Implemented |
 | `encodeXOffset` | Assignment | No replacement contract | Reassignment — Proposed |
@@ -365,6 +365,34 @@ editTitle({
 - 기존 `ChartProgram`은 변경하지 않고 새로운 program을 반환하며 `editTitle` 아래에 semantic,
   graphic, rematerialization child action이 trace로 남는다.
 - Status: Planned, NOT IMPLEMENTED. 실행 가능한 coverage는 구현 단계에서 추가한다.
+
+## Planned behavior extensions
+
+이 표는 새 method가 아니라 기존 assignment action의 accepted replacement behavior를 관리한다.
+
+| Existing action behavior | Status | Contract readiness |
+| --- | --- | --- |
+| `encodeShape` reassignment | Planned | Accepted |
+| `encodeSize` reassignment | Planned | Accepted |
+| `encodeStrokeDash` reassignment | Planned | Accepted |
+
+### Planned contract: scale-backed appearance reassignment
+
+- 같은 target의 `encodeSize`, `encodeShape`, `encodeStrokeDash`를 다시 호출하면 기존 field와
+  scale binding을 atomic하게 교체한다. 별도 `editSize`, `editShape`, `editStrokeDash` action은
+  만들지 않는다.
+- omitted scale ID는 현재 channel scale ID를 재사용한다. explicit new scale ID는 새 scale을
+  만들고 encoding을 rebind하며 이전 named scale은 삭제하지 않는다. 같은 scale ID의
+  domain/range/policy 변경은 accepted `editScale` contract를 wrapped child로 사용한다.
+- semantic encoding, scale, mark, existing legend 순서로 explicit rematerialization한다.
+  inferred legend title은 새 field로 갱신하고 custom title과 appearance config는 유지한다.
+- `encodeSize`는 constant `encodeRadius`를 자동 제거하지 않고 기존 conflict를 유지한다.
+  `encodeShape`는 새 domain/range로 heterogeneous point children과 symbols를 다시 만든다.
+- `encodeStrokeDash`는 color/group series field와 compatible해야 한다. 서로 다른 field가 하나의
+  line grouping을 요구하면 오류이며 기존 program은 유지한다.
+- explicit ordinal range가 새 domain을 표현할 수 없거나 shared consumer가 incompatible하면
+  전체 reassignment를 오류 처리한다.
+- Status: Planned, NOT IMPLEMENTED. 구현은 `editScale` parameter contract가 Accepted된 뒤 진행한다.
 
 ## Internal materialization inventory
 
