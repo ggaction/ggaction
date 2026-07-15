@@ -35,9 +35,10 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `scale`: Implemented. 위 shared contract를 사용한다. 기본 ID는 `x`, auto range는 left-to-right plot bounds다.
 - `coordinate`: Implemented, coordinate ID. 생략 시 positional action이 Cartesian `main` coordinate를
   만들거나 existing compatible coordinate를 사용하고 layer에 저장한다.
-- `bin.maxBins`: Implemented for quantitative bar x. positive integer이며 histogram aggregate의
-  default는 `10`; bin boundaries와 bar x/width를 결정한다. Planned `bin.step`과
-  `bin.boundaries`는 exact width 또는 explicit irregular intervals를 저장한다.
+- `bin`: Implemented for quantitative bar x. `{ maxBins?: PositiveInteger }`,
+  `{ step: PositiveFinite }`, `{ boundaries: readonly [Finite, Finite, ...Finite[]] }` 중 하나다.
+  생략된 maxBins default는 `10`; 세 mode는 mutually exclusive이며 bin boundaries와 bar x/width를
+  결정한다.
 - `aggregate`, `stack`: x의 현재 supported combinations에는 사용되지 않으며 잘못된 combination은 거부된다.
 - Effect: x encoding과 scale을 semantic state에 저장하고 scale 및 compatible mark/guide consumers를
   rematerialize한다.
@@ -49,8 +50,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 ### Formal values — `encodeX`
 
-- Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; bin?: { maxBins?: PositiveInteger } })`; 실제 fieldType/bin 조합은 mark policy가 제한한다.
-- Planned (NOT IMPLEMENTED): broader mark-specific `fieldType?: "quantitative" | "temporal" | "ordinal"` compatibility; `{ bin?: { step: PositiveFinite } | { boundaries: readonly [Finite, Finite, ...Finite[]] }; scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
+- Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; bin?: { maxBins?: PositiveInteger } | { step: PositiveFinite } | { boundaries: readonly [Finite, Finite, ...Finite[]] } })`; 실제 fieldType/bin 조합은 mark policy가 제한한다.
+- Planned (NOT IMPLEMENTED): broader mark-specific `fieldType?: "quantitative" | "temporal" | "ordinal"` compatibility; `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
 - Proposed (NOT IMPLEMENTED): Polar positional action.
 
 ### Value coverage — `encodeX`
@@ -66,10 +67,11 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - 🟣 Proposed: Polar theta/radial mapping; action naming unresolved.
 - `aggregate`
   - ⚠️ Partial: 현재 x에서는 생략만 supported; unsupported aggregate rejection matrix가 부분적이다.
-- `bin.maxBins`
+- `bin`
   - ✅ Covered: default via histogram, representative positive integer, invalid integer/value.
-  - ⚠️ Partial: `1`, very large maxBins와 constant field interaction.
-  - 🟡 Planned: mutually exclusive `bin.step`/`bin.boundaries`, exact/irregular geometry와 scale conflicts.
+  - ✅ Covered: exact step, negative/positive constant, zero policy, irregular boundaries, half-open/final-upper
+    assignment, empty-bin omission, exclusivity와 explicit-domain conflicts.
+  - ⚠️ Partial: `maxBins: 1`과 very large maxBins performance boundary.
 - `scale.id/type/domain/range/nice/zero`
   - ✅ Covered: auto/explicit linear, time, ordinal definitions; explicit domain/range precedence;
     wrong type and shared-channel conflicts.
@@ -272,7 +274,7 @@ type AggregateOperation =
 - Signature: `encodeHistogram({ field, target?, coordinate?, maxBins?, binStep?, binBoundaries?, stack?, xScale?, yScale? })`
 - `field`, `target`, `coordinate`: binned x에 전달되는 field와 optional target/coordinate다.
 - `maxBins`: positive integer, 기본값 `10`; `encodeX.bin.maxBins`로 전달된다.
-- `binStep`, `binBoundaries`: Planned exact-width/explicit-boundary modes이며 maxBins와 mutually exclusive다.
+- `binStep`, `binBoundaries`: exact-width/explicit-boundary modes이며 maxBins와 mutually exclusive다.
 - `stack`: `"zero" | null`, 기본값 `"zero"`; `encodeY`로 전달된다.
 - `xScale`, `yScale`: optional scale objects이며 각각 child x/y action에 전달된다.
 - Effect: wrapped `encodeX`와 `encodeY`를 원자적으로 결합해 bin/count semantics와 concrete rects를 만든다.
@@ -280,8 +282,8 @@ type AggregateOperation =
 
 ### Formal values — `encodeHistogram`
 
-- Implemented: `encodeHistogram({ field: FieldName; target?: UserId; coordinate?: UserId; maxBins?: PositiveInteger; stack?: "zero" | null; xScale?: PositionScale; yScale?: PositionScale })`
-- Planned (NOT IMPLEMENTED): `{ binStep?: PositiveFinite; binBoundaries?: readonly [Finite, Finite, ...Finite[]] }`; `maxBins`와 mutually exclusive.
+- Implemented: `encodeHistogram({ field: FieldName; target?: UserId; coordinate?: UserId; maxBins?: PositiveInteger; binStep?: PositiveFinite; binBoundaries?: readonly [Finite, Finite, ...Finite[]]; stack?: "zero"; xScale?: PositionScale; yScale?: PositionScale })`; 세 bin option은 mutually exclusive다.
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeHistogram`
@@ -296,7 +298,12 @@ type AggregateOperation =
 - `xScale`, `yScale`
   - ✅ Covered: explicit objects, default policies, domain/range precedence.
   - ⚠️ Partial: independent scale IDs and all policy combinations.
-- 🟡 Planned: `binStep`/explicit bin boundaries; maxBins exclusivity, domain ownership와 guide effects를 고정한다.
+- `binStep`, `binBoundaries`
+  - ✅ Covered: zero-anchored exact steps, irregular widths, explicit domain ownership, invalid values,
+    exclusivity, concrete rects와 inferred tick/grid rematerialization.
+- Reassignment
+  - ✅ Covered: full x/y field replacement, stale bin-mode removal, existing stack/color/legend preservation,
+    inferred guide refresh, explicit guide-value preservation, atomic failure와 primitive/public parity.
 - Evidence: `test/unit/actions/encodings/encode-histogram.test.js`와 histogram chart tests.
 
 ## `encodeDensity`

@@ -199,11 +199,15 @@ color layout normally invokes this action automatically.
 ### `encodeHistogram`
 
 ```javascript
-encodeHistogram({ field, target?, coordinate?, maxBins?, stack?, xScale?, yScale? })
+encodeHistogram({
+  field, target?, coordinate?, maxBins?, binStep?, binBoundaries?,
+  stack?, xScale?, yScale?
+})
 ```
 
 Compose binned bar `encodeX` and count/zero-stack `encodeY` as one atomic
-histogram action. `maxBins` defaults to `10`; `stack` defaults to `"zero"`.
+histogram action. Choose at most one of `maxBins`, `binStep`, and
+`binBoundaries`. `maxBins` defaults to `10`; `stack` defaults to `"zero"`.
 [Encodings](../api/encodings.md)
 
 ### `encodeDensity`

@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import {
+  createBinBoundariesCarsHistogram,
+  createBinStepCarsHistogram,
+  createFieldReassignmentCarsHistogram
+} from "../../../../examples/cars-histogram/program.js";
+import { assertChartProgramsEquivalent } from "../../../support/chart-equivalence.js";
 import { loadCars } from "../../../support/data.js";
 import { createCarsHistogramValues } from "../reference-values.js";
 import {
@@ -126,4 +132,32 @@ test("keeps future histogram actions out of Gate A primitive traces", () => {
     assert.equal(operations.includes("encodeX"), false);
     assert.equal(operations.includes("encodeY"), false);
   }
+});
+
+test("matches approved histogram primitives with public action flows", () => {
+  const pairs = [
+    [createBinStepPrimitives(cars), createBinStepCarsHistogram(cars)],
+    [createBinBoundariesPrimitives(cars), createBinBoundariesCarsHistogram(cars)],
+    [
+      createFieldReassignmentPrimitives(cars),
+      createFieldReassignmentCarsHistogram(cars)
+    ]
+  ];
+
+  for (const [primitiveProgram, publicProgram] of pairs) {
+    assertChartProgramsEquivalent({ publicProgram, primitiveProgram });
+  }
+  assert.deepEqual(
+    pairs[2][1].trace.children.map(node => node.op),
+    [
+      "createCanvas",
+      "createData",
+      "createBarMark",
+      "encodeHistogram",
+      "encodeColor",
+      "createGuides",
+      "createTitle",
+      "encodeHistogram"
+    ]
+  );
 });

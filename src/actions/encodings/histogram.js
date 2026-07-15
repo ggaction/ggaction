@@ -2,7 +2,8 @@ import { action } from "../../core/action.js";
 import { validateOptions } from "./shared.js";
 
 const HISTOGRAM_OPTIONS = Object.freeze([
-  "field", "target", "coordinate", "maxBins", "stack", "xScale", "yScale"
+  "field", "target", "coordinate", "maxBins", "binStep", "binBoundaries",
+  "stack", "xScale", "yScale"
 ]);
 
 const encodeHistogram = action(
@@ -12,9 +13,22 @@ const encodeHistogram = action(
   },
   function (args = {}) {
     validateOptions(args, HISTOGRAM_OPTIONS, "encodeHistogram");
+    const binOptions = ["maxBins", "binStep", "binBoundaries"].filter(
+      key => Object.hasOwn(args, key)
+    );
+    if (binOptions.length > 1) {
+      throw new Error(
+        "encodeHistogram accepts only one of maxBins, binStep, or binBoundaries."
+      );
+    }
+    const bin = Object.hasOwn(args, "binStep")
+      ? { step: args.binStep }
+      : Object.hasOwn(args, "binBoundaries")
+        ? { boundaries: args.binBoundaries }
+        : { maxBins: args.maxBins ?? 10 };
     const x = {
       field: args.field,
-      bin: { maxBins: args.maxBins ?? 10 }
+      bin
     };
     const y = { stack: args.stack ?? "zero" };
 

@@ -12,18 +12,26 @@ import {
 test("normalizes the current histogram bin policy in one owner", () => {
   assert.deepEqual(normalizeHistogramBin(), { maxBins: 10 });
   assert.deepEqual(normalizeHistogramBin({ maxBins: 4 }), { maxBins: 4 });
+  assert.deepEqual(normalizeHistogramBin({ step: 60 }), { step: 60 });
+  assert.deepEqual(
+    normalizeHistogramBin({ boundaries: [50, 100, 225] }),
+    { boundaries: [50, 100, 225] }
+  );
   assert.deepEqual(
     resolveHistogramBins({ values: [0, 8], bin: { maxBins: 4 }, nice: false }),
     { domain: [0, 8], step: 2, boundaries: [0, 2, 4, 6, 8] }
   );
-  assert.throws(() => normalizeHistogramBin({ step: 2 }), /Unknown bin option/);
+  assert.throws(
+    () => normalizeHistogramBin({ maxBins: 4, step: 2 }),
+    /only one/
+  );
   assert.throws(
     () => resolveHistogramBins({ values: [0, 8], bin: {}, maxBins: 4 }),
     /either bin or maxBins/
   );
 });
 
-test("owns planned exact-bin primitive validation without exposing it to encodeX", () => {
+test("owns exact-bin validation", () => {
   assert.equal(validateHistogramBinStep(60), 60);
   assert.deepEqual(
     validateHistogramBinBoundaries([50, 100, 225]),
@@ -33,6 +41,115 @@ test("owns planned exact-bin primitive validation without exposing it to encodeX
   assert.throws(
     () => validateHistogramBinBoundaries([0, 0]),
     /strictly increasing finite/
+  );
+});
+
+test("resolves zero-anchored exact-step bins", () => {
+  assert.deepEqual(
+    resolveHistogramBins({
+      values: [68, 455],
+      bin: { step: 60 },
+      nice: true,
+      zero: false
+    }),
+    {
+      domain: [60, 480],
+      step: 60,
+      boundaries: [60, 120, 180, 240, 300, 360, 420, 480]
+    }
+  );
+  assert.deepEqual(
+    resolveHistogramBins({
+      values: [-7, -7],
+      bin: { step: 5 },
+      zero: false
+    }),
+    { domain: [-10, -5], step: 5, boundaries: [-10, -5] }
+  );
+  assert.deepEqual(
+    resolveHistogramBins({
+      values: [10, 10],
+      bin: { step: 5 },
+      zero: false
+    }),
+    { domain: [10, 15], step: 5, boundaries: [10, 15] }
+  );
+  assert.deepEqual(
+    resolveHistogramBins({
+      values: [7, 7],
+      bin: { step: 5 },
+      zero: true
+    }),
+    { domain: [0, 10], step: 5, boundaries: [0, 5, 10] }
+  );
+});
+
+test("resolves explicit irregular bins and validates domain ownership", () => {
+  const boundaries = [50, 100, 150, 225, 500];
+  assert.deepEqual(
+    resolveHistogramBins({
+      values: [68, 455],
+      bin: { boundaries }
+    }),
+    { domain: [50, 500], boundaries }
+  );
+  assert.deepEqual(
+    resolveHistogramBins({
+      values: [],
+      bin: { boundaries },
+      domain: [50, 500]
+    }),
+    { domain: [50, 500], boundaries }
+  );
+  assert.throws(
+    () => resolveHistogramBins({
+      values: [49],
+      bin: { boundaries }
+    }),
+    /contain.*data extent/
+  );
+  assert.throws(
+    () => resolveHistogramBins({
+      values: [68],
+      bin: { boundaries },
+      domain: [0, 500]
+    }),
+    /match.*boundary endpoints/
+  );
+});
+
+test("validates exact-step explicit domains", () => {
+  assert.deepEqual(
+    resolveHistogramBins({
+      values: [68, 455],
+      bin: { step: 50 },
+      domain: [50, 500]
+    }),
+    {
+      domain: [50, 500],
+      step: 50,
+      boundaries: [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+    }
+  );
+  assert.throws(
+    () => resolveHistogramBins({
+      values: [68, 455],
+      bin: { step: 60 },
+      domain: [50, 500]
+    }),
+    /align.*bin step/
+  );
+  assert.throws(
+    () => resolveHistogramBins({
+      values: [68, 455],
+      bin: { step: 60 },
+      domain: [60, 420]
+    }),
+    /contain.*data extent/
+  );
+  assert.throws(
+    () => resolveHistogramBins({ values: [], bin: { step: 60 } }),
+    /no values/
   );
 });
 

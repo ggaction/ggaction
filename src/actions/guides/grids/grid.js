@@ -3,6 +3,7 @@ import { isPlainObject } from "../../../core/immutable.js";
 import { validateKeys } from "../../../core/validation.js";
 import {
   gridNames,
+  refreshGridConfig,
   resolveGridConfig,
   resolveGridGeometry,
   resolveGridResources,
@@ -22,12 +23,12 @@ function makeRematerialize(direction) {
       if (!isPlainObject(args) || Object.keys(args).length !== 0) {
         throw new TypeError(`${operation.rematerialize} does not accept options.`);
       }
-      const config = this.guideConfigs.grid?.[direction];
+      const storedConfig = this.guideConfigs.grid?.[direction];
       const semantic = this.semanticSpec.guides.grid?.[direction];
       if (
-        config === undefined ||
-        semantic?.scale !== config.scale ||
-        semantic.coordinate !== config.coordinate ||
+        storedConfig === undefined ||
+        semantic?.scale !== storedConfig.scale ||
+        semantic.coordinate !== storedConfig.coordinate ||
         this.graphicSpec.objects[operation.graphic]?.type !== "line"
       ) {
         throw new Error(
@@ -35,8 +36,9 @@ function makeRematerialize(direction) {
         );
       }
 
+      const config = refreshGridConfig(this, storedConfig);
       const geometry = resolveGridGeometry(this, config);
-      let next = this.editGraphics({
+      let next = this._withGridConfig(direction, config).editGraphics({
         target: operation.graphic,
         property: "length",
         value: geometry.values.length

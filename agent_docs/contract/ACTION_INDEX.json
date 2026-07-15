@@ -458,11 +458,11 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action will replace atomic bin/count encodings",
-      "audit": "Reassignment — Planned",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
-        "tests": "partial"
+        "tests": "complete"
       },
       "contract": {
         "file": "agent_docs/contract/current/ENCODINGS.md",
@@ -1432,18 +1432,6 @@
       }
     },
     {
-      "id": "encodeHistogram-reassignment",
-      "kind": "behavior",
-      "action": "encodeHistogram",
-      "name": "encodeHistogram reassignment",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "positional-reassignment"
-      }
-    },
-    {
       "id": "curve-interpolation-and-concrete-path-commands",
       "kind": "parameter",
       "name": "Curve interpolation and concrete path commands",
@@ -1507,17 +1495,6 @@
       "contract": {
         "file": "agent_docs/contract/planned/ENCODINGS.md",
         "anchor": "continuous-color-bar-consumer"
-      }
-    },
-    {
-      "id": "histogram-bin-controls",
-      "kind": "parameter",
-      "name": "Histogram bin controls",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "histogram-bin-controls"
       }
     },
     {

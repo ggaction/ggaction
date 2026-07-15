@@ -93,17 +93,17 @@ export const rematerializeScale = action(
           `Binned scale "${id}" cannot be shared with an unbinned consumer.`
         );
       }
-      const maxBins = new Set(
-        binnedBars.map(({ consumer }) => consumer.encoding.bin.maxBins)
+      const binDefinitions = new Set(
+        binnedBars.map(({ consumer }) => JSON.stringify(consumer.encoding.bin))
       );
-      if (maxBins.size !== 1) {
+      if (binDefinitions.size !== 1) {
         throw new Error(
-          `Binned scale "${id}" requires one shared maxBins value.`
+          `Binned scale "${id}" requires one shared bin definition.`
         );
       }
       domain = resolveHistogramBins({
         values: allValues,
-        bin: { maxBins: [...maxBins][0] },
+        bin: binnedBars[0].consumer.encoding.bin,
         domain: scale.domain,
         nice: scale.nice ?? true,
         zero: scale.zero ?? false

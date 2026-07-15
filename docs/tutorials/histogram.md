@@ -70,6 +70,12 @@ interdependent. Its trace still exposes the wrapped `encodeX` and `encodeY`
 actions. The source dataset remains unchanged; bin counts and stacked geometry
 are derived and materialized separately.
 
+Use `maxBins` for an inferred nice partition, `binStep` for an exact
+zero-anchored width, or `binBoundaries` for explicitly authored irregular
+intervals. These options are mutually exclusive. Calling `encodeHistogram`
+again replaces the complete bin/count assignment and refreshes inferred axes
+and grids while preserving compatible color grouping and legends.
+
 Legends default to the right for every supported chart. This example passes
 `position: "bottom"` because its horizontal layout is intentional.
 

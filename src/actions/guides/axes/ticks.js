@@ -76,8 +76,23 @@ function makeEdit(channel) {
     if (this.graphicSpec.objects[id]?.type !== "line") throw new Error(`${op} requires existing axis ticks.`);
     const previous = this.guideConfigs.axis?.[channel]?.ticks;
     if (!previous) throw new Error(`${op} requires tick configuration.`);
-    const mode = Object.hasOwn(args, "values") ? "values" : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    const config = { ...previous, ...args, mode };
+    const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
+    const inferredValues = !explicitMode && previous.inferredValues === true
+      ? inferHistogramBoundaries(this, channel, previous.scale) ??
+        (this.resolvedScales[previous.scale]?.type === "ordinal"
+          ? this.resolvedScales[previous.scale].domain
+          : undefined)
+      : undefined;
+    const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
+      ? "values"
+      : Object.hasOwn(args, "count") ? "count" : previous.mode;
+    const config = {
+      ...previous,
+      ...args,
+      ...(inferredValues === undefined ? {} : { values: inferredValues }),
+      ...(explicitMode ? { inferredValues: false } : {}),
+      mode
+    };
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
     const resolved = geometry(this, channel, config);
@@ -108,7 +123,7 @@ function makeCreate(channel) {
           : inferHistogramBoundaries(this, channel, scale);
     const options =
       inferredValues === undefined ? args : { ...args, values: inferredValues };
-    const config = { scale, position: channel === "x" ? "bottom" : "left", length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, mode: Object.hasOwn(options, "values") ? "values" : "count" };
+    const config = { scale, position: channel === "x" ? "bottom" : "left", length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, inferredValues: inferredValues !== undefined, mode: Object.hasOwn(options, "values") ? "values" : "count" };
     if (config.mode === "values") delete config.count; else config.count ??= DEFAULTS.count;
     validateConfig(channel, config); geometry(this, channel, config);
     return this.editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })

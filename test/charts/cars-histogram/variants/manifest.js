@@ -1,5 +1,9 @@
-import { createCarsHistogram } from
-  "../../../../examples/cars-histogram/program.js";
+import {
+  createBinBoundariesCarsHistogram,
+  createBinStepCarsHistogram,
+  createCarsHistogram,
+  createFieldReassignmentCarsHistogram
+} from "../../../../examples/cars-histogram/program.js";
 import { loadCars } from "../../../support/data.js";
 import { defineVisualVariant } from "../../../support/visual-variants.js";
 import { createCarsHistogramPrimitives } from "../primitive.program.js";
@@ -79,7 +83,8 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     subtitle: "by country",
     align: "center"
   });`,
-  primitive: createBinStepPrimitives(cars)
+  primitive: createBinStepPrimitives(cars),
+  userFacing: createBinStepCarsHistogram(cars)
 }), defineVisualVariant({
   ...shared,
   variant: "bin-boundaries",
@@ -104,7 +109,8 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     subtitle: "by country",
     align: "center"
   });`,
-  primitive: createBinBoundariesPrimitives(cars)
+  primitive: createBinBoundariesPrimitives(cars),
+  userFacing: createBinBoundariesCarsHistogram(cars)
 }), defineVisualVariant({
   ...shared,
   variant: "field-reassignment",
@@ -134,5 +140,6 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     maxBins: 8,
     xScale: { nice: true, zero: false }
   });`,
-  primitive: createFieldReassignmentPrimitives(cars)
+  primitive: createFieldReassignmentPrimitives(cars),
+  userFacing: createFieldReassignmentCarsHistogram(cars)
 })]);

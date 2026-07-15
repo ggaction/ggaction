@@ -45,9 +45,18 @@ function encodePosition(program, channel, args, operation) {
   }
 
   if (layer.mark.type === "bar" && channel === "x" && bin !== undefined) {
+    const [mode] = Object.keys(bin);
+    const previousModes = Object.keys(layer.encoding?.x?.bin ?? {});
+    for (const previousMode of previousModes) {
+      if (previousMode === mode) continue;
+      next = next.editSemantic({
+        property: `layer[${target}].encoding.x.bin.${previousMode}`,
+        remove: true
+      });
+    }
     next = next.editSemantic({
-      property: `layer[${target}].encoding.x.bin.maxBins`,
-      value: bin.maxBins
+      property: `layer[${target}].encoding.x.bin.${mode}`,
+      value: bin[mode]
     });
   }
 

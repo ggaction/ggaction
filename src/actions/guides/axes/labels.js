@@ -106,8 +106,22 @@ function makeEdit(channel) {
     if (this.graphicSpec.objects[id]?.type !== "text") throw new Error(`${op} requires existing axis labels.`);
     const previous = this.guideConfigs.axis?.[channel]?.labels;
     if (!previous) throw new Error(`${op} requires label configuration.`);
-    const mode = Object.hasOwn(args, "values") ? "values" : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    const config = { ...previous, ...args, mode };
+    const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
+    const ticks = this.guideConfigs.axis?.[channel]?.ticks;
+    const inferredValues = !explicitMode && previous.inferredValues === true &&
+      ticks?.mode === "values"
+      ? ticks.values
+      : undefined;
+    const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
+      ? "values"
+      : Object.hasOwn(args, "count") ? "count" : previous.mode;
+    const config = {
+      ...previous,
+      ...args,
+      ...(inferredValues === undefined ? {} : { values: inferredValues }),
+      ...(explicitMode ? { inferredValues: false } : {}),
+      mode
+    };
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
     assertTickCompatibility(this.guideConfigs.axis?.[channel]?.ticks, config, op);
@@ -152,6 +166,7 @@ function makeCreate(channel) {
       fontFamily: DEFAULTS.fontFamily,
       fontWeight: DEFAULTS.fontWeight,
       ...args,
+      inferredValues: !hasValues && !hasCount && ticks?.inferredValues === true,
       mode
     };
     if (mode === "values") config.values ??= ticks?.values; else config.count ??= ticks?.count ?? DEFAULTS.count;

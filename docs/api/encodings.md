@@ -79,13 +79,16 @@ by count/zero-stack `encodeY`.
 ```javascript
 program.encodeHistogram({
   field: "Displacement",
-  maxBins: 10
+  binStep: 60
 });
 ```
 
-It accepts optional `target`, `coordinate`, `stack`, `xScale`, and `yScale`
-options. The action directly records `encodeX` and `encodeY` as its children;
-it does not duplicate binning, scale, count, or rect materialization logic.
+Choose one of inferred `maxBins`, exact `binStep`, or explicit irregular
+`binBoundaries`. The action also accepts optional `target`, `coordinate`,
+`stack`, `xScale`, and `yScale` options. It directly records `encodeX` and
+`encodeY` as its children; it does not duplicate binning, scale, count, or
+rect materialization logic. Calling it again on the same bar atomically
+replaces both histogram fields and rematerializes connected guides.
 
 Use the explicit channel actions when x and y need to be authored as separate
 steps. Both forms produce the same semantic and graphical result.

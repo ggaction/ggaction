@@ -63,9 +63,6 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 - `encodeY2` 재호출은 ranged area의 upper field만 교체하며 existing lower y와 같은 scale,
   coordinate를 요구한다. `encodeYRange`는 lower/upper를 함께 요구하고 wrapped `encodeY`와
   `encodeY2`를 한 atomic hierarchy에서 호출한다.
-- `encodeHistogram` 재호출은 binned x와 count y를 함께 교체한다. 새 field와 maxBins에서 bin
-  boundaries, count domain, stack geometry, axes와 grids를 다시 계산하고 기존 color grouping과
-  stack mode를 유지한다.
 - validation 또는 downstream materialization이 실패하면 어느 semantic/graphic branch도
   바뀌지 않는다. 별도 positional edit action은 만들지 않는다.
 - Status: Planned, NOT IMPLEMENTED. 구현은 `editScale` parameter contract가 Accepted된 뒤 진행한다.
@@ -237,37 +234,6 @@ type ContinuousColorScale = {
 - Status: Planned, NOT IMPLEMENTED. Point quantitative/temporal domains, palettes/ranges, all interpolation
   tokens, policies, gradient legend, rematerialization and renderer parity are Current. This contract now
   contains only the continuous bar consumer and its `unknown` fallback.
-
-## histogram bin controls
-
-```typescript
-encodeHistogram({
-  field: FieldName;
-  target?: UserId;
-  maxBins?: PositiveInteger;
-  binStep?: PositiveFinite;
-  binBoundaries?: readonly [Finite, Finite, ...Finite[]];
-  // existing coordinate, stack, xScale and yScale options
-}): ChartProgram;
-```
-
-- `maxBins`, `binStep`, `binBoundaries`는 mutually exclusive다. 셋 다 생략하면 existing default
-  `maxBins: 10`을 사용한다. aggregate는 선택한 mode를 wrapped `encodeX.bin`에 그대로 전달한다.
-- `maxBins`는 현재처럼 data와 scale policy에서 최대 개수에 가까운 nice bins를 추론한다.
-  `binStep`은 exact positive width이며 auto domain에서는 zero를 anchor로 data minimum을 내림하고
-  maximum을 올림한 step 배수를 first/last boundary로 사용한다.
-- explicit x domain과 `binStep`을 함께 쓰면 domain endpoints가 zero-anchored step grid에 놓이고
-  span이 step의 정수배여야 한다. explicit domain이 data extent를 포함하지 않으면 오류이며
-  `nice`는 explicit step/domain을 바꾸지 않는다.
-- `binBoundaries`는 최소 두 개의 strictly increasing distinct finite values다. irregular intervals를
-  허용하고 first/last boundary가 전체 finite data extent를 포함해야 한다. boundaries가 x domain을
-  소유하며 별도 explicit x domain은 같은 endpoints일 때만 허용한다.
-- 모든 mode에서 interval은 `[lower, upper)`이고 마지막 interval만 upper endpoint를 포함한다.
-  빈 interval은 semantic bin에는 남지만 default materialization은 zero rect를 합성하지 않는다.
-- resolved mode와 concrete boundaries를 semantic state에 저장한다. x/y scale, bars, histogram axis
-  ticks, vertical grid와 color stack consumers를 deterministic plan으로 rematerialize한다.
-- Status: Planned, NOT IMPLEMENTED. exclusivity/defaults, negative/constant data, exact and irregular
-  boundaries, explicit domain conflicts, empty bins와 guide/rematerialization coverage가 필요하다.
 
 ## Position field-type compatibility
 

@@ -641,6 +641,12 @@ interdependent. Its trace still exposes the wrapped `encodeX` and `encodeY`
 actions. The source dataset remains unchanged; bin counts and stacked geometry
 are derived and materialized separately.
 
+Use `maxBins` for an inferred nice partition, `binStep` for an exact
+zero-anchored width, or `binBoundaries` for explicitly authored irregular
+intervals. These options are mutually exclusive. Calling `encodeHistogram`
+again replaces the complete bin/count assignment and refreshes inferred axes
+and grids while preserving compatible color grouping and legends.
+
 Legends default to the right for every supported chart. This example passes
 `position: "bottom"` because its horizontal layout is intentional.
 
@@ -1830,13 +1836,16 @@ by count/zero-stack `encodeY`.
 ```javascript
 program.encodeHistogram({
   field: "Displacement",
-  maxBins: 10
+  binStep: 60
 });
 ```
 
-It accepts optional `target`, `coordinate`, `stack`, `xScale`, and `yScale`
-options. The action directly records `encodeX` and `encodeY` as its children;
-it does not duplicate binning, scale, count, or rect materialization logic.
+Choose one of inferred `maxBins`, exact `binStep`, or explicit irregular
+`binBoundaries`. The action also accepts optional `target`, `coordinate`,
+`stack`, `xScale`, and `yScale` options. It directly records `encodeX` and
+`encodeY` as its children; it does not duplicate binning, scale, count, or
+rect materialization logic. Calling it again on the same bar atomically
+replaces both histogram fields and rematerializes connected guides.
 
 Use the explicit channel actions when x and y need to be authored as separate
 steps. Both forms produce the same semantic and graphical result.
@@ -2558,6 +2567,8 @@ or validation.
 | `fieldType` | `"quantitative"` | `"quantitative"` |
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
 | `bin.maxBins` | positive integer | `10` |
+| `bin.step` | positive finite number | mutually exclusive |
+| `bin.boundaries` | at least two increasing finite numbers | mutually exclusive |
 | `scale.id` | scale ID | `"x"` |
 | `scale.type` | `"linear"` | `"linear"` |
 | `scale.domain` | `"auto"` or two ascending finite numbers | `"auto"` |
@@ -2566,6 +2577,10 @@ or validation.
 | `scale.zero` | boolean | `false` |
 
 Automatic nice bins use `1, 2, 3, 5 × 10ⁿ` steps and never exceed `maxBins`.
+Exact-step bins use zero as their grid anchor and expand an automatic domain
+to step multiples. Explicit boundaries support irregular interval widths and
+own the x-domain endpoints. All intervals are half-open except the final
+interval, which includes its upper endpoint.
 The rect collection remains empty until y is encoded.
 
 ## Count/stack bar `encodeY(options?)`
@@ -2589,8 +2604,12 @@ into zero-stacked category segments.
 
 ## Errors and limitations
 
-Explicit fields must match the binned x field. Values outside an explicit x
-domain are not counted. Grouped histograms are unsupported.
+Explicit fields must match the binned x field. `maxBins`, `binStep`, and
+`binBoundaries` are mutually exclusive. Step-aligned explicit domains must
+contain the data and use zero-anchored step multiples. Explicit boundaries
+must contain the complete data extent; a separate domain must match their
+first and last values. Empty intervals remain meaningful but do not create
+zero-height rectangles. Grouped histograms are unsupported.
 
 ## Related
 
@@ -4078,11 +4097,15 @@ color layout normally invokes this action automatically.
 ### `encodeHistogram`
 
 ```javascript
-encodeHistogram({ field, target?, coordinate?, maxBins?, stack?, xScale?, yScale? })
+encodeHistogram({
+  field, target?, coordinate?, maxBins?, binStep?, binBoundaries?,
+  stack?, xScale?, yScale?
+})
 ```
 
 Compose binned bar `encodeX` and count/zero-stack `encodeY` as one atomic
-histogram action. `maxBins` defaults to `10`; `stack` defaults to `"zero"`.
+histogram action. Choose at most one of `maxBins`, `binStep`, and
+`binBoundaries`. `maxBins` defaults to `10`; `stack` defaults to `"zero"`.
 [Encodings](../api/encodings.md)
 
 ### `encodeDensity`

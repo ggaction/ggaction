@@ -121,6 +121,8 @@ export function resolveGridResources(program, direction, args) {
 }
 
 export function resolveGridConfig(program, direction, args, resources) {
+  const hasExplicitValues = Object.hasOwn(args, "values") ||
+    Object.hasOwn(args, "count");
   const explicit = Object.hasOwn(args, "values")
     ? { mode: "values", values: args.values }
     : Object.hasOwn(args, "count")
@@ -131,10 +133,23 @@ export function resolveGridConfig(program, direction, args, resources) {
     scale: resources.scale,
     coordinate: resources.coordinate,
     ...explicit,
+    inferredValues: !hasExplicitValues,
     color: args.color ?? DEFAULT_STYLE.color,
     lineWidth: args.lineWidth ?? DEFAULT_STYLE.lineWidth,
     strokeDash: args.strokeDash ?? DEFAULT_STYLE.strokeDash
   };
+}
+
+export function refreshGridConfig(program, config) {
+  if (config.inferredValues !== true) return config;
+  const channel = config.direction === "horizontal" ? "y" : "x";
+  const refreshed = {
+    ...config,
+    ...inferGridTickConfig(program, channel, config.scale)
+  };
+  if (refreshed.mode === "values") delete refreshed.count;
+  else delete refreshed.values;
+  return refreshed;
 }
 
 export function resolveGridGeometry(program, config) {

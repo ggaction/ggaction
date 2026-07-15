@@ -168,9 +168,33 @@ export interface PositionEncodingOptions {
   scale?: ScaleOptions;
   coordinate?: string;
   aggregate?: AggregateOperation;
-  bin?: { maxBins?: number };
+  bin?:
+    | { maxBins?: number; step?: never; boundaries?: never }
+    | { maxBins?: never; step: number; boundaries?: never }
+    | {
+        maxBins?: never;
+        step?: never;
+        boundaries: readonly [number, number, ...number[]];
+      };
   stack?: "zero" | null;
 }
+
+export type HistogramEncodingOptions = {
+  field: string;
+  target?: string;
+  coordinate?: string;
+  stack?: "zero";
+  xScale?: ScaleOptions;
+  yScale?: ScaleOptions;
+} & (
+  | { maxBins?: number; binStep?: never; binBoundaries?: never }
+  | { maxBins?: never; binStep: number; binBoundaries?: never }
+  | {
+      maxBins?: never;
+      binStep?: never;
+      binBoundaries: readonly [number, number, ...number[]];
+    }
+);
 
 export interface CategoricalEncodingOptions {
   field: string;
@@ -366,7 +390,7 @@ export class ChartProgram {
   encodeY2(options: ActionOptions): ChartProgram;
   encodeYRange(options: ActionOptions): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
-  encodeHistogram(options: ActionOptions): ChartProgram;
+  encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: ActionOptions): ChartProgram;
   encodeBarWidth(options: { band?: number; target?: string }): ChartProgram;
 

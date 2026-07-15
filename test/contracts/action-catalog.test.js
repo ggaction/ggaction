@@ -397,8 +397,8 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /paddingOuter\?: NonNegativeFinite/);
   assert.match(plannedCorpus, /encodeX2\(\{/);
   assert.match(plannedCorpus, /encodeXRange\(\{/);
-  assert.match(plannedCorpus, /binBoundaries\?: readonly \[Finite, Finite, \.\.\.Finite\[\]\]/);
-  assert.match(plannedCorpus, /zero를 anchor로/);
+  assert.match(currentCorpus, /binBoundaries\?: readonly \[Finite, Finite, \.\.\.Finite\[\]\]/);
+  assert.match(currentCorpus, /zero-anchored exact steps/);
   assert.match(plannedCorpus, /type PlannedScaleType =/);
   assert.match(plannedCorpus, /"log"[\s\S]*"pow"[\s\S]*"sqrt"[\s\S]*"symlog"/);
   assert.match(plannedCorpus, /"utc"[\s\S]*"band"[\s\S]*"point"/);

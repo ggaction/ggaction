@@ -136,7 +136,7 @@ test("validates bar bin and x scale options before changing the program", () => 
         field: "Displacement",
         bin: { maxBins: 10, step: 5 }
       }),
-    /Unknown bin option/
+    /only one/
   );
   assert.throws(
     () =>
@@ -204,6 +204,48 @@ test("rejects ambiguous binned scale sharing", () => {
         field: "Displacement",
         bin: { maxBins: 5 }
       }),
-    /one shared maxBins value/
+    /one shared bin definition/
   );
+});
+
+test("stores exact-step and explicit-boundary bin assignments", () => {
+  const stepped = barProgram().encodeX({
+    field: "Displacement",
+    bin: { step: 60 }
+  });
+  const bounded = barProgram().encodeX({
+    field: "Displacement",
+    bin: { boundaries: [50, 100, 225, 500] }
+  });
+
+  assert.deepEqual(stepped.semanticSpec.layers[0].encoding.x.bin, { step: 60 });
+  assert.deepEqual(stepped.resolvedScales.x.domain, [60, 480]);
+  assert.deepEqual(bounded.semanticSpec.layers[0].encoding.x.bin, {
+    boundaries: [50, 100, 225, 500]
+  });
+  assert.deepEqual(bounded.resolvedScales.x.domain, [50, 500]);
+});
+
+test("replaces the complete bin mode without retaining stale properties", () => {
+  const maximum = barProgram().encodeX({
+    field: "Displacement",
+    bin: { maxBins: 10 }
+  });
+  const stepped = maximum.encodeX({
+    field: "Displacement",
+    bin: { step: 60 }
+  });
+  const bounded = stepped.encodeX({
+    field: "Displacement",
+    bin: { boundaries: [50, 100, 225, 500] }
+  });
+
+  assert.deepEqual(maximum.semanticSpec.layers[0].encoding.x.bin, { maxBins: 10 });
+  assert.deepEqual(stepped.semanticSpec.layers[0].encoding.x.bin, { step: 60 });
+  assert.deepEqual(bounded.semanticSpec.layers[0].encoding.x.bin, {
+    boundaries: [50, 100, 225, 500]
+  });
+  assert.deepEqual(maximum.resolvedScales.x.domain, [50, 500]);
+  assert.deepEqual(stepped.resolvedScales.x.domain, [60, 480]);
+  assert.deepEqual(bounded.resolvedScales.x.domain, [50, 500]);
 });
