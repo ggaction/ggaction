@@ -5,8 +5,9 @@ import {
   DEFAULT_BAR_STROKE,
   DEFAULT_BAR_STROKE_WIDTH
 } from "./resolve.js";
+import { resolveBarWidth } from "../../grammar/bars/geometry.js";
 
-export function deriveGroupedRectangles(required, resolved, band) {
+export function deriveGroupedRectangles(required, resolved, widthConfig) {
   const { dataset, layer } = required;
   const xScale = resolved.resolvedScales[required.xEncoding.scale];
   const yScale = resolved.resolvedScales[required.yEncoding.scale];
@@ -43,7 +44,8 @@ export function deriveGroupedRectangles(required, resolved, band) {
   );
   const offsetMidpoint = (offsetScale.range[0] + offsetScale.range[1]) / 2;
   const direction = Math.sign(xScale.step) || 1;
-  const width = offsetScale.bandwidth * band;
+  const offsetDirection = Math.sign(offsetScale.step) || 1;
+  const width = resolveBarWidth(widthConfig, offsetScale.bandwidth);
   const baseline = mapLinearValues(
     [yScale.domain[0]],
     yScale.domain,
@@ -65,13 +67,16 @@ export function deriveGroupedRectangles(required, resolved, band) {
     }
 
     const categoryStart = xScale.range[0] + category * xScale.step;
-    const offsetStart = offsetScale.range[0] + offset * offsetScale.step;
+    const offsetCenter = offsetScale.start + offset * offsetScale.step +
+      offsetDirection * offsetScale.bandwidth / 2;
     const center = xScale.step > 0 && offsetScale.step > 0
-      ? categoryStart + offsetStart + offsetScale.bandwidth / 2
+      ? categoryStart + offsetCenter
       : categoryStart + xScale.step / 2 +
-        direction * (
-          offsetStart + offsetScale.step / 2 - offsetMidpoint
-        );
+        direction * (offsetCenter - offsetMidpoint);
+    const x = xScale.step > 0 && offsetScale.step > 0
+      ? categoryStart + offsetScale.start + offset * offsetScale.step +
+        (offsetScale.bandwidth - width) / 2
+      : center - width / 2;
     const valueY = mapLinearValues(
       [cell.y],
       yScale.domain,
@@ -80,7 +85,7 @@ export function deriveGroupedRectangles(required, resolved, band) {
     )[0];
 
     return {
-      x: center - width / 2,
+      x,
       y: Math.min(valueY, baseline),
       width,
       height: Math.abs(baseline - valueY),

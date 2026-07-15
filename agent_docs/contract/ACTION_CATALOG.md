@@ -28,7 +28,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`encodeShape`](current/ENCODINGS.md#encodeshape) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeOpacity`](current/ENCODINGS.md#encodeopacity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeRadius`](current/ENCODINGS.md#encoderadius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
-| user-facing | [`encodeXOffset`](current/ENCODINGS.md#encodexoffset) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ✅ |
+| user-facing | [`encodeXOffset`](current/ENCODINGS.md#encodexoffset) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeY2`](current/ENCODINGS.md#encodey2) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ✅ |
 | user-facing | [`encodeYRange`](current/ENCODINGS.md#encodeyrange) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeGroup`](current/ENCODINGS.md#encodegroup) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -104,13 +104,10 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | --- | --- | --- | --- |
 | composition | Regression band delegation through error band | accepted | [Open](planned/COMPOSITE_MARKS.md#regression-band-delegation) |
 | composition | Composite mark ownership and storage | accepted | [Open](planned/COMPOSITE_MARKS.md#composite-ownership-and-storage) |
-| behavior | encodeXOffset reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | behavior | encodeY2 reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | behavior | encodeYRange reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | parameter | Curve interpolation and concrete path commands | accepted | [Open](planned/MARKS_AND_PATHS.md#curve-interpolation-and-concrete-path-commands) |
 | parameter | Area outline | accepted | [Open](planned/ENCODINGS.md#area-outline) |
-| parameter | Bar width modes | accepted | [Open](planned/ENCODINGS.md#bar-width-modes) |
-| parameter | Offset padding controls | accepted | [Open](planned/ENCODINGS.md#offset-padding-controls) |
 | parameter | Continuous color bar consumer | accepted | [Open](planned/ENCODINGS.md#continuous-color-bar-consumer) |
 | parameter | Scale type vocabulary | accepted | [Open](planned/SCALES.md#scale-type-vocabulary) |
 | parameter | Scale mapping policies | accepted | [Open](planned/SCALES.md#scale-mapping-policies) |

@@ -1,6 +1,9 @@
 import {
   createJobsDivergingBar,
+  createJobsFixedPixelBar,
+  createJobsGroupReassignmentBar,
   createJobsGroupedBar,
+  createJobsOffsetPaddingBar,
   createJobsOverlayBar
 } from
   "../../../../examples/jobs-grouped-bar/program.js";
@@ -146,7 +149,8 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   })
   .encodeBarWidth({ pixels: 14 })
   .createGuides();`,
-  primitive: createFixedPixelWidthPrimitives(jobs)
+  primitive: createFixedPixelWidthPrimitives(jobs),
+  userFacing: createJobsFixedPixelBar(jobs)
 }), defineVisualVariant({
   ...shared,
   variant: "offset-padding",
@@ -177,7 +181,8 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   })
   .encodeBarWidth({ band: 0.72 })
   .createGuides();`,
-  primitive: createOffsetPaddingPrimitives(jobs)
+  primitive: createOffsetPaddingPrimitives(jobs),
+  userFacing: createJobsOffsetPaddingBar(jobs)
 }), defineVisualVariant({
   ...shared,
   colors: ["#4c78a8", "#f58518", "#e45756"],
@@ -205,5 +210,6 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   .encodeBarWidth({ band: 0.72 })
   .createGuides({ legend: { title: "Occupation" } })
   .encodeColor({ field: "job", layout: "group" });`,
-  primitive: createGroupReassignmentPrimitives(reassignmentJobs)
+  primitive: createGroupReassignmentPrimitives(reassignmentJobs),
+  userFacing: createJobsGroupReassignmentBar(reassignmentJobs)
 })]);

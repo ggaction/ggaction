@@ -127,7 +127,7 @@ series identity and concrete colors or dash patterns. On line marks they can
 split one aggregate path into multiple series. On complete histograms,
 `encodeColor` arranges each color partition with `stack`, `fill`, `group`,
 `overlay`, or `diverging`. On bars, group invokes `encodeXOffset`; aggregate
-bars remain empty until `encodeBarWidth({ band? })` authors their width.
+bars remain empty until `encodeBarWidth({ band? | pixels? })` authors their width.
 Area marks accept every layout except group and require color to match the
 existing semantic group field.
 On area marks, color fills an already grouped path collection and must use the

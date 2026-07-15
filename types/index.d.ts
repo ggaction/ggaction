@@ -2,6 +2,7 @@ import type { ChartProgram } from "./program.js";
 
 export type {
   ActionOptions,
+  BarWidthOptions,
   CanvasOptions,
   CategoricalEncodingOptions,
   ColorLayout,
@@ -25,6 +26,7 @@ export type {
   ContinuousColorScaleOptions,
   OpacityEncodingOptions,
   OpacityScaleOptions,
+  OffsetScaleOptions,
   PointShape,
   Palette,
   PaletteName,
@@ -36,7 +38,8 @@ export type {
   StackMode,
   SemanticSpec,
   StrokeDashEncodingOptions,
-  TraceNode
+  TraceNode,
+  XOffsetEncodingOptions
 } from "./program.js";
 
 export function chart(): ChartProgram;

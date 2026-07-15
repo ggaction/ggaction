@@ -190,11 +190,14 @@ Split line or area paths by a nominal field without creating a scale or guide.
 ### `encodeXOffset`
 
 ```javascript
-encodeXOffset({ field, target?, fieldType?, scale? })
+encodeXOffset({
+  field, target?, fieldType?, scale?, paddingInner?, paddingOuter?
+})
 ```
 
-Create an advanced nominal offset scale within an ordinal bar x band. Grouped
-color layout normally invokes this action automatically.
+Create or compatibly update an advanced nominal offset scale within an ordinal
+bar x band. Padding defaults to zero and is preserved when omitted on a later
+same-field call. Grouped color layout normally invokes this action automatically.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeHistogram`
@@ -236,7 +239,8 @@ Create or compatibly replace point fill, line-series color, grouped area fill,
 or bar color. Nominal bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area accepts all except `group`. Quantitative and temporal
 point fields use a sequential scale with concrete interpolated colors. Nominal
-grouped bars record `encodeXOffset` as a child.
+grouped bars record `encodeXOffset` as a child. Reassigning grouped color also
+atomically reassigns xOffset and rematerializes an existing legend.
 [Series encodings](../api/series-encodings.md)
 
 ### `encodeStrokeDash`
@@ -294,11 +298,12 @@ replace each other through the same action.
 ### `encodeBarWidth`
 
 ```javascript
-encodeBarWidth({ band?, target? })
+encodeBarWidth({ band?, pixels?, target? })
 ```
 
-Set aggregate-bar band or group-slot occupancy and materialize concrete rectangles. `band`
-defaults to `0.72` and must be greater than `0` and at most `1`.
+Set aggregate-bar band occupancy or a fixed logical-pixel width and materialize
+concrete rectangles. The modes are mutually exclusive. The first omitted mode
+defaults to `band: 0.72`; later omission retains the current mode.
 [Constant appearance](../api/appearance.md)
 
 ### `createRegression`

@@ -70,6 +70,32 @@ invokes the advanced xOffset encoding for the same field. `encodeBarWidth`
 then has enough stored information to materialize one concrete rectangle for
 each observed year/sex cell. Missing cells are omitted.
 
+## Width, spacing, and reassignment
+
+Use exactly one width mode. Band width follows a resized Canvas; logical pixels
+stay fixed and are independent of PNG output density.
+
+```javascript
+program.encodeBarWidth({ pixels: 14 });
+```
+
+Advanced offset padding changes slot bandwidth while retaining each year band:
+
+```javascript
+program.encodeXOffset({
+  field: "sex",
+  paddingInner: 0.2,
+  paddingOuter: 0.1
+});
+```
+
+To replace the grouped field, call color once. It replaces color and xOffset
+together and refreshes an existing legend:
+
+```javascript
+program.encodeColor({ field: "job", layout: "group" });
+```
+
 ## Key action trace
 
 Grouped color owns the matching offset encoding. Width is the final graphical

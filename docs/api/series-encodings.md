@@ -74,6 +74,11 @@ groupedBars.encodeColor({
 });
 ```
 
+Calling grouped color again with a new nominal field atomically updates color
+and xOffset to one matching first-appearance domain. Existing legends are
+rematerialized; inferred titles follow the field while explicit titles and
+styles remain unchanged.
+
 On a complete histogram, `encodeColor` rematerializes each non-empty bin as
 zero-stacked category rects. Stack and fill order follow the resolved color
 domain. The y scale continues to use each bin's total count, and an explicit

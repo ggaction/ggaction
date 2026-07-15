@@ -328,9 +328,9 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /Renderers execute commands only/);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /curve.*Proposed|Proposed.*curve/i);
   assert.match(plannedCorpus, /stroke\?: NonEmptyString \| false/);
-  assert.match(plannedCorpus, /band\?: UnitIntervalExclusiveZero/);
-  assert.match(plannedCorpus, /pixels\?: PositiveFinite/);
-  assert.match(plannedCorpus, /paddingInner\?: UnitIntervalLessThan1/);
+  assert.match(currentCorpus, /band\?: number; pixels\?: never/);
+  assert.match(currentCorpus, /pixels: PositiveFinite/);
+  assert.match(currentCorpus, /paddingInner\?: UnitIntervalLessThan1/);
   assert.match(currentCorpus, /type ScalarAggregateOperation =/);
   assert.match(currentCorpus, /type ParameterizedAggregateOperation =/);
   assert.match(currentCorpus, /op: "quantile"; probability: UnitInterval/);
@@ -394,7 +394,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.doesNotMatch(currentCorpus, /unit\?: "radius" \| "area"/);
   assert.match(plannedCorpus, /type PlannedPositionFieldType =/);
   assert.match(plannedCorpus, /type PlannedStackMode = "normalize"/);
-  assert.match(plannedCorpus, /paddingOuter\?: NonNegativeFinite/);
+  assert.match(currentCorpus, /paddingOuter\?: NonNegativeFinite/);
   assert.match(plannedCorpus, /encodeX2\(\{/);
   assert.match(plannedCorpus, /encodeXRange\(\{/);
   assert.match(currentCorpus, /binBoundaries\?: readonly \[Finite, Finite, \.\.\.Finite\[\]\]/);

@@ -754,6 +754,32 @@ invokes the advanced xOffset encoding for the same field. `encodeBarWidth`
 then has enough stored information to materialize one concrete rectangle for
 each observed year/sex cell. Missing cells are omitted.
 
+## Width, spacing, and reassignment
+
+Use exactly one width mode. Band width follows a resized Canvas; logical pixels
+stay fixed and are independent of PNG output density.
+
+```javascript
+program.encodeBarWidth({ pixels: 14 });
+```
+
+Advanced offset padding changes slot bandwidth while retaining each year band:
+
+```javascript
+program.encodeXOffset({
+  field: "sex",
+  paddingInner: 0.2,
+  paddingOuter: 0.1
+});
+```
+
+To replace the grouped field, call color once. It replaces color and xOffset
+together and refreshes an existing legend:
+
+```javascript
+program.encodeColor({ field: "job", layout: "group" });
+```
+
 ## Key action trace
 
 Grouped color owns the matching offset encoding. Width is the final graphical
@@ -1194,6 +1220,10 @@ const program = chart()
 
 Missing x/group combinations are omitted. Change `layout` to `stack`, `fill`,
 `overlay`, or `diverging` to use the other supported series arrangements.
+Use `encodeBarWidth({ pixels: 14 })` for a resize-stable logical width, or
+`encodeXOffset({ field: "group", paddingInner: 0.2, paddingOuter: 0.1 })`
+after grouped color to change within-band spacing. Reassign the group field
+with one `encodeColor({ field: "nextGroup", layout: "group" })` call.
 The current API does not synthesize zero bars or support horizontal bars.
 
 ## Continue
@@ -1896,7 +1926,7 @@ series identity and concrete colors or dash patterns. On line marks they can
 split one aggregate path into multiple series. On complete histograms,
 `encodeColor` arranges each color partition with `stack`, `fill`, `group`,
 `overlay`, or `diverging`. On bars, group invokes `encodeXOffset`; aggregate
-bars remain empty until `encodeBarWidth({ band? })` authors their width.
+bars remain empty until `encodeBarWidth({ band? | pixels? })` authors their width.
 Area marks accept every layout except group and require color to match the
 existing semantic group field.
 On area marks, color fills an already grouped path collection and must use the
@@ -2661,16 +2691,26 @@ That action calls `encodeXOffset` as a wrapped child with the same field.
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or unique nominal values | `"auto"` |
 | `scale.range` | `"auto"` or two finite numbers | `"auto"` |
+| `paddingInner` | finite number from `0` inclusive to `1` exclusive | `0` |
+| `paddingOuter` | non-negative finite number | `0` |
 
 The automatic range is `[0, x.bandwidth]`, not the full plot range. Its step
 divides one ordinal x band into equal nominal slots. Explicit domain order and
-reversed ranges are supported. This action resolves slot geometry but does not
-create rectangles by itself.
+reversed ranges are supported. Inner padding reduces each slot bandwidth;
+outer padding reserves step fractions before the first and after the last slot.
+Calling the action again for the same field preserves omitted padding values.
+This action resolves slot geometry but does not create rectangles by itself.
+
+When grouped color already exists, direct xOffset calls must use the same field.
+Change both fields atomically with `encodeColor({ field: next, layout: "group" })`.
+That action rematerializes the matching xOffset slots, bars, and any existing
+legend while preserving explicit legend titles and styles.
 
 ## Errors and limitations
 
 xOffset requires one resolved ordinal x bandwidth. Color and xOffset domains
-must have identical order before grouped rectangles can be materialized.
+must have identical order before grouped rectangles can be materialized. Every
+consumer of one shared xOffset scale must use the same padding policy.
 
 ## Related
 
@@ -2749,6 +2789,11 @@ groupedBars.encodeColor({
   scale: { palette: "tableau10" }
 });
 ```
+
+Calling grouped color again with a new nominal field atomically updates color
+and xOffset to one matching first-appearance domain. Existing legends are
+rematerialized; inferred titles follow the field while explicit titles and
+styles remain unchanged.
 
 On a complete histogram, `encodeColor` rematerializes each non-empty bin as
 zero-stacked category rects. Stack and fill order follow the resolved color
@@ -2878,7 +2923,7 @@ Combined line legends also require matching ordered domains.
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
 | `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current point; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
-| `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; band `0.72` | Concrete rectangles |
+| `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
 
 ## `encodeRadius({ value, target? })`
 
@@ -2934,7 +2979,7 @@ providing a new ID retains the previous named scale. Existing legends are
 recomputed, inferred legend titles follow the new field, and explicit legend
 titles and styles remain unchanged.
 
-## `encodeBarWidth({ band?, target? })`
+## `encodeBarWidth({ band?, pixels?, target? })`
 
 Set the fraction of each resolved x band—or xOffset slot for group layout—used
 by an aggregate bar and materialize concrete rectangles.
@@ -2945,8 +2990,14 @@ program.encodeBarWidth({ band: 0.72 });
 
 | Option | Type | Default |
 | --- | --- | --- |
-| `band` | finite number greater than `0` and at most `1` | `0.72` |
+| `band` | finite number greater than `0` and at most `1` | first assignment: `0.72` |
+| `pixels` | positive finite logical Canvas pixels | none |
 | `target` | aggregate bar mark ID | current mark |
+
+`band` and `pixels` are mutually exclusive. A later empty call retains the
+current mode and value. Band widths respond to Canvas resizing; pixel widths
+remain fixed in logical coordinates and do not change with PNG `pixelRatio`.
+An explicit pixel width may be wider than its slot, allowing intentional overlap.
 
 The action requires ordinal x, aggregate y, and nominal color. Group layout also
 requires matching xOffset semantics. Width is the outer x bandwidth times `band`
@@ -2960,7 +3011,7 @@ Canvas geometry changes explicitly rematerialize the scales and rectangles.
 
 ## Errors and limitations
 
-Radius, constant opacity, and bar band are graphical constants. Field opacity
+Radius, constant opacity, and both bar width modes are graphical constants. Field opacity
 is a semantic encoding.
 Size cannot be combined with a constant radius. A constant `editPointMark`
 shape cannot be combined with field-driven `encodeShape`. Bar width
@@ -3897,7 +3948,7 @@ chart-authoring API does not support that combination.
 | Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y |
 | Nominal color | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area |
 | Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — |
-| Constant appearance | radius | stroke width, 8 curves | — | band width | opacity, band fill, line width | opacity |
+| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill, line width | opacity |
 | Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density |
 | Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional |
 | Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom |
@@ -3913,7 +3964,7 @@ chart-authoring API does not support that combination.
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, grouped linear regression, and grouped Gaussian KDE derivations |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
-| Scales | Linear, UTC time, ordinal position, color, named/direct stroke dash, and band-local xOffset |
+| Scales | Linear, UTC time, ordinal position, color, named/direct stroke dash, and padded band-local xOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic axes, horizontal/vertical Cartesian grids, and categorical legends |
 | Titles | One plot-aligned top title with one optional single-line subtitle |
@@ -4117,11 +4168,14 @@ Split line or area paths by a nominal field without creating a scale or guide.
 ### `encodeXOffset`
 
 ```javascript
-encodeXOffset({ field, target?, fieldType?, scale? })
+encodeXOffset({
+  field, target?, fieldType?, scale?, paddingInner?, paddingOuter?
+})
 ```
 
-Create an advanced nominal offset scale within an ordinal bar x band. Grouped
-color layout normally invokes this action automatically.
+Create or compatibly update an advanced nominal offset scale within an ordinal
+bar x band. Padding defaults to zero and is preserved when omitted on a later
+same-field call. Grouped color layout normally invokes this action automatically.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeHistogram`
@@ -4163,7 +4217,8 @@ Create or compatibly replace point fill, line-series color, grouped area fill,
 or bar color. Nominal bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area accepts all except `group`. Quantitative and temporal
 point fields use a sequential scale with concrete interpolated colors. Nominal
-grouped bars record `encodeXOffset` as a child.
+grouped bars record `encodeXOffset` as a child. Reassigning grouped color also
+atomically reassigns xOffset and rematerializes an existing legend.
 [Series encodings](../api/series-encodings.md)
 
 ### `encodeStrokeDash`
@@ -4221,11 +4276,12 @@ replace each other through the same action.
 ### `encodeBarWidth`
 
 ```javascript
-encodeBarWidth({ band?, target? })
+encodeBarWidth({ band?, pixels?, target? })
 ```
 
-Set aggregate-bar band or group-slot occupancy and materialize concrete rectangles. `band`
-defaults to `0.72` and must be greater than `0` and at most `1`.
+Set aggregate-bar band occupancy or a fixed logical-pixel width and materialize
+concrete rectangles. The modes are mutually exclusive. The first omitted mode
+defaults to `band: 0.72`; later omission retains the current mode.
 [Constant appearance](../api/appearance.md)
 
 ### `createRegression`

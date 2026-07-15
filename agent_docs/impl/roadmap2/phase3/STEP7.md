@@ -7,18 +7,18 @@ reassignment를 구현한다.
 
 ## 진행 상태
 
-- [ ] Mutually exclusive `band | pixels` normalization
-- [ ] Default/omitted/reassignment width policy
-- [ ] `paddingInner`와 `paddingOuter` validation/defaults
-- [ ] Explicit/reversed offset range geometry
-- [ ] Canvas resize와 pixel/band width behavior
-- [ ] Same-field direct xOffset scale/padding reassignment
-- [ ] `encodeColor(layout: "group")` atomic color+xOffset field reassignment
-- [ ] Matching domain/order와 existing legend rematerialization
-- [ ] Zero-bandwidth, ambiguity, mismatch와 invalid-option failure matrix
-- [ ] Earlier-program immutability와 action-order convergence
-- [ ] Three approved primitive/public pairs와 PNG
-- [ ] Types/docs/current contract/catalog, commits와 push
+- [x] Mutually exclusive `band | pixels` normalization
+- [x] Default/omitted/reassignment width policy
+- [x] `paddingInner`와 `paddingOuter` validation/defaults
+- [x] Explicit/reversed offset range geometry
+- [x] Canvas resize와 pixel/band width behavior
+- [x] Same-field direct xOffset scale/padding reassignment
+- [x] `encodeColor(layout: "group")` atomic color+xOffset field reassignment
+- [x] Matching domain/order와 existing legend rematerialization
+- [x] Zero-bandwidth, ambiguity, mismatch와 invalid-option failure matrix
+- [x] Earlier-program immutability와 action-order convergence
+- [x] Three approved primitive/public pairs와 PNG
+- [x] Types/docs/current contract/catalog, commits와 push
 
 ## 구현 원칙
 
@@ -30,3 +30,11 @@ reassignment를 구현한다.
 ## 완료 조건
 
 세 approved pair와 width/padding/reassignment boundary 및 rematerialization matrix가 통과한다.
+
+## 구현 결과
+
+- `encodeBarWidth`는 slot 비율인 `band`와 논리 Canvas 픽셀인 `pixels`를 배타적으로 지원한다.
+- `encodeXOffset`는 inner/outer padding과 direct same-field scale 수정을 지원한다.
+- grouped color field 변경은 matching xOffset을 같은 action trace 안에서 먼저 변경한 뒤 bar와 legend를 재구체화한다.
+- padding policy가 충돌하는 shared offset scale, zero bandwidth, ambiguous target과 invalid option은 변경 없이 실패한다.
+- 승인된 세 primitive/public pair는 semantic, graphic, render order와 Canvas 호출까지 동일하다.

@@ -38,6 +38,10 @@ const program = chart()
 
 Missing x/group combinations are omitted. Change `layout` to `stack`, `fill`,
 `overlay`, or `diverging` to use the other supported series arrangements.
+Use `encodeBarWidth({ pixels: 14 })` for a resize-stable logical width, or
+`encodeXOffset({ field: "group", paddingInner: 0.2, paddingOuter: 0.1 })`
+after grouped color to change within-band spacing. Reassign the group field
+with one `encodeColor({ field: "nextGroup", layout: "group" })` call.
 The current API does not synthesize zero bars or support horizontal bars.
 
 ## Continue

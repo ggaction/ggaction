@@ -369,6 +369,12 @@ materializationConfigs.marks.points.opacity = 0.27;
 graphicSpec.objects.points.children[0].properties.opacity = 0.27;
 ```
 
+Grouped bar의 width mode와 xOffset padding도 semantic scale에 중복 저장하지 않는다.
+`materializationConfigs.marks[target].barWidth`는 mutually exclusive band/pixel intent를,
+`materializationConfigs.marks[target].xOffset`은 inner/outer padding intent를 소유한다. Scale
+materializer는 shared xOffset consumer의 padding policy와 parent bandwidth가 일치하는지 검증한 뒤
+signed step, start와 concrete bandwidth를 `resolvedScales`에 계산한다.
+
 `group`은 path를 series로 나누는 semantic channel이지만 scale이나 guide를 만들지
 않는다. `y2`는 area upper bound이며 기존 y scale을 정확히 공유한다. `xOffset`은 ordinal
 x band 안의 grouped-bar sub-band를 표현한다.

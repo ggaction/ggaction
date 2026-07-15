@@ -23,6 +23,11 @@ function aggregateBarProgram() {
     .encodeY({ field: "perc" });
 }
 
+function groupedBarProgram() {
+  return aggregateBarProgram()
+    .encodeColor({ field: "sex", layout: "group" });
+}
+
 test("encodes a nominal xOffset inside each ordinal x band", () => {
   const before = aggregateBarProgram();
   const program = before.encodeXOffset({ field: "sex" });
@@ -43,7 +48,14 @@ test("encodes a nominal xOffset inside each ordinal x band", () => {
     domain: ["men", "women"],
     range: [0, 160],
     step: 80,
-    bandwidth: 80
+    start: 0,
+    bandwidth: 80,
+    paddingInner: 0,
+    paddingOuter: 0
+  });
+  assert.deepEqual(program.markConfigs.bars.xOffset, {
+    paddingInner: 0,
+    paddingOuter: 0
   });
   assert.deepEqual(program.graphicSpec.objects.bars.children, []);
   assert.equal(before.semanticSpec.layers[0].encoding.xOffset, undefined);
@@ -55,7 +67,7 @@ test("encodes a nominal xOffset inside each ordinal x band", () => {
     "editSemantic",
     "editSemantic",
     "createScale",
-    "rematerializeScale"
+    "rematerializeBarMark"
   ]);
 });
 
@@ -74,7 +86,118 @@ test("supports explicit xOffset domain order and reversed range", () => {
     domain: ["women", "men"],
     range: [100, 0],
     step: -50,
-    bandwidth: 50
+    start: 100,
+    bandwidth: 50,
+    paddingInner: 0,
+    paddingOuter: 0
+  });
+});
+
+test("applies inner and outer padding to automatic group slots", () => {
+  const program = groupedBarProgram()
+    .encodeBarWidth()
+    .encodeXOffset({
+      field: "sex",
+      paddingInner: 0.2,
+      paddingOuter: 0.1
+    });
+
+  assert.deepEqual(program.markConfigs.bars.xOffset, {
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  });
+  assert.deepEqual(program.resolvedScales.xOffset, {
+    type: "ordinal",
+    domain: ["men", "women"],
+    range: [0, 160],
+    step: 80,
+    start: 8,
+    bandwidth: 64,
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  });
+  assert.deepEqual(
+    program.graphicSpec.objects.bars.children.map(
+      child => Number(child.properties.width.toFixed(6))
+    ),
+    [46.08, 46.08, 46.08, 46.08]
+  );
+});
+
+test("preserves padding across same-field scale edits and supports reversed ranges", () => {
+  const padded = groupedBarProgram().encodeXOffset({
+    field: "sex",
+    paddingInner: 0.2,
+    paddingOuter: 0.1,
+    scale: { range: [100, 0] }
+  });
+  const edited = padded.encodeXOffset({
+    field: "sex",
+    scale: { range: [80, 0] }
+  });
+
+  assert.deepEqual(padded.resolvedScales.xOffset, {
+    type: "ordinal",
+    domain: ["men", "women"],
+    range: [100, 0],
+    step: -50,
+    start: 95,
+    bandwidth: 40,
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  });
+  assert.deepEqual(edited.markConfigs.bars.xOffset, {
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  });
+  assert.equal(edited.resolvedScales.xOffset.step, -40);
+  assert.equal(edited.resolvedScales.xOffset.bandwidth, 32);
+});
+
+test("converges when width and offset padding are authored in either order", () => {
+  const padding = {
+    field: "sex",
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  };
+  const first = groupedBarProgram()
+    .encodeBarWidth({ pixels: 14 })
+    .encodeXOffset(padding);
+  const second = groupedBarProgram()
+    .encodeXOffset(padding)
+    .encodeBarWidth({ pixels: 14 });
+
+  assert.deepEqual(first.semanticSpec, second.semanticSpec);
+  assert.deepEqual(first.graphicSpec, second.graphicSpec);
+  assert.deepEqual(first.materializationConfigs, second.materializationConfigs);
+});
+
+test("rejects conflicting padding policies on one shared offset scale", () => {
+  let program = chart()
+    .createCanvas({ width: 420, height: 300 })
+    .createData({ id: "jobs", values })
+    .createBarMark({ id: "left" })
+    .encodeX({ target: "left", field: "year", fieldType: "ordinal", scale: { id: "leftX" } })
+    .encodeY({ target: "left", field: "perc", scale: { id: "leftY" } })
+    .encodeColor({ target: "left", field: "sex", layout: "group", scale: { id: "leftColor" } })
+    .encodeBarWidth({ target: "left" })
+    .createBarMark({ id: "right" })
+    .encodeX({ target: "right", field: "year", fieldType: "ordinal", scale: { id: "rightX" } })
+    .encodeY({ target: "right", field: "perc", scale: { id: "rightY" } })
+    .encodeColor({ target: "right", field: "sex", layout: "group", scale: { id: "rightColor" } })
+    .encodeBarWidth({ target: "right" });
+
+  assert.throws(
+    () => program.encodeXOffset({
+      target: "right",
+      field: "sex",
+      paddingInner: 0.2
+    }),
+    /one shared padding policy/
+  );
+  assert.deepEqual(program.markConfigs.right.xOffset, {
+    paddingInner: 0,
+    paddingOuter: 0
   });
 });
 
@@ -95,6 +218,29 @@ test("validates xOffset prerequisites, fields, and scale options", () => {
   assert.throws(
     () => program.encodeXOffset({ field: "missing" }),
     /nominal value/
+  );
+  for (const paddingInner of [-1, 1, Infinity, NaN]) {
+    assert.throws(
+      () => groupedBarProgram().encodeXOffset({ field: "sex", paddingInner }),
+      /paddingInner/
+    );
+  }
+  for (const paddingOuter of [-1, Infinity, NaN]) {
+    assert.throws(
+      () => groupedBarProgram().encodeXOffset({ field: "sex", paddingOuter }),
+      /paddingOuter/
+    );
+  }
+  assert.throws(
+    () => groupedBarProgram().encodeXOffset({
+      field: "sex",
+      paddingOuter: Number.MAX_VALUE
+    }),
+    /positive bandwidth/
+  );
+  assert.throws(
+    () => groupedBarProgram().encodeXOffset({ field: "other" }),
+    /must match a grouped bar color field/
   );
   assert.throws(
     () => program.encodeXOffset({ field: "sex", fieldType: "quantitative" }),

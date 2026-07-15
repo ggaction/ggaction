@@ -71,7 +71,9 @@ export function resolveOrdinalOffsetScale({
   domain,
   values,
   range,
-  parentBandwidth
+  parentBandwidth,
+  paddingInner = 0,
+  paddingOuter = 0
 }) {
   const resolvedDomain = resolveOrdinalDomain(domain, values);
   if (!Number.isFinite(parentBandwidth) || parentBandwidth <= 0) {
@@ -80,19 +82,37 @@ export function resolveOrdinalOffsetScale({
   const resolvedRange = range === "auto"
     ? validatePair([0, parentBandwidth], "Offset scale range")
     : validateScaleRange(range);
+  if (!Number.isFinite(paddingInner) || paddingInner < 0 || paddingInner >= 1) {
+    throw new RangeError(
+      "Offset scale paddingInner must be from 0 (inclusive) to 1 (exclusive)."
+    );
+  }
+  if (!Number.isFinite(paddingOuter) || paddingOuter < 0) {
+    throw new RangeError(
+      "Offset scale paddingOuter must be a non-negative finite number."
+    );
+  }
   const domainValues = new Set(resolvedDomain);
   for (const value of values) {
     if (!domainValues.has(value)) {
       throw new Error(`Value "${value}" is outside the ordinal domain.`);
     }
   }
-  const step = (resolvedRange[1] - resolvedRange[0]) / resolvedDomain.length;
+  const step = (resolvedRange[1] - resolvedRange[0]) /
+    Math.max(1, resolvedDomain.length - paddingInner + paddingOuter * 2);
+  const bandwidth = Math.abs(step) * (1 - paddingInner);
+  if (!Number.isFinite(bandwidth) || bandwidth <= 0) {
+    throw new Error("Offset scale padding must leave a positive bandwidth.");
+  }
   return cloneAndFreeze({
     type: "ordinal",
     domain: resolvedDomain,
     range: resolvedRange,
     step,
-    bandwidth: Math.abs(step)
+    start: resolvedRange[0] + step * paddingOuter,
+    bandwidth,
+    paddingInner,
+    paddingOuter
   });
 }
 

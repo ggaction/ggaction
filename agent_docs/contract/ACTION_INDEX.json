@@ -385,8 +385,8 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action will replace compatible grouped-bar slots",
-      "audit": "Reassignment — Planned",
+      "update": "Same action replaces compatible same-field scale and padding policy",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1396,18 +1396,6 @@
       }
     },
     {
-      "id": "encodeXOffset-reassignment",
-      "kind": "behavior",
-      "action": "encodeXOffset",
-      "name": "encodeXOffset reassignment",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "positional-reassignment"
-      }
-    },
-    {
       "id": "encodeY2-reassignment",
       "kind": "behavior",
       "action": "encodeY2",
@@ -1451,28 +1439,6 @@
       "contract": {
         "file": "agent_docs/contract/planned/ENCODINGS.md",
         "anchor": "area-outline"
-      }
-    },
-    {
-      "id": "bar-width-modes",
-      "kind": "parameter",
-      "name": "Bar width modes",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "bar-width-modes"
-      }
-    },
-    {
-      "id": "offset-padding-controls",
-      "kind": "parameter",
-      "name": "Offset padding controls",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "offset-padding-controls"
       }
     },
     {

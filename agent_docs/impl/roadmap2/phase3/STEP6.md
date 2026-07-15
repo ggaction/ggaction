@@ -16,8 +16,8 @@ Fixed-pixel width, xOffset padding과 grouped field reassignment의 final slot/r
 - [x] Existing legend title/style preservation target
 - [x] Expanded target chain metadata
 - [x] Browser와 2× primitive PNG 생성
-- [ ] Gate C 사용자 visual confirmation
-- [ ] Feedback 반영과 primitive 재확인
+- [x] Gate C 사용자 visual confirmation
+- [x] Feedback 반영과 primitive 재확인
 - [x] STEP status, conceptual commit와 push
 
 ## Primitive 원칙

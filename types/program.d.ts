@@ -211,6 +211,27 @@ export interface CategoricalEncodingOptions {
   layout?: ColorLayout;
 }
 
+export interface OffsetScaleOptions {
+  id?: string;
+  type?: "ordinal";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly [number, number];
+}
+
+export interface XOffsetEncodingOptions {
+  field: string;
+  target?: string;
+  fieldType?: "nominal";
+  scale?: OffsetScaleOptions;
+  paddingInner?: number;
+  paddingOuter?: number;
+}
+
+export type BarWidthOptions = { target?: string } & (
+  | { band?: number; pixels?: never }
+  | { band?: never; pixels: number }
+);
+
 export interface DashScaleOptions {
   id?: string;
   type?: "ordinal";
@@ -393,13 +414,13 @@ export class ChartProgram {
   encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ScaleOptions }): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
-  encodeXOffset(options: ActionOptions): ChartProgram;
+  encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
   encodeY2(options: ActionOptions): ChartProgram;
   encodeYRange(options: ActionOptions): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: ActionOptions): ChartProgram;
-  encodeBarWidth(options: { band?: number; target?: string }): ChartProgram;
+  encodeBarWidth(options?: BarWidthOptions): ChartProgram;
 
   createRegression(options?: RegressionOptions): ChartProgram;
   createAxes(options?: ActionOptions): ChartProgram;

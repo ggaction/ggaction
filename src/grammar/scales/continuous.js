@@ -42,8 +42,8 @@ function niceLinearDomain(domain) {
   }
   const step = niceLinearStep(maximum - minimum);
   return cloneAndFreeze([
-    Math.floor(minimum / step) * step,
-    Math.ceil(maximum / step) * step
+    Number((Math.floor(minimum / step) * step).toPrecision(12)),
+    Number((Math.ceil(maximum / step) * step).toPrecision(12))
   ]);
 }
 

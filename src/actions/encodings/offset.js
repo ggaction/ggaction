@@ -4,10 +4,23 @@ import {
   validateNominalFieldType
 } from "../../grammar/scales.js";
 import { resolveOffsetScaleDefinition } from "../scales/definitions.js";
-import { resolveTarget, validateOptions } from "./shared.js";
-import { resolveBarGrain } from "../../grammar/bars/policy.js";
+import {
+  applyEncodingScale,
+  resolveReassignmentScaleOptions,
+  resolveTarget,
+  validateOptions
+} from "./shared.js";
+import {
+  resolveBarColorLayout,
+  resolveBarGrain
+} from "../../grammar/bars/policy.js";
+import { normalizeOffsetPadding } from "../../grammar/bars/geometry.js";
+import { applyMaterializationPlan } from "../../materialization/dependencies.js";
+import { planEncodingRematerialization } from "../../materialization/encodings.js";
 
-const ENCODING_OPTIONS = Object.freeze(["field", "target", "fieldType", "scale"]);
+const ENCODING_OPTIONS = Object.freeze([
+  "field", "target", "fieldType", "scale", "paddingInner", "paddingOuter"
+]);
 const encodeXOffset = action(
   {
     op: "encodeXOffset",
@@ -31,11 +44,28 @@ const encodeXOffset = action(
         "encodeXOffset requires a complete bar x/y encoding."
       );
     }
+    if (
+      layer.encoding?.color !== undefined &&
+      (resolveBarColorLayout(layer) !== "group" ||
+        layer.encoding.color.field !== args.field)
+    ) {
+      throw new Error(
+        "encodeXOffset field must match a grouped bar color field."
+      );
+    }
 
     readNominalField(dataset.values, args.field);
-    const scale = resolveOffsetScaleDefinition(this, args.scale ?? {});
+    const requestedScale = resolveReassignmentScaleOptions(
+      layer.encoding?.xOffset,
+      args.scale ?? {}
+    );
+    const scale = resolveOffsetScaleDefinition(this, requestedScale);
+    const padding = normalizeOffsetPadding(
+      args,
+      this.markConfigs[target]?.xOffset
+    );
 
-    return this
+    let next = this
       .editSemantic({
         property: `layer[${target}].encoding.xOffset.field`,
         value: args.field
@@ -48,8 +78,21 @@ const encodeXOffset = action(
         property: `layer[${target}].encoding.xOffset.scale`,
         value: scale.id
       })
-      .createScale(scale)
-      .rematerializeScale({ id: scale.id });
+      ._withMarkConfig(target, {
+        ...this.markConfigs[target],
+        xOffset: padding
+      });
+    next = applyEncodingScale(next, scale, requestedScale, {
+      reassignment: layer.encoding?.xOffset?.scale === scale.id
+    });
+    return applyMaterializationPlan(
+      next,
+      planEncodingRematerialization(next, {
+        target,
+        channel: "xOffset",
+        scale: scale.id
+      })
+    );
   }
 );
 

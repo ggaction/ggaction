@@ -3,6 +3,7 @@ import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import { resolveHistogramBins } from "../../grammar/histogram.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
+import { normalizeOffsetPadding } from "../../grammar/bars/geometry.js";
 import {
   mapLinearValues,
   mapSequentialColors,
@@ -183,6 +184,20 @@ export const rematerializeScale = action(
               );
             }
             return bandwidths[0];
+          })(),
+          ...(() => {
+            const paddings = consumers.map(consumer => normalizeOffsetPadding(
+              this.markConfigs[consumer.layer.id]?.xOffset
+            ));
+            const signatures = new Set(
+              paddings.map(padding => JSON.stringify(padding))
+            );
+            if (signatures.size !== 1) {
+              throw new Error(
+                `xOffset scale "${id}" requires one shared padding policy.`
+              );
+            }
+            return paddings[0];
           })()
         })
       : isOrdinalPosition

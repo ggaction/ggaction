@@ -5,8 +5,9 @@ import {
   resolveBarColorLayout,
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
+import { normalizeBarWidth } from "../../grammar/bars/geometry.js";
 
-const OPTIONS = Object.freeze(["band", "target"]);
+const OPTIONS = Object.freeze(["band", "pixels", "target"]);
 
 const encodeBarWidth = action(
   {
@@ -15,11 +16,6 @@ const encodeBarWidth = action(
   },
   function (args = {}) {
     validateOptions(args, OPTIONS, "encodeBarWidth");
-    const band = args.band ?? 0.72;
-    if (!Number.isFinite(band) || band <= 0 || band > 1) {
-      throw new RangeError("Bar width band must be greater than 0 and at most 1.");
-    }
-
     const { id: target, layer } = resolveTarget(
       this,
       args.target,
@@ -27,6 +23,10 @@ const encodeBarWidth = action(
       "bar mark"
     );
     const layout = resolveBarColorLayout(layer);
+    const width = normalizeBarWidth(
+      args,
+      this.markConfigs[target]?.barWidth
+    );
     const grouped = layout === "group";
     if (
       resolveBarGrain(layer) !== BAR_GRAINS.aggregate ||
@@ -43,7 +43,7 @@ const encodeBarWidth = action(
     return this
       ._withMarkConfig(target, {
         ...this.markConfigs[target],
-        barWidth: { band }
+        barWidth: width
       })
       .rematerializeBarMark({ id: target });
   }

@@ -4,10 +4,10 @@ import test from "node:test";
 import { chart } from "../../../../src/index.js";
 
 const values = [
-  { year: 1850, perc: 1, sex: "men" },
-  { year: 1850, perc: 9, sex: "women" },
-  { year: 1860, perc: 2, sex: "men" },
-  { year: 1860, perc: 8, sex: "women" }
+  { year: 1850, perc: 1, sex: "men", job: "Actor" },
+  { year: 1850, perc: 9, sex: "women", job: "Agent" },
+  { year: 1860, perc: 2, sex: "men", job: "Agent" },
+  { year: 1860, perc: 8, sex: "women", job: "Actor" }
 ];
 
 function aggregateBarProgram() {
@@ -54,8 +54,8 @@ test("encodes grouped bar color through a nested xOffset action", () => {
     "editSemantic",
     "editSemantic",
     "createScale",
-    "encodeY",
     "encodeXOffset",
+    "encodeY",
     "rematerializeBarMark"
   ]);
   assert.deepEqual(node.children.at(-1).children.map(child => child.op), [
@@ -65,6 +65,46 @@ test("encodes grouped bar color through a nested xOffset action", () => {
     "rematerializeScale",
     "editGraphics"
   ]);
+});
+
+test("atomically reassigns grouped color, xOffset, bars, and an existing legend", () => {
+  const before = chart()
+    .createCanvas({
+      width: 520,
+      height: 300,
+      margin: { top: 30, right: 120, bottom: 50, left: 60 }
+    })
+    .createData({ id: "jobs", values })
+    .createBarMark({ id: "bars" })
+    .encodeX({ field: "year", fieldType: "ordinal" })
+    .encodeY({ field: "perc" })
+    .encodeColor({ field: "sex", layout: "group" })
+    .encodeBarWidth()
+    .createGuides({ legend: { title: "Occupation" } });
+  const program = before.encodeColor({ field: "job" });
+  const encoding = program.semanticSpec.layers[0].encoding;
+
+  assert.equal(encoding.color.field, "job");
+  assert.equal(encoding.color.layout, "group");
+  assert.equal(encoding.xOffset.field, "job");
+  assert.deepEqual(program.resolvedScales.color.domain, ["Actor", "Agent"]);
+  assert.deepEqual(program.resolvedScales.xOffset.domain, ["Actor", "Agent"]);
+  assert.equal(program.semanticSpec.guides.legend.color.title, "Occupation");
+  assert.deepEqual(
+    program.graphicSpec.objects.colorLegendLabels.children.map(
+      child => child.properties.text
+    ),
+    ["Actor", "Agent"]
+  );
+  const node = program.trace.children.at(-1);
+  assert.equal(node.op, "encodeColor");
+  assert.equal(
+    node.children.findIndex(child => child.op === "encodeXOffset") <
+      node.children.findIndex(child => child.op === "encodeY"),
+    true
+  );
+  assert.equal(before.semanticSpec.layers[0].encoding.color.field, "sex");
+  assert.deepEqual(before.resolvedScales.color.domain, ["men", "women"]);
 });
 
 test("supports explicit grouped color order and palette", () => {

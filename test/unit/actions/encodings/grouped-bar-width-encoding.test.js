@@ -31,7 +31,10 @@ test("materializes grouped rectangles with the default band", () => {
     child => child.properties
   );
 
-  assert.deepEqual(program.markConfigs.bars, { barWidth: { band: 0.72 } });
+  assert.deepEqual(program.markConfigs.bars, {
+    xOffset: { paddingInner: 0, paddingOuter: 0 },
+    barWidth: { band: 0.72 }
+  });
   assert.equal(rectangles.length, 4);
   assert.deepEqual(
     rectangles.map(rect => Number(rect.width.toFixed(6))),
@@ -92,6 +95,32 @@ test("replaces an existing bar width through the same assignment", () => {
   assert.equal(after.trace.children.at(-1).op, "encodeBarWidth");
 });
 
+test("supports fixed logical pixels and retains an omitted reassignment mode", () => {
+  const fixed = groupedBarProgram().encodeBarWidth({ pixels: 14 });
+  const retained = fixed.encodeBarWidth();
+
+  assert.deepEqual(fixed.markConfigs.bars.barWidth, { pixels: 14 });
+  assert.deepEqual(retained.markConfigs.bars.barWidth, { pixels: 14 });
+  assert.equal(
+    retained.graphicSpec.objects.bars.children.every(
+      child => child.properties.width === 14
+    ),
+    true
+  );
+  const resized = retained.editCanvas({ width: 620 });
+  assert.equal(
+    resized.graphicSpec.objects.bars.children.every(
+      child => child.properties.width === 14
+    ),
+    true
+  );
+});
+
+test("allows an explicit pixel width wider than its group slot", () => {
+  const program = groupedBarProgram().encodeBarWidth({ pixels: 120 });
+  assert.equal(program.graphicSpec.objects.bars.children[0].properties.width, 120);
+});
+
 test("uses one explicit domain order for color and group slots", () => {
   const program = chart()
     .createCanvas({
@@ -148,6 +177,16 @@ test("validates grouped bar width options and prerequisites", () => {
       /greater than 0 and at most 1/
     );
   }
+  for (const pixels of [0, -1, Infinity, NaN]) {
+    assert.throws(
+      () => program.encodeBarWidth({ pixels }),
+      /positive finite/
+    );
+  }
+  assert.throws(
+    () => program.encodeBarWidth({ band: 0.5, pixels: 10 }),
+    /mutually exclusive/
+  );
   assert.throws(
     () => program.encodeBarWidth({ band: 0.5, width: 10 }),
     /Unknown encodeBarWidth option/
@@ -163,5 +202,32 @@ test("validates grouped bar width options and prerequisites", () => {
     () => incomplete.encodeBarWidth(),
     /requires complete aggregate bar/
   );
-  assert.deepEqual(program.markConfigs, {});
+  assert.deepEqual(program.markConfigs, {
+    bars: { xOffset: { paddingInner: 0, paddingOuter: 0 } }
+  });
+});
+
+test("requires an explicit target when more than one bar mark is eligible", () => {
+  const ambiguous = groupedBarProgram()
+    .createBarMark({ id: "other" })
+    .encodeX({
+      field: "year",
+      fieldType: "ordinal",
+      scale: { id: "otherX" }
+    })
+    .encodeY({ field: "perc", scale: { id: "otherY" } })
+    .encodeColor({
+      field: "sex",
+      layout: "group",
+      scale: { id: "otherColor" }
+    })
+    ._withContext({ currentMark: undefined });
+
+  assert.throws(
+    () => ambiguous.encodeBarWidth(),
+    /bar mark target is ambiguous/
+  );
+  assert.deepEqual(ambiguous.markConfigs.bars, {
+    xOffset: { paddingInner: 0, paddingOuter: 0 }
+  });
 });

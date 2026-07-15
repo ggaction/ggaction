@@ -8,12 +8,13 @@ import {
   DEFAULT_BAR_STROKE_WIDTH
 } from "./resolve.js";
 import { deriveGroupedRectangles } from "./grouped.js";
+import { resolveBarWidth } from "../../grammar/bars/geometry.js";
 
-export function deriveAggregateRectangles(required, resolved, band) {
+export function deriveAggregateRectangles(required, resolved, widthConfig) {
   const { dataset, layer } = required;
   const layout = resolveBarColorLayout(layer);
   if (layout === "group") {
-    return deriveGroupedRectangles(required, resolved, band);
+    return deriveGroupedRectangles(required, resolved, widthConfig);
   }
 
   const xScale = resolved.resolvedScales[required.xEncoding.scale];
@@ -40,7 +41,10 @@ export function deriveAggregateRectangles(required, resolved, band) {
     JSON.stringify([cell.x, cell.color]),
     cell
   ]));
-  const width = Math.abs(xScale.bandwidth ?? xScale.step) * band;
+  const width = resolveBarWidth(
+    widthConfig,
+    Math.abs(xScale.bandwidth ?? xScale.step)
+  );
   const baseline = layout === "overlay" ? yScale.domain[0] : 0;
   const segments = [];
 

@@ -74,8 +74,8 @@ export const rematerializeBarMark = action(
       if (offsetScaleId !== undefined) {
         resolved = resolved.rematerializeScale({ id: offsetScaleId });
       }
-      const band = resolved.markConfigs[id]?.barWidth?.band;
-      if (band === undefined) {
+      const width = resolved.markConfigs[id]?.barWidth;
+      if (width === undefined) {
         return resolved.editGraphics({
           target: id,
           property: "length",
@@ -85,7 +85,7 @@ export const rematerializeBarMark = action(
       return editRectangles(
         resolved,
         id,
-        deriveAggregateRectangles(required, resolved, band)
+        deriveAggregateRectangles(required, resolved, width)
       );
     }
 

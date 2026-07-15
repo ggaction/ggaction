@@ -163,20 +163,23 @@ type AggregateOperation =
 
 ## `encodeXOffset`
 
-- Signature: `encodeXOffset({ field, target?, fieldType?, scale? })`
-- `field`: Implemented nominal grouping field. complete histogram 또는 ordinal aggregate bar에 허용된다.
+- Signature: `encodeXOffset({ field, target?, fieldType?, scale?, paddingInner?, paddingOuter? })`
+- `field`: nominal grouping field. complete histogram 또는 ordinal aggregate bar에 허용된다. Existing grouped
+  color가 있으면 같은 field만 직접 설정할 수 있고 field 교체는 atomic `encodeColor`가 소유한다.
 - `target`: optional eligible bar ID.
-- `fieldType`: Implemented, 유일한 값 `"nominal"`, 기본값도 nominal이다.
+- `fieldType`: 유일한 값 `"nominal"`, 기본값도 nominal이다.
 - `scale`: ordinal scale contract; 기본 ID `xOffset`, domain은 grouping order, range는 parent x band다.
-- Effect: x band 안에 group sub-band를 만들고 scale을 materialize한다. concrete rect는 color/group
-  semantics와 width가 완성될 때 생성된다.
-- Coverage: grouped-bar semantic/reference tests가 automatic child action과 geometry를 검증한다.
-  direct explicit range 조합은 부분적이다.
+- `paddingInner`: finite `[0, 1)`, sibling slot 사이의 step fraction. 기본값은 `0`이다.
+- `paddingOuter`: non-negative finite, 첫/마지막 slot 바깥의 step fraction. 기본값은 `0`이다.
+- Effect: x band 안에 group sub-band를 만들고 padding intent를 immutable mark materialization config에
+  저장한다. 같은 field 재호출에서 생략한 padding은 기존 값을 유지한다. Explicit/reversed range endpoint를
+  유지한 채 signed step, start와 positive bandwidth를 계산하고 dependent bar를 rematerialize한다.
+- Shared xOffset scale의 consumer는 같은 padding policy와 parent bandwidth를 사용해야 한다.
 
 ### Formal values — `encodeXOffset`
 
-- Implemented: `encodeXOffset({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: NumericRange } })`
-- Planned (NOT IMPLEMENTED): `{ paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite }`
+- Implemented: `encodeXOffset({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: NumericRange }; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite })`
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeXOffset`
@@ -187,7 +190,11 @@ type AggregateOperation =
   - ✅ Covered: `"nominal"`와 invalid alternatives.
 - `scale.id/type/domain/range`
   - ✅ Covered: defaults, explicit order, reversed range, auto range rematerialization, invalid definitions.
-  - 🟡 Planned: `encodeXOffset`-owned inner/outer padding; `encodeBarWidth`는 slot 내부 width만 소유한다.
+- `paddingInner`, `paddingOuter`
+  - ✅ Covered: defaults, partial reassignment preservation, boundaries, explicit/reversed range, Canvas resize,
+    zero-bandwidth와 shared-policy rejection.
+- Reassignment
+  - ✅ Covered: same-field scale/padding edit, grouped color mismatch rejection와 atomic color-owned field change.
 - Evidence: `test/unit/actions/encodings/x-offset-encoding.test.js`.
 
 ## `encodeY2`
@@ -369,6 +376,9 @@ type AggregateOperation =
 - Reassignment: 같은 target의 nominal color field를 교체한다. omitted scale ID는 current color scale을
   재사용하고 explicit new ID는 새 scale을 만든다. Existing compatible legend의 domain, symbols,
   labels와 inferred title을 갱신하며 custom title/layout/style은 보존한다.
+- Grouped-bar reassignment는 color semantic을 먼저 교체한 뒤 wrapped `encodeXOffset`으로 matching field와
+  domain을 원자적으로 교체하고 y policy, bars와 existing legend를 rematerialize한다. Direct xOffset field
+  mismatch나 layout transition은 earlier program을 바꾸지 않고 거부한다.
 - Coverage: 모든 대표 chart와 legend tests가 mark별 materialization을 검증한다. Five-layout bar matrix,
   four-layout area matrix, normalized/signed domains, primitive/public equivalence와 transition rejection을 포함한다.
 
@@ -552,30 +562,37 @@ type AggregateOperation =
 
 ## `encodeBarWidth`
 
-- Signature: `encodeBarWidth({ band?, target? })`
-- `band`: `(0, 1]` finite number, 기본값 `0.72`. 각 xOffset slot 중 rect가 차지하는 비율이다.
-- `pixels`: Planned fixed logical-pixel width이며 band와 mutually exclusive다. Group slot spacing은
-  `encodeXOffset`이 소유한다.
+- Signature: `encodeBarWidth({ band?, pixels?, target? })`
+- `band`: `(0, 1]` finite number. Resolved xOffset slot 중 rect가 차지하는 비율이다.
+- `pixels`: positive finite logical Canvas pixel width. `band`와 mutually exclusive이며 PNG `pixelRatio`와
+  무관하다.
+- 첫 assignment에서 width mode를 생략하면 `{ band: 0.72 }`; reassignment에서 생략하면 current mode와
+  value를 유지한다. Group slot spacing은 `encodeXOffset`이 소유한다.
 - `target`: optional complete ordinal aggregate bar ID. Group layout은 matching xOffset를 추가로 요구한다.
-- Effect: graphical mark config에 band fraction을 저장하고 rect x/width를 rematerialize한다.
-  같은 target에 다시 호출하면 기존 band fraction을 교체한다.
+- Effect: graphical mark config에 exactly one width mode를 저장하고 centered rect x/width를
+  rematerialize한다. Band width는 Canvas resize에 반응하고 pixel width는 고정된다. Slot보다 큰 explicit
+  pixel width와 overlap은 허용한다.
 - 오류: ordinal x, scalar aggregate y와 color가 완성되지 않으면 거부한다. Group layout은 matching
   color/xOffset가 완성되지 않으면 거부한다.
 - Coverage: grouped-bar semantic/reference tests가 default, explicit value, invalid range와 geometry를 검증한다.
 
 ### Formal values — `encodeBarWidth`
 
-- Implemented: `encodeBarWidth({ band?: number; target?: UserId })`, `0 < band <= 1`, default `0.72`.
-- Planned (NOT IMPLEMENTED): `{ pixels?: PositiveFinite }`; `band`와 mutually exclusive.
+- Implemented: mutually exclusive `encodeBarWidth({ band?: number; pixels?: never; target?: UserId } | { band?: never; pixels: PositiveFinite; target?: UserId })`; first-assignment default `{ band: 0.72 }`.
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeBarWidth`
 
 - `band`
   - ✅ Covered: omission→`0.72`, representative `(0,1)`, exact `1`, 0/negative/>1/non-finite rejection.
+- `pixels`
+  - ✅ Covered: representative fixed width, slot보다 큰 overlap, zero/negative/non-finite rejection와
+    `band` mutual exclusion.
 - `target`
   - ✅ Covered: inferred/explicit grouped bar와 incomplete prerequisites.
 - Reassignment
-  - ✅ Covered: same action replaces the stored band and concrete rect widths immutably.
-- 🟡 Planned: mutually exclusive fixed pixels/band modes; grouped padding은 `encodeXOffset` contract가 소유한다.
+  - ✅ Covered: explicit mode switching, omitted-mode retention와 immutable concrete rematerialization.
+- Resize/order
+  - ✅ Covered: band responsive, pixels fixed, width/padding action-order convergence와 2× PNG parity.
 - Evidence: grouped-bar width and chart reference tests.

@@ -14,7 +14,7 @@ title: Appearance Encodings
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
 | `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current point; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
-| `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; band `0.72` | Concrete rectangles |
+| `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
 
 ## `encodeRadius({ value, target? })`
 
@@ -70,7 +70,7 @@ providing a new ID retains the previous named scale. Existing legends are
 recomputed, inferred legend titles follow the new field, and explicit legend
 titles and styles remain unchanged.
 
-## `encodeBarWidth({ band?, target? })`
+## `encodeBarWidth({ band?, pixels?, target? })`
 
 Set the fraction of each resolved x band—or xOffset slot for group layout—used
 by an aggregate bar and materialize concrete rectangles.
@@ -81,8 +81,14 @@ program.encodeBarWidth({ band: 0.72 });
 
 | Option | Type | Default |
 | --- | --- | --- |
-| `band` | finite number greater than `0` and at most `1` | `0.72` |
+| `band` | finite number greater than `0` and at most `1` | first assignment: `0.72` |
+| `pixels` | positive finite logical Canvas pixels | none |
 | `target` | aggregate bar mark ID | current mark |
+
+`band` and `pixels` are mutually exclusive. A later empty call retains the
+current mode and value. Band widths respond to Canvas resizing; pixel widths
+remain fixed in logical coordinates and do not change with PNG `pixelRatio`.
+An explicit pixel width may be wider than its slot, allowing intentional overlap.
 
 The action requires ordinal x, aggregate y, and nominal color. Group layout also
 requires matching xOffset semantics. Width is the outer x bandwidth times `band`
@@ -96,7 +102,7 @@ Canvas geometry changes explicitly rematerialize the scales and rectangles.
 
 ## Errors and limitations
 
-Radius, constant opacity, and bar band are graphical constants. Field opacity
+Radius, constant opacity, and both bar width modes are graphical constants. Field opacity
 is a semantic encoding.
 Size cannot be combined with a constant radius. A constant `editPointMark`
 shape cannot be combined with field-driven `encodeShape`. Bar width

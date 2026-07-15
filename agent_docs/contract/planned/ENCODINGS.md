@@ -44,7 +44,7 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 - Status: Planned, NOT IMPLEMENTED. field/datum exclusivity, constant style boundaries, endpoint
   reassignment, shared scale/coordinate errors, existing appearance action reuse와 rematerialization coverage가 필요하다.
 
-## Remaining grouped-bar reassignment
+## Implemented grouped-bar reassignment compatibility note
 
 - reassignment에서 `layout`을 생략하면 현재 `"stack" | "group"` 결정을 유지한다. 첫 계약은
   stack/group 전환을 지원하지 않으며 explicit 다른 layout은 오류다. 전환은 companion 제거와
@@ -56,7 +56,8 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
   child로 사용한다. 이전 named scale은 자동 삭제하지 않는다.
 - semantic companion actions, scales, mark와 existing legend를 deterministic plan으로
   rematerialize하며 validation 실패 시 기존 program을 그대로 유지한다.
-- Status: Planned, NOT IMPLEMENTED. 구현은 `editScale` parameter contract가 Accepted된 뒤 진행한다.
+- Status: Implemented. Canonical behavior and coverage moved to
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodecolor).
 
 ## positional reassignment
 
@@ -82,7 +83,7 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 - Status: Planned, NOT IMPLEMENTED. create/edit/removal, zero width, regression forwarding과
   browser/PNG parity coverage가 필요하다.
 
-## bar width modes
+## Implemented bar width compatibility note
 
 ```typescript
 encodeBarWidth({
@@ -100,8 +101,8 @@ encodeBarWidth({
   실제 bar width만 소유하며 width보다 큰 bar나 명시적 overlap을 전역 오류로 만들지 않는다.
 - 변경 시 xOffset band geometry와 bar x/width를 함께 rematerialize한다. outer x band, category
   centers와 legend domain order는 유지한다.
-- Status: Planned, NOT IMPLEMENTED. mode switching, padding boundaries, Canvas resize와 overlap
-  coverage가 필요하다.
+- Status: Implemented. Canonical behavior and coverage moved to
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodebarwidth).
 
 ## Implemented color layout compatibility note
 
@@ -272,7 +273,7 @@ type PlannedStackMode = "normalize";
 - Status: Implemented. Canonical behavior and coverage moved to
   [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodey).
 
-## Offset padding controls
+## Implemented offset padding compatibility note
 
 ```typescript
 type UnitIntervalLessThan1 = number; // finite && 0 <= value && value < 1
@@ -294,8 +295,8 @@ encodeXOffset({
   bandwidth를 계산한다. Excessive padding이 zero bandwidth를 만들면 오류다.
 - 변경은 xOffset scale과 dependent bar geometry를 rematerialize하되 outer x band, color domain,
   legend order를 유지한다.
-- Status: Planned, NOT IMPLEMENTED. boundary values, explicit/reversed ranges, grouped-bar Canvas resize,
-  bar-width interaction과 invalid zero-bandwidth coverage가 필요하다.
+- Status: Implemented. Canonical behavior and coverage moved to
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodexoffset).
 
 ## Horizontal ranged position
 

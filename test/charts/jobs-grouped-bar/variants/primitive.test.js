@@ -3,6 +3,9 @@ import test from "node:test";
 
 import {
   createJobsDivergingBar,
+  createJobsFixedPixelBar,
+  createJobsGroupReassignmentBar,
+  createJobsOffsetPaddingBar,
   createJobsOverlayBar
 } from "../../../../examples/jobs-grouped-bar/program.js";
 import { assertChartProgramsEquivalent } from
@@ -236,16 +239,57 @@ test("omits missing cells and zero diverging graphics", () => {
   );
 });
 
-test("matches approved layout primitives with public action flows", () => {
+test("matches approved layout and geometry primitives with public action flows", () => {
   for (const [primitiveProgram, publicProgram] of [
     [createOverlayLayoutPrimitives(jobs), createJobsOverlayBar(jobs)],
     [
       createDivergingLayoutPrimitives(signedJobs),
       createJobsDivergingBar(signedJobs)
+    ],
+    [createFixedPixelWidthPrimitives(jobs), createJobsFixedPixelBar(jobs)],
+    [createOffsetPaddingPrimitives(jobs), createJobsOffsetPaddingBar(jobs)],
+    [
+      createGroupReassignmentPrimitives(reassignmentJobs),
+      createJobsGroupReassignmentBar(reassignmentJobs)
     ]
   ]) {
     assertChartProgramsEquivalent({ publicProgram, primitiveProgram });
   }
+});
+
+test("rematerializes approved geometry modes after Canvas resize", () => {
+  const fixed = createJobsFixedPixelBar(jobs);
+  const fixedResized = fixed.editCanvas({ width: 760, height: 500 });
+  assert.equal(
+    fixedResized.graphicSpec.objects.bars.children.every(
+      child => child.properties.width === 14
+    ),
+    true
+  );
+
+  const padded = createJobsOffsetPaddingBar(jobs);
+  const paddedResized = padded.editCanvas({ width: 760, height: 500 });
+  assert.notEqual(
+    paddedResized.graphicSpec.objects.bars.children[0].properties.width,
+    padded.graphicSpec.objects.bars.children[0].properties.width
+  );
+  assert.deepEqual(paddedResized.markConfigs.bars.xOffset, {
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  });
+
+  const reassigned = createJobsGroupReassignmentBar(reassignmentJobs);
+  const reassignedResized = reassigned.editCanvas({ width: 760, height: 500 });
+  assert.deepEqual(reassignedResized.resolvedScales.color.domain, [
+    "Actor", "Agent", "Author"
+  ]);
+  assert.deepEqual(
+    reassignedResized.graphicSpec.objects.colorLegendLabels.children.map(
+      child => child.properties.text
+    ),
+    ["Actor", "Agent", "Author"]
+  );
+  assert.equal(reassigned.semanticSpec.layers[0].encoding.color.field, "job");
 });
 
 test("rematerializes approved public layouts after Canvas resize", () => {

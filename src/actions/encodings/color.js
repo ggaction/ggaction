@@ -76,13 +76,7 @@ function applyColorLayoutCompanion(
     : layout === "overlay" || layout === "group"
       ? null
       : "zero";
-  let next = program.encodeY({
-    target,
-    field: y.field,
-    fieldType: y.fieldType,
-    ...(y.aggregate === undefined ? {} : { aggregate: y.aggregate }),
-    stack
-  });
+  let next = program;
   if (layout === "group") {
     next = next.encodeXOffset({
       field,
@@ -95,7 +89,13 @@ function applyColorLayoutCompanion(
       }
     });
   }
-  return next;
+  return next.encodeY({
+    target,
+    field: y.field,
+    fieldType: y.fieldType,
+    ...(y.aggregate === undefined ? {} : { aggregate: y.aggregate }),
+    stack
+  });
 }
 
 function encodeContinuousColor(program, args) {
