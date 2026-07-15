@@ -259,6 +259,14 @@ x/y/x2/y2 rule. Its exact expanded chain is owned by the future variant manifest
 
 - Mean, sample standard deviation, standard error and Student-t critical value are computed by an independent
   reference fixture that does not import production interval grammar.
+- The canonical vertical interval rows are fixed as follows:
+
+| Origin | n | Mean | Lower | Upper |
+| --- | ---: | ---: | ---: | ---: |
+| USA | 254 | 14.942519685039 | 14.595961849125 | 15.289077520954 |
+| Europe | 73 | 16.821917808219 | 16.119418784340 | 17.524416832098 |
+| Japan | 79 | 16.172151898734 | 15.734269872553 | 16.610033924915 |
+
 - CI requires enough valid finite samples; an invalid group is omitted rather than replaced by zero.
 - Group order follows first appearance and output rows retain all grouping fields needed by position encodings.
 - Statistical and explicit modes converge on identical semantic rule bindings and concrete graphics when their
