@@ -1,15 +1,19 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
-import { deriveLinearRegression } from "../../grammar/regression.js";
+import {
+  deriveRegression,
+  normalizeRegressionParameters
+} from "../../grammar/regression.js";
 import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "x", "y", "groupBy", "method", "confidence", "interval"
+  "id", "source", "x", "y", "groupBy", "method", "degree", "span",
+  "confidence", "interval"
 ]);
 
 export const materializeRegressionData = action(
-  { op: "materializeRegressionData", description: "Materialize one linear-regression derived dataset." },
+  { op: "materializeRegressionData", description: "Materialize one regression derived dataset." },
   function (args = {}) {
     validateKeys(args, MATERIALIZE_OPTIONS, "materializeRegressionData");
     const { id, source, transform } = requireDerivedDataset(
@@ -17,11 +21,15 @@ export const materializeRegressionData = action(
       args.id,
       "regression"
     );
-    const result = deriveLinearRegression(source.values, {
+    const result = deriveRegression(source.values, {
       x: transform.x,
       y: transform.y,
       groupBy: transform.groupBy,
-      confidence: transform.confidence
+      method: transform.method,
+      degree: transform.degree,
+      span: transform.span,
+      confidence: transform.confidence,
+      interval: transform.interval
     });
     return this.editSemantic({
       property: `dataset[${id}].values`,
@@ -31,13 +39,10 @@ export const materializeRegressionData = action(
 );
 
 export const createRegressionData = action(
-  { op: "createRegressionData", description: "Create grouped linear-regression values and confidence bounds." },
+  { op: "createRegressionData", description: "Create grouped regression values and optional interval bounds." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createRegressionData");
-    const method = args.method ?? "linear";
-    if (method !== "linear") {
-      throw new Error(`Unsupported regression method "${method}".`);
-    }
+    const parameters = normalizeRegressionParameters(args);
     const id = validateUserId(args.id, "Regression dataset id");
     const source = validateUserId(
       args.source ?? this.context.currentData,
@@ -45,12 +50,19 @@ export const createRegressionData = action(
     );
     const transform = {
       type: "regression",
-      method,
+      method: parameters.method,
       x: args.x,
       y: args.y,
       ...(args.groupBy === undefined ? {} : { groupBy: args.groupBy }),
-      confidence: args.confidence ?? 0.95,
-      interval: args.interval ?? "mean"
+      ...(parameters.method === "polynomial"
+        ? { degree: parameters.degree }
+        : {}),
+      ...(parameters.method === "loess"
+        ? { span: parameters.span }
+        : {
+            confidence: parameters.confidence,
+            interval: parameters.interval
+          })
     };
     return this
       .createDerivedData({ id, source, transform: [transform] })

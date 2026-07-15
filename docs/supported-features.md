@@ -30,7 +30,7 @@ chart-authoring API does not support that combination.
 | --- | --- |
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable arrays of plain row objects, named filters, grouped linear regression, and grouped kernel-density derivations |
+| Data | Immutable arrays of plain row objects, named filters, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
 | Scales | Linear, UTC time, ordinal position, color, named/direct stroke dash, and padded band-local xOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
@@ -41,8 +41,9 @@ chart-authoring API does not support that combination.
 
 ## Current limitations
 
-Polar guide graphics, transforms beyond named filters, linear regression, and density,
-facets, interactive legends, and program composition are not implemented.
+Polar guide graphics, transforms beyond the documented filters, regressions,
+and density derivations, facets, interactive legends, and program composition
+are not implemented.
 Additional title positions, automatic text wrapping, and text measurement are
 also unsupported. Categorical legends support right, bottom, and top placement;
 point composite and size legends currently use the right-side layout.

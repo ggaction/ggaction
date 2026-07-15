@@ -1,6 +1,19 @@
 import { chart } from "../../src/index.js";
 
-function createCarsRegressionScatterplotWithFilter(cars, filter) {
+const originFilter = Object.freeze({
+  field: "Origin",
+  oneOf: ["Japan", "USA"]
+});
+
+function createCarsRegressionScatterplotWithFilter(
+  cars,
+  filter,
+  regression = {
+    confidence: 0.95,
+    band: { color: "#111111", opacity: 0.18 },
+    line: { strokeWidth: 3 }
+  }
+) {
   return chart()
     .createCanvas({
       width: 760,
@@ -25,18 +38,32 @@ function createCarsRegressionScatterplotWithFilter(cars, filter) {
     .encodeShape({ field: "Origin" })
     .encodeOpacity({ value: 0.27 })
     .filterMark(filter)
-    .createRegression({
-      confidence: 0.95,
-      band: { color: "#111111", opacity: 0.18 },
-      line: { strokeWidth: 3 }
-    })
+    .createRegression(regression)
     .createGuides();
 }
 
 export function createCarsRegressionScatterplot(cars) {
-  return createCarsRegressionScatterplotWithFilter(cars, {
-    field: "Origin",
-    oneOf: ["Japan", "USA"]
+  return createCarsRegressionScatterplotWithFilter(cars, originFilter);
+}
+
+export function createPolynomialCarsRegressionScatterplot(cars) {
+  return createCarsRegressionScatterplotWithFilter(cars, originFilter, {
+    method: "polynomial",
+    degree: 2
+  });
+}
+
+export function createLoessCarsRegressionScatterplot(cars) {
+  return createCarsRegressionScatterplotWithFilter(cars, originFilter, {
+    method: "loess",
+    span: 0.55,
+    band: false
+  });
+}
+
+export function createPredictionIntervalCarsRegressionScatterplot(cars) {
+  return createCarsRegressionScatterplotWithFilter(cars, originFilter, {
+    interval: "prediction"
   });
 }
 

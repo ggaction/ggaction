@@ -1518,28 +1518,6 @@
       }
     },
     {
-      "id": "regression-method-vocabulary",
-      "kind": "parameter",
-      "name": "Regression method vocabulary",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/DATA_AND_STATISTICS.md",
-        "anchor": "regression-method-vocabulary"
-      }
-    },
-    {
-      "id": "regression-prediction-interval",
-      "kind": "parameter",
-      "name": "Regression prediction interval",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/DATA_AND_STATISTICS.md",
-        "anchor": "regression-prediction-interval"
-      }
-    },
-    {
       "id": "top-x-axis-position",
       "kind": "parameter",
       "name": "Top x axis position",

@@ -2,6 +2,9 @@ import {
   createCarsRegressionScatterplot,
   createComparisonFilterCarsRegressionScatterplot,
   createComponentEditCarsRegressionScatterplot,
+  createLoessCarsRegressionScatterplot,
+  createPolynomialCarsRegressionScatterplot,
+  createPredictionIntervalCarsRegressionScatterplot,
   createRangeFilterCarsRegressionScatterplot
 } from
   "../../../../examples/cars-regression-scatterplot/program.js";
@@ -143,7 +146,8 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     method: "polynomial",
     degree: 2
   })`),
-  primitive: createPolynomialRegressionPrimitives(cars)
+  primitive: createPolynomialRegressionPrimitives(cars),
+  userFacing: createPolynomialCarsRegressionScatterplot(cars)
 }), defineVisualVariant({
   ...shared,
   variant: "loess-span",
@@ -153,7 +157,8 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     span: 0.55,
     band: false
   })`),
-  primitive: createLoessRegressionPrimitives(cars)
+  primitive: createLoessRegressionPrimitives(cars),
+  userFacing: createLoessCarsRegressionScatterplot(cars)
 }), defineVisualVariant({
   ...shared,
   variant: "prediction-interval",
@@ -161,5 +166,6 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   callChain: withRegressionCall(`  .createRegression({
     interval: "prediction"
   })`),
-  primitive: createPredictionIntervalPrimitives(cars)
+  primitive: createPredictionIntervalPrimitives(cars),
+  userFacing: createPredictionIntervalCarsRegressionScatterplot(cars)
 })]);

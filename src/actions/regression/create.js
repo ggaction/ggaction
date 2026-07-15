@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
+import { normalizeRegressionParameters } from "../../grammar/regression.js";
 import {
   findRegressionPoint,
   inferRegressionGroup,
@@ -8,13 +9,14 @@ import {
 } from "./resolve.js";
 
 const REGRESSION_OPTIONS = Object.freeze([
-  "target", "x", "y", "groupBy", "confidence", "band", "line"
+  "target", "x", "y", "groupBy", "method", "degree", "span",
+  "confidence", "interval", "band", "line"
 ]);
 
 export const createRegression = action(
   {
     op: "createRegression",
-    description: "Fit and layer a linear regression line with confidence band."
+    description: "Fit and layer regression lines with optional interval bands."
   },
   function (args = {}) {
     validateKeys(args, REGRESSION_OPTIONS, "createRegression");
@@ -34,13 +36,23 @@ export const createRegression = action(
         "createRegression target requires stored coordinate and scales."
       );
     }
-    const band = requireRegressionObject(args.band ?? {}, "Regression band");
+    const parameters = normalizeRegressionParameters(args);
+    let band = false;
+    if (parameters.method === "loess") {
+      if (args.band !== undefined && args.band !== false) {
+        throw new Error("LOESS regression does not support a band object.");
+      }
+    } else if (args.band !== false) {
+      band = requireRegressionObject(args.band ?? {}, "Regression band");
+    }
     const line = requireRegressionObject(args.line ?? {}, "Regression line");
-    validateKeys(
-      band,
-      ["color", "opacity", "stroke", "strokeWidth"],
-      "regression band"
-    );
+    if (band !== false) {
+      validateKeys(
+        band,
+        ["color", "opacity", "stroke", "strokeWidth"],
+        "regression band"
+      );
+    }
     validateKeys(line, ["strokeWidth", "curve"], "regression line");
     const colorEncoding = point.encoding?.color;
     const namespace = point.id;
@@ -52,16 +64,17 @@ export const createRegression = action(
         ? colorEncoding.scale
         : `${namespace}RegressionColor`;
 
-    return this
+    let next = this
       .createRegressionData({
         id: dataId,
         source: point.data,
         x,
         y,
         ...(groupBy === undefined ? {} : { groupBy }),
-        confidence: args.confidence ?? 0.95
-      })
-      .createRegressionBand({
+        ...parameters
+      });
+    if (band !== false) {
+      next = next.createRegressionBand({
         id: bandId,
         data: dataId,
         x,
@@ -72,17 +85,18 @@ export const createRegression = action(
         xScale,
         yScale,
         ...band
-      })
-      .createRegressionLine({
-        id: lineId,
-        data: dataId,
-        x,
-        y,
-        ...(groupBy === undefined ? {} : { groupBy, colorScale }),
-        coordinate,
-        xScale,
-        yScale,
-        ...line
       });
+    }
+    return next.createRegressionLine({
+      id: lineId,
+      data: dataId,
+      x,
+      y,
+      ...(groupBy === undefined ? {} : { groupBy, colorScale }),
+      coordinate,
+      xScale,
+      yScale,
+      ...line
+    });
   }
 );

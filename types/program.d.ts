@@ -356,20 +356,66 @@ export type OpacityEncodingOptions =
       scale?: OpacityScaleOptions;
     };
 
-export interface RegressionOptions {
+export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionInterval = "mean" | "prediction";
+
+export interface RegressionBandOptions {
+  color?: string;
+  opacity?: number;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+type RegressionParameterOptions =
+  | {
+      method?: "linear";
+      degree?: never;
+      span?: never;
+      confidence?: number;
+      interval?: RegressionInterval;
+    }
+  | {
+      method: "polynomial";
+      degree?: number;
+      span?: never;
+      confidence?: number;
+      interval?: RegressionInterval;
+    }
+  | {
+      method: "loess";
+      degree?: never;
+      span?: number;
+      confidence?: never;
+      interval?: never;
+    };
+
+export type RegressionDataOptions = {
+  id: string;
+  source?: string;
+  x: string;
+  y: string;
+  groupBy?: string;
+} & RegressionParameterOptions;
+
+type RegressionCommonOptions = {
   target?: string;
   x?: string;
   y?: string;
   groupBy?: string;
-  confidence?: number;
-  band?: {
-    color?: string;
-    opacity?: number;
-    stroke?: string;
-    strokeWidth?: number;
-  };
   line?: { strokeWidth?: number; curve?: CurveInterpolation };
-}
+};
+
+export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
+      band?: false | RegressionBandOptions;
+    })
+  | (Extract<RegressionParameterOptions, { method: "polynomial" }> & {
+      band?: false | RegressionBandOptions;
+    })
+  | (Extract<RegressionParameterOptions, { method: "loess" }> & {
+      band?: false;
+    })
+);
 
 export interface LegendTextOptions {
   offset?: number;
@@ -452,7 +498,7 @@ export class ChartProgram {
   filterData(options: FilterDataOptions): ChartProgram;
   filterMark(options: FilterMarkOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
-  createRegressionData(options: ActionOptions): ChartProgram;
+  createRegressionData(options: RegressionDataOptions): ChartProgram;
 
   createPointMark(options: { id: string; data?: string; shape?: PointShape }): ChartProgram;
   editPointMark(options: { target?: string; shape: PointShape }): ChartProgram;

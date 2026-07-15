@@ -873,14 +873,15 @@ render(program, document.querySelector("#chart").getContext("2d"));
 | --- | --- | --- |
 | `filterMark` | A namespaced immutable dataset derived from `cars`; `points` is rebound | Point scales and geometry are rematerialized |
 | point encodings | Shared x/y, color, size, and shape scales | Typed circles and squares with fixed opacity |
-| `createRegression` | Grouped OLS predictions and three linked layers | Two filled bands and two stroked paths |
+| `createRegression` | Grouped linear predictions and three linked layers | Two filled bands and two stroked paths |
 | `createGuides` | Shared axes, grid, Origin legend, and size legend | One guide set for all compatible layers |
 
 The shortest `createRegression()` call infers its target from the current point
 mark, x/y from its quantitative encodings, and grouping from the unique nominal
 field shared by color and shape. It fails when those choices are ambiguous.
-The interval describes uncertainty around the fitted mean response, not a
-prediction interval for individual cars.
+The default interval describes uncertainty around the fitted mean response.
+Use `interval: "prediction"` for individual observations, or select polynomial
+and LOESS fits through the same action.
 
 ## Key action trace
 
@@ -1631,9 +1632,9 @@ The original dataset and earlier program remain unchanged. Apply the filter
 before creating a derived statistical layer when that statistic should use the
 filtered rows; existing independent layers are not silently rebound.
 
-## `createRegressionData({ id, source?, x, y, groupBy?, confidence? })`
+## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
 
-Create deterministic linear OLS predictions from an existing dataset. This is
+Create deterministic regression predictions from an existing dataset. This is
 an advanced data action used by higher-level regression chart actions.
 
 ```javascript
@@ -1651,14 +1652,19 @@ program.createRegressionData({
 | `source` | existing dataset ID | current dataset |
 | `x`, `y` | finite quantitative field names | required |
 | `groupBy` | nominal field name | one ungrouped model |
-| `confidence` | number strictly between `0` and `1` | `0.95` |
-| `method` | `"linear"` | `"linear"` |
-| `interval` | `"mean"` | `"mean"` |
+| `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
+| `degree` | positive integer for polynomial | `2` |
+| `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
+| `confidence` | number strictly between `0` and `1`; not accepted by LOESS | `0.95` |
+| `interval` | `"mean"` or `"prediction"`; not accepted by LOESS | `"mean"` |
 
-Each group uses at least three rows and must contain varying x values. Output
-uses each observed unique x value in ascending order, the predicted y field,
-and fixed `__regression_ci_lower` / `__regression_ci_upper` fields. Confidence
-bounds use a Student-t mean-response interval. Source values remain unchanged.
+Linear and polynomial fits use stable least squares. Polynomial groups require
+at least `degree + 2` rows and `degree + 1` distinct x values. LOESS uses
+tricube-weighted local-linear fits over `ceil(span * groupSize)` nearest rows,
+with source order breaking distance ties. Output follows group first appearance
+and observed unique x order. Linear and polynomial output includes fixed
+`__regression_ci_lower` / `__regression_ci_upper` fields; LOESS is line-only.
+Source values remain unchanged.
 
 ## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as? })`
 
@@ -1698,7 +1704,7 @@ group's valid sample count. Source values remain unchanged.
 Values must be an array. Dataset IDs are unique, and an existing source dataset
 cannot be replaced or mutated. Filtering requires a current or explicit source
 and does not permit an empty `oneOf` list. Regression rejects missing or
-non-finite fields, groups with fewer than three rows, and constant-x groups.
+non-finite fields, method-specific undersized groups, and constant-x groups.
 Density rejects empty valid input, non-positive bandwidth, degenerate automatic
 extent or bandwidth, invalid output fields, and fewer than two sample steps.
 
@@ -2091,14 +2097,15 @@ combinations are rejected before partial state is authored.
 
 # Regression
 
-`createRegression()` layers a grouped linear fit and mean-response confidence
-band over an existing quantitative point mark.
+`createRegression()` layers grouped linear, polynomial, or LOESS fits over an
+existing quantitative point mark. Linear and polynomial fits can include mean
+or prediction interval bands; LOESS is line-only.
 
 ## At a glance
 
 | Action | Required decision | Inferred or default behavior |
 | --- | --- | --- |
-| `createRegression(options?)` | Nothing when one eligible point layer exists | Target, x, y, grouping, 95% confidence, band and line appearance |
+| `createRegression(options?)` | Nothing when one eligible point layer exists | Target, x, y, grouping, linear method, 95% mean interval, band and line appearance |
 
 ## `createRegression(options?)`
 
@@ -2130,7 +2137,12 @@ program.createRegression({
 | `target` | eligible point mark ID | inferred |
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `undefined` | unique color/shape field |
+| `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
+| `degree` | positive integer for polynomial | `2` |
+| `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `confidence` | number strictly between `0` and `1` | `0.95` |
+| `interval` | `"mean"` or `"prediction"` | `"mean"` |
+| `band` | appearance object or `false` | default band; no band for LOESS |
 | `band.color` | color string | `"#111111"` |
 | `band.opacity` | number from `0` to `1` | `0.18` |
 | `band.stroke` | non-empty color string | no outline |
@@ -2138,12 +2150,27 @@ program.createRegression({
 | `line.strokeWidth` | non-negative finite number | `3` |
 | `line.curve` | supported curve interpolation | `"linear"` |
 
+Choose another model or interval without coordinating its child layers:
+
+```javascript
+points.createRegression({ method: "polynomial", degree: 2 });
+points.createRegression({ method: "loess", span: 0.55 });
+points.createRegression({ interval: "prediction" });
+```
+
+Polynomial degree `1` retains polynomial provenance while producing the same
+fit as linear regression. Prediction intervals include residual uncertainty
+and are therefore at least as wide as matching mean intervals. LOESS does not
+accept `confidence`, `interval`, or a band object; its omitted or `false` band
+produces only the fitted line. Linear and polynomial bands can also be disabled
+with `band: false`.
+
 The action keeps each fitted dataset, band, and line associated with its target
 point mark, so multiple point layers can add independent regressions in one
 program. The exact generated IDs are internal and are not required in ordinary
 chart-authoring code.
 
-Its trace records `createRegressionData`, `createRegressionBand`, and
+Its trace records `createRegressionData`, optional `createRegressionBand`, and
 `createRegressionLine` as meaningful children. See
 [Actions and trace trees](../concepts/actions-and-trace.md) when that
 decomposition matters.
@@ -2170,9 +2197,9 @@ and scales. `stroke: false` removes a band outline.
 
 The action rejects ambiguous point targets, missing quantitative x/y
 encodings, incompatible coordinates or scales, ambiguous nominal grouping,
-invalid confidence values, and groups that cannot support a linear fit. Only
-linear regression with mean-response confidence intervals is currently
-supported. Failed calls leave the earlier immutable program unchanged.
+invalid method-specific parameters, and groups that cannot support the chosen
+fit. Robust LOESS reweighting and LOESS confidence bands are not supported.
+Failed calls leave the earlier immutable program unchanged.
 
 ## Related
 
@@ -4138,7 +4165,7 @@ chart-authoring API does not support that combination.
 | --- | --- |
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable arrays of plain row objects, named filters, grouped linear regression, and grouped kernel-density derivations |
+| Data | Immutable arrays of plain row objects, named filters, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
 | Scales | Linear, UTC time, ordinal position, color, named/direct stroke dash, and padded band-local xOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
@@ -4149,8 +4176,9 @@ chart-authoring API does not support that combination.
 
 ## Current limitations
 
-Polar guide graphics, transforms beyond named filters, linear regression, and density,
-facets, interactive legends, and program composition are not implemented.
+Polar guide graphics, transforms beyond the documented filters, regressions,
+and density derivations, facets, interactive legends, and program composition
+are not implemented.
 Additional title positions, automatic text wrapping, and text measurement are
 also unsupported. Categorical legends support right, bottom, and top placement;
 point composite and size legends currently use the right-side layout.
@@ -4230,12 +4258,14 @@ and rematerialize its scales and connected guides without changing the source.
 ### `createRegressionData`
 
 ```javascript
-createRegressionData({ id, source?, x, y, groupBy?, method?, confidence?, interval? })
+createRegressionData({
+  id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval?
+})
 ```
 
-Create an immutable linear OLS derived dataset at observed unique x values,
-with Student-t mean-response confidence bounds. Source defaults to current
-data; method is `"linear"`, confidence is `0.95`, and interval is `"mean"`.
+Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
+values. Linear and polynomial fits support Student-t mean or prediction bounds;
+LOESS is line-only.
 [Data](../api/data.md)
 
 ### `createDensityData`
@@ -4501,12 +4531,15 @@ defaults to `band: 0.72`; later omission retains the current mode.
 ### `createRegression`
 
 ```javascript
-createRegression({ target?, x?, y?, groupBy?, confidence?, band?, line? })
+createRegression({
+  target?, x?, y?, groupBy?, method?, degree?, span?,
+  confidence?, interval?, band?, line?
+})
 ```
 
-Infer an eligible point layer and create immutable linear-regression data,
-grouped confidence-band paths, and grouped line paths. Confidence defaults to
-`0.95`, band to `{ color: "#111111", opacity: 0.18 }`, and line width to `3`.
+Infer an eligible point layer and create immutable fitted data, optional grouped
+interval-band paths, and grouped line paths. Method defaults to `"linear"`;
+polynomial degree to `2`; LOESS span to `0.75`.
 [Regression](../api/regression.md)
 
 ### `createGuides`
@@ -4791,8 +4824,9 @@ including temporal field types, `mean` aggregation, `strokeDash` encodings,
 scale `nice`/`zero` policies, combined series legends, and chart title text.
 
 Derived dataset primitives may store an immutable `source`, a validated
-`filter` or linear `regression` transform, and materialized `values`. Regression
-transforms currently describe Student-t mean-response intervals. Layer paths
+`filter` or `regression` transform, and materialized `values`. Regression
+transforms support linear, polynomial, or LOESS provenance and optional
+Student-t mean/prediction intervals for linear and polynomial fits. Layer paths
 also support `encoding.y2`, field-driven `encoding.shape`, and scale-free
 `encoding.group` for primitive area and grouped-path contracts. These are
 extension-level building blocks; the corresponding chart-authoring actions are

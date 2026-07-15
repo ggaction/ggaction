@@ -140,7 +140,7 @@ test("validates derived-data transform contracts", () => {
   );
 });
 
-test("accepts planned regression method and interval provenance", () => {
+test("accepts regression method and interval provenance", () => {
   const base = chart().createData({ id: "cars", values: [] });
   const polynomial = base
     .editSemantic({ property: "dataset[quadratic].source", value: "cars" })

@@ -190,23 +190,25 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `x`, `y`: Implemented. 필수 quantitative field 이름이다. finite numeric values가 필요하다.
 - `groupBy`: Implemented. optional field 이름이며 생략 시 하나의 regression을 만든다. 값의 first
   appearance order가 group order다.
-- `method`: Implemented `"linear"`; Planned `"polynomial" | "loess"`. 기본값은 `"linear"`다.
-- `degree`, `span`: Planned method-specific parameter다. polynomial degree 기본값은 `2`, LOESS span
-  기본값은 `0.75`이며 다른 method와 함께 주면 오류다.
+- `method`: Implemented `"linear" | "polynomial" | "loess"`. 기본값은 `"linear"`다.
+- `degree`, `span`: Implemented method-specific parameter다. polynomial degree 기본값은 `2`, LOESS
+  span 기본값은 `0.75`이며 다른 method와 함께 주면 오류다.
 - `confidence`: Implemented. `(0, 1)`의 finite number이며 기본값은 `0.95`다. Student-t
   mean-response confidence bounds의 폭을 바꾼다.
-- `interval`: Implemented `"mean"`; Planned `"prediction"`은 linear/polynomial에서만 허용한다.
+- `interval`: Implemented `"mean" | "prediction"`이며 linear/polynomial에서만 허용한다.
   기본값은 `"mean"`이다. 첫 LOESS 계약에서는 confidence/interval output을 만들지 않는다.
-- Effect: source, fields, grouping, resolved defaults를 transform provenance에 저장하고 observed
-  unique x별 fitted y/lower/upper row를 materialize한다. graphic은 직접 만들지 않는다.
+- Effect: source, fields, grouping과 resolved method defaults를 transform provenance에 저장하고 observed
+  unique x별 fitted row를 materialize한다. Polynomial은 normalized basis의 stable least squares를 사용하고
+  LOESS는 source-order tie를 가진 tricube local-linear neighbors를 사용한다. Linear/polynomial은
+  lower/upper를 만들고 LOESS는 fitted y만 만든다. graphic은 직접 만들지 않는다.
 - Coverage: `test/unit/actions/data/regression-data.test.js`와
   `test/charts/regression-scatterplot/reference-values.test.js`가 grouped/ungrouped 값,
   confidence bounds와 invalid/degenerate groups를 검증한다. 여러 confidence 대표값 coverage는 부분적이다.
 
 ### Formal values — `createRegressionData`
 
-- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName; method?: "linear"; confidence?: UnitIntervalExclusive; interval?: "mean" })`
-- Planned (NOT IMPLEMENTED): `{ method?: "linear" | "polynomial" | "loess"; degree?: PositiveInteger; span?: UnitIntervalExclusiveZero; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" }`; method별 허용 조합은 accepted regression contracts가 제한한다.
+- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero }))`
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createRegressionData`
@@ -214,14 +216,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`, `source`, `x`, `y`, `groupBy`
   - ✅ Covered: inferred/explicit source, grouped/ungrouped, missing fields, non-finite data와 degenerate groups.
 - `method`
-  - ✅ Covered: `"linear"`와 unknown value rejection.
-  - 🟡 Planned: `"polynomial"`, `"loess"`, method-specific degree/span, deterministic provenance/output ordering.
+  - ✅ Covered: all three methods, unknown rejection, degree/span defaults and boundaries, deterministic provenance/output ordering.
 - `confidence`
   - ✅ Covered: default `0.95`, representative explicit value, 0/1/out-of-range rejection.
   - ⚠️ Partial: near-boundary positive values의 numeric stability.
 - `interval`
   - ✅ Covered: `"mean"`과 unknown value rejection.
-  - 🟡 Planned: `"prediction"` for linear/polynomial with residual variance and Student-t bounds.
+  - ✅ Covered: `"prediction"` for linear/polynomial with residual variance and Student-t bounds.
 - Evidence: `test/unit/actions/data/regression-data.test.js`,
   `test/charts/regression-scatterplot/reference-values.test.js`.
 

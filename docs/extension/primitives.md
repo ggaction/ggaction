@@ -42,8 +42,9 @@ including temporal field types, `mean` aggregation, `strokeDash` encodings,
 scale `nice`/`zero` policies, combined series legends, and chart title text.
 
 Derived dataset primitives may store an immutable `source`, a validated
-`filter` or linear `regression` transform, and materialized `values`. Regression
-transforms currently describe Student-t mean-response intervals. Layer paths
+`filter` or `regression` transform, and materialized `values`. Regression
+transforms support linear, polynomial, or LOESS provenance and optional
+Student-t mean/prediction intervals for linear and polynomial fits. Layer paths
 also support `encoding.y2`, field-driven `encoding.shape`, and scale-free
 `encoding.group` for primitive area and grouped-path contracts. These are
 extension-level building blocks; the corresponding chart-authoring actions are

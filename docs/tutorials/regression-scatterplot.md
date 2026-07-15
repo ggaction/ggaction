@@ -65,14 +65,15 @@ render(program, document.querySelector("#chart").getContext("2d"));
 | --- | --- | --- |
 | `filterMark` | A namespaced immutable dataset derived from `cars`; `points` is rebound | Point scales and geometry are rematerialized |
 | point encodings | Shared x/y, color, size, and shape scales | Typed circles and squares with fixed opacity |
-| `createRegression` | Grouped OLS predictions and three linked layers | Two filled bands and two stroked paths |
+| `createRegression` | Grouped linear predictions and three linked layers | Two filled bands and two stroked paths |
 | `createGuides` | Shared axes, grid, Origin legend, and size legend | One guide set for all compatible layers |
 
 The shortest `createRegression()` call infers its target from the current point
 mark, x/y from its quantitative encodings, and grouping from the unique nominal
 field shared by color and shape. It fails when those choices are ambiguous.
-The interval describes uncertainty around the fitted mean response, not a
-prediction interval for individual cars.
+The default interval describes uncertainty around the fitted mean response.
+Use `interval: "prediction"` for individual observations, or select polynomial
+and LOESS fits through the same action.
 
 ## Key action trace
 

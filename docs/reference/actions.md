@@ -76,12 +76,14 @@ and rematerialize its scales and connected guides without changing the source.
 ### `createRegressionData`
 
 ```javascript
-createRegressionData({ id, source?, x, y, groupBy?, method?, confidence?, interval? })
+createRegressionData({
+  id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval?
+})
 ```
 
-Create an immutable linear OLS derived dataset at observed unique x values,
-with Student-t mean-response confidence bounds. Source defaults to current
-data; method is `"linear"`, confidence is `0.95`, and interval is `"mean"`.
+Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
+values. Linear and polynomial fits support Student-t mean or prediction bounds;
+LOESS is line-only.
 [Data](../api/data.md)
 
 ### `createDensityData`
@@ -347,12 +349,15 @@ defaults to `band: 0.72`; later omission retains the current mode.
 ### `createRegression`
 
 ```javascript
-createRegression({ target?, x?, y?, groupBy?, confidence?, band?, line? })
+createRegression({
+  target?, x?, y?, groupBy?, method?, degree?, span?,
+  confidence?, interval?, band?, line?
+})
 ```
 
-Infer an eligible point layer and create immutable linear-regression data,
-grouped confidence-band paths, and grouped line paths. Confidence defaults to
-`0.95`, band to `{ color: "#111111", opacity: 0.18 }`, and line width to `3`.
+Infer an eligible point layer and create immutable fitted data, optional grouped
+interval-band paths, and grouped line paths. Method defaults to `"linear"`;
+polynomial degree to `2`; LOESS span to `0.75`.
 [Regression](../api/regression.md)
 
 ### `createGuides`

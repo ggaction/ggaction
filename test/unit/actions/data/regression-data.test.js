@@ -3,7 +3,10 @@ import test from "node:test";
 
 import { chart } from "../../../../src/ChartProgram.js";
 import {
+  deriveRegression,
   deriveLinearRegression,
+  normalizeRegressionParameters,
+  REGRESSION_LOWER_FIELD,
   studentTCritical
 } from "../../../../src/grammar/regression.js";
 import { createCarsRegressionScatterplotValues } from
@@ -101,7 +104,7 @@ test("validates regression action options and source inference", () => {
     /between 0 and 1/
   );
   assert.throws(
-    () => program.createRegressionData({ id: "fit", x: "x", y: "y", method: "loess" }),
+    () => program.createRegressionData({ id: "fit", x: "x", y: "y", method: "unknown" }),
     /Unsupported regression method/
   );
   assert.throws(
@@ -116,4 +119,216 @@ test("validates regression action options and source inference", () => {
     () => program.createRegressionData({ id: "fit", x: "x", y: "y", extra: true }),
     /Unknown createRegressionData option/
   );
+});
+
+test("derives polynomial, LOESS, and prediction rows from resolved parameters", () => {
+  const expectedPolynomial = createCarsRegressionScatterplotValues(loadCars(), {
+    method: "polynomial",
+    degree: 2
+  });
+  const polynomial = deriveRegression(expectedPolynomial.filteredRows, {
+    x: "Displacement",
+    y: "Acceleration",
+    groupBy: "Origin",
+    method: "polynomial"
+  });
+  assert.deepEqual(polynomial.values, expectedPolynomial.regressionRows);
+  assert.deepEqual(polynomial.parameters, {
+    method: "polynomial",
+    degree: 2,
+    confidence: 0.95,
+    interval: "mean"
+  });
+  assert.deepEqual(
+    polynomial.models.map(model => model.coefficients),
+    expectedPolynomial.models.map(model => model.coefficients)
+  );
+
+  const expectedLoess = createCarsRegressionScatterplotValues(loadCars(), {
+    method: "loess",
+    span: 0.55
+  });
+  const loess = deriveRegression(expectedLoess.filteredRows, {
+    x: "Displacement",
+    y: "Acceleration",
+    groupBy: "Origin",
+    method: "loess",
+    span: 0.55
+  });
+  assert.deepEqual(loess.values, expectedLoess.regressionRows);
+  assert.deepEqual(loess.parameters, { method: "loess", span: 0.55 });
+  assert.deepEqual(loess.models.map(model => model.neighborCount), [140, 44]);
+  assert.equal(loess.fields.lower, undefined);
+
+  const expectedPrediction = createCarsRegressionScatterplotValues(loadCars(), {
+    interval: "prediction"
+  });
+  const prediction = deriveRegression(expectedPrediction.filteredRows, {
+    x: "Displacement",
+    y: "Acceleration",
+    groupBy: "Origin",
+    interval: "prediction"
+  });
+  assert.deepEqual(prediction.values, expectedPrediction.regressionRows);
+});
+
+test("stores method defaults in immutable regression provenance", () => {
+  const source = chart().createData({
+    id: "data",
+    values: [
+      { x: 0, y: 1 },
+      { x: 1, y: 2 },
+      { x: 2, y: 5 },
+      { x: 3, y: 10 }
+    ]
+  });
+  const polynomial = source.createRegressionData({
+    id: "quadratic",
+    x: "x",
+    y: "y",
+    method: "polynomial"
+  });
+  const loess = source.createRegressionData({
+    id: "local",
+    x: "x",
+    y: "y",
+    method: "loess"
+  });
+  const prediction = source.createRegressionData({
+    id: "prediction",
+    x: "x",
+    y: "y",
+    interval: "prediction"
+  });
+
+  assert.deepEqual(polynomial.semanticSpec.datasets[1].transform[0], {
+    type: "regression",
+    method: "polynomial",
+    x: "x",
+    y: "y",
+    degree: 2,
+    confidence: 0.95,
+    interval: "mean"
+  });
+  assert.deepEqual(loess.semanticSpec.datasets[1].transform[0], {
+    type: "regression",
+    method: "loess",
+    x: "x",
+    y: "y",
+    span: 0.75
+  });
+  assert.equal(
+    Object.hasOwn(loess.semanticSpec.datasets[1].values[0], REGRESSION_LOWER_FIELD),
+    false
+  );
+  assert.equal(
+    prediction.semanticSpec.datasets[1].transform[0].interval,
+    "prediction"
+  );
+  assert.equal(source.semanticSpec.datasets.length, 1);
+});
+
+test("validates method-specific regression boundaries and singular groups", () => {
+  assert.deepEqual(normalizeRegressionParameters({ method: "polynomial" }), {
+    method: "polynomial",
+    degree: 2,
+    confidence: 0.95,
+    interval: "mean"
+  });
+  assert.deepEqual(normalizeRegressionParameters({ method: "loess" }), {
+    method: "loess",
+    span: 0.75
+  });
+  for (const options of [
+    { method: "linear", degree: 2 },
+    { method: "linear", span: 0.5 },
+    { method: "polynomial", span: 0.5 },
+    { method: "loess", degree: 2 },
+    { method: "loess", confidence: 0.95 },
+    { method: "loess", interval: "mean" }
+  ]) {
+    assert.throws(() => normalizeRegressionParameters(options), /requires|does not support/);
+  }
+  for (const degree of [0, 1.5, Infinity]) {
+    assert.throws(
+      () => normalizeRegressionParameters({ method: "polynomial", degree }),
+      /positive integer/
+    );
+  }
+  for (const span of [0, -0.1, 1.1, Infinity]) {
+    assert.throws(
+      () => normalizeRegressionParameters({ method: "loess", span }),
+      /greater than zero/
+    );
+  }
+  assert.deepEqual(
+    normalizeRegressionParameters({ method: "loess", span: 1 }),
+    { method: "loess", span: 1 }
+  );
+  assert.deepEqual(
+    normalizeRegressionParameters({ confidence: 1e-6 }),
+    { method: "linear", confidence: 1e-6, interval: "mean" }
+  );
+  assert.throws(
+    () => deriveRegression([
+      { x: 0, y: 0 },
+      { x: 1, y: 1 },
+      { x: 2, y: 4 }
+    ], { x: "x", y: "y", method: "polynomial", degree: 2 }),
+    /at least 4 rows/
+  );
+  assert.throws(
+    () => deriveRegression([
+      { x: 0, y: 0 },
+      { x: 0, y: 1 },
+      { x: 1, y: 2 },
+      { x: 1, y: 3 }
+    ], { x: "x", y: "y", method: "polynomial", degree: 2 }),
+    /3 distinct x values/
+  );
+});
+
+test("keeps polynomial degree one equivalent to linear and supports prediction bounds", () => {
+  const rows = [
+    { x: 0, y: 1 },
+    { x: 1, y: 2.5 },
+    { x: 2, y: 4 },
+    { x: 3, y: 7 }
+  ];
+  const linear = deriveRegression(rows, { x: "x", y: "y" });
+  const degreeOne = deriveRegression(rows, {
+    x: "x",
+    y: "y",
+    method: "polynomial",
+    degree: 1
+  });
+  degreeOne.values.forEach((row, index) => {
+    assert.ok(Math.abs(row.y - linear.values[index].y) < 1e-12);
+  });
+  assert.equal(degreeOne.parameters.method, "polynomial");
+  assert.equal(degreeOne.parameters.degree, 1);
+
+  const mean = deriveRegression(rows, {
+    x: "x",
+    y: "y",
+    method: "polynomial",
+    degree: 2
+  });
+  const prediction = deriveRegression(rows, {
+    x: "x",
+    y: "y",
+    method: "polynomial",
+    degree: 2,
+    interval: "prediction"
+  });
+  for (let index = 0; index < mean.values.length; index += 1) {
+    assert.ok(
+      prediction.values[index][REGRESSION_LOWER_FIELD] <=
+      mean.values[index][REGRESSION_LOWER_FIELD]
+    );
+    assert.ok(
+      prediction.values[index].__regression_ci_upper >=
+      mean.values[index].__regression_ci_upper
+    );
+  }
 });

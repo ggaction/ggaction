@@ -11,6 +11,9 @@ import { assertChartProgramsEquivalent } from
 import {
   createComparisonFilterCarsRegressionScatterplot,
   createComponentEditCarsRegressionScatterplot,
+  createLoessCarsRegressionScatterplot,
+  createPolynomialCarsRegressionScatterplot,
+  createPredictionIntervalCarsRegressionScatterplot,
   createRangeFilterCarsRegressionScatterplot
 } from
   "../../../../examples/cars-regression-scatterplot/program.js";
@@ -172,4 +175,19 @@ test("authors polynomial, LOESS, and prediction targets as raw primitives", () =
   for (const program of [polynomial, loess, prediction]) {
     assert.ok(!program.trace.children.some(node => node.op === "createRegression"));
   }
+});
+
+test("matches regression method primitives with public action flows", () => {
+  assertChartProgramsEquivalent({
+    primitiveProgram: createPolynomialRegressionPrimitives(cars),
+    publicProgram: createPolynomialCarsRegressionScatterplot(cars)
+  });
+  assertChartProgramsEquivalent({
+    primitiveProgram: createLoessRegressionPrimitives(cars),
+    publicProgram: createLoessCarsRegressionScatterplot(cars)
+  });
+  assertChartProgramsEquivalent({
+    primitiveProgram: createPredictionIntervalPrimitives(cars),
+    publicProgram: createPredictionIntervalCarsRegressionScatterplot(cars)
+  });
 });

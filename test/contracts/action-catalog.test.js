@@ -428,9 +428,9 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /selectRows\(\{/);
   assert.match(plannedCorpus, /Extreme value tie는 source order에서 먼저 등장한 row/);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /argmin.*Proposed|argmax.*Proposed/);
-  assert.match(plannedCorpus, /type RegressionMethod = "linear" \| "polynomial" \| "loess"/);
-  assert.match(plannedCorpus, /tricube-weighted local-linear fit/);
-  assert.match(plannedCorpus, /residualVariance \* \(1 \+ leverage\)/);
+  assert.match(currentCorpus, /method\?: "linear"[\s\S]*method: "polynomial"[\s\S]*method: "loess"/);
+  assert.match(currentCorpus, /interval\?: "mean" \| "prediction"/);
+  assert.doesNotMatch(plannedCorpus, /regression method vocabulary|regression prediction interval/);
   assert.doesNotMatch(plannedCorpus, /ordered multi-transform pipeline/);
   assert.match(plannedCorpus, /top x title 기본 rotation은 `0`/);
   assert.match(plannedCorpus, /right y title 기본 rotation은/);

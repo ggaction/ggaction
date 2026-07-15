@@ -9,10 +9,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `x`, `y`: non-empty field names. 생략하면 target의 x/y encoding field를 사용한다.
 - `groupBy`: nominal field 또는 explicit `undefined`. 생략하면 matching color/shape field가 하나일 때
   추론한다. 후보가 둘 이상이면 오류이며 explicit undefined는 ungrouped regression을 요청한다.
-- `method`, `degree`, `span`: Planned regression method contract를 child `createRegressionData`에 전달한다.
+- `method`, `degree`, `span`: Implemented regression method contract를 child `createRegressionData`에 전달한다.
 - `confidence`: `(0, 1)` finite number, 기본값 `0.95`.
-- `interval`: Planned `"mean" | "prediction"`; 기본값은 `"mean"`이며 LOESS에서는 생략해야 한다.
-- `band`: existing style object 또는 Planned `false`. linear/polynomial은 생략 시 band를 만들고,
+- `interval`: Implemented `"mean" | "prediction"`; 기본값은 `"mean"`이며 LOESS에서는 생략해야 한다.
+- `band`: style object 또는 `false`. linear/polynomial은 생략 시 band를 만들고,
   LOESS는 생략/false일 때 band child를 만들지 않으며 object는 오류다.
 - `band.color`: non-empty color string, 기본 theme regression-band color `"#111111"`.
 - `band.opacity`: `[0, 1]` finite number, 기본값 `0.18`.
@@ -28,8 +28,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createRegression`
 
-- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName; confidence?: UnitIntervalExclusive; band?: { color?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite }; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } })`
-- Planned (NOT IMPLEMENTED): `{ method?: "linear" | "polynomial" | "loess"; degree?: PositiveInteger; span?: UnitIntervalExclusiveZero; interval?: "mean" | "prediction"; band?: false | { curve?: CurveInterpolation } }`; method별 허용 조합은 accepted regression contracts가 제한한다.
+- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; span?: UnitIntervalExclusiveZero; band?: false }))`
+- Planned (NOT IMPLEMENTED): `{ band?: { curve?: CurveInterpolation } }` only.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createRegression`
@@ -44,7 +44,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: defaults and representative explicit styles.
   - ⚠️ Partial: color/type and numeric endpoints are mostly child-action validation rather than aggregate direct tests.
 - ✅ Covered: band outline and line curve forwarding through corresponding component actions.
-- 🟡 Planned: polynomial/LOESS method forwarding, linear/polynomial prediction interval, method-specific
+- ✅ Covered: polynomial/LOESS method forwarding, linear/polynomial prediction interval, method-specific
   band creation/opt-out와 child trace hierarchy.
 - Evidence: `test/unit/actions/regression/create-regression.test.js` and regression chart tests.
 

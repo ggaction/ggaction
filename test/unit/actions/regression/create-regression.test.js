@@ -109,6 +109,56 @@ test("records the regression aggregate and component hierarchy", () => {
   ]);
 });
 
+test("orchestrates polynomial, LOESS, prediction, and band opt-out", () => {
+  const polynomial = pointProgram().createRegression({
+    method: "polynomial"
+  });
+  const polynomialTransform = polynomial.semanticSpec.datasets[2].transform[0];
+  assert.deepEqual(polynomialTransform, {
+    type: "regression",
+    method: "polynomial",
+    x: "Displacement",
+    y: "Acceleration",
+    groupBy: "Origin",
+    degree: 2,
+    confidence: 0.95,
+    interval: "mean"
+  });
+  assert.deepEqual(
+    polynomial.trace.children.at(-1).children.map(child => child.op),
+    ["createRegressionData", "createRegressionBand", "createRegressionLine"]
+  );
+
+  const loess = pointProgram().createRegression({ method: "loess" });
+  assert.deepEqual(loess.semanticSpec.datasets[2].transform[0], {
+    type: "regression",
+    method: "loess",
+    x: "Displacement",
+    y: "Acceleration",
+    groupBy: "Origin",
+    span: 0.75
+  });
+  assert.deepEqual(
+    loess.trace.children.at(-1).children.map(child => child.op),
+    ["createRegressionData", "createRegressionLine"]
+  );
+  assert.equal(loess.graphicSpec.objects.pointsRegressionBands, undefined);
+
+  const prediction = pointProgram().createRegression({
+    interval: "prediction"
+  });
+  assert.equal(
+    prediction.semanticSpec.datasets[2].transform[0].interval,
+    "prediction"
+  );
+
+  const noBand = pointProgram().createRegression({ band: false });
+  assert.deepEqual(
+    noBand.trace.children.at(-1).children.map(child => child.op),
+    ["createRegressionData", "createRegressionLine"]
+  );
+});
+
 test("rematerializes every regression layer after Canvas edits", () => {
   const before = pointProgram().createRegression();
   const after = before.editCanvas({ width: 860 });
@@ -121,6 +171,27 @@ test("rematerializes every regression layer after Canvas edits", () => {
     after.graphicSpec.objects.pointsRegressionLines,
     before.graphicSpec.objects.pointsRegressionLines
   );
+});
+
+test("rematerializes method-specific regression consumers after Canvas edits", () => {
+  for (const options of [
+    { method: "polynomial", degree: 2 },
+    { method: "loess", span: 0.55 },
+    { interval: "prediction" }
+  ]) {
+    const before = pointProgram().createRegression(options);
+    const after = before.editCanvas({ width: 860 });
+    assert.notDeepEqual(
+      after.graphicSpec.objects.pointsRegressionLines,
+      before.graphicSpec.objects.pointsRegressionLines
+    );
+    if (before.graphicSpec.objects.pointsRegressionBands !== undefined) {
+      assert.notDeepEqual(
+        after.graphicSpec.objects.pointsRegressionBands,
+        before.graphicSpec.objects.pointsRegressionBands
+      );
+    }
+  }
 });
 
 test("supports explicit ungrouped regression without series encodings", () => {
@@ -221,5 +292,21 @@ test("requires explicit choices for ambiguous targets and groups", () => {
   assert.throws(
     () => pointProgram().createRegression({ line: [] }),
     /Regression line must be a plain object/
+  );
+  assert.throws(
+    () => pointProgram().createRegression({ method: "loess", band: {} }),
+    /does not support a band object/
+  );
+  assert.throws(
+    () => pointProgram().createRegression({ method: "loess", confidence: 0.9 }),
+    /does not support confidence intervals/
+  );
+  assert.throws(
+    () => pointProgram().createRegression({ method: "polynomial", span: 0.5 }),
+    /span requires the loess method/
+  );
+  assert.throws(
+    () => pointProgram().createRegression({ method: "linear", degree: 2 }),
+    /degree requires the polynomial method/
   );
 });
