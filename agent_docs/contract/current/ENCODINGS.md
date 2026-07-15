@@ -61,7 +61,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: inferred/explicit point, line, bar, area targets; missing field, ambiguous/invalid target.
 - `fieldType`
   - ✅ Covered: point quantitative/temporal/ordinal, line/area current matrix, vertical ordinal/temporal bar,
-    horizontal ordinal bar와 unsupported pair rejection.
+    horizontal ordinal/temporal bar와 unsupported pair rejection.
   - ✅ Covered: unsupported mark/type pairs rejection.
 - `coordinate`
   - ✅ Covered: omitted Cartesian default, explicit/reused coordinate, incompatible coordinate rejection.

@@ -274,4 +274,13 @@ test("infers a unique histogram target and rejects ambiguity", () => {
   assert.equal(explicit.semanticSpec.layers[0].encoding.x.field, "Displacement");
   assert.equal(explicit.semanticSpec.layers[1].encoding, undefined);
   assert.equal(ambiguous.semanticSpec.layers[0].encoding, undefined);
+
+  const withoutBar = chart()
+    .createCanvas()
+    .createData({ id: "cars", values });
+  assert.throws(
+    () => withoutBar.encodeHistogram({ field: "Displacement" }),
+    /requires an eligible layer/
+  );
+  assert.deepEqual(withoutBar.semanticSpec.layers, []);
 });

@@ -99,6 +99,37 @@ test("maps temporal and ordinal point positions without rewriting source data", 
   );
 });
 
+test("materializes horizontal bars from temporal string categories", () => {
+  const values = [
+    { date: "1990-08-05", value: 1, group: "A" },
+    { date: "1990-08-05", value: 2, group: "B" },
+    { date: "1997/08/21", value: 3, group: "A" },
+    { date: "1997/08/21", value: 4, group: "B" }
+  ];
+  const program = chart()
+    .createCanvas({
+      width: 500,
+      height: 300,
+      margin: { top: 20, right: 120, bottom: 50, left: 70 }
+    })
+    .createData({ id: "values", values })
+    .createBarMark({ id: "bars" })
+    .encodeX({ field: "value", aggregate: "mean" })
+    .encodeY({ field: "date", fieldType: "temporal" })
+    .encodeColor({ field: "group", layout: "stack" })
+    .encodeBarWidth({ band: 0.72 });
+  const rectangles = program.graphicSpec.objects.bars.children;
+
+  assert.equal(rectangles.length, 4);
+  assert.equal(new Set(rectangles.map(child => child.properties.y)).size, 2);
+  assert.equal(rectangles.every(child => child.properties.height > 0), true);
+  assert.deepEqual(program.semanticSpec.datasets[0].values, values);
+  assert.deepEqual(
+    program.semanticSpec.layers[0].encoding.y,
+    { field: "date", fieldType: "temporal", scale: "y" }
+  );
+});
+
 test("supports explicit targets and scale definitions", () => {
   const program = createPointProgram().encodeX({
     field: "horsepower",

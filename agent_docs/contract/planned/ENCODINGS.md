@@ -44,21 +44,6 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 - Status: Planned, NOT IMPLEMENTED. field/datum exclusivity, constant style boundaries, endpoint
   reassignment, shared scale/coordinate errors, existing appearance action reuse와 rematerialization coverage가 필요하다.
 
-## Implemented grouped-bar reassignment compatibility note
-
-- reassignment에서 `layout`을 생략하면 현재 `"stack" | "group"` 결정을 유지한다. 첫 계약은
-  stack/group 전환을 지원하지 않으며 explicit 다른 layout은 오류다. 전환은 companion 제거와
-  scale cleanup 계약을 별도로 정한 뒤 추가한다.
-- `encodeXOffset` 재호출은 grouped bar의 inner slot field와 ordinal scale binding을 교체한다.
-  color group field와 같아야 하고 stack layout에서는 오류다. 새 domain order는 bar slot과
-  dependent legend order에 함께 반영한다.
-- 같은 scale ID의 policy 변경은 `editScale`, explicit new scale ID는 `createScale`을 wrapped
-  child로 사용한다. 이전 named scale은 자동 삭제하지 않는다.
-- semantic companion actions, scales, mark와 existing legend를 deterministic plan으로
-  rematerialize하며 validation 실패 시 기존 program을 그대로 유지한다.
-- Status: Implemented. Canonical behavior and coverage moved to
-  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodecolor).
-
 ## positional reassignment
 
 - `encodeY2` 재호출은 ranged area의 upper field만 교체하며 existing lower y와 같은 scale,
@@ -82,57 +67,6 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
   path appearance가 유지되어야 한다.
 - Status: Planned, NOT IMPLEMENTED. create/edit/removal, zero width, regression forwarding과
   browser/PNG parity coverage가 필요하다.
-
-## Implemented bar width compatibility note
-
-```typescript
-encodeBarWidth({
-  target?: UserId;
-  band?: UnitIntervalExclusiveZero;
-  pixels?: PositiveFinite;
-}): ChartProgram;
-```
-
-- `band`와 `pixels`는 mutually exclusive다. 첫 assignment에서 둘 다 생략하면 `band: 0.72`를
-  사용한다. reassignment에서 width mode를 생략하면 현재 mode/value를 유지한다.
-- band는 resolved inner slot width의 fraction이라 Canvas resize에 반응한다. pixels는 logical Canvas
-  pixel의 고정 width이며 slot 중앙에 배치되고 output pixelRatio와 무관하다.
-- Group slot 사이의 padding은 `encodeXOffset`이 소유한다. `encodeBarWidth`는 resolved slot 안의
-  실제 bar width만 소유하며 width보다 큰 bar나 명시적 overlap을 전역 오류로 만들지 않는다.
-- 변경 시 xOffset band geometry와 bar x/width를 함께 rematerialize한다. outer x band, category
-  centers와 legend domain order는 유지한다.
-- Status: Implemented. Canonical behavior and coverage moved to
-  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodebarwidth).
-
-## Implemented color layout compatibility note
-
-```typescript
-type ColorLayout =
-  | "stack" | "fill" | "group" | "overlay" | "diverging";
-```
-
-- `encodeColor.layout`이 color series의 graphical arrangement를 소유한다. 다섯 값 모두
-  Implemented이며 canonical parameter와 coverage는 Current contract가 소유한다.
-- `"stack"`은 각 x/category에서 series의 absolute quantitative value를 zero baseline부터
-  누적한다. `"fill"`은 같은 stack partition의 non-negative values를 합계 1로 정규화해 누적하며
-  auto y domain은 `[0, 1]`이다. partition 합계가 0인 위치에는 graphic을 합성하지 않는다.
-- `"group"`은 bar에만 적용하고 wrapped `encodeXOffset`으로 series를 나란히 배치한다. 이것은
-  line/area path를 field별로 나누는 별도 action `encodeGroup`과 다른 개념이다.
-- `"overlay"`는 bar 또는 area series를 같은 baseline과 coordinate에 겹쳐 그린다. series domain의
-  deterministic order를 rendering order로 사용하며 library가 opacity를 임의로 바꾸거나 overlap을
-  오류로 만들지 않는다.
-- `"diverging"`은 stackable bar 또는 area에서 positive values는 zero 위로, negative values는
-  zero 아래로 각각 누적한다. `"center"` streamgraph layout은 Proposed로 유지한다.
-- 첫 구현의 compatibility matrix는 bar에 `"stack" | "fill" | "group" | "overlay" |
-  "diverging"`, area에 `"stack" | "fill" | "overlay" | "diverging"`를 허용한다.
-  point/line에는 layout을 허용하지 않으며 series 분리는 기존 color/group materialization을 사용한다.
-- resolved layout은 semantic color encoding에 저장한다. `"group"`은 xOffset companion, 나머지
-  stack layouts는 y stack policy를 explicit wrapped child action으로 설정한다. y scale, mark geometry,
-  axes와 grids를 deterministic plan으로 rematerialize하고 color scale과 legend domain order는 유지한다.
-- 기존 layout에서 다른 layout으로 재할당하는 전환은 companion 제거, y policy cleanup과 scale
-  conflict를 원자적으로 처리하는 별도 reassignment contract가 구현될 때까지 지원하지 않는다.
-- Status: Implemented. Canonical behavior and coverage moved to
-  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodecolor).
 
 ## Implemented named palette baseline
 
@@ -235,48 +169,6 @@ type ContinuousColorScale = {
 - Status: Planned, NOT IMPLEMENTED. Point quantitative/temporal domains, palettes/ranges, all interpolation
   tokens, policies, gradient legend, rematerialization and renderer parity are Current. This contract now
   contains only the continuous bar consumer and its `unknown` fallback.
-
-## Implemented normalized stack compatibility note
-
-```typescript
-type PlannedStackMode = "normalize";
-```
-
-- `encodeY({ stack: "normalize" })`는 각 x/category partition의 non-negative series 합계를
-  `1`로 정규화하고 zero baseline부터 누적한다. Auto y domain은 `[0, 1]`이다.
-- Partition 합계가 zero이거나 valid value가 없으면 graphic을 합성하지 않는다. Negative values는
-  첫 contract에서 오류이며 diverging normalization은 별도 계약이다.
-- `encodeColor({ layout: "fill" })`은 wrapped y assignment로 이 mode를 사용한다. `fill`과
-  `normalize`는 각각 high-level series layout과 low-level y stack vocabulary다.
-- Stack change는 y scale, mark geometry, axes와 horizontal grid를 atomic하게 rematerialize한다.
-- Centered/silhouette stack과 `encodeColor.layout: "center"`는 streamgraph 계약까지 Proposed다.
-- Status: Implemented. Canonical behavior and coverage moved to
-  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodey).
-
-## Implemented offset padding compatibility note
-
-```typescript
-type UnitIntervalLessThan1 = number; // finite && 0 <= value && value < 1
-
-encodeXOffset({
-  field: FieldName;
-  target?: UserId;
-  paddingInner?: UnitIntervalLessThan1;
-  paddingOuter?: NonNegativeFinite;
-  // existing fieldType and scale options
-}): ChartProgram;
-```
-
-- `paddingInner`은 sibling offset bands 사이 step fraction이며 `[0, 1)`, `paddingOuter`는
-  첫/마지막 band 바깥의 non-negative step fraction이다. 둘의 기본값은 `0`이다.
-- Padding은 group slot의 centers와 bandwidth를 소유한다. `encodeBarWidth`는 각 resolved slot
-  안의 concrete width만 결정하고 padding을 받지 않는다.
-- Explicit offset range와 padding은 함께 사용할 수 있으며 range endpoints는 유지한 채 내부 step과
-  bandwidth를 계산한다. Excessive padding이 zero bandwidth를 만들면 오류다.
-- 변경은 xOffset scale과 dependent bar geometry를 rematerialize하되 outer x band, color domain,
-  legend order를 유지한다.
-- Status: Implemented. Canonical behavior and coverage moved to
-  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodexoffset).
 
 ## Horizontal ranged position
 

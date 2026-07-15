@@ -7,23 +7,23 @@ Phase 3의 모든 variant, numeric policy, cross-feature dependency와 public do
 
 ## 진행 상태
 
-- [ ] 13개 gallery variant metadata, image와 pair state
-- [ ] 모든 primitive/public semantic/graphic/order/Canvas-call equivalence
-- [ ] Bin/count/normalized/diverging independent numeric fixtures
-- [ ] Width/padding/position exact geometry fixtures
-- [ ] Call-order convergence와 Canvas resize
-- [ ] Reassignment target inference, explicit target, no candidate와 ambiguity
-- [ ] Missing/empty/zero/negative/boundary failure matrix
-- [ ] Unsupported layout transition과 shared-scale conflict
-- [ ] Trace hierarchy와 deterministic materialization plan order
-- [ ] Caller input ownership, earlier-program immutability와 atomic failure
-- [ ] Public TypeScript declarations와 package exports
-- [ ] Examples/tutorials/API/recipes/reference/LLM docs freshness
-- [ ] ACTION_INDEX evidence와 Planned → Implemented promotion
-- [ ] Intermediate files와 generated artifact cleanup
-- [ ] Unit, contract, chart, docs, coverage, render와 remote CI
-- [ ] Desktop/mobile gallery browser verification
-- [ ] Roadmap/GOAL/STEP final status, conceptual commit와 push
+- [x] 13개 gallery variant metadata, image와 pair state
+- [x] 모든 primitive/public semantic/graphic/order/Canvas-call equivalence
+- [x] Bin/count/normalized/diverging independent numeric fixtures
+- [x] Width/padding/position exact geometry fixtures
+- [x] Call-order convergence와 Canvas resize
+- [x] Reassignment target inference, explicit target, no candidate와 ambiguity
+- [x] Missing/empty/zero/negative/boundary failure matrix
+- [x] Unsupported layout transition과 shared-scale conflict
+- [x] Trace hierarchy와 deterministic materialization plan order
+- [x] Caller input ownership, earlier-program immutability와 atomic failure
+- [x] Public TypeScript declarations와 package exports
+- [x] Examples/tutorials/API/recipes/reference/LLM docs freshness
+- [x] ACTION_INDEX evidence와 Planned → Implemented promotion
+- [x] Intermediate files와 generated artifact cleanup
+- [x] Unit, contract, chart, docs, coverage, render와 remote CI
+- [x] Desktop/mobile gallery browser verification
+- [x] Roadmap/GOAL/STEP final status, conceptual commit와 push
 
 ## 통합 검증
 
@@ -52,3 +52,11 @@ Planned 상태를 유지한다.
 
 모든 gallery pair와 full verification이 통과하고 Roadmap, GOAL, STEP, current contracts와 generated catalog가
 같은 완료 상태를 나타낸다.
+
+## 완료 증거
+
+- Phase 3 gallery: histogram 5개와 jobs bar 8개, 모두 primitive/public pair와 exact pixel parity.
+- Local suites: `npm test` 648개, `npm run test:render` 178개, source coverage 94.87%.
+- Browser: Chromium 1440×1000과 390×844에서 image load, responsive 2열→1열과 horizontal overflow를 검증했다.
+- Contract: Phase 3의 implemented note를 Current encoding contract로 단일화하고 Planned 중복을 제거했다.
+- Position closeout에서 horizontal temporal category가 실제 rect를 만들도록 회귀를 수정하고 고정 테스트를 추가했다.

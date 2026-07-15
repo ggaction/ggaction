@@ -35,9 +35,6 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     );
   }
 
-  const categoryIndex = new Map(
-    categoryScale.domain.map((value, index) => [value, index])
-  );
   const seriesDomain = colorScale?.domain ?? [undefined];
   const seriesIndex = new Map(
     seriesDomain.map((value, index) => [value, index])
@@ -47,6 +44,13 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     colorScale?.range[index % colorScale.range.length] ?? DEFAULT_BAR_FILL
   ]));
   const cells = deriveBarAggregates(dataset.values, layer).values;
+  const categoryDomain = categoryScale.type === "ordinal"
+    ? categoryScale.domain
+    : [...new Set(cells.map(cell => cell[channels.category]))]
+        .sort((left, right) => left - right);
+  const categoryIndex = new Map(
+    categoryDomain.map((value, index) => [value, index])
+  );
   const cellMap = new Map(cells.map(cell => [
     JSON.stringify([cell[channels.category], cell.color]),
     cell
@@ -58,7 +62,7 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
   const baseline = layout === "overlay" ? measureScale.domain[0] : 0;
   const segments = [];
 
-  for (const category of categoryScale.domain) {
+  for (const category of categoryDomain) {
     const partition = seriesDomain.map(color =>
       cellMap.get(JSON.stringify([category, color]))?.[channels.measure] ?? 0
     );

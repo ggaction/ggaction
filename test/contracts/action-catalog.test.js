@@ -336,10 +336,9 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /op: "quantile"; probability: UnitInterval/);
   assert.match(currentCorpus, /op: "first" \| "last"/);
   assert.match(currentCorpus, /mean ± 1\.96 \* stderr/);
-  assert.match(plannedCorpus, /type ColorLayout =/);
-  assert.match(plannedCorpus, /"stack" \| "fill" \| "group" \| "overlay" \| "diverging"/);
-  assert.match(plannedCorpus, /`"center"` streamgraph layout은 Proposed/);
-  assert.match(plannedCorpus, /별도 action `encodeGroup`과 다른 개념/);
+  assert.match(currentCorpus, /layout\?: "stack" \| "fill" \| "group" \| "overlay" \| "diverging"/);
+  assert.match(currentCorpus, /`"center"`는 Proposed/);
+  assert.match(currentCorpus, /`encodeGroup`과의 distinct ownership/);
   const paletteType = currentCorpus.match(
     /type PaletteName =([\s\S]*?);\n\ntype Palette =/
   )?.[1];
@@ -394,7 +393,19 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.doesNotMatch(currentCorpus, /unit\?: "radius" \| "area"/);
   assert.match(currentCorpus, /## Position field-type compatibility/);
   assert.match(currentCorpus, /Canonical owner: `src\/grammar\/positionCompatibility\.js`/);
-  assert.match(plannedCorpus, /type PlannedStackMode = "normalize"/);
+  assert.match(currentCorpus, /Implemented values `"zero" \| "normalize" \| null`/);
+  for (const heading of [
+    "grouped-bar reassignment",
+    "bar width",
+    "color layout",
+    "normalized stack",
+    "offset padding"
+  ]) {
+    assert.doesNotMatch(
+      plannedCorpus,
+      new RegExp(`## Implemented ${heading} compatibility note`)
+    );
+  }
   assert.match(currentCorpus, /paddingOuter\?: NonNegativeFinite/);
   assert.match(plannedCorpus, /encodeX2\(\{/);
   assert.match(plannedCorpus, /encodeXRange\(\{/);

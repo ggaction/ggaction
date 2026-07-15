@@ -122,8 +122,8 @@ diverging  positive와 negative를 zero 양쪽에 따로 누적
 - Vertical bar: `ordinal | temporal x + quantitative y`.
 - Horizontal bar: `quantitative x + ordinal | temporal y`.
 - Orientation은 compatible completed channel pair에서 infer하고 별도 mark option으로 중복 저장하지 않는다.
-- Temporal은 compatible `time | utc`, ordinal position은 compatible `ordinal | band | point`, quantitative는
-  compatible continuous scale만 허용한다.
+- 현재 temporal position은 `time`, ordinal position은 `ordinal`, quantitative position은 `linear` scale을
+  사용한다. `utc`, `band`, `point`와 transformed continuous scale은 Phase 10의 planned vocabulary다.
 - Aggregate, bin, stack, ranged channel과 mark grain은 general matrix를 더 좁힐 수 있다.
 - Unsupported pair를 다른 field type으로 자동 변환하지 않는다.
 - Point, line과 area의 accepted position matrix는 exhaustive unit/contract coverage를 가지며 PNG는 vertical
