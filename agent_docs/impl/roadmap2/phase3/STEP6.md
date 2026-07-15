@@ -7,18 +7,18 @@ Fixed-pixel width, xOffset padding과 grouped field reassignment의 final slot/r
 
 ## 진행 상태
 
-- [ ] `width-pixels` primitive와 logical 14px reference
-- [ ] `offset-padding` inner/outer band reference
-- [ ] `group-reassignment` three-job subset reference
-- [ ] Outer x band와 inner slot center/bandwidth fixtures
-- [ ] Color/xOffset matching domain과 first-appearance order
-- [ ] Missing group cell omission
-- [ ] Existing legend title/style preservation target
-- [ ] Expanded target chain metadata
-- [ ] Browser와 2× primitive PNG 생성
+- [x] `width-pixels` primitive와 logical 14px reference
+- [x] `offset-padding` inner/outer band reference
+- [x] `group-reassignment` three-job subset reference
+- [x] Outer x band와 inner slot center/bandwidth fixtures
+- [x] Color/xOffset matching domain과 first-appearance order
+- [x] Missing group cell omission
+- [x] Existing legend title/style preservation target
+- [x] Expanded target chain metadata
+- [x] Browser와 2× primitive PNG 생성
 - [ ] Gate C 사용자 visual confirmation
 - [ ] Feedback 반영과 primitive 재확인
-- [ ] STEP status, conceptual commit와 push
+- [x] STEP status, conceptual commit와 push
 
 ## Primitive 원칙
 
@@ -27,6 +27,15 @@ Fixed-pixel width, xOffset padding과 grouped field reassignment의 final slot/r
 - Group reassignment primitive는 final matching color/xOffset field만 저장하고 invalid intermediate state를
   표현하지 않는다.
 - Primitive는 future padding, pixels 또는 reassignment behavior를 호출하지 않는다.
+
+## Gate C 대상
+
+- `width-pixels`: 15개 year × `men → women`, 모든 rect의 logical width `14`.
+- `offset-padding`: `paddingInner: 0.2`, `paddingOuter: 0.1`, offset step `16.666…`, bandwidth
+  `13.333…`, final band width `9.6`. Baseline slot center는 유지한다.
+- `group-reassignment`: first-appearance order `Actor → Agent → Author`인 90-row subset, 45개 observed
+  rect, color/xOffset matching domain과 explicit `Occupation` legend title을 유지한다.
+- 세 결과는 720×460 logical Canvas와 1440×920 PNG를 사용하며 gallery browser console 오류가 없다.
 
 ## 완료 조건
 

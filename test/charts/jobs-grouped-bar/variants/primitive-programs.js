@@ -10,3 +10,21 @@ export function createDivergingLayoutPrimitives(jobs) {
     layout: "diverging"
   });
 }
+
+export function createFixedPixelWidthPrimitives(jobs) {
+  return createJobsGroupedBarPrimitives(jobs, { pixels: 14 });
+}
+
+export function createOffsetPaddingPrimitives(jobs) {
+  return createJobsGroupedBarPrimitives(jobs, {
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  });
+}
+
+export function createGroupReassignmentPrimitives(jobs) {
+  return createJobsGroupedBarPrimitives(jobs, {
+    groupField: "job",
+    legendTitle: "Occupation"
+  });
+}

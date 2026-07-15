@@ -9,6 +9,9 @@ import { defineVisualVariant } from "../../../support/visual-variants.js";
 import { createJobsGroupedBarPrimitives } from "../primitive.program.js";
 import {
   createDivergingLayoutPrimitives,
+  createFixedPixelWidthPrimitives,
+  createGroupReassignmentPrimitives,
+  createOffsetPaddingPrimitives,
   createOverlayLayoutPrimitives
 } from "./primitive-programs.js";
 
@@ -17,6 +20,10 @@ export const signedJobs = Object.freeze(jobs.map(row => Object.freeze({
   ...row,
   signedPerc: row.sex === "women" ? -Math.abs(row.perc) : Math.abs(row.perc)
 })));
+const REASSIGNMENT_JOBS = Object.freeze(["Actor", "Agent", "Author"]);
+export const reassignmentJobs = Object.freeze(jobs.filter(row =>
+  REASSIGNMENT_JOBS.includes(row.job)
+));
 
 const shared = Object.freeze({
   chart: "jobs-grouped-bar",
@@ -114,4 +121,89 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   .createGuides();`,
   primitive: createDivergingLayoutPrimitives(signedJobs),
   userFacing: createJobsDivergingBar(signedJobs)
+}), defineVisualVariant({
+  ...shared,
+  variant: "width-pixels",
+  title: "Fixed 14px Bar Width",
+  callChain: `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 40, right: 140, bottom: 70, left: 80 }
+  })
+  .createData({ id: "jobs", values: rows })
+  .createBarMark({ id: "bars" })
+  .encodeX({ field: "year", fieldType: "ordinal" })
+  .encodeY({
+    field: "perc",
+    aggregate: "mean",
+    scale: { nice: true, zero: false }
+  })
+  .encodeColor({
+    field: "sex",
+    layout: "group",
+    scale: { palette: "tableau10" }
+  })
+  .encodeBarWidth({ pixels: 14 })
+  .createGuides();`,
+  primitive: createFixedPixelWidthPrimitives(jobs)
+}), defineVisualVariant({
+  ...shared,
+  variant: "offset-padding",
+  title: "Grouped Bar Offset Padding",
+  callChain: `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 40, right: 140, bottom: 70, left: 80 }
+  })
+  .createData({ id: "jobs", values: rows })
+  .createBarMark({ id: "bars" })
+  .encodeX({ field: "year", fieldType: "ordinal" })
+  .encodeY({
+    field: "perc",
+    aggregate: "mean",
+    scale: { nice: true, zero: false }
+  })
+  .encodeColor({
+    field: "sex",
+    layout: "group",
+    scale: { palette: "tableau10" }
+  })
+  .encodeXOffset({
+    field: "sex",
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  })
+  .encodeBarWidth({ band: 0.72 })
+  .createGuides();`,
+  primitive: createOffsetPaddingPrimitives(jobs)
+}), defineVisualVariant({
+  ...shared,
+  colors: ["#4c78a8", "#f58518", "#e45756"],
+  variant: "group-reassignment",
+  title: "Grouped Field Reassignment",
+  callChain: `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 40, right: 140, bottom: 70, left: 80 }
+  })
+  .createData({ id: "jobs", values: rows })
+  .createBarMark({ id: "bars" })
+  .encodeX({ field: "year", fieldType: "ordinal" })
+  .encodeY({
+    field: "perc",
+    aggregate: "mean",
+    scale: { nice: true, zero: false }
+  })
+  .encodeColor({
+    field: "sex",
+    layout: "group",
+    scale: { palette: "tableau10" }
+  })
+  .encodeBarWidth({ band: 0.72 })
+  .createGuides({ legend: { title: "Occupation" } })
+  .encodeColor({ field: "job", layout: "group" });`,
+  primitive: createGroupReassignmentPrimitives(reassignmentJobs)
 })]);

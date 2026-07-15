@@ -4,7 +4,16 @@ import { createJobsGroupedBarValues } from "./reference-values.js";
 
 export function createJobsGroupedBarPrimitives(
   jobs,
-  { field = "perc", layout = "group" } = {}
+  {
+    field = "perc",
+    layout = "group",
+    groupField = "sex",
+    band = 0.72,
+    pixels,
+    paddingInner = 0,
+    paddingOuter = 0,
+    legendTitle = groupField
+  } = {}
 ) {
   const width = 720;
   const height = 460;
@@ -13,9 +22,14 @@ export function createJobsGroupedBarPrimitives(
     width,
     height,
     margin,
-    band: 0.72,
+    band,
+    pixels,
+    paddingInner,
+    paddingOuter,
     field,
-    layout
+    layout,
+    groupField,
+    legendTitle
   });
   const { x: xAxis, y: yAxis } = values.axes;
   const xTickPositions = xAxis.ticks.map(tick => tick.position);
@@ -48,7 +62,10 @@ export function createJobsGroupedBarPrimitives(
       value: layout === "diverging" ? "zero" : null
     })
     .editSemantic({ property: "layer[bars].encoding.y.scale", value: "y" })
-    .editSemantic({ property: "layer[bars].encoding.color.field", value: "sex" })
+    .editSemantic({
+      property: "layer[bars].encoding.color.field",
+      value: groupField
+    })
     .editSemantic({
       property: "layer[bars].encoding.color.fieldType",
       value: "nominal"
@@ -67,7 +84,7 @@ export function createJobsGroupedBarPrimitives(
     program = program
     .editSemantic({
       property: "layer[bars].encoding.xOffset.field",
-      value: "sex"
+      value: groupField
     })
     .editSemantic({
       property: "layer[bars].encoding.xOffset.fieldType",
@@ -116,7 +133,10 @@ export function createJobsGroupedBarPrimitives(
       value: "main"
     })
     .editSemantic({ property: "guide.legend.color.scale", value: "color" })
-    .editSemantic({ property: "guide.legend.color.title", value: "sex" })
+    .editSemantic({
+      property: "guide.legend.color.title",
+      value: legendTitle
+    })
     .editGraphics({ target: "bars", property: "length", value: values.rects.length })
     .editGraphics({
       target: "bars",
@@ -306,7 +326,7 @@ export function createJobsGroupedBarPrimitives(
     .editGraphics({
       target: "colorLegendLabels",
       property: "text",
-      value: legendItems.map(item => item.sex)
+      value: legendItems.map(item => item.label)
     })
     .editGraphics({ target: "colorLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "colorLegendLabels", property: "fontSize", value: 12 })

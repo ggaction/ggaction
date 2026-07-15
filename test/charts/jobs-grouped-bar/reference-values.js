@@ -1,6 +1,14 @@
-const COLORS = ["#4c78a8", "#f58518"];
+const COLORS = ["#4c78a8", "#f58518", "#e45756"];
 
-function requireLayout({ width, height, margin, band }) {
+function requireLayout({
+  width,
+  height,
+  margin,
+  band,
+  pixels,
+  paddingInner,
+  paddingOuter
+}) {
   if (!Number.isFinite(width) || width <= 0) {
     throw new TypeError("Grouped bar layout requires a positive finite width.");
   }
@@ -16,8 +24,17 @@ function requireLayout({ width, height, margin, band }) {
   ) {
     throw new TypeError("Grouped bar layout requires four non-negative margins.");
   }
-  if (!Number.isFinite(band) || band <= 0 || band > 1) {
+  if (pixels === undefined && (!Number.isFinite(band) || band <= 0 || band > 1)) {
     throw new RangeError("Grouped bar band must be greater than 0 and at most 1.");
+  }
+  if (pixels !== undefined && (!Number.isFinite(pixels) || pixels <= 0)) {
+    throw new RangeError("Grouped bar pixels must be a positive finite number.");
+  }
+  if (!Number.isFinite(paddingInner) || paddingInner < 0 || paddingInner >= 1) {
+    throw new RangeError("Offset paddingInner must be from 0 (inclusive) to 1 (exclusive).");
+  }
+  if (!Number.isFinite(paddingOuter) || paddingOuter < 0) {
+    throw new RangeError("Offset paddingOuter must be a non-negative finite number.");
   }
 
   const bounds = {
@@ -32,7 +49,7 @@ function requireLayout({ width, height, margin, band }) {
   return bounds;
 }
 
-function normalizeRows(jobs, field) {
+function normalizeRows(jobs, field, groupField) {
   if (!Array.isArray(jobs)) {
     throw new TypeError("Jobs must be an array.");
   }
@@ -41,8 +58,8 @@ function normalizeRows(jobs, field) {
     typeof row === "object" &&
     Number.isFinite(row.year) &&
     Number.isFinite(row[field]) &&
-    typeof row.sex === "string" &&
-    row.sex.length > 0
+    typeof row[groupField] === "string" &&
+    row[groupField].length > 0
   );
 }
 
@@ -82,29 +99,37 @@ function mapValue(value, domain, range) {
   return range[0] + ratio * (range[1] - range[0]);
 }
 
-function aggregateMeans(rows, years, sexes, field) {
-  const groups = new Map();
+function aggregateMeans(rows, years, groups, field, groupField) {
+  const aggregates = new Map();
   for (const row of rows) {
-    const key = JSON.stringify([row.year, row.sex]);
-    const group = groups.get(key) ?? { sum: 0, count: 0 };
+    const key = JSON.stringify([row.year, row[groupField]]);
+    const group = aggregates.get(key) ?? { sum: 0, count: 0 };
     group.sum += row[field];
     group.count += 1;
-    groups.set(key, group);
+    aggregates.set(key, group);
   }
 
   const cells = [];
   for (const year of years) {
-    for (const sex of sexes) {
-      const group = groups.get(JSON.stringify([year, sex]));
+    for (const groupValue of groups) {
+      const group = aggregates.get(JSON.stringify([year, groupValue]));
       if (group === undefined) continue;
-      cells.push({ year, sex, mean: group.sum / group.count, count: group.count });
+      cells.push({
+        year,
+        group: groupValue,
+        [groupField]: groupValue,
+        mean: group.sum / group.count,
+        count: group.count
+      });
     }
   }
   return cells;
 }
 
-function formatTick(value) {
-  return value === 0 ? "0" : value.toFixed(3);
+function formatTick(value, step) {
+  if (value === 0) return "0";
+  const digits = Math.max(3, Math.ceil(-Math.log10(step)));
+  return value.toFixed(digits);
 }
 
 export function createJobsGroupedBarValues(
@@ -114,46 +139,65 @@ export function createJobsGroupedBarValues(
     height,
     margin,
     band = 0.72,
+    pixels,
+    paddingInner = 0,
+    paddingOuter = 0,
     field = "perc",
-    layout = "group"
+    layout = "group",
+    groupField = "sex",
+    legendTitle = groupField
   }
 ) {
-  const bounds = requireLayout({ width, height, margin, band });
+  const bounds = requireLayout({
+    width,
+    height,
+    margin,
+    band,
+    pixels,
+    paddingInner,
+    paddingOuter
+  });
   if (typeof field !== "string" || field.length === 0) {
     throw new TypeError("Bar reference field must be a non-empty string.");
   }
   if (!["group", "overlay", "diverging"].includes(layout)) {
     throw new Error(`Unsupported bar reference layout "${layout}".`);
   }
-  const validJobs = normalizeRows(jobs, field);
+  if (typeof groupField !== "string" || groupField.length === 0) {
+    throw new TypeError("Bar reference groupField must be a non-empty string.");
+  }
+  const validJobs = normalizeRows(jobs, field, groupField);
   if (validJobs.length === 0) {
     throw new Error("Grouped bar chart requires at least one valid job row.");
   }
 
   const years = unique(validJobs.map(row => row.year));
-  const sexes = unique(validJobs.map(row => row.sex));
-  const cells = aggregateMeans(validJobs, years, sexes, field);
+  const groups = unique(validJobs.map(row => row[groupField]));
+  const cells = aggregateMeans(validJobs, years, groups, field, groupField);
   const xRange = [bounds.x, bounds.x + bounds.width];
   const yRange = [bounds.y + bounds.height, bounds.y];
   const categoryWidth = bounds.width / years.length;
-  const slotWidth = categoryWidth / sexes.length;
-  const groupedWidth = slotWidth * band;
+  const offsetStep = categoryWidth /
+    Math.max(1, groups.length - paddingInner + paddingOuter * 2);
+  const offsetBandwidth = offsetStep * (1 - paddingInner);
+  const offsetStart = offsetStep * paddingOuter;
+  const groupedWidth = pixels ?? offsetBandwidth * band;
   const sharedWidth = categoryWidth * band;
   const partitions = new Map();
 
   for (const year of years) {
     let positive = 0;
     let negative = 0;
-    for (const sex of sexes) {
+    for (const groupValue of groups) {
       const cell = cells.find(candidate =>
-        candidate.year === year && candidate.sex === sex
+        candidate.year === year && candidate.group === groupValue
       );
       if (cell === undefined) continue;
       const stackStart = cell.mean >= 0 ? positive : negative;
       const stackEnd = stackStart + cell.mean;
       if (cell.mean >= 0) positive = stackEnd;
       else negative = stackEnd;
-      partitions.set(JSON.stringify([year, sex]), { stackStart, stackEnd });
+      partitions.set(JSON.stringify([year, groupValue]), { stackStart, stackEnd });
     }
   }
 
@@ -171,14 +215,14 @@ export function createJobsGroupedBarValues(
     .filter(cell => layout !== "diverging" || cell.mean !== 0)
     .map(cell => {
       const yearIndex = years.indexOf(cell.year);
-      const sexIndex = sexes.indexOf(cell.sex);
+      const groupIndex = groups.indexOf(cell.group);
       const isGrouped = layout === "group";
       const width = isGrouped ? groupedWidth : sharedWidth;
       const x = isGrouped
-        ? bounds.x + yearIndex * categoryWidth + sexIndex * slotWidth +
-          (slotWidth - width) / 2
+        ? bounds.x + yearIndex * categoryWidth + offsetStart +
+          groupIndex * offsetStep + (offsetBandwidth - width) / 2
         : bounds.x + yearIndex * categoryWidth + (categoryWidth - width) / 2;
-      const partition = partitions.get(JSON.stringify([cell.year, cell.sex]));
+      const partition = partitions.get(JSON.stringify([cell.year, cell.group]));
       const start = layout === "diverging"
         ? partition.stackStart
         : baselineValue;
@@ -194,7 +238,7 @@ export function createJobsGroupedBarValues(
         y: Math.min(startPosition, endPosition),
         width,
         height: Math.abs(startPosition - endPosition),
-        fill: COLORS[sexIndex % COLORS.length]
+        fill: COLORS[groupIndex % COLORS.length]
       };
     });
 
@@ -206,11 +250,11 @@ export function createJobsGroupedBarValues(
   const yTicks = yScale.ticks.map(value => ({
     value,
     position: mapValue(value, yScale.domain, yRange),
-    label: formatTick(value)
+    label: formatTick(value, yScale.step)
   }));
   const legendX = bounds.x + bounds.width + 30;
-  const legendItems = sexes.map((sex, index) => ({
-    sex,
+  const legendItems = groups.map((group, index) => ({
+    label: group,
     color: COLORS[index % COLORS.length],
     x: legendX,
     y: bounds.y + 46 + index * 28,
@@ -224,9 +268,11 @@ export function createJobsGroupedBarValues(
     validJobs,
     bounds,
     field,
+    groupField,
     layout,
     years,
-    sexes,
+    groups,
+    ...(groupField === "sex" ? { sexes: groups } : {}),
     cells,
     rects,
     scales: {
@@ -234,14 +280,17 @@ export function createJobsGroupedBarValues(
       ...(layout === "group"
         ? {
             xOffset: {
-              domain: sexes,
+              domain: groups,
               range: [0, categoryWidth],
-              bandwidth: slotWidth
+              step: offsetStep,
+              bandwidth: offsetBandwidth,
+              paddingInner,
+              paddingOuter
             }
           }
         : {}),
       y: { domain: yScale.domain, range: yRange, step: yScale.step },
-      color: { domain: sexes, range: COLORS.slice(0, sexes.length) }
+      color: { domain: groups, range: groups.map((_, index) => COLORS[index % COLORS.length]) }
     },
     grid: {
       horizontal: yTicks.map(tick => ({
@@ -285,7 +334,7 @@ export function createJobsGroupedBarValues(
       }
     },
     legend: {
-      title: { x: legendX, y: bounds.y + 20, text: "sex" },
+      title: { x: legendX, y: bounds.y + 20, text: legendTitle },
       items: legendItems
     }
   };
