@@ -1,28 +1,25 @@
-import test from "node:test";
-
 import { createCarsRegressionScatterplot } from
   "../../../examples/cars-regression-scatterplot/program.js";
 import { loadCars } from "../../support/data.js";
-import { assertRenderedPNG } from "../../support/png.js";
+import {
+  defineVisualVariant,
+  registerVisualVariantTests
+} from "../../support/visual-variants.js";
 import { createCarsRegressionScatterplotPrimitives } from
   "./primitive.program.js";
 
-test("renders public and primitive regression scatterplots at 2x", async () => {
-  const cars = loadCars();
-  for (const [name, program] of [
-    ["cars-regression-scatterplot", createCarsRegressionScatterplot(cars)],
-    [
-      "cars-regression-scatterplot-primitives",
-      createCarsRegressionScatterplotPrimitives(cars)
-    ]
-  ]) {
-    await assertRenderedPNG(program, {
-      name,
-      width: 760,
-      height: 480,
-      pixelRatio: 2,
-      colors: ["#4c78a8", "#f58518"],
-      minimumInkPixels: 1000
-    });
-  }
-});
+const cars = loadCars();
+
+registerVisualVariantTests([defineVisualVariant({
+  chart: "cars-regression-scatterplot",
+  variant: "baseline",
+  title: "Cars Regression Scatterplot",
+  callChain: "createCarsRegressionScatterplot(rows)",
+  primitive: createCarsRegressionScatterplotPrimitives(cars),
+  userFacing: createCarsRegressionScatterplot(cars),
+  width: 760,
+  height: 480,
+  colors: ["#4c78a8", "#f58518"],
+  regions: [{ name: "plot", x: 80, y: 40, width: 490, height: 370, minimumInkPixels: 200 }],
+  artifact: false
+})]);

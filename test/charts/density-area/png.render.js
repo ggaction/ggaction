@@ -1,25 +1,24 @@
-import test from "node:test";
-
 import { createCarsDensityArea } from
   "../../../examples/cars-density-area/program.js";
 import { loadCars } from "../../support/data.js";
-import { assertRenderedPNG } from "../../support/png.js";
-import { createCarsDensityAreaPrimitives } from
-  "./primitive.program.js";
+import {
+  defineVisualVariant,
+  registerVisualVariantTests
+} from "../../support/visual-variants.js";
+import { createCarsDensityAreaPrimitives } from "./primitive.program.js";
 
-test("renders the public and primitive density area charts at 2x", async () => {
-  const cars = loadCars();
-  for (const [name, program] of [
-    ["cars-density-area", createCarsDensityArea(cars)],
-    ["cars-density-area-primitives", createCarsDensityAreaPrimitives(cars)]
-  ]) {
-    await assertRenderedPNG(program, {
-      name,
-      width: 720,
-      height: 500,
-      pixelRatio: 2,
-      colors: ["#4c78a8", "#f58518", "#e45756"],
-      minimumInkPixels: 1000
-    });
-  }
-});
+const cars = loadCars();
+
+registerVisualVariantTests([defineVisualVariant({
+  chart: "cars-density-area",
+  variant: "baseline",
+  title: "Cars Density Area",
+  callChain: "createCarsDensityArea(rows)",
+  primitive: createCarsDensityAreaPrimitives(cars),
+  userFacing: createCarsDensityArea(cars),
+  width: 720,
+  height: 500,
+  colors: ["#4c78a8", "#f58518", "#e45756"],
+  regions: [{ name: "plot", x: 80, y: 130, width: 600, height: 300, minimumInkPixels: 200 }],
+  artifact: false
+})]);

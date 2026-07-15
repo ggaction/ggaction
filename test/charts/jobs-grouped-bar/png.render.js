@@ -1,22 +1,23 @@
-import test from "node:test";
-
 import { createJobsGroupedBar } from "../../../examples/jobs-grouped-bar/program.js";
 import { loadJobs } from "../../support/data.js";
-import { assertRenderedPNG } from "../../support/png.js";
+import {
+  defineVisualVariant,
+  registerVisualVariantTests
+} from "../../support/visual-variants.js";
 import { createJobsGroupedBarPrimitives } from "./primitive.program.js";
 
 const jobs = loadJobs();
 
-test("renders the public and primitive grouped bars with visible categories", async () => {
-  for (const [name, program] of [
-    ["jobs-grouped-bar", createJobsGroupedBar(jobs)],
-    ["jobs-grouped-bar-primitives", createJobsGroupedBarPrimitives(jobs)]
-  ]) {
-    await assertRenderedPNG(program, {
-      name,
-      width: 720,
-      height: 460,
-      colors: ["#4c78a8", "#f58518"]
-    });
-  }
-});
+registerVisualVariantTests([defineVisualVariant({
+  chart: "jobs-grouped-bar",
+  variant: "baseline",
+  title: "Jobs Grouped Bar",
+  callChain: "createJobsGroupedBar(rows)",
+  primitive: createJobsGroupedBarPrimitives(jobs),
+  userFacing: createJobsGroupedBar(jobs),
+  width: 720,
+  height: 460,
+  colors: ["#4c78a8", "#f58518"],
+  regions: [{ name: "plot", x: 80, y: 40, width: 500, height: 350, minimumInkPixels: 200 }],
+  artifact: false
+})]);

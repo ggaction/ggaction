@@ -1290,6 +1290,14 @@ horizontal overflow, console/page error를 검증한다.
 chart directory의 `png.render.js`에 두고 생성물은 source tree 밖의
 `.artifacts/test/png/`에 쓴다.
 
+Roadmap 2 variant는 `variants/manifest.js`가 primitive/public program, 표시 call chain,
+Canvas 크기와 visual region 기대값을 한 번만 소유한다. `png.render.js`는 공통 runner에 이
+manifest를 등록한다. Runner는 variant별 subtest로 양쪽 PNG를 독립 생성하고, plot region의
+최소 ink를 검사하며, 같은 backend 실행에서 decode한 RGBA hash가 정확히 같은지 비교한다.
+또한 표시 call chain의 action 순서가 public program의 top-level trace와 일치해야 한다.
+이는 OS 간 PNG byte snapshot을 요구하지 않으면서도 legend 한 조각만 남은 잘못된 chart가
+전체-image 색상 검사만으로 통과하는 것을 막는다.
+
 일반 test는 `.test.js`, 고비용 renderer regression은 `.render.js` suffix를 사용한다.
 Package script는 Node 기반 collector로 suite directory를 재귀 탐색하여 깊어진 capability
 directory도 누락하지 않고, support module이나 executable program은 test로 선택하지 않는다.
