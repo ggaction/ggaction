@@ -10,6 +10,12 @@ immutable `ChartProgram`. This page covers the methods declared on the public
 `ChartProgram` type. Additional wrapped operations may appear inside a trace;
 those are implementation steps, not supported direct-call APIs.
 
+Each action entry starts with its callable signature and a concise observable
+effect. Follow the linked API page for required values, defaults and inference,
+semantic and graphic effects, rematerialization, and errors. Chart-authoring
+actions are the recommended workflow; advanced and extension actions are
+available when that workflow does not express the required control.
+
 ## Quick navigation
 
 - [Chart authoring](#chart-authoring-api)
@@ -357,18 +363,94 @@ Create a chart title and optional subtitle. [Titles](../api/titles.md)
 
 Use these actions for explicit semantic resources or focused axis control.
 
-| Group | Actions |
-| --- | --- |
-| Coordinate | `createCoordinate({ id?, type?, layers? })` |
-| Derived data | `createDerivedData({ id, source, transform })` |
-| Regression layers | `createRegressionBand({ id, ... })`, `createRegressionLine({ id, ... })` |
-| Complete channel axis | `createXAxis(options?)`, `createYAxis(options?)` |
-| Axis lines | `createXAxisLine`, `createYAxisLine`, `editXAxisLine`, `editYAxisLine` |
-| Axis ticks | `createXAxisTicks`, `createYAxisTicks`, `editXAxisTicks`, `editYAxisTicks` |
-| Axis labels | `createXAxisLabels`, `createYAxisLabels`, `editXAxisLabels`, `editYAxisLabels` |
-| Tick/label groups | `createXAxisTicksAndLabels`, `createYAxisTicksAndLabels`, `editXAxisTicksAndLabels`, `editYAxisTicksAndLabels` |
-| Axis titles | `createXAxisTitle`, `createYAxisTitle`, `editXAxisTitle`, `editYAxisTitle` |
-| Grid directions | `createHorizontalGrid`, `createVerticalGrid` |
+### Semantic resources and regression layers
+
+```javascript
+createCoordinate({ id?, type?, layers? })
+createDerivedData({ id, source, transform })
+createRegressionBand({
+  id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
+  color?, opacity?
+})
+createRegressionLine({
+  id, data, x, y, groupBy?, coordinate, xScale, yScale,
+  colorScale?, strokeWidth?
+})
+```
+
+These actions explicitly author named semantic resources or the component
+layers normally owned by `createRegression`.
+
+### Complete single-channel axes
+
+```javascript
+createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
+createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
+```
+
+### Axis lines, ticks, and labels
+
+```javascript
+createXAxisLine({ scale?, position?, color?, lineWidth? })
+createYAxisLine({ scale?, position?, color?, lineWidth? })
+editXAxisLine({ position?, color?, lineWidth? })
+editYAxisLine({ position?, color?, lineWidth? })
+
+createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
+createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
+editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
+editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
+
+createXAxisLabels({
+  scale?, position?, count?, values?, offset?, format?, color?,
+  fontSize?, fontFamily?, fontWeight?
+})
+createYAxisLabels({
+  scale?, position?, count?, values?, offset?, format?, color?,
+  fontSize?, fontFamily?, fontWeight?
+})
+editXAxisLabels({
+  position?, count?, values?, offset?, format?, color?,
+  fontSize?, fontFamily?, fontWeight?
+})
+editYAxisLabels({
+  position?, count?, values?, offset?, format?, color?,
+  fontSize?, fontFamily?, fontWeight?
+})
+```
+
+### Tick/label groups and axis titles
+
+```javascript
+createXAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })
+createYAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })
+editXAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
+editYAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
+
+createXAxisTitle({
+  text?, scale?, position?, at?, offset?, rotation?, color?,
+  fontSize?, fontFamily?, fontWeight?
+})
+createYAxisTitle({
+  text?, scale?, position?, at?, offset?, rotation?, color?,
+  fontSize?, fontFamily?, fontWeight?
+})
+editXAxisTitle({
+  text?, position?, at?, offset?, rotation?, color?,
+  fontSize?, fontFamily?, fontWeight?
+})
+editYAxisTitle({
+  text?, position?, at?, offset?, rotation?, color?,
+  fontSize?, fontFamily?, fontWeight?
+})
+```
+
+### Directional grids
+
+```javascript
+createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
+createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
+```
 
 See [Coordinates](../api/coordinates.md) and
 [Advanced axis components](../advanced/axis-components.md).

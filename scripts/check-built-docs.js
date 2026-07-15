@@ -45,9 +45,25 @@ assert.equal(htmlFiles.length > 40, true, "Expected the complete documentation s
 for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
   assert.doesNotMatch(html, /{{|{%/, `${file} contains unrendered Liquid.`);
+  assert.equal((html.match(/<h1(?:\s|>)/g) ?? []).length, 1, `${file} must have one h1`);
+  assert.equal((html.match(/<main(?:\s|>)/g) ?? []).length, 1, `${file} must have one main`);
+  const ids = [...html.matchAll(/\sid=["']([^"']+)["']/g)].map(match => match[1]);
+  assert.equal(new Set(ids).size, ids.length, `${file} contains duplicate ids`);
+  for (const image of html.matchAll(/<img\b([^>]*)>/g)) {
+    assert.match(image[1], /\balt=["'][^"']+["']/, `${file} has an image without alt text`);
+  }
   for (const match of html.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) {
     await assertTarget(file, match[1]);
   }
+}
+
+const searchIndex = JSON.parse(await readFile(path.join(siteRoot, "search-index.json"), "utf8"));
+assert.equal(searchIndex.length > 40, true, "Expected every titled page in search.");
+assert.equal(new Set(searchIndex.map(entry => entry.url)).size, searchIndex.length);
+for (const entry of searchIndex) {
+  assert.equal(typeof entry.title === "string" && entry.title.length > 0, true);
+  assert.equal(typeof entry.url === "string" && entry.url.length > 0, true);
+  assert.equal(typeof entry.html === "string" && entry.html.length > 0, true);
 }
 
 for (const expected of [

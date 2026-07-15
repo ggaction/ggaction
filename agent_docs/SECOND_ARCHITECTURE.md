@@ -1295,6 +1295,11 @@ build하며, browser는 search focus 시점에 index를 lazy-load하고 section 
 표시한다. Heading permalink, code copy, code/table local-overflow affordance와 명시적 image
 dimensions/lazy loading은 공통 content script와 style이 소유하며 개별 Markdown page가
 동작을 복제하지 않는다.
+Documentation contract는 모든 Markdown의 front matter, 단일 H1과 heading hierarchy,
+repository source link의 local target, raw image dimensions/alt/loading을 검사한다. Built
+HTML은 추가로 단일 main/H1, unique IDs, image alt와 unique search URLs를 검증한다.
+Canonical action reference의 chart/advanced/extension section은 각 declared direct method의
+call signature를 정확히 한 section에서만 소유해야 한다.
 
 ### Render regression
 

@@ -70,6 +70,28 @@ function declaredProgramMethods() {
     .filter(name => name !== "constructor");
 }
 
+function markdownWithoutCodeFences(markdown) {
+  return markdown.replace(/```[\s\S]*?```/g, "");
+}
+
+function referenceSection(reference, heading, nextHeading) {
+  const start = reference.indexOf(`## ${heading}`);
+  assert.notEqual(start, -1, heading);
+  const end = nextHeading === undefined
+    ? reference.length
+    : reference.indexOf(`## ${nextHeading}`, start + 1);
+  assert.notEqual(end, -1, nextHeading);
+  return reference.slice(start, end);
+}
+
+function documentedCalls(markdown) {
+  const code = [...markdown.matchAll(/```[^\n]*\n([\s\S]*?)```|`([^`]+)`/g)]
+    .map(match => match[1] ?? match[2])
+    .join("\n");
+  return new Set([...code.matchAll(/\b([A-Za-z][A-Za-z0-9]*)\s*\(/g)]
+    .map(match => match[1]));
+}
+
 test("keeps every local Markdown link and anchor valid", async () => {
   const markdownFiles = [
     path.join(root, "README.md"),
@@ -114,6 +136,48 @@ test("keeps navigation and page order complete", async () => {
   assert.equal((layout.match(/class="docs-topnav"[\s\S]*?<\/nav>/)?.[0]
     .match(/<a /g) ?? []).length, 4);
   assert.match(layout, /'\/recipes\/' \| relative_url/);
+});
+
+test("keeps every Markdown page structurally readable", async () => {
+  const pages = (await files(docsRoot)).filter(file => file.endsWith(".md"));
+  for (const file of pages) {
+    const markdown = readFileSync(file, "utf8");
+    const frontMatter = markdown.match(/^---\n([\s\S]*?)\n---\n/);
+    assert.notEqual(frontMatter, null, `${file} front matter`);
+    assert.match(frontMatter[1], /^layout: default$/m, `${file} layout`);
+    assert.match(frontMatter[1], /^title: .+$/m, `${file} title`);
+    const visible = markdownWithoutCodeFences(markdown);
+    const headings = [...visible.matchAll(/^(#{1,6})\s+(.+)$/gm)];
+    assert.equal(headings.filter(match => match[1].length === 1).length, 1, file);
+    let previous = 0;
+    for (const heading of headings) {
+      const level = heading[1].length;
+      assert.equal(previous === 0 || level <= previous + 1, true, `${file}: ${heading[2]}`);
+      previous = level;
+    }
+  }
+});
+
+test("keeps repository source links and raw images verifiable", async () => {
+  const pages = (await files(docsRoot)).filter(file => file.endsWith(".md"));
+  for (const file of pages) {
+    const markdown = readFileSync(file, "utf8");
+    for (const match of markdown.matchAll(
+      /https:\/\/github\.com\/hj-n\/ggaction\/(?:blob|tree)\/main\/([^ )#]+)/g
+    )) {
+      assert.equal(
+        existsSync(path.join(root, decodeURIComponent(match[1]))),
+        true,
+        `${file} links to missing repository path ${match[1]}`
+      );
+    }
+    for (const match of markdown.matchAll(/<img\b([^>]*)>/g)) {
+      assert.match(match[1], /\balt="[^"]+"/, `${file} image alt`);
+      assert.match(match[1], /\bwidth="\d+"/, `${file} image width`);
+      assert.match(match[1], /\bheight="\d+"/, `${file} image height`);
+      assert.match(match[1], /\bloading="(?:eager|lazy)"/, `${file} image loading`);
+    }
+  }
 });
 
 test("keeps tutorial action flows aligned with public examples", () => {
@@ -291,6 +355,19 @@ test("classifies every declared ChartProgram action in the reference", () => {
   assert.match(reference, /^## Extension API$/m);
   assert.match(reference, /^## Internal trace operations$/m);
   assert.match(reference, /absent from the public TypeScript\s+declaration/);
+
+  const sections = [
+    referenceSection(reference, "Chart Authoring API", "Advanced Chart API"),
+    referenceSection(reference, "Advanced Chart API", "Extension API"),
+    referenceSection(reference, "Extension API", "Internal trace operations")
+  ].map(documentedCalls);
+  for (const method of methods) {
+    assert.equal(
+      sections.filter(section => section.has(method)).length,
+      1,
+      `${method} must have one canonical reference section`
+    );
+  }
 });
 
 test("keeps concise and full LLM documentation synchronized", async () => {

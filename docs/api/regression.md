@@ -8,6 +8,14 @@ title: Regression
 `createRegression()` layers a grouped linear fit and mean-response confidence
 band over an existing quantitative point mark.
 
+## At a glance
+
+| Action | Required decision | Inferred or default behavior |
+| --- | --- | --- |
+| `createRegression(options?)` | Nothing when one eligible point layer exists | Target, x, y, grouping, 95% confidence, band and line appearance |
+
+## `createRegression(options?)`
+
 ```javascript
 const program = points.createRegression();
 ```
@@ -45,6 +53,14 @@ Its trace records `createRegressionData`, `createRegressionBand`, and
 `createRegressionLine` as meaningful children. See
 [Actions and trace trees](../concepts/actions-and-trace.md) when that
 decomposition matters.
+
+## Errors and limitations
+
+The action rejects ambiguous point targets, missing quantitative x/y
+encodings, incompatible coordinates or scales, ambiguous nominal grouping,
+invalid confidence values, and groups that cannot support a linear fit. Only
+linear regression with mean-response confidence intervals is currently
+supported. Failed calls leave the earlier immutable program unchanged.
 
 ## Related
 
