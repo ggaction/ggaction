@@ -13,9 +13,18 @@ import {
   renderRuleGeometryPrimitives
 } from "./primitive.program.js";
 import {
+  createExplicitIntervalPrimitives,
+  createHorizontalErrorBarPrimitives,
+  createStyledCapsPrimitives
+} from "./gate-c.program.js";
+import {
   ERROR_BAR_COLOR,
+  ERROR_BAR_VARIANT_STYLE,
+  createExplicitIntervalReferenceValues,
   createEncodedLayerInferenceReferenceValues,
   createErrorBarReferenceValues,
+  createHorizontalErrorBarReferenceValues,
+  createStyledErrorBarReferenceValues,
   createRuleGeometryReferenceValues
 } from "./reference-values.js";
 import { loadCars } from "../../support/data.js";
@@ -246,4 +255,90 @@ test("authors an inferred error-bar overlay from an encoded point layer", () => 
   const ops = program.trace.children.map(node => node.op);
   assert.equal(ops.includes("createIntervalData"), false);
   assert.equal(ops.includes("createErrorBar"), false);
+});
+
+test("authors horizontal x/x2 intervals with vertical fixed caps", () => {
+  const cars = loadCars();
+  const values = createHorizontalErrorBarReferenceValues(cars);
+  const program = createHorizontalErrorBarPrimitives(cars);
+  const [main, lowerCap, upperCap] = program.semanticSpec.layers;
+
+  assert.deepEqual(Object.keys(main.encoding), [
+    "y", "x", "x2", "strokeDash", "opacity"
+  ]);
+  assert.equal(main.encoding.x.field, "__errorBar_lower");
+  assert.equal(main.encoding.x2.field, "__errorBar_upper");
+  assert.equal(main.encoding.y.field, "Origin");
+  assert.deepEqual([lowerCap.id, upperCap.id], [
+    "errorBarLowerCap", "errorBarUpperCap"
+  ]);
+  assert.deepEqual(program.semanticSpec.guides.grid, {
+    vertical: { scale: "x", coordinate: "main" }
+  });
+  for (const [id, expected] of [
+    ["errorBar", values.mainRules],
+    ["errorBarLowerCap", values.lowerCaps],
+    ["errorBarUpperCap", values.upperCaps]
+  ]) {
+    assert.deepEqual(
+      program.graphicSpec.objects[id].children.map(child => child.properties),
+      expected.map(line => ({
+        ...line,
+        stroke: ERROR_BAR_COLOR,
+        strokeWidth: 2,
+        strokeDash: [],
+        opacity: 1
+      }))
+    );
+  }
+});
+
+test("authors explicit interval fields without derived data or stale cap objects", () => {
+  const cars = loadCars();
+  const values = createExplicitIntervalReferenceValues(cars);
+  const program = createExplicitIntervalPrimitives(cars);
+  const [main] = program.semanticSpec.layers;
+
+  assert.equal(program.semanticSpec.datasets.length, 1);
+  assert.deepEqual(program.semanticSpec.datasets[0].values, values.sourceRows);
+  assert.equal(program.semanticSpec.datasets[0].transform, undefined);
+  assert.equal(main.data, "data");
+  assert.equal(main.encoding.y.field, "lowerAcceleration");
+  assert.equal(main.encoding.y2.field, "upperAcceleration");
+  assert.deepEqual(program.semanticSpec.layers.map(layer => layer.id), ["errorBar"]);
+  assert.equal(program.graphicSpec.objects.errorBarLowerCap, undefined);
+  assert.equal(program.graphicSpec.objects.errorBarUpperCap, undefined);
+  assert.equal(program.graphicSpec.order.includes("errorBarLowerCap"), false);
+  assert.equal(program.graphicSpec.order.includes("errorBarUpperCap"), false);
+});
+
+test("authors custom cap size and one constant appearance across all rules", () => {
+  const cars = loadCars();
+  const values = createStyledErrorBarReferenceValues(cars);
+  const program = createStyledCapsPrimitives(cars);
+
+  for (const [id, expected] of [
+    ["errorBar", values.mainRules],
+    ["errorBarLowerCap", values.lowerCaps],
+    ["errorBarUpperCap", values.upperCaps]
+  ]) {
+    assert.deepEqual(
+      program.graphicSpec.objects[id].children.map(child => child.properties),
+      expected.map(line => ({
+        ...line,
+        stroke: ERROR_BAR_VARIANT_STYLE.stroke,
+        strokeWidth: ERROR_BAR_VARIANT_STYLE.strokeWidth,
+        strokeDash: [...ERROR_BAR_VARIANT_STYLE.strokeDash],
+        opacity: ERROR_BAR_VARIANT_STYLE.opacity
+      }))
+    );
+  }
+  for (const programFactory of [
+    createHorizontalErrorBarPrimitives,
+    createExplicitIntervalPrimitives,
+    createStyledCapsPrimitives
+  ]) {
+    const ops = programFactory(cars).trace.children.map(node => node.op);
+    assert.equal(ops.includes("createErrorBar"), false);
+  }
 });

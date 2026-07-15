@@ -109,9 +109,11 @@ export const ENCODED_LAYER_POINT_RADIUS = 3;
 export const ENCODED_LAYER_POINT_OPACITY = 0.18;
 
 const T_975 = new Map([
+  [70, 1.994437111771186],
   [253, 1.9693848042198945],
   [72, 1.9934635666618716],
-  [78, 1.9908470688116904]
+  [78, 1.9908470688116904],
+  [249, 1.9695368676395824]
 ]);
 
 function tCritical(degreesOfFreedom, confidence) {
@@ -298,5 +300,162 @@ export function createEncodedLayerInferenceReferenceValues(cars) {
     mainRules,
     lowerCaps,
     upperCaps
+  });
+}
+
+export const ERROR_BAR_VARIANT_STYLE = Object.freeze({
+  stroke: "#d9485f",
+  strokeWidth: 3,
+  strokeDash: Object.freeze([8, 4]),
+  opacity: 0.8,
+  capSize: 16
+});
+
+function createHorizontalAxes(bounds, categories, domain) {
+  const tickValues = Object.freeze([70, 80, 90, 100, 110, 120, 130]);
+  const categoryStep = (bounds.bottom - bounds.top) / categories.length;
+  const categoryPositions = Object.freeze(categories.map(
+    (_, index) => bounds.top + categoryStep * (index + 0.5)
+  ));
+  const quantitativePositions = Object.freeze(tickValues.map(value =>
+    map(value, domain, [bounds.left, bounds.right])
+  ));
+  return Object.freeze({
+    x: Object.freeze({
+      line: Object.freeze({
+        x1: bounds.left,
+        y1: bounds.bottom,
+        x2: bounds.right,
+        y2: bounds.bottom
+      }),
+      values: tickValues,
+      positions: quantitativePositions,
+      title: Object.freeze({ x: (bounds.left + bounds.right) / 2, y: 432 })
+    }),
+    y: Object.freeze({
+      line: Object.freeze({
+        x1: bounds.left,
+        y1: bounds.bottom,
+        x2: bounds.left,
+        y2: bounds.top
+      }),
+      values: categories,
+      positions: categoryPositions,
+      title: Object.freeze({ x: 28, y: (bounds.top + bounds.bottom) / 2 })
+    })
+  });
+}
+
+export function createHorizontalErrorBarReferenceValues(cars) {
+  const statistics = freezeRows(createMeanConfidenceIntervalReference(cars, {
+    field: "Horsepower",
+    groupBy: "Origin",
+    confidence: 0.95,
+    criticalValue: tCritical
+  }));
+  const rows = freezeRows(statistics.map(row => ({
+    Origin: row.Origin,
+    [ERROR_BAR_FIELDS.center]: stableNumber(row.mean),
+    [ERROR_BAR_FIELDS.lower]: stableNumber(row.lower),
+    [ERROR_BAR_FIELDS.upper]: stableNumber(row.upper)
+  })));
+  const bounds = Object.freeze({
+    left: ERROR_BAR_LAYOUT.margin.left,
+    right: ERROR_BAR_LAYOUT.width - ERROR_BAR_LAYOUT.margin.right,
+    top: ERROR_BAR_LAYOUT.margin.top,
+    bottom: ERROR_BAR_LAYOUT.height - ERROR_BAR_LAYOUT.margin.bottom
+  });
+  const yDomain = Object.freeze(rows.map(row => row.Origin));
+  const xDomain = Object.freeze([70, 130]);
+  const axes = createHorizontalAxes(bounds, yDomain, xDomain);
+  const x = value => map(value, xDomain, [bounds.left, bounds.right]);
+  const mainRules = freezeRows(rows.map((row, index) => ({
+    x1: x(row[ERROR_BAR_FIELDS.lower]),
+    y1: axes.y.positions[index],
+    x2: x(row[ERROR_BAR_FIELDS.upper]),
+    y2: axes.y.positions[index]
+  })));
+  const lowerCaps = freezeRows(mainRules.map(rule => ({
+    x1: rule.x1,
+    y1: rule.y1 - ERROR_BAR_LAYOUT.capSize / 2,
+    x2: rule.x1,
+    y2: rule.y1 + ERROR_BAR_LAYOUT.capSize / 2
+  })));
+  const upperCaps = freezeRows(mainRules.map(rule => ({
+    x1: rule.x2,
+    y1: rule.y2 - ERROR_BAR_LAYOUT.capSize / 2,
+    x2: rule.x2,
+    y2: rule.y2 + ERROR_BAR_LAYOUT.capSize / 2
+  })));
+  const grid = freezeRows(axes.x.positions.map(position => ({
+    x1: position,
+    y1: bounds.top,
+    x2: position,
+    y2: bounds.bottom
+  })));
+
+  return Object.freeze({
+    statistics,
+    rows,
+    transform: Object.freeze({
+      type: "interval",
+      field: "Horsepower",
+      groupBy: Object.freeze(["Origin"]),
+      center: "mean",
+      extent: "ci",
+      level: 0.95,
+      as: ERROR_BAR_FIELDS
+    }),
+    bounds,
+    xDomain,
+    yDomain,
+    axes,
+    grid,
+    mainRules,
+    lowerCaps,
+    upperCaps
+  });
+}
+
+export function createExplicitIntervalReferenceValues(cars) {
+  const baseline = createErrorBarReferenceValues(cars);
+  const rows = freezeRows(baseline.rows.map(row => ({
+    Origin: row.Origin,
+    meanAcceleration: row[ERROR_BAR_FIELDS.center],
+    lowerAcceleration: row[ERROR_BAR_FIELDS.lower],
+    upperAcceleration: row[ERROR_BAR_FIELDS.upper]
+  })));
+
+  return Object.freeze({
+    ...baseline,
+    sourceRows: rows,
+    rows,
+    fields: Object.freeze({
+      center: "meanAcceleration",
+      lower: "lowerAcceleration",
+      upper: "upperAcceleration"
+    }),
+    lowerCaps: Object.freeze([]),
+    upperCaps: Object.freeze([])
+  });
+}
+
+export function createStyledErrorBarReferenceValues(cars) {
+  const baseline = createErrorBarReferenceValues(cars);
+  const { capSize } = ERROR_BAR_VARIANT_STYLE;
+  return Object.freeze({
+    ...baseline,
+    lowerCaps: freezeRows(baseline.mainRules.map(rule => ({
+      x1: rule.x1 - capSize / 2,
+      y1: rule.y1,
+      x2: rule.x1 + capSize / 2,
+      y2: rule.y1
+    }))),
+    upperCaps: freezeRows(baseline.mainRules.map(rule => ({
+      x1: rule.x2 - capSize / 2,
+      y1: rule.y2,
+      x2: rule.x2 + capSize / 2,
+      y2: rule.y2
+    })))
   });
 }

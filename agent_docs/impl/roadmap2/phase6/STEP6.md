@@ -7,15 +7,15 @@ primitive targets로 고정한다.
 
 ## 진행 상태
 
-- [ ] Horizontal mean Horsepower CI primitive using y/x/x2
-- [ ] Explicit center/lower/upper interval primitive without derived data
-- [ ] `caps: false` stale-cap absence and drawing order
-- [ ] Custom cap size/stroke/width/dash/opacity primitive
-- [ ] Independent numeric/geometry reference values
-- [ ] Three variant metadata chains and 2× primitive PNGs
+- [x] Horizontal mean Horsepower CI primitive using y/x/x2
+- [x] Explicit center/lower/upper interval primitive without derived data
+- [x] `caps: false` stale-cap absence and drawing order
+- [x] Custom cap size/stroke/width/dash/opacity primitive
+- [x] Independent numeric/geometry reference values
+- [x] Three variant metadata chains and 2× primitive PNGs
 - [ ] Gate C user visual confirmation
 - [ ] Feedback revision and reconfirmation when needed
-- [ ] STEP status, conceptual commit and push
+- [x] STEP status, conceptual commit and push
 
 ## Gate C
 

@@ -4,9 +4,13 @@ import test from "node:test";
 import { loadCars } from "../../support/data.js";
 import {
   ERROR_BAR_LAYOUT,
+  ERROR_BAR_VARIANT_STYLE,
   RULE_GEOMETRY_LAYOUT,
+  createExplicitIntervalReferenceValues,
   createEncodedLayerInferenceReferenceValues,
   createErrorBarReferenceValues,
+  createHorizontalErrorBarReferenceValues,
+  createStyledErrorBarReferenceValues,
   createRuleGeometryReferenceValues
 } from "./reference-values.js";
 
@@ -139,4 +143,68 @@ test("maps the encoded point layer and inferred interval through shared scales",
       [580, 251.8880379901, 580, 236.2493941979]
     ]
   );
+});
+
+test("locks horizontal Horsepower intervals and perpendicular caps", () => {
+  const values = createHorizontalErrorBarReferenceValues(loadCars());
+
+  assert.deepEqual(values.statistics.map(row => [row.Origin, row.count]), [
+    ["USA", 250],
+    ["Europe", 71],
+    ["Japan", 79]
+  ]);
+  assert.deepEqual(values.xDomain, [70, 130]);
+  assert.deepEqual(values.yDomain, ["USA", "Europe", "Japan"]);
+  assert.deepEqual(values.axes.x.values, [70, 80, 90, 100, 110, 120, 130]);
+  assert.deepEqual(values.axes.y.positions, [140, 240, 340]);
+  assert.deepEqual(
+    values.mainRules.map(rule =>
+      [rule.x1, rule.y1, rule.x2, rule.y2].map(value => Number(value.toFixed(10)))
+    ),
+    [
+      [529.1873227515, 140, 628.8126772485, 140],
+      [140.7353506028, 240, 239.2646493972, 240],
+      [138.4415992765, 340, 218.267261483, 340]
+    ]
+  );
+  for (const cap of [...values.lowerCaps, ...values.upperCaps]) {
+    assert.equal(cap.x1, cap.x2);
+    assert.equal(cap.y2 - cap.y1, ERROR_BAR_LAYOUT.capSize);
+  }
+});
+
+test("keeps explicit interval rows independent from transform state and caps", () => {
+  const values = createExplicitIntervalReferenceValues(loadCars());
+
+  assert.deepEqual(Object.keys(values.sourceRows[0]), [
+    "Origin",
+    "meanAcceleration",
+    "lowerAcceleration",
+    "upperAcceleration"
+  ]);
+  assert.deepEqual(values.fields, {
+    center: "meanAcceleration",
+    lower: "lowerAcceleration",
+    upper: "upperAcceleration"
+  });
+  assert.deepEqual(values.lowerCaps, []);
+  assert.deepEqual(values.upperCaps, []);
+});
+
+test("locks styled caps at sixteen pixels without changing interval geometry", () => {
+  const baseline = createErrorBarReferenceValues(loadCars());
+  const values = createStyledErrorBarReferenceValues(loadCars());
+
+  assert.deepEqual(values.mainRules, baseline.mainRules);
+  assert.deepEqual(ERROR_BAR_VARIANT_STYLE, {
+    stroke: "#d9485f",
+    strokeWidth: 3,
+    strokeDash: [8, 4],
+    opacity: 0.8,
+    capSize: 16
+  });
+  for (const cap of [...values.lowerCaps, ...values.upperCaps]) {
+    assert.equal(cap.y1, cap.y2);
+    assert.equal(cap.x2 - cap.x1, ERROR_BAR_VARIANT_STYLE.capSize);
+  }
 });

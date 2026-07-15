@@ -6,6 +6,11 @@ import {
   createRuleGeometryPrimitives
 } from "../primitive.program.js";
 import {
+  createExplicitIntervalPrimitives,
+  createHorizontalErrorBarPrimitives,
+  createStyledCapsPrimitives
+} from "../gate-c.program.js";
+import {
   createEncodedLayerInferenceProgram,
   createErrorBarProgram,
   createRuleGeometryProgram
@@ -108,6 +113,67 @@ const encodedLayerInferenceCallChain = `chart()
     subtitle: "Observations and 95% mean confidence intervals"
   });`;
 
+const horizontalCallChain = `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 90, right: 40, bottom: 70, left: 80 }
+  })
+  .createData({ values: cars })
+  .createErrorBar({
+    x: { field: "Horsepower" },
+    y: { field: "Origin", fieldType: "nominal" }
+  })
+  .createGuides()
+  .createTitle({
+    text: "Mean Horsepower by Origin",
+    subtitle: "95% confidence intervals"
+  });`;
+
+const explicitIntervalCallChain = `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 90, right: 40, bottom: 70, left: 80 }
+  })
+  .createData({ values: originAccelerationIntervals })
+  .createErrorBar({
+    x: { field: "Origin", fieldType: "nominal" },
+    y: {
+      center: "meanAcceleration",
+      lower: "lowerAcceleration",
+      upper: "upperAcceleration"
+    },
+    caps: false
+  })
+  .createGuides()
+  .createTitle({
+    text: "Explicit Acceleration Intervals",
+    subtitle: "Existing lower and upper fields; caps disabled"
+  });`;
+
+const styledCapsCallChain = `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 90, right: 40, bottom: 70, left: 80 }
+  })
+  .createData({ values: cars })
+  .createErrorBar({
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration" },
+    capSize: 16,
+    stroke: "#d9485f",
+    strokeWidth: 3,
+    strokeDash: [8, 4],
+    opacity: 0.8
+  })
+  .createGuides()
+  .createTitle({
+    text: "Styled Acceleration Intervals",
+    subtitle: "16px caps with custom rule appearance"
+  });`;
+
 export const visualVariants = Object.freeze([
   defineVisualVariant({
     chart: "cars-error-bar",
@@ -147,6 +213,45 @@ export const visualVariants = Object.freeze([
     width: ERROR_BAR_LAYOUT.width,
     height: ERROR_BAR_LAYOUT.height,
     colors: [ERROR_BAR_COLOR],
+    regions: [
+      { name: "plot", x: 80, y: 90, width: 600, height: 300 }
+    ]
+  }),
+  defineVisualVariant({
+    chart: "cars-error-bar",
+    variant: "horizontal",
+    title: "Horizontal Horsepower Error Bars",
+    callChain: horizontalCallChain,
+    primitive: createHorizontalErrorBarPrimitives(loadCars()),
+    width: ERROR_BAR_LAYOUT.width,
+    height: ERROR_BAR_LAYOUT.height,
+    colors: [ERROR_BAR_COLOR],
+    regions: [
+      { name: "plot", x: 80, y: 90, width: 600, height: 300 }
+    ]
+  }),
+  defineVisualVariant({
+    chart: "cars-error-bar",
+    variant: "explicit-interval",
+    title: "Explicit Error-Bar Intervals",
+    callChain: explicitIntervalCallChain,
+    primitive: createExplicitIntervalPrimitives(loadCars()),
+    width: ERROR_BAR_LAYOUT.width,
+    height: ERROR_BAR_LAYOUT.height,
+    colors: [ERROR_BAR_COLOR],
+    regions: [
+      { name: "plot", x: 80, y: 90, width: 600, height: 300 }
+    ]
+  }),
+  defineVisualVariant({
+    chart: "cars-error-bar",
+    variant: "styled-caps",
+    title: "Styled Error-Bar Caps",
+    callChain: styledCapsCallChain,
+    primitive: createStyledCapsPrimitives(loadCars()),
+    width: ERROR_BAR_LAYOUT.width,
+    height: ERROR_BAR_LAYOUT.height,
+    colors: ["#e16d7f"],
     regions: [
       { name: "plot", x: 80, y: 90, width: 600, height: 300 }
     ]
