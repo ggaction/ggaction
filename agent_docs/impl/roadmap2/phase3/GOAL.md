@@ -18,7 +18,7 @@ compatibility를 구현한다.
 - [x] Histogram bin/reassignment primitive 승인과 public implementation
 - [x] Normalized stack/color layout primitive 승인과 public implementation
 - [x] Bar width/padding/reassignment primitive 승인과 public implementation
-- [ ] Position compatibility primitive 승인과 public implementation
+- [x] Position compatibility primitive 승인과 public implementation
 - [ ] Full parameter, failure, immutability와 rematerialization matrix
 - [ ] Public docs, contract 승격과 Phase closeout
 
