@@ -21,6 +21,16 @@ export const SCALED_ENCODING_CHANNELS = Object.freeze(
 
 export const POSITION_CHANNELS = Object.freeze(["x", "y"]);
 
+export const COLOR_LAYOUTS = Object.freeze([
+  "stack",
+  "fill",
+  "group",
+  "overlay",
+  "diverging"
+]);
+
+export const STACK_MODES = Object.freeze(["zero", "normalize"]);
+
 export const CATEGORICAL_LEGEND_CHANNELS = Object.freeze([
   "color",
   "strokeDash",

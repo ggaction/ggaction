@@ -141,6 +141,13 @@ function niceCountScale(maximum, count = 5) {
   return { domain: [0, stop], ticks };
 }
 
+function normalizedCountScale() {
+  return {
+    domain: [0, 1],
+    ticks: [0, 0.2, 0.4, 0.6, 0.8, 1]
+  };
+}
+
 function mapValue(value, domain, range) {
   if (domain[0] === domain[1]) return (range[0] + range[1]) / 2;
   const ratio = (value - domain[0]) / (domain[1] - domain[0]);
@@ -156,11 +163,15 @@ export function createCarsHistogramValues(
     field = "Displacement",
     maxBins,
     binStep,
-    binBoundaries
+    binBoundaries,
+    stack = "zero"
   }
 ) {
   if (typeof field !== "string" || field.length === 0) {
     throw new TypeError("Histogram field must be a non-empty string.");
+  }
+  if (stack !== "zero" && stack !== "normalize") {
+    throw new Error(`Unsupported histogram reference stack "${stack}".`);
   }
   const bounds = requireLayout({ width, height, margin });
   const validCars = normalizeRows(cars, field);
@@ -195,7 +206,9 @@ export function createCarsHistogramValues(
     bin.total = origins.reduce((sum, origin) => sum + bin.counts[origin], 0);
   }
 
-  const yScale = niceCountScale(Math.max(...bins.map(bin => bin.total)));
+  const yScale = stack === "normalize"
+    ? normalizedCountScale()
+    : niceCountScale(Math.max(...bins.map(bin => bin.total)));
   const xRange = [bounds.x, bounds.x + bounds.width];
   const yRange = [bounds.y + bounds.height, bounds.y];
   const rects = [];
@@ -206,7 +219,8 @@ export function createCarsHistogramValues(
       const origin = origins[index];
       const count = bin.counts[origin];
       if (count === 0) continue;
-      const stackEnd = stackStart + count;
+      const value = stack === "normalize" ? count / bin.total : count;
+      const stackEnd = stackStart + value;
       const x = mapValue(bin.start, binned.domain, xRange);
       const x2 = mapValue(bin.end, binned.domain, xRange);
       const y = mapValue(stackEnd, yScale.domain, yRange);
@@ -215,6 +229,7 @@ export function createCarsHistogramValues(
         bin: bin.index,
         origin,
         count,
+        value,
         stackStart,
         stackEnd,
         x,

@@ -2,7 +2,10 @@ import { chart, render } from "../../../src/index.js";
 
 import { createJobsGroupedBarValues } from "./reference-values.js";
 
-export function createJobsGroupedBarPrimitives(jobs) {
+export function createJobsGroupedBarPrimitives(
+  jobs,
+  { field = "perc", layout = "group" } = {}
+) {
   const width = 720;
   const height = 460;
   const margin = { top: 40, right: 140, bottom: 70, left: 80 };
@@ -10,7 +13,9 @@ export function createJobsGroupedBarPrimitives(jobs) {
     width,
     height,
     margin,
-    band: 0.72
+    band: 0.72,
+    field,
+    layout
   });
   const { x: xAxis, y: yAxis } = values.axes;
   const xTickPositions = xAxis.ticks.map(tick => tick.position);
@@ -18,7 +23,7 @@ export function createJobsGroupedBarPrimitives(jobs) {
   const horizontalGrid = values.grid.horizontal;
   const legendItems = values.legend.items;
 
-  return chart()
+  let program = chart()
     .createCanvas({ width, height, margin, background: "white" })
     .createData({ id: "jobs", values: values.validJobs })
     .createBarMark({ id: "bars" })
@@ -29,7 +34,7 @@ export function createJobsGroupedBarPrimitives(jobs) {
       value: "ordinal"
     })
     .editSemantic({ property: "layer[bars].encoding.x.scale", value: "x" })
-    .editSemantic({ property: "layer[bars].encoding.y.field", value: "perc" })
+    .editSemantic({ property: "layer[bars].encoding.y.field", value: field })
     .editSemantic({
       property: "layer[bars].encoding.y.fieldType",
       value: "quantitative"
@@ -38,7 +43,10 @@ export function createJobsGroupedBarPrimitives(jobs) {
       property: "layer[bars].encoding.y.aggregate",
       value: "mean"
     })
-    .editSemantic({ property: "layer[bars].encoding.y.stack", value: null })
+    .editSemantic({
+      property: "layer[bars].encoding.y.stack",
+      value: layout === "diverging" ? "zero" : null
+    })
     .editSemantic({ property: "layer[bars].encoding.y.scale", value: "y" })
     .editSemantic({ property: "layer[bars].encoding.color.field", value: "sex" })
     .editSemantic({
@@ -48,7 +56,17 @@ export function createJobsGroupedBarPrimitives(jobs) {
     .editSemantic({
       property: "layer[bars].encoding.color.scale",
       value: "color"
-    })
+    });
+
+  if (layout !== "group") {
+    program = program.editSemantic({
+      property: "layer[bars].encoding.color.layout",
+      value: layout
+    });
+  }
+
+  if (layout === "group") {
+    program = program
     .editSemantic({
       property: "layer[bars].encoding.xOffset.field",
       value: "sex"
@@ -60,7 +78,10 @@ export function createJobsGroupedBarPrimitives(jobs) {
     .editSemantic({
       property: "layer[bars].encoding.xOffset.scale",
       value: "xOffset"
-    })
+    });
+  }
+
+  program = program
     .editSemantic({ property: "scale[x].type", value: "ordinal" })
     .editSemantic({ property: "scale[x].domain", value: "auto" })
     .editSemantic({ property: "scale[x].range", value: "auto" })
@@ -74,17 +95,23 @@ export function createJobsGroupedBarPrimitives(jobs) {
     .editSemantic({
       property: "scale[color].range",
       value: { palette: "tableau10" }
-    })
-    .editSemantic({ property: "scale[xOffset].type", value: "ordinal" })
-    .editSemantic({ property: "scale[xOffset].domain", value: "auto" })
-    .editSemantic({ property: "scale[xOffset].range", value: "auto" })
+    });
+
+  if (layout === "group") {
+    program = program
+      .editSemantic({ property: "scale[xOffset].type", value: "ordinal" })
+      .editSemantic({ property: "scale[xOffset].domain", value: "auto" })
+      .editSemantic({ property: "scale[xOffset].range", value: "auto" });
+  }
+
+  return program
     .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
     .editSemantic({ property: "guide.axis.x.title", value: "year" })
     .editSemantic({ property: "guide.axis.y.scale", value: "y" })
     .editSemantic({ property: "guide.axis.y.coordinate", value: "main" })
-    .editSemantic({ property: "guide.axis.y.title", value: "mean(perc)" })
+    .editSemantic({ property: "guide.axis.y.title", value: `mean(${field})` })
     .editSemantic({ property: "guide.grid.horizontal.scale", value: "y" })
     .editSemantic({
       property: "guide.grid.horizontal.coordinate",

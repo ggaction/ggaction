@@ -20,3 +20,12 @@ export function createFieldReassignmentPrimitives(cars) {
     maxBins: 8
   });
 }
+
+export function createNormalizedStackPrimitives(cars) {
+  return createCarsHistogramPrimitiveProgram(cars, {
+    field: "Displacement",
+    maxBins: 10,
+    stack: "normalize",
+    colorLayout: "fill"
+  });
+}

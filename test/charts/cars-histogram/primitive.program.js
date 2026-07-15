@@ -8,7 +8,9 @@ export function createCarsHistogramPrimitiveProgram(
     field = "Displacement",
     maxBins = 10,
     binStep,
-    binBoundaries
+    binBoundaries,
+    stack = "zero",
+    colorLayout
   } = {}
 ) {
   const width = 432;
@@ -23,7 +25,8 @@ export function createCarsHistogramPrimitiveProgram(
       ? maxBins
       : undefined,
     binStep,
-    binBoundaries
+    binBoundaries,
+    stack
   });
   const { x: xAxis, y: yAxis } = values.axes;
   const xTickPositions = xAxis.ticks.map(tick => tick.position);
@@ -63,7 +66,7 @@ export function createCarsHistogramPrimitiveProgram(
     });
   }
 
-  return program
+  program = program
     .editSemantic({ property: "layer[bars].encoding.x.scale", value: "x" })
     .editSemantic({
       property: "layer[bars].encoding.y.field",
@@ -79,7 +82,7 @@ export function createCarsHistogramPrimitiveProgram(
     })
     .editSemantic({
       property: "layer[bars].encoding.y.stack",
-      value: "zero"
+      value: stack
     })
     .editSemantic({ property: "layer[bars].encoding.y.scale", value: "y" })
     .editSemantic({
@@ -93,7 +96,16 @@ export function createCarsHistogramPrimitiveProgram(
     .editSemantic({
       property: "layer[bars].encoding.color.scale",
       value: "color"
-    })
+    });
+
+  if (colorLayout !== undefined) {
+    program = program.editSemantic({
+      property: "layer[bars].encoding.color.layout",
+      value: colorLayout
+    });
+  }
+
+  return program
     .editSemantic({ property: "scale[x].type", value: "linear" })
     .editSemantic({ property: "scale[x].domain", value: "auto" })
     .editSemantic({ property: "scale[x].range", value: "auto" })

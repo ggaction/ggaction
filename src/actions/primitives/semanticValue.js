@@ -1,6 +1,8 @@
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
+  COLOR_LAYOUTS,
+  STACK_MODES,
   CATEGORICAL_LEGEND_CHANNELS,
   MARK_TYPES
 } from "../../core/vocabulary.js";
@@ -186,8 +188,18 @@ export function validateSemanticValue(program, parsed, value) {
     if (property.endsWith(".bin.boundaries")) {
       validateHistogramBinBoundaries(value);
     }
-    if (property.endsWith(".stack") && value !== "zero" && value !== null) {
+    if (
+      property.endsWith(".stack") &&
+      value !== null &&
+      !STACK_MODES.includes(value)
+    ) {
       throw new Error(`Unsupported stack "${value}".`);
+    }
+    if (
+      property === "encoding.color.layout" &&
+      !COLOR_LAYOUTS.includes(value)
+    ) {
+      throw new Error(`Unsupported color layout "${value}".`);
     }
   }
   if (parsed.kind === "scale") {

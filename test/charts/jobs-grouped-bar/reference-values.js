@@ -32,7 +32,7 @@ function requireLayout({ width, height, margin, band }) {
   return bounds;
 }
 
-function normalizeRows(jobs) {
+function normalizeRows(jobs, field) {
   if (!Array.isArray(jobs)) {
     throw new TypeError("Jobs must be an array.");
   }
@@ -40,7 +40,7 @@ function normalizeRows(jobs) {
     row !== null &&
     typeof row === "object" &&
     Number.isFinite(row.year) &&
-    Number.isFinite(row.perc) &&
+    Number.isFinite(row[field]) &&
     typeof row.sex === "string" &&
     row.sex.length > 0
   );
@@ -82,12 +82,12 @@ function mapValue(value, domain, range) {
   return range[0] + ratio * (range[1] - range[0]);
 }
 
-function aggregateMeans(rows, years, sexes) {
+function aggregateMeans(rows, years, sexes, field) {
   const groups = new Map();
   for (const row of rows) {
     const key = JSON.stringify([row.year, row.sex]);
     const group = groups.get(key) ?? { sum: 0, count: 0 };
-    group.sum += row.perc;
+    group.sum += row[field];
     group.count += 1;
     groups.set(key, group);
   }
@@ -109,40 +109,94 @@ function formatTick(value) {
 
 export function createJobsGroupedBarValues(
   jobs,
-  { width, height, margin, band = 0.72 }
+  {
+    width,
+    height,
+    margin,
+    band = 0.72,
+    field = "perc",
+    layout = "group"
+  }
 ) {
   const bounds = requireLayout({ width, height, margin, band });
-  const validJobs = normalizeRows(jobs);
+  if (typeof field !== "string" || field.length === 0) {
+    throw new TypeError("Bar reference field must be a non-empty string.");
+  }
+  if (!["group", "overlay", "diverging"].includes(layout)) {
+    throw new Error(`Unsupported bar reference layout "${layout}".`);
+  }
+  const validJobs = normalizeRows(jobs, field);
   if (validJobs.length === 0) {
     throw new Error("Grouped bar chart requires at least one valid job row.");
   }
 
   const years = unique(validJobs.map(row => row.year));
   const sexes = unique(validJobs.map(row => row.sex));
-  const cells = aggregateMeans(validJobs, years, sexes);
-  const yScale = resolveNiceScale(cells.map(cell => cell.mean));
+  const cells = aggregateMeans(validJobs, years, sexes, field);
   const xRange = [bounds.x, bounds.x + bounds.width];
   const yRange = [bounds.y + bounds.height, bounds.y];
   const categoryWidth = bounds.width / years.length;
   const slotWidth = categoryWidth / sexes.length;
-  const barWidth = slotWidth * band;
-  const baseline = mapValue(yScale.domain[0], yScale.domain, yRange);
+  const groupedWidth = slotWidth * band;
+  const sharedWidth = categoryWidth * band;
+  const partitions = new Map();
 
-  const rects = cells.map(cell => {
-    const yearIndex = years.indexOf(cell.year);
-    const sexIndex = sexes.indexOf(cell.sex);
-    const x = bounds.x + yearIndex * categoryWidth + sexIndex * slotWidth +
-      (slotWidth - barWidth) / 2;
-    const y = mapValue(cell.mean, yScale.domain, yRange);
-    return {
-      ...cell,
-      x,
-      y,
-      width: barWidth,
-      height: baseline - y,
-      fill: COLORS[sexIndex % COLORS.length]
-    };
-  });
+  for (const year of years) {
+    let positive = 0;
+    let negative = 0;
+    for (const sex of sexes) {
+      const cell = cells.find(candidate =>
+        candidate.year === year && candidate.sex === sex
+      );
+      if (cell === undefined) continue;
+      const stackStart = cell.mean >= 0 ? positive : negative;
+      const stackEnd = stackStart + cell.mean;
+      if (cell.mean >= 0) positive = stackEnd;
+      else negative = stackEnd;
+      partitions.set(JSON.stringify([year, sex]), { stackStart, stackEnd });
+    }
+  }
+
+  const yValues = layout === "diverging"
+    ? [0, ...partitions.values()].flatMap(value =>
+      typeof value === "number"
+        ? [value]
+        : [value.stackStart, value.stackEnd]
+    )
+    : cells.map(cell => cell.mean);
+  const yScale = resolveNiceScale(yValues);
+  const baselineValue = layout === "diverging" ? 0 : yScale.domain[0];
+
+  const rects = cells
+    .filter(cell => layout !== "diverging" || cell.mean !== 0)
+    .map(cell => {
+      const yearIndex = years.indexOf(cell.year);
+      const sexIndex = sexes.indexOf(cell.sex);
+      const isGrouped = layout === "group";
+      const width = isGrouped ? groupedWidth : sharedWidth;
+      const x = isGrouped
+        ? bounds.x + yearIndex * categoryWidth + sexIndex * slotWidth +
+          (slotWidth - width) / 2
+        : bounds.x + yearIndex * categoryWidth + (categoryWidth - width) / 2;
+      const partition = partitions.get(JSON.stringify([cell.year, cell.sex]));
+      const start = layout === "diverging"
+        ? partition.stackStart
+        : baselineValue;
+      const end = layout === "diverging" ? partition.stackEnd : cell.mean;
+      const startPosition = mapValue(start, yScale.domain, yRange);
+      const endPosition = mapValue(end, yScale.domain, yRange);
+      return {
+        ...cell,
+        ...(layout === "diverging"
+          ? { stackStart: start, stackEnd: end }
+          : {}),
+        x,
+        y: Math.min(startPosition, endPosition),
+        width,
+        height: Math.abs(startPosition - endPosition),
+        fill: COLORS[sexIndex % COLORS.length]
+      };
+    });
 
   const xTicks = years.map((year, index) => ({
     value: year,
@@ -169,13 +223,23 @@ export function createJobsGroupedBarValues(
   return {
     validJobs,
     bounds,
+    field,
+    layout,
     years,
     sexes,
     cells,
     rects,
     scales: {
       x: { domain: years, range: xRange, bandwidth: categoryWidth },
-      xOffset: { domain: sexes, range: [0, categoryWidth], bandwidth: slotWidth },
+      ...(layout === "group"
+        ? {
+            xOffset: {
+              domain: sexes,
+              range: [0, categoryWidth],
+              bandwidth: slotWidth
+            }
+          }
+        : {}),
       y: { domain: yScale.domain, range: yRange, step: yScale.step },
       color: { domain: sexes, range: COLORS.slice(0, sexes.length) }
     },
@@ -215,7 +279,7 @@ export function createJobsGroupedBarValues(
         title: {
           x: 24,
           y: bounds.y + bounds.height / 2,
-          text: "mean(perc)",
+          text: `mean(${field})`,
           rotation: -Math.PI / 2
         }
       }

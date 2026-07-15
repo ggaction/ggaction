@@ -282,3 +282,34 @@ test("validates exact histogram bin semantics through the primitive API", () => 
     );
   }
 });
+
+test("validates planned stack and color-layout semantics through primitives", () => {
+  for (const stack of ["zero", "normalize", null]) {
+    const program = chart().editSemantic({
+      property: "layer[bars].encoding.y.stack",
+      value: stack
+    });
+    assert.equal(program.semanticSpec.layers[0].encoding.y.stack, stack);
+  }
+  for (const layout of ["stack", "fill", "group", "overlay", "diverging"]) {
+    const program = chart().editSemantic({
+      property: "layer[bars].encoding.color.layout",
+      value: layout
+    });
+    assert.equal(program.semanticSpec.layers[0].encoding.color.layout, layout);
+  }
+  assert.throws(
+    () => chart().editSemantic({
+      property: "layer[bars].encoding.y.stack",
+      value: "center"
+    }),
+    /Unsupported stack/
+  );
+  assert.throws(
+    () => chart().editSemantic({
+      property: "layer[bars].encoding.color.layout",
+      value: "center"
+    }),
+    /Unsupported color layout/
+  );
+});

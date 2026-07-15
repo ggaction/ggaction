@@ -7,18 +7,18 @@ implementation 전에 독립 primitive로 고정한다.
 
 ## 진행 상태
 
-- [ ] `normalized-stack` histogram independent reference
-- [ ] `overlay-layout` jobs bar independent reference
-- [ ] `diverging-layout` signed jobs independent reference
-- [ ] Partition order와 missing/zero policy
-- [ ] `[0, 1]` normalized domain과 signed diverging domain
-- [ ] Overlay deterministic drawing order와 no-auto-opacity target
-- [ ] Axes/grid/legend geometry와 drawing order
-- [ ] Expanded target chain metadata
-- [ ] Browser와 2× primitive PNG 생성
+- [x] `normalized-stack` histogram independent reference
+- [x] `overlay-layout` jobs bar independent reference
+- [x] `diverging-layout` signed jobs independent reference
+- [x] Partition order와 missing/zero policy
+- [x] `[0, 1]` normalized domain과 signed diverging domain
+- [x] Overlay deterministic drawing order와 no-auto-opacity target
+- [x] Axes/grid/legend geometry와 drawing order
+- [x] Expanded target chain metadata
+- [x] Browser와 2× primitive PNG 생성
 - [ ] Gate B 사용자 visual confirmation
 - [ ] Feedback 반영과 primitive 재확인
-- [ ] STEP status, conceptual commit와 push
+- [x] STEP status, conceptual commit와 push
 
 ## Primitive 원칙
 

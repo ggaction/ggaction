@@ -10,7 +10,8 @@ import { createCarsHistogramPrimitives } from "../primitive.program.js";
 import {
   createBinBoundariesPrimitives,
   createBinStepPrimitives,
-  createFieldReassignmentPrimitives
+  createFieldReassignmentPrimitives,
+  createNormalizedStackPrimitives
 } from "./primitive-programs.js";
 
 const cars = loadCars();
@@ -142,4 +143,33 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   });`,
   primitive: createFieldReassignmentPrimitives(cars),
   userFacing: createFieldReassignmentCarsHistogram(cars)
+}), defineVisualVariant({
+  ...shared,
+  variant: "normalized-stack",
+  title: "Normalized Histogram Stack",
+  callChain: `chart()
+  .createCanvas({
+    width: 432,
+    height: 460,
+    margin: { top: 80, right: 60, bottom: 130, left: 80 }
+  })
+  .createData({ id: "cars", values: rows })
+  .createBarMark({ id: "bars" })
+  .encodeHistogram({
+    field: "Displacement",
+    maxBins: 10,
+    xScale: { nice: true, zero: false }
+  })
+  .encodeColor({
+    field: "Origin",
+    layout: "fill",
+    scale: { palette: "tableau10" }
+  })
+  .createGuides({ legend: { position: "bottom" } })
+  .createTitle({
+    text: "Displacement distribution",
+    subtitle: "by country",
+    align: "center"
+  });`,
+  primitive: createNormalizedStackPrimitives(cars)
 })]);
