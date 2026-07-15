@@ -179,6 +179,11 @@ try {
     ),
     true
   );
+  assert.equal(await mobile.locator(".docs-nav-group[open]").count(), 1);
+  assert.equal(
+    await mobile.locator(".docs-nav-group[open] [aria-current='page']").count(),
+    1
+  );
   await mobile.keyboard.press("Escape");
   assert.equal(await toggle.getAttribute("aria-expanded"), "false");
   assert.equal(await toggle.evaluate(element => element === document.activeElement), true);

@@ -28,8 +28,8 @@
 
   <nav class="docs-sidenav">
     {% for group in site.data.navigation %}
-      <section class="docs-nav-group">
-        <h2>{{ group.title }}</h2>
+      <details class="docs-nav-group" open>
+        <summary><h2>{{ group.title }}</h2></summary>
         <ul>
           {% for item in group.items %}
             {% assign item_url = item.url | relative_url %}
@@ -41,7 +41,7 @@
             </li>
           {% endfor %}
         </ul>
-      </section>
+      </details>
     {% endfor %}
   </nav>
 </aside>

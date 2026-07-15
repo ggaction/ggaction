@@ -27,6 +27,12 @@
     ) active.scrollIntoView({ block: "center" });
   }
 
+  function syncGroups() {
+    for (const group of sidebar.querySelectorAll(".docs-nav-group")) {
+      group.open = !mobile.matches || Boolean(group.querySelector("[aria-current='page']"));
+    }
+  }
+
   function setOpen(open, { restoreFocus = false } = {}) {
     open = mobile.matches && open;
     document.body.classList.toggle("is-navigation-open", open);
@@ -45,6 +51,7 @@
       setInert(footer, false);
     }
     if (open) {
+      syncGroups();
       close.focus();
       revealActiveLink();
     }
@@ -85,7 +92,11 @@
     }
   });
   document.addEventListener("docs:open-navigation", () => setOpen(true));
-  mobile.addEventListener("change", () => setOpen(false));
+  mobile.addEventListener("change", () => {
+    syncGroups();
+    setOpen(false);
+  });
+  syncGroups();
   setOpen(false);
   requestAnimationFrame(revealActiveLink);
 })();

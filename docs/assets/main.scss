@@ -219,6 +219,14 @@ summary:focus-visible {
   margin-bottom: 1.25rem;
 }
 
+.docs-nav-group summary {
+  list-style: none;
+}
+
+.docs-nav-group summary::-webkit-details-marker {
+  display: none;
+}
+
 .docs-nav-group h2 {
   margin: 0 0 0.35rem;
   color: #0f172a;
@@ -687,6 +695,42 @@ h3:hover .docs-heading-anchor,
     font: inherit;
     font-size: 0.8rem;
     text-align: left;
+  }
+
+  .docs-nav-group {
+    margin-bottom: 0.45rem;
+  }
+
+  .docs-nav-group summary {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 0.55rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+  }
+
+  .docs-nav-group summary::after {
+    margin-left: auto;
+    color: var(--docs-muted);
+    content: "+";
+    font-weight: 600;
+  }
+
+  .docs-nav-group[open] summary::after {
+    content: "−";
+  }
+
+  .docs-nav-group summary:hover {
+    background: #f8fafc;
+  }
+
+  .docs-nav-group h2 {
+    margin: 0;
+  }
+
+  .docs-nav-group ul {
+    padding-bottom: 0.55rem;
   }
 
   .docs-content {

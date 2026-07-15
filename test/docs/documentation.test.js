@@ -231,11 +231,14 @@ test("indexes documentation headings for section search", () => {
   const sidebar = read("docs/_includes/sidebar.html");
   assert.match(sidebar, /role="combobox"/);
   assert.match(sidebar, /role="listbox"/);
+  assert.match(sidebar, /<details class="docs-nav-group" open>/);
+  assert.match(sidebar, /<summary><h2>/);
 
   const navigation = read("docs/assets/js/docs-navigation.js");
   assert.match(navigation, /aria-expanded/);
   assert.match(navigation, /event\.key === "Escape"/);
   assert.match(navigation, /restoreFocus/);
+  assert.match(navigation, /function syncGroups/);
 });
 
 test("keeps one generated gallery image for every public chart", async () => {
