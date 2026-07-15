@@ -16,7 +16,7 @@ export function parseCoverageTable(output) {
   const files = new Map();
   for (const line of output.split(/\r?\n/)) {
     const match = line.match(
-      /^ℹ( +)([^|]+?)\s+\|\s*([\d.]+)?\s*\|\s*([\d.]+)?\s*\|\s*([\d.]+)?\s*\|/
+      /^(?:ℹ|#)( +)([^|]+?)\s+\|\s*([\d.]+)?\s*\|\s*([\d.]+)?\s*\|\s*([\d.]+)?\s*\|/
     );
     if (!match || match[2].trim() === "file") continue;
     const depth = match[1].length;

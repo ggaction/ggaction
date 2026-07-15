@@ -26,6 +26,16 @@ test("parses nested native coverage rows into source-relative paths", () => {
   );
 });
 
+test("parses Node 22 TAP-prefixed native coverage rows", () => {
+  assert.deepEqual(
+    Object.fromEntries(parseCoverageTable(report.replaceAll("ℹ", "#"))),
+    {
+      "core/immutable.js": { lines: 95, branches: 90, functions: 100 },
+      "renderers/canvas/index.js": { lines: 88, branches: 75, functions: 100 }
+    }
+  );
+});
+
 test("enforces explicit critical-file coverage floors", () => {
   assert.doesNotThrow(() => assertCriticalCoverage(report, {
     "core/immutable.js": { lines: 90, branches: 85, functions: 100 }
