@@ -12,7 +12,7 @@ import { assertChartProgramsEquivalent } from
   "../../../support/chart-equivalence.js";
 import { loadJobs } from "../../../support/data.js";
 import { createJobsGroupedBarValues } from "../reference-values.js";
-import { reassignmentJobs, signedJobs } from "./manifest.js";
+import { reassignmentJobs, signedJobs, temporalJobs } from "./manifest.js";
 import {
   createDivergingLayoutPrimitives,
   createFixedPixelWidthPrimitives,
@@ -20,6 +20,14 @@ import {
   createOffsetPaddingPrimitives,
   createOverlayLayoutPrimitives
 } from "./primitive-programs.js";
+import {
+  createHorizontalBarPrimitives,
+  createTemporalXPrimitives
+} from "./position-primitive-programs.js";
+import {
+  createHorizontalBarReference,
+  createTemporalBarReference
+} from "./position-reference-values.js";
 
 const jobs = loadJobs();
 const layout = {
@@ -312,5 +320,95 @@ test("rematerializes approved public layouts after Canvas resize", () => {
       program.semanticSpec.layers[0].encoding.color.layout
     );
     assert.equal(program.graphicSpec.objects.canvas.properties.width, 720);
+  }
+});
+
+test("locks temporal x spacing and grouped vertical bar geometry", () => {
+  const values = createTemporalBarReference(temporalJobs, layout);
+  const program = createTemporalXPrimitives(temporalJobs);
+  const layer = program.semanticSpec.layers[0];
+  const years = values.dates.map(value => new Date(value).getUTCFullYear());
+
+  assert.equal(values.validRows.length, 7650);
+  assert.equal(values.cells.length, 30);
+  assert.equal(values.rects.length, 30);
+  assert.deepEqual(years, [
+    1850, 1860, 1870, 1880, 1900, 1910, 1920, 1930,
+    1940, 1950, 1960, 1970, 1980, 1990, 2000
+  ]);
+  assert.equal(
+    values.axes.x.ticks.some(tick => tick.label === "1890"),
+    true
+  );
+  assert.equal(years.includes(1890), false);
+  assert.equal(values.scales.x.range[0] > values.bounds.x, true);
+  assert.equal(
+    values.scales.x.range[1] < values.bounds.x + values.bounds.width,
+    true
+  );
+  assert.equal(
+    values.rects.every(rect =>
+      rect.x >= values.bounds.x &&
+      rect.x + rect.width <= values.bounds.x + values.bounds.width
+    ),
+    true
+  );
+  assert.equal(layer.encoding.x.fieldType, "temporal");
+  assert.equal(layer.encoding.y.fieldType, "quantitative");
+  assert.equal(layer.encoding.color.layout, "group");
+  assert.equal(layer.mark.orientation, undefined);
+  assert.deepEqual(graphicProperties(program), expectedProperties(values));
+});
+
+test("locks horizontal stacked bar geometry and directional guides", () => {
+  const values = createHorizontalBarReference(jobs, layout);
+  const program = createHorizontalBarPrimitives(jobs);
+  const layer = program.semanticSpec.layers[0];
+
+  assert.equal(values.validRows.length, 7650);
+  assert.equal(values.cells.length, 30);
+  assert.equal(values.rects.length, 30);
+  assert.deepEqual(values.scales.x.domain, [0, 0.004]);
+  assert.equal(
+    values.rects.every(rect => Math.abs(rect.height - 16.8) < 1e-12),
+    true
+  );
+  for (const year of values.years) {
+    const partition = values.rects.filter(rect => rect.category === year);
+    assert.deepEqual(partition.map(rect => rect.sex), ["men", "women"]);
+    assert.equal(partition[0].stackStart, 0);
+    assert.equal(partition[0].stackEnd, partition[1].stackStart);
+    assert.equal(
+      Math.abs(partition[1].stackEnd - 1 / 255) < 1e-15,
+      true
+    );
+    assert.equal(partition[0].y, partition[1].y);
+  }
+  assert.equal(layer.encoding.x.fieldType, "quantitative");
+  assert.equal(layer.encoding.x.aggregate, "mean");
+  assert.equal(layer.encoding.x.stack, "zero");
+  assert.equal(layer.encoding.y.fieldType, "ordinal");
+  assert.equal(layer.mark.orientation, undefined);
+  assert.equal(program.semanticSpec.guides.grid.horizontal, undefined);
+  assert.equal(program.semanticSpec.guides.grid.vertical.scale, "x");
+  assert.equal(
+    program.graphicSpec.order.indexOf("verticalGridLines") <
+      program.graphicSpec.order.indexOf("bars"),
+    true
+  );
+  assert.deepEqual(graphicProperties(program), expectedProperties(values));
+});
+
+test("keeps Gate D primitives independent of future position actions", () => {
+  for (const program of [
+    createTemporalXPrimitives(temporalJobs),
+    createHorizontalBarPrimitives(jobs)
+  ]) {
+    const operations = program.trace.children.map(node => node.op);
+    for (const operation of [
+      "encodeX", "encodeY", "encodeColor", "encodeBarWidth", "createGuides"
+    ]) {
+      assert.equal(operations.includes(operation), false);
+    }
   }
 });

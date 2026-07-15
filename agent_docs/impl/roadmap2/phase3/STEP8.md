@@ -7,18 +7,18 @@ rect, axes와 grid geometry를 raw primitive로 승인받는다.
 
 ## 진행 상태
 
-- [ ] `temporal-x` jobs-derived UTC-compatible reference
-- [ ] `horizontal-bar` quantitative x/ordinal y reference
-- [ ] Orientation inference target state
-- [ ] Temporal/ordinal/quantitative scale domain과 range fixtures
-- [ ] Rect x/y/width/height reference
-- [ ] Top-level drawing order, axes와 directional grids
-- [ ] Inferred guide title/format target
-- [ ] Expanded target chain metadata
-- [ ] Browser와 2× primitive PNG 생성
+- [x] `temporal-x` jobs-derived UTC-compatible reference
+- [x] `horizontal-bar` quantitative x/ordinal y reference
+- [x] Orientation inference target state
+- [x] Temporal/ordinal/quantitative scale domain과 range fixtures
+- [x] Rect x/y/width/height reference
+- [x] Top-level drawing order, axes와 directional grids
+- [x] Inferred guide title/format target
+- [x] Expanded target chain metadata
+- [x] Browser와 2× primitive PNG 생성
 - [ ] Gate D 사용자 visual confirmation
 - [ ] Feedback 반영과 primitive 재확인
-- [ ] STEP status, conceptual commit와 push
+- [x] STEP status, conceptual commit와 push
 
 ## Primitive 원칙
 
@@ -30,3 +30,21 @@ rect, axes와 grid geometry를 raw primitive로 승인받는다.
 ## 완료 조건
 
 두 orientation primitive의 scale/rect/guide geometry와 target public chain이 승인된다.
+
+## Gate D 대상
+
+### `temporal-x`
+
+- Manifest가 각 jobs row에 UTC `yearDate` timestamp를 추가하고 primitive dataset이 그 값을 소유한다.
+- 15개 observed year와 `men → women`을 집계해 30개 grouped rect를 만든다.
+- Time domain은 1850–2000이고 auto graphical range는 첫/마지막 bar가 plot 안에 들어오도록 inset된다.
+- 1890 tick은 존재하지만 row가 없으므로 bar가 없고, 1880–1900 간격은 실제 시간 간격을 보존한다.
+
+### `horizontal-bar`
+
+- x는 quantitative `mean(perc)`, y는 ordinal `year`이며 별도 orientation property를 저장하지 않는다.
+- 각 year에서 `men → women`을 zero부터 누적한 30개 horizontal rect를 만든다.
+- x domain은 `[0, 0.004]`, y category bandwidth는 `350 / 15`, bar height는 그 band의 `0.72`다.
+- Horizontal orientation에 맞춰 x scale 기반 vertical grid와 `mean(perc)` x title을 사용한다.
+
+두 primitive trace에는 future `encodeX`, `encodeY`, `encodeColor`, `encodeBarWidth`, `createGuides`가 없다.

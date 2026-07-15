@@ -207,11 +207,16 @@ test("validates aggregate semantic values needed by primitive authoring", () => 
     "q1", "q3", "ciLower", "ciUpper"
   ];
   for (const aggregate of scalarOperations) {
-    const program = chart().editSemantic({
-      property: "layer[lines].encoding.y.aggregate",
-      value: aggregate
-    });
-    assert.equal(program.semanticSpec.layers[0].encoding.y.aggregate, aggregate);
+    for (const channel of ["x", "y"]) {
+      const program = chart().editSemantic({
+        property: `layer[lines].encoding.${channel}.aggregate`,
+        value: aggregate
+      });
+      assert.equal(
+        program.semanticSpec.layers[0].encoding[channel].aggregate,
+        aggregate
+      );
+    }
   }
   for (const aggregate of [
     { op: "quantile", probability: 0.75 },
@@ -285,11 +290,13 @@ test("validates exact histogram bin semantics through the primitive API", () => 
 
 test("validates planned stack and color-layout semantics through primitives", () => {
   for (const stack of ["zero", "normalize", null]) {
-    const program = chart().editSemantic({
-      property: "layer[bars].encoding.y.stack",
-      value: stack
-    });
-    assert.equal(program.semanticSpec.layers[0].encoding.y.stack, stack);
+    for (const channel of ["x", "y"]) {
+      const program = chart().editSemantic({
+        property: `layer[bars].encoding.${channel}.stack`,
+        value: stack
+      });
+      assert.equal(program.semanticSpec.layers[0].encoding[channel].stack, stack);
+    }
   }
   for (const layout of ["stack", "fill", "group", "overlay", "diverging"]) {
     const program = chart().editSemantic({

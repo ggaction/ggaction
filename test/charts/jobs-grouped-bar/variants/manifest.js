@@ -17,6 +17,10 @@ import {
   createOffsetPaddingPrimitives,
   createOverlayLayoutPrimitives
 } from "./primitive-programs.js";
+import {
+  createHorizontalBarPrimitives,
+  createTemporalXPrimitives
+} from "./position-primitive-programs.js";
 
 const jobs = loadJobs();
 export const signedJobs = Object.freeze(jobs.map(row => Object.freeze({
@@ -27,6 +31,10 @@ const REASSIGNMENT_JOBS = Object.freeze(["Actor", "Agent", "Author"]);
 export const reassignmentJobs = Object.freeze(jobs.filter(row =>
   REASSIGNMENT_JOBS.includes(row.job)
 ));
+export const temporalJobs = Object.freeze(jobs.map(row => Object.freeze({
+  ...row,
+  yearDate: Date.UTC(row.year, 0, 1)
+})));
 
 const shared = Object.freeze({
   chart: "jobs-grouped-bar",
@@ -212,4 +220,56 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   .encodeColor({ field: "job", layout: "group" });`,
   primitive: createGroupReassignmentPrimitives(reassignmentJobs),
   userFacing: createJobsGroupReassignmentBar(reassignmentJobs)
+}), defineVisualVariant({
+  ...shared,
+  variant: "temporal-x",
+  title: "Temporal X Bar Position",
+  callChain: `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 40, right: 140, bottom: 70, left: 80 }
+  })
+  .createData({ id: "jobs", values: rows })
+  .createBarMark({ id: "bars" })
+  .encodeX({ field: "yearDate", fieldType: "temporal" })
+  .encodeY({
+    field: "perc",
+    aggregate: "mean",
+    scale: { nice: true, zero: false }
+  })
+  .encodeColor({
+    field: "sex",
+    layout: "group",
+    scale: { palette: "tableau10" }
+  })
+  .encodeBarWidth({ band: 0.72 })
+  .createGuides();`,
+  primitive: createTemporalXPrimitives(temporalJobs)
+}), defineVisualVariant({
+  ...shared,
+  variant: "horizontal-bar",
+  title: "Horizontal Stacked Bar Orientation",
+  callChain: `chart()
+  .createCanvas({
+    width: 720,
+    height: 460,
+    margin: { top: 40, right: 140, bottom: 70, left: 80 }
+  })
+  .createData({ id: "jobs", values: rows })
+  .createBarMark({ id: "bars" })
+  .encodeX({
+    field: "perc",
+    aggregate: "mean",
+    scale: { nice: true, zero: true }
+  })
+  .encodeY({ field: "year", fieldType: "ordinal" })
+  .encodeColor({
+    field: "sex",
+    layout: "stack",
+    scale: { palette: "tableau10" }
+  })
+  .encodeBarWidth({ band: 0.72 })
+  .createGuides();`,
+  primitive: createHorizontalBarPrimitives(jobs)
 })]);
