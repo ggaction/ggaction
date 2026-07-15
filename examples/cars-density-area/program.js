@@ -1,6 +1,6 @@
 import { chart } from "../../src/index.js";
 
-export function createCarsDensityArea(cars) {
+function createCarsDensityAreaWithDensity(cars, density = {}) {
   return chart()
     .createCanvas({
       width: 720,
@@ -12,7 +12,8 @@ export function createCarsDensityArea(cars) {
     .encodeDensity({
       field: "Acceleration",
       groupBy: "Origin",
-      bandwidth: 0.6
+      bandwidth: 0.6,
+      ...density
     })
     .encodeColor({
       field: "Origin",
@@ -34,6 +35,10 @@ export function createCarsDensityArea(cars) {
     });
 }
 
+export function createCarsDensityArea(cars) {
+  return createCarsDensityAreaWithDensity(cars);
+}
+
 export function createAreaOutlineEditCarsDensityArea(cars) {
   return createCarsDensityArea(cars)
     .editAreaMark({
@@ -42,4 +47,25 @@ export function createAreaOutlineEditCarsDensityArea(cars) {
       stroke: "#334155",
       strokeWidth: 1.5
     });
+}
+
+export function createEpanechnikovKernelCarsDensityArea(cars) {
+  return createCarsDensityAreaWithDensity(cars, {
+    kernel: "epanechnikov"
+  });
+}
+
+export function createCountNormalizationCarsDensityArea(cars) {
+  return createCarsDensityAreaWithDensity(cars, {
+    normalization: "count"
+  });
+}
+
+export function createDensityRevisionCarsDensityArea(cars) {
+  return createCarsDensityArea(cars).editDensity({
+    target: "densities",
+    bandwidth: 0.9,
+    kernel: "triangular",
+    normalization: "count"
+  });
 }

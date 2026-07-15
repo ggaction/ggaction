@@ -72,6 +72,10 @@ The density axis defaults to y and includes zero. The value axis preserves the
 shared observed extent. Set `densityChannel: "x"` to reverse the orientation;
 the axis titles and baseline orientation follow automatically.
 
+The default estimate uses the Gaussian kernel with unit normalization. Use
+`kernel` and `normalization` on `encodeDensity`, or call `editDensity` later to
+create and bind an immutable revised estimate while preserving the source.
+
 `direction` controls how legend items fill a multi-row grid, while `columns`
 sets its maximum column count. `titlePosition: "left"` places `Origin` beside
 the three items without changing the chart-wide right-side legend default.

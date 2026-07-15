@@ -258,7 +258,7 @@ mean-response confidence bands.
 
 ## Density area chart
 
-Derive grouped Gaussian kernel-density values and overlay translucent,
+Derive grouped kernel-density values and overlay translucent,
 zero-baseline areas with a top multi-column legend.
 
 [Build the cars density area chart](./density-area.md)
@@ -984,6 +984,10 @@ The density axis defaults to y and includes zero. The value axis preserves the
 shared observed extent. Set `densityChannel: "x"` to reverse the orientation;
 the axis titles and baseline orientation follow automatically.
 
+The default estimate uses the Gaussian kernel with unit normalization. Use
+`kernel` and `normalization` on `encodeDensity`, or call `editDensity` later to
+create and bind an immutable revised estimate while preserving the source.
+
 `direction` controls how legend items fill a multi-row grid, while `columns`
 sets its maximum column count. `titlePosition: "left"` places `Origin` beside
 the three items without changing the chart-wide right-side legend default.
@@ -1308,12 +1312,13 @@ const program = chart()
 - Quantitative source field
 - Optional nominal `groupBy`
 - Optional explicit bandwidth or sampling extent
+- Optional kernel and unit/count normalization
 - Whether density belongs on y (default) or x
 
 ## The library infers
 
 - Immutable derived dataset and deterministic output field names
-- Automatic Gaussian bandwidth and shared 100-step sample grid
+- Gaussian/unit defaults, automatic bandwidth, and a shared 100-step sample grid
 - Value and zero-inclusive density scales
 - One baseline-closed command path per group
 - Cartesian axes, horizontal grid, and a categorical legend when colored
@@ -1510,7 +1515,7 @@ margins must leave positive plot bounds.
 | `createData` | `createData({ id: "rows", values })` | No ID or value inference | Immutable semantic dataset and current-data context |
 | `filterData` | `filterData({ id: "selected", field, oneOf })` | Source: current dataset | Immutable derived dataset with filter provenance and materialized rows |
 | `createRegressionData` | `createRegressionData({ id: "fit", x, y })` | Source: current dataset; linear OLS; confidence `0.95` | Immutable derived predictions and mean-response interval |
-| `createDensityData` | `createDensityData({ id: "density", field })` | Source: current dataset; shared extent; 100 steps; automatic bandwidth | Immutable Gaussian KDE rows and density provenance |
+| `createDensityData` | `createDensityData({ id: "density", field })` | Source: current dataset; Gaussian/unit density; 100 steps; automatic bandwidth | Immutable KDE rows and density provenance |
 
 ## `createData({ id, values })`
 
@@ -1591,9 +1596,9 @@ uses each observed unique x value in ascending order, the predicted y field,
 and fixed `__regression_ci_lower` / `__regression_ci_upper` fields. Confidence
 bounds use a Student-t mean-response interval. Source values remain unchanged.
 
-## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, as? })`
+## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as? })`
 
-Create an immutable Gaussian kernel-density dataset. This is an advanced data
+Create an immutable kernel-density dataset. This is an advanced data
 action used by higher-level density-chart encodings.
 
 ```javascript
@@ -1614,11 +1619,15 @@ program.createDensityData({
 | `bandwidth` | positive number or `"auto"` | automatic Scott-rule estimate |
 | `extent` | ascending finite pair or `"auto"` | observed valid extent |
 | `steps` | integer at least `2` | `100` |
+| `kernel` | `"gaussian"`, `"epanechnikov"`, `"uniform"`, or `"triangular"` | `"gaussian"` |
+| `normalization` | `"unit"` or `"count"` | `"unit"` |
 | `as` | two distinct output field names | `<field>_value`, `<field>_density` |
 
 Grouped densities use one shared extent and inclusive sample grid. Group order
-follows first appearance. The resolved automatic bandwidth is stored as a
-number in transform provenance, and source values remain unchanged.
+follows first appearance. The resolved automatic bandwidth, kernel, and
+normalization are stored in transform provenance. Unit normalization integrates
+each complete group density to one; count normalization scales it by that
+group's valid sample count. Source values remain unchanged.
 
 ## Errors and limitations
 
@@ -1837,7 +1846,7 @@ defaults.
 | --- | --- | --- |
 | Position | `encodeX`, `encodeY`, `encodeYRange`, `encodeXOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
-| Atomic density | `encodeDensity` | Derived KDE data and baseline area geometry |
+| Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
 | Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
 | Constant appearance | `encodeRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
@@ -1919,7 +1928,7 @@ steps. Both forms produce the same semantic and graphical result.
 
 ## Atomic density
 
-`encodeDensity` derives Gaussian kernel-density values, rebinds the selected
+`encodeDensity` derives kernel-density values, rebinds the selected
 area mark to that immutable dataset, and authors both positional channels as
 one action.
 
@@ -1935,12 +1944,34 @@ area.encodeDensity({
 that mark's current dataset. Output fields, shared extent, 100 sample steps,
 and a vertical density axis are inferred. Set `densityChannel: "x"` to orient
 the density horizontally. Advanced options include `extent`, `steps`, `as`,
-`coordinate`, `valueScale`, and `densityScale`.
+`coordinate`, `valueScale`, and `densityScale`. Choose `kernel` from
+`"gaussian"`, `"epanechnikov"`, `"uniform"`, or `"triangular"`; it defaults
+to Gaussian. `normalization` is `"unit"` by default or `"count"` to scale each
+group by its valid sample count.
 
 The value scale defaults to `{ nice: false, zero: false }`; the density scale
 defaults to `{ nice: true, zero: true }`. Explicit scale options override those
 defaults. Grouped density delegates to `encodeGroup`, so every observed group
 becomes one baseline-closed command path ending in `Z`.
+
+Use `editDensity` to revise an existing density without mutating its source or
+previous derived values:
+
+```javascript
+const revised = area.editDensity({
+  target: "densities",
+  bandwidth: 0.9,
+  kernel: "triangular",
+  normalization: "count"
+});
+```
+
+The target may be omitted when the current or only density area is
+unambiguous. At least one of `bandwidth`, `extent`, `steps`, `kernel`, or
+`normalization` is required. The action creates a deterministic namespaced
+revision, rebinds the area, releases an unreferenced previous revision, and
+rematerializes shared scales, marks, axes, and grids. Earlier programs remain
+unchanged.
 
 ## Series
 
@@ -4043,7 +4074,7 @@ chart-authoring API does not support that combination.
 | --- | --- |
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable arrays of plain row objects, named filters, grouped linear regression, and grouped Gaussian KDE derivations |
+| Data | Immutable arrays of plain row objects, named filters, grouped linear regression, and grouped kernel-density derivations |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
 | Scales | Linear, UTC time, ordinal position, color, named/direct stroke dash, and padded band-local xOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
@@ -4135,12 +4166,16 @@ data; method is `"linear"`, confidence is `0.95`, and interval is `"mean"`.
 ### `createDensityData`
 
 ```javascript
-createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, as? })
+createDensityData({
+  id, source?, field, groupBy?, bandwidth?, extent?, steps?,
+  kernel?, normalization?, as?
+})
 ```
 
-Create immutable Gaussian KDE rows on one shared inclusive sample grid.
-Source defaults to current data, steps to `100`, and bandwidth to an automatic
-Scott-rule estimate. [Data](../api/data.md)
+Create immutable KDE rows on one shared inclusive sample grid. Source defaults
+to current data, steps to `100`, bandwidth to an automatic Scott-rule estimate,
+kernel to `"gaussian"`, and normalization to `"unit"`.
+[Data](../api/data.md)
 
 ### `createPointMark`
 
@@ -4289,14 +4324,26 @@ Use `stack: "normalize"` for a unit-height partition.
 
 ```javascript
 encodeDensity({
-  field, target?, source?, groupBy?, bandwidth?, extent?, steps?, as?,
-  densityChannel?, coordinate?, valueScale?, densityScale?
+  field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?,
+  normalization?, as?, densityChannel?, coordinate?, valueScale?, densityScale?
 })
 ```
 
-Create immutable Gaussian KDE data, bind it to an area mark, encode its value
+Create immutable KDE data, bind it to an area mark, encode its value
 and density fields, and materialize baseline-closed paths. Density defaults to
-the y channel; pass `densityChannel: "x"` for a horizontal orientation.
+the y channel; kernel and normalization default to `"gaussian"` and `"unit"`.
+Pass `densityChannel: "x"` for a horizontal orientation.
+[Encodings](../api/encodings.md#atomic-density)
+
+### `editDensity`
+
+```javascript
+editDensity({ target?, bandwidth?, extent?, steps?, kernel?, normalization? })
+```
+
+Create an immutable density-data revision, rebind the selected density area,
+and rematerialize its graphical consumers. Omitted density settings are
+preserved and at least one editable setting is required.
 [Encodings](../api/encodings.md#atomic-density)
 
 ### `encodeColor`

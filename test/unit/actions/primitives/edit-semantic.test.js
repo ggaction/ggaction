@@ -109,6 +109,46 @@ test("validates semantic removal mode and preserves dataset immutability", () =>
   );
 });
 
+test("removes only complete unreferenced derived dataset resources", () => {
+  const source = chart().editSemantic({
+    property: "dataset[source].values",
+    value: [{ value: 1 }]
+  });
+  const derived = source
+    .editSemantic({ property: "dataset[derived].source", value: "source" })
+    .editSemantic({
+      property: "dataset[derived].transform",
+      value: [{ type: "filter", field: "value", oneOf: [1] }]
+    });
+  const removed = derived.editSemantic({
+    property: "dataset[derived]",
+    remove: true
+  });
+
+  assert.deepEqual(removed.semanticSpec.datasets.map(dataset => dataset.id), [
+    "source"
+  ]);
+  assert.deepEqual(derived.semanticSpec.datasets.map(dataset => dataset.id), [
+    "source",
+    "derived"
+  ]);
+  assert.throws(
+    () => source.editSemantic({ property: "dataset[source]", remove: true }),
+    /Source dataset.*immutable/
+  );
+  const referenced = derived.editSemantic({
+    property: "layer[points].data",
+    value: "derived"
+  });
+  assert.throws(
+    () => referenced.editSemantic({
+      property: "dataset[derived]",
+      remove: true
+    }),
+    /still referenced/
+  );
+});
+
 test("takes ownership of dataset rows and keeps datasets immutable", () => {
   const rows = Object.freeze([{ nested: { value: 1 } }]);
   const program = chart().editSemantic({

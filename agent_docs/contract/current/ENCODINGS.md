@@ -342,7 +342,9 @@ type AggregateOperation =
 - Signature: `encodeDensity({ field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, coordinate?, valueScale?, densityScale? })`
 - `field`, `source`, `groupBy`, `bandwidth`, `extent`, `steps`, `as`: `createDensityData`와 같은 계약이며
   derived ID는 `${target}DensityData`로 namespace된다.
-- `kernel`: Planned shared density kernel이며 생략 시 Gaussian이다.
+- `kernel`: `"gaussian" | "epanechnikov" | "uniform" | "triangular"`; 생략 시 Gaussian이다.
+- `normalization`: `"unit" | "count"`; 생략 시 unit이며 count는 group-local sample count로 magnitude를
+  조정한다.
 - `target`: area mark ID. 생략하면 current 또는 유일한 eligible area를 추론한다.
 - `densityChannel`: `"x" | "y"`, 기본값 `"y"`. y이면 value→x/density→y, x이면 반대로 연결한다.
 - `coordinate`: optional compatible coordinate ID.
@@ -356,8 +358,8 @@ type AggregateOperation =
 
 ### Formal values — `encodeDensity`
 
-- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale })`
-- Planned (NOT IMPLEMENTED): `{ kernel?: DensityKernel; normalization?: "unit" | "count" }`; defaults는 `"gaussian"`과 `"unit"`이다.
+- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale })`
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeDensity`
@@ -374,10 +376,42 @@ type AggregateOperation =
 - `valueScale`, `densityScale`
   - ✅ Covered: defaults, explicit IDs/domain/range, baseline zero requirement.
   - ⚠️ Partial: reversed ranges and explicit density domain excluding zero across both orientations.
-- 🟡 Planned: shared `"gaussian" | "epanechnikov" | "uniform" | "triangular"` kernel grammar,
-  provenance and derived revision behavior.
-- 🟡 Planned: `"unit" | "count"` normalization forwarding, provenance and density-scale rematerialization.
+- `kernel`, `normalization`
+  - ✅ Covered: closed vocabularies, defaults, forwarding, provenance, formula fixtures와 scale/path parity.
 - Evidence: density encoding/data/mark/chart tests.
+
+## `editDensity`
+
+- Signature: `editDensity({ target?, bandwidth?, extent?, steps?, kernel?, normalization? })`.
+- `target`: existing density-encoded area layer ID. current 또는 유일한 eligible layer를 추론하며 ambiguity는
+  explicit target을 요구한다.
+- 최소 한 density option이 필요하다. 생략한 option과 source, input/output fields, groupBy,
+  densityChannel, coordinate, scale binding은 기존 provenance와 encoding에서 유지한다.
+- `${target}DensityDataRevision${n}` ID로 wrapped `createDensityData`를 호출하고 layer data를 explicit
+  `editSemantic` child로 rebind한다. 이전 derived dataset이 더 이상 참조되지 않으면 internal wrapped
+  `releaseDerivedData`가 전체 resource를 제거한다.
+- Affected positional scales를 공유하는 mark, axes와 grids는 deterministic materialization plan으로
+  갱신한다. Earlier programs, source values와 old derived values는 바뀌지 않는다.
+- validation, derivation 또는 materialization failure는 original program의 어느 branch도 변경하지 않는다.
+
+### Formal values — `editDensity`
+
+- Implemented: `editDensity({ target?: UserId; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count" })`.
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editDensity`
+
+- `target`
+  - ✅ Covered: explicit/current/unique inference, missing target와 ambiguous target.
+- `bandwidth`, `extent`, `steps`, `kernel`, `normalization`
+  - ✅ Covered: representative edits, omitted-value preservation, invalid/empty options와 repeated revisions.
+  - ⚠️ Partial: every cross-product of numeric extremes and kernel/normalization combinations.
+- Revision lifecycle
+  - ✅ Covered: deterministic IDs, explicit rebind, orphan release, retained shared old dataset, earlier-program
+    immutability and shared-scale mark rematerialization.
+- No future edit parameters are currently Planned or Proposed.
+- Evidence: `test/unit/actions/encodings/edit-density.test.js`, density-area variant equivalence and PNG tests.
 
 ## `encodeColor`
 

@@ -7,6 +7,8 @@ import {
 import {
   planEncodingRematerialization
 } from "../../src/materialization/encodings.js";
+import { planDensityRematerialization } from
+  "../../src/materialization/density.js";
 
 test("executes materialization plans in order and deduplicates equivalent steps", () => {
   const calls = [];
@@ -99,5 +101,52 @@ test("plans every area consumer of one shared color scale", () => {
       scale: "color"
     }),
     /Unknown encoding materialization target/
+  );
+});
+
+test("plans the revised density target before every shared-scale mark", () => {
+  const program = {
+    semanticSpec: {
+      datasets: [{
+        id: "density",
+        transform: [{ type: "density" }]
+      }],
+      layers: [{
+        id: "densityArea",
+        data: "density",
+        mark: { type: "area" },
+        encoding: {
+          x: { scale: "x" },
+          y: { scale: "y" }
+        }
+      }, {
+        id: "samples",
+        mark: { type: "point" },
+        encoding: {
+          x: { scale: "x" },
+          y: { scale: "y" }
+        }
+      }, {
+        id: "unrelated",
+        mark: { type: "point" },
+        encoding: {
+          x: { scale: "otherX" },
+          y: { scale: "otherY" }
+        }
+      }]
+    },
+    markConfigs: {}
+  };
+
+  assert.deepEqual(
+    planDensityRematerialization(program, "densityArea"),
+    [
+      { op: "rematerializeAreaMark", args: { id: "densityArea" } },
+      { op: "rematerializePointMark", args: { id: "samples" } }
+    ]
+  );
+  assert.throws(
+    () => planDensityRematerialization(program, "missing"),
+    /Unknown density materialization target/
   );
 });

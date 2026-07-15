@@ -1,7 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { formatTimeTick, timeTicks } from "../../../../src/grammar/ticks.js";
+import {
+  formatTimeTick,
+  niceTicks,
+  timeTicks
+} from "../../../../src/grammar/ticks.js";
+
+test("includes decimal endpoints despite floating-point division", () => {
+  assert.deepEqual(niceTicks([0, 0.3], 5), [0, 0.1, 0.2, 0.3]);
+  assert.deepEqual(niceTicks([0.3, 0], 5), [0, 0.1, 0.2, 0.3]);
+});
 
 test("creates UTC calendar-aligned year ticks near the requested density", () => {
   const domain = [Date.UTC(1970, 0, 1), Date.UTC(1982, 0, 1)];

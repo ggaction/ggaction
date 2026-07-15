@@ -12,7 +12,7 @@ title: Data
 | `createData` | `createData({ id: "rows", values })` | No ID or value inference | Immutable semantic dataset and current-data context |
 | `filterData` | `filterData({ id: "selected", field, oneOf })` | Source: current dataset | Immutable derived dataset with filter provenance and materialized rows |
 | `createRegressionData` | `createRegressionData({ id: "fit", x, y })` | Source: current dataset; linear OLS; confidence `0.95` | Immutable derived predictions and mean-response interval |
-| `createDensityData` | `createDensityData({ id: "density", field })` | Source: current dataset; shared extent; 100 steps; automatic bandwidth | Immutable Gaussian KDE rows and density provenance |
+| `createDensityData` | `createDensityData({ id: "density", field })` | Source: current dataset; Gaussian/unit density; 100 steps; automatic bandwidth | Immutable KDE rows and density provenance |
 
 ## `createData({ id, values })`
 
@@ -93,9 +93,9 @@ uses each observed unique x value in ascending order, the predicted y field,
 and fixed `__regression_ci_lower` / `__regression_ci_upper` fields. Confidence
 bounds use a Student-t mean-response interval. Source values remain unchanged.
 
-## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, as? })`
+## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as? })`
 
-Create an immutable Gaussian kernel-density dataset. This is an advanced data
+Create an immutable kernel-density dataset. This is an advanced data
 action used by higher-level density-chart encodings.
 
 ```javascript
@@ -116,11 +116,15 @@ program.createDensityData({
 | `bandwidth` | positive number or `"auto"` | automatic Scott-rule estimate |
 | `extent` | ascending finite pair or `"auto"` | observed valid extent |
 | `steps` | integer at least `2` | `100` |
+| `kernel` | `"gaussian"`, `"epanechnikov"`, `"uniform"`, or `"triangular"` | `"gaussian"` |
+| `normalization` | `"unit"` or `"count"` | `"unit"` |
 | `as` | two distinct output field names | `<field>_value`, `<field>_density` |
 
 Grouped densities use one shared extent and inclusive sample grid. Group order
-follows first appearance. The resolved automatic bandwidth is stored as a
-number in transform provenance, and source values remain unchanged.
+follows first appearance. The resolved automatic bandwidth, kernel, and
+normalization are stored in transform provenance. Unit normalization integrates
+each complete group density to one; count normalization scales it by that
+group's valid sample count. Source values remain unchanged.
 
 ## Errors and limitations
 

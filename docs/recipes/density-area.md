@@ -22,12 +22,13 @@ const program = chart()
 - Quantitative source field
 - Optional nominal `groupBy`
 - Optional explicit bandwidth or sampling extent
+- Optional kernel and unit/count normalization
 - Whether density belongs on y (default) or x
 
 ## The library infers
 
 - Immutable derived dataset and deterministic output field names
-- Automatic Gaussian bandwidth and shared 100-step sample grid
+- Gaussian/unit defaults, automatic bandwidth, and a shared 100-step sample grid
 - Value and zero-inclusive density scales
 - One baseline-closed command path per group
 - Cartesian axes, horizontal grid, and a categorical legend when colored

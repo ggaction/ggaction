@@ -2,37 +2,6 @@
 
 These contracts are accepted or pending future API work; they are not current public behavior.
 
-## editDensity
-
-```typescript
-editDensity({
-  target?: UserId;
-  bandwidth?: "auto" | PositiveFinite;
-  extent?: "auto" | OrderedFinitePair;
-  steps?: IntegerAtLeast2;
-  kernel?: DensityKernel;
-  normalization?: DensityNormalization;
-}): ChartProgram;
-```
-
-- `target`은 existing density-encoded area layer selector다. eligible layer가 유일하면 생략할
-  수 있고 여러 개면 explicit target이 필요하다. target 외 최소 한 변경값을 요구한다.
-- 기존 density transform provenance에서 source, input field, groupBy와 output fields를 유지하고
-  bandwidth/extent/steps/kernel/normalization 중 전달된 값만 교체한다. densityChannel, coordinate와
-  value/density scale binding도 유지한다.
-- 기존 derived dataset values를 덮어쓰지 않는다. `${target}DensityDataRevision${n}` 형태의
-  deterministic namespaced 새 ID로 `createDensityData`를 호출하고 area layer를 explicit wrapped
-  semantic action으로 rebind한다.
-- rebind 뒤 이전 derived dataset을 참조하는 layer가 없으면 새 program에서 internal wrapped
-  `releaseDerivedData`로 제거한다. source dataset이나 아직 참조되는 derived dataset은 제거하지
-  않으며 이전 `ChartProgram`은 기존 dataset과 binding을 그대로 유지한다.
-- affected value/density scales, area paths, axes와 grids를 deterministic materialization plan으로
-  갱신한다. validation, derivation 또는 layout 실패 시 어느 branch도 바뀌지 않는다.
-- source/field/groupBy/output names/densityChannel 변경은 accepted parameter가 아니다. 이 구조적
-  변경은 새 area mark에 `encodeDensity`를 적용한다.
-- Status: Planned, NOT IMPLEMENTED. 실행 가능한 derivation, ownership, orphan-release,
-  rematerialization coverage는 구현 단계에서 추가한다.
-
 ## directional grid edits
 
 ```typescript

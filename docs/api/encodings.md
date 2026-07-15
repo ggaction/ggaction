@@ -16,7 +16,7 @@ defaults.
 | --- | --- | --- |
 | Position | `encodeX`, `encodeY`, `encodeYRange`, `encodeXOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
-| Atomic density | `encodeDensity` | Derived KDE data and baseline area geometry |
+| Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
 | Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
 | Constant appearance | `encodeRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
@@ -98,7 +98,7 @@ steps. Both forms produce the same semantic and graphical result.
 
 ## Atomic density
 
-`encodeDensity` derives Gaussian kernel-density values, rebinds the selected
+`encodeDensity` derives kernel-density values, rebinds the selected
 area mark to that immutable dataset, and authors both positional channels as
 one action.
 
@@ -114,12 +114,34 @@ area.encodeDensity({
 that mark's current dataset. Output fields, shared extent, 100 sample steps,
 and a vertical density axis are inferred. Set `densityChannel: "x"` to orient
 the density horizontally. Advanced options include `extent`, `steps`, `as`,
-`coordinate`, `valueScale`, and `densityScale`.
+`coordinate`, `valueScale`, and `densityScale`. Choose `kernel` from
+`"gaussian"`, `"epanechnikov"`, `"uniform"`, or `"triangular"`; it defaults
+to Gaussian. `normalization` is `"unit"` by default or `"count"` to scale each
+group by its valid sample count.
 
 The value scale defaults to `{ nice: false, zero: false }`; the density scale
 defaults to `{ nice: true, zero: true }`. Explicit scale options override those
 defaults. Grouped density delegates to `encodeGroup`, so every observed group
 becomes one baseline-closed command path ending in `Z`.
+
+Use `editDensity` to revise an existing density without mutating its source or
+previous derived values:
+
+```javascript
+const revised = area.editDensity({
+  target: "densities",
+  bandwidth: 0.9,
+  kernel: "triangular",
+  normalization: "count"
+});
+```
+
+The target may be omitted when the current or only density area is
+unambiguous. At least one of `bandwidth`, `extent`, `steps`, `kernel`, or
+`normalization` is required. The action creates a deterministic namespaced
+revision, rebinds the area, releases an unreferenced previous revision, and
+rematerializes shared scales, marks, axes, and grids. Earlier programs remain
+unchanged.
 
 ## Series
 

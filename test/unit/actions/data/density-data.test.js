@@ -23,8 +23,46 @@ test("derives grouped Gaussian KDE on one shared sample grid", () => {
   assert.deepEqual(result.groups, expected.groupDomain);
   assert.deepEqual(result.extent, [8, 24.8]);
   assert.equal(result.bandwidth, 0.6);
+  assert.equal(result.kernel, "gaussian");
+  assert.equal(result.normalization, "unit");
   assert.equal(result.samples.length, 100);
   assert.equal(Object.isFrozen(result.values), true);
+});
+
+test("derives every kernel and normalization from the approved formulas", () => {
+  const rows = [
+    { value: 0, group: "A" },
+    { value: 0.5, group: "A" },
+    { value: 1, group: "B" }
+  ];
+  const shared = {
+    field: "value",
+    groupBy: "group",
+    bandwidth: 0.5,
+    extent: [0, 1],
+    steps: 3,
+    as: ["sample", "density"]
+  };
+
+  for (const kernel of [
+    "gaussian", "epanechnikov", "uniform", "triangular"
+  ]) {
+    for (const normalization of ["unit", "count"]) {
+      const expected = createCarsDensityAreaValues(rows, {
+        ...shared,
+        kernel,
+        normalization
+      });
+      const result = deriveKernelDensity(rows, {
+        ...shared,
+        kernel,
+        normalization
+      });
+      assert.deepEqual(result.values, expected.densityRows);
+      assert.equal(result.kernel, kernel);
+      assert.equal(result.normalization, normalization);
+    }
+  }
 });
 
 test("creates immutable density provenance and concrete values", () => {
@@ -47,6 +85,8 @@ test("creates immutable density provenance and concrete values", () => {
       bandwidth: 0.6,
       extent: "auto",
       steps: 100,
+      kernel: "gaussian",
+      normalization: "unit",
       as: ["Acceleration_value", "Acceleration_density"],
       resolve: "shared"
     }],
@@ -85,6 +125,38 @@ test("resolves and stores a deterministic automatic bandwidth", () => {
   assert.equal(transform.bandwidth, estimateDensityBandwidth([1, 2, 4, 8]));
   assert.ok(Number.isFinite(transform.bandwidth));
   assert.equal(program.semanticSpec.datasets[1].values.length, 10);
+});
+
+test("forwards explicit kernel and normalization into immutable provenance", () => {
+  const program = chart()
+    .createData({
+      id: "source",
+      values: [
+        { value: 0, group: "A" },
+        { value: 0.5, group: "A" },
+        { value: 1, group: "B" }
+      ]
+    })
+    .createDensityData({
+      id: "density",
+      field: "value",
+      groupBy: "group",
+      bandwidth: 0.5,
+      extent: [0, 1],
+      steps: 3,
+      kernel: "epanechnikov",
+      normalization: "count"
+    });
+  const dataset = program.semanticSpec.datasets[1];
+
+  assert.equal(dataset.transform[0].kernel, "epanechnikov");
+  assert.equal(dataset.transform[0].normalization, "count");
+  assert.deepEqual(
+    dataset.values,
+    deriveKernelDensity(program.semanticSpec.datasets[0].values, {
+      ...dataset.transform[0]
+    }).values
+  );
 });
 
 test("supports ungrouped and explicit-extent density", () => {
@@ -166,6 +238,21 @@ test("validates density derivation and action options", () => {
       steps: 1
     }),
     /integer of at least 2/
+  );
+  assert.throws(
+    () => deriveKernelDensity(source.semanticSpec.datasets[0].values, {
+      field: "value",
+      kernel: "round"
+    }),
+    /Unsupported density kernel/
+  );
+  assert.throws(
+    () => source.createDensityData({
+      id: "density",
+      field: "value",
+      normalization: "probability"
+    }),
+    /Unsupported density normalization/
   );
   assert.throws(
     () => deriveKernelDensity(source.semanticSpec.datasets[0].values, {
@@ -256,4 +343,35 @@ test("does not mutate or retain caller-owned density inputs", () => {
   values[0].value = 999;
   assert.deepEqual(program.semanticSpec.datasets[0].values, before);
   assert.equal(Object.isFrozen(program.semanticSpec.datasets[1].transform), true);
+});
+
+test("releases only unreferenced derived data through a wrapped action", () => {
+  const derived = chart()
+    .createData({ id: "source", values: [{ value: 1 }, { value: 2 }] })
+    .createDensityData({
+      id: "density",
+      field: "value",
+      bandwidth: 1
+    });
+  const released = derived.releaseDerivedData({ id: "density" });
+
+  assert.deepEqual(released.semanticSpec.datasets.map(dataset => dataset.id), [
+    "source"
+  ]);
+  assert.deepEqual(
+    released.trace.children.at(-1).children.map(child => child.op),
+    ["editSemantic"]
+  );
+  assert.throws(
+    () => derived.releaseDerivedData({ id: "source" }),
+    /Unknown derived dataset/
+  );
+  assert.throws(
+    () => derived.releaseDerivedData({ id: "missing" }),
+    /Unknown derived dataset/
+  );
+  assert.throws(
+    () => derived.releaseDerivedData({ id: "density", extra: true }),
+    /Unknown releaseDerivedData option/
+  );
 });

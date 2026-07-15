@@ -11,6 +11,11 @@ import { assertChartProgramsEquivalent } from
 import { createAreaOutlineEditCarsDensityArea } from
   "../../../../examples/cars-density-area/program.js";
 import {
+  createCountNormalizationCarsDensityArea,
+  createDensityRevisionCarsDensityArea,
+  createEpanechnikovKernelCarsDensityArea
+} from "../../../../examples/cars-density-area/program.js";
+import {
   createCarsDensityAreaPrimitives,
   renderCarsDensityAreaPrimitives
 } from "../primitive.program.js";
@@ -100,7 +105,7 @@ test("authors the Epanechnikov kernel target from independent values", () => {
   assert.equal(transform.kernel, "epanechnikov");
   assert.equal(transform.normalization, "unit");
   assert.deepEqual(dataset.values, expected.densityRows);
-  assert.deepEqual(expected.scales.y.domain, [0, 0.30000000000000004]);
+  assert.deepEqual(expected.scales.y.domain, [0, 0.3]);
   assertDensityGraphicTarget(program, expected);
 });
 
@@ -153,4 +158,23 @@ test("authors a deterministic triangular count density revision target", () => {
   assert.ok(!program.trace.children.some(node =>
     ["encodeDensity", "editDensity"].includes(node.op)
   ));
+});
+
+test("matches every approved density primitive with its public action flow", () => {
+  for (const [primitiveProgram, publicProgram] of [
+    [
+      createEpanechnikovKernelPrimitives(cars),
+      createEpanechnikovKernelCarsDensityArea(cars)
+    ],
+    [
+      createCountNormalizationPrimitives(cars),
+      createCountNormalizationCarsDensityArea(cars)
+    ],
+    [
+      createDensityRevisionPrimitives(cars),
+      createDensityRevisionCarsDensityArea(cars)
+    ]
+  ]) {
+    assertChartProgramsEquivalent({ primitiveProgram, publicProgram });
+  }
 });

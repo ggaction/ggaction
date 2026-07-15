@@ -27,6 +27,12 @@ domain action을 통해서만 실행한다.
 | `rematerializeTitle` | title and Canvas actions |
 | `rematerializeVerticalGrid` | vertical grid and Canvas actions |
 
+## Internal state-transition inventory
+
+| Internal action | Public owner | Role |
+| --- | --- | --- |
+| `releaseDerivedData` | `editDensity` | Remove an unreferenced old derived revision through `editSemantic({ remove: true })` |
+
 ## Internal guide component inventory
 
 이 action들은 public guide 또는 encoding action이 호출하는 peer wrapped component다. Public

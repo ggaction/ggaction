@@ -76,12 +76,16 @@ data; method is `"linear"`, confidence is `0.95`, and interval is `"mean"`.
 ### `createDensityData`
 
 ```javascript
-createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, as? })
+createDensityData({
+  id, source?, field, groupBy?, bandwidth?, extent?, steps?,
+  kernel?, normalization?, as?
+})
 ```
 
-Create immutable Gaussian KDE rows on one shared inclusive sample grid.
-Source defaults to current data, steps to `100`, and bandwidth to an automatic
-Scott-rule estimate. [Data](../api/data.md)
+Create immutable KDE rows on one shared inclusive sample grid. Source defaults
+to current data, steps to `100`, bandwidth to an automatic Scott-rule estimate,
+kernel to `"gaussian"`, and normalization to `"unit"`.
+[Data](../api/data.md)
 
 ### `createPointMark`
 
@@ -230,14 +234,26 @@ Use `stack: "normalize"` for a unit-height partition.
 
 ```javascript
 encodeDensity({
-  field, target?, source?, groupBy?, bandwidth?, extent?, steps?, as?,
-  densityChannel?, coordinate?, valueScale?, densityScale?
+  field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?,
+  normalization?, as?, densityChannel?, coordinate?, valueScale?, densityScale?
 })
 ```
 
-Create immutable Gaussian KDE data, bind it to an area mark, encode its value
+Create immutable KDE data, bind it to an area mark, encode its value
 and density fields, and materialize baseline-closed paths. Density defaults to
-the y channel; pass `densityChannel: "x"` for a horizontal orientation.
+the y channel; kernel and normalization default to `"gaussian"` and `"unit"`.
+Pass `densityChannel: "x"` for a horizontal orientation.
+[Encodings](../api/encodings.md#atomic-density)
+
+### `editDensity`
+
+```javascript
+editDensity({ target?, bandwidth?, extent?, steps?, kernel?, normalization? })
+```
+
+Create an immutable density-data revision, rebind the selected density area,
+and rematerialize its graphical consumers. Omitted density settings are
+preserved and at least one editable setting is required.
 [Encodings](../api/encodings.md#atomic-density)
 
 ### `encodeColor`

@@ -57,7 +57,7 @@ mean-response confidence bands.
 
 ## Density area chart
 
-Derive grouped Gaussian kernel-density values and overlay translucent,
+Derive grouped kernel-density values and overlay translucent,
 zero-baseline areas with a top multi-column legend.
 
 [Build the cars density area chart](./density-area.md)

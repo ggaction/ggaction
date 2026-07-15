@@ -5,7 +5,8 @@ import { deriveKernelDensity } from "../../grammar/density.js";
 import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "field", "groupBy", "bandwidth", "extent", "steps", "as"
+  "id", "source", "field", "groupBy", "bandwidth", "extent", "steps",
+  "kernel", "normalization", "as"
 ]);
 
 export const materializeDensityData = action(
@@ -31,7 +32,7 @@ export const materializeDensityData = action(
 );
 
 export const createDensityData = action(
-  { op: "createDensityData", description: "Create grouped Gaussian kernel-density values." },
+  { op: "createDensityData", description: "Create grouped kernel-density values." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createDensityData");
     const id = validateUserId(args.id, "Density dataset id");
@@ -49,6 +50,8 @@ export const createDensityData = action(
       bandwidth: args.bandwidth ?? "auto",
       extent: args.extent ?? "auto",
       steps: args.steps ?? 100,
+      kernel: args.kernel ?? "gaussian",
+      normalization: args.normalization ?? "unit",
       as: args.as ?? [`${args.field}_value`, `${args.field}_density`],
       resolve: "shared"
     };

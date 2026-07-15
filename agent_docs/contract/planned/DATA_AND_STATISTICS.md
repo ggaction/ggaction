@@ -69,51 +69,6 @@ type BoxWhisker =
 - Status: Planned, NOT IMPLEMENTED. quartile/whisker fixtures, even/odd/duplicate samples, missing values,
   grouped order, empty/singleton groups, Tukey factor, minmax, outlier ownership and deterministic IDs가 필요하다.
 
-## density kernel vocabulary
-
-```typescript
-type DensityKernel =
-  | "gaussian" | "epanechnikov" | "uniform" | "triangular";
-```
-
-- `createDensityData.kernel`, `encodeDensity.kernel`, `editDensity.kernel`은 하나의 shared closed
-  vocabulary와 pure kernel grammar를 사용한다. 생략 시 existing behavior인 `"gaussian"`이다.
-- normalized kernel recipe는 `u = (x - sample) / bandwidth`에 대해 Gaussian
-  `exp(-u² / 2) / sqrt(2π)`, Epanechnikov `0.75 * (1 - u²)`, uniform `0.5`, triangular
-  `1 - abs(u)`를 사용한다. 마지막 세 kernel은 `abs(u) <= 1` 밖에서 0이다.
-- 각 group의 estimate는 `sum(K(u)) / (n * bandwidth)`다. kernel이 달라도 bandwidth의 단위와
-  shared sample grid, group first-appearance order, output row ordering은 바뀌지 않는다.
-- `bandwidth: "auto"`는 kernel과 무관하게 existing deterministic Scott-rule width를 사용하고
-  resolved positive number를 transform provenance에 저장한다. provenance에는 resolved kernel도
-  반드시 저장한다.
-- `encodeDensity`는 kernel을 wrapped `createDensityData`로 전달한다. `editDensity`에서 kernel을
-  바꾸면 source dataset을 수정하지 않고 namespaced derived revision을 만든 뒤 consumer를 explicit
-  rebind하고 density scales, area paths, axes와 grids를 rematerialize한다.
-- Status: Planned, NOT IMPLEMENTED. kernel formula fixtures, default/invalid values, grouped/ungrouped
-  estimates, provenance, edit revision과 browser/PNG path parity coverage가 필요하다.
-
-## density normalization modes
-
-```typescript
-type DensityNormalization = "unit" | "count";
-```
-
-- `createDensityData.normalization`, `encodeDensity.normalization`과 `editDensity.normalization`은 같은
-  closed vocabulary를 사용하며 생략 default는 `"unit"`이다. Resolved value는 transform provenance에
-  저장하고 downstream action이 다시 추론하지 않는다.
-- 한 group의 valid finite sample 수를 `n`, kernel input을 `u = (x - sample) / bandwidth`라고 할 때
-  `"unit"` estimate는 `sum(K(u)) / (n * bandwidth)`다. 전체 실수축에서 적분이 1인 group-local
-  probability-density scaling이며 y 값 자체를 probability로 해석하지 않는다.
-- `"count"` estimate는 `sum(K(u)) / bandwidth`, 즉 같은 sample grid의 unit estimate에 `n`을 곱한다.
-  전체 실수축 적분은 group의 valid sample count이며 grouped density는 각 group의 own count를 사용한다.
-- Extent는 output sample grid만 제한하고 normalization denominator를 바꾸지 않는다. Truncated extent에서
-  materialized path의 visible area가 target integral보다 작아도 남은 sample을 다시 renormalize하지 않는다.
-- `encodeDensity`는 값을 wrapped `createDensityData`로 전달하고 resulting density scale, area path,
-  axes와 grids를 materialize한다. Planned `editDensity` 변경은 immutable derived-data revision을 만들고
-  같은 consumers를 deterministic plan으로 rematerialize한다.
-- Status: Planned, NOT IMPLEMENTED. grouped/ungrouped exact formulas, default/invalid value, truncated extent,
-  provenance, edit revision, density scale/guide updates와 browser/PNG parity coverage가 필요하다.
-
 ## filter predicate modes
 
 ```typescript

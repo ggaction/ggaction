@@ -122,16 +122,32 @@ function resolveOutputFields(as, field, groupBy) {
   return [...resolved];
 }
 
-function gaussianKernel(value) {
-  return Math.exp(-0.5 * value ** 2) / SQRT_TWO_PI;
-}
+const KERNEL_FUNCTIONS = Object.freeze({
+  gaussian(value) {
+    return Math.exp(-0.5 * value ** 2) / SQRT_TWO_PI;
+  },
+  epanechnikov(value) {
+    return Math.abs(value) <= 1 ? 0.75 * (1 - value ** 2) : 0;
+  },
+  uniform(value) {
+    return Math.abs(value) <= 1 ? 0.5 : 0;
+  },
+  triangular(value) {
+    return Math.abs(value) <= 1 ? 1 - Math.abs(value) : 0;
+  }
+});
 
-function estimateAt(sample, values, bandwidth) {
+function estimateAt(sample, values, bandwidth, kernel, normalization) {
   const sum = values.reduce(
-    (total, value) => total + gaussianKernel((sample - value) / bandwidth),
+    (total, value) => total + KERNEL_FUNCTIONS[kernel](
+      (sample - value) / bandwidth
+    ),
     0
   );
-  return sum / (values.length * bandwidth);
+  const denominator = normalization === "unit"
+    ? values.length * bandwidth
+    : bandwidth;
+  return sum / denominator;
 }
 
 export function deriveKernelDensity(values, {
@@ -140,6 +156,8 @@ export function deriveKernelDensity(values, {
   bandwidth = "auto",
   extent = "auto",
   steps = 100,
+  kernel = "gaussian",
+  normalization = "unit",
   as
 } = {}) {
   if (!Array.isArray(values)) {
@@ -153,6 +171,8 @@ export function deriveKernelDensity(values, {
     throw new RangeError("Density steps must be an integer of at least 2.");
   }
   const outputFields = resolveOutputFields(as, sourceField, groupField);
+  const resolvedKernel = validateDensityKernel(kernel);
+  const resolvedNormalization = validateDensityNormalization(normalization);
   const validRows = values.filter(row =>
     row !== null &&
     typeof row === "object" &&
@@ -184,7 +204,13 @@ export function deriveKernelDensity(values, {
       rows.push({
         ...(groupField === undefined ? {} : { [groupField]: group }),
         [outputFields[0]]: sample,
-        [outputFields[1]]: estimateAt(sample, groupValues, resolvedBandwidth)
+        [outputFields[1]]: estimateAt(
+          sample,
+          groupValues,
+          resolvedBandwidth,
+          resolvedKernel,
+          resolvedNormalization
+        )
       });
     }
   }
@@ -197,6 +223,8 @@ export function deriveKernelDensity(values, {
     },
     groups,
     bandwidth: resolvedBandwidth,
+    kernel: resolvedKernel,
+    normalization: resolvedNormalization,
     extent: resolvedExtent,
     steps,
     samples,

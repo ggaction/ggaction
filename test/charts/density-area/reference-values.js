@@ -154,8 +154,9 @@ function niceStep(span, count = 5) {
 
 function ticksForDomain(domain, count = 5) {
   const step = niceStep(domain[1] - domain[0], count);
-  const start = Math.ceil(domain[0] / step) * step;
-  const stop = Math.floor(domain[1] / step) * step;
+  const tolerance = step * 1e-10;
+  const start = Math.ceil((domain[0] - tolerance) / step) * step;
+  const stop = Math.floor((domain[1] + tolerance) / step) * step;
   const ticks = [];
   for (let value = start; value <= stop + step * 1e-10; value += step) {
     ticks.push(+value.toPrecision(12));
@@ -320,7 +321,10 @@ export function createCarsDensityAreaValues(
     ...groups.flatMap(group => group.rows.map(row => row[as[1]]))
   );
   const yStep = niceStep(maximumDensity, 5);
-  const yDomain = [0, Math.ceil(maximumDensity / yStep) * yStep];
+  const yDomain = [
+    0,
+    Number((Math.ceil(maximumDensity / yStep) * yStep).toPrecision(12))
+  ];
   const xRange = [bounds.x, bounds.x + bounds.width];
   const yRange = [bounds.y + bounds.height, bounds.y];
   const xTicks = ticksForDomain(xDomain).map(value => ({

@@ -95,6 +95,20 @@ export function parseSemanticPath(property, { allowContainer = false } = {}) {
     throw new TypeError("editSemantic requires a non-empty property string.");
   }
 
+  if (allowContainer) {
+    const datasetMatch = property.match(
+      new RegExp(`^dataset\\[(${USER_ID_SOURCE})\\]$`)
+    );
+    if (datasetMatch) {
+      return Object.freeze({
+        kind: "dataset",
+        id: datasetMatch[1],
+        collection: "datasets",
+        path: Object.freeze([])
+      });
+    }
+  }
+
   const entityMatch = property.match(
     new RegExp(
       `^(${Object.keys(ENTITY_PATHS).join("|")})\\[(${USER_ID_SOURCE})\\]\\.(.+)$`

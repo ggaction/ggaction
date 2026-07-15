@@ -192,7 +192,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   field와 optional grouping field다.
 - `bandwidth`
   - Status: Implemented. positive finite number 또는 `"auto"`; 기본은 `"auto"`다.
-  - Effect: Gaussian kernel 폭을 결정한다. auto는 deterministic Scott-rule 결과를 provenance에
+  - Effect: 선택한 kernel 폭을 결정한다. auto는 deterministic Scott-rule 결과를 provenance에
     concrete number로 다시 저장한다.
 - `extent`
   - Status: Implemented. `"auto"` 또는 오름차순 finite `[min, max]`; 기본은 `"auto"`다.
@@ -201,22 +201,27 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Status: Implemented. 2 이상의 integer이며 기본값은 `100`이다.
   - Effect: inclusive grid의 row 수와 area path resolution을 결정한다.
 - `kernel`
-  - Status: Planned. shared `DensityKernel`이며 기본값은 `"gaussian"`이다.
+  - Status: Implemented. `"gaussian" | "epanechnikov" | "uniform" | "triangular"`; 기본값은
+    `"gaussian"`이다.
   - Effect: bandwidth와 sample grid를 유지하면서 각 sample의 normalized weight recipe를 결정한다.
+- `normalization`
+  - Status: Implemented. `"unit" | "count"`; 기본값은 `"unit"`이다.
+  - Effect: unit은 group density integral을 1로 맞추고 count는 같은 estimate에 group의 valid sample
+    count를 곱한다.
 - `as`
   - Status: Implemented. 서로 다른 두 개의 non-empty field 이름이며 기본은
     `[`${field}_value`, `${field}_density`]`다.
   - Effect: derived row와 이후 encoding이 참조할 output field 이름을 결정한다.
-- Effect: grouped KDE provenance와 deterministic values를 저장한다. Planned kernel은 provenance에
-  resolved value로 기록한다.
+- Effect: grouped KDE provenance와 deterministic values를 저장한다. Resolved kernel과 normalization은
+  항상 provenance에 기록한다.
 - Coverage: `test/unit/actions/data/density-data.test.js`와
   `test/charts/density-area/reference-values.test.js`가 auto/explicit bandwidth, extent,
   grouped/ungrouped, ownership과 오류를 검증한다. steps의 여러 경계/대표 조합은 부분적이다.
 
 ### Formal values — `createDensityData`
 
-- Implemented: `createDensityData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; as?: readonly [FieldName, FieldName] })`
-- Planned (NOT IMPLEMENTED): `{ kernel?: DensityKernel; normalization?: "unit" | "count" }`; defaults는 `"gaussian"`과 `"unit"`이다.
+- Implemented: `createDensityData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; as?: readonly [FieldName, FieldName] })`
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createDensityData`
@@ -234,8 +239,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ⚠️ Partial: minimum `2`와 매우 큰 steps의 performance boundary.
 - `as`
   - ✅ Covered: inferred names, two explicit names, wrong cardinality/invalid names rejection.
-- 🟡 Planned: shared `DensityKernel`, Gaussian default, alternate formula fixtures와 provenance.
-- 🟡 Planned: `"unit" | "count"` normalization, unit default, group-local scaling과 provenance.
+- `kernel`
+  - ✅ Covered: four formulas, Gaussian default, invalid value, provenance와 primitive/public parity.
+- `normalization`
+  - ✅ Covered: unit/count formulas, unit default, group-local scaling, invalid value와 provenance.
 - Evidence: `test/unit/actions/data/density-data.test.js`,
   `test/charts/density-area/reference-values.test.js`.
 

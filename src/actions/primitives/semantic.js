@@ -76,6 +76,22 @@ function removeEntity(spec, parsed) {
   const collection = spec[parsed.collection];
   const index = collection.findIndex(item => item.id === parsed.id);
   if (index === -1) return spec;
+  if (parsed.kind === "dataset" && parsed.path.length === 0) {
+    const dataset = collection[index];
+    if (dataset.source === undefined) {
+      throw new Error(`Source dataset "${parsed.id}" is immutable after creation.`);
+    }
+    const referenced = spec.layers.some(layer => layer.data === parsed.id) ||
+      spec.datasets.some(candidate => candidate.source === parsed.id);
+    if (referenced) {
+      throw new Error(`Derived dataset "${parsed.id}" is still referenced.`);
+    }
+    const nextCollection = collection.filter((_, itemIndex) => itemIndex !== index);
+    return freezeOwned({
+      ...spec,
+      [parsed.collection]: freezeOwned(nextCollection)
+    });
+  }
   if (parsed.kind === "dataset") {
     throw new Error(`Dataset "${parsed.id}" is immutable after creation.`);
   }
@@ -119,9 +135,17 @@ const editSemantic = action(
         : parsed.kind === "title"
           ? removeRootProperty(this.semanticSpec, "title", parsed.path)
           : removeEntity(this.semanticSpec, parsed);
-      return semanticSpec === this.semanticSpec
-        ? this
-        : this._clone({ semanticSpec });
+      if (semanticSpec === this.semanticSpec) return this;
+      const clearsCurrentData =
+        parsed.kind === "dataset" &&
+        parsed.path.length === 0 &&
+        this.context.currentData === parsed.id;
+      return this._clone({
+        semanticSpec,
+        ...(clearsCurrentData
+          ? { context: freezeOwned({ ...this.context, currentData: undefined }) }
+          : {})
+      });
     }
     validateSemanticValue(this, parsed, value);
 

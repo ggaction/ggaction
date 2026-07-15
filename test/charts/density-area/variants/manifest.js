@@ -1,6 +1,9 @@
 import {
   createAreaOutlineEditCarsDensityArea,
-  createCarsDensityArea
+  createCarsDensityArea,
+  createCountNormalizationCarsDensityArea,
+  createDensityRevisionCarsDensityArea,
+  createEpanechnikovKernelCarsDensityArea
 } from
   "../../../../examples/cars-density-area/program.js";
 import { loadCars } from "../../../support/data.js";
@@ -101,13 +104,15 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   variant: "epanechnikov-kernel",
   title: "Epanechnikov Density Kernel",
   callChain: densityCallChain({ kernel: "epanechnikov" }),
-  primitive: createEpanechnikovKernelPrimitives(cars)
+  primitive: createEpanechnikovKernelPrimitives(cars),
+  userFacing: createEpanechnikovKernelCarsDensityArea(cars)
 }), defineVisualVariant({
   ...shared,
   variant: "count-normalization",
   title: "Count-normalized Density",
   callChain: densityCallChain({ normalization: "count" }),
-  primitive: createCountNormalizationPrimitives(cars)
+  primitive: createCountNormalizationPrimitives(cars),
+  userFacing: createCountNormalizationCarsDensityArea(cars)
 }), defineVisualVariant({
   ...shared,
   variant: "density-revision",
@@ -119,5 +124,6 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     kernel: "triangular",
     normalization: "count"
   });`,
-  primitive: createDensityRevisionPrimitives(cars)
+  primitive: createDensityRevisionPrimitives(cars),
+  userFacing: createDensityRevisionCarsDensityArea(cars)
 })]);

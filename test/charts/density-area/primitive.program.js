@@ -28,13 +28,11 @@ export function createCarsDensityAreaPrimitiveProgram(cars, {
     bandwidth: values.bandwidth,
     extent: "auto",
     steps: 100,
+    kernel: values.kernel,
+    normalization: values.normalization,
     as: ["Acceleration_value", "Acceleration_density"],
     resolve: "shared"
   };
-  if (kernel !== undefined || normalization !== undefined) {
-    transform.kernel = values.kernel;
-    transform.normalization = values.normalization;
-  }
   const { x: xAxis, y: yAxis } = values.axes;
   const xTickPositions = xAxis.ticks.map(tick => tick.position);
   const yTickPositions = yAxis.ticks.map(tick => tick.position);

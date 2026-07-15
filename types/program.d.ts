@@ -33,6 +33,12 @@ export type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";
 export type DashPattern = readonly number[];
 export type ScaleType = "linear" | "time" | "ordinal";
 export type StackMode = "zero" | "normalize" | null;
+export type DensityKernel =
+  | "gaussian"
+  | "epanechnikov"
+  | "uniform"
+  | "triangular";
+export type DensityNormalization = "unit" | "count";
 export type ColorLayout =
   | "stack"
   | "fill"
@@ -209,6 +215,37 @@ export interface CategoricalEncodingOptions {
   fieldType?: "nominal";
   scale?: ScaleOptions;
   layout?: ColorLayout;
+}
+
+export interface DensityDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string;
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  as?: readonly [string, string];
+}
+
+export interface DensityEncodingOptions
+  extends Omit<DensityDataOptions, "id"> {
+  target?: string;
+  densityChannel?: "x" | "y";
+  coordinate?: string;
+  valueScale?: ScaleOptions;
+  densityScale?: ScaleOptions;
+}
+
+export interface EditDensityOptions {
+  target?: string;
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
 }
 
 export interface OffsetScaleOptions {
@@ -392,7 +429,7 @@ export class ChartProgram {
   editCanvas(options: CanvasOptions): ChartProgram;
   createData(options: { id: string; values: readonly unknown[] }): ChartProgram;
   filterData(options: { id: string; source?: string; field: string; oneOf: readonly unknown[] }): ChartProgram;
-  createDensityData(options: ActionOptions): ChartProgram;
+  createDensityData(options: DensityDataOptions): ChartProgram;
   createRegressionData(options: ActionOptions): ChartProgram;
 
   createPointMark(options: { id: string; data?: string; shape?: PointShape }): ChartProgram;
@@ -438,7 +475,8 @@ export class ChartProgram {
   encodeYRange(options: ActionOptions): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
-  encodeDensity(options: ActionOptions): ChartProgram;
+  encodeDensity(options: DensityEncodingOptions): ChartProgram;
+  editDensity(options: EditDensityOptions): ChartProgram;
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
 
   createRegression(options?: RegressionOptions): ChartProgram;

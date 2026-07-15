@@ -196,6 +196,7 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
     "removeOpacityLegend",
     "createSizeLegend"
   ]);
+  assert.deepEqual(index.internal.stateTransitions, ["releaseDerivedData"]);
   assert.equal(runtime.includes("createLegendSymbols"), true);
   assert.equal(runtime.includes("createCategoricalLegend"), true);
   assert.equal(runtime.includes("createSizeLegend"), true);
@@ -206,6 +207,7 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
   for (const name of [
     ...index.internal.materialization,
     ...index.internal.guideComponents,
+    ...index.internal.stateTransitions,
     "createLegendSymbols"
   ]) {
     assert.equal(declared.has(name), false, name);
@@ -221,7 +223,6 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
     "createErrorBar",
     "createIntervalData",
     "createRuleMark",
-    "editDensity",
     "editHorizontalGrid",
     "editLegend",
     "editTitle",
@@ -417,10 +418,9 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /clamp\?: boolean/);
   assert.match(plannedCorpus, /reverse\?: boolean/);
   assert.match(plannedCorpus, /unknown\?: unknown/);
-  assert.match(plannedCorpus, /type DensityKernel =/);
-  assert.match(plannedCorpus, /sum\(K\(u\)\) \/ \(n \* bandwidth\)/);
-  assert.match(plannedCorpus, /type DensityNormalization = "unit" \| "count"/);
-  assert.match(plannedCorpus, /`"count"` estimate는 `sum\(K\(u\)\) \/ bandwidth`/);
+  assert.match(currentCorpus, /kernel\?: "gaussian" \| "epanechnikov" \| "uniform" \| "triangular"/);
+  assert.match(currentCorpus, /normalization\?: "unit" \| "count"/);
+  assert.match(currentCorpus, /unit은 group density integral을 1로 맞추고 count는/);
   assert.match(plannedCorpus, /type FilterComparison =/);
   assert.match(plannedCorpus, /oneOf.*predicate.*range.*정확히 하나/);
   assert.match(plannedCorpus, /type RowSelectionMode = "min" \| "max"/);

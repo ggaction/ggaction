@@ -30,7 +30,7 @@ chart-authoring API does not support that combination.
 | --- | --- |
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable arrays of plain row objects, named filters, grouped linear regression, and grouped Gaussian KDE derivations |
+| Data | Immutable arrays of plain row objects, named filters, grouped linear regression, and grouped kernel-density derivations |
 | Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
 | Scales | Linear, UTC time, ordinal position, color, named/direct stroke dash, and padded band-local xOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |

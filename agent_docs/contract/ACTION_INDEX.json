@@ -493,16 +493,34 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "`editDensity` will create and rebind a derived revision",
-      "audit": "`editDensity` — Planned",
+      "update": "`editDensity` creates and rebinds an immutable revision",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
-        "tests": "partial"
+        "tests": "complete"
       },
       "contract": {
         "file": "agent_docs/contract/current/ENCODINGS.md",
         "anchor": "encodedensity"
+      }
+    },
+    {
+      "name": "editDensity",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Creates and rebinds an immutable density revision",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "editdensity"
       }
     },
     {
@@ -1327,15 +1345,6 @@
       }
     },
     {
-      "name": "editDensity",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/EDITING.md",
-        "anchor": "editdensity"
-      }
-    },
-    {
       "name": "editHorizontalGrid",
       "status": "planned",
       "readiness": "accepted",
@@ -1491,28 +1500,6 @@
       }
     },
     {
-      "id": "density-kernel-vocabulary",
-      "kind": "parameter",
-      "name": "Density kernel vocabulary",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/DATA_AND_STATISTICS.md",
-        "anchor": "density-kernel-vocabulary"
-      }
-    },
-    {
-      "id": "density-normalization-modes",
-      "kind": "parameter",
-      "name": "Density normalization modes",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/DATA_AND_STATISTICS.md",
-        "anchor": "density-normalization-modes"
-      }
-    },
-    {
       "id": "filter-predicate-modes",
       "kind": "parameter",
       "name": "Filter predicate modes",
@@ -1649,6 +1636,9 @@
       "removeCategoricalLegend",
       "removeOpacityLegend",
       "createSizeLegend"
+    ],
+    "stateTransitions": [
+      "releaseDerivedData"
     ],
     "contract": "agent_docs/contract/internal/ACTIONS.md"
   }

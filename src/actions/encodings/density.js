@@ -1,13 +1,26 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
-import { hasDataset } from "../../selectors/index.js";
+import {
+  findDataset,
+  hasDataset,
+  resolveEligibleLayer
+} from "../../selectors/index.js";
+import { applyMaterializationPlan } from
+  "../../materialization/dependencies.js";
+import { planDensityRematerialization } from
+  "../../materialization/density.js";
 import { validateOptions } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "field", "target", "source", "groupBy", "bandwidth", "extent", "steps",
-  "as", "densityChannel", "coordinate", "valueScale", "densityScale"
+  "kernel", "normalization", "as", "densityChannel", "coordinate",
+  "valueScale", "densityScale"
 ]);
+const EDIT_OPTIONS = Object.freeze([
+  "target", "bandwidth", "extent", "steps", "kernel", "normalization"
+]);
+const EDITABLE = Object.freeze(EDIT_OPTIONS.filter(option => option !== "target"));
 
 function findArea(program, requested) {
   const areas = program.semanticSpec.layers.filter(layer => layer.mark?.type === "area");
@@ -103,6 +116,10 @@ const encodeDensity = action(
         ...(args.bandwidth === undefined ? {} : { bandwidth: args.bandwidth }),
         ...(args.extent === undefined ? {} : { extent: args.extent }),
         ...(args.steps === undefined ? {} : { steps: args.steps }),
+        ...(args.kernel === undefined ? {} : { kernel: args.kernel }),
+        ...(args.normalization === undefined
+          ? {}
+          : { normalization: args.normalization }),
         ...(args.as === undefined ? {} : { as: args.as })
       })
       .editSemantic({
@@ -128,6 +145,78 @@ const encodeDensity = action(
   }
 );
 
+function findDensityArea(program, requested) {
+  const target = requested === undefined
+    ? undefined
+    : validateUserId(requested, "Density target id");
+  return resolveEligibleLayer(program, {
+    target,
+    label: "density area",
+    predicate(layer) {
+      const dataset = findDataset(program, layer.data);
+      return layer.mark?.type === "area" &&
+        dataset?.transform?.length === 1 &&
+        dataset.transform[0].type === "density";
+    }
+  });
+}
+
+function nextDensityRevisionId(program, target) {
+  let revision = 1;
+  while (hasDataset(program, `${target}DensityDataRevision${revision}`)) {
+    revision += 1;
+  }
+  return `${target}DensityDataRevision${revision}`;
+}
+
+const editDensity = action(
+  {
+    op: "editDensity",
+    description: "Revise one density transform and rematerialize its consumers."
+  },
+  function (args = {}) {
+    validateOptions(args, EDIT_OPTIONS, "editDensity");
+    if (!EDITABLE.some(option => Object.hasOwn(args, option))) {
+      throw new Error("editDensity requires at least one density option.");
+    }
+    const layer = findDensityArea(this, args.target);
+    const previous = findDataset(this, layer.data);
+    const transform = previous.transform[0];
+    const revisionId = nextDensityRevisionId(this, layer.id);
+    const option = property => Object.hasOwn(args, property)
+      ? args[property]
+      : transform[property];
+
+    let next = this
+      .createDensityData({
+        id: revisionId,
+        source: previous.source,
+        field: transform.field,
+        ...(transform.groupBy === undefined
+          ? {}
+          : { groupBy: transform.groupBy }),
+        bandwidth: option("bandwidth"),
+        extent: option("extent"),
+        steps: option("steps"),
+        kernel: option("kernel") ?? "gaussian",
+        normalization: option("normalization") ?? "unit",
+        as: transform.as
+      })
+      .editSemantic({
+        property: `layer[${layer.id}].data`,
+        value: revisionId
+      })
+      .releaseDerivedData({ id: previous.id });
+
+    next = applyMaterializationPlan(
+      next,
+      planDensityRematerialization(next, layer.id)
+    );
+    return next;
+  }
+);
+
 export function registerDensityEncodingAction(ProgramClass) {
   ProgramClass.prototype.encodeDensity = encodeDensity;
+  ProgramClass.prototype.editDensity = editDensity;
 }

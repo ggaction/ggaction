@@ -28,6 +28,14 @@ test("encodes grouped y-density with inferred target and source", () => {
   const layer = program.semanticSpec.layers[0];
 
   assert.equal(layer.data, "densitiesDensityData");
+  assert.equal(
+    program.semanticSpec.datasets[1].transform[0].kernel,
+    "gaussian"
+  );
+  assert.equal(
+    program.semanticSpec.datasets[1].transform[0].normalization,
+    "unit"
+  );
   assert.deepEqual(layer.encoding, {
     x: { field: "Acceleration_value", fieldType: "quantitative", scale: "x" },
     y: { field: "Acceleration_density", fieldType: "quantitative", scale: "y" },
@@ -92,6 +100,32 @@ test("supports explicit x-density, output fields, scales, and coordinate", () =>
   assert.equal(program.graphicSpec.objects.horizontal.children[0].properties.commands.length, 28);
 });
 
+test("forwards kernel and normalization and rematerializes their magnitude", () => {
+  const program = areaProgram().encodeDensity({
+    field: "Acceleration",
+    groupBy: "Origin",
+    bandwidth: 0.6,
+    kernel: "epanechnikov",
+    normalization: "count"
+  });
+  const expected = createCarsDensityAreaValues(loadCars(), {
+    kernel: "epanechnikov",
+    normalization: "count"
+  });
+  const dataset = program.semanticSpec.datasets[1];
+
+  assert.equal(dataset.transform[0].kernel, "epanechnikov");
+  assert.equal(dataset.transform[0].normalization, "count");
+  assert.deepEqual(dataset.values, expected.densityRows);
+  assert.deepEqual(program.resolvedScales.y.domain, expected.scales.y.domain);
+  assert.deepEqual(
+    program.graphicSpec.objects.densities.children.map(
+      child => child.properties.commands
+    ),
+    expected.areas.map(area => linearPathCommands(area.points, { close: true }))
+  );
+});
+
 test("rejects ambiguous, conflicting, and invalid density requests atomically", () => {
   const ambiguous = areaProgram("first")
     .createAreaMark({ id: "second", data: "cars" })
@@ -120,6 +154,20 @@ test("rejects ambiguous, conflicting, and invalid density requests atomically", 
   assert.throws(
     () => areaProgram().encodeDensity({ field: "Acceleration", extra: true }),
     /Unknown encodeDensity option/
+  );
+  assert.throws(
+    () => areaProgram().encodeDensity({
+      field: "Acceleration",
+      kernel: "round"
+    }),
+    /Unsupported density kernel/
+  );
+  assert.throws(
+    () => areaProgram().encodeDensity({
+      field: "Acceleration",
+      normalization: "probability"
+    }),
+    /Unsupported density normalization/
   );
 
   const encoded = areaProgram()

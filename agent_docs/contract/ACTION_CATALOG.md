@@ -34,7 +34,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`encodeYRange`](current/ENCODINGS.md#encodeyrange) | encodings | Assignment | Reassignment — Planned | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeGroup`](current/ENCODINGS.md#encodegroup) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeHistogram`](current/ENCODINGS.md#encodehistogram) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
-| user-facing | [`encodeDensity`](current/ENCODINGS.md#encodedensity) | encodings | Assignment | `editDensity` — Planned | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeDensity`](current/ENCODINGS.md#encodedensity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`editDensity`](current/ENCODINGS.md#editdensity) | encodings | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`encodeBarWidth`](current/ENCODINGS.md#encodebarwidth) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`createRegression`](current/STATISTICS.md#createregression) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createAxes`](current/AXES.md#createaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
@@ -89,7 +90,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | `createErrorBar` | accepted | [Open](planned/COMPOSITE_MARKS.md#createerrorbar) |
 | `createErrorBand` | accepted | [Open](planned/COMPOSITE_MARKS.md#createerrorband) |
 | `createBoxPlot` | accepted | [Open](planned/COMPOSITE_MARKS.md#createboxplot) |
-| `editDensity` | accepted | [Open](planned/EDITING.md#editdensity) |
 | `editHorizontalGrid` | accepted | [Open](planned/EDITING.md#directional-grid-edits) |
 | `editLegend` | accepted | [Open](planned/EDITING.md#editlegend) |
 | `editTitle` | accepted | [Open](planned/EDITING.md#edittitle) |
@@ -110,8 +110,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | parameter | Continuous color bar consumer | accepted | [Open](planned/ENCODINGS.md#continuous-color-bar-consumer) |
 | parameter | Scale type vocabulary | accepted | [Open](planned/SCALES.md#scale-type-vocabulary) |
 | parameter | Scale mapping policies | accepted | [Open](planned/SCALES.md#scale-mapping-policies) |
-| parameter | Density kernel vocabulary | accepted | [Open](planned/DATA_AND_STATISTICS.md#density-kernel-vocabulary) |
-| parameter | Density normalization modes | accepted | [Open](planned/DATA_AND_STATISTICS.md#density-normalization-modes) |
 | parameter | Filter predicate modes | accepted | [Open](planned/DATA_AND_STATISTICS.md#filter-predicate-modes) |
 | parameter | Regression method vocabulary | accepted | [Open](planned/DATA_AND_STATISTICS.md#regression-method-vocabulary) |
 | parameter | Regression prediction interval | accepted | [Open](planned/DATA_AND_STATISTICS.md#regression-prediction-interval) |

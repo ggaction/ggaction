@@ -218,6 +218,9 @@ caller-owned rows         → 이후 수정해도 program1에 영향 없음
   전환한다.
 - source dataset의 `values`가 한 번 저장되면 다시 수정할 수 없다.
 - derived dataset도 concrete `values`가 materialize된 뒤에는 immutable하다.
+- Derived transform parameter edit은 새 deterministic namespaced dataset revision을 만들고 consumer를
+  explicit rebind한다. 새 program에서 참조되지 않는 이전 revision만 wrapped state-transition action으로
+  제거할 수 있으며 earlier program은 기존 revision을 계속 보존한다.
 - context, resolved scale, materialization config, trace도 같은 원칙을 따른다.
 
 `_clone()`은 현재 runtime class의 constructor를 사용하므로 `ChartProgram` subclass에서도
@@ -304,10 +307,10 @@ Derived dataset은 source와 transform provenance를 먼저 기록한 뒤 pure g
 
 - scalar `oneOf` filter
 - grouped or ungrouped linear OLS regression
-- grouped or ungrouped Gaussian kernel density estimation
+- grouped or ungrouped kernel density estimation with Gaussian, Epanechnikov, uniform, or triangular kernels
 
 Transform은 source, input/output field, group, method 및 resolved parameter를 보존한다.
-Density의 automatic bandwidth처럼 계산 결과에 영향을 주는 resolved default도
+Density의 automatic bandwidth, kernel과 normalization처럼 계산 결과에 영향을 주는 resolved default도
 provenance에 다시 저장한다.
 
 ### Layer와 mark
@@ -773,6 +776,8 @@ points
 
 Density도 target area ID에서 derived data ID를 만든다. 이렇게 해야 하나의 program에서
 여러 point 또는 area에 같은 aggregate action을 적용해도 충돌하지 않는다.
+Density edit revision은 `${target}DensityDataRevision${n}`을 사용한다. Rebind 뒤 이전 revision이 다른
+layer나 derived dataset에서 참조되지 않을 때만 `releaseDerivedData`가 semantic resource 전체를 제거한다.
 
 Canvas처럼 program당 하나뿐인 structural slot, 현재 범위의 channel별 단일 axis처럼
 library가 singularity를 보장하는 system slot은 stable system ID를 사용할 수 있다.
@@ -793,7 +798,7 @@ semantic definition을 받아 deterministic result를 반환한다.
 - grouped scalar and parameterized line/bar aggregation
 - line/area series grouping과 stable ordering
 - OLS coefficient와 Student-t mean-response confidence interval
-- Gaussian KDE bandwidth, shared sample grid와 density
+- KDE bandwidth, four kernel formulas, unit/count normalization과 shared sample grid
 - Canvas margin normalization과 plot bounds
 
 Action은 이 계산을 호출하고 semantic provenance와 concrete output을 저장한다. 계산을
@@ -1043,6 +1048,17 @@ encodeDensity
 ```
 
 `densityChannel`에 따라 value와 density field가 x/y 중 어느 쪽에 놓이는지 결정한다.
+
+```text
+editDensity
+├─ createDensityData(new revision)
+├─ editSemantic(layer.data = new revision)
+├─ releaseDerivedData(old revision, only when orphaned)
+└─ rematerialize affected shared-scale marks and guides
+```
+
+Density edit은 source, output field, orientation과 scale binding을 유지한다. 전달된 statistical parameter만
+새 revision provenance에 적용하며 이전 derived values를 덮어쓰지 않는다.
 
 ### Regression
 
