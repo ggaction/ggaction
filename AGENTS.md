@@ -12,6 +12,7 @@
 ## Maintaining These Instructions
 
 - Add durable implementation principles emphasized by the user to this file as they emerge during development.
+- Treat source, tests, and documentation as one change surface: when a conceptual change affects all three, update and verify all three in the same conceptual commit.
 - Do not add one-off task details, temporary workarounds, or narrow implementation notes here.
 - If a new instruction conflicts with an existing one, surface and resolve the conflict instead of silently replacing either rule.
 
@@ -27,14 +28,18 @@
 
 ## Source Ownership and Module Boundaries
 
+- Organize directories by stable responsibility and reusable capability rather than by the chart example or implementation phase that first required the code.
 - Give each cross-cutting contract one canonical owner. Shared defaults, closed vocabularies, resource lookup rules, validation rules, and dispatch tables must be defined once and consumed by actions rather than re-declared in multiple feature modules.
 - Route ID-based lookup, existence checks, and required-resource errors for named semantic datasets, layers, scales, and coordinates through shared selectors. Keep capability queries local only when they select by semantic behavior rather than by resource identity.
 - Use one shared concrete-graphic schema for graphical editing and rendering. Renderers may add completeness checks required to draw a node, but they must not redefine a conflicting property or value contract.
 - Namespace every repeatable generated internal dataset, layer, scale, guide, and graphic ID from its owning user-defined resource ID and semantic role. Stable system IDs are reserved for structurally singular slots such as the canvas or one supported guide per channel; do not use global generated IDs where the same aggregate action can create more than one resource.
 - Store each piece of program state in one canonical representation. Convenience aliases must be derived read-only accessors, and internal counters or bookkeeping must remain non-enumerable or private rather than becoming duplicate serialized state.
 - Organize source code by reusable semantic capability and separate wrapped action orchestration from pure grammar, resolution, layout, and materialization calculations. Pure modules must not mutate a program or create trace nodes; meaningful authoring steps must remain wrapped actions.
+- Keep semantic computation, concrete graphical materialization, and renderer execution as explicit boundaries. Do not let renderers infer chart semantics or let pure semantic modules author backend operations.
+- Extract logic shared by multiple actions into the smallest responsible capability module instead of duplicating it or creating a chart-specific utility bucket.
 - Express cross-cutting rematerialization as deterministic plans of wrapped action calls, deduplicate equivalent plan steps while preserving order, and register new consumers with the responsible materialization policy instead of scattering ad hoc rematerialization calls across unrelated actions.
 - Keep every public JavaScript entry point synchronized with its TypeScript declaration, package export-map entry, and package-boundary tests. Keep Node-only adapters out of browser-safe entry points.
+- Respect package boundaries in internal imports as well as public exports. Cross-package consumers must use the owning package's supported entry point rather than reaching through to private implementation files.
 
 ## User-Facing API Design
 
@@ -87,6 +92,7 @@
 - Write source code, test descriptions, fixtures, and example-program code in English. Implementation step documents remain in Korean.
 - Keep each public user-authored program under `examples/<chart>/program.js`; chart tests must import that same program instead of copying its action chain.
 - Keep each chart's primitive baseline, public contract tests, deterministic reference values, and PNG regression together under `test/charts/<chart>/`. Name the explicit primitive chain `primitive.program.js`.
+- Give shared chart inputs, expected geometry, displayed call chains, artifact locations, and variant metadata one canonical fixture or manifest owner. Tests and generators must consume that owner instead of maintaining synchronized copies.
 - Organize unit tests by reusable capability under `test/unit/`, not by implementation phase or a mechanically mirrored source tree. Keep cross-cutting architecture invariants under `test/contracts/`.
 - When progressively replacing a primitive contract with higher-level actions, preserve the primitive baseline and maintain one evolving high-level action program per chart development cycle. Do not create separate representative program files for every implementation unit unless the user explicitly requests snapshots.
 - Require a representative high-level program and its primitive baseline to converge on the same concrete `graphicSpec`, explicit rendering order, and renderer calls when they describe the same chart. Visual similarity alone is not sufficient regression evidence.
@@ -99,6 +105,7 @@
 - Verify browser Canvas and PNG output separately. Browser checks must cover logical Canvas dimensions and console/page errors; PNG checks must cover `pixelRatio` and physical output dimensions.
 - Establish deterministic numeric fixtures for statistical transforms before relying on graphical or PNG verification. Test quantities such as coefficients, confidence bounds, sample positions, and density values independently from their materialization.
 - Pair fixed numeric fixtures with deterministic mathematical invariants for continuous mappings, bins, densities, intervals, and ordering; examples include monotonicity, mass/count conservation, non-negativity, interval containment, and stable group order.
+- Do not rely on snapshots or example images alone. Pair them with focused assertions for invariants, selectors, package boundaries, shared validation, materialization plans, and critical-file coverage.
 - Keep the global source coverage threshold and explicit critical-file floors. Do not let high-coverage modules hide regressions in immutable state, statistical grammar, concrete schemas, renderer dispatch, or the PNG adapter.
 
 ## Semantic and Graphical Boundary
@@ -141,6 +148,7 @@
 - When behavior, APIs, stored structures, or implementation contracts change, update the relevant README or current documentation before considering the change complete.
 - Write public-facing files such as `README.md` and pages under `docs/` in English.
 - Treat `docs/` as user documentation: prioritize installation, user-facing APIs, observable behavior, examples, and the minimum core concepts users need.
+- Let one canonical reference page own the normative signature and behavioral contract for each public API. Tutorials, recipes, and overview pages should teach or route to that owner rather than duplicate the full contract.
 - Organize public documentation through progressive disclosure: getting started and tutorials first, then task-oriented recipes, chart API, advanced chart API, extension API, and finally the canonical action reference. Do not require ordinary chart authors to understand primitive actions or internal architecture before they can produce a chart.
 - Give tutorials and recipes distinct roles. Tutorials teach a complete, ordered workflow with explanation; recipes solve one narrowly scoped task with prerequisites, the minimal code, and the expected result. Do not duplicate an entire tutorial as a recipe or scatter one workflow across unrelated pages.
 - Every public code sample must be directly runnable in its stated environment. Include the required imports, data-loading assumptions, and invocation context; when a deliberately incomplete excerpt is clearer, label it as a fragment and state its prerequisites explicitly.
