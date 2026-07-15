@@ -214,6 +214,9 @@ computed/explicit interval, cap/style parameter classes를 검증한다.
 
 두 번째 신규 chart는 grouped vertical error band와 horizontal range variant다.
 
+- Phase goal: [`phase7/GOAL.md`](phase7/GOAL.md)
+- Complete chart contract: [`chart/cars-error-band.md`](chart/cars-error-band.md)
+
 - Direct action: `createErrorBand`
 - Direct action: `encodeXRange`
 - Capability: `encodeY2-reassignment`

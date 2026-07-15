@@ -34,10 +34,11 @@ These types are reused below by the remaining planned interval composites. The c
 
 ```typescript
 createErrorBand({
-  id: UserId;
+  id?: UserId;
+  target?: UserId;
   data?: UserId;
-  x: PositionChannel | IntervalChannel;
-  y: PositionChannel | IntervalChannel;
+  x?: PositionChannel | IntervalChannel;
+  y?: PositionChannel | IntervalChannel;
   groupBy?: FieldName;
   coordinate?: UserId;
   fill?: NonEmptyString;
@@ -53,14 +54,23 @@ createErrorBand({
 }): ChartProgram;
 ```
 
+- `id` defaults to `"errorBand"` only while that owner is unique. A second band must provide an explicit ID.
+  When x or y is omitted, `target` selects an existing compatible encoded layer; otherwise the normal
+  current-then-unique eligible-layer rule applies. Ambiguity is an error. The inferred source contributes its
+  data, coordinate, position scales and grouping, and every resolved resource is persisted.
 - x/y interval selection and optional `createIntervalData` are identical to `createErrorBar`. Explicit mode
   consumes existing center/lower/upper fields; the center field is retained for provenance and optional
-  downstream use even though band geometry uses lower/upper bounds.
+  downstream use even though band geometry uses lower/upper bounds. When both positions are quantitative, a
+  statistical interval must be distinguished by an interval option or an explicit lower/upper triple instead
+  of being guessed.
 - The aggregate calls `createAreaMark`, the positional action for the independent channel, and
   `encodeYRange` or Planned `encodeXRange` for the interval bounds. It forwards one shared coordinate,
   scales, grouping and curve decision to every child.
 - `boundaries` defaults to `false`. When present, the aggregate adds lower and upper `createLineMark` children
-  with namespaced IDs and forwards the boundary style. Rendering order is band first and boundaries second.
+  with namespaced IDs and forwards the boundary style. Boundary curve inherits the band curve unless explicitly
+  overridden. Rendering order is band first and boundaries second.
+- Field-driven fill is intentionally not duplicated in this aggregate. Call existing `encodeColor` on the
+  representative area after creation; `groupBy` controls path segmentation independently of visible color.
 - The aggregate is create-only. Band appearance changes use the owned area/encoding actions and boundary
   changes use the owned line/encoding actions; no `editErrorBand` action is introduced.
 - Status: Planned, NOT IMPLEMENTED. vertical/horizontal computed/explicit bounds, grouped paths, boundary
