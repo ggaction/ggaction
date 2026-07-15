@@ -57,30 +57,49 @@ enabled 8px caps and the shared rule appearance defaults. A second error bar mus
 ## Public parameter contract
 
 ```typescript
+type PositionChannel = {
+  field?: FieldName;
+  fieldType?: "nominal" | "ordinal" | "temporal";
+  scale?: PositionScale;
+};
+
+type StatisticalIntervalChannel = {
+  field?: FieldName;
+  center?: "mean" | "median";
+  extent?: "stderr" | "stdev" | "ci" | "iqr";
+  level?: UnitIntervalExclusive;
+  scale?: PositionScale;
+};
+
+type ExplicitIntervalChannel = {
+  center: FieldName;
+  lower: FieldName;
+  upper: FieldName;
+  scale?: PositionScale;
+};
+
 createErrorBar({
   id?: UserId;
   target?: UserId;
   data?: UserId;
-  x?: {
-    field?: FieldName;
-    fieldType?: "nominal" | "ordinal" | "temporal";
-    scale?: PositionScale;
-  };
-  y?: {
-    field?: FieldName;
-    center?: "mean" | "median";
-    extent?: "stderr" | "stdev" | "ci" | "iqr";
-    level?: UnitIntervalExclusive;
-    scale?: PositionScale;
-  };
+  x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
+  y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
   groupBy?: FieldName;
   coordinate?: UserId;
+  caps?: boolean;
+  capSize?: PositiveFinite;
+  stroke?: NonEmptyString;
+  strokeWidth?: NonNegativeFinite;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: UnitInterval;
 }): ChartProgram;
 ```
 
-Current behavior is a vertical statistical interval. x is nominal, ordinal, or temporal; y is quantitative and
-uses `{ field, center?, extent?, level? }`. The independent x field is always included in interval grouping;
-optional `groupBy` adds another field.
+Exactly one channel is a nominal, ordinal, or temporal position and the other is the quantitative interval.
+The interval channel uses either statistical `{ field, center?, extent?, level?, scale? }` or explicit
+`{ center, lower, upper, scale? }` fields. Statistical mode derives immutable rows; explicit mode uses the
+existing dataset. The independent position is always included in statistical grouping; optional `groupBy`
+adds another field.
 
 When x or y is omitted, `target` selects an existing encoded source layer. Without `target`, the current eligible
 layer is preferred, followed by one unique eligible layer. The source must persist data, coordinate and complete
@@ -88,9 +107,10 @@ field-based x/y encodings. This is a semantic-capability rule shared by point, l
 compatible marks; it is not a point-only special case. Omitted resources reuse the source data, coordinate and
 scale IDs. A source `group` encoding is retained as statistical grouping, while color alone is not.
 
-The inferred pair must contain a categorical, ordinal, or temporal x and quantitative y. Two quantitative axes
-are rejected in the current vertical-only contract. Explicit channel options override only their corresponding
-inferred channel; incompatible overrides fail atomically.
+The inferred pair must contain exactly one categorical, ordinal, or temporal axis and one quantitative axis.
+It therefore resolves vertical or horizontal orientation without an orientation flag. Two quantitative axes
+remain ambiguous. Explicit channel options override only their corresponding inferred channel; incompatible
+overrides fail atomically.
 
 Defaults are:
 
@@ -104,6 +124,9 @@ coordinate  main Cartesian
 cap geometry  two 8px logical-pixel caps
 appearance    #4c78a8, width 2, solid, opacity 1
 ```
+
+`caps: false` omits both cap layers. `capSize` changes the enabled caps' fixed logical-pixel span. Stroke,
+stroke width, named/custom dash and opacity are forwarded through the shared rule appearance actions.
 
 ## Important action hierarchy
 
@@ -140,13 +163,11 @@ The cap layers have ordinary semantic rule identity and data-space anchors; thei
 graphical materialization intent. The aggregate invokes
 the real wrapped assignment actions rather than writing their semantic or graphical results directly.
 
-### Planned Gate C variants
+### Horizontal and explicit variants
 
-Explicit mode will use an existing dataset containing center/lower/upper fields and omit `createIntervalData`.
-All remaining rule, endpoint, appearance and cap actions will be identical.
-
-Horizontal orientation, caps off/custom cap size, and custom stroke/width/dash/opacity remain Planned and are
-not accepted by the current public action.
+Explicit mode uses an existing dataset containing center/lower/upper fields and omits `createIntervalData`.
+Horizontal rules use y/x/x2 and vertical fixed-pixel caps. All endpoint and appearance assignments remain
+wrapped actions. Disabling caps creates no placeholder cap layers.
 
 ## Stored-result contract
 
@@ -188,12 +209,12 @@ Generated child IDs are deterministic implementation details. Explicit owner IDs
 | `rule-geometry` | rule mark and endpoint assignments | full-span vertical/horizontal and diagonal concrete rules |
 | `baseline` | computed vertical error bar | Origin mean Acceleration with default 95% CI and caps |
 | `encoded-layer-inference` | omitted source and x/y | point observations with an inferred error-bar overlay |
-| `horizontal` (Planned) | x/x2 interval orientation | Origin별 mean Horsepower horizontal intervals |
-| `explicit-interval` (Planned) | existing summary fields | no derived data and `caps: false` |
-| `styled-caps` (Planned) | cap/style parameter coverage | custom cap size, stroke, width, dash and opacity |
+| `horizontal` | x/x2 interval orientation | Origin별 mean Horsepower horizontal intervals |
+| `explicit-interval` | existing summary fields | no derived data and `caps: false` |
+| `styled-caps` | cap/style parameter coverage | custom cap size, stroke, width, dash and opacity |
 
-Each variant keeps independent primitive and user-facing programs. Only `primitive.png` is produced before its
-visual Gate; the public action and `user-facing.png` follow approval.
+Each variant keeps independent primitive and user-facing programs. Every approved pair must match in semantic
+state, concrete graphics, Canvas calls and decoded pixels.
 
 ### Encoded-layer inference target chain
 

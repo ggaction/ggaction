@@ -333,7 +333,9 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /encodeStroke\(\{ target\?: UserId; value: NonEmptyString \}\)/);
   assert.match(currentCorpus, /createIntervalData\(\{/);
   assert.match(currentCorpus, /createErrorBar\(\{/);
-  assert.match(plannedCorpus, /## createErrorBar remaining variants/);
+  assert.match(currentCorpus, /vertical or horizontal orientation/);
+  assert.match(currentCorpus, /ExplicitIntervalChannel/);
+  assert.doesNotMatch(plannedCorpus, /createErrorBar remaining variants/);
   assert.match(plannedCorpus, /createErrorBand\(\{/);
   assert.match(plannedCorpus, /createBoxPlot\(\{/);
   assert.match(plannedCorpus, /createRegressionBand[\s\S]*createErrorBand \(explicit interval mode\)/);

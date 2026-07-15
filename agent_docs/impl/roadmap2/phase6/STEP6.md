@@ -13,7 +13,7 @@ primitive targets로 고정한다.
 - [x] Custom cap size/stroke/width/dash/opacity primitive
 - [x] Independent numeric/geometry reference values
 - [x] Three variant metadata chains and 2× primitive PNGs
-- [ ] Gate C user visual confirmation
+- [x] Gate C user visual confirmation
 - [ ] Feedback revision and reconfirmation when needed
 - [x] STEP status, conceptual commit and push
 

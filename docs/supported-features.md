@@ -13,12 +13,12 @@ chart-authoring API does not support that combination.
 | Capability | Scatterplot | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Semantic mark | point | line | bar | bar | point + area + line | area | rule |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal x, interval y |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis |
 | Nominal color | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — |
-| Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — | fixed solid |
-| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill, line width | opacity | fixed rule and 8px caps |
-| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal x and linear y |
-| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | horizontal |
+| Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern |
+| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill, line width | opacity | stroke, width, dash, opacity, optional fixed-size caps |
+| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis |
+| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis |
 | Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — |
 | Chart title | optional | optional | optional | optional | optional | optional | optional |
 | Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
@@ -46,5 +46,5 @@ and density derivations, facets, interactive legends, and program composition
 are not implemented.
 Categorical legends support all four edges; point composite and size legends
 support right and left side layouts.
-Error bars currently support vertical statistical intervals only; horizontal,
-explicit-field, cap-removal, and custom-style variants are not implemented.
+Error bars support vertical and horizontal statistical intervals, existing
+center/lower/upper fields, optional caps, and constant rule appearance.

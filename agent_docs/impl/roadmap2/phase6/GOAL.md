@@ -19,8 +19,8 @@ Complete chart contract:
 - [x] Rule geometry primitive 승인과 public implementation
 - [x] Canonical vertical error-bar primitive 승인
 - [x] Encoded-layer inference primitive 승인과 vertical public implementation
-- [ ] Horizontal/explicit/style primitive 승인과 public implementation
-- [ ] Full numeric, parameter, error, immutability와 rematerialization coverage
+- [x] Horizontal/explicit/style primitive 승인과 public implementation
+- [x] Full numeric, parameter, error, immutability와 rematerialization coverage
 - [ ] Public example/docs, contract promotion과 Phase closeout
 
 ## 구현 범위

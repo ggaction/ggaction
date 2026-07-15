@@ -33,38 +33,45 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createErrorBar`
 
-- Current signature: `createErrorBar({ id?, target?, data?, x?, y?, groupBy?, coordinate? } = {})`.
-- Current implementation creates one vertical statistical error bar: x is nominal, ordinal, or temporal;
-  y is quantitative. Statistical defaults are mean/Student-t CI/0.95.
-- With explicit x/y, `data` defaults to current or unique data, `coordinate` to `"main"`, x scale to `"x"`,
-  and y scale to `"y"` with `nice: true, zero: false`.
+- Current signature: `createErrorBar({ id?, target?, data?, x?, y?, groupBy?, coordinate?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
+- Exactly one of x/y is a nominal, ordinal, or temporal position channel and the other is a quantitative
+  interval channel. This supports vertical or horizontal orientation without a separate orientation flag.
+- Statistical intervals accept `{ field, center?, extent?, level?, scale? }` and default to
+  mean/Student-t CI/0.95. Explicit intervals accept `{ center, lower, upper, scale? }`, use existing rows,
+  and never create derived data.
+- With explicit x/y, `data` defaults to current or unique data, `coordinate` to `"main"`, position scales to
+  their channel ID, and quantitative interval scales use `nice: true, zero: false`.
 - With an omitted channel, source selection is explicit `target` → current eligible encoded layer → unique
   eligible encoded layer → error. It reuses persisted data, coordinate and compatible x/y scale IDs by
   semantic capability, independently of source mark type.
-- The independent x field is always statistical grouping. A persisted `group` encoding adds its field;
+- The independent position field is always statistical grouping. A persisted `group` encoding adds its field;
   color is appearance and never silently becomes grouping. Two quantitative axes or multiple source layers
   require explicit disambiguation.
 - Omitted `id` resolves once to `"errorBar"`; child data and rules are namespaced as
   `errorBarIntervalData`, `errorBarLowerCap`, and `errorBarUpperCap`.
-- Effect: wrapped `createIntervalData`, main `createRuleMark`, endpoint/style assignments and two wrapped
-  `createErrorBarCap` components produce concrete lines. Current caps are always enabled, 8 logical pixels,
-  `#4c78a8`, width `2`, solid and opacity `1`. Their fixed span is graphical config and remains 8px through
-  Canvas/scale rematerialization. Interval provenance restores `mean(field)` axis titles; a point source keeps
-  its primary field title.
+- Effect: statistical mode calls wrapped `createIntervalData`; explicit mode uses the source dataset directly.
+  The aggregate then calls main `createRuleMark`, endpoint/style assignments and, unless `caps: false`, two
+  wrapped `createErrorBarCap` components. Vertical intervals store x/y/y2 and horizontal intervals y/x/x2.
+- Appearance defaults are enabled 8-logical-pixel caps, `#4c78a8`, width `2`, solid dash and opacity `1`.
+  `capSize` is a positive finite graphical span. Stroke width is non-negative, opacity is in `[0, 1]`, and dash
+  accepts the shared named styles or an explicit dash pattern. Fixed cap spans survive Canvas/scale
+  rematerialization. Statistical provenance restores titles such as `mean(field)`; explicit mode uses its center
+  field as the interval-axis title.
 
 ### Formal values — `createErrorBar`
 
-- Implemented: `createErrorBar({ id?: UserId; target?: UserId; data?: UserId; x?: { field?: FieldName; fieldType?: "nominal" | "ordinal" | "temporal"; scale?: PositionScale }; y?: { field?: FieldName; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive; scale?: PositionScale }; groupBy?: FieldName; coordinate?: UserId } = {})` for vertical statistical intervals.
-- Planned (NOT IMPLEMENTED): horizontal orientation, explicit center/lower/upper fields, caps off, cap size,
-  stroke, width, dash and opacity parameters.
+- Implemented: `createErrorBar({ id?: UserId; target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; groupBy?: FieldName; coordinate?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`, where `PositionChannel = { field?: FieldName; fieldType?: "nominal" | "ordinal" | "temporal"; scale?: PositionScale }`, `StatisticalIntervalChannel = { field?: FieldName; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive; scale?: PositionScale }`, and `ExplicitIntervalChannel = { center: FieldName; lower: FieldName; upper: FieldName; scale?: PositionScale }`.
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createErrorBar`
 
 - ✅ Covered: explicit canonical call, zero-option current-layer inference, explicit target, unique/ambiguous
-  sources, two-quantitative-axis rejection, point and line source marks, semantic group reuse and color exclusion.
-- ✅ Covered: deterministic namespacing, complete child trace, fixed cap span, Canvas rematerialization,
-  primitive/public semantic-graphic-Canvas equivalence and atomic failure.
+  sources, orientation ambiguity rejection, point and line source marks, semantic group reuse and color exclusion.
+- ✅ Covered: vertical/horizontal statistical intervals, explicit rows without derivation, caps on/off, cap size,
+  stroke/width/dash/opacity, statistical/explicit convergence, deterministic namespacing and complete child trace.
+- ✅ Covered: fixed cap span through Canvas and shared-scale rematerialization, six primitive/public
+  semantic-graphic-Canvas/pixel pairs, immutable source rows and atomic validation failure.
 - ⚠️ Partial: current custom center/extent/level forwarding is covered by interval child tests rather than a
   visual variant for every statistic.
 - Evidence: `test/unit/actions/error-bars/create-error-bar.test.js` and

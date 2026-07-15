@@ -1,7 +1,8 @@
 import { action } from "../../core/action.js";
 import {
   readNominalField,
-  readQuantitativeField
+  readQuantitativeField,
+  validateOpacityValue
 } from "../../grammar/scales.js";
 import {
   resolveAppearanceScaleDefinition,
@@ -164,9 +165,7 @@ const encodeOpacity = action(
       "point or rule mark"
     );
     if (hasValue) {
-      if (!Number.isFinite(args.value) || args.value < 0 || args.value > 1) {
-        throw new RangeError("encodeOpacity requires a finite value from 0 to 1.");
-      }
+      validateOpacityValue(args.value, "encodeOpacity");
       const { opacity, ...config } = this.markConfigs[target] ?? {};
       void opacity;
       const withoutLegend = this.guideConfigs.legend?.opacity === undefined

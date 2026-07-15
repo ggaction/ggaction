@@ -109,11 +109,11 @@ export const ENCODED_LAYER_POINT_RADIUS = 3;
 export const ENCODED_LAYER_POINT_OPACITY = 0.18;
 
 const T_975 = new Map([
-  [70, 1.994437111771186],
+  [70, 1.9944371117711843],
   [253, 1.9693848042198945],
   [72, 1.9934635666618716],
-  [78, 1.9908470688116904],
-  [249, 1.9695368676395824]
+  [78, 1.9908470688116768],
+  [249, 1.9695368676403633]
 ]);
 
 function tCritical(degreesOfFreedom, confidence) {
@@ -335,9 +335,9 @@ function createHorizontalAxes(bounds, categories, domain) {
     y: Object.freeze({
       line: Object.freeze({
         x1: bounds.left,
-        y1: bounds.bottom,
+        y1: bounds.top,
         x2: bounds.left,
-        y2: bounds.top
+        y2: bounds.bottom
       }),
       values: categories,
       positions: categoryPositions,

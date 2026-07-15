@@ -44,13 +44,34 @@ function inferGridOptions(program) {
   const barOrientations = program.semanticSpec.layers
     .map(resolveBarOrientation)
     .filter(Boolean);
+  const positionedLayers = program.semanticSpec.layers.filter(
+    layer => layer.encoding?.x !== undefined && layer.encoding?.y !== undefined
+  );
+  const horizontalQuantitative = positionedLayers.length > 0 &&
+    positionedLayers.every(layer =>
+      layer.encoding.x.fieldType === "quantitative" &&
+      ["nominal", "ordinal", "temporal"].includes(layer.encoding.y.fieldType)
+    );
   if (
-    barOrientations.length > 0 &&
-    barOrientations.every(value => value === BAR_ORIENTATIONS.horizontal)
+    horizontalQuantitative ||
+    (barOrientations.length > 0 &&
+      barOrientations.every(value => value === BAR_ORIENTATIONS.horizontal))
   ) {
     return { horizontal: false, vertical: true };
   }
   return { horizontal: true, vertical: false };
+}
+
+function inferAxesOptions(program) {
+  const horizontalInterval = program.semanticSpec.layers.some(layer =>
+    layer.mark?.type === "rule" &&
+    layer.encoding?.x?.fieldType === "quantitative" &&
+    layer.encoding?.x2?.fieldType === "quantitative" &&
+    ["nominal", "ordinal", "temporal"].includes(layer.encoding?.y?.fieldType)
+  );
+  return horizontalInterval
+    ? { x: { ticksAndLabels: { count: 7 } } }
+    : {};
 }
 
 function hasLegendEncoding(program) {
@@ -88,7 +109,9 @@ const createGuides = action(
   },
   function (args = {}) {
     validateOptions(args);
-    const axes = selectOption(args.axes, hasCartesianEncoding(this));
+    const axes = args.axes === undefined && hasCartesianEncoding(this)
+      ? inferAxesOptions(this)
+      : selectOption(args.axes, hasCartesianEncoding(this));
     const grid = args.grid === undefined && hasGridEncoding(this)
       ? inferGridOptions(this)
       : selectOption(args.grid, hasGridEncoding(this));

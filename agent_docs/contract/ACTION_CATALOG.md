@@ -103,8 +103,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| composition | Horizontal and explicit error-bar intervals | accepted | [Open](planned/COMPOSITE_MARKS.md#createerrorbar-remaining-variants) |
-| parameter | Error-bar cap and appearance options | accepted | [Open](planned/COMPOSITE_MARKS.md#createerrorbar-remaining-variants) |
 | composition | Regression band delegation through error band | accepted | [Open](planned/COMPOSITE_MARKS.md#regression-band-delegation) |
 | composition | Composite mark ownership and storage | accepted | [Open](planned/COMPOSITE_MARKS.md#composite-ownership-and-storage) |
 | behavior | encodeYRange reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |

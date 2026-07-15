@@ -62,7 +62,8 @@ are internal operations.
 The development build supports Cartesian scatterplots, temporal mean line
 charts, stacked histograms, ordinal grouped bars, grouped linear, polynomial,
 or LOESS regression scatterplots with optional mean/prediction bands, grouped density areas,
-and vertical grouped statistical error bars with encoded-layer inference.
+and vertical or horizontal statistical/explicit error bars with encoded-layer
+inference, optional caps, and constant rule appearance.
 Cartesian guides support bottom/top x axes, left/right y axes, and closed
 numeric or UTC label-format tokens. Existing horizontal and vertical grids can
 be edited independently without changing their scale or coordinate binding.

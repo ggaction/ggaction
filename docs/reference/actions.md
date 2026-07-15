@@ -417,11 +417,15 @@ polynomial degree to `2`; LOESS span to `0.75`.
 ### `createErrorBar`
 
 ```javascript
-createErrorBar({ id?, target?, data?, x?, y?, groupBy?, coordinate? } = {})
+createErrorBar({
+  id?, target?, data?, x?, y?, groupBy?, coordinate?,
+  caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?
+} = {})
 ```
 
-Create vertical grouped statistical intervals. With one eligible encoded
-layer, the shortest call infers its fields, data, coordinate, and scales.
+Create vertical or horizontal statistical or explicit intervals. With one
+eligible encoded layer, the shortest call infers its fields, orientation, data,
+coordinate, and scales.
 [Error bars](../api/error-bars.md)
 
 ### `createGuides`

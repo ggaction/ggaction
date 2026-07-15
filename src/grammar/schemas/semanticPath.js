@@ -9,7 +9,8 @@ const ENCODING_PATHS = Object.freeze([
   ...ENCODING_CHANNELS.flatMap(channel => [
     `encoding.${channel}.field`,
     `encoding.${channel}.datum`,
-    `encoding.${channel}.fieldType`
+    `encoding.${channel}.fieldType`,
+    `encoding.${channel}.title`
   ]),
   ...SCALED_ENCODING_CHANNELS.map(channel =>
     `encoding.${channel}.scale`

@@ -3,27 +3,27 @@ import {
   resolveOptionalUserId,
   validateUserId
 } from "../../core/identifiers.js";
+import { readQuantitativeField } from "../../grammar/scales.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { hasLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 
 const POSITION_TYPES = Object.freeze(["nominal", "ordinal", "temporal"]);
-const X_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
-const Y_OPTIONS = Object.freeze([
-  "field", "center", "extent", "level", "scale", "lower", "upper"
+const CHANNEL_OPTIONS = Object.freeze([
+  "field", "fieldType", "scale", "center", "extent", "level", "lower", "upper"
+]);
+const INTERVAL_PARAMETER_KEYS = Object.freeze([
+  "center", "extent", "level", "lower", "upper"
 ]);
 
 function requireObject(value, label) {
   if (!isPlainObject(value)) {
     throw new TypeError(`${label} must be a plain object.`);
   }
-  return value;
-}
-
-function validateChannelKeys(value, supported, label) {
-  const unknown = Object.keys(value).find(key => !supported.includes(key));
+  const unknown = Object.keys(value).find(key => !CHANNEL_OPTIONS.includes(key));
   if (unknown !== undefined) {
     throw new Error(`Unknown ${label} option "${unknown}".`);
   }
+  return value;
 }
 
 function requireField(value, label) {
@@ -64,17 +64,20 @@ function resolveSourceLayer(program, args) {
 
 function resolveDataset(program, args, sourceLayer) {
   const requested = args.data ?? sourceLayer?.data ?? program.context.currentData;
+  let dataset;
   if (requested !== undefined) {
     const id = validateUserId(requested, "Error-bar dataset id");
-    if (findDataset(program, id) === undefined) {
+    dataset = findDataset(program, id);
+    if (dataset === undefined) {
       throw new Error(`Unknown error-bar dataset "${id}".`);
     }
-    return id;
+  } else if (program.semanticSpec.datasets.length === 1) {
+    dataset = program.semanticSpec.datasets[0];
   }
-  if (program.semanticSpec.datasets.length === 1) {
-    return program.semanticSpec.datasets[0].id;
+  if (dataset === undefined) {
+    throw new Error("createErrorBar requires data or one uniquely inferable dataset.");
   }
-  throw new Error("createErrorBar requires data or one uniquely inferable dataset.");
+  return dataset;
 }
 
 function scaleOptions(value, inferredId, defaults = {}) {
@@ -90,62 +93,145 @@ function scaleOptions(value, inferredId, defaults = {}) {
   };
 }
 
-function resolveX(args, sourceLayer) {
-  const explicit = args.x === undefined
-    ? undefined
-    : requireObject(args.x, "createErrorBar x");
-  if (explicit !== undefined) validateChannelKeys(explicit, X_OPTIONS, "createErrorBar x");
-  const inferred = sourceLayer?.encoding.x;
-  const field = requireField(
-    explicit?.field ?? inferred?.field,
-    "createErrorBar x field"
+function hasAny(value, keys) {
+  return keys.some(key => Object.hasOwn(value ?? {}, key));
+}
+
+function resolveIntervalChannel(channels, sourceLayer) {
+  const explicitBounds = ["x", "y"].filter(channel =>
+    hasAny(channels[channel], ["lower", "upper"])
   );
+  if (explicitBounds.length > 1) {
+    throw new Error("createErrorBar requires exactly one interval channel.");
+  }
+  if (explicitBounds.length === 1) return explicitBounds[0];
+
+  const statisticalHints = ["x", "y"].filter(channel =>
+    hasAny(channels[channel], ["center", "extent", "level"])
+  );
+  if (statisticalHints.length > 1) {
+    throw new Error("createErrorBar requires exactly one interval channel.");
+  }
+  if (statisticalHints.length === 1) return statisticalHints[0];
+
+  const effectiveTypes = Object.fromEntries(["x", "y"].map(channel => [
+    channel,
+    channels[channel]?.fieldType ?? sourceLayer?.encoding?.[channel]?.fieldType
+  ]));
+  const positional = ["x", "y"].filter(channel =>
+    POSITION_TYPES.includes(effectiveTypes[channel])
+  );
+  const quantitative = ["x", "y"].filter(channel =>
+    effectiveTypes[channel] === "quantitative"
+  );
+  if (positional.length === 1 && quantitative.length === 1) {
+    return quantitative[0];
+  }
+  if (positional.length === 1) {
+    return positional[0] === "x" ? "y" : "x";
+  }
+  if (sourceLayer !== undefined) {
+    throw new Error(
+      "createErrorBar requires one quantitative interval axis and one nominal, ordinal, or temporal position axis."
+    );
+  }
+  return "y";
+}
+
+function resolvePosition(channel, explicit, inferred) {
+  if (hasAny(explicit, INTERVAL_PARAMETER_KEYS)) {
+    throw new Error(`createErrorBar ${channel} position does not accept interval options.`);
+  }
   const fieldType = explicit?.fieldType ?? inferred?.fieldType ?? "nominal";
   if (!POSITION_TYPES.includes(fieldType)) {
     throw new Error(
-      "Vertical createErrorBar requires a nominal, ordinal, or temporal x position."
+      `createErrorBar ${channel} position requires a nominal, ordinal, or temporal field.`
     );
   }
   return {
-    field,
+    channel,
+    field: requireField(
+      explicit?.field ?? inferred?.field,
+      `createErrorBar ${channel} field`
+    ),
     fieldType,
     scale: scaleOptions(explicit?.scale, inferred?.scale)
   };
 }
 
-function resolveY(args, sourceLayer) {
-  const explicit = args.y === undefined
-    ? undefined
-    : requireObject(args.y, "createErrorBar y");
-  if (explicit !== undefined) validateChannelKeys(explicit, Y_OPTIONS, "createErrorBar y");
-  if (explicit?.lower !== undefined || explicit?.upper !== undefined) {
-    throw new Error("Explicit error-bar intervals are not implemented yet.");
+function resolveInterval(channel, explicit, inferred, dataset) {
+  if (explicit?.fieldType !== undefined) {
+    throw new Error(`createErrorBar ${channel} interval does not accept fieldType.`);
   }
-  const inferred = sourceLayer?.encoding.y;
   if (inferred !== undefined && inferred.fieldType !== "quantitative") {
-    throw new Error("Vertical createErrorBar requires a quantitative y interval.");
+    throw new Error(`createErrorBar ${channel} interval requires a quantitative field.`);
+  }
+  const hasLower = Object.hasOwn(explicit ?? {}, "lower");
+  const hasUpper = Object.hasOwn(explicit ?? {}, "upper");
+  const explicitMode = hasLower || hasUpper;
+  const scale = scaleOptions(
+    explicit?.scale,
+    inferred?.scale,
+    inferred === undefined ? { nice: true, zero: false } : {}
+  );
+  if (explicitMode) {
+    if (!hasLower || !hasUpper || !Object.hasOwn(explicit, "center")) {
+      throw new Error(
+        `Explicit createErrorBar ${channel} interval requires center, lower, and upper fields.`
+      );
+    }
+    if (
+      explicit.field !== undefined ||
+      explicit.extent !== undefined ||
+      explicit.level !== undefined
+    ) {
+      throw new Error(
+        `Explicit createErrorBar ${channel} interval cannot combine field, extent, or level.`
+      );
+    }
+    const fields = {
+      center: requireField(explicit.center, `createErrorBar ${channel} center`),
+      lower: requireField(explicit.lower, `createErrorBar ${channel} lower`),
+      upper: requireField(explicit.upper, `createErrorBar ${channel} upper`)
+    };
+    if (new Set(Object.values(fields)).size !== 3) {
+      throw new Error("Explicit error-bar center, lower, and upper fields must be distinct.");
+    }
+    for (const field of Object.values(fields)) {
+      readQuantitativeField(dataset.values, field);
+    }
+    return { channel, mode: "explicit", fields, scale, title: fields.center };
   }
   return {
+    channel,
+    mode: "statistical",
     field: requireField(
       explicit?.field ?? inferred?.field,
-      "createErrorBar y field"
+      `createErrorBar ${channel} field`
     ),
     center: explicit?.center,
     extent: explicit?.extent,
     level: explicit?.level,
-    scale: scaleOptions(
-      explicit?.scale,
-      inferred?.scale,
-      inferred === undefined ? { nice: true, zero: false } : {}
-    )
+    scale
   };
 }
 
-function resolveGroupBy(args, sourceLayer, independentField) {
+function resolveGroupBy(args, sourceLayer, independentField, mode) {
+  if (mode === "explicit") {
+    if (args.groupBy !== undefined) {
+      throw new Error("Explicit createErrorBar intervals do not accept groupBy.");
+    }
+    return undefined;
+  }
   const inferred = sourceLayer?.encoding?.group?.field;
   const requested = args.groupBy ?? inferred;
-  if (requested === undefined || requested === independentField) return [independentField];
-  return [independentField, requireField(requested, "createErrorBar groupBy")];
+  if (requested === undefined || requested === independentField) {
+    return [independentField];
+  }
+  return [
+    independentField,
+    requireField(requested, "createErrorBar groupBy")
+  ];
 }
 
 function resolveOwner(program, requested) {
@@ -162,28 +248,48 @@ function resolveOwner(program, requested) {
 }
 
 export function resolveErrorBar(program, args) {
+  const channels = {
+    x: args.x === undefined ? undefined : requireObject(args.x, "createErrorBar x"),
+    y: args.y === undefined ? undefined : requireObject(args.y, "createErrorBar y")
+  };
   const sourceLayer = resolveSourceLayer(program, args);
-  const x = resolveX(args, sourceLayer);
-  const y = resolveY(args, sourceLayer);
+  const dataset = resolveDataset(program, args, sourceLayer);
+  const intervalChannel = resolveIntervalChannel(channels, sourceLayer);
+  const positionChannel = intervalChannel === "x" ? "y" : "x";
+  const position = resolvePosition(
+    positionChannel,
+    channels[positionChannel],
+    sourceLayer?.encoding?.[positionChannel]
+  );
+  const interval = resolveInterval(
+    intervalChannel,
+    channels[intervalChannel],
+    sourceLayer?.encoding?.[intervalChannel],
+    dataset
+  );
   const id = resolveOwner(program, args.id);
+  const generatedFields = {
+    center: `__${id}_center`,
+    lower: `__${id}_lower`,
+    upper: `__${id}_upper`
+  };
+  const fields = interval.mode === "explicit" ? interval.fields : generatedFields;
+
   return {
     id,
     sourceLayer,
-    source: resolveDataset(program, args, sourceLayer),
+    source: dataset.id,
+    dataId: interval.mode === "statistical" ? `${id}IntervalData` : dataset.id,
     coordinate: validateUserId(
       args.coordinate ?? sourceLayer?.coordinate ?? "main",
       "Error-bar coordinate id"
     ),
-    x,
-    y,
-    groupBy: resolveGroupBy(args, sourceLayer, x.field),
-    dataId: `${id}IntervalData`,
+    orientation: intervalChannel === "y" ? "vertical" : "horizontal",
+    position,
+    interval,
+    fields,
+    groupBy: resolveGroupBy(args, sourceLayer, position.field, interval.mode),
     lowerCapId: `${id}LowerCap`,
-    upperCapId: `${id}UpperCap`,
-    fields: {
-      center: `__${id}_center`,
-      lower: `__${id}_lower`,
-      upper: `__${id}_upper`
-    }
+    upperCapId: `${id}UpperCap`
   };
 }

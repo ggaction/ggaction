@@ -264,7 +264,7 @@ test("authors horizontal x/x2 intervals with vertical fixed caps", () => {
   const [main, lowerCap, upperCap] = program.semanticSpec.layers;
 
   assert.deepEqual(Object.keys(main.encoding), [
-    "y", "x", "x2", "strokeDash", "opacity"
+    "y", "x", "x2", "strokeDash"
   ]);
   assert.equal(main.encoding.x.field, "__errorBar_lower");
   assert.equal(main.encoding.x2.field, "__errorBar_upper");

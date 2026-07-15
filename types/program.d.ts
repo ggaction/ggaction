@@ -406,7 +406,7 @@ export interface ErrorBarPositionChannel {
   scale?: ScaleOptions;
 }
 
-export interface ErrorBarIntervalChannel {
+export interface ErrorBarStatisticalIntervalChannel {
   field?: string;
   center?: IntervalCenter;
   extent?: IntervalExtent;
@@ -414,14 +414,31 @@ export interface ErrorBarIntervalChannel {
   scale?: ScaleOptions;
 }
 
+export interface ErrorBarExplicitIntervalChannel {
+  center: string;
+  lower: string;
+  upper: string;
+  scale?: ScaleOptions;
+}
+
+export type ErrorBarIntervalChannel =
+  | ErrorBarStatisticalIntervalChannel
+  | ErrorBarExplicitIntervalChannel;
+
 export interface ErrorBarOptions {
   id?: string;
   target?: string;
   data?: string;
-  x?: ErrorBarPositionChannel;
-  y?: ErrorBarIntervalChannel;
+  x?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  y?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
   groupBy?: string;
   coordinate?: string;
+  caps?: boolean;
+  capSize?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
 }
 
 export interface EditDensityOptions {

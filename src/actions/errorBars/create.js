@@ -1,5 +1,13 @@
 import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
+import {
+  normalizeStrokeDashPattern,
+  validateOpacityValue
+} from "../../grammar/scales.js";
+import {
+  validateRuleStroke,
+  validateRuleStrokeWidth
+} from "../../grammar/ruleAppearance.js";
 import { findLayer } from "../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { resolveErrorBar } from "./resolve.js";
@@ -11,78 +19,121 @@ const OPTIONS = Object.freeze([
   "x",
   "y",
   "groupBy",
-  "coordinate"
+  "coordinate",
+  "caps",
+  "capSize",
+  "stroke",
+  "strokeWidth",
+  "strokeDash",
+  "opacity"
 ]);
 
-function resolveAppearance() {
+function resolveAppearance(args) {
+  const caps = args.caps ?? true;
+  if (typeof caps !== "boolean") {
+    throw new TypeError("createErrorBar caps must be a boolean.");
+  }
+  const capSize = args.capSize ?? 8;
+  if (!Number.isFinite(capSize) || capSize <= 0) {
+    throw new RangeError("createErrorBar capSize must be a positive finite number.");
+  }
+  const stroke = validateRuleStroke(
+    args.stroke ?? DEFAULT_COLORS.mark,
+    "createErrorBar stroke"
+  );
+  const strokeWidth = validateRuleStrokeWidth(
+    args.strokeWidth ?? 2,
+    "createErrorBar strokeWidth"
+  );
+  const strokeDash = args.strokeDash ?? "solid";
+  normalizeStrokeDashPattern(strokeDash);
+  const opacity = validateOpacityValue(args.opacity ?? 1, "createErrorBar opacity");
+  return { caps, capSize, stroke, strokeWidth, strokeDash, opacity };
+}
+
+function positionArgs(resolved) {
   return {
-    capSize: 8,
-    stroke: DEFAULT_COLORS.mark,
-    strokeWidth: 2,
-    strokeDash: "solid",
-    opacity: 1
+    target: resolved.id,
+    field: resolved.position.field,
+    fieldType: resolved.position.fieldType,
+    coordinate: resolved.coordinate,
+    scale: resolved.position.scale
+  };
+}
+
+function intervalArgs(resolved, field) {
+  return {
+    target: resolved.id,
+    field,
+    fieldType: "quantitative",
+    coordinate: resolved.coordinate,
+    scale: resolved.interval.scale
   };
 }
 
 export const createErrorBar = action(
   {
     op: "createErrorBar",
-    description: "Create a vertical statistical interval with fixed caps."
+    description: "Create a statistical or explicit vertical or horizontal interval."
   },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createErrorBar");
     const resolved = resolveErrorBar(this, args);
-    const appearance = resolveAppearance();
-    let next = this
-      .createIntervalData({
+    const appearance = resolveAppearance(args);
+    let next = this;
+
+    if (resolved.interval.mode === "statistical") {
+      next = next.createIntervalData({
         id: resolved.dataId,
         source: resolved.source,
-        field: resolved.y.field,
+        field: resolved.interval.field,
         groupBy: resolved.groupBy,
-        center: resolved.y.center,
-        extent: resolved.y.extent,
-        level: resolved.y.level,
+        center: resolved.interval.center,
+        extent: resolved.interval.extent,
+        level: resolved.interval.level,
         as: resolved.fields
-      })
-      .createRuleMark({ id: resolved.id, data: resolved.dataId })
-      .encodeX({
-        target: resolved.id,
-        field: resolved.x.field,
-        fieldType: resolved.x.fieldType,
-        coordinate: resolved.coordinate,
-        scale: resolved.x.scale
-      })
-      .encodeY({
-        target: resolved.id,
-        field: resolved.fields.lower,
-        fieldType: "quantitative",
-        coordinate: resolved.coordinate,
-        scale: resolved.y.scale
-      })
-      .encodeY2({
-        target: resolved.id,
-        field: resolved.fields.upper,
-        fieldType: "quantitative"
-      })
+      });
+    }
+
+    next = next.createRuleMark({ id: resolved.id, data: resolved.dataId });
+    const positionAction = resolved.position.channel === "x" ? "encodeX" : "encodeY";
+    const intervalAction = resolved.interval.channel === "x" ? "encodeX" : "encodeY";
+    const secondaryAction = resolved.interval.channel === "x" ? "encodeX2" : "encodeY2";
+    next = next[positionAction](positionArgs(resolved));
+    next = next[intervalAction](intervalArgs(resolved, resolved.fields.lower));
+    if (resolved.interval.mode === "explicit") {
+      next = next.editSemantic({
+        property: `layer[${resolved.id}].encoding.${resolved.interval.channel}.title`,
+        value: resolved.interval.title
+      });
+    }
+    next = next[secondaryAction]({
+      target: resolved.id,
+      field: resolved.fields.upper,
+      fieldType: "quantitative"
+    })
       .encodeStroke({ target: resolved.id, value: appearance.stroke })
       .encodeStrokeWidth({ target: resolved.id, value: appearance.strokeWidth })
       .encodeStrokeDash({ target: resolved.id, value: appearance.strokeDash })
       .encodeOpacity({ target: resolved.id, value: appearance.opacity });
 
+    if (!appearance.caps) return next;
+
+    const intervalLayer = findLayer(next, resolved.id);
     for (const [id, field] of [
       [resolved.lowerCapId, resolved.fields.lower],
       [resolved.upperCapId, resolved.fields.upper]
     ]) {
-      const intervalLayer = findLayer(next, resolved.id);
       next = next.createErrorBarCap({
         id,
         data: resolved.dataId,
-        x: resolved.x.field,
-        y: field,
-        xFieldType: resolved.x.fieldType,
+        orientation: resolved.orientation,
+        positionField: resolved.position.field,
+        positionFieldType: resolved.position.fieldType,
+        intervalField: field,
         coordinate: resolved.coordinate,
-        xScale: intervalLayer.encoding.x.scale,
-        yScale: intervalLayer.encoding.y.scale,
+        positionScale: intervalLayer.encoding[resolved.position.channel].scale,
+        intervalScale: intervalLayer.encoding[resolved.interval.channel].scale,
         capSize: appearance.capSize,
         stroke: appearance.stroke,
         strokeWidth: appearance.strokeWidth,

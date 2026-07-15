@@ -499,3 +499,22 @@ test("validates planned stack and color-layout semantics through primitives", ()
     /Unsupported color layout/
   );
 });
+
+test("stores and validates semantic encoding titles", () => {
+  const program = chart().editSemantic({
+    property: "layer[interval].encoding.y.title",
+    value: "Mean value"
+  });
+
+  assert.equal(
+    program.semanticSpec.layers[0].encoding.y.title,
+    "Mean value"
+  );
+  assert.throws(
+    () => chart().editSemantic({
+      property: "layer[interval].encoding.y.title",
+      value: ""
+    }),
+    /Encoding title must be a non-empty string/
+  );
+});

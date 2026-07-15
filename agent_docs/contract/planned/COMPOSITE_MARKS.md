@@ -2,7 +2,7 @@
 
 These accepted contracts define future aggregate mark APIs. They are not current public behavior.
 
-## createErrorBar remaining variants
+## Shared interval notation
 
 ```typescript
 type IntervalChannel =
@@ -24,52 +24,11 @@ type PositionChannel = {
   scale?: PositionScale;
 };
 
-createErrorBar({
-  // Current vertical statistical parameters remain available.
-  caps?: boolean;
-  capSize?: PositiveFinite;
-  stroke?: NonEmptyString;
-  strokeWidth?: NonNegativeFinite;
-  strokeDash?: DashPattern;
-  opacity?: UnitInterval;
-}): ChartProgram;
 ```
 
-- Vertical statistical intervals, encoded-layer inference, default caps, immutable interval data and fixed-span
-  rematerialization are Current. This section owns only the remaining horizontal, explicit and appearance variants.
-- `target` identifies an already encoded source layer. When either x or y is omitted, the action resolves the
-  source in this order: explicit `target`, current eligible layer, unique eligible layer, then error. Eligibility
-  depends on persisted data, coordinate and complete field-based x/y encodings, not on the source mark type.
-- Explicit x/y options override the corresponding inferred source encoding. An inferred pair must have exactly
-  one quantitative axis and one positional categorical/ordinal/temporal axis; two quantitative axes are
-  ambiguous unless the caller explicitly identifies the interval channel. Missing or multiple eligible sources
-  fail rather than choosing a layer or orientation arbitrarily.
-- Omitted data, coordinate and position scale IDs reuse the selected layer's persisted resources. A persisted
-  nominal `group` encoding, when present, contributes its field to interval grouping. Appearance encodings such
-  as color do not silently become statistical grouping. These rules apply consistently when the source is a
-  point, line, area, bar, rule, or a later compatible semantic mark.
-- Exactly one of x/y is an interval channel and the other is its positional channel. An interval may request
-  a statistic from source rows or reference already materialized center/lower/upper fields. Statistical mode
-  calls wrapped `createIntervalData`; explicit mode does not derive data.
-- The independent position field is always part of the statistical grouping. Optional `groupBy` adds one
-  more grouping field and duplicate fields are removed while preserving order. The derived result therefore
-  retains the independent position needed by the rule children without requiring callers to repeat it.
-- The aggregate creates one main `createRuleMark`. Vertical intervals use x/y/y2; horizontal intervals use
-  y/x/x2. `caps` defaults to `true`; lower and upper cap rules are namespaced children whose perpendicular
-  concrete span is `capSize`, default `8` logical pixels.
-- Omitted `id` resolves to the persisted representative rule ID `"errorBar"` only when that role is unique.
-  A second error bar requires an explicit ID; no numbered public ID is generated. The main rule uses the
-  resolved owner ID and derived data/cap resources are namespaced from it.
-- Appearance is assigned by wrapped `encodeStroke`, `encodeStrokeWidth`, `encodeStrokeDash`, and
-  `encodeOpacity`; defaults come from one shared rule theme. There is no `editErrorBar` or `editRuleMark`.
-  Reauthor appearance or endpoints through the owned encoding actions.
-- Cap rules keep their data-space anchor in ordinary position encodings. Their fixed perpendicular pixel span
-  is immutable graphical materialization config, not a fabricated data-domain endpoint. Canvas or position
-  scale changes rematerialize the cap endpoints into concrete `line` coordinates.
-- IDs for derived data, main rule and cap rules are deterministically namespaced from `id`. The aggregate is
-  create-only, and its complete child hierarchy remains visible in trace.
-- Status: Planned, NOT IMPLEMENTED. Horizontal computed orientation, explicit interval rows, caps on/off and
-  size, and custom style assignment require Gate C approval and public parity.
+These types are reused below by the remaining planned interval composites. The current
+`createErrorBar` contract, including horizontal and explicit intervals, lives in
+[`../current/STATISTICS.md`](../current/STATISTICS.md#createerrorbar).
 
 ## createErrorBand
 

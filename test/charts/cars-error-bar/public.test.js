@@ -8,8 +8,16 @@ import {
   createRuleGeometryPrimitives
 } from "./primitive.program.js";
 import {
+  createExplicitIntervalPrimitives,
+  createHorizontalErrorBarPrimitives,
+  createStyledCapsPrimitives
+} from "./gate-c.program.js";
+import {
   createEncodedLayerInferenceProgram,
   createErrorBarProgram,
+  createExplicitIntervalProgram,
+  createHorizontalErrorBarProgram,
+  createStyledCapsProgram,
   createRuleGeometryProgram
 } from "./public.program.js";
 
@@ -33,5 +41,29 @@ test("matches encoded-layer inference with public actions", () => {
   assertChartProgramsEquivalent({
     primitiveProgram: createEncodedLayerInferencePrimitives(cars),
     publicProgram: createEncodedLayerInferenceProgram(cars)
+  });
+});
+
+test("matches the horizontal error-bar primitive with public actions", () => {
+  const cars = loadCars();
+  assertChartProgramsEquivalent({
+    primitiveProgram: createHorizontalErrorBarPrimitives(cars),
+    publicProgram: createHorizontalErrorBarProgram(cars)
+  });
+});
+
+test("matches explicit intervals without caps with public actions", () => {
+  const cars = loadCars();
+  assertChartProgramsEquivalent({
+    primitiveProgram: createExplicitIntervalPrimitives(cars),
+    publicProgram: createExplicitIntervalProgram(cars)
+  });
+});
+
+test("matches styled error-bar caps with public actions", () => {
+  const cars = loadCars();
+  assertChartProgramsEquivalent({
+    primitiveProgram: createStyledCapsPrimitives(cars),
+    publicProgram: createStyledCapsProgram(cars)
   });
 });

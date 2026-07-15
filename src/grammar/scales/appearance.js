@@ -122,6 +122,13 @@ export function validateOpacityRange(range) {
   return cloneAndFreeze(range);
 }
 
+export function validateOpacityValue(value, label = "Opacity") {
+  if (!Number.isFinite(value) || value < 0 || value > 1) {
+    throw new RangeError(`${label} requires a finite value from 0 to 1.`);
+  }
+  return value;
+}
+
 export function validateSemanticScaleRange(range) {
   if (range === "auto") return range;
   if (Array.isArray(range) && range.length > 0) return cloneAndFreeze(range);

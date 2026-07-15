@@ -1,5 +1,6 @@
 import { chart } from "../../../src/index.js";
 import {
+  createExplicitIntervalReferenceValues,
   createRuleGeometryReferenceValues
 } from "./reference-values.js";
 
@@ -98,5 +99,74 @@ export function createRuleGeometryProgram() {
     .createTitle({
       text: "Rule geometry primitives",
       subtitle: "Full-span, bounded, and diagonal endpoints"
+    });
+}
+
+export function createHorizontalErrorBarProgram(cars) {
+  return chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 90, right: 40, bottom: 70, left: 80 }
+    })
+    .createData({ values: cars })
+    .createErrorBar({
+      x: { field: "Horsepower" },
+      y: { field: "Origin", fieldType: "nominal" }
+    })
+    .createGuides()
+    .createTitle({
+      text: "Mean Horsepower by Origin",
+      subtitle: "95% confidence intervals"
+    });
+}
+
+export function createExplicitIntervalProgram(cars) {
+  const originAccelerationIntervals =
+    createExplicitIntervalReferenceValues(cars).sourceRows;
+  return chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 90, right: 40, bottom: 70, left: 80 }
+    })
+    .createData({ values: originAccelerationIntervals })
+    .createErrorBar({
+      x: { field: "Origin", fieldType: "nominal" },
+      y: {
+        center: "meanAcceleration",
+        lower: "lowerAcceleration",
+        upper: "upperAcceleration"
+      },
+      caps: false
+    })
+    .createGuides()
+    .createTitle({
+      text: "Explicit Acceleration Intervals",
+      subtitle: "Existing lower and upper fields; caps disabled"
+    });
+}
+
+export function createStyledCapsProgram(cars) {
+  return chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 90, right: 40, bottom: 70, left: 80 }
+    })
+    .createData({ values: cars })
+    .createErrorBar({
+      x: { field: "Origin", fieldType: "nominal" },
+      y: { field: "Acceleration" },
+      capSize: 16,
+      stroke: "#d9485f",
+      strokeWidth: 3,
+      strokeDash: [8, 4],
+      opacity: 0.8
+    })
+    .createGuides()
+    .createTitle({
+      text: "Styled Acceleration Intervals",
+      subtitle: "16px caps with custom rule appearance"
     });
 }

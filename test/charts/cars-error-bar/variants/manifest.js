@@ -13,7 +13,10 @@ import {
 import {
   createEncodedLayerInferenceProgram,
   createErrorBarProgram,
-  createRuleGeometryProgram
+  createExplicitIntervalProgram,
+  createHorizontalErrorBarProgram,
+  createRuleGeometryProgram,
+  createStyledCapsProgram
 } from "../public.program.js";
 import {
   ERROR_BAR_COLOR,
@@ -223,6 +226,7 @@ export const visualVariants = Object.freeze([
     title: "Horizontal Horsepower Error Bars",
     callChain: horizontalCallChain,
     primitive: createHorizontalErrorBarPrimitives(loadCars()),
+    userFacing: createHorizontalErrorBarProgram(loadCars()),
     width: ERROR_BAR_LAYOUT.width,
     height: ERROR_BAR_LAYOUT.height,
     colors: [ERROR_BAR_COLOR],
@@ -236,6 +240,7 @@ export const visualVariants = Object.freeze([
     title: "Explicit Error-Bar Intervals",
     callChain: explicitIntervalCallChain,
     primitive: createExplicitIntervalPrimitives(loadCars()),
+    userFacing: createExplicitIntervalProgram(loadCars()),
     width: ERROR_BAR_LAYOUT.width,
     height: ERROR_BAR_LAYOUT.height,
     colors: [ERROR_BAR_COLOR],
@@ -249,6 +254,7 @@ export const visualVariants = Object.freeze([
     title: "Styled Error-Bar Caps",
     callChain: styledCapsCallChain,
     primitive: createStyledCapsPrimitives(loadCars()),
+    userFacing: createStyledCapsProgram(loadCars()),
     width: ERROR_BAR_LAYOUT.width,
     height: ERROR_BAR_LAYOUT.height,
     colors: ["#e16d7f"],

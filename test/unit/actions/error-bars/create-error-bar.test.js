@@ -154,7 +154,7 @@ test("requires explicit choices for ambiguous sources and axis roles", () => {
     .encodeRadius({ value: 2 });
   assert.throws(
     () => quantitative.createErrorBar(),
-    /requires a nominal, ordinal, or temporal x position/
+    /requires one quantitative interval axis/
   );
 });
 
@@ -179,14 +179,247 @@ test("keeps fixed cap widths through scale and Canvas rematerialization", () => 
   );
 });
 
-test("rejects unsupported staged options and duplicate default ownership atomically", () => {
+test("supports appearance options and rejects duplicate default ownership atomically", () => {
   const base = encodedPoints();
-  assert.throws(
-    () => base.createErrorBar({ stroke: "red" }),
-    /Unknown createErrorBar option/
+  assert.equal(
+    base.createErrorBar({ stroke: "red" })
+      .graphicSpec.objects.errorBar.children[0].properties.stroke,
+    "red"
   );
   const created = base.createErrorBar();
   assert.throws(() => created.createErrorBar(), /explicit error-bar id/);
   assert.equal(base.semanticSpec.datasets.length, 1);
   assert.equal(base.semanticSpec.layers.length, 1);
+});
+
+test("creates horizontal statistical intervals with x2 and vertical caps", () => {
+  const program = chart()
+    .createCanvas(canvas)
+    .createData({ values: loadCars() })
+    .createErrorBar({
+      x: { field: "Horsepower" },
+      y: { field: "Origin", fieldType: "nominal" }
+    });
+  const action = program.trace.children.at(-1);
+  const [main, lower, upper] = program.semanticSpec.layers;
+
+  assert.deepEqual(action.children.map(node => node.op), [
+    "createIntervalData",
+    "createRuleMark",
+    "encodeY",
+    "encodeX",
+    "encodeX2",
+    "encodeStroke",
+    "encodeStrokeWidth",
+    "encodeStrokeDash",
+    "encodeOpacity",
+    "createErrorBarCap",
+    "createErrorBarCap"
+  ]);
+  assert.equal(main.encoding.x.field, "__errorBar_lower");
+  assert.equal(main.encoding.x2.field, "__errorBar_upper");
+  assert.equal(main.encoding.y.field, "Origin");
+  assert.deepEqual(program.resolvedScales.x.domain, [70, 130]);
+  assert.deepEqual(program.resolvedScales.y.domain, ["USA", "Europe", "Japan"]);
+  for (const cap of [lower, upper]) {
+    assert.equal(cap.encoding.x.fieldType, "quantitative");
+    assert.equal(cap.encoding.y.fieldType, "nominal");
+    for (const child of program.graphicSpec.objects[cap.id].children) {
+      assert.equal(child.properties.y2 - child.properties.y1, 8);
+    }
+  }
+});
+
+test("uses explicit interval rows without deriving data or creating disabled caps", () => {
+  const rows = [
+    { group: "A", center: 3, lower: 2, upper: 4 },
+    { group: "B", center: 6, lower: 4, upper: 8 }
+  ];
+  const base = chart().createCanvas(canvas).createData({ values: rows });
+  const program = base
+    .createErrorBar({
+      x: { field: "group", fieldType: "nominal" },
+      y: { center: "center", lower: "lower", upper: "upper" },
+      caps: false
+    })
+    .createGuides({ grid: false });
+  const action = program.trace.children.at(-2);
+
+  assert.equal(program.semanticSpec.datasets.length, 1);
+  assert.deepEqual(program.semanticSpec.layers.map(layer => layer.id), ["errorBar"]);
+  assert.equal(program.semanticSpec.layers[0].data, "data");
+  assert.equal(program.semanticSpec.layers[0].encoding.y.title, "center");
+  assert.equal(program.semanticSpec.guides.axis.y.title, "center");
+  assert.equal(program.graphicSpec.objects.errorBarLowerCap, undefined);
+  assert.equal(program.graphicSpec.objects.errorBarUpperCap, undefined);
+  assert.equal(action.children.some(node => node.op === "createIntervalData"), false);
+  assert.equal(action.children.some(node => node.op === "createErrorBarCap"), false);
+  assert.deepEqual(base.semanticSpec.datasets[0].values, rows);
+});
+
+test("forwards one custom appearance and cap size to every owned rule", () => {
+  const program = encodedPoints().createErrorBar({
+    capSize: 16,
+    stroke: "#d9485f",
+    strokeWidth: 3,
+    strokeDash: [8, 4],
+    opacity: 0.8
+  });
+
+  for (const id of ["errorBar", "errorBarLowerCap", "errorBarUpperCap"]) {
+    const layer = program.semanticSpec.layers.find(item => item.id === id);
+    assert.deepEqual(layer.encoding.strokeDash.datum, [8, 4]);
+    for (const child of program.graphicSpec.objects[id].children) {
+      assert.equal(child.properties.stroke, "#d9485f");
+      assert.equal(child.properties.strokeWidth, 3);
+      assert.deepEqual(child.properties.strokeDash, [8, 4]);
+      assert.equal(child.properties.opacity, 0.8);
+    }
+  }
+  for (const id of ["errorBarLowerCap", "errorBarUpperCap"]) {
+    for (const child of program.graphicSpec.objects[id].children) {
+      assert.equal(child.properties.x2 - child.properties.x1, 16);
+    }
+  }
+});
+
+test("converges statistical and explicit modes when interval rows are equal", () => {
+  const statistical = chart()
+    .createCanvas(canvas)
+    .createData({ values: loadCars() })
+    .createErrorBar({
+      x: { field: "Origin", fieldType: "nominal" },
+      y: { field: "Acceleration" },
+      caps: false
+    });
+  const rows = statistical.semanticSpec.datasets.at(-1).values;
+  const explicit = chart()
+    .createCanvas(canvas)
+    .createData({ values: rows })
+    .createErrorBar({
+      x: { field: "Origin", fieldType: "nominal" },
+      y: {
+        center: "__errorBar_center",
+        lower: "__errorBar_lower",
+        upper: "__errorBar_upper"
+      },
+      caps: false
+    });
+
+  assert.deepEqual(
+    explicit.graphicSpec.objects.errorBar,
+    statistical.graphicSpec.objects.errorBar
+  );
+  assert.deepEqual(explicit.resolvedScales, statistical.resolvedScales);
+});
+
+test("namespaces repeated error bars and rejects occupied child roles", () => {
+  const base = chart().createCanvas(canvas).createData({ values: loadCars() });
+  const first = base.createErrorBar({
+    id: "acceleration",
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration" }
+  });
+  const second = first.createErrorBar({
+    id: "horsepower",
+    data: "data",
+    x: { field: "Horsepower", scale: { id: "horsepowerX" } },
+    y: {
+      field: "Origin",
+      fieldType: "nominal",
+      scale: { id: "horsepowerY" }
+    }
+  });
+
+  assert.deepEqual(second.semanticSpec.datasets.slice(1).map(item => item.id), [
+    "accelerationIntervalData",
+    "horsepowerIntervalData"
+  ]);
+  assert.deepEqual(second.semanticSpec.layers.map(layer => layer.id), [
+    "acceleration",
+    "accelerationLowerCap",
+    "accelerationUpperCap",
+    "horsepower",
+    "horsepowerLowerCap",
+    "horsepowerUpperCap"
+  ]);
+
+  const occupied = base.createRuleMark({ id: "customLowerCap" });
+  assert.throws(
+    () => occupied.createErrorBar({
+      id: "custom",
+      x: { field: "Origin", fieldType: "nominal" },
+      y: { field: "Acceleration" }
+    }),
+    /already exists/
+  );
+  assert.equal(occupied.semanticSpec.layers.length, 1);
+});
+
+test("validates variant option combinations before exposing a result", () => {
+  const base = chart().createCanvas(canvas).createData({ values: loadCars() });
+  const vertical = {
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration" }
+  };
+  for (const [options, pattern] of [
+    [{ ...vertical, caps: "yes" }, /caps must be a boolean/],
+    [{ ...vertical, capSize: 0 }, /capSize must be a positive/],
+    [{ ...vertical, stroke: "" }, /stroke requires a non-empty/],
+    [{ ...vertical, strokeWidth: -1 }, /strokeWidth requires a non-negative/],
+    [{ ...vertical, strokeDash: [1] }, /Stroke dash pattern/],
+    [{ ...vertical, opacity: 2 }, /opacity requires a finite value/],
+    [{ x: vertical.x, y: { lower: "a" } }, /requires center, lower, and upper/],
+    [{
+      x: vertical.x,
+      y: { center: "Origin", lower: "Origin", upper: "Acceleration" }
+    }, /must be distinct/],
+    [{
+      x: vertical.x,
+      y: {
+        center: "Acceleration",
+        lower: "Displacement",
+        upper: "Weight_in_lbs"
+      },
+      groupBy: "Origin"
+    }, /do not accept groupBy/]
+  ]) {
+    assert.throws(() => base.createErrorBar(options), pattern);
+  }
+  assert.equal(base.semanticSpec.datasets.length, 1);
+  assert.equal(base.semanticSpec.layers.length, 0);
+});
+
+test("keeps custom cap spans after Canvas and shared-scale rematerialization", () => {
+  const created = chart()
+    .createCanvas(canvas)
+    .createData({ values: loadCars() })
+    .createErrorBar({
+      x: { field: "Horsepower", scale: { domain: [70, 130] } },
+      y: { field: "Origin", fieldType: "nominal" },
+      capSize: 16
+    });
+  const resized = created.editCanvas({ width: 900 });
+  const rescaled = resized.encodeX({
+    target: "errorBar",
+    field: "__errorBar_lower",
+    fieldType: "quantitative",
+    scale: { id: "x", domain: [70, 140] }
+  });
+
+  assert.notEqual(
+    created.graphicSpec.objects.errorBar.children[0].properties.x1,
+    resized.graphicSpec.objects.errorBar.children[0].properties.x1
+  );
+  for (const program of [created, resized, rescaled]) {
+    for (const id of ["errorBarLowerCap", "errorBarUpperCap"]) {
+      for (const child of program.graphicSpec.objects[id].children) {
+        assert.equal(child.properties.y2 - child.properties.y1, 16);
+      }
+    }
+  }
+  assert.notEqual(
+    resized.graphicSpec.objects.errorBarLowerCap.children[0].properties.x1,
+    rescaled.graphicSpec.objects.errorBarLowerCap.children[0].properties.x1
+  );
 });

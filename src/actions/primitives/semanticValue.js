@@ -193,6 +193,9 @@ export function validateSemanticValue(program, parsed, value) {
   }
   if (parsed.kind === "layer") {
     const property = parsed.path.join(".");
+    if (property.endsWith(".title")) {
+      nonEmptyString(value, "Encoding title");
+    }
     if (property.endsWith(".fieldType")) validateSemanticFieldType(value);
     if (property.endsWith(".aggregate")) validateAggregate(value);
     if (property.endsWith(".bin.maxBins")) normalizeHistogramBin({ maxBins: value });

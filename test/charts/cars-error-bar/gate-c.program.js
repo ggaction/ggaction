@@ -20,6 +20,7 @@ function editSemantic(program, property, value) {
 function editGraphicProperties(program, target, properties) {
   let next = program;
   for (const [property, value] of Object.entries(properties)) {
+    if (value === undefined) continue;
     next = next.editGraphics({ target, property, value });
   }
   return next;
@@ -40,8 +41,9 @@ function addLineCollection(program, id, lines, style) {
 }
 
 function addTextCollection(program, id, { x, y, text, ...style }) {
-  const length = Array.isArray(text) ? text.length : 1;
-  let next = program.createGraphics({ id, type: "text", length });
+  const next = Array.isArray(text)
+    ? program.createGraphics({ id, type: "text", length: text.length })
+    : program.createGraphics({ id, type: "text" });
   return editGraphicProperties(next, id, { x, y, text, ...style });
 }
 
@@ -129,9 +131,9 @@ function addRuleLayer(program, {
   next = editSemantic(
     next,
     `layer[${id}].encoding.strokeDash.datum`,
-    [...style.strokeDash]
+    style.semanticStrokeDash ?? [...style.strokeDash]
   );
-  return editSemantic(next, `layer[${id}].encoding.opacity.datum`, style.opacity);
+  return next;
 }
 
 function createErrorBarVariant({
@@ -182,12 +184,16 @@ function createErrorBarVariant({
     program = editSemantic(program, "dataset[errorBarIntervalData].values", values.rows);
   }
   program = editSemantic(program, "coordinate[main].type", "cartesian");
-  program = editSemantic(program, "scale[x].type", horizontal ? "linear" : "ordinal");
-  program = editSemantic(program, "scale[x].domain", horizontal ? values.xDomain : "auto");
-  program = editSemantic(program, "scale[x].range", "auto");
-  program = editSemantic(program, "scale[y].type", horizontal ? "ordinal" : "linear");
-  program = editSemantic(program, "scale[y].domain", horizontal ? "auto" : values.yDomain);
-  program = editSemantic(program, "scale[y].range", "auto");
+  for (const channel of horizontal ? ["y", "x"] : ["x", "y"]) {
+    const quantitative = channel === quantitativeChannel;
+    program = editSemantic(
+      program,
+      `scale[${channel}].type`,
+      quantitative ? "linear" : "ordinal"
+    );
+    program = editSemantic(program, `scale[${channel}].domain`, "auto");
+    program = editSemantic(program, `scale[${channel}].range`, "auto");
+  }
   program = editSemantic(program, `scale[${quantitativeChannel}].nice`, true);
   program = editSemantic(program, `scale[${quantitativeChannel}].zero`, false);
   program = addRuleLayer(program, {
@@ -200,6 +206,13 @@ function createErrorBarVariant({
     },
     style
   });
+  if (!intervalData) {
+    program = editSemantic(
+      program,
+      `layer[errorBar].encoding.${quantitativeChannel}.title`,
+      fields.center
+    );
+  }
   if (caps) {
     program = addRuleLayer(program, {
       id: "errorBarLowerCap",
@@ -234,8 +247,7 @@ function createErrorBarVariant({
   program = addLineCollection(program, `${gridChannel}GridLines`, values.grid, {
     stroke: GRID_COLOR,
     strokeWidth: 1,
-    strokeDash: [],
-    opacity: 1
+    strokeDash: []
   });
   program = addLineCollection(program, "errorBar", values.mainRules, style);
   if (caps) {
@@ -255,7 +267,13 @@ export function createHorizontalErrorBarPrimitives(cars) {
     orientation: "horizontal",
     fields: ERROR_BAR_FIELDS,
     caps: true,
-    style: { stroke: ERROR_BAR_COLOR, strokeWidth: 2, strokeDash: [], opacity: 1 },
+    style: {
+      stroke: ERROR_BAR_COLOR,
+      strokeWidth: 2,
+      strokeDash: [],
+      semanticStrokeDash: "solid",
+      opacity: 1
+    },
     title: "Mean Horsepower by Origin",
     subtitle: "95% confidence intervals",
     xTitle: "mean(Horsepower)",
@@ -271,7 +289,13 @@ export function createExplicitIntervalPrimitives(cars) {
     orientation: "vertical",
     fields: values.fields,
     caps: false,
-    style: { stroke: ERROR_BAR_COLOR, strokeWidth: 2, strokeDash: [], opacity: 1 },
+    style: {
+      stroke: ERROR_BAR_COLOR,
+      strokeWidth: 2,
+      strokeDash: [],
+      semanticStrokeDash: "solid",
+      opacity: 1
+    },
     title: "Explicit Acceleration Intervals",
     subtitle: "Existing lower and upper fields; caps disabled",
     xTitle: "Origin",

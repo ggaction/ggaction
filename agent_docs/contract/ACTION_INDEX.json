@@ -1518,28 +1518,6 @@
   ],
   "plannedCapabilities": [
     {
-      "id": "error-bar-horizontal-and-explicit",
-      "kind": "composition",
-      "name": "Horizontal and explicit error-bar intervals",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/COMPOSITE_MARKS.md",
-        "anchor": "createerrorbar-remaining-variants"
-      }
-    },
-    {
-      "id": "error-bar-cap-and-style-options",
-      "kind": "parameter",
-      "name": "Error-bar cap and appearance options",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/COMPOSITE_MARKS.md",
-        "anchor": "createerrorbar-remaining-variants"
-      }
-    },
-    {
       "id": "regression-error-band-delegation",
       "kind": "composition",
       "name": "Regression band delegation through error band",
