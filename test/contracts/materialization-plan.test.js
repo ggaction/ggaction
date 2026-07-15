@@ -36,6 +36,41 @@ test("executes materialization plans in order and deduplicates equivalent steps"
   assert.deepEqual(calls, ["x", "y", "finish"]);
 });
 
+test("stops after an injected failure without mutating the input program", () => {
+  const calls = [];
+
+  function immutableProgram(state) {
+    return Object.freeze({
+      state: Object.freeze(state),
+      advance({ value }) {
+        calls.push(`advance:${value}`);
+        return immutableProgram({ values: [...this.state.values, value] });
+      },
+      fail() {
+        calls.push("fail");
+        throw new Error("Injected materialization failure.");
+      },
+      finish() {
+        calls.push("finish");
+        return this;
+      }
+    });
+  }
+
+  const original = immutableProgram({ values: [] });
+
+  assert.throws(
+    () => applyMaterializationPlan(original, [
+      { op: "advance", args: { value: "scale" } },
+      { op: "fail" },
+      { op: "finish" }
+    ]),
+    /Injected materialization failure/
+  );
+  assert.deepEqual(calls, ["advance:scale", "fail"]);
+  assert.deepEqual(original.state, { values: [] });
+});
+
 test("plans point encoding scale, mark, and existing legend in order", () => {
   const program = {
     semanticSpec: {
