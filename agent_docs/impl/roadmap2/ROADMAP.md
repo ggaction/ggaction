@@ -129,6 +129,10 @@ curve와 named dash를 사용하고, aggregate 값은 graphical 검증과 독립
 
 현재 histogram과 grouped bar를 사용해 bar grain, range와 layout parameter를 확장한다.
 
+- Phase goal: [`phase3/GOAL.md`](phase3/GOAL.md)
+- Histogram variant contract: [`chart/cars-histogram-variants.md`](chart/cars-histogram-variants.md)
+- Bar variant contract: [`chart/jobs-bar-variants.md`](chart/jobs-bar-variants.md)
+
 - Capability: `encodeXOffset-reassignment`
 - Capability: `encodeHistogram-reassignment`
 - Capability: `bar-width-modes`
