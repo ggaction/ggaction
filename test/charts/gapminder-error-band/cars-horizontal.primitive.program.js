@@ -5,7 +5,7 @@ import {
   CARS_HORIZONTAL_FIELDS,
   CARS_HORIZONTAL_LAYOUT,
   createCarsHorizontalErrorBandReferenceValues
-} from "./reference-values.js";
+} from "./cars-horizontal.reference-values.js";
 
 export function createCarsHorizontalErrorBandPrimitives(cars) {
   const { width, height, margin } = CARS_HORIZONTAL_LAYOUT;
@@ -147,15 +147,15 @@ export function createCarsHorizontalErrorBandPrimitives(cars) {
       property: "layer[errorBandUpperBoundary].encoding.x.scale",
       value: "x"
     })
+    .editSemantic({ property: "scale[y].type", value: "time" })
+    .editSemantic({ property: "scale[y].domain", value: "auto" })
+    .editSemantic({ property: "scale[y].range", value: "auto" })
+    .editSemantic({ property: "scale[y].nice", value: true })
     .editSemantic({ property: "scale[x].type", value: "linear" })
     .editSemantic({ property: "scale[x].domain", value: "auto" })
     .editSemantic({ property: "scale[x].range", value: "auto" })
     .editSemantic({ property: "scale[x].nice", value: true })
     .editSemantic({ property: "scale[x].zero", value: false })
-    .editSemantic({ property: "scale[y].type", value: "time" })
-    .editSemantic({ property: "scale[y].domain", value: "auto" })
-    .editSemantic({ property: "scale[y].range", value: "auto" })
-    .editSemantic({ property: "scale[y].nice", value: true })
     .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })

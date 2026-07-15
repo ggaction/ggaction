@@ -14,7 +14,7 @@ defaults.
 
 | Family | Core actions | Use it for |
 | --- | --- | --- |
-| Position | `encodeX`, `encodeY`, `encodeYRange`, `encodeXOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
+| Position | `encodeX`, `encodeY`, `encodeXRange`, `encodeYRange`, `encodeXOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
@@ -55,7 +55,8 @@ defaults to `"mean"` and may also use a parameterized quantile or ordered
 The advanced `encodeXOffset({ field })` action resolves nominal slots within
 each x band; grouped color layout normally calls it on the author's behalf.
 
-Ranged area marks use quantitative or temporal x and the atomic y-range action:
+Ranged area marks use one independent position and one atomic range action. A
+vertical range uses `encodeYRange`:
 
 ```javascript
 area
@@ -68,7 +69,18 @@ area
 ```
 
 `encodeYRange` records `encodeY` then advanced `encodeY2` as wrapped children.
-Both edges share one y scale, whose domain includes lower and upper values.
+The horizontal counterpart records `encodeX` then `encodeX2`:
+
+```javascript
+area
+  .encodeY({ field: "Acceleration" })
+  .encodeXRange({
+    lower: "Displacement_lower",
+    upper: "Displacement_upper"
+  });
+```
+
+Both range edges share one scale, whose domain includes lower and upper values.
 `encodeGroup` splits area or line paths by a nominal field without creating a
 scale or guide.
 

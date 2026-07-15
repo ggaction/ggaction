@@ -230,8 +230,8 @@ encodeX2({ field, target?, fieldType, scale?, coordinate? })
 encodeX2({ datum, target?, fieldType, scale?, coordinate? })
 ```
 
-Assign a rule secondary x endpoint. It requires an existing x and shares its
-scale and coordinate. [Position encodings](../api/position-encodings.md)
+Assign an area upper edge or a rule secondary x endpoint. It requires an
+existing x and shares its scale and coordinate. [Position encodings](../api/position-encodings.md)
 
 ### `encodeYRange`
 
@@ -240,6 +240,15 @@ encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
 Atomically compose area `encodeY` and `encodeY2`.
+[Encodings](../api/encodings.md)
+
+### `encodeXRange`
+
+```javascript
+encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
+```
+
+Atomically compose area `encodeX` and `encodeX2`.
 [Encodings](../api/encodings.md)
 
 ### `encodeGroup`
@@ -432,14 +441,16 @@ coordinate, and scales.
 
 ```javascript
 createErrorBand({
-  id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity?
+  id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity?,
+  boundaries?
 } = {})
 ```
 
-Create a vertical statistical or explicit interval ribbon. The action can
-infer one encoded source layer and reuses `createIntervalData`, area, y-range,
-and grouping actions. Horizontal ranges, curves, and boundary lines are not
-implemented yet.
+Create a vertical or horizontal statistical or explicit interval ribbon. The
+action can infer one encoded source layer and reuses `createIntervalData`, an
+ordinary area, the matching atomic range action, and grouping actions.
+`boundaries: { stroke?, strokeWidth? }` adds basic lower and upper line layers;
+curves and advanced boundary styles are not implemented yet.
 [Error bands](../api/error-bands.md)
 
 ### `createGuides`

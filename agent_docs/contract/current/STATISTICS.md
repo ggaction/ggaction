@@ -79,10 +79,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createErrorBand`
 
-- Current signature: `createErrorBand({ id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity? } = {})`.
-- The current implementation owns a vertical ranged area: x is a quantitative or temporal independent field,
-  while y is a quantitative statistical or explicit interval. Horizontal x/x2 ranges remain Planned.
-- Statistical y accepts `{ field, center?, extent?, level?, scale? }` and defaults to
+- Current signature: `createErrorBand({ id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity?, boundaries? } = {})`.
+- Exactly one of x/y is a quantitative statistical or explicit interval; the other is a quantitative or temporal
+  independent position. Vertical uses y/y2 and horizontal uses x/x2 on ordinary area layers.
+- A statistical interval accepts `{ field, center?, extent?, level?, scale? }` and defaults to
   mean/Student-t CI/0.95. It calls wrapped `createIntervalData` grouped by x and optional `groupBy`.
 - Explicit y accepts `{ center, lower, upper, scale? }`, consumes existing rows, and may still use `groupBy`
   to split one closed path per series. The center field is kept as title/provenance while geometry uses lower/upper.
@@ -92,29 +92,33 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   encoded layer → error. The action reuses that layer's data, coordinate, compatible scales, and explicit `group`
   encoding. Two quantitative source axes are ambiguous until an interval option identifies one axis.
 - Omitted `id` resolves once to `"errorBand"`; statistical data is namespaced as
-  `errorBandIntervalData`. The aggregate calls wrapped `createAreaMark`, `encodeX`, atomic `encodeYRange`, and
-  optional `encodeGroup`. It does not duplicate field-driven color; call `encodeColor` on the resulting area.
+  `errorBandIntervalData`. The aggregate calls wrapped `createAreaMark`, independent position encoding, atomic
+  `encodeYRange` or `encodeXRange`, and optional `encodeGroup`. It does not duplicate field-driven color; call
+  `encodeColor` on the resulting area.
 - `fill` and `opacity` use the area mark contract; defaults are the shared mark color and `0.2`. Existing
   `encodeColor` supports grouped ranged areas with inferred overlay layout and rematerializes concrete fills.
 - The result is an ordinary area layer and immutable derived dataset, not a composite registry. Canvas and
   compatible scale changes rematerialize the same namespaced closed paths.
+- `boundaries` defaults to false. `{}` creates deterministic lower/upper ordinary line layers after the band;
+  `stroke` defaults to the shared mark color and `strokeWidth` defaults to `1`. Current boundaries are linear,
+  solid and fully opaque.
 
 ### Formal values — `createErrorBand`
 
-- Implemented: `createErrorBand({ id?: UserId; target?: UserId; data?: UserId; x?: { field?: FieldName; fieldType?: "quantitative" | "temporal"; scale?: PositionScale }; y?: StatisticalIntervalChannel | ExplicitIntervalChannel; groupBy?: FieldName; coordinate?: UserId; fill?: NonEmptyString; opacity?: UnitInterval } = {})`.
-- Planned (NOT IMPLEMENTED): horizontal x interval with independent y, `curve`, and optional styled lower/upper
-  boundaries. These remain in `planned/COMPOSITE_MARKS.md`.
+- Implemented: `createErrorBand({ id?: UserId; target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; groupBy?: FieldName; coordinate?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; boundaries?: false | { stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } } = {})`.
+- Planned (NOT IMPLEMENTED): area/boundary curve, dash, boundary opacity and independent lower/upper overrides.
+  These remain in `planned/COMPOSITE_MARKS.md`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createErrorBand`
 
 - ✅ Covered: direct Gapminder temporal-x statistical mode, default mean/CI/0.95, grouped first-appearance paths,
   exact primitive/public semantic-graphic-Canvas/pixel equivalence, and existing color/legend composition.
-- ✅ Covered: source-layer data/coordinate/scale/group inference, explicit interval rows, statistical/explicit
-  concrete convergence, deterministic ID ownership, ambiguous quantitative roles, and unsupported horizontal mode.
-- ✅ Covered: atomic y/y2 reassignment, temporal area materialization, Canvas rematerialization, validation
-  failure and earlier-program immutability.
-- 🟡 Planned: horizontal range, curve interpolation, boundary layers/styles/order, and regression delegation.
+- ✅ Covered: source-layer data/coordinate/scale/group inference, vertical and horizontal statistical/explicit
+  rows, deterministic ID ownership and ambiguous quantitative roles.
+- ✅ Covered: atomic y/y2 and x/x2 reassignment, temporal area materialization, lower/upper boundary order,
+  basic stroke/width defaults and overrides, Canvas rematerialization, validation failure and immutability.
+- 🟡 Planned: curve interpolation, advanced boundary styles/overrides and regression delegation.
 - Evidence: `test/unit/actions/error-bands/create-error-band.test.js` and
   `test/charts/gapminder-error-band/public.test.js`.
 

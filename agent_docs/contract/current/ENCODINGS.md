@@ -255,25 +255,34 @@ type RulePositionAssignment =
   | { field: FieldName; datum?: never; target?: UserId; fieldType: FieldType; scale?: PositionScale; coordinate?: UserId }
   | { field?: never; datum: unknown; target?: UserId; fieldType: FieldType; scale?: PositionScale; coordinate?: UserId };
 
-encodeX2(options: RulePositionAssignment): ChartProgram;
+type AreaSecondaryXAssignment = {
+  field: FieldName;
+  target?: UserId;
+  fieldType?: "quantitative";
+  scale?: { id?: UserId };
+  coordinate?: UserId;
+};
+
+encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgram;
 ```
 
 - Rule `encodeX`/`encodeY`와 `encodeX2`/`encodeY2`는 field 또는 datum 중 정확히 하나를 저장한다.
   Secondary endpoint는 primary channel 없이는 생성할 수 없고 같은 scale, coordinate와 field type을 공유한다.
 - x-only/y-only는 plot-bound full span, `x+y+y2`/`y+x+x2`는 vertical/horizontal interval,
   `x+y+x2+y2`는 diagonal interval이다. Field mode는 row당 line 하나, datum-only mode는 line 하나다.
-- Endpoint/style reassignment, scale edit와 Canvas edit는 wrapped `rematerializeRuleMark`를 실행한다.
+- Area mode는 existing quantitative x와 같은 scale/coordinate를 공유하며 x/x2 horizontal closed path를
+  rematerialize한다. Rule endpoint/style reassignment는 wrapped `rematerializeRuleMark`를 실행한다.
 
 ### Formal values — `encodeX2`
 
-- Implemented: `encodeX2(RulePositionAssignment)`.
-- Planned (NOT IMPLEMENTED): `encodeXRange`와 horizontal ranged area geometry.
+- Implemented: `encodeX2(RulePositionAssignment | AreaSecondaryXAssignment)`.
+- Planned (NOT IMPLEMENTED): —.
 - Proposed (NOT IMPLEMENTED): field-driven rule stroke width.
 
 ### Value coverage — `encodeX2`
 
-- ✅ Covered: field/datum exclusivity, quantitative/nominal position, full span, bounded and diagonal geometry,
-  shared endpoint scale, endpoint reassignment and invalid/incomplete prerequisites.
+- ✅ Covered: rule field/datum exclusivity, quantitative/nominal position, full span, bounded and diagonal geometry,
+  plus area quantitative x2, shared endpoint scale, endpoint reassignment and invalid/incomplete prerequisites.
 - Evidence: `test/unit/actions/encodings/rule-position-encodings.test.js`,
   `test/charts/cars-error-bar/primitive.test.js`.
 
@@ -333,7 +342,7 @@ encodeX2(options: RulePositionAssignment): ChartProgram;
 ### Formal values — `encodeYRange`
 
 - Implemented: `encodeYRange({ lower: FieldName; upper: FieldName; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`
-- Planned (NOT IMPLEMENTED): 별도 `encodeX2({ field; ... })`와 atomic `encodeXRange({ lower; upper; ... })` actions.
+- Planned (NOT IMPLEMENTED): —.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeYRange`
@@ -345,8 +354,30 @@ encodeX2(options: RulePositionAssignment): ChartProgram;
   - ⚠️ Partial: explicit coordinate/scale option combinations direct test.
 - Reassignment
   - ✅ Covered: lower/upper 동시 교체, wrapped child order, concrete path change와 earlier-program immutability.
-- 🟡 Planned: `encodeX2`를 wrapped child로 사용하는 horizontal ranged area의 atomic `encodeXRange`.
 - Evidence: ranged-area and regression tests.
+
+## `encodeXRange`
+
+- Signature: `encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
+- `lower`, `upper`: required quantitative field names이며 각각 x와 x2가 된다.
+- Effect: wrapped `encodeX` 뒤 area-compatible `encodeX2`를 호출하는 atomic action이다.
+- Horizontal area는 y independent position 순서로 lower path와 reversed upper path를 연결해 Z-closed
+  concrete path를 만든다. x/x2는 one shared scale and coordinate를 사용한다.
+- Reassignment는 두 fields를 함께 교체하고 scale, area와 connected guides를 rematerialize하며 earlier
+  programs를 바꾸지 않는다.
+
+### Formal values — `encodeXRange`
+
+- Implemented: `encodeXRange({ lower: FieldName; upper: FieldName; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`.
+- Planned (NOT IMPLEMENTED): —.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `encodeXRange`
+
+- ✅ Covered: shortest horizontal area assignment, explicit target, wrapped x/x2 order, shared scale/coordinate,
+  invalid/missing fields, conflicting scale, atomic reassignment, Canvas rematerialization and primitive parity.
+- Evidence: `test/unit/actions/encodings/area-encodings.test.js` and
+  `test/charts/gapminder-error-band/public.test.js`.
 
 ## `encodeGroup`
 

@@ -476,6 +476,10 @@ export interface ErrorBandOptions {
   coordinate?: string;
   fill?: string;
   opacity?: number;
+  boundaries?: false | {
+    stroke?: string;
+    strokeWidth?: number;
+  };
 }
 
 export interface EditDensityOptions {
@@ -784,7 +788,7 @@ export class ChartProgram {
 
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
-  encodeX2(options: RulePositionEncodingOptions): ChartProgram;
+  encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeColor(options: ColorEncodingOptions): ChartProgram;
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
   encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: ScaleOptions }): ChartProgram;
@@ -794,6 +798,14 @@ export class ChartProgram {
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeYRange(options: {
+    lower: string;
+    upper: string;
+    target?: string;
+    fieldType?: "quantitative";
+    coordinate?: string;
+    scale?: ScaleOptions;
+  }): ChartProgram;
+  encodeXRange(options: {
     lower: string;
     upper: string;
     target?: string;

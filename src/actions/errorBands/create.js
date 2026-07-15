@@ -1,5 +1,7 @@
 import { action } from "../../core/action.js";
+import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
+import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { resolveErrorBand } from "./resolve.js";
 
 const OPTIONS = Object.freeze([
@@ -11,8 +13,29 @@ const OPTIONS = Object.freeze([
   "groupBy",
   "coordinate",
   "fill",
-  "opacity"
+  "opacity",
+  "boundaries"
 ]);
+const BOUNDARY_OPTIONS = Object.freeze(["stroke", "strokeWidth"]);
+
+function resolveBoundaries(value) {
+  if (value === undefined || value === false) return undefined;
+  if (!isPlainObject(value)) {
+    throw new TypeError("createErrorBand boundaries must be false or a plain object.");
+  }
+  validateKeys(value, BOUNDARY_OPTIONS, "createErrorBand boundaries");
+  const stroke = value.stroke ?? DEFAULT_COLORS.mark;
+  const strokeWidth = value.strokeWidth ?? 1;
+  if (typeof stroke !== "string" || stroke.length === 0) {
+    throw new TypeError("Error-band boundary stroke must be a non-empty string.");
+  }
+  if (!Number.isFinite(strokeWidth) || strokeWidth < 0) {
+    throw new RangeError(
+      "Error-band boundary strokeWidth must be a non-negative finite number."
+    );
+  }
+  return { stroke, strokeWidth };
+}
 
 function positionArgs(resolved) {
   return {
@@ -38,16 +61,12 @@ function rangeArgs(resolved) {
 export const createErrorBand = action(
   {
     op: "createErrorBand",
-    description: "Create a statistical or explicit vertical interval band."
+    description: "Create a statistical or explicit interval band."
   },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createErrorBand");
     const resolved = resolveErrorBand(this, args);
-    if (resolved.orientation !== "vertical") {
-      throw new Error(
-        "createErrorBand horizontal intervals require encodeXRange, which is not implemented yet."
-      );
-    }
+    const boundaries = resolveBoundaries(args.boundaries);
     let next = this;
 
     if (resolved.interval.mode === "statistical") {
@@ -63,19 +82,23 @@ export const createErrorBand = action(
       });
     }
 
-    next = next
-      .createAreaMark({
-        id: resolved.id,
-        data: resolved.dataId,
-        ...(args.fill === undefined ? {} : { fill: args.fill }),
-        ...(args.opacity === undefined ? {} : { opacity: args.opacity })
-      })
-      .encodeX(positionArgs(resolved))
-      .encodeYRange(rangeArgs(resolved));
+    next = next.createAreaMark({
+      id: resolved.id,
+      data: resolved.dataId,
+      ...(args.fill === undefined ? {} : { fill: args.fill }),
+      ...(args.opacity === undefined ? {} : { opacity: args.opacity })
+    });
+    next = resolved.orientation === "vertical"
+      ? next
+          .encodeX(positionArgs(resolved))
+          .encodeYRange(rangeArgs(resolved))
+      : next
+          .encodeY(positionArgs(resolved))
+          .encodeXRange(rangeArgs(resolved));
 
     if (resolved.interval.mode === "explicit") {
       next = next.editSemantic({
-        property: `layer[${resolved.id}].encoding.y.title`,
+        property: `layer[${resolved.id}].encoding.${resolved.interval.channel}.title`,
         value: resolved.interval.title
       });
     }
@@ -85,6 +108,31 @@ export const createErrorBand = action(
         field: resolved.groupField,
         fieldType: "nominal"
       });
+    }
+    if (boundaries !== undefined) {
+      const shared = {
+        data: resolved.dataId,
+        orientation: resolved.orientation,
+        position: resolved.position,
+        coordinate: resolved.coordinate,
+        intervalScale:
+          resolved.interval.scale.id ?? resolved.interval.channel,
+        positionScale:
+          resolved.position.scale.id ?? resolved.position.channel,
+        groupBy: resolved.groupField,
+        ...boundaries
+      };
+      next = next
+        .createErrorBandBoundary({
+          ...shared,
+          id: `${resolved.id}LowerBoundary`,
+          bound: resolved.fields.lower
+        })
+        .createErrorBandBoundary({
+          ...shared,
+          id: `${resolved.id}UpperBoundary`,
+          bound: resolved.fields.upper
+        });
     }
     return next;
   }

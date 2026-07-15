@@ -21,7 +21,7 @@ pages are canonical; the generated full-text bundle is available at
 - Extension action authoring: ./extension/action-authoring.md
 - Primitive extension API: ./extension/primitives.md
 - Browser and PNG rendering: ./api/rendering.md
-- Vertical statistical and explicit error bands: ./api/error-bands.md
+- Vertical and horizontal statistical and explicit error bands: ./api/error-bands.md
 
 Only methods declared on the public ChartProgram TypeScript type are supported
 direct-call actions. Additional wrapped names may appear in action traces but

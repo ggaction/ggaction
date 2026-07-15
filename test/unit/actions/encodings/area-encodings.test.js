@@ -111,6 +111,68 @@ test("records atomic range and group action hierarchies", () => {
   );
 });
 
+test("stores and reassigns horizontal ranged areas atomically", () => {
+  const rows = [
+    { Year: "1970-01-01", low: 10, high: 13, nextLow: 9, nextHigh: 14 },
+    { Year: "1971-01-01", low: 12, high: 15, nextLow: 14, nextHigh: 18 }
+  ];
+  const before = chart()
+    .createCanvas({ width: 400, height: 300, margin: 30 })
+    .createData({ values: rows })
+    .createAreaMark()
+    .encodeY({ field: "Year", fieldType: "temporal" })
+    .encodeXRange({ lower: "low", upper: "high" });
+  const after = before.encodeXRange({
+    lower: "nextLow",
+    upper: "nextHigh"
+  });
+
+  assert.deepEqual(before.semanticSpec.layers[0].encoding, {
+    y: { field: "Year", fieldType: "temporal", scale: "y" },
+    x: { field: "low", fieldType: "quantitative", scale: "x" },
+    x2: { field: "high", fieldType: "quantitative", scale: "x" }
+  });
+  assert.equal(
+    before.graphicSpec.objects.area.children[0].properties.commands.at(-1).op,
+    "Z"
+  );
+  assert.equal(after.semanticSpec.layers[0].encoding.x.field, "nextLow");
+  assert.equal(after.semanticSpec.layers[0].encoding.x2.field, "nextHigh");
+  assert.deepEqual(
+    after.trace.children.at(-1).children.map(child => child.op),
+    ["encodeX", "encodeX2"]
+  );
+  assert.notDeepEqual(after.graphicSpec.objects.area, before.graphicSpec.objects.area);
+  assert.equal(before.semanticSpec.layers[0].encoding.x.field, "low");
+});
+
+test("validates horizontal range prerequisites and shared scales", () => {
+  const rows = [
+    { Year: "1970-01-01", low: 10, high: 13 },
+    { Year: "1971-01-01", low: 12, high: 15 }
+  ];
+  const area = chart()
+    .createCanvas({ width: 400, height: 300, margin: 30 })
+    .createData({ values: rows })
+    .createAreaMark()
+    .encodeY({ field: "Year", fieldType: "temporal" });
+
+  assert.throws(
+    () => area.encodeX2({ field: "high" }),
+    /existing x encoding/
+  );
+  assert.throws(
+    () => area.encodeXRange({ lower: "low", upper: "missing" }),
+    /must contain a finite number/
+  );
+  assert.throws(
+    () => area
+      .encodeX({ field: "low", scale: { id: "interval" } })
+      .encodeX2({ field: "high", scale: { id: "other" } }),
+    /must share one scale/
+  );
+});
+
 test("rematerializes area geometry after Canvas edits and validates contracts", () => {
   const before = createBand(regressionBase());
   const after = before.editCanvas({ width: 860 });

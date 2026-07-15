@@ -687,7 +687,7 @@ createPointMark / createLineMark / createBarMark / createAreaMark / createRuleMa
 encodeX / encodeY / encodeX2 / encodeY2 / encodeStroke / encodeStrokeWidth
 encodeColor / encodeSize / encodeShape / encodeStrokeDash / encodeOpacity
 encodeHistogram / encodeDensity
-createRegression / createErrorBar
+createRegression / createErrorBar / createErrorBand
 createGuides
 createTitle / editTitle
 ```
@@ -703,7 +703,7 @@ default를 사용한다.
 createCoordinate
 createScale
 createDerivedData / createIntervalData
-encodeYRange / encodeXOffset / encodeGroup
+encodeXRange / encodeYRange / encodeXOffset / encodeGroup
 createXAxis / createYAxis
 axis line, tick, label, title component actions
 directional grid actions
@@ -926,7 +926,9 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 
 ### Area
 
-- ranged area는 shared y/y2 scale이 필요하다.
+- ranged area는 exactly one shared x/x2 또는 y/y2 scale pair가 필요하다.
+- vertical area는 x independent position 순서로 y/y2를 닫고, horizontal area는 y independent position
+  순서로 x/x2를 닫는다. 두 orientation 모두 별도 mark type 없이 ordinary area path로 저장된다.
 - density area는 derived density provenance와 value/density scale이 필요하다.
 - group 하나당 closed path 하나를 만든다.
 - density는 scale로 변환된 zero baseline에서 닫는다.
@@ -1188,20 +1190,24 @@ ordinary resource로 저장된다. 별도 composite registry는 만들지 않는
 createErrorBand
 ├─ createIntervalData? (statistical mode only)
 ├─ createAreaMark
-├─ encodeX
-├─ encodeYRange
-│  ├─ encodeY
-│  └─ encodeY2
-└─ encodeGroup?
+├─ encodeX + encodeYRange (vertical)
+│  └─ encodeY + encodeY2
+├─ encodeY + encodeXRange (horizontal)
+│  └─ encodeX + encodeX2
+├─ encodeGroup?
+├─ createErrorBandBoundary? (lower)
+└─ createErrorBandBoundary? (upper)
 ```
 
-현재 vertical contract에서 x는 quantitative 또는 temporal independent position이고 y/y2는
-quantitative lower/upper interval이다. Statistical mode는 x와 optional group field로 immutable interval
+Vertical contract에서 x는 quantitative 또는 temporal independent position이고 y/y2는 quantitative
+lower/upper interval이다. Horizontal contract는 이를 y independent position과 x/x2 interval로 바꾼다.
+Statistical mode는 independent position과 optional group field로 immutable interval
 rows를 만들며 explicit mode는 existing center/lower/upper fields를 사용한다. Existing encoded source가
 있으면 persisted data, coordinate, compatible scales와 explicit group을 재사용하고, 두 quantitative axes처럼
 interval role이 유일하지 않으면 추측하지 않는다. `createErrorBand`는 ordinary area와 derived dataset을
 조합하며 별도 composite registry를 만들지 않는다. Field-driven fill은 aggregate option이 아니라 existing
-`encodeColor`가 소유한다. Horizontal x/x2, curve와 optional boundary lines는 아직 Planned다.
+`encodeColor`가 소유한다. Optional linear lower/upper boundaries는 deterministic ordinary line layers이며
+band 뒤에 그린다. Curve, dash, opacity와 independent boundary overrides는 아직 Planned다.
 
 ### Guides
 

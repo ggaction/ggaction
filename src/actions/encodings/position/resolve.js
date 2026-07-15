@@ -92,10 +92,10 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
     if (args.stack !== undefined) throw new Error("Point position encoding does not support stack.");
   } else if (layer.mark.type === "area") {
     const validAreaPosition = fieldType === "quantitative" ||
-      (channel === "x" && fieldType === "temporal");
+      fieldType === "temporal";
     if (!validAreaPosition) {
       throw new Error(
-        "Area position encoding requires quantitative fields or a temporal x field."
+        "Area position encoding requires quantitative or temporal fields."
       );
     }
     if (args.aggregate !== undefined || args.bin !== undefined) {
@@ -112,8 +112,18 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
     }
   } else if (layer.mark.type === "line" && channel === "x") {
     const regression = dataset.transform?.some(item => item.type === "regression");
-    if (fieldType !== "temporal" && !(regression && fieldType === "quantitative")) {
-      throw new Error("Line x encoding requires a temporal field or regression quantitative field.");
+    const interval = dataset.transform?.some(item => item.type === "interval");
+    const horizontalDirect =
+      layer.encoding?.y?.fieldType === "temporal" &&
+      fieldType === "quantitative";
+    if (
+      fieldType !== "temporal" &&
+      !((regression || interval || horizontalDirect) &&
+        fieldType === "quantitative")
+    ) {
+      throw new Error(
+        "Line x encoding requires a temporal field or a compatible derived quantitative field."
+      );
     }
     if (args.aggregate !== undefined) throw new Error("Line x encoding does not support aggregate.");
     if (args.bin !== undefined) throw new Error("Line x encoding does not support bin.");
@@ -121,6 +131,25 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
   } else if (layer.mark.type === "line") {
     if (args.bin !== undefined) throw new Error("Line y encoding does not support bin.");
     const regression = dataset.transform?.some(item => item.type === "regression");
+    const interval = dataset.transform?.some(item => item.type === "interval");
+    const prospectiveDirect =
+      args.aggregate === undefined &&
+      (fieldType === "temporal" ||
+        (fieldType === "quantitative" && layer.encoding?.x === undefined));
+    if (interval || prospectiveDirect) {
+      if (!["quantitative", "temporal"].includes(fieldType)) {
+        throw new Error(
+          "Direct line y encoding requires a quantitative or temporal field."
+        );
+      }
+      if (args.aggregate !== undefined) {
+        throw new Error("Direct line y encoding does not support aggregate.");
+      }
+      if (args.stack !== undefined) {
+        throw new Error("Line y encoding does not support stack.");
+      }
+      return { bin, aggregate, stack };
+    }
     if (regression && fieldType !== "quantitative") {
       throw new Error(regression
         ? "Regression line y encoding requires a quantitative field."

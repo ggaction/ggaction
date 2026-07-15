@@ -5,37 +5,37 @@
     "cars-scatterplot": {
       "width": 1280,
       "height": 800,
-      "sourceHash": "fcda0462a6907c6fc3de559172484f049c07681a7062254b9b1ee7839a30c136"
+      "sourceHash": "c5e2f544df931d0a04df9fcbae3d5d6e5a2e5ef450d848468c153b82feb84541"
     },
     "cars-line-chart": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "b586fe68f79835f3a53ae10627affbe1afa2ea35408d4ce1e5f36671434e5a0b"
+      "sourceHash": "8e3a6224edcaa72d62bcd30f15796d3108814bad83f0ee3f69bce2f4cb77a5a8"
     },
     "cars-histogram": {
       "width": 864,
       "height": 920,
-      "sourceHash": "661935858333fc506992b1326ca3bae849652244439f83f6013acea081201d0d"
+      "sourceHash": "0743ada3ea02b8a2002e25377052c58c7f11873a56f5eda7cf16f37bfccd2b2a"
     },
     "jobs-grouped-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "71a808e02c18581334d8466490ea2aa7673a6e5e3f81d0b51a72756d16b787e7"
+      "sourceHash": "87a73574e2f33042b2c650961c7c22274ee45a2e70f54af056296a8971a119a9"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "6be2d6d465de37a84577cb4834a0bdd034f69a4cccab74604e619ffaa37bdd07"
+      "sourceHash": "2643d72ed654a30136f3c2fd814c7f0078e44eceda24fc8cd1b205fa8af39491"
     },
     "cars-density-area": {
       "width": 1440,
       "height": 1000,
-      "sourceHash": "4be95c204bb9b9e22370f7c9c2663ae96504b58e458980bbd47d1f64dce92dc6"
+      "sourceHash": "6d69b453190b84b67e1828d79be374d72731da9bc6f48e190bcb4cba9b4a63f7"
     },
     "cars-error-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "2da431ff895b959444db80567eee89d0454b03e883d4505c4818a4fa7891bb7f"
+      "sourceHash": "e60738970e6fdd8bbcb3818c3d80cb729b3bf66941277da85de459f4970ac266"
     }
   }
 }

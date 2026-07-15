@@ -51,8 +51,8 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
   `encodeY2`를 한 atomic hierarchy에서 호출한다.
 - validation 또는 downstream materialization이 실패하면 어느 semantic/graphic branch도
   바뀌지 않는다. 별도 positional edit action은 만들지 않는다.
-- Status: Implemented. `encodeY2`와 atomic `encodeYRange` reassignment는 Current contract와 executable
-  error-band tests가 소유한다. This compatibility note remains because horizontal `encodeXRange` mirrors it.
+- Status: Implemented. `encodeY2`, atomic `encodeYRange`, and horizontal `encodeXRange` reassignment는
+  Current contract와 executable error-band tests가 소유한다.
 
 ## Implemented named palette baseline
 
@@ -155,35 +155,3 @@ type ContinuousColorScale = {
 - Status: Planned, NOT IMPLEMENTED. Point quantitative/temporal domains, palettes/ranges, all interpolation
   tokens, policies, gradient legend, rematerialization and renderer parity are Current. This contract now
   contains only the continuous bar consumer and its `unknown` fallback.
-
-## Horizontal ranged position
-
-```typescript
-encodeX2({
-  field: FieldName;
-  target?: UserId;
-  fieldType?: "quantitative";
-  scale?: { id?: UserId };
-}): ChartProgram;
-
-encodeXRange({
-  lower: FieldName;
-  upper: FieldName;
-  target?: UserId;
-  fieldType?: "quantitative";
-  coordinate?: UserId;
-  scale?: PositionScale;
-}): ChartProgram;
-```
-
-- `encodeX2`는 rule mark에서 Implemented이며 existing x와 같은 scale 및 coordinate를 공유하는
-  horizontal endpoint다.
-  독립 scale 생성이나 incompatible field type은 허용하지 않는다.
-- `encodeXRange`는 wrapped `encodeX`와 `encodeX2`를 순서대로 호출하는 atomic action이다.
-  중간 incomplete area 상태를 public workflow에 노출하지 않는다.
-- Area materialization은 x lower/upper와 y independent values를 concrete closed path로 만든다.
-  Horizontal interval, confidence band와 density/ribbon 표현이 이 contract를 재사용한다.
-- Scale, area path, x axis와 vertical grid consumer를 deterministic plan으로 rematerialize하며
-  validation 실패 시 이전 program을 그대로 유지한다.
-- Status: Partially implemented. Rule `encodeX2`의 field/datum, reassignment, shared scale, Canvas edit와
-  renderer parity는 Current다. `encodeXRange`와 horizontal ranged area path geometry는 Planned다.

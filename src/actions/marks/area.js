@@ -117,14 +117,16 @@ const rematerializeAreaMark = action(
       : undefined;
     const xScaleId = layer.encoding?.x?.scale;
     const yScaleId = layer.encoding?.y?.scale;
+    const verticalRange = layer.encoding?.y2?.scale === yScaleId;
+    const horizontalRange = layer.encoding?.x2?.scale === xScaleId;
     if (
       xScaleId === undefined ||
       yScaleId === undefined ||
-      (densityTransform === undefined && layer.encoding?.y2?.scale !== yScaleId)
+      (densityTransform === undefined && verticalRange === horizontalRange)
     ) {
       throw new Error(
         densityTransform === undefined
-          ? `Area mark "${id}" requires shared x, y, and y2 scales.`
+          ? `Area mark "${id}" requires exactly one shared x/x2 or y/y2 range.`
           : `Density area mark "${id}" requires x and y scales.`
       );
     }
@@ -154,6 +156,33 @@ const rematerializeAreaMark = action(
       throw new Error(`Density area mark "${id}" requires a scale domain containing zero.`);
     }
     const paths = derived.series.map(series => {
+      if (densityTransform === undefined && derived.orientation === "horizontal") {
+        const y = mapLinearValues(
+          series.values.map(value => value.y),
+          yScale.domain,
+          yScale.range,
+          { clamp: yScale.clamp ?? false }
+        );
+        const lower = mapLinearValues(
+          series.values.map(value => value.x),
+          xScale.domain,
+          xScale.range,
+          { clamp: xScale.clamp ?? false }
+        );
+        const upper = mapLinearValues(
+          series.values.map(value => value.x2),
+          xScale.domain,
+          xScale.range,
+          { clamp: xScale.clamp ?? false }
+        );
+        return buildLinearPathCommands([
+          ...y.map((value, index) => ({ x: lower[index], y: value })),
+          ...[...y].reverse().map((value, reverseIndex) => ({
+            x: upper[upper.length - reverseIndex - 1],
+            y: value
+          }))
+        ], { close: true });
+      }
       const x = mapLinearValues(
         series.values.map(value => value.x),
         xScale.domain,

@@ -22,7 +22,7 @@ import {
 const SECONDARY_OPTIONS = Object.freeze([
   "field", "datum", "target", "fieldType", "scale", "coordinate"
 ]);
-const Y_RANGE_OPTIONS = Object.freeze([
+const RANGE_OPTIONS = Object.freeze([
   "lower", "upper", "target", "fieldType", "coordinate", "scale"
 ]);
 const GROUP_OPTIONS = Object.freeze(["field", "target", "fieldType"]);
@@ -130,10 +130,16 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
 const encodeX2 = action(
   {
     op: "encodeX2",
-    description: "Encode the secondary horizontal endpoint of a rule."
+    description: "Encode a secondary horizontal endpoint."
   },
   function (args = {}) {
-    return encodeSecondaryPosition(this, "x2", args, "encodeX2", ["rule"]);
+    return encodeSecondaryPosition(
+      this,
+      "x2",
+      args,
+      "encodeX2",
+      ["area", "rule"]
+    );
   }
 );
 
@@ -159,7 +165,7 @@ const encodeYRange = action(
     description: "Atomically encode lower and upper area bounds."
   },
   function (args = {}) {
-    validateOptions(args, Y_RANGE_OPTIONS, "encodeYRange");
+    validateOptions(args, RANGE_OPTIONS, "encodeYRange");
     const target = args.target;
     const lower = this.encodeY({
       field: args.lower,
@@ -169,6 +175,29 @@ const encodeYRange = action(
       ...(args.scale === undefined ? {} : { scale: args.scale })
     });
     return lower.encodeY2({
+      field: args.upper,
+      ...(target === undefined ? {} : { target }),
+      fieldType: args.fieldType ?? "quantitative"
+    });
+  }
+);
+
+const encodeXRange = action(
+  {
+    op: "encodeXRange",
+    description: "Atomically encode lower and upper horizontal area bounds."
+  },
+  function (args = {}) {
+    validateOptions(args, RANGE_OPTIONS, "encodeXRange");
+    const target = args.target;
+    const lower = this.encodeX({
+      field: args.lower,
+      ...(target === undefined ? {} : { target }),
+      fieldType: args.fieldType ?? "quantitative",
+      ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
+      ...(args.scale === undefined ? {} : { scale: args.scale })
+    });
+    return lower.encodeX2({
       field: args.upper,
       ...(target === undefined ? {} : { target }),
       fieldType: args.fieldType ?? "quantitative"
@@ -230,6 +259,7 @@ const encodeGroup = action(
 export function registerRangedEncodingActions(ProgramClass) {
   ProgramClass.prototype.encodeX2 = encodeX2;
   ProgramClass.prototype.encodeY2 = encodeY2;
+  ProgramClass.prototype.encodeXRange = encodeXRange;
   ProgramClass.prototype.encodeYRange = encodeYRange;
   ProgramClass.prototype.encodeGroup = encodeGroup;
 }

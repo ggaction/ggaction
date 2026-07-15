@@ -14,7 +14,7 @@ orientation과 boundary appearance를 승인받는다.
 - [x] Axes, vertical/horizontal grid policy and title
 - [x] Variant manifest and exact future call chain
 - [x] `cars-horizontal/primitive.png` and renderer checks
-- [ ] Gate B user confirmation
+- [x] Gate B user confirmation
 - [x] STEP status, conceptual commit and push
 
 ## Candidate visual contract

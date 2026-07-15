@@ -1,6 +1,7 @@
 import { action } from "../../core/action.js";
 import {
   canMaterializeArea,
+  canMaterializeLine,
 } from "../../materialization/marks.js";
 import { resolveBarGrain } from "../../grammar/bars/policy.js";
 import { resolvePositionEncoding } from "./position/resolve.js";
@@ -112,8 +113,11 @@ function encodePosition(program, channel, args, operation) {
     target
   );
 
-  if (layer.mark.type === "line" && channel === "y") {
-    return next.rematerializeLineMark({ id: target });
+  if (layer.mark.type === "line") {
+    const updated = findLayer(next, target);
+    return canMaterializeLine(next, updated)
+      ? next.rematerializeLineMark({ id: target })
+      : next.rematerializeScale({ id: scale.id });
   }
 
   if (layer.mark.type === "rule") {

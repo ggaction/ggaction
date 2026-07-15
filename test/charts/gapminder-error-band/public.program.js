@@ -1,2 +1,5 @@
-export { createGapminderErrorBand } from
+export {
+  createCarsHorizontalErrorBand,
+  createGapminderErrorBand
+} from
   "../../../examples/gapminder-error-band/program.js";

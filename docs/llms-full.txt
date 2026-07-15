@@ -1995,8 +1995,9 @@ defaults to `0.2`. The fixed fill and opacity are graphical appearance.
 `stroke` adds a constant path outline; its width defaults to `1`. A width without
 a stroke is rejected.
 
-An area becomes renderable after quantitative or temporal x and atomic
-quantitative `encodeYRange` encodings exist. Optional `encodeGroup` creates one Z-closed filled path per
+An area becomes renderable after exactly one ranged orientation exists:
+quantitative or temporal x with quantitative `encodeYRange`, or quantitative
+`encodeXRange` with quantitative or temporal y. Optional `encodeGroup` creates one Z-closed filled path per
 nominal group without creating a scale or legend. A density-derived dataset may
 instead use value/density x and y encodings: the density axis is closed against
 zero, while the value axis determines sample order. Both horizontal-density and
@@ -2151,7 +2152,7 @@ defaults.
 
 | Family | Core actions | Use it for |
 | --- | --- | --- |
-| Position | `encodeX`, `encodeY`, `encodeYRange`, `encodeXOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
+| Position | `encodeX`, `encodeY`, `encodeXRange`, `encodeYRange`, `encodeXOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
@@ -2192,7 +2193,8 @@ defaults to `"mean"` and may also use a parameterized quantile or ordered
 The advanced `encodeXOffset({ field })` action resolves nominal slots within
 each x band; grouped color layout normally calls it on the author's behalf.
 
-Ranged area marks use quantitative or temporal x and the atomic y-range action:
+Ranged area marks use one independent position and one atomic range action. A
+vertical range uses `encodeYRange`:
 
 ```javascript
 area
@@ -2205,7 +2207,18 @@ area
 ```
 
 `encodeYRange` records `encodeY` then advanced `encodeY2` as wrapped children.
-Both edges share one y scale, whose domain includes lower and upper values.
+The horizontal counterpart records `encodeX` then `encodeX2`:
+
+```javascript
+area
+  .encodeY({ field: "Acceleration" })
+  .encodeXRange({
+    lower: "Displacement_lower",
+    upper: "Displacement_upper"
+  });
+```
+
+Both range edges share one scale, whose domain includes lower and upper values.
 `encodeGroup` splits area or line paths by a nominal field without creating a
 scale or guide.
 
@@ -2634,9 +2647,9 @@ the current action.
 
 # Error Bands
 
-`createErrorBand()` creates a vertical confidence or interval ribbon as one
-ordinary area layer. It can derive grouped interval rows or consume existing
-center/lower/upper fields.
+`createErrorBand()` creates a vertical or horizontal confidence or interval
+ribbon as one ordinary area layer. It can derive grouped interval rows or
+consume existing center/lower/upper fields.
 
 ## `createErrorBand(options?)`
 
@@ -2671,16 +2684,20 @@ createErrorBand({
   id?: string;
   target?: string;
   data?: string;
-  x?: PositionChannel;
-  y?: StatisticalIntervalChannel | ExplicitIntervalChannel;
+  x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
+  y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
   groupBy?: string;
   coordinate?: string;
   fill?: string;
   opacity?: number;
+  boundaries?: false | {
+    stroke?: string;
+    strokeWidth?: number;
+  };
 } = {})
 ```
 
-The current vertical contract uses:
+The channel contracts are:
 
 ```typescript
 type PositionChannel = {
@@ -2706,12 +2723,26 @@ type ExplicitIntervalChannel = {
 ```
 
 Statistical mode defaults to a mean, two-sided `0.95` Student-t confidence
-interval. The independent x field is always part of grouping; `groupBy` adds
-one series field. Group and path order follow first appearance in the source.
+interval. The independent position field is always part of grouping;
+`groupBy` adds one series field. Group and path order follow first appearance
+in the source.
 
 Explicit mode uses the current dataset directly. It retains the center field
 for the inferred axis title, while the closed area geometry uses lower and
 upper fields.
+
+Exactly one channel must describe the interval. A vertical band stores y/y2;
+a horizontal band stores x/x2. For example, a horizontal interval inferred
+from an existing Cars scatterplot can be authored as:
+
+```javascript
+scatterplot.createErrorBand({
+  x: { field: "Displacement", center: "mean", extent: "ci" },
+  y: { field: "Acceleration" },
+  groupBy: "Origin",
+  boundaries: { stroke: "#334155", strokeWidth: 1.5 }
+});
+```
 
 ## Inference and ownership
 
@@ -2724,17 +2755,21 @@ the interval axis.
 The first omitted ID is `"errorBand"`; statistical rows use
 `"errorBandIntervalData"`. A second band requires an explicit ID. The action
 records one `createErrorBand` trace node with wrapped interval-data, area,
-position-range, and grouping children.
+the matching atomic position-range action, and grouping children.
 
 `fill` and `opacity` default to the area defaults. Field-driven fill remains an
 explicit `encodeColor` call so color, grouping, and legend ownership stay
 separate.
 
+`boundaries` defaults to `false`. An object adds deterministic lower and upper
+ordinary line layers after the filled band. Its stroke defaults to the shared
+mark color and its width defaults to `1`.
+
 ## Current boundary
 
-Horizontal bands, curved area edges, and optional lower/upper boundary lines
-are not implemented yet. Supplying those options is rejected instead of being
-silently ignored.
+Curved area edges and advanced boundary dash, opacity, curve, or independent
+lower/upper overrides are not implemented yet. Supplying unsupported options
+is rejected instead of being silently ignored.
 
 <!-- Source: /api/guides/ -->
 
@@ -4830,12 +4865,12 @@ chart-authoring API does not support that combination.
 | Capability | Scatterplot | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Semantic mark | point | line | bar | bar | point + area + line | area | rule | area |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal x; quantitative y/y2 |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval |
 | Nominal color | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill |
 | Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — |
-| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill, line width | opacity | stroke, width, dash, opacity, optional fixed-size caps | fill and opacity |
-| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | UTC time or linear x; linear interval y |
-| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | horizontal |
+| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill, line width | opacity | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, optional basic boundaries |
+| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis |
+| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis |
 | Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical |
 | Chart title | optional | optional | optional | optional | optional | optional | optional | optional |
 | Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
@@ -4865,8 +4900,9 @@ Categorical legends support all four edges; point composite and size legends
 support right and left side layouts.
 Error bars support vertical and horizontal statistical intervals, existing
 center/lower/upper fields, optional caps, and constant rule appearance.
-Error bands currently support vertical statistical or explicit ranges; horizontal
-ranges, curved edges, and optional boundary lines are not implemented yet.
+Error bands support vertical and horizontal statistical or explicit ranges and
+optional basic lower/upper boundary lines. Curved edges and advanced boundary
+dash, opacity, and independent overrides are not implemented yet.
 
 <!-- Source: /reference/actions/ -->
 
@@ -5097,8 +5133,8 @@ encodeX2({ field, target?, fieldType, scale?, coordinate? })
 encodeX2({ datum, target?, fieldType, scale?, coordinate? })
 ```
 
-Assign a rule secondary x endpoint. It requires an existing x and shares its
-scale and coordinate. [Position encodings](../api/position-encodings.md)
+Assign an area upper edge or a rule secondary x endpoint. It requires an
+existing x and shares its scale and coordinate. [Position encodings](../api/position-encodings.md)
 
 ### `encodeYRange`
 
@@ -5107,6 +5143,15 @@ encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
 Atomically compose area `encodeY` and `encodeY2`.
+[Encodings](../api/encodings.md)
+
+### `encodeXRange`
+
+```javascript
+encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
+```
+
+Atomically compose area `encodeX` and `encodeX2`.
 [Encodings](../api/encodings.md)
 
 ### `encodeGroup`
@@ -5299,14 +5344,16 @@ coordinate, and scales.
 
 ```javascript
 createErrorBand({
-  id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity?
+  id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity?,
+  boundaries?
 } = {})
 ```
 
-Create a vertical statistical or explicit interval ribbon. The action can
-infer one encoded source layer and reuses `createIntervalData`, area, y-range,
-and grouping actions. Horizontal ranges, curves, and boundary lines are not
-implemented yet.
+Create a vertical or horizontal statistical or explicit interval ribbon. The
+action can infer one encoded source layer and reuses `createIntervalData`, an
+ordinary area, the matching atomic range action, and grouping actions.
+`boundaries: { stroke?, strokeWidth? }` adds basic lower and upper line layers;
+curves and advanced boundary styles are not implemented yet.
 [Error bands](../api/error-bands.md)
 
 ### `createGuides`

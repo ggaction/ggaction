@@ -560,6 +560,24 @@
       }
     },
     {
+      "name": "encodeXRange",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action atomically replaces lower/upper fields",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodexrange"
+      }
+    },
+    {
       "name": "encodeGroup",
       "layer": "user-facing",
       "domain": "encodings",
@@ -692,7 +710,7 @@
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
       "update": "Owned interval-data, area, range, group, and appearance children",
-      "audit": "Intentional; horizontal range, curve, and boundary capabilities remain Planned",
+      "audit": "Intentional; curve and advanced boundary capabilities remain Planned",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1507,15 +1525,6 @@
       }
     },
     {
-      "name": "encodeXRange",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "horizontal-ranged-position"
-      }
-    },
-    {
       "name": "selectRows",
       "status": "planned",
       "readiness": "accepted",
@@ -1549,9 +1558,9 @@
       }
     },
     {
-      "id": "error-band-horizontal-curve-and-boundaries",
+      "id": "error-band-curve-and-advanced-boundaries",
       "kind": "parameter",
-      "name": "Error-band horizontal range, curve, and boundaries",
+      "name": "Error-band curve and advanced boundaries",
       "status": "planned",
       "readiness": "accepted",
       "contract": {
@@ -1649,7 +1658,8 @@
       "releaseDerivedData"
     ],
     "aggregateComponents": [
-      "createErrorBarCap"
+      "createErrorBarCap",
+      "createErrorBandBoundary"
     ],
     "contract": "agent_docs/contract/internal/ACTIONS.md"
   }

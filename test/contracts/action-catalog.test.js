@@ -197,7 +197,10 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
     "createSizeLegend"
   ]);
   assert.deepEqual(index.internal.stateTransitions, ["releaseDerivedData"]);
-  assert.deepEqual(index.internal.aggregateComponents, ["createErrorBarCap"]);
+  assert.deepEqual(index.internal.aggregateComponents, [
+    "createErrorBarCap",
+    "createErrorBandBoundary"
+  ]);
   assert.equal(runtime.includes("createLegendSymbols"), true);
   assert.equal(runtime.includes("createCategoricalLegend"), true);
   assert.equal(runtime.includes("createSizeLegend"), true);
@@ -221,7 +224,6 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   assert.equal(new Set(names).size, names.length);
   assert.deepEqual(new Set(names), new Set([
     "createBoxPlot",
-    "encodeXRange",
     "selectRows"
   ]));
   assert.equal(names.includes("editRuleMark"), false);
@@ -453,8 +455,8 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     );
   }
   assert.match(currentCorpus, /paddingOuter\?: NonNegativeFinite/);
-  assert.match(plannedCorpus, /encodeX2\(\{/);
-  assert.match(plannedCorpus, /encodeXRange\(\{/);
+  assert.match(currentCorpus, /## `encodeX2`/);
+  assert.match(currentCorpus, /## `encodeXRange`/);
   assert.match(currentCorpus, /binBoundaries\?: readonly \[Finite, Finite, \.\.\.Finite\[\]\]/);
   assert.match(currentCorpus, /zero-anchored exact steps/);
   assert.match(plannedCorpus, /type PlannedScaleType =/);

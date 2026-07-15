@@ -6,15 +6,16 @@ Approved Cars target를 `encodeXRange`와 horizontal `createErrorBand`로 재현
 
 ## 진행 상태
 
-- [ ] Area-compatible `encodeX2` support
-- [ ] Atomic `encodeXRange → encodeX + encodeX2` hierarchy
-- [ ] Horizontal area path construction and validation
-- [ ] Horizontal statistical/explicit orientation inference
-- [ ] Shared coordinate/scale/group propagation
-- [ ] Cars primitive/public exact equality
-- [ ] X-range reassignment, Canvas/scale/data rematerialization
-- [ ] Ambiguity, invalid pair, sparse/empty group and immutability tests
-- [ ] STEP status, conceptual commit and push
+- [x] Area-compatible `encodeX2` support
+- [x] Atomic `encodeXRange → encodeX + encodeX2` hierarchy
+- [x] Horizontal area path construction and validation
+- [x] Horizontal statistical/explicit orientation inference
+- [x] Shared coordinate/scale/group propagation
+- [x] Cars primitive/public exact equality
+- [x] X-range reassignment and Canvas/scale rematerialization
+- [x] Ambiguity, invalid pair, sparse/empty group and immutability tests
+- [x] Approved linear boundary stroke/width composition
+- [x] STEP status, conceptual commit and push
 
 ## 완료 조건
 

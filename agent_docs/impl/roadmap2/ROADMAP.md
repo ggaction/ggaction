@@ -219,7 +219,7 @@ computed/explicit interval, cap/style parameter classes를 검증한다.
 
 - Direct action: `createErrorBand`
 - Direct action: `encodeXRange`
-- Capability: `error-band-horizontal-curve-and-boundaries`
+- Capability: `error-band-curve-and-advanced-boundaries`
 - Capability: `regression-error-band-delegation`
 - Capability: `composite-mark-ownership-and-storage`
 

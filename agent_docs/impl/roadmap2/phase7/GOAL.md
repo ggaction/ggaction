@@ -18,8 +18,8 @@ Complete chart contract:
 - [x] Interval/area/range/boundary/regression 재사용 경계 설계
 - [x] Existing source, dataset과 Planned inventory baseline audit
 - [x] STEP1–STEP9와 three visual approval Gates 설계
-- [ ] Gapminder vertical primitive 승인과 vertical ranged-area implementation
-- [ ] Cars horizontal primitive 승인과 horizontal ranged-area implementation
+- [x] Gapminder vertical primitive 승인과 vertical ranged-area implementation
+- [x] Cars horizontal primitive 승인과 horizontal ranged-area implementation
 - [ ] Curved boundary primitive 승인과 full option/rematerialization implementation
 - [ ] Regression band delegation compatibility
 - [ ] Public docs, contract promotion, gallery와 Phase closeout

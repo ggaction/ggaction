@@ -5,9 +5,9 @@ title: Error Bands
 
 # Error Bands
 
-`createErrorBand()` creates a vertical confidence or interval ribbon as one
-ordinary area layer. It can derive grouped interval rows or consume existing
-center/lower/upper fields.
+`createErrorBand()` creates a vertical or horizontal confidence or interval
+ribbon as one ordinary area layer. It can derive grouped interval rows or
+consume existing center/lower/upper fields.
 
 ## `createErrorBand(options?)`
 
@@ -42,16 +42,20 @@ createErrorBand({
   id?: string;
   target?: string;
   data?: string;
-  x?: PositionChannel;
-  y?: StatisticalIntervalChannel | ExplicitIntervalChannel;
+  x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
+  y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
   groupBy?: string;
   coordinate?: string;
   fill?: string;
   opacity?: number;
+  boundaries?: false | {
+    stroke?: string;
+    strokeWidth?: number;
+  };
 } = {})
 ```
 
-The current vertical contract uses:
+The channel contracts are:
 
 ```typescript
 type PositionChannel = {
@@ -77,12 +81,26 @@ type ExplicitIntervalChannel = {
 ```
 
 Statistical mode defaults to a mean, two-sided `0.95` Student-t confidence
-interval. The independent x field is always part of grouping; `groupBy` adds
-one series field. Group and path order follow first appearance in the source.
+interval. The independent position field is always part of grouping;
+`groupBy` adds one series field. Group and path order follow first appearance
+in the source.
 
 Explicit mode uses the current dataset directly. It retains the center field
 for the inferred axis title, while the closed area geometry uses lower and
 upper fields.
+
+Exactly one channel must describe the interval. A vertical band stores y/y2;
+a horizontal band stores x/x2. For example, a horizontal interval inferred
+from an existing Cars scatterplot can be authored as:
+
+```javascript
+scatterplot.createErrorBand({
+  x: { field: "Displacement", center: "mean", extent: "ci" },
+  y: { field: "Acceleration" },
+  groupBy: "Origin",
+  boundaries: { stroke: "#334155", strokeWidth: 1.5 }
+});
+```
 
 ## Inference and ownership
 
@@ -95,14 +113,18 @@ the interval axis.
 The first omitted ID is `"errorBand"`; statistical rows use
 `"errorBandIntervalData"`. A second band requires an explicit ID. The action
 records one `createErrorBand` trace node with wrapped interval-data, area,
-position-range, and grouping children.
+the matching atomic position-range action, and grouping children.
 
 `fill` and `opacity` default to the area defaults. Field-driven fill remains an
 explicit `encodeColor` call so color, grouping, and legend ownership stay
 separate.
 
+`boundaries` defaults to `false`. An object adds deterministic lower and upper
+ordinary line layers after the filled band. Its stroke defaults to the shared
+mark color and its width defaults to `1`.
+
 ## Current boundary
 
-Horizontal bands, curved area edges, and optional lower/upper boundary lines
-are not implemented yet. Supplying those options is rejected instead of being
-silently ignored.
+Curved area edges and advanced boundary dash, opacity, curve, or independent
+lower/upper overrides are not implemented yet. Supplying unsupported options
+is rejected instead of being silently ignored.

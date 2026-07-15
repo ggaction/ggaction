@@ -14,13 +14,19 @@ export function canMaterializePoint(_program, layer) {
   return layer.mark?.type === "point" && hasPositionScales(layer);
 }
 
-export function canMaterializeLine(_program, layer) {
+export function canMaterializeLine(program, layer) {
+  const dataset = findDataset(program, layer.data);
+  const interval = dataset?.transform?.some(item => item.type === "interval");
   return (
     layer.mark?.type === "line" &&
     hasPositionScales(layer) &&
     (isAggregate(layer.encoding.y.aggregate) ||
       (layer.encoding.x.fieldType === "quantitative" &&
-        layer.encoding.y.fieldType === "quantitative"))
+        layer.encoding.y.fieldType === "quantitative") ||
+      ((interval || layer.encoding.y.aggregate === undefined) &&
+        ["quantitative", "temporal"].includes(layer.encoding.x.fieldType) &&
+        ["quantitative", "temporal"].includes(layer.encoding.y.fieldType) &&
+        layer.encoding.x.fieldType !== layer.encoding.y.fieldType))
   );
 }
 
@@ -42,7 +48,8 @@ export function canMaterializeArea(program, layer) {
 
   return (
     completeDensity ||
-    layer.encoding?.y2?.scale === layer.encoding.y.scale
+    layer.encoding?.y2?.scale === layer.encoding.y.scale ||
+    layer.encoding?.x2?.scale === layer.encoding.x.scale
   );
 }
 

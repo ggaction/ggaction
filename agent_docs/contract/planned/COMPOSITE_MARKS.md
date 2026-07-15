@@ -32,9 +32,10 @@ These types are reused below by the remaining planned interval composites. The c
 
 ## createErrorBand
 
-Vertical statistical/explicit y intervals, temporal/quantitative x, grouping, fill/opacity, source inference and
-ordinary area composition are Current in [`../current/STATISTICS.md`](../current/STATISTICS.md#createerrorband).
-This section owns only the accepted horizontal, curve, and boundary remainder.
+Vertical/horizontal statistical and explicit intervals, grouping, fill/opacity, source inference, ordinary area
+composition and basic linear boundary stroke/width are Current in
+[`../current/STATISTICS.md`](../current/STATISTICS.md#createerrorband). This section owns only the accepted curve
+and advanced boundary remainder.
 
 ```typescript
 createErrorBand({
@@ -68,18 +69,18 @@ createErrorBand({
   statistical interval must be distinguished by an interval option or an explicit lower/upper triple instead
   of being guessed.
 - The aggregate calls `createAreaMark`, the positional action for the independent channel, and
-  `encodeYRange` or Planned `encodeXRange` for the interval bounds. It forwards one shared coordinate,
+  `encodeYRange` or `encodeXRange` for the interval bounds. It forwards one shared coordinate,
   scales, grouping and curve decision to every child.
-- `boundaries` defaults to `false`. When present, the aggregate adds lower and upper `createLineMark` children
-  with namespaced IDs and forwards the boundary style. Boundary curve inherits the band curve unless explicitly
-  overridden. Rendering order is band first and boundaries second.
+- `boundaries` defaults to `false`. Current behavior adds deterministic lower and upper ordinary line children,
+  supports shared `stroke`/`strokeWidth`, and renders band first then boundaries. Planned work adds dash/opacity,
+  band-curve inheritance and an explicit boundary-curve override.
 - Field-driven fill is intentionally not duplicated in this aggregate. Call existing `encodeColor` on the
   representative area after creation; `groupBy` controls path segmentation independently of visible color.
 - The aggregate is create-only. Band appearance changes use the owned area/encoding actions and boundary
   changes use the owned line/encoding actions; no `editErrorBand` action is introduced.
-- Status: Partially implemented. Vertical computed/explicit bounds, grouped paths, scale sharing,
-  rematerialization, trace and renderer parity are Current. Horizontal x/x2 bounds, curve forwarding, boundary
-  options/order and their variants remain Planned, NOT IMPLEMENTED.
+- Status: Partially implemented. Both orientations, computed/explicit bounds, grouped paths, scale sharing,
+  basic boundaries, rematerialization, trace and renderer parity are Current. Curve forwarding and advanced
+  boundary style/override variants remain Planned, NOT IMPLEMENTED.
 
 ## regression band delegation
 
@@ -139,7 +140,7 @@ createBoxPlot({
 - Internal wrapped data actions create the immutable summary and optional outlier datasets. The aggregate then
   composes: `createErrorBar` in explicit whisker mode, a ranged `createBarMark` for q1→q3, a
   `createRuleMark` for the median, and optional `createPointMark` outliers.
-- The bar layer reuses `encodeYRange` or Planned `encodeXRange`; this extends ranged position materialization
+- The bar layer reuses Current `encodeYRange` or `encodeXRange`; this extends ranged position materialization
   to bars without adding a box-specific range channel. `width.band` defaults to `0.7` and remains graphical
   mark configuration.
 - `whisker` defaults to Tukey factor `1.5`; `outliers` defaults to `true` for Tukey and has no effect in minmax

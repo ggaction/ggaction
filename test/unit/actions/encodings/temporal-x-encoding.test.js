@@ -118,13 +118,12 @@ test("validates temporal x fields and scale policies", () => {
     }),
     /nice must be a boolean/
   );
-  assert.throws(
-    () => createLineProgram().encodeY({
-      field: "year",
-      fieldType: "temporal"
-    }),
-    /Aggregate must be a supported operation/
-  );
+  const horizontal = createLineProgram().encodeY({
+    field: "year",
+    fieldType: "temporal"
+  });
+  assert.equal(horizontal.semanticSpec.layers[0].encoding.y.field, "year");
+  assert.equal(horizontal.graphicSpec.objects.trends.children.length, 0);
 });
 
 test("rejects conflicting policies on a shared time scale", () => {

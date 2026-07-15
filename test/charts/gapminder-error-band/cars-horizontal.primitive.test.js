@@ -4,11 +4,11 @@ import test from "node:test";
 import { loadCars } from "../../support/data.js";
 import { linearPathCommands } from "../../support/path.js";
 import { createCarsHorizontalErrorBandPrimitives } from
-  "./primitive.program.js";
+  "./cars-horizontal.primitive.program.js";
 import {
   CARS_HORIZONTAL_FIELDS,
   createCarsHorizontalErrorBandReferenceValues
-} from "./reference-values.js";
+} from "./cars-horizontal.reference-values.js";
 
 function flattenActions(node) {
   return [node, ...(node.children ?? []).flatMap(flattenActions)];

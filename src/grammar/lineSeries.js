@@ -27,11 +27,15 @@ function requireLineEncoding(layer) {
 
   const aggregateMode =
     x?.fieldType === "temporal" && isAggregate(y?.aggregate);
-  const isDirect =
+  const directQuantitative =
     x?.fieldType === "quantitative" &&
     y?.fieldType === "quantitative" &&
     y.aggregate === undefined;
-  if (!aggregateMode && !isDirect) {
+  const directTemporal =
+    y?.aggregate === undefined &&
+    ((x?.fieldType === "temporal" && y?.fieldType === "quantitative") ||
+      (x?.fieldType === "quantitative" && y?.fieldType === "temporal"));
+  if (!aggregateMode && !directQuantitative && !directTemporal) {
     if (x?.fieldType === "temporal") {
       throw new Error(
         `Line mark "${layer.id}" requires a supported aggregate y encoding.`
@@ -44,7 +48,12 @@ function requireLineEncoding(layer) {
   if (aggregateMode) {
     validateAggregateFieldType(y.aggregate, y.fieldType);
   }
-  return { x, y, isAggregate: aggregateMode };
+  return {
+    x,
+    y,
+    isAggregate: aggregateMode,
+    directTemporal
+  };
 }
 
 function readSeriesFields(rows, layer) {
@@ -73,15 +82,54 @@ function groupKey(values) {
 }
 
 export function deriveLineSeries(rows, layer) {
-  const { x, y, isAggregate } = requireLineEncoding(layer);
+  const { x, y, isAggregate, directTemporal } = requireLineEncoding(layer);
   if (isAggregate) {
     validateAggregateFieldValues(rows, y.field, y.fieldType);
   }
-  const xValues = isAggregate
+  const xValues = x.fieldType === "temporal"
     ? readTemporalField(rows, x.field)
     : readQuantitativeField(rows, x.field);
-  if (!isAggregate) readQuantitativeField(rows, y.field);
+  const yValues = isAggregate
+    ? undefined
+    : y.fieldType === "temporal"
+      ? readTemporalField(rows, y.field)
+      : readQuantitativeField(rows, y.field);
   const seriesFields = readSeriesFields(rows, layer);
+
+  if (directTemporal) {
+    const groups = new Map();
+    for (let index = 0; index < rows.length; index += 1) {
+      const dimensions = seriesFields.fields.map(
+        field => seriesFields.values.get(field)[index]
+      );
+      const key = groupKey(dimensions);
+      const series = groups.get(key) ?? {
+        key: Object.fromEntries(
+          seriesFields.fields.map((field, item) => [field, dimensions[item]])
+        ),
+        values: []
+      };
+      series.values.push({ x: xValues[index], y: yValues[index] });
+      groups.set(key, series);
+    }
+    const orderBy = x.fieldType === "temporal" ? "x" : "y";
+    const series = [...groups.values()].flatMap(item => {
+      const values = item.values.sort(
+        (left, right) => left[orderBy] - right[orderBy]
+      );
+      return values.length < 2 ? [] : [{ key: item.key, values }];
+    });
+    if (series.length === 0) {
+      throw new Error(
+        `Line series on mark "${layer.id}" requires at least two direct points.`
+      );
+    }
+    return cloneAndFreeze({
+      xValues: series.flatMap(item => item.values.map(value => value.x)),
+      yValues: series.flatMap(item => item.values.map(value => value.y)),
+      series
+    });
+  }
   const aggregateGroups = new Map();
 
   for (let index = 0; index < rows.length; index += 1) {
