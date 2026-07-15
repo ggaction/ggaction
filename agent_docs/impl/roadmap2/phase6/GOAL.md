@@ -21,7 +21,7 @@ Complete chart contract:
 - [x] Encoded-layer inference primitive 승인과 vertical public implementation
 - [x] Horizontal/explicit/style primitive 승인과 public implementation
 - [x] Full numeric, parameter, error, immutability와 rematerialization coverage
-- [ ] Public example/docs, contract promotion과 Phase closeout
+- [x] Public example/docs, contract promotion과 Phase closeout
 
 ## 구현 범위
 

@@ -303,6 +303,32 @@ test("keeps completed Phase 5 guide and layout scope out of planned inventory", 
   }
 });
 
+test("keeps completed Phase 6 rule and error-bar scope out of planned inventory", () => {
+  const actions = [
+    "createRuleMark",
+    "encodeStroke",
+    "encodeStrokeWidth",
+    "createIntervalData",
+    "createErrorBar",
+    "encodeX2"
+  ];
+  const capabilities = [
+    "error-bar-horizontal-and-explicit",
+    "error-bar-cap-and-style-options"
+  ];
+  const currentNames = new Set(index.actions.map(action => action.name));
+  const plannedNames = new Set(index.plannedActions.map(action => action.name));
+  const plannedIds = new Set(index.plannedCapabilities.map(capability => capability.id));
+
+  for (const action of actions) {
+    assert.equal(currentNames.has(action), true, action);
+    assert.equal(plannedNames.has(action), false, action);
+  }
+  for (const capability of capabilities) {
+    assert.equal(plannedIds.has(capability), false, capability);
+  }
+});
+
 test("keeps accepted planned capabilities linked and non-public", () => {
   const ids = index.plannedCapabilities.map(capability => capability.id);
   assert.equal(new Set(ids).size, ids.length);
