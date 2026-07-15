@@ -7,15 +7,15 @@ primitive로 고정한다.
 
 ## 진행 상태
 
-- [ ] Density `area-outline-edit` primitive
-- [ ] Regression `component-edit` primitive
-- [ ] Fill → stroke path drawing order 확인
-- [ ] Semantic binding 불변과 concrete appearance 검증
-- [ ] Expanded target call-chain metadata
-- [ ] Browser와 2× primitive PNG 생성
+- [x] Density `area-outline-edit` primitive
+- [x] Regression `component-edit` primitive
+- [x] Fill → stroke path drawing order 확인
+- [x] Semantic binding 불변과 concrete appearance 검증
+- [x] Expanded target call-chain metadata
+- [x] Roadmap 2 gallery와 2× primitive PNG 생성
 - [ ] Gate A 사용자 visual confirmation
 - [ ] Feedback 반영과 primitive 재확인
-- [ ] STEP status, conceptual commit와 push
+- [x] STEP status, conceptual commit와 push
 
 ## Gate A 대상
 
