@@ -2,15 +2,39 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
+import { findDataset } from "../../selectors/datasets.js";
+import { resolveEligibleLayer } from "../../selectors/layers.js";
 
 const BAND_OPTIONS = Object.freeze([
   "id", "data", "x", "lower", "upper", "groupBy", "coordinate", "xScale", "yScale",
-  "color", "opacity"
+  "color", "opacity", "stroke", "strokeWidth"
 ]);
 const LINE_OPTIONS = Object.freeze([
   "id", "data", "x", "y", "groupBy", "coordinate", "xScale", "yScale", "colorScale",
-  "strokeWidth"
+  "strokeWidth", "curve"
 ]);
+const EDIT_BAND_OPTIONS = Object.freeze([
+  "target", "color", "opacity", "stroke", "strokeWidth"
+]);
+const EDIT_LINE_OPTIONS = Object.freeze(["target", "strokeWidth", "curve"]);
+
+function isRegressionLayer(program, layer, type) {
+  const dataset = findDataset(program, layer.data);
+  return layer.mark?.type === type &&
+    dataset?.transform?.length === 1 &&
+    dataset.transform[0].type === "regression";
+}
+
+function resolveRegressionComponent(program, args, type, label) {
+  const target = Object.hasOwn(args, "target")
+    ? validateUserId(args.target, `${label} id`)
+    : undefined;
+  return resolveEligibleLayer(program, {
+    target,
+    predicate: layer => isRegressionLayer(program, layer, type),
+    label
+  });
+}
 
 export const createRegressionBand = action(
   {
@@ -25,7 +49,11 @@ export const createRegressionBand = action(
         id,
         data: args.data,
         fill: args.color ?? DEFAULT_COLORS.regressionBand,
-        opacity: args.opacity ?? 0.18
+        opacity: args.opacity ?? 0.18,
+        ...(args.stroke === undefined ? {} : { stroke: args.stroke }),
+        ...(args.strokeWidth === undefined
+          ? {}
+          : { strokeWidth: args.strokeWidth })
       })
       .encodeX({
         target: id,
@@ -49,6 +77,66 @@ export const createRegressionBand = action(
   }
 );
 
+export const editRegressionBand = action(
+  {
+    op: "editRegressionBand",
+    description: "Edit regression-band fill, opacity, and outline."
+  },
+  function (args = {}) {
+    validateKeys(args, EDIT_BAND_OPTIONS, "editRegressionBand");
+    const changes = ["color", "opacity", "stroke", "strokeWidth"];
+    if (!changes.some(key => Object.hasOwn(args, key))) {
+      throw new Error(
+        "editRegressionBand requires color, opacity, stroke, or strokeWidth."
+      );
+    }
+    const layer = resolveRegressionComponent(
+      this,
+      args,
+      "area",
+      "regression band"
+    );
+    return this.editAreaMark({
+      target: layer.id,
+      ...(Object.hasOwn(args, "color") ? { fill: args.color } : {}),
+      ...(Object.hasOwn(args, "opacity") ? { opacity: args.opacity } : {}),
+      ...(Object.hasOwn(args, "stroke") ? { stroke: args.stroke } : {}),
+      ...(Object.hasOwn(args, "strokeWidth")
+        ? { strokeWidth: args.strokeWidth }
+        : {})
+    });
+  }
+);
+
+export const editRegressionLine = action(
+  {
+    op: "editRegressionLine",
+    description: "Edit regression-line width or curve."
+  },
+  function (args = {}) {
+    validateKeys(args, EDIT_LINE_OPTIONS, "editRegressionLine");
+    if (
+      !Object.hasOwn(args, "strokeWidth") &&
+      !Object.hasOwn(args, "curve")
+    ) {
+      throw new Error("editRegressionLine requires strokeWidth or curve.");
+    }
+    const layer = resolveRegressionComponent(
+      this,
+      args,
+      "line",
+      "regression line"
+    );
+    return this.editLineMark({
+      target: layer.id,
+      ...(Object.hasOwn(args, "strokeWidth")
+        ? { strokeWidth: args.strokeWidth }
+        : {}),
+      ...(Object.hasOwn(args, "curve") ? { curve: args.curve } : {})
+    });
+  }
+);
+
 export const createRegressionLine = action(
   {
     op: "createRegressionLine",
@@ -61,7 +149,8 @@ export const createRegressionLine = action(
       .createLineMark({
         id,
         data: args.data,
-        strokeWidth: args.strokeWidth ?? 3
+        strokeWidth: args.strokeWidth ?? 3,
+        ...(args.curve === undefined ? {} : { curve: args.curve })
       })
       .encodeX({
         target: id,

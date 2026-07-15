@@ -222,17 +222,35 @@
       "layer": "user-facing",
       "domain": "marks",
       "status": "implemented",
-      "lifecycle": "Stable resource, edit gap",
-      "update": "Encoding actions only; no base-mark edit",
-      "audit": "`editAreaMark` — Planned",
+      "lifecycle": "Mutable resource",
+      "update": "`editAreaMark`",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
-        "tests": "partial"
+        "tests": "complete"
       },
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createareamark"
+      }
+    },
+    {
+      "name": "editAreaMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits constant area appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editareamark"
       }
     },
     {
@@ -1122,13 +1140,13 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Stable resource, edit gap",
-      "update": "Generic area edit is insufficient for regression design",
-      "audit": "`editRegressionBand` — Planned",
+      "lifecycle": "Mutable resource",
+      "update": "`editRegressionBand`",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
-        "tests": "partial"
+        "tests": "complete"
       },
       "contract": {
         "file": "agent_docs/contract/current/STATISTICS.md",
@@ -1136,21 +1154,57 @@
       }
     },
     {
+      "name": "editRegressionBand",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits regression band appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/STATISTICS.md",
+        "anchor": "editregressionband"
+      }
+    },
+    {
       "name": "createRegressionLine",
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Stable resource, edit gap",
-      "update": "Generic line edit is insufficient for regression design",
-      "audit": "`editRegressionLine` — Planned",
+      "lifecycle": "Mutable resource",
+      "update": "`editRegressionLine`",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
-        "tests": "partial"
+        "tests": "complete"
       },
       "contract": {
         "file": "agent_docs/contract/current/STATISTICS.md",
         "anchor": "createregressionline"
+      }
+    },
+    {
+      "name": "editRegressionLine",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits regression line appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/STATISTICS.md",
+        "anchor": "editregressionline"
       }
     },
     {
@@ -1273,15 +1327,6 @@
       }
     },
     {
-      "name": "editAreaMark",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/EDITING.md",
-        "anchor": "mark-edits"
-      }
-    },
-    {
       "name": "editDensity",
       "status": "planned",
       "readiness": "accepted",
@@ -1306,24 +1351,6 @@
       "contract": {
         "file": "agent_docs/contract/planned/EDITING.md",
         "anchor": "editlegend"
-      }
-    },
-    {
-      "name": "editRegressionBand",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/EDITING.md",
-        "anchor": "regression-component-edits"
-      }
-    },
-    {
-      "name": "editRegressionLine",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/EDITING.md",
-        "anchor": "regression-component-edits"
       }
     },
     {
@@ -1428,17 +1455,6 @@
       "contract": {
         "file": "agent_docs/contract/planned/MARKS_AND_PATHS.md",
         "anchor": "curve-interpolation-and-concrete-path-commands"
-      }
-    },
-    {
-      "id": "area-outline",
-      "kind": "parameter",
-      "name": "Area outline",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/ENCODINGS.md",
-        "anchor": "area-outline"
       }
     },
     {

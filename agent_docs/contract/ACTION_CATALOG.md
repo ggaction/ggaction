@@ -19,7 +19,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`createLineMark`](current/MARKS.md#createlinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLineMark`](current/MARKS.md#editlinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createBarMark`](current/MARKS.md#createbarmark) | marks | Stable create-only | Intentional | ✅ / ✅ / ✅ |
-| user-facing | [`createAreaMark`](current/MARKS.md#createareamark) | marks | Stable resource, edit gap | `editAreaMark` — Planned | ✅ / ✅ / ⚠️ |
+| user-facing | [`createAreaMark`](current/MARKS.md#createareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editAreaMark`](current/MARKS.md#editareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`encodeX`](current/ENCODINGS.md#encodex) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeY`](current/ENCODINGS.md#encodey) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeColor`](current/ENCODINGS.md#encodecolor) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -69,8 +70,10 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`createScale`](current/CORE.md#createscale) | core | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
 | user-facing | [`editScale`](current/CORE.md#editscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createDerivedData`](current/CORE.md#createderiveddata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
-| user-facing | [`createRegressionBand`](current/STATISTICS.md#createregressionband) | statistics | Stable resource, edit gap | `editRegressionBand` — Planned | ✅ / ✅ / ⚠️ |
-| user-facing | [`createRegressionLine`](current/STATISTICS.md#createregressionline) | statistics | Stable resource, edit gap | `editRegressionLine` — Planned | ✅ / ✅ / ⚠️ |
+| user-facing | [`createRegressionBand`](current/STATISTICS.md#createregressionband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRegressionBand`](current/STATISTICS.md#editregressionband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRegressionLine`](current/STATISTICS.md#createregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRegressionLine`](current/STATISTICS.md#editregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | primitive | [`editSemantic`](current/PRIMITIVES.md#editsemantic) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
 | primitive | [`createGraphics`](current/PRIMITIVES.md#creategraphics) | primitives | Primitive | Complete | ✅ / ✅ / ✅ |
 | primitive | [`editGraphics`](current/PRIMITIVES.md#editgraphics) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
@@ -86,12 +89,9 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | `createErrorBar` | accepted | [Open](planned/COMPOSITE_MARKS.md#createerrorbar) |
 | `createErrorBand` | accepted | [Open](planned/COMPOSITE_MARKS.md#createerrorband) |
 | `createBoxPlot` | accepted | [Open](planned/COMPOSITE_MARKS.md#createboxplot) |
-| `editAreaMark` | accepted | [Open](planned/EDITING.md#mark-edits) |
 | `editDensity` | accepted | [Open](planned/EDITING.md#editdensity) |
 | `editHorizontalGrid` | accepted | [Open](planned/EDITING.md#directional-grid-edits) |
 | `editLegend` | accepted | [Open](planned/EDITING.md#editlegend) |
-| `editRegressionBand` | accepted | [Open](planned/EDITING.md#regression-component-edits) |
-| `editRegressionLine` | accepted | [Open](planned/EDITING.md#regression-component-edits) |
 | `editTitle` | accepted | [Open](planned/EDITING.md#edittitle) |
 | `editVerticalGrid` | accepted | [Open](planned/EDITING.md#directional-grid-edits) |
 | `encodeX2` | accepted | [Open](planned/ENCODINGS.md#horizontal-ranged-position) |
@@ -107,7 +107,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | behavior | encodeY2 reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | behavior | encodeYRange reassignment | accepted | [Open](planned/ENCODINGS.md#positional-reassignment) |
 | parameter | Curve interpolation and concrete path commands | accepted | [Open](planned/MARKS_AND_PATHS.md#curve-interpolation-and-concrete-path-commands) |
-| parameter | Area outline | accepted | [Open](planned/ENCODINGS.md#area-outline) |
 | parameter | Continuous color bar consumer | accepted | [Open](planned/ENCODINGS.md#continuous-color-bar-consumer) |
 | parameter | Scale type vocabulary | accepted | [Open](planned/SCALES.md#scale-type-vocabulary) |
 | parameter | Scale mapping policies | accepted | [Open](planned/SCALES.md#scale-mapping-policies) |

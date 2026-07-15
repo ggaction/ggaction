@@ -36,8 +36,12 @@ export const createRegression = action(
     }
     const band = requireRegressionObject(args.band ?? {}, "Regression band");
     const line = requireRegressionObject(args.line ?? {}, "Regression line");
-    validateKeys(band, ["color", "opacity"], "regression band");
-    validateKeys(line, ["strokeWidth"], "regression line");
+    validateKeys(
+      band,
+      ["color", "opacity", "stroke", "strokeWidth"],
+      "regression band"
+    );
+    validateKeys(line, ["strokeWidth", "curve"], "regression line");
     const colorEncoding = point.encoding?.color;
     const namespace = point.id;
     const dataId = `${namespace}RegressionData`;

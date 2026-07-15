@@ -6,6 +6,10 @@ import {
   findCanvasCalls
 } from "../../../support/canvas.js";
 import { loadCars } from "../../../support/data.js";
+import { assertChartProgramsEquivalent } from
+  "../../../support/chart-equivalence.js";
+import { createAreaOutlineEditCarsDensityArea } from
+  "../../../../examples/cars-density-area/program.js";
 import {
   createCarsDensityAreaPrimitives,
   renderCarsDensityAreaPrimitives
@@ -42,4 +46,11 @@ test("authors the density area outline target with low-level graphic edits", () 
   for (const stroke of outlinedStrokes) {
     assert.equal(stroke.globalAlpha, 0.35);
   }
+});
+
+test("matches the area outline primitive with the public edit action", () => {
+  assertChartProgramsEquivalent({
+    primitiveProgram: createAreaOutlineEditPrimitives(cars),
+    publicProgram: createAreaOutlineEditCarsDensityArea(cars)
+  });
 });

@@ -33,3 +33,13 @@ export function createCarsDensityArea(cars) {
       subtitle: "By Origin (cars dataset)"
     });
 }
+
+export function createAreaOutlineEditCarsDensityArea(cars) {
+  return createCarsDensityArea(cars)
+    .editAreaMark({
+      target: "densities",
+      opacity: 0.35,
+      stroke: "#334155",
+      strokeWidth: 1.5
+    });
+}

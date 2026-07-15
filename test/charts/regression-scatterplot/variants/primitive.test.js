@@ -6,6 +6,10 @@ import {
   findCanvasCalls
 } from "../../../support/canvas.js";
 import { loadCars } from "../../../support/data.js";
+import { assertChartProgramsEquivalent } from
+  "../../../support/chart-equivalence.js";
+import { createComponentEditCarsRegressionScatterplot } from
+  "../../../../examples/cars-regression-scatterplot/program.js";
 import {
   createCarsRegressionScatterplotPrimitives,
   renderCarsRegressionScatterplotPrimitives
@@ -49,4 +53,11 @@ test("authors regression component edit targets with low-level graphic edits", (
   assert.equal(findCanvasCalls(context, "stroke").filter(
     call => call.lineWidth === 5
   ).length, 2);
+});
+
+test("matches component primitives with regression edit actions", () => {
+  assertChartProgramsEquivalent({
+    primitiveProgram: createComponentEditPrimitives(cars),
+    publicProgram: createComponentEditCarsRegressionScatterplot(cars)
+  });
 });

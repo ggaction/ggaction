@@ -129,11 +129,21 @@ Create a semantic bar mark and empty rect collection. [Marks](../api/marks.md)
 ### `createAreaMark`
 
 ```javascript
-createAreaMark({ id, data?, fill?, opacity? })
+createAreaMark({ id, data?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
-`"#4c78a8"`; opacity defaults to `0.2`. [Marks](../api/marks.md)
+`"#4c78a8"`; opacity defaults to `0.2`. Optional outlines default to width `1`.
+[Marks](../api/marks.md)
+
+### `editAreaMark`
+
+```javascript
+editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit constant area appearance. `stroke: false` removes an existing outline.
+[Marks](../api/marks.md)
 
 ### `encodeX`
 
@@ -383,12 +393,14 @@ createCoordinate({ id?, type?, layers? })
 createDerivedData({ id, source, transform })
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
-  color?, opacity?
+  color?, opacity?, stroke?, strokeWidth?
 })
+editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth? })
 createRegressionLine({
   id, data, x, y, groupBy?, coordinate, xScale, yScale,
-  colorScale?, strokeWidth?
+  colorScale?, strokeWidth?, curve?
 })
+editRegressionLine({ target?, strokeWidth?, curve? })
 ```
 
 These actions explicitly author named semantic resources or the component

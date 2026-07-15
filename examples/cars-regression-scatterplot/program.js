@@ -36,3 +36,18 @@ export function createCarsRegressionScatterplot(cars) {
     })
     .createGuides();
 }
+
+export function createComponentEditCarsRegressionScatterplot(cars) {
+  return createCarsRegressionScatterplot(cars)
+    .editRegressionBand({
+      target: "pointsRegressionBands",
+      color: "#475569",
+      opacity: 0.12,
+      stroke: "#111827",
+      strokeWidth: 1.5
+    })
+    .editRegressionLine({
+      target: "pointsRegressionLines",
+      strokeWidth: 5
+    });
+}

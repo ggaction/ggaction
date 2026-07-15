@@ -1,4 +1,7 @@
-import { createCarsRegressionScatterplot } from
+import {
+  createCarsRegressionScatterplot,
+  createComponentEditCarsRegressionScatterplot
+} from
   "../../../../examples/cars-regression-scatterplot/program.js";
 import { loadCars } from "../../../support/data.js";
 import { defineVisualVariant } from "../../../support/visual-variants.js";
@@ -81,5 +84,6 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     target: "pointsRegressionLines",
     strokeWidth: 5
   });`,
-  primitive: createComponentEditPrimitives(cars)
+  primitive: createComponentEditPrimitives(cars),
+  userFacing: createComponentEditCarsRegressionScatterplot(cars)
 })]);

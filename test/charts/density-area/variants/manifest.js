@@ -1,4 +1,7 @@
-import { createCarsDensityArea } from
+import {
+  createAreaOutlineEditCarsDensityArea,
+  createCarsDensityArea
+} from
   "../../../../examples/cars-density-area/program.js";
 import { loadCars } from "../../../support/data.js";
 import { defineVisualVariant } from "../../../support/visual-variants.js";
@@ -72,5 +75,6 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     stroke: "#334155",
     strokeWidth: 1.5
   });`,
-  primitive: createAreaOutlineEditPrimitives(cars)
+  primitive: createAreaOutlineEditPrimitives(cars),
+  userFacing: createAreaOutlineEditCarsDensityArea(cars)
 })]);

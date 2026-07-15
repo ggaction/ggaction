@@ -150,8 +150,8 @@ shape encoding, concrete materialization, and legend symbols.
 - `id`, `data`: 필수 새 ID와 optional existing/current dataset이다.
 - `fill`: Implemented, non-empty color string. 기본값은 theme mark color `"#4c78a8"`다.
 - `opacity`: Implemented, `[0, 1]` finite number. 기본값은 `0.2`다.
-- `stroke`, `strokeWidth`: Planned. optional outline color와 non-negative width이며 stroke 없이
-  width만 지정할 수 없다.
+- `stroke`, `strokeWidth`: Implemented. optional non-empty outline string과 non-negative finite width다.
+  Stroke가 있으면 width 기본값은 `1`이며 stroke 없이 width만 지정할 수 없다.
 - Effect: semantic `area` layer와 빈 path collection을 만들고 fill/opacity는 graphical config에
   저장한다. ranged y 또는 density encoding이 완성되면 closed path를 만든다.
 - Coverage: density/regression chart와 area materialization tests가 default와 representative
@@ -159,8 +159,8 @@ shape encoding, concrete materialization, and legend symbols.
 
 ### Formal values — `createAreaMark`
 
-- Implemented: `createAreaMark({ id: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval })`
-- Planned (NOT IMPLEMENTED): `{ stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation }`; curve default는 `"linear"`다.
+- Implemented: `createAreaMark({ id: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite })`
+- Planned (NOT IMPLEMENTED): `{ curve?: CurveInterpolation }`; curve default는 `"linear"`다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createAreaMark`
@@ -172,5 +172,35 @@ shape encoding, concrete materialization, and legend symbols.
     validation에 있으나 dedicated boundary test가 부족하다.
 - `opacity`
   - ⚠️ Partial: default `0.2`, representative `0.18`/`0.5`, invalid range; exact 0/1 endpoints direct test가 부족하다.
-- 🟡 Planned: `stroke`, `strokeWidth`, no-outline default, 8-value curve grammar, edit removal와 rematerialization persistence.
-- Evidence: area materialization, density and regression chart tests.
+- `stroke`, `strokeWidth`
+  - ✅ Covered: omission/no outline, string with default/explicit/zero width, width-without-stroke rejection,
+    edit replacement/removal and Canvas rematerialization persistence.
+- 🟡 Planned: 8-value area curve grammar.
+- Evidence: area materialization, `test/unit/actions/marks/edit-area-mark.test.js`, density and regression chart tests.
+
+## `editAreaMark`
+
+- Signature: `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`.
+- `target`: existing area mark. Current compatible mark 또는 유일한 area mark를 infer하고 ambiguity는
+  explicit target을 요구한다.
+- `fill`, `opacity`: constant graphical appearance다. Field-driven color encoding이 있으면 fill edit는
+  오류지만 opacity는 독립적으로 수정할 수 있다.
+- `stroke`: non-empty string은 outline을 생성/교체하고 `false`는 outline과 stored width를 제거한다.
+- `strokeWidth`: non-negative finite number. Width-only edit은 active outline을 요구한다.
+- Effect: private mark config를 immutable하게 갱신하고 complete mark는 wrapped `rematerializeAreaMark`를
+  호출한다. Data, encodings, scales와 coordinates는 바꾸지 않는다.
+
+### Formal values — `editAreaMark`
+
+- Implemented: `editAreaMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
+- Planned (NOT IMPLEMENTED): `{ curve?: CurveInterpolation }`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editAreaMark`
+
+- ✅ Covered: inferred/explicit target, fill/opacity, outline create/replace/width/remove와 incomplete config.
+- ✅ Covered: empty/unknown/ambiguous target, invalid appearance, encoded-fill conflict, atomic failure and
+  earlier-program immutability.
+- ✅ Covered: approved density primitive/public pair and fill → stroke Canvas order.
+- Evidence: `test/unit/actions/marks/edit-area-mark.test.js` and
+  `test/charts/density-area/variants/primitive.test.js`.

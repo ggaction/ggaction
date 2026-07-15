@@ -1689,11 +1689,13 @@ triangles, `plus`, `cross`, `star`, `hexagon`, and `wye`. All recipes preserve
 the same logical target area. A constant edit is rejected when the mark already
 has a field-driven shape encoding.
 
-## `createAreaMark({ id, data?, fill?, opacity? })`
+## `createAreaMark({ id, data?, fill?, opacity?, stroke?, strokeWidth? })`
 
 Create a semantic area mark backed by an initially empty path collection.
 `data` defaults to current data, `fill` defaults to `"#4c78a8"`, and opacity
 defaults to `0.2`. The fixed fill and opacity are graphical appearance.
+`stroke` adds a constant path outline; its width defaults to `1`. A width without
+a stroke is rejected.
 
 An area becomes renderable after quantitative x and atomic `encodeYRange`
 encodings exist. Optional `encodeGroup` creates one Z-closed filled path per
@@ -1701,6 +1703,26 @@ nominal group without creating a scale or legend. A density-derived dataset may
 instead use value/density x and y encodings: the density axis is closed against
 zero, while the value axis determines sample order. Both horizontal-density and
 vertical-density orientations are supported.
+
+## `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`
+
+Edit constant area appearance without changing data, fields, grouping, scales,
+or coordinates:
+
+```javascript
+const outlined = program.editAreaMark({
+  target: "densities",
+  opacity: 0.35,
+  stroke: "#334155",
+  strokeWidth: 1.5
+});
+```
+
+The current or only compatible area is inferred when `target` is omitted.
+`stroke: false` removes both the outline and its stored width. A width-only edit
+requires an active outline. Constant `fill` cannot replace a field-driven color
+encoding, while opacity and outline remain independently editable. Complete
+areas rematerialize immediately; incomplete areas retain the graphical config.
 
 ## `createLineMark({ id, data?, strokeWidth?, curve? })`
 
@@ -1998,8 +2020,13 @@ targets or group fields. Explicit `groupBy: undefined` requests one model.
 ```javascript
 program.createRegression({
   confidence: 0.95,
-  band: { color: "#111111", opacity: 0.18 },
-  line: { strokeWidth: 3 }
+  band: {
+    color: "#111111",
+    opacity: 0.18,
+    stroke: "#334155",
+    strokeWidth: 1
+  },
+  line: { strokeWidth: 3, curve: "linear" }
 });
 ```
 
@@ -2011,7 +2038,10 @@ program.createRegression({
 | `confidence` | number strictly between `0` and `1` | `0.95` |
 | `band.color` | color string | `"#111111"` |
 | `band.opacity` | number from `0` to `1` | `0.18` |
+| `band.stroke` | non-empty color string | no outline |
+| `band.strokeWidth` | non-negative finite number | `1` with stroke |
 | `line.strokeWidth` | non-negative finite number | `3` |
+| `line.curve` | supported curve interpolation | `"linear"` |
 
 The action keeps each fitted dataset, band, and line associated with its target
 point mark, so multiple point layers can add independent regressions in one
@@ -2022,6 +2052,24 @@ Its trace records `createRegressionData`, `createRegressionBand`, and
 `createRegressionLine` as meaningful children. See
 [Actions and trace trees](../concepts/actions-and-trace.md) when that
 decomposition matters.
+
+## Editing generated components
+
+```javascript
+const emphasized = program
+  .editRegressionBand({
+    color: "#475569",
+    opacity: 0.12,
+    stroke: "#111827",
+    strokeWidth: 1.5
+  })
+  .editRegressionLine({ strokeWidth: 5 });
+```
+
+Each action infers the only compatible generated component or accepts an
+explicit target. Band edits delegate to `editAreaMark`; line edits delegate to
+`editLineMark`. They preserve fitted data, result fields, grouping, coordinates,
+and scales. `stroke: false` removes a band outline.
 
 ## Errors and limitations
 
@@ -4140,11 +4188,21 @@ Create a semantic bar mark and empty rect collection. [Marks](../api/marks.md)
 ### `createAreaMark`
 
 ```javascript
-createAreaMark({ id, data?, fill?, opacity? })
+createAreaMark({ id, data?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
-`"#4c78a8"`; opacity defaults to `0.2`. [Marks](../api/marks.md)
+`"#4c78a8"`; opacity defaults to `0.2`. Optional outlines default to width `1`.
+[Marks](../api/marks.md)
+
+### `editAreaMark`
+
+```javascript
+editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit constant area appearance. `stroke: false` removes an existing outline.
+[Marks](../api/marks.md)
 
 ### `encodeX`
 
@@ -4394,12 +4452,14 @@ createCoordinate({ id?, type?, layers? })
 createDerivedData({ id, source, transform })
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
-  color?, opacity?
+  color?, opacity?, stroke?, strokeWidth?
 })
+editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth? })
 createRegressionLine({
   id, data, x, y, groupBy?, coordinate, xScale, yScale,
-  colorScale?, strokeWidth?
+  colorScale?, strokeWidth?, curve?
 })
+editRegressionLine({ target?, strokeWidth?, curve? })
 ```
 
 These actions explicitly author named semantic resources or the component

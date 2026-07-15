@@ -53,21 +53,6 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
   바뀌지 않는다. 별도 positional edit action은 만들지 않는다.
 - Status: Planned, NOT IMPLEMENTED. 구현은 `editScale` parameter contract가 Accepted된 뒤 진행한다.
 
-## area outline
-
-- `createAreaMark`와 `createRegressionBand`는 `stroke?: NonEmptyString`과
-  `strokeWidth?: NonNegativeFinite`를 받는다. stroke 생략은 no outline이며 string stroke에 width를
-  생략하면 `1`을 사용한다. active stroke 없이 strokeWidth만 주면 오류다.
-- `editAreaMark`와 `editRegressionBand`는 `stroke?: NonEmptyString | false`를 받는다. string은
-  outline 생성/교체, `false`는 outline과 stored width를 제거한다. strokeWidth-only edit은 기존
-  active stroke가 있을 때만 허용한다.
-- `createRegression({ band })`는 stroke/strokeWidth를 `createRegressionBand`에 전달한다.
-  outline은 graphical config이며 semanticSpec에는 저장하지 않는다.
-- create/edit 및 Canvas/scale rematerialization 뒤에도 fill → stroke rendering order와 concrete
-  path appearance가 유지되어야 한다.
-- Status: Planned, NOT IMPLEMENTED. create/edit/removal, zero width, regression forwarding과
-  browser/PNG parity coverage가 필요하다.
-
 ## Implemented named palette baseline
 
 ```typescript

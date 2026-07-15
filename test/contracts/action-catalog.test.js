@@ -221,12 +221,9 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
     "createErrorBar",
     "createIntervalData",
     "createRuleMark",
-    "editAreaMark",
     "editDensity",
     "editHorizontalGrid",
     "editLegend",
-    "editRegressionBand",
-    "editRegressionLine",
     "editTitle",
     "editVerticalGrid",
     "encodeStroke",
@@ -327,7 +324,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /uniform cubic B-spline/);
   assert.match(plannedCorpus, /Renderers execute commands only/);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /curve.*Proposed|Proposed.*curve/i);
-  assert.match(plannedCorpus, /stroke\?: NonEmptyString \| false/);
+  assert.match(currentCorpus, /stroke\?: NonEmptyString \| false/);
   assert.match(currentCorpus, /band\?: number; pixels\?: never/);
   assert.match(currentCorpus, /pixels: PositiveFinite/);
   assert.match(currentCorpus, /paddingInner\?: UnitIntervalLessThan1/);

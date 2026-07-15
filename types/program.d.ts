@@ -304,8 +304,13 @@ export interface RegressionOptions {
   y?: string;
   groupBy?: string;
   confidence?: number;
-  band?: { color?: string; opacity?: number };
-  line?: { strokeWidth?: number };
+  band?: {
+    color?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  };
+  line?: { strokeWidth?: number; curve?: CurveInterpolation };
 }
 
 export interface LegendTextOptions {
@@ -404,7 +409,21 @@ export class ChartProgram {
     curve?: CurveInterpolation;
   }): ChartProgram;
   createBarMark(options: { id: string; data?: string }): ChartProgram;
-  createAreaMark(options: { id: string; data?: string; fill?: string; opacity?: number }): ChartProgram;
+  createAreaMark(options: {
+    id: string;
+    data?: string;
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  }): ChartProgram;
+  editAreaMark(options: {
+    target?: string;
+    fill?: string;
+    opacity?: number;
+    stroke?: string | false;
+    strokeWidth?: number;
+  }): ChartProgram;
 
   encodeX(options: PositionEncodingOptions): ChartProgram;
   encodeY(options: PositionEncodingOptions): ChartProgram;
@@ -457,8 +476,28 @@ export class ChartProgram {
   createScale(options: ActionOptions & { id: string }): ChartProgram;
   editScale(options: EditScaleOptions): ChartProgram;
   createDerivedData(options: ActionOptions): ChartProgram;
-  createRegressionBand(options: ActionOptions & { id: string }): ChartProgram;
-  createRegressionLine(options: ActionOptions & { id: string }): ChartProgram;
+  createRegressionBand(options: ActionOptions & {
+    id: string;
+    stroke?: string;
+    strokeWidth?: number;
+  }): ChartProgram;
+  editRegressionBand(options: {
+    target?: string;
+    color?: string;
+    opacity?: number;
+    stroke?: string | false;
+    strokeWidth?: number;
+  }): ChartProgram;
+  createRegressionLine(options: ActionOptions & {
+    id: string;
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+  }): ChartProgram;
+  editRegressionLine(options: {
+    target?: string;
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+  }): ChartProgram;
 
   editSemantic(options: EditSemanticOptions): ChartProgram;
   createGraphics(options: {
