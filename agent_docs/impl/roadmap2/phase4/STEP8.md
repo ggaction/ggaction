@@ -13,8 +13,10 @@ Quadratic polynomial, LOESS line-only와 prediction interval의 independent nume
 - [x] Line-only LOESS layer/trace target
 - [x] Expanded target call-chain metadata
 - [x] Browser와 2× primitive PNG 생성
-- [ ] Gate D 사용자 visual confirmation
-- [ ] Feedback, status, commit와 push
+- [x] Gate D 사용자 visual confirmation
+- [x] Feedback, status, commit와 push
+
+세 target은 수정 없이 승인되었다.
 
 ## 완료 조건
 
