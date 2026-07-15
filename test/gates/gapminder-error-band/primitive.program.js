@@ -4,12 +4,12 @@ import { linearPathCommands } from "../../support/path.js";
 import {
   ERROR_BAND_FIELDS,
   ERROR_BAND_LAYOUT,
-  createCarsErrorBandReferenceValues
+  createGapminderErrorBandReferenceValues
 } from "./reference-values.js";
 
-export function createCarsErrorBandPrimitives(cars) {
+export function createGapminderErrorBandPrimitives(gapminder) {
   const { width, height, margin } = ERROR_BAND_LAYOUT;
-  const values = createCarsErrorBandReferenceValues(cars, {
+  const values = createGapminderErrorBandReferenceValues(gapminder, {
     width,
     height,
     margin
@@ -20,10 +20,10 @@ export function createCarsErrorBandPrimitives(cars) {
 
   return chart()
     .createCanvas({ width, height, margin, background: "white" })
-    .createData({ id: "cars", values: cars })
+    .createData({ id: "gapminder", values: gapminder })
     .editSemantic({
       property: "dataset[errorBandIntervalData].source",
-      value: "cars"
+      value: "gapminder"
     })
     .editSemantic({
       property: "dataset[errorBandIntervalData].transform",
@@ -41,7 +41,7 @@ export function createCarsErrorBandPrimitives(cars) {
     .editSemantic({ property: "layer[errorBand].coordinate", value: "main" })
     .editSemantic({
       property: "layer[errorBand].encoding.x.field",
-      value: "Year"
+      value: "year"
     })
     .editSemantic({
       property: "layer[errorBand].encoding.x.fieldType",
@@ -77,7 +77,7 @@ export function createCarsErrorBandPrimitives(cars) {
     })
     .editSemantic({
       property: "layer[errorBand].encoding.group.field",
-      value: "Origin"
+      value: "cluster"
     })
     .editSemantic({
       property: "layer[errorBand].encoding.group.fieldType",
@@ -85,7 +85,7 @@ export function createCarsErrorBandPrimitives(cars) {
     })
     .editSemantic({
       property: "layer[errorBand].encoding.color.field",
-      value: "Origin"
+      value: "cluster"
     })
     .editSemantic({
       property: "layer[errorBand].encoding.color.fieldType",
@@ -113,12 +113,12 @@ export function createCarsErrorBandPrimitives(cars) {
     .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
-    .editSemantic({ property: "guide.axis.x.title", value: "Year" })
+    .editSemantic({ property: "guide.axis.x.title", value: "year" })
     .editSemantic({ property: "guide.axis.y.scale", value: "y" })
     .editSemantic({ property: "guide.axis.y.coordinate", value: "main" })
     .editSemantic({
       property: "guide.axis.y.title",
-      value: "mean(Acceleration)"
+      value: "mean(life_expect)"
     })
     .editSemantic({ property: "guide.grid.horizontal.scale", value: "y" })
     .editSemantic({
@@ -126,7 +126,7 @@ export function createCarsErrorBandPrimitives(cars) {
       value: "main"
     })
     .editSemantic({ property: "guide.legend.color.scale", value: "color" })
-    .editSemantic({ property: "guide.legend.color.title", value: "Origin" })
+    .editSemantic({ property: "guide.legend.color.title", value: "cluster" })
     .editSemantic({ property: "title.text", value: values.title.text })
     .editSemantic({
       property: "title.subtitle",
@@ -339,7 +339,7 @@ export function createCarsErrorBandPrimitives(cars) {
     .editGraphics({
       target: "colorLegendLabels",
       property: "text",
-      value: values.legend.items.map(item => item.origin)
+      value: values.legend.items.map(item => String(item.cluster))
     })
     .editGraphics({ target: "colorLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "colorLegendLabels", property: "fontSize", value: 12 })
@@ -379,7 +379,6 @@ export function createCarsErrorBandPrimitives(cars) {
     .editGraphics({ target: "chartSubtitle", property: "textBaseline", value: "middle" });
 }
 
-export function renderCarsErrorBandPrimitives(program, context) {
+export function renderGapminderErrorBandPrimitives(program, context) {
   render(program, context);
 }
-

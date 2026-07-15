@@ -2,7 +2,7 @@
 
 ## 목표
 
-Cars data로 curved area와 lower/upper boundary 조합을 raw primitives로 만들고 Gate C에서 style와 drawing order를
+Gapminder data로 curved area와 lower/upper boundary 조합을 raw primitives로 만들고 Gate C에서 style와 drawing order를
 승인받는다.
 
 ## 진행 상태
@@ -13,7 +13,7 @@ Cars data로 curved area와 lower/upper boundary 조합을 raw primitives로 만
 - [ ] Custom stroke/width/dash/opacity targets
 - [ ] Band-before-lower-before-upper drawing order
 - [ ] Variant manifest and exact future call chain
-- [ ] `cars-curved-boundaries/primitive.png` and browser checks
+- [ ] `gapminder-curved-boundaries/primitive.png` and browser checks
 - [ ] Gate C user confirmation
 - [ ] STEP status, conceptual commit and push
 
@@ -26,4 +26,3 @@ aggregate implementation을 완료하지 않는다.
 ## 완료 조건
 
 Chosen curve/default inheritance/override와 boundary visual order가 승인된다.
-

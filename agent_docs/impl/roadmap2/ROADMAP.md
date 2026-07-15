@@ -212,10 +212,10 @@ computed/explicit interval, cap/style parameter classes를 검증한다.
 
 ## Phase 7 — New error-band chart and regression delegation
 
-두 번째 신규 chart는 grouped vertical error band와 horizontal range variant다.
+두 번째 신규 chart는 Gapminder grouped vertical error band와 Cars horizontal range variant다.
 
 - Phase goal: [`phase7/GOAL.md`](phase7/GOAL.md)
-- Complete chart contract: [`chart/cars-error-band.md`](chart/cars-error-band.md)
+- Complete chart contract: [`chart/gapminder-error-band.md`](chart/gapminder-error-band.md)
 
 - Direct action: `createErrorBand`
 - Direct action: `encodeXRange`

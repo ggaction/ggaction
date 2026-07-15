@@ -1,50 +1,51 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { loadCars } from "../../support/data.js";
+import { loadGapminder } from "../../support/data.js";
 import { linearPathCommands } from "../../support/path.js";
-import { createCarsErrorBandPrimitives } from "./primitive.program.js";
+import { createGapminderErrorBandPrimitives } from "./primitive.program.js";
 import {
   ERROR_BAND_COLORS,
   ERROR_BAND_FIELDS,
-  createCarsErrorBandReferenceValues
+  createGapminderErrorBandReferenceValues
 } from "./reference-values.js";
 
 function flattenActions(node) {
   return [node, ...(node.children ?? []).flatMap(flattenActions)];
 }
 
-test("locks independent Year by Origin confidence intervals", () => {
-  const values = createCarsErrorBandReferenceValues(loadCars());
+test("locks independent year by cluster confidence intervals", () => {
+  const values = createGapminderErrorBandReferenceValues(loadGapminder());
 
-  assert.equal(values.rows.length, 36);
-  assert.deepEqual(values.origins, ["USA", "Europe", "Japan"]);
+  assert.equal(values.rows.length, 66);
+  assert.deepEqual(values.clusters, [0, 3, 4, 1, 5, 2]);
   assert.deepEqual(values.scales.x.domain, [
-    Date.UTC(1970, 0, 1),
-    Date.UTC(1982, 0, 1)
+    Date.UTC(1955, 0, 1),
+    Date.UTC(2005, 0, 1)
   ]);
-  assert.deepEqual(values.scales.y.domain, [-20, 60]);
+  assert.deepEqual(values.scales.y.domain, [30, 90]);
   assert.deepEqual(values.axes.x.ticks.map(tick => tick.label), [
-    "1970", "1972", "1974", "1976", "1978", "1980", "1982"
+    "1960", "1970", "1980", "1990", "2000"
   ]);
   assert.deepEqual(values.axes.y.ticks.map(tick => tick.value), [
-    -20, 0, 20, 40, 60
+    40, 60, 80
   ]);
 
-  const usa1970 = values.intervals.find(row =>
-    row.Year === "1970-01-01" && row.Origin === "USA"
+  const clusterOne1955 = values.intervals.find(row =>
+    row.year === 1955 && row.cluster === 1
   );
-  assert.equal(usa1970.count, 27);
-  assert.ok(Math.abs(usa1970.mean - 11.685185185185185) < 1e-12);
-  assert.ok(Math.abs(usa1970.lower - 10.58782157912761) < 1e-12);
-  assert.ok(Math.abs(usa1970.upper - 12.78254879124276) < 1e-12);
+  assert.equal(clusterOne1955.count, 19);
+  assert.ok(Math.abs(clusterOne1955.mean - 66.48263157894736) < 1e-12);
+  assert.ok(Math.abs(clusterOne1955.lower - 63.277896931216496) < 1e-12);
+  assert.ok(Math.abs(clusterOne1955.upper - 69.68736622667822) < 1e-12);
 
-  const sparse1979 = values.intervals.find(row =>
-    row.Year === "1979-01-01" && row.Origin === "Japan"
+  const clusterFour2005 = values.intervals.find(row =>
+    row.year === 2005 && row.cluster === 4
   );
-  assert.equal(sparse1979.count, 2);
-  assert.ok(Math.abs(sparse1979.lower - -8.212409472864191) < 1e-12);
-  assert.ok(Math.abs(sparse1979.upper - 42.61240947286419) < 1e-12);
+  assert.equal(clusterFour2005.count, 9);
+  assert.ok(Math.abs(clusterFour2005.mean - 76.18333333333334) < 1e-12);
+  assert.ok(Math.abs(clusterFour2005.lower - 71.78316530054533) < 1e-12);
+  assert.ok(Math.abs(clusterFour2005.upper - 80.58350136612134) < 1e-12);
 
   for (const row of values.rows) {
     assert.ok(row[ERROR_BAND_FIELDS.lower] <= row[ERROR_BAND_FIELDS.center]);
@@ -56,10 +57,10 @@ test("locks independent Year by Origin confidence intervals", () => {
   }
 });
 
-test("authors the Cars vertical error band with raw primitives", () => {
-  const cars = loadCars();
-  const values = createCarsErrorBandReferenceValues(cars);
-  const program = createCarsErrorBandPrimitives(cars);
+test("authors the Gapminder vertical error band with raw primitives", () => {
+  const gapminder = loadGapminder();
+  const values = createGapminderErrorBandReferenceValues(gapminder);
+  const program = createGapminderErrorBandPrimitives(gapminder);
   const layer = program.semanticSpec.layers.find(item => item.id === "errorBand");
   const dataset = program.semanticSpec.datasets.find(
     item => item.id === "errorBandIntervalData"
@@ -71,11 +72,11 @@ test("authors the Cars vertical error band with raw primitives", () => {
   assert.equal(layer.encoding.x.fieldType, "temporal");
   assert.equal(layer.encoding.y.field, ERROR_BAND_FIELDS.lower);
   assert.equal(layer.encoding.y2.field, ERROR_BAND_FIELDS.upper);
-  assert.equal(layer.encoding.group.field, "Origin");
-  assert.equal(layer.encoding.color.field, "Origin");
+  assert.equal(layer.encoding.group.field, "cluster");
+  assert.equal(layer.encoding.color.field, "cluster");
   assert.deepEqual(dataset.transform, [values.transform]);
   assert.deepEqual(dataset.values, values.rows);
-  assert.equal(paths.length, 3);
+  assert.equal(paths.length, 6);
   assert.deepEqual(
     paths.map(path => path.properties.commands),
     values.series.map(series => linearPathCommands(series.points, { close: true }))
@@ -86,7 +87,7 @@ test("authors the Cars vertical error band with raw primitives", () => {
   );
   assert.deepEqual(
     paths.map(path => path.properties.opacity),
-    [0.2, 0.2, 0.2]
+    [0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
   );
 
   const order = program.graphicSpec.order;
@@ -102,15 +103,14 @@ test("authors the Cars vertical error band with raw primitives", () => {
 });
 
 test("owns input rows and rejects an empty valid dataset", () => {
-  const cars = loadCars();
-  const values = createCarsErrorBandReferenceValues(cars);
-  const original = structuredClone(values.validCars[0]);
+  const gapminder = loadGapminder();
+  const values = createGapminderErrorBandReferenceValues(gapminder);
+  const original = structuredClone(values.validGapminder[0]);
 
-  cars[0].Acceleration = 999;
-  assert.deepEqual(values.validCars[0], original);
+  gapminder[0].life_expect = 999;
+  assert.deepEqual(values.validGapminder[0], original);
   assert.throws(
-    () => createCarsErrorBandReferenceValues([{ Year: null }]),
-    /at least one valid car row/
+    () => createGapminderErrorBandReferenceValues([{ year: null }]),
+    /at least one valid gapminder row/
   );
 });
-

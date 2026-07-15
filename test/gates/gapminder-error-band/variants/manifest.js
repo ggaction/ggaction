@@ -1,7 +1,7 @@
 import { defineVisualVariant } from "../../../support/visual-variants.js";
-import { loadCars } from "../../../support/data.js";
+import { loadGapminder } from "../../../support/data.js";
 
-import { createCarsErrorBandPrimitives } from "../primitive.program.js";
+import { createGapminderErrorBandPrimitives } from "../primitive.program.js";
 import {
   ERROR_BAND_COLORS,
   ERROR_BAND_LAYOUT
@@ -13,31 +13,31 @@ const targetCallChain = `chart()
     height: 480,
     margin: { top: 90, right: 150, bottom: 70, left: 80 }
   })
-  .createData({ values: cars })
+  .createData({ values: gapminder })
   .createErrorBand({
-    x: { field: "Year", fieldType: "temporal" },
-    y: { field: "Acceleration" },
-    groupBy: "Origin"
+    x: { field: "year", fieldType: "temporal" },
+    y: { field: "life_expect" },
+    groupBy: "cluster"
   })
   .encodeColor({
     target: "errorBand",
-    field: "Origin",
+    field: "cluster",
     fieldType: "nominal",
     scale: { palette: "tableau10" }
   })
   .createGuides()
   .createTitle({
-    text: "Acceleration Trend by Origin",
+    text: "Life Expectancy by Cluster",
     subtitle: "Mean and 95% confidence interval"
   });`;
 
 export const visualVariants = Object.freeze([
   defineVisualVariant({
-    chart: "cars-error-band",
-    variant: "cars-vertical",
-    title: "Cars Vertical Error Band",
+    chart: "gapminder-error-band",
+    variant: "gapminder-vertical",
+    title: "Gapminder Vertical Error Band",
     callChain: targetCallChain,
-    primitive: createCarsErrorBandPrimitives(loadCars()),
+    primitive: createGapminderErrorBandPrimitives(loadGapminder()),
     width: ERROR_BAND_LAYOUT.width,
     height: ERROR_BAND_LAYOUT.height,
     colors: ERROR_BAND_COLORS,
@@ -46,4 +46,3 @@ export const visualVariants = Object.freeze([
     ]
   })
 ]);
-
