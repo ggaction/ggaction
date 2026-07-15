@@ -330,6 +330,26 @@ test("keeps completed Phase 6 rule and error-bar scope out of planned inventory"
   }
 });
 
+test("keeps completed Phase 7 error-band scope out of planned inventory", () => {
+  const actions = ["createErrorBand", "encodeXRange"];
+  const capabilities = [
+    "error-band-curve-and-advanced-boundaries",
+    "regression-error-band-delegation",
+    "composite-mark-ownership-and-storage"
+  ];
+  const currentNames = new Set(index.actions.map(action => action.name));
+  const plannedNames = new Set(index.plannedActions.map(action => action.name));
+  const plannedIds = new Set(index.plannedCapabilities.map(capability => capability.id));
+
+  for (const action of actions) {
+    assert.equal(currentNames.has(action), true, action);
+    assert.equal(plannedNames.has(action), false, action);
+  }
+  for (const capability of capabilities) {
+    assert.equal(plannedIds.has(capability), false, capability);
+  }
+});
+
 test("keeps accepted planned capabilities linked and non-public", () => {
   const ids = index.plannedCapabilities.map(capability => capability.id);
   assert.equal(new Set(ids).size, ids.length);
@@ -363,11 +383,12 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /vertical or horizontal orientation/);
   assert.match(currentCorpus, /ExplicitIntervalChannel/);
   assert.doesNotMatch(plannedCorpus, /createErrorBar remaining variants/);
-  assert.match(plannedCorpus, /createErrorBand\(\{/);
+  assert.match(currentCorpus, /createErrorBand\(\{/);
+  assert.doesNotMatch(plannedCorpus, /createErrorBand\(\{/);
   assert.match(plannedCorpus, /createBoxPlot\(\{/);
   assert.match(currentCorpus, /wrapped `createErrorBand` explicit mode/);
   assert.doesNotMatch(plannedCorpus, /regression band delegation/);
-  assert.match(plannedCorpus, /No `semanticSpec\.composites` registry is introduced/);
+  assert.match(currentCorpus, /No `semanticSpec\.composites` registry is introduced/);
   assert.match(currentCorpus, /"plus" \| "cross" \| "star" \| "hexagon" \| "wye"/);
   assert.match(plannedCorpus, /type CurveInterpolation =/);
   assert.match(plannedCorpus, /"step-before"[\s\S]*"step-after"/);

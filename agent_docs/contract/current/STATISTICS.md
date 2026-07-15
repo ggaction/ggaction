@@ -107,6 +107,12 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `boundaries` defaults to false. `{}` creates deterministic lower/upper ordinary line layers after the band;
   `stroke`, `strokeWidth`, `strokeDash`, and `opacity` default to the shared mark color, `1`, solid, and `1`.
   Boundary curve inherits the band curve unless an explicit boundary `curve` overrides it.
+- Composite ownership uses ordinary resources only. No `semanticSpec.composites` registry is introduced:
+  interval rows use the existing derived-dataset/provenance model, the representative area keeps the user ID,
+  and repeatable boundary layers and graphics are deterministically namespaced by owner and role.
+- The aggregate orchestrates wrapped child actions instead of duplicating their validation or materialization.
+  Its rematerialization is the ordered, deduplicated union of ordinary area and boundary consumer plans, while
+  earlier immutable programs retain their datasets, semantic bindings, and concrete graphics.
 
 ### Formal values — `createErrorBand`
 
@@ -124,9 +130,12 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   basic stroke/width defaults and overrides, Canvas rematerialization, validation failure and immutability.
 - ✅ Covered: all area curve values, inherited/overridden boundary curves, dash/opacity/style validation,
   deterministic child order, Canvas/scale rematerialization, and approved primitive/public/pixel variants.
-- 🟡 Planned: independent lower/upper overrides and regression delegation.
+- ✅ Covered: regression-band delegation through explicit interval mode with prior semantic, graphic, ordering,
+  trace, grouped/ungrouped, method, appearance, and immutability compatibility.
+- 🟡 Planned: independent lower/upper boundary appearance overrides.
 - Evidence: `test/unit/actions/error-bands/create-error-band.test.js` and
-  `test/charts/gapminder-error-band/public.test.js`.
+  `test/charts/gapminder-error-band/public.test.js`, plus
+  `test/unit/actions/regression/create-regression.test.js` for delegation compatibility.
 
 ## `createRegression`
 

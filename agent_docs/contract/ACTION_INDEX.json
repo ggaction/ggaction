@@ -1536,17 +1536,6 @@
   ],
   "plannedCapabilities": [
     {
-      "id": "composite-mark-ownership-and-storage",
-      "kind": "composition",
-      "name": "Composite mark ownership and storage",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/COMPOSITE_MARKS.md",
-        "anchor": "composite-ownership-and-storage"
-      }
-    },
-    {
       "id": "continuous-color-bar-consumer",
       "kind": "parameter",
       "name": "Continuous color bar consumer",
