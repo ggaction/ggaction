@@ -14,7 +14,12 @@ import {
   createCarsRegressionScatterplotPrimitives,
   renderCarsRegressionScatterplotPrimitives
 } from "../primitive.program.js";
-import { createComponentEditPrimitives } from "./primitive-programs.js";
+import { createCarsRegressionScatterplotValues } from "../reference-values.js";
+import {
+  createComparisonFilterPrimitives,
+  createComponentEditPrimitives,
+  createRangeFilterPrimitives
+} from "./primitive-programs.js";
 
 const cars = loadCars();
 
@@ -60,4 +65,53 @@ test("matches component primitives with regression edit actions", () => {
     primitiveProgram: createComponentEditPrimitives(cars),
     publicProgram: createComponentEditCarsRegressionScatterplot(cars)
   });
+});
+
+test("authors comparison and range filter targets with primitive state", () => {
+  const variants = [{
+    program: createComparisonFilterPrimitives(cars),
+    filter: {
+      field: "Horsepower",
+      predicate: { op: "gte", value: 150 }
+    },
+    count: 71,
+    groups: ["USA"]
+  }, {
+    program: createRangeFilterPrimitives(cars),
+    filter: {
+      field: "Displacement",
+      range: { min: 100, max: 300, inclusive: true }
+    },
+    count: 205,
+    groups: ["Europe", "Japan", "USA"]
+  }];
+
+  for (const { program, filter, count, groups } of variants) {
+    const expected = createCarsRegressionScatterplotValues(cars, { filter });
+    const selected = program.semanticSpec.datasets.find(
+      dataset => dataset.id === "selectedCars"
+    );
+    const regression = program.semanticSpec.datasets.find(
+      dataset => dataset.id === "pointsRegressionData"
+    );
+
+    assert.deepEqual(selected.transform, [{ type: "filter", ...filter }]);
+    assert.deepEqual(selected.values, expected.filteredRows);
+    assert.equal(selected.values.length, count);
+    assert.deepEqual(
+      [...new Set(selected.values.map(row => row.Origin))],
+      groups
+    );
+    assert.deepEqual(regression.values, expected.regressionRows);
+    assert.equal(program.graphicSpec.objects.points.children.length, count);
+    assert.equal(
+      program.graphicSpec.objects.pointsRegressionLines.children.length,
+      groups.length
+    );
+    assert.equal(
+      program.graphicSpec.objects.pointsRegressionBands.children.length,
+      groups.length
+    );
+    assert.ok(!program.trace.children.some(node => node.op === "filterData"));
+  }
 });

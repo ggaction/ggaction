@@ -18,6 +18,7 @@ import {
   validateDensityKernel,
   validateDensityNormalization
 } from "../../grammar/density.js";
+import { validateFilterTransform } from "../../grammar/filter.js";
 import {
   validateSemanticFieldType,
   validateContinuousColorInterpolation,
@@ -29,28 +30,6 @@ import {
 function nonEmptyString(value, label) {
   if (typeof value !== "string" || value.length === 0) {
     throw new TypeError(`${label} must be a non-empty string.`);
-  }
-}
-
-function validateFilter(transform) {
-  const unknown = Object.keys(transform).find(
-    key => !["type", "field", "oneOf"].includes(key)
-  );
-  if (unknown !== undefined) {
-    throw new Error(`Unknown filter transform property "${unknown}".`);
-  }
-  nonEmptyString(transform.field, "Filter field");
-  if (
-    !Array.isArray(transform.oneOf) ||
-    transform.oneOf.length === 0 ||
-    transform.oneOf.some(value =>
-      value !== null &&
-      typeof value !== "string" &&
-      typeof value !== "boolean" &&
-      !(typeof value === "number" && Number.isFinite(value))
-    )
-  ) {
-    throw new TypeError("Filter oneOf must be a non-empty array of scalar values.");
   }
 }
 
@@ -134,7 +113,11 @@ function validateTransforms(value) {
   if (!Array.isArray(value) || value.length === 0 || !value.every(isPlainObject)) {
     throw new TypeError("Dataset transform must be a non-empty array of plain objects.");
   }
-  const validators = { filter: validateFilter, regression: validateRegression, density: validateDensity };
+  const validators = {
+    filter: validateFilterTransform,
+    regression: validateRegression,
+    density: validateDensity
+  };
   for (const transform of value) {
     const validate = validators[transform.type];
     if (validate === undefined) {

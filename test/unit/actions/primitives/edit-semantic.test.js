@@ -330,6 +330,62 @@ test("validates resolved density kernel and normalization provenance", () => {
   );
 });
 
+test("validates comparison and range filter transform provenance", () => {
+  const comparison = chart().editSemantic({
+    property: "dataset[selected].transform",
+    value: [{
+      type: "filter",
+      field: "Horsepower",
+      predicate: { op: "gte", value: 150 }
+    }]
+  });
+  const range = chart().editSemantic({
+    property: "dataset[selected].transform",
+    value: [{
+      type: "filter",
+      field: "Displacement",
+      range: { min: 100, max: 300, inclusive: true }
+    }]
+  });
+
+  assert.deepEqual(comparison.semanticSpec.datasets[0].transform[0].predicate, {
+    op: "gte",
+    value: 150
+  });
+  assert.deepEqual(range.semanticSpec.datasets[0].transform[0].range, {
+    min: 100,
+    max: 300,
+    inclusive: true
+  });
+
+  for (const transform of [{
+    type: "filter",
+    field: "value",
+    oneOf: [1],
+    predicate: { op: "gte", value: 1 }
+  }, {
+    type: "filter",
+    field: "value",
+    predicate: { op: "near", value: 1 }
+  }, {
+    type: "filter",
+    field: "value",
+    range: { min: 3, max: 1 }
+  }, {
+    type: "filter",
+    field: "value",
+    range: { min: 1, max: "3" }
+  }]) {
+    assert.throws(
+      () => chart().editSemantic({
+        property: "dataset[selected].transform",
+        value: [transform]
+      }),
+      /filter|operator|range/i
+    );
+  }
+});
+
 test("validates exact histogram bin semantics through the primitive API", () => {
   const withStep = chart().editSemantic({
     property: "layer[bars].encoding.x.bin.step",

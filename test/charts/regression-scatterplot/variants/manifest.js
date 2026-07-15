@@ -7,7 +7,11 @@ import { loadCars } from "../../../support/data.js";
 import { defineVisualVariant } from "../../../support/visual-variants.js";
 import { createCarsRegressionScatterplotPrimitives } from
   "../primitive.program.js";
-import { createComponentEditPrimitives } from "./primitive-programs.js";
+import {
+  createComparisonFilterPrimitives,
+  createComponentEditPrimitives,
+  createRangeFilterPrimitives
+} from "./primitive-programs.js";
 
 const cars = loadCars();
 
@@ -61,6 +65,16 @@ const baselineCallChain = `chart()
   })
   .createGuides();`;
 
+const baselineFilterCall = `  .filterData({
+    id: "selectedCars",
+    field: "Origin",
+    oneOf: ["Japan", "USA"]
+  })`;
+
+function withFilterCall(filterCall) {
+  return baselineCallChain.replace(baselineFilterCall, filterCall);
+}
+
 export const visualVariants = Object.freeze([defineVisualVariant({
   ...shared,
   variant: "baseline",
@@ -86,4 +100,26 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   });`,
   primitive: createComponentEditPrimitives(cars),
   userFacing: createComponentEditCarsRegressionScatterplot(cars)
+}), defineVisualVariant({
+  ...shared,
+  variant: "comparison-filter",
+  title: "Horsepower at Least 150",
+  colors: ["#4c78a8"],
+  callChain: withFilterCall(`  .filterData({
+    id: "selectedCars",
+    field: "Horsepower",
+    predicate: { op: "gte", value: 150 }
+  })`),
+  primitive: createComparisonFilterPrimitives(cars)
+}), defineVisualVariant({
+  ...shared,
+  variant: "range-filter",
+  title: "Inclusive Displacement Range",
+  colors: ["#4c78a8", "#f58518", "#e45756"],
+  callChain: withFilterCall(`  .filterData({
+    id: "selectedCars",
+    field: "Displacement",
+    range: { min: 100, max: 300, inclusive: true }
+  })`),
+  primitive: createRangeFilterPrimitives(cars)
 })]);

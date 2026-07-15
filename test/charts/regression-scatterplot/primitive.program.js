@@ -4,14 +4,20 @@ import { linearPathCommands } from "../../support/path.js";
 import { createCarsRegressionScatterplotValues } from
   "./reference-values.js";
 
-export function createCarsRegressionScatterplotPrimitives(cars) {
+export function createCarsRegressionScatterplotPrimitives(cars, {
+  filter = {
+    field: "Origin",
+    oneOf: ["Japan", "USA"]
+  }
+} = {}) {
   const width = 760;
   const height = 480;
   const margin = { top: 40, right: 190, bottom: 70, left: 80 };
   const values = createCarsRegressionScatterplotValues(cars, {
     width,
     height,
-    margin
+    margin,
+    filter
   });
   const { x: xAxis, y: yAxis } = values.axes;
   const xTickPositions = xAxis.ticks.map(tick => tick.position);
@@ -25,7 +31,7 @@ export function createCarsRegressionScatterplotPrimitives(cars) {
     .editSemantic({ property: "dataset[selectedCars].source", value: "cars" })
     .editSemantic({
       property: "dataset[selectedCars].transform",
-      value: [{ type: "filter", field: "Origin", oneOf: ["Japan", "USA"] }]
+      value: [{ ...filter, type: "filter" }]
     })
     .editSemantic({
       property: "dataset[selectedCars].values",

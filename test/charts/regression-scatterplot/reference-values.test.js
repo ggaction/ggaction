@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createCarsRegressionScatterplotValues } from
-  "./reference-values.js";
+import {
+  createCarsRegressionScatterplotValues,
+  selectRegressionFilterRows
+} from "./reference-values.js";
 import { loadCars } from "../../support/data.js";
 
 function assertApproximately(actual, expected, tolerance = 1e-12) {
@@ -186,4 +188,76 @@ test("does not mutate or retain caller-owned car rows", () => {
   assert.deepEqual(cars, before);
   result.filteredRows[0].Origin = "changed";
   assert.deepEqual(cars, before);
+});
+
+test("selects ordered comparison and inclusive range rows in source order", () => {
+  const cars = loadCars();
+  const comparison = createCarsRegressionScatterplotValues(cars, {
+    filter: {
+      field: "Horsepower",
+      predicate: { op: "gte", value: 150 }
+    }
+  });
+  const range = createCarsRegressionScatterplotValues(cars, {
+    filter: {
+      field: "Displacement",
+      range: { min: 100, max: 300, inclusive: true }
+    }
+  });
+
+  assert.equal(comparison.filteredRows.length, 71);
+  assert.deepEqual(comparison.groupDomain, ["USA"]);
+  assert.equal(comparison.filteredRows[0].Name, "buick skylark 320");
+  assert.equal(
+    comparison.filteredRows.at(-1).Name,
+    "chrysler lebaron town @ country (sw)"
+  );
+  assert.equal(comparison.regressionRows.length, 15);
+  assert.deepEqual(comparison.scales.x.domain, [200, 500]);
+  assert.deepEqual(comparison.scales.y.domain, [6, 21]);
+
+  assert.equal(range.filteredRows.length, 205);
+  assert.deepEqual(range.groupDomain, ["Europe", "Japan", "USA"]);
+  assert.equal(range.filteredRows[0].Name, "citroen ds-21 pallas");
+  assert.equal(range.filteredRows.at(-1).Name, "chevy s-10");
+  assert.equal(range.regressionRows.length, 57);
+  assert.deepEqual(range.scales.x.domain, [100, 300]);
+  assert.deepEqual(range.scales.y.domain, [9, 27]);
+  assert.ok(range.filteredRows.some(row => row.Displacement === 100));
+});
+
+test("locks comparison compatibility and range endpoint policies", () => {
+  const rows = [
+    { order: 1, value: 1 },
+    { order: 2, value: 2 },
+    { order: 3, value: 3 },
+    { order: 4, value: "2" },
+    { order: 5 },
+    { order: 6, value: Number.NaN }
+  ];
+  const select = filter => selectRegressionFilterRows(rows, {
+    field: "value",
+    ...filter
+  }).map(row => row.order);
+
+  assert.deepEqual(
+    select({ predicate: { op: "gte", value: 2 } }),
+    [2, 3]
+  );
+  assert.deepEqual(
+    select({ range: { min: 1, max: 3, inclusive: true } }),
+    [1, 2, 3]
+  );
+  assert.deepEqual(
+    select({ range: { min: 1, max: 3, inclusive: false } }),
+    [2]
+  );
+  assert.deepEqual(
+    select({ range: { min: 2, max: 2, inclusive: true } }),
+    [2]
+  );
+  assert.deepEqual(
+    select({ range: { min: 2, max: 2, inclusive: false } }),
+    []
+  );
 });

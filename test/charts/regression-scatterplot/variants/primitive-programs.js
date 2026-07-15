@@ -29,3 +29,21 @@ export function createComponentEditPrimitives(cars) {
       value: 5
     });
 }
+
+export function createComparisonFilterPrimitives(cars) {
+  return createCarsRegressionScatterplotPrimitives(cars, {
+    filter: {
+      field: "Horsepower",
+      predicate: { op: "gte", value: 150 }
+    }
+  });
+}
+
+export function createRangeFilterPrimitives(cars) {
+  return createCarsRegressionScatterplotPrimitives(cars, {
+    filter: {
+      field: "Displacement",
+      range: { min: 100, max: 300, inclusive: true }
+    }
+  });
+}

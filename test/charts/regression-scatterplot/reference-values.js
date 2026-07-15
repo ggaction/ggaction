@@ -1,9 +1,104 @@
 const LOWER_FIELD = "__regression_ci_lower";
 const UPPER_FIELD = "__regression_ci_upper";
-const COLORS = ["#4c78a8", "#f58518"];
-const SHAPES = ["circle", "square"];
+const COLORS = ["#4c78a8", "#f58518", "#e45756"];
+const SHAPES = ["circle", "square", "diamond"];
 const DEFAULT_SIZE_RANGE = [24, 196];
 const DEFAULT_SIZE_LEGEND_COUNT = 5;
+
+function comparable(value, operand) {
+  return (
+    Number.isFinite(value) && Number.isFinite(operand)
+  ) || (
+    typeof value === "string" && typeof operand === "string"
+  );
+}
+
+function matchesFilter(value, filter) {
+  if (filter.oneOf !== undefined) return filter.oneOf.includes(value);
+  if (filter.predicate !== undefined) {
+    const { op, value: operand } = filter.predicate;
+    if (op === "eq") return value === operand;
+    if (op === "neq") return value !== operand;
+    if (!comparable(value, operand)) return false;
+    if (op === "lt") return value < operand;
+    if (op === "lte") return value <= operand;
+    if (op === "gt") return value > operand;
+    if (op === "gte") return value >= operand;
+    throw new Error(`Unsupported reference filter operator "${op}".`);
+  }
+  const { min, max, inclusive = true } = filter.range;
+  if (!comparable(value, min) || !comparable(value, max)) return false;
+  return inclusive
+    ? value >= min && value <= max
+    : value > min && value < max;
+}
+
+function validateReferenceFilter(filter) {
+  if (filter === null || typeof filter !== "object" || Array.isArray(filter)) {
+    throw new TypeError("Reference filter must be an object.");
+  }
+  if (typeof filter.field !== "string" || filter.field.length === 0) {
+    throw new TypeError("Reference filter field must be a non-empty string.");
+  }
+  const modes = ["oneOf", "predicate", "range"].filter(
+    mode => Object.hasOwn(filter, mode)
+  );
+  if (modes.length !== 1) {
+    throw new Error("Reference filter requires exactly one filter mode.");
+  }
+  if (
+    modes[0] === "oneOf" &&
+    (!Array.isArray(filter.oneOf) || filter.oneOf.length === 0)
+  ) {
+    throw new TypeError("Reference filter oneOf must be a non-empty array.");
+  }
+  if (modes[0] === "predicate") {
+    const predicate = filter.predicate;
+    if (
+      predicate === null ||
+      typeof predicate !== "object" ||
+      Array.isArray(predicate) ||
+      !["eq", "neq", "lt", "lte", "gt", "gte"].includes(predicate.op)
+    ) {
+      throw new TypeError("Reference filter predicate is invalid.");
+    }
+    if (
+      !["eq", "neq"].includes(predicate.op) &&
+      typeof predicate.value !== "string" &&
+      !Number.isFinite(predicate.value)
+    ) {
+      throw new TypeError("Reference ordered filter value is invalid.");
+    }
+  }
+  if (modes[0] === "range") {
+    const range = filter.range;
+    if (
+      range === null ||
+      typeof range !== "object" ||
+      Array.isArray(range) ||
+      (typeof range.min !== "string" && !Number.isFinite(range.min)) ||
+      typeof range.min !== typeof range.max ||
+      range.min > range.max ||
+      (range.inclusive !== undefined && typeof range.inclusive !== "boolean")
+    ) {
+      throw new TypeError("Reference filter range is invalid.");
+    }
+  }
+}
+
+export function selectRegressionFilterRows(rows, filter) {
+  if (!Array.isArray(rows)) {
+    throw new TypeError("Cars must be an array.");
+  }
+  validateReferenceFilter(filter);
+  return rows
+    .filter(row =>
+      row !== null &&
+      typeof row === "object" &&
+      matchesFilter(row[filter.field], filter)
+    )
+    .map(row => structuredClone(row));
+}
 
 function requireOptions({ groups, confidence }) {
   if (
@@ -291,6 +386,26 @@ function pointChild(row, index, config) {
     };
   }
 
+  if (shape === "diamond") {
+    const radius = Math.sqrt(area / 2);
+    return {
+      row: index,
+      group: row[config.groupField],
+      value: row[config.yField],
+      type: "path",
+      properties: {
+        commands: [
+          { op: "M", x: centerX, y: centerY - radius },
+          { op: "L", x: centerX + radius, y: centerY },
+          { op: "L", x: centerX, y: centerY + radius },
+          { op: "L", x: centerX - radius, y: centerY },
+          { op: "Z" }
+        ],
+        ...shared
+      }
+    };
+  }
+
   const side = Math.sqrt(area);
   return {
     row: index,
@@ -313,6 +428,7 @@ export function createCarsRegressionScatterplotValues(
   cars,
   {
     groups = ["Japan", "USA"],
+    filter,
     confidence = 0.95,
     xField = "Displacement",
     yField = "Acceleration",
@@ -329,16 +445,16 @@ export function createCarsRegressionScatterplotValues(
   requireOptions({ groups, confidence });
   const bounds = requireLayout({ width, height, margin, sizeRange });
 
-  const includedGroups = new Set(groups);
-  const filteredRows = cars
+  const resolvedFilter = filter ?? {
+    field: groupField,
+    oneOf: groups
+  };
+  const filteredRows = selectRegressionFilterRows(cars, resolvedFilter)
     .filter(row =>
-      row !== null &&
-      typeof row === "object" &&
-      includedGroups.has(row[groupField]) &&
+      typeof row[groupField] === "string" &&
       Number.isFinite(row[xField]) &&
       Number.isFinite(row[yField])
-    )
-    .map(row => structuredClone(row));
+    );
 
   if (filteredRows.length === 0) {
     throw new Error("Regression scatterplot requires at least one valid row.");
@@ -455,8 +571,9 @@ export function createCarsRegressionScatterplotValues(
     const radius = Math.sqrt(64 / Math.PI);
     const side = radius * Math.sqrt(Math.PI);
     const shape = shapeRange[index];
-    const symbol = shape === "circle"
-      ? {
+    let symbol;
+    if (shape === "circle") {
+      symbol = {
           type: "circle",
           properties: {
             x: originLegendX + 16,
@@ -466,8 +583,24 @@ export function createCarsRegressionScatterplotValues(
             stroke: "white",
             strokeWidth: 0
           }
+        };
+    } else if (shape === "diamond") {
+      const diamondRadius = Math.sqrt(64 / 2);
+      symbol = {
+        type: "path",
+        properties: {
+          commands: [
+            { op: "M", x: originLegendX + 16, y: y - diamondRadius },
+            { op: "L", x: originLegendX + 16 + diamondRadius, y },
+            { op: "L", x: originLegendX + 16, y: y + diamondRadius },
+            { op: "L", x: originLegendX + 16 - diamondRadius, y },
+            { op: "Z" }
+          ],
+          fill: colorRange[index]
         }
-      : {
+      };
+    } else {
+      symbol = {
           type: "rect",
           properties: {
             x: originLegendX + 16 - side / 2,
@@ -479,6 +612,7 @@ export function createCarsRegressionScatterplotValues(
             strokeWidth: 0
           }
         };
+    }
     return {
       group,
       color: colorRange[index],
@@ -523,6 +657,7 @@ export function createCarsRegressionScatterplotValues(
 
   return {
     confidence,
+    filter: structuredClone(resolvedFilter),
     fields: {
       x: xField,
       y: yField,
