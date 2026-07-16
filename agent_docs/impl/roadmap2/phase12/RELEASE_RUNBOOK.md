@@ -54,12 +54,25 @@
 5. `CHANGELOG.md`에서 생성한 exact notes로 GitHub Release `v0.0.1`을 만든다.
 6. npm package가 존재한 뒤 npm package settings에서 trusted publisher를 연결한다.
 
+   ```bash
+   npm install --global "npm@^11.5.1"
+   npm trust github ggaction \
+     --file release.yml \
+     --repo hj-n/ggaction \
+     --env npm-release \
+     --allow-publish \
+     --yes
+   ```
+
    ```text
    owner/repository   hj-n/ggaction
    workflow           release.yml
    environment        npm-release
+   allowed action     npm publish
    ```
 
+   CLI 설정을 사용할 수 없으면 npm package Settings의 Trusted Publisher form에 같은 값을 입력한다. Binding을
+   확인한 뒤 Publishing access를 `Require two-factor authentication and disallow tokens`로 제한한다.
 7. STEP9의 registry/fresh-install/docs verification을 완료한다.
 
 ## 이후 OIDC release
