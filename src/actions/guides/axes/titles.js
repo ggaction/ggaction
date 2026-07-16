@@ -3,7 +3,8 @@ import { validateUserId } from "../../../core/identifiers.js";
 import { validateKeys } from "../../../core/validation.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
-  mapLinearValues,
+  isTransformedScaleType,
+  mapContinuousScaleValues,
   mapOrdinalPositionValues
 } from "../../../grammar/scales.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
@@ -100,7 +101,10 @@ function inferText(program, channel, scaleId) {
 function resolveGeometry(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveGraphicBounds(program);
-  if (!["linear", "time", "ordinal"].includes(scale?.type) || !bounds) throw new Error("Axis title requires a supported resolved scale and Canvas bounds.");
+  if ((
+    !["linear", "time", "ordinal"].includes(scale?.type) &&
+    !isTransformedScaleType(scale?.type)
+  ) || !bounds) throw new Error("Axis title requires a supported resolved scale and Canvas bounds.");
   let along;
   if (config.at === "start") along = scale.range[0];
   else if (config.at === "center") along = (scale.range[0] + scale.range[1]) / 2;
@@ -112,12 +116,7 @@ function resolveGeometry(program, channel, config) {
     } else {
       const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
       if (config.at < low || config.at > high) throw new RangeError("Axis title at value must be inside the scale domain.");
-      along = mapLinearValues(
-        [config.at],
-        scale.domain,
-        scale.range,
-        { clamp: scale.clamp ?? false }
-      )[0];
+      along = mapContinuousScaleValues([config.at], scale)[0];
     }
   }
   const geometry = resolveAxisTitleGeometry({

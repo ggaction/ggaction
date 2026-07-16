@@ -15,7 +15,7 @@ Complete chart contract:
 - [x] Four visual Gates and target public chains designed
 - [x] Current implementation and contract baseline audit
 - [x] Shared transformed-scale pure grammar
-- [ ] Gate A transformed scatterplot approval and public implementation
+- [x] Gate A transformed scatterplot approval and public implementation
 - [ ] Gate B temporal/discrete position approval and public implementation
 - [ ] Gate C discretized color approval and public implementation
 - [ ] Gate D continuous-color bar approval and public implementation

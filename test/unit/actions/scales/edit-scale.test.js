@@ -112,7 +112,10 @@ test("rejects invalid, empty, unknown, incompatible, and ambiguous edits atomica
   assert.throws(() => base.editScale({ id: "missing", reverse: true }), /Unknown scale/);
   assert.throws(() => base.editScale({ id: "x", reverse: "yes" }), /must be a boolean/);
   assert.throws(() => base.editScale({ id: "color", clamp: true }), /does not support clamp/);
-  assert.throws(() => base.editScale({ id: "x", type: "time" }), /Unknown editScale option/);
+  assert.throws(
+    () => base.editScale({ id: "x", type: "time" }),
+    /requires a quantitative position scale/
+  );
   const ambiguous = base._clone({ context: {} });
   assert.throws(() => ambiguous.editScale({ reverse: true }), /requires id/);
 

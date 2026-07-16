@@ -6,7 +6,7 @@ import {
   validatePointShape
 } from "../../grammar/pointShapes.js";
 import {
-  mapLinearValues,
+  mapContinuousScaleValues,
   mapOrdinalPositionValues,
   mapOrdinalValues,
   mapSequentialColors,
@@ -26,7 +26,9 @@ import { findLayer } from "../../selectors/layers.js";
 import { rematerializeExistingLegend } from "../encodings/shared.js";
 
 const POINT_MARK_OPTIONS = Object.freeze(["id", "data", "shape"]);
-const EDIT_POINT_OPTIONS = Object.freeze(["target", "shape"]);
+const EDIT_POINT_OPTIONS = Object.freeze([
+  "target", "shape", "opacity", "stroke", "strokeWidth"
+]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
 
@@ -94,9 +96,7 @@ function resolveMappedValues(program, layer, dataset, channel) {
     ? ["x", "y"].includes(channel)
       ? mapOrdinalPositionValues(values, scale)
       : mapOrdinalValues(values, scale.domain, scale.range)
-    : mapLinearValues(values, scale.domain, scale.range, {
-        clamp: scale.clamp ?? false
-      });
+    : mapContinuousScaleValues(values, scale);
 }
 
 function compactProperties(properties) {
@@ -213,6 +213,10 @@ const rematerializePointMark = action(
           y: centerY,
           area: resolvedArea,
           fill: color,
+          ...(config.stroke === undefined ? {} : { stroke: config.stroke }),
+          ...(config.strokeWidth === undefined
+            ? {}
+            : { strokeWidth: config.strokeWidth }),
           opacity
         });
       });
@@ -269,6 +273,14 @@ const rematerializePointMark = action(
     } else if (encodedOpacity !== undefined) {
       next = next.editGraphics({ target: id, property: "opacity", value: encodedOpacity });
     }
+    if (config.stroke !== undefined) {
+      next = next.editGraphics({ target: id, property: "stroke", value: config.stroke });
+      next = next.editGraphics({
+        target: id,
+        property: "strokeWidth",
+        value: config.strokeWidth
+      });
+    }
     return next;
   }
 );
@@ -280,8 +292,11 @@ const editPointMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_POINT_OPTIONS, "editPointMark");
-    if (!Object.hasOwn(args, "shape")) {
-      throw new Error("editPointMark requires shape.");
+    const editable = ["shape", "opacity", "stroke", "strokeWidth"];
+    if (!editable.some(property => Object.hasOwn(args, property))) {
+      throw new Error(
+        "editPointMark requires shape, opacity, stroke, or strokeWidth."
+      );
     }
     const candidates = this.semanticSpec.layers.filter(
       layer => layer.mark?.type === "point"
@@ -297,14 +312,41 @@ const editPointMark = action(
     if (layer?.mark?.type !== "point") {
       throw new Error(`Unknown point mark "${id}".`);
     }
-    if (layer.encoding?.shape !== undefined) {
+    if (Object.hasOwn(args, "shape") && layer.encoding?.shape !== undefined) {
       throw new Error(
         "editPointMark shape cannot be combined with a shape encoding."
       );
     }
-    const shape = validatePointShape(args.shape);
+    const config = { ...this.markConfigs[id] };
+    if (Object.hasOwn(args, "shape")) {
+      config.shape = validatePointShape(args.shape);
+    }
+    if (Object.hasOwn(args, "opacity")) {
+      if (!Number.isFinite(args.opacity) || args.opacity < 0 || args.opacity > 1) {
+        throw new RangeError("Point opacity must be from 0 to 1.");
+      }
+      config.opacity = args.opacity;
+    }
+    if (Object.hasOwn(args, "stroke")) {
+      if (typeof args.stroke !== "string" || args.stroke.length === 0) {
+        throw new TypeError("Point stroke must be a non-empty string.");
+      }
+      config.stroke = args.stroke;
+      config.strokeWidth ??= 1;
+    }
+    if (Object.hasOwn(args, "strokeWidth")) {
+      if (!Number.isFinite(args.strokeWidth) || args.strokeWidth < 0) {
+        throw new RangeError(
+          "Point strokeWidth must be a non-negative finite number."
+        );
+      }
+      if (config.stroke === undefined) {
+        throw new Error("Point strokeWidth requires an active stroke.");
+      }
+      config.strokeWidth = args.strokeWidth;
+    }
     const next = this
-      ._withMarkConfig(id, { ...this.markConfigs[id], shape })
+      ._withMarkConfig(id, config)
       .rematerializePointMark({ id });
     const legend = next.guideConfigs.legend?.series;
     return legend?.target === id && legend.channels.includes("shape")

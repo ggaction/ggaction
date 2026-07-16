@@ -169,7 +169,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant point shape",
+      "update": "Edits constant point shape and appearance",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

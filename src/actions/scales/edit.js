@@ -1,15 +1,22 @@
 import { action } from "../../core/action.js";
-import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
+import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
 import {
+  isTransformedScaleType,
+  normalizeTransformParameters,
+  SCALE_ROLES,
   validateColorRange,
   validateOrdinalDomain,
   validateScaleDomain,
+  validateScalePropertyForType,
   validateScaleRange,
+  validateScaleType,
+  validateScaleTypeForRole,
   validateShapeRange,
   validateSizeRange,
-  validateStrokeDashRange
+  validateStrokeDashRange,
+  validateTransformedDomain
 } from "../../grammar/scales.js";
 import { getMarkMaterializationStep } from "../../materialization/marks.js";
 import {
@@ -19,9 +26,11 @@ import { requireSemanticScale } from "../../selectors/scales.js";
 import { findScaleConsumers } from "./consumers.js";
 
 const OPTIONS = Object.freeze([
-  "id", "domain", "range", "nice", "zero", "clamp", "reverse"
+  "id", "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+  "base", "exponent", "constant"
 ]);
 const EDITABLE = Object.freeze(OPTIONS.filter(option => option !== "id"));
+const TYPE_PARAMETERS = Object.freeze(["base", "exponent", "constant"]);
 
 function resolveScaleId(program, requested) {
   if (requested !== undefined) {
@@ -29,7 +38,6 @@ function resolveScaleId(program, requested) {
     requireSemanticScale(program, id);
     return id;
   }
-
   const current = program.context.currentScale;
   if (
     typeof current === "string" &&
@@ -69,34 +77,95 @@ function validateRangeForChannel(scale, channel, value) {
   return validateScaleRange(value);
 }
 
-function normalizePatch(scale, channel, args) {
-  const patch = {};
-  if (Object.hasOwn(args, "domain")) {
-    patch.domain = scale.type === "ordinal"
-      ? validateOrdinalDomain(args.domain)
-      : validateScaleDomain(args.domain);
+function validateTypeTransition(scale, nextType, channel, consumers) {
+  if (nextType === scale.type) return;
+  validateScaleType(nextType);
+  const quantitative = nextType === "linear" || isTransformedScaleType(nextType);
+  if (
+    !quantitative ||
+    (consumers.length > 0 && !["x", "y"].includes(channel))
+  ) {
+    throw new Error(
+      "editScale type transition currently requires a quantitative position scale."
+    );
   }
-  if (Object.hasOwn(args, "range")) {
-    patch.range = validateRangeForChannel(scale, channel, args.range);
+  validateScaleTypeForRole(nextType, SCALE_ROLES.quantitativePosition);
+  if (consumers.some(consumer => consumer.encoding.fieldType !== "quantitative")) {
+    throw new Error(
+      `Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`
+    );
   }
+  if (
+    isTransformedScaleType(nextType) &&
+    consumers.some(consumer => consumer.layer.mark?.type !== "point")
+  ) {
+    throw new Error(
+      "Transformed position scale type edits currently require point consumers."
+    );
+  }
+}
+
+function propertyValue(scale, typeChanged, args, property) {
+  if (Object.hasOwn(args, property)) return args[property];
+  if (!typeChanged) return scale[property];
+  if (!Object.hasOwn(scale, property)) return undefined;
+  try {
+    validateScalePropertyForType(args.type, property);
+    return scale[property];
+  } catch {
+    return undefined;
+  }
+}
+
+function normalizeDefinition(scale, channel, consumers, args) {
+  const type = args.type ?? scale.type;
+  const typeChanged = type !== scale.type;
+  validateTypeTransition(scale, type, channel, consumers);
+  const domain = type === "ordinal"
+    ? validateOrdinalDomain(args.domain ?? scale.domain)
+    : validateScaleDomain(args.domain ?? scale.domain);
+  if (isTransformedScaleType(type) && domain !== "auto") {
+    validateTransformedDomain(type, domain, Object.fromEntries(
+      TYPE_PARAMETERS
+        .filter(property => Object.hasOwn(args, property))
+        .map(property => [property, args[property]])
+    ));
+  }
+  const definition = {
+    type,
+    domain,
+    range: Object.hasOwn(args, "range") || typeChanged
+      ? validateRangeForChannel({ type }, channel, args.range ?? scale.range)
+      : scale.range
+  };
   for (const property of ["nice", "zero", "clamp", "reverse"]) {
-    if (!Object.hasOwn(args, property)) continue;
-    if (typeof args[property] !== "boolean") {
+    const value = propertyValue(scale, typeChanged, args, property);
+    if (value === undefined) continue;
+    if (typeof value !== "boolean") {
       throw new TypeError(`Scale ${property} must be a boolean.`);
     }
-    patch[property] = args[property];
+    validateScalePropertyForType(type, property);
+    definition[property] = value;
   }
-  if (scale.type === "ordinal") {
-    for (const property of ["nice", "zero", "clamp"]) {
-      if (Object.hasOwn(patch, property)) {
-        throw new Error(`Scale type "ordinal" does not support ${property}.`);
-      }
+  const requested = Object.fromEntries(TYPE_PARAMETERS.flatMap(property => {
+    const value = propertyValue(scale, typeChanged, args, property);
+    return value === undefined ? [] : [[property, value]];
+  }));
+  if (isTransformedScaleType(type)) {
+    const parameters = normalizeTransformParameters(type, requested);
+    if (type === "log") definition.base = parameters.base;
+    if (type === "pow") definition.exponent = parameters.exponent;
+    if (type === "symlog") definition.constant = parameters.constant;
+  } else {
+    for (const property of Object.keys(requested)) {
+      validateScalePropertyForType(type, property);
     }
   }
-  if (scale.type === "time" && Object.hasOwn(patch, "zero")) {
-    throw new Error('Scale type "time" does not support zero.');
-  }
-  return patch;
+  return definition;
+}
+
+function sameValue(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
 }
 
 function planMarkRematerialization(program, consumers) {
@@ -134,14 +203,28 @@ export const editScale = action(
     const scale = requireSemanticScale(this, id);
     const consumers = findScaleConsumers(this, id);
     const channel = resolveChannel(consumers, id);
-    const patch = normalizePatch(scale, channel, args);
+    const definition = normalizeDefinition(scale, channel, consumers, args);
 
     let next = this;
     for (const property of EDITABLE) {
-      if (!Object.hasOwn(patch, property)) continue;
+      if (
+        Object.hasOwn(scale, property) &&
+        !Object.hasOwn(definition, property)
+      ) {
+        next = next.editSemantic({
+          property: `scale[${id}].${property}`,
+          remove: true
+        });
+      }
+    }
+    for (const property of EDITABLE) {
+      if (
+        !Object.hasOwn(definition, property) ||
+        sameValue(scale[property], definition[property])
+      ) continue;
       next = next.editSemantic({
         property: `scale[${id}].${property}`,
-        value: patch[property]
+        value: definition[property]
       });
     }
     if (consumers.length === 0) return next;

@@ -62,7 +62,8 @@ are internal operations.
 
 ## Current scope
 
-The development build supports Cartesian scatterplots, temporal mean line
+The development build supports Cartesian scatterplots with linear, log, power,
+square-root, and symmetric-log point-position scales, temporal mean line
 charts, stacked histograms, ordinal grouped bars, grouped linear, polynomial,
 or LOESS regression scatterplots with optional mean/prediction bands, grouped density areas,
 vertical or horizontal statistical/explicit error bars with encoded-layer

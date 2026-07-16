@@ -67,6 +67,31 @@ test("supports every constant shape and preserves equal logical area", () => {
   }
 });
 
+test("edits persistent point opacity and outline appearance", () => {
+  const base = completePointProgram();
+  const styled = base.editPointMark({
+    opacity: 0.72,
+    stroke: "#ffffff",
+    strokeWidth: 0.6
+  });
+  const rematerialized = styled.editCanvas({ width: 240 });
+
+  assert.deepEqual(styled.markConfigs.points, {
+    shape: "circle",
+    radius: 3,
+    opacity: 0.72,
+    stroke: "#ffffff",
+    strokeWidth: 0.6
+  });
+  for (const program of [styled, rematerialized]) {
+    assert.equal(program.graphicSpec.objects.points.children.every(child =>
+      child.properties.opacity === 0.72 &&
+      child.properties.stroke === "#ffffff" &&
+      child.properties.strokeWidth === 0.6
+    ), true);
+  }
+});
+
 test("keeps path shapes incomplete until position and size are all available", () => {
   const base = chart()
     .createCanvas({ width: 200, height: 120, margin: 10 })
@@ -90,7 +115,7 @@ test("keeps path shapes incomplete until position and size are all available", (
 
 test("rejects missing, invalid, ambiguous, and field-driven shape edits", () => {
   const base = completePointProgram();
-  assert.throws(() => base.editPointMark({}), /requires shape/);
+  assert.throws(() => base.editPointMark({}), /requires shape, opacity, stroke/);
   assert.throws(() => base.editPointMark({ shape: "triangle" }), /Unsupported/);
   assert.throws(
     () => base.editPointMark({ target: "missing", shape: "circle" }),
@@ -100,6 +125,8 @@ test("rejects missing, invalid, ambiguous, and field-driven shape edits", () => 
     () => base.encodeShape({ field: "group" }).editPointMark({ shape: "circle" }),
     /cannot be combined/
   );
+  assert.throws(() => base.editPointMark({ opacity: 2 }), /from 0 to 1/);
+  assert.throws(() => base.editPointMark({ strokeWidth: 1 }), /active stroke/);
 
   const ambiguous = base
     .createPointMark({ id: "other", data: "rows" })

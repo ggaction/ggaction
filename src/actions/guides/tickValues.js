@@ -1,5 +1,9 @@
 import { resolveHistogramBins } from "../../grammar/histogram.js";
-import { readQuantitativeField } from "../../grammar/scales.js";
+import {
+  isTransformedScaleType,
+  readQuantitativeField,
+  transformedTicks
+} from "../../grammar/scales.js";
 import { niceTicks, timeTicks } from "../../grammar/ticks.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
@@ -46,6 +50,13 @@ export function valuesFromTickConfig(program, config) {
   const scale = program.resolvedScales[config.scale];
   if (scale?.type === "time") return timeTicks(scale.domain, config.count);
   if (scale?.type === "linear") return niceTicks(scale.domain, config.count);
+  if (isTransformedScaleType(scale?.type)) {
+    return transformedTicks(scale.type, scale.domain, config.count, {
+      ...(scale.base === undefined ? {} : { base: scale.base }),
+      ...(scale.exponent === undefined ? {} : { exponent: scale.exponent }),
+      ...(scale.constant === undefined ? {} : { constant: scale.constant })
+    });
+  }
   throw new Error(
     `Guide values require resolved continuous scale "${config.scale}".`
   );

@@ -2,7 +2,8 @@ import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
-  mapLinearValues,
+  isTransformedScaleType,
+  mapContinuousScaleValues,
   mapOrdinalPositionValues
 } from "../../../grammar/scales.js";
 import {
@@ -49,7 +50,10 @@ function validateConfig(channel, config) {
 function geometry(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveGraphicBounds(program);
-  if (!["linear", "time", "ordinal"].includes(scale?.type) || !bounds) throw new Error("Axis ticks require a supported resolved scale and Canvas bounds.");
+  if ((
+    !["linear", "time", "ordinal"].includes(scale?.type) &&
+    !isTransformedScaleType(scale?.type)
+  ) || !bounds) throw new Error("Axis ticks require a supported resolved scale and Canvas bounds.");
   if (scale.type === "ordinal" && config.mode !== "values") throw new Error("Ordinal axis ticks require explicit or inferred values, not count.");
   const domain = scale.domain;
   const values = valuesFromTickConfig(program, config);
@@ -62,9 +66,7 @@ function geometry(program, channel, config) {
   }
   const positions = scale.type === "ordinal"
     ? mapOrdinalPositionValues(values, scale)
-    : mapLinearValues(values, domain, scale.range, {
-        clamp: scale.clamp ?? false
-      });
+    : mapContinuousScaleValues(values, scale);
   const resolved = {
     values,
     ...resolveAxisTickGeometry({

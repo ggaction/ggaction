@@ -52,27 +52,29 @@ validation and uniqueness contract.
 
 ## `editPointMark`
 
-- Implemented: immutable constant-shape edits for existing point marks.
-- Signature: `editPointMark({ target?, shape })`.
+- Implemented: immutable constant shape and appearance edits for existing point marks.
+- Signature: `editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
 - `shape`은 shared `PointShape` 12종 중 하나다. Field-driven `encodeShape`가 있으면 constant shape
   edit와 충돌하므로 오류다.
+- `opacity`는 `[0, 1]`, `stroke`는 non-empty color string, `strokeWidth`는 non-negative finite logical pixel이다.
+- 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete children을
   equal-area circle, rect 또는 path recipe로 교체한다. Semantic mark/data/encoding은 바꾸지 않는다.
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ target?: UserId; shape: PointShape })`.
-- Planned (NOT IMPLEMENTED): additional independently editable point appearance properties are owned by
-  their encoding actions rather than this surface.
+- Implemented: `editPointMark({ target?: UserId; shape?: PointShape; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite })`.
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editPointMark`
 
 - ✅ Covered: inferred/explicit target, all 12 shapes, equal target area and nested rematerialization trace.
 - ✅ Covered: missing/unknown/ambiguous target, invalid shape, field-driven shape conflict and immutable failure.
-- No proposal: color, radius, size and opacity remain owned by their corresponding encoding actions.
+- ✅ Covered: opacity/stroke/strokeWidth validation and persistence across position rematerialization.
+- No proposal: fill, radius and field-driven opacity remain owned by their corresponding encoding actions.
 - Evidence: `test/unit/actions/marks/edit-point-mark.test.js`.
 
 ## `createLineMark`

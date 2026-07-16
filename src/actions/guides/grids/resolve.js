@@ -1,7 +1,10 @@
 import { validateUserId } from "../../../core/identifiers.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateKeys } from "../../../core/validation.js";
-import { mapLinearValues } from "../../../grammar/scales.js";
+import {
+  isTransformedScaleType,
+  mapContinuousScaleValues
+} from "../../../grammar/scales.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
@@ -152,7 +155,10 @@ export function resolveGridResources(program, direction, args) {
     throw new Error(`${direction} grid found multiple ${channel} scales; provide scale explicitly.`);
   }
   const scale = requestedScale ?? scaleIds[0];
-  if (!["linear", "time"].includes(program.resolvedScales[scale]?.type)) {
+  if (
+    !["linear", "time"].includes(program.resolvedScales[scale]?.type) &&
+    !isTransformedScaleType(program.resolvedScales[scale]?.type)
+  ) {
     throw new Error(`${direction} grid requires resolved continuous scale "${scale}".`);
   }
   const related = new Set(layers.map(layer => layer.id));
@@ -219,7 +225,10 @@ export function editGridConfig(previous, args) {
 export function resolveGridGeometry(program, config) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveGraphicBounds(program);
-  if (!["linear", "time"].includes(scale?.type) || bounds === undefined) {
+  if ((
+    !["linear", "time"].includes(scale?.type) &&
+    !isTransformedScaleType(scale?.type)
+  ) || bounds === undefined) {
     throw new Error("Grid materialization requires a continuous scale and Canvas bounds.");
   }
   const values = valuesFromTickConfig(program, config);
@@ -228,9 +237,7 @@ export function resolveGridGeometry(program, config) {
   if (!values.every(value => value >= low && value <= high)) {
     throw new RangeError("Grid values must be inside the scale domain.");
   }
-  const positions = mapLinearValues(values, scale.domain, scale.range, {
-    clamp: scale.clamp ?? false
-  });
+  const positions = mapContinuousScaleValues(values, scale);
   return config.direction === "horizontal"
     ? { values, x1: bounds.x, y1: positions, x2: bounds.x + bounds.width, y2: positions }
     : { values, x1: positions, y1: bounds.y, x2: positions, y2: bounds.y + bounds.height };

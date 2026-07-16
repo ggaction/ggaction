@@ -197,7 +197,7 @@ properties needed to draw the primitive to be present.
 
 ## Scale materialization
 
-`createScale({ id, type?, domain?, range?, nice?, zero? })` creates an
+`createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })` creates an
 idempotent semantic scale. Domain actions that own scale consumers invoke the
 internal wrapped `rematerializeScale` operation to resolve all consumers and
 apply concrete graphic edits, including connected axis updates. Aggregate line
@@ -208,6 +208,10 @@ even-length stroke-dash patterns for the matching channel.
 ```javascript
 program.createScale({ id: "x", type: "linear" });
 ```
+
+Direct quantitative position scale types are `linear`, `log`, `pow`, `sqrt`,
+and `symlog`; type-specific parameters use the same contract as encoding scale
+options. `time` and `ordinal` remain available for their current roles.
 
 Extension actions should call the public domain action that owns the affected
 consumer instead of calling `rematerializeScale` directly. Rematerialization is

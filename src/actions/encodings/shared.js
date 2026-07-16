@@ -35,16 +35,7 @@ export function applyEncodingScale(
 ) {
   const existing = findSemanticScale(program, definition.id);
   if (existing === undefined) {
-    const { clamp, reverse, ...created } = definition;
-    let next = program.createScale(created);
-    for (const [property, value] of Object.entries({ clamp, reverse })) {
-      if (value === undefined) continue;
-      next = next.editSemantic({
-        property: `scale[${definition.id}].${property}`,
-        value
-      });
-    }
-    return next;
+    return program.createScale(definition);
   }
   if (existing.type !== definition.type) {
     throw new Error(
@@ -54,7 +45,8 @@ export function applyEncodingScale(
 
   const patch = { id: definition.id };
   for (const property of [
-    "domain", "range", "nice", "zero", "clamp", "reverse"
+    "domain", "range", "nice", "zero", "clamp", "reverse",
+    "base", "exponent", "constant"
   ]) {
     if (Object.hasOwn(options, property)) patch[property] = definition[property];
   }

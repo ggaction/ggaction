@@ -21,8 +21,8 @@ test("independently resolves the Gate A filter and transformed mappings", () => 
   assert.equal(values.points[afghanistan].fill, "#433f85");
   assert.deepEqual(values.axes.x.labels, ["100K", "1M", "10M", "100M", "1B", "10B"]);
   assert.deepEqual(values.axes.y.labels, ["0", "2", "4", "6", "8"]);
-  assert.equal(values.legend.gradient[0].fill, "#fde725");
-  assert.equal(values.legend.gradient.at(-1).fill, "#440154");
+  assert.equal(values.legend.gradient[0].fill, "#f8e722");
+  assert.equal(values.legend.gradient.at(-1).fill, "#450457");
 });
 
 test("authors the Gate A semantics and concrete drawing order with primitives only", () => {
@@ -62,18 +62,19 @@ test("authors the Gate A semantics and concrete drawing order with primitives on
     id: "color",
     type: "sequential",
     domain: "auto",
-    range: { palette: "viridis" }
+    range: { palette: { name: "viridis" } },
+    interpolate: "rgb"
   });
 
   assert.deepEqual(program.graphicSpec.order, [
-    "canvas", "horizontalGridLines", "verticalGridLines", "points",
-    "xAxisLine", "yAxisLine", "xAxisTicks", "yAxisTicks",
-    "xAxisLabels", "yAxisLabels", "xAxisTitle", "yAxisTitle",
-    "legendGradient", "legendOutline", "legendTicks", "legendLabels",
-    "legendTitle", "chartTitle", "chartSubtitle"
+    "canvas", "horizontalGridLines", "verticalGridLines", "point",
+    "colorGradientStrips", "xAxisLine", "xAxisTicks", "xAxisLabels",
+    "xAxisTitle", "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorGradientTicks", "colorGradientLabels", "colorGradientTitle",
+    "chartTitle", "chartSubtitle"
   ]);
-  assert.equal(program.graphicSpec.objects.points.children.length, 62);
-  assert.equal(program.graphicSpec.objects.legendGradient.children.length, 60);
+  assert.equal(program.graphicSpec.objects.point.children.length, 62);
+  assert.equal(program.graphicSpec.objects.colorGradientStrips.children.length, 60);
   assert.equal(program.graphicSpec.objects.verticalGridLines.children.length, 6);
   assert.equal(program.graphicSpec.objects.horizontalGridLines.children.length, 5);
   assert.ok(program.trace.children.length > 150);

@@ -10,7 +10,7 @@ import {
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
 import {
-  mapLinearValues,
+  mapContinuousScaleValues,
   mapSequentialColors,
   mapOrdinalValues,
   resolveColorRange,
@@ -26,7 +26,12 @@ import {
   resolveStrokeDashRange,
   validateLinearScaleType,
   validateOrdinalScaleType,
-  validateTimeScaleType
+  validateTimeScaleType,
+  isTransformedScaleType,
+  normalizeTransformParameters,
+  resolveTransformedDomain,
+  SCALE_ROLES,
+  validateScaleTypeForRole
 } from "../../grammar/scales.js";
 import {
   findScale,
@@ -185,13 +190,24 @@ export const rematerializeScale = action(
     } else {
       domain = isOrdinalAppearance || isOrdinalOffset || isOrdinalPosition
         ? resolveOrdinalDomain(scale.domain, allValues)
-        : resolveContinuousDomain({
-            domain: scale.domain,
-            values: allValues,
-            type: scale.type,
-            nice: scale.nice,
-            zero: scale.zero
-          });
+        : isTransformedScaleType(scale.type)
+          ? resolveTransformedDomain({
+              type: scale.type,
+              domain: scale.domain,
+              values: allValues,
+              nice: scale.nice ?? false,
+              zero: scale.zero ?? false,
+              ...(scale.base === undefined ? {} : { base: scale.base }),
+              ...(scale.exponent === undefined ? {} : { exponent: scale.exponent }),
+              ...(scale.constant === undefined ? {} : { constant: scale.constant })
+            })
+          : resolveContinuousDomain({
+              domain: scale.domain,
+              values: allValues,
+              type: scale.type,
+              nice: scale.nice,
+              zero: scale.zero
+            });
     }
 
     let range;
@@ -269,10 +285,32 @@ export const rematerializeScale = action(
                 ? validateOrdinalScaleType(scale.type)
                 : scale.type === "time"
                   ? validateTimeScaleType(scale.type)
-                  : validateLinearScaleType(scale.type),
+                  : isTransformedScaleType(scale.type)
+                    ? validateScaleTypeForRole(
+                        scale.type,
+                        SCALE_ROLES.quantitativePosition
+                      )
+                    : validateLinearScaleType(scale.type),
             domain,
             range,
             ...(scale.clamp === undefined ? {} : { clamp: scale.clamp }),
+            ...(scale.type === "log"
+              ? { base: normalizeTransformParameters("log", {
+                  ...(scale.base === undefined ? {} : { base: scale.base })
+                }).base }
+              : scale.type === "pow"
+                ? { exponent: normalizeTransformParameters("pow", {
+                    ...(scale.exponent === undefined
+                      ? {}
+                      : { exponent: scale.exponent })
+                  }).exponent }
+                : scale.type === "symlog"
+                  ? { constant: normalizeTransformParameters("symlog", {
+                      ...(scale.constant === undefined
+                        ? {}
+                        : { constant: scale.constant })
+                    }).constant }
+                  : {}),
             ...(isSequentialColor ? { interpolate: scale.interpolate ?? "rgb" } : {})
           };
     if (scale.type === "time" && ["x", "y"].includes(channel)) {
@@ -325,9 +363,7 @@ export const rematerializeScale = action(
             })
           : isOrdinalAppearance
             ? mapOrdinalValues(values, domain, resolvedScale.range)
-            : mapLinearValues(values, resolvedScale.domain, resolvedScale.range, {
-                clamp: resolvedScale.clamp ?? false
-              })
+            : mapContinuousScaleValues(values, resolvedScale)
       });
     }
 

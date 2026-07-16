@@ -14,12 +14,25 @@ import {
   validateSizeRange,
   validateStrokeDashRange,
   validateSequentialColorRange,
-  validateTimeScaleType
+  validateTimeScaleType,
+  normalizeTransformParameters,
+  SCALE_ROLES,
+  validateScalePropertyForType,
+  validateScaleTypeForRole
 } from "../../grammar/scales.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
 const BASE_OPTIONS = Object.freeze(["id", "type", "domain", "range"]);
-const POSITION_OPTIONS = Object.freeze([...BASE_OPTIONS, "nice", "zero"]);
+const POSITION_OPTIONS = Object.freeze([
+  ...BASE_OPTIONS,
+  "nice",
+  "zero",
+  "clamp",
+  "reverse",
+  "base",
+  "exponent",
+  "constant"
+]);
 const COLOR_OPTIONS = Object.freeze([...BASE_OPTIONS, "palette"]);
 const SEQUENTIAL_COLOR_OPTIONS = Object.freeze([
   ...COLOR_OPTIONS,
@@ -59,18 +72,14 @@ export function resolvePositionScaleDefinition(
   else if (["ordinal", "nominal"].includes(fieldType)) {
     validateOrdinalScaleType(type);
   }
-  else validateLinearScaleType(type);
-  if (options.nice !== undefined && typeof options.nice !== "boolean") {
-    throw new TypeError("Scale nice must be a boolean.");
-  }
-  if (options.zero !== undefined && typeof options.zero !== "boolean") {
-    throw new TypeError("Scale zero must be a boolean.");
-  }
-  if (type !== "linear" && options.zero !== undefined) {
-    throw new Error(`Scale type "${type}" does not support zero.`);
-  }
-  if (type === "ordinal" && options.nice !== undefined) {
-    throw new Error('Scale type "ordinal" does not support nice.');
+  else validateScaleTypeForRole(type, SCALE_ROLES.quantitativePosition);
+  for (const property of ["nice", "zero", "clamp", "reverse"]) {
+    if (options[property] !== undefined && typeof options[property] !== "boolean") {
+      throw new TypeError(`Scale ${property} must be a boolean.`);
+    }
+    if (options[property] !== undefined) {
+      validateScalePropertyForType(type, property);
+    }
   }
   const scale = {
     id,
@@ -86,8 +95,39 @@ export function resolvePositionScaleDefinition(
   const zero = options.zero ?? existing?.zero ?? (
     existing === undefined ? defaults.zero : undefined
   );
-  if (nice !== undefined) scale.nice = nice;
-  if (zero !== undefined) scale.zero = zero;
+  const clamp = options.clamp ?? existing?.clamp;
+  const reverse = options.reverse ?? existing?.reverse;
+  if (nice !== undefined) {
+    validateScalePropertyForType(type, "nice");
+    scale.nice = nice;
+  }
+  if (zero !== undefined) {
+    validateScalePropertyForType(type, "zero");
+    scale.zero = zero;
+  }
+  if (clamp !== undefined) {
+    validateScalePropertyForType(type, "clamp");
+    scale.clamp = clamp;
+  }
+  if (reverse !== undefined) scale.reverse = reverse;
+  if (["log", "pow", "sqrt", "symlog"].includes(type)) {
+    const sameType = existing?.type === type;
+    const requested = Object.fromEntries([
+      ["base", options.base ?? (sameType ? existing?.base : undefined)],
+      ["exponent", options.exponent ?? (sameType ? existing?.exponent : undefined)],
+      ["constant", options.constant ?? (sameType ? existing?.constant : undefined)]
+    ].filter(([, value]) => value !== undefined));
+    const parameters = normalizeTransformParameters(type, requested);
+    if (type === "log") scale.base = parameters.base;
+    if (type === "pow") scale.exponent = parameters.exponent;
+    if (type === "symlog") scale.constant = parameters.constant;
+  } else {
+    for (const property of ["base", "exponent", "constant"]) {
+      if (options[property] !== undefined) {
+        validateScalePropertyForType(type, property);
+      }
+    }
+  }
   return scale;
 }
 

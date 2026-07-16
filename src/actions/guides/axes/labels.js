@@ -3,10 +3,13 @@ import { validateUserId } from "../../../core/identifiers.js";
 import { sameOrderedValues } from "../../../core/validation.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
-  mapLinearValues,
+  isTransformedScaleType,
+  mapContinuousScaleValues,
+  formatTransformedTick,
   mapOrdinalPositionValues
 } from "../../../grammar/scales.js";
-import { formatTimeTick, niceTicks, timeTicks } from "../../../grammar/ticks.js";
+import { formatTimeTick } from "../../../grammar/ticks.js";
+import { valuesFromTickConfig } from "../tickValues.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import {
@@ -70,13 +73,12 @@ function assertTickCompatibility(ticks, config, operation) {
 function resolve(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveGraphicBounds(program);
-  if (!["linear", "time", "ordinal"].includes(scale?.type) || !bounds) throw new Error("Axis labels require a supported resolved scale and Canvas bounds.");
+  if ((
+    !["linear", "time", "ordinal"].includes(scale?.type) &&
+    !isTransformedScaleType(scale?.type)
+  ) || !bounds) throw new Error("Axis labels require a supported resolved scale and Canvas bounds.");
   if (scale.type === "ordinal" && config.mode !== "values") throw new Error("Ordinal axis labels require explicit or inferred values, not count.");
-  const values = config.mode === "values"
-    ? config.values
-    : scale.type === "time"
-      ? timeTicks(scale.domain, config.count)
-      : niceTicks(scale.domain, config.count);
+  const values = valuesFromTickConfig(program, config);
   if (scale.type === "ordinal") {
     const domainValues = new Set(scale.domain);
     if (!values.every(value => domainValues.has(value))) throw new RangeError("Label values must be inside the scale domain.");
@@ -86,16 +88,16 @@ function resolve(program, channel, config) {
   }
   const positions = scale.type === "ordinal"
     ? mapOrdinalPositionValues(values, scale)
-    : mapLinearValues(values, scale.domain, scale.range, {
-        clamp: scale.clamp ?? false
-      });
+    : mapContinuousScaleValues(values, scale);
   const text = values.map(value => formatAxisValue(
     value,
     scale.type,
     config.format,
     item => scale.type === "time"
       ? formatTimeTick(item, scale.domain)
-      : String(item)
+      : isTransformedScaleType(scale.type)
+        ? formatTransformedTick(scale.type, item)
+        : String(item)
   ));
   const resolved = {
     values,

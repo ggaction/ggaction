@@ -147,7 +147,7 @@ test("applies zero before nice only to an automatic linear domain", () => {
 });
 
 test("validates scale actions and materialization requirements", () => {
-  assert.throws(() => chart().createScale({ id: "x", type: "log" }), /Unsupported/);
+  assert.throws(() => chart().createScale({ id: "x", type: "band" }), /Unsupported/);
   assert.throws(() => chart().createScale({ id: "x", extra: true }), /Unknown/);
   assert.throws(() => chart().rematerializeScale({ id: "x" }), /Unknown scale/);
   assert.throws(

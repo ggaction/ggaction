@@ -3,6 +3,7 @@ import { STACK_MODES } from "../../../core/vocabulary.js";
 import { getPositionCoordinateDefaults } from "../../../grammar/coordinates.js";
 import { normalizeHistogramBin } from "../../../grammar/histogram.js";
 import {
+  isTransformedScaleType,
   readNominalField,
   readQuantitativeField,
   readTemporalField,
@@ -338,6 +339,11 @@ export function resolvePositionEncoding(program, channel, args, operation) {
           : {}
       : {}
   );
+  if (isTransformedScaleType(scale.type) && layer.mark.type !== "point") {
+    throw new Error(
+      "Transformed position scales currently require a point mark."
+    );
+  }
   return {
     target,
     layer,

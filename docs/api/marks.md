@@ -46,14 +46,18 @@ The first omitted mark ID uses its semantic role: `"point"`, `"line"`,
 `"bar"`, `"area"`, or `"rule"`. A second mark of the same type requires an explicit ID.
 This keeps simple chains concise without creating hidden numbered resources.
 
-## `editPointMark({ target?, shape })`
+## `editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })`
 
-Change a point mark's constant shape without changing its data or encodings:
+Change a point mark's constant shape or outline appearance without changing its
+data or encodings:
 
 ```javascript
 const diamonds = program.editPointMark({
   target: "points",
-  shape: "diamond"
+  shape: "diamond",
+  opacity: 0.72,
+  stroke: "#ffffff",
+  strokeWidth: 0.6
 });
 ```
 
@@ -62,6 +66,9 @@ Supported shapes are `circle`, `square`, `diamond`, the four directional
 triangles, `plus`, `cross`, `star`, `hexagon`, and `wye`. All recipes preserve
 the same logical target area. A constant edit is rejected when the mark already
 has a field-driven shape encoding.
+`opacity` is between `0` and `1`; `strokeWidth` is a non-negative finite logical
+pixel value. At least one editable property is required, and omitted properties
+are preserved through later position rematerialization.
 
 ## `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})`
 

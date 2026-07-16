@@ -4,23 +4,21 @@ These contracts are accepted future API work; they are not current public behavi
 
 ## Current edit baseline
 
-`editScale` for `linear | time | ordinal` scales, including domain/range reset, `nice`, `zero`, `clamp`,
-`reverse` and deterministic consumer rematerialization, is implemented and documented in
+`editScale` for `linear | log | pow | sqrt | symlog | time | ordinal` scales, including domain/range reset,
+type parameters, atomic quantitative point-position type transitions, `nice`, `zero`, `clamp`, `reverse` and deterministic consumer rematerialization, is implemented and documented in
 [`../current/CORE.md`](../current/CORE.md#editscale). This file retains only scale types and mapping policies
 that are still planned.
 
 ## Scale type vocabulary
 
 ```typescript
-type CurrentScaleType = "linear" | "time" | "ordinal";
+type CurrentScaleType =
+  | "linear" | "log" | "pow" | "sqrt" | "symlog"
+  | "time" | "ordinal";
 type PositiveFiniteExceptOne = number; // finite && value > 0 && value !== 1
 
 type PlannedScaleType =
   | CurrentScaleType
-  | "log"
-  | "pow"
-  | "sqrt"
-  | "symlog"
   | "band"
   | "point"
   | "sequential"
@@ -36,6 +34,8 @@ type PlannedScaleOptions = {
 };
 ```
 
+- `log`, `pow`, `sqrt` and `symlog` are Implemented for point position, including the parameters and
+  atomic edit policy below. Additional transformed mark consumers remain Planned.
 - `log` maps one strictly positive or one strictly negative quantitative domain. The domain may not
   contain or cross zero. `base` defaults to `10`, affects ticks and nice boundaries, and is valid
   only for `log`.
@@ -70,13 +70,12 @@ type PlannedScaleOptions = {
   rematerialization follow the existing scale contract.
 - `identity` and `bin-ordinal` remain Proposed. Identity bypasses normal mapping, while bin-ordinal
   overlaps the current histogram bin owner.
-- Status: Planned, NOT IMPLEMENTED. Each type needs domain/range validation, mapping, ticks where
-  applicable, mark and guide rematerialization, TypeScript declarations, and representative boundary
-  coverage before becoming Implemented.
+- Status: Mixed. Transformed point position is Implemented; `band | point | sequential | quantize | quantile |
+  threshold`, transformed non-point consumers and `unknown` remain Planned.
 
 ### Scale type editing
 
-`editScale` adds `type`, `base`, `exponent` and `constant` to its editable surface. A type edit validates
+`editScale` implements `type`, `base`, `exponent` and `constant` for quantitative point-position consumers. A type edit validates
 the complete resulting scale and every connected consumer before changing state. Existing domain and range
 are preserved only when valid for the new type; otherwise the same call must provide valid replacements.
 Properties that belong only to the old type are structurally removed and the new type's documented defaults

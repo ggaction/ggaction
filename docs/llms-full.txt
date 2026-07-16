@@ -2291,14 +2291,18 @@ The first omitted mark ID uses its semantic role: `"point"`, `"line"`,
 `"bar"`, `"area"`, or `"rule"`. A second mark of the same type requires an explicit ID.
 This keeps simple chains concise without creating hidden numbered resources.
 
-## `editPointMark({ target?, shape })`
+## `editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })`
 
-Change a point mark's constant shape without changing its data or encodings:
+Change a point mark's constant shape or outline appearance without changing its
+data or encodings:
 
 ```javascript
 const diamonds = program.editPointMark({
   target: "points",
-  shape: "diamond"
+  shape: "diamond",
+  opacity: 0.72,
+  stroke: "#ffffff",
+  strokeWidth: 0.6
 });
 ```
 
@@ -2307,6 +2311,9 @@ Supported shapes are `circle`, `square`, `diamond`, the four directional
 triangles, `plus`, `cross`, `star`, `hexagon`, and `wye`. All recipes preserve
 the same logical target area. A constant edit is rejected when the mark already
 has a field-driven shape encoding.
+`opacity` is between `0` and `1`; `strokeWidth` is a non-negative finite logical
+pixel value. At least one editable property is required, and omitted properties
+are preserved through later position rematerialization.
 
 ## `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})`
 
@@ -4497,7 +4504,7 @@ selection or appearance state. Highlight appearance currently supports points on
 
 | Scale family | Default domain | Default range | Common controls |
 | --- | --- | --- | --- |
-| Linear/time position | `"auto"` | Plot bounds | `nice`, `zero` |
+| Continuous point position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Ordinal position/xOffset | First-appearance order | Plot or parent band | explicit domain/range |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
 
@@ -4511,25 +4518,40 @@ const reversed = program.editScale({ id: "x", reverse: true });
 ```
 
 `id` may be omitted when the current scale or the program's only scale is
-unambiguous. At least one of `domain`, `range`, `nice`, `zero`, `clamp`, or
-`reverse` is required. Use `"auto"` to reset domain or range; omission preserves
-the current value.
+unambiguous. At least one editable option is required. Use `"auto"` to reset
+domain or range; omission preserves the current value. Quantitative point
+scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and
+`symlog`:
+
+```javascript
+const logarithmic = program.editScale({ id: "x", type: "log", base: 10 });
+```
 
 ## Continuous scales
 
 | Option | Type | Default |
 | --- | --- | --- |
 | `id` | scale ID | channel name |
-| `type` | `"linear"` or `"time"` | inferred from channel and field type |
+| `type` | `"linear"`, `"log"`, `"pow"`, `"sqrt"`, `"symlog"`, or `"time"` | inferred from field type |
 | `domain` | `"auto"` or two values | `"auto"` |
 | `range` | `"auto"` or two finite numbers | `"auto"` |
 | `nice` | boolean | omitted |
-| `zero` | boolean | omitted; linear only |
+| `zero` | boolean | omitted; linear/pow/sqrt/symlog only |
+| `clamp` | boolean | omitted (`false`) |
+| `reverse` | boolean | omitted (`false`) |
+| `base` | positive finite number except `1` | `10`; log only |
+| `exponent` | positive finite number | `1`; pow only |
+| `constant` | positive finite number | `1`; symlog only |
 
 Automatic ranges use current plot bounds. For automatic linear domains,
 `zero: true` includes zero and `nice: true` then expands to rounded boundaries.
 Automatic temporal `nice` expands to UTC calendar boundaries. Time scales
 reject `zero`.
+
+For quantitative point positions, `log` requires a strictly positive or
+strictly negative domain and rejects `zero`. `pow` is sign-preserving, `sqrt`
+is its fixed exponent-`0.5` specialization, and `symlog` supports values on
+both sides of zero. Axes and grids use the same transformed mapping as points.
 
 Temporal field values are normalized while resolving the scale, without
 rewriting the source dataset. Finite timestamps are accepted directly;
@@ -4543,7 +4565,7 @@ explicit domain > nice / zero > inferred domain
 reverse(explicit range > inferred range)
 ```
 
-`clamp: true` constrains values outside a linear or time domain to the nearest
+`clamp: true` constrains values outside a continuous position domain to the nearest
 range endpoint. `reverse: true` reverses the final resolved range. Ordinal
 scales support `reverse` but reject `nice`, `zero`, and `clamp`.
 
@@ -4672,6 +4694,10 @@ One scale cannot be shared across different channels. Explicit domains must
 contain every observed value required by ordinal consumers. A successful edit
 rematerializes connected marks and guides; a failed edit leaves the earlier
 immutable program unchanged.
+
+Transformed position materialization currently supports point marks. Other
+mark types reject these scale types until their path or rectangle materializers
+implement the same mapping.
 
 ## Related
 
@@ -5688,10 +5714,10 @@ Create a semantic point mark with one of 12 equal-area shape realizations. [Mark
 ### `editPointMark`
 
 ```javascript
-editPointMark({ target?, shape })
+editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape and rematerialize its concrete children. [Marks](../api/marks.md)
+Change constant point shape or outline appearance and rematerialize its concrete children. [Marks](../api/marks.md)
 
 ### `createLineMark`
 
@@ -6257,7 +6283,7 @@ are available on programs used by extension actions.
 | Semantic primitive | `editSemantic({ property, value })` or `editSemantic({ property, remove: true })` |
 | Graphic primitive | `createGraphics({ id, type, length?, before?, after? })` |
 | Graphic primitive | `editGraphics({ target, property, value })` or `editGraphics({ target, remove: true })` |
-| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero? })`, `editScale({ id?, domain?, range?, nice?, zero?, clamp?, reverse? })` |
+| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })` |
 
 See [Action authoring](../extension/action-authoring.md) and
 [Primitive API](../extension/primitives.md).
@@ -6531,7 +6557,7 @@ properties needed to draw the primitive to be present.
 
 ## Scale materialization
 
-`createScale({ id, type?, domain?, range?, nice?, zero? })` creates an
+`createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })` creates an
 idempotent semantic scale. Domain actions that own scale consumers invoke the
 internal wrapped `rematerializeScale` operation to resolve all consumers and
 apply concrete graphic edits, including connected axis updates. Aggregate line
@@ -6542,6 +6568,10 @@ even-length stroke-dash patterns for the matching channel.
 ```javascript
 program.createScale({ id: "x", type: "linear" });
 ```
+
+Direct quantitative position scale types are `linear`, `log`, `pow`, `sqrt`,
+and `symlog`; type-specific parameters use the same contract as encoding scale
+options. `time` and `ordinal` remain available for their current roles.
 
 Extension actions should call the public domain action that owns the affected
 consumer instead of calling `rematerializeScale` directly. Rematerialization is

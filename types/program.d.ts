@@ -31,7 +31,14 @@ export type CurveInterpolation =
   | "natural";
 export type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";
 export type DashPattern = readonly number[];
-export type ScaleType = "linear" | "time" | "ordinal";
+export type ScaleType =
+  | "linear"
+  | "log"
+  | "pow"
+  | "sqrt"
+  | "symlog"
+  | "time"
+  | "ordinal";
 export type StackMode = "zero" | "normalize" | null;
 export type DensityKernel =
   | "gaussian"
@@ -326,17 +333,26 @@ export interface ScaleOptions {
   range?: ScaleRange;
   nice?: boolean;
   zero?: boolean;
+  clamp?: boolean;
+  reverse?: boolean;
+  base?: number;
+  exponent?: number;
+  constant?: number;
   palette?: Palette;
 }
 
 export interface EditScaleOptions {
   id?: string;
+  type?: ScaleType;
   domain?: "auto" | readonly unknown[];
   range?: ScaleRange;
   nice?: boolean;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;
+  base?: number;
+  exponent?: number;
+  constant?: number;
 }
 
 export interface PositionEncodingOptions {
@@ -856,7 +872,13 @@ export class ChartProgram {
   createIntervalData(options: IntervalDataOptions): ChartProgram;
 
   createPointMark(options?: { id?: string; data?: string; shape?: PointShape }): ChartProgram;
-  editPointMark(options: { target?: string; shape: PointShape }): ChartProgram;
+  editPointMark(options: {
+    target?: string;
+    shape?: PointShape;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  }): ChartProgram;
   createLineMark(options?: {
     id?: string;
     data?: string;

@@ -9,7 +9,7 @@ title: Scale Options
 
 | Scale family | Default domain | Default range | Common controls |
 | --- | --- | --- | --- |
-| Linear/time position | `"auto"` | Plot bounds | `nice`, `zero` |
+| Continuous point position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Ordinal position/xOffset | First-appearance order | Plot or parent band | explicit domain/range |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
 
@@ -23,25 +23,40 @@ const reversed = program.editScale({ id: "x", reverse: true });
 ```
 
 `id` may be omitted when the current scale or the program's only scale is
-unambiguous. At least one of `domain`, `range`, `nice`, `zero`, `clamp`, or
-`reverse` is required. Use `"auto"` to reset domain or range; omission preserves
-the current value.
+unambiguous. At least one editable option is required. Use `"auto"` to reset
+domain or range; omission preserves the current value. Quantitative point
+scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and
+`symlog`:
+
+```javascript
+const logarithmic = program.editScale({ id: "x", type: "log", base: 10 });
+```
 
 ## Continuous scales
 
 | Option | Type | Default |
 | --- | --- | --- |
 | `id` | scale ID | channel name |
-| `type` | `"linear"` or `"time"` | inferred from channel and field type |
+| `type` | `"linear"`, `"log"`, `"pow"`, `"sqrt"`, `"symlog"`, or `"time"` | inferred from field type |
 | `domain` | `"auto"` or two values | `"auto"` |
 | `range` | `"auto"` or two finite numbers | `"auto"` |
 | `nice` | boolean | omitted |
-| `zero` | boolean | omitted; linear only |
+| `zero` | boolean | omitted; linear/pow/sqrt/symlog only |
+| `clamp` | boolean | omitted (`false`) |
+| `reverse` | boolean | omitted (`false`) |
+| `base` | positive finite number except `1` | `10`; log only |
+| `exponent` | positive finite number | `1`; pow only |
+| `constant` | positive finite number | `1`; symlog only |
 
 Automatic ranges use current plot bounds. For automatic linear domains,
 `zero: true` includes zero and `nice: true` then expands to rounded boundaries.
 Automatic temporal `nice` expands to UTC calendar boundaries. Time scales
 reject `zero`.
+
+For quantitative point positions, `log` requires a strictly positive or
+strictly negative domain and rejects `zero`. `pow` is sign-preserving, `sqrt`
+is its fixed exponent-`0.5` specialization, and `symlog` supports values on
+both sides of zero. Axes and grids use the same transformed mapping as points.
 
 Temporal field values are normalized while resolving the scale, without
 rewriting the source dataset. Finite timestamps are accepted directly;
@@ -55,7 +70,7 @@ explicit domain > nice / zero > inferred domain
 reverse(explicit range > inferred range)
 ```
 
-`clamp: true` constrains values outside a linear or time domain to the nearest
+`clamp: true` constrains values outside a continuous position domain to the nearest
 range endpoint. `reverse: true` reverses the final resolved range. Ordinal
 scales support `reverse` but reject `nice`, `zero`, and `clamp`.
 
@@ -184,6 +199,10 @@ One scale cannot be shared across different channels. Explicit domains must
 contain every observed value required by ordinal consumers. A successful edit
 rematerializes connected marks and guides; a failed edit leaves the earlier
 immutable program unchanged.
+
+Transformed position materialization currently supports point marks. Other
+mark types reject these scale types until their path or rectangle materializers
+implement the same mapping.
 
 ## Related
 

@@ -15,13 +15,13 @@ function scaled(value) {
 }
 
 export const TRANSFORMED_SCATTER_LAYOUT = Object.freeze({
-  width: scaled(760),
-  height: scaled(520),
+  width: 456,
+  height: 312,
   margin: Object.freeze({
-    top: scaled(96),
-    right: scaled(150),
-    bottom: scaled(72),
-    left: scaled(84)
+    top: 57.6,
+    right: 90,
+    bottom: 43.2,
+    left: 50.4
   })
 });
 
@@ -97,17 +97,19 @@ export function createGapminderTransformedScaleValues(gapminder) {
   const colorDomain = Object.freeze(extent(rows, "life_expect"));
   const xTicks = Object.freeze([100_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000, 10_000_000_000]);
   const yTicks = Object.freeze([0, 2, 4, 6, 8]);
-  const legendTicks = Object.freeze([
-    colorDomain[0], 60, 68, 76, colorDomain[1]
-  ]);
+  const legendTicks = Object.freeze(Array.from(
+    { length: 5 },
+    (_, index) => colorDomain[0] +
+      index / 4 * (colorDomain[1] - colorDomain[0])
+  ));
   const gradientSteps = 60;
   const gradient = Object.freeze(Array.from({ length: gradientSteps }, (_, index) => {
-    const ratio = index / (gradientSteps - 1);
+    const ratio = (index + 0.5) / gradientSteps;
     return Object.freeze({
-      x: scaled(646),
-      y: scaled(152 + ratio * 220),
-      width: scaled(16),
-      height: scaled(220 / gradientSteps + 0.6),
+      x: bounds.right + 21.6,
+      y: bounds.top + 46 + index * (132 / gradientSteps),
+      width: 9.6,
+      height: 132 / gradientSteps,
       fill: samplePalette(1 - ratio)
     });
   }));
@@ -140,8 +142,8 @@ export function createGapminderTransformedScaleValues(gapminder) {
     legend: Object.freeze({
       gradient,
       ticks: legendTicks,
-      positions: Object.freeze(legendTicks.map(value =>
-        mapLinear(value, colorDomain, [scaled(372), scaled(152)])
+      positions: Object.freeze(legendTicks.map((_, index) =>
+        bounds.top + 46 + 132 * (1 - index / (legendTicks.length - 1))
       )),
       labels: Object.freeze(legendTicks.map(value =>
         Number.isInteger(value) ? String(value) : value.toFixed(1)

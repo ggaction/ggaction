@@ -21,7 +21,10 @@ export function validatePositionChannel(channel) {
 }
 
 export function validateScaleType(type) {
-  if (!['linear', 'ordinal', 'time'].includes(type)) {
+  const implemented = [
+    "linear", "log", "pow", "sqrt", "symlog", "time", "ordinal"
+  ];
+  if (!implemented.includes(type)) {
     throw new Error(`Unsupported scale type "${type}".`);
   }
   return type;

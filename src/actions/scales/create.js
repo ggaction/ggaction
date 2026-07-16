@@ -6,7 +6,9 @@ import {
   validateOrdinalRange,
   validateScaleDomain,
   validateScaleRange,
-  validateScaleType
+  validateScalePropertyForType,
+  validateScaleType,
+  normalizeTransformParameters
 } from "../../grammar/scales.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
@@ -16,7 +18,12 @@ const CREATE_SCALE_OPTIONS = Object.freeze([
   "domain",
   "range",
   "nice",
-  "zero"
+  "zero",
+  "clamp",
+  "reverse",
+  "base",
+  "exponent",
+  "constant"
 ]);
 
 function validateOptions(args) {
@@ -48,13 +55,9 @@ function sameScaleSetting(left, right) {
 }
 
 function assertEquivalentScale(existing, expected) {
-  if (
-    existing.type !== expected.type ||
-    !sameScaleSetting(existing.domain, expected.domain) ||
-    !sameScaleSetting(existing.range, expected.range) ||
-    existing.nice !== expected.nice ||
-    existing.zero !== expected.zero
-  ) {
+  const keys = new Set([...Object.keys(existing), ...Object.keys(expected)]);
+  keys.delete("id");
+  if ([...keys].some(key => !sameScaleSetting(existing[key], expected[key]))) {
     throw new Error(`Scale "${existing.id}" already exists with a different definition.`);
   }
 }
@@ -84,9 +87,7 @@ export const createScale = action(
       if (typeof args.nice !== "boolean") {
         throw new TypeError("Scale nice must be a boolean.");
       }
-      if (type === "ordinal") {
-        throw new Error('Scale type "ordinal" does not support nice.');
-      }
+      validateScalePropertyForType(type, "nice");
       definition.nice = args.nice;
     }
 
@@ -94,10 +95,31 @@ export const createScale = action(
       if (typeof args.zero !== "boolean") {
         throw new TypeError("Scale zero must be a boolean.");
       }
-      if (type !== "linear") {
-        throw new Error(`Scale type "${type}" does not support zero.`);
-      }
+      validateScalePropertyForType(type, "zero");
       definition.zero = args.zero;
+    }
+    for (const property of ["clamp", "reverse"]) {
+      if (args[property] === undefined) continue;
+      if (typeof args[property] !== "boolean") {
+        throw new TypeError(`Scale ${property} must be a boolean.`);
+      }
+      validateScalePropertyForType(type, property);
+      definition[property] = args[property];
+    }
+    const requestedParameters = Object.fromEntries(
+      ["base", "exponent", "constant"]
+        .filter(property => args[property] !== undefined)
+        .map(property => [property, args[property]])
+    );
+    if (["log", "pow", "sqrt", "symlog"].includes(type)) {
+      const parameters = normalizeTransformParameters(type, requestedParameters);
+      if (type === "log") definition.base = parameters.base;
+      if (type === "pow") definition.exponent = parameters.exponent;
+      if (type === "symlog") definition.constant = parameters.constant;
+    } else {
+      for (const property of Object.keys(requestedParameters)) {
+        validateScalePropertyForType(type, property);
+      }
     }
     const existing = findSemanticScale(this, id);
 
@@ -111,17 +133,13 @@ export const createScale = action(
       .editSemantic({ property: `scale[${id}].domain`, value: definition.domain })
       .editSemantic({ property: `scale[${id}].range`, value: definition.range });
 
-    if (definition.nice !== undefined) {
+    for (const property of [
+      "nice", "zero", "clamp", "reverse", "base", "exponent", "constant"
+    ]) {
+      if (definition[property] === undefined) continue;
       next = next.editSemantic({
-        property: `scale[${id}].nice`,
-        value: definition.nice
-      });
-    }
-
-    if (definition.zero !== undefined) {
-      next = next.editSemantic({
-        property: `scale[${id}].zero`,
-        value: definition.zero
+        property: `scale[${id}].${property}`,
+        value: definition[property]
       });
     }
 

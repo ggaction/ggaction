@@ -138,10 +138,10 @@ Create a semantic point mark with one of 12 equal-area shape realizations. [Mark
 ### `editPointMark`
 
 ```javascript
-editPointMark({ target?, shape })
+editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape and rematerialize its concrete children. [Marks](../api/marks.md)
+Change constant point shape or outline appearance and rematerialize its concrete children. [Marks](../api/marks.md)
 
 ### `createLineMark`
 
@@ -707,7 +707,7 @@ are available on programs used by extension actions.
 | Semantic primitive | `editSemantic({ property, value })` or `editSemantic({ property, remove: true })` |
 | Graphic primitive | `createGraphics({ id, type, length?, before?, after? })` |
 | Graphic primitive | `editGraphics({ target, property, value })` or `editGraphics({ target, remove: true })` |
-| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero? })`, `editScale({ id?, domain?, range?, nice?, zero?, clamp?, reverse? })` |
+| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })` |
 
 See [Action authoring](../extension/action-authoring.md) and
 [Primitive API](../extension/primitives.md).

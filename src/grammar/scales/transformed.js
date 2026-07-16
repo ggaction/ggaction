@@ -54,8 +54,11 @@ export function normalizeTransformParameters(type, options = {}) {
 function transformValue(value, type, parameters) {
   if (type === "linear") return value;
   if (type === "log") {
-    return Math.sign(value) * Math.log(Math.abs(value)) /
-      Math.log(parameters.base);
+    return Math.sign(value) * Math.log10(Math.abs(value)) /
+      Math.log10(parameters.base);
+  }
+  if (type === "sqrt") {
+    return Math.sign(value) * Math.sqrt(Math.abs(value));
   }
   const exponent = type === "sqrt" ? 0.5 : parameters.exponent;
   if (type === "pow" || type === "sqrt") {
@@ -216,4 +219,18 @@ export function transformedTicks(type, domain, count, options = {}) {
   if (negative) values.reverse();
   if (reversed) values.reverse();
   return cloneAndFreeze(values.length === 0 ? [...validated] : values);
+}
+
+export function formatTransformedTick(type, value) {
+  if (type !== "log") return String(value);
+  const magnitude = Math.abs(value);
+  const units = [
+    [1_000_000_000, "B"],
+    [1_000_000, "M"],
+    [1_000, "K"]
+  ];
+  const unit = units.find(([threshold]) => magnitude >= threshold);
+  if (unit === undefined) return String(value);
+  const scaled = value / unit[0];
+  return `${Number(scaled.toPrecision(3))}${unit[1]}`;
 }

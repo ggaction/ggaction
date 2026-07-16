@@ -158,13 +158,14 @@ test("validates the continuous scale vocabulary and bounds", () => {
   assert.equal(validateFieldType("ordinal"), "ordinal");
   assert.equal(validateFieldType("temporal"), "temporal");
   assert.equal(validateScaleType("linear"), "linear");
+  assert.equal(validateScaleType("log"), "log");
   assert.equal(validateScaleType("time"), "time");
   assert.equal(validateScaleDomain("auto"), "auto");
   assert.equal(validateScaleRange("auto"), "auto");
 
   assert.throws(() => validatePositionChannel("color"), /Unknown/);
   assert.throws(() => validateFieldType("nominal"), /Unsupported/);
-  assert.throws(() => validateScaleType("log"), /Unsupported/);
+  assert.throws(() => validateScaleType("band"), /Unsupported/);
   assert.throws(() => validateScaleDomain([0]), /two finite numbers/);
   assert.throws(() => validateScaleRange([0, Infinity]), /two finite numbers/);
   assert.throws(

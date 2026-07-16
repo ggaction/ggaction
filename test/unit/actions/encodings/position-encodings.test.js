@@ -189,9 +189,14 @@ test("validates position encoding inputs before changing the program", () => {
       .semanticSpec.layers[0].encoding.x.fieldType,
     "nominal"
   );
+  assert.equal(
+    program.encodeX({ field: "horsepower", scale: { type: "log" } })
+      .semanticSpec.scales[0].type,
+    "log"
+  );
   assert.throws(
-    () => program.encodeX({ field: "horsepower", scale: { type: "log" } }),
-    /Unsupported position scale type/
+    () => program.encodeX({ field: "horsepower", scale: { type: "band" } }),
+    /not valid for quantitative-position/
   );
   assert.throws(
     () => program.encodeX({ field: "horsepower", extra: true }),
