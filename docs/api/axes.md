@@ -50,10 +50,10 @@ interval near the requested count and format labels automatically. For example,
 a 1970–1982 domain produces labels such as `1970`, `1972`, ..., `1982`.
 Explicit time values are finite timestamps.
 
-An ordinal x scale uses its complete domain as the default tick and label
-values. Each value is placed at the center of its category band and formatted
+A band or point x scale uses its complete domain as the default tick and label
+values. Each value is placed at the shared band or point center and formatted
 with `String(value)`. Explicit `ticksAndLabels.values` may select a domain
-subset in the requested order. Ordinal axes reject `count` so categories are
+subset in the requested order. Discrete axes reject `count` so categories are
 not silently omitted. Reversed ranges and Canvas rematerialization preserve
 the stored category values.
 

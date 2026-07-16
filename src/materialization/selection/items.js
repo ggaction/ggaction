@@ -269,7 +269,7 @@ function aggregateCellDefinitions(program, layer, dataset) {
     ));
   }
 
-  const categories = categoryScale.type === "ordinal"
+  const categories = ["ordinal", "band", "point"].includes(categoryScale.type)
     ? categoryScale.domain
     : [...new Set(derived.map(cell => cell[channels.category]))]
         .sort((left, right) => left - right);

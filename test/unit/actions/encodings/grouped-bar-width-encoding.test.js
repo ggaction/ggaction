@@ -198,10 +198,8 @@ test("validates grouped bar width options and prerequisites", () => {
     .createBarMark({ id: "bars" })
     .encodeX({ field: "year", fieldType: "ordinal" })
     .encodeY({ field: "perc" });
-  assert.throws(
-    () => incomplete.encodeBarWidth(),
-    /requires complete aggregate bar/
-  );
+  const uncolored = incomplete.encodeBarWidth();
+  assert.deepEqual(uncolored.markConfigs.bars.barWidth, { band: 0.72 });
   assert.deepEqual(program.markConfigs, {
     bars: { xOffset: { paddingInner: 0, paddingOuter: 0 } }
   });

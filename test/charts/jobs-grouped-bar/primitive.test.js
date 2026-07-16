@@ -56,7 +56,15 @@ test("authors and renders the complete primitive jobs grouped bar chart", () => 
     }
   }]);
   assert.deepEqual(program.semanticSpec.scales, [
-    { id: "x", type: "ordinal", domain: "auto", range: "auto" },
+    {
+      id: "x",
+      type: "band",
+      domain: "auto",
+      range: "auto",
+      paddingInner: 0,
+      paddingOuter: 0,
+      align: 0.5
+    },
     {
       id: "y",
       type: "linear",

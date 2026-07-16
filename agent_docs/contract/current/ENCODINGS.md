@@ -8,7 +8,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - `id`: Implemented. user-defined scale ID; 생략하면 channel 이름(`x`, `y`, `color`, `size`,
   `shape`, `strokeDash`, `xOffset`)을 사용한다.
-- `type`: Implemented. quantitative point position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 현재 `ordinal`; color/shape/dash/offset은
+- `type`: Implemented. quantitative point position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; color/shape/dash/offset은
   `ordinal`, size는 `linear`만 허용한다.
 - `domain`: Implemented. `"auto"` 또는 type에 맞는 explicit array. explicit domain은 data inference,
   `zero`, `nice`보다 우선한다.
@@ -21,7 +21,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `palette`: Implemented for color scale. palette name이며 `range`와 동시에 사용할 수 없다.
 - `base`, `exponent`, `constant`: Implemented for point position `log`, `pow`, `symlog`; defaults는 `10`, `1`, `1`이다. `sqrt`는 fixed exponent `0.5`다.
 - `clamp`, `reverse`: Implemented for continuous point position mappings.
-- Planned: explicit band/point, discretizing scale types와
+- `paddingInner`, `paddingOuter`, `padding`, `align`: Implemented for type-compatible band/point position.
+- Planned: discretizing scale types와
   clamp/reverse/unknown mapping policies는 `planned/SCALES.md`, named palette vocabulary는
   이 domain의 planned palette contract가 소유한다. Point quantitative/temporal color의 internal
   sequential scale, interpolation, clamp/reverse와 continuous gradient legend는 Implemented다.
@@ -55,7 +56,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; bin?: BinDefinition; stack?: "zero" | "normalize" | null })`; 실제 조합은 canonical matrix와 mark grain policy가 제한한다.
 - Implemented point extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }`.
-- Planned (NOT IMPLEMENTED): `{ scale?: { type?: "band" | "point"; unknown?: unknown } }`; temporal `time` remains UTC-only.
+- Planned (NOT IMPLEMENTED): `{ scale?: { unknown?: unknown } }`; temporal `time` remains UTC-only.
 - Proposed (NOT IMPLEMENTED): Polar positional action.
 
 ### Value coverage — `encodeX`
@@ -81,7 +82,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
     wrong type and shared-channel conflicts.
   - ⚠️ Partial: 모든 fieldType × nice × zero × explicit bound pairwise 조합.
   - ✅ Covered: point log/pow/sqrt/symlog mapping, parameters, clamp/reverse, guides, Canvas resize and unsupported mark rejection.
-  - 🟡 Planned: compatible band/point scale types and unknown policy.
+  - ✅ Covered: band/point defaults, padding/alignment, reversed range, bar bandwidth compatibility and shared point centers.
+  - 🟡 Planned: unknown policy.
 - Evidence: position, temporal, histogram-bin and ordinal-bar action tests.
 
 ## `encodeY`
@@ -141,7 +143,7 @@ type AggregateOperation =
 
 - Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | "normalize" | null })`; nominal은 compatible count-style aggregate에만 허용되고 mark/pair policy가 조합을 제한한다.
 - Implemented point extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }`.
-- Planned (NOT IMPLEMENTED): `{ scale?: { type?: "band" | "point"; unknown?: unknown } }`; temporal `time` remains UTC-only.
+- Planned (NOT IMPLEMENTED): `{ scale?: { unknown?: unknown } }`; temporal `time` remains UTC-only.
 - Proposed (NOT IMPLEMENTED): `{ stack?: "center" }`; full-item extreme selection은 Planned `selectMarks`가 소유한다.
 
 ### Value coverage — `encodeY`
@@ -165,7 +167,8 @@ type AggregateOperation =
   - ✅ Covered: auto/explicit domain/range, nice/zero precedence, shared consumer conflicts.
   - ⚠️ Partial: aggregate/stack/scale option pairwise matrix.
   - ✅ Covered: point transformed mapping and shared axes/grid rematerialization.
-  - 🟡 Planned: compatible band/point types and unknown policy.
+  - ✅ Covered: compatible band/point types, padding/alignment and shared consumer rematerialization.
+  - 🟡 Planned: unknown policy.
 - Evidence: point position, line aggregate, histogram y and ordinal aggregate bar tests.
 
 ## Position field-type compatibility
@@ -184,8 +187,8 @@ type AggregateOperation =
 - Temporal normalization은 source dataset을 바꾸지 않는다. 1000–9999 정수와 4자리 문자열은 UTC
   year, `YYYY-MM-DD`/`YYYY/MM/DD`는 검증된 UTC date, 그 밖의 valid string과 finite number는
   timestamp로 해석한다.
-- Current scale vocabulary는 UTC temporal `time`, ordinal `ordinal`, quantitative `linear`다. `band`,
-  `point`와 transformed continuous aliases는 planned scale vocabulary가 소유한다.
+- Current scale vocabulary는 UTC temporal `time`, discrete position `band | point`, appearance/offset
+  `ordinal`, quantitative `linear`과 point-only transformed aliases다.
 - Horizontal `layout: "group"`은 yOffset이 없으므로 명시적으로 거부한다. Stack/fill/overlay/diverging은
   quantitative x measure에서 materialize한다.
 - Evidence: `test/unit/grammar/position-compatibility.test.js`, scale temporal normalization tests,

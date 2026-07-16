@@ -49,6 +49,10 @@ export function validateCompleteScaleType(type) {
   return type;
 }
 
+export function isDiscretePositionScaleType(type) {
+  return type === "band" || type === "point";
+}
+
 export function validateScaleTypeForRole(type, role) {
   const accepted = SCALE_TYPES_BY_ROLE[role];
   if (accepted === undefined) {

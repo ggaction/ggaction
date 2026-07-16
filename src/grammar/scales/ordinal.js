@@ -69,6 +69,80 @@ export function resolveOrdinalPositionScale({
   });
 }
 
+function validateAlign(value) {
+  if (!Number.isFinite(value) || value < 0 || value > 1) {
+    throw new RangeError("Discrete scale align must be between 0 and 1.");
+  }
+  return value;
+}
+
+export function resolveDiscretePositionScale({
+  type,
+  domain,
+  values,
+  range,
+  channel,
+  bounds,
+  paddingInner = 0,
+  paddingOuter = 0,
+  padding = 0.5,
+  align = 0.5
+}) {
+  if (!["band", "point"].includes(type)) {
+    throw new Error(`Unsupported discrete position scale type "${type}".`);
+  }
+  const resolvedDomain = resolveOrdinalDomain(domain, values);
+  const resolvedRange = range === "auto" && channel === "y"
+    ? cloneAndFreeze([bounds.y, bounds.y + bounds.height])
+    : resolveScaleRange(range, channel, bounds);
+  const domainValues = new Set(resolvedDomain);
+  for (const value of values) {
+    if (!domainValues.has(value)) {
+      throw new Error(`Value "${value}" is outside the discrete domain.`);
+    }
+  }
+  validateAlign(align);
+  if (type === "band") {
+    if (!Number.isFinite(paddingInner) || paddingInner < 0 || paddingInner >= 1) {
+      throw new RangeError(
+        "Band scale paddingInner must be from 0 (inclusive) to 1 (exclusive)."
+      );
+    }
+    if (!Number.isFinite(paddingOuter) || paddingOuter < 0) {
+      throw new RangeError(
+        "Band scale paddingOuter must be a non-negative finite number."
+      );
+    }
+  } else if (!Number.isFinite(padding) || padding < 0) {
+    throw new RangeError(
+      "Point scale padding must be a non-negative finite number."
+    );
+  }
+  const span = Math.abs(resolvedRange[1] - resolvedRange[0]);
+  const direction = Math.sign(resolvedRange[1] - resolvedRange[0]) || 1;
+  const count = resolvedDomain.length;
+  const denominator = type === "band"
+    ? Math.max(1, count - paddingInner + paddingOuter * 2)
+    : Math.max(1, count - 1 + padding * 2);
+  const step = direction * span / denominator;
+  const bandwidth = type === "band"
+    ? Math.abs(step) * (1 - paddingInner)
+    : 0;
+  const outerPadding = type === "band" ? paddingOuter : padding;
+  const start = resolvedRange[0] +
+    direction * Math.abs(step) * outerPadding * 2 * align;
+  return cloneAndFreeze({
+    type,
+    domain: resolvedDomain,
+    range: resolvedRange,
+    step,
+    start,
+    bandwidth,
+    align,
+    ...(type === "band" ? { paddingInner, paddingOuter } : { padding })
+  });
+}
+
 export function resolveOrdinalOffsetScale({
   domain,
   values,
@@ -124,6 +198,19 @@ export function mapOrdinalPositionValues(values, scale) {
     const index = indices.get(value);
     if (index === undefined) {
       throw new Error(`Value "${value}" is outside the ordinal domain.`);
+    }
+    if (
+      (scale.type === "band" &&
+        scale.paddingInner === 0 &&
+        scale.paddingOuter === 0 &&
+        scale.align === 0.5) ||
+      (scale.type === "point" && scale.padding === 0.5 && scale.align === 0.5)
+    ) {
+      return scale.range[0] + (index + 0.5) * scale.step;
+    }
+    if (["band", "point"].includes(scale.type)) {
+      const direction = Math.sign(scale.step) || 1;
+      return scale.start + index * scale.step + direction * scale.bandwidth / 2;
     }
     return scale.range[0] + (index + 0.5) * scale.step;
   }));

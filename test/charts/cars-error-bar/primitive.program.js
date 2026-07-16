@@ -311,9 +311,11 @@ export function createErrorBarBaselinePrimitives(cars) {
       value: values.rows
     })
     .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
-    .editSemantic({ property: "scale[x].type", value: "ordinal" })
+    .editSemantic({ property: "scale[x].type", value: "point" })
     .editSemantic({ property: "scale[x].domain", value: "auto" })
     .editSemantic({ property: "scale[x].range", value: "auto" })
+    .editSemantic({ property: "scale[x].padding", value: 0.5 })
+    .editSemantic({ property: "scale[x].align", value: 0.5 })
     .editSemantic({ property: "scale[y].type", value: "linear" })
     .editSemantic({ property: "scale[y].domain", value: "auto" })
     .editSemantic({ property: "scale[y].range", value: "auto" })

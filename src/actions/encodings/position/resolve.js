@@ -336,9 +336,18 @@ export function resolvePositionEncoding(program, channel, args, operation) {
           : { nice: true, zero: true }
         : fieldType === "temporal"
           ? { nice: true }
-          : {}
-      : {}
+          : { discreteType: "band" }
+      : ["ordinal", "nominal"].includes(fieldType)
+        ? { discreteType: "point" }
+        : {}
   );
+  if (
+    layer.mark.type === "bar" &&
+    ["ordinal", "nominal"].includes(fieldType) &&
+    scale.type === "point"
+  ) {
+    throw new Error("Categorical bar positions require a band scale.");
+  }
   if (isTransformedScaleType(scale.type) && layer.mark.type !== "point") {
     throw new Error(
       "Transformed position scales currently require a point mark."

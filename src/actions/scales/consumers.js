@@ -91,7 +91,7 @@ export function resolveConsumerValues(program, consumer) {
   }
   if (["nominal", "ordinal"].includes(consumer.encoding.fieldType)) {
     const scale = findScale(program, consumer.encoding.scale);
-    if (scale.type !== "ordinal") {
+    if (!["ordinal", "band", "point"].includes(scale.type)) {
       throw new Error(
         `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
       );

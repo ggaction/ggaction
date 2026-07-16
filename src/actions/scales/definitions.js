@@ -31,7 +31,11 @@ const POSITION_OPTIONS = Object.freeze([
   "reverse",
   "base",
   "exponent",
-  "constant"
+  "constant",
+  "paddingInner",
+  "paddingOuter",
+  "padding",
+  "align"
 ]);
 const COLOR_OPTIONS = Object.freeze([...BASE_OPTIONS, "palette"]);
 const SEQUENTIAL_COLOR_OPTIONS = Object.freeze([
@@ -66,11 +70,17 @@ export function resolvePositionScaleDefinition(
   const existing = findSemanticScale(program, id);
   const expectedType = fieldType === "temporal"
     ? "time"
-    : ["ordinal", "nominal"].includes(fieldType) ? "ordinal" : "linear";
+    : ["ordinal", "nominal"].includes(fieldType)
+      ? defaults.discreteType ?? "point"
+      : "linear";
   const type = options.type ?? existing?.type ?? expectedType;
   if (fieldType === "temporal") validateTimeScaleType(type);
   else if (["ordinal", "nominal"].includes(fieldType)) {
-    validateOrdinalScaleType(type);
+    if (!["band", "point"].includes(type)) {
+      throw new Error(
+        `Scale type "${type}" is not valid for discrete position.`
+      );
+    }
   }
   else validateScaleTypeForRole(type, SCALE_ROLES.quantitativePosition);
   for (const property of ["nice", "zero", "clamp", "reverse"]) {
@@ -110,6 +120,51 @@ export function resolvePositionScaleDefinition(
     scale.clamp = clamp;
   }
   if (reverse !== undefined) scale.reverse = reverse;
+  if (type === "band") {
+    const paddingInner = options.paddingInner ?? existing?.paddingInner ?? 0;
+    const paddingOuter = options.paddingOuter ?? existing?.paddingOuter ?? 0;
+    const align = options.align ?? existing?.align ?? 0.5;
+    for (const [property, value] of [
+      ["paddingInner", paddingInner],
+      ["paddingOuter", paddingOuter],
+      ["align", align]
+    ]) {
+      validateScalePropertyForType(type, property);
+      if (!Number.isFinite(value)) {
+        throw new TypeError(`Scale ${property} must be finite.`);
+      }
+    }
+    if (paddingInner < 0 || paddingInner >= 1) {
+      throw new RangeError("Scale paddingInner must be from 0 (inclusive) to 1 (exclusive).");
+    }
+    if (paddingOuter < 0) {
+      throw new RangeError("Scale paddingOuter must be non-negative.");
+    }
+    if (align < 0 || align > 1) {
+      throw new RangeError("Scale align must be between 0 and 1.");
+    }
+    Object.assign(scale, { paddingInner, paddingOuter, align });
+  } else if (type === "point") {
+    const padding = options.padding ?? existing?.padding ?? 0.5;
+    const align = options.align ?? existing?.align ?? 0.5;
+    for (const [property, value] of [["padding", padding], ["align", align]]) {
+      validateScalePropertyForType(type, property);
+      if (!Number.isFinite(value)) {
+        throw new TypeError(`Scale ${property} must be finite.`);
+      }
+    }
+    if (padding < 0) throw new RangeError("Scale padding must be non-negative.");
+    if (align < 0 || align > 1) {
+      throw new RangeError("Scale align must be between 0 and 1.");
+    }
+    Object.assign(scale, { padding, align });
+  } else {
+    for (const property of ["paddingInner", "paddingOuter", "padding", "align"]) {
+      if (options[property] !== undefined) {
+        validateScalePropertyForType(type, property);
+      }
+    }
+  }
   if (["log", "pow", "sqrt", "symlog"].includes(type)) {
     const sameType = existing?.type === type;
     const requested = Object.fromEntries([

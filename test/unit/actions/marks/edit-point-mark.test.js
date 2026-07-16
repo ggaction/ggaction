@@ -70,6 +70,7 @@ test("supports every constant shape and preserves equal logical area", () => {
 test("edits persistent point opacity and outline appearance", () => {
   const base = completePointProgram();
   const styled = base.editPointMark({
+    fill: "#2563eb",
     opacity: 0.72,
     stroke: "#ffffff",
     strokeWidth: 0.6
@@ -79,6 +80,7 @@ test("edits persistent point opacity and outline appearance", () => {
   assert.deepEqual(styled.markConfigs.points, {
     shape: "circle",
     radius: 3,
+    fill: "#2563eb",
     opacity: 0.72,
     stroke: "#ffffff",
     strokeWidth: 0.6
@@ -86,6 +88,7 @@ test("edits persistent point opacity and outline appearance", () => {
   for (const program of [styled, rematerialized]) {
     assert.equal(program.graphicSpec.objects.points.children.every(child =>
       child.properties.opacity === 0.72 &&
+      child.properties.fill === "#2563eb" &&
       child.properties.stroke === "#ffffff" &&
       child.properties.strokeWidth === 0.6
     ), true);
@@ -115,7 +118,7 @@ test("keeps path shapes incomplete until position and size are all available", (
 
 test("rejects missing, invalid, ambiguous, and field-driven shape edits", () => {
   const base = completePointProgram();
-  assert.throws(() => base.editPointMark({}), /requires shape, opacity, stroke/);
+  assert.throws(() => base.editPointMark({}), /requires shape, fill, opacity, stroke/);
   assert.throws(() => base.editPointMark({ shape: "triangle" }), /Unsupported/);
   assert.throws(
     () => base.editPointMark({ target: "missing", shape: "circle" }),
@@ -126,6 +129,11 @@ test("rejects missing, invalid, ambiguous, and field-driven shape edits", () => 
     /cannot be combined/
   );
   assert.throws(() => base.editPointMark({ opacity: 2 }), /from 0 to 1/);
+  assert.throws(() => base.editPointMark({ fill: "" }), /non-empty string/);
+  assert.throws(
+    () => base.encodeColor({ field: "group" }).editPointMark({ fill: "red" }),
+    /cannot be combined/
+  );
   assert.throws(() => base.editPointMark({ strokeWidth: 1 }), /active stroke/);
 
   const ambiguous = base

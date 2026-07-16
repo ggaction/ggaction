@@ -61,9 +61,12 @@ export function createCarsBoxPlotPrimitives(cars, options = {}) {
 
   program = program
     .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
-    .editSemantic({ property: "scale[x].type", value: "ordinal" })
+    .editSemantic({ property: "scale[x].type", value: "band" })
     .editSemantic({ property: "scale[x].domain", value: "auto" })
     .editSemantic({ property: "scale[x].range", value: "auto" })
+    .editSemantic({ property: "scale[x].paddingInner", value: 0 })
+    .editSemantic({ property: "scale[x].paddingOuter", value: 0 })
+    .editSemantic({ property: "scale[x].align", value: 0.5 })
     .editSemantic({ property: "scale[y].type", value: "linear" })
     .editSemantic({ property: "scale[y].domain", value: "auto" })
     .editSemantic({ property: "scale[y].range", value: "auto" })

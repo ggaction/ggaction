@@ -78,7 +78,7 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
           xScale.range,
           { clamp: xScale.clamp ?? false }
         )[0] - xScale.bandwidth / 2
-      : xScale.range[0] + category * xScale.step;
+      : (xScale.start ?? xScale.range[0]) + category * xScale.step;
     const offsetCenter = offsetScale.start + offset * offsetScale.step +
       offsetDirection * offsetScale.bandwidth / 2;
     const center = temporal

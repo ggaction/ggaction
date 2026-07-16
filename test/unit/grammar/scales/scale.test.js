@@ -12,6 +12,7 @@ import {
   readTemporalField,
   resolveColorRange,
   resolveContinuousDomain,
+  resolveDiscretePositionScale,
   resolveOrdinalDomain,
   resolveOrdinalOffsetScale,
   resolveOrdinalPositionScale,
@@ -160,12 +161,14 @@ test("validates the continuous scale vocabulary and bounds", () => {
   assert.equal(validateScaleType("linear"), "linear");
   assert.equal(validateScaleType("log"), "log");
   assert.equal(validateScaleType("time"), "time");
+  assert.equal(validateScaleType("band"), "band");
+  assert.equal(validateScaleType("point"), "point");
   assert.equal(validateScaleDomain("auto"), "auto");
   assert.equal(validateScaleRange("auto"), "auto");
 
   assert.throws(() => validatePositionChannel("color"), /Unknown/);
   assert.throws(() => validateFieldType("nominal"), /Unsupported/);
-  assert.throws(() => validateScaleType("band"), /Unsupported/);
+  assert.throws(() => validateScaleType("category"), /Unsupported/);
   assert.throws(() => validateScaleDomain([0]), /two finite numbers/);
   assert.throws(() => validateScaleRange([0, Infinity]), /two finite numbers/);
   assert.throws(
@@ -226,6 +229,58 @@ test("preserves explicit ordinal order and reversed position ranges", () => {
   assert.throws(
     () => mapOrdinalPositionValues([1900], scale),
     /outside the ordinal domain/
+  );
+});
+
+test("resolves aligned band and point positions with explicit padding", () => {
+  const band = resolveDiscretePositionScale({
+    type: "band",
+    domain: ["A", "B", "C"],
+    values: ["A", "B", "C"],
+    range: [0, 300],
+    channel: "x",
+    paddingInner: 0.2,
+    paddingOuter: 0.1,
+    align: 0.5
+  });
+  assert.deepEqual(band, {
+    type: "band",
+    domain: ["A", "B", "C"],
+    range: [0, 300],
+    step: 100,
+    start: 10,
+    bandwidth: 80,
+    align: 0.5,
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  });
+  assert.deepEqual(
+    mapOrdinalPositionValues(["A", "B", "C"], band),
+    [50, 150, 250]
+  );
+
+  const point = resolveDiscretePositionScale({
+    type: "point",
+    domain: ["A", "B", "C"],
+    values: ["A", "B", "C"],
+    range: [300, 0],
+    channel: "x",
+    padding: 0.5,
+    align: 0.5
+  });
+  assert.deepEqual(point, {
+    type: "point",
+    domain: ["A", "B", "C"],
+    range: [300, 0],
+    step: -100,
+    start: 250,
+    bandwidth: 0,
+    align: 0.5,
+    padding: 0.5
+  });
+  assert.deepEqual(
+    mapOrdinalPositionValues(["A", "B", "C"], point),
+    [250, 150, 50]
   );
 });
 

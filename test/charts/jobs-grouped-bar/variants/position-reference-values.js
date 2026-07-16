@@ -253,8 +253,7 @@ export function createHorizontalBarReference(rows, layout) {
       stackStart: partition.start,
       stackEnd: partition.end,
       x: Math.min(start, end),
-      y: bounds.y + category * categoryBandwidth +
-        (categoryBandwidth - barHeight) / 2,
+      y: bounds.y + (category + 0.5) * categoryBandwidth - barHeight / 2,
       width: Math.abs(end - start),
       height: barHeight,
       fill: COLORS[group]

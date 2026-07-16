@@ -444,7 +444,10 @@ Scale은 named semantic resource다.
 }
 ```
 
-현재 scale type은 `linear`, `time`, `ordinal`이다. Channel default ID는 일반적으로
+현재 direct scale type은 `linear`, transformed quantitative types, `time`, `band`, `point`, `ordinal`이다.
+Category position은 width가 필요한 bar에서 `band`, center만 필요한 point/rule에서 `point`를 사용하고
+appearance/offset lookup은 `ordinal`이 소유한다. Band/point는 signed step, aligned start와 각각 positive/zero
+bandwidth를 resolved state에 저장한다. Channel default ID는 일반적으로
 `x`, `y`, `color`, `size`, `shape`, `strokeDash`, `xOffset`처럼 channel 이름을 쓴다.
 독립 scale이 필요할 때 명시적 ID를 제공한다.
 
@@ -457,6 +460,8 @@ Encoding이나 interval action이 `{ id }`만 전달해 existing scale을 참조
 Automatic continuous domain에는 `zero`가 먼저 적용되고 그 뒤 `nice`가 적용된다.
 사용자가 explicit domain 또는 range를 주면 automatic policy보다 우선한다. Ordinal
 domain은 source의 deterministic first-appearance order를 기본으로 사용한다.
+Band/point padding과 align edit는 같은 scale을 소비하는 marks와 guides를 모두 rematerialize하며,
+bar consumer가 남아 있으면 bandwidth가 없는 point type으로의 전환을 거부한다.
 
 ### Coordinate
 
@@ -660,6 +665,11 @@ Current context가 eligible resource를 명시적으로 가리키면 그 최근 
 Ordinary creation ID도 같은 원칙을 따른다. Stable role default가 하나뿐일 때만 omission을
 허용하고 동일 역할이 이미 존재하면 explicit ID를 요구한다. Generated public-resource counter는
 만들지 않는다.
+
+Ordinary mark를 새 layer로 추가할 때 current compatible layer, otherwise one unique compatible layer에서
+omitted data, coordinate와 x/y field/type/scale을 추론할 수 있다. 이 결정은 새 layer semantic state에
+저장한다. Aggregate, bin, stack처럼 source mark recipe 전용인 정책은 다른 mark로 복사하지 않고,
+multiple eligible sources는 explicit authoring을 요구한다.
 
 ## Action과 trace
 

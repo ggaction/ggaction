@@ -34,19 +34,26 @@ test("encodes an ordinal bar x field with the shortest valid call", () => {
   }]);
   assert.deepEqual(program.semanticSpec.scales, [{
     id: "x",
-    type: "ordinal",
+    type: "band",
     domain: "auto",
-    range: "auto"
+    range: "auto",
+    paddingInner: 0,
+    paddingOuter: 0,
+    align: 0.5
   }]);
   assert.deepEqual(program.semanticSpec.coordinates, [
     { id: "main", type: "cartesian" }
   ]);
   assert.deepEqual(program.resolvedScales.x, {
-    type: "ordinal",
+    type: "band",
     domain: [1850, 1860, 1870],
     range: [60, 380],
     step: 320 / 3,
-    bandwidth: 320 / 3
+    start: 60,
+    bandwidth: 320 / 3,
+    align: 0.5,
+    paddingInner: 0,
+    paddingOuter: 0
   });
   assert.deepEqual(program.graphicSpec.objects.bars.children, []);
   assert.equal(before.semanticSpec.layers[0].encoding, undefined);
@@ -78,11 +85,15 @@ test("supports explicit ordinal scale identity, order, and reversed range", () =
   assert.equal(program.semanticSpec.layers[0].coordinate, "plot");
   assert.equal(program.semanticSpec.layers[0].encoding.x.scale, "year");
   assert.deepEqual(program.resolvedScales.year, {
-    type: "ordinal",
+    type: "band",
     domain: [1870, 1860, 1850],
     range: [300, 0],
     step: -100,
-    bandwidth: 100
+    start: 300,
+    bandwidth: 100,
+    align: 0.5,
+    paddingInner: 0,
+    paddingOuter: 0
   });
 });
 
@@ -123,7 +134,7 @@ test("validates ordinal bar x options before changing the program", () => {
       fieldType: "ordinal",
       scale: { domain: [1850] }
     }),
-    /outside the ordinal domain/
+    /outside the discrete domain/
   );
   assert.equal(program.semanticSpec.layers[0].encoding, undefined);
 });

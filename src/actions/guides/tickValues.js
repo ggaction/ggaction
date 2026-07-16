@@ -71,6 +71,13 @@ export function inferGridTickConfig(program, channel, scaleId) {
   }
 
   const boundaries = inferHistogramBoundaries(program, channel, scaleId);
+  const scale = program.resolvedScales[scaleId];
+  if (
+    boundaries === undefined &&
+    ["ordinal", "band", "point"].includes(scale?.type)
+  ) {
+    return { mode: "values", values: scale.domain };
+  }
   return boundaries === undefined
     ? { mode: "count", count: DEFAULT_TICK_COUNT }
     : { mode: "values", values: boundaries };

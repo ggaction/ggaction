@@ -317,9 +317,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createScale`
 
-- Signature: `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })`.
+- Signature: `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align? })`.
 - `id`: 필수 user-defined scale ID.
-- `type`: `"linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "ordinal"`, 기본 linear.
+- `type`: `"linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "band" | "point" | "ordinal"`, 기본 linear.
 - `domain`: `"auto"` 또는 type-valid array. continuous는 두 finite/temporal values, ordinal은 non-empty
   unique values를 사용한다.
 - `range`: `"auto"` 또는 consumer-compatible array. continuous position은 finite pair, ordinal은
@@ -328,6 +328,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `zero`: boolean, `linear | pow | sqrt | symlog` auto domain에 적용되며 log에서는 오류다.
 - `base`, `exponent`, `constant`: 각각 log, pow, symlog 전용 positive finite parameter다. Defaults는 `10`, `1`, `1`이고 sqrt는 fixed exponent `0.5`다.
 - `clamp`: continuous position mapping을 resolved range endpoints로 제한한다. `reverse`는 final range direction을 뒤집는다.
+- `band`는 `paddingInner` 기본 `0`, `paddingOuter` 기본 `0`, `align` 기본 `0.5`; `point`는
+  `padding` 기본 `0.5`, `align` 기본 `0.5`를 저장한다. Bandwidth는 band만 positive다.
 - Effect: semantic definition만 저장한다. equivalent repeated call은 idempotent, conflicting definition은 오류다.
 - Coverage: `test/unit/actions/scales/scale-actions.test.js`와 grammar scale tests가 types,
   auto/explicit values, idempotence와 conflicts를 검증한다. raw `createScale`의 consumer별 ordinal range
@@ -335,16 +337,16 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createScale`
 
-- Implemented: `createScale({ id: UserId; type?: "linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "ordinal"; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite })`; type별 validation이 값을 제한한다.
-- Planned (NOT IMPLEMENTED): `{ type?: "band" | "point" | "sequential" | "quantize" | "quantile" | "threshold"; unknown?: unknown }`; `time` remains the single UTC temporal token.
+- Implemented: `createScale({ id: UserId; type?: "linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "band" | "point" | "ordinal"; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval })`; type별 validation이 값을 제한한다.
+- Planned (NOT IMPLEMENTED): `{ type?: "sequential" | "quantize" | "quantile" | "threshold"; unknown?: unknown }`; `time` remains the single UTC temporal token.
 - Proposed (NOT IMPLEMENTED): `{ type?: "identity" | "bin-ordinal" }`
 
 ### Value coverage — `createScale`
 
 - `id`: ✅ Covered valid/invalid IDs, equivalent idempotence and conflicting duplicate.
 - `type`
-  - ✅ Covered: omission→`"linear"`, `"linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "ordinal"`, unknown value.
-  - 🟡 Planned: `"band" | "point" | "sequential" | "quantize" | "quantile" | "threshold"`; type-specific domain, range, mapping and tick contracts는
+  - ✅ Covered: omission→`"linear"`, `"linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "band" | "point" | "ordinal"`, unknown value.
+  - 🟡 Planned: `"sequential" | "quantize" | "quantile" | "threshold"`; type-specific domain, range, mapping and tick contracts는
     `planned/SCALES.md`가 소유한다.
   - 🟣 Proposed: `"identity" | "bin-ordinal"`.
 - `domain`
@@ -365,8 +367,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `editScale`
 
-- Implemented: immutable edits for existing `linear | log | pow | sqrt | symlog | time | ordinal` scales.
-- Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })`.
+- Implemented: immutable edits for existing `linear | log | pow | sqrt | symlog | time | band | point | ordinal` scales.
+- Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align? })`.
 - `id`는 existing scale을 선택한다. 생략하면 current scale, 그렇지 않으면 유일한 scale을 사용하며
   안전하게 하나를 정할 수 없으면 explicit ID를 요구한다.
 - 최소 한 editable property가 필요하다. 현재는 scale 삭제, consumer rebind와 `unknown`을 지원하지 않는다.
@@ -374,6 +376,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `nice`/`zero`보다 우선하며 `reverse`는 auto 또는 explicit 최종 range에 적용된다.
 - `type`은 point mark가 소비하는 quantitative position scale에서 `linear | log | pow | sqrt | symlog`
   사이를 atomic하게 전환한다. Complete definition과 every consumer를 먼저 검증하고 stale type parameter를 제거한다.
+- Discrete position은 compatible consumers에서 `band ↔ point`를 검증한다. Bar consumer가 있으면
+  zero-bandwidth `point` 전환을 거부한다.
 - `nice`, `zero`, `clamp`, transformed parameters와 `reverse`는 create contract의 type별 policy를 따른다.
 - Complete patch와 shared-consumer channel compatibility를 먼저 검증한 뒤 semantic scale을 수정하고,
   scale, mark, axes, grids와 legend consumer를 wrapped materialization plan으로 갱신한다.
@@ -384,7 +388,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ```typescript
 type EditableCurrentScale = {
   id?: UserId;
-  type?: "linear" | "log" | "pow" | "sqrt" | "symlog";
+  type?: "linear" | "log" | "pow" | "sqrt" | "symlog" | "band" | "point";
   domain?: "auto" | readonly unknown[];
   range?: "auto" | readonly unknown[];
   nice?: boolean;
@@ -394,10 +398,14 @@ type EditableCurrentScale = {
   base?: PositiveFiniteExceptOne;
   exponent?: PositiveFinite;
   constant?: PositiveFinite;
+  paddingInner?: UnitIntervalLessThan1;
+  paddingOuter?: NonNegativeFinite;
+  padding?: NonNegativeFinite;
+  align?: UnitInterval;
 };
 ```
 
-- Implemented for existing current scales; type transition is currently restricted to quantitative point position consumers.
+- Implemented for quantitative point-position transitions and compatible band/point position transitions.
 - Planned (NOT IMPLEMENTED): `unknown` mapping and the additional scale types in
   [`../planned/SCALES.md`](../planned/SCALES.md).
 - Proposed (NOT IMPLEMENTED): no additional direct `editScale` surface beyond the planned vocabulary.

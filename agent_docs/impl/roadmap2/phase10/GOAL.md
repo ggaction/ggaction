@@ -16,7 +16,7 @@ Complete chart contract:
 - [x] Current implementation and contract baseline audit
 - [x] Shared transformed-scale pure grammar
 - [x] Gate A transformed scatterplot approval and public implementation
-- [ ] Gate B temporal/discrete position approval and public implementation
+- [x] Gate B temporal/discrete position approval and public implementation
 - [ ] Gate C discretized color approval and public implementation
 - [ ] Gate D continuous-color bar approval and public implementation
 - [ ] Mapping-policy, rematerialization and error matrix

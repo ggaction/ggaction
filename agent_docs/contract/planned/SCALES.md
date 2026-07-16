@@ -4,7 +4,7 @@ These contracts are accepted future API work; they are not current public behavi
 
 ## Current edit baseline
 
-`editScale` for `linear | log | pow | sqrt | symlog | time | ordinal` scales, including domain/range reset,
+`editScale` for `linear | log | pow | sqrt | symlog | time | band | point | ordinal` scales, including domain/range reset,
 type parameters, atomic quantitative point-position type transitions, `nice`, `zero`, `clamp`, `reverse` and deterministic consumer rematerialization, is implemented and documented in
 [`../current/CORE.md`](../current/CORE.md#editscale). This file retains only scale types and mapping policies
 that are still planned.
@@ -14,13 +14,11 @@ that are still planned.
 ```typescript
 type CurrentScaleType =
   | "linear" | "log" | "pow" | "sqrt" | "symlog"
-  | "time" | "ordinal";
+  | "time" | "band" | "point" | "ordinal";
 type PositiveFiniteExceptOne = number; // finite && value > 0 && value !== 1
 
 type PlannedScaleType =
   | CurrentScaleType
-  | "band"
-  | "point"
   | "sequential"
   | "quantize"
   | "quantile"
@@ -47,9 +45,8 @@ type PlannedScaleOptions = {
   controls the approximately linear region around zero, and is valid only for `symlog`.
 - `time` is the only temporal scale token and always resolves input normalization, domain boundaries,
   ticks and labels in UTC. There is no separate `utc` token and no environment-local calendar mode.
-- `band` maps a unique ordered discrete domain to contiguous numeric bands and exposes bandwidth.
-  `point` maps the same domain to zero-width centers. Their padding and alignment vocabulary remains
-  owned by the accepted bar-width and offset geometry contracts.
+- `band` and `point` position scales, including padding, alignment, shared centers, guides and edit
+  rematerialization, are Implemented in the current scale and encoding contracts.
 - `sequential` maps a quantitative or temporal domain to concrete colors. Its range, palette,
   interpolation and gradient-guide behavior are owned by the accepted continuous-color vertical contract.
 - `quantize` divides one finite continuous domain pair into equal intervals for a discrete range.
@@ -70,8 +67,8 @@ type PlannedScaleOptions = {
   rematerialization follow the existing scale contract.
 - `identity` and `bin-ordinal` remain Proposed. Identity bypasses normal mapping, while bin-ordinal
   overlaps the current histogram bin owner.
-- Status: Mixed. Transformed point position is Implemented; `band | point | sequential | quantize | quantile |
-  threshold`, transformed non-point consumers and `unknown` remain Planned.
+- Status: Mixed. Transformed point position and band/point position are Implemented; `sequential | quantize |
+  quantile | threshold`, transformed non-point consumers and `unknown` remain Planned.
 
 ### Scale type editing
 

@@ -101,8 +101,9 @@ function inferText(program, channel, scaleId) {
 function resolveGeometry(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveGraphicBounds(program);
+  const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   if ((
-    !["linear", "time", "ordinal"].includes(scale?.type) &&
+    !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis title requires a supported resolved scale and Canvas bounds.");
   let along;
@@ -110,7 +111,7 @@ function resolveGeometry(program, channel, config) {
   else if (config.at === "center") along = (scale.range[0] + scale.range[1]) / 2;
   else if (config.at === "end") along = scale.range[1];
   else {
-    if (scale.type === "ordinal") {
+    if (discrete) {
       if (!scale.domain.includes(config.at)) throw new RangeError("Axis title at value must be inside the scale domain.");
       along = mapOrdinalPositionValues([config.at], scale)[0];
     } else {

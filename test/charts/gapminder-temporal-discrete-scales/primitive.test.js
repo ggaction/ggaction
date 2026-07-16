@@ -41,7 +41,7 @@ test("locks band width, padding, and zero-bandwidth point centers", () => {
   assert.deepEqual(values.centers, [
     100.33333333333333,
     161,
-    221.66666666666666,
+    221.66666666666663,
     282.3333333333333,
     343,
     403.66666666666663
@@ -100,7 +100,7 @@ test("locks UTC time positions and one path per line series", () => {
   const program = createGapminderTimePrimitives(gapminder);
   const scale = program.semanticSpec.scales.find(item => item.id === "x");
 
-  assert.deepEqual(values.xTickYears, [1955, 1965, 1975, 1985, 1995, 2005]);
+  assert.deepEqual(values.xTickYears, [1960, 1970, 1980, 1990, 2000]);
   assert.deepEqual(values.xTicks, values.xTickYears.map(year => Date.UTC(year, 0, 1)));
   assert.deepEqual(values.xDomain, [Date.UTC(1955, 0, 1), Date.UTC(2005, 0, 1)]);
   assert.deepEqual(values.yDomain, [20, 80]);

@@ -23,7 +23,11 @@ const CREATE_SCALE_OPTIONS = Object.freeze([
   "reverse",
   "base",
   "exponent",
-  "constant"
+  "constant",
+  "paddingInner",
+  "paddingOuter",
+  "padding",
+  "align"
 ]);
 
 function validateOptions(args) {
@@ -74,13 +78,15 @@ export const createScale = action(
     const definition = {
       type,
       domain:
-        type !== "ordinal"
+        !["ordinal", "band", "point"].includes(type)
           ? validateScaleDomain(args.domain ?? "auto")
           : validateOrdinalDomain(args.domain ?? "auto"),
       range:
-        type !== "ordinal"
+        !["ordinal", "band", "point"].includes(type)
           ? validateScaleRange(args.range ?? "auto")
-          : validateOrdinalRange(args.range ?? "auto")
+          : type === "ordinal"
+            ? validateOrdinalRange(args.range ?? "auto")
+            : validateScaleRange(args.range ?? "auto")
     };
 
     if (args.nice !== undefined) {
@@ -121,6 +127,37 @@ export const createScale = action(
         validateScalePropertyForType(type, property);
       }
     }
+    if (type === "band") {
+      const paddingInner = args.paddingInner ?? 0;
+      const paddingOuter = args.paddingOuter ?? 0;
+      const align = args.align ?? 0.5;
+      if (!Number.isFinite(paddingInner) || paddingInner < 0 || paddingInner >= 1) {
+        throw new RangeError("Scale paddingInner must be from 0 (inclusive) to 1 (exclusive).");
+      }
+      if (!Number.isFinite(paddingOuter) || paddingOuter < 0) {
+        throw new RangeError("Scale paddingOuter must be non-negative and finite.");
+      }
+      if (!Number.isFinite(align) || align < 0 || align > 1) {
+        throw new RangeError("Scale align must be between 0 and 1.");
+      }
+      Object.assign(definition, { paddingInner, paddingOuter, align });
+    } else if (type === "point") {
+      const padding = args.padding ?? 0.5;
+      const align = args.align ?? 0.5;
+      if (!Number.isFinite(padding) || padding < 0) {
+        throw new RangeError("Scale padding must be non-negative and finite.");
+      }
+      if (!Number.isFinite(align) || align < 0 || align > 1) {
+        throw new RangeError("Scale align must be between 0 and 1.");
+      }
+      Object.assign(definition, { padding, align });
+    } else {
+      for (const property of ["paddingInner", "paddingOuter", "padding", "align"]) {
+        if (args[property] !== undefined) {
+          validateScalePropertyForType(type, property);
+        }
+      }
+    }
     const existing = findSemanticScale(this, id);
 
     if (existing !== undefined) {
@@ -134,7 +171,8 @@ export const createScale = action(
       .editSemantic({ property: `scale[${id}].range`, value: definition.range });
 
     for (const property of [
-      "nice", "zero", "clamp", "reverse", "base", "exponent", "constant"
+      "nice", "zero", "clamp", "reverse", "base", "exponent", "constant",
+      "paddingInner", "paddingOuter", "padding", "align"
     ]) {
       if (definition[property] === undefined) continue;
       next = next.editSemantic({

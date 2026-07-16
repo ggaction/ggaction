@@ -4,6 +4,10 @@ import {
   createGapminderBandPointPrimitives,
   createGapminderTimePrimitives
 } from "../primitive.program.js";
+import {
+  createGapminderBandPointChart,
+  createGapminderTimeChart
+} from "../../../../examples/gapminder-temporal-discrete-scales/program.js";
 
 const gapminder = loadGapminder();
 
@@ -44,7 +48,7 @@ export const bandPointTargetCallChain = `chart()
   .editBarMark({ fill: "#cbd5e1" })
   .createPointMark()
   .encodeRadius({ value: 5 })
-  .editPointMark({ stroke: "white", strokeWidth: 1 })
+  .editPointMark({ fill: "#2563eb", stroke: "white", strokeWidth: 1 })
   .createGuides({
     axes: {
       x: { scale: "x", title: { text: "Country" } },
@@ -55,7 +59,11 @@ export const bandPointTargetCallChain = `chart()
   })
   .createTitle({
     text: "Population by Country",
-    subtitle: "Band slots with aligned point centers · 2005"
+    subtitle: "Band slots with aligned point centers · 2005",
+    offset: -7,
+    gap: 7,
+    titleStyle: { fontSize: 18, fontWeight: 700 },
+    subtitleStyle: { fontSize: 12 }
   });`;
 
 export const timeTargetCallChain = `chart()
@@ -96,7 +104,11 @@ export const timeTargetCallChain = `chart()
   })
   .createTitle({
     text: "Life Expectancy over Time",
-    subtitle: "UTC year positions · 1955–2005"
+    subtitle: "UTC year positions · 1955–2005",
+    offset: -7,
+    gap: 7,
+    titleStyle: { fontSize: 18, fontWeight: 700 },
+    subtitleStyle: { fontSize: 12 }
   });`;
 
 export const visualVariants = Object.freeze([
@@ -106,6 +118,7 @@ export const visualVariants = Object.freeze([
     title: "Band Slots and Point Centers Gate",
     callChain: bandPointTargetCallChain,
     primitive: createGapminderBandPointPrimitives(gapminder),
+    userFacing: createGapminderBandPointChart(gapminder),
     width: 456,
     height: 312,
     colors: ["#cbd5e1", "#2563eb"],
@@ -125,6 +138,7 @@ export const visualVariants = Object.freeze([
     title: "UTC Time Series Gate",
     callChain: timeTargetCallChain,
     primitive: createGapminderTimePrimitives(gapminder),
+    userFacing: createGapminderTimeChart(gapminder),
     width: 456,
     height: 312,
     colors: ["#4c78a8", "#f58518", "#e45756"],

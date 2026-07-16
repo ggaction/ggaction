@@ -218,10 +218,11 @@ export function createJobsGroupedBarValues(
       const groupIndex = groups.indexOf(cell.group);
       const isGrouped = layout === "group";
       const width = isGrouped ? groupedWidth : sharedWidth;
+      const categoryCenter = bounds.x + (yearIndex + 0.5) * categoryWidth;
       const x = isGrouped
         ? bounds.x + yearIndex * categoryWidth + offsetStart +
           groupIndex * offsetStep + (offsetBandwidth - width) / 2
-        : bounds.x + yearIndex * categoryWidth + (categoryWidth - width) / 2;
+        : categoryCenter - width / 2;
       const partition = partitions.get(JSON.stringify([cell.year, cell.group]));
       const start = layout === "diverging"
         ? partition.stackStart

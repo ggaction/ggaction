@@ -18,6 +18,7 @@ import {
   resolveOrdinalDomain,
   resolveOrdinalOffsetScale,
   resolveOrdinalPositionScale,
+  resolveDiscretePositionScale,
   resolveScaleRange,
   resolveOpacityRange,
   resolveSequentialColorStops,
@@ -27,6 +28,7 @@ import {
   validateLinearScaleType,
   validateOrdinalScaleType,
   validateTimeScaleType,
+  isDiscretePositionScaleType,
   isTransformedScaleType,
   normalizeTransformParameters,
   resolveTransformedDomain,
@@ -133,6 +135,9 @@ export const rematerializeScale = action(
     const isOrdinalOffset = channel === "xOffset";
     const isOrdinalPosition =
       !isOrdinalAppearance && !isOrdinalOffset && scale.type === "ordinal";
+    const isDiscretePosition =
+      !isOrdinalAppearance && !isOrdinalOffset &&
+      isDiscretePositionScaleType(scale.type);
     const binnedBars = valuesByConsumer.filter(
       ({ consumer }) =>
         consumer.layer.mark?.type === "bar" &&
@@ -165,17 +170,35 @@ export const rematerializeScale = action(
         zero: scale.zero ?? false
       }).domain;
     } else if (seriesLayouts.some(Boolean)) {
-      if (seriesLayouts.some(item => item === undefined)) {
+      const activeLayouts = seriesLayouts.filter(Boolean);
+      const layouts = new Set(activeLayouts.map(item => item.layout));
+      if (layouts.size !== 1) {
+        throw new Error(`Series layout scale "${id}" requires one layout policy.`);
+      }
+      const layoutConsumers = valuesByConsumer.filter(
+        (_, index) => seriesLayouts[index] !== undefined
+      );
+      const directConsumers = valuesByConsumer.filter(
+        (_, index) => seriesLayouts[index] === undefined
+      );
+      const compatibleDirect = directConsumers.every(({ consumer }) =>
+        layoutConsumers.every(({ consumer: layoutConsumer }) => {
+          const aggregate = layoutConsumer.encoding.aggregate;
+          return aggregate !== "count" &&
+            consumer.encoding.fieldType === "quantitative" &&
+            consumer.encoding.field === layoutConsumer.encoding.field;
+        })
+      );
+      if (!compatibleDirect) {
         throw new Error(
           `Series layout scale "${id}" cannot be shared with another policy.`
         );
       }
-      const layouts = new Set(seriesLayouts.map(item => item.layout));
-      if (layouts.size !== 1) {
-        throw new Error(`Series layout scale "${id}" requires one layout policy.`);
-      }
-      const layout = seriesLayouts[0].layout;
-      const values = seriesLayouts.flatMap(item => item.values);
+      const layout = activeLayouts[0].layout;
+      const values = [
+        ...activeLayouts.flatMap(item => item.values),
+        ...directConsumers.flatMap(item => item.values)
+      ];
       domain = resolveContinuousDomain({
         domain: scale.domain,
         values,
@@ -188,7 +211,8 @@ export const rematerializeScale = action(
           : scale.zero
       });
     } else {
-      domain = isOrdinalAppearance || isOrdinalOffset || isOrdinalPosition
+      domain = isOrdinalAppearance || isOrdinalOffset || isOrdinalPosition ||
+        isDiscretePosition
         ? resolveOrdinalDomain(scale.domain, allValues)
         : isTransformedScaleType(scale.type)
           ? resolveTransformedDomain({
@@ -270,7 +294,23 @@ export const rematerializeScale = action(
             return paddings[0];
           })()
         })
-      : isOrdinalPosition
+      : isDiscretePosition
+        ? resolveDiscretePositionScale({
+            type: scale.type,
+            domain: scale.domain,
+            values: allValues,
+            range: scale.range,
+            channel,
+            bounds: resolveGraphicBounds(this),
+            ...(scale.type === "band"
+              ? {
+                  paddingInner: scale.paddingInner,
+                  paddingOuter: scale.paddingOuter
+                }
+              : { padding: scale.padding }),
+            align: scale.align
+          })
+        : isOrdinalPosition
         ? resolveOrdinalPositionScale({
             domain: scale.domain,
             values: allValues,
@@ -329,12 +369,18 @@ export const rematerializeScale = action(
       }
     }
     if (scale.reverse === true) {
+      const range = [...resolvedScale.range].reverse();
+      const direction = Math.sign(range[1] - range[0]) || 1;
+      const offset = resolvedScale.start === undefined
+        ? undefined
+        : Math.abs(resolvedScale.start - resolvedScale.range[0]);
       resolvedScale = {
         ...resolvedScale,
-        range: [...resolvedScale.range].reverse(),
+        range,
         ...(resolvedScale.step === undefined
           ? {}
-          : { step: -resolvedScale.step })
+          : { step: -resolvedScale.step }),
+        ...(offset === undefined ? {} : { start: range[0] + direction * offset })
       };
     }
     let next = this._withResolvedScale(id, resolvedScale);

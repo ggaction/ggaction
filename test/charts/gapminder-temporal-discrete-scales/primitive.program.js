@@ -17,7 +17,7 @@ export function createGapminderBandPointPrimitives(gapminder) {
   const { width, height } = BAND_POINT_LAYOUT;
   const { rows2005, rows, plot, domain, band, centers, yDomain, yTicks, yPositions, bars } = values;
   const labels = domain;
-  const yLabels = yTicks.map(value => value === 0 ? "0" : `${value / 1_000_000}M`);
+  const yLabels = yTicks.map(String);
 
   let program = chart()
     .editSemantic({ property: "dataset[data].values", value: gapminder })
@@ -36,6 +36,7 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editSemantic({ property: "layer[bar].encoding.y.field", value: "pop" })
     .editSemantic({ property: "layer[bar].encoding.y.fieldType", value: "quantitative" })
     .editSemantic({ property: "layer[bar].encoding.y.aggregate", value: "mean" })
+    .editSemantic({ property: "layer[bar].encoding.y.stack", value: null })
     .editSemantic({ property: "layer[bar].encoding.y.scale", value: "y" })
     .editSemantic({ property: "layer[point].mark.type", value: "point" })
     .editSemantic({ property: "layer[point].data", value: "selectedCountries" })
@@ -79,6 +80,11 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editGraphics({ target: "horizontalGridLines", property: "y2", value: yPositions })
     .editGraphics({ target: "horizontalGridLines", property: "stroke", value: GRID })
     .editGraphics({ target: "horizontalGridLines", property: "strokeWidth", value: 1 })
+    .editGraphics({
+      target: "horizontalGridLines",
+      property: "strokeDash",
+      value: yTicks.map(() => [])
+    })
     .createGraphics({ id: "bar", type: "rect", length: bars.length })
     .editGraphics({ target: "bar", property: "x", value: bars.map(bar => bar.x) })
     .editGraphics({ target: "bar", property: "y", value: bars.map(bar => bar.y) })
@@ -87,7 +93,6 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editGraphics({ target: "bar", property: "fill", value: "#cbd5e1" })
     .editGraphics({ target: "bar", property: "stroke", value: "white" })
     .editGraphics({ target: "bar", property: "strokeWidth", value: 0.5 })
-    .editGraphics({ target: "bar", property: "opacity", value: 1 })
     .createGraphics({ id: "point", type: "circle", length: rows.length })
     .editGraphics({ target: "point", property: "x", value: centers })
     .editGraphics({ target: "point", property: "y", value: bars.map(bar => bar.y) })
@@ -112,26 +117,36 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editGraphics({ target: "yAxisLine", property: "y2", value: plot.top })
     .editGraphics({ target: "yAxisLine", property: "stroke", value: line.stroke })
     .editGraphics({ target: "yAxisLine", property: "strokeWidth", value: line.strokeWidth })
-    .createGraphics({ id: "xAxisTicks", type: "line", length: centers.length })
+    .createGraphics({
+      id: "xAxisTicks",
+      type: "line",
+      length: centers.length,
+      before: "yAxisLine"
+    })
     .editGraphics({ target: "xAxisTicks", property: "x1", value: centers })
     .editGraphics({ target: "xAxisTicks", property: "y1", value: plot.bottom })
     .editGraphics({ target: "xAxisTicks", property: "x2", value: centers })
-    .editGraphics({ target: "xAxisTicks", property: "y2", value: plot.bottom + 5 })
+    .editGraphics({ target: "xAxisTicks", property: "y2", value: plot.bottom + 6 })
     .editGraphics({ target: "xAxisTicks", property: "stroke", value: MUTED })
     .editGraphics({ target: "xAxisTicks", property: "strokeWidth", value: 1 })
     .createGraphics({ id: "yAxisTicks", type: "line", length: yTicks.length })
-    .editGraphics({ target: "yAxisTicks", property: "x1", value: plot.left - 5 })
+    .editGraphics({ target: "yAxisTicks", property: "x1", value: plot.left - 6 })
     .editGraphics({ target: "yAxisTicks", property: "y1", value: yPositions })
     .editGraphics({ target: "yAxisTicks", property: "x2", value: plot.left })
     .editGraphics({ target: "yAxisTicks", property: "y2", value: yPositions })
     .editGraphics({ target: "yAxisTicks", property: "stroke", value: MUTED })
     .editGraphics({ target: "yAxisTicks", property: "strokeWidth", value: 1 })
-    .createGraphics({ id: "xAxisLabels", type: "text", length: labels.length })
+    .createGraphics({
+      id: "xAxisLabels",
+      type: "text",
+      length: labels.length,
+      before: "yAxisLine"
+    })
     .editGraphics({ target: "xAxisLabels", property: "x", value: centers })
-    .editGraphics({ target: "xAxisLabels", property: "y", value: plot.bottom + 12 })
+    .editGraphics({ target: "xAxisLabels", property: "y", value: plot.bottom + 18 })
     .editGraphics({ target: "xAxisLabels", property: "text", value: labels })
     .createGraphics({ id: "yAxisLabels", type: "text", length: yLabels.length })
-    .editGraphics({ target: "yAxisLabels", property: "x", value: plot.left - 10 })
+    .editGraphics({ target: "yAxisLabels", property: "x", value: plot.left - 12 })
     .editGraphics({ target: "yAxisLabels", property: "y", value: yPositions })
     .editGraphics({ target: "yAxisLabels", property: "text", value: yLabels })
     .editGraphics({ target: "xAxisLabels", property: "fill", value: AXIS })
@@ -148,9 +163,9 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editGraphics({ target: "yAxisLabels", property: "textBaseline", value: "middle" });
 
   return program
-    .createGraphics({ id: "xAxisTitle", type: "text" })
+    .createGraphics({ id: "xAxisTitle", type: "text", before: "yAxisLine" })
     .editGraphics({ target: "xAxisTitle", property: "x", value: (plot.left + plot.right) / 2 })
-    .editGraphics({ target: "xAxisTitle", property: "y", value: 296 })
+    .editGraphics({ target: "xAxisTitle", property: "y", value: 300 })
     .editGraphics({ target: "xAxisTitle", property: "text", value: "Country" })
     .editGraphics({ target: "xAxisTitle", property: "fill", value: AXIS })
     .editGraphics({ target: "xAxisTitle", property: "fontSize", value: 13 })
@@ -158,8 +173,9 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editGraphics({ target: "xAxisTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "xAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "xAxisTitle", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "xAxisTitle", property: "rotation", value: 0 })
     .createGraphics({ id: "yAxisTitle", type: "text" })
-    .editGraphics({ target: "yAxisTitle", property: "x", value: 16 })
+    .editGraphics({ target: "yAxisTitle", property: "x", value: 18 })
     .editGraphics({ target: "yAxisTitle", property: "y", value: (plot.top + plot.bottom) / 2 })
     .editGraphics({ target: "yAxisTitle", property: "text", value: "Population" })
     .editGraphics({ target: "yAxisTitle", property: "fill", value: AXIS })
@@ -225,7 +241,7 @@ export function createGapminderTimePrimitives(gapminder) {
     .editSemantic({ property: "scale[y].zero", value: false })
     .editSemantic({ property: "scale[color].type", value: "ordinal" })
     .editSemantic({ property: "scale[color].domain", value: "auto" })
-    .editSemantic({ property: "scale[color].range", value: { palette: { name: "tableau10" } } })
+    .editSemantic({ property: "scale[color].range", value: { palette: "tableau10" } })
     .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
@@ -235,8 +251,9 @@ export function createGapminderTimePrimitives(gapminder) {
     .editSemantic({ property: "guide.axis.y.title", value: "Life expectancy" })
     .editSemantic({ property: "guide.grid.horizontal.scale", value: "y" })
     .editSemantic({ property: "guide.grid.horizontal.coordinate", value: "main" })
-    .editSemantic({ property: "guide.legend.color.scale", value: "color" })
-    .editSemantic({ property: "guide.legend.color.title", value: "Country" })
+    .editSemantic({ property: "guide.legend.series.channels", value: ["color"] })
+    .editSemantic({ property: "guide.legend.series.scales", value: ["color"] })
+    .editSemantic({ property: "guide.legend.series.title", value: "Country" })
     .editSemantic({ property: "title.text", value: "Life Expectancy over Time" })
     .editSemantic({ property: "title.subtitle", value: "UTC year positions · 1955–2005" })
     .createGraphics({ id: "canvas", type: "canvas" })
@@ -250,10 +267,20 @@ export function createGapminderTimePrimitives(gapminder) {
     .editGraphics({ target: "horizontalGridLines", property: "y2", value: yPositions })
     .editGraphics({ target: "horizontalGridLines", property: "stroke", value: GRID })
     .editGraphics({ target: "horizontalGridLines", property: "strokeWidth", value: 1 })
+    .editGraphics({
+      target: "horizontalGridLines",
+      property: "strokeDash",
+      value: yTicks.map(() => [])
+    })
     .createGraphics({ id: "line", type: "path", length: series.length })
     .editGraphics({ target: "line", property: "commands", value: series.map(item => item.commands) })
     .editGraphics({ target: "line", property: "stroke", value: series.map(item => item.color) })
-    .editGraphics({ target: "line", property: "strokeWidth", value: 3 });
+    .editGraphics({ target: "line", property: "strokeWidth", value: 3 })
+    .editGraphics({
+      target: "line",
+      property: "strokeDash",
+      value: series.map(() => [])
+    });
 
   const xLabels = xTickYears.map(String);
   const yLabels = yTicks.map(String);
@@ -272,26 +299,36 @@ export function createGapminderTimePrimitives(gapminder) {
     .editGraphics({ target: "yAxisLine", property: "y2", value: plot.top })
     .editGraphics({ target: "yAxisLine", property: "stroke", value: AXIS })
     .editGraphics({ target: "yAxisLine", property: "strokeWidth", value: 1 })
-    .createGraphics({ id: "xAxisTicks", type: "line", length: xPositions.length })
+    .createGraphics({
+      id: "xAxisTicks",
+      type: "line",
+      length: xPositions.length,
+      before: "yAxisLine"
+    })
     .editGraphics({ target: "xAxisTicks", property: "x1", value: xPositions })
     .editGraphics({ target: "xAxisTicks", property: "y1", value: plot.bottom })
     .editGraphics({ target: "xAxisTicks", property: "x2", value: xPositions })
-    .editGraphics({ target: "xAxisTicks", property: "y2", value: plot.bottom + 5 })
+    .editGraphics({ target: "xAxisTicks", property: "y2", value: plot.bottom + 6 })
     .editGraphics({ target: "xAxisTicks", property: "stroke", value: MUTED })
     .editGraphics({ target: "xAxisTicks", property: "strokeWidth", value: 1 })
     .createGraphics({ id: "yAxisTicks", type: "line", length: yPositions.length })
-    .editGraphics({ target: "yAxisTicks", property: "x1", value: plot.left - 5 })
+    .editGraphics({ target: "yAxisTicks", property: "x1", value: plot.left - 6 })
     .editGraphics({ target: "yAxisTicks", property: "y1", value: yPositions })
     .editGraphics({ target: "yAxisTicks", property: "x2", value: plot.left })
     .editGraphics({ target: "yAxisTicks", property: "y2", value: yPositions })
     .editGraphics({ target: "yAxisTicks", property: "stroke", value: MUTED })
     .editGraphics({ target: "yAxisTicks", property: "strokeWidth", value: 1 })
-    .createGraphics({ id: "xAxisLabels", type: "text", length: xLabels.length })
+    .createGraphics({
+      id: "xAxisLabels",
+      type: "text",
+      length: xLabels.length,
+      before: "yAxisLine"
+    })
     .editGraphics({ target: "xAxisLabels", property: "x", value: xPositions })
-    .editGraphics({ target: "xAxisLabels", property: "y", value: plot.bottom + 12 })
+    .editGraphics({ target: "xAxisLabels", property: "y", value: plot.bottom + 18 })
     .editGraphics({ target: "xAxisLabels", property: "text", value: xLabels })
     .createGraphics({ id: "yAxisLabels", type: "text", length: yLabels.length })
-    .editGraphics({ target: "yAxisLabels", property: "x", value: plot.left - 10 })
+    .editGraphics({ target: "yAxisLabels", property: "x", value: plot.left - 12 })
     .editGraphics({ target: "yAxisLabels", property: "y", value: yPositions })
     .editGraphics({ target: "yAxisLabels", property: "text", value: yLabels })
     .editGraphics({ target: "xAxisLabels", property: "fill", value: AXIS })
@@ -308,38 +345,43 @@ export function createGapminderTimePrimitives(gapminder) {
     .editGraphics({ target: "yAxisLabels", property: "textBaseline", value: "middle" });
 
   program = program
-    .createGraphics({ id: "legendSymbols", type: "line", length: countries.length })
-    .editGraphics({ target: "legendSymbols", property: "x1", value: 338 })
-    .editGraphics({ target: "legendSymbols", property: "x2", value: 354 })
-    .editGraphics({ target: "legendSymbols", property: "y1", value: [100, 130, 160] })
-    .editGraphics({ target: "legendSymbols", property: "y2", value: [100, 130, 160] })
-    .editGraphics({ target: "legendSymbols", property: "stroke", value: colors })
-    .editGraphics({ target: "legendSymbols", property: "strokeWidth", value: 3 })
-    .createGraphics({ id: "legendLabels", type: "text", length: countries.length })
-    .editGraphics({ target: "legendLabels", property: "x", value: 362 })
-    .editGraphics({ target: "legendLabels", property: "y", value: [100, 130, 160] })
-    .editGraphics({ target: "legendLabels", property: "text", value: countries })
-    .createGraphics({ id: "legendTitle", type: "text" })
-    .editGraphics({ target: "legendTitle", property: "x", value: 338 })
-    .editGraphics({ target: "legendTitle", property: "y", value: 76 })
-    .editGraphics({ target: "legendTitle", property: "text", value: "Country" })
-    .editGraphics({ target: "legendLabels", property: "fill", value: AXIS })
-    .editGraphics({ target: "legendLabels", property: "fontSize", value: 11 })
-    .editGraphics({ target: "legendLabels", property: "fontFamily", value: FONT })
-    .editGraphics({ target: "legendLabels", property: "fontWeight", value: "normal" })
-    .editGraphics({ target: "legendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "legendLabels", property: "textBaseline", value: "middle" })
-    .editGraphics({ target: "legendTitle", property: "fill", value: AXIS })
-    .editGraphics({ target: "legendTitle", property: "fontSize", value: 12 })
-    .editGraphics({ target: "legendTitle", property: "fontFamily", value: FONT })
-    .editGraphics({ target: "legendTitle", property: "fontWeight", value: 600 })
-    .editGraphics({ target: "legendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "legendTitle", property: "textBaseline", value: "middle" });
+    .createGraphics({ id: "seriesLegendSymbols", type: "line", length: countries.length })
+    .editGraphics({ target: "seriesLegendSymbols", property: "x1", value: 360 })
+    .editGraphics({ target: "seriesLegendSymbols", property: "x2", value: 392 })
+    .editGraphics({ target: "seriesLegendSymbols", property: "y1", value: [110, 138, 166] })
+    .editGraphics({ target: "seriesLegendSymbols", property: "y2", value: [110, 138, 166] })
+    .editGraphics({ target: "seriesLegendSymbols", property: "stroke", value: colors })
+    .editGraphics({ target: "seriesLegendSymbols", property: "strokeWidth", value: 2 })
+    .editGraphics({
+      target: "seriesLegendSymbols",
+      property: "strokeDash",
+      value: countries.map(() => [])
+    })
+    .createGraphics({ id: "seriesLegendLabels", type: "text", length: countries.length })
+    .editGraphics({ target: "seriesLegendLabels", property: "x", value: 402 })
+    .editGraphics({ target: "seriesLegendLabels", property: "y", value: [110, 138, 166] })
+    .editGraphics({ target: "seriesLegendLabels", property: "text", value: countries })
+    .createGraphics({ id: "seriesLegendTitle", type: "text" })
+    .editGraphics({ target: "seriesLegendTitle", property: "x", value: 360 })
+    .editGraphics({ target: "seriesLegendTitle", property: "y", value: 78 })
+    .editGraphics({ target: "seriesLegendTitle", property: "text", value: "Country" })
+    .editGraphics({ target: "seriesLegendLabels", property: "fill", value: AXIS })
+    .editGraphics({ target: "seriesLegendLabels", property: "fontSize", value: 12 })
+    .editGraphics({ target: "seriesLegendLabels", property: "fontFamily", value: FONT })
+    .editGraphics({ target: "seriesLegendLabels", property: "fontWeight", value: "normal" })
+    .editGraphics({ target: "seriesLegendLabels", property: "textAlign", value: "left" })
+    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendTitle", property: "fill", value: AXIS })
+    .editGraphics({ target: "seriesLegendTitle", property: "fontSize", value: 13 })
+    .editGraphics({ target: "seriesLegendTitle", property: "fontFamily", value: FONT })
+    .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
+    .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
+    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" });
 
   return program
-    .createGraphics({ id: "xAxisTitle", type: "text" })
+    .createGraphics({ id: "xAxisTitle", type: "text", before: "yAxisLine" })
     .editGraphics({ target: "xAxisTitle", property: "x", value: (plot.left + plot.right) / 2 })
-    .editGraphics({ target: "xAxisTitle", property: "y", value: 296 })
+    .editGraphics({ target: "xAxisTitle", property: "y", value: 300 })
     .editGraphics({ target: "xAxisTitle", property: "text", value: "Year" })
     .editGraphics({ target: "xAxisTitle", property: "fill", value: AXIS })
     .editGraphics({ target: "xAxisTitle", property: "fontSize", value: 13 })
@@ -347,8 +389,13 @@ export function createGapminderTimePrimitives(gapminder) {
     .editGraphics({ target: "xAxisTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "xAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "xAxisTitle", property: "textBaseline", value: "middle" })
-    .createGraphics({ id: "yAxisTitle", type: "text" })
-    .editGraphics({ target: "yAxisTitle", property: "x", value: 16 })
+    .editGraphics({ target: "xAxisTitle", property: "rotation", value: 0 })
+    .createGraphics({
+      id: "yAxisTitle",
+      type: "text",
+      before: "seriesLegendSymbols"
+    })
+    .editGraphics({ target: "yAxisTitle", property: "x", value: -2 })
     .editGraphics({ target: "yAxisTitle", property: "y", value: (plot.top + plot.bottom) / 2 })
     .editGraphics({ target: "yAxisTitle", property: "text", value: "Life expectancy" })
     .editGraphics({ target: "yAxisTitle", property: "fill", value: AXIS })

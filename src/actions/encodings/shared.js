@@ -46,7 +46,8 @@ export function applyEncodingScale(
   const patch = { id: definition.id };
   for (const property of [
     "domain", "range", "nice", "zero", "clamp", "reverse",
-    "base", "exponent", "constant"
+    "base", "exponent", "constant", "paddingInner", "paddingOuter",
+    "padding", "align"
   ]) {
     if (Object.hasOwn(options, property)) patch[property] = definition[property];
   }

@@ -147,7 +147,18 @@ test("applies zero before nice only to an automatic linear domain", () => {
 });
 
 test("validates scale actions and materialization requirements", () => {
-  assert.throws(() => chart().createScale({ id: "x", type: "band" }), /Unsupported/);
+  assert.deepEqual(
+    chart().createScale({ id: "x", type: "band" }).semanticSpec.scales[0],
+    {
+      id: "x",
+      type: "band",
+      domain: "auto",
+      range: "auto",
+      paddingInner: 0,
+      paddingOuter: 0,
+      align: 0.5
+    }
+  );
   assert.throws(() => chart().createScale({ id: "x", extra: true }), /Unknown/);
   assert.throws(() => chart().rematerializeScale({ id: "x" }), /Unknown scale/);
   assert.throws(

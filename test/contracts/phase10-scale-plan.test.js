@@ -36,18 +36,18 @@ test("locks time as the only UTC temporal token in the planned scale contract", 
   assert.doesNotMatch(plannedScales, /"utc"/);
 });
 
-test("publishes only the transformed scale family approved at Gate A", () => {
+test("publishes the transformed and discrete position families approved through Gate B", () => {
   assert.match(
     declarations,
-    /export type ScaleType =\s+[\s\S]*?"log"[\s\S]*?"pow"[\s\S]*?"sqrt"[\s\S]*?"symlog"[\s\S]*?"time"[\s\S]*?"ordinal";/
+    /export type ScaleType =\s+[\s\S]*?"log"[\s\S]*?"pow"[\s\S]*?"sqrt"[\s\S]*?"symlog"[\s\S]*?"time"[\s\S]*?"band"[\s\S]*?"point"[\s\S]*?"ordinal";/
   );
-  for (const type of ["log", "pow", "sqrt", "symlog"]) {
+  for (const type of ["log", "pow", "sqrt", "symlog", "band", "point"]) {
     assert.doesNotThrow(
       () => chart().createScale({ id: `current-${type}`, type })
     );
   }
   for (const type of [
-    "band", "point", "sequential", "quantize", "quantile", "threshold"
+    "sequential", "quantize", "quantile", "threshold"
   ]) {
     assert.throws(
       () => chart().createScale({ id: `planned-${type}`, type }),

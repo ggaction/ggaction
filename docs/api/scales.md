@@ -10,7 +10,8 @@ title: Scale Options
 | Scale family | Default domain | Default range | Common controls |
 | --- | --- | --- | --- |
 | Continuous point position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
-| Ordinal position/xOffset | First-appearance order | Plot or parent band | explicit domain/range |
+| Band/point position | First-appearance order | Plot bounds | padding and alignment |
+| Ordinal appearance/xOffset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
 
 Encoding actions accept a nested `scale` object. Omitted properties use channel
@@ -31,6 +32,24 @@ scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and
 ```javascript
 const logarithmic = program.editScale({ id: "x", type: "log", base: 10 });
 ```
+
+Categorical bar positions use `band`; categorical point and rule positions use
+`point`. Both preserve first-appearance domain order. A band scale exposes a
+non-zero slot width and accepts `paddingInner`, `paddingOuter`, and `align`.
+A point scale exposes zero bandwidth and accepts `padding` and `align`.
+
+```javascript
+program.encodeX({
+  field: "country",
+  fieldType: "nominal",
+  scale: { type: "band", paddingInner: 0.2, paddingOuter: 0.1 }
+});
+```
+
+`align` is between `0` and `1`; both padding families are non-negative and
+`paddingInner` is less than `1`. `editScale` rematerializes all connected marks
+and guides. A band can be shared by bars and point centers, but changing it to
+`point` is rejected while a bar requires its bandwidth.
 
 ## Continuous scales
 
@@ -98,16 +117,17 @@ and ordered `first`/`last` results. Explicit domain and range values remain auth
 The y action resolves the scale but leaves rectangles empty until grouping
 semantics are available.
 
-## Ordinal scales
+## Discrete and ordinal scales
 
-Ordinal bar x, color, and stroke-dash encodings use ordinal scales. Automatic
-domains preserve first-appearance order.
+Band/point position, color, and stroke-dash encodings use ordered discrete
+domains. Automatic domains preserve first-appearance order. `ordinal` remains
+the appearance and offset lookup type; position uses explicit `band` or `point`.
 
-An ordinal bar x scale uses `"auto"` or a numeric pair as its range. Automatic
-ranges use the horizontal plot bounds. The resolved scale records one equal
-`step` per domain value and an absolute `bandwidth`; category positions lie at
-band centers. Reversed explicit ranges are valid. Ordinal scales reject
-`nice` and `zero`.
+A band or point position scale uses `"auto"` or a numeric pair as its range.
+Automatic ranges use the plot bounds. Resolved band scales record signed
+`step`, aligned `start`, and positive `bandwidth`; point scales record the same
+geometry with zero bandwidth. Marks, ticks, labels, and grids read the same
+resolved centers. Reversed explicit ranges are valid.
 
 Color ranges accept explicit colors or a named palette descriptor; stroke-dash
 ranges accept named styles and direct dash patterns.

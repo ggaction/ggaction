@@ -27,7 +27,8 @@ import { findScaleConsumers } from "./consumers.js";
 
 const OPTIONS = Object.freeze([
   "id", "type", "domain", "range", "nice", "zero", "clamp", "reverse",
-  "base", "exponent", "constant"
+  "base", "exponent", "constant", "paddingInner", "paddingOuter", "padding",
+  "align"
 ]);
 const EDITABLE = Object.freeze(OPTIONS.filter(option => option !== "id"));
 const TYPE_PARAMETERS = Object.freeze(["base", "exponent", "constant"]);
@@ -80,6 +81,26 @@ function validateRangeForChannel(scale, channel, value) {
 function validateTypeTransition(scale, nextType, channel, consumers) {
   if (nextType === scale.type) return;
   validateScaleType(nextType);
+  const discrete = ["band", "point"].includes(nextType);
+  if (discrete) {
+    if (
+      consumers.length > 0 &&
+      (!["x", "y"].includes(channel) || consumers.some(consumer =>
+        !["nominal", "ordinal"].includes(consumer.encoding.fieldType)
+      ))
+    ) {
+      throw new Error(
+        `Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`
+      );
+    }
+    if (
+      nextType === "point" &&
+      consumers.some(consumer => consumer.layer.mark?.type === "bar")
+    ) {
+      throw new Error("Point scales cannot provide bar bandwidth.");
+    }
+    return;
+  }
   const quantitative = nextType === "linear" || isTransformedScaleType(nextType);
   if (
     !quantitative ||
@@ -121,7 +142,7 @@ function normalizeDefinition(scale, channel, consumers, args) {
   const type = args.type ?? scale.type;
   const typeChanged = type !== scale.type;
   validateTypeTransition(scale, type, channel, consumers);
-  const domain = type === "ordinal"
+  const domain = ["ordinal", "band", "point"].includes(type)
     ? validateOrdinalDomain(args.domain ?? scale.domain)
     : validateScaleDomain(args.domain ?? scale.domain);
   if (isTransformedScaleType(type) && domain !== "auto") {
@@ -159,6 +180,35 @@ function normalizeDefinition(scale, channel, consumers, args) {
   } else {
     for (const property of Object.keys(requested)) {
       validateScalePropertyForType(type, property);
+    }
+  }
+  if (type === "band") {
+    const paddingInner = propertyValue(scale, typeChanged, args, "paddingInner") ?? 0;
+    const paddingOuter = propertyValue(scale, typeChanged, args, "paddingOuter") ?? 0;
+    const align = propertyValue(scale, typeChanged, args, "align") ?? 0.5;
+    if (!Number.isFinite(paddingInner) || paddingInner < 0 || paddingInner >= 1) {
+      throw new RangeError("Scale paddingInner must be from 0 (inclusive) to 1 (exclusive).");
+    }
+    if (!Number.isFinite(paddingOuter) || paddingOuter < 0) {
+      throw new RangeError("Scale paddingOuter must be non-negative and finite.");
+    }
+    if (!Number.isFinite(align) || align < 0 || align > 1) {
+      throw new RangeError("Scale align must be between 0 and 1.");
+    }
+    Object.assign(definition, { paddingInner, paddingOuter, align });
+  } else if (type === "point") {
+    const padding = propertyValue(scale, typeChanged, args, "padding") ?? 0.5;
+    const align = propertyValue(scale, typeChanged, args, "align") ?? 0.5;
+    if (!Number.isFinite(padding) || padding < 0) {
+      throw new RangeError("Scale padding must be non-negative and finite.");
+    }
+    if (!Number.isFinite(align) || align < 0 || align > 1) {
+      throw new RangeError("Scale align must be between 0 and 1.");
+    }
+    Object.assign(definition, { padding, align });
+  } else {
+    for (const property of ["paddingInner", "paddingOuter", "padding", "align"]) {
+      if (args[property] !== undefined) validateScalePropertyForType(type, property);
     }
   }
   return definition;

@@ -50,21 +50,22 @@ function validateConfig(channel, config) {
 function geometry(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveGraphicBounds(program);
+  const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   if ((
-    !["linear", "time", "ordinal"].includes(scale?.type) &&
+    !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis ticks require a supported resolved scale and Canvas bounds.");
-  if (scale.type === "ordinal" && config.mode !== "values") throw new Error("Ordinal axis ticks require explicit or inferred values, not count.");
+  if (discrete && config.mode !== "values") throw new Error("Discrete axis ticks require explicit or inferred values, not count.");
   const domain = scale.domain;
   const values = valuesFromTickConfig(program, config);
-  if (scale.type === "ordinal") {
+  if (discrete) {
     const domainValues = new Set(domain);
     if (!values.every(value => domainValues.has(value))) throw new RangeError("Tick values must be inside the scale domain.");
   } else {
     const low = Math.min(...domain), high = Math.max(...domain);
     if (!values.every(value => value >= low && value <= high)) throw new RangeError("Tick values must be inside the scale domain.");
   }
-  const positions = scale.type === "ordinal"
+  const positions = discrete
     ? mapOrdinalPositionValues(values, scale)
     : mapContinuousScaleValues(values, scale);
   const resolved = {
@@ -105,7 +106,9 @@ function makeEdit(channel) {
     const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
     const inferredValues = !explicitMode && previous.inferredValues === true
       ? inferHistogramBoundaries(this, channel, previous.scale) ??
-        (this.resolvedScales[previous.scale]?.type === "ordinal"
+        (["ordinal", "band", "point"].includes(
+          this.resolvedScales[previous.scale]?.type
+        )
           ? this.resolvedScales[previous.scale].domain
           : undefined)
       : undefined;
@@ -144,7 +147,7 @@ function makeCreate(channel) {
     const inferredValues =
       Object.hasOwn(args, "count") || Object.hasOwn(args, "values")
         ? undefined
-        : resolvedScale?.type === "ordinal"
+        : ["ordinal", "band", "point"].includes(resolvedScale?.type)
           ? resolvedScale.domain
           : inferHistogramBoundaries(this, channel, scale);
     const options =

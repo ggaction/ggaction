@@ -189,10 +189,14 @@ function createErrorBarVariant({
     program = editSemantic(
       program,
       `scale[${channel}].type`,
-      quantitative ? "linear" : "ordinal"
+      quantitative ? "linear" : "point"
     );
     program = editSemantic(program, `scale[${channel}].domain`, "auto");
     program = editSemantic(program, `scale[${channel}].range`, "auto");
+    if (!quantitative) {
+      program = editSemantic(program, `scale[${channel}].padding`, 0.5);
+      program = editSemantic(program, `scale[${channel}].align`, 0.5);
+    }
   }
   program = editSemantic(program, `scale[${quantitativeChannel}].nice`, true);
   program = editSemantic(program, `scale[${quantitativeChannel}].zero`, false);

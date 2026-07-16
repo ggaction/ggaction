@@ -35,13 +35,14 @@ const encodeBarWidth = action(
     }
     if (
       grain !== BAR_GRAINS.aggregate ||
-      layer.encoding?.color?.field === undefined ||
-      (grouped && layer.encoding?.xOffset?.field !== layer.encoding.color.field)
+      (grouped &&
+        layer.encoding?.color?.field !== undefined &&
+        layer.encoding?.xOffset?.field !== layer.encoding.color.field)
     ) {
       throw new Error(
         grouped
           ? "encodeBarWidth requires complete grouped bar x, y, color, and xOffset encodings."
-          : "encodeBarWidth requires complete aggregate bar x, y, and color encodings."
+          : "encodeBarWidth requires complete aggregate bar x and y encodings."
       );
     }
 

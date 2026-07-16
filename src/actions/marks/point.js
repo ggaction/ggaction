@@ -16,6 +16,7 @@ import {
 } from "../../grammar/scales.js";
 import {
   assertMarkAvailable,
+  resolveLayeredMarkInheritance,
   resolveMarkId,
   resolveMarkData,
   validateMarkOptions
@@ -27,7 +28,7 @@ import { rematerializeExistingLegend } from "../encodings/shared.js";
 
 const POINT_MARK_OPTIONS = Object.freeze(["id", "data", "shape"]);
 const EDIT_POINT_OPTIONS = Object.freeze([
-  "target", "shape", "opacity", "stroke", "strokeWidth"
+  "target", "shape", "fill", "opacity", "stroke", "strokeWidth"
 ]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
@@ -45,7 +46,15 @@ const createPointMark = action(
       markType: "point",
       operation: "createPointMark"
     });
-    const { data, dataset } = resolveMarkData(this, args);
+    const inherited = resolveLayeredMarkInheritance(this, args);
+    const { data, dataset } = resolveMarkData(this, {
+      ...args,
+      ...(args.data === undefined &&
+        this.context.currentData === undefined &&
+        inherited?.data !== undefined
+        ? { data: inherited.data }
+        : {})
+    });
     const shape = Object.hasOwn(args, "shape") ? args.shape : "circle";
     validatePointShape(shape);
     const resolvedType = getPointGraphicType(shape);
@@ -53,7 +62,7 @@ const createPointMark = action(
 
     assertMarkAvailable(this, id);
 
-    return this
+    let next = this
       .editSemantic({
         property: `layer[${id}].mark.type`,
         value: "point"
@@ -61,13 +70,38 @@ const createPointMark = action(
       .editSemantic({
         property: `layer[${id}].data`,
         value: data
-      })
+      });
+    if (inherited?.coordinate !== undefined) {
+      next = next.editSemantic({
+        property: `layer[${id}].coordinate`,
+        value: inherited.coordinate
+      });
+    }
+    for (const channel of ["x", "y"]) {
+      for (const [property, value] of Object.entries(
+        inherited?.encoding[channel] ?? {}
+      )) {
+        next = next.editSemantic({
+          property: `layer[${id}].encoding.${channel}.${property}`,
+          value
+        });
+      }
+    }
+    next = next
       .createGraphics({
         id,
         type: graphicType,
         length: dataset.values.length
       })
       ._withMarkConfig(id, { shape });
+    const inheritedEncodings = Object.values(inherited?.encoding ?? {});
+    const canMaterializeInherited = inheritedEncodings.length > 0 &&
+      inheritedEncodings.every(encoding =>
+        encoding.scale !== undefined && next.resolvedScales[encoding.scale] !== undefined
+      );
+    return !canMaterializeInherited
+      ? next
+      : next.rematerializePointMark({ id });
   }
 );
 
@@ -172,8 +206,8 @@ const rematerializePointMark = action(
     const area = resolveMappedValues(this, layer, dataset, "size");
     const encodedShape = resolveMappedValues(this, layer, dataset, "shape");
     const encodedOpacity = resolveMappedValues(this, layer, dataset, "opacity");
-    const fill = mappedFill ?? DEFAULT_POINT_FILL;
     const config = this.markConfigs[id] ?? {};
+    const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
     const existingChildren = graphic.children ?? [];
     const constantShape = validatePointShape(config.shape ?? "circle");
@@ -186,7 +220,8 @@ const rematerializePointMark = action(
       const children = dataset.values.map((_, index) => {
         const shape = shapes[index];
         const existing = existingChildren[index]?.properties ?? {};
-        const color = mappedFill?.[index] ?? existing.fill ?? DEFAULT_POINT_FILL;
+        const color = mappedFill?.[index] ?? config.fill ??
+          existing.fill ?? DEFAULT_POINT_FILL;
         const opacity = encodedOpacity?.[index] ?? config.opacity ?? existing.opacity;
         const resolvedArea = area?.[index] ??
           (config.radius === undefined
@@ -292,10 +327,10 @@ const editPointMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_POINT_OPTIONS, "editPointMark");
-    const editable = ["shape", "opacity", "stroke", "strokeWidth"];
+    const editable = ["shape", "fill", "opacity", "stroke", "strokeWidth"];
     if (!editable.some(property => Object.hasOwn(args, property))) {
       throw new Error(
-        "editPointMark requires shape, opacity, stroke, or strokeWidth."
+        "editPointMark requires shape, fill, opacity, stroke, or strokeWidth."
       );
     }
     const candidates = this.semanticSpec.layers.filter(
@@ -317,9 +352,20 @@ const editPointMark = action(
         "editPointMark shape cannot be combined with a shape encoding."
       );
     }
+    if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
+      throw new Error(
+        "editPointMark fill cannot be combined with a color encoding."
+      );
+    }
     const config = { ...this.markConfigs[id] };
     if (Object.hasOwn(args, "shape")) {
       config.shape = validatePointShape(args.shape);
+    }
+    if (Object.hasOwn(args, "fill")) {
+      if (typeof args.fill !== "string" || args.fill.length === 0) {
+        throw new TypeError("Point fill must be a non-empty string.");
+      }
+      config.fill = args.fill;
     }
     if (Object.hasOwn(args, "opacity")) {
       if (!Number.isFinite(args.opacity) || args.opacity < 0 || args.opacity > 1) {

@@ -73,20 +73,21 @@ function assertTickCompatibility(ticks, config, operation) {
 function resolve(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveGraphicBounds(program);
+  const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   if ((
-    !["linear", "time", "ordinal"].includes(scale?.type) &&
+    !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis labels require a supported resolved scale and Canvas bounds.");
-  if (scale.type === "ordinal" && config.mode !== "values") throw new Error("Ordinal axis labels require explicit or inferred values, not count.");
+  if (discrete && config.mode !== "values") throw new Error("Discrete axis labels require explicit or inferred values, not count.");
   const values = valuesFromTickConfig(program, config);
-  if (scale.type === "ordinal") {
+  if (discrete) {
     const domainValues = new Set(scale.domain);
     if (!values.every(value => domainValues.has(value))) throw new RangeError("Label values must be inside the scale domain.");
   } else {
     const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
     if (!values.every(value => value >= low && value <= high)) throw new RangeError("Label values must be inside the scale domain.");
   }
-  const positions = scale.type === "ordinal"
+  const positions = discrete
     ? mapOrdinalPositionValues(values, scale)
     : mapContinuousScaleValues(values, scale);
   const text = values.map(value => formatAxisValue(

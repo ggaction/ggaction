@@ -32,7 +32,7 @@ for the same field.
 - `coordinate` uses the layer coordinate, then the documented `main`
   Cartesian default.
 - Scale IDs default to their channel names: `x`, `y`, and `xOffset`.
-- Automatic continuous y ranges run bottom-to-top. Ordinal y bands run
+- Automatic continuous y ranges run bottom-to-top. Discrete y positions run
   top-to-bottom so horizontal categories follow domain order.
 - Temporal values accept finite timestamps, four-digit numeric/string years,
   and valid date strings. Four-digit values are interpreted as UTC years.

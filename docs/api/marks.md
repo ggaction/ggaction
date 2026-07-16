@@ -10,7 +10,7 @@ title: Marks
 | Action | Shortest call | Inference/defaults | Initial graphic |
 | --- | --- | --- | --- |
 | `createPointMark` | `createPointMark()` | ID `"point"`; current dataset; circle shape | Empty/concrete point collection |
-| `editPointMark` | `editPointMark({ shape: "diamond" })` | Current or unique point mark | Rematerialized equal-area symbols |
+| `editPointMark` | `editPointMark({ shape: "diamond" })` | Current or unique point mark | Rematerialized equal-area symbols and appearance |
 | `createLineMark` | `createLineMark()` | ID `"line"`; current dataset; linear curve | Empty path collection |
 | `editLineMark` | `editLineMark({ curve: "monotone" })` | Current or unique line mark | Rematerialized path commands |
 | `createBarMark` | `createBarMark()` | ID `"bar"`; current dataset | Empty rect collection |
@@ -39,14 +39,17 @@ mark into one typed mixed collection.
 Points are not renderable until later actions assign the required position,
 size, and fill properties.
 
-Point creation does not assign a coordinate or scale. Position encodings create
-and attach the appropriate semantic coordinate when needed.
+Point creation normally waits for position encodings. When it is added after
+one current compatible layer, omitted data, coordinate, and x/y encodings are
+inferred and persisted. The new point reuses the existing scales but does not
+copy mark-specific aggregate, bin, or stack policies. Ambiguous sources require
+explicit authoring.
 
 The first omitted mark ID uses its semantic role: `"point"`, `"line"`,
 `"bar"`, `"area"`, or `"rule"`. A second mark of the same type requires an explicit ID.
 This keeps simple chains concise without creating hidden numbered resources.
 
-## `editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })`
+## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })`
 
 Change a point mark's constant shape or outline appearance without changing its
 data or encodings:
@@ -55,6 +58,7 @@ data or encodings:
 const diamonds = program.editPointMark({
   target: "points",
   shape: "diamond",
+  fill: "#2563eb",
   opacity: 0.72,
   stroke: "#ffffff",
   strokeWidth: 0.6
@@ -65,7 +69,8 @@ const diamonds = program.editPointMark({
 Supported shapes are `circle`, `square`, `diamond`, the four directional
 triangles, `plus`, `cross`, `star`, `hexagon`, and `wye`. All recipes preserve
 the same logical target area. A constant edit is rejected when the mark already
-has a field-driven shape encoding.
+has a field-driven shape encoding. Constant `fill` is rejected when a semantic
+color encoding already owns point color.
 `opacity` is between `0` and `1`; `strokeWidth` is a non-negative finite logical
 pixel value. At least one editable property is required, and omitted properties
 are preserved through later position rematerialization.

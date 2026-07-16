@@ -5,7 +5,11 @@ import {
   resolveBarColorLayout
 } from "../../grammar/bars/policy.js";
 import { layoutSeriesPartition } from "../../grammar/seriesLayout.js";
-import { mapLinearValues } from "../../grammar/scales.js";
+import {
+  isDiscretePositionScaleType,
+  mapLinearValues,
+  mapOrdinalPositionValues
+} from "../../grammar/scales.js";
 import {
   DEFAULT_BAR_FILL,
   DEFAULT_BAR_STROKE,
@@ -44,7 +48,9 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     colorScale?.range[index % colorScale.range.length] ?? DEFAULT_BAR_FILL
   ]));
   const cells = deriveBarAggregates(dataset.values, layer).values;
-  const categoryDomain = categoryScale.type === "ordinal"
+  const discreteCategory = categoryScale.type === "ordinal" ||
+    isDiscretePositionScaleType(categoryScale.type);
+  const categoryDomain = discreteCategory
     ? categoryScale.domain
     : [...new Set(cells.map(cell => cell[channels.category]))]
         .sort((left, right) => left - right);
@@ -83,8 +89,8 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     if (category === undefined || color === undefined) {
       throw new Error("Bar value is outside a resolved ordinal domain.");
     }
-    const categoryCenter = categoryScale.type === "ordinal"
-      ? categoryScale.range[0] + category * categoryScale.step + categoryScale.step / 2
+    const categoryCenter = discreteCategory
+      ? mapOrdinalPositionValues([segment.category], categoryScale)[0]
       : mapLinearValues(
           [segment.category],
           categoryScale.domain,
@@ -97,23 +103,13 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
       measureScale.range,
       { clamp: measureScale.clamp ?? false }
     );
-    const categorySlotStart = categoryScale.type === "ordinal"
-      ? Math.min(
-          categoryScale.range[0] + category * categoryScale.step,
-          categoryScale.range[0] + (category + 1) * categoryScale.step
-        )
-      : categoryCenter - thickness / 2;
     return {
       x: vertical
-        ? categoryScale.type === "ordinal"
-          ? categorySlotStart + (Math.abs(categoryScale.step) - thickness) / 2
-          : categoryCenter - thickness / 2
+        ? categoryCenter - thickness / 2
         : Math.min(start, end),
       y: vertical
         ? Math.min(start, end)
-        : categoryScale.type === "ordinal"
-          ? categorySlotStart + (Math.abs(categoryScale.step) - thickness) / 2
-          : categoryCenter - thickness / 2,
+        : categoryCenter - thickness / 2,
       width: vertical ? thickness : Math.abs(start - end),
       height: vertical ? Math.abs(start - end) : thickness,
       fill: segment.color === undefined

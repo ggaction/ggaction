@@ -134,8 +134,8 @@ function formatTime(value, format) {
 export function formatAxisValue(value, scaleType, format, autoFormatter) {
   validateAxisFormat(format);
   if (format === "auto") return autoFormatter(value);
-  if (scaleType === "ordinal") {
-    throw new Error('Ordinal axis labels require format "auto".');
+  if (["ordinal", "band", "point"].includes(scaleType)) {
+    throw new Error('Discrete axis labels require format "auto".');
   }
   if (scaleType === "time") {
     if (!TIME_FORMATS.has(format)) {

@@ -68,11 +68,13 @@ export function createBandPointReference(gapminder) {
   const bandwidth = step * (1 - paddingInner);
   const start = plot.left + step * paddingOuter;
   const pointPadding = 0.5;
-  const pointStep = span / (domain.length - 1 + pointPadding * 2);
-  const pointStart = plot.left + pointStep * pointPadding;
-  const centers = domain.map((_, index) => pointStart + index * pointStep);
-  const yDomain = Object.freeze([0, 130_000_000]);
-  const yTicks = Object.freeze([0, 25_000_000, 50_000_000, 75_000_000, 100_000_000, 125_000_000]);
+  const pointStep = step;
+  const pointStart = start + bandwidth / 2;
+  const centers = domain.map((_, index) =>
+    start + index * step + bandwidth / 2
+  );
+  const yDomain = Object.freeze([0, 150_000_000]);
+  const yTicks = Object.freeze([0, 30_000_000, 60_000_000, 90_000_000, 120_000_000, 150_000_000]);
   const yPositions = yTicks.map(value =>
     mapLinear(value, yDomain, [plot.bottom, plot.top])
   );
@@ -117,12 +119,12 @@ export function createTimeReference(gapminder) {
     normalizeUtcTemporalReference(1955),
     normalizeUtcTemporalReference(2005)
   ]);
-  const xTickYears = Object.freeze([1955, 1965, 1975, 1985, 1995, 2005]);
+  const xTickYears = Object.freeze([1960, 1970, 1980, 1990, 2000]);
   const xTicks = Object.freeze(
     xTickYears.map(normalizeUtcTemporalReference)
   );
   const yDomain = Object.freeze([20, 80]);
-  const yTicks = Object.freeze([20, 30, 40, 50, 60, 70, 80]);
+  const yTicks = Object.freeze([20, 40, 60, 80]);
   const xPositions = Object.freeze(xTicks.map(value =>
     mapLinear(value, xDomain, [plot.left, plot.right])
   ));

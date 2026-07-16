@@ -31,6 +31,9 @@ validation and uniqueness contract.
   - Effect: semantic mark는 항상 `point`지만 concrete child는 circle, rect 또는 normalized path가 된다.
 - Effect: dataset cardinality와 같은 길이의 point graphic collection을 만들며 아직 위치 property가
   없으므로 encoding 전에는 보이지 않을 수 있다.
+- Layered inference: current compatible layer, otherwise one unique compatible layer에서 omitted data,
+  coordinate와 x/y field, fieldType, scale, title을 복사한다. Aggregate/bin/stack은 다른 mark recipe로
+  복사하지 않는다. Inferred decision은 새 layer semantic state에 저장하며 ambiguity는 오류다.
 - Coverage: `test/unit/actions/marks/create-point-mark.test.js`가 두 shape, empty data,
   multiple marks, inference, conflicts와 trace를 검증한다.
 
@@ -53,11 +56,12 @@ validation and uniqueness contract.
 ## `editPointMark`
 
 - Implemented: immutable constant shape and appearance edits for existing point marks.
-- Signature: `editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })`.
+- Signature: `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
 - `shape`은 shared `PointShape` 12종 중 하나다. Field-driven `encodeShape`가 있으면 constant shape
   edit와 충돌하므로 오류다.
+- `fill`은 non-empty color string이며 field-driven `encodeColor`가 있으면 충돌하므로 오류다.
 - `opacity`는 `[0, 1]`, `stroke`는 non-empty color string, `strokeWidth`는 non-negative finite logical pixel이다.
 - 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete children을
@@ -65,7 +69,7 @@ validation and uniqueness contract.
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ target?: UserId; shape?: PointShape; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite })`.
+- Implemented: `editPointMark({ target?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -73,8 +77,9 @@ validation and uniqueness contract.
 
 - ✅ Covered: inferred/explicit target, all 12 shapes, equal target area and nested rematerialization trace.
 - ✅ Covered: missing/unknown/ambiguous target, invalid shape, field-driven shape conflict and immutable failure.
-- ✅ Covered: opacity/stroke/strokeWidth validation and persistence across position rematerialization.
-- No proposal: fill, radius and field-driven opacity remain owned by their corresponding encoding actions.
+- ✅ Covered: fill/opacity/stroke/strokeWidth validation and persistence across position rematerialization;
+  field-driven color conflict.
+- No proposal: radius and field-driven opacity remain owned by their corresponding encoding actions.
 - Evidence: `test/unit/actions/marks/edit-point-mark.test.js`.
 
 ## `createLineMark`

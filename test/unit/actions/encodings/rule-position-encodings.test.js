@@ -103,7 +103,7 @@ test("supports nominal independent positions with quantitative intervals", () =>
     })
     .encodeY2({ field: "upper", fieldType: "quantitative" });
 
-  assert.equal(program.semanticSpec.scales[0].type, "ordinal");
+  assert.equal(program.semanticSpec.scales[0].type, "point");
   assert.deepEqual(program.resolvedScales.x.domain, ["A", "B"]);
   assert.deepEqual(
     program.graphicSpec.objects.intervals.children.map(child =>

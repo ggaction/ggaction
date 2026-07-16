@@ -38,6 +38,8 @@ export type ScaleType =
   | "sqrt"
   | "symlog"
   | "time"
+  | "band"
+  | "point"
   | "ordinal";
 export type StackMode = "zero" | "normalize" | null;
 export type DensityKernel =
@@ -338,6 +340,10 @@ export interface ScaleOptions {
   base?: number;
   exponent?: number;
   constant?: number;
+  paddingInner?: number;
+  paddingOuter?: number;
+  padding?: number;
+  align?: number;
   palette?: Palette;
 }
 
@@ -353,6 +359,10 @@ export interface EditScaleOptions {
   base?: number;
   exponent?: number;
   constant?: number;
+  paddingInner?: number;
+  paddingOuter?: number;
+  padding?: number;
+  align?: number;
 }
 
 export interface PositionEncodingOptions {
@@ -875,6 +885,7 @@ export class ChartProgram {
   editPointMark(options: {
     target?: string;
     shape?: PointShape;
+    fill?: string;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;

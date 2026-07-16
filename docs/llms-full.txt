@@ -2255,7 +2255,7 @@ duplicate grouping fields, and colliding output field names.
 | Action | Shortest call | Inference/defaults | Initial graphic |
 | --- | --- | --- | --- |
 | `createPointMark` | `createPointMark()` | ID `"point"`; current dataset; circle shape | Empty/concrete point collection |
-| `editPointMark` | `editPointMark({ shape: "diamond" })` | Current or unique point mark | Rematerialized equal-area symbols |
+| `editPointMark` | `editPointMark({ shape: "diamond" })` | Current or unique point mark | Rematerialized equal-area symbols and appearance |
 | `createLineMark` | `createLineMark()` | ID `"line"`; current dataset; linear curve | Empty path collection |
 | `editLineMark` | `editLineMark({ curve: "monotone" })` | Current or unique line mark | Rematerialized path commands |
 | `createBarMark` | `createBarMark()` | ID `"bar"`; current dataset | Empty rect collection |
@@ -2284,14 +2284,17 @@ mark into one typed mixed collection.
 Points are not renderable until later actions assign the required position,
 size, and fill properties.
 
-Point creation does not assign a coordinate or scale. Position encodings create
-and attach the appropriate semantic coordinate when needed.
+Point creation normally waits for position encodings. When it is added after
+one current compatible layer, omitted data, coordinate, and x/y encodings are
+inferred and persisted. The new point reuses the existing scales but does not
+copy mark-specific aggregate, bin, or stack policies. Ambiguous sources require
+explicit authoring.
 
 The first omitted mark ID uses its semantic role: `"point"`, `"line"`,
 `"bar"`, `"area"`, or `"rule"`. A second mark of the same type requires an explicit ID.
 This keeps simple chains concise without creating hidden numbered resources.
 
-## `editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })`
+## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })`
 
 Change a point mark's constant shape or outline appearance without changing its
 data or encodings:
@@ -2300,6 +2303,7 @@ data or encodings:
 const diamonds = program.editPointMark({
   target: "points",
   shape: "diamond",
+  fill: "#2563eb",
   opacity: 0.72,
   stroke: "#ffffff",
   strokeWidth: 0.6
@@ -2310,7 +2314,8 @@ const diamonds = program.editPointMark({
 Supported shapes are `circle`, `square`, `diamond`, the four directional
 triangles, `plus`, `cross`, `star`, `hexagon`, and `wye`. All recipes preserve
 the same logical target area. A constant edit is rejected when the mark already
-has a field-driven shape encoding.
+has a field-driven shape encoding. Constant `fill` is rejected when a semantic
+color encoding already owns point color.
 `opacity` is between `0` and `1`; `strokeWidth` is a non-negative finite logical
 pixel value. At least one editable property is required, and omitted properties
 are preserved through later position rematerialization.
@@ -3618,7 +3623,7 @@ for the same field.
 - `coordinate` uses the layer coordinate, then the documented `main`
   Cartesian default.
 - Scale IDs default to their channel names: `x`, `y`, and `xOffset`.
-- Automatic continuous y ranges run bottom-to-top. Ordinal y bands run
+- Automatic continuous y ranges run bottom-to-top. Discrete y positions run
   top-to-bottom so horizontal categories follow domain order.
 - Temporal values accept finite timestamps, four-digit numeric/string years,
   and valid date strings. Four-digit values are interpreted as UTC years.
@@ -4505,7 +4510,8 @@ selection or appearance state. Highlight appearance currently supports points on
 | Scale family | Default domain | Default range | Common controls |
 | --- | --- | --- | --- |
 | Continuous point position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
-| Ordinal position/xOffset | First-appearance order | Plot or parent band | explicit domain/range |
+| Band/point position | First-appearance order | Plot bounds | padding and alignment |
+| Ordinal appearance/xOffset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
 
 Encoding actions accept a nested `scale` object. Omitted properties use channel
@@ -4526,6 +4532,24 @@ scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and
 ```javascript
 const logarithmic = program.editScale({ id: "x", type: "log", base: 10 });
 ```
+
+Categorical bar positions use `band`; categorical point and rule positions use
+`point`. Both preserve first-appearance domain order. A band scale exposes a
+non-zero slot width and accepts `paddingInner`, `paddingOuter`, and `align`.
+A point scale exposes zero bandwidth and accepts `padding` and `align`.
+
+```javascript
+program.encodeX({
+  field: "country",
+  fieldType: "nominal",
+  scale: { type: "band", paddingInner: 0.2, paddingOuter: 0.1 }
+});
+```
+
+`align` is between `0` and `1`; both padding families are non-negative and
+`paddingInner` is less than `1`. `editScale` rematerializes all connected marks
+and guides. A band can be shared by bars and point centers, but changing it to
+`point` is rejected while a bar requires its bandwidth.
 
 ## Continuous scales
 
@@ -4593,16 +4617,17 @@ and ordered `first`/`last` results. Explicit domain and range values remain auth
 The y action resolves the scale but leaves rectangles empty until grouping
 semantics are available.
 
-## Ordinal scales
+## Discrete and ordinal scales
 
-Ordinal bar x, color, and stroke-dash encodings use ordinal scales. Automatic
-domains preserve first-appearance order.
+Band/point position, color, and stroke-dash encodings use ordered discrete
+domains. Automatic domains preserve first-appearance order. `ordinal` remains
+the appearance and offset lookup type; position uses explicit `band` or `point`.
 
-An ordinal bar x scale uses `"auto"` or a numeric pair as its range. Automatic
-ranges use the horizontal plot bounds. The resolved scale records one equal
-`step` per domain value and an absolute `bandwidth`; category positions lie at
-band centers. Reversed explicit ranges are valid. Ordinal scales reject
-`nice` and `zero`.
+A band or point position scale uses `"auto"` or a numeric pair as its range.
+Automatic ranges use the plot bounds. Resolved band scales record signed
+`step`, aligned `start`, and positive `bandwidth`; point scales record the same
+geometry with zero bandwidth. Marks, ticks, labels, and grids read the same
+resolved centers. Reversed explicit ranges are valid.
 
 Color ranges accept explicit colors or a named palette descriptor; stroke-dash
 ranges accept named styles and direct dash patterns.
@@ -4808,10 +4833,10 @@ interval near the requested count and format labels automatically. For example,
 a 1970–1982 domain produces labels such as `1970`, `1972`, ..., `1982`.
 Explicit time values are finite timestamps.
 
-An ordinal x scale uses its complete domain as the default tick and label
-values. Each value is placed at the center of its category band and formatted
+A band or point x scale uses its complete domain as the default tick and label
+values. Each value is placed at the shared band or point center and formatted
 with `String(value)`. Explicit `ticksAndLabels.values` may select a domain
-subset in the requested order. Ordinal axes reject `count` so categories are
+subset in the requested order. Discrete axes reject `count` so categories are
 not silently omitted. Reversed ranges and Canvas rematerialization preserve
 the stored category values.
 
@@ -5714,10 +5739,10 @@ Create a semantic point mark with one of 12 equal-area shape realizations. [Mark
 ### `editPointMark`
 
 ```javascript
-editPointMark({ target?, shape?, opacity?, stroke?, strokeWidth? })
+editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape or outline appearance and rematerialize its concrete children. [Marks](../api/marks.md)
+Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete children. [Marks](../api/marks.md)
 
 ### `createLineMark`
 
@@ -6283,7 +6308,7 @@ are available on programs used by extension actions.
 | Semantic primitive | `editSemantic({ property, value })` or `editSemantic({ property, remove: true })` |
 | Graphic primitive | `createGraphics({ id, type, length?, before?, after? })` |
 | Graphic primitive | `editGraphics({ target, property, value })` or `editGraphics({ target, remove: true })` |
-| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })` |
+| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align? })` |
 
 See [Action authoring](../extension/action-authoring.md) and
 [Primitive API](../extension/primitives.md).

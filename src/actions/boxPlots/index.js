@@ -10,6 +10,7 @@ import {
 import { validatePointShape } from "../../grammar/pointShapes.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer, hasLayer } from "../../selectors/layers.js";
+import { findSemanticScale } from "../../selectors/scales.js";
 
 const OPTIONS = Object.freeze([
   "id", "target", "data", "x", "y", "coordinate", "whisker",
@@ -430,7 +431,16 @@ const createBoxPlot = action(
     ) {
       throw new Error("createBoxPlot requires one categorical axis and one quantitative axis.");
     }
-    let next = this.createBarMark({ id, data })._withMarkConfig(id, {
+    const orientation = resolveOrientation(x, y);
+    const category = orientation === "vertical" ? x : y;
+    const categoryScaleId = typeof category?.scale === "string"
+      ? category.scale
+      : category?.scale?.id;
+    const categoryScale = findSemanticScale(this, categoryScaleId);
+    let next = categoryScale?.type === "point"
+      ? this.editScale({ id: categoryScaleId, type: "band" })
+      : this;
+    next = next.createBarMark({ id, data })._withMarkConfig(id, {
       boxPlot: {
         whisker,
         width,

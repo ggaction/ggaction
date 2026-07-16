@@ -29,7 +29,7 @@ const DEFAULT_RULE_CONFIG = Object.freeze({
 });
 
 function mapPosition(values, scale) {
-  return scale.type === "ordinal"
+  return ["ordinal", "band", "point"].includes(scale.type)
     ? mapOrdinalPositionValues(values, scale)
     : mapLinearValues(values, scale.domain, scale.range, {
         clamp: scale.clamp ?? false
