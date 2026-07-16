@@ -23,6 +23,7 @@ test("publishes only the bounded public package artifact", () => {
   assert.equal(paths.some(path => path.startsWith("test/")), false);
   assert.equal(paths.some(path => path.startsWith("agent_docs/")), false);
   assert.equal(paths.some(path => path.startsWith(".github/")), false);
+  assert.equal(paths.some(path => path.endsWith("/AGENTS.md") || path === "AGENTS.md"), false);
 });
 
 test("rejects missing, forbidden, and oversized package manifests", () => {
@@ -58,6 +59,13 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
       files: [...base.files, { path: "test/private.test.js" }]
     }),
     /forbidden file/
+  );
+  assert.throws(
+    () => validatePackageManifest({
+      ...base,
+      files: [...base.files, { path: "src/AGENTS.md" }]
+    }),
+    /forbidden internal file/
   );
   assert.throws(
     () => validatePackageManifest({ ...base, size: PACKAGE_LIMITS.packedBytes + 1 }),

@@ -22,6 +22,7 @@
   "type": "module",
   "files": [
     "src/",
+    "!src/AGENTS.md",
     "types/",
     "README.md",
     "CHANGELOG.md",

@@ -27,6 +27,8 @@ const REQUIRED_FILES = Object.freeze([
   "types/program.d.ts"
 ]);
 
+const FORBIDDEN_BASENAMES = new Set(["AGENTS.md"]);
+
 function runPack(args, cwd = root) {
   const output = execFileSync(npmCommand, ["pack", "--json", ...args], {
     cwd,
@@ -47,6 +49,9 @@ export function validatePackageManifest(manifest) {
     }
   }
   for (const file of files) {
+    if (FORBIDDEN_BASENAMES.has(path.posix.basename(file))) {
+      throw new Error(`Package artifact includes forbidden internal file "${file}".`);
+    }
     if (![
       "CHANGELOG.md",
       "LICENSE",
