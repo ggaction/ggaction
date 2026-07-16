@@ -213,6 +213,16 @@ test("summarizes array values in the trace", () => {
 });
 
 test("validates semantic scale values through the primitive API", () => {
+  const transformed = chart()
+    .editSemantic({ property: "scale[x].type", value: "log" })
+    .editSemantic({ property: "scale[x].base", value: 10 })
+    .editSemantic({ property: "scale[x].nice", value: true })
+    .editSemantic({ property: "scale[y].type", value: "sqrt" })
+    .editSemantic({ property: "scale[y].zero", value: false });
+  assert.deepEqual(transformed.semanticSpec.scales, [
+    { id: "x", type: "log", base: 10, nice: true },
+    { id: "y", type: "sqrt", zero: false }
+  ]);
   assert.throws(
     () =>
       chart().editSemantic({
@@ -236,6 +246,18 @@ test("validates semantic scale values through the primitive API", () => {
         value: { palette: "unknown" }
       }),
     /Unknown palette/
+  );
+  assert.throws(
+    () => chart()
+      .editSemantic({ property: "scale[x].type", value: "log" })
+      .editSemantic({ property: "scale[x].zero", value: false }),
+    /does not support zero/
+  );
+  assert.throws(
+    () => chart()
+      .editSemantic({ property: "scale[x].type", value: "sqrt" })
+      .editSemantic({ property: "scale[x].base", value: 10 }),
+    /does not support base/
   );
 });
 

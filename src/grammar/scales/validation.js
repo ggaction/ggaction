@@ -1,5 +1,6 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { POSITION_CHANNELS } from "../../core/vocabulary.js";
+import { validateCompleteScaleType } from "./types.js";
 
 export function validatePair(value, label) {
   if (
@@ -27,8 +28,7 @@ export function validateScaleType(type) {
 }
 
 export function validateSemanticScaleType(type) {
-  if (type === "sequential") return type;
-  return validateScaleType(type);
+  return validateCompleteScaleType(type);
 }
 
 export function validateLinearScaleType(type) {

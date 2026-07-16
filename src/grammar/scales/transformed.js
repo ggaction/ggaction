@@ -1,54 +1,12 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { niceTicks } from "../ticks.js";
 import { niceLinearDomain } from "./continuous.js";
+import {
+  SCALE_ROLES,
+  validateScaleTypeForRole
+} from "./types.js";
 import { validatePair } from "./validation.js";
-
-export const SCALE_ROLES = Object.freeze({
-  quantitativePosition: "quantitative-position",
-  temporalPosition: "temporal-position",
-  bandPosition: "band-position",
-  pointPosition: "point-position",
-  discreteAppearance: "discrete-appearance",
-  continuousColor: "continuous-color",
-  discretizedColor: "discretized-color"
-});
-
-export const SCALE_TYPES_BY_ROLE = Object.freeze({
-  [SCALE_ROLES.quantitativePosition]: Object.freeze([
-    "linear", "log", "pow", "sqrt", "symlog"
-  ]),
-  [SCALE_ROLES.temporalPosition]: Object.freeze(["time"]),
-  [SCALE_ROLES.bandPosition]: Object.freeze(["band"]),
-  [SCALE_ROLES.pointPosition]: Object.freeze(["point"]),
-  [SCALE_ROLES.discreteAppearance]: Object.freeze(["ordinal"]),
-  [SCALE_ROLES.continuousColor]: Object.freeze(["sequential"]),
-  [SCALE_ROLES.discretizedColor]: Object.freeze([
-    "quantize", "quantile", "threshold"
-  ])
-});
-
-const ALL_TYPES = Object.freeze([
-  ...new Set(Object.values(SCALE_TYPES_BY_ROLE).flat())
-]);
 const TRANSFORMED_TYPES = Object.freeze(["log", "pow", "sqrt", "symlog"]);
-
-export function validateCompleteScaleType(type) {
-  if (!ALL_TYPES.includes(type)) {
-    throw new Error(`Unsupported scale type "${type}".`);
-  }
-  return type;
-}
-
-export function validateScaleTypeForRole(type, role) {
-  const accepted = SCALE_TYPES_BY_ROLE[role];
-  if (accepted === undefined) {
-    throw new Error(`Unknown scale role "${role}".`);
-  }
-  if (!accepted.includes(type)) {
-    throw new Error(`Scale type "${type}" is not valid for ${role}.`);
-  }
-  return type;
-}
 
 function positiveFinite(value, label) {
   if (!Number.isFinite(value) || value <= 0) {

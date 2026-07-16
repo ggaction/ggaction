@@ -25,6 +25,7 @@ import { validateMarkFilterTransform } from "../../grammar/markFilter.js";
 import {
   validateSemanticFieldType,
   validateContinuousColorInterpolation,
+  validateScalePropertyForType,
   validateSemanticScaleDomain,
   validateSemanticScaleRange,
   validateSemanticScaleType
@@ -227,29 +228,40 @@ export function validateSemanticValue(program, parsed, value) {
     const existing = findSemanticScale(program, parsed.id);
     if (property === "type") {
       validateSemanticScaleType(value);
-      if (value !== "linear" && existing?.zero !== undefined) {
-        throw new Error(`Scale type "${value}" does not support zero.`);
-      }
-      if (value === "ordinal" && existing?.nice !== undefined) {
-        throw new Error('Scale type "ordinal" does not support nice.');
+      for (const owned of ["nice", "zero", "clamp", "base", "exponent", "constant"]) {
+        if (existing?.[owned] !== undefined) {
+          validateScalePropertyForType(value, owned);
+        }
       }
     } else if (property === "domain") validateSemanticScaleDomain(value);
     else if (property === "range") validateSemanticScaleRange(value);
     else if (property === "nice") {
       if (typeof value !== "boolean") throw new TypeError("Scale nice must be a boolean.");
-      if (existing?.type === "ordinal") throw new Error('Scale type "ordinal" does not support nice.');
+      if (existing?.type !== undefined) {
+        validateScalePropertyForType(existing.type, "nice");
+      }
     } else if (property === "zero") {
       if (typeof value !== "boolean") throw new TypeError("Scale zero must be a boolean.");
-      if (existing?.type !== undefined && existing.type !== "linear") {
-        throw new Error(`Scale type "${existing.type}" does not support zero.`);
+      if (existing?.type !== undefined) {
+        validateScalePropertyForType(existing.type, "zero");
       }
     } else if (property === "clamp") {
       if (typeof value !== "boolean") throw new TypeError("Scale clamp must be a boolean.");
-      if (existing?.type === "ordinal") {
-        throw new Error('Scale type "ordinal" does not support clamp.');
+      if (existing?.type !== undefined) {
+        validateScalePropertyForType(existing.type, "clamp");
       }
     } else if (property === "reverse") {
       if (typeof value !== "boolean") throw new TypeError("Scale reverse must be a boolean.");
+    } else if (["base", "exponent", "constant"].includes(property)) {
+      if (!Number.isFinite(value) || value <= 0) {
+        throw new RangeError(`Scale ${property} must be a positive finite number.`);
+      }
+      if (property === "base" && value === 1) {
+        throw new RangeError("Scale base must not equal 1.");
+      }
+      if (existing?.type !== undefined) {
+        validateScalePropertyForType(existing.type, property);
+      }
     } else if (property === "interpolate") {
       validateContinuousColorInterpolation(value);
     }

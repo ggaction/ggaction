@@ -47,7 +47,7 @@ const program = chart()
   .encodeX({
     field: "pop",
     fieldType: "quantitative",
-    scale: { type: "log", base: 10, nice: true, zero: false }
+    scale: { type: "log", base: 10, nice: true }
   })
   .encodeY({
     field: "fertility",
