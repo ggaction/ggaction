@@ -3,7 +3,8 @@ import test from "node:test";
 
 import { chart } from "../../../src/index.js";
 import { normalizeMarkSelector } from "../../../src/grammar/markSelection.js";
-import { resolveMarkItems } from "../../../src/materialization/selection/items.js";
+import { resolveMarkItems } from
+  "../../../src/materialization/selection/policies/index.js";
 import {
   resolveSelectionCreationId,
   resolveStoredSelection

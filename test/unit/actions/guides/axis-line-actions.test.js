@@ -100,7 +100,9 @@ test("rematerializes axis lines after Canvas bounds change", () => {
       "editGraphics",
       "rematerializeScale",
       "rematerializeScale",
-      "rematerializePointMark"
+      "rematerializePointMark",
+      "editXAxisLine",
+      "editYAxisLine"
     ]
   );
 });
@@ -119,6 +121,6 @@ test("rematerializes an explicit-range axis baseline after margin change", () =>
   });
   assert.equal(
     resized.trace.children.at(-1).children.at(-1).op,
-    "rematerializeScale"
+    "editXAxisLine"
   );
 });
