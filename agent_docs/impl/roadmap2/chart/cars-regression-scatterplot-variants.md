@@ -49,14 +49,18 @@ createCarsRegressionScatterplot(rows)
 The canonical public chain applies one of these after the point encodings and before `createRegression`:
 
 ```javascript
-.filterMark({
+.filterMarks({
   field: "Horsepower",
-  predicate: { op: "gte", value: 150 }
+  op: "gte",
+  value: 150
 });
 
-.filterMark({
+.filterMarks({
   field: "Displacement",
-  range: { min: 100, max: 300, inclusive: true }
+  op: "range",
+  min: 100,
+  max: 300,
+  inclusive: true
 });
 ```
 

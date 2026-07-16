@@ -2,7 +2,8 @@ import { chart } from "../../src/index.js";
 
 const originFilter = Object.freeze({
   field: "Origin",
-  oneOf: ["Japan", "USA"]
+  op: "oneOf",
+  values: ["Japan", "USA"]
 });
 
 function createCarsRegressionScatterplotWithFilter(
@@ -39,7 +40,7 @@ function createCarsRegressionScatterplotWithFilter(
     .encodeSize({ field: "Acceleration" })
     .encodeShape({ field: "Origin" })
     .encodeOpacity({ value: 0.27 })
-    .filterMark(filter)
+    .filterMarks(filter)
     .createRegression(regression)
     .createGuides(guides);
 }
@@ -72,14 +73,18 @@ export function createPredictionIntervalCarsRegressionScatterplot(cars) {
 export function createComparisonFilterCarsRegressionScatterplot(cars) {
   return createCarsRegressionScatterplotWithFilter(cars, {
     field: "Horsepower",
-    predicate: { op: "gte", value: 150 }
+    op: "gte",
+    value: 150
   });
 }
 
 export function createRangeFilterCarsRegressionScatterplot(cars) {
   return createCarsRegressionScatterplotWithFilter(cars, {
     field: "Displacement",
-    range: { min: 100, max: 300, inclusive: true }
+    op: "range",
+    min: 100,
+    max: 300,
+    inclusive: true
   });
 }
 

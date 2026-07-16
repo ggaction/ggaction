@@ -206,7 +206,8 @@ test("plans each unique scale after one layer changes data", () => {
   assert.deepEqual(planLayerDataRematerialization(program, "points"), [
     { op: "rematerializeScale", args: { id: "x" } },
     { op: "rematerializeScale", args: { id: "y" } },
-    { op: "rematerializeScale", args: { id: "color" } }
+    { op: "rematerializeScale", args: { id: "color" } },
+    { op: "rematerializePointMark", args: { id: "points" } }
   ]);
   assert.throws(
     () => planLayerDataRematerialization(program, "missing"),

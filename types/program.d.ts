@@ -56,10 +56,6 @@ export type FilterDataOptions = {
   source?: string;
   field: string;
 } & FilterModeOptions;
-export type FilterMarkOptions = {
-  target?: string;
-  field: string;
-} & FilterModeOptions;
 export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"
   | "x1" | "y1" | "x2" | "y2"
@@ -88,6 +84,9 @@ export type MarkSelector = {
 );
 export type SelectMarksOptions = {
   id?: string;
+  target?: string;
+} & MarkSelector;
+export type FilterMarksOptions = {
   target?: string;
 } & MarkSelector;
 export interface HighlightMarksOptions {
@@ -849,7 +848,7 @@ export class ChartProgram {
   editCanvas(options: CanvasOptions): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
-  filterMark(options: FilterMarkOptions): ChartProgram;
+  filterMarks(options: FilterMarksOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;

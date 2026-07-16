@@ -6,16 +6,16 @@ Current `filterMark` behavior를 plural `filterMarks`와 shared selector grammar
 
 ## 진행 상태
 
-- [ ] Runtime registration and trace op renamed to `filterMarks`
-- [ ] Type declaration, package surface, current contract and reference renamed
-- [ ] Existing membership/comparison/range behavior migrated exactly
-- [ ] Rank/count/group/tie and channel/item-grain filtering added
-- [ ] Point derived-data/rebind and downstream regression behavior preserved
-- [ ] Bar/path native-grain filtering and rematerialization
-- [ ] All examples, tutorials, recipes, tests and variant call chains migrated
-- [ ] Contract test proves `filterMark` is absent everywhere current
-- [ ] Full invalid/ambiguity/immutability/rematerialization coverage
-- [ ] STEP status, conceptual commit and push
+- [x] Runtime registration and trace op renamed to `filterMarks`
+- [x] Type declaration, package surface, current contract and reference renamed
+- [x] Existing membership/comparison/range behavior migrated exactly
+- [x] Rank/count/group/tie and channel/item-grain filtering added
+- [x] Point derived-data/rebind and downstream regression behavior preserved
+- [x] Bar/path native-grain filtering and rematerialization
+- [x] All examples, tutorials, recipes, tests and variant call chains migrated
+- [x] Contract test proves `filterMark` is absent everywhere current
+- [x] Full invalid/ambiguity/immutability/rematerialization coverage
+- [x] STEP status, conceptual commit and push
 
 ## 완료 조건
 

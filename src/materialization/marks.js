@@ -2,6 +2,7 @@ import { findDataset } from "../selectors/datasets.js";
 import { isAggregate } from "../grammar/aggregate.js";
 import { BAR_GRAINS, resolveBarGrain } from "../grammar/bars/policy.js";
 import { resolveRuleMode } from "../grammar/rules.js";
+import { findUpstreamTransform } from "./dataProvenance.js";
 
 function hasPositionScales(layer) {
   return (
@@ -36,11 +37,7 @@ export function canMaterializeArea(program, layer) {
   }
 
   const dataset = findDataset(program, layer.data);
-  const densityTransform =
-    dataset?.transform?.length === 1 &&
-    dataset.transform[0].type === "density"
-      ? dataset.transform[0]
-      : undefined;
+  const densityTransform = findUpstreamTransform(program, dataset, "density");
   const completeDensity =
     densityTransform !== undefined &&
     (densityTransform.groupBy === undefined ||

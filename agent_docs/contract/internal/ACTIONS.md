@@ -15,6 +15,7 @@ domain action을 통해서만 실행한다.
 | `materializeBoxPlot` | deferred `createBoxPlot` completion and position encodings |
 | `materializeDensityData` | density data actions |
 | `materializeFilteredData` | filter data actions |
+| `materializeMarkFilteredData` | `filterMarks` selected-item member rows |
 | `materializeIntervalData` | interval data actions |
 | `materializeRegressionData` | regression data actions |
 | `materializeRuleSpan` | error-bar cap components and rule rematerialization |

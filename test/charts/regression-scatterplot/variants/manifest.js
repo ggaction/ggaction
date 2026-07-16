@@ -63,9 +63,10 @@ const baselineCallChain = `chart()
   .encodeSize({ field: "Acceleration" })
   .encodeShape({ field: "Origin" })
   .encodeOpacity({ value: 0.27 })
-  .filterMark({
+  .filterMarks({
     field: "Origin",
-    oneOf: ["Japan", "USA"]
+    op: "oneOf",
+    values: ["Japan", "USA"]
   })
   .createRegression({
     confidence: 0.95,
@@ -74,9 +75,10 @@ const baselineCallChain = `chart()
   })
   .createGuides();`;
 
-const baselineFilterCall = `  .filterMark({
+const baselineFilterCall = `  .filterMarks({
     field: "Origin",
-    oneOf: ["Japan", "USA"]
+    op: "oneOf",
+    values: ["Japan", "USA"]
   })`;
 
 function withFilterCall(filterCall) {
@@ -116,9 +118,10 @@ const leftLegendCallChain = `chart()
   .encodeSize({ field: "Acceleration" })
   .encodeShape({ field: "Origin" })
   .encodeOpacity({ value: 0.27 })
-  .filterMark({
+  .filterMarks({
     field: "Origin",
-    oneOf: ["Japan", "USA"]
+    op: "oneOf",
+    values: ["Japan", "USA"]
   })
   .createRegression({
     confidence: 0.95,
@@ -174,9 +177,10 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   variant: "comparison-filter",
   title: "Horsepower at Least 150",
   colors: ["#4c78a8"],
-  callChain: withFilterCall(`  .filterMark({
+  callChain: withFilterCall(`  .filterMarks({
     field: "Horsepower",
-    predicate: { op: "gte", value: 150 }
+    op: "gte",
+    value: 150
   })`),
   primitive: createComparisonFilterPrimitives(cars),
   userFacing: createComparisonFilterCarsRegressionScatterplot(cars)
@@ -185,9 +189,12 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   variant: "range-filter",
   title: "Inclusive Displacement Range",
   colors: ["#4c78a8", "#f58518", "#e45756"],
-  callChain: withFilterCall(`  .filterMark({
+  callChain: withFilterCall(`  .filterMarks({
     field: "Displacement",
-    range: { min: 100, max: 300, inclusive: true }
+    op: "range",
+    min: 100,
+    max: 300,
+    inclusive: true
   })`),
   primitive: createRangeFilterPrimitives(cars),
   userFacing: createRangeFilterCarsRegressionScatterplot(cars)

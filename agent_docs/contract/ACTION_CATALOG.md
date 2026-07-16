@@ -12,7 +12,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`editCanvas`](current/CORE.md#editcanvas) | core | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
 | user-facing | [`createData`](current/CORE.md#createdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`filterData`](current/CORE.md#filterdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
-| user-facing | [`filterMark`](current/CORE.md#filtermark) | core | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createIntervalData`](current/STATISTICS.md#createintervaldata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
@@ -90,6 +89,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`editRegressionBand`](current/STATISTICS.md#editregressionband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createRegressionLine`](current/STATISTICS.md#createregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRegressionLine`](current/STATISTICS.md#editregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`filterMarks`](current/MARK_SELECTION.md#filtermarks) | mark-selection | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | advanced | [`selectMarks`](current/MARK_SELECTION.md#selectmarks) | mark-selection | Stable create-only | Intentional | ✅ / ⚠️ / ⚠️ |
 | user-facing | [`highlightMarks`](current/MARK_SELECTION.md#highlightmarks) | mark-selection | Mutable resource | Cross-mark recipes complete; exhaustive option matrix partial | ✅ / ✅ / ⚠️ |
 | primitive | [`editSemantic`](current/PRIMITIVES.md#editsemantic) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
@@ -100,7 +100,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `filterMarks` | accepted | [Open](planned/MARK_SELECTION.md#filtermarks) |
 
 ## Planned capabilities
 

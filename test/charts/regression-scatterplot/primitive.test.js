@@ -36,9 +36,14 @@ test("authors and renders the complete primitive regression scatterplot", () => 
         id: "pointsFilteredData",
         source: "cars",
         transform: [{
-          type: "filter",
-          field: "Origin",
-          oneOf: ["Japan", "USA"]
+          type: "markFilter",
+          target: "points",
+          selector: {
+            grain: "item",
+            field: "Origin",
+            op: "oneOf",
+            values: ["Japan", "USA"]
+          }
         }],
         valueCount: 333
       },

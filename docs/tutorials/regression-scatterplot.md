@@ -45,9 +45,10 @@ const program = chart()
   .encodeSize({ field: "Acceleration" })
   .encodeShape({ field: "Origin" })
   .encodeOpacity({ value: 0.27 })
-  .filterMark({
+  .filterMarks({
     field: "Origin",
-    oneOf: ["Japan", "USA"]
+    op: "oneOf",
+    values: ["Japan", "USA"]
   })
   .createRegression({
     confidence: 0.95,
@@ -63,7 +64,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
-| `filterMark` | A namespaced immutable dataset derived from `cars`; `points` is rebound | Point scales and geometry are rematerialized |
+| `filterMarks` | A namespaced immutable dataset derived from `cars`; `points` is rebound | Point scales and geometry are rematerialized |
 | point encodings | Shared x/y, color, size, and shape scales | Typed circles and squares with fixed opacity |
 | `createRegression` | Grouped linear predictions and three linked layers | Two filled bands and two stroked paths |
 | `createGuides` | Shared axes, grid, Origin legend, and size legend | One guide set for all compatible layers |
@@ -85,10 +86,12 @@ program
 ├─ createPointMark
 ├─ encodeSize
 ├─ encodeShape
-├─ filterMark
-│  ├─ filterData
+├─ filterMarks
+│  ├─ createDerivedData
+│  ├─ materializeMarkFilteredData
 │  ├─ editSemantic(points.data)
-│  └─ rematerializeScale
+│  ├─ rematerializeScale
+│  └─ rematerializePointMark
 ├─ createRegression
 │  ├─ createRegressionData
 │  ├─ createRegressionBand

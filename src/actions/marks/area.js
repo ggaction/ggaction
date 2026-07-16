@@ -22,6 +22,7 @@ import {
 import { buildLinearPathCommands } from "../../grammar/pathCommands.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { canMaterializeArea } from "../../materialization/marks.js";
+import { findUpstreamTransform } from "../../materialization/dataProvenance.js";
 
 const CREATE_OPTIONS = Object.freeze([
   "id", "data", "fill", "opacity", "stroke", "strokeWidth", "curve"
@@ -137,10 +138,11 @@ const rematerializeAreaMark = action(
     if (dataset === undefined) {
       throw new Error(`Area mark "${id}" requires an existing dataset.`);
     }
-    const densityTransform = dataset.transform?.length === 1 &&
-      dataset.transform[0].type === "density"
-      ? dataset.transform[0]
-      : undefined;
+    const densityTransform = findUpstreamTransform(
+      this,
+      dataset,
+      "density"
+    );
     const xScaleId = layer.encoding?.x?.scale;
     const yScaleId = layer.encoding?.y?.scale;
     const verticalRange = layer.encoding?.y2?.scale === yScaleId;

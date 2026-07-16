@@ -63,14 +63,15 @@ Create an immutable named derived dataset using exactly one membership,
 comparison, or range filter. The source defaults to current data.
 [Data](../api/data.md)
 
-### `filterMark`
+### `filterMarks`
 
 ```javascript
-filterMark({ target?, field, oneOf | predicate | range })
+filterMarks({ target?, grain?, field | channel | property, op, ...operands })
 ```
 
-Create one namespaced immutable filtered dataset, rebind the selected mark,
-and rematerialize its scales and connected guides without changing the source.
+Retain matching final mark items through the shared selector grammar, create one
+namespaced immutable member-row dataset, rebind the mark, and rematerialize its
+scales and connected guides without changing the source.
 [Data](../api/data.md)
 
 ### `highlightMarks`

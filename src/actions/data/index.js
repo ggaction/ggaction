@@ -1,6 +1,11 @@
 import { createData } from "./create.js";
 import { createDerivedData, releaseDerivedData } from "./derived.js";
-import { filterData, filterMark, materializeFilteredData } from "./filter.js";
+import {
+  filterData,
+  filterMarks,
+  materializeFilteredData,
+  materializeMarkFilteredData
+} from "./filter.js";
 import { createRegressionData, materializeRegressionData } from "./regression.js";
 import { createDensityData, materializeDensityData } from "./density.js";
 import { createIntervalData, materializeIntervalData } from "./interval.js";
@@ -12,8 +17,9 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.releaseDerivedData = releaseDerivedData;
   ProgramClass.prototype.createDensityData = createDensityData;
   ProgramClass.prototype.materializeFilteredData = materializeFilteredData;
+  ProgramClass.prototype.materializeMarkFilteredData = materializeMarkFilteredData;
   ProgramClass.prototype.filterData = filterData;
-  ProgramClass.prototype.filterMark = filterMark;
+  ProgramClass.prototype.filterMarks = filterMarks;
   ProgramClass.prototype.materializeRegressionData = materializeRegressionData;
   ProgramClass.prototype.materializeDensityData = materializeDensityData;
   ProgramClass.prototype.createRegressionData = createRegressionData;

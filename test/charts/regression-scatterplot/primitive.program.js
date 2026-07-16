@@ -4,6 +4,16 @@ import { linearPathCommands } from "../../support/path.js";
 import { createCarsRegressionScatterplotValues } from
   "./reference-values.js";
 
+function markSelector(filter) {
+  if (filter.oneOf !== undefined) {
+    return { grain: "item", field: filter.field, op: "oneOf", values: filter.oneOf };
+  }
+  if (filter.predicate !== undefined) {
+    return { grain: "item", field: filter.field, ...filter.predicate };
+  }
+  return { grain: "item", field: filter.field, op: "range", ...filter.range };
+}
+
 export function createCarsRegressionScatterplotPrimitives(cars, {
   filter = {
     field: "Origin",
@@ -33,7 +43,11 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
     .editSemantic({ property: "dataset[pointsFilteredData].source", value: "cars" })
     .editSemantic({
       property: "dataset[pointsFilteredData].transform",
-      value: [{ ...filter, type: "filter" }]
+      value: [{
+        type: "markFilter",
+        target: "points",
+        selector: markSelector(filter)
+      }]
     })
     .editSemantic({
       property: "dataset[pointsFilteredData].values",

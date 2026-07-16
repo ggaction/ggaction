@@ -25,9 +25,10 @@ const program = chart()
   .encodeSize({ field: "Acceleration" })
   .encodeShape({ field: "Origin" })
   .encodeOpacity({ value: 0.27 })
-  .filterMark({
+  .filterMarks({
     field: "Origin",
-    oneOf: ["Japan", "USA"]
+    op: "oneOf",
+    values: ["Japan", "USA"]
   })
   .createRegression()
   .createGuides();

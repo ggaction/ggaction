@@ -253,7 +253,11 @@ test("reapplies selection and highlight intent after point rematerialization", (
     true
   );
 
-  const filtered = highlighted.filterMark({ field: "group", oneOf: ["A"] });
+  const filtered = highlighted.filterMarks({
+    field: "group",
+    op: "eq",
+    value: "A"
+  });
   assert.deepEqual(resolveStoredSelection(filtered).keys, ["point/point/1"]);
   assert.equal(filtered.graphicSpec.objects.point.children.length, 2);
   assert.equal(filtered.graphicSpec.objects.point.children.at(-1).type, "path");

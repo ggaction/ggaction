@@ -107,7 +107,14 @@ test("authors comparison and range filter targets with primitive state", () => {
       dataset => dataset.id === "pointsRegressionData"
     );
 
-    assert.deepEqual(selected.transform, [{ type: "filter", ...filter }]);
+    const selector = filter.predicate === undefined
+      ? { grain: "item", field: filter.field, op: "range", ...filter.range }
+      : { grain: "item", field: filter.field, ...filter.predicate };
+    assert.deepEqual(selected.transform, [{
+      type: "markFilter",
+      target: "points",
+      selector
+    }]);
     assert.deepEqual(selected.values, expected.filteredRows);
     assert.equal(selected.values.length, count);
     assert.deepEqual(
@@ -128,7 +135,7 @@ test("authors comparison and range filter targets with primitive state", () => {
   }
 });
 
-test("matches filter primitives with public filterMark modes", () => {
+test("matches filter primitives with public filterMarks modes", () => {
   assertChartProgramsEquivalent({
     primitiveProgram: createComparisonFilterPrimitives(cars),
     publicProgram: createComparisonFilterCarsRegressionScatterplot(cars)

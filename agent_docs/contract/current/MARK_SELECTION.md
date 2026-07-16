@@ -41,8 +41,46 @@ type MarkSelector =
   `channel: "y2"`, concrete pixel 높이는 `property: "height"`로 선택한다.
 - Stable key는 semantic item identity에서 만들며 collection child order를 selector identity로 사용하지 않는다.
   Multi-row path의 field/channel은 series grain에서 값이 하나로 unique할 때만 selectable하다.
-- Empty selection은 성공이다. Ambiguous field/channel/property, target 또는 incompatible selector는 state와 trace를
-  만들기 전에 실패한다.
+- Empty selection은 `selectMarks`/`highlightMarks`에서 성공이다. `filterMarks`는 empty retained dataset을
+  거부한다. Ambiguous field/channel/property, target 또는 incompatible selector는 state와 trace를 만들기 전에
+  실패한다.
+
+## `filterMarks`
+
+- Signature: `filterMarks({ target?, ...selector })`
+- Target and selection: `selectMarks`와 같은 target inference, selector normalization, native item/stack grain을
+  사용한다. Point field selection은 position/size가 아직 없어도 row grain에서 동작하며 channel/property와
+  non-point mark는 materialized final items를 요구한다.
+- Effect: selected final items의 source member rows를 원래 source order로 보존하는 immutable
+  `${target}FilteredData`를 만들고 `layer[target].data`를 explicit `editSemantic` child로 rebind한다. Stored
+  `markFilter` transform은 target과 normalized selector를 기록한다. Existing derived ID와 repeat application은
+  거부한다.
+- Native grain: aggregate/ranged bar는 selected cell members, stacked bar는 complete selected stack members,
+  line/area는 selected series members, rule은 selected line members를 보존한다. Histogram은 filtering 전 resolved
+  boundaries를 explicit semantic boundaries로 고정해서 selected bins가 subset domain에서 다시 나뉘지 않게 한다.
+- Rematerialization: target scale을 deduplicate한 순서로 resolve하고 target mark를 다시 만든 뒤 connected axes,
+  grids와 legends를 갱신한다. Coupled categorical legend scales는 intermediate mismatch를 노출하지 않고 final
+  domains에서 한 번 다시 materialize한다. Density area는 upstream density provenance를 유지한다.
+- Boundary: source dataset, unrelated marks와 earlier program은 바뀌지 않는다. Existing independent downstream
+  statistical/composite layers를 암묵적으로 rebind하지 않으므로 filtered rows를 사용해야 하는 aggregate는
+  `filterMarks` 뒤에 생성한다. Automatic scales cannot resolve an empty retained dataset, so zero matching items fail
+  before state changes. Singular compatibility alias는 없다.
+
+### Formal values — `filterMarks`
+
+- Implemented: `filterMarks({ target?: UserId } & MarkSelector)` for point/bar/line/area/rule item grain and stacked-bar
+  grain using field, channel or concrete property with comparison, set, range and grouped/ungrouped rank modes.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `filterMarks`
+
+- ✅ Covered: omitted/explicit/invalid target, incomplete point field fallback, all shared selector families and value
+  sources, deterministic derived ID, repeat conflict, immutable source/earlier program and explicit layer rebind.
+- ✅ Covered: point scale/axis/grid rematerialization, histogram boundary retention, stack grain, line/area series,
+  density provenance, rule endpoints and categorical legend convergence.
+- ✅ Covered: regression scatterplot primitive/public equivalence when filtering before statistical layers.
+- Evidence: `test/unit/actions/data/filter-marks.test.js`,
+  `test/charts/regression-scatterplot/variants/primitive.test.js`.
 
 ## `selectMarks`
 

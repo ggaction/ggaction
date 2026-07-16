@@ -5,47 +5,47 @@
     "cars-scatterplot": {
       "width": 1280,
       "height": 800,
-      "sourceHash": "4a18bd551eb48b19f3add79dacbe8b0bdc801420baca10c57a271fbe78f79777"
+      "sourceHash": "400957655a223eb881a3aff389c2d0ae6641afcf5e7bedf6b40a4557f4c30dc9"
     },
     "cars-line-chart": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "a9ca368cda7a915db0b3f5feb139b1afd25a7064f5e093e061dcbbc63b1dc92d"
+      "sourceHash": "639c287c2a4a38b92698af412f93452951504d1fe2062e3ced6a53494ba1ba91"
     },
     "cars-histogram": {
       "width": 864,
       "height": 920,
-      "sourceHash": "3c5688701b6a05931d63140502aaf99ca8505c59fc1fa3961c67a2deb7e614d0"
+      "sourceHash": "00c1031d9253ccc9f130d1c76556148be8ba95a1b55c1d630d5c61d64745026e"
     },
     "jobs-grouped-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "5023025af188463f91a2439ba98071848973e48a63e8af52b076fd99075f3695"
+      "sourceHash": "952b4096f8b9904ef4071f5dfd73be8a3523c1613c799065a720ee516b24ee2a"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "c087f86983272acad4c9d46ada5641e825d628a57d8432ea96e1c1f2811afb6d"
+      "sourceHash": "e3c40b155bb97ae87d1623cd3469fae051e807eea0c1323a5be7960acf7f5e95"
     },
     "cars-density-area": {
       "width": 1440,
       "height": 1000,
-      "sourceHash": "3897dbbe10c96364d8584cd61bd16c216fd58839c4aa7f0a3fef70ec4fbe7262"
+      "sourceHash": "0eab66fd948d2302d2c06d4982c485b307af96248bf514892a7caea39e9b36b8"
     },
     "cars-error-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "1ea94bd7ba44112874d5f217efe61e8763d3a28d5189b92b64056fa029c301c0"
+      "sourceHash": "d992bf9d6f82ce071b7259e8cf5b4164561f37a0d32297c758156b655cbb378e"
     },
     "cars-box-plot": {
       "width": 720,
       "height": 920,
-      "sourceHash": "4f54fa1f25532931fc58b66963d0bb3ceafe4a2c0ee11cd31dfa2ec8b2b2cf30"
+      "sourceHash": "4e590a67322a2e7c7090f142d7cd4f0ba8df99390b2ce0673b9d01d06051d01b"
     },
     "gapminder-error-band": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "3afad19ed6b60d6f42174834abb6244fdf20a6cd5ca151492c8ab3495f9ac73a"
+      "sourceHash": "caafd63652bdc0adf7b83b063c68881a19992689ce781a3eab3dfd5fd91064a8"
     }
   }
 }

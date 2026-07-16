@@ -156,36 +156,6 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: exactly-one mutual exclusivity, source immutability/order와 primitive/public chart equivalence.
 - Evidence: `test/unit/actions/data/filter-data.test.js`.
 
-## `filterMark`
-
-- Signature: `filterMark({ target?, field, oneOf?, predicate?, range? })`
-- `target`: Implemented, optional mark ID. 생략하면 current mark, 그 다음 unique eligible mark 순서로
-  추론하며 안전하게 하나를 고를 수 없으면 오류다.
-- `field`와 filter mode: Implemented, `filterData`와 같은 exactly-one membership/comparison/range 계약이다.
-- Derived ID: `${target}FilteredData`로 deterministic하게 namespaced된다. 기존 ID가 있으면 conflicting
-  second application을 거부한다.
-- Effect: selected mark의 현재 dataset을 source로 immutable filtered dataset을 만들고
-  `layer[target].data`를 explicit `editSemantic`으로 rebind한다. Mark encoding이 참조하는 unique scale을
-  ordered materialization plan으로 다시 계산하므로 mark와 connected axes, grids, legends가 갱신된다.
-- Boundary: source dataset, 다른 mark와 earlier program은 바뀌지 않는다. 이미 존재하는 independent
-  statistical/composite layer를 암묵적으로 새 source에 rebind하지 않으므로, 그 통계가 filtered rows를
-  사용해야 한다면 `filterMark`를 통계 action보다 먼저 호출한다.
-
-### Formal values — `filterMark`
-
-- Implemented: `filterMark({ target?: UserId; field: FieldName } & ({ oneOf: readonly unknown[] } | { predicate: FilterComparison } | { range: FilterRange }))`
-- Planned (NOT IMPLEMENTED): Phase 9 replaces this singular action with `filterMarks` and the shared mark-item
-  selector algebra. The completed migration removes `filterMark` rather than retaining a compatibility alias.
-- Proposed (NOT IMPLEMENTED): —
-
-### Value coverage — `filterMark`
-
-- ✅ Covered: current/explicit target, deterministic derived ID, all three filter modes, source and earlier-program
-  immutability, semantic rebind, point cardinality change, scale rematerialization, invalid target/mode와 repeat conflict.
-- ✅ Covered: regression scatterplot primitive/public equivalence when filtering before the statistical layer.
-- Evidence: `test/unit/actions/data/filter-mark.test.js`,
-  `test/charts/regression-scatterplot/variants/primitive.test.js`.
-
 ## `createRegressionData`
 
 - Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`

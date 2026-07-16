@@ -27,6 +27,14 @@ function markdownFiles(directory) {
     .map(file => path.join(contractRoot, directory, file));
 }
 
+function sourceFiles(directory) {
+  return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+    const absolute = path.join(directory, entry.name);
+    if (entry.isDirectory()) return sourceFiles(absolute);
+    return /\.(?:js|md|d\.ts)$/.test(entry.name) ? [absolute] : [];
+  });
+}
+
 const currentFiles = markdownFiles("current");
 const plannedFiles = markdownFiles("planned");
 const currentCorpus = currentFiles
@@ -112,6 +120,17 @@ function assertContractTarget(contract) {
 test("keeps the generated catalog synchronized with the manifest", () => {
   assert.equal(catalog, renderActionCatalog(index));
   assert.equal(index.version, 2);
+});
+
+test("removes the singular filterMark API from every current public surface", () => {
+  assert.equal(ChartProgram.prototype.filterMark, undefined);
+  const corpus = ["src", "types", "docs", "examples"]
+    .flatMap(directory => sourceFiles(path.join(root, directory)))
+    .map(file => readFileSync(file, "utf8"))
+    .join("\n");
+  assert.doesNotMatch(corpus, /\bfilterMark\b/);
+  assert.equal(index.actions.some(action => action.name === "filterMark"), false);
+  assert.equal(index.plannedActions.some(action => action.name === "filterMarks"), false);
 });
 test("keeps every declared direct action in one current domain contract", () => {
   const declared = declaredProgramMethods();
@@ -232,9 +251,7 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
 test("keeps planned direct actions and reassignment gaps explicit", () => {
   const names = index.plannedActions.map(action => action.name);
   assert.equal(new Set(names).size, names.length);
-  assert.deepEqual(new Set(names), new Set([
-    "filterMarks"
-  ]));
+  assert.deepEqual(names, []);
   assert.equal(names.includes("editRuleMark"), false);
 
   for (const action of index.plannedActions) {
@@ -529,7 +546,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /"eq" \| "neq" \| "gt" \| "gte" \| "lt" \| "lte"/);
   assert.match(currentCorpus, /op: "min" \| "max"/);
   assert.match(currentCorpus, /ties\?: "first" \| "all"/);
-  assert.match(plannedCorpus, /filterMarks\(options:/);
+  assert.match(currentCorpus, /filterMarks\(\{ target\?, \.\.\.selector \}\)/);
   assert.match(currentCorpus, /selectMarks\(\{ id\?, target\?, \.\.\.selector \}\)/);
   assert.match(currentCorpus, /highlightMarks\(\{ id\?, target\?, select\?, selection\?/);
   assert.match(currentCorpus, /editBarMark\(\{/);

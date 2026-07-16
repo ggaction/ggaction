@@ -11,7 +11,7 @@ title: Data
 | --- | --- | --- | --- |
 | `createData` | `createData({ values })` | First dataset ID: `"data"`; values are required | Immutable semantic dataset and current-data context |
 | `filterData` | `filterData({ id: "selected", field, oneOf })` | Source: current dataset | Immutable derived dataset using one membership, comparison, or range filter |
-| `filterMark` | `filterMark({ field, oneOf })` | Target: current or unique mark; source and derived ID from target | Immutable derived dataset, mark rebind, and concrete rematerialization |
+| `filterMarks` | `filterMarks({ field, op: "eq", value })` | Target: current or unique mark; shared final-item selector | Immutable member-row dataset, mark rebind, and concrete rematerialization |
 | `createRegressionData` | `createRegressionData({ id: "fit", x, y })` | Source: current dataset; linear OLS; confidence `0.95` | Immutable derived predictions and mean-response interval |
 | `createDensityData` | `createDensityData({ id: "density", field })` | Source: current dataset; Gaussian/unit density; 100 steps; automatic bandwidth | Immutable KDE rows and density provenance |
 | `createIntervalData` | `createIntervalData({ id: "summary", field })` | Source: current dataset; ungrouped mean 95% CI | Immutable center/lower/upper rows and interval provenance |
@@ -99,12 +99,13 @@ program.filterData({
 });
 ```
 
-## `filterMark({ target?, field, oneOf | predicate | range })`
+## `filterMarks({ target?, ...selector })`
 
-Filter an existing mark without changing its source dataset. `filterMark`
-infers the current mark when possible, creates a namespaced immutable dataset
-such as `pointsFilteredData`, rebinds only that mark, and rematerializes its
-scales and connected guides.
+Filter existing final mark items without changing the source dataset.
+`filterMarks` uses the same selector grammar as `selectMarks`, infers the current
+mark when possible, creates a namespaced immutable dataset such as
+`pointsFilteredData`, rebinds only that mark, and rematerializes its scales,
+graphics, and connected guides.
 
 ```javascript
 const filtered = chart()
@@ -112,23 +113,37 @@ const filtered = chart()
   .createPointMark({ id: "points" })
   .encodeX({ field: "Displacement" })
   .encodeY({ field: "Acceleration" })
-  .filterMark({
+  .filterMarks({
     field: "Origin",
-    oneOf: ["Japan", "USA"]
+    op: "oneOf",
+    values: ["Japan", "USA"]
   });
 ```
 
-| Option | Type | Required |
-| --- | --- | --- |
-| `target` | existing mark ID | no; current or unique mark |
-| `field` | non-empty string | yes |
-| `oneOf` | non-empty scalar array | one filter mode required |
-| `predicate` | `{ op, value }` | one filter mode required |
-| `range` | `{ min, max, inclusive? }` | one filter mode required |
+Choose exactly one selector value source: `field` for a data value unique at
+the item grain, `channel` for a pre-scale semantic value, or `property` for a
+concrete graphical value. Operators are `eq | neq | gt | gte | lt | lte`,
+`oneOf`, `range`, and ranked `min | max` with optional `count`, `groupBy`, and
+`ties`. The default `grain: "item"` means a point, final bar rectangle,
+line/area series path, or rule. Stacked bars additionally support
+`grain: "stack"`.
+
+```javascript
+program.filterMarks({
+  target: "bars",
+  grain: "stack",
+  channel: "y2",
+  op: "max"
+});
+```
 
 The original dataset and earlier program remain unchanged. Apply the filter
 before creating a derived statistical layer when that statistic should use the
-filtered rows; existing independent layers are not silently rebound.
+filtered rows; existing independent layers are not silently rebound. Histograms
+retain their pre-filter bin boundaries, and line/area filters retain complete
+series. Reapplying the same target is rejected because its deterministic derived
+dataset ID already exists. A selector that matches no final item fails before
+creating derived state.
 
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
 

@@ -91,14 +91,13 @@ export function planLayerDataRematerialization(program, id) {
       .map(encoding => encoding?.scale)
       .filter(scale => scale !== undefined)
   )];
-  if (scaleIds.length > 0) {
-    return scaleIds.map(scale => ({
+  const plan = scaleIds.map(scale => ({
       op: "rematerializeScale",
       args: { id: scale }
     }));
-  }
   const markStep = getMarkMaterializationStep(program, layer);
-  if (markStep !== undefined) return [markStep];
+  if (markStep !== undefined) plan.push(markStep);
+  if (plan.length > 0) return plan;
   return layer.mark?.type === "point" &&
     program.graphicSpec.objects[layer.id] !== undefined
     ? [{ op: "rematerializePointMark", args: { id: layer.id } }]
@@ -117,4 +116,27 @@ export function applyMaterializationPlan(program, plan) {
       : next[step.op](step.args);
   }
   return next;
+}
+
+export function applyLayerDataRematerialization(program, id) {
+  const categoricalKind = ["series", "color"].find(kind =>
+    program.guideConfigs.legend?.[kind] !== undefined
+  );
+  const categoricalConfig = categoricalKind === undefined
+    ? undefined
+    : program.guideConfigs.legend[categoricalKind];
+  let next = categoricalKind === undefined
+    ? program
+    : program._withoutMaterializationConfig([
+        "guides", "legend", categoricalKind
+      ]);
+  next = applyMaterializationPlan(
+    next,
+    planLayerDataRematerialization(next, id)
+  );
+  return categoricalConfig === undefined
+    ? next
+    : next
+        ._withLegendConfig(categoricalKind, categoricalConfig)
+        .rematerializeLegend();
 }

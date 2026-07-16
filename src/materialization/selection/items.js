@@ -22,6 +22,7 @@ import {
 import { deriveHistogramSegments } from "../bars/histogram.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
+import { findUpstreamTransform } from "../dataProvenance.js";
 
 function itemKey(layer, grain, index) {
   return `${layer.id}/${grain}/${index}`;
@@ -132,7 +133,7 @@ function finalizeItems(program, layer, grain, definitions, graphicType) {
       `Mark "${layer.id}" item count does not match its materialized graphics.`
     );
   }
-  return cloneAndFreeze(definitions.map((definition, index) => {
+  return Object.freeze(definitions.map((definition, index) => {
     const indices = definition.graphicIndices ?? [index];
     const children = indices.map(childIndex => graphic.children[childIndex]);
     const properties = definition.properties ?? (
@@ -143,18 +144,18 @@ function finalizeItems(program, layer, grain, definitions, graphicType) {
             ...collectionBounds(children)
           }
     );
-    return {
+    return Object.freeze({
       key: definition.key ?? itemKey(layer, grain, index),
       layer: layer.id,
       markType: layer.mark.type,
-      fields: definition.fields,
-      channels: definition.channels,
-      properties,
-      members: definition.members,
-      graphicIds: children.map((child, childOffset) =>
+      fields: cloneAndFreeze(definition.fields),
+      channels: cloneAndFreeze(definition.channels),
+      properties: cloneAndFreeze(properties),
+      members: Object.freeze([...definition.members]),
+      graphicIds: Object.freeze(children.map((child, childOffset) =>
         child.id ?? graphicId(layer, indices[childOffset])
-      )
-    };
+      ))
+    });
   }));
 }
 
@@ -456,10 +457,7 @@ function resolveLineItems(program, layer, dataset) {
 }
 
 function resolveAreaItems(program, layer, dataset) {
-  const transform = dataset.transform?.length === 1 &&
-    dataset.transform[0].type === "density"
-    ? dataset.transform[0]
-    : undefined;
+  const transform = findUpstreamTransform(program, dataset, "density");
   const derived = transform === undefined
     ? deriveAreaSeries(dataset.values, layer)
     : deriveDensityAreaSeries(dataset.values, layer, transform);

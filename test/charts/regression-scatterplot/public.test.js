@@ -19,7 +19,7 @@ const expectedTopLevelActions = [
   "encodeSize",
   "encodeShape",
   "encodeOpacity",
-  "filterMark",
+  "filterMarks",
   "createRegression",
   "createGuides"
 ];

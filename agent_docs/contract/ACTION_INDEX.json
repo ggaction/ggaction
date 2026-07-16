@@ -92,24 +92,6 @@
       }
     },
     {
-      "name": "filterMark",
-      "layer": "user-facing",
-      "domain": "core",
-      "status": "implemented",
-      "lifecycle": "Aggregate create-only",
-      "update": "Create filtered data and rebind one mark",
-      "audit": "Intentional",
-      "coverage": {
-        "contract": "complete",
-        "effects": "complete",
-        "tests": "complete"
-      },
-      "contract": {
-        "file": "agent_docs/contract/current/CORE.md",
-        "anchor": "filtermark"
-      }
-    },
-    {
       "name": "createDensityData",
       "layer": "user-facing",
       "domain": "core",
@@ -1496,6 +1478,24 @@
       }
     },
     {
+      "name": "filterMarks",
+      "layer": "user-facing",
+      "domain": "mark-selection",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Create selected-item data and rebind one mark",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARK_SELECTION.md",
+        "anchor": "filtermarks"
+      }
+    },
+    {
       "name": "selectMarks",
       "layer": "advanced",
       "domain": "mark-selection",
@@ -1586,17 +1586,7 @@
       }
     }
   ],
-  "plannedActions": [
-    {
-      "name": "filterMarks",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/MARK_SELECTION.md",
-        "anchor": "filtermarks"
-      }
-    }
-  ],
+  "plannedActions": [],
   "plannedCapabilities": [
     {
       "id": "continuous-color-bar-consumer",
@@ -1650,6 +1640,7 @@
       "materializeBoxSummaryData",
       "materializeDensityData",
       "materializeFilteredData",
+      "materializeMarkFilteredData",
       "materializeIntervalData",
       "materializeRegressionData",
       "materializeRuleSpan",

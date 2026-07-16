@@ -13,9 +13,9 @@ Relevant existing chart contracts:
 - [`../chart/cars-histogram-variants.md`](../chart/cars-histogram-variants.md)
 - [`../chart/cars-line-chart-variants.md`](../chart/cars-line-chart-variants.md)
 
-Planned normative action contract:
+Normative action contract:
 
-- [`../../../contract/planned/MARK_SELECTION.md`](../../../contract/planned/MARK_SELECTION.md)
+- [`../../../contract/current/MARK_SELECTION.md`](../../../contract/current/MARK_SELECTION.md)
 
 ## 진행 상태
 
@@ -28,7 +28,7 @@ Planned normative action contract:
 - [x] Point selection/highlight Gate A and public implementation
 - [x] Histogram tallest-stack Gate B and public implementation
 - [x] Line-series Gate C and cross-mark integration
-- [ ] `filterMarks` migration
+- [x] `filterMarks` migration
 - [x] `editBarMark`
 - [ ] Robustness, docs, contract promotion and Phase closeout
 
