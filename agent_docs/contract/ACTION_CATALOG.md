@@ -20,7 +20,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`editPointMark`](current/MARKS.md#editpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createLineMark`](current/MARKS.md#createlinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLineMark`](current/MARKS.md#editlinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createBarMark`](current/MARKS.md#createbarmark) | marks | Stable create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createBarMark`](current/MARKS.md#createbarmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editBarMark`](current/MARKS.md#editbarmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createAreaMark`](current/MARKS.md#createareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createRuleMark`](current/MARKS.md#createrulemark) | marks | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editAreaMark`](current/MARKS.md#editareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -99,7 +100,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `editBarMark` | accepted | [Open](planned/MARK_SELECTION.md#editbarmark) |
 | `filterMarks` | accepted | [Open](planned/MARK_SELECTION.md#filtermarks) |
 
 ## Planned capabilities

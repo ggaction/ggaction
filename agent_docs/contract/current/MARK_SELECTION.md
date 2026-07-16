@@ -1,6 +1,6 @@
 # Mark selection action contracts
 
-Current direct-action contracts for semantic mark-item selection and point highlighting. Shared notation and
+Current direct-action contracts for mark-item selection and point/bar highlighting. Shared notation and
 lifecycle rules live in [`../README.md`](../README.md).
 
 ## Shared selector algebra and mark-item grain
@@ -78,33 +78,35 @@ type MarkSelector =
 - Effects and reevaluation
   - ✅ Covered: selection-only graphic identity, exact point keys, trace, Canvas resize and filtered-cardinality reevaluation.
   - ⚠️ Partial: multiple simultaneous selections through every rematerialization producer.
-- Cross-mark highlight appearance remains Planned, but cross-mark selection identity is current.
+- Line/area/rule highlight appearance remains Planned, but cross-mark selection identity is current.
 - Evidence: `test/unit/grammar/transforms/mark-selection.test.js`,
   `test/unit/selectors/mark-items.test.js`,
   `test/unit/actions/selection/mark-selection.test.js`,
-  `test/charts/mark-selection-points/public.test.js`.
+  `test/charts/mark-selection-points/public.test.js`,
+  `test/charts/mark-selection-bars/public.test.js`.
 
 ## `highlightMarks`
 
 - Signature: `highlightMarks({ id?, target?, select?, selection?, color?, opacity?, fill?, stroke?, strokeWidth?, shape?, size?, offset?, dimOthers?, bringToFront? })`
 - Selection source: inline `select`, explicit `selection`, current unique compatible selection 순으로 resolve한다.
   Inline selection은 real wrapped `selectMarks` child를 호출하며 `select`와 `selection`은 함께 쓸 수 없다.
-- Current mark capability: point only. Omitted appearance uses accent `#dc2626` and area multiplier `2`.
-  `color` maps to point fill; `color` and `fill` conflict. `shape` accepts the shared 12 point shapes. `size` is a
-  positive finite area multiplier, not a semantic size encoding.
+- Current mark capability: point and bar. Omitted appearance uses accent `#dc2626`. Point default size is area
+  multiplier `2`; `shape` accepts the shared 12 point shapes and logical offset is available. Point/bar `color` aliases
+  fill and conflicts with explicit `fill`. Bar rejects shape, size, offset and strokeDash.
 - `opacity` is selected-item opacity. Optional `strokeWidth` requires `stroke`. Logical `offset.x/y` defaults to zero.
-  Point highlight rejects `strokeDash`; bar/line/area/rule-specific styles remain Planned.
+  Point highlight rejects `strokeDash`; line/area/rule-specific styles remain Planned.
 - `dimOthers` defaults to `false`; `true` uses opacity `0.25`, or `{ opacity }` supplies an explicit unit interval.
   `bringToFront` defaults to `true` and stores selected collection children last. Empty selection changes no selected
   child and may still dim the full complement when requested.
-- Effect: selected concrete children receive overrides after ordinary encoding appearance. Assignment intent is stored
-  in `materializationConfigs.highlights`; reapplying the same selection immutably replaces its assignment. Point
-  rematerialization first rebuilds base children, reevaluates selection, then reapplies highlight/dimming/order.
+- Effect: selected concrete children receive overrides after ordinary encoding appearance. Stack selection applies the
+  override to every attached rect. Assignment intent is stored in `materializationConfigs.highlights`; reapplying the
+  same selection immutably replaces it. Point/bar rematerialization rebuilds base children, resolves selected keys once,
+  then passes the same key snapshot to highlight, dimming and ordering children.
 
 ### Formal values — `highlightMarks`
 
-- Implemented: `highlightMarks({ id?: UserId; target?: UserId; select?: MarkSelector; selection?: UserId; color?: NonEmptyString; opacity?: UnitInterval; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; shape?: PointShape; size?: PositiveFinite; offset?: { x?: Finite; y?: Finite }; dimOthers?: boolean | { opacity?: UnitInterval }; bringToFront?: boolean })` for point marks.
-- Proposed (NOT IMPLEMENTED): —; bar/line/area/rule recipes plus `strokeDash` applicability are Planned.
+- Implemented: `highlightMarks({ id?: UserId; target?: UserId; select?: MarkSelector; selection?: UserId; color?: NonEmptyString; opacity?: UnitInterval; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; shape?: PointShape; size?: PositiveFinite; offset?: { x?: Finite; y?: Finite }; dimOthers?: boolean | { opacity?: UnitInterval }; bringToFront?: boolean })` for point and bar marks with mark-specific option applicability.
+- Proposed (NOT IMPLEMENTED): —; line/area/rule recipes plus `strokeDash` applicability are Planned.
 
 ### Value coverage — `highlightMarks`
 
@@ -113,13 +115,17 @@ type MarkSelector =
 - Point appearance
   - ✅ Covered: shortest default, color/fill conflict, opacity, stroke/width dependency, shape, size, offset and errors.
   - ⚠️ Partial: every supported point shape as a highlighted replacement rather than through shared shape grammar alone.
+- Bar appearance and grain
+  - ✅ Covered: default/explicit fill, opacity, stroke/width, point-only option rejection, item/stack attachment and
+    selected-last behavior.
+  - ✅ Covered: approved maximum-`y2` item/stack primitive-public pairs and Canvas rematerialization.
 - Complement and ordering
   - ✅ Covered: disabled/default/explicit dimming, selected-last order, disabled front placement and empty-selection no-op.
 - Persistence and visual equality
   - ✅ Covered: Canvas resize and filtered cardinality rematerialization; approved primitive/public semantic,
     graphic, renderer-call and same-run pixel equality.
-- Planned: bar fill, line/rule stroke/dash and area fill recipes remain in
+- Planned: line/rule stroke/dash and area fill recipes remain in
   [`../planned/MARK_SELECTION.md`](../planned/MARK_SELECTION.md).
 - Evidence: `test/unit/actions/selection/mark-selection.test.js`,
   `test/charts/mark-selection-points/public.test.js`,
-  `test/charts/mark-selection-points/png.render.js`.
+  `test/charts/mark-selection-bars/public.test.js`, and their PNG render tests.

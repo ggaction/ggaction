@@ -158,7 +158,10 @@ test("uses the default point recipe and can replace an existing assignment", () 
     .selectMarks({ field: "x", op: "max" })
     .highlightMarks({});
   const highlighted = selected.graphicSpec.objects.point.children.at(-1);
-  assert.equal(highlighted.type, "circle");
+  assert.equal(
+    highlighted.type ?? selected.graphicSpec.objects.point.type,
+    "circle"
+  );
   assert.equal(highlighted.properties.fill, "#dc2626");
   assert.equal(highlighted.properties.radius, 3 * Math.sqrt(2));
 
@@ -284,4 +287,61 @@ test("validates selection and point highlight options atomically", () => {
   }
   assert.equal(base.materializationConfigs.selections, undefined);
   assert.equal(base.materializationConfigs.highlights, undefined);
+});
+
+test("highlights one bar item or one complete stack from the same y2 channel", () => {
+  const base = createCarsHistogram(loadCars());
+  const item = base.highlightMarks({
+    target: "bars",
+    select: { channel: "y2", op: "max" },
+    fill: "#facc15",
+    stroke: "#713f12",
+    strokeWidth: 2.5,
+    opacity: 1
+  });
+  assert.deepEqual(resolveStoredSelection(item).keys, ["bars/histogram/5"]);
+  assert.equal(item.graphicSpec.objects.bars.children.at(-1).properties.fill, "#facc15");
+  assert.deepEqual(item.trace.children.at(-1).children.map(child => child.op), [
+    "selectMarks",
+    "applyBarHighlight",
+    "placeSelectedMarkItemsLast"
+  ]);
+
+  const stack = base.highlightMarks({
+    target: "bars",
+    select: { grain: "stack", channel: "y2", op: "max" },
+    fill: "#facc15",
+    stroke: "#713f12",
+    strokeWidth: 2.5,
+    opacity: 1
+  });
+  assert.deepEqual(resolveStoredSelection(stack).keys, ["bars/stack/1"]);
+  assert.equal(stack.graphicSpec.objects.bars.children.slice(-3).every(child =>
+    child.properties.fill === "#facc15" &&
+    child.properties.stroke === "#713f12"
+  ), true);
+
+  const resized = stack.editCanvas({ height: 520 });
+  assert.deepEqual(resolveStoredSelection(resized).keys, ["bars/stack/1"]);
+  assert.equal(resized.graphicSpec.objects.bars.children.slice(-3).every(child =>
+    child.properties.fill === "#facc15"
+  ), true);
+});
+
+test("validates bar-specific highlight appearance before creating selection state", () => {
+  const base = createCarsHistogram(loadCars());
+  for (const [option, error] of [
+    [{ shape: "diamond" }, /does not support shape/],
+    [{ size: 2 }, /does not support size/],
+    [{ offset: { x: 1 } }, /does not support offset/],
+    [{ strokeDash: "dashed" }, /does not support strokeDash/],
+    [{ strokeWidth: 2 }, /requires stroke/]
+  ]) {
+    assert.throws(() => base.highlightMarks({
+      target: "bars",
+      select: { channel: "y2", op: "max" },
+      ...option
+    }), error);
+  }
+  assert.equal(base.materializationConfigs.selections, undefined);
 });

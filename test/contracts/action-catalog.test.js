@@ -204,6 +204,7 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
     "createBoxSummaryData",
     "createErrorBarCap",
     "createErrorBandBoundary",
+    "applyBarHighlight",
     "applyPointHighlight",
     "dimUnselectedMarkItems",
     "placeSelectedMarkItemsLast"
@@ -230,7 +231,6 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   const names = index.plannedActions.map(action => action.name);
   assert.equal(new Set(names).size, names.length);
   assert.deepEqual(new Set(names), new Set([
-    "editBarMark",
     "filterMarks"
   ]));
   assert.equal(names.includes("editRuleMark"), false);
@@ -530,7 +530,8 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(plannedCorpus, /filterMarks\(options:/);
   assert.match(currentCorpus, /selectMarks\(\{ id\?, target\?, \.\.\.selector \}\)/);
   assert.match(currentCorpus, /highlightMarks\(\{ id\?, target\?, select\?, selection\?/);
-  assert.match(plannedCorpus, /editBarMark\(\{/);
+  assert.match(currentCorpus, /editBarMark\(\{/);
+  assert.doesNotMatch(plannedCorpus, /^## `editBarMark`$/m);
   assert.doesNotMatch(plannedCorpus, /^## `selectRows`$/m);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /argmin.*Proposed|argmax.*Proposed/);
   assert.match(currentCorpus, /method\?: "linear"[\s\S]*method: "polynomial"[\s\S]*method: "loess"/);

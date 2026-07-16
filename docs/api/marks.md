@@ -14,6 +14,7 @@ title: Marks
 | `createLineMark` | `createLineMark()` | ID `"line"`; current dataset; linear curve | Empty path collection |
 | `editLineMark` | `editLineMark({ curve: "monotone" })` | Current or unique line mark | Rematerialized path commands |
 | `createBarMark` | `createBarMark()` | ID `"bar"`; current dataset | Empty rect collection |
+| `editBarMark` | `editBarMark({ opacity: 0.7 })` | Current or unique bar | Rematerialized bar appearance |
 | `createAreaMark` | `createAreaMark()` | ID `"area"`; current dataset; blue fill; opacity `0.2` | Empty path collection |
 | `createRuleMark` | `createRuleMark()` | ID `"rule"`; current dataset | Empty line collection |
 
@@ -199,6 +200,26 @@ both endpoints share one scale and Canvas edits rematerialize the rectangles.
 rects. The color scale domain controls series order. Stack uses total bin counts,
 fill normalizes to one, group creates within-bin slots, overlay shares a baseline,
 and diverging separates positive and negative accumulation.
+
+## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`
+
+Edit the appearance of every rectangle owned by one bar mark:
+
+```javascript
+const outlined = program.editBarMark({
+  target: "bars",
+  opacity: 0.8,
+  stroke: "#111827",
+  strokeWidth: 1.5
+});
+```
+
+The current or only bar is inferred when `target` is omitted. At least one
+appearance option is required. `stroke: false` removes the visible outline;
+a later string stroke restores it. A constant `fill` conflicts with a
+field-driven color encoding, while opacity and outline remain editable.
+Histogram, aggregate, grouped, and ranged geometry and semantics are unchanged,
+and the appearance is reapplied after Canvas or scale rematerialization.
 
 ## `createRuleMark({ id?, data? } = {})`
 

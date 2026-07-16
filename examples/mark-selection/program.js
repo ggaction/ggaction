@@ -52,3 +52,73 @@ export function createGroupedMaximumPointHighlight(cars) {
       bringToFront: true
     });
 }
+
+export function createTopmostHistogramSegmentHighlight(cars) {
+  return chart()
+    .createCanvas({
+      width: 432,
+      height: 460,
+      margin: { top: 80, right: 60, bottom: 130, left: 80 }
+    })
+    .createData({ id: "cars", values: cars })
+    .createBarMark({ id: "bars" })
+    .encodeHistogram({
+      field: "Displacement",
+      maxBins: 10,
+      xScale: { nice: true, zero: false }
+    })
+    .encodeColor({
+      field: "Origin",
+      scale: { palette: "tableau10" }
+    })
+    .createGuides({ legend: { position: "bottom" } })
+    .createTitle({
+      text: "Displacement distribution",
+      subtitle: "by country",
+      align: "center"
+    })
+    .highlightMarks({
+      target: "bars",
+      select: { channel: "y2", op: "max" },
+      fill: "#facc15",
+      stroke: "#713f12",
+      strokeWidth: 2.5,
+      opacity: 1,
+      bringToFront: true
+    });
+}
+
+export function createTallestHistogramStackHighlight(cars) {
+  return chart()
+    .createCanvas({
+      width: 432,
+      height: 460,
+      margin: { top: 80, right: 60, bottom: 130, left: 80 }
+    })
+    .createData({ id: "cars", values: cars })
+    .createBarMark({ id: "bars" })
+    .encodeHistogram({
+      field: "Displacement",
+      maxBins: 10,
+      xScale: { nice: true, zero: false }
+    })
+    .encodeColor({
+      field: "Origin",
+      scale: { palette: "tableau10" }
+    })
+    .createGuides({ legend: { position: "bottom" } })
+    .createTitle({
+      text: "Displacement distribution",
+      subtitle: "by country",
+      align: "center"
+    })
+    .highlightMarks({
+      target: "bars",
+      select: { grain: "stack", channel: "y2", op: "max" },
+      fill: "#facc15",
+      stroke: "#713f12",
+      strokeWidth: 2.5,
+      opacity: 1,
+      bringToFront: true
+    });
+}

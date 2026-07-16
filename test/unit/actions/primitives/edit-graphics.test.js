@@ -188,6 +188,37 @@ test("replaces heterogeneous children and broadcasts shared properties", () => {
   assert.equal(populated.graphicSpec.objects.symbols.children[0].properties.radius, 4);
 });
 
+test("keeps a homogeneous collection type when replacing ordered children", () => {
+  const base = chart().createGraphics({ id: "bars", type: "rect", length: 2 });
+  const replaced = base.editGraphics({
+    target: "bars",
+    property: "children",
+    value: [
+      {
+        type: "rect",
+        properties: {
+          x: 0, y: 0, width: 4, height: 8,
+          fill: "red", stroke: "white", strokeWidth: 0
+        }
+      },
+      {
+        type: "rect",
+        properties: {
+          x: 5, y: 0, width: 4, height: 6,
+          fill: "blue", stroke: "white", strokeWidth: 0
+        }
+      }
+    ]
+  });
+
+  assert.equal(replaced.graphicSpec.objects.bars.type, "rect");
+  assert.equal(replaced.graphicSpec.objects.bars.children[0].type, undefined);
+  assert.deepEqual(
+    replaced.graphicSpec.objects.bars.children.map(child => child.id),
+    ["bars:0", "bars:1"]
+  );
+});
+
 test("validates heterogeneous child types and type-specific properties", () => {
   const collection = chart().createGraphics({
     id: "symbols",

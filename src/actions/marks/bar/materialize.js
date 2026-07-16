@@ -69,6 +69,22 @@ export const rematerializeBarMark = action(
       "rematerializeBarMark"
     );
     const id = validateUserId(args.id, "Bar mark id");
+    const highlights = Object.entries(
+      this.materializationConfigs.highlights ?? {}
+    ).filter(([, config]) => config.target === id);
+    if (highlights.length > 0) {
+      let baseline = this;
+      for (const [highlightId] of highlights) {
+        baseline = baseline._withoutMaterializationConfig([
+          "highlights",
+          highlightId
+        ]);
+      }
+      return baseline
+        .editGraphics({ target: id, property: "length", value: 0 })
+        .rematerializeBarMark({ id })
+        .rematerializeMarkHighlights({ target: id, highlights });
+    }
     const required = requireCompleteBar(this, id);
     let resolved = this
       .rematerializeScale({ id: required.xEncoding.scale })

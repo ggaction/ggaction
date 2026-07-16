@@ -75,6 +75,8 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
   }
 
   const existing = resolved.graphicSpec.objects[layer.id].children;
+  const config = resolved.markConfigs[layer.id] ?? {};
+  const appearance = config.barAppearance ?? {};
   return segments.map((segment, index) => {
     const category = categoryIndex.get(segment.category);
     const color = seriesIndex.get(segment.color);
@@ -114,10 +116,23 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
           : categoryCenter - thickness / 2,
       width: vertical ? thickness : Math.abs(start - end),
       height: vertical ? Math.abs(start - end) : thickness,
-      fill: colors.get(segment.color),
-      stroke: existing[index]?.properties.stroke ?? DEFAULT_BAR_STROKE,
+      fill: segment.color === undefined
+        ? appearance.fill ?? config.fill ?? colors.get(segment.color)
+        : colors.get(segment.color),
+      stroke: appearance.stroke === false
+        ? "transparent"
+        : appearance.stroke ?? config.stroke ?? existing[index]?.properties.stroke ?? DEFAULT_BAR_STROKE,
       strokeWidth:
-        existing[index]?.properties.strokeWidth ?? DEFAULT_BAR_STROKE_WIDTH
+        appearance.stroke === false
+          ? 0
+          : appearance.strokeWidth ?? config.strokeWidth ??
+            existing[index]?.properties.strokeWidth ??
+            DEFAULT_BAR_STROKE_WIDTH,
+      ...((appearance.opacity ?? config.opacity) === undefined
+        ? (existing[index]?.properties.opacity === undefined
+            ? {}
+            : { opacity: existing[index].properties.opacity })
+        : { opacity: appearance.opacity ?? config.opacity })
     };
   });
 }

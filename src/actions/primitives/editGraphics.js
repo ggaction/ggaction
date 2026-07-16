@@ -84,6 +84,20 @@ function replaceCollectionChildren(value, id) {
   ));
 }
 
+function replaceDrawableChildren(value, id, type) {
+  const children = replaceCollectionChildren(value, id);
+  if (!children.every(child => child.type === type)) {
+    return freezeOwned({ type: "collection", children });
+  }
+  return freezeOwned({
+    type,
+    children: freezeOwned(children.map(child => freezeOwned({
+      id: child.id,
+      properties: child.properties
+    })))
+  });
+}
+
 function editDirectChild(object, childIndex, property, value) {
   const children = [...object.children];
   const child = children[childIndex];
@@ -199,21 +213,22 @@ const editGraphics = action(
         })
       });
     }
-    const convertsToCollection =
+    const replacesDrawableChildren =
       found.childIndex === undefined &&
       property === "children" &&
       found.object.children !== undefined &&
       found.object.type !== "collection";
-    const validatedProperty = convertsToCollection
+    const validatedProperty = replacesDrawableChildren
       ? "children"
       : validateGraphicProperty(found.object.type, property);
     let updated;
 
-    if (convertsToCollection) {
-      updated = freezeOwned({
-        type: "collection",
-        children: replaceCollectionChildren(value, found.id)
-      });
+    if (replacesDrawableChildren) {
+      updated = replaceDrawableChildren(
+        value,
+        found.id,
+        found.object.type
+      );
     } else if (found.childIndex !== undefined) {
       if (validatedProperty === "length") {
         throw new Error("length can only target a graphic collection.");

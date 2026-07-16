@@ -869,6 +869,13 @@ export class ChartProgram {
     curve?: CurveInterpolation;
   }): ChartProgram;
   createBarMark(options?: { id?: string; data?: string }): ChartProgram;
+  editBarMark(options: {
+    target?: string;
+    fill?: string;
+    opacity?: number;
+    stroke?: string | false;
+    strokeWidth?: number;
+  }): ChartProgram;
   createAreaMark(options?: {
     id?: string;
     data?: string;

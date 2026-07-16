@@ -60,4 +60,4 @@ appearance overrides, and explicit outlier opt-out without placeholder resources
 Mark selection supports point, final-bar item, stacked-bar group, line/area
 series, and rule grain. Selector values explicitly distinguish data fields,
 pre-scale semantic channels, and concrete graphic properties.
-Highlight appearance currently supports point items only.
+Highlight appearance currently supports point items and bar item/stack grains.

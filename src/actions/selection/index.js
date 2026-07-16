@@ -1,4 +1,5 @@
 import {
+  applyBarHighlight,
   applyPointHighlight,
   dimUnselectedMarkItems,
   highlightMarks,
@@ -10,6 +11,7 @@ import {
 export function registerSelectionActions(ProgramClass) {
   ProgramClass.prototype.selectMarks = selectMarks;
   ProgramClass.prototype.highlightMarks = highlightMarks;
+  ProgramClass.prototype.applyBarHighlight = applyBarHighlight;
   ProgramClass.prototype.applyPointHighlight = applyPointHighlight;
   ProgramClass.prototype.dimUnselectedMarkItems = dimUnselectedMarkItems;
   ProgramClass.prototype.placeSelectedMarkItemsLast = placeSelectedMarkItemsLast;

@@ -68,7 +68,7 @@ aggregation, grouping 변경은 resolver를 다시 실행해 현재 item set을 
 | Gate | Test owner | Artifact | Target public call |
 | --- | --- | --- | --- |
 | A | `test/gates/mark-selection-points/` | `.artifacts/test/png/roadmap2/mark-selection/points-grouped-max/primitive.png` | `highlightMarks({ select: { field: "Horsepower", op: "max", groupBy: "Origin" }, ... })` |
-| B | `test/gates/mark-selection-bars/` | `.artifacts/test/png/roadmap2/mark-selection/bars-tallest-stack/primitive.png` | `highlightMarks({ select: { grain: "stack", channel: "y2", op: "max" }, ... })` |
+| B | `test/charts/mark-selection-bars/` after approval | `.artifacts/test/png/roadmap2/mark-selection/bars-tallest-stack/primitive.png` | `highlightMarks({ select: { grain: "stack", channel: "y2", op: "max" }, ... })` |
 | C | `test/gates/mark-selection-lines/` | `.artifacts/test/png/roadmap2/mark-selection/line-series/primitive.png` | `highlightMarks({ select: { field: "Origin", op: "eq", value: "Japan" }, ... })` |
 
 Gate manifests own the exact expanded call chain. Before approval they contain `primitive` only; the corresponding

@@ -1,6 +1,10 @@
 import { defineVisualVariant } from "../../../support/visual-variants.js";
 import { loadCars } from "../../../support/data.js";
 import {
+  createTallestHistogramStackHighlight,
+  createTopmostHistogramSegmentHighlight
+} from "../../../../examples/mark-selection/program.js";
+import {
   createTallestHistogramStackGatePrimitive,
   createTopmostHistogramSegmentGatePrimitive
 } from "../primitive.program.js";
@@ -82,6 +86,7 @@ export const visualVariants = Object.freeze([
     title: "Tallest Histogram Stack Highlight",
     callChain: tallestStackHighlightCallChain,
     primitive: createTallestHistogramStackGatePrimitive(loadCars()),
+    userFacing: createTallestHistogramStackHighlight(loadCars()),
     width: BAR_HIGHLIGHT_LAYOUT.width,
     height: BAR_HIGHLIGHT_LAYOUT.height,
     colors: [BAR_HIGHLIGHT_TARGET.fill],
@@ -102,6 +107,7 @@ export const visualVariants = Object.freeze([
     title: "Topmost Histogram Segment Highlight",
     callChain: topmostSegmentHighlightCallChain,
     primitive: createTopmostHistogramSegmentGatePrimitive(loadCars()),
+    userFacing: createTopmostHistogramSegmentHighlight(loadCars()),
     width: BAR_HIGHLIGHT_LAYOUT.width,
     height: BAR_HIGHLIGHT_LAYOUT.height,
     colors: [BAR_HIGHLIGHT_TARGET.fill],

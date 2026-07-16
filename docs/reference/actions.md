@@ -82,8 +82,9 @@ highlightMarks({
 })
 ```
 
-Select point symbols inline or reuse a stored selection, then apply concrete
-emphasis, optional complement dimming, logical offset, and selected-last order.
+Select point or bar items inline or reuse a stored selection, then apply concrete
+emphasis, optional complement dimming, and selected-last order. Logical offset,
+shape, and size are point-only options.
 [Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
 
 ### `createRegressionData`
@@ -167,6 +168,16 @@ createBarMark({ id?, data? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection. [Marks](../api/marks.md)
+
+### `editBarMark`
+
+```javascript
+editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit whole-bar appearance and rematerialize every concrete rectangle.
+`stroke: false` removes the visible outline; constant fill conflicts with a
+field-driven color encoding. [Marks](../api/marks.md)
 
 ### `createAreaMark`
 

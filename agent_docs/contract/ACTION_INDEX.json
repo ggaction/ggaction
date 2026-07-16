@@ -240,9 +240,9 @@
       "layer": "user-facing",
       "domain": "marks",
       "status": "implemented",
-      "lifecycle": "Stable create-only",
-      "update": "Encoding actions own its current appearance and geometry",
-      "audit": "Intentional",
+      "lifecycle": "Mutable resource",
+      "update": "`editBarMark`",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -251,6 +251,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createbarmark"
+      }
+    },
+    {
+      "name": "editBarMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits whole-bar appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editbarmark"
       }
     },
     {
@@ -1570,15 +1588,6 @@
   ],
   "plannedActions": [
     {
-      "name": "editBarMark",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/MARK_SELECTION.md",
-        "anchor": "editbarmark"
-      }
-    },
-    {
       "name": "filterMarks",
       "status": "planned",
       "readiness": "accepted",
@@ -1678,6 +1687,7 @@
       "createBoxSummaryData",
       "createErrorBarCap",
       "createErrorBandBoundary",
+      "applyBarHighlight",
       "applyPointHighlight",
       "dimUnselectedMarkItems",
       "placeSelectedMarkItemsLast"

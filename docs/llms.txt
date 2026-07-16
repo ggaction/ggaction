@@ -79,8 +79,9 @@ stable partial edits including subtitle removal.
 `selectMarks` creates reusable selections over point, bar-item/bar-stack,
 line/area series, and rule items. Its explicit value sources distinguish data
 fields, pre-scale semantic channels, and concrete graphic properties.
-`highlightMarks` currently applies concrete
-emphasis, optional complement dimming, offset, and front order to point items.
+`highlightMarks` currently applies concrete emphasis, optional complement
+dimming, and front order to point and bar items; point recipes also support
+shape, size, and offset.
 It renders through browser Canvas and Node PNG. It is not published to npm yet.
 
 Do not assume facets, program composition, SVG rendering, animation, automatic

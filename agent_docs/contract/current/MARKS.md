@@ -150,6 +150,31 @@ validation and uniqueness contract.
 - No proposal: orientation/group/stack/width는 mark parameter가 아니라 encoding action이 소유한다.
 - Evidence: `test/unit/actions/marks/create-bar-mark.test.js`.
 
+## `editBarMark`
+
+- Signature: `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`.
+- `target`: current compatible bar, unique bar, or explicit existing bar ID.
+- `fill`: non-empty constant color. Field-driven color encoding과 함께 사용할 수 없다.
+- `opacity`: unit interval. `stroke`: non-empty color or `false`; false는 concrete transparent zero-width outline로
+  materialize한다. `strokeWidth`는 non-negative finite이며 removed stroke에 단독 적용할 수 없다.
+- Effect: mark materialization config를 immutable하게 갱신하고 complete histogram/aggregate/grouped/ranged bar를
+  `rematerializeBarMark`로 다시 만든다. Data, encoding, scale, bin, group과 stack semantics는 바꾸지 않는다.
+
+### Formal values — `editBarMark`
+
+- Implemented: `editBarMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editBarMark`
+
+- ✅ Covered: inferred/explicit target, fill, opacity, stroke, width, outline removal/restoration, combined edits.
+- ✅ Covered: color-fill conflict, empty/unknown/invalid options, missing target and immutable failure.
+- ✅ Covered: uncolored/color histogram, Canvas rematerialization and compatibility with selected bar overrides.
+- Evidence: `test/unit/actions/marks/edit-bar-mark.test.js` and
+  `test/charts/mark-selection-bars/public.test.js`.
+- Evidence: `test/unit/actions/marks/create-bar-mark.test.js`.
+
 ## `createAreaMark`
 
 - Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})`

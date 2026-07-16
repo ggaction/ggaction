@@ -60,6 +60,8 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
       offsetIndex.get(left.color) - offsetIndex.get(right.color)
   );
   const existing = resolved.graphicSpec.objects[layer.id].children;
+  const config = resolved.markConfigs[layer.id] ?? {};
+  const appearance = config.barAppearance ?? {};
 
   return cells.map((cell, index) => {
     const category = xIndex.get(cell.x);
@@ -102,9 +104,20 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
       width,
       height: Math.abs(baseline - valueY),
       fill: colors.get(cell.color),
-      stroke: existing[index]?.properties.stroke ?? DEFAULT_BAR_STROKE,
+      stroke: appearance.stroke === false
+        ? "transparent"
+        : appearance.stroke ?? config.stroke ?? existing[index]?.properties.stroke ?? DEFAULT_BAR_STROKE,
       strokeWidth:
-        existing[index]?.properties.strokeWidth ?? DEFAULT_BAR_STROKE_WIDTH
+        appearance.stroke === false
+          ? 0
+          : appearance.strokeWidth ?? config.strokeWidth ??
+            existing[index]?.properties.strokeWidth ??
+            DEFAULT_BAR_STROKE_WIDTH,
+      ...((appearance.opacity ?? config.opacity) === undefined
+        ? (existing[index]?.properties.opacity === undefined
+            ? {}
+            : { opacity: existing[index].properties.opacity })
+        : { opacity: appearance.opacity ?? config.opacity })
     };
   });
 }

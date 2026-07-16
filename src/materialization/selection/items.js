@@ -65,7 +65,12 @@ function uniqueFields(rows) {
 
 function requireResolvedGraphic(program, layer, type) {
   const graphic = program.graphicSpec.objects[layer.id];
-  if (graphic?.type !== type || !Array.isArray(graphic.children)) {
+  const compatibleCollection = graphic?.type === "collection" &&
+    graphic.children?.every(child => child.type === type);
+  if (
+    (graphic?.type !== type && !compatibleCollection) ||
+    !Array.isArray(graphic.children)
+  ) {
     throw new Error(
       `Mark "${layer.id}" requires a materialized ${type} collection for selection.`
     );

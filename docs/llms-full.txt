@@ -2106,6 +2106,7 @@ duplicate grouping fields, and colliding output field names.
 | `createLineMark` | `createLineMark()` | ID `"line"`; current dataset; linear curve | Empty path collection |
 | `editLineMark` | `editLineMark({ curve: "monotone" })` | Current or unique line mark | Rematerialized path commands |
 | `createBarMark` | `createBarMark()` | ID `"bar"`; current dataset | Empty rect collection |
+| `editBarMark` | `editBarMark({ opacity: 0.7 })` | Current or unique bar | Rematerialized bar appearance |
 | `createAreaMark` | `createAreaMark()` | ID `"area"`; current dataset; blue fill; opacity `0.2` | Empty path collection |
 | `createRuleMark` | `createRuleMark()` | ID `"rule"`; current dataset | Empty line collection |
 
@@ -2291,6 +2292,26 @@ both endpoints share one scale and Canvas edits rematerialize the rectangles.
 rects. The color scale domain controls series order. Stack uses total bin counts,
 fill normalizes to one, group creates within-bin slots, overlay shares a baseline,
 and diverging separates positive and negative accumulation.
+
+## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`
+
+Edit the appearance of every rectangle owned by one bar mark:
+
+```javascript
+const outlined = program.editBarMark({
+  target: "bars",
+  opacity: 0.8,
+  stroke: "#111827",
+  strokeWidth: 1.5
+});
+```
+
+The current or only bar is inferred when `target` is omitted. At least one
+appearance option is required. `stroke: false` removes the visible outline;
+a later string stroke restores it. A constant `fill` conflicts with a
+field-driven color encoding, while opacity and outline remain editable.
+Histogram, aggregate, grouped, and ranged geometry and semantics are unchanged,
+and the appearance is reapplied after Canvas or scale rematerialization.
 
 ## `createRuleMark({ id?, data? } = {})`
 
@@ -4071,7 +4092,7 @@ Combined line legends also require matching ordered domains.
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current rule mark | Constant concrete line width |
 | `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
-| `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point; red accent; area ×2; selected-last | Concrete selected-point emphasis |
+| `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point/bar; red accent; selected-last | Concrete selected-item emphasis |
 
 ## Mark selection and highlighting
 
@@ -4147,16 +4168,18 @@ const reused = selected.highlightMarks({
 });
 ```
 
-Current highlighting supports point marks. `color` changes selected fill;
-`opacity`, `fill`, `stroke`, `strokeWidth`, `shape`, positive area-multiplier
-`size`, and finite logical `offset.x/y` are available. `strokeWidth` requires
+Current highlighting supports point and bar marks. `color` changes selected
+fill; `opacity`, `fill`, `stroke`, and `strokeWidth` apply to both. Points also
+support `shape`, positive area-multiplier `size`, and finite logical
+`offset.x/y`; bars reject those point-only options. `strokeWidth` requires
 `stroke`, and `color` cannot be combined with `fill`. `dimOthers` defaults to
-`false`; `true` uses opacity `0.25`. `bringToFront` defaults to `true`.
+`false`; `true` uses opacity `0.25`. `bringToFront` defaults to `true` and keeps
+every rect of a selected stack together at the end of its collection.
 
-Selection and highlight intent is immutable and is reapplied after point
+Selection and highlight intent is immutable and is reapplied after point/bar
 rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
-assignment. Bar, line, area, and rule highlighting is not implemented yet.
+assignment. Line, area, and rule highlighting is not implemented yet.
 
 ## `encodeRadius({ value, target? })`
 
@@ -5330,7 +5353,7 @@ appearance overrides, and explicit outlier opt-out without placeholder resources
 Mark selection supports point, final-bar item, stacked-bar group, line/area
 series, and rule grain. Selector values explicitly distinguish data fields,
 pre-scale semantic channels, and concrete graphic properties.
-Highlight appearance currently supports point items only.
+Highlight appearance currently supports point items and bar item/stack grains.
 
 <!-- Source: /reference/actions/ -->
 
@@ -5413,8 +5436,9 @@ highlightMarks({
 })
 ```
 
-Select point symbols inline or reuse a stored selection, then apply concrete
-emphasis, optional complement dimming, logical offset, and selected-last order.
+Select point or bar items inline or reuse a stored selection, then apply concrete
+emphasis, optional complement dimming, and selected-last order. Logical offset,
+shape, and size are point-only options.
 [Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
 
 ### `createRegressionData`
@@ -5498,6 +5522,16 @@ createBarMark({ id?, data? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection. [Marks](../api/marks.md)
+
+### `editBarMark`
+
+```javascript
+editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit whole-bar appearance and rematerialize every concrete rectangle.
+`stroke: false` removes the visible outline; constant fill conflicts with a
+field-driven color encoding. [Marks](../api/marks.md)
 
 ### `createAreaMark`
 

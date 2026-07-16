@@ -36,7 +36,7 @@ stack without changing bin boundaries, segment counts, scales or neighboring sta
   `height`.
 - Artifact: `.artifacts/test/png/roadmap2/mark-selection/bars-tallest-stack/primitive.png`.
 - Comparison artifact: `.artifacts/test/png/roadmap2/mark-selection/bars-topmost-segment/primitive.png`.
-- Manifest: `test/gates/mark-selection-bars/variants/manifest.js` stores the exact future
+- Approved slice: `test/charts/mark-selection-bars/`; its manifest stores the exact public
   `highlightMarks({ select: { grain: "stack", channel: "y2", op: "max" }, ... })` chain without a user-facing program.
 
 ## 완료 조건

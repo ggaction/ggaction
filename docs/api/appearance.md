@@ -18,7 +18,7 @@ title: Appearance Encodings
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current rule mark | Constant concrete line width |
 | `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
-| `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point; red accent; area ×2; selected-last | Concrete selected-point emphasis |
+| `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point/bar; red accent; selected-last | Concrete selected-item emphasis |
 
 ## Mark selection and highlighting
 
@@ -94,16 +94,18 @@ const reused = selected.highlightMarks({
 });
 ```
 
-Current highlighting supports point marks. `color` changes selected fill;
-`opacity`, `fill`, `stroke`, `strokeWidth`, `shape`, positive area-multiplier
-`size`, and finite logical `offset.x/y` are available. `strokeWidth` requires
+Current highlighting supports point and bar marks. `color` changes selected
+fill; `opacity`, `fill`, `stroke`, and `strokeWidth` apply to both. Points also
+support `shape`, positive area-multiplier `size`, and finite logical
+`offset.x/y`; bars reject those point-only options. `strokeWidth` requires
 `stroke`, and `color` cannot be combined with `fill`. `dimOthers` defaults to
-`false`; `true` uses opacity `0.25`. `bringToFront` defaults to `true`.
+`false`; `true` uses opacity `0.25`. `bringToFront` defaults to `true` and keeps
+every rect of a selected stack together at the end of its collection.
 
-Selection and highlight intent is immutable and is reapplied after point
+Selection and highlight intent is immutable and is reapplied after point/bar
 rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
-assignment. Bar, line, area, and rule highlighting is not implemented yet.
+assignment. Line, area, and rule highlighting is not implemented yet.
 
 ## `encodeRadius({ value, target? })`
 

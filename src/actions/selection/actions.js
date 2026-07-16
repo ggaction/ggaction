@@ -22,9 +22,9 @@ const HIGHLIGHT_OPTIONS = Object.freeze([
   "stroke", "strokeWidth", "strokeDash", "shape", "size", "offset",
   "dimOthers", "bringToFront"
 ]);
-const INTERNAL_SELECTION_OPTIONS = Object.freeze(["selection", "style"]);
-const INTERNAL_DIM_OPTIONS = Object.freeze(["selection", "opacity"]);
-const INTERNAL_ORDER_OPTIONS = Object.freeze(["selection"]);
+const INTERNAL_SELECTION_OPTIONS = Object.freeze(["selection", "style", "keys"]);
+const INTERNAL_DIM_OPTIONS = Object.freeze(["selection", "opacity", "keys"]);
+const INTERNAL_ORDER_OPTIONS = Object.freeze(["selection", "keys"]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["target", "highlights"]);
 const SUPPORTED_MARKS = new Set(["point", "bar", "line", "area", "rule"]);
 const DEFAULT_POINT_SIZE = 2;
@@ -140,6 +140,55 @@ function normalizePointStyle(args) {
   };
 }
 
+function normalizeBarStyle(args) {
+  for (const option of ["shape", "size", "offset", "strokeDash"]) {
+    if (args[option] !== undefined) {
+      throw new Error(`Bar highlight does not support ${option}.`);
+    }
+  }
+  if (args.color !== undefined && args.fill !== undefined) {
+    throw new Error("Bar highlight accepts color or fill, not both.");
+  }
+  const fill = validateColor(
+    args.fill ?? args.color ?? DEFAULT_COLORS.highlight,
+    "Bar highlight fill"
+  );
+  const opacity = args.opacity === undefined
+    ? undefined
+    : validateUnitInterval(args.opacity, "Bar highlight opacity");
+  const stroke = args.stroke === undefined
+    ? undefined
+    : validateColor(args.stroke, "Bar highlight stroke");
+  const strokeWidth = args.strokeWidth === undefined
+    ? undefined
+    : validateNonNegative(args.strokeWidth, "Bar highlight strokeWidth");
+  if (strokeWidth !== undefined && stroke === undefined) {
+    throw new Error("Bar highlight strokeWidth requires stroke.");
+  }
+  return {
+    fill,
+    ...(opacity === undefined ? {} : { opacity }),
+    ...(stroke === undefined ? {} : { stroke }),
+    ...(strokeWidth === undefined ? {} : { strokeWidth })
+  };
+}
+
+function normalizeHighlightStyle(args, markType) {
+  if (markType === "point") return normalizePointStyle(args);
+  if (markType === "bar") return normalizeBarStyle(args);
+  throw new Error("highlightMarks currently supports point and bar marks.");
+}
+
+function selectedKeys(args, resolved) {
+  if (args.keys === undefined) return resolved.keys;
+  if (!Array.isArray(args.keys) || !args.keys.every(key =>
+    typeof key === "string" && key.length > 0
+  )) {
+    throw new TypeError("Selected mark item keys must be non-empty strings.");
+  }
+  return args.keys;
+}
+
 export const selectMarks = action(
   { op: "selectMarks", description: "Create one reusable selection over final mark items." },
   function (args = {}) {
@@ -158,11 +207,12 @@ export const applyPointHighlight = action(
   function (args = {}) {
     validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyPointHighlight");
     const resolved = resolveStoredSelection(this, args.selection);
+    const keys = selectedKeys(args, resolved);
     if (resolved.items[0]?.markType !== "point" && resolved.items.length > 0) {
       throw new Error("applyPointHighlight requires a point selection.");
     }
-    if (resolved.keys.length === 0) return this;
-    const selected = new Set(resolved.keys);
+    if (keys.length === 0) return this;
+    const selected = new Set(keys);
     const graphic = this.graphicSpec.objects[resolved.definition.target];
     const keyByGraphic = new Map(resolved.items.flatMap(item =>
       item.graphicIds.map(id => [id, item.key])
@@ -183,13 +233,41 @@ export const applyPointHighlight = action(
   }
 );
 
+export const applyBarHighlight = action(
+  { op: "applyBarHighlight", description: "Apply selected bar appearance." },
+  function (args = {}) {
+    validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyBarHighlight");
+    const resolved = resolveStoredSelection(this, args.selection);
+    const keys = selectedKeys(args, resolved);
+    if (resolved.items[0]?.markType !== "bar" && resolved.items.length > 0) {
+      throw new Error("applyBarHighlight requires a bar selection.");
+    }
+    if (keys.length === 0) return this;
+    const selected = new Set(keys);
+    const graphic = this.graphicSpec.objects[resolved.definition.target];
+    const keyByGraphic = new Map(resolved.items.flatMap(item =>
+      item.graphicIds.map(id => [id, item.key])
+    ));
+    return this.editGraphics({
+      target: resolved.definition.target,
+      property: "children",
+      value: graphic.children.map(child => ({
+        type: child.type ?? graphic.type,
+        properties: selected.has(keyByGraphic.get(child.id))
+          ? { ...child.properties, ...args.style }
+          : child.properties
+      }))
+    });
+  }
+);
+
 export const dimUnselectedMarkItems = action(
   { op: "dimUnselectedMarkItems", description: "Dim the complement of one mark selection." },
   function (args = {}) {
     validateKeys(args, INTERNAL_DIM_OPTIONS, "dimUnselectedMarkItems");
     const opacity = validateUnitInterval(args.opacity, "Dim opacity");
     const resolved = resolveStoredSelection(this, args.selection);
-    const selected = new Set(resolved.keys);
+    const selected = new Set(selectedKeys(args, resolved));
     const graphic = this.graphicSpec.objects[resolved.definition.target];
     const keyByGraphic = new Map(resolved.items.flatMap(item =>
       item.graphicIds.map(id => [id, item.key])
@@ -212,10 +290,11 @@ export const placeSelectedMarkItemsLast = action(
   function (args = {}) {
     validateKeys(args, INTERNAL_ORDER_OPTIONS, "placeSelectedMarkItemsLast");
     const resolved = resolveStoredSelection(this, args.selection);
-    if (resolved.keys.length === 0 || resolved.keys.length === resolved.items.length) {
+    const keys = selectedKeys(args, resolved);
+    if (keys.length === 0 || keys.length === resolved.items.length) {
       return this;
     }
-    const selected = new Set(resolved.keys);
+    const selected = new Set(keys);
     const graphic = this.graphicSpec.objects[resolved.definition.target];
     const keyByGraphic = new Map(resolved.items.flatMap(item =>
       item.graphicIds.map(id => [id, item.key])
@@ -243,17 +322,36 @@ export const rematerializeMarkHighlights = action(
     if (!Array.isArray(args.highlights)) {
       throw new TypeError("rematerializeMarkHighlights requires highlight entries.");
     }
+    const prepared = args.highlights.map(([id, config]) => ({
+      id,
+      config,
+      keys: resolveStoredSelection(this, config.selection).keys
+    }));
     let next = this;
-    for (const [id, config] of args.highlights) {
-      next = next.applyPointHighlight({ selection: config.selection, style: config.style });
+    for (const { id, config, keys } of prepared) {
+      next = config.markType === "bar"
+        ? next.applyBarHighlight({
+            selection: config.selection,
+            style: config.style,
+            keys
+          })
+        : next.applyPointHighlight({
+            selection: config.selection,
+            style: config.style,
+            keys
+          });
       if (config.dimOthers !== false) {
         next = next.dimUnselectedMarkItems({
           selection: config.selection,
-          opacity: config.dimOthers.opacity
+          opacity: config.dimOthers.opacity,
+          keys
         });
       }
       if (config.bringToFront) {
-        next = next.placeSelectedMarkItemsLast({ selection: config.selection });
+        next = next.placeSelectedMarkItemsLast({
+          selection: config.selection,
+          keys
+        });
       }
       next = next._withHighlightConfig(id, config);
     }
@@ -274,7 +372,6 @@ export const highlightMarks = action(
     if (args.id !== undefined && args.select === undefined) {
       throw new Error("highlightMarks id is available only with inline select.");
     }
-    const style = normalizePointStyle(args);
     const dimOthers = normalizeDimOthers(args.dimOthers);
     const bringToFront = args.bringToFront ?? true;
     if (typeof bringToFront !== "boolean") {
@@ -283,46 +380,57 @@ export const highlightMarks = action(
 
     let next = this;
     let resolved;
+    let layer;
     if (args.select !== undefined) {
-      const layer = resolveTarget(this, args.target, "highlight mark");
-      if (layer.mark.type !== "point") {
-        throw new Error("Phase 9 point highlight requires a point mark.");
-      }
+      layer = resolveTarget(this, args.target, "highlight mark");
       resolveMarkSelection(this, layer.id, args.select);
+      const style = normalizeHighlightStyle(args, layer.mark.type);
       next = next.selectMarks({
         ...(args.id === undefined ? {} : { id: args.id }),
         target: layer.id,
         ...args.select
       });
       resolved = resolveStoredSelection(next);
+      resolved = { ...resolved, style };
     } else {
       resolved = resolveStoredSelection(next, args.selection);
       if (args.target !== undefined && args.target !== resolved.definition.target) {
         throw new Error("highlightMarks target must match its selection target.");
       }
-      const layer = resolveTarget(next, resolved.definition.target, "highlight mark");
-      if (layer.mark.type !== "point") {
-        throw new Error("Phase 9 point highlight requires a point mark.");
-      }
+      layer = resolveTarget(next, resolved.definition.target, "highlight mark");
+      resolved = {
+        ...resolved,
+        style: normalizeHighlightStyle(args, layer.mark.type)
+      };
     }
 
     const selection = resolved.id;
+    const keys = resolved.keys;
+    const style = resolved.style;
     const existing = next.materializationConfigs.highlights?.[selection];
     if (existing !== undefined) {
-      next = next
-        ._withoutMaterializationConfig(["highlights", selection])
-        .rematerializePointMark({ id: resolved.definition.target });
+      next = next._withoutMaterializationConfig(["highlights", selection]);
+      next = layer.mark.type === "bar"
+        ? next.rematerializeBarMark({ id: resolved.definition.target })
+        : next.rematerializePointMark({ id: resolved.definition.target });
     }
-    next = next.applyPointHighlight({ selection, style });
+    next = layer.mark.type === "bar"
+      ? next.applyBarHighlight({ selection, style, keys })
+      : next.applyPointHighlight({ selection, style, keys });
     if (dimOthers !== false) {
-      next = next.dimUnselectedMarkItems({ selection, opacity: dimOthers.opacity });
+      next = next.dimUnselectedMarkItems({
+        selection,
+        opacity: dimOthers.opacity,
+        keys
+      });
     }
     if (bringToFront) {
-      next = next.placeSelectedMarkItemsLast({ selection });
+      next = next.placeSelectedMarkItemsLast({ selection, keys });
     }
     return next._withHighlightConfig(selection, {
       target: resolved.definition.target,
       selection,
+      markType: layer.mark.type,
       style,
       dimOthers,
       bringToFront

@@ -110,6 +110,8 @@ export function deriveHistogramRectangles(required, resolved) {
   });
   const existing = resolved.graphicSpec.objects[required.layer.id].children;
   const layout = resolveBarColorLayout(required.layer);
+  const config = resolved.markConfigs[required.layer.id] ?? {};
+  const appearance = config.barAppearance ?? {};
 
   return segments.map((segment, index) => {
     const [x1, x2] = mapLinearValues(
@@ -139,12 +141,27 @@ export function deriveHistogramRectangles(required, resolved) {
       height: Math.abs(y2 - y1),
       fill:
         segment.color ??
+        appearance.fill ??
+        config.fill ??
         existing[index]?.properties.fill ??
         DEFAULT_BAR_FILL,
       stroke:
-        existing[index]?.properties.stroke ?? DEFAULT_BAR_STROKE,
+        appearance.stroke === false
+          ? "transparent"
+          : appearance.stroke ?? config.stroke ??
+            existing[index]?.properties.stroke ??
+            DEFAULT_BAR_STROKE,
       strokeWidth:
-        existing[index]?.properties.strokeWidth ?? DEFAULT_BAR_STROKE_WIDTH
+        appearance.stroke === false
+          ? 0
+          : appearance.strokeWidth ?? config.strokeWidth ??
+            existing[index]?.properties.strokeWidth ??
+            DEFAULT_BAR_STROKE_WIDTH,
+      ...((appearance.opacity ?? config.opacity) === undefined
+        ? (existing[index]?.properties.opacity === undefined
+            ? {}
+            : { opacity: existing[index].properties.opacity })
+        : { opacity: appearance.opacity ?? config.opacity })
     };
   });
 }

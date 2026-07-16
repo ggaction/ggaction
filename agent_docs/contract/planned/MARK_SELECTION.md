@@ -26,38 +26,13 @@ filterMarks(options: { target?: UserId } & MarkSelector): ChartProgram;
 - Add `min | max`, `count`, grouping/ties, channel selection and point/bar/line item-grain coverage.
 - Assert `filterMark` is absent from runtime, declarations, contracts, docs, examples and displayed call chains.
 
-## `editBarMark`
-
-```typescript
-editBarMark({
-  target?: UserId;
-  fill?: NonEmptyString;
-  opacity?: UnitInterval;
-  stroke?: NonEmptyString | false;
-  strokeWidth?: NonNegativeFinite;
-}): ChartProgram;
-```
-
-- This fills the current stable bar-resource edit gap for whole-mark appearance. At least one property is required.
-  Target resolution is explicit, current compatible bar, unique compatible bar, then error.
-- Field-driven color takes precedence over a whole-mark fill and conflicts are rejected unless the caller uses
-  `highlightMarks`, whose selection-specific override is intentionally higher priority.
-- Stored bar appearance survives histogram, grouped/ranged bar, scale and Canvas rematerialization. Geometry,
-  encodings, aggregation and stack policy are unchanged.
-
-### Coverage plan — `editBarMark`
-
-- Every property alone and combined, zero stroke width, stroke removal, empty/invalid edits and target ambiguity.
-- Histogram, grouped, ranged and stacked bars; encoded-color conflict; Canvas and scale rematerialization.
-- Exact use beneath bar highlight materialization remains visible in the wrapped trace without raw graphic paths.
-
 ## Cross-mark highlight recipes
 
-Point highlighting is implemented. Bar, line, area and rule recipes remain Planned extensions of the same current
+Point and bar highlighting are implemented. Line, area and rule recipes remain Planned extensions of the same current
 `highlightMarks` action. They will reuse the current selector identity and assignment lifecycle, while validating
 appearance by mark capability:
 
-- bar/area: accent fill and optional complement dimming;
+- area: accent fill and optional complement dimming;
 - line/rule: accent stroke, width/dash and series/line front order;
 - logical offset support for rect, line and path geometry;
 - stable reapplication after each owning mark rematerializer runs.
