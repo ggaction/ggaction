@@ -14,7 +14,7 @@ box, whisker, median, outlier와 guide layering을 승인받는다.
 - [x] Axes, horizontal grid and title composition
 - [x] Variant manifest and exact future call chain
 - [x] `cars-vertical-tukey/primitive.png` and browser/renderer checks
-- [ ] Gate A user confirmation
+- [x] Gate A user confirmation
 - [x] STEP status, conceptual commit and push
 
 ## Gate A

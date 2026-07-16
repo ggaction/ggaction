@@ -17,8 +17,8 @@ error-bar whisker, median rule, outlier point와 `createBoxPlot` hierarchy의 ca
 - Outliers: whisker 밖의 source rows, source order 유지; canonical counts는 USA 3, Japan 1, Europe 6이다.
 - Box width: category bandwidth의 `0.7`
 - Box appearance: opacity `1`, stroke width `1.5`; categorical color maps `Origin` through the default palette
-- Median: stroke `#1f2937`, stroke width `2`, concrete box body의 폭과 동일한 span
-- Whisker/caps: black `#111111`, stroke width `2`; caps는 8 logical pixels
+- Median: stroke `#1f2937`, stroke width `1.5`, concrete box body의 폭과 동일한 span
+- Whisker/caps: black `#111111`, stroke width `1.5`; caps는 8 logical pixels
 - Outlier: black diamond, radius-equivalent area from `3`, opacity `0.75`
 - Scales: ordinal x; linear y with `nice: true`, `zero: false`
 - Guides: x/y axes와 horizontal grid; x가 이미 Origin을 식별하므로 redundant color legend는 명시적으로 끈다.

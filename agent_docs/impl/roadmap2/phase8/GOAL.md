@@ -18,7 +18,8 @@ Complete chart contract:
 - [x] Public parameters, inference/default, hierarchy와 stored-result contract 설계
 - [x] STEP1–STEP9와 three visual approval Gates 설계
 - [x] Existing source/contract/data baseline audit
-- [ ] Canonical vertical Tukey primitive 승인과 data/ranged-bar foundation
+- [x] Canonical vertical Tukey primitive 승인
+- [ ] Box data/ranged-bar foundation
 - [ ] Vertical `createBoxPlot` public implementation
 - [ ] Horizontal minmax primitive 승인과 public implementation
 - [ ] Style/factor/outlier primitive 승인과 full option implementation
