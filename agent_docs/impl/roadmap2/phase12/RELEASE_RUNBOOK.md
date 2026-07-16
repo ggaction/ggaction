@@ -91,7 +91,21 @@
   ```
 
 - Trusted publisher와 protected environment readiness는 npm binding, GitHub environment policy와 workflow contract
-  test로 확인했다. 이미 존재하는 `0.0.1`을 재배포하지 않으므로 실제 OIDC publish는 다음 version에서 검증한다.
+  test로 확인했다. 이미 존재하는 `0.0.1`을 재배포하지 않고 corrective `0.0.2`에서 실제 OIDC publish를 검증했다.
+
+## `0.0.2` OIDC observations
+
+- Default-branch workflow가 input tag를 checkout하고 annotated tag target과 candidate commit을 검증한다. Candidate
+  helper에 effective tag ref를 전달해 tag identity를 retry에서도 보존한다.
+- Full graphical equality는 canonical Node 20, coverage/documentation은 CI와 같은 Node 22, trusted publish는 npm
+  OIDC를 지원하는 Node 24가 담당한다. Runtime 차이를 application failure로 숨기지 않는다.
+- Protected `npm-release` environment는 reviewer approval, `v*` tag policy와 default-branch orchestrator용 `main`
+  branch policy를 함께 사용한다. Publish 전 실패는 registry를 변경하지 않으며 exact retained artifact만 재사용한다.
+- Release run `29520189000`이 retained artifact를 OIDC로 publish하고 matching GitHub Release를 만들었다. Registry에서
+  다시 받은 tarball은 retained artifact와 같은 SHA-1 `87e4210a12a4949c1e6036dfd6e91a0f537504dc`와 SHA-256
+  `b8ec5879e6aba08432cef5dc13a01ae216cb35c2a7828f035fdc06ab149e26e7`을 가졌다.
+- Registry tarball은 221 files이고 internal `AGENTS.md`가 없다. Main, extension, PNG, TypeScript와 browser fresh
+  consumer가 모두 통과했고 `latest`는 `0.0.2`를 가리킨다.
 
 ## 이후 OIDC release
 

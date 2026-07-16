@@ -18,9 +18,9 @@ GitHub Release와 npm registry 결과가 하나의 release contract로 일치하
 - [x] Secure repeatable GitHub/npm publishing automation completed
 - [x] `0.0.1` release candidate approved at Gate B
 - [x] npm `0.0.1` and matching GitHub Release published
-- [ ] Corrective `0.0.2` package approved, published and verified through OIDC
-- [ ] Registry, fresh-install, documentation and rollback verification completed
-- [ ] Roadmap 2 release closeout completed
+- [x] Corrective `0.0.2` package approved, published and verified through OIDC
+- [x] Registry, fresh-install, documentation and rollback verification completed
+- [x] Roadmap 2 release closeout completed
 
 ## 배포 대상
 

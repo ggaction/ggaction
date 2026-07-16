@@ -14,12 +14,12 @@ deprecate하거나 unpublish하지 않는다.
 - [x] Corrective patch version fixed as `0.0.2`
 - [x] Package, lockfile, changelog, docs and release notes agree on `0.0.2`
 - [x] Exact 221-file tarball and hashes recorded
-- [ ] Full local and remote release qualification passes
-- [ ] Immutable `v0.0.2` tag points to the corrective candidate
-- [ ] Protected release workflow publishes through npm trusted publishing
-- [ ] GitHub Release and npm `latest` identify `0.0.2`
-- [ ] Fresh registry runtime, browser, PNG and TypeScript consumers pass
-- [ ] Phase 12 and Roadmap 2 closeout completed
+- [x] Full local and remote release qualification passes
+- [x] Immutable `v0.0.2` tag points to the corrective candidate
+- [x] Protected release workflow publishes through npm trusted publishing
+- [x] GitHub Release and npm `latest` identify `0.0.2`
+- [x] Fresh registry runtime, browser, PNG and TypeScript consumers pass
+- [x] Phase 12 and Roadmap 2 closeout completed
 
 ## 승인과 실행 경계
 
@@ -67,3 +67,29 @@ helper 양쪽에서 계속 수행한다.
 Release run `29520061916`은 full Node 20 suite까지 통과하고 coverage 단계에서 publish 전에 중단됐다. Coverage
 tooling은 canonical CI와 같이 Node 22 provider contract를 사용해야 한다. Release verify를 full equality Node 20,
 coverage/documentation Node 22, trusted-publishing Node 24로 분리해 기존 CI runtime ownership과 일치시켰다.
+
+## Canonical workflow and registry evidence
+
+Release run [`29520189000`](https://github.com/hj-n/ggaction/actions/runs/29520189000)은 exact annotated tag와 commit,
+1100 tests, coverage floors, installed-package consumers, Jekyll/browser documentation, 77 PNG variants와 package
+boundary를 모두 검증했다. 첫 publish job은 protected environment가 default-branch orchestrator를 허용하지 않아
+registry mutation 전에 거절됐다. `npm-release` environment에 `main` deployment policy를 추가한 뒤 같은 run의
+failed publish job만 재실행하고 reviewer 승인을 거쳐 OIDC publish와 GitHub Release 생성을 완료했다.
+
+```text
+approved commit       fc144beb896ea2bdf50570eddf7adb03b336568e
+tag                   v0.0.2
+workflow artifact     ggaction-v0.0.2
+entries               221
+packed                203386 bytes
+unpacked              926913 bytes
+SHA-1                 87e4210a12a4949c1e6036dfd6e91a0f537504dc
+SHA-256               b8ec5879e6aba08432cef5dc13a01ae216cb35c2a7828f035fdc06ab149e26e7
+npm integrity         sha512-oAomgGW91masco17LY5GLeftuG1gl4ihAI/mp9LQGciEAqDWoKAVn05BMOW5S8vgeDshqZVRsb8ISiXJEmFKlA==
+internal AGENTS.md    absent
+```
+
+Retained workflow artifact와 registry에서 다시 받은 tarball의 SHA-1/SHA-256이 정확히 같다. npm metadata는
+provenance attestation, `latest -> 0.0.2`와 GitHub Actions OIDC publisher를 보고한다. Fresh registry consumer에서
+main, extension, PNG, TypeScript, private-subpath rejection과 browser render가 모두 통과했고 public docs도
+`0.0.2` install flow를 제공한다. 기능상 정상인 `0.0.1`은 deprecate하거나 unpublish하지 않았다.

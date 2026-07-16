@@ -14,9 +14,9 @@ Registry에서 다시 내려받은 `ggaction@0.0.1`을 검증하고 repeatable r
 - [x] Public documentation install flow and deployed links verified
 - [x] Trusted publisher and protected environment tested for future release readiness
 - [x] Release runbook updated with actual first-release observations
-- [ ] Roadmap 2 status and Phase 12 evidence updated
+- [x] Roadmap 2 status and Phase 12 evidence updated
 - [x] Full local/remote quality gates pass after release metadata closeout
-- [ ] Final conceptual commits pushed and worktree clean
+- [x] Final conceptual commits pushed and worktree clean
 
 ## Closeout audit
 
@@ -42,10 +42,10 @@ no unfinished implementation or distribution work.
 - Public install 문구가 반영된 Pages deployment와 CI run `29518733354`가 Jekyll, desktop/mobile docs, package
   matrix, coverage, browser와 PNG render를 모두 통과했다.
 
-## Closeout blocker
+## Resolved packaging finding
 
 Registry tarball inventory에서 `src/AGENTS.md`가 포함된 것을 발견했다. 이 파일에는 credential이나 비공개
 source가 없고 public repository에서도 읽을 수 있지만, internal agent record를 npm artifact에서 제외한다는 release
-contract를 위반한다. `0.0.1`은 immutable하므로 같은 version을 덮어쓰지 않는다. Package allowlist와 executable
-forbidden-file audit를 보강한 뒤 corrected patch release를 만들지, 이 known packaging issue를 다음 계획 version까지
-유지할지 사용자 결정을 받아야 Phase 12를 종료할 수 있다.
+contract를 위반했다. `0.0.1`은 immutable하므로 같은 version을 덮어쓰지 않았다. Package allowlist와 executable
+forbidden-file audit를 보강하고 internal instruction file이 없는 corrective `0.0.2`를 OIDC workflow로 배포해
+해결했다. 자세한 evidence는 [`STEP10.md`](STEP10.md)에 기록한다.
