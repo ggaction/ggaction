@@ -63,3 +63,7 @@ Release run `29519959283`도 publish 전 중단됐다. Workflow가 tag를 정확
 기존 helper가 `GITHUB_REF`를 직접 읽는 compatibility contract를 유지하고 있었다. Default-branch orchestrator는
 pack/verify helper에 이미 검증한 effective tag ref를 명시적으로 전달하고, annotated tag/commit 검사는 workflow와
 helper 양쪽에서 계속 수행한다.
+
+Release run `29520061916`은 full Node 20 suite까지 통과하고 coverage 단계에서 publish 전에 중단됐다. Coverage
+tooling은 canonical CI와 같이 Node 22 provider contract를 사용해야 한다. Release verify를 full equality Node 20,
+coverage/documentation Node 22, trusted-publishing Node 24로 분리해 기존 CI runtime ownership과 일치시켰다.

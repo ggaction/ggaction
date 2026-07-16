@@ -57,6 +57,12 @@ jobs:
           git diff --exit-code -- docs/assets/images/manifest.json docs/llms-full.txt
       - name: Run unit, acceptance, and contract tests
         run: npm test
+      - name: Set up the coverage and documentation runtime
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          package-manager-cache: false
       - name: Enforce coverage thresholds
         run: npm run test:coverage
       - name: Test the installed packed-package consumers

@@ -17,6 +17,7 @@ test("keeps publishing manual, immutable-tag-bound, protected, and non-concurren
 
 test("uses current trusted-publishing requirements without an npm secret", () => {
   assert.match(workflow, /node-version: 20/);
+  assert.match(workflow, /node-version: 22/);
   assert.match(workflow, /node-version: 24/);
   assert.match(workflow, /npm@\^11\.5\.1/);
   assert.match(workflow, /id-token: write/);
