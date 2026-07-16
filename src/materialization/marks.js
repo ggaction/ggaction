@@ -94,10 +94,17 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
   })
 });
 
+export function getMarkRematerializationStep(layer) {
+  const policy = MARK_MATERIALIZATION_POLICIES[layer.mark?.type];
+  return policy === undefined
+    ? undefined
+    : { op: policy.op, args: { id: layer.id } };
+}
+
 export function getMarkMaterializationStep(program, layer) {
   const policy = MARK_MATERIALIZATION_POLICIES[layer.mark?.type];
   if (policy === undefined || !policy.canMaterialize(program, layer)) {
     return undefined;
   }
-  return { op: policy.op, args: { id: layer.id } };
+  return getMarkRematerializationStep(layer);
 }

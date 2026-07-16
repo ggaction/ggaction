@@ -48,7 +48,7 @@ import {
   planScaleGuideRematerialization
 } from "../../materialization/dependencies.js";
 
-const OPTIONS = Object.freeze(["id"]);
+const OPTIONS = Object.freeze(["id", "guides"]);
 
 function resolveTemporalBarBand(consumers, domain, range, values) {
   const temporalBars = consumers.filter(consumer => {
@@ -104,6 +104,9 @@ export const rematerializeScale = action(
   },
   function (args = {}) {
     validateOptions(args);
+    if (args.guides !== undefined && typeof args.guides !== "boolean") {
+      throw new TypeError("rematerializeScale guides must be a boolean.");
+    }
     const id = validateUserId(args.id, "Scale id");
     const scale = findScale(this, id);
     const consumers = findScaleConsumers(this, id);
@@ -449,9 +452,11 @@ export const rematerializeScale = action(
       });
     }
 
-    return applyMaterializationPlan(
-      next,
-      planScaleGuideRematerialization(next, id)
-    );
+    return args.guides === false
+      ? next
+      : applyMaterializationPlan(
+          next,
+          planScaleGuideRematerialization(next, id)
+        );
   }
 );

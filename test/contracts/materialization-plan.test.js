@@ -2,9 +2,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  applyMaterializationPlan,
   planLayerDataRematerialization
 } from "../../src/materialization/dependencies.js";
+import {
+  applyMaterializationPlan,
+  buildMaterializationPlan
+} from "../../src/materialization/planner.js";
 import {
   planEncodingRematerialization
 } from "../../src/materialization/encodings.js";
@@ -34,6 +37,22 @@ test("executes materialization plans in order and deduplicates equivalent steps"
 
   assert.equal(result, program);
   assert.deepEqual(calls, ["x", "y", "finish"]);
+});
+
+test("builds one deterministic scale, mark, guide, layout, highlight plan", () => {
+  assert.deepEqual(buildMaterializationPlan({
+    guides: [{ op: "guide" }],
+    marks: [{ op: "mark" }, { op: "mark" }],
+    scales: [{ op: "scale" }],
+    highlights: [{ op: "highlight" }],
+    layout: [{ op: "layout" }]
+  }), [
+    { op: "scale" },
+    { op: "mark" },
+    { op: "guide" },
+    { op: "layout" },
+    { op: "highlight" }
+  ]);
 });
 
 test("stops after an injected failure without mutating the input program", () => {
@@ -87,7 +106,7 @@ test("plans point encoding scale, mark, and existing legend in order", () => {
       scale: "shape"
     }),
     [
-      { op: "rematerializeScale", args: { id: "shape" } },
+      { op: "rematerializeScale", args: { id: "shape", guides: false } },
       { op: "rematerializePointMark", args: { id: "points" } },
       { op: "rematerializeLegend" }
     ]
@@ -204,9 +223,9 @@ test("plans each unique scale after one layer changes data", () => {
   };
 
   assert.deepEqual(planLayerDataRematerialization(program, "points"), [
-    { op: "rematerializeScale", args: { id: "x" } },
-    { op: "rematerializeScale", args: { id: "y" } },
-    { op: "rematerializeScale", args: { id: "color" } },
+    { op: "rematerializeScale", args: { id: "x", guides: false } },
+    { op: "rematerializeScale", args: { id: "y", guides: false } },
+    { op: "rematerializeScale", args: { id: "color", guides: false } },
     { op: "rematerializePointMark", args: { id: "points" } }
   ]);
   assert.throws(

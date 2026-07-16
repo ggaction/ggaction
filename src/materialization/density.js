@@ -1,10 +1,13 @@
 import { getMarkMaterializationStep } from "./marks.js";
+import { requireLayer } from "../selectors/layers.js";
+import { buildMaterializationPlan } from "./planner.js";
 
 export function planDensityRematerialization(program, target) {
-  const layer = program.semanticSpec.layers.find(item => item.id === target);
-  if (layer === undefined) {
-    throw new Error(`Unknown density materialization target "${target}".`);
-  }
+  const layer = requireLayer(
+    program,
+    target,
+    `Unknown density materialization target "${target}"`
+  );
   const scaleIds = new Set([
     layer.encoding?.x?.scale,
     layer.encoding?.y?.scale
@@ -22,5 +25,5 @@ export function planDensityRematerialization(program, target) {
     const step = getMarkMaterializationStep(program, candidate);
     if (step !== undefined) plan.push(step);
   }
-  return plan;
+  return buildMaterializationPlan({ marks: plan });
 }

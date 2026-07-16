@@ -1049,7 +1049,7 @@ Canvas 또는 shared scale 변경은 여러 mark와 guide에 동시에 영향을
 
 ```javascript
 [
-  { op: "rematerializeScale", args: { id: "x" } },
+  { op: "rematerializeScale", args: { id: "x", guides: false } },
   { op: "rematerializePointMark", args: { id: "points" } },
   { op: "rematerializeLegend" },
   { op: "rematerializeTitle" }
@@ -1057,8 +1057,11 @@ Canvas 또는 shared scale 변경은 여러 mark와 guide에 동시에 영향을
 ```
 
 Planner는 현재 semantic state, resolved scale, materialization config, concrete graphic
-presence를 읽어 applicable step만 만든다. Executor는 순서를 유지하고 같은 `op + args`
-step을 deduplicate한 뒤 실제 wrapped action을 호출한다.
+presence를 읽어 applicable step만 만든다. 모든 plan은 `scale → mark → guide → layout →
+highlight` phase 순서를 사용하고 같은 `op + args` step을 deduplicate한다. Executor는 그
+순서대로 실제 wrapped action을 호출한다. 여러 scale이 함께 바뀌는 plan은 각
+`rematerializeScale`에서 guide 갱신을 유예하고 mark가 모두 수렴한 뒤 guide를 한 번
+갱신한다. 따라서 중간 상태를 피하려고 legend config를 임시 제거하거나 복원하지 않는다.
 
 주요 plan은 다음과 같다.
 
