@@ -60,7 +60,8 @@
     "contracts:catalog": "node scripts/generate-action-catalog.js",
     "contracts:catalog:check": "node scripts/generate-action-catalog.js --check",
     "package:check": "node scripts/package-artifact.js --check",
-    "package:pack": "node scripts/package-artifact.js --pack"
+    "package:pack": "node scripts/package-artifact.js --pack",
+    "test:package": "node scripts/package-consumer.js"
   },
   "engines": {
     "node": ">=20"
@@ -75,6 +76,7 @@
   },
   "devDependencies": {
     "es-module-lexer": "^1.7.0",
-    "playwright": "^1.61.1"
+    "playwright": "^1.61.1",
+    "typescript": "^7.0.2"
   }
 }
