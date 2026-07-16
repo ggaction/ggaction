@@ -14,7 +14,7 @@ Complete chart contract:
 - [x] Scale vocabulary, time/discrete ownership and editScale type policy designed
 - [x] Four visual Gates and target public chains designed
 - [x] Current implementation and contract baseline audit
-- [ ] Shared transformed-scale pure grammar
+- [x] Shared transformed-scale pure grammar
 - [ ] Gate A transformed scatterplot approval and public implementation
 - [ ] Gate B temporal/discrete position approval and public implementation
 - [ ] Gate C discretized color approval and public implementation

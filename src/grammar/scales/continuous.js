@@ -31,7 +31,7 @@ function niceLinearStep(span, count = 5) {
   return factor * power;
 }
 
-function niceLinearDomain(domain) {
+export function niceLinearDomain(domain) {
   const [minimum, maximum] = domain;
   const tolerance = Number.EPSILON * 16 * Math.max(
     1, Math.abs(minimum), Math.abs(maximum)
