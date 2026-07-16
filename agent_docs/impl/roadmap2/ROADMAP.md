@@ -265,12 +265,17 @@ Log/pow/sqrt/symlog/time/band/point와 quantize/quantile/threshold/sequential을
 
 ## Phase 11 — Graphical hierarchy and closeout
 
+- Phase goal: [`phase11/GOAL.md`](phase11/GOAL.md)
+- Hierarchy variant contract: [`chart/cars-regression-scatterplot-variants.md`](chart/cars-regression-scatterplot-variants.md)
+
 - Capability: `graphic-parent-attachment`
 
-Layered/composite example을 primitive-first cycle로 만들어 parent attachment, rendering order와 Canvas
-ownership을 검증한다. 마지막으로 ACTION_INDEX의 Planned inventory가 비었는지, 모든 implemented
-contract가 current/type/export/docs/evidence와 일치하는지, Roadmap 2 gallery가 최종 pair만 포함하는지
-검사한다.
+Canonical regression scatterplot을 primitive-first hierarchy variant로 만들어 Canvas → plot → graphical
+consumer attachment, grid → statistical band → ordinary mark → highlighted item → axis draw order와
+legend/title Canvas ownership을 검증한다. Primitive approval 뒤 ordinary domain actions가 같은 tree를
+자동으로 만들도록 연결하고 existing chart vertical slices 전체를 migration한다. 마지막으로
+ACTION_INDEX의 Planned inventory가 비었는지, 모든 implemented contract가 current/type/export/docs/evidence와
+일치하는지, Roadmap 2 gallery가 최종 pair만 포함하는지 검사한다.
 
 ## Direct action 배치 감사
 

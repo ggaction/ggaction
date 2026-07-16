@@ -24,6 +24,7 @@ prediction interval의 target behavior를 고정한다.
 | `polynomial-degree-2` | polynomial regression | grouped quadratic fit and mean band |
 | `loess-span` | loess regression | grouped local fit, line only |
 | `prediction-interval` | prediction interval | mean interval보다 넓은 grouped bands |
+| `graphic-hierarchy` | Canvas/plot ownership and explicit draw order | Flat visual output과 동일한 named graphic tree |
 
 ## Target user-facing chains
 
@@ -76,6 +77,38 @@ The canonical public chain replaces `createRegression()` with one of:
 
 Omitted x, y and groupBy continue to resolve from the unique compatible point layer.
 
+### Graphic hierarchy
+
+The target public chain remains the canonical `createCarsRegressionScatterplot(rows)` flow. No parent, plot ID or
+placement parameter is added to the chart-authoring API. With a Canvas-first ordinary flow, domain actions infer the
+stable graphical owner and create this named tree:
+
+```text
+graphicSpec.order
+└─ canvas
+   ├─ plot-main
+   │  ├─ horizontal grid
+   │  ├─ regression band
+   │  ├─ points
+   │  ├─ regression lines
+   │  ├─ x axis components
+   │  └─ y axis components
+   ├─ categorical/size legend graphics
+   └─ title graphics, when present
+```
+
+`graphicSpec.objects` remains the flat global named-object registry. Named `children` express ownership and local
+drawing order, while repeated concrete mark instances remain in the owning drawable's `items`. Highlighted items stay
+inside the owning mark and are ordered after its unselected items; they do not become an unrelated top-level node.
+
+The default visual order is background, grid, statistical band, ordinary mark, highlighted item, axis, legend and
+title. Axis graphics remain above marks so bars, areas and points cannot cover baselines or ticks. Legend and title are
+Canvas children rather than plot children because they occupy chart layout outside the coordinate plot.
+
+The hierarchy variant must preserve the baseline semantic specification, resolved scales, concrete properties, Canvas
+commands and decoded pixels. Its Roadmap artifact pair is stored under
+`.artifacts/test/png/roadmap2/cars-regression-scatterplot/graphic-hierarchy/`.
+
 ## Numeric contract
 
 - Filter fixtures independently preserve source order and enforce strict equality/type compatibility rules.
@@ -87,3 +120,6 @@ Omitted x, y and groupBy continue to resolve from the unique compatible point la
 ## 범위 경계
 
 Robust LOESS reweighting, extrapolated sample grids, simultaneous confidence bands and renderer-side fitting are not included.
+Program composition, nested child canvases, clipping, transforms, automatic layout groups and a new user-facing
+hierarchy action are also outside this variant. Extension-authored top-level graphics remain supported; the hierarchy
+guarantee applies to ordinary Canvas-first domain-action flows.
