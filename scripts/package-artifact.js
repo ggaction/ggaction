@@ -14,6 +14,7 @@ export const PACKAGE_LIMITS = Object.freeze({
 });
 
 const REQUIRED_FILES = Object.freeze([
+  "CHANGELOG.md",
   "LICENSE",
   "README.md",
   "package.json",
@@ -47,6 +48,7 @@ export function validatePackageManifest(manifest) {
   }
   for (const file of files) {
     if (![
+      "CHANGELOG.md",
       "LICENSE",
       "README.md",
       "package.json"

@@ -7,14 +7,14 @@ runbook을 작성한다.
 
 ## 진행 상태
 
-- [ ] README development-status notice updated for `0.0.1`
-- [ ] `npm install ggaction` and three public entry examples verified and documented
-- [ ] Public docs installation, compatibility and package links updated
-- [ ] `CHANGELOG.md` initialized with `0.0.1` scope and known limitations
-- [ ] Release notes generated from the same `0.0.1` record
-- [ ] Version bump, candidate, approval, tag, publish and verification runbook added
-- [ ] Failure handling covers pre-publish abort, deprecate and next-patch recovery
-- [ ] Generated LLM docs and navigation remain fresh
+- [x] README development-status notice updated for `0.0.1`
+- [x] `npm install ggaction` and three public entry examples verified and documented
+- [x] Public docs installation, compatibility and package links updated
+- [x] `CHANGELOG.md` initialized with `0.0.1` scope and known limitations
+- [x] Release notes generated from the same `0.0.1` record
+- [x] Version bump, candidate, approval, tag, publish and verification runbook added
+- [x] Failure handling covers pre-publish abort, deprecate and next-patch recovery
+- [x] Generated LLM docs and navigation remain fresh
 - [ ] Documentation, built-site, desktop and mobile checks pass
 - [ ] STEP status, conceptual commit and push
 

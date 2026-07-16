@@ -7,50 +7,51 @@ title: Getting Started
 
 {% include chart-example.html id="scatterplot" %}
 
-This example creates and renders a complete scatterplot from a small inline
-dataset. Every method returns a new `ChartProgram`, so the calls can be chained.
+This walkthrough installs `ggaction`, creates a complete scatterplot from an
+inline dataset, and renders it to Browser Canvas. Every action returns a new
+immutable `ChartProgram`, so the calls can be chained.
 
-## Use the repository build
+## 1. Create a browser project
 
-`ggaction` is not published to npm yet. Clone the repository and run its browser
-examples directly from source:
+`ggaction` is an ESM package. This minimal setup uses Vite to resolve the npm
+package for the browser:
 
 ```bash
-git clone https://github.com/hj-n/ggaction.git
-cd ggaction
-npm install
-python3 -m http.server 4173
+mkdir ggaction-start
+cd ggaction-start
+npm init -y
+npm install ggaction
+npm install --save-dev vite
 ```
 
-Open one of the runnable repository examples:
+Registry availability is confirmed as part of the initial release completion.
+If `0.0.1` is not yet available while that release is in progress, use the
+[repository examples](https://github.com/hj-n/ggaction/tree/main/examples)
+instead of substituting another registry package.
 
-- `http://localhost:4173/examples/getting-started/`
-- `http://localhost:4173/examples/cars-scatterplot/`
-- `http://localhost:4173/examples/cars-line-chart/`
-- `http://localhost:4173/examples/cars-histogram/`
-- `http://localhost:4173/examples/jobs-grouped-bar/`
-- `http://localhost:4173/examples/cars-regression-scatterplot/`
-- `http://localhost:4173/examples/cars-density-area/`
-- `http://localhost:4173/examples/cars-error-bar/`
-- `http://localhost:4173/examples/gapminder-error-band/`
-- `http://localhost:4173/examples/cars-box-plot/`
-- `http://localhost:4173/examples/mark-selection/`
-
-Those browser examples import `../../src/index.js` directly. The code below is
-the complete module used by `examples/getting-started/`, so it runs immediately
-from the repository checkout. After the package is published, replace the
-relative import with `from "ggaction"`; the action chain stays the same.
-
-## 1. Add a canvas
+Create `index.html`:
 
 ```html
-<canvas id="chart" aria-label="Horsepower versus mileage"></canvas>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ggaction scatterplot</title>
+  </head>
+  <body>
+    <canvas id="chart" aria-label="Horsepower versus mileage"></canvas>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
 ```
 
 ## 2. Build the program
 
+Create `main.js`:
+
 ```javascript
-import { chart, render } from "../../src/index.js";
+import { chart, render } from "ggaction";
 
 const cars = [
   { horsepower: 88, mpg: 27, origin: "USA" },
@@ -76,29 +77,62 @@ const program = chart()
       y: { title: { text: "Miles per gallon" } }
     }
   });
+
+const canvas = document.querySelector("#chart");
+render(program, canvas.getContext("2d"));
 ```
 
 `createPointMark` uses the most recently created dataset. Encoding actions use
 the most recently created mark. Pass `data` or `target` explicitly when a
 program contains more than one candidate. The first omitted dataset and point
-IDs are stored as `"data"` and `"point"`; name them explicitly only when a
-later multi-resource flow needs that identity. `createGuides` infers the applicable
-axes and horizontal grid from these point encodings. A nominal point color
-encoding can produce a composite categorical legend when a matching shape
-encoding is also present.
+IDs are stored as `"data"` and `"point"`; name them explicitly only when a later
+multi-resource flow needs that identity.
 
-## 3. Render it
+`createGuides` infers the applicable axes and horizontal grid from the position
+encodings. The renderer reads only concrete `graphicSpec` values already
+produced by actions; it does not compile `semanticSpec` during rendering.
+A nominal point color encoding can produce a categorical legend; adding a
+matching shape encoding produces a composite color-and-shape legend.
 
-```javascript
-const canvas = document.querySelector("#chart");
-render(program, canvas.getContext("2d"));
+## 3. Run it
+
+```bash
+npx vite
 ```
 
-The runnable page and module are available in
-[`examples/getting-started/`](https://github.com/hj-n/ggaction/tree/main/examples/getting-started).
+Open the local URL printed by Vite. The browser draws the chart into the Canvas
+created in `index.html`.
 
-The renderer reads only concrete `graphicSpec` values already produced by the
-actions. It does not compile `semanticSpec` during rendering.
+## Package entries and compatibility
+
+| Import | Environment | Use |
+| --- | --- | --- |
+| `ggaction` | Modern ESM browsers and Node.js 20+ | Chart authoring and Browser Canvas rendering |
+| `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped actions and public primitive authoring |
+| `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
+
+All entries include TypeScript declarations. The package does not publish
+CommonJS entry points. Import `ggaction/png` only from Node code; the default
+browser entry does not load filesystem or native PNG modules.
+
+The release artifact is tested by installing its exact tarball into fresh
+JavaScript and TypeScript consumer projects. It is also tested in a browser and
+across the supported Node release matrix.
+
+## Runnable repository examples
+
+The source repository also contains complete modules for the
+[minimal getting-started chart](https://github.com/hj-n/ggaction/tree/main/examples/getting-started/),
+[scatterplot](https://github.com/hj-n/ggaction/tree/main/examples/cars-scatterplot/),
+[line chart](https://github.com/hj-n/ggaction/tree/main/examples/cars-line-chart/),
+[histogram](https://github.com/hj-n/ggaction/tree/main/examples/cars-histogram/),
+[bar chart](https://github.com/hj-n/ggaction/tree/main/examples/jobs-grouped-bar/),
+[regression scatterplot](https://github.com/hj-n/ggaction/tree/main/examples/cars-regression-scatterplot/),
+[density area](https://github.com/hj-n/ggaction/tree/main/examples/cars-density-area/),
+[error bar](https://github.com/hj-n/ggaction/tree/main/examples/cars-error-bar/),
+[error band](https://github.com/hj-n/ggaction/tree/main/examples/gapminder-error-band/),
+[box plot](https://github.com/hj-n/ggaction/tree/main/examples/cars-box-plot/), and
+[mark selection](https://github.com/hj-n/ggaction/tree/main/examples/mark-selection/).
 
 ## Next
 
@@ -110,7 +144,7 @@ actions. It does not compile `semanticSpec` during rendering.
   [cars histogram tutorial](./tutorials/histogram.md).
 - Aggregate and group ordinal categories in the
   [jobs grouped bar tutorial](./tutorials/grouped-bar.md).
-- Layer grouped linear fits and confidence bands in the
+- Layer grouped fits and confidence bands in the
   [regression scatterplot tutorial](./tutorials/regression-scatterplot.md).
 - Summarize grouped means and confidence intervals in the
   [error-bar tutorial](./tutorials/error-bar.md).

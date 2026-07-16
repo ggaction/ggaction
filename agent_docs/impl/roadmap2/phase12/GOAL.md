@@ -14,7 +14,7 @@ GitHub Release와 npm registry 결과가 하나의 release contract로 일치하
 - [x] Public package metadata and legal files completed
 - [x] Minimal deterministic npm package artifact completed
 - [x] Packed-package runtime, browser, PNG and TypeScript consumer tests completed
-- [ ] Public installation documentation, changelog and release runbook completed
+- [x] Public installation documentation, changelog and release runbook completed
 - [ ] Secure repeatable GitHub/npm publishing automation completed
 - [ ] `0.0.1` release candidate approved at Gate B
 - [ ] npm `0.0.1` and matching GitHub Release published

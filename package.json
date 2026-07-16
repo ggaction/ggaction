@@ -24,6 +24,7 @@
     "src/",
     "types/",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "types": "./types/index.d.ts",
@@ -61,7 +62,8 @@
     "contracts:catalog:check": "node scripts/generate-action-catalog.js --check",
     "package:check": "node scripts/package-artifact.js --check",
     "package:pack": "node scripts/package-artifact.js --pack",
-    "test:package": "node scripts/package-consumer.js"
+    "test:package": "node scripts/package-consumer.js",
+    "release:notes": "node scripts/release-notes.js"
   },
   "engines": {
     "node": ">=20"

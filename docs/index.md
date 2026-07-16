@@ -9,16 +9,17 @@ Build charts as immutable, traceable action programs. Start with a complete
 example, then use the API pages when you need to customize one part.
 The main, extension, and PNG entry points include TypeScript declarations.
 
-> **Development status:** `ggaction` is currently used directly from this
-> repository and is not published to npm yet. The documented API version is
-> `0.0.0-dev`.
+> **Release status:** This documentation describes the experimental `0.0.1`
+> release. APIs may change before `1.0.0`; consult the
+> [changelog](https://github.com/hj-n/ggaction/blob/main/CHANGELOG.md) when
+> upgrading.
 
 ## Start here
 
 <div class="docs-entry-grid">
   <a href="./getting-started/">
     <strong>Build your first chart</strong>
-    <span>Run a complete repository example and understand the action chain.</span>
+    <span>Install the package, render a complete chart, and understand the action chain.</span>
   </a>
   <a href="./recipes/">
     <strong>Start from a chart type</strong>

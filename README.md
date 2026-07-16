@@ -6,6 +6,12 @@ traceable actions.
 ```javascript
 import { chart, render } from "ggaction";
 
+const cars = [
+  { horsepower: 88, mpg: 27, origin: "USA" },
+  { horsepower: 70, mpg: 36, origin: "Japan" },
+  { horsepower: 110, mpg: 24, origin: "Europe" }
+];
+
 const program = chart()
   .createCanvas({
     width: 640,
@@ -14,9 +20,9 @@ const program = chart()
   })
   .createData({ values: cars })
   .createPointMark()
-  .encodeX({ field: "Horsepower" })
-  .encodeY({ field: "Miles_per_Gallon" })
-  .encodeColor({ field: "Origin" })
+  .encodeX({ field: "horsepower" })
+  .encodeY({ field: "mpg" })
+  .encodeColor({ field: "origin" })
   .encodeRadius({ value: 3 })
   .createGuides({
     axes: {
@@ -31,11 +37,33 @@ render(program, document.querySelector("#chart").getContext("2d"));
 The renderer reads only fully materialized, backend-neutral graphics. Semantic
 state is never automatically compiled during rendering.
 
-> **Status:** `0.0.1` is the first public release candidate. The package is not
-> published to npm until the release checks and approval gate complete.
+> **Status:** `0.0.1` is the first experimental public release. APIs may change
+> before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+
+## Install
+
+```bash
+npm install ggaction
+```
+
+The package is ESM-only and supports Node.js 20 or later. The default `ggaction`
+entry works with modern browser build tools and Canvas. `ggaction/png` is
+Node-only and uses a native Canvas dependency.
+
+| Entry | Purpose |
+| --- | --- |
+| `ggaction` | Create chart programs and render them to Browser Canvas |
+| `ggaction/extension` | Author wrapped actions and use public low-level primitives |
+| `ggaction/png` | Render a completed program to a PNG file in Node.js |
+
+All three entries include TypeScript declarations. See [Getting
+Started](https://hyeonword.com/ggaction/getting-started/) for a complete browser
+setup and [Rendering](https://hyeonword.com/ggaction/api/rendering/) for Node PNG
+output.
 
 ## Documentation
 
+- [npm package](https://www.npmjs.com/package/ggaction)
 - [Getting started](https://hyeonword.com/ggaction/getting-started/)
 - [Cars scatterplot tutorial](https://hyeonword.com/ggaction/tutorials/scatterplot/)
 - [Cars line chart tutorial](https://hyeonword.com/ggaction/tutorials/line-chart/)
