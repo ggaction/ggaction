@@ -93,6 +93,26 @@ export class ChartProgram {
     return this.materializationConfigs.title;
   }
 
+  _withSelectionConfig(id, config) {
+    if (typeof id !== "string" || id.length === 0) {
+      throw new TypeError("Selection config id must be a non-empty string.");
+    }
+    if (!isPlainObject(config)) {
+      throw new TypeError("Selection config must be a plain object.");
+    }
+    return this._withMaterializationConfig(["selections", id], config);
+  }
+
+  _withHighlightConfig(id, config) {
+    if (typeof id !== "string" || id.length === 0) {
+      throw new TypeError("Highlight config id must be a non-empty string.");
+    }
+    if (!isPlainObject(config)) {
+      throw new TypeError("Highlight config must be a plain object.");
+    }
+    return this._withMaterializationConfig(["highlights", id], config);
+  }
+
   _clone({
     semanticSpec = this.semanticSpec,
     graphicSpec = this.graphicSpec,

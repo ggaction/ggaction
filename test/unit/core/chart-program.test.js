@@ -208,6 +208,35 @@ test("stores private mark materialization config immutably", () => {
   assert.throws(() => chart()._withMarkConfig("bars", []), /plain object/);
 });
 
+test("stores selection and highlight intent in canonical materialization state", () => {
+  const selector = { field: "value", op: "max" };
+  const base = chart();
+  const selected = base._withSelectionConfig("pointsSelection", {
+    target: "points",
+    selector
+  });
+  const highlighted = selected._withHighlightConfig("pointsSelection", {
+    target: "points",
+    opacity: 1
+  });
+  selector.field = "other";
+
+  assert.equal(base.materializationConfigs.selections, undefined);
+  assert.deepEqual(selected.materializationConfigs.selections, {
+    pointsSelection: {
+      target: "points",
+      selector: { field: "value", op: "max" }
+    }
+  });
+  assert.deepEqual(highlighted.materializationConfigs.highlights, {
+    pointsSelection: { target: "points", opacity: 1 }
+  });
+  assert.equal(selected.graphicSpec, base.graphicSpec);
+  assert.equal(selected.trace, base.trace);
+  assert.throws(() => base._withSelectionConfig("", {}), /non-empty string/);
+  assert.throws(() => base._withHighlightConfig("selected", []), /plain object/);
+});
+
 test("stores only canonical legend config kinds", () => {
   const next = chart()._withLegendConfig("size", {
     target: "points",

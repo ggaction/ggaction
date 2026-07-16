@@ -17,7 +17,7 @@ import {
   DEFAULT_BAR_STROKE_WIDTH
 } from "./resolve.js";
 
-function deriveSegments({
+export function deriveHistogramSegments({
   dataset,
   layer,
   xEncoding,
@@ -44,7 +44,10 @@ function deriveSegments({
         category: segment.index,
         categoryCount: 1,
         stackStart: segment.start,
-        stackEnd: segment.end
+        stackEnd: segment.end,
+        members: dataset.values.filter((_, index) =>
+          findHistogramBinIndex(xValues[index], bins.boundaries) === bin
+        )
       }))
     );
   }
@@ -83,6 +86,10 @@ function deriveSegments({
         categoryCount: counts[bin].length,
         stackStart: segment.start,
         stackEnd: segment.end,
+        members: dataset.values.filter((_, index) =>
+          findHistogramBinIndex(xValues[index], bins.boundaries) === bin &&
+          categoryIndex.get(colorValues[index]) === category
+        ),
         color: mapOrdinalValues(
           [colorScale.domain[category]],
           colorScale.domain,
@@ -97,7 +104,7 @@ function deriveSegments({
 export function deriveHistogramRectangles(required, resolved) {
   const xScale = resolved.resolvedScales[required.xEncoding.scale];
   const yScale = resolved.resolvedScales[required.yEncoding.scale];
-  const segments = deriveSegments({
+  const segments = deriveHistogramSegments({
     ...required,
     resolvedScales: resolved.resolvedScales
   });
