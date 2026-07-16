@@ -1,6 +1,6 @@
 import { validateUserId } from "../../core/identifiers.js";
 import { normalizeMarkSelector, selectMarkItemKeys } from "../../grammar/markSelection.js";
-import { resolveMarkItems } from "./items.js";
+import { resolveMarkItems } from "./policies/index.js";
 
 export function resolveMarkSelection(program, target, selector) {
   const normalized = normalizeMarkSelector(selector);

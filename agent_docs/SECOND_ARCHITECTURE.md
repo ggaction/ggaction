@@ -205,7 +205,9 @@ Item resolver가 현재 semantic/materialization 계산에서 point row, final b
 rule row를 다시 만든 뒤 selection을 평가한다. Bar의 semantic position은 start `x`/`y`와 end `x2`/`y2`로
 표현하고, concrete rect의 top-left `x`/`y`와 `width`/`height`는 property namespace에만 둔다. `grain: "stack"`은
 stack/fill/diverging bar의 같은 category/bin rect들을 하나의 item으로 묶어 모든 attachment ID와 union concrete
-bounds를 가진다. `highlights`는 그 selection에 적용할 graphical override intent의 owner다. 따라서 Canvas와
+bounds를 가진다. 각 mark의 `selectionPolicy`가 supported grain, item resolver, highlight style normalizer,
+highlight action과 owning rematerializer를 함께 소유한다. Selection orchestration은 mark type 조건문을
+복제하지 않고 이 policy를 조회한다. `highlights`는 그 selection에 적용할 graphical override intent의 owner다. 따라서 Canvas와
 scale range 변경 뒤 stale concrete child ID를 authoritative state로 사용하지 않는다.
 
 현재 program-level child composition state는 구현되어 있지 않다. 초기 설계에 있던

@@ -3,7 +3,6 @@ import { deriveAreaSeries, deriveDensityAreaSeries } from "../../grammar/areaSer
 import { deriveBarAggregates } from "../../grammar/bars/aggregate.js";
 import {
   BAR_GRAINS,
-  BAR_ORIENTATIONS,
   resolveBarChannels,
   resolveBarColorLayout,
   resolveBarGrain
@@ -20,8 +19,6 @@ import {
   readTemporalField
 } from "../../grammar/scales.js";
 import { deriveHistogramSegments } from "../bars/histogram.js";
-import { findDataset } from "../../selectors/datasets.js";
-import { findLayer } from "../../selectors/layers.js";
 import { findUpstreamTransform } from "../dataProvenance.js";
 import { unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 
@@ -152,7 +149,7 @@ function finalizeItems(program, layer, grain, definitions, graphicType) {
   }));
 }
 
-function resolvePointItems(program, layer, dataset) {
+export function resolvePointItems(program, layer, dataset) {
   const graphic = program.graphicSpec.objects[layer.id];
   if (
     !Array.isArray(graphic?.items) ||
@@ -321,7 +318,6 @@ function histogramDefinitions(program, layer, dataset) {
   });
   const colorScale = program.resolvedScales[colorEncoding?.scale];
   return segments.map(segment => {
-    const count = segment.stackEnd - segment.stackStart;
     const colorValue = colorScale?.domain[segment.category];
     return {
       fields: uniqueFields(segment.members),
@@ -408,7 +404,7 @@ function barStackDefinitions(layer, barGrain, definitions) {
   });
 }
 
-function resolveBarItems(program, layer, dataset, selectionGrain) {
+export function resolveBarItems(program, layer, dataset, selectionGrain) {
   const grain = resolveBarGrain(layer);
   const definitions = grain === BAR_GRAINS.histogram
     ? histogramDefinitions(program, layer, dataset)
@@ -459,7 +455,7 @@ function seriesDefinitions(layer, rows, series) {
   });
 }
 
-function resolveLineItems(program, layer, dataset) {
+export function resolveLineItems(program, layer, dataset) {
   const derived = deriveLineSeries(dataset.values, layer);
   return finalizeItems(
     program,
@@ -470,7 +466,7 @@ function resolveLineItems(program, layer, dataset) {
   );
 }
 
-function resolveAreaItems(program, layer, dataset) {
+export function resolveAreaItems(program, layer, dataset) {
   const transform = findUpstreamTransform(program, dataset, "density");
   const derived = transform === undefined
     ? deriveAreaSeries(dataset.values, layer)
@@ -484,7 +480,7 @@ function resolveAreaItems(program, layer, dataset) {
   );
 }
 
-function resolveRuleItems(program, layer, dataset) {
+export function resolveRuleItems(program, layer, dataset) {
   const derived = deriveRuleValues(dataset.values, layer);
   const hasField = Object.values(layer.encoding ?? {}).some(encoding =>
     Object.hasOwn(encoding, "field")
@@ -505,24 +501,4 @@ function resolveRuleItems(program, layer, dataset) {
     };
   });
   return finalizeItems(program, layer, "rule", definitions, "line");
-}
-
-export function resolveMarkItems(program, target, grain = "item") {
-  const layer = findLayer(program, target);
-  if (layer === undefined) throw new Error(`Unknown mark target "${target}".`);
-  const dataset = findDataset(program, layer.data);
-  if (dataset === undefined) {
-    throw new Error(`Mark "${target}" requires an existing dataset for selection.`);
-  }
-  if (grain === "stack" && layer.mark?.type !== "bar") {
-    throw new Error(`Mark "${target}" does not support stack selection grain.`);
-  }
-  if (layer.mark?.type === "point") return resolvePointItems(program, layer, dataset);
-  if (layer.mark?.type === "bar") {
-    return resolveBarItems(program, layer, dataset, grain);
-  }
-  if (layer.mark?.type === "line") return resolveLineItems(program, layer, dataset);
-  if (layer.mark?.type === "area") return resolveAreaItems(program, layer, dataset);
-  if (layer.mark?.type === "rule") return resolveRuleItems(program, layer, dataset);
-  throw new Error(`Mark "${target}" has no selectable item resolver.`);
 }
