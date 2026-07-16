@@ -8,7 +8,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `property`: 필수 supported semantic path string. user ID selector는 `dataset[id]`, `layer[id]`,
   `scale[id]`, `coordinate[id]`; system guide keys는 `guide.axis.x` 같은 closed path를 사용한다.
 - `value`: selected path schema에 맞는 scalar, object 또는 array. caller-owned nested value를 복사/freeze한다.
-  `encoding.y.aggregate`는 accepted scalar aggregate token과 parameterized quantile/ordered object를
+  position encoding과 `encoding.color.aggregate`는 accepted scalar aggregate token과 parameterized quantile/ordered object를
   primitive authoring state로 저장할 수 있다. 이 primitive validation은 aggregate 계산이나 graphical
   materialization을 수행하지 않는다.
 - `remove`: `true`일 때 value 대신 supported encoding channel 또는 legend branch를 삭제하고 empty

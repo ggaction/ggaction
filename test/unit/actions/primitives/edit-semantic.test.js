@@ -318,7 +318,7 @@ test("validates aggregate semantic values needed by primitive authoring", () => 
     "q1", "q3", "ciLower", "ciUpper"
   ];
   for (const aggregate of scalarOperations) {
-    for (const channel of ["x", "y"]) {
+    for (const channel of ["x", "y", "color"]) {
       const program = chart().editSemantic({
         property: `layer[lines].encoding.${channel}.aggregate`,
         value: aggregate

@@ -19,6 +19,7 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.x.bin.step",
   "encoding.x.bin.boundaries",
   "encoding.color.layout",
+  "encoding.color.aggregate",
   ...POSITION_CHANNELS.flatMap(channel => [
     `encoding.${channel}.aggregate`,
     `encoding.${channel}.stack`

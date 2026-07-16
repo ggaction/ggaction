@@ -253,13 +253,24 @@ The three target chains share the Gate A data, point, x/y, guide and appearance 
 
 Each chain requests an inferred right-side discrete legend with `direction: "vertical"`, `itemGap: 28`, 10px labels
 and title, and the chart title identifies its boundary policy. The executable complete target chains are owned by
-`test/gates/gapminder-discretized-color-scales/variants/manifest.js` until Gate approval.
+`test/charts/gapminder-discretized-color-scales/variants/manifest.js`.
 
 ## Gate D — continuous-color bars
 
 A filtered Gapminder country bar chart uses aggregate population for height and color. Matching color/measure fields
 inherit the measure aggregate; another quantitative color field requires explicit `aggregate`. A sequential scale
 and gradient legend rematerialize together after scale and Canvas edits.
+
+The approved-target family uses the eight named focus countries and three source rows per country from 1995–2005:
+
+- `matching-population`: bar height and color both use `sum(pop)`; `encodeColor` omits `aggregate` and inherits it.
+- `mean-life-expectancy`: height uses `sum(pop)` while color explicitly uses `aggregate: "mean"` on `life_expect`.
+- `reversed-life-expectancy`: the second target calls `editScale({ id: "color", reverse: true })`; bar geometry,
+  numeric color domain and legend labels remain unchanged while concrete bar and gradient colors reverse.
+
+All variants use one rect per country, an explicit `[0, 4_000_000_000]` height domain, the internal sequential
+`viridis` color scale and one right-side vertical gradient legend. The exact executable future chains are owned by
+`test/gates/gapminder-continuous-color-bars/variants/manifest.js` until Gate D approval.
 
 ## Scale and edit contract
 
