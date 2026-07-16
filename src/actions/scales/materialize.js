@@ -221,17 +221,39 @@ export const rematerializeScale = action(
         ...activeLayouts.flatMap(item => item.values),
         ...directConsumers.flatMap(item => item.values)
       ];
-      domain = resolveContinuousDomain({
-        domain: scale.domain,
-        values,
-        type: scale.type,
-        nice: layout === "fill" && scale.domain === "auto"
-          ? false
-          : scale.nice,
-        zero: layout === "fill" && scale.domain === "auto"
-          ? false
-          : scale.zero
-      });
+      if (
+        ["group", "overlay"].includes(layout) &&
+        scale.domain !== "auto" &&
+        (Math.min(...scale.domain) > 0 || Math.max(...scale.domain) < 0)
+      ) {
+        throw new Error(
+          `Series layout scale "${id}" requires an explicit domain containing zero.`
+        );
+      }
+      const nice = layout === "fill" && scale.domain === "auto"
+        ? false
+        : scale.nice;
+      const zero = layout === "fill" && scale.domain === "auto"
+        ? false
+        : scale.zero;
+      domain = isTransformedScaleType(scale.type)
+        ? resolveTransformedDomain({
+            type: scale.type,
+            domain: scale.domain,
+            values,
+            nice: nice ?? false,
+            zero: zero ?? false,
+            ...(scale.base === undefined ? {} : { base: scale.base }),
+            ...(scale.exponent === undefined ? {} : { exponent: scale.exponent }),
+            ...(scale.constant === undefined ? {} : { constant: scale.constant })
+          })
+        : resolveContinuousDomain({
+            domain: scale.domain,
+            values,
+            type: scale.type,
+            nice,
+            zero
+          });
     } else {
       domain = isOrdinalAppearance || isOrdinalOffset || isOrdinalPosition ||
         isDiscretePosition

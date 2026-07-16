@@ -216,7 +216,7 @@ test("materializes scalar aggregate grouped bars at the final category grain", (
     .encodeBarWidth();
 
   assert.equal(program.semanticSpec.layers[0].encoding.y.aggregate, "median");
-  assert.deepEqual(program.resolvedScales.y.domain, [2, 8]);
+  assert.deepEqual(program.resolvedScales.y.domain, [0, 8]);
   assert.equal(program.graphicSpec.objects.bars.items.length, 4);
   assert.equal(
     program.graphicSpec.objects.bars.items.every(child =>
@@ -251,6 +251,6 @@ test("materializes parameterized grouped bars at the final category grain", () =
     program.semanticSpec.layers[0].encoding.y.aggregate,
     { op: "first", orderBy: "rank", order: "ascending" }
   );
-  assert.deepEqual(program.resolvedScales.y.domain, [2, 10]);
+  assert.deepEqual(program.resolvedScales.y.domain, [0, 10]);
   assert.equal(program.graphicSpec.objects.bars.items.length, 4);
 });

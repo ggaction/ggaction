@@ -150,8 +150,11 @@ materializes concrete histogram rectangles.
 
 An ordinal bar aggregate y scale defaults to `nice: true` and `zero: false`.
 Its automatic domain uses one final aggregate value per ordinal x/category and
-series cell rather than raw source values. This includes parameterized quantile
-and ordered `first`/`last` results. Explicit domain and range values remain authoritative.
+series cell rather than raw source values. Group and overlay layouts also include
+their semantic zero baseline in the automatic domain, even when `zero: false`;
+that option does not remove an endpoint required by bar geometry. This includes
+parameterized quantile and ordered `first`/`last` results. An explicit group or
+overlay domain must contain zero, while explicit range values remain authoritative.
 The y action resolves the scale but leaves rectangles empty until grouping
 semantics are available.
 

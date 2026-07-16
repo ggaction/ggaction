@@ -4,7 +4,10 @@ import {
   resolveBarChannels,
   resolveBarColorLayout
 } from "../../grammar/bars/policy.js";
-import { layoutSeriesPartition } from "../../grammar/seriesLayout.js";
+import {
+  DEFAULT_SERIES_BASELINE,
+  layoutSeriesPartition
+} from "../../grammar/seriesLayout.js";
 import {
   isDiscretePositionScaleType,
   mapContinuousScaleValues,
@@ -66,7 +69,7 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     widthConfig,
     Math.abs(categoryScale.bandwidth ?? categoryScale.step)
   );
-  const baseline = layout === "overlay" ? measureScale.domain[0] : 0;
+  const baseline = DEFAULT_SERIES_BASELINE;
   const continuousColor = colorEncoding?.fieldType === "quantitative";
   if (continuousColor) {
     const mappedColors = mapSequentialColors(

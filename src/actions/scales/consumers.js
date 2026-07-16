@@ -208,7 +208,10 @@ function resolveAggregatePartitions(program, consumer) {
     : derived.yValues;
   const categoryDomain = resolveOrdinalDomain(categoryScale.domain, categoryValues);
   const colorEncoding = layer.encoding?.color;
-  if (colorEncoding?.scale === undefined) {
+  if (
+    colorEncoding?.scale === undefined ||
+    colorEncoding.fieldType === "quantitative"
+  ) {
     const byCategory = new Map(derived.values.map(value => [
       value[channels.category],
       value[channels.measure]

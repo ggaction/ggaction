@@ -19,7 +19,7 @@ signature를 유지하고 재현 하나만 통과시키는 특수 처리 대신 
 - [x] External report, F-001~F-007과 executable reproductions 검토
 - [x] `ggaction@0.0.2`에서 F-001~F-007 독립 재현
 - [x] 현재 source, tests, types와 public docs의 원인 후보 대조
-- [ ] F-007 — 음수·0 aggregate bar baseline과 domain 수정
+- [x] F-007 — 음수·0 aggregate bar baseline과 domain 수정
 - [ ] F-001 — ranged/aggregate bar 기본 width와 materialization completion 수정
 - [ ] F-002A — horizontal ranged-area color dispatch 수정
 - [ ] F-002B — horizontal error-band boundary direct-path composition 수정

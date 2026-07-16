@@ -46,7 +46,11 @@ test("resolves layout domain inputs from complete partitions", () => {
   assert.deepEqual(resolveSeriesLayoutDomainValues(partitions, "fill"), [0, 1]);
   assert.deepEqual(
     resolveSeriesLayoutDomainValues(partitions, "overlay"),
-    [2, 3, 4, 1]
+    [0, 2, 3, 0, 4, 1]
+  );
+  assert.deepEqual(
+    resolveSeriesLayoutDomainValues(partitions, "group"),
+    [0, 2, 3, 0, 4, 1]
   );
   assert.deepEqual(
     resolveSeriesLayoutDomainValues(partitions, "stack"),

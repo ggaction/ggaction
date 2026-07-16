@@ -6,6 +6,7 @@ import {
   DEFAULT_BAR_STROKE_WIDTH
 } from "./resolve.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
+import { DEFAULT_SERIES_BASELINE } from "../../grammar/seriesLayout.js";
 
 export function deriveGroupedRectangles(required, resolved, widthConfig) {
   const { dataset, layer } = required;
@@ -47,7 +48,7 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
   const offsetDirection = Math.sign(offsetScale.step) || 1;
   const width = resolveBarWidth(widthConfig, offsetScale.bandwidth);
   const baseline = mapContinuousScaleValues(
-    [yScale.domain[0]],
+    [DEFAULT_SERIES_BASELINE],
     yScale
   )[0];
   const cells = [...deriveBarAggregates(dataset.values, layer).values].sort(

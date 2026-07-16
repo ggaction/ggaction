@@ -25,7 +25,7 @@ function aggregateBarProgram() {
 
 test("encodes grouped bar color through a nested xOffset action", () => {
   const before = aggregateBarProgram();
-  assert.deepEqual(before.resolvedScales.y.domain, [5, 5]);
+  assert.deepEqual(before.resolvedScales.y.domain, [0, 5]);
 
   const program = before.encodeColor({ field: "sex", layout: "group" });
 

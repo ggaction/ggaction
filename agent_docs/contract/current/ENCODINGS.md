@@ -131,7 +131,9 @@ type AggregateOperation =
   type이 한 group 안에서 섞이면 해당 group을 생략한다.
 - `stack`: Implemented values `"zero" | "normalize" | null`. `"normalize"`은 각 non-negative
   partition을 합계 1로 정규화하고 automatic y domain을 `[0, 1]`로 고정한다. 합계가 0인 partition은
-  graphic을 만들지 않는다.
+  graphic을 만들지 않는다. Aggregate bar의 group/overlay는 `stack: null`이어도 semantic start endpoint
+  `0`을 domain과 geometry가 함께 사용한다. Automatic domain은 `zero: false`와 무관하게 이 endpoint를
+  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다.
 - `bin`: 현재 y에서는 지원되지 않는다.
 - Effect: y semantic, scale, final bar/line aggregate grain을 저장하고 mark geometry와
   existing guides를 rematerialize한다.
@@ -558,7 +560,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   많은 color를 요구한다. Boundary equality는 upper class에 포함되고 interval legend도 같은 경계를 읽는다.
 - Effect: color semantic, resolved layout과 scale을 저장한다. `group`은 wrapped `encodeXOffset`, `fill`은
   wrapped `encodeY({ stack: "normalize" })`, overlay는 non-stacked y, stack/diverging은 zero-stack y를
-  사용한다. Bar는 rect, area는 closed path로 concrete materialize한다.
+  사용한다. Aggregate bar group/overlay의 semantic start endpoint는 0이며 scale domain과 concrete rect가
+  같은 endpoint를 소비한다. Bar는 rect, area는 closed path로 concrete materialize한다.
 - Reassignment: 같은 target의 nominal color field를 교체한다. omitted scale ID는 current color scale을
   재사용하고 explicit new ID는 새 scale을 만든다. Existing compatible legend의 domain, symbols,
   labels와 inferred title을 갱신하며 custom title/layout/style은 보존한다.
@@ -583,6 +586,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: matching-field inheritance, explicit alternate-field aggregate, ambiguous omission and invalid operation.
 - `layout`
   - ✅ Covered: omission, all five values, bar/area compatibility, normalized and signed baseline policies,
+    group/overlay zero endpoint, positive/mixed/all-negative/zero partitions, incompatible explicit domain,
     no-auto-opacity overlay, invalid transition atomicity와 `encodeGroup`과의 distinct ownership.
   - 🟣 Proposed: `"center"` streamgraph layout.
 - `scale.id/type/domain`

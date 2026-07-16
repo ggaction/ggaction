@@ -3992,7 +3992,10 @@ program.encodeY({
 
 The automatic domain uses aggregate summaries at the final available grouping
 grain. Parameterized quantile and ordered `first`/`last` use the same contract
-as temporal line y encodings.
+as temporal line y encodings. Group and overlay bars start at the semantic value
+zero, so their automatic domain contains zero even when `scale.zero` is `false`.
+An explicit domain for either layout must contain zero; otherwise the encoding
+fails before creating extrapolated or clipped rectangles.
 Grouping and `encodeBarWidth` later supply enough information to materialize
 concrete rectangles.
 
@@ -4235,7 +4238,9 @@ See [Scale options](./scales.md#named-palettes) for the complete vocabulary.
 
 For an ordinal-x mean bar, `layout: "group"` is the default. It keeps
 `y.stack = null`, invokes `encodeXOffset` with the same field, and recomputes
-the y domain from one mean per x/color cell. Color and xOffset scales are fully
+the y domain from zero and one mean per x/color cell. Negative and positive bars
+therefore extend in opposite directions from the same zero baseline, and a zero
+value has zero height. Color and xOffset scales are fully
 resolved, while concrete rects wait for bar width.
 
 ```javascript
@@ -4272,7 +4277,9 @@ partition to one and uses `[0, 1]` as the automatic y domain. `group` places
 series side by side within each bin, `overlay` draws them in color-domain order
 without changing opacity, and `diverging` accumulates positive and negative
 values independently around zero. Ordinal aggregate bars support the same five
-values; call `encodeBarWidth` after color.
+values; their group and overlay layouts use zero as each rectangle's start
+endpoint and reject explicit measure domains that exclude zero. Call
+`encodeBarWidth` after color.
 
 ```javascript
 histogram.encodeColor({ field: "Origin", layout: "fill" });
@@ -4813,8 +4820,11 @@ materializes concrete histogram rectangles.
 
 An ordinal bar aggregate y scale defaults to `nice: true` and `zero: false`.
 Its automatic domain uses one final aggregate value per ordinal x/category and
-series cell rather than raw source values. This includes parameterized quantile
-and ordered `first`/`last` results. Explicit domain and range values remain authoritative.
+series cell rather than raw source values. Group and overlay layouts also include
+their semantic zero baseline in the automatic domain, even when `zero: false`;
+that option does not remove an endpoint required by bar geometry. This includes
+parameterized quantile and ordered `first`/`last` results. An explicit group or
+overlay domain must contain zero, while explicit range values remain authoritative.
 The y action resolves the scale but leaves rectangles empty until grouping
 semantics are available.
 

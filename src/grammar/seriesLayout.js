@@ -1,6 +1,8 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { COLOR_LAYOUTS } from "../core/vocabulary.js";
 
+export const DEFAULT_SERIES_BASELINE = 0;
+
 export function validateColorLayout(layout) {
   if (!COLOR_LAYOUTS.includes(layout)) {
     throw new Error(`Unsupported color layout "${layout}".`);
@@ -14,7 +16,11 @@ function validateValues(values) {
   }
 }
 
-export function layoutSeriesPartition(values, layout, { baseline = 0 } = {}) {
+export function layoutSeriesPartition(
+  values,
+  layout,
+  { baseline = DEFAULT_SERIES_BASELINE } = {}
+) {
   validateValues(values);
   validateColorLayout(layout);
   if (!Number.isFinite(baseline)) {
@@ -66,7 +72,12 @@ export function resolveSeriesLayoutDomainValues(partitions, layout) {
   for (const partition of partitions) validateValues(partition);
 
   if (layout === "fill") return [0, 1];
-  if (layout === "group" || layout === "overlay") return partitions.flat();
+  if (layout === "group" || layout === "overlay") {
+    return partitions.flatMap(partition => [
+      DEFAULT_SERIES_BASELINE,
+      ...partition
+    ]);
+  }
   return partitions.flatMap(partition =>
     layoutSeriesPartition(partition, layout).flatMap(segment => [
       segment.start,

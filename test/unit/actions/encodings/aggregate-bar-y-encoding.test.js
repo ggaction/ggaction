@@ -75,7 +75,7 @@ test("encodes aggregate ordinal bars with inferred mean/non-stack defaults", () 
   });
   assert.deepEqual(program.resolvedScales.y, {
     type: "linear",
-    domain: [2, 10],
+    domain: [0, 10],
     range: [250, 30]
   });
   assert.deepEqual(program.graphicSpec.objects.bars.items, []);

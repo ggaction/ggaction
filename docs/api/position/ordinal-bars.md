@@ -64,7 +64,10 @@ program.encodeY({
 
 The automatic domain uses aggregate summaries at the final available grouping
 grain. Parameterized quantile and ordered `first`/`last` use the same contract
-as temporal line y encodings.
+as temporal line y encodings. Group and overlay bars start at the semantic value
+zero, so their automatic domain contains zero even when `scale.zero` is `false`.
+An explicit domain for either layout must contain zero; otherwise the encoding
+fails before creating extrapolated or clipped rectangles.
 Grouping and `encodeBarWidth` later supply enough information to materialize
 concrete rectangles.
 
