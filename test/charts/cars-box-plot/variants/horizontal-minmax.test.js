@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { render } from "../../../src/index.js";
-import { loadCars } from "../../support/data.js";
-import { createMockCanvasContext } from "../../support/canvas.js";
-import { createCarsHorizontalMinmaxPrimitives } from "./primitive.program.js";
+import { render } from "../../../../src/index.js";
+import { loadCars } from "../../../support/data.js";
+import { createMockCanvasContext } from "../../../support/canvas.js";
+import { createCarsHorizontalMinmaxPrimitives } from "./horizontal-minmax.program.js";
 
 test("authors the horizontal minmax box plot with raw primitives", () => {
   const program = createCarsHorizontalMinmaxPrimitives(loadCars());

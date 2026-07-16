@@ -4,7 +4,9 @@ import { validateKeys } from "../../core/validation.js";
 import { BOX_FIELDS, deriveBoxData, normalizeBoxTransform } from "../../grammar/boxPlot.js";
 import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
 
-const OPTIONS = Object.freeze(["id", "source", "category", "field", "factor", "as"]);
+const OPTIONS = Object.freeze([
+  "id", "source", "category", "field", "whisker", "factor", "as"
+]);
 
 function materializer(type, op, select) {
   return action({ op, description: `Materialize ${type} box-plot data.` }, function (args = {}) {
@@ -23,7 +25,12 @@ function creator(type, op, materialize) {
     const id = validateUserId(args.id, "Box dataset id");
     const source = validateUserId(args.source ?? this.context.currentData, "Box source dataset id");
     const transform = normalizeBoxTransform({
-      type, category: args.category, field: args.field, factor: args.factor, as: args.as ?? BOX_FIELDS
+      type,
+      category: args.category,
+      field: args.field,
+      ...(args.whisker === undefined ? {} : { whisker: args.whisker }),
+      ...(args.factor === undefined ? {} : { factor: args.factor }),
+      as: args.as ?? BOX_FIELDS
     });
     return this.createDerivedData({ id, source, transform: [transform] })[materialize]({ id });
   });

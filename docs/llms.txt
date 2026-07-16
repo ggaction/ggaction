@@ -22,7 +22,7 @@ pages are canonical; the generated full-text bundle is available at
 - Primitive extension API: ./extension/primitives.md
 - Browser and PNG rendering: ./api/rendering.md
 - Vertical and horizontal statistical and explicit error bands: ./api/error-bands.md
-- Vertical Tukey box plots: ./api/box-plots.md
+- Vertical/horizontal Tukey and min–max box plots: ./api/box-plots.md
 
 Only methods declared on the public ChartProgram TypeScript type are supported
 direct-call actions. Additional wrapped names may appear in action traces but

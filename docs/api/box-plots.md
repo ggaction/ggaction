@@ -5,9 +5,9 @@ title: Box Plots
 
 # Box Plots
 
-`createBoxPlot` creates a vertical Tukey box plot from one categorical x field
-and one quantitative y field. It derives immutable summary/outlier datasets and
-composes ordinary ranged-bar, error-bar, rule, and point actions.
+`createBoxPlot` creates vertical or horizontal box plots from one categorical
+field and one quantitative field. It derives immutable summary data and
+composes ordinary ranged-bar, error-bar, rule, and optional point actions.
 
 ```javascript
 import { chart } from "ggaction";
@@ -28,7 +28,7 @@ const program = chart()
 ## Signature
 
 ```javascript
-createBoxPlot({ id?, target?, data?, x?, y?, coordinate? } = {})
+createBoxPlot({ id?, target?, data?, x?, y?, coordinate?, whisker? } = {})
 ```
 
 | Option | Meaning | Default or inference |
@@ -36,18 +36,32 @@ createBoxPlot({ id?, target?, data?, x?, y?, coordinate? } = {})
 | `id` | box-body owner ID | first instance uses `"boxPlot"` |
 | `target` | compatible encoded source layer | current, then unique eligible layer |
 | `data` | source dataset | source layer, then current dataset |
-| `x` | categorical field, type, and optional scale | inferred from `target` when omitted |
-| `y` | quantitative field and optional scale | inferred from `target` when omitted |
+| `x` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
+| `y` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `coordinate` | Cartesian coordinate ID | source coordinate, then `"main"` |
+| `whisker` | `{ type: "tukey" }` or `{ type: "minmax" }` | Tukey with factor `1.5` |
 
 `createBoxPlot()` may also establish an incomplete owner first. Compatible
 `encodeX` and `encodeY` calls can follow later; the completed semantic and
 graphical state is the same as supplying both channels at creation time.
 
+The category/measure pairing determines orientation. This horizontal min–max
+example creates no outlier resources:
+
+```javascript
+program.createBoxPlot({
+  x: { field: "Horsepower" },
+  y: { field: "Origin", fieldType: "nominal" },
+  whisker: { type: "minmax" }
+});
+```
+
 ## Current statistical and visual defaults
 
 - Quartiles use linear interpolation at `(n - 1) × p`.
 - Whiskers use the most extreme observed values inside `1.5 × IQR` fences.
+- `{ type: "minmax" }` instead uses each category's observed minimum and
+  maximum and never creates an outlier dataset, layer, or graphic.
 - Missing category or measure rows are omitted; non-missing non-finite measures
   are errors.
 - Category order follows first valid source appearance.
@@ -62,8 +76,7 @@ explicitly rematerialize boxes, medians, whiskers, caps, and outliers.
 
 ## Current limitations
 
-The current action supports vertical Tukey box plots. Horizontal orientation,
-min/max whiskers, and public factor, width, style, or outlier toggles are not
+Public factor customization, width/style options, and outlier toggles are not
 implemented yet. `createBoxPlot` is a create-only aggregate; there is no
 `editBoxPlot` action.
 

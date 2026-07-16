@@ -167,10 +167,17 @@ const rematerializeRuleMark = action(
         const owner = resolved.graphicSpec.objects[boxSpan];
         const box = owner?.children?.[index]?.properties;
         if (box === undefined) throw new Error(`Rule mark "${id}" requires box span owner "${boxSpan}".`);
-        x1.push(box.x);
-        y1.push(mapped.y[index]);
-        x2.push(box.x + box.width);
-        y2.push(mapped.y[index]);
+        if (layer.encoding?.x?.fieldType === "quantitative") {
+          x1.push(mapped.x[index]);
+          y1.push(box.y);
+          x2.push(mapped.x[index]);
+          y2.push(box.y + box.height);
+        } else {
+          x1.push(box.x);
+          y1.push(mapped.y[index]);
+          x2.push(box.x + box.width);
+          y2.push(mapped.y[index]);
+        }
       } else if (mode === "fixed-span") {
         if (fixedSpan.orientation === "horizontal") {
           x1.push(mapped.x[index] - fixedSpan.size / 2);

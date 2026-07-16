@@ -35,10 +35,6 @@ const POSITION_ENCODING_OPTIONS = Object.freeze([
   "aggregate", "bin", "stack"
 ]);
 
-function isCategoryEncoding(encoding) {
-  return ["nominal", "ordinal", "temporal"].includes(encoding?.fieldType);
-}
-
 function resolveCoordinate(program, channel, layer, requestedId) {
   const defaults = getPositionCoordinateDefaults(channel);
   const existingId = layer.coordinate;
@@ -171,6 +167,7 @@ function validateMarkPolicy(program, layer, dataset, channel, args, fieldType, f
     if (args.stack !== undefined) throw new Error("Line y encoding does not support stack.");
   } else {
     const opposite = layer.encoding?.[channel === "x" ? "y" : "x"];
+    const pendingBoxRange = program.markConfigs[layer.id]?.boxPlot !== undefined;
     if (["nominal", "ordinal", "temporal"].includes(fieldType)) {
       if (args.aggregate !== undefined || args.bin !== undefined || args.stack !== undefined) {
       throw new Error(
@@ -201,14 +198,13 @@ function validateMarkPolicy(program, layer, dataset, channel, args, fieldType, f
             : "Quantitative bar measure encoding does not support bin."
         );
       }
-      const pendingBoxRange = program.markConfigs[layer.id]?.boxPlot !== undefined;
       aggregate = args.aggregate ?? (
         ["nominal", "ordinal", "temporal"].includes(opposite?.fieldType) &&
         !pendingBoxRange
           ? "mean"
           : undefined
       );
-      if (pendingBoxRange && isCategoryEncoding(opposite) && args.aggregate === undefined) {
+      if (pendingBoxRange && args.aggregate === undefined) {
         return { bin, aggregate, stack };
       }
       if (aggregate === undefined) {
@@ -234,7 +230,7 @@ function validateMarkPolicy(program, layer, dataset, channel, args, fieldType, f
       }
     };
     const orientation = resolveBarOrientation(candidate);
-    if (opposite !== undefined && orientation === undefined) {
+    if (opposite !== undefined && orientation === undefined && !pendingBoxRange) {
       throw new Error(
         `Bar ${channel} encoding requires a quantitative field opposite a categorical position.`
       );

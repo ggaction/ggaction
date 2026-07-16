@@ -458,13 +458,13 @@ is overridden.
 ### `createBoxPlot`
 
 ```javascript
-createBoxPlot({ id?, target?, data?, x?, y?, coordinate? } = {})
+createBoxPlot({ id?, target?, data?, x?, y?, coordinate?, whisker? } = {})
 ```
 
-Create a vertical Tukey box plot from categorical x and quantitative y fields.
-The action infers an encoded source when possible and composes immutable box
-summary/outlier data, error-bar whiskers, ranged-bar bodies, median rules, and
-diamond outliers. [Box plots](../api/box-plots.md)
+Create a vertical or horizontal Tukey/min–max box plot from one categorical
+and one quantitative field. The action infers an encoded source when possible
+and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
+median rules, and optional diamond outliers. [Box plots](../api/box-plots.md)
 
 ### `createGuides`
 

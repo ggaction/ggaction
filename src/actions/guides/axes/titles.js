@@ -77,7 +77,15 @@ function inferText(program, channel, scaleId) {
         Object.values(interval.as).includes(encoding.field)
         ? `${interval.center}(${interval.field})`
         : undefined;
-      const title = encoding.title ?? densityTitle ?? intervalTitle ?? (encoding.aggregate === undefined
+      const box = dataset?.transform?.length === 1 &&
+        dataset.transform[0].type === "boxSummary"
+        ? dataset.transform[0]
+        : undefined;
+      const boxTitle = box !== undefined &&
+        Object.values(box.as).includes(encoding.field)
+        ? box.field
+        : undefined;
+      const title = encoding.title ?? densityTitle ?? intervalTitle ?? boxTitle ?? (encoding.aggregate === undefined
         ? encoding.field
         : formatAggregateTitle(encoding.aggregate, encoding.field));
       titles.add(title);

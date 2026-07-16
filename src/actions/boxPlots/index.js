@@ -10,15 +10,19 @@ import {
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer, hasLayer } from "../../selectors/layers.js";
 
-const OPTIONS = Object.freeze(["id", "target", "data", "x", "y", "coordinate"]);
+const OPTIONS = Object.freeze([
+  "id", "target", "data", "x", "y", "coordinate", "whisker"
+]);
 const MEDIAN_OPTIONS = Object.freeze([
   "id", "owner", "data", "category", "categoryType", "measure",
-  "coordinate", "categoryScale", "measureScale", "stroke", "strokeWidth"
+  "coordinate", "categoryScale", "measureScale", "orientation", "stroke", "strokeWidth"
 ]);
 const OUTLIER_OPTIONS = Object.freeze([
   "id", "data", "category", "categoryType", "measure", "coordinate",
-  "categoryScale", "measureScale", "shape", "radius", "opacity"
+  "categoryScale", "measureScale", "orientation", "shape", "radius", "opacity"
 ]);
+
+const CATEGORY_TYPES = Object.freeze(["nominal", "ordinal", "temporal"]);
 
 function position(value, label) {
   if (value === undefined) return undefined;
@@ -32,6 +36,28 @@ function encodingArgs(value) {
     ...value,
     ...(typeof value.scale === "string" ? { scale: { id: value.scale } } : {})
   };
+}
+
+function resolveWhisker(value) {
+  if (value === undefined) return Object.freeze({ type: "tukey", factor: 1.5 });
+  if (!isPlainObject(value)) {
+    throw new TypeError("createBoxPlot whisker must be a plain object.");
+  }
+  validateKeys(value, ["type"], "createBoxPlot whisker");
+  const type = value.type ?? "tukey";
+  if (!["tukey", "minmax"].includes(type)) {
+    throw new Error(`Unsupported createBoxPlot whisker type "${type}".`);
+  }
+  if (type === "minmax") return Object.freeze({ type });
+  return Object.freeze({ type, factor: 1.5 });
+}
+
+function resolveOrientation(x, y) {
+  const xType = x?.fieldType ?? "quantitative";
+  const yType = y?.fieldType ?? "quantitative";
+  if (CATEGORY_TYPES.includes(xType) && yType === "quantitative") return "vertical";
+  if (xType === "quantitative" && CATEGORY_TYPES.includes(yType)) return "horizontal";
+  return undefined;
 }
 
 function sourceLayer(program, target) {
@@ -57,22 +83,27 @@ const createBoxMedian = action(
   { op: "createBoxMedian", description: "Create a median rule spanning one concrete box body." },
   function (args = {}) {
     validateKeys(args, MEDIAN_OPTIONS, "createBoxMedian");
-    let next = this
-      .createRuleMark({ id: args.id, data: args.data })
-      .encodeX({
-        target: args.id,
-        field: args.category,
-        fieldType: args.categoryType,
-        coordinate: args.coordinate,
-        scale: { id: args.categoryScale }
-      })
-      .encodeY({
-        target: args.id,
-        field: args.measure,
-        fieldType: "quantitative",
-        coordinate: args.coordinate,
-        scale: { id: args.measureScale }
-      })
+    if (!["vertical", "horizontal"].includes(args.orientation)) {
+      throw new Error(`Unsupported box median orientation "${args.orientation}".`);
+    }
+    const categoryAction = args.orientation === "vertical" ? "encodeX" : "encodeY";
+    const measureAction = args.orientation === "vertical" ? "encodeY" : "encodeX";
+    let next = this.createRuleMark({ id: args.id, data: args.data });
+    next = next[categoryAction]({
+      target: args.id,
+      field: args.category,
+      fieldType: args.categoryType,
+      coordinate: args.coordinate,
+      scale: { id: args.categoryScale }
+    });
+    next = next[measureAction]({
+      target: args.id,
+      field: args.measure,
+      fieldType: "quantitative",
+      coordinate: args.coordinate,
+      scale: { id: args.measureScale }
+    });
+    next = next
       .encodeStroke({ target: args.id, value: args.stroke })
       .encodeStrokeWidth({ target: args.id, value: args.strokeWidth });
     next = next._withMarkConfig(args.id, {
@@ -87,22 +118,27 @@ const createBoxOutliers = action(
   { op: "createBoxOutliers", description: "Create concrete point symbols for box-plot outlier rows." },
   function (args = {}) {
     validateKeys(args, OUTLIER_OPTIONS, "createBoxOutliers");
-    return this
-      .createPointMark({ id: args.id, data: args.data, shape: args.shape })
-      .encodeX({
-        target: args.id,
-        field: args.category,
-        fieldType: args.categoryType,
-        coordinate: args.coordinate,
-        scale: { id: args.categoryScale }
-      })
-      .encodeY({
-        target: args.id,
-        field: args.measure,
-        fieldType: "quantitative",
-        coordinate: args.coordinate,
-        scale: { id: args.measureScale }
-      })
+    if (!["vertical", "horizontal"].includes(args.orientation)) {
+      throw new Error(`Unsupported box outlier orientation "${args.orientation}".`);
+    }
+    const categoryAction = args.orientation === "vertical" ? "encodeX" : "encodeY";
+    const measureAction = args.orientation === "vertical" ? "encodeY" : "encodeX";
+    let next = this.createPointMark({ id: args.id, data: args.data, shape: args.shape });
+    next = next[categoryAction]({
+      target: args.id,
+      field: args.category,
+      fieldType: args.categoryType,
+      coordinate: args.coordinate,
+      scale: { id: args.categoryScale }
+    });
+    next = next[measureAction]({
+      target: args.id,
+      field: args.measure,
+      fieldType: "quantitative",
+      coordinate: args.coordinate,
+      scale: { id: args.measureScale }
+    });
+    return next
       .encodeRadius({ target: args.id, value: args.radius })
       .encodeOpacity({ target: args.id, value: args.opacity })
       .editGraphics({ target: args.id, property: "fill", value: "#111111" });
@@ -120,9 +156,13 @@ const materializeBoxPlot = action(
     const x = layer.encoding?.x;
     const y = layer.encoding?.y;
     if (x?.field === undefined || y?.field === undefined) return this;
-    if (!["nominal", "ordinal", "temporal"].includes(x.fieldType) || y.fieldType !== "quantitative") {
-      throw new Error("createBoxPlot currently requires categorical x and quantitative y encodings.");
+    const orientation = resolveOrientation(x, y);
+    if (orientation === undefined) {
+      throw new Error("createBoxPlot requires one categorical axis and one quantitative axis.");
     }
+    const category = orientation === "vertical" ? x : y;
+    const measure = orientation === "vertical" ? y : x;
+    const measureChannel = orientation === "vertical" ? "y" : "x";
     const source = layer.data;
     const summaryId = `${ownerId}SummaryData`;
     const outlierDataId = `${ownerId}OutlierData`;
@@ -131,42 +171,88 @@ const materializeBoxPlot = action(
     const outlierId = `${ownerId}Outliers`;
     let next = this._withMarkConfig(ownerId, {
       ...this.markConfigs[ownerId],
-      boxPlot: { ...config, materialized: true, source, category: x.field, measure: y.field },
+      boxPlot: {
+        ...config,
+        materialized: true,
+        source,
+        orientation,
+        category: category.field,
+        measure: measure.field
+      },
       barWidth: { band: config.width },
       fill: config.box.fill,
       opacity: config.box.opacity,
       stroke: config.box.stroke,
       strokeWidth: config.box.strokeWidth
     })
-      .createBoxSummaryData({ id: summaryId, source, category: x.field, field: y.field, factor: config.factor });
+      .createBoxSummaryData({
+        id: summaryId,
+        source,
+        category: category.field,
+        field: measure.field,
+        whisker: config.whisker.type,
+        ...(config.whisker.factor === undefined ? {} : { factor: config.whisker.factor })
+      });
     const sourceRows = findDataset(next, source).values;
-    const hasOutliers = config.outliers && deriveBoxData(sourceRows, normalizeBoxTransform({
+    const hasOutliers = config.outliers && config.whisker.type === "tukey" && deriveBoxData(sourceRows, normalizeBoxTransform({
       type: "boxOutlier",
-      category: x.field,
-      field: y.field,
-      factor: config.factor
+      category: category.field,
+      field: measure.field,
+      whisker: config.whisker.type,
+      factor: config.whisker.factor
     })).outliers.length > 0;
     if (hasOutliers) {
-      next = next.createBoxOutlierData({ id: outlierDataId, source, category: x.field, field: y.field, factor: config.factor });
+      next = next.createBoxOutlierData({
+        id: outlierDataId,
+        source,
+        category: category.field,
+        field: measure.field,
+        whisker: config.whisker.type,
+        factor: config.whisker.factor
+      });
     }
-    next = next
-      .editSemantic({ property: `layer[${ownerId}].data`, value: summaryId })
-      .editSemantic({ property: `layer[${ownerId}].encoding.y.field`, value: BOX_FIELDS.q1 })
-      .editSemantic({ property: `layer[${ownerId}].encoding.y.title`, value: y.field })
-      .editSemantic({ property: `layer[${ownerId}].encoding.y2.field`, value: BOX_FIELDS.q3 })
-      .editSemantic({ property: `layer[${ownerId}].encoding.y2.fieldType`, value: "quantitative" })
-      .editSemantic({ property: `layer[${ownerId}].encoding.y2.scale`, value: y.scale });
+    next = next.editSemantic({ property: `layer[${ownerId}].data`, value: summaryId });
+    const rangeAction = orientation === "vertical" ? "encodeYRange" : "encodeXRange";
+    next = next[rangeAction]({
+      target: ownerId,
+      lower: BOX_FIELDS.q1,
+      upper: BOX_FIELDS.q3,
+      scale: { id: measure.scale }
+    }).editSemantic({
+      property: `layer[${ownerId}].encoding.${measureChannel}.title`,
+      value: measure.field
+    });
     next = next.createErrorBar({
       id: whiskerId,
       data: summaryId,
-      x: { field: x.field, fieldType: x.fieldType, scale: { id: x.scale } },
-      y: { center: BOX_FIELDS.median, lower: BOX_FIELDS.lowerWhisker, upper: BOX_FIELDS.upperWhisker, scale: { id: y.scale } },
+      ...(orientation === "vertical"
+        ? {
+            x: { field: category.field, fieldType: category.fieldType, scale: { id: category.scale } },
+            y: {
+              center: BOX_FIELDS.median,
+              lower: BOX_FIELDS.lowerWhisker,
+              upper: BOX_FIELDS.upperWhisker,
+              scale: { id: measure.scale }
+            }
+          }
+        : {
+            x: {
+              center: BOX_FIELDS.median,
+              lower: BOX_FIELDS.lowerWhisker,
+              upper: BOX_FIELDS.upperWhisker,
+              scale: { id: measure.scale }
+            },
+            y: { field: category.field, fieldType: category.fieldType, scale: { id: category.scale } }
+          }),
       coordinate: layer.coordinate,
       stroke: "#111111",
       strokeWidth: 1.5
     });
     next = next
-      .editSemantic({ property: `layer[${whiskerId}].encoding.y.title`, value: y.field })
+      .editSemantic({
+        property: `layer[${whiskerId}].encoding.${measureChannel}.title`,
+        value: measure.field
+      })
       .editGraphics({ target: ownerId, remove: true })
       .createGraphics({ id: ownerId, type: "rect", length: 0 })
       .rematerializeBarMark({ id: ownerId })
@@ -174,12 +260,13 @@ const materializeBoxPlot = action(
         id: medianId,
         owner: ownerId,
         data: summaryId,
-        category: x.field,
-        categoryType: x.fieldType,
+        category: category.field,
+        categoryType: category.fieldType,
         measure: BOX_FIELDS.median,
+        orientation,
         coordinate: layer.coordinate,
-        categoryScale: x.scale,
-        measureScale: y.scale,
+        categoryScale: category.scale,
+        measureScale: measure.scale,
         stroke: config.median.stroke,
         strokeWidth: config.median.strokeWidth
       });
@@ -188,12 +275,13 @@ const materializeBoxPlot = action(
         .createBoxOutliers({
           id: outlierId,
           data: outlierDataId,
-          category: x.field,
-          categoryType: x.fieldType,
-          measure: y.field,
+          category: category.field,
+          categoryType: category.fieldType,
+          measure: measure.field,
+          orientation,
           coordinate: layer.coordinate,
-          categoryScale: x.scale,
-          measureScale: y.scale,
+          categoryScale: category.scale,
+          measureScale: measure.scale,
           shape: config.outlier.shape,
           radius: config.outlier.radius,
           opacity: config.outlier.opacity
@@ -213,17 +301,17 @@ const createBoxPlot = action(
     if (findDataset(this, data) === undefined) throw new Error("createBoxPlot requires data or one inferable dataset.");
     const x = position(args.x, "x") ?? source?.encoding?.x;
     const y = position(args.y, "y") ?? source?.encoding?.y;
+    const whisker = resolveWhisker(args.whisker);
     if (
       x !== undefined &&
       y !== undefined &&
-      (!["nominal", "ordinal", "temporal"].includes(x.fieldType) ||
-        (y.fieldType ?? "quantitative") !== "quantitative")
+      resolveOrientation(x, y) === undefined
     ) {
-      throw new Error("createBoxPlot currently requires categorical x and quantitative y encodings.");
+      throw new Error("createBoxPlot requires one categorical axis and one quantitative axis.");
     }
     let next = this.createBarMark({ id, data })._withMarkConfig(id, {
       boxPlot: {
-        factor: 1.5,
+        whisker,
         width: 0.7,
         outliers: true,
         box: { fill: "#4c78a8", opacity: 1, stroke: "#4c78a8", strokeWidth: 1.5 },

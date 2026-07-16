@@ -1527,7 +1527,8 @@ interval containment을 deterministic invariant로 검증한다.
 6. Grouped Gaussian KDE와 baseline-closed area를 가진 density area chart
 7. Grouped mean Student-t interval과 fixed-pixel caps를 가진 cars error-bar chart
 8. Temporal x와 cluster-grouped mean Student-t y/y2 paths를 가진 Gapminder error-band chart
-9. Nominal x, Tukey q1/q3 ranged bars, error-bar whiskers, median rules와 diamond outliers를 가진 Cars box plot
+9. Nominal category/quantitative measure를 양방향으로 배치하고 Tukey 또는 minmax q1/q3 ranged bars,
+   error-bar whiskers, median rules와 optional diamond outliers를 가진 Cars box plot
 
 이 목록은 chart type별 별도 compiler가 있다는 뜻이 아니다. 같은 data, scale, mark,
 encoding, guide, layout, materialization primitive가 여러 vertical slice에서 재사용된다는

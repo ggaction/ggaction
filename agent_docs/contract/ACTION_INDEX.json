@@ -728,7 +728,7 @@
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
       "update": "Owned summary/outlier data, error-bar, ranged-bar, median-rule, and point children",
-      "audit": "Intentional vertical Tukey scope; horizontal and option expansion remain planned",
+      "audit": "Intentional create-only aggregate; configurable factor and style expansion remain planned",
       "coverage": {
         "contract": "complete",
         "effects": "complete",

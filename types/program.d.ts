@@ -453,13 +453,22 @@ export interface BoxPlotMeasureChannel {
   scale?: ScaleOptions;
 }
 
+export type BoxPlotPositionChannel =
+  | BoxPlotCategoryChannel
+  | BoxPlotMeasureChannel;
+
+export type BoxPlotWhisker =
+  | { type?: "tukey" }
+  | { type: "minmax" };
+
 export interface BoxPlotOptions {
   id?: string;
   target?: string;
   data?: string;
-  x?: BoxPlotCategoryChannel;
-  y?: BoxPlotMeasureChannel;
+  x?: BoxPlotPositionChannel;
+  y?: BoxPlotPositionChannel;
   coordinate?: string;
+  whisker?: BoxPlotWhisker;
 }
 
 export interface ErrorBandPositionChannel {

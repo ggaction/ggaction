@@ -21,6 +21,14 @@ function complete(program = base()) {
   });
 }
 
+function horizontal(program = base()) {
+  return program.createBoxPlot({
+    x: { field: "Horsepower" },
+    y: { field: "Origin", fieldType: "nominal" },
+    whisker: { type: "minmax" }
+  });
+}
+
 function findAction(node, op) {
   if (node.op === op) return node;
   for (const child of node.children ?? []) {
@@ -110,6 +118,91 @@ test("records reusable data, interval, median, and outlier child actions", () =>
   assert.ok(findAction(materialize, "createBoxOutliers"));
 });
 
+test("creates horizontal minmax boxes without optional outlier resources", () => {
+  const program = horizontal();
+  const summary = program.semanticSpec.datasets.find(dataset =>
+    dataset.id === "boxPlotSummaryData"
+  );
+  const body = program.semanticSpec.layers.find(layer => layer.id === "boxPlot");
+
+  assert.equal(summary.transform[0].whisker, "minmax");
+  assert.equal(Object.hasOwn(summary.transform[0], "factor"), false);
+  assert.equal(program.semanticSpec.datasets.some(dataset =>
+    dataset.id === "boxPlotOutlierData"
+  ), false);
+  assert.equal(program.semanticSpec.layers.some(layer =>
+    layer.id === "boxPlotOutliers"
+  ), false);
+  assert.equal(program.graphicSpec.objects.boxPlotOutliers, undefined);
+  assert.equal(body.encoding.y.field, "Origin");
+  assert.equal(body.encoding.x.field, "__boxPlot_q1");
+  assert.equal(body.encoding.x2.field, "__boxPlot_q3");
+  assert.deepEqual(
+    program.graphicSpec.objects.boxPlotMedian.children.map(child => [
+      child.properties.y1,
+      child.properties.y2
+    ]),
+    program.graphicSpec.objects.boxPlot.children.map(child => [
+      child.properties.y,
+      child.properties.y + child.properties.height
+    ])
+  );
+});
+
+test("converges when horizontal encodings arrive after createBoxPlot", () => {
+  const direct = horizontal();
+  const deferred = base()
+    .createBoxPlot({ whisker: { type: "minmax" } })
+    .encodeX({ target: "boxPlot", field: "Horsepower" })
+    .encodeY({ target: "boxPlot", field: "Origin", fieldType: "nominal" });
+
+  assert.deepEqual(deferred.semanticSpec, direct.semanticSpec);
+  assert.deepEqual(deferred.graphicSpec, direct.graphicSpec);
+  assert.deepEqual(deferred.resolvedScales, direct.resolvedScales);
+});
+
+test("infers horizontal box roles from one compatible encoded source", () => {
+  const source = base(loadCars().filter(row =>
+    typeof row.Origin === "string" && Number.isFinite(row.Horsepower)
+  ))
+    .createPointMark({ id: "observations" })
+    .encodeX({ field: "Horsepower" })
+    .encodeY({ field: "Origin", fieldType: "nominal" });
+  const program = source.createBoxPlot({ whisker: { type: "minmax" } });
+  const body = program.semanticSpec.layers.find(layer => layer.id === "boxPlot");
+
+  assert.equal(body.encoding.x.scale, "x");
+  assert.equal(body.encoding.y.scale, "y");
+  assert.equal(body.encoding.x.title, "Horsepower");
+  assert.equal(program.markConfigs.boxPlot.boxPlot.orientation, "horizontal");
+});
+
+test("rematerializes horizontal boxes, medians, and minmax whiskers", () => {
+  const program = horizontal();
+  const resized = program.editCanvas({ width: 460 });
+  const reversed = resized.editScale({ id: "x", reverse: true });
+
+  assert.notDeepEqual(
+    resized.graphicSpec.objects.boxPlot.children.map(child => child.properties.x),
+    program.graphicSpec.objects.boxPlot.children.map(child => child.properties.x)
+  );
+  assert.notDeepEqual(
+    reversed.graphicSpec.objects.boxPlot.children.map(child => child.properties.x),
+    resized.graphicSpec.objects.boxPlot.children.map(child => child.properties.x)
+  );
+  assert.deepEqual(
+    reversed.graphicSpec.objects.boxPlotMedian.children.map(child => [
+      child.properties.y1,
+      child.properties.y2
+    ]),
+    reversed.graphicSpec.objects.boxPlot.children.map(child => [
+      child.properties.y,
+      child.properties.y + child.properties.height
+    ])
+  );
+  assert.equal(reversed.graphicSpec.objects.boxPlotOutliers, undefined);
+});
+
 test("omits empty optional outlier resources and rematerializes after Canvas edits", () => {
   const rows = [
     { Origin: "A", Miles_per_Gallon: 1 },
@@ -145,7 +238,7 @@ test("validates ownership, orientation, and nested options atomically", () => {
       x: { field: "Horsepower" },
       y: { field: "Miles_per_Gallon" }
     }),
-    /categorical x and quantitative y/
+    /one categorical axis and one quantitative axis/
   );
   assert.throws(
     () => complete(program).createBoxPlot({
@@ -161,6 +254,18 @@ test("validates ownership, orientation, and nested options atomically", () => {
       width: { band: 1 }
     }),
     /Unknown createBoxPlot option/
+  );
+  assert.throws(
+    () => program.createBoxPlot({ whisker: { type: "minmax", factor: 1 } }),
+    /Unknown createBoxPlot whisker option/
+  );
+  assert.throws(
+    () => program.createBoxPlot({ whisker: { type: "outer" } }),
+    /Unsupported createBoxPlot whisker type/
+  );
+  assert.throws(
+    () => program.createBoxPlot({ whisker: { type: "tukey", factor: 0 } }),
+    /Unknown createBoxPlot whisker option/
   );
   assert.equal(program.semanticSpec.layers.length, 0);
 });

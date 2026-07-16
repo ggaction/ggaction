@@ -19,10 +19,9 @@ type BoxWhisker =
   Category order follows first appearance and rows inside each outlier category retain source order.
 - Provenance records source, category and measure fields, quantile convention, resolved
   whisker policy, generated fields and the owning box ID. Source data and old derived revisions are immutable.
-- Status: Partially Current. Linear quartiles, default Tukey factor, observed whiskers, missing values,
+- Status: Partially Current. Linear quartiles, default Tukey factor, observed/minmax whiskers, missing values,
   category order, singleton categories, outlier ownership and deterministic IDs are implemented through
-  `createBoxPlot`. Pure minmax derivation is implemented and covered by the Gate B primitive; public minmax
-  composition and configurable factor coverage remain Planned.
+  `createBoxPlot`; public configurable factor coverage remains Planned.
 
 ## selectRows
 

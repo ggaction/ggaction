@@ -32,9 +32,9 @@ These types are reused below by the remaining planned interval composites. The c
 
 ## createBoxPlot remaining capabilities
 
-The vertical Tukey action is Current in
+The vertical/horizontal Tukey and minmax action is Current in
 [`../current/COMPOSITE_MARKS.md`](../current/COMPOSITE_MARKS.md#createboxplot).
-This section owns only the accepted horizontal, minmax, and configurable-option expansion.
+This section owns only the accepted configurable factor, width, style, and outlier expansion.
 
 ```typescript
 createBoxPlot({
@@ -65,22 +65,6 @@ createBoxPlot({
 }): ChartProgram;
 ```
 
-- One positional channel is categorical and the other is quantitative; vertical and horizontal orientation
-  are inferred from that pair. With omitted channels, `target` selects an existing compatible encoded layer,
-  otherwise the normal current-then-unique eligible-layer rule applies. Data, coordinate and compatible scales
-  are reused from that source. Unsupported or ambiguous combinations fail instead of choosing an orientation
-  arbitrarily.
-- The completed contract is authoring-order independent. Compatible x/y encodings may exist before
-  `createBoxPlot`, or `createBoxPlot` may establish its owner before later `encodeX`/`encodeY` calls. The latter
-  stores materialization intent without synthetic summary rows or placeholder components, then rematerializes
-  when the required data and channel roles are complete. Both orders must converge on identical semantic and
-  graphical state; ambiguous targets remain errors.
-- Internal wrapped data actions create the immutable summary and optional outlier datasets. The aggregate then
-  composes: `createErrorBar` in explicit whisker mode, a ranged `createBarMark` for q1→q3, a
-  `createRuleMark` for the median, and optional `createPointMark` outliers.
-- The bar layer reuses Current `encodeYRange` or `encodeXRange`; this extends ranged position materialization
-  to bars without adding a box-specific range channel. `width.band` defaults to `0.7` and remains graphical
-  mark configuration.
 - `whisker` defaults to Tukey factor `1.5`; `outliers` defaults to `true` for Tukey and has no effect in minmax
   mode. Concrete order is whiskers/caps behind the box, then median, then outliers.
 - `width.band` defaults to `0.7`. Box defaults are fill/stroke `#4c78a8`, opacity `1`, stroke width `1.5`;
@@ -93,5 +77,5 @@ createBoxPlot({
   are not synthesized.
 - Phase 8 does not accept an additional `groupBy`. The categorical position already owns the statistical
   partition; subgroup offset/color/layout remains outside this initial contract.
-- Status: Planned, NOT IMPLEMENTED. Horizontal orientation, minmax, width/outlier/style options and their
-  approved primitive/public variants remain; the default vertical Tukey flow and ranged-bar foundation are Current.
+- Status: Planned, NOT IMPLEMENTED. Public factor, width/outlier/style options and their approved primitive/public
+  variants remain; both orientations, Tukey/minmax statistics and ranged-bar composition are Current.

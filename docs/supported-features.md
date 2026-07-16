@@ -52,6 +52,6 @@ Error bands support vertical and horizontal statistical or explicit ranges and
 optional lower/upper boundary lines with shared stroke, width, dash, opacity,
 and inherited or overridden curve. Independent lower/upper style objects are
 not implemented.
-Box plots currently support vertical categorical-x Tukey summaries with fixed
-documented appearance defaults. Horizontal/minmax variants and public
+Box plots support vertical or horizontal category/measure pairings, default
+Tukey summaries, and min–max whiskers without outlier resources. Public
 factor/style/outlier options are not implemented yet.

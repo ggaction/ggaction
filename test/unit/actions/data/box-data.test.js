@@ -75,3 +75,30 @@ test("validates box data options without changing the source program", () => {
   );
   assert.equal(base.semanticSpec.datasets.length, 1);
 });
+
+test("creates minmax summary provenance without classifying outliers", () => {
+  const program = chart()
+    .createData({ values: rows })
+    .createBoxSummaryData({
+      id: "summary",
+      category: "group",
+      field: "value",
+      whisker: "minmax"
+    });
+  const summary = program.semanticSpec.datasets[1];
+
+  assert.equal(summary.transform[0].whisker, "minmax");
+  assert.equal(Object.hasOwn(summary.transform[0], "factor"), false);
+  assert.equal(summary.values[0][BOX_FIELDS.lowerWhisker], 1);
+  assert.equal(summary.values[0][BOX_FIELDS.upperWhisker], 20);
+  assert.throws(
+    () => chart().createData({ values: rows }).createBoxSummaryData({
+      id: "invalid",
+      category: "group",
+      field: "value",
+      whisker: "minmax",
+      factor: 1
+    }),
+    /do not accept factor/
+  );
+});

@@ -1,10 +1,10 @@
-import { chart } from "../../../src/index.js";
+import { chart } from "../../../../src/index.js";
 import {
   BOX_PLOT_FIELDS,
   BOX_PLOT_STYLE,
   HORIZONTAL_MINMAX_LAYOUT,
   createCarsHorizontalMinmaxReferenceValues
-} from "../../charts/cars-box-plot/reference-values.js";
+} from "../reference-values.js";
 
 function repeated(length, value) {
   return Array.from({ length }, () => value);
@@ -59,6 +59,8 @@ export function createCarsHorizontalMinmaxPrimitives(cars) {
     .editSemantic({ property: "guide.axis.y.title", value: "Origin" })
     .editSemantic({ property: "guide.grid.vertical.scale", value: "x" })
     .editSemantic({ property: "guide.grid.vertical.coordinate", value: "main" })
+    .editSemantic({ property: "title.text", value: values.title.text })
+    .editSemantic({ property: "title.subtitle", value: values.title.subtitle })
     .createGraphics({
       id: "verticalGridLines",
       type: "line",
@@ -239,9 +241,10 @@ export function createCarsHorizontalMinmaxPrimitives(cars) {
     .editGraphics({ target: "xAxisTitle", property: "fill", value: "#334155" })
     .editGraphics({ target: "xAxisTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "xAxisTitle", property: "fontFamily", value: "sans-serif" })
-    .editGraphics({ target: "xAxisTitle", property: "fontWeight", value: "normal" })
+    .editGraphics({ target: "xAxisTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "xAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "xAxisTitle", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "xAxisTitle", property: "rotation", value: 0 })
     .createGraphics({ id: "yAxisLine", type: "line" })
     .editGraphics({ target: "yAxisLine", property: "x1", value: yAxis.line.x1 })
     .editGraphics({ target: "yAxisLine", property: "y1", value: yAxis.line.y1 })
@@ -250,14 +253,14 @@ export function createCarsHorizontalMinmaxPrimitives(cars) {
     .editGraphics({ target: "yAxisLine", property: "stroke", value: "#334155" })
     .editGraphics({ target: "yAxisLine", property: "strokeWidth", value: 1 })
     .createGraphics({ id: "yAxisTicks", type: "line", length: yAxis.ticks.length })
-    .editGraphics({ target: "yAxisTicks", property: "x1", value: yAxis.line.x1 })
+    .editGraphics({ target: "yAxisTicks", property: "x1", value: yAxis.line.x1 - 6 })
     .editGraphics({ target: "yAxisTicks", property: "y1", value: yPositions })
-    .editGraphics({ target: "yAxisTicks", property: "x2", value: yAxis.line.x1 - 6 })
+    .editGraphics({ target: "yAxisTicks", property: "x2", value: yAxis.line.x1 })
     .editGraphics({ target: "yAxisTicks", property: "y2", value: yPositions })
     .editGraphics({ target: "yAxisTicks", property: "stroke", value: "#64748b" })
     .editGraphics({ target: "yAxisTicks", property: "strokeWidth", value: 1 })
     .createGraphics({ id: "yAxisLabels", type: "text", length: yAxis.ticks.length })
-    .editGraphics({ target: "yAxisLabels", property: "x", value: yAxis.line.x1 - 10 })
+    .editGraphics({ target: "yAxisLabels", property: "x", value: yAxis.line.x1 - 12 })
     .editGraphics({ target: "yAxisLabels", property: "y", value: yPositions })
     .editGraphics({ target: "yAxisLabels", property: "text", value: yAxis.ticks.map(tick => tick.label) })
     .editGraphics({ target: "yAxisLabels", property: "fill", value: "#334155" })
@@ -273,7 +276,7 @@ export function createCarsHorizontalMinmaxPrimitives(cars) {
     .editGraphics({ target: "yAxisTitle", property: "fill", value: "#334155" })
     .editGraphics({ target: "yAxisTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "yAxisTitle", property: "fontFamily", value: "sans-serif" })
-    .editGraphics({ target: "yAxisTitle", property: "fontWeight", value: "normal" })
+    .editGraphics({ target: "yAxisTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "yAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "yAxisTitle", property: "textBaseline", value: "middle" })
     .editGraphics({ target: "yAxisTitle", property: "rotation", value: yAxis.title.rotation })
@@ -282,17 +285,17 @@ export function createCarsHorizontalMinmaxPrimitives(cars) {
     .editGraphics({ target: "chartTitle", property: "y", value: values.title.titleY })
     .editGraphics({ target: "chartTitle", property: "text", value: values.title.text })
     .editGraphics({ target: "chartTitle", property: "fill", value: "#0f172a" })
-    .editGraphics({ target: "chartTitle", property: "fontSize", value: 20 })
+    .editGraphics({ target: "chartTitle", property: "fontSize", value: 22 })
     .editGraphics({ target: "chartTitle", property: "fontFamily", value: "sans-serif" })
-    .editGraphics({ target: "chartTitle", property: "fontWeight", value: "bold" })
+    .editGraphics({ target: "chartTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "chartTitle", property: "textAlign", value: "left" })
     .editGraphics({ target: "chartTitle", property: "textBaseline", value: "middle" })
     .createGraphics({ id: "chartSubtitle", type: "text" })
     .editGraphics({ target: "chartSubtitle", property: "x", value: values.title.x })
     .editGraphics({ target: "chartSubtitle", property: "y", value: values.title.subtitleY })
     .editGraphics({ target: "chartSubtitle", property: "text", value: values.title.subtitle })
-    .editGraphics({ target: "chartSubtitle", property: "fill", value: "#475569" })
-    .editGraphics({ target: "chartSubtitle", property: "fontSize", value: 13 })
+    .editGraphics({ target: "chartSubtitle", property: "fill", value: "#64748b" })
+    .editGraphics({ target: "chartSubtitle", property: "fontSize", value: 14 })
     .editGraphics({ target: "chartSubtitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "chartSubtitle", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "chartSubtitle", property: "textAlign", value: "left" })

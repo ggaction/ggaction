@@ -62,8 +62,8 @@ distributions from the cars data. The [error-bar chart](./examples/cars-error-ba
 summarizes mean Acceleration with 95% confidence intervals. The
 [error-band chart](./examples/gapminder-error-band/) summarizes grouped
 confidence intervals as closed area paths over time.
-The [box plot](./examples/cars-box-plot/) summarizes Miles per Gallon by Origin
-with Tukey quartiles, observed whiskers, and diamond outliers.
+The [box plot](./examples/cars-box-plot/) supports vertical Tukey summaries and
+horizontal min–max ranges from categorical and quantitative field pairs.
 Completed programs can also be exported through
 [`ggaction/png`](./docs/api/rendering.md#png-output).
 

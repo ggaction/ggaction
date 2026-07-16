@@ -71,3 +71,6 @@ draws one translucent closed area path per cluster.
 Open <http://localhost:8000/examples/cars-box-plot/>. This chart derives
 Origin-wise Tukey quartiles, observed whiskers, and black diamond outliers,
 then renders them through `createBoxPlot`.
+
+The same program module also exports `createCarsHorizontalMinmaxBoxPlot`, which
+uses Horsepower on x, Origin on y, and creates no outlier resources.

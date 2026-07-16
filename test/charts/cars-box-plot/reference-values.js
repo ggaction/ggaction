@@ -242,16 +242,16 @@ export function createCarsHorizontalMinmaxReferenceValues(cars, {
         ticks: freezeRows(xTicks),
         title: Object.freeze({
           x: bounds.x + bounds.width / 2,
-          y: height - 28,
+          y: height - 23,
           text: measureField
         })
       }),
       y: Object.freeze({
         line: Object.freeze({
           x1: bounds.x,
-          y1: bounds.y + bounds.height,
+          y1: bounds.y,
           x2: bounds.x,
-          y2: bounds.y
+          y2: bounds.y + bounds.height
         }),
         ticks: freezeRows(categories.map((value, index) => ({
           value,
@@ -274,8 +274,8 @@ export function createCarsHorizontalMinmaxReferenceValues(cars, {
     }))),
     title: Object.freeze({
       x: bounds.x,
-      titleY: 28,
-      subtitleY: 52,
+      titleY: 27,
+      subtitleY: 53,
       text: "Horsepower Range by Origin",
       subtitle: "Min–max whiskers with no outlier layer"
     })

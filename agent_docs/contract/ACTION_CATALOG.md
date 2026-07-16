@@ -47,7 +47,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`createRegression`](current/STATISTICS.md#createregression) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createErrorBar`](current/STATISTICS.md#createerrorbar) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createErrorBand`](current/STATISTICS.md#createerrorband) | statistics | Aggregate create-only | Intentional create-only aggregate with editable ordinary child marks | ✅ / ✅ / ✅ |
-| user-facing | [`createBoxPlot`](current/COMPOSITE_MARKS.md#createboxplot) | statistics | Aggregate create-only | Intentional vertical Tukey scope; horizontal and option expansion remain planned | ✅ / ✅ / ✅ |
+| user-facing | [`createBoxPlot`](current/COMPOSITE_MARKS.md#createboxplot) | statistics | Aggregate create-only | Intentional create-only aggregate; configurable factor and style expansion remain planned | ✅ / ✅ / ✅ |
 | user-facing | [`createAxes`](current/AXES.md#createaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createXAxis`](current/AXES.md#createxaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createYAxis`](current/AXES.md#createyaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
