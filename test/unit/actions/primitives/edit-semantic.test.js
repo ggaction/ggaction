@@ -261,6 +261,55 @@ test("validates semantic scale values through the primitive API", () => {
   );
 });
 
+test("validates band and point layout values through the primitive API", () => {
+  const program = chart()
+    .editSemantic({ property: "scale[band].type", value: "band" })
+    .editSemantic({ property: "scale[band].paddingInner", value: 0.2 })
+    .editSemantic({ property: "scale[band].paddingOuter", value: 0.1 })
+    .editSemantic({ property: "scale[band].align", value: 0.5 })
+    .editSemantic({ property: "scale[point].type", value: "point" })
+    .editSemantic({ property: "scale[point].padding", value: 0.5 })
+    .editSemantic({ property: "scale[point].align", value: 0.5 });
+
+  assert.deepEqual(program.semanticSpec.scales, [
+    {
+      id: "band",
+      type: "band",
+      paddingInner: 0.2,
+      paddingOuter: 0.1,
+      align: 0.5
+    },
+    { id: "point", type: "point", padding: 0.5, align: 0.5 }
+  ]);
+
+  for (const [property, value] of [
+    ["paddingInner", 1],
+    ["paddingOuter", -0.1],
+    ["padding", Infinity],
+    ["align", 1.1]
+  ]) {
+    assert.throws(
+      () => chart()
+        .editSemantic({ property: "scale[x].type", value: "band" })
+        .editSemantic({ property: `scale[x].${property}`, value }),
+      new RegExp(property)
+    );
+  }
+
+  assert.throws(
+    () => chart()
+      .editSemantic({ property: "scale[x].type", value: "point" })
+      .editSemantic({ property: "scale[x].paddingInner", value: 0.2 }),
+    /does not support paddingInner/
+  );
+  assert.throws(
+    () => chart()
+      .editSemantic({ property: "scale[x].type", value: "band" })
+      .editSemantic({ property: "scale[x].padding", value: 0.5 }),
+    /does not support padding/
+  );
+});
+
 test("validates aggregate semantic values needed by primitive authoring", () => {
   const scalarOperations = [
     "count", "sum", "mean", "median", "min", "max",

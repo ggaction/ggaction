@@ -228,7 +228,10 @@ export function validateSemanticValue(program, parsed, value) {
     const existing = findSemanticScale(program, parsed.id);
     if (property === "type") {
       validateSemanticScaleType(value);
-      for (const owned of ["nice", "zero", "clamp", "base", "exponent", "constant"]) {
+      for (const owned of [
+        "nice", "zero", "clamp", "base", "exponent", "constant",
+        "paddingInner", "paddingOuter", "padding", "align"
+      ]) {
         if (existing?.[owned] !== undefined) {
           validateScalePropertyForType(value, owned);
         }
@@ -264,6 +267,29 @@ export function validateSemanticValue(program, parsed, value) {
       }
     } else if (property === "interpolate") {
       validateContinuousColorInterpolation(value);
+    } else if (property === "paddingInner") {
+      if (!Number.isFinite(value) || value < 0 || value >= 1) {
+        throw new RangeError(
+          "Scale paddingInner must be from 0 (inclusive) to 1 (exclusive)."
+        );
+      }
+      if (existing?.type !== undefined) {
+        validateScalePropertyForType(existing.type, property);
+      }
+    } else if (property === "paddingOuter" || property === "padding") {
+      if (!Number.isFinite(value) || value < 0) {
+        throw new RangeError(`Scale ${property} must be a non-negative finite number.`);
+      }
+      if (existing?.type !== undefined) {
+        validateScalePropertyForType(existing.type, property);
+      }
+    } else if (property === "align") {
+      if (!Number.isFinite(value) || value < 0 || value > 1) {
+        throw new RangeError("Scale align must be between 0 and 1.");
+      }
+      if (existing?.type !== undefined) {
+        validateScalePropertyForType(existing.type, property);
+      }
     }
   }
   if (parsed.kind === "coordinate" && parsed.path[0] === "type") {

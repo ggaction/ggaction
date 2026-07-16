@@ -35,7 +35,11 @@ const SCALE_PROPERTY_TYPES = Object.freeze({
   ]),
   base: Object.freeze(["log"]),
   exponent: Object.freeze(["pow"]),
-  constant: Object.freeze(["symlog"])
+  constant: Object.freeze(["symlog"]),
+  paddingInner: Object.freeze(["band"]),
+  paddingOuter: Object.freeze(["band"]),
+  padding: Object.freeze(["point"]),
+  align: Object.freeze(["band", "point"])
 });
 
 export function validateCompleteScaleType(type) {
