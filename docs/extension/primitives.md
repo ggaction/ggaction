@@ -107,6 +107,25 @@ IDs are stored in the parent's `children` list; repeated drawable instances stay
 separate in the owning graphic's `items` list. Omitting `parent` preserves
 top-level placement in `graphicSpec.order`.
 
+Ordinary chart actions create and use their Canvas/plot hierarchy automatically.
+An extension that authors the same structure directly makes every owner explicit:
+
+```javascript
+program
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .createGraphics({
+    id: "plot",
+    type: "collection",
+    parent: "canvas"
+  })
+  .createGraphics({
+    id: "bars",
+    type: "rect",
+    length: 3,
+    parent: "plot"
+  });
+```
+
 `before` or `after` places a new graphic relative to a direct sibling. They are
 mutually exclusive, the referenced graphic must already belong to the same
 parent, and no top-level graphic can be placed before the Canvas.
@@ -124,6 +143,9 @@ program.createGraphics({
 Graphic IDs are unique across the complete tree. The renderer visits named
 graphics depth-first in sibling order. Attachment defines ownership and drawing
 order only; it does not create coordinate transforms, clipping, or layout.
+Unknown or non-container parents, self-attachment, and cross-parent sibling
+anchors are rejected during authoring. Rendering rejects orphaned, duplicated,
+cyclic, or unknown attachments instead of silently skipping them.
 
 Path graphics use backend-neutral `path.commands` arrays rather than renderer-specific
 path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts

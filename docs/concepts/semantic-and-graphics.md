@@ -38,6 +38,25 @@ encodings, scales, coordinates, and guides. Examples include:
 line, and text. Every stored x/y coordinate, radius, color, line endpoint, and
 label string is already resolved.
 
+Named graphics form an explicit ownership tree. A normal Canvas-first chart has
+one Canvas root, a plot container for grids, marks, and axes, then Canvas-owned
+legends and titles:
+
+```text
+canvas
+├─ plot
+│  ├─ grid
+│  ├─ marks
+│  └─ axes
+├─ legends
+└─ title
+```
+
+Sibling order is drawing order. Containers do not imply clipping, transforms,
+or layout; they only record ownership and order. Repeated concrete mark items
+remain in the owning graphic's `items` collection rather than becoming named
+tree children.
+
 It never stores field expressions, scale calls, executable functions, or
 instructions for a renderer to infer.
 

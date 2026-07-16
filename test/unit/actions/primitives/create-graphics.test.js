@@ -209,6 +209,7 @@ test("attaches named graphics to canvas and collection parents", () => {
   assert.deepEqual(base.graphicSpec.objects.canvas.children, ["plot"]);
   assert.deepEqual(base.graphicSpec.objects.plot.children, ["grid", "bars", "labels"]);
   assert.equal(base.graphicSpec.objects.bars.items.length, 2);
+  assert.equal(Object.isFrozen(base.graphicSpec.objects.canvas.children), true);
   assert.equal(
     base.createGraphics({ id: "bars", type: "rect", length: 2, parent: "plot" })
       .graphicSpec,
@@ -226,6 +227,10 @@ test("rejects invalid graphic parents and cross-parent placement", () => {
   assert.throws(
     () => base.createGraphics({ id: "label", type: "text", parent: "missing" }),
     /Unknown graphic parent/
+  );
+  assert.throws(
+    () => chart().createGraphics({ id: "loop", type: "collection", parent: "loop" }),
+    /attach a graphic to itself/
   );
   assert.throws(
     () => base.createGraphics({ id: "label", type: "text", parent: "point" }),

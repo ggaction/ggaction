@@ -147,6 +147,48 @@ test("renders attached named graphics in depth-first sibling order", () => {
   ]);
 });
 
+test("rejects orphaned, duplicate, cyclic, and unknown graphic attachments", () => {
+  const createTree = () => ({
+    objects: {
+      canvas: {
+        type: "canvas",
+        properties: { width: 100, height: 80, background: "white" },
+        children: ["plot"]
+      },
+      plot: { type: "collection", items: [], children: [] }
+    },
+    order: ["canvas"]
+  });
+
+  const orphaned = createTree();
+  orphaned.objects.orphan = { type: "collection", items: [] };
+  assert.throws(
+    () => render({ graphicSpec: orphaned }, createMockCanvasContext()),
+    /not attached/
+  );
+
+  const duplicated = createTree();
+  duplicated.order.push("plot");
+  assert.throws(
+    () => render({ graphicSpec: duplicated }, createMockCanvasContext()),
+    /attached more than once/
+  );
+
+  const cyclic = createTree();
+  cyclic.objects.plot.children.push("canvas");
+  assert.throws(
+    () => render({ graphicSpec: cyclic }, createMockCanvasContext()),
+    /attachment cycle/
+  );
+
+  const unknown = createTree();
+  unknown.objects.plot.children.push("missing");
+  assert.throws(
+    () => render({ graphicSpec: unknown }, createMockCanvasContext()),
+    /Unknown attached graphic/
+  );
+});
+
 test("reads only graphicSpec from the supplied program", () => {
   const program = {
     graphicSpec: createGraphicSpec(),

@@ -59,7 +59,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - 오류: invalid ID/type/length, second Canvas, conflicting repeated definition/attachment/placement,
   self/unknown/non-container parent, cross-parent anchor를 거부한다. Reparent는 지원하지 않는다.
 - Coverage: `test/unit/actions/primitives/create-graphics.test.js`가 all creation modes, idempotence,
-  placement와 invalid definitions를 검증한다.
+  placement, attachment immutability와 invalid definitions를 검증하고,
+  `test/unit/renderers/canvas-renderer.test.js`가 invalid stored tree rejection을 검증한다.
 
 ### Formal values — `createGraphics`
 
@@ -82,7 +83,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `parent`
   - ✅ Covered: Canvas/collection attachment, global lookup, nested sibling order, invalid parent and immutable updates.
   - ✅ Covered: depth-first renderer traversal, duplicate/cycle/orphan rejection.
-- Evidence: `test/unit/actions/primitives/create-graphics.test.js`.
+- Evidence: `test/unit/actions/primitives/create-graphics.test.js`,
+  `test/unit/renderers/canvas-renderer.test.js`,
+  `test/contracts/graphic-hierarchy-migration.test.js`,
+  `test/contracts/graphic-tree-equivalence.test.js`.
 
 ## `editGraphics`
 
