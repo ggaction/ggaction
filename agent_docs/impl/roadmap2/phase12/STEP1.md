@@ -24,7 +24,7 @@
 | Version | confirmed | `0.0.1` |
 | Package | registry lookup required at execution | unscoped public `ggaction` |
 | License | absent | user-approved license and exact copyright holder |
-| Repository visibility | private | explicit keep-private or make-public decision |
+| Repository visibility | public | explicit keep-public confirmation |
 | npm identity | local session unauthenticated | verified owner account with publish authority |
 | First publish | not configured | authenticated bootstrap procedure |
 | Later publish | absent | GitHub OIDC trusted publisher |
@@ -35,19 +35,22 @@
 - Package version과 lockfile root version은 `0.0.0`이고 README는 `0.0.0-dev` unpublished 상태다.
 - Registry lookup에서 `ggaction` package는 존재하지 않았지만 실제 publish 직전 다시 확인해야 한다.
 - Local npm session은 인증되지 않았고 package owner도 아직 확인되지 않았다.
-- GitHub repository는 private이고 Pages site는 public legacy deployment로 정상 build된다.
+- GitHub repository는 public이며 description과 homepage가 설정되어 있고 Pages site도 정상 build된다.
 - CI는 test, render, coverage와 documentation build/browser checks를 실행하지만 release/publish job은 없다.
+- GitHub에는 npm release environment와 Git tag protection이 없고 `main` branch도 protected 상태가 아니다.
 - Git tag와 GitHub Release는 아직 없다.
 - `LICENSE`와 package license/repository/homepage/bugs metadata가 없다.
 - Current dry-run tarball은 920 files, 약 2.15 MB packed/6.71 MB unpacked이며 test, internal docs와 workflow를
   포함한다.
 - Production dependency는 Node PNG entry가 사용하는 `@napi-rs/canvas`이며 production audit vulnerability는 0이다.
+- Local npm CLI는 `10.9.2`이고 staged-publish command를 제공하지 않는다.
 
 ## 권장 결정
 
 - License: broad reuse를 허용하는 MIT를 기본 권장한다. Explicit patent grant가 필요하면 Apache-2.0을 선택한다.
-- Repository: public npm source와 provenance를 일치시키기 위해 public 전환을 권장한다.
-- First publish: exact candidate를 npm account 2FA로 review 가능한 bootstrap 절차를 사용한다.
+- Repository: 현재 public 상태를 유지해 npm source, public docs와 future provenance를 일치시킨다.
+- First publish: approved exact candidate를 user npm account의 interactive 2FA로 직접 bootstrap하고 reusable token은
+  repository나 GitHub secret에 저장하지 않는다.
 - Later publish: `npm-release` protected GitHub environment와 GitHub-hosted OIDC trusted publisher를 사용한다.
 - Approval: version tag를 만들기 전 user approval, publish job 진입 전 protected-environment approval을 모두 요구한다.
 

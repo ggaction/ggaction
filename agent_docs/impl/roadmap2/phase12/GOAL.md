@@ -58,14 +58,14 @@ semantic version과 release notes로 명시한다.
 다음 항목은 구현 전에 사용자와 확정한다.
 
 - License 선택과 `LICENSE`/package metadata
-- GitHub repository를 public으로 전환할지 여부
+- GitHub repository의 현재 public visibility 유지 여부
 - npm owner account와 `ggaction` package-name 최종 확인
 - `0.0.1`, unscoped public package, `latest` dist-tag 확인
 - First publish 인증 방식과 이후 trusted publisher 전환 순서
 - GitHub release environment의 approval/protection policy
 
-Public repository는 npm provenance와 source/documentation 접근성을 위해 권장하지만, visibility는 자동으로
-변경하지 않는다. Gate A 승인 전에는 license를 추정하거나 repository를 공개하지 않는다.
+현재 public repository를 유지하면 npm provenance와 source/documentation 접근성을 함께 제공할 수 있다.
+Gate A 승인 전에는 license를 추정하거나 visibility를 다시 변경하지 않는다.
 
 ### Gate B — Irreversible publish approval
 
