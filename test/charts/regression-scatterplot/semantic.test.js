@@ -183,6 +183,6 @@ test("accepts regression method and interval provenance", () => {
         confidence: 0.95
       }]
     }),
-    /does not support degree or intervals/
+    /does not support confidence intervals/
   );
 });
