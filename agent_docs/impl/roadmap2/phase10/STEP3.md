@@ -14,7 +14,7 @@ Gapminder 2005 log/sqrt/sequential scatterplot을 만들고 Gate A에서 승인�
 - [x] Stable drawing order and renderer-call expectations
 - [x] Variant manifest and exact future public call chain
 - [x] Browser Canvas and high-resolution `primitive.png`
-- [ ] Gate A code/image presentation and user confirmation
+- [x] Gate A code/image presentation and user confirmation
 - [x] STEP status, conceptual commit and push
 
 ## Gate A
