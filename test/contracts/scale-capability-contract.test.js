@@ -19,7 +19,7 @@ const deliveredCapabilities = Object.freeze([
   "scale-mapping-policies"
 ]);
 
-test("closes every accepted Phase 10 capability out of the Planned inventory", () => {
+test("closes every accepted scale capability out of the Planned inventory", () => {
   const remaining = new Set(
     index.plannedCapabilities.map(capability => capability.id)
   );

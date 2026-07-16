@@ -1,14 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { loadCars } from "../../support/data.js";
-import { linearPathCommands } from "../../support/path.js";
+import { loadCars } from "../../../../support/data.js";
+import { linearPathCommands } from "../../../../support/path.js";
 import { createCarsHorizontalErrorBandPrimitives } from
-  "./cars-horizontal.primitive.program.js";
+  "./primitive.program.js";
 import {
   CARS_HORIZONTAL_FIELDS,
   createCarsHorizontalErrorBandReferenceValues
-} from "./cars-horizontal.reference-values.js";
+} from "./reference-values.js";
 
 function flattenActions(node) {
   return [node, ...(node.children ?? []).flatMap(flattenActions)];

@@ -5,7 +5,7 @@ import { render } from "../../../src/index.js";
 import { createCarsLineChart } from "../../../examples/cars-line-chart/program.js";
 import { createMockCanvasContext } from "../../support/canvas.js";
 import { loadCars } from "../../support/data.js";
-import { createJapanLineHighlightGatePrimitive } from "./primitive.program.js";
+import { createJapanLineHighlightPrimitive } from "./primitive.program.js";
 import {
   LINE_HIGHLIGHT_LAYOUT,
   LINE_HIGHLIGHT_TARGET,
@@ -16,10 +16,10 @@ function flattenActions(node) {
   return [node, ...(node.children ?? []).flatMap(flattenActions)];
 }
 
-test("authors Gate C as one selected-last complete path", () => {
+test("authors the approved line highlight as one selected-last complete path", () => {
   const cars = loadCars();
   const base = createCarsLineChart(cars);
-  const program = createJapanLineHighlightGatePrimitive(cars);
+  const program = createJapanLineHighlightPrimitive(cars);
   const { target } = selectJapanLineSeries(cars);
   const baseChildren = base.graphicSpec.objects.trends.items;
   const children = program.graphicSpec.objects.trends.items;
@@ -80,7 +80,7 @@ test("authors Gate C as one selected-last complete path", () => {
 });
 
 test("renders the selected series with approved path appearance", () => {
-  const program = createJapanLineHighlightGatePrimitive(loadCars());
+  const program = createJapanLineHighlightPrimitive(loadCars());
   const context = createMockCanvasContext();
   assert.doesNotThrow(() => render(program, context));
   assert.equal(context.canvas.width, LINE_HIGHLIGHT_LAYOUT.width);
@@ -103,7 +103,7 @@ test("reauthors the same semantic series after Canvas-only resize", () => {
   const cars = loadCars();
   const width = LINE_HIGHLIGHT_LAYOUT.width + 120;
   const base = createCarsLineChart(cars).editCanvas({ width });
-  const program = createJapanLineHighlightGatePrimitive(cars, { width });
+  const program = createJapanLineHighlightPrimitive(cars, { width });
   const target = selectJapanLineSeries(cars, { width }).target;
 
   assert.equal(program.graphicSpec.objects.trends.items.at(-1).properties.stroke,

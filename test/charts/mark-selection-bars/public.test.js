@@ -8,20 +8,20 @@ import {
 import { assertChartProgramsEquivalent } from "../../support/chart-equivalence.js";
 import { loadCars } from "../../support/data.js";
 import {
-  createTallestHistogramStackGatePrimitive,
-  createTopmostHistogramSegmentGatePrimitive
+  createTallestHistogramStackHighlightPrimitive,
+  createTopmostHistogramSegmentHighlightPrimitive
 } from "./primitive.program.js";
 
 for (const [name, primitive, userFacing, selectedCount] of [
   [
     "topmost item",
-    createTopmostHistogramSegmentGatePrimitive,
+    createTopmostHistogramSegmentHighlightPrimitive,
     createTopmostHistogramSegmentHighlight,
     1
   ],
   [
     "tallest stack",
-    createTallestHistogramStackGatePrimitive,
+    createTallestHistogramStackHighlightPrimitive,
     createTallestHistogramStackHighlight,
     3
   ]

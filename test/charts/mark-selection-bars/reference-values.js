@@ -32,7 +32,7 @@ export function selectTallestHistogramStack(
   const maximumTotal = Math.max(...values.bins.map(bin => bin.total));
   const selectedBins = values.bins.filter(bin => bin.total === maximumTotal);
   if (selectedBins.length !== 1) {
-    throw new Error("Gate B requires one unique maximum-total histogram stack.");
+    throw new Error("Histogram highlight requires one unique maximum-total histogram stack.");
   }
   const [bin] = selectedBins;
   const segments = values.rects
@@ -82,7 +82,7 @@ export function selectTopmostHistogramSegment(
     .map((rect, index) => ({ rect, index }))
     .filter(({ rect }) => rect.stackEnd === maximumEnd);
   if (selected.length !== 1) {
-    throw new Error("Gate B requires one unique maximum-y2 histogram segment.");
+    throw new Error("Histogram highlight requires one unique maximum-y2 histogram segment.");
   }
   const [{ rect, index }] = selected;
   const bin = values.bins[rect.bin];

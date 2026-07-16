@@ -16,7 +16,7 @@ import {
   createExplicitIntervalPrimitives,
   createHorizontalErrorBarPrimitives,
   createStyledCapsPrimitives
-} from "./gate-c.program.js";
+} from "./variants/error-bar-modes.primitive.program.js";
 import {
   ERROR_BAR_COLOR,
   ERROR_BAR_VARIANT_STYLE,
@@ -29,7 +29,7 @@ import {
 } from "./reference-values.js";
 import { loadCars } from "../../support/data.js";
 
-test("authors the rule geometry gate with raw graphical primitives", () => {
+test("authors the rule geometry target with raw graphical primitives", () => {
   const values = createRuleGeometryReferenceValues();
   const program = createRuleGeometryPrimitives();
 
@@ -90,7 +90,7 @@ test("renders exact concrete rule endpoints through the shared line renderer", (
   );
 });
 
-test("authors the canonical error-bar gate with raw interval and line primitives", () => {
+test("authors the canonical error-bar target with raw interval and line primitives", () => {
   const cars = loadCars();
   const values = createErrorBarReferenceValues(cars);
   const program = createErrorBarBaselinePrimitives(cars);

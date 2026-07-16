@@ -2,7 +2,7 @@ import { defineVisualVariant } from "../../../support/visual-variants.js";
 import { loadCars, loadGapminder } from "../../../support/data.js";
 
 import { createCarsHorizontalErrorBandPrimitives } from
-  "../cars-horizontal.primitive.program.js";
+  "./horizontal/primitive.program.js";
 import { createGapminderErrorBandPrimitives } from "../primitive.program.js";
 import {
   createGapminderBoundaryOverrideErrorBand,
@@ -15,7 +15,7 @@ import { createGapminderCurvedBoundaryPrimitives } from
 import {
   CARS_HORIZONTAL_LAYOUT,
   CARS_HORIZONTAL_STYLE
-} from "../cars-horizontal.reference-values.js";
+} from "./horizontal/reference-values.js";
 import {
   ERROR_BAND_COLORS,
   ERROR_BAND_LAYOUT

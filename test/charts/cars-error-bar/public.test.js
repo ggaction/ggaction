@@ -19,7 +19,7 @@ import {
   createExplicitIntervalPrimitives,
   createHorizontalErrorBarPrimitives,
   createStyledCapsPrimitives
-} from "./gate-c.program.js";
+} from "./variants/error-bar-modes.primitive.program.js";
 import { createExplicitIntervalReferenceValues } from "./reference-values.js";
 
 test("matches rule geometry with public rule actions", () => {

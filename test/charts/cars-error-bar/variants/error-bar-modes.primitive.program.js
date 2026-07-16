@@ -1,4 +1,4 @@
-import { chart } from "../../../src/index.js";
+import { chart } from "../../../../src/index.js";
 import {
   ERROR_BAR_COLOR,
   ERROR_BAR_FIELDS,
@@ -7,7 +7,7 @@ import {
   createExplicitIntervalReferenceValues,
   createHorizontalErrorBarReferenceValues,
   createStyledErrorBarReferenceValues
-} from "./reference-values.js";
+} from "../reference-values.js";
 
 const AXIS_COLOR = "#334155";
 const TICK_COLOR = "#64748b";

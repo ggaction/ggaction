@@ -306,7 +306,7 @@ test("maps every planned contract into Roadmap 2", () => {
   }
 });
 
-test("keeps completed Phase 5 guide and layout scope out of planned inventory", () => {
+test("keeps implemented guide and layout scope out of planned inventory", () => {
   const actions = [
     "editHorizontalGrid",
     "editVerticalGrid",
@@ -334,7 +334,7 @@ test("keeps completed Phase 5 guide and layout scope out of planned inventory", 
   }
 });
 
-test("keeps completed Phase 6 rule and error-bar scope out of planned inventory", () => {
+test("keeps implemented rule and error-bar scope out of planned inventory", () => {
   const actions = [
     "createRuleMark",
     "encodeStroke",
@@ -360,7 +360,7 @@ test("keeps completed Phase 6 rule and error-bar scope out of planned inventory"
   }
 });
 
-test("keeps completed Phase 7 error-band scope out of planned inventory", () => {
+test("keeps implemented error-band scope out of planned inventory", () => {
   const actions = ["createErrorBand", "encodeXRange"];
   const capabilities = [
     "error-band-curve-and-advanced-boundaries",
@@ -380,7 +380,7 @@ test("keeps completed Phase 7 error-band scope out of planned inventory", () => 
   }
 });
 
-test("keeps completed Phase 8 box-plot scope out of planned inventory", () => {
+test("keeps implemented box-plot scope out of planned inventory", () => {
   const currentNames = new Set(index.actions.map(action => action.name));
   const plannedNames = new Set(index.plannedActions.map(action => action.name));
   const boxContract = owningSection("createBoxPlot").source;
@@ -397,7 +397,7 @@ test("keeps completed Phase 8 box-plot scope out of planned inventory", () => {
   assert.doesNotMatch(plannedCorpus, /createBoxPlot\(\{/);
 });
 
-test("keeps completed Phase 9 mark-selection scope current and complete", () => {
+test("keeps implemented mark-selection scope current and complete", () => {
   const actions = ["filterMarks", "selectMarks", "highlightMarks", "editBarMark"];
   const currentByName = new Map(index.actions.map(action => [action.name, action]));
   const plannedNames = new Set(index.plannedActions.map(action => action.name));

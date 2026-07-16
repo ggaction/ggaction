@@ -14,7 +14,7 @@ function baseLineChart(cars, width, height) {
     : base.editCanvas({ width, height });
 }
 
-export function createJapanLineHighlightGatePrimitive(
+export function createJapanLineHighlightPrimitive(
   cars,
   {
     width = LINE_HIGHLIGHT_LAYOUT.width,

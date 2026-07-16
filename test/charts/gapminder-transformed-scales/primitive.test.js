@@ -7,7 +7,7 @@ import { createGapminderTransformedScaleValues } from "./reference-values.js";
 
 const gapminder = loadGapminder();
 
-test("independently resolves the Gate A filter and transformed mappings", () => {
+test("independently resolves the transformed-scale filter and transformed mappings", () => {
   const values = createGapminderTransformedScaleValues(gapminder);
   assert.equal(values.rows.length, 62);
   assert.deepEqual(values.domains.x, [100_000, 10_000_000_000]);
@@ -25,7 +25,7 @@ test("independently resolves the Gate A filter and transformed mappings", () => 
   assert.equal(values.legend.gradient.at(-1).fill, "#450457");
 });
 
-test("authors the Gate A semantics and concrete drawing order with primitives only", () => {
+test("authors the transformed-scale semantics and concrete drawing order with primitives only", () => {
   const program = createGapminderTransformedScalePrimitives(gapminder);
   const datasets = Object.fromEntries(
     program.semanticSpec.datasets.map(dataset => [dataset.id, dataset])

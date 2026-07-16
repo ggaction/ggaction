@@ -4,7 +4,7 @@ import test from "node:test";
 import { render } from "../../../src/index.js";
 import { createMockCanvasContext } from "../../support/canvas.js";
 import { loadCars } from "../../support/data.js";
-import { createPointHighlightGatePrimitive } from "./primitive.program.js";
+import { createPointHighlightPrimitive } from "./primitive.program.js";
 import {
   POINT_HIGHLIGHT_TARGET,
   selectGroupedMaximumHorsepower
@@ -14,10 +14,10 @@ function flattenActions(node) {
   return [node, ...(node.children ?? []).flatMap(flattenActions)];
 }
 
-test("authors Gate A through an independent selector and low-level graphic edit", () => {
+test("authors the approved point highlight through an independent selector and low-level graphic edit", () => {
   const cars = loadCars();
   const values = selectGroupedMaximumHorsepower(cars);
-  const program = createPointHighlightGatePrimitive(cars);
+  const program = createPointHighlightPrimitive(cars);
   const children = program.graphicSpec.objects.points.items;
   const selected = children.slice(-values.selected.length);
   const unselected = children.slice(0, -values.selected.length);
@@ -49,8 +49,8 @@ test("authors Gate A through an independent selector and low-level graphic edit"
   assert.equal(operations.at(-1), "editGraphics");
 });
 
-test("renders the complete Gate A chart through Canvas without errors", () => {
-  const program = createPointHighlightGatePrimitive(loadCars());
+test("renders the complete point-highlight chart through Canvas without errors", () => {
+  const program = createPointHighlightPrimitive(loadCars());
   const context = createMockCanvasContext();
   render(program, context);
 

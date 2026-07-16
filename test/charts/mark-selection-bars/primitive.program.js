@@ -15,7 +15,7 @@ function baseHistogram(cars, width, height) {
     : base.editCanvas({ width, height });
 }
 
-export function createTallestHistogramStackGatePrimitive(
+export function createTallestHistogramStackHighlightPrimitive(
   cars,
   {
     width = BAR_HIGHLIGHT_LAYOUT.width,
@@ -44,7 +44,7 @@ export function createTallestHistogramStackGatePrimitive(
   });
 }
 
-export function createTopmostHistogramSegmentGatePrimitive(
+export function createTopmostHistogramSegmentHighlightPrimitive(
   cars,
   {
     width = BAR_HIGHLIGHT_LAYOUT.width,

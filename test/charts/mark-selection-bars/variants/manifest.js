@@ -5,8 +5,8 @@ import {
   createTopmostHistogramSegmentHighlight
 } from "../../../../examples/mark-selection/program.js";
 import {
-  createTallestHistogramStackGatePrimitive,
-  createTopmostHistogramSegmentGatePrimitive
+  createTallestHistogramStackHighlightPrimitive,
+  createTopmostHistogramSegmentHighlightPrimitive
 } from "../primitive.program.js";
 import {
   BAR_HIGHLIGHT_LAYOUT,
@@ -85,7 +85,7 @@ export const visualVariants = Object.freeze([
     variant: "bars-tallest-stack",
     title: "Tallest Histogram Stack Highlight",
     callChain: tallestStackHighlightCallChain,
-    primitive: () => createTallestHistogramStackGatePrimitive(loadCars()),
+    primitive: () => createTallestHistogramStackHighlightPrimitive(loadCars()),
     userFacing: () => createTallestHistogramStackHighlight(loadCars()),
     width: BAR_HIGHLIGHT_LAYOUT.width,
     height: BAR_HIGHLIGHT_LAYOUT.height,
@@ -106,7 +106,7 @@ export const visualVariants = Object.freeze([
     variant: "bars-topmost-segment",
     title: "Topmost Histogram Segment Highlight",
     callChain: topmostSegmentHighlightCallChain,
-    primitive: () => createTopmostHistogramSegmentGatePrimitive(loadCars()),
+    primitive: () => createTopmostHistogramSegmentHighlightPrimitive(loadCars()),
     userFacing: () => createTopmostHistogramSegmentHighlight(loadCars()),
     width: BAR_HIGHLIGHT_LAYOUT.width,
     height: BAR_HIGHLIGHT_LAYOUT.height,

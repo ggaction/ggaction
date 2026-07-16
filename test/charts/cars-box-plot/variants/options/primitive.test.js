@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { render } from "../../../../src/index.js";
-import { createMockCanvasContext } from "../../../support/canvas.js";
-import { loadCars } from "../../../support/data.js";
+import { render } from "../../../../../src/index.js";
+import { createMockCanvasContext } from "../../../../support/canvas.js";
+import { loadCars } from "../../../../support/data.js";
 import {
   createCarsOutliersOffPrimitives,
   createCarsStyledFactorPrimitives

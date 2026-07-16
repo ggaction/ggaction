@@ -13,7 +13,7 @@ import {
   BOX_PLOT_STYLE,
   HORIZONTAL_MINMAX_LAYOUT
 } from "../reference-values.js";
-import { boxPlotOptionVariants } from "../options/variants/manifest.js";
+import { boxPlotOptionVariants } from "./options/manifest.js";
 
 const targetCallChain = `chart()
   .createCanvas({

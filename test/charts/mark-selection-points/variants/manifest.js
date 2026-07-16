@@ -1,7 +1,7 @@
 import { defineVisualVariant } from "../../../support/visual-variants.js";
 import { loadCars } from "../../../support/data.js";
 import { createGroupedMaximumPointHighlight } from "../../../../examples/mark-selection/program.js";
-import { createPointHighlightGatePrimitive } from "../primitive.program.js";
+import { createPointHighlightPrimitive } from "../primitive.program.js";
 import {
   POINT_HIGHLIGHT_LAYOUT,
   POINT_HIGHLIGHT_TARGET
@@ -54,7 +54,7 @@ export const visualVariants = Object.freeze([
     variant: "points-grouped-max",
     title: "Grouped Maximum Point Highlight",
     callChain: pointHighlightCallChain,
-    primitive: () => createPointHighlightGatePrimitive(loadCars()),
+    primitive: () => createPointHighlightPrimitive(loadCars()),
     userFacing: () => createGroupedMaximumPointHighlight(loadCars()),
     width: POINT_HIGHLIGHT_LAYOUT.width,
     height: POINT_HIGHLIGHT_LAYOUT.height,

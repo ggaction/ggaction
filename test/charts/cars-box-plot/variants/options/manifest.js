@@ -12,8 +12,8 @@ import {
 import {
   createCarsOutliersOffPrimitives,
   createCarsStyledFactorPrimitives
-} from "../primitive.program.js";
-import { STYLED_FACTOR_STYLE } from "../reference-values.js";
+} from "./primitive.program.js";
+import { STYLED_FACTOR_STYLE } from "./reference-values.js";
 
 const styledFactorCallChain = `chart()
   .createCanvas({

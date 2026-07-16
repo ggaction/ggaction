@@ -6,8 +6,8 @@ import { createCarsHistogram } from "../../../examples/cars-histogram/program.js
 import { createMockCanvasContext } from "../../support/canvas.js";
 import { loadCars } from "../../support/data.js";
 import {
-  createTallestHistogramStackGatePrimitive,
-  createTopmostHistogramSegmentGatePrimitive
+  createTallestHistogramStackHighlightPrimitive,
+  createTopmostHistogramSegmentHighlightPrimitive
 } from "./primitive.program.js";
 import {
   BAR_HIGHLIGHT_LAYOUT,
@@ -88,10 +88,10 @@ function assertSegmentTarget(program, base, target) {
   assert.equal(selected.properties.strokeWidth, BAR_HIGHLIGHT_TARGET.strokeWidth);
 }
 
-test("authors Gate B with one selected-last raw stack edit", () => {
+test("authors the approved stack highlight with one selected-last raw stack edit", () => {
   const cars = loadCars();
   const base = createCarsHistogram(cars);
-  const program = createTallestHistogramStackGatePrimitive(cars);
+  const program = createTallestHistogramStackHighlightPrimitive(cars);
   const { target } = selectTallestHistogramStack(cars);
 
   assertPrimitiveTarget(program, base, target);
@@ -125,7 +125,7 @@ test("reauthors the same semantic target after a Canvas-only resize", () => {
   const cars = loadCars();
   const height = BAR_HIGHLIGHT_LAYOUT.height + 120;
   const base = createCarsHistogram(cars).editCanvas({ height });
-  const program = createTallestHistogramStackGatePrimitive(cars, { height });
+  const program = createTallestHistogramStackHighlightPrimitive(cars, { height });
   const { target } = selectTallestHistogramStack(cars, { height });
 
   assertPrimitiveTarget(program, base, target);
@@ -136,7 +136,7 @@ test("reauthors the same semantic target after a Canvas-only resize", () => {
 test("authors the maximum-y2 item as one selected-last rect", () => {
   const cars = loadCars();
   const base = createCarsHistogram(cars);
-  const program = createTopmostHistogramSegmentGatePrimitive(cars);
+  const program = createTopmostHistogramSegmentHighlightPrimitive(cars);
   const { target } = selectTopmostHistogramSegment(cars);
 
   assertSegmentTarget(program, base, target);

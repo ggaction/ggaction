@@ -88,7 +88,7 @@ function closeBand(lower, upperReversed) {
 function boundaryCommands(points, curve) {
   if (curve === "cardinal") return createCardinalReferenceCommands(points);
   if (curve === "step") return createStepReferenceCommands(points);
-  throw new Error(`Unsupported Gate C boundary curve "${curve}".`);
+  throw new Error(`Unsupported error-band boundary curve "${curve}".`);
 }
 
 export function createCurvedBoundaryReferenceValues(

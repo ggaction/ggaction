@@ -4,11 +4,11 @@ import test from "node:test";
 import { createJapanLineSeriesHighlight } from "../../../examples/mark-selection/program.js";
 import { assertChartProgramsEquivalent } from "../../support/chart-equivalence.js";
 import { loadCars } from "../../support/data.js";
-import { createJapanLineHighlightGatePrimitive } from "./primitive.program.js";
+import { createJapanLineHighlightPrimitive } from "./primitive.program.js";
 
 test("matches the approved Japan line-series primitive exactly", () => {
   const cars = loadCars();
-  const primitiveProgram = createJapanLineHighlightGatePrimitive(cars);
+  const primitiveProgram = createJapanLineHighlightPrimitive(cars);
   const publicProgram = createJapanLineSeriesHighlight(cars);
 
   assertChartProgramsEquivalent({ primitiveProgram, publicProgram });

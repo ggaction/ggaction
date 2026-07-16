@@ -190,7 +190,7 @@ test("omits empty normalized bins without synthesizing placeholders", () => {
   assert.deepEqual(values.rects.map(rect => rect.stackEnd), [1, 1]);
 });
 
-test("keeps future histogram actions out of Gate A primitive traces", () => {
+test("keeps future histogram actions out of approved primitive traces", () => {
   for (const program of [
     createBinStepPrimitives(cars),
     createBinBoundariesPrimitives(cars),

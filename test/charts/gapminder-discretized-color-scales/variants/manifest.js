@@ -104,7 +104,7 @@ export const visualVariants = Object.freeze(DISCRETIZED_COLOR_TYPES.map(type =>
   defineVisualVariant({
     chart: "gapminder-discretized-color-scales",
     variant: `${type}-life-expectancy`,
-    title: `Gapminder ${type[0].toUpperCase()}${type.slice(1)} Color Gate`,
+    title: `Gapminder ${type[0].toUpperCase()}${type.slice(1)} Color`,
     callChain: discretizedColorTargetCallChains[type],
     primitive: () => createGapminderDiscretizedColorPrimitives(gapminder, type),
     userFacing: () => GAPMINDER_DISCRETIZED_COLOR_BUILDERS[type](gapminder),

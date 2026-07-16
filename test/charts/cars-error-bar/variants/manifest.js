@@ -9,7 +9,7 @@ import {
   createExplicitIntervalPrimitives,
   createHorizontalErrorBarPrimitives,
   createStyledCapsPrimitives
-} from "../gate-c.program.js";
+} from "./error-bar-modes.primitive.program.js";
 import {
   createCarsErrorBar,
   createCarsErrorBarOverlay,

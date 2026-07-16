@@ -43,7 +43,7 @@ test("locks independent cardinal and step boundary commands", () => {
 });
 
 for (const boundaryCurve of ["cardinal", "step"]) {
-  test(`authors the ${boundaryCurve} Gate C boundary target with primitives`, () => {
+  test(`authors the ${boundaryCurve} boundary target with primitives`, () => {
     const gapminder = loadGapminder();
     const values = createCurvedBoundaryReferenceValues(gapminder, {
       boundaryCurve
@@ -115,11 +115,11 @@ for (const boundaryCurve of ["cardinal", "step"]) {
   });
 }
 
-test("rejects an unsupported Gate C boundary curve", () => {
+test("rejects an unsupported boundary curve", () => {
   assert.throws(
     () => createCurvedBoundaryReferenceValues(loadGapminder(), {
       boundaryCurve: "unknown"
     }),
-    /Unsupported Gate C boundary curve/
+    /Unsupported error-band boundary curve/
   );
 });

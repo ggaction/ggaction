@@ -7,7 +7,7 @@ import {
   selectGroupedMaximumHorsepower
 } from "./reference-values.js";
 
-export function createPointHighlightGatePrimitive(cars) {
+export function createPointHighlightPrimitive(cars) {
   const values = selectGroupedMaximumHorsepower(cars);
   const selectedIndices = new Set(values.selected.map(item => item.index));
   const base = chart()

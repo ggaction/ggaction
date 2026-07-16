@@ -115,7 +115,7 @@ export const visualVariants = Object.freeze([
   defineVisualVariant({
     chart: "gapminder-temporal-discrete-scales",
     variant: "band-point-centers",
-    title: "Band Slots and Point Centers Gate",
+    title: "Band Slots and Point Centers",
     callChain: bandPointTargetCallChain,
     primitive: () => createGapminderBandPointPrimitives(gapminder),
     userFacing: () => createGapminderBandPointChart(gapminder),
@@ -135,7 +135,7 @@ export const visualVariants = Object.freeze([
   defineVisualVariant({
     chart: "gapminder-temporal-discrete-scales",
     variant: "utc-time-lines",
-    title: "UTC Time Series Gate",
+    title: "UTC Time Series",
     callChain: timeTargetCallChain,
     primitive: () => createGapminderTimePrimitives(gapminder),
     userFacing: () => createGapminderTimeChart(gapminder),

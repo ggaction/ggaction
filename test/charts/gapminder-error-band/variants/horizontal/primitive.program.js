@@ -1,11 +1,11 @@
-import { chart, render } from "../../../src/index.js";
-import { linearPathCommands } from "../../support/path.js";
+import { chart, render } from "../../../../../src/index.js";
+import { linearPathCommands } from "../../../../support/path.js";
 
 import {
   CARS_HORIZONTAL_FIELDS,
   CARS_HORIZONTAL_LAYOUT,
   createCarsHorizontalErrorBandReferenceValues
-} from "./cars-horizontal.reference-values.js";
+} from "./reference-values.js";
 
 export function createCarsHorizontalErrorBandPrimitives(cars) {
   const { width, height, margin } = CARS_HORIZONTAL_LAYOUT;

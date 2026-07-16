@@ -15,7 +15,7 @@ await mkdir(screenshots, { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
 const errors = [];
-const phase1Variants = Object.freeze([
+const requiredScatterVariants = Object.freeze([
   "cars-scatterplot/baseline",
   "cars-scatterplot/categorical-palette",
   "cars-scatterplot/continuous-color-gradient",
@@ -47,21 +47,21 @@ try {
   if (await statuses.count() !== await variants.count()) {
     throw new Error("Every Roadmap 2 variant must show one review status.");
   }
-  const renderedPhase1Variants = await variants.locator(":scope > code")
+  const renderedVariantIds = await variants.locator(":scope > code")
     .allTextContents();
-  for (const variant of phase1Variants) {
-    if (!renderedPhase1Variants.includes(variant)) {
-      throw new Error(`Roadmap 2 gallery is missing Phase 1 variant ${variant}.`);
+  for (const variant of requiredScatterVariants) {
+    if (!renderedVariantIds.includes(variant)) {
+      throw new Error(`Roadmap 2 gallery is missing required scatterplot variant ${variant}.`);
     }
     const card = variants.filter({ hasText: variant });
     if (await card.count() !== 1) {
-      throw new Error(`Phase 1 variant ${variant} must have exactly one card.`);
+      throw new Error(`required scatterplot variant ${variant} must have exactly one card.`);
     }
     if (await card.locator(".status.ready").count() !== 1) {
-      throw new Error(`Phase 1 variant ${variant} is not ready for review.`);
+      throw new Error(`required scatterplot variant ${variant} is not ready for review.`);
     }
     if (await card.locator("img").count() !== 2) {
-      throw new Error(`Phase 1 variant ${variant} must show one primitive/public pair.`);
+      throw new Error(`required scatterplot variant ${variant} must show one primitive/public pair.`);
     }
   }
   const callChains = desktop.locator(".call-chain pre code");

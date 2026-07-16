@@ -1,5 +1,5 @@
 import { createMeanConfidenceIntervalReference } from
-  "../../support/interval-reference.js";
+  "../../../../support/interval-reference.js";
 
 export const CARS_HORIZONTAL_LAYOUT = Object.freeze({
   width: 760,

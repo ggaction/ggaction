@@ -1,4 +1,4 @@
-import { createCarsBoxPlotReferenceValues } from "../reference-values.js";
+import { createCarsBoxPlotReferenceValues } from "../../reference-values.js";
 
 export const STYLED_FACTOR_STYLE = Object.freeze({
   factor: 1,

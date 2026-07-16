@@ -78,7 +78,7 @@ export const transformedScaleTargetCallChain = `chart()
 export const visualVariants = Object.freeze([defineVisualVariant({
   chart: "gapminder-transformed-scales",
   variant: "gapminder-2005-log-sqrt",
-  title: "Gapminder Log and Sqrt Scale Gate",
+  title: "Gapminder Log and Sqrt Scale",
   callChain: transformedScaleTargetCallChain,
   primitive: () => createGapminderTransformedScalePrimitives(gapminder),
   userFacing: () => createGapminderTransformedScaleScatterplot(gapminder),

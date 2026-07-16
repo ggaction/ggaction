@@ -28,11 +28,11 @@ export function selectJapanLineSeries(
     .map((series, index) => ({ series, index }))
     .filter(({ series }) => series.origin === LINE_HIGHLIGHT_TARGET.origin);
   if (matches.length !== 1) {
-    throw new Error("Gate C requires one unique Japan line series.");
+    throw new Error("Line highlight requires one unique Japan line series.");
   }
   const [{ series, index }] = matches;
   if (series.points.length < 2) {
-    throw new Error("Gate C requires one connected Japan line path.");
+    throw new Error("Line highlight requires one connected Japan line path.");
   }
   return Object.freeze({
     rows: Object.freeze(values.validCars),

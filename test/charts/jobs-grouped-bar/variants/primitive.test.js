@@ -116,7 +116,7 @@ test("locks diverging bars to separate positive and negative accumulation", () =
   assert.deepEqual(graphicProperties(program), expectedProperties(values));
 });
 
-test("keeps Gate B primitive traces independent of public layout actions", () => {
+test("keeps overlay and diverging primitive traces independent of public layout actions", () => {
   for (const program of [
     createOverlayLayoutPrimitives(jobs),
     createDivergingLayoutPrimitives(signedJobs)
@@ -217,7 +217,7 @@ test("omits a missing reassigned group cell", () => {
   assert.equal(values.rects.length, 44);
 });
 
-test("keeps Gate C primitive traces independent of future geometry actions", () => {
+test("keeps width and offset primitive traces independent of future geometry actions", () => {
   for (const program of [
     createFixedPixelWidthPrimitives(jobs),
     createOffsetPaddingPrimitives(jobs),
@@ -402,7 +402,7 @@ test("locks horizontal stacked bar geometry and directional guides", () => {
   assert.deepEqual(graphicProperties(program), expectedProperties(values));
 });
 
-test("keeps Gate D primitives independent of future position actions", () => {
+test("keeps position primitive targets independent of future position actions", () => {
   for (const program of [
     createTemporalXPrimitives(jobs),
     createHorizontalBarPrimitives(jobs)

@@ -34,7 +34,7 @@ fixtures를 감사해 구현 전에 migration boundary를 고정한다.
   aggregate를 상속하고 다른 field는 explicit aggregate를 요구한다.
 - Gate A–D의 exact public chain과 visual ownership은 chart contract가 소유하고, 각 Gate manifest가 artifact path와
   executable call-chain metadata를 이어받는다.
-- `test/contracts/phase10-scale-plan.test.js`가 세 Planned capability, UTC-only time token과 pre-Gate non-public
+- `test/contracts/scale-capability-contract.test.js`가 세 Planned capability, UTC-only time token과 pre-Gate non-public
   boundary를 고정한다.
 
 ## 검증

@@ -1,4 +1,4 @@
-import { createCarsBoxPlotPrimitives } from "../primitive.program.js";
+import { createCarsBoxPlotPrimitives } from "../../primitive.program.js";
 import {
   STYLED_FACTOR_STYLE,
   createCarsStyledFactorReferenceValues

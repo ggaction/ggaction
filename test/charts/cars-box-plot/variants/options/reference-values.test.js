@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { loadCars } from "../../../support/data.js";
-import { BOX_PLOT_FIELDS } from "../reference-values.js";
+import { loadCars } from "../../../../support/data.js";
+import { BOX_PLOT_FIELDS } from "../../reference-values.js";
 import {
   STYLED_FACTOR_STYLE,
   createCarsStyledFactorReferenceValues

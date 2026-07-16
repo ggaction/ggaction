@@ -9,7 +9,7 @@ import {
 import { assertChartProgramsEquivalent } from "../../support/chart-equivalence.js";
 import { loadCars, loadGapminder } from "../../support/data.js";
 import { createCarsHorizontalErrorBandPrimitives } from
-  "./cars-horizontal.primitive.program.js";
+  "./variants/horizontal/primitive.program.js";
 import { createGapminderErrorBandPrimitives } from "./primitive.program.js";
 import { createGapminderCurvedBoundaryPrimitives } from
   "./variants/curved-boundary.primitive.program.js";

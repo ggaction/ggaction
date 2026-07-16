@@ -14,7 +14,7 @@ import { createCarsHorizontalMinmaxPrimitives } from
 import {
   createCarsOutliersOffPrimitives,
   createCarsStyledFactorPrimitives
-} from "./options/primitive.program.js";
+} from "./variants/options/primitive.program.js";
 
 test("matches the approved vertical Tukey primitive with createBoxPlot", () => {
   const cars = loadCars();
