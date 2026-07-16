@@ -162,7 +162,7 @@ test("stores complete main rules and fixed caps in declared order", () => {
       expected.map(line => ({
         ...line,
         stroke: ERROR_BAR_COLOR,
-        strokeWidth: 2,
+        strokeWidth: 1.5,
         strokeDash: [],
         opacity: 1
       }))
@@ -246,7 +246,7 @@ test("authors an inferred error-bar overlay from an encoded point layer", () => 
       expected.map(line => ({
         ...line,
         stroke: ERROR_BAR_COLOR,
-        strokeWidth: 2,
+        strokeWidth: 1.5,
         strokeDash: [],
         opacity: 1
       }))
@@ -285,7 +285,7 @@ test("authors horizontal x/x2 intervals with vertical fixed caps", () => {
       expected.map(line => ({
         ...line,
         stroke: ERROR_BAR_COLOR,
-        strokeWidth: 2,
+        strokeWidth: 1.5,
         strokeDash: [],
         opacity: 1
       }))

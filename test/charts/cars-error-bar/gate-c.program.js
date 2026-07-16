@@ -269,7 +269,7 @@ export function createHorizontalErrorBarPrimitives(cars) {
     caps: true,
     style: {
       stroke: ERROR_BAR_COLOR,
-      strokeWidth: 2,
+      strokeWidth: 1.5,
       strokeDash: [],
       semanticStrokeDash: "solid",
       opacity: 1
@@ -291,7 +291,7 @@ export function createExplicitIntervalPrimitives(cars) {
     caps: false,
     style: {
       stroke: ERROR_BAR_COLOR,
-      strokeWidth: 2,
+      strokeWidth: 1.5,
       strokeDash: [],
       semanticStrokeDash: "solid",
       opacity: 1

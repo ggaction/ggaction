@@ -2775,7 +2775,7 @@ layers fail instead of selecting one arbitrarily.
 | Center and extent | mean, confidence interval |
 | Confidence level | `0.95` |
 | Coordinate | inferred, otherwise `"main"` Cartesian |
-| Main rule and caps | `#4c78a8`, width `2`, solid, opacity `1` |
+| Main rule and caps | `#4c78a8`, width `1.5`, solid, opacity `1` |
 | Cap width | `8` logical Canvas pixels |
 
 Caps preserve their logical-pixel width when the Canvas or positional scales

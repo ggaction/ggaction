@@ -54,7 +54,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Effect: statistical mode calls wrapped `createIntervalData`; explicit mode uses the source dataset directly.
   The aggregate then calls main `createRuleMark`, endpoint/style assignments and, unless `caps: false`, two
   wrapped `createErrorBarCap` components. Vertical intervals store x/y/y2 and horizontal intervals y/x/x2.
-- Appearance defaults are enabled 8-logical-pixel caps, `#4c78a8`, width `2`, solid dash and opacity `1`.
+- Appearance defaults are enabled 8-logical-pixel caps, `#4c78a8`, width `1.5`, solid dash and opacity `1`.
   `capSize` is a positive finite graphical span. Stroke width is non-negative, opacity is in `[0, 1]`, and dash
   accepts the shared named styles or an explicit dash pattern. Fixed cap spans survive Canvas/scale
   rematerialization. Statistical provenance restores titles such as `mean(field)`; explicit mode uses its center

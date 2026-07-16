@@ -42,7 +42,7 @@ function resolveAppearance(args) {
     "createErrorBar stroke"
   );
   const strokeWidth = validateRuleStrokeWidth(
-    args.strokeWidth ?? 2,
+    args.strokeWidth ?? 1.5,
     "createErrorBar strokeWidth"
   );
   const strokeDash = args.strokeDash ?? "solid";

@@ -496,7 +496,7 @@ export function createErrorBarBaselinePrimitives(cars) {
     .editGraphics({ target: "errorBar", property: "x2", value: lineX2(values.mainRules) })
     .editGraphics({ target: "errorBar", property: "y2", value: lineY2(values.mainRules) })
     .editGraphics({ target: "errorBar", property: "stroke", value: ERROR_BAR_COLOR })
-    .editGraphics({ target: "errorBar", property: "strokeWidth", value: 2 })
+    .editGraphics({ target: "errorBar", property: "strokeWidth", value: 1.5 })
     .editGraphics({
       target: "errorBar",
       property: "strokeDash",
@@ -513,7 +513,7 @@ export function createErrorBarBaselinePrimitives(cars) {
     .editGraphics({ target: "errorBarLowerCap", property: "x2", value: lineX2(values.lowerCaps) })
     .editGraphics({ target: "errorBarLowerCap", property: "y2", value: lineY2(values.lowerCaps) })
     .editGraphics({ target: "errorBarLowerCap", property: "stroke", value: ERROR_BAR_COLOR })
-    .editGraphics({ target: "errorBarLowerCap", property: "strokeWidth", value: 2 })
+    .editGraphics({ target: "errorBarLowerCap", property: "strokeWidth", value: 1.5 })
     .editGraphics({
       target: "errorBarLowerCap",
       property: "strokeDash",
@@ -530,7 +530,7 @@ export function createErrorBarBaselinePrimitives(cars) {
     .editGraphics({ target: "errorBarUpperCap", property: "x2", value: lineX2(values.upperCaps) })
     .editGraphics({ target: "errorBarUpperCap", property: "y2", value: lineY2(values.upperCaps) })
     .editGraphics({ target: "errorBarUpperCap", property: "stroke", value: ERROR_BAR_COLOR })
-    .editGraphics({ target: "errorBarUpperCap", property: "strokeWidth", value: 2 })
+    .editGraphics({ target: "errorBarUpperCap", property: "strokeWidth", value: 1.5 })
     .editGraphics({
       target: "errorBarUpperCap",
       property: "strokeDash",
@@ -780,7 +780,7 @@ export function createEncodedLayerInferencePrimitives(cars) {
     .editGraphics({ target: "errorBar", property: "x2", value: x2(values.mainRules) })
     .editGraphics({ target: "errorBar", property: "y2", value: y2(values.mainRules) })
     .editGraphics({ target: "errorBar", property: "stroke", value: ERROR_BAR_COLOR })
-    .editGraphics({ target: "errorBar", property: "strokeWidth", value: 2 })
+    .editGraphics({ target: "errorBar", property: "strokeWidth", value: 1.5 })
     .editGraphics({
       target: "errorBar",
       property: "strokeDash",
@@ -797,7 +797,7 @@ export function createEncodedLayerInferencePrimitives(cars) {
     .editGraphics({ target: "errorBarLowerCap", property: "x2", value: x2(values.lowerCaps) })
     .editGraphics({ target: "errorBarLowerCap", property: "y2", value: y2(values.lowerCaps) })
     .editGraphics({ target: "errorBarLowerCap", property: "stroke", value: ERROR_BAR_COLOR })
-    .editGraphics({ target: "errorBarLowerCap", property: "strokeWidth", value: 2 })
+    .editGraphics({ target: "errorBarLowerCap", property: "strokeWidth", value: 1.5 })
     .editGraphics({
       target: "errorBarLowerCap",
       property: "strokeDash",
@@ -814,7 +814,7 @@ export function createEncodedLayerInferencePrimitives(cars) {
     .editGraphics({ target: "errorBarUpperCap", property: "x2", value: x2(values.upperCaps) })
     .editGraphics({ target: "errorBarUpperCap", property: "y2", value: y2(values.upperCaps) })
     .editGraphics({ target: "errorBarUpperCap", property: "stroke", value: ERROR_BAR_COLOR })
-    .editGraphics({ target: "errorBarUpperCap", property: "strokeWidth", value: 2 })
+    .editGraphics({ target: "errorBarUpperCap", property: "strokeWidth", value: 1.5 })
     .editGraphics({
       target: "errorBarUpperCap",
       property: "strokeDash",

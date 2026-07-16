@@ -5,42 +5,42 @@
     "cars-scatterplot": {
       "width": 1280,
       "height": 800,
-      "sourceHash": "26a57db9e5f5ccaca7b8ddbfff3ec133ecf5f95ae3cb9403fb21e9c6bf1f3dba"
+      "sourceHash": "522bff361158504a839f96aa4661c1918a2a6660976ac14dbd6ef367f988ff56"
     },
     "cars-line-chart": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "a1ed213a4a289f11ed9e7718fbfe6b790d3d06e9884a9a1f702f5442e06d91a0"
+      "sourceHash": "90f7e9c1da731ae1f19ec1313e9b5681eb9a50dea6c40f82e31e335373d5cab4"
     },
     "cars-histogram": {
       "width": 864,
       "height": 920,
-      "sourceHash": "e041c0197316d080b3101e7b622d7c955927dab61b8805a947ea767235d36457"
+      "sourceHash": "5dc1cf3d173484bb437e0de40e4b7db7337dfa58915579890ad20da9ac2cc11a"
     },
     "jobs-grouped-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "41a723720720ab004e56329e50e06ffcffdd0c81f449da0f421b927a9bc3de43"
+      "sourceHash": "4690d8ad1d45fa2d4195b2946e62047f004dba16294a1797ad2c829d625cb2e4"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "fb95825c82dbd6fc6f044de8f68411c4734da926b2232cad3eed6e3afd553474"
+      "sourceHash": "76d0746d8b177d1dd9431ade308e170ca19e70149e9268615d2c80163330bb20"
     },
     "cars-density-area": {
       "width": 1440,
       "height": 1000,
-      "sourceHash": "5d2577411a60dac25f0115f93b92bf7ccc0c4993604c26c9bab76729c625f0fe"
+      "sourceHash": "9ce2d9cbf8762105164a4880de571a78b811fe42bc24bf469194539d7d43876d"
     },
     "cars-error-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "1eae8585ad69892946a17925a76c99fd6c72b704ee6d3ea8c1f5c374dd1007a3"
+      "sourceHash": "dccd71c69315a4c0bd498b065580066ddb88f46fa1104daed0b6d63af557dec7"
     },
     "gapminder-error-band": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "776185d2b4be820104c0da0b921a841354756d8aa3a25bebe0abb0454df2e109"
+      "sourceHash": "e3380f2e1cc6c3d1d942fc89e5448f7c64b0b5b13a6b90728fcff7ceb2b2e143"
     }
   }
 }
