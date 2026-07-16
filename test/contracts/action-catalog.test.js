@@ -227,7 +227,10 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   const names = index.plannedActions.map(action => action.name);
   assert.equal(new Set(names).size, names.length);
   assert.deepEqual(new Set(names), new Set([
-    "selectRows"
+    "editBarMark",
+    "filterMarks",
+    "highlightMarks",
+    "selectMarks"
   ]));
   assert.equal(names.includes("editRuleMark"), false);
 
@@ -519,9 +522,15 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /FilterComparison =/);
   assert.match(currentCorpus, /oneOf.*predicate.*range.*정확히 하나/);
   assert.doesNotMatch(plannedCorpus, /filter predicate modes/);
-  assert.match(plannedCorpus, /type RowSelectionMode = "min" \| "max"/);
-  assert.match(plannedCorpus, /selectRows\(\{/);
-  assert.match(plannedCorpus, /Extreme value tie는 source order에서 먼저 등장한 row/);
+  assert.match(plannedCorpus, /type MarkSelector =/);
+  assert.match(plannedCorpus, /"eq" \| "neq" \| "gt" \| "gte" \| "lt" \| "lte"/);
+  assert.match(plannedCorpus, /op: "min" \| "max"/);
+  assert.match(plannedCorpus, /ties\?: "first" \| "all"/);
+  assert.match(plannedCorpus, /filterMarks\(options:/);
+  assert.match(plannedCorpus, /selectMarks\(options:/);
+  assert.match(plannedCorpus, /highlightMarks\(\{/);
+  assert.match(plannedCorpus, /editBarMark\(\{/);
+  assert.doesNotMatch(plannedCorpus, /^## `selectRows`$/m);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /argmin.*Proposed|argmax.*Proposed/);
   assert.match(currentCorpus, /method\?: "linear"[\s\S]*method: "polynomial"[\s\S]*method: "loess"/);
   assert.match(currentCorpus, /interval\?: "mean" \| "prediction"/);

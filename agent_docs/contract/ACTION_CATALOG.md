@@ -97,12 +97,16 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `selectRows` | accepted | [Open](planned/DATA_AND_STATISTICS.md#selectrows) |
+| `editBarMark` | accepted | [Open](planned/MARK_SELECTION.md#editbarmark) |
+| `filterMarks` | accepted | [Open](planned/MARK_SELECTION.md#filtermarks) |
+| `highlightMarks` | accepted | [Open](planned/MARK_SELECTION.md#highlightmarks) |
+| `selectMarks` | accepted | [Open](planned/MARK_SELECTION.md#selectmarks) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
+| composition | Mark-item selection grammar | accepted | [Open](planned/MARK_SELECTION.md#mark-item-selection-grammar) |
 | parameter | Continuous color bar consumer | accepted | [Open](planned/ENCODINGS.md#continuous-color-bar-consumer) |
 | parameter | Scale type vocabulary | accepted | [Open](planned/SCALES.md#scale-type-vocabulary) |
 | parameter | Scale mapping policies | accepted | [Open](planned/SCALES.md#scale-mapping-policies) |

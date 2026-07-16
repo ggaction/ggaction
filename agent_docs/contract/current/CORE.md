@@ -174,7 +174,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `filterMark`
 
 - Implemented: `filterMark({ target?: UserId; field: FieldName } & ({ oneOf: readonly unknown[] } | { predicate: FilterComparison } | { range: FilterRange }))`
-- Planned (NOT IMPLEMENTED): —
+- Planned (NOT IMPLEMENTED): Phase 9 replaces this singular action with `filterMarks` and the shared mark-item
+  selector algebra. The completed migration removes `filterMark` rather than retaining a compatibility alias.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `filterMark`

@@ -21,7 +21,7 @@ encoding reassignment의 선행 조건으로 Phase 1의 첫 implementation slice
 - [x] Phase 6 — 신규 error-bar chart
 - [x] Phase 7 — 신규 error-band chart와 regression delegation
 - [x] Phase 8 — 신규 box-plot chart
-- [ ] Phase 9 — 신규 selected-row chart
+- [ ] Phase 9 — mark selection, filtering과 highlighting
 - [ ] Phase 10 — 신규 transformed-scale chart
 - [ ] Phase 11 — graphical hierarchy와 전체 Planned closeout
 
@@ -238,12 +238,16 @@ Tukey/minmax summary, whisker/caps, ranged bar, median rule와 outlier point를 
 Vertical/horizontal orientation, factor, width, outlier/style parameter와 sparse category ordering을 검증한다.
 Box는 generic rule/error-bar/ranged-position actions를 실제 wrapped children으로 재사용한다.
 
-## Phase 9 — New selected-row chart
+## Phase 9 — Mark selection, filtering and highlighting
 
-- Direct action: `selectRows`
+- Phase goal: [`phase9/GOAL.md`](phase9/GOAL.md)
+- Direct actions: `filterMarks`, `selectMarks`, `highlightMarks`, `editBarMark`
+- Capability: `mark-item-selection-grammar`
 
-그룹별 min/max full row를 보존하는 selected-row example을 만든다. Numeric/string order, ties, missing,
-empty groups, deterministic order와 explicit consumer rebinding을 numeric fixture와 chart로 검증한다.
+Point symbol, final bar rectangle, line/area series path와 rule line을 backend pixels가 아닌 semantic item grain에서
+선택한다. Shared comparison/set/range/rank grammar, top/bottom N과 ties, mark filtering, persistent selection,
+mark-specific highlighting, dimming, front order와 logical offset을 Cars point/histogram/line visual Gates로 검증한다.
+Current `filterMark`는 plural `filterMarks`로 완전히 교체하며 compatibility alias를 남기지 않는다.
 
 ## Phase 10 — New transformed-scale chart
 
@@ -289,7 +293,10 @@ contract가 current/type/export/docs/evidence와 일치하는지, Roadmap 2 gall
 | `editVerticalGrid` | Phase 5 |
 | `encodeX2` | Phase 6 |
 | `encodeXRange` | Phase 7 |
-| `selectRows` | Phase 9 |
+| `editBarMark` | Phase 9 |
+| `filterMarks` | Phase 9 replacement of `filterMark` |
+| `highlightMarks` | Phase 9 |
+| `selectMarks` | Phase 9 |
 
 ## 완료 조건
 

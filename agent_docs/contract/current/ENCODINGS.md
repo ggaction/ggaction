@@ -137,7 +137,7 @@ type AggregateOperation =
 
 - Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | "normalize" | null })`; nominal은 compatible count-style aggregate에만 허용되고 mark/pair policy가 조합을 제한한다.
 - Planned (NOT IMPLEMENTED): `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog" | "utc" | "band" | "point"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean; unknown?: unknown } }`
-- Proposed (NOT IMPLEMENTED): `{ stack?: "center" }`; extreme-row selection은 Planned `selectRows`가 소유한다.
+- Proposed (NOT IMPLEMENTED): `{ stack?: "center" }`; full-item extreme selection은 Planned `selectMarks`가 소유한다.
 
 ### Value coverage — `encodeY`
 
@@ -151,7 +151,7 @@ type AggregateOperation =
     domain/rematerialization과 incompatible aggregate rejection.
   - ✅ Covered: parameterized quantile boundaries, ordered first/last direction, stable ties, missing/invalid
     candidates, final grain, inferred title, rematerialization과 caller-owned object isolation.
-  - 🟡 Planned: full-row min/max selection은 scalar aggregate가 아닌 `selectRows` transform으로 제공한다.
+  - 🟡 Planned: full-item min/max selection은 scalar aggregate가 아닌 `selectMarks` selector로 제공한다.
 - `stack`
   - ✅ Covered: `"zero"`, `"normalize"`, `null`, positive/zero partition, auto `[0, 1]` domain과
     incompatible policy rejection.

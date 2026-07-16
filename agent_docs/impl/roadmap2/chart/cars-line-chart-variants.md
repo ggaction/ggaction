@@ -125,8 +125,8 @@ quantile(probability), first/last(orderBy, order)
 ```
 
 No-valid-sample group은 graphic을 만들지 않는다. Sample dispersion/CI는 `n < 2`일 때 값을 만들지 않는다.
-Explicit axis title은 보존하고 inferred title은 aggregate 표현으로 갱신한다. Full-row min/max selection은 이
-scalar aggregate가 아니라 Roadmap 2 Phase 9의 `selectRows`가 소유한다.
+Explicit axis title은 보존하고 inferred title은 aggregate 표현으로 갱신한다. Full-item min/max selection은 이
+scalar aggregate가 아니라 Roadmap 2 Phase 9의 `selectMarks`가 소유한다.
 
 Gate C primitive의 inferred title target은 scalar operation에 `${op}(Acceleration)`, quantile에
 `quantile(Acceleration, 0.75)`, ordered selection에

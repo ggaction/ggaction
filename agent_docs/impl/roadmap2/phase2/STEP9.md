@@ -19,7 +19,7 @@ Parameter object가 필요한 quantile과 ordered first/last를 `encodeY.aggrega
 
 ## 범위 경계
 
-Full-row min/max selection은 scalar output aggregate가 아니며 Roadmap 2 Phase 9의 `selectRows`가 소유한다.
+Full-item min/max selection은 scalar output aggregate가 아니며 Roadmap 2 Phase 9의 `selectMarks`가 소유한다.
 
 ## 완료 조건
 

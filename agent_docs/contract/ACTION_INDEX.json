@@ -1534,16 +1534,54 @@
   ],
   "plannedActions": [
     {
-      "name": "selectRows",
+      "name": "editBarMark",
       "status": "planned",
       "readiness": "accepted",
       "contract": {
-        "file": "agent_docs/contract/planned/DATA_AND_STATISTICS.md",
-        "anchor": "selectrows"
+        "file": "agent_docs/contract/planned/MARK_SELECTION.md",
+        "anchor": "editbarmark"
+      }
+    },
+    {
+      "name": "filterMarks",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/MARK_SELECTION.md",
+        "anchor": "filtermarks"
+      }
+    },
+    {
+      "name": "highlightMarks",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/MARK_SELECTION.md",
+        "anchor": "highlightmarks"
+      }
+    },
+    {
+      "name": "selectMarks",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/MARK_SELECTION.md",
+        "anchor": "selectmarks"
       }
     }
   ],
   "plannedCapabilities": [
+    {
+      "id": "mark-item-selection-grammar",
+      "kind": "composition",
+      "name": "Mark-item selection grammar",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/MARK_SELECTION.md",
+        "anchor": "mark-item-selection-grammar"
+      }
+    },
     {
       "id": "continuous-color-bar-consumer",
       "kind": "parameter",
