@@ -2,6 +2,13 @@
 
 All notable changes to `ggaction` are recorded in this file.
 
+## [0.0.2] - 2026-07-17
+
+### Fixed
+
+- Excluded internal repository instruction files from the published npm package.
+- Added an executable forbidden-file audit and public-registry consumer verification for release artifacts.
+
 ## [0.0.1] - 2026-07-17
 
 ### Added
@@ -24,4 +31,5 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
+[0.0.2]: https://github.com/hj-n/ggaction/releases/tag/v0.0.2
 [0.0.1]: https://github.com/hj-n/ggaction/releases/tag/v0.0.1

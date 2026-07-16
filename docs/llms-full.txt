@@ -16,7 +16,7 @@ Build charts as immutable, traceable action programs. Start with a complete
 example, then use the API pages when you need to customize one part.
 The main, extension, and PNG entry points include TypeScript declarations.
 
-> **Release status:** This documentation describes the experimental `0.0.1`
+> **Release status:** This documentation describes the experimental `0.0.2`
 > release. APIs may change before `1.0.0`; consult the
 > [changelog](https://github.com/hj-n/ggaction/blob/main/CHANGELOG.md) when
 > upgrading.

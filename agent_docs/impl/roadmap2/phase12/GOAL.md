@@ -18,6 +18,7 @@ GitHub Release와 npm registry 결과가 하나의 release contract로 일치하
 - [x] Secure repeatable GitHub/npm publishing automation completed
 - [x] `0.0.1` release candidate approved at Gate B
 - [x] npm `0.0.1` and matching GitHub Release published
+- [ ] Corrective `0.0.2` package approved, published and verified through OIDC
 - [ ] Registry, fresh-install, documentation and rollback verification completed
 - [ ] Roadmap 2 release closeout completed
 
@@ -99,11 +100,12 @@ STEP7   0.0.1 release candidate and Gate B
   ↓ Gate B
 STEP8   publish npm package and matching GitHub Release
 STEP9   post-publish verification and Roadmap 2 closeout
+STEP10  corrective 0.0.2 package and OIDC release closeout
 ```
 
 ## 완료 조건
 
-- `npm install ggaction@0.0.1`이 fresh project에서 성공한다.
+- `npm install ggaction@0.0.2`가 fresh project에서 성공한다.
 - `ggaction`, `ggaction/extension`, `ggaction/png`의 runtime and declaration contract가 packed and registry
   install에서 모두 통과한다.
 - npm package page, version, integrity, dist-tag, repository/homepage/license metadata와 GitHub Release가 일치한다.
@@ -123,3 +125,4 @@ STEP9   post-publish verification and Roadmap 2 closeout
 - [`STEP7.md`](STEP7.md)
 - [`STEP8.md`](STEP8.md)
 - [`STEP9.md`](STEP9.md)
+- [`STEP10.md`](STEP10.md)

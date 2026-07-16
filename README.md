@@ -37,7 +37,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 The renderer reads only fully materialized, backend-neutral graphics. Semantic
 state is never automatically compiled during rendering.
 
-> **Status:** `0.0.1` is the first experimental public release. APIs may change
+> **Status:** `0.0.2` is the current experimental public release. APIs may change
 > before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ## Install
