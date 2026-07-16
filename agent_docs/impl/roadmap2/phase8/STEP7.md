@@ -7,13 +7,13 @@ component behavior를 승인받는다.
 
 ## 진행 상태
 
-- [ ] Tukey factor 1.0 reference rows and changed outlier set
-- [ ] Narrow band width and custom box appearance target
-- [ ] Custom median stroke/width target
-- [ ] Diamond/radius/opacity outlier target
-- [ ] `outliers: false` target without outlier resources
-- [ ] Two variant manifests and exact future call chains
-- [ ] Primitive PNGs and browser/renderer checks
+- [x] Tukey factor 1.0 reference rows and changed outlier set
+- [x] Narrow band width and custom box appearance target
+- [x] Custom median stroke/width target
+- [x] Diamond/radius/opacity outlier target
+- [x] `outliers: false` target without outlier resources
+- [x] Two variant manifests and exact future call chains
+- [x] Primitive PNGs and browser/renderer checks
 - [ ] Gate C user confirmation
 - [ ] STEP status, conceptual commit and push
 

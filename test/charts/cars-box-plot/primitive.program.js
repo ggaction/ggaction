@@ -10,13 +10,18 @@ function repeated(length, value) {
   return Array.from({ length }, () => value);
 }
 
-export function createCarsBoxPlotPrimitives(cars) {
-  const values = createCarsBoxPlotReferenceValues(cars);
+export function createCarsBoxPlotPrimitives(cars, options = {}) {
+  const factor = options.factor ?? 1.5;
+  const values = options.values ?? createCarsBoxPlotReferenceValues(cars, { factor });
+  const color = options.color !== false;
+  const outliers = options.outliers !== false;
+  const box = options.box ?? {};
+  const median = options.median ?? {};
   const { x: xAxis, y: yAxis } = values.axes;
   const xPositions = xAxis.ticks.map(tick => tick.position);
   const yPositions = yAxis.ticks.map(tick => tick.position);
 
-  return chart()
+  let program = chart()
     .createCanvas({
       width: BOX_PLOT_LAYOUT.width,
       height: BOX_PLOT_LAYOUT.height,
@@ -31,11 +36,14 @@ export function createCarsBoxPlotPrimitives(cars) {
         category: "Origin",
         field: "Miles_per_Gallon",
         method: "linear",
-        factor: 1.5,
+        factor,
         as: BOX_PLOT_FIELDS
       }]
     })
-    .editSemantic({ property: "dataset[boxPlotSummaryData].values", value: values.summaries })
+    .editSemantic({ property: "dataset[boxPlotSummaryData].values", value: values.summaries });
+
+  if (outliers) {
+    program = program
     .editSemantic({ property: "dataset[boxPlotOutlierData].source", value: "data" })
     .editSemantic({
       property: "dataset[boxPlotOutlierData].transform",
@@ -44,11 +52,14 @@ export function createCarsBoxPlotPrimitives(cars) {
         category: "Origin",
         field: "Miles_per_Gallon",
         method: "linear",
-        factor: 1.5,
+        factor,
         as: BOX_PLOT_FIELDS
       }]
     })
-    .editSemantic({ property: "dataset[boxPlotOutlierData].values", value: values.outliers })
+    .editSemantic({ property: "dataset[boxPlotOutlierData].values", value: values.outliers });
+  }
+
+  program = program
     .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "scale[x].type", value: "ordinal" })
     .editSemantic({ property: "scale[x].domain", value: "auto" })
@@ -57,10 +68,16 @@ export function createCarsBoxPlotPrimitives(cars) {
     .editSemantic({ property: "scale[y].domain", value: "auto" })
     .editSemantic({ property: "scale[y].range", value: "auto" })
     .editSemantic({ property: "scale[y].nice", value: true })
-    .editSemantic({ property: "scale[y].zero", value: false })
-    .editSemantic({ property: "scale[color].type", value: "ordinal" })
-    .editSemantic({ property: "scale[color].domain", value: "auto" })
-    .editSemantic({ property: "scale[color].range", value: { palette: "tableau10" } })
+    .editSemantic({ property: "scale[y].zero", value: false });
+
+  if (color) {
+    program = program
+      .editSemantic({ property: "scale[color].type", value: "ordinal" })
+      .editSemantic({ property: "scale[color].domain", value: "auto" })
+      .editSemantic({ property: "scale[color].range", value: { palette: "tableau10" } });
+  }
+
+  program = program
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
     .editSemantic({ property: "guide.axis.x.title", value: "Origin" })
@@ -113,11 +130,17 @@ export function createCarsBoxPlotPrimitives(cars) {
     .editSemantic({ property: "layer[boxPlot].encoding.y.title", value: "Miles_per_Gallon" })
     .editSemantic({ property: "layer[boxPlot].encoding.y2.field", value: BOX_PLOT_FIELDS.q3 })
     .editSemantic({ property: "layer[boxPlot].encoding.y2.fieldType", value: "quantitative" })
-    .editSemantic({ property: "layer[boxPlot].encoding.y2.scale", value: "y" })
-    .editSemantic({ property: "layer[boxPlot].encoding.color.field", value: "Origin" })
-    .editSemantic({ property: "layer[boxPlot].encoding.color.fieldType", value: "nominal" })
-    .editSemantic({ property: "layer[boxPlot].encoding.color.scale", value: "color" })
-    .editSemantic({ property: "layer[boxPlot].encoding.color.layout", value: "overlay" })
+    .editSemantic({ property: "layer[boxPlot].encoding.y2.scale", value: "y" });
+
+  if (color) {
+    program = program
+      .editSemantic({ property: "layer[boxPlot].encoding.color.field", value: "Origin" })
+      .editSemantic({ property: "layer[boxPlot].encoding.color.fieldType", value: "nominal" })
+      .editSemantic({ property: "layer[boxPlot].encoding.color.scale", value: "color" })
+      .editSemantic({ property: "layer[boxPlot].encoding.color.layout", value: "overlay" });
+  }
+
+  program = program
     .editSemantic({ property: "layer[boxPlotWhisker].mark.type", value: "rule" })
     .editSemantic({ property: "layer[boxPlotWhisker].data", value: "boxPlotSummaryData" })
     .editSemantic({ property: "layer[boxPlotWhisker].coordinate", value: "main" })
@@ -196,10 +219,14 @@ export function createCarsBoxPlotPrimitives(cars) {
     .editGraphics({ target: "boxPlot", property: "y", value: values.boxes.map(box => box.y) })
     .editGraphics({ target: "boxPlot", property: "width", value: values.boxes.map(box => box.width) })
     .editGraphics({ target: "boxPlot", property: "height", value: values.boxes.map(box => box.height) })
-    .editGraphics({ target: "boxPlot", property: "fill", value: values.boxColors })
-    .editGraphics({ target: "boxPlot", property: "opacity", value: BOX_PLOT_STYLE.boxOpacity })
-    .editGraphics({ target: "boxPlot", property: "stroke", value: values.boxColors })
-    .editGraphics({ target: "boxPlot", property: "strokeWidth", value: BOX_PLOT_STYLE.boxStrokeWidth })
+    .editGraphics({ target: "boxPlot", property: "fill", value: box.fill ?? values.boxColors })
+    .editGraphics({ target: "boxPlot", property: "opacity", value: box.opacity ?? BOX_PLOT_STYLE.boxOpacity })
+    .editGraphics({ target: "boxPlot", property: "stroke", value: box.stroke ?? values.boxColors })
+    .editGraphics({
+      target: "boxPlot",
+      property: "strokeWidth",
+      value: box.strokeWidth ?? BOX_PLOT_STYLE.boxStrokeWidth
+    })
     .editSemantic({ property: "layer[boxPlotMedian].mark.type", value: "rule" })
     .editSemantic({ property: "layer[boxPlotMedian].data", value: "boxPlotSummaryData" })
     .editSemantic({ property: "layer[boxPlotMedian].coordinate", value: "main" })
@@ -214,10 +241,21 @@ export function createCarsBoxPlotPrimitives(cars) {
     .editGraphics({ target: "boxPlotMedian", property: "y1", value: values.medians.map(rule => rule.y1) })
     .editGraphics({ target: "boxPlotMedian", property: "x2", value: values.medians.map(rule => rule.x2) })
     .editGraphics({ target: "boxPlotMedian", property: "y2", value: values.medians.map(rule => rule.y2) })
-    .editGraphics({ target: "boxPlotMedian", property: "stroke", value: BOX_PLOT_STYLE.medianStroke })
-    .editGraphics({ target: "boxPlotMedian", property: "strokeWidth", value: BOX_PLOT_STYLE.medianStrokeWidth })
+    .editGraphics({
+      target: "boxPlotMedian",
+      property: "stroke",
+      value: median.stroke ?? BOX_PLOT_STYLE.medianStroke
+    })
+    .editGraphics({
+      target: "boxPlotMedian",
+      property: "strokeWidth",
+      value: median.strokeWidth ?? BOX_PLOT_STYLE.medianStrokeWidth
+    })
     .editGraphics({ target: "boxPlotMedian", property: "strokeDash", value: repeated(values.medians.length, []) })
-    .editGraphics({ target: "boxPlotMedian", property: "opacity", value: 1 })
+    .editGraphics({ target: "boxPlotMedian", property: "opacity", value: 1 });
+
+  if (outliers) {
+    program = program
     .editSemantic({ property: "layer[boxPlotOutliers].mark.type", value: "point" })
     .editSemantic({ property: "layer[boxPlotOutliers].data", value: "boxPlotOutlierData" })
     .editSemantic({ property: "layer[boxPlotOutliers].coordinate", value: "main" })
@@ -228,7 +266,10 @@ export function createCarsBoxPlotPrimitives(cars) {
     .editSemantic({ property: "layer[boxPlotOutliers].encoding.y.fieldType", value: "quantitative" })
     .editSemantic({ property: "layer[boxPlotOutliers].encoding.y.scale", value: "y" })
     .createGraphics({ id: "boxPlotOutliers", type: "collection" })
-    .editGraphics({ target: "boxPlotOutliers", property: "children", value: values.outlierGraphics })
+    .editGraphics({ target: "boxPlotOutliers", property: "children", value: values.outlierGraphics });
+  }
+
+  return program
     .createGraphics({ id: "xAxisLine", type: "line" })
     .editGraphics({ target: "xAxisLine", property: "x1", value: xAxis.line.x1 })
     .editGraphics({ target: "xAxisLine", property: "y1", value: xAxis.line.y1 })
