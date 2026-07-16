@@ -1,6 +1,10 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { validateKeys } from "../../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite
+} from "../../../core/validation.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import {
@@ -14,13 +18,8 @@ const CREATE_OPTIONS = Object.freeze(["scale", "position", "color", "lineWidth"]
 const EDIT_OPTIONS = Object.freeze(["position", "color", "lineWidth"]);
 
 function validateStyle({ color, lineWidth }) {
-  if (typeof color !== "string" || color.length === 0) {
-    throw new TypeError("Axis line color must be a non-empty string.");
-  }
-
-  if (!Number.isFinite(lineWidth) || lineWidth < 0) {
-    throw new RangeError("Axis lineWidth must be a non-negative finite number.");
-  }
+  validateNonEmptyString(color, "Axis line color");
+  validateNonNegativeFinite(lineWidth, "Axis lineWidth");
 }
 
 function resolveGeometry(program, channel, scaleId, position) {

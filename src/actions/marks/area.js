@@ -1,6 +1,11 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validateUnitInterval
+} from "../../core/validation.js";
+import {
   deriveAreaSeries,
   deriveDensityAreaSeries,
   layoutDensityAreaSeries
@@ -32,48 +37,18 @@ const EDIT_OPTIONS = Object.freeze([
 ]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
-function validateAreaFill(value) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError("Area fill must be a non-empty string.");
-  }
-  return value;
-}
-
-function validateAreaOpacity(value) {
-  if (!Number.isFinite(value) || value < 0 || value > 1) {
-    throw new RangeError("Area opacity must be from 0 to 1.");
-  }
-  return value;
-}
-
-function validateAreaStroke(value) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError("Area stroke must be a non-empty string.");
-  }
-  return value;
-}
-
-function validateAreaStrokeWidth(value) {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new RangeError(
-      "Area strokeWidth must be a non-negative finite number."
-    );
-  }
-  return value;
-}
-
 export function validateAreaCreateOutline(args, operation = "createAreaMark") {
   if (Object.hasOwn(args, "strokeWidth") && !Object.hasOwn(args, "stroke")) {
     throw new Error(`${operation} strokeWidth requires stroke.`);
   }
   const stroke = Object.hasOwn(args, "stroke")
-    ? validateAreaStroke(args.stroke)
+    ? validateNonEmptyString(args.stroke, "Area stroke")
     : undefined;
   return {
     stroke,
     strokeWidth: stroke === undefined
       ? undefined
-      : validateAreaStrokeWidth(args.strokeWidth ?? 1)
+      : validateNonNegativeFinite(args.strokeWidth ?? 1, "Area strokeWidth")
   };
 }
 
@@ -91,8 +66,8 @@ const createAreaMark = action(
       operation: "createAreaMark"
     });
     const { data } = resolveMarkData(this, args);
-    const fill = validateAreaFill(args.fill ?? DEFAULT_COLORS.mark);
-    const opacity = validateAreaOpacity(args.opacity ?? 0.2);
+    const fill = validateNonEmptyString(args.fill ?? DEFAULT_COLORS.mark, "Area fill");
+    const opacity = validateUnitInterval(args.opacity ?? 0.2, "Area opacity");
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     const { stroke, strokeWidth } = validateAreaCreateOutline(args);
     assertMarkAvailable(this, id);
@@ -342,10 +317,10 @@ const editAreaMark = action(
 
     let config = { ...this.markConfigs[layer.id] };
     if (Object.hasOwn(args, "fill")) {
-      config.fill = validateAreaFill(args.fill);
+      config.fill = validateNonEmptyString(args.fill, "Area fill");
     }
     if (Object.hasOwn(args, "opacity")) {
-      config.opacity = validateAreaOpacity(args.opacity);
+      config.opacity = validateUnitInterval(args.opacity, "Area opacity");
     }
     if (Object.hasOwn(args, "curve")) {
       config.curve = validateCurveInterpolation(args.curve);
@@ -358,16 +333,19 @@ const editAreaMark = action(
         config = rest;
       } else {
         const hadStroke = config.stroke !== undefined;
-        config.stroke = validateAreaStroke(args.stroke);
+        config.stroke = validateNonEmptyString(args.stroke, "Area stroke");
         config.strokeWidth = Object.hasOwn(args, "strokeWidth")
-          ? validateAreaStrokeWidth(args.strokeWidth)
+          ? validateNonNegativeFinite(args.strokeWidth, "Area strokeWidth")
           : hadStroke ? config.strokeWidth : 1;
       }
     } else if (Object.hasOwn(args, "strokeWidth")) {
       if (config.stroke === undefined) {
         throw new Error("editAreaMark strokeWidth requires an active stroke.");
       }
-      config.strokeWidth = validateAreaStrokeWidth(args.strokeWidth);
+      config.strokeWidth = validateNonNegativeFinite(
+        args.strokeWidth,
+        "Area strokeWidth"
+      );
     }
 
     const next = this._withMarkConfig(layer.id, config);

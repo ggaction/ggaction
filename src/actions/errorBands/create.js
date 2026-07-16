@@ -1,6 +1,11 @@
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
-import { validateKeys } from "../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validateUnitInterval
+} from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import { normalizeStrokeDashPattern } from "../../grammar/scales.js";
@@ -34,18 +39,13 @@ function resolveBoundaries(value, areaCurve) {
   const strokeDash = value.strokeDash ?? "solid";
   const opacity = value.opacity ?? 1;
   const curve = validateCurveInterpolation(value.curve ?? areaCurve);
-  if (typeof stroke !== "string" || stroke.length === 0) {
-    throw new TypeError("Error-band boundary stroke must be a non-empty string.");
-  }
-  if (!Number.isFinite(strokeWidth) || strokeWidth < 0) {
-    throw new RangeError(
-      "Error-band boundary strokeWidth must be a non-negative finite number."
-    );
-  }
+  validateNonEmptyString(stroke, "Error-band boundary stroke");
+  validateNonNegativeFinite(
+    strokeWidth,
+    "Error-band boundary strokeWidth"
+  );
   const resolvedStrokeDash = normalizeStrokeDashPattern(strokeDash);
-  if (!Number.isFinite(opacity) || opacity < 0 || opacity > 1) {
-    throw new RangeError("Error-band boundary opacity must be from 0 to 1.");
-  }
+  validateUnitInterval(opacity, "Error-band boundary opacity");
   return {
     stroke,
     strokeWidth,

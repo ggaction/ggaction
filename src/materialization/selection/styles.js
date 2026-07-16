@@ -1,5 +1,11 @@
 import { isPlainObject } from "../../core/immutable.js";
-import { validateKeys } from "../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite,
+  validateUnitInterval
+} from "../../core/validation.js";
 import { validatePointShape } from "../../grammar/pointShapes.js";
 import { normalizeStrokeDashPattern } from "../../grammar/scales.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
@@ -7,33 +13,7 @@ import { DEFAULT_COLORS } from "../../theme/defaults.js";
 const DEFAULT_POINT_SIZE = 2;
 const DEFAULT_DIM_OPACITY = 0.25;
 
-export function validateUnitInterval(value, label) {
-  if (!Number.isFinite(value) || value < 0 || value > 1) {
-    throw new RangeError(`${label} must be between 0 and 1.`);
-  }
-  return value;
-}
-
-function validatePositive(value, label) {
-  if (!Number.isFinite(value) || value <= 0) {
-    throw new RangeError(`${label} must be a positive finite number.`);
-  }
-  return value;
-}
-
-function validateNonNegative(value, label) {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new RangeError(`${label} must be a non-negative finite number.`);
-  }
-  return value;
-}
-
-function validateColor(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
+export { validateUnitInterval };
 
 function normalizeOffset(offset) {
   if (offset === undefined) return { x: 0, y: 0 };
@@ -71,7 +51,7 @@ export function normalizePointHighlightStyle(args) {
   if (args.strokeDash !== undefined) {
     throw new Error("Point highlight does not support strokeDash.");
   }
-  const fill = validateColor(
+  const fill = validateNonEmptyString(
     args.fill ?? args.color ?? DEFAULT_COLORS.highlight,
     "Point highlight fill"
   );
@@ -80,10 +60,10 @@ export function normalizePointHighlightStyle(args) {
     : validateUnitInterval(args.opacity, "Point highlight opacity");
   const stroke = args.stroke === undefined
     ? undefined
-    : validateColor(args.stroke, "Point highlight stroke");
+    : validateNonEmptyString(args.stroke, "Point highlight stroke");
   const strokeWidth = args.strokeWidth === undefined
     ? undefined
-    : validateNonNegative(args.strokeWidth, "Point highlight strokeWidth");
+    : validateNonNegativeFinite(args.strokeWidth, "Point highlight strokeWidth");
   if (strokeWidth !== undefined && stroke === undefined) {
     throw new Error("Point highlight strokeWidth requires stroke.");
   }
@@ -95,7 +75,7 @@ export function normalizePointHighlightStyle(args) {
     ...(args.shape === undefined ? {} : { shape: validatePointShape(args.shape) }),
     size: args.size === undefined
       ? DEFAULT_POINT_SIZE
-      : validatePositive(args.size, "Point highlight size"),
+      : validatePositiveFinite(args.size, "Point highlight size"),
     offset: normalizeOffset(args.offset)
   };
 }
@@ -109,7 +89,7 @@ export function normalizeBarHighlightStyle(args) {
   if (args.color !== undefined && args.fill !== undefined) {
     throw new Error("Bar highlight accepts color or fill, not both.");
   }
-  const fill = validateColor(
+  const fill = validateNonEmptyString(
     args.fill ?? args.color ?? DEFAULT_COLORS.highlight,
     "Bar highlight fill"
   );
@@ -118,10 +98,10 @@ export function normalizeBarHighlightStyle(args) {
     : validateUnitInterval(args.opacity, "Bar highlight opacity");
   const stroke = args.stroke === undefined
     ? undefined
-    : validateColor(args.stroke, "Bar highlight stroke");
+    : validateNonEmptyString(args.stroke, "Bar highlight stroke");
   const strokeWidth = args.strokeWidth === undefined
     ? undefined
-    : validateNonNegative(args.strokeWidth, "Bar highlight strokeWidth");
+    : validateNonNegativeFinite(args.strokeWidth, "Bar highlight strokeWidth");
   if (strokeWidth !== undefined && stroke === undefined) {
     throw new Error("Bar highlight strokeWidth requires stroke.");
   }
@@ -147,14 +127,14 @@ export function normalizeStrokeHighlightStyle(args, mark) {
     throw new Error(`${mark} highlight accepts color or stroke, not both.`);
   }
   return {
-    stroke: validateColor(
+    stroke: validateNonEmptyString(
       args.stroke ?? args.color ?? DEFAULT_COLORS.highlight,
       `${mark} highlight stroke`
     ),
     ...(args.strokeWidth === undefined
       ? {}
       : {
-          strokeWidth: validateNonNegative(
+          strokeWidth: validateNonNegativeFinite(
             args.strokeWidth,
             `${mark} highlight strokeWidth`
           )
@@ -181,15 +161,15 @@ export function normalizeAreaHighlightStyle(args) {
   }
   const stroke = args.stroke === undefined
     ? undefined
-    : validateColor(args.stroke, "Area highlight stroke");
+    : validateNonEmptyString(args.stroke, "Area highlight stroke");
   const strokeWidth = args.strokeWidth === undefined
     ? undefined
-    : validateNonNegative(args.strokeWidth, "Area highlight strokeWidth");
+    : validateNonNegativeFinite(args.strokeWidth, "Area highlight strokeWidth");
   if (strokeWidth !== undefined && stroke === undefined) {
     throw new Error("Area highlight strokeWidth requires stroke.");
   }
   return {
-    fill: validateColor(
+    fill: validateNonEmptyString(
       args.fill ?? args.color ?? DEFAULT_COLORS.highlight,
       "Area highlight fill"
     ),

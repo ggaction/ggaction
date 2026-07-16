@@ -1,6 +1,11 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { sameOrderedValues } from "../../../core/validation.js";
+import {
+  sameOrderedValues,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite
+} from "../../../core/validation.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
   isTransformedScaleType,
@@ -55,10 +60,10 @@ function validateConfig(channel, config) {
       (typeof value === "number" && Number.isFinite(value))
     ))
   ) throw new TypeError("Label values must be nominal values or finite numbers.");
-  if (!Number.isFinite(config.offset) || config.offset < 0) throw new RangeError("Label offset must be non-negative.");
-  if (!Number.isFinite(config.fontSize) || config.fontSize <= 0) throw new RangeError("Label fontSize must be positive.");
-  if (typeof config.color !== "string" || !config.color.length) throw new TypeError("Label color must be non-empty.");
-  if (typeof config.fontFamily !== "string" || !config.fontFamily.length) throw new TypeError("Label fontFamily must be non-empty.");
+  validateNonNegativeFinite(config.offset, "Label offset");
+  validatePositiveFinite(config.fontSize, "Label fontSize");
+  validateNonEmptyString(config.color, "Label color");
+  validateNonEmptyString(config.fontFamily, "Label fontFamily");
   if ((typeof config.fontWeight !== "string" && !Number.isFinite(config.fontWeight))) throw new TypeError("Label fontWeight must be a string or number.");
   validateAxisFormat(config.format);
 }

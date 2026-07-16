@@ -1,5 +1,10 @@
 import { isPlainObject } from "../../../../core/immutable.js";
-import { validateKeys } from "../../../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite
+} from "../../../../core/validation.js";
 import { formatTimeTick } from "../../../../grammar/ticks.js";
 import { resolveGraphicBounds } from "../../../../layout/canvas.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
@@ -38,19 +43,8 @@ const DEFAULT_BORDER = Object.freeze({
   background: "transparent"
 });
 
-export function validatePositive(value, label) {
-  if (!Number.isFinite(value) || value <= 0) {
-    throw new RangeError(`${label} must be positive.`);
-  }
-  return value;
-}
-
-export function validateNonNegative(value, label) {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new RangeError(`${label} must be non-negative.`);
-  }
-  return value;
-}
+export const validatePositive = validatePositiveFinite;
+export const validateNonNegative = validateNonNegativeFinite;
 
 function validateTextOptions(value, label, defaults) {
   if (value === undefined) return { ...defaults };
@@ -64,9 +58,7 @@ function validateTextOptions(value, label, defaults) {
   }
   validatePositive(result.fontSize, `${label} fontSize`);
   for (const key of ["color", "fontFamily"]) {
-    if (typeof result[key] !== "string" || result[key].length === 0) {
-      throw new TypeError(`${label} ${key} must be a non-empty string.`);
-    }
+    validateNonEmptyString(result[key], `${label} ${key}`);
   }
   if (
     typeof result.fontWeight !== "string" &&
@@ -85,9 +77,7 @@ function normalizeBorder(value) {
   if (value !== true) validateKeys(value, BORDER_OPTIONS, "createLegend.border");
   const border = { ...DEFAULT_BORDER, ...(value === true ? {} : value) };
   for (const key of ["color", "background"]) {
-    if (typeof border[key] !== "string" || border[key].length === 0) {
-      throw new TypeError(`Legend border ${key} must be a non-empty string.`);
-    }
+    validateNonEmptyString(border[key], `Legend border ${key}`);
   }
   validateNonNegative(border.lineWidth, "Legend border lineWidth");
   validateNonNegative(border.padding, "Legend border padding");
@@ -117,11 +107,7 @@ export function normalizeContinuousLegend(args, kind) {
   validateNonNegative(offset, "Legend offset");
   const itemGap = args.itemGap ?? 28;
   validatePositive(itemGap, "Legend itemGap");
-  if (args.title !== undefined && (
-    typeof args.title !== "string" || args.title.length === 0
-  )) {
-    throw new TypeError("Legend title must be a non-empty string.");
-  }
+  if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
   if (args.titlePosition !== undefined && args.titlePosition !== "top") {
     throw new Error("Continuous legends currently require top titlePosition.");
   }

@@ -4,7 +4,11 @@ import test from "node:test";
 import {
   noOptions,
   sameOrderedValues,
-  validateKeys
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite,
+  validateUnitInterval
 } from "../../../src/core/validation.js";
 
 test("validates closed option keys", () => {
@@ -25,4 +29,20 @@ test("compares ordered values without coercion", () => {
   assert.equal(sameOrderedValues(["A", 2], ["A", 2]), true);
   assert.equal(sameOrderedValues(["A", 2], [2, "A"]), false);
   assert.equal(sameOrderedValues(undefined, undefined), false);
+});
+
+test("validates shared appearance scalar contracts", () => {
+  assert.equal(validateNonEmptyString("red", "Color"), "red");
+  assert.equal(validateUnitInterval(0, "Opacity"), 0);
+  assert.equal(validateUnitInterval(1, "Opacity"), 1);
+  assert.equal(validatePositiveFinite(0.5, "Size"), 0.5);
+  assert.equal(validateNonNegativeFinite(0, "Width"), 0);
+
+  assert.throws(() => validateNonEmptyString("", "Color"), /non-empty/);
+  assert.throws(() => validateUnitInterval(2, "Opacity"), /between 0 and 1/);
+  assert.throws(() => validatePositiveFinite(0, "Size"), /positive finite/);
+  assert.throws(
+    () => validateNonNegativeFinite(-1, "Width"),
+    /non-negative finite/
+  );
 });

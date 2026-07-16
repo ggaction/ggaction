@@ -22,3 +22,33 @@ export function sameOrderedValues(left, right) {
     left.every((value, index) => value === right[index])
   );
 }
+
+export function validateNonEmptyString(value, label) {
+  if (typeof value !== "string" || value.length === 0) {
+    throw new TypeError(`${label} must be a non-empty string.`);
+  }
+  return value;
+}
+
+export function validateUnitInterval(value, label) {
+  if (!Number.isFinite(value) || value < 0 || value > 1) {
+    throw new RangeError(
+      `${label} must be between 0 and 1 (values from 0 to 1).`
+    );
+  }
+  return value;
+}
+
+export function validatePositiveFinite(value, label) {
+  if (!Number.isFinite(value) || value <= 0) {
+    throw new RangeError(`${label} must be a positive finite number.`);
+  }
+  return value;
+}
+
+export function validateNonNegativeFinite(value, label) {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new RangeError(`${label} must be a non-negative finite number.`);
+  }
+  return value;
+}

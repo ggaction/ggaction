@@ -1,5 +1,10 @@
 import { isPlainObject } from "../../../../core/immutable.js";
-import { validateKeys } from "../../../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite
+} from "../../../../core/validation.js";
 
 export { validateKeys };
 
@@ -10,26 +15,9 @@ export function validateObject(value, supported, label) {
   validateKeys(value, supported, label);
 }
 
-export function nonEmptyString(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
-
-export function nonNegative(value, label) {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new RangeError(`${label} must be a non-negative finite number.`);
-  }
-  return value;
-}
-
-export function positive(value, label) {
-  if (!Number.isFinite(value) || value <= 0) {
-    throw new RangeError(`${label} must be a positive finite number.`);
-  }
-  return value;
-}
+export const nonEmptyString = validateNonEmptyString;
+export const nonNegative = validateNonNegativeFinite;
+export const positive = validatePositiveFinite;
 
 export function validateFontWeight(value, label) {
   if (typeof value !== "string" && !Number.isFinite(value)) {

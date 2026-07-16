@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import { deriveLineSeries } from "../../grammar/lineSeries.js";
 import { mapContinuousScaleValues, mapOrdinalValues } from "../../grammar/scales.js";
 import { validateUserId } from "../../core/identifiers.js";
+import { validateNonNegativeFinite } from "../../core/validation.js";
 import {
   assertMarkAvailable,
   resolveMarkId,
@@ -24,13 +25,6 @@ const CREATE_OPTIONS = Object.freeze(["id", "data", "strokeWidth", "curve"]);
 const EDIT_OPTIONS = Object.freeze(["target", "strokeWidth", "curve"]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
-function validateStrokeWidth(value) {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new RangeError("Line strokeWidth must be a non-negative finite number.");
-  }
-  return value;
-}
-
 const createLineMark = action(
   {
     op: "createLineMark",
@@ -45,8 +39,9 @@ const createLineMark = action(
       operation: "createLineMark"
     });
     const { data } = resolveMarkData(this, args);
-    const strokeWidth = validateStrokeWidth(
-      args.strokeWidth ?? DEFAULT_LINE_WIDTH
+    const strokeWidth = validateNonNegativeFinite(
+      args.strokeWidth ?? DEFAULT_LINE_WIDTH,
+      "Line strokeWidth"
     );
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     assertMarkAvailable(this, id);
@@ -225,7 +220,12 @@ const editLineMark = action(
     const config = {
       ...this.markConfigs[layer.id],
       ...(Object.hasOwn(args, "strokeWidth")
-        ? { strokeWidth: validateStrokeWidth(args.strokeWidth) }
+        ? {
+            strokeWidth: validateNonNegativeFinite(
+              args.strokeWidth,
+              "Line strokeWidth"
+            )
+          }
         : {}),
       ...(Object.hasOwn(args, "curve")
         ? { curve: validateCurveInterpolation(args.curve) }

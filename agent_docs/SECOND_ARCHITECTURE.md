@@ -1711,6 +1711,10 @@ state, explicit materialization, action trace, package boundary와 충돌하지 
 - Generated aggregate resource는 owning mark ID로 namespace된다.
 - Browser, extension, Node PNG entry point와 TypeScript declaration이 분리된다.
 - 현재 source는 chart example이 아니라 reusable capability 기준으로 조직된다.
+- 색상·opacity·크기·선 두께 같은 반복 appearance scalar validation은
+  `core/validation.js`가 소유하고, chart-independent appearance default는
+  `theme/defaults.js`가 소유한다. Mark, guide, layout, selection policy는 이 공통 계약을
+  소비하며 같은 값 규칙을 다시 선언하지 않는다.
 
 반대로 초기 문서의 program composition, broad guide editing hierarchy, generic
 `editScale`, SVG mapping 등은 아직 구현 계약이 아니다. 구현되지 않은 초기 아이디어는

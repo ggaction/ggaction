@@ -1,6 +1,10 @@
 import { validateUserId } from "../../../core/identifiers.js";
 import { isPlainObject } from "../../../core/immutable.js";
-import { validateKeys } from "../../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite
+} from "../../../core/validation.js";
 import {
   isTransformedScaleType,
   mapContinuousScaleValues
@@ -67,15 +71,11 @@ export function validateGridCreateArgs(args, operation) {
   )) {
     throw new TypeError("Grid values must be a non-empty finite number array.");
   }
-  if (Object.hasOwn(args, "color") && (
-    typeof args.color !== "string" || args.color.length === 0
-  )) {
-    throw new TypeError("Grid color must be a non-empty string.");
+  if (Object.hasOwn(args, "color")) {
+    validateNonEmptyString(args.color, "Grid color");
   }
-  if (Object.hasOwn(args, "lineWidth") && (
-    !Number.isFinite(args.lineWidth) || args.lineWidth < 0
-  )) {
-    throw new RangeError("Grid lineWidth must be non-negative.");
+  if (Object.hasOwn(args, "lineWidth")) {
+    validateNonNegativeFinite(args.lineWidth, "Grid lineWidth");
   }
   if (Object.hasOwn(args, "strokeDash")) validateStrokeDash(args.strokeDash);
 }
@@ -105,15 +105,11 @@ export function validateGridEditArgs(args, operation) {
       'Grid values must be "auto" or a non-empty finite number array.'
     );
   }
-  if (Object.hasOwn(args, "color") && (
-    typeof args.color !== "string" || args.color.length === 0
-  )) {
-    throw new TypeError("Grid color must be a non-empty string.");
+  if (Object.hasOwn(args, "color")) {
+    validateNonEmptyString(args.color, "Grid color");
   }
-  if (Object.hasOwn(args, "lineWidth") && (
-    !Number.isFinite(args.lineWidth) || args.lineWidth < 0
-  )) {
-    throw new RangeError("Grid lineWidth must be non-negative.");
+  if (Object.hasOwn(args, "lineWidth")) {
+    validateNonNegativeFinite(args.lineWidth, "Grid lineWidth");
   }
   if (Object.hasOwn(args, "strokeDash")) validateStrokeDash(args.strokeDash);
 }

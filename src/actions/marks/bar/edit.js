@@ -1,5 +1,10 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
+import {
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validateUnitInterval
+} from "../../../core/validation.js";
 import { canMaterializeBar } from "../../../materialization/marks.js";
 import { DEFAULT_BAR_STROKE_WIDTH } from "../../../materialization/bars/resolve.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
@@ -8,29 +13,6 @@ import { validateMarkOptions } from "../shared.js";
 const EDIT_OPTIONS = Object.freeze([
   "target", "fill", "opacity", "stroke", "strokeWidth"
 ]);
-
-function validateColor(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
-
-function validateOpacity(value) {
-  if (!Number.isFinite(value) || value < 0 || value > 1) {
-    throw new RangeError("Bar opacity must be from 0 to 1.");
-  }
-  return value;
-}
-
-function validateStrokeWidth(value) {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new RangeError(
-      "Bar strokeWidth must be a non-negative finite number."
-    );
-  }
-  return value;
-}
 
 export const editBarMark = action(
   {
@@ -67,19 +49,22 @@ export const editBarMark = action(
     const config = { ...this.markConfigs[layer.id] };
     const appearance = { ...config.barAppearance };
     if (Object.hasOwn(args, "fill")) {
-      appearance.fill = validateColor(args.fill, "Bar fill");
+      appearance.fill = validateNonEmptyString(args.fill, "Bar fill");
     }
     if (Object.hasOwn(args, "opacity")) {
-      appearance.opacity = validateOpacity(args.opacity);
+      appearance.opacity = validateUnitInterval(args.opacity, "Bar opacity");
     }
     if (Object.hasOwn(args, "stroke")) {
       if (args.stroke === false) {
         appearance.stroke = false;
       } else {
         const restoresStroke = appearance.stroke === false;
-        appearance.stroke = validateColor(args.stroke, "Bar stroke");
+        appearance.stroke = validateNonEmptyString(args.stroke, "Bar stroke");
         if (Object.hasOwn(args, "strokeWidth")) {
-          appearance.strokeWidth = validateStrokeWidth(args.strokeWidth);
+          appearance.strokeWidth = validateNonNegativeFinite(
+            args.strokeWidth,
+            "Bar strokeWidth"
+          );
         } else if (restoresStroke) {
           appearance.strokeWidth = DEFAULT_BAR_STROKE_WIDTH;
         }
@@ -88,7 +73,10 @@ export const editBarMark = action(
       if (appearance.stroke === false) {
         throw new Error("editBarMark strokeWidth requires an active stroke.");
       }
-      appearance.strokeWidth = validateStrokeWidth(args.strokeWidth);
+      appearance.strokeWidth = validateNonNegativeFinite(
+        args.strokeWidth,
+        "Bar strokeWidth"
+      );
     }
 
     const next = this._withMarkConfig(layer.id, {

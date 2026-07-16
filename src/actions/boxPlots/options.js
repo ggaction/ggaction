@@ -1,6 +1,13 @@
 import { isPlainObject } from "../../core/immutable.js";
-import { validateKeys } from "../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite,
+  validateUnitInterval
+} from "../../core/validation.js";
 import { validatePointShape } from "../../grammar/pointShapes.js";
+import { DEFAULT_COLORS } from "../../theme/defaults.js";
 
 export const BOX_PLOT_OPTIONS = Object.freeze([
   "id", "target", "data", "x", "y", "coordinate", "whisker",
@@ -8,9 +15,9 @@ export const BOX_PLOT_OPTIONS = Object.freeze([
 ]);
 
 const DEFAULT_BOX = Object.freeze({
-  fill: "#4c78a8",
+  fill: DEFAULT_COLORS.mark,
   opacity: 1,
-  stroke: "#4c78a8",
+  stroke: DEFAULT_COLORS.mark,
   strokeWidth: 1.5
 });
 const DEFAULT_MEDIAN = Object.freeze({ stroke: "#1f2937", strokeWidth: 1.5 });
@@ -26,36 +33,6 @@ function plainOptions(value, keys, label) {
     throw new TypeError(`createBoxPlot ${label} must be a plain object.`);
   }
   validateKeys(value, keys, `createBoxPlot ${label}`);
-  return value;
-}
-
-function nonEmptyString(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`createBoxPlot ${label} must be a non-empty string.`);
-  }
-  return value;
-}
-
-function opacity(value, label) {
-  if (!Number.isFinite(value) || value < 0 || value > 1) {
-    throw new RangeError(`createBoxPlot ${label} must be between 0 and 1.`);
-  }
-  return value;
-}
-
-function nonNegative(value, label) {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new RangeError(
-      `createBoxPlot ${label} must be a non-negative finite number.`
-    );
-  }
-  return value;
-}
-
-function positive(value, label) {
-  if (!Number.isFinite(value) || value <= 0) {
-    throw new RangeError(`createBoxPlot ${label} must be a positive finite number.`);
-  }
   return value;
 }
 
@@ -120,16 +97,19 @@ export function resolveBoxAppearance(value) {
   return Object.freeze({
     fill: options.fill === undefined
       ? DEFAULT_BOX.fill
-      : nonEmptyString(options.fill, "box.fill"),
+      : validateNonEmptyString(options.fill, "createBoxPlot box.fill"),
     opacity: options.opacity === undefined
       ? DEFAULT_BOX.opacity
-      : opacity(options.opacity, "box.opacity"),
+      : validateUnitInterval(options.opacity, "createBoxPlot box.opacity"),
     stroke: options.stroke === undefined
       ? DEFAULT_BOX.stroke
-      : nonEmptyString(options.stroke, "box.stroke"),
+      : validateNonEmptyString(options.stroke, "createBoxPlot box.stroke"),
     strokeWidth: options.strokeWidth === undefined
       ? DEFAULT_BOX.strokeWidth
-      : nonNegative(options.strokeWidth, "box.strokeWidth")
+      : validateNonNegativeFinite(
+          options.strokeWidth,
+          "createBoxPlot box.strokeWidth"
+        )
   });
 }
 
@@ -138,10 +118,13 @@ export function resolveBoxMedianAppearance(value) {
   return Object.freeze({
     stroke: options.stroke === undefined
       ? DEFAULT_MEDIAN.stroke
-      : nonEmptyString(options.stroke, "median.stroke"),
+      : validateNonEmptyString(options.stroke, "createBoxPlot median.stroke"),
     strokeWidth: options.strokeWidth === undefined
       ? DEFAULT_MEDIAN.strokeWidth
-      : nonNegative(options.strokeWidth, "median.strokeWidth")
+      : validateNonNegativeFinite(
+          options.strokeWidth,
+          "createBoxPlot median.strokeWidth"
+        )
   });
 }
 
@@ -153,9 +136,12 @@ export function resolveBoxOutlierAppearance(value) {
       : validatePointShape(options.shape),
     radius: options.radius === undefined
       ? DEFAULT_OUTLIER.radius
-      : positive(options.radius, "outlier.radius"),
+      : validatePositiveFinite(options.radius, "createBoxPlot outlier.radius"),
     opacity: options.opacity === undefined
       ? DEFAULT_OUTLIER.opacity
-      : opacity(options.opacity, "outlier.opacity")
+      : validateUnitInterval(
+          options.opacity,
+          "createBoxPlot outlier.opacity"
+        )
   });
 }

@@ -1,6 +1,11 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { validateKeys } from "../../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite
+} from "../../../core/validation.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
   isTransformedScaleType,
@@ -31,20 +36,17 @@ const DEFAULTS = Object.freeze({
 });
 
 function validateText(text) {
-  if (typeof text !== "string" || text.length === 0) {
-    throw new TypeError("Axis title text must be a non-empty string.");
-  }
-  return text;
+  return validateNonEmptyString(text, "Axis title text");
 }
 
 function validateConfig(channel, config) {
   validateAxisPosition(channel, config.position);
   if (!["start", "center", "end"].includes(config.at) && !Number.isFinite(config.at)) throw new TypeError("Axis title at must be start, center, end, or a finite number.");
-  if (!Number.isFinite(config.offset) || config.offset < 0) throw new RangeError("Axis title offset must be non-negative.");
+  validateNonNegativeFinite(config.offset, "Axis title offset");
   if (!Number.isFinite(config.rotation)) throw new TypeError("Axis title rotation must be finite radians.");
-  if (typeof config.color !== "string" || !config.color.length) throw new TypeError("Axis title color must be non-empty.");
-  if (!Number.isFinite(config.fontSize) || config.fontSize <= 0) throw new RangeError("Axis title fontSize must be positive.");
-  if (typeof config.fontFamily !== "string" || !config.fontFamily.length) throw new TypeError("Axis title fontFamily must be non-empty.");
+  validateNonEmptyString(config.color, "Axis title color");
+  validatePositiveFinite(config.fontSize, "Axis title fontSize");
+  validateNonEmptyString(config.fontFamily, "Axis title fontFamily");
   if (typeof config.fontWeight !== "string" && !Number.isFinite(config.fontWeight)) throw new TypeError("Axis title fontWeight must be a string or number.");
 }
 

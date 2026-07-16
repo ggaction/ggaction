@@ -1,5 +1,10 @@
 import { isPlainObject } from "../../core/immutable.js";
-import { validateKeys } from "../../core/validation.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite
+} from "../../core/validation.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import {
@@ -41,9 +46,7 @@ const DEFAULTS = Object.freeze({
 });
 
 export function validateTitleString(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
+  validateNonEmptyString(value, label);
   if (/\r|\n/u.test(value)) {
     throw new Error(`${label} does not accept explicit newlines.`);
   }
@@ -58,9 +61,7 @@ function normalizeStyle(value, defaults, label) {
   validateKeys(style, STYLE_OPTIONS, label);
   validateTitleString(style.color, `${label} color`);
   validateTitleString(style.fontFamily, `${label} fontFamily`);
-  if (!Number.isFinite(style.fontSize) || style.fontSize <= 0) {
-    throw new RangeError(`${label} fontSize must be a positive finite number.`);
-  }
+  validatePositiveFinite(style.fontSize, `${label} fontSize`);
   if (!(
     (typeof style.fontWeight === "string" && style.fontWeight.length > 0) ||
     Number.isFinite(style.fontWeight)
@@ -97,11 +98,9 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
   if (!Number.isFinite(offset)) {
     throw new TypeError("Chart title offset must be a finite number.");
   }
-  if (!Number.isFinite(gap) || gap < 0) {
-    throw new RangeError("Chart title gap must be a non-negative finite number.");
-  }
-  if (maxWidth !== undefined && (!Number.isFinite(maxWidth) || maxWidth <= 0)) {
-    throw new RangeError("Chart title maxWidth must be a positive finite number.");
+  validateNonNegativeFinite(gap, "Chart title gap");
+  if (maxWidth !== undefined) {
+    validatePositiveFinite(maxWidth, "Chart title maxWidth");
   }
   if (wrap !== undefined && !WRAPS.includes(wrap)) {
     throw new Error(`Unsupported title wrap "${wrap}".`);

@@ -1,5 +1,9 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
+import {
+  validateNonEmptyString,
+  validateNonNegativeFinite
+} from "../../../core/validation.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
   isTransformedScaleType,
@@ -42,9 +46,9 @@ function validateConfig(channel, config) {
       (typeof value === "number" && Number.isFinite(value))
     ))
   ) throw new TypeError("Tick values must be nominal values or finite numbers.");
-  if (!Number.isFinite(config.length) || config.length < 0) throw new RangeError("Tick length must be non-negative.");
-  if (!Number.isFinite(config.lineWidth) || config.lineWidth < 0) throw new RangeError("Tick lineWidth must be non-negative.");
-  if (typeof config.color !== "string" || !config.color.length) throw new TypeError("Tick color must be non-empty.");
+  validateNonNegativeFinite(config.length, "Tick length");
+  validateNonNegativeFinite(config.lineWidth, "Tick lineWidth");
+  validateNonEmptyString(config.color, "Tick color");
 }
 
 function geometry(program, channel, config) {

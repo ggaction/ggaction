@@ -1,5 +1,5 @@
 import { action } from "../../core/action.js";
-import { validateKeys } from "../../core/validation.js";
+import { validateKeys, validatePositiveFinite } from "../../core/validation.js";
 import {
   normalizeStrokeDashPattern,
   validateOpacityValue
@@ -34,9 +34,7 @@ function resolveAppearance(args) {
     throw new TypeError("createErrorBar caps must be a boolean.");
   }
   const capSize = args.capSize ?? 8;
-  if (!Number.isFinite(capSize) || capSize <= 0) {
-    throw new RangeError("createErrorBar capSize must be a positive finite number.");
-  }
+  validatePositiveFinite(capSize, "createErrorBar capSize");
   const stroke = validateRuleStroke(
     args.stroke ?? DEFAULT_COLORS.mark,
     "createErrorBar stroke"

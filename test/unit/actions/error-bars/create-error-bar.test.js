@@ -365,10 +365,10 @@ test("validates variant option combinations before exposing a result", () => {
   for (const [options, pattern] of [
     [{ ...vertical, caps: "yes" }, /caps must be a boolean/],
     [{ ...vertical, capSize: 0 }, /capSize must be a positive/],
-    [{ ...vertical, stroke: "" }, /stroke requires a non-empty/],
-    [{ ...vertical, strokeWidth: -1 }, /strokeWidth requires a non-negative/],
+    [{ ...vertical, stroke: "" }, /stroke must be a non-empty/],
+    [{ ...vertical, strokeWidth: -1 }, /strokeWidth must be a non-negative/],
     [{ ...vertical, strokeDash: [1] }, /Stroke dash pattern/],
-    [{ ...vertical, opacity: 2 }, /opacity requires a finite value/],
+    [{ ...vertical, opacity: 2 }, /opacity must be between 0 and 1/],
     [{ x: vertical.x, y: { lower: "a" } }, /requires center, lower, and upper/],
     [{
       x: vertical.x,

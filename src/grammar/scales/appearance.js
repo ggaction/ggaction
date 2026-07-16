@@ -1,4 +1,5 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
+import { validateUnitInterval } from "../../core/validation.js";
 import { POINT_SHAPES } from "../pointShapes.js";
 import {
   normalizePalette,
@@ -123,10 +124,7 @@ export function validateOpacityRange(range) {
 }
 
 export function validateOpacityValue(value, label = "Opacity") {
-  if (!Number.isFinite(value) || value < 0 || value > 1) {
-    throw new RangeError(`${label} requires a finite value from 0 to 1.`);
-  }
-  return value;
+  return validateUnitInterval(value, label);
 }
 
 export function validateSemanticScaleRange(range) {

@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
+import { validatePositiveFinite } from "../../core/validation.js";
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues,
@@ -262,9 +263,7 @@ export const materializeRuleSpan = action(
         `Unsupported rule span orientation "${args.orientation}".`
       );
     }
-    if (!Number.isFinite(args.size) || args.size <= 0) {
-      throw new RangeError("Rule span size must be a positive finite number.");
-    }
+    validatePositiveFinite(args.size, "Rule span size");
     return this
       ._withMarkConfig(id, {
         ...this.markConfigs[id],

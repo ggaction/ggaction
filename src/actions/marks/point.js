@@ -1,5 +1,10 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
+import {
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validateUnitInterval
+} from "../../core/validation.js";
 import { getPointGraphicType } from "../../grammar/schemas/mark.js";
 import {
   createPointShapeGraphic,
@@ -377,34 +382,23 @@ const editPointMark = action(
       config.shape = validatePointShape(args.shape);
     }
     if (Object.hasOwn(args, "fill")) {
-      if (typeof args.fill !== "string" || args.fill.length === 0) {
-        throw new TypeError("Point fill must be a non-empty string.");
-      }
-      config.fill = args.fill;
+      config.fill = validateNonEmptyString(args.fill, "Point fill");
     }
     if (Object.hasOwn(args, "opacity")) {
-      if (!Number.isFinite(args.opacity) || args.opacity < 0 || args.opacity > 1) {
-        throw new RangeError("Point opacity must be from 0 to 1.");
-      }
-      config.opacity = args.opacity;
+      config.opacity = validateUnitInterval(args.opacity, "Point opacity");
     }
     if (Object.hasOwn(args, "stroke")) {
-      if (typeof args.stroke !== "string" || args.stroke.length === 0) {
-        throw new TypeError("Point stroke must be a non-empty string.");
-      }
-      config.stroke = args.stroke;
+      config.stroke = validateNonEmptyString(args.stroke, "Point stroke");
       config.strokeWidth ??= 1;
     }
     if (Object.hasOwn(args, "strokeWidth")) {
-      if (!Number.isFinite(args.strokeWidth) || args.strokeWidth < 0) {
-        throw new RangeError(
-          "Point strokeWidth must be a non-negative finite number."
-        );
-      }
       if (config.stroke === undefined) {
         throw new Error("Point strokeWidth requires an active stroke.");
       }
-      config.strokeWidth = args.strokeWidth;
+      config.strokeWidth = validateNonNegativeFinite(
+        args.strokeWidth,
+        "Point strokeWidth"
+      );
     }
     const next = this
       ._withMarkConfig(id, config)

@@ -56,7 +56,10 @@ test("rejects invalid margin and canvas values", () => {
   assert.throws(() => normalizeMargin(-1), /must not be negative/);
   assert.throws(() => normalizeMargin({}), /at least one side/);
   assert.throws(() => normalizeMargin({ start: 1 }), /Unknown canvas margin/);
-  assert.throws(() => normalizeMargin({ left: Infinity }), /non-negative number/);
+  assert.throws(
+    () => normalizeMargin({ left: Infinity }),
+    /non-negative finite number/
+  );
   assert.throws(
     () =>
       validateCanvasState({
