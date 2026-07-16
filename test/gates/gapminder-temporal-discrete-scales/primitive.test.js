@@ -67,14 +67,11 @@ test("authors explicit band and point semantics with primitive calls only", () =
     paddingOuter: 0.1,
     align: 0.5
   });
-  assert.deepEqual(scales.countryPoint, {
-    id: "countryPoint",
-    type: "point",
-    domain: "auto",
-    range: "auto",
-    padding: 0.5,
-    align: 0.5
-  });
+  assert.equal(scales.countryPoint, undefined);
+  assert.equal(program.semanticSpec.layers[0].encoding.x.scale, "x");
+  assert.equal(program.semanticSpec.layers[1].encoding.x.scale, "x");
+  assert.equal(program.semanticSpec.layers[0].encoding.y.scale, "y");
+  assert.equal(program.semanticSpec.layers[1].encoding.y.scale, "y");
   assert.deepEqual(
     program.graphicSpec.objects.bar.children.map(child => child.properties.x),
     values.bars.map(bar => bar.x)

@@ -43,21 +43,6 @@ export const bandPointTargetCallChain = `chart()
   .encodeBarWidth({ band: 0.72 })
   .editBarMark({ fill: "#cbd5e1" })
   .createPointMark()
-  .encodeX({
-    field: "country",
-    fieldType: "nominal",
-    scale: {
-      id: "countryPoint",
-      type: "point",
-      padding: 0.5,
-      align: 0.5
-    }
-  })
-  .encodeY({
-    field: "pop",
-    fieldType: "quantitative",
-    scale: { id: "y" }
-  })
   .encodeRadius({ value: 5 })
   .editPointMark({ stroke: "white", strokeWidth: 1 })
   .createGuides({

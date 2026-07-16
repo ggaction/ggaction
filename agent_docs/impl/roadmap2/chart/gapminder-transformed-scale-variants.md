@@ -107,8 +107,8 @@ fixtures cover bandwidth, padding, point centers, year/date normalization, nice 
 
 ### Target public chains
 
-Band는 bar의 slot width를 소유하고 point는 같은 category의 center만 소유한다. 두 scale의 id는 서로 다르며,
-x-axis는 band scale `x`를 명시적으로 사용한다.
+Band는 bar의 slot width와 같은 category의 point center를 함께 소유한다. 새 point layer는 유일한 기존 bar
+layer에서 data, coordinate, x/y field와 scale을 추론하고, x-axis도 shared band scale `x`를 사용한다.
 
 ```javascript
 const bandPoint = chart()
@@ -147,21 +147,6 @@ const bandPoint = chart()
   .encodeBarWidth({ band: 0.72 })
   .editBarMark({ fill: "#cbd5e1" })
   .createPointMark()
-  .encodeX({
-    field: "country",
-    fieldType: "nominal",
-    scale: {
-      id: "countryPoint",
-      type: "point",
-      padding: 0.5,
-      align: 0.5
-    }
-  })
-  .encodeY({
-    field: "pop",
-    fieldType: "quantitative",
-    scale: { id: "y" }
-  })
   .encodeRadius({ value: 5 })
   .editPointMark({ stroke: "white", strokeWidth: 1 })
   .createGuides({

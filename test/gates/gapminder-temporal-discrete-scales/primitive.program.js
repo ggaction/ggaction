@@ -15,7 +15,7 @@ const GRID = "#e2e8f0";
 export function createGapminderBandPointPrimitives(gapminder) {
   const values = createBandPointReference(gapminder);
   const { width, height } = BAND_POINT_LAYOUT;
-  const { rows2005, rows, plot, domain, band, point, centers, yDomain, yTicks, yPositions, bars } = values;
+  const { rows2005, rows, plot, domain, band, centers, yDomain, yTicks, yPositions, bars } = values;
   const labels = domain;
   const yLabels = yTicks.map(value => value === 0 ? "0" : `${value / 1_000_000}M`);
 
@@ -42,7 +42,7 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editSemantic({ property: "layer[point].coordinate", value: "main" })
     .editSemantic({ property: "layer[point].encoding.x.field", value: "country" })
     .editSemantic({ property: "layer[point].encoding.x.fieldType", value: "nominal" })
-    .editSemantic({ property: "layer[point].encoding.x.scale", value: "countryPoint" })
+    .editSemantic({ property: "layer[point].encoding.x.scale", value: "x" })
     .editSemantic({ property: "layer[point].encoding.y.field", value: "pop" })
     .editSemantic({ property: "layer[point].encoding.y.fieldType", value: "quantitative" })
     .editSemantic({ property: "layer[point].encoding.y.scale", value: "y" })
@@ -52,11 +52,6 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editSemantic({ property: "scale[x].paddingInner", value: band.paddingInner })
     .editSemantic({ property: "scale[x].paddingOuter", value: band.paddingOuter })
     .editSemantic({ property: "scale[x].align", value: 0.5 })
-    .editSemantic({ property: "scale[countryPoint].type", value: "point" })
-    .editSemantic({ property: "scale[countryPoint].domain", value: "auto" })
-    .editSemantic({ property: "scale[countryPoint].range", value: "auto" })
-    .editSemantic({ property: "scale[countryPoint].padding", value: point.padding })
-    .editSemantic({ property: "scale[countryPoint].align", value: 0.5 })
     .editSemantic({ property: "scale[y].type", value: "linear" })
     .editSemantic({ property: "scale[y].domain", value: "auto" })
     .editSemantic({ property: "scale[y].range", value: "auto" })

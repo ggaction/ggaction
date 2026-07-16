@@ -11,7 +11,7 @@ Gapminder subsets로 UTC `time`, categorical `band` and `point` target geometry�
 - [x] Point center/zero-bandwidth reference values
 - [x] Primitive bar/series variants and future call chains
 - [x] Browser and PNG verification
-- [ ] Gate B user confirmation
+- [x] Gate B user confirmation
 - [x] STEP status, conceptual commit and push
 
 ## 완료 조건
