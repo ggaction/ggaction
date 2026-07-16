@@ -31,7 +31,7 @@ Normative action contract:
 - [x] `filterMarks` migration
 - [x] `editBarMark`
 - [x] Cross-cutting robustness and option matrix
-- [ ] Docs, contract promotion and Phase closeout
+- [x] Docs, contract promotion and Phase closeout
 
 ## Public API scope
 
