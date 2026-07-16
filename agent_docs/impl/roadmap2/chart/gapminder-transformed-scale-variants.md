@@ -211,8 +211,49 @@ const timeSeries = chart()
 
 ## Gate C — discretized color
 
-The Gate A scatterplot is recolored with representative `quantize`, `quantile` and `threshold` definitions. Exact
-fixtures own class boundaries and interval labels; representative PNGs verify concrete colors and discrete legends.
+The Gate A scatterplot is recolored with representative `quantize`, `quantile` and `threshold` definitions. The
+plot region stays fixed while the Canvas grows to `480×312` with margin
+`{ top: 57.6, right: 114, bottom: 43.2, left: 50.4 }` so five interval labels fit on the right.
+
+Every variant uses this explicit low-to-high color range:
+
+```javascript
+const range = ["#440154", "#3b528b", "#21918c", "#5ec962", "#fde725"];
+```
+
+- `quantize`: auto extent `[52.1, 82.5]` and equal boundaries `[58.18, 64.26, 70.34, 76.42]`.
+- `quantile`: auto sample and linear-interpolation boundaries
+  `[69.178, 74.17, 77.71000000000001, 79.728]`; class counts are `[13, 12, 12, 12, 13]`.
+- `threshold`: explicit boundaries `[60, 70, 75, 80]`.
+- A value equal to one boundary enters the higher class.
+- Legend labels are `< first`, adjacent `lower–upper` intervals and `≥ last`, formatted to one decimal when needed.
+- The interval legend uses five `14×12` swatches, vertical `28px` item spacing and no border.
+
+The three target chains share the Gate A data, point, x/y, guide and appearance calls. Their color calls are:
+
+```javascript
+.encodeColor({
+  field: "life_expect",
+  fieldType: "quantitative",
+  scale: { type: "quantize", range }
+});
+
+.encodeColor({
+  field: "life_expect",
+  fieldType: "quantitative",
+  scale: { type: "quantile", range }
+});
+
+.encodeColor({
+  field: "life_expect",
+  fieldType: "quantitative",
+  scale: { type: "threshold", domain: [60, 70, 75, 80], range }
+});
+```
+
+Each chain requests an inferred right-side discrete legend with `direction: "vertical"`, `itemGap: 28`, 10px labels
+and title, and the chart title identifies its boundary policy. The executable complete target chains are owned by
+`test/gates/gapminder-discretized-color-scales/variants/manifest.js` until Gate approval.
 
 ## Gate D — continuous-color bars
 
