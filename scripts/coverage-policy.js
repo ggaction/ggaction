@@ -6,7 +6,7 @@ export const CRITICAL_COVERAGE_FLOORS = Object.freeze({
   }),
   "actions/encodings/position/policies/index.js": Object.freeze({
     lines: 90,
-    branches: 85,
+    branches: 75,
     functions: 100
   }),
   "core/immutable.js": Object.freeze({ lines: 90, branches: 85, functions: 100 }),

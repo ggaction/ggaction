@@ -51,3 +51,27 @@ test("does not discover programs or support modules as tests", () => {
     assert.equal(classifyTestFile(file, testRoot), undefined);
   }
 });
+
+test("selects tests by chart, capability, or relative path", () => {
+  const histogram = collectTestFiles("all", testRoot, [
+    "chart:cars-histogram"
+  ]);
+  assert.equal(histogram.length > 0, true);
+  assert.equal(histogram.every(file => file.includes(
+    `${path.sep}charts${path.sep}cars-histogram${path.sep}`
+  )), true);
+
+  const selection = collectTestFiles("all", testRoot, [
+    "capability:selection"
+  ]);
+  assert.equal(selection.length > 0, true);
+  assert.equal(selection.every(file =>
+    path.relative(testRoot, file).toLowerCase().includes("selection")
+  ), true);
+
+  const scales = collectTestFiles("all", testRoot, ["unit/actions/scales"]);
+  assert.equal(scales.length > 0, true);
+  assert.equal(scales.every(file => file.includes(
+    `${path.sep}unit${path.sep}actions${path.sep}scales${path.sep}`
+  )), true);
+});

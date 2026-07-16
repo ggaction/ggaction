@@ -3,7 +3,11 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-import { assertCriticalCoverage } from "./coverage-policy.js";
+import {
+  assertCriticalCoverage,
+  CRITICAL_COVERAGE_FLOORS,
+  parseCoverageTable
+} from "./coverage-policy.js";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const testRoot = path.join(repositoryRoot, "test");
@@ -38,19 +42,42 @@ export function classifyTestFile(file, root = testRoot) {
   return undefined;
 }
 
-export function collectTestFiles(suite = "all", root = testRoot) {
+function matchesSelector(file, root, selector) {
+  const relative = path.relative(root, file).split(path.sep).join("/");
+  if (selector.startsWith("chart:")) {
+    return relative.startsWith(`charts/${selector.slice("chart:".length)}/`);
+  }
+  const value = selector.startsWith("capability:")
+    ? selector.slice("capability:".length)
+    : selector.replace(/^test\//, "");
+  return relative.toLowerCase().includes(value.toLowerCase());
+}
+
+export function collectTestFiles(suite = "all", root = testRoot, selectors = []) {
   const requested = suite === "all" || suite === "coverage"
     ? new Set(NORMAL_SUITES)
     : new Set([suite]);
   return walk(root)
     .filter(file => requested.has(classifyTestFile(file, root)))
+    .filter(file => selectors.length === 0 || selectors.some(
+      selector => matchesSelector(file, root, selector)
+    ))
     .sort();
 }
 
-function run(suite) {
-  const files = collectTestFiles(suite);
+function coverageSummary(output) {
+  const coverage = parseCoverageTable(output).get("all files");
+  if (coverage === undefined) return "Coverage thresholds passed.\n";
+  return `Coverage: ${coverage.lines}% lines, ${coverage.branches}% branches, ` +
+    `${coverage.functions}% functions; ` +
+    `${Object.keys(CRITICAL_COVERAGE_FLOORS).length} critical floors passed.\n`;
+}
+
+function run(suite, selectors) {
+  const files = collectTestFiles(suite, testRoot, selectors);
   if (files.length === 0) {
-    throw new Error(`No test files found for suite "${suite}".`);
+    const suffix = selectors.length === 0 ? "" : ` matching ${selectors.join(", ")}`;
+    throw new Error(`No test files found for suite "${suite}"${suffix}.`);
   }
   const coverage = suite === "coverage";
   const args = ["--test"];
@@ -72,9 +99,14 @@ function run(suite) {
   });
   if (result.error) throw result.error;
   if (coverage) {
-    process.stdout.write(result.stdout);
-    process.stderr.write(result.stderr);
-    if (result.status === 0) assertCriticalCoverage(result.stdout);
+    if (result.status === 0) {
+      assertCriticalCoverage(result.stdout);
+      process.stdout.write(coverageSummary(result.stdout));
+      process.stderr.write(result.stderr);
+    } else {
+      process.stdout.write(result.stdout);
+      process.stderr.write(result.stderr);
+    }
   }
   process.exitCode = result.status ?? 1;
 }
@@ -83,15 +115,19 @@ if (
   process.argv[1] &&
   fileURLToPath(import.meta.url) === path.resolve(process.argv[1])
 ) {
-  const suite = process.argv[2] ?? "all";
+  const requested = process.argv[2] ?? "all";
   const accepted = new Set([
     ...NORMAL_SUITES,
     ...SPECIAL_SUITES,
     "all",
     "coverage"
   ]);
-  if (!accepted.has(suite)) {
-    throw new Error(`Unknown test suite "${suite}".`);
+  const suite = accepted.has(requested) ? requested : "all";
+  const selectors = accepted.has(requested)
+    ? process.argv.slice(3)
+    : process.argv.slice(2);
+  if (suite === "coverage" && selectors.length > 0) {
+    throw new Error("Coverage requires the complete normal test suite.");
   }
-  run(suite);
+  run(suite, selectors);
 }

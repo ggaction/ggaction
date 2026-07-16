@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
+import {
+  assertAtomicFailures,
+  requireTestScale
+} from "../../../support/program-state.js";
 
 const rows = Object.freeze([
   Object.freeze({ x: -5, y: 1, group: "a" }),
@@ -36,13 +40,13 @@ test("edits a scale immutably and reverses its final concrete range", () => {
     child => child.properties.x
   );
 
-  assert.deepEqual(original.semanticSpec.scales.find(scale => scale.id === "x"), {
+  assert.deepEqual(requireTestScale(original, "x"), {
     id: "x",
     type: "linear",
     domain: [0, 10],
     range: "auto"
   });
-  assert.equal(edited.semanticSpec.scales.find(scale => scale.id === "x").reverse, true);
+  assert.equal(requireTestScale(edited, "x").reverse, true);
   assert.deepEqual(edited.resolvedScales.x.range, [280, 40]);
   assert.deepEqual(after, before.map(value => 320 - value));
   assert.notStrictEqual(edited.semanticSpec, original.semanticSpec);
@@ -71,7 +75,7 @@ test("resets auto domain and range while preserving omitted policies", () => {
   });
   explicitRange[0] = -100;
 
-  assert.deepEqual(edited.semanticSpec.scales.find(scale => scale.id === "x"), {
+  assert.deepEqual(requireTestScale(edited, "x"), {
     id: "x",
     type: "linear",
     domain: "auto",
@@ -101,26 +105,28 @@ test("infers one existing scale and records meaningful nested actions", () => {
 
 test("rejects invalid, empty, unknown, incompatible, and ambiguous edits atomically", () => {
   const base = pointProgram();
-  const snapshot = {
-    semanticSpec: base.semanticSpec,
-    graphicSpec: base.graphicSpec,
-    context: base.context,
-    trace: base.trace
-  };
-
-  assert.throws(() => base.editScale({ id: "x" }), /at least one/);
-  assert.throws(() => base.editScale({ id: "missing", reverse: true }), /Unknown scale/);
-  assert.throws(() => base.editScale({ id: "x", reverse: "yes" }), /must be a boolean/);
-  assert.throws(() => base.editScale({ id: "color", clamp: true }), /does not support clamp/);
-  assert.throws(
-    () => base.editScale({ id: "x", type: "time" }),
-    /consumer incompatible with type "time"/
-  );
   const ambiguous = base._clone({ context: {} });
-  assert.throws(() => ambiguous.editScale({ reverse: true }), /requires id/);
-
-  assert.strictEqual(base.semanticSpec, snapshot.semanticSpec);
-  assert.strictEqual(base.graphicSpec, snapshot.graphicSpec);
-  assert.strictEqual(base.context, snapshot.context);
-  assert.strictEqual(base.trace, snapshot.trace);
+  assertAtomicFailures(base, [
+    { operation: () => base.editScale({ id: "x" }), error: /at least one/ },
+    {
+      operation: () => base.editScale({ id: "missing", reverse: true }),
+      error: /Unknown scale/
+    },
+    {
+      operation: () => base.editScale({ id: "x", reverse: "yes" }),
+      error: /must be a boolean/
+    },
+    {
+      operation: () => base.editScale({ id: "color", clamp: true }),
+      error: /does not support clamp/
+    },
+    {
+      operation: () => base.editScale({ id: "x", type: "time" }),
+      error: /consumer incompatible with type "time"/
+    }
+  ]);
+  assertAtomicFailures(ambiguous, [{
+    operation: () => ambiguous.editScale({ reverse: true }),
+    error: /requires id/
+  }]);
 });
