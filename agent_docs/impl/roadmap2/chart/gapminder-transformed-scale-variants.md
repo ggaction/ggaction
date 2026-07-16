@@ -24,7 +24,7 @@ visual oracle이다.
 - y: `fertility`, quantitative sqrt
 - color: `life_expect`, quantitative sequential `viridis`
 - point: circle, radius 4, opacity 0.72, white 0.6px outline
-- Canvas: `760×520`, margin `{ top: 96, right: 150, bottom: 72, left: 84 }`
+- Canvas: `456×312`, margin `{ top: 57.6, right: 90, bottom: 43.2, left: 50.4 }`
 - Guides: x/y axes, horizontal and vertical grids, right gradient legend
 - Title: `Population, Fertility, and Life Expectancy`; subtitle: `Gapminder countries in 2005 · log population scale`
 
@@ -33,9 +33,9 @@ visual oracle이다.
 ```javascript
 const program = chart()
   .createCanvas({
-    width: 760,
-    height: 520,
-    margin: { top: 96, right: 150, bottom: 72, left: 84 }
+    width: 456,
+    height: 312,
+    margin: { top: 57.6, right: 90, bottom: 43.2, left: 50.4 }
   })
   .createData({ values: gapminder })
   .filterData({
@@ -67,11 +67,16 @@ const program = chart()
       y: { title: { text: "Fertility" } }
     },
     grid: { horizontal: {}, vertical: {} },
-    legend: { title: "Life expectancy" }
+    legend: {
+      title: "Life expectancy",
+      titleStyle: { fontSize: 10 }
+    }
   })
   .createTitle({
     text: "Population, Fertility, and Life Expectancy",
-    subtitle: "Gapminder countries in 2005 · log population scale"
+    subtitle: "Gapminder countries in 2005 · log population scale",
+    titleStyle: { fontSize: 16 },
+    subtitleStyle: { fontSize: 10 }
   });
 ```
 

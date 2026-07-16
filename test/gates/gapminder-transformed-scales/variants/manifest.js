@@ -6,9 +6,9 @@ const gapminder = loadGapminder();
 
 export const transformedScaleTargetCallChain = `chart()
   .createCanvas({
-    width: 760,
-    height: 520,
-    margin: { top: 96, right: 150, bottom: 72, left: 84 }
+    width: 456,
+    height: 312,
+    margin: { top: 57.6, right: 90, bottom: 43.2, left: 50.4 }
   })
   .createData({ values: gapminder })
   .filterData({
@@ -44,11 +44,16 @@ export const transformedScaleTargetCallChain = `chart()
       y: { title: { text: "Fertility" } }
     },
     grid: { horizontal: {}, vertical: {} },
-    legend: { title: "Life expectancy" }
+    legend: {
+      title: "Life expectancy",
+      titleStyle: { fontSize: 10 }
+    }
   })
   .createTitle({
     text: "Population, Fertility, and Life Expectancy",
-    subtitle: "Gapminder countries in 2005 · log population scale"
+    subtitle: "Gapminder countries in 2005 · log population scale",
+    titleStyle: { fontSize: 16 },
+    subtitleStyle: { fontSize: 10 }
   });`;
 
 export const visualVariants = Object.freeze([defineVisualVariant({
@@ -57,26 +62,26 @@ export const visualVariants = Object.freeze([defineVisualVariant({
   title: "Gapminder Log and Sqrt Scale Gate",
   callChain: transformedScaleTargetCallChain,
   primitive: createGapminderTransformedScalePrimitives(gapminder),
-  width: 760,
-  height: 520,
+  width: 456,
+  height: 312,
   colors: ["#440154", "#fde725"],
   regions: [
     Object.freeze({
       name: "plot",
-      x: 84,
-      y: 96,
-      width: 526,
-      height: 352,
-      minimumInkPixels: 180
+      x: 50.4,
+      y: 57.6,
+      width: 315.6,
+      height: 211.2,
+      minimumInkPixels: 90
     }),
     Object.freeze({
       name: "gradient legend",
-      x: 638,
-      y: 118,
-      width: 110,
-      height: 270,
+      x: 382.8,
+      y: 70.8,
+      width: 66,
+      height: 162,
       colors: ["#440154", "#fde725"],
-      minimumInkPixels: 150
+      minimumInkPixels: 75
     })
   ]
 })]);

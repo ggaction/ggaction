@@ -16,8 +16,8 @@ test("independently resolves the Gate A filter and transformed mappings", () => 
 
   const afghanistan = values.rows.findIndex(row => row.country === "Afghanistan");
   assert.equal(afghanistan, 0);
-  assert.ok(Math.abs(values.points[afghanistan].x - 335.174359514637) < 1e-9);
-  assert.ok(Math.abs(values.points[afghanistan].y - 120.85770680023654) < 1e-9);
+  assert.ok(Math.abs(values.points[afghanistan].x - 201.10461570878223) < 1e-9);
+  assert.ok(Math.abs(values.points[afghanistan].y - 72.51462408014194) < 1e-9);
   assert.equal(values.points[afghanistan].fill, "#433f85");
   assert.deepEqual(values.axes.x.labels, ["100K", "1M", "10M", "100M", "1B", "10B"]);
   assert.deepEqual(values.axes.y.labels, ["0", "2", "4", "6", "8"]);

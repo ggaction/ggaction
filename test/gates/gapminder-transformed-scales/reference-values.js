@@ -8,10 +8,21 @@ const VIRIDIS = Object.freeze([
   "#fde725"
 ]);
 
+export const TRANSFORMED_SCATTER_SCALE = 0.6;
+
+function scaled(value) {
+  return value * TRANSFORMED_SCATTER_SCALE;
+}
+
 export const TRANSFORMED_SCATTER_LAYOUT = Object.freeze({
-  width: 760,
-  height: 520,
-  margin: Object.freeze({ top: 96, right: 150, bottom: 72, left: 84 })
+  width: scaled(760),
+  height: scaled(520),
+  margin: Object.freeze({
+    top: scaled(96),
+    right: scaled(150),
+    bottom: scaled(72),
+    left: scaled(84)
+  })
 });
 
 function parseHex(value) {
@@ -93,10 +104,10 @@ export function createGapminderTransformedScaleValues(gapminder) {
   const gradient = Object.freeze(Array.from({ length: gradientSteps }, (_, index) => {
     const ratio = index / (gradientSteps - 1);
     return Object.freeze({
-      x: 646,
-      y: 152 + ratio * 220,
-      width: 16,
-      height: 220 / gradientSteps + 0.6,
+      x: scaled(646),
+      y: scaled(152 + ratio * 220),
+      width: scaled(16),
+      height: scaled(220 / gradientSteps + 0.6),
       fill: samplePalette(1 - ratio)
     });
   }));
@@ -130,7 +141,7 @@ export function createGapminderTransformedScaleValues(gapminder) {
       gradient,
       ticks: legendTicks,
       positions: Object.freeze(legendTicks.map(value =>
-        mapLinear(value, colorDomain, [372, 152])
+        mapLinear(value, colorDomain, [scaled(372), scaled(152)])
       )),
       labels: Object.freeze(legendTicks.map(value =>
         Number.isInteger(value) ? String(value) : value.toFixed(1)
