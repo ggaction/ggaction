@@ -65,3 +65,9 @@ with fixed-width caps.
 Open <http://localhost:8000/examples/gapminder-error-band/>. This chart derives
 mean life expectancy and 95% confidence intervals by year and cluster, then
 draws one translucent closed area path per cluster.
+
+## Cars box plot
+
+Open <http://localhost:8000/examples/cars-box-plot/>. This chart derives
+Origin-wise Tukey quartiles, observed whiskers, and black diamond outliers,
+then renders them through `createBoxPlot`.

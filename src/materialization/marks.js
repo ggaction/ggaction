@@ -59,15 +59,17 @@ export function canMaterializeBar(program, layer) {
   }
   const grain = resolveBarGrain(layer);
   return grain === BAR_GRAINS.histogram || (
-    grain === BAR_GRAINS.aggregate &&
+    [BAR_GRAINS.aggregate, BAR_GRAINS.ranged].includes(grain) &&
     program.markConfigs[layer.id]?.barWidth !== undefined
   );
 }
 
 export function canMaterializeRule(program, layer) {
   const fixedSpan = program.markConfigs[layer.id]?.fixedSpan;
+  const boxSpanOwner = program.markConfigs[layer.id]?.boxSpanOwner;
   return layer.mark?.type === "rule" && (
     resolveRuleMode(layer) !== undefined ||
+    (boxSpanOwner !== undefined && hasPositionScales(layer)) ||
     (fixedSpan !== undefined && hasPositionScales(layer))
   );
 }

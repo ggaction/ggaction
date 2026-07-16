@@ -4,11 +4,13 @@ import { validateMarkOptions } from "../shared.js";
 import { deriveAggregateRectangles } from "../../../materialization/bars/aggregate.js";
 import { deriveHistogramRectangles } from "../../../materialization/bars/histogram.js";
 import { requireCompleteBar } from "../../../materialization/bars/resolve.js";
+import { deriveRangedRectangles } from "../../../materialization/bars/ranged.js";
+import { BAR_GRAINS } from "../../../grammar/bars/policy.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
 function editRectangles(program, id, rectangles) {
-  return program
+  let next = program
     .editGraphics({ target: id, property: "length", value: rectangles.length })
     .editGraphics({
       target: id,
@@ -45,6 +47,14 @@ function editRectangles(program, id, rectangles) {
       property: "strokeWidth",
       value: rectangles.map(rect => rect.strokeWidth)
     });
+  if (rectangles.some(rect => rect.opacity !== undefined)) {
+    next = next.editGraphics({
+      target: id,
+      property: "opacity",
+      value: rectangles.map(rect => rect.opacity ?? 1)
+    });
+  }
+  return next;
 }
 
 export const rematerializeBarMark = action(
@@ -87,6 +97,12 @@ export const rematerializeBarMark = action(
         id,
         deriveAggregateRectangles(required, resolved, width)
       );
+    }
+
+    if (required.materialization === BAR_GRAINS.ranged) {
+      const width = resolved.markConfigs[id]?.barWidth;
+      if (width === undefined) return resolved.editGraphics({ target: id, property: "length", value: 0 });
+      return editRectangles(resolved, id, deriveRangedRectangles(required, resolved, width));
     }
 
     return editRectangles(

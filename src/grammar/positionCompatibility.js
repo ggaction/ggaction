@@ -1,7 +1,7 @@
 export const POSITION_FIELD_COMPATIBILITY = Object.freeze({
   point: Object.freeze({
-    x: Object.freeze(["quantitative", "temporal", "ordinal"]),
-    y: Object.freeze(["quantitative", "temporal", "ordinal"])
+    x: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"]),
+    y: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"])
   }),
   line: Object.freeze({
     x: Object.freeze(["quantitative", "temporal"]),
@@ -16,8 +16,8 @@ export const POSITION_FIELD_COMPATIBILITY = Object.freeze({
     y: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"])
   }),
   bar: Object.freeze({
-    x: Object.freeze(["quantitative", "temporal", "ordinal"]),
-    y: Object.freeze(["quantitative", "temporal", "ordinal"])
+    x: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"]),
+    y: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"])
   })
 });
 

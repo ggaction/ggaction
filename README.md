@@ -45,6 +45,7 @@ state is never automatically compiled during rendering.
 - [Density area chart tutorial](./docs/tutorials/density-area.md)
 - [Error-bar chart tutorial](./docs/tutorials/error-bar.md)
 - [Error-band chart tutorial](./docs/tutorials/error-band.md)
+- [Box-plot API](./docs/api/box-plots.md)
 - [Chart concepts](./docs/concepts/chart-program.md)
 - [Complete action reference](./docs/reference/actions.md)
 - [Supported features](./docs/supported-features.md)
@@ -61,6 +62,8 @@ distributions from the cars data. The [error-bar chart](./examples/cars-error-ba
 summarizes mean Acceleration with 95% confidence intervals. The
 [error-band chart](./examples/gapminder-error-band/) summarizes grouped
 confidence intervals as closed area paths over time.
+The [box plot](./examples/cars-box-plot/) summarizes Miles per Gallon by Origin
+with Tukey quartiles, observed whiskers, and diamond outliers.
 Completed programs can also be exported through
 [`ggaction/png`](./docs/api/rendering.md#png-output).
 

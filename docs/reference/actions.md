@@ -192,8 +192,8 @@ encodeX({ datum, target?, fieldType, coordinate?, scale? }) // rule
 ```
 
 Create or compatibly replace an x encoding. Points accept quantitative,
-temporal, and ordinal fields. Bars accept binned quantitative x, vertical
-ordinal/temporal categories, or a horizontal quantitative aggregate measure.
+temporal, ordinal, and nominal fields. Bars accept binned quantitative x, vertical
+nominal/ordinal/temporal categories, or a horizontal quantitative aggregate measure.
 Rules accept exactly one field or datum and an explicit field type.
 [Position encodings](../api/position-encodings.md)
 
@@ -221,7 +221,7 @@ encodeY2({ field, target?, fieldType, scale?, coordinate? })
 encodeY2({ datum, target?, fieldType, scale?, coordinate? }) // rule
 ```
 
-Assign an area upper edge or a rule secondary y endpoint. It requires an
+Assign an area or ranged-bar upper edge, or a rule secondary y endpoint. It requires an
 existing y and shares its scale and coordinate. [Position encodings](../api/position-encodings.md)
 
 ### `encodeX2`
@@ -231,7 +231,7 @@ encodeX2({ field, target?, fieldType, scale?, coordinate? })
 encodeX2({ datum, target?, fieldType, scale?, coordinate? })
 ```
 
-Assign an area upper edge or a rule secondary x endpoint. It requires an
+Assign an area or ranged-bar upper edge, or a rule secondary x endpoint. It requires an
 existing x and shares its scale and coordinate. [Position encodings](../api/position-encodings.md)
 
 ### `encodeYRange`
@@ -240,7 +240,7 @@ existing x and shares its scale and coordinate. [Position encodings](../api/posi
 encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area `encodeY` and `encodeY2`.
+Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
 [Encodings](../api/encodings.md)
 
 ### `encodeXRange`
@@ -249,7 +249,7 @@ Atomically compose area `encodeY` and `encodeY2`.
 encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area `encodeX` and `encodeX2`.
+Atomically compose area or ranged-bar `encodeX` and `encodeX2`.
 [Encodings](../api/encodings.md)
 
 ### `encodeGroup`
@@ -454,6 +454,17 @@ ordinary area, the matching atomic range action, and grouping actions.
 lower and upper line layers. Boundary curve inherits the area curve unless it
 is overridden.
 [Error bands](../api/error-bands.md)
+
+### `createBoxPlot`
+
+```javascript
+createBoxPlot({ id?, target?, data?, x?, y?, coordinate? } = {})
+```
+
+Create a vertical Tukey box plot from categorical x and quantitative y fields.
+The action infers an encoded source when possible and composes immutable box
+summary/outlier data, error-bar whiskers, ranged-bar bodies, median rules, and
+diamond outliers. [Box plots](../api/box-plots.md)
 
 ### `createGuides`
 

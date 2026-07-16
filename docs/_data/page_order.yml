@@ -54,6 +54,8 @@
   url: /api/error-bars/
 - title: Error Bands
   url: /api/error-bands/
+- title: Box Plots
+  url: /api/box-plots/
 - title: Guides
   url: /api/guides/
 - title: Titles

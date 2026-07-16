@@ -83,6 +83,12 @@ The main, extension, and PNG entry points include TypeScript declarations.
     <a class="docs-chart-gallery__title" href="./tutorials/error-bar/">Error bar</a>
   </article>
   <article>
+    <a class="docs-chart-gallery__image" href="./assets/images/cars-box-plot.png" aria-label="Open the full-size box plot">
+      <img src="./assets/images/cars-box-plot.png" alt="Fuel economy distribution by origin as a Tukey box plot" width="720" height="920" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./api/box-plots/">Box plot</a>
+  </article>
+  <article>
     <a class="docs-chart-gallery__image" href="./assets/images/gapminder-error-band.png" aria-label="Open the full-size error-band chart">
       <img src="./assets/images/gapminder-error-band.png" alt="Mean life expectancy by cluster with 95% confidence bands" width="1520" height="960" loading="lazy">
     </a>
@@ -135,6 +141,7 @@ Open one of the runnable repository examples:
 - `http://localhost:4173/examples/cars-density-area/`
 - `http://localhost:4173/examples/cars-error-bar/`
 - `http://localhost:4173/examples/gapminder-error-band/`
+- `http://localhost:4173/examples/cars-box-plot/`
 
 Those browser examples import `../../src/index.js` directly. The code below is
 the complete module used by `examples/getting-started/`, so it runs immediately
@@ -2274,6 +2281,12 @@ meaning and resolve its scale. `encodeY()` then infers count/zero-stack meaning
 and resolves its scale, then materializes one concrete rectangle per non-empty
 bin.
 
+A bar can instead represent an observed interval. Give it a nominal or ordinal
+category on one axis, use `encodeYRange({ lower, upper })` or
+`encodeXRange({ lower, upper })` on the other, and set thickness with
+`encodeBarWidth`. The secondary endpoint removes stale aggregate/stack intent;
+both endpoints share one scale and Canvas edits rematerialize the rectangles.
+
 `encodeColor({ field, layout? })` can then split each non-empty bin into category
 rects. The color scale domain controls series order. Stack uses total bin counts,
 fill normalizes to one, group creates within-bin slots, overlay shares a baseline,
@@ -2361,7 +2374,7 @@ defaults to `"mean"` and may also use a parameterized quantile or ordered
 The advanced `encodeXOffset({ field })` action resolves nominal slots within
 each x band; grouped color layout normally calls it on the author's behalf.
 
-Ranged area marks use one independent position and one atomic range action. A
+Ranged area and bar marks use one categorical/independent position and one atomic range action. A
 vertical range uses `encodeYRange`:
 
 ```javascript
@@ -2389,6 +2402,10 @@ area
 Both range edges share one scale, whose domain includes lower and upper values.
 `encodeGroup` splits area or line paths by a nominal field without creating a
 scale or guide.
+
+For a bar mark, the same range actions create one concrete rectangle per
+observed category. `encodeBarWidth({ band })` resolves its thickness from the
+category band; `pixels` keeps a fixed logical width across Canvas changes.
 
 ## Atomic histogram
 
@@ -2971,6 +2988,77 @@ The two boundary IDs are `${id}LowerBoundary` and `${id}UpperBoundary`. They
 remain ordinary line layers and can be targeted by line or encoding actions.
 The aggregate intentionally does not accept separate lower and upper style
 objects.
+
+<!-- Source: /api/box-plots/ -->
+
+# Box Plots
+
+`createBoxPlot` creates a vertical Tukey box plot from one categorical x field
+and one quantitative y field. It derives immutable summary/outlier datasets and
+composes ordinary ranged-bar, error-bar, rule, and point actions.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    width: 360,
+    height: 460,
+    margin: { top: 140, right: 40, bottom: 70, left: 80 }
+  })
+  .createData({ values: cars })
+  .createBoxPlot({
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Miles_per_Gallon" }
+  });
+```
+
+## Signature
+
+```javascript
+createBoxPlot({ id?, target?, data?, x?, y?, coordinate? } = {})
+```
+
+| Option | Meaning | Default or inference |
+| --- | --- | --- |
+| `id` | box-body owner ID | first instance uses `"boxPlot"` |
+| `target` | compatible encoded source layer | current, then unique eligible layer |
+| `data` | source dataset | source layer, then current dataset |
+| `x` | categorical field, type, and optional scale | inferred from `target` when omitted |
+| `y` | quantitative field and optional scale | inferred from `target` when omitted |
+| `coordinate` | Cartesian coordinate ID | source coordinate, then `"main"` |
+
+`createBoxPlot()` may also establish an incomplete owner first. Compatible
+`encodeX` and `encodeY` calls can follow later; the completed semantic and
+graphical state is the same as supplying both channels at creation time.
+
+## Current statistical and visual defaults
+
+- Quartiles use linear interpolation at `(n - 1) × p`.
+- Whiskers use the most extreme observed values inside `1.5 × IQR` fences.
+- Missing category or measure rows are omitted; non-missing non-finite measures
+  are errors.
+- Category order follows first valid source appearance.
+- Box width is `0.7` of the category band and box opacity is `1`.
+- Box borders, medians, whiskers, and caps use `1.5` logical pixels.
+- Outliers are black diamonds with radius-equivalent size `3` and opacity
+  `0.75`. No outlier resource is created when no outlier row exists.
+
+The summary and optional outlier datasets, child layers, and graphics use
+deterministic IDs derived from the owner. Canvas or shared-scale changes
+explicitly rematerialize boxes, medians, whiskers, caps, and outliers.
+
+## Current limitations
+
+The current action supports vertical Tukey box plots. Horizontal orientation,
+min/max whiskers, and public factor, width, style, or outlier toggles are not
+implemented yet. `createBoxPlot` is a create-only aggregate; there is no
+`editBoxPlot` action.
+
+## Related
+
+[Marks](./marks.md) · [Encodings](./encodings.md) ·
+[Error bars](./error-bars.md) · [Guides](./guides.md)
 
 <!-- Source: /api/guides/ -->
 
@@ -5063,19 +5151,19 @@ chart-authoring API does not support that combination.
 
 ## Complete chart support
 
-| Capability | Scatterplot | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Semantic mark | point | line | bar | bar | point + area + line | area | rule | area |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval |
-| Nominal color | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill |
-| Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — |
-| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, 8 curves, styled boundaries |
-| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis |
-| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis |
-| Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical |
-| Chart title | optional | optional | optional | optional | optional | optional | optional | optional |
-| Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Capability | Scatterplot | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band | Box plot |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Semantic mark | point | line | bar | bar | point + area + line | area | rule | area | bar + rule + point |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval | categorical x; quantitative y/y2 |
+| Nominal color | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill | body fill through ranged-bar color |
+| Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — | — |
+| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers |
+| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis | categorical x and linear y |
+| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis | horizontal |
+| Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical | optional ranged-bar color legend |
+| Chart title | optional | optional | optional | optional | optional | optional | optional | optional | optional |
+| Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 ## Shared foundations
 
@@ -5105,6 +5193,9 @@ Error bands support vertical and horizontal statistical or explicit ranges and
 optional lower/upper boundary lines with shared stroke, width, dash, opacity,
 and inherited or overridden curve. Independent lower/upper style objects are
 not implemented.
+Box plots currently support vertical categorical-x Tukey summaries with fixed
+documented appearance defaults. Horizontal/minmax variants and public
+factor/style/outlier options are not implemented yet.
 
 <!-- Source: /reference/actions/ -->
 
@@ -5297,8 +5388,8 @@ encodeX({ datum, target?, fieldType, coordinate?, scale? }) // rule
 ```
 
 Create or compatibly replace an x encoding. Points accept quantitative,
-temporal, and ordinal fields. Bars accept binned quantitative x, vertical
-ordinal/temporal categories, or a horizontal quantitative aggregate measure.
+temporal, ordinal, and nominal fields. Bars accept binned quantitative x, vertical
+nominal/ordinal/temporal categories, or a horizontal quantitative aggregate measure.
 Rules accept exactly one field or datum and an explicit field type.
 [Position encodings](../api/position-encodings.md)
 
@@ -5326,7 +5417,7 @@ encodeY2({ field, target?, fieldType, scale?, coordinate? })
 encodeY2({ datum, target?, fieldType, scale?, coordinate? }) // rule
 ```
 
-Assign an area upper edge or a rule secondary y endpoint. It requires an
+Assign an area or ranged-bar upper edge, or a rule secondary y endpoint. It requires an
 existing y and shares its scale and coordinate. [Position encodings](../api/position-encodings.md)
 
 ### `encodeX2`
@@ -5336,7 +5427,7 @@ encodeX2({ field, target?, fieldType, scale?, coordinate? })
 encodeX2({ datum, target?, fieldType, scale?, coordinate? })
 ```
 
-Assign an area upper edge or a rule secondary x endpoint. It requires an
+Assign an area or ranged-bar upper edge, or a rule secondary x endpoint. It requires an
 existing x and shares its scale and coordinate. [Position encodings](../api/position-encodings.md)
 
 ### `encodeYRange`
@@ -5345,7 +5436,7 @@ existing x and shares its scale and coordinate. [Position encodings](../api/posi
 encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area `encodeY` and `encodeY2`.
+Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
 [Encodings](../api/encodings.md)
 
 ### `encodeXRange`
@@ -5354,7 +5445,7 @@ Atomically compose area `encodeY` and `encodeY2`.
 encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area `encodeX` and `encodeX2`.
+Atomically compose area or ranged-bar `encodeX` and `encodeX2`.
 [Encodings](../api/encodings.md)
 
 ### `encodeGroup`
@@ -5559,6 +5650,17 @@ ordinary area, the matching atomic range action, and grouping actions.
 lower and upper line layers. Boundary curve inherits the area curve unless it
 is overridden.
 [Error bands](../api/error-bands.md)
+
+### `createBoxPlot`
+
+```javascript
+createBoxPlot({ id?, target?, data?, x?, y?, coordinate? } = {})
+```
+
+Create a vertical Tukey box plot from categorical x and quantitative y fields.
+The action infers an encoded source when possible and composes immutable box
+summary/outlier data, error-bar whiskers, ranged-bar bodies, median rules, and
+diamond outliers. [Box plots](../api/box-plots.md)
 
 ### `createGuides`
 

@@ -7,6 +7,7 @@ import { renderToPNG } from "ggaction/png";
 
 import { createCarsDensityArea } from "../examples/cars-density-area/program.js";
 import { createCarsErrorBar } from "../examples/cars-error-bar/program.js";
+import { createCarsBoxPlot } from "../examples/cars-box-plot/program.js";
 import { createCarsHistogram } from "../examples/cars-histogram/program.js";
 import { createCarsLineChart } from "../examples/cars-line-chart/program.js";
 import { createCarsRegressionScatterplot } from
@@ -85,6 +86,14 @@ export const chartImages = [
     programFile: new URL("../examples/cars-error-bar/program.js", import.meta.url),
     dataFile: new URL("../data/cars.json", import.meta.url),
     createProgram: () => createCarsErrorBar(cars)
+  },
+  {
+    id: "cars-box-plot",
+    width: 360,
+    height: 460,
+    programFile: new URL("../examples/cars-box-plot/program.js", import.meta.url),
+    dataFile: new URL("../data/cars.json", import.meta.url),
+    createProgram: () => createCarsBoxPlot(cars)
   },
   {
     id: "gapminder-error-band",

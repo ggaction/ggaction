@@ -7,15 +7,15 @@ reusable boundaries로 구현한다.
 
 ## 진행 상태
 
-- [ ] Pure box summary/outlier grammar and deterministic output order
-- [ ] Internal wrapped summary/outlier derived-data actions and provenance
-- [ ] Bar-compatible `encodeY2` and atomic `encodeYRange`
-- [ ] Ranged-bar completeness policy and vertical rect materialization
-- [ ] Ranged `encodeBarWidth` support
-- [ ] Band-width-aware median rule materialization
-- [ ] Scale/Canvas/data rematerialization plans
-- [ ] Numeric, validation, ownership and immutability coverage
-- [ ] STEP status, conceptual commits and pushes
+- [x] Pure box summary/outlier grammar and deterministic output order
+- [x] Internal wrapped summary/outlier derived-data actions and provenance
+- [x] Bar-compatible `encodeY2` and atomic `encodeYRange`
+- [x] Ranged-bar completeness policy and vertical rect materialization
+- [x] Ranged `encodeBarWidth` support
+- [x] Band-width-aware median rule materialization
+- [x] Scale/Canvas/data rematerialization plans
+- [x] Numeric, validation, ownership and immutability coverage
+- [x] STEP status, conceptual commits and pushes
 
 ## 완료 조건
 

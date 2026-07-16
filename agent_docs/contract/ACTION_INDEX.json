@@ -722,6 +722,24 @@
       }
     },
     {
+      "name": "createBoxPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Owned summary/outlier data, error-bar, ranged-bar, median-rule, and point children",
+      "audit": "Intentional vertical Tukey scope; horizontal and option expansion remain planned",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITE_MARKS.md",
+        "anchor": "createboxplot"
+      }
+    },
+    {
       "name": "createAxes",
       "layer": "user-facing",
       "domain": "axes",
@@ -1516,15 +1534,6 @@
   ],
   "plannedActions": [
     {
-      "name": "createBoxPlot",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/COMPOSITE_MARKS.md",
-        "anchor": "createboxplot"
-      }
-    },
-    {
       "name": "selectRows",
       "status": "planned",
       "readiness": "accepted",
@@ -1582,6 +1591,9 @@
   ],
   "internal": {
     "materialization": [
+      "materializeBoxOutlierData",
+      "materializeBoxPlot",
+      "materializeBoxSummaryData",
       "materializeDensityData",
       "materializeFilteredData",
       "materializeIntervalData",
@@ -1614,6 +1626,10 @@
       "releaseDerivedData"
     ],
     "aggregateComponents": [
+      "createBoxMedian",
+      "createBoxOutlierData",
+      "createBoxOutliers",
+      "createBoxSummaryData",
       "createErrorBarCap",
       "createErrorBandBoundary"
     ],

@@ -30,7 +30,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Signature: `encodeX({ field, target?, fieldType?, scale?, coordinate?, aggregate?, bin?, stack? })`
 - `field`: Implemented, dataset에 존재하는 field. 현재 supported mark grain에 맞는 값 type이 필요하다.
 - `target`: Implemented, mark ID. 생략하면 current mark, 아니면 유일한 eligible mark를 추론한다.
-- `fieldType`: Implemented. Point x/y는 quantitative/temporal/ordinal, line과 area는 아래 canonical
+- `fieldType`: Implemented. Point x/y는 quantitative/temporal/ordinal/nominal, line과 area는 아래 canonical
   compatibility matrix, bar는 quantitative/temporal/ordinal을 mark grain에 맞게 지원한다.
 - `scale`: Implemented. 위 shared contract를 사용한다. 기본 ID는 `x`, auto range는 left-to-right plot bounds다.
 - `coordinate`: Implemented, coordinate ID. 생략 시 positional action이 Cartesian `main` coordinate를
@@ -166,7 +166,7 @@ type AggregateOperation =
 
 - Canonical owner: `src/grammar/positionCompatibility.js`. Generic mark × channel acceptance는 여기서만
   정의하고 bar grain narrowing은 `src/grammar/bars/policy.js`가 소유한다.
-- Point x/y: `"quantitative" | "temporal" | "ordinal"`.
+- Point x/y: `"quantitative" | "temporal" | "ordinal" | "nominal"`.
 - Line x: `"quantitative" | "temporal"`; line y는 aggregate policy에 따라
   `"quantitative" | "temporal" | "ordinal" | "nominal"`을 더 좁힌다.
 - Area x: ranged area는 `"quantitative" | "temporal"`, density area는 `"quantitative"`; area y는
@@ -223,18 +223,19 @@ type AggregateOperation =
 
 ## `encodeY2`
 
-- Signature: area는 `encodeY2({ field, target?, fieldType?, scale? })`; rule은
+- Signature: area와 ranged bar는 `encodeY2({ field, target?, fieldType?, scale? })`; rule은
   `encodeY2({ field | datum, target?, fieldType, scale?, coordinate? })`다.
-- Area `field`는 quantitative upper-bound field다. Rule은 field/datum 중 정확히 하나를 요구하고 primary y의
+- Area/ranged-bar `field`는 quantitative upper-bound field다. Bar는 stale aggregate/stack intent를 제거해
+  lower/upper endpoints를 one range grain으로 저장한다. Rule은 field/datum 중 정확히 하나를 요구하고 primary y의
   field type, scale과 coordinate를 공유한다.
-- 같은 action 재호출은 area/rule secondary endpoint만 교체하고 dependent graphics를 rematerialize한다.
-- Effect: area는 closed path, rule은 vertical/diagonal concrete line endpoint를 다시 만든다.
-- Coverage: ranged area/regression tests와 rule position tests가 shared scale, reassignment와 invalid
+- 같은 action 재호출은 area/bar/rule secondary endpoint만 교체하고 dependent graphics를 rematerialize한다.
+- Effect: area는 closed path, bar는 concrete rect range, rule은 vertical/diagonal concrete line endpoint를 다시 만든다.
+- Coverage: ranged area/bar/regression tests와 rule position tests가 shared scale, reassignment와 invalid
   prerequisites를 검증한다.
 
 ### Formal values — `encodeY2`
 
-- Implemented: area `encodeY2({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId } })`; rule `encodeY2(RulePositionAssignment)`.
+- Implemented: area/bar `encodeY2({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId } })`; rule `encodeY2(RulePositionAssignment)`.
 - Proposed (NOT IMPLEMENTED): —; y2는 y scale 공유를 유지한다.
 
 ### Value coverage — `encodeY2`
@@ -246,7 +247,7 @@ type AggregateOperation =
 - `scale.id`
   - ✅ Covered: omission/shared y ID, same explicit ID, conflicting ID rejection.
   - No proposal: y2는 y scale 공유가 semantic invariant다.
-- Evidence: ranged-area and regression semantic/materialization tests.
+- Evidence: ranged-area, ranged-bar and regression semantic/materialization tests.
 
 ## `encodeX2`
 
@@ -271,11 +272,12 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - x-only/y-only는 plot-bound full span, `x+y+y2`/`y+x+x2`는 vertical/horizontal interval,
   `x+y+x2+y2`는 diagonal interval이다. Field mode는 row당 line 하나, datum-only mode는 line 하나다.
 - Area mode는 existing quantitative x와 같은 scale/coordinate를 공유하며 x/x2 horizontal closed path를
-  rematerialize한다. Rule endpoint/style reassignment는 wrapped `rematerializeRuleMark`를 실행한다.
+  rematerialize한다. Ranged bar mode materializes a horizontal rect range. Rule endpoint/style reassignment는
+  wrapped `rematerializeRuleMark`를 실행한다.
 
 ### Formal values — `encodeX2`
 
-- Implemented: `encodeX2(RulePositionAssignment | AreaSecondaryXAssignment)`.
+- Implemented: `encodeX2(RulePositionAssignment | AreaSecondaryXAssignment)` where the field assignment also accepts a ranged bar.
 - Planned (NOT IMPLEMENTED): —.
 - Proposed (NOT IMPLEMENTED): field-driven rule stroke width.
 
@@ -332,10 +334,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
 - `lower`, `upper`: 필수 quantitative field names이며 각각 y와 y2가 된다.
 - `target`, `fieldType`, `coordinate`, `scale`: `encodeY` 계약을 공유한다.
-- Effect: wrapped `encodeY` 뒤 `encodeY2`를 호출하는 atomic action이다. 중간의 incomplete area
+- Effect: wrapped `encodeY` 뒤 `encodeY2`를 호출하는 atomic action이다. 중간의 incomplete area/bar
   상태를 public workflow에 노출하지 않는다.
-- Reassignment: 같은 area에 다시 호출하면 wrapped y/y2 assignments가 두 field를 함께 교체하고
-  shared scale, concrete closed paths와 consumers를 rematerialize한다. Earlier programs remain unchanged.
+- Reassignment: 같은 area 또는 ranged bar에 다시 호출하면 wrapped y/y2 assignments가 두 field를 함께 교체하고
+  shared scale, concrete closed paths/rects와 consumers를 rematerialize한다. Earlier programs remain unchanged.
 - Coverage: regression band, ranged area와 vertical error-band tests가 hierarchy, temporal/quantitative path
   geometry, reassignment and rematerialization을 검증한다.
 
@@ -354,15 +356,15 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ⚠️ Partial: explicit coordinate/scale option combinations direct test.
 - Reassignment
   - ✅ Covered: lower/upper 동시 교체, wrapped child order, concrete path change와 earlier-program immutability.
-- Evidence: ranged-area and regression tests.
+- Evidence: ranged-area, ranged-bar and regression tests.
 
 ## `encodeXRange`
 
 - Signature: `encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
 - `lower`, `upper`: required quantitative field names이며 각각 x와 x2가 된다.
-- Effect: wrapped `encodeX` 뒤 area-compatible `encodeX2`를 호출하는 atomic action이다.
+- Effect: wrapped `encodeX` 뒤 area/bar-compatible `encodeX2`를 호출하는 atomic action이다.
 - Horizontal area는 y independent position 순서로 lower path와 reversed upper path를 연결해 Z-closed
-  concrete path를 만든다. x/x2는 one shared scale and coordinate를 사용한다.
+  concrete path를 만들고 ranged bar는 one rect per observed category를 만든다. x/x2는 one shared scale and coordinate를 사용한다.
 - Reassignment는 두 fields를 함께 교체하고 scale, area와 connected guides를 rematerialize하며 earlier
   programs를 바꾸지 않는다.
 

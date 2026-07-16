@@ -2,7 +2,8 @@ import { isAggregate } from "../aggregate.js";
 
 export const BAR_GRAINS = Object.freeze({
   histogram: "histogram",
-  aggregate: "aggregate"
+  aggregate: "aggregate",
+  ranged: "ranged"
 });
 
 export const BAR_ORIENTATIONS = Object.freeze({
@@ -11,7 +12,7 @@ export const BAR_ORIENTATIONS = Object.freeze({
 });
 
 function isCategory(encoding) {
-  return ["ordinal", "temporal"].includes(encoding?.fieldType);
+  return ["nominal", "ordinal", "temporal"].includes(encoding?.fieldType);
 }
 
 function isMeasure(encoding) {
@@ -25,6 +26,12 @@ export function resolveBarOrientation(layer) {
   const y = layer.encoding?.y;
   if (x?.bin !== undefined && y?.aggregate === "count") {
     return BAR_ORIENTATIONS.vertical;
+  }
+  if (isCategory(x) && y?.fieldType === "quantitative" && layer.encoding?.y2?.fieldType === "quantitative") {
+    return BAR_ORIENTATIONS.vertical;
+  }
+  if (isCategory(y) && x?.fieldType === "quantitative" && layer.encoding?.x2?.fieldType === "quantitative") {
+    return BAR_ORIENTATIONS.horizontal;
   }
   if (isCategory(x) && isMeasure(y)) return BAR_ORIENTATIONS.vertical;
   if (isMeasure(x) && isCategory(y)) return BAR_ORIENTATIONS.horizontal;
@@ -50,6 +57,10 @@ export function resolveBarGrain(layer) {
   ) {
     return BAR_GRAINS.histogram;
   }
+  if (
+    (isCategory(x) && y?.fieldType === "quantitative" && layer.encoding?.y2?.fieldType === "quantitative") ||
+    (isCategory(y) && x?.fieldType === "quantitative" && layer.encoding?.x2?.fieldType === "quantitative")
+  ) return BAR_GRAINS.ranged;
   if (resolveBarOrientation(layer) !== undefined) {
     return BAR_GRAINS.aggregate;
   }
@@ -63,6 +74,7 @@ export function inferBarColorLayout(layer) {
   const grain = resolveBarGrain(layer);
   if (grain === BAR_GRAINS.histogram) return "stack";
   if (grain === BAR_GRAINS.aggregate) return "group";
+  if (grain === BAR_GRAINS.ranged) return "overlay";
   return undefined;
 }
 

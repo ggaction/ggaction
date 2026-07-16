@@ -4,6 +4,7 @@ import { registerDataActions } from "./data/index.js";
 import { registerEncodingActions } from "./encodings/index.js";
 import { registerErrorBandActions } from "./errorBands/index.js";
 import { registerErrorBarActions } from "./errorBars/index.js";
+import { registerBoxPlotActions } from "./boxPlots/index.js";
 import { registerGuideActions } from "./guides/index.js";
 import { registerMarkActions } from "./marks/index.js";
 import { registerPrimitiveActions } from "./primitives/index.js";
@@ -24,4 +25,5 @@ export function registerActions(ProgramClass) {
   registerRegressionActions(ProgramClass);
   registerErrorBarActions(ProgramClass);
   registerErrorBandActions(ProgramClass);
+  registerBoxPlotActions(ProgramClass);
 }

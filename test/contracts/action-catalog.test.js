@@ -198,6 +198,10 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
   ]);
   assert.deepEqual(index.internal.stateTransitions, ["releaseDerivedData"]);
   assert.deepEqual(index.internal.aggregateComponents, [
+    "createBoxMedian",
+    "createBoxOutlierData",
+    "createBoxOutliers",
+    "createBoxSummaryData",
     "createErrorBarCap",
     "createErrorBandBoundary"
   ]);
@@ -223,7 +227,6 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   const names = index.plannedActions.map(action => action.name);
   assert.equal(new Set(names).size, names.length);
   assert.deepEqual(new Set(names), new Set([
-    "createBoxPlot",
     "selectRows"
   ]));
   assert.equal(names.includes("editRuleMark"), false);

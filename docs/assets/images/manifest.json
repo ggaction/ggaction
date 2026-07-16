@@ -5,42 +5,47 @@
     "cars-scatterplot": {
       "width": 1280,
       "height": 800,
-      "sourceHash": "522bff361158504a839f96aa4661c1918a2a6660976ac14dbd6ef367f988ff56"
+      "sourceHash": "5cb027dee3c710b8230ba3b5edd39e34fa9708da39522d5719c2e47b3264df9e"
     },
     "cars-line-chart": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "90f7e9c1da731ae1f19ec1313e9b5681eb9a50dea6c40f82e31e335373d5cab4"
+      "sourceHash": "0f05e63084d112562de6b4b29945d6c0c1ce4a67a22fdfb0526a2f8cf013430a"
     },
     "cars-histogram": {
       "width": 864,
       "height": 920,
-      "sourceHash": "5dc1cf3d173484bb437e0de40e4b7db7337dfa58915579890ad20da9ac2cc11a"
+      "sourceHash": "2a349615f8eba780e86a93ccab0cb32e77b0991853ab87158fa74e7df6c25efd"
     },
     "jobs-grouped-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "4690d8ad1d45fa2d4195b2946e62047f004dba16294a1797ad2c829d625cb2e4"
+      "sourceHash": "f2b797f3fc6026c22758b6a37cccf9cc05b2fce78bbc58c8410b1da3fb5f1720"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "76d0746d8b177d1dd9431ade308e170ca19e70149e9268615d2c80163330bb20"
+      "sourceHash": "e2e1e4c75c07d7df3411c9d81ad047a44e5fea154b39d228d0df5c62dfdfd20c"
     },
     "cars-density-area": {
       "width": 1440,
       "height": 1000,
-      "sourceHash": "9ce2d9cbf8762105164a4880de571a78b811fe42bc24bf469194539d7d43876d"
+      "sourceHash": "59b7faf59317816a1849466b7fd5fb0e6818b95f6c51f0c7abd7aa5025743cf8"
     },
     "cars-error-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "dccd71c69315a4c0bd498b065580066ddb88f46fa1104daed0b6d63af557dec7"
+      "sourceHash": "ab04cd5855097d2fc6e48c3aff56c587eb4170a6dcc606ab9023149dd89dbbda"
+    },
+    "cars-box-plot": {
+      "width": 720,
+      "height": 920,
+      "sourceHash": "60993046964df3177c21228627d1fb9053a4c6bb4c83fdde85208e33ec533ff4"
     },
     "gapminder-error-band": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "e3380f2e1cc6c3d1d942fc89e5448f7c64b0b5b13a6b90728fcff7ceb2b2e143"
+      "sourceHash": "c6a6410b4035bd0114ac95633767a76a0508dd09c977770e72613b3fc778e4ee"
     }
   }
 }

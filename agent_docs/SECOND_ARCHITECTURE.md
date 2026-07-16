@@ -841,6 +841,7 @@ semantic definition을 받아 deterministic result를 반환한다.
 - nice numeric ticks와 calendar-aligned time ticks
 - histogram bin boundary와 count
 - bar grain 분류와 color layout 추론
+- ranged-bar grain, shared primary/secondary scale와 band/pixel rect geometry
 - grouped scalar and parameterized line/bar aggregation
 - line/area series grouping과 stable ordering
 - OLS coefficient와 Student-t mean-response confidence interval
@@ -1302,6 +1303,7 @@ src/
 ├─ ChartProgram.js      core class와 built-in action의 assembly boundary
 ├─ actions/
 │  ├─ canvas/          Canvas domain actions
+│  ├─ boxPlots/        Tukey box aggregate and wrapped median/outlier components
 │  ├─ coordinates/     coordinate authoring
 │  ├─ data/            source/derived data actions
 │  ├─ encodings/       position, color, stroke-dash, ranged, atomic encoding actions
@@ -1525,6 +1527,7 @@ interval containment을 deterministic invariant로 검증한다.
 6. Grouped Gaussian KDE와 baseline-closed area를 가진 density area chart
 7. Grouped mean Student-t interval과 fixed-pixel caps를 가진 cars error-bar chart
 8. Temporal x와 cluster-grouped mean Student-t y/y2 paths를 가진 Gapminder error-band chart
+9. Nominal x, Tukey q1/q3 ranged bars, error-bar whiskers, median rules와 diamond outliers를 가진 Cars box plot
 
 이 목록은 chart type별 별도 compiler가 있다는 뜻이 아니다. 같은 data, scale, mark,
 encoding, guide, layout, materialization primitive가 여러 vertical slice에서 재사용된다는

@@ -229,7 +229,8 @@ test("links every public chart example from entry documentation", () => {
     "cars-regression-scatterplot",
     "cars-density-area",
     "cars-error-bar",
-    "gapminder-error-band"
+    "gapminder-error-band",
+    "cars-box-plot"
   ]) {
     assert.match(readme, new RegExp(`examples/${name}`));
     assert.match(gettingStarted, new RegExp(`examples/${name}`));
@@ -327,7 +328,7 @@ test("keeps one generated gallery image for every public chart", async () => {
   const index = read("docs/index.md");
   const tutorials = read("docs/tutorials/index.md");
 
-  assert.equal(chartImages.length, 8);
+  assert.equal(chartImages.length, 9);
   for (const { id, width, height } of chartImages) {
     const image = readFileSync(path.join(root, `docs/assets/images/${id}.png`));
     assert.deepEqual([...image.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);

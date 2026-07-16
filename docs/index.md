@@ -76,6 +76,12 @@ The main, extension, and PNG entry points include TypeScript declarations.
     <a class="docs-chart-gallery__title" href="./tutorials/error-bar/">Error bar</a>
   </article>
   <article>
+    <a class="docs-chart-gallery__image" href="./assets/images/cars-box-plot.png" aria-label="Open the full-size box plot">
+      <img src="./assets/images/cars-box-plot.png" alt="Fuel economy distribution by origin as a Tukey box plot" width="720" height="920" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./api/box-plots/">Box plot</a>
+  </article>
+  <article>
     <a class="docs-chart-gallery__image" href="./assets/images/gapminder-error-band.png" aria-label="Open the full-size error-band chart">
       <img src="./assets/images/gapminder-error-band.png" alt="Mean life expectancy by cluster with 95% confidence bands" width="1520" height="960" loading="lazy">
     </a>

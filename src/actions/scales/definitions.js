@@ -80,8 +80,12 @@ export function resolvePositionScaleDefinition(
       : validateScaleDomain(options.domain ?? existing?.domain ?? "auto"),
     range: validateScaleRange(options.range ?? existing?.range ?? "auto")
   };
-  const nice = options.nice ?? existing?.nice ?? defaults.nice;
-  const zero = options.zero ?? existing?.zero ?? defaults.zero;
+  const nice = options.nice ?? existing?.nice ?? (
+    existing === undefined ? defaults.nice : undefined
+  );
+  const zero = options.zero ?? existing?.zero ?? (
+    existing === undefined ? defaults.zero : undefined
+  );
   if (nice !== undefined) scale.nice = nice;
   if (zero !== undefined) scale.zero = zero;
   return scale;

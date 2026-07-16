@@ -10,19 +10,19 @@ chart-authoring API does not support that combination.
 
 ## Complete chart support
 
-| Capability | Scatterplot | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Semantic mark | point | line | bar | bar | point + area + line | area | rule | area |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval |
-| Nominal color | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill |
-| Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — |
-| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, 8 curves, styled boundaries |
-| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis |
-| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis |
-| Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical |
-| Chart title | optional | optional | optional | optional | optional | optional | optional | optional |
-| Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Capability | Scatterplot | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band | Box plot |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Semantic mark | point | line | bar | bar | point + area + line | area | rule | area | bar + rule + point |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval | categorical x; quantitative y/y2 |
+| Nominal color | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill | body fill through ranged-bar color |
+| Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — | — |
+| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers |
+| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis | categorical x and linear y |
+| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis | horizontal |
+| Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical | optional ranged-bar color legend |
+| Chart title | optional | optional | optional | optional | optional | optional | optional | optional | optional |
+| Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 ## Shared foundations
 
@@ -52,3 +52,6 @@ Error bands support vertical and horizontal statistical or explicit ranges and
 optional lower/upper boundary lines with shared stroke, width, dash, opacity,
 and inherited or overridden curve. Independent lower/upper style objects are
 not implemented.
+Box plots currently support vertical categorical-x Tukey summaries with fixed
+documented appearance defaults. Horizontal/minmax variants and public
+factor/style/outlier options are not implemented yet.

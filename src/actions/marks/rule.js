@@ -103,7 +103,10 @@ const rematerializeRuleMark = action(
     validateEndpointBindings(layer);
     const config = this.markConfigs[id] ?? DEFAULT_RULE_CONFIG;
     const fixedSpan = config.fixedSpan;
-    const mode = fixedSpan !== undefined &&
+    const boxSpan = config.boxSpanOwner;
+    const mode = boxSpan !== undefined
+      ? "box-span"
+      : fixedSpan !== undefined &&
       layer.encoding?.x?.scale !== undefined &&
       layer.encoding?.y?.scale !== undefined
       ? "fixed-span"
@@ -159,6 +162,14 @@ const rematerializeRuleMark = action(
         x1.push(mapped.x[index]);
         y1.push(mapped.y[index]);
         x2.push(mapped.x2[index]);
+        y2.push(mapped.y[index]);
+      } else if (mode === "box-span") {
+        const owner = resolved.graphicSpec.objects[boxSpan];
+        const box = owner?.children?.[index]?.properties;
+        if (box === undefined) throw new Error(`Rule mark "${id}" requires box span owner "${boxSpan}".`);
+        x1.push(box.x);
+        y1.push(mapped.y[index]);
+        x2.push(box.x + box.width);
         y2.push(mapped.y[index]);
       } else if (mode === "fixed-span") {
         if (fixedSpan.orientation === "horizontal") {

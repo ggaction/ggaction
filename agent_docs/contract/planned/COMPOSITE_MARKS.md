@@ -30,7 +30,11 @@ These types are reused below by the remaining planned interval composites. The c
 `createErrorBar` contract, including horizontal and explicit intervals, lives in
 [`../current/STATISTICS.md`](../current/STATISTICS.md#createerrorbar).
 
-## createBoxPlot
+## createBoxPlot remaining capabilities
+
+The vertical Tukey action is Current in
+[`../current/COMPOSITE_MARKS.md`](../current/COMPOSITE_MARKS.md#createboxplot).
+This section owns only the accepted horizontal, minmax, and configurable-option expansion.
 
 ```typescript
 createBoxPlot({
@@ -89,5 +93,5 @@ createBoxPlot({
   are not synthesized.
 - Phase 8 does not accept an additional `groupBy`. The categorical position already owns the statistical
   partition; subgroup offset/color/layout remains outside this initial contract.
-- Status: Planned, NOT IMPLEMENTED. both orientations, Tukey/minmax, width/outlier/style options, empty and
-  sparse groups, ranged bars, child edits, ordering, trace, rematerialization and browser/PNG parity가 필요하다.
+- Status: Planned, NOT IMPLEMENTED. Horizontal orientation, minmax, width/outlier/style options and their
+  approved primitive/public variants remain; the default vertical Tukey flow and ranged-bar foundation are Current.

@@ -48,7 +48,7 @@ function resolveColorLayout(layer, requested, barGrain) {
   }
   const layout = requested ?? existing ?? (
     layer.mark.type === "bar"
-      ? barGrain === BAR_GRAINS.histogram ? "stack" : "group"
+      ? barGrain === BAR_GRAINS.histogram ? "stack" : barGrain === BAR_GRAINS.ranged ? "overlay" : "group"
       : layer.mark.type === "area"
         ? "overlay"
         : undefined
@@ -75,6 +75,7 @@ function applyColorLayoutCompanion(
   { target, layer, layout, scale, field }
 ) {
   if (layout === undefined) return program;
+  if (layer.mark.type === "bar" && resolveBarGrain(layer) === BAR_GRAINS.ranged) return program;
   if (layer.mark.type === "area" && layer.encoding?.y2 !== undefined) {
     return program;
   }

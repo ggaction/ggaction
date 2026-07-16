@@ -126,9 +126,16 @@ function encodePosition(program, channel, args, operation) {
 
   if (layer.mark.type === "bar") {
     const updated = findLayer(next, target);
-    return resolveBarGrain(updated) !== undefined
+    const pendingBox = next.markConfigs[target]?.boxPlot;
+    if (pendingBox !== undefined && !pendingBox.materialized) {
+      return updated.encoding?.x !== undefined && updated.encoding?.y !== undefined
+        ? next.materializeBoxPlot({ id: target })
+        : next;
+    }
+    const materialized = resolveBarGrain(updated) !== undefined
       ? next.rematerializeBarMark({ id: target })
       : next.rematerializeScale({ id: scale.id });
+    return materialized;
   }
 
   next = next.rematerializeScale({ id: scale.id });

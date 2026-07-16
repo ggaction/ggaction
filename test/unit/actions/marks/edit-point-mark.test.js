@@ -67,6 +67,27 @@ test("supports every constant shape and preserves equal logical area", () => {
   }
 });
 
+test("keeps path shapes incomplete until position and size are all available", () => {
+  const base = chart()
+    .createCanvas({ width: 200, height: 120, margin: 10 })
+    .createData({ values: [{ group: "a", value: 2 }] })
+    .createPointMark({ shape: "diamond" });
+  const withX = base.encodeX({ field: "group", fieldType: "nominal" });
+  const complete = withX
+    .encodeY({ field: "value" })
+    .encodeRadius({ value: 3 });
+
+  assert.deepEqual(withX.graphicSpec.objects.point.children[0], {
+    id: "point:0",
+    type: "path",
+    properties: { fill: "#4c78a8" }
+  });
+  assert.equal(
+    complete.graphicSpec.objects.point.children[0].properties.commands.at(-1).op,
+    "Z"
+  );
+});
+
 test("rejects missing, invalid, ambiguous, and field-driven shape edits", () => {
   const base = completePointProgram();
   assert.throws(() => base.editPointMark({}), /requires shape/);

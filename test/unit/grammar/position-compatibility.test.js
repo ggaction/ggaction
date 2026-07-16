@@ -8,7 +8,7 @@ import {
 
 test("owns the accepted mark, channel, and field-type matrix", () => {
   assert.deepEqual(POSITION_FIELD_COMPATIBILITY.point.x, [
-    "quantitative", "temporal", "ordinal"
+    "quantitative", "temporal", "ordinal", "nominal"
   ]);
   assert.equal(validatePositionFieldCompatibility("bar", "x", "temporal"), "temporal");
   assert.equal(validatePositionFieldCompatibility("bar", "y", "ordinal"), "ordinal");
@@ -20,8 +20,8 @@ test("owns the accepted mark, channel, and field-type matrix", () => {
     validatePositionFieldCompatibility("area", "y", "temporal"),
     "temporal"
   );
-  assert.throws(
-    () => validatePositionFieldCompatibility("point", "x", "nominal"),
-    /does not support field type/
+  assert.equal(
+    validatePositionFieldCompatibility("point", "x", "nominal"),
+    "nominal"
   );
 });

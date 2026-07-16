@@ -31,6 +31,7 @@ Open one of the runnable repository examples:
 - `http://localhost:4173/examples/cars-density-area/`
 - `http://localhost:4173/examples/cars-error-bar/`
 - `http://localhost:4173/examples/gapminder-error-band/`
+- `http://localhost:4173/examples/cars-box-plot/`
 
 Those browser examples import `../../src/index.js` directly. The code below is
 the complete module used by `examples/getting-started/`, so it runs immediately

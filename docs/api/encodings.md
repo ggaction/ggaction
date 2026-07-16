@@ -55,7 +55,7 @@ defaults to `"mean"` and may also use a parameterized quantile or ordered
 The advanced `encodeXOffset({ field })` action resolves nominal slots within
 each x band; grouped color layout normally calls it on the author's behalf.
 
-Ranged area marks use one independent position and one atomic range action. A
+Ranged area and bar marks use one categorical/independent position and one atomic range action. A
 vertical range uses `encodeYRange`:
 
 ```javascript
@@ -83,6 +83,10 @@ area
 Both range edges share one scale, whose domain includes lower and upper values.
 `encodeGroup` splits area or line paths by a nominal field without creating a
 scale or guide.
+
+For a bar mark, the same range actions create one concrete rectangle per
+observed category. `encodeBarWidth({ band })` resolves its thickness from the
+category band; `pixels` keeps a fixed logical width across Canvas changes.
 
 ## Atomic histogram
 

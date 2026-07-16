@@ -107,7 +107,10 @@ function compactProperties(properties) {
 
 function incompleteShapeGraphic(shape, properties) {
   const type = getPointGraphicType(shape);
-  return { type, properties: compactProperties(properties) };
+  const incomplete = type === "path"
+    ? { fill: properties.fill, opacity: properties.opacity }
+    : properties;
+  return { type, properties: compactProperties(incomplete) };
 }
 
 function existingArea(child, parentType) {

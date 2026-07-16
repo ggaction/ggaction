@@ -20,6 +20,7 @@ import {
 } from "../../grammar/density.js";
 import { validateFilterTransform } from "../../grammar/filter.js";
 import { validateIntervalTransform } from "../../grammar/interval.js";
+import { validateBoxTransform } from "../../grammar/boxPlot.js";
 import {
   validateSemanticFieldType,
   validateContinuousColorInterpolation,
@@ -138,7 +139,9 @@ function validateTransforms(value) {
     filter: validateFilterTransform,
     regression: validateRegression,
     density: validateDensity,
-    interval: validateIntervalTransform
+    interval: validateIntervalTransform,
+    boxSummary: validateBoxTransform,
+    boxOutlier: validateBoxTransform
   };
   for (const transform of value) {
     const validate = validators[transform.type];

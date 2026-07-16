@@ -22,6 +22,7 @@ pages are canonical; the generated full-text bundle is available at
 - Primitive extension API: ./extension/primitives.md
 - Browser and PNG rendering: ./api/rendering.md
 - Vertical and horizontal statistical and explicit error bands: ./api/error-bands.md
+- Vertical Tukey box plots: ./api/box-plots.md
 
 Only methods declared on the public ChartProgram TypeScript type are supported
 direct-call actions. Additional wrapped names may appear in action traces but
@@ -66,6 +67,8 @@ or LOESS regression scatterplots with optional mean/prediction bands, grouped de
 vertical or horizontal statistical/explicit error bars with encoded-layer
 inference, optional caps, and constant rule appearance, and vertical grouped
 statistical/explicit error bands.
+The current box-plot aggregate supports vertical categorical-x Tukey boxes with
+immutable summary/outlier data and 1.5px median and whisker defaults.
 Cartesian guides support bottom/top x axes, left/right y axes, and closed
 numeric or UTC label-format tokens. Existing horizontal and vertical grids can
 be edited independently without changing their scale or coordinate binding.

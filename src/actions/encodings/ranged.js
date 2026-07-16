@@ -78,7 +78,7 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
     throw new Error(`${operation} requires exactly one of field or datum for a rule mark.`);
   }
   if (!rule && (!hasField || hasDatum)) {
-    throw new Error(`${operation} requires a field for an area mark.`);
+    throw new Error(`${operation} requires a field for a ranged mark.`);
   }
   if (rule && args.fieldType === undefined) {
     throw new Error(`${operation} requires fieldType for a rule mark.`);
@@ -99,6 +99,16 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
 
   const previous = layer.encoding?.[channel];
   let next = program;
+  if (layer.mark.type === "bar") {
+    for (const property of ["aggregate", "stack", "bin"]) {
+      if (layer.encoding?.[primaryChannel]?.[property] !== undefined) {
+        next = next.editSemantic({
+          property: `layer[${target}].encoding.${primaryChannel}.${property}`,
+          remove: true
+        });
+      }
+    }
+  }
   if (previous !== undefined) {
     const alternate = hasField ? "datum" : "field";
     if (Object.hasOwn(previous, alternate)) {
@@ -122,8 +132,9 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
       value: primary.scale
     })
     .rematerializeScale({ id: primary.scale });
-  return rule
-    ? next.rematerializeRuleMark({ id: target })
+  if (rule) return next.rematerializeRuleMark({ id: target });
+  return layer.mark.type === "bar"
+    ? next.rematerializeBarMark({ id: target })
     : next.rematerializeAreaMark({ id: target });
 }
 
@@ -138,7 +149,7 @@ const encodeX2 = action(
       "x2",
       args,
       "encodeX2",
-      ["area", "rule"]
+      ["area", "rule", "bar"]
     );
   }
 );
@@ -154,7 +165,7 @@ const encodeY2 = action(
       "y2",
       args,
       "encodeY2",
-      ["area", "rule"]
+      ["area", "rule", "bar"]
     );
   }
 );

@@ -441,6 +441,27 @@ export interface ErrorBarOptions {
   opacity?: number;
 }
 
+export interface BoxPlotCategoryChannel {
+  field: string;
+  fieldType: "nominal" | "ordinal" | "temporal";
+  scale?: ScaleOptions;
+}
+
+export interface BoxPlotMeasureChannel {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: ScaleOptions;
+}
+
+export interface BoxPlotOptions {
+  id?: string;
+  target?: string;
+  data?: string;
+  x?: BoxPlotCategoryChannel;
+  y?: BoxPlotMeasureChannel;
+  coordinate?: string;
+}
+
 export interface ErrorBandPositionChannel {
   field?: string;
   fieldType?: "quantitative" | "temporal";
@@ -831,6 +852,7 @@ export class ChartProgram {
   createRegression(options?: RegressionOptions): ChartProgram;
   createErrorBar(options?: ErrorBarOptions): ChartProgram;
   createErrorBand(options?: ErrorBandOptions): ChartProgram;
+  createBoxPlot(options?: BoxPlotOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;

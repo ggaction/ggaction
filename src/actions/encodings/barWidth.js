@@ -28,8 +28,13 @@ const encodeBarWidth = action(
       this.markConfigs[target]?.barWidth
     );
     const grouped = layout === "group";
+    const grain = resolveBarGrain(layer);
+    if (grain === BAR_GRAINS.ranged) {
+      return this._withMarkConfig(target, { ...this.markConfigs[target], barWidth: width })
+        .rematerializeBarMark({ id: target });
+    }
     if (
-      resolveBarGrain(layer) !== BAR_GRAINS.aggregate ||
+      grain !== BAR_GRAINS.aggregate ||
       layer.encoding?.color?.field === undefined ||
       (grouped && layer.encoding?.xOffset?.field !== layer.encoding.color.field)
     ) {

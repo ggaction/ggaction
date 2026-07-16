@@ -180,9 +180,10 @@ test("validates position encoding inputs before changing the program", () => {
 
   assert.throws(() => program.encodeX(), /field must be a non-empty string/i);
   assert.throws(() => program.encodeX({ field: "missing" }), /finite number/);
-  assert.throws(
-    () => program.encodeX({ field: "horsepower", fieldType: "nominal" }),
-    /does not support field type/
+  assert.equal(
+    program.encodeX({ field: "horsepower", fieldType: "nominal" })
+      .semanticSpec.layers[0].encoding.x.fieldType,
+    "nominal"
   );
   assert.throws(
     () => program.encodeX({ field: "horsepower", scale: { type: "log" } }),

@@ -1,5 +1,6 @@
 import { defineVisualVariant } from "../../../support/visual-variants.js";
 import { loadCars } from "../../../support/data.js";
+import { createCarsBoxPlot } from "../../../../examples/cars-box-plot/program.js";
 
 import { createCarsBoxPlotPrimitives } from "../primitive.program.js";
 import {
@@ -39,6 +40,7 @@ export const visualVariants = Object.freeze([
     title: "Cars Vertical Tukey Box Plot",
     callChain: targetCallChain,
     primitive: createCarsBoxPlotPrimitives(loadCars()),
+    userFacing: createCarsBoxPlot(loadCars()),
     width: BOX_PLOT_LAYOUT.width,
     height: BOX_PLOT_LAYOUT.height,
     colors: [...BOX_PLOT_COLORS, BOX_PLOT_STYLE.whiskerStroke],

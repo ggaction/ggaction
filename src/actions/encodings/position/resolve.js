@@ -35,6 +35,10 @@ const POSITION_ENCODING_OPTIONS = Object.freeze([
   "aggregate", "bin", "stack"
 ]);
 
+function isCategoryEncoding(encoding) {
+  return ["nominal", "ordinal", "temporal"].includes(encoding?.fieldType);
+}
+
 function resolveCoordinate(program, channel, layer, requestedId) {
   const defaults = getPositionCoordinateDefaults(channel);
   const existingId = layer.coordinate;
@@ -63,7 +67,7 @@ function validateStack(stack, label) {
   return stack;
 }
 
-function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
+function validateMarkPolicy(program, layer, dataset, channel, args, fieldType, field) {
   let bin;
   let aggregate;
   let stack;
@@ -84,8 +88,8 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
       throw new Error("Rule position encoding does not support stack.");
     }
   } else if (layer.mark.type === "point") {
-    if (!["quantitative", "temporal", "ordinal"].includes(fieldType)) {
-      throw new Error("Point position encoding requires quantitative fields, temporal fields, or ordinal fields.");
+    if (!["quantitative", "temporal", "ordinal", "nominal"].includes(fieldType)) {
+      throw new Error("Point position encoding requires quantitative, temporal, ordinal, or nominal fields.");
     }
     if (args.aggregate !== undefined) throw new Error("Point position encoding does not support aggregate.");
     if (args.bin !== undefined) throw new Error("Point position encoding does not support bin.");
@@ -167,7 +171,7 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
     if (args.stack !== undefined) throw new Error("Line y encoding does not support stack.");
   } else {
     const opposite = layer.encoding?.[channel === "x" ? "y" : "x"];
-    if (["ordinal", "temporal"].includes(fieldType)) {
+    if (["nominal", "ordinal", "temporal"].includes(fieldType)) {
       if (args.aggregate !== undefined || args.bin !== undefined || args.stack !== undefined) {
       throw new Error(
         "Categorical bar position does not support bin or aggregate; a binned bar requires a quantitative field."
@@ -197,9 +201,16 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
             : "Quantitative bar measure encoding does not support bin."
         );
       }
+      const pendingBoxRange = program.markConfigs[layer.id]?.boxPlot !== undefined;
       aggregate = args.aggregate ?? (
-        ["ordinal", "temporal"].includes(opposite?.fieldType) ? "mean" : undefined
+        ["nominal", "ordinal", "temporal"].includes(opposite?.fieldType) &&
+        !pendingBoxRange
+          ? "mean"
+          : undefined
       );
+      if (pendingBoxRange && isCategoryEncoding(opposite) && args.aggregate === undefined) {
+        return { bin, aggregate, stack };
+      }
       if (aggregate === undefined) {
         throw new Error(
           channel === "x"
@@ -212,7 +223,7 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
       validateAggregateFieldType(aggregate, fieldType);
       stack = validateStack(stack, `Bar ${channel} encoding`);
     } else {
-      throw new Error("Bar position requires quantitative, temporal, or ordinal fields.");
+      throw new Error("Bar position requires quantitative, temporal, ordinal, or nominal fields.");
     }
 
     const candidate = {
@@ -225,7 +236,7 @@ function validateMarkPolicy(layer, dataset, channel, args, fieldType, field) {
     const orientation = resolveBarOrientation(candidate);
     if (opposite !== undefined && orientation === undefined) {
       throw new Error(
-        `Bar ${channel} encoding requires a quantitative field opposite an ordinal or temporal category.`
+        `Bar ${channel} encoding requires a quantitative field opposite a categorical position.`
       );
     }
     if (
@@ -278,6 +289,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     }
   }
   const policy = validateMarkPolicy(
+    program,
     layer,
     dataset,
     channel,
@@ -296,6 +308,14 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   } else if (aggregateOutput) {
     validateAggregateFieldType(policy.aggregate, fieldType);
     validateAggregateFieldValues(dataset.values, field, fieldType);
+  } else if (program.markConfigs[target]?.boxPlot !== undefined) {
+    for (const [index, row] of dataset.values.entries()) {
+      const value = row[field];
+      if (value === undefined || value === null || value === "") continue;
+      if (fieldType === "quantitative" && !Number.isFinite(value)) {
+        throw new TypeError(`Field "${field}" must contain a finite number at row ${index}.`);
+      }
+    }
   } else if (fieldType === "temporal") readTemporalField(dataset.values, field);
   else if (["ordinal", "nominal"].includes(fieldType)) {
     readNominalField(dataset.values, field);
@@ -311,7 +331,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     aggregateOutput ? "quantitative" : fieldType,
     requestedScale,
     layer.mark.type === "bar"
-      ? fieldType === "quantitative"
+      ? program.markConfigs[target]?.boxPlot !== undefined && fieldType === "quantitative"
+        ? { nice: true, zero: false }
+        : fieldType === "quantitative"
         ? policy.bin !== undefined || policy.stack === null
           ? { nice: true, zero: false }
           : { nice: true, zero: true }

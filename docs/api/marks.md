@@ -189,6 +189,12 @@ meaning and resolve its scale. `encodeY()` then infers count/zero-stack meaning
 and resolves its scale, then materializes one concrete rectangle per non-empty
 bin.
 
+A bar can instead represent an observed interval. Give it a nominal or ordinal
+category on one axis, use `encodeYRange({ lower, upper })` or
+`encodeXRange({ lower, upper })` on the other, and set thickness with
+`encodeBarWidth`. The secondary endpoint removes stale aggregate/stack intent;
+both endpoints share one scale and Canvas edits rematerialize the rectangles.
+
 `encodeColor({ field, layout? })` can then split each non-empty bin into category
 rects. The color scale domain controls series order. Stack uses total bin counts,
 fill normalizes to one, group creates within-bin slots, overlay shares a baseline,

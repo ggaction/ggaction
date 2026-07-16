@@ -23,19 +23,43 @@ export function createCarsBoxPlotPrimitives(cars) {
       margin: BOX_PLOT_LAYOUT.margin
     })
     .createData({ id: "data", values: cars })
-    .createData({ id: "boxPlotSummaryData", values: values.summaries })
-    .createData({ id: "boxPlotOutlierData", values: values.outliers })
+    .editSemantic({ property: "dataset[boxPlotSummaryData].source", value: "data" })
+    .editSemantic({
+      property: "dataset[boxPlotSummaryData].transform",
+      value: [{
+        type: "boxSummary",
+        category: "Origin",
+        field: "Miles_per_Gallon",
+        method: "linear",
+        factor: 1.5,
+        as: BOX_PLOT_FIELDS
+      }]
+    })
+    .editSemantic({ property: "dataset[boxPlotSummaryData].values", value: values.summaries })
+    .editSemantic({ property: "dataset[boxPlotOutlierData].source", value: "data" })
+    .editSemantic({
+      property: "dataset[boxPlotOutlierData].transform",
+      value: [{
+        type: "boxOutlier",
+        category: "Origin",
+        field: "Miles_per_Gallon",
+        method: "linear",
+        factor: 1.5,
+        as: BOX_PLOT_FIELDS
+      }]
+    })
+    .editSemantic({ property: "dataset[boxPlotOutlierData].values", value: values.outliers })
     .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "scale[x].type", value: "ordinal" })
-    .editSemantic({ property: "scale[x].domain", value: values.scales.x.domain })
+    .editSemantic({ property: "scale[x].domain", value: "auto" })
     .editSemantic({ property: "scale[x].range", value: "auto" })
     .editSemantic({ property: "scale[y].type", value: "linear" })
-    .editSemantic({ property: "scale[y].domain", value: values.scales.y.domain })
+    .editSemantic({ property: "scale[y].domain", value: "auto" })
     .editSemantic({ property: "scale[y].range", value: "auto" })
     .editSemantic({ property: "scale[y].nice", value: true })
     .editSemantic({ property: "scale[y].zero", value: false })
     .editSemantic({ property: "scale[color].type", value: "ordinal" })
-    .editSemantic({ property: "scale[color].domain", value: values.categories })
+    .editSemantic({ property: "scale[color].domain", value: "auto" })
     .editSemantic({ property: "scale[color].range", value: { palette: "tableau10" } })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
@@ -77,6 +101,23 @@ export function createCarsBoxPlotPrimitives(cars) {
       property: "strokeDash",
       value: repeated(values.horizontalGrid.length, [])
     })
+    .editSemantic({ property: "layer[boxPlot].mark.type", value: "bar" })
+    .editSemantic({ property: "layer[boxPlot].data", value: "boxPlotSummaryData" })
+    .editSemantic({ property: "layer[boxPlot].coordinate", value: "main" })
+    .editSemantic({ property: "layer[boxPlot].encoding.x.field", value: "Origin" })
+    .editSemantic({ property: "layer[boxPlot].encoding.x.fieldType", value: "nominal" })
+    .editSemantic({ property: "layer[boxPlot].encoding.x.scale", value: "x" })
+    .editSemantic({ property: "layer[boxPlot].encoding.y.field", value: BOX_PLOT_FIELDS.q1 })
+    .editSemantic({ property: "layer[boxPlot].encoding.y.fieldType", value: "quantitative" })
+    .editSemantic({ property: "layer[boxPlot].encoding.y.scale", value: "y" })
+    .editSemantic({ property: "layer[boxPlot].encoding.y.title", value: "Miles_per_Gallon" })
+    .editSemantic({ property: "layer[boxPlot].encoding.y2.field", value: BOX_PLOT_FIELDS.q3 })
+    .editSemantic({ property: "layer[boxPlot].encoding.y2.fieldType", value: "quantitative" })
+    .editSemantic({ property: "layer[boxPlot].encoding.y2.scale", value: "y" })
+    .editSemantic({ property: "layer[boxPlot].encoding.color.field", value: "Origin" })
+    .editSemantic({ property: "layer[boxPlot].encoding.color.fieldType", value: "nominal" })
+    .editSemantic({ property: "layer[boxPlot].encoding.color.scale", value: "color" })
+    .editSemantic({ property: "layer[boxPlot].encoding.color.layout", value: "overlay" })
     .editSemantic({ property: "layer[boxPlotWhisker].mark.type", value: "rule" })
     .editSemantic({ property: "layer[boxPlotWhisker].data", value: "boxPlotSummaryData" })
     .editSemantic({ property: "layer[boxPlotWhisker].coordinate", value: "main" })
@@ -89,12 +130,14 @@ export function createCarsBoxPlotPrimitives(cars) {
     })
     .editSemantic({ property: "layer[boxPlotWhisker].encoding.y.fieldType", value: "quantitative" })
     .editSemantic({ property: "layer[boxPlotWhisker].encoding.y.scale", value: "y" })
+    .editSemantic({ property: "layer[boxPlotWhisker].encoding.y.title", value: "Miles_per_Gallon" })
     .editSemantic({
       property: "layer[boxPlotWhisker].encoding.y2.field",
       value: BOX_PLOT_FIELDS.upperWhisker
     })
     .editSemantic({ property: "layer[boxPlotWhisker].encoding.y2.fieldType", value: "quantitative" })
     .editSemantic({ property: "layer[boxPlotWhisker].encoding.y2.scale", value: "y" })
+    .editSemantic({ property: "layer[boxPlotWhisker].encoding.strokeDash.datum", value: "solid" })
     .createGraphics({ id: "boxPlotWhisker", type: "line", length: values.whiskers.length })
     .editGraphics({ target: "boxPlotWhisker", property: "x1", value: values.whiskers.map(rule => rule.x1) })
     .editGraphics({ target: "boxPlotWhisker", property: "y1", value: values.whiskers.map(rule => rule.y1) })
@@ -116,6 +159,7 @@ export function createCarsBoxPlotPrimitives(cars) {
     })
     .editSemantic({ property: "layer[boxPlotWhiskerLowerCap].encoding.y.fieldType", value: "quantitative" })
     .editSemantic({ property: "layer[boxPlotWhiskerLowerCap].encoding.y.scale", value: "y" })
+    .editSemantic({ property: "layer[boxPlotWhiskerLowerCap].encoding.strokeDash.datum", value: "solid" })
     .createGraphics({ id: "boxPlotWhiskerLowerCap", type: "line", length: values.lowerCaps.length })
     .editGraphics({ target: "boxPlotWhiskerLowerCap", property: "x1", value: values.lowerCaps.map(rule => rule.x1) })
     .editGraphics({ target: "boxPlotWhiskerLowerCap", property: "y1", value: values.lowerCaps.map(rule => rule.y1) })
@@ -137,6 +181,7 @@ export function createCarsBoxPlotPrimitives(cars) {
     })
     .editSemantic({ property: "layer[boxPlotWhiskerUpperCap].encoding.y.fieldType", value: "quantitative" })
     .editSemantic({ property: "layer[boxPlotWhiskerUpperCap].encoding.y.scale", value: "y" })
+    .editSemantic({ property: "layer[boxPlotWhiskerUpperCap].encoding.strokeDash.datum", value: "solid" })
     .createGraphics({ id: "boxPlotWhiskerUpperCap", type: "line", length: values.upperCaps.length })
     .editGraphics({ target: "boxPlotWhiskerUpperCap", property: "x1", value: values.upperCaps.map(rule => rule.x1) })
     .editGraphics({ target: "boxPlotWhiskerUpperCap", property: "y1", value: values.upperCaps.map(rule => rule.y1) })
@@ -146,21 +191,6 @@ export function createCarsBoxPlotPrimitives(cars) {
     .editGraphics({ target: "boxPlotWhiskerUpperCap", property: "strokeWidth", value: BOX_PLOT_STYLE.whiskerStrokeWidth })
     .editGraphics({ target: "boxPlotWhiskerUpperCap", property: "strokeDash", value: repeated(values.upperCaps.length, []) })
     .editGraphics({ target: "boxPlotWhiskerUpperCap", property: "opacity", value: 1 })
-    .editSemantic({ property: "layer[boxPlot].mark.type", value: "bar" })
-    .editSemantic({ property: "layer[boxPlot].data", value: "boxPlotSummaryData" })
-    .editSemantic({ property: "layer[boxPlot].coordinate", value: "main" })
-    .editSemantic({ property: "layer[boxPlot].encoding.x.field", value: "Origin" })
-    .editSemantic({ property: "layer[boxPlot].encoding.x.fieldType", value: "nominal" })
-    .editSemantic({ property: "layer[boxPlot].encoding.x.scale", value: "x" })
-    .editSemantic({ property: "layer[boxPlot].encoding.y.field", value: BOX_PLOT_FIELDS.q1 })
-    .editSemantic({ property: "layer[boxPlot].encoding.y.fieldType", value: "quantitative" })
-    .editSemantic({ property: "layer[boxPlot].encoding.y.scale", value: "y" })
-    .editSemantic({ property: "layer[boxPlot].encoding.y2.field", value: BOX_PLOT_FIELDS.q3 })
-    .editSemantic({ property: "layer[boxPlot].encoding.y2.fieldType", value: "quantitative" })
-    .editSemantic({ property: "layer[boxPlot].encoding.y2.scale", value: "y" })
-    .editSemantic({ property: "layer[boxPlot].encoding.color.field", value: "Origin" })
-    .editSemantic({ property: "layer[boxPlot].encoding.color.fieldType", value: "nominal" })
-    .editSemantic({ property: "layer[boxPlot].encoding.color.scale", value: "color" })
     .createGraphics({ id: "boxPlot", type: "rect", length: values.boxes.length })
     .editGraphics({ target: "boxPlot", property: "x", value: values.boxes.map(box => box.x) })
     .editGraphics({ target: "boxPlot", property: "y", value: values.boxes.map(box => box.y) })
