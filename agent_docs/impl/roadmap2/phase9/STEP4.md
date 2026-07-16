@@ -6,20 +6,30 @@ Future selection actions 없이 Cars grouped top-point highlight를 raw primitiv
 
 ## 진행 상태
 
-- [ ] Independent Origin-grouped maximum Horsepower selected rows
-- [ ] Exact selected/unselected point IDs and stable tie order
-- [ ] Accent color, diamond, size, opacity and logical offset target
-- [ ] Complement dimming and selected-last child order
-- [ ] Axes/legend/title integration without selection-aware public actions
-- [ ] Primitive program, reference values, manifest and exact future call chain
-- [ ] Browser and `primitive.png` checks
+- [x] Independent Origin-grouped maximum Horsepower selected rows
+- [x] Exact selected/unselected point IDs and stable tie order
+- [x] Accent color, diamond, size, opacity and logical offset target
+- [x] Complement dimming and selected-last child order
+- [x] Axes/legend/title integration without selection-aware public actions
+- [x] Primitive program, reference values, manifest and exact future call chain
+- [x] Canvas and `primitive.png` checks
 - [ ] Gate A user confirmation
-- [ ] STEP status, conceptual commit and push
+- [x] Gate candidate commit and push
 
 ## Gate A
 
 Confirm that all three selected points remain data-positioned, visibly emphasized and front-most while the complete
 scatterplot context remains readable.
+
+### Gate A candidate
+
+- Selected rows: USA `pontiac grand prix` (230), Japan `datsun 280-zx` (132), Europe `peugeot 604sl` (133).
+- Selected recipe: red diamond, white 1.5px outline, area multiplier 5.5, opacity 1 and logical offset `(7, -7)`.
+- Complement opacity: 0.18. Selected children are the final three collection children.
+- Artifact: `.artifacts/test/png/roadmap2/mark-selection/points-grouped-max/primitive.png`.
+- Manifest: `test/gates/mark-selection-points/variants/manifest.js`.
+- The gallery stores the exact future `highlightMarks({ select: ... })` chain and intentionally has no user-facing
+  program before approval.
 
 ## 완료 조건
 
