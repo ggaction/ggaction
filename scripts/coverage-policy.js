@@ -4,14 +4,47 @@ export const CRITICAL_COVERAGE_FLOORS = Object.freeze({
     branches: 75,
     functions: 100
   }),
+  "actions/encodings/position/policies/index.js": Object.freeze({
+    lines: 90,
+    branches: 85,
+    functions: 100
+  }),
   "core/immutable.js": Object.freeze({ lines: 90, branches: 85, functions: 100 }),
   "grammar/areaSeries.js": Object.freeze({ lines: 75, branches: 75, functions: 100 }),
   "grammar/markFilter.js": Object.freeze({ lines: 75, branches: 60, functions: 100 }),
   "grammar/markSelection.js": Object.freeze({ lines: 90, branches: 90, functions: 100 }),
   "grammar/regression.js": Object.freeze({ lines: 90, branches: 75, functions: 100 }),
+  "grammar/scales/definition.js": Object.freeze({
+    lines: 90,
+    branches: 85,
+    functions: 100
+  }),
   "grammar/schemas/concreteGraphic.js": Object.freeze({
     lines: 85,
     branches: 85,
+    functions: 100
+  }),
+  "grammar/schemas/graphicTree.js": Object.freeze({
+    lines: 90,
+    branches: 85,
+    functions: 90
+  }),
+  "grammar/schemas/graphicBounds.js": Object.freeze({
+    lines: 85,
+    branches: 75,
+    functions: 90
+  }),
+  "grammar/transforms.js": Object.freeze({
+    lines: 85,
+    branches: 75,
+    functions: 100
+  }),
+  "layout/grid.js": Object.freeze({ lines: 100, branches: 100, functions: 100 }),
+  "layout/legend.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "layout/title.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "materialization/planner.js": Object.freeze({
+    lines: 95,
+    branches: 95,
     functions: 100
   }),
   "materialization/selection/filter.js": Object.freeze({
@@ -24,9 +57,19 @@ export const CRITICAL_COVERAGE_FLOORS = Object.freeze({
     branches: 75,
     functions: 90
   }),
+  "materialization/selection/policies/index.js": Object.freeze({
+    lines: 90,
+    branches: 85,
+    functions: 100
+  }),
   "materialization/selection/state.js": Object.freeze({
     lines: 95,
     branches: 90,
+    functions: 100
+  }),
+  "materialization/selection/styles.js": Object.freeze({
+    lines: 90,
+    branches: 75,
     functions: 100
   }),
   "renderers/canvas/index.js": Object.freeze({ lines: 85, branches: 70, functions: 100 }),
