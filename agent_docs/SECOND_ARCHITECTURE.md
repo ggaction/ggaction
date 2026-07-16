@@ -1384,7 +1384,7 @@ src/
 ├─ ChartProgram.js      core class와 built-in action의 assembly boundary
 ├─ actions/
 │  ├─ canvas/          Canvas domain actions
-│  ├─ boxPlots/        vertical/horizontal Tukey/minmax box aggregate and wrapped components
+│  ├─ boxPlots/        box option/target resolution, wrapped components와 materialization orchestration
 │  ├─ coordinates/     coordinate authoring
 │  ├─ data/            source/derived data actions
 │  ├─ encodings/       position, color, stroke-dash, ranged, atomic encoding actions
