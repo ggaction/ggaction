@@ -15,8 +15,11 @@ runbook을 작성한다.
 - [x] Version bump, candidate, approval, tag, publish and verification runbook added
 - [x] Failure handling covers pre-publish abort, deprecate and next-patch recovery
 - [x] Generated LLM docs and navigation remain fresh
-- [ ] Documentation, built-site, desktop and mobile checks pass
-- [ ] STEP status, conceptual commit and push
+- [x] Documentation, built-site, desktop and mobile checks pass
+- [x] STEP status, conceptual commit and push
+
+Remote CI run `29516731978` built the Jekyll site and passed generated-doc,
+built-link, desktop, narrow-mobile, standard-mobile, and tablet browser checks.
 
 ## 문서 경계
 
