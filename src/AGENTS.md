@@ -44,7 +44,7 @@ Apply these instructions to library source, public package entry points, and sou
 - Validate library-defined closed vocabularies such as channels and types.
 - Treat user-defined IDs as names: validate their basic form, uniqueness when creating, and existence when referencing rather than checking them against a library vocabulary.
 - Infer layout coordinates from Canvas or plot bounds when possible instead of requiring raw x/y values. Do not make non-overlap a global invariant; individual actions and explicit user options may intentionally produce overlapping graphics.
-- Do not create placeholder semantic or graphical components for omitted optional content. Create optional subtitles, borders, backgrounds, and similar components only when they are actually requested or inferred as present.
+- Do not create placeholder resources for optional content. Create an optional dataset, semantic component, materialization config, graphic, or wrapped trace child only when the option is enabled and the component is semantically applicable with non-empty output; disabling or inapplicability must leave the entire optional branch absent.
 
 ## Actions and Trace
 
@@ -56,6 +56,7 @@ Apply these instructions to library source, public package entry points, and sou
 - Component actions invoked by higher-level actions must also be wrapped actions when they represent meaningful authoring steps.
 - Aggregate actions must orchestrate wrapped child actions instead of duplicating their behavior or hiding meaningful authoring steps inside untraced helpers.
 - Keep aggregate actions thin: they may decide child applicability and call order, but inference and validation owned by a child action must remain in that child rather than being reimplemented by the aggregate.
+- Before an aggregate action invokes its first state-changing child, use the canonical child-owned validators and resolvers to preflight the complete option object, inferred ownership, applicability, and conflicts without duplicating their logic. A rejected aggregate call must not leave partial datasets, layers, graphics, configs, or trace branches.
 - Do not hide meaningful action decomposition inside untraced helpers.
 - Every trace has a virtual `program` root, and nested wrapped calls form its action hierarchy.
 - Context updates are part of successful immutable state transitions; they are not separate actions or trace nodes.
@@ -85,10 +86,12 @@ Apply these instructions to library source, public package entry points, and sou
 - Treat concrete rendering order as explicit graphical state rather than an accidental consequence of action call order. Use graphic placement to preserve relationships such as grids behind marks and axes or legends above them.
 - Do not synthesize missing categorical combinations as zero values or placeholder graphics unless an explicit semantic completion policy requests them. Materialize only observed groups by default.
 - Use one resolved ordinal domain order and its band geometry as the shared source of truth for marks, offsets, ticks, labels, and other positional consumers.
+- When one composite component depends on another component's realized geometry, derive it from the concrete owner geometry instead of duplicating scale, band, width, or endpoint calculations. Rematerialize the owner before its dependents so Canvas and scale edits preserve alignment.
 - Design shared guides around their semantic role, such as a categorical legend, and express mark-specific symbols through graphical recipes instead of forking the complete guide implementation by mark type.
 - Give each guide type one chart-independent documented default, such as a right-side legend. Alternate placement must come from an explicit public option rather than a different hidden default for each chart type.
 - Generic aggregate actions must select only semantic combinations that their child actions currently support. Determine applicability from persisted mark, encoding, scale, and coordinate state rather than from resource presence alone.
 - Statistical transforms must record enough provenance to reproduce and interpret their results: the source dataset, transform type, input and output fields, grouping, method, and every resolved parameter or default that affects the derived values.
+- When one statistical policy controls multiple coupled outputs, normalize it once and pass the same immutable resolved decision to every derived dataset and component. Do not independently recompute classifications such as summaries, bounds, and excluded rows in separate consumers.
 - Derived-data output order must be deterministic and documented. Unless a transform defines another semantic order, preserve group order by first appearance in the source and use a stable, explicit order within each group.
 - Keep statistical computation, semantic data authoring, and graphical materialization separate. Pure grammar modules compute derived values, data actions own transform provenance and derived datasets, and mark actions turn those values into concrete graphics.
 - User-facing guide text must not expose generated internal field names when transform provenance can recover the original meaning. Infer titles from source fields and semantic roles such as `Density` rather than names such as `Acceleration_density`.
