@@ -7,15 +7,15 @@ Gapminder 2005 log/sqrt/sequential scatterplot을 만들고 Gate A에서 승인�
 
 ## 진행 상태
 
-- [ ] Independent 2005 filtering, log/sqrt domain and mapped positions
-- [ ] Independent sequential life-expectancy colors and gradient stops
-- [ ] Raw datasets, semantic point layer and scale definitions
-- [ ] Concrete point, grid, axis, gradient legend and title graphics
-- [ ] Stable drawing order and renderer-call expectations
-- [ ] Variant manifest and exact future public call chain
-- [ ] Browser Canvas and high-resolution `primitive.png`
+- [x] Independent 2005 filtering, log/sqrt domain and mapped positions
+- [x] Independent sequential life-expectancy colors and gradient stops
+- [x] Raw datasets, semantic point layer and scale definitions
+- [x] Concrete point, grid, axis, gradient legend and title graphics
+- [x] Stable drawing order and renderer-call expectations
+- [x] Variant manifest and exact future public call chain
+- [x] Browser Canvas and high-resolution `primitive.png`
 - [ ] Gate A code/image presentation and user confirmation
-- [ ] STEP status, conceptual commit and push
+- [x] STEP status, conceptual commit and push
 
 ## Gate A
 

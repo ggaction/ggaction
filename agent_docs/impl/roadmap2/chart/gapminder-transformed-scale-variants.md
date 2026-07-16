@@ -61,7 +61,14 @@ const program = chart()
   })
   .encodeRadius({ value: 4 })
   .editPointMark({ opacity: 0.72, stroke: "#ffffff", strokeWidth: 0.6 })
-  .createGuides({ grid: { horizontal: true, vertical: true } })
+  .createGuides({
+    axes: {
+      x: { title: { text: "Population" } },
+      y: { title: { text: "Fertility" } }
+    },
+    grid: { horizontal: {}, vertical: {} },
+    legend: { title: "Life expectancy" }
+  })
   .createTitle({
     text: "Population, Fertility, and Life Expectancy",
     subtitle: "Gapminder countries in 2005 · log population scale"
