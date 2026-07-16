@@ -1,6 +1,6 @@
 import { createCarsBoxPlot } from "./cars-box-plot/program.js";
 import { createCarsDensityArea } from "./cars-density-area/program.js";
-import { createCarsErrorBar } from "./cars-error-bar/program.js";
+import { createCarsErrorBarOverlay } from "./cars-error-bar/program.js";
 import { createCarsHistogram } from "./cars-histogram/program.js";
 import { createCarsLineChart } from "./cars-line-chart/program.js";
 import { createCarsRegressionScatterplot } from
@@ -10,7 +10,8 @@ import { createMatchingPopulationColorBars } from
   "./gapminder-continuous-color-bars/program.js";
 import { createGapminderQuantizeColorScale } from
   "./gapminder-discretized-color-scales/program.js";
-import { createGapminderErrorBand } from "./gapminder-error-band/program.js";
+import { createGapminderCurvedBoundaryErrorBand } from
+  "./gapminder-error-band/program.js";
 import { createGapminderBandPointChart } from
   "./gapminder-temporal-discrete-scales/program.js";
 import { createGapminderTransformedScaleScatterplot } from
@@ -96,7 +97,7 @@ export const PUBLIC_CHARTS = Object.freeze([
     data: "cars",
     width: 720,
     height: 460,
-    createProgram: createCarsErrorBar,
+    createProgram: createCarsErrorBarOverlay,
     docsGroup: "charts",
     browser: { path: "cars-error-bar/", canvas: "#chart" }
   }),
@@ -114,7 +115,7 @@ export const PUBLIC_CHARTS = Object.freeze([
     data: "gapminder",
     width: 760,
     height: 480,
-    createProgram: createGapminderErrorBand,
+    createProgram: createGapminderCurvedBoundaryErrorBand,
     docsGroup: "charts",
     browser: { path: "gapminder-error-band/", canvas: "#chart" }
   }),

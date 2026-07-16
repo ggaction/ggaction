@@ -5,11 +5,12 @@ title: Error-Bar Chart Tutorial
 
 # Error-Bar Chart Tutorial
 
-![Mean acceleration by origin with 95% confidence intervals](../assets/images/cars-error-bar.png)
+![Car observations with grouped mean confidence intervals](../assets/images/cars-error-bar.png)
 
-This chart summarizes car acceleration by Origin. `createErrorBar` derives one
-mean and two-sided 95% Student-t confidence interval per group, then creates
-concrete vertical rules and fixed-width caps. The source rows remain immutable.
+This chart keeps individual car observations visible while summarizing
+acceleration by Origin. `createErrorBar()` infers the encoded point layer,
+derives one mean and two-sided 95% Student-t confidence interval per group,
+then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
 [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-error-bar)
 and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-error-bar/program.js).
@@ -28,14 +29,17 @@ const program = chart()
     margin: { top: 90, right: 40, bottom: 70, left: 80 }
   })
   .createData({ values: cars })
-  .createErrorBar({
-    x: { field: "Origin", fieldType: "nominal" },
-    y: { field: "Acceleration" }
-  })
+  .createPointMark()
+  .encodeX({ field: "Origin", fieldType: "ordinal" })
+  .encodeY({ field: "Acceleration" })
+  .encodeColor({ field: "Origin" })
+  .encodeRadius({ value: 3 })
+  .encodeOpacity({ value: 0.18 })
+  .createErrorBar()
   .createGuides()
   .createTitle({
-    text: "Mean Acceleration by Origin",
-    subtitle: "95% confidence intervals"
+    text: "Acceleration by Origin",
+    subtitle: "Observations and 95% mean confidence intervals"
   });
 
 render(program, document.querySelector("#chart").getContext("2d"));
@@ -45,13 +49,13 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
+| Point encodings | One observation layer grouped by Origin | Translucent colored observations |
 | `createErrorBar` | Immutable grouped interval rows and three rule layers | Main intervals and two 8px caps per Origin |
 | `createGuides` | Ordinal x, quantitative y, axes, horizontal grid | Grid behind rules and axes above them |
 | `createTitle` | Title and subtitle | Plot-aligned text above the chart |
 
 The first dataset ID, error-bar ID, source, coordinate, grouping, statistic,
-and appearance are all inferred. The explicit x and y fields are the only
-decisions needed when no encoded source layer exists.
+and interval appearance are inferred from the encoded point layer.
 
 ## Add intervals to an existing layer
 

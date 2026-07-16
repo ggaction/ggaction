@@ -192,11 +192,15 @@ test("keeps tutorial action flows aligned with public examples", () => {
       "return chart()"
     ],
     ["density-area", "examples/cars-density-area/program.js", "return chart()"],
-    ["error-bar", "examples/cars-error-bar/program.js", "return chart()"],
+    [
+      "error-bar",
+      "examples/cars-error-bar/program.js",
+      "export function createCarsErrorBarOverlay"
+    ],
     [
       "error-band",
       "examples/gapminder-error-band/program.js",
-      "return chart()"
+      "function createCurvedBoundaryErrorBand"
     ]
   ];
 

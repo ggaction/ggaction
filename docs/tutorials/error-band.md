@@ -5,11 +5,12 @@ title: Error-Band Chart Tutorial
 
 # Error-Band Chart Tutorial
 
-![Mean life expectancy by cluster with 95% confidence bands](../assets/images/gapminder-error-band.png)
+![Mean life expectancy by cluster with bounded confidence bands](../assets/images/gapminder-error-band.png)
 
 This chart summarizes life expectancy over time for each Gapminder cluster.
 `createErrorBand` derives one mean and two-sided 95% Student-t confidence
-interval per year and cluster, then creates one closed area path per cluster.
+interval per year and cluster, then creates one closed area path plus explicit
+lower and upper boundary paths per cluster.
 The repository contains a
 [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/gapminder-error-band)
 and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/gapminder-error-band/program.js).
@@ -31,7 +32,14 @@ const program = chart()
   .createErrorBand({
     x: { field: "year", fieldType: "temporal" },
     y: { field: "life_expect" },
-    groupBy: "cluster"
+    groupBy: "cluster",
+    curve: "cardinal",
+    boundaries: {
+      stroke: "#25364d",
+      strokeWidth: 1.4,
+      strokeDash: [6, 3],
+      opacity: 0.8
+    }
   })
   .encodeColor({
     target: "errorBand",
@@ -52,7 +60,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
-| `createErrorBand` | Immutable year × cluster interval rows and one area layer | Six closed confidence-band paths |
+| `createErrorBand` | Immutable year × cluster interval rows, one area layer, and boundary layers | Six closed bands with explicit lower and upper paths |
 | `encodeColor` | Shared nominal cluster scale | One fill per cluster |
 | `createGuides` | Temporal x, quantitative y, axes, horizontal grid, legend | Grid behind bands and guides above them |
 | `createTitle` | Title and subtitle | Plot-aligned text above the chart |

@@ -444,6 +444,13 @@ summary:focus-visible {
   border-radius: 0.65rem;
 }
 
+.docs-chart-gallery article > p {
+  margin: 0;
+  color: var(--docs-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
 .docs-chart-gallery article:focus-within,
 .docs-chart-gallery article:hover {
   border-color: #93c5fd;
@@ -457,27 +464,28 @@ summary:focus-visible {
   border-radius: 0.4rem;
 }
 
-.docs-chart-gallery__image::after {
-  position: absolute;
-  right: 0.45rem;
-  bottom: 0.45rem;
-  padding: 0.2rem 0.4rem;
-  color: #fff;
-  border-radius: 0.25rem;
-  background: rgba(15, 23, 42, 0.78);
-  content: "Full size";
-  font-size: 0.68rem;
-  opacity: 0;
-}
-
-.docs-chart-gallery__image:focus::after,
-.docs-chart-gallery__image:hover::after {
-  opacity: 1;
-}
-
 .docs-chart-gallery__title {
   color: #0f172a;
   font-weight: 600;
+}
+
+.docs-chart-gallery__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.docs-chart-gallery__actions code {
+  padding: 0.12rem 0.35rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+}
+
+.docs-chart-gallery__full-size {
+  align-self: flex-start;
+  margin-top: auto;
+  color: var(--docs-muted);
+  font-size: 0.76rem;
 }
 
 .docs-chart-gallery img {
