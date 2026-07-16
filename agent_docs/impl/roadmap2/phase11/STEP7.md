@@ -16,7 +16,7 @@ equivalence를 두 번째 Gate에서 검토한다.
 - [x] `user-facing.png` and complete variant metadata
 - [x] Gallery primitive/public pair and displayed call chain
 - [x] Gate B code, image, tree and equivalence review package
-- [ ] Explicit user approval before STEP8
+- [x] Explicit user approval before STEP8
 
 ## Gate B 결과
 
@@ -27,6 +27,7 @@ equivalence를 두 번째 Gate에서 검토한다.
 - Resize, x-scale edit, regression band/line edit와 point highlight 뒤에도 named draw order가 유지된다.
 - Remaining chart-family primitive fixtures와 flat-order assertions는 의도적으로 STEP8 범위에 남겨 두었다. Gate B
   승인 전에는 이를 migration하지 않는다.
+- Gate B는 2026-07-17 사용자 승인을 받았다.
 
 ## Gate B
 
