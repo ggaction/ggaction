@@ -140,15 +140,78 @@ test("rematerializes every shared point consumer and rejects invalid transitions
   assert.equal(shared.semanticSpec.scales.find(scale => scale.id === "shared").type, "linear");
 });
 
-test("rejects transformed positions for marks without transformed materialization", () => {
+test("materializes transformed positions for compound marks and type edits", () => {
   const area = chart()
     .createCanvas({ width: 300, height: 200, margin: 20 })
-    .createData({ id: "rows", values: rows })
-    .createAreaMark({ id: "area" });
+    .createData({
+      id: "rows",
+      values: rows.map(row => ({ ...row, y2: row.y + 1 }))
+    })
+    .createAreaMark({ id: "area" })
+    .encodeX({ field: "x", scale: { type: "log" } })
+    .encodeY({ field: "y" })
+    .encodeY2({ field: "y2" });
+  const bars = chart()
+    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createData({ values: rows.map(row => ({ category: String(row.x), value: row.y })) })
+    .createBarMark()
+    .encodeX({ field: "category", fieldType: "ordinal" })
+    .encodeY({ field: "value", aggregate: "sum", stack: null, scale: { zero: false } })
+    .encodeBarWidth({ band: 0.7 });
+  const squareRootBars = bars.editScale({ id: "y", type: "sqrt" });
 
-  assert.throws(
-    () => area.encodeX({ field: "x", scale: { type: "log" } }),
-    /currently require a point mark/
+  assert.deepEqual(
+    area.graphicSpec.objects.area.children[0].properties.commands
+      .filter(command => command.op !== "Z")
+      .slice(0, 3)
+      .map(command => command.x),
+    [20, 150, 280]
   );
-  assert.equal(area.semanticSpec.scales.length, 0);
+  assert.notDeepEqual(
+    squareRootBars.graphicSpec.objects.bar.children.map(child => child.properties.height),
+    bars.graphicSpec.objects.bar.children.map(child => child.properties.height)
+  );
+  assert.equal(bars.semanticSpec.scales.find(scale => scale.id === "y").type, "linear");
+});
+
+test("uses transformed mappings for line paths and rule endpoints", () => {
+  const line = chart()
+    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createData({
+      id: "line-rows",
+      values: rows.map((row, index) => ({ year: 2000 + index, value: row.y }))
+    })
+    .createLineMark()
+    .encodeX({ field: "year", fieldType: "temporal" })
+    .encodeY({ field: "value", aggregate: "mean" });
+  const transformedLine = line.editScale({ id: "y", type: "sqrt" });
+  const rule = chart()
+    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createData({ id: "rule-rows", values: rows.map(({ x }) => ({ x })) })
+    .createRuleMark()
+    .encodeX({
+      field: "x",
+      fieldType: "quantitative",
+      scale: { type: "log" }
+    })
+    .encodeY({
+      datum: 0,
+      fieldType: "quantitative",
+      scale: { domain: [0, 10] }
+    })
+    .encodeY2({ datum: 10, fieldType: "quantitative" });
+
+  assert.deepEqual(
+    transformedLine.graphicSpec.objects.line.children[0].properties.commands
+      .map(command => command.y),
+    [180, 100, 20]
+  );
+  assert.deepEqual(
+    rule.graphicSpec.objects.rule.children.map(child => child.properties.x1),
+    [20, 150, 280]
+  );
+  assert.deepEqual(
+    rule.graphicSpec.objects.rule.children.map(child => child.properties.x2),
+    [20, 150, 280]
+  );
 });

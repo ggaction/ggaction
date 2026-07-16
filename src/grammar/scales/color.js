@@ -320,12 +320,14 @@ export function mapSequentialColors(
   values,
   domain,
   stops,
-  { interpolation = "rgb", clamp: shouldClamp = false } = {}
+  options = {}
 ) {
+  const { interpolation = "rgb", clamp: shouldClamp = false } = options;
+  const hasUnknown = Object.hasOwn(options, "unknown");
   if (!Array.isArray(domain) || domain.length !== 2 || !domain.every(Number.isFinite)) {
     throw new TypeError("Sequential color domain must contain two finite numbers.");
   }
-  if (!Array.isArray(values) || !values.every(Number.isFinite)) {
+  if (!Array.isArray(values) || (!hasUnknown && !values.every(Number.isFinite))) {
     throw new TypeError("Sequential color values must be finite numbers.");
   }
   if (typeof shouldClamp !== "boolean") {
@@ -334,6 +336,10 @@ export function mapSequentialColors(
   const [start, end] = domain;
   const constant = start === end;
   return cloneAndFreeze(values.map(value => {
+    if (!Number.isFinite(value)) {
+      if (hasUnknown) return options.unknown;
+      throw new TypeError("Sequential color values must be finite numbers.");
+    }
     const raw = constant ? 0.5 : (value - start) / (end - start);
     if (!shouldClamp && (raw < 0 || raw > 1)) {
       return interpolateColorStops(stops, raw < 0 ? 0 : 1, interpolation);

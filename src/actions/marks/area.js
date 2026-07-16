@@ -5,7 +5,7 @@ import {
   deriveDensityAreaSeries,
   layoutDensityAreaSeries
 } from "../../grammar/areaSeries.js";
-import { mapLinearValues, mapOrdinalValues } from "../../grammar/scales.js";
+import { mapContinuousScaleValues, mapOrdinalValues } from "../../grammar/scales.js";
 import {
   assertMarkAvailable,
   resolveMarkId,
@@ -186,23 +186,17 @@ const rematerializeAreaMark = action(
     const paths = derived.series.map(series => {
       const curve = this.markConfigs[id]?.curve ?? "linear";
       if (densityTransform === undefined && derived.orientation === "horizontal") {
-        const y = mapLinearValues(
+        const y = mapContinuousScaleValues(
           series.values.map(value => value.y),
-          yScale.domain,
-          yScale.range,
-          { clamp: yScale.clamp ?? false }
+          yScale
         );
-        const lower = mapLinearValues(
+        const lower = mapContinuousScaleValues(
           series.values.map(value => value.x),
-          xScale.domain,
-          xScale.range,
-          { clamp: xScale.clamp ?? false }
+          xScale
         );
-        const upper = mapLinearValues(
+        const upper = mapContinuousScaleValues(
           series.values.map(value => value.x2),
-          xScale.domain,
-          xScale.range,
-          { clamp: xScale.clamp ?? false }
+          xScale
         );
         return buildAreaCurvePathCommands(
           y.map((value, index) => ({ x: lower[index], y: value })),
@@ -212,23 +206,17 @@ const rematerializeAreaMark = action(
         );
       }
       if (densityTransform !== undefined && derived.mode === "x-density") {
-        const y = mapLinearValues(
+        const y = mapContinuousScaleValues(
           series.values.map(value => value.y),
-          yScale.domain,
-          yScale.range,
-          { clamp: yScale.clamp ?? false }
+          yScale
         );
-        const upper = mapLinearValues(
+        const upper = mapContinuousScaleValues(
           series.values.map(value => value.x),
-          xScale.domain,
-          xScale.range,
-          { clamp: xScale.clamp ?? false }
+          xScale
         );
-        const baseline = mapLinearValues(
+        const baseline = mapContinuousScaleValues(
           [0],
-          densityScale.domain,
-          densityScale.range,
-          { clamp: densityScale.clamp ?? false }
+          densityScale
         )[0];
         if (curve === "linear") {
           return buildLinearPathCommands([
@@ -244,38 +232,30 @@ const rematerializeAreaMark = action(
           { independentAxis: "y" }
         );
       }
-      const x = mapLinearValues(
+      const x = mapContinuousScaleValues(
         series.values.map(value => value.x),
-        xScale.domain,
-        xScale.range,
-        { clamp: xScale.clamp ?? false }
+        xScale
       );
       const lowerValues = densityTransform === undefined
         ? series.values.map(value => value.y)
         : derived.mode === "y-density"
           ? series.values.map(value => value.lower)
           : series.values.map(value => value.y);
-      const lower = mapLinearValues(
+      const lower = mapContinuousScaleValues(
         lowerValues,
-        yScale.domain,
-        yScale.range,
-        { clamp: yScale.clamp ?? false }
+        yScale
       );
       const upperValues = densityTransform === undefined
         ? series.values.map(value => value.y2)
         : series.values.map(value => value.upper);
-      const upper = mapLinearValues(
+      const upper = mapContinuousScaleValues(
         upperValues,
-        yScale.domain,
-        yScale.range,
-        { clamp: yScale.clamp ?? false }
+        yScale
       );
       if (densityTransform !== undefined && layout === "overlay") {
-        const baseline = mapLinearValues(
+        const baseline = mapContinuousScaleValues(
           [0],
-          yScale.domain,
-          yScale.range,
-          { clamp: yScale.clamp ?? false }
+          yScale
         )[0];
         if (curve === "linear") {
           return buildLinearPathCommands([

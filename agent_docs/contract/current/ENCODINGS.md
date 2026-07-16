@@ -8,8 +8,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - `id`: Implemented. user-defined scale ID; 생략하면 channel 이름(`x`, `y`, `color`, `size`,
   `shape`, `strokeDash`, `xOffset`)을 사용한다.
-- `type`: Implemented. quantitative point position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; nominal color/shape/dash/offset은
-  `ordinal`, quantitative point color는 `sequential | quantize | quantile | threshold`, size는 `linear`만 허용한다.
+- `type`: Implemented. compatible quantitative position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; nominal color/shape/dash/offset은
+  `ordinal`, continuous point/aggregate-bar color는 `sequential`, quantitative point color는 추가로
+  `quantize | quantile | threshold`, size는 `linear`만 허용한다.
 - `domain`: Implemented. `"auto"` 또는 type에 맞는 explicit array. explicit domain은 data inference,
   `zero`, `nice`보다 우선한다.
 - `range`: Implemented. `"auto"` 또는 type/channel에 맞는 explicit array. position auto range는
@@ -19,12 +20,14 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `zero`: Implemented for linear scale. boolean이며 auto domain에만 zero를 포함한다. explicit domain이
   있으면 적용되지 않는다.
 - `palette`: Implemented for color scale. palette name이며 `range`와 동시에 사용할 수 없다.
-- `base`, `exponent`, `constant`: Implemented for point position `log`, `pow`, `symlog`; defaults는 `10`, `1`, `1`이다. `sqrt`는 fixed exponent `0.5`다.
-- `clamp`, `reverse`: Implemented for continuous point position mappings.
+- `base`, `exponent`, `constant`: Implemented for position `log`, `pow`, `symlog`; defaults는 `10`, `1`, `1`이다. `sqrt`는 fixed exponent `0.5`다.
+- `clamp`, `reverse`: Implemented for compatible continuous position/color mappings and final resolved ranges.
 - `paddingInner`, `paddingOuter`, `padding`, `align`: Implemented for type-compatible band/point position.
-- Planned: direct scale vocabulary/type transition과 `unknown` mapping policy는 `planned/SCALES.md`가
-  소유한다. Point quantitative/temporal color의 internal sequential scale과 point quantitative color의
-  quantize/quantile/threshold mapping, reverse, interval legend는 Implemented다.
+- `unknown`: Implemented for row-owned point `x`, `y`, `color`, `size`, `shape`, `opacity`. Missing/invalid input과
+  explicit ordinal domain 밖의 값에 channel-valid concrete fallback을 사용하며 scale domain에는 추가하지 않는다.
+  Compound path/bar/area/rule, xOffset와 strokeDash에서는 topology-safe fallback contract가 없어 거부한다.
+- Direct `createScale`/`editScale`은 complete current scale vocabulary를 노출한다. Encoding attachment가
+  field type, channel, mark grain과 existing consumers에 맞는 subset을 검증한다.
 - Proposed: —
 
 ## `encodeX`
@@ -54,8 +57,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Formal values — `encodeX`
 
 - Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; bin?: BinDefinition; stack?: "zero" | "normalize" | null })`; 실제 조합은 canonical matrix와 mark grain policy가 제한한다.
-- Implemented point extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }`.
-- Planned (NOT IMPLEMENTED): `{ scale?: { unknown?: unknown } }`; temporal `time` remains UTC-only.
+- Implemented quantitative extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }` for compatible point, line, area, bar and rule materializers.
+- Implemented point fallback: `{ scale?: { unknown?: Finite } }`; temporal `time` remains UTC-only.
 - Proposed (NOT IMPLEMENTED): Polar positional action.
 
 ### Value coverage — `encodeX`
@@ -80,9 +83,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: auto/explicit linear, time, ordinal definitions; explicit domain/range precedence;
     wrong type and shared-channel conflicts.
   - ⚠️ Partial: 모든 fieldType × nice × zero × explicit bound pairwise 조합.
-  - ✅ Covered: point log/pow/sqrt/symlog mapping, parameters, clamp/reverse, guides, Canvas resize and unsupported mark rejection.
+  - ✅ Covered: point/line/area/bar/rule log/pow/sqrt/symlog mapping, parameters, clamp/reverse, guides and Canvas resize.
   - ✅ Covered: band/point defaults, padding/alignment, reversed range, bar bandwidth compatibility and shared point centers.
-  - 🟡 Planned: unknown policy.
+  - ✅ Covered: point missing/invalid and explicit-domain `unknown`; compound-grain rejection.
 - Evidence: position, temporal, histogram-bin and ordinal-bar action tests.
 
 ## `encodeY`
@@ -141,8 +144,8 @@ type AggregateOperation =
 ### Formal values — `encodeY`
 
 - Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | "normalize" | null })`; nominal은 compatible count-style aggregate에만 허용되고 mark/pair policy가 조합을 제한한다.
-- Implemented point extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }`.
-- Planned (NOT IMPLEMENTED): `{ scale?: { unknown?: unknown } }`; temporal `time` remains UTC-only.
+- Implemented quantitative extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }` for compatible point, line, area, bar and rule materializers.
+- Implemented point fallback: `{ scale?: { unknown?: Finite } }`; temporal `time` remains UTC-only.
 - Proposed (NOT IMPLEMENTED): `{ stack?: "center" }`; full-item extreme selection은 Planned `selectMarks`가 소유한다.
 
 ### Value coverage — `encodeY`
@@ -165,9 +168,9 @@ type AggregateOperation =
 - `scale`
   - ✅ Covered: auto/explicit domain/range, nice/zero precedence, shared consumer conflicts.
   - ⚠️ Partial: aggregate/stack/scale option pairwise matrix.
-  - ✅ Covered: point transformed mapping and shared axes/grid rematerialization.
+  - ✅ Covered: point/line/area/bar/rule transformed mapping and shared axes/grid rematerialization.
   - ✅ Covered: compatible band/point types, padding/alignment and shared consumer rematerialization.
-  - 🟡 Planned: unknown policy.
+  - ✅ Covered: point missing/invalid and explicit-domain `unknown`; compound-grain rejection.
 - Evidence: point position, line aggregate, histogram y and ordinal aggregate bar tests.
 
 ## Position field-type compatibility
@@ -548,8 +551,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   explicit `range` 중 하나를 사용할 수 있다. Palette는
   [`PALETTES.md`](PALETTES.md)의 frozen 68-name vocabulary와 `{ name, count?, extent? }` object를 받는다.
 - Continuous color는 default `viridis`, eight interpolation tokens, `clamp`, `reverse`, quantitative/temporal
-  point auto domain과 aggregate-bar quantitative auto domain을 지원하며 layout을 거부한다. General
-  `createScale` vocabulary에는 sequential을 노출하지 않는다.
+  point auto domain과 aggregate-bar quantitative auto domain을 지원하며 layout을 거부한다.
+  `sequential | quantize | quantile | threshold`는 direct scale vocabulary에도 포함된다.
 - Quantize는 auto 또는 explicit pair를 동일 폭으로 나누고, quantile은 auto 또는 explicit sample에서
   동일 개수에 가까운 class를 만들며, threshold는 strictly increasing explicit domain과 정확히 하나 더
   많은 color를 요구한다. Boundary equality는 upper class에 포함되고 interval legend도 같은 경계를 읽는다.
@@ -593,6 +596,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
     primitive/public semantic, graphic, Canvas and decoded-pixel parity.
   - ✅ Covered: quantize/quantile/threshold boundaries, upper-boundary equality, explicit colors, reverse,
     invalid threshold definitions, interval legend editing, primitive/public and Canvas parity.
+  - ✅ Covered: point color missing/invalid `unknown`, channel-invalid fallback rejection and shared-scale editing.
 - Evidence: color, palette, line-series, bar-color, continuous-bar-color, area-color, grouped-bar and Roadmap 2
   continuous-color bar integration tests.
 

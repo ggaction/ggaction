@@ -1,4 +1,4 @@
-import { mapLinearValues, mapOrdinalPositionValues, mapOrdinalValues } from "../../grammar/scales.js";
+import { mapContinuousScaleValues, mapOrdinalPositionValues, mapOrdinalValues } from "../../grammar/scales.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
 import { DEFAULT_BAR_FILL, DEFAULT_BAR_STROKE, DEFAULT_BAR_STROKE_WIDTH } from "./resolve.js";
 
@@ -14,8 +14,14 @@ export function deriveRangedRectangles(required, program, width) {
   const categoryScale = program.resolvedScales[category.scale];
   const measureScale = program.resolvedScales[primary.scale];
   const centers = mapOrdinalPositionValues(dataset.values.map(row => row[category.field]), categoryScale);
-  const first = mapLinearValues(dataset.values.map(row => row[primary.field]), measureScale.domain, measureScale.range);
-  const second = mapLinearValues(dataset.values.map(row => row[secondary.field]), measureScale.domain, measureScale.range);
+  const first = mapContinuousScaleValues(
+    dataset.values.map(row => row[primary.field]),
+    measureScale
+  );
+  const second = mapContinuousScaleValues(
+    dataset.values.map(row => row[secondary.field]),
+    measureScale
+  );
   const band = resolveBarWidth(width, Math.abs(categoryScale.bandwidth ?? categoryScale.step));
   const config = program.markConfigs[layer.id] ?? {};
   const appearance = config.barAppearance ?? {};

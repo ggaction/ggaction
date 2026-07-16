@@ -16,6 +16,7 @@ import { resolveSeriesLayoutDomainValues } from "../../grammar/seriesLayout.js";
 import {
   readNominalField,
   readQuantitativeField,
+  readScaleField,
   readTemporalField,
   resolveOrdinalDomain
 } from "../../grammar/scales.js";
@@ -59,16 +60,26 @@ export function resolveConsumerValues(program, consumer) {
   }
 
   if (
+    consumer.channel === "strokeDash" &&
+    !["line", "rule"].includes(consumer.layer.mark?.type)
+  ) {
+    throw new Error("strokeDash scale materialization requires a line mark or rule mark.");
+  }
+  const scale = findScale(program, consumer.encoding.scale);
+  const allowUnknown = Object.hasOwn(scale, "unknown");
+
+  if (
     ["color", "strokeDash", "xOffset", "shape"].includes(consumer.channel) &&
     consumer.encoding.fieldType === "nominal"
   ) {
-    if (
-      consumer.channel === "strokeDash" &&
-      !["line", "rule"].includes(consumer.layer.mark?.type)
-    ) {
-      throw new Error("strokeDash scale materialization requires a line mark or rule mark.");
-    }
-    return readNominalField(dataset.values, consumer.encoding.field);
+    return allowUnknown
+      ? readScaleField(
+          dataset.values,
+          consumer.encoding.field,
+          consumer.encoding.fieldType,
+          { allowUnknown: true }
+        )
+      : readNominalField(dataset.values, consumer.encoding.field);
   }
 
   if (
@@ -90,23 +101,37 @@ export function resolveConsumerValues(program, consumer) {
   }
 
   if (consumer.encoding.fieldType === "temporal") {
-    return readTemporalField(dataset.values, consumer.encoding.field);
+    return allowUnknown
+      ? readScaleField(dataset.values, consumer.encoding.field, "temporal", {
+          allowUnknown: true
+        })
+      : readTemporalField(dataset.values, consumer.encoding.field);
   }
   if (["nominal", "ordinal"].includes(consumer.encoding.fieldType)) {
-    const scale = findScale(program, consumer.encoding.scale);
     if (!["ordinal", "band", "point"].includes(scale.type)) {
       throw new Error(
         `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
       );
     }
-    return readNominalField(dataset.values, consumer.encoding.field);
+    return allowUnknown
+      ? readScaleField(
+          dataset.values,
+          consumer.encoding.field,
+          consumer.encoding.fieldType,
+          { allowUnknown: true }
+        )
+      : readNominalField(dataset.values, consumer.encoding.field);
   }
   if (consumer.encoding.fieldType !== "quantitative") {
     throw new Error(
       `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
     );
   }
-  return readQuantitativeField(dataset.values, consumer.encoding.field);
+  return allowUnknown
+    ? readScaleField(dataset.values, consumer.encoding.field, "quantitative", {
+        allowUnknown: true
+      })
+    : readQuantitativeField(dataset.values, consumer.encoding.field);
 }
 
 export function resolveHistogramCountValues(program, consumer) {

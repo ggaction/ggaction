@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import {
   readNominalField,
   readQuantitativeField,
+  readScaleField,
   validateOpacityValue
 } from "../../grammar/scales.js";
 import {
@@ -39,8 +40,6 @@ function encodeAppearanceField(program, channel, args, operation) {
   if (channel === "size" && program.markConfigs[target]?.radius !== undefined) {
     throw new Error("encodeSize cannot be combined with a constant radius.");
   }
-  if (channel === "shape") readNominalField(dataset.values, args.field);
-  else readQuantitativeField(dataset.values, args.field);
   const previous = layer.encoding?.[channel];
   const requestedScale = resolveReassignmentScaleOptions(
     previous,
@@ -51,6 +50,15 @@ function encodeAppearanceField(program, channel, args, operation) {
     channel,
     requestedScale
   );
+  if (Object.hasOwn(scale, "unknown")) {
+    readScaleField(dataset.values, args.field, fieldType, {
+      allowUnknown: true
+    });
+  } else if (channel === "shape") {
+    readNominalField(dataset.values, args.field);
+  } else {
+    readQuantitativeField(dataset.values, args.field);
+  }
 
   let next = program
     .editSemantic({
@@ -183,13 +191,19 @@ const encodeOpacity = action(
     if (fieldType !== "quantitative") {
       throw new Error("encodeOpacity requires a quantitative field.");
     }
-    readQuantitativeField(dataset.values, args.field);
     const previous = layer.encoding?.opacity;
     const requestedScale = resolveReassignmentScaleOptions(
       previous,
       args.scale ?? {}
     );
     const scale = resolveOpacityScaleDefinition(this, requestedScale);
+    if (Object.hasOwn(scale, "unknown")) {
+      readScaleField(dataset.values, args.field, fieldType, {
+        allowUnknown: true
+      });
+    } else {
+      readQuantitativeField(dataset.values, args.field);
+    }
     const { opacity, ...config } = this.markConfigs[target] ?? {};
     void opacity;
     let next = this

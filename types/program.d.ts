@@ -40,7 +40,11 @@ export type ScaleType =
   | "time"
   | "band"
   | "point"
-  | "ordinal";
+  | "ordinal"
+  | "sequential"
+  | "quantize"
+  | "quantile"
+  | "threshold";
 export type StackMode = "zero" | "normalize" | null;
 export type DensityKernel =
   | "gaussian"
@@ -345,6 +349,8 @@ export interface ScaleOptions {
   padding?: number;
   align?: number;
   palette?: Palette;
+  interpolate?: ContinuousColorInterpolation;
+  unknown?: unknown;
 }
 
 export interface EditScaleOptions {
@@ -363,6 +369,8 @@ export interface EditScaleOptions {
   paddingOuter?: number;
   padding?: number;
   align?: number;
+  interpolate?: ContinuousColorInterpolation;
+  unknown?: unknown;
 }
 
 export interface PositionEncodingOptions {

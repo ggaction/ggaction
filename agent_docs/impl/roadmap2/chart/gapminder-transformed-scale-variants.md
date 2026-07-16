@@ -270,7 +270,7 @@ The approved-target family uses the eight named focus countries and three source
 
 All variants use one rect per country, an explicit `[0, 4_000_000_000]` height domain, the internal sequential
 `viridis` color scale and one right-side vertical gradient legend. The exact executable future chains are owned by
-`test/gates/gapminder-continuous-color-bars/variants/manifest.js` until Gate D approval.
+`test/charts/gapminder-continuous-color-bars/variants/manifest.js`.
 
 ## Scale and edit contract
 
@@ -298,7 +298,9 @@ editScale({
 ```
 
 Type transition preserves domain/range only when valid for the next type, removes old type-only parameters, persists
-new resolved defaults and rejects incompatible consumers before state changes. `unknown` does not add a domain member.
+new resolved defaults and rejects incompatible consumers before state changes. A gradient/interval legend recipe
+also blocks a cross-family color type edit instead of being silently replaced. `unknown` does not add a domain member;
+it is implemented for row-owned point x/y/color/size/shape/opacity and rejected for compound mark grains.
 
 ## 완료 조건
 

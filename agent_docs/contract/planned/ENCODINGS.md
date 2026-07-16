@@ -107,5 +107,5 @@ type ImplementedPalette =
   registration API는 두지 않는다.
 - Status: Implemented. The canonical current palette and continuous-color contracts are
   [`../current/PALETTES.md`](../current/PALETTES.md) and
-  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodecolor). Remaining `unknown` mapping policy work is
-  owned by [`SCALES.md`](SCALES.md#scale-mapping-policies).
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodecolor). The implemented point-item `unknown` policy
+  is part of the current shared scale contract.

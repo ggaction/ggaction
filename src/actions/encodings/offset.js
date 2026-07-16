@@ -60,6 +60,9 @@ const encodeXOffset = action(
       args.scale ?? {}
     );
     const scale = resolveOffsetScaleDefinition(this, requestedScale);
+    if (Object.hasOwn(scale, "unknown")) {
+      throw new Error("xOffset scale unknown is not supported for grouped bars.");
+    }
     const padding = normalizeOffsetPadding(
       args,
       this.markConfigs[target]?.xOffset

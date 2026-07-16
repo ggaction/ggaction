@@ -9,11 +9,11 @@ Continuous-color bar aggregate ownership과 clamp/reverse/unknown policies를 ma
 
 - [x] Aggregate inheritance and explicit color aggregate validation
 - [x] Sequential bar materialization and gradient legend reuse
-- [ ] Clamp/reverse/unknown channel applicability matrix
-- [ ] Scale/type/Canvas rematerialization
+- [x] Clamp/reverse/unknown channel applicability matrix
+- [x] Scale/type/Canvas rematerialization
 - [x] Gate D exact public equivalence
 - [x] Atomic failure and caller-input immutability
-- [ ] STEP status, conceptual commits and pushes
+- [x] STEP status, conceptual commits and pushes
 
 ## 완료 조건
 

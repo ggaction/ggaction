@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import {
   readNominalField,
   readQuantitativeField,
+  readScaleField,
   readTemporalField,
   validateNominalFieldType
 } from "../../grammar/scales.js";
@@ -133,6 +134,20 @@ function encodeContinuousColor(program, args) {
     ["point", "bar"],
     "continuous color mark"
   );
+  const requestedScale = resolveReassignmentScaleOptions(
+    layer.encoding?.color,
+    args.scale ?? {}
+  );
+  const scale = resolveQuantitativeColorScaleDefinition(
+    program,
+    args.fieldType,
+    requestedScale
+  );
+  if (Object.hasOwn(scale, "unknown") && layer.mark.type !== "point") {
+    throw new Error(
+      "Continuous color scale unknown currently requires a row-owned point mark."
+    );
+  }
   if (
     layer.mark.type === "bar" &&
     layer.encoding?.color?.fieldType === "nominal"
@@ -169,20 +184,15 @@ function encodeContinuousColor(program, args) {
     validateAggregateFieldType(aggregate, args.fieldType);
     validateAggregateFieldValues(dataset.values, args.field, args.fieldType);
   }
-  if (args.fieldType === "temporal") {
+  if (Object.hasOwn(scale, "unknown")) {
+    readScaleField(dataset.values, args.field, args.fieldType, {
+      allowUnknown: true
+    });
+  } else if (args.fieldType === "temporal") {
     readTemporalField(dataset.values, args.field);
   } else {
     readQuantitativeField(dataset.values, args.field);
   }
-  const requestedScale = resolveReassignmentScaleOptions(
-    layer.encoding?.color,
-    args.scale ?? {}
-  );
-  const scale = resolveQuantitativeColorScaleDefinition(
-    program,
-    args.fieldType,
-    requestedScale
-  );
   const next = program
     .editSemantic({
       property: `layer[${target}].encoding.color.field`,
@@ -255,12 +265,23 @@ const encodeColor = action(
       );
     }
     const layout = resolveColorLayout(layer, args.layout, barGrain);
-    readNominalField(dataset.values, args.field);
     const requestedScale = resolveReassignmentScaleOptions(
       layer.encoding?.color,
       args.scale ?? {}
     );
     const scale = resolveColorScaleDefinition(this, requestedScale);
+    if (Object.hasOwn(scale, "unknown") && layer.mark.type !== "point") {
+      throw new Error(
+        "Nominal color scale unknown currently requires a row-owned point mark."
+      );
+    }
+    if (Object.hasOwn(scale, "unknown")) {
+      readScaleField(dataset.values, args.field, fieldType, {
+        allowUnknown: true
+      });
+    } else {
+      readNominalField(dataset.values, args.field);
+    }
 
     let next = this
       .editSemantic({

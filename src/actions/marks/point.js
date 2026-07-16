@@ -11,6 +11,7 @@ import {
   mapOrdinalPositionValues,
   mapOrdinalValues,
   mapSequentialColors,
+  readScaleField,
   readNominalField,
   readQuantitativeField,
   readTemporalField
@@ -116,15 +117,20 @@ function resolveMappedValues(program, layer, dataset, channel) {
     );
   }
   const ordinal = ["nominal", "ordinal"].includes(encoding.fieldType);
-  const values = ordinal
-    ? readNominalField(dataset.values, encoding.field)
-    : encoding.fieldType === "temporal"
-      ? readTemporalField(dataset.values, encoding.field)
-      : readQuantitativeField(dataset.values, encoding.field);
+  const values = Object.hasOwn(scale, "unknown")
+    ? readScaleField(dataset.values, encoding.field, encoding.fieldType, {
+        allowUnknown: true
+      })
+    : ordinal
+      ? readNominalField(dataset.values, encoding.field)
+      : encoding.fieldType === "temporal"
+        ? readTemporalField(dataset.values, encoding.field)
+        : readQuantitativeField(dataset.values, encoding.field);
   if (channel === "color" && scale.type === "sequential") {
     return mapSequentialColors(values, scale.domain, scale.range, {
       interpolation: scale.interpolate,
-      clamp: scale.clamp ?? false
+      clamp: scale.clamp ?? false,
+      ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
     });
   }
   if (
@@ -136,7 +142,9 @@ function resolveMappedValues(program, layer, dataset, channel) {
   return ordinal
     ? ["x", "y"].includes(channel)
       ? mapOrdinalPositionValues(values, scale)
-      : mapOrdinalValues(values, scale.domain, scale.range)
+      : mapOrdinalValues(values, scale.domain, scale.range, {
+          ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
+        })
     : mapContinuousScaleValues(values, scale);
 }
 

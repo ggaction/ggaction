@@ -47,7 +47,8 @@ export function resolveOrdinalPositionScale({
   values,
   range,
   channel,
-  bounds
+  bounds,
+  unknown
 }) {
   const resolvedDomain = resolveOrdinalDomain(domain, values);
   const resolvedRange = range === "auto" && channel === "y"
@@ -55,7 +56,7 @@ export function resolveOrdinalPositionScale({
     : resolveScaleRange(range, channel, bounds);
   const domainValues = new Set(resolvedDomain);
   for (const value of values) {
-    if (!domainValues.has(value)) {
+    if (!domainValues.has(value) && unknown === undefined) {
       throw new Error(`Value "${value}" is outside the ordinal domain.`);
     }
   }
@@ -86,7 +87,8 @@ export function resolveDiscretePositionScale({
   paddingInner = 0,
   paddingOuter = 0,
   padding = 0.5,
-  align = 0.5
+  align = 0.5,
+  unknown
 }) {
   if (!["band", "point"].includes(type)) {
     throw new Error(`Unsupported discrete position scale type "${type}".`);
@@ -97,7 +99,7 @@ export function resolveDiscretePositionScale({
     : resolveScaleRange(range, channel, bounds);
   const domainValues = new Set(resolvedDomain);
   for (const value of values) {
-    if (!domainValues.has(value)) {
+    if (!domainValues.has(value) && unknown === undefined) {
       throw new Error(`Value "${value}" is outside the discrete domain.`);
     }
   }
@@ -193,10 +195,12 @@ export function resolveOrdinalOffsetScale({
 }
 
 export function mapOrdinalPositionValues(values, scale) {
+  const hasUnknown = Object.hasOwn(scale, "unknown");
   const indices = new Map(scale.domain.map((value, index) => [value, index]));
   return cloneAndFreeze(values.map(value => {
     const index = indices.get(value);
     if (index === undefined) {
+      if (hasUnknown) return scale.unknown;
       throw new Error(`Value "${value}" is outside the ordinal domain.`);
     }
     if (

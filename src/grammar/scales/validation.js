@@ -21,14 +21,7 @@ export function validatePositionChannel(channel) {
 }
 
 export function validateScaleType(type) {
-  const implemented = [
-    "linear", "log", "pow", "sqrt", "symlog", "time", "ordinal",
-    "band", "point"
-  ];
-  if (!implemented.includes(type)) {
-    throw new Error(`Unsupported scale type "${type}".`);
-  }
-  return type;
+  return validateCompleteScaleType(type);
 }
 
 export function validateSemanticScaleType(type) {

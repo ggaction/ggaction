@@ -9,11 +9,11 @@ title: Scale Options
 
 | Scale family | Default domain | Default range | Common controls |
 | --- | --- | --- | --- |
-| Continuous point position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
+| Continuous position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Band/point position | First-appearance order | Plot bounds | padding and alignment |
 | Ordinal appearance/xOffset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
-| Discretized point color | Type-specific numeric boundaries | Five colors | `quantize`, `quantile`, `threshold`, `reverse` |
+| Sequential/discretized color | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
 
 Encoding actions accept a nested `scale` object. Omitted properties use channel
 defaults and stored program state.
@@ -24,9 +24,26 @@ Existing scales can be changed with `editScale`:
 const reversed = program.editScale({ id: "x", reverse: true });
 ```
 
+Advanced authors can create a named unattached scale with the same complete
+type vocabulary:
+
+```javascript
+const program = chart().createScale({
+  id: "temperature",
+  type: "sequential",
+  domain: [0, 100],
+  palette: "viridis"
+});
+```
+
+The accepted types are `linear`, `log`, `pow`, `sqrt`, `symlog`, `time`,
+`band`, `point`, `ordinal`, `sequential`, `quantize`, `quantile`, and
+`threshold`. A later encoding attachment validates whether the type, range,
+and fallback are compatible with that channel and mark.
+
 `id` may be omitted when the current scale or the program's only scale is
 unambiguous. At least one editable option is required. Use `"auto"` to reset
-domain or range; omission preserves the current value. Quantitative point
+domain or range; omission preserves the current value. Quantitative position
 scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and
 `symlog`:
 
@@ -52,6 +69,23 @@ program.encodeX({
 and guides. A band can be shared by bars and point centers, but changing it to
 `point` is rejected while a bar requires its bandwidth.
 
+## Compatibility matrix
+
+| Scale family | Current compatible consumers |
+| --- | --- |
+| `linear`, `log`, `pow`, `sqrt`, `symlog` | Quantitative x/y on point, line, area, bar, and rule recipes that support that encoding |
+| `time` | Temporal x/y on compatible marks; UTC normalization, ticks, and labels |
+| `band` | Discrete category position that needs positive bandwidth, especially bars |
+| `point` | Discrete point/rule centers and compatible shared centers; never bar width |
+| `ordinal` | Nominal color, shape, stroke dash, and xOffset lookup |
+| `sequential` | Quantitative/temporal point color and quantitative aggregate-bar color |
+| `quantize`, `quantile`, `threshold` | Quantitative point color |
+| `unknown` fallback | Row-owned point x/y/color/size/shape/opacity only |
+
+The field type, channel, mark recipe, and all consumers of a shared scale must
+agree. `editScale` validates that complete matrix before applying any semantic
+or graphical change.
+
 ## Continuous scales
 
 | Option | Type | Default |
@@ -73,10 +107,11 @@ Automatic ranges use current plot bounds. For automatic linear domains,
 Automatic temporal `nice` expands to UTC calendar boundaries. Time scales
 reject `zero`.
 
-For quantitative point positions, `log` requires a strictly positive or
+For quantitative positions, `log` requires a strictly positive or
 strictly negative domain and rejects `zero`. `pow` is sign-preserving, `sqrt`
 is its fixed exponent-`0.5` specialization, and `symlog` supports values on
-both sides of zero. Axes and grids use the same transformed mapping as points.
+both sides of zero. Point, line, area, bar, and rule materializers use the same
+mapping, and axes and grids read the same resolved scale.
 
 Temporal field values are normalized while resolving the scale, without
 rewriting the source dataset. Finite timestamps are accepted directly;
@@ -213,8 +248,8 @@ program.encodeColor({
 });
 ```
 
-The sequential type is inferred inside `encodeColor`; it is not added to the
-general direct `createScale` vocabulary.
+The sequential type is inferred inside `encodeColor` and is also available to
+direct `createScale` and compatible atomic `editScale` transitions.
 
 For aggregate bars, a color field equal to the measure field inherits its
 aggregate. A different quantitative field requires an explicit `aggregate`.
@@ -246,9 +281,35 @@ program.encodeColor({
 
 An exact boundary belongs to the upper interval. `reverse: true` reverses the
 resolved colors without changing boundaries. `createLegend()` infers an
-interval legend with labels such as `< 60`, `60–70`, and `≥ 80`. These scale
-types are currently owned by quantitative point `encodeColor`; the direct
-`createScale` and type-changing `editScale` contracts do not expose them yet.
+interval legend with labels such as `< 60`, `60–70`, and `≥ 80`. These
+mappings are available through quantitative point `encodeColor` and the direct
+scale vocabulary. A type-changing `editScale` call validates the complete
+replacement definition before rematerializing its consumers.
+
+## Missing and invalid values
+
+Point encodings can provide an `unknown` fallback inside their scale options:
+
+```javascript
+program.encodeX({
+  field: "value",
+  scale: { domain: [0, 100], unknown: 20 }
+});
+```
+
+The fallback is used for a missing or field-type-invalid input. For ordinal
+point position or appearance, it also handles a value outside an explicit
+domain. It never becomes a domain member. Output validation follows the
+channel: position uses a finite coordinate, color a non-empty string, size a
+non-negative area, opacity a value from `0` to `1`, and shape one supported
+point shape.
+
+This policy is intentionally limited to row-owned point items. A missing value
+inside a line/area path, bar aggregate, rule, xOffset group, or stroke-dash
+series could change item topology; those consumers reject `unknown` until they
+have a separate topology-safe policy. A direct unattached scale stores its
+fallback and defers channel validation until attachment. Set
+`unknown: undefined` with `editScale` to remove an existing fallback.
 
 ## Errors and limitations
 
@@ -257,9 +318,12 @@ contain every observed value required by ordinal consumers. A successful edit
 rematerializes connected marks and guides; a failed edit leaves the earlier
 immutable program unchanged.
 
-Transformed position materialization currently supports point marks. Other
-mark types reject these scale types until their path or rectangle materializers
-implement the same mapping.
+Scale type transitions reject incompatible field types, channels, or mark
+grains before changing the immutable program. Discretized color transitions
+currently require quantitative point color; sequential color supports points
+and aggregate bars. An active gradient or interval legend also fixes its
+current recipe family, so a transition between sequential and discretized
+color is rejected instead of silently replacing the guide.
 
 ## Related
 

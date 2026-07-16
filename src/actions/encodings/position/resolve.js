@@ -3,9 +3,9 @@ import { STACK_MODES } from "../../../core/vocabulary.js";
 import { getPositionCoordinateDefaults } from "../../../grammar/coordinates.js";
 import { normalizeHistogramBin } from "../../../grammar/histogram.js";
 import {
-  isTransformedScaleType,
   readNominalField,
   readQuantitativeField,
+  readScaleField,
   readTemporalField,
   validateFieldType,
   validatePositionChannel
@@ -300,24 +300,6 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   }
 
   const aggregateOutput = isAggregate(policy.aggregate);
-  if (layer.mark.type === "rule" && hasDatum) {
-    normalizeRuleDatum(datum, fieldType, channel);
-  } else if (aggregateOutput) {
-    validateAggregateFieldType(policy.aggregate, fieldType);
-    validateAggregateFieldValues(dataset.values, field, fieldType);
-  } else if (program.markConfigs[target]?.boxPlot !== undefined) {
-    for (const [index, row] of dataset.values.entries()) {
-      const value = row[field];
-      if (value === undefined || value === null || value === "") continue;
-      if (fieldType === "quantitative" && !Number.isFinite(value)) {
-        throw new TypeError(`Field "${field}" must contain a finite number at row ${index}.`);
-      }
-    }
-  } else if (fieldType === "temporal") readTemporalField(dataset.values, field);
-  else if (["ordinal", "nominal"].includes(fieldType)) {
-    readNominalField(dataset.values, field);
-  } else readQuantitativeField(dataset.values, field);
-
   const requestedScale = resolveReassignmentScaleOptions(
     previous,
     Object.hasOwn(args, "scale") ? args.scale : {}
@@ -341,17 +323,37 @@ export function resolvePositionEncoding(program, channel, args, operation) {
         ? { discreteType: "point" }
         : {}
   );
+  if (Object.hasOwn(scale, "unknown") && layer.mark.type !== "point") {
+    throw new Error(
+      "Position scale unknown currently requires a row-owned point mark."
+    );
+  }
+  if (layer.mark.type === "rule" && hasDatum) {
+    normalizeRuleDatum(datum, fieldType, channel);
+  } else if (aggregateOutput) {
+    validateAggregateFieldType(policy.aggregate, fieldType);
+    validateAggregateFieldValues(dataset.values, field, fieldType);
+  } else if (program.markConfigs[target]?.boxPlot !== undefined) {
+    for (const [index, row] of dataset.values.entries()) {
+      const value = row[field];
+      if (value === undefined || value === null || value === "") continue;
+      if (fieldType === "quantitative" && !Number.isFinite(value)) {
+        throw new TypeError(`Field "${field}" must contain a finite number at row ${index}.`);
+      }
+    }
+  } else if (Object.hasOwn(scale, "unknown")) {
+    readScaleField(dataset.values, field, fieldType, { allowUnknown: true });
+  } else if (fieldType === "temporal") readTemporalField(dataset.values, field);
+  else if (["ordinal", "nominal"].includes(fieldType)) {
+    readNominalField(dataset.values, field);
+  } else readQuantitativeField(dataset.values, field);
+
   if (
     layer.mark.type === "bar" &&
     ["ordinal", "nominal"].includes(fieldType) &&
     scale.type === "point"
   ) {
     throw new Error("Categorical bar positions require a band scale.");
-  }
-  if (isTransformedScaleType(scale.type) && layer.mark.type !== "point") {
-    throw new Error(
-      "Transformed position scales currently require a point mark."
-    );
   }
   return {
     target,

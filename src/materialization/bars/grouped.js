@@ -1,5 +1,5 @@
 import { deriveBarAggregates } from "../../grammar/bars/aggregate.js";
-import { mapLinearValues } from "../../grammar/scales.js";
+import { mapContinuousScaleValues } from "../../grammar/scales.js";
 import { sameOrderedValues } from "../../core/validation.js";
 import {
   DEFAULT_BAR_STROKE,
@@ -46,11 +46,9 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
   const direction = Math.sign(xScale.step) || 1;
   const offsetDirection = Math.sign(offsetScale.step) || 1;
   const width = resolveBarWidth(widthConfig, offsetScale.bandwidth);
-  const baseline = mapLinearValues(
+  const baseline = mapContinuousScaleValues(
     [yScale.domain[0]],
-    yScale.domain,
-    yScale.range,
-    { clamp: yScale.clamp ?? false }
+    yScale
   )[0];
   const cells = [...deriveBarAggregates(dataset.values, layer).values].sort(
     (left, right) =>
@@ -72,11 +70,9 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
 
     const temporal = xScale.type === "time";
     const categoryStart = temporal
-      ? mapLinearValues(
+      ? mapContinuousScaleValues(
           [cell.x],
-          xScale.domain,
-          xScale.range,
-          { clamp: xScale.clamp ?? false }
+          xScale
         )[0] - xScale.bandwidth / 2
       : (xScale.start ?? xScale.range[0]) + category * xScale.step;
     const offsetCenter = offsetScale.start + offset * offsetScale.step +
@@ -91,11 +87,9 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
       ? categoryStart + offsetScale.start + offset * offsetScale.step +
         (offsetScale.bandwidth - width) / 2
       : center - width / 2;
-    const valueY = mapLinearValues(
+    const valueY = mapContinuousScaleValues(
       [cell.y],
-      yScale.domain,
-      yScale.range,
-      { clamp: yScale.clamp ?? false }
+      yScale
     )[0];
 
     return {

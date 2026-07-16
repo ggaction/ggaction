@@ -7,12 +7,12 @@ All scale families를 shared consumers, reversed authoring order, Canvas edits, 
 
 ## 진행 상태
 
-- [ ] Full type/channel/field/mark compatibility matrix
-- [ ] Type transition matrix and stale-property removal
-- [ ] Shared marks and guide rematerialization order/deduplication
-- [ ] Explicit domain/range precedence and reset
-- [ ] Missing/invalid/unknown behavior
-- [ ] Browser/PNG renderer parity and critical coverage floors
+- [x] Full type/channel/field/mark compatibility matrix
+- [x] Type transition matrix and stale-property removal
+- [x] Shared marks and guide rematerialization order/deduplication
+- [x] Explicit domain/range precedence and reset
+- [x] Missing/invalid/unknown behavior
+- [x] Browser/PNG renderer parity and critical coverage floors
 - [ ] STEP status, conceptual commits and pushes
 
 ## 완료 조건

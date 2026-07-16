@@ -1,6 +1,6 @@
 import { action } from "../../core/action.js";
 import { deriveLineSeries } from "../../grammar/lineSeries.js";
-import { mapLinearValues, mapOrdinalValues } from "../../grammar/scales.js";
+import { mapContinuousScaleValues, mapOrdinalValues } from "../../grammar/scales.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
   assertMarkAvailable,
@@ -144,17 +144,13 @@ const rematerializeLineMark = action(
     const xScale = resolved.resolvedScales[xScaleId];
     const yScale = resolved.resolvedScales[yScaleId];
     const commands = derived.series.map(series => {
-      const x = mapLinearValues(
+      const x = mapContinuousScaleValues(
         series.values.map(value => value.x),
-        xScale.domain,
-        xScale.range,
-        { clamp: xScale.clamp ?? false }
+        xScale
       );
-      const y = mapLinearValues(
+      const y = mapContinuousScaleValues(
         series.values.map(value => value.y),
-        yScale.domain,
-        yScale.range,
-        { clamp: yScale.clamp ?? false }
+        yScale
       );
 
       return buildCurvePathCommands(

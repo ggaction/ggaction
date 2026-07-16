@@ -14,12 +14,14 @@ export function mapContinuousScaleValues(values, scale) {
     return mapTransformedValues(values, scale.domain, scale.range, {
       type: scale.type,
       clamp: scale.clamp ?? false,
+      ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {}),
       ...(scale.type === "log" ? { base: scale.base } : {}),
       ...(scale.type === "pow" ? { exponent: scale.exponent } : {}),
       ...(scale.type === "symlog" ? { constant: scale.constant } : {})
     });
   }
   return mapLinearValues(values, scale.domain, scale.range, {
-    clamp: scale.clamp ?? false
+    clamp: scale.clamp ?? false,
+    ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
   });
 }

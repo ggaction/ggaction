@@ -104,3 +104,30 @@ export function readNominalField(rows, field) {
     return row[field];
   }));
 }
+
+export function readScaleField(rows, field, fieldType, { allowUnknown = false } = {}) {
+  validateSemanticFieldType(fieldType);
+  if (!allowUnknown) {
+    if (fieldType === "temporal") return readTemporalField(rows, field);
+    if (["nominal", "ordinal"].includes(fieldType)) {
+      return readNominalField(rows, field);
+    }
+    return readQuantitativeField(rows, field);
+  }
+  validateField(field);
+  return cloneAndFreeze(rows.map((row, index) => {
+    if (!Object.hasOwn(row, field)) return undefined;
+    const value = row[field];
+    if (fieldType === "quantitative") {
+      return Number.isFinite(value) ? value : undefined;
+    }
+    if (["nominal", "ordinal"].includes(fieldType)) {
+      return isNominalValue(value) ? value : undefined;
+    }
+    try {
+      return normalizeTemporalValue(value, field, index);
+    } catch {
+      return undefined;
+    }
+  }));
+}

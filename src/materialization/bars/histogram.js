@@ -4,7 +4,7 @@ import {
   resolveHistogramBins
 } from "../../grammar/histogram.js";
 import {
-  mapLinearValues,
+  mapContinuousScaleValues,
   mapOrdinalValues,
   readNominalField,
   readQuantitativeField
@@ -114,17 +114,13 @@ export function deriveHistogramRectangles(required, resolved) {
   const appearance = config.barAppearance ?? {};
 
   return segments.map((segment, index) => {
-    const [x1, x2] = mapLinearValues(
+    const [x1, x2] = mapContinuousScaleValues(
       [segment.start, segment.end],
-      xScale.domain,
-      xScale.range,
-      { clamp: xScale.clamp ?? false }
+      xScale
     );
-    const [y1, y2] = mapLinearValues(
+    const [y1, y2] = mapContinuousScaleValues(
       [segment.stackStart, segment.stackEnd],
-      yScale.domain,
-      yScale.range,
-      { clamp: yScale.clamp ?? false }
+      yScale
     );
     const binStart = Math.min(x1, x2);
     const binWidth = Math.abs(x2 - x1);

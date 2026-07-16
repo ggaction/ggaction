@@ -136,9 +136,11 @@ export function discretizedColorIndex(value, thresholds) {
 }
 
 export function mapDiscretizedColors(values, scale) {
-  return cloneAndFreeze(values.map(value =>
-    scale.range[discretizedColorIndex(value, scale.thresholds)]
-  ));
+  const hasUnknown = Object.hasOwn(scale, "unknown");
+  return cloneAndFreeze(values.map(value => {
+    if (!Number.isFinite(value) && hasUnknown) return scale.unknown;
+    return scale.range[discretizedColorIndex(value, scale.thresholds)];
+  }));
 }
 
 function formatBoundary(value) {

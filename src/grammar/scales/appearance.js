@@ -168,11 +168,13 @@ export function resolveOpacityRange(range) {
   return validated === "auto" ? DEFAULT_OPACITY_RANGE : validated;
 }
 
-export function mapOrdinalValues(values, domain, range) {
+export function mapOrdinalValues(values, domain, range, options = {}) {
+  const hasUnknown = Object.hasOwn(options, "unknown");
   const indices = new Map(domain.map((value, index) => [value, index]));
   return cloneAndFreeze(values.map(value => {
     const index = indices.get(value);
     if (index === undefined) {
+      if (hasUnknown) return options.unknown;
       throw new Error(`Value "${value}" is outside the ordinal domain.`);
     }
     return range[index % range.length];

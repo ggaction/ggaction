@@ -9,53 +9,51 @@ import { chart } from "../../src/index.js";
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const read = relative => readFileSync(path.join(root, relative), "utf8");
 const index = JSON.parse(read("agent_docs/contract/ACTION_INDEX.json"));
+const currentCore = read("agent_docs/contract/current/CORE.md");
+const currentEncodings = read("agent_docs/contract/current/ENCODINGS.md");
 const plannedScales = read("agent_docs/contract/planned/SCALES.md");
 const declarations = read("types/program.d.ts");
 
-const phase10Capabilities = Object.freeze([
+const deliveredCapabilities = Object.freeze([
   "scale-type-vocabulary",
   "scale-mapping-policies"
 ]);
 
-test("keeps the remaining accepted scale capabilities assigned to Phase 10", () => {
-  const planned = new Map(
-    index.plannedCapabilities.map(capability => [capability.id, capability])
+test("closes every accepted Phase 10 capability out of the Planned inventory", () => {
+  const remaining = new Set(
+    index.plannedCapabilities.map(capability => capability.id)
   );
-  for (const id of phase10Capabilities) {
-    const capability = planned.get(id);
-    assert.ok(capability, `Missing planned capability ${id}.`);
-    assert.equal(capability.status, "planned");
-    assert.equal(capability.readiness, "accepted");
-  }
+  for (const id of deliveredCapabilities) assert.equal(remaining.has(id), false);
+  assert.match(plannedScales, /No accepted scale capability remains/);
+  assert.doesNotMatch(plannedScales, /Status: Planned/);
 });
 
-test("locks time as the only UTC temporal token in the planned scale contract", () => {
-  assert.match(plannedScales, /`time` is the only temporal scale token/);
-  assert.match(plannedScales, /ticks and labels in UTC/);
-  assert.doesNotMatch(plannedScales, /"utc"/);
+test("keeps time as the only UTC temporal token in the current contract", () => {
+  assert.match(currentCore, /`time`[^\n]*UTC temporal token/);
+  assert.doesNotMatch(currentCore, /"utc"/);
+  assert.doesNotMatch(declarations, /\| "utc"/);
 });
 
-test("publishes the transformed and discrete position families approved through Gate B", () => {
-  assert.match(
-    declarations,
-    /export type ScaleType =\s+[\s\S]*?"log"[\s\S]*?"pow"[\s\S]*?"sqrt"[\s\S]*?"symlog"[\s\S]*?"time"[\s\S]*?"band"[\s\S]*?"point"[\s\S]*?"ordinal";/
-  );
-  for (const type of ["log", "pow", "sqrt", "symlog", "band", "point"]) {
-    assert.doesNotThrow(
-      () => chart().createScale({ id: `current-${type}`, type })
-    );
-  }
+test("publishes the complete current scale type vocabulary", () => {
   for (const type of [
-    "sequential", "quantize", "quantile", "threshold"
+    "linear", "log", "pow", "sqrt", "symlog", "time", "band", "point",
+    "ordinal", "sequential", "quantize", "quantile", "threshold"
   ]) {
-    assert.throws(
-      () => chart().createScale({ id: `planned-${type}`, type }),
-      /Unsupported scale type/
-    );
+    assert.match(declarations, new RegExp(`\\| "${type}"`));
+    const options = type === "threshold"
+      ? { id: `current-${type}`, type, domain: [0], range: ["black", "white"] }
+      : { id: `current-${type}`, type };
+    assert.doesNotThrow(() => chart().createScale(options));
   }
-
-  const current = chart().createScale({ id: "x" });
-  assert.doesNotThrow(
-    () => current.editScale({ id: "x", type: "log" })
+  assert.throws(
+    () => chart().createScale({ id: "future", type: "identity" }),
+    /Unsupported scale type/
   );
+});
+
+test("publishes mapping fallback ownership and compound-grain limits", () => {
+  assert.match(currentCore, /`unknown`[\s\S]*row-owned point item/);
+  assert.match(currentEncodings, /scale domain에는 추가하지 않는다/);
+  assert.match(currentEncodings, /Compound path\/bar\/area\/rule/);
+  assert.match(declarations, /unknown\?: unknown/);
 });

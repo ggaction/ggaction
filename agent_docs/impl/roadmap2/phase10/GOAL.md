@@ -19,8 +19,8 @@ Complete chart contract:
 - [x] Gate B temporal/discrete position approval and public implementation
 - [x] Gate C discretized color approval and public implementation
 - [x] Gate D continuous-color bar approval and public implementation
-- [ ] Mapping-policy, rematerialization and error matrix
-- [ ] Types, docs, contract promotion and Phase closeout
+- [x] Mapping-policy, rematerialization and error matrix
+- [x] Types, docs, contract promotion and Phase closeout
 
 ## 실행 순서
 

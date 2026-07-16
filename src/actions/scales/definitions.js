@@ -22,6 +22,7 @@ import {
   validateScalePropertyForType,
   validateScaleTypeForRole
 } from "../../grammar/scales.js";
+import { withScaleUnknown } from "../../grammar/scales.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
 const BASE_OPTIONS = Object.freeze(["id", "type", "domain", "range"]);
@@ -37,9 +38,10 @@ const POSITION_OPTIONS = Object.freeze([
   "paddingInner",
   "paddingOuter",
   "padding",
-  "align"
+  "align",
+  "unknown"
 ]);
-const COLOR_OPTIONS = Object.freeze([...BASE_OPTIONS, "palette"]);
+const COLOR_OPTIONS = Object.freeze([...BASE_OPTIONS, "palette", "unknown"]);
 const SEQUENTIAL_COLOR_OPTIONS = Object.freeze([
   ...COLOR_OPTIONS,
   "interpolate",
@@ -185,7 +187,7 @@ export function resolvePositionScaleDefinition(
       }
     }
   }
-  return scale;
+  return withScaleUnknown(scale, { ...existing, ...options }, channel);
 }
 
 export function resolveColorScaleDefinition(program, options) {
@@ -199,12 +201,12 @@ export function resolveColorScaleDefinition(program, options) {
   const range = options.palette === undefined
     ? options.range
     : { palette: options.palette };
-  return {
+  return withScaleUnknown({
     id,
     type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
     domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
     range: validateColorRange(range ?? existing?.range ?? "auto")
-  };
+  }, { ...existing, ...options }, "color");
 }
 
 function continuousDomain(value, fieldType) {
@@ -261,7 +263,7 @@ export function resolveSequentialColorScaleDefinition(
   const reverse = options.reverse ?? existing?.reverse;
   if (clamp !== undefined) scale.clamp = clamp;
   if (reverse !== undefined) scale.reverse = reverse;
-  return scale;
+  return withScaleUnknown(scale, { ...existing, ...options }, "color");
 }
 
 export function resolveQuantitativeColorScaleDefinition(
@@ -315,29 +317,29 @@ export function resolveQuantitativeColorScaleDefinition(
   const reverse = options.reverse ?? (existing?.type === type ? existing.reverse : undefined);
   if (clamp !== undefined) scale.clamp = clamp;
   if (reverse !== undefined) scale.reverse = reverse;
-  return scale;
+  return withScaleUnknown(scale, { ...existing, ...options }, "color");
 }
 
 export function resolveStrokeDashScaleDefinition(program, options) {
   optionsObject(options);
-  validateKeys(options, BASE_OPTIONS, "scale");
+  validateKeys(options, [...BASE_OPTIONS, "unknown"], "scale");
   const id = validateUserId(options.id ?? "strokeDash", "Scale id");
   const existing = findSemanticScale(program, id);
-  return {
+  return withScaleUnknown({
     id,
     type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
     domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
     range: validateStrokeDashRange(options.range ?? existing?.range ?? "auto")
-  };
+  }, { ...existing, ...options }, "strokeDash");
 }
 
 export function resolveAppearanceScaleDefinition(program, channel, options) {
   optionsObject(options);
-  validateKeys(options, BASE_OPTIONS, "scale");
+  validateKeys(options, [...BASE_OPTIONS, "unknown"], "scale");
   const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
   const shape = channel === "shape";
-  return {
+  return withScaleUnknown({
     id,
     type: shape
       ? validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal")
@@ -348,7 +350,7 @@ export function resolveAppearanceScaleDefinition(program, channel, options) {
     range: shape
       ? validateShapeRange(options.range ?? existing?.range ?? "auto")
       : validateSizeRange(options.range ?? existing?.range ?? "auto")
-  };
+  }, { ...existing, ...options }, channel);
 }
 
 export function resolveOpacityScaleDefinition(program, options) {
@@ -376,18 +378,18 @@ export function resolveOpacityScaleDefinition(program, options) {
   if (zero !== undefined) scale.zero = zero;
   if (clamp !== undefined) scale.clamp = clamp;
   if (reverse !== undefined) scale.reverse = reverse;
-  return scale;
+  return withScaleUnknown(scale, { ...existing, ...options }, "opacity");
 }
 
 export function resolveOffsetScaleDefinition(program, options) {
   optionsObject(options);
-  validateKeys(options, BASE_OPTIONS, "scale");
+  validateKeys(options, [...BASE_OPTIONS, "unknown"], "scale");
   const id = validateUserId(options.id ?? "xOffset", "Scale id");
   const existing = findSemanticScale(program, id);
-  return {
+  return withScaleUnknown({
     id,
     type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
     domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
     range: validateScaleRange(options.range ?? existing?.range ?? "auto")
-  };
+  }, { ...existing, ...options }, "xOffset");
 }

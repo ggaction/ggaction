@@ -80,22 +80,30 @@ export function resolveScaleRange(range, channel, bounds) {
     : cloneAndFreeze([bounds.y + bounds.height, bounds.y]);
 }
 
-export function mapLinearValues(values, domain, range, { clamp = false } = {}) {
+export function mapLinearValues(values, domain, range, options = {}) {
+  const { clamp = false } = options;
+  const hasUnknown = Object.hasOwn(options, "unknown");
   const [domainStart, domainEnd] = validatePair(domain, "Resolved domain");
   const [rangeStart, rangeEnd] = validatePair(range, "Resolved range");
   if (typeof clamp !== "boolean") {
     throw new TypeError("Linear scale clamp must be a boolean.");
   }
-  if (!values.every(Number.isFinite)) {
+  if (!hasUnknown && !values.every(Number.isFinite)) {
     throw new TypeError("Linear scale values must be finite numbers.");
   }
   if (domainStart === domainEnd) {
     const midpoint = (rangeStart + rangeEnd) / 2;
-    return cloneAndFreeze(values.map(() => midpoint));
+    return cloneAndFreeze(values.map(value =>
+      Number.isFinite(value) ? midpoint : options.unknown
+    ));
   }
   const domainSpan = domainEnd - domainStart;
   const rangeSpan = rangeEnd - rangeStart;
   return cloneAndFreeze(values.map(value => {
+    if (!Number.isFinite(value)) {
+      if (hasUnknown) return options.unknown;
+      throw new TypeError("Linear scale values must be finite numbers.");
+    }
     const proportion = (value - domainStart) / domainSpan;
     const resolved = clamp ? Math.max(0, Math.min(1, proportion)) : proportion;
     return rangeStart + resolved * rangeSpan;

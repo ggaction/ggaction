@@ -92,7 +92,10 @@ type ParameterizedAggregateOperation =
 type AggregateOperation =
   | ScalarAggregateOperation
   | ParameterizedAggregateOperation;
-type ScaleType = "linear" | "time" | "ordinal";
+type ScaleType =
+  | "linear" | "log" | "pow" | "sqrt" | "symlog"
+  | "time" | "band" | "point" | "ordinal"
+  | "sequential" | "quantize" | "quantile" | "threshold";
 type ContinuousDomain = "auto" | readonly [unknown, unknown];
 type OrdinalDomain = "auto" | readonly unknown[];
 type NumericRange = "auto" | readonly [Finite, Finite];
@@ -125,11 +128,14 @@ type GaussianDensityTransform = {
 };
 type PositionScale = {
   id?: UserId;
-  type?: "linear" | "time" | "ordinal";
+  type?: "linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "band" | "point";
   domain?: ContinuousDomain | OrdinalDomain;
   range?: NumericRange;
   nice?: boolean;
   zero?: boolean;
+  clamp?: boolean;
+  reverse?: boolean;
+  unknown?: Finite;
 };
 type ColorScale = {
   id?: UserId;

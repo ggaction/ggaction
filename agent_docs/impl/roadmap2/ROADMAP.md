@@ -22,7 +22,7 @@ encoding reassignment의 선행 조건으로 Phase 1의 첫 implementation slice
 - [x] Phase 7 — 신규 error-band chart와 regression delegation
 - [x] Phase 8 — 신규 box-plot chart
 - [x] Phase 9 — mark selection, filtering과 highlighting
-- [ ] Phase 10 — 신규 transformed-scale chart
+- [x] Phase 10 — 신규 transformed-scale chart
 - [ ] Phase 11 — graphical hierarchy와 전체 Planned closeout
 
 ## 실행 원칙
@@ -255,9 +255,9 @@ Current `filterMark`는 plural `filterMarks`로 완전히 교체하며 compatibi
 - Complete variant contract: [`chart/gapminder-transformed-scale-variants.md`](chart/gapminder-transformed-scale-variants.md)
 
 - Direct action expansion: `editScale`
-- Capability: `scale-type-vocabulary`
-- Capability: `scale-mapping-policies`
-- Capability: `continuous-color-bar-consumer`
+- Delivered capability: `scale-type-vocabulary`
+- Delivered capability: `scale-mapping-policies`
+- Delivered capability: `continuous-color-bar-consumer`
 
 Log/pow/sqrt/symlog/time/band/point와 quantize/quantile/threshold/sequential을 compatible channel별로
 나누어 검증한다. Clamp/reverse/unknown과 explicit domain/range precedence를 exact mapping fixture로

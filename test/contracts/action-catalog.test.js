@@ -581,17 +581,16 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /## `encodeXRange`/);
   assert.match(currentCorpus, /binBoundaries\?: readonly \[Finite, Finite, \.\.\.Finite\[\]\]/);
   assert.match(currentCorpus, /zero-anchored exact steps/);
-  assert.match(plannedCorpus, /type PlannedScaleType =/);
-  assert.match(plannedCorpus, /"log"[\s\S]*"pow"[\s\S]*"sqrt"[\s\S]*"symlog"/);
-  assert.match(plannedCorpus, /"symlog"[\s\S]*"band"[\s\S]*"point"/);
-  assert.doesNotMatch(plannedCorpus, /"utc"/);
-  assert.match(plannedCorpus, /`time` is the only temporal scale token/);
-  assert.match(plannedCorpus, /"point"[\s\S]*"sequential"[\s\S]*"quantize"/);
-  assert.match(plannedCorpus, /"quantize"[\s\S]*"quantile"[\s\S]*"threshold"/);
-  assert.match(plannedCorpus, /type PlannedScalePolicies =/);
-  assert.match(plannedCorpus, /clamp\?: boolean/);
-  assert.match(plannedCorpus, /reverse\?: boolean/);
-  assert.match(plannedCorpus, /unknown\?: unknown/);
+  assert.doesNotMatch(plannedCorpus, /type PlannedScaleType =/);
+  assert.match(currentCorpus, /type ScaleType =/);
+  assert.match(currentCorpus, /"log"[\s\S]*"pow"[\s\S]*"sqrt"[\s\S]*"symlog"/);
+  assert.match(currentCorpus, /"symlog"[\s\S]*"band"[\s\S]*"point"/);
+  assert.doesNotMatch(currentCorpus + plannedCorpus, /"utc"/);
+  assert.match(currentCorpus, /"point"[\s\S]*"sequential"[\s\S]*"quantize"/);
+  assert.match(currentCorpus, /"quantize"[\s\S]*"quantile"[\s\S]*"threshold"/);
+  assert.match(currentCorpus, /clamp\?: boolean/);
+  assert.match(currentCorpus, /reverse\?: boolean/);
+  assert.match(currentCorpus, /unknown\?: unknown/);
   assert.match(currentCorpus, /kernel\?: "gaussian" \| "epanechnikov" \| "uniform" \| "triangular"/);
   assert.match(currentCorpus, /normalization\?: "unit" \| "count"/);
   assert.match(currentCorpus, /unit은 group density integral을 1로 맞추고 count는/);
@@ -661,10 +660,11 @@ test("keeps maybe-future ideas outside the active proposal queue", () => {
     /^- Maybe Future \(NOT IMPLEMENTED\): (.+)$/gm
   )].map(match => match[1]);
 
-  assert.equal(entries.length, 3);
+  assert.equal(entries.length, 4);
   assert.equal(entries.some(entry => entry.includes("wildcard path")), true);
   assert.equal(entries.some(entry => entry.includes("svg | g")), true);
   assert.equal(entries.some(entry => entry.includes("multi-property dictionary")), true);
+  assert.equal(entries.some(entry => entry.includes("identity")), true);
   assert.doesNotMatch(
     currentCorpus,
     /🟣 Proposed: no wildcard|🟣 Proposed: no renderer-specific|🟣 Proposed: no multi-property/

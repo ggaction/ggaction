@@ -7,7 +7,7 @@ import {
 import { layoutSeriesPartition } from "../../grammar/seriesLayout.js";
 import {
   isDiscretePositionScaleType,
-  mapLinearValues,
+  mapContinuousScaleValues,
   mapOrdinalPositionValues,
   mapSequentialColors
 } from "../../grammar/scales.js";
@@ -90,17 +90,13 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
       const { cell, index } = entry;
       const categoryCenter = discreteCategory
         ? mapOrdinalPositionValues([categoryValue], categoryScale)[0]
-        : mapLinearValues(
+        : mapContinuousScaleValues(
             [categoryValue],
-            categoryScale.domain,
-            categoryScale.range,
-            { clamp: categoryScale.clamp ?? false }
+            categoryScale
           )[0];
-      const [start, end] = mapLinearValues(
+      const [start, end] = mapContinuousScaleValues(
         [baseline, cell[channels.measure]],
-        measureScale.domain,
-        measureScale.range,
-        { clamp: measureScale.clamp ?? false }
+        measureScale
       );
       return [{
         x: vertical ? categoryCenter - thickness / 2 : Math.min(start, end),
@@ -149,17 +145,13 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     }
     const categoryCenter = discreteCategory
       ? mapOrdinalPositionValues([segment.category], categoryScale)[0]
-      : mapLinearValues(
+      : mapContinuousScaleValues(
           [segment.category],
-          categoryScale.domain,
-          categoryScale.range,
-          { clamp: categoryScale.clamp ?? false }
+          categoryScale
         )[0];
-    const [start, end] = mapLinearValues(
+    const [start, end] = mapContinuousScaleValues(
       [segment.start, segment.end],
-      measureScale.domain,
-      measureScale.range,
-      { clamp: measureScale.clamp ?? false }
+      measureScale
     );
     return {
       x: vertical

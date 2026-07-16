@@ -7,6 +7,9 @@ import {
   normalizeTransformParameters,
   SCALE_ROLES,
   validateColorRange,
+  validateContinuousColorInterpolation,
+  validateDiscretizedColorDomain,
+  validateDiscretizedColorRange,
   validateOrdinalDomain,
   validateScaleDomain,
   validateScalePropertyForType,
@@ -16,6 +19,8 @@ import {
   validateShapeRange,
   validateSizeRange,
   validateStrokeDashRange,
+  validateSequentialColorRange,
+  validateScaleUnknown,
   validateTransformedDomain
 } from "../../grammar/scales.js";
 import { getMarkMaterializationStep } from "../../materialization/marks.js";
@@ -28,7 +33,7 @@ import { findScaleConsumers } from "./consumers.js";
 const OPTIONS = Object.freeze([
   "id", "type", "domain", "range", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "paddingInner", "paddingOuter", "padding",
-  "align"
+  "align", "interpolate", "unknown"
 ]);
 const EDITABLE = Object.freeze(OPTIONS.filter(option => option !== "id"));
 const TYPE_PARAMETERS = Object.freeze(["base", "exponent", "constant"]);
@@ -70,6 +75,12 @@ function resolveChannel(consumers, id) {
 
 function validateRangeForChannel(scale, channel, value) {
   if (value === "auto") return value;
+  if (scale.type === "sequential") {
+    return validateSequentialColorRange(value);
+  }
+  if (["quantize", "quantile", "threshold"].includes(scale.type)) {
+    return validateDiscretizedColorRange(value);
+  }
   if (scale.type !== "ordinal") return validateScaleRange(value);
   if (channel === "color") return validateColorRange(value);
   if (channel === "shape") return validateShapeRange(value);
@@ -81,6 +92,35 @@ function validateRangeForChannel(scale, channel, value) {
 function validateTypeTransition(scale, nextType, channel, consumers) {
   if (nextType === scale.type) return;
   validateScaleType(nextType);
+  if (consumers.length === 0) return;
+  if (["sequential", "quantize", "quantile", "threshold"].includes(nextType)) {
+    const discretized = nextType !== "sequential";
+    if (channel !== "color" || consumers.some(consumer =>
+      consumer.encoding.fieldType === "nominal" ||
+      (discretized && (
+        consumer.encoding.fieldType !== "quantitative" ||
+        consumer.layer.mark?.type !== "point"
+      )) ||
+      (!discretized && !["point", "bar"].includes(consumer.layer.mark?.type))
+    )) {
+      throw new Error(
+        `Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`
+      );
+    }
+    return;
+  }
+  if (nextType === "time") {
+    if (
+      consumers.length > 0 &&
+      (!["x", "y"].includes(channel) ||
+        consumers.some(consumer => consumer.encoding.fieldType !== "temporal"))
+    ) {
+      throw new Error(
+        `Scale "${scale.id}" has a consumer incompatible with type "time".`
+      );
+    }
+    return;
+  }
   const discrete = ["band", "point"].includes(nextType);
   if (discrete) {
     if (
@@ -116,12 +156,25 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
       `Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`
     );
   }
+}
+
+function validateLegendTypeTransition(program, scale, nextType) {
+  if (nextType === scale.type) return;
+  const legends = program.guideConfigs.legend ?? {};
   if (
-    isTransformedScaleType(nextType) &&
-    consumers.some(consumer => consumer.layer.mark?.type !== "point")
+    legends.gradient?.scale === scale.id &&
+    nextType !== "sequential"
   ) {
     throw new Error(
-      "Transformed position scale type edits currently require point consumers."
+      `Scale "${scale.id}" cannot change type while its gradient legend is active.`
+    );
+  }
+  if (
+    legends.interval?.scale === scale.id &&
+    !["quantize", "quantile", "threshold"].includes(nextType)
+  ) {
+    throw new Error(
+      `Scale "${scale.id}" cannot change type while its interval legend is active.`
     );
   }
 }
@@ -142,9 +195,11 @@ function normalizeDefinition(scale, channel, consumers, args) {
   const type = args.type ?? scale.type;
   const typeChanged = type !== scale.type;
   validateTypeTransition(scale, type, channel, consumers);
-  const domain = ["ordinal", "band", "point"].includes(type)
-    ? validateOrdinalDomain(args.domain ?? scale.domain)
-    : validateScaleDomain(args.domain ?? scale.domain);
+  const domain = ["quantize", "quantile", "threshold"].includes(type)
+    ? validateDiscretizedColorDomain(type, args.domain ?? scale.domain)
+    : ["ordinal", "band", "point"].includes(type)
+      ? validateOrdinalDomain(args.domain ?? scale.domain)
+      : validateScaleDomain(args.domain ?? scale.domain);
   if (isTransformedScaleType(type) && domain !== "auto") {
     validateTransformedDomain(type, domain, Object.fromEntries(
       TYPE_PARAMETERS
@@ -172,6 +227,27 @@ function normalizeDefinition(scale, channel, consumers, args) {
     const value = propertyValue(scale, typeChanged, args, property);
     return value === undefined ? [] : [[property, value]];
   }));
+  const interpolate = Object.hasOwn(args, "interpolate")
+    ? args.interpolate
+    : typeChanged ? undefined : scale.interpolate;
+  if (type === "sequential") {
+    definition.interpolate = validateContinuousColorInterpolation(
+      interpolate ?? "rgb"
+    );
+  } else if (interpolate !== undefined) {
+    throw new Error(`Scale type "${type}" does not support interpolate.`);
+  }
+  const unknown = propertyValue(scale, typeChanged, args, "unknown");
+  if (unknown !== undefined) {
+    if (consumers.some(consumer => consumer.layer.mark?.type !== "point")) {
+      throw new Error(
+        "Scale unknown currently requires row-owned point consumers."
+      );
+    }
+    definition.unknown = consumers.length === 0
+      ? unknown
+      : validateScaleUnknown(channel, unknown);
+  }
   if (isTransformedScaleType(type)) {
     const parameters = normalizeTransformParameters(type, requested);
     if (type === "log") definition.base = parameters.base;
@@ -253,6 +329,7 @@ export const editScale = action(
     const scale = requireSemanticScale(this, id);
     const consumers = findScaleConsumers(this, id);
     const channel = resolveChannel(consumers, id);
+    validateLegendTypeTransition(this, scale, args.type ?? scale.type);
     const definition = normalizeDefinition(scale, channel, consumers, args);
 
     let next = this;

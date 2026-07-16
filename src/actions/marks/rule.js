@@ -1,7 +1,7 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
-  mapLinearValues,
+  mapContinuousScaleValues,
   mapOrdinalPositionValues,
   mapOrdinalValues,
   normalizeStrokeDashPattern
@@ -31,9 +31,7 @@ const DEFAULT_RULE_CONFIG = Object.freeze({
 function mapPosition(values, scale) {
   return ["ordinal", "band", "point"].includes(scale.type)
     ? mapOrdinalPositionValues(values, scale)
-    : mapLinearValues(values, scale.domain, scale.range, {
-        clamp: scale.clamp ?? false
-      });
+    : mapContinuousScaleValues(values, scale);
 }
 
 function requireRule(program, id) {
@@ -228,11 +226,9 @@ const rematerializeRuleMark = action(
         );
     const opacity = opacityEncoding?.scale === undefined
       ? resolvedConfig.opacity
-      : mapLinearValues(
+      : mapContinuousScaleValues(
           derived.values.opacity,
-          resolved.resolvedScales[opacityEncoding.scale].domain,
-          resolved.resolvedScales[opacityEncoding.scale].range,
-          { clamp: resolved.resolvedScales[opacityEncoding.scale].clamp ?? false }
+          resolved.resolvedScales[opacityEncoding.scale]
         );
 
     return resolved

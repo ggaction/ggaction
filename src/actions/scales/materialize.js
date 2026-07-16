@@ -129,7 +129,9 @@ export const rematerializeScale = action(
       consumer,
       values: resolveConsumerValues(this, consumer)
     }));
-    const allValues = valuesByConsumer.flatMap(item => item.values);
+    const allValues = valuesByConsumer
+      .flatMap(item => item.values)
+      .filter(value => value !== undefined);
     const isSequentialColor = channel === "color" && scale.type === "sequential";
     const isDiscretizedColor = channel === "color" &&
       ["quantize", "quantile", "threshold"].includes(scale.type);
@@ -325,7 +327,8 @@ export const rematerializeScale = action(
                   paddingOuter: scale.paddingOuter
                 }
               : { padding: scale.padding }),
-            align: scale.align
+            align: scale.align,
+            unknown: scale.unknown
           })
         : isOrdinalPosition
         ? resolveOrdinalPositionScale({
@@ -333,7 +336,8 @@ export const rematerializeScale = action(
             values: allValues,
             range: scale.range,
             channel,
-            bounds: resolveGraphicBounds(this)
+            bounds: resolveGraphicBounds(this),
+            unknown: scale.unknown
           })
         : {
             type: isSequentialColor
@@ -368,8 +372,14 @@ export const rematerializeScale = action(
                         : { constant: scale.constant })
                     }).constant }
                   : {}),
-            ...(isSequentialColor ? { interpolate: scale.interpolate ?? "rgb" } : {})
+            ...(isSequentialColor ? { interpolate: scale.interpolate ?? "rgb" } : {}),
+            ...(Object.hasOwn(scale, "unknown")
+              ? { unknown: scale.unknown }
+              : {})
           };
+    if (Object.hasOwn(scale, "unknown") && !Object.hasOwn(resolvedScale, "unknown")) {
+      resolvedScale = { ...resolvedScale, unknown: scale.unknown };
+    }
     if (scale.type === "time" && ["x", "y"].includes(channel)) {
       const temporalBarBand = resolveTemporalBarBand(
         consumers,
@@ -424,10 +434,17 @@ export const rematerializeScale = action(
           : isSequentialColor
           ? mapSequentialColors(values, resolvedScale.domain, resolvedScale.range, {
               interpolation: resolvedScale.interpolate,
-              clamp: resolvedScale.clamp ?? false
+              clamp: resolvedScale.clamp ?? false,
+              ...(Object.hasOwn(resolvedScale, "unknown")
+                ? { unknown: resolvedScale.unknown }
+                : {})
             })
           : isOrdinalAppearance
-            ? mapOrdinalValues(values, domain, resolvedScale.range)
+            ? mapOrdinalValues(values, domain, resolvedScale.range, {
+                ...(Object.hasOwn(resolvedScale, "unknown")
+                  ? { unknown: resolvedScale.unknown }
+                  : {})
+              })
             : mapContinuousScaleValues(values, resolvedScale)
       });
     }

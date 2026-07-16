@@ -8,7 +8,11 @@ import {
   validateScaleRange,
   validateScalePropertyForType,
   validateScaleType,
-  normalizeTransformParameters
+  normalizeTransformParameters,
+  validateContinuousColorInterpolation,
+  validateDiscretizedColorDomain,
+  validateDiscretizedColorRange,
+  validateSequentialColorRange
 } from "../../grammar/scales.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
@@ -27,7 +31,10 @@ const CREATE_SCALE_OPTIONS = Object.freeze([
   "paddingInner",
   "paddingOuter",
   "padding",
-  "align"
+  "align",
+  "palette",
+  "interpolate",
+  "unknown"
 ]);
 
 function validateOptions(args) {
@@ -75,19 +82,44 @@ export const createScale = action(
     validateOptions(args);
     const id = validateUserId(args.id, "Scale id");
     const type = validateScaleType(args.type ?? "linear");
+    const colorType = [
+      "sequential", "quantize", "quantile", "threshold"
+    ].includes(type);
+    if (args.palette !== undefined && args.range !== undefined) {
+      throw new Error("Color scale cannot specify both palette and range.");
+    }
+    if (args.palette !== undefined && !colorType) {
+      throw new Error(`Scale type "${type}" does not support palette.`);
+    }
+    if (args.interpolate !== undefined && type !== "sequential") {
+      throw new Error(`Scale type "${type}" does not support interpolate.`);
+    }
+    const requestedRange = args.palette === undefined
+      ? args.range
+      : { palette: args.palette };
     const definition = {
       type,
-      domain:
-        !["ordinal", "band", "point"].includes(type)
+      domain: ["quantize", "quantile", "threshold"].includes(type)
+        ? validateDiscretizedColorDomain(type, args.domain ?? "auto")
+        : !["ordinal", "band", "point"].includes(type)
           ? validateScaleDomain(args.domain ?? "auto")
           : validateOrdinalDomain(args.domain ?? "auto"),
-      range:
-        !["ordinal", "band", "point"].includes(type)
-          ? validateScaleRange(args.range ?? "auto")
-          : type === "ordinal"
-            ? validateOrdinalRange(args.range ?? "auto")
-            : validateScaleRange(args.range ?? "auto")
+      range: ["quantize", "quantile", "threshold"].includes(type)
+        ? validateDiscretizedColorRange(requestedRange ?? "auto")
+        : type === "sequential"
+          ? validateSequentialColorRange(requestedRange ?? "auto")
+          : !["ordinal", "band", "point"].includes(type)
+            ? validateScaleRange(requestedRange ?? "auto")
+            : type === "ordinal"
+              ? validateOrdinalRange(requestedRange ?? "auto")
+              : validateScaleRange(requestedRange ?? "auto")
     };
+    if (type === "sequential") {
+      definition.interpolate = validateContinuousColorInterpolation(
+        args.interpolate ?? "rgb"
+      );
+    }
+    if (Object.hasOwn(args, "unknown")) definition.unknown = args.unknown;
 
     if (args.nice !== undefined) {
       if (typeof args.nice !== "boolean") {
@@ -172,7 +204,8 @@ export const createScale = action(
 
     for (const property of [
       "nice", "zero", "clamp", "reverse", "base", "exponent", "constant",
-      "paddingInner", "paddingOuter", "padding", "align"
+      "paddingInner", "paddingOuter", "padding", "align", "interpolate",
+      "unknown"
     ]) {
       if (definition[property] === undefined) continue;
       next = next.editSemantic({

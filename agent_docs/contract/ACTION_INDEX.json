@@ -1362,7 +1362,7 @@
       "coverage": {
         "contract": "complete",
         "effects": "complete",
-        "tests": "partial"
+        "tests": "complete"
       },
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
@@ -1588,28 +1588,6 @@
   ],
   "plannedActions": [],
   "plannedCapabilities": [
-    {
-      "id": "scale-type-vocabulary",
-      "kind": "parameter",
-      "name": "Scale type vocabulary",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/SCALES.md",
-        "anchor": "scale-type-vocabulary"
-      }
-    },
-    {
-      "id": "scale-mapping-policies",
-      "kind": "parameter",
-      "name": "Scale mapping policies",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/SCALES.md",
-        "anchor": "scale-mapping-policies"
-      }
-    },
     {
       "id": "graphic-parent-attachment",
       "kind": "parameter",

@@ -94,13 +94,18 @@ const encodeStrokeDash = action(
     }
 
     const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
-    readNominalField(dataset.values, args.field);
     validateLineSeriesCompatibility(layer, "strokeDash", args.field);
     const previous = layer.encoding?.strokeDash;
     const requestedScale = previous?.field === args.field
       ? resolveReassignmentScaleOptions(previous, args.scale ?? {})
       : args.scale ?? {};
     const scale = resolveStrokeDashScaleDefinition(this, requestedScale);
+    if (Object.hasOwn(scale, "unknown")) {
+      throw new Error(
+        "StrokeDash scale unknown is not supported for grouped line or rule paths."
+      );
+    }
+    readNominalField(dataset.values, args.field);
 
     let next = previous === undefined
       ? this

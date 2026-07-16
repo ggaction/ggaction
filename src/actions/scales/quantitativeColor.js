@@ -9,7 +9,8 @@ const OPTIONS = Object.freeze([
   "range",
   "interpolate",
   "clamp",
-  "reverse"
+  "reverse",
+  "unknown"
 ]);
 
 export const setQuantitativeColorScale = action(
@@ -30,7 +31,7 @@ export const setQuantitativeColorScale = action(
     }
     let next = this;
     for (const property of [
-      "type", "domain", "range", "interpolate", "clamp", "reverse"
+      "type", "domain", "range", "interpolate", "clamp", "reverse", "unknown"
     ]) {
       if (!Object.hasOwn(args, property)) continue;
       if (existing?.[property] === args[property]) continue;
