@@ -75,6 +75,24 @@
    확인한 뒤 Publishing access를 `Require two-factor authentication and disallow tokens`로 제한한다.
 7. STEP9의 registry/fresh-install/docs verification을 완료한다.
 
+## `0.0.1` actual observations
+
+- Interactive `npm publish`는 browser authorization URL을 제시했고 승인 후 exact tarball을 한 번만 publish했다.
+  OTP, recovery code와 reusable npm token은 저장하지 않았다.
+- Bootstrap publish는 설치돼 있던 npm `10.9.2`로 성공했다. Trusted publisher 설정 전 npm을 `11.18.0`으로
+  올렸고 `npm trust github` 결과를 `npm trust list ggaction`으로 다시 확인했다.
+- Publishing access의 token 우회를 막기 위해 `npm access set mfa=publish ggaction`을 실행했다. 이 모드는
+  interactive publish에 2FA를 요구하고 automation token override를 허용하지 않는다.
+- Registry consumer는 다음 두 명령으로 재현한다.
+
+  ```bash
+  node scripts/package-consumer.js ggaction@0.0.1
+  GGACTION_PACKAGE_SPEC=ggaction@0.0.1 node --test test/browser/package-consumer.browser.js
+  ```
+
+- Trusted publisher와 protected environment readiness는 npm binding, GitHub environment policy와 workflow contract
+  test로 확인했다. 이미 존재하는 `0.0.1`을 재배포하지 않으므로 실제 OIDC publish는 다음 version에서 검증한다.
+
 ## 이후 OIDC release
 
 1. 공통 candidate 절차와 approval을 완료한다.

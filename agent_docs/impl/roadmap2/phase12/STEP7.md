@@ -15,7 +15,7 @@
 - [x] npm owner/authentication and package-name availability rechecked
 - [x] Release workflow dry/safe path and environment approval verified
 - [x] Recovery procedure and exact publish sequence shown to the user
-- [ ] Explicit Gate B approval before STEP8
+- [x] Explicit Gate B approval before STEP8
 
 ## Gate B review package
 
@@ -33,6 +33,9 @@ release notes + recovery procedure
 
 The user approves the exact immutable candidate and publish mechanism with no remaining code, metadata, authentication or
 artifact uncertainty.
+
+Gate B는 2026-07-17 사용자 승인을 받았고, 승인된 candidate는
+`111059b2240c2198591b339f8d0cd1c12b12a1ac`이다.
 
 ## Candidate evidence
 
