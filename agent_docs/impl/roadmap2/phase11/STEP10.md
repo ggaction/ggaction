@@ -3,7 +3,7 @@
 ## 목표
 
 Phase 11과 Roadmap 2의 implementation, visual artifacts, contracts, documentation and remote quality gates를 하나의
-executable closeout으로 종료한다.
+executable implementation closeout으로 종료한다. Public distribution closeout은 Phase 12가 소유한다.
 
 ## 진행 상태
 
@@ -33,5 +33,5 @@ executable closeout으로 종료한다.
 
 ## 완료 조건
 
-Roadmap 2 has no accepted unfinished contract, every approved variant has a complete primitive/public pair, the current
-architecture records the implemented graphic tree, and all local and remote gates pass.
+Roadmap 2 has no accepted unfinished implementation contract, every approved variant has a complete primitive/public pair,
+the current architecture records the implemented graphic tree, and all local and remote implementation gates pass.

@@ -22,7 +22,7 @@ Complete variant contract:
 - [x] Gate B canonical public regression hierarchy approval
 - [x] Existing chart-family hierarchy migration and regression coverage
 - [x] Architecture, contracts, extension docs and executable closeout audits
-- [x] Full local/remote verification and Roadmap 2 closeout
+- [x] Full local/remote verification and Roadmap 2 implementation closeout
 
 ## Target hierarchy
 
