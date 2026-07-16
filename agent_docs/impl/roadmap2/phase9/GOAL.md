@@ -25,7 +25,7 @@ Planned normative action contract:
 - [x] STEP1–STEP12 and three visual approval Gates designed
 - [ ] Contract and current implementation audit
 - [ ] Pure selector and mark-item resolver foundation
-- [ ] Point selection/highlight Gate A and public implementation
+- [x] Point selection/highlight Gate A and public implementation
 - [ ] Histogram longest-bar Gate B and public implementation
 - [ ] Line-series Gate C and cross-mark integration
 - [ ] `filterMarks` migration and `editBarMark`

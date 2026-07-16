@@ -2,6 +2,25 @@ import { validateUserId } from "../../core/identifiers.js";
 import { normalizeMarkSelector, selectMarkItemKeys } from "../../grammar/markSelection.js";
 import { resolveMarkItems } from "./items.js";
 
+export function resolveMarkSelection(program, target, selector) {
+  const normalized = normalizeMarkSelector(selector);
+  const items = resolveMarkItems(program, target);
+  if (items.length > 0) {
+    const source = normalized.field === undefined ? "channels" : "fields";
+    const key = normalized.field ?? normalized.channel;
+    if (!items.some(item => Object.hasOwn(item[source], key))) {
+      throw new Error(
+        `Selection ${normalized.field === undefined ? "channel" : "field"} "${key}" is not uniquely defined at the target item grain.`
+      );
+    }
+  }
+  return Object.freeze({
+    selector: normalized,
+    items,
+    keys: selectMarkItemKeys(items, normalized)
+  });
+}
+
 export function resolveSelectionCreationId(program, id, target) {
   const resolved = validateUserId(
     id ?? `${target}Selection`,
@@ -30,17 +49,10 @@ export function resolveStoredSelection(program, id) {
   if (definition === undefined) {
     throw new Error(`Unknown selection "${resolvedId}".`);
   }
-  const selector = normalizeMarkSelector(definition.selector);
-  const items = resolveMarkItems(program, definition.target);
-  if (items.length > 0) {
-    const source = selector.field === undefined ? "channels" : "fields";
-    const key = selector.field ?? selector.channel;
-    if (!items.some(item => Object.hasOwn(item[source], key))) {
-      throw new Error(
-        `Selection ${selector.field === undefined ? "channel" : "field"} "${key}" is not uniquely defined at the target item grain.`
-      );
-    }
-  }
-  const keys = selectMarkItemKeys(items, selector);
-  return Object.freeze({ id: resolvedId, definition, items, keys });
+  const resolved = resolveMarkSelection(
+    program,
+    definition.target,
+    definition.selector
+  );
+  return Object.freeze({ id: resolvedId, definition, ...resolved });
 }

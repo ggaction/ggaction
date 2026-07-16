@@ -9,6 +9,7 @@ import {
 } from "../../grammar/bars/policy.js";
 import { deriveLineSeries } from "../../grammar/lineSeries.js";
 import { deriveRuleValues } from "../../grammar/rules.js";
+import { selectMarkItemKeys } from "../../grammar/markSelection.js";
 import {
   readNominalField,
   readTemporalField
@@ -75,7 +76,7 @@ function finalizeItems(program, layer, grain, definitions, graphicType) {
     );
   }
   return cloneAndFreeze(definitions.map((definition, index) => ({
-    key: itemKey(layer, grain, index),
+    key: definition.key ?? itemKey(layer, grain, index),
     layer: layer.id,
     markType: layer.mark.type,
     fields: definition.fields,
@@ -89,28 +90,38 @@ function resolvePointItems(program, layer, dataset) {
   const graphic = program.graphicSpec.objects[layer.id];
   if (
     !Array.isArray(graphic?.children) ||
-    graphic.children.some(child => {
-      const type = child.type ?? graphic.type;
-      const properties = child.properties ?? {};
-      if (!Number.isFinite(properties.x) || !Number.isFinite(properties.y)) return true;
-      if (type === "circle") return !Number.isFinite(properties.radius);
-      if (type === "rect") {
-        return !Number.isFinite(properties.width) || !Number.isFinite(properties.height);
-      }
-      return type === "path" && !Array.isArray(properties.commands);
-    })
+    layer.encoding?.x?.scale === undefined ||
+    layer.encoding?.y?.scale === undefined ||
+    (
+      layer.encoding?.size?.scale === undefined &&
+      !Number.isFinite(program.markConfigs[layer.id]?.radius)
+    )
   ) {
     throw new Error(`Point mark "${layer.id}" is incomplete for selection.`);
+  }
+  let definitions = dataset.values.map((row, index) => ({
+    key: itemKey(layer, "point", index),
+    fields: ownFields(row),
+    channels: channelMapFromRow(row, layer),
+    members: [row]
+  }));
+  for (const config of Object.values(
+    program.materializationConfigs.highlights ?? {}
+  )) {
+    if (config.target !== layer.id || config.bringToFront !== true) continue;
+    const selection = program.materializationConfigs.selections?.[config.selection];
+    if (selection?.target !== layer.id) continue;
+    const selected = new Set(selectMarkItemKeys(definitions, selection.selector));
+    definitions = [
+      ...definitions.filter(definition => !selected.has(definition.key)),
+      ...definitions.filter(definition => selected.has(definition.key))
+    ];
   }
   return finalizeItems(
     program,
     layer,
     "point",
-    dataset.values.map(row => ({
-      fields: ownFields(row),
-      channels: channelMapFromRow(row, layer),
-      members: [row]
-    })),
+    definitions,
     program.graphicSpec.objects[layer.id]?.type
   );
 }

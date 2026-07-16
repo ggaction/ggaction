@@ -4070,6 +4070,67 @@ Combined line legends also require matching ordered domains.
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current rule mark | Constant concrete line width |
 | `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
+| `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
+| `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point; red accent; area ×2; selected-last | Concrete selected-point emphasis |
+
+## Mark selection and highlighting
+
+`selectMarks` is the advanced reusable-selection action. Selection by itself
+does not alter `semanticSpec` or `graphicSpec`:
+
+```javascript
+const selected = program.selectMarks({
+  id: "highestByOrigin",
+  target: "points",
+  field: "Horsepower",
+  op: "max",
+  groupBy: "Origin"
+});
+```
+
+Choose exactly one of `field` or `channel`. Operators are strict
+`eq | neq | gt | gte | lt | lte`, set membership with
+`{ op: "oneOf", values }`, range selection with
+`{ op: "range", min, max, inclusive? }`, or ranked selection with
+`{ op: "min" | "max", count?, groupBy?, ties? }`. `count` defaults to `1`,
+`ties` to `"first"`, and `inclusive` to `true`. Values are semantic data
+values, never rendered pixel positions. Selectable items are one point symbol,
+one final bar rectangle, one line/area series path, or one rule line. A
+multi-row path field or channel must have one unique value at series grain.
+
+`highlightMarks` is the concise chart-authoring facade. It can create the
+selection inline or reuse one:
+
+```javascript
+const highlighted = program.highlightMarks({
+  select: {
+    field: "Horsepower",
+    op: "max",
+    groupBy: "Origin"
+  },
+  color: "#dc2626",
+  shape: "diamond",
+  size: 5.5,
+  offset: { x: 7, y: -7 },
+  dimOthers: { opacity: 0.18 }
+});
+
+const reused = selected.highlightMarks({
+  selection: "highestByOrigin",
+  color: "#dc2626"
+});
+```
+
+Current highlighting supports point marks. `color` changes selected fill;
+`opacity`, `fill`, `stroke`, `strokeWidth`, `shape`, positive area-multiplier
+`size`, and finite logical `offset.x/y` are available. `strokeWidth` requires
+`stroke`, and `color` cannot be combined with `fill`. `dimOthers` defaults to
+`false`; `true` uses opacity `0.25`. `bringToFront` defaults to `true`.
+
+Selection and highlight intent is immutable and is reapplied after point
+rematerialization, including Canvas changes and filtered data cardinality.
+Reapplying `highlightMarks` for the same selection replaces that appearance
+assignment. Bar, line, area, and rule highlighting is not implemented yet.
 
 ## `encodeRadius({ value, target? })`
 
@@ -4175,6 +4236,9 @@ Size cannot be combined with a constant radius. A constant `editPointMark`
 shape cannot be combined with field-driven `encodeShape`. Bar width
 requires complete ordinal x, aggregate y, and color semantics; group additionally
 requires matching xOffset semantics.
+Ambiguous targets, duplicate inferred selection IDs, incompatible item-grain
+selectors, and point-inapplicable highlight options fail before creating partial
+selection or appearance state. Highlight appearance currently supports points only.
 
 ## Related
 
@@ -5201,6 +5265,7 @@ chart-authoring API does not support that combination.
 | Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis | horizontal |
 | Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical | optional ranged-bar color legend |
 | Chart title | optional | optional | optional | optional | optional | optional | optional | optional | optional |
+| Mark selection/highlight | selection + point highlight | series selection | final-bar selection | final-bar selection | layer selection + point highlight | series selection | rule selection | series selection | component selection |
 | Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
@@ -5218,6 +5283,7 @@ chart-authoring API does not support that combination.
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
 | Rendering | Browser Canvas and Node PNG |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
+| Selection | Strict semantic point/bar/series/rule comparison, set, range, grouped rank, reusable selection state, point highlight/dimming/front order |
 
 ## Current limitations
 
@@ -5235,6 +5301,8 @@ not implemented.
 Box plots support vertical or horizontal category/measure pairings, default
 or configurable Tukey summaries, min–max whiskers, band width and component
 appearance overrides, and explicit outlier opt-out without placeholder resources.
+Mark selection supports point, final-bar, line/area series, and rule grain.
+Highlight appearance currently supports point items only.
 
 <!-- Source: /reference/actions/ -->
 
@@ -5307,6 +5375,19 @@ filterMark({ target?, field, oneOf | predicate | range })
 Create one namespaced immutable filtered dataset, rebind the selected mark,
 and rematerialize its scales and connected guides without changing the source.
 [Data](../api/data.md)
+
+### `highlightMarks`
+
+```javascript
+highlightMarks({
+  id?, target?, select?, selection?, color?, opacity?, fill?, stroke?,
+  strokeWidth?, shape?, size?, offset?, dimOthers?, bringToFront?
+})
+```
+
+Select point symbols inline or reuse a stored selection, then apply concrete
+emphasis, optional complement dimming, logical offset, and selected-last order.
+[Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
 
 ### `createRegressionData`
 
@@ -5789,6 +5870,17 @@ omitted properties remain unchanged. [Titles](../api/titles.md)
 ## Advanced Chart API
 
 Use these actions for explicit semantic resources or focused axis control.
+
+### Reusable mark selections
+
+```javascript
+selectMarks({ id?, target?, field | channel, op, ...operatorOptions })
+```
+
+Store a reusable semantic final-item selection without changing graphics.
+Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
+`range`, `min`, and `max`.
+[Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
 
 ### Semantic resources and regression layers
 

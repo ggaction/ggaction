@@ -17,6 +17,67 @@ title: Appearance Encodings
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current rule mark | Constant concrete line width |
 | `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
+| `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
+| `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point; red accent; area ×2; selected-last | Concrete selected-point emphasis |
+
+## Mark selection and highlighting
+
+`selectMarks` is the advanced reusable-selection action. Selection by itself
+does not alter `semanticSpec` or `graphicSpec`:
+
+```javascript
+const selected = program.selectMarks({
+  id: "highestByOrigin",
+  target: "points",
+  field: "Horsepower",
+  op: "max",
+  groupBy: "Origin"
+});
+```
+
+Choose exactly one of `field` or `channel`. Operators are strict
+`eq | neq | gt | gte | lt | lte`, set membership with
+`{ op: "oneOf", values }`, range selection with
+`{ op: "range", min, max, inclusive? }`, or ranked selection with
+`{ op: "min" | "max", count?, groupBy?, ties? }`. `count` defaults to `1`,
+`ties` to `"first"`, and `inclusive` to `true`. Values are semantic data
+values, never rendered pixel positions. Selectable items are one point symbol,
+one final bar rectangle, one line/area series path, or one rule line. A
+multi-row path field or channel must have one unique value at series grain.
+
+`highlightMarks` is the concise chart-authoring facade. It can create the
+selection inline or reuse one:
+
+```javascript
+const highlighted = program.highlightMarks({
+  select: {
+    field: "Horsepower",
+    op: "max",
+    groupBy: "Origin"
+  },
+  color: "#dc2626",
+  shape: "diamond",
+  size: 5.5,
+  offset: { x: 7, y: -7 },
+  dimOthers: { opacity: 0.18 }
+});
+
+const reused = selected.highlightMarks({
+  selection: "highestByOrigin",
+  color: "#dc2626"
+});
+```
+
+Current highlighting supports point marks. `color` changes selected fill;
+`opacity`, `fill`, `stroke`, `strokeWidth`, `shape`, positive area-multiplier
+`size`, and finite logical `offset.x/y` are available. `strokeWidth` requires
+`stroke`, and `color` cannot be combined with `fill`. `dimOthers` defaults to
+`false`; `true` uses opacity `0.25`. `bringToFront` defaults to `true`.
+
+Selection and highlight intent is immutable and is reapplied after point
+rematerialization, including Canvas changes and filtered data cardinality.
+Reapplying `highlightMarks` for the same selection replaces that appearance
+assignment. Bar, line, area, and rule highlighting is not implemented yet.
 
 ## `encodeRadius({ value, target? })`
 
@@ -122,6 +183,9 @@ Size cannot be combined with a constant radius. A constant `editPointMark`
 shape cannot be combined with field-driven `encodeShape`. Bar width
 requires complete ordinal x, aggregate y, and color semantics; group additionally
 requires matching xOffset semantics.
+Ambiguous targets, duplicate inferred selection IDs, incompatible item-grain
+selectors, and point-inapplicable highlight options fail before creating partial
+selection or appearance state. Highlight appearance currently supports points only.
 
 ## Related
 

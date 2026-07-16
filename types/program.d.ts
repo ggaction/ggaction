@@ -60,6 +60,45 @@ export type FilterMarkOptions = {
   target?: string;
   field: string;
 } & FilterModeOptions;
+export type MarkSelector = (
+  | { field: string; channel?: never }
+  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "group" | "opacity"; field?: never }
+) & (
+  | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
+  | { op: "oneOf"; values: readonly unknown[] }
+  | {
+      op: "range";
+      min: number | string;
+      max: number | string;
+      inclusive?: boolean;
+    }
+  | {
+      op: "min" | "max";
+      count?: number;
+      groupBy?: string | readonly string[];
+      ties?: "first" | "all";
+    }
+);
+export type SelectMarksOptions = {
+  id?: string;
+  target?: string;
+} & MarkSelector;
+export interface HighlightMarksOptions {
+  id?: string;
+  target?: string;
+  select?: MarkSelector;
+  selection?: string;
+  color?: string;
+  opacity?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  shape?: PointShape;
+  size?: number;
+  offset?: { x?: number; y?: number };
+  dimOthers?: boolean | { opacity?: number };
+  bringToFront?: boolean;
+}
 export type ColorLayout =
   | "stack"
   | "fill"
@@ -803,6 +842,8 @@ export class ChartProgram {
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMark(options: FilterMarkOptions): ChartProgram;
+  selectMarks(options: SelectMarksOptions): ChartProgram;
+  highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;

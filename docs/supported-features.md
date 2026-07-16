@@ -21,6 +21,7 @@ chart-authoring API does not support that combination.
 | Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis | horizontal |
 | Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical | optional ranged-bar color legend |
 | Chart title | optional | optional | optional | optional | optional | optional | optional | optional | optional |
+| Mark selection/highlight | selection + point highlight | series selection | final-bar selection | final-bar selection | layer selection + point highlight | series selection | rule selection | series selection | component selection |
 | Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
@@ -38,6 +39,7 @@ chart-authoring API does not support that combination.
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
 | Rendering | Browser Canvas and Node PNG |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
+| Selection | Strict semantic point/bar/series/rule comparison, set, range, grouped rank, reusable selection state, point highlight/dimming/front order |
 
 ## Current limitations
 
@@ -55,3 +57,5 @@ not implemented.
 Box plots support vertical or horizontal category/measure pairings, default
 or configurable Tukey summaries, min–max whiskers, band width and component
 appearance overrides, and explicit outlier opt-out without placeholder resources.
+Mark selection supports point, final-bar, line/area series, and rule grain.
+Highlight appearance currently supports point items only.

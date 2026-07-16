@@ -89,6 +89,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`editRegressionBand`](current/STATISTICS.md#editregressionband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createRegressionLine`](current/STATISTICS.md#createregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRegressionLine`](current/STATISTICS.md#editregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| advanced | [`selectMarks`](current/MARK_SELECTION.md#selectmarks) | mark-selection | Stable create-only | Intentional | ✅ / ⚠️ / ⚠️ |
+| user-facing | [`highlightMarks`](current/MARK_SELECTION.md#highlightmarks) | mark-selection | Mutable resource | Complete for point marks; cross-mark recipes Planned | ✅ / ⚠️ / ⚠️ |
 | primitive | [`editSemantic`](current/PRIMITIVES.md#editsemantic) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
 | primitive | [`createGraphics`](current/PRIMITIVES.md#creategraphics) | primitives | Primitive | Complete | ✅ / ✅ / ✅ |
 | primitive | [`editGraphics`](current/PRIMITIVES.md#editgraphics) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
@@ -99,14 +101,11 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | --- | --- | --- |
 | `editBarMark` | accepted | [Open](planned/MARK_SELECTION.md#editbarmark) |
 | `filterMarks` | accepted | [Open](planned/MARK_SELECTION.md#filtermarks) |
-| `highlightMarks` | accepted | [Open](planned/MARK_SELECTION.md#highlightmarks) |
-| `selectMarks` | accepted | [Open](planned/MARK_SELECTION.md#selectmarks) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| composition | Mark-item selection grammar | accepted | [Open](planned/MARK_SELECTION.md#mark-item-selection-grammar) |
 | parameter | Continuous color bar consumer | accepted | [Open](planned/ENCODINGS.md#continuous-color-bar-consumer) |
 | parameter | Scale type vocabulary | accepted | [Open](planned/SCALES.md#scale-type-vocabulary) |
 | parameter | Scale mapping policies | accepted | [Open](planned/SCALES.md#scale-mapping-policies) |

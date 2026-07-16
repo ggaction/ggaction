@@ -11,6 +11,7 @@ import { registerPrimitiveActions } from "./primitives/index.js";
 import { registerRegressionActions } from "./regression/index.js";
 import { registerScaleActions } from "./scales/index.js";
 import { registerTitleActions } from "./titles/index.js";
+import { registerSelectionActions } from "./selection/index.js";
 
 export function registerActions(ProgramClass) {
   registerPrimitiveActions(ProgramClass);
@@ -26,4 +27,5 @@ export function registerActions(ProgramClass) {
   registerErrorBarActions(ProgramClass);
   registerErrorBandActions(ProgramClass);
   registerBoxPlotActions(ProgramClass);
+  registerSelectionActions(ProgramClass);
 }

@@ -13,7 +13,7 @@ Future selection actions 없이 Cars grouped top-point highlight를 raw primitiv
 - [x] Axes/legend/title integration without selection-aware public actions
 - [x] Primitive program, reference values, manifest and exact future call chain
 - [x] Canvas and `primitive.png` checks
-- [ ] Gate A user confirmation
+- [x] Gate A user confirmation
 - [x] Gate candidate commit and push
 
 ## Gate A
@@ -30,6 +30,11 @@ scatterplot context remains readable.
 - Manifest: `test/gates/mark-selection-points/variants/manifest.js`.
 - The gallery stores the exact future `highlightMarks({ select: ... })` chain and intentionally has no user-facing
   program before approval.
+
+### Approval result
+
+2026-07-16 user confirmation approved the candidate without visual changes. STEP5 uses this primitive as the exact
+public semantic/graphic/renderer/pixel target.
 
 ## 완료 조건
 

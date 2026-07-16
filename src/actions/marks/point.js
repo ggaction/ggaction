@@ -136,6 +136,21 @@ const rematerializePointMark = action(
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializePointMark");
     const id = validateUserId(args.id, "Point mark id");
+    const highlights = Object.entries(
+      this.materializationConfigs.highlights ?? {}
+    ).filter(([, config]) => config.target === id);
+    if (highlights.length > 0) {
+      let baseline = this;
+      for (const [highlightId] of highlights) {
+        baseline = baseline._withoutMaterializationConfig([
+          "highlights",
+          highlightId
+        ]);
+      }
+      return baseline
+        .rematerializePointMark({ id })
+        .rematerializeMarkHighlights({ target: id, highlights });
+    }
     const layer = findLayer(this, id);
     const graphic = this.graphicSpec.objects[id];
 

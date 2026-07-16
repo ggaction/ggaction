@@ -76,6 +76,9 @@ Categorical, composite point/size, gradient, and opacity legends have stable
 layout/appearance edits; categorical side layouts support right and left.
 Chart titles support four edges, deterministic word/character wrapping, and
 stable partial edits including subtitle removal.
+`selectMarks` creates reusable semantic selections over point, final-bar,
+line/area series, and rule items. `highlightMarks` currently applies concrete
+emphasis, optional complement dimming, offset, and front order to point items.
 It renders through browser Canvas and Node PNG. It is not published to npm yet.
 
 Do not assume facets, program composition, SVG rendering, animation, automatic

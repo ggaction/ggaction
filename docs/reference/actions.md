@@ -73,6 +73,19 @@ Create one namespaced immutable filtered dataset, rebind the selected mark,
 and rematerialize its scales and connected guides without changing the source.
 [Data](../api/data.md)
 
+### `highlightMarks`
+
+```javascript
+highlightMarks({
+  id?, target?, select?, selection?, color?, opacity?, fill?, stroke?,
+  strokeWidth?, shape?, size?, offset?, dimOthers?, bringToFront?
+})
+```
+
+Select point symbols inline or reuse a stored selection, then apply concrete
+emphasis, optional complement dimming, logical offset, and selected-last order.
+[Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
+
 ### `createRegressionData`
 
 ```javascript
@@ -554,6 +567,17 @@ omitted properties remain unchanged. [Titles](../api/titles.md)
 ## Advanced Chart API
 
 Use these actions for explicit semantic resources or focused axis control.
+
+### Reusable mark selections
+
+```javascript
+selectMarks({ id?, target?, field | channel, op, ...operatorOptions })
+```
+
+Store a reusable semantic final-item selection without changing graphics.
+Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
+`range`, `min`, and `max`.
+[Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
 
 ### Semantic resources and regression layers
 

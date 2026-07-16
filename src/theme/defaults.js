@@ -8,5 +8,6 @@ export const DEFAULT_COLORS = Object.freeze({
   grid: "#e2e8f0",
   border: "#cbd5e1",
   sizeSymbol: "#94a3b8",
-  regressionBand: "#111111"
+  regressionBand: "#111111",
+  highlight: "#dc2626"
 });

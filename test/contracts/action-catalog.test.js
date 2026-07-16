@@ -203,7 +203,10 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
     "createBoxOutliers",
     "createBoxSummaryData",
     "createErrorBarCap",
-    "createErrorBandBoundary"
+    "createErrorBandBoundary",
+    "applyPointHighlight",
+    "dimUnselectedMarkItems",
+    "placeSelectedMarkItemsLast"
   ]);
   assert.equal(runtime.includes("createLegendSymbols"), true);
   assert.equal(runtime.includes("createCategoricalLegend"), true);
@@ -228,9 +231,7 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   assert.equal(new Set(names).size, names.length);
   assert.deepEqual(new Set(names), new Set([
     "editBarMark",
-    "filterMarks",
-    "highlightMarks",
-    "selectMarks"
+    "filterMarks"
   ]));
   assert.equal(names.includes("editRuleMark"), false);
 
@@ -522,13 +523,13 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /FilterComparison =/);
   assert.match(currentCorpus, /oneOf.*predicate.*range.*정확히 하나/);
   assert.doesNotMatch(plannedCorpus, /filter predicate modes/);
-  assert.match(plannedCorpus, /type MarkSelector =/);
-  assert.match(plannedCorpus, /"eq" \| "neq" \| "gt" \| "gte" \| "lt" \| "lte"/);
-  assert.match(plannedCorpus, /op: "min" \| "max"/);
-  assert.match(plannedCorpus, /ties\?: "first" \| "all"/);
+  assert.match(currentCorpus, /type MarkSelector =/);
+  assert.match(currentCorpus, /"eq" \| "neq" \| "gt" \| "gte" \| "lt" \| "lte"/);
+  assert.match(currentCorpus, /op: "min" \| "max"/);
+  assert.match(currentCorpus, /ties\?: "first" \| "all"/);
   assert.match(plannedCorpus, /filterMarks\(options:/);
-  assert.match(plannedCorpus, /selectMarks\(options:/);
-  assert.match(plannedCorpus, /highlightMarks\(\{/);
+  assert.match(currentCorpus, /selectMarks\(\{ id\?, target\?, \.\.\.selector \}\)/);
+  assert.match(currentCorpus, /highlightMarks\(\{ id\?, target\?, select\?, selection\?/);
   assert.match(plannedCorpus, /editBarMark\(\{/);
   assert.doesNotMatch(plannedCorpus, /^## `selectRows`$/m);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /argmin.*Proposed|argmax.*Proposed/);
