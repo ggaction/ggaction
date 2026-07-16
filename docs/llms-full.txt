@@ -2269,19 +2269,19 @@ each type infers its ID and current dataset when those choices are unambiguous.
 ## Choose a mark family
 
 <div class="docs-entry-grid docs-entry-grid--two">
-  <a href="./marks/point/">
+  <a href="./point/">
     <strong>Point marks</strong>
     <span>Scatterplots, symbols, field-driven shape, size, and opacity.</span>
   </a>
-  <a href="./marks/line-area/">
+  <a href="./line-area/">
     <strong>Line and area marks</strong>
     <span>Ordered paths, grouped series, ranged areas, and density geometry.</span>
   </a>
-  <a href="./marks/bar/">
+  <a href="./bar/">
     <strong>Bar marks</strong>
     <span>Histograms, aggregate bars, grouped layouts, and observed intervals.</span>
   </a>
-  <a href="./marks/rule/">
+  <a href="./rule/">
     <strong>Rule marks</strong>
     <span>Full-span references, bounded intervals, and diagonal endpoints.</span>
   </a>
