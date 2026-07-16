@@ -12,7 +12,7 @@ Canonical regression scatterplot의 concrete values를 유지하면서 Canvas �
 - [ ] Grid → band → points → regression line → axis local order
 - [ ] Legend and title Canvas ownership
 - [ ] Stored tree, reachability and draw-order assertions
-- [ ] Baseline semantic/concrete/Canvas-call equivalence
+- [ ] Baseline semantic/per-node concrete equivalence and intentional draw-order delta
 - [ ] High-resolution browser and `primitive.png` rendering
 - [ ] Gallery metadata and plot-region ink checks
 - [ ] Gate A source, image, tree and draw-order review package
@@ -24,4 +24,5 @@ Canonical regression scatterplot의 concrete values를 유지하면서 Canvas �
 
 ## 완료 조건
 
-The primitive hierarchy is visually approved and proves that tree storage alone does not change chart meaning or pixels.
+The primitive hierarchy is visually approved, preserves chart meaning and concrete geometry, and explicitly approves
+the intended band-before-points pixel change.

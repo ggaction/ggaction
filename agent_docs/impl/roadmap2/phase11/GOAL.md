@@ -105,7 +105,8 @@ STEP10  Roadmap 2 executable closeout and full CI/Pages verification
 
 ## 완료 조건
 
-- Canonical primitive/public regression programs have equivalent semantic state, concrete tree, renderer calls and pixels.
+- After Gate A approves the intentional band-before-points correction, canonical hierarchy primitive/public regression
+  programs have equivalent semantic state, concrete tree, renderer calls and pixels.
 - Every ordinary Canvas-first public example produces a reachable, duplicate-free named graphic tree.
 - Grid, band, mark, highlight and axis ordering is deterministic after Canvas, scale, data and appearance edits.
 - Subtree removal, invalid attachment and immutable structural copy are executable contracts.

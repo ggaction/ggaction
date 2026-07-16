@@ -105,8 +105,11 @@ The default visual order is background, grid, statistical band, ordinary mark, h
 title. Axis graphics remain above marks so bars, areas and points cannot cover baselines or ticks. Legend and title are
 Canvas children rather than plot children because they occupy chart layout outside the coordinate plot.
 
-The hierarchy variant must preserve the baseline semantic specification, resolved scales, concrete properties, Canvas
-commands and decoded pixels. Its Roadmap artifact pair is stored under
+The hierarchy variant must preserve the baseline semantic specification, resolved scales and per-node concrete
+properties. It intentionally changes the old flat `points → band → line` draw order to
+`band → points → line`, so old-baseline Canvas-call order and decoded pixels are not equivalence requirements. Gate A
+approves that deliberate visual correction; after approval, the hierarchy primitive and public program must have exact
+Canvas-call and decoded-pixel equivalence. Its Roadmap artifact pair is stored under
 `.artifacts/test/png/roadmap2/cars-regression-scatterplot/graphic-hierarchy/`.
 
 ## Numeric contract
