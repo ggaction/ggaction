@@ -4,7 +4,10 @@
 
   const headings = [...content.querySelectorAll(":scope > h2, :scope > h3")]
     .filter(heading => heading.id);
-  const labels = new Map(headings.map(heading => [heading, heading.textContent.trim()]));
+  const labels = new Map(headings.map(heading => [
+    heading,
+    heading.dataset.tocLabel ?? heading.textContent.trim()
+  ]));
 
   for (const heading of headings) {
     const anchor = document.createElement("a");
@@ -17,6 +20,10 @@
 
   if (headings.length < 4) return;
 
+  const navigationHeadings = headings.length > 30
+    ? headings.filter(heading => heading.tagName === "H2")
+    : headings;
+
   const navigation = document.createElement("details");
   navigation.className = "docs-page-toc";
   navigation.open = !window.matchMedia("(max-width: 860px)").matches;
@@ -25,13 +32,15 @@
   const title = document.createElement("strong");
   title.textContent = "On this page";
   const count = document.createElement("span");
-  count.textContent = `${headings.length} sections`;
+  count.textContent = headings.length > 30
+    ? `${navigationHeadings.length} categories · ${headings.length - navigationHeadings.length} actions`
+    : `${headings.length} sections`;
   summary.append(title, count);
   navigation.append(summary);
 
   const list = document.createElement("ul");
   const items = new Map();
-  for (const heading of headings) {
+  for (const heading of navigationHeadings) {
     const item = document.createElement("li");
     if (heading.tagName === "H3") item.className = "is-nested";
     const link = document.createElement("a");
@@ -54,8 +63,8 @@
     scheduled = false;
     const top = parseFloat(getComputedStyle(document.documentElement)
       .getPropertyValue("--docs-topbar")) + 24;
-    let current = headings[0];
-    for (const heading of headings) {
+    let current = navigationHeadings[0];
+    for (const heading of navigationHeadings) {
       if (heading.getBoundingClientRect().top > top) break;
       current = heading;
     }
@@ -64,10 +73,10 @@
     }
     items.get(current)?.classList.add("is-current");
     if (current.tagName === "H3") {
-      const currentIndex = headings.indexOf(current);
+      const currentIndex = navigationHeadings.indexOf(current);
       for (let index = currentIndex - 1; index >= 0; index -= 1) {
-        if (headings[index].tagName === "H2") {
-          items.get(headings[index])?.classList.add("is-parent-current");
+        if (navigationHeadings[index].tagName === "H2") {
+          items.get(navigationHeadings[index])?.classList.add("is-parent-current");
           break;
         }
       }

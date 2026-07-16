@@ -310,6 +310,10 @@ test("indexes documentation headings for section search", () => {
   assert.match(search, /event\.metaKey \|\| event\.ctrlKey/);
   assert.match(layout, /docs-toc\.js/);
   assert.match(layout, /docs-content\.js/);
+  assert.equal(
+    layout.indexOf("docs-content.js") < layout.indexOf("docs-toc.js"),
+    true
+  );
   assert.match(layout, /page-navigation\.html/);
   assert.match(layout, /docs-navigation\.js/);
 
@@ -324,6 +328,15 @@ test("indexes documentation headings for section search", () => {
   assert.match(navigation, /event\.key === "Escape"/);
   assert.match(navigation, /restoreFocus/);
   assert.match(navigation, /function syncGroups/);
+
+  const content = read("docs/assets/js/docs-content.js");
+  assert.match(content, /docs-action-heading/);
+  assert.match(content, /docs-action-signature/);
+  assert.match(content, /docs-action-filter-input/);
+
+  const toc = read("docs/assets/js/docs-toc.js");
+  assert.match(toc, /heading\.dataset\.tocLabel/);
+  assert.match(toc, /headings\.length > 30/);
 });
 
 test("classifies every declared ChartProgram action in the reference", () => {

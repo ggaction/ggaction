@@ -281,11 +281,105 @@ summary:focus-visible {
   margin-top: 2.4rem;
   padding-top: 0.2rem;
   font-size: 1.45rem;
+  font-weight: 650;
   letter-spacing: -0.02em;
 }
 
 .docs-content h3 {
   margin-top: 1.8rem;
+  font-weight: 650;
+}
+
+.docs-content .docs-action-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--docs-border);
+  font-weight: 700;
+}
+
+.docs-action-heading code {
+  color: #0f172a;
+  background: transparent;
+  font-size: 0.94em;
+  overflow-wrap: normal;
+}
+
+.docs-action-kind {
+  flex: 0 0 auto;
+  padding: 0.18rem 0.42rem;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #eff6ff;
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.docs-action-kind--edit,
+.docs-action-kind--filter,
+.docs-action-kind--highlight,
+.docs-action-kind--select {
+  color: #6b21a8;
+  border-color: #e9d5ff;
+  background: #faf5ff;
+}
+
+.docs-action-signature {
+  max-width: 100%;
+  margin: -0.25rem 0 1rem;
+  padding: 0.65rem 0.8rem;
+  overflow-x: auto;
+  border: 1px solid #dbeafe;
+  border-radius: 0.45rem;
+  background: #f8fafc;
+}
+
+.docs-action-signature code {
+  color: #1e3a8a;
+  background: transparent;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+.docs-action-filter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.45rem 1rem;
+  margin: 1.5rem 0 2rem;
+  padding: 1rem;
+  border: 1px solid var(--docs-border);
+  border-radius: 0.55rem;
+  background: #f8fafc;
+}
+
+.docs-action-filter label {
+  grid-column: 1 / -1;
+  color: #0f172a;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.docs-action-filter input {
+  min-width: 0;
+  padding: 0.58rem 0.7rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  background: #fff;
+  font: inherit;
+}
+
+.docs-action-filter__status {
+  align-self: center;
+  color: var(--docs-muted);
+  font-size: 0.78rem;
 }
 
 .docs-content table {
