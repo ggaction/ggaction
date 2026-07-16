@@ -19,9 +19,12 @@ function run(command, args, cwd) {
   execFileSync(command, args, { cwd, encoding: "utf8", stdio: "pipe" });
 }
 
-export async function preparePackageConsumer() {
+export async function preparePackageConsumer({
+  packageSpec = process.env.GGACTION_PACKAGE_SPEC
+} = {}) {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-consumer-"));
-  const artifact = await createPackageArtifact();
+  const artifact = packageSpec === undefined ? await createPackageArtifact() : undefined;
+  const installSpec = packageSpec ?? artifact.file;
   await writeFile(path.join(directory, "package.json"), `${JSON.stringify({
     name: "ggaction-release-consumer",
     version: "1.0.0",
@@ -33,11 +36,17 @@ export async function preparePackageConsumer() {
     "--ignore-scripts",
     "--no-audit",
     "--no-fund",
-    artifact.file
+    installSpec
   ], directory);
+  const installedManifest = JSON.parse(await readFile(
+    path.join(directory, "node_modules", "ggaction", "package.json"),
+    "utf8"
+  ));
   return {
     artifact,
     directory,
+    installedManifest,
+    packageSpec: packageSpec ?? artifact.file,
     cleanup: () => rm(directory, { recursive: true, force: true })
   };
 }
@@ -115,23 +124,24 @@ async function testTypeScriptConsumer(directory) {
   run(tscCommand, ["--project", "tsconfig.json"], directory);
 }
 
-export async function testPackageConsumer() {
-  const consumer = await preparePackageConsumer();
+export async function testPackageConsumer(options) {
+  const consumer = await preparePackageConsumer(options);
   try {
     await testNodeConsumer(consumer.directory);
     await testTypeScriptConsumer(consumer.directory);
-    return consumer.artifact;
+    return consumer;
   } finally {
     await consumer.cleanup();
   }
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
-  const result = await testPackageConsumer();
+  const packageSpec = process.argv[2];
+  const result = await testPackageConsumer({ packageSpec });
   process.stdout.write(`${JSON.stringify({
-    package: `${result.name}@${result.version}`,
-    filename: result.filename,
-    sha256: result.sha256,
+    package: `${result.installedManifest.name}@${result.installedManifest.version}`,
+    source: packageSpec ?? result.artifact.filename,
+    ...(result.artifact ? { sha256: result.artifact.sha256 } : {}),
     checks: ["node", "extension", "png", "typescript", "private-export-rejection"]
   }, null, 2)}\n`);
 }
