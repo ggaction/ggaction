@@ -1,0 +1,153 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing annotated release tag, for example v0.0.2
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the requested tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js for trusted publishing compatibility
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+          package-manager-cache: false
+      - name: Install a trusted-publishing-capable npm CLI
+        run: npm install --global "npm@^11.5.1"
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Verify tag, version, and checked-out commit
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/tags/$RELEASE_TAG"
+          test "$RELEASE_TAG" = "v$(node -p "require('./package.json').version")"
+          test "$(node -p "require('./package-lock.json').version")" = "$(node -p "require('./package.json').version")"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")"
+      - name: Pack the exact release candidate once
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: node scripts/release-candidate.js "$RELEASE_TAG"
+      - name: Verify generated contracts and documentation
+        run: |
+          npm run contracts:catalog:check
+          npm run docs:images
+          npm run docs:llms
+          npm run test:docs
+          git diff --exit-code -- docs/assets/images/manifest.json docs/llms-full.txt
+      - name: Run unit, acceptance, and contract tests
+        run: npm test
+      - name: Enforce coverage thresholds
+        run: npm run test:coverage
+      - name: Test the installed packed-package consumers
+        run: npm run test:package
+      - name: Build documentation with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./docs
+          destination: ./_site
+      - name: Check built documentation
+        run: npm run test:docs:built
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test browser package and documentation consumers
+        run: |
+          npm run test:browser
+          npm run test:docs:browser
+      - name: Render PNG regression charts
+        run: npm run test:render
+      - name: Retain the exact reviewed release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: |
+            .artifacts/release/candidate.json
+            .artifacts/release/ggaction-*.tgz
+            .artifacts/release/ggaction-*-release-notes.md
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment:
+      name: npm-release
+      url: https://www.npmjs.com/package/ggaction
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Check out the approved tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js without a release cache
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+          package-manager-cache: false
+      - name: Install a trusted-publishing-capable npm CLI
+        run: npm install --global "npm@^11.5.1"
+      - name: Download the reviewed release artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify downloaded artifact identity
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+      - name: Check whether this exact version is already public
+        id: registry
+        run: |
+          set -euo pipefail
+          PACKAGE=$(node -p "require('./.artifacts/release/candidate.json').name")
+          VERSION=$(node -p "require('./.artifacts/release/candidate.json').version")
+          LOCAL_SHA1=$(node -p "require('./.artifacts/release/candidate.json').sha1")
+          if REMOTE_SHA1=$(npm view "$PACKAGE@$VERSION" dist.shasum 2>.artifacts/release/npm-view-error.log); then
+            test "$REMOTE_SHA1" = "$LOCAL_SHA1"
+            echo "already=true" >> "$GITHUB_OUTPUT"
+          elif grep -q "E404" .artifacts/release/npm-view-error.log; then
+            echo "already=false" >> "$GITHUB_OUTPUT"
+          else
+            cat .artifacts/release/npm-view-error.log >&2
+            exit 1
+          fi
+      - name: Publish to npm through OIDC
+        if: steps.registry.outputs.already != 'true'
+        run: |
+          TARBALL=".artifacts/release/$(node -p "require('./.artifacts/release/candidate.json').filename")"
+          npm publish "$TARBALL" --access public --tag latest
+      - name: Create or repair the matching GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          VERSION=$(node -p "require('./.artifacts/release/candidate.json').version")
+          NOTES=".artifacts/release/$(node -p "require('./.artifacts/release/candidate.json').releaseNotes")"
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_TAG" --title "ggaction $VERSION" --notes-file "$NOTES"
+          else
+            gh release create "$RELEASE_TAG" --verify-tag --title "ggaction $VERSION" --notes-file "$NOTES"
+          fi

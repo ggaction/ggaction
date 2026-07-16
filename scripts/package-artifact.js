@@ -88,6 +88,7 @@ export async function createPackageArtifact({
   return Object.freeze({
     ...manifest,
     file,
+    sha1: createHash("sha1").update(bytes).digest("hex"),
     sha256: createHash("sha256").update(bytes).digest("hex")
   });
 }
@@ -103,6 +104,10 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     entryCount: result.entryCount,
     packedBytes: result.size,
     unpackedBytes: result.unpackedSize,
-    ...(result.file ? { file: result.file, sha256: result.sha256 } : {})
+    ...(result.file ? {
+      file: result.file,
+      sha1: result.sha1,
+      sha256: result.sha256
+    } : {})
   }, null, 2)}\n`);
 }
