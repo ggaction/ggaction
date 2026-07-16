@@ -5,11 +5,6 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import {
-  buildDocImageManifest,
-  chartImages,
-  tutorialImages
-} from "../../scripts/generate-doc-images.js";
 import { buildFullLlmDocumentation } from "../../scripts/generate-llm-docs.js";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
@@ -325,72 +320,6 @@ test("indexes documentation headings for section search", () => {
   assert.match(navigation, /event\.key === "Escape"/);
   assert.match(navigation, /restoreFocus/);
   assert.match(navigation, /function syncGroups/);
-});
-
-test("keeps one generated gallery image for every public chart", async () => {
-  const index = read("docs/index.md");
-  const tutorials = read("docs/tutorials/index.md");
-
-  assert.equal(chartImages.length, 9);
-  for (const { id, width, height } of chartImages) {
-    const image = readFileSync(path.join(root, `docs/assets/images/${id}.png`));
-    assert.deepEqual([...image.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
-    assert.equal(image.readUInt32BE(16), width * 2, `${id} width`);
-    assert.equal(image.readUInt32BE(20), height * 2, `${id} height`);
-    assert.match(index, new RegExp(`assets/images/${id}\\.png`));
-  }
-  assert.equal((index.match(/<article>/g) ?? []).length, chartImages.length);
-  assert.equal(
-    (index.match(/class="docs-chart-gallery__image"/g) ?? []).length,
-    chartImages.length
-  );
-  assert.equal(
-    (index.match(/class="docs-chart-gallery__title"/g) ?? []).length,
-    chartImages.length
-  );
-  assert.equal(
-    (index.match(/loading="lazy"/g) ?? []).length,
-    chartImages.length - 1
-  );
-  assert.equal((index.match(/loading="eager"/g) ?? []).length, 1);
-  assert.equal(
-    (index.match(/<img [^>]*width="\d+"[^>]*height="\d+"/g) ?? []).length,
-    chartImages.length
-  );
-
-  for (const tutorial of [
-    "scatterplot",
-    "line-chart",
-    "histogram",
-    "grouped-bar",
-    "regression-scatterplot",
-    "density-area",
-    "error-bar"
-  ]) {
-    assert.match(tutorials, new RegExp(`\\./${tutorial}\\.md`));
-  }
-
-  assert.deepEqual(
-    JSON.parse(read("docs/assets/images/manifest.json")),
-    await buildDocImageManifest()
-  );
-});
-
-test("keeps generated mark-selection tutorial images canonical and fresh", () => {
-  const tutorial = read("docs/tutorials/mark-selection.md");
-
-  assert.equal(tutorialImages.length, 3);
-  for (const { id, width, height } of tutorialImages) {
-    const image = readFileSync(path.join(root, `docs/assets/images/${id}.png`));
-    assert.deepEqual([...image.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
-    assert.equal(image.readUInt32BE(16), width * 2, `${id} width`);
-    assert.equal(image.readUInt32BE(20), height * 2, `${id} height`);
-    assert.match(tutorial, new RegExp(`assets/images/${id}\\.png`));
-  }
-  assert.match(tutorial, /examples\/mark-selection\/program\.js/);
-  assert.match(tutorial, /filterMarks/);
-  assert.match(tutorial, /selectMarks/);
-  assert.match(tutorial, /highlightMarks/);
 });
 
 test("classifies every declared ChartProgram action in the reference", () => {

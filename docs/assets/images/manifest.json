@@ -1,68 +1,80 @@
 {
-  "version": 1,
+  "version": 2,
   "pixelRatio": 2,
   "charts": {
     "cars-scatterplot": {
       "width": 1280,
       "height": 800,
-      "sourceHash": "88539aa261688b2bbdf043c1935baed4b294627d085de9fc185fe80216c724cb"
+      "sourceHash": "88539aa261688b2bbdf043c1935baed4b294627d085de9fc185fe80216c724cb",
+      "pixelHash": "9d59b456ff20823ad3b8160c176b34c01d6c385b9fa0cbcb44b6f38f6ea2c4f9"
     },
     "cars-line-chart": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "e2c88ae9f6b025e1712d4b30d00bcc2c75e97afaadb0417329724febbf9d268b"
+      "sourceHash": "e2c88ae9f6b025e1712d4b30d00bcc2c75e97afaadb0417329724febbf9d268b",
+      "pixelHash": "4f324cc2aa4d06ec3842e91e2acc3d6917bb8121a85e98cca837abd528dd93a8"
     },
     "cars-histogram": {
       "width": 864,
       "height": 920,
-      "sourceHash": "0e162cdeb19436437be91ad41846e6364cc1b26c166710cea4c890730885a53e"
+      "sourceHash": "0e162cdeb19436437be91ad41846e6364cc1b26c166710cea4c890730885a53e",
+      "pixelHash": "00688082cf317d8bd1000a786832066a6f9b9deaf9844b4ded1254c4cde03686"
     },
     "jobs-grouped-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "a930a619886c25750254463e4baf72a8b49c9a7c978a651bc9b8e6082ef56771"
+      "sourceHash": "a930a619886c25750254463e4baf72a8b49c9a7c978a651bc9b8e6082ef56771",
+      "pixelHash": "6592f53c7c6365b4ae9a72bf727c41f99d3627153279795d43bd21d327e1922f"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "8968b3fac67bb4f771805fe56ca7a90fe49267327f24674007226e50a614cbd9"
+      "sourceHash": "8968b3fac67bb4f771805fe56ca7a90fe49267327f24674007226e50a614cbd9",
+      "pixelHash": "4031a9368db1ec14607cab597d2364a6fedc23e1078b5b68aa6d6411f0e196d9"
     },
     "cars-density-area": {
       "width": 1440,
       "height": 1000,
-      "sourceHash": "1df632bef9175342f5597423463ba0122b148ac7ed1560e61e81ba778f0f2ea9"
+      "sourceHash": "1df632bef9175342f5597423463ba0122b148ac7ed1560e61e81ba778f0f2ea9",
+      "pixelHash": "a0dd8b98fc837d69baac47ef82917dfd51308792f8f8900b178292cc96dfc347"
     },
     "cars-error-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "ae1f20a4b922dbc3dd5faf44eeb0750218255d235870ccfa7a0d2bb5154577a3"
+      "sourceHash": "ae1f20a4b922dbc3dd5faf44eeb0750218255d235870ccfa7a0d2bb5154577a3",
+      "pixelHash": "8630e07a892fa9262b9d53f986fc19c7801bfdbcc16e68f41c047c0bee22ae56"
     },
     "cars-box-plot": {
       "width": 720,
       "height": 920,
-      "sourceHash": "eb981ce1e4a66ae6d7597633737c05f1a0db5bc59b198aa54d186be6f3f1946f"
+      "sourceHash": "eb981ce1e4a66ae6d7597633737c05f1a0db5bc59b198aa54d186be6f3f1946f",
+      "pixelHash": "6c370fb644d49e5a73f6b5c54866fe53f5bb9ad839b1992d80dd898b15868009"
     },
     "gapminder-error-band": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "bb56c467ce0bbaf7dbe699b427aa1deabd97166e41af907bcf8d75c4af960fa5"
+      "sourceHash": "bb56c467ce0bbaf7dbe699b427aa1deabd97166e41af907bcf8d75c4af960fa5",
+      "pixelHash": "94be8d74e58bc2e302b495d7262b06370c9b375d35d824c96b56a65183c9a75c"
     }
   },
   "tutorials": {
     "mark-selection-points": {
       "width": 1520,
       "height": 880,
-      "sourceHash": "70af0e598a5a5acab0244980d7d6f77edd75870da4d5b6a2eaa77d9051175b0d"
+      "sourceHash": "70af0e598a5a5acab0244980d7d6f77edd75870da4d5b6a2eaa77d9051175b0d",
+      "pixelHash": "fb28fd0282203e586787a7c8dfe797d5202663082e9e4e1cff29b1e55ffb55b7"
     },
     "mark-selection-bars": {
       "width": 864,
       "height": 920,
-      "sourceHash": "09ce40102bccc94b6d6e0098c20caed778b779bbab24b03d1fd2a065880f26ca"
+      "sourceHash": "09ce40102bccc94b6d6e0098c20caed778b779bbab24b03d1fd2a065880f26ca",
+      "pixelHash": "69c7f01a1344d8ad9d03201be329c4727d9ba702457221b5a17cd4f9d62e2599"
     },
     "mark-selection-lines": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "dff46d7d8d1b7ccdd5f8e611c00806910667d3db3fd1f67794a2ac6023a43e4e"
+      "sourceHash": "dff46d7d8d1b7ccdd5f8e611c00806910667d3db3fd1f67794a2ac6023a43e4e",
+      "pixelHash": "c7b2b0be89e4ab25a222a260d8434b9d3a08de57f170c622f7302054ac1beeb6"
     }
   }
 }
