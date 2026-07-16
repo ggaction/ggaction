@@ -14,7 +14,7 @@ vertical median과 no-outlier policy를 승인받는다.
 - [x] Axes, vertical grid and title composition
 - [x] Variant manifest and exact future call chain
 - [x] `cars-horizontal-minmax/primitive.png` and renderer checks
-- [ ] Gate B user confirmation
+- [x] Gate B user confirmation
 - [x] STEP status, conceptual commit and push
 
 ## Gate B
