@@ -187,8 +187,8 @@ export function createCarsPolarGuideReference(rows) {
       text: "Acceleration"
     },
     radialTitle: {
-      x: frame.cx + frame.radius / 2,
-      y: frame.cy + 28,
+      x: frame.cx + frame.radius + 38,
+      y: frame.cy + 32,
       text: "Horsepower"
     }
   };

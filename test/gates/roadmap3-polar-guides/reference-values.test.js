@@ -64,8 +64,8 @@ test("places readable perimeter labels and titles inside the Canvas", () => {
     text: "Acceleration"
   });
   assert.deepEqual(values.radialTitle, {
-    x: 426,
-    y: 338,
+    x: 580,
+    y: 342,
     text: "Horsepower"
   });
 });

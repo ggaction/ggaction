@@ -4,7 +4,7 @@
 
 - [x] STEP 1 — Phase 계약, action inventory와 target chart 확정
 - [x] STEP 2 — Deterministic Polar guide reference geometry
-- [ ] STEP 3 — Primitive Polar guide visual baseline
+- [x] STEP 3 — Primitive Polar guide visual baseline
 - [ ] STEP 4 — Gate D visual evidence와 사용자 승인
 - [ ] STEP 5 — Pure Polar guide grammar와 tick policy
 - [ ] STEP 6 — Polar guide semantic/config ownership
