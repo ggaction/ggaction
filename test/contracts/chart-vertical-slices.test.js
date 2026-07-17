@@ -13,13 +13,12 @@ test("keeps the public chart registry and vertical slices synchronized", () => {
     .filter(entry => entry.isDirectory())
     .map(entry => entry.name)
     .sort();
-  const registeredDirectories = PUBLIC_CHARTS
-    .map(chart => chart.testDirectory)
-    .sort();
+  const registeredDirectories = [...new Set(
+    PUBLIC_CHARTS.map(chart => chart.testDirectory)
+  )].sort();
 
   assert.deepEqual(charts, registeredDirectories);
   assert.equal(new Set(PUBLIC_CHARTS.map(chart => chart.id)).size, PUBLIC_CHARTS.length);
-  assert.equal(new Set(registeredDirectories).size, PUBLIC_CHARTS.length);
 
   for (const chart of PUBLIC_CHARTS) {
     const directory = path.join(chartRoot, chart.testDirectory);

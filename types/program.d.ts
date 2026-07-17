@@ -1360,6 +1360,7 @@ export class ChartProgram {
     curve?: CurveInterpolation;
     stroke?: string;
     opacity?: number;
+    closed?: boolean;
   }): ChartProgram;
   editLineMark(options: {
     target?: string;
@@ -1367,6 +1368,7 @@ export class ChartProgram {
     curve?: CurveInterpolation;
     stroke?: string;
     opacity?: number;
+    closed?: boolean;
   }): ChartProgram;
   createBarMark(options?: {
     id?: string;

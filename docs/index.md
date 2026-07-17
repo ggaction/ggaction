@@ -65,6 +65,24 @@ want to answer.
     <a class="docs-chart-gallery__full-size" href="./assets/images/cars-polar-guides.png">View full size</a>
   </article>
   <article>
+    <a class="docs-chart-gallery__image" href="./tutorials/polar-lines/" aria-label="Build open Polar life-expectancy trends">
+      <img src="./assets/images/gapminder-polar-trends.png" alt="Open Polar life-expectancy trends for three countries" width="1520" height="1240" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./tutorials/polar-lines/">Polar lines</a>
+    <p>Connect ordered angle and radial values as grouped open paths.</p>
+    <span class="docs-chart-gallery__actions"><code>createLineMark</code> <code>encodeTheta</code> <code>encodeR</code></span>
+    <a class="docs-chart-gallery__full-size" href="./assets/images/gapminder-polar-trends.png">View full size</a>
+  </article>
+  <article>
+    <a class="docs-chart-gallery__image" href="./tutorials/polar-lines/#closed-radar-paths" aria-label="Build the closed jobs radar chart">
+      <img src="./assets/images/jobs-radar-chart.png" alt="Closed radar paths comparing job shares" width="1640" height="1300" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./tutorials/polar-lines/#closed-radar-paths">Radar chart</a>
+    <p>Close nominal-angle series without duplicating the first observation.</p>
+    <span class="docs-chart-gallery__actions"><code>createLineMark</code> <code>closed</code></span>
+    <a class="docs-chart-gallery__full-size" href="./assets/images/jobs-radar-chart.png">View full size</a>
+  </article>
+  <article>
     <a class="docs-chart-gallery__image" href="./tutorials/line-chart/" aria-label="Build the aggregate line chart">
       <img src="./assets/images/cars-line-chart.png" alt="Cars aggregate line chart" width="1440" height="920" loading="lazy">
     </a>

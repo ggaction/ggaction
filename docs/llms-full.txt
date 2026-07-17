@@ -72,6 +72,24 @@ want to answer.
     <a class="docs-chart-gallery__full-size" href="./assets/images/cars-polar-guides.png">View full size</a>
   </article>
   <article>
+    <a class="docs-chart-gallery__image" href="./tutorials/polar-lines/" aria-label="Build open Polar life-expectancy trends">
+      <img src="./assets/images/gapminder-polar-trends.png" alt="Open Polar life-expectancy trends for three countries" width="1520" height="1240" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./tutorials/polar-lines/">Polar lines</a>
+    <p>Connect ordered angle and radial values as grouped open paths.</p>
+    <span class="docs-chart-gallery__actions"><code>createLineMark</code> <code>encodeTheta</code> <code>encodeR</code></span>
+    <a class="docs-chart-gallery__full-size" href="./assets/images/gapminder-polar-trends.png">View full size</a>
+  </article>
+  <article>
+    <a class="docs-chart-gallery__image" href="./tutorials/polar-lines/#closed-radar-paths" aria-label="Build the closed jobs radar chart">
+      <img src="./assets/images/jobs-radar-chart.png" alt="Closed radar paths comparing job shares" width="1640" height="1300" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./tutorials/polar-lines/#closed-radar-paths">Radar chart</a>
+    <p>Close nominal-angle series without duplicating the first observation.</p>
+    <span class="docs-chart-gallery__actions"><code>createLineMark</code> <code>closed</code></span>
+    <a class="docs-chart-gallery__full-size" href="./assets/images/jobs-radar-chart.png">View full size</a>
+  </article>
+  <article>
     <a class="docs-chart-gallery__image" href="./tutorials/line-chart/" aria-label="Build the aggregate line chart">
       <img src="./assets/images/cars-line-chart.png" alt="Cars aggregate line chart" width="1440" height="920" loading="lazy">
     </a>
@@ -330,6 +348,7 @@ Choose the visual relationship that matches the question you want to answer.
 <div class="docs-chart-index">
   {% include chart-card.html id="scatterplot" title="Scatterplot" url="/tutorials/scatterplot/" summary="Quantitative positions, nominal color, radius, and inferred axes." actions="createPointMark · encodeX · encodeY" %}
   {% include chart-card.html id="polar" title="Polar point chart" url="/tutorials/polar-points/" summary="Map fields to clockwise angle and radial distance without changing the Canvas renderer." actions="encodeTheta · encodeR · encodePointRadius" %}
+  {% include chart-card.html id="polar-line" title="Polar lines and radar" url="/tutorials/polar-lines/" summary="Connect ordered theta/radius values as open trends or closed radar paths." actions="createLineMark · encodeTheta · encodeR" %}
   {% include chart-card.html id="line" title="Aggregate line chart" url="/tutorials/line-chart/" summary="Temporal mean series with color, stroke dash, legend, and title." actions="createLineMark · encodeGroup" %}
   {% include chart-card.html id="histogram" title="Stacked histogram" url="/tutorials/histogram/" summary="Binned counts partitioned and stacked by a nominal field." actions="encodeHistogram · encodeColor" %}
   {% include chart-card.html id="bar" title="Bar chart" url="/tutorials/grouped-bar/" summary="Ordinal aggregate bars arranged side by side by nominal color." actions="encodeY · encodeColor" %}
@@ -598,12 +617,119 @@ radial axis together, or a focused edit such as
 
 Polar point marks support ordinary color, size, shape, opacity, filtering,
 selection, highlighting, theta/radius axes, and both Polar grid families.
-Polar line and arc marks remain outside this slice.
+Polar lines and closed radar paths use the same position and guide system; arc
+marks remain outside this slice.
 
 ## Related
 
 [Position encodings](../api/position-encodings.md) ·
-[Coordinates](../api/coordinates.md) · [Scale options](../api/scales.md)
+[Polar lines](./polar-lines.md) · [Coordinates](../api/coordinates.md) ·
+[Scale options](../api/scales.md)
+
+<!-- Source: /tutorials/polar-lines/ -->
+
+# Polar Lines and Radar Tutorial
+
+Polar line marks use the same `encodeTheta` and `encodeR` actions as Polar
+points. The line stays open by default; `closed: true` turns each grouped series
+into a radar path.
+
+## Open Polar trends
+
+{% include chart-example.html id="polar-line" %}
+
+This chart orders years around a partial circle and maps life expectancy to
+radial distance.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const response = await fetch("./gapminder.json");
+const gapminder = await response.json();
+const countries = ["India", "Japan", "South Africa"];
+const rows = gapminder.filter(row =>
+  countries.includes(row.country) &&
+  row.year >= 1955 && row.year <= 2005 &&
+  Number.isFinite(row.life_expect)
+);
+
+const program = chart()
+  .createCanvas({
+    width: 760,
+    height: 620,
+    margin: { top: 70, right: 190, bottom: 70, left: 70 }
+  })
+  .createData({ values: rows })
+  .createLineMark({ strokeWidth: 2.5, opacity: 0.88 })
+  .encodeTheta({
+    field: "year",
+    scale: { domain: [1955, 2005], range: [0, 330] }
+  })
+  .encodeR({
+    field: "life_expect",
+    scale: { domain: [25, 85], zero: false }
+  })
+  .encodeGroup({ field: "country" })
+  .encodeColor({ field: "country", palette: "tableau10" })
+  .createGuides({
+    axes: {
+      theta: { title: { text: "Year" } },
+      radius: { title: { text: "Life expectancy" } }
+    },
+    legend: { position: "right" }
+  });
+
+render(program, document.querySelector("canvas").getContext("2d"));
+```
+
+The theta and radius actions are order-independent. With only one of them, the
+program retains the semantic assignment but does not create a path. Grouping
+creates one path per country; color, dash, legends, filtering, selection, and
+highlighting all operate on those final series.
+
+## Closed radar paths
+
+{% include chart-example.html id="radar" %}
+
+The radar chart uses nominal theta categories and normalized radial values:
+
+```javascript
+const radar = chart()
+  .createCanvas({
+    width: 820,
+    height: 650,
+    margin: { top: 90, right: 190, bottom: 90, left: 90 }
+  })
+  .createData({ values: radarRows })
+  .createLineMark({ closed: true, strokeWidth: 2.5, opacity: 0.9 })
+  .encodeTheta({
+    field: "role",
+    fieldType: "nominal",
+    scale: { domain: roleOrder }
+  })
+  .encodeR({ field: "share", scale: { domain: [0, 1], zero: true } })
+  .encodeGroup({ field: "sex" })
+  .encodeColor({ field: "sex", palette: "tableau10" })
+  .createGuides({
+    axes: {
+      theta: { title: { text: "Occupation" } },
+      radius: { title: { text: "Share" } }
+    },
+    legend: { position: "right", title: "Sex" }
+  });
+```
+
+`closed: true` appends one backend-neutral `Z` command to each series. It does
+not duplicate the first row. You can switch later with
+`editLineMark({ closed: false })`. Polar lines currently support linear
+interpolation only; Cartesian lines retain the complete curve vocabulary.
+
+## Related
+
+[Polar points](./polar-points.md) ·
+[Line and area marks](../api/marks/line-area.md) ·
+[Position encodings](../api/position-encodings.md) ·
+[Polar guides](./polar-points.md#add-polar-guides)
 
 <!-- Source: /tutorials/line-chart/ -->
 
@@ -2638,7 +2764,7 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})`
+### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})`
 
 ```javascript
 const program = chart()
@@ -2654,7 +2780,7 @@ as an empty path collection because later grouping determines series
 cardinality. Complete encodings materialize sorted commands; color and stroke
 dash may regroup them.
 
-### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })`
+### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`
 
 ```javascript
 program.editLineMark({
@@ -2672,6 +2798,29 @@ materialized x values.
 
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
+
+## Polar lines and radar paths
+
+Line marks also accept theta/radius positions. The two encoding actions may be
+called in either order; one channel remains valid semantic state but does not
+produce a path until both are present.
+
+```javascript
+const radar = chart()
+  .createData({ values: rows })
+  .createLineMark({ closed: true, strokeWidth: 2.5 })
+  .encodeTheta({ field: "category", fieldType: "nominal" })
+  .encodeR({ field: "score", scale: { domain: [0, 1] } })
+  .encodeGroup({ field: "series" });
+```
+
+`closed` defaults to `false`. When true, every series ends with one closing
+`Z` command; the first row is not duplicated. `editLineMark({ closed })`
+switches an existing Polar line between open and closed. Polar lines currently
+accept only `curve: "linear"`; other interpolation modes remain available to
+Cartesian lines. Color, stroke dash, grouping, legends, scale edits, Canvas
+resizing, filtering, selection, and highlighting all rebuild the same path
+through the shared line materialization lifecycle.
 
 ## Area marks
 
@@ -2708,7 +2857,8 @@ configuration until their encodings become renderable.
 
 ## Related
 
-[Position ranges](../position-encodings.md) · [Series encodings](../series-encodings.md) ·
+[Position encodings](../position-encodings.md) · [Polar line tutorial](../../tutorials/polar-lines.md) ·
+[Series encodings](../series-encodings.md) ·
 [Density](../encodings.md#atomic-density) · [Error bands](../error-bands.md)
 
 <!-- Source: /api/marks/bar/ -->
@@ -4078,6 +4228,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | --- | --- | --- | --- |
 | Position points | point mark, quantitative, temporal, or ordinal fields | `encodeX`, `encodeY` | [Quantitative positions](./position/quantitative.md) |
 | Position Polar points | point mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar point tutorial](../tutorials/polar-points.md) |
+| Draw Polar lines or radar paths | line mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar line tutorial](../tutorials/polar-lines.md) |
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
 | Build horizontal aggregate bars | bar mark, quantitative x and ordinal/temporal y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
@@ -4102,7 +4253,7 @@ for the same field.
   and valid date strings. Four-digit values are interpreted as UTC years.
 - Ambiguous resources produce an error instead of an arbitrary selection.
 
-## Polar point positions
+## Polar positions
 
 ```javascript
 program
@@ -4111,7 +4262,8 @@ program
   .encodePointRadius({ value: 3 });
 ```
 
-`encodeTheta` accepts quantitative, temporal, ordinal, and nominal fields.
+`encodeTheta` accepts point or line marks with quantitative, temporal, ordinal,
+or nominal fields.
 Quantitative angle scales are linear; temporal angles use time scales; discrete
 angles use point or band scales. The automatic range is `[0, 360]` degrees with
 0 at 12 o'clock and clockwise positive direction.
@@ -4121,9 +4273,10 @@ scale policies. Its automatic range fits the smaller plot dimension. Explicit
 ranges are non-negative logical pixels and must fit the current plot bounds.
 
 The two actions are order-independent. One Polar channel may exist as an
-incomplete semantic assignment, but points become visible only after both
-channels and their scales resolve. Cartesian x/y and Polar theta/radius cannot
-be mixed on one layer.
+incomplete semantic assignment, but points or paths become visible only after
+both channels and their scales resolve. A line may use
+`createLineMark({ closed: true })` for a closed radar path. Cartesian x/y and
+Polar theta/radius cannot be mixed on one layer.
 
 ## Rule endpoints
 
@@ -5451,15 +5604,16 @@ program.createCoordinate({
 Equivalent repeated creation is allowed. A conflicting type or an attempt to
 reattach a layer that already uses another coordinate produces an error.
 
-Polar point position actions create or reuse a Polar coordinate automatically.
-The layer stores semantic theta/radius encodings, while `graphicSpec` stores
-only final Cartesian x/y values for the renderer.
+Polar point and line position actions create or reuse a Polar coordinate
+automatically. The layer stores semantic theta/radius encodings, while
+`graphicSpec` stores only final Cartesian x/y values and path commands for the
+renderer.
 
 ## Errors and limitations
 
 A layer cannot be silently moved from one coordinate to another, and Cartesian
-x/y cannot be mixed with Polar theta/radius. Polar point charts support
-theta/radius axes and grids; Polar line, radar, and arc marks are not yet
+x/y cannot be mixed with Polar theta/radius. Polar point, open-line, and closed
+radar charts support theta/radius axes and grids. Arc marks are not yet
 supported.
 
 ## Related
@@ -6554,20 +6708,20 @@ chart-authoring API does not support that combination.
 
 ## Complete chart support
 
-| Capability | Scatterplot | Polar points | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band | Box plot |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Semantic mark | point | point | line | bar | bar | point + area + line | area | rule | area | bar + rule + point |
-| Position | quantitative x/y | theta/radius | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval | categorical x; quantitative y/y2 |
-| Nominal color | point fill | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill | body fill through ranged-bar color |
-| Stroke dash | — | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — | — |
-| Constant appearance | radius | radius, opacity, shape | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers |
-| Automatic axes | linear | theta outer axis + radial axis | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis | categorical x and linear y |
-| Automatic grid | horizontal | theta spokes + radial circles | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis | horizontal |
-| Legend | point color + shape | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical | optional ranged-bar color legend |
-| Chart title | optional | optional | optional | optional | optional | optional | optional | optional | optional | optional |
-| Mark selection/highlight | selection + point highlight | selection + point highlight | series selection | final-bar selection | final-bar selection | layer selection + point highlight | series selection | rule selection | series selection | component selection |
-| Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Capability | Scatterplot | Polar points | Polar line / radar | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band | Box plot |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Semantic mark | point | point | line | line | bar | bar | point + area + line | area | rule | area | bar + rule + point |
+| Position | quantitative x/y | theta/radius | theta/radius | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval | categorical x; quantitative y/y2 |
+| Nominal color | point fill | point fill | series stroke | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill | body fill through ranged-bar color |
+| Stroke dash | — | — | nominal or constant; 4 named styles | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — | — |
+| Constant appearance | radius | radius, opacity, shape | stroke width, opacity, open/closed | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers |
+| Automatic axes | linear | theta outer axis + radial axis | theta outer axis + radial axis | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis | categorical x and linear y |
+| Automatic grid | horizontal | theta spokes + radial circles | theta spokes + radial circles | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis | horizontal |
+| Legend | point color + shape | point color + shape | categorical | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical | optional ranged-bar color legend |
+| Chart title | optional | optional | optional | optional | optional | optional | optional | optional | optional | optional | optional |
+| Mark selection/highlight | selection + point highlight | selection + point highlight | series selection | series selection | final-bar selection | final-bar selection | layer selection + point highlight | series selection | rule selection | series selection | component selection |
+| Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 ## Shared foundations
 
@@ -6576,7 +6730,7 @@ chart-authoring API does not support that combination.
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
-| Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points |
+| Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points and lines |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
@@ -6587,7 +6741,7 @@ chart-authoring API does not support that combination.
 
 ## Current limitations
 
-Polar line/arc marks, transforms beyond the documented filters, regressions,
+Polar arc marks, transforms beyond the documented filters, regressions,
 and density derivations, facets, interactive legends, and program composition
 are not implemented.
 Categorical legends support all four edges; point composite and size legends
@@ -6763,17 +6917,18 @@ and independently shared resources. [Marks](../api/marks.md)
 ### `createLineMark`
 
 ```javascript
-createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})
+createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
 `"linear"`; explicit curve and `strokeWidth` values are retained during
-rematerialization. [Marks](../api/marks.md)
+rematerialization. `closed: true` closes each Polar series as a radar path.
+[Marks](../api/marks.md)
 
 ### `editLineMark`
 
 ```javascript
-editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })
+editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })
 ```
 
 Edit line appearance and rematerialize concrete path commands without changing
@@ -7005,7 +7160,7 @@ encodeTheta({ field, target?, fieldType?, scale?, coordinate? })
 Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
 temporal, ordinal, and nominal fields are supported. The default scale ID is
 `theta` and its automatic range is `[0, 360]`.
-[Polar positions](../api/position-encodings.md#polar-point-positions)
+[Polar positions](../api/position-encodings.md#polar-positions)
 
 ### `encodeR`
 
@@ -7015,7 +7170,7 @@ encodeR({ field, target?, fieldType?, scale?, coordinate? })
 
 Encode a quantitative field as Polar radial distance. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
-[Polar positions](../api/position-encodings.md#polar-point-positions)
+[Polar positions](../api/position-encodings.md#polar-positions)
 
 ### `encodePointRadius`
 

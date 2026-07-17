@@ -115,7 +115,7 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
 
 ## `createLineMark`
 
-- Signature: `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})`
+- Signature: `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})`
 - `id`, `data`: `createPointMark`와 같은 ID/data 계약이다.
 - `strokeWidth`: Implemented, non-negative finite number이며 concrete default는 `2`다. 명시한 값은
   mark materialization config에 저장되어 path 재생성 후에도 유지된다.
@@ -123,6 +123,10 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
   기본값은 `linear`다. Curve는 graphical materialization config이고 semantic field/scale/group을 바꾸지 않는다.
 - `stroke`: Implemented non-empty constant color. Field-driven color encoding과 충돌한다.
 - `opacity`: Implemented `[0, 1]` constant appearance이며 default concrete value는 `1`이다.
+- `closed`: Implemented boolean, 기본값은 `false`다. Polar line에서만 사용할 수 있으며 `true`이면
+  각 series의 마지막 명령에 정확히 하나의 `Z`를 추가한다. 첫 data point를 복제하지 않는다.
+- Polar line은 theta/radius position을 사용하며 현재 `curve: "linear"`만 허용한다. 두 position
+  encoding은 호출 순서와 무관하고, 하나만 존재하는 동안에는 semantic assignment를 보존하되 path를 만들지 않는다.
 - Creation-time `stroke`/`opacity`는 wrapped `editLineMark`로 적용해 direct edit과 같은 validation/config를 사용한다.
 - Effect: semantic `line` layer와 길이 0의 path collection을 만든다. x/y encoding이 완성되기
   전에는 path가 없다.
@@ -131,7 +135,7 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
 
 ### Formal values — `createLineMark`
 
-- Implemented: `createLineMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation } = {})`
+- Implemented: `createLineMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; closed?: boolean } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -146,22 +150,26 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
   - ✅ Covered: create-time config persistence, Canvas/scale/group rematerialization과 approved step primitive/public pair.
 - `stroke`, `opacity`
   - ✅ Covered: representative creation, invalid values, color-encoding conflict and grouping rematerialization persistence.
+- `closed`
+  - ✅ Covered: omission→false, Polar open/closed paths, one `Z` per series, edit convergence, Cartesian rejection,
+    non-linear Polar rejection, reverse scales, resize, grouping, filtering and highlighting rematerialization.
 - Evidence: `test/unit/actions/marks/create-line-mark.test.js`, `test/unit/grammar/curve-commands.test.js`,
   `test/charts/cars-line-chart/variants/capabilities.test.js`.
 
 ## `editLineMark`
 
-- Signature: `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })`.
+- Signature: `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`.
 - `target`: existing line mark. Current compatible mark 또는 유일한 line mark로 infer하며 ambiguity는 explicit target을 요구한다.
 - `strokeWidth`: non-negative finite number. 전달되면 stored line config와 every concrete series path를 갱신한다.
 - `curve`: shared `CurveInterpolation`. Field, grouping, coordinates와 scale semantics를 유지한 채 commands를 다시 만든다.
 - `stroke`: non-empty constant color이며 field-driven color encoding과 충돌한다. `opacity`는 `[0, 1]`이다.
+- `closed`: Polar line의 open/closed path를 전환하는 boolean이다. Cartesian line에는 적용할 수 없다.
 - 최소 한 변경값이 필요하다. 아직 x/y encoding이 완성되지 않은 line은 config만 저장하고, complete line은 wrapped
   `rematerializeLineMark`를 호출한다.
 
 ### Formal values — `editLineMark`
 
-- Implemented: `editLineMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation })`.
+- Implemented: `editLineMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; closed?: boolean })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -171,6 +179,7 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
 - ✅ Covered: empty edit, unknown option/target, ambiguity, invalid width/curve와 earlier-program immutability.
 - ✅ Covered: Canvas resize, group rematerialization, deterministic nested trace and approved monotone primitive/public pair.
 - ✅ Covered: constant stroke/opacity validation, create/edit convergence, color conflict and rematerialization persistence.
+- ✅ Covered: open/closed Polar edit, exactly one closing command, invalid Cartesian/non-linear combinations and atomic failure.
 - Evidence: `test/unit/actions/marks/edit-line-mark.test.js` and
   `test/charts/cars-line-chart/variants/capabilities.test.js`.
 

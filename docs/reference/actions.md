@@ -157,17 +157,18 @@ and independently shared resources. [Marks](../api/marks.md)
 ### `createLineMark`
 
 ```javascript
-createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})
+createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
 `"linear"`; explicit curve and `strokeWidth` values are retained during
-rematerialization. [Marks](../api/marks.md)
+rematerialization. `closed: true` closes each Polar series as a radar path.
+[Marks](../api/marks.md)
 
 ### `editLineMark`
 
 ```javascript
-editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })
+editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })
 ```
 
 Edit line appearance and rematerialize concrete path commands without changing
@@ -399,7 +400,7 @@ encodeTheta({ field, target?, fieldType?, scale?, coordinate? })
 Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
 temporal, ordinal, and nominal fields are supported. The default scale ID is
 `theta` and its automatic range is `[0, 360]`.
-[Polar positions](../api/position-encodings.md#polar-point-positions)
+[Polar positions](../api/position-encodings.md#polar-positions)
 
 ### `encodeR`
 
@@ -409,7 +410,7 @@ encodeR({ field, target?, fieldType?, scale?, coordinate? })
 
 Encode a quantitative field as Polar radial distance. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
-[Polar positions](../api/position-encodings.md#polar-point-positions)
+[Polar positions](../api/position-encodings.md#polar-positions)
 
 ### `encodePointRadius`
 

@@ -19,6 +19,20 @@ polar-guides:
   height: 1240
   caption: Polar point positions with readable theta and radius guides.
   url: /tutorials/polar-points/#add-polar-guides
+polar-line:
+  image: /assets/images/gapminder-polar-trends.png
+  alt: Open Polar lines showing life-expectancy trends for three countries
+  width: 1520
+  height: 1240
+  caption: Ordered theta/radius series with explicit open paths.
+  url: /tutorials/polar-lines/
+radar:
+  image: /assets/images/jobs-radar-chart.png
+  alt: Closed radar paths comparing job shares for men and women
+  width: 1640
+  height: 1300
+  caption: Nominal theta categories connected as closed series.
+  url: /tutorials/polar-lines/#closed-radar-paths
 line:
   image: /assets/images/cars-line-chart.png
   alt: Aggregate cars line chart grouped by origin

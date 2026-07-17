@@ -8,7 +8,7 @@ import { startStaticServer } from "../support/static-server.js";
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 
-test("renders open and closed Polar line primitives in a browser", async () => {
+test("renders the public open and closed Polar line examples in a browser", async () => {
   const server = await startStaticServer(repositoryRoot);
   const browser = await chromium.launch({ headless: true });
   try {
@@ -18,15 +18,29 @@ test("renders open and closed Polar line primitives in a browser", async () => {
       if (message.type() === "error") errors.push(message.text());
     });
     page.on("pageerror", error => errors.push(error.message));
-    const response = await page.goto(
-      new URL("test/gates/polar-line-radar/", server.baseUrl).href,
+    let response = await page.goto(
+      new URL("examples/gapminder-polar-trends/", server.baseUrl).href,
       { waitUntil: "networkidle" }
     );
     assert.equal(response.ok(), true);
-    await page.waitForFunction(() => window.__polarLineRadarGate !== undefined);
-    assert.deepEqual(await page.evaluate(() => window.__polarLineRadarGate), {
-      gapminder: { width: 760, height: 620, paths: 3, closed: false },
-      jobs: { width: 820, height: 650, paths: 2, closed: true }
+    await page.waitForFunction(() => window.__gapminderPolarTrends !== undefined);
+    assert.deepEqual(await page.evaluate(() => window.__gapminderPolarTrends), {
+      width: 760,
+      height: 620,
+      paths: 3,
+      closed: false
+    });
+    response = await page.goto(
+      new URL("examples/jobs-radar-chart/", server.baseUrl).href,
+      { waitUntil: "networkidle" }
+    );
+    assert.equal(response.ok(), true);
+    await page.waitForFunction(() => window.__jobsRadarChart !== undefined);
+    assert.deepEqual(await page.evaluate(() => window.__jobsRadarChart), {
+      width: 820,
+      height: 650,
+      paths: 2,
+      closed: true
     });
     assert.deepEqual(errors, []);
     await page.close();

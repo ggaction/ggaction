@@ -35,6 +35,18 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle",
     "radialAxisLine", "radialAxisTicks", "radialAxisLabels", "radialAxisTitle"
   ],
+  "gapminder-polar-trends": [
+    "canvas", "radialGridCircles", "thetaGridLines", "line",
+    "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle",
+    "radialAxisLine", "radialAxisTicks", "radialAxisLabels", "radialAxisTitle",
+    "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle"
+  ],
+  "jobs-radar-chart": [
+    "canvas", "radialGridCircles", "thetaGridLines", "line",
+    "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle",
+    "radialAxisLine", "radialAxisTicks", "radialAxisLabels", "radialAxisTitle",
+    "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle"
+  ],
   "cars-histogram": [
     "canvas", "horizontalGridLines", "bars",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

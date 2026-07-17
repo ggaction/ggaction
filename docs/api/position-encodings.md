@@ -17,6 +17,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | --- | --- | --- | --- |
 | Position points | point mark, quantitative, temporal, or ordinal fields | `encodeX`, `encodeY` | [Quantitative positions](./position/quantitative.md) |
 | Position Polar points | point mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar point tutorial](../tutorials/polar-points.md) |
+| Draw Polar lines or radar paths | line mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar line tutorial](../tutorials/polar-lines.md) |
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
 | Build horizontal aggregate bars | bar mark, quantitative x and ordinal/temporal y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
@@ -41,7 +42,7 @@ for the same field.
   and valid date strings. Four-digit values are interpreted as UTC years.
 - Ambiguous resources produce an error instead of an arbitrary selection.
 
-## Polar point positions
+## Polar positions
 
 ```javascript
 program
@@ -50,7 +51,8 @@ program
   .encodePointRadius({ value: 3 });
 ```
 
-`encodeTheta` accepts quantitative, temporal, ordinal, and nominal fields.
+`encodeTheta` accepts point or line marks with quantitative, temporal, ordinal,
+or nominal fields.
 Quantitative angle scales are linear; temporal angles use time scales; discrete
 angles use point or band scales. The automatic range is `[0, 360]` degrees with
 0 at 12 o'clock and clockwise positive direction.
@@ -60,9 +62,10 @@ scale policies. Its automatic range fits the smaller plot dimension. Explicit
 ranges are non-negative logical pixels and must fit the current plot bounds.
 
 The two actions are order-independent. One Polar channel may exist as an
-incomplete semantic assignment, but points become visible only after both
-channels and their scales resolve. Cartesian x/y and Polar theta/radius cannot
-be mixed on one layer.
+incomplete semantic assignment, but points or paths become visible only after
+both channels and their scales resolve. A line may use
+`createLineMark({ closed: true })` for a closed radar path. Cartesian x/y and
+Polar theta/radius cannot be mixed on one layer.
 
 ## Rule endpoints
 

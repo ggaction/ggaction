@@ -12,7 +12,7 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})`
+### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})`
 
 ```javascript
 const program = chart()
@@ -28,7 +28,7 @@ as an empty path collection because later grouping determines series
 cardinality. Complete encodings materialize sorted commands; color and stroke
 dash may regroup them.
 
-### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })`
+### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`
 
 ```javascript
 program.editLineMark({
@@ -46,6 +46,29 @@ materialized x values.
 
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
+
+## Polar lines and radar paths
+
+Line marks also accept theta/radius positions. The two encoding actions may be
+called in either order; one channel remains valid semantic state but does not
+produce a path until both are present.
+
+```javascript
+const radar = chart()
+  .createData({ values: rows })
+  .createLineMark({ closed: true, strokeWidth: 2.5 })
+  .encodeTheta({ field: "category", fieldType: "nominal" })
+  .encodeR({ field: "score", scale: { domain: [0, 1] } })
+  .encodeGroup({ field: "series" });
+```
+
+`closed` defaults to `false`. When true, every series ends with one closing
+`Z` command; the first row is not duplicated. `editLineMark({ closed })`
+switches an existing Polar line between open and closed. Polar lines currently
+accept only `curve: "linear"`; other interpolation modes remain available to
+Cartesian lines. Color, stroke dash, grouping, legends, scale edits, Canvas
+resizing, filtering, selection, and highlighting all rebuild the same path
+through the shared line materialization lifecycle.
 
 ## Area marks
 
@@ -82,5 +105,6 @@ configuration until their encodings become renderable.
 
 ## Related
 
-[Position ranges](../position-encodings.md) · [Series encodings](../series-encodings.md) ·
+[Position encodings](../position-encodings.md) · [Polar line tutorial](../../tutorials/polar-lines.md) ·
+[Series encodings](../series-encodings.md) ·
 [Density](../encodings.md#atomic-density) · [Error bands](../error-bands.md)

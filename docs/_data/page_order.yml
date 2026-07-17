@@ -8,6 +8,8 @@
   url: /tutorials/scatterplot/
 - title: Polar Point Tutorial
   url: /tutorials/polar-points/
+- title: Polar Line and Radar Tutorial
+  url: /tutorials/polar-lines/
 - title: Line Chart Tutorial
   url: /tutorials/line-chart/
 - title: Histogram Tutorial

@@ -11,6 +11,7 @@ Choose the visual relationship that matches the question you want to answer.
 <div class="docs-chart-index">
   {% include chart-card.html id="scatterplot" title="Scatterplot" url="/tutorials/scatterplot/" summary="Quantitative positions, nominal color, radius, and inferred axes." actions="createPointMark · encodeX · encodeY" %}
   {% include chart-card.html id="polar" title="Polar point chart" url="/tutorials/polar-points/" summary="Map fields to clockwise angle and radial distance without changing the Canvas renderer." actions="encodeTheta · encodeR · encodePointRadius" %}
+  {% include chart-card.html id="polar-line" title="Polar lines and radar" url="/tutorials/polar-lines/" summary="Connect ordered theta/radius values as open trends or closed radar paths." actions="createLineMark · encodeTheta · encodeR" %}
   {% include chart-card.html id="line" title="Aggregate line chart" url="/tutorials/line-chart/" summary="Temporal mean series with color, stroke dash, legend, and title." actions="createLineMark · encodeGroup" %}
   {% include chart-card.html id="histogram" title="Stacked histogram" url="/tutorials/histogram/" summary="Binned counts partitioned and stacked by a nominal field." actions="encodeHistogram · encodeColor" %}
   {% include chart-card.html id="bar" title="Bar chart" url="/tutorials/grouped-bar/" summary="Ordinal aggregate bars arranged side by side by nominal color." actions="encodeY · encodeColor" %}

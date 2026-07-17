@@ -32,7 +32,9 @@ createLineMark/editLineMark: closed?: boolean
 - Polar line series sort deterministically by theta domain and map every theta/radius pair before path creation.
 - `closed: true` emits the radar closing command. First Polar line slice accepts only linear curve.
 - Full-circle seam, duplicate angle, short series and reverse have independent geometry fixtures.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 4.
+- Status: Implemented. Canonical contracts moved to
+  [`../current/MARKS.md`](../current/MARKS.md#createlinemark) and
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#polar-position-actions).
 
 ## Arc actions
 

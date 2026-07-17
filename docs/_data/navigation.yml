@@ -89,6 +89,8 @@
       url: /api/position/offsets/
     - title: Polar Points
       url: /tutorials/polar-points/
+    - title: Polar Lines and Radar
+      url: /tutorials/polar-lines/
 
 - title: Concepts
   items:

@@ -1,5 +1,9 @@
 import { loadGapminder, loadJobs } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
+import { createGapminderPolarTrends } from
+  "../../../examples/gapminder-polar-trends/program.js";
+import { createJobsRadarChart } from
+  "../../../examples/jobs-radar-chart/program.js";
 
 import {
   createGapminderPolarLinePrimitives,
@@ -98,6 +102,7 @@ export const visualVariants = Object.freeze([
       capability: "polar-line-radar"
     },
     primitive: () => createGapminderPolarLinePrimitives(gapminder),
+    userFacing: () => createGapminderPolarTrends(gapminder),
     width: 760,
     height: 620,
     colors: ["#4c78a8", "#f58518", "#e45756", "#d7e0ea"],
@@ -121,6 +126,7 @@ export const visualVariants = Object.freeze([
       capability: "polar-line-radar"
     },
     primitive: () => createJobsRadarPrimitives(jobs),
+    userFacing: () => createJobsRadarChart(jobs),
     width: 820,
     height: 650,
     colors: ["#4c78a8", "#f58518", "#d7e0ea"],
