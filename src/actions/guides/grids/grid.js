@@ -12,7 +12,12 @@ import {
   validateGridEditArgs
 } from "./resolve.js";
 
-const AGGREGATE_OPTIONS = Object.freeze(["horizontal", "vertical"]);
+const CARTESIAN_OPTIONS = Object.freeze(["horizontal", "vertical"]);
+const POLAR_OPTIONS = Object.freeze(["theta", "radial"]);
+const AGGREGATE_OPTIONS = Object.freeze([
+  ...CARTESIAN_OPTIONS,
+  ...POLAR_OPTIONS
+]);
 
 function removeDirection(program, direction) {
   const operation = gridNames(direction);
@@ -165,6 +170,13 @@ function normalizeDirection(value, direction) {
   return value;
 }
 
+function hasPolarGridEncoding(program) {
+  return program.semanticSpec.layers.some(layer =>
+    layer.encoding?.theta?.scale !== undefined ||
+    layer.encoding?.radius?.scale !== undefined
+  );
+}
+
 const rematerializeHorizontalGrid = makeRematerialize("horizontal");
 const rematerializeVerticalGrid = makeRematerialize("vertical");
 const createHorizontalGrid = makeCreate("horizontal");
@@ -202,6 +214,8 @@ const editGrid = action(
     if (args.vertical !== undefined) {
       next = next.editVerticalGrid(args.vertical);
     }
+    if (args.theta !== undefined) next = next.editThetaGrid(args.theta);
+    if (args.radial !== undefined) next = next.editRadialGrid(args.radial);
     return next;
   }
 );
@@ -216,11 +230,28 @@ const createGrid = action(
       throw new TypeError("createGrid options must be a plain object.");
     }
     validateKeys(args, AGGREGATE_OPTIONS, "createGrid");
-    const horizontal = normalizeDirection(args.horizontal, "horizontal");
+    const polarDefault = Object.keys(args).length === 0 &&
+      hasPolarGridEncoding(this);
+    const hasExplicitPolar = Object.hasOwn(args, "theta") ||
+      Object.hasOwn(args, "radial");
+    const horizontal = polarDefault ||
+      (hasExplicitPolar && args.horizontal === undefined)
+      ? undefined
+      : normalizeDirection(args.horizontal, "horizontal");
     const vertical = args.vertical === undefined
       ? undefined
       : normalizeDirection(args.vertical, "vertical");
-    if (horizontal === undefined && vertical === undefined) {
+    const theta = polarDefault
+      ? {}
+      : args.theta === undefined
+        ? undefined
+        : normalizeDirection(args.theta, "theta");
+    const radial = polarDefault
+      ? {}
+      : args.radial === undefined
+        ? undefined
+        : normalizeDirection(args.radial, "radial");
+    if ([horizontal, vertical, theta, radial].every(value => value === undefined)) {
       throw new Error("createGrid requires at least one selected direction.");
     }
 
@@ -231,6 +262,8 @@ const createGrid = action(
     if (vertical !== undefined) {
       next = next.createVerticalGrid(vertical);
     }
+    if (theta !== undefined) next = next.createThetaGrid(theta);
+    if (radial !== undefined) next = next.createRadialGrid(radial);
     return next;
   }
 );
@@ -252,6 +285,14 @@ const rematerializeGrid = action(
     }
     if (this.guideConfigs.grid?.vertical !== undefined) {
       next = next.rematerializeVerticalGrid();
+      count += 1;
+    }
+    if (this.guideConfigs.grid?.theta !== undefined) {
+      next = next.rematerializeThetaGrid();
+      count += 1;
+    }
+    if (this.guideConfigs.grid?.radial !== undefined) {
+      next = next.rematerializeRadialGrid();
       count += 1;
     }
     if (count === 0) {

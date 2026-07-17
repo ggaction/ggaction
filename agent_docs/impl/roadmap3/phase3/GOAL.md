@@ -8,7 +8,7 @@
 - [x] STEP 4 — Gate D visual evidence와 사용자 승인
 - [x] STEP 5 — Pure Polar guide grammar와 tick policy
 - [x] STEP 6 — Polar guide semantic/config ownership
-- [ ] STEP 7 — Theta/radial grid actions
+- [x] STEP 7 — Theta/radial grid actions
 - [ ] STEP 8 — Theta/radius axis actions
 - [ ] STEP 9 — Aggregate dispatch, focused edits와 rematerialization
 - [ ] STEP 10 — Public vertical slice, docs와 Phase closeout

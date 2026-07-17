@@ -29,8 +29,12 @@ function needsCanvasScaleRematerialization(program, scale) {
       usesRadialScale(program, scale.id) ||
       program.semanticSpec.guides.axis?.x?.scale === scale.id ||
       program.semanticSpec.guides.axis?.y?.scale === scale.id ||
+      program.semanticSpec.guides.axis?.theta?.scale === scale.id ||
+      program.semanticSpec.guides.axis?.radius?.scale === scale.id ||
       program.semanticSpec.guides.grid?.horizontal?.scale === scale.id ||
-      program.semanticSpec.guides.grid?.vertical?.scale === scale.id) &&
+      program.semanticSpec.guides.grid?.vertical?.scale === scale.id ||
+      program.semanticSpec.guides.grid?.theta?.scale === scale.id ||
+      program.semanticSpec.guides.grid?.radial?.scale === scale.id) &&
     program.resolvedScales[scale.id] !== undefined &&
     usesPositionalScale(program, scale.id)
   );
@@ -116,6 +120,12 @@ export function planScaleGuideRematerialization(program, id) {
   }
   if (guideConfigs.grid?.vertical?.scale === id) {
     guides.push({ op: "rematerializeVerticalGrid" });
+  }
+  if (guideConfigs.grid?.theta?.scale === id) {
+    guides.push({ op: "rematerializeThetaGrid" });
+  }
+  if (guideConfigs.grid?.radial?.scale === id) {
+    guides.push({ op: "rematerializeRadialGrid" });
   }
   if (materializedLegendUsesScale(program, id)) {
     guides.push({ op: "rematerializeLegend" });
