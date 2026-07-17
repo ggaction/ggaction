@@ -253,6 +253,31 @@ test("stores only canonical legend config kinds", () => {
   );
 });
 
+test("stores Polar axis and grid materialization intent immutably", () => {
+  const source = { scale: "theta", count: 6 };
+  const base = chart();
+  const axis = base._withGuideConfig("theta", "ticks", source);
+  const grid = axis._withGridConfig("radial", {
+    scale: "radius",
+    count: 5
+  });
+  source.count = 2;
+
+  assert.deepEqual(axis.guideConfigs.axis.theta.ticks, {
+    scale: "theta",
+    count: 6
+  });
+  assert.deepEqual(grid.guideConfigs.grid.radial, {
+    scale: "radius",
+    count: 5
+  });
+  assert.equal(base.guideConfigs.axis, undefined);
+  assert.throws(
+    () => base._withGridConfig("angular", {}),
+    /Unknown grid direction/
+  );
+});
+
 test("removes private materialization config paths with structural pruning", () => {
   const configured = chart()
     ._withMarkConfig("points", { opacity: 0.5 })

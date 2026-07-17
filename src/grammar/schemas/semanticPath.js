@@ -65,6 +65,12 @@ const GUIDE_PATHS = new Set([
   "axis.y.scale",
   "axis.y.coordinate",
   "axis.y.title",
+  "axis.theta.scale",
+  "axis.theta.coordinate",
+  "axis.theta.title",
+  "axis.radius.scale",
+  "axis.radius.coordinate",
+  "axis.radius.title",
   "legend.color.scale",
   "legend.color.title",
   "legend.size.scale",
@@ -77,14 +83,22 @@ const GUIDE_PATHS = new Set([
   "grid.horizontal.scale",
   "grid.horizontal.coordinate",
   "grid.vertical.scale",
-  "grid.vertical.coordinate"
+  "grid.vertical.coordinate",
+  "grid.theta.scale",
+  "grid.theta.coordinate",
+  "grid.radial.scale",
+  "grid.radial.coordinate"
 ]);
 
 const GUIDE_REMOVABLE_CONTAINERS = new Set([
   "axis.x",
   "axis.y",
+  "axis.theta",
+  "axis.radius",
   "grid.horizontal",
   "grid.vertical",
+  "grid.theta",
+  "grid.radial",
   "legend.color",
   "legend.size",
   "legend.opacity",

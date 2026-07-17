@@ -242,6 +242,40 @@ test("summarizes array values in the trace", () => {
   });
 });
 
+test("stores and removes Polar guide semantics through canonical paths", () => {
+  const program = chart()
+    .editSemantic({ property: "guide.axis.theta.scale", value: "theta" })
+    .editSemantic({ property: "guide.axis.theta.coordinate", value: "polar" })
+    .editSemantic({ property: "guide.axis.theta.title", value: "Angle" })
+    .editSemantic({ property: "guide.axis.radius.scale", value: "radius" })
+    .editSemantic({ property: "guide.grid.theta.scale", value: "theta" })
+    .editSemantic({ property: "guide.grid.radial.coordinate", value: "polar" });
+
+  assert.deepEqual(program.semanticSpec.guides, {
+    axis: {
+      theta: { scale: "theta", coordinate: "polar", title: "Angle" },
+      radius: { scale: "radius" }
+    },
+    grid: {
+      theta: { scale: "theta" },
+      radial: { coordinate: "polar" }
+    }
+  });
+  const removed = program.editSemantic({
+    property: "guide.axis.theta",
+    remove: true
+  });
+  assert.equal(removed.semanticSpec.guides.axis.theta, undefined);
+  assert.equal(program.semanticSpec.guides.axis.theta.title, "Angle");
+  assert.throws(
+    () => chart().editSemantic({
+      property: "guide.axis.theta.title",
+      value: ""
+    }),
+    /Axis title/
+  );
+});
+
 test("validates semantic scale values through the primitive API", () => {
   const transformed = chart()
     .editSemantic({ property: "scale[x].type", value: "log" })

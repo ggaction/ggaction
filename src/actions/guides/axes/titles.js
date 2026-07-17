@@ -52,7 +52,7 @@ function validateConfig(channel, config) {
   if (typeof config.fontWeight !== "string" && !Number.isFinite(config.fontWeight)) throw new TypeError("Axis title fontWeight must be a string or number.");
 }
 
-function inferText(program, channel, scaleId) {
+export function inferAxisTitleText(program, channel, scaleId) {
   const titles = new Set();
   const primaryTitles = new Set();
   for (const layer of program.semanticSpec.layers) {
@@ -184,7 +184,7 @@ function makeEdit(channel) {
     const resolvedTitle = explicitText
       ? validateText(text)
       : config.inferredText === true
-        ? inferText(this, channel, config.scale)
+        ? inferAxisTitleText(this, channel, config.scale)
         : this.semanticSpec.guides.axis?.[channel]?.title;
     if (resolvedTitle !== this.semanticSpec.guides.axis?.[channel]?.title) {
       next = next.editSemantic({
@@ -218,7 +218,9 @@ function makeCreate(channel) {
     if (guideScale && guideScale !== scale) throw new Error(`${operation.create} conflicts with the existing axis scale.`);
     if (this.graphicSpec.objects[operation.graphic]) throw new Error(`${operation.create} requires a missing axis title.`);
     const inferredText = !Object.hasOwn(args, "text");
-    const text = validateText(args.text ?? inferText(this, channel, scale));
+    const text = validateText(
+      args.text ?? inferAxisTitleText(this, channel, scale)
+    );
     const position = args.position ?? defaultAxisPosition(channel);
     const inferredRotation = !Object.hasOwn(args, "rotation");
     const config = {

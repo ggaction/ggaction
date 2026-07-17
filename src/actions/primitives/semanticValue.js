@@ -173,8 +173,12 @@ export function validateSemanticValue(program, parsed, value) {
   if (parsed.kind === "guide" && parsed.id === "legend.series") {
     validateLegend(parsed.path.at(-1), value);
   }
-  if (parsed.kind === "guide" && parsed.id.startsWith("grid.")) {
-    validateUserId(value, `Grid ${parsed.path.at(-1)} id`);
+  if (parsed.kind === "guide" && (
+    parsed.id.startsWith("grid.") || parsed.id.startsWith("axis.")
+  )) {
+    const property = parsed.path.at(-1);
+    if (property === "title") nonEmptyString(value, "Axis title");
+    else validateUserId(value, `Guide ${property} id`);
   }
   if (parsed.kind === "title") {
     nonEmptyString(value, `Chart title ${parsed.path[0]}`);

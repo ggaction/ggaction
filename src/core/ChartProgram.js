@@ -257,7 +257,7 @@ export class ChartProgram {
   }
 
   _withGridConfig(direction, config) {
-    if (!["horizontal", "vertical"].includes(direction)) {
+    if (!["horizontal", "vertical", "theta", "radial"].includes(direction)) {
       throw new Error(`Unknown grid direction "${direction}".`);
     }
     if (!isPlainObject(config)) {
