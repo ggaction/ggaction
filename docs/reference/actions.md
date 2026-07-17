@@ -600,7 +600,11 @@ values, and properties are concrete graphical values.
 
 ```javascript
 createCoordinate({ id?, type?, layers? })
-createDerivedData({ id, source, transform })
+createDerivedData({
+  id,
+  source,
+  transform: [DatasetTransform, ...DatasetTransform[]]
+})
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
   color?, opacity?, stroke?, strokeWidth?, curve?
@@ -615,6 +619,12 @@ editRegressionLine({ target?, strokeWidth?, curve? })
 
 These actions explicitly author named semantic resources or the component
 layers normally owned by `createRegression`.
+
+`createDerivedData` stores immutable source and transform provenance only; it
+does not materialize values. Its public `DatasetTransform` union supports
+`filter`, `regression`, `density`, and `interval` objects. A single object or
+empty array is invalid. See the runnable filter example and exact transform
+requirements in [Data](../api/data.md#createderiveddata-id-source-transform).
 
 ### Complete single-channel axes
 

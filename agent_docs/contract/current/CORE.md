@@ -265,28 +265,30 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Signature: `createDerivedData({ id, source, transform })`
 - `id`: Implemented, 필수 새 dataset ID.
 - `source`: Implemented, 필수 existing dataset ID.
-- `transform`: Implemented, 필수 transform definition array. 현재 filter/regression/density schema만
-  semantic validation이 가능하며 값 materialization은 해당 전용 action이 담당한다.
+- `transform`: Implemented, 필수 non-empty transform definition array. Public direct-authoring union은
+  filter/regression/density/interval schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
+  box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty transform schema를 거부한다.
-- Coverage: transform schema는 data action 및 `test/charts/cars-regression-scatterplot/semantic.test.js`에서
-  검증되지만 각 transform을 이 low-level action으로 직접 호출하는 조합은 부분적이다.
+- Coverage: `test/unit/actions/data/derived-data.test.js`가 네 public branch의 direct call, 배열 cardinality,
+  invalid discriminant와 caller-owned input immutability를 검증한다. Package consumer는 documented filter call과
+  closed union을 strict TypeScript로 compile한다.
 
 ### Formal values — `createDerivedData`
 
-- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [FilterTransform | LinearRegressionTransform | GaussianDensityTransform] })`
-- Planned (NOT IMPLEMENTED): `SelectRowsTransform` as one additional single-transform provenance schema.
-- Proposed (NOT IMPLEMENTED): —; one-transform provenance resource라는 현재 역할을 유지한다.
+- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform, ...DatasetTransform[]] })`, where public `DatasetTransform = FilterTransform | RegressionTransform | DensityTransform | IntervalTransform`.
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createDerivedData`
 
 - `id`, `source`
   - ✅ Covered: valid IDs, duplicate output, unknown source.
 - `transform`
-  - ✅ Covered: filter/regression/density schema through their public parent actions.
-  - ⚠️ Partial: direct low-level call의 각 schema와 multi-entry array rejection/acceptance boundary.
-  - No proposal: one-transform provenance resource라는 현재 역할을 유지한다.
-- Evidence: data action tests와 `test/charts/cars-regression-scatterplot/semantic.test.js`.
+  - ✅ Covered: filter/regression/density/interval direct schema, object/empty/unknown rejection,
+    non-empty array acceptance와 deep immutable ownership.
+  - Built-in value materializer는 owning high-level action이 만든 single-transform resource만 받는다.
+- Evidence: `test/unit/actions/data/derived-data.test.js`, `scripts/package-consumer.js`, 각 high-level data action test.
 
 ## `createCoordinate`
 

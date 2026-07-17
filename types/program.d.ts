@@ -69,6 +69,92 @@ export type FilterDataOptions = {
   source?: string;
   field: string;
 } & FilterModeOptions;
+export type DatasetScalar = string | number | boolean | null;
+export type DatasetFilterTransform = {
+  type: "filter";
+  field: string;
+} & (
+  | { oneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
+  | { oneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; predicate?: never; range: FilterRange }
+);
+export type DatasetRegressionTransform = {
+  type: "regression";
+  x: string;
+  y: string;
+  groupBy?: string;
+} & (
+  | {
+      method: "linear";
+      confidence: number;
+      interval: "mean" | "prediction";
+      degree?: never;
+      span?: never;
+    }
+  | {
+      method: "polynomial";
+      degree: number;
+      confidence: number;
+      interval: "mean" | "prediction";
+      span?: never;
+    }
+  | {
+      method: "loess";
+      span: number;
+      degree?: never;
+      confidence?: never;
+      interval?: never;
+    }
+);
+export interface DatasetDensityTransform {
+  type: "density";
+  field: string;
+  groupBy?: string;
+  bandwidth: "auto" | number;
+  extent: "auto" | readonly [number, number];
+  steps: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  as: readonly [string, string];
+  resolve: "shared";
+}
+export interface DatasetIntervalOutputFields {
+  center: string;
+  lower: string;
+  upper: string;
+}
+export type DatasetIntervalTransform = {
+  type: "interval";
+  field: string;
+  groupBy: readonly string[];
+  as: DatasetIntervalOutputFields;
+} & (
+  | {
+      center: "mean";
+      extent: "stderr" | "stdev";
+      level?: never;
+    }
+  | {
+      center: "mean";
+      extent: "ci";
+      level: number;
+    }
+  | {
+      center: "median";
+      extent: "iqr";
+      level?: never;
+    }
+);
+export type DatasetTransform =
+  | DatasetFilterTransform
+  | DatasetRegressionTransform
+  | DatasetDensityTransform
+  | DatasetIntervalTransform;
+export interface CreateDerivedDataOptions {
+  id: string;
+  source: string;
+  transform: readonly [DatasetTransform, ...DatasetTransform[]];
+}
 export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"
   | "x1" | "y1" | "x2" | "y2"
@@ -1057,7 +1143,7 @@ export class ChartProgram {
   createCoordinate(options?: ActionOptions): ChartProgram;
   createScale(options: ActionOptions & { id: string }): ChartProgram;
   editScale(options: EditScaleOptions): ChartProgram;
-  createDerivedData(options: ActionOptions): ChartProgram;
+  createDerivedData(options: CreateDerivedDataOptions): ChartProgram;
   createRegressionBand(options: ActionOptions & {
     id: string;
     stroke?: string;

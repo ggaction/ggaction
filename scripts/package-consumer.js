@@ -93,7 +93,13 @@ async function testNodeConsumer(directory) {
 
 async function testTypeScriptConsumer(directory) {
   await writeFile(path.join(directory, "consumer.ts"), `
-    import { chart, render, type ChartProgram } from "ggaction";
+    import {
+      chart,
+      render,
+      type ChartProgram,
+      type CreateDerivedDataOptions,
+      type DatasetTransform
+    } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import { renderToPNG, type PNGRenderResult } from "ggaction/png";
 
@@ -105,9 +111,26 @@ async function testTypeScriptConsumer(directory) {
       function () { return this; }
     );
     const extensionProgram: ExtensionProgram = wrapped.call(new ExtensionProgram());
+    const filterTransform: DatasetTransform = {
+      type: "filter",
+      field: "group",
+      oneOf: ["A"]
+    };
+    const derivedOptions: CreateDerivedDataOptions = {
+      id: "filtered",
+      source: "source",
+      transform: [filterTransform]
+    };
+    const derived = chart()
+      .createData({ id: "source", values: [{ group: "A" }] })
+      .createDerivedData(derivedOptions);
+    // @ts-expect-error DatasetTransform is a closed discriminated union.
+    const invalidTransform: DatasetTransform = { type: "unknown" };
     void draw;
     void png;
     void extensionProgram;
+    void derived;
+    void invalidTransform;
   `);
   await writeFile(path.join(directory, "tsconfig.json"), `${JSON.stringify({
     compilerOptions: {
