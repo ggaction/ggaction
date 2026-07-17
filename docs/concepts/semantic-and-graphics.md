@@ -57,6 +57,10 @@ or layout; they only record ownership and order. Repeated concrete mark items
 remain in the owning graphic's `items` collection rather than becoming named
 tree children.
 
+See [Inspecting authored and materialized state](./chart-program.md#inspecting-authored-and-materialized-state)
+for the exact `semanticSpec.layers`, `graphicSpec.objects[id].items`, ownership,
+and drawing-order access paths.
+
 It never stores field expressions, scale calls, executable functions, or
 instructions for a renderer to infer.
 

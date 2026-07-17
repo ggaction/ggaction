@@ -293,11 +293,43 @@ export interface TraceNode {
   readonly children: readonly TraceNode[];
 }
 
+export interface SemanticDataset {
+  readonly id: string;
+  readonly values?: readonly Readonly<Record<string, unknown>>[];
+  readonly source?: string;
+  readonly transform?: readonly Readonly<Record<string, unknown>>[];
+  readonly [key: string]: unknown;
+}
+
+export interface SemanticLayer {
+  readonly id: string;
+  readonly data?: string;
+  readonly coordinate?: string;
+  readonly mark?: Readonly<{ type?: string; [key: string]: unknown }>;
+  readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
+  readonly [key: string]: unknown;
+}
+
+export interface SemanticScale {
+  readonly id: string;
+  readonly type?: ScaleType;
+  readonly domain?: "auto" | readonly unknown[];
+  readonly range?: ScaleRange;
+  readonly [key: string]: unknown;
+}
+
+export interface SemanticCoordinate {
+  readonly id: string;
+  readonly type?: "cartesian" | "polar";
+  readonly layers?: readonly string[];
+  readonly [key: string]: unknown;
+}
+
 export interface SemanticSpec {
-  readonly datasets: readonly Readonly<Record<string, unknown>>[];
-  readonly layers: readonly Readonly<Record<string, unknown>>[];
-  readonly scales: readonly Readonly<Record<string, unknown>>[];
-  readonly coordinates: readonly Readonly<Record<string, unknown>>[];
+  readonly datasets: readonly SemanticDataset[];
+  readonly layers: readonly SemanticLayer[];
+  readonly scales: readonly SemanticScale[];
+  readonly coordinates: readonly SemanticCoordinate[];
   readonly guides: Readonly<Record<string, unknown>>;
   readonly title: Readonly<Record<string, unknown>>;
 }

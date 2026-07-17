@@ -109,3 +109,26 @@ program.trace;        // hierarchical action history
 The renderer reads only `graphicSpec`; it never repairs incomplete semantic
 state. See [Actions and trace trees](./concepts/actions-and-trace.md) and
 [Semantic and graphical state](./concepts/semantic-and-graphics.md).
+
+When rendering succeeds but a mark looks empty, verify the final concrete item
+cardinality instead of treating a PNG or Canvas call as proof that marks were
+materialized:
+
+```javascript
+const markId = "points";
+const graphic = program.graphicSpec.objects[markId];
+
+if (graphic === undefined) {
+  throw new Error(`No concrete graphic exists for mark "${markId}".`);
+}
+const items = program.graphicSpec.objects[markId].items;
+if (items.length === 0) {
+  throw new Error(`Mark "${markId}" materialized no final items.`);
+}
+```
+
+Point and rule items usually correspond to final rows, bars correspond to
+final bin/category cells, and line or area items correspond to complete series.
+Use `program.semanticSpec.layers.find(layer => layer.id === markId)` to inspect
+the owning semantic layer. The map is named `graphicSpec.objects`, not
+`graphicSpec.graphics`.

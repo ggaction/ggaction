@@ -124,12 +124,26 @@ async function testTypeScriptConsumer(directory) {
     const derived = chart()
       .createData({ id: "source", values: [{ group: "A" }] })
       .createDerivedData(derivedOptions);
+    const inspected = chart()
+      .createCanvas()
+      .createData({ values: [{ x: 1, y: 2 }] })
+      .createPointMark({ id: "points" })
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" });
+    const pointLayer = inspected.semanticSpec.layers.find(
+      layer => layer.id === "points"
+    );
+    const pointItems = inspected.graphicSpec.objects.points?.items ?? [];
+    const lastAction = inspected.trace.children.at(-1)?.op;
     // @ts-expect-error DatasetTransform is a closed discriminated union.
     const invalidTransform: DatasetTransform = { type: "unknown" };
     void draw;
     void png;
     void extensionProgram;
     void derived;
+    void pointLayer;
+    void pointItems;
+    void lastAction;
     void invalidTransform;
   `);
   await writeFile(path.join(directory, "tsconfig.json"), `${JSON.stringify({

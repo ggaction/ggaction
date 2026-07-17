@@ -29,7 +29,8 @@ createAxes
 ```
 
 The trace is available as `program.trace`. Its root is the virtual `program`
-node. Every node contains:
+node, and `program.trace.children` contains the top-level authored actions.
+Every node contains:
 
 ```javascript
 {
