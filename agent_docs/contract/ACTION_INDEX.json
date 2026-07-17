@@ -2034,6 +2034,7 @@
       "materializeBoxOutlierData",
       "materializeBoxPlot",
       "materializeBoxSummaryData",
+      "materializeComposition",
       "materializeDensityData",
       "materializeFilteredData",
       "materializeMarkFilteredData",
@@ -2089,7 +2090,8 @@
     ],
     "stateTransitions": [
       "releaseDerivedData",
-      "setQuantitativeColorScale"
+      "setQuantitativeColorScale",
+      "useProgram"
     ],
     "aggregateComponents": [
       "createBoxMedian",

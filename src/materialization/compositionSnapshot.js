@@ -8,9 +8,6 @@ function validateNamespace(namespace) {
   if (typeof namespace !== "string" || namespace.length === 0) {
     throw new TypeError("Graphic snapshot namespace must be a non-empty string.");
   }
-  if (namespace.includes("::")) {
-    throw new Error("Graphic snapshot namespace must not contain the internal :: delimiter.");
-  }
   return namespace;
 }
 
@@ -32,7 +29,10 @@ function validateCanvas(canvas, id) {
 }
 
 function namespacedId(namespace, id) {
-  return `${namespace}::${id}`;
+  const encode = value => Array.from(value, character =>
+    character.codePointAt(0).toString(16).padStart(6, "0")
+  ).join("");
+  return `g${encode(namespace)}_${encode(id)}`;
 }
 
 function rewriteItem(item, namespace) {
@@ -112,4 +112,3 @@ export function namespaceGraphicSnapshot(
     order: freezeOwned([rootId])
   });
 }
-

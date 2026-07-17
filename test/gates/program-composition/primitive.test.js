@@ -82,11 +82,11 @@ test("authors unequal, nested, and replacement results with explicit primitives"
   );
 });
 
-test("keeps Gate G primitive-only before user approval", () => {
+test("exposes only approved composition operations after Gate G", () => {
   assert.equal(visualVariants.length, 3);
-  assert.equal(ggaction.hconcat, undefined);
-  assert.equal(ggaction.vconcat, undefined);
-  for (const variant of visualVariants) {
-    assert.equal(variant.userFacing, undefined);
-  }
+  assert.equal(typeof ggaction.hconcat, "function");
+  assert.equal(typeof ggaction.vconcat, "function");
+  assert.equal(typeof visualVariants[0].userFacing, "function");
+  assert.equal(typeof visualVariants[1].userFacing, "function");
+  assert.equal(visualVariants[2].userFacing, undefined);
 });

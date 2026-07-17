@@ -46,6 +46,31 @@ export type ScaleType =
   | "quantile"
   | "threshold";
 export type StackMode = "zero" | "normalize" | null;
+export type CompositionAlign = "start" | "center" | "end";
+export interface CompositionPadding {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+}
+export type CompositionProgramEntry =
+  | ChartProgram
+  | { id?: string; program: ChartProgram };
+export interface CompositionOptions {
+  id?: string;
+  programs: readonly CompositionProgramEntry[];
+  gap?: number;
+  align?: CompositionAlign;
+  padding?: number | CompositionPadding;
+}
+export interface CompositionSpec {
+  readonly id: string;
+  readonly direction: "horizontal" | "vertical";
+  readonly children: readonly string[];
+  readonly gap: number;
+  readonly align: CompositionAlign;
+  readonly padding: Readonly<Required<CompositionPadding>>;
+}
 export type DensityKernel =
   | "gaussian"
   | "epanechnikov"
@@ -1333,6 +1358,8 @@ export class ChartProgram {
   readonly graphicSpec: GraphicSpec;
   readonly resolvedScales: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
   readonly materializationConfigs: Readonly<Record<string, unknown>>;
+  readonly children: Readonly<Record<string, ChartProgram>>;
+  readonly compositionSpec?: CompositionSpec;
   readonly context: Readonly<Record<string, unknown>>;
   readonly trace: TraceNode;
   readonly actionStack: readonly unknown[];

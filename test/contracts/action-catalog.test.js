@@ -229,7 +229,8 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
   ]);
   assert.deepEqual(index.internal.stateTransitions, [
     "releaseDerivedData",
-    "setQuantitativeColorScale"
+    "setQuantitativeColorScale",
+    "useProgram"
   ]);
   assert.deepEqual(index.internal.aggregateComponents, [
     "createBoxMedian",

@@ -6,6 +6,10 @@ import {
   createReplacementPrimitives,
   createUnequalHorizontalPrimitives
 } from "./primitive.program.js";
+import {
+  createNestedDashboardPublic,
+  createUnequalHorizontalPublic
+} from "./public.program.js";
 import { createCompositionGateValues } from "./reference-values.js";
 
 const cars = loadCars();
@@ -53,6 +57,7 @@ export const visualVariants = Object.freeze([
     callChain: unequalHorizontalTarget,
     artifact,
     primitive: () => createUnequalHorizontalPrimitives(cars, jobs, gapminder),
+    userFacing: () => createUnequalHorizontalPublic(cars, jobs, gapminder),
     width: values.overview.width,
     height: values.overview.height,
     colors: ["#4c78a8", "#f58518"],
@@ -68,6 +73,7 @@ export const visualVariants = Object.freeze([
     callChain: nestedDashboardTarget,
     artifact,
     primitive: () => createNestedDashboardPrimitives(cars, jobs, gapminder),
+    userFacing: () => createNestedDashboardPublic(cars, jobs, gapminder),
     width: values.nested.width,
     height: values.nested.height,
     colors: ["#4c78a8", "#f58518", "#e45756", "#54a24b"],

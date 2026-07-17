@@ -13,6 +13,7 @@ domain action을 통해서만 실행한다.
 | `materializeBoxSummaryData` | `createBoxPlot` summary data |
 | `materializeBoxOutlierData` | `createBoxPlot` optional outlier data |
 | `materializeBoxPlot` | deferred `createBoxPlot` completion and position encodings |
+| `materializeComposition` | `hconcat`, `vconcat`, and composition edits |
 | `materializeDensityData` | density data actions |
 | `materializeFilteredData` | filter data actions |
 | `materializeMarkFilteredData` | `filterMarks` selected-item member rows |
@@ -53,6 +54,7 @@ domain action을 통해서만 실행한다.
 | Internal action | Public owner | Role |
 | --- | --- | --- |
 | `releaseDerivedData` | `editDensity` | Remove an unreferenced old derived revision through `editSemantic({ remove: true })` |
+| `useProgram` | `hconcat`, `vconcat`, and child replacement | Retain one immutable named child program before composition materialization |
 
 ## Internal guide component inventory
 

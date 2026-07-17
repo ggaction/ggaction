@@ -112,14 +112,24 @@ export function defineVisualVariant({
 }
 
 export function displayedActionOperations(source) {
-  if (typeof source !== "string" || !/^chart\(\)/.test(source.trim())) {
-    throw new TypeError("Visual call chain must start with chart().");
+  if (typeof source !== "string") {
+    throw new TypeError("Visual call chain must be a string.");
   }
-  if (!source.trim().endsWith(";")) {
+  const trimmed = source.trim();
+  if (!trimmed.endsWith(";")) {
     throw new TypeError("Visual call chain must end with a semicolon.");
   }
-  return [...source.matchAll(/\.([A-Za-z][A-Za-z0-9]*)\s*\(/g)]
+  const methods = [...trimmed.matchAll(/\.([A-Za-z][A-Za-z0-9]*)\s*\(/g)]
     .map(match => match[1]);
+  if (/^chart\(\)/.test(trimmed)) return methods;
+  const operation = trimmed.match(/^([A-Za-z][A-Za-z0-9]*)\s*\(/)?.[1];
+  if (["hconcat", "vconcat"].includes(operation)) {
+    return [operation, ...methods];
+  }
+  if (/^[A-Za-z][A-Za-z0-9]*\s*\./.test(trimmed)) return methods;
+  throw new TypeError(
+    "Visual call chain must start with chart(), hconcat(), vconcat(), or a program variable."
+  );
 }
 
 export function assertDisplayedProgram(variant, program) {

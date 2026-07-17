@@ -9,7 +9,7 @@
 - [x] STEP 5 — Gate G primitive dashboard variants
 - [x] STEP 6 — Gate G visual evidence와 사용자 승인
 - [x] STEP 7 — Immutable child-program state와 concat materialization
-- [ ] STEP 8 — Public `hconcat`/`vconcat`과 trace hierarchy
+- [x] STEP 8 — Public `hconcat`/`vconcat`과 trace hierarchy
 - [ ] STEP 9 — Layout edit, child replacement와 public surface
 - [ ] STEP 10 — Coverage, contracts, docs와 Phase closeout
 

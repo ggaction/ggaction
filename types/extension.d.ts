@@ -6,6 +6,7 @@ export { ChartProgram };
 export interface ActionMetadata {
   op: string;
   description: string;
+  scope?: "unit" | "composition" | "any";
 }
 
 export function action<TOptions extends ActionOptions = ActionOptions>(

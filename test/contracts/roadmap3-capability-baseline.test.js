@@ -47,8 +47,8 @@ test("records the current and missing Roadmap 3 public surface", () => {
     assert.equal(program[name], undefined, name);
   }
   assert.equal(typeof program.createArcMark, "function");
-  assert.equal(ggaction.hconcat, undefined);
-  assert.equal(ggaction.vconcat, undefined);
+  assert.equal(typeof ggaction.hconcat, "function");
+  assert.equal(typeof ggaction.vconcat, "function");
 });
 
 test("stores a Polar resource without inventing positional encodings", () => {

@@ -1,4 +1,4 @@
-import type { ChartProgram } from "./program.js";
+import type { ChartProgram, CompositionOptions } from "./program.js";
 
 export type {
   ActionOptions,
@@ -18,6 +18,11 @@ export type {
   ColorLayout,
   ColorEncodingOptions,
   CompleteAxisOptions,
+  CompositionAlign,
+  CompositionOptions,
+  CompositionPadding,
+  CompositionProgramEntry,
+  CompositionSpec,
   ChartProgram,
   ConcretePathCommand,
   CurveInterpolation,
@@ -107,6 +112,8 @@ export type {
 } from "./program.js";
 
 export function chart(): ChartProgram;
+export function hconcat(options: CompositionOptions): ChartProgram;
+export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(
   program: Pick<ChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,

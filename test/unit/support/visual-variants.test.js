@@ -82,6 +82,14 @@ test("parses one displayed chain without evaluating its data bindings", () => {
   assert.deepEqual(displayedActionOperations(`chart()
     .createData({ values: rowsFromAnyScope })
     .createPointMark();`), ["createData", "createPointMark"]);
+  assert.deepEqual(displayedActionOperations(`hconcat({
+    programs: [left, right]
+  });`), ["hconcat"]);
+  assert.deepEqual(displayedActionOperations(`overview
+    .editCompositionLayout({ gap: 20 })
+    .replaceCompositionChild({ target: "right", program: detail });`), [
+    "editCompositionLayout", "replaceCompositionChild"
+  ]);
   assert.throws(() => displayedActionOperations("createPointMark();"), /start/);
   assert.throws(() => displayedActionOperations("chart().createPointMark()"), /semicolon/);
 });

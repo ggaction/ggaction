@@ -1,5 +1,6 @@
 import { registerCanvasActions } from "./canvas/index.js";
 import { registerCoordinateActions } from "./coordinates/index.js";
+import { registerCompositionActions } from "./composition/index.js";
 import { registerDataActions } from "./data/index.js";
 import { registerEncodingActions } from "./encodings/index.js";
 import { registerErrorBandActions } from "./errorBands/index.js";
@@ -15,6 +16,7 @@ import { registerSelectionActions } from "./selection/index.js";
 
 export function registerActions(ProgramClass) {
   registerPrimitiveActions(ProgramClass);
+  registerCompositionActions(ProgramClass);
   registerCanvasActions(ProgramClass);
   registerDataActions(ProgramClass);
   registerMarkActions(ProgramClass);

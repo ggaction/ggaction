@@ -35,6 +35,13 @@ function childGraphicSpec() {
   };
 }
 
+function snapshotId(namespace, id) {
+  const encode = value => Array.from(value, character =>
+    character.codePointAt(0).toString(16).padStart(6, "0")
+  ).join("");
+  return `g${encode(namespace)}_${encode(id)}`;
+}
+
 test("namespaces every object, item, attachment, and root", () => {
   const source = childGraphicSpec();
   const snapshot = namespaceGraphicSnapshot(source, {
@@ -43,14 +50,18 @@ test("namespaces every object, item, attachment, and root", () => {
     y: 24
   });
 
-  assert.deepEqual(snapshot.order, ["main::canvas"]);
+  const canvas = snapshotId("main", "canvas");
+  const plot = snapshotId("main", "plot-main");
+  const points = snapshotId("main", "points");
+  const note = snapshotId("main", "note");
+  assert.deepEqual(snapshot.order, [canvas]);
   assert.deepEqual(Object.keys(snapshot.objects), [
-    "main::canvas",
-    "main::plot-main",
-    "main::points",
-    "main::note"
+    canvas,
+    plot,
+    points,
+    note
   ]);
-  assert.deepEqual(snapshot.objects["main::canvas"], {
+  assert.deepEqual(snapshot.objects[canvas], {
     type: "canvas",
     properties: {
       width: 240,
@@ -59,11 +70,11 @@ test("namespaces every object, item, attachment, and root", () => {
       x: 18,
       y: 24
     },
-    children: ["main::plot-main", "main::note"]
+    children: [plot, note]
   });
   assert.deepEqual(
-    snapshot.objects["main::points"].items.map(item => item.id),
-    ["main::points:0", "main::points:1"]
+    snapshot.objects[points].items.map(item => item.id),
+    [snapshotId("main", "points:0"), snapshotId("main", "points:1")]
   );
   const visits = [];
   walkGraphicTreeEvents(snapshot, {
@@ -71,12 +82,12 @@ test("namespaces every object, item, attachment, and root", () => {
     item: ({ id }) => visits.push(id)
   });
   assert.deepEqual(visits, [
-    "main::canvas",
-    "main::plot-main",
-    "main::points",
-    "main::points:0",
-    "main::points:1",
-    "main::note"
+    canvas,
+    plot,
+    points,
+    snapshotId("main", "points:0"),
+    snapshotId("main", "points:1"),
+    note
   ]);
 });
 
@@ -93,7 +104,7 @@ test("preserves source ownership and allows equal local IDs in separate namespac
   );
   assert.ok(Object.isFrozen(left));
   assert.ok(Object.isFrozen(left.objects));
-  assert.ok(Object.isFrozen(left.objects["left::points"].items));
+  assert.ok(Object.isFrozen(left.objects[snapshotId("left", "points")].items));
 });
 
 test("adds complete ancestry when a composition snapshot becomes a child", () => {
@@ -108,17 +119,22 @@ test("adds complete ancestry when a composition snapshot becomes a child", () =>
     y: 13
   });
 
-  assert.deepEqual(outer.order, ["outer::inner::canvas"]);
+  const innerCanvas = snapshotId("inner", "canvas");
+  const outerCanvas = snapshotId("outer", innerCanvas);
+  assert.deepEqual(outer.order, [outerCanvas]);
   assert.deepEqual(
-    outer.objects["outer::inner::canvas"].children,
-    ["outer::inner::plot-main", "outer::inner::note"]
+    outer.objects[outerCanvas].children,
+    [
+      snapshotId("outer", snapshotId("inner", "plot-main")),
+      snapshotId("outer", snapshotId("inner", "note"))
+    ]
   );
   assert.equal(
-    outer.objects["outer::inner::canvas"].properties.x,
+    outer.objects[outerCanvas].properties.x,
     11
   );
   assert.equal(
-    outer.objects["outer::inner::canvas"].properties.y,
+    outer.objects[outerCanvas].properties.y,
     13
   );
 });
@@ -138,8 +154,8 @@ test("rejects incomplete and malformed child trees before copying", () => {
     /width must be a positive finite number/
   );
   assert.throws(
-    () => namespaceGraphicSnapshot(childGraphicSpec(), { namespace: "bad::name" }),
-    /must not contain the internal/
+    () => namespaceGraphicSnapshot(childGraphicSpec(), { namespace: "" }),
+    /non-empty string/
   );
   const dangling = childGraphicSpec();
   dangling.objects.canvas.children.push("missing");
@@ -148,4 +164,3 @@ test("rejects incomplete and malformed child trees before copying", () => {
     /Unknown attached graphic/
   );
 });
-
