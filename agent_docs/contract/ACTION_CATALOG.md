@@ -71,13 +71,21 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`createYAxisTitle`](current/AXES.md#createyaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxisTitle`](current/AXES.md#editxaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxisTitle`](current/AXES.md#edityaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`editXAxis`](current/AXES.md#editxaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editYAxis`](current/AXES.md#edityaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGrid`](current/GRID.md#creategrid) | grid | Aggregate create-only | Intentional; planned child edits | ✅ / ✅ / ✅ |
 | user-facing | [`createHorizontalGrid`](current/GRID.md#createhorizontalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createVerticalGrid`](current/GRID.md#createverticalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
 | user-facing | [`editHorizontalGrid`](current/GRID.md#edithorizontalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editVerticalGrid`](current/GRID.md#editverticalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`editGrid`](current/GRID.md#editgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createLegend`](current/LEGEND_AND_TITLE.md#createlegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
 | user-facing | [`editLegend`](current/LEGEND_AND_TITLE.md#editlegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`editLegendLayout`](current/LEGEND_AND_TITLE.md#editlegendlayout) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editLegendLabels`](current/LEGEND_AND_TITLE.md#editlegendlabels) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editLegendTitle`](current/LEGEND_AND_TITLE.md#editlegendtitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editLegendSymbols`](current/LEGEND_AND_TITLE.md#editlegendsymbols) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editLegendBorder`](current/LEGEND_AND_TITLE.md#editlegendborder) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGuides`](current/LEGEND_AND_TITLE.md#createguides) | legend_and_title | Aggregate create-only | Intentional; child edit gaps remain | ✅ / ✅ / ⚠️ |
 | user-facing | [`createTitle`](current/LEGEND_AND_TITLE.md#createtitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTitle`](current/LEGEND_AND_TITLE.md#edittitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -100,14 +108,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `editLegendLayout` | accepted | [Open](planned/ROADMAP3_EDITING.md#focused-legend-edits) |
-| `editLegendLabels` | accepted | [Open](planned/ROADMAP3_EDITING.md#focused-legend-edits) |
-| `editLegendTitle` | accepted | [Open](planned/ROADMAP3_EDITING.md#focused-legend-edits) |
-| `editLegendSymbols` | accepted | [Open](planned/ROADMAP3_EDITING.md#focused-legend-edits) |
-| `editLegendBorder` | accepted | [Open](planned/ROADMAP3_EDITING.md#focused-legend-edits) |
-| `editXAxis` | accepted | [Open](planned/ROADMAP3_EDITING.md#cartesian-guide-facades) |
-| `editYAxis` | accepted | [Open](planned/ROADMAP3_EDITING.md#cartesian-guide-facades) |
-| `editGrid` | accepted | [Open](planned/ROADMAP3_EDITING.md#cartesian-guide-facades) |
 | `editErrorBar` | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
 | `editErrorBand` | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
 | `editErrorBandBoundary` | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
@@ -160,7 +160,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | parameter | Closed Polar line option | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-line-radar) |
 | parameter | Facet scale resolution options | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
 | behavior | Compatibility-aware layer inference | accepted | [Open](planned/ROADMAP3_EDITING.md#layer-inference-and-api-contract) |
-| composition | Focused component editing | accepted | [Open](planned/ROADMAP3_EDITING.md#focused-legend-edits) |
+| composition | Focused component editing | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
 | behavior | Atomic domain removal | accepted | [Open](planned/ROADMAP3_EDITING.md#domain-removal) |
 | parameter | Exact public option types | accepted | [Open](planned/ROADMAP3_EDITING.md#layer-inference-and-api-contract) |
 | parameter | API layer classification alignment | accepted | [Open](planned/ROADMAP3_EDITING.md#layer-inference-and-api-contract) |

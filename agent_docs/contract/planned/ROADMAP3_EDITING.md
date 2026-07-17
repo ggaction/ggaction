@@ -3,47 +3,6 @@
 Gate A에서 승인된 Phase 1과 Phase 10 계약이다. 아직 current public behavior가 아니며 runtime, public
 TypeScript와 user documentation에 노출하지 않는다.
 
-## Focused legend edits
-
-```typescript
-editLegendLayout({
-  target?: UserId;
-  position?: "right" | "bottom" | "top" | "left";
-  align?: "left" | "center" | "right";
-  direction?: "horizontal" | "vertical";
-  columns?: PositiveInteger;
-  offset?: NonNegativeFinite;
-  titlePosition?: "top" | "left";
-  itemGap?: PositiveFinite;
-}): ChartProgram;
-
-editLegendLabels({ target?: UserId; color?; fontSize?; fontFamily?; fontWeight? }): ChartProgram;
-editLegendTitle({ target?: UserId; title?: NonEmptyString | "auto" | false; color?; fontSize?; fontFamily?; fontWeight? }): ChartProgram;
-editLegendSymbols({ target?: UserId; symbol?; count?; gradient? }): ChartProgram;
-editLegendBorder({ target?: UserId; border: false | true | LegendBorderOptions }): ChartProgram;
-```
-
-- 각 action은 `target` 외 최소 한 변경을 요구하고 kind-incompatible option을 preflight에서 거부한다.
-- Existing `editLegend`는 여러 stable component를 함께 편집하는 aggregate convenience로 유지한다.
-- Existing internal no-option `editLegend*` actions는 public names를 추가하기 전에 `rematerializeLegend*`로
-  rename한다.
-- Focused action은 같은 canonical config normalization과 wrapped rematerialization을 사용한다.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 1.
-
-## Cartesian guide facades
-
-```typescript
-editXAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? }): ChartProgram;
-editYAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? }): ChartProgram;
-editGrid({ horizontal?, vertical? }): ChartProgram;
-```
-
-- Complete-axis facade는 selected existing leaf edit actions를 실제로 호출하며 one preflight 뒤 atomic하게
-  실행한다. Leaf 하나만 바꿀 때는 current direction-specific direct action을 사용한다.
-- `editGrid`는 existing horizontal/vertical child patches를 aggregate한다.
-- `editAxes`와 `editGuides`는 만들지 않는다.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 1.
-
 ## Composite owner edits
 
 ```text

@@ -155,6 +155,90 @@ type TitleWrap = "word" | "character";
 - ✅ Covered: Canvas/edit action-order convergence, insufficient margin, immutability, trace, browser/PNG parity.
 - Evidence: `test/unit/actions/guides/legend-edit-actions.test.js` and regression-scatterplot left-legend variant.
 
+## `editLegendLayout`
+
+- Signature: `editLegendLayout({ target?, position?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
+- Layout-only facade이며 최소 한 layout change를 요구하고 wrapped `editLegend`를 호출한다.
+
+### Formal values — `editLegendLayout`
+
+- Implemented: `editLegendLayout(options: EditLegendLayoutOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editLegendLayout`
+
+- ✅ Covered: explicit/inferred target, left layout, invalid options and exact Gate parity.
+- No proposal: semantic channel binding은 focused layout edit의 범위가 아니다.
+- Evidence: `test/unit/actions/guides/legend-edit-actions.test.js` and Roadmap 3 focused-editing Gate.
+
+## `editLegendLabels`
+
+- Signature: `editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })`.
+- Label style만 `editLegend({ labels })`로 전달한다. 최소 한 style change가 필요하다.
+
+### Formal values — `editLegendLabels`
+
+- Implemented: `editLegendLabels(options: EditLegendLabelsOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editLegendLabels`
+
+- ✅ Covered: partial style merge, shared categorical/size application, trace and invalid option rejection.
+- No proposal: label text는 resolved domain이 소유하며 appearance action으로 교체하지 않는다.
+- Evidence: `test/unit/actions/guides/legend-edit-actions.test.js`.
+
+## `editLegendTitle`
+
+- Signature: `editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight? })`.
+- `title`은 `NonEmptyString | "auto" | false`; 나머지는 `titleStyle`로 전달한다.
+
+### Formal values — `editLegendTitle`
+
+- Implemented: `editLegendTitle(options: EditLegendTitleOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editLegendTitle`
+
+- ✅ Covered: style-only edit, title mode validation and nested `editLegend` trace.
+- No proposal: title 위치는 `editLegendLayout`의 `titlePosition`이 소유한다.
+- Evidence: `test/unit/actions/guides/legend-edit-actions.test.js`.
+
+## `editLegendSymbols`
+
+- Signature: `editLegendSymbols({ target?, symbol?, count?, gradient? })`.
+- Legend kind별 기존 symbol/count/gradient validation을 그대로 사용한다.
+
+### Formal values — `editLegendSymbols`
+
+- Implemented: `editLegendSymbols(options: EditLegendSymbolsOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editLegendSymbols`
+
+- ✅ Covered: combined categorical-size count, kind incompatibility and rematerialization.
+- No proposal: symbol/count/gradient 외 kind-specific component는 현재 없다.
+- Evidence: `test/unit/actions/guides/legend-edit-actions.test.js`.
+
+## `editLegendBorder`
+
+- Signature: `editLegendBorder({ target?, border })`.
+- `border`는 `boolean | LegendBorderOptions`이며 required다.
+
+### Formal values — `editLegendBorder`
+
+- Implemented: `editLegendBorder(options: EditLegendBorderOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editLegendBorder`
+
+- ✅ Covered: partial border merge, invalid boundary and exact Gate parity.
+- No proposal: border removal은 `border: false`로 표현한다.
+- Evidence: `test/unit/actions/guides/legend-edit-actions.test.js` and Roadmap 3 focused-editing Gate.
+
+Focused actions는 별도 stored schema를 만들지 않고 `editLegend`의 target resolution, closed kind policy,
+config normalization과 rematerialization을 공유한다. Evidence:
+`test/unit/actions/guides/legend-edit-actions.test.js` and Roadmap 3 focused-editing Gate.
+
 ## `createGuides`
 
 - Signature: `createGuides({ axes?, grid?, legend? })`.

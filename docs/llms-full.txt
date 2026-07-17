@@ -5184,6 +5184,8 @@ resources can be stored, but the current rendering slice is Cartesian.
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `createAxes` | `createAxes()` | Encoded Cartesian channels, scales, coordinate, titles | Complete selected x/y axes |
+| `editXAxis` | `editXAxis({ line: { lineWidth: 2 } })` | Existing x-axis components | Selected x-axis components rematerialized |
+| `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Existing y-axis components moved together |
 
 ## `createAxes(options?)`
 
@@ -5283,6 +5285,44 @@ createAxes
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
 
+## Editing a complete axis
+
+Use `editXAxis()` or `editYAxis()` when several components of one existing
+axis should change together:
+
+```javascript
+program
+  .editXAxis({
+    line: { color: "#334155", lineWidth: 2 },
+    ticksAndLabels: {
+      count: 6,
+      ticks: { length: 7 },
+      labels: { color: "#475569", fontSize: 11 }
+    },
+    title: { text: "Engine displacement" }
+  })
+  .editYAxis({ position: "right" });
+```
+
+The complete edit facade does not create an axis or change its scale and
+coordinate binding. It delegates to the existing line, tick, label, grouped
+tick/label, and title edit actions. Omitted component objects remain unchanged.
+Changing `position` updates every existing component on that axis, including
+components omitted from the call.
+
+| Option | Meaning |
+| --- | --- |
+| `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
+| `line` | `{ color?, lineWidth? }` |
+| `ticks` | `{ count?, values?, length?, color?, lineWidth? }` |
+| `labels` | `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? }` |
+| `ticksAndLabels` | `{ count?, values?, ticks?, labels? }` |
+| `title` | `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
+
+Use either `ticksAndLabels` or the independent `ticks`/`labels` options in one
+call. The action validates the entire request before editing any component, so
+an invalid later component cannot leave a partial result.
+
 ## Errors and limitations
 
 Ambiguous scale or coordinate candidates require explicit IDs. Each channel
@@ -5305,6 +5345,7 @@ axes) cannot be created simultaneously. Polar axes are unsupported.
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `createGrid` | `createGrid()` | Horizontal direction from y; vertical off | Concrete lines behind related marks |
+| `editGrid` | `editGrid({ horizontal: { count: 6 } })` | Existing selected directions | One or both directions rematerialized |
 
 ## `createGrid(options?)`
 
@@ -5368,7 +5409,7 @@ createGrid
 Use `false` to disable a direction. If scale or coordinate inference is
 ambiguous, provide its ID explicitly.
 
-## Editing one direction
+## Editing grids
 
 Use the direction-specific edit actions after that grid exists:
 
@@ -5382,10 +5423,23 @@ Edit options are `count`, `values`, `color`, `lineWidth`, and `strokeDash`.
 Use either `count` or `values`. `values: "auto"` restores current axis/scale
 inference. At least one option is required.
 
+Use `editGrid()` to update both directions through one aggregate action:
+
+```javascript
+program.editGrid({
+  horizontal: { count: 6, color: "#cbd5e1" },
+  vertical: { values: [50, 100, 150], strokeDash: [4, 2] }
+});
+```
+
+Both selected directions must already exist. The complete request is validated
+before either directional edit runs, so an invalid vertical patch cannot leave
+a partially edited horizontal grid.
+
 Grid edits preserve the existing scale and coordinate binding. They invoke a
 wrapped directional rematerialization action, replacing only that direction's
-concrete line geometry and appearance. There is intentionally no aggregate
-`editGrid` action.
+concrete line geometry and appearance. `editGrid` delegates to these same
+directional actions, which remain available for focused edits.
 
 `createGuides()` selects this default horizontal grid automatically when a y
 encoding is present. Pass `createGuides({ grid: false })` to opt out.
@@ -5412,6 +5466,7 @@ coordinate. Ambiguous resources require explicit IDs.
 | --- | --- | --- | --- |
 | `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, gradient, interval, or opacity guide |
 | `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized layout and appearance |
+| Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
 
 ## `createLegend(options?)`
 
@@ -5654,6 +5709,36 @@ leaves. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
 stored semantic title. Gradient and opacity legends accept only their
 kind-compatible options.
+
+## Focused edits
+
+Focused actions avoid constructing nested `editLegend()` options when only one
+legend component should change:
+
+```javascript
+program
+  .editLegendLayout({ position: "left", offset: 12 })
+  .editLegendLabels({ color: "#475569", fontSize: 11 })
+  .editLegendTitle({ title: "Country", fontWeight: 700 })
+  .editLegendSymbols({ count: 5 })
+  .editLegendBorder({
+    border: { color: "#cbd5e1", lineWidth: 1, padding: 8 }
+  });
+```
+
+| Action | Accepted component options |
+| --- | --- |
+| `editLegendLayout` | `position`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLabels` | `color`, `fontSize`, `fontFamily`, `fontWeight` |
+| `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
+| `editLegendSymbols` | `symbol`, `count`, `gradient` |
+| `editLegendBorder` | required `border` boolean or border style object |
+
+Every focused action also accepts `target`. Omit it only when one existing
+legend is inferable. The actions use `editLegend` internally, so title modes,
+partial nested merges, legend-kind compatibility, layout errors, and
+rematerialization behavior remain identical. At least one component option is
+required.
 
 Canvas changes and relevant encoding actions explicitly rematerialize the
 legend from the latest ordinal domains and ranges. The renderer still reads
@@ -6706,6 +6791,26 @@ Partially edit one existing legend. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited.
 [Legends](../api/legends.md)
 
+### Focused legend edits
+
+```javascript
+editLegendLayout({
+  target?, position?, align?, direction?, columns?, offset?,
+  titlePosition?, itemGap?
+})
+editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })
+editLegendTitle({
+  target?, title?, color?, fontSize?, fontFamily?, fontWeight?
+})
+editLegendSymbols({ target?, symbol?, count?, gradient? })
+editLegendBorder({ target?, border })
+```
+
+Edit one legend component without constructing the nested options accepted by
+`editLegend`. Each action uses the same target inference, validation, and
+rematerialization as `editLegend`. At least one component change is required.
+[Legends](../api/legends.md#focused-edits)
+
 ### `createTitle`
 
 ```javascript
@@ -6783,7 +6888,13 @@ requirements in [Data](../api/data.md#createderiveddata-id-source-transform).
 ```javascript
 createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
 createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
+editXAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })
+editYAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })
 ```
+
+Complete-axis edits update only the selected components of an existing axis.
+Use `ticksAndLabels` for a coordinated tick/label edit, or `ticks` and
+`labels` for independent edits; do not combine both forms.
 
 ### Axis lines, ticks, and labels
 
@@ -6853,10 +6964,15 @@ createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?,
 createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
 editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
+editGrid({
+  horizontal?: { count?, values?, color?, lineWidth?, strokeDash? },
+  vertical?: { count?, values?, color?, lineWidth?, strokeDash? }
+})
 ```
 
 Directional grid edits require an existing grid. Their `values` option accepts
 an exact finite array or `"auto"` to restore current axis/scale inference.
+`editGrid` applies one or both directional edits through the same actions.
 
 See [Coordinates](../api/coordinates.md) and
 [Advanced axis components](../advanced/axis-components.md).

@@ -12,6 +12,8 @@ title: Axes
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `createAxes` | `createAxes()` | Encoded Cartesian channels, scales, coordinate, titles | Complete selected x/y axes |
+| `editXAxis` | `editXAxis({ line: { lineWidth: 2 } })` | Existing x-axis components | Selected x-axis components rematerialized |
+| `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Existing y-axis components moved together |
 
 ## `createAxes(options?)`
 
@@ -110,6 +112,44 @@ createAxes
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
+
+## Editing a complete axis
+
+Use `editXAxis()` or `editYAxis()` when several components of one existing
+axis should change together:
+
+```javascript
+program
+  .editXAxis({
+    line: { color: "#334155", lineWidth: 2 },
+    ticksAndLabels: {
+      count: 6,
+      ticks: { length: 7 },
+      labels: { color: "#475569", fontSize: 11 }
+    },
+    title: { text: "Engine displacement" }
+  })
+  .editYAxis({ position: "right" });
+```
+
+The complete edit facade does not create an axis or change its scale and
+coordinate binding. It delegates to the existing line, tick, label, grouped
+tick/label, and title edit actions. Omitted component objects remain unchanged.
+Changing `position` updates every existing component on that axis, including
+components omitted from the call.
+
+| Option | Meaning |
+| --- | --- |
+| `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
+| `line` | `{ color?, lineWidth? }` |
+| `ticks` | `{ count?, values?, length?, color?, lineWidth? }` |
+| `labels` | `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? }` |
+| `ticksAndLabels` | `{ count?, values?, ticks?, labels? }` |
+| `title` | `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
+
+Use either `ticksAndLabels` or the independent `ticks`/`labels` options in one
+call. The action validates the entire request before editing any component, so
+an invalid later component cannot leave a partial result.
 
 ## Errors and limitations
 

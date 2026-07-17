@@ -186,3 +186,38 @@ test("requires an explicit target when independent legends are ambiguous", () =>
   assert.equal(edited.graphicSpec.objects.opacityLegendSymbols.items.length, 3);
   assert.equal(edited.graphicSpec.objects.colorGradientLabels.items.length, 5);
 });
+
+test("edits focused legend components through nested editLegend calls", () => {
+  const before = createLeftLegendCarsRegressionScatterplot(cars);
+  const beforeConfig = structuredClone(before.guideConfigs.legend);
+  const edited = before
+    .editLegendLayout({ target: "points", offset: 84, itemGap: 30 })
+    .editLegendLabels({ target: "points", color: "#475569", fontSize: 11 })
+    .editLegendTitle({ target: "points", color: "#0f172a", fontWeight: 700 })
+    .editLegendSymbols({ target: "points", count: 4 })
+    .editLegendBorder({ target: "points", border: { padding: 9 } });
+
+  assert.equal(edited.guideConfigs.legend.series.offset, 84);
+  assert.equal(edited.graphicSpec.objects.seriesLegendLabels.items[0].properties.fill,
+    "#475569");
+  assert.equal(edited.graphicSpec.objects.seriesLegendTitle.properties.fontWeight, 700);
+  assert.equal(edited.graphicSpec.objects.sizeLegendSymbols.items.length, 4);
+  assert.equal(edited.guideConfigs.legend.series.border.padding, 9);
+  for (const node of edited.trace.children.slice(-5)) {
+    assert.deepEqual(node.children.map(child => child.op), ["editLegend"]);
+  }
+  assert.deepEqual(before.guideConfigs.legend, beforeConfig);
+});
+
+test("validates focused legend component boundaries", () => {
+  const program = createLeftLegendCarsRegressionScatterplot(cars);
+  assert.throws(() => program.editLegendLayout(), /at least one component change/);
+  assert.throws(
+    () => program.editLegendLabels({ offset: 4 }),
+    /Unknown editLegendLabels option/
+  );
+  assert.throws(
+    () => program.editLegendBorder({ border: { padding: -1 } }),
+    /non-negative/
+  );
+});

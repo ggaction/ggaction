@@ -128,3 +128,31 @@ test("validates existing resources, edit options, and values atomically", () => 
   assert.throws(() => program.editHorizontalGrid({ strokeDash: [2] }), /even-length/);
   assert.deepEqual(program.guideConfigs.grid.horizontal.values, [0, 5, 10]);
 });
+
+test("edits selected grid directions through one aggregate facade", () => {
+  const before = pointGrid();
+  const edited = before.editGrid({
+    horizontal: { color: "#cbd5e1", strokeDash: [4, 2] },
+    vertical: { lineWidth: 2 }
+  });
+  const node = edited.trace.children.at(-1);
+
+  assert.deepEqual(node.children.map(child => child.op), [
+    "editHorizontalGrid", "editVerticalGrid"
+  ]);
+  assert.equal(edited.guideConfigs.grid.horizontal.color, "#cbd5e1");
+  assert.equal(edited.guideConfigs.grid.vertical.lineWidth, 2);
+  assert.notEqual(edited.guideConfigs.grid, before.guideConfigs.grid);
+});
+
+test("validates aggregate grid patches before editing either direction", () => {
+  const program = pointGrid();
+  const initialColor = program.guideConfigs.grid.horizontal.color;
+  assert.throws(() => program.editGrid(), /requires horizontal or vertical/);
+  assert.throws(() => program.editGrid({ horizontal: false }), /plain object/);
+  assert.throws(
+    () => program.editGrid({ horizontal: { color: "red" }, vertical: { count: 0 } }),
+    /positive integer/
+  );
+  assert.equal(program.guideConfigs.grid.horizontal.color, initialColor);
+});

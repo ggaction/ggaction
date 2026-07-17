@@ -13,6 +13,7 @@ title: Legends
 | --- | --- | --- | --- |
 | `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, gradient, interval, or opacity guide |
 | `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized layout and appearance |
+| Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
 
 ## `createLegend(options?)`
 
@@ -255,6 +256,36 @@ leaves. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
 stored semantic title. Gradient and opacity legends accept only their
 kind-compatible options.
+
+## Focused edits
+
+Focused actions avoid constructing nested `editLegend()` options when only one
+legend component should change:
+
+```javascript
+program
+  .editLegendLayout({ position: "left", offset: 12 })
+  .editLegendLabels({ color: "#475569", fontSize: 11 })
+  .editLegendTitle({ title: "Country", fontWeight: 700 })
+  .editLegendSymbols({ count: 5 })
+  .editLegendBorder({
+    border: { color: "#cbd5e1", lineWidth: 1, padding: 8 }
+  });
+```
+
+| Action | Accepted component options |
+| --- | --- |
+| `editLegendLayout` | `position`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLabels` | `color`, `fontSize`, `fontFamily`, `fontWeight` |
+| `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
+| `editLegendSymbols` | `symbol`, `count`, `gradient` |
+| `editLegendBorder` | required `border` boolean or border style object |
+
+Every focused action also accepts `target`. Omit it only when one existing
+legend is inferable. The actions use `editLegend` internally, so title modes,
+partial nested merges, legend-kind compatibility, layout errors, and
+rematerialization behavior remain identical. At least one component option is
+required.
 
 Canvas changes and relevant encoding actions explicitly rematerialize the
 legend from the latest ordinal domains and ranges. The renderer still reads

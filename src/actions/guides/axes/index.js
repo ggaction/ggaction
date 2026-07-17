@@ -5,6 +5,7 @@ import { registerAxisTickGroupActions } from "./tickGroups.js";
 import { registerAxisTickActions } from "./ticks.js";
 import { registerAxisTitleActions } from "./titles.js";
 import { registerAxisActions } from "./axis.js";
+import { registerCompleteAxisEditActions } from "./edit.js";
 
 export function registerGuideAxisActions(ProgramClass) {
   registerAxisLineActions(ProgramClass);
@@ -14,4 +15,5 @@ export function registerGuideAxisActions(ProgramClass) {
   registerAxisTitleActions(ProgramClass);
   registerAxisActions(ProgramClass);
   registerAxisCollectionActions(ProgramClass);
+  registerCompleteAxisEditActions(ProgramClass);
 }

@@ -138,3 +138,21 @@ type EditGridOptions = {
 - ✅ Covered: explicit values, wrapped trace, missing/unknown option과 shared validation classes.
 - ⚠️ Partial: repeated auto→count→values→auto transition과 temporal vertical grid edit.
 - Evidence: `test/unit/actions/guides/grid-edit-actions.test.js`.
+
+## `editGrid`
+
+- Signature: `editGrid({ horizontal?, vertical? })` where each selected direction is `EditGridOptions`.
+- 최소 한 existing direction patch가 필요하다. Boolean은 removal과 혼동되므로 받지 않으며 direction
+  binding은 leaf edit과 동일하게 유지한다.
+- Effect: 모든 nested patch를 먼저 검증하고 wrapped `editHorizontalGrid`/`editVerticalGrid`를
+  deterministic horizontal→vertical order로 호출한다.
+
+### Formal values — `editGrid`
+
+- Implemented: `editGrid(options: { horizontal?: EditGridOptions; vertical?: EditGridOptions })`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editGrid`
+
+- ✅ Covered: one/both directions, nested style/tick policy, child trace and immutable validation failure.
+- Evidence: `test/unit/actions/guides/grid-edit-actions.test.js` and Roadmap 3 focused-editing Gate.

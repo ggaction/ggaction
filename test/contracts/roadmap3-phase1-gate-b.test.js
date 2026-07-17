@@ -40,6 +40,9 @@ const DIRECT_ACTIONS = Object.freeze([
   "removeMark"
 ]);
 
+const CURRENT_FOCUSED_ACTIONS = Object.freeze(DIRECT_ACTIONS.slice(0, 8));
+const REMAINING_DIRECT_ACTIONS = Object.freeze(DIRECT_ACTIONS.slice(8));
+
 const EXTENSIONS = Object.freeze([
   "point-create-appearance",
   "bar-create-appearance",
@@ -76,10 +79,20 @@ test("locks the complete Phase 1 Gate A assignment", () => {
   );
 });
 
-test("keeps the not-yet-implemented Phase 1 direct actions Planned", () => {
+test("promotes the approved focused guide actions and keeps later work Planned", () => {
   const planned = new Set(index.plannedActions.map(action => action.name));
   const current = new Set(index.actions.map(action => action.name));
-  for (const action of DIRECT_ACTIONS) {
+  for (const action of CURRENT_FOCUSED_ACTIONS) {
+    assert.equal(planned.has(action), false, action);
+    assert.equal(current.has(action), true, action);
+    assert.match(
+      declarations,
+      new RegExp(`^  ${action}\\(`, "m"),
+      action
+    );
+    assert.equal(typeof ChartProgram.prototype[action], "function", action);
+  }
+  for (const action of REMAINING_DIRECT_ACTIONS) {
     assert.equal(planned.has(action), true, action);
     assert.equal(current.has(action), false, action);
     assert.doesNotMatch(
@@ -87,12 +100,6 @@ test("keeps the not-yet-implemented Phase 1 direct actions Planned", () => {
       new RegExp(`^  ${action}\\(`, "m"),
       action
     );
-  }
-  for (const action of DIRECT_ACTIONS.filter(action => ![
-    "editLegendLabels",
-    "editLegendTitle",
-    "editLegendSymbols"
-  ].includes(action))) {
     assert.equal(ChartProgram.prototype[action], undefined, action);
   }
 });
@@ -130,7 +137,7 @@ test("covers every Phase 1 public action in a Gate target", () => {
     });
     assert.equal(
       typeof target.userFacing,
-      index < EXTENSIONS.length - 1 ? "function" : "undefined",
+      index < 5 ? "function" : "undefined",
       target.variant
     );
   }

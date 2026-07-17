@@ -88,6 +88,90 @@ function createLineErgonomicsActions(rows) {
     .editLineMark({ target: "trends", opacity: 0.55 });
 }
 
+function createFocusedLegendActions(rows) {
+  return chart()
+    .createCanvas({
+      width: 760,
+      height: 480,
+      margin: { top: 40, right: 80, bottom: 70, left: 190 }
+    })
+    .createData({ id: "cars", values: rows })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "Displacement", scale: { nice: true, zero: false } })
+    .encodeY({ field: "Acceleration", scale: { nice: true, zero: false } })
+    .encodeColor({ field: "Origin" })
+    .encodeSize({ field: "Acceleration" })
+    .encodeShape({ field: "Origin" })
+    .encodeOpacity({ value: 0.27 })
+    .filterMarks({ field: "Origin", op: "oneOf", values: ["Japan", "USA"] })
+    .createRegression()
+    .createGuides()
+    .editLegendLayout({
+      target: "points",
+      position: "left",
+      align: "center",
+      direction: "vertical",
+      offset: 80,
+      titlePosition: "top"
+    })
+    .editLegendLabels({
+      target: "points",
+      color: "#475569",
+      fontSize: 12
+    })
+    .editLegendTitle({
+      target: "points",
+      color: "#0f172a",
+      fontSize: 14,
+      fontWeight: 700
+    })
+    .editLegendSymbols({ target: "points", count: 5 })
+    .editLegendBorder({
+      target: "points",
+      border: {
+        color: "#94a3b8",
+        lineWidth: 1,
+        padding: 10,
+        background: "#f8fafc"
+      }
+    });
+}
+
+function createCartesianGuideFacadeActions(rows) {
+  const validRows = rows.filter(row =>
+    Number.isFinite(row.Horsepower) &&
+    Number.isFinite(row.Miles_per_Gallon) &&
+    typeof row.Origin === "string" &&
+    row.Origin.length > 0
+  );
+  return chart()
+    .createCanvas({
+      width: 640,
+      height: 400,
+      margin: { top: 80, right: 90, bottom: 30, left: 30 }
+    })
+    .createData({ id: "cars", values: validRows })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "Horsepower" })
+    .encodeY({ field: "Miles_per_Gallon" })
+    .encodeColor({ field: "Origin" })
+    .encodeRadius({ value: 3 })
+    .createGuides()
+    .editXAxis({
+      position: "top",
+      ticksAndLabels: { labels: { offset: 12, format: ".1f" } },
+      title: { offset: 62 }
+    })
+    .editYAxis({
+      position: "right",
+      ticksAndLabels: { labels: { offset: 12, format: ".1f" } },
+      title: { text: "Miles per Gallon", offset: 70 }
+    })
+    .editGrid({
+      horizontal: { color: "#cbd5e1", strokeDash: [4, 4] }
+    });
+}
+
 function artifact(capability) {
   return Object.freeze({ roadmap: "roadmap3", phase, capability });
 }
@@ -160,6 +244,7 @@ const legendCallChain = `chart()
   .encodeColor({ field: "Origin" })
   .encodeSize({ field: "Acceleration" })
   .encodeShape({ field: "Origin" })
+  .encodeOpacity({ value: 0.27 })
   .filterMarks({ field: "Origin", op: "oneOf", values: ["Japan", "USA"] })
   .createRegression()
   .createGuides()
@@ -214,7 +299,7 @@ const guidesCallChain = `chart()
   .editYAxis({
     position: "right",
     ticksAndLabels: { labels: { offset: 12, format: ".1f" } },
-    title: { offset: 70 }
+    title: { text: "Miles per Gallon", offset: 70 }
   })
   .editGrid({
     horizontal: { color: "#cbd5e1", strokeDash: [4, 4] }
@@ -413,6 +498,7 @@ export const visualVariants = Object.freeze([
     callChain: legendCallChain,
     artifact: artifact("focused-component-editing"),
     primitive: () => createFocusedLegendPrimitives(cars),
+    userFacing: () => createFocusedLegendActions(cars),
     width: 760,
     height: 480,
     colors: [],
@@ -428,6 +514,7 @@ export const visualVariants = Object.freeze([
     callChain: guidesCallChain,
     artifact: artifact("focused-component-editing"),
     primitive: () => createCartesianGuideFacadePrimitives(cars),
+    userFacing: () => createCartesianGuideFacadeActions(cars),
     width: 640,
     height: 400,
     colors: [],

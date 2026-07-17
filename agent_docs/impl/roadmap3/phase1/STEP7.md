@@ -3,7 +3,7 @@
 ## 진행 상태
 
 - [x] Internal legend edit-like operations를 `rematerialize*`로 정리
-- [ ] Focused target resolution과 closed option validation 공유
+- [x] Focused target resolution과 closed option validation 공유
 - [ ] Composite one-preflight/one-plan policy 구현
 - [ ] Behavior-preserving regression suite 통과
 

@@ -160,6 +160,40 @@ const createVerticalGrid = makeCreate("vertical");
 const editHorizontalGrid = makeEdit("horizontal");
 const editVerticalGrid = makeEdit("vertical");
 
+const editGrid = action(
+  {
+    op: "editGrid",
+    description: "Edit selected existing Cartesian grid directions."
+  },
+  function (args = {}) {
+    if (!isPlainObject(args)) {
+      throw new TypeError("editGrid options must be a plain object.");
+    }
+    validateKeys(args, AGGREGATE_OPTIONS, "editGrid");
+    if (Object.keys(args).length === 0) {
+      throw new Error("editGrid requires horizontal or vertical changes.");
+    }
+    for (const direction of AGGREGATE_OPTIONS) {
+      if (!Object.hasOwn(args, direction)) continue;
+      if (!isPlainObject(args[direction])) {
+        throw new TypeError(`editGrid ${direction} must be a plain object.`);
+      }
+      validateGridEditArgs(
+        args[direction],
+        `edit${direction === "horizontal" ? "Horizontal" : "Vertical"}Grid`
+      );
+    }
+    let next = this;
+    if (args.horizontal !== undefined) {
+      next = next.editHorizontalGrid(args.horizontal);
+    }
+    if (args.vertical !== undefined) {
+      next = next.editVerticalGrid(args.vertical);
+    }
+    return next;
+  }
+);
+
 const createGrid = action(
   {
     op: "createGrid",
@@ -221,6 +255,7 @@ export function registerGridActions(ProgramClass) {
   ProgramClass.prototype.createVerticalGrid = createVerticalGrid;
   ProgramClass.prototype.editHorizontalGrid = editHorizontalGrid;
   ProgramClass.prototype.editVerticalGrid = editVerticalGrid;
+  ProgramClass.prototype.editGrid = editGrid;
   ProgramClass.prototype.rematerializeGrid = rematerializeGrid;
   ProgramClass.prototype.rematerializeHorizontalGrid =
     rematerializeHorizontalGrid;

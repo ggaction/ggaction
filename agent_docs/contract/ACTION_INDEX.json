@@ -1154,6 +1154,42 @@
       }
     },
     {
+      "name": "editXAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits selected existing x-axis components",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editxaxis"
+      }
+    },
+    {
+      "name": "editYAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits selected existing y-axis components",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "edityaxis"
+      }
+    },
+    {
       "name": "createGrid",
       "layer": "user-facing",
       "domain": "grid",
@@ -1244,6 +1280,24 @@
       }
     },
     {
+      "name": "editGrid",
+      "layer": "user-facing",
+      "domain": "grid",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits selected existing grid directions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRID.md",
+        "anchor": "editgrid"
+      }
+    },
+    {
       "name": "createLegend",
       "layer": "user-facing",
       "domain": "legend_and_title",
@@ -1277,6 +1331,96 @@
       "contract": {
         "file": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
         "anchor": "editlegend"
+      }
+    },
+    {
+      "name": "editLegendLayout",
+      "layer": "user-facing",
+      "domain": "legend_and_title",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Delegates focused layout changes to editLegend",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+        "anchor": "editlegendlayout"
+      }
+    },
+    {
+      "name": "editLegendLabels",
+      "layer": "user-facing",
+      "domain": "legend_and_title",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Delegates focused label changes to editLegend",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+        "anchor": "editlegendlabels"
+      }
+    },
+    {
+      "name": "editLegendTitle",
+      "layer": "user-facing",
+      "domain": "legend_and_title",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Delegates focused title changes to editLegend",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+        "anchor": "editlegendtitle"
+      }
+    },
+    {
+      "name": "editLegendSymbols",
+      "layer": "user-facing",
+      "domain": "legend_and_title",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Delegates focused symbol changes to editLegend",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+        "anchor": "editlegendsymbols"
+      }
+    },
+    {
+      "name": "editLegendBorder",
+      "layer": "user-facing",
+      "domain": "legend_and_title",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Delegates focused border changes to editLegend",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+        "anchor": "editlegendborder"
       }
     },
     {
@@ -1587,14 +1731,6 @@
     }
   ],
   "plannedActions": [
-    { "name": "editLegendLayout", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "focused-legend-edits" } },
-    { "name": "editLegendLabels", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "focused-legend-edits" } },
-    { "name": "editLegendTitle", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "focused-legend-edits" } },
-    { "name": "editLegendSymbols", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "focused-legend-edits" } },
-    { "name": "editLegendBorder", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "focused-legend-edits" } },
-    { "name": "editXAxis", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "cartesian-guide-facades" } },
-    { "name": "editYAxis", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "cartesian-guide-facades" } },
-    { "name": "editGrid", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "cartesian-guide-facades" } },
     { "name": "editErrorBar", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
     { "name": "editErrorBand", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
     { "name": "editErrorBandBoundary", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
@@ -1644,7 +1780,7 @@
     { "id": "polar-line-closed", "kind": "parameter", "name": "Closed Polar line option", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-line-radar" } },
     { "id": "facet-scale-resolution", "kind": "parameter", "name": "Facet scale resolution options", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "facet-resolution-and-derived-replay" } },
     { "id": "compatible-layer-inference", "kind": "behavior", "name": "Compatibility-aware layer inference", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "layer-inference-and-api-contract" } },
-    { "id": "focused-component-editing", "kind": "composition", "name": "Focused component editing", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "focused-legend-edits" } },
+    { "id": "focused-component-editing", "kind": "composition", "name": "Focused component editing", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
     { "id": "domain-removal", "kind": "behavior", "name": "Atomic domain removal", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "domain-removal" } },
     { "id": "exact-public-option-types", "kind": "parameter", "name": "Exact public option types", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "layer-inference-and-api-contract" } },
     { "id": "api-layer-classification-alignment", "kind": "parameter", "name": "API layer classification alignment", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "layer-inference-and-api-contract" } },

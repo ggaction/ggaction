@@ -254,10 +254,13 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
 
 test("keeps planned direct actions and reassignment gaps explicit", () => {
   const names = index.plannedActions.map(action => action.name);
+  const current = new Set(index.actions.map(action => action.name));
   assert.equal(new Set(names).size, names.length);
   assert.deepEqual(
     names,
-    roadmap3GateInventory.proposedActions.map(action => action.name)
+    roadmap3GateInventory.proposedActions
+      .map(action => action.name)
+      .filter(name => !current.has(name))
   );
   assert.equal(names.includes("editRuleMark"), false);
 

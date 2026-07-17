@@ -554,6 +554,26 @@ Partially edit one existing legend. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited.
 [Legends](../api/legends.md)
 
+### Focused legend edits
+
+```javascript
+editLegendLayout({
+  target?, position?, align?, direction?, columns?, offset?,
+  titlePosition?, itemGap?
+})
+editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })
+editLegendTitle({
+  target?, title?, color?, fontSize?, fontFamily?, fontWeight?
+})
+editLegendSymbols({ target?, symbol?, count?, gradient? })
+editLegendBorder({ target?, border })
+```
+
+Edit one legend component without constructing the nested options accepted by
+`editLegend`. Each action uses the same target inference, validation, and
+rematerialization as `editLegend`. At least one component change is required.
+[Legends](../api/legends.md#focused-edits)
+
 ### `createTitle`
 
 ```javascript
@@ -631,7 +651,13 @@ requirements in [Data](../api/data.md#createderiveddata-id-source-transform).
 ```javascript
 createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
 createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
+editXAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })
+editYAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })
 ```
+
+Complete-axis edits update only the selected components of an existing axis.
+Use `ticksAndLabels` for a coordinated tick/label edit, or `ticks` and
+`labels` for independent edits; do not combine both forms.
 
 ### Axis lines, ticks, and labels
 
@@ -701,10 +727,15 @@ createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?,
 createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
 editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
+editGrid({
+  horizontal?: { count?, values?, color?, lineWidth?, strokeDash? },
+  vertical?: { count?, values?, color?, lineWidth?, strokeDash? }
+})
 ```
 
 Directional grid edits require an existing grid. Their `values` option accepts
 an exact finite array or `"auto"` to restore current axis/scale inference.
+`editGrid` applies one or both directional edits through the same actions.
 
 See [Coordinates](../api/coordinates.md) and
 [Advanced axis components](../advanced/axis-components.md).

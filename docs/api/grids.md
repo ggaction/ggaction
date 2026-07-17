@@ -12,6 +12,7 @@ title: Grids
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `createGrid` | `createGrid()` | Horizontal direction from y; vertical off | Concrete lines behind related marks |
+| `editGrid` | `editGrid({ horizontal: { count: 6 } })` | Existing selected directions | One or both directions rematerialized |
 
 ## `createGrid(options?)`
 
@@ -75,7 +76,7 @@ createGrid
 Use `false` to disable a direction. If scale or coordinate inference is
 ambiguous, provide its ID explicitly.
 
-## Editing one direction
+## Editing grids
 
 Use the direction-specific edit actions after that grid exists:
 
@@ -89,10 +90,23 @@ Edit options are `count`, `values`, `color`, `lineWidth`, and `strokeDash`.
 Use either `count` or `values`. `values: "auto"` restores current axis/scale
 inference. At least one option is required.
 
+Use `editGrid()` to update both directions through one aggregate action:
+
+```javascript
+program.editGrid({
+  horizontal: { count: 6, color: "#cbd5e1" },
+  vertical: { values: [50, 100, 150], strokeDash: [4, 2] }
+});
+```
+
+Both selected directions must already exist. The complete request is validated
+before either directional edit runs, so an invalid vertical patch cannot leave
+a partially edited horizontal grid.
+
 Grid edits preserve the existing scale and coordinate binding. They invoke a
 wrapped directional rematerialization action, replacing only that direction's
-concrete line geometry and appearance. There is intentionally no aggregate
-`editGrid` action.
+concrete line geometry and appearance. `editGrid` delegates to these same
+directional actions, which remain available for focused edits.
 
 `createGuides()` selects this default horizontal grid automatically when a y
 encoding is present. Pass `createGuides({ grid: false })` to opt out.

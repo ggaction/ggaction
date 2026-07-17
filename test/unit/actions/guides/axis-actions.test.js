@@ -90,3 +90,46 @@ test("validates nested options and rejects partial duplicate axes", () => {
   const partial = program.createXAxisLine();
   assert.throws(() => partial.createXAxis(), /missing x-axis line/);
 });
+
+test("edits complete axes through existing leaf actions", () => {
+  const before = chart()
+    .createCanvas({ width: 360, height: 280, margin: 80 })
+    .createData({ values: [{ x: 0, y: 5 }, { x: 10, y: 15 }] })
+    .createPointMark()
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .createAxes();
+  const edited = before
+    .editXAxis({
+      position: "top",
+      ticksAndLabels: { labels: { format: ".1f" } },
+      title: { offset: 54 }
+    })
+    .editYAxis({ labels: { color: "#475569" }, title: { offset: 60 } });
+  const xNode = edited.trace.children.at(-2);
+  const yNode = edited.trace.children.at(-1);
+
+  assert.deepEqual(xNode.children.map(child => child.op), [
+    "editXAxisLine", "editXAxisTicksAndLabels", "editXAxisTitle"
+  ]);
+  assert.deepEqual(yNode.children.map(child => child.op), [
+    "editYAxisLabels", "editYAxisTitle"
+  ]);
+  assert.equal(edited.guideConfigs.axis.x.line.position, "top");
+  assert.equal(edited.guideConfigs.axis.x.labels.format, ".1f");
+  assert.equal(edited.guideConfigs.axis.y.labels.color, "#475569");
+  assert.equal(before.guideConfigs.axis.x.line.position, "bottom");
+});
+
+test("validates complete-axis facade options before leaf edits", () => {
+  const program = encodedProgram().createAxes();
+  assert.throws(() => program.editXAxis(), /at least one axis change/);
+  assert.throws(
+    () => program.editXAxis({ ticksAndLabels: {}, labels: {} }),
+    /cannot combine/
+  );
+  assert.throws(
+    () => program.editYAxis({ line: { unknown: true } }),
+    /Unknown editYAxis.line option/
+  );
+});

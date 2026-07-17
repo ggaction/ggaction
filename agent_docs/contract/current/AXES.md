@@ -574,3 +574,39 @@ type CompleteAxisOptions<P extends string> = {
   - ✅ Covered: inferred rotation follows left/right position edits while explicit rotation wins.
   - ⚠️ Partial: repeated explicit rotation/at interactions.
 - Evidence: axis-title tests.
+
+## `editXAxis`
+
+- Signature: `editXAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })`.
+- Existing x-axis leaf resources만 선택해 편집하는 aggregate facade다. `position`은 존재하는 line,
+  ticks/labels와 title에 공유된다. `ticksAndLabels`는 standalone `ticks`/`labels`와 함께 쓸 수 없다.
+- Effect: 새로운 axis config를 만들지 않고 wrapped `editXAxisLine`, `editXAxisTicks`,
+  `editXAxisLabels`, `editXAxisTicksAndLabels`, `editXAxisTitle`만 호출한다.
+- Errors: empty/unknown/nested-invalid options, ambiguous tick API combination, requested missing leaf,
+  leaf value/layout validation failure.
+
+### Formal values — `editXAxis`
+
+- Implemented: `editXAxis(options: EditAxisOptions<AxisPositionX>)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editXAxis`
+
+- ✅ Covered: shared top position, grouped label formatting, title offset, leaf trace and earlier-program immutability.
+- ✅ Covered: empty, unknown nested and mutually ambiguous tick options.
+- Evidence: `test/unit/actions/guides/axis-actions.test.js` and Roadmap 3 focused-editing Gate.
+
+## `editYAxis`
+
+- x facade와 같은 contract를 left/right y-axis에 적용한다.
+
+### Formal values — `editYAxis`
+
+- Implemented: `editYAxis(options: EditAxisOptions<AxisPositionY>)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editYAxis`
+
+- ✅ Covered: right position, standalone labels, title offset/text, leaf hierarchy and exact Gate parity.
+- No proposal: scale and coordinate rebinding remain outside the edit facade.
+- Evidence: `test/unit/actions/guides/axis-actions.test.js` and Roadmap 3 focused-editing Gate.

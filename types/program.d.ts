@@ -452,6 +452,10 @@ export interface EditGridOptions {
   lineWidth?: number;
   strokeDash?: readonly number[];
 }
+export interface EditGridDirectionsOptions {
+  horizontal?: EditGridOptions;
+  vertical?: EditGridOptions;
+}
 export interface CreateGridOptions {
   horizontal?: boolean | GridDirectionOptions;
   vertical?: boolean | GridDirectionOptions;
@@ -1005,6 +1009,47 @@ export interface EditLegendOptions
   title?: string | "auto" | false;
 }
 
+export interface EditLegendLayoutOptions {
+  target?: string;
+  position?: "right" | "left" | "bottom" | "top";
+  align?: "left" | "center" | "right";
+  direction?: "horizontal" | "vertical";
+  columns?: number;
+  offset?: number;
+  titlePosition?: "top" | "left";
+  itemGap?: number;
+}
+
+export interface EditLegendLabelsOptions extends LegendTitleStyleOptions {
+  target?: string;
+}
+
+export interface EditLegendTitleOptions extends LegendTitleStyleOptions {
+  target?: string;
+  title?: string | "auto" | false;
+}
+
+export interface EditLegendSymbolsOptions {
+  target?: string;
+  symbol?: LegendSymbolRecipe;
+  count?: number;
+  gradient?: { length?: number; thickness?: number };
+}
+
+export interface EditLegendBorderOptions {
+  target?: string;
+  border: boolean | LegendBorderOptions;
+}
+
+export interface EditAxisOptions<P extends string> {
+  position?: P;
+  line?: AxisLineStyleOptions;
+  ticks?: Omit<AxisTickOptions<P>, "scale" | "position">;
+  labels?: Omit<AxisLabelOptions<P>, "scale" | "position">;
+  ticksAndLabels?: Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
+  title?: Omit<AxisTitleOptions<P>, "scale" | "position">;
+}
+
 export interface TitleTextStyleOptions {
   color?: string;
   fontSize?: number;
@@ -1181,13 +1226,21 @@ export class ChartProgram {
   createYAxisTitle(options?: AxisTitleOptions<YAxisPosition>): ChartProgram;
   editXAxisTitle(options?: Omit<AxisTitleOptions<XAxisPosition>, "scale">): ChartProgram;
   editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, "scale">): ChartProgram;
+  editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
+  editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
   createGrid(options?: CreateGridOptions): ChartProgram;
   createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
   createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
   editHorizontalGrid(options: EditGridOptions): ChartProgram;
   editVerticalGrid(options: EditGridOptions): ChartProgram;
+  editGrid(options: EditGridDirectionsOptions): ChartProgram;
   createLegend(options?: LegendOptions): ChartProgram;
   editLegend(options: EditLegendOptions): ChartProgram;
+  editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
+  editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;
+  editLegendTitle(options: EditLegendTitleOptions): ChartProgram;
+  editLegendSymbols(options: EditLegendSymbolsOptions): ChartProgram;
+  editLegendBorder(options: EditLegendBorderOptions): ChartProgram;
   createGuides(options?: ActionOptions): ChartProgram;
   createTitle(options: TitleOptions): ChartProgram;
   editTitle(options: EditTitleOptions): ChartProgram;
