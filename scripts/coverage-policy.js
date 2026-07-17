@@ -1,4 +1,28 @@
-export const CRITICAL_COVERAGE_FLOORS = Object.freeze({
+import { readdirSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
+
+export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "position-policies": Object.freeze({
+    prefix: "actions/encodings/position/policies/",
+    floor: Object.freeze({ lines: 50, branches: 30, functions: 80 }),
+    rationale: "Every positional mark policy must remain executable through shared encodings."
+  }),
+  "selection-materialization": Object.freeze({
+    prefix: "materialization/selection/",
+    floor: Object.freeze({ lines: 80, branches: 65, functions: 80 }),
+    rationale: "Selection grain and rematerialization errors silently target the wrong marks."
+  }),
+  "canvas-renderer": Object.freeze({
+    prefix: "renderers/canvas/",
+    floor: Object.freeze({ lines: 75, branches: 60, functions: 80 }),
+    rationale: "Every concrete primitive renderer is a public rendering boundary."
+  })
+});
+
+export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
   "actions/selection/actions.js": Object.freeze({
     lines: 90,
     branches: 75,
@@ -95,6 +119,32 @@ export const CRITICAL_COVERAGE_FLOORS = Object.freeze({
   "renderers/canvas/index.js": Object.freeze({ lines: 85, branches: 70, functions: 100 }),
   "renderers/png.js": Object.freeze({ lines: 90, branches: 80, functions: 100 })
 });
+
+function sourceFiles(directory, relative = "") {
+  return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+    const childRelative = path.posix.join(relative, entry.name);
+    const child = path.join(directory, entry.name);
+    return entry.isDirectory()
+      ? sourceFiles(child, childRelative)
+      : entry.name.endsWith(".js") ? [childRelative] : [];
+  });
+}
+
+export function coverageFloorsForFiles(
+  files,
+  families = CRITICAL_COVERAGE_FAMILIES,
+  overrides = CRITICAL_COVERAGE_OVERRIDES
+) {
+  const floors = {};
+  for (const file of files) {
+    for (const family of Object.values(families)) {
+      if (file.startsWith(family.prefix)) floors[file] = family.floor;
+    }
+  }
+  return Object.freeze({ ...floors, ...overrides });
+}
+
+export const CRITICAL_COVERAGE_FLOORS = coverageFloorsForFiles(sourceFiles(sourceRoot));
 
 export function parseCoverageTable(output) {
   const stack = [];

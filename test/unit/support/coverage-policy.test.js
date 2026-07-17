@@ -3,6 +3,9 @@ import test from "node:test";
 
 import {
   assertCriticalCoverage,
+  coverageFloorsForFiles,
+  CRITICAL_COVERAGE_FAMILIES,
+  CRITICAL_COVERAGE_FLOORS,
   parseCoverageTable
 } from "../../../scripts/coverage-policy.js";
 
@@ -44,4 +47,29 @@ test("enforces explicit critical-file coverage floors", () => {
     "core/immutable.js": { lines: 96, branches: 85, functions: 100 },
     "renderers/png.js": { lines: 90, branches: 80, functions: 100 }
   }), /immutable\.js: lines 95%.*renderers\/png\.js: missing/s);
+});
+
+test("applies critical family floors to new matching source files", () => {
+  const floors = coverageFloorsForFiles([
+    "materialization/selection/new-mark.js",
+    "unrelated/helper.js"
+  ], CRITICAL_COVERAGE_FAMILIES, {});
+  assert.deepEqual(floors, {
+    "materialization/selection/new-mark.js": {
+      lines: 80,
+      branches: 65,
+      functions: 80
+    }
+  });
+});
+
+test("keeps explicit critical overrides above family defaults", () => {
+  assert.equal(
+    CRITICAL_COVERAGE_FLOORS["materialization/selection/items/point.js"].lines,
+    95
+  );
+  assert.deepEqual(
+    CRITICAL_COVERAGE_FLOORS["renderers/canvas/circle.js"],
+    { lines: 75, branches: 60, functions: 80 }
+  );
 });

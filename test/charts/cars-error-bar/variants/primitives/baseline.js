@@ -1,4 +1,4 @@
-import { chart, render } from "../../../../src/index.js";
+import { chart, render } from "../../../../../src/index.js";
 import {
   ERROR_BAR_COLOR,
   ERROR_BAR_FIELDS,
@@ -9,7 +9,7 @@ import {
   createEncodedLayerInferenceReferenceValues,
   createErrorBarReferenceValues,
   createRuleGeometryReferenceValues
-} from "../reference-values.js";
+} from "../../reference-values.js";
 
 export function createErrorBarBaselinePrimitives(cars) {
   const values = createErrorBarReferenceValues(cars);
@@ -353,5 +353,4 @@ export function createErrorBarBaselinePrimitives(cars) {
 export function renderErrorBarBaselinePrimitives(cars, context) {
   return render(createErrorBarBaselinePrimitives(cars), context);
 }
-
 

@@ -67,3 +67,9 @@ must not import from `src/`: they are a separate mathematical implementation
 used to catch shared implementation mistakes rather than repeat production
 helpers. Keep a few representative literal expectations in chart tests as
 anchors for the oracle itself and for important public examples.
+
+Critical coverage is owned by `scripts/coverage-policy.js`. Family rules apply
+minimum floors to every current and future file under high-risk boundaries;
+explicit per-file overrides are reserved for modules that warrant stricter
+thresholds. This prevents a newly split policy or renderer from escaping the
+coverage contract.
