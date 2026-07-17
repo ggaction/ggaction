@@ -14,7 +14,11 @@ const rows = Object.freeze([
 
 function base(mark = {}) {
   return chart()
-    .createCanvas({ width: 320, height: 320, margin: 40 })
+    .createCanvas({
+      width: 400,
+      height: 320,
+      margin: { top: 40, right: 120, bottom: 40, left: 40 }
+    })
     .createData({ values: rows })
     .createLineMark(mark);
 }
@@ -112,6 +116,90 @@ test("inherits complete Polar positions when adding a line layer", () => {
   assert.equal(line.coordinate, "polar");
   assert.deepEqual(line.encoding, source.semanticSpec.layers[0].encoding);
   assert.equal(layered.graphicSpec.objects.overlay.items.length, 1);
+});
+
+test("rematerializes Polar paths after scale, Canvas, and data revisions", () => {
+  const original = openPolar();
+  const originalCommands = original.graphicSpec.objects.line.items.map(
+    item => item.properties.commands
+  );
+  const reversed = original.editScale({ id: "theta", reverse: true });
+  const resized = original.editCanvas({ width: 480, height: 360 });
+  const filtered = original.filterMarks({
+    target: "line",
+    field: "group",
+    op: "eq",
+    value: "a"
+  });
+
+  assert.notDeepEqual(
+    reversed.graphicSpec.objects.line.items.map(item => item.properties.commands),
+    originalCommands
+  );
+  assert.deepEqual(
+    reversed.editScale({ id: "theta", reverse: false }).graphicSpec,
+    original.graphicSpec
+  );
+  assert.notDeepEqual(
+    resized.graphicSpec.objects.line.items.map(item => item.properties.commands),
+    originalCommands
+  );
+  assert.equal(filtered.graphicSpec.objects.line.items.length, 1);
+  assert.equal(filtered.semanticSpec.layers[0].data, "lineFilteredData");
+});
+
+test("selects, highlights, and reapplies one complete Polar series", () => {
+  const baseProgram = openPolar()
+    .encodeColor({ field: "group" })
+    .createGuides({
+      axes: false,
+      grid: false,
+      legend: { channels: ["color"] }
+    });
+  const highlighted = baseProgram.highlightMarks({
+    target: "line",
+    select: { field: "group", op: "eq", value: "b" },
+    strokeWidth: 5,
+    opacity: 1,
+    dimOthers: { opacity: 0.15 },
+    bringToFront: true
+  });
+  const resized = highlighted.editCanvas({ width: 480, height: 360 });
+
+  for (const program of [highlighted, resized]) {
+    const paths = program.graphicSpec.objects.line.items;
+    const symbols = program.graphicSpec.objects.seriesLegendSymbols.items;
+    assert.deepEqual(paths.map(item => item.properties.opacity), [0.15, 1]);
+    assert.deepEqual(paths.map(item => item.properties.strokeWidth), [2, 5]);
+    assert.deepEqual(symbols.map(item => item.properties.opacity), [0.15, 1]);
+    assert.equal(program.graphicSpec.objects.seriesLegendLabels.items.every(
+      item => item.properties.opacity === undefined
+    ), true);
+  }
+});
+
+test("keeps Polar group, color, stroke dash, and legend series aligned", () => {
+  const program = openPolar()
+    .encodeColor({ field: "group" })
+    .encodeStrokeDash({ field: "group" })
+    .createGuides({
+      axes: false,
+      grid: false,
+      legend: { channels: ["color", "strokeDash"] }
+    });
+  const paths = program.graphicSpec.objects.line.items;
+  const symbols = program.graphicSpec.objects.seriesLegendSymbols.items;
+
+  assert.deepEqual(program.semanticSpec.guides.legend.series.channels, [
+    "color",
+    "strokeDash"
+  ]);
+  assert.deepEqual(paths.map(item => item.properties.stroke), [
+    "#4c78a8",
+    "#f58518"
+  ]);
+  assert.deepEqual(paths.map(item => item.properties.strokeDash), [[], [8, 4]]);
+  assert.deepEqual(symbols.map(item => item.properties.strokeDash), [[], [8, 4]]);
 });
 
 test("rejects non-linear Polar curves and closed Cartesian lines atomically", () => {
