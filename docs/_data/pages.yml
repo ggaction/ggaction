@@ -66,6 +66,12 @@
   url: /api/canvas/
 - title: Data
   url: /api/data/
+- title: Source and Derived Data
+  url: /api/data/source-and-derived/
+- title: Data Filtering
+  url: /api/data/filtering/
+- title: Statistical Data Transforms
+  url: /api/data/statistical-transforms/
 - title: Marks
   url: /api/marks/
   nav_group: chart-api
@@ -122,10 +128,30 @@
   url: /api/position/offsets/
 - title: Series Encodings
   url: /api/series-encodings/
+- title: Color Encoding
+  url: /api/series/color/
+- title: Stroke-Dash Encoding
+  url: /api/series/stroke-dash/
 - title: Appearance Encodings
   url: /api/appearance/
+- title: Selection and Highlighting
+  url: /api/appearance/selection-and-highlighting/
+- title: Point Appearance
+  url: /api/appearance/point/
+- title: Mark Style
+  url: /api/appearance/mark-style/
 - title: Scale Options
   url: /api/scales/
+- title: Position Scales
+  url: /api/scales/position/
+- title: Ordinal and Dash Scales
+  url: /api/scales/ordinal-and-dash/
+- title: Continuous Color Scales
+  url: /api/scales/continuous-color/
+- title: Discretized Color Scales
+  url: /api/scales/discretized-color/
+- title: Missing Scale Values
+  url: /api/scales/missing-values/
 - title: Coordinates
   url: /api/coordinates/
   nav_group: chart-api
@@ -136,6 +162,14 @@
   url: /api/grids/
 - title: Legends
   url: /api/legends/
+- title: Categorical and Size Legends
+  url: /api/legends/categorical/
+- title: Continuous Legends
+  url: /api/legends/continuous/
+- title: Composite Legend Symbols
+  url: /api/legends/composite/
+- title: Editing Legends
+  url: /api/legends/editing/
 - title: ChartProgram and Immutability
   url: /concepts/chart-program/
   nav_group: concepts
@@ -166,4 +200,3 @@
   url: /extension/primitives/
   nav_group: reference
   nav_order: 4
-

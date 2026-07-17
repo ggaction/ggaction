@@ -88,7 +88,7 @@ highlightMarks({
 Select point, bar, line, area, or rule items inline or reuse a stored selection,
 then apply mark-specific concrete emphasis, optional complement dimming, and
 selected-last order.
-[Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
+[Mark selection and highlighting](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
 ### `createRegressionData`
 
@@ -809,7 +809,7 @@ editLegendBorder({ target?, border })
 Edit one legend component without constructing the nested options accepted by
 `editLegend`. Each action uses the same target inference, validation, and
 rematerialization as `editLegend`. At least one component change is required.
-[Legends](../api/legends.md#focused-edits)
+[Editing legends](../api/legends/editing.md#focused-edits)
 
 ### `removeLegend`
 
@@ -868,7 +868,7 @@ Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
 `range`, `min`, and `max`. `grain` defaults to `"item"`; stacked bars also
 support `"stack"`. Fields are data values, channels are pre-scale semantic
 values, and properties are concrete graphical values.
-[Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
+[Mark selection and highlighting](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
 ### Semantic resources and regression layers
 
@@ -898,7 +898,7 @@ layers normally owned by `createRegression`.
 does not materialize values. Its public `DatasetTransform` union supports
 `filter`, `regression`, `density`, and `interval` objects. A single object or
 empty array is invalid. See the runnable filter example and exact transform
-requirements in [Data](../api/data.md#createderiveddata-id-source-transform).
+requirements in [Source and derived data](../api/data/source-and-derived.md#createderiveddata-id-source-transform).
 
 ### Complete single-channel axes
 

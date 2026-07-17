@@ -1,5 +1,4 @@
 # ggaction
-
 ggaction is a JavaScript chart-authoring library built around immutable,
 hierarchical actions. Use this file as a routing index. The linked Markdown
 pages are canonical; the generated full-text bundle is available at
@@ -21,6 +20,9 @@ pages are canonical; the generated full-text bundle is available at
 - Extension action authoring: ./extension/action-authoring.md
 - Primitive extension API: ./extension/primitives.md
 - Browser and PNG rendering: ./api/rendering.md
+- Data and scales: ./api/data.md | ./api/scales.md
+- Legends and series encodings: ./api/legends.md | ./api/series-encodings.md
+- Mark appearance, selection, and highlighting: ./api/appearance.md
 - Vertical and horizontal statistical and explicit error bands: ./api/error-bands.md
 - Vertical/horizontal Tukey and min–max box plots: ./api/box-plots.md
 
@@ -38,7 +40,7 @@ are internal operations.
 - Regression scatterplot: ./recipes/regression-scatterplot.md | ./tutorials/regression-scatterplot.md
 - Density area: ./recipes/density-area.md | ./tutorials/density-area.md
 - Error bar: ./recipes/error-bar.md | ./tutorials/error-bar.md
-- Mark selection and highlighting: ./tutorials/mark-selection.md | ./api/appearance.md#mark-selection-and-highlighting
+- Mark selection and highlighting: ./tutorials/mark-selection.md | ./api/appearance/selection-and-highlighting.md
 
 ## Core concepts
 

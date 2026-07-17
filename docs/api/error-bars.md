@@ -213,5 +213,5 @@ parameter revision are not part of the current edit action.
 ## Related
 
 [Error-bar tutorial](../tutorials/error-bar.md) ·
-[Interval data](./data.md#createintervaldata-id-source-field-groupby-center-extent-level-as) ·
+[Interval data](./data/statistical-transforms.md#createintervaldata-id-source-field-groupby-center-extent-level-as) ·
 [Rule marks](./marks.md) · [Guides](./guides.md)

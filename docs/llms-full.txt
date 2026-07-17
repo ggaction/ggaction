@@ -1585,8 +1585,8 @@ data-cardinality changes. It does not store stale item IDs.
 ## Run and continue
 
 - Serve the repository root and open `examples/mark-selection/`.
-- Read the complete [selector and appearance tables](../api/appearance.md#mark-selection-and-highlighting).
-- Use [`filterMarks`](../api/data.md#filtermarks-target-selector) when matching items should replace the target mark's data.
+- Read the complete [selector and appearance tables](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting).
+- Use [`filterMarks`](../api/data/filtering.md#filtermarks-target-selector) when matching items should replace the target mark's data.
 - Use [`editBarMark`](../api/marks/bar.md#editbarmark-target-fill-opacity-stroke-strokewidth) for whole-bar appearance rather than selected items.
 
 <!-- Source: /recipes/ -->
@@ -2271,17 +2271,44 @@ margins must leave positive plot bounds.
 
 {% include chart-example.html id="regression" %}
 
+Data actions own immutable source rows, explicit derivation provenance, and
+statistical result datasets. Choose the focused page that matches the data
+operation; marks and renderers never mutate source values.
+
 ## At a glance
 
-| Action | Shortest call | Inference/defaults | Result |
-| --- | --- | --- | --- |
-| `createData` | `createData({ values })` | First dataset ID: `"data"`; values are required | Immutable semantic dataset and current-data context |
-| `createDerivedData` | `createDerivedData({ id, source, transform: [...] })` | No transform inference; advanced API | Immutable source and transform provenance without materialized values |
-| `filterData` | `filterData({ id: "selected", field, oneOf })` | Source: current dataset | Immutable derived dataset using one membership, comparison, or range filter |
-| `filterMarks` | `filterMarks({ field, op: "eq", value })` | Target: current or unique mark; shared final-item selector | Immutable member-row dataset, mark rebind, and concrete rematerialization |
-| `createRegressionData` | `createRegressionData({ id: "fit", x, y })` | Source: current dataset; linear OLS; confidence `0.95` | Immutable derived predictions and mean-response interval |
-| `createDensityData` | `createDensityData({ id: "density", field })` | Source: current dataset; Gaussian/unit density; 100 steps; automatic bandwidth | Immutable KDE rows and density provenance |
-| `createIntervalData` | `createIntervalData({ id: "summary", field })` | Source: current dataset; ungrouped mean 95% CI | Immutable center/lower/upper rows and interval provenance |
+| Family | Actions | Use |
+| --- | --- | --- |
+| [Source and derived data](./data/source-and-derived.md) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
+| [Filtering](./data/filtering.md) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
+| [Statistical transforms](./data/statistical-transforms.md) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
+
+## Shared invariants
+
+- Every dataset is immutable after creation.
+- Omitted sources resolve only from the current or unique compatible dataset.
+- Derived datasets retain their source and transform provenance.
+- Ambiguous sources require an explicit ID; the library never selects the first
+  of several candidates silently.
+
+## Errors and limitations
+
+Values must be arrays of plain row objects. Dataset IDs are unique. Filters and
+statistical transforms validate their complete option combination before
+creating state, and a failed action leaves the earlier program unchanged.
+
+## Related
+
+[Marks](./marks.md) · [ChartProgram and immutability](../concepts/chart-program.md) ·
+[Complete action reference](../reference/actions.md)
+
+<!-- Source: /api/data/source-and-derived/ -->
+
+# Source and Derived Data
+
+{% include chart-example.html id="scatterplot" %}
+
+{% include chart-example.html id="scatterplot" %}
 
 ## `createData({ id?, values })`
 
@@ -2361,6 +2388,18 @@ box-plot and final-mark filtering provenance, are intentionally not part of
 this direct-authoring union. Multiple public transforms may be recorded in the
 ordered array, but built-in value materializers each require the single
 transform owned by their corresponding higher-level action.
+
+## Related
+
+[Data overview](../data.md) · [Chart API](../index.md) · [Action reference](../../reference/actions.md)
+
+<!-- Source: /api/data/filtering/ -->
+
+# Data and Mark Filtering
+
+{% include chart-example.html id="selection" %}
+
+{% include chart-example.html id="regression" %}
 
 ## `filterData({ id, source?, field, oneOf | predicate | range })`
 
@@ -2464,6 +2503,18 @@ series. Reapplying the same target is rejected because its deterministic derived
 dataset ID already exists. A selector that matches no final item fails before
 creating derived state.
 
+## Related
+
+[Data overview](../data.md) · [Chart API](../index.md) · [Action reference](../../reference/actions.md)
+
+<!-- Source: /api/data/statistical-transforms/ -->
+
+# Statistical Data Transforms
+
+{% include chart-example.html id="regression" %}
+
+{% include chart-example.html id="regression" %}
+
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
 
 Create deterministic regression predictions from an existing dataset. This is
@@ -2561,20 +2612,9 @@ normalization are stored in transform provenance. Unit normalization integrates
 each complete group density to one; count normalization scales it by that
 group's valid sample count. Source values remain unchanged.
 
-## Errors and limitations
-
-Values must be an array. Dataset IDs are unique, and an existing source dataset
-cannot be replaced or mutated. Filtering requires a current or explicit source
-and does not permit an empty `oneOf` list. Regression rejects missing or
-non-finite fields, method-specific undersized groups, and constant-x groups.
-Density rejects empty valid input, non-positive bandwidth, degenerate automatic
-extent or bandwidth, invalid output fields, and fewer than two sample steps.
-Intervals reject incompatible center/extent pairs, invalid confidence levels,
-duplicate grouping fields, and colliding output field names.
-
 ## Related
 
-[Marks](./marks.md) · [ChartProgram and immutability](../concepts/chart-program.md)
+[Data overview](../data.md) · [Chart API](../index.md) · [Action reference](../../reference/actions.md)
 
 <!-- Source: /api/marks/ -->
 
@@ -3503,7 +3543,7 @@ parameter revision are not part of the current edit action.
 ## Related
 
 [Error-bar tutorial](../tutorials/error-bar.md) ·
-[Interval data](./data.md#createintervaldata-id-source-field-groupby-center-extent-level-as) ·
+[Interval data](./data/statistical-transforms.md#createintervaldata-id-source-field-groupby-center-extent-level-as) ·
 [Rule marks](./marks.md) · [Guides](./guides.md)
 
 <!-- Source: /api/error-bands/ -->
@@ -4689,6 +4729,34 @@ consumer of one shared xOffset scale must use the same padding policy.
 | `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal field type, color scale | Semantic grouping and concrete color |
 | `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
 
+Series appearance is authored through color and stroke-dash families. Each
+focused page owns the complete options, replacement behavior, and errors for
+that encoding.
+
+## Focused series families
+
+<div class="docs-entry-grid docs-entry-grid--two">
+  <a href="./series/color/"><strong>Color</strong><span>Categorical and continuous color, grouping layouts, and aggregate bars.</span></a>
+  <a href="./series/stroke-dash/"><strong>Stroke dash</strong><span>Constant and field-driven dash patterns for lines and rules.</span></a>
+</div>
+
+## Errors and limitations
+
+Series fields must be nominal. Area color must match its group encoding. Line
+group, color, and field-driven stroke dash must use one compatible field.
+Combined line legends also require matching ordered domains.
+
+## Related
+
+[Scale options](./scales.md) · [Legends](./legends.md) ·
+[Position encodings](./position-encodings.md)
+
+<!-- Source: /api/series/color/ -->
+
+# Color Encoding
+
+{% include chart-example.html id="line" %}
+
 ## `encodeColor(options)`
 
 Map a nominal field to point fills, line-series strokes, area fills, or bar
@@ -4740,7 +4808,7 @@ program.encodeColor({
 });
 ```
 
-See [Scale options](./scales.md#named-palettes) for the complete vocabulary.
+See [continuous color scales](../scales/continuous-color.md#named-palettes) for the complete vocabulary.
 
 For an ordinal-x mean bar, `layout: "group"` is the default. It keeps
 `y.stack = null`, invokes `encodeXOffset` with the same field, and recomputes
@@ -4845,6 +4913,16 @@ the gradient without changing geometry. Continuous bar color rejects
 `layout`; histogram, ranged-bar, line-path, and area-path continuous color are
 not part of this contract.
 
+## Related
+
+[Series overview](../series-encodings.md) · [Scale options](../scales.md) · [Legends](../legends.md)
+
+<!-- Source: /api/series/stroke-dash/ -->
+
+# Stroke-Dash Encoding
+
+{% include chart-example.html id="line" %}
+
 ## `encodeStrokeDash(options)`
 
 Map a nominal field to line-series or rule dash patterns, or apply one constant pattern
@@ -4901,18 +4979,11 @@ If color and stroke dash encode the same field, that field appears only once in
 the series key and can be represented by one combined legend. Canvas changes
 explicitly rematerialize both styles.
 
-See [Scale options](./scales.md) and [Legends](./legends.md).
-
-## Errors and limitations
-
-Series fields must be nominal. Area color must match its group encoding. Line
-group, color, and field-driven stroke dash must use one compatible field.
-Combined line legends also require matching ordered domains.
+See [Scale options](../scales.md) and [Legends](../legends.md).
 
 ## Related
 
-[Scale options](./scales.md) · [Legends](./legends.md) ·
-[Position encodings](./position-encodings.md)
+[Series overview](../series-encodings.md) · [Scale options](../scales.md) · [Legends](../legends.md)
 
 <!-- Source: /api/appearance/ -->
 
@@ -4934,6 +5005,40 @@ Combined line legends also require matching ordered domains.
 | `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
 | `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point/bar/path/rule; red accent; selected-last | Concrete selected-item emphasis |
+
+Appearance actions change final mark style without changing position. Use the
+focused pages below for selection, point appearance, and mark-specific style.
+
+## Focused appearance families
+
+<div class="docs-entry-grid docs-entry-grid--two">
+  <a href="./appearance/selection-and-highlighting/"><strong>Selection and highlighting</strong><span>Select final graphical items and apply durable emphasis.</span></a>
+  <a href="./appearance/point/"><strong>Point appearance</strong><span>Radius, size, shape, and opacity encodings.</span></a>
+  <a href="./appearance/mark-style/"><strong>Mark style</strong><span>Rule stroke and aggregate or ranged bar width.</span></a>
+</div>
+
+## Errors and limitations
+
+Radius, rule stroke/width, constant opacity, and both bar width modes are graphical constants. Field opacity
+is a semantic encoding.
+Size cannot be combined with a constant radius. A constant `editPointMark`
+shape cannot be combined with field-driven `encodeShape`. Bar width
+requires complete ordinal x, aggregate y, and color semantics; group additionally
+requires matching xOffset semantics.
+Ambiguous targets, duplicate inferred selection IDs, incompatible item-grain
+selectors, and point-inapplicable highlight options fail before creating partial
+selection or appearance state. Highlight appearance currently supports points only.
+
+## Related
+
+[Marks](./marks.md) · [Position encodings](./position-encodings.md) ·
+[Series encodings](./series-encodings.md) · [Legends](./legends.md)
+
+<!-- Source: /api/appearance/selection-and-highlighting/ -->
+
+# Selection and Highlighting
+
+{% include chart-example.html id="selection" %}
 
 ## Mark selection and highlighting
 
@@ -5061,8 +5166,18 @@ rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
 assignment.
 
-See the complete [mark-selection tutorial](../tutorials/mark-selection.md) for
+See the complete [mark-selection tutorial](../../tutorials/mark-selection.md) for
 the approved point, stacked-bar, and line-series examples.
+
+## Related
+
+[Appearance overview](../appearance.md) · [Mark-selection tutorial](../../tutorials/mark-selection.md) · [Data filtering](../data/filtering.md)
+
+<!-- Source: /api/appearance/point/ -->
+
+# Point Appearance
+
+{% include chart-example.html id="regression" %}
 
 ## `encodeRadius({ value, target? })`
 
@@ -5100,7 +5215,7 @@ range is `[24, 196]`. Circles use `sqrt(area / PI)` as radius and squares use
 
 `encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
 Its ordinal scale accepts the 12 shared point shapes documented under
-[Marks](./marks.md). The automatic range uses each shape once and rejects more
+[Marks](../marks.md). The automatic range uses each shape once and rejects more
 than 12 distinct categories rather than silently repeating symbols. Explicit
 ranges must contain unique supported shapes. Mixed circle, rect, and Z-closed path
 symbols are stored as typed items in one graphical collection.
@@ -5121,6 +5236,16 @@ compatible scale binding. Omitting `scale.id` reuses the current scale;
 providing a new ID retains the previous named scale. Existing legends are
 recomputed, inferred legend titles follow the new field, and explicit legend
 titles and styles remain unchanged.
+
+## Related
+
+[Appearance overview](../appearance.md) · [Point marks](../marks/point.md) · [Legends](../legends.md)
+
+<!-- Source: /api/appearance/mark-style/ -->
+
+# Mark Style
+
+{% include chart-example.html id="bar" %}
 
 ## Rule appearance
 
@@ -5167,28 +5292,19 @@ group. Each bar is centered in its slot; missing cells are omitted.
 fully concrete `x`, `y`, `width`, `height`, and `fill` values to `graphicSpec`.
 Canvas geometry changes explicitly rematerialize the scales and rectangles.
 
-## Errors and limitations
-
-Radius, rule stroke/width, constant opacity, and both bar width modes are graphical constants. Field opacity
-is a semantic encoding.
-Size cannot be combined with a constant radius. A constant `editPointMark`
-shape cannot be combined with field-driven `encodeShape`. Bar width
-requires complete ordinal x, aggregate y, and color semantics; group additionally
-requires matching xOffset semantics.
-Ambiguous targets, duplicate inferred selection IDs, incompatible item-grain
-selectors, and point-inapplicable highlight options fail before creating partial
-selection or appearance state. Highlight appearance currently supports points only.
-
 ## Related
 
-[Marks](./marks.md) · [Position encodings](./position-encodings.md) ·
-[Series encodings](./series-encodings.md) · [Legends](./legends.md)
+[Appearance overview](../appearance.md) · [Rule marks](../marks/rule.md) · [Bar marks](../marks/bar.md)
 
 <!-- Source: /api/scales/ -->
 
 # Scale Options
 
 {% include chart-example.html id="density" %}
+
+Scales map semantic field or datum values into concrete positions and
+appearance values. Encodings create compatible scales automatically; use
+`editScale` when the inferred mapping needs a documented revision.
 
 ## At a glance
 
@@ -5260,6 +5376,44 @@ program.encodeX({
 `paddingInner` is less than `1`. `editScale` rematerializes all connected marks
 and guides. A band can be shared by bars and point centers, but changing it to
 `point` is rejected while a bar requires its bandwidth.
+
+## Focused scale families
+
+<div class="docs-entry-grid docs-entry-grid--two">
+  <a href="./scales/position/"><strong>Position scales</strong><span>Linear, transformed, time, band, and point mappings.</span></a>
+  <a href="./scales/ordinal-and-dash/"><strong>Ordinal and dash scales</strong><span>Stable categorical domains and stroke-dash ranges.</span></a>
+  <a href="./scales/continuous-color/"><strong>Continuous color</strong><span>Named palettes and continuous quantitative color.</span></a>
+  <a href="./scales/discretized-color/"><strong>Discretized color</strong><span>Quantize, quantile, and threshold classes.</span></a>
+  <a href="./scales/missing-values/"><strong>Missing values</strong><span>Unknown fallbacks and compound-grain limits.</span></a>
+</div>
+
+## Errors and limitations
+
+One scale cannot be shared across different channels. Explicit domains must
+contain every observed value required by ordinal consumers. A successful edit
+rematerializes connected marks and guides; a failed edit leaves the earlier
+immutable program unchanged.
+
+Scale type transitions reject incompatible field types, channels, or mark
+grains before changing the immutable program. Discretized color transitions
+currently require quantitative point color; sequential color supports points
+and aggregate bars. An active gradient or interval legend also fixes its
+current recipe family, so a transition between sequential and discretized
+color is rejected instead of silently replacing the guide.
+
+## Related
+
+[Position encodings](./position-encodings.md) ·
+[Series encodings](./series-encodings.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·
+[Troubleshooting](../troubleshooting.md)
+
+<!-- Source: /api/scales/position/ -->
+
+# Position Scales
+
+{% include chart-example.html id="scatterplot" %}
+
+{% include chart-example.html id="line" %}
 
 ## Compatibility matrix
 
@@ -5348,6 +5502,18 @@ overlay domain must contain zero, while explicit range values remain authoritati
 The y action resolves the scale but leaves rectangles empty until grouping
 semantics are available.
 
+## Related
+
+[Scale overview](../scales.md) · [Encodings](../encodings.md) · [Troubleshooting](../../troubleshooting.md)
+
+<!-- Source: /api/scales/ordinal-and-dash/ -->
+
+# Ordinal and Stroke-Dash Scales
+
+{% include chart-example.html id="line" %}
+
+{% include chart-example.html id="line" %}
+
 ## Discrete and ordinal scales
 
 Band/point position, color, and stroke-dash encodings use ordered discrete
@@ -5392,6 +5558,18 @@ program.encodeStrokeDash({
 Semantic scale state preserves the names; the resolved scale, line paths, and
 legend symbols contain numeric patterns only. Pattern lengths use logical
 Canvas units and do not change with output pixel ratio.
+
+## Related
+
+[Scale overview](../scales.md) · [Encodings](../encodings.md) · [Troubleshooting](../../troubleshooting.md)
+
+<!-- Source: /api/scales/continuous-color/ -->
+
+# Continuous Color Scales
+
+{% include chart-example.html id="density" %}
+
+{% include chart-example.html id="density" %}
 
 ## Named palettes
 
@@ -5451,6 +5629,18 @@ aggregate. A different quantitative field requires an explicit `aggregate`.
 The automatic domain is derived from those final aggregate values, not from
 the unaggregated source rows.
 
+## Related
+
+[Scale overview](../scales.md) · [Encodings](../encodings.md) · [Troubleshooting](../../troubleshooting.md)
+
+<!-- Source: /api/scales/discretized-color/ -->
+
+# Discretized Color Scales
+
+{% include chart-example.html id="scatterplot" %}
+
+{% include chart-example.html id="scatterplot" %}
+
 ## Discretized point color
 
 Quantitative point color can create concrete color classes instead of a
@@ -5481,6 +5671,18 @@ mappings are available through quantitative point `encodeColor` and the direct
 scale vocabulary. A type-changing `editScale` call validates the complete
 replacement definition before rematerializing its consumers.
 
+## Related
+
+[Scale overview](../scales.md) · [Encodings](../encodings.md) · [Troubleshooting](../../troubleshooting.md)
+
+<!-- Source: /api/scales/missing-values/ -->
+
+# Scale Missing Values
+
+{% include chart-example.html id="scatterplot" %}
+
+{% include chart-example.html id="scatterplot" %}
+
 ## Missing and invalid values
 
 Point encodings can provide an `unknown` fallback inside their scale options:
@@ -5506,25 +5708,9 @@ have a separate topology-safe policy. A direct unattached scale stores its
 fallback and defers channel validation until attachment. Set
 `unknown: undefined` with `editScale` to remove an existing fallback.
 
-## Errors and limitations
-
-One scale cannot be shared across different channels. Explicit domains must
-contain every observed value required by ordinal consumers. A successful edit
-rematerializes connected marks and guides; a failed edit leaves the earlier
-immutable program unchanged.
-
-Scale type transitions reject incompatible field types, channels, or mark
-grains before changing the immutable program. Discretized color transitions
-currently require quantitative point color; sequential color supports points
-and aggregate bars. An active gradient or interval legend also fixes its
-current recipe family, so a transition between sequential and discretized
-color is rejected instead of silently replacing the guide.
-
 ## Related
 
-[Position encodings](./position-encodings.md) ·
-[Series encodings](./series-encodings.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·
-[Troubleshooting](../troubleshooting.md)
+[Scale overview](../scales.md) · [Encodings](../encodings.md) · [Troubleshooting](../../troubleshooting.md)
 
 <!-- Source: /api/coordinates/ -->
 
@@ -5945,6 +6131,42 @@ Cartesian or Polar coordinate. Ambiguous resources require explicit IDs.
 | Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
 | `removeLegend` | `removeLegend({ target: "points" })` | Existing legend owner | All owned legend blocks removed |
 
+Legends are inferred from final mark encodings and materialized as concrete
+graphics. Start with the family that matches the encoded channel and use the
+editing page when changing an existing guide.
+
+## Focused legend families
+
+<div class="docs-entry-grid docs-entry-grid--two">
+  <a href="./legends/categorical/"><strong>Categorical legends</strong><span>Create categorical, size, and interval guides and control their layout.</span></a>
+  <a href="./legends/continuous/"><strong>Continuous legends</strong><span>Gradient color and sampled opacity guides.</span></a>
+  <a href="./legends/composite/"><strong>Composite symbols</strong><span>Layered line, point, and swatch recipes plus optional borders.</span></a>
+  <a href="./legends/editing/"><strong>Edit and remove</strong><span>Atomic component edits, rematerialization, trace, and removal.</span></a>
+</div>
+
+## Errors and limitations
+
+Continuous color is currently limited to point marks, and field opacity is
+limited to quantitative point fields. Interactive legends are unsupported.
+Combined point-series and quantitative-size legends require a right or left
+side position so both blocks remain in one vertical stack. A left block must
+fit outside any left y-axis guides; use sufficient margin and offset.
+Right-side layout requires sufficient right margin; bottom layout requires
+sufficient bottom margin; top layout requires enough top margin for its title,
+item grid, offset, and optional border. The library reports a layout error
+instead of resizing the Canvas or dropping symbol layers.
+
+## Related
+
+[Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
+[Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)
+
+<!-- Source: /api/legends/categorical/ -->
+
+# Categorical and Size Legends
+
+{% include chart-example.html id="line" %}
+
 ## `createLegend(options?)`
 
 Creates inferred legend blocks. It supports combined line-series,
@@ -6029,6 +6251,16 @@ densityArea.createLegend({
 });
 ~~~
 
+## Related
+
+[Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)
+
+<!-- Source: /api/legends/continuous/ -->
+
+# Continuous Legends
+
+{% include chart-example.html id="density" %}
+
 ## Continuous color and opacity
 
 A point `color` encoding with a quantitative or temporal field produces a
@@ -6071,6 +6303,16 @@ program.createLegend({
   symbol: { width: 14, height: 12 }
 });
 ~~~
+
+## Related
+
+[Legend overview](../legends.md) · [Scale options](../scales.md) · [Editing legends](./editing.md)
+
+<!-- Source: /api/legends/composite/ -->
+
+# Composite Legend Symbols
+
+{% include chart-example.html id="regression" %}
 
 ## Layered symbols
 
@@ -6164,6 +6406,16 @@ program.createLegend({
 
 The background is rendered before every symbol layer, label, and title.
 
+## Related
+
+[Legend overview](../legends.md) · [Categorical legends](./categorical.md) · [Series encodings](../series-encodings.md)
+
+<!-- Source: /api/legends/editing/ -->
+
+# Editing Legends
+
+{% include chart-example.html id="density" %}
+
 ## Updates and trace
 
 `editLegend()` updates one existing stable legend. Omit `target` when exactly
@@ -6255,22 +6507,9 @@ grouped-area color, and compatible point color/shape/size, sequential color,
 or standalone field-opacity legends automatically.
 Pass `createGuides({ legend: false })` to opt out.
 
-## Errors and limitations
-
-Continuous color is currently limited to point marks, and field opacity is
-limited to quantitative point fields. Interactive legends are unsupported.
-Combined point-series and quantitative-size legends require a right or left
-side position so both blocks remain in one vertical stack. A left block must
-fit outside any left y-axis guides; use sufficient margin and offset.
-Right-side layout requires sufficient right margin; bottom layout requires
-sufficient bottom margin; top layout requires enough top margin for its title,
-item grid, offset, and optional border. The library reports a layout error
-instead of resizing the Canvas or dropping symbol layers.
-
 ## Related
 
-[Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
-[Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)
+[Legend overview](../legends.md) · [Guides](../guides.md) · [Canvas](../canvas.md)
 
 <!-- Source: /concepts/chart-program/ -->
 
@@ -6814,7 +7053,7 @@ highlightMarks({
 Select point, bar, line, area, or rule items inline or reuse a stored selection,
 then apply mark-specific concrete emphasis, optional complement dimming, and
 selected-last order.
-[Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
+[Mark selection and highlighting](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
 ### `createRegressionData`
 
@@ -7535,7 +7774,7 @@ editLegendBorder({ target?, border })
 Edit one legend component without constructing the nested options accepted by
 `editLegend`. Each action uses the same target inference, validation, and
 rematerialization as `editLegend`. At least one component change is required.
-[Legends](../api/legends.md#focused-edits)
+[Editing legends](../api/legends/editing.md#focused-edits)
 
 ### `removeLegend`
 
@@ -7594,7 +7833,7 @@ Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
 `range`, `min`, and `max`. `grain` defaults to `"item"`; stacked bars also
 support `"stack"`. Fields are data values, channels are pre-scale semantic
 values, and properties are concrete graphical values.
-[Mark selection and highlighting](../api/appearance.md#mark-selection-and-highlighting)
+[Mark selection and highlighting](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
 ### Semantic resources and regression layers
 
@@ -7624,7 +7863,7 @@ layers normally owned by `createRegression`.
 does not materialize values. Its public `DatasetTransform` union supports
 `filter`, `regression`, `density`, and `interval` objects. A single object or
 empty array is invalid. See the runnable filter example and exact transform
-requirements in [Data](../api/data.md#createderiveddata-id-source-transform).
+requirements in [Source and derived data](../api/data/source-and-derived.md#createderiveddata-id-source-transform).
 
 ### Complete single-channel axes
 
