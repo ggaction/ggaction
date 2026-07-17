@@ -153,8 +153,8 @@ try {
   assert.deepEqual(desktopErrors, []);
 
   await desktop.goto(`${baseUrl}tutorials/`, { waitUntil: "networkidle" });
-  assert.equal(await desktop.locator(".docs-chart-index article").count(), 9);
-  assert.equal(await desktop.locator(".docs-chart-index img").count(), 9);
+  assert.equal(await desktop.locator(".docs-chart-index article").count(), 10);
+  assert.equal(await desktop.locator(".docs-chart-index img").count(), 10);
   await desktop.goto(`${baseUrl}getting-started/`, { waitUntil: "networkidle" });
   assert.equal(await desktop.locator(".docs-example-figure img").count(), 1);
   await desktop.goto(baseUrl, { waitUntil: "networkidle" });
