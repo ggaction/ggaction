@@ -1,6 +1,9 @@
 import { action } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
-import { validateKeys } from "../../../../core/validation.js";
+import {
+  validateKeys,
+  validateOptionObject
+} from "../../../../core/validation.js";
 import { formatDiscretizedIntervals } from "../../../../grammar/scales.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
@@ -38,10 +41,7 @@ function textOptions(value, label, defaults) {
 }
 
 export function normalizeIntervalLegend(args) {
-  if (!isPlainObject(args)) {
-    throw new TypeError("createLegend options must be a plain object.");
-  }
-  validateKeys(args, OPTIONS, "createLegend");
+  validateOptionObject(args, OPTIONS, "createLegend");
   if (args.channels !== undefined && (
     !Array.isArray(args.channels) ||
     args.channels.length !== 1 ||

@@ -12,13 +12,10 @@ import {
   CARTESIAN_POSITION_CHANNELS,
   POSITION_CHANNELS
 } from "../../core/vocabulary.js";
+import { validateOptionObject } from "../../core/validation.js";
 
 export function validateMarkOptions(args, supported, operation) {
-  for (const key of Object.keys(args)) {
-    if (!supported.includes(key)) {
-      throw new Error(`Unknown ${operation} option "${key}".`);
-    }
-  }
+  validateOptionObject(args, supported, operation);
 }
 
 export function resolveMarkData(program, requested) {

@@ -1,4 +1,4 @@
-import { isPlainObject } from "../../../../core/immutable.js";
+import { validateOptionObject } from "../../../../core/validation.js";
 import { CATEGORICAL_LEGEND_CHANNELS } from "../../../../core/vocabulary.js";
 import { normalizeRecipe } from "./recipes.js";
 import {
@@ -86,10 +86,7 @@ function normalizeBorder(border) {
 }
 
 export function normalizeOptions(args, kind) {
-  if (!isPlainObject(args)) {
-    throw new TypeError("createLegend options must be a plain object.");
-  }
-  validateKeys(args, OPTIONS, "createLegend");
+  validateOptionObject(args, OPTIONS, "createLegend");
   if (Object.hasOwn(args, "labels")) {
     validateObject(args.labels, TEXT_OPTIONS, "createLegend.labels");
   }

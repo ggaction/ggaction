@@ -3,14 +3,14 @@ import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { hasMaterializedLegend } from "../../materialization/legends.js";
 import { findSemanticScale } from "../../selectors/scales.js";
-import { validateKeys } from "../../core/validation.js";
+import { validateOptionObject } from "../../core/validation.js";
 import {
   getMarkGraphicTypes,
   getPositionChannelDefinition
 } from "../../core/vocabulary.js";
 
 export function validateOptions(args, supported, operation) {
-  validateKeys(args, supported, operation);
+  validateOptionObject(args, supported, operation);
 }
 
 export function validateLineSeriesCompatibility(layer, channel, field) {

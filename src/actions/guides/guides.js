@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
+import { validateOptionObject } from "../../core/validation.js";
 import {
   resolveAutomaticGridOptions,
   resolveGuideApplicability
@@ -14,14 +15,7 @@ function validateGuideOption(value, label) {
 }
 
 function validateOptions(args) {
-  if (!isPlainObject(args)) {
-    throw new TypeError("createGuides options must be a plain object.");
-  }
-  for (const key of Object.keys(args)) {
-    if (!OPTIONS.includes(key)) {
-      throw new Error(`Unknown createGuides option "${key}".`);
-    }
-  }
+  validateOptionObject(args, OPTIONS, "createGuides");
   validateGuideOption(args.axes, "createGuides axes");
   validateGuideOption(args.grid, "createGuides grid");
   validateGuideOption(args.legend, "createGuides legend");

@@ -3,15 +3,12 @@ import { validateCoordinateType } from "../../grammar/coordinates.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { findCoordinate } from "../../selectors/coordinates.js";
 import { findLayer, hasLayer } from "../../selectors/layers.js";
+import { validateOptionObject } from "../../core/validation.js";
 
 const COORDINATE_OPTIONS = Object.freeze(["id", "type", "layers"]);
 
 function validateOptions(args) {
-  for (const key of Object.keys(args)) {
-    if (!COORDINATE_OPTIONS.includes(key)) {
-      throw new Error(`Unknown createCoordinate option "${key}".`);
-    }
-  }
+  validateOptionObject(args, COORDINATE_OPTIONS, "createCoordinate");
 }
 
 function validateLayers(program, layers) {

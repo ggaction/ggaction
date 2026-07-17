@@ -1,7 +1,7 @@
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { validateKeys } from "../../../core/validation.js";
+import { validateKeys, validateOptionObject } from "../../../core/validation.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import { resolvePolarGuideResources } from "../polar/resolve.js";
 
@@ -18,11 +18,7 @@ function validateAxisOption(value, channel) {
 }
 
 function validateArgs(args) {
-  if (!isPlainObject(args)) {
-    throw new TypeError("createAxes options must be a plain object.");
-  }
-
-  validateKeys(args, TOP_OPTIONS, "createAxes");
+  validateOptionObject(args, TOP_OPTIONS, "createAxes");
   validateAxisOption(args.x, "x");
   validateAxisOption(args.y, "y");
   validateAxisOption(args.theta, "theta");

@@ -1,6 +1,5 @@
 import { action } from "../../../core/action.js";
-import { isPlainObject } from "../../../core/immutable.js";
-import { validateKeys } from "../../../core/validation.js";
+import { validateOptionObject } from "../../../core/validation.js";
 
 function makeFocusedLegendEdit({ name, options, map }) {
   return action(
@@ -9,10 +8,7 @@ function makeFocusedLegendEdit({ name, options, map }) {
       description: `Edit one focused legend component through editLegend.`
     },
     function (args = {}) {
-      if (!isPlainObject(args)) {
-        throw new TypeError(`${name} options must be a plain object.`);
-      }
-      validateKeys(args, ["target", ...options], name);
+      validateOptionObject(args, ["target", ...options], name);
       if (!options.some(option => Object.hasOwn(args, option))) {
         throw new Error(`${name} requires at least one component change.`);
       }

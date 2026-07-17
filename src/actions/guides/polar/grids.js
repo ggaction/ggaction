@@ -1,7 +1,7 @@
 import { action } from "../../../core/action.js";
-import { isPlainObject } from "../../../core/immutable.js";
 import {
-  validateKeys,
+  noOptions,
+  validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite
 } from "../../../core/validation.js";
@@ -46,13 +46,12 @@ function validateStrokeDash(value) {
 }
 
 function validateOptions(args, operation, create) {
-  if (!isPlainObject(args)) {
-    throw new TypeError(`${operation} options must be a plain object.`);
-  }
-  validateKeys(args, create ? CREATE_OPTIONS : EDIT_OPTIONS, operation);
-  if (!create && Object.keys(args).length === 0) {
-    throw new Error(`${operation} requires at least one option.`);
-  }
+  validateOptionObject(
+    args,
+    create ? CREATE_OPTIONS : EDIT_OPTIONS,
+    operation,
+    { allowEmpty: create, emptyError: Error }
+  );
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
   }
@@ -156,9 +155,7 @@ function makeRematerialize(kind) {
     op: operations.rematerialize,
     description: `Recompute concrete Polar ${kind} grid geometry.`
   }, function (args = {}) {
-    if (!isPlainObject(args) || Object.keys(args).length !== 0) {
-      throw new TypeError(`${operations.rematerialize} does not accept options.`);
-    }
+    noOptions(args, operations.rematerialize);
     const config = this.guideConfigs.grid?.[kind];
     const semantic = this.semanticSpec.guides.grid?.[kind];
     const graphic = this.graphicSpec.objects[polarGuideNames(kind).grid];

@@ -8,6 +8,22 @@ export function validateKeys(value, supported, label) {
   }
 }
 
+export function validateOptionObject(value, supported, label, {
+  allowEmpty = true,
+  plainObjectMessage = `${label} options must be a plain object.`,
+  emptyMessage = `${label} requires at least one option.`,
+  emptyError = TypeError
+} = {}) {
+  if (!isPlainObject(value)) {
+    throw new TypeError(plainObjectMessage);
+  }
+  if (supported !== undefined) validateKeys(value, supported, label);
+  if (!allowEmpty && Object.keys(value).length === 0) {
+    throw new emptyError(emptyMessage);
+  }
+  return value;
+}
+
 export function noOptions(args, operation) {
   if (!isPlainObject(args) || Object.keys(args).length > 0) {
     throw new Error(`${operation} does not accept options.`);

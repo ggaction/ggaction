@@ -1,6 +1,10 @@
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
-import { validateKeys } from "../../../core/validation.js";
+import {
+  noOptions,
+  validateKeys,
+  validateOptionObject
+} from "../../../core/validation.js";
 import {
   gridNames,
   editGridConfig,
@@ -43,9 +47,7 @@ function makeRematerialize(direction) {
       description: `Recompute concrete ${direction} grid lines.`
     },
     function (args = {}) {
-      if (!isPlainObject(args) || Object.keys(args).length !== 0) {
-        throw new TypeError(`${operation.rematerialize} does not accept options.`);
-      }
+      noOptions(args, operation.rematerialize);
       const storedConfig = this.guideConfigs.grid?.[direction];
       const semantic = this.semanticSpec.guides.grid?.[direction];
       if (
@@ -187,13 +189,11 @@ const editGrid = action(
     description: "Edit selected existing Cartesian grid directions."
   },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("editGrid options must be a plain object.");
-    }
-    validateKeys(args, AGGREGATE_OPTIONS, "editGrid");
-    if (Object.keys(args).length === 0) {
-      throw new Error("editGrid requires horizontal or vertical changes.");
-    }
+    validateOptionObject(args, AGGREGATE_OPTIONS, "editGrid", {
+      allowEmpty: false,
+      emptyMessage: "editGrid requires horizontal or vertical changes.",
+      emptyError: Error
+    });
     for (const direction of AGGREGATE_OPTIONS) {
       if (!Object.hasOwn(args, direction)) continue;
       if (!isPlainObject(args[direction])) {
@@ -223,10 +223,7 @@ const createGrid = action(
     description: "Create selected Cartesian grid directions."
   },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("createGrid options must be a plain object.");
-    }
-    validateKeys(args, AGGREGATE_OPTIONS, "createGrid");
+    validateOptionObject(args, AGGREGATE_OPTIONS, "createGrid");
     const automatic = Object.keys(args).length === 0
       ? resolveAutomaticGridOptions(this)
       : undefined;
@@ -278,9 +275,7 @@ const rematerializeGrid = action(
     description: "Recompute every existing grid direction."
   },
   function (args = {}) {
-    if (!isPlainObject(args) || Object.keys(args).length !== 0) {
-      throw new TypeError("rematerializeGrid does not accept options.");
-    }
+    noOptions(args, "rematerializeGrid");
     let next = this;
     let count = 0;
     if (this.guideConfigs.grid?.horizontal !== undefined) {
@@ -312,10 +307,7 @@ const removeGrid = action(
     description: "Remove selected Cartesian grid directions."
   },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("removeGrid options must be a plain object.");
-    }
-    validateKeys(args, AGGREGATE_OPTIONS, "removeGrid");
+    validateOptionObject(args, AGGREGATE_OPTIONS, "removeGrid");
     for (const direction of AGGREGATE_OPTIONS) {
       if (
         Object.hasOwn(args, direction) &&

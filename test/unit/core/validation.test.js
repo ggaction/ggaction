@@ -5,6 +5,7 @@ import {
   noOptions,
   sameOrderedValues,
   validateKeys,
+  validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite,
   validatePositiveFinite,
@@ -23,6 +24,28 @@ test("requires an empty plain option object", () => {
   assert.doesNotThrow(() => noOptions({}, "operation"));
   assert.throws(() => noOptions({ value: 1 }, "operation"), /does not accept/);
   assert.throws(() => noOptions([], "operation"), /does not accept/);
+});
+
+test("validates one canonical option-object contract", () => {
+  const options = { width: 10 };
+  assert.equal(
+    validateOptionObject(options, ["width"], "example"),
+    options
+  );
+  assert.throws(
+    () => validateOptionObject([], ["width"], "example"),
+    /example options must be a plain object/
+  );
+  assert.throws(
+    () => validateOptionObject({ typo: true }, ["width"], "example"),
+    /Unknown example option "typo"/
+  );
+  assert.throws(
+    () => validateOptionObject({}, ["width"], "example", {
+      allowEmpty: false
+    }),
+    /example requires at least one option/
+  );
 });
 
 test("compares ordered values without coercion", () => {

@@ -1,7 +1,6 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { isPlainObject } from "../../../core/immutable.js";
-import { validateKeys } from "../../../core/validation.js";
+import { validateOptionObject } from "../../../core/validation.js";
 import { normalizeOptions } from "./categorical/options.js";
 import { symbolGraphic } from "./categorical/layout.js";
 import {
@@ -276,10 +275,7 @@ function editCategorical(program, kind, previous, size, args) {
 export const editLegend = action(
   { op: "editLegend", description: "Edit one stable legend layout or appearance." },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("editLegend options must be a plain object.");
-    }
-    validateKeys(args, OPTIONS, "editLegend");
+    validateOptionObject(args, OPTIONS, "editLegend");
     const changes = Object.keys(args).filter(key => key !== "target");
     if (changes.length === 0) {
       throw new Error("editLegend requires at least one change.");

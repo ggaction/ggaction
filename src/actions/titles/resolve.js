@@ -1,6 +1,7 @@
 import { isPlainObject } from "../../core/immutable.js";
 import {
   validateKeys,
+  validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite,
   validatePositiveFinite
@@ -131,10 +132,7 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
 }
 
 export function normalizeTitleOptions(args) {
-  if (!isPlainObject(args)) {
-    throw new TypeError("createTitle options must be a plain object.");
-  }
-  validateKeys(args, OPTIONS, "createTitle");
+  validateOptionObject(args, OPTIONS, "createTitle");
   const text = validateTitleString(args.text, "Chart title text");
   const subtitle = args.subtitle === undefined
     ? undefined
@@ -147,13 +145,11 @@ export function normalizeTitleOptions(args) {
 }
 
 export function normalizeTitleEditOptions(args, previous, semanticTitle) {
-  if (!isPlainObject(args)) {
-    throw new TypeError("editTitle options must be a plain object.");
-  }
-  validateKeys(args, OPTIONS, "editTitle");
-  if (Object.keys(args).length === 0) {
-    throw new Error("editTitle requires at least one change.");
-  }
+  validateOptionObject(args, OPTIONS, "editTitle", {
+    allowEmpty: false,
+    emptyMessage: "editTitle requires at least one change.",
+    emptyError: Error
+  });
   const text = args.text === undefined
     ? semanticTitle.text
     : validateTitleString(args.text, "Chart title text");

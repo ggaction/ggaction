@@ -1,5 +1,5 @@
 import { action } from "../../../../core/action.js";
-import { isPlainObject } from "../../../../core/immutable.js";
+import { validateOptionObject } from "../../../../core/validation.js";
 import { noOptions, resolveLayout, activeConfig } from "./layout.js";
 import { normalizeOptions } from "./options.js";
 import { findLayer } from "../../../../selectors/layers.js";
@@ -171,9 +171,7 @@ export const createCategoricalLegend = action(
 export const createLegend = action(
   { op: "createLegend", description: "Create an inferred legend for selected channels." },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("createLegend options must be a plain object.");
-    }
+    validateOptionObject(args, undefined, "createLegend");
     const channels = args.channels;
     if (channels !== undefined && !Array.isArray(channels)) {
       throw new TypeError("createLegend channels must be an array.");

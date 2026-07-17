@@ -1,5 +1,4 @@
-import { isPlainObject } from "../../../../core/immutable.js";
-import { validateKeys } from "../../../../core/validation.js";
+import { validateOptionObject } from "../../../../core/validation.js";
 import {
   POLAR_AXIS_DEFAULTS,
   resolvePolarGuideResources
@@ -43,10 +42,7 @@ export function operations(kind, component) {
 }
 
 export function validateObject(args, supported, operation) {
-  if (!isPlainObject(args)) {
-    throw new TypeError(`${operation} options must be a plain object.`);
-  }
-  validateKeys(args, supported, operation);
+  validateOptionObject(args, supported, operation);
 }
 
 export function validateModeOptions(args, operation) {

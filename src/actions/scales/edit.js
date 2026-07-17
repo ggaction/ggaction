@@ -1,7 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { isPlainObject } from "../../core/immutable.js";
-import { validateKeys } from "../../core/validation.js";
+import { validateOptionObject } from "../../core/validation.js";
 import {
   isTransformedScaleType,
   SCALE_ROLES,
@@ -251,10 +250,7 @@ export const editScale = action(
     description: "Edit an existing scale and rematerialize its consumers."
   },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("editScale options must be a plain object.");
-    }
-    validateKeys(args, OPTIONS, "editScale");
+    validateOptionObject(args, OPTIONS, "editScale");
     if (!REQUESTED_CHANGES.some(property => Object.hasOwn(args, property))) {
       throw new Error("editScale requires at least one editable property.");
     }

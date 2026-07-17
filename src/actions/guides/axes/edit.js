@@ -1,6 +1,6 @@
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
-import { validateKeys } from "../../../core/validation.js";
+import { validateKeys, validateOptionObject } from "../../../core/validation.js";
 
 const OPTIONS = Object.freeze([
   "position", "line", "ticks", "labels", "ticksAndLabels", "title"
@@ -28,13 +28,11 @@ function validateNested(args, key, options, operation) {
 }
 
 function validateArgs(args, operation) {
-  if (!isPlainObject(args)) {
-    throw new TypeError(`${operation} options must be a plain object.`);
-  }
-  validateKeys(args, OPTIONS, operation);
-  if (Object.keys(args).length === 0) {
-    throw new Error(`${operation} requires at least one axis change.`);
-  }
+  validateOptionObject(args, OPTIONS, operation, {
+    allowEmpty: false,
+    emptyMessage: `${operation} requires at least one axis change.`,
+    emptyError: Error
+  });
   validateNested(args, "line", LINE_OPTIONS, operation);
   validateNested(args, "ticks", TICK_OPTIONS, operation);
   validateNested(args, "labels", LABEL_OPTIONS, operation);

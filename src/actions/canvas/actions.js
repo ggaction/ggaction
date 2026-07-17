@@ -6,6 +6,7 @@ import {
   validateCanvasState
 } from "../../layout/canvas.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
+import { validateOptionObject } from "../../core/validation.js";
 import {
   applyMaterializationPlan,
   planCanvasRematerialization
@@ -25,17 +26,7 @@ const CANVAS_OPTIONS = Object.freeze([
 ]);
 
 function validateOptions(args, operation, { allowEmpty = false } = {}) {
-  const keys = Object.keys(args);
-
-  if (!allowEmpty && keys.length === 0) {
-    throw new TypeError(`${operation} requires at least one option.`);
-  }
-
-  for (const key of keys) {
-    if (!CANVAS_OPTIONS.includes(key)) {
-      throw new Error(`Unknown ${operation} option "${key}".`);
-    }
-  }
+  validateOptionObject(args, CANVAS_OPTIONS, operation, { allowEmpty });
 }
 
 function requireCanvas(program) {

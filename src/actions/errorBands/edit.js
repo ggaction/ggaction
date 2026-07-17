@@ -1,8 +1,7 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { isPlainObject } from "../../core/immutable.js";
 import {
-  validateKeys,
+  validateOptionObject,
   validateNonEmptyString,
   validateUnitInterval
 } from "../../core/validation.js";
@@ -89,10 +88,11 @@ export const rematerializeErrorBandBoundary = action(
     description: "Rematerialize one owned error-band boundary."
   },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("rematerializeErrorBandBoundary options must be a plain object.");
-    }
-    validateKeys(args, REMATERIALIZE_OPTIONS, "rematerializeErrorBandBoundary");
+    validateOptionObject(
+      args,
+      REMATERIALIZE_OPTIONS,
+      "rematerializeErrorBandBoundary"
+    );
     const id = validateUserId(args.id, "Error-band boundary id");
     currentBoundaryAppearance(this, id);
     const graphic = this.graphicSpec.objects[id];
@@ -120,10 +120,7 @@ export const editErrorBand = action(
     description: "Edit one error-band body appearance."
   },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("editErrorBand options must be a plain object.");
-    }
-    validateKeys(args, EDIT_OPTIONS, "editErrorBand");
+    validateOptionObject(args, EDIT_OPTIONS, "editErrorBand");
     if (!["fill", "opacity", "curve"].some(key => Object.hasOwn(args, key))) {
       throw new Error("editErrorBand requires fill, opacity, or curve.");
     }
@@ -151,10 +148,11 @@ export const editErrorBandBoundary = action(
     description: "Edit one or both owned error-band boundaries."
   },
   function (args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("editErrorBandBoundary options must be a plain object.");
-    }
-    validateKeys(args, BOUNDARY_EDIT_OPTIONS, "editErrorBandBoundary");
+    validateOptionObject(
+      args,
+      BOUNDARY_EDIT_OPTIONS,
+      "editErrorBandBoundary"
+    );
     if (!ERROR_BAND_BOUNDARY_OPTIONS.some(key => Object.hasOwn(args, key))) {
       throw new Error("editErrorBandBoundary requires an appearance change.");
     }

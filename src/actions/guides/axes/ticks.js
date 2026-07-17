@@ -2,7 +2,8 @@ import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   validateNonEmptyString,
-  validateNonNegativeFinite
+  validateNonNegativeFinite,
+  validateOptionObject
 } from "../../../core/validation.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
@@ -33,7 +34,11 @@ const DEFAULTS = Object.freeze({
 });
 
 function validateOptions(args, operation, create) {
-  for (const key of Object.keys(args)) if (!OPTIONS.includes(key) || (!create && key === "scale")) throw new Error(`Unknown ${operation} option "${key}".`);
+  validateOptionObject(
+    args,
+    create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
+    operation
+  );
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) throw new Error(`${operation} cannot use count and values together.`);
 }
 

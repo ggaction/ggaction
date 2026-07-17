@@ -1,6 +1,7 @@
 import { isPlainObject } from "../../../../core/immutable.js";
 import {
   validateKeys,
+  validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite,
   validatePositiveFinite
@@ -87,10 +88,7 @@ function normalizeBorder(value) {
 }
 
 export function normalizeContinuousLegend(args, kind) {
-  if (!isPlainObject(args)) {
-    throw new TypeError("createLegend options must be a plain object.");
-  }
-  validateKeys(args, OPTIONS, "createLegend");
+  validateOptionObject(args, OPTIONS, "createLegend");
   const position = args.position ?? "right";
   if (!POSITIONS.includes(position)) {
     throw new Error(`Unsupported legend position "${position}".`);

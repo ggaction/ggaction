@@ -1,7 +1,6 @@
 import { validateUserId } from "../../../core/identifiers.js";
-import { isPlainObject } from "../../../core/immutable.js";
 import {
-  validateKeys,
+  validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite
 } from "../../../core/validation.js";
@@ -58,10 +57,7 @@ function validateStrokeDash(value) {
 }
 
 export function validateGridCreateArgs(args, operation) {
-  if (!isPlainObject(args)) {
-    throw new TypeError(`${operation} options must be a plain object.`);
-  }
-  validateKeys(args, GRID_OPTIONS, operation);
+  validateOptionObject(args, GRID_OPTIONS, operation);
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
   }
@@ -85,13 +81,9 @@ export function validateGridCreateArgs(args, operation) {
 }
 
 export function validateGridEditArgs(args, operation) {
-  if (!isPlainObject(args)) {
-    throw new TypeError(`${operation} options must be a plain object.`);
-  }
-  validateKeys(args, GRID_EDIT_OPTIONS, operation);
-  if (Object.keys(args).length === 0) {
-    throw new TypeError(`${operation} requires at least one option.`);
-  }
+  validateOptionObject(args, GRID_EDIT_OPTIONS, operation, {
+    allowEmpty: false
+  });
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
   }

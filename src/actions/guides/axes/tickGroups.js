@@ -1,6 +1,6 @@
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
-import { validateKeys } from "../../../core/validation.js";
+import { validateKeys, validateOptionObject } from "../../../core/validation.js";
 
 const CREATE_OPTIONS = Object.freeze([
   "scale",
@@ -38,7 +38,12 @@ function validateNested(value, supported, label) {
 }
 
 function validateArgs(args, operation, create) {
-  validateKeys(args, create ? CREATE_OPTIONS : EDIT_OPTIONS, operation);
+  validateOptionObject(
+    args,
+    create ? CREATE_OPTIONS : EDIT_OPTIONS,
+    operation,
+    { allowEmpty: create }
+  );
 
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
@@ -52,9 +57,6 @@ function validateArgs(args, operation, create) {
     validateNested(args.labels, LABEL_OPTIONS, `${operation}.labels`);
   }
 
-  if (!create && Object.keys(args).length === 0) {
-    throw new TypeError(`${operation} requires at least one option.`);
-  }
 }
 
 function select(source, keys) {
