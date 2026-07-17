@@ -1184,6 +1184,12 @@ Mark가 incomplete한 중간 상태일 때 empty graphic collection은 존재할
 임시 geometry를 만들지 않는다. 이후 responsible encoding action이 completeness를
 확보하면 mark rematerialization을 호출한다.
 
+Highlighted mark의 rematerialization은 하나의 shared lifecycle을 사용한다. Lifecycle은
+target에 적용된 highlight config를 immutable baseline에서 잠시 분리하고, stale concrete
+items를 비운 뒤 해당 mark의 wrapped rematerialization action을 호출하며, 마지막으로 저장된
+selection을 현재 item identity에 다시 적용한다. Mark별 materializer는 baseline geometry와
+appearance만 소유하고 highlight strip/replay 절차를 복제하지 않는다.
+
 ## Cross-cutting rematerialization plan
 
 Canvas 또는 shared scale 변경은 여러 mark와 guide에 동시에 영향을 줄 수 있다. 이

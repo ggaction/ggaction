@@ -6,6 +6,7 @@ import { deriveHistogramRectangles } from "../../../materialization/bars/histogr
 import { requireCompleteBar } from "../../../materialization/bars/resolve.js";
 import { deriveRangedRectangles } from "../../../materialization/bars/ranged.js";
 import { BAR_GRAINS } from "../../../grammar/bars/policy.js";
+import { rematerializeHighlightBaseline } from "../lifecycle.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
@@ -69,22 +70,13 @@ export const rematerializeBarMark = action(
       "rematerializeBarMark"
     );
     const id = validateUserId(args.id, "Bar mark id");
-    const highlights = Object.entries(
-      this.materializationConfigs.highlights ?? {}
-    ).filter(([, config]) => config.target === id);
-    if (highlights.length > 0) {
-      let baseline = this;
-      for (const [highlightId] of highlights) {
-        baseline = baseline._withoutMaterializationConfig([
-          "highlights",
-          highlightId
-        ]);
-      }
-      return baseline
-        .editGraphics({ target: id, property: "length", value: 0 })
-        .rematerializeBarMark({ id })
-        .rematerializeMarkHighlights({ target: id, highlights });
-    }
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializeBarMark",
+      resetProperty: "length",
+      resetValue: 0
+    });
+    if (highlighted !== undefined) return highlighted;
     const required = requireCompleteBar(this, id);
     let resolved = this
       .rematerializeScale({ id: required.xEncoding.scale })

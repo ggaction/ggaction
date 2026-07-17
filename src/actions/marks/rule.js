@@ -23,6 +23,7 @@ import {
 } from "./shared.js";
 import { resolveMarkGraphicPlacement } from
   "../../materialization/graphicHierarchy.js";
+import { rematerializeHighlightBaseline } from "./lifecycle.js";
 
 const CREATE_OPTIONS = Object.freeze(["id", "data"]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
@@ -116,19 +117,13 @@ const rematerializeRuleMark = action(
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeRuleMark");
     const id = validateUserId(args.id, "Rule mark id");
-    const highlights = Object.entries(
-      this.materializationConfigs.highlights ?? {}
-    ).filter(([, config]) => config.target === id);
-    if (highlights.length > 0) {
-      let baseline = this;
-      for (const [highlightId] of highlights) {
-        baseline = baseline._withoutMaterializationConfig(["highlights", highlightId]);
-      }
-      return baseline
-        .editGraphics({ target: id, property: "length", value: 0 })
-        .rematerializeRuleMark({ id })
-        .rematerializeMarkHighlights({ target: id, highlights });
-    }
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializeRuleMark",
+      resetProperty: "length",
+      resetValue: 0
+    });
+    if (highlighted !== undefined) return highlighted;
     const { dataset, graphic, layer } = requireRule(this, id);
     validateEndpointBindings(layer);
     const config = this.markConfigs[id] ?? DEFAULT_RULE_CONFIG;

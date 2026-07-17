@@ -16,6 +16,7 @@ import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { resolveMarkGraphicPlacement } from
   "../../materialization/graphicHierarchy.js";
+import { rematerializeHighlightBaseline } from "./lifecycle.js";
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
@@ -137,22 +138,13 @@ const rematerializeArcMark = action(
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeArcMark");
     const id = validateUserId(args.id, "Arc mark id");
-    const highlights = Object.entries(
-      this.materializationConfigs.highlights ?? {}
-    ).filter(([, config]) => config.target === id);
-    if (highlights.length > 0) {
-      let baseline = this;
-      for (const [highlightId] of highlights) {
-        baseline = baseline._withoutMaterializationConfig([
-          "highlights",
-          highlightId
-        ]);
-      }
-      return baseline
-        .editGraphics({ target: id, property: "length", value: 0 })
-        .rematerializeArcMark({ id })
-        .rematerializeMarkHighlights({ target: id, highlights });
-    }
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializeArcMark",
+      resetProperty: "length",
+      resetValue: 0
+    });
+    if (highlighted !== undefined) return highlighted;
     const { layer, dataset } = requireArc(this, id);
     if (!canMaterializeArc(this, layer)) {
       throw new Error(`Arc mark "${id}" does not have a complete encoding.`);

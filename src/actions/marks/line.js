@@ -30,6 +30,7 @@ import { normalizeStrokeDashPattern } from "../../grammar/scales.js";
 import { canMaterializeLine } from "../../materialization/marks.js";
 import { resolveMarkGraphicPlacement } from
   "../../materialization/graphicHierarchy.js";
+import { rematerializeHighlightBaseline } from "./lifecycle.js";
 
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
@@ -163,19 +164,13 @@ const rematerializeLineMark = action(
       "rematerializeLineMark"
     );
     const id = validateUserId(args.id, "Line mark id");
-    const highlights = Object.entries(
-      this.materializationConfigs.highlights ?? {}
-    ).filter(([, config]) => config.target === id);
-    if (highlights.length > 0) {
-      let baseline = this;
-      for (const [highlightId] of highlights) {
-        baseline = baseline._withoutMaterializationConfig(["highlights", highlightId]);
-      }
-      return baseline
-        .editGraphics({ target: id, property: "length", value: 0 })
-        .rematerializeLineMark({ id })
-        .rematerializeMarkHighlights({ target: id, highlights });
-    }
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializeLineMark",
+      resetProperty: "length",
+      resetValue: 0
+    });
+    if (highlighted !== undefined) return highlighted;
     const { dataset, layer } = requireLine(this, id);
     const existingChildren = this.graphicSpec.objects[id].items;
     const xScaleId = layer.encoding?.x?.scale;

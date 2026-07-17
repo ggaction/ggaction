@@ -39,6 +39,7 @@ import { findLayer } from "../../selectors/layers.js";
 import { rematerializeExistingLegend } from "../encodings/shared.js";
 import { resolveMarkGraphicPlacement } from
   "../../materialization/graphicHierarchy.js";
+import { rematerializeHighlightBaseline } from "./lifecycle.js";
 
 const POINT_MARK_OPTIONS = Object.freeze([
   "id", "data", "shape", "fill", "opacity", "stroke", "strokeWidth"
@@ -212,22 +213,13 @@ const rematerializePointMark = action(
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializePointMark");
     const id = validateUserId(args.id, "Point mark id");
-    const highlights = Object.entries(
-      this.materializationConfigs.highlights ?? {}
-    ).filter(([, config]) => config.target === id);
-    if (highlights.length > 0) {
-      let baseline = this;
-      for (const [highlightId] of highlights) {
-        baseline = baseline._withoutMaterializationConfig([
-          "highlights",
-          highlightId
-        ]);
-      }
-      return baseline
-        .editGraphics({ target: id, property: "items", value: [] })
-        .rematerializePointMark({ id })
-        .rematerializeMarkHighlights({ target: id, highlights });
-    }
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializePointMark",
+      resetProperty: "items",
+      resetValue: []
+    });
+    if (highlighted !== undefined) return highlighted;
     const layer = findLayer(this, id);
     const graphic = this.graphicSpec.objects[id];
 

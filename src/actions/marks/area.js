@@ -33,6 +33,7 @@ import { canMaterializeArea } from "../../materialization/marks.js";
 import { findUpstreamTransform } from "../../materialization/dataProvenance.js";
 import { resolveMarkGraphicPlacement } from
   "../../materialization/graphicHierarchy.js";
+import { rematerializeHighlightBaseline } from "./lifecycle.js";
 
 const CREATE_OPTIONS = Object.freeze([
   "id", "data", "fill", "opacity", "stroke", "strokeWidth", "curve"
@@ -110,19 +111,13 @@ const rematerializeAreaMark = action(
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeAreaMark");
     const id = validateUserId(args.id, "Area mark id");
-    const highlights = Object.entries(
-      this.materializationConfigs.highlights ?? {}
-    ).filter(([, config]) => config.target === id);
-    if (highlights.length > 0) {
-      let baseline = this;
-      for (const [highlightId] of highlights) {
-        baseline = baseline._withoutMaterializationConfig(["highlights", highlightId]);
-      }
-      return baseline
-        .editGraphics({ target: id, property: "length", value: 0 })
-        .rematerializeAreaMark({ id })
-        .rematerializeMarkHighlights({ target: id, highlights });
-    }
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializeAreaMark",
+      resetProperty: "length",
+      resetValue: 0
+    });
+    if (highlighted !== undefined) return highlighted;
     const layer = findLayer(this, id);
     const dataset = findDataset(this, layer?.data);
     if (layer?.mark?.type !== "area" || this.graphicSpec.objects[id]?.type !== "path") {
