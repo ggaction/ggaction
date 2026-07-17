@@ -496,10 +496,18 @@ Coordinate는 named semantic resource이며 layer가 ID로 참조한다.
 { id: "main", type: "cartesian" }
 ```
 
-Vocabulary에는 `cartesian`과 미래 확장을 위한 `polar`가 있다. x/y positional encoding은
-명시하지 않으면 `main` Cartesian coordinate를 생성하고 저장한다. `theta`/`radius`의
-default coordinate vocabulary와 semantic path는 준비되어 있지만, 완전한 Polar
-materialization과 guide API는 아직 구현 범위가 아니다.
+Vocabulary에는 `cartesian`과 `polar`가 있다. x/y positional encoding은 명시하지 않으면
+`main` Cartesian coordinate를 생성하고 저장한다. theta/radius positional encoding은 compatible한
+유일한 기존 Polar coordinate를 재사용하거나 `polar` coordinate를 생성하고 저장한다. 여러 compatible
+coordinate가 있으면 임의로 선택하지 않고 explicit ID를 요구한다. 한 layer에서 Cartesian x/y와 Polar
+theta/radius를 함께 저장하지 않는다.
+
+현재 Polar vertical slice는 point mark만 지원한다. Theta의 public 단위는 degree이며 12시 방향의 0에서
+clockwise로 증가한다. 기본 theta range는 `[0, 360]`, 기본 radius range는 현재 plot bounds의 짧은 변
+절반이다. Semantic encoding과 resolved scale은 theta/radius를 유지하지만 point materializer는 Polar frame과
+mapping을 적용한 final Cartesian x/y만 `graphicSpec`에 쓴다. 따라서 renderer는 coordinate type이나 angle을
+해석하지 않는다. 한 Polar channel만 있는 incomplete state는 semantic으로 보존하되 visible point geometry를
+만들지 않는다. Polar axis/grid는 아직 지원하지 않으며 guide action이 명시적인 error를 낸다.
 
 ### Guide와 title
 
@@ -970,6 +978,12 @@ rematerializeScale
   → 직접 매핑 가능한 concrete property edit
   → 필요한 mark/guide rematerialization action 실행
 ```
+
+하나의 mark가 여러 positional scale을 함께 소비하면 plan은 관련 scale을 먼저 모두 resolve한 뒤 mark를 한 번
+materialize한다. 내부 scale rematerialization step은 이 경우 direct mark edit을 억제하고, 뒤따르는 explicit
+mark step이 완성된 scale 집합을 읽는다. 이는 Canvas edit, data revision과 encoding reassignment 도중 새 theta와
+이전 radius처럼 부분적으로 stale한 scale 조합을 concrete geometry에 적용하는 것을 막는다. 한 scale만으로도
+완성 가능한 기존 consumer는 direct scale rematerialization 경로를 유지한다.
 
 Consumer resolution은 mark policy를 고려한다.
 

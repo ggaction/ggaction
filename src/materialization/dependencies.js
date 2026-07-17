@@ -11,15 +11,22 @@ import {
 
 function usesPositionalScale(program, id) {
   return program.semanticSpec.layers.some(layer =>
-    ["x", "y", "x2", "y2", "xOffset"].some(
+    ["x", "y", "x2", "y2", "xOffset", "theta", "radius"].some(
       channel => layer.encoding?.[channel]?.scale === id
     )
+  );
+}
+
+function usesRadialScale(program, id) {
+  return program.semanticSpec.layers.some(layer =>
+    layer.encoding?.radius?.scale === id
   );
 }
 
 function needsCanvasScaleRematerialization(program, scale) {
   return (
     (scale.range === "auto" ||
+      usesRadialScale(program, scale.id) ||
       program.semanticSpec.guides.axis?.x?.scale === scale.id ||
       program.semanticSpec.guides.axis?.y?.scale === scale.id ||
       program.semanticSpec.guides.grid?.horizontal?.scale === scale.id ||
@@ -37,19 +44,36 @@ function hasTitle(program) {
 }
 
 export function planCanvasRematerialization(program) {
-  const scales = [];
-  for (const scale of program.semanticSpec.scales) {
-    if (needsCanvasScaleRematerialization(program, scale)) {
-      scales.push({
-        op: "rematerializeScale",
-        args: { id: scale.id, guides: false }
-      });
-    }
-  }
   const marks = [];
   for (const layer of program.semanticSpec.layers) {
     const step = getMarkMaterializationStep(program, layer);
     if (step !== undefined) marks.push(step);
+  }
+  const deferredPointIds = new Set(
+    marks
+      .filter(step => step.op === "rematerializePointMark")
+      .map(step => step.args.id)
+  );
+  const scales = [];
+  for (const scale of program.semanticSpec.scales) {
+    if (needsCanvasScaleRematerialization(program, scale)) {
+      const pointConsumers = program.semanticSpec.layers.filter(layer =>
+        layer.mark?.type === "point" &&
+        Object.values(layer.encoding ?? {}).some(
+          encoding => encoding?.scale === scale.id
+        )
+      );
+      const canDeferMarks = pointConsumers.length === 0 ||
+        pointConsumers.every(layer => deferredPointIds.has(layer.id));
+      scales.push({
+        op: "rematerializeScale",
+        args: {
+          id: scale.id,
+          guides: false,
+          ...(canDeferMarks ? { marks: false } : {})
+        }
+      });
+    }
   }
   const guides = program.semanticSpec.scales.flatMap(scale =>
     needsCanvasScaleRematerialization(program, scale)
@@ -106,11 +130,15 @@ export function planLayerDataRematerialization(program, id) {
       .map(encoding => encoding?.scale)
       .filter(scale => scale !== undefined)
   )];
+  const markStep = getMarkMaterializationStep(program, layer);
   const scales = scaleIds.map(scale => ({
       op: "rematerializeScale",
-      args: { id: scale, guides: false }
+      args: {
+        id: scale,
+        guides: false,
+        ...(markStep === undefined ? {} : { marks: false })
+      }
     }));
-  const markStep = getMarkMaterializationStep(program, layer);
   const marks = markStep === undefined ? [] : [markStep];
   if (scales.length > 0 || marks.length > 0) {
     const guides = scaleIds.flatMap(scale =>

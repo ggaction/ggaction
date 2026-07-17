@@ -2,9 +2,9 @@ import { render } from "../../../src/index.js";
 import { parseFashionTsneCsv } from "../../support/fashion-tsne.js";
 
 import {
-  createCarsPolarScatterplotPrimitives,
-  createFashionTsnePolarPointPrimitives
-} from "./primitive.program.js";
+  createCarsPolarScatterplot,
+  createFashionTsnePolarPoints
+} from "../../../examples/polar-points/program.js";
 
 const [carsResponse, fashionResponse] = await Promise.all([
   fetch("../../../data/cars.json"),
@@ -15,8 +15,8 @@ const [cars, fashionSource] = await Promise.all([
   fashionResponse.text()
 ]);
 const programs = {
-  cars: createCarsPolarScatterplotPrimitives(cars),
-  fashion: createFashionTsnePolarPointPrimitives(parseFashionTsneCsv(fashionSource))
+  cars: createCarsPolarScatterplot(cars),
+  fashion: createFashionTsnePolarPoints(parseFashionTsneCsv(fashionSource))
 };
 
 for (const [id, program] of Object.entries(programs)) {
@@ -24,7 +24,7 @@ for (const [id, program] of Object.entries(programs)) {
   render(program, canvas.getContext("2d"));
 }
 
-window.__polarPointGate = Object.freeze({
+window.__polarPoints = Object.freeze({
   cars: Object.freeze({
     width: document.querySelector("#cars").width,
     height: document.querySelector("#cars").height,

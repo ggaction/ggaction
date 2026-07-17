@@ -54,6 +54,15 @@ want to answer.
     <a class="docs-chart-gallery__full-size" href="./assets/images/cars-scatterplot.png">View full size</a>
   </article>
   <article>
+    <a class="docs-chart-gallery__image" href="./tutorials/polar-points/" aria-label="Build the cars Polar point chart">
+      <img src="./assets/images/cars-polar-scatterplot.png" alt="Cars Polar scatterplot" width="1040" height="1040" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./tutorials/polar-points/">Polar points</a>
+    <p>Map quantitative fields to clockwise angle and radial distance.</p>
+    <span class="docs-chart-gallery__actions"><code>encodeTheta</code> <code>encodeR</code></span>
+    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-polar-scatterplot.png">View full size</a>
+  </article>
+  <article>
     <a class="docs-chart-gallery__image" href="./tutorials/line-chart/" aria-label="Build the aggregate line chart">
       <img src="./assets/images/cars-line-chart.png" alt="Cars aggregate line chart" width="1440" height="920" loading="lazy">
     </a>
@@ -311,6 +320,7 @@ Choose the visual relationship that matches the question you want to answer.
 
 <div class="docs-chart-index">
   {% include chart-card.html id="scatterplot" title="Scatterplot" url="/tutorials/scatterplot/" summary="Quantitative positions, nominal color, radius, and inferred axes." actions="createPointMark · encodeX · encodeY" %}
+  {% include chart-card.html id="polar" title="Polar point chart" url="/tutorials/polar-points/" summary="Map fields to clockwise angle and radial distance without changing the Canvas renderer." actions="encodeTheta · encodeR · encodePointRadius" %}
   {% include chart-card.html id="line" title="Aggregate line chart" url="/tutorials/line-chart/" summary="Temporal mean series with color, stroke dash, legend, and title." actions="createLineMark · encodeGroup" %}
   {% include chart-card.html id="histogram" title="Stacked histogram" url="/tutorials/histogram/" summary="Binned counts partitioned and stacked by a nominal field." actions="encodeHistogram · encodeColor" %}
   {% include chart-card.html id="bar" title="Bar chart" url="/tutorials/grouped-bar/" summary="Ordinal aggregate bars arranged side by side by nominal color." actions="encodeY · encodeColor" %}
@@ -484,6 +494,83 @@ program
 - View the [complete browser source](https://github.com/hj-n/ggaction/blob/main/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](../api/encodings.md) and
   [Guides](../api/guides.md).
+
+<!-- Source: /tutorials/polar-points/ -->
+
+# Polar Point Chart Tutorial
+
+{% include chart-example.html id="polar" %}
+
+This tutorial maps car acceleration to angle, horsepower to distance from the
+center, and origin to color. The public angle unit is degrees: `0` points to 12
+o'clock and positive angles move clockwise.
+
+## Complete program
+
+```javascript
+import { chart, render } from "ggaction";
+
+const response = await fetch("./cars.json");
+const cars = await response.json();
+const rows = cars.filter(row =>
+  Number.isFinite(row.Acceleration) &&
+  Number.isFinite(row.Horsepower) &&
+  typeof row.Origin === "string" &&
+  row.Origin.length > 0
+);
+
+const program = chart()
+  .createCanvas({ width: 520, height: 520, margin: 48 })
+  .createData({ values: rows })
+  .createPointMark()
+  .encodeTheta({ field: "Acceleration" })
+  .encodeR({ field: "Horsepower" })
+  .encodeColor({ field: "Origin" })
+  .encodePointRadius({ value: 3 });
+
+render(program, document.querySelector("canvas").getContext("2d"));
+```
+
+`encodeTheta` and `encodeR` infer the current point mark, create the `polar`
+coordinate, and create scales named `theta` and `radius`. You can call them in
+either order. Until both channels exist, the semantic assignment is retained
+but no visible point position is produced.
+
+## Scale control
+
+Theta uses `[0, 360]` by default. An explicit range may be reversed, but its
+absolute span cannot exceed 360 degrees:
+
+```javascript
+const reversed = program.editScale({ id: "theta", reverse: true });
+```
+
+Radius uses `[0, min(plot width, plot height) / 2]` by default. Explicit radial
+ranges are logical Canvas pixels, must be non-negative, and must fit the current
+plot bounds. Canvas size and margin edits recompute automatic radial ranges.
+
+```javascript
+const zoomed = program.editScale({
+  id: "radius",
+  domain: [40, 240],
+  range: [12, 200]
+});
+```
+
+`encodePointRadius` controls glyph size. It is an alias of `encodeRadius` and is
+separate from semantic radial position in `encodeR`.
+
+## Current boundary
+
+Polar point marks support ordinary color, size, shape, opacity, filtering,
+selection, and highlighting. Polar axes and grids are not part of this slice;
+requesting Cartesian guide actions for a Polar chart produces an explicit
+error.
+
+## Related
+
+[Position encodings](../api/position-encodings.md) ·
+[Coordinates](../api/coordinates.md) · [Scale options](../api/scales.md)
 
 <!-- Source: /tutorials/line-chart/ -->
 
@@ -2717,7 +2804,7 @@ defaults.
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
 | Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
-| Constant appearance | `encodeRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
+| Constant appearance | `encodeRadius`, `encodePointRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
 
 ## Position
 
@@ -3945,7 +4032,7 @@ concrete, and `pixelRatio` must be a positive finite number.
 {% include chart-example.html id="scatterplot" %}
 
 Choose the position family from the semantic mark and field relationship. All
-position actions infer the current mark, use or create a Cartesian coordinate,
+position actions infer the current mark, use or create a compatible coordinate,
 resolve a channel scale, and explicitly materialize the affected graphics.
 
 ## Choose an encoding
@@ -3953,6 +4040,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Goal | Required state | Actions | Detailed page |
 | --- | --- | --- | --- |
 | Position points | point mark, quantitative, temporal, or ordinal fields | `encodeX`, `encodeY` | [Quantitative positions](./position/quantitative.md) |
+| Position Polar points | point mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar point tutorial](../tutorials/polar-points.md) |
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
 | Build horizontal aggregate bars | bar mark, quantitative x and ordinal/temporal y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
@@ -3969,13 +4057,36 @@ for the same field.
 
 - `target` defaults to the current compatible mark.
 - `coordinate` uses the layer coordinate, then the documented `main`
-  Cartesian default.
-- Scale IDs default to their channel names: `x`, `y`, and `xOffset`.
+  Cartesian or `polar` Polar default for the requested channel family.
+- Scale IDs default to their channel names: `x`, `y`, `theta`, `radius`, and `xOffset`.
 - Automatic continuous y ranges run bottom-to-top. Discrete y positions run
   top-to-bottom so horizontal categories follow domain order.
 - Temporal values accept finite timestamps, four-digit numeric/string years,
   and valid date strings. Four-digit values are interpreted as UTC years.
 - Ambiguous resources produce an error instead of an arbitrary selection.
+
+## Polar point positions
+
+```javascript
+program
+  .encodeTheta({ field: "angle" })
+  .encodeR({ field: "distance" })
+  .encodePointRadius({ value: 3 });
+```
+
+`encodeTheta` accepts quantitative, temporal, ordinal, and nominal fields.
+Quantitative angle scales are linear; temporal angles use time scales; discrete
+angles use point or band scales. The automatic range is `[0, 360]` degrees with
+0 at 12 o'clock and clockwise positive direction.
+
+`encodeR` accepts a quantitative field and linear, log, pow, sqrt, or symlog
+scale policies. Its automatic range fits the smaller plot dimension. Explicit
+ranges are non-negative logical pixels and must fit the current plot bounds.
+
+The two actions are order-independent. One Polar channel may exist as an
+incomplete semantic assignment, but points become visible only after both
+channels and their scales resolve. Cartesian x/y and Polar theta/radius cannot
+be mixed on one layer.
 
 ## Rule endpoints
 
@@ -4437,6 +4548,7 @@ the field for grouping. Area color must match an existing `encodeGroup` field.
 | `fieldType` | `"nominal"`, `"quantitative"`, or `"temporal"` | `"nominal"` |
 | `aggregate` | aggregate operation; quantitative aggregate bars only | matching measure aggregate |
 | `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, or `"diverging"` | mark policy |
+| `palette` | palette name or `{ name, count?, extent? }`; shorthand for `scale.palette` | omitted |
 | `scale.id` | scale ID | `"color"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or category array | `"auto"` |
@@ -4450,9 +4562,9 @@ program.encodeColor({
 });
 ```
 
-`scale.palette` is the concise form of
-`scale.range: { palette: "tableau10" }`. Do not provide both. Automatic domains
-preserve first-appearance order.
+Top-level `palette` is a shorthand for `scale.palette`, and `scale.palette` is the
+concise form of `scale.range: { palette: "tableau10" }`. Provide only one of these
+forms. Automatic domains preserve first-appearance order.
 
 Calling `encodeColor` again for the same target replaces the nominal field.
 Without `scale.id`, the current color scale is reused and its domain, marks,
@@ -4656,7 +4768,7 @@ Combined line legends also require matching ordered domains.
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `encodeRadius` | `encodeRadius({ value: 3 })` | Current point mark | Concrete circle radius |
+| `encodeRadius` / `encodePointRadius` | `encodePointRadius({ value: 3 })` | Current point mark | Concrete point glyph radius |
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
@@ -4803,6 +4915,10 @@ Broadcast a non-negative finite graphical radius to a point mark.
 ```javascript
 program.encodeRadius({ value: 3 });
 ```
+
+`encodePointRadius({ value, target? })` is the preferred alias in Polar charts.
+It records `encodeRadius` as a wrapped child and remains distinct from
+`encodeR`, which assigns semantic radial position.
 
 | Option | Type | Default |
 | --- | --- | --- |
@@ -5270,6 +5386,7 @@ Position encoding actions normally manage coordinates automatically:
 
 ```text
 encodeX / encodeY -> main / cartesian
+encodeTheta / encodeR -> polar / polar
 ```
 
 The resolved coordinate definition and layer reference are stored in
@@ -5297,13 +5414,15 @@ program.createCoordinate({
 Equivalent repeated creation is allowed. A conflicting type or an attempt to
 reattach a layer that already uses another coordinate produces an error.
 
-Polar semantic coordinates are valid resources, but Polar position actions and
-guide graphics are not supported in the current release.
+Polar point position actions create or reuse a Polar coordinate automatically.
+The layer stores semantic theta/radius encodings, while `graphicSpec` stores
+only final Cartesian x/y values for the renderer.
 
 ## Errors and limitations
 
-A layer cannot be silently moved from one coordinate to another. Polar
-resources can be stored, but the current rendering slice is Cartesian.
+A layer cannot be silently moved from one coordinate to another, and Cartesian
+x/y cannot be mixed with Polar theta/radius. Polar axes and grids are not yet
+supported; guide requests fail explicitly instead of creating Cartesian guides.
 
 ## Related
 
@@ -6364,20 +6483,20 @@ chart-authoring API does not support that combination.
 
 ## Complete chart support
 
-| Capability | Scatterplot | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band | Box plot |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Semantic mark | point | line | bar | bar | point + area + line | area | rule | area | bar + rule + point |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval | categorical x; quantitative y/y2 |
-| Nominal color | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill | body fill through ranged-bar color |
-| Stroke dash | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — | — |
-| Constant appearance | radius | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers |
-| Automatic axes | linear | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis | categorical x and linear y |
-| Automatic grid | horizontal | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis | horizontal |
-| Legend | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical | optional ranged-bar color legend |
-| Chart title | optional | optional | optional | optional | optional | optional | optional | optional | optional |
-| Mark selection/highlight | selection + point highlight | series selection | final-bar selection | final-bar selection | layer selection + point highlight | series selection | rule selection | series selection | component selection |
-| Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Capability | Scatterplot | Polar points | Line chart | Histogram | Bar chart | Regression scatterplot | Density area | Error bar | Error band | Box plot |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Semantic mark | point | point | line | bar | bar | point + area + line | area | rule | area | bar + rule + point |
+| Position | quantitative x/y | theta/radius | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y | shared quantitative x/y | value + density x/y | categorical/temporal position on x or y; interval on the other axis | quantitative/temporal independent position; quantitative x/x2 or y/y2 interval | categorical x; quantitative y/y2 |
+| Nominal color | point fill | point fill | series stroke | five bar layouts | five bar layouts | point fill + fit stroke | overlay/stack/fill/diverging area | — | grouped area fill | body fill through ranged-bar color |
+| Stroke dash | — | — | nominal or constant; 4 named styles | — | — | — | — | 4 named styles or custom pattern | — | — |
+| Constant appearance | radius | radius, opacity, shape | stroke width, 8 curves | — | band or logical-pixel width | opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | stroke, width, dash, opacity, optional fixed-size caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers |
+| Automatic axes | linear | — | UTC time and linear | bin-aligned and linear | ordinal and linear | shared linear | source value + density | categorical/temporal position and linear interval axis | temporal or linear independent axis; linear interval axis | categorical x and linear y |
+| Automatic grid | horizontal | — | horizontal | horizontal | horizontal | shared horizontal | horizontal; vertical optional | perpendicular to the interval axis | perpendicular to the interval axis | horizontal |
+| Legend | point color + shape | point color + shape | categorical | categorical | categorical | composite color/shape/line + size | categorical top/right/bottom | — | categorical | optional ranged-bar color legend |
+| Chart title | optional | optional | optional | optional | optional | optional | optional | optional | optional | optional |
+| Mark selection/highlight | selection + point highlight | selection + point highlight | series selection | final-bar selection | final-bar selection | layer selection + point highlight | series selection | rule selection | series selection | component selection |
+| Browser Canvas | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Node PNG | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 ## Shared foundations
 
@@ -6386,7 +6505,7 @@ chart-authoring API does not support that combination.
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
-| Coordinates | Named Cartesian and Polar semantic resources; x/y use Cartesian |
+| Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic bottom/top x axes, left/right y axes, closed numeric/UTC label formats, independently editable horizontal/vertical Cartesian grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
@@ -6397,7 +6516,7 @@ chart-authoring API does not support that combination.
 
 ## Current limitations
 
-Polar guide graphics, transforms beyond the documented filters, regressions,
+Polar guide graphics and Polar line/arc marks, transforms beyond the documented filters, regressions,
 and density derivations, facets, interactive legends, and program composition
 are not implemented.
 Categorical legends support all four edges; point composite and size legends
@@ -6770,7 +6889,7 @@ preserved and at least one editable setting is required.
 ### `encodeColor`
 
 ```javascript
-encodeColor({ field, target?, fieldType?, layout?, aggregate?, scale? })
+encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
 ```
 
 Create or compatibly replace point fill, line-series color, grouped area fill,
@@ -6805,6 +6924,37 @@ encodeRadius({ value, target? })
 ```
 
 Apply a constant point radius. [Constant appearance](../api/appearance.md)
+
+### `encodeTheta`
+
+```javascript
+encodeTheta({ field, target?, fieldType?, scale?, coordinate? })
+```
+
+Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
+temporal, ordinal, and nominal fields are supported. The default scale ID is
+`theta` and its automatic range is `[0, 360]`.
+[Polar positions](../api/position-encodings.md#polar-point-positions)
+
+### `encodeR`
+
+```javascript
+encodeR({ field, target?, fieldType?, scale?, coordinate? })
+```
+
+Encode a quantitative field as Polar radial distance. The default `radius`
+scale fits the current plot bounds and rematerializes after Canvas edits.
+[Polar positions](../api/position-encodings.md#polar-point-positions)
+
+### `encodePointRadius`
+
+```javascript
+encodePointRadius({ value, target? })
+```
+
+Apply a constant point glyph radius through a traced `encodeRadius` child. This
+does not assign semantic Polar radial position.
+[Constant appearance](../api/appearance.md)
 
 ### `encodeSize`
 

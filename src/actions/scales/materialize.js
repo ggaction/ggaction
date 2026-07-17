@@ -51,7 +51,7 @@ import {
   planScaleGuideRematerialization
 } from "../../materialization/dependencies.js";
 
-const OPTIONS = Object.freeze(["id", "guides"]);
+const OPTIONS = Object.freeze(["id", "guides", "marks"]);
 
 function resolveTemporalBarBand(consumers, domain, range, values) {
   const temporalBars = consumers.filter(consumer => {
@@ -109,6 +109,9 @@ export const rematerializeScale = action(
     validateOptions(args);
     if (args.guides !== undefined && typeof args.guides !== "boolean") {
       throw new TypeError("rematerializeScale guides must be a boolean.");
+    }
+    if (args.marks !== undefined && typeof args.marks !== "boolean") {
+      throw new TypeError("rematerializeScale marks must be a boolean.");
     }
     const id = validateUserId(args.id, "Scale id");
     const scale = findScale(this, id);
@@ -442,17 +445,22 @@ export const rematerializeScale = action(
     let next = this._withResolvedScale(id, resolvedScale);
 
     for (const { consumer, values } of valuesByConsumer) {
+      if (consumer.layer.mark?.type === "point" && args.marks === false) {
+        continue;
+      }
       if (
         consumer.layer.mark?.type === "point" &&
-        ["x", "y"].includes(channel)
+        ["x", "y", "theta", "radius"].includes(channel)
       ) {
-        next = next.rematerializePointMark({ id: consumer.layer.id });
+        if (args.marks !== false) {
+          next = next.rematerializePointMark({ id: consumer.layer.id });
+        }
         continue;
       }
       if (
         ["line", "bar", "area", "rule"].includes(consumer.layer.mark?.type) ||
         (consumer.layer.mark?.type === "point" &&
-          ["x", "y"].includes(channel) && isOrdinalPosition) ||
+          ["x", "y", "theta", "radius"].includes(channel) && isOrdinalPosition) ||
         (consumer.layer.mark?.type === "point" && ["size", "shape"].includes(channel))
       ) continue;
       next = next.editGraphics({

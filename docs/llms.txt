@@ -31,6 +31,7 @@ are internal operations.
 ## Chart recipes and tutorials
 
 - Scatterplot: ./recipes/scatterplot.md | ./tutorials/scatterplot.md
+- Polar point chart: ./tutorials/polar-points.md | ./api/position-encodings.md#polar-point-positions
 - Line chart: ./recipes/line-chart.md | ./tutorials/line-chart.md
 - Histogram: ./recipes/histogram.md | ./tutorials/histogram.md
 - Bar chart: ./recipes/bar-chart.md | ./tutorials/grouped-bar.md
@@ -69,6 +70,8 @@ or LOESS regression scatterplots with optional mean/prediction bands, grouped de
 vertical or horizontal statistical/explicit error bars with encoded-layer
 inference, optional caps, and constant rule appearance, and vertical grouped
 statistical/explicit error bands.
+Polar point charts support clockwise degree theta, quantitative radial position,
+ordinary point appearance, filtering, selection, Canvas resizing, and PNG output.
 The current box-plot aggregate supports vertical categorical-x Tukey boxes with
 immutable summary/outlier data and 1.5px median and whisker defaults.
 Cartesian guides support bottom/top x axes, left/right y axes, and closed
@@ -87,5 +90,5 @@ It is distributed as the ESM-only `ggaction` npm package for Node 20 or later,
 renders through Browser Canvas and Node PNG, and provides TypeScript declarations
 for `ggaction`, `ggaction/extension`, and `ggaction/png`.
 
-Do not assume facets, program composition, SVG rendering, animation, automatic
-semantic compilation, or complete Polar chart rendering are implemented.
+Do not assume Polar guides, Polar line/arc marks, facets, program composition,
+SVG rendering, animation, or automatic semantic compilation are implemented.

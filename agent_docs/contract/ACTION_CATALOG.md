@@ -36,6 +36,9 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`encodeShape`](current/ENCODINGS.md#encodeshape) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeOpacity`](current/ENCODINGS.md#encodeopacity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeRadius`](current/ENCODINGS.md#encoderadius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeTheta`](current/ENCODINGS.md#encodetheta) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeR`](current/ENCODINGS.md#encoder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodePointRadius`](current/ENCODINGS.md#encodepointradius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeXOffset`](current/ENCODINGS.md#encodexoffset) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeY2`](current/ENCODINGS.md#encodey2) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeYRange`](current/ENCODINGS.md#encodeyrange) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -119,9 +122,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `encodeTheta` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-position-actions) |
-| `encodeR` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-position-actions) |
-| `encodePointRadius` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-position-actions) |
 | `createThetaAxis` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
 | `createRadialAxis` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
 | `createThetaGrid` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
@@ -159,7 +159,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | composition | Vertical program composition | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | parameter | Closed Polar line option | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-line-radar) |
 | parameter | Facet scale resolution options | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
-| composition | Polar point chart vertical slice | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-position-actions) |
 | composition | Polar axes and grids | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
 | composition | Polar line and radar charts | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-line-radar) |
 | composition | Arc donut and radial bar charts | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-actions) |

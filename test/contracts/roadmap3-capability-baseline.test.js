@@ -29,12 +29,16 @@ function canvas() {
   });
 }
 
-test("records the current missing Roadmap 3 public surface", () => {
+test("records the current and missing Roadmap 3 public surface", () => {
   const program = chart();
   for (const name of [
     "encodeTheta",
     "encodeR",
-    "encodePointRadius",
+    "encodePointRadius"
+  ]) {
+    assert.equal(typeof program[name], "function", name);
+  }
+  for (const name of [
     "encodeYOffset",
     "createTextMark",
     "createRectMark",
@@ -47,7 +51,7 @@ test("records the current missing Roadmap 3 public surface", () => {
   assert.equal(ggaction.vconcat, undefined);
 });
 
-test("stores a Polar resource without claiming Polar chart materialization", () => {
+test("stores a Polar resource without inventing positional encodings", () => {
   const program = chart()
     .createData({ values: rows })
     .createPointMark({ id: "points" })

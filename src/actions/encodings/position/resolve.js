@@ -28,6 +28,24 @@ const POSITION_ENCODING_OPTIONS = Object.freeze([
   "aggregate", "bin", "stack"
 ]);
 
+const CARTESIAN_CHANNELS = Object.freeze(["x", "y"]);
+const POLAR_CHANNELS = Object.freeze(["theta", "radius"]);
+
+function validateCoordinateFamily(layer, channel, operation) {
+  const requestedFamily = POLAR_CHANNELS.includes(channel)
+    ? POLAR_CHANNELS
+    : CARTESIAN_CHANNELS;
+  const incompatible = requestedFamily === POLAR_CHANNELS
+    ? CARTESIAN_CHANNELS
+    : POLAR_CHANNELS;
+  const existing = incompatible.filter(name => layer.encoding?.[name] !== undefined);
+  if (existing.length > 0) {
+    throw new Error(
+      `${operation} cannot mix ${channel} with ${existing.join("/")} position encodings on layer "${layer.id}".`
+    );
+  }
+}
+
 function resolveCoordinate(program, channel, layer, requestedId) {
   const defaults = getPositionCoordinateDefaults(channel);
   const existingId = layer.coordinate;
@@ -35,7 +53,19 @@ function resolveCoordinate(program, channel, layer, requestedId) {
   if (existingId !== undefined && requestedId !== undefined && existingId !== requestedId) {
     throw new Error(`Layer "${layer.id}" already uses coordinate "${existingId}".`);
   }
-  const id = existingId ?? requestedId ?? defaults.id;
+  const compatible = program.semanticSpec.coordinates.filter(
+    coordinate => coordinate.type === defaults.type
+  );
+  if (
+    existingId === undefined &&
+    requestedId === undefined &&
+    compatible.length > 1
+  ) {
+    throw new Error(
+      `${channel} encoding requires coordinate when multiple ${defaults.type} coordinates are available.`
+    );
+  }
+  const id = existingId ?? requestedId ?? compatible[0]?.id ?? defaults.id;
   const coordinate = findCoordinate(program, id);
   if (coordinate !== undefined && coordinate.type !== defaults.type) {
     throw new Error(
@@ -51,8 +81,11 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   const { id: target, dataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point", "line", "bar", "area", "rule"]
+    POLAR_CHANNELS.includes(channel)
+      ? ["point"]
+      : ["point", "line", "bar", "area", "rule"]
   );
+  validateCoordinateFamily(layer, channel, operation);
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
   if (layer.mark.type === "rule") {

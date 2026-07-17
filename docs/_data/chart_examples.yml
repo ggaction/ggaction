@@ -5,6 +5,13 @@ scatterplot:
   height: 800
   caption: Quantitative positions with nominal color.
   url: /tutorials/scatterplot/
+polar:
+  image: /assets/images/cars-polar-scatterplot.png
+  alt: Cars Polar scatterplot using acceleration angle and horsepower radius
+  width: 1040
+  height: 1040
+  caption: Quantitative angle and radial position with nominal color.
+  url: /tutorials/polar-points/
 line:
   image: /assets/images/cars-line-chart.png
   alt: Aggregate cars line chart grouped by origin

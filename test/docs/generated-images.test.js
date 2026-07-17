@@ -27,7 +27,7 @@ test("keeps one generated gallery image for every public chart", async () => {
   const index = read("docs/index.md");
   const tutorials = read("docs/tutorials/index.md");
 
-  assert.equal(chartImages.length, 9);
+  assert.equal(chartImages.length, 10);
   for (const { id, width, height } of chartImages) {
     assertPng(id, width, height);
     assert.match(index, new RegExp(`assets/images/${id}\\.png`));
@@ -49,7 +49,7 @@ test("keeps one generated gallery image for every public chart", async () => {
   );
 
   for (const tutorial of [
-    "scatterplot", "line-chart", "histogram", "grouped-bar",
+    "scatterplot", "polar-points", "line-chart", "histogram", "grouped-bar",
     "regression-scatterplot", "density-area", "error-bar"
   ]) {
     assert.match(tutorials, new RegExp(`/tutorials/${tutorial}/`));

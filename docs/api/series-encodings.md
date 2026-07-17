@@ -29,6 +29,7 @@ the field for grouping. Area color must match an existing `encodeGroup` field.
 | `fieldType` | `"nominal"`, `"quantitative"`, or `"temporal"` | `"nominal"` |
 | `aggregate` | aggregate operation; quantitative aggregate bars only | matching measure aggregate |
 | `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, or `"diverging"` | mark policy |
+| `palette` | palette name or `{ name, count?, extent? }`; shorthand for `scale.palette` | omitted |
 | `scale.id` | scale ID | `"color"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or category array | `"auto"` |
@@ -42,9 +43,9 @@ program.encodeColor({
 });
 ```
 
-`scale.palette` is the concise form of
-`scale.range: { palette: "tableau10" }`. Do not provide both. Automatic domains
-preserve first-appearance order.
+Top-level `palette` is a shorthand for `scale.palette`, and `scale.palette` is the
+concise form of `scale.range: { palette: "tableau10" }`. Provide only one of these
+forms. Automatic domains preserve first-appearance order.
 
 Calling `encodeColor` again for the same target replaces the nominal field.
 Without `scale.id`, the current color scale is reused and its domain, marks,

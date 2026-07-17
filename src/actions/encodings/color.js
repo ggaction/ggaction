@@ -33,8 +33,19 @@ import { applyMaterializationPlan } from "../../materialization/dependencies.js"
 import { planEncodingRematerialization } from "../../materialization/encodings.js";
 
 const COLOR_ENCODING_OPTIONS = Object.freeze([
-  "field", "target", "fieldType", "scale", "layout", "aggregate"
+  "field", "target", "fieldType", "scale", "palette", "layout", "aggregate"
 ]);
+
+function resolveColorScaleOptions(args) {
+  const options = args.scale ?? {};
+  if (args.palette === undefined) return options;
+  if (options.palette !== undefined || options.range !== undefined) {
+    throw new Error(
+      "encodeColor palette cannot be combined with scale.palette or scale.range."
+    );
+  }
+  return { ...options, palette: args.palette };
+}
 
 function assertNoConstantColor(program, layer) {
   const config = program.markConfigs[layer.id];
@@ -159,7 +170,7 @@ function encodeContinuousColor(program, args) {
   assertNoConstantColor(program, layer);
   const requestedScale = resolveReassignmentScaleOptions(
     layer.encoding?.color,
-    args.scale ?? {}
+    resolveColorScaleOptions(args)
   );
   const scale = resolveQuantitativeColorScaleDefinition(
     program,
@@ -291,7 +302,7 @@ const encodeColor = action(
     const layout = resolveColorLayout(layer, args.layout, barGrain);
     const requestedScale = resolveReassignmentScaleOptions(
       layer.encoding?.color,
-      args.scale ?? {}
+      resolveColorScaleOptions(args)
     );
     const scale = resolveColorScaleDefinition(this, requestedScale);
     if (Object.hasOwn(scale, "unknown") && layer.mark.type !== "point") {

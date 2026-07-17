@@ -8,7 +8,7 @@ title: Position Encodings
 {% include chart-example.html id="scatterplot" %}
 
 Choose the position family from the semantic mark and field relationship. All
-position actions infer the current mark, use or create a Cartesian coordinate,
+position actions infer the current mark, use or create a compatible coordinate,
 resolve a channel scale, and explicitly materialize the affected graphics.
 
 ## Choose an encoding
@@ -16,6 +16,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Goal | Required state | Actions | Detailed page |
 | --- | --- | --- | --- |
 | Position points | point mark, quantitative, temporal, or ordinal fields | `encodeX`, `encodeY` | [Quantitative positions](./position/quantitative.md) |
+| Position Polar points | point mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar point tutorial](../tutorials/polar-points.md) |
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
 | Build horizontal aggregate bars | bar mark, quantitative x and ordinal/temporal y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
@@ -32,13 +33,36 @@ for the same field.
 
 - `target` defaults to the current compatible mark.
 - `coordinate` uses the layer coordinate, then the documented `main`
-  Cartesian default.
-- Scale IDs default to their channel names: `x`, `y`, and `xOffset`.
+  Cartesian or `polar` Polar default for the requested channel family.
+- Scale IDs default to their channel names: `x`, `y`, `theta`, `radius`, and `xOffset`.
 - Automatic continuous y ranges run bottom-to-top. Discrete y positions run
   top-to-bottom so horizontal categories follow domain order.
 - Temporal values accept finite timestamps, four-digit numeric/string years,
   and valid date strings. Four-digit values are interpreted as UTC years.
 - Ambiguous resources produce an error instead of an arbitrary selection.
+
+## Polar point positions
+
+```javascript
+program
+  .encodeTheta({ field: "angle" })
+  .encodeR({ field: "distance" })
+  .encodePointRadius({ value: 3 });
+```
+
+`encodeTheta` accepts quantitative, temporal, ordinal, and nominal fields.
+Quantitative angle scales are linear; temporal angles use time scales; discrete
+angles use point or band scales. The automatic range is `[0, 360]` degrees with
+0 at 12 o'clock and clockwise positive direction.
+
+`encodeR` accepts a quantitative field and linear, log, pow, sqrt, or symlog
+scale policies. Its automatic range fits the smaller plot dimension. Explicit
+ranges are non-negative logical pixels and must fit the current plot bounds.
+
+The two actions are order-independent. One Polar channel may exist as an
+incomplete semantic assignment, but points become visible only after both
+channels and their scales resolve. Cartesian x/y and Polar theta/radius cannot
+be mixed on one layer.
 
 ## Rule endpoints
 

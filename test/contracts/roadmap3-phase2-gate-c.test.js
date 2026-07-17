@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { ChartProgram } from "../../src/ChartProgram.js";
-import { visualVariants } from "../gates/roadmap3-polar-point/manifest.js";
+import { visualVariants } from "../charts/polar-points/variants/manifest.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const inventory = JSON.parse(readFileSync(path.join(
@@ -36,24 +36,24 @@ test("locks the exact Phase 2 Gate A assignment", () => {
   );
 });
 
-test("keeps Phase 2 actions planned and absent from runtime before Gate C approval", () => {
+test("promotes every approved Phase 2 action to the current public surface", () => {
   const planned = new Set(index.plannedActions.map(action => action.name));
   const current = new Set(index.actions.map(action => action.name));
   for (const action of ACTIONS) {
-    assert.equal(planned.has(action), true, action);
-    assert.equal(current.has(action), false, action);
-    assert.equal(ChartProgram.prototype[action], undefined, action);
-    assert.doesNotMatch(declarations, new RegExp(`^  ${action}\\(`, "m"), action);
+    assert.equal(planned.has(action), false, action);
+    assert.equal(current.has(action), true, action);
+    assert.equal(typeof ChartProgram.prototype[action], "function", action);
+    assert.match(declarations, new RegExp(`^  ${action}\\(`, "m"), action);
   }
   const plannedCapabilities = new Set(
     index.plannedCapabilities.map(capability => capability.id)
   );
   for (const capability of CAPABILITIES) {
-    assert.equal(plannedCapabilities.has(capability), true, capability);
+    assert.equal(plannedCapabilities.has(capability), false, capability);
   }
 });
 
-test("registers exactly two primitive-only Phase 2 Gate C targets", () => {
+test("registers exactly two approved primitive/public Phase 2 pairs", () => {
   assert.deepEqual(
     visualVariants.map(variant => `${variant.chart}/${variant.variant}`),
     [
@@ -64,6 +64,6 @@ test("registers exactly two primitive-only Phase 2 Gate C targets", () => {
   for (const variant of visualVariants) {
     assert.equal(variant.artifact.phase, "phase2");
     assert.equal(variant.artifact.capability, "polar-point");
-    assert.equal(variant.userFacing, undefined);
+    assert.equal(typeof variant.userFacing, "function");
   }
 });

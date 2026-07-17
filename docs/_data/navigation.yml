@@ -87,6 +87,8 @@
       url: /api/position/histogram/
     - title: Ordinal Offsets
       url: /api/position/offsets/
+    - title: Polar Points
+      url: /tutorials/polar-points/
 
 - title: Concepts
   items:

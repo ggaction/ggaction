@@ -1,5 +1,5 @@
 import { registerVisualVariantTests } from "../../support/visual-variants.js";
 
-import { visualVariants } from "./manifest.js";
+import { visualVariants } from "./variants/manifest.js";
 
 registerVisualVariantTests(visualVariants);

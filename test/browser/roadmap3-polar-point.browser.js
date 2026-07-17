@@ -8,7 +8,7 @@ import { startStaticServer } from "../support/static-server.js";
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 
-test("renders both primitive-only Polar point Gate charts in a browser", async () => {
+test("renders both public Polar point charts in a browser", async () => {
   const server = await startStaticServer(repositoryRoot);
   const browser = await chromium.launch({ headless: true });
   try {
@@ -19,12 +19,12 @@ test("renders both primitive-only Polar point Gate charts in a browser", async (
     });
     page.on("pageerror", error => errors.push(error.message));
     const response = await page.goto(
-      new URL("test/gates/roadmap3-polar-point/", server.baseUrl).href,
+      new URL("test/charts/polar-points/", server.baseUrl).href,
       { waitUntil: "networkidle" }
     );
     assert.equal(response.ok(), true);
-    await page.waitForFunction(() => window.__polarPointGate !== undefined);
-    assert.deepEqual(await page.evaluate(() => window.__polarPointGate), {
+    await page.waitForFunction(() => window.__polarPoints !== undefined);
+    assert.deepEqual(await page.evaluate(() => window.__polarPoints), {
       cars: { width: 520, height: 520, points: 400 },
       fashion: { width: 560, height: 560, points: 498 }
     });

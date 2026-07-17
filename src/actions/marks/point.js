@@ -21,6 +21,8 @@ import {
   readQuantitativeField,
   readTemporalField
 } from "../../grammar/scales.js";
+import { polarToCartesian, resolvePolarFrame } from "../../grammar/polar.js";
+import { resolveGraphicBounds } from "../../layout/canvas.js";
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
@@ -137,12 +139,39 @@ function resolveMappedValues(program, layer, dataset, channel) {
     return mapDiscretizedColors(values, scale);
   }
   return ordinal
-    ? ["x", "y"].includes(channel)
+    ? ["x", "y", "theta", "radius"].includes(channel)
       ? mapOrdinalPositionValues(values, scale)
       : mapOrdinalValues(values, scale.domain, scale.range, {
           ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
         })
     : mapContinuousScaleValues(values, scale);
+}
+
+function resolvePointPositions(program, layer, dataset) {
+  const hasPolar = layer.encoding?.theta !== undefined ||
+    layer.encoding?.radius !== undefined;
+  if (!hasPolar) {
+    return {
+      x: resolveMappedValues(program, layer, dataset, "x"),
+      y: resolveMappedValues(program, layer, dataset, "y")
+    };
+  }
+  const theta = resolveMappedValues(program, layer, dataset, "theta");
+  const radius = resolveMappedValues(program, layer, dataset, "radius");
+  if (theta === undefined || radius === undefined) {
+    return { x: undefined, y: undefined };
+  }
+  const frame = resolvePolarFrame(resolveGraphicBounds(program));
+  const positions = theta.map((angle, index) => {
+    const distance = radius[index];
+    return Number.isFinite(angle) && Number.isFinite(distance)
+      ? polarToCartesian({ theta: angle, radius: distance, frame })
+      : { x: undefined, y: undefined };
+  });
+  return {
+    x: positions.map(position => position.x),
+    y: positions.map(position => position.y)
+  };
 }
 
 function compactProperties(properties) {
@@ -212,8 +241,7 @@ const rematerializePointMark = action(
       throw new Error(`Point mark "${id}" requires an existing dataset.`);
     }
 
-    const x = resolveMappedValues(this, layer, dataset, "x");
-    const y = resolveMappedValues(this, layer, dataset, "y");
+    const { x, y } = resolvePointPositions(this, layer, dataset);
     const mappedFill = resolveMappedValues(this, layer, dataset, "color");
     const area = resolveMappedValues(this, layer, dataset, "size");
     const encodedShape = resolveMappedValues(this, layer, dataset, "shape");

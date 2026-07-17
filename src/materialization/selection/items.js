@@ -152,10 +152,16 @@ function finalizeItems(program, layer, grain, definitions, graphicType) {
 
 export function resolvePointItems(program, layer, dataset) {
   const graphic = program.graphicSpec.objects[layer.id];
+  const completePosition = (
+    layer.encoding?.x?.scale !== undefined &&
+    layer.encoding?.y?.scale !== undefined
+  ) || (
+    layer.encoding?.theta?.scale !== undefined &&
+    layer.encoding?.radius?.scale !== undefined
+  );
   if (
     !Array.isArray(graphic?.items) ||
-    layer.encoding?.x?.scale === undefined ||
-    layer.encoding?.y?.scale === undefined ||
+    !completePosition ||
     (
       layer.encoding?.size?.scale === undefined &&
       !Number.isFinite(program.markConfigs[layer.id]?.radius)

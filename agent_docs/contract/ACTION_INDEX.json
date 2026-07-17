@@ -524,6 +524,60 @@
       }
     },
     {
+      "name": "encodeTheta",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces the field and compatible Polar angle scale binding",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodetheta"
+      }
+    },
+    {
+      "name": "encodeR",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces the field and compatible Polar radial scale binding",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encoder"
+      }
+    },
+    {
+      "name": "encodePointRadius",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Delegates replacement to encodeRadius",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodepointradius"
+      }
+    },
+    {
       "name": "encodeXOffset",
       "layer": "user-facing",
       "domain": "encodings",
@@ -1929,9 +1983,6 @@
     }
   ],
   "plannedActions": [
-    { "name": "encodeTheta", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-position-actions" } },
-    { "name": "encodeR", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-position-actions" } },
-    { "name": "encodePointRadius", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-position-actions" } },
     { "name": "createThetaAxis", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-guide-actions" } },
     { "name": "createRadialAxis", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-guide-actions" } },
     { "name": "createThetaGrid", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-guide-actions" } },
@@ -1966,7 +2017,6 @@
     { "id": "vconcat", "kind": "composition", "name": "Vertical program composition", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "program-composition" } },
     { "id": "polar-line-closed", "kind": "parameter", "name": "Closed Polar line option", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-line-radar" } },
     { "id": "facet-scale-resolution", "kind": "parameter", "name": "Facet scale resolution options", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "facet-resolution-and-derived-replay" } },
-    { "id": "polar-point", "kind": "composition", "name": "Polar point chart vertical slice", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-position-actions" } },
     { "id": "polar-guides", "kind": "composition", "name": "Polar axes and grids", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-guide-actions" } },
     { "id": "polar-line-radar", "kind": "composition", "name": "Polar line and radar charts", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "polar-line-radar" } },
     { "id": "arc-donut-radial-bar", "kind": "composition", "name": "Arc donut and radial bar charts", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "arc-actions" } },

@@ -5,64 +5,69 @@
     "cars-scatterplot": {
       "width": 1280,
       "height": 800,
-      "sourceHash": "6049a51db7c84fac5e290a682b9d822ba630685a47b6b4edbe601423eb1d80ec"
+      "sourceHash": "4d3d04bf85a9e4880f83ee103fc924a07a98cf5c10a2e8f10a6e6bc1ee463912"
+    },
+    "cars-polar-scatterplot": {
+      "width": 1040,
+      "height": 1040,
+      "sourceHash": "60e06eb3b2e93a2fdc27bdad5ec13578075a5b590fd5adb364fd18f392d250d6"
     },
     "cars-line-chart": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "4ae2abc336b31dbfd0905ac697ff9c83179bff05bb844d40164bbf53c181c0ce"
+      "sourceHash": "d21caf9b1a58726350403f2f5dade979a80cd908cbc78fd41dc46b831cf18891"
     },
     "cars-histogram": {
       "width": 864,
       "height": 920,
-      "sourceHash": "7eb59ce6a2a6960a9eeae0df408658a502a201576c646d70e242b667a2e327fa"
+      "sourceHash": "31dbac557e48cc73ee050c1d96af75d8f57e05e015b258dfd17e5ea515007968"
     },
     "jobs-grouped-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "8b95ae9e6607eca93034e5f2737eb6a77954aee17efe94dcd04c3a4155d45651"
+      "sourceHash": "372dc0306e38d0dd7233a16163306c012600096a12c9b7d3d6d713dda9dad564"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "21135fb682609b533ed79b75f2573309493f471398a38a375d368f0ea7c9e955"
+      "sourceHash": "98696247b4bd67bae8995ae689be0d71f37cdb563c24a68e3a68230939ac93e9"
     },
     "cars-density-area": {
       "width": 1440,
       "height": 1000,
-      "sourceHash": "a1b8b58797315fc4465240c9975c0eb977b885b9f2c0257f38e6d216e50ba355"
+      "sourceHash": "2b92ff64027bfadd82e8ff48f409b47aae95976ba44a3d4645b98588a3fd7406"
     },
     "cars-error-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "e96e05869c7ab2829bf04065ec8cb155bde607594d27cc76c28a9baa3d15cc0e"
+      "sourceHash": "cbb5626dd0455f79d1a02cd365c2ef6428121cb7abd0bcd84d84f334da583bce"
     },
     "cars-box-plot": {
       "width": 720,
       "height": 920,
-      "sourceHash": "730b5b134b080cbc1d52364a56172f527c16fa364e0c8c8d7b5b051ff9bd6867"
+      "sourceHash": "299bd1c1e031487084d05db49d4b46a490771dc3f358d07a87853fe85273151d"
     },
     "gapminder-error-band": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "d2e62dc02248178562e094488933ce4d6d76893aabd2e123b121a3c22ddf6099"
+      "sourceHash": "4860b70f27fb6e42941a5c702a7d74ffd415079c6f4320aa45e66018a03e8644"
     }
   },
   "tutorials": {
     "mark-selection-points": {
       "width": 1520,
       "height": 880,
-      "sourceHash": "28e5aacf9056061e0c5513000eab6adc4003a680064255d49c2c41681397a854"
+      "sourceHash": "10be8d7fecf37a0408e4bb0a2dc12a70de9cec9914b4fafe1901b09218825cb7"
     },
     "mark-selection-bars": {
       "width": 864,
       "height": 920,
-      "sourceHash": "836f360cfc53c40876aa997dfc645077aa2d54604334787aefebd2a59d13a6aa"
+      "sourceHash": "e4e913f208789bcf3ab6fddbe48192422c7938879b83ba1ece2dc29abe346041"
     },
     "mark-selection-lines": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "d5ffc78eeed51b56f2b964f83c0ed0ccc2d8c6252ace6264cf4d7c6f82e8429f"
+      "sourceHash": "3b4ae7ec65f7945aa0222bbfd0a0071b7e0a21f441b3bd40052e58220e3d0ea6"
     }
   }
 }

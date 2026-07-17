@@ -354,7 +354,7 @@ preserved and at least one editable setting is required.
 ### `encodeColor`
 
 ```javascript
-encodeColor({ field, target?, fieldType?, layout?, aggregate?, scale? })
+encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
 ```
 
 Create or compatibly replace point fill, line-series color, grouped area fill,
@@ -389,6 +389,37 @@ encodeRadius({ value, target? })
 ```
 
 Apply a constant point radius. [Constant appearance](../api/appearance.md)
+
+### `encodeTheta`
+
+```javascript
+encodeTheta({ field, target?, fieldType?, scale?, coordinate? })
+```
+
+Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
+temporal, ordinal, and nominal fields are supported. The default scale ID is
+`theta` and its automatic range is `[0, 360]`.
+[Polar positions](../api/position-encodings.md#polar-point-positions)
+
+### `encodeR`
+
+```javascript
+encodeR({ field, target?, fieldType?, scale?, coordinate? })
+```
+
+Encode a quantitative field as Polar radial distance. The default `radius`
+scale fits the current plot bounds and rematerializes after Canvas edits.
+[Polar positions](../api/position-encodings.md#polar-point-positions)
+
+### `encodePointRadius`
+
+```javascript
+encodePointRadius({ value, target? })
+```
+
+Apply a constant point glyph radius through a traced `encodeRadius` child. This
+does not assign semantic Polar radial position.
+[Constant appearance](../api/appearance.md)
 
 ### `encodeSize`
 

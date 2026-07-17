@@ -170,7 +170,29 @@ const encodeY = action(
   }
 );
 
+const encodeTheta = action(
+  {
+    op: "encodeTheta",
+    description: "Encode a field as Polar angle in clockwise degrees."
+  },
+  function (args = {}) {
+    return encodePosition(this, "theta", args, "encodeTheta");
+  }
+);
+
+const encodeR = action(
+  {
+    op: "encodeR",
+    description: "Encode a quantitative field as Polar radius."
+  },
+  function (args = {}) {
+    return encodePosition(this, "radius", args, "encodeR");
+  }
+);
+
 export function registerPositionEncodingActions(ProgramClass) {
   ProgramClass.prototype.encodeX = encodeX;
   ProgramClass.prototype.encodeY = encodeY;
+  ProgramClass.prototype.encodeTheta = encodeTheta;
+  ProgramClass.prototype.encodeR = encodeR;
 }

@@ -47,6 +47,15 @@ want to answer.
     <a class="docs-chart-gallery__full-size" href="./assets/images/cars-scatterplot.png">View full size</a>
   </article>
   <article>
+    <a class="docs-chart-gallery__image" href="./tutorials/polar-points/" aria-label="Build the cars Polar point chart">
+      <img src="./assets/images/cars-polar-scatterplot.png" alt="Cars Polar scatterplot" width="1040" height="1040" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./tutorials/polar-points/">Polar points</a>
+    <p>Map quantitative fields to clockwise angle and radial distance.</p>
+    <span class="docs-chart-gallery__actions"><code>encodeTheta</code> <code>encodeR</code></span>
+    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-polar-scatterplot.png">View full size</a>
+  </article>
+  <article>
     <a class="docs-chart-gallery__image" href="./tutorials/line-chart/" aria-label="Build the aggregate line chart">
       <img src="./assets/images/cars-line-chart.png" alt="Cars aggregate line chart" width="1440" height="920" loading="lazy">
     </a>

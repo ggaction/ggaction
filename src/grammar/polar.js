@@ -86,9 +86,9 @@ export function polarToCartesian({ theta, radius, frame }) {
       `Polar radius ${radius} exceeds the available radius ${resolvedFrame.availableRadius}.`
     );
   }
-  const angle = (theta - 90) * Math.PI / 180;
+  const angle = theta * Math.PI / 180;
   return cloneAndFreeze({
-    x: resolvedFrame.centerX + radius * Math.cos(angle),
-    y: resolvedFrame.centerY + radius * Math.sin(angle)
+    x: resolvedFrame.centerX + radius * Math.sin(angle),
+    y: resolvedFrame.centerY - radius * Math.cos(angle)
   });
 }

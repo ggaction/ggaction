@@ -7,6 +7,7 @@ import { assertRenderedPNG } from "./png.js";
 
 const DATA_ALIASES = Object.freeze([
   "rows",
+  "fashionRows",
   "cars",
   "jobs",
   "gapminder",

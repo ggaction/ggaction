@@ -27,6 +27,9 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
+  "cars-polar-scatterplot": [
+    "canvas", "point"
+  ],
   "cars-histogram": [
     "canvas", "horizontalGridLines", "bars",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

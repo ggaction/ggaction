@@ -68,6 +68,15 @@ async function testNodeConsumer(directory) {
       .encodeRadius({ value: 3 });
     assert.equal(typeof render, "function");
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    const polar = chart()
+      .createCanvas({ width: 160, height: 160, margin: 20 })
+      .createData({ values: [{ angle: 0, distance: 1 }, { angle: 1, distance: 2 }] })
+      .createPointMark()
+      .encodeTheta({ field: "angle" })
+      .encodeR({ field: "distance" })
+      .encodePointRadius({ value: 3 });
+    assert.equal(polar.semanticSpec.layers[0].coordinate, "polar");
+    assert.equal(polar.graphicSpec.objects.point.items.length, 2);
     const result = await renderToPNG(program, {
       output: ${JSON.stringify(output)},
       pixelRatio: 1
@@ -130,6 +139,13 @@ async function testTypeScriptConsumer(directory) {
       .createPointMark({ id: "points" })
       .encodeX({ field: "x" })
       .encodeY({ field: "y" });
+    const polar: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ angle: 0, distance: 1 }] })
+      .createPointMark()
+      .encodeTheta({ field: "angle", scale: { range: [0, 360] } })
+      .encodeR({ field: "distance", scale: { type: "sqrt" } })
+      .encodePointRadius({ value: 2 });
     const pointLayer = inspected.semanticSpec.layers.find(
       layer => layer.id === "points"
     );
@@ -141,6 +157,7 @@ async function testTypeScriptConsumer(directory) {
     void png;
     void extensionProgram;
     void derived;
+    void polar;
     void pointLayer;
     void pointItems;
     void lastAction;

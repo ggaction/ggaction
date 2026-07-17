@@ -25,6 +25,7 @@ test("finds scale definitions and channel consumers", () => {
     mark: { type: "point" },
     encoding: {
       x: { field: "value", fieldType: "quantitative", scale: "x" },
+      theta: { field: "value", fieldType: "quantitative", scale: "theta" },
       color: { field: "group", fieldType: "nominal", scale: "color" }
     }
   };
@@ -32,6 +33,10 @@ test("finds scale definitions and channel consumers", () => {
 
   assert.equal(findScale(current, "x").id, "x");
   assert.deepEqual(findScaleConsumers(current, "x").map(item => item.channel), ["x"]);
+  assert.deepEqual(
+    findScaleConsumers(current, "theta").map(item => item.channel),
+    ["theta"]
+  );
   assert.throws(() => findScale(current, "missing"), /Unknown scale/);
 });
 

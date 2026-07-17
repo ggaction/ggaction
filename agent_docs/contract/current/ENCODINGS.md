@@ -20,6 +20,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `zero`: Implemented for linear scale. boolean이며 auto domain에만 zero를 포함한다. explicit domain이
   있으면 적용되지 않는다.
 - `palette`: Implemented for color scale. palette name이며 `range`와 동시에 사용할 수 없다.
+  `encodeColor`에서는 top-level shorthand 또는 `scale.palette` 중 하나로 지정한다.
 - `base`, `exponent`, `constant`: Implemented for position `log`, `pow`, `symlog`; defaults는 `10`, `1`, `1`이다. `sqrt`는 fixed exponent `0.5`다.
 - `clamp`, `reverse`: Implemented for compatible continuous position/color mappings and final resolved ranges.
 - `paddingInner`, `paddingOuter`, `padding`, `align`: Implemented for type-compatible band/point position.
@@ -738,8 +739,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   field-driven `encodeSize`와 동시에 사용할 수 없다. 같은 target에 다시 호출하면 기존 radius를
   교체하고 point를 rematerialize한다.
 - Coverage: scatterplot/point tests가 constant radius, reassignment, rematerialization과 invalid values를 검증한다.
-- Proposed: Polar position의 radial channel 이름은 이미 이 action이 차지한 `encodeRadius`와 충돌한다.
-  Polar API를 설계할 때 별도 이름을 사용자와 결정해야 한다.
+- Polar semantic radial position은 별도 `encodeR`이 소유하며 이 action은 glyph size만 소유한다.
 
 ### Formal values — `encodeRadius`
 
@@ -756,6 +756,70 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: semanticSpec unchanged, child broadcast, same-action reassignment, encodeSize conflict.
 - No proposal: constant area shorthand는 추가하지 않고 field-driven area는 `encodeSize`가 소유한다.
 - Evidence: `test/unit/actions/encodings/radius-encoding.test.js`.
+
+## `encodeTheta`
+
+- Signature: `encodeTheta({ field, target?, fieldType?, scale?, coordinate? })`
+- Public angle unit은 degree다. 0°는 12시 방향이고 양의 방향은 clockwise다.
+- `fieldType`은 quantitative, temporal, ordinal, nominal을 지원한다. Quantitative는 linear, temporal은 time,
+  discrete 값은 point/band scale을 사용한다.
+- Auto range는 `[0, 360]`이고 explicit range의 absolute span은 360° 이하이어야 한다.
+- 첫 Polar position action은 `polar` coordinate를 생성·저장한다. 같은 layer의 Cartesian x/y와 혼합할 수 없다.
+- Theta만 있는 incomplete point는 semantic과 resolved scale을 유지하지만 visible x/y geometry를 만들지 않는다.
+- Reassignment는 같은 action과 scale lifecycle을 사용한다.
+
+### Formal values — `encodeTheta`
+
+- Implemented: `encodeTheta({ field: FieldName; target?: UserId; fieldType?: FieldType; scale?: ThetaScaleOptions; coordinate?: UserId })`
+- Theta scale type: `"linear" | "time" | "point" | "band"`.
+- Range: `"auto" | readonly [Finite, Finite]`, with absolute span `<= 360`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `encodeTheta`
+
+- ✅ Covered: shortest call, quantitative and discrete mappings, explicit/reversed ranges, invalid span and type.
+- ✅ Covered: order independence, one-channel incomplete state, Cartesian conflict and immutable failure.
+- Evidence: Polar grammar, encoding, chart, browser and render tests.
+
+## `encodeR`
+
+- Signature: `encodeR({ field, target?, fieldType?: "quantitative", scale?, coordinate? })`
+- Radius is semantic Polar position, distinct from graphical `encodeRadius`/`encodePointRadius` glyph size.
+- Auto range is `[0, min(plotWidth, plotHeight) / 2]`. Explicit range values are non-negative logical Canvas
+  pixels and must fit current plot bounds.
+- Linear/log/pow/sqrt/symlog quantitative scale policies are supported. Canvas edits re-resolve auto ranges and
+  reject an explicit range that no longer fits before returning a new program.
+- Radius만 있는 incomplete point는 semantic/config를 유지하고 complete theta/radius pair가 생기면 x/y를
+  materialize한다.
+
+### Formal values — `encodeR`
+
+- Implemented: `encodeR({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: RadiusScaleOptions; coordinate?: UserId })`
+- Range: `"auto" | readonly [NonNegativeFinite, NonNegativeFinite]` within the current available radius.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `encodeR`
+
+- ✅ Covered: auto/explicit/reversed range, zero policy, resize, scale edit and out-of-bounds error.
+- ✅ Covered: filter, selection, highlight, appearance encodings and order-independent completion.
+- Evidence: Polar encoding, selection, chart, browser and render tests.
+
+## `encodePointRadius`
+
+- Signature: `encodePointRadius({ value, target? })`
+- Additive public alias for `encodeRadius`. It calls `encodeRadius` as one wrapped child, so trace decomposition and
+  all glyph-size validation remain owned by the existing action.
+- It never writes the semantic Polar `radius` channel.
+
+### Formal values — `encodePointRadius`
+
+- Implemented: `encodePointRadius({ value: NonNegativeFinite; target?: UserId })`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `encodePointRadius`
+
+- ✅ Covered: nested action trace, concrete point radius and separation from `encodeR`.
+- Evidence: Polar encoding and public chart tests.
 
 ## `encodeBarWidth`
 

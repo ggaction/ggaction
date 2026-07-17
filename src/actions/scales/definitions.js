@@ -23,6 +23,10 @@ import {
   validateScaleTypeForRole,
   isDiscretePositionScaleType
 } from "../../grammar/scales.js";
+import {
+  validateRadialRange,
+  validateThetaRange
+} from "../../grammar/polar.js";
 import { withScaleUnknown } from "../../grammar/scales.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
@@ -87,6 +91,7 @@ export function resolvePositionScaleDefinition(
       );
     }
   }
+  else if (channel === "theta") validateLinearScaleType(type);
   else validateScaleTypeForRole(type, SCALE_ROLES.quantitativePosition);
   const scale = {
     id,
@@ -108,7 +113,11 @@ export function resolvePositionScaleDefinition(
         ["ordinal", "nominal"].includes(fieldType)
           ? validateOrdinalDomain(value)
           : validateScaleDomain(value),
-      validateRange: (_scaleType, value) => validateScaleRange(value)
+      validateRange: (_scaleType, value) => channel === "theta"
+        ? validateThetaRange(value)
+        : channel === "radius"
+          ? validateRadialRange(value)
+          : validateScaleRange(value)
     })
   };
   return withScaleUnknown(scale, { ...existing, ...options }, channel);

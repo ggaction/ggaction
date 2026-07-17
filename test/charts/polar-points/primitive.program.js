@@ -11,7 +11,8 @@ function createPolarPointPrimitives(rows, {
   colorField,
   pointRadius,
   opacity,
-  radiusZero
+  radiusZero,
+  colorRange
 }) {
   const values = createPolarPointPrimitiveValues(rows, {
     width,
@@ -78,12 +79,12 @@ function createPolarPointPrimitives(rows, {
     });
   }
 
-  return program
+  program = program
     .editSemantic({ property: "scale[color].type", value: "ordinal" })
     .editSemantic({ property: "scale[color].domain", value: "auto" })
     .editSemantic({
       property: "scale[color].range",
-      value: { palette: "tableau10" }
+      value: colorRange
     })
     .editSemantic({ property: "coordinate[polar].type", value: "polar" })
     .createGraphics({ id: "canvas", type: "canvas" })
@@ -104,8 +105,15 @@ function createPolarPointPrimitives(rows, {
       target: "point",
       property: "radius",
       value: values.pointRadius
-    })
-    .editGraphics({ target: "point", property: "opacity", value: values.opacity });
+    });
+
+  return opacity === undefined
+    ? program
+    : program.editGraphics({
+        target: "point",
+        property: "opacity",
+        value: values.opacity
+      });
 }
 
 export function createCarsPolarScatterplotPrimitives(rows) {
@@ -117,7 +125,7 @@ export function createCarsPolarScatterplotPrimitives(rows) {
     radiusField: "Horsepower",
     colorField: "Origin",
     pointRadius: 3,
-    opacity: 1
+    colorRange: "auto"
   });
 }
 
@@ -131,6 +139,7 @@ export function createFashionTsnePolarPointPrimitives(rows) {
     colorField: "label_name",
     pointRadius: 1.4,
     opacity: 0.42,
-    radiusZero: false
+    radiusZero: false,
+    colorRange: { palette: "tableau10" }
   });
 }

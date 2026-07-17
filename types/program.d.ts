@@ -535,6 +535,53 @@ export interface PositionEncodingOptions {
   stack?: StackMode;
 }
 
+export interface ThetaScaleOptions {
+  id?: string;
+  type?: "linear" | "time" | "band" | "point";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly [number, number];
+  nice?: boolean;
+  zero?: boolean;
+  clamp?: boolean;
+  reverse?: boolean;
+  paddingInner?: number;
+  paddingOuter?: number;
+  padding?: number;
+  align?: number;
+  unknown?: unknown;
+}
+
+export interface RadiusScaleOptions {
+  id?: string;
+  type?: "linear" | "log" | "pow" | "sqrt" | "symlog";
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [number, number];
+  nice?: boolean;
+  zero?: boolean;
+  clamp?: boolean;
+  reverse?: boolean;
+  base?: number;
+  exponent?: number;
+  constant?: number;
+  unknown?: unknown;
+}
+
+export interface ThetaEncodingOptions {
+  field: string;
+  target?: string;
+  fieldType?: FieldType;
+  scale?: ThetaScaleOptions;
+  coordinate?: string;
+}
+
+export interface RadialEncodingOptions {
+  field: string;
+  target?: string;
+  fieldType?: "quantitative";
+  scale?: RadiusScaleOptions;
+  coordinate?: string;
+}
+
 type RulePositionValue =
   | { field: string; datum?: never }
   | { field?: never; datum: unknown };
@@ -579,6 +626,7 @@ export interface CategoricalEncodingOptions {
   target?: string;
   fieldType?: "nominal";
   scale?: ScaleOptions;
+  palette?: Palette;
   layout?: ColorLayout;
 }
 
@@ -908,6 +956,7 @@ export type ColorEncodingOptions =
       fieldType: "quantitative";
       aggregate?: AggregateOperation;
       scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+      palette?: Palette;
       layout?: never;
     }
   | {
@@ -916,6 +965,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       aggregate?: never;
       scale?: ContinuousColorScaleOptions;
+      palette?: Palette;
       layout?: never;
     };
 
@@ -1289,6 +1339,8 @@ export class ChartProgram {
 
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
+  encodeTheta(options: ThetaEncodingOptions): ChartProgram;
+  encodeR(options: RadialEncodingOptions): ChartProgram;
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeColor(options: ColorEncodingOptions): ChartProgram;
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
@@ -1296,6 +1348,7 @@ export class ChartProgram {
   encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ScaleOptions }): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
+  encodePointRadius(options: { value: number; target?: string }): ChartProgram;
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeYRange(options: {

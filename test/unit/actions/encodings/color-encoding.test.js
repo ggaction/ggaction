@@ -75,6 +75,10 @@ test("supports explicit color domains, ranges, and palette descriptors", () => {
     field: "origin",
     scale: { palette: "tableau10" }
   });
+  const topLevelPalette = createPointProgram().encodeColor({
+    field: "origin",
+    palette: "tableau10"
+  });
 
   assert.deepEqual(explicit.resolvedScales.color.range, ["navy", "green"]);
   assert.deepEqual(palette.semanticSpec.scales[0].range, {
@@ -83,6 +87,17 @@ test("supports explicit color domains, ranges, and palette descriptors", () => {
   assert.deepEqual(paletteAlias.semanticSpec.scales[0].range, {
     palette: "tableau10"
   });
+  assert.deepEqual(topLevelPalette.semanticSpec.scales[0].range, {
+    palette: "tableau10"
+  });
+  assert.throws(
+    () => createPointProgram().encodeColor({
+      field: "origin",
+      palette: "tableau10",
+      scale: { range: ["red", "blue"] }
+    }),
+    /cannot be combined/
+  );
 });
 
 test("resolves named palettes for marks and connected legends", () => {

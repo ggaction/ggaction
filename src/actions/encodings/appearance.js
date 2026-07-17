@@ -119,6 +119,16 @@ const encodeRadius = action(
   }
 );
 
+const encodePointRadius = action(
+  {
+    op: "encodePointRadius",
+    description: "Set a constant graphical radius on a point mark."
+  },
+  function (args = {}) {
+    return this.encodeRadius(args);
+  }
+);
+
 const encodeSize = action(
   {
     op: "encodeSize",
@@ -236,6 +246,7 @@ const encodeOpacity = action(
 
 export function registerAppearanceEncodingAction(ProgramClass) {
   ProgramClass.prototype.encodeRadius = encodeRadius;
+  ProgramClass.prototype.encodePointRadius = encodePointRadius;
   ProgramClass.prototype.encodeSize = encodeSize;
   ProgramClass.prototype.encodeShape = encodeShape;
   ProgramClass.prototype.encodeOpacity = encodeOpacity;

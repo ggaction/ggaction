@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { loadCars, loadFashionTsne } from "../../support/data.js";
-import { visualVariants } from "./manifest.js";
+import { visualVariants } from "./variants/manifest.js";
 import {
   createCarsPolarScatterplotPrimitives,
   createFashionTsnePolarPointPrimitives
@@ -130,10 +130,10 @@ test("locks dense Fashion negative-domain Polar coverage", () => {
   assert.equal(program.semanticSpec.scales.find(scale => scale.id === "radius").zero, false);
 });
 
-test("keeps Gate C primitive-only until visual approval", () => {
+test("keeps the approved primitive as an independent baseline", () => {
   assert.equal(visualVariants.length, 2);
   for (const variant of visualVariants) {
-    assert.equal(variant.userFacing, undefined);
+    assert.equal(typeof variant.userFacing, "function");
     const operations = nestedOperations(variant.primitive().trace);
     for (const action of ["encodeTheta", "encodeR", "encodePointRadius"]) {
       assert.equal(operations.includes(action), false, `${variant.chart}: ${action}`);

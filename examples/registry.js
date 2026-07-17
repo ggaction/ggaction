@@ -16,6 +16,7 @@ import { createGapminderBandPointChart } from
   "./gapminder-temporal-discrete-scales/program.js";
 import { createGapminderTransformedScaleScatterplot } from
   "./gapminder-transformed-scales/program.js";
+import { createCarsPolarScatterplot } from "./polar-points/program.js";
 import { createJobsGroupedBar } from "./jobs-grouped-bar/program.js";
 import {
   createGroupedMaximumPointHighlight,
@@ -46,6 +47,17 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsScatterplot,
     docsGroup: "charts",
     browser: { path: "cars-scatterplot/", canvas: "#chart" }
+  }),
+  example({
+    id: "cars-polar-scatterplot",
+    data: "cars",
+    width: 520,
+    height: 520,
+    createProgram: createCarsPolarScatterplot,
+    programDirectory: "polar-points",
+    testDirectory: "polar-points",
+    docsGroup: "charts",
+    browser: { path: "polar-points/", canvas: "#chart" }
   }),
   example({
     id: "cars-line-chart",

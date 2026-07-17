@@ -65,6 +65,7 @@ export function rebindPositionGuides(
   nextScale,
   target
 ) {
+  if (!["x", "y"].includes(channel)) return program;
   if (previousScale === undefined || previousScale === nextScale) return program;
 
   const axis = program.semanticSpec.guides.axis?.[channel];

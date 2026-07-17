@@ -6,12 +6,12 @@
 - [x] STEP 2 — Deterministic Polar reference geometry
 - [x] STEP 3 — Primitive visual baselines
 - [x] STEP 4 — Gate C visual evidence와 사용자 승인
-- [ ] STEP 5 — Pure Polar grammar
-- [ ] STEP 6 — Polar semantic, scale와 coordinate policy
-- [ ] STEP 7 — Point materialization과 rematerialization
-- [ ] STEP 8 — `encodeTheta`, `encodeR`, `encodePointRadius`
-- [ ] STEP 9 — Interaction, revision과 compatibility matrix
-- [ ] STEP 10 — Types, docs, package와 Phase closeout
+- [x] STEP 5 — Pure Polar grammar
+- [x] STEP 6 — Polar semantic, scale와 coordinate policy
+- [x] STEP 7 — Point materialization과 rematerialization
+- [x] STEP 8 — `encodeTheta`, `encodeR`, `encodePointRadius`
+- [x] STEP 9 — Interaction, revision과 compatibility matrix
+- [x] STEP 10 — Types, docs, package와 Phase closeout
 
 ## 목표
 

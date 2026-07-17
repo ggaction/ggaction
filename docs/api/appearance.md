@@ -11,7 +11,7 @@ title: Appearance Encodings
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `encodeRadius` | `encodeRadius({ value: 3 })` | Current point mark | Concrete circle radius |
+| `encodeRadius` / `encodePointRadius` | `encodePointRadius({ value: 3 })` | Current point mark | Concrete point glyph radius |
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
@@ -158,6 +158,10 @@ Broadcast a non-negative finite graphical radius to a point mark.
 ```javascript
 program.encodeRadius({ value: 3 });
 ```
+
+`encodePointRadius({ value, target? })` is the preferred alias in Polar charts.
+It records `encodeRadius` as a wrapped child and remains distinct from
+`encodeR`, which assigns semantic radial position.
 
 | Option | Type | Default |
 | --- | --- | --- |

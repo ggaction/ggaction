@@ -106,7 +106,10 @@ test("plans point encoding scale, mark, and existing legend in order", () => {
       scale: "shape"
     }),
     [
-      { op: "rematerializeScale", args: { id: "shape", guides: false } },
+      {
+        op: "rematerializeScale",
+        args: { id: "shape", guides: false, marks: false }
+      },
       { op: "rematerializePointMark", args: { id: "points" } },
       { op: "rematerializeLegend" }
     ]
@@ -223,9 +226,18 @@ test("plans each unique scale after one layer changes data", () => {
   };
 
   assert.deepEqual(planLayerDataRematerialization(program, "points"), [
-    { op: "rematerializeScale", args: { id: "x", guides: false } },
-    { op: "rematerializeScale", args: { id: "y", guides: false } },
-    { op: "rematerializeScale", args: { id: "color", guides: false } },
+    {
+      op: "rematerializeScale",
+      args: { id: "x", guides: false, marks: false }
+    },
+    {
+      op: "rematerializeScale",
+      args: { id: "y", guides: false, marks: false }
+    },
+    {
+      op: "rematerializeScale",
+      args: { id: "color", guides: false, marks: false }
+    },
     { op: "rematerializePointMark", args: { id: "points" } }
   ]);
   assert.throws(

@@ -23,6 +23,10 @@ import {
   hasOrdinalDomain,
   normalizeScaleDefinition
 } from "../../grammar/scales.js";
+import {
+  validateRadialRange,
+  validateThetaRange
+} from "../../grammar/polar.js";
 import { getMarkMaterializationStep } from "../../materialization/marks.js";
 import {
   applyMaterializationPlan
@@ -79,6 +83,8 @@ function resolveChannel(consumers, id) {
 
 function validateRangeForChannel(scale, channel, value) {
   if (value === "auto") return value;
+  if (channel === "theta") return validateThetaRange(value);
+  if (channel === "radius") return validateRadialRange(value);
   if (scale.type === "sequential") {
     return validateSequentialColorRange(value);
   }
@@ -116,7 +122,7 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
   if (nextType === "time") {
     if (
       consumers.length > 0 &&
-      (!["x", "y"].includes(channel) ||
+      (!["x", "y", "theta"].includes(channel) ||
         consumers.some(consumer => consumer.encoding.fieldType !== "temporal"))
     ) {
       throw new Error(
@@ -129,7 +135,7 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
   if (discrete) {
     if (
       consumers.length > 0 &&
-      (!["x", "y"].includes(channel) || consumers.some(consumer =>
+      (!["x", "y", "theta"].includes(channel) || consumers.some(consumer =>
         !["nominal", "ordinal"].includes(consumer.encoding.fieldType)
       ))
     ) {
@@ -148,13 +154,16 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
   const quantitative = nextType === "linear" || isTransformedScaleType(nextType);
   if (
     !quantitative ||
-    (consumers.length > 0 && !["x", "y"].includes(channel))
+    (consumers.length > 0 && !["x", "y", "theta", "radius"].includes(channel))
   ) {
     throw new Error(
       "editScale type transition currently requires a quantitative position scale."
     );
   }
   validateScaleTypeForRole(nextType, SCALE_ROLES.quantitativePosition);
+  if (channel === "theta" && nextType !== "linear") {
+    throw new Error("Theta quantitative position currently requires a linear scale.");
+  }
   if (consumers.some(consumer => consumer.encoding.fieldType !== "quantitative")) {
     throw new Error(
       `Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`

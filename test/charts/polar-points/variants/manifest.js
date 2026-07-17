@@ -1,10 +1,14 @@
-import { loadCars, loadFashionTsne } from "../../support/data.js";
-import { defineVisualVariant } from "../../support/visual-variants.js";
+import { loadCars, loadFashionTsne } from "../../../support/data.js";
+import { defineVisualVariant } from "../../../support/visual-variants.js";
 
 import {
   createCarsPolarScatterplotPrimitives,
   createFashionTsnePolarPointPrimitives
-} from "./primitive.program.js";
+} from "../primitive.program.js";
+import {
+  createCarsPolarScatterplot,
+  createFashionTsnePolarPoints
+} from "../../../../examples/polar-points/program.js";
 
 const cars = loadCars();
 const fashionRows = loadFashionTsne();
@@ -40,6 +44,7 @@ export const visualVariants = Object.freeze([
     callChain: carsCallChain,
     artifact,
     primitive: () => createCarsPolarScatterplotPrimitives(cars),
+    userFacing: () => createCarsPolarScatterplot(cars),
     width: 520,
     height: 520,
     colors: ["#4c78a8", "#f58518", "#e45756"],
@@ -52,6 +57,7 @@ export const visualVariants = Object.freeze([
     callChain: fashionCallChain,
     artifact,
     primitive: () => createFashionTsnePolarPointPrimitives(fashionRows),
+    userFacing: () => createFashionTsnePolarPoints(fashionRows),
     width: 560,
     height: 560,
     colors: [],

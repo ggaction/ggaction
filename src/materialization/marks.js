@@ -8,15 +8,28 @@ import {
 import { resolveRuleMode } from "../grammar/rules.js";
 import { findUpstreamTransform } from "./dataProvenance.js";
 
-function hasPositionScales(layer) {
+function hasCartesianPositionScales(layer) {
   return (
     layer.encoding?.x?.scale !== undefined &&
     layer.encoding?.y?.scale !== undefined
   );
 }
 
+function hasPolarPositionScales(layer) {
+  return (
+    layer.encoding?.theta?.scale !== undefined &&
+    layer.encoding?.radius?.scale !== undefined
+  );
+}
+
+function hasPositionScales(layer) {
+  return hasCartesianPositionScales(layer);
+}
+
 export function canMaterializePoint(_program, layer) {
-  return layer.mark?.type === "point" && hasPositionScales(layer);
+  return layer.mark?.type === "point" && (
+    hasCartesianPositionScales(layer) || hasPolarPositionScales(layer)
+  );
 }
 
 export function canMaterializeLine(program, layer) {

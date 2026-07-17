@@ -17,6 +17,7 @@ Position encoding actions normally manage coordinates automatically:
 
 ```text
 encodeX / encodeY -> main / cartesian
+encodeTheta / encodeR -> polar / polar
 ```
 
 The resolved coordinate definition and layer reference are stored in
@@ -44,13 +45,15 @@ program.createCoordinate({
 Equivalent repeated creation is allowed. A conflicting type or an attempt to
 reattach a layer that already uses another coordinate produces an error.
 
-Polar semantic coordinates are valid resources, but Polar position actions and
-guide graphics are not supported in the current release.
+Polar point position actions create or reuse a Polar coordinate automatically.
+The layer stores semantic theta/radius encodings, while `graphicSpec` stores
+only final Cartesian x/y values for the renderer.
 
 ## Errors and limitations
 
-A layer cannot be silently moved from one coordinate to another. Polar
-resources can be stored, but the current rendering slice is Cartesian.
+A layer cannot be silently moved from one coordinate to another, and Cartesian
+x/y cannot be mixed with Polar theta/radius. Polar axes and grids are not yet
+supported; guide requests fail explicitly instead of creating Cartesian guides.
 
 ## Related
 

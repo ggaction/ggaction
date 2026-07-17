@@ -1,24 +1,7 @@
 # Roadmap 3 Planned Polar contracts
 
-Gate A에서 승인된 Phase 2~5 계약이다. Public angle unit은 degree이며 renderer는 Polar semantics를 읽지 않는다.
-
-## Polar position actions
-
-```typescript
-encodeTheta({ target?, field, fieldType?, scale? }): ChartProgram;
-encodeR({ target?, field, fieldType?: "quantitative", scale? }): ChartProgram;
-encodePointRadius({ target?, value: NonNegativeFinite }): ChartProgram;
-```
-
-- `encodePointRadius`는 current glyph-size `encodeRadius`의 additive alias다. Semantic radial position은
-  `encodeR`이 stored `radius` channel에 기록한다.
-- Theta default는 0°=12시, clockwise, range `[0, 360]`; explicit span은 absolute `<= 360`이다.
-- Auto radial range는 `[0, min(plotWidth, plotHeight) / 2]`이고 explicit range는 logical Canvas pixels다.
-- First position action creates or reuses one unambiguous Polar coordinate. Cartesian x/y와 혼합하지 않는다.
-- `encodeTheta → encodeR`과 reverse order는 같은 final state를 만든다. Incomplete one-channel point는
-  semantic/config를 보존하지만 visible geometry를 만들지 않는다.
-- Concrete point items store only final Cartesian x/y and ordinary shape graphics.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 2.
+Gate A에서 승인된 Phase 3~5 계약이다. Phase 2 Polar point actions는 구현되어
+`current/ENCODINGS.md`가 소유한다. Public angle unit은 degree이며 renderer는 Polar semantics를 읽지 않는다.
 
 ## Polar guide actions
 

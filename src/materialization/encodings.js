@@ -18,7 +18,7 @@ export function planEncodingRematerialization(program, {
   if (layer.mark?.type === "point" && scale !== undefined) {
     scales.push({
       op: "rematerializeScale",
-      args: { id: scale, guides: false }
+      args: { id: scale, guides: false, marks: false }
     });
   }
 
