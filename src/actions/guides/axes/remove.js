@@ -4,13 +4,20 @@ import { validateKeys } from "../../../core/validation.js";
 const OPTIONS = Object.freeze(["coordinate", "scale"]);
 
 function makeRemoveAxis(channel) {
-  const prefix = channel === "x" ? "X" : "Y";
+  const prefix = channel === "x"
+    ? "X"
+    : channel === "y"
+      ? "Y"
+      : channel === "theta"
+        ? "Theta"
+        : "Radial";
   const operation = `remove${prefix}Axis`;
+  const graphicPrefix = channel === "radius" ? "radial" : channel;
   const graphicIds = [
-    `${channel}AxisLine`,
-    `${channel}AxisTicks`,
-    `${channel}AxisLabels`,
-    `${channel}AxisTitle`
+    `${graphicPrefix}AxisLine`,
+    `${graphicPrefix}AxisTicks`,
+    `${graphicPrefix}AxisLabels`,
+    `${graphicPrefix}AxisTitle`
   ];
   return action(
     {
@@ -53,3 +60,5 @@ function makeRemoveAxis(channel) {
 
 export const removeXAxis = makeRemoveAxis("x");
 export const removeYAxis = makeRemoveAxis("y");
+export const removeThetaAxis = makeRemoveAxis("theta");
+export const removeRadialAxis = makeRemoveAxis("radius");

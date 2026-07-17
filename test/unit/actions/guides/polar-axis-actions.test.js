@@ -8,8 +8,8 @@ function polarProgram() {
   return chart()
     .createCanvas({ width: 300, height: 300, margin: 30 })
     .createData({ values: [
-      { a: 0, r: 0 },
-      { a: 10, r: 20 }
+      { a: 0, a2: 5, r: 0 },
+      { a: 10, a2: 15, r: 20 }
     ] })
     .createPointMark()
     .encodeTheta({ field: "a" })
@@ -109,6 +109,75 @@ test("dispatches createAxes and rematerializes Polar axis consumers", () => {
     reversed.graphicSpec.objects.thetaAxisTicks,
     resized.graphicSpec.objects.thetaAxisTicks
   );
+});
+
+test("moves every radial-axis component through one aggregate edit", () => {
+  const created = polarProgram().createRadialAxis({
+    ticksAndLabels: { values: [0, 20] }
+  });
+  const moved = created.editRadialAxis({ angle: 180 });
+
+  assert.equal(moved.guideConfigs.axis.radius.layout.angle, 180);
+  assert.equal(moved.graphicSpec.objects.radialAxisLine.properties.y2, 270);
+  assert.notDeepEqual(
+    moved.graphicSpec.objects.radialAxisTicks,
+    created.graphicSpec.objects.radialAxisTicks
+  );
+  assert.notDeepEqual(
+    moved.graphicSpec.objects.radialAxisTitle,
+    created.graphicSpec.objects.radialAxisTitle
+  );
+  assert.deepEqual(
+    moved.trace.children.at(-1).children.map(child => child.op),
+    [
+      "editRadialAxisLine",
+      "editRadialAxisTicks",
+      "editRadialAxisLabels",
+      "editRadialAxisTitle"
+    ]
+  );
+});
+
+test("removes complete Polar axes and preserves earlier programs", () => {
+  const created = polarProgram().createAxes();
+  const removed = created.removeThetaAxis().removeRadialAxis();
+
+  assert.equal(removed.semanticSpec.guides.axis, undefined);
+  assert.equal(removed.graphicSpec.objects.thetaAxisLine, undefined);
+  assert.equal(removed.graphicSpec.objects.radialAxisTitle, undefined);
+  assert.ok(created.graphicSpec.objects.thetaAxisLine);
+  assert.throws(() => removed.removeThetaAxis(), /requires an existing/);
+});
+
+test("creates the approved default Polar guide hierarchy", () => {
+  const program = polarProgram().createGuides();
+  assert.deepEqual(
+    program.trace.children.at(-1).children.map(child => child.op),
+    ["createAxes", "createGrid"]
+  );
+  assert.ok(program.graphicSpec.objects.thetaAxisLine);
+  assert.ok(program.graphicSpec.objects.radialAxisLine);
+  assert.ok(program.graphicSpec.objects.thetaGridLines);
+  assert.ok(program.graphicSpec.objects.radialGridCircles);
+});
+
+test("converges Polar guides after a position encoding reassignment", () => {
+  const created = polarProgram().createGuides();
+  const reassigned = created.encodeTheta({ field: "a2" });
+
+  assert.equal(
+    reassigned.semanticSpec.layers[0].encoding.theta.field,
+    "a2"
+  );
+  assert.equal(
+    reassigned.semanticSpec.guides.axis.theta.title,
+    "a2"
+  );
+  assert.notDeepEqual(
+    reassigned.graphicSpec.objects.thetaAxisTicks,
+    created.graphicSpec.objects.thetaAxisTicks
+  );
+  assert.ok(reassigned.graphicSpec.objects.thetaGridLines);
 });
 
 test("validates Polar axis conflicts before returning partial state", () => {

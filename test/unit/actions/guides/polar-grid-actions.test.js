@@ -92,3 +92,15 @@ test("validates Polar grid ownership and option conflicts atomically", () => {
   assert.equal(base.semanticSpec.guides.grid, undefined);
   assert.equal(base.graphicSpec.objects.thetaGridLines, undefined);
 });
+
+test("removes selected Polar grids and allows recreation", () => {
+  const created = polarProgram().createGrid();
+  const removed = created.removeGrid({ theta: true });
+  const recreated = removed.createThetaGrid();
+
+  assert.equal(removed.semanticSpec.guides.grid.theta, undefined);
+  assert.ok(removed.semanticSpec.guides.grid.radial);
+  assert.equal(removed.graphicSpec.objects.thetaGridLines, undefined);
+  assert.ok(recreated.graphicSpec.objects.thetaGridLines);
+  assert.ok(created.graphicSpec.objects.thetaGridLines);
+});

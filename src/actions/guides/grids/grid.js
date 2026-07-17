@@ -11,6 +11,7 @@ import {
   validateGridCreateArgs,
   validateGridEditArgs
 } from "./resolve.js";
+import { polarGuideNames } from "../polar/resolve.js";
 
 const CARTESIAN_OPTIONS = Object.freeze(["horizontal", "vertical"]);
 const POLAR_OPTIONS = Object.freeze(["theta", "radial"]);
@@ -20,13 +21,15 @@ const AGGREGATE_OPTIONS = Object.freeze([
 ]);
 
 function removeDirection(program, direction) {
-  const operation = gridNames(direction);
+  const graphic = POLAR_OPTIONS.includes(direction)
+    ? polarGuideNames(direction).grid
+    : gridNames(direction).graphic;
   let next = program.editSemantic({
     property: `guide.grid.${direction}`,
     remove: true
   });
-  if (next.graphicSpec.objects[operation.graphic] !== undefined) {
-    next = next.editGraphics({ target: operation.graphic, remove: true });
+  if (next.graphicSpec.objects[graphic] !== undefined) {
+    next = next.editGraphics({ target: graphic, remove: true });
   }
   return next._withoutMaterializationConfig(["guides", "grid", direction]);
 }
@@ -323,7 +326,11 @@ const removeGrid = action(
     const existing = AGGREGATE_OPTIONS.filter(direction =>
       this.semanticSpec.guides.grid?.[direction] !== undefined ||
       this.guideConfigs.grid?.[direction] !== undefined ||
-      this.graphicSpec.objects[gridNames(direction).graphic] !== undefined
+      this.graphicSpec.objects[
+        POLAR_OPTIONS.includes(direction)
+          ? polarGuideNames(direction).grid
+          : gridNames(direction).graphic
+      ] !== undefined
     );
     const selected = Object.keys(args).length === 0
       ? existing

@@ -65,11 +65,17 @@ export function rebindPositionGuides(
   nextScale,
   target
 ) {
-  if (!["x", "y"].includes(channel)) return program;
+  if (!["x", "y", "theta", "radius"].includes(channel)) return program;
   if (previousScale === undefined || previousScale === nextScale) return program;
 
   const axis = program.semanticSpec.guides.axis?.[channel];
-  const direction = channel === "x" ? "vertical" : "horizontal";
+  const direction = channel === "x"
+    ? "vertical"
+    : channel === "y"
+      ? "horizontal"
+      : channel === "theta"
+        ? "theta"
+        : "radial";
   const grid = program.semanticSpec.guides.grid?.[direction];
   const ownsAxis = axis?.scale === previousScale;
   const ownsGrid = grid?.scale === previousScale;
@@ -90,7 +96,7 @@ export function rebindPositionGuides(
       property: `guide.axis.${channel}.scale`,
       value: nextScale
     });
-    for (const component of ["ticks", "labels", "title"]) {
+    for (const component of ["line", "ticks", "labels", "title"]) {
       const config = next.guideConfigs.axis?.[channel]?.[component];
       if (config?.scale === previousScale) {
         next = next._withGuideConfig(channel, component, {

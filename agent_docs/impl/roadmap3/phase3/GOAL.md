@@ -10,7 +10,7 @@
 - [x] STEP 6 — Polar guide semantic/config ownership
 - [x] STEP 7 — Theta/radial grid actions
 - [x] STEP 8 — Theta/radius axis actions
-- [ ] STEP 9 — Aggregate dispatch, focused edits와 rematerialization
+- [x] STEP 9 — Aggregate dispatch, focused edits와 rematerialization
 - [ ] STEP 10 — Public vertical slice, docs와 Phase closeout
 
 ## 목표

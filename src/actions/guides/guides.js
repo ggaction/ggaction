@@ -34,14 +34,26 @@ function hasCartesianEncoding(program) {
   );
 }
 
+function hasPolarEncoding(program) {
+  return program.semanticSpec.layers.some(
+    layer => layer.encoding?.theta !== undefined ||
+      layer.encoding?.radius !== undefined
+  );
+}
+
 function hasGridEncoding(program) {
   return program.semanticSpec.layers.some(
     layer => layer.encoding?.x?.scale !== undefined ||
-      layer.encoding?.y?.scale !== undefined
+      layer.encoding?.y?.scale !== undefined ||
+      layer.encoding?.theta?.scale !== undefined ||
+      layer.encoding?.radius?.scale !== undefined
   );
 }
 
 function inferGridOptions(program) {
+  if (hasPolarEncoding(program) && !hasCartesianEncoding(program)) {
+    return { theta: {}, radial: {} };
+  }
   const barOrientations = program.semanticSpec.layers
     .map(resolveBarOrientation)
     .filter(Boolean);
@@ -112,9 +124,10 @@ const createGuides = action(
   },
   function (args = {}) {
     validateOptions(args);
+    const hasAxes = hasCartesianEncoding(this) || hasPolarEncoding(this);
     const axes = args.axes === undefined && hasCartesianEncoding(this)
       ? inferAxesOptions(this)
-      : selectOption(args.axes, hasCartesianEncoding(this));
+      : selectOption(args.axes, hasAxes);
     const grid = args.grid === undefined && hasGridEncoding(this)
       ? inferGridOptions(this)
       : selectOption(args.grid, hasGridEncoding(this));

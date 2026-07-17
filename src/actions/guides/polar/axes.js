@@ -706,6 +706,111 @@ function makeCreateAxis(kind) {
   });
 }
 
+const AXIS_EDIT_OPTIONS = Object.freeze([
+  "angle", "line", "ticks", "labels", "ticksAndLabels", "title"
+]);
+
+function validateAxisEditArgs(kind, args, operation) {
+  validateObject(
+    args,
+    kind === "theta"
+      ? AXIS_EDIT_OPTIONS.filter(option => option !== "angle")
+      : AXIS_EDIT_OPTIONS,
+    operation
+  );
+  if (Object.keys(args).length === 0) {
+    throw new Error(`${operation} requires at least one axis change.`);
+  }
+  if (Object.hasOwn(args, "angle")) validateAngle(args.angle);
+  if (Object.hasOwn(args, "line")) {
+    validateObject(args.line, LINE_EDIT_OPTIONS, `${operation}.line`);
+  }
+  if (Object.hasOwn(args, "ticks")) {
+    validateObject(args.ticks, TICK_EDIT_OPTIONS, `${operation}.ticks`);
+    validateModeOptions(args.ticks, `${operation}.ticks`);
+  }
+  if (Object.hasOwn(args, "labels")) {
+    validateObject(args.labels, LABEL_EDIT_OPTIONS, `${operation}.labels`);
+    validateModeOptions(args.labels, `${operation}.labels`);
+  }
+  if (Object.hasOwn(args, "ticksAndLabels")) {
+    validateObject(
+      args.ticksAndLabels,
+      TICK_GROUP_OPTIONS,
+      `${operation}.ticksAndLabels`
+    );
+    validateModeOptions(args.ticksAndLabels, `${operation}.ticksAndLabels`);
+    if (args.ticks !== undefined || args.labels !== undefined) {
+      throw new Error(
+        `${operation} cannot combine ticksAndLabels with ticks or labels.`
+      );
+    }
+    if (args.ticksAndLabels.ticks !== undefined) {
+      validateObject(
+        args.ticksAndLabels.ticks,
+        ["length", "color", "lineWidth"],
+        `${operation}.ticksAndLabels.ticks`
+      );
+    }
+    if (args.ticksAndLabels.labels !== undefined) {
+      validateObject(
+        args.ticksAndLabels.labels,
+        LABEL_EDIT_OPTIONS.filter(key => !["count", "values"].includes(key)),
+        `${operation}.ticksAndLabels.labels`
+      );
+    }
+  }
+  if (Object.hasOwn(args, "title")) {
+    validateObject(args.title, TITLE_EDIT_OPTIONS, `${operation}.title`);
+  }
+}
+
+function makeEditAxis(kind) {
+  const operation = `edit${prefix(kind)}Axis`;
+  return action({
+    op: operation,
+    description: `Edit selected Polar ${kind}-axis components.`
+  }, function (args = {}) {
+    validateAxisEditArgs(kind, args, operation);
+    const names = polarGuideNames(kind);
+    const angleChanged = Object.hasOwn(args, "angle");
+    let next = angleChanged
+      ? this._withGuideConfig("radius", "layout", { angle: args.angle })
+      : this;
+    const has = component =>
+      next.graphicSpec.objects[names[component]] !== undefined;
+    if (args.line !== undefined || (angleChanged && has("line"))) {
+      next = next[`edit${prefix(kind)}AxisLine`](args.line ?? {});
+    }
+    if (args.ticksAndLabels !== undefined) {
+      const group = args.ticksAndLabels;
+      const mode = {
+        ...(Object.hasOwn(group, "count") ? { count: group.count } : {}),
+        ...(Object.hasOwn(group, "values") ? { values: group.values } : {})
+      };
+      next = next[`edit${prefix(kind)}AxisTicks`]({
+        ...mode,
+        ...(group.ticks ?? {})
+      });
+      next = next[`edit${prefix(kind)}AxisLabels`]({
+        ...mode,
+        ...(group.labels ?? {})
+      });
+    } else {
+      if (args.ticks !== undefined || (angleChanged && has("ticks"))) {
+        next = next[`edit${prefix(kind)}AxisTicks`](args.ticks ?? {});
+      }
+      if (args.labels !== undefined || (angleChanged && has("labels"))) {
+        next = next[`edit${prefix(kind)}AxisLabels`](args.labels ?? {});
+      }
+    }
+    if (args.title !== undefined || (angleChanged && has("title"))) {
+      next = next[`edit${prefix(kind)}AxisTitle`](args.title ?? {});
+    }
+    return next;
+  });
+}
+
 const createThetaAxisLine = makeCreateLine("theta");
 const createRadialAxisLine = makeCreateLine("radius");
 const editThetaAxisLine = makeEditLine("theta");
@@ -724,6 +829,8 @@ const editThetaAxisTitle = makeEditTitle("theta");
 const editRadialAxisTitle = makeEditTitle("radius");
 const createThetaAxis = makeCreateAxis("theta");
 const createRadialAxis = makeCreateAxis("radius");
+const editThetaAxis = makeEditAxis("theta");
+const editRadialAxis = makeEditAxis("radius");
 
 export function registerPolarAxisActions(ProgramClass) {
   Object.assign(ProgramClass.prototype, {
@@ -744,6 +851,8 @@ export function registerPolarAxisActions(ProgramClass) {
     editThetaAxisTitle,
     editRadialAxisTitle,
     createThetaAxis,
-    createRadialAxis
+    createRadialAxis,
+    editThetaAxis,
+    editRadialAxis
   });
 }
