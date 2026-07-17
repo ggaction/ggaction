@@ -3,6 +3,7 @@ import test from "node:test";
 
 import { ChartProgram } from "../../../src/ChartProgram.js";
 import { render } from "../../../src/renderers/canvas/index.js";
+import { drawTextGraphic } from "../../../src/renderers/canvas/text.js";
 import {
   createMockCanvasContext,
   findCanvasCalls
@@ -77,6 +78,31 @@ test("renders a text collection with distributed positions and values", () => {
       [40, 70]
     ]
   );
+  assert.deepEqual(
+    findCanvasCalls(context, "fillText").map(call => call.args[0]),
+    ["A", "B"]
+  );
+});
+
+test("draws a prepared text collection through the primitive drawer", () => {
+  const context = createMockCanvasContext();
+  const properties = {
+    y: 20,
+    fill: "#333333",
+    fontSize: 12,
+    fontFamily: "sans-serif",
+    textAlign: "center",
+    textBaseline: "middle"
+  };
+
+  drawTextGraphic(context, "labels", {
+    type: "text",
+    items: [
+      { id: "labels:0", properties: { ...properties, x: 10, text: "A" } },
+      { id: "labels:1", properties: { ...properties, x: 30, text: "B" } }
+    ]
+  });
+
   assert.deepEqual(
     findCanvasCalls(context, "fillText").map(call => call.args[0]),
     ["A", "B"]
