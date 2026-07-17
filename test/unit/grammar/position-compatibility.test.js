@@ -24,4 +24,16 @@ test("owns the accepted mark, channel, and field-type matrix", () => {
     validatePositionFieldCompatibility("point", "x", "nominal"),
     "nominal"
   );
+  assert.equal(
+    validatePositionFieldCompatibility("point", "theta", "temporal"),
+    "temporal"
+  );
+  assert.equal(
+    validatePositionFieldCompatibility("point", "radius", "quantitative"),
+    "quantitative"
+  );
+  assert.throws(
+    () => validatePositionFieldCompatibility("point", "radius", "nominal"),
+    /does not support/
+  );
 });

@@ -79,6 +79,8 @@ test("resolves automatic domains and positional ranges", () => {
   assert.deepEqual(resolveScaleDomain("auto", [4, 1, 9]), [1, 9]);
   assert.deepEqual(resolveScaleRange("auto", "x", bounds), [70, 610]);
   assert.deepEqual(resolveScaleRange("auto", "y", bounds), [340, 30]);
+  assert.deepEqual(resolveScaleRange("auto", "theta", bounds), [0, 360]);
+  assert.deepEqual(resolveScaleRange("auto", "radius", bounds), [0, 155]);
   assert.deepEqual(resolveScaleDomain([0, 10], []), [0, 10]);
   assert.deepEqual(resolveScaleRange([5, 15], "x", undefined), [5, 15]);
 });
@@ -155,6 +157,8 @@ test("rounds time domains at calendar boundaries across supported spans", () => 
 
 test("validates the continuous scale vocabulary and bounds", () => {
   assert.equal(validatePositionChannel("x"), "x");
+  assert.equal(validatePositionChannel("theta"), "theta");
+  assert.equal(validatePositionChannel("radius"), "radius");
   assert.equal(validateFieldType("quantitative"), "quantitative");
   assert.equal(validateFieldType("ordinal"), "ordinal");
   assert.equal(validateFieldType("temporal"), "temporal");

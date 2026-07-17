@@ -26,7 +26,14 @@ export const SCALED_ENCODING_CHANNELS = Object.freeze(
   ENCODING_CHANNELS.filter(channel => channel !== "group")
 );
 
-export const POSITION_CHANNELS = Object.freeze(["x", "y"]);
+export const CARTESIAN_POSITION_CHANNELS = Object.freeze(["x", "y"]);
+
+export const POLAR_POSITION_CHANNELS = Object.freeze(["theta", "radius"]);
+
+export const POSITION_CHANNELS = Object.freeze([
+  ...CARTESIAN_POSITION_CHANNELS,
+  ...POLAR_POSITION_CHANNELS
+]);
 
 export const COLOR_LAYOUTS = Object.freeze([
   "stack",

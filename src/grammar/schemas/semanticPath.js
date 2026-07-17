@@ -1,7 +1,7 @@
 import { USER_ID_SOURCE } from "../../core/identifiers.js";
 import {
+  CARTESIAN_POSITION_CHANNELS,
   ENCODING_CHANNELS,
-  POSITION_CHANNELS,
   SCALED_ENCODING_CHANNELS
 } from "../../core/vocabulary.js";
 
@@ -20,7 +20,7 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.x.bin.boundaries",
   "encoding.color.layout",
   "encoding.color.aggregate",
-  ...POSITION_CHANNELS.flatMap(channel => [
+  ...CARTESIAN_POSITION_CHANNELS.flatMap(channel => [
     `encoding.${channel}.aggregate`,
     `encoding.${channel}.stack`
   ])

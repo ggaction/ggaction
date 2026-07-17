@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  CARTESIAN_POSITION_CHANNELS,
   CATEGORICAL_LEGEND_CHANNELS,
   COLOR_LAYOUTS,
   ENCODING_CHANNELS,
   LEGEND_CONFIG_KINDS,
   MARK_TYPES,
+  POLAR_POSITION_CHANNELS,
   POSITION_CHANNELS,
   SCALED_ENCODING_CHANNELS,
   STACK_MODES
@@ -14,7 +16,9 @@ import {
 
 test("owns the implemented semantic and legend vocabularies in one module", () => {
   assert.deepEqual(MARK_TYPES, ["point", "line", "bar", "area", "rule"]);
-  assert.deepEqual(POSITION_CHANNELS, ["x", "y"]);
+  assert.deepEqual(CARTESIAN_POSITION_CHANNELS, ["x", "y"]);
+  assert.deepEqual(POLAR_POSITION_CHANNELS, ["theta", "radius"]);
+  assert.deepEqual(POSITION_CHANNELS, ["x", "y", "theta", "radius"]);
   assert.deepEqual(CATEGORICAL_LEGEND_CHANNELS, [
     "color", "strokeDash", "shape"
   ]);
@@ -30,6 +34,8 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
   assert.equal(SCALED_ENCODING_CHANNELS.includes("group"), false);
   for (const vocabulary of [
     MARK_TYPES,
+    CARTESIAN_POSITION_CHANNELS,
+    POLAR_POSITION_CHANNELS,
     POSITION_CHANNELS,
     CATEGORICAL_LEGEND_CHANNELS,
     LEGEND_CONFIG_KINDS,

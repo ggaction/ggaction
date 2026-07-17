@@ -1,4 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
+import { POLAR_POSITION_CHANNELS } from "../../core/vocabulary.js";
+import { resolvePolarScaleRange } from "../polar.js";
 import { niceTimeDomain } from "./temporal.js";
 import {
   validatePair,
@@ -66,8 +68,11 @@ export function resolveContinuousDomain({ domain, values, type, nice, zero }) {
 }
 
 export function resolveScaleRange(range, channel, bounds) {
-  const validated = validateScaleRange(range);
   validatePositionChannel(channel);
+  if (POLAR_POSITION_CHANNELS.includes(channel)) {
+    return resolvePolarScaleRange(range, channel, bounds);
+  }
+  const validated = validateScaleRange(range);
   if (validated !== "auto") return validated;
   if (
     !isPlainObject(bounds) ||
