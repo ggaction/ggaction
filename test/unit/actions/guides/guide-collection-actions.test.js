@@ -49,6 +49,23 @@ function createGroupedBars() {
     .encodeBarWidth({ band: 0.72 });
 }
 
+function createCountDonut() {
+  return chart()
+    .createCanvas({
+      width: 400,
+      height: 320,
+      margin: { top: 30, right: 120, bottom: 50, left: 50 }
+    })
+    .createData({ values: [
+      { category: "A" },
+      { category: "A" },
+      { category: "B" }
+    ] })
+    .createArcMark({ innerRadius: 0.3 })
+    .encodeTheta({ field: "category", aggregate: "count" })
+    .encodeColor({ field: "category" });
+}
+
 test("automatically creates axes, grid, and a line-series legend", () => {
   const program = createSeriesLine().createGuides();
   const node = program.trace.children.at(-1);
@@ -176,6 +193,36 @@ test("automatically selects a histogram color legend", () => {
   );
   assert.equal(program.semanticSpec.guides.legend.color.scale, "color");
   assert.equal(program.graphicSpec.objects.colorLegendSymbols.type, "rect");
+});
+
+test("creates only applicable Polar guides for a theta-only arc", () => {
+  const program = createCountDonut().createGuides();
+
+  assert.deepEqual(
+    program.trace.children.at(-1).children.map(child => child.op),
+    ["createAxes", "createGrid", "createLegend"]
+  );
+  assert.ok(program.semanticSpec.guides.axis.theta);
+  assert.equal(program.semanticSpec.guides.axis.radius, undefined);
+  assert.ok(program.semanticSpec.guides.grid.theta);
+  assert.equal(program.semanticSpec.guides.grid.radial, undefined);
+  assert.equal(program.semanticSpec.guides.legend.color.scale, "color");
+  assert.ok(program.graphicSpec.objects.colorLegendSymbols);
+});
+
+test("supports an inferred arc legend when axes and grid are disabled", () => {
+  const program = createCountDonut().createGuides({
+    axes: false,
+    grid: false
+  });
+
+  assert.deepEqual(
+    program.trace.children.at(-1).children.map(child => child.op),
+    ["createLegend"]
+  );
+  assert.equal(program.semanticSpec.guides.axis, undefined);
+  assert.equal(program.semanticSpec.guides.grid, undefined);
+  assert.equal(program.semanticSpec.guides.legend.color.scale, "color");
 });
 
 test("collects grouped bar axes, grid, and right legend", () => {

@@ -12,6 +12,7 @@ import {
   validateGridEditArgs
 } from "./resolve.js";
 import { polarGuideNames } from "../polar/resolve.js";
+import { resolveAutomaticGridOptions } from "../applicability.js";
 
 const CARTESIAN_OPTIONS = Object.freeze(["horizontal", "vertical"]);
 const POLAR_OPTIONS = Object.freeze(["theta", "radial"]);
@@ -173,13 +174,6 @@ function normalizeDirection(value, direction) {
   return value;
 }
 
-function hasPolarGridEncoding(program) {
-  return program.semanticSpec.layers.some(layer =>
-    layer.encoding?.theta?.scale !== undefined ||
-    layer.encoding?.radius?.scale !== undefined
-  );
-}
-
 const rematerializeHorizontalGrid = makeRematerialize("horizontal");
 const rematerializeVerticalGrid = makeRematerialize("vertical");
 const createHorizontalGrid = makeCreate("horizontal");
@@ -233,24 +227,31 @@ const createGrid = action(
       throw new TypeError("createGrid options must be a plain object.");
     }
     validateKeys(args, AGGREGATE_OPTIONS, "createGrid");
-    const polarDefault = Object.keys(args).length === 0 &&
-      hasPolarGridEncoding(this);
+    const automatic = Object.keys(args).length === 0
+      ? resolveAutomaticGridOptions(this)
+      : undefined;
     const hasExplicitPolar = Object.hasOwn(args, "theta") ||
       Object.hasOwn(args, "radial");
-    const horizontal = polarDefault ||
+    const polarDefault = automatic !== undefined &&
+      (Object.hasOwn(automatic, "theta") || Object.hasOwn(automatic, "radial"));
+    const horizontal = automatic !== undefined
+      ? automatic.horizontal === false ? undefined : automatic.horizontal
+      : polarDefault ||
       (hasExplicitPolar && args.horizontal === undefined)
       ? undefined
       : normalizeDirection(args.horizontal, "horizontal");
-    const vertical = args.vertical === undefined
+    const vertical = automatic !== undefined
+      ? automatic.vertical === false ? undefined : automatic.vertical
+      : args.vertical === undefined
       ? undefined
       : normalizeDirection(args.vertical, "vertical");
-    const theta = polarDefault
-      ? {}
+    const theta = automatic !== undefined
+      ? automatic.theta
       : args.theta === undefined
         ? undefined
         : normalizeDirection(args.theta, "theta");
-    const radial = polarDefault
-      ? {}
+    const radial = automatic !== undefined
+      ? automatic.radial
       : args.radial === undefined
         ? undefined
         : normalizeDirection(args.radial, "radial");

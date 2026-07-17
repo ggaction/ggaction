@@ -263,6 +263,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
   inference, `{}`는 명시적 선택+inference, false는 opt-out이다.
 - Effect: applicable axes → grid → legend wrapped actions을 deterministic order로 호출한다. title은 guide가
   아니므로 포함하지 않는다.
+- Polar omission은 실제 저장된 theta/radius channel별 axis와 grid만 선택한다. Arc color encoding은
+  categorical legend applicability에 포함되며 theta-only count arc는 radial guide를 합성하지 않는다.
 - 오류: explicit/automatic selection 결과가 하나도 없거나 child resource inference가 ambiguous하면 거부한다.
 - Coverage: `test/unit/actions/guides/guide-collection-actions.test.js`와 size/regression/density guide tests가
   chart-type applicability, standalone size inference, forwarding, opt-out, ambiguity와 trace를 검증한다.
@@ -277,6 +279,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 - `axes`, `grid`, `legend`
   - ✅ Covered: omission/applicability inference, `{}` explicit selection, nested options, `false` opt-out.
+  - ✅ Covered: theta-only arc의 theta axis/grid + color legend, radial guide absence.
   - ✅ Covered: unsupported/non-object values, no selected guide and ambiguous child errors.
   - ⚠️ Partial: explicit selection of all three with every nested option family simultaneously.
 - ✅ Covered: automatic continuous-color/opacity selection and nested continuous legend options.

@@ -59,8 +59,10 @@ program.createGuides({ legend: false });
 ```
 
 Axes are selected from x/y or theta/radius encodings. A horizontal grid is selected
-when a y encoding exists; vertical grid remains off unless requested. A legend
-is selected for line color/stroke-dash, bar color, area color, compatible point
+when a y encoding exists; vertical grid remains off unless requested. Polar grids
+are selected only for the encoded Polar channels: theta creates spokes and radius
+creates concentric circles. A legend is selected for line color/stroke-dash, bar
+color, area or arc color, compatible point
 color+shape encodings, or a standalone quantitative point-size encoding. Size
 adds a second quantitative block when a point-series legend also exists.
 
@@ -112,9 +114,12 @@ scale, target, field, and domain validation remains the responsibility of
 require their explicit child options. If nothing is selected, the action
 reports an error.
 
-For a Polar-only chart, omission selects both theta/radius axes and both Polar
-grid families. Grid geometry is inserted behind marks while axes remain above
-marks, independent of the call occurring after mark creation.
+For a Polar-only chart, omission selects the axis and grid family for each stored
+Polar position encoding. A theta-only donut therefore creates a theta axis and
+spokes without inventing a radial guide; its arc color encoding can still infer
+the categorical legend. A theta/radius chart selects both families. Grid geometry
+is inserted behind marks while axes remain above marks, independent of the call
+occurring after mark creation.
 
 The trace preserves the composition:
 

@@ -1258,6 +1258,11 @@ Grid는 horizontal과 vertical을 독립적으로 켜고 끌 수 있다. `create
 binding을 유지하면서 direction별 tick policy와 appearance config를 바꾸고, 대응하는
 wrapped `rematerialize*Grid` action으로 concrete collection 전체를 다시 만든다.
 
+Guide aggregate의 적용 가능성은 `actions/guides/applicability.js`가 positional-channel
+descriptor와 persisted encoding/scale을 읽어 한 번 결정한다. `createGuides`와
+`createGrid`는 이 결과를 공유한다. Polar omission은 실제 존재하는 theta/radius channel의
+axis와 grid만 선택하므로 theta-only count arc가 radial guide를 합성하지 않는다.
+
 ### Legend
 
 Categorical legend는 color, strokeDash, shape와 mark recipe를 하나의 generic legend
@@ -1443,6 +1448,9 @@ createGuides
 
 Omission은 persisted semantic state를 기준으로 applicability를 infer하고, `{}`는 해당
 component를 inferred detail로 명시 선택하며, `false`는 명시적으로 끈다.
+`createGuides`와 `createGrid` aggregate는 같은 guide applicability owner를 소비한다. Arc
+color는 categorical legend candidate이며 Polar grid direction은 stored theta/radius
+scale별로 선택된다.
 
 ## Built-in visual default
 

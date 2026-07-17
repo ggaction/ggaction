@@ -1,10 +1,9 @@
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
-  BAR_ORIENTATIONS,
-  resolveBarOrientation
-} from "../../grammar/bars/policy.js";
-import { findSemanticScale } from "../../selectors/scales.js";
+  resolveAutomaticGridOptions,
+  resolveGuideApplicability
+} from "./applicability.js";
 
 const OPTIONS = Object.freeze(["axes", "grid", "legend"]);
 
@@ -28,53 +27,6 @@ function validateOptions(args) {
   validateGuideOption(args.legend, "createGuides legend");
 }
 
-function hasCartesianEncoding(program) {
-  return program.semanticSpec.layers.some(
-    layer => layer.encoding?.x !== undefined || layer.encoding?.y !== undefined
-  );
-}
-
-function hasPolarEncoding(program) {
-  return program.semanticSpec.layers.some(
-    layer => layer.encoding?.theta !== undefined ||
-      layer.encoding?.radius !== undefined
-  );
-}
-
-function hasGridEncoding(program) {
-  return program.semanticSpec.layers.some(
-    layer => layer.encoding?.x?.scale !== undefined ||
-      layer.encoding?.y?.scale !== undefined ||
-      layer.encoding?.theta?.scale !== undefined ||
-      layer.encoding?.radius?.scale !== undefined
-  );
-}
-
-function inferGridOptions(program) {
-  if (hasPolarEncoding(program) && !hasCartesianEncoding(program)) {
-    return { theta: {}, radial: {} };
-  }
-  const barOrientations = program.semanticSpec.layers
-    .map(resolveBarOrientation)
-    .filter(Boolean);
-  const positionedLayers = program.semanticSpec.layers.filter(
-    layer => layer.encoding?.x !== undefined && layer.encoding?.y !== undefined
-  );
-  const horizontalQuantitative = positionedLayers.length > 0 &&
-    positionedLayers.every(layer =>
-      layer.encoding.x.fieldType === "quantitative" &&
-      ["nominal", "ordinal", "temporal"].includes(layer.encoding.y.fieldType)
-    );
-  if (
-    horizontalQuantitative ||
-    (barOrientations.length > 0 &&
-      barOrientations.every(value => value === BAR_ORIENTATIONS.horizontal))
-  ) {
-    return { horizontal: false, vertical: true };
-  }
-  return { horizontal: true, vertical: false };
-}
-
 function inferAxesOptions(program) {
   const horizontalInterval = program.semanticSpec.layers.some(layer =>
     layer.mark?.type === "rule" &&
@@ -85,30 +37,6 @@ function inferAxesOptions(program) {
   return horizontalInterval
     ? { x: { ticksAndLabels: { count: 7 } } }
     : {};
-}
-
-function hasLegendEncoding(program) {
-  return program.semanticSpec.layers.some(
-    layer =>
-      (layer.mark?.type === "point" &&
-        layer.encoding?.opacity?.scale !== undefined) ||
-      (layer.mark?.type === "point" &&
-        layer.encoding?.size?.scale !== undefined) ||
-      (layer.mark?.type === "point" &&
-        layer.encoding?.color?.scale !== undefined &&
-        (layer.encoding?.shape?.scale !== undefined ||
-          ["sequential", "quantize", "quantile", "threshold"].includes(
-            findSemanticScale(program, layer.encoding.color.scale)?.type
-          ))) ||
-      (layer.mark?.type === "line" &&
-        ["color", "strokeDash"].some(
-          channel => layer.encoding?.[channel]?.scale !== undefined
-        )) ||
-      (layer.mark?.type === "bar" &&
-        layer.encoding?.color?.scale !== undefined) ||
-      (layer.mark?.type === "area" &&
-        layer.encoding?.color?.scale !== undefined)
-  );
 }
 
 function selectOption(explicit, applicable) {
@@ -124,16 +52,21 @@ const createGuides = action(
   },
   function (args = {}) {
     validateOptions(args);
-    const hasAxes = hasCartesianEncoding(this) || hasPolarEncoding(this);
-    const axes = args.axes === undefined && hasCartesianEncoding(this)
+    const applicability = resolveGuideApplicability(this);
+    const hasAxes = applicability.axes.cartesian || applicability.axes.polar;
+    const axes = args.axes === undefined && applicability.axes.cartesian
       ? inferAxesOptions(this)
       : selectOption(args.axes, hasAxes);
-    const grid = args.grid === undefined && hasGridEncoding(this)
-      ? inferGridOptions(this)
-      : selectOption(args.grid, hasGridEncoding(this));
+    const grid = args.grid === undefined &&
+        (applicability.grid.cartesian || applicability.grid.polar)
+      ? resolveAutomaticGridOptions(this)
+      : selectOption(
+          args.grid,
+          applicability.grid.cartesian || applicability.grid.polar
+        );
     const legend = selectOption(
       args.legend,
-      hasLegendEncoding(this)
+      applicability.legend
     );
 
     if (axes === undefined && grid === undefined && legend === undefined) {

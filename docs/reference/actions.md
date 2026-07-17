@@ -756,7 +756,7 @@ IDs. [Box plots](../api/box-plots.md#editing-a-box-plot)
 createGuides({ axes?, grid?, legend? })
 ```
 
-Create applicable axes, Cartesian grid, and categorical legend.
+Create applicable Cartesian or Polar axes and grids plus supported legends.
 [Guides](../api/guides.md)
 
 ### `createAxes`
@@ -890,7 +890,8 @@ createGrid({ horizontal?, vertical?, theta?, radial? })
 ```
 
 Create inferred horizontal and/or vertical Cartesian grid lines behind related
-marks, or infer both Polar grid families. [Grids](../api/grids.md)
+marks, or infer the Polar grid families backed by stored theta/radius encodings.
+[Grids](../api/grids.md)
 
 ### `createThetaGrid`
 

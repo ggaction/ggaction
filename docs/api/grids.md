@@ -11,15 +11,16 @@ title: Grids
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createGrid` | `createGrid()` | Cartesian horizontal or both Polar families | Concrete guides behind related marks |
+| `createGrid` | `createGrid()` | Cartesian horizontal or applicable Polar families | Concrete guides behind related marks |
 | `editGrid` | `editGrid({ horizontal: { count: 6 } })` | Existing selected directions | One or both directions rematerialized |
 | `removeGrid` | `removeGrid({ vertical: true })` | Existing selected directions | Semantic, graphic, and stored grid state removed |
 
 ## `createGrid(options?)`
 
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
-defaults to horizontal only; a Polar-only chart defaults to theta spokes and
-radial circles.
+defaults to horizontal only. A Polar-only chart creates theta spokes when theta
+is encoded and radial circles when radius is encoded; charts with both channels
+create both families.
 
 ```javascript
 program.createGrid();
@@ -40,8 +41,8 @@ program.createGrid({
 | --- | --- | --- |
 | `horizontal` | boolean or direction options | `true` |
 | `vertical` | boolean or direction options | `false` |
-| `theta` | boolean or Polar direction options | Polar-only: `true` |
-| `radial` | boolean or Polar direction options | Polar-only: `true` |
+| `theta` | boolean or Polar direction options | Polar-only: encoded theta |
+| `radial` | boolean or Polar direction options | Polar-only: encoded radius |
 
 Direction options are:
 

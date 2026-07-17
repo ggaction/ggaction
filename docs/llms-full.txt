@@ -4012,8 +4012,10 @@ program.createGuides({ legend: false });
 ```
 
 Axes are selected from x/y or theta/radius encodings. A horizontal grid is selected
-when a y encoding exists; vertical grid remains off unless requested. A legend
-is selected for line color/stroke-dash, bar color, area color, compatible point
+when a y encoding exists; vertical grid remains off unless requested. Polar grids
+are selected only for the encoded Polar channels: theta creates spokes and radius
+creates concentric circles. A legend is selected for line color/stroke-dash, bar
+color, area or arc color, compatible point
 color+shape encodings, or a standalone quantitative point-size encoding. Size
 adds a second quantitative block when a point-series legend also exists.
 
@@ -4065,9 +4067,12 @@ scale, target, field, and domain validation remains the responsibility of
 require their explicit child options. If nothing is selected, the action
 reports an error.
 
-For a Polar-only chart, omission selects both theta/radius axes and both Polar
-grid families. Grid geometry is inserted behind marks while axes remain above
-marks, independent of the call occurring after mark creation.
+For a Polar-only chart, omission selects the axis and grid family for each stored
+Polar position encoding. A theta-only donut therefore creates a theta axis and
+spokes without inventing a radial guide; its arc color encoding can still infer
+the categorical legend. A theta/radius chart selects both families. Grid geometry
+is inserted behind marks while axes remain above marks, independent of the call
+occurring after mark creation.
 
 The trace preserves the composition:
 
@@ -6011,15 +6016,16 @@ has one semantic axis, so parallel duplicate axes cannot be created.
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createGrid` | `createGrid()` | Cartesian horizontal or both Polar families | Concrete guides behind related marks |
+| `createGrid` | `createGrid()` | Cartesian horizontal or applicable Polar families | Concrete guides behind related marks |
 | `editGrid` | `editGrid({ horizontal: { count: 6 } })` | Existing selected directions | One or both directions rematerialized |
 | `removeGrid` | `removeGrid({ vertical: true })` | Existing selected directions | Semantic, graphic, and stored grid state removed |
 
 ## `createGrid(options?)`
 
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
-defaults to horizontal only; a Polar-only chart defaults to theta spokes and
-radial circles.
+defaults to horizontal only. A Polar-only chart creates theta spokes when theta
+is encoded and radial circles when radius is encoded; charts with both channels
+create both families.
 
 ```javascript
 program.createGrid();
@@ -6040,8 +6046,8 @@ program.createGrid({
 | --- | --- | --- |
 | `horizontal` | boolean or direction options | `true` |
 | `vertical` | boolean or direction options | `false` |
-| `theta` | boolean or Polar direction options | Polar-only: `true` |
-| `radial` | boolean or Polar direction options | Polar-only: `true` |
+| `theta` | boolean or Polar direction options | Polar-only: encoded theta |
+| `radial` | boolean or Polar direction options | Polar-only: encoded radius |
 
 Direction options are:
 
@@ -7776,7 +7782,7 @@ IDs. [Box plots](../api/box-plots.md#editing-a-box-plot)
 createGuides({ axes?, grid?, legend? })
 ```
 
-Create applicable axes, Cartesian grid, and categorical legend.
+Create applicable Cartesian or Polar axes and grids plus supported legends.
 [Guides](../api/guides.md)
 
 ### `createAxes`
@@ -7910,7 +7916,8 @@ createGrid({ horizontal?, vertical?, theta?, radial? })
 ```
 
 Create inferred horizontal and/or vertical Cartesian grid lines behind related
-marks, or infer both Polar grid families. [Grids](../api/grids.md)
+marks, or infer the Polar grid families backed by stored theta/radius encodings.
+[Grids](../api/grids.md)
 
 ### `createThetaGrid`
 
