@@ -20,13 +20,13 @@ test("locks the three approved layout targets to literal placement values", () =
   assert.deepEqual(values.overview, {
     direction: "horizontal",
     gap: 20,
-    align: "center",
+    align: "start",
     padding: { top: 16, right: 16, bottom: 16, left: 16 },
     width: 792,
     height: 352,
     children: [
       { id: "main", width: 440, height: 320, x: 16, y: 16 },
-      { id: "detail", width: 300, height: 240, x: 476, y: 56 }
+      { id: "detail", width: 300, height: 240, x: 476, y: 16 }
     ]
   });
   assert.deepEqual(values.nested.children, [
@@ -56,8 +56,15 @@ test("authors unequal, nested, and replacement results with explicit primitives"
   assert.deepEqual(nested.graphicSpec.objects.dashboard.children, [
     "overviewCanvas", "trendCanvas"
   ]);
+  assert.equal(unequal.graphicSpec.objects.canvas.properties.background, "#ffffff");
+  assert.equal(nested.graphicSpec.objects.canvas.properties.background, "#ffffff");
+  assert.equal(replacement.graphicSpec.objects.canvas.properties.background, "#ffffff");
   assert.equal(
     nested.graphicSpec.objects.nestedMainCanvas.properties.x,
+    16
+  );
+  assert.equal(
+    nested.graphicSpec.objects.nestedDetailCanvas.properties.y,
     16
   );
   assert.deepEqual(replacement.graphicSpec.objects.revisedOverview.children, [

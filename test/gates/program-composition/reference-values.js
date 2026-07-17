@@ -272,7 +272,7 @@ export function createCompositionGateValues({ cars, jobs, gapminder }) {
       { id: "detail", width: 300, height: 240 }
     ],
     gap: 20,
-    align: "center",
+    align: "start",
     padding: 16
   });
   const nested = resolveCompositionLayout({

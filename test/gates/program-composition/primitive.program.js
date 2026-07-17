@@ -2,7 +2,7 @@ import { chart } from "../../../src/index.js";
 
 import { createCompositionGateValues } from "./reference-values.js";
 
-const ROOT_BACKGROUND = "#e8edf4";
+const ROOT_BACKGROUND = "#ffffff";
 const PANEL_BACKGROUND = "#ffffff";
 
 export function createUnequalHorizontalPrimitives(cars, jobs, gapminder) {
