@@ -1,25 +1,25 @@
 import { createCarsStyledFactorPrimitives } from
-  "../../charts/cars-box-plot/variants/options/primitive.program.js";
+  "../../../cars-box-plot/variants/options/primitive.program.js";
 import { createStyledCapsPrimitives } from
-  "../../charts/cars-error-bar/variants/error-bar-modes.primitive.program.js";
+  "../../../cars-error-bar/variants/error-bar-modes.primitive.program.js";
 import { createCarsHistogramPrimitives } from
-  "../../charts/cars-histogram/primitive.program.js";
+  "../../../cars-histogram/primitive.program.js";
 import { createGroupReassignmentPrimitives } from
-  "../../charts/cars-line-chart/variants/primitive-programs.js";
+  "../../../cars-line-chart/variants/primitive-programs.js";
 import {
   createLeftLegendPrimitives,
   createPolynomialRegressionPrimitives
-} from "../../charts/cars-regression-scatterplot/variants/primitive-programs.js";
+} from "../../../cars-regression-scatterplot/variants/primitive-programs.js";
 import {
   createCategoricalPalettePrimitives,
   createMirroredAxesPrimitives
-} from "../../charts/cars-scatterplot/variants/primitive-programs.js";
+} from "../primitive-programs.js";
 import { createGapminderCurvedBoundaryPrimitives } from
-  "../../charts/gapminder-error-band/variants/curved-boundary.primitive.program.js";
+  "../../../gapminder-error-band/variants/curved-boundary.primitive.program.js";
 import { createGapminderBandPointPrimitives } from
-  "../../charts/gapminder-temporal-discrete-scales/primitive.program.js";
+  "../../../gapminder-temporal-discrete-scales/primitive.program.js";
 import { createJobsGroupedBarPrimitives } from
-  "../../charts/jobs-grouped-bar/primitive.program.js";
+  "../../../jobs-grouped-bar/primitive.program.js";
 
 function repeated(length, value) {
   return Array.from({ length }, () => value);

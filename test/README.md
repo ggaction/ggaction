@@ -23,6 +23,9 @@ npm run test:browser
 npm run test:render
 ```
 
+`npm run test:gates` reports `No active gate tests.` and succeeds when every
+approved visual slice has graduated into `test/charts/`.
+
 `test/support/program-state.js` owns assertions for named program resources and
 atomic rejection. Prefer those helpers when a test needs an existing dataset,
 layer, scale, coordinate, or graphic, or when several invalid calls must prove

@@ -1,6 +1,6 @@
-import { chart } from "../../../src/index.js";
-import { loadCars, loadGapminder, loadJobs } from "../../support/data.js";
-import { defineVisualVariant } from "../../support/visual-variants.js";
+import { chart } from "../../../../../src/index.js";
+import { loadCars, loadGapminder, loadJobs } from "../../../../support/data.js";
+import { defineVisualVariant } from "../../../../support/visual-variants.js";
 import {
   createBarErgonomicsPrimitives,
   createBoxPlotEditPrimitives,

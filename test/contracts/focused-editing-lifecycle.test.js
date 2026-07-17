@@ -5,7 +5,8 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { ChartProgram } from "../../src/ChartProgram.js";
-import { visualVariants } from "../gates/roadmap3-focused-editing/manifest.js";
+import { visualVariants } from
+  "../charts/cars-scatterplot/variants/focused-editing/manifest.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const inventory = JSON.parse(readFileSync(path.join(
@@ -62,7 +63,7 @@ const CAPABILITIES = Object.freeze([
   "api-layer-classification-alignment"
 ]);
 
-test("locks the complete Phase 1 Gate A assignment", () => {
+test("locks the approved focused-editing assignment", () => {
   assert.deepEqual(
     inventory.proposedActions
       .filter(action => action.phase === "phase1")
@@ -119,7 +120,7 @@ test("promotes the approved mark and scale parameter extensions", () => {
   assert.match(declarations, /export interface EditScaleOptions \{[\s\S]*?palette\?: Palette;/);
 });
 
-test("covers every Phase 1 public action in a Gate target", () => {
+test("covers every focused-editing action in an approved visual target", () => {
   const callChains = visualVariants.map(target => target.callChain).join("\n");
   for (const action of DIRECT_ACTIONS) {
     assert.match(callChains, new RegExp(`\\.${action}\\(`), action);
@@ -177,7 +178,7 @@ test("publishes exact current option types and aligns audience classifications",
   );
 });
 
-test("closes every accepted Phase 1 action and capability out of Planned", () => {
+test("keeps every accepted focused-editing action and capability current", () => {
   const plannedActions = new Set(index.plannedActions.map(action => action.name));
   const plannedCapabilities = new Set(
     index.plannedCapabilities.map(capability => capability.id)

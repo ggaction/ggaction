@@ -9,7 +9,7 @@
 - [x] User visual approval
 
 Gate B는 아래 public call-chain suffix의 final state를 승인한다. Complete executable call chains는
-`test/gates/roadmap3-focused-editing/manifest.js`가 canonical하게 소유한다.
+`test/charts/cars-scatterplot/variants/focused-editing/manifest.js`가 canonical하게 소유한다.
 
 ## Target families
 
@@ -41,9 +41,9 @@ domain-removal
 
 ## Executable evidence
 
-- 11 approved primitive/public visual pairs: `test/gates/roadmap3-focused-editing/manifest.js`
-- Semantic/graphic and trace assertions: `test/gates/roadmap3-focused-editing/primitive.test.js`
-- High-DPI PNG registry: `test/gates/roadmap3-focused-editing/png.render.js`
+- 11 approved primitive/public visual pairs: `test/charts/cars-scatterplot/variants/focused-editing/manifest.js`
+- Semantic/graphic and trace assertions: `test/charts/cars-scatterplot/variants/focused-editing/primitive.test.js`
+- High-DPI PNG registry: `test/charts/cars-scatterplot/variants/focused-editing/png.render.js`
 - Planned/public boundary lock: `test/contracts/roadmap3-phase1-gate-b.test.js`
 - Gallery: `.artifacts/test/png/roadmap3/index.html`
 

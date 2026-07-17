@@ -76,6 +76,10 @@ function coverageSummary(output) {
 function run(suite, selectors) {
   const files = collectTestFiles(suite, testRoot, selectors);
   if (files.length === 0) {
+    if (suite === "gates" && selectors.length === 0) {
+      process.stdout.write("No active gate tests.\n");
+      return;
+    }
     const suffix = selectors.length === 0 ? "" : ` matching ${selectors.join(", ")}`;
     throw new Error(`No test files found for suite "${suite}"${suffix}.`);
   }
