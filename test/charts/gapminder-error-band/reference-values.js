@@ -1,5 +1,10 @@
 import { createMeanConfidenceIntervalReference } from
   "../../support/interval-reference.js";
+import {
+  mapLinear,
+  niceDomain,
+  numericTicks
+} from "../../oracles/numeric.js";
 
 export const ERROR_BAND_LAYOUT = Object.freeze({
   width: 760,
@@ -86,48 +91,12 @@ function normalizeGapminder(gapminder) {
   });
 }
 
-function niceStep(span, count = 5) {
-  const rough = span / Math.max(1, count);
-  const power = 10 ** Math.floor(Math.log10(rough));
-  const fraction = rough / power;
-  const factor = [1, 2, 3, 5, 10].find(candidate => candidate >= fraction);
-  return factor * power;
-}
-
-function niceDomain(values) {
-  const minimum = Math.min(...values);
-  const maximum = Math.max(...values);
-  const step = niceStep(maximum - minimum);
-  return [
-    Number((Math.floor(minimum / step) * step).toPrecision(12)),
-    Number((Math.ceil(maximum / step) * step).toPrecision(12))
-  ];
-}
-
-function ticksForDomain(domain, count = 5) {
-  const step = niceStep(domain[1] - domain[0], count);
-  const tolerance = step * 1e-10;
-  const start = Math.ceil((domain[0] - tolerance) / step) * step;
-  const stop = Math.floor((domain[1] + tolerance) / step) * step;
-  const ticks = [];
-  for (let value = start; value <= stop + tolerance; value += step) {
-    ticks.push(Number(value.toPrecision(12)));
-  }
-  return ticks;
-}
-
 function yearTicks(minimum, maximum) {
   const step = maximum - minimum >= 20 ? 10 : maximum - minimum > 8 ? 2 : 1;
   const start = Math.ceil(minimum / step) * step;
   const ticks = [];
   for (let year = start; year <= maximum; year += step) ticks.push(year);
   return ticks;
-}
-
-function mapLinear(value, domain, range) {
-  if (domain[0] === domain[1]) return (range[0] + range[1]) / 2;
-  const ratio = (value - domain[0]) / (domain[1] - domain[0]);
-  return range[0] + ratio * (range[1] - range[0]);
 }
 
 function freezeRows(rows) {
@@ -204,7 +173,7 @@ export function createGapminderErrorBandReferenceValues(gapminder, {
       label: String(year)
     });
   }));
-  const yTicks = Object.freeze(ticksForDomain(yDomain).map(value =>
+  const yTicks = Object.freeze(numericTicks(yDomain).map(value =>
     Object.freeze({
       value,
       position: mapLinear(value, yDomain, yRange),

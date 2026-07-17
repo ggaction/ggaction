@@ -44,3 +44,9 @@ test infrastructure.
 Reference datasets are registered lazily in `test/support/data.js`. Use
 `fixtureRows(id)` for a shared frozen oracle and `loadDataset(id)` or the named
 loaders when a test specifically needs caller-owned mutable rows.
+
+Independent expected-value algorithms live in `test/oracles/`. Oracle modules
+must not import from `src/`: they are a separate mathematical implementation
+used to catch shared implementation mistakes rather than repeat production
+helpers. Keep a few representative literal expectations in chart tests as
+anchors for the oracle itself and for important public examples.

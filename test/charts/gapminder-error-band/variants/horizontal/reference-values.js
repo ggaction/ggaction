@@ -1,5 +1,10 @@
 import { createMeanConfidenceIntervalReference } from
   "../../../../support/interval-reference.js";
+import {
+  mapLinear,
+  niceDomain,
+  numericTicks
+} from "../../../../oracles/numeric.js";
 
 export const CARS_HORIZONTAL_LAYOUT = Object.freeze({
   width: 760,
@@ -96,38 +101,6 @@ function requireBounds({ width, height, margin }) {
   return bounds;
 }
 
-function niceStep(span, count = 5) {
-  const rough = span / Math.max(1, count);
-  const power = 10 ** Math.floor(Math.log10(rough));
-  const fraction = rough / power;
-  const factor = [1, 2, 3, 5, 10].find(candidate => candidate >= fraction);
-  return factor * power;
-}
-
-function niceDomain(values) {
-  const minimum = Math.min(...values);
-  const maximum = Math.max(...values);
-  const step = niceStep(maximum - minimum);
-  return Object.freeze([
-    Number((Math.floor(minimum / step) * step).toPrecision(12)),
-    Number((Math.ceil(maximum / step) * step).toPrecision(12))
-  ]);
-}
-
-function numericTicks(domain, count = 5) {
-  const step = niceStep(domain[1] - domain[0], count);
-  const tolerance = step * 1e-10;
-  const ticks = [];
-  for (
-    let value = Math.ceil((domain[0] - tolerance) / step) * step;
-    value <= domain[1] + tolerance;
-    value += step
-  ) {
-    ticks.push(Number(value.toPrecision(12)));
-  }
-  return ticks;
-}
-
 function yearTicks(minimumTime, maximumTime) {
   const minimum = new Date(minimumTime).getUTCFullYear();
   const maximum = new Date(maximumTime).getUTCFullYear();
@@ -137,12 +110,6 @@ function yearTicks(minimumTime, maximumTime) {
     ticks.push(Date.UTC(year, 0, 1));
   }
   return ticks;
-}
-
-function mapLinear(value, domain, range) {
-  if (domain[0] === domain[1]) return (range[0] + range[1]) / 2;
-  const ratio = (value - domain[0]) / (domain[1] - domain[0]);
-  return range[0] + ratio * (range[1] - range[0]);
 }
 
 function freezeRows(rows) {

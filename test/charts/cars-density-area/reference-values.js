@@ -1,3 +1,10 @@
+import {
+  mapLinear,
+  niceStep,
+  numericTicks as ticksForDomain,
+  quantile
+} from "../../oracles/numeric.js";
+
 const SQRT_TWO_PI = Math.sqrt(2 * Math.PI);
 const COLORS = ["#4c78a8", "#f58518", "#e45756"];
 
@@ -5,15 +12,6 @@ function requireNonEmptyString(value, name) {
   if (typeof value !== "string" || value.length === 0) {
     throw new TypeError(`${name} must be a non-empty string.`);
   }
-}
-
-function quantile(sortedValues, probability) {
-  const index = (sortedValues.length - 1) * probability;
-  const lower = Math.floor(index);
-  const upper = Math.ceil(index);
-  if (lower === upper) return sortedValues[lower];
-  const ratio = index - lower;
-  return sortedValues[lower] * (1 - ratio) + sortedValues[upper] * ratio;
 }
 
 function sampleDeviation(values) {
@@ -142,31 +140,6 @@ function requireLayout({ width, height, margin }) {
     throw new Error("Density area margins must leave positive plot bounds.");
   }
   return bounds;
-}
-
-function niceStep(span, count = 5) {
-  const rough = span / Math.max(1, count);
-  const power = 10 ** Math.floor(Math.log10(rough));
-  const fraction = rough / power;
-  const factor = [1, 2, 3, 5, 10].find(candidate => candidate >= fraction);
-  return factor * power;
-}
-
-function ticksForDomain(domain, count = 5) {
-  const step = niceStep(domain[1] - domain[0], count);
-  const tolerance = step * 1e-10;
-  const start = Math.ceil((domain[0] - tolerance) / step) * step;
-  const stop = Math.floor((domain[1] + tolerance) / step) * step;
-  const ticks = [];
-  for (let value = start; value <= stop + step * 1e-10; value += step) {
-    ticks.push(+value.toPrecision(12));
-  }
-  return ticks;
-}
-
-function mapLinear(value, domain, range) {
-  const ratio = (value - domain[0]) / (domain[1] - domain[0]);
-  return range[0] + ratio * (range[1] - range[0]);
 }
 
 function buildLegend(

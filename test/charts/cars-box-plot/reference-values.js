@@ -1,3 +1,10 @@
+import {
+  mapLinear,
+  niceDomain,
+  numericTicks as ticks,
+  quantile
+} from "../../oracles/numeric.js";
+
 export const BOX_PLOT_LAYOUT = Object.freeze({
   width: 360,
   height: 460,
@@ -50,57 +57,6 @@ function freezeRows(rows) {
 
 function stableNumber(value) {
   return Number(value.toFixed(12));
-}
-
-function quantile(sorted, probability) {
-  if (sorted.length === 0) {
-    throw new Error("Box-plot quantile requires at least one value.");
-  }
-  const position = (sorted.length - 1) * probability;
-  const lower = Math.floor(position);
-  const upper = Math.ceil(position);
-  if (lower === upper) return sorted[lower];
-  const fraction = position - lower;
-  return sorted[lower] + (sorted[upper] - sorted[lower]) * fraction;
-}
-
-function niceStep(span, count = 5) {
-  const rough = span / Math.max(1, count);
-  const power = 10 ** Math.floor(Math.log10(rough));
-  const fraction = rough / power;
-  const factor = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 3 ? 3
-    : fraction <= 5 ? 5 : 10;
-  return factor * power;
-}
-
-function niceDomain(values) {
-  const minimum = Math.min(...values);
-  const maximum = Math.max(...values);
-  if (minimum === maximum) return [minimum, maximum];
-  const step = niceStep(maximum - minimum);
-  return [
-    Number((Math.floor(minimum / step) * step).toPrecision(12)),
-    Number((Math.ceil(maximum / step) * step).toPrecision(12))
-  ];
-}
-
-function ticks(domain, count = 5) {
-  if (domain[0] === domain[1]) return [domain[0]];
-  const step = niceStep(domain[1] - domain[0], count);
-  const tolerance = step * 1e-10;
-  const start = Math.ceil((domain[0] - tolerance) / step) * step;
-  const stop = Math.floor((domain[1] + tolerance) / step) * step;
-  const values = [];
-  for (let value = start; value <= stop + tolerance; value += step) {
-    values.push(Number(value.toPrecision(12)));
-  }
-  return values;
-}
-
-function mapLinear(value, domain, range) {
-  if (domain[0] === domain[1]) return (range[0] + range[1]) / 2;
-  const ratio = (value - domain[0]) / (domain[1] - domain[0]);
-  return range[0] + ratio * (range[1] - range[0]);
 }
 
 function normalizeCars(cars, measureField = "Miles_per_Gallon") {

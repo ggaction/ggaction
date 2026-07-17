@@ -1,3 +1,9 @@
+import {
+  mapLinear as mapValue,
+  niceDomain as niceLinearDomain,
+  numericTicks as niceLinearTicks
+} from "../../oracles/numeric.js";
+
 const LOWER_FIELD = "__regression_ci_lower";
 const UPPER_FIELD = "__regression_ci_upper";
 const COLORS = ["#4c78a8", "#f58518", "#e45756"];
@@ -499,44 +505,6 @@ function requireLayout({ width, height, margin, sizeRange }) {
     );
   }
   return bounds;
-}
-
-function niceLinearStep(span, count = 5) {
-  const rough = span / Math.max(1, count);
-  const power = 10 ** Math.floor(Math.log10(rough));
-  const fraction = rough / power;
-  const factor = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 3 ? 3
-    : fraction <= 5 ? 5 : 10;
-  return factor * power;
-}
-
-function niceLinearDomain(values) {
-  const minimum = Math.min(...values);
-  const maximum = Math.max(...values);
-  if (minimum === maximum) return [minimum, maximum];
-  const step = niceLinearStep(maximum - minimum);
-  return [
-    Math.floor(minimum / step) * step,
-    Math.ceil(maximum / step) * step
-  ];
-}
-
-function niceLinearTicks(domain, count = 5) {
-  if (domain[0] === domain[1]) return [domain[0]];
-  const step = niceLinearStep(domain[1] - domain[0], count);
-  const start = Math.ceil(domain[0] / step) * step;
-  const stop = Math.floor(domain[1] / step) * step;
-  const ticks = [];
-  for (let value = start; value <= stop + step * 1e-10; value += step) {
-    ticks.push(+value.toPrecision(12));
-  }
-  return ticks;
-}
-
-function mapValue(value, domain, range) {
-  if (domain[0] === domain[1]) return (range[0] + range[1]) / 2;
-  return range[0] +
-    (value - domain[0]) / (domain[1] - domain[0]) * (range[1] - range[0]);
 }
 
 function pointChild(row, index, config) {
