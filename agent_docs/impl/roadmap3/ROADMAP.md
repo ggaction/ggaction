@@ -19,7 +19,7 @@ domain action은 semantic change와 필요한 graphical materialization을 명�
 ## 진행 상태
 
 - [x] Phase 0 — Capability lab, 계약 정밀화와 Roadmap 3 scope audit
-- [ ] Phase 1 — Focused edit, create/edit symmetry와 domain-level removal
+- [x] Phase 1 — Focused edit, create/edit symmetry와 domain-level removal
 - [ ] Phase 2 — Polar coordinate 기반과 point vertical slice
 - [ ] Phase 3 — Polar axes, grids와 focused guide edits
 - [ ] Phase 4 — Polar line과 radar chart
