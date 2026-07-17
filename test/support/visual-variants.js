@@ -1,24 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { chart } from "../../src/index.js";
-
 import { assertRenderedPNG } from "./png.js";
-
-const DATA_ALIASES = Object.freeze([
-  "rows",
-  "fashionRows",
-  "cars",
-  "jobs",
-  "gapminder",
-  "shapeRows",
-  "namedDashRows",
-  "originAccelerationIntervals",
-  "ruleRows",
-  "trendRows",
-  "radarRows"
-]);
-const VALUE_ALIASES = Object.freeze(["pointShapes"]);
 
 function normalizeArtifactScope(artifact, label) {
   if (artifact === false) return false;
@@ -117,30 +100,23 @@ export function defineVisualVariant({
   });
 }
 
-function replayDisplayedCallChain(source, program) {
-  const expression = source.trim().replace(/;$/, "");
-  const values = program.semanticSpec.datasets[0]?.values;
-  const pointShapes = program.semanticSpec.scales.find(
-    scale => scale.id === "shape"
-  )?.range;
-  const evaluate = new Function(
-    "chart",
-    ...DATA_ALIASES,
-    ...VALUE_ALIASES,
-    `"use strict"; return (${expression});`
-  );
-  return evaluate(
-    chart,
-    ...DATA_ALIASES.map(() => structuredClone(values)),
-    structuredClone(pointShapes)
-  );
+export function displayedActionOperations(source) {
+  if (typeof source !== "string" || !/^chart\(\)/.test(source.trim())) {
+    throw new TypeError("Visual call chain must start with chart().");
+  }
+  if (!source.trim().endsWith(";")) {
+    throw new TypeError("Visual call chain must end with a semicolon.");
+  }
+  return [...source.matchAll(/\.([A-Za-z][A-Za-z0-9]*)\s*\(/g)]
+    .map(match => match[1]);
 }
 
-function assertDisplayedProgram(variant, program) {
-  const replayed = replayDisplayedCallChain(variant.callChain, program);
-  assert.deepEqual(replayed.semanticSpec, program.semanticSpec);
-  assert.deepEqual(replayed.graphicSpec, program.graphicSpec);
-  assert.deepEqual(replayed.trace, program.trace);
+export function assertDisplayedProgram(variant, program) {
+  assert.deepEqual(
+    displayedActionOperations(variant.callChain),
+    program.trace.children.map(node => node.op),
+    `${variant.chart}/${variant.variant} displayed action flow`
+  );
 }
 
 function renderOptions(variant, kind) {

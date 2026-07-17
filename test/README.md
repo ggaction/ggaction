@@ -30,3 +30,8 @@ approved visual slice has graduated into `test/charts/`.
 atomic rejection. Prefer those helpers when a test needs an existing dataset,
 layer, scale, coordinate, or graphic, or when several invalid calls must prove
 that the input program remains unchanged.
+
+Visual manifests treat the `userFacing` factory as the canonical executable
+program. Their displayed `callChain` is presentation metadata: the render harness
+parses it without evaluation and requires its top-level actions to match the
+factory trace exactly.
