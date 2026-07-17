@@ -39,6 +39,43 @@ test("executes materialization plans in order and deduplicates equivalent steps"
   assert.deepEqual(calls, ["x", "y", "finish"]);
 });
 
+test("deduplicates equivalent arguments independent of object key order", () => {
+  const plan = buildMaterializationPlan({
+    marks: [
+      { op: "materialize", args: { id: "x", guides: false } },
+      { op: "materialize", args: { guides: false, id: "x" } }
+    ]
+  });
+
+  assert.equal(plan.length, 1);
+  assert.deepEqual(plan[0], {
+    op: "materialize",
+    args: { id: "x", guides: false }
+  });
+  assert.equal(Object.isFrozen(plan), true);
+  assert.equal(Object.isFrozen(plan[0]), true);
+  assert.equal(Object.isFrozen(plan[0].args), true);
+});
+
+test("rejects malformed plans and unavailable operations clearly", () => {
+  assert.throws(
+    () => buildMaterializationPlan({ unknown: [] }),
+    /Unknown materialization stage "unknown"/
+  );
+  assert.throws(
+    () => buildMaterializationPlan({ marks: [{ op: "" }] }),
+    /op must be a non-empty string/
+  );
+  assert.throws(
+    () => buildMaterializationPlan({ marks: [{ op: "mark", args: [] }] }),
+    /args must be a plain object/
+  );
+  assert.throws(
+    () => applyMaterializationPlan({}, [{ op: "missing" }]),
+    /operation "missing" is not available/
+  );
+});
+
 test("builds one deterministic scale, mark, guide, layout, highlight plan", () => {
   assert.deepEqual(buildMaterializationPlan({
     guides: [{ op: "guide" }],
