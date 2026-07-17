@@ -6966,8 +6966,10 @@ Dataset values cannot be replaced after creation.
 Use `remove: true` instead of `value` to remove one supported semantic branch.
 Empty parent objects are pruned, the earlier program remains unchanged, and the
 removal is recorded as an `editSemantic` trace node. Current removable container
-paths are encoding channels such as `layer[points].encoding.opacity` and legend
-branches such as `guide.legend.opacity`. Dataset state remains immutable.
+paths are complete layers such as `layer[points]`, encoding channels such as
+`layer[points].encoding.opacity`, and legend branches such as
+`guide.legend.opacity`. Source datasets remain immutable; only an unreferenced
+derived dataset may be removed as a complete dataset resource.
 
 ```javascript
 program.editSemantic({
@@ -6975,6 +6977,11 @@ program.editSemantic({
   remove: true
 });
 ```
+
+Removing a complete layer does not automatically remove its graphics, scales,
+guides, or materialization configuration. A domain action that owns the whole
+resource lifecycle must explicitly clean up those consumers as separate wrapped
+operations.
 
 The primitive semantic grammar also supports the current line-chart contract,
 including temporal field types, `mean` aggregation, `strokeDash` encodings,

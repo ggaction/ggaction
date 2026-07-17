@@ -108,9 +108,9 @@ test("rematerializes both legend blocks after Canvas edits", () => {
     child => child.op === "rematerializeLegend"
   );
   assert.deepEqual(legendNode.children.map(child => child.op), [
-    "editLegendSymbols",
-    "editLegendLabels",
-    "editLegendTitle",
+    "rematerializeLegendSymbols",
+    "rematerializeLegendLabels",
+    "rematerializeLegendTitle",
     "rematerializeSizeLegend"
   ]);
 });

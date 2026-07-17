@@ -8,19 +8,19 @@ import {
   createLegendBackground,
   createLegendLabels,
   createLegendTitle,
-  editLegendBackground,
-  editLegendLabels,
-  editLegendTitle
+  rematerializeLegendBackground,
+  rematerializeLegendLabels,
+  rematerializeLegendTitle
 } from "./components.js";
 import {
   createLegendSymbolLines,
   createLegendSymbolPoints,
   createLegendSymbolSwatches,
   createLegendSymbols,
-  editLegendSymbolLines,
-  editLegendSymbolPoints,
-  editLegendSymbolSwatches,
-  editLegendSymbols,
+  rematerializeLegendSymbolLines,
+  rematerializeLegendSymbolPoints,
+  rematerializeLegendSymbolSwatches,
+  rematerializeLegendSymbols,
   rematerializeLegendHighlights
 } from "./symbols.js";
 import { editLegend } from "../edit.js";
@@ -31,19 +31,19 @@ export function registerCategoricalLegendActions(ProgramClass) {
   ProgramClass.prototype.createCategoricalLegend = createCategoricalLegend;
   ProgramClass.prototype.removeCategoricalLegend = removeCategoricalLegend;
   ProgramClass.prototype.createLegendBackground = createLegendBackground;
-  ProgramClass.prototype.editLegendBackground = editLegendBackground;
+  ProgramClass.prototype.rematerializeLegendBackground = rematerializeLegendBackground;
   ProgramClass.prototype.createLegendSymbols = createLegendSymbols;
-  ProgramClass.prototype.editLegendSymbols = editLegendSymbols;
+  ProgramClass.prototype.rematerializeLegendSymbols = rematerializeLegendSymbols;
   ProgramClass.prototype.rematerializeLegendHighlights = rematerializeLegendHighlights;
   ProgramClass.prototype.createLegendSymbolLines = createLegendSymbolLines;
-  ProgramClass.prototype.editLegendSymbolLines = editLegendSymbolLines;
+  ProgramClass.prototype.rematerializeLegendSymbolLines = rematerializeLegendSymbolLines;
   ProgramClass.prototype.createLegendSymbolPoints = createLegendSymbolPoints;
-  ProgramClass.prototype.editLegendSymbolPoints = editLegendSymbolPoints;
+  ProgramClass.prototype.rematerializeLegendSymbolPoints = rematerializeLegendSymbolPoints;
   ProgramClass.prototype.createLegendSymbolSwatches = createLegendSymbolSwatches;
-  ProgramClass.prototype.editLegendSymbolSwatches = editLegendSymbolSwatches;
+  ProgramClass.prototype.rematerializeLegendSymbolSwatches = rematerializeLegendSymbolSwatches;
   ProgramClass.prototype.createLegendLabels = createLegendLabels;
-  ProgramClass.prototype.editLegendLabels = editLegendLabels;
+  ProgramClass.prototype.rematerializeLegendLabels = rematerializeLegendLabels;
   ProgramClass.prototype.createLegendTitle = createLegendTitle;
-  ProgramClass.prototype.editLegendTitle = editLegendTitle;
+  ProgramClass.prototype.rematerializeLegendTitle = rematerializeLegendTitle;
   ProgramClass.prototype.rematerializeLegend = rematerializeLegend;
 }

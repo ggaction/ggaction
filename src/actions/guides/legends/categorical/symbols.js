@@ -53,7 +53,7 @@ function legendLayerStyle(layer, style) {
 
 function makeEditSymbol(type) {
   const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
-  const op = `editLegendSymbol${suffix}`;
+  const op = `rematerializeLegendSymbol${suffix}`;
   return action(
     { op, description: `Rematerialize categorical legend ${type} symbols.` },
     function (args = {}) {
@@ -180,20 +180,20 @@ function makeCreateSymbol(type, edit) {
   );
 }
 
-export const editLegendSymbolLines = makeEditSymbol("line");
-export const editLegendSymbolPoints = makeEditSymbol("point");
-export const editLegendSymbolSwatches = makeEditSymbol("swatch");
+export const rematerializeLegendSymbolLines = makeEditSymbol("line");
+export const rematerializeLegendSymbolPoints = makeEditSymbol("point");
+export const rematerializeLegendSymbolSwatches = makeEditSymbol("swatch");
 export const createLegendSymbolLines = makeCreateSymbol(
   "line",
-  "editLegendSymbolLines"
+  "rematerializeLegendSymbolLines"
 );
 export const createLegendSymbolPoints = makeCreateSymbol(
   "point",
-  "editLegendSymbolPoints"
+  "rematerializeLegendSymbolPoints"
 );
 export const createLegendSymbolSwatches = makeCreateSymbol(
   "swatch",
-  "editLegendSymbolSwatches"
+  "rematerializeLegendSymbolSwatches"
 );
 
 export const createLegendSymbols = action(
@@ -214,17 +214,17 @@ export const createLegendSymbols = action(
   }
 );
 
-export const editLegendSymbols = action(
-  { op: "editLegendSymbols", description: "Rematerialize layered legend symbols." },
+export const rematerializeLegendSymbols = action(
+  { op: "rematerializeLegendSymbols", description: "Rematerialize layered legend symbols." },
   function (args = {}) {
-    noOptions(args, "editLegendSymbols");
+    noOptions(args, "rematerializeLegendSymbols");
     const { config } = activeConfig(this);
     let next = this;
     for (const layer of config.symbol.layers) {
       const operation = {
-        line: "editLegendSymbolLines",
-        point: "editLegendSymbolPoints",
-        swatch: "editLegendSymbolSwatches"
+        line: "rematerializeLegendSymbolLines",
+        point: "rematerializeLegendSymbolPoints",
+        swatch: "rematerializeLegendSymbolSwatches"
       }[layer.type];
       next = next[operation]();
     }
@@ -252,7 +252,7 @@ export const rematerializeLegendHighlights = action(
     })).filter(entry => entry.states !== undefined);
     if (highlights.length === 0) return this;
 
-    let next = this.editLegendSymbols();
+    let next = this.rematerializeLegendSymbols();
     for (const { highlight, states } of highlights) {
       for (const layer of config.symbol.layers) {
         const id = symbolGraphic(config, layer.type);

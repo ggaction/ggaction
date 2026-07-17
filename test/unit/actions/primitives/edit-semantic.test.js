@@ -149,6 +149,36 @@ test("removes only complete unreferenced derived dataset resources", () => {
   );
 });
 
+test("removes a complete layer resource without mutating earlier programs", () => {
+  const layered = chart()
+    .editSemantic({ property: "layer[points].mark.type", value: "point" })
+    .editSemantic({ property: "layer[points].data", value: "cars" })
+    .editSemantic({ property: "layer[line].mark.type", value: "line" });
+  const removed = layered.editSemantic({
+    property: "layer[points]",
+    remove: true
+  });
+  const idempotent = removed.editSemantic({
+    property: "layer[points]",
+    remove: true
+  });
+
+  assert.deepEqual(layered.semanticSpec.layers.map(layer => layer.id), [
+    "points",
+    "line"
+  ]);
+  assert.deepEqual(removed.semanticSpec.layers, [
+    { id: "line", mark: { type: "line" } }
+  ]);
+  assert.equal(removed.context.currentMark, "line");
+  assert.equal(idempotent.semanticSpec, removed.semanticSpec);
+
+  const current = layered
+    .editSemantic({ property: "layer[points].mark.type", value: "point" })
+    .editSemantic({ property: "layer[points]", remove: true });
+  assert.equal(current.context.currentMark, undefined);
+});
+
 test("takes ownership of dataset rows and keeps datasets immutable", () => {
   const rows = Object.freeze([{ nested: { value: 1 } }]);
   const program = chart().editSemantic({

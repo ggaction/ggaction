@@ -125,7 +125,7 @@ test("records semantic and component actions beneath createLegend", () => {
   ]);
   assert.deepEqual(
     categorical.children[3].children[0].children.map(child => child.op),
-    ["createGraphics", "editLegendSymbolLines"]
+    ["createGraphics", "rematerializeLegendSymbolLines"]
   );
 });
 

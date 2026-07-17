@@ -11,8 +11,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   position encoding과 `encoding.color.aggregate`는 accepted scalar aggregate token과 parameterized quantile/ordered object를
   primitive authoring state로 저장할 수 있다. 이 primitive validation은 aggregate 계산이나 graphical
   materialization을 수행하지 않는다.
-- `remove`: `true`일 때 value 대신 supported encoding channel 또는 legend branch를 삭제하고 empty
-  parent object를 prune한다. Dataset state는 삭제할 수 없다.
+- `remove`: `true`일 때 value 대신 supported encoding channel, legend branch 또는 complete layer resource를
+  삭제하고 empty parent object를 prune한다. Source dataset은 삭제할 수 없고 unreferenced derived dataset만
+  complete resource removal을 허용한다.
 - Effect: 해당 path만 structural copy하고 기존 program을 보존한다. path가 dataset/layer/scale/coordinate를
   가리키면 current context를 내부적으로 갱신할 수 있다. graphic rematerialization은 자동으로 하지 않는다.
 - 오류: unknown path, closed vocabulary 위반, invalid transform/scale/guide value, existing source dataset
@@ -39,7 +40,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ⚠️ Partial: every transform schema leaf and every guide semantic leaf direct coverage.
 - Effect
   - ✅ Covered: structural copy and context inference without automatic graphic compilation.
-  - ✅ Covered: encoding/legend branch removal, empty-parent pruning, idempotence와 dataset immutability.
+  - ✅ Covered: encoding/legend branch와 complete layer removal, empty-parent pruning, idempotence와 dataset
+    immutability.
 - Evidence: `test/unit/actions/primitives/edit-semantic.test.js`.
 
 ## `createGraphics`

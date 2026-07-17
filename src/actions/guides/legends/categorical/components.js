@@ -3,14 +3,14 @@ import { activeConfig, graphic, noOptions, resolveLayout } from "./layout.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 
-export const editLegendLabels = action(
-  { op: "editLegendLabels", description: "Rematerialize categorical legend labels." },
+export const rematerializeLegendLabels = action(
+  { op: "rematerializeLegendLabels", description: "Rematerialize categorical legend labels." },
   function (args = {}) {
-    noOptions(args, "editLegendLabels");
+    noOptions(args, "rematerializeLegendLabels");
     const { config } = activeConfig(this);
     const id = graphic(config, "Labels");
     if (this.graphicSpec.objects[id]?.type !== "text") {
-      throw new Error("editLegendLabels requires existing legend labels.");
+      throw new Error("rematerializeLegendLabels requires existing legend labels.");
     }
     const layout = resolveLayout(this, config);
     return this
@@ -43,18 +43,18 @@ export const createLegendLabels = action(
         length: config.domain.length,
         ...resolveLegendGraphicPlacement(this)
       })
-      .editLegendLabels();
+      .rematerializeLegendLabels();
   }
 );
 
-export const editLegendTitle = action(
-  { op: "editLegendTitle", description: "Rematerialize the categorical legend title." },
+export const rematerializeLegendTitle = action(
+  { op: "rematerializeLegendTitle", description: "Rematerialize the categorical legend title." },
   function (args = {}) {
-    noOptions(args, "editLegendTitle");
+    noOptions(args, "rematerializeLegendTitle");
     const { config } = activeConfig(this);
     const id = graphic(config, "Title");
     if (this.graphicSpec.objects[id]?.type !== "text") {
-      throw new Error("editLegendTitle requires an existing legend title.");
+      throw new Error("rematerializeLegendTitle requires an existing legend title.");
     }
     const layout = resolveLayout(this, config);
     return this
@@ -92,21 +92,21 @@ export const createLegendTitle = action(
         type: "text",
         ...resolveLegendGraphicPlacement(this)
       })
-      .editLegendTitle();
+      .rematerializeLegendTitle();
   }
 );
 
-export const editLegendBackground = action(
-  { op: "editLegendBackground", description: "Rematerialize the legend background." },
+export const rematerializeLegendBackground = action(
+  { op: "rematerializeLegendBackground", description: "Rematerialize the legend background." },
   function (args = {}) {
-    noOptions(args, "editLegendBackground");
+    noOptions(args, "rematerializeLegendBackground");
     const { config } = activeConfig(this);
     if (config.border === false) {
-      throw new Error("editLegendBackground requires border configuration.");
+      throw new Error("rematerializeLegendBackground requires border configuration.");
     }
     const id = graphic(config, "Background");
     if (this.graphicSpec.objects[id]?.type !== "rect") {
-      throw new Error("editLegendBackground requires an existing background.");
+      throw new Error("rematerializeLegendBackground requires an existing background.");
     }
     const layout = resolveLayout(this, config).background;
     return this
@@ -135,6 +135,6 @@ export const createLegendBackground = action(
         type: "rect",
         ...resolveLegendGraphicPlacement(this)
       })
-      .editLegendBackground();
+      .rematerializeLegendBackground();
   }
 );

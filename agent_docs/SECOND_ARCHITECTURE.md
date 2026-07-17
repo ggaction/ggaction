@@ -856,9 +856,11 @@ Unknown path를 임의로 만들어 저장하지 않는다. Value validator는 f
 transform schema, stack/bin policy, coordinate type 등을 검증한다.
 
 `remove: true`는 `value`와 함께 쓸 수 없으며 supported semantic branch를 structural copy로
-삭제한다. Encoding channel과 legend branch를 제거할 수 있고 빈 parent object도 함께
-정리한다. Dataset state는 생성 이후 삭제하거나 교체할 수 없다. 삭제도 동일한
-`editSemantic` trace node로 기록된다.
+삭제한다. Encoding channel, legend branch와 complete layer resource를 제거할 수 있고 빈 parent
+object도 함께 정리한다. Source dataset state는 생성 이후 삭제하거나 교체할 수 없고 unreferenced
+derived dataset만 complete resource removal을 허용한다. 삭제도 동일한 `editSemantic` trace node로
+기록된다. Layer removal은 semantic resource만 소유하므로 domain removal action이 related graphic,
+config, selection/highlight와 orphaned derived data cleanup을 명시적으로 조합한다.
 
 ### `createGraphics({ id, type, length?, parent?, before?, after? })`
 

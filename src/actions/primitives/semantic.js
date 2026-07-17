@@ -76,6 +76,13 @@ function removeEntity(spec, parsed) {
   const collection = spec[parsed.collection];
   const index = collection.findIndex(item => item.id === parsed.id);
   if (index === -1) return spec;
+  if (parsed.kind === "layer" && parsed.path.length === 0) {
+    const nextCollection = collection.filter((_, itemIndex) => itemIndex !== index);
+    return freezeOwned({
+      ...spec,
+      [parsed.collection]: freezeOwned(nextCollection)
+    });
+  }
   if (parsed.kind === "dataset" && parsed.path.length === 0) {
     const dataset = collection[index];
     if (dataset.source === undefined) {
@@ -140,10 +147,18 @@ const editSemantic = action(
         parsed.kind === "dataset" &&
         parsed.path.length === 0 &&
         this.context.currentData === parsed.id;
+      const clearsCurrentMark =
+        parsed.kind === "layer" &&
+        parsed.path.length === 0 &&
+        this.context.currentMark === parsed.id;
       return this._clone({
         semanticSpec,
-        ...(clearsCurrentData
-          ? { context: freezeOwned({ ...this.context, currentData: undefined }) }
+        ...(clearsCurrentData || clearsCurrentMark
+          ? { context: freezeOwned({
+              ...this.context,
+              ...(clearsCurrentData ? { currentData: undefined } : {}),
+              ...(clearsCurrentMark ? { currentMark: undefined } : {})
+            }) }
           : {})
       });
     }

@@ -26,7 +26,14 @@ domain action을 통해서만 실행한다.
 | `rematerializeGrid` | grid aggregate and Canvas actions |
 | `rematerializeHorizontalGrid` | horizontal grid and Canvas actions |
 | `rematerializeLegend` | legend, encoding, scale, and Canvas actions |
+| `rematerializeLegendBackground` | categorical legend border/background component |
 | `rematerializeLegendHighlights` | categorical legend and `highlightMarks` exact-group reflection |
+| `rematerializeLegendLabels` | categorical legend label component |
+| `rematerializeLegendSymbolLines` | categorical line-symbol component |
+| `rematerializeLegendSymbolPoints` | categorical point-symbol component |
+| `rematerializeLegendSymbolSwatches` | categorical swatch-symbol component |
+| `rematerializeLegendSymbols` | categorical layered-symbol aggregate |
+| `rematerializeLegendTitle` | categorical legend title component |
 | `rematerializeLineMark` | line mark and encoding actions |
 | `rematerializeMarkHighlights` | owning mark rematerializer reapplication of stored highlight assignments |
 | `rematerializeOpacityLegend` | field-opacity legend, scale, and Canvas actions |

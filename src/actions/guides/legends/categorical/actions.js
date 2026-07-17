@@ -70,11 +70,11 @@ export const rematerializeLegend = action(
           });
         }
       }
-      if (config.border !== false) next = next.editLegendBackground();
+      if (config.border !== false) next = next.rematerializeLegendBackground();
       next = next
-        .editLegendSymbols()
-        .editLegendLabels();
-      if (config.titleVisible !== false) next = next.editLegendTitle();
+        .rematerializeLegendSymbols()
+        .rematerializeLegendLabels();
+      if (config.titleVisible !== false) next = next.rematerializeLegendTitle();
       const hasHighlight = Object.values(
         next.materializationConfigs.highlights ?? {}
       ).some(highlight => highlight.target === config.target);

@@ -99,14 +99,15 @@ export function parseSemanticPath(property, { allowContainer = false } = {}) {
   }
 
   if (allowContainer) {
-    const datasetMatch = property.match(
-      new RegExp(`^dataset\\[(${USER_ID_SOURCE})\\]$`)
+    const entityMatch = property.match(
+      new RegExp(`^(dataset|layer)\\[(${USER_ID_SOURCE})\\]$`)
     );
-    if (datasetMatch) {
+    if (entityMatch) {
+      const [, kind, id] = entityMatch;
       return Object.freeze({
-        kind: "dataset",
-        id: datasetMatch[1],
-        collection: "datasets",
+        kind,
+        id,
+        collection: ENTITY_PATHS[kind].collection,
         path: Object.freeze([])
       });
     }
