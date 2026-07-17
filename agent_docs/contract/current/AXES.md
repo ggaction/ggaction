@@ -170,7 +170,7 @@ axis를 만든다. Theta axis는 outer circle, outward ticks, perimeter labels�
 
 ```typescript
 createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
-createRadialAxis(options?: CompletePolarAxisOptions): ChartProgram;
+createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
 editThetaAxis(options: EditPolarAxisOptions): ChartProgram;
 editRadialAxis(options: EditPolarAxisOptions & { angle?: number }): ChartProgram;
 ```
@@ -178,6 +178,7 @@ editRadialAxis(options: EditPolarAxisOptions & { angle?: number }): ChartProgram
 - `scale`, `coordinate`는 unique stored encoding에서 추론한다.
 - `ticksAndLabels.count` 기본값은 theta `6`, radius `5`이며 `values`와 mutually exclusive다.
 - `angle`은 public Polar degree convention을 사용하며 radial aggregate create/edit만 소유한다.
+- `title: false` omits the title at creation. Other title objects keep the inferred or explicit text contract.
 - Focused line/ticks/labels/title actions는 raw graphic target 없이 같은 stored resource를 변경한다.
 - Inferred title은 encoding field/title을 읽는다. Canvas, scale, encoding revision은 모든 component를
   deterministic하게 rematerialize한다.
@@ -204,12 +205,12 @@ Complete radius-axis aggregate with public-degree `angle`.
 
 ### Formal values — `createRadialAxis`
 
-- Implemented: `createRadialAxis(options?: CompletePolarAxisOptions)`.
+- Implemented: `createRadialAxis(options?: CompleteRadialAxisOptions)`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createRadialAxis`
 
-- ✅ Covered: default/arbitrary angle, inferred resources, components and invalid input.
+- ✅ Covered: default/arbitrary angle, inferred resources, components, title opt-out and invalid input.
 - No proposal; Evidence: `test/unit/actions/guides/polar-axis-actions.test.js`.
 
 ## `editThetaAxis`

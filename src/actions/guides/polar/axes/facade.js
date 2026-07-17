@@ -50,13 +50,15 @@ function validateAxisArgs(kind, args, operation) {
     }
   }
   if (Object.hasOwn(args, "title")) {
-    validateObject(
-      args.title,
-      kind === "theta"
-        ? TITLE_EDIT_OPTIONS.filter(option => option !== "position")
-        : TITLE_EDIT_OPTIONS,
-      `${operation}.title`
-    );
+    if (args.title !== false) {
+      validateObject(
+        args.title,
+        kind === "theta"
+          ? TITLE_EDIT_OPTIONS.filter(option => option !== "position")
+          : TITLE_EDIT_OPTIONS,
+        `${operation}.title`
+      );
+    }
   }
 }
 
@@ -83,7 +85,7 @@ function makeCreateAxis(kind) {
     if (kind === "radius") {
       next = next._withGuideConfig("radius", "layout", { angle });
     }
-    return next
+    next = next
       [`create${prefix(kind)}AxisLine`]({ ...shared, ...(args.line ?? {}) })
       [`create${prefix(kind)}AxisTicks`]({
         ...shared,
@@ -94,11 +96,13 @@ function makeCreateAxis(kind) {
         ...shared,
         ...mode,
         ...(group.labels ?? {})
-      })
-      [`create${prefix(kind)}AxisTitle`]({
-        ...shared,
-        ...(args.title ?? {})
       });
+    return args.title === false
+      ? next
+      : next[`create${prefix(kind)}AxisTitle`]({
+          ...shared,
+          ...(args.title ?? {})
+        });
   });
 }
 

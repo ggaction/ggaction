@@ -471,11 +471,11 @@ export interface RadialTitleOptions extends PolarTitleOptions {
 export interface CompletePolarAxisOptions extends PolarGuideResourceOptions {
   line?: AxisLineStyleOptions;
   ticksAndLabels?: PolarTicksAndLabelsOptions;
-  title?: PolarTitleOptions;
+  title?: false | PolarTitleOptions;
 }
 export interface CompleteRadialAxisOptions
   extends Omit<CompletePolarAxisOptions, "title"> {
-  title?: RadialTitleOptions;
+  title?: false | RadialTitleOptions;
 }
 export interface EditPolarAxisOptions {
   angle?: number;

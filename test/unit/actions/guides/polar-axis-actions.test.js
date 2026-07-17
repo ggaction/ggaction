@@ -90,6 +90,17 @@ test("supports an arbitrary radial-axis angle from the aggregate action", () => 
   assert.equal(program.guideConfigs.axis.radius.layout.angle, 180);
 });
 
+test("can omit a Polar axis title at creation", () => {
+  const program = polarProgram().createThetaAxis({ title: false });
+
+  assert.equal(program.graphicSpec.objects.thetaAxisTitle, undefined);
+  assert.equal(program.semanticSpec.guides.axis.theta.title, undefined);
+  assert.deepEqual(
+    program.trace.children.at(-1).children.map(child => child.op),
+    ["createThetaAxisLine", "createThetaAxisTicks", "createThetaAxisLabels"]
+  );
+});
+
 test("places radial titles inside by default and outside only when requested", () => {
   const inside = polarProgram().createRadialAxis();
   const outside = polarProgram().createRadialAxis({
