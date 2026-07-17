@@ -46,6 +46,6 @@
 
 - 외부 reproduction은 published `0.0.2`의 original failure oracle이다. Current 수정은 repository regression으로
   검증하며, 다음 published version은 0.0.2 evidence를 덮어쓰지 않고 새 독립 평가를 받아야 한다.
-- `createDerivedData` may record multiple ordered public transforms as provenance, but each built-in value materializer
-  intentionally owns one matching transform created by its high-level action.
+- `createDerivedData`는 여러 public transform을 ordered provenance로 기록할 수 있다. 다만 각 built-in value
+  materializer는 대응하는 high-level action이 만든 하나의 matching transform만 의도적으로 소유한다.
 - Roadmap 2.1은 corrective source candidate를 완성한다. Version bump와 npm publish는 별도 release 결정이다.
