@@ -2,6 +2,8 @@ import { loadCars } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 
 import { createCarsPolarGuidePrimitives } from "./primitive.program.js";
+import { createCarsPolarGuides } from
+  "../../../examples/polar-guides/program.js";
 
 const cars = loadCars();
 
@@ -27,6 +29,7 @@ export const visualVariants = Object.freeze([
       capability: "polar-guides"
     },
     primitive: () => createCarsPolarGuidePrimitives(cars),
+    userFacing: () => createCarsPolarGuides(cars),
     width: 620,
     height: 620,
     colors: ["#d7e0ea", "#475569"],

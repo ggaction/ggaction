@@ -133,7 +133,7 @@ type CompleteAxisOptions<P extends string> = {
 
 ## `createAxes`
 
-- Signature: `createAxes({ coordinate?, x?, y? })`
+- Signature: `createAxes({ coordinate?, x?, y?, theta?, radius? })`
 - `coordinate.id`: existing coordinate ID. 생략하면 encoded Cartesian layers가 참조하는 유일한 ID를 추론한다.
 - `coordinate.type`: `"auto" | "cartesian" | "polar"`, 기본값 `"auto"`; stored type assertion이다.
 - `x`, `y`: `false`, `{}`, 또는 complete-axis options. 생략하면 해당 encoded channel을 자동 선택하고,
@@ -142,27 +142,223 @@ type CompleteAxisOptions<P extends string> = {
 - 오류: mixed Cartesian/Polar channel, ambiguous coordinate/scale, missing stored coordinate, no selected axis를 거부한다.
 - Coverage: `test/unit/actions/guides/create-axes.test.js`와 temporal/ordinal/histogram axis tests가 inference,
   opt-out, ambiguity, stored coordinate와 rematerialization을 검증한다.
-- Planned: Polar semantics는 Implemented지만 Polar guide graphics는 Planned capability다. theta/radial action
-  이름과 concrete guide contract는 아직 Proposed 상태라 현재 API로 노출하지 않는다.
+- Polar coordinate는 `theta`와 `radius` complete-axis option을 사용하며 stored coordinate family로 dispatch한다.
 
 ### Formal values — `createAxes`
 
-- Implemented: `createAxes({ coordinate?: { id?: UserId; type?: "auto" | "cartesian" | "polar" }; x?: false | CompleteAxisOptions<AxisPositionX>; y?: false | CompleteAxisOptions<AxisPositionY> } = {})`; Polar 선택은 현재 validation error다.
-- Proposed (NOT IMPLEMENTED): Polar axis option schema; x/y에 Polar 값을 억지로 추가하지 않는다.
+- Implemented: Cartesian `x`/`y`와 Polar `theta`/`radius` option을 coordinate family별로 dispatch한다.
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createAxes`
 
 - `coordinate.id`
   - ✅ Covered: omission with unique coordinate, explicit matching ID, unknown/ambiguous IDs.
 - `coordinate.type`
-  - ✅ Covered: omission/`"auto"`, `"cartesian"`, stored `"polar"` rejection, unknown value.
-  - 🟣 Proposed: `"polar"` execution after Polar guide materialization exists; currently it is assertion-only and rejected.
+  - ✅ Covered: omission/`"auto"`, `"cartesian"`, `"polar"`, stored-type mismatch와 unknown value.
 - `x`, `y`
   - ✅ Covered: omission inference, `{}` explicit selection, `false` opt-out, nested options, neither selected error.
   - ⚠️ Partial: multi-layer shared coordinate with one disabled axis and multiple candidate scales pairwise cases.
   - ✅ Covered: x top/y right complete-axis forwarding while preserving channel defaults.
 - Proposed: future Polar axes should use coordinate channels rather than force x/y objects into Polar semantics.
 - Evidence: `test/unit/actions/guides/create-axes.test.js`.
+
+## Polar guide actions
+
+`createThetaAxis`와 `createRadialAxis`는 stored Polar coordinate와 각각 `theta`/`radius` scale을 읽어 complete
+axis를 만든다. Theta axis는 outer circle, outward ticks, perimeter labels와 아래 title을 소유한다. Radial axis는
+기본 `90` degree center-to-edge baseline과 perpendicular ticks, labels, title을 소유한다.
+
+```typescript
+createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
+createRadialAxis(options?: CompletePolarAxisOptions): ChartProgram;
+editThetaAxis(options: EditPolarAxisOptions): ChartProgram;
+editRadialAxis(options: EditPolarAxisOptions & { angle?: number }): ChartProgram;
+```
+
+- `scale`, `coordinate`는 unique stored encoding에서 추론한다.
+- `ticksAndLabels.count` 기본값은 theta `6`, radius `5`이며 `values`와 mutually exclusive다.
+- `angle`은 public Polar degree convention을 사용하며 radial aggregate create/edit만 소유한다.
+- Focused line/ticks/labels/title actions는 raw graphic target 없이 같은 stored resource를 변경한다.
+- Inferred title은 encoding field/title을 읽는다. Canvas, scale, encoding revision은 모든 component를
+  deterministic하게 rematerialize한다.
+- `removeThetaAxis`와 `removeRadialAxis`는 semantic/config/concrete resource 전체를 제거한다.
+- Evidence: `test/unit/actions/guides/polar-axis-actions.test.js`, `test/charts/polar-guides/`.
+
+## `createThetaAxis`
+
+Complete theta-axis aggregate; options follow the Polar guide contract above.
+
+### Formal values — `createThetaAxis`
+
+- Implemented: `createThetaAxis(options?: CompletePolarAxisOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxis`
+
+- ✅ Covered: inferred/explicit resources, count/values, style, title, duplicate and invalid input.
+- No proposal; Evidence: `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxis`
+
+Complete radius-axis aggregate with public-degree `angle`.
+
+### Formal values — `createRadialAxis`
+
+- Implemented: `createRadialAxis(options?: CompletePolarAxisOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxis`
+
+- ✅ Covered: default/arbitrary angle, inferred resources, components and invalid input.
+- No proposal; Evidence: `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `editThetaAxis`
+
+Edits selected existing theta-axis components through focused children.
+
+### Formal values — `editThetaAxis`
+
+- Implemented: `editThetaAxis(options: Omit<EditPolarAxisOptions, "angle">)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editThetaAxis`
+
+- ✅ Covered: line, ticks, labels, combined ticks/labels and title routing.
+- No proposal; Evidence: `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `editRadialAxis`
+
+Edits selected radius-axis components; `angle` rematerializes every existing component.
+
+### Formal values — `editRadialAxis`
+
+- Implemented: `editRadialAxis(options: EditPolarAxisOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRadialAxis`
+
+- ✅ Covered: aggregate component routing and whole-axis angle movement.
+- No proposal; Evidence: `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `editThetaAxisLine`
+
+### Formal values — `editThetaAxisLine`
+
+- Implemented: `editThetaAxisLine({ color?, lineWidth? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editThetaAxisLine`
+
+- ✅ Covered: default rematerialization and partial style edit.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `editRadialAxisLine`
+
+### Formal values — `editRadialAxisLine`
+
+- Implemented: `editRadialAxisLine({ color?, lineWidth? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRadialAxisLine`
+
+- ✅ Covered: partial style edit and aggregate angle rematerialization.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `editThetaAxisTicks`
+
+### Formal values — `editThetaAxisTicks`
+
+- Implemented: `editThetaAxisTicks({ count?, values?, length?, color?, lineWidth? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editThetaAxisTicks`
+
+- ✅ Covered: count/value replacement, geometry and style.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `editRadialAxisTicks`
+
+### Formal values — `editRadialAxisTicks`
+
+- Implemented: `editRadialAxisTicks({ count?, values?, length?, color?, lineWidth? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRadialAxisTicks`
+
+- ✅ Covered: count/value replacement and angle-aware geometry.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `editThetaAxisLabels`
+
+### Formal values — `editThetaAxisLabels`
+
+- Implemented: `editThetaAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editThetaAxisLabels`
+
+- ✅ Covered: tick synchronization, formatting, alignment and style.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `editRadialAxisLabels`
+
+### Formal values — `editRadialAxisLabels`
+
+- Implemented: `editRadialAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRadialAxisLabels`
+
+- ✅ Covered: values, offset, style and angle-aware geometry.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `editThetaAxisTitle`
+
+### Formal values — `editThetaAxisTitle`
+
+- Implemented: `editThetaAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editThetaAxisTitle`
+
+- ✅ Covered: inferred/explicit text, offset and appearance.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `editRadialAxisTitle`
+
+### Formal values — `editRadialAxisTitle`
+
+- Implemented: `editRadialAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRadialAxisTitle`
+
+- ✅ Covered: inferred/explicit text, offset, appearance and angle movement.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `removeThetaAxis`
+
+### Formal values — `removeThetaAxis`
+
+- Implemented: `removeThetaAxis({ scale?, coordinate? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `removeThetaAxis`
+
+- ✅ Covered: complete removal, immutable prior state and missing-resource error.
+- No proposal; Evidence: Polar axis unit tests.
+
+## `removeRadialAxis`
+
+### Formal values — `removeRadialAxis`
+
+- Implemented: `removeRadialAxis({ scale?, coordinate? } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `removeRadialAxis`
+
+- ✅ Covered: complete removal, immutable prior state and missing-resource error.
+- No proposal; Evidence: Polar axis unit tests.
 
 ## `createXAxis`
 

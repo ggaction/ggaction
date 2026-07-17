@@ -178,7 +178,10 @@ export function validateSemanticValue(program, parsed, value) {
   )) {
     const property = parsed.path.at(-1);
     if (property === "title") nonEmptyString(value, "Axis title");
-    else validateUserId(value, `Guide ${property} id`);
+    else {
+      const guideKind = parsed.id.startsWith("grid.") ? "Grid" : "Axis";
+      validateUserId(value, `${guideKind} ${property} id`);
+    }
   }
   if (parsed.kind === "title") {
     nonEmptyString(value, `Chart title ${parsed.path[0]}`);

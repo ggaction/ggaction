@@ -37,7 +37,7 @@ type EditGridOptions = {
 
 ## `createGrid`
 
-- Signature: `createGrid({ horizontal?, vertical? })`.
+- Signature: `createGrid({ horizontal?, vertical?, theta?, radial? })`.
 - `horizontal`: boolean 또는 direction options, 기본 `true`.
 - `vertical`: boolean 또는 direction options, 기본 `false`.
 - `false`는 끄고 `true`/`{}`는 inference로 생성한다. 최소 한 방향이 필요하다.
@@ -47,7 +47,7 @@ type EditGridOptions = {
 ### Formal values — `createGrid`
 
 - Implemented: `createGrid({ horizontal?: boolean | GridDirectionOptions; vertical?: boolean | GridDirectionOptions } = {})`; horizontal default true, vertical default false.
-- Proposed (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —; Polar-only default는 radial과 theta가 모두 enabled다.
 
 ### Value coverage — `createGrid`
 
@@ -59,6 +59,73 @@ type EditGridOptions = {
   - ✅ Covered: horizontal only, both directions, neither selected error, invalid non-object value.
 - No proposal at aggregate level; future direction options belong to direction actions.
 - Evidence: `test/unit/actions/guides/grid-actions.test.js`.
+
+## Polar grid actions
+
+`createThetaGrid`는 theta ticks를 center-to-edge spokes로, `createRadialGrid`는 positive radius ticks를
+concentric closed paths로 만든다. 둘 다 mark보다 앞에 배치되며 shared grid style contract를 사용한다.
+
+```typescript
+createThetaGrid(options?: PolarGridOptions): ChartProgram;
+createRadialGrid(options?: PolarGridOptions): ChartProgram;
+editThetaGrid(options: EditPolarGridOptions): ChartProgram;
+editRadialGrid(options: EditPolarGridOptions): ChartProgram;
+```
+
+- theta count 기본값 `6`, radius count 기본값 `5`; radial zero tick은 axis에는 남지만 degenerate circle은 만들지 않는다.
+- Polar grid 기본 color는 approved `"#d7e0ea"`, lineWidth `1`, strokeDash `[]`다.
+- `createGrid()`는 Polar-only program에서 radial과 theta grid를 모두 추론한다.
+- `editGrid({ theta?, radial? })`와 `removeGrid({ theta?, radial? })`가 aggregate routing을 제공한다.
+- Canvas/scale/encoding 변경은 wrapped rematerialization을 통해 geometry를 다시 계산한다.
+- Evidence: `test/unit/actions/guides/polar-grid-actions.test.js`, `test/charts/polar-guides/`.
+
+## `createThetaGrid`
+
+### Formal values — `createThetaGrid`
+
+- Implemented: `createThetaGrid(options?: PolarGridOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaGrid`
+
+- ✅ Covered: inference, count/values, appearance, draw order and errors.
+- No proposal; Evidence: `test/unit/actions/guides/polar-grid-actions.test.js`.
+
+## `createRadialGrid`
+
+### Formal values — `createRadialGrid`
+
+- Implemented: `createRadialGrid(options?: PolarGridOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialGrid`
+
+- ✅ Covered: inference, count/values, zero omission, paths and errors.
+- No proposal; Evidence: `test/unit/actions/guides/polar-grid-actions.test.js`.
+
+## `editThetaGrid`
+
+### Formal values — `editThetaGrid`
+
+- Implemented: `editThetaGrid(options: EditPolarGridOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editThetaGrid`
+
+- ✅ Covered: count/value replacement, appearance and rematerialization.
+- No proposal; Evidence: Polar grid unit tests.
+
+## `editRadialGrid`
+
+### Formal values — `editRadialGrid`
+
+- Implemented: `editRadialGrid(options: EditPolarGridOptions)`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRadialGrid`
+
+- ✅ Covered: count/value replacement, appearance and rematerialization.
+- No proposal; Evidence: Polar grid unit tests.
 
 ## `createHorizontalGrid`
 

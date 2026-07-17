@@ -11,7 +11,7 @@
 - [x] STEP 7 — Theta/radial grid actions
 - [x] STEP 8 — Theta/radius axis actions
 - [x] STEP 9 — Aggregate dispatch, focused edits와 rematerialization
-- [ ] STEP 10 — Public vertical slice, docs와 Phase closeout
+- [x] STEP 10 — Public vertical slice, docs와 Phase closeout
 
 ## 목표
 

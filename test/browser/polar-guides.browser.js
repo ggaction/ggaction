@@ -8,7 +8,7 @@ import { startStaticServer } from "../support/static-server.js";
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 
-test("renders the Polar guide Gate primitive in a browser", async () => {
+test("renders the public Polar guide chart in a browser", async () => {
   const server = await startStaticServer(repositoryRoot);
   const browser = await chromium.launch({ headless: true });
   try {
@@ -19,7 +19,7 @@ test("renders the Polar guide Gate primitive in a browser", async () => {
     });
     page.on("pageerror", error => errors.push(error.message));
     const response = await page.goto(
-      new URL("test/gates/roadmap3-polar-guides/", server.baseUrl).href,
+      new URL("examples/polar-guides/", server.baseUrl).href,
       { waitUntil: "networkidle" }
     );
     assert.equal(response.ok(), true);

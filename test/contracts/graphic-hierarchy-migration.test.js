@@ -30,6 +30,11 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "cars-polar-scatterplot": [
     "canvas", "point"
   ],
+  "cars-polar-guides": [
+    "canvas", "radialGridCircles", "thetaGridLines", "point",
+    "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle",
+    "radialAxisLine", "radialAxisTicks", "radialAxisLabels", "radialAxisTitle"
+  ],
   "cars-histogram": [
     "canvas", "horizontalGridLines", "bars",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

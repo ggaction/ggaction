@@ -52,8 +52,9 @@ only final Cartesian x/y values for the renderer.
 ## Errors and limitations
 
 A layer cannot be silently moved from one coordinate to another, and Cartesian
-x/y cannot be mixed with Polar theta/radius. Polar axes and grids are not yet
-supported; guide requests fail explicitly instead of creating Cartesian guides.
+x/y cannot be mixed with Polar theta/radius. Polar point charts support
+theta/radius axes and grids; Polar line, radar, and arc marks are not yet
+supported.
 
 ## Related
 

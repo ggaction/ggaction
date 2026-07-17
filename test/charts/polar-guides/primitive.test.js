@@ -17,7 +17,24 @@ test("authors the Polar guide Gate target through graphical primitives", () => {
   const drawOrder = [];
   walkGraphicDrawOrder(program.graphicSpec, ({ id }) => drawOrder.push(id));
 
-  assert.deepEqual(program.semanticSpec.guides, {});
+  assert.deepEqual(program.semanticSpec.guides, {
+    grid: {
+      radial: { scale: "radius", coordinate: "polar" },
+      theta: { scale: "theta", coordinate: "polar" }
+    },
+    axis: {
+      theta: {
+        scale: "theta",
+        coordinate: "polar",
+        title: "Acceleration"
+      },
+      radius: {
+        scale: "radius",
+        coordinate: "polar",
+        title: "Horsepower"
+      }
+    }
+  });
   assert.equal(program.semanticSpec.coordinates[0].type, "polar");
   assert.deepEqual(program.graphicSpec.objects.thetaAxisLine.properties.commands, values.thetaAxisCommands);
   assert.equal(program.graphicSpec.objects.radialGridCircles.items.length, 4);

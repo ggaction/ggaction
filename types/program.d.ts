@@ -420,6 +420,8 @@ export interface CreateAxesOptions {
   };
   x?: false | CompleteAxisOptions<XAxisPosition>;
   y?: false | CompleteAxisOptions<YAxisPosition>;
+  theta?: false | CompletePolarAxisOptions;
+  radius?: false | CompletePolarAxisOptions;
 }
 export interface AxisTickOptions<P extends string>
   extends AxisTickStyleOptions {
@@ -434,6 +436,47 @@ export interface AxisLabelOptions<P extends string>
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
+}
+
+export interface PolarGuideResourceOptions {
+  scale?: string;
+  coordinate?: string;
+  angle?: number;
+}
+export interface PolarTickOptions extends AxisTickStyleOptions {
+  count?: number;
+  values?: readonly AxisValue[];
+}
+export interface PolarLabelOptions extends AxisLabelStyleOptions {
+  count?: number;
+  values?: readonly AxisValue[];
+}
+export interface PolarTicksAndLabelsOptions {
+  count?: number;
+  values?: readonly AxisValue[];
+  ticks?: AxisTickStyleOptions;
+  labels?: AxisLabelStyleOptions;
+}
+export interface PolarTitleOptions {
+  text?: string;
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+}
+export interface CompletePolarAxisOptions extends PolarGuideResourceOptions {
+  line?: AxisLineStyleOptions;
+  ticksAndLabels?: PolarTicksAndLabelsOptions;
+  title?: PolarTitleOptions;
+}
+export interface EditPolarAxisOptions {
+  angle?: number;
+  line?: AxisLineStyleOptions;
+  ticks?: PolarTickOptions;
+  labels?: PolarLabelOptions;
+  ticksAndLabels?: PolarTicksAndLabelsOptions;
+  title?: PolarTitleOptions;
 }
 
 export interface GridDirectionOptions {
@@ -455,10 +498,30 @@ export interface EditGridOptions {
 export interface EditGridDirectionsOptions {
   horizontal?: EditGridOptions;
   vertical?: EditGridOptions;
+  theta?: EditPolarGridOptions;
+  radial?: EditPolarGridOptions;
 }
 export interface CreateGridOptions {
   horizontal?: boolean | GridDirectionOptions;
   vertical?: boolean | GridDirectionOptions;
+  theta?: boolean | PolarGridOptions;
+  radial?: boolean | PolarGridOptions;
+}
+export interface PolarGridOptions {
+  scale?: string;
+  coordinate?: string;
+  count?: number;
+  values?: readonly AxisValue[];
+  color?: string;
+  lineWidth?: number;
+  strokeDash?: readonly number[];
+}
+export interface EditPolarGridOptions {
+  count?: number;
+  values?: readonly AxisValue[];
+  color?: string;
+  lineWidth?: number;
+  strokeDash?: readonly number[];
 }
 
 export interface CreateGuidesOptions {
@@ -1102,6 +1165,8 @@ export interface RemoveAxisOptions {
 export interface RemoveGridOptions {
   horizontal?: boolean;
   vertical?: boolean;
+  theta?: boolean;
+  radial?: boolean;
 }
 
 export interface RemoveLegendOptions {
@@ -1388,6 +1453,16 @@ export class ChartProgram {
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
+  createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
+  createRadialAxis(options?: CompletePolarAxisOptions): ChartProgram;
+  editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
+  editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
+  editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
+  editRadialAxisTicks(options?: PolarTickOptions): ChartProgram;
+  editThetaAxisLabels(options?: PolarLabelOptions): ChartProgram;
+  editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
+  editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
+  editRadialAxisTitle(options?: PolarTitleOptions): ChartProgram;
   createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
   createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
   editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
@@ -1410,13 +1485,21 @@ export class ChartProgram {
   editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, "scale">): ChartProgram;
   editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
   editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
+  editThetaAxis(options: Omit<EditPolarAxisOptions, "angle">): ChartProgram;
+  editRadialAxis(options: EditPolarAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
+  removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
+  removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
   createGrid(options?: CreateGridOptions): ChartProgram;
   createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
   createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
+  createThetaGrid(options?: PolarGridOptions): ChartProgram;
+  createRadialGrid(options?: PolarGridOptions): ChartProgram;
   editHorizontalGrid(options: EditGridOptions): ChartProgram;
   editVerticalGrid(options: EditGridOptions): ChartProgram;
+  editThetaGrid(options: EditPolarGridOptions): ChartProgram;
+  editRadialGrid(options: EditPolarGridOptions): ChartProgram;
   editGrid(options: EditGridDirectionsOptions): ChartProgram;
   removeGrid(options?: RemoveGridOptions): ChartProgram;
   createLegend(options?: LegendOptions): ChartProgram;

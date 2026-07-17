@@ -56,6 +56,15 @@ want to answer.
     <a class="docs-chart-gallery__full-size" href="./assets/images/cars-polar-scatterplot.png">View full size</a>
   </article>
   <article>
+    <a class="docs-chart-gallery__image" href="./tutorials/polar-points/#add-polar-guides" aria-label="Add axes and grids to the cars Polar point chart">
+      <img src="./assets/images/cars-polar-guides.png" alt="Cars Polar scatterplot with theta and radius guides" width="1240" height="1240" loading="lazy">
+    </a>
+    <a class="docs-chart-gallery__title" href="./tutorials/polar-points/#add-polar-guides">Polar guides</a>
+    <p>Read angle and radial mappings with aligned axes, ticks, labels, and grids.</p>
+    <span class="docs-chart-gallery__actions"><code>createGuides</code> <code>editRadialAxis</code></span>
+    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-polar-guides.png">View full size</a>
+  </article>
+  <article>
     <a class="docs-chart-gallery__image" href="./tutorials/line-chart/" aria-label="Build the aggregate line chart">
       <img src="./assets/images/cars-line-chart.png" alt="Cars aggregate line chart" width="1440" height="920" loading="lazy">
     </a>

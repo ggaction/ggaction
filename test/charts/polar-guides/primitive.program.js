@@ -13,6 +13,46 @@ export function createCarsPolarGuidePrimitives(rows) {
     .encodeR({ field: "Horsepower", scale: { zero: true } })
     .encodeColor({ field: "Origin" })
     .encodePointRadius({ value: 3 })
+    .editSemantic({
+      property: "guide.grid.radial.scale",
+      value: "radius"
+    })
+    .editSemantic({
+      property: "guide.grid.radial.coordinate",
+      value: "polar"
+    })
+    .editSemantic({
+      property: "guide.grid.theta.scale",
+      value: "theta"
+    })
+    .editSemantic({
+      property: "guide.grid.theta.coordinate",
+      value: "polar"
+    })
+    .editSemantic({
+      property: "guide.axis.theta.scale",
+      value: "theta"
+    })
+    .editSemantic({
+      property: "guide.axis.theta.coordinate",
+      value: "polar"
+    })
+    .editSemantic({
+      property: "guide.axis.theta.title",
+      value: "Acceleration"
+    })
+    .editSemantic({
+      property: "guide.axis.radius.scale",
+      value: "radius"
+    })
+    .editSemantic({
+      property: "guide.axis.radius.coordinate",
+      value: "polar"
+    })
+    .editSemantic({
+      property: "guide.axis.radius.title",
+      value: "Horsepower"
+    })
     .createGraphics({
       id: "radialGridCircles",
       parent: "plot-main",
@@ -34,6 +74,11 @@ export function createCarsPolarGuidePrimitives(rows) {
       target: "radialGridCircles",
       property: "strokeWidth",
       value: 1
+    })
+    .editGraphics({
+      target: "radialGridCircles",
+      property: "strokeDash",
+      value: values.radialGridCommands.map(() => [])
     })
     .createGraphics({
       id: "thetaGridLines",
@@ -71,6 +116,11 @@ export function createCarsPolarGuidePrimitives(rows) {
       target: "thetaGridLines",
       property: "strokeWidth",
       value: 1
+    })
+    .editGraphics({
+      target: "thetaGridLines",
+      property: "strokeDash",
+      value: values.thetaGrid.map(() => [])
     })
     .createGraphics({
       id: "thetaAxisLine",

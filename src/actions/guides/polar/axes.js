@@ -583,8 +583,7 @@ function makeEditTitle(kind) {
       fill: config.color,
       fontSize: config.fontSize,
       fontFamily: config.fontFamily,
-      fontWeight: config.fontWeight,
-      rotation: 0
+      fontWeight: config.fontWeight
     };
     for (const [property, value] of Object.entries(properties)) {
       next = next.editGraphics({ target: names.title, property, value });

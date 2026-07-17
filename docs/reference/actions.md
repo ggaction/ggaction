@@ -600,20 +600,166 @@ Create applicable axes, Cartesian grid, and categorical legend.
 ### `createAxes`
 
 ```javascript
-createAxes({ coordinate?, x?, y? })
+createAxes({ coordinate?, x?, y?, theta?, radius? })
 ```
 
-Create Cartesian axes directly, including inferred histogram bin-boundary
-ticks. [Axes](../api/axes.md)
+Create Cartesian or Polar axes directly, including inferred titles and ticks.
+[Axes](../api/axes.md)
+
+### `createThetaAxis`
+
+```javascript
+createThetaAxis({ scale?, coordinate?, line?, ticksAndLabels?, title? } = {})
+```
+
+Create the complete outer circular theta axis. [Axes](../api/axes.md)
+
+### `createRadialAxis`
+
+```javascript
+createRadialAxis({ scale?, coordinate?, angle?, line?, ticksAndLabels?, title? } = {})
+```
+
+Create the complete center-to-edge radial axis; `angle` defaults to `90`.
+[Axes](../api/axes.md)
+
+### `editThetaAxis`
+
+```javascript
+editThetaAxis({ line?, ticks?, labels?, ticksAndLabels?, title? })
+```
+
+Edit selected theta-axis components. [Axes](../api/axes.md#editing-a-complete-axis)
+
+### `editRadialAxis`
+
+```javascript
+editRadialAxis({ angle?, line?, ticks?, labels?, ticksAndLabels?, title? })
+```
+
+Edit selected radial components; `angle` moves the whole axis.
+[Axes](../api/axes.md#editing-a-complete-axis)
+
+### `editThetaAxisLine`
+
+```javascript
+editThetaAxisLine({ color?, lineWidth? } = {})
+```
+
+Edit the outer baseline style. [Axes](../api/axes.md)
+
+### `editRadialAxisLine`
+
+```javascript
+editRadialAxisLine({ color?, lineWidth? } = {})
+```
+
+Edit the radial baseline style. [Axes](../api/axes.md)
+
+### `editThetaAxisTicks`
+
+```javascript
+editThetaAxisTicks({ count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Edit theta tick geometry and style. [Axes](../api/axes.md)
+
+### `editRadialAxisTicks`
+
+```javascript
+editRadialAxisTicks({ count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Edit radial tick geometry and style. [Axes](../api/axes.md)
+
+### `editThetaAxisLabels`
+
+```javascript
+editThetaAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Edit perimeter theta labels. [Axes](../api/axes.md)
+
+### `editRadialAxisLabels`
+
+```javascript
+editRadialAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Edit radial value labels. [Axes](../api/axes.md)
+
+### `editThetaAxisTitle`
+
+```javascript
+editThetaAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Edit the theta title. [Axes](../api/axes.md)
+
+### `editRadialAxisTitle`
+
+```javascript
+editRadialAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Edit the radial title. [Axes](../api/axes.md)
+
+### `removeThetaAxis`
+
+```javascript
+removeThetaAxis({ scale?, coordinate? } = {})
+```
+
+Remove the complete theta-axis resource. [Axes](../api/axes.md#removing-an-axis)
+
+### `removeRadialAxis`
+
+```javascript
+removeRadialAxis({ scale?, coordinate? } = {})
+```
+
+Remove the complete radial-axis resource. [Axes](../api/axes.md#removing-an-axis)
 
 ### `createGrid`
 
 ```javascript
-createGrid({ horizontal?, vertical? })
+createGrid({ horizontal?, vertical?, theta?, radial? })
 ```
 
 Create inferred horizontal and/or vertical Cartesian grid lines behind related
-marks. [Grids](../api/grids.md)
+marks, or infer both Polar grid families. [Grids](../api/grids.md)
+
+### `createThetaGrid`
+
+```javascript
+createThetaGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? } = {})
+```
+
+Create theta spokes behind related marks. [Grids](../api/grids.md)
+
+### `createRadialGrid`
+
+```javascript
+createRadialGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? } = {})
+```
+
+Create concentric radial paths behind related marks. [Grids](../api/grids.md)
+
+### `editThetaGrid`
+
+```javascript
+editThetaGrid({ count?, values?, color?, lineWidth?, strokeDash? })
+```
+
+Edit the existing theta grid. [Grids](../api/grids.md#editing-grids)
+
+### `editRadialGrid`
+
+```javascript
+editRadialGrid({ count?, values?, color?, lineWidth?, strokeDash? })
+```
+
+Edit the existing radial grid. [Grids](../api/grids.md#editing-grids)
 
 ### `createLegend`
 

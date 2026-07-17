@@ -208,6 +208,14 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
 
   assert.deepEqual([...index.internal.materialization].sort(), materialization);
   assert.deepEqual(index.internal.guideComponents, [
+    "createThetaAxisLine",
+    "createRadialAxisLine",
+    "createThetaAxisTicks",
+    "createRadialAxisTicks",
+    "createThetaAxisLabels",
+    "createRadialAxisLabels",
+    "createThetaAxisTitle",
+    "createRadialAxisTitle",
     "createCategoricalLegend",
     "createGradientLegend",
     "createIntervalLegend",

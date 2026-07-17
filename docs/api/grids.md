@@ -11,14 +11,15 @@ title: Grids
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createGrid` | `createGrid()` | Horizontal direction from y; vertical off | Concrete lines behind related marks |
+| `createGrid` | `createGrid()` | Cartesian horizontal or both Polar families | Concrete guides behind related marks |
 | `editGrid` | `editGrid({ horizontal: { count: 6 } })` | Existing selected directions | One or both directions rematerialized |
 | `removeGrid` | `removeGrid({ vertical: true })` | Existing selected directions | Semantic, graphic, and stored grid state removed |
 
 ## `createGrid(options?)`
 
-Creates Cartesian grid lines from encoded continuous scales. With no options,
-it creates a horizontal grid and omits the vertical grid.
+Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
+defaults to horizontal only; a Polar-only chart defaults to theta spokes and
+radial circles.
 
 ```javascript
 program.createGrid();
@@ -39,6 +40,8 @@ program.createGrid({
 | --- | --- | --- |
 | `horizontal` | boolean or direction options | `true` |
 | `vertical` | boolean or direction options | `false` |
+| `theta` | boolean or Polar direction options | Polar-only: `true` |
+| `radial` | boolean or Polar direction options | Polar-only: `true` |
 
 Direction options are:
 
@@ -73,6 +76,12 @@ createGrid
 ├─ createHorizontalGrid?
 └─ createVerticalGrid?
 ```
+
+Polar dispatch uses `createRadialGrid` for concentric closed paths and
+`createThetaGrid` for center-to-edge spokes. Theta defaults to six ticks;
+radius defaults to five. A zero radial tick remains available to the axis but
+does not create a degenerate zero-radius circle. Polar grid color defaults to
+`#d7e0ea`.
 
 Use `false` to disable a direction. If scale or coordinate inference is
 ambiguous, provide its ID explicitly.
@@ -109,6 +118,10 @@ wrapped directional rematerialization action, replacing only that direction's
 concrete line geometry and appearance. `editGrid` delegates to these same
 directional actions, which remain available for focused edits.
 
+Polar grids use the same pattern through `editThetaGrid`, `editRadialGrid`, or
+`editGrid({ theta: {...}, radial: {...} })`. `removeGrid` accepts the same
+direction names.
+
 `createGuides()` selects this default horizontal grid automatically when a y
 encoding is present. Pass `createGuides({ grid: false })` to opt out.
 
@@ -127,8 +140,8 @@ Scales, coordinates, marks, and axes remain.
 
 ## Errors and limitations
 
-Each selected direction requires one compatible resolved scale and Cartesian
-coordinate. Ambiguous resources require explicit IDs.
+Each selected direction requires one compatible resolved scale and matching
+Cartesian or Polar coordinate. Ambiguous resources require explicit IDs.
 
 ## Related
 

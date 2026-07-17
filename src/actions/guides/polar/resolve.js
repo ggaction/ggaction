@@ -25,13 +25,13 @@ import { formatAxisValue, validateAxisFormat } from "../axes/policy.js";
 
 export const POLAR_AXIS_DEFAULTS = Object.freeze({
   angle: 90,
-  line: Object.freeze({ color: DEFAULT_COLORS.text, lineWidth: 1.25 }),
+  line: Object.freeze({ color: "#475569", lineWidth: 1.25 }),
   ticks: Object.freeze({
     thetaCount: 6,
     radiusCount: 5,
     length: 6,
     radialLength: 8,
-    color: DEFAULT_COLORS.text,
+    color: "#475569",
     lineWidth: 1
   }),
   labels: Object.freeze({
@@ -54,7 +54,7 @@ export const POLAR_AXIS_DEFAULTS = Object.freeze({
 });
 
 export const POLAR_GRID_DEFAULTS = Object.freeze({
-  color: DEFAULT_COLORS.grid,
+  color: "#d7e0ea",
   lineWidth: 1,
   strokeDash: Object.freeze([]),
   thetaCount: 6,

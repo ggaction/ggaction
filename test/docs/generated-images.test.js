@@ -27,7 +27,7 @@ test("keeps one generated gallery image for every public chart", async () => {
   const index = read("docs/index.md");
   const tutorials = read("docs/tutorials/index.md");
 
-  assert.equal(chartImages.length, 10);
+  assert.equal(chartImages.length, 11);
   for (const { id, width, height } of chartImages) {
     assertPng(id, width, height);
     assert.match(index, new RegExp(`assets/images/${id}\\.png`));

@@ -71,7 +71,8 @@ vertical or horizontal statistical/explicit error bars with encoded-layer
 inference, optional caps, and constant rule appearance, and vertical grouped
 statistical/explicit error bands.
 Polar point charts support clockwise degree theta, quantitative radial position,
-ordinary point appearance, filtering, selection, Canvas resizing, and PNG output.
+theta/radius axes and grids, ordinary point appearance, filtering, selection,
+Canvas resizing, and PNG output.
 The current box-plot aggregate supports vertical categorical-x Tukey boxes with
 immutable summary/outlier data and 1.5px median and whisker defaults.
 Cartesian guides support bottom/top x axes, left/right y axes, and closed
@@ -90,5 +91,5 @@ It is distributed as the ESM-only `ggaction` npm package for Node 20 or later,
 renders through Browser Canvas and Node PNG, and provides TypeScript declarations
 for `ggaction`, `ggaction/extension`, and `ggaction/png`.
 
-Do not assume Polar guides, Polar line/arc marks, facets, program composition,
+Do not assume Polar line/arc marks, facets, program composition,
 SVG rendering, animation, or automatic semantic compilation are implemented.

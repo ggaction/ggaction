@@ -15,7 +15,7 @@ title: Guides
 
 ## `createGuides(options?)`
 
-Creates the applicable axes, Cartesian grid, and categorical legend supported
+Creates the applicable axes, Cartesian or Polar grid, and categorical legend supported
 by the current semantic encodings.
 
 ```javascript
@@ -50,7 +50,7 @@ program.createGuides({
 program.createGuides({ legend: false });
 ```
 
-Axes are selected when an x or y encoding exists. A horizontal grid is selected
+Axes are selected from x/y or theta/radius encodings. A horizontal grid is selected
 when a y encoding exists; vertical grid remains off unless requested. A legend
 is selected for line color/stroke-dash, bar color, area color, compatible point
 color+shape encodings, or a standalone quantitative point-size encoding. Size
@@ -103,6 +103,10 @@ scale, target, field, and domain validation remains the responsibility of
 `createAxes`, `createGrid`, and `createLegend`, so ambiguous charts still
 require their explicit child options. If nothing is selected, the action
 reports an error.
+
+For a Polar-only chart, omission selects both theta/radius axes and both Polar
+grid families. Grid geometry is inserted behind marks while axes remain above
+marks, independent of the call occurring after mark creation.
 
 The trace preserves the composition:
 

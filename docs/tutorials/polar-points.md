@@ -66,12 +66,36 @@ const zoomed = program.editScale({
 `encodePointRadius` controls glyph size. It is an alias of `encodeRadius` and is
 separate from semantic radial position in `encodeR`.
 
+## Add Polar guides
+
+{% include chart-example.html id="polar-guides" %}
+
+Call `createGuides()` after both position encodings to infer theta/radius axes
+and grids:
+
+```javascript
+const guided = chart()
+  .createCanvas({ width: 620, height: 620, margin: 78 })
+  .createData({ values: rows })
+  .createPointMark({ opacity: 0.78 })
+  .encodeTheta({ field: "Acceleration" })
+  .encodeR({ field: "Horsepower", scale: { zero: true } })
+  .encodeColor({ field: "Origin" })
+  .encodePointRadius({ value: 3 })
+  .createGuides();
+```
+
+The default radial axis points right at `90` degrees. Theta spokes and radial
+circles draw behind the points; both axes draw above them. Titles are inferred
+from the encoded fields. Use `editRadialAxis({ angle: 180 })` to move the whole
+radial axis together, or a focused edit such as
+`editThetaAxisLabels({ fontSize: 12 })`.
+
 ## Current boundary
 
 Polar point marks support ordinary color, size, shape, opacity, filtering,
-selection, and highlighting. Polar axes and grids are not part of this slice;
-requesting Cartesian guide actions for a Polar chart produces an explicit
-error.
+selection, highlighting, theta/radius axes, and both Polar grid families.
+Polar line and arc marks remain outside this slice.
 
 ## Related
 

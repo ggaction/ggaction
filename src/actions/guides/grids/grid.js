@@ -265,8 +265,8 @@ const createGrid = action(
     if (vertical !== undefined) {
       next = next.createVerticalGrid(vertical);
     }
-    if (theta !== undefined) next = next.createThetaGrid(theta);
     if (radial !== undefined) next = next.createRadialGrid(radial);
+    if (theta !== undefined) next = next.createThetaGrid(theta);
     return next;
   }
 );

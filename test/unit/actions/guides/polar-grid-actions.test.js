@@ -40,7 +40,7 @@ test("creates Polar spoke and concentric-circle grids behind marks", () => {
   assert.equal(order.indexOf("radialGridCircles") < order.indexOf("point"), true);
   assert.deepEqual(
     program.trace.children.at(-1).children.map(child => child.op),
-    ["createThetaGrid", "createRadialGrid"]
+    ["createRadialGrid", "createThetaGrid"]
   );
   assert.equal(base.semanticSpec.guides.grid, undefined);
 });

@@ -19,7 +19,9 @@ editThetaGrid           editRadialGrid
 - Theta grid materializes spokes and radial grid concentric circles.
 - `createAxes`/`createGuides` dispatch by stored coordinate type.
 - Concrete guides use existing path, line and text schemas only.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 3.
+- Status: Implemented. Canonical contract moved to
+  [`../current/AXES.md`](../current/AXES.md#polar-guide-actions) and
+  [`../current/GRID.md`](../current/GRID.md#polar-grid-actions).
 
 ## Polar line radar
 

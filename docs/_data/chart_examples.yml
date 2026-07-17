@@ -12,6 +12,13 @@ polar:
   height: 1040
   caption: Quantitative angle and radial position with nominal color.
   url: /tutorials/polar-points/
+polar-guides:
+  image: /assets/images/cars-polar-guides.png
+  alt: Cars Polar scatterplot with circular and radial axes and grids
+  width: 1240
+  height: 1240
+  caption: Polar point positions with readable theta and radius guides.
+  url: /tutorials/polar-points/#add-polar-guides
 line:
   image: /assets/images/cars-line-chart.png
   alt: Aggregate cars line chart grouped by origin

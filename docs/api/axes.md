@@ -11,14 +11,14 @@ title: Axes
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createAxes` | `createAxes()` | Encoded Cartesian channels, scales, coordinate, titles | Complete selected x/y axes |
+| `createAxes` | `createAxes()` | Stored coordinate family, position scales, titles | Complete x/y or theta/radius axes |
 | `editXAxis` | `editXAxis({ line: { lineWidth: 2 } })` | Existing x-axis components | Selected x-axis components rematerialized |
 | `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Existing y-axis components moved together |
 | `removeXAxis` / `removeYAxis` | `removeXAxis()` | Existing complete axis | Semantic, graphic, and stored axis state removed |
 
 ## `createAxes(options?)`
 
-Creates complete axes for encoded x/y channels. This is the recommended axis
+Creates complete axes for encoded Cartesian x/y or Polar theta/radius channels. This is the recommended axis
 action for ordinary chart authoring.
 
 ```javascript
@@ -32,9 +32,11 @@ program.createAxes({
 | `coordinate` | `{ id?, type? }` | unique coordinate used by x/y layers |
 | `x` | axis options or `false` | create when x is encoded |
 | `y` | axis options or `false` | create when y is encoded |
+| `theta` | Polar axis options or `false` | create when theta is encoded |
+| `radius` | Polar axis options or `false` | create when radius is encoded |
 
 `coordinate.type` accepts `"auto"`, `"cartesian"`, or `"polar"` as a stored
-type assertion. Polar axis graphics are not implemented.
+type assertion.
 
 Each x/y axis option supports:
 
@@ -111,6 +113,19 @@ createAxes
 └─ createYAxis (when selected)
 ```
 
+For a Polar coordinate, the same aggregate becomes:
+
+```text
+createAxes
+├─ createThetaAxis
+└─ createRadialAxis
+```
+
+`createThetaAxis()` creates the outer circular baseline, outward ticks,
+perimeter labels, and an inferred title. `createRadialAxis()` creates one
+center-to-edge baseline; its `angle` defaults to `90` degrees (right). Both
+support `ticksAndLabels: { count?, values?, ticks?, labels? }` and title style.
+
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
 
@@ -139,9 +154,15 @@ tick/label, and title edit actions. Omitted component objects remain unchanged.
 Changing `position` updates every existing component on that axis, including
 components omitted from the call.
 
+Use `editThetaAxis()` for grouped theta component edits. Use
+`editRadialAxis({ angle: 180 })` to move the radial line, ticks, labels, and
+title together. Focused `editThetaAxisLine/Ticks/Labels/Title` and matching
+`editRadialAxis*` actions change one visible component without raw graphic IDs.
+
 ## Removing an axis
 
-`removeXAxis()` and `removeYAxis()` remove the complete axis: line, ticks,
+`removeXAxis()`, `removeYAxis()`, `removeThetaAxis()`, and
+`removeRadialAxis()` remove the complete axis: line, ticks,
 labels, title, semantic guide state, and stored materialization settings. Marks,
 scales, coordinates, and the opposite axis remain.
 
@@ -169,8 +190,7 @@ an invalid later component cannot leave a partial result.
 ## Errors and limitations
 
 Ambiguous scale or coordinate candidates require explicit IDs. Each channel
-still has one semantic axis, so top and bottom x axes (or left and right y
-axes) cannot be created simultaneously. Polar axes are unsupported.
+has one semantic axis, so parallel duplicate axes cannot be created.
 
 ## Related
 

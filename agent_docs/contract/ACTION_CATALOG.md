@@ -117,25 +117,29 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | primitive | [`editSemantic`](current/PRIMITIVES.md#editsemantic) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
 | primitive | [`createGraphics`](current/PRIMITIVES.md#creategraphics) | primitives | Primitive | Complete | ✅ / ✅ / ✅ |
 | primitive | [`editGraphics`](current/PRIMITIVES.md#editgraphics) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`createThetaAxis`](current/AXES.md#createThetaAxis) | axes | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRadialAxis`](current/AXES.md#createRadialAxis) | axes | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editThetaAxis`](current/AXES.md#editThetaAxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRadialAxis`](current/AXES.md#editRadialAxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeThetaAxis`](current/AXES.md#removeThetaAxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeRadialAxis`](current/AXES.md#removeRadialAxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editThetaAxisLine`](current/AXES.md#editThetaAxisLine) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRadialAxisLine`](current/AXES.md#editRadialAxisLine) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editThetaAxisTicks`](current/AXES.md#editThetaAxisTicks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRadialAxisTicks`](current/AXES.md#editRadialAxisTicks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editThetaAxisLabels`](current/AXES.md#editThetaAxisLabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRadialAxisLabels`](current/AXES.md#editRadialAxisLabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editThetaAxisTitle`](current/AXES.md#editThetaAxisTitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRadialAxisTitle`](current/AXES.md#editRadialAxisTitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createThetaGrid`](current/GRID.md#createThetaGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRadialGrid`](current/GRID.md#createRadialGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editThetaGrid`](current/GRID.md#editThetaGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRadialGrid`](current/GRID.md#editRadialGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `createThetaAxis` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `createRadialAxis` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `createThetaGrid` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `createRadialGrid` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editThetaAxisLine` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editRadialAxisLine` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editThetaAxisTicks` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editRadialAxisTicks` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editThetaAxisLabels` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editRadialAxisLabels` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editThetaAxisTitle` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editRadialAxisTitle` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editThetaGrid` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
-| `editRadialGrid` | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
 | `createArcMark` | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-actions) |
 | `editArcMark` | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-actions) |
 | `encodeTheta2` | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-actions) |
@@ -159,7 +163,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | composition | Vertical program composition | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | parameter | Closed Polar line option | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-line-radar) |
 | parameter | Facet scale resolution options | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
-| composition | Polar axes and grids | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-guide-actions) |
 | composition | Polar line and radar charts | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-line-radar) |
 | composition | Arc donut and radial bar charts | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-actions) |
 | behavior | Arc selection and highlight | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-selection-highlight) |

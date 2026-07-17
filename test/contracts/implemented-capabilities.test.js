@@ -60,6 +60,20 @@ test("keeps implemented capability groups out of planned inventory", () => {
         "regression-error-band-delegation",
         "composite-mark-ownership-and-storage"
       ]
+    },
+    {
+      actions: [
+        "createThetaAxis", "createRadialAxis",
+        "editThetaAxis", "editRadialAxis",
+        "editThetaAxisLine", "editRadialAxisLine",
+        "editThetaAxisTicks", "editRadialAxisTicks",
+        "editThetaAxisLabels", "editRadialAxisLabels",
+        "editThetaAxisTitle", "editRadialAxisTitle",
+        "removeThetaAxis", "removeRadialAxis",
+        "createThetaGrid", "createRadialGrid",
+        "editThetaGrid", "editRadialGrid"
+      ],
+      capabilities: ["polar-guides"]
     }
   ];
 
