@@ -7,7 +7,7 @@
 - [x] STEP 3 — Cars Origin donut primitive
 - [x] STEP 4 — Nightingale rose primitive
 - [x] STEP 5 — Gapminder radial bar primitive
-- [ ] STEP 6 — Gate F visual evidence와 사용자 승인
+- [x] STEP 6 — Gate F visual evidence와 사용자 승인
 - [ ] STEP 7 — Arc semantic mark, materialization policy와 action hierarchy
 - [ ] STEP 8 — Theta/radius/color grain, edit와 rematerialization lifecycle
 - [ ] STEP 9 — Public examples, types, contracts와 docs
@@ -67,3 +67,7 @@ STEP 6 승인 전에는 semantic `arc` vocabulary, public `createArcMark`/`editA
 TypeScript surface와 public docs를 구현하지 않는다. STEP 2~5는 source materializer와 독립된 reference
 calculation, extension primitive chain, browser Canvas와 high-DPI PNG만 작성한다. Gate F에서는 세 exact target
 call chain, primitive source, reference assertions와 PNG를 함께 제시한다.
+
+Gate F는 2026-07-17 승인되었다. 승인 baseline은 Cars count donut, larger-first Nightingale cause overlay,
+Gapminder life-expectancy radial bars다. Polar radial-axis title은 baseline midpoint의 `position: "inside"`를
+default로 유지하고 endpoint 바깥 배치는 explicit `position: "outside"`로만 선택한다.
