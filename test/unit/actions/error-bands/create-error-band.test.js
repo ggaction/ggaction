@@ -266,6 +266,58 @@ test("uses explicit horizontal bounds without deriving a dataset", () => {
   );
 });
 
+test("colors statistical and explicit horizontal bands without stack dispatch", () => {
+  const statistical = chart()
+    .createCanvas(canvas)
+    .createData({ values: loadCars() })
+    .createErrorBand({
+      x: { field: "Displacement", center: "mean", extent: "ci" },
+      y: { field: "Acceleration" },
+      groupBy: "Origin"
+    })
+    .encodeColor({
+      target: "errorBand",
+      field: "Origin",
+      layout: "overlay"
+    });
+  const explicitRows = [
+    { position: 1, center: 2, lower: 1, upper: 3, group: "A" },
+    { position: 2, center: 3, lower: 2, upper: 4, group: "A" },
+    { position: 1, center: 4, lower: 3, upper: 5, group: "B" },
+    { position: 2, center: 5, lower: 4, upper: 6, group: "B" }
+  ];
+  const explicit = chart()
+    .createCanvas(canvas)
+    .createData({ values: explicitRows })
+    .createErrorBand({
+      x: { center: "center", lower: "lower", upper: "upper" },
+      y: { field: "position" },
+      groupBy: "group"
+    })
+    .encodeColor({
+      target: "errorBand",
+      field: "group",
+      layout: "overlay"
+    });
+
+  assert.equal(statistical.graphicSpec.objects.errorBand.items.length, 3);
+  assert.equal(explicit.graphicSpec.objects.errorBand.items.length, 2);
+  for (const program of [statistical, explicit]) {
+    const layer = program.semanticSpec.layers.find(
+      candidate => candidate.id === "errorBand"
+    );
+    assert.equal(layer.encoding.color.layout, "overlay");
+    assert.equal(layer.encoding.x.stack, undefined);
+    assert.equal(layer.encoding.y.stack, undefined);
+    assert.equal(
+      new Set(program.graphicSpec.objects.errorBand.items.map(
+        item => item.properties.fill
+      )).size,
+      program.graphicSpec.objects.errorBand.items.length
+    );
+  }
+});
+
 test("rematerializes horizontal bands and boundaries after Canvas and scale edits", () => {
   const before = chart()
     .createCanvas({

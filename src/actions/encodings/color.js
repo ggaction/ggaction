@@ -36,6 +36,13 @@ const COLOR_ENCODING_OPTIONS = Object.freeze([
   "field", "target", "fieldType", "scale", "layout", "aggregate"
 ]);
 
+function isRangedArea(layer) {
+  return layer.mark.type === "area" && (
+    layer.encoding?.x2 !== undefined ||
+    layer.encoding?.y2 !== undefined
+  );
+}
+
 function resolveColorLayout(layer, requested, barGrain) {
   const existing = layer.encoding?.color === undefined
     ? undefined
@@ -67,8 +74,7 @@ function resolveColorLayout(layer, requested, barGrain) {
     throw new Error('Area color layout does not support "group".');
   }
   if (
-    layer.mark.type === "area" &&
-    layer.encoding?.y2 !== undefined &&
+    isRangedArea(layer) &&
     layout !== "overlay"
   ) {
     throw new Error('Ranged area color encoding supports only "overlay" layout.');
@@ -82,7 +88,7 @@ function applyColorLayoutCompanion(
 ) {
   if (layout === undefined) return program;
   if (layer.mark.type === "bar" && resolveBarGrain(layer) === BAR_GRAINS.ranged) return program;
-  if (layer.mark.type === "area" && layer.encoding?.y2 !== undefined) {
+  if (isRangedArea(layer)) {
     return program;
   }
   const channels = layer.mark.type === "bar" ? resolveBarChannels(layer) : undefined;

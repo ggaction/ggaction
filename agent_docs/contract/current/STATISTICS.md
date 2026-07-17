@@ -129,7 +129,7 @@ the two boundaries need different styles.
 - ✅ Covered: direct Gapminder temporal-x statistical mode, default mean/CI/0.95, grouped first-appearance paths,
   exact primitive/public semantic-graphic-Canvas/pixel equivalence, and existing color/legend composition.
 - ✅ Covered: source-layer data/coordinate/scale/group inference, vertical and horizontal statistical/explicit
-  rows, deterministic ID ownership and ambiguous quantitative roles.
+  rows, horizontal x/x2 overlay-color composition, deterministic ID ownership and ambiguous quantitative roles.
 - ✅ Covered: atomic y/y2 and x/x2 reassignment, temporal area materialization, lower/upper boundary order,
   basic stroke/width defaults and overrides, Canvas rematerialization, validation failure and immutability.
 - ✅ Covered: all area curve values, inherited/overridden boundary curves, dash/opacity/style validation,

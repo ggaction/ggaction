@@ -21,7 +21,7 @@ signature를 유지하고 재현 하나만 통과시키는 특수 처리 대신 
 - [x] 현재 source, tests, types와 public docs의 원인 후보 대조
 - [x] F-007 — 음수·0 aggregate bar baseline과 domain 수정
 - [x] F-001 — ranged/aggregate bar 기본 width와 materialization completion 수정
-- [ ] F-002A — horizontal ranged-area color dispatch 수정
+- [x] F-002A — horizontal ranged-area color dispatch 수정
 - [ ] F-002B — horizontal error-band boundary direct-path composition 수정
 - [ ] F-003 — standalone size legend eligibility와 guide inference 수정
 - [ ] F-004 — interval-aware temporal tick formatting 수정
