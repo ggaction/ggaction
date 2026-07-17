@@ -7,7 +7,7 @@
 - [x] STEP 3 — Focused legend, Cartesian axis와 grid primitive variants
 - [x] STEP 4 — Composite owner edit primitive variants
 - [x] STEP 5 — Domain removal primitive variants와 cleanup contract
-- [ ] STEP 6 — PNG/gallery/browser 검증과 Gate B
+- [x] STEP 6 — PNG/gallery/browser 검증과 Gate B
 - [ ] STEP 7 — Internal rematerialization naming과 shared edit policy
 - [ ] STEP 8 — Public focused edit/removal actions와 action hierarchy
 - [ ] STEP 9 — Exact public types, docs와 installed-consumer surface

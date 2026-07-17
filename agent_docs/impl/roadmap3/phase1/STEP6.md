@@ -7,7 +7,7 @@
 - [x] Capability gallery에 exact target call chain 노출
 - [x] Browser logical dimensions, console/page error 검증
 - [x] Gate B 코드와 이미지 제시
-- [ ] 사용자 승인
+- [x] 사용자 승인
 
 ## Gate 규칙
 

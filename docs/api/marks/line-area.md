@@ -12,31 +12,40 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, strokeWidth?, curve? } = {})`
+### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})`
 
 ```javascript
 const program = chart()
   .createData({ values: cars })
-  .createLineMark()
+  .createLineMark({ stroke: "#7c3aed", opacity: 0.55 })
   .encodeX({ field: "Year", fieldType: "temporal" })
   .encodeY({ field: "Acceleration", aggregate: "mean" });
 ```
 
 The first ID is `"line"`, data defaults to current data, stroke width defaults
-to `2`, and curve defaults to `"linear"`. A line begins as an empty path
-collection because later grouping determines series cardinality. Complete
-encodings materialize sorted commands; color and stroke dash may regroup them.
+to `2`, opacity defaults to `1`, and curve defaults to `"linear"`. A line begins
+as an empty path collection because later grouping determines series
+cardinality. Complete encodings materialize sorted commands; color and stroke
+dash may regroup them.
 
-### `editLineMark({ target?, strokeWidth?, curve? })`
+### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })`
 
 ```javascript
-program.editLineMark({ curve: "monotone", strokeWidth: 4 });
+program.editLineMark({
+  curve: "monotone",
+  stroke: "#7c3aed",
+  strokeWidth: 4,
+  opacity: 0.55
+});
 ```
 
 Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 `cardinal`, `monotone`, and `natural`. Smooth curves use cubic commands and
 two-point series fall back to linear. Monotone paths require strictly increasing
 materialized x values.
+
+A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
+stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
 
 ## Area marks
 

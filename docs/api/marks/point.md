@@ -11,18 +11,22 @@ Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
 realizations of that meaning.
 
-## `createPointMark({ id?, data?, shape? } = {})`
+## `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})`
 
 | Option | Type | Default or inference |
 | --- | --- | --- |
 | `id` | valid user-defined ID | first point mark uses `"point"` |
 | `data` | existing dataset ID | current dataset |
 | `shape` | supported constant shape | `"circle"` |
+| `fill` | non-empty color string | theme color; conflicts with `encodeColor` |
+| `opacity` | number from `0` to `1` | `1` |
+| `stroke` | non-empty color string | no outline |
+| `strokeWidth` | non-negative number | `0` |
 
 ```javascript
 const program = chart()
   .createData({ values: cars })
-  .createPointMark()
+  .createPointMark({ opacity: 0.48, stroke: "white", strokeWidth: 1.25 })
   .encodeX({ field: "Horsepower" })
   .encodeY({ field: "Miles_per_Gallon" });
 ```

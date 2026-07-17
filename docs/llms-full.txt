@@ -2436,18 +2436,22 @@ Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
 realizations of that meaning.
 
-## `createPointMark({ id?, data?, shape? } = {})`
+## `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})`
 
 | Option | Type | Default or inference |
 | --- | --- | --- |
 | `id` | valid user-defined ID | first point mark uses `"point"` |
 | `data` | existing dataset ID | current dataset |
 | `shape` | supported constant shape | `"circle"` |
+| `fill` | non-empty color string | theme color; conflicts with `encodeColor` |
+| `opacity` | number from `0` to `1` | `1` |
+| `stroke` | non-empty color string | no outline |
+| `strokeWidth` | non-negative number | `0` |
 
 ```javascript
 const program = chart()
   .createData({ values: cars })
-  .createPointMark()
+  .createPointMark({ opacity: 0.48, stroke: "white", strokeWidth: 1.25 })
   .encodeX({ field: "Horsepower" })
   .encodeY({ field: "Miles_per_Gallon" });
 ```
@@ -2498,31 +2502,40 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, strokeWidth?, curve? } = {})`
+### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})`
 
 ```javascript
 const program = chart()
   .createData({ values: cars })
-  .createLineMark()
+  .createLineMark({ stroke: "#7c3aed", opacity: 0.55 })
   .encodeX({ field: "Year", fieldType: "temporal" })
   .encodeY({ field: "Acceleration", aggregate: "mean" });
 ```
 
 The first ID is `"line"`, data defaults to current data, stroke width defaults
-to `2`, and curve defaults to `"linear"`. A line begins as an empty path
-collection because later grouping determines series cardinality. Complete
-encodings materialize sorted commands; color and stroke dash may regroup them.
+to `2`, opacity defaults to `1`, and curve defaults to `"linear"`. A line begins
+as an empty path collection because later grouping determines series
+cardinality. Complete encodings materialize sorted commands; color and stroke
+dash may regroup them.
 
-### `editLineMark({ target?, strokeWidth?, curve? })`
+### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })`
 
 ```javascript
-program.editLineMark({ curve: "monotone", strokeWidth: 4 });
+program.editLineMark({
+  curve: "monotone",
+  stroke: "#7c3aed",
+  strokeWidth: 4,
+  opacity: 0.55
+});
 ```
 
 Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 `cardinal`, `monotone`, and `natural`. Smooth curves use cubic commands and
 two-point series fall back to linear. Monotone paths require strictly increasing
 materialized x values.
+
+A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
+stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
 
 ## Area marks
 
@@ -2571,18 +2584,22 @@ configuration until their encodings become renderable.
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
-## `createBarMark({ id?, data? } = {})`
+## `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
 
 ```javascript
 const program = chart()
   .createData({ values: cars })
-  .createBarMark()
+  .createBarMark({ opacity: 0.78, stroke: "#0f172a", strokeWidth: 1.25 })
   .encodeHistogram({ field: "Displacement" });
 ```
 
 The first ID is `"bar"` and data defaults to current data. Creation starts with
 an empty rect collection because binning, aggregation, stacking, grouping, and
 width determine the final rectangle count and geometry.
+
+Creation-time `fill`, `opacity`, `stroke`, and `strokeWidth` use the same
+validation and persistent materialization config as `editBarMark`. Constant
+fill conflicts with a later field-driven color encoding.
 
 For an aggregate bar, combine an ordinal position and quantitative aggregate.
 Complete aggregate and ranged bars immediately use the default `0.72` band
@@ -4783,6 +4800,13 @@ Existing scales can be changed with `editScale`:
 const reversed = program.editScale({ id: "x", reverse: true });
 ```
 
+Color scales can use the same top-level palette shorthand during creation and
+editing. It is mutually exclusive with `range`:
+
+```javascript
+const recolored = program.editScale({ id: "color", palette: "set2" });
+```
+
 Advanced authors can create a named unattached scale with the same complete
 type vocabulary:
 
@@ -6258,7 +6282,7 @@ median supports interquartile range. [Data](../api/data.md)
 ### `createPointMark`
 
 ```javascript
-createPointMark({ id?, data?, shape? } = {})
+createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic point mark with one of 12 equal-area shape realizations. [Marks](../api/marks.md)
@@ -6274,7 +6298,7 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 ### `createLineMark`
 
 ```javascript
-createLineMark({ id?, data?, strokeWidth?, curve? } = {})
+createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -6284,7 +6308,7 @@ rematerialization. [Marks](../api/marks.md)
 ### `editLineMark`
 
 ```javascript
-editLineMark({ target?, strokeWidth?, curve? })
+editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })
 ```
 
 Edit line appearance and rematerialize concrete path commands without changing
@@ -6293,7 +6317,7 @@ semantic encodings. [Marks](../api/marks.md)
 ### `createBarMark`
 
 ```javascript
-createBarMark({ id?, data? } = {})
+createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection. [Marks](../api/marks.md)
@@ -6848,7 +6872,7 @@ are available on programs used by extension actions.
 | Semantic primitive | `editSemantic({ property, value })` or `editSemantic({ property, remove: true })` |
 | Graphic primitive | `createGraphics({ id, type, length?, parent?, before?, after? })` |
 | Graphic primitive | `editGraphics({ target, property, value })` or `editGraphics({ target, remove: true })` |
-| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, interpolate?, unknown? })` |
+| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })` |
 
 See [Action authoring](../extension/action-authoring.md) and
 [Primitive API](../extension/primitives.md).

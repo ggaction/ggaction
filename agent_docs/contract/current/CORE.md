@@ -382,12 +382,14 @@ type ScaleType =
 ## `editScale`
 
 - Implemented: immutable edits for every current `ScaleType`.
-- Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, interpolate?, unknown? })`.
+- Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })`.
 - `id`는 existing scale을 선택한다. 생략하면 current scale, 그렇지 않으면 유일한 scale을 사용하며
   안전하게 하나를 정할 수 없으면 explicit ID를 요구한다.
 - 최소 한 editable property가 필요하다. `unknown: undefined`는 existing fallback을 제거한다.
 - `domain`/`range`의 `"auto"`는 reset이고 omission은 기존 값을 보존한다. Explicit domain은
   `nice`/`zero`보다 우선하며 `reverse`는 auto 또는 explicit 최종 range에 적용된다.
+- `palette`는 color scale의 top-level shorthand이며 canonical `range: { palette }`로 저장한다.
+  같은 call의 `range`와는 mutually exclusive다.
 - `type`은 unattached scale 또는 compatible consumers에서 atomic하게 전환한다. Quantitative position은
   `linear | log | pow | sqrt | symlog`, continuous quantitative color는 `sequential`, quantitative point color는
   `quantize | quantile | threshold`를 사용한다. Complete definition과 every consumer를 먼저 검증하고 stale
@@ -424,6 +426,7 @@ type EditableCurrentScale = {
   paddingOuter?: NonNegativeFinite;
   padding?: NonNegativeFinite;
   align?: UnitInterval;
+  palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
   unknown?: unknown;
 };
@@ -437,6 +440,7 @@ type EditableCurrentScale = {
 
 - ✅ Covered: existing scale selection through explicit ID, current scale, sole scale, unknown and ambiguous failures.
 - ✅ Covered: domain/range patch, `"auto"` reset, omission preservation and caller-owned array isolation.
+- ✅ Covered: categorical color palette shorthand, range conflict, invalid palette and non-color rejection.
 - ✅ Covered: `nice`, `zero`, `clamp`, `reverse`, type compatibility and invalid value rejection.
 - ✅ Covered: concrete point/guide rematerialization, immutable failure and nested trace.
 - ✅ Covered: transformed line/area/bar/rule materialization, direct versus later type-edit convergence, stale

@@ -6,7 +6,7 @@ import { chart } from "../../../../src/index.js";
 function dataProgram() {
   return chart().createData({
     id: "cars",
-    values: [{ Year: "1970-01-01", Acceleration: 12 }]
+    values: [{ Year: "1970-01-01", Acceleration: 12, Origin: "USA" }]
   });
 }
 
@@ -63,14 +63,25 @@ test("stores explicit curve and stroke appearance for later materialization", ()
   const program = dataProgram().createLineMark({
     id: "trends",
     curve: "step",
-    strokeWidth: 0
+    stroke: "#7c3aed",
+    strokeWidth: 0,
+    opacity: 0.5
   });
 
   assert.deepEqual(program.markConfigs.trends, {
     curve: "step",
-    strokeWidth: 0
+    strokeWidth: 0,
+    stroke: "#7c3aed",
+    opacity: 0.5
   });
   assert.deepEqual(dataProgram().createLineMark({ id: "trends" }).markConfigs.trends, {});
+  assert.equal(program.trace.children.at(-1).children.at(-1).op, "editLineMark");
+  assert.throws(
+    () => dataProgram()
+      .createLineMark({ id: "colored", stroke: "#7c3aed" })
+      .encodeColor({ field: "Origin" }),
+    /cannot replace constant appearance/
+  );
 });
 
 test("validates line mark options, ids, data, and conflicts", () => {
@@ -92,6 +103,10 @@ test("validates line mark options, ids, data, and conflicts", () => {
   assert.throws(
     () => program.createLineMark({ id: "trends", curve: "smooth" }),
     /Unsupported curve interpolation/
+  );
+  assert.throws(
+    () => program.createLineMark({ id: "trends", opacity: 2 }),
+    /from 0 to 1/
   );
 
   const created = program.createLineMark({ id: "trends" });

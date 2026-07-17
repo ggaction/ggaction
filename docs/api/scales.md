@@ -26,6 +26,13 @@ Existing scales can be changed with `editScale`:
 const reversed = program.editScale({ id: "x", reverse: true });
 ```
 
+Color scales can use the same top-level palette shorthand during creation and
+editing. It is mutually exclusive with `range`:
+
+```javascript
+const recolored = program.editScale({ id: "color", palette: "set2" });
+```
+
 Advanced authors can create a named unattached scale with the same complete
 type vocabulary:
 

@@ -1,3 +1,4 @@
+import { chart } from "../../../src/index.js";
 import { loadCars, loadGapminder, loadJobs } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 import {
@@ -19,6 +20,73 @@ const gapminder = loadGapminder();
 const jobs = loadJobs();
 
 const phase = "phase1";
+
+function createPointScaleErgonomicsActions(rows) {
+  const validRows = rows.filter(row =>
+    Number.isFinite(row.Horsepower) &&
+    Number.isFinite(row.Miles_per_Gallon) &&
+    typeof row.Origin === "string" &&
+    row.Origin.length > 0
+  );
+  return chart()
+    .createCanvas({
+      width: 760,
+      height: 400,
+      margin: { top: 30, right: 150, bottom: 60, left: 70 }
+    })
+    .createData({ id: "cars", values: validRows })
+    .createPointMark({
+      id: "points",
+      opacity: 0.48,
+      stroke: "white",
+      strokeWidth: 1.25
+    })
+    .encodeX({ field: "Horsepower" })
+    .encodeY({ field: "Miles_per_Gallon" })
+    .encodeColor({ field: "Origin" })
+    .encodeRadius({ value: 3 })
+    .createGuides({ legend: { channels: ["color"] } })
+    .editScale({ id: "color", palette: "set2" });
+}
+
+function createBarErgonomicsActions(rows) {
+  return chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 40, right: 140, bottom: 70, left: 80 }
+    })
+    .createData({ id: "jobs", values: rows })
+    .createBarMark({
+      id: "bars",
+      opacity: 0.78,
+      stroke: "#0f172a",
+      strokeWidth: 1.25
+    })
+    .encodeX({ field: "year", fieldType: "ordinal" })
+    .encodeY({ field: "perc", aggregate: "mean", stack: null })
+    .encodeColor({ field: "sex", layout: "group" })
+    .createGuides();
+}
+
+function createLineErgonomicsActions(rows) {
+  return chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 80, right: 170, bottom: 60, left: 80 }
+    })
+    .createData({ id: "cars", values: rows })
+    .createLineMark({ id: "trends", stroke: "#7c3aed" })
+    .encodeX({ field: "Year", fieldType: "temporal", scale: { nice: true } })
+    .encodeY({
+      field: "Acceleration",
+      aggregate: "mean",
+      scale: { nice: true, zero: false }
+    })
+    .encodeGroup({ field: "Cylinders" })
+    .editLineMark({ target: "trends", opacity: 0.55 });
+}
 
 function artifact(capability) {
   return Object.freeze({ roadmap: "roadmap3", phase, capability });
@@ -306,6 +374,7 @@ export const visualVariants = Object.freeze([
     callChain: pointScaleCallChain,
     artifact: artifact("mark-and-scale-ergonomics"),
     primitive: () => createPointScaleErgonomicsPrimitives(cars),
+    userFacing: () => createPointScaleErgonomicsActions(cars),
     width: 760,
     height: 400,
     colors: [],
@@ -318,6 +387,7 @@ export const visualVariants = Object.freeze([
     callChain: barCallChain,
     artifact: artifact("mark-and-scale-ergonomics"),
     primitive: () => createBarErgonomicsPrimitives(jobs),
+    userFacing: () => createBarErgonomicsActions(jobs),
     width: 720,
     height: 460,
     colors: [],
@@ -330,6 +400,7 @@ export const visualVariants = Object.freeze([
     callChain: lineCallChain,
     artifact: artifact("mark-and-scale-ergonomics"),
     primitive: () => createLineErgonomicsPrimitives(cars),
+    userFacing: () => createLineErgonomicsActions(cars),
     width: 720,
     height: 460,
     colors: [],

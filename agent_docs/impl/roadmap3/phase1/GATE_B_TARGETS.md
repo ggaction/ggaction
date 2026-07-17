@@ -6,7 +6,7 @@
 - [x] Focused guide targets rendered
 - [x] Composite edit targets rendered
 - [x] Domain removal targets rendered
-- [ ] User visual approval
+- [x] User visual approval
 
 Gate B는 아래 public call-chain suffix의 final state를 승인한다. Complete executable call chains는
 `test/gates/roadmap3-focused-editing/manifest.js`가 canonical하게 소유한다.

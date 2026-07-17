@@ -36,10 +36,9 @@ function variant(id) {
   return visualVariants.find(candidate => candidate.variant === id);
 }
 
-test("authors every Gate B target without future public actions", () => {
+test("keeps every Gate target primitive independent from later public actions", () => {
   assert.equal(visualVariants.length, 11);
   for (const target of visualVariants) {
-    assert.equal(target.userFacing, undefined, target.variant);
     const program = target.primitive();
     const operations = actionOperations(program.trace);
     for (const action of FUTURE_ACTIONS) {

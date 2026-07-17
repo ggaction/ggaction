@@ -59,6 +59,24 @@ test("supports empty datasets because bar cardinality is unresolved", () => {
   assert.equal(program.graphicSpec.objects.bars.items.length, 0);
 });
 
+test("stores create-time bar appearance through the existing edit action", () => {
+  const program = dataProgram().createBarMark({
+    fill: "#f97316",
+    opacity: 0.75,
+    stroke: "#0f172a",
+    strokeWidth: 1.5
+  });
+  const node = program.trace.children.at(-1);
+
+  assert.deepEqual(program.markConfigs.bar.barAppearance, {
+    fill: "#f97316",
+    opacity: 0.75,
+    stroke: "#0f172a",
+    strokeWidth: 1.5
+  });
+  assert.equal(node.children.at(-1).op, "editBarMark");
+});
+
 test("validates bar mark options, ids, data, and conflicts", () => {
   const program = dataProgram();
 

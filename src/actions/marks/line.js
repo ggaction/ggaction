@@ -2,7 +2,11 @@ import { action } from "../../core/action.js";
 import { deriveLineSeries } from "../../grammar/lineSeries.js";
 import { mapContinuousScaleValues, mapOrdinalValues } from "../../grammar/scales.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateNonNegativeFinite } from "../../core/validation.js";
+import {
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validateUnitInterval
+} from "../../core/validation.js";
 import {
   assertMarkAvailable,
   resolveMarkId,
@@ -23,8 +27,12 @@ import { resolveMarkGraphicPlacement } from
 
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
-const CREATE_OPTIONS = Object.freeze(["id", "data", "strokeWidth", "curve"]);
-const EDIT_OPTIONS = Object.freeze(["target", "strokeWidth", "curve"]);
+const CREATE_OPTIONS = Object.freeze([
+  "id", "data", "stroke", "strokeWidth", "opacity", "curve"
+]);
+const EDIT_OPTIONS = Object.freeze([
+  "target", "stroke", "strokeWidth", "opacity", "curve"
+]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
 const createLineMark = action(
@@ -46,9 +54,15 @@ const createLineMark = action(
       "Line strokeWidth"
     );
     const curve = validateCurveInterpolation(args.curve ?? "linear");
+    const stroke = Object.hasOwn(args, "stroke")
+      ? validateNonEmptyString(args.stroke, "Line stroke")
+      : undefined;
+    const opacity = Object.hasOwn(args, "opacity")
+      ? validateUnitInterval(args.opacity, "Line opacity")
+      : undefined;
     assertMarkAvailable(this, id);
 
-    return this
+    const created = this
       .editSemantic({
         property: `layer[${id}].mark.type`,
         value: "line"
@@ -70,6 +84,13 @@ const createLineMark = action(
           ...(Object.hasOwn(args, "curve") ? { curve } : {})
         }
       );
+    const appearance = {
+      ...(stroke === undefined ? {} : { stroke }),
+      ...(opacity === undefined ? {} : { opacity })
+    };
+    return Object.keys(appearance).length === 0
+      ? created
+      : created.editLineMark({ target: id, ...appearance });
   }
 );
 
@@ -161,7 +182,9 @@ const rematerializeLineMark = action(
     const strokes = colorEncoding?.scale === undefined
       ? commands.map(
           (_, index) =>
-            existingChildren[index]?.properties.stroke ?? DEFAULT_LINE_STROKE
+            this.markConfigs[id]?.stroke ??
+            existingChildren[index]?.properties.stroke ??
+            DEFAULT_LINE_STROKE
         )
       : mapOrdinalValues(
           derived.series.map(series => series.key[colorEncoding.field]),
@@ -186,7 +209,7 @@ const rematerializeLineMark = action(
           resolved.resolvedScales[dashEncoding.scale].range
         );
 
-    return resolved
+    let next = resolved
       .editGraphics({ target: id, property: "length", value: commands.length })
       .editGraphics({ target: id, property: "commands", value: commands })
       .editGraphics({ target: id, property: "stroke", value: strokes })
@@ -196,6 +219,14 @@ const rematerializeLineMark = action(
         property: "strokeDash",
         value: strokeDashes
       });
+    if (this.markConfigs[id]?.opacity !== undefined) {
+      next = next.editGraphics({
+        target: id,
+        property: "opacity",
+        value: this.markConfigs[id].opacity
+      });
+    }
+    return next;
   }
 );
 
@@ -207,10 +238,12 @@ const editLineMark = action(
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editLineMark");
     if (
+      !Object.hasOwn(args, "stroke") &&
       !Object.hasOwn(args, "strokeWidth") &&
+      !Object.hasOwn(args, "opacity") &&
       !Object.hasOwn(args, "curve")
     ) {
-      throw new Error("editLineMark requires strokeWidth or curve.");
+      throw new Error("editLineMark requires stroke, strokeWidth, opacity, or curve.");
     }
     const target = Object.hasOwn(args, "target")
       ? validateUserId(args.target, "Line mark id")
@@ -220,8 +253,16 @@ const editLineMark = action(
       predicate: candidate => candidate.mark?.type === "line",
       label: "line mark"
     });
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.color !== undefined) {
+      throw new Error(
+        "editLineMark stroke cannot be combined with a color encoding."
+      );
+    }
     const config = {
       ...this.markConfigs[layer.id],
+      ...(Object.hasOwn(args, "stroke")
+        ? { stroke: validateNonEmptyString(args.stroke, "Line stroke") }
+        : {}),
       ...(Object.hasOwn(args, "strokeWidth")
         ? {
             strokeWidth: validateNonNegativeFinite(
@@ -229,6 +270,9 @@ const editLineMark = action(
               "Line strokeWidth"
             )
           }
+        : {}),
+      ...(Object.hasOwn(args, "opacity")
+        ? { opacity: validateUnitInterval(args.opacity, "Line opacity") }
         : {}),
       ...(Object.hasOwn(args, "curve")
         ? { curve: validateCurveInterpolation(args.curve) }

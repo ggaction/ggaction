@@ -76,7 +76,7 @@ test("locks the complete Phase 1 Gate A assignment", () => {
   );
 });
 
-test("keeps Phase 1 direct actions Planned and absent before Gate B approval", () => {
+test("keeps the not-yet-implemented Phase 1 direct actions Planned", () => {
   const planned = new Set(index.plannedActions.map(action => action.name));
   const current = new Set(index.actions.map(action => action.name));
   for (const action of DIRECT_ACTIONS) {
@@ -97,7 +97,18 @@ test("keeps Phase 1 direct actions Planned and absent before Gate B approval", (
   }
 });
 
-test("covers every Phase 1 public action in a primitive-only Gate target", () => {
+test("promotes the approved mark and scale parameter extensions", () => {
+  const planned = new Set(index.plannedCapabilities.map(capability => capability.id));
+  for (const extension of EXTENSIONS) {
+    assert.equal(planned.has(extension), false, extension);
+  }
+  assert.match(declarations, /createPointMark\(options\?: \{[\s\S]*?fill\?: string;[\s\S]*?opacity\?: number;/);
+  assert.match(declarations, /createBarMark\(options\?: \{[\s\S]*?stroke\?: string;[\s\S]*?strokeWidth\?: number;/);
+  assert.match(declarations, /createLineMark\(options\?: \{[\s\S]*?stroke\?: string;[\s\S]*?opacity\?: number;/);
+  assert.match(declarations, /export interface EditScaleOptions \{[\s\S]*?palette\?: Palette;/);
+});
+
+test("covers every Phase 1 public action in a Gate target", () => {
   const callChains = visualVariants.map(target => target.callChain).join("\n");
   for (const action of DIRECT_ACTIONS) {
     assert.match(callChains, new RegExp(`\\.${action}\\(`), action);
@@ -111,12 +122,16 @@ test("covers every Phase 1 public action in a primitive-only Gate target", () =>
   ]) {
     assert.match(callChains, new RegExp(`\\.${action}\\(`), action);
   }
-  for (const target of visualVariants) {
+  for (const [index, target] of visualVariants.entries()) {
     assert.deepEqual(target.artifact, {
       roadmap: "roadmap3",
       phase: "phase1",
       capability: target.artifact.capability
     });
-    assert.equal(target.userFacing, undefined, target.variant);
+    assert.equal(
+      typeof target.userFacing,
+      index < EXTENSIONS.length - 1 ? "function" : "undefined",
+      target.variant
+    );
   }
 });

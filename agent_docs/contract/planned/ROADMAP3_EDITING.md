@@ -82,20 +82,6 @@ removeMark({ target? } = {}): ChartProgram;
 - Every removal is one immutable transition; raw graphic deletion의 alias가 아니다.
 - Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 1.
 
-## Mark appearance and scale ergonomics
-
-```text
-createPointMark: fill, opacity, stroke, strokeWidth
-createBarMark: fill, opacity, stroke, strokeWidth
-createLineMark/editLineMark: stroke, opacity
-editScale: palette, mutually exclusive with range
-```
-
-Current nested or assignment paths remain compatible. The extensions provide shorter ordinary authoring without
-exposing stored representation.
-
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 1.
-
 ## Layer inference and API contract
 
 - `compatible-layer-inference` inherits only encodings valid for the new mark and must converge across equivalent

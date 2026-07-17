@@ -81,6 +81,42 @@ test("records resolved semantic and graphical child actions", () => {
   assert.deepEqual(program.actionStack, []);
 });
 
+test("applies create-time point appearance through the existing edit action", () => {
+  const program = chart()
+    .createData({ values: [{ x: 1 }] })
+    .createPointMark({
+      fill: "#7c3aed",
+      opacity: 0.5,
+      stroke: "white",
+      strokeWidth: 1.25
+    });
+  const item = program.graphicSpec.objects.point.items[0].properties;
+  const node = program.trace.children.at(-1);
+
+  assert.deepEqual(program.markConfigs.point, {
+    shape: "circle",
+    fill: "#7c3aed",
+    opacity: 0.5,
+    stroke: "white",
+    strokeWidth: 1.25
+  });
+  assert.deepEqual(item, {
+    fill: "#7c3aed",
+    opacity: 0.5,
+    stroke: "white",
+    strokeWidth: 1.25
+  });
+  assert.equal(node.children.at(-1).op, "editPointMark");
+
+  assert.throws(
+    () => chart()
+      .createData({ values: [{ group: "a" }] })
+      .createPointMark({ fill: "#7c3aed" })
+      .encodeColor({ field: "group" }),
+    /cannot replace constant appearance/
+  );
+});
+
 test("supports square points and rejects missing or unknown data", () => {
   assert.throws(
     () => chart().createPointMark({ id: "points" }),

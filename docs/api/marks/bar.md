@@ -10,18 +10,22 @@ title: Bar Marks
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
-## `createBarMark({ id?, data? } = {})`
+## `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
 
 ```javascript
 const program = chart()
   .createData({ values: cars })
-  .createBarMark()
+  .createBarMark({ opacity: 0.78, stroke: "#0f172a", strokeWidth: 1.25 })
   .encodeHistogram({ field: "Displacement" });
 ```
 
 The first ID is `"bar"` and data defaults to current data. Creation starts with
 an empty rect collection because binning, aggregation, stacking, grouping, and
 width determine the final rectangle count and geometry.
+
+Creation-time `fill`, `opacity`, `stroke`, and `strokeWidth` use the same
+validation and persistent materialization config as `editBarMark`. Constant
+fill conflicts with a later field-driven color encoding.
 
 For an aggregate bar, combine an ordinal position and quantitative aggregate.
 Complete aggregate and ranged bars immediately use the default `0.72` band

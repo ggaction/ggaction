@@ -157,10 +157,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | --- | --- | --- | --- |
 | composition | Horizontal program composition | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | composition | Vertical program composition | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
-| parameter | Point create appearance options | accepted | [Open](planned/ROADMAP3_EDITING.md#mark-appearance-and-scale-ergonomics) |
-| parameter | Bar create appearance options | accepted | [Open](planned/ROADMAP3_EDITING.md#mark-appearance-and-scale-ergonomics) |
-| parameter | Line constant appearance options | accepted | [Open](planned/ROADMAP3_EDITING.md#mark-appearance-and-scale-ergonomics) |
-| parameter | Top-level scale palette edit | accepted | [Open](planned/ROADMAP3_EDITING.md#mark-appearance-and-scale-ergonomics) |
 | parameter | Closed Polar line option | accepted | [Open](planned/ROADMAP3_POLAR.md#polar-line-radar) |
 | parameter | Facet scale resolution options | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
 | behavior | Compatibility-aware layer inference | accepted | [Open](planned/ROADMAP3_EDITING.md#layer-inference-and-api-contract) |

@@ -35,7 +35,9 @@ import { rematerializeExistingLegend } from "../encodings/shared.js";
 import { resolveMarkGraphicPlacement } from
   "../../materialization/graphicHierarchy.js";
 
-const POINT_MARK_OPTIONS = Object.freeze(["id", "data", "shape"]);
+const POINT_MARK_OPTIONS = Object.freeze([
+  "id", "data", "shape", "fill", "opacity", "stroke", "strokeWidth"
+]);
 const EDIT_POINT_OPTIONS = Object.freeze([
   "target", "shape", "fill", "opacity", "stroke", "strokeWidth"
 ]);
@@ -109,9 +111,17 @@ const createPointMark = action(
       inheritedEncodings.every(encoding =>
         encoding.scale !== undefined && next.resolvedScales[encoding.scale] !== undefined
       );
-    return !canMaterializeInherited
+    const created = !canMaterializeInherited
       ? next
       : next.rematerializePointMark({ id });
+    const appearance = Object.fromEntries(
+      ["fill", "opacity", "stroke", "strokeWidth"]
+        .filter(property => Object.hasOwn(args, property))
+        .map(property => [property, args[property]])
+    );
+    return Object.keys(appearance).length === 0
+      ? created
+      : created.editPointMark({ target: id, ...appearance });
   }
 );
 

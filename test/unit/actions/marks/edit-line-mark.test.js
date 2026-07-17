@@ -63,6 +63,22 @@ test("edits line curve and width through one nested rematerialization", () => {
   assert.deepEqual(before.markConfigs.trends, {});
 });
 
+test("edits constant line stroke and opacity and retains them after resize", () => {
+  const before = completeLineProgram();
+  const edited = before.editLineMark({ stroke: "#7c3aed", opacity: 0.55 });
+  const resized = edited.editCanvas({ width: 300 });
+
+  for (const program of [edited, resized]) {
+    const properties = program.graphicSpec.objects.trends.items[0].properties;
+    assert.equal(properties.stroke, "#7c3aed");
+    assert.equal(properties.opacity, 0.55);
+  }
+  assert.deepEqual(edited.markConfigs.trends, {
+    stroke: "#7c3aed",
+    opacity: 0.55
+  });
+});
+
 test("supports explicit, current, and unique line target resolution", () => {
   const base = completeLineProgram();
   assert.equal(base.editLineMark({ strokeWidth: 3 }).markConfigs.trends.strokeWidth, 3);
@@ -112,7 +128,7 @@ test("retains curve appearance across Canvas and grouping rematerialization", ()
 
 test("rejects invalid and ambiguous edits without changing prior programs", () => {
   const base = completeLineProgram();
-  assert.throws(() => base.editLineMark({}), /requires strokeWidth or curve/);
+  assert.throws(() => base.editLineMark({}), /requires stroke, strokeWidth, opacity, or curve/);
   assert.throws(
     () => base.editLineMark({ curve: "smooth" }),
     /Unsupported curve interpolation/
@@ -120,6 +136,14 @@ test("rejects invalid and ambiguous edits without changing prior programs", () =
   assert.throws(
     () => base.editLineMark({ strokeWidth: -1 }),
     /non-negative finite/
+  );
+  assert.throws(
+    () => base.editLineMark({ opacity: 2 }),
+    /from 0 to 1/
+  );
+  assert.throws(
+    () => base.encodeColor({ field: "group" }).editLineMark({ stroke: "red" }),
+    /cannot be combined with a color encoding/
   );
   assert.throws(
     () => base.editLineMark({ target: "missing", curve: "linear" }),

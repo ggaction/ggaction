@@ -130,7 +130,7 @@ median supports interquartile range. [Data](../api/data.md)
 ### `createPointMark`
 
 ```javascript
-createPointMark({ id?, data?, shape? } = {})
+createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic point mark with one of 12 equal-area shape realizations. [Marks](../api/marks.md)
@@ -146,7 +146,7 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 ### `createLineMark`
 
 ```javascript
-createLineMark({ id?, data?, strokeWidth?, curve? } = {})
+createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -156,7 +156,7 @@ rematerialization. [Marks](../api/marks.md)
 ### `editLineMark`
 
 ```javascript
-editLineMark({ target?, strokeWidth?, curve? })
+editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })
 ```
 
 Edit line appearance and rematerialize concrete path commands without changing
@@ -165,7 +165,7 @@ semantic encodings. [Marks](../api/marks.md)
 ### `createBarMark`
 
 ```javascript
-createBarMark({ id?, data? } = {})
+createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection. [Marks](../api/marks.md)
@@ -720,7 +720,7 @@ are available on programs used by extension actions.
 | Semantic primitive | `editSemantic({ property, value })` or `editSemantic({ property, remove: true })` |
 | Graphic primitive | `createGraphics({ id, type, length?, parent?, before?, after? })` |
 | Graphic primitive | `editGraphics({ target, property, value })` or `editGraphics({ target, remove: true })` |
-| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, interpolate?, unknown? })` |
+| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })` |
 
 See [Action authoring](../extension/action-authoring.md) and
 [Primitive API](../extension/primitives.md).

@@ -80,21 +80,24 @@ test("links every Gate A candidate to one owning phase and executable observatio
   assert.deepEqual(assignedPhases, phases);
 });
 
-test("promotes approved direct names to Planned without making them Current", () => {
+test("keeps every approved direct name either Current or Planned", () => {
   const current = new Set(actionIndex.actions.map(action => action.name));
-  const planned = actionIndex.plannedActions.map(action => action.name);
+  const planned = new Set(actionIndex.plannedActions.map(action => action.name));
   for (const candidate of inventory.proposedActions) {
-    assert.equal(current.has(candidate.name), false, candidate.name);
+    assert.notEqual(
+      current.has(candidate.name),
+      planned.has(candidate.name),
+      candidate.name
+    );
   }
-  assert.deepEqual(planned, inventory.proposedActions.map(action => action.name));
-  assert.deepEqual(
-    actionIndex.plannedCapabilities.map(capability => capability.id),
-    [
-      ...inventory.proposedOperations.map(operation => operation.name),
-      ...inventory.parameterExtensions.map(extension => extension.id),
-      ...inventory.proposedCapabilities.map(capability => capability.id)
-    ]
-  );
+  const approvedCapabilities = new Set([
+    ...inventory.proposedOperations.map(operation => operation.name),
+    ...inventory.parameterExtensions.map(extension => extension.id),
+    ...inventory.proposedCapabilities.map(capability => capability.id)
+  ]);
+  for (const capability of actionIndex.plannedCapabilities) {
+    assert.equal(approvedCapabilities.has(capability.id), true, capability.id);
+  }
 });
 
 test("covers the exact structural and focused API names requested at Gate A", () => {

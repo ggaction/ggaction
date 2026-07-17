@@ -36,6 +36,22 @@ const COLOR_ENCODING_OPTIONS = Object.freeze([
   "field", "target", "fieldType", "scale", "layout", "aggregate"
 ]);
 
+function assertNoConstantColor(program, layer) {
+  const config = program.markConfigs[layer.id];
+  const hasConstant = layer.mark.type === "point"
+    ? config?.fill !== undefined
+    : layer.mark.type === "line"
+      ? config?.stroke !== undefined
+      : layer.mark.type === "bar"
+        ? config?.barAppearance?.fill !== undefined
+        : false;
+  if (hasConstant) {
+    throw new Error(
+      `encodeColor cannot replace constant appearance on ${layer.mark.type} mark "${layer.id}".`
+    );
+  }
+}
+
 function isRangedArea(layer) {
   return layer.mark.type === "area" && (
     layer.encoding?.x2 !== undefined ||
@@ -140,6 +156,7 @@ function encodeContinuousColor(program, args) {
     ["point", "bar"],
     "continuous color mark"
   );
+  assertNoConstantColor(program, layer);
   const requestedScale = resolveReassignmentScaleOptions(
     layer.encoding?.color,
     args.scale ?? {}
@@ -253,6 +270,7 @@ const encodeColor = action(
       ["point", "line", "bar", "area"],
       "color mark"
     );
+    assertNoConstantColor(this, layer);
     if (
       layer.mark.type === "area" &&
       (layer.encoding?.group?.field === undefined ||

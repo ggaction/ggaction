@@ -41,6 +41,15 @@ function removeSemanticProperties(program, properties) {
 
 export function createPointScaleErgonomicsPrimitives(cars) {
   return createCategoricalPalettePrimitives(cars)
+    .editSemantic({
+      property: "guide.axis.y.title",
+      value: "Miles_per_Gallon"
+    })
+    .editGraphics({
+      target: "yAxisTitle",
+      property: "text",
+      value: "Miles_per_Gallon"
+    })
     .editGraphics({ target: "points", property: "opacity", value: 0.48 })
     .editGraphics({ target: "points", property: "stroke", value: "white" })
     .editGraphics({ target: "points", property: "strokeWidth", value: 1.25 });

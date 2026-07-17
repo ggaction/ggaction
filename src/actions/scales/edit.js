@@ -36,9 +36,12 @@ import { findScaleConsumers } from "./consumers.js";
 const OPTIONS = Object.freeze([
   "id", "type", "domain", "range", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "paddingInner", "paddingOuter", "padding",
-  "align", "interpolate", "unknown"
+  "align", "interpolate", "unknown", "palette"
 ]);
-const EDITABLE = Object.freeze(OPTIONS.filter(option => option !== "id"));
+const EDITABLE = Object.freeze(
+  OPTIONS.filter(option => !["id", "palette"].includes(option))
+);
+const REQUESTED_CHANGES = Object.freeze(OPTIONS.filter(option => option !== "id"));
 
 function resolveScaleId(program, requested) {
   if (requested !== undefined) {
@@ -246,16 +249,34 @@ export const editScale = action(
       throw new TypeError("editScale options must be a plain object.");
     }
     validateKeys(args, OPTIONS, "editScale");
-    if (!EDITABLE.some(property => Object.hasOwn(args, property))) {
+    if (!REQUESTED_CHANGES.some(property => Object.hasOwn(args, property))) {
       throw new Error("editScale requires at least one editable property.");
+    }
+    const hasPalette = Object.hasOwn(args, "palette");
+    if (hasPalette && Object.hasOwn(args, "range")) {
+      throw new Error("editScale cannot specify both palette and range.");
     }
 
     const id = resolveScaleId(this, args.id);
     const scale = requireSemanticScale(this, id);
     const consumers = findScaleConsumers(this, id);
     const channel = resolveChannel(consumers, id);
+    if (
+      hasPalette &&
+      channel !== "color" &&
+      scale.type !== "sequential" &&
+      !isDiscretizedColorScaleType(scale.type)
+    ) {
+      throw new Error("editScale palette requires a color scale.");
+    }
+    const patch = !hasPalette
+      ? args
+      : Object.fromEntries([
+          ...Object.entries(args).filter(([key]) => key !== "palette"),
+          ["range", { palette: args.palette }]
+        ]);
     validateLegendTypeTransition(this, scale, args.type ?? scale.type);
-    const definition = normalizeDefinition(scale, channel, consumers, args);
+    const definition = normalizeDefinition(scale, channel, consumers, patch);
 
     let next = this;
     for (const property of EDITABLE) {

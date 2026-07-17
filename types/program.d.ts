@@ -494,6 +494,7 @@ export interface EditScaleOptions {
   paddingOuter?: number;
   padding?: number;
   align?: number;
+  palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
   unknown?: unknown;
 }
@@ -1052,7 +1053,15 @@ export class ChartProgram {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
 
-  createPointMark(options?: { id?: string; data?: string; shape?: PointShape }): ChartProgram;
+  createPointMark(options?: {
+    id?: string;
+    data?: string;
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  }): ChartProgram;
   editPointMark(options: {
     target?: string;
     shape?: PointShape;
@@ -1066,13 +1075,24 @@ export class ChartProgram {
     data?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    stroke?: string;
+    opacity?: number;
   }): ChartProgram;
   editLineMark(options: {
     target?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    stroke?: string;
+    opacity?: number;
   }): ChartProgram;
-  createBarMark(options?: { id?: string; data?: string }): ChartProgram;
+  createBarMark(options?: {
+    id?: string;
+    data?: string;
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  }): ChartProgram;
   editBarMark(options: {
     target?: string;
     fill?: string;

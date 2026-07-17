@@ -8,7 +8,9 @@ import {
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 
-const CREATE_OPTIONS = Object.freeze(["id", "data"]);
+const CREATE_OPTIONS = Object.freeze([
+  "id", "data", "fill", "opacity", "stroke", "strokeWidth"
+]);
 
 export const createBarMark = action(
   {
@@ -27,7 +29,7 @@ export const createBarMark = action(
 
     assertMarkAvailable(this, id);
 
-    return this
+    const created = this
       .editSemantic({
         property: `layer[${id}].mark.type`,
         value: "bar"
@@ -42,5 +44,13 @@ export const createBarMark = action(
         length: 0,
         ...resolveMarkGraphicPlacement(this, { data, markType: "bar" })
       });
+    const appearance = Object.fromEntries(
+      ["fill", "opacity", "stroke", "strokeWidth"]
+        .filter(property => Object.hasOwn(args, property))
+        .map(property => [property, args[property]])
+    );
+    return Object.keys(appearance).length === 0
+      ? created
+      : created.editBarMark({ target: id, ...appearance });
   }
 );

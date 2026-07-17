@@ -23,12 +23,15 @@ validation and uniqueness contract.
 
 ## `createPointMark`
 
-- Signature: `createPointMark({ id?, data?, shape? } = {})`
+- Signature: `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})`
 - `id`: Implemented optional 새 layer/graphic ID. 첫 unnamed point는 `"point"`; 동일 type이 이미 있으면 required다.
 - `data`: Implemented, existing dataset ID. 생략하면 current data를 사용한다.
 - `shape`
   - Status: Implemented. shared `PointShape` 12종, 기본값 `"circle"`.
   - Effect: semantic mark는 항상 `point`지만 concrete child는 circle, rect 또는 normalized path가 된다.
+- `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. 각각
+  `editPointMark`와 같은 validation/config persistence를 사용하며 wrapped `editPointMark`로 적용한다.
+  Field-driven color와 constant fill은 충돌한다.
 - Effect: dataset cardinality와 같은 길이의 point graphic collection을 만들며 아직 위치 property가
   없으므로 encoding 전에는 보이지 않을 수 있다.
 - Layered inference: current compatible layer, otherwise one unique compatible layer에서 omitted data,
@@ -39,7 +42,7 @@ validation and uniqueness contract.
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape } = {})`
+- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -50,6 +53,8 @@ validation and uniqueness contract.
     second unnamed ambiguity, unknown data와 duplicate IDs.
 - `shape`
   - ✅ Covered: 12-value vocabulary, omission→circle, equal-area normalized recipes and unknown rejection.
+- `fill`, `opacity`, `stroke`, `strokeWidth`
+  - ✅ Covered: representative combined creation, validation reuse, stored config and later position rematerialization.
 - Evidence: `test/unit/actions/marks/create-point-mark.test.js` and
   `test/unit/grammar/schemas/mark-schema.test.js`.
 
@@ -84,12 +89,15 @@ validation and uniqueness contract.
 
 ## `createLineMark`
 
-- Signature: `createLineMark({ id?, data?, strokeWidth?, curve? } = {})`
+- Signature: `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve? } = {})`
 - `id`, `data`: `createPointMark`와 같은 ID/data 계약이다.
 - `strokeWidth`: Implemented, non-negative finite number이며 concrete default는 `2`다. 명시한 값은
   mark materialization config에 저장되어 path 재생성 후에도 유지된다.
 - `curve`: Implemented. `linear | step | step-before | step-after | basis | cardinal | monotone | natural`이며
   기본값은 `linear`다. Curve는 graphical materialization config이고 semantic field/scale/group을 바꾸지 않는다.
+- `stroke`: Implemented non-empty constant color. Field-driven color encoding과 충돌한다.
+- `opacity`: Implemented `[0, 1]` constant appearance이며 default concrete value는 `1`이다.
+- Creation-time `stroke`/`opacity`는 wrapped `editLineMark`로 적용해 direct edit과 같은 validation/config를 사용한다.
 - Effect: semantic `line` layer와 길이 0의 path collection을 만든다. x/y encoding이 완성되기
   전에는 path가 없다.
 - Coverage: `test/unit/actions/marks/create-line-mark.test.js`가 default/explicit data,
@@ -97,7 +105,7 @@ validation and uniqueness contract.
 
 ### Formal values — `createLineMark`
 
-- Implemented: `createLineMark({ id?: UserId; data?: UserId; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } = {})`
+- Implemented: `createLineMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -110,21 +118,24 @@ validation and uniqueness contract.
 - `curve`
   - ✅ Covered: 전체 8-value vocabulary, omission→linear, exact straight/step/cubic commands, short smooth-series fallback와 invalid rejection.
   - ✅ Covered: create-time config persistence, Canvas/scale/group rematerialization과 approved step primitive/public pair.
+- `stroke`, `opacity`
+  - ✅ Covered: representative creation, invalid values, color-encoding conflict and grouping rematerialization persistence.
 - Evidence: `test/unit/actions/marks/create-line-mark.test.js`, `test/unit/grammar/curve-commands.test.js`,
   `test/charts/cars-line-chart/variants/capabilities.test.js`.
 
 ## `editLineMark`
 
-- Signature: `editLineMark({ target?, strokeWidth?, curve? })`.
+- Signature: `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve? })`.
 - `target`: existing line mark. Current compatible mark 또는 유일한 line mark로 infer하며 ambiguity는 explicit target을 요구한다.
 - `strokeWidth`: non-negative finite number. 전달되면 stored line config와 every concrete series path를 갱신한다.
 - `curve`: shared `CurveInterpolation`. Field, grouping, coordinates와 scale semantics를 유지한 채 commands를 다시 만든다.
+- `stroke`: non-empty constant color이며 field-driven color encoding과 충돌한다. `opacity`는 `[0, 1]`이다.
 - 최소 한 변경값이 필요하다. 아직 x/y encoding이 완성되지 않은 line은 config만 저장하고, complete line은 wrapped
   `rematerializeLineMark`를 호출한다.
 
 ### Formal values — `editLineMark`
 
-- Implemented: `editLineMark({ target?: UserId; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation })`.
+- Implemented: `editLineMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -133,27 +144,32 @@ validation and uniqueness contract.
 - ✅ Covered: explicit/current/unique target, stroke width zero/positive와 전체 curve vocabulary.
 - ✅ Covered: empty edit, unknown option/target, ambiguity, invalid width/curve와 earlier-program immutability.
 - ✅ Covered: Canvas resize, group rematerialization, deterministic nested trace and approved monotone primitive/public pair.
+- ✅ Covered: constant stroke/opacity validation, create/edit convergence, color conflict and rematerialization persistence.
 - Evidence: `test/unit/actions/marks/edit-line-mark.test.js` and
   `test/charts/cars-line-chart/variants/capabilities.test.js`.
 
 ## `createBarMark`
 
-- Signature: `createBarMark({ id?, data? } = {})`
+- Signature: `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
 - `id`, `data`: 첫 unnamed bar의 deterministic `"bar"` 또는 explicit 새 ID와 optional existing/current data다.
 - Effect: semantic `bar` layer와 길이 0의 rect collection을 만든다. 관련 x/y/grouping semantics가
   완성될 때 rect가 materialize된다.
+- `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. Wrapped
+  `editBarMark`와 동일한 validation/config persistence를 사용한다. Creation에서는 `stroke: false`를 받지 않는다.
 - Coverage: `test/unit/actions/marks/create-bar-mark.test.js`가 inference, empty data,
   invalid options와 conflicts를 검증한다.
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ id?: UserId; data?: UserId } = {})`
+- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } = {})`
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createBarMark`
 
 - `id`, `data`
   - ✅ Covered: omission→`"bar"`, current/explicit/empty dataset, second unnamed ambiguity, invalid options와 conflicts.
+- `fill`, `opacity`, `stroke`, `strokeWidth`
+  - ✅ Covered: representative combined creation, validation reuse, config persistence and grouped-bar rematerialization.
 - No proposal: orientation/group/stack/width는 mark parameter가 아니라 encoding action이 소유한다.
 - Evidence: `test/unit/actions/marks/create-bar-mark.test.js`.
 

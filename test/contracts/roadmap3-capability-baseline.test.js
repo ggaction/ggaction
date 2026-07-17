@@ -123,7 +123,7 @@ test("captures the current layered bar and line scale-policy conflict", () => {
   );
 });
 
-test("captures horizontal grouped-bar and top-level palette gaps", () => {
+test("captures the horizontal grouped-bar gap and the implemented palette shorthand", () => {
   const horizontal = canvas()
     .createData({ values: rows })
     .createBarMark({ id: "bars" })
@@ -140,9 +140,10 @@ test("captures horizontal grouped-bar and top-level palette gaps", () => {
     .encodeX({ field: "Horsepower" })
     .encodeY({ field: "Miles_per_Gallon" })
     .encodeColor({ field: "Origin" });
-  assert.throws(
-    () => colored.editScale({ id: "color", palette: "set2" }),
-    /Unknown editScale option "palette"/
+  assert.deepEqual(
+    colored.editScale({ id: "color", palette: "set2" })
+      .semanticSpec.scales.find(scale => scale.id === "color").range,
+    { palette: "set2" }
   );
   assert.deepEqual(
     colored.editScale({ id: "color", range: { palette: "set2" } })

@@ -3,7 +3,7 @@
 ## 진행 상태
 
 - [ ] 19 direct actions 구현
-- [ ] 4 existing-action parameter extension 구현
+- [x] 4 existing-action parameter extension 구현
 - [ ] Compatible layer inference 구현
 - [ ] Shortest call, invalid, ambiguous와 rematerialization tests
 - [ ] Primitive/public semantic, graphic, trace와 pixel equivalence

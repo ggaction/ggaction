@@ -103,6 +103,36 @@ test("infers one existing scale and records meaningful nested actions", () => {
   );
 });
 
+test("edits a color palette through the top-level palette alias", () => {
+  const base = pointProgram();
+  const edited = base.editScale({ id: "color", palette: "set2" });
+  const fills = edited.graphicSpec.objects.points.items.map(
+    item => item.properties.fill
+  );
+
+  assert.deepEqual(requireTestScale(edited, "color").range, {
+    palette: "set2"
+  });
+  assert.deepEqual(fills, ["#66c2a5", "#fc8d62", "#66c2a5"]);
+  assert.deepEqual(requireTestScale(base, "color").range, "auto");
+  assert.throws(
+    () => base.editScale({ id: "color", palette: "set2", range: ["red"] }),
+    /both palette and range/
+  );
+  assert.throws(
+    () => base.editScale({ id: "x", palette: "set2" }),
+    /requires a color scale/
+  );
+  assert.throws(
+    () => base.editScale({ id: "color", palette: "unknown-palette" }),
+    /Unknown palette/
+  );
+  assert.throws(
+    () => base.editScale({ id: "color", palette: undefined }),
+    /Palette/
+  );
+});
+
 test("rejects invalid, empty, unknown, incompatible, and ambiguous edits atomically", () => {
   const base = pointProgram();
   const ambiguous = base._clone({ context: {} });
