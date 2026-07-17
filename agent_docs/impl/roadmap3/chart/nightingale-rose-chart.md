@@ -19,7 +19,7 @@ chart()
     margin: { top: 80, right: 210, bottom: 80, left: 80 }
   })
   .createData({ values: nightingale })
-  .createArcMark({ padAngle: 1, opacity: 0.9 })
+  .createArcMark({ padAngle: 1, opacity: 0.9, strokeWidth: 0.5 })
   .encodeTheta({
     field: "month",
     fieldType: "ordinal",
@@ -38,7 +38,7 @@ chart()
     axes: {
       theta: { title: false },
       radius: {
-        ticksAndLabels: { values: [0, 2, 4, 6] },
+        ticksAndLabels: { values: [2, 4, 6] },
         title: { text: "Mortality rate", position: "inside" }
       }
     },

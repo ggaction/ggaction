@@ -17,6 +17,10 @@ const step = readFileSync(
   path.join(root, "agent_docs/impl/roadmap3/phase0/STEP6.md"),
   "utf8"
 );
+const polarContract = readFileSync(
+  path.join(root, "agent_docs/contract/planned/ROADMAP3_POLAR.md"),
+  "utf8"
+);
 
 const phases = new Set(Array.from({ length: 10 }, (_, index) => `phase${index + 1}`));
 
@@ -80,16 +84,20 @@ test("links every Gate A candidate to one owning phase and executable observatio
   assert.deepEqual(assignedPhases, phases);
 });
 
-test("keeps every approved direct name either Current or Planned", () => {
+test("keeps every approved direct name Current, Planned, or explicitly Maybe Future", () => {
   const current = new Set(actionIndex.actions.map(action => action.name));
   const planned = new Set(actionIndex.plannedActions.map(action => action.name));
+  const maybeFuture = new Set(
+    [...polarContract.matchAll(/^(encode(?:Theta|R)2)\(/gm)].map(match => match[1])
+  );
   for (const candidate of inventory.proposedActions) {
-    assert.notEqual(
-      current.has(candidate.name),
-      planned.has(candidate.name),
-      candidate.name
+    assert.equal(
+      [current, planned, maybeFuture].filter(group => group.has(candidate.name)).length,
+      1,
+      `${candidate.name} must have exactly one lifecycle classification`
     );
   }
+  assert.match(polarContract, /Status: Maybe Future, NOT IMPLEMENTED/);
   const approvedCapabilities = new Set([
     ...inventory.proposedOperations.map(operation => operation.name),
     ...inventory.parameterExtensions.map(extension => extension.id),

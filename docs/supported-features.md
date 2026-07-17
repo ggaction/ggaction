@@ -53,16 +53,16 @@ screens.
 
 ### Polar charts
 
-| Capability | Polar points | Polar line / radar |
-| --- | --- | --- |
-| Semantic mark | point | line |
-| Position | theta/radius | theta/radius |
-| Nominal color | point fill | series stroke |
-| Stroke dash | — | nominal or constant; 4 named styles |
-| Appearance | radius, opacity, shape | stroke width, opacity, open/closed |
-| Automatic guides | theta outer axis, radial axis, spokes, circles | theta outer axis, radial axis, spokes, circles |
-| Legend | point color + shape | categorical |
-| Selection/highlight | point | series |
+| Capability | Polar points | Polar line / radar | Arc / donut / rose / radial bar |
+| --- | --- | --- | --- |
+| Semantic mark | point | line | arc |
+| Position | theta/radius | theta/radius | count theta, or theta/radius |
+| Nominal color | point fill | series stroke | sector fill, including overlay grain |
+| Stroke dash | — | nominal or constant; 4 named styles | — |
+| Appearance | radius, opacity, shape | stroke width, opacity, open/closed | inner radius, angular padding, fill, outline, opacity |
+| Automatic guides | theta outer axis, radial axis, spokes, circles | theta outer axis, radial axis, spokes, circles | applicable theta/radius axes, spokes, circles |
+| Legend | point color + shape | categorical | categorical |
+| Selection/highlight | point | series | sector |
 
 ## Shared foundations
 
@@ -71,7 +71,7 @@ screens.
 | Program model | Immutable `ChartProgram`, hierarchical action trace |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
-| Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points and lines |
+| Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |

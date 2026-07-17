@@ -77,6 +77,19 @@ async function testNodeConsumer(directory) {
       .encodePointRadius({ value: 3 });
     assert.equal(polar.semanticSpec.layers[0].coordinate, "polar");
     assert.equal(polar.graphicSpec.objects.point.items.length, 2);
+    const arcs = chart()
+      .createCanvas({ width: 160, height: 160, margin: 20 })
+      .createData({ values: [{ group: "A" }, { group: "A" }, { group: "B" }] })
+      .createArcMark({ innerRadius: 0.4, padAngle: 2 })
+      .encodeTheta({ field: "group", aggregate: "count" })
+      .encodeColor({ field: "group" });
+    assert.equal(arcs.graphicSpec.objects.arc.items.length, 2);
+    assert.equal(
+      arcs.graphicSpec.objects.arc.items.every(
+        item => item.properties.commands.at(-1).op === "Z"
+      ),
+      true
+    );
     const result = await renderToPNG(program, {
       output: ${JSON.stringify(output)},
       pixelRatio: 1
@@ -146,6 +159,13 @@ async function testTypeScriptConsumer(directory) {
       .encodeTheta({ field: "angle", scale: { range: [0, 360] } })
       .encodeR({ field: "distance", scale: { type: "sqrt" } })
       .encodePointRadius({ value: 2 });
+    const arcs: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ group: "A" }, { group: "B" }] })
+      .createArcMark({ innerRadius: 0.4 })
+      .encodeTheta({ field: "group", aggregate: "count" })
+      .encodeColor({ field: "group" })
+      .editArcMark({ padAngle: 2 });
     const pointLayer = inspected.semanticSpec.layers.find(
       layer => layer.id === "points"
     );
@@ -158,6 +178,7 @@ async function testTypeScriptConsumer(directory) {
     void extensionProgram;
     void derived;
     void polar;
+    void arcs;
     void pointLayer;
     void pointItems;
     void lastAction;

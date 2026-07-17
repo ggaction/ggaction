@@ -142,8 +142,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `encodeTheta2` | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-actions) |
-| `encodeR2` | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-actions) |
 | `editCompositionLayout` | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | `replaceCompositionChild` | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | `facet` | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet) |
@@ -162,8 +160,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | composition | Horizontal program composition | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | composition | Vertical program composition | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | parameter | Facet scale resolution options | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
-| composition | Arc donut and radial bar charts | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-actions) |
-| behavior | Arc selection and highlight | accepted | [Open](planned/ROADMAP3_POLAR.md#arc-selection-highlight) |
 | composition | Program composition state | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | composition | Nested Canvas rendering | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#program-composition) |
 | composition | Direct-source facet | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet) |

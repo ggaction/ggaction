@@ -2003,8 +2003,6 @@
     { "name": "editRadialGrid", "layer": "user-facing", "domain": "grid", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits radial grid", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/GRID.md", "anchor": "editRadialGrid" } }
   ],
   "plannedActions": [
-    { "name": "encodeTheta2", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "arc-actions" } },
-    { "name": "encodeR2", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "arc-actions" } },
     { "name": "editCompositionLayout", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "program-composition" } },
     { "name": "replaceCompositionChild", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "program-composition" } },
     { "name": "facet", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "facet" } },
@@ -2020,8 +2018,6 @@
     { "id": "hconcat", "kind": "composition", "name": "Horizontal program composition", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "program-composition" } },
     { "id": "vconcat", "kind": "composition", "name": "Vertical program composition", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "program-composition" } },
     { "id": "facet-scale-resolution", "kind": "parameter", "name": "Facet scale resolution options", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "facet-resolution-and-derived-replay" } },
-    { "id": "arc-donut-radial-bar", "kind": "composition", "name": "Arc donut and radial bar charts", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "arc-actions" } },
-    { "id": "arc-selection-highlight", "kind": "behavior", "name": "Arc selection and highlight", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_POLAR.md", "anchor": "arc-selection-highlight" } },
     { "id": "program-composition-state", "kind": "composition", "name": "Program composition state", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "program-composition" } },
     { "id": "nested-canvas-rendering", "kind": "composition", "name": "Nested Canvas rendering", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "program-composition" } },
     { "id": "direct-source-facet", "kind": "composition", "name": "Direct-source facet", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "facet" } },

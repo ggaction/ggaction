@@ -54,7 +54,7 @@ program.createCoordinate({
 Equivalent repeated creation is allowed. A conflicting type or an attempt to
 reattach a layer that already uses another coordinate produces an error.
 
-Polar point and line position actions create or reuse a Polar coordinate
+Polar point, line, and arc position actions create or reuse a Polar coordinate
 automatically. The layer stores semantic theta/radius encodings, while
 `graphicSpec` stores only final Cartesian x/y values and path commands for the
 renderer.
@@ -62,9 +62,8 @@ renderer.
 ## Errors and limitations
 
 A layer cannot be silently moved from one coordinate to another, and Cartesian
-x/y cannot be mixed with Polar theta/radius. Polar point, open-line, and closed
-radar charts support theta/radius axes and grids. Arc marks are not yet
-supported.
+x/y cannot be mixed with Polar theta/radius. Polar point, open-line, closed
+radar, donut, rose, and radial-bar charts support theta/radius axes and grids.
 
 ## Related
 

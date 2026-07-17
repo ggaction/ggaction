@@ -36,24 +36,15 @@ createLineMark/editLineMark: closed?: boolean
   [`../current/MARKS.md`](../current/MARKS.md#createlinemark) and
   [`../current/ENCODINGS.md`](../current/ENCODINGS.md#polar-position-actions).
 
-## Arc actions
+## Maybe Future arc endpoints
 
 ```typescript
-createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? }): ChartProgram;
-editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? }): ChartProgram;
 encodeTheta2({ target?, field?, datum?, fieldType?, scale?, coordinate? }): ChartProgram;
 encodeR2({ target?, field?, datum?, fieldType?, scale?, coordinate? }): ChartProgram;
 ```
 
-- Arc is a distinct semantic mark. Existing bar semantics are not changed by coordinate type.
-- Secondary endpoints share the primary channel scale and coordinate and use assignment/reassignment lifecycle.
-- Pie/donut use normalized theta with inner radius; radial bar uses ordinal theta band and quantitative radial extent.
-- Concrete sectors are backend-neutral command paths.
-- Status: `createArcMark` and `editArcMark` are implemented and owned by
-  [`../current/MARKS.md`](../current/MARKS.md#createarcmark). Secondary endpoint actions remain Planned.
-
-## Arc selection highlight
-
-- Arc items expose one stable final semantic item per sector and support the current select/filter/highlight grammar.
-- Bounds, attachment and bring-to-front behavior use the shared mark-selection policy boundary.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 5.
+- Current donut, rose and radial-bar contracts need one theta band/partition and one radial endpoint only. They are
+  implemented by `createArcMark`/`editArcMark`, existing `encodeTheta`/`encodeR`, and the current arc selection policy.
+- Secondary angular or radial endpoints need a concrete ranged-sector chart and an independently approved scale-sharing,
+  endpoint-order and completeness contract before they enter Planned again.
+- Status: Maybe Future, NOT IMPLEMENTED. These names are outside the active Planned inventory and public API.

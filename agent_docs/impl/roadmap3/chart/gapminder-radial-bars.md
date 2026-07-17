@@ -15,7 +15,7 @@ chart()
     margin: { top: 75, right: 190, bottom: 75, left: 75 }
   })
   .createData({ values: countryRows })
-  .createArcMark({ innerRadius: 0.18, padAngle: 2 })
+  .createArcMark({ innerRadius: 0.18, padAngle: 2, opacity: 0.94 })
   .encodeTheta({
     field: "country",
     fieldType: "nominal",

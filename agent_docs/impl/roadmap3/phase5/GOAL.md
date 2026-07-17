@@ -8,10 +8,10 @@
 - [x] STEP 4 — Nightingale rose primitive
 - [x] STEP 5 — Gapminder radial bar primitive
 - [x] STEP 6 — Gate F visual evidence와 사용자 승인
-- [ ] STEP 7 — Arc semantic mark, materialization policy와 action hierarchy
-- [ ] STEP 8 — Theta/radius/color grain, edit와 rematerialization lifecycle
-- [ ] STEP 9 — Public examples, types, contracts와 docs
-- [ ] STEP 10 — Parameter coverage, selection/highlight와 Phase closeout
+- [x] STEP 7 — Arc semantic mark, materialization policy와 action hierarchy
+- [x] STEP 8 — Theta/radius/color grain, edit와 rematerialization lifecycle
+- [x] STEP 9 — Public examples, types, contracts와 docs
+- [x] STEP 10 — Parameter coverage, selection/highlight와 Phase closeout
 
 ## 목표
 
@@ -42,7 +42,7 @@ createArcMark(options?: {
 }): ChartProgram;
 
 editArcMark(options?: {
-  id?: string;
+  target?: string;
   innerRadius?: number;
   padAngle?: number;
   fill?: string;
