@@ -686,6 +686,14 @@ size scale은 concrete palette 또는 range를 저장한다.
 값을 계산할 때 사용하는 immutable authoring state다. 최종 renderer는 여전히
 `graphicSpec`만 읽는다.
 
+Scale materialization은 계산과 적용을 분리한다. `materialization/scales/resolve.js`는
+semantic scale, consumer values, plot bounds와 기존 resolved state를 입력받아 새 concrete
+scale만 계산한다. Bar bin·offset·temporal band, series layout, Polar arc auto range처럼
+mark family에 종속된 계산은 `materialization/scales/policies/`가 소유한다. Wrapped
+`rematerializeScale` action은 consumer 조회, immutable state 반영, mark와 guide의 ordered
+rematerialization만 담당한다. 따라서 순수 scale 계산은 trace를 만들거나 Program을
+변경하지 않고, renderer도 scale 의미를 다시 추론하지 않는다.
+
 ## `materializationConfigs`
 
 일부 graphical decision은 semantic은 아니지만 나중에 Canvas 크기나 scale이 바뀌었을
