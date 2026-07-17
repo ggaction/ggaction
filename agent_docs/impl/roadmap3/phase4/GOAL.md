@@ -6,7 +6,7 @@
 - [x] STEP 2 — Independent Polar line reference geometry
 - [x] STEP 3 — Gapminder open Polar line primitive
 - [x] STEP 4 — Jobs closed radar primitive
-- [ ] STEP 5 — Gate E visual evidence와 사용자 승인
+- [x] STEP 5 — Gate E visual evidence와 사용자 승인
 - [ ] STEP 6 — Polar line series grammar와 command policy
 - [ ] STEP 7 — Polar line materialization과 `closed` lifecycle
 - [ ] STEP 8 — Encoding order, scale, guide와 rematerialization integration
