@@ -8,6 +8,7 @@ import {
   ROADMAP2_ARTIFACT_ROOT,
   ROADMAP3_ARTIFACT_ROOT
 } from "../test/support/artifact-paths.js";
+import { artifactTrackConfig } from "../test/support/artifact-schema.js";
 
 const requiredRoadmap2Variants = Object.freeze([
   "cars-scatterplot/baseline",
@@ -25,7 +26,7 @@ async function verifyGallery(browser, {
   root,
   requiredVariants = []
 }) {
-  const number = roadmap === "roadmap2" ? 2 : 3;
+  const { label, number } = artifactTrackConfig(roadmap);
   const gallery = path.join(root, "index.html");
   const screenshots = path.resolve(root, `../../${roadmap}-gallery`);
   await mkdir(screenshots, { recursive: true });
@@ -37,8 +38,8 @@ async function verifyGallery(browser, {
   desktop.on("pageerror", error => errors.push(`page: ${error.message}`));
   await desktop.goto(pathToFileURL(gallery).href, { waitUntil: "networkidle" });
 
-  if (await desktop.title() !== `ggaction Roadmap ${number} Gallery`) {
-    throw new Error(`Roadmap ${number} gallery title is incorrect.`);
+  if (await desktop.title() !== `ggaction ${label} Gallery`) {
+    throw new Error(`${label} gallery title is incorrect.`);
   }
   const variants = desktop.locator("article.variant");
   const variantCount = await variants.count();
@@ -128,7 +129,7 @@ async function verifyGallery(browser, {
   await desktop.close();
   await mobile.close();
   if (errors.length > 0) throw new Error(errors.join("\n"));
-  process.stdout.write(`verified Roadmap ${number} gallery: ${gallery}\n`);
+  process.stdout.write(`verified ${label} gallery: ${gallery}\n`);
 }
 
 const browser = await chromium.launch({ headless: true });

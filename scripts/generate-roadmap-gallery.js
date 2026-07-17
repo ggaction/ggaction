@@ -4,28 +4,16 @@ import { pathToFileURL } from "node:url";
 
 import {
   ROADMAP2_ARTIFACT_ROOT,
-  ROADMAP3_ARTIFACT_ROOT,
   resolvePngArtifactPath,
   validateVariantMetadata
 } from "../test/support/artifact-paths.js";
-
-const ROADMAPS = Object.freeze({
-  roadmap2: Object.freeze({
-    number: 2,
-    root: ROADMAP2_ARTIFACT_ROOT,
-    emptyMessage: "No Roadmap 2 PNG artifacts yet."
-  }),
-  roadmap3: Object.freeze({
-    number: 3,
-    root: ROADMAP3_ARTIFACT_ROOT,
-    emptyMessage: "No Roadmap 3 PNG artifacts yet."
-  })
-});
+import {
+  artifactTrackConfig,
+  artifactTrackNames
+} from "../test/support/artifact-schema.js";
 
 function roadmapConfig(roadmap) {
-  const config = ROADMAPS[roadmap];
-  if (config === undefined) throw new TypeError(`Unknown roadmap "${roadmap}".`);
-  return config;
+  return artifactTrackConfig(roadmap);
 }
 
 function compareText(left, right) {
@@ -65,15 +53,13 @@ async function directoryNames(root) {
 }
 
 function variantDirectory(root, identity) {
-  return identity.roadmap === "roadmap2"
-    ? path.join(root, identity.chart, identity.variant)
-    : path.join(root, identity.capability, identity.chart, identity.variant);
+  const config = roadmapConfig(identity.roadmap);
+  return path.join(root, ...config.pathKeys.map(key => identity[key]));
 }
 
 function relativeArtifactPath(identity, kind) {
-  const segments = identity.roadmap === "roadmap2"
-    ? [identity.chart, identity.variant]
-    : [identity.capability, identity.chart, identity.variant];
+  const config = roadmapConfig(identity.roadmap);
+  const segments = config.pathKeys.map(key => identity[key]);
   return `./${[...segments, `${kind}.png`].join("/")}`;
 }
 
@@ -87,7 +73,7 @@ async function collectVariant(root, identity) {
   const hasUserFacing = await exists(userFacing);
   if (!hasPrimitive && !hasUserFacing) return null;
   const label = Object.values(identity).slice(1).join("/");
-  const roadmapLabel = identity.roadmap === "roadmap2" ? "Roadmap 2" : "Roadmap 3";
+  const roadmapLabel = roadmapConfig(identity.roadmap).label;
   if (hasUserFacing && !hasPrimitive) {
     throw new Error(
       `${roadmapLabel} artifact ${label} has user-facing.png without primitive.png.`
@@ -126,34 +112,19 @@ export async function collectRoadmapVariants({ roadmap, root } = {}) {
   const config = roadmapConfig(roadmap);
   const artifactRoot = root ?? config.root;
   const variants = [];
-  if (roadmap === "roadmap2") {
-    for (const chart of await directoryNames(artifactRoot)) {
-      for (const variant of await directoryNames(path.join(artifactRoot, chart))) {
-        const item = await collectVariant(artifactRoot, {
-          roadmap,
-          chart,
-          variant
-        });
+  async function collectLevel(directory, depth, identity) {
+    const key = config.pathKeys[depth];
+    for (const segment of await directoryNames(directory)) {
+      const nextIdentity = { ...identity, [key]: segment };
+      if (depth === config.pathKeys.length - 1) {
+        const item = await collectVariant(artifactRoot, nextIdentity);
         if (item !== null) variants.push(item);
-      }
-    }
-  } else {
-    for (const capability of await directoryNames(artifactRoot)) {
-      for (const chart of await directoryNames(path.join(artifactRoot, capability))) {
-        for (const variant of await directoryNames(
-          path.join(artifactRoot, capability, chart)
-        )) {
-          const item = await collectVariant(artifactRoot, {
-            roadmap,
-            capability,
-            chart,
-            variant
-          });
-          if (item !== null) variants.push(item);
-        }
+      } else {
+        await collectLevel(path.join(directory, segment), depth + 1, nextIdentity);
       }
     }
   }
+  await collectLevel(artifactRoot, 0, { roadmap });
   return Object.freeze(variants);
 }
 
@@ -162,10 +133,9 @@ export function collectRoadmap2Variants(root = ROADMAP2_ARTIFACT_ROOT) {
 }
 
 function renderVariantCard(item) {
+  const config = roadmapConfig(item.roadmap);
   const ready = item.userFacing !== null;
-  const id = item.roadmap === "roadmap2"
-    ? `${item.chart}/${item.variant}`
-    : `${item.capability}/${item.chart}/${item.variant}`;
+  const id = config.pathKeys.map(key => item[key]).join("/");
   const publicFigure = ready
     ? `<figure><figcaption>User-facing</figcaption><img src="${escapeHtml(item.userFacing)}" alt="${escapeHtml(`${id} user-facing`)}"></figure>`
     : `<div class="placeholder"><span>User-facing</span><strong>Waiting for primitive approval</strong></div>`;
@@ -190,49 +160,41 @@ function renderVariantCard(item) {
 }
 
 function renderSections(variants, roadmap) {
-  if (roadmap === "roadmap2") {
-    const groups = new Map();
-    for (const variant of variants) {
-      const items = groups.get(variant.chart) ?? [];
-      items.push(variant);
-      groups.set(variant.chart, items);
+  const config = roadmapConfig(roadmap);
+  function renderLevel(items, depth) {
+    if (depth === config.groupKeys.length) {
+      return items.map(item => renderVariantCard({ roadmap, ...item })).join("\n");
     }
-    return [...groups.entries()].map(([chart, items]) => `<section>
-      <h2>${escapeHtml(displayName(chart))}</h2>
-      ${items.map(renderVariantCard).join("\n")}
-    </section>`).join("\n");
+    const key = config.groupKeys[depth];
+    const groups = new Map();
+    for (const item of items) {
+      const group = groups.get(item[key]) ?? [];
+      group.push(item);
+      groups.set(item[key], group);
+    }
+    return [...groups.entries()].map(([value, children]) => {
+      const heading = depth === 0
+        ? `<h2>${escapeHtml(displayName(value))}</h2>`
+        : `<h3>${escapeHtml(displayName(value))}</h3>`;
+      const body = renderLevel(children, depth + 1);
+      return depth === 0
+        ? `<section>${heading}${body}</section>`
+        : `<div class="chart-group">${heading}${body}</div>`;
+    }).join("\n");
   }
-
-  const capabilities = new Map();
-  for (const variant of variants) {
-    const charts = capabilities.get(variant.capability) ?? new Map();
-    const items = charts.get(variant.chart) ?? [];
-    items.push(variant);
-    charts.set(variant.chart, items);
-    capabilities.set(variant.capability, charts);
-  }
-  return [...capabilities.entries()].map(([capability, charts]) => `<section>
-    <div class="capability-heading">
-      <h2>${escapeHtml(displayName(capability))}</h2>
-      <code>${escapeHtml(capability)}</code>
-    </div>
-    ${[...charts.entries()].map(([chart, items]) => `<div class="chart-group">
-      <h3>${escapeHtml(displayName(chart))}</h3>
-      ${items.map(renderVariantCard).join("\n")}
-    </div>`).join("\n")}
-  </section>`).join("\n");
+  return renderLevel(variants, 0);
 }
 
 export function renderRoadmapGallery(variants, { roadmap } = {}) {
   const config = roadmapConfig(roadmap);
   const sections = renderSections(variants, roadmap);
-  const content = sections || `<div class="empty">${config.emptyMessage}</div>`;
+  const content = sections || `<div class="empty">No ${config.label} PNG artifacts yet.</div>`;
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ggaction Roadmap ${config.number} Gallery</title>
+  <title>ggaction ${config.label} Gallery</title>
   <style>
     :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #f5f7fb; color: #172033; }
     * { box-sizing: border-box; }
@@ -270,7 +232,7 @@ export function renderRoadmapGallery(variants, { roadmap } = {}) {
 </head>
 <body>
   <header>
-    <h1>Roadmap ${config.number} Visual Gallery</h1>
+    <h1>${config.label} Visual Gallery</h1>
     <p>Primitive-first chart variants and their user-facing equivalents.</p>
   </header>
   <main>${content}</main>
@@ -304,7 +266,7 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href
 ) {
-  for (const roadmap of ["roadmap2", "roadmap3"]) {
+  for (const roadmap of artifactTrackNames()) {
     const { output, variants } = await generateRoadmapGallery({ roadmap });
     process.stdout.write(
       `generated ${roadmap} gallery with ${variants.length} variant(s): ${output}\n`

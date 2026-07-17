@@ -47,7 +47,7 @@ test("rejects incomplete or expanded visual artifact scope", () => {
       ...required,
       artifact: { roadmap: "roadmap3", capability: "polar-point" }
     }),
-    /requires roadmap, phase, and capability/
+    /requires phase, capability/
   );
   assert.throws(
     () => defineVisualVariant({

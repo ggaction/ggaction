@@ -35,3 +35,8 @@ Visual manifests treat the `userFacing` factory as the canonical executable
 program. Their displayed `callChain` is presentation metadata: the render harness
 parses it without evaluation and requires its top-level actions to match the
 factory trace exactly.
+
+Artifact track shape is owned by `test/support/artifact-schema.js`. Paths,
+metadata validation, render manifests, and gallery generation consume that
+registry so a later roadmap does not add independent conditionals across the
+test infrastructure.

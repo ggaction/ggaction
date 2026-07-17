@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { artifactTrackConfig } from "./artifact-schema.js";
 import { assertRenderedPNG } from "./png.js";
 
 function normalizeArtifactScope(artifact, label) {
@@ -9,31 +10,23 @@ function normalizeArtifactScope(artifact, label) {
   if (artifact === null || typeof artifact !== "object" || Array.isArray(artifact)) {
     throw new TypeError(`${label} artifact must be a boolean or object.`);
   }
-  const allowed = new Set(["roadmap", "phase", "capability"]);
+  const config = artifactTrackConfig(artifact.roadmap);
+  const allowed = new Set(["roadmap", ...config.scopeKeys]);
   for (const key of Object.keys(artifact)) {
     if (!allowed.has(key)) {
       throw new TypeError(`${label} has unknown artifact option "${key}".`);
     }
   }
-  if (artifact.roadmap === "roadmap2") {
-    if (Object.keys(artifact).length !== 1) {
-      throw new TypeError(`${label} Roadmap 2 artifact only accepts roadmap.`);
+  for (const key of config.scopeKeys) {
+    if (typeof artifact[key] !== "string" || artifact[key].length === 0) {
+      throw new TypeError(
+        `${label} ${config.label} artifact requires ${config.scopeKeys.join(", ")}.`
+      );
     }
-    return Object.freeze({ roadmap: "roadmap2" });
-  }
-  if (
-    artifact.roadmap !== "roadmap3" ||
-    typeof artifact.phase !== "string" ||
-    typeof artifact.capability !== "string"
-  ) {
-    throw new TypeError(
-      `${label} Roadmap 3 artifact requires roadmap, phase, and capability.`
-    );
   }
   return Object.freeze({
-    roadmap: "roadmap3",
-    phase: artifact.phase,
-    capability: artifact.capability
+    roadmap: artifact.roadmap,
+    ...Object.fromEntries(config.scopeKeys.map(key => [key, artifact[key]]))
   });
 }
 

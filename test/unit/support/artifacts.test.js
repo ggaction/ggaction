@@ -23,6 +23,10 @@ import {
   renderRoadmapGallery,
   renderRoadmap2Gallery
 } from "../../../scripts/generate-roadmap-gallery.js";
+import {
+  artifactTrackConfig,
+  artifactTrackNames
+} from "../../support/artifact-schema.js";
 
 async function temporaryDirectory(t) {
   const directory = await mkdtemp(path.join(os.tmpdir(), "ggaction-artifacts-"));
@@ -77,6 +81,16 @@ async function createRoadmap3Artifact(
   }
   await writeFile(path.join(directory, `${kind}.png`), "png");
 }
+
+test("owns every artifact track schema in one extensible registry", () => {
+  assert.deepEqual(artifactTrackNames(), ["roadmap2", "roadmap3"]);
+  assert.deepEqual(artifactTrackConfig("roadmap2").pathKeys, ["chart", "variant"]);
+  assert.deepEqual(
+    artifactTrackConfig("roadmap3").pathKeys,
+    ["capability", "chart", "variant"]
+  );
+  assert.throws(() => artifactTrackConfig("roadmap4"), /Unknown artifact track/);
+});
 
 test("resolves legacy, Roadmap 2, and Roadmap 3 PNG artifact paths", () => {
   assert.equal(

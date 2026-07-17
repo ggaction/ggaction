@@ -3,31 +3,26 @@ import { link, mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import {
-  ROADMAP2_ARTIFACT_ROOT,
-  ROADMAP3_ARTIFACT_ROOT,
   createVariantMetadata,
   validateVariantMetadata
 } from "./artifact-paths.js";
+import { artifactTrackConfig } from "./artifact-schema.js";
 
 function roadmapLabel(roadmap) {
-  return roadmap === "roadmap2" ? "Roadmap 2" : "Roadmap 3";
+  return artifactTrackConfig(roadmap).label;
 }
 
 function identityFor(artifact) {
-  return artifact.roadmap === "roadmap2"
-    ? { roadmap: "roadmap2", chart: artifact.chart, variant: artifact.variant }
-    : {
-        roadmap: "roadmap3",
-        capability: artifact.capability,
-        chart: artifact.chart,
-        variant: artifact.variant
-      };
+  const config = artifactTrackConfig(artifact.roadmap);
+  return {
+    roadmap: artifact.roadmap,
+    ...Object.fromEntries(config.pathKeys.map(key => [key, artifact[key]]))
+  };
 }
 
 function directoryFor(root, artifact) {
-  return artifact.roadmap === "roadmap2"
-    ? path.join(root, artifact.chart, artifact.variant)
-    : path.join(root, artifact.capability, artifact.chart, artifact.variant);
+  const config = artifactTrackConfig(artifact.roadmap);
+  return path.join(root, ...config.pathKeys.map(key => artifact[key]));
 }
 
 async function readMetadata(file, identity) {
@@ -46,11 +41,7 @@ async function readMetadata(file, identity) {
 
 export async function ensureVariantMetadata(artifact, { root } = {}) {
   const expected = createVariantMetadata(artifact);
-  const artifactRoot = root ?? (
-    artifact.roadmap === "roadmap2"
-      ? ROADMAP2_ARTIFACT_ROOT
-      : ROADMAP3_ARTIFACT_ROOT
-  );
+  const artifactRoot = root ?? artifactTrackConfig(artifact.roadmap).root;
   const identity = identityFor(artifact);
   const identityLabel = Object.values(identity).slice(1).join("/");
   const directory = directoryFor(artifactRoot, artifact);

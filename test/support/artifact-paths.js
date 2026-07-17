@@ -1,50 +1,20 @@
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
-export const PNG_ARTIFACT_ROOT = fileURLToPath(
-  new URL("../../.artifacts/test/png/", import.meta.url)
-);
+import {
+  PNG_ARTIFACT_ROOT,
+  artifactTrackConfig
+} from "./artifact-schema.js";
 
-export const ROADMAP2_ARTIFACT_ROOT = path.join(PNG_ARTIFACT_ROOT, "roadmap2");
-export const ROADMAP3_ARTIFACT_ROOT = path.join(PNG_ARTIFACT_ROOT, "roadmap3");
+export { PNG_ARTIFACT_ROOT } from "./artifact-schema.js";
+
+export const ROADMAP2_ARTIFACT_ROOT = artifactTrackConfig("roadmap2").root;
+export const ROADMAP3_ARTIFACT_ROOT = artifactTrackConfig("roadmap3").root;
 
 const SEGMENT = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ARTIFACT_KINDS = new Set(["primitive", "user-facing"]);
 const COMMON_ARTIFACT_KEYS = Object.freeze([
-  "roadmap",
-  "chart",
-  "variant",
-  "kind",
-  "title",
-  "userFacingCallChain"
+  "roadmap", "kind", "title", "userFacingCallChain"
 ]);
-const ROADMAP_CONFIGS = Object.freeze({
-  roadmap2: Object.freeze({
-    root: ROADMAP2_ARTIFACT_ROOT,
-    identityKeys: Object.freeze(["chart", "variant"]),
-    metadataKeys: Object.freeze([
-      "version",
-      "chart",
-      "variant",
-      "title",
-      "userFacingCallChain"
-    ])
-  }),
-  roadmap3: Object.freeze({
-    root: ROADMAP3_ARTIFACT_ROOT,
-    identityKeys: Object.freeze(["capability", "chart", "variant"]),
-    metadataKeys: Object.freeze([
-      "version",
-      "roadmap",
-      "phase",
-      "capability",
-      "chart",
-      "variant",
-      "title",
-      "userFacingCallChain"
-    ])
-  })
-});
 
 function assertSegment(value, label) {
   if (typeof value !== "string" || !SEGMENT.test(value)) {
@@ -61,11 +31,7 @@ function assertNonEmptyText(value, label) {
 }
 
 function artifactConfig(roadmap) {
-  const config = ROADMAP_CONFIGS[roadmap];
-  if (config === undefined) {
-    throw new TypeError('artifact.roadmap must be "roadmap2" or "roadmap3".');
-  }
-  return config;
+  return artifactTrackConfig(roadmap);
 }
 
 function assertExactKeys(value, expectedKeys, label) {
@@ -92,7 +58,8 @@ function assertArtifact(artifact) {
   const config = artifactConfig(artifact.roadmap);
   const allowed = new Set([
     ...COMMON_ARTIFACT_KEYS,
-    ...(artifact.roadmap === "roadmap3" ? ["phase", "capability"] : [])
+    ...config.pathKeys,
+    ...config.scopeKeys
   ]);
   for (const key of Object.keys(artifact)) {
     if (!allowed.has(key)) {
@@ -100,7 +67,7 @@ function assertArtifact(artifact) {
     }
   }
   const identity = Object.fromEntries(
-    config.identityKeys.map(key => [
+    config.pathKeys.map(key => [
       key,
       assertSegment(artifact[key], `artifact.${key}`)
     ])
@@ -125,13 +92,13 @@ export function resolvePngArtifactPath({ name, artifact } = {}) {
   }
   return path.join(
     config.root,
-    ...config.identityKeys.map(key => identity[key]),
+    ...config.pathKeys.map(key => identity[key]),
     `${artifact.kind}.png`
   );
 }
 
 export function createVariantMetadata(artifact) {
-  const { identity } = assertArtifact(artifact);
+  const { config, identity } = assertArtifact(artifact);
   resolvePngArtifactPath({ artifact });
   const common = {
     version: 1,
@@ -142,14 +109,15 @@ export function createVariantMetadata(artifact) {
       "artifact.userFacingCallChain"
     )
   };
-  if (artifact.roadmap === "roadmap2") return Object.freeze(common);
+  const scope = Object.fromEntries(config.scopeKeys.map(key => [
+    key,
+    assertSegment(artifact[key], `artifact.${key}`)
+  ]));
   return Object.freeze({
     version: common.version,
-    roadmap: "roadmap3",
-    phase: assertSegment(artifact.phase, "artifact.phase"),
-    capability: common.capability,
-    chart: common.chart,
-    variant: common.variant,
+    ...(config.includeTrackInMetadata ? { roadmap: artifact.roadmap } : {}),
+    ...scope,
+    ...identity,
     title: common.title,
     userFacingCallChain: common.userFacingCallChain
   });
@@ -158,24 +126,24 @@ export function createVariantMetadata(artifact) {
 export function validateVariantMetadata(metadata, identity) {
   const roadmap = identity?.roadmap ?? "roadmap2";
   const config = artifactConfig(roadmap);
-  const label = `${roadmap === "roadmap2" ? "Roadmap 2" : "Roadmap 3"} variant metadata`;
+  const label = `${config.label} variant metadata`;
   assertExactKeys(metadata, config.metadataKeys, label);
   if (metadata.version !== 1) {
     throw new TypeError(`${label} version must be 1.`);
   }
-  if (roadmap === "roadmap3" && metadata.roadmap !== "roadmap3") {
-    throw new TypeError('Roadmap 3 variant metadata roadmap must be "roadmap3".');
+  if (config.includeTrackInMetadata && metadata.roadmap !== roadmap) {
+    throw new TypeError(`${config.label} variant metadata roadmap must be "${roadmap}".`);
   }
-  for (const key of config.identityKeys) {
+  for (const key of config.pathKeys) {
     if (metadata[key] !== identity[key]) {
-      const expected = config.identityKeys.map(name => identity[name]).join("/");
+      const expected = config.pathKeys.map(name => identity[name]).join("/");
       throw new TypeError(`${label} identity must match ${expected}.`);
     }
   }
   return createVariantMetadata({
     roadmap,
-    ...Object.fromEntries(config.identityKeys.map(key => [key, identity[key]])),
-    ...(roadmap === "roadmap3" ? { phase: metadata.phase } : {}),
+    ...Object.fromEntries(config.pathKeys.map(key => [key, identity[key]])),
+    ...Object.fromEntries(config.scopeKeys.map(key => [key, metadata[key]])),
     kind: "primitive",
     title: metadata.title,
     userFacingCallChain: metadata.userFacingCallChain
