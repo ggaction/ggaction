@@ -1,4 +1,4 @@
-import { readdirSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -11,6 +11,17 @@ import {
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const testRoot = path.join(repositoryRoot, "test");
+const capabilityRegistry = JSON.parse(readFileSync(
+  path.join(testRoot, "capabilities.json"),
+  "utf8"
+));
+
+export const TEST_CAPABILITIES = Object.freeze(Object.fromEntries(
+  Object.entries(capabilityRegistry.capabilities).map(([name, paths]) => [
+    name,
+    Object.freeze([...paths])
+  ])
+));
 
 const NORMAL_SUITES = Object.freeze([
   "unit",
@@ -47,9 +58,18 @@ function matchesSelector(file, root, selector) {
   if (selector.startsWith("chart:")) {
     return relative.startsWith(`charts/${selector.slice("chart:".length)}/`);
   }
-  const value = selector.startsWith("capability:")
-    ? selector.slice("capability:".length)
-    : selector.replace(/^test\//, "");
+  if (selector.startsWith("capability:")) {
+    const name = selector.slice("capability:".length);
+    const paths = TEST_CAPABILITIES[name];
+    if (!paths) {
+      throw new Error(
+        `Unknown test capability "${name}". Expected one of: ` +
+        `${Object.keys(TEST_CAPABILITIES).join(", ")}.`
+      );
+    }
+    return paths.some(candidate => relative.includes(candidate));
+  }
+  const value = selector.replace(/^test\//, "");
   return relative.toLowerCase().includes(value.toLowerCase());
 }
 

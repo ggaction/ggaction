@@ -14,9 +14,11 @@ npm test -- capability:selection
 npm test -- unit/actions/scales
 ```
 
-Selectors match a chart directory, a capability substring, or a path relative to
-`test/`. Browser and PNG regressions remain explicit because they start external
-rendering resources:
+Selectors match a chart directory, a named capability in
+`test/capabilities.json`, or a path relative to `test/`. Capability selectors
+have explicit owners and fail on unknown names; they never depend on accidental
+filename substrings. Browser and PNG regressions remain explicit because they
+start external rendering resources:
 
 ```sh
 npm run test:browser

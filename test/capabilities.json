@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "capabilities": {
+    "artifacts": [
+      "contracts/chart-variant-structure.test.js",
+      "unit/support/artifacts.test.js",
+      "unit/support/visual-variants.test.js"
+    ],
+    "data": [
+      "unit/actions/data/",
+      "contracts/dataset-fixtures.test.js",
+      "contracts/transform-registry.test.js"
+    ],
+    "guides": [
+      "unit/actions/guides/",
+      "unit/layout/guides.test.js",
+      "charts/polar-guides/"
+    ],
+    "package": [
+      "contracts/package-",
+      "browser/package-consumer.browser.js"
+    ],
+    "polar": [
+      "charts/polar-",
+      "unit/actions/coordinates/",
+      "unit/materialization/polar-",
+      "contracts/roadmap3-phase"
+    ],
+    "rendering": [
+      "unit/renderers/",
+      "browser/public-examples.browser.js"
+    ],
+    "scales": [
+      "unit/actions/scales/",
+      "unit/materialization/scales/",
+      "contracts/scale-capability-contract.test.js"
+    ],
+    "selection": [
+      "charts/mark-selection-",
+      "unit/actions/selection/",
+      "unit/selectors/",
+      "contracts/selection-policy.test.js",
+      "contracts/selectors.test.js"
+    ],
+    "statistics": [
+      "unit/actions/statistics/",
+      "unit/materialization/statistics/",
+      "charts/cars-regression-scatterplot/",
+      "charts/cars-box-plot/"
+    ]
+  }
+}

@@ -6,7 +6,8 @@ import { fileURLToPath } from "node:url";
 
 import {
   classifyTestFile,
-  collectTestFiles
+  collectTestFiles,
+  TEST_CAPABILITIES
 } from "../../scripts/run-tests.js";
 import { collectReachableModules } from "../support/module-imports.js";
 
@@ -106,7 +107,9 @@ test("selects tests by chart, capability, or relative path", () => {
   ]);
   assert.equal(selection.length > 0, true);
   assert.equal(selection.every(file =>
-    path.relative(testRoot, file).toLowerCase().includes("selection")
+    TEST_CAPABILITIES.selection.some(candidate =>
+      path.relative(testRoot, file).split(path.sep).join("/").includes(candidate)
+    )
   ), true);
 
   const scales = collectTestFiles("all", testRoot, ["unit/actions/scales"]);
@@ -114,4 +117,21 @@ test("selects tests by chart, capability, or relative path", () => {
   assert.equal(scales.every(file => file.includes(
     `${path.sep}unit${path.sep}actions${path.sep}scales${path.sep}`
   )), true);
+});
+
+test("maps every named capability to an explicit non-empty test family", () => {
+  assert.deepEqual(Object.keys(TEST_CAPABILITIES), [...Object.keys(TEST_CAPABILITIES)].sort());
+  for (const [name, paths] of Object.entries(TEST_CAPABILITIES)) {
+    assert.equal(paths.length > 0, true, name);
+    assert.equal(paths.every(value => typeof value === "string" && value.length > 0), true);
+    assert.equal(
+      collectTestFiles("all", testRoot, [`capability:${name}`]).length > 0,
+      true,
+      name
+    );
+  }
+  assert.throws(
+    () => collectTestFiles("all", testRoot, ["capability:unknown"]),
+    /Unknown test capability/
+  );
 });
