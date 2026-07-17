@@ -5,6 +5,7 @@ const response = await fetch("../../data/gapminder.json");
 const program = createGapminderPolarTrends(await response.json());
 const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));
+document.querySelector("#status").textContent = "Rendered Gapminder Polar trends.";
 
 window.__gapminderPolarTrends = Object.freeze({
   width: canvas.width,

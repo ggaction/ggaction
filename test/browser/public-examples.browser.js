@@ -23,11 +23,11 @@ test.after(async () => {
   await server?.close();
 });
 
-test("renders every registered browser example at its logical Canvas size", async () => {
-  assert.equal(examples.length > 0, true);
-  const page = await browser.newPage();
+assert.equal(examples.length > 0, true);
 
-  for (const example of examples) {
+for (const example of examples) {
+  test(`renders ${example.id} at its logical Canvas size`, async () => {
+    const page = await browser.newPage();
     const errors = [];
     const onConsole = message => {
       if (message.type() === "error") errors.push(message.text());
@@ -54,10 +54,6 @@ test("renders every registered browser example at its logical Canvas size", asyn
       height: example.height
     }, `${example.id} Canvas size`);
     assert.deepEqual(errors, [], `${example.id} browser errors`);
-
-    page.off("console", onConsole);
-    page.off("pageerror", onPageError);
-  }
-
-  await page.close();
-});
+    await page.close();
+  });
+}

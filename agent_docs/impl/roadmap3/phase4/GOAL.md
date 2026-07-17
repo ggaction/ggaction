@@ -11,7 +11,7 @@
 - [x] STEP 7 — Polar line materialization과 `closed` lifecycle
 - [x] STEP 8 — Encoding order, scale, guide와 rematerialization integration
 - [x] STEP 9 — Public examples, types, contracts와 docs
-- [ ] STEP 10 — Parameter coverage와 Phase closeout
+- [x] STEP 10 — Parameter coverage와 Phase closeout
 
 ## 목표
 
