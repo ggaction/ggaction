@@ -90,6 +90,26 @@ test("supports an arbitrary radial-axis angle from the aggregate action", () => 
   assert.equal(program.guideConfigs.axis.radius.layout.angle, 180);
 });
 
+test("starts a radial axis at the resolved inner radius", () => {
+  const program = chart()
+    .createCanvas({ width: 300, height: 300, margin: 30 })
+    .createData({ values: [{ category: "A", value: 10 }] })
+    .createArcMark({ innerRadius: 0.25 })
+    .encodeTheta({ field: "category", fieldType: "nominal" })
+    .encodeR({ field: "value", scale: { domain: [0, 20], zero: true } })
+    .createRadialAxis();
+
+  assert.equal(program.resolvedScales.radius.range[0], 30);
+  assert.deepEqual(program.graphicSpec.objects.radialAxisLine.properties, {
+    x1: 180,
+    y1: 150,
+    x2: 270,
+    y2: 150,
+    stroke: "#475569",
+    strokeWidth: 1.25
+  });
+});
+
 test("can omit a Polar axis title at creation", () => {
   const program = polarProgram().createThetaAxis({ title: false });
 

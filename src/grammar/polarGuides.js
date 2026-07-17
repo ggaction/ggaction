@@ -137,12 +137,16 @@ function radialVectors(angle) {
   };
 }
 
-export function resolveRadialAxisLine({ frame, angle }) {
+export function resolveRadialAxisLine({ frame, angle, startRadius = 0 }) {
   validateFrame(frame);
+  validateNonNegative(startRadius, "Radial-axis start radius");
+  if (startRadius > frame.availableRadius) {
+    throw new RangeError("Radial-axis start radius must be inside the Polar frame.");
+  }
   const { direction } = radialVectors(angle);
   return own({
-    x1: frame.centerX,
-    y1: frame.centerY,
+    x1: frame.centerX + direction.x * startRadius,
+    y1: frame.centerY + direction.y * startRadius,
     x2: frame.centerX + direction.x * frame.availableRadius,
     y2: frame.centerY + direction.y * frame.availableRadius
   });

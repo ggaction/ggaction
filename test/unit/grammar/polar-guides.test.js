@@ -75,6 +75,16 @@ test("orients arbitrary radial axes from shared vectors", () => {
     x2: 150,
     y2: 80
   });
+  assert.deepEqual(resolveRadialAxisLine({
+    frame,
+    angle: 90,
+    startRadius: 20
+  }), {
+    x1: 120,
+    y1: 80,
+    x2: 150,
+    y2: 80
+  });
 
   const ticks = resolveRadialAxisTicks({
     frame,

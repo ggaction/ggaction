@@ -22,11 +22,16 @@ import {
   withAxisSemantics
 } from "./shared.js";
 
-function lineGeometry(program, kind, angle) {
+function lineGeometry(program, kind, angle, scale) {
   const frame = resolvePolarFrameForProgram(program);
-  return kind === "theta"
-    ? { commands: buildPolarCircleCommands(frame, frame.availableRadius) }
-    : resolveRadialAxisLine({ frame, angle });
+  if (kind === "theta") {
+    return { commands: buildPolarCircleCommands(frame, frame.availableRadius) };
+  }
+  const range = program.resolvedScales[scale]?.range;
+  const startRadius = Array.isArray(range) && range.length > 0
+    ? Math.min(...range)
+    : 0;
+  return resolveRadialAxisLine({ frame, angle, startRadius });
 }
 
 function makeEditLine(kind) {
@@ -46,7 +51,7 @@ function makeEditLine(kind) {
     const config = { ...previous, ...args };
     validatePolarLineStyle(config, `${prefix(kind)} axis line`);
     const angle = resolveAngle(this, kind, {});
-    const geometry = lineGeometry(this, kind, angle);
+    const geometry = lineGeometry(this, kind, angle, previous.scale);
     let next = this._withGuideConfig(kind, "line", config);
     for (const [property, value] of Object.entries(geometry)) {
       next = next.editGraphics({ target: names.line, property, value });
@@ -85,7 +90,7 @@ function makeCreateLine(kind) {
       lineWidth: args.lineWidth ?? POLAR_AXIS_DEFAULTS.line.lineWidth
     };
     validatePolarLineStyle(config, `${prefix(kind)} axis line`);
-    lineGeometry(this, kind, angle);
+    lineGeometry(this, kind, angle, resources.scale);
     let next = withAxisSemantics(this, kind, resources);
     if (kind === "radius" &&
         next.guideConfigs.axis?.radius?.layout === undefined) {
