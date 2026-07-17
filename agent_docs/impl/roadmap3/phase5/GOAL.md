@@ -4,9 +4,9 @@
 
 - [x] STEP 1 — Phase 계약, 세 target chart와 Gate boundary 확정
 - [x] STEP 2 — Independent annular-sector geometry와 reference invariants
-- [ ] STEP 3 — Cars Origin donut primitive
-- [ ] STEP 4 — Nightingale rose primitive
-- [ ] STEP 5 — Gapminder radial bar primitive
+- [x] STEP 3 — Cars Origin donut primitive
+- [x] STEP 4 — Nightingale rose primitive
+- [x] STEP 5 — Gapminder radial bar primitive
 - [ ] STEP 6 — Gate F visual evidence와 사용자 승인
 - [ ] STEP 7 — Arc semantic mark, materialization policy와 action hierarchy
 - [ ] STEP 8 — Theta/radius/color grain, edit와 rematerialization lifecycle

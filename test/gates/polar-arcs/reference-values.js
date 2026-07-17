@@ -216,6 +216,47 @@ function perimeterLabel(frame, theta, radius, text) {
   });
 }
 
+function legendLayout(target, domain, colors, title) {
+  const symbolX = target.width - target.margin.right + 42;
+  const titleY = target.margin.top + 56;
+  const itemY = domain.map((_, index) => titleY + 32 + index * 28);
+  return Object.freeze({
+    domain,
+    colors,
+    title,
+    symbolX: domain.map(() => symbolX),
+    symbolY: itemY.map(value => value - 7),
+    symbolWidth: domain.map(() => 14),
+    symbolHeight: domain.map(() => 14),
+    labelX: domain.map(() => symbolX + 24),
+    itemY: Object.freeze(itemY),
+    titleX: symbolX,
+    titleY
+  });
+}
+
+function radialGuide(frame, ticks, domain, range) {
+  const positions = ticks.map(value => mapLinear(value, domain, range));
+  const startRadius = range[0];
+  return Object.freeze({
+    axis: Object.freeze({
+      start: referencePolarPoint(frame, 90, startRadius),
+      end: referencePolarPoint(frame, 90, frame.availableRadius)
+    }),
+    ticks: Object.freeze(positions.map(position => {
+      const point = referencePolarPoint(frame, 90, position);
+      return Object.freeze({
+        start: Object.freeze({ x: point.x, y: point.y - 4 }),
+        end: Object.freeze({ x: point.x, y: point.y + 4 })
+      });
+    })),
+    labels: Object.freeze(positions.map((position, index) => {
+      const point = referencePolarPoint(frame, 90, position);
+      return Object.freeze({ x: point.x, y: point.y - 9, text: String(ticks[index]) });
+    }))
+  });
+}
+
 function categoricalBand(domain, value) {
   const index = domain.indexOf(value);
   if (index < 0) throw new Error(`Unknown categorical theta value "${value}".`);
@@ -263,7 +304,18 @@ export function createCarsDonutReference(rows) {
     startTheta = endTheta;
     return sector;
   });
-  return Object.freeze({ frame, total, sectors: Object.freeze(sectors) });
+  return Object.freeze({
+    frame,
+    rows,
+    total,
+    sectors: Object.freeze(sectors),
+    legend: legendLayout(
+      CARS_DONUT_TARGET,
+      ORIGIN_ORDER,
+      ORIGIN_COLORS,
+      "Origin"
+    )
+  });
 }
 
 export function createNightingaleRoseReference(rows) {
@@ -274,6 +326,7 @@ export function createNightingaleRoseReference(rows) {
     throw new Error("Nightingale rose requires one row per month and cause.");
   }
   const sectors = [];
+  const orderedRows = [];
   for (const month of MONTH_ORDER) {
     const band = categoricalBand(MONTH_ORDER, month);
     const monthSectors = CAUSE_ORDER.map((cause, causeIndex) => {
@@ -286,6 +339,7 @@ export function createNightingaleRoseReference(rows) {
         NIGHTINGALE_TARGET.radiusDomain,
         [0, frame.availableRadius]
       );
+      orderedRows.push(row);
       return {
         key: `${month}:${cause}`,
         month,
@@ -322,11 +376,28 @@ export function createNightingaleRoseReference(rows) {
     const band = categoricalBand(MONTH_ORDER, month);
     return perimeterLabel(frame, band.center, frame.availableRadius + 22, month);
   });
+  const radialGuideValues = radialGuide(
+    frame,
+    NIGHTINGALE_TARGET.radiusTicks,
+    NIGHTINGALE_TARGET.radiusDomain,
+    [0, frame.availableRadius]
+  );
   return Object.freeze({
     frame,
+    rows: Object.freeze(orderedRows),
     sectors: Object.freeze(sectors),
     radialGridCommands: Object.freeze(radialGridCommands),
-    thetaLabels: Object.freeze(thetaLabels)
+    thetaLabels: Object.freeze(thetaLabels),
+    thetaAxisCommands: buildReferenceCircleCommands(frame, frame.availableRadius),
+    radialAxis: radialGuideValues.axis,
+    radialTicks: radialGuideValues.ticks,
+    radialLabels: radialGuideValues.labels,
+    legend: legendLayout(
+      NIGHTINGALE_TARGET,
+      CAUSE_ORDER,
+      NIGHTINGALE_COLORS,
+      "Cause"
+    )
   });
 }
 
@@ -341,6 +412,7 @@ export function createGapminderRadialBarReference(rows) {
     throw new Error("Gapminder radial bars require every selected 2005 country.");
   }
   const innerRadius = frame.availableRadius * GAPMINDER_RADIAL_TARGET.innerRadius;
+  const selectedRows = RADIAL_COUNTRY_ORDER.map(country => byCountry.get(country));
   const sectors = RADIAL_COUNTRY_ORDER.map(country => {
     const row = byCountry.get(country);
     if (!Number.isFinite(row.life_expect) || !Number.isInteger(row.cluster)) {
@@ -383,10 +455,37 @@ export function createGapminderRadialBarReference(rows) {
     const band = categoricalBand(RADIAL_COUNTRY_ORDER, country);
     return perimeterLabel(frame, band.center, frame.availableRadius + 22, country);
   });
+  const radialGuideValues = radialGuide(
+    frame,
+    GAPMINDER_RADIAL_TARGET.radiusTicks,
+    GAPMINDER_RADIAL_TARGET.radiusDomain,
+    [innerRadius, frame.availableRadius]
+  );
   return Object.freeze({
     frame,
+    rows: Object.freeze(selectedRows),
     sectors: Object.freeze(sectors),
     radialGridCommands: Object.freeze(radialGridCommands),
-    thetaLabels: Object.freeze(thetaLabels)
+    thetaLabels: Object.freeze(thetaLabels),
+    thetaAxisCommands: buildReferenceCircleCommands(frame, frame.availableRadius),
+    radialAxis: radialGuideValues.axis,
+    radialTicks: radialGuideValues.ticks,
+    radialLabels: radialGuideValues.labels,
+    thetaTitle: Object.freeze({
+      x: frame.centerX,
+      y: frame.centerY + frame.availableRadius + 54,
+      text: "Country"
+    }),
+    radialTitle: Object.freeze({
+      x: frame.centerX + frame.availableRadius + 12,
+      y: frame.centerY + 24,
+      text: "Life expectancy"
+    }),
+    legend: legendLayout(
+      GAPMINDER_RADIAL_TARGET,
+      Object.freeze(["0", "1", "2", "3", "4", "5"]),
+      CLUSTER_COLORS,
+      "Cluster"
+    )
   });
 }

@@ -39,10 +39,7 @@ chart()
       theta: { title: false },
       radius: { ticksAndLabels: { values: [0, 2, 4, 6] }, title: false }
     },
-    grid: {
-      theta: { values: monthOrder },
-      radial: { values: [2, 4, 6] }
-    },
+    grid: { theta: false, radial: { values: [2, 4, 6] } },
     legend: { position: "right", title: "Cause" }
   });
 ```
@@ -55,5 +52,6 @@ chart()
   `#f1595f` 순서다.
 - 12개 month band는 30도씩 동일하며 April band의 center가 0도다.
 - Cause sector는 stack하지 않고 모두 radius 0에서 시작한다.
+- Zero-valued sector는 fabricated path를 만들지 않고 concrete item에서 생략한다.
 - 같은 month 안에서 outer radius descending으로 그린다. Equal radius는 cause domain order를 stable tie-break로 쓴다.
 - Radius는 `[0, 6.5]`의 linear mapping이다. Area-aware square-root mapping은 별도 variant로 남긴다.
