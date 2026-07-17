@@ -27,8 +27,8 @@ signature를 유지하고 재현 하나만 통과시키는 특수 처리 대신 
 - [x] F-004 — interval-aware temporal tick formatting 수정
 - [x] F-005 — `createDerivedData` public input/type/documentation contract 보강
 - [x] F-006 — public state inspection schema와 runnable docs 보강
-- [ ] 전체 외부 reproduction, ggaction suite, docs/browser/render/package verification 통과
-- [ ] Roadmap 2.1 closeout와 corrective release candidate evidence 작성
+- [x] 전체 외부 reproduction, ggaction suite, docs/browser/render/package verification 통과
+- [x] Roadmap 2.1 closeout와 corrective release candidate evidence 작성
 
 ## 공통 실행 규칙
 

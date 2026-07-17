@@ -2,6 +2,17 @@
 
 All notable changes to `ggaction` are recorded in this file.
 
+## Unreleased
+
+### Fixed
+
+- Corrected zero-baseline and signed geometry for aggregate bars, and materialized complete ranged or aggregate bars
+  with their documented default width.
+- Made horizontal error bands compose with color and explicit boundaries in the same supported cases as vertical bands.
+- Added standalone point-size legends and interval-aware temporal axis labels without duplicate automatic tick text.
+- Published the exact `createDerivedData` transform-array contract and stable `ChartProgram` state-inspection paths in
+  TypeScript and user documentation.
+
 ## [0.0.2] - 2026-07-17
 
 ### Fixed
