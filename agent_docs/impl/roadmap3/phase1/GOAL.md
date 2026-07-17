@@ -8,10 +8,10 @@
 - [x] STEP 4 — Composite owner edit primitive variants
 - [x] STEP 5 — Domain removal primitive variants와 cleanup contract
 - [x] STEP 6 — PNG/gallery/browser 검증과 Gate B
-- [ ] STEP 7 — Internal rematerialization naming과 shared edit policy
-- [ ] STEP 8 — Public focused edit/removal actions와 action hierarchy
-- [ ] STEP 9 — Exact public types, docs와 installed-consumer surface
-- [ ] STEP 10 — Integration matrix와 Phase closeout
+- [x] STEP 7 — Internal rematerialization naming과 shared edit policy
+- [x] STEP 8 — Public focused edit/removal actions와 action hierarchy
+- [x] STEP 9 — Exact public types, docs와 installed-consumer surface
+- [x] STEP 10 — Integration matrix와 Phase closeout
 
 ## 목표
 

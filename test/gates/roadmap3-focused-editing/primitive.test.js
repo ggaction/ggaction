@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { visualVariants } from "./manifest.js";
 
-const FUTURE_ACTIONS = Object.freeze([
+const FOCUSED_ACTIONS = Object.freeze([
   "editLegendLayout",
   "editLegendLabels",
   "editLegendTitle",
@@ -36,12 +36,12 @@ function variant(id) {
   return visualVariants.find(candidate => candidate.variant === id);
 }
 
-test("keeps every Gate target primitive independent from later public actions", () => {
+test("keeps every approved primitive baseline independent from its public facade", () => {
   assert.equal(visualVariants.length, 11);
   for (const target of visualVariants) {
     const program = target.primitive();
     const operations = actionOperations(program.trace);
-    for (const action of FUTURE_ACTIONS) {
+    for (const action of FOCUSED_ACTIONS) {
       assert.equal(operations.includes(action), false, `${target.variant}: ${action}`);
     }
     assert.equal(program.graphicSpec.objects.canvas.type, "canvas");

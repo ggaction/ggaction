@@ -41,12 +41,12 @@ domain-removal
 
 ## Executable evidence
 
-- 11 primitive-only variants: `test/gates/roadmap3-focused-editing/manifest.js`
+- 11 approved primitive/public visual pairs: `test/gates/roadmap3-focused-editing/manifest.js`
 - Semantic/graphic and trace assertions: `test/gates/roadmap3-focused-editing/primitive.test.js`
 - High-DPI PNG registry: `test/gates/roadmap3-focused-editing/png.render.js`
 - Planned/public boundary lock: `test/contracts/roadmap3-phase1-gate-b.test.js`
 - Gallery: `.artifacts/test/png/roadmap3/index.html`
 
-`removeMark` target은 complete resource removal을 요구한다. Current primitive evidence에는 empty semantic layer
-shell이 남는 한계를 의도적으로 assertion하며, 승인 뒤 resource-level semantic removal primitive를 먼저 추가한
-후 public action parity를 검증한다.
+`removeMark` target은 complete resource removal을 수행한다. Public action parity는 semantic layer, owned
+graphics/config/selection state와 unreferenced derived data cleanup을 검증하며 user source dataset과 shared
+resources는 보존한다.
