@@ -2,13 +2,10 @@ import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
   validateKeys,
-  validateNonEmptyString,
-  validateNonNegativeFinite,
-  validateUnitInterval
 } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
-import { normalizeStrokeDashPattern } from "../../grammar/scales.js";
+import { resolveBoundaryAppearance } from "./options.js";
 import { resolveErrorBand } from "./resolve.js";
 
 const OPTIONS = Object.freeze([
@@ -24,35 +21,21 @@ const OPTIONS = Object.freeze([
   "curve",
   "boundaries"
 ]);
-const BOUNDARY_OPTIONS = Object.freeze([
-  "stroke", "strokeWidth", "strokeDash", "opacity", "curve"
-]);
-
 function resolveBoundaries(value, areaCurve) {
   if (value === undefined || value === false) return undefined;
   if (!isPlainObject(value)) {
     throw new TypeError("createErrorBand boundaries must be false or a plain object.");
   }
-  validateKeys(value, BOUNDARY_OPTIONS, "createErrorBand boundaries");
-  const stroke = value.stroke ?? DEFAULT_COLORS.mark;
-  const strokeWidth = value.strokeWidth ?? 1;
-  const strokeDash = value.strokeDash ?? "solid";
-  const opacity = value.opacity ?? 1;
-  const curve = validateCurveInterpolation(value.curve ?? areaCurve);
-  validateNonEmptyString(stroke, "Error-band boundary stroke");
-  validateNonNegativeFinite(
-    strokeWidth,
-    "Error-band boundary strokeWidth"
-  );
-  const resolvedStrokeDash = normalizeStrokeDashPattern(strokeDash);
-  validateUnitInterval(opacity, "Error-band boundary opacity");
-  return {
-    stroke,
-    strokeWidth,
-    strokeDash: resolvedStrokeDash,
-    opacity,
-    curve
-  };
+  return resolveBoundaryAppearance(value, {
+    defaults: {
+      stroke: DEFAULT_COLORS.mark,
+      strokeWidth: 1,
+      strokeDash: "solid",
+      opacity: 1,
+      curve: areaCurve
+    },
+    operation: "createErrorBand boundaries"
+  });
 }
 
 function positionArgs(resolved) {
@@ -153,7 +136,32 @@ export const createErrorBand = action(
           id: `${resolved.id}UpperBoundary`,
           bound: resolved.fields.upper
         });
+      for (const [id, bound] of [
+        [`${resolved.id}LowerBoundary`, "lower"],
+        [`${resolved.id}UpperBoundary`, "upper"]
+      ]) {
+        next = next._withMarkConfig(id, {
+          ...next.markConfigs[id],
+          ...boundaries,
+          errorBandBoundary: { owner: resolved.id, bound }
+        });
+      }
     }
-    return next;
+    return next._withMarkConfig(resolved.id, {
+      ...next.markConfigs[resolved.id],
+      errorBand: {
+        data: resolved.dataId,
+        orientation: resolved.orientation,
+        position: resolved.position,
+        coordinate: resolved.coordinate,
+        intervalScale: resolved.interval.scale.id ?? resolved.interval.channel,
+        positionScale: resolved.position.scale.id ?? resolved.position.channel,
+        groupBy: resolved.groupField,
+        lowerField: resolved.fields.lower,
+        upperField: resolved.fields.upper,
+        lowerBoundaryId: `${resolved.id}LowerBoundary`,
+        upperBoundaryId: `${resolved.id}UpperBoundary`
+      }
+    });
   }
 );

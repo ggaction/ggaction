@@ -466,6 +466,18 @@ eligible encoded layer, the shortest call infers its fields, orientation, data,
 coordinate, and scales.
 [Error bars](../api/error-bars.md)
 
+### `editErrorBar`
+
+```javascript
+editErrorBar({
+  target?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?
+})
+```
+
+Partially edit one error bar and its owned caps. `caps: false` removes both
+caps; `caps: true` restores them without replacing interval data.
+[Error bars](../api/error-bars.md#editing-error-bars)
+
 ### `createErrorBand`
 
 ```javascript
@@ -482,6 +494,20 @@ ordinary area, the matching atomic range action, and grouping actions.
 lower and upper line layers. Boundary curve inherits the area curve unless it
 is overridden.
 [Error bands](../api/error-bands.md)
+
+### `editErrorBand` and `editErrorBandBoundary`
+
+```javascript
+editErrorBand({ target?, fill?, opacity?, curve? })
+editErrorBandBoundary({
+  target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve?
+})
+```
+
+Edit the band body or selected owned boundaries without addressing generated
+line IDs. Boundary selection is `"both"`, `"lower"`, or `"upper"`; omitted
+selection means both. Missing selected boundaries are created from the band.
+[Error bands](../api/error-bands.md#editing-the-band)
 
 ### `createBoxPlot`
 

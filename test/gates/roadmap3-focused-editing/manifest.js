@@ -172,6 +172,70 @@ function createCartesianGuideFacadeActions(rows) {
     });
 }
 
+function createErrorBarEditActions(rows) {
+  return chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 90, right: 40, bottom: 70, left: 80 }
+    })
+    .createData({ values: rows })
+    .createErrorBar({
+      x: { field: "Origin", fieldType: "nominal" },
+      y: { field: "Acceleration" }
+    })
+    .createGuides()
+    .createTitle({
+      text: "Styled Acceleration Intervals",
+      subtitle: "16px caps with custom rule appearance"
+    })
+    .editErrorBar({
+      target: "errorBar",
+      caps: true,
+      capSize: 16,
+      stroke: "#d9485f",
+      strokeWidth: 3,
+      strokeDash: [8, 4],
+      opacity: 0.8
+    });
+}
+
+function createErrorBandEditActions(rows) {
+  return chart()
+    .createCanvas({
+      width: 760,
+      height: 480,
+      margin: { top: 90, right: 150, bottom: 70, left: 80 }
+    })
+    .createData({ values: rows })
+    .createErrorBand({
+      x: { field: "year", fieldType: "temporal" },
+      y: { field: "life_expect", center: "mean", extent: "ci" },
+      groupBy: "cluster"
+    })
+    .encodeColor({ target: "errorBand", field: "cluster" })
+    .createGuides()
+    .createTitle({
+      text: "Life Expectancy by Cluster",
+      subtitle: "Mean and 95% confidence interval"
+    })
+    .editErrorBand({
+      target: "errorBand",
+      fill: "#7dd3fc",
+      opacity: 0.34,
+      curve: "cardinal"
+    })
+    .editErrorBandBoundary({
+      target: "errorBand",
+      boundary: "both",
+      stroke: "#0369a1",
+      strokeWidth: 2,
+      strokeDash: [6, 3],
+      opacity: 0.8,
+      curve: "cardinal"
+    });
+}
+
 function artifact(capability) {
   return Object.freeze({ roadmap: "roadmap3", phase, capability });
 }
@@ -317,13 +381,17 @@ const errorBarCallChain = `chart()
     y: { field: "Acceleration" }
   })
   .createGuides()
+  .createTitle({
+    text: "Styled Acceleration Intervals",
+    subtitle: "16px caps with custom rule appearance"
+  })
   .editErrorBar({
     target: "errorBar",
     caps: true,
     capSize: 16,
     stroke: "#d9485f",
     strokeWidth: 3,
-    strokeDash: "dashed",
+    strokeDash: [8, 4],
     opacity: 0.8
   });`;
 
@@ -331,7 +399,7 @@ const errorBandCallChain = `chart()
   .createCanvas({
     width: 760,
     height: 480,
-    margin: { top: 90, right: 170, bottom: 70, left: 80 }
+    margin: { top: 90, right: 150, bottom: 70, left: 80 }
   })
   .createData({ values: gapminder })
   .createErrorBand({
@@ -341,6 +409,10 @@ const errorBandCallChain = `chart()
   })
   .encodeColor({ target: "errorBand", field: "cluster" })
   .createGuides()
+  .createTitle({
+    text: "Life Expectancy by Cluster",
+    subtitle: "Mean and 95% confidence interval"
+  })
   .editErrorBand({
     target: "errorBand",
     fill: "#7dd3fc",
@@ -352,6 +424,8 @@ const errorBandCallChain = `chart()
     boundary: "both",
     stroke: "#0369a1",
     strokeWidth: 2,
+    strokeDash: [6, 3],
+    opacity: 0.8,
     curve: "cardinal"
   });`;
 
@@ -527,6 +601,7 @@ export const visualVariants = Object.freeze([
     callChain: errorBarCallChain,
     artifact: artifact("focused-component-editing"),
     primitive: () => createErrorBarEditPrimitives(cars),
+    userFacing: () => createErrorBarEditActions(cars),
     width: 720,
     height: 460,
     colors: [],
@@ -539,6 +614,7 @@ export const visualVariants = Object.freeze([
     callChain: errorBandCallChain,
     artifact: artifact("focused-component-editing"),
     primitive: () => createErrorBandEditPrimitives(gapminder),
+    userFacing: () => createErrorBandEditActions(gapminder),
     width: 760,
     height: 480,
     colors: [],

@@ -16,6 +16,7 @@ inputs from an already encoded layer or accept both channel roles directly.
 | Action | Shortest call | Result |
 | --- | --- | --- |
 | `createErrorBar` | `createErrorBar()` after one eligible encoded layer | Mean 95% confidence intervals sharing that layer's data, coordinate, and scales |
+| `editErrorBar` | `editErrorBar({ opacity: 0.6 })` | Main rule and owned caps rematerialized without replacing interval data |
 
 ## `createErrorBar(options?)`
 
@@ -175,6 +176,30 @@ const styled = intervals.createErrorBar({
 });
 ```
 
+## Editing error bars
+
+Use the stable error-bar owner instead of editing generated cap layers:
+
+```javascript
+const edited = intervals.editErrorBar({
+  caps: true,
+  capSize: 16,
+  stroke: "#d9485f",
+  strokeWidth: 3,
+  strokeDash: [8, 4],
+  opacity: 0.8
+});
+```
+
+The options are `target`, `caps`, `capSize`, `stroke`, `strokeWidth`,
+`strokeDash`, and `opacity`. Omitted values retain their current setting.
+Omit `target` when the current or unique error bar is unambiguous.
+
+`caps: false` removes both owned cap resources. A later `caps: true` recreates
+them from the owner's stored data, fields, coordinate, and scales. The main
+interval and its immutable statistical or explicit dataset remain unchanged.
+The complete request is validated before the wrapped rematerialization runs.
+
 ## Errors and current limitations
 
 The action rejects missing data, incompatible or ambiguous source layers,
@@ -182,8 +207,8 @@ ambiguous channel roles, incomplete or non-quantitative explicit fields,
 invalid statistics or appearance values, and occupied generated IDs. Failed
 calls leave the earlier immutable program unchanged.
 
-Center symbols, per-row cap sizes, and field-driven rule widths are not part of
-the current action.
+Center symbols, per-row cap sizes, field-driven rule widths, and statistical
+parameter revision are not part of the current edit action.
 
 ## Related
 

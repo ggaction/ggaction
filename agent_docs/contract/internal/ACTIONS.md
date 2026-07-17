@@ -21,6 +21,8 @@ domain action을 통해서만 실행한다.
 | `materializeRuleSpan` | error-bar cap components and rule rematerialization |
 | `rematerializeAreaMark` | area mark and encoding actions |
 | `rematerializeBarMark` | bar mark and encoding actions |
+| `rematerializeErrorBandBoundary` | `editErrorBandBoundary` selected boundary appearance |
+| `rematerializeErrorBar` | `editErrorBar` main rule and owned cap reconciliation |
 | `rematerializeGradientLegend` | continuous color legend, scale, and Canvas actions |
 | `rematerializeIntervalLegend` | discretized color legend, scale, and Canvas actions |
 | `rematerializeGrid` | grid aggregate and Canvas actions |
@@ -77,7 +79,7 @@ primitive edits로 저장하기 위해 호출하는 internal wrapped state trans
 | `createBoxMedian` | `createBoxPlot` | median rule spanning the concrete ranged-bar body |
 | `createBoxOutliers` | `createBoxPlot` | diamond point realization for existing outlier rows |
 | `createErrorBarCap` | `createErrorBar` | compose one namespaced fixed-pixel cap from rule and encoding child actions |
-| `createErrorBandBoundary` | `createErrorBand` | compose one namespaced lower or upper line boundary from ordinary mark and encoding actions |
+| `createErrorBandBoundary` | `createErrorBand`, `editErrorBandBoundary` | compose one namespaced lower or upper line boundary from ordinary mark and encoding actions |
 | `applyPointHighlight` | `highlightMarks` | replace selected point child geometry and appearance from one stored selection |
 | `applyBarHighlight` | `highlightMarks` | replace appearance on every rect attached to selected bar item or stack keys |
 | `applyPathHighlight` | `highlightMarks` | replace selected line/area path appearance and translate path commands |

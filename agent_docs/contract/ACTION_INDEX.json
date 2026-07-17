@@ -690,9 +690,9 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Aggregate create-only",
-      "update": "Owned interval-data, rule, endpoint, and appearance children",
-      "audit": "Intentional",
+      "lifecycle": "Mutable resource",
+      "update": "`editErrorBar`",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -704,13 +704,31 @@
       }
     },
     {
+      "name": "editErrorBar",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits main-rule and owned-cap appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/STATISTICS.md",
+        "anchor": "editerrorbar"
+      }
+    },
+    {
       "name": "createErrorBand",
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Aggregate create-only",
-      "update": "Owned interval-data, area, range, group, and appearance children",
-      "audit": "Intentional create-only aggregate with editable ordinary child marks",
+      "lifecycle": "Mutable resource",
+      "update": "`editErrorBand` and `editErrorBandBoundary`",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -719,6 +737,42 @@
       "contract": {
         "file": "agent_docs/contract/current/STATISTICS.md",
         "anchor": "createerrorband"
+      }
+    },
+    {
+      "name": "editErrorBand",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits error-band body appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/STATISTICS.md",
+        "anchor": "editerrorband"
+      }
+    },
+    {
+      "name": "editErrorBandBoundary",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Creates or edits selected owned boundaries",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/STATISTICS.md",
+        "anchor": "editerrorbandboundary"
       }
     },
     {
@@ -1731,9 +1785,6 @@
     }
   ],
   "plannedActions": [
-    { "name": "editErrorBar", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
-    { "name": "editErrorBand", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
-    { "name": "editErrorBandBoundary", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
     { "name": "editBoxPlot", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
     { "name": "editRegression", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "composite-owner-edits" } },
     { "name": "removeXAxis", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "domain-removal" } },
@@ -1813,6 +1864,8 @@
       "materializeRuleSpan",
       "rematerializeAreaMark",
       "rematerializeBarMark",
+      "rematerializeErrorBandBoundary",
+      "rematerializeErrorBar",
       "rematerializeGradientLegend",
       "rematerializeIntervalLegend",
       "rematerializeGrid",

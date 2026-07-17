@@ -45,8 +45,11 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`editDensity`](current/ENCODINGS.md#editdensity) | encodings | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`encodeBarWidth`](current/ENCODINGS.md#encodebarwidth) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`createRegression`](current/STATISTICS.md#createregression) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
-| user-facing | [`createErrorBar`](current/STATISTICS.md#createerrorbar) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
-| user-facing | [`createErrorBand`](current/STATISTICS.md#createerrorband) | statistics | Aggregate create-only | Intentional create-only aggregate with editable ordinary child marks | ✅ / ✅ / ✅ |
+| user-facing | [`createErrorBar`](current/STATISTICS.md#createerrorbar) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editErrorBar`](current/STATISTICS.md#editerrorbar) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createErrorBand`](current/STATISTICS.md#createerrorband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editErrorBand`](current/STATISTICS.md#editerrorband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editErrorBandBoundary`](current/STATISTICS.md#editerrorbandboundary) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createBoxPlot`](current/COMPOSITE_MARKS.md#createboxplot) | statistics | Aggregate create-only | Intentional create-only aggregate; updates delegate to supported child assignments | ✅ / ✅ / ✅ |
 | user-facing | [`createAxes`](current/AXES.md#createaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createXAxis`](current/AXES.md#createxaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
@@ -108,9 +111,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `editErrorBar` | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
-| `editErrorBand` | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
-| `editErrorBandBoundary` | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
 | `editBoxPlot` | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
 | `editRegression` | accepted | [Open](planned/ROADMAP3_EDITING.md#composite-owner-edits) |
 | `removeXAxis` | accepted | [Open](planned/ROADMAP3_EDITING.md#domain-removal) |

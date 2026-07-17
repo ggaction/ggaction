@@ -16,6 +16,8 @@ consume existing center/lower/upper fields.
 | Action | Shortest call | Result |
 | --- | --- | --- |
 | `createErrorBand` | `createErrorBand()` after one eligible encoded layer | One grouped interval dataset and ordinary area/boundary layers |
+| `editErrorBand` | `editErrorBand({ opacity: 0.35 })` | Existing band body rematerialized without replacing interval data |
+| `editErrorBandBoundary` | `editErrorBandBoundary({ strokeWidth: 2 })` | Both owned boundaries created or edited |
 
 ## `createErrorBand(options?)`
 
@@ -162,7 +164,41 @@ program.createErrorBand({
 });
 ```
 
-The two boundary IDs are `${id}LowerBoundary` and `${id}UpperBoundary`. They
-remain ordinary line layers and can be targeted by line or encoding actions.
-The aggregate intentionally does not accept separate lower and upper style
-objects.
+Boundary layers remain ordinary line resources internally. Chart authors edit
+them through the owner-level action below rather than constructing generated
+layer IDs. The create action intentionally accepts one shared boundary recipe.
+
+## Editing the band
+
+`editErrorBand()` changes the stable body appearance:
+
+```javascript
+program.editErrorBand({
+  fill: "#7dd3fc",
+  opacity: 0.34,
+  curve: "cardinal"
+});
+```
+
+An explicit edit fill overrides concrete encoded colors while retaining the
+semantic color encoding and legend. The override persists through Canvas and
+scale rematerialization. Statistical interval rows are not replaced.
+
+`editErrorBandBoundary()` edits or creates one or both owned boundaries:
+
+```javascript
+program.editErrorBandBoundary({
+  boundary: "both",
+  stroke: "#0369a1",
+  strokeWidth: 2,
+  strokeDash: [6, 3],
+  opacity: 0.8,
+  curve: "cardinal"
+});
+```
+
+`boundary` accepts `"both"`, `"lower"`, or `"upper"` and defaults to
+`"both"`. If a selected boundary was not created initially, the action creates
+it from the owner's stored data, fields, coordinate, grouping, and scales.
+Existing selected boundaries retain omitted style properties; an unselected
+boundary remains untouched. Omit `target` only when one owner is unambiguous.

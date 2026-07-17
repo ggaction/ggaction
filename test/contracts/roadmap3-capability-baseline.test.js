@@ -40,7 +40,6 @@ test("records the current missing Roadmap 3 public surface", () => {
     "createRectMark",
     "createArcMark",
     "facet",
-    "editErrorBand",
     "editBoxPlot",
     "removeLegend"
   ]) {

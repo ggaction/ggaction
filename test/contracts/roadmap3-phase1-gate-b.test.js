@@ -40,8 +40,8 @@ const DIRECT_ACTIONS = Object.freeze([
   "removeMark"
 ]);
 
-const CURRENT_FOCUSED_ACTIONS = Object.freeze(DIRECT_ACTIONS.slice(0, 8));
-const REMAINING_DIRECT_ACTIONS = Object.freeze(DIRECT_ACTIONS.slice(8));
+const CURRENT_FOCUSED_ACTIONS = Object.freeze(DIRECT_ACTIONS.slice(0, 11));
+const REMAINING_DIRECT_ACTIONS = Object.freeze(DIRECT_ACTIONS.slice(11));
 
 const EXTENSIONS = Object.freeze([
   "point-create-appearance",
@@ -137,7 +137,7 @@ test("covers every Phase 1 public action in a Gate target", () => {
     });
     assert.equal(
       typeof target.userFacing,
-      index < 5 ? "function" : "undefined",
+      index < 7 ? "function" : "undefined",
       target.variant
     );
   }

@@ -259,7 +259,9 @@ const rematerializeAreaMark = action(
       );
     });
     const config = this.markConfigs[id];
-    const fills = colorEncoding?.scale === undefined
+    const fills = config.errorBand?.fill !== undefined
+      ? paths.map(() => config.errorBand.fill)
+      : colorEncoding?.scale === undefined
       ? paths.map(() => config.fill)
       : mapOrdinalValues(
           derived.series.map(series => series.key[colorEncoding.field]),

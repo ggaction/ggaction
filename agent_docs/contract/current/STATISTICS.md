@@ -79,6 +79,27 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Evidence: `test/unit/actions/error-bars/create-error-bar.test.js` and
   `test/charts/cars-error-bar/primitive.test.js`, `test/charts/cars-error-bar/public.test.js`.
 
+## `editErrorBar`
+
+- Signature: `editErrorBar({ target?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- `target` selects the stable main error-bar layer; omission uses current/unique eligible owner inference.
+- Omitted appearance leaves the stored value unchanged. `caps: false` removes both owned cap layers and graphics;
+  `caps: true` restores missing caps from the owner's stored data, fields, coordinate and scales.
+- The edit retains the existing source or interval dataset and interval semantics. Main and cap appearance is
+  reconciled through one wrapped `rematerializeErrorBar` action; generated cap IDs are not public parameters.
+
+### Formal values — `editErrorBar`
+
+- Implemented: `editErrorBar({ target?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval })`.
+- Proposed (NOT IMPLEMENTED): statistical center/extent/level editing remains a derived-data revision concern.
+
+### Value coverage — `editErrorBar`
+
+- ✅ Covered: inferred/explicit target, complete appearance patch, cap removal/restoration, cap-size geometry,
+  named/explicit dash, retained derived dataset, nested trace, immutability and atomic validation.
+- ✅ Covered: approved primitive/public semantic, graphic and pixel parity.
+- Evidence: `test/unit/actions/error-bars/edit-error-bar.test.js` and Roadmap 3 focused-editing Gate.
+
 ## `createErrorBand`
 
 - Current signature: `createErrorBand({ id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity?, curve?, boundaries? } = {})`.
@@ -121,8 +142,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Proposed (NOT IMPLEMENTED): —
 
 Independent lower/upper boundary appearance objects are intentionally outside
-the aggregate contract. Edit the deterministic ordinary child line layers when
-the two boundaries need different styles.
+the create contract. Use `editErrorBandBoundary({ boundary: "lower" | "upper" })`
+without naming generated child layers.
 
 ### Value coverage — `createErrorBand`
 
@@ -142,6 +163,43 @@ the two boundaries need different styles.
 - Evidence: `test/unit/actions/error-bands/create-error-band.test.js` and
   `test/charts/gapminder-error-band/public.test.js`, plus
   `test/unit/actions/regression/create-regression.test.js` for delegation compatibility.
+
+## `editErrorBand`
+
+- Signature: `editErrorBand({ target?, fill?, opacity?, curve? })`.
+- The stable owner is an error-band area created by `createErrorBand`; omission uses current/unique inference.
+- A focused fill is an explicit owner override and therefore remains constant even when the band retains a color
+  encoding. Opacity and curve update the existing area materialization without replacing interval data.
+
+### Formal values — `editErrorBand`
+
+- Implemented: `editErrorBand({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; curve?: CurveInterpolation })`.
+- Proposed (NOT IMPLEMENTED): statistical center/extent/level editing remains a derived-data revision concern.
+
+### Value coverage — `editErrorBand`
+
+- ✅ Covered: inferred/explicit owner, constant fill over encoded color, opacity/curve, Canvas persistence,
+  immutability, empty/invalid edit rejection and exact Gate parity.
+- Evidence: `test/unit/actions/error-bands/edit-error-band.test.js` and Roadmap 3 focused-editing Gate.
+
+## `editErrorBandBoundary`
+
+- Signature: `editErrorBandBoundary({ target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve? })`.
+- `boundary` is `"both" | "lower" | "upper"` and defaults to `"both"`. Missing selected boundaries are created
+  from the owner provenance; existing selected boundaries are partially edited. The other boundary is untouched.
+- The public target is always the error-band owner, never a generated lower/upper layer ID.
+
+### Formal values — `editErrorBandBoundary`
+
+- Implemented: `editErrorBandBoundary({ target?: UserId; boundary?: "both" | "lower" | "upper"; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; curve?: CurveInterpolation })`.
+- Proposed (NOT IMPLEMENTED): boundary removal is not part of this appearance edit.
+
+### Value coverage — `editErrorBandBoundary`
+
+- ✅ Covered: both/default, lower and upper selection, missing-component creation, existing-component edit,
+  independent appearance, child trace, invalid selection/style and immutable failure.
+- ✅ Covered: approved absent-to-both boundary primitive/public and pixel parity.
+- Evidence: `test/unit/actions/error-bands/edit-error-band.test.js` and Roadmap 3 focused-editing Gate.
 
 ## `createRegression`
 

@@ -1,15 +1,8 @@
 import { action } from "../../core/action.js";
-import { validateKeys, validatePositiveFinite } from "../../core/validation.js";
-import {
-  normalizeStrokeDashPattern,
-  validateOpacityValue
-} from "../../grammar/scales.js";
-import {
-  validateRuleStroke,
-  validateRuleStrokeWidth
-} from "../../grammar/ruleAppearance.js";
+import { validateKeys } from "../../core/validation.js";
 import { findLayer } from "../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
+import { resolveErrorBarAppearance } from "./options.js";
 import { resolveErrorBar } from "./resolve.js";
 
 const OPTIONS = Object.freeze([
@@ -29,24 +22,22 @@ const OPTIONS = Object.freeze([
 ]);
 
 function resolveAppearance(args) {
-  const caps = args.caps ?? true;
-  if (typeof caps !== "boolean") {
-    throw new TypeError("createErrorBar caps must be a boolean.");
-  }
-  const capSize = args.capSize ?? 8;
-  validatePositiveFinite(capSize, "createErrorBar capSize");
-  const stroke = validateRuleStroke(
-    args.stroke ?? DEFAULT_COLORS.mark,
-    "createErrorBar stroke"
+  const appearanceArgs = Object.fromEntries(
+    ["caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"]
+      .filter(key => Object.hasOwn(args, key))
+      .map(key => [key, args[key]])
   );
-  const strokeWidth = validateRuleStrokeWidth(
-    args.strokeWidth ?? 1.5,
-    "createErrorBar strokeWidth"
-  );
-  const strokeDash = args.strokeDash ?? "solid";
-  normalizeStrokeDashPattern(strokeDash);
-  const opacity = validateOpacityValue(args.opacity ?? 1, "createErrorBar opacity");
-  return { caps, capSize, stroke, strokeWidth, strokeDash, opacity };
+  return resolveErrorBarAppearance(appearanceArgs, {
+    defaults: {
+      caps: true,
+      capSize: 8,
+      stroke: DEFAULT_COLORS.mark,
+      strokeWidth: 1.5,
+      strokeDash: "solid",
+      opacity: 1
+    },
+    operation: "createErrorBar"
+  });
 }
 
 function positionArgs(resolved) {
@@ -115,30 +106,46 @@ export const createErrorBar = action(
       .encodeStrokeDash({ target: resolved.id, value: appearance.strokeDash })
       .encodeOpacity({ target: resolved.id, value: appearance.opacity });
 
-    if (!appearance.caps) return next;
-
     const intervalLayer = findLayer(next, resolved.id);
-    for (const [id, field] of [
-      [resolved.lowerCapId, resolved.fields.lower],
-      [resolved.upperCapId, resolved.fields.upper]
-    ]) {
-      next = next.createErrorBarCap({
-        id,
+    if (appearance.caps) {
+      for (const [id, field] of [
+        [resolved.lowerCapId, resolved.fields.lower],
+        [resolved.upperCapId, resolved.fields.upper]
+      ]) {
+        next = next.createErrorBarCap({
+          id,
+          data: resolved.dataId,
+          orientation: resolved.orientation,
+          positionField: resolved.position.field,
+          positionFieldType: resolved.position.fieldType,
+          intervalField: field,
+          coordinate: resolved.coordinate,
+          positionScale: intervalLayer.encoding[resolved.position.channel].scale,
+          intervalScale: intervalLayer.encoding[resolved.interval.channel].scale,
+          capSize: appearance.capSize,
+          stroke: appearance.stroke,
+          strokeWidth: appearance.strokeWidth,
+          strokeDash: appearance.strokeDash,
+          opacity: appearance.opacity
+        });
+      }
+    }
+    return next._withMarkConfig(resolved.id, {
+      ...next.markConfigs[resolved.id],
+      errorBar: {
         data: resolved.dataId,
         orientation: resolved.orientation,
         positionField: resolved.position.field,
         positionFieldType: resolved.position.fieldType,
-        intervalField: field,
+        lowerField: resolved.fields.lower,
+        upperField: resolved.fields.upper,
         coordinate: resolved.coordinate,
         positionScale: intervalLayer.encoding[resolved.position.channel].scale,
         intervalScale: intervalLayer.encoding[resolved.interval.channel].scale,
-        capSize: appearance.capSize,
-        stroke: appearance.stroke,
-        strokeWidth: appearance.strokeWidth,
-        strokeDash: appearance.strokeDash,
-        opacity: appearance.opacity
-      });
-    }
-    return next;
+        lowerCapId: resolved.lowerCapId,
+        upperCapId: resolved.upperCapId,
+        ...appearance
+      }
+    });
   }
 );

@@ -651,6 +651,16 @@ export interface ErrorBarOptions {
   opacity?: number;
 }
 
+export interface EditErrorBarOptions {
+  target?: string;
+  caps?: boolean;
+  capSize?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+}
+
 export interface BoxPlotCategoryChannel {
   field: string;
   fieldType: "nominal" | "ordinal" | "temporal";
@@ -741,6 +751,23 @@ export interface ErrorBandOptions {
     opacity?: number;
     curve?: CurveInterpolation;
   };
+}
+
+export interface EditErrorBandOptions {
+  target?: string;
+  fill?: string;
+  opacity?: number;
+  curve?: CurveInterpolation;
+}
+
+export interface EditErrorBandBoundaryOptions {
+  target?: string;
+  boundary?: "both" | "lower" | "upper";
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+  curve?: CurveInterpolation;
 }
 
 export interface EditDensityOptions {
@@ -1201,7 +1228,10 @@ export class ChartProgram {
 
   createRegression(options?: RegressionOptions): ChartProgram;
   createErrorBar(options?: ErrorBarOptions): ChartProgram;
+  editErrorBar(options: EditErrorBarOptions): ChartProgram;
   createErrorBand(options?: ErrorBandOptions): ChartProgram;
+  editErrorBand(options: EditErrorBandOptions): ChartProgram;
+  editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;
   createBoxPlot(options?: BoxPlotOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
