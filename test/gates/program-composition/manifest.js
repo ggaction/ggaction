@@ -25,7 +25,6 @@ export const unequalHorizontalTarget = `hconcat({
     { id: "detail", program: jobsGroupedBar }
   ],
   gap: 20,
-  align: "start",
   padding: 16
 });`;
 
@@ -60,7 +59,7 @@ export const visualVariants = Object.freeze([
     colors: ["#4c78a8", "#f58518"],
     regions: [
       { name: "main-panel", x: 16, y: 16, width: 440, height: 320, minimumInkPixels: 400 },
-      { name: "detail-panel", x: 476, y: 16, width: 300, height: 240, minimumInkPixels: 250 }
+      { name: "detail-panel", x: 476, y: 16, width: 300, height: 320, minimumInkPixels: 250 }
     ]
   }),
   defineVisualVariant({

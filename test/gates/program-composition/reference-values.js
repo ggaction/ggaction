@@ -87,7 +87,7 @@ function createScatterItems(cars) {
   return items;
 }
 
-function createBarItems(jobs) {
+function createBarItems(jobs, { width, height }) {
   const years = [1940, 1960, 1980, 2000];
   const rows = jobs.filter(row =>
     row.job === "Accountant / Auditor" &&
@@ -96,19 +96,24 @@ function createBarItems(jobs) {
     Number.isFinite(row.perc)
   );
   const maximum = Math.max(...rows.map(row => row.perc));
-  const baseline = 194;
+  const baseline = height - 46;
   const top = 48;
-  const centers = new Map(years.map((year, index) => [year, 62 + index * 66]));
+  const firstCenter = 62;
+  const lastCenter = width - 40;
+  const centerGap = (lastCenter - firstCenter) / (years.length - 1);
+  const centers = new Map(
+    years.map((year, index) => [year, firstCenter + index * centerGap])
+  );
   const items = [
     text("Jobs: accountant share", 16, 16, {
       fontSize: 14,
       fontWeight: 700,
       textBaseline: "top"
     }),
-    line(36, baseline, 282, baseline, { stroke: "#64748b", strokeWidth: 1.2 }),
+    line(36, baseline, width - 18, baseline, { stroke: "#64748b", strokeWidth: 1.2 }),
     line(36, top, 36, baseline, { stroke: "#64748b", strokeWidth: 1.2 }),
-    text("men", 176, 30, { fill: COLORS.men }),
-    text("women", 222, 30, { fill: COLORS.women })
+    text("men", width - 124, 30, { fill: COLORS.men }),
+    text("women", width - 78, 30, { fill: COLORS.women })
   ];
   for (const row of rows) {
     const height = mapLinear(row.perc, [0, maximum], [0, baseline - top]);
@@ -128,7 +133,7 @@ function createBarItems(jobs) {
     });
   }
   for (const year of years) {
-    items.push(text(String(year), centers.get(year), 213, {
+    items.push(text(String(year), centers.get(year), baseline + 19, {
       textAlign: "center",
       fontSize: 9
     }));
@@ -268,11 +273,10 @@ export function createCompositionGateValues({ cars, jobs, gapminder }) {
   const overview = resolveCompositionLayout({
     direction: "horizontal",
     children: [
-      { id: "main", width: 440, height: 320 },
-      { id: "detail", width: 300, height: 240 }
+      { id: "main", width: 440, height: 320, heightMode: "auto" },
+      { id: "detail", width: 300, height: 240, heightMode: "auto" }
     ],
     gap: 20,
-    align: "start",
     padding: 16
   });
   const nested = resolveCompositionLayout({
@@ -300,7 +304,10 @@ export function createCompositionGateValues({ cars, jobs, gapminder }) {
     nested,
     replacement,
     scatterItems: createScatterItems(cars),
-    barItems: createBarItems(jobs),
+    barItems: createBarItems(
+      jobs,
+      overview.children.find(child => child.id === "detail")
+    ),
     trendItems: createTrendItems(gapminder),
     donutItems: createDonutItems(cars)
   });
