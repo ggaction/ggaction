@@ -530,6 +530,12 @@ style은 materialization config가 소유한다. `graphicSpec`에는 최종 path
 Polar scale, tick, coordinate를 추론하지 않는다. Grid는 관련 mark보다 먼저, axis는 mark보다 나중에 그려지며
 action call order가 drawing order를 결정하지 않는다.
 
+`grammar/polarPaths.js`는 Polar frame 안의 circle, pie sector와 annular sector를
+backend-neutral `M/L/C/Z` command로 만든다. Sweep은 최대 90도인 cubic segment로
+분할하고 reverse sweep, full circle과 angular padding을 pure geometry로 처리한다.
+Canvas renderer는 angle, radius, sector 또는 arc primitive를 해석하지 않는다. Polar guide
+circle도 이 grammar를 재사용하며 기존 four-cubic circle command 계약을 유지한다.
+
 ### Guide와 title
 
 Guide semantic state는 어떤 scale과 coordinate를 설명하는지, 그리고 사용자에게

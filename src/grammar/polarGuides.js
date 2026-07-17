@@ -1,7 +1,8 @@
 import { freezeOwned } from "../core/immutable.js";
 import { polarDirection } from "./polar.js";
+import { buildPolarCircleCommands } from "./polarPaths.js";
 
-const KAPPA = 0.5522847498307936;
+export { buildPolarCircleCommands } from "./polarPaths.js";
 
 function validateFrame(frame) {
   if (
@@ -42,53 +43,6 @@ function pointAt(frame, theta, radius) {
     x: frame.centerX + direction.x * radius,
     y: frame.centerY + direction.y * radius
   };
-}
-
-export function buildPolarCircleCommands(frame, radius) {
-  validateFrame(frame);
-  validateNonNegative(radius, "Polar circle radius");
-  const control = radius * KAPPA;
-  const { centerX: cx, centerY: cy } = frame;
-  return own([
-    { op: "M", x: cx, y: cy - radius },
-    {
-      op: "C",
-      x1: cx + control,
-      y1: cy - radius,
-      x2: cx + radius,
-      y2: cy - control,
-      x: cx + radius,
-      y: cy
-    },
-    {
-      op: "C",
-      x1: cx + radius,
-      y1: cy + control,
-      x2: cx + control,
-      y2: cy + radius,
-      x: cx,
-      y: cy + radius
-    },
-    {
-      op: "C",
-      x1: cx - control,
-      y1: cy + radius,
-      x2: cx - radius,
-      y2: cy + control,
-      x: cx - radius,
-      y: cy
-    },
-    {
-      op: "C",
-      x1: cx - radius,
-      y1: cy - control,
-      x2: cx - control,
-      y2: cy - radius,
-      x: cx,
-      y: cy - radius
-    },
-    { op: "Z" }
-  ]);
 }
 
 export function resolveThetaSpokes({ frame, angles }) {
@@ -171,13 +125,15 @@ export function resolveThetaAxisLabels({ frame, angles, offset }) {
 }
 
 function radialVectors(angle) {
-  if (!Number.isFinite(angle)) {
+  let direction;
+  try {
+    direction = polarDirection(angle);
+  } catch {
     throw new TypeError("Radial-axis angle must be finite degrees.");
   }
-  const radians = angle * Math.PI / 180;
   return {
-    direction: { x: Math.sin(radians), y: -Math.cos(radians) },
-    normal: { x: Math.cos(radians), y: Math.sin(radians) }
+    direction,
+    normal: { x: -direction.y, y: direction.x }
   };
 }
 
