@@ -4,9 +4,29 @@ import { pathToFileURL } from "node:url";
 
 import {
   ROADMAP2_ARTIFACT_ROOT,
+  ROADMAP3_ARTIFACT_ROOT,
   resolvePngArtifactPath,
-  validateRoadmap2VariantMetadata
+  validateVariantMetadata
 } from "../test/support/artifact-paths.js";
+
+const ROADMAPS = Object.freeze({
+  roadmap2: Object.freeze({
+    number: 2,
+    root: ROADMAP2_ARTIFACT_ROOT,
+    emptyMessage: "No Roadmap 2 PNG artifacts yet."
+  }),
+  roadmap3: Object.freeze({
+    number: 3,
+    root: ROADMAP3_ARTIFACT_ROOT,
+    emptyMessage: "No Roadmap 3 PNG artifacts yet."
+  })
+});
+
+function roadmapConfig(roadmap) {
+  const config = ROADMAPS[roadmap];
+  if (config === undefined) throw new TypeError(`Unknown roadmap "${roadmap}".`);
+  return config;
+}
 
 function compareText(left, right) {
   return left < right ? -1 : left > right ? 1 : 0;
@@ -44,105 +64,175 @@ async function directoryNames(root) {
     .sort(compareText);
 }
 
-export async function collectRoadmap2Variants(
-  root = ROADMAP2_ARTIFACT_ROOT
-) {
-  const variants = [];
-  for (const chart of await directoryNames(root)) {
-    for (const variant of await directoryNames(path.join(root, chart))) {
-      resolvePngArtifactPath({
-        artifact: { roadmap: "roadmap2", chart, variant, kind: "primitive" }
-      });
-      const primitive = path.join(root, chart, variant, "primitive.png");
-      const userFacing = path.join(root, chart, variant, "user-facing.png");
-      const metadataFile = path.join(root, chart, variant, "variant.json");
-      const hasPrimitive = await exists(primitive);
-      const hasUserFacing = await exists(userFacing);
-      if (!hasPrimitive && !hasUserFacing) continue;
-      if (hasUserFacing && !hasPrimitive) {
-        throw new Error(
-          `Roadmap 2 artifact ${chart}/${variant} has user-facing.png without primitive.png.`
-        );
-      }
-      if (!(await exists(metadataFile))) {
-        throw new Error(
-          `Roadmap 2 artifact ${chart}/${variant} is missing variant.json.`
-        );
-      }
-      let metadata;
-      try {
-        metadata = validateRoadmap2VariantMetadata(
-          JSON.parse(await readFile(metadataFile, "utf8")),
-          { chart, variant }
-        );
-      } catch (error) {
-        throw new Error(
-          `Invalid Roadmap 2 metadata for ${chart}/${variant}.`,
-          { cause: error }
-        );
-      }
+function variantDirectory(root, identity) {
+  return identity.roadmap === "roadmap2"
+    ? path.join(root, identity.chart, identity.variant)
+    : path.join(root, identity.capability, identity.chart, identity.variant);
+}
 
-      variants.push(Object.freeze({
-        chart,
-        variant,
-        title: metadata.title,
-        userFacingCallChain: metadata.userFacingCallChain,
-        primitive: `./${chart}/${variant}/primitive.png`,
-        userFacing: hasUserFacing
-          ? `./${chart}/${variant}/user-facing.png`
-          : null,
-        status: hasUserFacing
-          ? "Ready for equivalence review"
-          : "Awaiting visual confirmation"
-      }));
+function relativeArtifactPath(identity, kind) {
+  const segments = identity.roadmap === "roadmap2"
+    ? [identity.chart, identity.variant]
+    : [identity.capability, identity.chart, identity.variant];
+  return `./${[...segments, `${kind}.png`].join("/")}`;
+}
+
+async function collectVariant(root, identity) {
+  resolvePngArtifactPath({ artifact: { ...identity, kind: "primitive" } });
+  const directory = variantDirectory(root, identity);
+  const primitive = path.join(directory, "primitive.png");
+  const userFacing = path.join(directory, "user-facing.png");
+  const metadataFile = path.join(directory, "variant.json");
+  const hasPrimitive = await exists(primitive);
+  const hasUserFacing = await exists(userFacing);
+  if (!hasPrimitive && !hasUserFacing) return null;
+  const label = Object.values(identity).slice(1).join("/");
+  const roadmapLabel = identity.roadmap === "roadmap2" ? "Roadmap 2" : "Roadmap 3";
+  if (hasUserFacing && !hasPrimitive) {
+    throw new Error(
+      `${roadmapLabel} artifact ${label} has user-facing.png without primitive.png.`
+    );
+  }
+  if (!(await exists(metadataFile))) {
+    throw new Error(`${roadmapLabel} artifact ${label} is missing variant.json.`);
+  }
+  let metadata;
+  try {
+    metadata = validateVariantMetadata(
+      JSON.parse(await readFile(metadataFile, "utf8")),
+      identity
+    );
+  } catch (error) {
+    throw new Error(`Invalid ${roadmapLabel} metadata for ${label}.`, {
+      cause: error
+    });
+  }
+  return Object.freeze({
+    ...identity,
+    phase: metadata.phase ?? null,
+    title: metadata.title,
+    userFacingCallChain: metadata.userFacingCallChain,
+    primitive: relativeArtifactPath(identity, "primitive"),
+    userFacing: hasUserFacing
+      ? relativeArtifactPath(identity, "user-facing")
+      : null,
+    status: hasUserFacing
+      ? "Ready for equivalence review"
+      : "Awaiting visual confirmation"
+  });
+}
+
+export async function collectRoadmapVariants({ roadmap, root } = {}) {
+  const config = roadmapConfig(roadmap);
+  const artifactRoot = root ?? config.root;
+  const variants = [];
+  if (roadmap === "roadmap2") {
+    for (const chart of await directoryNames(artifactRoot)) {
+      for (const variant of await directoryNames(path.join(artifactRoot, chart))) {
+        const item = await collectVariant(artifactRoot, {
+          roadmap,
+          chart,
+          variant
+        });
+        if (item !== null) variants.push(item);
+      }
+    }
+  } else {
+    for (const capability of await directoryNames(artifactRoot)) {
+      for (const chart of await directoryNames(path.join(artifactRoot, capability))) {
+        for (const variant of await directoryNames(
+          path.join(artifactRoot, capability, chart)
+        )) {
+          const item = await collectVariant(artifactRoot, {
+            roadmap,
+            capability,
+            chart,
+            variant
+          });
+          if (item !== null) variants.push(item);
+        }
+      }
     }
   }
   return Object.freeze(variants);
 }
 
-export function renderRoadmap2Gallery(variants) {
-  const groups = new Map();
-  for (const variant of variants) {
-    const items = groups.get(variant.chart) ?? [];
-    items.push(variant);
-    groups.set(variant.chart, items);
+export function collectRoadmap2Variants(root = ROADMAP2_ARTIFACT_ROOT) {
+  return collectRoadmapVariants({ roadmap: "roadmap2", root });
+}
+
+function renderVariantCard(item) {
+  const ready = item.userFacing !== null;
+  const id = item.roadmap === "roadmap2"
+    ? `${item.chart}/${item.variant}`
+    : `${item.capability}/${item.chart}/${item.variant}`;
+  const publicFigure = ready
+    ? `<figure><figcaption>User-facing</figcaption><img src="${escapeHtml(item.userFacing)}" alt="${escapeHtml(`${id} user-facing`)}"></figure>`
+    : `<div class="placeholder"><span>User-facing</span><strong>Waiting for primitive approval</strong></div>`;
+  const phase = item.phase === null || item.phase === undefined
+    ? ""
+    : `<span class="phase">${escapeHtml(displayName(item.phase))}</span>`;
+  return `<article class="variant">
+    <div class="variant-heading">
+      <h4>${escapeHtml(item.title)}</h4>
+      <div class="badges">${phase}<span class="status ${ready ? "ready" : "awaiting"}">${escapeHtml(item.status)}</span></div>
+    </div>
+    <code>${escapeHtml(id)}</code>
+    <div class="call-chain">
+      <div class="call-chain-label">Target user-facing call chain</div>
+      <pre><code>${escapeHtml(item.userFacingCallChain)}</code></pre>
+    </div>
+    <div class="pair">
+      <figure><figcaption>Primitive</figcaption><img src="${escapeHtml(item.primitive)}" alt="${escapeHtml(`${id} primitive`)}"></figure>
+      ${publicFigure}
+    </div>
+  </article>`;
+}
+
+function renderSections(variants, roadmap) {
+  if (roadmap === "roadmap2") {
+    const groups = new Map();
+    for (const variant of variants) {
+      const items = groups.get(variant.chart) ?? [];
+      items.push(variant);
+      groups.set(variant.chart, items);
+    }
+    return [...groups.entries()].map(([chart, items]) => `<section>
+      <h2>${escapeHtml(displayName(chart))}</h2>
+      ${items.map(renderVariantCard).join("\n")}
+    </section>`).join("\n");
   }
 
-  const sections = [...groups.entries()].map(([chart, items]) => {
-    const cards = items.map(item => {
-      const ready = item.userFacing !== null;
-      const publicFigure = ready
-        ? `<figure><figcaption>User-facing</figcaption><img src="${escapeHtml(item.userFacing)}" alt="${escapeHtml(`${chart} ${item.variant} user-facing`)}"></figure>`
-        : `<div class="placeholder"><span>User-facing</span><strong>Waiting for primitive approval</strong></div>`;
-      return `<article class="variant">
-        <div class="variant-heading">
-          <h3>${escapeHtml(item.title)}</h3>
-          <span class="status ${ready ? "ready" : "awaiting"}">${escapeHtml(item.status)}</span>
-        </div>
-        <code>${escapeHtml(`${chart}/${item.variant}`)}</code>
-        <div class="call-chain">
-          <div class="call-chain-label">Target user-facing call chain</div>
-          <pre><code>${escapeHtml(item.userFacingCallChain)}</code></pre>
-        </div>
-        <div class="pair">
-          <figure><figcaption>Primitive</figcaption><img src="${escapeHtml(item.primitive)}" alt="${escapeHtml(`${chart} ${item.variant} primitive`)}"></figure>
-          ${publicFigure}
-        </div>
-      </article>`;
-    }).join("\n");
-    return `<section>
-      <h2>${escapeHtml(displayName(chart))}</h2>
-      ${cards}
-    </section>`;
-  }).join("\n");
+  const capabilities = new Map();
+  for (const variant of variants) {
+    const charts = capabilities.get(variant.capability) ?? new Map();
+    const items = charts.get(variant.chart) ?? [];
+    items.push(variant);
+    charts.set(variant.chart, items);
+    capabilities.set(variant.capability, charts);
+  }
+  return [...capabilities.entries()].map(([capability, charts]) => `<section>
+    <div class="capability-heading">
+      <h2>${escapeHtml(displayName(capability))}</h2>
+      <code>${escapeHtml(capability)}</code>
+    </div>
+    ${[...charts.entries()].map(([chart, items]) => `<div class="chart-group">
+      <h3>${escapeHtml(displayName(chart))}</h3>
+      ${items.map(renderVariantCard).join("\n")}
+    </div>`).join("\n")}
+  </section>`).join("\n");
+}
 
-  const content = sections || `<div class="empty">No Roadmap 2 PNG artifacts yet.</div>`;
+export function renderRoadmapGallery(variants, { roadmap } = {}) {
+  const config = roadmapConfig(roadmap);
+  const sections = renderSections(variants, roadmap);
+  const content = sections || `<div class="empty">${config.emptyMessage}</div>`;
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ggaction Roadmap 2 Gallery</title>
+  <title>ggaction Roadmap ${config.number} Gallery</title>
   <style>
     :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #f5f7fb; color: #172033; }
     * { box-sizing: border-box; }
@@ -152,10 +242,13 @@ export function renderRoadmap2Gallery(variants) {
     header p { margin: 0; color: #cbd5e1; }
     main { width: min(1440px, 100%); margin: 0 auto; padding: 28px clamp(16px, 4vw, 56px) 64px; }
     section { margin-bottom: 36px; }
-    section > h2 { margin: 0 0 14px; font-size: 24px; }
+    section > h2, .capability-heading h2 { margin: 0 0 14px; font-size: 24px; }
+    .capability-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .chart-group > h3 { margin: 20px 0 12px; font-size: 20px; }
     .variant { padding: 20px; margin-bottom: 18px; border: 1px solid #dce2eb; border-radius: 16px; background: white; box-shadow: 0 8px 28px rgb(23 32 51 / 7%); }
     .variant-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .variant h3 { margin: 0; font-size: 19px; }
+    .variant h4 { margin: 0; font-size: 19px; }
+    .badges { display: flex; align-items: center; gap: 8px; }
     code { display: inline-block; margin: 8px 0 16px; color: #526078; }
     .call-chain { margin: 0 0 18px; overflow: hidden; border: 1px solid #dce2eb; border-radius: 12px; background: #111827; }
     .call-chain-label { padding: 9px 12px; border-bottom: 1px solid #334155; color: #cbd5e1; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
@@ -164,6 +257,7 @@ export function renderRoadmap2Gallery(variants) {
     .status { padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
     .status.ready { color: #166534; background: #dcfce7; }
     .status.awaiting { color: #92400e; background: #fef3c7; }
+    .phase { padding: 5px 10px; border-radius: 999px; color: #1e3a8a; background: #dbeafe; font-size: 12px; font-weight: 700; }
     .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
     figure, .placeholder { min-width: 0; margin: 0; padding: 12px; border: 1px solid #e5e9f0; border-radius: 12px; background: #fafbfc; }
     figcaption, .placeholder span { display: block; margin-bottom: 10px; color: #526078; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
@@ -171,12 +265,12 @@ export function renderRoadmap2Gallery(variants) {
     .placeholder { min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #64748b; }
     .placeholder span { margin: 0 0 10px; }
     .empty { padding: 48px; border: 1px dashed #aeb8c8; border-radius: 16px; text-align: center; background: white; color: #64748b; }
-    @media (max-width: 760px) { .pair { grid-template-columns: 1fr; } .variant-heading { align-items: flex-start; flex-direction: column; } }
+    @media (max-width: 760px) { .pair { grid-template-columns: 1fr; } .variant-heading, .capability-heading { align-items: flex-start; flex-direction: column; } .badges { align-items: flex-start; flex-wrap: wrap; } }
   </style>
 </head>
 <body>
   <header>
-    <h1>Roadmap 2 Visual Gallery</h1>
+    <h1>Roadmap ${config.number} Visual Gallery</h1>
     <p>Primitive-first chart variants and their user-facing equivalents.</p>
   </header>
   <main>${content}</main>
@@ -185,22 +279,35 @@ export function renderRoadmap2Gallery(variants) {
 `;
 }
 
-export async function generateRoadmap2Gallery({
+export function renderRoadmap2Gallery(variants) {
+  return renderRoadmapGallery(variants, { roadmap: "roadmap2" });
+}
+
+export async function generateRoadmapGallery({ roadmap, root, output } = {}) {
+  const config = roadmapConfig(roadmap);
+  const artifactRoot = root ?? config.root;
+  const galleryOutput = output ?? path.join(artifactRoot, "index.html");
+  await mkdir(artifactRoot, { recursive: true });
+  const variants = await collectRoadmapVariants({ roadmap, root: artifactRoot });
+  await writeFile(galleryOutput, renderRoadmapGallery(variants, { roadmap }));
+  return Object.freeze({ output: galleryOutput, variants });
+}
+
+export function generateRoadmap2Gallery({
   root = ROADMAP2_ARTIFACT_ROOT,
   output = path.join(root, "index.html")
 } = {}) {
-  await mkdir(root, { recursive: true });
-  const variants = await collectRoadmap2Variants(root);
-  await writeFile(output, renderRoadmap2Gallery(variants));
-  return Object.freeze({ output, variants });
+  return generateRoadmapGallery({ roadmap: "roadmap2", root, output });
 }
 
 if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href
 ) {
-  const { output, variants } = await generateRoadmap2Gallery();
-  process.stdout.write(
-    `generated Roadmap 2 gallery with ${variants.length} variant(s): ${output}\n`
-  );
+  for (const roadmap of ["roadmap2", "roadmap3"]) {
+    const { output, variants } = await generateRoadmapGallery({ roadmap });
+    process.stdout.write(
+      `generated ${roadmap} gallery with ${variants.length} variant(s): ${output}\n`
+    );
+  }
 }

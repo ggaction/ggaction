@@ -17,6 +17,40 @@ const DATA_ALIASES = Object.freeze([
 ]);
 const VALUE_ALIASES = Object.freeze(["pointShapes"]);
 
+function normalizeArtifactScope(artifact, label) {
+  if (artifact === false) return false;
+  if (artifact === true) return Object.freeze({ roadmap: "roadmap2" });
+  if (artifact === null || typeof artifact !== "object" || Array.isArray(artifact)) {
+    throw new TypeError(`${label} artifact must be a boolean or object.`);
+  }
+  const allowed = new Set(["roadmap", "phase", "capability"]);
+  for (const key of Object.keys(artifact)) {
+    if (!allowed.has(key)) {
+      throw new TypeError(`${label} has unknown artifact option "${key}".`);
+    }
+  }
+  if (artifact.roadmap === "roadmap2") {
+    if (Object.keys(artifact).length !== 1) {
+      throw new TypeError(`${label} Roadmap 2 artifact only accepts roadmap.`);
+    }
+    return Object.freeze({ roadmap: "roadmap2" });
+  }
+  if (
+    artifact.roadmap !== "roadmap3" ||
+    typeof artifact.phase !== "string" ||
+    typeof artifact.capability !== "string"
+  ) {
+    throw new TypeError(
+      `${label} Roadmap 3 artifact requires roadmap, phase, and capability.`
+    );
+  }
+  return Object.freeze({
+    roadmap: "roadmap3",
+    phase: artifact.phase,
+    capability: artifact.capability
+  });
+}
+
 export function defineVisualVariant({
   chart,
   variant,
@@ -64,6 +98,7 @@ export function defineVisualVariant({
   if (userFacing !== undefined && typeof userFacing !== "function") {
     throw new TypeError(`${chart}/${variant} userFacing must be a program factory.`);
   }
+  const artifactScope = normalizeArtifactScope(artifact, `${chart}/${variant}`);
   return Object.freeze({
     chart,
     variant,
@@ -75,7 +110,7 @@ export function defineVisualVariant({
     height,
     colors,
     regions,
-    artifact
+    artifact: artifactScope
   });
 }
 
@@ -116,7 +151,7 @@ function renderOptions(variant, kind) {
     return {
       ...shared,
       artifact: {
-        roadmap: "roadmap2",
+        ...variant.artifact,
         chart: variant.chart,
         variant: variant.variant,
         kind,

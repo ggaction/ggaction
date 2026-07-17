@@ -5,7 +5,7 @@ import { readFile } from "node:fs/promises";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { renderToPNG } from "ggaction/png";
 
-import { ensureRoadmap2VariantMetadata } from "./artifact-metadata.js";
+import { ensureVariantMetadata } from "./artifact-metadata.js";
 import { resolvePngArtifactPath } from "./artifact-paths.js";
 
 const signature = [137, 80, 78, 71, 13, 10, 26, 10];
@@ -30,7 +30,7 @@ export async function assertRenderedPNG(
 ) {
   const output = resolvePngArtifactPath({ name, artifact });
   if (artifact !== undefined) {
-    await ensureRoadmap2VariantMetadata(artifact);
+    await ensureVariantMetadata(artifact);
   }
   const result = await renderToPNG(program, { output, pixelRatio });
   const png = await readFile(result.output);

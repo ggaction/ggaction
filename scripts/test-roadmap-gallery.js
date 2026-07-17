@@ -4,18 +4,12 @@ import { pathToFileURL } from "node:url";
 
 import { chromium } from "playwright";
 
-import { ROADMAP2_ARTIFACT_ROOT } from "../test/support/artifact-paths.js";
-
-const gallery = path.join(ROADMAP2_ARTIFACT_ROOT, "index.html");
-const screenshots = path.resolve(
+import {
   ROADMAP2_ARTIFACT_ROOT,
-  "../../roadmap2-gallery"
-);
-await mkdir(screenshots, { recursive: true });
+  ROADMAP3_ARTIFACT_ROOT
+} from "../test/support/artifact-paths.js";
 
-const browser = await chromium.launch({ headless: true });
-const errors = [];
-const requiredScatterVariants = Object.freeze([
+const requiredRoadmap2Variants = Object.freeze([
   "cars-scatterplot/baseline",
   "cars-scatterplot/categorical-palette",
   "cars-scatterplot/continuous-color-gradient",
@@ -26,47 +20,54 @@ const requiredScatterVariants = Object.freeze([
   "cars-scatterplot/shape-vocabulary"
 ]);
 
-try {
-  const desktop = await browser.newPage({
-    viewport: { width: 1440, height: 1000 }
-  });
+async function verifyGallery(browser, {
+  roadmap,
+  root,
+  requiredVariants = []
+}) {
+  const number = roadmap === "roadmap2" ? 2 : 3;
+  const gallery = path.join(root, "index.html");
+  const screenshots = path.resolve(root, `../../${roadmap}-gallery`);
+  await mkdir(screenshots, { recursive: true });
+  const errors = [];
+  const desktop = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   desktop.on("console", message => {
     if (message.type() === "error") errors.push(`console: ${message.text()}`);
   });
   desktop.on("pageerror", error => errors.push(`page: ${error.message}`));
   await desktop.goto(pathToFileURL(gallery).href, { waitUntil: "networkidle" });
 
-  if (await desktop.title() !== "ggaction Roadmap 2 Gallery") {
-    throw new Error("Roadmap 2 gallery title is incorrect.");
-  }
-  if (await desktop.locator("article.variant").count() === 0) {
-    throw new Error("Roadmap 2 gallery has no chart variants.");
+  if (await desktop.title() !== `ggaction Roadmap ${number} Gallery`) {
+    throw new Error(`Roadmap ${number} gallery title is incorrect.`);
   }
   const variants = desktop.locator("article.variant");
-  const statuses = desktop.locator(".status.ready, .status.awaiting");
-  if (await statuses.count() !== await variants.count()) {
-    throw new Error("Every Roadmap 2 variant must show one review status.");
+  const variantCount = await variants.count();
+  if (requiredVariants.length > 0 && variantCount === 0) {
+    throw new Error(`Roadmap ${number} gallery has no chart variants.`);
   }
-  const renderedVariantIds = await variants.locator(":scope > code")
-    .allTextContents();
-  for (const variant of requiredScatterVariants) {
+  const statuses = desktop.locator(".status.ready, .status.awaiting");
+  if (await statuses.count() !== variantCount) {
+    throw new Error(`Every Roadmap ${number} variant must show one review status.`);
+  }
+  const renderedVariantIds = await variants.locator(":scope > code").allTextContents();
+  for (const variant of requiredVariants) {
     if (!renderedVariantIds.includes(variant)) {
-      throw new Error(`Roadmap 2 gallery is missing required scatterplot variant ${variant}.`);
+      throw new Error(`Roadmap ${number} gallery is missing required variant ${variant}.`);
     }
     const card = variants.filter({ hasText: variant });
     if (await card.count() !== 1) {
-      throw new Error(`required scatterplot variant ${variant} must have exactly one card.`);
+      throw new Error(`Required variant ${variant} must have exactly one card.`);
     }
     if (await card.locator(".status.ready").count() !== 1) {
-      throw new Error(`required scatterplot variant ${variant} is not ready for review.`);
+      throw new Error(`Required variant ${variant} is not ready for review.`);
     }
     if (await card.locator("img").count() !== 2) {
-      throw new Error(`required scatterplot variant ${variant} must show one primitive/public pair.`);
+      throw new Error(`Required variant ${variant} must show one primitive/public pair.`);
     }
   }
   const callChains = desktop.locator(".call-chain pre code");
-  if (await callChains.count() !== await desktop.locator("article.variant").count()) {
-    throw new Error("Every Roadmap 2 variant must show one target call chain.");
+  if (await callChains.count() !== variantCount) {
+    throw new Error(`Every Roadmap ${number} variant must show one target call chain.`);
   }
   for (let index = 0; index < await callChains.count(); index += 1) {
     if ((await callChains.nth(index).textContent()).trim().length === 0) {
@@ -80,11 +81,15 @@ try {
     );
     if (!loaded) throw new Error(`Gallery image ${index} did not load.`);
   }
-  const desktopColumns = await desktop.locator(".pair").first().evaluate(
-    node => getComputedStyle(node).gridTemplateColumns.split(" ").length
-  );
-  if (desktopColumns !== 2) {
-    throw new Error("Desktop gallery must render a two-column pair.");
+  if (variantCount > 0) {
+    const desktopColumns = await desktop.locator(".pair").first().evaluate(
+      node => getComputedStyle(node).gridTemplateColumns.split(" ").length
+    );
+    if (desktopColumns !== 2) {
+      throw new Error("Desktop gallery must render a two-column pair.");
+    }
+  } else if (await desktop.locator(".empty").count() !== 1) {
+    throw new Error(`Empty Roadmap ${number} gallery must show its empty state.`);
   }
   const desktopOverflows = await desktop.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth
@@ -97,19 +102,18 @@ try {
     fullPage: true
   });
 
-  const mobile = await browser.newPage({
-    viewport: { width: 390, height: 844 }
-  });
+  const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await mobile.goto(pathToFileURL(gallery).href, { waitUntil: "networkidle" });
-  const mobileColumns = await mobile.locator(".pair").first().evaluate(
-    node => getComputedStyle(node).gridTemplateColumns.split(" ").length
-  );
-  if (mobileColumns !== 1) {
-    throw new Error("Mobile gallery must render a one-column pair.");
-  }
-  const mobileCallChain = mobile.locator(".call-chain pre").first();
-  if (await mobileCallChain.count() !== 1) {
-    throw new Error("Mobile gallery must retain the target call chain.");
+  if (variantCount > 0) {
+    const mobileColumns = await mobile.locator(".pair").first().evaluate(
+      node => getComputedStyle(node).gridTemplateColumns.split(" ").length
+    );
+    if (mobileColumns !== 1) {
+      throw new Error("Mobile gallery must render a one-column pair.");
+    }
+    if (await mobile.locator(".call-chain pre").first().count() !== 1) {
+      throw new Error("Mobile gallery must retain the target call chain.");
+    }
   }
   const mobileOverflows = await mobile.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth
@@ -121,9 +125,23 @@ try {
     path: path.join(screenshots, "mobile.png"),
     fullPage: true
   });
-
+  await desktop.close();
+  await mobile.close();
   if (errors.length > 0) throw new Error(errors.join("\n"));
-  process.stdout.write(`verified Roadmap 2 gallery: ${gallery}\n`);
+  process.stdout.write(`verified Roadmap ${number} gallery: ${gallery}\n`);
+}
+
+const browser = await chromium.launch({ headless: true });
+try {
+  await verifyGallery(browser, {
+    roadmap: "roadmap2",
+    root: ROADMAP2_ARTIFACT_ROOT,
+    requiredVariants: requiredRoadmap2Variants
+  });
+  await verifyGallery(browser, {
+    roadmap: "roadmap3",
+    root: ROADMAP3_ARTIFACT_ROOT
+  });
 } finally {
   await browser.close();
 }

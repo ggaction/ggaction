@@ -6,14 +6,21 @@ import test from "node:test";
 
 import {
   PNG_ARTIFACT_ROOT,
+  createVariantMetadata,
   createRoadmap2VariantMetadata,
   resolvePngArtifactPath
 } from "../../support/artifact-paths.js";
-import { ensureRoadmap2VariantMetadata } from "../../support/artifact-metadata.js";
+import {
+  ensureRoadmap2VariantMetadata,
+  ensureVariantMetadata
+} from "../../support/artifact-metadata.js";
 import { resetPngArtifacts } from "../../support/artifacts.js";
 import {
+  collectRoadmapVariants,
   collectRoadmap2Variants,
+  generateRoadmapGallery,
   generateRoadmap2Gallery,
+  renderRoadmapGallery,
   renderRoadmap2Gallery
 } from "../../../scripts/generate-roadmap-gallery.js";
 
@@ -44,7 +51,34 @@ async function createArtifact(root, chart, variant, kind) {
   await writeFile(path.join(directory, `${kind}.png`), "png");
 }
 
-test("resolves legacy and Roadmap 2 PNG artifact paths", () => {
+async function createRoadmap3Artifact(
+  root,
+  { phase, capability, chart, variant, kind }
+) {
+  const directory = path.join(root, capability, chart, variant);
+  await mkdir(directory, { recursive: true });
+  try {
+    await writeFile(
+      path.join(directory, "variant.json"),
+      `${JSON.stringify({
+        version: 1,
+        roadmap: "roadmap3",
+        phase,
+        capability,
+        chart,
+        variant,
+        title: `${chart} ${variant}`,
+        userFacingCallChain: `chart().createPointMark({ id: "${chart}" });`
+      }, null, 2)}\n`,
+      { flag: "wx" }
+    );
+  } catch (error) {
+    if (error.code !== "EEXIST") throw error;
+  }
+  await writeFile(path.join(directory, `${kind}.png`), "png");
+}
+
+test("resolves legacy, Roadmap 2, and Roadmap 3 PNG artifact paths", () => {
   assert.equal(
     resolvePngArtifactPath({ name: "cars-scatterplot" }),
     path.join(PNG_ARTIFACT_ROOT, "cars-scatterplot.png")
@@ -66,6 +100,26 @@ test("resolves legacy and Roadmap 2 PNG artifact paths", () => {
       "user-facing.png"
     )
   );
+  assert.equal(
+    resolvePngArtifactPath({
+      artifact: {
+        roadmap: "roadmap3",
+        phase: "phase2",
+        capability: "polar-point",
+        chart: "cars-polar-scatterplot",
+        variant: "baseline",
+        kind: "primitive"
+      }
+    }),
+    path.join(
+      PNG_ARTIFACT_ROOT,
+      "roadmap3",
+      "polar-point",
+      "cars-polar-scatterplot",
+      "baseline",
+      "primitive.png"
+    )
+  );
 });
 
 test("rejects ambiguous, unknown, and unsafe artifact paths", () => {
@@ -82,7 +136,7 @@ test("rejects ambiguous, unknown, and unsafe artifact paths", () => {
     /either name or artifact/
   );
   for (const [key, value] of [
-    ["roadmap", "roadmap3"],
+    ["roadmap", "roadmap4"],
     ["chart", "../chart"],
     ["variant", "Not Kebab"],
     ["kind", "public"]
@@ -107,6 +161,58 @@ test("rejects ambiguous, unknown, and unsafe artifact paths", () => {
       }
     }),
     /Unknown artifact option/
+  );
+});
+
+test("requires Roadmap 3 phase and capability metadata", async t => {
+  const root = await temporaryDirectory(t);
+  const artifact = {
+    roadmap: "roadmap3",
+    phase: "phase2",
+    capability: "polar-point",
+    chart: "cars-polar-scatterplot",
+    variant: "baseline",
+    kind: "primitive",
+    title: "Polar Point Baseline",
+    userFacingCallChain: "chart().createPointMark().encodeTheta({ field: \"Acceleration\" });"
+  };
+  assert.deepEqual(createVariantMetadata(artifact), {
+    version: 1,
+    roadmap: "roadmap3",
+    phase: "phase2",
+    capability: "polar-point",
+    chart: "cars-polar-scatterplot",
+    variant: "baseline",
+    title: "Polar Point Baseline",
+    userFacingCallChain: "chart().createPointMark().encodeTheta({ field: \"Acceleration\" });"
+  });
+  assert.throws(
+    () => createVariantMetadata({ ...artifact, phase: undefined }),
+    /artifact\.phase/
+  );
+
+  const first = await ensureVariantMetadata(artifact, { root });
+  const repeated = await ensureVariantMetadata(
+    { ...artifact, kind: "user-facing" },
+    { root }
+  );
+  assert.deepEqual(repeated.metadata, first.metadata);
+  assert.equal(
+    first.file,
+    path.join(
+      root,
+      "polar-point",
+      "cars-polar-scatterplot",
+      "baseline",
+      "variant.json"
+    )
+  );
+  await assert.rejects(
+    ensureVariantMetadata(
+      { ...artifact, kind: "user-facing", phase: "phase3" },
+      { root }
+    ),
+    /Conflicting Roadmap 3 metadata/
   );
 });
 
@@ -237,4 +343,77 @@ test("renders an escaped responsive gallery and writes relative image paths", as
   assert.match(html, /\.\/cars-scatterplot\/baseline\/primitive\.png/);
   assert.match(html, /\.\/cars-scatterplot\/baseline\/user-facing\.png/);
   assert.match(html, /Target user-facing call chain/);
+});
+
+test("collects and renders Roadmap 3 capability hierarchy", async t => {
+  const root = await temporaryDirectory(t);
+  await createRoadmap3Artifact(root, {
+    phase: "phase2",
+    capability: "polar-point",
+    chart: "cars-polar-scatterplot",
+    variant: "baseline",
+    kind: "primitive"
+  });
+  await createRoadmap3Artifact(root, {
+    phase: "phase2",
+    capability: "polar-point",
+    chart: "cars-polar-scatterplot",
+    variant: "baseline",
+    kind: "user-facing"
+  });
+  await createRoadmap3Artifact(root, {
+    phase: "phase6",
+    capability: "program-composition",
+    chart: "two-chart-dashboard",
+    variant: "horizontal",
+    kind: "primitive"
+  });
+
+  const variants = await collectRoadmapVariants({ roadmap: "roadmap3", root });
+  assert.deepEqual(
+    variants.map(item => [
+      item.capability,
+      item.chart,
+      item.variant,
+      item.phase,
+      item.status
+    ]),
+    [
+      [
+        "polar-point",
+        "cars-polar-scatterplot",
+        "baseline",
+        "phase2",
+        "Ready for equivalence review"
+      ],
+      [
+        "program-composition",
+        "two-chart-dashboard",
+        "horizontal",
+        "phase6",
+        "Awaiting visual confirmation"
+      ]
+    ]
+  );
+  assert.equal(
+    variants[0].primitive,
+    "./polar-point/cars-polar-scatterplot/baseline/primitive.png"
+  );
+
+  const html = renderRoadmapGallery(variants, { roadmap: "roadmap3" });
+  assert.match(html, /Roadmap 3 Visual Gallery/);
+  assert.match(html, /Polar Point/);
+  assert.match(html, /Program Composition/);
+  assert.match(
+    html,
+    /polar-point\/cars-polar-scatterplot\/baseline\/primitive\.png/
+  );
+  const output = path.join(root, "index.html");
+  const generated = await generateRoadmapGallery({
+    roadmap: "roadmap3",
+    root,
+    output
+  });
+  assert.equal(generated.variants.length, 2);
+  assert.equal((await readFile(output, "utf8")), html);
 });

@@ -109,7 +109,7 @@ Proposed contract와 target call chain
 
 ```text
 .artifacts/test/png/roadmap3/
-├─ <phase-or-capability>/
+├─ <capability>/
 │  ├─ <chart>/
 │  │  ├─ <variant>/
 │  │  │  ├─ variant.json
@@ -120,6 +120,8 @@ Proposed contract와 target call chain
 └─ index.html
 ```
 
+- Capability는 artifact path의 첫 grouping segment이고 Phase는 `variant.json` metadata로 기록한다. 따라서
+  Phase가 바뀌어도 stable capability artifact identity와 gallery grouping은 유지된다.
 - `variant.json`은 display title, exact target call chain, Phase와 capability를 기록한다.
 - Gallery는 capability → chart → variant 순서로 primitive/public pair와 call chain을 보여준다.
 - Artifact tree는 gitignore하며 executable manifests로 다시 생성할 수 있어야 한다.
