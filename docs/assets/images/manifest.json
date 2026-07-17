@@ -1,70 +1,123 @@
 {
-  "version": 3,
+  "version": 4,
   "pixelRatio": 2,
+  "thumbnailMaxWidth": 640,
   "charts": {
     "cars-scatterplot": {
       "width": 1280,
       "height": 800,
+      "thumbnail": {
+        "width": 640,
+        "height": 400
+      },
       "sourceHash": "591b14f9cee3a3d4a2534311faab3176fa3f8bdaa9577011616856a1a6eae8a4"
     },
     "cars-polar-scatterplot": {
       "width": 1040,
       "height": 1040,
+      "thumbnail": {
+        "width": 640,
+        "height": 640
+      },
       "sourceHash": "6f0dbc4fa23055230d3b56c2bf1c8a55eab26ca5aa86b09d11c598d9c6849b0a"
     },
     "cars-polar-guides": {
       "width": 1240,
       "height": 1240,
+      "thumbnail": {
+        "width": 640,
+        "height": 640
+      },
       "sourceHash": "b8567cb1f4d10c2fb241a3a471eecd5005c88f36f69082832ebadf8199d04a3b"
     },
     "gapminder-polar-trends": {
       "width": 1520,
       "height": 1240,
+      "thumbnail": {
+        "width": 640,
+        "height": 522
+      },
       "sourceHash": "0cfb56009d0ae3c3b6c7f4c8c16115b4a1a37ac6254c0a6eca97168782a2b041"
     },
     "jobs-radar-chart": {
       "width": 1640,
       "height": 1300,
+      "thumbnail": {
+        "width": 640,
+        "height": 507
+      },
       "sourceHash": "62fae7b40548dc56e56a93cb4c236e4490040475e678288b2858d144121e0f81"
     },
     "cars-line-chart": {
       "width": 1440,
       "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 409
+      },
       "sourceHash": "88a4dcaf37e0b70dc565fdb40dc08914daffd998bf02d445698dc7002aa9ae9a"
     },
     "cars-histogram": {
       "width": 864,
       "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 681
+      },
       "sourceHash": "2cc2831d97493a7d7b618d682eecb53aba196247d980e0e2d01e15bf4e826113"
     },
     "jobs-grouped-bar": {
       "width": 1440,
       "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 409
+      },
       "sourceHash": "ecbb4c33b06de41ebcf187d39e81a7b01a7805e00053bc875ea0e18eb3bd13c1"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
       "height": 960,
+      "thumbnail": {
+        "width": 640,
+        "height": 404
+      },
       "sourceHash": "9b6865c3339e9892bc7452574b2e262df49348ee7df0f2de1004bdb1e0f4383c"
     },
     "cars-density-area": {
       "width": 1440,
       "height": 1000,
+      "thumbnail": {
+        "width": 640,
+        "height": 444
+      },
       "sourceHash": "64b867d81e016d930f2019056fef16b569c44922ad11090ac60642f8f988f96d"
     },
     "cars-error-bar": {
       "width": 1440,
       "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 409
+      },
       "sourceHash": "20f26989835755228ae95a5cb9a2e1a214a8036254009b652b9dde53622b0e55"
     },
     "cars-box-plot": {
       "width": 720,
       "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 818
+      },
       "sourceHash": "7b4d04a35ffc2e2b7831c34d42ad0bc6a9f02885427e24aea2f9538ec7bb3a4f"
     },
     "gapminder-error-band": {
       "width": 1520,
       "height": 960,
+      "thumbnail": {
+        "width": 640,
+        "height": 404
+      },
       "sourceHash": "f3042403db9bce4fa248bcf4a2ecac80b99692a56dcde02f5e46b0abc3b30449"
     }
   },
@@ -72,16 +125,28 @@
     "mark-selection-points": {
       "width": 1520,
       "height": 880,
+      "thumbnail": {
+        "width": 640,
+        "height": 371
+      },
       "sourceHash": "35ac1822839011e7b9a70cac8b1e38dbc35e94a4e0a9d2d0c7ddd0c52b726dd1"
     },
     "mark-selection-bars": {
       "width": 864,
       "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 681
+      },
       "sourceHash": "6114bd03003d9444daf1ba4f099278aabf05934f69b57b41d00e3ffb2880ac81"
     },
     "mark-selection-lines": {
       "width": 1440,
       "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 409
+      },
       "sourceHash": "ef2461d1b3c734997af766ca308057c65e4a4fcb3b735e40d66687dfb63d3897"
     }
   }

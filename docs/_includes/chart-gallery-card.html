@@ -2,10 +2,10 @@
 <article>
   <a class="docs-chart-gallery__image" href="{{ example.url | relative_url }}" aria-label="Open {{ example.title }} documentation">
     <img
-      src="{{ example.image | relative_url }}"
+      src="{{ example.thumbnail | relative_url }}"
       alt="{{ example.alt }}"
-      width="{{ example.width }}"
-      height="{{ example.height }}"
+      width="{{ example.thumbnail_width }}"
+      height="{{ example.thumbnail_height }}"
       loading="{% if include.eager %}eager{% else %}lazy{% endif %}"
       {% if include.eager %}fetchpriority="high"{% endif %}
     >

@@ -4,6 +4,9 @@
   alt: Cars scatterplot of horsepower and fuel economy
   width: 1280
   height: 800
+  thumbnail: /assets/images/cars-scatterplot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 400
   caption: Quantitative positions with nominal color.
   summary: Compare two quantitative fields and encode a category with color.
   actions: createPointMark · encodeX · encodeY
@@ -19,6 +22,9 @@
   alt: Aggregate cars line chart grouped by origin
   width: 1440
   height: 920
+  thumbnail: /assets/images/cars-line-chart-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 409
   caption: Temporal aggregate paths with grouped series.
   summary: Aggregate values over time and split the result into series.
   actions: createLineMark · encodeX · encodeY · encodeGroup
@@ -34,6 +40,9 @@
   alt: Grouped bar chart of job percentages
   width: 1440
   height: 920
+  thumbnail: /assets/images/jobs-grouped-bar-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 409
   caption: Aggregate ordinal bars with grouped color layout.
   summary: Aggregate ordinal categories and arrange nominal groups side by side.
   actions: createBarMark · encodeY · encodeColor
@@ -49,6 +58,9 @@
   alt: Stacked histogram of car displacement
   width: 864
   height: 920
+  thumbnail: /assets/images/cars-histogram-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 681
   caption: Binned counts partitioned by a nominal field.
   summary: Bin a quantitative field and count category partitions.
   actions: createBarMark · encodeHistogram · encodeColor
@@ -64,6 +76,9 @@
   alt: Grouped density area chart of car acceleration
   width: 1440
   height: 1000
+  thumbnail: /assets/images/cars-density-area-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 444
   caption: Derived density paths with grouped color and guides.
   summary: Estimate grouped distributions and draw baseline-closed areas.
   actions: createAreaMark · encodeDensity · encodeColor
@@ -79,6 +94,9 @@
   alt: Cars scatterplot with grouped regression lines and confidence bands
   width: 1520
   height: 960
+  thumbnail: /assets/images/cars-regression-scatterplot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 404
   caption: Layered points, derived fits, and confidence bands.
   summary: Layer observations, grouped fits, and confidence bands.
   actions: createPointMark · createRegression
@@ -94,6 +112,9 @@
   alt: Car observations with grouped mean confidence intervals
   width: 1440
   height: 920
+  thumbnail: /assets/images/cars-error-bar-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 409
   caption: Observation points layered with fixed-pixel error-bar caps.
   summary: Keep observations visible while summarizing group uncertainty.
   actions: createErrorBar
@@ -109,6 +130,9 @@
   alt: Life expectancy confidence bands with explicit boundaries
   width: 1520
   height: 960
+  thumbnail: /assets/images/gapminder-error-band-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 404
   caption: Grouped confidence ribbons with lower and upper paths.
   summary: Show interval ribbons with explicit lower and upper boundaries.
   actions: createErrorBand
@@ -124,6 +148,9 @@
   alt: Tukey box plot of fuel economy by origin
   width: 720
   height: 920
+  thumbnail: /assets/images/cars-box-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 818
   caption: Quartile boxes, medians, whiskers, and outlier points.
   summary: Compose quartiles, whiskers, medians, and outlier points.
   actions: createBoxPlot
@@ -138,6 +165,9 @@
   alt: Cars Polar scatterplot using acceleration angle and horsepower radius
   width: 1040
   height: 1040
+  thumbnail: /assets/images/cars-polar-scatterplot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 640
   caption: Quantitative angle and radial position with nominal color.
   summary: Map quantitative fields to clockwise angle and radial distance.
   actions: encodeTheta · encodeR · encodePointRadius
@@ -151,6 +181,9 @@
   alt: Cars Polar scatterplot with circular and radial axes and grids
   width: 1240
   height: 1240
+  thumbnail: /assets/images/cars-polar-guides-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 640
   caption: Polar point positions with readable theta and radius guides.
   summary: Read angle and radial mappings with aligned axes, labels, and grids.
   actions: createGuides · editRadialAxis
@@ -163,6 +196,9 @@
   alt: Open Polar lines showing life-expectancy trends for three countries
   width: 1520
   height: 1240
+  thumbnail: /assets/images/gapminder-polar-trends-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 522
   caption: Ordered theta/radius series with explicit open paths.
   summary: Connect ordered angle and radial values as grouped open paths.
   actions: createLineMark · encodeTheta · encodeR
@@ -176,6 +212,9 @@
   alt: Closed radar paths comparing job shares for men and women
   width: 1640
   height: 1300
+  thumbnail: /assets/images/jobs-radar-chart-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 507
   caption: Nominal theta categories connected as closed series.
   summary: Close nominal-angle series without duplicating the first observation.
   actions: createLineMark · closed
@@ -188,8 +227,12 @@
   alt: Grouped maximum points highlighted as red diamonds
   width: 1520
   height: 880
+  thumbnail: /assets/images/mark-selection-points-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 371
   caption: Final visual items selected and emphasized by their rendered grain.
   summary: Select, filter, and emphasize final point, bar, and line items.
   actions: selectMarks · highlightMarks
   url: /tutorials/mark-selection/
   tutorial_order: 11
+

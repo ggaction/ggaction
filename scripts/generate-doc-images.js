@@ -3,8 +3,11 @@ import { readFile, readdir, writeFile } from "node:fs/promises";
 import { relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { renderToPNG } from "ggaction/png";
 import { publicCharts } from "../examples/registry.js";
+
+const thumbnailMaxWidth = 640;
 
 const dataFiles = Object.freeze({
   cars: new URL("../data/cars.json", import.meta.url),
@@ -33,6 +36,14 @@ export const tutorialImages = publicCharts({ docsGroup: "tutorials" })
 
 const allImages = [...chartImages, ...tutorialImages];
 
+export function docThumbnailDimensions(width, height) {
+  const scale = Math.min(1, thumbnailMaxWidth / width);
+  return {
+    width: Math.round(width * scale),
+    height: Math.round(height * scale)
+  };
+}
+
 async function sourceFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const nested = await Promise.all(entries.map(entry => {
@@ -60,6 +71,7 @@ export async function buildDocImageManifest() {
     {
       width: image.width * 2,
       height: image.height * 2,
+      thumbnail: docThumbnailDimensions(image.width * 2, image.height * 2),
       sourceHash: undefined
     }
   ]));
@@ -77,7 +89,7 @@ export async function buildDocImageManifest() {
     group[chart.id].sourceHash = hash.digest("hex");
   }
 
-  return { version: 3, pixelRatio: 2, ...groups };
+  return { version: 4, pixelRatio: 2, thumbnailMaxWidth, ...groups };
 }
 
 export async function generateDocImages() {
@@ -87,6 +99,18 @@ export async function generateDocImages() {
     );
     await renderToPNG(chart.createProgram(), { output, pixelRatio: 2 });
     process.stdout.write(`generated ${chart.id}.png\n`);
+
+    const image = await loadImage(output);
+    const dimensions = docThumbnailDimensions(image.width, image.height);
+    const thumbnail = createCanvas(dimensions.width, dimensions.height);
+    thumbnail
+      .getContext("2d")
+      .drawImage(image, 0, 0, dimensions.width, dimensions.height);
+    const thumbnailOutput = fileURLToPath(
+      new URL(`../docs/assets/images/${chart.id}-thumb.png`, import.meta.url)
+    );
+    await writeFile(thumbnailOutput, thumbnail.toBuffer("image/png"));
+    process.stdout.write(`generated ${chart.id}-thumb.png\n`);
   }
   const manifest = fileURLToPath(
     new URL("../docs/assets/images/manifest.json", import.meta.url)
