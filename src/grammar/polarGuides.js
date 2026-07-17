@@ -193,11 +193,28 @@ export function resolveRadialAxisTitle({
   frame,
   angle,
   radius = frame.availableRadius / 2,
-  offset
+  offset,
+  position = "inside"
 }) {
   validateFrame(frame);
-  validateNonNegative(radius, "Radial-axis title radius");
   validateNonNegative(offset, "Radial-axis title offset");
+  if (!["inside", "outside"].includes(position)) {
+    throw new Error(`Unknown radial-axis title position "${position}".`);
+  }
+  if (position === "outside") {
+    const { direction } = radialVectors(angle);
+    return own({
+      x: frame.centerX + direction.x * (frame.availableRadius + offset),
+      y: frame.centerY + direction.y * (frame.availableRadius + offset),
+      textAlign: direction.x > 0.25
+        ? "left"
+        : direction.x < -0.25 ? "right" : "center",
+      textBaseline: direction.y > 0.25
+        ? "top"
+        : direction.y < -0.25 ? "bottom" : "middle"
+    });
+  }
+  validateNonNegative(radius, "Radial-axis title radius");
   if (radius > frame.availableRadius) {
     throw new RangeError("Radial-axis title radius must be inside the Polar frame.");
   }

@@ -421,7 +421,7 @@ export interface CreateAxesOptions {
   x?: false | CompleteAxisOptions<XAxisPosition>;
   y?: false | CompleteAxisOptions<YAxisPosition>;
   theta?: false | CompletePolarAxisOptions;
-  radius?: false | CompletePolarAxisOptions;
+  radius?: false | CompleteRadialAxisOptions;
 }
 export interface AxisTickOptions<P extends string>
   extends AxisTickStyleOptions {
@@ -465,10 +465,17 @@ export interface PolarTitleOptions {
   fontFamily?: string;
   fontWeight?: string | number;
 }
+export interface RadialTitleOptions extends PolarTitleOptions {
+  position?: "inside" | "outside";
+}
 export interface CompletePolarAxisOptions extends PolarGuideResourceOptions {
   line?: AxisLineStyleOptions;
   ticksAndLabels?: PolarTicksAndLabelsOptions;
   title?: PolarTitleOptions;
+}
+export interface CompleteRadialAxisOptions
+  extends Omit<CompletePolarAxisOptions, "title"> {
+  title?: RadialTitleOptions;
 }
 export interface EditPolarAxisOptions {
   angle?: number;
@@ -477,6 +484,10 @@ export interface EditPolarAxisOptions {
   labels?: PolarLabelOptions;
   ticksAndLabels?: PolarTicksAndLabelsOptions;
   title?: PolarTitleOptions;
+}
+export interface EditRadialAxisOptions
+  extends Omit<EditPolarAxisOptions, "title"> {
+  title?: RadialTitleOptions;
 }
 
 export interface GridDirectionOptions {
@@ -1476,7 +1487,7 @@ export class ChartProgram {
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
-  createRadialAxis(options?: CompletePolarAxisOptions): ChartProgram;
+  createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
   editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
@@ -1484,7 +1495,7 @@ export class ChartProgram {
   editThetaAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
-  editRadialAxisTitle(options?: PolarTitleOptions): ChartProgram;
+  editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
   createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
   createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
   editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
@@ -1508,7 +1519,7 @@ export class ChartProgram {
   editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
   editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
   editThetaAxis(options: Omit<EditPolarAxisOptions, "angle">): ChartProgram;
-  editRadialAxis(options: EditPolarAxisOptions): ChartProgram;
+  editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
   removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;

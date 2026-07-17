@@ -125,6 +125,10 @@ createAxes
 perimeter labels, and an inferred title. `createRadialAxis()` creates one
 center-to-edge baseline; its `angle` defaults to `90` degrees (right). Both
 support `ticksAndLabels: { count?, values?, ticks?, labels? }` and title style.
+The radial title defaults to `position: "inside"` at the baseline midpoint.
+Use `title: { position: "outside" }` to place it beyond the radial endpoint;
+`offset` is measured from the midpoint normal when inside and from the endpoint
+when outside.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
@@ -158,6 +162,8 @@ Use `editThetaAxis()` for grouped theta component edits. Use
 `editRadialAxis({ angle: 180 })` to move the radial line, ticks, labels, and
 title together. Focused `editThetaAxisLine/Ticks/Labels/Title` and matching
 `editRadialAxis*` actions change one visible component without raw graphic IDs.
+`editRadialAxisTitle({ position: "inside" | "outside" })` switches only the
+radial title placement while preserving its text and style.
 
 ## Removing an axis
 

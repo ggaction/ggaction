@@ -40,6 +40,7 @@ test("creates complete theta and radial axes above marks", () => {
   assert.equal(program.graphicSpec.objects.radialAxisLabels.items.length, 3);
   assert.equal(program.graphicSpec.objects.radialAxisTitle.properties.x, 210);
   assert.equal(program.graphicSpec.objects.radialAxisTitle.properties.y, 158);
+  assert.equal(program.guideConfigs.axis.radius.title.position, "inside");
   const order = graphicDrawOrder(program);
   assert.equal(order.indexOf("point") < order.indexOf("thetaAxisLine"), true);
   assert.equal(order.indexOf("point") < order.indexOf("radialAxisLine"), true);
@@ -87,6 +88,44 @@ test("supports an arbitrary radial-axis angle from the aggregate action", () => 
   assert.equal(Math.abs(line.x2 - 150) < 1e-10, true);
   assert.equal(line.y2, 270);
   assert.equal(program.guideConfigs.axis.radius.layout.angle, 180);
+});
+
+test("places radial titles inside by default and outside only when requested", () => {
+  const inside = polarProgram().createRadialAxis();
+  const outside = polarProgram().createRadialAxis({
+    title: { position: "outside" }
+  });
+  const moved = inside.editRadialAxisTitle({ position: "outside", offset: 12 });
+  const restored = moved.editRadialAxisTitle({ position: "inside", offset: 8 });
+
+  assert.deepEqual(
+    outside.graphicSpec.objects.radialAxisTitle.properties,
+    {
+      x: 278,
+      y: 150,
+      text: "r",
+      fill: "#0f172a",
+      fontSize: 13,
+      fontFamily: "sans-serif",
+      fontWeight: 600,
+      textAlign: "left",
+      textBaseline: "middle"
+    }
+  );
+  assert.equal(moved.graphicSpec.objects.radialAxisTitle.properties.x, 282);
+  assert.equal(moved.guideConfigs.axis.radius.title.position, "outside");
+  assert.deepEqual(
+    restored.graphicSpec.objects.radialAxisTitle,
+    inside.graphicSpec.objects.radialAxisTitle
+  );
+  assert.throws(
+    () => polarProgram().createThetaAxis({ title: { position: "inside" } }),
+    /Unknown createThetaAxis\.title option "position"/
+  );
+  assert.throws(
+    () => inside.editRadialAxisTitle({ position: "sideways" }),
+    /Unknown radial-axis title position/
+  );
 });
 
 test("dispatches createAxes and rematerializes Polar axis consumers", () => {

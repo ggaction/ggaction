@@ -22,7 +22,7 @@ const AXIS_EDIT_OPTIONS = Object.freeze([
   "angle", "line", "ticks", "labels", "ticksAndLabels", "title"
 ]);
 
-function validateAxisArgs(args, operation) {
+function validateAxisArgs(kind, args, operation) {
   validateObject(args, AXIS_OPTIONS, operation);
   if (Object.hasOwn(args, "line")) {
     validateObject(args.line, LINE_EDIT_OPTIONS, `${operation}.line`);
@@ -50,7 +50,13 @@ function validateAxisArgs(args, operation) {
     }
   }
   if (Object.hasOwn(args, "title")) {
-    validateObject(args.title, TITLE_EDIT_OPTIONS, `${operation}.title`);
+    validateObject(
+      args.title,
+      kind === "theta"
+        ? TITLE_EDIT_OPTIONS.filter(option => option !== "position")
+        : TITLE_EDIT_OPTIONS,
+      `${operation}.title`
+    );
   }
 }
 
@@ -60,7 +66,7 @@ function makeCreateAxis(kind) {
     op: operation,
     description: `Create the complete Polar ${kind} axis.`
   }, function (args = {}) {
-    validateAxisArgs(args, operation);
+    validateAxisArgs(kind, args, operation);
     const resources = resolvePolarGuideResources(this, kind, args, operation);
     const angle = resolveAngle(this, kind, args);
     const shared = {
@@ -147,7 +153,13 @@ function validateAxisEditArgs(kind, args, operation) {
     }
   }
   if (Object.hasOwn(args, "title")) {
-    validateObject(args.title, TITLE_EDIT_OPTIONS, `${operation}.title`);
+    validateObject(
+      args.title,
+      kind === "theta"
+        ? TITLE_EDIT_OPTIONS.filter(option => option !== "position")
+        : TITLE_EDIT_OPTIONS,
+      `${operation}.title`
+    );
   }
 }
 

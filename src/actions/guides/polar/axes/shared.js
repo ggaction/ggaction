@@ -26,10 +26,11 @@ export const LABEL_EDIT_OPTIONS = Object.freeze([
 ]);
 export const TITLE_CREATE_OPTIONS = Object.freeze([
   "scale", "coordinate", "angle", "text", "offset", "color", "fontSize",
-  "fontFamily", "fontWeight"
+  "fontFamily", "fontWeight", "position"
 ]);
 export const TITLE_EDIT_OPTIONS = Object.freeze([
-  "text", "offset", "color", "fontSize", "fontFamily", "fontWeight"
+  "text", "offset", "color", "fontSize", "fontFamily", "fontWeight",
+  "position"
 ]);
 
 export function prefix(kind) {

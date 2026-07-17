@@ -328,12 +328,13 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 
 ### Formal values — `editRadialAxisTitle`
 
-- Implemented: `editRadialAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
+- Implemented: `editRadialAxisTitle({ text?, position?: "inside" | "outside", offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editRadialAxisTitle`
 
-- ✅ Covered: inferred/explicit text, offset, appearance and angle movement.
+- ✅ Covered: inferred/explicit text, default inside midpoint, explicit outside endpoint placement, offset,
+  appearance, angle movement, invalid position and immutable round-trip.
 - No proposal; Evidence: Polar axis unit tests.
 
 ## `removeThetaAxis`

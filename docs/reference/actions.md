@@ -93,7 +93,7 @@ interface ChartProgramActions {
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
-  createRadialAxis(options?: CompletePolarAxisOptions): ChartProgram;
+  createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
   editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
@@ -101,7 +101,7 @@ interface ChartProgramActions {
   editThetaAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
-  editRadialAxisTitle(options?: PolarTitleOptions): ChartProgram;
+  editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
   createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
   createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
   editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
@@ -125,7 +125,7 @@ interface ChartProgramActions {
   editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
   editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
   editThetaAxis(options: Omit<EditPolarAxisOptions, "angle">): ChartProgram;
-  editRadialAxis(options: EditPolarAxisOptions): ChartProgram;
+  editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
   removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
@@ -861,10 +861,11 @@ Edit the theta title. [Axes](../api/axes.md)
 ### `editRadialAxisTitle`
 
 ```javascript
-editRadialAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+editRadialAxisTitle({ text?, position?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
 ```
 
-Edit the radial title. [Axes](../api/axes.md)
+Edit the radial title. `position` accepts `"inside"` or `"outside"` and defaults
+to the baseline midpoint inside the plot. [Axes](../api/axes.md)
 
 ### `removeThetaAxis`
 

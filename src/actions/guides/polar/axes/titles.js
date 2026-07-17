@@ -34,7 +34,8 @@ function titleGeometry(program, kind, config) {
     : resolveRadialAxisTitle({
         frame,
         angle: resolveAngle(program, kind, {}),
-        offset: config.offset
+        offset: config.offset,
+        position: config.position
       });
 }
 
@@ -55,6 +56,17 @@ function resolveTitleConfig(kind, args, resources, previous) {
     fontWeight: args.fontWeight ?? previous?.fontWeight ??
       POLAR_AXIS_DEFAULTS.title.fontWeight
   };
+  if (kind === "theta" && Object.hasOwn(args, "position")) {
+    throw new Error("Theta axis title does not support position.");
+  }
+  if (kind === "radius") {
+    config.position = args.position ?? previous?.position ?? "inside";
+    if (!["inside", "outside"].includes(config.position)) {
+      throw new Error(
+        `Unknown radial-axis title position "${config.position}".`
+      );
+    }
+  }
   if (Object.hasOwn(args, "text")) config.inferredText = false;
   validateNonNegativeFinite(config.offset, "Polar axis title offset");
   validatePolarTextStyle(config, `${prefix(kind)} axis title`);

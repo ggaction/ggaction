@@ -114,6 +114,17 @@ test("places approved theta and radial titles relative to their axes", () => {
     textAlign: "center",
     textBaseline: "top"
   });
+  assert.deepEqual(resolveRadialAxisTitle({
+    frame,
+    angle: 90,
+    offset: 8,
+    position: "outside"
+  }), {
+    x: 158,
+    y: 80,
+    textAlign: "left",
+    textBaseline: "middle"
+  });
 });
 
 test("rejects invalid frame, radius, and angle inputs", () => {
@@ -136,5 +147,14 @@ test("rejects invalid frame, radius, and angle inputs", () => {
   assert.throws(
     () => resolveRadialAxisLine({ frame, angle: Infinity }),
     /angle must be finite/
+  );
+  assert.throws(
+    () => resolveRadialAxisTitle({
+      frame,
+      angle: 90,
+      offset: 8,
+      position: "sideways"
+    }),
+    /Unknown radial-axis title position/
   );
 });

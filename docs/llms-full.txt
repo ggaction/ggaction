@@ -5766,6 +5766,10 @@ createAxes
 perimeter labels, and an inferred title. `createRadialAxis()` creates one
 center-to-edge baseline; its `angle` defaults to `90` degrees (right). Both
 support `ticksAndLabels: { count?, values?, ticks?, labels? }` and title style.
+The radial title defaults to `position: "inside"` at the baseline midpoint.
+Use `title: { position: "outside" }` to place it beyond the radial endpoint;
+`offset` is measured from the midpoint normal when inside and from the endpoint
+when outside.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
@@ -5799,6 +5803,8 @@ Use `editThetaAxis()` for grouped theta component edits. Use
 `editRadialAxis({ angle: 180 })` to move the radial line, ticks, labels, and
 title together. Focused `editThetaAxisLine/Ticks/Labels/Title` and matching
 `editRadialAxis*` actions change one visible component without raw graphic IDs.
+`editRadialAxisTitle({ position: "inside" | "outside" })` switches only the
+radial title placement while preserving its text and style.
 
 ## Removing an axis
 
@@ -6949,7 +6955,7 @@ interface ChartProgramActions {
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
-  createRadialAxis(options?: CompletePolarAxisOptions): ChartProgram;
+  createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
   editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
@@ -6957,7 +6963,7 @@ interface ChartProgramActions {
   editThetaAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
-  editRadialAxisTitle(options?: PolarTitleOptions): ChartProgram;
+  editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
   createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
   createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
   editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
@@ -6981,7 +6987,7 @@ interface ChartProgramActions {
   editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
   editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
   editThetaAxis(options: Omit<EditPolarAxisOptions, "angle">): ChartProgram;
-  editRadialAxis(options: EditPolarAxisOptions): ChartProgram;
+  editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
   removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
@@ -7716,10 +7722,11 @@ Edit the theta title. [Axes](../api/axes.md)
 ### `editRadialAxisTitle`
 
 ```javascript
-editRadialAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+editRadialAxisTitle({ text?, position?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
 ```
 
-Edit the radial title. [Axes](../api/axes.md)
+Edit the radial title. `position` accepts `"inside"` or `"outside"` and defaults
+to the baseline midpoint inside the plot. [Axes](../api/axes.md)
 
 ### `removeThetaAxis`
 
