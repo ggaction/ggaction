@@ -3,7 +3,7 @@
 ## 진행 상태
 
 - [x] STEP 1 — Phase 계약과 target dashboard 확정
-- [ ] STEP 2 — Pure concat layout grammar와 reference invariants
+- [x] STEP 2 — Pure concat layout grammar와 reference invariants
 - [ ] STEP 3 — Namespaced child graphic snapshot
 - [ ] STEP 4 — Nested Canvas primitive와 renderer
 - [ ] STEP 5 — Gate G primitive dashboard variants
@@ -93,4 +93,3 @@ Gate G는 다음 세 결과를 승인한다.
 - Parent-owned shared legend 또는 outer-only axes
 - Parent에서 child unit action을 암묵적으로 broadcast하는 기능
 - Child semantic state 병합
-
