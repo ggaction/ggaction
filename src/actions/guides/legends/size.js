@@ -12,12 +12,13 @@ import { resolveLegendGraphicPlacement } from
 
 const SIZE_OPTIONS = Object.freeze(["target", "count"]);
 
-function resolvePoint(program, requested) {
-  const candidates = program.semanticSpec.layers.filter(layer =>
-    layer.mark?.type === "point" &&
-    layer.encoding?.color?.scale !== undefined &&
-    layer.encoding?.shape?.scale !== undefined
-  );
+export function isSizeLegendPoint(layer) {
+  return layer?.mark?.type === "point" &&
+    layer.encoding?.size?.scale !== undefined;
+}
+
+export function resolveSizeLegendPoint(program, requested) {
+  const candidates = program.semanticSpec.layers.filter(isSizeLegendPoint);
   const layer = requested === undefined
     ? candidates.length === 1 ? candidates[0] : undefined
     : (() => {
@@ -27,12 +28,9 @@ function resolvePoint(program, requested) {
   if (layer === undefined) {
     throw new Error(
       requested === undefined
-        ? "Point series legend requires one eligible point mark."
-        : `Unknown point series legend target "${requested}".`
+        ? "Size legend requires one eligible point mark or an explicit target."
+        : `Unknown size legend target "${requested}".`
     );
-  }
-  if (layer.encoding.color.field !== layer.encoding.shape.field) {
-    throw new Error("Point color and shape legends require the same field.");
   }
   return layer;
 }
@@ -171,7 +169,7 @@ export const createSizeLegend = action(
   },
   function (args = {}) {
     validateKeys(args, [...SIZE_OPTIONS, "inheritAppearance"], "createSizeLegend");
-    const layer = resolvePoint(this, args.target);
+    const layer = resolveSizeLegendPoint(this, args.target);
     const encoding = layer.encoding?.size;
     if (encoding?.scale === undefined) {
       throw new Error(`Point mark "${layer.id}" requires a size encoding.`);

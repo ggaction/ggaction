@@ -27,11 +27,14 @@ type TitleWrap = "word" | "character";
 - Signature: `createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient? })`.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다. Sequential gradient는
   point와 aggregate bar를 지원한다.
-- `channels`: unique compatible subset of `"color" | "strokeDash" | "shape" | "opacity"`. 생략하면
+- `channels`: unique compatible subset of `"color" | "strokeDash" | "shape" | "size" | "opacity"`. 생략하면
   target의 compatible channels를 추론한다. Sequential color는 gradient, field-driven opacity는 sampled
   point block을 선택한다. Opacity는 단독 channel만 지원한다.
 - Point의 explicit color-only selection은 color swatch legend를 만들고, shape 또는 composite channel
   선택은 typed point series legend를 만든다.
+- Explicit `["size"]` 또는 유일한 size-only point는 categorical dispatch보다 먼저 standalone size legend를
+  선택한다. Multiple size points는 explicit target을 요구한다. Standalone은 right만 지원하고 combined
+  point-series+size block은 right/left를 지원한다.
 - `position`: categorical과 continuous color/opacity는 left를 포함한 네 방향을 지원한다.
   combined point-size legend는 right/left side position을 사용한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
@@ -64,7 +67,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly ("color" | "strokeDash" | "shape" | "opacity")[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly ("color" | "strokeDash" | "shape" | "size" | "opacity")[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -76,10 +79,13 @@ type TitleWrap = "word" | "character";
 - `channels`
   - ✅ Covered: color, strokeDash, color+strokeDash, point color-only swatch, point color+shape,
     duplicates/incompatible combinations.
+  - ✅ Covered: explicit/inferred standalone point size, createGuides inference, multiple-target ambiguity and
+    unchanged composite point-series+size dispatch.
   - ✅ Covered: opacity as one continuous guide channel; constant opacity and incompatible mixes rejected.
 - `position`
   - ✅ Covered: omission→`"right"`, `"right"`, `"bottom"`, `"top"`, invalid value.
   - ✅ Covered: `"left"` for categorical, point-composite/size, gradient and opacity.
+  - ✅ Covered: standalone size right and unsupported standalone left rejection.
 - `align`
   - ✅ Covered: top/bottom `"left" | "center" | "right"`, right center-only and invalid combinations.
 - `direction`
@@ -157,8 +163,8 @@ type TitleWrap = "word" | "character";
 - Effect: applicable axes → grid → legend wrapped actions을 deterministic order로 호출한다. title은 guide가
   아니므로 포함하지 않는다.
 - 오류: explicit/automatic selection 결과가 하나도 없거나 child resource inference가 ambiguous하면 거부한다.
-- Coverage: `test/unit/actions/guides/guide-collection-actions.test.js`와 regression/density guide tests가
-  chart-type applicability, forwarding, opt-out, ambiguity와 trace를 검증한다.
+- Coverage: `test/unit/actions/guides/guide-collection-actions.test.js`와 size/regression/density guide tests가
+  chart-type applicability, standalone size inference, forwarding, opt-out, ambiguity와 trace를 검증한다.
 
 ### Formal values — `createGuides`
 

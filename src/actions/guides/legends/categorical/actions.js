@@ -4,6 +4,7 @@ import { noOptions, resolveLayout, activeConfig } from "./layout.js";
 import { normalizeOptions } from "./options.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
+import { isSizeLegendPoint } from "../size.js";
 import {
   resolveCurrentDefinition,
   resolveDefinition,
@@ -176,6 +177,46 @@ export const createLegend = action(
     const channels = args.channels;
     if (channels !== undefined && !Array.isArray(channels)) {
       throw new TypeError("createLegend channels must be an array.");
+    }
+    const explicitSize = channels?.length === 1 && channels[0] === "size";
+    const requestedSizeLayer = args.target === undefined
+      ? undefined
+      : findLayer(this, args.target);
+    const sizeCandidates = this.semanticSpec.layers.filter(isSizeLegendPoint);
+    const hasNonSizeLegendEncoding = layer =>
+      ["color", "shape", "strokeDash", "opacity"].some(channel =>
+        layer.encoding?.[channel]?.scale !== undefined
+      );
+    const hasNonSizeLegendCandidate = this.semanticSpec.layers.some(
+      hasNonSizeLegendEncoding
+    );
+    const inferredSize = channels === undefined && (
+      (args.target !== undefined && isSizeLegendPoint(requestedSizeLayer) &&
+        !hasNonSizeLegendEncoding(requestedSizeLayer)) ||
+      (args.target === undefined && sizeCandidates.length === 1 &&
+        !hasNonSizeLegendCandidate)
+    );
+    if (explicitSize || inferredSize) {
+      const {
+        target,
+        count,
+        position,
+        channels: _channels,
+        ...unsupported
+      } = args;
+      const unsupportedKeys = Object.keys(unsupported);
+      if (unsupportedKeys.length > 0) {
+        throw new Error(
+          `Standalone size legend does not support option "${unsupportedKeys[0]}".`
+        );
+      }
+      if (position !== undefined && position !== "right") {
+        throw new Error('Standalone size legends currently require position "right".');
+      }
+      return this.createSizeLegend({
+        ...(target === undefined ? {} : { target }),
+        ...(count === undefined ? {} : { count })
+      });
     }
     const opacityCandidates = this.semanticSpec.layers.filter(layer =>
       layer.mark?.type === "point" && layer.encoding?.opacity?.scale !== undefined

@@ -26,6 +26,17 @@ color scales.
 program.createLegend();
 ~~~
 
+A size encoding is independently eligible; color and shape are not required:
+
+~~~javascript
+program.createLegend({ channels: ["size"], position: "right", count: 4 });
+~~~
+
+With one size-encoded point mark, both `createLegend()` and `createGuides()`
+infer the same block. Multiple size-encoded point marks require `target`.
+Standalone size legends currently use the right position; a size block paired
+with a categorical point legend may use either side.
+
 Every categorical legend uses the same right-side default:
 
 | Mark | Channels | Position | Symbol |
@@ -36,7 +47,7 @@ Every categorical legend uses the same right-side default:
 | grouped area | `color` | `right` | swatch |
 | point | explicitly selected `color` only | `right` | swatch |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
-| quantitative point size | `size` | `right`, below point series | five equal-area circles |
+| quantitative point size | `size` | `right`, standalone or below point series | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
 | discretized quantitative point color | `color` | `right` | ordered interval swatches |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |

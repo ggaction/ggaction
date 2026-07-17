@@ -52,8 +52,9 @@ program.createGuides({ legend: false });
 
 Axes are selected when an x or y encoding exists. A horizontal grid is selected
 when a y encoding exists; vertical grid remains off unless requested. A legend
-is selected for line color/stroke-dash, bar color, area color, or compatible point
-color+shape encodings. A point size encoding adds a second quantitative block.
+is selected for line color/stroke-dash, bar color, area color, compatible point
+color+shape encodings, or a standalone quantitative point-size encoding. Size
+adds a second quantitative block when a point-series legend also exists.
 
 Density areas can request both grids and forward the complete top-legend
 layout through the aggregate:

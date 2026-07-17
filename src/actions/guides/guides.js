@@ -81,6 +81,8 @@ function hasLegendEncoding(program) {
       (layer.mark?.type === "point" &&
         layer.encoding?.opacity?.scale !== undefined) ||
       (layer.mark?.type === "point" &&
+        layer.encoding?.size?.scale !== undefined) ||
+      (layer.mark?.type === "point" &&
         layer.encoding?.color?.scale !== undefined &&
         (layer.encoding?.shape?.scale !== undefined ||
           ["sequential", "quantize", "quantile", "threshold"].includes(

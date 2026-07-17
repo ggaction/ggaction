@@ -864,7 +864,7 @@ export interface LegendBorderOptions {
 
 export interface LegendOptions {
   target?: string;
-  channels?: readonly ("color" | "strokeDash" | "shape" | "opacity")[];
+  channels?: readonly ("color" | "strokeDash" | "shape" | "size" | "opacity")[];
   position?: "right" | "left" | "bottom" | "top";
   align?: "left" | "center" | "right";
   direction?: "horizontal" | "vertical";
