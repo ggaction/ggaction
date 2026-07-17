@@ -5,84 +5,84 @@
     "cars-scatterplot": {
       "width": 1280,
       "height": 800,
-      "sourceHash": "3261a5c2d36348c48da1caa56a859e42cc56a65fd09f931c390a7a251ba13e79"
+      "sourceHash": "591b14f9cee3a3d4a2534311faab3176fa3f8bdaa9577011616856a1a6eae8a4"
     },
     "cars-polar-scatterplot": {
       "width": 1040,
       "height": 1040,
-      "sourceHash": "cef1070450b3343bc88c04e59ca06c7e32e4470f6bb398abf3fbde18b32e91e8"
+      "sourceHash": "6f0dbc4fa23055230d3b56c2bf1c8a55eab26ca5aa86b09d11c598d9c6849b0a"
     },
     "cars-polar-guides": {
       "width": 1240,
       "height": 1240,
-      "sourceHash": "9b07a08656001d5158bf41d2bf06f4db01c4dfbd0ee88e3697b99ba92c555ca0"
+      "sourceHash": "b8567cb1f4d10c2fb241a3a471eecd5005c88f36f69082832ebadf8199d04a3b"
     },
     "gapminder-polar-trends": {
       "width": 1520,
       "height": 1240,
-      "sourceHash": "95752a51cebca9a621a4094f9df680ba6abe256afe872bfd619c2276c61e1233"
+      "sourceHash": "0cfb56009d0ae3c3b6c7f4c8c16115b4a1a37ac6254c0a6eca97168782a2b041"
     },
     "jobs-radar-chart": {
       "width": 1640,
       "height": 1300,
-      "sourceHash": "e4faeade699b0d3c0029173ddf5cf0b801ce3acd238965e3fbdfe6a92d5293f0"
+      "sourceHash": "62fae7b40548dc56e56a93cb4c236e4490040475e678288b2858d144121e0f81"
     },
     "cars-line-chart": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "6ad55cf736435d9c8119515e644d3539846c89682b6171abb6997fac32e18b95"
+      "sourceHash": "88a4dcaf37e0b70dc565fdb40dc08914daffd998bf02d445698dc7002aa9ae9a"
     },
     "cars-histogram": {
       "width": 864,
       "height": 920,
-      "sourceHash": "49d89e11b4aa0f3501cd4ba68a980ad2b8d84f29e5c528cec74bc5d7fa4f4933"
+      "sourceHash": "2cc2831d97493a7d7b618d682eecb53aba196247d980e0e2d01e15bf4e826113"
     },
     "jobs-grouped-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "b04d13e2ebe6eb7eb4d46670df99206a4e1775148ea01098a497f386e53f0a6e"
+      "sourceHash": "ecbb4c33b06de41ebcf187d39e81a7b01a7805e00053bc875ea0e18eb3bd13c1"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "45d2d4cc74a35c78df0a8a3e78ed4ccce911d0f2b8ff0dbe28d2b94e5c9498d2"
+      "sourceHash": "9b6865c3339e9892bc7452574b2e262df49348ee7df0f2de1004bdb1e0f4383c"
     },
     "cars-density-area": {
       "width": 1440,
       "height": 1000,
-      "sourceHash": "29028973ffbde67dc7e9d2842c8f552258376b2f4d3502b151e9c482b77ecd08"
+      "sourceHash": "64b867d81e016d930f2019056fef16b569c44922ad11090ac60642f8f988f96d"
     },
     "cars-error-bar": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "cc6b4ad41c6bf772711d7487094cc4744e1dc04f6c18804766c72e31c84589a6"
+      "sourceHash": "20f26989835755228ae95a5cb9a2e1a214a8036254009b652b9dde53622b0e55"
     },
     "cars-box-plot": {
       "width": 720,
       "height": 920,
-      "sourceHash": "354095cbc82c83e7d0569aee0f995214f440d66d5dd0b4a139e7ac4e5728c214"
+      "sourceHash": "7b4d04a35ffc2e2b7831c34d42ad0bc6a9f02885427e24aea2f9538ec7bb3a4f"
     },
     "gapminder-error-band": {
       "width": 1520,
       "height": 960,
-      "sourceHash": "74be49d3eb92afc1d5d353d1c75686a46c3a15adb1d1a3256f3218bda0cc7bbc"
+      "sourceHash": "f3042403db9bce4fa248bcf4a2ecac80b99692a56dcde02f5e46b0abc3b30449"
     }
   },
   "tutorials": {
     "mark-selection-points": {
       "width": 1520,
       "height": 880,
-      "sourceHash": "e8559f0080bdffe6b0b54d971c5f7a7fab49a951cc735c0ec173587d8392fdfc"
+      "sourceHash": "35ac1822839011e7b9a70cac8b1e38dbc35e94a4e0a9d2d0c7ddd0c52b726dd1"
     },
     "mark-selection-bars": {
       "width": 864,
       "height": 920,
-      "sourceHash": "0f3ee250cee5b047f6047aa7fa9e46083dc188c4446ac6d0e44c133ecec5535a"
+      "sourceHash": "6114bd03003d9444daf1ba4f099278aabf05934f69b57b41d00e3ffb2880ac81"
     },
     "mark-selection-lines": {
       "width": 1440,
       "height": 920,
-      "sourceHash": "c1d661807ac1c50f73ea6fca3ed6892ad279c6b7a9919d26c532bbd39c46742f"
+      "sourceHash": "ef2461d1b3c734997af766ca308057c65e4a4fcb3b735e40d66687dfb63d3897"
     }
   }
 }

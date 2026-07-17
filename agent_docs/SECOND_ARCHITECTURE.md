@@ -536,6 +536,11 @@ backend-neutral `M/L/C/Z` command로 만든다. Sweep은 최대 90도인 cubic s
 Canvas renderer는 angle, radius, sector 또는 arc primitive를 해석하지 않는다. Polar guide
 circle도 이 grammar를 재사용하며 기존 four-cubic circle command 계약을 유지한다.
 
+Polar axis action은 `actions/guides/polar/axes/`에서 `shared`, `lines`, `ticks`,
+`labels`, `titles`, aggregate `facade`로 분리된다. Leaf module은 해당 concrete component와
+materialization config만 소유하고 facade는 validation과 nested action orchestration만
+소유한다. 상위 `polar/axes.js`는 action registration boundary다.
+
 ### Guide와 title
 
 Guide semantic state는 어떤 scale과 coordinate를 설명하는지, 그리고 사용자에게
