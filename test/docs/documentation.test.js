@@ -43,12 +43,12 @@ function dataUrls(relative) {
 
 function chartExampleCatalog() {
   const source = read("docs/_data/chart_examples.yml");
-  return new Map([...source.matchAll(/^([a-z][a-z0-9-]*):\n((?: {2}.+\n?)+)/gm)]
+  return new Map([...source.matchAll(/^- id:\s+([a-z][a-z0-9-]*)\n((?: {2}.+\n?)+)/gm)]
     .map(match => {
       const values = Object.fromEntries([...match[2].matchAll(
-        /^ {2}([a-z]+):\s*(.+)$/gm
+        /^ {2}([a-z_]+):\s*(.+)$/gm
       )].map(property => [property[1], property[2]]));
-      return [match[1], values];
+      return [match[1], { id: match[1], ...values }];
     }));
 }
 
@@ -282,7 +282,7 @@ test("keeps tutorial action flows aligned with public examples", () => {
 test("links every public chart example from entry documentation", () => {
   const readme = read("README.md");
   const gettingStarted = read("docs/getting-started.md");
-  const tutorials = read("docs/tutorials/index.md");
+  const catalog = chartExampleCatalog();
 
   for (const name of [
     "cars-scatterplot",
@@ -299,32 +299,16 @@ test("links every public chart example from entry documentation", () => {
     assert.match(readme, new RegExp(`examples/${name}`));
     assert.match(gettingStarted, new RegExp(`examples/${name}`));
   }
-  for (const name of [
-    "scatterplot",
-    "line-chart",
-    "histogram",
-    "grouped-bar",
-    "regression-scatterplot",
-    "density-area",
-    "error-bar",
-    "error-band",
-    "mark-selection"
-  ]) {
-    assert.match(tutorials, new RegExp(`/tutorials/${name}/`));
-  }
-  const recipes = read("docs/recipes/index.md");
-  for (const name of [
-    "scatterplot",
-    "line-chart",
-    "histogram",
-    "bar-chart",
-    "regression-scatterplot",
-    "density-area",
-    "error-bar",
-    "error-band"
-  ]) {
-    assert.match(recipes, new RegExp(`/recipes/${name}/`));
-  }
+  assert.equal(
+    [...catalog.values()].filter(example => example.tutorial_order).length,
+    11
+  );
+  assert.equal(
+    [...catalog.values()].filter(example => example.recipe_order).length,
+    9
+  );
+  assert.match(read("docs/tutorials/index.md"), /example\.tutorial_order/);
+  assert.match(read("docs/recipes/index.md"), /example\.recipe_order/);
   assert.match(gettingStarted, /point color\s+encoding can produce/);
   assert.match(gettingStarted, /examples\/getting-started/);
 });

@@ -1,98 +1,195 @@
-scatterplot:
+- id: scatterplot
+  title: Scatterplot
   image: /assets/images/cars-scatterplot.png
   alt: Cars scatterplot of horsepower and fuel economy
   width: 1280
   height: 800
   caption: Quantitative positions with nominal color.
+  summary: Compare two quantitative fields and encode a category with color.
+  actions: createPointMark · encodeX · encodeY
   url: /tutorials/scatterplot/
-polar:
-  image: /assets/images/cars-polar-scatterplot.png
-  alt: Cars Polar scatterplot using acceleration angle and horsepower radius
-  width: 1040
-  height: 1040
-  caption: Quantitative angle and radial position with nominal color.
-  url: /tutorials/polar-points/
-polar-guides:
-  image: /assets/images/cars-polar-guides.png
-  alt: Cars Polar scatterplot with circular and radial axes and grids
-  width: 1240
-  height: 1240
-  caption: Polar point positions with readable theta and radius guides.
-  url: /tutorials/polar-points/#add-polar-guides
-polar-line:
-  image: /assets/images/gapminder-polar-trends.png
-  alt: Open Polar lines showing life-expectancy trends for three countries
-  width: 1520
-  height: 1240
-  caption: Ordered theta/radius series with explicit open paths.
-  url: /tutorials/polar-lines/
-radar:
-  image: /assets/images/jobs-radar-chart.png
-  alt: Closed radar paths comparing job shares for men and women
-  width: 1640
-  height: 1300
-  caption: Nominal theta categories connected as closed series.
-  url: /tutorials/polar-lines/#closed-radar-paths
-line:
+  recipe_url: /recipes/scatterplot/
+  home_group: essentials
+  home_order: 1
+  tutorial_order: 1
+  recipe_order: 1
+- id: line
+  title: Line chart
   image: /assets/images/cars-line-chart.png
   alt: Aggregate cars line chart grouped by origin
   width: 1440
   height: 920
   caption: Temporal aggregate paths with grouped series.
+  summary: Aggregate values over time and split the result into series.
+  actions: createLineMark · encodeX · encodeY · encodeGroup
   url: /tutorials/line-chart/
-histogram:
-  image: /assets/images/cars-histogram.png
-  alt: Stacked histogram of car displacement
-  width: 864
-  height: 920
-  caption: Binned counts partitioned by a nominal field.
-  url: /tutorials/histogram/
-bar:
+  recipe_url: /recipes/line-chart/
+  home_group: essentials
+  home_order: 2
+  tutorial_order: 4
+  recipe_order: 2
+- id: bar
+  title: Bar chart
   image: /assets/images/jobs-grouped-bar.png
   alt: Grouped bar chart of job percentages
   width: 1440
   height: 920
   caption: Aggregate ordinal bars with grouped color layout.
+  summary: Aggregate ordinal categories and arrange nominal groups side by side.
+  actions: createBarMark · encodeY · encodeColor
   url: /tutorials/grouped-bar/
-regression:
-  image: /assets/images/cars-regression-scatterplot.png
-  alt: Cars scatterplot with grouped regression lines and confidence bands
-  width: 1520
-  height: 960
-  caption: Layered points, derived fits, and confidence bands.
-  url: /tutorials/regression-scatterplot/
-density:
+  recipe_url: /recipes/bar-chart/
+  home_group: essentials
+  home_order: 3
+  tutorial_order: 6
+  recipe_order: 4
+- id: histogram
+  title: Histogram
+  image: /assets/images/cars-histogram.png
+  alt: Stacked histogram of car displacement
+  width: 864
+  height: 920
+  caption: Binned counts partitioned by a nominal field.
+  summary: Bin a quantitative field and count category partitions.
+  actions: createBarMark · encodeHistogram · encodeColor
+  url: /tutorials/histogram/
+  recipe_url: /recipes/histogram/
+  home_group: essentials
+  home_order: 4
+  tutorial_order: 5
+  recipe_order: 3
+- id: density
+  title: Density area
   image: /assets/images/cars-density-area.png
   alt: Grouped density area chart of car acceleration
   width: 1440
   height: 1000
   caption: Derived density paths with grouped color and guides.
+  summary: Estimate grouped distributions and draw baseline-closed areas.
+  actions: createAreaMark · encodeDensity · encodeColor
   url: /tutorials/density-area/
-error-bar:
+  recipe_url: /recipes/density-area/
+  home_group: essentials
+  home_order: 5
+  tutorial_order: 8
+  recipe_order: 6
+- id: regression
+  title: Regression scatterplot
+  image: /assets/images/cars-regression-scatterplot.png
+  alt: Cars scatterplot with grouped regression lines and confidence bands
+  width: 1520
+  height: 960
+  caption: Layered points, derived fits, and confidence bands.
+  summary: Layer observations, grouped fits, and confidence bands.
+  actions: createPointMark · createRegression
+  url: /tutorials/regression-scatterplot/
+  recipe_url: /recipes/regression-scatterplot/
+  home_group: statistical
+  home_order: 1
+  tutorial_order: 7
+  recipe_order: 5
+- id: error-bar
+  title: Error bar
   image: /assets/images/cars-error-bar.png
   alt: Car observations with grouped mean confidence intervals
   width: 1440
   height: 920
   caption: Observation points layered with fixed-pixel error-bar caps.
+  summary: Keep observations visible while summarizing group uncertainty.
+  actions: createErrorBar
   url: /tutorials/error-bar/
-box:
-  image: /assets/images/cars-box-plot.png
-  alt: Tukey box plot of fuel economy by origin
-  width: 720
-  height: 920
-  caption: Quartile boxes, medians, whiskers, and outlier points.
-  url: /api/box-plots/
-error-band:
+  recipe_url: /recipes/error-bar/
+  home_group: statistical
+  home_order: 2
+  tutorial_order: 9
+  recipe_order: 7
+- id: error-band
+  title: Error band
   image: /assets/images/gapminder-error-band.png
   alt: Life expectancy confidence bands with explicit boundaries
   width: 1520
   height: 960
   caption: Grouped confidence ribbons with lower and upper paths.
+  summary: Show interval ribbons with explicit lower and upper boundaries.
+  actions: createErrorBand
   url: /tutorials/error-band/
-selection:
+  recipe_url: /recipes/error-band/
+  home_group: statistical
+  home_order: 3
+  tutorial_order: 10
+  recipe_order: 8
+- id: box
+  title: Box plot
+  image: /assets/images/cars-box-plot.png
+  alt: Tukey box plot of fuel economy by origin
+  width: 720
+  height: 920
+  caption: Quartile boxes, medians, whiskers, and outlier points.
+  summary: Compose quartiles, whiskers, medians, and outlier points.
+  actions: createBoxPlot
+  url: /recipes/box-plot/
+  recipe_url: /recipes/box-plot/
+  home_group: statistical
+  home_order: 4
+  recipe_order: 9
+- id: polar
+  title: Polar points
+  image: /assets/images/cars-polar-scatterplot.png
+  alt: Cars Polar scatterplot using acceleration angle and horsepower radius
+  width: 1040
+  height: 1040
+  caption: Quantitative angle and radial position with nominal color.
+  summary: Map quantitative fields to clockwise angle and radial distance.
+  actions: encodeTheta · encodeR · encodePointRadius
+  url: /tutorials/polar-points/
+  home_group: coordinates
+  home_order: 1
+  tutorial_order: 2
+- id: polar-guides
+  title: Polar guides
+  image: /assets/images/cars-polar-guides.png
+  alt: Cars Polar scatterplot with circular and radial axes and grids
+  width: 1240
+  height: 1240
+  caption: Polar point positions with readable theta and radius guides.
+  summary: Read angle and radial mappings with aligned axes, labels, and grids.
+  actions: createGuides · editRadialAxis
+  url: /tutorials/polar-points/#add-polar-guides
+  home_group: coordinates
+  home_order: 2
+- id: polar-line
+  title: Polar lines
+  image: /assets/images/gapminder-polar-trends.png
+  alt: Open Polar lines showing life-expectancy trends for three countries
+  width: 1520
+  height: 1240
+  caption: Ordered theta/radius series with explicit open paths.
+  summary: Connect ordered angle and radial values as grouped open paths.
+  actions: createLineMark · encodeTheta · encodeR
+  url: /tutorials/polar-lines/
+  home_group: coordinates
+  home_order: 3
+  tutorial_order: 3
+- id: radar
+  title: Radar chart
+  image: /assets/images/jobs-radar-chart.png
+  alt: Closed radar paths comparing job shares for men and women
+  width: 1640
+  height: 1300
+  caption: Nominal theta categories connected as closed series.
+  summary: Close nominal-angle series without duplicating the first observation.
+  actions: createLineMark · closed
+  url: /tutorials/polar-lines/#closed-radar-paths
+  home_group: coordinates
+  home_order: 4
+- id: selection
+  title: Mark selection and highlighting
   image: /assets/images/mark-selection-points.png
   alt: Grouped maximum points highlighted as red diamonds
   width: 1520
   height: 880
   caption: Final visual items selected and emphasized by their rendered grain.
+  summary: Select, filter, and emphasize final point, bar, and line items.
+  actions: selectMarks · highlightMarks
   url: /tutorials/mark-selection/
+  tutorial_order: 11

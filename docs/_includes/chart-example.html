@@ -1,4 +1,5 @@
-{% assign example = site.data.chart_examples[include.id] %}
+{% assign examples = site.data.chart_examples | where: "id", include.id %}
+{% assign example = examples | first %}
 <figure class="docs-example-figure">
   <a href="{{ example.url | relative_url }}">
     <img

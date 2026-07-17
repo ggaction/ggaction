@@ -38,137 +38,39 @@ The main, extension, and PNG entry points include TypeScript declarations.
   </a>
 </div>
 
-## Core charts
+## Essential charts
 
-Start with a complete chart whose data relationship matches the question you
-want to answer.
+Start with the most common Cartesian relationships before moving into
+statistical layers or alternate coordinates.
 
 <div class="docs-chart-gallery">
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/scatterplot/" aria-label="Build the cars scatterplot">
-      <img src="./assets/images/cars-scatterplot.png" alt="Cars scatterplot" width="1280" height="800" loading="eager" fetchpriority="high">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/scatterplot/">Scatterplot</a>
-    <p>Compare two quantitative fields and encode a category with color.</p>
-    <span class="docs-chart-gallery__actions"><code>createPointMark</code> <code>encodeX</code> <code>encodeY</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-scatterplot.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/polar-points/" aria-label="Build the cars Polar point chart">
-      <img src="./assets/images/cars-polar-scatterplot.png" alt="Cars Polar scatterplot" width="1040" height="1040" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/polar-points/">Polar points</a>
-    <p>Map quantitative fields to clockwise angle and radial distance.</p>
-    <span class="docs-chart-gallery__actions"><code>encodeTheta</code> <code>encodeR</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-polar-scatterplot.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/polar-points/#add-polar-guides" aria-label="Add axes and grids to the cars Polar point chart">
-      <img src="./assets/images/cars-polar-guides.png" alt="Cars Polar scatterplot with theta and radius guides" width="1240" height="1240" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/polar-points/#add-polar-guides">Polar guides</a>
-    <p>Read angle and radial mappings with aligned axes, ticks, labels, and grids.</p>
-    <span class="docs-chart-gallery__actions"><code>createGuides</code> <code>editRadialAxis</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-polar-guides.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/polar-lines/" aria-label="Build open Polar life-expectancy trends">
-      <img src="./assets/images/gapminder-polar-trends.png" alt="Open Polar life-expectancy trends for three countries" width="1520" height="1240" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/polar-lines/">Polar lines</a>
-    <p>Connect ordered angle and radial values as grouped open paths.</p>
-    <span class="docs-chart-gallery__actions"><code>createLineMark</code> <code>encodeTheta</code> <code>encodeR</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/gapminder-polar-trends.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/polar-lines/#closed-radar-paths" aria-label="Build the closed jobs radar chart">
-      <img src="./assets/images/jobs-radar-chart.png" alt="Closed radar paths comparing job shares" width="1640" height="1300" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/polar-lines/#closed-radar-paths">Radar chart</a>
-    <p>Close nominal-angle series without duplicating the first observation.</p>
-    <span class="docs-chart-gallery__actions"><code>createLineMark</code> <code>closed</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/jobs-radar-chart.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/line-chart/" aria-label="Build the aggregate line chart">
-      <img src="./assets/images/cars-line-chart.png" alt="Cars aggregate line chart" width="1440" height="920" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/line-chart/">Line chart</a>
-    <p>Aggregate values over time and split the result into series.</p>
-    <span class="docs-chart-gallery__actions"><code>createLineMark</code> <code>encodeGroup</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-line-chart.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/histogram/" aria-label="Build the stacked histogram">
-      <img src="./assets/images/cars-histogram.png" alt="Cars stacked histogram" width="864" height="920" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/histogram/">Histogram</a>
-    <p>Bin a quantitative field and count category partitions.</p>
-    <span class="docs-chart-gallery__actions"><code>createBarMark</code> <code>encodeHistogram</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-histogram.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/grouped-bar/" aria-label="Build the grouped bar chart">
-      <img src="./assets/images/jobs-grouped-bar.png" alt="Jobs grouped bar example" width="1440" height="920" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/grouped-bar/">Bar chart</a>
-    <p>Aggregate ordinal categories and arrange nominal groups side by side.</p>
-    <span class="docs-chart-gallery__actions"><code>createBarMark</code> <code>encodeColor</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/jobs-grouped-bar.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/density-area/" aria-label="Build the density area chart">
-      <img src="./assets/images/cars-density-area.png" alt="Cars density area chart" width="1440" height="1000" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/density-area/">Density area</a>
-    <p>Estimate grouped distributions and draw baseline-closed areas.</p>
-    <span class="docs-chart-gallery__actions"><code>createAreaMark</code> <code>encodeDensity</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-density-area.png">View full size</a>
-  </article>
+  {% assign essential_charts = site.data.chart_examples | where: "home_group", "essentials" | sort: "home_order" %}
+  {% for example in essential_charts %}
+    {% include chart-gallery-card.html example=example eager=forloop.first %}
+  {% endfor %}
 </div>
 
 ## Statistical and layered charts
 
-These examples compose ordinary marks and derived data into higher-level
-statistical views.
+Compose ordinary marks and derived data into higher-level statistical views.
 
 <div class="docs-chart-gallery docs-chart-gallery--secondary">
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/regression-scatterplot/" aria-label="Build the regression scatterplot">
-      <img src="./assets/images/cars-regression-scatterplot.png" alt="Cars regression scatterplot with confidence bands" width="1520" height="960" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/regression-scatterplot/">Regression scatterplot</a>
-    <p>Layer observations, grouped fits, and confidence bands.</p>
-    <span class="docs-chart-gallery__actions"><code>createRegression</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-regression-scatterplot.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/error-bar/" aria-label="Build the error-bar overlay">
-      <img src="./assets/images/cars-error-bar.png" alt="Car observations with grouped mean confidence intervals" width="1440" height="920" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/error-bar/">Error bar</a>
-    <p>Keep observations visible while summarizing group uncertainty.</p>
-    <span class="docs-chart-gallery__actions"><code>createErrorBar</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-error-bar.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./api/box-plots/" aria-label="Learn how to build the box plot">
-      <img src="./assets/images/cars-box-plot.png" alt="Fuel economy distribution by origin as a Tukey box plot" width="720" height="920" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./api/box-plots/">Box plot</a>
-    <p>Compose quartiles, whiskers, medians, and outlier points.</p>
-    <span class="docs-chart-gallery__actions"><code>createBoxPlot</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/cars-box-plot.png">View full size</a>
-  </article>
-  <article>
-    <a class="docs-chart-gallery__image" href="./tutorials/error-band/" aria-label="Build the bounded error-band chart">
-      <img src="./assets/images/gapminder-error-band.png" alt="Mean life expectancy by cluster with bounded confidence bands" width="1520" height="960" loading="lazy">
-    </a>
-    <a class="docs-chart-gallery__title" href="./tutorials/error-band/">Error band</a>
-    <p>Show interval ribbons with explicit lower and upper boundaries.</p>
-    <span class="docs-chart-gallery__actions"><code>createErrorBand</code></span>
-    <a class="docs-chart-gallery__full-size" href="./assets/images/gapminder-error-band.png">View full size</a>
-  </article>
+  {% assign statistical_charts = site.data.chart_examples | where: "home_group", "statistical" | sort: "home_order" %}
+  {% for example in statistical_charts %}
+    {% include chart-gallery-card.html example=example %}
+  {% endfor %}
+</div>
+
+## Coordinate extensions
+
+Use Polar coordinates when angle and radial distance express the relationship
+more directly than Cartesian x and y.
+
+<div class="docs-chart-gallery docs-chart-gallery--secondary">
+  {% assign coordinate_charts = site.data.chart_examples | where: "home_group", "coordinates" | sort: "home_order" %}
+  {% for example in coordinate_charts %}
+    {% include chart-gallery-card.html example=example %}
+  {% endfor %}
 </div>
 
 ## Go deeper
@@ -346,17 +248,10 @@ Tutorials build complete, runnable charts and explain what each action adds.
 Choose the visual relationship that matches the question you want to answer.
 
 <div class="docs-chart-index">
-  {% include chart-card.html id="scatterplot" title="Scatterplot" url="/tutorials/scatterplot/" summary="Quantitative positions, nominal color, radius, and inferred axes." actions="createPointMark · encodeX · encodeY" %}
-  {% include chart-card.html id="polar" title="Polar point chart" url="/tutorials/polar-points/" summary="Map fields to clockwise angle and radial distance without changing the Canvas renderer." actions="encodeTheta · encodeR · encodePointRadius" %}
-  {% include chart-card.html id="polar-line" title="Polar lines and radar" url="/tutorials/polar-lines/" summary="Connect ordered theta/radius values as open trends or closed radar paths." actions="createLineMark · encodeTheta · encodeR" %}
-  {% include chart-card.html id="line" title="Aggregate line chart" url="/tutorials/line-chart/" summary="Temporal mean series with color, stroke dash, legend, and title." actions="createLineMark · encodeGroup" %}
-  {% include chart-card.html id="histogram" title="Stacked histogram" url="/tutorials/histogram/" summary="Binned counts partitioned and stacked by a nominal field." actions="encodeHistogram · encodeColor" %}
-  {% include chart-card.html id="bar" title="Bar chart" url="/tutorials/grouped-bar/" summary="Ordinal aggregate bars arranged side by side by nominal color." actions="encodeY · encodeColor" %}
-  {% include chart-card.html id="regression" title="Regression scatterplot" url="/tutorials/regression-scatterplot/" summary="Filtered observations, variable symbols, grouped fits, and bands." actions="filterData · createRegression" %}
-  {% include chart-card.html id="density" title="Density area" url="/tutorials/density-area/" summary="Grouped kernel-density data and translucent area paths." actions="encodeDensity · encodeColor" %}
-  {% include chart-card.html id="error-bar" title="Error-bar overlay" url="/tutorials/error-bar/" summary="Observations with grouped mean confidence intervals and caps." actions="createErrorBar" %}
-  {% include chart-card.html id="error-band" title="Bounded error band" url="/tutorials/error-band/" summary="Grouped confidence ribbons with explicit boundary paths." actions="createErrorBand" %}
-  {% include chart-card.html id="selection" title="Mark selection and highlighting" url="/tutorials/mark-selection/" summary="Select, filter, and emphasize final point, bar, and line items." actions="selectMarks · highlightMarks" %}
+  {% assign tutorial_charts = site.data.chart_examples | where_exp: "example", "example.tutorial_order" | sort: "tutorial_order" %}
+  {% for example in tutorial_charts %}
+    {% include chart-card.html id=example.id kind="tutorial" %}
+  {% endfor %}
 </div>
 
 The bar tutorial uses grouped bars as one layout of the general bar mark. The
@@ -1703,14 +1598,10 @@ action flow. Each recipe separates the decisions you must provide from the
 resources, defaults, and guides that ggaction can infer.
 
 <div class="docs-chart-index">
-  {% include chart-card.html id="scatterplot" title="Scatterplot" url="/recipes/scatterplot/" summary="Choose two quantitative fields; infer scales and Cartesian guides." actions="createPointMark · encodeX · encodeY" %}
-  {% include chart-card.html id="line" title="Line chart" url="/recipes/line-chart/" summary="Choose temporal x and quantitative y; infer aggregation and series paths." actions="createLineMark · encodeX · encodeY" %}
-  {% include chart-card.html id="histogram" title="Histogram" url="/recipes/histogram/" summary="Choose one quantitative field; infer bins, count y, and zero baseline." actions="createBarMark · encodeHistogram" %}
-  {% include chart-card.html id="bar" title="Bar chart" url="/recipes/bar-chart/" summary="Choose category and measure fields; infer aggregate band geometry." actions="createBarMark · encodeBarWidth" %}
-  {% include chart-card.html id="regression" title="Regression scatterplot" url="/recipes/regression-scatterplot/" summary="Layer observations, grouped fits, and confidence bands." actions="createPointMark · createRegression" %}
-  {% include chart-card.html id="density" title="Density area" url="/recipes/density-area/" summary="Derive density values and create grouped baseline-closed paths." actions="createAreaMark · encodeDensity" %}
-  {% include chart-card.html id="error-bar" title="Error bar" url="/recipes/error-bar/" summary="Summarize grouped centers and intervals over existing observations." actions="createErrorBar" %}
-  {% include chart-card.html id="error-band" title="Error band" url="/recipes/error-band/" summary="Derive intervals over an independent position and close one ribbon per series." actions="createErrorBand" %}
+  {% assign recipe_charts = site.data.chart_examples | where_exp: "example", "example.recipe_order" | sort: "recipe_order" %}
+  {% for example in recipe_charts %}
+    {% include chart-card.html id=example.id kind="recipe" %}
+  {% endfor %}
 </div>
 
 Every flow begins with `createCanvas`, `createData`, and a semantic mark or
@@ -2102,6 +1993,48 @@ axis is unambiguous.
 
 [Error-band tutorial](../tutorials/error-band.md) ·
 [Error-band API](../api/error-bands.md)
+
+<!-- Source: /recipes/box-plot/ -->
+
+# Box-Plot Recipe
+
+{% include chart-example.html id="box" %}
+
+## Minimal flow
+
+```javascript
+const program = chart()
+  .createCanvas()
+  .createData({ values })
+  .createBoxPlot({
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" }
+  })
+  .createGuides({ legend: false });
+```
+
+## You must decide
+
+- One categorical field and one quantitative field
+- Whether the categorical field belongs on x or y
+
+## The library infers
+
+- The current dataset and Cartesian coordinate
+- Vertical or horizontal orientation from the complete field pair
+- Tukey quartiles and `1.5 × IQR` observed whiskers
+- A ranged-bar body, median rule, whiskers, caps, and optional outlier points
+- Compatible scales, axes, and the perpendicular grid
+
+Use `whisker: { type: "minmax" }` for observed minimum and maximum whiskers
+without an outlier layer. Use `editBoxPlot` to revise statistics, width, or
+component appearance through the stable box-plot owner.
+
+## Continue
+
+[Box-plot API](../api/box-plots.md) ·
+[Bar marks](../api/marks/bar.md) ·
+[Error bars](../api/error-bars.md)
 
 <!-- Source: /troubleshooting/ -->
 

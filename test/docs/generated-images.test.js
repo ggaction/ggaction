@@ -26,34 +26,20 @@ function assertPng(id, width, height) {
 test("keeps one generated gallery image for every public chart", async () => {
   const index = read("docs/index.md");
   const tutorials = read("docs/tutorials/index.md");
+  const catalog = read("docs/_data/chart_examples.yml");
 
   assert.equal(chartImages.length, 13);
   for (const { id, width, height } of chartImages) {
     assertPng(id, width, height);
-    assert.match(index, new RegExp(`assets/images/${id}\\.png`));
+    assert.match(catalog, new RegExp(`image: /assets/images/${id}\\.png`));
   }
-  assert.equal((index.match(/<article>/g) ?? []).length, chartImages.length);
-  assert.equal(
-    (index.match(/class="docs-chart-gallery__image"/g) ?? []).length,
-    chartImages.length
-  );
-  assert.equal(
-    (index.match(/class="docs-chart-gallery__title"/g) ?? []).length,
-    chartImages.length
-  );
-  assert.equal((index.match(/loading="lazy"/g) ?? []).length, chartImages.length - 1);
-  assert.equal((index.match(/loading="eager"/g) ?? []).length, 1);
-  assert.equal(
-    (index.match(/<img [^>]*width="\d+"[^>]*height="\d+"/g) ?? []).length,
-    chartImages.length
-  );
+  assert.equal((catalog.match(/^  home_group:/gm) ?? []).length, chartImages.length);
+  assert.match(index, /chart-gallery-card\.html/);
+  assert.match(index, /home_group", "essentials"/);
+  assert.match(index, /home_group", "statistical"/);
+  assert.match(index, /home_group", "coordinates"/);
 
-  for (const tutorial of [
-    "scatterplot", "polar-points", "line-chart", "histogram", "grouped-bar",
-    "regression-scatterplot", "density-area", "error-bar"
-  ]) {
-    assert.match(tutorials, new RegExp(`/tutorials/${tutorial}/`));
-  }
+  assert.match(tutorials, /example\.tutorial_order/);
 
   const manifest = JSON.parse(read("docs/assets/images/manifest.json"));
   assert.deepEqual(manifest, await buildDocImageManifest());

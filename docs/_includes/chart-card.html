@@ -1,6 +1,9 @@
-{% assign example = site.data.chart_examples[include.id] %}
+{% assign examples = site.data.chart_examples | where: "id", include.id %}
+{% assign example = examples | first %}
+{% assign card_url = example.url %}
+{% if include.kind == "recipe" %}{% assign card_url = example.recipe_url %}{% endif %}
 <article>
-  <a class="docs-chart-index__image" href="{{ include.url | relative_url }}">
+  <a class="docs-chart-index__image" href="{{ card_url | relative_url }}">
     <img
       src="{{ example.image | relative_url }}"
       alt="{{ example.alt }}"
@@ -10,8 +13,8 @@
     >
   </a>
   <div class="docs-chart-index__body">
-    <a class="docs-chart-index__title" href="{{ include.url | relative_url }}">{{ include.title }}</a>
-    <p>{{ include.summary }}</p>
-    <span>{{ include.actions }}</span>
+    <a class="docs-chart-index__title" href="{{ card_url | relative_url }}">{{ example.title }}</a>
+    <p>{{ example.summary }}</p>
+    <span>{{ example.actions }}</span>
   </div>
 </article>
