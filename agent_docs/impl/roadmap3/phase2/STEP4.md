@@ -6,8 +6,8 @@
 - [x] Cars와 Fashion high-DPI PNG 생성
 - [x] Browser Canvas size와 console/page error 검증
 - [x] Roadmap 3 gallery 검증
-- [ ] Exact code와 images 제시
-- [ ] 사용자 승인
+- [x] Exact code와 images 제시
+- [x] 사용자 승인
 
 Gate C는 visual center, clockwise direction, radial extent, point density와 color result를 승인한다. 승인 전에는
 STEP 5 이후를 진행하지 않는다.
