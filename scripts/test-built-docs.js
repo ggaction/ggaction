@@ -150,6 +150,16 @@ try {
   assert.equal(await desktop.locator(".docs-search-snippet").count(), resultCount);
   const urls = await results.evaluateAll(links => links.map(link => link.href.split("#")[0]));
   assert.equal(new Set(urls).size, urls.length);
+  await desktop.keyboard.press("ArrowDown");
+  assert.equal(await search.evaluate(element => element === document.activeElement), true);
+  const activeResult = await search.getAttribute("aria-activedescendant");
+  assert.equal(activeResult?.startsWith("docs-search-option-"), true);
+  assert.equal(
+    await desktop.locator(`#${activeResult}`).getAttribute("aria-selected"),
+    "true"
+  );
+  await desktop.keyboard.press("Escape");
+  assert.equal(await search.getAttribute("aria-expanded"), "false");
   assert.deepEqual(desktopErrors, []);
 
   await desktop.goto(`${baseUrl}tutorials/`, { waitUntil: "networkidle" });
@@ -228,6 +238,14 @@ try {
   await mobile.goto(`${baseUrl}reference/actions/`, { waitUntil: "networkidle" });
   assert.equal(await mobile.locator(".docs-page-toc").getAttribute("open"), null);
   assert.equal(await mobile.locator(".docs-copy-button").count() > 0, true);
+  assert.equal(
+    await mobile.locator('pre[tabindex="0"][aria-label="Scrollable code example"]').count() > 0,
+    true
+  );
+  assert.equal(
+    await mobile.locator('table[tabindex="0"][aria-label="Scrollable data table"]').count() > 0,
+    true
+  );
   assert.equal(await mobile.locator(".docs-heading-anchor").count() > 0, true);
   const actionHeadingCount = await mobile.locator(".docs-action-heading").count();
   assert.equal(actionHeadingCount > 0, true);

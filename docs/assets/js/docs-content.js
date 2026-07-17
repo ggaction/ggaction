@@ -90,19 +90,26 @@
   const actionHeadings = enhanceActionHeadings();
   addActionFilter(actionHeadings);
 
-  function updateOverflow(region, element) {
+  function updateOverflow(region, element, label) {
     const overflowing = element.scrollWidth > element.clientWidth + 1;
     const atEnd = element.scrollLeft + element.clientWidth >= element.scrollWidth - 2;
     region.classList.toggle("has-overflow", overflowing);
     region.classList.toggle("is-scrolled-end", !overflowing || atEnd);
+    if (overflowing) {
+      element.tabIndex = 0;
+      element.setAttribute("aria-label", label);
+    } else {
+      element.removeAttribute("tabindex");
+      element.removeAttribute("aria-label");
+    }
   }
 
-  function wrapScrollable(element, className) {
+  function wrapScrollable(element, className, label) {
     const region = document.createElement("div");
     region.className = `docs-scroll-region ${className}`;
     element.before(region);
     region.append(element);
-    const update = () => updateOverflow(region, element);
+    const update = () => updateOverflow(region, element, label);
     element.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     requestAnimationFrame(update);
@@ -110,7 +117,7 @@
   }
 
   for (const pre of content.querySelectorAll("pre")) {
-    const region = wrapScrollable(pre, "docs-code-block");
+    const region = wrapScrollable(pre, "docs-code-block", "Scrollable code example");
     const button = document.createElement("button");
     button.className = "docs-copy-button";
     button.type = "button";
@@ -138,6 +145,6 @@
   }
 
   for (const table of content.querySelectorAll("table")) {
-    wrapScrollable(table, "docs-table-region");
+    wrapScrollable(table, "docs-table-region", "Scrollable data table");
   }
 })();

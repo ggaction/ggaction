@@ -235,6 +235,17 @@ test("keeps task pages visual and chart figures canonical", async () => {
     assert.equal(example.caption.length > 0, true, `${id} caption`);
   }
 
+  const exceptionSource = read("docs/_data/visual_exceptions.yml");
+  const exceptions = new Map(
+    [...exceptionSource.matchAll(/^- url: (\S+)\n\s+reason: (.+)$/gm)]
+      .map(([, url, reason]) => [url, reason])
+  );
+  assert.deepEqual(
+    [...exceptions.keys()],
+    ["/reference/actions/", "/supported-features/", "/troubleshooting/"]
+  );
+  for (const reason of exceptions.values()) assert.equal(reason.length > 30, true);
+
   const pages = (await files(docsRoot)).filter(isDocumentationMarkdown);
   const visualPattern = /!\[[^\]]+\]\([^)]+\)|chart-(?:example|card)\.html|docs-concept-flow/;
   const visualDirectories = [
@@ -246,10 +257,16 @@ test("keeps task pages visual and chart figures canonical", async () => {
   ];
   const taskPages = pages.filter(file =>
     file === path.join(docsRoot, "getting-started.md") ||
+    file === path.join(docsRoot, "reference/actions.md") ||
+    file === path.join(docsRoot, "supported-features.md") ||
+    file === path.join(docsRoot, "troubleshooting.md") ||
     visualDirectories.some(directory => file.includes(directory))
   );
   for (const file of taskPages) {
     const markdown = readFileSync(file, "utf8");
+    const relative = path.relative(docsRoot, file).replace(/\.md$/, "");
+    const url = relative === "index" ? "/" : `/${relative}/`;
+    if (exceptions.has(url)) continue;
     assert.match(markdown, visualPattern, `${file} needs a purposeful visual`);
     for (const match of markdown.matchAll(
       /chart-(?:example|card)\.html\s+id="([^"]+)"/g
@@ -370,6 +387,8 @@ test("indexes documentation headings for section search", () => {
   assert.match(search, /sectionTitle/);
   assert.match(search, /seenPages/);
   assert.match(search, /docs-search-snippet/);
+  assert.match(search, /aria-activedescendant/);
+  assert.match(search, /aria-selected/);
   assert.match(search, /event\.metaKey \|\| event\.ctrlKey/);
   assert.match(layout, /docs-toc\.js/);
   assert.match(layout, /docs-content\.js/);

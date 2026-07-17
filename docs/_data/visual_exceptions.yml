@@ -1,0 +1,6 @@
+- url: /reference/actions/
+  reason: The exhaustive action reference is optimized for searchable signatures and exact contracts.
+- url: /supported-features/
+  reason: The support matrix is the visual comparison and an additional chart would not clarify coverage.
+- url: /troubleshooting/
+  reason: The diagnostic index routes by error and remedy rather than by a single graphical outcome.

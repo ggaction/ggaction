@@ -7,6 +7,7 @@
 
   let sections;
   let loading;
+  let activeIndex = -1;
 
   function buildSections(pages) {
     return pages.flatMap(page => {
@@ -67,7 +68,25 @@
   function clearResults() {
     results.replaceChildren();
     results.hidden = true;
+    activeIndex = -1;
+    input.removeAttribute("aria-activedescendant");
     input.setAttribute("aria-expanded", "false");
+  }
+
+  function options() {
+    return [...results.querySelectorAll("[role='option']")];
+  }
+
+  function setActive(index) {
+    const available = options();
+    if (available.length === 0) return;
+    activeIndex = (index + available.length) % available.length;
+    for (const [optionIndex, option] of available.entries()) {
+      option.setAttribute("aria-selected", String(optionIndex === activeIndex));
+    }
+    const active = available[activeIndex];
+    input.setAttribute("aria-activedescendant", active.id);
+    active.scrollIntoView({ block: "nearest" });
   }
 
   function excerpt(content, query) {
@@ -126,16 +145,20 @@
     }).slice(0, 8);
 
     results.replaceChildren();
+    activeIndex = -1;
+    input.removeAttribute("aria-activedescendant");
     if (matches.length === 0) {
       const empty = document.createElement("li");
       empty.className = "docs-search-empty";
       empty.textContent = "No matching pages";
       results.append(empty);
     } else {
-      for (const match of matches) {
+      for (const [index, match] of matches.entries()) {
         const item = document.createElement("li");
         const link = document.createElement("a");
         link.setAttribute("role", "option");
+        link.setAttribute("aria-selected", "false");
+        link.id = `docs-search-option-${index}`;
         link.href = match.url;
         link.textContent = match.sectionTitle
           ? `${match.pageTitle} › ${match.sectionTitle}`
@@ -160,28 +183,18 @@
     }
 
     if (["ArrowDown", "ArrowUp"].includes(event.key)) {
-      const links = [...results.querySelectorAll("a")];
-      if (links.length === 0) return;
+      if (options().length === 0) return;
       event.preventDefault();
-      const target = event.key === "ArrowDown" ? links[0] : links.at(-1);
-      target.focus();
-    }
-  });
-
-  results.addEventListener("keydown", event => {
-    if (!["ArrowDown", "ArrowUp", "Escape"].includes(event.key)) return;
-    event.preventDefault();
-    if (event.key === "Escape") {
-      input.focus();
-      input.value = "";
-      clearResults();
+      setActive(activeIndex + (event.key === "ArrowDown" ? 1 : -1));
       return;
     }
-    const links = [...results.querySelectorAll("a")];
-    const index = links.indexOf(document.activeElement);
-    const offset = event.key === "ArrowDown" ? 1 : -1;
-    const next = links[(index + offset + links.length) % links.length];
-    next.focus();
+
+    if (event.key === "Enter" && activeIndex >= 0) {
+      const active = options()[activeIndex];
+      if (!active) return;
+      event.preventDefault();
+      active.click();
+    }
   });
 
   document.addEventListener("click", event => {

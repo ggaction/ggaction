@@ -431,6 +431,11 @@ summary:focus-visible {
   opacity: 1;
 }
 
+.docs-scroll-region > [tabindex="0"]:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 3px;
+}
+
 .docs-code-block {
   margin: 0 0 1rem;
 }
