@@ -3,11 +3,11 @@
 ## 진행 상태
 
 - [x] STEP 1 — Public contract, stored state와 Gate targets 확정
-- [ ] STEP 2 — Dataset dependency DAG와 partition-anchor oracle
-- [ ] STEP 3 — Requested/resolved density provenance
-- [ ] STEP 4 — Shared/independent scale-resolution grammar
-- [ ] STEP 5 — Outer-axis와 shared-guide layout grammar
-- [ ] STEP 6 — Shared/independent regression facet primitives
+- [x] STEP 2 — Dataset dependency DAG와 partition-anchor oracle
+- [x] STEP 3 — Requested/resolved density provenance
+- [x] STEP 4 — Shared/independent scale-resolution grammar
+- [x] STEP 5 — Outer-axis와 shared-guide layout grammar
+- [x] STEP 6 — Shared/independent regression facet primitives
 - [ ] STEP 7 — Gate I-A visual approval
 - [ ] STEP 8 — Derived replay와 scale-resolution public implementation
 - [ ] STEP 9 — Outer axes와 shared gradient legend primitive

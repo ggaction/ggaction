@@ -33,6 +33,7 @@ const program = chart()
     field: "life_expect",
     scale: { nice: true, zero: false }
   })
+  .encodeRadius({ value: 2.5 })
   .encodeColor({
     field: "pop",
     fieldType: "quantitative",
