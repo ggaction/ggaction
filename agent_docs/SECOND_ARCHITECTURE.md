@@ -268,6 +268,12 @@ Density provenance는 requested policy와 materialized revision 결과를 분리
 `resolved: { bandwidth, extent }`에 저장된다. 따라서 derived replay와 `editDensity`는 새 source rows마다
 자동 policy를 다시 계산하면서도 각 immutable revision의 실제 계산값을 해석할 수 있다.
 
+Advanced facet scale grammar는 channel별 shared/independent intent를 pure normalized plan으로 소유한다. Omitted
+channel은 shared이며, 같은 scale ID에 연결된 channel들이 서로 다른 policy를 요청하면 state 변경 전에 거부한다.
+Shared automatic continuous domain은 child domain의 min/max union, discrete domain은 child order의 stable union,
+quantile domain은 duplicate를 보존한 sample merge다. Independent automatic domain은 child별 결과를 보존하고,
+어느 policy에서도 explicit semantic domain이 우선한다. 이 resolver는 아직 public facet runtime을 수정하지 않는다.
+
 ## Immutability와 ownership
 
 `ChartProgram`은 생성이 끝나면 freeze된다. 모든 public action과 internal wrapped
