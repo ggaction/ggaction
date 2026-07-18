@@ -7,7 +7,7 @@ import { namespaceGraphicSnapshot } from "./compositionSnapshot.js";
 
 const ZERO_MARGIN = freezeOwned({ top: 0, right: 0, bottom: 0, left: 0 });
 
-function requireChildCanvas(program, id) {
+export function requireChildCanvas(program, id) {
   const { object } = requireSingleOrderedGraphicByType(program.graphicSpec, "canvas");
   const { width, height } = object.properties ?? {};
   if (!Number.isFinite(width) || width <= 0 || !Number.isFinite(height) || height <= 0) {
@@ -16,7 +16,7 @@ function requireChildCanvas(program, id) {
   return object;
 }
 
-function childDescriptor(id, program) {
+export function compositionChildDescriptor(id, program) {
   const canvas = requireChildCanvas(program, id);
   const size = program.materializationConfigs.canvas?.size ?? {
     width: "explicit",
@@ -36,7 +36,7 @@ export function resolveCompositionProgramLayout(program) {
   const spec = program.compositionSpec;
   return resolveCompositionLayout({
     direction: spec.direction,
-    children: spec.children.map(id => childDescriptor(id, program.children[id])),
+    children: spec.children.map(id => compositionChildDescriptor(id, program.children[id])),
     gap: spec.gap,
     align: spec.align,
     padding: spec.padding
@@ -84,7 +84,7 @@ function itemDefinitions(object) {
   }));
 }
 
-function attachSnapshotObject(program, snapshot, id, parent) {
+export function attachSnapshotObject(program, snapshot, id, parent) {
   const object = snapshot.objects[id];
   let next = program.createGraphics({
     id,
@@ -110,7 +110,7 @@ function attachSnapshotObject(program, snapshot, id, parent) {
   return next;
 }
 
-function clearCompositionChildren(program) {
+export function clearCompositionChildren(program) {
   const canvas = program.graphicSpec.objects.canvas;
   let next = program;
   for (const id of canvas?.children ?? []) {

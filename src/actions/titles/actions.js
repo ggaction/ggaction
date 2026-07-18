@@ -11,6 +11,15 @@ import {
   resolveCanvasGraphicPlacement
 } from "../../materialization/graphicHierarchy.js";
 
+function assertTitleScope(program, operation) {
+  if (
+    program.compositionSpec !== undefined &&
+    program.compositionSpec.type !== "facet"
+  ) {
+    throw new Error(`${operation} is not available on this composition ChartProgram.`);
+  }
+}
+
 function hasRotation(graphic) {
   const properties = graphic.items?.map(child => child.properties) ??
     [graphic.properties];
@@ -179,8 +188,13 @@ export const rematerializeTitle = action(
 );
 
 export const createTitle = action(
-  { op: "createTitle", description: "Create a chart title and optional subtitle." },
+  {
+    op: "createTitle",
+    description: "Create a chart title and optional subtitle.",
+    scope: "any"
+  },
   function (args = {}) {
+    assertTitleScope(this, "createTitle");
     const options = normalizeTitleOptions(args);
     if (Object.keys(this.semanticSpec.title).length > 0) {
       throw new Error("createTitle requires missing semantic title state.");
@@ -197,6 +211,9 @@ export const createTitle = action(
       next = next.editSemantic({ property: "title.subtitle", value: subtitle });
     }
     next = next._withTitleConfig(config);
+    if (next.compositionSpec?.type === "facet") {
+      return next.materializeComposition();
+    }
     resolveTitleLayout(next, config);
     next = next.createTitleText();
     if (subtitle !== undefined) next = next.createSubtitleText();
@@ -205,8 +222,13 @@ export const createTitle = action(
 );
 
 export const editTitle = action(
-  { op: "editTitle", description: "Edit one stable chart title resource." },
+  {
+    op: "editTitle",
+    description: "Edit one stable chart title resource.",
+    scope: "any"
+  },
   function (args = {}) {
+    assertTitleScope(this, "editTitle");
     if (this.semanticSpec.title.text === undefined) {
       throw new Error("editTitle requires an existing chart title.");
     }
@@ -229,14 +251,22 @@ export const editTitle = action(
       });
     }
     next = next._withTitleConfig(normalized.config);
+    if (next.compositionSpec?.type === "facet") {
+      return next.materializeComposition();
+    }
     resolveTitleLayout(next, normalized.config);
     return next.rematerializeTitle();
   }
 );
 
 export const removeTitle = action(
-  { op: "removeTitle", description: "Remove the complete chart title resource." },
+  {
+    op: "removeTitle",
+    description: "Remove the complete chart title resource.",
+    scope: "any"
+  },
   function (args = {}) {
+    assertTitleScope(this, "removeTitle");
     noOptions(args, "removeTitle");
     if (
       this.semanticSpec.title.text === undefined &&
@@ -258,6 +288,9 @@ export const removeTitle = action(
         next = next.editGraphics({ target: id, remove: true });
       }
     }
-    return next._withoutMaterializationConfig(["title"]);
+    next = next._withoutMaterializationConfig(["title"]);
+    return next.compositionSpec?.type === "facet"
+      ? next.materializeComposition()
+      : next;
   }
 );

@@ -6,7 +6,8 @@ import { graphicTreeSnapshot } from "./graphic-tree.js";
 
 export function assertChartProgramsEquivalent({
   publicProgram,
-  primitiveProgram
+  primitiveProgram,
+  compareSemanticSpec = true
 }) {
   const publicContext = createMockCanvasContext();
   const primitiveContext = createMockCanvasContext();
@@ -14,7 +15,9 @@ export function assertChartProgramsEquivalent({
   render(publicProgram, publicContext);
   render(primitiveProgram, primitiveContext);
 
-  assert.deepEqual(publicProgram.semanticSpec, primitiveProgram.semanticSpec);
+  if (compareSemanticSpec) {
+    assert.deepEqual(publicProgram.semanticSpec, primitiveProgram.semanticSpec);
+  }
   assert.deepEqual(publicProgram.graphicSpec, primitiveProgram.graphicSpec);
   assert.deepEqual(
     graphicTreeSnapshot(publicProgram),

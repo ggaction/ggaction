@@ -37,7 +37,7 @@ not mutated.
 | `resolvedScales` | Resolved domains and concrete output ranges |
 | `materializationConfigs` | Immutable appearance and layout inputs needed for later rematerialization |
 | `children` | Named immutable child programs retained by a composition parent |
-| `compositionSpec` | Optional direction, ordered slots, gap, alignment, and padding for a composition parent |
+| `compositionSpec` | Optional concat direction or facet intent, ordered slots, gap, alignment, and padding for a composition parent |
 | `context` | Current authoring selections used to interpret omitted action targets |
 | `trace` | Hierarchical action history |
 
@@ -47,8 +47,10 @@ transient context, and plot bounds are derived from it and the concrete Canvas
 dimensions. Rendering does not depend on `context` or `trace`.
 
 A unit program has empty `children` and no `compositionSpec`. Package-level
-`hconcat` and `vconcat` create a composition parent without merging child
-semantic state. See [Program composition](../api/composition.md).
+`hconcat` and `vconcat` retain already-authored children. Chainable `facet`
+derives filtered immutable children from one unit program. Neither form merges
+child semantic state into one layer grammar. See
+[Program composition](../api/composition.md).
 
 ## Inspecting authored and materialized state
 

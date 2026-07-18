@@ -7,9 +7,11 @@ import {
   normalizeCompositionPadding,
   resolveCompositionLayout
 } from "../../layout/composition.js";
+import { resolveFacetLayout } from "../../layout/facets.js";
 import { namespaceGraphicSnapshot } from "../../materialization/compositionSnapshot.js";
 import { materializeCompositionGraphics } from
   "../../materialization/composition.js";
+import { materializeFacetGraphics } from "../../materialization/facets.js";
 
 const CONCAT_OPTIONS = Object.freeze([
   "id", "programs", "gap", "align", "padding"
@@ -116,7 +118,9 @@ const materializeComposition = action(
     scope: "composition"
   },
   function () {
-    return materializeCompositionGraphics(this);
+    return this.compositionSpec.type === "facet"
+      ? materializeFacetGraphics(this)
+      : materializeCompositionGraphics(this);
   }
 );
 
@@ -154,6 +158,30 @@ const editCompositionLayout = action(
       throw new TypeError("editCompositionLayout requires at least one layout option.");
     }
     const current = this.compositionSpec;
+    if (current.type === "facet") {
+      const layout = resolveFacetLayout({
+        children: current.children.map((id, index) => ({
+          ...childDescriptor({ id, program: this.children[id] }),
+          value: current.facet.values[index]
+        })),
+        columns: current.columns,
+        gap: Object.hasOwn(args, "gap") ? args.gap : current.gap,
+        align: Object.hasOwn(args, "align") ? args.align : current.align,
+        padding: Object.hasOwn(args, "padding")
+          ? normalizeCompositionPadding(args.padding, current.padding)
+          : current.padding,
+        sharedLegend: current.facet.guides.legend === "shared"
+      });
+      return this._withCompositionState({
+        children: this.children,
+        compositionSpec: {
+          ...current,
+          gap: layout.gap,
+          align: layout.align,
+          padding: layout.padding
+        }
+      }).materializeComposition();
+    }
     const padding = Object.hasOwn(args, "padding")
       ? normalizeCompositionPadding(args.padding, current.padding)
       : current.padding;
@@ -187,6 +215,9 @@ const replaceCompositionChild = action(
   },
   function (args = {}) {
     validateOptionObject(args, REPLACEMENT_OPTIONS, "replaceCompositionChild");
+    if (this.compositionSpec.type === "facet") {
+      throw new Error("replaceCompositionChild is not available on a facet composition.");
+    }
     const target = validateUserId(args.target, "Composition child target");
     if (!Object.hasOwn(this.children, target)) {
       throw new Error(`Unknown composition child "${target}".`);

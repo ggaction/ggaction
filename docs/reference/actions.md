@@ -164,6 +164,8 @@ interface ChartProgramActions {
   editRegressionLine(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
   replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
+  facet(options: FacetOptions): ChartProgram;
+  editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;
   editSemantic(options: EditSemanticOptions): ChartProgram;
   createGraphics(options: { id: string; type: GraphicType; length?: number; parent?: string; before?: string; after?: string; }): ChartProgram;
   editGraphics(options: EditGraphicsOptions): ChartProgram;
@@ -210,6 +212,26 @@ replaceCompositionChild({ target, program })
 
 Replace one named child while preserving its slot ID and order. The replacement
 must already be a complete chart or composition program.
+
+### `facet`
+
+```javascript
+facet({ id?, field, data?, columns?, gap?, align?, padding?, guides? })
+```
+
+Repeat one complete direct-source point or bar chart by source field value.
+Values preserve source first appearance, scales are shared, axes remain in each
+cell, and `guides: { legend: "shared" }` creates one parent categorical color
+legend. See [Program composition](../api/composition.md#repeat-the-current-chart-by-a-field).
+
+### `editFacetHeaders`
+
+```javascript
+editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? })
+```
+
+Edit the parent-owned repeated facet headers and rebuild the parent snapshot
+without changing child programs or facet value order.
 
 ### `createData`
 

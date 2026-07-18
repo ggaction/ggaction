@@ -1,5 +1,9 @@
 import { loadCars } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
+import { createCarsOriginHistogramFacet } from
+  "../../../examples/cars-origin-histogram-facet/program.js";
+import { createCarsOriginScatterplotFacet } from
+  "../../../examples/cars-origin-scatterplot-facet/program.js";
 
 import {
   createCarsOriginHistogramFacetPrimitives,
@@ -35,21 +39,21 @@ export const scatterplotFacetTarget = `chart()
   .encodeColor({
     field: "Cylinders",
     fieldType: "ordinal",
-    scale: { palette: "reds" }
+    scale: { domain: [8, 4, 6, 3, 5], palette: "reds" }
   })
   .createGuides({
     axes: {
       x: { title: { text: "Horsepower" } },
-      y: { title: { text: "Miles per Gallon" } }
+      y: { title: { text: "Miles per Gallon", offset: 39 } }
     },
     legend: false
   })
+  .facet({ field: "Origin", guides: { legend: "shared" } })
   .createTitle({
     text: "Horsepower and Fuel Economy",
     subtitle: "Faceted by Origin",
     align: "center"
   })
-  .facet({ field: "Origin", guides: { legend: "shared" } })
   .editFacetHeaders({ fontSize: 13, fontWeight: 700, offset: 10 });`;
 
 export const histogramFacetTarget = `chart()
@@ -62,7 +66,7 @@ export const histogramFacetTarget = `chart()
   .createBarMark()
   .encodeHistogram({
     field: "Displacement",
-    maxBins: 8,
+    binBoundaries: [50, 106.25, 162.5, 218.75, 275, 331.25, 387.5, 443.75, 500],
     xScale: { nice: true, zero: false }
   })
   .encodeColor({
@@ -73,15 +77,10 @@ export const histogramFacetTarget = `chart()
   .createGuides({
     axes: {
       x: { title: { text: "Displacement" } },
-      y: { title: { text: "Count" } }
+      y: { title: { text: "Count", offset: 39 } }
     },
     legend: false,
     grid: { horizontal: true, vertical: false }
-  })
-  .createTitle({
-    text: "Displacement Distribution",
-    subtitle: "Faceted by Origin",
-    align: "center"
   })
   .facet({
     field: "Origin",
@@ -89,6 +88,11 @@ export const histogramFacetTarget = `chart()
     gap: 18,
     padding: 14,
     guides: { legend: "shared" }
+  })
+  .createTitle({
+    text: "Displacement Distribution",
+    subtitle: "Faceted by Origin",
+    align: "center"
   });`;
 
 export const visualVariants = Object.freeze([
@@ -99,6 +103,7 @@ export const visualVariants = Object.freeze([
     callChain: scatterplotFacetTarget,
     artifact,
     primitive: () => createCarsOriginScatterplotFacetPrimitives(cars),
+    userFacing: () => createCarsOriginScatterplotFacet(cars),
     width: values.scatter.width,
     height: values.scatter.height,
     colors: values.colorRange,
@@ -118,6 +123,7 @@ export const visualVariants = Object.freeze([
     callChain: histogramFacetTarget,
     artifact,
     primitive: () => createCarsOriginHistogramFacetPrimitives(cars),
+    userFacing: () => createCarsOriginHistogramFacet(cars),
     width: values.histogram.width,
     height: values.histogram.height,
     colors: values.colorRange,

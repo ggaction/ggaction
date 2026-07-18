@@ -98,6 +98,9 @@ The [mark-selection example](https://github.com/hj-n/ggaction/tree/main/examples
 complete stacked-bar, and line-series highlighting through one selector grammar.
 The [program-composition example](https://github.com/hj-n/ggaction/tree/main/examples/program-composition/) combines
 complete child programs, edits their inferred layout, and replaces one stable slot.
+The [facet example](https://github.com/hj-n/ggaction/tree/main/examples/cars-origin-scatterplot-facet/)
+repeats one direct-source chart with `.facet({ field: "Origin" })`, shared
+scales, per-cell axes, and an optional parent-owned categorical legend.
 Completed programs can also be exported through
 [`ggaction/png`](https://hyeonword.com/ggaction/api/rendering/#png-output).
 

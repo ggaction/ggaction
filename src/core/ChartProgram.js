@@ -50,7 +50,10 @@ function ownCompositionSpec(compositionSpec, children) {
   if (!isPlainObject(compositionSpec)) {
     throw new TypeError("ChartProgram compositionSpec must be a plain object.");
   }
-  const allowed = ["id", "direction", "children", "gap", "align", "padding"];
+  const allowed = [
+    "id", "type", "direction", "children", "columns", "gap", "align",
+    "padding", "facet"
+  ];
   const unknown = Object.keys(compositionSpec).find(key => !allowed.includes(key));
   if (unknown !== undefined) {
     throw new Error(`Unknown compositionSpec property "${unknown}".`);
@@ -58,15 +61,27 @@ function ownCompositionSpec(compositionSpec, children) {
   if (typeof compositionSpec.id !== "string" || compositionSpec.id.length === 0) {
     throw new TypeError("compositionSpec.id must be a non-empty string.");
   }
-  if (!["horizontal", "vertical"].includes(compositionSpec.direction)) {
+  const facet = compositionSpec.type === "facet";
+  if (compositionSpec.type !== undefined && !facet) {
+    throw new Error(`Unknown compositionSpec type "${compositionSpec.type}".`);
+  }
+  if (facet) {
+    if (compositionSpec.direction !== undefined) {
+      throw new Error("Facet compositionSpec does not use direction.");
+    }
+  } else if (!["horizontal", "vertical"].includes(compositionSpec.direction)) {
     throw new Error("compositionSpec.direction must be horizontal or vertical.");
   }
   if (
     !Array.isArray(compositionSpec.children) ||
-    compositionSpec.children.length < 2 ||
+    compositionSpec.children.length < (facet ? 1 : 2) ||
     !compositionSpec.children.every(id => typeof id === "string" && id.length > 0)
   ) {
-    throw new TypeError("compositionSpec.children requires at least two child IDs.");
+    throw new TypeError(
+      facet
+        ? "Facet compositionSpec.children requires at least one child ID."
+        : "compositionSpec.children requires at least two child IDs."
+    );
   }
   if (new Set(compositionSpec.children).size !== compositionSpec.children.length) {
     throw new Error("compositionSpec.children must not contain duplicate IDs.");
@@ -76,6 +91,69 @@ function ownCompositionSpec(compositionSpec, children) {
     compositionSpec.children.some(id => !Object.hasOwn(children, id))
   ) {
     throw new Error("compositionSpec.children must match ChartProgram children exactly.");
+  }
+  if (facet) {
+    if (
+      !Number.isInteger(compositionSpec.columns) ||
+      compositionSpec.columns <= 0 ||
+      compositionSpec.columns > compositionSpec.children.length
+    ) {
+      throw new RangeError(
+        "Facet compositionSpec.columns must be a positive integer no larger than its children."
+      );
+    }
+    if (!isPlainObject(compositionSpec.facet)) {
+      throw new TypeError("Facet compositionSpec.facet must be a plain object.");
+    }
+    const facetKeys = ["data", "field", "values", "scales", "guides"];
+    const unknownFacet = Object.keys(compositionSpec.facet).find(
+      key => !facetKeys.includes(key)
+    );
+    if (unknownFacet !== undefined) {
+      throw new Error(`Unknown compositionSpec.facet property "${unknownFacet}".`);
+    }
+    for (const property of ["data", "field"]) {
+      if (
+        typeof compositionSpec.facet[property] !== "string" ||
+        compositionSpec.facet[property].length === 0
+      ) {
+        throw new TypeError(`compositionSpec.facet.${property} must be a non-empty string.`);
+      }
+    }
+    const values = compositionSpec.facet.values;
+    if (
+      !Array.isArray(values) ||
+      values.length !== compositionSpec.children.length ||
+      values.some(value => !(
+        typeof value === "string" ||
+        typeof value === "boolean" ||
+        (typeof value === "number" && Number.isFinite(value))
+      )) ||
+      new Set(values).size !== values.length
+    ) {
+      throw new TypeError(
+        "compositionSpec.facet.values must contain one unique scalar per child."
+      );
+    }
+    if (compositionSpec.facet.scales !== "shared") {
+      throw new Error('compositionSpec.facet.scales must be "shared".');
+    }
+    const guides = compositionSpec.facet.guides;
+    if (
+      !isPlainObject(guides) ||
+      Object.keys(guides).some(key => !["axes", "legend"].includes(key)) ||
+      guides.axes !== "each" ||
+      ![false, "shared"].includes(guides.legend)
+    ) {
+      throw new Error(
+        'compositionSpec.facet.guides requires axes "each" and legend false or "shared".'
+      );
+    }
+  } else if (
+    compositionSpec.columns !== undefined ||
+    compositionSpec.facet !== undefined
+  ) {
+    throw new Error("Concat compositionSpec does not accept facet properties.");
   }
   if (!Number.isFinite(compositionSpec.gap) || compositionSpec.gap < 0) {
     throw new RangeError("compositionSpec.gap must be a non-negative finite number.");

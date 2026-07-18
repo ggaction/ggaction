@@ -24,7 +24,7 @@ chart()
   .createBarMark()
   .encodeHistogram({
     field: "Displacement",
-    maxBins: 8,
+    binBoundaries: [50, 106.25, 162.5, 218.75, 275, 331.25, 387.5, 443.75, 500],
     xScale: { nice: true, zero: false }
   })
   .encodeColor({
@@ -35,15 +35,10 @@ chart()
   .createGuides({
     axes: {
       x: { title: { text: "Displacement" } },
-      y: { title: { text: "Count" } }
+      y: { title: { text: "Count", offset: 39 } }
     },
     legend: false,
     grid: { horizontal: true, vertical: false }
-  })
-  .createTitle({
-    text: "Displacement Distribution",
-    subtitle: "Faceted by Origin",
-    align: "center"
   })
   .facet({
     field: "Origin",
@@ -51,6 +46,11 @@ chart()
     gap: 18,
     padding: 14,
     guides: { legend: "shared" }
+  })
+  .createTitle({
+    text: "Displacement Distribution",
+    subtitle: "Faceted by Origin",
+    align: "center"
   });
 ```
 
@@ -67,3 +67,4 @@ cell grain에서 다시 materialize하되 bin boundaries와 final y domain은 �
 - Shared y domain contains the maximum cell/bin count; absent bins materialize no synthetic bars.
 - Every observed bin stacks Cylinders in shared domain order and one `reds` legend is owned by the parent.
 - Parent title and headers are not copied into child semantic programs.
+- Parent Canvas is `756 × 578`; primitive and user-facing Canvas calls are exact matches.

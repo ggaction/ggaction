@@ -148,18 +148,27 @@ function applySharedScales(program, sharedScales) {
   );
 }
 
-export function deriveFacetChildren(base, definition) {
-  const bins = sharedHistogramBoundaries(base);
+export function deriveFacetChildren(
+  base,
+  definition,
+  { closeInheritedAction = false, stripTitle = false } = {}
+) {
+  const template = stripTitle && base.semanticSpec.title.text !== undefined
+    ? base.removeTitle()
+    : base;
+  const bins = sharedHistogramBoundaries(template);
   const independentlyResolved = Object.fromEntries(definition.cells.map(cell => [
     cell.id,
-    deriveCellProgram(base, definition, cell, bins)
+    deriveCellProgram(template, definition, cell, bins)
   ]));
-  const sharedScales = resolveFacetSharedScales(base, independentlyResolved);
+  const sharedScales = resolveFacetSharedScales(template, independentlyResolved);
   return freezeOwned({
     children: freezeOwned(Object.fromEntries(
       Object.entries(independentlyResolved).map(([id, child]) => [
         id,
-        applySharedScales(child, sharedScales)
+        closeInheritedAction
+          ? applySharedScales(child, sharedScales)._exitAction()
+          : applySharedScales(child, sharedScales)
       ])
     )),
     sharedScales

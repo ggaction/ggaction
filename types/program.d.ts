@@ -72,7 +72,24 @@ export interface ReplaceCompositionChildOptions {
   target: string;
   program: ChartProgram;
 }
-export interface CompositionSpec {
+export interface FacetOptions {
+  id?: string;
+  field: string;
+  data?: string;
+  columns?: number;
+  gap?: number;
+  align?: CompositionAlign;
+  padding?: number | CompositionPadding;
+  guides?: { legend?: false | "shared" };
+}
+export interface EditFacetHeadersOptions {
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+  offset?: number;
+}
+export interface ConcatCompositionSpec {
   readonly id: string;
   readonly direction: "horizontal" | "vertical";
   readonly children: readonly string[];
@@ -80,6 +97,26 @@ export interface CompositionSpec {
   readonly align: CompositionAlign;
   readonly padding: Readonly<Required<CompositionPadding>>;
 }
+export interface FacetCompositionSpec {
+  readonly id: string;
+  readonly type: "facet";
+  readonly children: readonly string[];
+  readonly columns: number;
+  readonly gap: number;
+  readonly align: CompositionAlign;
+  readonly padding: Readonly<Required<CompositionPadding>>;
+  readonly facet: {
+    readonly data: string;
+    readonly field: string;
+    readonly values: readonly DatasetScalar[];
+    readonly scales: "shared";
+    readonly guides: {
+      readonly axes: "each";
+      readonly legend: false | "shared";
+    };
+  };
+}
+export type CompositionSpec = ConcatCompositionSpec | FacetCompositionSpec;
 export type DensityKernel =
   | "gaussian"
   | "epanechnikov"
@@ -1606,6 +1643,8 @@ export class ChartProgram {
 
   editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
   replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
+  facet(options: FacetOptions): ChartProgram;
+  editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;
 
   editSemantic(options: EditSemanticOptions): ChartProgram;
   createGraphics(options: {

@@ -1,26 +1,6 @@
-# Roadmap 3 Planned Composition and Facet contracts
+# Roadmap 3 Planned Advanced Facet contracts
 
-Gate A에서 승인된 Phase 6~8 계약이다. Composition intent는 `semanticSpec` layer grammar 밖에 둔다.
-
-## Facet
-
-```typescript
-facet({
-  id?, field, data?, columns?, gap?, align?, padding?,
-  guides?: { legend?: "each" | "shared" }
-}): ChartProgram;
-editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? }): ChartProgram;
-```
-
-- `facet` is a chainable `ChartProgram` action whose base is current `this`.
-- First slice requires one direct source, uses first-appearance facet values, shared scale domains and axes in each
-  cell. Omitted columns creates one row; explicit positive integer wraps deterministically.
-- `guides.legend: "shared"` creates one parent-owned categorical legend from the shared encoded domain. The base
-  guide action uses `legend: false`; scale sharing and legend ownership remain separate explicit decisions.
-- Child IDs are opaque deterministic IDs and never embed raw facet values.
-- Existing title is promoted to parent; headers are parent-owned concrete repeated graphics.
-- Unit-only actions reject a composition parent without an explicit future child-target contract.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 7.
+Phase 7 direct-source facet은 Current로 승격되었다. 이 문서는 Phase 8의 확장 계약만 소유한다.
 
 ## Facet resolution and derived replay
 

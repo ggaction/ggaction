@@ -5,6 +5,7 @@ import { registerDataActions } from "./data/index.js";
 import { registerEncodingActions } from "./encodings/index.js";
 import { registerErrorBandActions } from "./errorBands/index.js";
 import { registerErrorBarActions } from "./errorBars/index.js";
+import { registerFacetActions } from "./facets/index.js";
 import { registerBoxPlotActions } from "./boxPlots/index.js";
 import { registerGuideActions } from "./guides/index.js";
 import { registerMarkActions } from "./marks/index.js";
@@ -17,6 +18,7 @@ import { registerSelectionActions } from "./selection/index.js";
 export function registerActions(ProgramClass) {
   registerPrimitiveActions(ProgramClass);
   registerCompositionActions(ProgramClass);
+  registerFacetActions(ProgramClass);
   registerCanvasActions(ProgramClass);
   registerDataActions(ProgramClass);
   registerMarkActions(ProgramClass);

@@ -115,6 +115,52 @@ test("validates canonical composition state atomically", () => {
   );
 });
 
+test("stores and validates canonical facet composition state", () => {
+  const child = chart();
+  const facet = {
+    id: "originFacet",
+    type: "facet",
+    children: ["originFacet-cell-1"],
+    columns: 1,
+    gap: 16,
+    align: "center",
+    padding: { top: 0, right: 0, bottom: 0, left: 0 },
+    facet: {
+      data: "cars",
+      field: "Origin",
+      values: ["USA"],
+      scales: "shared",
+      guides: { axes: "each", legend: "shared" }
+    }
+  };
+  const program = new ChartProgram({
+    children: { "originFacet-cell-1": child },
+    compositionSpec: facet
+  });
+
+  facet.facet.values[0] = "Japan";
+  assert.deepEqual(program.compositionSpec.facet.values, ["USA"]);
+  assert.equal(Object.isFrozen(program.compositionSpec.facet), true);
+
+  assert.throws(
+    () => new ChartProgram({
+      children: { "originFacet-cell-1": child },
+      compositionSpec: { ...facet, columns: 2 }
+    }),
+    /no larger than its children/
+  );
+  assert.throws(
+    () => new ChartProgram({
+      children: { "originFacet-cell-1": child },
+      compositionSpec: {
+        ...facet,
+        facet: { ...facet.facet, values: ["USA", "Japan"] }
+      }
+    }),
+    /one unique scalar per child/
+  );
+});
+
 test("creates independent empty programs", () => {
   const first = chart();
   const second = chart();

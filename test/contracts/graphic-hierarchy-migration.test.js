@@ -171,7 +171,8 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
-  "program-composition": []
+  "program-composition": [],
+  "cars-origin-scatterplot-facet": []
 });
 
 function isCanvasOwned(id) {
@@ -199,6 +200,23 @@ test("locks the complete public graphic hierarchy inventory", () => {
       }
       assert.equal(drawOrder[0], "canvas");
       assert.equal(drawOrder.length, 7);
+      continue;
+    }
+    if (program.compositionSpec?.type === "facet") {
+      assert.deepEqual(program.graphicSpec.order, ["canvas"]);
+      const rootChildren = program.graphicSpec.objects.canvas.children;
+      assert.equal(rootChildren.length, 7);
+      assert.equal(rootChildren.slice(0, 3).every(id =>
+        program.graphicSpec.objects[id].type === "canvas"
+      ), true);
+      assert.deepEqual(rootChildren.slice(3), [
+        "facet-headers", "facet-legend", "chartTitle", "chartSubtitle"
+      ]);
+      for (const childId of rootChildren) {
+        assert.equal(findGraphicParent(program.graphicSpec, childId).id, "canvas");
+      }
+      assert.equal(drawOrder[0], "canvas");
+      assert.ok(drawOrder.length > 20);
       continue;
     }
     const descendants = expected.slice(1);

@@ -7,6 +7,8 @@ import { createCarsLineChart } from "./cars-line-chart/program.js";
 import { createCarsRegressionScatterplot } from
   "./cars-regression-scatterplot/program.js";
 import { createCarsScatterplot } from "./cars-scatterplot/program.js";
+import { createCarsOriginScatterplotFacet } from
+  "./cars-origin-scatterplot-facet/program.js";
 import { createMatchingPopulationColorBars } from
   "./gapminder-continuous-color-bars/program.js";
 import { createGapminderQuantizeColorScale } from
@@ -58,6 +60,14 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createProgramCompositionExample,
     docsGroup: "charts",
     browser: { path: "program-composition/", canvas: "#chart" }
+  }),
+  example({
+    id: "cars-origin-scatterplot-facet",
+    data: "cars",
+    width: 932,
+    height: 282,
+    createProgram: createCarsOriginScatterplotFacet,
+    docsGroup: "charts"
   }),
   example({
     id: "cars-scatterplot",

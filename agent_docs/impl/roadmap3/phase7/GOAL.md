@@ -9,8 +9,8 @@
 - [x] STEP 5 — Cars Origin histogram facet primitive
 - [x] STEP 6 — Gate H visual evidence와 사용자 승인
 - [x] STEP 7 — Immutable facet child derivation
-- [ ] STEP 8 — Public `facet`과 composition materialization
-- [ ] STEP 9 — `editFacetHeaders`, title promotion과 layout edits
+- [x] STEP 8 — Public `facet`과 composition materialization
+- [x] STEP 9 — `editFacetHeaders`, title promotion과 layout edits
 - [ ] STEP 10 — Coverage, contracts, docs와 Phase closeout
 
 ## 목표
@@ -32,7 +32,7 @@ facet(options: {
   columns?: number;
   gap?: number;
   align?: "start" | "center" | "end";
-  guides?: { legend?: "each" | "shared" };
+  guides?: { legend?: false | "shared" };
   padding?: number | Partial<{
     top: number;
     right: number;
@@ -80,5 +80,5 @@ STEP 6은 hard pause다. 승인 전에는 `ChartProgram.prototype.facet`, facet 
 
 `guides.legend` exact syntax와 parent ownership은 2026-07-18 Gate H feedback에서 승인되었다.
 
-Gate H primitive package는 `test/gates/direct-source-facet/`에 있으며 public `facet`과
-`editFacetHeaders`가 아직 존재하지 않는 것도 normal Gate test가 확인한다.
+Gate H primitive package는 `test/gates/direct-source-facet/`에 있으며 승인 뒤 추가된 public pair가 같은
+concrete Canvas call sequence를 만드는 것도 확인한다.

@@ -19,8 +19,8 @@ test("resolves direct facet values by source first appearance", () => {
 test("keeps one shared scatter domain across every facet cell", () => {
   const values = createDirectFacetGateValues(loadCars());
   assert.deepEqual(values.scatter.domains, {
-    x: [46, 230],
-    y: [9, 46.6]
+    x: [40, 250],
+    y: [0, 50]
   });
   assert.equal(values.scatter.columns, 3);
   assert.equal(values.scatter.rows, 1);

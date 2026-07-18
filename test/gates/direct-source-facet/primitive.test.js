@@ -24,8 +24,8 @@ test("authors the one-row scatterplot facet with extension primitives", () => {
     nestedCanvases(program).map(canvas => [canvas.properties.x, canvas.properties.y]),
     [[0, 52], [266, 52], [532, 52]]
   );
-  assert.equal(typeof ChartProgram.prototype.facet, "undefined");
-  assert.equal(typeof ChartProgram.prototype.editFacetHeaders, "undefined");
+  assert.equal(typeof ChartProgram.prototype.facet, "function");
+  assert.equal(typeof ChartProgram.prototype.editFacetHeaders, "function");
 });
 
 test("authors the wrapped histogram facet without synthetic empty-bin bars", () => {
@@ -36,12 +36,9 @@ test("authors the wrapped histogram facet without synthetic empty-bin bars", () 
     nestedCanvases(program).map(canvas => [canvas.properties.x, canvas.properties.y]),
     [[14, 66], [312, 66], [14, 324]]
   );
-  const collections = Object.entries(program.graphicSpec.objects)
-    .filter(([id]) => id.endsWith("Content"))
-    .map(([, object]) => object);
-  const rectCounts = collections.map(collection =>
-    collection.items.filter(child => child.type === "rect").length
-  );
+  const collections = Object.values(program.graphicSpec.objects)
+    .filter(object => object.type === "rect" && object.items !== undefined);
+  const rectCounts = collections.map(collection => collection.items.length);
   assert.deepEqual(rectCounts, [10, 6, 5]);
 });
 
@@ -51,7 +48,7 @@ test("authors one parent legend instead of repeating it in facet cells", () => {
     createCarsOriginHistogramFacetPrimitives(loadCars())
   ]) {
     const legendIds = Object.keys(program.graphicSpec.objects)
-      .filter(id => id.endsWith("FacetLegend"));
+      .filter(id => id === "facet-legend");
     assert.equal(legendIds.length, 1);
     const legend = program.graphicSpec.objects[legendIds[0]];
     assert.deepEqual(

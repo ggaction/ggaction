@@ -11,7 +11,7 @@ export const DEFAULT_COMPOSITION_LAYOUT = cloneAndFreeze({
   padding: { top: 0, right: 0, bottom: 0, left: 0 }
 });
 
-function validateNonNegativeFinite(value, label) {
+export function validateCompositionSpacing(value, label) {
   if (!Number.isFinite(value) || value < 0) {
     throw new RangeError(`${label} must be a non-negative finite number.`);
   }
@@ -23,7 +23,7 @@ function validatePaddingBase(base) {
     throw new TypeError("Composition padding base must be a plain object.");
   }
   for (const key of PADDING_KEYS) {
-    validateNonNegativeFinite(base[key], `Composition padding.${key}`);
+    validateCompositionSpacing(base[key], `Composition padding.${key}`);
   }
   return base;
 }
@@ -34,7 +34,7 @@ export function normalizeCompositionPadding(
 ) {
   validatePaddingBase(base);
   if (Number.isFinite(padding)) {
-    validateNonNegativeFinite(padding, "Composition padding");
+    validateCompositionSpacing(padding, "Composition padding");
     return cloneAndFreeze({
       top: padding,
       right: padding,
@@ -53,7 +53,7 @@ export function normalizeCompositionPadding(
     if (!PADDING_KEYS.includes(key)) {
       throw new Error(`Unknown composition padding option "${key}".`);
     }
-    validateNonNegativeFinite(padding[key], `Composition padding.${key}`);
+    validateCompositionSpacing(padding[key], `Composition padding.${key}`);
   }
   return cloneAndFreeze({ ...base, ...padding });
 }
@@ -67,7 +67,7 @@ function normalizeDirection(direction) {
   return direction;
 }
 
-function normalizeAlign(align) {
+export function normalizeCompositionAlign(align) {
   if (!ALIGNMENTS.includes(align)) {
     throw new Error(
       `Unknown composition align "${align}"; expected start, center, or end.`
@@ -76,7 +76,7 @@ function normalizeAlign(align) {
   return align;
 }
 
-function normalizeChildren(children) {
+export function normalizeCompositionChildren(children) {
   if (!Array.isArray(children) || children.length === 0) {
     throw new TypeError("Composition layout requires a non-empty children array.");
   }
@@ -153,9 +153,9 @@ export function resolveCompositionLayout({
   padding = DEFAULT_COMPOSITION_LAYOUT.padding
 } = {}) {
   const resolvedDirection = normalizeDirection(direction);
-  const resolvedChildren = normalizeChildren(children);
-  const resolvedGap = validateNonNegativeFinite(gap, "Composition gap");
-  const resolvedAlign = normalizeAlign(align);
+  const resolvedChildren = normalizeCompositionChildren(children);
+  const resolvedGap = validateCompositionSpacing(gap, "Composition gap");
+  const resolvedAlign = normalizeCompositionAlign(align);
   const resolvedPadding = normalizeCompositionPadding(padding);
   const horizontal = resolvedDirection === "horizontal";
   const sizedChildren = normalizeAutoCrossSize(resolvedChildren, horizontal);

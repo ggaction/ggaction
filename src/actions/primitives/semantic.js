@@ -122,7 +122,8 @@ function removeRootProperty(spec, root, path) {
 const editSemantic = action(
   {
     op: "editSemantic",
-    description: "Create, replace, or remove one semantic property."
+    description: "Create, replace, or remove one semantic property.",
+    scope: "any"
   },
   function ({ property, value, remove = false } = {}) {
     if (typeof remove !== "boolean") {
@@ -136,6 +137,13 @@ const editSemantic = action(
     }
 
     const parsed = parseSemanticPath(property, { allowContainer: remove });
+    if (this.compositionSpec !== undefined && !(
+      this.compositionSpec.type === "facet" && parsed.kind === "title"
+    )) {
+      throw new Error(
+        "editSemantic on a composition parent currently supports only facet title state."
+      );
+    }
     if (remove) {
       const semanticSpec = parsed.kind === "guide"
         ? removeRootProperty(this.semanticSpec, "guides", parsed.path)

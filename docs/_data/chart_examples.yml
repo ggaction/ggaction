@@ -13,6 +13,21 @@
   url: /api/composition/
   home_group: essentials
   home_order: 6
+- id: facet
+  title: Faceted scatterplot
+  image: /assets/images/cars-origin-scatterplot-facet.png
+  alt: Cars scatterplots repeated by origin with one shared cylinder legend
+  width: 1864
+  height: 564
+  thumbnail: /assets/images/cars-origin-scatterplot-facet-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 194
+  caption: One direct-source chart repeated with shared scales and a parent legend.
+  summary: Repeat a complete point or bar chart by field value.
+  actions: facet · editFacetHeaders · editCompositionLayout
+  url: /api/composition/#repeat-the-current-chart-by-a-field
+  home_group: essentials
+  home_order: 7
 - id: scatterplot
   title: Scatterplot
   image: /assets/images/cars-scatterplot.png

@@ -34,15 +34,16 @@ test("records the current and missing Roadmap 3 public surface", () => {
   for (const name of [
     "encodeTheta",
     "encodeR",
-    "encodePointRadius"
+    "encodePointRadius",
+    "facet",
+    "editFacetHeaders"
   ]) {
     assert.equal(typeof program[name], "function", name);
   }
   for (const name of [
     "encodeYOffset",
     "createTextMark",
-    "createRectMark",
-    "facet"
+    "createRectMark"
   ]) {
     assert.equal(program[name], undefined, name);
   }

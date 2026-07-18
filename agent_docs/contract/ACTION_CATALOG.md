@@ -139,13 +139,13 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`editRadialGrid`](current/GRID.md#editRadialGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editCompositionLayout`](current/COMPOSITION.md#editCompositionLayout) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`replaceCompositionChild`](current/COMPOSITION.md#replaceCompositionChild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`facet`](current/COMPOSITION.md#facet) | composition | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFacetHeaders`](current/COMPOSITION.md#editFacetHeaders) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `facet` | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet) |
-| `editFacetHeaders` | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet) |
 | `encodeYOffset` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#directional-offset) |
 | `createTextMark` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#text-annotation) |
 | `encodeText` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#text-annotation) |
@@ -158,7 +158,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
 | parameter | Facet scale resolution options | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
-| composition | Direct-source facet | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet) |
 | behavior | Derived facet dependency replay | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
 | composition | Parent guide composition | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
 | composition | Horizontal grouped bar | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#directional-offset) |

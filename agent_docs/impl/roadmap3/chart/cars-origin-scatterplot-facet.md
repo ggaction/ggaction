@@ -9,11 +9,15 @@ first-appearance order, default one-row layout, shared quantitative domains, per
 ## 최종 user-facing API
 
 ```javascript
-const rows = cars.filter(row =>
+const completeRows = cars.filter(row =>
   Number.isFinite(row.Horsepower) &&
   Number.isFinite(row.Miles_per_Gallon) &&
   Number.isFinite(row.Cylinders) &&
   typeof row.Origin === "string"
+);
+const originOrder = [...new Set(cars.map(row => row.Origin))];
+const rows = originOrder.flatMap(origin =>
+  completeRows.filter(row => row.Origin === origin)
 );
 
 chart()
@@ -36,21 +40,21 @@ chart()
   .encodeColor({
     field: "Cylinders",
     fieldType: "ordinal",
-    scale: { palette: "reds" }
+    scale: { domain: [8, 4, 6, 3, 5], palette: "reds" }
   })
   .createGuides({
     axes: {
       x: { title: { text: "Horsepower" } },
-      y: { title: { text: "Miles per Gallon" } }
+      y: { title: { text: "Miles per Gallon", offset: 39 } }
     },
     legend: false
   })
+  .facet({ field: "Origin", guides: { legend: "shared" } })
   .createTitle({
     text: "Horsepower and Fuel Economy",
     subtitle: "Faceted by Origin",
     align: "center"
   })
-  .facet({ field: "Origin", guides: { legend: "shared" } })
   .editFacetHeaders({ fontSize: 13, fontWeight: 700, offset: 10 });
 ```
 
@@ -58,15 +62,14 @@ chart()
 
 ```text
 facet
-├─ resolveFacetSource
-├─ resolveFacetValues
-├─ deriveFacetCell(value) × 3
-│  ├─ filterData revision
-│  ├─ rebindFacetLayers
-│  └─ rematerialize cell consumers
-├─ promoteChartTitle
-├─ createFacetHeaders
-└─ materializeFacetComposition
+├─ useProgram(cell) × 3
+└─ materializeComposition
+   ├─ attach namespaced child Canvas × 3
+   ├─ create facet headers
+   └─ create shared categorical legend
+
+Each retained child records `filterData`, explicit layer rebinding and consumer rematerialization under its inherited
+`facet` trace node. `createTitle` and `editFacetHeaders` remain later top-level actions on the parent.
 ```
 
 ## Stored-result contract
@@ -75,5 +78,6 @@ facet
 - Omitted columns resolves to `3`; all cells appear in one row.
 - Every child keeps an independent scale resource but resolves the same full-source x/y domain.
 - Cylinders uses shared ordinal domain `[8, 4, 6, 3, 5]` and one parent `reds` legend.
-- Title exists only on the composition parent; header text is parent-owned concrete graphics.
+- Title is created after `facet` and exists only on the composition parent; header text is parent-owned concrete graphics.
 - Raw Origin values never appear in generated child, dataset or graphic IDs.
+- Parent Canvas is `932 × 282`; primitive and user-facing Canvas calls are exact matches.

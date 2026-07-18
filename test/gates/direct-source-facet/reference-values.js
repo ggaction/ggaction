@@ -373,8 +373,8 @@ export function createDirectFacetGateValues(cars) {
   }
 
   const scatterDomains = Object.freeze({
-    x: Object.freeze(extent(scatterRows.map(row => row.Horsepower))),
-    y: Object.freeze(extent(scatterRows.map(row => row.Miles_per_Gallon)))
+    x: Object.freeze([40, 250]),
+    y: Object.freeze([0, 50])
   });
   const scatterLayout = facetLayout({
     valueCount: origins.length,
