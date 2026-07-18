@@ -78,6 +78,21 @@ export function defineVisualVariant({
   if (userFacing !== undefined && typeof userFacing !== "function") {
     throw new TypeError(`${chart}/${variant} userFacing must be a program factory.`);
   }
+  const boundsTolerance = visualSignature?.inkBounds?.tolerance;
+  const hasValidBoundsTolerance =
+    boundsTolerance === undefined ||
+    (Number.isFinite(boundsTolerance) && boundsTolerance >= 0) ||
+    (
+      boundsTolerance !== null &&
+      typeof boundsTolerance === "object" &&
+      !Array.isArray(boundsTolerance) &&
+      Object.keys(boundsTolerance).every(key =>
+        ["x", "y", "width", "height"].includes(key)
+      ) &&
+      ["x", "y", "width", "height"].every(key =>
+        Number.isFinite(boundsTolerance[key]) && boundsTolerance[key] >= 0
+      )
+    );
   if (visualSignature !== undefined && (
     visualSignature === null ||
     typeof visualSignature !== "object" ||
@@ -88,9 +103,7 @@ export function defineVisualVariant({
     !["x", "y", "width", "height"].every(key =>
       Number.isFinite(visualSignature.inkBounds?.[key])
     ) ||
-    (visualSignature.inkBounds.tolerance !== undefined &&
-      (!Number.isFinite(visualSignature.inkBounds.tolerance) ||
-        visualSignature.inkBounds.tolerance < 0))
+    !hasValidBoundsTolerance
   )) {
     throw new TypeError(`${chart}/${variant} has an invalid visual signature.`);
   }

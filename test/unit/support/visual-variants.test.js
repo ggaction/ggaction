@@ -50,9 +50,35 @@ test("accepts only complete compact visual signatures", () => {
     ...required,
     visualSignature
   }).visualSignature, visualSignature);
+  assert.doesNotThrow(() => defineVisualVariant({
+    ...required,
+    visualSignature: {
+      inkRatio: { min: 0.1, max: 0.2 },
+      inkBounds: {
+        x: 2,
+        y: 3,
+        width: 90,
+        height: 70,
+        tolerance: { x: 2, y: 1, width: 4, height: 1 }
+      }
+    }
+  }));
   assert.throws(() => defineVisualVariant({
     ...required,
     visualSignature: { inkRatio: { min: 0.2, max: 0.1 } }
+  }), /invalid visual signature/);
+  assert.throws(() => defineVisualVariant({
+    ...required,
+    visualSignature: {
+      inkRatio: { min: 0.1, max: 0.2 },
+      inkBounds: {
+        x: 2,
+        y: 3,
+        width: 90,
+        height: 70,
+        tolerance: { x: 2, y: 1, width: -1, height: 1 }
+      }
+    }
   }), /invalid visual signature/);
 });
 

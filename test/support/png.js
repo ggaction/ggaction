@@ -98,17 +98,20 @@ export async function assertRenderedPNG(
       `${label} ink ratio ${compactSignature.inkRatio} left its approved range`
     );
     const tolerance = visualSignature.inkBounds.tolerance ?? 0;
+    const toleranceFor = key =>
+      typeof tolerance === "number" ? tolerance : tolerance[key];
     const mismatchedBounds = ["x", "y", "width", "height"].filter(key =>
       Math.abs(
         compactSignature.inkBounds[key] - visualSignature.inkBounds[key]
-      ) > tolerance
+      ) > toleranceFor(key)
     );
     assert.deepEqual(
       mismatchedBounds,
       [],
       `${label} ink bounds changed from its approved signature ` +
         `(actual ${JSON.stringify(compactSignature.inkBounds)}, ` +
-        `expected ${JSON.stringify(visualSignature.inkBounds)} ± ${tolerance})`
+        `expected ${JSON.stringify(visualSignature.inkBounds)}, ` +
+        `tolerance ${JSON.stringify(tolerance)})`
     );
   }
 

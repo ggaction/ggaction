@@ -49,9 +49,11 @@ parses it without evaluation and requires its top-level actions to match the
 factory trace exactly.
 
 Approved representative charts may also declare a compact visual signature:
-an ink-density range and logical ink bounds with a small tolerance. Signatures
-catch major layout regressions without committing platform-sensitive full PNG
-snapshots; primitive and user-facing renders must still match pixel-for-pixel.
+an ink-density range and logical ink bounds with either one small tolerance or
+per-bound tolerances when platform font metrics affect only selected edges.
+Signatures catch major layout regressions without committing platform-sensitive
+full PNG snapshots; primitive and user-facing renders must still match
+pixel-for-pixel on the same platform.
 
 Artifact track shape is owned by `test/support/artifact-schema.js`. Paths,
 metadata validation, render manifests, and gallery generation consume that
