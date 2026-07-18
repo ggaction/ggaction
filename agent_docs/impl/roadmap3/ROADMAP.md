@@ -28,7 +28,7 @@ domain action은 semantic change와 필요한 graphical materialization을 명�
 - [x] Phase 7 — Chainable `.facet({ field })`와 direct-source facets
 - [x] Phase 8 — Facet scale resolution, derived-data facets와 guide composition
 - [x] Phase 9 — `encodeYOffset`, text annotation과 rect heatmap
-- [ ] Phase 10 — Cross-feature integration, architecture closeout와 release readiness
+- [x] Phase 10 — Cross-feature integration, architecture closeout와 release readiness
 
 ## 확정된 설계 결정
 

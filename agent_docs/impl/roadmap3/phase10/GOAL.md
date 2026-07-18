@@ -11,7 +11,7 @@
 - [x] STEP 7 — Transitive rematerialization matrix
 - [x] STEP 8 — Gate K-B cross-feature integration approval
 - [x] STEP 9 — Package, TypeScript, docs와 architecture audit
-- [ ] STEP 10 — Roadmap 3 closeout와 release-candidate Gate
+- [x] STEP 10 — Roadmap 3 closeout와 release-candidate Gate
 
 ## 목표
 
@@ -61,8 +61,8 @@ unsupported errors를 승인한다. 승인 전에는 integration behavior를 Cur
 
 ### Release-candidate Gate
 
-Roadmap 3 closeout matrix, package/type/docs/architecture 결과와 release notes를 제시한다. 기본 후보 version은
-`0.1.0`이지만 version 변경과 publish는 사용자 승인 뒤에만 수행한다.
+Roadmap 3 closeout matrix, package/type/docs/architecture 결과와 release notes를 제시했다. 사용자가 확정한
+`0.0.3`은 승인 뒤 exact tagged artifact로 publish했다.
 
 ## 완료 조건
 
