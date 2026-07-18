@@ -11,7 +11,7 @@
 - [x] STEP 7 — Gate I-A visual approval
 - [x] STEP 8 — Derived replay와 scale-resolution public implementation
 - [x] STEP 9 — Outer axes와 shared gradient legend primitive
-- [ ] STEP 10 — Gate I-B visual approval
+- [x] STEP 10 — Gate I-B visual approval
 - [ ] STEP 11 — Guide composition과 transform-family integration
 - [ ] STEP 12 — Coverage, contracts, docs와 Phase closeout
 
