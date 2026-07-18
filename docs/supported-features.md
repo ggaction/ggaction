@@ -68,7 +68,7 @@ screens.
 
 | Area | Supported now |
 | --- | --- |
-| Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested horizontal/vertical composition, and stable child replacement |
+| Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar horizontal or vertical composition, stable child replacement, and Cartesian facet repetition |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
 | Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
@@ -100,3 +100,5 @@ series, arc sector, and rule grain. Selector values explicitly distinguish data 
 pre-scale semantic channels, and concrete graphic properties.
 Highlight appearance supports point fill/shape/size/outline/offset, bar fill and
 outline, area/arc fill/outline/offset, and line/rule stroke/width/dash/offset.
+Polar charts may be direct or nested concat children. Faceting a Polar source is
+not implemented and fails before partial child state is created.

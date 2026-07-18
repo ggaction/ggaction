@@ -4555,6 +4555,32 @@ child width or height is never overwritten.
 The parent background is white. Child Canvas backgrounds are preserved, and
 nested compositions keep independent clipping and coordinate scopes.
 
+## Compose Cartesian and Polar charts
+
+A complete Cartesian or Polar chart can be a direct or nested concat child.
+The composition does not reinterpret theta, radius, x, y, scales, guides, or
+selections. It snapshots each finished child into one namespaced concrete
+graphic tree, so Canvas and PNG renderers use the same result.
+
+When a nested child changes, replace it in each ancestor explicitly:
+
+```javascript
+const revisedPolarRow = polarRow.replaceCompositionChild({
+  target: "detail",
+  program: revisedPolarChart
+});
+
+const revisedDashboard = dashboard.replaceCompositionChild({
+  target: "polarRow",
+  program: revisedPolarRow
+});
+```
+
+This preserves immutable earlier programs and makes the affected ancestor
+layout visible in the action trace. See the
+[cross-feature dashboard source](https://github.com/hj-n/ggaction/tree/main/examples/cross-feature-dashboard)
+for a nested Polar replacement next to a Cartesian facet.
+
 ## Repeat the current chart by a field
 
 Call `facet` on one complete unit chart to repeat it for each observed field
@@ -4613,7 +4639,10 @@ bar, ranged bar, rule, regression, density, interval/error-band, and box-plot
 layers when they share one valid row-preserving partition ancestor. A shared
 legend is accepted only when every represented child scale and legend recipe is
 concretely compatible; scale resolution alone does not make a guide shareable.
-Polar facet channels are not yet supported.
+Polar sources cannot currently be faceted. Calling `facet` on a Polar source
+throws before creating partial children because theta/radius facet scale and
+guide resolution are not implemented. Polar charts remain supported as concat
+children.
 
 Create a chart title after `facet` so the title is owned directly by the
 parent. A title that already fits the unit Canvas is promoted for authoring
@@ -4891,6 +4920,13 @@ program.encodeY({
 The action groups by temporal x and encoded series fields, computes the selected
 scalar summary, sorts each series by x, and materializes concrete path commands.
 Automatic y domains use final aggregate values rather than raw rows.
+
+When a compatible temporal aggregate bar already owns x and y, a newly created
+line mark infers both encodings and reuses the same semantic scale IDs. Do not
+repeat `encodeX` or `encodeY` for that line unless it intentionally needs a
+different field or scale. Bar centers and line vertices then map the same
+temporal values to the same x positions; bar width remains mark layout rather
+than a second scale.
 
 Supported operations are `count`, `sum`, `mean`, `median`, `min`, `max`,
 `distinct`, `valid`, `missing`, `variance`, `varianceP`, `stdev`, `stdevP`,
@@ -7415,7 +7451,7 @@ screens.
 
 | Area | Supported now |
 | --- | --- |
-| Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested horizontal/vertical composition, and stable child replacement |
+| Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar horizontal or vertical composition, stable child replacement, and Cartesian facet repetition |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
 | Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
@@ -7447,6 +7483,8 @@ series, arc sector, and rule grain. Selector values explicitly distinguish data 
 pre-scale semantic channels, and concrete graphic properties.
 Highlight appearance supports point fill/shape/size/outline/offset, bar fill and
 outline, area/arc fill/outline/offset, and line/rule stroke/width/dash/offset.
+Polar charts may be direct or nested concat children. Faceting a Polar source is
+not implemented and fails before partial child state is created.
 
 <!-- Source: /reference/actions/ -->
 

@@ -101,6 +101,14 @@ async function testNodeConsumer(directory) {
     const nested = vconcat({ programs: [pair, replaced] });
     assert.equal(replaced.children["view-2"], arcs);
     assert.equal(nested.compositionSpec.direction, "vertical");
+    const faceted = program.facet({ field: "x", columns: 2 });
+    assert.equal(faceted.compositionSpec.type, "facet");
+    assert.equal(
+      faceted.children["facet-cell-1"].semanticSpec.datasets.find(
+        dataset => dataset.id === "facet-cell-1-data"
+      ).values.length,
+      1
+    );
     const result = await renderToPNG(program, {
       output: ${JSON.stringify(output)},
       pixelRatio: 1
@@ -171,6 +179,7 @@ async function testTypeScriptConsumer(directory) {
       .createPointMark({ id: "points" })
       .encodeX({ field: "x" })
       .encodeY({ field: "y" });
+    const faceted: ChartProgram = inspected.facet({ field: "x", columns: 1 });
     const polar: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ angle: 0, distance: 1 }] })
@@ -197,6 +206,7 @@ async function testTypeScriptConsumer(directory) {
     void extensionProgram;
     void composed;
     void nested;
+    void faceted;
     void derived;
     void polar;
     void arcs;

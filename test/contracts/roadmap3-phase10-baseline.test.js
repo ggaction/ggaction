@@ -8,10 +8,6 @@ const matrixUrl = new URL(
   "../../agent_docs/impl/roadmap3/phase10/INTEGRATION_MATRIX.json",
   import.meta.url
 );
-const plannedContract = readFileSync(new URL(
-  "../../agent_docs/contract/planned/ROADMAP3_EDITING.md",
-  import.meta.url
-), "utf8");
 const encodingContract = readFileSync(new URL(
   "../../agent_docs/contract/current/ENCODINGS.md",
   import.meta.url
@@ -53,7 +49,7 @@ function polarLegendProgram() {
 test("keeps the Phase 10 integration matrix valid and evidence-addressable", () => {
   const matrix = JSON.parse(readFileSync(matrixUrl, "utf8"));
   const statuses = new Set([
-    "current-pass", "current-explicit-error", "gate-pending", "audit-pending"
+    "current-pass", "current-explicit-error", "gate-pending"
   ]);
 
   assert.equal(matrix.schemaVersion, 1);
@@ -61,15 +57,9 @@ test("keeps the Phase 10 integration matrix valid and evidence-addressable", () 
   assert.equal(new Set(matrix.cases.map(entry => entry.id)).size, matrix.cases.length);
   for (const entry of matrix.cases) {
     assert.equal(statuses.has(entry.status), true, `${entry.id} status`);
-    if (entry.status === "audit-pending") {
-      assert.equal(entry.evidence, null);
-    } else {
-      assert.equal(existsSync(new URL(`../../${entry.evidence}`, import.meta.url)), true);
-    }
+    assert.equal(existsSync(new URL(`../../${entry.evidence}`, import.meta.url)), true);
   }
-  assert.doesNotMatch(plannedContract, /Shared position scale resolution/);
   assert.match(encodingContract, /temporal aggregate bar bandwidth/);
-  assert.match(plannedContract, /Cross feature integration/);
 });
 
 test("retains Polar children in horizontal and nested concat compositions", () => {

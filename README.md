@@ -103,6 +103,10 @@ repeats one chart with `.facet({ field: "Origin" })`, channel-level shared or
 independent scales, per-cell or occupied-outer axes, and an optional compatible
 parent-owned legend. Regression, density, interval, and box-derived data are
 recomputed independently inside each cell.
+Complete Cartesian and Polar programs can be nested with `hconcat` and
+`vconcat`; the [cross-feature dashboard](https://github.com/hj-n/ggaction/tree/main/examples/cross-feature-dashboard/)
+shows a Polar child replacement beside a Cartesian facet. Polar sources cannot
+currently be faceted and fail before partial child state is created.
 Completed programs can also be exported through
 [`ggaction/png`](https://hyeonword.com/ggaction/api/rendering/#png-output).
 

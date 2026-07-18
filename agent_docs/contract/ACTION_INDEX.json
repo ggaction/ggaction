@@ -2081,9 +2081,7 @@
     ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],
   "plannedActions": [],
-  "plannedCapabilities": [
-    { "id": "cross-feature-integration", "kind": "composition", "name": "Roadmap 3 cross-feature integration", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "cross-feature-integration" } }
-  ],
+  "plannedCapabilities": [],
   "internal": {
     "materialization": [
       "materializeBoxOutlierData",

@@ -107,3 +107,25 @@
   identity, namespaced snapshot rebuilding, unknown target and incomplete child rejection.
 - Evidence: `test/unit/actions/composition/concat.test.js`, `test/gates/program-composition/public.test.js`,
   `test/gates/program-composition/png.render.js`.
+
+## Cross-feature integration contract
+
+- A complete Cartesian or Polar unit program may be a direct or nested `hconcat`/`vconcat` child. Each child keeps
+  its semantic state, resolved scales, guides, selections, and immutable program identity; the parent stores only
+  retained child programs plus a concrete namespaced Canvas snapshot.
+- Replacing a nested child is explicit at every ancestor. Revise the leaf, call `replaceCompositionChild` on its
+  immediate parent, and repeat for each outer parent. Earlier leaves and compositions remain unchanged.
+- Automatic cross-axis sizing rematerializes unit children. Nested compositions keep their intrinsic layout and are
+  placed inside the resolved slot using the outer composition's `align` policy instead of stretching their internal
+  cells, gaps, or guide geometry.
+- Cartesian `facet` supports the mark and derived-data families listed above. A Polar source is rejected before any
+  child or partial parent state is created because theta/radius facet scale and guide resolution are not implemented.
+
+### Value coverage — cross-feature integration
+
+- ✅ Covered: direct and nested Polar concat, nested replacement and explicit ancestor propagation, immutable prior
+  state, centered unequal snapshots, Cartesian facet shared/independent scale and guide resolution, and explicit
+  Polar-facet rejection.
+- Evidence: `test/charts/cross-feature-integration/`,
+  `test/contracts/roadmap3-phase10-baseline.test.js`, and
+  `test/contracts/roadmap3-phase10-closeout.test.js`.

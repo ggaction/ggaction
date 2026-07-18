@@ -4,6 +4,20 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- Added complete Polar point, line/radar, arc/donut/rose/radial-bar authoring with theta/radius guides, selection,
+  highlighting, and Canvas/PNG rendering.
+- Added immutable horizontal and vertical program composition, nested child snapshots, layout editing, stable child
+  replacement, and Cartesian facets with derived-data replay, scale resolution, outer axes, and shared legends.
+- Added text and rect marks, directional offsets, horizontal grouped bars, and compatible shared temporal bar/line
+  position inference.
+
+### Changed
+
+- Nested compositions now preserve their intrinsic layout and honor outer cross-axis alignment instead of stretching
+  internal cells or leaving unequal snapshots pinned to the start edge.
+
 ### Fixed
 
 - Corrected zero-baseline and signed geometry for aggregate bars, and materialized complete ranged or aggregate bars

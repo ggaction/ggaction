@@ -68,6 +68,13 @@ The action groups by temporal x and encoded series fields, computes the selected
 scalar summary, sorts each series by x, and materializes concrete path commands.
 Automatic y domains use final aggregate values rather than raw rows.
 
+When a compatible temporal aggregate bar already owns x and y, a newly created
+line mark infers both encodings and reuses the same semantic scale IDs. Do not
+repeat `encodeX` or `encodeY` for that line unless it intentionally needs a
+different field or scale. Bar centers and line vertices then map the same
+temporal values to the same x positions; bar width remains mark layout rather
+than a second scale.
+
 Supported operations are `count`, `sum`, `mean`, `median`, `min`, `max`,
 `distinct`, `valid`, `missing`, `variance`, `varianceP`, `stdev`, `stdevP`,
 `stderr`, `q1`, `q3`, `ciLower`, and `ciUpper`. `distinct`, `valid`, `missing`,

@@ -64,6 +64,32 @@ child width or height is never overwritten.
 The parent background is white. Child Canvas backgrounds are preserved, and
 nested compositions keep independent clipping and coordinate scopes.
 
+## Compose Cartesian and Polar charts
+
+A complete Cartesian or Polar chart can be a direct or nested concat child.
+The composition does not reinterpret theta, radius, x, y, scales, guides, or
+selections. It snapshots each finished child into one namespaced concrete
+graphic tree, so Canvas and PNG renderers use the same result.
+
+When a nested child changes, replace it in each ancestor explicitly:
+
+```javascript
+const revisedPolarRow = polarRow.replaceCompositionChild({
+  target: "detail",
+  program: revisedPolarChart
+});
+
+const revisedDashboard = dashboard.replaceCompositionChild({
+  target: "polarRow",
+  program: revisedPolarRow
+});
+```
+
+This preserves immutable earlier programs and makes the affected ancestor
+layout visible in the action trace. See the
+[cross-feature dashboard source](https://github.com/hj-n/ggaction/tree/main/examples/cross-feature-dashboard)
+for a nested Polar replacement next to a Cartesian facet.
+
 ## Repeat the current chart by a field
 
 {% include chart-example.html id="facet" %}
@@ -124,7 +150,10 @@ bar, ranged bar, rule, regression, density, interval/error-band, and box-plot
 layers when they share one valid row-preserving partition ancestor. A shared
 legend is accepted only when every represented child scale and legend recipe is
 concretely compatible; scale resolution alone does not make a guide shareable.
-Polar facet channels are not yet supported.
+Polar sources cannot currently be faceted. Calling `facet` on a Polar source
+throws before creating partial children because theta/radius facet scale and
+guide resolution are not implemented. Polar charts remain supported as concat
+children.
 
 Create a chart title after `facet` so the title is owned directly by the
 parent. A title that already fits the unit Canvas is promoted for authoring
