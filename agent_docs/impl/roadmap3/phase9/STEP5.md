@@ -2,10 +2,10 @@
 
 ## 진행 상태
 
-- [ ] IMDb label fixture and deterministic formatting oracle
-- [ ] Explicit annotated-scatterplot primitive
-- [ ] Position, alignment, rotation and offset variants
-- [ ] High-DPI PNG and Gate J-B artifact
+- [x] IMDb label fixture and deterministic formatting oracle
+- [x] Explicit annotated-scatterplot primitive
+- [x] Position, alignment, rotation and offset variants
+- [x] High-DPI PNG and Gate J-B artifact
 - [ ] Gate J-B user approval
 
 IMDb rows에서 complete numeric position과 non-empty title을 가진 representative subset을 사용한다. Point와 text

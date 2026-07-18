@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 
 import { parseFashionTsneCsv } from "./fashion-tsne.js";
+import { parseCsv } from "./csv.js";
 
 const FIXTURES = Object.freeze({
   cars: Object.freeze({
@@ -77,6 +78,7 @@ function parseRows(id) {
   if (definition.format === "fashion-tsne-csv") {
     return parseFashionTsneCsv(source);
   }
+  if (definition.format === "csv-lines") return parseCsv(source);
   throw new Error(`Test dataset "${id}" does not define a row parser.`);
 }
 
@@ -132,4 +134,8 @@ export function loadNightingaleRose() {
 
 export function loadFashionTsne() {
   return loadDataset("fashionTsne");
+}
+
+export function loadImdbTop1000() {
+  return loadDataset("imdbTop1000");
 }
