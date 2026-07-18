@@ -467,8 +467,9 @@ Guide composition은 repeated guide baseline을 먼저 보존한 뒤 별도 visu
 remaining non-categorical legend families를 검토한다. Shared guide를 지원할 때는 child semantic state를
 merge하지 않고 parent composition action이 representative concrete guide를 명시적으로 materialize한다.
 
-Gate I는 filtered child data에서 regression 또는 density statistic이 독립적으로 다시 계산되는지와
-shared/independent visual difference를 승인한다.
+Gate I-A는 filtered child data에서 regression statistic이 독립적으로 다시 계산되는지와 shared/independent
+visual difference를 승인한다. Gate I-B는 incomplete final row의 outer-only axes와 parent-owned shared
+continuous legend를 별도로 승인한다.
 
 ## Phase 9 — Directional parity, text, and rect
 
