@@ -86,6 +86,8 @@
   url: /api/marks/bar/
 - title: Rule Marks
   url: /api/marks/rule/
+- title: Text Marks
+  url: /api/marks/text/
 - title: Encodings
   url: /api/encodings/
   nav_group: chart-api

@@ -4,7 +4,8 @@ export const MARK_TYPES = Object.freeze([
   "bar",
   "area",
   "arc",
-  "rule"
+  "rule",
+  "text"
 ]);
 
 export const MARK_GRAPHIC_TYPES = Object.freeze({
@@ -13,7 +14,8 @@ export const MARK_GRAPHIC_TYPES = Object.freeze({
   bar: Object.freeze(["rect"]),
   area: Object.freeze(["path"]),
   arc: Object.freeze(["path"]),
-  rule: Object.freeze(["line"])
+  rule: Object.freeze(["line"]),
+  text: Object.freeze(["text"])
 });
 
 export const ENCODING_CHANNELS = Object.freeze([
@@ -30,11 +32,12 @@ export const ENCODING_CHANNELS = Object.freeze([
   "size",
   "shape",
   "group",
-  "opacity"
+  "opacity",
+  "text"
 ]);
 
 const CARTESIAN_MARK_TYPES = Object.freeze([
-  "point", "line", "bar", "area", "rule"
+  "point", "line", "bar", "area", "rule", "text"
 ]);
 const POLAR_MARK_TYPES = Object.freeze(["point", "line", "arc"]);
 
@@ -106,7 +109,7 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
 });
 
 export const SCALED_ENCODING_CHANNELS = Object.freeze(
-  ENCODING_CHANNELS.filter(channel => channel !== "group")
+  ENCODING_CHANNELS.filter(channel => !["group", "text"].includes(channel))
 );
 
 export const POSITION_ENCODING_CHANNELS = Object.freeze(

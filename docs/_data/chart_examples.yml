@@ -64,6 +64,21 @@
   home_order: 2
   tutorial_order: 4
   recipe_order: 2
+- id: annotation
+  title: Annotated scatterplot
+  image: /assets/images/annotated-imdb-scatterplot.png
+  alt: Selected film ratings over release years with title annotations
+  width: 1440
+  height: 920
+  thumbnail: /assets/images/annotated-imdb-scatterplot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 409
+  caption: Point positions reused by a field-driven text layer.
+  summary: Attach readable data labels to final point, bar, or rule items.
+  actions: createTextMark · encodeText · editTextMark
+  url: /api/marks/text/
+  home_group: essentials
+  home_order: 1.5
 - id: bar
   title: Bar chart
   image: /assets/images/jobs-grouped-bar.png

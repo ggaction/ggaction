@@ -91,7 +91,7 @@ export function createAnnotatedImdbValues(rows) {
         ticks: Object.freeze(yTickValues.map(value => Object.freeze({
           value,
           position: map(value, yDomain, yRange),
-          label: value.toFixed(1)
+          label: Number.isInteger(value) ? String(value) : value.toFixed(1)
         }))),
         title: "IMDb Rating"
       })

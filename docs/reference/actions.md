@@ -56,6 +56,8 @@ interface ChartProgramActions {
   createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
+  createTextMark(options?: TextMarkOptions): ChartProgram;
+  editTextMark(options: EditTextMarkOptions): ChartProgram;
   editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
@@ -75,6 +77,7 @@ interface ChartProgramActions {
   encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
@@ -430,6 +433,25 @@ createRuleMark({ id?, data? } = {})
 Create a semantic rule mark and empty line collection. The first omitted ID is
 `"rule"`; data defaults to current data. [Marks](../api/marks.md)
 
+### `createTextMark`
+
+```javascript
+createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+```
+
+Create a semantic text layer. Omitted data and position attach to the current
+or unique compatible point, bar, or rule layer. `text` is constant-content
+shorthand. [Text marks](../api/marks/text.md)
+
+### `editTextMark`
+
+```javascript
+editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+```
+
+Edit text typography and graphical offsets without changing its semantic
+source or position. [Text marks](../api/marks/text.md)
+
 ### `encodeX`
 
 ```javascript
@@ -506,6 +528,16 @@ encodeGroup({ field, target?, fieldType? })
 
 Split line or area paths by a nominal field without creating a scale or guide.
 [Encodings](../api/encodings.md)
+
+### `encodeText`
+
+```javascript
+encodeText({ target?, field?, value?, format? })
+```
+
+Assign exactly one field or constant value to a text mark. `format` accepts
+`"auto"` or fixed-decimal tokens from `".0f"` through `".12f"`. Reassignment
+replaces the previous content branch. [Text marks](../api/marks/text.md)
 
 ### `encodeXOffset`
 

@@ -17,7 +17,7 @@ This closed vocabulary is owned by the shared point-shape grammar and reused by 
 shape encoding, concrete materialization, and legend symbols.
 
 Ordinary mark creation may omit `id` for the first mark of that semantic type. The library persists the
-deterministic role ID `"point" | "line" | "bar" | "area" | "arc" | "rule"`. A second mark of the same type requires an
+  deterministic role ID `"point" | "line" | "bar" | "area" | "arc" | "rule" | "text"`. A second mark of the same type requires an
 explicit user ID; the library never invents numbered public-resource IDs. Explicit IDs retain the existing
 validation and uniqueness contract.
 
@@ -368,3 +368,45 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
 - ✅ Covered: empty line collection, default appearance config, immutable earlier program과 wrapped trace.
 - Evidence: `test/unit/actions/marks/create-rule-mark.test.js` and
   `test/charts/cars-error-bar/primitive.test.js`.
+
+## `createTextMark`
+
+- Signature: `createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
+- The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
+  the current compatible point, bar, or rule layer, then one unique compatible layer, supplies data, coordinate,
+  Cartesian position encodings, and a persisted semantic `source` relation.
+- `text` is a constant-content shorthand for wrapped `encodeText({ value: text })`. Appearance options use wrapped
+  `editTextMark`; defaults are theme text fill, opacity `1`, 12px sans-serif normal text, left/alphabetic alignment,
+  zero rotation, and zero offsets.
+- Concrete children are backend-neutral text primitives. A source-owned annotation anchors to final point centers,
+  bar measure endpoints, or rule endpoints, so aggregate bars produce one label per final bar rather than one per row.
+- Collision avoidance is intentionally not automatic. Authors control filtering, alignment, rotation, `dx`, and `dy`.
+
+### Formal values — `createTextMark`
+
+- Implemented: `createTextMark({ id?: UserId; data?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: Finite; dx?: Finite; dy?: Finite } = {})`.
+- Proposed (NOT IMPLEMENTED): automatic collision avoidance and interactive tooltips.
+
+### Value coverage — `createTextMark`
+
+- ✅ Covered: deterministic ID, explicit/inferred data, point/bar/rule source inference, incomplete creation, constant
+  content shorthand, explicit typography, offsets, ambiguity and invalid options.
+- Evidence: `test/unit/actions/marks/text-mark.test.js` and the annotated IMDb Gate pair.
+
+## `editTextMark`
+
+- Signature: `editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
+- At least one property is required. Omitted properties preserve current immutable materialization config.
+- Complete text rematerializes immediately; incomplete text retains the edit until position and content complete.
+- `dx` and `dy` are final graphical offsets and never alter inherited semantic position or source geometry.
+
+### Formal values — `editTextMark`
+
+- Implemented: the appearance subset and value vocabularies of `createTextMark`, plus optional inferred/explicit target.
+- Proposed (NOT IMPLEMENTED): automatic placement and collision editing.
+
+### Value coverage — `editTextMark`
+
+- ✅ Covered: target inference, typography/alignment/rotation/offset edits, Canvas and scale rematerialization,
+  validation, empty edit, and earlier-program immutability.
+- Evidence: `test/unit/actions/marks/text-mark.test.js`.

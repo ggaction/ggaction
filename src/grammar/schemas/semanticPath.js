@@ -21,6 +21,7 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.color.layout",
   "encoding.color.aggregate",
   "encoding.theta.aggregate",
+  "encoding.text.format",
   ...CARTESIAN_POSITION_CHANNELS.flatMap(channel => [
     `encoding.${channel}.aggregate`,
     `encoding.${channel}.stack`
@@ -39,6 +40,7 @@ const ENTITY_PATHS = Object.freeze({
     ),
     properties: new Set([
       "data",
+      "source",
       "coordinate",
       "transform",
       "mark.type",

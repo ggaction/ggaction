@@ -7,6 +7,8 @@ import { createCarsLineChart } from "./cars-line-chart/program.js";
 import { createCarsRegressionScatterplot } from
   "./cars-regression-scatterplot/program.js";
 import { createCarsScatterplot } from "./cars-scatterplot/program.js";
+import { createAnnotatedImdbScatterplot } from
+  "./annotated-imdb-scatterplot/program.js";
 import { createCarsOriginScatterplotFacet } from
   "./cars-origin-scatterplot-facet/program.js";
 import { createMatchingPopulationColorBars } from
@@ -79,6 +81,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsScatterplot,
     docsGroup: "charts",
     browser: { path: "cars-scatterplot/", canvas: "#chart" }
+  }),
+  example({
+    id: "annotated-imdb-scatterplot",
+    data: "imdbSelected",
+    width: 720,
+    height: 460,
+    createProgram: createAnnotatedImdbScatterplot,
+    docsGroup: "charts",
+    browser: { path: "annotated-imdb-scatterplot/", canvas: "#chart" }
   }),
   example({
     id: "cars-polar-scatterplot",

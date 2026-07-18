@@ -1,4 +1,5 @@
 import { findDataset } from "../selectors/datasets.js";
+import { findLayer } from "../selectors/layers.js";
 import { isAggregate } from "../grammar/aggregate.js";
 import {
   BAR_GRAINS,
@@ -128,6 +129,19 @@ export function canMaterializeRule(program, layer) {
   );
 }
 
+export function canMaterializeText(program, layer) {
+  if (layer.mark?.type !== "text" || layer.encoding?.text === undefined) {
+    return false;
+  }
+  if (layer.source !== undefined) {
+    const source = findLayer(program, layer.source);
+    return source !== undefined &&
+      ["point", "bar", "rule"].includes(source.mark?.type) &&
+      Array.isArray(program.graphicSpec.objects[source.id]?.items);
+  }
+  return hasCartesianPositionScales(layer);
+}
+
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
   point: Object.freeze({
     canMaterialize: canMaterializePoint,
@@ -173,6 +187,19 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
     op: "rematerializeRuleMark",
     positionEncoding: Object.freeze({ incomplete: "mark", scaleFirst: false }),
     scaleApplication: Object.freeze({ default: "defer" })
+  }),
+  text: Object.freeze({
+    canMaterialize: canMaterializeText,
+    op: "rematerializeTextMark",
+    positionEncoding: Object.freeze({ incomplete: "mark", scaleFirst: true }),
+    encoding: Object.freeze({ scaleFirst: true }),
+    scaleApplication: Object.freeze({
+      deferWithMark: true,
+      position: "rematerialize",
+      default: "defer"
+    }),
+    rematerializeIncompleteExisting: true,
+    sourceDependent: true
   })
 });
 
@@ -193,6 +220,16 @@ export function getMarkMaterializationStep(program, layer) {
     return undefined;
   }
   return getMarkRematerializationStep(layer);
+}
+
+export function getSourceDependentMarkSteps(program, sourceId) {
+  return program.semanticSpec.layers.flatMap(layer =>
+    layer.source === sourceId && getMarkPolicy(layer)?.sourceDependent === true
+      ? [getMarkMaterializationStep(program, layer)].filter(
+          step => step !== undefined
+        )
+      : []
+  );
 }
 
 export function getPositionEncodingMaterializationSteps(program, layer, scaleId) {

@@ -10,18 +10,6 @@ import {
   createPointShapeGraphic,
   validatePointShape
 } from "../../../grammar/pointShapes.js";
-import {
-  mapContinuousScaleValues,
-  mapDiscretizedColors,
-  mapOrdinalPositionValues,
-  mapOrdinalValues,
-  mapSequentialColors,
-  readScaleField,
-  readNominalField,
-  readQuantitativeField,
-  readTemporalField
-} from "../../../grammar/scales.js";
-import { POSITION_CHANNELS } from "../../../core/vocabulary.js";
 import { polarToCartesian, resolvePolarFrame } from "../../../grammar/polar.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
@@ -40,6 +28,8 @@ import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import { resolveRowEncodingValues } from
+  "../../../materialization/rowEncoding.js";
 
 const POINT_MARK_OPTIONS = Object.freeze([
   "id", "data", "shape", "fill", "opacity", "stroke", "strokeWidth"
@@ -108,58 +98,17 @@ const createPointMark = action(
   }
 );
 
-function resolveMappedValues(program, layer, dataset, channel) {
-  const encoding = layer.encoding?.[channel];
-  if (encoding === undefined) return undefined;
-  const scale = program.resolvedScales[encoding.scale];
-  if (scale === undefined) {
-    throw new Error(
-      `Point mark "${layer.id}" requires resolved ${channel} scale "${encoding.scale}".`
-    );
-  }
-  const ordinal = ["nominal", "ordinal"].includes(encoding.fieldType);
-  const values = Object.hasOwn(scale, "unknown")
-    ? readScaleField(dataset.values, encoding.field, encoding.fieldType, {
-        allowUnknown: true
-      })
-    : ordinal
-      ? readNominalField(dataset.values, encoding.field)
-      : encoding.fieldType === "temporal"
-        ? readTemporalField(dataset.values, encoding.field)
-        : readQuantitativeField(dataset.values, encoding.field);
-  if (channel === "color" && scale.type === "sequential") {
-    return mapSequentialColors(values, scale.domain, scale.range, {
-      interpolation: scale.interpolate,
-      clamp: scale.clamp ?? false,
-      ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
-    });
-  }
-  if (
-    channel === "color" &&
-    ["quantize", "quantile", "threshold"].includes(scale.type)
-  ) {
-    return mapDiscretizedColors(values, scale);
-  }
-  return ordinal
-    ? POSITION_CHANNELS.includes(channel)
-      ? mapOrdinalPositionValues(values, scale)
-      : mapOrdinalValues(values, scale.domain, scale.range, {
-          ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
-        })
-    : mapContinuousScaleValues(values, scale);
-}
-
 function resolvePointPositions(program, layer, dataset) {
   const hasPolar = layer.encoding?.theta !== undefined ||
     layer.encoding?.radius !== undefined;
   if (!hasPolar) {
     return {
-      x: resolveMappedValues(program, layer, dataset, "x"),
-      y: resolveMappedValues(program, layer, dataset, "y")
+      x: resolveRowEncodingValues(program, layer, dataset, "x"),
+      y: resolveRowEncodingValues(program, layer, dataset, "y")
     };
   }
-  const theta = resolveMappedValues(program, layer, dataset, "theta");
-  const radius = resolveMappedValues(program, layer, dataset, "radius");
+  const theta = resolveRowEncodingValues(program, layer, dataset, "theta");
+  const radius = resolveRowEncodingValues(program, layer, dataset, "radius");
   if (theta === undefined || radius === undefined) {
     return { x: undefined, y: undefined };
   }
@@ -235,10 +184,10 @@ const rematerializePointMark = action(
     }
 
     const { x, y } = resolvePointPositions(this, layer, dataset);
-    const mappedFill = resolveMappedValues(this, layer, dataset, "color");
-    const area = resolveMappedValues(this, layer, dataset, "size");
-    const encodedShape = resolveMappedValues(this, layer, dataset, "shape");
-    const encodedOpacity = resolveMappedValues(this, layer, dataset, "opacity");
+    const mappedFill = resolveRowEncodingValues(this, layer, dataset, "color");
+    const area = resolveRowEncodingValues(this, layer, dataset, "size");
+    const encodedShape = resolveRowEncodingValues(this, layer, dataset, "shape");
+    const encodedOpacity = resolveRowEncodingValues(this, layer, dataset, "opacity");
     const config = this.markConfigs[id] ?? {};
     const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");

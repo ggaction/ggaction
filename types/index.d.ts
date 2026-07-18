@@ -114,7 +114,11 @@ export type {
   TraceNode,
   TitleOptions,
   EditTitleOptions,
+  EditTextMarkOptions,
   TitleTextStyleOptions,
+  TextEncodingOptions,
+  TextFormat,
+  TextMarkOptions,
   XAxisPosition,
   YAxisPosition,
   XOffsetEncodingOptions

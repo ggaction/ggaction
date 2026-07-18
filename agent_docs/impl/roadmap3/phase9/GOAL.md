@@ -6,9 +6,9 @@
 - [x] STEP 2 — Horizontal grouped bar primitive와 Gate J-A
 - [x] STEP 3 — Shared offset grammar와 `encodeYOffset`
 - [x] STEP 4 — Horizontal grouped bar public vertical slice
-- [ ] STEP 5 — Text reference grammar, primitive와 Gate J-B
-- [ ] STEP 6 — Text mark, `encodeText`와 focused editing
-- [ ] STEP 7 — Annotation public variants와 rematerialization
+- [x] STEP 5 — Text reference grammar, primitive와 Gate J-B
+- [x] STEP 6 — Text mark, `encodeText`와 focused editing
+- [x] STEP 7 — Annotation public variants와 rematerialization
 - [ ] STEP 8 — Rect reference grammar, primitive와 Gate J-C
 - [ ] STEP 9 — Rect mark와 heatmap public vertical slice
 - [ ] STEP 10 — Cross-capability coverage, docs와 Phase closeout

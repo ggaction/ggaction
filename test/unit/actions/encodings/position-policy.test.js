@@ -59,8 +59,8 @@ test("rejects unsupported mark and mark-specific position options", () => {
     })),
     /does not support aggregate/
   );
-  assert.throws(
-    () => resolveMarkPositionPolicy(context("text", "x", "quantitative")),
-    /text x position does not support/
+  assert.deepEqual(
+    resolveMarkPositionPolicy(context("text", "x", "quantitative")),
+    { bin: undefined, aggregate: undefined, stack: undefined }
   );
 });

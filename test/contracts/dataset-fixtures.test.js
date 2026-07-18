@@ -26,6 +26,7 @@ test("locks every reference dataset by row count, bytes, and sha256", () => {
       "jobs",
       "gapminder",
       "nightingaleRose",
+      "imdbSelected",
       "fashionTsne",
       "imdbTop1000"
     ]

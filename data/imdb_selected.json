@@ -1,0 +1,10 @@
+[
+  { "Series_Title": "City Lights", "Released_Year": "1931", "IMDB_Rating": 8.5 },
+  { "Series_Title": "It's a Wonderful Life", "Released_Year": "1946", "IMDB_Rating": 8.6 },
+  { "Series_Title": "12 Angry Men", "Released_Year": "1957", "IMDB_Rating": 9.0 },
+  { "Series_Title": "The Godfather", "Released_Year": "1972", "IMDB_Rating": 9.2 },
+  { "Series_Title": "Star Wars: Episode V - The Empire Strikes Back", "Released_Year": "1980", "IMDB_Rating": 8.7 },
+  { "Series_Title": "The Shawshank Redemption", "Released_Year": "1994", "IMDB_Rating": 9.3 },
+  { "Series_Title": "Inception", "Released_Year": "2010", "IMDB_Rating": 8.8 },
+  { "Series_Title": "Hamilton", "Released_Year": "2020", "IMDB_Rating": 8.6 }
+]

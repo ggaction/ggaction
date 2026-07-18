@@ -4,6 +4,7 @@ import {
   getEncodingMaterializationStages
 } from "./marks.js";
 import { buildMaterializationPlan } from "./planner.js";
+import { getSourceDependentMarkSteps } from "./marks.js";
 
 export function planEncodingRematerialization(program, {
   target,
@@ -16,12 +17,16 @@ export function planEncodingRematerialization(program, {
     `Unknown encoding materialization target "${target}"`
   );
 
-  const { scales, marks } = getEncodingMaterializationStages(
+  const { scales, marks: directMarks } = getEncodingMaterializationStages(
     program,
     layer,
     channel,
     scale
   );
+  const marks = [
+    ...directMarks,
+    ...getSourceDependentMarkSteps(program, target)
+  ];
 
   const guides = [];
   if (hasMaterializedLegend(program)) {

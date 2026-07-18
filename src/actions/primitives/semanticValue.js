@@ -7,7 +7,7 @@ import {
   MARK_TYPES
 } from "../../core/vocabulary.js";
 import { validateAggregate } from "../../grammar/aggregate.js";
-import { findSemanticScale, hasDataset } from "../../selectors/index.js";
+import { findLayer, findSemanticScale, hasDataset } from "../../selectors/index.js";
 import { validateCoordinateType } from "../../grammar/coordinates.js";
 import {
   normalizeHistogramBin,
@@ -74,6 +74,21 @@ export function validateSemanticValue(program, parsed, value) {
   }
   if (parsed.kind === "layer") {
     const property = parsed.path.join(".");
+    if (property === "source") {
+      validateUserId(value, "Layer source id");
+      if (value === parsed.id) {
+        throw new Error("A layer cannot use itself as its source.");
+      }
+      const source = findLayer(program, value);
+      if (source === undefined) {
+        throw new Error(`Unknown source layer "${value}".`);
+      }
+      if (!["point", "bar", "rule"].includes(source.mark?.type)) {
+        throw new Error(
+          `Layer source "${value}" must be a point, bar, or rule mark.`
+        );
+      }
+    }
     if (property.endsWith(".title")) {
       nonEmptyString(value, "Encoding title");
     }

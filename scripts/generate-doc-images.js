@@ -13,7 +13,8 @@ const dataFiles = Object.freeze({
   cars: new URL("../data/cars.json", import.meta.url),
   jobs: new URL("../data/jobs.json", import.meta.url),
   gapminder: new URL("../data/gapminder.json", import.meta.url),
-  nightingaleRose: new URL("../data/nightingale_rose.json", import.meta.url)
+  nightingaleRose: new URL("../data/nightingale_rose.json", import.meta.url),
+  imdbSelected: new URL("../data/imdb_selected.json", import.meta.url)
 });
 const data = Object.fromEntries(await Promise.all(
   Object.entries(dataFiles).map(async ([id, file]) => [

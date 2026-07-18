@@ -9,6 +9,7 @@ import {
 import {
   loadCars,
   loadGapminder,
+  loadImdbSelected,
   loadJobs,
   loadNightingaleRose
 } from "../support/data.js";
@@ -17,7 +18,8 @@ const LOADERS = Object.freeze({
   cars: loadCars,
   gapminder: loadGapminder,
   jobs: loadJobs,
-  nightingaleRose: loadNightingaleRose
+  nightingaleRose: loadNightingaleRose,
+  imdbSelected: loadImdbSelected
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
@@ -25,6 +27,12 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "canvas", "horizontalGridLines", "points",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"
+  ],
+  "annotated-imdb-scatterplot": [
+    "canvas", "horizontalGridLines", "point", "text",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "chartTitle"
   ],
   "cars-line-chart": [
     "canvas", "horizontalGridLines", "trends",

@@ -2711,6 +2711,9 @@ each type infers its ID and current dataset when those choices are unambiguous.
     Rule marks
     Full-span references, bounded intervals, and diagonal endpoints.
 
+    Text marks
+    Data labels and annotations attached to points, bars, or rules.
+
     Arc marks
     Donuts, rose overlays, and radial bars with Polar positions.
 
@@ -2724,6 +2727,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Arc | `createArcMark` | `editArcMark` | Closed sector path collection |
 | Bar | `createBarMark` | `editBarMark` | Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
+| Text | `createTextMark` | `editTextMark` | Text collection |
 
 Use `removeMark({ target? })` to remove one complete stable mark owner. It also
 removes generated composite children, unreferenced generated datasets, owned
@@ -2746,7 +2750,7 @@ those graphics.
 
 - `data` defaults to the current dataset.
 - The first omitted mark ID uses the semantic role: `"point"`, `"line"`,
-  `"area"`, `"arc"`, `"bar"`, or `"rule"`.
+  `"area"`, `"arc"`, `"bar"`, `"rule"`, or `"text"`.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
   encodings from the current layer, or one unique source on the current dataset.
@@ -3060,6 +3064,72 @@ it. Canvas and scale changes recompute all endpoints.
 [Appearance encodings](../appearance.md) · [Error bars](../error-bars.md) ·
 [Advanced axis components](../../advanced/axis-components.md)
 
+<!-- Source: /api/marks/text/ -->
+
+# Text marks
+
+Text marks turn data values into visible labels. Add one after a compatible point,
+bar, or rule layer and ggaction persists that layer as the annotation source.
+
+## `createTextMark(options?)`
+
+```javascript
+const annotated = points
+  .createTextMark({
+    fontSize: 10,
+    fill: "#334155",
+    dx: 7,
+    dy: -6,
+    align: "left",
+    baseline: "bottom"
+  })
+  .encodeText({ field: "Series_Title" });
+```
+
+The first omitted ID is `"text"`. When `data` is omitted, the current compatible
+layer—or one unique compatible layer—supplies its dataset, Cartesian position,
+and final visual-item grain. This means aggregate bars receive one label per bar,
+not one label per source row. Pass `data` explicitly to assemble an independent
+text layer with `encodeX` and `encodeY`.
+
+Creation options are `id`, `data`, `text`, `fill`, `opacity`, `fontSize`,
+`fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.
+The `text` option is constant-content shorthand.
+
+## `encodeText({ target?, field?, value?, format? })`
+
+Provide exactly one of `field` or `value`. `format` defaults to `"auto"`; fixed
+decimal formats from `".0f"` through `".12f"` are available for numeric content.
+Calling `encodeText` again replaces the previous field or constant assignment.
+
+```javascript
+bars
+  .createTextMark({ dy: -4, align: "center" })
+  .encodeText({ field: "value", format: ".1f" });
+```
+
+## `editTextMark(options)`
+
+Edit typography, opacity, alignment, baseline, rotation, or `dx`/`dy` without
+changing the semantic anchor:
+
+```javascript
+const revised = annotated.editTextMark({
+  fill: "#b91c1c",
+  fontWeight: 600,
+  dx: 10
+});
+```
+
+At least one property is required. Canvas and scale edits rematerialize both the
+source geometry and attached labels. ggaction does not perform automatic label
+collision avoidance; use filtering and explicit offsets for dense charts.
+
+## Related
+
+[Point marks](./point.md) · [Bar marks](./bar.md) · [Rule marks](./rule.md) ·
+[Encodings](../encodings.md)
+
 <!-- Source: /api/encodings/ -->
 
 # Encodings
@@ -3079,6 +3149,7 @@ defaults.
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
 | Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
 | Constant appearance | `encodeRadius`, `encodePointRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
+| Text | `encodeText` | Field-driven or constant annotation content |
 
 ## Position
 
@@ -3253,6 +3324,13 @@ program
   .encodeShape({ field: "Origin" })
   .encodeOpacity({ value: 0.27 });
 ```
+
+## Text content
+
+`encodeText` assigns exactly one field or constant value to a text mark. It does
+not create a scale. Use `"auto"` formatting or a fixed-decimal token such as
+`".1f"`; attached text inherits the final point, bar, or rule item position.
+See [Text marks](./marks/text.md) for source inference and editing.
 
 ## Scale options
 
@@ -7309,6 +7387,8 @@ interface ChartProgramActions {
   createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
+  createTextMark(options?: TextMarkOptions): ChartProgram;
+  editTextMark(options: EditTextMarkOptions): ChartProgram;
   editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
@@ -7328,6 +7408,7 @@ interface ChartProgramActions {
   encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
@@ -7682,6 +7763,25 @@ createRuleMark({ id?, data? } = {})
 Create a semantic rule mark and empty line collection. The first omitted ID is
 `"rule"`; data defaults to current data. [Marks](../api/marks.md)
 
+### `createTextMark`
+
+```javascript
+createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+```
+
+Create a semantic text layer. Omitted data and position attach to the current
+or unique compatible point, bar, or rule layer. `text` is constant-content
+shorthand. [Text marks](../api/marks/text.md)
+
+### `editTextMark`
+
+```javascript
+editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+```
+
+Edit text typography and graphical offsets without changing its semantic
+source or position. [Text marks](../api/marks/text.md)
+
 ### `encodeX`
 
 ```javascript
@@ -7758,6 +7858,16 @@ encodeGroup({ field, target?, fieldType? })
 
 Split line or area paths by a nominal field without creating a scale or guide.
 [Encodings](../api/encodings.md)
+
+### `encodeText`
+
+```javascript
+encodeText({ target?, field?, value?, format? })
+```
+
+Assign exactly one field or constant value to a text mark. `format` accepts
+`"auto"` or fixed-decimal tokens from `".0f"` through `".12f"`. Reassignment
+replaces the previous content branch. [Text marks](../api/marks/text.md)
 
 ### `encodeXOffset`
 

@@ -889,3 +889,26 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Resize/order
   - ✅ Covered: band responsive, pixels fixed, width/padding action-order convergence와 2× PNG parity.
 - Evidence: grouped-bar width and chart reference tests.
+
+## `encodeText`
+
+- Signature: `encodeText({ target?, field?, value?, format? })` with exactly one of `field` or `value`.
+- `target`: current compatible text mark, otherwise one unique text mark; ambiguity requires an explicit ID.
+- `field`: a field present on the text dataset. For a source-owned aggregate bar annotation, a matching measure field
+  resolves to the final aggregate endpoint rather than an arbitrary source row.
+- `value`: constant content repeated at every final text anchor.
+- `format`: `"auto"` or a fixed-decimal token `.0f` through `.12f`. Auto uses deterministic string conversion;
+  fixed format requires finite numeric content. Null, undefined, and empty content do not create placeholder children.
+- Reassignment replaces the alternate field/value branch, preserves the previous format when omitted, and
+  rematerializes final text without changing position semantics or the source mark.
+
+### Formal values — `encodeText`
+
+- Implemented: `encodeText({ target?: UserId; format?: "auto" | ".0f" … ".12f" } & ({ field: FieldName; value?: never } | { field?: never; value: unknown }))`.
+- Proposed (NOT IMPLEMENTED): date/time and locale-aware formatting tokens.
+
+### Value coverage — `encodeText`
+
+- ✅ Covered: field/value exclusivity, reassignment, automatic and fixed-decimal formatting, missing field,
+  invalid format, direct row positions, source point/bar/rule anchors, and order-independent completion.
+- Evidence: `test/unit/actions/marks/text-mark.test.js` and the annotated IMDb Gate pair.

@@ -33,6 +33,13 @@ const FIXTURES = Object.freeze({
     bytes: 2885,
     sha256: "ab332b25f7b26770f4fb1d782e774e9e7140c12b8af231da50643872d3c7f1b0"
   }),
+  imdbSelected: Object.freeze({
+    file: new URL("../../data/imdb_selected.json", import.meta.url),
+    format: "json",
+    rows: 8,
+    bytes: 715,
+    sha256: "756e1f343bb57cae20b423d2428f250b2fb6a765937f114dc90a257913c28e9f"
+  }),
   fashionTsne: Object.freeze({
     file: new URL("../../data/fashion_mnist_tsne.csv", import.meta.url),
     format: "fashion-tsne-csv",
@@ -138,4 +145,8 @@ export function loadFashionTsne() {
 
 export function loadImdbTop1000() {
   return loadDataset("imdbTop1000");
+}
+
+export function loadImdbSelected() {
+  return loadDataset("imdbSelected");
 }

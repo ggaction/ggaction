@@ -9,6 +9,7 @@ import {
 } from "../../materialization/dependencies.js";
 import {
   canDeferScaleConsumerApplication,
+  getMarkRematerializationStep,
   getScaleConsumerMaterializationMode
 } from "../../materialization/marks.js";
 import { mapScaleConsumerValues } from
@@ -91,7 +92,8 @@ export const rematerializeScale = action(
       );
       if (materializationMode === "rematerialize") {
         if (args.marks !== false) {
-          next = next.rematerializePointMark({ id: consumer.layer.id });
+          const step = getMarkRematerializationStep(consumer.layer);
+          if (step !== undefined) next = next[step.op](step.args);
         }
         continue;
       }

@@ -28,7 +28,11 @@ function ownedChildren(program, id) {
     config.boxPlot?.whiskerId,
     config.boxPlot?.medianId,
     config.boxPlot?.outlierId
-  ].filter(child => child !== undefined && findLayer(program, child) !== undefined);
+  ].concat(
+    program.semanticSpec.layers
+      .filter(layer => layer.source === id)
+      .map(layer => layer.id)
+  ).filter(child => child !== undefined && findLayer(program, child) !== undefined);
 }
 
 function ownership(program) {

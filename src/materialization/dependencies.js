@@ -1,7 +1,8 @@
 import {
   canDeferScaleConsumerApplication,
   getExistingMarkRematerializationStep,
-  getMarkMaterializationStep
+  getMarkMaterializationStep,
+  getSourceDependentMarkSteps
 } from "./marks.js";
 import { requireLayer } from "../selectors/layers.js";
 import {
@@ -162,7 +163,10 @@ export function planLayerDataRematerialization(program, id) {
         ...(markStep === undefined ? {} : { marks: false })
       }
     }));
-  const marks = markStep === undefined ? [] : [markStep];
+  const marks = [
+    ...(markStep === undefined ? [] : [markStep]),
+    ...getSourceDependentMarkSteps(program, id)
+  ];
   if (scales.length > 0 || marks.length > 0) {
     const guides = scaleIds.flatMap(scale =>
       planScaleGuideRematerialization(program, scale)

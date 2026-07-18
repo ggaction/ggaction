@@ -12,13 +12,13 @@ test("authors the Gate J-B IMDb annotation only through primitives", () => {
   render(program, context);
 
   assert.equal(program.graphicSpec.objects.point.items.length, 8);
-  assert.equal(program.graphicSpec.objects.labels.items.length, 8);
+  assert.equal(program.graphicSpec.objects.text.items.length, 8);
   assert.equal(
-    program.graphicSpec.objects.labels.items[4].properties.text,
+    program.graphicSpec.objects.text.items[4].properties.text,
     "Star Wars: Episode V - The Empire Strikes Back"
   );
   assert.deepEqual(program.graphicSpec.objects["plot-main"].children.slice(0, 3), [
-    "horizontalGridLines", "point", "labels"
+    "horizontalGridLines", "point", "text"
   ]);
   assert.equal(context.calls.some(call => call.op === "fillText"), true);
   assert.equal(program.trace.children.some(node => node.op === "createTextMark"), false);
@@ -27,23 +27,23 @@ test("authors the Gate J-B IMDb annotation only through primitives", () => {
 
 test("keeps graphical annotation alignment, rotation, and offsets explicit", () => {
   const baseline = createAnnotatedImdbPrimitives(loadImdbTop1000());
-  const baselineItems = baseline.graphicSpec.objects.labels.items;
+  const baselineItems = baseline.graphicSpec.objects.text.items;
   const revised = baseline
     .editGraphics({
-      target: "labels",
+      target: "text",
       property: "x",
       value: baselineItems.map(item => item.properties.x - 14)
     })
-    .editGraphics({ target: "labels", property: "textAlign", value: "right" })
-    .editGraphics({ target: "labels", property: "rotation", value: -Math.PI / 12 });
+    .editGraphics({ target: "text", property: "textAlign", value: "right" })
+    .editGraphics({ target: "text", property: "rotation", value: -Math.PI / 12 });
 
   assert.equal(
-    revised.graphicSpec.objects.labels.items.every((item, index) =>
+    revised.graphicSpec.objects.text.items.every((item, index) =>
       item.properties.x === baselineItems[index].properties.x - 14 &&
       item.properties.textAlign === "right" &&
       item.properties.rotation === -Math.PI / 12
     ),
     true
   );
-  assert.equal(baseline.graphicSpec.objects.labels.items[0].properties.rotation, 0);
+  assert.equal(baseline.graphicSpec.objects.text.items[0].properties.rotation, 0);
 });

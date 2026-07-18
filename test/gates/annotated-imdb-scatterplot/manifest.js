@@ -2,6 +2,7 @@ import { loadImdbTop1000 } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 
 import { createAnnotatedImdbPrimitives } from "./primitive.program.js";
+import { createAnnotatedImdbScatterplot } from "./public.program.js";
 import { createAnnotatedImdbValues } from "./reference-values.js";
 
 const rows = loadImdbTop1000();
@@ -53,6 +54,7 @@ export const visualVariants = Object.freeze([
       capability: "text-annotation"
     },
     primitive: () => createAnnotatedImdbPrimitives(rows),
+    userFacing: () => createAnnotatedImdbScatterplot(values.rows),
     width: values.width,
     height: values.height,
     colors: ["#4c78a8", "#334155"],

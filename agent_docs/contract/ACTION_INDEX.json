@@ -164,6 +164,42 @@
       }
     },
     {
+      "name": "createTextMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTextMark` and `encodeText`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createtextmark"
+      }
+    },
+    {
+      "name": "editTextMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits typography, alignment, rotation, and offsets",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "edittextmark"
+      }
+    },
+    {
       "name": "editPointMark",
       "layer": "user-facing",
       "domain": "marks",
@@ -683,6 +719,24 @@
       "contract": {
         "file": "agent_docs/contract/current/ENCODINGS.md",
         "anchor": "encodegroup"
+      }
+    },
+    {
+      "name": "encodeText",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces field or constant text content",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodetext"
       }
     },
     {
@@ -2025,14 +2079,10 @@
     { "name": "editFacetHeaders", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits parent-owned facet headers", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "editFacetHeaders" } }
   ],
   "plannedActions": [
-    { "name": "createTextMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
-    { "name": "encodeText", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
-    { "name": "editTextMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
     { "name": "createRectMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } },
     { "name": "editRectMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } }
   ],
   "plannedCapabilities": [
-    { "id": "text-annotation", "kind": "composition", "name": "Text annotation", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
     { "id": "rect-heatmap", "kind": "composition", "name": "Rect heatmap", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } },
     { "id": "shared-position-scale-resolution", "kind": "behavior", "name": "Shared position scale resolution", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "shared-position-scale-resolution" } },
     { "id": "cross-feature-integration", "kind": "composition", "name": "Roadmap 3 cross-feature integration", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "cross-feature-integration" } }
@@ -2073,6 +2123,7 @@
       "rematerializePointMark",
       "rematerializeRadialGrid",
       "rematerializeRuleMark",
+      "rematerializeTextMark",
       "rematerializeScale",
       "rematerializeSizeLegend",
       "rematerializeThetaGrid",

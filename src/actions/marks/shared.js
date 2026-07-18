@@ -87,7 +87,7 @@ function scaleSupportsEncoding(program, markType, channel, encoding) {
   return ["linear", "log", "pow", "sqrt", "symlog"].includes(scale.type);
 }
 
-function resolveCompatibleEncodings(program, source, markType) {
+export function resolveCompatibleEncodings(program, source, markType) {
   const dataset = findDataset(program, source.data);
   if (dataset === undefined) return {};
   const channels = POLAR_POSITION_CHANNELS.some(

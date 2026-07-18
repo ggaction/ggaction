@@ -396,6 +396,7 @@ export interface SemanticDataset {
 export interface SemanticLayer {
   readonly id: string;
   readonly data?: string;
+  readonly source?: string;
   readonly coordinate?: string;
   readonly mark?: Readonly<{ type?: string; [key: string]: unknown }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
@@ -1049,6 +1050,36 @@ export interface OffsetEncodingOptions {
 export interface XOffsetEncodingOptions extends OffsetEncodingOptions {}
 export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
+export type TextFormat = "auto" | `.${number}f`;
+
+export interface TextMarkOptions {
+  id?: string;
+  data?: string;
+  text?: unknown;
+  fill?: string;
+  opacity?: number;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  align?: "left" | "right" | "center" | "start" | "end";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
+  rotation?: number;
+  dx?: number;
+  dy?: number;
+}
+
+export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "text"> {
+  target?: string;
+}
+
+export type TextEncodingOptions = {
+  target?: string;
+  format?: TextFormat;
+} & (
+  | { field: string; value?: never }
+  | { field?: never; value: unknown }
+);
+
 export type BarWidthOptions = { target?: string } & (
   | { band?: number; pixels?: never }
   | { band?: never; pixels: number }
@@ -1523,6 +1554,8 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
+  createTextMark(options?: TextMarkOptions): ChartProgram;
+  editTextMark(options: EditTextMarkOptions): ChartProgram;
   editAreaMark(options: {
     target?: string;
     fill?: string;
@@ -1564,6 +1597,7 @@ export class ChartProgram {
     scale?: ScaleOptions;
   }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;

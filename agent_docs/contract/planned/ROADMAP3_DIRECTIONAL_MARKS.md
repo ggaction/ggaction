@@ -1,21 +1,7 @@
-# Roadmap 3 Planned Directional, Text and Rect contracts
+# Roadmap 3 Planned Rect contract
 
-Gate A에서 승인된 Phase 9의 아직 구현되지 않은 text와 rect 계약이다. Directional offset은 구현되어 Current
-`ENCODINGS.md`로 이동했다.
-
-## Text annotation
-
-```typescript
-createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? }): ChartProgram;
-encodeText({ target?, field?, value?, format? }): ChartProgram;
-editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? }): ChartProgram;
-```
-
-- Text accepts exactly one field/value content source, inherited or explicit position, deterministic formatting and
-  graphical offsets.
-- Scatter labels, bar values and rule annotations use the same semantic mark; tooltip/interaction is excluded.
-- Concrete text stores final content, x/y, typography, alignment and rotation.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 9.
+Gate A에서 승인된 Phase 9의 아직 구현되지 않은 rect 계약이다. Directional offset과 text annotation은 구현되어
+Current 계약으로 이동했다.
 
 ## Rect heatmap
 

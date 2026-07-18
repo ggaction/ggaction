@@ -22,6 +22,7 @@ defaults.
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
 | Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
 | Constant appearance | `encodeRadius`, `encodePointRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
+| Text | `encodeText` | Field-driven or constant annotation content |
 
 ## Position
 
@@ -196,6 +197,13 @@ program
   .encodeShape({ field: "Origin" })
   .encodeOpacity({ value: 0.27 });
 ```
+
+## Text content
+
+`encodeText` assigns exactly one field or constant value to a text mark. It does
+not create a scale. Use `"auto"` formatting or a fixed-decimal token such as
+`".1f"`; attached text inherits the final point, bar, or rule item position.
+See [Text marks](./marks/text.md) for source inference and editing.
 
 ## Scale options
 
