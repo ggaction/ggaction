@@ -274,6 +274,12 @@ Shared automatic continuous domain은 child domain의 min/max union, discrete do
 quantile domain은 duplicate를 보존한 sample merge다. Independent automatic domain은 child별 결과를 보존하고,
 어느 policy에서도 explicit semantic domain이 우선한다. 이 resolver는 아직 public facet runtime을 수정하지 않는다.
 
+Advanced facet guide grammar도 pure ownership plan으로 분리된다. Outer axes는 각 column의 bottommost occupied
+cell과 각 row의 leftmost occupied cell을 선택하고, retained child guide bounds를 parent 좌표로 번역한다. Shared
+legend는 child-specific target을 제외한 canonical config와 represented resolved scales가 concretely compatible할
+때만 categorical, gradient, discretized, size 또는 opacity recipe를 한 parent source에서 promote한다. 이 plan은
+child guide removal과 parent promotion의 입력이며, Gate 승인 전에는 public facet graphics에 적용되지 않는다.
+
 ## Immutability와 ownership
 
 `ChartProgram`은 생성이 끝나면 freeze된다. 모든 public action과 internal wrapped
