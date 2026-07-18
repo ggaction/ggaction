@@ -169,7 +169,10 @@ export function resolveSharedFacetLegends(children) {
       throw new Error(`Unsupported shared facet legend kind "${kind}".`);
     }
     const config = first.legends[kind];
-    if (!isPlainObject(config) || config.kind !== kind) {
+    if (
+      !isPlainObject(config) ||
+      (config.kind !== undefined && config.kind !== kind)
+    ) {
       throw new Error(`Facet child "${first.id}" has invalid ${kind} legend config.`);
     }
     const scales = scaleIds(config);
@@ -252,4 +255,3 @@ export function planFacetGuideOwnership({
       : { legends: [] }
   });
 }
-

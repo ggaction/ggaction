@@ -157,9 +157,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| parameter | Facet scale resolution options | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
-| behavior | Derived facet dependency replay | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
-| composition | Parent guide composition | accepted | [Open](planned/ROADMAP3_COMPOSITION.md#facet-resolution-and-derived-replay) |
 | composition | Horizontal grouped bar | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#directional-offset) |
 | composition | Text annotation | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#text-annotation) |
 | composition | Rect heatmap | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#rect-heatmap) |

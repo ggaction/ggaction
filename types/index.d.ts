@@ -64,6 +64,7 @@ export type {
   EditSemanticOptions,
   FieldType,
   FacetCompositionSpec,
+  FacetGuideOptions,
   FacetOptions,
   FacetScaleResolution,
   FacetScaleResolutions,

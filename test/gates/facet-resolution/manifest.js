@@ -9,7 +9,10 @@ import { createGapminderRegressionFacetValues } from
   "./reference-values.js";
 import { OUTER_GUIDE_CLUSTERS, OUTER_GUIDE_LAYOUT } from
   "./reference-values.js";
-import { createGapminderRegressionFacet } from "./public.program.js";
+import {
+  createGapminderOuterGuideFacet,
+  createGapminderRegressionFacet
+} from "./public.program.js";
 
 const rows = loadGapminder();
 const shared = createGapminderRegressionFacetValues(rows);
@@ -120,7 +123,11 @@ export const outerGuidesTarget = `chart()
     margin: { top: 36, right: 18, bottom: 50, left: 58 }
   })
   .createData({ values: rows })
-  .filterData({ field: "cluster", oneOf: [0, 3, 4, 1, 5] })
+  .filterData({
+    id: "selectedClusters",
+    field: "cluster",
+    oneOf: [0, 3, 4, 1, 5]
+  })
   .createPointMark({ opacity: 0.35 })
   .encodeX({
     field: "fertility",
@@ -164,7 +171,7 @@ export const outerGuidesTarget = `chart()
         }
       }
     },
-    legend: { channels: ["color"] }
+    legend: false
   })
   .facet({
     field: "cluster",
@@ -252,6 +259,7 @@ export const visualVariants = Object.freeze([
     callChain: outerGuidesTarget,
     artifact,
     primitive: () => createGapminderOuterGuideFacetPrimitives(rows),
+    userFacing: () => createGapminderOuterGuideFacet(rows),
     width: outerWidth,
     height: outer.height,
     colors: ["#111827", "#450457", "#f8e722"],

@@ -100,8 +100,9 @@ The [program-composition example](https://github.com/hj-n/ggaction/tree/main/exa
 complete child programs, edits their inferred layout, and replaces one stable slot.
 The [facet example](https://github.com/hj-n/ggaction/tree/main/examples/cars-origin-scatterplot-facet/)
 repeats one chart with `.facet({ field: "Origin" })`, channel-level shared or
-independent scales, per-cell axes, and an optional parent-owned categorical
-legend. Layered regression data is recomputed independently inside each cell.
+independent scales, per-cell or occupied-outer axes, and an optional compatible
+parent-owned legend. Regression, density, interval, and box-derived data are
+recomputed independently inside each cell.
 Completed programs can also be exported through
 [`ggaction/png`](https://hyeonword.com/ggaction/api/rendering/#png-output).
 

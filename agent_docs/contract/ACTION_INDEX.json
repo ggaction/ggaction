@@ -2015,9 +2015,6 @@
     { "name": "editRectMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } }
   ],
   "plannedCapabilities": [
-    { "id": "facet-scale-resolution", "kind": "parameter", "name": "Facet scale resolution options", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "facet-resolution-and-derived-replay" } },
-    { "id": "derived-facet-replay", "kind": "behavior", "name": "Derived facet dependency replay", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "facet-resolution-and-derived-replay" } },
-    { "id": "parent-guide-composition", "kind": "composition", "name": "Parent guide composition", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_COMPOSITION.md", "anchor": "facet-resolution-and-derived-replay" } },
     { "id": "horizontal-grouped-bar", "kind": "composition", "name": "Horizontal grouped bar", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "directional-offset" } },
     { "id": "text-annotation", "kind": "composition", "name": "Text annotation", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
     { "id": "rect-heatmap", "kind": "composition", "name": "Rect heatmap", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } },
@@ -2084,6 +2081,7 @@
       "createSizeLegend"
     ],
     "stateTransitions": [
+      "composeFacetGuides",
       "rebindLayerData",
       "releaseDerivedData",
       "replayDerivedData",

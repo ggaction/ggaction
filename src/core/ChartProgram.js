@@ -156,11 +156,11 @@ function ownCompositionSpec(compositionSpec, children) {
     if (
       !isPlainObject(guides) ||
       Object.keys(guides).some(key => !["axes", "legend"].includes(key)) ||
-      guides.axes !== "each" ||
+      !["each", "outer"].includes(guides.axes) ||
       ![false, "shared"].includes(guides.legend)
     ) {
       throw new Error(
-        'compositionSpec.facet.guides requires axes "each" and legend false or "shared".'
+        'compositionSpec.facet.guides requires axes "each" or "outer" and legend false or "shared".'
       );
     }
   } else if (

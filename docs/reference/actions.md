@@ -222,8 +222,9 @@ facet({ id?, field, data?, columns?, gap?, align?, padding?, scales?, guides? })
 Repeat one complete chart by a field on its common row-preserving dataset
 ancestor. Values preserve source first appearance; scale policies can be
 `"shared"` or `"independent"` by supported channel, and layered regression
-data is recomputed per cell. Axes remain in each cell, while
-`guides: { legend: "shared" }` creates one parent categorical color legend.
+data and other supported statistical descendants are recomputed per cell.
+`guides: { axes: "outer" }` keeps axes only on occupied outer cells, while
+`guides: { legend: "shared" }` promotes one compatible parent-owned legend.
 See [Program composition](../api/composition.md#repeat-the-current-chart-by-a-field).
 
 ### `editFacetHeaders`

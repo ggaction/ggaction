@@ -255,8 +255,10 @@ cell 결과의 deterministic union을 사용하고, independent automatic domain
 semantic domain은 항상 우선한다. Shared histogram x는 template bin boundary를 공유하고 independent x는 cell별
 boundary를 다시 계산한다. Child scale을 먼저 해결한 다음 mark와 guide는 scale을 재추론하지 않는 하나의
 deduplicated plan으로 rematerialize하고, parent가 namespaced child Canvas snapshot을
-attach한다. Axes는 cell-owned이고, explicit `guides.legend: "shared"` categorical legend, repeated header와 chart
-title은 parent-owned concrete graphics다. Canonical title order는 `facet(...).createTitle(...)`이며 이미 valid한 unit
+attach한다. Axes는 기본적으로 cell-owned이고 `guides.axes: "outer"`이면 column별 bottommost occupied cell과
+row별 leftmost occupied cell만 유지한다. Explicit `guides.legend: "shared"`는 compatible categorical, gradient,
+discretized-color, size 또는 opacity recipe를 parent-owned concrete graphic으로 승격한다. Repeated header와 chart
+title도 parent-owned concrete graphics다. Canonical title order는 `facet(...).createTitle(...)`이며 이미 valid한 unit
 title은 cell에서 제거하고 parent에 한 번 promote한다. `editFacetHeaders`와 facet-compatible
 `editCompositionLayout`은 child identity를 보존한 채 parent snapshot만 다시 materialize한다. Renderer는 concat과
 마찬가지로 완성된 parent `graphicSpec`만 읽는다.
@@ -264,9 +266,10 @@ title은 cell에서 제거하고 parent에 한 번 promote한다. `editFacetHead
 
 Facet replay의 pure dataset dependency planner는 visible layer에서 source 방향으로 ancestry를
 검증하고, 모든 branch가 공유하는 latest row-preserving partition anchor와 deterministic topological replay order를
-반환한다. 이 planner는 semantic state를 수정하거나 trace를 만들지 않는다. Public facet action은 현재 regression
-descendant를 `replayDerivedData → createDerivedData → materializeRegressionData` hierarchy로 실행한다. Density,
-interval/error-band와 box family의 public integration은 같은 registry를 사용하되 Phase 8 후속 단계에서 검증한다.
+반환한다. 이 planner는 semantic state를 수정하거나 trace를 만들지 않는다. Public facet action은 filter,
+regression, density, interval, box-summary와 box-outlier descendant를
+`replayDerivedData → createDerivedData → canonical materialize*Data` hierarchy로 실행한다. Transform별 통계 계산은
+facet에 복제하지 않고 각 기존 data materializer가 계속 소유한다.
 
 Density provenance는 requested policy와 materialized revision 결과를 분리한다. `bandwidth`와 `extent`의
 `"auto"` intent는 transform에 그대로 남고, 해당 revision에서 계산한 concrete 값은
@@ -284,7 +287,7 @@ Advanced facet guide grammar도 pure ownership plan으로 분리된다. Outer ax
 cell과 각 row의 leftmost occupied cell을 선택하고, retained child guide bounds를 parent 좌표로 번역한다. Shared
 legend는 child-specific target을 제외한 canonical config와 represented resolved scales가 concretely compatible할
 때만 categorical, gradient, discretized, size 또는 opacity recipe를 한 parent source에서 promote한다. 이 plan은
-child guide removal과 parent promotion의 입력이며, Gate 승인 전에는 public facet graphics에 적용되지 않는다.
+child guide removal과 parent promotion의 입력이며 `composeFacetGuides` wrapped action이 parent snapshot에 적용한다.
 
 ## Immutability와 ownership
 

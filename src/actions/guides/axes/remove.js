@@ -1,5 +1,7 @@
 import { action } from "../../../core/action.js";
 import { validateKeys } from "../../../core/validation.js";
+import { axisGraphicIds } from
+  "../../../materialization/guides/resources.js";
 
 const OPTIONS = Object.freeze(["coordinate", "scale"]);
 
@@ -12,13 +14,7 @@ function makeRemoveAxis(channel) {
         ? "Theta"
         : "Radial";
   const operation = `remove${prefix}Axis`;
-  const graphicPrefix = channel === "radius" ? "radial" : channel;
-  const graphicIds = [
-    `${graphicPrefix}AxisLine`,
-    `${graphicPrefix}AxisTicks`,
-    `${graphicPrefix}AxisLabels`,
-    `${graphicPrefix}AxisTitle`
-  ];
+  const graphicIds = axisGraphicIds(channel);
   return action(
     {
       op: operation,

@@ -107,17 +107,21 @@ a positive value wraps cells row-major.
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every channel `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `color`, `size`, `shape`, `opacity`, or `strokeDash` |
-| `guides.legend` | `false` | `"shared"` creates one parent categorical color legend |
+| `guides.axes` | `"each"` | `"outer"` keeps x axes on the bottommost occupied cell in each column and y axes on the leftmost occupied cell in each row |
+| `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
 Shared auto domains use the full faceted result; independent auto domains are
-resolved from each cell. An explicit semantic domain always wins. Regression
-datasets are replayed after the cell filter, so each panel receives its own fit
-and confidence interval rather than a clipped copy of the full-chart model.
+resolved from each cell. An explicit semantic domain always wins. Regression,
+density, interval/error-band, and box-summary/outlier datasets are replayed
+after the cell filter, so each panel receives a fresh statistical result rather
+than a clipped copy of the full-chart result.
 
-The current slice supports direct point, histogram bar, and aggregate bar
-charts plus layered point/regression charts. Density, interval, and box-derived
-facet integration, outer-only axes, and non-categorical shared legends remain
-unsupported until their integration slice is complete.
+The current Cartesian slice supports point, line, area, histogram, aggregate
+bar, ranged bar, rule, regression, density, interval/error-band, and box-plot
+layers when they share one valid row-preserving partition ancestor. A shared
+legend is accepted only when every represented child scale and legend recipe is
+concretely compatible; scale resolution alone does not make a guide shareable.
+Polar facet channels are not yet supported.
 
 Create a chart title after `facet` so the title is owned directly by the
 parent. A title that already fits the unit Canvas is promoted for authoring

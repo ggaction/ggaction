@@ -28,7 +28,7 @@ function validateCanvas(canvas, id) {
   }
 }
 
-function namespacedId(namespace, id) {
+export function namespaceGraphicId(namespace, id) {
   const encode = value => Array.from(value, character =>
     character.codePointAt(0).toString(16).padStart(6, "0")
   ).join("");
@@ -41,7 +41,7 @@ function rewriteItem(item, namespace) {
   }
   return freezeOwned({
     ...cloneAndFreeze(item),
-    id: namespacedId(namespace, item.id)
+    id: namespaceGraphicId(namespace, item.id)
   });
 }
 
@@ -56,10 +56,10 @@ function rewriteObject(object, namespace, rootCanvasId, placement, extraRoots) {
       ? {}
       : {
           children: freezeOwned([
-            ...children.map(id => namespacedId(namespace, id)),
+            ...children.map(id => namespaceGraphicId(namespace, id)),
             ...(rootCanvasId === undefined
               ? []
-              : extraRoots.map(id => namespacedId(namespace, id)))
+                : extraRoots.map(id => namespaceGraphicId(namespace, id)))
           ])
         })
   };
@@ -96,7 +96,7 @@ export function namespaceGraphicSnapshot(
   const extraRoots = graphicSpec.order.filter(id => id !== canvasId);
   const objects = Object.fromEntries(Object.entries(graphicSpec.objects).map(
     ([id, object]) => [
-      namespacedId(resolvedNamespace, id),
+      namespaceGraphicId(resolvedNamespace, id),
       rewriteObject(
         object,
         resolvedNamespace,
@@ -106,7 +106,7 @@ export function namespaceGraphicSnapshot(
       )
     ]
   ));
-  const rootId = namespacedId(resolvedNamespace, canvasId);
+  const rootId = namespaceGraphicId(resolvedNamespace, canvasId);
   return freezeOwned({
     objects: freezeOwned(objects),
     order: freezeOwned([rootId])

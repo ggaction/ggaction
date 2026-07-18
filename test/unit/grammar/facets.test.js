@@ -121,7 +121,7 @@ test("supports row-preserving anchors and rejects unsupported or incomplete sour
     .createBarMark({ id: "bars" });
   assert.throws(
     () => resolveFacetDefinition(incompleteBar.semanticSpec, { field: "group" }),
-    /complete histogram or aggregate bar/
+    /complete histogram, aggregate, or ranged bar/
   );
 });
 

@@ -7,7 +7,8 @@ import { readNominalField } from "./scales.js";
 const SUPPORTED_MARKS = new Set(["point", "line", "area", "bar", "rule"]);
 const SUPPORTED_BAR_GRAINS = new Set([
   BAR_GRAINS.histogram,
-  BAR_GRAINS.aggregate
+  BAR_GRAINS.aggregate,
+  BAR_GRAINS.ranged
 ]);
 
 function requireFacetField(field) {
@@ -28,7 +29,7 @@ function requireSupportedLayer(layer) {
     !SUPPORTED_BAR_GRAINS.has(resolveBarGrain(layer))
   ) {
     throw new Error(
-      `facet requires bar mark "${layer.id}" to be a complete histogram or aggregate bar.`
+      `facet requires bar mark "${layer.id}" to be a complete histogram, aggregate, or ranged bar.`
     );
   }
   if (

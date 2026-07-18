@@ -53,6 +53,7 @@ domain action을 통해서만 실행한다.
 
 | Internal action | Public owner | Role |
 | --- | --- | --- |
+| `composeFacetGuides` | `facet`, facet layout edits | Remove interior child axes/legends and attach one compatible parent legend |
 | `rebindLayerData` | `facet` | Rebind one repeated layer to its cell-local filtered or replayed dataset |
 | `releaseDerivedData` | `editDensity` | Remove an unreferenced old derived revision through `editSemantic({ remove: true })` |
 | `replayDerivedData` | `facet` | Recreate one supported stored transform through its canonical data materializer |

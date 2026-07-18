@@ -15,12 +15,13 @@ import { compositionChildDescriptor } from
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../theme/defaults.js";
 import { deriveFacetChildren } from "./derive.js";
 import { rebindLayerData, replayDerivedData } from "./replay.js";
+import { composeFacetGuides } from "./guides.js";
 
 const FACET_OPTIONS = Object.freeze([
   "id", "field", "data", "columns", "gap", "align", "padding", "scales",
   "guides"
 ]);
-const GUIDE_OPTIONS = Object.freeze(["legend"]);
+const GUIDE_OPTIONS = Object.freeze(["axes", "legend"]);
 const HEADER_OPTIONS = Object.freeze([
   "fontSize", "fontFamily", "fontWeight", "color", "offset"
 ]);
@@ -35,11 +36,15 @@ const DEFAULT_HEADERS = Object.freeze({
 function normalizeGuides(guides) {
   if (guides === undefined) return { axes: "each", legend: false };
   validateOptionObject(guides, GUIDE_OPTIONS, "facet.guides");
+  const axes = guides.axes ?? "each";
+  if (!["each", "outer"].includes(axes)) {
+    throw new Error('facet guides.axes must be "each" or "outer".');
+  }
   const legend = guides.legend ?? false;
   if (legend !== false && legend !== "shared") {
     throw new Error('facet guides.legend must be false or "shared".');
   }
-  return { axes: "each", legend };
+  return { axes, legend };
 }
 
 function normalizeHeaderPatch(args, previous) {
@@ -151,6 +156,7 @@ export const editFacetHeaders = action(
 export function registerFacetActions(ProgramClass) {
   ProgramClass.prototype.replayDerivedData = replayDerivedData;
   ProgramClass.prototype.rebindLayerData = rebindLayerData;
+  ProgramClass.prototype.composeFacetGuides = composeFacetGuides;
   ProgramClass.prototype.facet = facet;
   ProgramClass.prototype.editFacetHeaders = editFacetHeaders;
 }

@@ -4,14 +4,20 @@
 
 - Signature: `facet({ id?, field, data?, columns?, gap?, align?, padding?, scales?, guides? })`.
 - `field` is required. Omitted `data` resolves only when every eligible repeated layer has one unique common row-preserving ancestor.
-- Supported sources are complete point, histogram bar, aggregate bar, and layered point/regression programs.
+- Supported sources are complete Cartesian point, line, area, histogram bar, aggregate bar, ranged bar, rule,
+  regression, density, interval/error-band, and box-plot programs whose visible layers share one valid partition anchor.
 - Facet values use source first-appearance order. Omitted `columns` creates one row; a positive integer wraps cells row-major.
 - Omitted scale policies are shared. `x`, `y`, `xOffset`, `color`, `size`, `shape`, `opacity`, and `strokeDash`
   accept `"shared" | "independent"` when the channel is used. Explicit semantic domains override either policy.
   Histogram children share one bin-boundary set only when x is shared.
-- Regression dependencies replay from each filtered cell source through `replayDerivedData`, then every affected
-  layer is explicitly rebound through `rebindLayerData` before one deduplicated rematerialization plan runs.
-- `guides.legend` is `false` by default. `"shared"` creates one parent-owned categorical color legend while axes remain in each cell.
+- Filter, regression, density, interval, box-summary, and box-outlier dependencies replay topologically from each
+  filtered cell source through `replayDerivedData`. Every affected layer is explicitly rebound through
+  `rebindLayerData` before one deduplicated rematerialization plan runs.
+- `guides.axes` is `"each"` by default. `"outer"` keeps x axes on the bottommost occupied cell in each column and y
+  axes on the leftmost occupied cell in each row, including an incomplete final row.
+- `guides.legend` is `false` by default. `"shared"` promotes one compatible categorical, gradient, discretized-color,
+  size, or opacity recipe to a parent-owned concrete guide. Independent or otherwise incompatible child guide
+  definitions are rejected before a facet result is returned.
 - The result is a composition parent whose `children` retain immutable filtered programs and whose `graphicSpec` contains the complete namespaced nested-Canvas snapshot.
 - Canonical title order is `.facet(...).createTitle(...)`. A valid title authored before `facet` is promoted once to the parent.
 - Parent title alignment uses the translated child-plot union. Each facet header is centered on its own translated
@@ -19,23 +25,23 @@
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; columns?: PositiveInteger; gap?: NonNegativeFinite; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { legend?: false | "shared" } }): ChartProgram`.
-- Proposed (NOT IMPLEMENTED): outer-only axes and non-categorical shared legends.
-- Planned (NOT YET INTEGRATED): density, interval/error-band and box dependency replay, outer-only axes, and
-  non-categorical shared legends.
-- Current limitation: Polar channels, remaining statistical transform families, outer-only axes, and
-  non-categorical shared legends are not implemented in public facet composition.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; columns?: PositiveInteger; gap?: NonNegativeFinite; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" } }): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): Polar facet channel integration.
+- Current limitation: `theta` and `radius` facet resolution/guide composition are not implemented.
 
 ### Value coverage — `facet`
 
 - ✅ Covered: source and value inference, explicit common ancestor, one-row and wrapped layout,
-  point/histogram/aggregate-bar eligibility, regression dependency replay, shared/independent continuous domains,
+  point/histogram/aggregate/ranged-bar eligibility, regression/density/interval/box dependency replay,
+  shared/independent continuous domains,
   explicit-domain precedence, shared ordinal order, shared/independent histogram policy, parent categorical legend,
-  title promotion, child-plot-aligned parent title and headers, renderer isolation, immutable base/children, invalid
-  channel, dependency, and ambiguous-source rejection.
+  parent gradient/discretized/size/opacity legends, occupied-edge outer axes, title promotion, child-plot-aligned
+  parent title and headers, renderer isolation, layout rematerialization, immutable base/children, incompatible guide,
+  invalid channel, dependency, and ambiguous-source rejection.
 - Evidence: `test/unit/grammar/facets.test.js`, `test/unit/grammar/facet-dependencies.test.js`,
   `test/unit/grammar/facet-scales.test.js`, `test/unit/actions/composition/facet-derivation.test.js`,
-  `test/unit/actions/composition/facet.test.js`, `test/gates/direct-source-facet/public.test.js`,
+  `test/unit/actions/composition/facet.test.js`, `test/unit/actions/composition/facet-derived-families.test.js`,
+  `test/unit/actions/composition/facet-legend-families.test.js`, `test/gates/direct-source-facet/public.test.js`,
   `test/gates/facet-resolution/public.test.js`.
 
 ## `editFacetHeaders`

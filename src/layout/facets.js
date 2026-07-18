@@ -31,7 +31,9 @@ export function resolveFacetLayout({
   align = DEFAULT_COMPOSITION_LAYOUT.align,
   padding = DEFAULT_COMPOSITION_LAYOUT.padding,
   titleHeight = 0,
-  sharedLegend = false
+  sharedLegend = false,
+  sharedLegendGap = DEFAULT_FACET_LEGEND_GAP,
+  sharedLegendWidth = DEFAULT_FACET_LEGEND_WIDTH
 } = {}) {
   const values = children?.map(child => child?.value);
   const resolvedChildren = normalizeCompositionChildren(children?.map(
@@ -48,6 +50,14 @@ export function resolveFacetLayout({
   if (typeof sharedLegend !== "boolean") {
     throw new TypeError("Facet sharedLegend must be a boolean.");
   }
+  const legendGap = validateCompositionSpacing(
+    sharedLegendGap,
+    "Facet shared legend gap"
+  );
+  const legendWidth = validateCompositionSpacing(
+    sharedLegendWidth,
+    "Facet shared legend width"
+  );
   const rowCount = Math.ceil(resolvedChildren.length / resolvedColumns);
   const columnWidths = Array.from({ length: resolvedColumns }, (_, column) =>
     Math.max(...resolvedChildren
@@ -106,15 +116,15 @@ export function resolveFacetLayout({
     titleHeight: resolvedTitleHeight,
     gridWidth,
     width: gridWidth + (sharedLegend
-      ? DEFAULT_FACET_LEGEND_GAP + DEFAULT_FACET_LEGEND_WIDTH
+      ? legendGap + legendWidth
       : 0),
     height: gridHeight,
     children: placements,
     ...(sharedLegend ? {
       legend: {
-        x: gridWidth + DEFAULT_FACET_LEGEND_GAP,
+        x: gridWidth + legendGap,
         y: resolvedTitleHeight + resolvedPadding.top + 30,
-        width: DEFAULT_FACET_LEGEND_WIDTH
+        width: legendWidth
       }
     } : {})
   });

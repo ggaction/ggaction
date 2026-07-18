@@ -228,6 +228,7 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
     "createSizeLegend"
   ]);
   assert.deepEqual(index.internal.stateTransitions, [
+    "composeFacetGuides",
     "rebindLayerData",
     "releaseDerivedData",
     "replayDerivedData",

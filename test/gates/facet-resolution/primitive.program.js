@@ -298,7 +298,7 @@ function addPopulationLegend(program, values) {
   return graphic(next, "populationGradientTitle", "text", {
     x,
     y: y - 18,
-    text: "Population",
+    text: "pop",
     fill: "#0f172a",
     fontSize: 11,
     fontFamily: FONT,

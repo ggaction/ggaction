@@ -83,6 +83,10 @@ export interface FacetScaleResolutions {
   opacity?: FacetScaleResolution;
   strokeDash?: FacetScaleResolution;
 }
+export interface FacetGuideOptions {
+  axes?: "each" | "outer";
+  legend?: false | "shared";
+}
 export interface FacetOptions {
   id?: string;
   field: string;
@@ -92,7 +96,7 @@ export interface FacetOptions {
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
-  guides?: { legend?: false | "shared" };
+  guides?: FacetGuideOptions;
 }
 export interface EditFacetHeadersOptions {
   fontSize?: number;
@@ -123,7 +127,7 @@ export interface FacetCompositionSpec {
     readonly values: readonly DatasetScalar[];
     readonly scales: Readonly<Required<FacetScaleResolutions>>;
     readonly guides: {
-      readonly axes: "each";
+      readonly axes: "each" | "outer";
       readonly legend: false | "shared";
     };
   };

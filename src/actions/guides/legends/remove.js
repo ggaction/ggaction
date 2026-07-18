@@ -1,6 +1,8 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { validateKeys } from "../../../core/validation.js";
+import { legendGraphicIds } from
+  "../../../materialization/guides/resources.js";
 
 const OPTIONS = Object.freeze(["target"]);
 
@@ -21,39 +23,6 @@ function resolveTarget(program, requested) {
   }
   return targets[0];
 }
-
-function categoricalGraphics(kind) {
-  const prefix = kind === "series" ? "seriesLegend" : "colorLegend";
-  return [
-    `${prefix}Symbols`,
-    `${prefix}SymbolLines`,
-    `${prefix}SymbolPoints`,
-    `${prefix}SymbolSwatches`,
-    `${prefix}Labels`,
-    `${prefix}Title`,
-    `${prefix}Background`
-  ];
-}
-
-const GRAPHICS = Object.freeze({
-  series: categoricalGraphics("series"),
-  color: categoricalGraphics("color"),
-  size: ["sizeLegendSymbols", "sizeLegendLabels", "sizeLegendTitle"],
-  gradient: [
-    "colorGradientBackground",
-    "colorGradientStrips",
-    "colorGradientTicks",
-    "colorGradientLabels",
-    "colorGradientTitle"
-  ],
-  interval: ["colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"],
-  opacity: [
-    "opacityLegendBackground",
-    "opacityLegendSymbols",
-    "opacityLegendLabels",
-    "opacityLegendTitle"
-  ]
-});
 
 const SEMANTIC_KIND = Object.freeze({
   series: "series",
@@ -82,7 +51,7 @@ export const removeLegend = action(
         });
       }
     }
-    for (const id of new Set(kinds.flatMap(kind => GRAPHICS[kind] ?? []))) {
+    for (const id of new Set(kinds.flatMap(legendGraphicIds))) {
       if (next.graphicSpec.objects[id] !== undefined) {
         next = next.editGraphics({ target: id, remove: true });
       }

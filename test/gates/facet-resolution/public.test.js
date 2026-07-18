@@ -2,8 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { loadGapminder } from "../../support/data.js";
+import { namespaceGraphicId } from
+  "../../../src/materialization/compositionSnapshot.js";
 
-import { createGapminderRegressionFacet } from "./public.program.js";
+import {
+  createGapminderOuterGuideFacet,
+  createGapminderRegressionFacet
+} from "./public.program.js";
 import { createGapminderRegressionFacetValues } from
   "./reference-values.js";
 
@@ -85,3 +90,72 @@ test("keeps independent x domains while sharing y and color", () => {
   );
 });
 
+test("keeps axes on occupied outer cells and promotes one shared gradient", () => {
+  const program = createGapminderOuterGuideFacet(loadGapminder());
+  const childIds = program.compositionSpec.children;
+  const hasAxis = (id, channel) =>
+    program.graphicSpec.objects[namespaceGraphicId(
+      `facet-${id}`,
+      `${channel}AxisTitle`
+    )] !== undefined;
+
+  assert.deepEqual(
+    childIds.map(id => ({ x: hasAxis(id, "x"), y: hasAxis(id, "y") })),
+    [
+      { x: false, y: true },
+      { x: false, y: false },
+      { x: true, y: false },
+      { x: true, y: true },
+      { x: true, y: false }
+    ]
+  );
+  assert.equal(program.compositionSpec.facet.guides.axes, "outer");
+  assert.equal(program.compositionSpec.facet.guides.legend, "shared");
+  assert.equal(
+    program.graphicSpec.objects["facet-shared-legend"].type,
+    "canvas"
+  );
+  assert.equal(
+    program.graphicSpec.objects["facet-shared-legend"].children.includes(
+      "colorGradientStrips"
+    ),
+    true
+  );
+  assert.equal(
+    Object.keys(program.graphicSpec.objects).filter(id =>
+      id.includes("colorGradientStrips")
+    ).length,
+    1
+  );
+  assert.equal(program.graphicSpec.objects.canvas.properties.width, 1044);
+  assert.equal(program.graphicSpec.objects.canvas.properties.height, 588);
+});
+
+test("recomposes outer guides without changing retained facet children", () => {
+  const program = createGapminderOuterGuideFacet(loadGapminder());
+  const children = program.children;
+  const edited = program.editCompositionLayout({
+    gap: 12,
+    padding: { top: 20, right: 18, bottom: 10, left: 18 }
+  });
+
+  assert.equal(edited.children, children);
+  assert.equal(edited.compositionSpec.gap, 12);
+  assert.equal(
+    edited.graphicSpec.objects.canvas.children.filter(
+      id => id === "facet-shared-legend"
+    ).length,
+    1
+  );
+  assert.equal(
+    edited.graphicSpec.objects["facet-shared-legend"].children.includes(
+      "colorGradientStrips"
+    ),
+    true
+  );
+  assert.notEqual(
+    edited.graphicSpec.objects.canvas.properties.width,
+    program.graphicSpec.objects.canvas.properties.width
+  );
+  assert.equal(program.compositionSpec.gap, 20);
+});

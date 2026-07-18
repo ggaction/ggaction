@@ -1,4 +1,3 @@
-import { mapOrdinalValues } from "../grammar/scales.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
@@ -7,6 +6,7 @@ import {
 } from "../layout/title.js";
 import { resolveFacetLayout } from "../layout/facets.js";
 import { namespaceGraphicSnapshot } from "./compositionSnapshot.js";
+import { prepareSharedFacetLegend } from "./facetGuides.js";
 import {
   attachSnapshotObject,
   clearCompositionChildren,
@@ -93,84 +93,6 @@ function materializeHeaders(program, layout, plots, config) {
   return collection(program, `${program.compositionSpec.id}-headers`, items);
 }
 
-function resolveSharedLegend(program) {
-  const encodings = program.semanticSpec.layers.flatMap(layer =>
-    layer.encoding?.color === undefined
-      ? []
-      : [{ layer, encoding: layer.encoding.color }]
-  );
-  if (encodings.length === 0) {
-    throw new Error("Shared facet legend requires a categorical color encoding.");
-  }
-  const fields = new Set(encodings.map(entry => entry.encoding.field));
-  const scales = new Set(encodings.map(entry => entry.encoding.scale));
-  const marks = new Set(encodings.map(entry => entry.layer.mark?.type));
-  if (fields.size !== 1 || scales.size !== 1 || marks.size !== 1) {
-    throw new Error(
-      "Shared facet legend requires one compatible color field, scale, and mark recipe."
-    );
-  }
-  if (encodings.some(entry =>
-    !["nominal", "ordinal"].includes(entry.encoding.fieldType)
-  )) {
-    throw new Error("Shared facet legend currently requires categorical color.");
-  }
-  const child = program.children[program.compositionSpec.children[0]];
-  const scaleId = encodings[0].encoding.scale;
-  const scale = child.resolvedScales[scaleId];
-  if (scale?.type !== "ordinal") {
-    throw new Error("Shared facet legend requires a resolved ordinal color scale.");
-  }
-  return {
-    field: encodings[0].encoding.field,
-    mark: encodings[0].layer.mark.type,
-    domain: scale.domain,
-    colors: mapOrdinalValues(scale.domain, scale.domain, scale.range)
-  };
-}
-
-function materializeLegend(program, layout) {
-  const legend = resolveSharedLegend(program);
-  const items = [textItem(legend.field, layout.legend.x, layout.legend.y, {
-    fontSize: 12,
-    fontWeight: 700,
-    textBaseline: "top"
-  })];
-  legend.domain.forEach((value, index) => {
-    const y = layout.legend.y + 29 + index * 26;
-    items.push(legend.mark === "point"
-      ? {
-          type: "circle",
-          properties: {
-            x: layout.legend.x + 7,
-            y,
-            radius: 5.5,
-            fill: legend.colors[index],
-            stroke: "#ffffff",
-            strokeWidth: 0.35,
-            opacity: 1
-          }
-        }
-      : {
-          type: "rect",
-          properties: {
-            x: layout.legend.x + 1,
-            y: y - 6,
-            width: 12,
-            height: 12,
-            fill: legend.colors[index],
-            stroke: "#ffffff",
-            strokeWidth: 0.6,
-            opacity: 1
-          }
-        });
-    items.push(textItem(value, layout.legend.x + 22, y, {
-      fontSize: 10.5
-    }));
-  });
-  return collection(program, `${program.compositionSpec.id}-legend`, items);
-}
-
 function materializeTitleComponent(program, id, lines, centers, style, plot, top) {
   if (lines.length === 0) return program;
   const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align);
@@ -221,7 +143,7 @@ function materializeTitle(program, plot, title) {
   return next;
 }
 
-export function resolveFacetProgramLayout(program) {
+export function resolveFacetProgramLayout(program, preparedLegend) {
   program._assertCompositionProgram("resolveFacetProgramLayout");
   if (program.compositionSpec.type !== "facet") {
     throw new Error("resolveFacetProgramLayout requires a facet composition.");
@@ -238,7 +160,11 @@ export function resolveFacetProgramLayout(program) {
     align: spec.align,
     padding: spec.padding,
     titleHeight: title.height,
-    sharedLegend: spec.facet.guides.legend === "shared"
+    sharedLegend: spec.facet.guides.legend === "shared",
+    ...(preparedLegend === undefined ? {} : {
+      sharedLegendGap: preparedLegend.reservation.gap,
+      sharedLegendWidth: preparedLegend.reservation.width
+    })
   });
   const plots = spec.children.map(id => ({
     id,
@@ -252,7 +178,11 @@ export function resolveFacetProgramLayout(program) {
 }
 
 export function materializeFacetGraphics(program) {
-  const { layout, title, plot, plots } = resolveFacetProgramLayout(program);
+  const preparedLegend = prepareSharedFacetLegend(program);
+  const { layout, title, plot, plots } = resolveFacetProgramLayout(
+    program,
+    preparedLegend
+  );
   const config = facetConfig(program);
   let next = clearCompositionChildren(program);
   if (next.graphicSpec.objects.canvas === undefined) {
@@ -275,9 +205,7 @@ export function materializeFacetGraphics(program) {
     next = attachSnapshotObject(next, snapshot, snapshot.order[0], "canvas");
   }
   next = materializeHeaders(next, layout, plots, config.headers);
-  if (program.compositionSpec.facet.guides.legend === "shared") {
-    next = materializeLegend(next, layout);
-  }
+  next = next.composeFacetGuides({ layout, plot });
   if (title.height > 0) next = materializeTitle(next, plot, title);
   return next._withCanvasConfig({
     margin: ZERO_MARGIN,
