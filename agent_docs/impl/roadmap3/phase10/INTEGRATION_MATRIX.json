@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "phase": "phase10",
+  "cases": [
+    {
+      "id": "shared-temporal-bar-line-position",
+      "capability": "shared-position-scale-resolution",
+      "status": "gate-pending",
+      "expected": "Bar centers and line vertices share one temporal scale mapping.",
+      "evidence": "test/gates/cars-temporal-bar-line/primitive.test.js"
+    },
+    {
+      "id": "polar-child-hconcat",
+      "capability": "cross-feature-integration",
+      "status": "current-pass",
+      "expected": "A Polar child is retained and fully snapshotted by hconcat.",
+      "evidence": "test/contracts/roadmap3-phase10-baseline.test.js"
+    },
+    {
+      "id": "nested-polar-concat",
+      "capability": "cross-feature-integration",
+      "status": "current-pass",
+      "expected": "Nested hconcat and vconcat render only the parent graphic tree.",
+      "evidence": "test/contracts/roadmap3-phase10-baseline.test.js"
+    },
+    {
+      "id": "polar-source-facet",
+      "capability": "cross-feature-integration",
+      "status": "current-explicit-error",
+      "expected": "Unsupported Polar facet fails before creating partial children.",
+      "evidence": "test/contracts/roadmap3-phase10-baseline.test.js"
+    },
+    {
+      "id": "facet-scale-guide-resolution",
+      "capability": "cross-feature-integration",
+      "status": "current-pass",
+      "expected": "Shared and independent scale policy remains separate from guide composition.",
+      "evidence": "test/unit/actions/composition/facet.test.js"
+    },
+    {
+      "id": "composition-child-replacement-layout",
+      "capability": "cross-feature-integration",
+      "status": "current-pass",
+      "expected": "Replacement preserves slot identity and recomputes concrete layout.",
+      "evidence": "test/unit/actions/composition/concat.test.js"
+    },
+    {
+      "id": "transitive-child-rematerialization",
+      "capability": "cross-feature-integration",
+      "status": "audit-pending",
+      "expected": "Child revisions refresh every affected composition ancestor.",
+      "evidence": null
+    },
+    {
+      "id": "release-surface-parity",
+      "capability": "cross-feature-integration",
+      "status": "audit-pending",
+      "expected": "Runtime, types, package, contracts, docs and installed consumers agree.",
+      "evidence": null
+    }
+  ]
+}
