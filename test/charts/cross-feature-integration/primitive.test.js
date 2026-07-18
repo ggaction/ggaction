@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { render } from "../../../src/index.js";
+import { createCrossFeatureDashboardState } from
+  "../../../examples/cross-feature-dashboard/program.js";
 import { createMockCanvasContext } from "../../support/canvas.js";
 import {
   loadCars,
@@ -48,4 +50,21 @@ test("replaces one nested Polar child and explicitly refreshes its ancestor", ()
   assert.equal(context.calls.some(call => call.op === "bezierCurveTo"), true);
   assert.equal(context.calls.some(call => call.op === "arc"), true);
   assert.equal(context.calls.some(call => call.op === "fillText"), true);
+});
+
+test("matches the approved primitive with the user-facing composition flow", () => {
+  const data = {
+    cars: loadCars(),
+    fashionRows: loadFashionTsne(),
+    nightingale: loadNightingaleRose()
+  };
+  const primitive = createCrossFeatureDashboardPrimitiveState(data);
+  const userFacing = createCrossFeatureDashboardState(data);
+
+  assert.deepEqual(
+    userFacing.revisedDashboard.graphicSpec,
+    primitive.revisedDashboard.graphicSpec
+  );
+  assert.equal(userFacing.revisedPolarPair.children.detail, userFacing.fashionPolar);
+  assert.equal(userFacing.revisedDashboard.children.polarPair, userFacing.revisedPolarPair);
 });

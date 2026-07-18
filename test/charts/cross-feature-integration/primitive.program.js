@@ -16,7 +16,11 @@ export function createCrossFeatureDashboardPrimitiveState({
   const donut = createCarsOriginDonutPrimitives(cars);
   const rose = createNightingaleRosePrimitives(nightingale);
   const fashionPolar = createFashionTsnePolarPointPrimitives(fashionRows);
-  const facet = createCarsOriginScatterplotFacetPrimitives(cars);
+  const facetPrimitive = createCarsOriginScatterplotFacetPrimitives(cars);
+  const facet = facetPrimitive._withCanvasConfig({
+    ...facetPrimitive.materializationConfigs.canvas,
+    size: { width: "auto", height: "auto" }
+  });
   const polarPair = hconcat({
     id: "polarPair",
     programs: [

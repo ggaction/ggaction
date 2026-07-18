@@ -5,9 +5,13 @@ import {
   loadNightingaleRose
 } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
+import { createCrossFeatureDashboard } from
+  "../../../examples/cross-feature-dashboard/program.js";
 import { createGapminderOuterGuideFacetPrimitives } from
-  "../facet-resolution/primitive.program.js";
-import { outerGuidesTarget } from "../facet-resolution/manifest.js";
+  "../../gates/facet-resolution/primitive.program.js";
+import { createGapminderOuterGuideFacet } from
+  "../../gates/facet-resolution/public.program.js";
+import { outerGuidesTarget } from "../../gates/facet-resolution/manifest.js";
 
 import { createCrossFeatureDashboardPrimitives } from "./primitive.program.js";
 
@@ -39,6 +43,7 @@ export const visualVariants = Object.freeze([
     callChain: nestedDashboardTarget,
     artifact,
     primitive: () => createCrossFeatureDashboardPrimitives(dashboardData),
+    userFacing: () => createCrossFeatureDashboard(dashboardData),
     width: dashboardCanvas.width,
     height: dashboardCanvas.height,
     colors: ["#4c78a8", "#f58518", "#e45756"],
@@ -58,6 +63,7 @@ export const visualVariants = Object.freeze([
     callChain: outerGuidesTarget,
     artifact,
     primitive: () => createGapminderOuterGuideFacetPrimitives(gapminder),
+    userFacing: () => createGapminderOuterGuideFacet(gapminder),
     width: facetCanvas.width,
     height: facetCanvas.height,
     colors: ["#111827", "#450457", "#f8e722"],
