@@ -24,6 +24,7 @@ const program = chart()
     margin: { top: 30, right: 28, bottom: 50, left: 58 }
   })
   .createData({ values: gapminder })
+  .filterData({ field: "cluster", oneOf: [0, 3, 4, 1, 5] })
   .createPointMark({ opacity: 0.35 })
   .encodeX({
     field: "fertility",
@@ -65,7 +66,8 @@ const program = chart()
   });
 ```
 
-Resource IDs는 ordinary authoring flow에서 생략한다. Facet은 current chart에서 unique source, affected layers,
+Cluster `2`를 제외한 다섯 cell은 3열 layout의 마지막 행을 의도적으로 불완전하게 만들어 occupied-edge
+guide selection을 검증한다. Resource IDs는 ordinary authoring flow에서 생략한다. Facet은 current chart에서 unique source, affected layers,
 coordinates와 scales를 추론하고 resolved IDs를 child semantic state에 저장한다.
 
 ## Gate variants

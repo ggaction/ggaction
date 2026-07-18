@@ -3,6 +3,7 @@ import test from "node:test";
 
 import { loadGapminder } from "../../support/data.js";
 import { createGapminderRegressionFacetValues } from "./reference-values.js";
+import { OUTER_GUIDE_CLUSTERS } from "./reference-values.js";
 
 test("locks per-cluster row counts and independently fitted regression models", () => {
   const values = createGapminderRegressionFacetValues(loadGapminder());
@@ -42,4 +43,17 @@ test("locks shared and independent domains independently from screenshots", () =
   );
   assert.deepEqual([shared.width, shared.height], [908, 588]);
   assert.deepEqual(shared.plot, { x: 72, y: 110, width: 804, height: 414 });
+});
+
+test("locks the five-cell incomplete row used by the outer-guide gate", () => {
+  const values = createGapminderRegressionFacetValues(loadGapminder(), {
+    xResolution: "independent",
+    clusters: OUTER_GUIDE_CLUSTERS
+  });
+  assert.deepEqual(values.clusters, [0, 3, 4, 1, 5]);
+  assert.deepEqual(values.cells.map(cell => [cell.row, cell.column]), [
+    [0, 0], [0, 1], [0, 2], [1, 0], [1, 1]
+  ]);
+  assert.deepEqual(values.shared.color, [82656, 1304887562]);
+  assert.deepEqual([values.width, values.height], [908, 588]);
 });

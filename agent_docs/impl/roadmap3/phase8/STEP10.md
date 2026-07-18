@@ -2,10 +2,10 @@
 
 ## 진행 상태
 
-- [ ] Outer-axis code and image
-- [ ] Shared-gradient code and image
-- [ ] Occupied-edge evidence
-- [ ] Parent/child ownership evidence
+- [x] Outer-axis code and image
+- [x] Shared-gradient code and image
+- [x] Occupied-edge evidence
+- [x] Parent/child ownership evidence
 - [ ] User approval
 
 Gate I-B는 hard pause다. Incomplete final row에서 outer axes가 선택되는 위치와 shared gradient legend의 parent

@@ -20,6 +20,14 @@ export const FACET_LAYOUT = Object.freeze({
   padding: 14,
   titleHeight: 60
 });
+export const OUTER_GUIDE_CLUSTERS = Object.freeze([0, 3, 4, 1, 5]);
+export const OUTER_GUIDE_LAYOUT = Object.freeze({
+  legendGap: 24,
+  legendWidth: 112,
+  gradientWidth: 12,
+  gradientHeight: 180,
+  gradientSteps: 60
+});
 
 function validRows(rows) {
   if (!Array.isArray(rows)) throw new TypeError("Gapminder rows must be an array.");
@@ -78,13 +86,26 @@ function placements(count) {
 }
 
 export function createGapminderRegressionFacetValues(rows, {
-  xResolution = "shared"
+  xResolution = "shared",
+  clusters: requestedClusters
 } = {}) {
   if (!["shared", "independent"].includes(xResolution)) {
     throw new Error("Regression facet xResolution must be shared or independent.");
   }
-  const source = validRows(rows);
-  const clusters = [...new Set(source.map(row => row.cluster))];
+  const allRows = validRows(rows);
+  const observedClusters = [...new Set(allRows.map(row => row.cluster))];
+  const clusters = requestedClusters === undefined
+    ? observedClusters
+    : [...requestedClusters];
+  if (
+    clusters.length === 0 ||
+    new Set(clusters).size !== clusters.length ||
+    clusters.some(cluster => !observedClusters.includes(cluster))
+  ) {
+    throw new Error("Regression facet clusters must be unique observed values.");
+  }
+  const selected = new Set(clusters);
+  const source = allRows.filter(row => selected.has(row.cluster));
   const regressionCells = clusters.map(cluster => cellRegression(source, cluster));
   const shared = {
     x: expectedContinuousFacetUnion(

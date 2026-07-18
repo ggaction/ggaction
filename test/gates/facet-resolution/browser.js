@@ -1,13 +1,16 @@
 import { render } from "../../../src/index.js";
 import { createGapminderRegressionFacetPrimitives } from
   "./primitive.program.js";
+import { createGapminderOuterGuideFacetPrimitives } from
+  "./primitive.program.js";
 
 const rows = await fetch("../../../data/gapminder.json").then(response => response.json());
 const programs = {
   shared: createGapminderRegressionFacetPrimitives(rows),
   independent: createGapminderRegressionFacetPrimitives(rows, {
     xResolution: "independent"
-  })
+  }),
+  outer: createGapminderOuterGuideFacetPrimitives(rows)
 };
 
 for (const [id, program] of Object.entries(programs)) {
@@ -21,5 +24,4 @@ window.__facetResolutionGate = Object.freeze(Object.fromEntries(
     height: program.graphicSpec.objects.canvas.properties.height
   })])
 ));
-document.querySelector("#status").textContent = "Facet resolution Gate I-A rendered";
-
+document.querySelector("#status").textContent = "Facet resolution Gates rendered";

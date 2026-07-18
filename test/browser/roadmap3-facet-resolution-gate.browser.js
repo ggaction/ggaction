@@ -13,7 +13,7 @@ import { startStaticServer } from "../support/static-server.js";
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 
-test("renders both Gate I-A regression facet primitives in a browser", async () => {
+test("renders the facet resolution and outer-guide gate primitives in a browser", async () => {
   const server = await startStaticServer(repositoryRoot);
   const browser = await chromium.launch({ headless: true });
   try {
@@ -24,9 +24,10 @@ test("renders both Gate I-A regression facet primitives in a browser", async () 
     );
     assert.deepEqual(await windowValue(page, "__facetResolutionGate"), {
       shared: { width: 908, height: 588 },
-      independent: { width: 908, height: 588 }
+      independent: { width: 908, height: 588 },
+      outer: { width: 1044, height: 588 }
     });
-    assertNoBrowserErrors(errors, "Roadmap 3 facet resolution Gate I-A");
+    assertNoBrowserErrors(errors, "Roadmap 3 facet resolution Gates");
     await page.close();
   } finally {
     await browser.close();
