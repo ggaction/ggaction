@@ -3,10 +3,10 @@
 ## 진행 상태
 
 - [x] STEP 1 — Phase 계약과 Gate H target 확정
-- [ ] STEP 2 — Facet source/value resolution과 독립 oracle
-- [ ] STEP 3 — Facet grid, header와 parent title reference layout
-- [ ] STEP 4 — Cars Origin scatterplot facet primitive
-- [ ] STEP 5 — Cars Origin histogram facet primitive
+- [x] STEP 2 — Facet source/value resolution과 독립 oracle
+- [x] STEP 3 — Facet grid, header와 parent title reference layout
+- [x] STEP 4 — Cars Origin scatterplot facet primitive
+- [x] STEP 5 — Cars Origin histogram facet primitive
 - [ ] STEP 6 — Gate H visual evidence와 사용자 승인
 - [ ] STEP 7 — Immutable facet child derivation
 - [ ] STEP 8 — Public `facet`과 composition materialization
@@ -75,3 +75,5 @@ STEP 6은 hard pause다. 승인 전에는 `ChartProgram.prototype.facet`, facet 
 2. `columns: 2` Cars Origin histogram facet wrapping
 3. Shared domains, per-cell axes, parent-owned title와 headers
 
+Gate H primitive package는 `test/gates/direct-source-facet/`에 있으며 public `facet`과
+`editFacetHeaders`가 아직 존재하지 않는 것도 normal Gate test가 확인한다.
