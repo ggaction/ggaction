@@ -41,4 +41,5 @@ test("locks shared and independent domains independently from screenshots", () =
     shared.cells.map(cell => cell.domains.y)
   );
   assert.deepEqual([shared.width, shared.height], [908, 588]);
+  assert.deepEqual(shared.plot, { x: 72, y: 110, width: 804, height: 414 });
 });

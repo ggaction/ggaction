@@ -128,6 +128,35 @@ test("creates, edits, and removes one parent-owned facet title", () => {
   assert.ok(removed.graphicSpec.objects.canvas.properties.height < originalHeight);
 });
 
+test("aligns facet titles to the union of child plots instead of the parent Canvas", () => {
+  const base = chart()
+    .createCanvas({
+      width: 220,
+      height: 160,
+      margin: { top: 20, right: 10, bottom: 20, left: 40 }
+    })
+    .createData({ values: rows })
+    .createPointMark()
+    .encodeX({ field: "x", scale: { nice: false, zero: false } })
+    .encodeY({ field: "y", scale: { nice: false, zero: false } })
+    .encodeRadius({ value: 3 });
+  const centered = base
+    .facet({ field: "group", guides: { legend: false } })
+    .createTitle({ text: "Plot centered", align: "center" });
+  const left = centered.editTitle({ align: "left" });
+  const right = centered.editTitle({ align: "right" });
+  const relaid = centered.editCompositionLayout({
+    padding: { left: 10, right: 30 }
+  });
+
+  assert.equal(centered.graphicSpec.objects.canvas.properties.width, 456);
+  assert.equal(centered.graphicSpec.objects.chartTitle.properties.x, 243);
+  assert.equal(left.graphicSpec.objects.chartTitle.properties.x, 40);
+  assert.equal(right.graphicSpec.objects.chartTitle.properties.x, 446);
+  assert.equal(relaid.graphicSpec.objects.chartTitle.properties.x, 253);
+  assert.notEqual(centered.graphicSpec.objects.chartTitle.properties.x, 228);
+});
+
 test("promotes an existing unit title to the facet parent", () => {
   const base = pointBase()
     .editCanvas({ margin: { top: 60 } })

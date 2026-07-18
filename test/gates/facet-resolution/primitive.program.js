@@ -210,7 +210,7 @@ export function createGapminderRegressionFacetPrimitives(rows, options = {}) {
     ))
   });
   program = graphic(program, "chartTitle", "text", {
-    x: values.width / 2,
+    x: values.plot.x + values.plot.width / 2,
     y: 19,
     text: "Fertility and Life Expectancy",
     fill: "#0f172a",
@@ -221,7 +221,7 @@ export function createGapminderRegressionFacetPrimitives(rows, options = {}) {
     textBaseline: "middle"
   });
   return graphic(program, "chartSubtitle", "text", {
-    x: values.width / 2,
+    x: values.plot.x + values.plot.width / 2,
     y: 43,
     text: options.xResolution === "independent"
       ? "Regression recomputed by cluster · independent fertility scales"

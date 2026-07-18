@@ -150,6 +150,31 @@ test("rematerializes title layout after Canvas edits", () => {
   assert.equal(before.graphicSpec.objects.chartTitle.properties.x, 200);
 });
 
+test("centers horizontal titles on asymmetric plot bounds", () => {
+  const before = chart().createCanvas({
+    width: 400,
+    height: 240,
+    margin: { top: 80, right: 20, bottom: 30, left: 70 }
+  }).createTitle({ text: "Plot centered", align: "center" });
+  const after = before.editCanvas({ width: 500 });
+
+  assert.equal(before.graphicSpec.objects.chartTitle.properties.x, 225);
+  assert.equal(after.graphicSpec.objects.chartTitle.properties.x, 275);
+  assert.notEqual(before.graphicSpec.objects.chartTitle.properties.x, 200);
+
+  const side = chart().createCanvas({
+    width: 520,
+    height: 420,
+    margin: { top: 90, right: 120, bottom: 130, left: 120 }
+  }).createTitle({
+    text: "Plot centered",
+    position: "left",
+    align: "center"
+  });
+  assert.equal(side.graphicSpec.objects.chartTitle.properties.y, 190);
+  assert.notEqual(side.graphicSpec.objects.chartTitle.properties.y, 210);
+});
+
 test("validates title options, layout, duplicates, and component state", () => {
   assert.throws(() => createCanvas().createTitle(), /text must be a non-empty/);
   assert.throws(

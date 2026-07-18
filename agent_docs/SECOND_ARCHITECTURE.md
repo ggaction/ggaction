@@ -1381,6 +1381,11 @@ Title은 guide와 별도 stable resource다. `createTitle`과 `editTitle`이 mai
 subtitle을 concrete text node로 만들며 alignment, position, offset, gap, wrapping과 font는
 materialization config가 소유한다.
 
+Title alignment span은 Canvas나 guide-inclusive container가 아니라 실제 plot bounds다. Unit chart는 Canvas
+margin으로 정해진 plot bounds를 사용하고 facet parent는 translated child plot bounds의 union을 사용한다.
+따라서 child margin, axis label/title, facet padding과 shared legend는 left/center/right anchor를 이동시키지
+않는다. Layout이나 Canvas 변경은 이 span을 다시 계산해 title을 rematerialize한다.
+
 Top/bottom title은 horizontal block이고 left/right title은 complete reading block을 각각
 `-Math.PI / 2`, `Math.PI / 2`로 회전한다. `maxWidth`가 있으면 shared deterministic text
 metric이 word 또는 Unicode code-point character wrapping을 계산한다. Oversized word는

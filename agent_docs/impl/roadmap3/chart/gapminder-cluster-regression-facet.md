@@ -113,5 +113,7 @@ facet
 - Shared and independent domains use numeric oracles rather than screenshots alone.
 - Outer x axes appear on the bottommost occupied cell of each column; outer y axes appear on the leftmost occupied
   cell of each row.
+- The parent title is aligned to the union of translated child plot bounds, excluding cell margins, axis text,
+  facet padding and shared guides.
 - Primitive and public programs produce the same concrete Canvas calls and exact same-run pixels.
 - Earlier source, base chart and every sibling child remain unchanged.

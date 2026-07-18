@@ -9,6 +9,7 @@ import {
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import {
+  alignedTextAnchor,
   alignedTitleAnchor,
   buildTitleReadingBlock,
   layoutBoundsIntersect,
@@ -254,11 +255,7 @@ export function resolveTitleLayout(program, config) {
   let title;
   let subtitle;
   if (horizontal) {
-    const x = config.align === "left"
-      ? plot.x
-      : config.align === "center"
-        ? plot.x + plot.width / 2
-        : plot.x + plot.width;
+    const x = alignedTextAnchor(plot.x, plot.width, config.align);
     const blockTop = config.position === "top"
       ? 16 + config.offset
       : plot.y + plot.height + config.offset;

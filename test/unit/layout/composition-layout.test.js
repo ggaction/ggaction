@@ -4,7 +4,8 @@ import test from "node:test";
 import {
   DEFAULT_COMPOSITION_LAYOUT,
   normalizeCompositionPadding,
-  resolveCompositionLayout
+  resolveCompositionLayout,
+  resolvePlacedPlotBounds
 } from "../../../src/layout/composition.js";
 import { expectedConcatLayout } from "../../oracles/composition.js";
 
@@ -143,6 +144,44 @@ test("preserves order, gaps, outer bounds, and frozen ownership", () => {
   assert.ok(Object.isFrozen(result));
   assert.ok(Object.isFrozen(result.children));
   assert.ok(Object.isFrozen(result.padding));
+});
+
+test("unions placed plot bounds without including child margins", () => {
+  const result = resolvePlacedPlotBounds({
+    placements: [
+      { id: "left", x: 10, y: 20, width: 220, height: 160 },
+      { id: "right", x: 250, y: 30, width: 220, height: 160 }
+    ],
+    plots: [
+      { id: "left", x: 40, y: 30, width: 170, height: 100 },
+      { id: "right", x: 40, y: 30, width: 170, height: 100 }
+    ]
+  });
+
+  assert.deepEqual(result, { x: 50, y: 50, width: 410, height: 110 });
+  assert.equal(Object.isFrozen(result), true);
+});
+
+test("validates complete one-to-one placed plot bounds", () => {
+  const placement = { id: "cell", x: 0, y: 0, width: 100, height: 80 };
+  assert.throws(
+    () => resolvePlacedPlotBounds({ placements: [placement], plots: [] }),
+    /one local plot/
+  );
+  assert.throws(
+    () => resolvePlacedPlotBounds({
+      placements: [placement],
+      plots: [{ id: "other", x: 10, y: 10, width: 80, height: 60 }]
+    }),
+    /Missing local plot bounds/
+  );
+  assert.throws(
+    () => resolvePlacedPlotBounds({
+      placements: [placement],
+      plots: [{ id: "cell", x: 10, y: 10, width: 100, height: 60 }]
+    }),
+    /must fit its placement/
+  );
 });
 
 test("rejects malformed composition layout inputs", () => {

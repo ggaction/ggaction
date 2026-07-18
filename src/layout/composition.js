@@ -199,3 +199,80 @@ export function resolveCompositionLayout({
     children: placements
   });
 }
+
+function validatePlacedBounds(value, label) {
+  if (!isPlainObject(value)) {
+    throw new TypeError(`${label} must be a plain object.`);
+  }
+  for (const property of ["x", "y", "width", "height"]) {
+    if (!Number.isFinite(value[property])) {
+      throw new TypeError(`${label}.${property} must be finite.`);
+    }
+  }
+  if (value.width <= 0 || value.height <= 0) {
+    throw new RangeError(`${label} width and height must be positive.`);
+  }
+  return value;
+}
+
+export function resolvePlacedPlotBounds({ placements, plots } = {}) {
+  if (!Array.isArray(placements) || placements.length === 0) {
+    throw new TypeError("Placed plot bounds require non-empty placements.");
+  }
+  if (!Array.isArray(plots) || plots.length !== placements.length) {
+    throw new TypeError("Placed plot bounds require one local plot per placement.");
+  }
+  const plotById = new Map();
+  for (const [index, plot] of plots.entries()) {
+    if (!isPlainObject(plot) || typeof plot.id !== "string" || plot.id.length === 0) {
+      throw new TypeError(`Placed plot ${index} requires a non-empty id.`);
+    }
+    if (plotById.has(plot.id)) {
+      throw new Error(`Duplicate placed plot id "${plot.id}".`);
+    }
+    plotById.set(plot.id, validatePlacedBounds(plot, `Placed plot "${plot.id}"`));
+  }
+  const translated = placements.map((placement, index) => {
+    if (
+      !isPlainObject(placement) ||
+      typeof placement.id !== "string" ||
+      placement.id.length === 0
+    ) {
+      throw new TypeError(`Plot placement ${index} requires a non-empty id.`);
+    }
+    validatePlacedBounds(placement, `Plot placement "${placement.id}"`);
+    const plot = plotById.get(placement.id);
+    if (plot === undefined) {
+      throw new Error(`Missing local plot bounds for "${placement.id}".`);
+    }
+    if (
+      plot.x < 0 || plot.y < 0 ||
+      plot.x + plot.width > placement.width ||
+      plot.y + plot.height > placement.height
+    ) {
+      throw new RangeError(
+        `Local plot bounds for "${placement.id}" must fit its placement.`
+      );
+    }
+    plotById.delete(placement.id);
+    return {
+      left: placement.x + plot.x,
+      top: placement.y + plot.y,
+      right: placement.x + plot.x + plot.width,
+      bottom: placement.y + plot.y + plot.height
+    };
+  });
+  if (plotById.size > 0) {
+    throw new Error(`Unknown placed plot id "${plotById.keys().next().value}".`);
+  }
+  const left = Math.min(...translated.map(bounds => bounds.left));
+  const top = Math.min(...translated.map(bounds => bounds.top));
+  const right = Math.max(...translated.map(bounds => bounds.right));
+  const bottom = Math.max(...translated.map(bounds => bounds.bottom));
+  return cloneAndFreeze({
+    x: left,
+    y: top,
+    width: right - left,
+    height: bottom - top
+  });
+}

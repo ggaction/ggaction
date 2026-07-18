@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  alignedTextAnchor,
   alignedTitleAnchor,
   buildTitleReadingBlock,
   layoutBoundsIntersect,
@@ -30,6 +31,9 @@ test("builds deterministic title reading blocks and anchors", () => {
   assert.equal(alignedTitleAnchor(10, 100, 30, "left"), 25);
   assert.equal(alignedTitleAnchor(10, 100, 30, "center"), 60);
   assert.equal(alignedTitleAnchor(10, 100, 30, "right"), 95);
+  assert.equal(alignedTextAnchor(10, 100, "left"), 10);
+  assert.equal(alignedTextAnchor(10, 100, "center"), 60);
+  assert.equal(alignedTextAnchor(10, 100, "right"), 110);
 });
 
 test("resolves rotated component bounds, unions, and strict intersections", () => {

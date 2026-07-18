@@ -293,7 +293,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - `text`: 필수 non-empty string; `subtitle`은 optional non-empty single-line string이다. 첫 contract는 explicit newline을 거부한다.
 - `position`: `"top" | "bottom" | "left" | "right"`; 기본 top. top/bottom rotation은 0, left는
   `-Math.PI / 2`, right는 `Math.PI / 2`다.
-- `align`: `"left" | "center" | "right"`, 기본 left; plot bounds 기준이다.
+- `align`: `"left" | "center" | "right"`, 기본 left; plot bounds 기준이다. Facet parent title은 translated child
+  plot bounds의 union을 사용하며 child margin, axis text/title, composition padding과 shared legend를 제외한다.
 - top/bottom align은 plot의 x start/center/end이고 left/right align은 edge 진행 방향의
   top/center/bottom이다.
 - `offset`: finite number, 기본 `0`; top/bottom은 y, left/right는 x Canvas axis에서 block을 이동한다.
@@ -322,7 +323,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - `position`
   - ✅ Covered: omission→`"top"`, all four positions, rotation, align/offset, invalid value.
 - `align`
-  - ✅ Covered: `"left" | "center" | "right"`, default left and invalid value.
+  - ✅ Covered: `"left" | "center" | "right"`, default left, invalid value, asymmetric unit margins와
+    facet child-plot union.
 - `offset`
   - ✅ Covered: zero/default, positive/negative finite values within layout, non-finite/out-of-layout rejection.
 - `gap`
@@ -332,7 +334,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - ✅ Covered: word/character wrapping, long-token fallback, Unicode, maxWidth dependency, inferred/explicit lineHeight.
 - ✅ Covered: actual occupied-bounds failures, same-edge guide collision, Canvas rematerialization and
   primitive/public exact equivalence.
-- Evidence: `test/unit/actions/guides/title-actions.test.js`.
+- Evidence: `test/unit/actions/guides/title-actions.test.js` and
+  `test/unit/actions/composition/facet.test.js`.
 
 ## `editTitle`
 

@@ -55,6 +55,12 @@ export function alignedTitleAnchor(start, length, blockLength, align) {
   return start + length - blockLength / 2;
 }
 
+export function alignedTextAnchor(start, length, align) {
+  if (align === "left") return start;
+  if (align === "center") return start + length / 2;
+  return start + length;
+}
+
 function axisAlignedTextBounds({ x, y, text, style, align, rotation }) {
   const width = measureTextWidth(text, style);
   const left = align === "left" ? 0 : align === "center" ? -width / 2 : -width;

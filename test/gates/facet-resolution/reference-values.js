@@ -152,14 +152,22 @@ export function createGapminderRegressionFacetValues(rows, {
       }
     };
   });
+  const plot = {
+    x: Math.min(...cells.map(cell => cell.x + bounds.x)),
+    y: Math.min(...cells.map(cell => cell.y + bounds.y)),
+    width: Math.max(...cells.map(cell => cell.x + bounds.x + bounds.width)) -
+      Math.min(...cells.map(cell => cell.x + bounds.x)),
+    height: Math.max(...cells.map(cell => cell.y + bounds.y + bounds.height)) -
+      Math.min(...cells.map(cell => cell.y + bounds.y))
+  };
   return Object.freeze({
     xResolution,
     clusters,
     shared,
     bounds,
+    plot,
     width: layout.width,
     height: layout.height,
     cells
   });
 }
-

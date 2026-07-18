@@ -4169,6 +4169,9 @@ The defaults are:
 
 Alignment uses the plot bounds rather than the full Canvas: left aligns with
 the plot's left edge, center with its midpoint, and right with its right edge.
+For a facet, the alignment span is the union of the translated child plot
+bounds. Child margins, axis labels and titles, facet padding, and shared
+legends do not pull the title away from the visual center of the plots.
 For a left or right title, the same values mean the top, center, and bottom of
 the plot edge. Left titles rotate counter-clockwise and right titles rotate
 clockwise; top and bottom titles remain horizontal.

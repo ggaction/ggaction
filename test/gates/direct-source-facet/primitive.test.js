@@ -20,6 +20,8 @@ test("authors the one-row scatterplot facet with extension primitives", () => {
   assert.equal(program.graphicSpec.objects.canvas.properties.width, 932);
   assert.equal(program.graphicSpec.objects.canvas.properties.height, 282);
   assert.equal(nestedCanvases(program).length, 3);
+  assert.equal(program.graphicSpec.objects.chartTitle.properties.x, 409);
+  assert.equal(program.graphicSpec.objects.chartSubtitle.properties.x, 409);
   assert.deepEqual(
     nestedCanvases(program).map(canvas => [canvas.properties.x, canvas.properties.y]),
     [[0, 52], [266, 52], [532, 52]]
@@ -32,6 +34,8 @@ test("authors the wrapped histogram facet without synthetic empty-bin bars", () 
   const program = createCarsOriginHistogramFacetPrimitives(loadCars());
   assert.equal(program.graphicSpec.objects.canvas.properties.width, 756);
   assert.equal(program.graphicSpec.objects.canvas.properties.height, 578);
+  assert.equal(program.graphicSpec.objects.chartTitle.properties.x, 320);
+  assert.equal(program.graphicSpec.objects.chartSubtitle.properties.x, 320);
   assert.deepEqual(
     nestedCanvases(program).map(canvas => [canvas.properties.x, canvas.properties.y]),
     [[14, 66], [312, 66], [14, 324]]

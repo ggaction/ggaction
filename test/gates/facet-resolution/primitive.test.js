@@ -19,6 +19,8 @@ test("authors both Gate I-A variants through concrete graphical primitives", () 
     assert.equal(program.graphicSpec.objects.canvas.properties.width, 908);
     assert.equal(program.graphicSpec.objects.canvas.properties.height, 588);
     assert.equal(nestedCanvases(program).length, 6);
+    assert.equal(program.graphicSpec.objects.chartTitle.properties.x, 474);
+    assert.equal(program.graphicSpec.objects.chartSubtitle.properties.x, 474);
     assert.deepEqual(
       [...new Set(program.trace.children.map(node => node.op))].sort(),
       ["createGraphics", "editGraphics"]

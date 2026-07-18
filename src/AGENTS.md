@@ -52,6 +52,7 @@ Apply these instructions to library source, public package entry points, and sou
 - Validate library-defined closed vocabularies such as channels and types.
 - Treat user-defined IDs as names: validate their basic form, uniqueness when creating, and existence when referencing rather than checking them against a library vocabulary.
 - Infer layout coordinates from Canvas or plot bounds when possible instead of requiring raw x/y values. Do not make non-overlap a global invariant; individual actions and explicit user options may intentionally produce overlapping graphics.
+- Resolve chart-title alignment against the actual plot bounds, never the full Canvas or a guide-inclusive container. For a facet, use the union of translated child plot bounds and exclude child margins, axis text, composition padding, and shared legends from the alignment span.
 - Do not create placeholder resources for optional content. Create an optional dataset, semantic component, materialization config, graphic, or wrapped trace child only when the option is enabled and the component is semantically applicable with non-empty output; disabling or inapplicability must leave the entire optional branch absent.
 - Validate every mark-specific appearance option against the resolved mark recipe before changing state. Reject inapplicable options with a clear error instead of silently ignoring them or partially applying a highlight.
 

@@ -14,6 +14,8 @@ const GRID_COLOR = "#e2e8f0";
 
 const SCATTER_CELL = Object.freeze({ width: 250, height: 230 });
 const HISTOGRAM_CELL = Object.freeze({ width: 280, height: 240 });
+const SCATTER_PLOT = Object.freeze({ left: 52, right: 234, top: 38, bottom: 182 });
+const HISTOGRAM_PLOT = Object.freeze({ left: 52, right: 262, top: 38, bottom: 190 });
 const TITLE_HEIGHT = 52;
 const LEGEND_GAP = 18;
 const LEGEND_WIDTH = 132;
@@ -163,15 +165,15 @@ function facetLayout({ valueCount, cell, columns, gap = 16, padding = 0 }) {
   });
 }
 
-function titleItems(title, subtitle, width) {
+function titleItems(title, subtitle, x) {
   return Object.freeze([
-    text(title, width / 2, 12, {
+    text(title, x, 12, {
       fontSize: 16,
       fontWeight: 700,
       textAlign: "center",
       textBaseline: "top"
     }),
-    text(subtitle, width / 2, 34, {
+    text(subtitle, x, 34, {
       fontSize: 11,
       fill: "#64748b",
       textAlign: "center",
@@ -181,7 +183,7 @@ function titleItems(title, subtitle, width) {
 }
 
 function scatterCellItems(rows, origin, domains) {
-  const plot = Object.freeze({ left: 52, right: 234, top: 38, bottom: 182 });
+  const plot = SCATTER_PLOT;
   const xTicks = [50, 100, 150, 200];
   const yTicks = [10, 20, 30, 40];
   const items = [
@@ -279,7 +281,7 @@ function histogramStacks(rows, boundaries) {
 }
 
 function histogramCellItems(origin, stacks, domains) {
-  const plot = Object.freeze({ left: 52, right: 262, top: 38, bottom: 190 });
+  const plot = HISTOGRAM_PLOT;
   const yTicks = [0, 20, 40, 60];
   const xTicks = [50, 275, 500];
   const items = [
@@ -427,6 +429,20 @@ export function createDirectFacetGateValues(cars) {
     stacks: series.stacks,
     items: histogramCellItems(series.origin, series.stacks, histogramDomains)
   })));
+  const placedPlotBounds = (cells, plot) => {
+    const left = Math.min(...cells.map(cell => cell.x + plot.left));
+    const top = Math.min(...cells.map(cell => cell.y + plot.top));
+    const right = Math.max(...cells.map(cell => cell.x + plot.right));
+    const bottom = Math.max(...cells.map(cell => cell.y + plot.bottom));
+    return Object.freeze({
+      x: left,
+      y: top,
+      width: right - left,
+      height: bottom - top
+    });
+  };
+  const scatterPlot = placedPlotBounds(scatterCells, SCATTER_PLOT);
+  const histogramPlot = placedPlotBounds(histogramCells, HISTOGRAM_PLOT);
 
   return Object.freeze({
     origins,
@@ -437,10 +453,11 @@ export function createDirectFacetGateValues(cars) {
       width: scatterLayout.width + LEGEND_GAP + LEGEND_WIDTH,
       cells: scatterCells,
       domains: scatterDomains,
+      plot: scatterPlot,
       titleItems: titleItems(
         "Horsepower and Fuel Economy",
         "Faceted by Origin",
-        scatterLayout.width
+        scatterPlot.x + scatterPlot.width / 2
       ),
       legendItems: legendItems(
         scatterLayout.width + LEGEND_GAP,
@@ -454,10 +471,11 @@ export function createDirectFacetGateValues(cars) {
       cells: histogramCells,
       domains: histogramDomains,
       boundaries: histogramBoundariesValue,
+      plot: histogramPlot,
       titleItems: titleItems(
         "Displacement Distribution",
         "Faceted by Origin",
-        histogramLayout.width
+        histogramPlot.x + histogramPlot.width / 2
       ),
       legendItems: legendItems(
         histogramLayout.width + LEGEND_GAP,

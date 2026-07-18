@@ -1,5 +1,10 @@
 import { mapOrdinalValues } from "../grammar/scales.js";
-import { buildTitleReadingBlock } from "../layout/title.js";
+import { resolveGraphicBounds } from "../layout/canvas.js";
+import { resolvePlacedPlotBounds } from "../layout/composition.js";
+import {
+  alignedTextAnchor,
+  buildTitleReadingBlock
+} from "../layout/title.js";
 import { resolveFacetLayout } from "../layout/facets.js";
 import { namespaceGraphicSnapshot } from "./compositionSnapshot.js";
 import {
@@ -159,15 +164,9 @@ function materializeLegend(program, layout) {
   return collection(program, `${program.compositionSpec.id}-legend`, items);
 }
 
-function titleX(layout, align) {
-  if (align === "left") return layout.padding.left;
-  if (align === "right") return layout.gridWidth - layout.padding.right;
-  return layout.gridWidth / 2;
-}
-
-function materializeTitleComponent(program, id, lines, centers, style, layout, top) {
+function materializeTitleComponent(program, id, lines, centers, style, plot, top) {
   if (lines.length === 0) return program;
-  const x = titleX(layout, program.titleConfig.align);
+  const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align);
   const count = lines.length;
   let next = program.createGraphics({
     id,
@@ -191,14 +190,14 @@ function materializeTitleComponent(program, id, lines, centers, style, layout, t
   return next;
 }
 
-function materializeTitle(program, layout, title) {
+function materializeTitle(program, plot, title) {
   let next = materializeTitleComponent(
     program,
     "chartTitle",
     title.block.titleLines,
     title.block.titleCenters,
     title.config.titleStyle,
-    layout,
+    plot,
     title.top
   );
   if (title.block.subtitleLines.length > 0) {
@@ -208,7 +207,7 @@ function materializeTitle(program, layout, title) {
       title.block.subtitleLines,
       title.block.subtitleCenters,
       title.config.subtitleStyle,
-      layout,
+      plot,
       title.top
     );
   }
@@ -234,11 +233,18 @@ export function resolveFacetProgramLayout(program) {
     titleHeight: title.height,
     sharedLegend: spec.facet.guides.legend === "shared"
   });
-  return { layout, title };
+  const plot = resolvePlacedPlotBounds({
+    placements: layout.children,
+    plots: spec.children.map(id => ({
+      id,
+      ...resolveGraphicBounds(program.children[id])
+    }))
+  });
+  return { layout, title, plot };
 }
 
 export function materializeFacetGraphics(program) {
-  const { layout, title } = resolveFacetProgramLayout(program);
+  const { layout, title, plot } = resolveFacetProgramLayout(program);
   const config = facetConfig(program);
   let next = clearCompositionChildren(program);
   if (next.graphicSpec.objects.canvas === undefined) {
@@ -264,7 +270,7 @@ export function materializeFacetGraphics(program) {
   if (program.compositionSpec.facet.guides.legend === "shared") {
     next = materializeLegend(next, layout);
   }
-  if (title.height > 0) next = materializeTitle(next, layout, title);
+  if (title.height > 0) next = materializeTitle(next, plot, title);
   return next._withCanvasConfig({
     margin: ZERO_MARGIN,
     size: { width: "auto", height: "auto" }
