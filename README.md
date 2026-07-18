@@ -1,119 +1,131 @@
 # ggaction
 
-`ggaction` is a JavaScript library for building charts through immutable,
-traceable actions.
+[![npm version](https://img.shields.io/npm/v/ggaction.svg)](https://www.npmjs.com/package/ggaction) [![license](https://img.shields.io/npm/l/ggaction.svg)](./LICENSE) [![documentation](https://img.shields.io/badge/docs-hyeonword.com-2563eb)](https://hyeonword.com/ggaction/)
+
+### A grammar for how charts are made.
+
+Most visualization grammars describe a finished chart. **ggaction** represents chart authoring itself as an immutable, traceable sequence of graphical actions.
+
+Build, inspect, select, and revise charts one meaningful action at a time.
+
+<p align="left">
+  <img src="./docs/assets/images/readme-authoring-sequence.gif" width="960" height="540" loading="eager" alt="A ggaction program progressively creates a scatterplot, adds grouped regression fits and confidence bands, highlights the Japan group across chart layers, and finishes with an R-squared annotation.">
+</p>
+
+Every frame is rendered from an immutable `ChartProgram`. The final R² label is a custom traceable action composed from ggaction's public extension primitives.
+
+```bash
+npm install ggaction
+```
+
+## A grammar of graphical action
+
+Actions are verbs:
+
+`create · transform · encode · edit · select · compose`
+
+Chart resources are nouns:
+
+`data · marks · scales · coordinates · guides`
+
+A `ChartProgram` is the immutable sentence they produce.
+
+The following fragment assumes `cars` is an array of row objects:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: cars })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "Displacement" })
+  .encodeY({ field: "Acceleration" })
+  .encodeColor({ field: "Origin" })
+  .createRegression()
+  .createGuides();
+```
+
+## Why actions?
+
+- **Progressive** — build and revise a chart one meaningful operation at a time.
+- **Traceable** — retain high-level actions and the wrapped actions they invoke.
+- **Materialized** — actions create concrete backend-neutral graphics; rendering does not perform hidden semantic compilation.
+
+## Quick start
+
+```bash
+npm install ggaction
+```
 
 ```javascript
 import { chart, render } from "ggaction";
 
-const cars = [
-  { horsepower: 88, mpg: 27, origin: "USA" },
-  { horsepower: 70, mpg: 36, origin: "Japan" },
-  { horsepower: 110, mpg: 24, origin: "Europe" }
+const observations = [
+  { displacement: 97, acceleration: 14.5, origin: "Japan" },
+  { displacement: 140, acceleration: 15.5, origin: "USA" },
+  { displacement: 86, acceleration: 16.4, origin: "Japan" }
 ];
 
 const program = chart()
   .createCanvas({
     width: 640,
     height: 400,
-    margin: { top: 30, right: 30, bottom: 60, left: 70 }
+    margin: { top: 30, right: 130, bottom: 60, left: 70 }
   })
-  .createData({ values: cars })
+  .createData({ values: observations })
   .createPointMark()
-  .encodeX({ field: "horsepower" })
-  .encodeY({ field: "mpg" })
+  .encodeX({ field: "displacement" })
+  .encodeY({ field: "acceleration" })
   .encodeColor({ field: "origin" })
-  .encodeRadius({ value: 3 })
-  .createGuides({
-    axes: {
-      x: { title: { text: "Horsepower" } },
-      y: { title: { text: "Miles per Gallon" } }
-    }
-  });
+  .encodeRadius({ value: 4 })
+  .createGuides();
 
-render(program, document.querySelector("#chart").getContext("2d"));
+const context = document.querySelector("#chart").getContext("2d");
+render(program, context);
 ```
 
-The renderer reads only fully materialized, backend-neutral graphics. Semantic
-state is never automatically compiled during rendering.
+For the advanced version, follow the [regression recipe](https://hyeonword.com/ggaction/recipes/regression-scatterplot/) or open the [runnable example](./examples/cars-regression-scatterplot/).
 
-> **Status:** `0.0.3` is the current experimental public release. APIs may change
-> before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+## What it supports
 
-## Install
+- Cartesian and polar charts
+- Statistical layers and intervals
+- Faceting and program composition
+- Mark selection and coordinated highlighting
+- Browser Canvas and Node PNG output
+- TypeScript declarations and traceable extension actions
 
-```bash
-npm install ggaction
-```
+See the current [supported features](https://hyeonword.com/ggaction/supported-features/), [tutorials and examples](https://hyeonword.com/ggaction/tutorials/), and [action reference](https://hyeonword.com/ggaction/reference/actions/) for exact coverage. Runnable programs are collected in [`examples/`](./examples/README.md).
 
-The package is ESM-only and supports Node.js 20 or later. The default `ggaction`
-entry works with modern browser build tools and Canvas. `ggaction/png` is
-Node-only and uses a native Canvas dependency.
+## Package entries
+
+The package is ESM-only and requires Node.js 20 or later.
 
 | Entry | Purpose |
 | --- | --- |
 | `ggaction` | Create chart programs and render them to Browser Canvas |
-| `ggaction/extension` | Author wrapped actions and use public low-level primitives |
+| `ggaction/extension` | Author wrapped actions with public low-level primitives |
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
 
-All three entries include TypeScript declarations. See [Getting
-Started](https://hyeonword.com/ggaction/getting-started/) for a complete browser
-setup and [Rendering](https://hyeonword.com/ggaction/api/rendering/) for Node PNG
-output.
+All entries include TypeScript declarations. The default entry is browser-safe; the PNG adapter is Node-only.
 
 ## Documentation
 
-- [npm package](https://www.npmjs.com/package/ggaction)
-- [Getting started](https://hyeonword.com/ggaction/getting-started/)
-- [Cars scatterplot tutorial](https://hyeonword.com/ggaction/tutorials/scatterplot/)
-- [Cars line chart tutorial](https://hyeonword.com/ggaction/tutorials/line-chart/)
-- [Cars histogram tutorial](https://hyeonword.com/ggaction/tutorials/histogram/)
-- [Bar chart tutorial](https://hyeonword.com/ggaction/tutorials/grouped-bar/)
-- [Regression scatterplot tutorial](https://hyeonword.com/ggaction/tutorials/regression-scatterplot/)
-- [Density area chart tutorial](https://hyeonword.com/ggaction/tutorials/density-area/)
-- [Error-bar chart tutorial](https://hyeonword.com/ggaction/tutorials/error-bar/)
-- [Error-band chart tutorial](https://hyeonword.com/ggaction/tutorials/error-band/)
-- [Mark selection and highlighting tutorial](https://hyeonword.com/ggaction/tutorials/mark-selection/)
-- [Box-plot API](https://hyeonword.com/ggaction/api/box-plots/)
-- [Chart concepts](https://hyeonword.com/ggaction/concepts/chart-program/)
-- [Complete action reference](https://hyeonword.com/ggaction/reference/actions/)
-- [Supported features](https://hyeonword.com/ggaction/supported-features/)
-- [Documentation index](https://hyeonword.com/ggaction/)
+- [Getting Started](https://hyeonword.com/ggaction/getting-started/)
+- [Tutorials and Examples](https://hyeonword.com/ggaction/tutorials/)
+- [Action Reference](https://hyeonword.com/ggaction/reference/actions/)
+- [Concepts](https://hyeonword.com/ggaction/concepts/chart-program/)
+- [Supported Features](https://hyeonword.com/ggaction/supported-features/)
 
-The runnable [cars scatterplot](https://github.com/hj-n/ggaction/tree/main/examples/cars-scatterplot/),
-[aggregate line chart](https://github.com/hj-n/ggaction/tree/main/examples/cars-line-chart/), and
-[stacked histogram](https://github.com/hj-n/ggaction/tree/main/examples/cars-histogram/) use `data/cars.json`. The
-[regression scatterplot](https://github.com/hj-n/ggaction/tree/main/examples/cars-regression-scatterplot/) also uses the
-cars data and layers grouped fits with confidence bands. The [grouped bar
-chart](https://github.com/hj-n/ggaction/tree/main/examples/jobs-grouped-bar/) uses `data/jobs.json`. The [density area
-chart](https://github.com/hj-n/ggaction/tree/main/examples/cars-density-area/) derives grouped Acceleration
-distributions from the cars data. The [error-bar chart](https://github.com/hj-n/ggaction/tree/main/examples/cars-error-bar/)
-summarizes mean Acceleration with 95% confidence intervals. The
-[error-band chart](https://github.com/hj-n/ggaction/tree/main/examples/gapminder-error-band/) summarizes grouped
-confidence intervals as closed area paths over time.
-The [box plot](https://github.com/hj-n/ggaction/tree/main/examples/cars-box-plot/) supports vertical or horizontal
-Tukey/min–max ranges, configurable factor and component appearance, and
-optional outlier rendering from categorical and quantitative field pairs.
-The [mark-selection example](https://github.com/hj-n/ggaction/tree/main/examples/mark-selection/) compares grouped point,
-complete stacked-bar, and line-series highlighting through one selector grammar.
-The [program-composition example](https://github.com/hj-n/ggaction/tree/main/examples/program-composition/) combines
-complete child programs, edits their inferred layout, and replaces one stable slot.
-The [facet example](https://github.com/hj-n/ggaction/tree/main/examples/cars-origin-scatterplot-facet/)
-repeats one chart with `.facet({ field: "Origin" })`, channel-level shared or
-independent scales, per-cell or occupied-outer axes, and an optional compatible
-parent-owned legend. Regression, density, interval, and box-derived data are
-recomputed independently inside each cell.
-Complete Cartesian and Polar programs can be nested with `hconcat` and
-`vconcat`; the [cross-feature dashboard](https://github.com/hj-n/ggaction/tree/main/examples/cross-feature-dashboard/)
-shows a Polar child replacement beside a Cartesian facet. Polar sources cannot
-currently be faceted and fail before partial child state is created.
-Completed programs can also be exported through
-[`ggaction/png`](https://hyeonword.com/ggaction/api/rendering/#png-output).
+## Status and development
 
-## Development
+> **Status:** `0.0.3` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ```bash
 npm install
+npm run assets:readme
 npm test
 npm run test:render
+npm run test:docs
 ```
