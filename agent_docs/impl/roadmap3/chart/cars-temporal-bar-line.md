@@ -29,7 +29,10 @@ chart()
   })
   .createTitle({
     text: "Average Acceleration by Model Year",
-    subtitle: "Shared temporal scale for bars and trend"
+    subtitle: "Shared temporal scale for bars and trend",
+    align: "center",
+    titleStyle: { color: "#334155", fontSize: 18, fontWeight: 700 },
+    subtitleStyle: { fontSize: 12 }
   });
 ```
 

@@ -1803,6 +1803,19 @@ const smooth = program.editLineMark({
 });
 ```
 
+To overlay a trend on compatible aggregate bars, add the line after the bar
+encodings. The line infers the shared fields, scales, and aggregate, so no
+second `encodeY` call is needed:
+
+```javascript
+const layered = chart()
+  .createData({ values })
+  .createBarMark({ id: "bars" })
+  .encodeX({ field: "date", fieldType: "temporal" })
+  .encodeY({ field: "value", aggregate: "mean" })
+  .createLineMark({ id: "trend", strokeWidth: 3 });
+```
+
 The accepted curve vocabulary is `linear`, `step`, `step-before`, `step-after`,
 `basis`, `cardinal`, `monotone`, and `natural`. The renderer receives only final
 `M/L/C` commands and never interprets these names.
@@ -2758,8 +2771,10 @@ those graphics.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
   encodings from the current layer, or one unique source on the current dataset.
-- Mark-specific aggregate, bin, stack, and appearance policies are never copied
-  implicitly.
+- A grain-preserving aggregate is inherited when both mark recipes support the
+  same result. For example, a line added after mean bars inherits that mean.
+- Bin, stack, offset, and appearance policies are not copied into a mark recipe
+  that does not support the same final item grain.
 - Only field-based positions compatible with the new mark and existing scale
   type are inherited. Incompatible channels remain unencoded.
 - Passing `data` explicitly starts independent mark assembly and disables
@@ -2857,6 +2872,25 @@ to `2`, opacity defaults to `1`, and curve defaults to `"linear"`. A line begins
 as an empty path collection because later grouping determines series
 cardinality. Complete encodings materialize sorted commands; color and stroke
 dash may regroup them.
+
+When a line is layered immediately after a compatible encoded mark, omitted
+data and positions are inferred. Compatible aggregate grain is inferred too,
+so an aggregate trend over aggregate bars needs no repeated `encodeX` or
+`encodeY` call:
+
+```javascript
+const layered = chart()
+  .createData({ values: cars })
+  .createBarMark({ id: "bars" })
+  .encodeX({ field: "Year", fieldType: "temporal" })
+  .encodeY({ field: "Acceleration", aggregate: "mean" })
+  .createLineMark({ id: "trend", strokeWidth: 3 });
+```
+
+Both layers reference the same x/y scales. The bar owns its bandwidth while
+line vertices use the shared bar centers. Incompatible bin, stack, or offset
+policies are not transferred. Pass `data` explicitly to assemble an independent
+line with explicit encodings and scale IDs.
 
 ### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`
 
@@ -7765,7 +7799,10 @@ createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } 
 
 Create a semantic line mark and empty path collection. Curve defaults to
 `"linear"`; explicit curve and `strokeWidth` values are retained during
-rematerialization. `closed: true` closes each Polar series as a radar path.
+rematerialization. A compatible layered source can provide data, positions,
+shared scales, and a grain-preserving aggregate such as `mean`; bar-only bin,
+stack, and offset policies are not inherited. `closed: true` closes each Polar
+series as a radar path.
 [Marks](../api/marks.md)
 
 ### `editLineMark`

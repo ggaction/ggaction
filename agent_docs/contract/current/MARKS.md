@@ -23,9 +23,11 @@ validation and uniqueness contract.
 
 When `data` is omitted, every ordinary mark family uses one shared layered-inference policy. The current eligible
 layer, otherwise one unique layer on the current dataset, may contribute its coordinate and compatible field-based
-x/y encodings. Datum endpoints and source mark policies such as bin, stack, offset and grouped color layout are not
-copied. The target mark re-resolves its own policy, incompatible field/scale pairs remain absent, and ambiguity is
-an error. Passing `data` explicitly opts into independent assembly and does not inherit position encodings.
+x/y encodings. The target mark re-resolves every candidate against its own position policy. A transform policy is
+copied only when both source and target support the same final grain: an aggregate line layered over an aggregate
+bar may inherit `mean`, while bin, stack, offset and grouped color layout are not copied into an incompatible recipe.
+Incompatible field/scale pairs remain absent, and ambiguity is an error. Passing `data` explicitly opts into
+independent assembly and does not inherit position encodings.
 
 ## `createPointMark`
 
@@ -130,6 +132,9 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
 - Creation-time `stroke`/`opacity`는 wrapped `editLineMark`로 적용해 direct edit과 같은 validation/config를 사용한다.
 - Effect: semantic `line` layer와 길이 0의 path collection을 만든다. x/y encoding이 완성되기
   전에는 path가 없다.
+- Layered aggregate inference: compatible current/unique source가 line과 같은 field, scale, coordinate와
+  aggregate grain을 가지면 `aggregate`까지 저장하고 즉시 materialize한다. Temporal aggregate bar의 center
+  mapping을 공유할 수 있지만 bar-only `stack`, bin과 offset은 상속하지 않는다.
 - Coverage: `test/unit/actions/marks/create-line-mark.test.js`가 default/explicit data,
   empty dataset, invalid width와 conflicts를 검증한다.
 
@@ -154,7 +159,9 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
   - ✅ Covered: omission→false, Polar open/closed paths, one `Z` per series, edit convergence, Cartesian rejection,
     non-linear Polar rejection, reverse scales, resize, grouping, filtering and highlighting rematerialization.
 - Evidence: `test/unit/actions/marks/create-line-mark.test.js`, `test/unit/grammar/curve-commands.test.js`,
-  `test/charts/cars-line-chart/variants/capabilities.test.js`.
+  `test/unit/actions/marks/layered-mark-inference.test.js`,
+  `test/charts/cars-line-chart/variants/capabilities.test.js`, and
+  `test/charts/cars-temporal-bar-line/public.test.js`.
 
 ## `editLineMark`
 

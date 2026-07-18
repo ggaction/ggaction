@@ -39,7 +39,7 @@ test("keeps one generated gallery image for every public chart", async () => {
   const tutorials = read("docs/tutorials/index.md");
   const catalog = read("docs/_data/chart_examples.yml");
 
-  assert.equal(chartImages.length, 21);
+  assert.equal(chartImages.length, 22);
   for (const { id, width, height } of chartImages) {
     assertPng(id, width, height);
     assertThumbnail(id, width, height);

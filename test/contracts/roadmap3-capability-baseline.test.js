@@ -102,7 +102,7 @@ test("inherits only compatible positions from a layered rule", () => {
   assert.equal(point.encoding.y, undefined);
 });
 
-test("captures the current layered bar and line scale-policy conflict", () => {
+test("shares a temporal position scale between compatible bars and lines", () => {
   const layered = canvas()
     .createData({ values: rows })
     .createBarMark({ id: "bars" })
@@ -117,16 +117,13 @@ test("captures the current layered bar and line scale-policy conflict", () => {
       aggregate: "mean"
     })
     .createLineMark({ id: "trend" });
+  const trend = layered.semanticSpec.layers.find(layer => layer.id === "trend");
 
-  assert.throws(
-    () => layered.encodeX({
-      target: "trend",
-      field: "Year",
-      fieldType: "temporal",
-      scale: { id: "x" }
-    }),
-    /temporal bar position scale cannot share a non-bar layout policy/
-  );
+  assert.equal(trend.encoding.x.scale, "x");
+  assert.equal(trend.encoding.y.scale, "y");
+  assert.equal(trend.encoding.y.aggregate, "mean");
+  assert.equal(trend.encoding.y.stack, undefined);
+  assert.ok(layered.graphicSpec.objects.trend.items.length > 0);
 });
 
 test("captures horizontal grouped bars and the implemented palette shorthand", () => {

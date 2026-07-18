@@ -1,5 +1,7 @@
 import { loadCars } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
+import { createCarsTemporalBarLine } from
+  "../../../examples/cars-temporal-bar-line/program.js";
 
 import { createCarsTemporalBarLinePrimitives } from "./primitive.program.js";
 import { createCarsTemporalBarLineValues } from "./reference-values.js";
@@ -27,7 +29,10 @@ export const carsTemporalBarLineTarget = `chart()
   })
   .createTitle({
     text: "Average Acceleration by Model Year",
-    subtitle: "Shared temporal scale for bars and trend"
+    subtitle: "Shared temporal scale for bars and trend",
+    align: "center",
+    titleStyle: { color: "#334155", fontSize: 18, fontWeight: 700 },
+    subtitleStyle: { fontSize: 12 }
   });`;
 
 export const visualVariants = Object.freeze([
@@ -42,6 +47,7 @@ export const visualVariants = Object.freeze([
       capability: "shared-position-scale"
     },
     primitive: () => createCarsTemporalBarLinePrimitives(rows),
+    userFacing: () => createCarsTemporalBarLine(rows),
     width: values.width,
     height: values.height,
     colors: ["#bfdbfe", "#1d4ed8"],

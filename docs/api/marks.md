@@ -82,8 +82,10 @@ those graphics.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
   encodings from the current layer, or one unique source on the current dataset.
-- Mark-specific aggregate, bin, stack, and appearance policies are never copied
-  implicitly.
+- A grain-preserving aggregate is inherited when both mark recipes support the
+  same result. For example, a line added after mean bars inherits that mean.
+- Bin, stack, offset, and appearance policies are not copied into a mark recipe
+  that does not support the same final item grain.
 - Only field-based positions compatible with the new mark and existing scale
   type are inherited. Incompatible channels remain unencoded.
 - Passing `data` explicitly starts independent mark assembly and disables

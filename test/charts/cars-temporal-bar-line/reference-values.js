@@ -124,15 +124,15 @@ export function createCarsTemporalBarLineValues(rows) {
     })),
     axes: {
       x: {
-        line: { x1: bounds.x, y1: baseline, x2: bounds.x + bounds.width, y2: baseline },
+        line: { x1: x.range[0], y1: baseline, x2: x.range[1], y2: baseline },
         ticks: xTicks,
-        title: { x: bounds.x + bounds.width / 2, y: baseline + 50, text: "Year" }
+        title: { x: bounds.x + bounds.width / 2, y: baseline + 42, text: "Year" }
       },
       y: {
-        line: { x1: bounds.x, y1: bounds.y, x2: bounds.x, y2: baseline },
+        line: { x1: bounds.x, y1: baseline, x2: bounds.x, y2: bounds.y },
         ticks: yTicks,
         title: {
-          x: 18,
+          x: 20,
           y: bounds.y + bounds.height / 2,
           text: "Mean acceleration",
           rotation: -Math.PI / 2
@@ -142,7 +142,9 @@ export function createCarsTemporalBarLineValues(rows) {
     title: {
       text: "Average Acceleration by Model Year",
       subtitle: "Shared temporal scale for bars and trend",
-      x: bounds.x + bounds.width / 2
+      x: bounds.x + bounds.width / 2,
+      y: 25,
+      subtitleY: 48
     }
   });
 }

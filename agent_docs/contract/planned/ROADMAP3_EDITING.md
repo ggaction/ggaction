@@ -1,15 +1,7 @@
 # Roadmap 3 Planned Editing contracts
 
-Gate A에서 승인된 Phase 1과 Phase 10 계약이다. 아직 current public behavior가 아니며 runtime, public
-TypeScript와 user documentation에 노출하지 않는다.
-
-## Shared position scale resolution
-
-- Scale identity is separated from mark-specific layout policy so layered bar/line consumers can share semantic
-  position without silently shifting pixels.
-- Shared, independent, explicit and ambiguous cases require exact resolved-coordinate tests.
-- Existing valid single-mark and intentionally independent-scale behavior remains compatible.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 10.
+Gate A에서 승인되었지만 아직 current public behavior가 아닌 Phase 1과 Phase 10 계약이다. Runtime,
+public TypeScript와 user documentation에는 구현된 subset만 노출한다.
 
 ## Cross feature integration
 

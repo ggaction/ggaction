@@ -65,13 +65,40 @@ export function assertMarkAvailable(program, id) {
   }
 }
 
-function inheritedPositionEncoding(encoding) {
+const POSITION_POLICY_PROPERTIES = Object.freeze(["aggregate", "bin", "stack"]);
+const POSITION_POLICY_SUBSETS = Object.freeze([
+  Object.freeze(["aggregate", "bin", "stack"]),
+  Object.freeze(["aggregate", "bin"]),
+  Object.freeze(["aggregate", "stack"]),
+  Object.freeze(["bin", "stack"]),
+  Object.freeze(["aggregate"]),
+  Object.freeze(["bin"]),
+  Object.freeze(["stack"]),
+  Object.freeze([])
+]);
+
+function inheritedPositionEncodings(encoding) {
   if (encoding?.field === undefined) return undefined;
-  return Object.fromEntries(
+  const base = Object.fromEntries(
     ["field", "fieldType", "scale", "title"]
       .filter(property => Object.hasOwn(encoding, property))
       .map(property => [property, encoding[property]])
   );
+  const available = POSITION_POLICY_PROPERTIES.filter(property =>
+    Object.hasOwn(encoding, property)
+  );
+  const seen = new Set();
+  return POSITION_POLICY_SUBSETS.map(properties => ({
+    ...base,
+    ...Object.fromEntries(properties
+      .filter(property => available.includes(property))
+      .map(property => [property, encoding[property]]))
+  })).filter(candidate => {
+    const key = JSON.stringify(candidate);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function scaleSupportsEncoding(program, markType, channel, encoding) {
@@ -97,8 +124,8 @@ export function resolveCompatibleEncodings(program, source, markType) {
     : CARTESIAN_POSITION_CHANNELS;
   const pending = new Map(channels.map(channel => [
     channel,
-    inheritedPositionEncoding(source.encoding?.[channel])
-  ]).filter(([, encoding]) => encoding !== undefined));
+    inheritedPositionEncodings(source.encoding?.[channel])
+  ]).filter(([, encodings]) => encodings !== undefined));
   const candidate = {
     id: "layered-inference",
     data: source.data,
@@ -107,27 +134,31 @@ export function resolveCompatibleEncodings(program, source, markType) {
   };
 
   for (let pass = 0; pass < 2; pass += 1) {
-    for (const [channel, encoding] of pending) {
-      if (!scaleSupportsEncoding(program, markType, channel, encoding)) continue;
-      try {
-        const policy = resolveMarkPositionPolicy({
-          program,
-          layer: candidate,
-          dataset,
-          channel,
-          args: encoding,
-          field: encoding.field,
-          fieldType: encoding.fieldType
-        });
-        candidate.encoding[channel] = {
-          ...encoding,
-          ...Object.fromEntries(
-            Object.entries(policy).filter(([, value]) => value !== undefined)
-          )
-        };
-        pending.delete(channel);
-      } catch {
-        // Another compatible channel may make this policy resolvable next pass.
+    for (const [channel, encodings] of pending) {
+      for (const encoding of encodings) {
+        if (!scaleSupportsEncoding(program, markType, channel, encoding)) continue;
+        try {
+          const policy = resolveMarkPositionPolicy({
+            program,
+            layer: candidate,
+            dataset,
+            channel,
+            args: encoding,
+            field: encoding.field,
+            fieldType: encoding.fieldType
+          });
+          candidate.encoding[channel] = {
+            ...encoding,
+            ...Object.fromEntries(
+              Object.entries(policy).filter(([, value]) => value !== undefined)
+            )
+          };
+          pending.delete(channel);
+          break;
+        } catch {
+          // Try the next target-compatible policy subset. Another channel may
+          // also make a richer subset resolvable on the next pass.
+        }
       }
     }
   }

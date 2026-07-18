@@ -4,6 +4,8 @@ import { createCarsDensityArea } from "./cars-density-area/program.js";
 import { createCarsErrorBarOverlay } from "./cars-error-bar/program.js";
 import { createCarsHistogram } from "./cars-histogram/program.js";
 import { createCarsLineChart } from "./cars-line-chart/program.js";
+import { createCarsTemporalBarLine } from
+  "./cars-temporal-bar-line/program.js";
 import { createCarsRegressionScatterplot } from
   "./cars-regression-scatterplot/program.js";
 import { createCarsScatterplot } from "./cars-scatterplot/program.js";
@@ -227,6 +229,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsLineChart,
     docsGroup: "charts",
     browser: { path: "cars-line-chart/", canvas: "#chart" }
+  }),
+  example({
+    id: "cars-temporal-bar-line",
+    data: "cars",
+    width: 720,
+    height: 440,
+    createProgram: createCarsTemporalBarLine,
+    docsGroup: "charts",
+    browser: { path: "cars-temporal-bar-line/", canvas: "#chart" }
   }),
   example({
     id: "cars-histogram",

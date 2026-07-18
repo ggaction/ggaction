@@ -2082,7 +2082,6 @@
   ],
   "plannedActions": [],
   "plannedCapabilities": [
-    { "id": "shared-position-scale-resolution", "kind": "behavior", "name": "Shared position scale resolution", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "shared-position-scale-resolution" } },
     { "id": "cross-feature-integration", "kind": "composition", "name": "Roadmap 3 cross-feature integration", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "cross-feature-integration" } }
   ],
   "internal": {

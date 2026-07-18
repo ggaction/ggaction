@@ -12,6 +12,10 @@ const plannedContract = readFileSync(new URL(
   "../../agent_docs/contract/planned/ROADMAP3_EDITING.md",
   import.meta.url
 ), "utf8");
+const encodingContract = readFileSync(new URL(
+  "../../agent_docs/contract/current/ENCODINGS.md",
+  import.meta.url
+), "utf8");
 
 const rows = Object.freeze([
   Object.freeze({ angle: "A", radius: 1, group: "one" }),
@@ -47,7 +51,8 @@ test("keeps the Phase 10 integration matrix valid and evidence-addressable", () 
       assert.equal(existsSync(new URL(`../../${entry.evidence}`, import.meta.url)), true);
     }
   }
-  assert.match(plannedContract, /Shared position scale resolution/);
+  assert.doesNotMatch(plannedContract, /Shared position scale resolution/);
+  assert.match(encodingContract, /temporal aggregate bar bandwidth/);
   assert.match(plannedContract, /Cross feature integration/);
 });
 
@@ -85,7 +90,7 @@ test("rejects unsupported Polar facet before changing the source program", () =>
   assert.equal(polar.compositionSpec, undefined);
 });
 
-test("records the current temporal bar-line conflict until Gate K-A approval", () => {
+test("records the approved temporal bar-line shared-scale behavior", () => {
   const values = Object.freeze([
     Object.freeze({ Year: "1970-01-01", Acceleration: 12 }),
     Object.freeze({ Year: "1971-01-01", Acceleration: 15 })
@@ -97,14 +102,12 @@ test("records the current temporal bar-line conflict until Gate K-A approval", (
     .encodeX({ field: "Year", fieldType: "temporal" })
     .encodeY({ field: "Acceleration", aggregate: "mean" })
     .createLineMark({ id: "trend" });
+  const bars = layered.semanticSpec.layers.find(layer => layer.id === "bars");
+  const trend = layered.semanticSpec.layers.find(layer => layer.id === "trend");
 
-  assert.throws(
-    () => layered.encodeY({
-      target: "trend",
-      field: "Acceleration",
-      aggregate: "mean",
-      scale: { id: "y" }
-    }),
-    /temporal bar position scale cannot share a non-bar layout policy/
-  );
+  assert.equal(trend.encoding.x.scale, bars.encoding.x.scale);
+  assert.equal(trend.encoding.y.scale, bars.encoding.y.scale);
+  assert.equal(trend.encoding.y.aggregate, "mean");
+  assert.equal(trend.encoding.y.stack, undefined);
+  assert.equal(layered.graphicSpec.objects.trend.items.length, 1);
 });

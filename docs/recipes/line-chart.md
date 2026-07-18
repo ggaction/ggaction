@@ -49,6 +49,19 @@ const smooth = program.editLineMark({
 });
 ```
 
+To overlay a trend on compatible aggregate bars, add the line after the bar
+encodings. The line infers the shared fields, scales, and aggregate, so no
+second `encodeY` call is needed:
+
+```javascript
+const layered = chart()
+  .createData({ values })
+  .createBarMark({ id: "bars" })
+  .encodeX({ field: "date", fieldType: "temporal" })
+  .encodeY({ field: "value", aggregate: "mean" })
+  .createLineMark({ id: "trend", strokeWidth: 3 });
+```
+
 The accepted curve vocabulary is `linear`, `step`, `step-before`, `step-after`,
 `basis`, `cardinal`, `monotone`, and `natural`. The renderer receives only final
 `M/L/C` commands and never interprets these names.

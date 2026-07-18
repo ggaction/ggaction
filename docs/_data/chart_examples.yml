@@ -64,6 +64,22 @@
   home_order: 2
   tutorial_order: 4
   recipe_order: 2
+- id: temporal-bar-line
+  title: Temporal bar and line
+  image: /assets/images/cars-temporal-bar-line.png
+  alt: Mean car acceleration shown as aligned temporal bars and a trend line
+  width: 1440
+  height: 880
+  thumbnail: /assets/images/cars-temporal-bar-line-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 391
+  caption: One temporal scale shared by aggregate bars and a line.
+  summary: Layer compatible marks without repeating the line position encodings.
+  actions: createBarMark · encodeX · encodeY · createLineMark
+  url: /api/marks/line-area/#line-marks
+  recipe_url: /recipes/line-chart/
+  home_group: essentials
+  home_order: 2.25
 - id: annotation
   title: Annotated scatterplot
   image: /assets/images/annotated-imdb-scatterplot.png

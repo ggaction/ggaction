@@ -5,8 +5,8 @@
 - [x] STEP 1 — Phase 범위, Planned inventory와 baseline matrix 확정
 - [x] STEP 2 — Shared temporal position reference contract
 - [x] STEP 3 — Gate K-A primitive layered chart
-- [ ] STEP 4 — Gate K-A visual approval
-- [ ] STEP 5 — Shared position scale-resolution 구현
+- [x] STEP 4 — Gate K-A visual approval
+- [x] STEP 5 — Shared position scale-resolution 구현
 - [ ] STEP 6 — Polar, facet와 nested composition integration
 - [ ] STEP 7 — Transitive rematerialization matrix
 - [ ] STEP 8 — Gate K-B cross-feature integration approval

@@ -157,7 +157,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| behavior | Shared position scale resolution | accepted | [Open](planned/ROADMAP3_EDITING.md#shared-position-scale-resolution) |
 | composition | Roadmap 3 cross-feature integration | accepted | [Open](planned/ROADMAP3_EDITING.md#cross-feature-integration) |
 
 ## Internal inventories

@@ -32,7 +32,7 @@ test("authors Gate K-A only through semantic and graphic primitives", () => {
 test("aligns every bar center and top with the shared line vertex", () => {
   const program = createCarsTemporalBarLinePrimitives(loadCars());
   const bars = program.graphicSpec.objects.bars.items;
-  const commands = program.graphicSpec.objects.trend.properties.commands;
+  const commands = program.graphicSpec.objects.trend.items[0].properties.commands;
 
   assert.equal(commands.length, bars.length);
   bars.forEach((bar, index) => {

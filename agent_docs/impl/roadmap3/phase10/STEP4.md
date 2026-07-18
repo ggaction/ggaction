@@ -5,8 +5,7 @@
 - [x] Exact target user-facing call chain 준비
 - [x] Primitive source와 alignment evidence 준비
 - [x] High-DPI PNG 준비
-- [ ] 사용자 visual approval
+- [x] 사용자 visual approval
 
-Gate K-A는 hard pause다. Bar center와 line vertex의 shared temporal alignment, missing-year spacing, one-axis
-result를 코드와 이미지로 승인받기 전에는 runtime scale policy, public declarations 또는 Current contract를
-수정하지 않는다.
+Bar center와 line vertex의 shared temporal alignment, missing-year spacing, one-axis result가 승인되었다.
+승인된 call chain은 trend용 `encodeY`를 반복하지 않으며 STEP 5의 public vertical slice 기준이 된다.

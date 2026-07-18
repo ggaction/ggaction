@@ -357,7 +357,10 @@ createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } 
 
 Create a semantic line mark and empty path collection. Curve defaults to
 `"linear"`; explicit curve and `strokeWidth` values are retained during
-rematerialization. `closed: true` closes each Polar series as a radar path.
+rematerialization. A compatible layered source can provide data, positions,
+shared scales, and a grain-preserving aggregate such as `mean`; bar-only bin,
+stack, and offset policies are not inherited. `closed: true` closes each Polar
+series as a radar path.
 [Marks](../api/marks.md)
 
 ### `editLineMark`

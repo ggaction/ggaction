@@ -89,9 +89,17 @@ export function resolveTemporalBarBand(consumers, domain, range, values) {
       consumer.encoding.fieldType === "temporal";
   });
   if (temporalBars.length === 0) return undefined;
-  if (temporalBars.length !== consumers.length) {
+  const temporalFields = new Set(
+    temporalBars.map(consumer => consumer.encoding.field)
+  );
+  const compatibleLines = consumers.filter(consumer =>
+    consumer.layer.mark?.type === "line" &&
+    consumer.encoding.fieldType === "temporal" &&
+    temporalFields.has(consumer.encoding.field)
+  );
+  if (temporalBars.length + compatibleLines.length !== consumers.length) {
     throw new Error(
-      "A temporal bar position scale cannot share a non-bar layout policy."
+      "A temporal bar position scale requires compatible bar or line consumers of one field."
     );
   }
   const ordered = [...new Set(values)].sort((left, right) => left - right);

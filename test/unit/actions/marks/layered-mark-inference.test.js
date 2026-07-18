@@ -144,3 +144,39 @@ test("uses the shared compatible inheritance policy for every ordinary mark", ()
   assert.ok(line.graphicSpec.objects.lineLayer.items.length > 0);
   assert.equal(area.graphicSpec.objects.areaLayer.items.length, 0);
 });
+
+test("inherits a shared mean grain from temporal bars into a line", () => {
+  const source = chart()
+    .createCanvas({ width: 360, height: 260, margin: 40 })
+    .createData({ values: [
+      { year: "2000-01-01", value: 10 },
+      { year: "2000-01-01", value: 14 },
+      { year: "2001-01-01", value: 20 }
+    ] })
+    .createBarMark({ id: "bars" })
+    .encodeX({ field: "year", fieldType: "temporal" })
+    .encodeY({ field: "value", aggregate: "mean" });
+  const layered = source.createLineMark({ id: "trend" });
+  const trend = layered.semanticSpec.layers.find(layer => layer.id === "trend");
+  const bars = layered.graphicSpec.objects.bars.items;
+  const commands = layered.graphicSpec.objects.trend.items[0].properties.commands;
+
+  assert.deepEqual(trend.encoding, {
+    x: { field: "year", fieldType: "temporal", scale: "x" },
+    y: {
+      field: "value",
+      fieldType: "quantitative",
+      scale: "y",
+      aggregate: "mean"
+    }
+  });
+  assert.equal(trend.encoding.y.stack, undefined);
+  assert.equal(commands.length, bars.length);
+  bars.forEach((bar, index) => {
+    assert.ok(Math.abs(
+      bar.properties.x + bar.properties.width / 2 - commands[index].x
+    ) < 1e-9);
+    assert.equal(bar.properties.y, commands[index].y);
+  });
+  assert.equal(source.semanticSpec.layers.some(layer => layer.id === "trend"), false);
+});

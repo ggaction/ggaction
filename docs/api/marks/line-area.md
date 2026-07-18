@@ -28,6 +28,25 @@ as an empty path collection because later grouping determines series
 cardinality. Complete encodings materialize sorted commands; color and stroke
 dash may regroup them.
 
+When a line is layered immediately after a compatible encoded mark, omitted
+data and positions are inferred. Compatible aggregate grain is inferred too,
+so an aggregate trend over aggregate bars needs no repeated `encodeX` or
+`encodeY` call:
+
+```javascript
+const layered = chart()
+  .createData({ values: cars })
+  .createBarMark({ id: "bars" })
+  .encodeX({ field: "Year", fieldType: "temporal" })
+  .encodeY({ field: "Acceleration", aggregate: "mean" })
+  .createLineMark({ id: "trend", strokeWidth: 3 });
+```
+
+Both layers reference the same x/y scales. The bar owns its bandwidth while
+line vertices use the shared bar centers. Incompatible bin, stack, or offset
+policies are not transferred. Pass `data` explicitly to assemble an independent
+line with explicit encodings and scale IDs.
+
 ### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`
 
 ```javascript
