@@ -10,6 +10,7 @@ import {
 import { resolveRuleMode } from "../grammar/rules.js";
 import { findUpstreamTransform } from "./dataProvenance.js";
 import { POSITION_CHANNELS } from "../core/vocabulary.js";
+import { resolveRectMode } from "../grammar/rects.js";
 
 function hasCartesianPositionScales(layer) {
   return (
@@ -136,10 +137,14 @@ export function canMaterializeText(program, layer) {
   if (layer.source !== undefined) {
     const source = findLayer(program, layer.source);
     return source !== undefined &&
-      ["point", "bar", "rule"].includes(source.mark?.type) &&
+      ["point", "bar", "rule", "rect"].includes(source.mark?.type) &&
       Array.isArray(program.graphicSpec.objects[source.id]?.items);
   }
   return hasCartesianPositionScales(layer);
+}
+
+export function canMaterializeRect(_program, layer) {
+  return resolveRectMode(layer) !== undefined;
 }
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
@@ -200,6 +205,18 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
     }),
     rematerializeIncompleteExisting: true,
     sourceDependent: true
+  }),
+  rect: Object.freeze({
+    canMaterialize: canMaterializeRect,
+    op: "rematerializeRectMark",
+    positionEncoding: Object.freeze({ incomplete: "scale", scaleFirst: true }),
+    encoding: Object.freeze({ scaleFirst: true }),
+    scaleApplication: Object.freeze({
+      deferWithMark: true,
+      position: "rematerialize",
+      default: "defer"
+    }),
+    rematerializeIncompleteExisting: true
   })
 });
 

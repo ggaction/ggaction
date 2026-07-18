@@ -80,30 +80,30 @@ export function normalizePointHighlightStyle(args) {
   };
 }
 
-export function normalizeBarHighlightStyle(args) {
+function normalizeRectangularHighlightStyle(args, mark) {
   for (const option of ["shape", "size", "offset", "strokeDash"]) {
     if (args[option] !== undefined) {
-      throw new Error(`Bar highlight does not support ${option}.`);
+      throw new Error(`${mark} highlight does not support ${option}.`);
     }
   }
   if (args.color !== undefined && args.fill !== undefined) {
-    throw new Error("Bar highlight accepts color or fill, not both.");
+    throw new Error(`${mark} highlight accepts color or fill, not both.`);
   }
   const fill = validateNonEmptyString(
     args.fill ?? args.color ?? DEFAULT_COLORS.highlight,
-    "Bar highlight fill"
+    `${mark} highlight fill`
   );
   const opacity = args.opacity === undefined
     ? undefined
-    : validateUnitInterval(args.opacity, "Bar highlight opacity");
+    : validateUnitInterval(args.opacity, `${mark} highlight opacity`);
   const stroke = args.stroke === undefined
     ? undefined
-    : validateNonEmptyString(args.stroke, "Bar highlight stroke");
+    : validateNonEmptyString(args.stroke, `${mark} highlight stroke`);
   const strokeWidth = args.strokeWidth === undefined
     ? undefined
-    : validateNonNegativeFinite(args.strokeWidth, "Bar highlight strokeWidth");
+    : validateNonNegativeFinite(args.strokeWidth, `${mark} highlight strokeWidth`);
   if (strokeWidth !== undefined && stroke === undefined) {
-    throw new Error("Bar highlight strokeWidth requires stroke.");
+    throw new Error(`${mark} highlight strokeWidth requires stroke.`);
   }
   return {
     fill,
@@ -111,6 +111,14 @@ export function normalizeBarHighlightStyle(args) {
     ...(stroke === undefined ? {} : { stroke }),
     ...(strokeWidth === undefined ? {} : { strokeWidth })
   };
+}
+
+export function normalizeBarHighlightStyle(args) {
+  return normalizeRectangularHighlightStyle(args, "Bar");
+}
+
+export function normalizeRectHighlightStyle(args) {
+  return normalizeRectangularHighlightStyle(args, "Rect");
 }
 
 function rejectHighlightOptions(args, mark, options) {

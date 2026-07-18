@@ -2,6 +2,7 @@ import { loadGapminder } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 
 import { createGapminderHeatmapPrimitives } from "./primitive.program.js";
+import { createGapminderLifeExpectancyHeatmap } from "./public.program.js";
 import { createHeatmapReference } from "./reference-values.js";
 
 const gapminder = loadGapminder();
@@ -29,7 +30,13 @@ export const gapminderHeatmapTarget = `chart()
     baseline: "middle"
   })
   .encodeText({ field: "life_expect", format: ".0f" })
-  .createGuides()
+  .createGuides({
+    axes: {
+      x: { title: { text: "Year" } },
+      y: { title: { text: "Country" } }
+    },
+    legend: { title: "Life expectancy" }
+  })
   .createTitle({
     text: "Life Expectancy over Time",
     align: "center"
@@ -47,6 +54,7 @@ export const visualVariants = Object.freeze([
       capability: "rect-heatmap"
     },
     primitive: () => createGapminderHeatmapPrimitives(gapminder),
+    userFacing: () => createGapminderLifeExpectancyHeatmap(gapminder),
     width: values.width,
     height: values.height,
     colors: ["#440154", "#21918d", "#fde725", "#f8fafc", "#0f172a"],

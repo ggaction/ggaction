@@ -35,7 +35,7 @@ type MarkSelector =
   비교하고 missing/incompatible item은 제외한다.
 - `min | max`의 `count` 기본값은 `1`, `ties` 기본값은 `"first"`다. `"first"`는 stable source order로
   정확히 count개를 고르고 `"all"`은 boundary tie를 모두 포함할 수 있다. `groupBy`는 extrema에만 유효하다.
-- `grain` 기본값은 `"item"`이다. Item grain은 point symbol, final bar segment/rectangle, line/area series path,
+- `grain` 기본값은 `"item"`이다. Item grain은 point symbol, final bar segment/rectangle, observed rect cell, line/area series path,
   arc sector, rule line이다. Bar의 `grain: "stack"`은 stack/fill/diverging layout에서 같은 bin/category의 모든 segment를
   한 item으로 묶는다. Group/overlay/ranged bar와 non-bar mark는 stack grain을 거부한다.
 - Bar semantic geometry는 start endpoint `x`/`y`와 end endpoint `x2`/`y2`를 사용한다. Concrete rect는
@@ -70,7 +70,7 @@ type MarkSelector =
 
 ### Formal values — `filterMarks`
 
-- Implemented: `filterMarks({ target?: UserId } & MarkSelector)` for point/bar/line/area/arc/rule item grain and stacked-bar
+- Implemented: `filterMarks({ target?: UserId } & MarkSelector)` for point/bar/rect/line/area/arc/rule item grain and stacked-bar
   grain using field, channel or concrete property with comparison, set, range and grouped/ungrouped rank modes.
 - Proposed (NOT IMPLEMENTED): —.
 

@@ -11,7 +11,7 @@ function isCategoricalTarget(layer) {
       channel => layer.encoding?.[channel]?.scale !== undefined
     );
   }
-  return ["bar", "area", "arc"].includes(layer?.mark?.type) &&
+  return ["bar", "area", "arc", "rect"].includes(layer?.mark?.type) &&
     layer.encoding?.color?.scale !== undefined;
 }
 
@@ -39,7 +39,7 @@ export function resolveTarget(program, requested) {
 export const sameValues = sameOrderedValues;
 
 export function resolveLegendKind(layer, requestedChannels) {
-  if (["bar", "area", "arc"].includes(layer.mark.type)) return "color";
+  if (["bar", "area", "arc", "rect"].includes(layer.mark.type)) return "color";
   if (
     layer.mark.type === "point" &&
     sameValues(requestedChannels, ["color"])

@@ -34,6 +34,13 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
     "chartTitle"
   ],
+  "gapminder-life-expectancy-heatmap": [
+    "canvas", "rect", "text",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorGradientStrips", "colorGradientTicks", "colorGradientLabels",
+    "colorGradientTitle", "chartTitle"
+  ],
   "cars-line-chart": [
     "canvas", "horizontalGridLines", "trends",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

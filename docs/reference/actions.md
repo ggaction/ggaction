@@ -55,6 +55,8 @@ interface ChartProgramActions {
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createRectMark(options?: RectMarkOptions): ChartProgram;
+  editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
@@ -433,6 +435,27 @@ createRuleMark({ id?, data? } = {})
 Create a semantic rule mark and empty line collection. The first omitted ID is
 `"rule"`; data defaults to current data. [Marks](../api/marks.md)
 
+### `createRectMark`
+
+```javascript
+createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+```
+
+Create a semantic rect mark and empty rect collection. Two discrete x/y bands
+or complete x/x2 and y/y2 endpoint pairs materialize observed cells. Rects do
+not infer bar aggregation, baseline, stack, or width semantics.
+[Rect marks](../api/marks/rect.md)
+
+### `editRectMark`
+
+```javascript
+editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit rect appearance and rematerialize complete cells. Constant fill conflicts
+with field-driven color. `stroke: false` disables the outline.
+[Rect marks](../api/marks/rect.md)
+
 ### `createTextMark`
 
 ```javascript
@@ -440,7 +463,7 @@ createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fon
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
-or unique compatible point, bar, or rule layer. `text` is constant-content
+or unique compatible point, bar, rect, or rule layer. `text` is constant-content
 shorthand. [Text marks](../api/marks/text.md)
 
 ### `editTextMark`

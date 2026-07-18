@@ -25,7 +25,7 @@ const STYLE_OPTIONS = Object.freeze([
 const CREATE_OPTIONS = Object.freeze(["id", "data", "text", ...STYLE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
-const SOURCE_TYPES = new Set(["point", "bar", "rule"]);
+const SOURCE_TYPES = new Set(["point", "bar", "rule", "rect"]);
 
 function eligibleSource(program, layer, requestedData) {
   if (
@@ -110,7 +110,7 @@ const createTextMark = action(
         length: 0,
         ...resolveMarkGraphicPlacement(next, { data, markType: "text" })
       })
-      ._withMarkConfig(id, DEFAULT_TEXT_MARK);
+      ._withMarkConfig(id, { ...DEFAULT_TEXT_MARK, fillExplicit: false });
 
     const style = Object.fromEntries(
       STYLE_OPTIONS.filter(option => Object.hasOwn(args, option))
@@ -169,7 +169,15 @@ const editTextMark = action(
     const layer = requireTextLayer(this, args.target, "editTextMark");
     const next = this._withMarkConfig(
       layer.id,
-      normalizeTextMarkConfig(args, this.markConfigs[layer.id] ?? DEFAULT_TEXT_MARK)
+      {
+        ...normalizeTextMarkConfig(
+          args,
+          this.markConfigs[layer.id] ?? DEFAULT_TEXT_MARK
+        ),
+        fillExplicit: Object.hasOwn(args, "fill")
+          ? true
+          : this.markConfigs[layer.id]?.fillExplicit ?? false
+      }
     );
     return canMaterializeText(next, layer)
       ? next.rematerializeTextMark({ id: layer.id })

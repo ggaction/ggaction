@@ -79,7 +79,7 @@ function scaleSupportsEncoding(program, markType, channel, encoding) {
   if (scale === undefined) return false;
   const categorical = ["nominal", "ordinal"].includes(encoding.fieldType);
   if (categorical) {
-    if (markType === "bar") return scale.type === "band";
+    if (["bar", "rect"].includes(markType)) return scale.type === "band";
     if (markType === "arc") return scale.type === "band";
     return ["ordinal", "band", "point"].includes(scale.type);
   }

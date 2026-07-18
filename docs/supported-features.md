@@ -16,16 +16,16 @@ screens.
 
 ### Cartesian charts
 
-| Capability | Scatterplot | Line | Histogram | Bar |
-| --- | --- | --- | --- | --- |
-| Semantic mark | point | line | bar | bar |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair |
-| Nominal color | point fill | series stroke | five bar layouts | five bar layouts |
-| Stroke dash | — | nominal or constant; 4 named styles | — | — |
-| Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width |
-| Automatic guides | linear axes; horizontal grid | UTC time/linear axes; horizontal grid | bin-aligned/linear axes; horizontal grid | ordinal/linear axes; horizontal grid |
-| Legend | point color + shape | categorical | categorical | categorical |
-| Selection/highlight | point | series | final bar | final bar |
+| Capability | Scatterplot | Line | Histogram | Bar | Heatmap / ranged rect |
+| --- | --- | --- | --- | --- | --- |
+| Semantic mark | point | line | bar | bar | rect |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair | two discrete bands or x/x2 + y/y2 ranges |
+| Nominal color | point fill | series stroke | five bar layouts | five bar layouts | cell fill |
+| Stroke dash | — | nominal or constant; 4 named styles | — | — | — |
+| Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width | fill, opacity, outline |
+| Automatic guides | linear axes; horizontal grid | UTC time/linear axes; horizontal grid | bin-aligned/linear axes; horizontal grid | ordinal/linear axes; horizontal grid | discrete/continuous axes and color legend |
+| Legend | point color + shape | categorical | categorical | categorical | categorical or continuous color |
+| Selection/highlight | point | series | final bar | final bar | observed cell |
 
 ### Statistical layers
 
@@ -78,12 +78,12 @@ screens.
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
 | Rendering | Browser Canvas and Node PNG |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
-| Selection | Strict point/bar/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
+| Selection | Strict point/bar/rect/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
 
 ## Current limitations
 
-Transforms beyond the documented filters, regressions, and density derivations,
-as well as facets and interactive legends, are not implemented.
+Transforms beyond the documented filters, regressions, density and interval
+derivations, as well as interactive legends, are not implemented.
 Categorical legends support all four edges; point composite and size legends
 support right and left side layouts.
 Error bars support vertical and horizontal statistical intervals, existing

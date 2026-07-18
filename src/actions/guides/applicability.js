@@ -8,10 +8,14 @@ import {
 } from "../../core/vocabulary.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
-function hasEncoding(program, channel, { scaled = false } = {}) {
+function hasEncoding(program, channel, { scaled = false, grid = false } = {}) {
   return program.semanticSpec.layers.some(layer => {
     const encoding = layer.encoding?.[channel];
-    return scaled ? encoding?.scale !== undefined : encoding !== undefined;
+    if (!scaled && !grid) return encoding !== undefined;
+    if (encoding?.scale === undefined) return false;
+    if (!grid || POLAR_POSITION_CHANNELS.includes(channel)) return true;
+    const type = findSemanticScale(program, encoding.scale)?.type;
+    return type !== undefined && !["ordinal", "band", "point"].includes(type);
   });
 }
 
@@ -21,7 +25,7 @@ function positionalApplicability(program, channels) {
       channel,
       Object.freeze({
         axis: hasEncoding(program, channel),
-        grid: hasEncoding(program, channel, { scaled: true })
+        grid: hasEncoding(program, channel, { grid: true })
       })
     ])
   ));
@@ -43,7 +47,7 @@ export function hasInferableLegend(program) {
       ["color", "strokeDash"].some(
         channel => layer.encoding?.[channel]?.scale !== undefined
       )) ||
-    (["bar", "area", "arc"].includes(layer.mark?.type) &&
+    (["bar", "area", "arc", "rect"].includes(layer.mark?.type) &&
       layer.encoding?.color?.scale !== undefined)
   );
 }

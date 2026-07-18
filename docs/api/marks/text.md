@@ -8,7 +8,7 @@ title: Text Marks
 {% include chart-example.html id="annotation" %}
 
 Text marks turn data values into visible labels. Add one after a compatible point,
-bar, or rule layer and ggaction persists that layer as the annotation source.
+bar, rect, or rule layer and ggaction persists that layer as the annotation source.
 
 ## `createTextMark(options?)`
 
@@ -28,7 +28,7 @@ const annotated = points
 The first omitted ID is `"text"`. When `data` is omitted, the current compatible
 layer—or one unique compatible layer—supplies its dataset, Cartesian position,
 and final visual-item grain. This means aggregate bars receive one label per bar,
-not one label per source row. Pass `data` explicitly to assemble an independent
+while rect labels anchor at cell centers. Pass `data` explicitly to assemble an independent
 text layer with `encodeX` and `encodeY`.
 
 Creation options are `id`, `data`, `text`, `fill`, `opacity`, `fontSize`,

@@ -9,6 +9,8 @@ import { createCarsRegressionScatterplot } from
 import { createCarsScatterplot } from "./cars-scatterplot/program.js";
 import { createAnnotatedImdbScatterplot } from
   "./annotated-imdb-scatterplot/program.js";
+import { createGapminderLifeExpectancyHeatmap } from
+  "./gapminder-life-expectancy-heatmap/program.js";
 import { createCarsOriginScatterplotFacet } from
   "./cars-origin-scatterplot-facet/program.js";
 import { createMatchingPopulationColorBars } from
@@ -90,6 +92,18 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createAnnotatedImdbScatterplot,
     docsGroup: "charts",
     browser: { path: "annotated-imdb-scatterplot/", canvas: "#chart" }
+  }),
+  example({
+    id: "gapminder-life-expectancy-heatmap",
+    data: "gapminder",
+    width: 760,
+    height: 440,
+    createProgram: createGapminderLifeExpectancyHeatmap,
+    docsGroup: "charts",
+    browser: {
+      path: "gapminder-life-expectancy-heatmap/",
+      canvas: "#chart"
+    }
   }),
   example({
     id: "cars-polar-scatterplot",

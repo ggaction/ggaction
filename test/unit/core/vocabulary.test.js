@@ -22,7 +22,7 @@ import {
 
 test("owns the implemented semantic and legend vocabularies in one module", () => {
   assert.deepEqual(MARK_TYPES, [
-    "point", "line", "bar", "area", "arc", "rule", "text"
+    "point", "line", "bar", "area", "arc", "rule", "text", "rect"
   ]);
   assert.deepEqual(CARTESIAN_POSITION_CHANNELS, ["x", "y"]);
   assert.deepEqual(POLAR_POSITION_CHANNELS, ["theta", "radius"]);

@@ -24,7 +24,7 @@ test("authors the Gate J-C heatmap from explicit concrete primitives", () => {
     values.cells.map(cell => cell.label)
   );
   assert.equal(program.graphicSpec.objects.colorGradientStrips.items.length, 60);
-  assert.equal(program.semanticSpec.layers.length, 0);
+  assert.equal(program.semanticSpec.layers.length, 2);
   assert.equal(operations(program.trace).includes("createRectMark"), false);
 });
 
@@ -38,16 +38,15 @@ test("draws cells and labels before axes, legend, and chart title", () => {
   assert.deepEqual(order, [
     "canvas",
     "plot-main",
-    "horizontalGridLines",
     "rect",
     "text",
     "xAxisLine",
-    "yAxisLine",
     "xAxisTicks",
-    "yAxisTicks",
     "xAxisLabels",
-    "yAxisLabels",
     "xAxisTitle",
+    "yAxisLine",
+    "yAxisTicks",
+    "yAxisLabels",
     "yAxisTitle",
     "colorGradientStrips",
     "colorGradientTicks",

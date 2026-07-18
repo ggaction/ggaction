@@ -32,6 +32,10 @@ horizontal bar positions including a binned quantitative bar x
 encoding. `encodeX` also supports ordinal bar categories. Position actions
 establish the Cartesian coordinate and the scale used by later marks and axes.
 
+For rect marks, nominal or ordinal x/y positions resolve full band cells.
+Quantitative or temporal rects require complete x/x2 and y/y2 endpoint pairs;
+partial pairs preserve semantic intent without placeholder graphics.
+
 ```javascript
 program
   .encodeX({ field: "Horsepower" })

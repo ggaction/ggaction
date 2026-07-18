@@ -154,7 +154,11 @@ export function resolvePositionEncoding(program, channel, args, operation) {
           ? { nice: true }
           : { discreteType: "band" }
       : ["ordinal", "nominal"].includes(fieldType)
-        ? { discreteType: layer.mark.type === "arc" ? "band" : "point" }
+        ? {
+            discreteType: ["arc", "rect"].includes(layer.mark.type)
+              ? "band"
+              : "point"
+          }
         : {}
   );
   if (
@@ -183,6 +187,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
         throw new TypeError(`Field "${field}" must contain a finite number at row ${index}.`);
       }
     }
+  } else if (layer.mark.type === "rect") {
+    readScaleField(dataset.values, field, fieldType, { allowUnknown: true });
   } else if (Object.hasOwn(scale, "unknown")) {
     readScaleField(dataset.values, field, fieldType, { allowUnknown: true });
   } else if (fieldType === "temporal") readTemporalField(dataset.values, field);
@@ -191,11 +197,11 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   } else readQuantitativeField(dataset.values, field);
 
   if (
-    layer.mark.type === "bar" &&
+    ["bar", "rect"].includes(layer.mark.type) &&
     ["ordinal", "nominal"].includes(fieldType) &&
     scale.type === "point"
   ) {
-    throw new Error("Categorical bar positions require a band scale.");
+    throw new Error(`Categorical ${layer.mark.type} positions require a band scale.`);
   }
   return {
     target,

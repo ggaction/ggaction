@@ -1,5 +1,6 @@
 import {
   applyBarHighlight,
+  applyRectHighlight,
   applyPathHighlight,
   applyPointHighlight,
   applyRuleHighlight,
@@ -14,6 +15,7 @@ export function registerSelectionActions(ProgramClass) {
   ProgramClass.prototype.selectMarks = selectMarks;
   ProgramClass.prototype.highlightMarks = highlightMarks;
   ProgramClass.prototype.applyBarHighlight = applyBarHighlight;
+  ProgramClass.prototype.applyRectHighlight = applyRectHighlight;
   ProgramClass.prototype.applyPathHighlight = applyPathHighlight;
   ProgramClass.prototype.applyPointHighlight = applyPointHighlight;
   ProgramClass.prototype.applyRuleHighlight = applyRuleHighlight;

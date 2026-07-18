@@ -83,9 +83,9 @@ export function validateSemanticValue(program, parsed, value) {
       if (source === undefined) {
         throw new Error(`Unknown source layer "${value}".`);
       }
-      if (!["point", "bar", "rule"].includes(source.mark?.type)) {
+      if (!["point", "bar", "rule", "rect"].includes(source.mark?.type)) {
         throw new Error(
-          `Layer source "${value}" must be a point, bar, or rule mark.`
+          `Layer source "${value}" must be a point, bar, rule, or rect mark.`
         );
       }
     }

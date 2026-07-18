@@ -2077,13 +2077,11 @@
     { "name": "replaceCompositionChild", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Replaces one child slot", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "replaceCompositionChild" } },
     { "name": "facet", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Creates immutable derived child views", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "facet" } },
     { "name": "editFacetHeaders", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits parent-owned facet headers", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "editFacetHeaders" } }
+    ,{ "name": "createRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editRectMark` and position/color encodings", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "createrectmark" } }
+    ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],
-  "plannedActions": [
-    { "name": "createRectMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } },
-    { "name": "editRectMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } }
-  ],
+  "plannedActions": [],
   "plannedCapabilities": [
-    { "id": "rect-heatmap", "kind": "composition", "name": "Rect heatmap", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } },
     { "id": "shared-position-scale-resolution", "kind": "behavior", "name": "Shared position scale resolution", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "shared-position-scale-resolution" } },
     { "id": "cross-feature-integration", "kind": "composition", "name": "Roadmap 3 cross-feature integration", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "cross-feature-integration" } }
   ],
@@ -2122,6 +2120,7 @@
       "rematerializeOpacityLegend",
       "rematerializePointMark",
       "rematerializeRadialGrid",
+      "rematerializeRectMark",
       "rematerializeRuleMark",
       "rematerializeTextMark",
       "rematerializeScale",
@@ -2163,6 +2162,7 @@
       "createErrorBarCap",
       "createErrorBandBoundary",
       "applyBarHighlight",
+      "applyRectHighlight",
       "applyPathHighlight",
       "applyPointHighlight",
       "applyRuleHighlight",

@@ -42,6 +42,12 @@ function barAnchor(program, source, item) {
 
 function sourceAnchor(program, source, item) {
   if (source.mark.type === "bar") return barAnchor(program, source, item);
+  if (source.mark.type === "rect") {
+    return {
+      x: item.properties.x + item.properties.width / 2,
+      y: item.properties.y + item.properties.height / 2
+    };
+  }
   if (source.mark.type === "rule") {
     return {
       x: item.properties.x2,
@@ -84,6 +90,29 @@ function concreteItem(config, position, value, format) {
   };
 }
 
+function relativeLuminance(color) {
+  if (typeof color !== "string" || !/^#[0-9a-f]{6}$/i.test(color)) {
+    return undefined;
+  }
+  const channels = [1, 3, 5].map(offset =>
+    Number.parseInt(color.slice(offset, offset + 2), 16) / 255
+  ).map(value => value <= 0.04045
+    ? value / 12.92
+    : ((value + 0.055) / 1.055) ** 2.4
+  );
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function sourceTextConfig(config, source, item) {
+  if (source.mark.type !== "rect" || config.fillExplicit === true) return config;
+  const luminance = relativeLuminance(item.properties.fill);
+  if (luminance === undefined) return config;
+  return {
+    ...config,
+    fill: luminance >= 0.26 ? "#0f172a" : "#f8fafc"
+  };
+}
+
 function resolveSourceTextItems(program, layer, config) {
   const source = findLayer(program, layer.source);
   if (source === undefined) {
@@ -92,7 +121,7 @@ function resolveSourceTextItems(program, layer, config) {
   const items = resolveMarkItems(program, source.id);
   return items.flatMap(item => {
     const concrete = concreteItem(
-      config,
+      sourceTextConfig(config, source, item),
       sourceAnchor(program, source, item),
       contentValue(layer.encoding.text, item, source),
       layer.encoding.text.format

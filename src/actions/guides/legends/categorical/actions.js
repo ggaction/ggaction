@@ -232,7 +232,7 @@ export const createLegend = action(
       return this.createOpacityLegend(args);
     }
     const continuousColorCandidates = this.semanticSpec.layers.filter(layer => {
-      const encoding = ["point", "bar"].includes(layer.mark?.type)
+      const encoding = ["point", "bar", "rect"].includes(layer.mark?.type)
         ? layer.encoding?.color
         : undefined;
       const scale = findSemanticScale(this, encoding?.scale);

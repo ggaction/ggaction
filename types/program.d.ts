@@ -767,7 +767,7 @@ export type SecondaryPositionEncodingOptions =
       field: string;
       datum?: never;
       target?: string;
-      fieldType?: "quantitative";
+      fieldType?: "quantitative" | "temporal";
       scale?: { id?: string };
       coordinate?: string;
     };
@@ -1069,6 +1069,19 @@ export interface TextMarkOptions {
 }
 
 export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "text"> {
+  target?: string;
+}
+
+export interface RectMarkOptions {
+  id?: string;
+  data?: string;
+  fill?: string;
+  opacity?: number;
+  stroke?: string | false;
+  strokeWidth?: number;
+}
+
+export interface EditRectMarkOptions extends Omit<RectMarkOptions, "id" | "data"> {
   target?: string;
 }
 
@@ -1553,6 +1566,8 @@ export class ChartProgram {
     stroke?: string;
     strokeWidth?: number;
   }): ChartProgram;
+  createRectMark(options?: RectMarkOptions): ChartProgram;
+  editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;

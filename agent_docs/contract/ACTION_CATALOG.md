@@ -145,19 +145,18 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`replaceCompositionChild`](current/COMPOSITION.md#replaceCompositionChild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`facet`](current/COMPOSITION.md#facet) | composition | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetHeaders`](current/COMPOSITION.md#editFacetHeaders) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRectMark`](current/MARKS.md#createrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRectMark`](current/MARKS.md#editrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `createRectMark` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#rect-heatmap) |
-| `editRectMark` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#rect-heatmap) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| composition | Rect heatmap | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#rect-heatmap) |
 | behavior | Shared position scale resolution | accepted | [Open](planned/ROADMAP3_EDITING.md#shared-position-scale-resolution) |
 | composition | Roadmap 3 cross-feature integration | accepted | [Open](planned/ROADMAP3_EDITING.md#cross-feature-integration) |
 

@@ -9,9 +9,9 @@
 - [x] STEP 5 — Text reference grammar, primitive와 Gate J-B
 - [x] STEP 6 — Text mark, `encodeText`와 focused editing
 - [x] STEP 7 — Annotation public variants와 rematerialization
-- [ ] STEP 8 — Rect reference grammar, primitive와 Gate J-C
-- [ ] STEP 9 — Rect mark와 heatmap public vertical slice
-- [ ] STEP 10 — Cross-capability coverage, docs와 Phase closeout
+- [x] STEP 8 — Rect reference grammar, primitive와 Gate J-C
+- [x] STEP 9 — Rect mark와 heatmap public vertical slice
+- [x] STEP 10 — Cross-capability coverage, docs와 Phase closeout
 
 ## 목표
 

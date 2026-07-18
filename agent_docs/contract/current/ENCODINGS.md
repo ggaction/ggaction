@@ -36,8 +36,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Signature: `encodeX({ field, target?, fieldType?, scale?, coordinate?, aggregate?, bin?, stack? })`
 - `field`: Implemented, dataset에 존재하는 field. 현재 supported mark grain에 맞는 값 type이 필요하다.
 - `target`: Implemented, mark ID. 생략하면 current mark, 아니면 유일한 eligible mark를 추론한다.
-- `fieldType`: Implemented. Point x/y는 quantitative/temporal/ordinal/nominal, line과 area는 아래 canonical
-  compatibility matrix, bar는 quantitative/temporal/ordinal을 mark grain에 맞게 지원한다.
+- `fieldType`: Implemented. Point와 rect x/y는 quantitative/temporal/ordinal/nominal, line과 area는 아래 canonical
+  compatibility matrix, bar는 quantitative/temporal/ordinal을 mark grain에 맞게 지원한다. Rect categorical x/y는
+  band scale cell을 만들고 continuous x는 matching x2와 함께 ranged cell을 완성한다.
 - `scale`: Implemented. 위 shared contract를 사용한다. 기본 ID는 `x`, auto range는 left-to-right plot bounds다.
 - `coordinate`: Implemented, coordinate ID. 생략 시 positional action이 Cartesian `main` coordinate를
   만들거나 existing compatible coordinate를 사용하고 layer에 저장한다.
@@ -65,7 +66,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ### Value coverage — `encodeX`
 
 - `field`, `target`
-  - ✅ Covered: inferred/explicit point, line, bar, area targets; missing field, ambiguous/invalid target.
+  - ✅ Covered: inferred/explicit point, line, bar, rect, area targets; missing field, ambiguous/invalid target.
 - `fieldType`
   - ✅ Covered: point quantitative/temporal/ordinal, line/area current matrix, vertical ordinal/temporal bar,
     horizontal ordinal/temporal bar와 unsupported pair rejection.
@@ -112,7 +113,7 @@ type AggregateOperation =
 ```
 
 - Signature: `encodeY({ field?, target?, fieldType?, scale?, coordinate?, aggregate?, bin?, stack? })`
-- `field`: point/area/line/ordinal-bar에서는 필수 field다. histogram count y는 x field에서 추론한다.
+- `field`: point/area/line/rect/ordinal-bar에서는 필수 field다. histogram count y는 x field에서 추론한다.
 - `target`, `fieldType`, `scale`, `coordinate`: x와 같은 selection/storage contract이다. Continuous y
   auto range는 bottom-to-top, ordinal y band는 top-to-bottom이다.
 - `aggregate`: line과 ordinal bar는 `"count" | "sum" | "mean" | "median" | "min" | "max" |
@@ -260,7 +261,7 @@ type AggregateOperation =
 
 ## `encodeY2`
 
-- Signature: area와 ranged bar는 `encodeY2({ field, target?, fieldType?, scale? })`; rule은
+- Signature: area, ranged bar와 ranged rect는 `encodeY2({ field, target?, fieldType?, scale? })`; rule은
   `encodeY2({ field | datum, target?, fieldType, scale?, coordinate? })`다.
 - Area/ranged-bar `field`는 quantitative upper-bound field다. Bar는 stale aggregate/stack intent를 제거해
   lower/upper endpoints를 one range grain으로 저장한다. Rule은 field/datum 중 정확히 하나를 요구하고 primary y의
@@ -272,7 +273,7 @@ type AggregateOperation =
 
 ### Formal values — `encodeY2`
 
-- Implemented: area/bar `encodeY2({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId } })`; rule `encodeY2(RulePositionAssignment)`.
+- Implemented: area/bar `encodeY2({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId } })`; rect additionally accepts matching `"quantitative" | "temporal"`; rule `encodeY2(RulePositionAssignment)`.
 - Proposed (NOT IMPLEMENTED): —; y2는 y scale 공유를 유지한다.
 
 ### Value coverage — `encodeY2`
@@ -309,12 +310,13 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - x-only/y-only는 plot-bound full span, `x+y+y2`/`y+x+x2`는 vertical/horizontal interval,
   `x+y+x2+y2`는 diagonal interval이다. Field mode는 row당 line 하나, datum-only mode는 line 하나다.
 - Area mode는 existing quantitative x와 같은 scale/coordinate를 공유하며 x/x2 horizontal closed path를
-  rematerialize한다. Ranged bar mode materializes a horizontal rect range. Rule endpoint/style reassignment는
+  rematerialize한다. Ranged bar mode materializes a horizontal rect range. Rect mode는 x/x2와 y/y2가 모두
+  matching quantitative 또는 temporal pair일 때 independent 2D cell을 materialize한다. Rule endpoint/style reassignment는
   wrapped `rematerializeRuleMark`를 실행한다.
 
 ### Formal values — `encodeX2`
 
-- Implemented: `encodeX2(RulePositionAssignment | AreaSecondaryXAssignment)` where the field assignment also accepts a ranged bar.
+- Implemented: `encodeX2(RulePositionAssignment | AreaSecondaryXAssignment)` where the field assignment also accepts a ranged bar and matching quantitative/temporal rect.
 - Planned (NOT IMPLEMENTED): —.
 - Proposed (NOT IMPLEMENTED): field-driven rule stroke width.
 
@@ -564,7 +566,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeColor({ field, target?, fieldType?, layout?, aggregate?, scale? })`
 - `field`: 필수 field. nominal/ordinal은 categorical color contract에, quantitative/temporal은 point에 사용하며
   aggregate bar는 quantitative field를 지원한다.
-- `target`: point, line, bar 또는 area ID; current/unique inference를 지원한다.
+- `target`: point, line, bar, rect 또는 area ID; current/unique inference를 지원한다.
 - `fieldType`: `"nominal" | "ordinal" | "quantitative" | "temporal"`; 기본값은 nominal이다.
   Ordinal은 숫자를 포함한 ordered category를 categorical palette와 first-appearance domain으로 매핑한다.
 - `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외한
@@ -573,7 +575,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `aggregate`: aggregate bar continuous color에서만 사용한다. Color field가 measure field와 같으면 measure
   aggregate를 상속하고, 다른 field는 compatible aggregate를 명시해야 한다. 집계는 최종 category rect
   grain에서 독립적으로 계산한다.
-- `scale`: nominal은 ordinal, continuous point/bar color는 internal sequential scale이다. Quantitative point는
+- `scale`: nominal은 ordinal, continuous point/bar/rect color는 internal sequential scale이다. Quantitative point는
   `quantize | quantile | threshold`도 지원한다. `palette` 또는
   explicit `range` 중 하나를 사용할 수 있다. Palette는
   [`PALETTES.md`](PALETTES.md)의 frozen 68-name vocabulary와 `{ name, count?, extent? }` object를 받는다.
@@ -583,6 +585,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Quantize는 auto 또는 explicit pair를 동일 폭으로 나누고, quantile은 auto 또는 explicit sample에서
   동일 개수에 가까운 class를 만들며, threshold는 strictly increasing explicit domain과 정확히 하나 더
   많은 color를 요구한다. Boundary equality는 upper class에 포함되고 interval legend도 같은 경계를 읽는다.
+- Rect color는 categorical 또는 continuous fill을 final observed cell grain에 적용하며 layout/aggregate를 받지 않는다.
+  Missing color나 incomplete position row는 cell과 automatic domain에서 함께 생략한다.
 - Effect: color semantic, resolved layout과 scale을 저장한다. `group`은 orientation에 따라 wrapped
   `encodeXOffset` 또는 `encodeYOffset`, `fill`은
   wrapped `encodeY({ stack: "normalize" })`, overlay는 non-stacked y, stack/diverging은 zero-stack y를
@@ -599,13 +603,13 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; ordinal supports ordered categorical values including finite numbers, discretized scales require quantitative point color, aggregate is valid only for quantitative aggregate bars, and mark compatibility narrows the categorical layout set.
+- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales require quantitative point color, aggregate is valid only for quantitative aggregate bars, and mark compatibility narrows the categorical layout set.
 - Proposed (NOT IMPLEMENTED): `{ layout?: "center" }`.
 
 ### Value coverage — `encodeColor`
 
 - `field`, `target`
-  - ✅ Covered: point/line/bar/area, inferred/explicit target, missing/invalid nominal values.
+  - ✅ Covered: point/line/bar/rect/area, inferred/explicit target, missing/invalid nominal values.
 - `fieldType`
   - ✅ Covered: nominal, numeric ordinal point/histogram color, quantitative/temporal point color,
     quantitative aggregate-bar color와 invalid alternatives.

@@ -39,13 +39,12 @@ test("records the current and missing Roadmap 3 public surface", () => {
     "createTextMark",
     "editTextMark",
     "encodeText",
+    "createRectMark",
+    "editRectMark",
     "facet",
     "editFacetHeaders"
   ]) {
     assert.equal(typeof program[name], "function", name);
-  }
-  for (const name of ["createRectMark"]) {
-    assert.equal(program[name], undefined, name);
   }
   assert.equal(typeof program.createArcMark, "function");
   assert.equal(typeof ggaction.hconcat, "function");

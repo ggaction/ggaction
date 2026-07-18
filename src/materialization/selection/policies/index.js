@@ -6,6 +6,7 @@ import { barSelectionPolicy } from "./bar.js";
 import { lineSelectionPolicy } from "./line.js";
 import { pointSelectionPolicy } from "./point.js";
 import { ruleSelectionPolicy } from "./rule.js";
+import { rectSelectionPolicy } from "./rect.js";
 
 const POLICIES = Object.freeze({
   arc: arcSelectionPolicy,
@@ -13,7 +14,8 @@ const POLICIES = Object.freeze({
   bar: barSelectionPolicy,
   line: lineSelectionPolicy,
   point: pointSelectionPolicy,
-  rule: ruleSelectionPolicy
+  rule: ruleSelectionPolicy,
+  rect: rectSelectionPolicy
 });
 
 export function findSelectionPolicy(markType) {

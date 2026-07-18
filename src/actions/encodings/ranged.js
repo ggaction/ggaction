@@ -4,6 +4,7 @@ import { isPlainObject } from "../../core/immutable.js";
 import {
   readNominalField,
   readQuantitativeField,
+  readScaleField,
   readTemporalField,
   validateSemanticFieldType
 } from "../../grammar/scales.js";
@@ -85,16 +86,35 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   }
   const fieldType = rule
     ? validateSemanticFieldType(args.fieldType)
-    : args.fieldType ?? "quantitative";
-  if (!rule && fieldType !== "quantitative") {
+    : layer.mark.type === "rect"
+      ? args.fieldType ?? primary.fieldType
+      : args.fieldType ?? "quantitative";
+  if (
+    !rule &&
+    layer.mark.type !== "rect" &&
+    fieldType !== "quantitative"
+  ) {
     throw new Error(`${operation} requires a quantitative field.`);
+  }
+  if (
+    layer.mark.type === "rect" &&
+    !["quantitative", "temporal"].includes(fieldType)
+  ) {
+    throw new Error(`${operation} requires a quantitative or temporal rect field.`);
+  }
+  if (layer.mark.type === "rect" && fieldType !== primary.fieldType) {
+    throw new Error(
+      `${operation} fieldType must match the primary ${primaryChannel} fieldType.`
+    );
   }
   if (rule && fieldType !== primary.fieldType) {
     throw new Error(
       `${operation} fieldType must match the primary ${primaryChannel} fieldType.`
     );
   }
-  if (hasField) validateSecondaryField(dataset, args.field, fieldType);
+  if (hasField && layer.mark.type === "rect") {
+    readScaleField(dataset.values, args.field, fieldType, { allowUnknown: true });
+  } else if (hasField) validateSecondaryField(dataset, args.field, fieldType);
   else normalizeRuleDatum(args.datum, fieldType, channel);
 
   const previous = layer.encoding?.[channel];
@@ -135,7 +155,9 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   if (rule) return next.rematerializeRuleMark({ id: target });
   return layer.mark.type === "bar"
     ? next.rematerializeBarMark({ id: target })
-    : next.rematerializeAreaMark({ id: target });
+    : layer.mark.type === "rect"
+      ? next.rematerializeRectMark({ id: target })
+      : next.rematerializeAreaMark({ id: target });
 }
 
 const encodeX2 = action(
@@ -149,7 +171,7 @@ const encodeX2 = action(
       "x2",
       args,
       "encodeX2",
-      ["area", "rule", "bar"]
+      ["area", "rule", "bar", "rect"]
     );
   }
 );
@@ -165,7 +187,7 @@ const encodeY2 = action(
       "y2",
       args,
       "encodeY2",
-      ["area", "rule", "bar"]
+      ["area", "rule", "bar", "rect"]
     );
   }
 );

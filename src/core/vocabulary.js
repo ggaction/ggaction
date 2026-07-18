@@ -5,7 +5,8 @@ export const MARK_TYPES = Object.freeze([
   "area",
   "arc",
   "rule",
-  "text"
+  "text",
+  "rect"
 ]);
 
 export const MARK_GRAPHIC_TYPES = Object.freeze({
@@ -15,7 +16,8 @@ export const MARK_GRAPHIC_TYPES = Object.freeze({
   area: Object.freeze(["path"]),
   arc: Object.freeze(["path"]),
   rule: Object.freeze(["line"]),
-  text: Object.freeze(["text"])
+  text: Object.freeze(["text"]),
+  rect: Object.freeze(["rect"])
 });
 
 export const ENCODING_CHANNELS = Object.freeze([
@@ -37,7 +39,7 @@ export const ENCODING_CHANNELS = Object.freeze([
 ]);
 
 const CARTESIAN_MARK_TYPES = Object.freeze([
-  "point", "line", "bar", "area", "rule", "text"
+  "point", "line", "bar", "area", "rule", "text", "rect"
 ]);
 const POLAR_MARK_TYPES = Object.freeze(["point", "line", "arc"]);
 
@@ -65,14 +67,14 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
     role: "secondary",
     scaleChannel: "x",
     coordinate: Object.freeze({ id: "main", type: "cartesian" }),
-    markTypes: Object.freeze(["area", "rule"])
+    markTypes: Object.freeze(["area", "rule", "rect"])
   }),
   y2: Object.freeze({
     family: "cartesian",
     role: "secondary",
     scaleChannel: "y",
     coordinate: Object.freeze({ id: "main", type: "cartesian" }),
-    markTypes: Object.freeze(["area", "rule"])
+    markTypes: Object.freeze(["area", "rule", "rect"])
   }),
   xOffset: Object.freeze({
     family: "cartesian",

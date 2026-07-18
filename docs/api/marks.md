@@ -34,6 +34,10 @@ each type infers its ID and current dataset when those choices are unambiguous.
     <strong>Text marks</strong>
     <span>Data labels and annotations attached to points, bars, or rules.</span>
   </a>
+  <a href="./rect/">
+    <strong>Rect marks</strong>
+    <span>Discrete heatmap cells and explicit two-dimensional ranges.</span>
+  </a>
   <a href="./line-area/#arc-marks">
     <strong>Arc marks</strong>
     <span>Donuts, rose overlays, and radial bars with Polar positions.</span>
@@ -51,6 +55,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Bar | `createBarMark` | `editBarMark` | Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
 | Text | `createTextMark` | `editTextMark` | Text collection |
+| Rect | `createRectMark` | `editRectMark` | Rect collection |
 
 Use `removeMark({ target? })` to remove one complete stable mark owner. It also
 removes generated composite children, unreferenced generated datasets, owned
@@ -73,7 +78,7 @@ those graphics.
 
 - `data` defaults to the current dataset.
 - The first omitted mark ID uses the semantic role: `"point"`, `"line"`,
-  `"area"`, `"arc"`, `"bar"`, `"rule"`, or `"text"`.
+  `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, or `"text"`.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
   encodings from the current layer, or one unique source on the current dataset.

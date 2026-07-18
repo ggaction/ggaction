@@ -25,6 +25,7 @@ import { requireSemanticScale } from "../../selectors/scales.js";
 import { isAggregate } from "../../grammar/aggregate.js";
 import { normalizeRuleDatum } from "../../grammar/rules.js";
 import { SCALED_ENCODING_CHANNELS } from "../../core/vocabulary.js";
+import { resolveRectConsumerValues } from "../../materialization/rect.js";
 
 export function findScale(program, id) {
   return requireSemanticScale(program, id);
@@ -65,6 +66,13 @@ export function resolveConsumerValues(program, consumer) {
   }
   const scale = findScale(program, consumer.encoding.scale);
   const allowUnknown = Object.hasOwn(scale, "unknown");
+  if (consumer.layer.mark?.type === "rect") {
+    return resolveRectConsumerValues(
+      consumer.layer,
+      dataset,
+      consumer.channel
+    );
+  }
 
   if (
     ["color", "strokeDash", "xOffset", "yOffset", "shape"].includes(consumer.channel) &&

@@ -369,17 +369,62 @@ an error. Passing `data` explicitly opts into independent assembly and does not 
 - Evidence: `test/unit/actions/marks/create-rule-mark.test.js` and
   `test/charts/cars-error-bar/primitive.test.js`.
 
+## `createRectMark`
+
+- Signature: `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`.
+- The first omitted ID resolves to `"rect"`. Data is explicit or inferred from the current dataset; a newly layered
+  rect may inherit one unique compatible Cartesian source's data, coordinate, and position encodings.
+- Rect is a distinct semantic mark. It materializes either two discrete band positions (`x` and `y`) or two complete
+  continuous endpoint pairs (`x`/`x2` and `y`/`y2`). It never receives bar aggregation, baseline, stacking, or width
+  semantics implicitly. Incomplete position intent remains an empty concrete rect collection.
+- Discrete mode creates one full-band cell for every complete observed row. Ranged mode maps both endpoint pairs and
+  normalizes them into positive concrete bounds. Missing values omit only their own cell and do not extend automatic
+  scale domains. Continuous or categorical `encodeColor` owns field-driven fill.
+- Defaults are theme mark fill, opacity `1`, white stroke, and stroke width `1`. Explicit creation styles delegate to
+  `editRectMark` and are preserved through scale, Canvas, data, selection, and highlight rematerialization.
+
+### Formal values — `createRectMark`
+
+- Implemented: `createRectMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite } = {})`.
+- Proposed (NOT IMPLEMENTED): categorical cell completion and automatic missing-cell placeholders.
+
+### Value coverage — `createRectMark`
+
+- ✅ Covered: deterministic ID/data, discrete and ranged topology, encoding order independence, missing rows, continuous
+  color, rect-source text, selection/highlight, Canvas rendering, exact approved primitive/public/PNG equivalence.
+- Evidence: `test/unit/actions/marks/rect-mark.test.js` and
+  `test/charts/gapminder-life-expectancy-heatmap/`.
+
+## `editRectMark`
+
+- Signature: `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`.
+- At least one property is required. Omitted target resolves only one eligible rect. Omitted properties preserve the
+  immutable mark configuration; `stroke: false` disables the stroke and rejects a simultaneous width.
+- Constant fill and `encodeColor` are mutually exclusive. Complete cells rematerialize immediately; incomplete rects
+  retain the validated style until their position topology becomes complete.
+
+### Formal values — `editRectMark`
+
+- Implemented: `editRectMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRectMark`
+
+- ✅ Covered: inferred target, appearance persistence, disabled stroke, color conflict, invalid values, empty edit,
+  rematerialization, and earlier-program immutability.
+- Evidence: `test/unit/actions/marks/rect-mark.test.js`.
+
 ## `createTextMark`
 
 - Signature: `createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
 - The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
-  the current compatible point, bar, or rule layer, then one unique compatible layer, supplies data, coordinate,
+  the current compatible point, bar, rect, or rule layer, then one unique compatible layer, supplies data, coordinate,
   Cartesian position encodings, and a persisted semantic `source` relation.
 - `text` is a constant-content shorthand for wrapped `encodeText({ value: text })`. Appearance options use wrapped
   `editTextMark`; defaults are theme text fill, opacity `1`, 12px sans-serif normal text, left/alphabetic alignment,
   zero rotation, and zero offsets.
 - Concrete children are backend-neutral text primitives. A source-owned annotation anchors to final point centers,
-  bar measure endpoints, or rule endpoints, so aggregate bars produce one label per final bar rather than one per row.
+  bar measure endpoints, rect centers, or rule endpoints, so aggregate bars produce one label per final bar rather than one per row.
 - Collision avoidance is intentionally not automatic. Authors control filtering, alignment, rotation, `dx`, and `dy`.
 
 ### Formal values — `createTextMark`

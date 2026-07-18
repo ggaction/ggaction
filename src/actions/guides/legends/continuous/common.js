@@ -170,7 +170,7 @@ export function resolveContinuousPoint(program, requested, channel) {
 
 export function resolveContinuousColorLayer(program, requested) {
   const candidates = program.semanticSpec.layers.filter(layer =>
-    ["point", "bar"].includes(layer.mark?.type) &&
+    ["point", "bar", "rect"].includes(layer.mark?.type) &&
     layer.encoding?.color?.scale !== undefined
   );
   const layer = requested === undefined
@@ -182,7 +182,7 @@ export function resolveContinuousColorLayer(program, requested) {
   if (layer === undefined) {
     throw new Error(
       requested === undefined
-        ? "color legend requires one eligible point or bar mark."
+        ? "color legend requires one eligible point, bar, or rect mark."
         : `Unknown color legend target "${requested}".`
     );
   }

@@ -2714,6 +2714,9 @@ each type infers its ID and current dataset when those choices are unambiguous.
     Text marks
     Data labels and annotations attached to points, bars, or rules.
 
+    Rect marks
+    Discrete heatmap cells and explicit two-dimensional ranges.
+
     Arc marks
     Donuts, rose overlays, and radial bars with Polar positions.
 
@@ -2728,6 +2731,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Bar | `createBarMark` | `editBarMark` | Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
 | Text | `createTextMark` | `editTextMark` | Text collection |
+| Rect | `createRectMark` | `editRectMark` | Rect collection |
 
 Use `removeMark({ target? })` to remove one complete stable mark owner. It also
 removes generated composite children, unreferenced generated datasets, owned
@@ -2750,7 +2754,7 @@ those graphics.
 
 - `data` defaults to the current dataset.
 - The first omitted mark ID uses the semantic role: `"point"`, `"line"`,
-  `"area"`, `"arc"`, `"bar"`, `"rule"`, or `"text"`.
+  `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, or `"text"`.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
   encodings from the current layer, or one unique source on the current dataset.
@@ -3069,7 +3073,7 @@ it. Canvas and scale changes recompute all endpoints.
 # Text marks
 
 Text marks turn data values into visible labels. Add one after a compatible point,
-bar, or rule layer and ggaction persists that layer as the annotation source.
+bar, rect, or rule layer and ggaction persists that layer as the annotation source.
 
 ## `createTextMark(options?)`
 
@@ -3089,7 +3093,7 @@ const annotated = points
 The first omitted ID is `"text"`. When `data` is omitted, the current compatible
 layer—or one unique compatible layer—supplies its dataset, Cartesian position,
 and final visual-item grain. This means aggregate bars receive one label per bar,
-not one label per source row. Pass `data` explicitly to assemble an independent
+while rect labels anchor at cell centers. Pass `data` explicitly to assemble an independent
 text layer with `encodeX` and `encodeY`.
 
 Creation options are `id`, `data`, `text`, `fill`, `opacity`, `fontSize`,
@@ -3130,6 +3134,76 @@ collision avoidance; use filtering and explicit offsets for dense charts.
 [Point marks](./point.md) · [Bar marks](./bar.md) · [Rule marks](./rule.md) ·
 [Encodings](../encodings.md)
 
+<!-- Source: /api/marks/rect/ -->
+
+# Rect Marks
+
+Rect marks represent independent two-dimensional cells. They are distinct from
+bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
+
+## `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+
+```javascript
+const program = chart()
+  .createCanvas({ width: 640, height: 400, margin: 60 })
+  .createData({ values: rows })
+  .createRectMark()
+  .encodeX({ field: "year", fieldType: "ordinal" })
+  .encodeY({ field: "country", fieldType: "nominal" })
+  .encodeColor({
+    field: "life_expect",
+    fieldType: "quantitative",
+    scale: { type: "sequential", palette: "viridis" }
+  });
+```
+
+The first omitted ID is `"rect"`, and data defaults to the current dataset.
+Two discrete x/y encodings create one full-band cell for each complete observed
+row. Missing category combinations are not synthesized.
+
+Ranged rects use complete continuous endpoint pairs:
+
+```javascript
+program
+  .encodeX({ field: "xStart" })
+  .encodeX2({ field: "xEnd", fieldType: "quantitative" })
+  .encodeY({ field: "yStart" })
+  .encodeY2({ field: "yEnd", fieldType: "quantitative" });
+```
+
+Until one supported topology is complete, semantic intent is retained and the
+rect collection stays empty. Missing endpoint or color values omit only their
+row. `encodeColor` accepts categorical and continuous color scales.
+
+## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`
+
+```javascript
+const outlined = program.editRectMark({
+  opacity: 0.9,
+  stroke: "#f8fafc",
+  strokeWidth: 1.5
+});
+```
+
+The target is inferred when exactly one rect is eligible. Constant `fill`
+cannot be combined with a field-driven color encoding. Use `stroke: false` to
+remove the outline; a simultaneous `strokeWidth` is invalid.
+
+## Cell labels and selection
+
+Calling `createTextMark()` after a complete rect inherits its data and x/y
+positions. Labels anchor at cell centers, and an omitted text fill resolves to
+light or dark text for a realized six-digit hex cell color. Other fill syntaxes
+retain the normal text default, and an explicit text fill always
+wins. `selectMarks`, `filterMarks`, and `highlightMarks` operate on final
+observed cells at item grain.
+
+## Related
+
+[Position encodings](../position-encodings.md) ·
+[Series and color encodings](../series-encodings.md) ·
+[Text marks](./text.md)
+
 <!-- Source: /api/encodings/ -->
 
 # Encodings
@@ -3158,6 +3232,10 @@ positions, temporal/aggregate line positions, or compatible vertical and
 horizontal bar positions including a binned quantitative bar x
 encoding. `encodeX` also supports ordinal bar categories. Position actions
 establish the Cartesian coordinate and the scale used by later marks and axes.
+
+For rect marks, nominal or ordinal x/y positions resolve full band cells.
+Quantitative or temporal rects require complete x/x2 and y/y2 endpoint pairs;
+partial pairs preserve semantic intent without placeholder graphics.
 
 ```javascript
 program
@@ -7248,16 +7326,16 @@ screens.
 
 ### Cartesian charts
 
-| Capability | Scatterplot | Line | Histogram | Bar |
-| --- | --- | --- | --- | --- |
-| Semantic mark | point | line | bar | bar |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair |
-| Nominal color | point fill | series stroke | five bar layouts | five bar layouts |
-| Stroke dash | — | nominal or constant; 4 named styles | — | — |
-| Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width |
-| Automatic guides | linear axes; horizontal grid | UTC time/linear axes; horizontal grid | bin-aligned/linear axes; horizontal grid | ordinal/linear axes; horizontal grid |
-| Legend | point color + shape | categorical | categorical | categorical |
-| Selection/highlight | point | series | final bar | final bar |
+| Capability | Scatterplot | Line | Histogram | Bar | Heatmap / ranged rect |
+| --- | --- | --- | --- | --- | --- |
+| Semantic mark | point | line | bar | bar | rect |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair | two discrete bands or x/x2 + y/y2 ranges |
+| Nominal color | point fill | series stroke | five bar layouts | five bar layouts | cell fill |
+| Stroke dash | — | nominal or constant; 4 named styles | — | — | — |
+| Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width | fill, opacity, outline |
+| Automatic guides | linear axes; horizontal grid | UTC time/linear axes; horizontal grid | bin-aligned/linear axes; horizontal grid | ordinal/linear axes; horizontal grid | discrete/continuous axes and color legend |
+| Legend | point color + shape | categorical | categorical | categorical | categorical or continuous color |
+| Selection/highlight | point | series | final bar | final bar | observed cell |
 
 ### Statistical layers
 
@@ -7310,12 +7388,12 @@ screens.
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
 | Rendering | Browser Canvas and Node PNG |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
-| Selection | Strict point/bar/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
+| Selection | Strict point/bar/rect/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
 
 ## Current limitations
 
-Transforms beyond the documented filters, regressions, and density derivations,
-as well as facets and interactive legends, are not implemented.
+Transforms beyond the documented filters, regressions, density and interval
+derivations, as well as interactive legends, are not implemented.
 Categorical legends support all four edges; point composite and size legends
 support right and left side layouts.
 Error bars support vertical and horizontal statistical intervals, existing
@@ -7386,6 +7464,8 @@ interface ChartProgramActions {
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createRectMark(options?: RectMarkOptions): ChartProgram;
+  editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
@@ -7763,6 +7843,27 @@ createRuleMark({ id?, data? } = {})
 Create a semantic rule mark and empty line collection. The first omitted ID is
 `"rule"`; data defaults to current data. [Marks](../api/marks.md)
 
+### `createRectMark`
+
+```javascript
+createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+```
+
+Create a semantic rect mark and empty rect collection. Two discrete x/y bands
+or complete x/x2 and y/y2 endpoint pairs materialize observed cells. Rects do
+not infer bar aggregation, baseline, stack, or width semantics.
+[Rect marks](../api/marks/rect.md)
+
+### `editRectMark`
+
+```javascript
+editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit rect appearance and rematerialize complete cells. Constant fill conflicts
+with field-driven color. `stroke: false` disables the outline.
+[Rect marks](../api/marks/rect.md)
+
 ### `createTextMark`
 
 ```javascript
@@ -7770,7 +7871,7 @@ createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fon
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
-or unique compatible point, bar, or rule layer. `text` is constant-content
+or unique compatible point, bar, rect, or rule layer. `text` is constant-content
 shorthand. [Text marks](../api/marks/text.md)
 
 ### `editTextMark`

@@ -117,31 +117,42 @@ export const applyPointHighlight = action(
   }
 );
 
+function applyRectangularHighlight(program, args, operation, markType) {
+  validateKeys(args, INTERNAL_SELECTION_OPTIONS, operation);
+  const resolved = resolveStoredSelection(program, args.selection);
+  const keys = selectedKeys(args, resolved);
+  if (resolved.items[0]?.markType !== markType && resolved.items.length > 0) {
+    throw new Error(`${operation} requires a ${markType} selection.`);
+  }
+  if (keys.length === 0) return program;
+  const selected = new Set(keys);
+  const graphic = program.graphicSpec.objects[resolved.definition.target];
+  const keyByGraphic = new Map(resolved.items.flatMap(item =>
+    item.graphicIds.map(id => [id, item.key])
+  ));
+  return program.editGraphics({
+    target: resolved.definition.target,
+    property: "items",
+    value: graphic.items.map(child => ({
+      type: child.type ?? graphic.type,
+      properties: selected.has(keyByGraphic.get(child.id))
+        ? { ...child.properties, ...args.style }
+        : child.properties
+    }))
+  });
+}
+
 export const applyBarHighlight = action(
   { op: "applyBarHighlight", description: "Apply selected bar appearance." },
   function (args = {}) {
-    validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyBarHighlight");
-    const resolved = resolveStoredSelection(this, args.selection);
-    const keys = selectedKeys(args, resolved);
-    if (resolved.items[0]?.markType !== "bar" && resolved.items.length > 0) {
-      throw new Error("applyBarHighlight requires a bar selection.");
-    }
-    if (keys.length === 0) return this;
-    const selected = new Set(keys);
-    const graphic = this.graphicSpec.objects[resolved.definition.target];
-    const keyByGraphic = new Map(resolved.items.flatMap(item =>
-      item.graphicIds.map(id => [id, item.key])
-    ));
-    return this.editGraphics({
-      target: resolved.definition.target,
-      property: "items",
-      value: graphic.items.map(child => ({
-        type: child.type ?? graphic.type,
-        properties: selected.has(keyByGraphic.get(child.id))
-          ? { ...child.properties, ...args.style }
-          : child.properties
-      }))
-    });
+    return applyRectangularHighlight(this, args, "applyBarHighlight", "bar");
+  }
+);
+
+export const applyRectHighlight = action(
+  { op: "applyRectHighlight", description: "Apply selected rect appearance." },
+  function (args = {}) {
+    return applyRectangularHighlight(this, args, "applyRectHighlight", "rect");
   }
 );
 

@@ -51,15 +51,13 @@ function resolveColorScaleOptions(args) {
 
 function assertNoConstantColor(program, layer) {
   const config = program.markConfigs[layer.id];
-  const hasConstant = layer.mark.type === "point"
-    ? config?.fill !== undefined
-    : layer.mark.type === "line"
-      ? config?.stroke !== undefined
-      : layer.mark.type === "bar"
-        ? config?.barAppearance?.fill !== undefined
-        : layer.mark.type === "arc"
-          ? config?.fill !== undefined
-        : false;
+  const hasConstant = {
+    point: config?.fill !== undefined,
+    line: config?.stroke !== undefined,
+    bar: config?.barAppearance?.fill !== undefined,
+    arc: config?.fill !== undefined,
+    rect: config?.fillExplicit === true
+  }[layer.mark.type] ?? false;
   if (hasConstant) {
     throw new Error(
       `encodeColor cannot replace constant appearance on ${layer.mark.type} mark "${layer.id}".`
@@ -98,7 +96,7 @@ function resolveColorLayout(layer, requested, barGrain) {
         : undefined
   );
 
-  if (["point", "line"].includes(layer.mark.type) && layout !== undefined) {
+  if (["point", "line", "rect"].includes(layer.mark.type) && layout !== undefined) {
     throw new Error(`Color layout is not supported for ${layer.mark.type} marks.`);
   }
   if (layer.mark.type === "area" && layout === "group") {
@@ -209,7 +207,7 @@ function encodeContinuousColor(program, args) {
   const { id: target, dataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point", "bar"],
+    ["point", "bar", "rect"],
     "continuous color mark"
   );
   assertNoConstantColor(program, layer);
@@ -236,9 +234,9 @@ function encodeContinuousColor(program, args) {
     );
   }
   let aggregate;
-  if (layer.mark.type === "point") {
+  if (["point", "rect"].includes(layer.mark.type)) {
     if (args.aggregate !== undefined) {
-      throw new Error("Point continuous color does not support aggregate.");
+      throw new Error(`${layer.mark.type} continuous color does not support aggregate.`);
     }
   } else {
     if (args.fieldType !== "quantitative") {
@@ -263,7 +261,11 @@ function encodeContinuousColor(program, args) {
     validateAggregateFieldType(aggregate, args.fieldType);
     validateAggregateFieldValues(dataset.values, args.field, args.fieldType);
   }
-  if (Object.hasOwn(scale, "unknown")) {
+  if (layer.mark.type === "rect") {
+    readScaleField(dataset.values, args.field, args.fieldType, {
+      allowUnknown: true
+    });
+  } else if (Object.hasOwn(scale, "unknown")) {
     readScaleField(dataset.values, args.field, args.fieldType, {
       allowUnknown: true
     });
@@ -323,7 +325,7 @@ const encodeColor = action(
     const { id: target, dataset, layer } = resolveTarget(
       this,
       args.target,
-      ["point", "line", "bar", "area", "arc"],
+      ["point", "line", "bar", "area", "arc", "rect"],
       "color mark"
     );
     assertNoConstantColor(this, layer);
@@ -355,7 +357,11 @@ const encodeColor = action(
         "Categorical color scale unknown currently requires a row-owned point mark."
       );
     }
-    if (Object.hasOwn(scale, "unknown")) {
+    if (layer.mark.type === "rect") {
+      readScaleField(dataset.values, args.field, fieldType, {
+        allowUnknown: true
+      });
+    } else if (Object.hasOwn(scale, "unknown")) {
       readScaleField(dataset.values, args.field, fieldType, {
         allowUnknown: true
       });

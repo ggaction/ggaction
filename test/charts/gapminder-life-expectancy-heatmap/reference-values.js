@@ -1,15 +1,10 @@
-export const HEATMAP_COUNTRIES = Object.freeze([
-  "Afghanistan",
-  "Brazil",
-  "China",
-  "India",
-  "Japan",
-  "United States"
-]);
+import {
+  HEATMAP_COUNTRIES,
+  HEATMAP_YEARS,
+  selectHeatmapRows
+} from "../../../examples/gapminder-life-expectancy-heatmap/program.js";
 
-export const HEATMAP_YEARS = Object.freeze([
-  1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005
-]);
+export { HEATMAP_COUNTRIES, HEATMAP_YEARS };
 
 export const HEATMAP_LAYOUT = Object.freeze({
   width: 760,
@@ -60,19 +55,25 @@ function sampleViridis(amount) {
   return interpolate(VIRIDIS[lower], VIRIDIS[upper], position - lower);
 }
 
+function contrastTextColor(color) {
+  const channels = [1, 3, 5].map(offset =>
+    Number.parseInt(color.slice(offset, offset + 2), 16) / 255
+  ).map(value => value <= 0.04045
+    ? value / 12.92
+    : ((value + 0.055) / 1.055) ** 2.4
+  );
+  const luminance = 0.2126 * channels[0] +
+    0.7152 * channels[1] +
+    0.0722 * channels[2];
+  return luminance >= 0.26 ? "#0f172a" : "#f8fafc";
+}
+
 function key(country, year) {
   return `${country}\u0000${year}`;
 }
 
 function selectedRows(gapminder) {
-  if (!Array.isArray(gapminder)) {
-    throw new TypeError("gapminder must be an array.");
-  }
-  const rows = gapminder.filter(row =>
-    HEATMAP_COUNTRIES.includes(row?.country) &&
-    HEATMAP_YEARS.includes(row?.year) &&
-    Number.isFinite(row?.life_expect)
-  );
+  const rows = selectHeatmapRows(gapminder);
   const identities = new Set();
   for (const row of rows) {
     const identity = key(row.country, row.year);
@@ -157,18 +158,19 @@ export function createHeatmapReference(gapminder) {
       const row = byCell.get(key(country, year));
       if (row === undefined) continue;
       const amount = mapLinear(row.life_expect, colorDomain, [0, 1]);
+      const fill = sampleViridis(amount);
       cells.push({
         key: key(country, year),
         country,
         year,
         value: row.life_expect,
-        x: bounds.left + yearIndex * xStep,
-        y: bounds.top + countryIndex * yStep,
+        x: bounds.left + xStep * (yearIndex + 0.5) - xStep / 2,
+        y: bounds.top + yStep * (countryIndex + 0.5) - yStep / 2,
         width: xStep,
         height: yStep,
-        fill: sampleViridis(amount),
+        fill,
         label: String(Math.round(row.life_expect)),
-        labelFill: amount < 0.55 ? "#f8fafc" : "#0f172a"
+        labelFill: contrastTextColor(fill)
       });
     }
   }

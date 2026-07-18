@@ -79,6 +79,21 @@
   url: /api/marks/text/
   home_group: essentials
   home_order: 1.5
+- id: heatmap
+  title: Life expectancy heatmap
+  image: /assets/images/gapminder-life-expectancy-heatmap.png
+  alt: Heatmap of life expectancy by country and year with values inside colored cells
+  width: 1520
+  height: 880
+  thumbnail: /assets/images/gapminder-life-expectancy-heatmap-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 371
+  caption: Observed discrete cells with continuous color and centered labels.
+  summary: Map two discrete fields to cells and a quantitative field to color.
+  actions: createRectMark · encodeX · encodeY · encodeColor
+  url: /api/marks/rect/
+  home_group: essentials
+  home_order: 2.5
 - id: bar
   title: Bar chart
   image: /assets/images/jobs-grouped-bar.png

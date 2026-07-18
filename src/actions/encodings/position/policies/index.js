@@ -14,7 +14,8 @@ const POSITION_POLICIES = Object.freeze({
   line: resolveLinePositionPolicy,
   point: resolvePointPositionPolicy,
   rule: resolveRulePositionPolicy,
-  text: resolvePointPositionPolicy
+  text: resolvePointPositionPolicy,
+  rect: resolvePointPositionPolicy
 });
 
 export function resolveMarkPositionPolicy(context) {

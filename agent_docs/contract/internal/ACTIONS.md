@@ -42,6 +42,7 @@ domain action을 통해서만 실행한다.
 | `rematerializeMarkHighlights` | owning mark rematerializer reapplication of stored highlight assignments |
 | `rematerializeOpacityLegend` | field-opacity legend, scale, and Canvas actions |
 | `rematerializePointMark` | point mark and encoding actions |
+| `rematerializeRectMark` | rect mark and position/color encoding actions |
 | `rematerializeRuleMark` | rule mark, endpoint, appearance, scale, and Canvas actions |
 | `rematerializeScale` | scale-owning encoding and Canvas actions |
 | `rematerializeSizeLegend` | point size legend, scale, and Canvas actions |
@@ -97,6 +98,7 @@ primitive edits로 저장하기 위해 호출하는 internal wrapped state trans
 | `createErrorBandBoundary` | `createErrorBand`, `editErrorBandBoundary` | compose one namespaced lower or upper line boundary from ordinary mark and encoding actions |
 | `applyPointHighlight` | `highlightMarks` | replace selected point child geometry and appearance from one stored selection |
 | `applyBarHighlight` | `highlightMarks` | replace appearance on every rect attached to selected bar item or stack keys |
+| `applyRectHighlight` | `highlightMarks` | replace appearance on selected observed rect cells |
 | `applyPathHighlight` | `highlightMarks` | replace selected line/area path appearance and translate path commands |
 | `dimUnselectedMarkItems` | `highlightMarks` | assign complement opacity without changing selected children |
 | `placeSelectedMarkItemsLast` | `highlightMarks` | place selected collection children after their complement |
