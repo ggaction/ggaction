@@ -319,7 +319,7 @@ test("keeps tutorial action flows aligned with public examples", () => {
   }
 });
 
-test("links every public chart example from entry documentation", () => {
+test("routes entry documentation to the canonical example indexes", () => {
   const readme = read("README.md");
   const gettingStarted = read("docs/getting-started.md");
   const catalog = chartExampleCatalog();
@@ -337,9 +337,11 @@ test("links every public chart example from entry documentation", () => {
     "mark-selection",
     "program-composition"
   ]) {
-    assert.match(readme, new RegExp(`examples/${name}`));
     assert.match(gettingStarted, new RegExp(`examples/${name}`));
   }
+  assert.match(readme, /\.\/examples\/README\.md/);
+  assert.match(readme, /\/tutorials\//);
+  assert.match(readme, /examples\/cars-regression-scatterplot/);
   assert.equal(
     [...catalog.values()].filter(example => example.tutorial_order).length,
     12

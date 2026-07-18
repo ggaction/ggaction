@@ -55,6 +55,7 @@
     "test:docs:browser": "node scripts/test-built-docs.js _site",
     "test:coverage": "node scripts/run-tests.js coverage",
     "test:render": "node test/support/artifacts.js && node scripts/run-tests.js render && node scripts/generate-roadmap-gallery.js && node scripts/test-roadmap-gallery.js",
+    "assets:readme": "node scripts/generate-readme-demo.js",
     "artifacts:gallery": "node scripts/generate-roadmap-gallery.js",
     "artifacts:gallery:test": "node scripts/test-roadmap-gallery.js",
     "docs:images": "node scripts/generate-doc-images.js",
@@ -84,6 +85,7 @@
   },
   "devDependencies": {
     "es-module-lexer": "^1.7.0",
+    "gifenc": "^1.0.3",
     "playwright": "^1.61.1",
     "typescript": "^7.0.2"
   }
