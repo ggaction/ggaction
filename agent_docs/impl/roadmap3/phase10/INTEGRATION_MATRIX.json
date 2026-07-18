@@ -47,9 +47,9 @@
     {
       "id": "transitive-child-rematerialization",
       "capability": "cross-feature-integration",
-      "status": "audit-pending",
+      "status": "current-pass",
       "expected": "Child revisions refresh every affected composition ancestor.",
-      "evidence": null
+      "evidence": "test/contracts/roadmap3-phase10-baseline.test.js"
     },
     {
       "id": "release-surface-parity",

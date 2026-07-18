@@ -34,6 +34,22 @@ function polarProgram() {
     .encodeRadius({ value: 3 });
 }
 
+function polarLegendProgram() {
+  return chart()
+    .createCanvas({
+      width: 260,
+      height: 220,
+      margin: { top: 20, right: 80, bottom: 20, left: 20 }
+    })
+    .createData({ values: rows })
+    .createPointMark()
+    .encodeTheta({ field: "angle", fieldType: "nominal" })
+    .encodeR({ field: "radius" })
+    .encodeColor({ field: "group" })
+    .encodePointRadius({ value: 4 })
+    .createGuides({ axes: false, grid: false, legend: { position: "right" } });
+}
+
 test("keeps the Phase 10 integration matrix valid and evidence-addressable", () => {
   const matrix = JSON.parse(readFileSync(matrixUrl, "utf8"));
   const statuses = new Set([
@@ -110,4 +126,63 @@ test("records the approved temporal bar-line shared-scale behavior", () => {
   assert.equal(trend.encoding.y.aggregate, "mean");
   assert.equal(trend.encoding.y.stack, undefined);
   assert.equal(layered.graphicSpec.objects.trend.items.length, 1);
+});
+
+test("propagates an immutable Polar child revision through explicit ancestor replacement", () => {
+  const polar = polarLegendProgram();
+  const peer = polarLegendProgram();
+  const inner = hconcat({
+    id: "inner",
+    programs: [
+      { id: "polar", program: polar },
+      { id: "peer", program: peer }
+    ]
+  });
+  const outer = vconcat({
+    id: "outer",
+    programs: [
+      { id: "inner", program: inner },
+      { id: "footer", program: peer }
+    ]
+  });
+  const revisedPolar = polar
+    .filterMarks({ field: "group", op: "eq", value: "one" })
+    .highlightMarks({
+      select: { field: "radius", op: "max" },
+      color: "#dc2626",
+      size: 6,
+      dimOthers: { opacity: 0.2 }
+    })
+    .editCanvas({ width: 320 })
+    .editScale({ id: "radius", reverse: true });
+  const revisedInner = inner.replaceCompositionChild({
+    target: "polar",
+    program: revisedPolar
+  });
+  const revisedOuter = outer.replaceCompositionChild({
+    target: "inner",
+    program: revisedInner
+  });
+
+  assert.equal(revisedOuter.children.inner, revisedInner);
+  assert.equal(revisedOuter.children.inner.children.polar, revisedPolar);
+  assert.deepEqual(revisedOuter.graphicSpec.objects.canvas.properties, {
+    width: 596,
+    height: 456,
+    background: "white"
+  });
+  assert.deepEqual(outer.graphicSpec.objects.canvas.properties, {
+    width: 536,
+    height: 456,
+    background: "white"
+  });
+  assert.equal(
+    revisedPolar.graphicSpec.objects.seriesLegendSymbols.items.length,
+    1
+  );
+  assert.equal(revisedPolar.graphicSpec.objects.point.items.length, 2);
+  assert.equal(polar.graphicSpec.objects.seriesLegendSymbols.items.length, 2);
+  assert.equal(polar.graphicSpec.objects.point.items.length, 4);
+  assert.equal(inner.children.polar, polar);
+  assert.equal(outer.children.inner, inner);
 });
