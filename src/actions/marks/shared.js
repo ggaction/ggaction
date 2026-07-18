@@ -167,6 +167,7 @@ export function resolveLayeredMarkInheritance(program, requested = {}, markType)
       (source.encoding?.x?.stack !== undefined && source.encoding.x.stack !== null) ||
       (source.encoding?.y?.stack !== undefined && source.encoding.y.stack !== null) ||
       source.encoding?.xOffset !== undefined ||
+      source.encoding?.yOffset !== undefined ||
       source.encoding?.color?.layout !== undefined
     )
   ) {

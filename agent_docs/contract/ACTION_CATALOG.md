@@ -40,6 +40,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`encodeR`](current/ENCODINGS.md#encoder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodePointRadius`](current/ENCODINGS.md#encodepointradius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeXOffset`](current/ENCODINGS.md#encodexoffset) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeYOffset`](current/ENCODINGS.md#encodeyoffset) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeY2`](current/ENCODINGS.md#encodey2) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeYRange`](current/ENCODINGS.md#encodeyrange) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeXRange`](current/ENCODINGS.md#encodexrange) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -146,7 +147,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `encodeYOffset` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#directional-offset) |
 | `createTextMark` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#text-annotation) |
 | `encodeText` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#text-annotation) |
 | `editTextMark` | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#text-annotation) |
@@ -157,7 +157,6 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| composition | Horizontal grouped bar | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#directional-offset) |
 | composition | Text annotation | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#text-annotation) |
 | composition | Rect heatmap | accepted | [Open](planned/ROADMAP3_DIRECTIONAL_MARKS.md#rect-heatmap) |
 | behavior | Shared position scale resolution | accepted | [Open](planned/ROADMAP3_EDITING.md#shared-position-scale-resolution) |

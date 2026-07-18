@@ -474,7 +474,7 @@ semantic rule  → line collection
 현재 schema가 다루는 주요 channel은 다음과 같다.
 
 ```text
-position       x, y, x2, y2, xOffset
+position       x, y, x2, y2, xOffset, yOffset
 polar position theta, radius
 appearance     color, strokeDash, size, shape, opacity
 grouping       group
@@ -507,15 +507,15 @@ materializationConfigs.marks.points.opacity = 0.27;
 graphicSpec.objects.points.items[0].properties.opacity = 0.27;
 ```
 
-Grouped bar의 width mode와 xOffset padding도 semantic scale에 중복 저장하지 않는다.
+Grouped bar의 width mode와 directional offset padding도 semantic scale에 중복 저장하지 않는다.
 `materializationConfigs.marks[target].barWidth`는 mutually exclusive band/pixel intent를,
-`materializationConfigs.marks[target].xOffset`은 inner/outer padding intent를 소유한다. Scale
-materializer는 shared xOffset consumer의 padding policy와 parent bandwidth가 일치하는지 검증한 뒤
+`materializationConfigs.marks[target].xOffset | yOffset`은 inner/outer padding intent를 소유한다. Scale
+materializer는 shared offset consumer의 padding policy와 parent bandwidth가 일치하는지 검증한 뒤
 signed step, start와 concrete bandwidth를 `resolvedScales`에 계산한다.
 
 `group`은 path를 series로 나누는 semantic channel이지만 scale이나 guide를 만들지
-않는다. `y2`는 area upper bound이며 기존 y scale을 정확히 공유한다. `xOffset`은 ordinal
-x band 안의 grouped-bar sub-band를 표현한다. Primary positional encoding의 optional `title`은
+않는다. `y2`는 area upper bound이며 기존 y scale을 정확히 공유한다. `xOffset`과 `yOffset`은 ordinal
+category band 안의 grouped-bar sub-band를 표현한다. Primary positional encoding의 optional `title`은
 field 또는 transform provenance에서 추론되는 guide title을 명시적으로 덮어쓰는 semantic text다.
 Guide materializer는 이 값을 가장 먼저 읽으며 renderer가 title을 다시 추론하지 않는다.
 
@@ -544,7 +544,7 @@ domain/range의 concrete value contract만 제공한다.
 Category position은 width가 필요한 bar에서 `band`, center만 필요한 point/rule에서 `point`를 사용하고
 appearance/offset lookup은 `ordinal`이 소유한다. Band/point는 signed step, aligned start와 각각 positive/zero
 bandwidth를 resolved state에 저장한다. Channel default ID는 일반적으로
-`x`, `y`, `color`, `size`, `shape`, `strokeDash`, `xOffset`처럼 channel 이름을 쓴다.
+`x`, `y`, `color`, `size`, `shape`, `strokeDash`, `xOffset`, `yOffset`처럼 channel 이름을 쓴다.
 독립 scale이 필요할 때 명시적 ID를 제공한다.
 
 같은 scale ID를 참조하는 consumer는 domain과 range를 공유한다. 현재 하나의 scale은
@@ -567,7 +567,7 @@ grammar를 사용한다.
 
 Scale `unknown`은 domain member가 아니라 mapping fallback이다. 현재 row-owned point item의 x/y/color/size/
 shape/opacity만 지원하며 concrete channel value를 먼저 검증한다. Missing/invalid input과 explicit ordinal
-domain 밖의 input이 fallback으로 간다. Compound path, aggregate bar, rule, xOffset와 strokeDash처럼 한 input이
+domain 밖의 input이 fallback으로 간다. Compound path, aggregate bar, rule, offset과 strokeDash처럼 한 input이
 final item topology와 일대일 대응하지 않는 grain은 fallback을 적용하지 않고 명시적으로 거부한다. Direct
 unattached scale은 channel을 모르므로 fallback validation을 consumer attachment까지 지연한다.
 
@@ -748,7 +748,7 @@ resolvedScales.x = {
 ```
 
 Ordinal positional scale은 domain/range 외에 step과 bandwidth 같은 geometry를 가질 수
-있다. `xOffset`은 parent x bandwidth를 읽어 sub-band를 만든다. Color, dash, shape,
+있다. `xOffset`과 `yOffset`은 각각 parent x/y bandwidth를 읽어 sub-band를 만든다. Color, dash, shape,
 size scale은 concrete palette 또는 range를 저장한다.
 
 `resolvedScales`는 renderer input이 아니다. Action materializer가 concrete mark와 guide
@@ -928,7 +928,7 @@ default를 사용한다.
 createCoordinate
 createScale
 createDerivedData / createIntervalData
-encodeXRange / encodeYRange / encodeXOffset / encodeGroup
+encodeXRange / encodeYRange / encodeXOffset / encodeYOffset / encodeGroup
 createXAxis / createYAxis
 axis line, tick, label, title component actions
 directional grid actions
@@ -1232,7 +1232,8 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 ### Bar
 
 - Histogram은 binned x, count y, zero stack이 함께 있어야 한다.
-- Grouped bar는 ordinal x, supported aggregate y, null stack, xOffset group과 bar width가 필요하다.
+- Grouped bar는 한 discrete category axis, perpendicular aggregate measure axis, null stack,
+  orientation에 맞는 xOffset/yOffset group과 bar width가 필요하다.
 - final grouping grain에서 aggregate하고 observed cell만 rect로 만든다.
 - Missing categorical combination을 자동으로 zero rect로 합성하지 않는다.
 

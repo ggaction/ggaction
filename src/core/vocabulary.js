@@ -22,6 +22,7 @@ export const ENCODING_CHANNELS = Object.freeze([
   "x2",
   "y2",
   "xOffset",
+  "yOffset",
   "theta",
   "radius",
   "color",
@@ -77,6 +78,13 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
     coordinate: Object.freeze({ id: "main", type: "cartesian" }),
     markTypes: Object.freeze(["bar"])
   }),
+  yOffset: Object.freeze({
+    family: "cartesian",
+    role: "offset",
+    scaleChannel: "yOffset",
+    coordinate: Object.freeze({ id: "main", type: "cartesian" }),
+    markTypes: Object.freeze(["bar"])
+  }),
   theta: Object.freeze({
     family: "polar",
     role: "primary",
@@ -105,6 +113,12 @@ export const POSITION_ENCODING_CHANNELS = Object.freeze(
   Object.keys(POSITION_CHANNEL_DEFINITIONS)
 );
 
+export const OFFSET_POSITION_CHANNELS = Object.freeze(
+  POSITION_ENCODING_CHANNELS.filter(channel =>
+    POSITION_CHANNEL_DEFINITIONS[channel].role === "offset"
+  )
+);
+
 export const CARTESIAN_POSITION_CHANNELS = Object.freeze(
   POSITION_ENCODING_CHANNELS.filter(channel =>
     POSITION_CHANNEL_DEFINITIONS[channel].family === "cartesian" &&
@@ -128,6 +142,7 @@ export const FACET_SCALE_CHANNELS = Object.freeze([
   "x",
   "y",
   "xOffset",
+  "yOffset",
   "color",
   "size",
   "shape",

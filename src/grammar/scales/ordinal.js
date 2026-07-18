@@ -151,11 +151,14 @@ export function resolveOrdinalOffsetScale({
   range,
   parentBandwidth,
   paddingInner = 0,
-  paddingOuter = 0
+  paddingOuter = 0,
+  channel = "xOffset"
 }) {
   const resolvedDomain = resolveOrdinalDomain(domain, values);
   if (!Number.isFinite(parentBandwidth) || parentBandwidth <= 0) {
-    throw new Error("Automatic xOffset range requires a positive x bandwidth.");
+    throw new Error(
+      `Automatic ${channel} range requires a positive ${channel[0]} bandwidth.`
+    );
   }
   const resolvedRange = range === "auto"
     ? validatePair([0, parentBandwidth], "Offset scale range")

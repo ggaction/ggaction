@@ -10,6 +10,7 @@ import {
   BAR_GRAINS,
   inferBarColorLayout,
   resolveBarChannels,
+  resolveBarOffsetChannel,
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
 import { validateColorLayout } from "../../grammar/seriesLayout.js";
@@ -20,6 +21,7 @@ import {
 } from "../../grammar/aggregate.js";
 import {
   resolveColorScaleDefinition,
+  resolveOffsetScaleDefinition,
   resolveQuantitativeColorScaleDefinition
 } from "../scales/definitions.js";
 import {
@@ -141,16 +143,15 @@ function applyColorLayoutCompanion(
       : "zero";
   let next = program;
   if (layout === "group") {
-    if (channels?.orientation === "horizontal") {
-      throw new Error('Horizontal bars do not support color layout "group" until yOffset is available.');
-    }
-    next = next.encodeXOffset({
+    const offsetChannel = resolveBarOffsetChannel(layer);
+    const method = offsetChannel === "xOffset" ? "encodeXOffset" : "encodeYOffset";
+    next = next[method]({
       field,
       target,
       scale: {
-        ...(layer.encoding?.xOffset?.scale === undefined
+        ...(layer.encoding?.[offsetChannel]?.scale === undefined
           ? {}
-          : { id: layer.encoding.xOffset.scale }),
+          : { id: layer.encoding[offsetChannel].scale }),
         domain: scale.domain
       }
     });
@@ -162,6 +163,40 @@ function applyColorLayoutCompanion(
     ...(measure.aggregate === undefined ? {} : { aggregate: measure.aggregate }),
     stack
   });
+}
+
+function preSynchronizeGroupedOffset(
+  program,
+  { target, layer, layout, field, fieldType, scale, requestedScale }
+) {
+  if (
+    layer.mark.type !== "bar" ||
+    layout !== "group" ||
+    layer.encoding?.color?.scale !== scale.id ||
+    !Object.keys(requestedScale).some(key => key !== "id")
+  ) {
+    return program;
+  }
+  const offsetChannel = resolveBarOffsetChannel(layer);
+  const offset = layer.encoding?.[offsetChannel];
+  if (offset?.scale === undefined) return program;
+  const offsetScale = resolveOffsetScaleDefinition(program, {
+    id: offset.scale,
+    domain: scale.domain
+  }, offsetChannel);
+  return program
+    .editSemantic({
+      property: `layer[${target}].encoding.${offsetChannel}.field`,
+      value: field
+    })
+    .editSemantic({
+      property: `layer[${target}].encoding.${offsetChannel}.fieldType`,
+      value: fieldType
+    })
+    .editSemantic({
+      property: `scale[${offsetScale.id}].domain`,
+      value: offsetScale.domain
+    });
 }
 
 function encodeContinuousColor(program, args) {
@@ -347,6 +382,15 @@ const encodeColor = action(
         value: layout
       });
     }
+    next = preSynchronizeGroupedOffset(next, {
+      target,
+      layer,
+      layout,
+      field: args.field,
+      fieldType,
+      scale,
+      requestedScale
+    });
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: layer.encoding?.color?.scale === scale.id
     });

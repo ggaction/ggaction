@@ -43,20 +43,24 @@ export function createHorizontalGroupedBarPrimitives(rows) {
     })
     .editGraphics({ target: "verticalGridLines", property: "stroke", value: "#e2e8f0" })
     .editGraphics({ target: "verticalGridLines", property: "strokeWidth", value: 1 })
-    .editGraphics({ target: "verticalGridLines", property: "opacity", value: 1 })
+    .editGraphics({
+      target: "verticalGridLines",
+      property: "strokeDash",
+      value: values.grid.map(() => [])
+    })
     .createGraphics({
-      id: "bars",
+      id: "bar",
       parent: "plot-main",
       type: "rect",
       length: values.rects.length
     })
-    .editGraphics({ target: "bars", property: "x", value: values.rects.map(rect => rect.x) })
-    .editGraphics({ target: "bars", property: "y", value: values.rects.map(rect => rect.y) })
-    .editGraphics({ target: "bars", property: "width", value: values.rects.map(rect => rect.width) })
-    .editGraphics({ target: "bars", property: "height", value: values.rects.map(rect => rect.height) })
-    .editGraphics({ target: "bars", property: "fill", value: values.rects.map(rect => rect.fill) })
-    .editGraphics({ target: "bars", property: "stroke", value: "white" })
-    .editGraphics({ target: "bars", property: "strokeWidth", value: 0.5 })
+    .editGraphics({ target: "bar", property: "x", value: values.rects.map(rect => rect.x) })
+    .editGraphics({ target: "bar", property: "y", value: values.rects.map(rect => rect.y) })
+    .editGraphics({ target: "bar", property: "width", value: values.rects.map(rect => rect.width) })
+    .editGraphics({ target: "bar", property: "height", value: values.rects.map(rect => rect.height) })
+    .editGraphics({ target: "bar", property: "fill", value: values.rects.map(rect => rect.fill) })
+    .editGraphics({ target: "bar", property: "stroke", value: "white" })
+    .editGraphics({ target: "bar", property: "strokeWidth", value: 0.5 })
     .createGraphics({ id: "xAxisLine", parent: "plot-main", type: "line" })
     .editGraphics({ target: "xAxisLine", property: "x1", value: xAxis.line.x1 })
     .editGraphics({ target: "xAxisLine", property: "y1", value: xAxis.line.y1 })
@@ -91,6 +95,7 @@ export function createHorizontalGroupedBarPrimitives(rows) {
     .editGraphics({ target: "xAxisTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "xAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "xAxisTitle", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "xAxisTitle", property: "rotation", value: 0 })
     .createGraphics({ id: "yAxisLine", parent: "plot-main", type: "line" })
     .editGraphics({ target: "yAxisLine", property: "x1", value: yAxis.line.x1 })
     .editGraphics({ target: "yAxisLine", property: "y1", value: yAxis.line.y1 })
@@ -110,7 +115,7 @@ export function createHorizontalGroupedBarPrimitives(rows) {
     .editGraphics({ target: "yAxisLabels", property: "y", value: yPositions })
     .editGraphics({ target: "yAxisLabels", property: "text", value: yAxis.ticks.map(tick => tick.label) })
     .editGraphics({ target: "yAxisLabels", property: "fill", value: "#334155" })
-    .editGraphics({ target: "yAxisLabels", property: "fontSize", value: 11 })
+    .editGraphics({ target: "yAxisLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "yAxisLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "yAxisLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "yAxisLabels", property: "textAlign", value: "right" })

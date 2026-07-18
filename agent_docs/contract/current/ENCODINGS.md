@@ -7,7 +7,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - `id`: Implemented. user-defined scale ID; 생략하면 channel 이름(`x`, `y`, `color`, `size`,
-  `shape`, `strokeDash`, `xOffset`)을 사용한다.
+  `shape`, `strokeDash`, `xOffset`, `yOffset`)을 사용한다.
 - `type`: Implemented. compatible quantitative position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; nominal color/shape/dash/offset은
   `ordinal`, continuous point/aggregate-bar color는 `sequential`, quantitative point color는 추가로
   `quantize | quantile | threshold`, size는 `linear`만 허용한다.
@@ -26,7 +26,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `paddingInner`, `paddingOuter`, `padding`, `align`: Implemented for type-compatible band/point position.
 - `unknown`: Implemented for row-owned point `x`, `y`, `color`, `size`, `shape`, `opacity`. Missing/invalid input과
   explicit ordinal domain 밖의 값에 channel-valid concrete fallback을 사용하며 scale domain에는 추가하지 않는다.
-  Compound path/bar/area/rule, xOffset와 strokeDash에서는 topology-safe fallback contract가 없어 거부한다.
+  Compound path/bar/area/rule, offset과 strokeDash에서는 topology-safe fallback contract가 없어 거부한다.
 - Direct `createScale`/`editScale`은 complete current scale vocabulary를 노출한다. Encoding attachment가
   field type, channel, mark grain과 existing consumers에 맞는 subset을 검증한다.
 - Proposed: —
@@ -202,10 +202,10 @@ type AggregateOperation =
 ## `encodeXOffset`
 
 - Signature: `encodeXOffset({ field, target?, fieldType?, scale?, paddingInner?, paddingOuter? })`
-- `field`: nominal grouping field. complete histogram 또는 ordinal aggregate bar에 허용된다. Existing grouped
+- `field`: categorical grouping field. complete histogram 또는 ordinal aggregate bar에 허용된다. Existing grouped
   color가 있으면 같은 field만 직접 설정할 수 있고 field 교체는 atomic `encodeColor`가 소유한다.
 - `target`: optional eligible bar ID.
-- `fieldType`: 유일한 값 `"nominal"`, 기본값도 nominal이다.
+- `fieldType`: `"nominal" | "ordinal"`; 기본값은 nominal이다.
 - `scale`: ordinal scale contract; 기본 ID `xOffset`, domain은 grouping order, range는 parent x band다.
 - `paddingInner`: finite `[0, 1)`, sibling slot 사이의 step fraction. 기본값은 `0`이다.
 - `paddingOuter`: non-negative finite, 첫/마지막 slot 바깥의 step fraction. 기본값은 `0`이다.
@@ -216,7 +216,7 @@ type AggregateOperation =
 
 ### Formal values — `encodeXOffset`
 
-- Implemented: `encodeXOffset({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: NumericRange }; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite })`
+- Implemented: `encodeXOffset({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: NumericRange }; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -225,7 +225,7 @@ type AggregateOperation =
 - `field`, `target`
   - ✅ Covered: nominal grouping field, explicit/inferred eligible grouped bar, missing/incompatible prerequisites.
 - `fieldType`
-  - ✅ Covered: `"nominal"`와 invalid alternatives.
+  - ✅ Covered: `"nominal" | "ordinal"`와 invalid alternatives.
 - `scale.id/type/domain/range`
   - ✅ Covered: defaults, explicit order, reversed range, auto range rematerialization, invalid definitions.
 - `paddingInner`, `paddingOuter`
@@ -234,6 +234,29 @@ type AggregateOperation =
 - Reassignment
   - ✅ Covered: same-field scale/padding edit, grouped color mismatch rejection와 atomic color-owned field change.
 - Evidence: `test/unit/actions/encodings/x-offset-encoding.test.js`.
+
+## `encodeYOffset`
+
+- Signature: `encodeYOffset({ field, target?, fieldType?, scale?, paddingInner?, paddingOuter? })`
+- `encodeXOffset`과 같은 categorical sub-band 계약을 y category band에 적용한다. Horizontal aggregate bar의
+  complete x/y encoding이 필요하고 grouped color가 있으면 같은 field를 사용해야 한다.
+- 기본 scale ID는 `yOffset`이며 auto range는 parent y band다. Explicit/reversed range, padding intent,
+  Canvas rematerialization과 shared-consumer compatibility는 xOffset과 동일하다.
+- `encodeColor({ layout: "group" })`은 horizontal bar에서 이 action을 wrapped child로 호출한다.
+
+### Formal values — `encodeYOffset`
+
+- Implemented: `encodeYOffset({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: NumericRange }; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite })`
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `encodeYOffset`
+
+- ✅ Covered: direct and color-owned assignment, nominal/ordinal field types, default and explicit scale definitions,
+  padding, reversed range, Canvas rematerialization, explicit color-domain reassignment, incompatible orientation and
+  earlier-program immutability.
+- Evidence: `test/unit/actions/encodings/y-offset-encoding.test.js`,
+  `test/charts/jobs-horizontal-grouped-bar/public.test.js`.
 
 ## `encodeY2`
 
@@ -560,15 +583,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Quantize는 auto 또는 explicit pair를 동일 폭으로 나누고, quantile은 auto 또는 explicit sample에서
   동일 개수에 가까운 class를 만들며, threshold는 strictly increasing explicit domain과 정확히 하나 더
   많은 color를 요구한다. Boundary equality는 upper class에 포함되고 interval legend도 같은 경계를 읽는다.
-- Effect: color semantic, resolved layout과 scale을 저장한다. `group`은 wrapped `encodeXOffset`, `fill`은
+- Effect: color semantic, resolved layout과 scale을 저장한다. `group`은 orientation에 따라 wrapped
+  `encodeXOffset` 또는 `encodeYOffset`, `fill`은
   wrapped `encodeY({ stack: "normalize" })`, overlay는 non-stacked y, stack/diverging은 zero-stack y를
   사용한다. Aggregate bar group/overlay의 semantic start endpoint는 0이며 scale domain과 concrete rect가
   같은 endpoint를 소비한다. Bar는 rect, area는 closed path로 concrete materialize한다.
 - Reassignment: 같은 target의 categorical color field를 교체한다. omitted scale ID는 current color scale을
   재사용하고 explicit new ID는 새 scale을 만든다. Existing compatible legend의 domain, symbols,
   labels와 inferred title을 갱신하며 custom title/layout/style은 보존한다.
-- Grouped-bar reassignment는 color semantic을 먼저 교체한 뒤 wrapped `encodeXOffset`으로 matching field와
-  domain을 원자적으로 교체하고 y policy, bars와 existing legend를 rematerialize한다. Direct xOffset field
+- Grouped-bar reassignment는 color semantic을 먼저 교체한 뒤 wrapped directional offset action으로 matching
+  field와 domain을 원자적으로 교체하고 measure policy, bars와 existing legend를 rematerialize한다. Direct offset field
   mismatch나 layout transition은 earlier program을 바꾸지 않고 거부한다.
 - Coverage: 모든 대표 chart와 legend tests가 mark별 materialization을 검증한다. Five-layout bar matrix,
   four-layout area matrix, normalized/signed domains, primitive/public equivalence와 transition rejection을 포함한다.
@@ -829,19 +853,19 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeBarWidth`
 
 - Signature: `encodeBarWidth({ band?, pixels?, target? })`
-- `band`: `(0, 1]` finite number. Resolved xOffset slot 중 rect가 차지하는 비율이다.
+- `band`: `(0, 1]` finite number. Resolved category/offset slot 중 rect가 차지하는 비율이다.
 - `pixels`: positive finite logical Canvas pixel width. `band`와 mutually exclusive이며 PNG `pixelRatio`와
   무관하다.
 - Complete aggregate/ranged bar는 action 호출 전에도 implicit `{ band: 0.72 }`로 즉시 materialize된다.
   첫 assignment에서 width mode를 생략하면 그 기본값을 config에 저장하고, reassignment에서 생략하면 current
-  mode와 value를 유지한다. Group slot spacing은 `encodeXOffset`이 소유한다.
-- `target`: optional complete ordinal aggregate 또는 categorical ranged bar ID. Group layout은 matching xOffset를
+  mode와 value를 유지한다. Group slot spacing은 directional offset action이 소유한다.
+- `target`: optional complete ordinal aggregate 또는 categorical ranged bar ID. Group layout은 matching offset를
   추가로 요구한다.
 - Effect: graphical mark config에 exactly one width mode를 저장하고 centered rect x/width를
   rematerialize한다. Band width는 Canvas resize에 반응하고 pixel width는 고정된다. Slot보다 큰 explicit
   pixel width와 overlap은 허용한다.
 - 오류: aggregate 또는 ranged category/measure pair가 완성되지 않으면 거부한다. Group layout은 matching
-  color/xOffset가 완성되지 않으면 거부한다.
+  color/directional offset이 완성되지 않으면 거부한다.
 - Coverage: aggregate/grouped/ranged bar tests가 implicit default, explicit value, invalid range, both orientations와
   resize geometry를 검증한다.
 

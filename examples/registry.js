@@ -27,6 +27,8 @@ import { createGapminderPolarTrends } from
   "./gapminder-polar-trends/program.js";
 import { createJobsRadarChart } from "./jobs-radar-chart/program.js";
 import { createJobsGroupedBar } from "./jobs-grouped-bar/program.js";
+import { createJobsHorizontalGroupedBar } from
+  "./jobs-horizontal-grouped-bar/program.js";
 import { createNightingaleRoseChart } from
   "./nightingale-rose-chart/program.js";
 import { createProgramCompositionExample } from
@@ -218,6 +220,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createJobsGroupedBar,
     docsGroup: "charts",
     browser: { path: "jobs-grouped-bar/", canvas: "#chart" }
+  }),
+  example({
+    id: "jobs-horizontal-grouped-bar",
+    data: "jobs",
+    width: 760,
+    height: 640,
+    createProgram: createJobsHorizontalGroupedBar,
+    docsGroup: "charts",
+    browser: { path: "jobs-horizontal-grouped-bar/", canvas: "#chart" }
   }),
   example({
     id: "cars-regression-scatterplot",

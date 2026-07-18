@@ -39,7 +39,8 @@ program
 ```
 
 `encodeColor({ layout })` can arrange partitions with `stack`, `fill`, `group`,
-`overlay`, or `diverging`. Group layout invokes `encodeXOffset` internally.
+`overlay`, or `diverging`. Group layout invokes `encodeXOffset` for vertical
+bars or `encodeYOffset` for horizontal bars internally.
 Observed interval bars instead combine one categorical axis with `encodeYRange`
 or `encodeXRange`.
 

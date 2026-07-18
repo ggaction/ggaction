@@ -2993,7 +2993,8 @@ program
 ```
 
 `encodeColor({ layout })` can arrange partitions with `stack`, `fill`, `group`,
-`overlay`, or `diverging`. Group layout invokes `encodeXOffset` internally.
+`overlay`, or `diverging`. Group layout invokes `encodeXOffset` for vertical
+bars or `encodeYOffset` for horizontal bars internally.
 Observed interval bars instead combine one categorical axis with `encodeYRange`
 or `encodeXRange`.
 
@@ -3072,7 +3073,7 @@ defaults.
 
 | Family | Core actions | Use it for |
 | --- | --- | --- |
-| Position | `encodeX`, `encodeY`, `encodeXRange`, `encodeYRange`, `encodeXOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
+| Position | `encodeX`, `encodeY`, `encodeXRange`, `encodeYRange`, `encodeXOffset`, `encodeYOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
@@ -3110,8 +3111,9 @@ empty until aggregate y and group layout are authored. On an ordinal bar,
 selected summary at each final x/category and series grain. `aggregate`
 defaults to `"mean"` and may also use a parameterized quantile or ordered
 `first`/`last` object. It still leaves rects empty until grouping is authored.
-The advanced `encodeXOffset({ field })` action resolves nominal slots within
-each x band; grouped color layout normally calls it on the author's behalf.
+The advanced `encodeXOffset({ field })` and `encodeYOffset({ field })` actions
+resolve categorical slots within x or y bands; grouped color layout normally
+calls the matching action on the author's behalf.
 
 Ranged area and bar marks use one categorical/independent position and one atomic range action. A
 vertical range uses `encodeYRange`:
@@ -4403,7 +4405,7 @@ a positive value wraps cells row-major.
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
-| `scales` | every channel `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `color`, `size`, `shape`, `opacity`, or `strokeDash` |
+| `scales` | every channel `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `color`, `size`, `shape`, `opacity`, or `strokeDash` |
 | `guides.axes` | `"each"` | `"outer"` keeps x axes on the bottommost occupied cell in each column and y axes on the leftmost occupied cell in each row |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
@@ -4512,18 +4514,18 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Bin and count values | bar mark, quantitative field | `encodeHistogram` or `encodeX` + `encodeY` | [Histograms](./position/histogram.md) |
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./encodings.md#atomic-density) |
 | Draw full-span or bounded rules | rule mark, field or datum endpoints | `encodeX`, `encodeY`, `encodeX2`, `encodeY2` | [Rule endpoints](#rule-endpoints) |
-| Control within-band grouping | complete ordinal-bar positions | `encodeXOffset` | [Offsets](./position/offsets.md) |
+| Control within-band grouping | complete ordinal-bar positions | `encodeXOffset`, `encodeYOffset` | [Offsets](./position/offsets.md) |
 
 For ordinary grouped bar charts, prefer
-`encodeColor({ field, layout: "group" })`; it calls the advanced xOffset action
-for the same field.
+`encodeColor({ field, layout: "group" })`; it calls the matching advanced
+directional offset action for the same field.
 
 ## Shared inference
 
 - `target` defaults to the current compatible mark.
 - `coordinate` uses the layer coordinate, then the documented `main`
   Cartesian or `polar` Polar default for the requested channel family.
-- Scale IDs default to their channel names: `x`, `y`, `theta`, `radius`, and `xOffset`.
+- Scale IDs default to their channel names: `x`, `y`, `theta`, `radius`, `xOffset`, and `yOffset`.
 - Automatic continuous y ranges run bottom-to-top. Discrete y positions run
   top-to-bottom so horizontal categories follow domain order.
 - Temporal values accept finite timestamps, four-digit numeric/string years,
@@ -4806,7 +4808,7 @@ zero, so their automatic domain contains zero even when `scale.zero` is `false`.
 An explicit domain for either layout must contain zero; otherwise the encoding
 fails before creating extrapolated or clipped rectangles.
 Once the category and measure encodings are complete, concrete rectangles use
-an implicit `0.72` category-band width. Grouping recomputes them within xOffset
+an implicit `0.72` category-band width. Grouping recomputes them within directional offset
 slots, and `encodeBarWidth` is an optional graphical override.
 
 ## Temporal and horizontal bars
@@ -4832,9 +4834,8 @@ are also accepted.
 ## Errors and limitations
 
 Ordinal position does not accept `nice` or `zero`. Vertical grouped bars use
-`xOffset`; horizontal `layout: "group"` remains unavailable until `yOffset`
-exists. Horizontal stack, overlay, fill, and diverging layouts use the
-quantitative x measure.
+`xOffset`; horizontal grouped bars use `yOffset`. Horizontal stack, overlay,
+fill, and diverging layouts use the quantitative x measure.
 
 ## Related
 
@@ -4931,6 +4932,7 @@ zero-height rectangles. Grouped histograms require categorical color with
 | Action | Shortest call | Required state | Result |
 | --- | --- | --- | --- |
 | `encodeXOffset` | `encodeXOffset({ field: "group" })` | ordinal x bar | Nominal slots inside each x band |
+| `encodeYOffset` | `encodeYOffset({ field: "group" })` | ordinal y bar | Nominal slots inside each y band |
 
 Most chart authors should use:
 
@@ -4938,39 +4940,41 @@ Most chart authors should use:
 program.encodeColor({ field: "sex", layout: "group" });
 ```
 
-That action calls `encodeXOffset` as a wrapped child with the same field.
+That action calls `encodeXOffset` for a vertical bar or `encodeYOffset` for a
+horizontal bar as a wrapped child with the same field.
 
-## Advanced `encodeXOffset(options)`
+## Advanced `encodeXOffset(options)` and `encodeYOffset(options)`
 
 | Option | Type | Default |
 | --- | --- | --- |
 | `field` | non-empty string | required |
-| `fieldType` | `"nominal"` | `"nominal"` |
+| `fieldType` | `"nominal"` or `"ordinal"` | `"nominal"` |
 | `target` | aggregate bar mark ID | current mark |
-| `scale.id` | scale ID | `"xOffset"` |
+| `scale.id` | scale ID | channel name: `"xOffset"` or `"yOffset"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or unique nominal values | `"auto"` |
 | `scale.range` | `"auto"` or two finite numbers | `"auto"` |
 | `paddingInner` | finite number from `0` inclusive to `1` exclusive | `0` |
 | `paddingOuter` | non-negative finite number | `0` |
 
-The automatic range is `[0, x.bandwidth]`, not the full plot range. Its step
-divides one ordinal x band into equal nominal slots. Explicit domain order and
+The automatic range is the parent category bandwidth, not the full plot range.
+Its step divides one ordinal x or y band into equal categorical slots. Explicit domain order and
 reversed ranges are supported. Inner padding reduces each slot bandwidth;
 outer padding reserves step fractions before the first and after the last slot.
 Calling the action again for the same field preserves omitted padding values.
 This action resolves slot geometry but does not create rectangles by itself.
 
-When grouped color already exists, direct xOffset calls must use the same field.
+When grouped color already exists, direct offset calls must use the same field.
 Change both fields atomically with `encodeColor({ field: next, layout: "group" })`.
-That action rematerializes the matching xOffset slots, bars, and any existing
+That action rematerializes the matching directional offset slots, bars, and any existing
 legend while preserving explicit legend titles and styles.
 
 ## Errors and limitations
 
-xOffset requires one resolved ordinal x bandwidth. Color and xOffset domains
-must have identical order before grouped rectangles can be materialized. Every
-consumer of one shared xOffset scale must use the same padding policy.
+`xOffset` requires one resolved ordinal x bandwidth; `yOffset` requires one
+resolved ordinal y bandwidth. Color and offset domains must have identical
+order before grouped rectangles can be materialized. Every consumer of one
+shared offset scale must use the same padding policy and parent bandwidth.
 
 ## Related
 
@@ -5079,12 +5083,12 @@ program.encodeColor({
 
 See [continuous color scales](../scales/continuous-color.md#named-palettes) for the complete vocabulary.
 
-For an ordinal-x mean bar, `layout: "group"` is the default. It keeps
-`y.stack = null`, invokes `encodeXOffset` with the same field, and recomputes
-the y domain from zero and one mean per x/color cell. Negative and positive bars
-therefore extend in opposite directions from the same zero baseline, and a zero
-value has zero height. Color and xOffset scales are fully resolved, and
-concrete rects use the implicit `0.72` band width immediately.
+For an ordinal-category mean bar, `layout: "group"` is the default. It keeps
+the measure stack null, invokes `encodeXOffset` for vertical bars or
+`encodeYOffset` for horizontal bars, and recomputes the measure domain from
+zero and one mean per category/color cell. Negative and positive bars therefore
+extend in opposite directions from the same zero baseline. Color and offset
+scales are fully resolved, and concrete rects use the implicit `0.72` band width immediately.
 
 ```javascript
 groupedBars.encodeColor({
@@ -5095,7 +5099,7 @@ groupedBars.encodeColor({
 ```
 
 Calling grouped color again with a new categorical field atomically updates color
-and xOffset to one matching first-appearance domain. Existing legends are
+and the directional offset to one matching first-appearance domain. Existing legends are
 rematerialized; inferred titles follow the field while explicit titles and
 styles remain unchanged.
 
@@ -5521,7 +5525,7 @@ an owning action replaces that appearance assignment immutably.
 
 ## `encodeBarWidth({ band?, pixels?, target? })`
 
-Override the fraction of each resolved category band—or xOffset slot for group
+Override the fraction of each resolved category band—or directional offset slot for group
 layout—used by an aggregate or ranged bar and rematerialize its rectangles.
 
 ```javascript
@@ -5542,9 +5546,9 @@ remain fixed in logical coordinates and do not change with PNG `pixelRatio`.
 An explicit pixel width may be wider than its slot, allowing intentional overlap.
 
 The action requires a complete category/measure aggregate bar or a complete
-categorical ranged bar. Group layout also requires matching color and xOffset
-semantics. Width is the category bandwidth times `band` for stack, fill,
-overlay, diverging, and ranged bars, or xOffset bandwidth times `band` for
+categorical ranged bar. Group layout also requires matching color and directional
+offset semantics. Thickness is the category bandwidth times `band` for stack, fill,
+overlay, diverging, and ranged bars, or offset bandwidth times `band` for
 group. Each bar is centered in its slot; missing cells are omitted.
 
 `band` is graphical layout rather than chart meaning, so it is not added to
@@ -5576,7 +5580,7 @@ appearance values. Encodings create compatible scales automatically; use
 | --- | --- | --- | --- |
 | Continuous position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Band/point position | First-appearance order | Plot bounds | padding and alignment |
-| Ordinal appearance/xOffset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
+| Ordinal appearance/offset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
 | Sequential/discretized color | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
 
@@ -7169,7 +7173,7 @@ screens.
 | Capability | Scatterplot | Line | Histogram | Bar |
 | --- | --- | --- | --- | --- |
 | Semantic mark | point | line | bar | bar |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair |
 | Nominal color | point fill | series stroke | five bar layouts | five bar layouts |
 | Stroke dash | — | nominal or constant; 4 named styles | — | — |
 | Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width |
@@ -7222,7 +7226,7 @@ screens.
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
 | Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
-| Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset |
+| Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
@@ -7319,6 +7323,7 @@ interface ChartProgramActions {
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
+  encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
@@ -7767,6 +7772,20 @@ bar x band. Padding defaults to zero and is preserved when omitted on a later
 same-field call. Grouped color layout normally invokes this action automatically.
 [Position encodings](../api/position-encodings.md)
 
+### `encodeYOffset`
+
+```javascript
+encodeYOffset({
+  field, target?, fieldType?, scale?, paddingInner?, paddingOuter?
+})
+```
+
+Create or compatibly update the corresponding categorical offset scale within
+an ordinal bar y band. Horizontal grouped color layout invokes this action as a
+wrapped child; explicit domain order, reversed range, and padding follow the
+same contract as `encodeXOffset`.
+[Position encodings](../api/position-encodings.md)
+
 ### `encodeHistogram`
 
 ```javascript
@@ -7820,8 +7839,9 @@ ordinal fields may contain ordered numeric categories. Categorical bar layout ac
 and `diverging`; area accepts all except `group`. Quantitative and temporal
 point fields use a sequential scale; quantitative point fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
-grouped bars record `encodeXOffset` as a child. Reassigning grouped color also
-atomically reassigns xOffset and rematerializes an existing legend. Aggregate
+grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
+orientation. Reassigning grouped color also atomically reassigns its offset and
+rematerializes an existing legend. Aggregate
 bars accept quantitative sequential color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
 [Series encodings](../api/series-encodings.md)

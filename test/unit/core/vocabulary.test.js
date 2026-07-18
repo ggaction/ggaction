@@ -26,7 +26,7 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
   assert.deepEqual(POLAR_POSITION_CHANNELS, ["theta", "radius"]);
   assert.deepEqual(POSITION_CHANNELS, ["x", "y", "theta", "radius"]);
   assert.deepEqual(POSITION_ENCODING_CHANNELS, [
-    "x", "y", "x2", "y2", "xOffset", "theta", "radius"
+    "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius"
   ]);
   assert.equal(getPositionChannelDefinition("theta").family, "polar");
   assert.equal(getPositionChannelDefinition("x").gridDirection, "vertical");

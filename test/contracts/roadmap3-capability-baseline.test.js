@@ -35,13 +35,13 @@ test("records the current and missing Roadmap 3 public surface", () => {
     "encodeTheta",
     "encodeR",
     "encodePointRadius",
+    "encodeYOffset",
     "facet",
     "editFacetHeaders"
   ]) {
     assert.equal(typeof program[name], "function", name);
   }
   for (const name of [
-    "encodeYOffset",
     "createTextMark",
     "createRectMark"
   ]) {
@@ -130,16 +130,17 @@ test("captures the current layered bar and line scale-policy conflict", () => {
   );
 });
 
-test("captures the horizontal grouped-bar gap and the implemented palette shorthand", () => {
+test("captures horizontal grouped bars and the implemented palette shorthand", () => {
   const horizontal = canvas()
     .createData({ values: rows })
     .createBarMark({ id: "bars" })
     .encodeX({ field: "Acceleration", aggregate: "mean" })
     .encodeY({ field: "Year", fieldType: "ordinal" });
-  assert.throws(
-    () => horizontal.encodeColor({ field: "Origin", layout: "group" }),
-    /Horizontal bars do not support color layout "group" until yOffset is available/
-  );
+  const grouped = horizontal.encodeColor({ field: "Origin", layout: "group" });
+  const groupedLayer = grouped.semanticSpec.layers.find(layer => layer.id === "bars");
+  assert.equal(groupedLayer.encoding.yOffset.field, "Origin");
+  assert.equal(groupedLayer.encoding.yOffset.scale, "yOffset");
+  assert.ok(grouped.graphicSpec.objects.bars.items.length > 0);
 
   const colored = canvas()
     .createData({ values: rows })

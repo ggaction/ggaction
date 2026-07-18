@@ -135,11 +135,13 @@ export function createHorizontalGroupedBarValues(
     const category = years.indexOf(cell.year);
     const group = groups.indexOf(cell.sex);
     const x2 = mapLinear(cell.mean, xDomain, xRange);
+    const categoryCenter = bounds.y + (category + 0.5) * categoryStep;
+    const offsetCenter = offsetStart + group * offsetStep + offsetBandwidth / 2;
+    const center = categoryCenter + (offsetCenter - categoryStep / 2);
     return {
       ...cell,
       x: bounds.x,
-      y: bounds.y + category * categoryStep + offsetStart +
-        group * offsetStep + (offsetBandwidth - barHeight) / 2,
+      y: center - barHeight / 2,
       width: x2 - bounds.x,
       height: barHeight,
       fill: COLORS[group % COLORS.length]
@@ -155,8 +157,8 @@ export function createHorizontalGroupedBarValues(
     label: String(value),
     position: bounds.y + (index + 0.5) * categoryStep
   }));
-  const legendX = bounds.x + bounds.width + 28;
-  const legendY = bounds.y + 28;
+  const legendX = bounds.x + bounds.width + 30;
+  const legendY = bounds.y + 20;
 
   return deepFreeze({
     width,
@@ -223,11 +225,11 @@ export function createHorizontalGroupedBarValues(
         label: group,
         color: COLORS[index % COLORS.length],
         x: legendX,
-        y: legendY + 22 + index * 28,
+        y: bounds.y + 46 + index * 28,
         width: 14,
-        height: 14,
+        height: 12,
         labelX: legendX + 22,
-        labelY: legendY + 29 + index * 28
+        labelY: bounds.y + 52 + index * 28
       }))
     },
     title: {

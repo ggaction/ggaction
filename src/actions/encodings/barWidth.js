@@ -3,6 +3,7 @@ import { resolveTarget, validateOptions } from "./shared.js";
 import {
   BAR_GRAINS,
   resolveBarColorLayout,
+  resolveBarOffsetChannel,
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
 import { normalizeBarWidth } from "../../grammar/bars/geometry.js";
@@ -28,6 +29,7 @@ const encodeBarWidth = action(
       this.markConfigs[target]?.barWidth
     );
     const grouped = layout === "group";
+    const offsetChannel = resolveBarOffsetChannel(layer);
     const grain = resolveBarGrain(layer);
     if (grain === BAR_GRAINS.ranged) {
       return this._withMarkConfig(target, { ...this.markConfigs[target], barWidth: width })
@@ -37,11 +39,11 @@ const encodeBarWidth = action(
       grain !== BAR_GRAINS.aggregate ||
       (grouped &&
         layer.encoding?.color?.field !== undefined &&
-        layer.encoding?.xOffset?.field !== layer.encoding.color.field)
+        layer.encoding?.[offsetChannel]?.field !== layer.encoding.color.field)
     ) {
       throw new Error(
         grouped
-          ? "encodeBarWidth requires complete grouped bar x, y, color, and xOffset encodings."
+          ? `encodeBarWidth requires complete grouped bar x, y, color, and ${offsetChannel} encodings.`
           : "encodeBarWidth requires complete aggregate bar x and y encodings."
       );
     }

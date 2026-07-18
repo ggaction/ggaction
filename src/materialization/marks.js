@@ -3,6 +3,7 @@ import { isAggregate } from "../grammar/aggregate.js";
 import {
   BAR_GRAINS,
   resolveBarColorLayout,
+  resolveBarOffsetChannel,
   resolveBarGrain
 } from "../grammar/bars/policy.js";
 import { resolveRuleMode } from "../grammar/rules.js";
@@ -107,10 +108,11 @@ export function canMaterializeBar(program, layer) {
     grain === BAR_GRAINS.aggregate &&
     resolveBarColorLayout(layer) === "group"
   ) {
+    const offsetChannel = resolveBarOffsetChannel(layer);
     return (
       layer.encoding?.color?.field !== undefined &&
-      layer.encoding?.xOffset?.field === layer.encoding.color.field &&
-      layer.encoding.xOffset.scale !== undefined
+      layer.encoding?.[offsetChannel]?.field === layer.encoding.color.field &&
+      layer.encoding[offsetChannel].scale !== undefined
     );
   }
   return true;

@@ -31,15 +31,19 @@ chart()
   .encodeBarWidth({ band: 0.72 })
   .createGuides({
     axes: {
-      x: { title: { text: "Mean workforce share" } },
-      y: { title: { text: "Year" } }
+      x: { title: { text: "Mean workforce share", offset: 48 } },
+      y: { title: { text: "Year", offset: 58 } }
     },
     grid: { horizontal: false, vertical: true },
     legend: { title: "Sex" }
   })
   .createTitle({
     text: "Workforce Share by Year and Sex",
-    subtitle: "Mean occupation share in the jobs dataset"
+    subtitle: "Mean occupation share in the jobs dataset",
+    align: "center",
+    offset: -1,
+    titleStyle: { fontSize: 20, fontWeight: 700 },
+    subtitleStyle: { fontSize: 12, color: "#475569" }
   });
 ```
 

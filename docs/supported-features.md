@@ -19,7 +19,7 @@ screens.
 | Capability | Scatterplot | Line | Histogram | Bar |
 | --- | --- | --- | --- | --- |
 | Semantic mark | point | line | bar | bar |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | ordinal x, aggregate y |
+| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair |
 | Nominal color | point fill | series stroke | five bar layouts | five bar layouts |
 | Stroke dash | — | nominal or constant; 4 named styles | — | — |
 | Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width |
@@ -72,7 +72,7 @@ screens.
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
 | Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
-| Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset |
+| Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |

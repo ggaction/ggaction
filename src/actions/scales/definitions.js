@@ -314,15 +314,15 @@ export function resolveOpacityScaleDefinition(program, options) {
   return withScaleUnknown(scale, { ...existing, ...options }, "opacity");
 }
 
-export function resolveOffsetScaleDefinition(program, options) {
+export function resolveOffsetScaleDefinition(program, options, channel = "xOffset") {
   optionsObject(options);
   validateKeys(options, [...BASE_OPTIONS, "unknown"], "scale");
-  const id = validateUserId(options.id ?? "xOffset", "Scale id");
+  const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
   return withScaleUnknown({
     id,
     type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
     domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
     range: validateScaleRange(options.range ?? existing?.range ?? "auto")
-  }, { ...existing, ...options }, "xOffset");
+  }, { ...existing, ...options }, channel);
 }

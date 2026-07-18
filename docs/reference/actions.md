@@ -70,6 +70,7 @@ interface ChartProgramActions {
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
+  encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
@@ -519,6 +520,20 @@ bar x band. Padding defaults to zero and is preserved when omitted on a later
 same-field call. Grouped color layout normally invokes this action automatically.
 [Position encodings](../api/position-encodings.md)
 
+### `encodeYOffset`
+
+```javascript
+encodeYOffset({
+  field, target?, fieldType?, scale?, paddingInner?, paddingOuter?
+})
+```
+
+Create or compatibly update the corresponding categorical offset scale within
+an ordinal bar y band. Horizontal grouped color layout invokes this action as a
+wrapped child; explicit domain order, reversed range, and padding follow the
+same contract as `encodeXOffset`.
+[Position encodings](../api/position-encodings.md)
+
 ### `encodeHistogram`
 
 ```javascript
@@ -572,8 +587,9 @@ ordinal fields may contain ordered numeric categories. Categorical bar layout ac
 and `diverging`; area accepts all except `group`. Quantitative and temporal
 point fields use a sequential scale; quantitative point fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
-grouped bars record `encodeXOffset` as a child. Reassigning grouped color also
-atomically reassigns xOffset and rematerializes an existing legend. Aggregate
+grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
+orientation. Reassigning grouped color also atomically reassigns its offset and
+rematerializes an existing legend. Aggregate
 bars accept quantitative sequential color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
 [Series encodings](../api/series-encodings.md)

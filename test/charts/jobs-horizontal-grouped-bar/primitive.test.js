@@ -8,7 +8,7 @@ import { createHorizontalGroupedBarValues } from "./reference-values.js";
 test("authors the Gate J-A chart only through graphical primitives", () => {
   const values = createHorizontalGroupedBarValues(loadJobs());
   const program = createHorizontalGroupedBarPrimitives(loadJobs());
-  const bars = program.graphicSpec.objects.bars;
+  const bars = program.graphicSpec.objects.bar;
 
   assert.equal(program.graphicSpec.objects.canvas.properties.width, 760);
   assert.equal(program.graphicSpec.objects.canvas.properties.height, 640);
@@ -40,7 +40,7 @@ test("draws grid before bars and centers title on plot bounds", () => {
   const plot = program.graphicSpec.objects["plot-main"];
 
   assert.equal(
-    plot.children.indexOf("verticalGridLines") < plot.children.indexOf("bars"),
+    plot.children.indexOf("verticalGridLines") < plot.children.indexOf("bar"),
     true
   );
   assert.equal(program.graphicSpec.objects.chartTitle.properties.x, 351);

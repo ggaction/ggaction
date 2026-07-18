@@ -3,9 +3,9 @@
 ## 진행 상태
 
 - [x] STEP 1 — Phase 계약, representative chart와 Gate 분리
-- [ ] STEP 2 — Horizontal grouped bar primitive와 Gate J-A
-- [ ] STEP 3 — Shared offset grammar와 `encodeYOffset`
-- [ ] STEP 4 — Horizontal grouped bar public vertical slice
+- [x] STEP 2 — Horizontal grouped bar primitive와 Gate J-A
+- [x] STEP 3 — Shared offset grammar와 `encodeYOffset`
+- [x] STEP 4 — Horizontal grouped bar public vertical slice
 - [ ] STEP 5 — Text reference grammar, primitive와 Gate J-B
 - [ ] STEP 6 — Text mark, `encodeText`와 focused editing
 - [ ] STEP 7 — Annotation public variants와 rematerialization

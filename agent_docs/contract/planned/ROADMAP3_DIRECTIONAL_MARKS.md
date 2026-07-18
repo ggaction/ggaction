@@ -1,17 +1,7 @@
 # Roadmap 3 Planned Directional, Text and Rect contracts
 
-Gate A에서 승인된 Phase 9 계약이다.
-
-## Directional offset
-
-```typescript
-encodeYOffset({ target?, field, fieldType?: "nominal" | "ordinal", scale? }): ChartProgram;
-```
-
-- `encodeYOffset` is the y-direction counterpart of current `encodeXOffset` and owns the same domain order,
-  padding, explicit/reversed range and Canvas rematerialization rules.
-- Horizontal grouped color layout delegates to `encodeYOffset`; vertical grouping continues to use xOffset.
-- Status: Planned, NOT IMPLEMENTED. Roadmap 3 Phase 9.
+Gate A에서 승인된 Phase 9의 아직 구현되지 않은 text와 rect 계약이다. Directional offset은 구현되어 Current
+`ENCODINGS.md`로 이동했다.
 
 ## Text annotation
 

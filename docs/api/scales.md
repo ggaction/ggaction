@@ -25,7 +25,7 @@ appearance values. Encodings create compatible scales automatically; use
 | --- | --- | --- | --- |
 | Continuous position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Band/point position | First-appearance order | Plot bounds | padding and alignment |
-| Ordinal appearance/xOffset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
+| Ordinal appearance/offset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
 | Sequential/discretized color | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
 

@@ -4,6 +4,7 @@ import {
 } from "../../../../grammar/aggregate.js";
 import {
   BAR_ORIENTATIONS,
+  resolveBarOffsetChannel,
   resolveBarOrientation
 } from "../../../../grammar/bars/policy.js";
 import { resolveBin, validateStack } from "./common.js";
@@ -98,12 +99,15 @@ export function resolveBarPositionPolicy({
       `Bar ${channel} encoding requires a quantitative field opposite a categorical position.`
     );
   }
-  if (
-    orientation === BAR_ORIENTATIONS.horizontal &&
-    candidate.encoding?.xOffset !== undefined
-  ) {
+  const expectedOffset = resolveBarOffsetChannel(candidate);
+  const incompatibleOffset = orientation === BAR_ORIENTATIONS.horizontal
+    ? "xOffset"
+    : orientation === BAR_ORIENTATIONS.vertical
+      ? "yOffset"
+      : undefined;
+  if (incompatibleOffset !== undefined && candidate.encoding?.[incompatibleOffset] !== undefined) {
     throw new Error(
-      "Horizontal grouped bars require yOffset support, which is not available yet."
+      `${orientation} bars require ${expectedOffset}; remove the incompatible ${incompatibleOffset} encoding.`
     );
   }
   return { bin, aggregate, stack };

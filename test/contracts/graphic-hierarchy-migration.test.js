@@ -84,6 +84,13 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
     "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"
   ],
+  "jobs-horizontal-grouped-bar": [
+    "canvas", "verticalGridLines", "bar",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "cars-regression-scatterplot": [
     "canvas", "horizontalGridLines", "pointsRegressionBands", "points",
     "pointsRegressionLines", "xAxisLine", "xAxisTicks", "xAxisLabels",

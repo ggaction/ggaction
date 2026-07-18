@@ -32,6 +32,7 @@ import {
   resolveTemporalBarBand
 } from "./policies/bar.js";
 import { resolveSeriesLayoutDomain } from "./policies/series.js";
+import { OFFSET_POSITION_CHANNELS } from "../../core/vocabulary.js";
 
 function resolveDefaultDomain({
   scale,
@@ -187,7 +188,7 @@ export function resolveScaleMaterialization({
   const isOrdinalAppearance =
     ["color", "strokeDash", "shape"].includes(channel) &&
     isOrdinalScaleType(scale.type);
-  const isOrdinalOffset = channel === "xOffset";
+  const isOrdinalOffset = OFFSET_POSITION_CHANNELS.includes(channel);
   const isOrdinalPosition =
     !isOrdinalAppearance && !isOrdinalOffset && isOrdinalScaleType(scale.type);
   const isDiscretePosition =
@@ -261,8 +262,10 @@ export function resolveScaleMaterialization({
             consumers,
             resolvedScales,
             markConfigs,
-            id
-          })
+            id,
+            channel
+          }),
+          channel
         })
       : isDiscretePosition
         ? resolveDiscretePositionScale({

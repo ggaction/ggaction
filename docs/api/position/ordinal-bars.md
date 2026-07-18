@@ -69,7 +69,7 @@ zero, so their automatic domain contains zero even when `scale.zero` is `false`.
 An explicit domain for either layout must contain zero; otherwise the encoding
 fails before creating extrapolated or clipped rectangles.
 Once the category and measure encodings are complete, concrete rectangles use
-an implicit `0.72` category-band width. Grouping recomputes them within xOffset
+an implicit `0.72` category-band width. Grouping recomputes them within directional offset
 slots, and `encodeBarWidth` is an optional graphical override.
 
 ## Temporal and horizontal bars
@@ -95,9 +95,8 @@ are also accepted.
 ## Errors and limitations
 
 Ordinal position does not accept `nice` or `zero`. Vertical grouped bars use
-`xOffset`; horizontal `layout: "group"` remains unavailable until `yOffset`
-exists. Horizontal stack, overlay, fill, and diverging layouts use the
-quantitative x measure.
+`xOffset`; horizontal grouped bars use `yOffset`. Horizontal stack, overlay,
+fill, and diverging layouts use the quantitative x measure.
 
 ## Related
 

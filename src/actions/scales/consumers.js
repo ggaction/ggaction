@@ -67,7 +67,7 @@ export function resolveConsumerValues(program, consumer) {
   const allowUnknown = Object.hasOwn(scale, "unknown");
 
   if (
-    ["color", "strokeDash", "xOffset", "shape"].includes(consumer.channel) &&
+    ["color", "strokeDash", "xOffset", "yOffset", "shape"].includes(consumer.channel) &&
     consumer.encoding.fieldType === "nominal"
   ) {
     return allowUnknown

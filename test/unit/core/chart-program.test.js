@@ -133,6 +133,7 @@ test("stores and validates canonical facet composition state", () => {
         x: "shared",
         y: "shared",
         xOffset: "shared",
+        yOffset: "shared",
         color: "shared",
         size: "shared",
         shape: "shared",

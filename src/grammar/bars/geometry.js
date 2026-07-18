@@ -27,19 +27,19 @@ export function normalizeBarWidth(options = {}, existing) {
   return cloneAndFreeze({ pixels: options.pixels });
 }
 
-export function normalizeOffsetPadding(options = {}, existing) {
+export function normalizeOffsetPadding(options = {}, existing, channel = "xOffset") {
   const paddingInner = options.paddingInner ??
     existing?.paddingInner ?? DEFAULT_OFFSET_PADDING.paddingInner;
   const paddingOuter = options.paddingOuter ??
     existing?.paddingOuter ?? DEFAULT_OFFSET_PADDING.paddingOuter;
   if (!Number.isFinite(paddingInner) || paddingInner < 0 || paddingInner >= 1) {
     throw new RangeError(
-      "xOffset paddingInner must be from 0 (inclusive) to 1 (exclusive)."
+      `${channel} paddingInner must be from 0 (inclusive) to 1 (exclusive).`
     );
   }
   if (!Number.isFinite(paddingOuter) || paddingOuter < 0) {
     throw new RangeError(
-      "xOffset paddingOuter must be a non-negative finite number."
+      `${channel} paddingOuter must be a non-negative finite number.`
     );
   }
   return cloneAndFreeze({ paddingInner, paddingOuter });

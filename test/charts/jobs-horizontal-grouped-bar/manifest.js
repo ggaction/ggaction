@@ -1,4 +1,6 @@
 import { loadJobs } from "../../support/data.js";
+import { createJobsHorizontalGroupedBar } from
+  "../../../examples/jobs-horizontal-grouped-bar/program.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 
 import { createHorizontalGroupedBarPrimitives } from "./primitive.program.js";
@@ -29,15 +31,19 @@ export const horizontalGroupedBarTarget = `chart()
   .encodeBarWidth({ band: 0.72 })
   .createGuides({
     axes: {
-      x: { title: { text: "Mean workforce share" } },
-      y: { title: { text: "Year" } }
+      x: { title: { text: "Mean workforce share", offset: 48 } },
+      y: { title: { text: "Year", offset: 58 } }
     },
     grid: { horizontal: false, vertical: true },
     legend: { title: "Sex" }
   })
   .createTitle({
     text: "Workforce Share by Year and Sex",
-    subtitle: "Mean occupation share in the jobs dataset"
+    subtitle: "Mean occupation share in the jobs dataset",
+    align: "center",
+    offset: -1,
+    titleStyle: { fontSize: 20, fontWeight: 700 },
+    subtitleStyle: { fontSize: 12, color: "#475569" }
   });`;
 
 export const visualVariants = Object.freeze([
@@ -52,6 +58,7 @@ export const visualVariants = Object.freeze([
       capability: "directional-offset"
     },
     primitive: () => createHorizontalGroupedBarPrimitives(rows),
+    userFacing: () => createJobsHorizontalGroupedBar(rows),
     width: values.width,
     height: values.height,
     colors: values.scales.color.range,

@@ -3,7 +3,7 @@ import { POINT_SHAPES } from "../pointShapes.js";
 import { normalizeStrokeDashPattern } from "./appearance.js";
 
 export function validateScaleUnknown(channel, value) {
-  if (["x", "y", "xOffset"].includes(channel)) {
+  if (["x", "y", "xOffset", "yOffset"].includes(channel)) {
     if (!Number.isFinite(value)) {
       throw new TypeError(`Scale unknown for ${channel} must be a finite number.`);
     }

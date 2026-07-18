@@ -245,7 +245,7 @@ test("validates xOffset prerequisites, fields, and scale options", () => {
   );
   assert.throws(
     () => program.encodeXOffset({ field: "sex", fieldType: "quantitative" }),
-    /Unsupported color field type/
+    /Unsupported categorical field type/
   );
   assert.throws(
     () => program.encodeXOffset({ field: "sex", scale: { type: "linear" } }),
@@ -263,7 +263,7 @@ test("validates xOffset prerequisites, fields, and scale options", () => {
     .encodeX({ field: "year", fieldType: "ordinal" });
   assert.throws(
     () => incomplete.encodeXOffset({ field: "sex" }),
-    /complete bar x\/y encoding/
+    /complete bar with a x category encoding/
   );
   assert.equal(program.semanticSpec.layers[0].encoding.xOffset, undefined);
 });

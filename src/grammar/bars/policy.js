@@ -46,6 +46,11 @@ export function resolveBarChannels(layer) {
     : { orientation, category: "y", measure: "x" };
 }
 
+export function resolveBarOffsetChannel(layer) {
+  const channels = resolveBarChannels(layer);
+  return channels === undefined ? undefined : `${channels.category}Offset`;
+}
+
 export function resolveBarGrain(layer) {
   if (layer?.mark?.type !== "bar") return undefined;
   const x = layer.encoding?.x;
@@ -84,7 +89,8 @@ export function resolveBarColorLayout(layer) {
   }
   const channels = resolveBarChannels(layer);
   if (layer?.encoding?.[channels?.measure]?.stack === "normalize") return "fill";
-  if (layer?.encoding?.xOffset !== undefined) return "group";
+  const offsetChannel = resolveBarOffsetChannel(layer);
+  if (layer?.encoding?.[offsetChannel] !== undefined) return "group";
   if (layer?.encoding?.[channels?.measure]?.stack === null) return "overlay";
   return "stack";
 }

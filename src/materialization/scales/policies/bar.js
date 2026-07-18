@@ -43,30 +43,36 @@ export function resolveOffsetScalePolicy({
   consumers,
   resolvedScales,
   markConfigs,
-  id
+  id,
+  channel
 }) {
+  const parentChannel = channel === "xOffset" ? "x" : "y";
   const bandwidths = consumers.map(consumer => {
-    if (consumer.layer.encoding?.x?.bin !== undefined) return 1;
-    const xScaleId = consumer.layer.encoding?.x?.scale;
-    return resolvedScales[xScaleId]?.bandwidth;
+    if (parentChannel === "x" && consumer.layer.encoding?.x?.bin !== undefined) {
+      return 1;
+    }
+    const parentScaleId = consumer.layer.encoding?.[parentChannel]?.scale;
+    return resolvedScales[parentScaleId]?.bandwidth;
   });
   if (
     bandwidths.some(value => !Number.isFinite(value)) ||
     new Set(bandwidths).size !== 1
   ) {
     throw new Error(
-      `xOffset scale "${id}" requires one shared resolved x bandwidth.`
+      `${channel} scale "${id}" requires one shared resolved ${parentChannel} bandwidth.`
     );
   }
   const paddings = consumers.map(consumer => normalizeOffsetPadding(
-    markConfigs[consumer.layer.id]?.xOffset
+    markConfigs[consumer.layer.id]?.[channel],
+    undefined,
+    channel
   ));
   const signatures = new Set(
     paddings.map(padding => JSON.stringify(padding))
   );
   if (signatures.size !== 1) {
     throw new Error(
-      `xOffset scale "${id}" requires one shared padding policy.`
+      `${channel} scale "${id}" requires one shared padding policy.`
     );
   }
   return {

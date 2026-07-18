@@ -77,6 +77,7 @@ export interface FacetScaleResolutions {
   x?: FacetScaleResolution;
   y?: FacetScaleResolution;
   xOffset?: FacetScaleResolution;
+  yOffset?: FacetScaleResolution;
   color?: FacetScaleResolution;
   size?: FacetScaleResolution;
   shape?: FacetScaleResolution;
@@ -254,7 +255,7 @@ export type MarkSelector = {
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
-  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "group" | "opacity"; field?: never; property?: never }
+  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "group" | "opacity"; field?: never; property?: never }
   | { property: MarkGraphicProperty; field?: never; channel?: never }
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
@@ -1036,14 +1037,17 @@ export interface OffsetScaleOptions {
   range?: "auto" | readonly [number, number];
 }
 
-export interface XOffsetEncodingOptions {
+export interface OffsetEncodingOptions {
   field: string;
   target?: string;
-  fieldType?: "nominal";
+  fieldType?: "nominal" | "ordinal";
   scale?: OffsetScaleOptions;
   paddingInner?: number;
   paddingOuter?: number;
 }
+
+export interface XOffsetEncodingOptions extends OffsetEncodingOptions {}
+export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
 export type BarWidthOptions = { target?: string } & (
   | { band?: number; pixels?: never }
@@ -1541,6 +1545,7 @@ export class ChartProgram {
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
+  encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeYRange(options: {
     lower: string;

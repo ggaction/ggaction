@@ -24,18 +24,18 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Bin and count values | bar mark, quantitative field | `encodeHistogram` or `encodeX` + `encodeY` | [Histograms](./position/histogram.md) |
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./encodings.md#atomic-density) |
 | Draw full-span or bounded rules | rule mark, field or datum endpoints | `encodeX`, `encodeY`, `encodeX2`, `encodeY2` | [Rule endpoints](#rule-endpoints) |
-| Control within-band grouping | complete ordinal-bar positions | `encodeXOffset` | [Offsets](./position/offsets.md) |
+| Control within-band grouping | complete ordinal-bar positions | `encodeXOffset`, `encodeYOffset` | [Offsets](./position/offsets.md) |
 
 For ordinary grouped bar charts, prefer
-`encodeColor({ field, layout: "group" })`; it calls the advanced xOffset action
-for the same field.
+`encodeColor({ field, layout: "group" })`; it calls the matching advanced
+directional offset action for the same field.
 
 ## Shared inference
 
 - `target` defaults to the current compatible mark.
 - `coordinate` uses the layer coordinate, then the documented `main`
   Cartesian or `polar` Polar default for the requested channel family.
-- Scale IDs default to their channel names: `x`, `y`, `theta`, `radius`, and `xOffset`.
+- Scale IDs default to their channel names: `x`, `y`, `theta`, `radius`, `xOffset`, and `yOffset`.
 - Automatic continuous y ranges run bottom-to-top. Discrete y positions run
   top-to-bottom so horizontal categories follow domain order.
 - Temporal values accept finite timestamps, four-digit numeric/string years,

@@ -73,12 +73,12 @@ program.encodeColor({
 
 See [continuous color scales](../scales/continuous-color.md#named-palettes) for the complete vocabulary.
 
-For an ordinal-x mean bar, `layout: "group"` is the default. It keeps
-`y.stack = null`, invokes `encodeXOffset` with the same field, and recomputes
-the y domain from zero and one mean per x/color cell. Negative and positive bars
-therefore extend in opposite directions from the same zero baseline, and a zero
-value has zero height. Color and xOffset scales are fully resolved, and
-concrete rects use the implicit `0.72` band width immediately.
+For an ordinal-category mean bar, `layout: "group"` is the default. It keeps
+the measure stack null, invokes `encodeXOffset` for vertical bars or
+`encodeYOffset` for horizontal bars, and recomputes the measure domain from
+zero and one mean per category/color cell. Negative and positive bars therefore
+extend in opposite directions from the same zero baseline. Color and offset
+scales are fully resolved, and concrete rects use the implicit `0.72` band width immediately.
 
 ```javascript
 groupedBars.encodeColor({
@@ -89,7 +89,7 @@ groupedBars.encodeColor({
 ```
 
 Calling grouped color again with a new categorical field atomically updates color
-and xOffset to one matching first-appearance domain. Existing legends are
+and the directional offset to one matching first-appearance domain. Existing legends are
 rematerialized; inferred titles follow the field while explicit titles and
 styles remain unchanged.
 

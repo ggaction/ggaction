@@ -106,7 +106,7 @@ a positive value wraps cells row-major.
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
-| `scales` | every channel `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `color`, `size`, `shape`, `opacity`, or `strokeDash` |
+| `scales` | every channel `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `color`, `size`, `shape`, `opacity`, or `strokeDash` |
 | `guides.axes` | `"each"` | `"outer"` keeps x axes on the bottommost occupied cell in each column and y axes on the leftmost occupied cell in each row |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 

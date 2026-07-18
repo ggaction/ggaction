@@ -596,6 +596,24 @@
       }
     },
     {
+      "name": "encodeYOffset",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces compatible same-field scale and padding policy",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodeyoffset"
+      }
+    },
+    {
       "name": "encodeY2",
       "layer": "user-facing",
       "domain": "encodings",
@@ -2007,7 +2025,6 @@
     { "name": "editFacetHeaders", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits parent-owned facet headers", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "editFacetHeaders" } }
   ],
   "plannedActions": [
-    { "name": "encodeYOffset", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "directional-offset" } },
     { "name": "createTextMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
     { "name": "encodeText", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
     { "name": "editTextMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
@@ -2015,7 +2032,6 @@
     { "name": "editRectMark", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } }
   ],
   "plannedCapabilities": [
-    { "id": "horizontal-grouped-bar", "kind": "composition", "name": "Horizontal grouped bar", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "directional-offset" } },
     { "id": "text-annotation", "kind": "composition", "name": "Text annotation", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "text-annotation" } },
     { "id": "rect-heatmap", "kind": "composition", "name": "Rect heatmap", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_DIRECTIONAL_MARKS.md", "anchor": "rect-heatmap" } },
     { "id": "shared-position-scale-resolution", "kind": "behavior", "name": "Shared position scale resolution", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/ROADMAP3_EDITING.md", "anchor": "shared-position-scale-resolution" } },

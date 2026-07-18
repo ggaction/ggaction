@@ -37,6 +37,7 @@ test("replays regression data independently in every shared-scale facet cell", (
     x: "shared",
     y: "shared",
     xOffset: "shared",
+    yOffset: "shared",
     color: "shared",
     size: "shared",
     shape: "shared",

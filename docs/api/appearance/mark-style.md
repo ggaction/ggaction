@@ -21,7 +21,7 @@ an owning action replaces that appearance assignment immutably.
 
 ## `encodeBarWidth({ band?, pixels?, target? })`
 
-Override the fraction of each resolved category band—or xOffset slot for group
+Override the fraction of each resolved category band—or directional offset slot for group
 layout—used by an aggregate or ranged bar and rematerialize its rectangles.
 
 ```javascript
@@ -42,9 +42,9 @@ remain fixed in logical coordinates and do not change with PNG `pixelRatio`.
 An explicit pixel width may be wider than its slot, allowing intentional overlap.
 
 The action requires a complete category/measure aggregate bar or a complete
-categorical ranged bar. Group layout also requires matching color and xOffset
-semantics. Width is the category bandwidth times `band` for stack, fill,
-overlay, diverging, and ranged bars, or xOffset bandwidth times `band` for
+categorical ranged bar. Group layout also requires matching color and directional
+offset semantics. Thickness is the category bandwidth times `band` for stack, fill,
+overlay, diverging, and ranged bars, or offset bandwidth times `band` for
 group. Each bar is centered in its slot; missing cells are omitted.
 
 `band` is graphical layout rather than chart meaning, so it is not added to

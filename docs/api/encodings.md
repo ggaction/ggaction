@@ -16,7 +16,7 @@ defaults.
 
 | Family | Core actions | Use it for |
 | --- | --- | --- |
-| Position | `encodeX`, `encodeY`, `encodeXRange`, `encodeYRange`, `encodeXOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
+| Position | `encodeX`, `encodeY`, `encodeXRange`, `encodeYRange`, `encodeXOffset`, `encodeYOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
@@ -54,8 +54,9 @@ empty until aggregate y and group layout are authored. On an ordinal bar,
 selected summary at each final x/category and series grain. `aggregate`
 defaults to `"mean"` and may also use a parameterized quantile or ordered
 `first`/`last` object. It still leaves rects empty until grouping is authored.
-The advanced `encodeXOffset({ field })` action resolves nominal slots within
-each x band; grouped color layout normally calls it on the author's behalf.
+The advanced `encodeXOffset({ field })` and `encodeYOffset({ field })` actions
+resolve categorical slots within x or y bands; grouped color layout normally
+calls the matching action on the author's behalf.
 
 Ranged area and bar marks use one categorical/independent position and one atomic range action. A
 vertical range uses `encodeYRange`:

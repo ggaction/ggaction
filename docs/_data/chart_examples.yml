@@ -82,6 +82,22 @@
   home_order: 3
   tutorial_order: 6
   recipe_order: 4
+- id: horizontal-grouped-bar
+  title: Horizontal grouped bar
+  image: /assets/images/jobs-horizontal-grouped-bar.png
+  alt: Horizontal grouped bar chart of job percentages
+  width: 1520
+  height: 1280
+  thumbnail: /assets/images/jobs-horizontal-grouped-bar-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 539
+  caption: Aggregate categories grouped inside horizontal y bands.
+  summary: Compare grouped aggregate values with a horizontal measure axis.
+  actions: createBarMark · encodeX · encodeY · encodeColor
+  url: /api/position/offsets/
+  recipe_url: /recipes/bar-chart/
+  home_group: essentials
+  home_order: 3.5
 - id: histogram
   title: Histogram
   image: /assets/images/cars-histogram.png

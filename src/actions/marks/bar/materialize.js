@@ -5,7 +5,10 @@ import { deriveAggregateRectangles } from "../../../materialization/bars/aggrega
 import { deriveHistogramRectangles } from "../../../materialization/bars/histogram.js";
 import { requireCompleteBar } from "../../../materialization/bars/resolve.js";
 import { deriveRangedRectangles } from "../../../materialization/bars/ranged.js";
-import { BAR_GRAINS } from "../../../grammar/bars/policy.js";
+import {
+  BAR_GRAINS,
+  resolveBarOffsetChannel
+} from "../../../grammar/bars/policy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
@@ -94,7 +97,8 @@ export const rematerializeBarMark = action(
     }
 
     if (required.materialization === "aggregate") {
-      const offsetScaleId = required.layer.encoding?.xOffset?.scale;
+      const offsetChannel = resolveBarOffsetChannel(required.layer);
+      const offsetScaleId = required.layer.encoding?.[offsetChannel]?.scale;
       if (offsetScaleId !== undefined && args.scales !== false) {
         resolved = resolved.rematerializeScale({ id: offsetScaleId });
       }

@@ -3,6 +3,7 @@ import {
   BAR_GRAINS,
   resolveBarChannels,
   resolveBarColorLayout,
+  resolveBarOffsetChannel,
   resolveBarGrain
 } from "../../../grammar/bars/policy.js";
 import { layoutSeriesPartition } from "../../../grammar/seriesLayout.js";
@@ -50,7 +51,8 @@ function aggregateCellDefinitions(program, layer, dataset) {
   ];
   const colorEncoding = layer.encoding?.color;
   const colorScale = program.resolvedScales[colorEncoding?.scale];
-  const offsetScale = program.resolvedScales[layer.encoding?.xOffset?.scale];
+  const offsetChannel = resolveBarOffsetChannel(layer);
+  const offsetScale = program.resolvedScales[layer.encoding?.[offsetChannel]?.scale];
   const layout = resolveBarColorLayout(layer);
 
   function definition(cell, start, end) {
@@ -62,9 +64,9 @@ function aggregateCellDefinitions(program, layer, dataset) {
         [channels.measure]: start,
         [`${channels.measure}2`]: end,
         ...(cell.color === undefined ? {} : { color: cell.color }),
-        ...(layer.encoding?.xOffset === undefined
+        ...(layer.encoding?.[offsetChannel] === undefined
           ? {}
-          : { xOffset: cell.color })
+          : { [offsetChannel]: cell.color })
       },
       members
     };
