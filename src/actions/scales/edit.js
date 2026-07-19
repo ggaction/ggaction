@@ -26,7 +26,7 @@ import {
   validateRadialRange,
   validateThetaRange
 } from "../../grammar/polar.js";
-import { getMarkMaterializationStep } from "../../materialization/marks.js";
+import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
 import {
   applyMaterializationPlan
 } from "../../materialization/dependencies.js";
@@ -34,7 +34,7 @@ import {
   findSemanticScale,
   requireSemanticScale
 } from "../../selectors/scales.js";
-import { findScaleConsumers } from "./consumers.js";
+import { findScaleConsumers } from "./consumers/index.js";
 import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
 
 const OPTIONS = Object.freeze([

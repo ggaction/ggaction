@@ -6,7 +6,7 @@ import { findDataset } from "../../selectors/datasets.js";
 import { findLayer, hasLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { resolveMarkPositionPolicy } from "../encodings/position/policies/index.js";
-import { getMarkMaterializationStep } from "../../materialization/marks.js";
+import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
 import {
   POLAR_POSITION_CHANNELS,
   CARTESIAN_POSITION_CHANNELS,

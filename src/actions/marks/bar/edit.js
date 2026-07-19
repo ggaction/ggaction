@@ -5,7 +5,7 @@ import {
   validateNonNegativeFinite,
   validateUnitInterval
 } from "../../../core/validation.js";
-import { canMaterializeBar } from "../../../materialization/marks.js";
+import { canMaterializeBar } from "../../../materialization/marks/index.js";
 import { DEFAULT_BAR_STROKE_WIDTH } from "../../../materialization/bars/resolve.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
 import { validateMarkOptions } from "../shared.js";

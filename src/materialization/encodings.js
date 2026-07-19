@@ -2,9 +2,9 @@ import { hasMaterializedLegend } from "./legends.js";
 import { requireLayer } from "../selectors/layers.js";
 import {
   getEncodingMaterializationStages
-} from "./marks.js";
+} from "./marks/index.js";
 import { buildMaterializationPlan } from "./planner.js";
-import { getSourceDependentMarkSteps } from "./marks.js";
+import { getSourceDependentMarkSteps } from "./marks/index.js";
 
 export function planEncodingRematerialization(program, {
   target,

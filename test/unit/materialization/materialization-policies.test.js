@@ -9,7 +9,7 @@ import {
   getMarkMaterializationStep,
   getPositionEncodingMaterializationSteps,
   getScaleConsumerMaterializationMode
-} from "../../../src/materialization/marks.js";
+} from "../../../src/materialization/marks/index.js";
 
 function programWith({ datasets = [], marks = {} } = {}) {
   return {

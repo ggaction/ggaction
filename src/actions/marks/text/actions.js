@@ -4,7 +4,7 @@ import {
   DEFAULT_TEXT_MARK,
   normalizeTextMarkConfig
 } from "../../../grammar/text.js";
-import { canMaterializeText } from "../../../materialization/marks.js";
+import { canMaterializeText } from "../../../materialization/marks/index.js";
 import { resolveTextGraphicItems } from "../../../materialization/text.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import {

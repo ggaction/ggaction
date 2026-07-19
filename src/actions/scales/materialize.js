@@ -11,7 +11,7 @@ import {
   canDeferScaleConsumerApplication,
   getMarkRematerializationStep,
   getScaleConsumerMaterializationMode
-} from "../../materialization/marks.js";
+} from "../../materialization/marks/index.js";
 import { mapScaleConsumerValues } from
   "../../materialization/scales/map.js";
 import { resolveScaleMaterialization } from
@@ -21,7 +21,7 @@ import {
   findScaleConsumers,
   resolveConsumerValues,
   resolveSeriesLayoutScaleValues
-} from "./consumers.js";
+} from "./consumers/index.js";
 
 const OPTIONS = Object.freeze(["id", "guides", "marks"]);
 

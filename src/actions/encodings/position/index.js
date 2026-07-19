@@ -1,7 +1,7 @@
 import { action } from "../../../core/action.js";
 import {
   getPositionEncodingMaterializationSteps
-} from "../../../materialization/marks.js";
+} from "../../../materialization/marks/index.js";
 import { resolvePositionEncoding } from "./resolve.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { applyPositionSemantics } from "./apply.js";

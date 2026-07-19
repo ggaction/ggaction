@@ -1,6 +1,6 @@
 import { action } from "../../core/action.js";
 import { formatTextValue, validateTextFormat } from "../../grammar/text.js";
-import { canMaterializeText } from "../../materialization/marks.js";
+import { canMaterializeText } from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
 import { resolveTarget, validateOptions } from "./shared.js";
 

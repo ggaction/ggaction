@@ -27,7 +27,7 @@ import { buildPolarLinePathCommands } from "../../../grammar/polarLineCommands.j
 import { resolvePolarFrame } from "../../../grammar/polar.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { normalizeStrokeDashPattern } from "../../../grammar/scales/index.js";
-import { canMaterializeLine } from "../../../materialization/marks.js";
+import { canMaterializeLine } from "../../../materialization/marks/index.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";

@@ -29,7 +29,7 @@ import {
 } from "../../../grammar/curveCommands.js";
 import { buildLinearPathCommands } from "../../../grammar/pathCommands.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
-import { canMaterializeArea } from "../../../materialization/marks.js";
+import { canMaterializeArea } from "../../../materialization/marks/index.js";
 import { findUpstreamTransform } from "../../../materialization/dataProvenance.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";

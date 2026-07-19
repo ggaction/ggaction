@@ -7,7 +7,7 @@ import {
   applyMaterializationPlan,
   planScaleGuideRematerialization
 } from "../../materialization/dependencies.js";
-import { getMarkMaterializationStep } from "../../materialization/marks.js";
+import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
 import { buildMaterializationPlan } from "../../materialization/planner.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { requireLayer } from "../../selectors/layers.js";

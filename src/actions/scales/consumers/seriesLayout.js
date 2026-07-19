@@ -1,144 +1,26 @@
-import { deriveBarAggregates } from "../../grammar/bars/aggregate.js";
+import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
 import {
   BAR_GRAINS,
   resolveBarChannels,
   resolveBarColorLayout,
   resolveBarGrain
-} from "../../grammar/bars/policy.js";
+} from "../../../grammar/bars/policy.js";
 import {
   countHistogramBins,
   findHistogramBinIndex,
   resolveHistogramBins
-} from "../../grammar/histogram.js";
-import { deriveDensityAreaSeries } from "../../grammar/areaSeries.js";
-import { deriveLineSeries } from "../../grammar/lineSeries.js";
-import { resolveSeriesLayoutDomainValues } from "../../grammar/seriesLayout.js";
+} from "../../../grammar/histogram.js";
+import { deriveDensityAreaSeries } from "../../../grammar/areaSeries.js";
+import {
+  resolveSeriesLayoutDomainValues
+} from "../../../grammar/seriesLayout.js";
 import {
   readNominalField,
   readQuantitativeField,
-  readScaleField,
-  readTemporalField,
   resolveOrdinalDomain
-} from "../../grammar/scales/index.js";
-import { findDataset } from "../../selectors/datasets.js";
-import { requireSemanticScale } from "../../selectors/scales.js";
-import { isAggregate } from "../../grammar/aggregate.js";
-import { normalizeRuleDatum } from "../../grammar/rules.js";
-import { SCALED_ENCODING_CHANNELS } from "../../core/vocabulary.js";
-import { resolveRectConsumerValues } from "../../materialization/rect.js";
-
-export function findScale(program, id) {
-  return requireSemanticScale(program, id);
-}
-
-export function findScaleConsumers(program, id) {
-  const consumers = [];
-  for (const layer of program.semanticSpec.layers) {
-    for (const channel of SCALED_ENCODING_CHANNELS) {
-      const encoding = layer.encoding?.[channel];
-      if (encoding?.scale === id) consumers.push({ layer, channel, encoding });
-    }
-  }
-  return consumers;
-}
-
-export function resolveConsumerValues(program, consumer) {
-  const dataset = findDataset(program, consumer.layer.data);
-  if (dataset === undefined) {
-    throw new Error(
-      `Mark "${consumer.layer.id}" references unknown dataset "${consumer.layer.data}".`
-    );
-  }
-
-  if (Object.hasOwn(consumer.encoding, "datum")) {
-    return [normalizeRuleDatum(
-      consumer.encoding.datum,
-      consumer.encoding.fieldType,
-      consumer.channel
-    )];
-  }
-
-  if (
-    consumer.channel === "strokeDash" &&
-    !["line", "rule"].includes(consumer.layer.mark?.type)
-  ) {
-    throw new Error("strokeDash scale materialization requires a line mark or rule mark.");
-  }
-  const scale = findScale(program, consumer.encoding.scale);
-  const allowUnknown = Object.hasOwn(scale, "unknown");
-  if (consumer.layer.mark?.type === "rect") {
-    return resolveRectConsumerValues(
-      consumer.layer,
-      dataset,
-      consumer.channel
-    );
-  }
-
-  if (
-    ["color", "strokeDash", "xOffset", "yOffset", "shape"].includes(consumer.channel) &&
-    consumer.encoding.fieldType === "nominal"
-  ) {
-    return allowUnknown
-      ? readScaleField(
-          dataset.values,
-          consumer.encoding.field,
-          consumer.encoding.fieldType,
-          { allowUnknown: true }
-        )
-      : readNominalField(dataset.values, consumer.encoding.field);
-  }
-
-  if (
-    consumer.layer.mark?.type === "line" &&
-    isAggregate(consumer.layer.encoding?.y?.aggregate)
-  ) {
-    const derived = deriveLineSeries(dataset.values, consumer.layer);
-    return consumer.channel === "x" ? derived.xValues : derived.yValues;
-  }
-
-  if (
-    resolveBarGrain(consumer.layer) === BAR_GRAINS.aggregate
-  ) {
-    const derived = deriveBarAggregates(dataset.values, consumer.layer);
-    if (consumer.channel === "color") {
-      return derived.values.map(value => value.color);
-    }
-    return consumer.channel === "x" ? derived.xValues : derived.yValues;
-  }
-
-  if (consumer.encoding.fieldType === "temporal") {
-    return allowUnknown
-      ? readScaleField(dataset.values, consumer.encoding.field, "temporal", {
-          allowUnknown: true
-        })
-      : readTemporalField(dataset.values, consumer.encoding.field);
-  }
-  if (["nominal", "ordinal"].includes(consumer.encoding.fieldType)) {
-    if (!["ordinal", "band", "point"].includes(scale.type)) {
-      throw new Error(
-        `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
-      );
-    }
-    return allowUnknown
-      ? readScaleField(
-          dataset.values,
-          consumer.encoding.field,
-          consumer.encoding.fieldType,
-          { allowUnknown: true }
-        )
-      : readNominalField(dataset.values, consumer.encoding.field);
-  }
-  if (consumer.encoding.fieldType !== "quantitative") {
-    throw new Error(
-      `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
-    );
-  }
-  return allowUnknown
-    ? readScaleField(dataset.values, consumer.encoding.field, "quantitative", {
-        allowUnknown: true
-      })
-    : readQuantitativeField(dataset.values, consumer.encoding.field);
-}
+} from "../../../grammar/scales/index.js";
+import { findDataset } from "../../../selectors/datasets.js";
+import { findScale } from "./common.js";
 
 export function resolveHistogramCountValues(program, consumer) {
   const xEncoding = consumer.layer.encoding?.x;
@@ -146,7 +28,6 @@ export function resolveHistogramCountValues(program, consumer) {
     ? undefined
     : findScale(program, xEncoding.scale);
   const dataset = findDataset(program, consumer.layer.data);
-
   if (xEncoding?.bin === undefined || xScale === undefined) {
     throw new Error(
       `Histogram mark "${consumer.layer.id}" requires a binned x scale.`
@@ -157,7 +38,6 @@ export function resolveHistogramCountValues(program, consumer) {
       `Histogram mark "${consumer.layer.id}" requires an existing dataset.`
     );
   }
-
   const xValues = readQuantitativeField(dataset.values, xEncoding.field);
   const bins = resolveHistogramBins({
     values: xValues,
@@ -186,7 +66,6 @@ function resolveHistogramPartitions(program, consumer) {
   if (colorEncoding?.scale === undefined) {
     return countHistogramBins(xValues, bins.boundaries).map(value => [value]);
   }
-
   const colorScale = findScale(program, colorEncoding.scale);
   const colorValues = readNominalField(dataset.values, colorEncoding.field);
   const colorDomain = resolveOrdinalDomain(colorScale.domain, colorValues);
@@ -224,7 +103,6 @@ function resolveAggregatePartitions(program, consumer) {
     ]));
     return categoryDomain.map(value => [byCategory.get(value) ?? 0]);
   }
-
   const colorScale = findScale(program, colorEncoding.scale);
   const colorValues = readNominalField(dataset.values, colorEncoding.field);
   const colorDomain = resolveOrdinalDomain(colorScale.domain, colorValues);

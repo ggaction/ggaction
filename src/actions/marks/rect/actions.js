@@ -6,7 +6,7 @@ import {
 } from "../../../materialization/rectConfig.js";
 import {
   canMaterializeRect
-} from "../../../materialization/marks.js";
+} from "../../../materialization/marks/index.js";
 import { resolveRectGraphicItems } from "../../../materialization/rect.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";

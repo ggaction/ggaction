@@ -6,7 +6,7 @@
 - [x] STEP 2 — Core program state와 immutable transition 분리
 - [x] STEP 3 — Grammar ownership, statistics와 충돌 경로 정리
 - [x] STEP 4 — Mark와 encoding orchestration 정리
-- [ ] STEP 5 — Scale consumer와 materialization policy 정리
+- [x] STEP 5 — Scale consumer와 materialization policy 정리
 - [ ] STEP 6 — Guide, layout와 facet composition 정리
 - [ ] STEP 7 — Renderer와 source package boundary 정리
 - [ ] STEP 8 — Comprehensive integration과 Gate B

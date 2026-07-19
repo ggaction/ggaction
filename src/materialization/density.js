@@ -1,4 +1,4 @@
-import { getMarkMaterializationStep } from "./marks.js";
+import { getMarkMaterializationStep } from "./marks/index.js";
 import { requireLayer } from "../selectors/layers.js";
 import { buildMaterializationPlan } from "./planner.js";
 

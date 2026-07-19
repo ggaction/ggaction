@@ -10,7 +10,7 @@ import { buildAnnularSectorCommands } from "../../../grammar/polarPaths.js";
 import { resolvePolarFrame } from "../../../grammar/polar.js";
 import { mapOrdinalValues } from "../../../grammar/scales/index.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
-import { canMaterializeArc } from "../../../materialization/marks.js";
+import { canMaterializeArc } from "../../../materialization/marks/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";

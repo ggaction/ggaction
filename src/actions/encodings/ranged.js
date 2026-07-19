@@ -12,7 +12,7 @@ import { normalizeRuleDatum } from "../../grammar/rules.js";
 import {
   canMaterializeArea,
   canMaterializeLine
-} from "../../materialization/marks.js";
+} from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
   resolveTarget,

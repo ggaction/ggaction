@@ -3,48 +3,17 @@ import {
   getExistingMarkRematerializationStep,
   getMarkMaterializationStep,
   getSourceDependentMarkSteps
-} from "./marks.js";
+} from "./marks/index.js";
 import { requireLayer } from "../selectors/layers.js";
 import {
   applyMaterializationPlan,
   buildMaterializationPlan
 } from "./planner.js";
+import { hasMaterializedLegend } from "./legends.js";
 import {
-  hasMaterializedLegend,
-  materializedLegendUsesScale
-} from "./legends.js";
-import { POSITION_ENCODING_CHANNELS } from "../core/vocabulary.js";
-
-function usesPositionalScale(program, id) {
-  return program.semanticSpec.layers.some(layer =>
-    POSITION_ENCODING_CHANNELS.some(
-      channel => layer.encoding?.[channel]?.scale === id
-    )
-  );
-}
-
-function usesRadialScale(program, id) {
-  return program.semanticSpec.layers.some(layer =>
-    layer.encoding?.radius?.scale === id
-  );
-}
-
-function needsCanvasScaleRematerialization(program, scale) {
-  return (
-    (scale.range === "auto" ||
-      usesRadialScale(program, scale.id) ||
-      program.semanticSpec.guides.axis?.x?.scale === scale.id ||
-      program.semanticSpec.guides.axis?.y?.scale === scale.id ||
-      program.semanticSpec.guides.axis?.theta?.scale === scale.id ||
-      program.semanticSpec.guides.axis?.radius?.scale === scale.id ||
-      program.semanticSpec.guides.grid?.horizontal?.scale === scale.id ||
-      program.semanticSpec.guides.grid?.vertical?.scale === scale.id ||
-      program.semanticSpec.guides.grid?.theta?.scale === scale.id ||
-      program.semanticSpec.guides.grid?.radial?.scale === scale.id) &&
-    program.resolvedScales[scale.id] !== undefined &&
-    usesPositionalScale(program, scale.id)
-  );
-}
+  needsCanvasScaleRematerialization,
+  planScaleGuideRematerialization
+} from "./scaleGuideDependencies.js";
 
 function hasTitle(program) {
   return (
@@ -96,57 +65,6 @@ export function planCanvasRematerialization(program) {
   return buildMaterializationPlan({ scales, marks, guides, layout });
 }
 
-export function planScaleGuideRematerialization(program, id) {
-  const guides = [];
-  const objects = program.graphicSpec?.objects ?? {};
-  const guideConfigs = program.guideConfigs ?? {};
-  if (
-    objects.xAxisLine &&
-    program.semanticSpec.guides.axis?.x?.scale === id
-  ) {
-    guides.push({ op: "editXAxisLine" });
-  }
-  if (
-    objects.yAxisLine &&
-    program.semanticSpec.guides.axis?.y?.scale === id
-  ) {
-    guides.push({ op: "editYAxisLine" });
-  }
-  for (const channel of ["x", "y"]) {
-    for (const component of ["ticks", "labels", "title"]) {
-      if (guideConfigs.axis?.[channel]?.[component]?.scale === id) {
-        const suffix = component[0].toUpperCase() + component.slice(1);
-        guides.push({ op: `edit${channel.toUpperCase()}Axis${suffix}` });
-      }
-    }
-  }
-  for (const channel of ["theta", "radius"]) {
-    const prefix = channel === "theta" ? "Theta" : "Radial";
-    for (const component of ["line", "ticks", "labels", "title"]) {
-      if (guideConfigs.axis?.[channel]?.[component]?.scale === id) {
-        const suffix = component[0].toUpperCase() + component.slice(1);
-        guides.push({ op: `edit${prefix}Axis${suffix}` });
-      }
-    }
-  }
-  if (guideConfigs.grid?.horizontal?.scale === id) {
-    guides.push({ op: "rematerializeHorizontalGrid" });
-  }
-  if (guideConfigs.grid?.vertical?.scale === id) {
-    guides.push({ op: "rematerializeVerticalGrid" });
-  }
-  if (guideConfigs.grid?.theta?.scale === id) {
-    guides.push({ op: "rematerializeThetaGrid" });
-  }
-  if (guideConfigs.grid?.radial?.scale === id) {
-    guides.push({ op: "rematerializeRadialGrid" });
-  }
-  if (materializedLegendUsesScale(program, id)) {
-    guides.push({ op: "rematerializeLegend" });
-  }
-  return buildMaterializationPlan({ guides });
-}
-
 export function planLayerDataRematerialization(program, id) {
   const layer = requireLayer(program, id);
   const scaleIds = [...new Set(
@@ -187,3 +105,4 @@ export function applyLayerDataRematerialization(program, id) {
 }
 
 export { applyMaterializationPlan } from "./planner.js";
+export { planScaleGuideRematerialization };
