@@ -8,7 +8,7 @@
 - [x] STEP 4 — Mark와 encoding orchestration 정리
 - [x] STEP 5 — Scale consumer와 materialization policy 정리
 - [x] STEP 6 — Guide, layout와 facet composition 정리
-- [ ] STEP 7 — Renderer와 source package boundary 정리
+- [x] STEP 7 — Renderer와 source package boundary 정리
 - [ ] STEP 8 — Comprehensive integration과 Gate B
 - [ ] STEP 9 — GitHub organization/transfer preflight
 - [ ] STEP 10 — Repository transfer와 Gate C
