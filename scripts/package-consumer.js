@@ -195,12 +195,30 @@ async function testNodeConsumer(directory) {
     });
     assert.deepEqual(directSequentialCount.semanticSpec, nestedSequentialCount.semanticSpec);
 
-    class ConsumerProgram extends ChartProgram {}
+    class ConsumerProgram extends ChartProgram {
+      passthrough(options = {}) {
+        return passthrough.call(this, options);
+      }
+
+      finish(options = {}) {
+        return finish.call(this, options);
+      }
+    }
     const passthrough = action(
       { op: "passthrough", description: "Return one extension program." },
       function () { return this; }
     );
-    assert.equal(passthrough.call(new ConsumerProgram()) instanceof ConsumerProgram, true);
+    const finish = action(
+      { op: "finish", description: "Chain a second extension action." },
+      function () { return this; }
+    );
+    const extensionResult = new ConsumerProgram().passthrough().finish();
+    assert.equal(extensionResult instanceof ConsumerProgram, true);
+    assert.deepEqual(
+      extensionResult.trace.children.map(node => node.op),
+      ["passthrough", "finish"]
+    );
+    assert.deepEqual(extensionResult.actionStack, []);
 
     await assert.rejects(() => import("ggaction/src/index.js"), /not defined|not exported/);
   `;
@@ -232,6 +250,14 @@ async function testNodeConsumer(directory) {
 }
 
 async function testTypeScriptConsumer(directory) {
+  const extensionAuthoring = await readFile(
+    path.join(root, "examples", "extension-typescript", "program.ts"),
+    "utf8"
+  );
+  await writeFile(
+    path.join(directory, "extension-authoring.ts"),
+    extensionAuthoring
+  );
   await writeFile(path.join(directory, "consumer.ts"), `
     import {
       chart,
@@ -324,7 +350,7 @@ async function testTypeScriptConsumer(directory) {
       noEmit: true,
       skipLibCheck: false
     },
-    files: ["consumer.ts"]
+    files: ["consumer.ts", "extension-authoring.ts"]
   }, null, 2)}\n`);
   run(tscCommand, ["--project", "tsconfig.json"], directory);
 }

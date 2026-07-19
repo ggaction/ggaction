@@ -12,4 +12,7 @@ export interface ActionMetadata {
 export function action<TOptions extends ActionOptions = ActionOptions>(
   metadata: ActionMetadata,
   implementation: (this: ChartProgram, options: TOptions) => ChartProgram
-): (this: ChartProgram, options?: TOptions) => ChartProgram;
+): <TProgram extends ChartProgram>(
+  this: TProgram,
+  options?: TOptions
+) => TProgram;

@@ -12,6 +12,8 @@ All notable changes to `ggaction` are recorded in this file.
   edits, including labels, titles, and optional backgrounds.
 - Accepted `count` on sequential palette descriptors as a concrete gradient-stop count, consistently across
   top-level palette shorthands, nested ranges, encodings, direct scales, and scale edits.
+- Preserved concrete `ChartProgram` subclasses in the TypeScript signature of wrapped extension actions and added
+  a strict NodeNext declaration-merging authoring pattern.
 
 ## [0.0.3] - 2026-07-19
 

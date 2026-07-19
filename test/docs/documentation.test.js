@@ -236,6 +236,19 @@ test("documents sequential palette count consistently across scale surfaces", ()
   assert.match(encoding, /controls the concrete gradient-stop count/);
 });
 
+test("keeps the strict TypeScript extension example executable by package CI", () => {
+  const documentation = read("docs/extension/action-authoring.md");
+  const section = documentation.slice(
+    documentation.indexOf("## Strict TypeScript authoring")
+  );
+  const documented = section.match(/```typescript\n([\s\S]*?)```/)?.[1];
+  const executable = read("examples/extension-typescript/program.ts");
+
+  assert.equal(documented, executable);
+  assert.match(documentation, /strict: true/);
+  assert.match(documentation, /skipLibCheck: false/);
+});
+
 test("keeps task pages visual and chart figures canonical", async () => {
   const catalog = chartExampleCatalog();
   const manifest = JSON.parse(read("docs/assets/images/manifest.json"));
