@@ -19,6 +19,11 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
     prefix: "renderers/canvas/",
     floor: Object.freeze({ lines: 75, branches: 60, functions: 80 }),
     rationale: "Every concrete primitive renderer is a public rendering boundary."
+  }),
+  "regression-grammar": Object.freeze({
+    prefix: "grammar/regression/",
+    floor: Object.freeze({ lines: 90, branches: 75, functions: 100 }),
+    rationale: "Every regression validation, fit, and prediction owner must preserve the statistical contract."
   })
 });
 
@@ -37,7 +42,6 @@ export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
   "grammar/areaSeries.js": Object.freeze({ lines: 75, branches: 75, functions: 100 }),
   "grammar/markFilter.js": Object.freeze({ lines: 75, branches: 60, functions: 100 }),
   "grammar/markSelection.js": Object.freeze({ lines: 90, branches: 90, functions: 100 }),
-  "grammar/regression.js": Object.freeze({ lines: 90, branches: 75, functions: 100 }),
   "grammar/scales/definition.js": Object.freeze({
     lines: 90,
     branches: 85,

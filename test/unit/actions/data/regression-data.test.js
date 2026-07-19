@@ -29,6 +29,21 @@ test("derives grouped OLS rows at observed unique x values", () => {
   assert.ok(Math.abs(studentTCritical(0.95, 252) - 1.9694223653655463) < 1e-12);
 });
 
+test("validates the public Student-t wrapper independently from its kernel", () => {
+  for (const confidence of [NaN, 0, 1]) {
+    assert.throws(
+      () => studentTCritical(confidence, 3),
+      /Regression confidence must be between 0 and 1/
+    );
+  }
+  for (const degreesOfFreedom of [0, 1.5, Infinity]) {
+    assert.throws(
+      () => studentTCritical(0.95, degreesOfFreedom),
+      /Student-t degrees of freedom must be positive/
+    );
+  }
+});
+
 test("creates immutable regression provenance and concrete values", () => {
   const cars = loadCars();
   const expected = createCarsRegressionScatterplotValues(cars);
