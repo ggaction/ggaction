@@ -4,7 +4,7 @@ import { registerColorEncodingAction } from "./color.js";
 import { registerDensityEncodingAction } from "./density.js";
 import { registerHistogramEncodingAction } from "./histogram.js";
 import { registerOffsetEncodingAction } from "./offset.js";
-import { registerPositionEncodingActions } from "./position.js";
+import { registerPositionEncodingActions } from "./position/index.js";
 import { registerRangedEncodingActions } from "./ranged.js";
 import { registerStrokeDashEncodingActions } from "./strokeDash.js";
 import { registerRuleAppearanceEncodingActions } from "./ruleAppearance.js";

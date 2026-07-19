@@ -1,14 +1,14 @@
-import { action } from "../../core/action.js";
+import { action } from "../../../core/action.js";
 import {
   getPositionEncodingMaterializationSteps
-} from "../../materialization/marks.js";
-import { resolvePositionEncoding } from "./position/resolve.js";
-import { findLayer } from "../../selectors/layers.js";
-import { applyPositionSemantics } from "./position/apply.js";
+} from "../../../materialization/marks.js";
+import { resolvePositionEncoding } from "./resolve.js";
+import { findLayer } from "../../../selectors/layers.js";
+import { applyPositionSemantics } from "./apply.js";
 import {
   applyEncodingScale,
   rebindPositionGuides
-} from "./shared.js";
+} from "../shared.js";
 
 function encodePosition(program, channel, args, operation) {
   const {

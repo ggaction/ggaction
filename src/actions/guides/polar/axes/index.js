@@ -3,31 +3,31 @@ import {
   createThetaAxis,
   editRadialAxis,
   editThetaAxis
-} from "./axes/facade.js";
+} from "./facade.js";
 import {
   createRadialAxisLabels,
   createThetaAxisLabels,
   editRadialAxisLabels,
   editThetaAxisLabels
-} from "./axes/labels.js";
+} from "./labels.js";
 import {
   createRadialAxisLine,
   createThetaAxisLine,
   editRadialAxisLine,
   editThetaAxisLine
-} from "./axes/lines.js";
+} from "./lines.js";
 import {
   createRadialAxisTicks,
   createThetaAxisTicks,
   editRadialAxisTicks,
   editThetaAxisTicks
-} from "./axes/ticks.js";
+} from "./ticks.js";
 import {
   createRadialAxisTitle,
   createThetaAxisTitle,
   editRadialAxisTitle,
   editThetaAxisTitle
-} from "./axes/titles.js";
+} from "./titles.js";
 
 export function registerPolarAxisActions(ProgramClass) {
   Object.assign(ProgramClass.prototype, {
