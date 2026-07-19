@@ -15,7 +15,7 @@
 
 Gate 상태: `ready-for-review`
 
-구현 checkpoint: `pending push`
+구현 checkpoint: `c4f0fd4` (`origin/main`)
 
 ## 승인할 public call chain
 
