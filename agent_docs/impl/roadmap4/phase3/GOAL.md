@@ -16,7 +16,7 @@ Gate로 합치지 않는다.
 - [x] Phase 2 exit 승인과 Polar arc / line / rule baseline 확인
 - [x] weighted theta exact contract와 Gate matrix 작성
 - [x] P3-A weighted theta 구현과 review package 작성
-- [ ] P3-A 사용자 승인
+- [x] P3-A 사용자 승인
 - [ ] P3-B field-driven stroke width 구현과 사용자 승인
 - [ ] declarations, package, docs와 누적 회귀 closeout
 
@@ -53,7 +53,7 @@ program.encodeTheta({
 
 | Gate | 상태 | 승인 대상 | 승인 전 차단되는 작업 |
 | --- | --- | --- | --- |
-| P3-A | ready-for-review | weighted theta source/call chain, chart image와 contract evidence | field-driven stroke width |
+| P3-A | approved | weighted theta source/call chain, chart image와 contract evidence | field-driven stroke width |
 | P3-B | pending | line/rule stroke-width source/call chain, chart image와 grain evidence | Phase closeout |
 | P3-Exit | pending | declarations, package, docs와 누적 tests | Phase 4 |
 

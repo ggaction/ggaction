@@ -9,7 +9,7 @@
 - [x] public docs, generated reference와 runnable example 동기화
 - [x] targeted, contract와 full regression
 - [x] P3-A review package 작성
-- [ ] P3-A 사용자 승인
+- [x] P3-A 사용자 승인
 
 ## 작업
 

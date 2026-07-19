@@ -11,9 +11,9 @@
 - [x] Browser Canvas와 2x Node PNG
 - [x] public type, Current contract, docs와 generated references
 - [x] full tests, coverage와 packed-package consumer
-- [ ] 사용자 승인
+- [x] 사용자 승인
 
-Gate 상태: `ready-for-review`
+Gate 상태: `approved` (2026-07-20)
 
 구현 checkpoint: `c4f0fd4` (`origin/main`)
 
@@ -87,3 +87,5 @@ Category order는 scale domain을 따르고, 각 sweep은 해당 category의 `po
 - Weight는 arc theta에서만 허용되며 point/line/radius에 전달하면 명시 오류다.
 - Invalid weight는 state와 trace 생성 전에 실패한다.
 - P3-B field-driven stroke width는 이 Gate 승인 전까지 구현하지 않는다.
+
+2026-07-20 사용자 승인으로 P3-B field-driven stroke width 구현이 열렸다.
