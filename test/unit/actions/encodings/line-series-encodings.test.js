@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/ChartProgram.js";
-import { DASH10, TABLEAU10 } from "../../../../src/grammar/scales.js";
+import { DASH10, TABLEAU10 } from "../../../../src/grammar/scales/index.js";
 
 const rows = [
   { year: "2020-01-01", value: 2, origin: "A", cylinders: 4 },

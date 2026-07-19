@@ -6,7 +6,7 @@ import {
   mapOrdinalPositionValues,
   mapOrdinalValues,
   normalizeStrokeDashPattern
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 import { deriveRuleValues, resolveRuleMode } from "../../../grammar/rules.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { findDataset } from "../../../selectors/datasets.js";

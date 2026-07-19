@@ -9,7 +9,7 @@ import {
   mapSequentialColors,
   readScaleField,
   validateScaleUnknown
-} from "../../../../src/grammar/scales.js";
+} from "../../../../src/grammar/scales/index.js";
 
 test("normalizes invalid field inputs only when an unknown policy is active", () => {
   const rows = [

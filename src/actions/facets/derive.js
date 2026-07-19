@@ -1,6 +1,6 @@
 import { freezeOwned } from "../../core/immutable.js";
 import { resolveHistogramBins } from "../../grammar/histogram.js";
-import { readQuantitativeField } from "../../grammar/scales.js";
+import { readQuantitativeField } from "../../grammar/scales/index.js";
 import { BAR_GRAINS, resolveBarGrain } from "../../grammar/bars/policy.js";
 import { resolveFacetScaleDomains } from "../../grammar/facets/scales.js";
 import {

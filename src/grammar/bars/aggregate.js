@@ -1,5 +1,5 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
-import { readNominalField, readTemporalField } from "../scales.js";
+import { readNominalField, readTemporalField } from "../scales/index.js";
 import {
   aggregateRows,
   validateAggregateFieldType,

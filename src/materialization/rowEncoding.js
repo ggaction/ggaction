@@ -5,7 +5,7 @@ import {
   readQuantitativeField,
   readScaleField,
   readTemporalField
-} from "../grammar/scales.js";
+} from "../grammar/scales/index.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
 
 export function resolveRowEncodingValues(program, layer, dataset, channel) {

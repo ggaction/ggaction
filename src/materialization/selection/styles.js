@@ -7,7 +7,7 @@ import {
   validateUnitInterval
 } from "../../core/validation.js";
 import { validatePointShape } from "../../grammar/pointShapes.js";
-import { normalizeStrokeDashPattern } from "../../grammar/scales.js";
+import { normalizeStrokeDashPattern } from "../../grammar/scales/index.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 
 const DEFAULT_POINT_SIZE = 2;

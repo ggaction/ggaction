@@ -4,7 +4,7 @@ import {
   validateKeys,
   validateOptionObject
 } from "../../../../core/validation.js";
-import { formatDiscretizedIntervals } from "../../../../grammar/scales.js";
+import { formatDiscretizedIntervals } from "../../../../grammar/scales/index.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
 import {

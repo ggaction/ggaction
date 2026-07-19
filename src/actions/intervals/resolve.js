@@ -3,7 +3,7 @@ import {
   resolveOptionalUserId,
   validateUserId
 } from "../../core/identifiers.js";
-import { readQuantitativeField } from "../../grammar/scales.js";
+import { readQuantitativeField } from "../../grammar/scales/index.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { hasLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";

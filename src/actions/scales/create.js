@@ -15,7 +15,7 @@ import {
   isContinuousColorScaleType,
   isDiscretizedColorScaleType,
   normalizeScaleDefinition
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
 const CREATE_SCALE_OPTIONS = Object.freeze([

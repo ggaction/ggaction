@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
 import { mapContinuousScaleValues } from
-  "../../../../src/grammar/scales.js";
+  "../../../../src/grammar/scales/index.js";
 
 const mixed = [
   { category: "A", group: "one", value: -5 },

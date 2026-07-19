@@ -2,7 +2,7 @@ import {
   isTransformedScaleType,
   resolveContinuousDomain,
   resolveTransformedDomain
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 
 export function resolveSeriesLayoutDomain({
   id,

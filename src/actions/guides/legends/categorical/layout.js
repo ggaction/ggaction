@@ -1,6 +1,6 @@
 import { isPlainObject } from "../../../../core/immutable.js";
 import { noOptions } from "../../../../core/validation.js";
-import { mapOrdinalValues } from "../../../../grammar/scales.js";
+import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
 import { resolveGraphicBounds } from "../../../../layout/canvas.js";
 import { unionConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";

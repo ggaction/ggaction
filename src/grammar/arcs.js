@@ -4,7 +4,7 @@ import {
   mapOrdinalPositionValues,
   readNominalField,
   readQuantitativeField
-} from "./scales.js";
+} from "./scales/index.js";
 
 function requireArcLayer(layer) {
   if (layer?.mark?.type !== "arc") {

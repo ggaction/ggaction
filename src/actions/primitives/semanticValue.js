@@ -22,7 +22,7 @@ import {
   validateSemanticScaleDomain,
   validateSemanticScaleRange,
   validateSemanticScaleType
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 
 function nonEmptyString(value, label) {
   if (typeof value !== "string" || value.length === 0) {

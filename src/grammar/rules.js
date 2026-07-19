@@ -6,7 +6,7 @@ import {
   readQuantitativeField,
   readTemporalField,
   validateSemanticFieldType
-} from "./scales.js";
+} from "./scales/index.js";
 
 const ENDPOINT_CHANNELS = Object.freeze(["x", "y", "x2", "y2"]);
 const VALUE_CHANNELS = Object.freeze([

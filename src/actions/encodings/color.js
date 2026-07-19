@@ -5,7 +5,7 @@ import {
   readScaleField,
   readTemporalField,
   validateCategoricalFieldType
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import {
   BAR_GRAINS,
   inferBarColorLayout,

@@ -5,7 +5,7 @@ import {
   planFacetGuideOwnership,
   resolveSharedFacetLegends
 } from "../grammar/facets/guides.js";
-import { mapOrdinalValues } from "../grammar/scales.js";
+import { mapOrdinalValues } from "../grammar/scales/index.js";
 import { findLayer } from "../selectors/layers.js";
 import { findSemanticScale } from "../selectors/scales.js";
 import { axisGraphicIds, allLegendGraphicIds } from

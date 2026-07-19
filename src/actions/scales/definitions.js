@@ -22,12 +22,12 @@ import {
   validateScalePropertyForType,
   validateScaleTypeForRole,
   isDiscretePositionScaleType
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import {
   validateRadialRange,
   validateThetaRange
 } from "../../grammar/polar.js";
-import { withScaleUnknown } from "../../grammar/scales.js";
+import { withScaleUnknown } from "../../grammar/scales/index.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
 const BASE_OPTIONS = Object.freeze(["id", "type", "domain", "range"]);

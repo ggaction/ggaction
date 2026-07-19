@@ -6,7 +6,7 @@ import {
   mapDiscretizedColors,
   mapOrdinalValues,
   mapSequentialColors
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 
 export function mapScaleConsumerValues(values, resolvedScale, channel) {
   if (channel === "color" && isDiscretizedColorScaleType(resolvedScale.type)) {

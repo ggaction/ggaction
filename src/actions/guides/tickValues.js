@@ -3,7 +3,7 @@ import {
   isTransformedScaleType,
   readQuantitativeField,
   transformedTicks
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { niceTicks, timeTicks } from "../../grammar/ticks.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";

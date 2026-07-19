@@ -21,7 +21,7 @@ import {
   isDiscretePositionScaleType,
   hasOrdinalDomain,
   normalizeScaleDefinition
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import {
   validateRadialRange,
   validateThetaRange

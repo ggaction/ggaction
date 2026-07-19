@@ -7,7 +7,7 @@ import {
 import {
   isTransformedScaleType,
   mapContinuousScaleValues
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { resolveGridLineGeometry } from "../../../layout/grid.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";

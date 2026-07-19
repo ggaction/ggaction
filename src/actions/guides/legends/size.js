@@ -1,6 +1,6 @@
 import { action } from "../../../core/action.js";
 import { validateKeys } from "../../../core/validation.js";
-import { mapLinearValues } from "../../../grammar/scales.js";
+import { mapLinearValues } from "../../../grammar/scales/index.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";

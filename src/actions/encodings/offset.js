@@ -2,7 +2,7 @@ import { action } from "../../core/action.js";
 import {
   readNominalField,
   validateCategoricalFieldType
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { resolveOffsetScaleDefinition } from "../scales/definitions.js";
 import {
   applyEncodingScale,

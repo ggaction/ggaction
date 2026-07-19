@@ -3,7 +3,7 @@ import {
   readNominalField,
   readQuantitativeField,
   readTemporalField
-} from "./scales.js";
+} from "./scales/index.js";
 import {
   layoutSeriesPartition,
   validateColorLayout

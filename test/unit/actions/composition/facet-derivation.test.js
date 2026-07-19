@@ -4,7 +4,7 @@ import test from "node:test";
 import { chart } from "../../../../src/index.js";
 import { deriveFacetChildren } from
   "../../../../src/actions/facets/derive.js";
-import { resolveFacetDefinition } from "../../../../src/grammar/facets.js";
+import { resolveFacetDefinition } from "../../../../src/grammar/facets/index.js";
 
 const rows = [
   { x: 10, y: 10, group: "A", category: 4 },

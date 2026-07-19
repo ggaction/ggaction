@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../src/index.js";
-import { resolveFacetDefinition } from "../../../src/grammar/facets.js";
+import { resolveFacetDefinition } from "../../../src/grammar/facets/index.js";
 
 const rows = [
   { x: 1, y: 4, group: "Japan" },

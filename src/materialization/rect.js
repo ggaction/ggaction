@@ -1,7 +1,7 @@
 import {
   mapOrdinalPositionValues,
   readScaleField
-} from "../grammar/scales.js";
+} from "../grammar/scales/index.js";
 import { RECT_MODES, resolveRectMode } from "../grammar/rects.js";
 import { DEFAULT_RECT_MARK } from "./rectConfig.js";
 import { mapScaleConsumerValues } from "./scales/map.js";

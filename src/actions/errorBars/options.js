@@ -5,7 +5,7 @@ import {
 import {
   normalizeStrokeDashPattern,
   validateOpacityValue
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import {
   validateRuleStroke,
   validateRuleStrokeWidth

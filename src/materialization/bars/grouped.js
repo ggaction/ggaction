@@ -2,7 +2,7 @@ import { deriveBarAggregates } from "../../grammar/bars/aggregate.js";
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { sameOrderedValues } from "../../core/validation.js";
 import {
   DEFAULT_BAR_STROKE,

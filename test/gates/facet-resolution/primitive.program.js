@@ -2,7 +2,7 @@ import { chart } from "../../../src/index.js";
 import {
   mapSequentialColors,
   resolveSequentialColorStops
-} from "../../../src/grammar/scales.js";
+} from "../../../src/grammar/scales/index.js";
 import { attachSnapshotObject } from
   "../../../src/materialization/composition.js";
 import { namespaceGraphicSnapshot } from

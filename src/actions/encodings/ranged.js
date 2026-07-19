@@ -7,7 +7,7 @@ import {
   readScaleField,
   readTemporalField,
   validateSemanticFieldType
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { normalizeRuleDatum } from "../../grammar/rules.js";
 import {
   canMaterializeArea,

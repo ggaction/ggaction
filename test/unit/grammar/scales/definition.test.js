@@ -12,7 +12,7 @@ import {
   validateOrdinalDomain,
   validateScaleDomain,
   validateScaleRange
-} from "../../../../src/grammar/scales.js";
+} from "../../../../src/grammar/scales/index.js";
 
 test("classifies scale roles through canonical predicates", () => {
   assert.equal(isContinuousPositionScaleType("log"), true);

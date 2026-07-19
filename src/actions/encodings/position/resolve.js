@@ -7,7 +7,7 @@ import {
   readTemporalField,
   validateFieldType,
   validatePositionChannel
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 import { resolvePositionScaleDefinition } from "../../scales/definitions.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import {

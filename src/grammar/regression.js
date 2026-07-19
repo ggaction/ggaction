@@ -2,7 +2,7 @@ import { cloneAndFreeze } from "../core/immutable.js";
 import {
   readNominalField,
   readQuantitativeField
-} from "./scales.js";
+} from "./scales/index.js";
 import { studentTCriticalValue } from "./statistics/studentT.js";
 
 export const REGRESSION_LOWER_FIELD = "__regression_ci_lower";

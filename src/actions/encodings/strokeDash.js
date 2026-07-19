@@ -3,7 +3,7 @@ import {
   normalizeStrokeDashPattern,
   readNominalField,
   validateNominalFieldType
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { resolveStrokeDashScaleDefinition } from "../scales/definitions.js";
 import { applyMaterializationPlan } from "../../materialization/dependencies.js";
 import { planEncodingRematerialization } from "../../materialization/encodings.js";

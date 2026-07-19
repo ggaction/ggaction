@@ -6,7 +6,7 @@ import {
   validateOptionObject,
   validatePositiveFinite
 } from "../../core/validation.js";
-import { resolveFacetDefinition } from "../../grammar/facets.js";
+import { resolveFacetDefinition } from "../../grammar/facets/index.js";
 import { normalizeFacetScalePolicies } from
   "../../grammar/facets/scales.js";
 import { resolveFacetLayout } from "../../layout/facets.js";

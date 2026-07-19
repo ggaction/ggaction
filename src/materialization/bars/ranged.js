@@ -1,4 +1,4 @@
-import { mapContinuousScaleValues, mapOrdinalPositionValues, mapOrdinalValues } from "../../grammar/scales.js";
+import { mapContinuousScaleValues, mapOrdinalPositionValues, mapOrdinalValues } from "../../grammar/scales/index.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
 import { DEFAULT_BAR_FILL, DEFAULT_BAR_STROKE, DEFAULT_BAR_STROKE_WIDTH } from "./resolve.js";
 

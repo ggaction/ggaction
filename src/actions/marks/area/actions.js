@@ -10,7 +10,7 @@ import {
   deriveDensityAreaSeries,
   layoutDensityAreaSeries
 } from "../../../grammar/areaSeries.js";
-import { mapContinuousScaleValues, mapOrdinalValues } from "../../../grammar/scales.js";
+import { mapContinuousScaleValues, mapOrdinalValues } from "../../../grammar/scales/index.js";
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,

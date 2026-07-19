@@ -4,7 +4,7 @@ import {
   readQuantitativeField,
   readScaleField,
   validateOpacityValue
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import {
   resolveAppearanceScaleDefinition,
   resolveOpacityScaleDefinition

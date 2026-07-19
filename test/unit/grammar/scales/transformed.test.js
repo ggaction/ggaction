@@ -12,7 +12,7 @@ import {
   validateCompleteScaleType,
   validateScaleTypeForRole,
   validateTransformedDomain
-} from "../../../../src/grammar/scales.js";
+} from "../../../../src/grammar/scales/index.js";
 
 test("separates scale types by semantic consumer role", () => {
   assert.deepEqual(

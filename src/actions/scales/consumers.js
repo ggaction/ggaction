@@ -19,7 +19,7 @@ import {
   readScaleField,
   readTemporalField,
   resolveOrdinalDomain
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { requireSemanticScale } from "../../selectors/scales.js";
 import { isAggregate } from "../../grammar/aggregate.js";

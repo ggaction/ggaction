@@ -8,7 +8,7 @@ import {
   resolveSequentialColorStops,
   validateContinuousColorInterpolation,
   validateSequentialColorRange
-} from "../../../../src/grammar/scales.js";
+} from "../../../../src/grammar/scales/index.js";
 import {
   PALETTE_NAMES,
   resolveContinuousPalette

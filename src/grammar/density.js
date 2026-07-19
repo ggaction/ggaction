@@ -1,5 +1,5 @@
 import { cloneAndFreeze } from "../core/immutable.js";
-import { isNominalValue } from "./scales.js";
+import { isNominalValue } from "./scales/index.js";
 
 const SQRT_TWO_PI = Math.sqrt(2 * Math.PI);
 

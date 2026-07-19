@@ -10,7 +10,7 @@ import { layoutSeriesPartition } from "../../../grammar/seriesLayout.js";
 import {
   readNominalField,
   readTemporalField
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 import { deriveHistogramSegments } from "../../bars/histogram.js";
 import {

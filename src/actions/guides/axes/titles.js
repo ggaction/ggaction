@@ -11,7 +11,7 @@ import {
   isTransformedScaleType,
   mapContinuousScaleValues,
   mapOrdinalPositionValues
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";

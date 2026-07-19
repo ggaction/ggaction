@@ -3,7 +3,7 @@ import { polarToCartesian } from "./polar.js";
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues
-} from "./scales.js";
+} from "./scales/index.js";
 
 function mappedTheta(values, fieldType, scale) {
   return ["nominal", "ordinal"].includes(fieldType)

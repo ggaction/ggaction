@@ -13,7 +13,7 @@ import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues,
   mapSequentialColors
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import {
   DEFAULT_BAR_FILL,
   DEFAULT_BAR_STROKE,

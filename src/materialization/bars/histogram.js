@@ -8,7 +8,7 @@ import {
   mapOrdinalValues,
   readNominalField,
   readQuantitativeField
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { resolveBarColorLayout } from "../../grammar/bars/policy.js";
 import { layoutSeriesPartition } from "../../grammar/seriesLayout.js";
 import {

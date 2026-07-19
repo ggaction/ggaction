@@ -13,7 +13,7 @@ import {
   mapContinuousScaleValues,
   formatTransformedTick,
   mapOrdinalPositionValues
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 import { formatTimeTick, formatTimeTicks } from "../../../grammar/ticks.js";
 import { valuesFromTickConfig } from "../tickValues.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from

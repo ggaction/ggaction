@@ -1,6 +1,6 @@
 import { action } from "../../../core/action.js";
 import { deriveLineSeries } from "../../../grammar/lineSeries.js";
-import { mapContinuousScaleValues, mapOrdinalValues } from "../../../grammar/scales.js";
+import { mapContinuousScaleValues, mapOrdinalValues } from "../../../grammar/scales/index.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   validateNonEmptyString,
@@ -26,7 +26,7 @@ import {
 import { buildPolarLinePathCommands } from "../../../grammar/polarLineCommands.js";
 import { resolvePolarFrame } from "../../../grammar/polar.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
-import { normalizeStrokeDashPattern } from "../../../grammar/scales.js";
+import { normalizeStrokeDashPattern } from "../../../grammar/scales/index.js";
 import { canMaterializeLine } from "../../../materialization/marks.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";

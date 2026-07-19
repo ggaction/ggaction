@@ -1,7 +1,7 @@
 import { action } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { validateKeys } from "../../../../core/validation.js";
-import { mapLinearValues } from "../../../../grammar/scales.js";
+import { mapLinearValues } from "../../../../grammar/scales/index.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
 import {
   assertLegendInsideCanvas,

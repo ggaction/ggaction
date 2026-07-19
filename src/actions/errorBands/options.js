@@ -6,7 +6,7 @@ import {
   validateUnitInterval
 } from "../../core/validation.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
-import { normalizeStrokeDashPattern } from "../../grammar/scales.js";
+import { normalizeStrokeDashPattern } from "../../grammar/scales/index.js";
 
 export const ERROR_BAND_BOUNDARY_OPTIONS = Object.freeze([
   "stroke", "strokeWidth", "strokeDash", "opacity", "curve"

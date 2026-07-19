@@ -10,7 +10,7 @@ import {
   isTransformedScaleType,
   mapContinuousScaleValues,
   mapOrdinalPositionValues
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 import { formatTimeTick, formatTimeTicks } from "../../../grammar/ticks.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";

@@ -24,7 +24,7 @@ import {
   validateOrdinalScaleType,
   validateScaleTypeForRole,
   validateTimeScaleType
-} from "../../grammar/scales.js";
+} from "../../grammar/scales/index.js";
 import { resolveArcAutoPositionRange } from "./policies/arc.js";
 import {
   resolveBinnedBarDomain,

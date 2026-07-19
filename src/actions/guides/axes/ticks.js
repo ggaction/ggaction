@@ -10,7 +10,7 @@ import {
   isTransformedScaleType,
   mapContinuousScaleValues,
   mapOrdinalPositionValues
-} from "../../../grammar/scales.js";
+} from "../../../grammar/scales/index.js";
 import {
   DEFAULT_TICK_COUNT,
   inferHistogramBoundaries,

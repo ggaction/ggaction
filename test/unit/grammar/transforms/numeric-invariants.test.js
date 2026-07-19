@@ -11,7 +11,7 @@ import {
   REGRESSION_UPPER_FIELD,
   deriveLinearRegression
 } from "../../../../src/grammar/regression.js";
-import { mapLinearValues } from "../../../../src/grammar/scales.js";
+import { mapLinearValues } from "../../../../src/grammar/scales/index.js";
 
 function trapezoidIntegral(points) {
   return points.slice(1).reduce((sum, point, index) => {

@@ -1,8 +1,8 @@
-import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
-import { validateUserId } from "../core/identifiers.js";
-import { BAR_GRAINS, resolveBarGrain } from "./bars/policy.js";
-import { planFacetDependencies } from "./facets/dependencies.js";
-import { readNominalField } from "./scales.js";
+import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
+import { validateUserId } from "../../core/identifiers.js";
+import { BAR_GRAINS, resolveBarGrain } from "../bars/policy.js";
+import { planFacetDependencies } from "./dependencies.js";
+import { readNominalField } from "../scales/index.js";
 
 const SUPPORTED_MARKS = new Set(["point", "line", "area", "bar", "rule"]);
 const SUPPORTED_BAR_GRAINS = new Set([

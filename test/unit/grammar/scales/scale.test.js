@@ -30,7 +30,7 @@ import {
   validateScaleRange,
   validateScaleType,
   validateStrokeDashRange
-} from "../../../../src/grammar/scales.js";
+} from "../../../../src/grammar/scales/index.js";
 import { niceTimeDomain } from "../../../../src/grammar/scales/temporal.js";
 
 test("reads finite quantitative field values", () => {
