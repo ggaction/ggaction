@@ -11,7 +11,7 @@
 - [x] STEP 7 — Renderer와 source package boundary 정리
 - [x] STEP 8 — Comprehensive integration과 Gate B 승인
 - [x] STEP 9 — GitHub organization/transfer preflight
-- [ ] STEP 10 — Repository transfer와 Gate C
+- [x] STEP 10 — Repository transfer와 Gate C
 - [ ] STEP 11 — `0.0.4` release candidate, release-only docs와 Gate D
 - [ ] STEP 12 — npm publish, GitHub Release, Pages와 Roadmap 3 closeout
 

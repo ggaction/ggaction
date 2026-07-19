@@ -5,10 +5,10 @@
 - [x] Gate C transfer checklist 승인
 - [x] `hj-n/ggaction`을 `ggaction/ggaction`으로 transfer
 - [x] Local origin과 canonical repository identity 갱신
-- [ ] Actions, environment와 trusted publisher 재연결
+- [x] Actions, environment와 trusted publisher 재연결
 - [x] Old repository/raw/release URL redirect 검증
-- [ ] New repository full CI와 Pages release configuration 검증
-- [ ] Transfer closeout
+- [x] New repository full CI와 Pages release configuration 검증
+- [x] Transfer closeout
 
 Public metadata와 documentation URL 변경은 STEP 11 release preparation에서 한 번에 적용한다.
 
@@ -36,10 +36,16 @@ Public metadata와 documentation URL 변경은 STEP 11 release preparation에서
 - Pages source는 `main:/docs`, build type은 legacy이고
   `https://ggaction.github.io/ggaction/`이 `200`으로 응답한다.
 
-## Remaining Gate C work
+## Post-transfer verification
 
-1. npm trusted publisher의 repository binding을 `ggaction/ggaction`으로 변경하고 exact
-   stored value를 다시 확인한다.
-2. 이 execution record를 새 origin에 push해 organization repository에서 full CI와 Pages
-   deployment를 검증한다.
-3. 검증 결과를 기록하고 STEP 10을 close한다.
+- npm trusted publisher는 `ggaction/ggaction`, workflow `release.yml`, environment
+  `npm-release`, permission `npm publish`로 변경됐다. npm success notification과 저장 후
+  표시된 exact value를 모두 확인했다.
+- Transfer record commit `837bcad`를 new origin에 push했다.
+- Organization repository CI run `29675569716`이 coverage, documentation, Node 20/22/24
+  package consumer와 browser/PNG test를 포함해 전체 성공했다.
+- Pages run `29675568649`이 성공했고 `https://ggaction.github.io/ggaction/`이 `200`으로
+  응답한다.
+- Package sidebar가 보여 주는 repository/homepage는 published `0.0.3` metadata이므로 아직
+  old value인 것이 정상이다. Source package metadata와 public documentation URL은 STEP 11의
+  `0.0.4` release preparation에서 함께 갱신한다.
