@@ -21,7 +21,10 @@
 ## Maintaining These Instructions
 
 - Add durable implementation principles emphasized by the user to the most specific applicable `AGENTS.md` file as they emerge during development.
-- Treat source, tests, and documentation as one change surface: when a conceptual change affects all three, update and verify all three in the same conceptual commit.
+- Treat source and tests as one continuous change surface, but keep public documentation release-scoped. During development,
+  record public documentation impact in the current internal implementation or release plan; update and publish `docs/`,
+  `README.md`, generated public references, and public examples together only during release preparation. A release must not
+  complete with contradictions between its implementation, declarations, package metadata, and public documentation.
 - Do not add one-off task details, temporary workarounds, or narrow implementation notes to instruction files.
 - If a new instruction conflicts with an existing one, surface and resolve the conflict instead of silently replacing either rule.
 
