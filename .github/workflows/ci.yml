@@ -30,6 +30,8 @@ jobs:
         run: npm ci
       - name: Audit the packed package
         run: npm run package:check
+      - name: Install Chromium for tutorial consumers
+        run: npx playwright install --with-deps chromium
       - name: Test installed JavaScript, extension, PNG, and TypeScript consumers
         run: npm run test:package
 
