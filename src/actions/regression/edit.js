@@ -7,7 +7,7 @@ import {
   validateNonNegativeFinite,
   validateUnitInterval
 } from "../../core/validation.js";
-import { normalizeRegressionParameters } from "../../grammar/regression.js";
+import { normalizeRegressionParameters } from "../../grammar/regression/index.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import { hasDataset } from "../../selectors/index.js";
 import { findLayer } from "../../selectors/layers.js";

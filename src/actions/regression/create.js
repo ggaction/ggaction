@@ -1,6 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
-import { normalizeRegressionParameters } from "../../grammar/regression.js";
+import { normalizeRegressionParameters } from "../../grammar/regression/index.js";
 import {
   findRegressionPoint,
   inferRegressionGroup,

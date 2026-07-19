@@ -4,7 +4,7 @@ import { validateKeys } from "../../core/validation.js";
 import {
   deriveRegression,
   normalizeRegressionParameters
-} from "../../grammar/regression.js";
+} from "../../grammar/regression/index.js";
 import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
 
 const OPTIONS = Object.freeze([

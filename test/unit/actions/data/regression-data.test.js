@@ -8,7 +8,7 @@ import {
   normalizeRegressionParameters,
   REGRESSION_LOWER_FIELD,
   studentTCritical
-} from "../../../../src/grammar/regression.js";
+} from "../../../../src/grammar/regression/index.js";
 import { createCarsRegressionScatterplotValues } from
   "../../../charts/cars-regression-scatterplot/reference-values.js";
 import { loadCars } from "../../../support/data.js";

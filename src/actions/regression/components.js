@@ -7,7 +7,7 @@ import { resolveEligibleLayer } from "../../selectors/layers.js";
 import {
   REGRESSION_LOWER_FIELD,
   REGRESSION_UPPER_FIELD
-} from "../../grammar/regression.js";
+} from "../../grammar/regression/index.js";
 import { validateAreaCreateOutline } from "../marks/area/index.js";
 
 const BAND_OPTIONS = Object.freeze([

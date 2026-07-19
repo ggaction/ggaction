@@ -4,7 +4,7 @@ import { validateDensityTransform } from "./density.js";
 import { validateFilterTransform } from "./filter.js";
 import { validateIntervalTransform } from "./interval.js";
 import { validateMarkFilterTransform } from "./markFilter.js";
-import { validateRegressionTransform } from "./regression.js";
+import { validateRegressionTransform } from "./regression/index.js";
 
 const TRANSFORM_VALIDATORS = Object.freeze({
   boxOutlier: validateBoxTransform,

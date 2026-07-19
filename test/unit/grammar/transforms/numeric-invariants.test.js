@@ -10,7 +10,7 @@ import {
   REGRESSION_LOWER_FIELD,
   REGRESSION_UPPER_FIELD,
   deriveLinearRegression
-} from "../../../../src/grammar/regression.js";
+} from "../../../../src/grammar/regression/index.js";
 import { mapLinearValues } from "../../../../src/grammar/scales/index.js";
 
 function trapezoidIntegral(points) {
