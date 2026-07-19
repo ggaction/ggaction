@@ -13,11 +13,7 @@ title: Scatterplot Recipe
 const program = chart()
   .createCanvas()
   .createData({ values })
-  .createPointMark()
-  .encodeX({ field: "x" })
-  .encodeY({ field: "y" })
-  .encodeRadius({ value: 3 })
-  .createGuides();
+  .createScatterPlot({ x: "x", y: "y" });
 ```
 
 ## You must decide
@@ -25,12 +21,12 @@ const program = chart()
 - Dataset values
 - Quantitative x and y fields
 
-Radius is optional, but points need a concrete radius before they are visible.
-Add `encodeColor({ field })` for nominal fill.
+Add `color: "group"`, `size: "amount"`, or `shape: "category"` to the same
+call for field-driven appearance. The default point radius is `3`.
 
 ## The library infers
 
-- Current dataset and mark for later actions
+- Current dataset for the facade and current mark for later actions
 - Stable internal role IDs for the first dataset and point mark
 - Quantitative linear scales named `x` and `y`
 - The `main` Cartesian coordinate
@@ -43,5 +39,6 @@ scale IDs.
 ## Continue
 
 [Scatterplot tutorial](../tutorials/scatterplot.md) ·
+[Basic Charts](../api/basic-charts.md#createscatterplot) ·
 [Quantitative positions](../api/position/quantitative.md) ·
 [Constant appearance](../api/appearance.md)

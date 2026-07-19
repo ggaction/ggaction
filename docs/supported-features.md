@@ -16,13 +16,18 @@ screens.
 
 ### Cartesian charts
 
+The complete `createScatterPlot`, `createLinePlot`, `createBarPlot`,
+`createHistogram`, and pre-gridded `createHeatmap` facades compose the same
+mark, encoding, scale, and guide actions described below. Individual actions
+remain available for custom layering and editing.
+
 | Capability | Scatterplot | Line | Histogram | Bar | Heatmap / ranged rect |
 | --- | --- | --- | --- | --- | --- |
 | Semantic mark | point | line | bar | bar | rect |
 | Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair | two discrete bands or x/x2 + y/y2 ranges |
 | Nominal color | point fill | series stroke | five bar layouts | five bar layouts | cell fill |
 | Stroke dash | — | nominal or constant; 4 named styles | — | — | — |
-| Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width | fill, opacity, outline |
+| Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width | encoded fill, opacity, outline |
 | Automatic guides | linear axes; horizontal grid | UTC time/linear axes; horizontal grid | bin-aligned/linear axes; horizontal grid | ordinal/linear axes; horizontal grid | discrete/continuous axes and color legend |
 | Legend | point color + shape | categorical | categorical | categorical | categorical or continuous color |
 | Selection/highlight | point | series | final bar | final bar | observed cell |
@@ -80,10 +85,18 @@ screens.
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
 | Selection | Strict point/bar/rect/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
 
+Basic chart facades infer only a current or unique dataset and stable unused
+role IDs. Ambiguous data or an occupied default role requires an explicit ID.
+Applicable guides are created by default and can be disabled with
+`guides: false`.
+
 ## Current limitations
 
 Transforms beyond the documented filters, regressions, density and interval
 derivations, as well as interactive legends, are not implemented.
+The current `createHeatmap` facade accepts pre-gridded observed rows only. It
+does not synthesize missing cells or perform two-dimensional binning, and cell
+text must be added as a separate text layer.
 Categorical legends support all four edges; point composite and size legends
 support right and left side layouts.
 Error bars support vertical and horizontal statistical intervals, existing

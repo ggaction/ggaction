@@ -14,15 +14,15 @@ export function createGettingStartedChart() {
       margin: { top: 30, right: 30, bottom: 60, left: 70 }
     })
     .createData({ values: cars })
-    .createPointMark()
-    .encodeX({ field: "horsepower" })
-    .encodeY({ field: "mpg" })
-    .encodeColor({ field: "origin" })
-    .encodeRadius({ value: 4 })
-    .createGuides({
-      axes: {
-        x: { title: { text: "Horsepower" } },
-        y: { title: { text: "Miles per gallon" } }
+    .createScatterPlot({
+      x: "horsepower",
+      y: "mpg",
+      color: "origin",
+      guides: {
+        axes: {
+          x: { title: { text: "Horsepower" } },
+          y: { title: { text: "Miles per gallon" } }
+        }
       }
     });
 }

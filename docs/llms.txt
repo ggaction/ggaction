@@ -15,6 +15,7 @@ HTML routes are canonical; the generated full-text bundle is available at
 
 ## Public API layers
 
+- Basic scatter, line, bar, histogram, and heatmap charts: ./api/basic-charts/
 - Chart authoring: ./reference/actions/#chart-authoring-api
 - Advanced chart actions: ./reference/actions/#advanced-chart-api
 - Extension action authoring: ./extension/action-authoring/
@@ -37,6 +38,7 @@ are internal operations.
 - Line chart: ./recipes/line-chart/ | ./tutorials/line-chart/
 - Histogram: ./recipes/histogram/ | ./tutorials/histogram/
 - Bar chart: ./recipes/bar-chart/ | ./tutorials/grouped-bar/
+- Heatmap: ./recipes/heatmap/ | ./api/basic-charts/#createheatmap
 - Regression scatterplot: ./recipes/regression-scatterplot/ | ./tutorials/regression-scatterplot/
 - Density area: ./recipes/density-area/ | ./tutorials/density-area/
 - Error bar: ./recipes/error-bar/ | ./tutorials/error-bar/
@@ -91,9 +93,7 @@ line/area series, and rule items. Its explicit value sources distinguish data
 fields, pre-scale semantic channels, and concrete graphic properties.
 `highlightMarks` applies mark-specific concrete emphasis, optional complement
 dimming, and front order to point, bar, line/area-series, and rule items.
-It is distributed as the ESM-only `ggaction` npm package for Node 20 or later,
-renders through Browser Canvas and Node PNG, and provides TypeScript declarations
-for `ggaction`, `ggaction/extension`, and `ggaction/png`.
+It is an ESM-only npm package for Node 20 or later with Browser Canvas, Node PNG,
+and TypeScript entries for `ggaction`, `ggaction/extension`, and `ggaction/png`.
 
-Program composition supports hconcat/vconcat, nested Cartesian/Polar snapshots, layout editing, replacement, and
-Cartesian facets with scale/guide resolution. Polar facets, SVG, animation, and automatic compilation are unsupported.
+Program composition supports concat, nested Cartesian/Polar snapshots, editing, replacement, and Cartesian facets. Polar facets, SVG, animation, and automatic compilation are unsupported.

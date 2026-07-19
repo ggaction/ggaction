@@ -1,5 +1,7 @@
 export const DEFAULT_FONT_FAMILY = "sans-serif";
 
+export const DEFAULT_POINT_RADIUS = 3;
+
 export const DEFAULT_COLORS = Object.freeze({
   mark: "#4c78a8",
   text: "#334155",

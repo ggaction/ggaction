@@ -45,20 +45,21 @@ const program = chart()
     margin: { top: 40, right: 140, bottom: 70, left: 80 }
   })
   .createData({ id: "jobs", values: rows })
-  .createBarMark({ id: "bars" })
-  .encodeX({ field: "year", fieldType: "ordinal" })
-  .encodeY({
-    field: "perc",
-    aggregate: "mean",
-    scale: { nice: true, zero: false }
-  })
-  .encodeColor({
-    field: "sex",
-    layout: "group",
-    scale: { palette: "tableau10" }
-  })
-  .encodeBarWidth({ band: 0.72 })
-  .createGuides();
+  .createBarPlot({
+    id: "bars",
+    x: { field: "year", fieldType: "ordinal" },
+    y: {
+      field: "perc",
+      aggregate: "mean",
+      scale: { nice: true, zero: false }
+    },
+    color: {
+      field: "sex",
+      layout: "group",
+      scale: { palette: "tableau10" }
+    },
+    width: { band: 0.72 }
+  });
 
 render(program, document.querySelector("#chart").getContext("2d"));
 ```
@@ -67,12 +68,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
-| `createBarMark` | A bar layer bound to `jobs` | An initially empty rect collection |
-| ordinal `encodeX` | Year categories and an ordinal x scale | Resolved equal-width year bands |
-| aggregate `encodeY` | `mean(perc)` with no stack | A resolved quantitative y scale |
-| grouped `encodeColor` | Sex color and xOffset encodings | Resolved color and within-band slots |
-| `encodeBarWidth` | No additional semantic state | Concrete centered rectangles using 72% of each slot |
-| `createGuides` | Axis, horizontal-grid, and legend definitions | Ordinal/linear axes, grid lines, and a right-side legend |
+| `createBarPlot` | Bar layer, ordinal/aggregate positions, grouped color and guides | Concrete grouped rectangles plus ordinal/linear axes, grid, and legend |
 
 `layout: "group"` is the atomic grouping choice. It keeps y unstacked and
 invokes the advanced xOffset encoding for the same field. `encodeBarWidth`
@@ -112,18 +108,19 @@ decision that makes concrete grouped rectangles possible.
 
 ```text
 program
-├─ createBarMark
-├─ encodeX
-├─ encodeY
-├─ encodeColor
-│  ├─ encodeXOffset
-│  └─ rematerializeBarMark
-├─ encodeBarWidth
-│  └─ rematerializeBarMark
-└─ createGuides
-   ├─ createAxes
-   ├─ createGrid
-   └─ createLegend
+└─ createBarPlot
+   ├─ createBarMark
+   ├─ encodeX
+   ├─ encodeY
+   ├─ encodeColor
+   │  ├─ encodeXOffset
+   │  └─ rematerializeBarMark
+   ├─ encodeBarWidth
+   │  └─ rematerializeBarMark
+   └─ createGuides
+      ├─ createAxes
+      ├─ createGrid
+      └─ createLegend
 ```
 
 ## Run and continue
@@ -132,4 +129,5 @@ program
 - View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](../api/position-encodings.md),
   [Series encodings](../api/series-encodings.md), and
-  [Constant appearance](../api/appearance.md).
+  [Constant appearance](../api/appearance.md), or review the
+  [Basic Chart contract](../api/basic-charts.md#createbarplot).

@@ -36,13 +36,10 @@ test("builds the public cars histogram with chart actions", () => {
   assert.equal(title.textAlign, "center");
   assert.equal(subtitle.textAlign, "center");
   assert.deepEqual(program.trace.children.map(node => node.op), [
-    "createCanvas",
-    "createData",
-    "createBarMark",
-    "encodeHistogram",
-    "encodeColor",
-    "createGuides",
-    "createTitle"
+    "createCanvas", "createData", "createHistogram", "createTitle"
+  ]);
+  assert.deepEqual(program.trace.children[2].children.map(node => node.op), [
+    "createBarMark", "encodeHistogram", "encodeColor", "createGuides"
   ]);
 });
 

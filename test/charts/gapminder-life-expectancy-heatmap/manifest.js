@@ -15,13 +15,22 @@ export const gapminderHeatmapTarget = `chart()
     margin: { top: 70, right: 120, bottom: 75, left: 110 }
   })
   .createData({ values: rows })
-  .createRectMark()
-  .encodeX({ field: "year", fieldType: "ordinal" })
-  .encodeY({ field: "country", fieldType: "nominal" })
-  .encodeColor({
-    field: "life_expect",
-    fieldType: "quantitative",
-    scale: { type: "sequential", palette: "viridis" }
+  .createHeatmap({
+    id: "rect",
+    x: { field: "year", fieldType: "ordinal" },
+    y: { field: "country", fieldType: "nominal" },
+    color: {
+      field: "life_expect",
+      fieldType: "quantitative",
+      scale: { type: "sequential", palette: "viridis" }
+    },
+    guides: {
+      axes: {
+        x: { title: { text: "Year" } },
+        y: { title: { text: "Country" } }
+      },
+      legend: { title: "Life expectancy" }
+    }
   })
   .createTextMark({
     fontSize: 10,
@@ -30,13 +39,6 @@ export const gapminderHeatmapTarget = `chart()
     baseline: "middle"
   })
   .encodeText({ field: "life_expect", format: ".0f" })
-  .createGuides({
-    axes: {
-      x: { title: { text: "Year" } },
-      y: { title: { text: "Country" } }
-    },
-    legend: { title: "Life expectancy" }
-  })
   .createTitle({
     text: "Life Expectancy over Time",
     align: "center"

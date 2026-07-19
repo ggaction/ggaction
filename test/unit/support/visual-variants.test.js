@@ -41,6 +41,21 @@ test("accepts an exact Roadmap 3 phase and capability scope", () => {
   });
 });
 
+test("accepts an exact Roadmap 4 phase and capability scope", () => {
+  assert.deepEqual(defineVisualVariant({
+    ...required,
+    artifact: {
+      roadmap: "roadmap4",
+      phase: "phase3",
+      capability: "weighted-theta"
+    }
+  }).artifact, {
+    roadmap: "roadmap4",
+    phase: "phase3",
+    capability: "weighted-theta"
+  });
+});
+
 test("accepts only complete compact visual signatures", () => {
   const visualSignature = {
     inkRatio: { min: 0.1, max: 0.2 },

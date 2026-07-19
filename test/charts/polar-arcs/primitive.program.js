@@ -3,11 +3,14 @@ import { chart } from "../../../src/index.js";
 import {
   CAUSE_ORDER,
   CARS_DONUT_TARGET,
+  CLUSTER_ORDER,
   GAPMINDER_RADIAL_TARGET,
+  GAPMINDER_WEIGHTED_DONUT_TARGET,
   MONTH_ORDER,
   NIGHTINGALE_TARGET,
   RADIAL_COUNTRY_ORDER,
   createCarsDonutReference,
+  createGapminderWeightedDonutReference,
   createGapminderRadialBarReference,
   createNightingaleRoseReference
 } from "./reference-values.js";
@@ -375,6 +378,39 @@ export function createCarsOriginDonutPrimitives(rows) {
       },
       guides: {
         "legend.color": { scale: "color", title: "Origin" }
+      }
+    }
+  });
+}
+
+export function createGapminderWeightedDonutPrimitives(rows) {
+  return createArcPrimitiveProgram(createGapminderWeightedDonutReference(rows), {
+    target: GAPMINDER_WEIGHTED_DONUT_TARGET,
+    opacity: 0.96,
+    sectorStroke: "#ffffff",
+    sectorStrokeWidth: 1,
+    thetaFontSize: 11,
+    mark: { innerRadius: 0.5, padAngle: 1.25, opacity: 0.96 },
+    semantic: {
+      scales: {
+        theta: {
+          type: "band", domain: CLUSTER_ORDER, range: "auto",
+          paddingInner: 0, paddingOuter: 0, align: 0.5
+        },
+        color: {
+          type: "ordinal", domain: CLUSTER_ORDER,
+          range: ["#4c78a8", "#f58518", "#e45756", "#72b7b2", "#54a24b", "#eeca3b"]
+        }
+      },
+      encoding: {
+        theta: {
+          field: "cluster", fieldType: "nominal", scale: "theta",
+          aggregate: "sum", weight: "pop"
+        },
+        color: { field: "cluster", fieldType: "nominal", scale: "color" }
+      },
+      guides: {
+        "legend.color": { scale: "color", title: "Cluster" }
       }
     }
   });

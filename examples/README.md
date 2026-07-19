@@ -9,7 +9,8 @@ python3 -m http.server 8000
 ```
 
 Then open <http://localhost:8000/examples/cars-scatterplot/>. The example uses
-the Chart API to materialize 392 circles and the Canvas renderer to draw them.
+`createScatterPlot` to materialize 392 circles and the Canvas renderer to draw
+them.
 
 ## Getting started
 
@@ -27,19 +28,31 @@ render three Origin paths, axes, a combined color/dash legend, and chart title.
 
 Open <http://localhost:8000/examples/cars-line-chart/>. This is the ordinary
 chart-authoring example: it creates the same aggregate line chart entirely with
-`createLineMark`, encoding, guide, and title actions.
+`createLinePlot` and a separate title action.
 
 ## Cars histogram
 
 Open <http://localhost:8000/examples/cars-histogram/>. This chart uses
-`createBarMark`, atomic histogram encoding, color stacking, inferred guides,
-and a centered title.
+`createHistogram` for atomic bins, color stacking, and inferred guides, then
+adds a centered title.
 
 ## Jobs grouped bar chart
 
 Open <http://localhost:8000/examples/jobs-grouped-bar/>. This chart aggregates
-job percentages by year, groups bars by sex, and infers ordinal axes, a
-horizontal grid, and a right-side legend.
+job percentages by year through `createBarPlot`, groups bars by sex, and infers
+ordinal axes, a horizontal grid, and a right-side legend.
+
+## Gapminder life-expectancy heatmap
+
+Open <http://localhost:8000/examples/gapminder-life-expectancy-heatmap/>. This
+chart uses `createHeatmap` for observed pre-gridded cells, then adds a text layer
+for the displayed values.
+
+## Gapminder population donut
+
+The `gapminder-population-donut` program filters one year, then uses
+`encodeTheta({ aggregate: "sum", weight: "pop" })` to size each cluster sector
+by total population without expanding the source rows.
 
 ## Cars regression scatterplot
 

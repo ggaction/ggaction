@@ -21,6 +21,7 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.color.layout",
   "encoding.color.aggregate",
   "encoding.theta.aggregate",
+  "encoding.theta.weight",
   "encoding.text.format",
   ...CARTESIAN_POSITION_CHANNELS.flatMap(channel => [
     `encoding.${channel}.aggregate`,

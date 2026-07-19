@@ -12,6 +12,7 @@ owns the decision you need to make; follow its focused pages only when the
 overview no longer provides enough control.
 
 <div class="docs-entry-grid docs-entry-grid--two">
+  <a href="./basic-charts/"><strong>Basic charts</strong><span>Create scatter, line, bar, histogram, and heatmap charts from their minimum field decisions.</span></a>
   <a href="./canvas/"><strong>Canvas and data</strong><span>Create the drawing surface, immutable source data, and derived transforms.</span></a>
   <a href="./marks/"><strong>Marks</strong><span>Create point, line, area, bar, and rule layers.</span></a>
   <a href="./encodings/"><strong>Encodings</strong><span>Map fields and constants to position, grouping, and appearance.</span></a>

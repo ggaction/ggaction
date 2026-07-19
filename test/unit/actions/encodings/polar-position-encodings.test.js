@@ -65,7 +65,11 @@ test("encodes Polar angle and radius into final Cartesian point geometry", () =>
   );
   assert.equal(
     Object.hasOwn(program.graphicSpec.objects.points.items[0].properties, "radius"),
-    false
+    true
+  );
+  assert.deepEqual(
+    program.graphicSpec.objects.points.items.map(child => child.properties.radius),
+    [3, 3, 3]
   );
 });
 

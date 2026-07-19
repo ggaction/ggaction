@@ -6,7 +6,8 @@ import { chromium } from "playwright";
 
 import {
   ROADMAP2_ARTIFACT_ROOT,
-  ROADMAP3_ARTIFACT_ROOT
+  ROADMAP3_ARTIFACT_ROOT,
+  ROADMAP4_ARTIFACT_ROOT
 } from "../test/support/artifact-paths.js";
 import { artifactTrackConfig } from "../test/support/artifact-schema.js";
 
@@ -142,6 +143,10 @@ try {
   await verifyGallery(browser, {
     roadmap: "roadmap3",
     root: ROADMAP3_ARTIFACT_ROOT
+  });
+  await verifyGallery(browser, {
+    roadmap: "roadmap4",
+    root: ROADMAP4_ARTIFACT_ROOT
   });
 } finally {
   await browser.close();

@@ -5,6 +5,8 @@ import { createCarsOriginDonut } from
   "../../../../examples/cars-origin-donut/program.js";
 import { createGapminderRadialBars } from
   "../../../../examples/gapminder-radial-bars/program.js";
+import { createGapminderPopulationDonut } from
+  "../../../../examples/gapminder-population-donut/program.js";
 import { resolveStoredSelection } from
   "../../../../src/materialization/selection/state.js";
 import { loadCars, loadGapminder } from "../../../support/data.js";
@@ -24,6 +26,24 @@ test("selects count sectors at their final visual grain", () => {
     "USA", "Europe", "Japan"
   ]);
   assert.equal(resolved.items[2].members.length, 79);
+  assert.equal(selected.graphicSpec, base.graphicSpec);
+});
+
+test("selects weighted sectors at the grouped source-member grain", () => {
+  const base = createGapminderPopulationDonut(loadGapminder());
+  const selected = base.selectMarks({
+    target: "arc",
+    channel: "theta",
+    op: "eq",
+    value: 4
+  });
+  const resolved = resolveStoredSelection(selected);
+  const item = resolved.items.find(candidate => resolved.keys.includes(candidate.key));
+
+  assert.deepEqual(resolved.keys, ["arc/sector/4"]);
+  assert.equal(item.channels.theta, 4);
+  assert.equal(item.members.every(row => row.cluster === 4), true);
+  assert.equal(item.members.length > 1, true);
   assert.equal(selected.graphicSpec, base.graphicSpec);
 });
 

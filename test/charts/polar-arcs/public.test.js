@@ -5,6 +5,8 @@ import { createCarsOriginDonut } from
   "../../../examples/cars-origin-donut/program.js";
 import { createGapminderRadialBars } from
   "../../../examples/gapminder-radial-bars/program.js";
+import { createGapminderPopulationDonut } from
+  "../../../examples/gapminder-population-donut/program.js";
 import { createNightingaleRoseChart } from
   "../../../examples/nightingale-rose-chart/program.js";
 import { assertChartProgramsEquivalent } from
@@ -16,9 +18,22 @@ import {
 } from "../../support/data.js";
 import {
   createCarsOriginDonutPrimitives,
+  createGapminderWeightedDonutPrimitives,
   createGapminderRadialBarPrimitives,
   createNightingaleRosePrimitives
 } from "./primitive.program.js";
+
+test("matches the weighted Gapminder donut primitive exactly", () => {
+  const rows = loadGapminder();
+  const program = createGapminderPopulationDonut(rows);
+
+  assertChartProgramsEquivalent({
+    primitiveProgram: createGapminderWeightedDonutPrimitives(rows),
+    publicProgram: program
+  });
+  assert.equal(program.semanticSpec.datasets[0].values.length, 62);
+  assert.equal(program.graphicSpec.objects.arc.items.length, 6);
+});
 
 test("matches the approved Cars donut primitive exactly", () => {
   const rows = loadCars();

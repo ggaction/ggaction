@@ -95,6 +95,11 @@ interface ChartProgramActions {
   editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;
   createBoxPlot(options?: BoxPlotOptions): ChartProgram;
   editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
+  createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
+  createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createBarPlot(options: CreateBarPlotOptions): ChartProgram;
+  createHistogram(options: CreateHistogramOptions): ChartProgram;
+  createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
@@ -249,6 +254,52 @@ createData({ id?, values })
 ```
 
 Create one immutable named dataset. [Data](../api/data.md)
+
+### `createScatterPlot`
+
+```javascript
+createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, guides? })
+```
+
+Create a complete Cartesian point chart from required x/y fields and optional
+appearance encodings. [Basic Charts](../api/basic-charts.md#createscatterplot)
+
+### `createLinePlot`
+
+```javascript
+createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, line?, guides? })
+```
+
+Create a complete Cartesian line chart, including optional series grouping and
+appearance. [Basic Charts](../api/basic-charts.md#createlineplot)
+
+### `createBarPlot`
+
+```javascript
+createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
+```
+
+Create a complete vertical, horizontal, aggregate, ranged, grouped, or stacked
+bar chart through the existing bar policies.
+[Basic Charts](../api/basic-charts.md#createbarplot)
+
+### `createHistogram`
+
+```javascript
+createHistogram({ id?, data?, coordinate?, field, maxBins?, binStep?, binBoundaries?, stack?, xScale?, yScale?, color?, bar?, guides? })
+```
+
+Create a bar layer with atomic bin and count encodings. Exactly one bin mode may
+be specified. [Basic Charts](../api/basic-charts.md#createhistogram)
+
+### `createHeatmap`
+
+```javascript
+createHeatmap({ id?, data?, coordinate?, x, y, color, rect?, guides? })
+```
+
+Create one rect cell per valid pre-gridded row. The required color encoding owns
+cell fill. [Basic Charts](../api/basic-charts.md#createheatmap)
 
 ### `filterData`
 
@@ -486,7 +537,7 @@ source or position. [Text marks](../api/marks/text.md)
 | `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
-| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count for proportional sectors |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 <!-- action-capabilities:position:end -->
 

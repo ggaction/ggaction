@@ -739,7 +739,8 @@ export interface ThetaEncodingOptions {
   fieldType?: FieldType;
   scale?: ThetaScaleOptions;
   coordinate?: string;
-  aggregate?: "count";
+  aggregate?: "count" | "sum";
+  weight?: string;
 }
 
 export interface RadialEncodingOptions {
@@ -958,6 +959,119 @@ export interface EditBoxPlotOptions {
     radius?: number;
     opacity?: number;
   };
+}
+
+type BasicPositionChannel =
+  | string
+  | Omit<PositionEncodingOptions, "target" | "coordinate">;
+type BasicColorChannel =
+  | string
+  | (ColorEncodingOptions extends infer T
+      ? T extends unknown ? Omit<T, "target"> : never
+      : never);
+export type BasicSizeChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: ScaleOptions;
+};
+export type BasicShapeChannel = string | {
+  field: string;
+  fieldType?: "nominal";
+  scale?: ScaleOptions;
+};
+export type BasicStrokeDashChannel =
+  StrokeDashEncodingOptions extends infer T
+    ? T extends unknown ? Omit<T, "target"> : never
+    : never;
+
+export interface CreateScatterPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: BasicPositionChannel;
+  y: BasicPositionChannel;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: {
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  };
+  guides?: false | CreateGuidesOptions;
+}
+
+export interface CreateLinePlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: BasicPositionChannel;
+  y: BasicPositionChannel;
+  color?: BasicColorChannel;
+  groupBy?: string;
+  strokeDash?: BasicStrokeDashChannel;
+  line?: {
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+    stroke?: string;
+    opacity?: number;
+    closed?: boolean;
+  };
+  guides?: false | CreateGuidesOptions;
+}
+
+type BasicHistogramEncoding =
+  HistogramEncodingOptions extends infer T
+    ? T extends unknown ? Omit<T, "field" | "target" | "coordinate"> : never
+    : never;
+
+export interface CreateBarPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: BasicPositionChannel;
+  y: BasicPositionChannel;
+  color?: BasicColorChannel;
+  width?: Omit<BarWidthOptions, "target">;
+  bar?: {
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  };
+  guides?: false | CreateGuidesOptions;
+}
+
+export type CreateHistogramOptions = BasicHistogramEncoding & {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  color?: BasicColorChannel;
+  bar?: {
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  };
+  guides?: false | CreateGuidesOptions;
+};
+
+export interface CreateHeatmapOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: BasicPositionChannel;
+  y: BasicPositionChannel;
+  color: BasicColorChannel;
+  rect?: {
+    opacity?: number;
+    stroke?: string | false;
+    strokeWidth?: number;
+  };
+  guides?: false | CreateGuidesOptions;
 }
 
 export interface ErrorBandPositionChannel {
@@ -1629,6 +1743,11 @@ export class ChartProgram {
   editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;
   createBoxPlot(options?: BoxPlotOptions): ChartProgram;
   editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
+  createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
+  createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createBarPlot(options: CreateBarPlotOptions): ChartProgram;
+  createHistogram(options: CreateHistogramOptions): ChartProgram;
+  createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;

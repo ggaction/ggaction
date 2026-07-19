@@ -36,8 +36,20 @@ test("leaves no Roadmap 3 Phase 10 capability in Planned inventory", () => {
     "cross-feature-integration"
   ]);
   for (const id of assigned) assert.equal(planned.has(id), false, id);
-  assert.deepEqual(index.plannedActions, []);
-  assert.deepEqual(index.plannedCapabilities, []);
+  const roadmap3Actions = new Set(
+    inventory.proposedActions.map(action => action.name)
+  );
+  const roadmap3Capabilities = new Set([
+    ...inventory.proposedOperations.map(operation => operation.name),
+    ...inventory.parameterExtensions.map(extension => extension.id),
+    ...inventory.proposedCapabilities.map(capability => capability.id)
+  ]);
+  for (const action of index.plannedActions) {
+    assert.equal(roadmap3Actions.has(action.name), false, action.name);
+  }
+  for (const capability of index.plannedCapabilities) {
+    assert.equal(roadmap3Capabilities.has(capability.id), false, capability.id);
+  }
 });
 
 test("locks composition into exact declarations and public package exports", () => {

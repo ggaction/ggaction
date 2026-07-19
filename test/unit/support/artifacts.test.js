@@ -83,19 +83,43 @@ async function createRoadmap3Artifact(
 }
 
 test("owns every artifact track schema in one extensible registry", () => {
-  assert.deepEqual(artifactTrackNames(), ["roadmap2", "roadmap3"]);
+  assert.deepEqual(artifactTrackNames(), ["roadmap2", "roadmap3", "roadmap4"]);
   assert.deepEqual(artifactTrackConfig("roadmap2").pathKeys, ["chart", "variant"]);
   assert.deepEqual(
     artifactTrackConfig("roadmap3").pathKeys,
     ["capability", "chart", "variant"]
   );
-  assert.throws(() => artifactTrackConfig("roadmap4"), /Unknown artifact track/);
+  assert.deepEqual(
+    artifactTrackConfig("roadmap4").pathKeys,
+    ["capability", "chart", "variant"]
+  );
+  assert.throws(() => artifactTrackConfig("roadmap5"), /Unknown artifact track/);
 });
 
-test("resolves legacy, Roadmap 2, and Roadmap 3 PNG artifact paths", () => {
+test("resolves legacy and registered Roadmap PNG artifact paths", () => {
   assert.equal(
     resolvePngArtifactPath({ name: "cars-scatterplot" }),
     path.join(PNG_ARTIFACT_ROOT, "cars-scatterplot.png")
+  );
+  assert.equal(
+    resolvePngArtifactPath({
+      artifact: {
+        roadmap: "roadmap4",
+        phase: "phase3",
+        capability: "weighted-theta",
+        chart: "gapminder-population-donut",
+        variant: "weighted-theta",
+        kind: "user-facing"
+      }
+    }),
+    path.join(
+      PNG_ARTIFACT_ROOT,
+      "roadmap4",
+      "weighted-theta",
+      "gapminder-population-donut",
+      "weighted-theta",
+      "user-facing.png"
+    )
   );
   assert.equal(
     resolvePngArtifactPath({

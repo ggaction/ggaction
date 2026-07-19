@@ -121,15 +121,15 @@ const program = chart()
     margin: { top: 30, right: 30, bottom: 60, left: 70 }
   })
   .createData({ values: cars })
-  .createPointMark()
-  .encodeX({ field: "horsepower" })
-  .encodeY({ field: "mpg" })
-  .encodeColor({ field: "origin" })
-  .encodeRadius({ value: 4 })
-  .createGuides({
-    axes: {
-      x: { title: { text: "Horsepower" } },
-      y: { title: { text: "Miles per gallon" } }
+  .createScatterPlot({
+    x: "horsepower",
+    y: "mpg",
+    color: "origin",
+    guides: {
+      axes: {
+        x: { title: { text: "Horsepower" } },
+        y: { title: { text: "Miles per gallon" } }
+      }
     }
   });
 
@@ -137,15 +137,17 @@ const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));
 ```
 
-`createPointMark` uses the most recently created dataset. Encoding actions use
-the most recently created mark. Pass `data` or `target` explicitly when a
-program contains more than one candidate. The first omitted dataset and point
-IDs are stored as `"data"` and `"point"`; name them explicitly only when a later
-multi-resource flow needs that identity.
+`createScatterPlot` uses the current dataset, creates a point mark, assigns the
+x, y, and optional appearance encodings, and creates applicable guides. It
+records those regular actions as trace children rather than compiling a second
+chart specification. Pass `data` explicitly when a program contains more than
+one dataset candidate; pass `id` when a later multi-resource flow needs that
+mark identity.
 
-`createGuides` infers the applicable axes and horizontal grid from the position
-encodings. The renderer reads only concrete `graphicSpec` values already
-produced by actions; it does not compile `semanticSpec` during rendering.
+The wrapped `createGuides` action infers the applicable axes and horizontal
+grid from the position encodings. The renderer reads only concrete
+`graphicSpec` values already produced by actions; it does not compile
+`semanticSpec` during rendering.
 A nominal point color encoding can produce a categorical legend; adding a
 matching shape encoding produces a composite color-and-shape legend.
 
@@ -182,6 +184,7 @@ The source repository also contains complete modules for the
 [line chart](https://github.com/ggaction/ggaction/tree/main/examples/cars-line-chart/),
 [histogram](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram/),
 [bar chart](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar/),
+[heatmap](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-life-expectancy-heatmap/),
 [regression scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-regression-scatterplot/),
 [density area](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area/),
 [error bar](https://github.com/ggaction/ggaction/tree/main/examples/cars-error-bar/),
@@ -192,6 +195,8 @@ The source repository also contains complete modules for the
 
 ## Next
 
+- Start with the five [Basic Chart actions](./api/basic-charts.md), then use
+  resource-specific actions for advanced edits and layering.
 - Use the [cars scatterplot tutorial](./tutorials/scatterplot.md) with the
   repository dataset.
 - Build temporal aggregate series in the
@@ -262,15 +267,16 @@ const program = chart()
     margin: { top: 30, right: 30, bottom: 60, left: 70 }
   })
   .createData({ id: "cars", values: rows })
-  .createPointMark({ id: "points" })
-  .encodeX({ field: "Horsepower" })
-  .encodeY({ field: "Miles_per_Gallon" })
-  .encodeColor({ field: "Origin" })
-  .encodeRadius({ value: 3 })
-  .createGuides({
-    axes: {
-      x: { title: { text: "Horsepower" } },
-      y: { title: { text: "Miles per Gallon" } }
+  .createScatterPlot({
+    id: "points",
+    x: "Horsepower",
+    y: "Miles_per_Gallon",
+    color: "Origin",
+    guides: {
+      axes: {
+        x: { title: { text: "Horsepower" } },
+        y: { title: { text: "Miles per Gallon" } }
+      }
     }
   });
 
@@ -284,16 +290,12 @@ render(program, context);
 | --- | --- | --- |
 | `createCanvas` | — | Canvas dimensions and background |
 | `createData` | Immutable named rows | — |
-| `createPointMark` | Point layer bound to `cars` | One circle child per row |
-| `encodeX`, `encodeY` | Fields, scales, Cartesian coordinate | Concrete x/y values |
-| `encodeColor` | Nominal color field and scale | Concrete fill colors |
-| `encodeRadius` | — | Constant circle radius |
-| `createGuides` | Axis and horizontal-grid definitions | Concrete grid/axis lines, ticks, labels, and axis titles |
+| `createScatterPlot` | Point layer, x/y/color encodings, scales, Cartesian coordinate, and guides | Concrete circles plus grid/axis lines, ticks, labels, and titles |
 
-Position encodings create the default `main` Cartesian coordinate before guides
-are requested. `createGuides` calls the axis and grid actions, which read that
-stored relationship and create guide graphics; they do not create or repair
-coordinates.
+`createScatterPlot` calls `createPointMark`, the requested encoding actions,
+and `createGuides` as wrapped children. Position encodings create the default
+`main` Cartesian coordinate before guides are requested. The guide children
+read that stored relationship; they do not create or repair coordinates.
 
 ## Reassign encodings
 
@@ -372,24 +374,25 @@ property edits remain available deeper in the same tree.
 
 ```text
 program
-├─ createPointMark
-├─ encodeX
-├─ encodeY
-├─ encodeColor
-├─ encodeRadius
-└─ createGuides
-   ├─ createAxes
-   │  ├─ createXAxis
-   │  └─ createYAxis
-   └─ createGrid
+└─ createScatterPlot
+   ├─ createPointMark
+   ├─ encodeX
+   ├─ encodeY
+   ├─ encodeColor
+   └─ createGuides
+      ├─ createAxes
+      │  ├─ createXAxis
+      │  └─ createYAxis
+      └─ createGrid
 ```
 
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
 - View the [complete browser source](https://github.com/ggaction/ggaction/blob/main/examples/cars-scatterplot/main.js).
-- Continue with [Encodings](../api/encodings.md) and
-  [Guides](../api/guides.md).
+- Continue with [Encodings](../api/encodings.md),
+  [Guides](../api/guides.md), and the
+  [Basic Chart contract](../api/basic-charts.md#createscatterplot).
 
 <!-- Source: /tutorials/polar-points/ -->
 
@@ -615,9 +618,9 @@ interpolation only; Cartesian lines retain the complete curve vocabulary.
 
 # Polar Arc Tutorial
 
-Arc marks turn Polar positions into closed sector paths. Use count aggregation
-for proportional donut sectors, or combine categorical theta bands with a
-quantitative radius for rose charts and radial bars.
+Arc marks turn Polar positions into closed sector paths. Use count or weighted
+sum aggregation for proportional donut sectors, or combine categorical theta
+bands with a quantitative radius for rose charts and radial bars.
 
 ## Count a category into a donut
 
@@ -663,6 +666,41 @@ render(program, document.querySelector("canvas").getContext("2d"));
 `aggregate: "count"` assigns one sector to each category and makes its angular
 sweep proportional to the category count. The omitted radius encoding uses the
 available Polar radius. `innerRadius` is a fraction of that available radius.
+
+## Sum a field into weighted sectors
+
+Use `aggregate: "sum"` when each source row contributes a numeric weight rather
+than one count. This example filters Gapminder to one year and partitions the
+donut by the total population in each cluster:
+
+```javascript
+const clusterOrder = [0, 1, 2, 3, 4, 5];
+const populationByCluster = chart()
+  .createCanvas({
+    width: 680,
+    height: 520,
+    margin: { top: 65, right: 200, bottom: 55, left: 55 }
+  })
+  .createData({ values: gapminder.filter(row => row.year === 2005) })
+  .createArcMark({ innerRadius: 0.5, padAngle: 1.25 })
+  .encodeTheta({
+    field: "cluster",
+    fieldType: "nominal",
+    aggregate: "sum",
+    weight: "pop",
+    scale: { domain: clusterOrder }
+  })
+  .encodeColor({
+    field: "cluster",
+    fieldType: "nominal",
+    scale: { domain: clusterOrder }
+  })
+  .createGuides({ axes: false, grid: false, legend: { title: "Cluster" } });
+```
+
+Repeated categories and fractional weights are valid. Every weight must be a
+non-negative finite number, and the total must be positive. Invalid input fails
+before semantic state or trace changes; source rows are never expanded.
 
 ## Rose overlays
 
@@ -822,24 +860,21 @@ const program = chart()
     margin: { top: 80, right: 170, bottom: 60, left: 80 }
   })
   .createData({ id: "cars", values: rows })
-  .createLineMark({ id: "trends" })
-  .encodeX({
-    field: "Year",
-    fieldType: "temporal",
-    scale: { nice: true }
-  })
-  .encodeY({
-    field: "Acceleration",
-    aggregate: "mean",
-    scale: { nice: true, zero: false }
-  })
-  .encodeColor({
-    field: "Origin",
-    scale: { palette: "tableau10" }
-  })
-  .encodeStrokeDash({ field: "Origin" })
-  .createGuides({
-    axes: { y: { ticksAndLabels: { count: 6 } } }
+  .createLinePlot({
+    id: "trends",
+    x: {
+      field: "Year",
+      fieldType: "temporal",
+      scale: { nice: true }
+    },
+    y: {
+      field: "Acceleration",
+      aggregate: "mean",
+      scale: { nice: true, zero: false }
+    },
+    color: { field: "Origin", scale: { palette: "tableau10" } },
+    strokeDash: { field: "Origin" },
+    guides: { axes: { y: { ticksAndLabels: { count: 6 } } } }
   })
   .createTitle({
     text: "The trend of acceleration by year",
@@ -853,12 +888,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
-| `createLineMark` | A line layer bound to `cars` | An initially empty path collection |
-| `encodeX` | Temporal field, time scale, Cartesian coordinate | Resolved horizontal scale |
-| `encodeY` | Quantitative mean aggregation | Sorted concrete series paths |
-| `encodeColor` | Nominal series identity and color scale | One concrete stroke per origin |
-| `encodeStrokeDash` | Nominal dash scale | One concrete dash pattern per origin |
-| `createGuides` | Axis, horizontal-grid, and combined legend definitions | Grid/axis lines, ticks, labels, titles, legend symbols |
+| `createLinePlot` | Line layer, temporal/aggregate positions, series appearance, scales, and guides | Sorted concrete series paths plus axes, grid, and combined legend |
 | `createTitle` | Chart title and subtitle text | Plot-aligned text graphics |
 
 The source rows remain immutable. Aggregation creates derived series values;
@@ -868,10 +898,15 @@ field and ordered domain, `createGuides` combines them into one legend.
 ## Change the curve
 
 Curve is line appearance rather than a semantic field encoding. It can be set
-when the mark is created:
+inside the facade:
 
 ```javascript
-.createLineMark({ id: "trends", curve: "step" })
+.createLinePlot({
+  id: "trends",
+  x: { field: "Year", fieldType: "temporal" },
+  y: { field: "Acceleration", aggregate: "mean" },
+  line: { curve: "step" }
+})
 ```
 
 or edited after the complete chart exists:
@@ -914,18 +949,19 @@ does not infer those relationships later.
 
 ```text
 program
-├─ createLineMark
-├─ encodeX
-├─ encodeY
-│  └─ rematerializeLineMark
-├─ encodeColor
-│  └─ rematerializeLineMark
-├─ encodeStrokeDash
-│  └─ rematerializeLineMark
-├─ createGuides
-│  ├─ createAxes
-│  ├─ createGrid
-│  └─ createLegend
+├─ createLinePlot
+│  ├─ createLineMark
+│  ├─ encodeX
+│  ├─ encodeY
+│  │  └─ rematerializeLineMark
+│  ├─ encodeColor
+│  │  └─ rematerializeLineMark
+│  ├─ encodeStrokeDash
+│  │  └─ rematerializeLineMark
+│  └─ createGuides
+│     ├─ createAxes
+│     ├─ createGrid
+│     └─ createLegend
 └─ createTitle
 ```
 
@@ -934,7 +970,8 @@ program
 - Serve the repository root and open `examples/cars-line-chart/`.
 - View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-line-chart/program.js).
 - Continue with [Encodings](../api/encodings.md),
-  [Guides](../api/guides.md), and [Titles](../api/titles.md).
+  [Guides](../api/guides.md), [Titles](../api/titles.md), and the
+  [Basic Chart contract](../api/basic-charts.md#createlineplot).
 
 <!-- Source: /tutorials/histogram/ -->
 
@@ -979,17 +1016,14 @@ const program = chart()
     margin: { top: 80, right: 60, bottom: 130, left: 80 }
   })
   .createData({ id: "cars", values: rows })
-  .createBarMark({ id: "bars" })
-  .encodeHistogram({
+  .createHistogram({
+    id: "bars",
     field: "Displacement",
     maxBins: 10,
-    xScale: { nice: true, zero: false }
+    xScale: { nice: true, zero: false },
+    color: { field: "Origin", scale: { palette: "tableau10" } },
+    guides: { legend: { position: "bottom" } }
   })
-  .encodeColor({
-    field: "Origin",
-    scale: { palette: "tableau10" }
-  })
-  .createGuides({ legend: { position: "bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",
@@ -1003,16 +1037,13 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
-| `createBarMark` | A bar layer bound to `cars` | An initially empty rect collection |
-| `encodeHistogram` | Binned x plus count/zero-stack y encodings | Resolved scales and concrete bin rects |
-| `encodeColor` | Nominal stack identity and color scale | Category-colored rects in each bin |
-| `createGuides` | Axis, horizontal-grid, and legend definitions | Bin-aligned axes, grid lines, and an explicitly bottom-centered legend |
+| `createHistogram` | Bar layer, atomic bin/count positions, nominal stack identity, scales, and guides | Category-colored bin rects plus bin-aligned axes, grid, and bottom legend |
 | `createTitle` | Chart title and subtitle text | Plot-centered title graphics |
 
-`encodeHistogram` is atomic because its x binning and y count/stack meaning are
-interdependent. Its trace still exposes the wrapped `encodeX` and `encodeY`
-actions. The source dataset remains unchanged; bin counts and stacked geometry
-are derived and materialized separately.
+The facade calls atomic `encodeHistogram` because its x binning and y
+count/stack meaning are interdependent. That action still exposes wrapped
+`encodeX` and `encodeY` children. The source dataset remains unchanged; bin
+counts and stacked geometry are derived and materialized separately.
 
 Use `maxBins` for an inferred nice partition, `binStep` for an exact
 zero-anchored width, or `binBoundaries` for explicitly authored irregular
@@ -1037,17 +1068,18 @@ children, while guide selection remains a separate aggregate.
 
 ```text
 program
-├─ createBarMark
-├─ encodeHistogram
-│  ├─ encodeX
-│  └─ encodeY
-│     └─ rematerializeBarMark
-├─ encodeColor
-│  └─ rematerializeBarMark
-├─ createGuides
-│  ├─ createAxes
-│  ├─ createGrid
-│  └─ createLegend
+├─ createHistogram
+│  ├─ createBarMark
+│  ├─ encodeHistogram
+│  │  ├─ encodeX
+│  │  └─ encodeY
+│  │     └─ rematerializeBarMark
+│  ├─ encodeColor
+│  │  └─ rematerializeBarMark
+│  └─ createGuides
+│     ├─ createAxes
+│     ├─ createGrid
+│     └─ createLegend
 └─ createTitle
 ```
 
@@ -1056,7 +1088,8 @@ program
 - Serve the repository root and open `examples/cars-histogram/`.
 - View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-histogram/program.js).
 - Continue with [Encodings](../api/encodings.md),
-  [Guides](../api/guides.md), and [Titles](../api/titles.md).
+  [Guides](../api/guides.md), [Titles](../api/titles.md), and the
+  [Basic Chart contract](../api/basic-charts.md#createhistogram).
 
 <!-- Source: /tutorials/grouped-bar/ -->
 
@@ -1102,20 +1135,21 @@ const program = chart()
     margin: { top: 40, right: 140, bottom: 70, left: 80 }
   })
   .createData({ id: "jobs", values: rows })
-  .createBarMark({ id: "bars" })
-  .encodeX({ field: "year", fieldType: "ordinal" })
-  .encodeY({
-    field: "perc",
-    aggregate: "mean",
-    scale: { nice: true, zero: false }
-  })
-  .encodeColor({
-    field: "sex",
-    layout: "group",
-    scale: { palette: "tableau10" }
-  })
-  .encodeBarWidth({ band: 0.72 })
-  .createGuides();
+  .createBarPlot({
+    id: "bars",
+    x: { field: "year", fieldType: "ordinal" },
+    y: {
+      field: "perc",
+      aggregate: "mean",
+      scale: { nice: true, zero: false }
+    },
+    color: {
+      field: "sex",
+      layout: "group",
+      scale: { palette: "tableau10" }
+    },
+    width: { band: 0.72 }
+  });
 
 render(program, document.querySelector("#chart").getContext("2d"));
 ```
@@ -1124,12 +1158,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
-| `createBarMark` | A bar layer bound to `jobs` | An initially empty rect collection |
-| ordinal `encodeX` | Year categories and an ordinal x scale | Resolved equal-width year bands |
-| aggregate `encodeY` | `mean(perc)` with no stack | A resolved quantitative y scale |
-| grouped `encodeColor` | Sex color and xOffset encodings | Resolved color and within-band slots |
-| `encodeBarWidth` | No additional semantic state | Concrete centered rectangles using 72% of each slot |
-| `createGuides` | Axis, horizontal-grid, and legend definitions | Ordinal/linear axes, grid lines, and a right-side legend |
+| `createBarPlot` | Bar layer, ordinal/aggregate positions, grouped color and guides | Concrete grouped rectangles plus ordinal/linear axes, grid, and legend |
 
 `layout: "group"` is the atomic grouping choice. It keeps y unstacked and
 invokes the advanced xOffset encoding for the same field. `encodeBarWidth`
@@ -1169,18 +1198,19 @@ decision that makes concrete grouped rectangles possible.
 
 ```text
 program
-├─ createBarMark
-├─ encodeX
-├─ encodeY
-├─ encodeColor
-│  ├─ encodeXOffset
-│  └─ rematerializeBarMark
-├─ encodeBarWidth
-│  └─ rematerializeBarMark
-└─ createGuides
-   ├─ createAxes
-   ├─ createGrid
-   └─ createLegend
+└─ createBarPlot
+   ├─ createBarMark
+   ├─ encodeX
+   ├─ encodeY
+   ├─ encodeColor
+   │  ├─ encodeXOffset
+   │  └─ rematerializeBarMark
+   ├─ encodeBarWidth
+   │  └─ rematerializeBarMark
+   └─ createGuides
+      ├─ createAxes
+      ├─ createGrid
+      └─ createLegend
 ```
 
 ## Run and continue
@@ -1189,7 +1219,8 @@ program
 - View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](../api/position-encodings.md),
   [Series encodings](../api/series-encodings.md), and
-  [Constant appearance](../api/appearance.md).
+  [Constant appearance](../api/appearance.md), or review the
+  [Basic Chart contract](../api/basic-charts.md#createbarplot).
 
 <!-- Source: /tutorials/regression-scatterplot/ -->
 
@@ -1828,11 +1859,7 @@ than one compatible resource.
 const program = chart()
   .createCanvas()
   .createData({ values })
-  .createPointMark()
-  .encodeX({ field: "x" })
-  .encodeY({ field: "y" })
-  .encodeRadius({ value: 3 })
-  .createGuides();
+  .createScatterPlot({ x: "x", y: "y" });
 ```
 
 ## You must decide
@@ -1840,12 +1867,12 @@ const program = chart()
 - Dataset values
 - Quantitative x and y fields
 
-Radius is optional, but points need a concrete radius before they are visible.
-Add `encodeColor({ field })` for nominal fill.
+Add `color: "group"`, `size: "amount"`, or `shape: "category"` to the same
+call for field-driven appearance. The default point radius is `3`.
 
 ## The library infers
 
-- Current dataset and mark for later actions
+- Current dataset for the facade and current mark for later actions
 - Stable internal role IDs for the first dataset and point mark
 - Quantitative linear scales named `x` and `y`
 - The `main` Cartesian coordinate
@@ -1858,6 +1885,7 @@ scale IDs.
 ## Continue
 
 [Scatterplot tutorial](../tutorials/scatterplot.md) ·
+[Basic Charts](../api/basic-charts.md#createscatterplot) ·
 [Quantitative positions](../api/position/quantitative.md) ·
 [Constant appearance](../api/appearance.md)
 
@@ -1871,10 +1899,10 @@ scale IDs.
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createLineMark()
-  .encodeX({ field: "date", fieldType: "temporal" })
-  .encodeY({ field: "value", aggregate: "mean" })
-  .createGuides();
+  .createLinePlot({
+    x: { field: "date", fieldType: "temporal" },
+    y: { field: "value", aggregate: "mean" }
+  });
 ```
 
 ## You must decide
@@ -1883,21 +1911,21 @@ const program = chart()
 - Quantitative y field
 - Whether the line is one series or grouped by a nominal field
 
-For multiple series, add `encodeColor({ field: "group" })`,
-`encodeStrokeDash({ field: "group" })`, or both before `createGuides`.
+For multiple series, add `color: "group"`, `groupBy: "group"`, or
+`strokeDash: { field: "group" }` to the facade call.
 
 ## The library infers
 
 - UTC time x and linear y scales
 - Mean aggregation at each x/series group
 - Sorted concrete `M/L` path commands
-- Linear interpolation unless `createLineMark({ curve })` selects another curve
+- Linear interpolation unless `line: { curve }` selects another curve
 - Axes, horizontal grid, and a right-side categorical legend when applicable
 
 Every materialized series needs at least two points. Reserve right margin for a
 legend or pass `createLegend({ position: "bottom" })` with bottom margin.
 
-Use `curve: "step"` during creation for midpoint steps, or edit an existing
+Use `line: { curve: "step" }` during creation for midpoint steps, or edit an existing
 line without changing its encodings:
 
 ```javascript
@@ -1927,6 +1955,7 @@ The accepted curve vocabulary is `linear`, `step`, `step-before`, `step-after`,
 ## Continue
 
 [Line chart tutorial](../tutorials/line-chart.md) ·
+[Basic Charts](../api/basic-charts.md#createlineplot) ·
 [Temporal line positions](../api/position/temporal.md) ·
 [Series encodings](../api/series-encodings.md)
 
@@ -1940,9 +1969,7 @@ The accepted curve vocabulary is `linear`, `step`, `step-before`, `step-after`,
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createBarMark()
-  .encodeHistogram({ field: "value" })
-  .createGuides();
+  .createHistogram({ field: "value" });
 ```
 
 ## You must decide
@@ -1951,9 +1978,8 @@ const program = chart()
 - Optional `maxBins`
 - Optional nominal color field and series layout
 
-```javascript
-program.encodeColor({ field: "group", layout: "stack" });
-```
+Add `color: { field: "group", layout: "stack" }` to the `createHistogram`
+options.
 
 Choose `fill`, `group`, `overlay`, or `diverging` when their partition meaning
 matches the chart.
@@ -1966,12 +1992,13 @@ matches the chart.
 - Bin-aligned axes, horizontal grid, and categorical legend when applicable
 
 Legends default to the right. Pass
-`createGuides({ legend: { position: "bottom" } })` for the horizontal layout
-used by the public tutorial.
+`guides: { legend: { position: "bottom" } }` for the horizontal layout used by
+the public tutorial.
 
 ## Continue
 
 [Histogram tutorial](../tutorials/histogram.md) ·
+[Basic Charts](../api/basic-charts.md#createhistogram) ·
 [Histogram positions](../api/position/histogram.md) ·
 [Scale options](../api/scales.md)
 
@@ -1988,12 +2015,12 @@ choice inside the bar chart, not a separate top-level chart type.
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createBarMark()
-  .encodeX({ field: "category", fieldType: "ordinal" })
-  .encodeY({ field: "value", aggregate: "mean" })
-  .encodeColor({ field: "group", layout: "group" })
-  .encodeBarWidth()
-  .createGuides();
+  .createBarPlot({
+    x: { field: "category", fieldType: "ordinal" },
+    y: { field: "value", aggregate: "mean" },
+    color: { field: "group", layout: "group" },
+    width: { band: 0.72 }
+  });
 ```
 
 ## You must decide
@@ -2016,13 +2043,68 @@ Use `encodeBarWidth({ pixels: 14 })` for a resize-stable logical width, or
 `encodeXOffset({ field: "group", paddingInner: 0.2, paddingOuter: 0.1 })`
 after grouped color to change within-band spacing. Reassign the group field
 with one `encodeColor({ field: "nextGroup", layout: "group" })` call.
-The current API does not synthesize zero bars or support horizontal bars.
+The current API does not synthesize zero bars. For horizontal bars, put the
+quantitative measure on x and the ordinal category on y.
 
 ## Continue
 
 [Bar chart tutorial](../tutorials/grouped-bar.md) ·
+[Basic Charts](../api/basic-charts.md#createbarplot) ·
 [Ordinal bar positions](../api/position/ordinal-bars.md) ·
 [Ordinal offsets](../api/position/offsets.md)
+
+<!-- Source: /recipes/heatmap/ -->
+
+# Heatmap Recipe
+
+## Minimal flow
+
+```javascript
+const program = chart()
+  .createCanvas({ margin: { right: 120 } })
+  .createData({ values: cells })
+  .createHeatmap({
+    x: { field: "column", fieldType: "ordinal" },
+    y: { field: "row", fieldType: "nominal" },
+    color: {
+      field: "value",
+      fieldType: "quantitative",
+      scale: { type: "sequential", palette: "viridis" }
+    }
+  });
+```
+
+## You must decide
+
+- The two discrete cell-position fields
+- The field that owns cell color
+- Whether the rows are already at one-row-per-cell grain
+
+The current facade consumes observed, pre-gridded rows. It does not create
+missing row/column combinations or perform two-dimensional binning.
+
+## The library infers
+
+- Band scales for the two discrete positions
+- One concrete rectangle per valid observed row
+- A categorical or continuous color scale and matching legend
+- Cartesian axes and horizontal grid
+
+Use `rect: { opacity, stroke, strokeWidth }` for cell appearance. Cell fill is
+owned by the required color encoding. To show values, chain a text layer after
+the heatmap:
+
+```javascript
+const labeled = program
+  .createTextMark({ align: "center", baseline: "middle" })
+  .encodeText({ field: "value", format: ".0f" });
+```
+
+## Continue
+
+[Basic Charts](../api/basic-charts.md#createheatmap) ·
+[Rect marks](../api/marks/rect.md) ·
+[Continuous color scales](../api/scales/continuous-color.md)
 
 <!-- Source: /recipes/regression-scatterplot/ -->
 
@@ -2381,6 +2463,7 @@ Build a chart from a small set of domain actions. Start with the family that
 owns the decision you need to make; follow its focused pages only when the
 overview no longer provides enough control.
 
+  Basic charts Create scatter, line, bar, histogram, and heatmap charts from their minimum field decisions.
   Canvas and data Create the drawing surface, immutable source data, and derived transforms.
   Marks Create point, line, area, bar, and rule layers.
   Encodings Map fields and constants to position, grouping, and appearance.
@@ -2402,6 +2485,191 @@ Use the [complete action reference](../reference/actions.md) when you know an
 action name and need its canonical signature. Extension authors should use the
 [extension API](../extension/action-authoring.md) rather than depending on
 internal trace operations.
+
+<!-- Source: /api/basic-charts/ -->
+
+# Basic Charts
+
+Basic chart actions create a complete mark, its encodings, and applicable
+guides in one traceable call. Create a Canvas and dataset first, then provide
+only the fields that define the chart.
+
+```javascript
+const program = chart()
+  .createCanvas()
+  .createData({ values })
+  .createScatterPlot({ x: "horsepower", y: "mpg", color: "origin" });
+```
+
+These actions are conveniences over the regular mark, encoding, and guide
+actions. They call those wrapped actions as trace children; they do not add a
+second chart specification or compile semantics during rendering.
+
+## Shared behavior
+
+- `data` is optional when there is a current dataset or exactly one dataset.
+  Pass it explicitly when more than one dataset could apply.
+- `id` is optional for the first chart of each family. A stable default role is
+  used; a conflicting role requires an explicit ID.
+- A field may be a string or an encoding option object. Use the object form for
+  field types, scales, aggregates, and other channel-specific options.
+- `guides` is optional. Omission or `{}` creates applicable axes, horizontal
+  grid, and legends. Pass `guides: false` to create no guides.
+- A facade validates its complete option object before changing the program.
+- To revise the result, use the resource action that owns the decision, such as
+  `encodeX`, `editScale`, `editPointMark`, or `editLegend`. Aggregate
+  `editScatterPlot`-style actions are intentionally not provided.
+
+Canvas and source data remain separate authoring decisions. Basic chart
+actions never create either one or silently choose among ambiguous resources.
+
+## `createScatterPlot`
+
+```typescript
+createScatterPlot(options: CreateScatterPlotOptions): ChartProgram
+```
+
+Required options are `x` and `y`. Optional `color`, `size`, and `shape` values
+create field encodings; `point` controls constant point appearance.
+
+```javascript
+const scatter = chart()
+  .createCanvas()
+  .createData({ values: cars })
+  .createScatterPlot({
+    x: "Horsepower",
+    y: "Miles_per_Gallon",
+    color: "Origin",
+    point: { opacity: 0.7 },
+    guides: {
+      axes: {
+        x: { title: { text: "Horsepower" } },
+        y: { title: { text: "Miles per gallon" } }
+      }
+    }
+  });
+```
+
+The stable default mark ID is `scatterPlot`. Omitted size materializes the
+default point radius of `3`. Constant fill, shape, opacity, stroke, and stroke
+width belong in `point`; field-driven color, size, and shape remain top-level.
+
+## `createLinePlot`
+
+```typescript
+createLinePlot(options: CreateLinePlotOptions): ChartProgram
+```
+
+Required options are `x` and `y`. Use `color`, `groupBy`, or `strokeDash` for
+series identity and `line` for constant appearance.
+
+```javascript
+const line = chart()
+  .createCanvas({ margin: { right: 140 } })
+  .createData({ values: rows })
+  .createLinePlot({
+    x: { field: "date", fieldType: "temporal" },
+    y: { field: "value", aggregate: "mean" },
+    color: "group",
+    strokeDash: { field: "group" },
+    line: { curve: "monotone", strokeWidth: 3 }
+  });
+```
+
+The stable default mark ID is `linePlot`. A plain `strokeDash` string is not
+accepted because it could mean either a field or a named dash style; use
+`{ field }` or `{ value }`. This facade creates Cartesian lines. Use the
+explicit Polar mark and encoding actions for closed Polar paths.
+
+## `createBarPlot`
+
+```typescript
+createBarPlot(options: CreateBarPlotOptions): ChartProgram
+```
+
+Required options are `x` and `y`. Position option objects select vertical,
+horizontal, aggregate, or ranged geometry. `color.layout` owns grouped,
+stacked, normalized-fill, overlay, and diverging arrangements.
+
+```javascript
+const bars = chart()
+  .createCanvas({ margin: { right: 140 } })
+  .createData({ values: rows })
+  .createBarPlot({
+    x: { field: "year", fieldType: "ordinal" },
+    y: { field: "value", aggregate: "mean" },
+    color: { field: "group", layout: "group" },
+    width: { band: 0.72 }
+  });
+```
+
+The stable default mark ID is `barPlot`. `width` accepts the same band or
+logical-pixel options as `encodeBarWidth`; `bar` controls constant fill,
+opacity, stroke, and stroke width.
+
+## `createHistogram`
+
+```typescript
+createHistogram(options: CreateHistogramOptions): ChartProgram
+```
+
+`field` is required. The action atomically creates binned x and count y
+encodings because those meanings depend on each other.
+
+```javascript
+const histogram = chart()
+  .createCanvas({ margin: { right: 140 } })
+  .createData({ values })
+  .createHistogram({
+    field: "value",
+    maxBins: 10,
+    color: { field: "group", layout: "stack" }
+  });
+```
+
+The stable default mark ID is `histogram`. The default is `maxBins: 10`.
+Choose exactly one of `maxBins`, `binStep`, or `binBoundaries`. Optional
+`xScale`, `yScale`, `stack`, `color`, and `bar` values use the corresponding
+histogram, color, and bar contracts.
+
+## `createHeatmap`
+
+```typescript
+createHeatmap(options: CreateHeatmapOptions): ChartProgram
+```
+
+`x`, `y`, and `color` are required. The current action consumes pre-gridded
+rows and creates one cell for each valid observed row; it does not synthesize
+missing x/y combinations or perform two-dimensional binning.
+
+```javascript
+const heatmap = chart()
+  .createCanvas({ margin: { right: 120 } })
+  .createData({ values: cells })
+  .createHeatmap({
+    x: { field: "year", fieldType: "ordinal" },
+    y: { field: "country", fieldType: "nominal" },
+    color: {
+      field: "life_expectancy",
+      fieldType: "quantitative",
+      scale: { type: "sequential", palette: "viridis" }
+    },
+    rect: { stroke: "white", strokeWidth: 1 }
+  });
+```
+
+The stable default mark ID is `heatmap`. The color encoding is the sole cell
+fill owner, so `rect.fill` is rejected; `rect` accepts opacity and outline
+options. Text is not automatic. Add it afterward with
+`createTextMark().encodeText()` when the rows contain display values.
+
+## Advanced authoring
+
+Use individual [mark](./marks.md), [encoding](./encodings.md),
+[coordinate](./coordinates.md), and [guide](./guides.md) actions when the chart
+needs custom layering, Polar geometry, a partially constructed state, or
+control between the wrapped steps. Both authoring styles produce the same
+immutable semantic and graphical resources.
 
 <!-- Source: /api/canvas/ -->
 
@@ -3383,7 +3651,7 @@ The tables below are generated from the same reviewed capability registry used b
 | `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
-| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count for proportional sectors |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 
 ### Color channels
@@ -4894,7 +5162,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
-| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count for proportional sectors |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 
 ## Choose an encoding
@@ -4904,7 +5172,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Position points | point mark, quantitative, temporal, or ordinal fields | `encodeX`, `encodeY` | [Quantitative positions](./position/quantitative.md) |
 | Position Polar points | point mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar point tutorial](../tutorials/polar-points.md) |
 | Draw Polar lines or radar paths | line mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar line tutorial](../tutorials/polar-lines.md) |
-| Draw donuts, rose charts, or radial bars | arc mark, categorical/count theta and optional quantitative radius | `encodeTheta`, optional `encodeR` | [Polar arc tutorial](../tutorials/polar-arcs.md) |
+| Draw donuts, rose charts, or radial bars | arc mark, categorical count/weighted-sum theta or quantitative radius | `encodeTheta`, optional `encodeR` | [Polar arc tutorial](../tutorials/polar-arcs.md) |
 | Draw discrete or ranged cells | rect mark, two discrete positions or complete x/x2 and y/y2 pairs | `encodeX`, `encodeY`, optional `encodeX2`, `encodeY2` | [Rect marks](./marks/rect.md) |
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
@@ -4941,8 +5209,9 @@ program
 
 `encodeTheta` accepts point or line marks with quantitative, temporal, ordinal,
 or nominal fields. Arc marks accept nominal or ordinal theta; `aggregate:
-"count"` creates proportional sectors, while categorical theta plus
-quantitative `encodeR` creates radial sectors.
+"count"` creates count-proportional sectors. `aggregate: "sum"` plus a
+non-negative finite `weight` field creates weighted proportional sectors.
+Categorical theta plus quantitative `encodeR` creates radial sectors.
 Quantitative angle scales are linear; temporal angles use time scales; discrete
 angles use point or band scales. The automatic range is `[0, 360]` degrees with
 0 at 12 o'clock and clockwise positive direction.
@@ -7626,13 +7895,18 @@ screens.
 
 ### Cartesian charts
 
+The complete `createScatterPlot`, `createLinePlot`, `createBarPlot`,
+`createHistogram`, and pre-gridded `createHeatmap` facades compose the same
+mark, encoding, scale, and guide actions described below. Individual actions
+remain available for custom layering and editing.
+
 | Capability | Scatterplot | Line | Histogram | Bar | Heatmap / ranged rect |
 | --- | --- | --- | --- | --- | --- |
 | Semantic mark | point | line | bar | bar | rect |
 | Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair | two discrete bands or x/x2 + y/y2 ranges |
 | Nominal color | point fill | series stroke | five bar layouts | five bar layouts | cell fill |
 | Stroke dash | — | nominal or constant; 4 named styles | — | — | — |
-| Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width | fill, opacity, outline |
+| Appearance | radius | stroke width, 8 curves | default bar geometry | band or logical-pixel width | encoded fill, opacity, outline |
 | Automatic guides | linear axes; horizontal grid | UTC time/linear axes; horizontal grid | bin-aligned/linear axes; horizontal grid | ordinal/linear axes; horizontal grid | discrete/continuous axes and color legend |
 | Legend | point color + shape | categorical | categorical | categorical | categorical or continuous color |
 | Selection/highlight | point | series | final bar | final bar | observed cell |
@@ -7690,10 +7964,18 @@ screens.
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
 | Selection | Strict point/bar/rect/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
 
+Basic chart facades infer only a current or unique dataset and stable unused
+role IDs. Ambiguous data or an occupied default role requires an explicit ID.
+Applicable guides are created by default and can be disabled with
+`guides: false`.
+
 ## Current limitations
 
 Transforms beyond the documented filters, regressions, density and interval
 derivations, as well as interactive legends, are not implemented.
+The current `createHeatmap` facade accepts pre-gridded observed rows only. It
+does not synthesize missing cells or perform two-dimensional binning, and cell
+text must be added as a separate text layer.
 Categorical legends support all four edges; point composite and size legends
 support right and left side layouts.
 Error bars support vertical and horizontal statistical intervals, existing
@@ -7806,6 +8088,11 @@ interface ChartProgramActions {
   editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;
   createBoxPlot(options?: BoxPlotOptions): ChartProgram;
   editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
+  createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
+  createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createBarPlot(options: CreateBarPlotOptions): ChartProgram;
+  createHistogram(options: CreateHistogramOptions): ChartProgram;
+  createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
@@ -7959,6 +8246,52 @@ createData({ id?, values })
 ```
 
 Create one immutable named dataset. [Data](../api/data.md)
+
+### `createScatterPlot`
+
+```javascript
+createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, guides? })
+```
+
+Create a complete Cartesian point chart from required x/y fields and optional
+appearance encodings. [Basic Charts](../api/basic-charts.md#createscatterplot)
+
+### `createLinePlot`
+
+```javascript
+createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, line?, guides? })
+```
+
+Create a complete Cartesian line chart, including optional series grouping and
+appearance. [Basic Charts](../api/basic-charts.md#createlineplot)
+
+### `createBarPlot`
+
+```javascript
+createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
+```
+
+Create a complete vertical, horizontal, aggregate, ranged, grouped, or stacked
+bar chart through the existing bar policies.
+[Basic Charts](../api/basic-charts.md#createbarplot)
+
+### `createHistogram`
+
+```javascript
+createHistogram({ id?, data?, coordinate?, field, maxBins?, binStep?, binBoundaries?, stack?, xScale?, yScale?, color?, bar?, guides? })
+```
+
+Create a bar layer with atomic bin and count encodings. Exactly one bin mode may
+be specified. [Basic Charts](../api/basic-charts.md#createhistogram)
+
+### `createHeatmap`
+
+```javascript
+createHeatmap({ id?, data?, coordinate?, x, y, color, rect?, guides? })
+```
+
+Create one rect cell per valid pre-gridded row. The required color encoding owns
+cell fill. [Basic Charts](../api/basic-charts.md#createheatmap)
 
 ### `filterData`
 
@@ -8195,7 +8528,7 @@ source or position. [Text marks](../api/marks/text.md)
 | `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
-| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count for proportional sectors |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 
 ### `encodeX`

@@ -63,15 +63,15 @@ const program = chart()
     margin: { top: 30, right: 30, bottom: 60, left: 70 }
   })
   .createData({ values: cars })
-  .createPointMark()
-  .encodeX({ field: "horsepower" })
-  .encodeY({ field: "mpg" })
-  .encodeColor({ field: "origin" })
-  .encodeRadius({ value: 4 })
-  .createGuides({
-    axes: {
-      x: { title: { text: "Horsepower" } },
-      y: { title: { text: "Miles per gallon" } }
+  .createScatterPlot({
+    x: "horsepower",
+    y: "mpg",
+    color: "origin",
+    guides: {
+      axes: {
+        x: { title: { text: "Horsepower" } },
+        y: { title: { text: "Miles per gallon" } }
+      }
     }
   });
 
@@ -79,15 +79,17 @@ const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));
 ```
 
-`createPointMark` uses the most recently created dataset. Encoding actions use
-the most recently created mark. Pass `data` or `target` explicitly when a
-program contains more than one candidate. The first omitted dataset and point
-IDs are stored as `"data"` and `"point"`; name them explicitly only when a later
-multi-resource flow needs that identity.
+`createScatterPlot` uses the current dataset, creates a point mark, assigns the
+x, y, and optional appearance encodings, and creates applicable guides. It
+records those regular actions as trace children rather than compiling a second
+chart specification. Pass `data` explicitly when a program contains more than
+one dataset candidate; pass `id` when a later multi-resource flow needs that
+mark identity.
 
-`createGuides` infers the applicable axes and horizontal grid from the position
-encodings. The renderer reads only concrete `graphicSpec` values already
-produced by actions; it does not compile `semanticSpec` during rendering.
+The wrapped `createGuides` action infers the applicable axes and horizontal
+grid from the position encodings. The renderer reads only concrete
+`graphicSpec` values already produced by actions; it does not compile
+`semanticSpec` during rendering.
 A nominal point color encoding can produce a categorical legend; adding a
 matching shape encoding produces a composite color-and-shape legend.
 
@@ -124,6 +126,7 @@ The source repository also contains complete modules for the
 [line chart](https://github.com/ggaction/ggaction/tree/main/examples/cars-line-chart/),
 [histogram](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram/),
 [bar chart](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar/),
+[heatmap](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-life-expectancy-heatmap/),
 [regression scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-regression-scatterplot/),
 [density area](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area/),
 [error bar](https://github.com/ggaction/ggaction/tree/main/examples/cars-error-bar/),
@@ -134,6 +137,8 @@ The source repository also contains complete modules for the
 
 ## Next
 
+- Start with the five [Basic Chart actions](./api/basic-charts.md), then use
+  resource-specific actions for advanced edits and layering.
 - Use the [cars scatterplot tutorial](./tutorials/scatterplot.md) with the
   repository dataset.
 - Build temporal aggregate series in the

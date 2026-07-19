@@ -32,6 +32,20 @@ const TRACKS = Object.freeze({
       "version", "roadmap", "phase", "capability", "chart", "variant",
       "title", "userFacingCallChain"
     ])
+  }),
+  roadmap4: Object.freeze({
+    id: "roadmap4",
+    label: "Roadmap 4",
+    number: 4,
+    root: path.join(PNG_ARTIFACT_ROOT, "roadmap4"),
+    scopeKeys: Object.freeze(["phase", "capability"]),
+    pathKeys: Object.freeze(["capability", "chart", "variant"]),
+    groupKeys: Object.freeze(["capability", "chart"]),
+    includeTrackInMetadata: true,
+    metadataKeys: Object.freeze([
+      "version", "roadmap", "phase", "capability", "chart", "variant",
+      "title", "userFacingCallChain"
+    ])
   })
 });
 

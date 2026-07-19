@@ -46,6 +46,8 @@
   url: /recipes/histogram/
 - title: Bar Chart Recipe
   url: /recipes/bar-chart/
+- title: Heatmap Recipe
+  url: /recipes/heatmap/
 - title: Regression Scatterplot Recipe
   url: /recipes/regression-scatterplot/
 - title: Density Area Recipe
@@ -64,6 +66,8 @@
   url: /api/
   nav_group: chart-api
   nav_order: 1
+- title: Basic Charts
+  url: /api/basic-charts/
 - title: Canvas
   url: /api/canvas/
 - title: Data

@@ -52,6 +52,38 @@ test("materializes count theta as proportional donut sectors", () => {
   assert.equal(items[0].properties.commands[0].op, "M");
 });
 
+test("materializes weighted theta and removes stale weight when reassigned to count", () => {
+  const initial = base({ innerRadius: 0.4 })
+    .encodeTheta({
+      field: "category",
+      aggregate: "sum",
+      weight: "value"
+    })
+    .encodeColor({ field: "category" });
+  const reassigned = initial.encodeTheta({
+    field: "category",
+    aggregate: "count"
+  });
+
+  assert.deepEqual(initial.semanticSpec.layers[0].encoding.theta, {
+    field: "category",
+    fieldType: "nominal",
+    aggregate: "sum",
+    weight: "value",
+    scale: "theta"
+  });
+  assert.equal(initial.graphicSpec.objects.arc.items.length, 2);
+  assert.equal(reassigned.semanticSpec.layers[0].encoding.theta.weight, undefined);
+  assert.equal(reassigned.semanticSpec.layers[0].encoding.theta.aggregate, "count");
+  assert.equal(reassigned.graphicSpec.objects.arc.items.length, 2);
+  assert.equal(initial.semanticSpec.layers[0].encoding.theta.weight, "value");
+  const thetaTrace = initial.trace.children.find(node => node.op === "encodeTheta");
+  assert.equal(
+    thetaTrace.children.some(node => node.op === "rematerializeArcMark"),
+    true
+  );
+});
+
 test("keeps incomplete arc collections empty and converges across encoding order", () => {
   const thetaOnly = base().encodeTheta({
     field: "category",
@@ -125,11 +157,74 @@ test("rejects incompatible arc position and appearance contracts atomically", ()
       fieldType: "nominal",
       aggregate: "mean"
     }),
-    /supports only "count"/
+    /supports only "count" or "sum"/
+  );
+  assert.throws(
+    () => program.encodeTheta({
+      field: "category",
+      aggregate: "sum"
+    }),
+    /requires weight/
+  );
+  assert.throws(
+    () => program.encodeTheta({
+      field: "category",
+      aggregate: "count",
+      weight: "value"
+    }),
+    /weight requires aggregate: "sum"/
   );
   assert.throws(
     () => radial().editArcMark({ fill: "red" }),
     /cannot be combined with a color encoding/
   );
   assert.equal(JSON.stringify(program), before);
+});
+
+test("rejects invalid weighted theta rows before state or trace changes", () => {
+  for (const value of [-1, Infinity, NaN, undefined, "2"]) {
+    const program = chart()
+      .createCanvas({ width: 300, height: 300, margin: 30 })
+      .createData({ values: [{ category: "A", weight: value }] })
+      .createArcMark();
+    const before = JSON.stringify(program);
+
+    assert.throws(
+      () => program.encodeTheta({
+        field: "category",
+        aggregate: "sum",
+        weight: "weight"
+      }),
+      /non-negative finite numbers at row 0/
+    );
+    assert.equal(JSON.stringify(program), before);
+  }
+
+  const zeros = chart()
+    .createCanvas({ width: 300, height: 300, margin: 30 })
+    .createData({ values: [
+      { category: "A", weight: 0 },
+      { category: "B", weight: 0 }
+    ] })
+    .createArcMark();
+  assert.throws(
+    () => zeros.encodeTheta({
+      field: "category",
+      aggregate: "sum",
+      weight: "weight"
+    }),
+    /positive total/
+  );
+});
+
+test("does not accept theta weight on non-arc marks", () => {
+  const point = chart()
+    .createCanvas({ width: 300, height: 300, margin: 30 })
+    .createData({ values: [{ angle: "A", weight: 2 }] })
+    .createPointMark();
+
+  assert.throws(
+    () => point.encodeTheta({ field: "angle", weight: "weight" }),
+    /supported only for arc theta encoding/
+  );
 });

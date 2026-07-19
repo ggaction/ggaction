@@ -38,10 +38,13 @@ import { chart } from "ggaction";
 const program = chart()
   .createCanvas()
   .createData({ values: cars })
-  .createPointMark({ id: "points" })
-  .encodeX({ field: "Displacement" })
-  .encodeY({ field: "Acceleration" })
-  .encodeColor({ field: "Origin" })
+  .createScatterPlot({
+    id: "points",
+    x: "Displacement",
+    y: "Acceleration",
+    color: "Origin",
+    guides: false
+  })
   .createRegression()
   .createGuides();
 ```
@@ -74,16 +77,21 @@ const program = chart()
     margin: { top: 30, right: 130, bottom: 60, left: 70 }
   })
   .createData({ values: observations })
-  .createPointMark()
-  .encodeX({ field: "displacement" })
-  .encodeY({ field: "acceleration" })
-  .encodeColor({ field: "origin" })
-  .encodeRadius({ value: 4 })
-  .createGuides();
+  .createScatterPlot({
+    x: "displacement",
+    y: "acceleration",
+    color: "origin"
+  });
 
 const context = document.querySelector("#chart").getContext("2d");
 render(program, context);
 ```
+
+Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
+the other basic Cartesian charts. Each facade records the regular mark,
+encoding, and guide actions as trace children, and the same resource-specific
+actions remain available for later edits. See the
+[Basic Charts API](https://ggaction.github.io/ggaction/api/basic-charts/).
 
 For the advanced version, follow the [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/) or open the [runnable example](./examples/cars-regression-scatterplot/).
 

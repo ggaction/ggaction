@@ -21,7 +21,10 @@ import {
   resolveMarkData,
   validateMarkOptions
 } from "../shared.js";
-import { DEFAULT_COLORS } from "../../../theme/defaults.js";
+import {
+  DEFAULT_COLORS,
+  DEFAULT_POINT_RADIUS
+} from "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
@@ -207,9 +210,9 @@ const rematerializePointMark = action(
         const opacity = encodedOpacity?.[index] ?? config.opacity ?? existing.opacity;
         const resolvedArea = area?.[index] ??
           (config.radius === undefined
-            ? existingArea(existingChildren[index], graphic.type)
-            :
-            Math.PI * config.radius ** 2);
+            ? existingArea(existingChildren[index], graphic.type) ??
+              Math.PI * DEFAULT_POINT_RADIUS ** 2
+            : Math.PI * config.radius ** 2);
         const centerX = x?.[index] ?? existing.x;
         const centerY = y?.[index] ?? existing.y;
         if (
@@ -254,14 +257,32 @@ const rematerializePointMark = action(
     }
     if (graphic.type === "circle") {
       const radii = area === undefined
-        ? config.radius
+        ? config.radius ?? (
+          x !== undefined && y !== undefined
+            ? dataset.values.map((_, index) => {
+                const existing = existingChildren[index]?.properties?.radius;
+                return Number.isFinite(existing)
+                  ? existing
+                  : DEFAULT_POINT_RADIUS;
+              })
+            : undefined
+        )
         : area.map(value => Math.sqrt(value / Math.PI));
       if (radii !== undefined) {
         next = next.editGraphics({ target: id, property: "radius", value: radii });
       }
-    } else if (area !== undefined || config.radius !== undefined) {
+    } else if (
+      area !== undefined ||
+      config.radius !== undefined ||
+      (x !== undefined && y !== undefined)
+    ) {
       const sides = area === undefined
-        ? config.radius * Math.sqrt(Math.PI)
+        ? dataset.values.map((_, index) => {
+          const existing = existingArea(existingChildren[index], graphic.type);
+          return Math.sqrt(
+            existing ?? Math.PI * (config.radius ?? DEFAULT_POINT_RADIUS) ** 2
+          );
+        })
         : area.map(value => Math.sqrt(value));
       const centersX = x ?? existingChildren.map(child => child.properties.x);
       const centersY = y ?? existingChildren.map(child => child.properties.y);

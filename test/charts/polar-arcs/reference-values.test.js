@@ -15,6 +15,7 @@ import {
   RADIAL_COUNTRY_ORDER,
   buildReferenceAnnularSectorCommands,
   createCarsDonutReference,
+  createGapminderWeightedDonutReference,
   createGapminderRadialBarReference,
   createNightingaleRoseReference,
   referenceRadialAxisTitle
@@ -125,6 +126,20 @@ test("partitions all Cars rows into one normalized donut revolution", () => {
     0
   ), 360);
   close(values.sectors[0].startTheta, 0);
+  close(values.sectors.at(-1).endTheta, 360);
+  assertFiniteClosedSectors(values.sectors);
+});
+
+test("sums Gapminder population by cluster into one weighted revolution", () => {
+  const values = createGapminderWeightedDonutReference(loadGapminder());
+
+  assert.equal(values.rows.length, 62);
+  assert.equal(values.sectors.length, 6);
+  assert.equal(values.sectors.every(sector => sector.population > 0), true);
+  close(values.sectors.reduce(
+    (sum, sector) => sum + sector.endTheta - sector.startTheta,
+    0
+  ), 360);
   close(values.sectors.at(-1).endTheta, 360);
   assertFiniteClosedSectors(values.sectors);
 });

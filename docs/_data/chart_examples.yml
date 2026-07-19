@@ -39,7 +39,7 @@
   thumbnail_height: 400
   caption: Quantitative positions with nominal color.
   summary: Compare two quantitative fields and encode a category with color.
-  actions: createPointMark · encodeX · encodeY
+  actions: createScatterPlot
   url: /tutorials/scatterplot/
   recipe_url: /recipes/scatterplot/
   home_group: essentials
@@ -57,7 +57,7 @@
   thumbnail_height: 409
   caption: Temporal aggregate paths with grouped series.
   summary: Aggregate values over time and split the result into series.
-  actions: createLineMark · encodeX · encodeY · encodeGroup
+  actions: createLinePlot
   url: /tutorials/line-chart/
   recipe_url: /recipes/line-chart/
   home_group: essentials
@@ -106,10 +106,12 @@
   thumbnail_height: 371
   caption: Observed discrete cells with continuous color and centered labels.
   summary: Map two discrete fields to cells and a quantitative field to color.
-  actions: createRectMark · encodeX · encodeY · encodeColor
-  url: /api/marks/rect/
+  actions: createHeatmap · createTextMark · encodeText
+  url: /api/basic-charts/#createheatmap
+  recipe_url: /recipes/heatmap/
   home_group: essentials
   home_order: 2.5
+  recipe_order: 5
 - id: bar
   title: Bar chart
   image: /assets/images/jobs-grouped-bar.png
@@ -121,7 +123,7 @@
   thumbnail_height: 409
   caption: Aggregate ordinal bars with grouped color layout.
   summary: Aggregate ordinal categories and arrange nominal groups side by side.
-  actions: createBarMark · encodeY · encodeColor
+  actions: createBarPlot
   url: /tutorials/grouped-bar/
   recipe_url: /recipes/bar-chart/
   home_group: essentials
@@ -155,7 +157,7 @@
   thumbnail_height: 681
   caption: Binned counts partitioned by a nominal field.
   summary: Bin a quantitative field and count category partitions.
-  actions: createBarMark · encodeHistogram · encodeColor
+  actions: createHistogram
   url: /tutorials/histogram/
   recipe_url: /recipes/histogram/
   home_group: essentials
@@ -329,6 +331,21 @@
   home_group: coordinates
   home_order: 5
   tutorial_order: 4
+- id: weighted-donut
+  title: Weighted donut chart
+  image: /assets/images/gapminder-population-donut.png
+  alt: Donut chart showing 2005 population totals by Gapminder cluster
+  width: 1360
+  height: 1040
+  thumbnail: /assets/images/gapminder-population-donut-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 489
+  caption: Quantitative weights summed into proportional annular sectors.
+  summary: Partition a full revolution by category-level sums without expanding rows.
+  actions: createArcMark · encodeTheta · encodeColor
+  url: /tutorials/polar-arcs/#sum-a-field-into-weighted-sectors
+  home_group: coordinates
+  home_order: 6
 - id: rose
   title: Rose chart
   image: /assets/images/nightingale-rose-chart.png
@@ -343,7 +360,7 @@
   actions: createArcMark · encodeTheta · encodeR
   url: /tutorials/polar-arcs/#rose-overlays
   home_group: coordinates
-  home_order: 6
+  home_order: 7
 - id: radial-bars
   title: Radial bars
   image: /assets/images/gapminder-radial-bars.png
@@ -358,7 +375,7 @@
   actions: createArcMark · encodeTheta · encodeR
   url: /tutorials/polar-arcs/#radial-bars
   home_group: coordinates
-  home_order: 7
+  home_order: 8
 - id: selection
   title: Mark selection and highlighting
   image: /assets/images/mark-selection-points.png

@@ -45,24 +45,21 @@ const program = chart()
     margin: { top: 80, right: 170, bottom: 60, left: 80 }
   })
   .createData({ id: "cars", values: rows })
-  .createLineMark({ id: "trends" })
-  .encodeX({
-    field: "Year",
-    fieldType: "temporal",
-    scale: { nice: true }
-  })
-  .encodeY({
-    field: "Acceleration",
-    aggregate: "mean",
-    scale: { nice: true, zero: false }
-  })
-  .encodeColor({
-    field: "Origin",
-    scale: { palette: "tableau10" }
-  })
-  .encodeStrokeDash({ field: "Origin" })
-  .createGuides({
-    axes: { y: { ticksAndLabels: { count: 6 } } }
+  .createLinePlot({
+    id: "trends",
+    x: {
+      field: "Year",
+      fieldType: "temporal",
+      scale: { nice: true }
+    },
+    y: {
+      field: "Acceleration",
+      aggregate: "mean",
+      scale: { nice: true, zero: false }
+    },
+    color: { field: "Origin", scale: { palette: "tableau10" } },
+    strokeDash: { field: "Origin" },
+    guides: { axes: { y: { ticksAndLabels: { count: 6 } } } }
   })
   .createTitle({
     text: "The trend of acceleration by year",
@@ -76,12 +73,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
-| `createLineMark` | A line layer bound to `cars` | An initially empty path collection |
-| `encodeX` | Temporal field, time scale, Cartesian coordinate | Resolved horizontal scale |
-| `encodeY` | Quantitative mean aggregation | Sorted concrete series paths |
-| `encodeColor` | Nominal series identity and color scale | One concrete stroke per origin |
-| `encodeStrokeDash` | Nominal dash scale | One concrete dash pattern per origin |
-| `createGuides` | Axis, horizontal-grid, and combined legend definitions | Grid/axis lines, ticks, labels, titles, legend symbols |
+| `createLinePlot` | Line layer, temporal/aggregate positions, series appearance, scales, and guides | Sorted concrete series paths plus axes, grid, and combined legend |
 | `createTitle` | Chart title and subtitle text | Plot-aligned text graphics |
 
 The source rows remain immutable. Aggregation creates derived series values;
@@ -91,10 +83,15 @@ field and ordered domain, `createGuides` combines them into one legend.
 ## Change the curve
 
 Curve is line appearance rather than a semantic field encoding. It can be set
-when the mark is created:
+inside the facade:
 
 ```javascript
-.createLineMark({ id: "trends", curve: "step" })
+.createLinePlot({
+  id: "trends",
+  x: { field: "Year", fieldType: "temporal" },
+  y: { field: "Acceleration", aggregate: "mean" },
+  line: { curve: "step" }
+})
 ```
 
 or edited after the complete chart exists:
@@ -137,18 +134,19 @@ does not infer those relationships later.
 
 ```text
 program
-├─ createLineMark
-├─ encodeX
-├─ encodeY
-│  └─ rematerializeLineMark
-├─ encodeColor
-│  └─ rematerializeLineMark
-├─ encodeStrokeDash
-│  └─ rematerializeLineMark
-├─ createGuides
-│  ├─ createAxes
-│  ├─ createGrid
-│  └─ createLegend
+├─ createLinePlot
+│  ├─ createLineMark
+│  ├─ encodeX
+│  ├─ encodeY
+│  │  └─ rematerializeLineMark
+│  ├─ encodeColor
+│  │  └─ rematerializeLineMark
+│  ├─ encodeStrokeDash
+│  │  └─ rematerializeLineMark
+│  └─ createGuides
+│     ├─ createAxes
+│     ├─ createGrid
+│     └─ createLegend
 └─ createTitle
 ```
 
@@ -157,4 +155,5 @@ program
 - Serve the repository root and open `examples/cars-line-chart/`.
 - View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-line-chart/program.js).
 - Continue with [Encodings](../api/encodings.md),
-  [Guides](../api/guides.md), and [Titles](../api/titles.md).
+  [Guides](../api/guides.md), [Titles](../api/titles.md), and the
+  [Basic Chart contract](../api/basic-charts.md#createlineplot).

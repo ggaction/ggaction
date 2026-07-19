@@ -5,9 +5,9 @@ title: Polar Arc Tutorial
 
 # Polar Arc Tutorial
 
-Arc marks turn Polar positions into closed sector paths. Use count aggregation
-for proportional donut sectors, or combine categorical theta bands with a
-quantitative radius for rose charts and radial bars.
+Arc marks turn Polar positions into closed sector paths. Use count or weighted
+sum aggregation for proportional donut sectors, or combine categorical theta
+bands with a quantitative radius for rose charts and radial bars.
 
 ## Count a category into a donut
 
@@ -55,6 +55,43 @@ render(program, document.querySelector("canvas").getContext("2d"));
 `aggregate: "count"` assigns one sector to each category and makes its angular
 sweep proportional to the category count. The omitted radius encoding uses the
 available Polar radius. `innerRadius` is a fraction of that available radius.
+
+## Sum a field into weighted sectors
+
+{% include chart-example.html id="weighted-donut" %}
+
+Use `aggregate: "sum"` when each source row contributes a numeric weight rather
+than one count. This example filters Gapminder to one year and partitions the
+donut by the total population in each cluster:
+
+```javascript
+const clusterOrder = [0, 1, 2, 3, 4, 5];
+const populationByCluster = chart()
+  .createCanvas({
+    width: 680,
+    height: 520,
+    margin: { top: 65, right: 200, bottom: 55, left: 55 }
+  })
+  .createData({ values: gapminder.filter(row => row.year === 2005) })
+  .createArcMark({ innerRadius: 0.5, padAngle: 1.25 })
+  .encodeTheta({
+    field: "cluster",
+    fieldType: "nominal",
+    aggregate: "sum",
+    weight: "pop",
+    scale: { domain: clusterOrder }
+  })
+  .encodeColor({
+    field: "cluster",
+    fieldType: "nominal",
+    scale: { domain: clusterOrder }
+  })
+  .createGuides({ axes: false, grid: false, legend: { title: "Cluster" } });
+```
+
+Repeated categories and fractional weights are valid. Every weight must be a
+non-negative finite number, and the total must be positive. Invalid input fails
+before semantic state or trace changes; source rows are never expanded.
 
 ## Rose overlays
 

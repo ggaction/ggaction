@@ -21,6 +21,7 @@ import {
   validateAggregateFieldValues,
 } from "../../../grammar/aggregate.js";
 import { normalizeRuleDatum } from "../../../grammar/rules.js";
+import { readArcThetaWeights } from "../../../grammar/arcs.js";
 import { resolveMarkPositionPolicy } from "./policies/index.js";
 import {
   getPositionChannelDefinition,
@@ -29,7 +30,7 @@ import {
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([
   "field", "datum", "target", "fieldType", "scale", "coordinate",
-  "aggregate", "bin", "stack"
+  "aggregate", "bin", "stack", "weight"
 ]);
 
 function validateCoordinateFamily(layer, channel, operation) {
@@ -82,6 +83,12 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     args.target,
     getPositionChannelDefinition(channel).markTypes
   );
+  if (
+    Object.hasOwn(args, "weight") &&
+    !(layer.mark.type === "arc" && channel === "theta")
+  ) {
+    throw new Error(`${operation} weight is supported only for arc theta encoding.`);
+  }
   validateCoordinateFamily(layer, channel, operation);
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
@@ -97,7 +104,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   }
   const previous = layer.encoding?.[channel];
   const requestedFieldType = args.fieldType ?? previous?.fieldType ?? (
-    layer.mark.type === "arc" && channel === "theta" && args.aggregate === "count"
+    layer.mark.type === "arc" && channel === "theta" &&
+      ["count", "sum"].includes(args.aggregate)
       ? "nominal"
       : "quantitative"
   );
@@ -116,6 +124,14 @@ export function resolvePositionEncoding(program, channel, args, operation) {
       Object.hasOwn(previous, property)) {
       effectiveArgs[property] = previous[property];
     }
+  }
+  if (
+    !Object.hasOwn(effectiveArgs, "weight") &&
+    effectiveArgs.aggregate === "sum" &&
+    previous !== undefined &&
+    Object.hasOwn(previous, "weight")
+  ) {
+    effectiveArgs.weight = previous.weight;
   }
   const policy = resolveMarkPositionPolicy({
     program,
@@ -179,6 +195,12 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   } else if (aggregateOutput) {
     validateAggregateFieldType(policy.aggregate, fieldType);
     validateAggregateFieldValues(dataset.values, field, fieldType);
+  } else if (
+    layer.mark.type === "arc" &&
+    channel === "theta" &&
+    policy.aggregate === "sum"
+  ) {
+    readArcThetaWeights(dataset.values, policy.weight, layer.id);
   } else if (program.markConfigs[target]?.boxPlot !== undefined) {
     for (const [index, row] of dataset.values.entries()) {
       const value = row[field];

@@ -9,6 +9,7 @@ export { PNG_ARTIFACT_ROOT } from "./artifact-schema.js";
 
 export const ROADMAP2_ARTIFACT_ROOT = artifactTrackConfig("roadmap2").root;
 export const ROADMAP3_ARTIFACT_ROOT = artifactTrackConfig("roadmap3").root;
+export const ROADMAP4_ARTIFACT_ROOT = artifactTrackConfig("roadmap4").root;
 
 const SEGMENT = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ARTIFACT_KINDS = new Set(["primitive", "user-facing"]);

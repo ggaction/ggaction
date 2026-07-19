@@ -13,10 +13,10 @@ title: Line Chart Recipe
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createLineMark()
-  .encodeX({ field: "date", fieldType: "temporal" })
-  .encodeY({ field: "value", aggregate: "mean" })
-  .createGuides();
+  .createLinePlot({
+    x: { field: "date", fieldType: "temporal" },
+    y: { field: "value", aggregate: "mean" }
+  });
 ```
 
 ## You must decide
@@ -25,21 +25,21 @@ const program = chart()
 - Quantitative y field
 - Whether the line is one series or grouped by a nominal field
 
-For multiple series, add `encodeColor({ field: "group" })`,
-`encodeStrokeDash({ field: "group" })`, or both before `createGuides`.
+For multiple series, add `color: "group"`, `groupBy: "group"`, or
+`strokeDash: { field: "group" }` to the facade call.
 
 ## The library infers
 
 - UTC time x and linear y scales
 - Mean aggregation at each x/series group
 - Sorted concrete `M/L` path commands
-- Linear interpolation unless `createLineMark({ curve })` selects another curve
+- Linear interpolation unless `line: { curve }` selects another curve
 - Axes, horizontal grid, and a right-side categorical legend when applicable
 
 Every materialized series needs at least two points. Reserve right margin for a
 legend or pass `createLegend({ position: "bottom" })` with bottom margin.
 
-Use `curve: "step"` during creation for midpoint steps, or edit an existing
+Use `line: { curve: "step" }` during creation for midpoint steps, or edit an existing
 line without changing its encodings:
 
 ```javascript
@@ -69,5 +69,6 @@ The accepted curve vocabulary is `linear`, `step`, `step-before`, `step-after`,
 ## Continue
 
 [Line chart tutorial](../tutorials/line-chart.md) ·
+[Basic Charts](../api/basic-charts.md#createlineplot) ·
 [Temporal line positions](../api/position/temporal.md) ·
 [Series encodings](../api/series-encodings.md)

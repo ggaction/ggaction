@@ -60,20 +60,21 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     margin: { top: 40, right: 140, bottom: 70, left: 80 }
   })
   .createData({ id: "jobs", values: rows })
-  .createBarMark({ id: "bars" })
-  .encodeX({ field: "year", fieldType: "ordinal" })
-  .encodeY({
-    field: "perc",
-    aggregate: "mean",
-    scale: { nice: true, zero: false }
-  })
-  .encodeColor({
-    field: "sex",
-    layout: "group",
-    scale: { palette: "tableau10" }
-  })
-  .encodeBarWidth({ band: 0.72 })
-  .createGuides();`,
+  .createBarPlot({
+    id: "bars",
+    x: { field: "year", fieldType: "ordinal" },
+    y: {
+      field: "perc",
+      aggregate: "mean",
+      scale: { nice: true, zero: false }
+    },
+    color: {
+      field: "sex",
+      layout: "group",
+      scale: { palette: "tableau10" }
+    },
+    width: { band: 0.72 }
+  });`,
   primitive: () => createJobsGroupedBarPrimitives(jobs),
   userFacing: () => createJobsGroupedBar(jobs)
 }), defineVisualVariant({

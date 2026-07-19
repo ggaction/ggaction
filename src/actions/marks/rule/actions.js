@@ -104,7 +104,17 @@ const createRuleMark = action(
         length: 0,
         ...resolveMarkGraphicPlacement(created, { data, markType: "rule" })
       })
-      ._withMarkConfig(id, DEFAULT_RULE_CONFIG);
+      ._withMarkConfig(id, {
+        ...DEFAULT_RULE_CONFIG,
+        ...(inherited === undefined
+          ? {}
+          : {
+              inheritedPosition: {
+                source: inherited.source,
+                channels: Object.keys(inherited.encoding)
+              }
+            })
+      });
     return materializeInheritedMark(created, id);
   }
 );

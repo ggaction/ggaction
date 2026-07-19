@@ -44,7 +44,7 @@
         "line": ["quantitative", "temporal", "ordinal", "nominal"],
         "arc": ["ordinal", "nominal"]
       },
-      "modes": "arc accepts aggregate: count for proportional sectors"
+      "modes": "arc accepts aggregate: count or weighted sum for proportional sectors"
     },
     {
       "action": "encodeR",

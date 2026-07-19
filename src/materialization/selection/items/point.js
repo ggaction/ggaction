@@ -18,11 +18,7 @@ export function resolvePointItems(program, layer, dataset) {
   );
   if (
     !Array.isArray(graphic?.items) ||
-    !completePosition ||
-    (
-      layer.encoding?.size?.scale === undefined &&
-      !Number.isFinite(program.markConfigs[layer.id]?.radius)
-    )
+    !completePosition
   ) {
     throw new Error(`Point mark "${layer.id}" is incomplete for selection.`);
   }

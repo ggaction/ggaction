@@ -35,15 +35,16 @@ export function createCarsScatterplot(cars) {
       margin: { top: 30, right: 30, bottom: 60, left: 70 }
     })
     .createData({ id: "cars", values: rows })
-    .createPointMark({ id: "points" })
-    .encodeX({ field: "Horsepower" })
-    .encodeY({ field: "Miles_per_Gallon" })
-    .encodeColor({ field: "Origin" })
-    .encodeRadius({ value: 3 })
-    .createGuides({
-      axes: {
-        x: { title: { text: "Horsepower" } },
-        y: { title: { text: "Miles per Gallon" } }
+    .createScatterPlot({
+      id: "points",
+      x: "Horsepower",
+      y: "Miles_per_Gallon",
+      color: "Origin",
+      guides: {
+        axes: {
+          x: { title: { text: "Horsepower" } },
+          y: { title: { text: "Miles per Gallon" } }
+        }
       }
     });
 }

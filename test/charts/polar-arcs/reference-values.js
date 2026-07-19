@@ -54,6 +54,7 @@ export const CLUSTER_COLORS = Object.freeze([
   "#54a24b",
   "#eeca3b"
 ]);
+export const CLUSTER_ORDER = Object.freeze([0, 1, 2, 3, 4, 5]);
 
 export const CARS_DONUT_TARGET = Object.freeze({
   width: 640,
@@ -61,6 +62,15 @@ export const CARS_DONUT_TARGET = Object.freeze({
   margin: Object.freeze({ top: 55, right: 190, bottom: 55, left: 55 }),
   innerRadius: 0.56,
   padAngle: 1.5
+});
+
+export const GAPMINDER_WEIGHTED_DONUT_TARGET = Object.freeze({
+  width: 680,
+  height: 520,
+  margin: Object.freeze({ top: 65, right: 200, bottom: 55, left: 55 }),
+  year: 2005,
+  innerRadius: 0.5,
+  padAngle: 1.25
 });
 
 export const NIGHTINGALE_TARGET = Object.freeze({
@@ -365,6 +375,66 @@ export function createCarsDonutReference(rows) {
       ORIGIN_ORDER,
       ORIGIN_COLORS,
       "Origin"
+    )
+  });
+}
+
+export function createGapminderWeightedDonutReference(rows) {
+  requireRows(rows, "Gapminder weighted donut");
+  const selectedRows = rows.filter(row => row?.year === GAPMINDER_WEIGHTED_DONUT_TARGET.year);
+  const totals = new Map(CLUSTER_ORDER.map(value => [value, 0]));
+  for (const [index, row] of selectedRows.entries()) {
+    if (!totals.has(row?.cluster)) {
+      throw new Error(`Gapminder weighted donut found an unknown cluster at row ${index}.`);
+    }
+    if (!Number.isFinite(row.pop) || row.pop < 0) {
+      throw new TypeError(
+        `Gapminder weighted donut population must be non-negative and finite at row ${index}.`
+      );
+    }
+    totals.set(row.cluster, totals.get(row.cluster) + row.pop);
+  }
+  const total = [...totals.values()].reduce((sum, value) => sum + value, 0);
+  if (total <= 0) throw new Error("Gapminder weighted donut requires positive population.");
+  const frame = frameFor(GAPMINDER_WEIGHTED_DONUT_TARGET);
+  const innerRadius = frame.availableRadius * GAPMINDER_WEIGHTED_DONUT_TARGET.innerRadius;
+  let startTheta = 0;
+  const positiveClusters = CLUSTER_ORDER.filter(cluster => totals.get(cluster) > 0);
+  const sectors = positiveClusters.map((cluster, index) => {
+    const population = totals.get(cluster);
+    const endTheta = index === positiveClusters.length - 1
+      ? 360
+      : startTheta + population / total * 360;
+    const sector = Object.freeze({
+      key: cluster,
+      population,
+      startTheta,
+      endTheta,
+      innerRadius,
+      outerRadius: frame.availableRadius,
+      fill: CLUSTER_COLORS[cluster],
+      commands: buildReferenceAnnularSectorCommands({
+        frame,
+        startTheta,
+        endTheta,
+        innerRadius,
+        outerRadius: frame.availableRadius,
+        padAngle: GAPMINDER_WEIGHTED_DONUT_TARGET.padAngle
+      })
+    });
+    startTheta = endTheta;
+    return sector;
+  });
+  return Object.freeze({
+    frame,
+    rows: Object.freeze(selectedRows),
+    total,
+    sectors: Object.freeze(sectors),
+    legend: legendLayout(
+      GAPMINDER_WEIGHTED_DONUT_TARGET,
+      CLUSTER_ORDER.map(String),
+      CLUSTER_COLORS,
+      "Cluster"
     )
   });
 }

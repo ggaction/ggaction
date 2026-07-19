@@ -40,15 +40,16 @@ const program = chart()
     margin: { top: 30, right: 30, bottom: 60, left: 70 }
   })
   .createData({ id: "cars", values: rows })
-  .createPointMark({ id: "points" })
-  .encodeX({ field: "Horsepower" })
-  .encodeY({ field: "Miles_per_Gallon" })
-  .encodeColor({ field: "Origin" })
-  .encodeRadius({ value: 3 })
-  .createGuides({
-    axes: {
-      x: { title: { text: "Horsepower" } },
-      y: { title: { text: "Miles per Gallon" } }
+  .createScatterPlot({
+    id: "points",
+    x: "Horsepower",
+    y: "Miles_per_Gallon",
+    color: "Origin",
+    guides: {
+      axes: {
+        x: { title: { text: "Horsepower" } },
+        y: { title: { text: "Miles per Gallon" } }
+      }
     }
   });
 
@@ -62,16 +63,12 @@ render(program, context);
 | --- | --- | --- |
 | `createCanvas` | — | Canvas dimensions and background |
 | `createData` | Immutable named rows | — |
-| `createPointMark` | Point layer bound to `cars` | One circle child per row |
-| `encodeX`, `encodeY` | Fields, scales, Cartesian coordinate | Concrete x/y values |
-| `encodeColor` | Nominal color field and scale | Concrete fill colors |
-| `encodeRadius` | — | Constant circle radius |
-| `createGuides` | Axis and horizontal-grid definitions | Concrete grid/axis lines, ticks, labels, and axis titles |
+| `createScatterPlot` | Point layer, x/y/color encodings, scales, Cartesian coordinate, and guides | Concrete circles plus grid/axis lines, ticks, labels, and titles |
 
-Position encodings create the default `main` Cartesian coordinate before guides
-are requested. `createGuides` calls the axis and grid actions, which read that
-stored relationship and create guide graphics; they do not create or repair
-coordinates.
+`createScatterPlot` calls `createPointMark`, the requested encoding actions,
+and `createGuides` as wrapped children. Position encodings create the default
+`main` Cartesian coordinate before guides are requested. The guide children
+read that stored relationship; they do not create or repair coordinates.
 
 ## Reassign encodings
 
@@ -150,21 +147,22 @@ property edits remain available deeper in the same tree.
 
 ```text
 program
-├─ createPointMark
-├─ encodeX
-├─ encodeY
-├─ encodeColor
-├─ encodeRadius
-└─ createGuides
-   ├─ createAxes
-   │  ├─ createXAxis
-   │  └─ createYAxis
-   └─ createGrid
+└─ createScatterPlot
+   ├─ createPointMark
+   ├─ encodeX
+   ├─ encodeY
+   ├─ encodeColor
+   └─ createGuides
+      ├─ createAxes
+      │  ├─ createXAxis
+      │  └─ createYAxis
+      └─ createGrid
 ```
 
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
 - View the [complete browser source](https://github.com/ggaction/ggaction/blob/main/examples/cars-scatterplot/main.js).
-- Continue with [Encodings](../api/encodings.md) and
-  [Guides](../api/guides.md).
+- Continue with [Encodings](../api/encodings.md),
+  [Guides](../api/guides.md), and the
+  [Basic Chart contract](../api/basic-charts.md#createscatterplot).

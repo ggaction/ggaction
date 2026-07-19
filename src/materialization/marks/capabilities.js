@@ -81,7 +81,7 @@ export function canMaterializeArc(_program, layer) {
   ) {
     return false;
   }
-  if (layer.encoding.theta.aggregate === "count") {
+  if (["count", "sum"].includes(layer.encoding.theta.aggregate)) {
     return layer.encoding?.radius === undefined;
   }
   return (

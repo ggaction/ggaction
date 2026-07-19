@@ -8,10 +8,13 @@ import { createCarsOriginDonut } from
   "../../../examples/cars-origin-donut/program.js";
 import { createGapminderRadialBars } from
   "../../../examples/gapminder-radial-bars/program.js";
+import { createGapminderPopulationDonut } from
+  "../../../examples/gapminder-population-donut/program.js";
 import { createNightingaleRoseChart } from
   "../../../examples/nightingale-rose-chart/program.js";
 import {
   createCarsOriginDonutPrimitives,
+  createGapminderWeightedDonutPrimitives,
   createGapminderRadialBarPrimitives,
   createNightingaleRosePrimitives
 } from "./primitive.program.js";
@@ -100,7 +103,60 @@ export const gapminderRadialTargetCallChain = `chart()
     legend: { position: "right", title: "Cluster" }
   });`;
 
+export const gapminderWeightedDonutCallChain = `chart()
+  .createCanvas({
+    width: 680,
+    height: 520,
+    margin: { top: 65, right: 200, bottom: 55, left: 55 }
+  })
+  .createData({ values: populationRows })
+  .createArcMark({ innerRadius: 0.5, padAngle: 1.25, opacity: 0.96 })
+  .encodeTheta({
+    field: "cluster",
+    fieldType: "nominal",
+    aggregate: "sum",
+    weight: "pop",
+    scale: { domain: [0, 1, 2, 3, 4, 5] }
+  })
+  .encodeColor({
+    field: "cluster",
+    fieldType: "nominal",
+    scale: {
+      domain: [0, 1, 2, 3, 4, 5],
+      range: ["#4c78a8", "#f58518", "#e45756", "#72b7b2", "#54a24b", "#eeca3b"]
+    }
+  })
+  .createGuides({
+    axes: false,
+    grid: false,
+    legend: { position: "right", title: "Cluster" }
+  });`;
+
 export const visualVariants = Object.freeze([
+  defineVisualVariant({
+    chart: "gapminder-population-donut",
+    variant: "weighted-theta",
+    title: "Gapminder Population by Cluster",
+    callChain: gapminderWeightedDonutCallChain,
+    artifact: {
+      roadmap: "roadmap4",
+      phase: "phase3",
+      capability: "weighted-theta"
+    },
+    primitive: () => createGapminderWeightedDonutPrimitives(gapminder),
+    userFacing: () => createGapminderPopulationDonut(gapminder),
+    width: 680,
+    height: 520,
+    colors: ["#4c78a8", "#f58518", "#e45756", "#72b7b2", "#54a24b", "#eeca3b"],
+    regions: [{
+      name: "weighted-sectors",
+      x: 45,
+      y: 45,
+      width: 430,
+      height: 430,
+      minimumInkPixels: 1200
+    }]
+  }),
   defineVisualVariant({
     chart: "cars-origin-donut",
     variant: "count",

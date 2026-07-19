@@ -24,7 +24,8 @@ function encodePosition(program, channel, args, operation) {
     coordinate,
     bin,
     aggregate,
-    stack
+    stack,
+    weight
   } = resolvePositionEncoding(program, channel, args, operation);
 
   let next = program
@@ -36,6 +37,7 @@ function encodePosition(program, channel, args, operation) {
   next = applyPositionSemantics(next, {
     target,
     channel,
+    layer,
     previous,
     field,
     datum,
@@ -43,7 +45,8 @@ function encodePosition(program, channel, args, operation) {
     fieldType,
     bin,
     aggregate,
-    stack
+    stack,
+    weight
   });
 
   next = next.editSemantic({

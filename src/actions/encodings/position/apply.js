@@ -9,6 +9,44 @@ function replaceAlternateBinding(program, target, channel, previous, usesField) 
     : program;
 }
 
+function reconcileInheritedRulePosition(program, {
+  target,
+  channel,
+  layer,
+  hasField
+}) {
+  const config = program.markConfigs[target] ?? {};
+  const inherited = config.inheritedPosition;
+  if (layer.mark.type !== "rule" || inherited === undefined) return program;
+
+  let channels = inherited.channels.filter(candidate => candidate !== channel);
+  let next = program;
+  if (
+    !hasField &&
+    ["x", "y"].includes(channel) &&
+    layer.encoding?.x2 === undefined &&
+    layer.encoding?.y2 === undefined
+  ) {
+    const opposite = channel === "x" ? "y" : "x";
+    if (channels.includes(opposite) && layer.encoding?.[opposite] !== undefined) {
+      next = next.editSemantic({
+        property: `layer[${target}].encoding.${opposite}`,
+        remove: true
+      });
+      channels = channels.filter(candidate => candidate !== opposite);
+    }
+  }
+
+  const { inheritedPosition, ...rest } = config;
+  void inheritedPosition;
+  return next._withMarkConfig(target, channels.length === 0
+    ? rest
+    : {
+        ...rest,
+        inheritedPosition: { ...inherited, channels }
+      });
+}
+
 function applyBin(program, target, channel, previous, bin) {
   if (bin === undefined) return program;
   const [mode] = Object.keys(bin);
@@ -26,9 +64,26 @@ function applyBin(program, target, channel, previous, bin) {
   });
 }
 
+function applyArcThetaWeight(program, target, channel, previous, aggregate, weight) {
+  if (channel !== "theta") return program;
+  if (aggregate !== "sum") {
+    return previous?.weight === undefined
+      ? program
+      : program.editSemantic({
+          property: `layer[${target}].encoding.theta.weight`,
+          remove: true
+        });
+  }
+  return program.editSemantic({
+    property: `layer[${target}].encoding.theta.weight`,
+    value: weight
+  });
+}
+
 export function applyPositionSemantics(program, {
   target,
   channel,
+  layer,
   previous,
   field,
   datum,
@@ -36,10 +91,17 @@ export function applyPositionSemantics(program, {
   fieldType,
   bin,
   aggregate,
-  stack
+  stack,
+  weight
 }) {
-  let next = replaceAlternateBinding(
-    program,
+  let next = reconcileInheritedRulePosition(program, {
+    target,
+    channel,
+    layer,
+    hasField
+  });
+  next = replaceAlternateBinding(
+    next,
     target,
     channel,
     previous,
@@ -62,5 +124,12 @@ export function applyPositionSemantics(program, {
       value
     });
   }
-  return next;
+  return applyArcThetaWeight(
+    next,
+    target,
+    channel,
+    previous,
+    aggregate,
+    weight
+  );
 }

@@ -44,24 +44,21 @@ const baselineArtifact = Object.freeze({
     margin: { top: 80, right: 170, bottom: 60, left: 80 }
   })
   .createData({ id: "cars", values: rows })
-  .createLineMark({ id: "trends" })
-  .encodeX({
-    field: "Year",
-    fieldType: "temporal",
-    scale: { nice: true }
-  })
-  .encodeY({
-    field: "Acceleration",
-    aggregate: "mean",
-    scale: { nice: true, zero: false }
-  })
-  .encodeColor({
-    field: "Origin",
-    scale: { palette: "tableau10" }
-  })
-  .encodeStrokeDash({ field: "Origin" })
-  .createGuides({
-    axes: { y: { ticksAndLabels: { count: 6 } } }
+  .createLinePlot({
+    id: "trends",
+    x: {
+      field: "Year",
+      fieldType: "temporal",
+      scale: { nice: true }
+    },
+    y: {
+      field: "Acceleration",
+      aggregate: "mean",
+      scale: { nice: true, zero: false }
+    },
+    color: { field: "Origin", scale: { palette: "tableau10" } },
+    strokeDash: { field: "Origin" },
+    guides: { axes: { y: { ticksAndLabels: { count: 6 } } } }
   })
   .createTitle({
     text: "The trend of acceleration by year",

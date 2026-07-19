@@ -20,6 +20,10 @@ const roadmap3GateInventory = JSON.parse(readFileSync(
   path.join(root, "agent_docs/impl/roadmap3/phase0/GATE_A_INVENTORY.json"),
   "utf8"
 ));
+const roadmap4Phase2Proposals = JSON.parse(readFileSync(
+  path.join(root, "agent_docs/impl/roadmap4/phase2/PROPOSALS.json"),
+  "utf8"
+));
 
 function markdownFiles(directory) {
   return readdirSync(path.join(contractRoot, directory))
@@ -274,9 +278,10 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   assert.equal(new Set(names).size, names.length);
   assert.deepEqual(
     names,
-    roadmap3GateInventory.proposedActions
-      .map(action => action.name)
-      .filter(name => !current.has(name) && !maybeFutureActions.has(name))
+    [
+      ...roadmap3GateInventory.proposedActions.map(action => action.name),
+      ...roadmap4Phase2Proposals.actions.map(action => action.name)
+    ].filter(name => !current.has(name) && !maybeFutureActions.has(name))
   );
   assert.equal(names.includes("editRuleMark"), false);
 
@@ -313,9 +318,12 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   assert.deepEqual(new Set(indexedReassignments), new Set(plannedReassignments));
 });
 
-test("maps every planned contract into the approved Roadmap 3 Gate inventory", () => {
+test("maps every planned contract into an approved roadmap Gate inventory", () => {
   const approvedActions = new Set(
-    roadmap3GateInventory.proposedActions.map(action => action.name)
+    [
+      ...roadmap3GateInventory.proposedActions.map(action => action.name),
+      ...roadmap4Phase2Proposals.actions.map(action => action.name)
+    ]
   );
   const approvedCapabilities = new Set([
     ...roadmap3GateInventory.proposedOperations.map(operation => operation.name),

@@ -15,17 +15,14 @@ export function createCarsHistogram(cars) {
       margin: { top: 80, right: 60, bottom: 130, left: 80 }
     })
     .createData({ id: "cars", values: rows })
-    .createBarMark({ id: "bars" })
-    .encodeHistogram({
+    .createHistogram({
+      id: "bars",
       field: "Displacement",
       maxBins: 10,
-      xScale: { nice: true, zero: false }
+      xScale: { nice: true, zero: false },
+      color: { field: "Origin", scale: { palette: "tableau10" } },
+      guides: { legend: { position: "bottom" } }
     })
-    .encodeColor({
-      field: "Origin",
-      scale: { palette: "tableau10" }
-    })
-    .createGuides({ legend: { position: "bottom" } })
     .createTitle({
       text: "Displacement distribution",
       subtitle: "by country",

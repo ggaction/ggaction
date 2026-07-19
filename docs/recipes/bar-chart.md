@@ -16,12 +16,12 @@ choice inside the bar chart, not a separate top-level chart type.
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createBarMark()
-  .encodeX({ field: "category", fieldType: "ordinal" })
-  .encodeY({ field: "value", aggregate: "mean" })
-  .encodeColor({ field: "group", layout: "group" })
-  .encodeBarWidth()
-  .createGuides();
+  .createBarPlot({
+    x: { field: "category", fieldType: "ordinal" },
+    y: { field: "value", aggregate: "mean" },
+    color: { field: "group", layout: "group" },
+    width: { band: 0.72 }
+  });
 ```
 
 ## You must decide
@@ -44,10 +44,12 @@ Use `encodeBarWidth({ pixels: 14 })` for a resize-stable logical width, or
 `encodeXOffset({ field: "group", paddingInner: 0.2, paddingOuter: 0.1 })`
 after grouped color to change within-band spacing. Reassign the group field
 with one `encodeColor({ field: "nextGroup", layout: "group" })` call.
-The current API does not synthesize zero bars or support horizontal bars.
+The current API does not synthesize zero bars. For horizontal bars, put the
+quantitative measure on x and the ordinal category on y.
 
 ## Continue
 
 [Bar chart tutorial](../tutorials/grouped-bar.md) ·
+[Basic Charts](../api/basic-charts.md#createbarplot) ·
 [Ordinal bar positions](../api/position/ordinal-bars.md) ·
 [Ordinal offsets](../api/position/offsets.md)

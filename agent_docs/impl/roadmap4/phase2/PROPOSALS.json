@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "phase": "roadmap4/phase2",
+  "gate": "P2-A",
+  "status": "approved",
+  "actions": [
+    {
+      "name": "createScatterPlot",
+      "status": "implemented",
+      "defaultId": "scatterPlot",
+      "required": ["x", "y"],
+      "optional": ["id", "data", "coordinate", "color", "size", "shape", "point", "guides"],
+      "children": ["createPointMark", "encodeX", "encodeY", "encodeColor?", "encodeSize?", "encodeShape?", "createGuides?"],
+      "contract": "agent_docs/impl/roadmap4/chart/scatter-plot.md"
+    },
+    {
+      "name": "createLinePlot",
+      "status": "implemented",
+      "defaultId": "linePlot",
+      "required": ["x", "y"],
+      "optional": ["id", "data", "coordinate", "color", "groupBy", "strokeDash", "line", "guides"],
+      "children": ["createLineMark", "encodeX", "encodeY", "encodeColor?", "encodeGroup?", "encodeStrokeDash?", "createGuides?"],
+      "contract": "agent_docs/impl/roadmap4/chart/line-plot.md"
+    },
+    {
+      "name": "createBarPlot",
+      "status": "implemented",
+      "defaultId": "barPlot",
+      "required": ["x", "y"],
+      "optional": ["id", "data", "coordinate", "color", "width", "bar", "guides"],
+      "children": ["createBarMark", "encodeX", "encodeY", "encodeColor?", "encodeBarWidth?", "createGuides?"],
+      "contract": "agent_docs/impl/roadmap4/chart/bar-plot.md"
+    },
+    {
+      "name": "createHistogram",
+      "status": "implemented",
+      "defaultId": "histogram",
+      "required": ["field"],
+      "optional": ["id", "data", "coordinate", "maxBins", "binStep", "binBoundaries", "stack", "xScale", "yScale", "color", "bar", "guides"],
+      "children": ["createBarMark", "encodeHistogram", "encodeColor?", "createGuides?"],
+      "contract": "agent_docs/impl/roadmap4/chart/histogram.md"
+    },
+    {
+      "name": "createHeatmap",
+      "status": "implemented",
+      "defaultId": "heatmap",
+      "required": ["x", "y", "color"],
+      "optional": ["id", "data", "coordinate", "rect", "guides"],
+      "children": ["createRectMark", "encodeX", "encodeY", "encodeColor", "createGuides?"],
+      "contract": "agent_docs/impl/roadmap4/chart/heatmap.md"
+    }
+  ]
+}

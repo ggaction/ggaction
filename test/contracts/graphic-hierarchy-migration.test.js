@@ -80,6 +80,10 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "canvas", "arc",
     "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"
   ],
+  "gapminder-population-donut": [
+    "canvas", "arc",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"
+  ],
   "nightingale-rose-chart": [
     "canvas", "radialGridCircles", "arc",
     "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels",

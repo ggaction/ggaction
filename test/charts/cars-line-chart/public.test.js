@@ -23,15 +23,11 @@ test("builds the public cars line-chart example with chart actions", () => {
     "The trend of acceleration by year"
   );
   assert.deepEqual(program.trace.children.map(node => node.op), [
-    "createCanvas",
-    "createData",
-    "createLineMark",
-    "encodeX",
-    "encodeY",
-    "encodeColor",
-    "encodeStrokeDash",
-    "createGuides",
-    "createTitle"
+    "createCanvas", "createData", "createLinePlot", "createTitle"
+  ]);
+  assert.deepEqual(program.trace.children[2].children.map(node => node.op), [
+    "createLineMark", "encodeX", "encodeY", "encodeColor",
+    "encodeStrokeDash", "createGuides"
   ]);
 });
 

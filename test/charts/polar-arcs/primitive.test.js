@@ -9,14 +9,31 @@ import {
 } from "../../support/data.js";
 import {
   createCarsDonutReference,
+  createGapminderWeightedDonutReference,
   createGapminderRadialBarReference,
   createNightingaleRoseReference
 } from "./reference-values.js";
 import {
   createCarsOriginDonutPrimitives,
+  createGapminderWeightedDonutPrimitives,
   createGapminderRadialBarPrimitives,
   createNightingaleRosePrimitives
 } from "./primitive.program.js";
+
+test("authors weighted Gapminder sectors from an independent population sum", () => {
+  const rows = loadGapminder();
+  const values = createGapminderWeightedDonutReference(rows);
+  const program = createGapminderWeightedDonutPrimitives(rows);
+
+  assert.equal(program.semanticSpec.datasets[0].values.length, 62);
+  assert.deepEqual(program.graphicSpec.objects.arc.items.map(
+    item => item.properties.commands
+  ), values.sectors.map(sector => sector.commands));
+  assert.deepEqual(program.graphicSpec.objects.arc.items.map(
+    item => item.properties.fill
+  ), values.sectors.map(sector => sector.fill));
+  assert.equal(values.sectors.at(-1).endTheta, 360);
+});
 
 function operations(node) {
   return node.children.flatMap(child => [child.op, ...operations(child)]);
@@ -113,6 +130,7 @@ test("authors one Gapminder radial bar for each selected 2005 country", () => {
 
 test("keeps post-Gate arc actions out of every primitive trace", () => {
   const programs = [
+    createGapminderWeightedDonutPrimitives(loadGapminder()),
     createCarsOriginDonutPrimitives(loadCars()),
     createNightingaleRosePrimitives(loadNightingaleRose()),
     createGapminderRadialBarPrimitives(loadGapminder())

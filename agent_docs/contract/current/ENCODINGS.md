@@ -50,6 +50,13 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   category x에서는 거부된다.
 - Effect: x encoding과 scale을 semantic state에 저장하고 scale 및 compatible mark/guide consumers를
   rematerialize한다.
+- Line order independence: direct quantitative line은 y가 아직 없어도 x semantic과 scale을 저장한다.
+  `encodeY`가 compatible quantitative pair를 완성할 때 materialize하며 y→x와 동일한 final
+  layer/resolved scale/graphic을 만든다. Aggregate y line은 temporal x를 요구하며 incompatible
+  quantitative x completion을 명시적으로 거부한다.
+- Layered rule datum: inherited position provenance가 있는 rule에 datum x를 작성하면 secondary endpoint가
+  없는 경우 inherited y branch만 제거해 vertical full-span을 만든다. Explicit data나 field x는 이 정리를
+  적용하지 않는다.
 - Reassignment: 같은 target에 다시 호출하면 compatible field와 scale binding을 교체한다. scale ID를
   생략하면 현재 x scale을 재사용하고, explicit new ID는 이전 scale을 남긴 채 axis/vertical grid를
   새 scale에 rebind한다. inferred title은 새 field로 바뀌고 custom title/style은 유지된다.
@@ -91,7 +98,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
     explicit independent scales, incompatible field rejection, Canvas resize and scale reversal.
   - ✅ Covered: point missing/invalid and explicit-domain `unknown`; compound-grain rejection.
 - Evidence: position, temporal, histogram-bin and ordinal-bar action tests, including
-  `test/unit/actions/scales/temporal-bar-line-sharing.test.js`.
+  `test/unit/actions/scales/temporal-bar-line-sharing.test.js`,
+  `test/contracts/line-position-order.test.js`, and
+  `test/contracts/rule-inherited-datum-span.test.js`.
 
 ## `encodeY`
 
@@ -142,6 +151,12 @@ type AggregateOperation =
 - `bin`: 현재 y에서는 지원되지 않는다.
 - Effect: y semantic, scale, final bar/line aggregate grain을 저장하고 mark geometry와
   existing guides를 rematerialize한다.
+- Line order independence: direct quantitative line은 x가 아직 없어도 y semantic과 scale을 저장하고,
+  compatible x가 완성되면 x→y와 동일한 final line을 materialize한다. Aggregate y는 temporal x와 함께만
+  final grain을 만들며 incompatible quantitative x completion은 명시적 validation error다.
+- Layered rule datum: inherited position provenance가 있는 rule에 datum y를 작성하면 secondary endpoint가
+  없는 경우 inherited x branch만 제거해 horizontal full-span을 만든다. Explicit data나 field y는 이 정리를
+  적용하지 않는다.
 - Reassignment: 같은 target의 existing fieldType, aggregate/bin/stack mode와 coordinate를 유지하며
   compatible field를 교체한다. current scale reuse, explicit new-scale rebind, inferred/custom title
   규칙은 x와 같다.
@@ -771,6 +786,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Effect: graphical mark config와 concrete size만 바꾸며 semanticSpec에는 기록하지 않는다.
   field-driven `encodeSize`와 동시에 사용할 수 없다. 같은 target에 다시 호출하면 기존 radius를
   교체하고 point를 rematerialize한다.
+- Priority: explicit constant radius는 point materializer의 default radius `3`보다 우선한다.
+  Default radius는 user-authored constant로 취급하지 않으므로 `encodeSize`와 충돌하지 않는다;
+  field-driven size가 default를 대체한다.
 - Coverage: scatterplot/point tests가 constant radius, reassignment, rematerialization과 invalid values를 검증한다.
 - Polar semantic radial position은 별도 `encodeR`이 소유하며 이 action은 glyph size만 소유한다.
 
@@ -786,13 +804,15 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `target`
   - ✅ Covered: inferred/explicit point와 invalid target.
 - Interaction
-  - ✅ Covered: semanticSpec unchanged, child broadcast, same-action reassignment, encodeSize conflict.
+  - ✅ Covered: semanticSpec unchanged, child broadcast, same-action reassignment, explicit-radius/encodeSize
+    conflict, default-radius/encodeSize override.
 - No proposal: constant area shorthand는 추가하지 않고 field-driven area는 `encodeSize`가 소유한다.
-- Evidence: `test/unit/actions/encodings/radius-encoding.test.js`.
+- Evidence: `test/unit/actions/encodings/radius-encoding.test.js` and
+  `test/contracts/point-default-radius.test.js`.
 
 ## `encodeTheta`
 
-- Signature: `encodeTheta({ field, target?, fieldType?, scale?, coordinate?, aggregate? })`
+- Signature: `encodeTheta({ field, target?, fieldType?, scale?, coordinate?, aggregate?, weight? })`
 - Public angle unit은 degree다. 0°는 12시 방향이고 양의 방향은 clockwise다.
 - `fieldType`은 quantitative, temporal, ordinal, nominal을 지원한다. Quantitative는 linear, temporal은 time,
   discrete 값은 point/band scale을 사용한다.
@@ -800,12 +820,13 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - 첫 Polar position action은 `polar` coordinate를 생성·저장한다. 같은 layer의 Cartesian x/y와 혼합할 수 없다.
 - Theta만 있는 incomplete point는 semantic과 resolved scale을 유지하지만 visible x/y geometry를 만들지 않는다.
 - Reassignment는 같은 action과 scale lifecycle을 사용한다.
-- Arc marks use a band scale for categorical theta. `aggregate: "count"` is arc-only, infers nominal field type
-  when omitted, and partitions the full theta range proportionally by category count.
+- Arc marks use a band scale for categorical theta. `aggregate: "count"` partitions the full theta range by
+  category count. `aggregate: "sum"` requires a `weight` field and partitions it by each category's sum of
+  non-negative finite weights. Both modes are arc-only and infer nominal field type when omitted.
 
 ### Formal values — `encodeTheta`
 
-- Implemented: `encodeTheta({ field: FieldName; target?: UserId; fieldType?: FieldType; scale?: ThetaScaleOptions; coordinate?: UserId; aggregate?: "count" })`
+- Implemented: `encodeTheta({ field: FieldName; target?: UserId; fieldType?: FieldType; scale?: ThetaScaleOptions; coordinate?: UserId; aggregate?: "count" | "sum"; weight?: FieldName })`
 - Theta scale type: `"linear" | "time" | "point" | "band"`.
 - Range: `"auto" | readonly [Finite, Finite]`, with absolute span `<= 360`.
 - Proposed (NOT IMPLEMENTED): —
@@ -814,7 +835,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - ✅ Covered: shortest call, quantitative and discrete mappings, explicit/reversed ranges, invalid span and type.
 - ✅ Covered: order independence, one-channel incomplete state, Cartesian conflict and immutable failure.
-- ✅ Covered: arc count partition, circular categorical bands, larger-first radial overlay and zero-radius omission.
+- ✅ Covered: arc count and weighted-sum partition, fractional/repeated categories, strict invalid/all-zero weight
+  rejection, circular categorical bands, larger-first radial overlay and zero-radius omission.
 - Evidence: Polar grammar, encoding, chart, browser and render tests.
 
 ## `encodeR`

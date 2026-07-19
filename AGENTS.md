@@ -21,10 +21,10 @@
 ## Maintaining These Instructions
 
 - Add durable implementation principles emphasized by the user to the most specific applicable `AGENTS.md` file as they emerge during development.
-- Treat source and tests as one continuous change surface, but keep public documentation release-scoped. During development,
-  record public documentation impact in the current internal implementation or release plan; update and publish `docs/`,
-  `README.md`, generated public references, and public examples together only during release preparation. A release must not
-  complete with contradictions between its implementation, declarations, package metadata, and public documentation.
+- Treat source, tests, public documentation, generated public references, and public examples as one continuous change
+  surface. When user-facing behavior changes, update `docs/`, `README.md`, affected examples, declarations, and executable
+  documentation checks during the same development phase. Documentation deployment and package publishing remain
+  release-scoped and must use the exact approved release commit or tag.
 - Do not add one-off task details, temporary workarounds, or narrow implementation notes to instruction files.
 - If a new instruction conflicts with an existing one, surface and resolve the conflict instead of silently replacing either rule.
 
@@ -43,6 +43,7 @@
 
 - Implement one coherent conceptual change at a time.
 - After completing and verifying each small coherent conceptual change, commit it and push the current branch before beginning the next change, unless the user explicitly asks otherwise.
+- Treat an approval Gate as a mandatory repository checkpoint: before requesting approval, commit and push every verified change in the Gate package so the reviewed source, tests, docs, and evidence share one remote commit. PR creation, package publishing, and documentation deployment still require separate user authorization.
 - Use a terse commit message that describes that conceptual change, and never include unrelated work in the same commit.
 - Do not combine requested work with unrelated large refactors.
 - Preserve unrelated user changes and avoid modifying files outside the task's scope.

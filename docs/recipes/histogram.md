@@ -13,9 +13,7 @@ title: Histogram Recipe
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createBarMark()
-  .encodeHistogram({ field: "value" })
-  .createGuides();
+  .createHistogram({ field: "value" });
 ```
 
 ## You must decide
@@ -24,9 +22,8 @@ const program = chart()
 - Optional `maxBins`
 - Optional nominal color field and series layout
 
-```javascript
-program.encodeColor({ field: "group", layout: "stack" });
-```
+Add `color: { field: "group", layout: "stack" }` to the `createHistogram`
+options.
 
 Choose `fill`, `group`, `overlay`, or `diverging` when their partition meaning
 matches the chart.
@@ -39,11 +36,12 @@ matches the chart.
 - Bin-aligned axes, horizontal grid, and categorical legend when applicable
 
 Legends default to the right. Pass
-`createGuides({ legend: { position: "bottom" } })` for the horizontal layout
-used by the public tutorial.
+`guides: { legend: { position: "bottom" } }` for the horizontal layout used by
+the public tutorial.
 
 ## Continue
 
 [Histogram tutorial](../tutorials/histogram.md) ·
+[Basic Charts](../api/basic-charts.md#createhistogram) ·
 [Histogram positions](../api/position/histogram.md) ·
 [Scale options](../api/scales.md)

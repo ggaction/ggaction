@@ -85,7 +85,7 @@ for (const file of htmlFiles) {
 
 const llmsFile = path.join(siteRoot, "llms.txt");
 const llmsTargets = llmReferences(await readFile(llmsFile, "utf8"));
-assert.equal(llmsTargets.length, 40, "Expected every selective LLM documentation target.");
+assert.equal(llmsTargets.length, 43, "Expected every selective LLM documentation target.");
 for (const target of llmsTargets) await assertTarget(llmsFile, target);
 
 const searchIndex = JSON.parse(await readFile(path.join(siteRoot, "search-index.json"), "utf8"));

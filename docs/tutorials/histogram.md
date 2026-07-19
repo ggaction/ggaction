@@ -44,17 +44,14 @@ const program = chart()
     margin: { top: 80, right: 60, bottom: 130, left: 80 }
   })
   .createData({ id: "cars", values: rows })
-  .createBarMark({ id: "bars" })
-  .encodeHistogram({
+  .createHistogram({
+    id: "bars",
     field: "Displacement",
     maxBins: 10,
-    xScale: { nice: true, zero: false }
+    xScale: { nice: true, zero: false },
+    color: { field: "Origin", scale: { palette: "tableau10" } },
+    guides: { legend: { position: "bottom" } }
   })
-  .encodeColor({
-    field: "Origin",
-    scale: { palette: "tableau10" }
-  })
-  .createGuides({ legend: { position: "bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",
@@ -68,16 +65,13 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 | Stage | Semantic result | Graphical result |
 | --- | --- | --- |
-| `createBarMark` | A bar layer bound to `cars` | An initially empty rect collection |
-| `encodeHistogram` | Binned x plus count/zero-stack y encodings | Resolved scales and concrete bin rects |
-| `encodeColor` | Nominal stack identity and color scale | Category-colored rects in each bin |
-| `createGuides` | Axis, horizontal-grid, and legend definitions | Bin-aligned axes, grid lines, and an explicitly bottom-centered legend |
+| `createHistogram` | Bar layer, atomic bin/count positions, nominal stack identity, scales, and guides | Category-colored bin rects plus bin-aligned axes, grid, and bottom legend |
 | `createTitle` | Chart title and subtitle text | Plot-centered title graphics |
 
-`encodeHistogram` is atomic because its x binning and y count/stack meaning are
-interdependent. Its trace still exposes the wrapped `encodeX` and `encodeY`
-actions. The source dataset remains unchanged; bin counts and stacked geometry
-are derived and materialized separately.
+The facade calls atomic `encodeHistogram` because its x binning and y
+count/stack meaning are interdependent. That action still exposes wrapped
+`encodeX` and `encodeY` children. The source dataset remains unchanged; bin
+counts and stacked geometry are derived and materialized separately.
 
 Use `maxBins` for an inferred nice partition, `binStep` for an exact
 zero-anchored width, or `binBoundaries` for explicitly authored irregular
@@ -102,17 +96,18 @@ children, while guide selection remains a separate aggregate.
 
 ```text
 program
-├─ createBarMark
-├─ encodeHistogram
-│  ├─ encodeX
-│  └─ encodeY
-│     └─ rematerializeBarMark
-├─ encodeColor
-│  └─ rematerializeBarMark
-├─ createGuides
-│  ├─ createAxes
-│  ├─ createGrid
-│  └─ createLegend
+├─ createHistogram
+│  ├─ createBarMark
+│  ├─ encodeHistogram
+│  │  ├─ encodeX
+│  │  └─ encodeY
+│  │     └─ rematerializeBarMark
+│  ├─ encodeColor
+│  │  └─ rematerializeBarMark
+│  └─ createGuides
+│     ├─ createAxes
+│     ├─ createGrid
+│     └─ createLegend
 └─ createTitle
 ```
 
@@ -121,4 +116,5 @@ program
 - Serve the repository root and open `examples/cars-histogram/`.
 - View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-histogram/program.js).
 - Continue with [Encodings](../api/encodings.md),
-  [Guides](../api/guides.md), and [Titles](../api/titles.md).
+  [Guides](../api/guides.md), [Titles](../api/titles.md), and the
+  [Basic Chart contract](../api/basic-charts.md#createhistogram).

@@ -33,14 +33,11 @@ test("builds the public jobs grouped bar chart with chart actions", () => {
   );
   assert.equal(program.semanticSpec.guides.grid.horizontal.scale, "y");
   assert.deepEqual(program.trace.children.map(node => node.op), [
-    "createCanvas",
-    "createData",
-    "createBarMark",
-    "encodeX",
-    "encodeY",
-    "encodeColor",
-    "encodeBarWidth",
-    "createGuides"
+    "createCanvas", "createData", "createBarPlot"
+  ]);
+  assert.deepEqual(program.trace.children[2].children.map(node => node.op), [
+    "createBarMark", "encodeX", "encodeY", "encodeColor",
+    "encodeBarWidth", "createGuides"
   ]);
 });
 

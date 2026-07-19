@@ -72,6 +72,57 @@ async function testNodeConsumer(directory) {
       .encodeRadius({ value: 3 });
     assert.equal(typeof render, "function");
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    const scatterFacade = chart()
+      .createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false });
+    assert.equal(scatterFacade.graphicSpec.objects.scatterPlot.items.length, 2);
+    assert.deepEqual(
+      scatterFacade.trace.children.at(-1).children.map(node => node.op),
+      ["createPointMark", "encodeX", "encodeY"]
+    );
+    const lineFacade = chart()
+      .createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: [
+        { x: 1, y: 2, group: "A" },
+        { x: 2, y: 4, group: "A" }
+      ] })
+      .createLinePlot({ x: "x", y: "y", groupBy: "group", guides: false });
+    assert.equal(lineFacade.graphicSpec.objects.linePlot.items.length, 1);
+    assert.deepEqual(
+      lineFacade.trace.children.at(-1).children.map(node => node.op),
+      ["createLineMark", "encodeX", "encodeY", "encodeGroup"]
+    );
+    const barFacade = chart()
+      .createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: [
+        { category: "A", value: 2 },
+        { category: "B", value: 4 }
+      ] })
+      .createBarPlot({
+        x: { field: "category", fieldType: "ordinal" },
+        y: { field: "value", aggregate: "mean" },
+        guides: false
+      });
+    assert.equal(barFacade.graphicSpec.objects.barPlot.items.length, 2);
+    const histogramFacade = chart()
+      .createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: [{ value: 1 }, { value: 2 }, { value: 3 }] })
+      .createHistogram({ field: "value", guides: false });
+    assert.equal(histogramFacade.graphicSpec.objects.histogram.items.length, 3);
+    const heatmapFacade = chart()
+      .createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: [
+        { x: "A", y: "one", value: 1 },
+        { x: "B", y: "one", value: 2 }
+      ] })
+      .createHeatmap({
+        x: { field: "x", fieldType: "ordinal" },
+        y: { field: "y", fieldType: "nominal" },
+        color: { field: "value", fieldType: "quantitative" },
+        guides: false
+      });
+    assert.equal(heatmapFacade.graphicSpec.objects.heatmap.items.length, 2);
     const polar = chart()
       .createCanvas({ width: 160, height: 160, margin: 20 })
       .createData({ values: [{ angle: 0, distance: 1 }, { angle: 1, distance: 2 }] })
@@ -266,13 +317,68 @@ async function testTypeScriptConsumer(directory) {
       render,
       vconcat,
       type ChartProgram,
+      type CreateBarPlotOptions,
+      type CreateHeatmapOptions,
+      type CreateHistogramOptions,
+      type CreateLinePlotOptions,
       type CreateDerivedDataOptions,
+      type CreateScatterPlotOptions,
       type DatasetTransform
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import { renderToPNG, type PNGRenderResult } from "ggaction/png";
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
+    const scatterOptions: CreateScatterPlotOptions = {
+      x: "x",
+      y: { field: "y", scale: { zero: false } },
+      guides: false
+    };
+    const scatterFacade: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ x: 1, y: 2 }] })
+      .createScatterPlot(scatterOptions);
+    const lineOptions: CreateLinePlotOptions = {
+      x: "x",
+      y: "y",
+      groupBy: "group",
+      line: { curve: "linear", strokeWidth: 2 },
+      guides: false
+    };
+    const lineFacade: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ x: 1, y: 2, group: "A" }] })
+      .createLinePlot(lineOptions);
+    const barOptions: CreateBarPlotOptions = {
+      x: { field: "category", fieldType: "ordinal" },
+      y: { field: "value", aggregate: "mean" },
+      width: { band: 0.7 },
+      guides: false
+    };
+    const barFacade: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ category: "A", value: 2 }] })
+      .createBarPlot(barOptions);
+    const histogramOptions: CreateHistogramOptions = {
+      field: "value",
+      maxBins: 5,
+      guides: false
+    };
+    const histogramFacade: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ value: 2 }] })
+      .createHistogram(histogramOptions);
+    const heatmapOptions: CreateHeatmapOptions = {
+      x: { field: "x", fieldType: "ordinal" },
+      y: { field: "y", fieldType: "nominal" },
+      color: { field: "value", fieldType: "quantitative" },
+      rect: { stroke: false, opacity: 0.8 },
+      guides: false
+    };
+    const heatmapFacade: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ x: "A", y: "one", value: 2 }] })
+      .createHeatmap(heatmapOptions);
     const composed: ChartProgram = hconcat({
       programs: [program, program]
     })
@@ -328,6 +434,11 @@ async function testTypeScriptConsumer(directory) {
     // @ts-expect-error DatasetTransform is a closed discriminated union.
     const invalidTransform: DatasetTransform = { type: "unknown" };
     void draw;
+    void scatterFacade;
+    void lineFacade;
+    void barFacade;
+    void histogramFacade;
+    void heatmapFacade;
     void png;
     void extensionProgram;
     void composed;

@@ -23,6 +23,8 @@ import { createGapminderCurvedBoundaryErrorBand } from
   "./gapminder-error-band/program.js";
 import { createGapminderRadialBars } from
   "./gapminder-radial-bars/program.js";
+import { createGapminderPopulationDonut } from
+  "./gapminder-population-donut/program.js";
 import { createGapminderBandPointChart } from
   "./gapminder-temporal-discrete-scales/program.js";
 import { createGapminderTransformedScaleScatterplot } from
@@ -198,6 +200,23 @@ export const PUBLIC_CHARTS = Object.freeze([
       state: {
         global: "__carsOriginDonut",
         expected: { width: 640, height: 500, paths: 3 }
+      }
+    }
+  }),
+  example({
+    id: "gapminder-population-donut",
+    data: "gapminder",
+    width: 680,
+    height: 520,
+    createProgram: createGapminderPopulationDonut,
+    testDirectory: "polar-arcs",
+    docsGroup: "charts",
+    browser: {
+      path: "gapminder-population-donut/",
+      canvas: "#chart",
+      state: {
+        global: "__gapminderPopulationDonut",
+        expected: { width: 680, height: 520, paths: 6, rows: 62 }
       }
     }
   }),

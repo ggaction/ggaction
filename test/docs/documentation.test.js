@@ -356,6 +356,7 @@ test("routes entry documentation to the canonical example indexes", () => {
     "cars-line-chart",
     "cars-histogram",
     "jobs-grouped-bar",
+    "gapminder-life-expectancy-heatmap",
     "cars-regression-scatterplot",
     "cars-density-area",
     "cars-error-bar",
@@ -375,7 +376,7 @@ test("routes entry documentation to the canonical example indexes", () => {
   );
   assert.equal(
     [...catalog.values()].filter(example => example.recipe_order).length,
-    9
+    10
   );
   assert.match(read("docs/tutorials/index.md"), /example\.tutorial_order/);
   assert.match(read("docs/recipes/index.md"), /example\.recipe_order/);
@@ -546,7 +547,7 @@ test("keeps concise and full LLM documentation synchronized", async () => {
   assert.match(index, /\.\/llms-full\.txt/);
   assert.match(index, /\.\/reference\/actions\/#chart-authoring-api/);
   assert.doesNotMatch(index, /\.md(?:#|\b)/);
-  assert.equal(targets.length, 40);
+  assert.equal(targets.length, 43);
   assert.match(index, /vertical or\s+horizontal grouped statistical\/explicit error bands/);
   assert.match(index, /vertical or horizontal categorical and\s+quantitative pairings/);
   assert.doesNotMatch(index, /Polar line\/arc marks/);

@@ -16,15 +16,10 @@ test("matches the approved life-expectancy heatmap primitive exactly", () => {
     primitiveProgram: primitive
   });
   assert.deepEqual(program.trace.children.map(node => node.op), [
-    "createCanvas",
-    "createData",
-    "createRectMark",
-    "encodeX",
-    "encodeY",
-    "encodeColor",
-    "createTextMark",
-    "encodeText",
-    "createGuides",
-    "createTitle"
+    "createCanvas", "createData", "createHeatmap", "createTextMark",
+    "encodeText", "createTitle"
+  ]);
+  assert.deepEqual(program.trace.children[2].children.map(node => node.op), [
+    "createRectMark", "encodeX", "encodeY", "encodeColor", "createGuides"
   ]);
 });

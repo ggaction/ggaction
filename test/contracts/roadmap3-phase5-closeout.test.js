@@ -68,15 +68,18 @@ test("promotes the implemented arc actions and defers unneeded endpoints explici
 });
 
 test("locks the approved arc chart and selection capabilities into Current evidence", () => {
+  const roadmap3Variants = visualVariants.filter(
+    variant => variant.artifact.roadmap === "roadmap3"
+  );
   assert.deepEqual(
-    visualVariants.map(variant => `${variant.chart}/${variant.variant}`),
+    roadmap3Variants.map(variant => `${variant.chart}/${variant.variant}`),
     [
       "cars-origin-donut/count",
       "nightingale-rose-chart/overlay",
       "gapminder-radial-bars/life-expectancy"
     ]
   );
-  for (const variant of visualVariants) {
+  for (const variant of roadmap3Variants) {
     assert.equal(variant.artifact.phase, "phase5");
     assert.equal(variant.artifact.capability, "polar-arcs");
     assert.equal(typeof variant.userFacing, "function");

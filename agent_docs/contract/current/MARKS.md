@@ -42,11 +42,16 @@ independent assembly and does not inherit position encodings.
   Field-driven color와 constant fill은 충돌한다.
 - Effect: dataset cardinality와 같은 길이의 point graphic collection을 만들며 아직 위치 property가
   없으므로 encoding 전에는 보이지 않을 수 있다.
+- Default glyph size: compatible Cartesian x/y 또는 Polar theta/r position이 완성되면 materializer가
+  radius `3`을 concrete child에 적용한다. 이는 renderer fallback이나 semantic property가 아니다.
+  Field-driven size, 명시적 `encodeRadius`, 보존 가능한 concrete size, default radius 순으로 결정한다.
+  Position이 불완전할 때는 명시적 radius가 없는 한 default size만 먼저 materialize하지 않는다.
 - Layered inference: current compatible layer, otherwise one unique compatible layer에서 omitted data,
   coordinate와 x/y field, fieldType, scale, title을 복사한다. Aggregate/bin/stack은 다른 mark recipe로
   복사하지 않는다. Inferred decision은 새 layer semantic state에 저장하며 ambiguity는 오류다.
 - Coverage: `test/unit/actions/marks/create-point-mark.test.js`가 두 shape, empty data,
-  multiple marks, inference, conflicts와 trace를 검증한다.
+  multiple marks, inference, conflicts와 trace를 검증한다. `test/contracts/point-default-radius.test.js`는
+  Cartesian/Polar default, explicit radius와 field size 우선순위, resize, Browser Canvas와 Node PNG를 검증한다.
 
 ### Formal values — `createPointMark`
 
@@ -61,6 +66,9 @@ independent assembly and does not inherit position encodings.
     second unnamed ambiguity, unknown data와 duplicate IDs.
 - `shape`
   - ✅ Covered: 12-value vocabulary, omission→circle, equal-area normalized recipes and unknown rejection.
+- `default radius`
+  - ✅ Covered: complete Cartesian/Polar position→`3`, explicit radius와 field-driven size override,
+    Canvas resize, immutable earlier program, Browser Canvas와 Node PNG.
 - `fill`, `opacity`, `stroke`, `strokeWidth`
   - ✅ Covered: representative combined creation, validation reuse, stored config and later position rematerialization.
 - Evidence: `test/unit/actions/marks/create-point-mark.test.js` and
@@ -129,6 +137,9 @@ independent assembly and does not inherit position encodings.
   각 series의 마지막 명령에 정확히 하나의 `Z`를 추가한다. 첫 data point를 복제하지 않는다.
 - Polar line은 theta/radius position을 사용하며 현재 `curve: "linear"`만 허용한다. 두 position
   encoding은 호출 순서와 무관하고, 하나만 존재하는 동안에는 semantic assignment를 보존하되 path를 만들지 않는다.
+- Direct Cartesian quantitative x/y line도 호출 순서와 무관하다. 첫 position action은 semantic과 scale을
+  보존하되 path를 만들지 않고, 두 번째 action이 compatible pair를 완성하면 같은 final line을 materialize한다.
+  Aggregate y를 사용하는 line은 temporal x가 필요하므로 quantitative x와 결합하려 하면 명시적 validation error다.
 - Creation-time `stroke`/`opacity`는 wrapped `editLineMark`로 적용해 direct edit과 같은 validation/config를 사용한다.
 - Effect: semantic `line` layer와 길이 0의 path collection을 만든다. x/y encoding이 완성되기
   전에는 path가 없다.
@@ -160,6 +171,7 @@ independent assembly and does not inherit position encodings.
     non-linear Polar rejection, reverse scales, resize, grouping, filtering and highlighting rematerialization.
 - Evidence: `test/unit/actions/marks/create-line-mark.test.js`, `test/unit/grammar/curve-commands.test.js`,
   `test/unit/actions/marks/layered-mark-inference.test.js`,
+  `test/contracts/line-position-order.test.js`,
   `test/charts/cars-line-chart/variants/capabilities.test.js`, and
   `test/charts/cars-temporal-bar-line/public.test.js`.
 
@@ -360,6 +372,11 @@ independent assembly and does not inherit position encodings.
 - Effect: semantic `rule` layer와 길이 0의 backend-neutral `line` collection을 만든다. 위치와 appearance는
   create parameter가 아니라 `encodeX/Y/X2/Y2`, `encodeStroke`, `encodeStrokeWidth`, `encodeStrokeDash`,
   `encodeOpacity`가 독립적으로 소유한다.
+- Layered position provenance: omitted `data`로 compatible layer의 position을 상속하면 source와 inherited
+  channel을 internal mark config에 기록한다. 이후 datum x 또는 y를 작성할 때 반대 primary channel만
+  inherited이고 secondary endpoint가 없으면 그 inherited branch를 제거해 full-span rule을 만든다.
+  Field endpoint는 orthogonal inherited channel을 보존해 interval을 구성하며, explicit `data`로 만든 rule은
+  이 provenance 기반 정리를 적용하지 않는다.
 - Lifecycle: immutable create-only. `editRuleMark`는 없으며 endpoint/style 변경은 owning encode action을
   다시 호출한다.
 
@@ -373,8 +390,8 @@ independent assembly and does not inherit position encodings.
 - ✅ Covered: omitted ID→`"rule"`, current/explicit data, empty data, explicit multiple roles, second unnamed
   ambiguity, invalid ID/data/options와 graphic/layer conflict.
 - ✅ Covered: empty line collection, default appearance config, immutable earlier program과 wrapped trace.
-- Evidence: `test/unit/actions/marks/create-rule-mark.test.js` and
-  `test/charts/cars-error-bar/primitive.test.js`.
+- Evidence: `test/unit/actions/marks/create-rule-mark.test.js`,
+  `test/contracts/rule-inherited-datum-span.test.js`, and `test/charts/cars-error-bar/primitive.test.js`.
 
 ## `createRectMark`
 

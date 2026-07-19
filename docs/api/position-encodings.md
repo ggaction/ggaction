@@ -19,7 +19,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
-| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count for proportional sectors |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 <!-- action-capabilities:position:end -->
 
@@ -30,7 +30,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Position points | point mark, quantitative, temporal, or ordinal fields | `encodeX`, `encodeY` | [Quantitative positions](./position/quantitative.md) |
 | Position Polar points | point mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar point tutorial](../tutorials/polar-points.md) |
 | Draw Polar lines or radar paths | line mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar line tutorial](../tutorials/polar-lines.md) |
-| Draw donuts, rose charts, or radial bars | arc mark, categorical/count theta and optional quantitative radius | `encodeTheta`, optional `encodeR` | [Polar arc tutorial](../tutorials/polar-arcs.md) |
+| Draw donuts, rose charts, or radial bars | arc mark, categorical count/weighted-sum theta or quantitative radius | `encodeTheta`, optional `encodeR` | [Polar arc tutorial](../tutorials/polar-arcs.md) |
 | Draw discrete or ranged cells | rect mark, two discrete positions or complete x/x2 and y/y2 pairs | `encodeX`, `encodeY`, optional `encodeX2`, `encodeY2` | [Rect marks](./marks/rect.md) |
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
@@ -67,8 +67,9 @@ program
 
 `encodeTheta` accepts point or line marks with quantitative, temporal, ordinal,
 or nominal fields. Arc marks accept nominal or ordinal theta; `aggregate:
-"count"` creates proportional sectors, while categorical theta plus
-quantitative `encodeR` creates radial sectors.
+"count"` creates count-proportional sectors. `aggregate: "sum"` plus a
+non-negative finite `weight` field creates weighted proportional sectors.
+Categorical theta plus quantitative `encodeR` creates radial sectors.
 Quantitative angle scales are linear; temporal angles use time scales; discrete
 angles use point or band scales. The automatic range is `[0, 360]` degrees with
 0 at 12 o'clock and clockwise positive direction.

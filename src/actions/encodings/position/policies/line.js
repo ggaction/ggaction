@@ -44,9 +44,14 @@ export function resolveLinePositionPolicy({
       layer.encoding?.y?.aggregate === undefined &&
       ["quantitative", "temporal"].includes(layer.encoding?.y?.fieldType) &&
       fieldType === "quantitative";
+    const pendingQuantitativePair =
+      layer.encoding?.y === undefined && fieldType === "quantitative";
     if (
       fieldType !== "temporal" &&
-      !((regression || interval || directPair) && fieldType === "quantitative")
+      !(
+        (regression || interval || directPair || pendingQuantitativePair) &&
+        fieldType === "quantitative"
+      )
     ) {
       throw new Error(
         "Line x encoding requires a temporal field or a compatible derived quantitative field."
@@ -60,10 +65,14 @@ export function resolveLinePositionPolicy({
   }
 
   rejectSharedOptions(args, "y");
+  const quantitativePair =
+    fieldType === "quantitative" &&
+    layer.encoding?.x?.fieldType === "quantitative";
   const prospectiveDirect =
     args.aggregate === undefined &&
     (fieldType === "temporal" ||
-      (fieldType === "quantitative" && layer.encoding?.x === undefined));
+      (fieldType === "quantitative" &&
+        (layer.encoding?.x === undefined || quantitativePair)));
   if (interval || prospectiveDirect) {
     if (!["quantitative", "temporal"].includes(fieldType)) {
       throw new Error(
@@ -83,6 +92,13 @@ export function resolveLinePositionPolicy({
       throw new Error("Regression line y encoding does not support aggregate.");
     }
     return emptyPositionPolicy();
+  }
+
+  if (
+    layer.encoding?.x !== undefined &&
+    layer.encoding.x.fieldType !== "temporal"
+  ) {
+    throw new Error("Aggregate line y encoding requires a temporal x encoding.");
   }
 
   const aggregate = validateAggregate(args.aggregate);
