@@ -7,7 +7,7 @@
 - [x] Actions, environments, ruleset, Pages와 release 권한 inventory
 - [x] npm trusted publisher의 current repository binding 확인
 - [x] Transfer 후 canonical Pages URL 결정
-- [ ] Transfer/rollback/redirect checklist와 Gate C 승인
+- [x] Transfer/rollback/redirect checklist와 Gate C 승인
 
 Organization이 생성되기 전에는 transfer mutation을 시도하지 않는다.
 
