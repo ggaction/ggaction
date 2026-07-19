@@ -119,18 +119,18 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 The source repository also contains complete modules for the
-[minimal getting-started chart](https://github.com/hj-n/ggaction/tree/main/examples/getting-started/),
-[scatterplot](https://github.com/hj-n/ggaction/tree/main/examples/cars-scatterplot/),
-[line chart](https://github.com/hj-n/ggaction/tree/main/examples/cars-line-chart/),
-[histogram](https://github.com/hj-n/ggaction/tree/main/examples/cars-histogram/),
-[bar chart](https://github.com/hj-n/ggaction/tree/main/examples/jobs-grouped-bar/),
-[regression scatterplot](https://github.com/hj-n/ggaction/tree/main/examples/cars-regression-scatterplot/),
-[density area](https://github.com/hj-n/ggaction/tree/main/examples/cars-density-area/),
-[error bar](https://github.com/hj-n/ggaction/tree/main/examples/cars-error-bar/),
-[error band](https://github.com/hj-n/ggaction/tree/main/examples/gapminder-error-band/),
-[box plot](https://github.com/hj-n/ggaction/tree/main/examples/cars-box-plot/),
-[mark selection](https://github.com/hj-n/ggaction/tree/main/examples/mark-selection/), and
-[program composition](https://github.com/hj-n/ggaction/tree/main/examples/program-composition/).
+[minimal getting-started chart](https://github.com/ggaction/ggaction/tree/main/examples/getting-started/),
+[scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-scatterplot/),
+[line chart](https://github.com/ggaction/ggaction/tree/main/examples/cars-line-chart/),
+[histogram](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram/),
+[bar chart](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar/),
+[regression scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-regression-scatterplot/),
+[density area](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area/),
+[error bar](https://github.com/ggaction/ggaction/tree/main/examples/cars-error-bar/),
+[error band](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-error-band/),
+[box plot](https://github.com/ggaction/ggaction/tree/main/examples/cars-box-plot/),
+[mark selection](https://github.com/ggaction/ggaction/tree/main/examples/mark-selection/), and
+[program composition](https://github.com/ggaction/ggaction/tree/main/examples/program-composition/).
 
 ## Next
 

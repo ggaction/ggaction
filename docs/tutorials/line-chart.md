@@ -9,15 +9,15 @@ title: Cars Line Chart Tutorial
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-line-chart)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -155,6 +155,6 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/hj-n/ggaction/blob/main/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-line-chart/program.js).
 - Continue with [Encodings](../api/encodings.md),
   [Guides](../api/guides.md), and [Titles](../api/titles.md).

@@ -7,8 +7,8 @@ title: Mark Selection and Highlighting Tutorial
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/mark-selection)
-and the [canonical programs](https://github.com/hj-n/ggaction/blob/main/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/main/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Highlight grouped maximum points

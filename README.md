@@ -1,6 +1,6 @@
 # ggaction
 
-[![npm version](https://img.shields.io/npm/v/ggaction.svg)](https://www.npmjs.com/package/ggaction) [![license](https://img.shields.io/npm/l/ggaction.svg)](./LICENSE) [![documentation](https://img.shields.io/badge/docs-hyeonword.com-2563eb)](https://hyeonword.com/ggaction/)
+[![npm version](https://img.shields.io/npm/v/ggaction.svg)](https://www.npmjs.com/package/ggaction) [![license](https://img.shields.io/npm/l/ggaction.svg)](./LICENSE) [![documentation](https://img.shields.io/badge/docs-ggaction.github.io-2563eb)](https://ggaction.github.io/ggaction/)
 
 ### A grammar for how charts are made.
 
@@ -85,7 +85,7 @@ const context = document.querySelector("#chart").getContext("2d");
 render(program, context);
 ```
 
-For the advanced version, follow the [regression recipe](https://hyeonword.com/ggaction/recipes/regression-scatterplot/) or open the [runnable example](./examples/cars-regression-scatterplot/).
+For the advanced version, follow the [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/) or open the [runnable example](./examples/cars-regression-scatterplot/).
 
 ## What it supports
 
@@ -96,7 +96,7 @@ For the advanced version, follow the [regression recipe](https://hyeonword.com/g
 - Browser Canvas and Node PNG output
 - TypeScript declarations and traceable extension actions
 
-See the current [supported features](https://hyeonword.com/ggaction/supported-features/), [tutorials and examples](https://hyeonword.com/ggaction/tutorials/), and [action reference](https://hyeonword.com/ggaction/reference/actions/) for exact coverage. Runnable programs are collected in [`examples/`](./examples/README.md).
+See the current [supported features](https://ggaction.github.io/ggaction/supported-features/), [tutorials and examples](https://ggaction.github.io/ggaction/tutorials/), and [action reference](https://ggaction.github.io/ggaction/reference/actions/) for exact coverage. Runnable programs are collected in [`examples/`](./examples/README.md).
 
 ## Package entries
 
@@ -112,15 +112,15 @@ All entries include TypeScript declarations. The default entry is browser-safe; 
 
 ## Documentation
 
-- [Getting Started](https://hyeonword.com/ggaction/getting-started/)
-- [Tutorials and Examples](https://hyeonword.com/ggaction/tutorials/)
-- [Action Reference](https://hyeonword.com/ggaction/reference/actions/)
-- [Concepts](https://hyeonword.com/ggaction/concepts/chart-program/)
-- [Supported Features](https://hyeonword.com/ggaction/supported-features/)
+- [Getting Started](https://ggaction.github.io/ggaction/getting-started/)
+- [Tutorials and Examples](https://ggaction.github.io/ggaction/tutorials/)
+- [Action Reference](https://ggaction.github.io/ggaction/reference/actions/)
+- [Concepts](https://ggaction.github.io/ggaction/concepts/chart-program/)
+- [Supported Features](https://ggaction.github.io/ggaction/supported-features/)
 
 ## Status and development
 
-> **Status:** `0.0.3` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+> **Status:** `0.0.4` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ```bash
 npm install

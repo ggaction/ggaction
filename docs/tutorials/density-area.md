@@ -12,15 +12,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-density-area)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -145,6 +145,6 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/hj-n/ggaction/blob/main/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-density-area/program.js).
 - Continue with [Encodings](../api/encodings.md),
   [Legends](../api/legends.md), and [Scale options](../api/scales.md).

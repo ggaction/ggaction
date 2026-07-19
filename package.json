@@ -1,16 +1,16 @@
 {
   "name": "ggaction",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Build charts through immutable, traceable graphical actions.",
   "license": "MIT",
   "author": "Hyeon Jeon",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hj-n/ggaction.git"
+    "url": "git+https://github.com/ggaction/ggaction.git"
   },
-  "homepage": "https://hyeonword.com/ggaction/",
+  "homepage": "https://ggaction.github.io/ggaction/",
   "bugs": {
-    "url": "https://github.com/hj-n/ggaction/issues"
+    "url": "https://github.com/ggaction/ggaction/issues"
   },
   "keywords": [
     "visualization",

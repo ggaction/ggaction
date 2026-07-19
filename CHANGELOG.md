@@ -4,6 +4,17 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.4] - 2026-07-19
+
+### Changed
+
+- Transferred the canonical repository to the `ggaction` organization and moved public documentation to
+  `https://ggaction.github.io/ggaction/`.
+- Made public documentation deployment release-scoped so ordinary `main` pushes continue to verify docs without
+  changing the published site.
+- Refactored source ownership and materialization boundaries while preserving the public API, stored specifications,
+  trace hierarchy, and rendered output.
+
 ### Fixed
 
 - Normalized numeric Canvas font weights before rendering so valid intermediate values such as `650` retain normal
@@ -71,6 +82,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
-[0.0.3]: https://github.com/hj-n/ggaction/releases/tag/v0.0.3
-[0.0.2]: https://github.com/hj-n/ggaction/releases/tag/v0.0.2
-[0.0.1]: https://github.com/hj-n/ggaction/releases/tag/v0.0.1
+[0.0.4]: https://github.com/ggaction/ggaction/releases/tag/v0.0.4
+[0.0.3]: https://github.com/ggaction/ggaction/releases/tag/v0.0.3
+[0.0.2]: https://github.com/ggaction/ggaction/releases/tag/v0.0.2
+[0.0.1]: https://github.com/ggaction/ggaction/releases/tag/v0.0.1

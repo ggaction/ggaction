@@ -11,7 +11,7 @@ The main, extension, and PNG entry points include TypeScript declarations.
 
 > **Release status:** This documentation describes the experimental `{{ site.version }}`
 > release. APIs may change before `1.0.0`; consult the
-> [changelog](https://github.com/hj-n/ggaction/blob/main/CHANGELOG.md) when
+> [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when
 > upgrading.
 
 ## Start here
@@ -79,5 +79,5 @@ continue with [action authoring](./extension/action-authoring.md) and the
 [full-text bundle](./llms-full.txt).
 
 Source, issues, and development history are available on
-[GitHub](https://github.com/hj-n/ggaction).
+[GitHub](https://github.com/ggaction/ggaction).
 

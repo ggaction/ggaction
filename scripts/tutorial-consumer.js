@@ -67,7 +67,7 @@ async function prepareTutorials(directory) {
       markdown.slice(0, markdown.indexOf("## Complete program")),
       new RegExp(
         `curl --fail --location https://raw\\.githubusercontent\\.com/` +
-        `hj-n/ggaction/main/data/${dataset}\\.json --output public/${dataset}\\.json`
+        `ggaction/ggaction/main/data/${dataset}\\.json --output public/${dataset}\\.json`
       )
     );
 

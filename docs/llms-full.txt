@@ -16,9 +16,9 @@ Build charts as immutable, traceable action programs. Start with a complete
 example, then use the API pages when you need to customize one part.
 The main, extension, and PNG entry points include TypeScript declarations.
 
-> **Release status:** This documentation describes the experimental `0.0.3`
+> **Release status:** This documentation describes the experimental `0.0.4`
 > release. APIs may change before `1.0.0`; consult the
-> [changelog](https://github.com/hj-n/ggaction/blob/main/CHANGELOG.md) when
+> [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when
 > upgrading.
 
 ## Start here
@@ -59,7 +59,7 @@ continue with [action authoring](./extension/action-authoring.md) and the
 [full-text bundle](./llms-full.txt).
 
 Source, issues, and development history are available on
-[GitHub](https://github.com/hj-n/ggaction).
+[GitHub](https://github.com/ggaction/ggaction).
 
 <!-- Source: /getting-started/ -->
 
@@ -177,18 +177,18 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 The source repository also contains complete modules for the
-[minimal getting-started chart](https://github.com/hj-n/ggaction/tree/main/examples/getting-started/),
-[scatterplot](https://github.com/hj-n/ggaction/tree/main/examples/cars-scatterplot/),
-[line chart](https://github.com/hj-n/ggaction/tree/main/examples/cars-line-chart/),
-[histogram](https://github.com/hj-n/ggaction/tree/main/examples/cars-histogram/),
-[bar chart](https://github.com/hj-n/ggaction/tree/main/examples/jobs-grouped-bar/),
-[regression scatterplot](https://github.com/hj-n/ggaction/tree/main/examples/cars-regression-scatterplot/),
-[density area](https://github.com/hj-n/ggaction/tree/main/examples/cars-density-area/),
-[error bar](https://github.com/hj-n/ggaction/tree/main/examples/cars-error-bar/),
-[error band](https://github.com/hj-n/ggaction/tree/main/examples/gapminder-error-band/),
-[box plot](https://github.com/hj-n/ggaction/tree/main/examples/cars-box-plot/),
-[mark selection](https://github.com/hj-n/ggaction/tree/main/examples/mark-selection/), and
-[program composition](https://github.com/hj-n/ggaction/tree/main/examples/program-composition/).
+[minimal getting-started chart](https://github.com/ggaction/ggaction/tree/main/examples/getting-started/),
+[scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-scatterplot/),
+[line chart](https://github.com/ggaction/ggaction/tree/main/examples/cars-line-chart/),
+[histogram](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram/),
+[bar chart](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar/),
+[regression scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-regression-scatterplot/),
+[density area](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area/),
+[error bar](https://github.com/ggaction/ggaction/tree/main/examples/cars-error-bar/),
+[error band](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-error-band/),
+[box plot](https://github.com/ggaction/ggaction/tree/main/examples/cars-box-plot/),
+[mark selection](https://github.com/ggaction/ggaction/tree/main/examples/mark-selection/), and
+[program composition](https://github.com/ggaction/ggaction/tree/main/examples/program-composition/).
 
 ## Next
 
@@ -230,15 +230,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](../assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-scatterplot)
-and its [canonical program](https://github.com/hj-n/ggaction/blob/main/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/main/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -387,7 +387,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/hj-n/ggaction/blob/main/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/main/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](../api/encodings.md) and
   [Guides](../api/guides.md).
 
@@ -404,7 +404,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -517,7 +517,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -629,7 +629,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -786,15 +786,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-line-chart)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -932,7 +932,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/hj-n/ggaction/blob/main/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-line-chart/program.js).
 - Continue with [Encodings](../api/encodings.md),
   [Guides](../api/guides.md), and [Titles](../api/titles.md).
 
@@ -945,15 +945,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-histogram)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1054,7 +1054,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/hj-n/ggaction/blob/main/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-histogram/program.js).
 - Continue with [Encodings](../api/encodings.md),
   [Guides](../api/guides.md), and [Titles](../api/titles.md).
 
@@ -1067,15 +1067,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1186,7 +1186,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/hj-n/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](../api/position-encodings.md),
   [Series encodings](../api/series-encodings.md), and
   [Constant appearance](../api/appearance.md).
@@ -1201,15 +1201,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1322,15 +1322,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-density-area)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1455,7 +1455,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/hj-n/ggaction/blob/main/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-density-area/program.js).
 - Continue with [Encodings](../api/encodings.md),
   [Legends](../api/legends.md), and [Scale options](../api/scales.md).
 
@@ -1470,15 +1470,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/cars-error-bar)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1575,15 +1575,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/gapminder-error-band)
-and its [complete program](https://github.com/hj-n/ggaction/blob/main/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/hj-n/ggaction/main/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1689,8 +1689,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/hj-n/ggaction/tree/main/examples/mark-selection)
-and the [canonical programs](https://github.com/hj-n/ggaction/blob/main/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/main/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Highlight grouped maximum points
@@ -4680,7 +4680,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/hj-n/ggaction/tree/main/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/main/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -4739,7 +4739,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/hj-n/ggaction/tree/main/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/main/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -4768,7 +4768,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/hj-n/ggaction/tree/main/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/main/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 `facet` uses field values in source first-appearance order. It infers one
@@ -9396,12 +9396,12 @@ program
 ```
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/hj-n/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/hj-n/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
