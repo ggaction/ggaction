@@ -10,16 +10,24 @@ title: Color Encoding
 ## `encodeColor(options)`
 
 Map a nominal or ordinal field to point fills, line-series strokes, area fills,
-or bar fills. Ordinal fields may contain ordered numeric categories such as
-engine cylinder counts. Quantitative or temporal point fields use continuous or discretized
-color scales. Aggregate bars additionally support one aggregate quantitative
+bar fills, rect fills, or arc-sector fills. Ordinal fields may contain ordered numeric categories such as
+engine cylinder counts. Quantitative or temporal point and rect fields use continuous color
+scales; point fields also support discretized color. Aggregate bars additionally support one aggregate quantitative
 color value per final rectangle. Line and categorical bar materializers may use
 the field for grouping. Area color must match an existing `encodeGroup` field.
+
+<!-- action-capabilities:color:start -->
+| Mode | Supported marks | Field types | Important options |
+| --- | --- | --- | --- |
+| Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
+| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+<!-- action-capabilities:color:end -->
 
 | Option | Type | Default |
 | --- | --- | --- |
 | `field` | non-empty string | required |
-| `target` | point, line, area, or bar mark ID | current mark |
+| `target` | point, line, area, bar, rect, or arc mark ID | current mark |
 | `fieldType` | `"nominal"`, `"ordinal"`, `"quantitative"`, or `"temporal"` | `"nominal"` |
 | `aggregate` | aggregate operation; quantitative aggregate bars only | matching measure aggregate |
 | `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, or `"diverging"` | mark policy |

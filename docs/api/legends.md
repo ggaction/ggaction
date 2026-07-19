@@ -28,6 +28,17 @@ Legends are inferred from final mark encodings and materialized as concrete
 graphics. Start with the family that matches the encoded channel and use the
 editing page when changing an existing guide.
 
+## Supported legend families
+
+<!-- action-capabilities:legends:start -->
+| Legend family | Supported marks | Channels |
+| --- | --- | --- |
+| Categorical | point, line, area, bar, rect, arc | color, shape, strokeDash, or compatible composites |
+| Continuous gradient | point, aggregate bar, rect | sequential color |
+| Discretized interval | point | quantize, quantile, or threshold color |
+| Sampled | point | field opacity or size |
+<!-- action-capabilities:legends:end -->
+
 ## Focused legend families
 
 <div class="docs-entry-grid docs-entry-grid--two">
@@ -39,8 +50,8 @@ editing page when changing an existing guide.
 
 ## Errors and limitations
 
-Continuous color is currently limited to point marks, and field opacity is
-limited to quantitative point fields. Interactive legends are unsupported.
+Continuous color legends support point, aggregate-bar, and rect marks. Field
+opacity and discretized continuous legends remain point-only. Interactive legends are unsupported.
 Combined point-series and quantitative-size legends require a right or left
 side position so both blocks remain in one vertical stack. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.

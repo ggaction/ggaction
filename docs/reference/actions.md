@@ -478,6 +478,18 @@ editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, al
 Edit text typography and graphical offsets without changing its semantic
 source or position. [Text marks](../api/marks/text.md)
 
+#### Position capability matrix
+
+<!-- action-capabilities:position:start -->
+| Action | Supported marks | Field types | Important modes |
+| --- | --- | --- | --- |
+| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count for proportional sectors |
+| `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
+<!-- action-capabilities:position:end -->
+
 ### `encodeX`
 
 ```javascript
@@ -485,10 +497,11 @@ encodeX({ field, target?, fieldType?, aggregate?, stack?, coordinate?, bin?, sca
 encodeX({ datum, target?, fieldType, coordinate?, scale? }) // rule
 ```
 
-Create or compatibly replace an x encoding. Points accept quantitative,
-temporal, ordinal, and nominal fields. Bars accept binned quantitative x, vertical
-nominal/ordinal/temporal categories, or a horizontal quantitative aggregate measure.
-Rules accept exactly one field or datum and an explicit field type.
+Create or compatibly replace an x encoding for the supported mark/type pairs in
+the matrix above. Rects accept a discrete x band or the primary x edge of a
+complete x/x2 range. Bars accept binned x, vertical categories, or a horizontal
+aggregate measure. Rules accept exactly one field or datum and an explicit
+field type.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeY`
@@ -505,6 +518,7 @@ from the complete pair and is not stored separately. Bar stack accepts
 `"zero"`, `"normalize"`, or `null`.
 Aggregate values may be scalar names or parameterized quantile
 and ordered first/last objects. A complete histogram x/y pair materializes concrete rects.
+Rects accept a discrete y band or the primary y edge of a complete y/y2 range.
 Rules accept exactly one field or datum and an explicit field type.
 [Position encodings](../api/position-encodings.md)
 
@@ -515,8 +529,9 @@ encodeY2({ field, target?, fieldType, scale?, coordinate? })
 encodeY2({ datum, target?, fieldType, scale?, coordinate? }) // rule
 ```
 
-Assign an area or ranged-bar upper edge, or a rule secondary y endpoint. It requires an
-existing y and shares its scale and coordinate. [Position encodings](../api/position-encodings.md)
+Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.
+It requires an existing y and shares its scale and coordinate.
+[Position encodings](../api/position-encodings.md)
 
 ### `encodeX2`
 
@@ -525,8 +540,9 @@ encodeX2({ field, target?, fieldType, scale?, coordinate? })
 encodeX2({ datum, target?, fieldType, scale?, coordinate? })
 ```
 
-Assign an area or ranged-bar upper edge, or a rule secondary x endpoint. It requires an
-existing x and shares its scale and coordinate. [Position encodings](../api/position-encodings.md)
+Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.
+It requires an existing x and shares its scale and coordinate.
+[Position encodings](../api/position-encodings.md)
 
 ### `encodeYRange`
 
@@ -635,12 +651,22 @@ preserved and at least one editable setting is required.
 
 ### `encodeColor`
 
+#### Color capability matrix
+
+<!-- action-capabilities:color:start -->
+| Mode | Supported marks | Field types | Important options |
+| --- | --- | --- | --- |
+| Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
+| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+<!-- action-capabilities:color:end -->
+
 ```javascript
 encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
 ```
 
 Create or compatibly replace point fill, line-series color, grouped area fill,
-or bar color. Nominal and ordinal categories share an ordinal palette scale;
+bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share an ordinal palette scale;
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area accepts all except `group`. Quantitative and temporal
 point fields use a sequential scale; quantitative point fields also accept
@@ -650,6 +676,8 @@ orientation. Reassigning grouped color also atomically reassigns its offset and
 rematerializes an existing legend. Aggregate
 bars accept quantitative sequential color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
+Row-owned rects accept categorical or continuous color. Arc sectors accept
+categorical color with optional overlay layout.
 [Series encodings](../api/series-encodings.md)
 
 ### `encodeStrokeDash`
@@ -677,12 +705,13 @@ Apply a constant point radius. [Constant appearance](../api/appearance.md)
 ### `encodeTheta`
 
 ```javascript
-encodeTheta({ field, target?, fieldType?, scale?, coordinate? })
+encodeTheta({ field, target?, fieldType?, aggregate?, scale?, coordinate? })
 ```
 
 Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
-temporal, ordinal, and nominal fields are supported. The default scale ID is
-`theta` and its automatic range is `[0, 360]`.
+temporal, ordinal, and nominal fields are supported for point and line marks.
+Arc marks accept nominal or ordinal fields and optional `aggregate: "count"`.
+The default scale ID is `theta` and its automatic range is `[0, 360]`.
 [Polar positions](../api/position-encodings.md#polar-positions)
 
 ### `encodeR`

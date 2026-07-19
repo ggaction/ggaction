@@ -5,8 +5,8 @@
 - [x] Complete consumer example 12개 fresh-consumer 기준선 재현
 - [x] Public package import와 explicit data acquisition으로 tutorial 수정
 - [x] Checkout 밖 build/render/data-status 회귀 추가
-- [ ] Central capability source와 focused documentation 대조 구현
-- [ ] Rect, arc, bar highlight, continuous legend와 complete-axis smoke 고정
+- [x] Central capability source와 focused documentation 대조 구현
+- [x] Rect, arc, bar highlight, continuous legend와 complete-axis smoke 고정
 
 Complete example은 repository checkout 없이 문서의 준비 단계와 공개 package만으로 실행돼야 한다. Central
 overview/reference와 focused page는 동일 capability source 또는 build-time contract로 충돌을 방지한다.
@@ -28,3 +28,23 @@ overview/reference와 focused page는 동일 capability source 또는 build-time
 - `npm run test:package`: installed package Node/TypeScript/PNG와 tutorial consumer 11개 통과
 - `npm run test:docs -- documentation`: 15개 통과
 - `npm test`: 1,534개 통과
+
+## F-010 결과
+
+- 평가 snapshot의 여섯 충돌은 runtime 실패가 아니라 중앙 position/action/appearance/legend/axis 문서의
+  수동 target 목록과 오래된 limitation 문구에서 재현됐다. Focused rect, arc, selection, color와 axis 문서의
+  동작은 현재 source와 일치했다.
+- `docs/_data/action_capabilities.json`이 position mark/field-type, color mode, highlight grain,
+  legend family와 complete-axis create/edit surface의 canonical registry다. Overview, focused page와 action
+  reference의 여섯 표는 `docs:capabilities`가 이 registry에서 생성한다.
+- `docs:capabilities:check`는 생성 표가 수동 편집되거나 registry보다 뒤처지면 실패한다. Primary position
+  행은 runtime `POSITION_FIELD_COMPATIBILITY`와 exact 비교하고, highlight mark 집합은 실제 selection
+  policy registry와 비교한다.
+- Public smoke는 discrete/ranged rect, aggregate-theta arc, aggregate-bar highlight, aggregate-bar gradient
+  legend와 grouped `editXAxis`/`editYAxis`를 실행한다. 따라서 지원 기능과 반대되는 limitation 문구가 다시
+  들어가거나 runtime capability가 사라지면 docs suite가 실패한다.
+
+## F-010 검증
+
+- `npm run docs:capabilities:check`: generated surface clean
+- `npm run test:docs`: 26개 통과, capability smoke 6개 포함

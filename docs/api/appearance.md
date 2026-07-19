@@ -25,6 +25,14 @@ title: Appearance Encodings
 Appearance actions change final mark style without changing position. Use the
 focused pages below for selection, point appearance, and mark-specific style.
 
+## Supported highlight marks
+
+<!-- action-capabilities:highlight:start -->
+| Action | Supported marks | Grain | Result |
+| --- | --- | --- | --- |
+| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
+<!-- action-capabilities:highlight:end -->
+
 ## Focused appearance families
 
 <div class="docs-entry-grid docs-entry-grid--two">
@@ -43,7 +51,8 @@ requires complete ordinal x, aggregate y, and color semantics; group additionall
 requires matching xOffset semantics.
 Ambiguous targets, duplicate inferred selection IDs, incompatible item-grain
 selectors, and point-inapplicable highlight options fail before creating partial
-selection or appearance state. Highlight appearance currently supports points only.
+selection or appearance state. Each supported mark accepts only the style
+properties listed on the focused selection page.
 
 ## Related
 

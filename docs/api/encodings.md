@@ -24,6 +24,48 @@ defaults.
 | Constant appearance | `encodeRadius`, `encodePointRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
 | Text | `encodeText` | Field-driven or constant annotation content |
 
+## Supported mark/channel matrix
+
+<!-- action-capabilities:summary:start -->
+The tables below are generated from the same reviewed capability registry used by the focused API pages.
+
+### Position channels
+
+| Action | Supported marks | Field types | Important modes |
+| --- | --- | --- | --- |
+| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count for proportional sectors |
+| `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
+
+### Color channels
+
+| Mode | Supported marks | Field types | Important options |
+| --- | --- | --- | --- |
+| Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
+| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+
+### Selection and guides
+
+| Action | Supported marks | Grain | Result |
+| --- | --- | --- | --- |
+| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
+
+| Legend family | Supported marks | Channels |
+| --- | --- | --- |
+| Categorical | point, line, area, bar, rect, arc | color, shape, strokeDash, or compatible composites |
+| Continuous gradient | point, aggregate bar, rect | sequential color |
+| Discretized interval | point | quantize, quantile, or threshold color |
+| Sampled | point | field opacity or size |
+
+| Axis family | Create | Edit | Editable components |
+| --- | --- | --- | --- |
+| Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
+| Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
+<!-- action-capabilities:summary:end -->
+
 ## Position
 
 [`encodeX` and `encodeY`](./position-encodings.md) create quantitative point

@@ -27,8 +27,15 @@ program.createXAxis({
 ```
 
 `createXAxis` and `createYAxis` call the line, tick-and-label, and title actions
-as trace children. Complete-axis aggregate edit actions are not implemented;
-use the focused edit actions below.
+as trace children. `editXAxis` and `editYAxis` update several existing
+components atomically; use the focused edit actions below for one component.
+
+<!-- action-capabilities:axes:start -->
+| Axis family | Create | Edit | Editable components |
+| --- | --- | --- | --- |
+| Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
+| Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
+<!-- action-capabilities:axes:end -->
 
 Create also accepts `coordinate`, an existing coordinate ID consumed by the
 selected channel and scale. `createAxes` supplies this automatically and stores

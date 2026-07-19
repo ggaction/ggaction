@@ -7,7 +7,7 @@
 - [x] STEP 3 — F-013 right categorical legend `offset`
 - [x] STEP 4 — F-015 sequential `palette.count`와 F-014 strict TypeScript extension
 - [x] STEP 5 — F-008 LLM route와 fragment integrity
-- [ ] STEP 6 — F-009 tutorial portability와 F-010 capability drift
+- [x] STEP 6 — F-009 tutorial portability와 F-010 capability drift
 - [ ] STEP 7 — F-011 composition asset, 전체 회귀와 closeout
 
 ## 목표
