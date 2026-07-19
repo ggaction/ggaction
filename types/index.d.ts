@@ -120,6 +120,8 @@ export type {
   StrokeDashEncodingOptions,
   StrokeWidthEncodingOptions,
   StrokeWidthScaleOptions,
+  ThetaEncodingOptions,
+  ThetaScaleOptions,
   TraceNode,
   TitleOptions,
   EditTitleOptions,

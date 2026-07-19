@@ -145,6 +145,17 @@ async function testNodeConsumer(directory) {
       ),
       true
     );
+    const weightedArcs = chart()
+      .createCanvas({ width: 160, height: 160, margin: 20 })
+      .createData({ values: [
+        { group: "A", weight: 1.5 },
+        { group: "A", weight: 2.5 },
+        { group: "B", weight: 6 }
+      ] })
+      .createArcMark({ innerRadius: 0.4 })
+      .encodeTheta({ field: "group", aggregate: "sum", weight: "weight" });
+    assert.equal(weightedArcs.graphicSpec.objects.arc.items.length, 2);
+    assert.equal(weightedArcs.semanticSpec.layers[0].encoding.theta.weight, "weight");
     const weightedRules = chart()
       .createCanvas({ width: 240, height: 160, margin: 30 })
       .createData({ values: [
@@ -342,7 +353,9 @@ async function testTypeScriptConsumer(directory) {
       type CreateDerivedDataOptions,
       type CreateScatterPlotOptions,
       type DatasetTransform,
-      type StrokeWidthEncodingOptions
+      type StrokeWidthEncodingOptions,
+      type ThetaEncodingOptions,
+      type ThetaScaleOptions
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import { renderToPNG, type PNGRenderResult } from "ggaction/png";
@@ -445,6 +458,26 @@ async function testTypeScriptConsumer(directory) {
       .encodeTheta({ field: "group", aggregate: "count" })
       .encodeColor({ field: "group" })
       .editArcMark({ padAngle: 2 });
+    const thetaScale: ThetaScaleOptions = {
+      type: "band",
+      domain: ["A", "B"],
+      range: [0, 360]
+    };
+    const weightedTheta: ThetaEncodingOptions = {
+      field: "group",
+      fieldType: "nominal",
+      aggregate: "sum",
+      weight: "weight",
+      scale: thetaScale
+    };
+    const weightedArcs: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { group: "A", weight: 1 },
+        { group: "B", weight: 2 }
+      ] })
+      .createArcMark()
+      .encodeTheta(weightedTheta);
     const strokeWidthOptions: StrokeWidthEncodingOptions = {
       field: "weight",
       scale: { domain: [0, 10], range: [1, 6] }
@@ -482,6 +515,7 @@ async function testTypeScriptConsumer(directory) {
     void derived;
     void polar;
     void arcs;
+    void weightedArcs;
     void weightedRules;
     void pointLayer;
     void pointItems;

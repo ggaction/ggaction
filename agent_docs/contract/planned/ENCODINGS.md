@@ -24,7 +24,6 @@ type RulePositionAssignment =
     };
 
 encodeStroke({ target?: UserId; value: NonEmptyString }): ChartProgram;
-encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 ```
 
 - Rule은 별도 `encodeRule`을 만들지 않는다. `encodeX`, `encodeX2`, `encodeY`, `encodeY2`가
@@ -33,10 +32,8 @@ encodeStrokeWidth({ target?: UserId; value: NonNegativeFinite }): ChartProgram;
 - `encodeX2`/`encodeY2`는 primary channel의 scale과 coordinate를 반드시 공유한다. Primary channel
   없이 secondary channel만 할당할 수 없다. 같은 action을 다시 호출하면 해당 endpoint만 atomic하게
   교체하고 dependent rule/composite consumers를 rematerialize한다.
-- `encodeStroke`는 constant graphical assignment다. `encodeStrokeWidth`의 field-driven line/rule
-  variant는 Current contract로 승격되었다. Field-driven series color는
-  `encodeColor`, field-driven width는 기존 `encodeSize` contract가 소유하므로 첫 rule contract에서
-  중복 field mode를 만들지 않는다.
+- `encodeStroke`는 constant graphical assignment다. Field-driven series color는
+  `encodeColor`가 소유한다.
 - `encodeStrokeDash`와 `encodeOpacity`는 existing field/value contracts를 그대로 재사용한다.
   Constant assignment는 scale이나 legend를 만들지 않고, field assignment는 해당 action의 scale 및
   guide contract를 따른다.

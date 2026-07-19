@@ -19,7 +19,8 @@ Gate로 합치지 않는다.
 - [x] P3-A 사용자 승인
 - [x] P3-B field-driven stroke width 구현과 review package 작성
 - [x] P3-B 사용자 승인
-- [ ] declarations, package, docs와 누적 회귀 closeout
+- [x] declarations, package, docs와 누적 회귀 closeout review package 작성
+- [ ] P3-Exit 사용자 승인
 
 ## Weighted theta 계약
 
@@ -56,7 +57,7 @@ program.encodeTheta({
 | --- | --- | --- | --- |
 | P3-A | approved | weighted theta source/call chain, chart image와 contract evidence | field-driven stroke width |
 | P3-B | approved | line/rule stroke-width source/call chain, chart image와 grain evidence | Phase closeout |
-| P3-Exit | pending | declarations, package, docs와 누적 tests | Phase 4 |
+| P3-Exit | ready-for-review | declarations, package, docs와 누적 tests | Phase 4 |
 
 모든 Gate는 hard pause다.
 
