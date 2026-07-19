@@ -40,6 +40,10 @@ test("qualifies, retains, verifies, and publishes one exact artifact", () => {
   assert.match(workflow, /actions\/upload-artifact@v4/);
   assert.match(workflow, /release-candidate\.js --verify/);
   assert.match(workflow, /npm publish "\$TARBALL" --access public --tag latest/);
+  assert.ok(
+    workflow.indexOf("npx playwright install --with-deps chromium") <
+      workflow.indexOf("npm run test:package")
+  );
   assert.ok(workflow.indexOf("npm publish") < workflow.indexOf("gh release create"));
 });
 

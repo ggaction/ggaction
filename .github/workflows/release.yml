@@ -67,6 +67,8 @@ jobs:
           package-manager-cache: false
       - name: Enforce coverage thresholds
         run: npm run test:coverage
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
       - name: Test the installed packed-package consumers
         run: npm run test:package
       - name: Set up the documentation runtime
@@ -78,8 +80,6 @@ jobs:
         run: npm run docs:build
       - name: Check built documentation
         run: npm run test:docs:built
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
       - name: Test browser package and documentation consumers
         run: |
           npm run test:browser
