@@ -9,7 +9,7 @@
 - [x] `SECOND_ARCHITECTURE.md`와 Current contract 반영
 - [x] Phase-local Planned entry를 Current로 승격하고 durable tests로 이동
 - [x] P6-Exit exact checkpoint commit/push와 Gate evidence 기록
-- [ ] P6-Exit 사용자 승인
+- [x] P6-Exit 사용자 승인
 
 Documentation source는 development와 함께 갱신하고 배포는 release-scoped로 유지한다. P6-Exit 전에는 Phase 7
 ordered-path 구현을 시작하지 않는다.

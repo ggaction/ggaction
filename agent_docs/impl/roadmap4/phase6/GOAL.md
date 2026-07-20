@@ -16,7 +16,7 @@ NCP-002를 범용 backend-neutral `FillPaint` concrete property contract의 첫 
 - [x] Cars primitive gradient plot과 P6-A 승인
 - [x] `createGradientPlot`/`editGradientPlot` vertical slice와 P6-B 승인
 - [x] lifecycle, consumer matrix, declarations, docs와 package parity
-- [ ] P6-Exit 사용자 승인
+- [x] P6-Exit 사용자 승인
 
 ## 확정된 public 방향
 
@@ -69,7 +69,7 @@ Profile은 raw source를 직접 참조하는 하나의 generated revision이다.
 | --- | --- | --- | --- |
 | P6-A | approved | exact `FillPaint`/profile/API contract, primitive source와 Cars PNG | public facade 구현 |
 | P6-B | approved | create/edit public chains, state/trace와 primitive/public Browser/PNG parity | Phase closeout |
-| P6-Exit | ready-for-review | lifecycle/consumer matrix, Current inventory, docs/package와 누적 test | Phase 7 |
+| P6-Exit | approved | lifecycle/consumer matrix, Current inventory, docs/package와 누적 test | Phase 7 |
 
 모든 Gate는 hard pause다.
 

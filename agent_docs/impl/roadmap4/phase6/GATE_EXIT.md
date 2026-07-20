@@ -3,9 +3,11 @@
 ## 상태
 
 - Gate: `P6-Exit`
-- 상태: `ready-for-review`
+- 상태: `approved`
+- 사용자 승인: `2026-07-20`
 - 검토 대상 remote checkpoint: `bcd922c` (`origin/main`)
-- 승인 전 차단: Phase 7 ordered-path 구현
+- Gate evidence checkpoint: `1725c82` (`origin/main`)
+- 승인으로 해제: Phase 7 ordered-path 계획 구체화
 
 ## 승인 대상
 
@@ -79,5 +81,5 @@ contract suite는 모두 통과했으며 built-site 검증은 compatible Ruby en
 - Shared facet density legend, subgroup offset, multiple profile overlay와 per-category intensity domain은 명시적
   limitation으로 남는다.
 
-P6-Exit가 승인되면 Phase 6를 `completed`로 닫고 Roadmap 4 Phase 7 `encodePathOrder` 계획을 구체화할 수 있다.
-승인 전에는 Phase 7 production source를 변경하지 않는다.
+P6-Exit 승인으로 Phase 6를 `completed`로 닫았다. 다음 작업은 Roadmap 4 Phase 7 `encodePathOrder`의 exact
+contract, primitive target과 Gate 계획 구체화다.
