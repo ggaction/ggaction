@@ -7,7 +7,7 @@
 - [x] color/strokeDash/line appearance와 legend
 - [x] selection/highlight/filter와 text applicability consumer matrix
 - [x] primitive/public exact parity
-- [ ] P11-B 사용자 승인
+- [x] P11-B 사용자 승인
 
 Axes는 stored dimension order와 scales를 읽고 ordinary line/text graphics를 만든다. Facade는 child validators를
 preflight하고 기존 wrapped actions를 호출하며 dimension logic을 복제하지 않는다.
