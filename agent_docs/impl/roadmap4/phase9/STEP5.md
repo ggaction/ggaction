@@ -2,11 +2,11 @@
 
 ## 진행 상태
 
-- [ ] partial `editHorizon`과 derived revision replacement
-- [ ] source/x/y/group/options edit와 stale resource cleanup
-- [ ] filter/facet shared·independent replay
-- [ ] Canvas/scale/data/selection/highlight consumer matrix
-- [ ] primitive/public exact parity와 P9-B package
+- [x] partial `editHorizon`과 derived revision replacement
+- [x] source/x/y/group/options edit와 stale resource cleanup
+- [x] filter/facet shared·independent replay
+- [x] Canvas/scale/data/selection/highlight consumer matrix
+- [x] primitive/public exact parity와 P9-B package
 - [ ] P9-B 사용자 승인
 
 P9-B 승인 전에는 Phase closeout을 시작하지 않는다.

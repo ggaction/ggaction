@@ -24,6 +24,20 @@ function requestedDensityTransform(transform) {
   return requested;
 }
 
+function facetHorizonTransform(transform, { scales = {} } = {}) {
+  if (
+    transform.extent !== "auto" ||
+    (scales.y ?? "shared") !== "shared" ||
+    !Array.isArray(transform.resolved?.extents)
+  ) return transform;
+  const extent = Math.max(...transform.resolved.extents.map(item => item.extent));
+  if (!(extent > 0)) return transform;
+  return {
+    ...requestedHorizonTransform(transform),
+    extent
+  };
+}
+
 const TRANSFORM_POLICIES = Object.freeze({
   bin2d: Object.freeze({
     validate: validateBin2DTransform,
@@ -62,7 +76,8 @@ const TRANSFORM_POLICIES = Object.freeze({
     validate: validateHorizonTransform,
     materializeOp: "materializeHorizonData",
     facetTopology: "statistical",
-    replayTransform: requestedHorizonTransform
+    replayTransform: requestedHorizonTransform,
+    facetReplayTransform: facetHorizonTransform
   }),
   interval: Object.freeze({
     validate: validateIntervalTransform,

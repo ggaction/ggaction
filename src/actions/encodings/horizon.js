@@ -19,15 +19,29 @@ import {
 import {
   findDataset,
   findLayer,
+  findSemanticScale,
   hasDataset,
   resolveEligibleLayer
 } from "../../selectors/index.js";
+import { applyMaterializationPlan } from
+  "../../materialization/dependencies.js";
+import { planHorizonRematerialization } from
+  "../../materialization/horizon.js";
+import { planDerivedDataRevision } from
+  "../../materialization/dataProvenance.js";
 
 const OPTIONS = Object.freeze([
   "target", "source", "x", "y", "groupBy", "bands", "baseline", "extent",
   "resolve", "missing", "overflow", "palette"
 ]);
 const FIELD_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
+const EDIT_OPTIONS = OPTIONS;
+const EDITABLE = Object.freeze(EDIT_OPTIONS.filter(option => option !== "target"));
+const SCALE_PROPERTIES = Object.freeze([
+  "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+  "base", "exponent", "constant", "paddingInner", "paddingOuter",
+  "padding", "align", "interpolate", "unknown"
+]);
 
 function findArea(program, requested) {
   const target = requested === undefined
@@ -297,6 +311,222 @@ function applyHorizonEncoding(program, {
   return next;
 }
 
+function sameValue(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function applyScaleDefinition(program, current, definition) {
+  const patch = Object.fromEntries(SCALE_PROPERTIES
+    .filter(property => Object.hasOwn(definition, property))
+    .map(property => [property, definition[property]]));
+  const changed = Object.entries(patch).some(
+    ([property, value]) => !sameValue(current[property], value)
+  );
+  return changed ? program.editScale({ id: current.id, ...patch }) : program;
+}
+
+function existingScale(program, id, label) {
+  const scale = findSemanticScale(program, id);
+  if (scale === undefined) throw new Error(`${label} scale "${id}" is missing.`);
+  return scale;
+}
+
+function editedField(program, layer, source, transform, requested, role) {
+  if (requested === undefined) {
+    return {
+      ...transform[role],
+      ...(role === "x" ? { title: layer.encoding.x.title } : {})
+    };
+  }
+  const prior = transform[role];
+  return resolveField(program, {
+    ...layer,
+    encoding: {
+      ...layer.encoding,
+      [role]: {
+        field: prior.field,
+        fieldType: prior.fieldType,
+        scale: layer.encoding[role].scale,
+        ...(role === "x" && layer.encoding.x.title !== undefined
+          ? { title: layer.encoding.x.title }
+          : {})
+      }
+    }
+  }, source, requested, role);
+}
+
+function editedGroupBy(source, previous, requested) {
+  if (requested === undefined) return previous;
+  if (requested === false) return undefined;
+  if (typeof requested !== "string" || requested.length === 0) {
+    throw new TypeError("Horizon groupBy must be a field string or false.");
+  }
+  readNominalField(source.values, requested);
+  return requested;
+}
+
+function mergedPalette(previous, requested) {
+  if (requested === undefined) return previous;
+  if (!isPlainObject(requested)) {
+    throw new TypeError("Horizon palette must be a plain object.");
+  }
+  return {
+    positive: requested.positive ?? previous.positive,
+    negative: requested.negative ?? previous.negative
+  };
+}
+
+const editHorizon = action(
+  {
+    op: "editHorizon",
+    description: "Revise one Horizon transform and rematerialize its consumers."
+  },
+  function (args = {}) {
+    validateOptionObject(args, EDIT_OPTIONS, "editHorizon");
+    if (!EDITABLE.some(option => Object.hasOwn(args, option))) {
+      throw new Error("editHorizon requires at least one Horizon option.");
+    }
+    const layer = resolveEligibleLayer(this, {
+      target: args.target,
+      label: "Horizon area",
+      predicate: candidate => {
+        const dataset = findDataset(this, candidate.data);
+        return candidate.mark?.type === "area" &&
+          dataset?.transform?.length === 1 &&
+          dataset.transform[0].type === "horizon";
+      }
+    });
+    const previous = findDataset(this, layer.data);
+    const prior = previous.transform[0];
+    const sourceId = validateUserId(
+      args.source ?? previous.source,
+      "Horizon source dataset id"
+    );
+    const source = findDataset(this, sourceId);
+    if (source === undefined) {
+      throw new Error(`Unknown Horizon source dataset "${sourceId}".`);
+    }
+    const x = editedField(this, layer, source, prior, args.x, "x");
+    const y = editedField(this, layer, source, prior, args.y, "y");
+    const groupBy = editedGroupBy(source, prior.groupBy, args.groupBy);
+    const candidate = validateHorizonTransform({
+      type: "horizon",
+      x: { field: x.field, fieldType: x.fieldType },
+      y: { field: y.field, fieldType: y.fieldType },
+      ...(groupBy === undefined ? {} : { groupBy }),
+      bands: args.bands ?? prior.bands,
+      baseline: args.baseline ?? prior.baseline,
+      extent: args.extent ?? prior.extent,
+      resolve: args.resolve ?? prior.resolve,
+      missing: args.missing ?? prior.missing,
+      overflow: args.overflow ?? prior.overflow,
+      palette: mergedPalette(prior.palette, args.palette),
+      as: prior.as
+    });
+    const preflight = deriveHorizon(source.values, candidate);
+    const revision = planDerivedDataRevision(this, {
+      owner: layer.id,
+      role: "HorizonData",
+      previous: previous.id,
+      consumers: [layer.id]
+    });
+    let next = this
+      .createHorizonData({
+        id: revision.id,
+        source: source.id,
+        x: candidate.x,
+        y: candidate.y,
+        ...(groupBy === undefined ? {} : { groupBy }),
+        bands: candidate.bands,
+        baseline: candidate.baseline,
+        extent: candidate.extent,
+        resolve: candidate.resolve,
+        missing: candidate.missing,
+        overflow: candidate.overflow,
+        palette: candidate.palette,
+        as: candidate.as
+      })
+      .rebindLayerData(revision.rebinds[0])
+      .releaseDerivedData(revision.release);
+
+    if (layer.encoding.x.fieldType !== x.fieldType) {
+      next = next.editSemantic({
+        property: `layer[${layer.id}].encoding.x.fieldType`,
+        value: x.fieldType
+      });
+    }
+    if (Object.hasOwn(args, "x")) {
+      next = next.editSemantic({
+        property: `layer[${layer.id}].encoding.x.title`,
+        value: inferredTitle(x.field)
+      });
+    }
+
+    const currentX = existingScale(next, layer.encoding.x.scale, "Horizon x");
+    const requestedXScale = x.scale ?? {};
+    if (requestedXScale.id !== undefined && requestedXScale.id !== currentX.id) {
+      throw new Error("editHorizon x scale cannot change its id.");
+    }
+    const xTypeChanged = prior.x.fieldType !== x.fieldType;
+    const emptyXDomain = preflight.values.length === 0 &&
+      requestedXScale.domain === undefined &&
+      currentX.domain === "auto"
+      ? source.values.map((row, index) => x.fieldType === "temporal"
+          ? normalizeTemporalValue(row[x.field], x.field, index)
+          : row[x.field])
+      : undefined;
+    const nextX = resolvePositionScaleDefinition(next, "x", x.fieldType, {
+      ...requestedXScale,
+      id: currentX.id,
+      ...(emptyXDomain === undefined
+        ? {}
+        : { domain: [Math.min(...emptyXDomain), Math.max(...emptyXDomain)] }),
+      ...(xTypeChanged && requestedXScale.type === undefined
+        ? { type: x.fieldType === "temporal" ? "time" : "linear" }
+        : {})
+    });
+    next = applyScaleDefinition(next, currentX, nextX);
+
+    const currentY = existingScale(next, layer.encoding.y.scale, "Horizon y");
+    const requestedYScale = y.scale ?? {};
+    if (requestedYScale.id !== undefined && requestedYScale.id !== currentY.id) {
+      throw new Error("editHorizon y scale cannot change its id.");
+    }
+    const nextY = foldedScaleOptions(layer.id, {
+      ...currentY,
+      ...requestedYScale,
+      id: currentY.id
+    });
+    next = applyScaleDefinition(next, currentY, nextY);
+
+    const colors = normalizedPaletteColors(candidate);
+    const currentColor = existingScale(
+      next,
+      layer.encoding.color.scale,
+      "Horizon color"
+    );
+    const nextColor = resolveColorScaleDefinition(next, {
+      id: currentColor.id,
+      type: "ordinal",
+      domain: colors.domain,
+      range: colors.range
+    });
+    next = applyScaleDefinition(next, currentColor, nextColor);
+
+    if (preflight.values.length === 0) {
+      return next.editGraphics({
+        target: layer.id,
+        property: "length",
+        value: 0
+      });
+    }
+    return applyMaterializationPlan(
+      next,
+      planHorizonRematerialization(next, layer.id)
+    );
+  }
+);
+
 const encodeHorizon = action(
   {
     op: "encodeHorizon",
@@ -389,4 +619,5 @@ const encodeHorizon = action(
 
 export function registerHorizonEncodingAction(ProgramClass) {
   ProgramClass.prototype.encodeHorizon = encodeHorizon;
+  ProgramClass.prototype.editHorizon = editHorizon;
 }

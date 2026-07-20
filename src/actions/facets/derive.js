@@ -12,6 +12,7 @@ import { buildMaterializationPlan } from "../../materialization/planner.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { requireLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { findTransformPolicy } from "../../grammar/transforms.js";
 
 function sharedHistogramBoundaries(program) {
   const boundaries = new Map();
@@ -89,7 +90,13 @@ function cellMaterializationPlan(program) {
   return buildMaterializationPlan({ scales });
 }
 
-function deriveCellProgram(base, definition, cell, histogramBoundaries) {
+function deriveCellProgram(
+  base,
+  definition,
+  cell,
+  histogramBoundaries,
+  scales
+) {
   let child = base.filterData({
     id: cell.data,
     source: definition.data,
@@ -105,10 +112,15 @@ function deriveCellProgram(base, definition, cell, histogramBoundaries) {
       );
     }
     const id = replayDatasetId(cell, replay.id);
+    const policy = findTransformPolicy(replay.transform.type);
+    const transform = policy?.facetReplayTransform?.(
+      replay.transform,
+      { scales }
+    ) ?? replay.transform;
     child = child.replayDerivedData({
       id,
       source,
-      transform: replay.transform
+      transform
     });
     datasets.set(replay.id, id);
   }
@@ -181,7 +193,7 @@ export function deriveFacetChildren(
     : new Map();
   const independentlyResolved = Object.fromEntries(definition.cells.map(cell => [
     cell.id,
-    deriveCellProgram(template, definition, cell, bins)
+    deriveCellProgram(template, definition, cell, bins, resolutionRequest)
   ]));
   const resolution = resolveFacetScaleDomains(
     template.semanticSpec,
