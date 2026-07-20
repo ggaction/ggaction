@@ -1,4 +1,6 @@
 import { calculateHorizon } from "../../oracles/horizon.js";
+import { createMonotoneAreaReferenceCommands } from
+  "../../oracles/monotone-area.js";
 import { mapLinear } from "../../oracles/numeric.js";
 
 export const HORIZON_LAYOUT = Object.freeze({
@@ -50,14 +52,16 @@ function graphicalSeries(horizon, bounds) {
         [bounds.bottom, bounds.top]
       )
     }));
+    const lower = upper.map(point => Object.freeze({
+      x: point.x,
+      y: bounds.bottom
+    }));
     return Object.freeze({
       ...series,
+      commands: createMonotoneAreaReferenceCommands(lower, upper),
       fill: HORIZON_COLORS[series.sign][series.bandIndex],
-      polygon: Object.freeze([
-        Object.freeze({ x: upper[0].x, y: bounds.bottom }),
-        ...upper,
-        Object.freeze({ x: upper.at(-1).x, y: bounds.bottom })
-      ])
+      lower,
+      upper: Object.freeze(upper)
     });
   }));
 }

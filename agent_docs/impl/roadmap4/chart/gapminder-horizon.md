@@ -20,7 +20,7 @@ chart()
     field: "country",
     oneOf: ["Kenya"]
   })
-  .createAreaMark()
+  .createAreaMark({ curve: "monotone" })
   .encodeHorizon({
     x: "year",
     y: "life_expect",
@@ -76,6 +76,8 @@ editHorizon({
 - Default palette는 positive `blues`, negative `reds`다.
 - `editHorizon`은 partial edit이고 omitted option은 보존한다. `groupBy: false`는 grouping을 제거한다.
 - Empty edit은 오류다. Source/x/y/group/options 변경은 original source에서 새 derived revision을 만든다.
+- Horizon은 target area의 기존 `curve` appearance를 그대로 존중한다. 곡선은 `createAreaMark`/`editAreaMark`가
+  소유하며 `encodeHorizon`에 중복 옵션을 만들지 않는다.
 - Phase 9는 `createHorizonPlot` facade와 automatic Horizon legend를 추가하지 않는다.
 
 ## Action hierarchy
@@ -112,7 +114,8 @@ Pure sorting, crossing, band calculation helper는 trace node가 아니다.
 
 ## Non-goals
 
-- Temporal aggregation, resampling, smoothing 또는 custom curves
+- Temporal aggregation, resampling 또는 data smoothing
+- Horizon 전용 curve alias; 기존 area `curve`를 사용한다.
 - Ordinal x baseline-cross interpolation
 - Renderer-side clipping 또는 semantic inference
 - One-shot `createHorizonPlot` facade

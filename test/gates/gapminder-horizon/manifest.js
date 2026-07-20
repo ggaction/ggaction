@@ -17,7 +17,7 @@ export const horizonTargetCallChain = `chart()
   })
   .createData({ values: gapminder })
   .filterData({ id: "kenya", field: "country", oneOf: ["Kenya"] })
-  .createAreaMark()
+  .createAreaMark({ curve: "monotone" })
   .encodeHorizon({
     x: "year",
     y: "life_expect",

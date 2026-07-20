@@ -24,6 +24,7 @@ sign×band×segment rows로 변환하고, 기존 area path와 Canvas/PNG rendere
 - `bands=3`, `baseline=0`, `extent="auto"`, `resolve="shared"`, `missing="break"`,
   `overflow="clip"`가 기본이다.
 - Positive/negative palettes는 기존 Palette vocabulary를 재사용한다.
+- Path interpolation은 target area의 기존 `curve`를 재사용하며 Horizon-specific curve option을 만들지 않는다.
 - `editHorizon`은 partial revision이고 original source에서 새 immutable derived dataset을 만든다.
 - Renderer는 Horizon을 모르며 materialized ordinary closed path만 읽는다.
 - Default guide는 x축만 소유하고 folded y축과 automatic legend는 만들지 않는다.
@@ -50,7 +51,7 @@ sign×band×segment rows로 변환하고, 기존 area path와 Canvas/PNG rendere
 ## Non-goals
 
 - `createHorizonPlot` facade
-- Temporal aggregation/resampling/smoothing
-- Ordinal crossing interpolation와 custom curve
+- Temporal aggregation/resampling/data smoothing
+- Ordinal crossing interpolation와 Horizon-specific curve option
 - Automatic Horizon legend, interactions 또는 animation
 - Renderer 전용 Horizon primitive

@@ -174,7 +174,8 @@ test("authors a renderer-neutral primitive Horizon tree", () => {
   );
   assert.equal(bands.every(item =>
     item.properties.commands[0].op === "M" &&
-    item.properties.commands.at(-1).op === "Z"
+    item.properties.commands.at(-1).op === "Z" &&
+    item.properties.commands.some(command => command.op === "C")
   ), true);
   assert.equal(program.graphicSpec.objects.yAxisLine, undefined);
   assert.equal(program.graphicSpec.objects.colorLegend, undefined);

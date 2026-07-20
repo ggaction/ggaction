@@ -1,5 +1,4 @@
 import { chart } from "../../../src/index.js";
-import { linearPathCommands } from "../../support/path.js";
 
 import { createGapminderHorizonValues } from "./reference-values.js";
 
@@ -65,9 +64,7 @@ export function createGapminderHorizonPrimitiveResult(gapminder) {
     .editGraphics({
       target: "horizonBands",
       property: "commands",
-      value: values.series.map(series =>
-        linearPathCommands(series.polygon, { close: true })
-      )
+      value: values.series.map(series => series.commands)
     })
     .editGraphics({
       target: "horizonBands",
