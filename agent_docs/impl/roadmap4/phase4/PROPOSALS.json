@@ -2,11 +2,11 @@
   "version": 1,
   "phase": "roadmap4/phase4",
   "gate": "P4-A",
-  "status": "ready-for-review",
+  "status": "approved",
   "actions": [
     {
       "name": "jitterPoints",
-      "status": "proposed",
+      "status": "planned",
       "required": ["channel", "maxOffset"],
       "optional": ["target", "seed", "key"],
       "replacement": "same action replaces the target policy from its semantic base position",
@@ -14,7 +14,7 @@
     },
     {
       "name": "removeJitter",
-      "status": "proposed",
+      "status": "planned",
       "required": [],
       "optional": ["target"],
       "replacement": "removes the target policy and restores semantic base positions",

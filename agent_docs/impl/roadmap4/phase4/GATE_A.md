@@ -10,9 +10,11 @@
 - [x] stable key reorder invariance와 semantic-coordinate 보존
 - [x] 2x Node PNG, 전체 render와 Roadmap 4 gallery 검증
 - [x] 전체 test suite와 coverage
-- [ ] 사용자 승인
+- [x] 사용자 승인
 
-Gate 상태: `ready-for-review` (2026-07-20)
+Gate 상태: `approved` (2026-07-20)
+
+승인 checkpoint: `aed50d6` (`origin/main`)
 
 ## 승인할 후보 API
 

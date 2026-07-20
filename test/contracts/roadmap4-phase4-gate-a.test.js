@@ -13,11 +13,11 @@ const proposals = JSON.parse(read(
   "agent_docs/impl/roadmap4/phase4/PROPOSALS.json"
 ));
 
-test("keeps the P4-A jitter proposal exact and outside public surfaces", () => {
+test("keeps the approved P4-A jitter contract exact before implementation", () => {
   assert.equal(proposals.version, 1);
   assert.equal(proposals.phase, "roadmap4/phase4");
   assert.equal(proposals.gate, "P4-A");
-  assert.equal(proposals.status, "ready-for-review");
+  assert.equal(proposals.status, "approved");
   assert.deepEqual(
     proposals.actions.map(action => action.name),
     ["jitterPoints", "removeJitter"]
@@ -25,7 +25,7 @@ test("keeps the P4-A jitter proposal exact and outside public surfaces", () => {
   const index = JSON.parse(read("agent_docs/contract/ACTION_INDEX.json"));
   const declarations = read("types/program.d.ts");
   for (const action of proposals.actions) {
-    assert.equal(action.status, "proposed", action.name);
+    assert.equal(action.status, "planned", action.name);
     assert.equal(ChartProgram.prototype[action.name], undefined, action.name);
     assert.equal(index.actions.some(item => item.name === action.name), false, action.name);
     assert.equal(index.plannedActions.some(item => item.name === action.name), false, action.name);
