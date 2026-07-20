@@ -12,8 +12,9 @@ independent-position sort를 그대로 유지한다.
 
 - [x] P6-Exit 승인과 ordinary line/area baseline 확인
 - [x] exact 후보 API, semantic owner와 compatibility boundary 작성
-- [ ] independent stable-order oracle와 fixed vectors
-- [ ] Gapminder primitive trajectory와 P7-A 사용자 승인
+- [x] independent stable-order oracle와 fixed vectors
+- [x] Gapminder primitive trajectory와 P7-A review evidence
+- [ ] P7-A 사용자 승인
 - [ ] public action, immutable reassignment/removal과 P7-B 사용자 승인
 - [ ] consumer matrix, declarations, docs/package와 P7-Exit 사용자 승인
 
