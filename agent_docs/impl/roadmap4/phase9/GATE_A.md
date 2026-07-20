@@ -5,7 +5,7 @@
 - Gate: `P9-A`
 - 상태: `ready-for-review`
 - 승인: 대기 중
-- Primitive source checkpoint: `9bca453` (`add horizon primitive gate`)
+- Primitive source checkpoint: `5481ed6` (`smooth horizon primitive curves`)
 - Remote: `origin/main`
 - 승인 전 차단: production Horizon grammar, transform, action과 public declarations
 
@@ -61,7 +61,7 @@ chart()
   })
   .createData({ values: gapminder })
   .filterData({ id: "kenya", field: "country", oneOf: ["Kenya"] })
-  .createAreaMark()
+  .createAreaMark({ curve: "monotone" })
   .encodeHorizon({
     x: "year",
     y: "life_expect",
@@ -84,6 +84,8 @@ chart()
   baseline, missing/overflow, palette와 generated output names를 소유한다.
 - Target area는 generated ordinary x/y/y2/group/color encoding만 저장한다. 같은 Horizon 계약을 별도 encoding
   branch에 중복하지 않는다.
+- Target area의 existing `curve` appearance를 그대로 사용한다. Horizon은 별도 curve option을 만들거나 source
+  data를 smoothing하지 않는다.
 - Edit은 original source에서 deterministic derived revision을 만들고 consumer를 rebind한다. Earlier program과
   caller rows는 그대로다.
 - Concrete sampled colors와 closed path commands는 `graphicSpec`에만 저장한다. Renderer에는 Horizon primitive나
@@ -110,8 +112,8 @@ Order는 negative band `0→1`, positive band `0→1→2`이며 같은 band의 d
 - Source: `test/gates/gapminder-horizon/primitive.program.js`
 - Artifact: `.artifacts/test/png/review/gapminder-horizon/kenya-life-expectancy/primitive.png`
 - Logical/physical: `760×300` / `1520×600`
-- SHA-256: `f7577fcb820debe0cce4b5ae08f89320947f1ddca9f14873a85582d3d237bbff`
-- Seven ordinary closed path items, vertical grid behind paths, x axis/title above paths
+- SHA-256: `09115548bb665608eacec8b3c0ef9320b74a5b780d2dee65dd0bd547ebb3b4f1`
+- Seven ordinary monotone-cubic closed path items, vertical grid behind paths, x axis/title above paths
 - No y axis, y grid, legend, `encodeHorizon` trace node 또는 production Horizon state
 - Semantic getter가 오류인 renderer probe에서도 final `graphicSpec`만으로 동일하게 그린다.
 
