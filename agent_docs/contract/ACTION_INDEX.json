@@ -2157,8 +2157,46 @@
     ,{ "name": "createRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editRectMark` and position/color encodings", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "createrectmark" } }
     ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],
-  "plannedActions": [],
-  "plannedCapabilities": [],
+  "plannedActions": [
+    {
+      "name": "createGradientPlot",
+      "status": "planned",
+      "readiness": "pending-parameter-review",
+      "contract": {
+        "file": "agent_docs/contract/planned/GRADIENT_PLOTS.md",
+        "anchor": "creategradientplot"
+      }
+    },
+    {
+      "name": "editGradientPlot",
+      "status": "planned",
+      "readiness": "pending-parameter-review",
+      "contract": {
+        "file": "agent_docs/contract/planned/GRADIENT_PLOTS.md",
+        "anchor": "editgradientplot"
+      }
+    }
+  ],
+  "plannedCapabilities": [
+    {
+      "name": "LinearGradientPaint fill value",
+      "kind": "parameter",
+      "readiness": "pending-parameter-review",
+      "contract": {
+        "file": "agent_docs/contract/planned/GRADIENT_PLOTS.md",
+        "anchor": "lineargradientpaint"
+      }
+    },
+    {
+      "name": "Categorical uncertainty chart family",
+      "kind": "behavior",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/GRADIENT_PLOTS.md",
+        "anchor": "categorical-uncertainty-family"
+      }
+    }
+  ],
   "internal": {
     "materialization": [
       "materializeBoxOutlierData",

@@ -161,11 +161,15 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
+| `createGradientPlot` | pending-parameter-review | [Open](planned/GRADIENT_PLOTS.md#creategradientplot) |
+| `editGradientPlot` | pending-parameter-review | [Open](planned/GRADIENT_PLOTS.md#editgradientplot) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
+| parameter | LinearGradientPaint fill value | pending-parameter-review | [Open](planned/GRADIENT_PLOTS.md#lineargradientpaint) |
+| behavior | Categorical uncertainty chart family | accepted | [Open](planned/GRADIENT_PLOTS.md#categorical-uncertainty-family) |
 
 ## Internal inventories
 
