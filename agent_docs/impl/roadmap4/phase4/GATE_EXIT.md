@@ -9,9 +9,9 @@
 - [x] canonical public examples, Browser Canvas와 2x Node PNG
 - [x] executable Phase closeout audit
 - [x] full tests, coverage, render, packed-package와 built-docs verification
-- [ ] 사용자 승인
+- [x] 사용자 승인
 
-Gate 상태: `ready-for-review`
+Gate 상태: `approved` (2026-07-20)
 
 Closeout checkpoint: `d2b34af` (`origin/main`)
 
@@ -104,5 +104,5 @@ Canonical executable source: `examples/point-jitter/program.js`.
 
 - Additive API이며 existing point encoding, selection, Canvas/PNG renderer와 package exports를 깨지 않는다.
 - Phase 5의 window/2D-bin derived data는 이 jitter state owner와 독립적으로 진행한다.
-- 승인 시 Phase 4를 `completed`로 전환하고 P4-Exit 승인 commit을 push한다. Phase 5는 별도 시작 요청 전까지
-  구현하지 않는다.
+- 2026-07-20 사용자 승인으로 Phase 4를 `completed`로 전환했다.
+- Phase 5는 별도 시작 요청 전까지 구현하지 않는다.

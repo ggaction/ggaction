@@ -90,3 +90,18 @@ test("documents and package-tests the additive Phase 4 contract", () => {
   assert.match(packageConsumer, /\.jitterPoints\(jitterOptions\)/);
   assert.match(packageConsumer, /\.removeJitter\(removeJitterOptions\)/);
 });
+
+test("records the approved Phase 4 exit and opens no later implementation", () => {
+  assert.match(
+    read("agent_docs/impl/roadmap4/ROADMAP.md"),
+    /\| 4 \| completed \| NCP-003 deterministic bounded point jitter, P4-Exit 승인 완료 \|/
+  );
+  assert.match(
+    read("agent_docs/impl/roadmap4/phase4/GATE_EXIT.md"),
+    /Gate 상태: `approved` \(2026-07-20\)/
+  );
+  assert.match(
+    read("agent_docs/impl/roadmap4/phase4/GOAL.md"),
+    /\| P4-Exit \| approved \|/
+  );
+});
