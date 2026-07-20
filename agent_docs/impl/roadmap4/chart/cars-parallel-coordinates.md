@@ -13,9 +13,9 @@ P11-A에서 승인받기 전까지 아래 surface는 후보이며 Current API가
 ```javascript
 chart()
   .createCanvas({
-    width: 820,
-    height: 480,
-    margin: { top: 70, right: 120, bottom: 70, left: 70 }
+    width: 860,
+    height: 500,
+    margin: { top: 110, right: 160, bottom: 65, left: 78 }
   })
   .createData({ values: cars })
   .filterData({
@@ -27,11 +27,15 @@ chart()
     dimensions: [
       { field: "Miles_per_Gallon", title: "MPG", scale: { nice: true, zero: false } },
       { field: "Horsepower", scale: { nice: true, zero: false } },
-      { field: "Weight_in_lbs", title: "Weight", scale: { nice: true, zero: false } },
+      { field: "Weight_in_lbs", title: "Weight (lb)", scale: { nice: true, zero: false } },
       { field: "Acceleration", scale: { nice: true, zero: false } }
     ],
     key: "Name",
-    color: { field: "Origin", fieldType: "nominal" },
+    color: {
+      field: "Origin",
+      fieldType: "nominal",
+      scale: { palette: "tableau10" }
+    },
     line: { strokeWidth: 1.25, opacity: 0.48 }
   })
   .createTitle({

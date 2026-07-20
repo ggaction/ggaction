@@ -38,7 +38,7 @@ backend-neutral path/line/text graphics만 소비한다.
 
 | Gate | 상태 | 승인 대상 | 승인 전 차단되는 작업 |
 | --- | --- | --- | --- |
-| P11-A | planned | exact API/default/error/state, independent oracle, Cars primitive source와 PNG | production grammar/action 구현 |
+| P11-A | ready-for-review | exact API/default/error/state, independent oracle, Cars primitive source와 PNG | production grammar/action 구현 |
 | P11-B | planned | facade hierarchy, primitive/public parity, guide/selection/edit lifecycle | public closeout |
 | P11-Exit | planned | Current inventory, architecture, docs/types/package와 cumulative verification | Phase 12 |
 

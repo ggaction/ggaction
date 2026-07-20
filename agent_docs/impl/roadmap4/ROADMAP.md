@@ -131,7 +131,7 @@ existing createBoxPlot({ ... })
 | 8 | completed | NCP-001 categorical density placement; P8-Exit 승인 완료 |
 | 9 | completed | NCP-005 Horizon encoding; P9-A/P9-B/P9-Exit 승인 완료 |
 | 10 | skipped | P-006 overlay/inset composition을 `Maybe Future`로 이동; public/API 구현 없음 |
-| 11 | in-progress | NCP-004 Parallel Coordinates; P11-A contract/primitive 설계 |
+| 11 | in-progress | NCP-004 Parallel Coordinates; P11-A ready-for-review |
 | 12 | planned | P-005 label layout |
 | 13 | planned | P-007 hierarchy layout |
 | 14 | planned | 전체 Basic Chart facade consistency closeout |
