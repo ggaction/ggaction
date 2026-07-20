@@ -14,7 +14,7 @@ import { compositionChildDescriptor } from
   "../../materialization/composition.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../theme/defaults.js";
 import { deriveFacetChildren } from "./derive.js";
-import { rebindLayerData, replayDerivedData } from "./replay.js";
+import { replayDerivedData } from "./replay.js";
 import { composeFacetGuides } from "./guides.js";
 
 const FACET_OPTIONS = Object.freeze([
@@ -155,7 +155,6 @@ export const editFacetHeaders = action(
 
 export function registerFacetActions(ProgramClass) {
   ProgramClass.prototype.replayDerivedData = replayDerivedData;
-  ProgramClass.prototype.rebindLayerData = rebindLayerData;
   ProgramClass.prototype.composeFacetGuides = composeFacetGuides;
   ProgramClass.prototype.facet = facet;
   ProgramClass.prototype.editFacetHeaders = editFacetHeaders;

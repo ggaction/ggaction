@@ -82,7 +82,7 @@ test("records explicit revision, rebind, release, and materialization actions", 
 
   assert.deepEqual(node.children.map(child => child.op), [
     "createDensityData",
-    "editSemantic",
+    "rebindLayerData",
     "releaseDerivedData",
     "rematerializeAreaMark"
   ]);

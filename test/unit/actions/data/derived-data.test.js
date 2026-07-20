@@ -76,7 +76,7 @@ test("createDerivedData accepts each documented transform branch as an array", (
   }
 });
 
-test("createDerivedData rejects object, empty, and unknown transform inputs", () => {
+test("createDerivedData rejects object, empty, multiple, and unknown transform inputs", () => {
   const source = sourceProgram();
   assert.throws(
     () => source.createDerivedData({
@@ -84,7 +84,7 @@ test("createDerivedData rejects object, empty, and unknown transform inputs", ()
       source: "source",
       transform: { type: "filter", field: "group", oneOf: ["A"] }
     }),
-    /non-empty array/
+    /exactly one plain object/
   );
   assert.throws(
     () => source.createDerivedData({
@@ -92,7 +92,18 @@ test("createDerivedData rejects object, empty, and unknown transform inputs", ()
       source: "source",
       transform: []
     }),
-    /non-empty array/
+    /exactly one plain object/
+  );
+  assert.throws(
+    () => source.createDerivedData({
+      id: "multiple",
+      source: "source",
+      transform: [
+        { type: "filter", field: "group", oneOf: ["A"] },
+        { type: "filter", field: "group", oneOf: ["B"] }
+      ]
+    }),
+    /exactly one plain object/
   );
   assert.throws(
     () => source.createDerivedData({
@@ -101,6 +112,27 @@ test("createDerivedData rejects object, empty, and unknown transform inputs", ()
       transform: [{ type: "unknown" }]
     }),
     /Unsupported dataset transform/
+  );
+});
+
+test("rebindLayerData records an explicit immutable consumer transition", () => {
+  const before = sourceProgram()
+    .createPointMark({ id: "points", data: "source" })
+    .createDerivedData({
+      id: "filtered",
+      source: "source",
+      transform: [{ type: "filter", field: "group", oneOf: ["A"] }]
+    });
+  const after = before.rebindLayerData({ id: "points", data: "filtered" });
+  const action = after.trace.children.at(-1);
+
+  assert.equal(before.semanticSpec.layers[0].data, "source");
+  assert.equal(after.semanticSpec.layers[0].data, "filtered");
+  assert.equal(action.op, "rebindLayerData");
+  assert.deepEqual(action.children.map(child => child.op), ["editSemantic"]);
+  assert.throws(
+    () => before.rebindLayerData({ id: "points", data: "missing" }),
+    /does not exist/
   );
 });
 

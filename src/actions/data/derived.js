@@ -3,9 +3,11 @@ import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import { hasDataset } from "../../selectors/index.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { requireLayer } from "../../selectors/layers.js";
 
 const OPTIONS = Object.freeze(["id", "source", "transform"]);
 const RELEASE_OPTIONS = Object.freeze(["id"]);
+const REBIND_OPTIONS = Object.freeze(["id", "data"]);
 
 export const createDerivedData = action(
   { op: "createDerivedData", description: "Create an immutable derived dataset definition." },
@@ -48,5 +50,25 @@ export const releaseDerivedData = action(
           property: `dataset[${validatedId}]`,
           remove: true
         });
+  }
+);
+
+export const rebindLayerData = action(
+  {
+    op: "rebindLayerData",
+    description: "Rebind one semantic layer to an existing dataset."
+  },
+  function (args = {}) {
+    validateKeys(args, REBIND_OPTIONS, "rebindLayerData");
+    const id = validateUserId(args.id, "Layer id");
+    const data = validateUserId(args.data, "Layer dataset id");
+    requireLayer(this, id);
+    if (!hasDataset(this, data)) {
+      throw new Error(`Layer dataset "${data}" does not exist.`);
+    }
+    return this.editSemantic({
+      property: `layer[${id}].data`,
+      value: data
+    });
   }
 );

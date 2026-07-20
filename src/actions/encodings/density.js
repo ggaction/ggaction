@@ -11,6 +11,8 @@ import { applyMaterializationPlan } from
   "../../materialization/dependencies.js";
 import { planDensityRematerialization } from
   "../../materialization/density.js";
+import { planDerivedDataRevision } from
+  "../../materialization/dataProvenance.js";
 import { validateOptions } from "./shared.js";
 
 const OPTIONS = Object.freeze([
@@ -164,14 +166,6 @@ function findDensityArea(program, requested) {
   });
 }
 
-function nextDensityRevisionId(program, target) {
-  let revision = 1;
-  while (hasDataset(program, `${target}DensityDataRevision${revision}`)) {
-    revision += 1;
-  }
-  return `${target}DensityDataRevision${revision}`;
-}
-
 const editDensity = action(
   {
     op: "editDensity",
@@ -185,14 +179,19 @@ const editDensity = action(
     const layer = findDensityArea(this, args.target);
     const previous = findDataset(this, layer.data);
     const transform = previous.transform[0];
-    const revisionId = nextDensityRevisionId(this, layer.id);
+    const revision = planDerivedDataRevision(this, {
+      owner: layer.id,
+      role: "DensityData",
+      previous: previous.id,
+      consumers: [layer.id]
+    });
     const option = property => Object.hasOwn(args, property)
       ? args[property]
       : transform[property];
 
     let next = this
       .createDensityData({
-        id: revisionId,
+        id: revision.id,
         source: previous.source,
         field: transform.field,
         ...(transform.groupBy === undefined
@@ -205,11 +204,8 @@ const editDensity = action(
         normalization: option("normalization") ?? "unit",
         as: transform.as
       })
-      .editSemantic({
-        property: `layer[${layer.id}].data`,
-        value: revisionId
-      })
-      .releaseDerivedData({ id: previous.id });
+      .rebindLayerData(revision.rebinds[0])
+      .releaseDerivedData(revision.release);
 
     next = applyMaterializationPlan(
       next,

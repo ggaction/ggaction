@@ -39,8 +39,9 @@ and produces no graphics.
 ## `createDerivedData({ id, source, transform })` {#create-derived-data}
 
 `createDerivedData` is the advanced provenance-assembly action behind the
-higher-level data actions. `transform` must be a non-empty array of supported
-transform objects; a single transform object is not accepted.
+higher-level data actions. `transform` must be a one-element array containing
+one supported transform object; a bare object, an empty array, or a transform
+pipeline is not accepted.
 
 ```javascript
 import { chart } from "ggaction";

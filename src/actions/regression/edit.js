@@ -9,7 +9,8 @@ import {
 } from "../../core/validation.js";
 import { normalizeRegressionParameters } from "../../grammar/regression/index.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
-import { hasDataset } from "../../selectors/index.js";
+import { planDerivedDataRevision } from
+  "../../materialization/dataProvenance.js";
 import { findLayer } from "../../selectors/layers.js";
 
 const OPTIONS = Object.freeze([
@@ -117,14 +118,6 @@ function resolveParameters(previous, args) {
   return normalizeRegressionParameters(raw);
 }
 
-function nextRevisionId(program, ownerId) {
-  let revision = 1;
-  while (hasDataset(program, `${ownerId}RegressionDataRevision${revision}`)) {
-    revision += 1;
-  }
-  return `${ownerId}RegressionDataRevision${revision}`;
-}
-
 function removeBand(program, id) {
   return program
     .editSemantic({ property: `layer[${id}]`, remove: true })
@@ -165,9 +158,20 @@ export const editRegression = action(
         : hadBand || bandPatch !== undefined || current.parameters.method === "loess");
     let dataId = current.dataId;
     let next = this;
+    const revision = changesStatistics
+      ? planDerivedDataRevision(this, {
+          owner: owner.id,
+          role: "RegressionData",
+          previous: current.dataId,
+          consumers: [
+            current.lineId,
+            ...(hadBand ? [current.bandId] : [])
+          ]
+        })
+      : undefined;
 
     if (changesStatistics) {
-      dataId = nextRevisionId(this, owner.id);
+      dataId = revision.id;
       next = next.createRegressionData({
         id: dataId,
         source: current.source,
@@ -176,6 +180,9 @@ export const editRegression = action(
         ...(current.groupBy === undefined ? {} : { groupBy: current.groupBy }),
         ...parameters
       });
+      for (const rebind of revision.rebinds) {
+        next = next.rebindLayerData(rebind);
+      }
     }
 
     let bandId = current.bandId;
@@ -198,19 +205,10 @@ export const editRegression = action(
       });
     } else if (hadBand && changesStatistics) {
       const bandConfig = next.markConfigs[bandId];
-      next = next
-        .editSemantic({ property: `layer[${bandId}].data`, value: dataId })
-        ._withMarkConfig(bandId, {
+      next = next._withMarkConfig(bandId, {
           ...bandConfig,
           errorBand: { ...bandConfig.errorBand, data: dataId }
         });
-    }
-
-    if (changesStatistics) {
-      next = next.editSemantic({
-        property: `layer[${current.lineId}].data`,
-        value: dataId
-      });
     }
 
     if (bandId !== undefined) {
@@ -232,7 +230,7 @@ export const editRegression = action(
     }
 
     if (changesStatistics) {
-      next = next.releaseDerivedData({ id: current.dataId });
+      next = next.releaseDerivedData(revision.release);
     }
     return next._withMarkConfig(owner.id, {
       ...next.markConfigs[owner.id],

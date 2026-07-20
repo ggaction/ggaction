@@ -4,7 +4,8 @@ import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import { BOX_FIELDS, deriveBoxData, normalizeBoxTransform } from
   "../../grammar/boxPlot.js";
-import { hasDataset } from "../../selectors/index.js";
+import { planDerivedDataRevision } from
+  "../../materialization/dataProvenance.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
@@ -61,23 +62,11 @@ function resolveEditedWhisker(current, value) {
   return resolveBoxWhisker(candidate, "editBoxPlot");
 }
 
-function nextRevisionId(program, ownerId, kind) {
-  let revision = 1;
-  while (hasDataset(program, `${ownerId}${kind}Revision${revision}`)) {
-    revision += 1;
-  }
-  return `${ownerId}${kind}Revision${revision}`;
-}
-
 function removeOwnedMark(program, id) {
   return program
     .editSemantic({ property: `layer[${id}]`, remove: true })
     .editGraphics({ target: id, remove: true })
     ._withoutMaterializationConfig(["marks", id]);
-}
-
-function rebindRuleData(program, id, data) {
-  return program.editSemantic({ property: `layer[${id}].data`, value: data });
 }
 
 export const editBoxPlot = action(
@@ -156,7 +145,18 @@ export const editBoxPlot = action(
       derived.outliers.length > 0;
 
     if (revisesData) {
-      summaryId = nextRevisionId(this, owner.id, "SummaryData");
+      const whiskerConfig = next.markConfigs[current.whiskerId];
+      const capIds = [
+        whiskerConfig.errorBar.lowerCapId,
+        whiskerConfig.errorBar.upperCapId
+      ].filter(id => id !== undefined);
+      const summaryRevision = planDerivedDataRevision(this, {
+        owner: owner.id,
+        role: "SummaryData",
+        previous: current.summaryId,
+        consumers: [owner.id, current.whiskerId, ...capIds, current.medianId]
+      });
+      summaryId = summaryRevision.id;
       next = next.createBoxSummaryData({
         id: summaryId,
         source: current.source,
@@ -166,7 +166,16 @@ export const editBoxPlot = action(
         ...(whisker.factor === undefined ? {} : { factor: whisker.factor })
       });
       if (hasOutliers) {
-        outlierDataId = nextRevisionId(this, owner.id, "OutlierData");
+        const hadOutlierLayer = findLayer(next, current.outlierId) !== undefined;
+        const outlierRevision = planDerivedDataRevision(this, {
+          owner: owner.id,
+          role: "OutlierData",
+          ...(current.outlierDataId === undefined
+            ? {}
+            : { previous: current.outlierDataId }),
+          consumers: hadOutlierLayer ? [current.outlierId] : []
+        });
+        outlierDataId = outlierRevision.id;
         next = next.createBoxOutlierData({
           id: outlierDataId,
           source: current.source,
@@ -175,37 +184,24 @@ export const editBoxPlot = action(
           whisker: whisker.type,
           factor: whisker.factor
         });
+        for (const rebind of outlierRevision.rebinds) {
+          next = next.rebindLayerData(rebind);
+        }
       } else {
         outlierDataId = undefined;
       }
 
-      next = next.editSemantic({
-        property: `layer[${owner.id}].data`,
-        value: summaryId
-      });
-      const whiskerConfig = next.markConfigs[current.whiskerId];
-      const capIds = [
-        whiskerConfig.errorBar.lowerCapId,
-        whiskerConfig.errorBar.upperCapId
-      ].filter(id => id !== undefined);
-      next = rebindRuleData(next, current.whiskerId, summaryId)
-        ._withMarkConfig(current.whiskerId, {
+      for (const rebind of summaryRevision.rebinds) {
+        next = next.rebindLayerData(rebind);
+      }
+      next = next._withMarkConfig(current.whiskerId, {
           ...whiskerConfig,
           errorBar: { ...whiskerConfig.errorBar, data: summaryId }
         });
-      for (const capId of capIds) {
-        next = rebindRuleData(next, capId, summaryId);
-      }
-      next = rebindRuleData(next, current.medianId, summaryId);
 
       const hadOutlierLayer = findLayer(next, current.outlierId) !== undefined;
       if (hadOutlierLayer && !hasOutliers) {
         next = removeOwnedMark(next, current.outlierId);
-      } else if (hadOutlierLayer && hasOutliers) {
-        next = next.editSemantic({
-          property: `layer[${current.outlierId}].data`,
-          value: outlierDataId
-        });
       } else if (!hadOutlierLayer && hasOutliers) {
         next = next.createBoxOutliers({
           id: current.outlierId,

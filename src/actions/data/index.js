@@ -1,5 +1,9 @@
 import { createData } from "./create.js";
-import { createDerivedData, releaseDerivedData } from "./derived.js";
+import {
+  createDerivedData,
+  rebindLayerData,
+  releaseDerivedData
+} from "./derived.js";
 import {
   filterData,
   filterMarks,
@@ -15,6 +19,7 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.createData = createData;
   ProgramClass.prototype.createDerivedData = createDerivedData;
   ProgramClass.prototype.releaseDerivedData = releaseDerivedData;
+  ProgramClass.prototype.rebindLayerData = rebindLayerData;
   ProgramClass.prototype.createDensityData = createDensityData;
   ProgramClass.prototype.materializeFilteredData = materializeFilteredData;
   ProgramClass.prototype.materializeMarkFilteredData = materializeMarkFilteredData;

@@ -1,14 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
-
-const ROW_PRESERVING_TRANSFORMS = new Set(["filter"]);
-const STATISTICAL_TRANSFORMS = new Set([
-  "regression",
-  "density",
-  "interval",
-  "boxSummary",
-  "boxOutlier"
-]);
+import { findTransformPolicy } from "../transforms.js";
 
 function requireCollection(value, label) {
   if (!Array.isArray(value) || value.length === 0) {
@@ -54,8 +46,8 @@ function classifyDataset(dataset) {
     throw new Error(`Transformed dataset "${dataset.id}" requires a source dataset.`);
   }
   const type = transforms[0].type;
-  if (ROW_PRESERVING_TRANSFORMS.has(type)) return "rowPreserving";
-  if (STATISTICAL_TRANSFORMS.has(type)) return "statistical";
+  const topology = findTransformPolicy(type)?.facetTopology;
+  if (topology !== undefined) return topology;
   throw new Error(
     `Facet replay does not support dataset transform "${type ?? "unknown"}" on "${dataset.id}".`
   );

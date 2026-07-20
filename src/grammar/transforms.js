@@ -6,24 +6,62 @@ import { validateIntervalTransform } from "./interval.js";
 import { validateMarkFilterTransform } from "./markFilter.js";
 import { validateRegressionTransform } from "./regression/index.js";
 
-const TRANSFORM_VALIDATORS = Object.freeze({
-  boxOutlier: validateBoxTransform,
-  boxSummary: validateBoxTransform,
-  density: validateDensityTransform,
-  filter: validateFilterTransform,
-  interval: validateIntervalTransform,
-  markFilter: validateMarkFilterTransform,
-  regression: validateRegressionTransform
+function requestedDensityTransform(transform) {
+  const { resolved: _resolved, ...requested } = transform;
+  return requested;
+}
+
+const TRANSFORM_POLICIES = Object.freeze({
+  boxOutlier: Object.freeze({
+    validate: validateBoxTransform,
+    materializeOp: "materializeBoxOutlierData",
+    facetTopology: "statistical"
+  }),
+  boxSummary: Object.freeze({
+    validate: validateBoxTransform,
+    materializeOp: "materializeBoxSummaryData",
+    facetTopology: "statistical"
+  }),
+  density: Object.freeze({
+    validate: validateDensityTransform,
+    materializeOp: "materializeDensityData",
+    facetTopology: "statistical",
+    replayTransform: requestedDensityTransform
+  }),
+  filter: Object.freeze({
+    validate: validateFilterTransform,
+    materializeOp: "materializeFilteredData",
+    facetTopology: "rowPreserving"
+  }),
+  interval: Object.freeze({
+    validate: validateIntervalTransform,
+    materializeOp: "materializeIntervalData",
+    facetTopology: "statistical"
+  }),
+  markFilter: Object.freeze({
+    validate: validateMarkFilterTransform,
+    materializeOp: "materializeMarkFilteredData",
+    provenanceTransparent: true
+  }),
+  regression: Object.freeze({
+    validate: validateRegressionTransform,
+    materializeOp: "materializeRegressionData",
+    facetTopology: "statistical"
+  })
 });
 
+export function findTransformPolicy(type) {
+  return TRANSFORM_POLICIES[type];
+}
+
 export function findTransformValidator(type) {
-  return TRANSFORM_VALIDATORS[type];
+  return findTransformPolicy(type)?.validate;
 }
 
 export function validateDatasetTransforms(value) {
-  if (!Array.isArray(value) || value.length === 0 || !value.every(isPlainObject)) {
+  if (!Array.isArray(value) || value.length !== 1 || !isPlainObject(value[0])) {
     throw new TypeError(
-      "Dataset transform must be a non-empty array of plain objects."
+      "Dataset transform must contain exactly one plain object."
     );
   }
   for (const transform of value) {

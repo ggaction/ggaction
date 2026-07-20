@@ -2802,8 +2802,9 @@ and produces no graphics.
 ## `createDerivedData({ id, source, transform })` {#create-derived-data}
 
 `createDerivedData` is the advanced provenance-assembly action behind the
-higher-level data actions. `transform` must be a non-empty array of supported
-transform objects; a single transform object is not accepted.
+higher-level data actions. `transform` must be a one-element array containing
+one supported transform object; a bare object, an empty array, or a transform
+pipeline is not accepted.
 
 ```javascript
 import { chart } from "ggaction";
@@ -9335,7 +9336,7 @@ createCoordinate({ id?, type?, layers? })
 createDerivedData({
   id,
   source,
-  transform: [DatasetTransform, ...DatasetTransform[]]
+  transform: [DatasetTransform]
 })
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
@@ -9354,8 +9355,8 @@ layers normally owned by `createRegression`.
 
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Its public `DatasetTransform` union supports
-`filter`, `regression`, `density`, and `interval` objects. A single object or
-empty array is invalid. See the runnable filter example and exact transform
+`filter`, `regression`, `density`, and `interval` objects. A bare object, empty
+array, or multi-transform pipeline is invalid. See the runnable filter example and exact transform
 requirements in [Source and derived data](../api/data/source-and-derived.md#create-derived-data).
 
 ### Complete single-channel axes

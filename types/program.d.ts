@@ -258,7 +258,7 @@ export type DatasetTransform =
 export interface CreateDerivedDataOptions {
   id: string;
   source: string;
-  transform: readonly [DatasetTransform, ...DatasetTransform[]];
+  transform: readonly [DatasetTransform];
 }
 export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"

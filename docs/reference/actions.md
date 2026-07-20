@@ -1263,7 +1263,7 @@ createCoordinate({ id?, type?, layers? })
 createDerivedData({
   id,
   source,
-  transform: [DatasetTransform, ...DatasetTransform[]]
+  transform: [DatasetTransform]
 })
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
@@ -1282,8 +1282,8 @@ layers normally owned by `createRegression`.
 
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Its public `DatasetTransform` union supports
-`filter`, `regression`, `density`, and `interval` objects. A single object or
-empty array is invalid. See the runnable filter example and exact transform
+`filter`, `regression`, `density`, and `interval` objects. A bare object, empty
+array, or multi-transform pipeline is invalid. See the runnable filter example and exact transform
 requirements in [Source and derived data](../api/data/source-and-derived.md#create-derived-data).
 
 ### Complete single-channel axes
