@@ -80,19 +80,19 @@ export function normalizePointHighlightStyle(args) {
   };
 }
 
-function normalizeRectangularHighlightStyle(args, mark) {
-  for (const option of ["shape", "size", "offset", "strokeDash"]) {
+function normalizeRectangularHighlightStyle(args, mark, { offset = false } = {}) {
+  for (const option of ["shape", "size", "strokeDash"]) {
     if (args[option] !== undefined) {
       throw new Error(`${mark} highlight does not support ${option}.`);
     }
   }
+  if (!offset && args.offset !== undefined) {
+    throw new Error(`${mark} highlight does not support offset.`);
+  }
   if (args.color !== undefined && args.fill !== undefined) {
     throw new Error(`${mark} highlight accepts color or fill, not both.`);
   }
-  const fill = validateNonEmptyString(
-    args.fill ?? args.color ?? DEFAULT_COLORS.highlight,
-    `${mark} highlight fill`
-  );
+  const explicitFill = args.fill ?? args.color;
   const opacity = args.opacity === undefined
     ? undefined
     : validateUnitInterval(args.opacity, `${mark} highlight opacity`);
@@ -105,11 +105,22 @@ function normalizeRectangularHighlightStyle(args, mark) {
   if (strokeWidth !== undefined && stroke === undefined) {
     throw new Error(`${mark} highlight strokeWidth requires stroke.`);
   }
+  const hasAppearanceOverride = opacity !== undefined || stroke !== undefined ||
+    strokeWidth !== undefined || args.offset !== undefined;
+  const fill = explicitFill === undefined && hasAppearanceOverride
+    ? undefined
+    : validateNonEmptyString(
+        explicitFill ?? DEFAULT_COLORS.highlight,
+        `${mark} highlight fill`
+      );
   return {
-    fill,
+    ...(fill === undefined ? {} : { fill }),
     ...(opacity === undefined ? {} : { opacity }),
     ...(stroke === undefined ? {} : { stroke }),
-    ...(strokeWidth === undefined ? {} : { strokeWidth })
+    ...(strokeWidth === undefined ? {} : { strokeWidth }),
+    ...(offset && args.offset !== undefined
+      ? { offset: normalizeOffset(args.offset) }
+      : {})
   };
 }
 
@@ -118,7 +129,7 @@ export function normalizeBarHighlightStyle(args) {
 }
 
 export function normalizeRectHighlightStyle(args) {
-  return normalizeRectangularHighlightStyle(args, "Rect");
+  return normalizeRectangularHighlightStyle(args, "Rect", { offset: true });
 }
 
 function rejectHighlightOptions(args, mark, options) {

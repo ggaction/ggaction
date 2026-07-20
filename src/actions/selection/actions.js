@@ -117,7 +117,26 @@ export const applyPointHighlight = action(
   }
 );
 
-function applyRectangularHighlight(program, args, operation, markType) {
+function transformRectangularProperties(properties, style, offset = false) {
+  if (!offset || style.offset === undefined) {
+    return { ...properties, ...style };
+  }
+  const { offset: translation, ...appearance } = style;
+  return {
+    ...properties,
+    ...appearance,
+    x: properties.x + translation.x,
+    y: properties.y + translation.y
+  };
+}
+
+function applyRectangularHighlight(
+  program,
+  args,
+  operation,
+  markType,
+  { offset = false } = {}
+) {
   validateKeys(args, INTERNAL_SELECTION_OPTIONS, operation);
   const resolved = resolveStoredSelection(program, args.selection);
   const keys = selectedKeys(args, resolved);
@@ -136,7 +155,7 @@ function applyRectangularHighlight(program, args, operation, markType) {
     value: graphic.items.map(child => ({
       type: child.type ?? graphic.type,
       properties: selected.has(keyByGraphic.get(child.id))
-        ? { ...child.properties, ...args.style }
+        ? transformRectangularProperties(child.properties, args.style, offset)
         : child.properties
     }))
   });
@@ -152,7 +171,13 @@ export const applyBarHighlight = action(
 export const applyRectHighlight = action(
   { op: "applyRectHighlight", description: "Apply selected rect appearance." },
   function (args = {}) {
-    return applyRectangularHighlight(this, args, "applyRectHighlight", "rect");
+    return applyRectangularHighlight(
+      this,
+      args,
+      "applyRectHighlight",
+      "rect",
+      { offset: true }
+    );
   }
 );
 

@@ -6,6 +6,7 @@ import {
   normalizeBarHighlightStyle,
   normalizeDimOthers,
   normalizePointHighlightStyle,
+  normalizeRectHighlightStyle,
   normalizeStrokeHighlightStyle
 } from "../../../src/materialization/selection/styles.js";
 
@@ -30,6 +31,10 @@ test("normalizes default and explicit highlight recipes by mark family", () => {
   assert.deepEqual(normalizeBarHighlightStyle({ fill: "blue", opacity: 0.5 }), {
     fill: "blue",
     opacity: 0.5
+  });
+  assert.deepEqual(normalizeRectHighlightStyle({ opacity: 0.5, offset: { x: 2 } }), {
+    opacity: 0.5,
+    offset: { x: 2, y: 0 }
   });
   assert.deepEqual(normalizeStrokeHighlightStyle({
     color: "black",
