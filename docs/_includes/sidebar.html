@@ -28,18 +28,12 @@
 
   <nav class="docs-sidenav">
     {% for group in site.data.navigation_groups %}
-      <details class="docs-nav-group" open>
+      <details class="docs-nav-group">
         <summary><span class="docs-nav-group__title">{{ group.title }}</span></summary>
         <ul>
           {% assign group_items = site.data.pages | where: "nav_group", group.id | sort: "nav_order" %}
           {% for item in group_items %}
-            {% assign item_url = item.url | relative_url %}
-            <li>
-              <a
-                href="{{ item_url }}"
-                {% if page.url == item.url %}class="is-active" aria-current="page"{% endif %}
-              >{{ item.title }}</a>
-            </li>
+            {% include nav-entry.html item=item %}
           {% endfor %}
         </ul>
       </details>

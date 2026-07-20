@@ -29,7 +29,10 @@
 
   function syncGroups() {
     for (const group of sidebar.querySelectorAll(".docs-nav-group")) {
-      group.open = !mobile.matches || Boolean(group.querySelector("[aria-current='page']"));
+      group.open = Boolean(group.querySelector("[aria-current='page']"));
+    }
+    for (const branch of sidebar.querySelectorAll(".docs-nav-branch")) {
+      branch.open = Boolean(branch.querySelector("[aria-current='page']"));
     }
   }
 

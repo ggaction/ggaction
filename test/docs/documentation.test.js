@@ -165,7 +165,14 @@ test("keeps navigation and page order complete", async () => {
   assert.deepEqual(new Set(order), pageUrls);
   for (const url of navigation) assert.equal(pageUrls.has(url), true, url);
   assert.equal(navigation.includes("/api/"), true);
-  assert.equal(navigation.length, 23);
+  assert.equal(navigation.length, 16);
+
+  const byUrl = new Map(registry.map(page => [page.url, page]));
+  for (const page of registry) {
+    if (!page.parent) continue;
+    assert.notEqual(byUrl.get(page.parent), undefined, `${page.url} parent`);
+    assert.notEqual(page.parent, page.url, `${page.url} self parent`);
+  }
 
   assert.equal(
     registry.filter(page => page.nav_group).some(page => /Tutorial$/.test(page.title)),
@@ -476,8 +483,9 @@ test("indexes documentation headings for section search", () => {
   const sidebar = read("docs/_includes/sidebar.html");
   assert.match(sidebar, /role="combobox"/);
   assert.match(sidebar, /role="listbox"/);
-  assert.match(sidebar, /<details class="docs-nav-group" open>/);
+  assert.match(sidebar, /<details class="docs-nav-group">/);
   assert.match(sidebar, /docs-nav-group__title/);
+  assert.match(sidebar, /nav-entry\.html/);
   assert.doesNotMatch(sidebar, /<summary><h2>/);
   assert.match(sidebar, /site\.data\.pages/);
 
@@ -486,6 +494,11 @@ test("indexes documentation headings for section search", () => {
   assert.match(navigation, /event\.key === "Escape"/);
   assert.match(navigation, /restoreFocus/);
   assert.match(navigation, /function syncGroups/);
+  assert.match(navigation, /docs-nav-branch/);
+
+  const breadcrumbs = read("docs/_includes/breadcrumbs.html");
+  assert.match(breadcrumbs, /aria-label="Breadcrumb"/);
+  assert.match(breadcrumbs, /current_entry\.parent/);
 
   const content = read("docs/assets/js/docs-content.js");
   assert.match(content, /docs-action-heading/);

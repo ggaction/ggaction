@@ -1,0 +1,17 @@
+{% assign current_entry = site.data.pages | where: "url", page.url | first %}
+{% if current_entry and current_entry.url != "/" %}
+  {% assign parent_entry = site.data.pages | where: "url", current_entry.parent | first %}
+  {% assign grandparent_entry = site.data.pages | where: "url", parent_entry.parent | first %}
+  <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/' | relative_url }}">Docs</a></li>
+      {% if grandparent_entry %}
+        <li><a href="{{ grandparent_entry.url | relative_url }}">{{ grandparent_entry.title }}</a></li>
+      {% endif %}
+      {% if parent_entry %}
+        <li><a href="{{ parent_entry.url | relative_url }}">{{ parent_entry.title }}</a></li>
+      {% endif %}
+      <li aria-current="page">{{ current_entry.title }}</li>
+    </ol>
+  </nav>
+{% endif %}

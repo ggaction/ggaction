@@ -12,52 +12,74 @@
   nav_order: 3
 - title: Scatterplot Tutorial
   url: /tutorials/scatterplot/
+  parent: /tutorials/
 - title: Polar Point Tutorial
   url: /tutorials/polar-points/
+  parent: /tutorials/
 - title: Polar Line and Radar Tutorial
   url: /tutorials/polar-lines/
+  parent: /tutorials/
 - title: Polar Arc Tutorial
   url: /tutorials/polar-arcs/
+  parent: /tutorials/
 - title: Line Chart Tutorial
   url: /tutorials/line-chart/
+  parent: /tutorials/
 - title: Histogram Tutorial
   url: /tutorials/histogram/
+  parent: /tutorials/
 - title: Bar Chart Tutorial
   url: /tutorials/grouped-bar/
+  parent: /tutorials/
 - title: Regression Scatterplot Tutorial
   url: /tutorials/regression-scatterplot/
+  parent: /tutorials/
 - title: Density Area Tutorial
   url: /tutorials/density-area/
+  parent: /tutorials/
 - title: Error-Bar Tutorial
   url: /tutorials/error-bar/
+  parent: /tutorials/
 - title: Error-Band Tutorial
   url: /tutorials/error-band/
+  parent: /tutorials/
 - title: Mark Selection Tutorial
   url: /tutorials/mark-selection/
+  parent: /tutorials/
 - title: Chart Recipes
   url: /recipes/
   nav_group: start
   nav_order: 4
 - title: Scatterplot Recipe
   url: /recipes/scatterplot/
+  parent: /recipes/
 - title: Line Chart Recipe
   url: /recipes/line-chart/
+  parent: /recipes/
 - title: Histogram Recipe
   url: /recipes/histogram/
+  parent: /recipes/
 - title: Bar Chart Recipe
   url: /recipes/bar-chart/
+  parent: /recipes/
 - title: Heatmap Recipe
   url: /recipes/heatmap/
+  parent: /recipes/
 - title: Regression Scatterplot Recipe
   url: /recipes/regression-scatterplot/
+  parent: /recipes/
 - title: Density Area Recipe
   url: /recipes/density-area/
+  parent: /recipes/
 - title: Error-Bar Recipe
   url: /recipes/error-bar/
+  parent: /recipes/
 - title: Error-Band Recipe
   url: /recipes/error-band/
+  parent: /recipes/
 - title: Box-Plot Recipe
   url: /recipes/box-plot/
+  parent: /recipes/
 - title: Troubleshooting
   url: /troubleshooting/
   nav_group: start
@@ -68,36 +90,46 @@
   nav_order: 1
 - title: Basic Charts
   url: /api/basic-charts/
+  parent: /api/
 - title: Canvas
   url: /api/canvas/
+  parent: /api/
 - title: Data
   url: /api/data/
+  parent: /api/
 - title: Source and Derived Data
   url: /api/data/source-and-derived/
+  parent: /api/data/
 - title: Data Filtering
   url: /api/data/filtering/
+  parent: /api/data/
 - title: Statistical Data Transforms
   url: /api/data/statistical-transforms/
+  parent: /api/data/
 - title: Marks
   url: /api/marks/
-  nav_group: chart-api
-  nav_order: 2
+  parent: /api/
 - title: Point Marks
   url: /api/marks/point/
+  parent: /api/marks/
 - title: Line and Area Marks
   url: /api/marks/line-area/
+  parent: /api/marks/
 - title: Bar Marks
   url: /api/marks/bar/
+  parent: /api/marks/
 - title: Rule Marks
   url: /api/marks/rule/
+  parent: /api/marks/
 - title: Text Marks
   url: /api/marks/text/
+  parent: /api/marks/
 - title: Rect Marks
   url: /api/marks/rect/
+  parent: /api/marks/
 - title: Encodings
   url: /api/encodings/
-  nav_group: chart-api
-  nav_order: 3
+  parent: /api/
 - title: Regression
   url: /api/regression/
   nav_group: statistics
@@ -116,74 +148,97 @@
   nav_order: 4
 - title: Guides
   url: /api/guides/
-  nav_group: chart-api
-  nav_order: 5
+  parent: /api/
 - title: Titles
   url: /api/titles/
+  parent: /api/guides/
 - title: Rendering
   url: /api/rendering/
-  nav_group: chart-api
-  nav_order: 6
+  parent: /api/
 - title: Program Composition
   url: /api/composition/
-  nav_group: chart-api
-  nav_order: 7
+  parent: /api/
 - title: Position Encodings
   url: /api/position-encodings/
+  parent: /api/encodings/
 - title: Quantitative Positions
   url: /api/position/quantitative/
+  parent: /api/position-encodings/
 - title: Temporal Line Positions
   url: /api/position/temporal/
+  parent: /api/position-encodings/
 - title: Ordinal Bar Positions
   url: /api/position/ordinal-bars/
+  parent: /api/position-encodings/
 - title: Histogram Positions
   url: /api/position/histogram/
+  parent: /api/position-encodings/
 - title: Ordinal Offsets
   url: /api/position/offsets/
+  parent: /api/position-encodings/
 - title: Series Encodings
   url: /api/series-encodings/
+  parent: /api/encodings/
 - title: Color Encoding
   url: /api/series/color/
+  parent: /api/series-encodings/
 - title: Stroke-Dash Encoding
   url: /api/series/stroke-dash/
+  parent: /api/series-encodings/
 - title: Appearance Encodings
   url: /api/appearance/
+  parent: /api/encodings/
 - title: Selection and Highlighting
   url: /api/appearance/selection-and-highlighting/
+  parent: /api/appearance/
 - title: Point Appearance
   url: /api/appearance/point/
+  parent: /api/appearance/
 - title: Mark Style
   url: /api/appearance/mark-style/
+  parent: /api/appearance/
 - title: Scale Options
   url: /api/scales/
+  parent: /api/coordinates/
 - title: Position Scales
   url: /api/scales/position/
+  parent: /api/scales/
 - title: Ordinal and Dash Scales
   url: /api/scales/ordinal-and-dash/
+  parent: /api/scales/
 - title: Continuous Color Scales
   url: /api/scales/continuous-color/
+  parent: /api/scales/
 - title: Discretized Color Scales
   url: /api/scales/discretized-color/
+  parent: /api/scales/
 - title: Missing Scale Values
   url: /api/scales/missing-values/
+  parent: /api/scales/
 - title: Coordinates
   url: /api/coordinates/
-  nav_group: chart-api
-  nav_order: 4
+  parent: /api/
 - title: Axes
   url: /api/axes/
+  parent: /api/guides/
 - title: Grids
   url: /api/grids/
+  parent: /api/guides/
 - title: Legends
   url: /api/legends/
+  parent: /api/guides/
 - title: Categorical and Size Legends
   url: /api/legends/categorical/
+  parent: /api/legends/
 - title: Continuous Legends
   url: /api/legends/continuous/
+  parent: /api/legends/
 - title: Composite Legend Symbols
   url: /api/legends/composite/
+  parent: /api/legends/
 - title: Editing Legends
   url: /api/legends/editing/
+  parent: /api/legends/
 - title: ChartProgram and Immutability
   url: /concepts/chart-program/
   nav_group: concepts
@@ -198,6 +253,7 @@
   nav_order: 3
 - title: Advanced Axis Components
   url: /advanced/axis-components/
+  parent: /api/axes/
 - title: Supported Features
   url: /supported-features/
   nav_group: reference
@@ -212,5 +268,4 @@
   nav_order: 3
 - title: Primitive API
   url: /extension/primitives/
-  nav_group: reference
-  nav_order: 4
+  parent: /extension/action-authoring/
