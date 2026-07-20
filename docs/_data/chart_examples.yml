@@ -82,6 +82,21 @@
   recipe_url: /recipes/line-chart/
   home_group: essentials
   home_order: 2.25
+- id: development-trajectories
+  title: Development trajectories
+  image: /assets/images/gapminder-development-trajectories.png
+  alt: Three chronological country trajectories through fertility and life expectancy space
+  width: 1520
+  height: 1000
+  thumbnail: /assets/images/gapminder-development-trajectories-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 421
+  caption: One explicit year order controls each country's path topology.
+  summary: Connect repeated and non-monotonic positions by a separate quantitative order field.
+  actions: createLineMark · encodePathOrder · removePathOrder
+  url: /api/series-encodings/#explicit-path-topology
+  home_group: essentials
+  home_order: 2.3
 - id: annotation
   title: Annotated scatterplot
   image: /assets/images/annotated-imdb-scatterplot.png

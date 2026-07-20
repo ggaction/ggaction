@@ -6,7 +6,7 @@ import {
 } from "../../core/vocabulary.js";
 
 const ENCODING_PATHS = Object.freeze([
-  ...ENCODING_CHANNELS.flatMap(channel => [
+  ...ENCODING_CHANNELS.filter(channel => channel !== "pathOrder").flatMap(channel => [
     `encoding.${channel}.field`,
     `encoding.${channel}.datum`,
     `encoding.${channel}.fieldType`,
@@ -20,6 +20,9 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.x.bin.boundaries",
   "encoding.color.layout",
   "encoding.color.aggregate",
+  "encoding.pathOrder.field",
+  "encoding.pathOrder.fieldType",
+  "encoding.pathOrder.order",
   "encoding.theta.aggregate",
   "encoding.theta.weight",
   "encoding.text.format",

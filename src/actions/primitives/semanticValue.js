@@ -15,6 +15,7 @@ import {
   validateHistogramBinStep
 } from "../../grammar/histogram.js";
 import { validateDatasetTransforms } from "../../grammar/transforms.js";
+import { validatePathOrderDirection } from "../../grammar/pathOrder.js";
 import {
   validateSemanticFieldType,
   validateContinuousColorInterpolation,
@@ -92,7 +93,13 @@ export function validateSemanticValue(program, parsed, value) {
     if (property.endsWith(".title")) {
       nonEmptyString(value, "Encoding title");
     }
+    if (property === "encoding.pathOrder.fieldType" && value !== "quantitative") {
+      throw new Error("Path order field type must be quantitative.");
+    }
     if (property.endsWith(".fieldType")) validateSemanticFieldType(value);
+    if (property === "encoding.pathOrder.order") {
+      validatePathOrderDirection(value);
+    }
     if (property.endsWith(".aggregate")) validateAggregate(value);
     if (property.endsWith(".bin.maxBins")) normalizeHistogramBin({ maxBins: value });
     if (property.endsWith(".bin.step")) validateHistogramBinStep(value);

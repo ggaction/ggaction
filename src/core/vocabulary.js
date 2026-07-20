@@ -35,6 +35,7 @@ export const ENCODING_CHANNELS = Object.freeze([
   "size",
   "shape",
   "group",
+  "pathOrder",
   "opacity",
   "text"
 ]);
@@ -112,7 +113,9 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
 });
 
 export const SCALED_ENCODING_CHANNELS = Object.freeze(
-  ENCODING_CHANNELS.filter(channel => !["group", "text"].includes(channel))
+  ENCODING_CHANNELS.filter(channel =>
+    !["group", "pathOrder", "text"].includes(channel)
+  )
 );
 
 export const POSITION_ENCODING_CHANNELS = Object.freeze(

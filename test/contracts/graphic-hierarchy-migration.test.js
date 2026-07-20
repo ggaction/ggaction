@@ -74,6 +74,14 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
+  "gapminder-development-trajectories": [
+    "canvas", "horizontalGridLines", "verticalGridLines",
+    "trajectories",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "cars-temporal-bar-line": [
     "canvas", "horizontalGridLines", "bars", "trend",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

@@ -2,10 +2,10 @@
 
 ## 진행 상태
 
-- [ ] `encodePathOrder` validation, target inference와 semantic assignment
-- [ ] line/area stable row-preserving derivation
-- [ ] action-before/after-position convergence와 explicit rematerialization
-- [ ] grouped/repeated-position/ascending/descending regression
-- [ ] primitive/public semantic, graphic, Canvas-call과 pixel parity
+- [x] `encodePathOrder` validation, target inference와 semantic assignment
+- [x] line/area stable row-preserving derivation
+- [x] action-before/after-position convergence와 explicit rematerialization
+- [x] grouped/repeated-position/ascending/descending regression
+- [x] primitive/public semantic, graphic, Canvas-call과 pixel parity
 
 P7-A 승인 전에는 시작하지 않는다.

@@ -48,6 +48,13 @@ Open <http://localhost:8000/examples/gapminder-life-expectancy-heatmap/>. This
 chart uses `createHeatmap` for observed pre-gridded cells, then adds a text layer
 for the displayed values.
 
+## Gapminder development trajectories
+
+Open <http://localhost:8000/examples/gapminder-development-trajectories/>. This
+chart uses `encodePathOrder({ field: "year" })` to connect each country's
+fertility and life-expectancy observations chronologically instead of sorting
+the path by either position axis.
+
 ## Cars binned heatmap
 
 Open <http://localhost:8000/examples/cars-binned-heatmap/>. This chart passes

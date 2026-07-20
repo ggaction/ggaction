@@ -86,6 +86,48 @@ test("validates semantic scale values through the primitive API", () => {
   );
 });
 
+test("owns the explicit path-order semantic vocabulary", () => {
+  const program = chart()
+    .editSemantic({
+      property: "layer[path].encoding.pathOrder.field",
+      value: "year"
+    })
+    .editSemantic({
+      property: "layer[path].encoding.pathOrder.fieldType",
+      value: "quantitative"
+    })
+    .editSemantic({
+      property: "layer[path].encoding.pathOrder.order",
+      value: "descending"
+    });
+  assert.deepEqual(program.semanticSpec.layers[0].encoding.pathOrder, {
+    field: "year",
+    fieldType: "quantitative",
+    order: "descending"
+  });
+  assert.throws(
+    () => program.editSemantic({
+      property: "layer[path].encoding.pathOrder.fieldType",
+      value: "temporal"
+    }),
+    /must be quantitative/
+  );
+  assert.throws(
+    () => program.editSemantic({
+      property: "layer[path].encoding.pathOrder.order",
+      value: "forward"
+    }),
+    /Unsupported path order/
+  );
+  assert.throws(
+    () => program.editSemantic({
+      property: "layer[path].encoding.pathOrder.datum",
+      value: 1
+    }),
+    /Unknown semantic property/
+  );
+});
+
 test("validates band and point layout values through the primitive API", () => {
   const program = chart()
     .editSemantic({ property: "scale[band].type", value: "band" })

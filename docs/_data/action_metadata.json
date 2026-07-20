@@ -214,6 +214,16 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "encodePathOrder": {
+    "operation": "encode",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
+  "removePathOrder": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
   "encodeText": {
     "operation": "encode",
     "layer": "user-facing",

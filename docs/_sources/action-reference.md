@@ -667,6 +667,26 @@ encodeGroup({ field, target?, fieldType? })
 Split line or area paths by a nominal field without creating a scale or guide.
 [Encodings](../api/encodings.md)
 
+### `encodePathOrder`
+
+```javascript
+encodePathOrder({ field, target?, fieldType?, order? })
+```
+
+Order vertices within each compatible Cartesian line or ranged-area series.
+`fieldType` defaults to `"quantitative"`; `order` defaults to `"ascending"`.
+Ties preserve source-row order, and no scale or guide is created.
+[Series encodings](../api/series-encodings.md)
+
+### `removePathOrder`
+
+```javascript
+removePathOrder({ target? } = {})
+```
+
+Remove explicit path topology and restore the mark's automatic independent-
+position ordering. [Series encodings](../api/series-encodings.md)
+
 ### `encodeText`
 
 ```javascript

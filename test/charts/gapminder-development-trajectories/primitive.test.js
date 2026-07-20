@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { render } from "../../../src/index.js";
@@ -37,26 +36,16 @@ test("authors three chronological development paths from explicit primitives", (
   assert.notDeepEqual(result.automaticCommands[0], result.commands[0]);
 });
 
-test("keeps path order out of semantic state before the public action exists", () => {
+test("stores the approved semantic order through explicit primitives", () => {
   const program = createDevelopmentTrajectoryPrimitives(loadGapminder());
   const layer = program.semanticSpec.layers.find(item => item.id === "trajectories");
-  const declarations = readFileSync(
-    new URL("../../../types/program.d.ts", import.meta.url),
-    "utf8"
-  );
-  const inventory = JSON.parse(readFileSync(
-    new URL("../../../agent_docs/contract/ACTION_INDEX.json", import.meta.url),
-    "utf8"
-  ));
 
-  assert.equal(layer.encoding.pathOrder, undefined);
+  assert.deepEqual(layer.encoding.pathOrder, {
+    field: "year",
+    fieldType: "quantitative",
+    order: "ascending"
+  });
   assert.equal(program.trace.children.some(node => node.op === "encodePathOrder"), false);
-  assert.equal(typeof program.encodePathOrder, "undefined");
-  assert.equal(typeof program.removePathOrder, "undefined");
-  assert.doesNotMatch(declarations, /encodePathOrder|removePathOrder/);
-  assert.equal(inventory.actions.some(action =>
-    action.name === "encodePathOrder" || action.name === "removePathOrder"
-  ), false);
   assert.deepEqual(layer.encoding.x.field, "fertility");
   assert.deepEqual(layer.encoding.y.field, "life_expect");
   assert.deepEqual(layer.encoding.color.field, "country");

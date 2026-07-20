@@ -6,7 +6,7 @@
   "actions": [
     {
       "name": "encodePathOrder",
-      "status": "planned",
+      "status": "implemented",
       "required": ["field"],
       "optional": ["target", "fieldType", "order"],
       "replacement": "reassigns one target path-order encoding and rematerializes its complete paths",
@@ -14,7 +14,7 @@
     },
     {
       "name": "removePathOrder",
-      "status": "planned",
+      "status": "implemented",
       "required": [],
       "optional": ["target"],
       "replacement": "removes pathOrder and restores the existing automatic independent-position sort",

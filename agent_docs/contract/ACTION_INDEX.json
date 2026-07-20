@@ -794,6 +794,42 @@
       }
     },
     {
+      "name": "encodePathOrder",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces the field and direction for one compatible path",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodepathorder"
+      }
+    },
+    {
+      "name": "removePathOrder",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Removes explicit topology order and restores automatic independent-position ordering",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "removepathorder"
+      }
+    },
+    {
       "name": "encodeText",
       "layer": "user-facing",
       "domain": "encodings",

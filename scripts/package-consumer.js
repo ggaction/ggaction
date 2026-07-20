@@ -151,6 +151,25 @@ async function testNodeConsumer(directory) {
       lineFacade.trace.children.at(-1).children.map(node => node.op),
       ["createLineMark", "encodeX", "encodeY", "encodeGroup"]
     );
+    const orderedLineFacade = chart()
+      .createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: [
+        { x: 2, y: 4, order: 2 },
+        { x: 1, y: 2, order: 1 }
+      ] })
+      .createLineMark()
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .encodePathOrder({ field: "order" });
+    assert.deepEqual(
+      orderedLineFacade.semanticSpec.layers[0].encoding.pathOrder,
+      { field: "order", fieldType: "quantitative", order: "ascending" }
+    );
+    assert.equal(
+      orderedLineFacade.removePathOrder()
+        .semanticSpec.layers[0].encoding.pathOrder,
+      undefined
+    );
     const barFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [
@@ -486,6 +505,17 @@ async function testTypeScriptConsumer(directory) {
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2, group: "A" }] })
       .createLinePlot(lineOptions);
+    const orderedLineFacade: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { x: 2, y: 4, order: 2 },
+        { x: 1, y: 2, order: 1 }
+      ] })
+      .createLineMark()
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .encodePathOrder({ field: "order", order: "descending" })
+      .removePathOrder();
     const barOptions: CreateBarPlotOptions = {
       x: { field: "category", fieldType: "ordinal" },
       y: { field: "value", aggregate: "mean" },
@@ -697,6 +727,7 @@ async function testTypeScriptConsumer(directory) {
     void draw;
     void scatterFacade;
     void lineFacade;
+    void orderedLineFacade;
     void barFacade;
     void histogramFacade;
     void heatmapFacade;
@@ -759,6 +790,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "png",
       "numeric-font-weight",
       "point-jitter",
+      "path-order",
       "window-data",
       "bin2d-data",
       "binned-heatmap",

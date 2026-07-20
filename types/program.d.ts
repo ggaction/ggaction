@@ -1807,6 +1807,17 @@ export interface TitleTextStyleOptions {
   fontWeight?: string | number;
 }
 
+export interface PathOrderEncodingOptions {
+  target?: string;
+  field: string;
+  fieldType?: "quantitative";
+  order?: "ascending" | "descending";
+}
+
+export interface RemovePathOrderOptions {
+  target?: string;
+}
+
 export interface TitleOptions {
   text: string;
   subtitle?: string;
@@ -1977,6 +1988,8 @@ export class ChartProgram {
     scale?: ScaleOptions;
   }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+  removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;

@@ -37,6 +37,8 @@ import { createGapminderBandPointChart } from
   "./gapminder-temporal-discrete-scales/program.js";
 import { createGapminderTransformedScaleScatterplot } from
   "./gapminder-transformed-scales/program.js";
+import { createGapminderDevelopmentTrajectories } from
+  "./gapminder-development-trajectories/program.js";
 import { createCarsPolarScatterplot } from "./polar-points/program.js";
 import { createCarsPolarGuides } from "./polar-guides/program.js";
 import { createGapminderPolarTrends } from
@@ -178,6 +180,22 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: {
       path: "gapminder-life-expectancy-heatmap/",
       canvas: "#chart"
+    }
+  }),
+  example({
+    id: "gapminder-development-trajectories",
+    data: "gapminder",
+    width: 760,
+    height: 500,
+    createProgram: createGapminderDevelopmentTrajectories,
+    docsGroup: "charts",
+    browser: {
+      path: "gapminder-development-trajectories/",
+      canvas: "#chart",
+      state: {
+        global: "__gapminderDevelopmentTrajectories",
+        expected: { width: 760, height: 500, paths: 3 }
+      }
     }
   }),
   example({

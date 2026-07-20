@@ -481,6 +481,57 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - No proposal: group은 scale-free path partition이라는 현재 역할을 유지한다.
 - Evidence: line-series, ranged-area and density-area tests.
 
+## `encodePathOrder`
+
+- Signature: `encodePathOrder({ field, target?, fieldType?, order? })`
+- `field`: 각 series 안에서 vertex 연결 순서를 정하는 필수 quantitative field다.
+- `target`: raw 또는 row-preserving data를 사용하는 Cartesian line/ordinary ranged area ID다. 생략하면
+  current compatible path, 그다음 unique compatible path만 추론한다.
+- `fieldType`: `"quantitative"`만 허용하며 기본값도 quantitative다.
+- `order`: `"ascending" | "descending"`, 기본값은 ascending이다. 같은 값은 source row order를 유지한다.
+- Effect: `semanticSpec.layers[target].encoding.pathOrder`에 field/type/direction을 저장한다. Scale이나 guide는
+  만들지 않고, group/color/strokeDash가 나눈 각 series를 독립적으로 정렬해 concrete commands를 다시 만든다.
+  Explicit order에서는 repeated position row를 합치지 않는다.
+- Reassignment: 같은 target에 다시 호출하면 field와 direction을 교체하고 complete path를 rematerialize한다.
+  Position보다 먼저 호출한 incomplete path intent도 보존되며 최종 semantic state가 같으면 같은 graphics로 수렴한다.
+- Compatibility: direct Cartesian quantitative/temporal line과 ordinary ranged area를 지원한다. Aggregate line,
+  Polar line, density/error/regression 또는 다른 statistical/generated path는 명확히 거부한다. Missing/non-finite
+  order 값은 부분 state 없이 전체 action을 거부한다.
+
+### Formal values — `encodePathOrder`
+
+- Implemented: `encodePathOrder({ field: FieldName; target?: UserId; fieldType?: "quantitative"; order?: "ascending" | "descending" })`.
+- Planned (NOT IMPLEMENTED): —.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `encodePathOrder`
+
+- ✅ Covered: ascending/descending, stable ties, repeated-position conservation, group-local ordering, line/ranged-area,
+  action-before/after-position convergence, reassignment, target inference/ambiguity, invalid field/type/direction,
+  aggregate/generated/Polar rejection, Canvas/scale/data/filter and facet rematerialization, primitive/public exact parity.
+- Evidence: `test/unit/actions/encodings/path-order.test.js`, `test/unit/grammar/path-order.test.js` and
+  `test/charts/gapminder-development-trajectories/`.
+
+## `removePathOrder`
+
+- Signature: `removePathOrder({ target? } = {})`
+- `target`: active path-order owner. 생략하면 current/unique active owner만 추론한다.
+- Effect: complete `encoding.pathOrder` branch를 structural removal하고 해당 path를 다시 materialize한다.
+- Result: 기존 automatic independent-position ordering으로 복귀한다. Earlier programs와 caller data는 바뀌지 않는다.
+- Error: active owner가 없거나 target이 ambiguous/unknown이면 추측하지 않고 명확히 거부한다.
+
+### Formal values — `removePathOrder`
+
+- Implemented: `removePathOrder({ target?: UserId } = {})`.
+- Planned (NOT IMPLEMENTED): —.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `removePathOrder`
+
+- ✅ Covered: inferred/explicit removal, automatic-order restoration, repeated-position contraction, immutable branch
+  preservation, missing/ambiguous owner와 wrapped trace.
+- Evidence: `test/unit/actions/encodings/path-order.test.js`.
+
 ## `encodeHistogram`
 
 - Signature: `encodeHistogram({ field, target?, coordinate?, maxBins?, binStep?, binBoundaries?, stack?, xScale?, yScale? })`

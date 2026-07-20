@@ -171,7 +171,7 @@ test("keeps lifecycle, coverage, and edit gaps machine-readable", () => {
       assert.match(action.audit, /Planned|Proposed/, action.name);
     }
     if (action.lifecycle === "Assignment") {
-      assert.match(action.name, /^(?:encode|jitterPoints$|removeJitter$)/, action.name);
+      assert.match(action.name, /^(?:encode|jitterPoints$|remove[A-Z])/, action.name);
       assert.match(action.audit, /Implemented|Planned|Proposed/, action.name);
     }
     if (action.lifecycle === "Structural create-only") {

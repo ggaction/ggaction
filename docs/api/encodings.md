@@ -20,7 +20,7 @@ defaults.
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
-| Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
+| Series | `encodeColor`, `encodeStrokeDash`, `encodePathOrder` | Nominal grouping, appearance, and explicit path topology |
 | Constant appearance | `encodeRadius`, `encodePointRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
 | Text | `encodeText` | Field-driven or constant annotation content |
 
@@ -229,6 +229,12 @@ program
   .encodeColor({ field: "Origin" })
   .encodeStrokeDash({ field: "Origin" });
 ```
+
+`encodePathOrder({ field: "year" })` is independent of position and appearance:
+it connects each line or ranged-area series by an explicit quantitative field.
+The action creates no scale or guide, preserves source order for ties, and keeps
+repeated positions as separate vertices. `removePathOrder()` restores the
+existing automatic independent-position ordering.
 
 ## Point appearance
 

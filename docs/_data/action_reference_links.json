@@ -43,6 +43,8 @@
   "encodeYRange": "/reference/actions/encodings/#encodeyrange",
   "encodeXRange": "/reference/actions/encodings/#encodexrange",
   "encodeGroup": "/reference/actions/encodings/#encodegroup",
+  "encodePathOrder": "/reference/actions/encodings/#encodepathorder",
+  "removePathOrder": "/reference/actions/encodings/#removepathorder",
   "encodeText": "/reference/actions/encodings/#encodetext",
   "encodeXOffset": "/reference/actions/encodings/#encodexoffset",
   "encodeYOffset": "/reference/actions/encodings/#encodeyoffset",

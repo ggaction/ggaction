@@ -4,6 +4,7 @@ import { registerColorEncodingAction } from "./color/index.js";
 import { registerDensityEncodingAction } from "./density.js";
 import { registerHistogramEncodingAction } from "./histogram.js";
 import { registerOffsetEncodingAction } from "./offset.js";
+import { registerPathOrderEncodingActions } from "./pathOrder.js";
 import { registerPositionEncodingActions } from "./position/index.js";
 import { registerRangedEncodingActions } from "./ranged.js";
 import { registerStrokeDashEncodingActions } from "./strokeDash.js";
@@ -14,6 +15,7 @@ export function registerEncodingActions(ProgramClass) {
   registerPositionEncodingActions(ProgramClass);
   registerRangedEncodingActions(ProgramClass);
   registerOffsetEncodingAction(ProgramClass);
+  registerPathOrderEncodingActions(ProgramClass);
   registerBarWidthEncodingAction(ProgramClass);
   registerHistogramEncodingAction(ProgramClass);
   registerDensityEncodingAction(ProgramClass);

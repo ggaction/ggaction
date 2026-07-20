@@ -142,6 +142,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`encodeGroup`](./actions/encodings.md#encodegroup) | user-facing | encodings |
 | [`encodeHistogram`](./actions/encodings.md#encodehistogram) | user-facing | encodings |
 | [`encodeOpacity`](./actions/encodings.md#encodeopacity) | user-facing | encodings |
+| [`encodePathOrder`](./actions/encodings.md#encodepathorder) | user-facing | encodings |
 | [`encodePointRadius`](./actions/encodings.md#encodepointradius) | user-facing | encodings |
 | [`encodeR`](./actions/encodings.md#encoder) | user-facing | encodings |
 | [`encodeRadius`](./actions/encodings.md#encoderadius) | user-facing | encodings |
@@ -169,6 +170,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
 | [`removeLegend`](./actions/guides.md#removelegend) | user-facing | legend_and_title |
 | [`removeMark`](./actions/marks.md#removemark) | user-facing | marks |
+| [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |
 | [`removeThetaAxis`](./actions/guides.md#removethetaaxis) | user-facing | axes |
 | [`removeTitle`](./actions/guides.md#removetitle) | user-facing | legend_and_title |

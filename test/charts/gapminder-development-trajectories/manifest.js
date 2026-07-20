@@ -1,5 +1,7 @@
 import { loadGapminder } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
+import { createGapminderDevelopmentTrajectories } from
+  "../../../examples/gapminder-development-trajectories/program.js";
 import { TRAJECTORY_LAYOUT } from "./fixture.js";
 import { createDevelopmentTrajectoryPrimitives } from "./primitive.program.js";
 
@@ -56,8 +58,9 @@ export const visualVariants = Object.freeze([
     variant: "year-ordered",
     title: "Gapminder Development Trajectories",
     callChain: trajectoryTargetCallChain,
-    artifact: { scope: "review" },
+    artifact: { capability: "path-order" },
     primitive: () => createDevelopmentTrajectoryPrimitives(gapminder),
+    userFacing: () => createGapminderDevelopmentTrajectories(gapminder),
     width: TRAJECTORY_LAYOUT.width,
     height: TRAJECTORY_LAYOUT.height,
     colors: [...TRAJECTORY_LAYOUT.colors, "#334155"],

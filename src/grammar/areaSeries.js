@@ -8,6 +8,7 @@ import {
   layoutSeriesPartition,
   validateColorLayout
 } from "./seriesLayout.js";
+import { stableOrderPathValues } from "./pathOrder.js";
 
 export function deriveAreaSeries(rows, layer) {
   if (layer?.mark?.type !== "area") {
@@ -46,6 +47,10 @@ export function deriveAreaSeries(rows, layer) {
   const groupValues = group === undefined
     ? rows.map(() => undefined)
     : readNominalField(rows, group.field);
+  const pathOrder = layer.encoding?.pathOrder;
+  const orderValues = pathOrder === undefined
+    ? undefined
+    : readQuantitativeField(rows, pathOrder.field);
   const groups = new Map();
 
   for (let index = 0; index < rows.length; index += 1) {
@@ -58,12 +63,14 @@ export function deriveAreaSeries(rows, layer) {
       ? {
           x: independentValues[index],
           y: lower[index],
-          y2: upper[index]
+          y2: upper[index],
+          ...(orderValues === undefined ? {} : { pathOrder: orderValues[index] })
         }
       : {
           x: lower[index],
           x2: upper[index],
-          y: independentValues[index]
+          y: independentValues[index],
+          ...(orderValues === undefined ? {} : { pathOrder: orderValues[index] })
         });
     groups.set(key, series);
   }
@@ -72,7 +79,13 @@ export function deriveAreaSeries(rows, layer) {
   }
   const series = [...groups.values()].map(item => {
     const key = vertical ? "x" : "y";
-    const values = item.values.sort((left, right) => left[key] - right[key]);
+    const values = pathOrder === undefined
+      ? item.values.sort((left, right) => left[key] - right[key])
+      : stableOrderPathValues(
+          item.values.map(({ pathOrder: _pathOrder, ...value }) => value),
+          item.values.map(value => value.pathOrder),
+          pathOrder.order
+        );
     if (values.length < 2) {
       throw new Error(
         `Area series on mark "${layer.id}" requires at least two points.`
@@ -95,6 +108,11 @@ export function deriveAreaSeries(rows, layer) {
 export function deriveDensityAreaSeries(rows, layer, transform) {
   if (layer?.mark?.type !== "area") {
     throw new Error("Density area derivation requires a semantic area mark.");
+  }
+  if (layer.encoding?.pathOrder !== undefined) {
+    throw new Error(
+      `Density area mark "${layer.id}" does not support path order.`
+    );
   }
   if (transform?.type !== "density" || !Array.isArray(transform.as)) {
     throw new Error(`Area mark "${layer.id}" requires density provenance.`);

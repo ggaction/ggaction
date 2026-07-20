@@ -73,11 +73,24 @@ export function createDevelopmentTrajectoryPrimitiveResult(gapminder) {
     item => item.properties.commands
   );
   const commands = trajectoryCommands(series);
-  const program = base.editGraphics({
-    target: "trajectories",
-    property: "commands",
-    value: commands
-  });
+  const program = base
+    .editSemantic({
+      property: "layer[trajectories].encoding.pathOrder.field",
+      value: "year"
+    })
+    .editSemantic({
+      property: "layer[trajectories].encoding.pathOrder.fieldType",
+      value: "quantitative"
+    })
+    .editSemantic({
+      property: "layer[trajectories].encoding.pathOrder.order",
+      value: "ascending"
+    })
+    .editGraphics({
+      target: "trajectories",
+      property: "commands",
+      value: commands
+    });
 
   return Object.freeze({ automaticCommands, commands, program, rows, series });
 }

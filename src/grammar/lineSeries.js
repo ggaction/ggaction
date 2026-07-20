@@ -10,6 +10,7 @@ import {
   validateAggregateFieldType,
   validateAggregateFieldValues,
 } from "./aggregate.js";
+import { stableOrderPathValues } from "./pathOrder.js";
 
 const SERIES_CHANNELS = Object.freeze(["group", "color", "strokeDash"]);
 
@@ -100,6 +101,51 @@ function deriveCartesianLineSeries(rows, layer) {
       ? readTemporalField(rows, y.field)
       : readQuantitativeField(rows, y.field);
   const seriesFields = readSeriesFields(rows, layer);
+
+  const pathOrder = layer.encoding?.pathOrder;
+  if (pathOrder !== undefined) {
+    if (isAggregate) {
+      throw new Error(
+        `Line mark "${layer.id}" cannot combine aggregate y and path order.`
+      );
+    }
+    const orderValues = readQuantitativeField(rows, pathOrder.field);
+    const groups = new Map();
+    for (let index = 0; index < rows.length; index += 1) {
+      const dimensions = seriesFields.fields.map(
+        field => seriesFields.values.get(field)[index]
+      );
+      const key = groupKey(dimensions);
+      const series = groups.get(key) ?? {
+        key: Object.fromEntries(
+          seriesFields.fields.map((field, item) => [field, dimensions[item]])
+        ),
+        values: [],
+        orderValues: []
+      };
+      series.values.push({ x: xValues[index], y: yValues[index] });
+      series.orderValues.push(orderValues[index]);
+      groups.set(key, series);
+    }
+    const series = [...groups.values()].flatMap(item => {
+      const values = stableOrderPathValues(
+        item.values,
+        item.orderValues,
+        pathOrder.order
+      );
+      return values.length < 2 ? [] : [{ key: item.key, values }];
+    });
+    if (series.length === 0) {
+      throw new Error(
+        `Line series on mark "${layer.id}" requires at least two ordered points.`
+      );
+    }
+    return cloneAndFreeze({
+      xValues: series.flatMap(item => item.values.map(value => value.x)),
+      yValues: series.flatMap(item => item.values.map(value => value.y)),
+      series
+    });
+  }
 
   if (directTemporal) {
     const groups = new Map();
@@ -249,6 +295,11 @@ function thetaOrder(values, fieldType, domain) {
 }
 
 export function derivePolarLineSeries(rows, layer, { thetaDomain } = {}) {
+  if (layer.encoding?.pathOrder !== undefined) {
+    throw new Error(
+      `Polar line mark "${layer.id}" does not support path order.`
+    );
+  }
   const { theta, radius } = requirePolarLineEncoding(layer);
   const thetaValues = readThetaValues(rows, theta);
   const radiusValues = readQuantitativeField(rows, radius.field);

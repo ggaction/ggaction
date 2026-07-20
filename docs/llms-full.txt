@@ -3915,7 +3915,7 @@ defaults.
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
-| Series | `encodeColor`, `encodeStrokeDash` | Nominal grouping and appearance |
+| Series | `encodeColor`, `encodeStrokeDash`, `encodePathOrder` | Nominal grouping, appearance, and explicit path topology |
 | Constant appearance | `encodeRadius`, `encodePointRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
 | Text | `encodeText` | Field-driven or constant annotation content |
 
@@ -4122,6 +4122,12 @@ program
   .encodeColor({ field: "Origin" })
   .encodeStrokeDash({ field: "Origin" });
 ```
+
+`encodePathOrder({ field: "year" })` is independent of position and appearance:
+it connects each line or ranged-area series by an explicit quantitative field.
+The action creates no scale or guide, preserves source order for ties, and keeps
+repeated positions as separate vertices. `removePathOrder()` restores the
+existing automatic independent-position ordering.
 
 ## Point appearance
 
@@ -6063,10 +6069,32 @@ shared offset scale must use the same padding policy and parent bandwidth.
 | `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal default or explicit ordinal field type, color scale | Semantic grouping and concrete color |
 | `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; independent quantitative scale | Rule-item or line-series widths |
+| `encodePathOrder` | `encodePathOrder({ field: "year" })` | Current or unique compatible Cartesian path; ascending default | Stable per-series vertex order without a scale |
 
 Series appearance is authored through color, stroke-dash, and stroke-width families. Each
 focused page owns the complete options, replacement behavior, and errors for
 that encoding.
+
+## Explicit path topology
+
+```javascript
+const ordered = program.encodePathOrder({
+  field: "year",
+  order: "ascending"
+});
+
+const automatic = ordered.removePathOrder();
+```
+
+`encodePathOrder` supports direct Cartesian quantitative/temporal lines and
+ordinary ranged areas backed by raw or row-preserving data. It sorts each
+color/group/stroke-dash series independently, keeps repeated positions, and
+uses source-row order to break ties. The field is quantitative, `order` is
+`"ascending"` or `"descending"`, and neither action creates a scale or guide.
+
+Aggregate lines, Polar lines, and generated density, error, or regression paths
+own their topology elsewhere and are rejected. Missing or non-finite order
+values reject the complete action instead of producing a partial path.
 
 ## Focused series families
 
@@ -8572,6 +8600,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`encodeGroup`](./actions/encodings.md#encodegroup) | user-facing | encodings |
 | [`encodeHistogram`](./actions/encodings.md#encodehistogram) | user-facing | encodings |
 | [`encodeOpacity`](./actions/encodings.md#encodeopacity) | user-facing | encodings |
+| [`encodePathOrder`](./actions/encodings.md#encodepathorder) | user-facing | encodings |
 | [`encodePointRadius`](./actions/encodings.md#encodepointradius) | user-facing | encodings |
 | [`encodeR`](./actions/encodings.md#encoder) | user-facing | encodings |
 | [`encodeRadius`](./actions/encodings.md#encoderadius) | user-facing | encodings |
@@ -8599,6 +8628,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
 | [`removeLegend`](./actions/guides.md#removelegend) | user-facing | legend_and_title |
 | [`removeMark`](./actions/marks.md#removemark) | user-facing | marks |
+| [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |
 | [`removeThetaAxis`](./actions/guides.md#removethetaaxis) | user-facing | axes |
 | [`removeTitle`](./actions/guides.md#removetitle) | user-facing | legend_and_title |
@@ -9094,6 +9124,26 @@ encodeGroup({ field, target?, fieldType? })
 
 Split line or area paths by a nominal field without creating a scale or guide.
 [Encodings](../../api/encodings.md)
+
+## `encodePathOrder`
+
+```javascript
+encodePathOrder({ field, target?, fieldType?, order? })
+```
+
+Order vertices within each compatible Cartesian line or ranged-area series.
+`fieldType` defaults to `"quantitative"`; `order` defaults to `"ascending"`.
+Ties preserve source-row order, and no scale or guide is created.
+[Series encodings](../../api/series-encodings.md)
+
+## `removePathOrder`
+
+```javascript
+removePathOrder({ target? } = {})
+```
+
+Remove explicit path topology and restore the mark's automatic independent-
+position ordering. [Series encodings](../../api/series-encodings.md)
 
 ## `encodeText`
 
@@ -10047,6 +10097,8 @@ interface ChartProgramActions {
   encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+  removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
