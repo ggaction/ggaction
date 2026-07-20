@@ -9,15 +9,15 @@ description: Find every public ggaction action by task, API layer, or exact acti
 Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. The API-layer labels match the action catalog layers `user-facing`, `advanced`, and `primitive`, respectively.
 
 <div class="docs-entry-grid docs-entry-grid--two">
-  <a href="./actions/charts-data.md"><strong>Charts, Data, and Composition Actions</strong><span>Create complete charts, manage data, select marks, and compose complete programs.</span></a>
-  <a href="./actions/marks.md"><strong>Mark Actions</strong><span>Create, edit, jitter, and remove semantic chart marks.</span></a>
-  <a href="./actions/encodings.md"><strong>Encoding Actions</strong><span>Map fields and constants to position, grouping, color, shape, size, and appearance.</span></a>
-  <a href="./actions/statistics.md"><strong>Statistical Layer Actions</strong><span>Create and edit regression, density, interval, error, and box-plot layers.</span></a>
-  <a href="./actions/guides.md"><strong>Guide, Axis, Grid, and Title Actions</strong><span>Create, edit, and remove axes, grids, legends, and chart titles.</span></a>
-  <a href="./actions/advanced.md"><strong>Advanced chart actions</strong><span>Explicit resources and focused axis or grid control.</span></a>
-  <a href="./actions/extension.md"><strong>Extension actions</strong><span>Wrapped actions and public authoring primitives.</span></a>
-  <a href="./runtime.md"><strong>Program and rendering functions</strong><span>Package functions, renderers, and internal trace boundaries.</span></a>
-  <a href="./types.md"><strong>Exact TypeScript contract</strong><span>The complete generated `ChartProgram` action interface.</span></a>
+  <a href="{{ '/reference/actions/charts-data/' | relative_url }}"><strong>Charts, Data, and Composition Actions</strong><span>Create complete charts, manage data, select marks, and compose complete programs.</span></a>
+  <a href="{{ '/reference/actions/marks/' | relative_url }}"><strong>Mark Actions</strong><span>Create, edit, jitter, and remove semantic chart marks.</span></a>
+  <a href="{{ '/reference/actions/encodings/' | relative_url }}"><strong>Encoding Actions</strong><span>Map fields and constants to position, grouping, color, shape, size, and appearance.</span></a>
+  <a href="{{ '/reference/actions/statistics/' | relative_url }}"><strong>Statistical Layer Actions</strong><span>Create and edit regression, density, interval, error, and box-plot layers.</span></a>
+  <a href="{{ '/reference/actions/guides/' | relative_url }}"><strong>Guide, Axis, Grid, and Title Actions</strong><span>Create, edit, and remove axes, grids, legends, and chart titles.</span></a>
+  <a href="{{ '/reference/actions/advanced/' | relative_url }}"><strong>Advanced chart actions</strong><span>Explicit resources and focused axis or grid control.</span></a>
+  <a href="{{ '/reference/actions/extension/' | relative_url }}"><strong>Extension actions</strong><span>Wrapped actions and public authoring primitives.</span></a>
+  <a href="{{ '/reference/runtime/' | relative_url }}"><strong>Program and rendering functions</strong><span>Package functions, renderers, and internal trace boundaries.</span></a>
+  <a href="{{ '/reference/types/' | relative_url }}"><strong>Exact TypeScript contract</strong><span>The complete generated `ChartProgram` action interface.</span></a>
 </div>
 
 ## Exact action lookup

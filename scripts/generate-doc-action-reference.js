@@ -187,13 +187,13 @@ export async function buildDocActionReference() {
   }
 
   const cards = [
-    ...families.map(family => [family.title, `./actions/${family.id}.md`, family.description]),
-    ["Advanced chart actions", "./actions/advanced.md", "Explicit resources and focused axis or grid control."],
-    ["Extension actions", "./actions/extension.md", "Wrapped actions and public authoring primitives."],
-    ["Program and rendering functions", "./runtime.md", "Package functions, renderers, and internal trace boundaries."],
-    ["Exact TypeScript contract", "./types.md", "The complete generated `ChartProgram` action interface."]
+    ...families.map(family => [family.title, `/reference/actions/${family.id}/`, family.description]),
+    ["Advanced chart actions", "/reference/actions/advanced/", "Explicit resources and focused axis or grid control."],
+    ["Extension actions", "/reference/actions/extension/", "Wrapped actions and public authoring primitives."],
+    ["Program and rendering functions", "/reference/runtime/", "Package functions, renderers, and internal trace boundaries."],
+    ["Exact TypeScript contract", "/reference/types/", "The complete generated `ChartProgram` action interface."]
   ].map(([title, url, description]) =>
-    `  <a href="${url}"><strong>${title}</strong><span>${description}</span></a>`
+    `  <a href="{{ '${url}' | relative_url }}"><strong>${title}</strong><span>${description}</span></a>`
   ).join("\n");
 
   const actionRows = [...locations].sort(([left], [right]) => left.localeCompare(right))
