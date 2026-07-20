@@ -6,6 +6,13 @@
   const actionMetadata = new Map(Object.entries(
     metadataNode ? JSON.parse(metadataNode.textContent) : {}
   ));
+  const redirectsNode = document.querySelector("#docs-action-redirects");
+  if (redirectsNode && window.location.hash.length > 1) {
+    const redirects = JSON.parse(redirectsNode.textContent);
+    const target = redirects[window.location.hash.slice(1)];
+    const docsRoot = document.querySelector(".docs-brand")?.href;
+    if (target && docsRoot) window.location.replace(new URL(target.slice(1), docsRoot));
+  }
 
   function enhanceActionHeadings() {
     const actionHeadings = [];

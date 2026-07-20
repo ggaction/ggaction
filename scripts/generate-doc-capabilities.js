@@ -8,8 +8,8 @@ const registryFile = path.join(root, "docs/_data/action_capabilities.json");
 
 const targets = Object.freeze({
   summary: ["docs/api/encodings.md"],
-  position: ["docs/api/position-encodings.md", "docs/reference/actions.md"],
-  color: ["docs/api/series/color.md", "docs/reference/actions.md"],
+  position: ["docs/api/position-encodings.md", "docs/_sources/action-reference.md"],
+  color: ["docs/api/series/color.md", "docs/_sources/action-reference.md"],
   highlight: ["docs/api/appearance.md"],
   legends: ["docs/api/legends.md"],
   axes: ["docs/advanced/axis-components.md"]

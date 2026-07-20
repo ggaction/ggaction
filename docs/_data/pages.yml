@@ -262,6 +262,33 @@
   url: /reference/actions/
   nav_group: reference
   nav_order: 2
+- title: Charts, Data, and Composition Actions
+  url: /reference/actions/charts-data/
+  parent: /reference/actions/
+- title: Mark Actions
+  url: /reference/actions/marks/
+  parent: /reference/actions/
+- title: Encoding Actions
+  url: /reference/actions/encodings/
+  parent: /reference/actions/
+- title: Statistical Layer Actions
+  url: /reference/actions/statistics/
+  parent: /reference/actions/
+- title: Guide, Axis, Grid, and Title Actions
+  url: /reference/actions/guides/
+  parent: /reference/actions/
+- title: Advanced Chart Actions
+  url: /reference/actions/advanced/
+  parent: /reference/actions/
+- title: Extension Actions
+  url: /reference/actions/extension/
+  parent: /reference/actions/
+- title: Program and Rendering Functions
+  url: /reference/runtime/
+  parent: /reference/actions/
+- title: Exact TypeScript Contract
+  url: /reference/types/
+  parent: /reference/actions/
 - title: Action Authoring
   url: /extension/action-authoring/
   nav_group: reference

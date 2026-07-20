@@ -6,7 +6,7 @@ const declarationFile = fileURLToPath(
   new URL("../types/program.d.ts", import.meta.url)
 );
 const referenceFile = fileURLToPath(
-  new URL("../docs/reference/actions.md", import.meta.url)
+  new URL("../docs/reference/types.md", import.meta.url)
 );
 const begin = "<!-- BEGIN GENERATED TYPESCRIPT SIGNATURES -->";
 const end = "<!-- END GENERATED TYPESCRIPT SIGNATURES -->";

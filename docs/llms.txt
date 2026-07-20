@@ -16,8 +16,8 @@ HTML routes are canonical; the generated full-text bundle is available at
 ## Public API layers
 
 - Basic scatter, line, bar, histogram, and heatmap charts: ./api/basic-charts/
-- Chart authoring: ./reference/actions/#chart-authoring-api
-- Advanced chart actions: ./reference/actions/#advanced-chart-api
+- Chart authoring: ./reference/actions/charts-data/
+- Advanced chart actions: ./reference/actions/advanced/
 - Extension action authoring: ./extension/action-authoring/
 - Primitive extension API: ./extension/primitives/
 - Browser and PNG rendering: ./api/rendering/

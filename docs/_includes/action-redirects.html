@@ -1,0 +1,5 @@
+{% if page.url == "/reference/actions/" %}
+  <script id="docs-action-redirects" type="application/json">
+    {{ site.data.action_reference_links | jsonify }}
+  </script>
+{% endif %}

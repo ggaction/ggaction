@@ -22,6 +22,9 @@ import {
   buildDocSearchIndex,
   generateDocSearchIndex
 } from "../../scripts/generate-doc-search-index.js";
+import {
+  generateDocActionReference
+} from "../../scripts/generate-doc-action-reference.js";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const docsRoot = path.join(root, "docs");
@@ -40,7 +43,9 @@ function read(relative) {
 }
 
 function isDocumentationMarkdown(file) {
-  return file.endsWith(".md") && !["AGENTS.md", "README.md"].includes(path.basename(file));
+  return file.endsWith(".md") &&
+    !file.includes(`${path.sep}_sources${path.sep}`) &&
+    !["AGENTS.md", "README.md"].includes(path.basename(file));
 }
 
 function prettyUrl(file) {
@@ -520,7 +525,7 @@ test("keeps the compact search index generated and action-aware", async () => {
   assert.equal(index.length > 100, true);
   assert.equal(JSON.stringify(index).length < 400_000, true);
   assert.equal(index.every(entry => !Object.hasOwn(entry, "html")), true);
-  assert.equal(index.some(entry => entry.url === "/reference/actions/#editlegend"), true);
+  assert.equal(index.some(entry => entry.url === "/reference/actions/guides/#editlegend"), true);
   assert.equal(index.some(entry => entry.keywords.includes("removeLegend")), true);
 });
 
@@ -551,16 +556,22 @@ test("keeps point legend support consistent across public guidance", () => {
 });
 
 test("classifies every declared ChartProgram action in the reference", async () => {
-  const reference = read("docs/reference/actions.md");
+  await generateDocActionReference({ check: true });
+  const landing = read("docs/reference/actions.md");
+  const references = [
+    "charts-data", "marks", "encodings", "statistics", "guides", "advanced", "extension"
+  ].map(name => read(`docs/reference/actions/${name}.md`));
+  const reference = references.join("\n");
+  const types = read("docs/reference/types.md");
   const methods = declaredProgramMethods();
   const generated = await buildSignatureSection();
-  const generatedStart = reference.indexOf("<!-- BEGIN GENERATED TYPESCRIPT SIGNATURES -->");
-  const generatedEnd = reference.indexOf("<!-- END GENERATED TYPESCRIPT SIGNATURES -->");
+  const generatedStart = types.indexOf("<!-- BEGIN GENERATED TYPESCRIPT SIGNATURES -->");
+  const generatedEnd = types.indexOf("<!-- END GENERATED TYPESCRIPT SIGNATURES -->");
 
   assert.notEqual(generatedStart, -1);
   assert.notEqual(generatedEnd, -1);
   assert.equal(
-    reference.slice(
+    types.slice(
       generatedStart,
       generatedEnd + "<!-- END GENERATED TYPESCRIPT SIGNATURES -->".length
     ),
@@ -570,27 +581,17 @@ test("classifies every declared ChartProgram action in the reference", async () 
 
   assert.equal(new Set(methods).size, methods.length);
   for (const method of methods) {
-    assert.match(reference, new RegExp(`\\b${method}\\b`), method);
-  }
-
-  assert.match(reference, /^## Chart Authoring API$/m);
-  assert.match(reference, /^## Advanced Chart API$/m);
-  assert.match(reference, /^## Extension API$/m);
-  assert.match(reference, /^## Internal trace operations$/m);
-  assert.match(reference, /absent from the public TypeScript\s+declaration/);
-
-  const sections = [
-    referenceSection(reference, "Chart Authoring API", "Advanced Chart API"),
-    referenceSection(reference, "Advanced Chart API", "Extension API"),
-    referenceSection(reference, "Extension API", "Internal trace operations")
-  ].map(documentedCalls);
-  for (const method of methods) {
     assert.equal(
-      sections.filter(section => section.has(method)).length,
+      references.filter(section => documentedCalls(section).has(method)).length,
       1,
-      `${method} must have one canonical reference section`
+      `${method} must have one canonical family reference`
     );
+    assert.match(landing, new RegExp(`\\b${method}\\b`), method);
   }
+
+  assert.match(landing, /^## Exact action lookup$/m);
+  assert.match(read("docs/reference/runtime.md"), /^## Internal trace operations$/m);
+  assert.match(read("docs/reference/runtime.md"), /absent from the public TypeScript\s+declaration/);
 });
 
 test("keeps concise and full LLM documentation synchronized", async () => {
@@ -602,7 +603,7 @@ test("keeps concise and full LLM documentation synchronized", async () => {
 
   assert.equal(lines.length < 100, true);
   assert.match(index, /\.\/llms-full\.txt/);
-  assert.match(index, /\.\/reference\/actions\/#chart-authoring-api/);
+  assert.match(index, /\.\/reference\/actions\/charts-data\//);
   assert.doesNotMatch(index, /\.md(?:#|\b)/);
   assert.equal(targets.length, 43);
   assert.match(index, /vertical or\s+horizontal grouped statistical\/explicit error bands/);
