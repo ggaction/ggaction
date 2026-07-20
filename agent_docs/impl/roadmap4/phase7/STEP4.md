@@ -7,6 +7,7 @@
 - [x] Canvas/scale/data/filter/selection/highlight rematerialization
 - [x] facet child replay와 ambiguity rejection
 - [x] ranged area, curve compatibility와 generated/aggregate/Polar errors
-- [ ] P7-B review package, commit/push와 사용자 승인
+- [x] P7-B review package와 exact checkpoint commit/push
+- [ ] P7-B 사용자 승인
 
 P7-A 승인 전에는 시작하지 않는다.

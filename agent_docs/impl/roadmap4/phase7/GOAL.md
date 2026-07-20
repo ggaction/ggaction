@@ -84,7 +84,7 @@ layer.encoding.pathOrder = {
 | Gate | 상태 | 승인 대상 | 승인 전 차단되는 작업 |
 | --- | --- | --- | --- |
 | P7-A | approved | exact API/storage/compatibility, stable oracle와 Gapminder primitive PNG | public action 구현 |
-| P7-B | pending | public call chain, primitive/public exact parity와 lifecycle/consumer evidence | Phase closeout |
+| P7-B | ready-for-review | public call chain, primitive/public exact parity와 lifecycle/consumer evidence | Phase closeout |
 | P7-Exit | planned | Current inventory, declarations, docs/package와 누적 tests | Phase 8 |
 
 모든 Gate는 hard pause다.
