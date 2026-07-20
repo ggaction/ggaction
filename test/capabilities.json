@@ -18,6 +18,13 @@
       "unit/layout/guides.test.js",
       "charts/polar-guides/"
     ],
+    "horizon": [
+      "unit/grammar/horizon.test.js",
+      "unit/actions/data/horizon-data.test.js",
+      "unit/actions/encodings/encode-horizon.test.js",
+      "unit/actions/encodings/edit-horizon.test.js",
+      "charts/gapminder-horizon/"
+    ],
     "package": [
       "contracts/package-",
       "browser/package-consumer.browser.js"

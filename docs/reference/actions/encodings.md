@@ -187,6 +187,34 @@ and rematerialize its graphical consumers. Omitted density settings are
 preserved and at least one editable setting is required.
 [Encodings](../../api/encodings.md#atomic-density)
 
+## `encodeHorizon`
+
+```javascript
+encodeHorizon({
+  target?, source?, x?, y?, groupBy?, bands?, baseline?, extent?, resolve?,
+  missing?, overflow?, palette?
+} = {})
+```
+
+Create immutable folded-band data, bind it to an area mark, and author the
+ordinary x, y/y2, group, and color encodings needed for a compact Horizon
+chart. Compatible target, source, and fields are inferred when unambiguous.
+[Encodings](../../api/encodings.md#atomic-horizon)
+
+## `editHorizon`
+
+```javascript
+editHorizon({
+  target?, source?, x?, y?, groupBy?, bands?, baseline?, extent?, resolve?,
+  missing?, overflow?, palette?
+})
+```
+
+Create and bind an immutable Horizon revision, preserve omitted settings and
+scale identities, and rematerialize affected consumers. `groupBy: false`
+removes grouping.
+[Encodings](../../api/encodings.md#atomic-horizon)
+
 ## `encodeColor`
 
 ### Color capability matrix

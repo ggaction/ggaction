@@ -95,6 +95,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#extension-actions) | primitive | primitives |
 | [`editGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
+| [`editHorizon`](./actions/encodings.md#edithorizon) | user-facing | encodings |
 | [`editHorizontalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`editLegend`](./actions/guides.md#editlegend) | user-facing | legend_and_title |
 | [`editLegendBorder`](./actions/guides.md#focused-legend-edits) | user-facing | legend_and_title |
@@ -142,6 +143,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | user-facing | encodings |
 | [`encodeGroup`](./actions/encodings.md#encodegroup) | user-facing | encodings |
 | [`encodeHistogram`](./actions/encodings.md#encodehistogram) | user-facing | encodings |
+| [`encodeHorizon`](./actions/encodings.md#encodehorizon) | user-facing | encodings |
 | [`encodeOpacity`](./actions/encodings.md#encodeopacity) | user-facing | encodings |
 | [`encodePathOrder`](./actions/encodings.md#encodepathorder) | user-facing | encodings |
 | [`encodePointRadius`](./actions/encodings.md#encodepointradius) | user-facing | encodings |

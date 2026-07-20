@@ -285,6 +285,49 @@ export interface DatasetDensityTransform {
     readonly splitDomain?: readonly [unknown, unknown];
   };
 }
+export type HorizonResolution = "shared" | "independent";
+export type HorizonMissingPolicy = "break" | "error";
+export type HorizonOverflowPolicy = "clip" | "error";
+export interface HorizonOutputFields {
+  readonly x: string;
+  readonly lower: string;
+  readonly upper: string;
+  readonly group: string;
+  readonly color: string;
+  readonly sign: string;
+  readonly band: string;
+  readonly segment: string;
+}
+export interface DatasetHorizonTransform {
+  readonly type: "horizon";
+  readonly x: {
+    readonly field: string;
+    readonly fieldType: "quantitative" | "temporal";
+  };
+  readonly y: {
+    readonly field: string;
+    readonly fieldType: "quantitative";
+  };
+  readonly groupBy?: string;
+  readonly bands: number;
+  readonly baseline: number;
+  readonly extent: "auto" | number;
+  readonly resolve: HorizonResolution;
+  readonly missing: HorizonMissingPolicy;
+  readonly overflow: HorizonOverflowPolicy;
+  readonly palette: {
+    readonly positive: Readonly<Exclude<Palette, string>>;
+    readonly negative: Readonly<Exclude<Palette, string>>;
+  };
+  readonly as: HorizonOutputFields;
+  readonly resolved?: {
+    readonly extents: readonly {
+      readonly group?: DatasetScalar;
+      readonly extent: number;
+      readonly bandHeight: number;
+    }[];
+  };
+}
 export interface DatasetIntervalOutputFields {
   center: string;
   lower: string;
@@ -405,6 +448,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetRegressionTransform
   | DatasetDensityTransform
+  | DatasetHorizonTransform
   | DatasetIntervalTransform
   | DatasetWindowTransform;
 export interface CreateDerivedDataOptions {
@@ -994,6 +1038,43 @@ export type DensityEncodingOptions = DensityEncodingBase & (
       densityScale?: never;
     }
 );
+
+export interface HorizonXEncoding {
+  field: string;
+  fieldType?: "quantitative" | "temporal";
+  scale?: ScaleOptions;
+}
+
+export interface HorizonYEncoding {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: ScaleOptions;
+}
+
+export interface HorizonPaletteOptions {
+  positive?: Palette;
+  negative?: Palette;
+}
+
+export interface HorizonEncodingOptions {
+  target?: string;
+  source?: string;
+  x?: string | HorizonXEncoding;
+  y?: string | HorizonYEncoding;
+  groupBy?: string;
+  bands?: number;
+  baseline?: number;
+  extent?: "auto" | number;
+  resolve?: HorizonResolution;
+  missing?: HorizonMissingPolicy;
+  overflow?: HorizonOverflowPolicy;
+  palette?: HorizonPaletteOptions;
+}
+
+export interface EditHorizonOptions
+  extends Omit<HorizonEncodingOptions, "groupBy"> {
+  groupBy?: string | false;
+}
 
 export type IntervalCenter = "mean" | "median";
 export type IntervalExtent = "stderr" | "stdev" | "ci" | "iqr";
@@ -2086,6 +2167,8 @@ export class ChartProgram {
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
+  encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;
+  editHorizon(options: EditHorizonOptions): ChartProgram;
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
   encodeStroke(options: { target?: string; value: string }): ChartProgram;
   encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;

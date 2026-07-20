@@ -902,6 +902,42 @@
       }
     },
     {
+      "name": "encodeHorizon",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "`editHorizon` creates and rebinds an immutable revision",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodehorizon"
+      }
+    },
+    {
+      "name": "editHorizon",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Creates and rebinds an immutable Horizon revision",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "edithorizon"
+      }
+    },
+    {
       "name": "encodeBarWidth",
       "layer": "user-facing",
       "domain": "encodings",

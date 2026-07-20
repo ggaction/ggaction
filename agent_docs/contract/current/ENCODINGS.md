@@ -658,6 +658,74 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - No future edit parameters are currently Planned or Proposed.
 - Evidence: `test/unit/actions/encodings/edit-density.test.js`, density-area variant equivalence and PNG tests.
 
+## `encodeHorizon`
+
+- Signature: `encodeHorizon({ target?, source?, x?, y?, groupBy?, bands?, baseline?, extent?, resolve?, missing?, overflow?, palette? } = {})`.
+- `target`: area mark ID. 생략하면 current 또는 유일한 eligible area를 추론한다.
+- `source`: 원본 dataset ID. 생략하면 target layer data 또는 current data를 사용한다.
+- `x`, `y`: field string 또는 `{ field, fieldType?, scale? }`. 생략하면 target이나 같은 source의 유일한 compatible
+  encoding을 추론한다. x는 quantitative/temporal, y는 quantitative만 허용한다.
+- `groupBy`: optional nominal field. 생략하면 target의 existing group encoding을 추론한다.
+- `bands`: positive integer, 기본 `3`.
+- `baseline`: finite number, 기본 `0`.
+- `extent`: `"auto"` 또는 positive finite number, 기본 `"auto"`. Shared auto는 전체 group extent 하나를,
+  independent auto는 group별 extent를 사용한다.
+- `resolve`: `"shared" | "independent"`, 기본 `"shared"`.
+- `missing`: `"break" | "error"`, 기본 `"break"`. break는 missing y에서 path segment를 나눈다.
+- `overflow`: `"clip" | "error"`, 기본 `"clip"`. Explicit extent를 넘는 amplitude 처리 정책이다.
+- `palette`: `{ positive?, negative? }`; 각 값은 Palette이며 기본은 positive `"blues"`, negative `"reds"`다.
+- Effect: namespaced immutable derived dataset을 만들고 area layer를 rebind한 뒤 x, folded `[0, 1]` y/y2,
+  group과 sign/band color encoding을 명시적으로 작성한다. Concrete result는 ordinary closed path collection이며
+  renderer는 Horizon 의미를 알지 않는다. y axis와 legend는 만들지 않고 x axis/grid만 guide-compatible하다.
+- Facet replay: shared y scale이면 parent auto extent를 모든 cell에 고정하고, independent y scale이면 cell마다
+  다시 계산한다.
+
+### Formal values — `encodeHorizon`
+
+- Implemented: `encodeHorizon({ target?: UserId; source?: UserId; x?: FieldName | { field: FieldName; fieldType?: "quantitative" | "temporal"; scale?: PositionScale }; y?: FieldName | { field: FieldName; fieldType?: "quantitative"; scale?: PositionScale }; groupBy?: FieldName; bands?: PositiveInteger; baseline?: Finite; extent?: "auto" | PositiveFinite; resolve?: "shared" | "independent"; missing?: "break" | "error"; overflow?: "clip" | "error"; palette?: { positive?: Palette; negative?: Palette } })`.
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `encodeHorizon`
+
+- Inference and fields
+  - ✅ Covered: explicit and inferred target/source/x/y/groupBy, temporal x, ambiguity and incompatible target rejection.
+- Fold policy
+  - ✅ Covered: default/explicit bands, baseline, shared/independent auto extent, explicit extent, missing break/error,
+    overflow clip/error, positive/negative palettes and empty all-baseline output.
+- Materialization and guides
+  - ✅ Covered: closed-path geometry, monotone curve, ordinary Canvas/PNG rendering, x-only axes/grid policy,
+    shared-scale rematerialization and primitive/public pixel parity.
+- Composition
+  - ✅ Covered: facet shared extent freeze and independent per-cell recomputation.
+- Evidence: Horizon grammar/data/encoding/materialization unit tests and `test/charts/gapminder-horizon/`.
+
+## `editHorizon`
+
+- Signature: `editHorizon({ target?, source?, x?, y?, groupBy?, bands?, baseline?, extent?, resolve?, missing?, overflow?, palette? })`.
+- `target`: existing Horizon-encoded area layer. 생략하면 current 또는 유일한 eligible layer를 추론한다.
+- 최소 한 editable option이 필요하다. 생략한 option은 기존 requested transform에서 보존한다.
+- `groupBy: false`는 grouping을 제거한다. 다른 option은 `encodeHorizon`과 같은 값 계약을 사용한다.
+- `${target}HorizonDataRevision${n}` immutable revision을 만들고 target을 explicit rebind한 뒤 orphaned prior revision을
+  제거한다. Scale ID는 유지하며 x field type이 바뀌면 linear/time type을 안전하게 갱신한다.
+- Affected shared-scale marks와 compatible guides를 deterministic materialization plan으로 갱신한다. Selection과
+  highlight config는 retained target layer에 남고 새 geometry에 재적용된다.
+- Derivation 또는 validation failure는 original program과 모든 caller-owned input을 바꾸지 않는다.
+
+### Formal values — `editHorizon`
+
+- Implemented: `editHorizon({ target?: UserId; source?: UserId; x?: HorizonX; y?: HorizonY; groupBy?: FieldName | false; bands?: PositiveInteger; baseline?: Finite; extent?: "auto" | PositiveFinite; resolve?: "shared" | "independent"; missing?: "break" | "error"; overflow?: "clip" | "error"; palette?: HorizonPalette })`.
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editHorizon`
+
+- ✅ Covered: every editable option, empty edit rejection, target inference/ambiguity, repeated revisions and deterministic IDs.
+- ✅ Covered: source/field/group replacement, group removal, palette merge, x scale type transition and scale-ID rejection.
+- ✅ Covered: orphan cleanup, shared prior dataset retention, prior-program immutability, empty output cleanup, selection/highlight
+  persistence and shared-scale consumer rematerialization.
+- Evidence: `test/unit/actions/encodings/edit-horizon.test.js`, facet replay tests and stable Horizon chart tests.
+
 ## `encodeColor`
 
 - Signature: `encodeColor({ field, target?, fieldType?, layout?, aggregate?, scale? })`

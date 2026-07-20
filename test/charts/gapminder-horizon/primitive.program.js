@@ -56,23 +56,23 @@ export function createGapminderHorizonPrimitiveResult(gapminder) {
       value: values.xTicks.map(() => [])
     })
     .createGraphics({
-      id: "horizonBands",
+      id: "area",
       parent: "plot-main",
       type: "path",
       length: values.series.length
     })
     .editGraphics({
-      target: "horizonBands",
+      target: "area",
       property: "commands",
       value: values.series.map(series => series.commands)
     })
     .editGraphics({
-      target: "horizonBands",
+      target: "area",
       property: "fill",
       value: values.series.map(series => series.fill)
     })
     .editGraphics({
-      target: "horizonBands",
+      target: "area",
       property: "opacity",
       value: 1
     })

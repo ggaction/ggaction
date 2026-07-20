@@ -31,6 +31,7 @@ import { createGapminderQuantizeColorScale } from
   "./gapminder-discretized-color-scales/program.js";
 import { createGapminderCurvedBoundaryErrorBand } from
   "./gapminder-error-band/program.js";
+import { createGapminderHorizon } from "./gapminder-horizon/program.js";
 import { createGapminderRadialBars } from
   "./gapminder-radial-bars/program.js";
 import { createGapminderPopulationDonut } from
@@ -393,6 +394,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsDensityArea,
     docsGroup: "charts",
     browser: { path: "cars-density-area/", canvas: "#chart" }
+  }),
+  example({
+    id: "gapminder-horizon",
+    data: "gapminder",
+    width: 760,
+    height: 300,
+    createProgram: createGapminderHorizon,
+    docsGroup: "charts",
+    browser: { path: "gapminder-horizon/", canvas: "#chart" }
   }),
   example({
     id: "cars-acceleration-violins",

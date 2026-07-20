@@ -128,7 +128,7 @@ existing createBoxPlot({ ... })
 | 6 | completed | NCP-002 FillPaint linear-gradient variant와 categorical gradient-distribution facade; P6-Exit 승인 완료 |
 | 7 | completed | P-003 ordered path; P7-A/P7-B/P7-Exit 승인 완료 |
 | 8 | completed | NCP-001 categorical density placement; P8-Exit 승인 완료 |
-| 9 | in-progress | NCP-005 Horizon encoding; P9-A approved |
+| 9 | in-progress | NCP-005 Horizon encoding; P9-A/P9-B approved, P9-Exit ready-for-review |
 | 10 | planned | P-006 overlay/inset composition |
 | 11 | planned | NCP-004 parallel coordinate와 facade |
 | 12 | planned | P-005 label layout |

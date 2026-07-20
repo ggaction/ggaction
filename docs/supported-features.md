@@ -34,15 +34,15 @@ remain available for custom layering and editing.
 
 ### Statistical layers
 
-| Capability | Regression scatterplot | Density area |
-| --- | --- | --- |
-| Semantic marks | point + area + line | area |
-| Position | shared quantitative x/y | value + density x/y |
-| Nominal color | point fill + fit stroke | overlay/stack/fill/diverging area |
-| Appearance | point opacity, band fill/outline, line width, 8 curves | opacity, 8 curves |
-| Automatic guides | shared linear axes and horizontal grid | source-value/density axes; horizontal grid, vertical optional |
-| Legend | composite color/shape/line + size | categorical top/right/bottom |
-| Selection/highlight | layer selection + point highlight | series |
+| Capability | Regression scatterplot | Density area | Horizon area |
+| --- | --- | --- | --- |
+| Semantic marks | point + area + line | area | area |
+| Position | shared quantitative x/y | value + density x/y | quantitative/temporal x; folded `[0, 1]` y/y2 |
+| Nominal color | point fill + fit stroke | overlay/stack/fill/diverging area | positive/negative band palettes |
+| Appearance | point opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | band count, baseline, 8 curves |
+| Automatic guides | shared linear axes and horizontal grid | source-value/density axes; horizontal grid, vertical optional | source x axis/grid only; no folded y axis or legend |
+| Legend | composite color/shape/line + size | categorical top/right/bottom | intentionally omitted |
+| Selection/highlight | layer selection + point highlight | series | folded band items |
 
 ### Intervals and distributions
 
@@ -75,7 +75,7 @@ remain available for custom layering and editing.
 | --- | --- |
 | Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar horizontal or vertical composition, stable child replacement, and Cartesian facet repetition |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
+| Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, grouped kernel-density derivations, and immutable Horizon band revisions |
 | Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |

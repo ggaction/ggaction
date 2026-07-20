@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { loadGapminder } from "../../support/data.js";
+import { assertChartProgramsEquivalent } from
+  "../../support/chart-equivalence.js";
+import { createGapminderHorizonPrimitives } from "./primitive.program.js";
 import { createGapminderHorizon } from "./public.program.js";
 import {
   HORIZON_COLORS,
@@ -12,12 +15,18 @@ test("builds the approved Kenya Horizon through one atomic encoding", () => {
   const input = loadGapminder().map(row => ({ ...row }));
   const before = structuredClone(input);
   const program = createGapminderHorizon(input);
+  const primitive = createGapminderHorizonPrimitives(loadGapminder());
   const expected = createGapminderHorizonValues(loadGapminder());
   const dataset = program.semanticSpec.datasets.find(
     candidate => candidate.id === "areaHorizonData"
   );
 
   assert.deepEqual(input, before);
+  assertChartProgramsEquivalent({
+    publicProgram: program,
+    primitiveProgram: primitive,
+    compareSemanticSpec: false
+  });
   assert.equal(dataset.transform[0].type, "horizon");
   assert.deepEqual(dataset.transform[0].resolved.extents, [{
     extent: expected.horizon.groups[0].extent,

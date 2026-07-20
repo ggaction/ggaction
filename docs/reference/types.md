@@ -71,6 +71,8 @@ interface ChartProgramActions {
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
+  encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;
+  editHorizon(options: EditHorizonOptions): ChartProgram;
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
   encodeStroke(options: { target?: string; value: string }): ChartProgram;
   encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;

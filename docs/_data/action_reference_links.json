@@ -51,6 +51,8 @@
   "encodeHistogram": "/reference/actions/encodings/#encodehistogram",
   "encodeDensity": "/reference/actions/encodings/#encodedensity",
   "editDensity": "/reference/actions/encodings/#editdensity",
+  "encodeHorizon": "/reference/actions/encodings/#encodehorizon",
+  "editHorizon": "/reference/actions/encodings/#edithorizon",
   "encodeColor": "/reference/actions/encodings/#encodecolor",
   "encodeStrokeDash": "/reference/actions/encodings/#encodestrokedash",
   "encodeRadius": "/reference/actions/encodings/#encoderadius",

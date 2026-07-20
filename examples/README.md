@@ -86,6 +86,12 @@ Open <http://localhost:8000/examples/cars-density-area/>. This chart derives
 Gaussian kernel-density values for acceleration by Origin, overlays three
 translucent area paths, and uses two-direction grids with a top legend.
 
+## Gapminder Horizon chart
+
+Open <http://localhost:8000/examples/gapminder-horizon/>. This chart filters to
+Kenya and uses `encodeHorizon` to fold life-expectancy deviations around 55
+years into three compact blue and red area bands.
+
 ## Cars acceleration violin plot
 
 Open <http://localhost:8000/examples/cars-acceleration-violins/>. This chart

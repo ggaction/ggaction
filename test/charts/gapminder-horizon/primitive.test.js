@@ -166,7 +166,7 @@ test("authors a renderer-neutral primitive Horizon tree", () => {
   input.find(row => row.country === "Kenya").life_expect = 999;
   assert.notEqual(program.semanticSpec.datasets[0].values[0].life_expect, 999);
 
-  const bands = program.graphicSpec.objects.horizonBands.items;
+  const bands = program.graphicSpec.objects.area.items;
   assert.equal(bands.length, 7);
   assert.deepEqual(
     bands.map(item => item.properties.fill),
@@ -185,8 +185,8 @@ test("authors a renderer-neutral primitive Horizon tree", () => {
 
   const order = [];
   walkGraphicDrawOrder(program.graphicSpec, ({ id }) => order.push(id));
-  assert.ok(order.indexOf("verticalGridLines") < order.indexOf("horizonBands"));
-  assert.ok(order.indexOf("horizonBands") < order.indexOf("xAxisLine"));
+  assert.ok(order.indexOf("verticalGridLines") < order.indexOf("area"));
+  assert.ok(order.indexOf("area") < order.indexOf("xAxisLine"));
 
   const context = createMockCanvasContext();
   render({

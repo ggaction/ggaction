@@ -221,6 +221,24 @@
   tutorial_order: 7
   recipe_order: 5
   featured: true
+- id: horizon
+  title: Horizon chart
+  image: /assets/images/gapminder-horizon.png
+  alt: Kenya life expectancy folded into blue and red Horizon bands around 55 years
+  width: 1520
+  height: 600
+  thumbnail: /assets/images/gapminder-horizon-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 253
+  caption: Signed deviations folded into three compact area bands.
+  summary: Compress a long time series by folding values above and below a baseline.
+  actions: createAreaMark · encodeHorizon · editHorizon
+  url: /tutorials/horizon/
+  recipe_url: /recipes/horizon/
+  home_group: statistical
+  home_order: 1.5
+  tutorial_order: 8.5
+  recipe_order: 6.5
 - id: error-bar
   title: Error bar
   image: /assets/images/cars-error-bar.png

@@ -1,4 +1,4 @@
-import { chart } from "../../../src/index.js";
+import { chart } from "../../src/index.js";
 
 export function createGapminderHorizon(gapminder) {
   return chart()

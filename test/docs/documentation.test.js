@@ -382,6 +382,7 @@ test("keeps tutorial action flows aligned with public examples", () => {
       "return chart()"
     ],
     ["density-area", "examples/cars-density-area/program.js", "return chart()"],
+    ["horizon", "examples/gapminder-horizon/program.js", "return chart()"],
     [
       "error-bar",
       "examples/cars-error-bar/program.js",
@@ -433,11 +434,11 @@ test("routes entry documentation to the canonical example indexes", () => {
   assert.match(readme, /examples\/cars-regression-scatterplot/);
   assert.equal(
     [...catalog.values()].filter(example => example.tutorial_order).length,
-    12
+    13
   );
   assert.equal(
     [...catalog.values()].filter(example => example.recipe_order).length,
-    11
+    12
   );
   assert.match(read("docs/tutorials/index.md"), /example\.tutorial_order/);
   assert.match(read("docs/recipes/index.md"), /example\.recipe_order/);

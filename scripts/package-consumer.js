@@ -139,6 +139,20 @@ async function testNodeConsumer(directory) {
       scatterFacade.trace.children.at(-1).children.map(node => node.op),
       ["createPointMark", "encodeX", "encodeY"]
     );
+    const horizon = chart()
+      .createCanvas({ width: 180, height: 100, margin: 15 })
+      .createData({
+        values: [
+          { time: 1, value: -2 },
+          { time: 2, value: 3 },
+          { time: 3, value: 1 }
+        ]
+      })
+      .createAreaMark()
+      .encodeHorizon({ x: "time", y: "value" });
+    assert.ok(horizon.graphicSpec.objects.area.items.length > 0);
+    assert.equal(horizon.editHorizon({ bands: 2 })
+      .semanticSpec.datasets.at(-1).transform[0].bands, 2);
     const lineFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [
@@ -489,6 +503,8 @@ async function testTypeScriptConsumer(directory) {
       type CreateHistogramOptions,
       type CreateLinePlotOptions,
       type GradientPlotOptions,
+      type HorizonEncodingOptions,
+      type EditHorizonOptions,
       type CreateDerivedDataOptions,
       type CreateScatterPlotOptions,
       type DatasetTransform,
@@ -514,6 +530,24 @@ async function testTypeScriptConsumer(directory) {
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2 }] })
       .createScatterPlot(scatterOptions);
+    const horizonOptions: HorizonEncodingOptions = {
+      x: { field: "time", fieldType: "temporal" },
+      y: "value",
+      bands: 3,
+      resolve: "shared",
+      palette: { positive: "blues", negative: "reds" }
+    };
+    const horizonEdit: EditHorizonOptions = {
+      bands: 4,
+      groupBy: false,
+      overflow: "clip"
+    };
+    const horizonFacade = chart()
+      .createCanvas()
+      .createData({ values: [{ time: "2000-01-01", value: 2 }] })
+      .createAreaMark()
+      .encodeHorizon(horizonOptions)
+      .editHorizon(horizonEdit);
     const lineOptions: CreateLinePlotOptions = {
       x: "x",
       y: "y",
@@ -763,6 +797,7 @@ async function testTypeScriptConsumer(directory) {
     const invalidTransform: DatasetTransform = { type: "unknown" };
     void draw;
     void scatterFacade;
+    void horizonFacade;
     void lineFacade;
     void orderedLineFacade;
     void barFacade;
@@ -832,6 +867,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "window-data",
       "bin2d-data",
       "binned-heatmap",
+      "horizon",
       "violin-plot",
       "right-categorical-legend-offset",
       "sequential-palette-count",

@@ -244,6 +244,16 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "encodeHorizon": {
+    "operation": "encode",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
+  "editHorizon": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
   "encodeBarWidth": {
     "operation": "encode",
     "layer": "user-facing",

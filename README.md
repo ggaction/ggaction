@@ -101,6 +101,8 @@ or open the [runnable example](./examples/cars-gradient-plot/).
 For symmetric or split density shapes centered on categories, use the
 [violin-plot API](https://ggaction.github.io/ggaction/api/violin-plots/) or the
 [runnable Cars example](./examples/cars-acceleration-violins/).
+For compact signed time-series bands, use `encodeHorizon` on an area mark and
+open the [runnable Gapminder example](./examples/gapminder-horizon/).
 
 ## What it supports
 

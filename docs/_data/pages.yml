@@ -37,6 +37,9 @@
 - title: Density Area Tutorial
   url: /tutorials/density-area/
   parent: /tutorials/
+- title: Horizon Chart Tutorial
+  url: /tutorials/horizon/
+  parent: /tutorials/
 - title: Error-Bar Tutorial
   url: /tutorials/error-bar/
   parent: /tutorials/
@@ -70,6 +73,9 @@
   parent: /recipes/
 - title: Density Area Recipe
   url: /recipes/density-area/
+  parent: /recipes/
+- title: Horizon Chart Recipe
+  url: /recipes/horizon/
   parent: /recipes/
 - title: Error-Bar Recipe
   url: /recipes/error-bar/

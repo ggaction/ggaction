@@ -51,6 +51,10 @@
     "title": "Density Area Tutorial",
     "description": "This chart estimates the distribution of car acceleration separately for each Origin."
   },
+  "/tutorials/horizon/": {
+    "title": "Horizon Chart Tutorial",
+    "description": "This chart folds Kenya's life expectancy above and below a 55 year baseline into three compact bands. The source rows stay immutable."
+  },
   "/tutorials/error-bar/": {
     "title": "Error-Bar Tutorial",
     "description": "This chart keeps individual car observations visible while summarizing acceleration by Origin."
@@ -101,6 +105,11 @@
     "title": "Density Area Recipe",
     "description": "Use createGuides({ grid: { horizontal: {}, vertical: {} } }) for both grid directions.",
     "image": "/assets/images/cars-density-area.png"
+  },
+  "/recipes/horizon/": {
+    "title": "Horizon Chart Recipe",
+    "description": "Use editHorizon({ bands, baseline, extent, palette }) to create a revised immutable result. Use resolve: \"independent\" only when group local amplitude comparison is intentional.",
+    "image": "/assets/images/gapminder-horizon.png"
   },
   "/recipes/error-bar/": {
     "title": "Error-Bar Recipe",

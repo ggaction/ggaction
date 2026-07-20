@@ -57,6 +57,8 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`encodeHistogram`](current/ENCODINGS.md#encodehistogram) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeDensity`](current/ENCODINGS.md#encodedensity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`editDensity`](current/ENCODINGS.md#editdensity) | encodings | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`encodeHorizon`](current/ENCODINGS.md#encodehorizon) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`editHorizon`](current/ENCODINGS.md#edithorizon) | encodings | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`encodeBarWidth`](current/ENCODINGS.md#encodebarwidth) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`createRegression`](current/STATISTICS.md#createregression) | statistics | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
 | user-facing | [`editRegression`](current/STATISTICS.md#editregression) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |

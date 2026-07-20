@@ -16,7 +16,8 @@ sign×band×segment rows로 변환하고, 기존 area path와 Canvas/PNG rendere
 - [x] transform/provenance
 - [x] `encodeHorizon`
 - [x] `editHorizon`, facet/consumer lifecycle과 P9-B
-- [ ] types/contracts/docs/package closeout와 P9-Exit
+- [x] types/contracts/docs/package closeout
+- [ ] P9-Exit 사용자 승인
 
 ## 핵심 계약
 
@@ -45,7 +46,7 @@ sign×band×segment rows로 변환하고, 기존 area path와 Canvas/PNG rendere
 | --- | --- | --- | --- |
 | P9-A | approved | exact API/default/error/state, independent oracle, primitive source와 PNG | production grammar/action 구현 |
 | P9-B | approved | public lifecycle, primitive/public parity, edit/facet consumer matrix | Phase closeout |
-| P9-Exit | planned | Current inventory, architecture, docs/types/package와 cumulative verification | Phase 10 |
+| P9-Exit | ready-for-review | Current inventory, architecture, docs/types/package와 cumulative verification | Phase 10 |
 
 모든 Gate는 hard pause다.
 

@@ -19,6 +19,7 @@ defaults.
 | Position | `encodeX`, `encodeY`, `encodeXRange`, `encodeYRange`, `encodeXOffset`, `encodeYOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
+| Atomic Horizon | `encodeHorizon`, `editHorizon` | Fold signed time-series deviations into compact area bands |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
 | Series | `encodeColor`, `encodeStrokeDash`, `encodePathOrder` | Nominal grouping, appearance, and explicit path topology |
 | Constant appearance | `encodeRadius`, `encodePointRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
@@ -232,6 +233,58 @@ ordinary zero-baseline density layout. The action creates a deterministic namesp
 revision, rebinds the area, releases an unreferenced previous revision, and
 rematerializes shared scales, marks, axes, and grids. Earlier programs remain
 unchanged.
+
+## Atomic Horizon
+
+`encodeHorizon` folds signed deviations from a baseline into repeated area
+bands. It is useful when a long series needs substantially less vertical space
+than an ordinary line or area chart.
+
+```javascript
+area.encodeHorizon({
+  x: "year",
+  y: "life_expect",
+  bands: 3,
+  baseline: 55,
+  palette: { positive: "blues", negative: "reds" }
+});
+```
+
+The target defaults to the current or only area mark, and the source defaults
+to that mark's dataset. `x` and `y` may be omitted when compatible encodings
+are uniquely inferable. The x field may be quantitative or temporal; y is
+quantitative. `groupBy` may be inferred from an existing group encoding.
+
+`bands` defaults to `3`, `baseline` to `0`, and `extent` to `"auto"`.
+`resolve: "shared"` uses one amplitude extent across groups; `"independent"`
+normalizes each group separately. Missing y values break paths by default;
+use `missing: "error"` for strict input. Explicit extents clip overflow by
+default or reject it with `overflow: "error"`.
+
+The action creates immutable derived data, binds the area to it, and records
+ordinary x, y/y2, group, and color encodings. Folded y always uses `[0, 1]`.
+Horizon charts intentionally omit the y axis and color legend; compatible
+guides create only the original x axis and x grid. The Canvas and PNG renderers
+draw ordinary closed paths and do not contain a Horizon-specific renderer.
+
+Use `editHorizon` to revise the transform without mutating earlier programs:
+
+```javascript
+const revised = program.editHorizon({
+  bands: 4,
+  baseline: 58,
+  palette: { positive: "teals" }
+});
+```
+
+At least one option is required. Omitted values are preserved, while
+`groupBy: false` removes grouping. The action creates a deterministic immutable
+dataset revision, retains scale identities, releases an unreferenced prior
+revision, and rematerializes shared consumers. Facets preserve the parent
+extent for shared y scales and recompute it per cell for independent y scales.
+
+See the [Horizon tutorial](../tutorials/horizon.md) for a complete runnable
+example.
 
 ## Series
 

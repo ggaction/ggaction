@@ -200,6 +200,11 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
+  "gapminder-horizon": [
+    "canvas", "verticalGridLines", "area",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "gapminder-continuous-color-bars": [
     "canvas", "horizontalGridLines", "bar",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

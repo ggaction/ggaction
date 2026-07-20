@@ -1482,6 +1482,104 @@ program
 - Continue with [Encodings](../api/encodings.md),
   [Legends](../api/legends.md), and [Scale options](../api/scales.md).
 
+<!-- Source: /tutorials/horizon/ -->
+
+# Horizon Chart Tutorial
+
+![Kenya life expectancy Horizon chart](../assets/images/gapminder-horizon.png)
+
+This chart folds Kenya's life expectancy above and below a 55-year baseline
+into three compact bands. The source rows stay immutable. `encodeHorizon`
+creates one derived dataset and ordinary closed area paths, so Browser Canvas
+and Node PNG use the same backend-neutral graphics.
+
+The repository contains a
+[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/gapminder-horizon/program.js).
+
+## Complete program
+
+```javascript
+import { chart, render } from "ggaction";
+
+const response = await fetch("/gapminder.json");
+if (!response.ok) throw new Error(`Failed to load data: ${response.status}`);
+const gapminder = await response.json();
+
+const program = chart()
+  .createCanvas({
+    width: 760,
+    height: 300,
+    margin: { top: 78, right: 30, bottom: 58, left: 50 }
+  })
+  .createData({ values: gapminder })
+  .filterData({ id: "kenya", field: "country", oneOf: ["Kenya"] })
+  .createAreaMark({ curve: "monotone" })
+  .encodeHorizon({
+    x: "year",
+    y: "life_expect",
+    bands: 3,
+    baseline: 55,
+    palette: { positive: "blues", negative: "reds" }
+  })
+  .createGuides({ axes: { y: false } })
+  .createTitle({
+    text: "Kenya Life Expectancy",
+    subtitle: "Blue above, red below · three folded bands around 55 years"
+  });
+
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+## What the atomic encoding owns
+
+| Decision | Result |
+| --- | --- |
+| `baseline: 55` | Values are represented as signed deviations from 55 |
+| `bands: 3` | Each sign is divided into three equal-amplitude folds |
+| `extent: "auto"` | The largest absolute deviation defines the shared band height |
+| `missing: "break"` | Missing y values split, rather than bridge, a path |
+| `overflow: "clip"` | An explicit smaller extent clips excess amplitude |
+
+The folded y scale is always `[0, 1]`. Because its ticks would describe folded
+amplitude rather than the original life-expectancy values, Horizon guide policy
+creates only the original x axis and grid and no automatic legend.
+
+## Revise without mutation
+
+```javascript
+const revised = program.editHorizon({
+  bands: 4,
+  baseline: 58,
+  palette: { positive: "teals" }
+});
+```
+
+The revision keeps the source dataset and scale IDs, creates a new namespaced
+derived dataset, rebinds the same area layer, and removes the old revision only
+when no layer still references it. The earlier `program` remains unchanged.
+
+## Key action trace
+
+```text
+program
+├─ createAreaMark
+├─ encodeHorizon
+│  ├─ createHorizonData
+│  │  └─ materializeHorizonData
+│  ├─ rebindLayerData
+│  ├─ encodeX
+│  ├─ encodeY
+│  ├─ encodeGroup
+│  ├─ encodeY2
+│  └─ encodeColor
+├─ createGuides
+└─ createTitle
+```
+
+Continue with [Encodings](../api/encodings.md#atomic-horizon),
+[Area marks](../api/marks/line-area.md), and [Faceting](../api/composition.md).
+
 <!-- Source: /tutorials/error-bar/ -->
 
 # Error-Bar Chart Tutorial
@@ -2217,6 +2315,44 @@ options only when that composition is intentional.
 [Density area tutorial](../tutorials/density-area.md) ·
 [Encodings](../api/encodings.md#atomic-density) ·
 [Legends](../api/legends.md)
+
+<!-- Source: /recipes/horizon/ -->
+
+# Horizon Chart Recipe
+
+## Minimal flow
+
+```javascript
+const program = chart()
+  .createCanvas()
+  .createData({ values })
+  .createAreaMark({ curve: "monotone" })
+  .encodeHorizon({ x: "time", y: "value" })
+  .createGuides();
+```
+
+## You must decide
+
+- The ordered quantitative or temporal x field
+- The quantitative y field
+- A baseline when zero is not meaningful
+
+## The library infers
+
+- The current area target and source dataset when unambiguous
+- Three bands, shared automatic extent, and blue/red palettes
+- Immutable namespaced output data and ordinary closed path graphics
+- An x axis and x grid, without a misleading folded y axis or band legend
+
+Use `editHorizon({ bands, baseline, extent, palette })` to create a revised
+immutable result. Use `resolve: "independent"` only when group-local amplitude
+comparison is intentional.
+
+## Continue
+
+[Horizon tutorial](../tutorials/horizon.md) ·
+[Encodings](../api/encodings.md#atomic-horizon) ·
+[Area marks](../api/marks/line-area.md)
 
 <!-- Source: /recipes/error-bar/ -->
 
@@ -3956,6 +4092,7 @@ defaults.
 | Position | `encodeX`, `encodeY`, `encodeXRange`, `encodeYRange`, `encodeXOffset`, `encodeYOffset` | Quantitative, temporal, binned, ordinal, or ranged placement |
 | Atomic histogram | `encodeHistogram` | Interdependent bin/count semantics |
 | Atomic density | `encodeDensity`, `editDensity` | Derived KDE data, immutable revisions, and baseline area geometry |
+| Atomic Horizon | `encodeHorizon`, `editHorizon` | Fold signed time-series deviations into compact area bands |
 | Appearance | `encodeColor`, `encodeSize`, `encodeShape`, `encodeOpacity` | Field-driven or fixed point appearance |
 | Series | `encodeColor`, `encodeStrokeDash`, `encodePathOrder` | Nominal grouping, appearance, and explicit path topology |
 | Constant appearance | `encodeRadius`, `encodePointRadius`, `encodeOpacity`, `encodeBarWidth` | Fixed graphical values |
@@ -4167,6 +4304,58 @@ ordinary zero-baseline density layout. The action creates a deterministic namesp
 revision, rebinds the area, releases an unreferenced previous revision, and
 rematerializes shared scales, marks, axes, and grids. Earlier programs remain
 unchanged.
+
+## Atomic Horizon
+
+`encodeHorizon` folds signed deviations from a baseline into repeated area
+bands. It is useful when a long series needs substantially less vertical space
+than an ordinary line or area chart.
+
+```javascript
+area.encodeHorizon({
+  x: "year",
+  y: "life_expect",
+  bands: 3,
+  baseline: 55,
+  palette: { positive: "blues", negative: "reds" }
+});
+```
+
+The target defaults to the current or only area mark, and the source defaults
+to that mark's dataset. `x` and `y` may be omitted when compatible encodings
+are uniquely inferable. The x field may be quantitative or temporal; y is
+quantitative. `groupBy` may be inferred from an existing group encoding.
+
+`bands` defaults to `3`, `baseline` to `0`, and `extent` to `"auto"`.
+`resolve: "shared"` uses one amplitude extent across groups; `"independent"`
+normalizes each group separately. Missing y values break paths by default;
+use `missing: "error"` for strict input. Explicit extents clip overflow by
+default or reject it with `overflow: "error"`.
+
+The action creates immutable derived data, binds the area to it, and records
+ordinary x, y/y2, group, and color encodings. Folded y always uses `[0, 1]`.
+Horizon charts intentionally omit the y axis and color legend; compatible
+guides create only the original x axis and x grid. The Canvas and PNG renderers
+draw ordinary closed paths and do not contain a Horizon-specific renderer.
+
+Use `editHorizon` to revise the transform without mutating earlier programs:
+
+```javascript
+const revised = program.editHorizon({
+  bands: 4,
+  baseline: 58,
+  palette: { positive: "teals" }
+});
+```
+
+At least one option is required. Omitted values are preserved, while
+`groupBy: false` removes grouping. The action creates a deterministic immutable
+dataset revision, retains scale identities, releases an unreferenced prior
+revision, and rematerializes shared consumers. Facets preserve the parent
+extent for shared y scales and recompute it per cell for independent y scales.
+
+See the [Horizon tutorial](../tutorials/horizon.md) for a complete runnable
+example.
 
 ## Series
 
@@ -8557,15 +8746,15 @@ remain available for custom layering and editing.
 
 ### Statistical layers
 
-| Capability | Regression scatterplot | Density area |
-| --- | --- | --- |
-| Semantic marks | point + area + line | area |
-| Position | shared quantitative x/y | value + density x/y |
-| Nominal color | point fill + fit stroke | overlay/stack/fill/diverging area |
-| Appearance | point opacity, band fill/outline, line width, 8 curves | opacity, 8 curves |
-| Automatic guides | shared linear axes and horizontal grid | source-value/density axes; horizontal grid, vertical optional |
-| Legend | composite color/shape/line + size | categorical top/right/bottom |
-| Selection/highlight | layer selection + point highlight | series |
+| Capability | Regression scatterplot | Density area | Horizon area |
+| --- | --- | --- | --- |
+| Semantic marks | point + area + line | area | area |
+| Position | shared quantitative x/y | value + density x/y | quantitative/temporal x; folded `[0, 1]` y/y2 |
+| Nominal color | point fill + fit stroke | overlay/stack/fill/diverging area | positive/negative band palettes |
+| Appearance | point opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | band count, baseline, 8 curves |
+| Automatic guides | shared linear axes and horizontal grid | source-value/density axes; horizontal grid, vertical optional | source x axis/grid only; no folded y axis or legend |
+| Legend | composite color/shape/line + size | categorical top/right/bottom | intentionally omitted |
+| Selection/highlight | layer selection + point highlight | series | folded band items |
 
 ### Intervals and distributions
 
@@ -8598,7 +8787,7 @@ remain available for custom layering and editing.
 | --- | --- |
 | Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar horizontal or vertical composition, stable child replacement, and Cartesian facet repetition |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, and grouped kernel-density derivations |
+| Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, grouped kernel-density derivations, and immutable Horizon band revisions |
 | Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
@@ -8745,6 +8934,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#extension-actions) | primitive | primitives |
 | [`editGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
+| [`editHorizon`](./actions/encodings.md#edithorizon) | user-facing | encodings |
 | [`editHorizontalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`editLegend`](./actions/guides.md#editlegend) | user-facing | legend_and_title |
 | [`editLegendBorder`](./actions/guides.md#focused-legend-edits) | user-facing | legend_and_title |
@@ -8792,6 +8982,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | user-facing | encodings |
 | [`encodeGroup`](./actions/encodings.md#encodegroup) | user-facing | encodings |
 | [`encodeHistogram`](./actions/encodings.md#encodehistogram) | user-facing | encodings |
+| [`encodeHorizon`](./actions/encodings.md#encodehorizon) | user-facing | encodings |
 | [`encodeOpacity`](./actions/encodings.md#encodeopacity) | user-facing | encodings |
 | [`encodePathOrder`](./actions/encodings.md#encodepathorder) | user-facing | encodings |
 | [`encodePointRadius`](./actions/encodings.md#encodepointradius) | user-facing | encodings |
@@ -9415,6 +9606,34 @@ Create an immutable density-data revision, rebind the selected density area,
 and rematerialize its graphical consumers. Omitted density settings are
 preserved and at least one editable setting is required.
 [Encodings](../../api/encodings.md#atomic-density)
+
+## `encodeHorizon`
+
+```javascript
+encodeHorizon({
+  target?, source?, x?, y?, groupBy?, bands?, baseline?, extent?, resolve?,
+  missing?, overflow?, palette?
+} = {})
+```
+
+Create immutable folded-band data, bind it to an area mark, and author the
+ordinary x, y/y2, group, and color encodings needed for a compact Horizon
+chart. Compatible target, source, and fields are inferred when unambiguous.
+[Encodings](../../api/encodings.md#atomic-horizon)
+
+## `editHorizon`
+
+```javascript
+editHorizon({
+  target?, source?, x?, y?, groupBy?, bands?, baseline?, extent?, resolve?,
+  missing?, overflow?, palette?
+})
+```
+
+Create and bind an immutable Horizon revision, preserve omitted settings and
+scale identities, and rematerialize affected consumers. `groupBy: false`
+removes grouping.
+[Encodings](../../api/encodings.md#atomic-horizon)
 
 ## `encodeColor`
 
@@ -10313,6 +10532,8 @@ interface ChartProgramActions {
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
+  encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;
+  editHorizon(options: EditHorizonOptions): ChartProgram;
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
   encodeStroke(options: { target?: string; value: string }): ChartProgram;
   encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
