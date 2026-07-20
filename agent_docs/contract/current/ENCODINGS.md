@@ -571,26 +571,32 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeDensity`
 
-- Signature: `encodeDensity({ field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, coordinate?, valueScale?, densityScale? })`
+- Signature: `encodeDensity({ field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, coordinate?, valueScale?, densityScale?, placement? })`
 - `field`, `source`, `groupBy`, `bandwidth`, `extent`, `steps`, `as`: `createDensityData`와 같은 계약이며
   derived ID는 `${target}DensityData`로 namespace된다.
 - `kernel`: `"gaussian" | "epanechnikov" | "uniform" | "triangular"`; 생략 시 Gaussian이다.
 - `normalization`: `"unit" | "count"`; 생략 시 unit이며 count는 group-local sample count로 magnitude를
   조정한다.
 - `target`: area mark ID. 생략하면 current 또는 유일한 eligible area를 추론한다.
-- `densityChannel`: `"x" | "y"`, 기본값 `"y"`. y이면 value→x/density→y, x이면 반대로 연결한다.
+- `densityChannel`: `"x" | "y"`. Baseline default는 `"y"`이고 y이면 value→x/density→y,
+  x이면 반대로 연결한다. Category placement default는 `"x"`이고 category→x/value→y violin을 만든다.
 - `coordinate`: optional compatible coordinate ID.
 - `valueScale`: position scale object, 기본 `{ nice: false, zero: false }`.
 - `densityScale`: position scale object, 기본 `{ nice: true, zero: true }`; baseline을 그리기 위해 domain이
   zero를 포함해야 한다.
-- Effect: density data 생성, layer data rebinding, x/y encoding, optional group encoding, baseline-closed
-  area path materialization을 하나의 hierarchy로 수행한다.
+- `placement`: 생략 또는 `{ type: "baseline" }`은 기존 baseline이다. Category branch는
+  `{ type: "category", side?, width?, split?, scale? }`를 받는다. `side` default는 `"both"`,
+  `width` default는 `{ band: 0.8, resolve: "shared" }`다. Split은 exactly two value를 left/right 또는
+  top/bottom half로 배치하며 `side`와 mutually exclusive다. Category branch에서 `densityScale`은
+  category scale과 의미가 겹치므로 거부한다.
+- Effect: density data 생성, layer data rebinding, x/y encoding, optional group encoding, baseline-closed 또는
+  category-centered full/half closed area path materialization을 하나의 hierarchy로 수행한다.
 - Coverage: density data/mark/chart/guide tests가 두 orientation, grouped/ungrouped, explicit/auto
   density options와 rematerialization을 검증한다. 여러 steps×bandwidth pair는 부분적이다.
 
 ### Formal values — `encodeDensity`
 
-- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale })`
+- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale; placement?: { type: "baseline" } | { type: "category"; side?: "both" | "left" | "right" | "top" | "bottom"; width?: { band?: UnitIntervalExclusiveOrOne; resolve?: "shared" | "independent" }; split?: { field: FieldName; domain?: readonly [unknown, unknown] }; scale?: BandScale } })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -602,7 +608,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: forwarding of auto/default and representative explicit values, invalid input atomicity.
   - ⚠️ Partial: full numeric boundary matrix는 `createDensityData` coverage에 의존한다.
 - `densityChannel`
-  - ✅ Covered: omission→`"y"`, explicit `"x"`, unknown value rejection.
+  - ✅ Covered: baseline omission→`"y"`, category omission→`"x"`, explicit x/y, unknown value rejection.
 - `coordinate`
   - ✅ Covered: omitted/inferred and explicit compatible Cartesian coordinate.
 - `valueScale`, `densityScale`
@@ -610,15 +616,19 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ⚠️ Partial: reversed ranges and explicit density domain excluding zero across both orientations.
 - `kernel`, `normalization`
   - ✅ Covered: closed vocabularies, defaults, forwarding, provenance, formula fixtures와 scale/path parity.
+- `placement`
+  - ✅ Covered: baseline omission compatibility, full/left/right/top/bottom, split inferred/explicit domain,
+    shared/independent width, band containment, category scale, invalid side/split/band/densityScale combinations.
 - Evidence: density encoding/data/mark/chart tests.
 
 ## `editDensity`
 
-- Signature: `editDensity({ target?, bandwidth?, extent?, steps?, kernel?, normalization? })`.
+- Signature: `editDensity({ target?, bandwidth?, extent?, steps?, kernel?, normalization?, placement? })`.
 - `target`: existing density-encoded area layer ID. current 또는 유일한 eligible layer를 추론하며 ambiguity는
   explicit target을 요구한다.
 - 최소 한 density option이 필요하다. 생략한 option과 source, input/output fields, groupBy,
-  densityChannel, coordinate, scale binding은 기존 provenance와 encoding에서 유지한다.
+  densityChannel, coordinate, scale binding은 기존 provenance와 encoding에서 유지한다. `placement`는
+  category width/split/scale를 revise하거나 `{ type: "baseline" }`으로 baseline mode를 복원한다.
 - `${target}DensityDataRevision${n}` ID로 wrapped `createDensityData`를 호출하고 layer data를 explicit
   `editSemantic` child로 rebind한다. 이전 derived dataset이 더 이상 참조되지 않으면 internal wrapped
   `releaseDerivedData`가 전체 resource를 제거한다.
@@ -628,7 +638,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `editDensity`
 
-- Implemented: `editDensity({ target?: UserId; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count" })`.
+- Implemented: `editDensity({ target?: UserId; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; placement?: DensityPlacement })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -639,6 +649,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `bandwidth`, `extent`, `steps`, `kernel`, `normalization`
   - ✅ Covered: representative edits, omitted-value preservation, invalid/empty options와 repeated revisions.
   - ⚠️ Partial: every cross-product of numeric extremes and kernel/normalization combinations.
+- `placement`
+  - ✅ Covered: category width/split revision, placement scale edit, baseline↔category replacement, stale encoding/scale
+    cleanup, color compatibility rejection와 previous-program immutability.
 - Revision lifecycle
   - ✅ Covered: deterministic IDs, explicit rebind, orphan release, retained shared old dataset, earlier-program
     immutability and shared-scale mark rematerialization.

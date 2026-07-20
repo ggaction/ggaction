@@ -1,7 +1,8 @@
 import { loadCars } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 import { createCarsViolinPrimitives } from "./primitive.program.js";
-import { createCarsViolinActions } from "./action.program.js";
+import { createCarsAccelerationViolins } from
+  "../../../examples/cars-acceleration-violins/program.js";
 import {
   FULL_LAYOUT,
   SPLIT_LAYOUT
@@ -125,9 +126,8 @@ export const visualVariants = Object.freeze([
     variant: "full",
     title: "Cars Full Violin Plot",
     callChain: fullViolinTargetCallChain,
-    artifact: { scope: "review" },
     primitive: () => createCarsViolinPrimitives(cars),
-    userFacing: () => createCarsViolinActions(cars),
+    userFacing: () => createCarsAccelerationViolins(cars),
     width: FULL_LAYOUT.width,
     height: FULL_LAYOUT.height,
     colors: [],
@@ -145,9 +145,8 @@ export const visualVariants = Object.freeze([
     variant: "split-era",
     title: "Cars Split Violin Plot",
     callChain: splitViolinTargetCallChain,
-    artifact: { scope: "review" },
     primitive: () => createCarsViolinPrimitives(cars, { split: true }),
-    userFacing: () => createCarsViolinActions(cars, { split: true }),
+    userFacing: () => createCarsAccelerationViolins(cars, { split: true }),
     width: SPLIT_LAYOUT.width,
     height: SPLIT_LAYOUT.height,
     colors: ["#4c78a8", "#e45756", "#334155"],

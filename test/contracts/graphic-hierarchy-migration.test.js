@@ -25,6 +25,12 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "cars-acceleration-violins": [
+    "canvas", "horizontalGridLines", "violins",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "cars-binned-heatmap": [
     "canvas", "heatmap",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

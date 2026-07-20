@@ -1,11 +1,9 @@
-import { chart } from "../../../src/index.js";
-import {
-  ERA_COLORS,
-  ERA_DOMAIN,
-  ORIGIN_COLORS,
-  ORIGIN_DOMAIN,
-  prepareViolinCars
-} from "./reference-values.js";
+import { chart } from "../../src/index.js";
+
+const ORIGIN_DOMAIN = Object.freeze(["USA", "Europe", "Japan"]);
+const ORIGIN_COLORS = Object.freeze(["#4c78a8", "#f58518", "#54a24b"]);
+const ERA_DOMAIN = Object.freeze(["1970–1976", "1977–1982"]);
+const ERA_COLORS = Object.freeze(["#4c78a8", "#e45756"]);
 
 const AXES = Object.freeze({
   x: Object.freeze({
@@ -42,8 +40,17 @@ const TITLE = Object.freeze({
   titleStyle: Object.freeze({ fontSize: 24, fontWeight: 700 })
 });
 
-export function createCarsViolinActions(cars, { split = false } = {}) {
-  const rows = split ? prepareViolinCars(cars) : cars;
+function carsWithEra(cars) {
+  return cars.map(row => ({
+    ...row,
+    era: Number(String(row.Year).slice(0, 4)) <= 1976
+      ? ERA_DOMAIN[0]
+      : ERA_DOMAIN[1]
+  }));
+}
+
+export function createCarsAccelerationViolins(cars, { split = false } = {}) {
+  const values = split ? carsWithEra(cars) : cars;
   return chart()
     .createCanvas({
       width: split ? 760 : 720,
@@ -52,7 +59,7 @@ export function createCarsViolinActions(cars, { split = false } = {}) {
         ? { top: 90, right: 165, bottom: 80, left: 80 }
         : { top: 90, right: 45, bottom: 80, left: 80 }
     })
-    .createData({ values: rows })
+    .createData({ values })
     .createViolinPlot({
       id: "violins",
       x: { field: "Origin", fieldType: "nominal" },

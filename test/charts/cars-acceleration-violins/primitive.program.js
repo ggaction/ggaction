@@ -140,11 +140,12 @@ export function createCarsViolinPrimitiveResult(cars, { split = false } = {}) {
     .editGraphics({ target: "xAxisTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "xAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "xAxisTitle", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "xAxisTitle", property: "rotation", value: 0 })
     .createGraphics({ id: "yAxisLine", parent: "plot-main", type: "line" })
     .editGraphics({ target: "yAxisLine", property: "x1", value: bounds.left })
-    .editGraphics({ target: "yAxisLine", property: "y1", value: bounds.top })
+    .editGraphics({ target: "yAxisLine", property: "y1", value: bounds.bottom })
     .editGraphics({ target: "yAxisLine", property: "x2", value: bounds.left })
-    .editGraphics({ target: "yAxisLine", property: "y2", value: bounds.bottom })
+    .editGraphics({ target: "yAxisLine", property: "y2", value: bounds.top })
     .editGraphics({ target: "yAxisLine", property: "stroke", value: "#334155" })
     .editGraphics({ target: "yAxisLine", property: "strokeWidth", value: 1 })
     .createGraphics({
@@ -196,7 +197,76 @@ export function createCarsViolinPrimitiveResult(cars, { split = false } = {}) {
       target: "yAxisTitle",
       property: "rotation",
       value: -Math.PI / 2
-    })
+    });
+
+  if (values.legend !== undefined) {
+    const legend = values.legend;
+    program = program
+      .createGraphics({
+        id: "colorLegendSymbols",
+        parent: "canvas",
+        type: "rect",
+        length: legend.items.length
+      })
+      .editGraphics({
+        target: "colorLegendSymbols",
+        property: "x",
+        value: legend.items.map(item => item.x)
+      })
+      .editGraphics({
+        target: "colorLegendSymbols",
+        property: "y",
+        value: legend.items.map(item => item.y)
+      })
+      .editGraphics({ target: "colorLegendSymbols", property: "width", value: 16 })
+      .editGraphics({ target: "colorLegendSymbols", property: "height", value: 16 })
+      .editGraphics({
+        target: "colorLegendSymbols",
+        property: "fill",
+        value: legend.items.map(item => item.fill)
+      })
+      .editGraphics({ target: "colorLegendSymbols", property: "stroke", value: "white" })
+      .editGraphics({ target: "colorLegendSymbols", property: "strokeWidth", value: 0.75 })
+      .createGraphics({
+        id: "colorLegendLabels",
+        parent: "canvas",
+        type: "text",
+        length: legend.items.length
+      })
+      .editGraphics({
+        target: "colorLegendLabels",
+        property: "x",
+        value: legend.items.map(item => item.x + 26)
+      })
+      .editGraphics({
+        target: "colorLegendLabels",
+        property: "y",
+        value: legend.items.map(item => item.y + 8)
+      })
+      .editGraphics({
+        target: "colorLegendLabels",
+        property: "text",
+        value: legend.items.map(item => item.label)
+      })
+      .editGraphics({ target: "colorLegendLabels", property: "fill", value: "#334155" })
+      .editGraphics({ target: "colorLegendLabels", property: "fontSize", value: 13 })
+      .editGraphics({ target: "colorLegendLabels", property: "fontFamily", value: "sans-serif" })
+      .editGraphics({ target: "colorLegendLabels", property: "fontWeight", value: "normal" })
+      .editGraphics({ target: "colorLegendLabels", property: "textAlign", value: "left" })
+      .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "middle" })
+      .createGraphics({ id: "colorLegendTitle", parent: "canvas", type: "text" })
+      .editGraphics({ target: "colorLegendTitle", property: "x", value: legend.title.x })
+      .editGraphics({ target: "colorLegendTitle", property: "y", value: legend.title.y })
+      .editGraphics({ target: "colorLegendTitle", property: "text", value: legend.title.text })
+      .editGraphics({ target: "colorLegendTitle", property: "fill", value: "#334155" })
+      .editGraphics({ target: "colorLegendTitle", property: "fontSize", value: 14 })
+      .editGraphics({ target: "colorLegendTitle", property: "fontFamily", value: "sans-serif" })
+      .editGraphics({ target: "colorLegendTitle", property: "fontWeight", value: 600 })
+      .editGraphics({ target: "colorLegendTitle", property: "textAlign", value: "left" })
+      .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "middle" });
+  }
+
+  program = program
     .createGraphics({ id: "chartTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "chartTitle", property: "x", value: values.title.x })
     .editGraphics({ target: "chartTitle", property: "y", value: 32 })
@@ -221,73 +291,6 @@ export function createCarsViolinPrimitiveResult(cars, { split = false } = {}) {
     .editGraphics({ target: "chartSubtitle", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "chartSubtitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "chartSubtitle", property: "textBaseline", value: "middle" });
-
-  if (values.legend !== undefined) {
-    const legend = values.legend;
-    program = program
-      .createGraphics({
-        id: "splitLegendSymbols",
-        parent: "canvas",
-        type: "rect",
-        length: legend.items.length
-      })
-      .editGraphics({
-        target: "splitLegendSymbols",
-        property: "x",
-        value: legend.items.map(item => item.x)
-      })
-      .editGraphics({
-        target: "splitLegendSymbols",
-        property: "y",
-        value: legend.items.map(item => item.y)
-      })
-      .editGraphics({ target: "splitLegendSymbols", property: "width", value: 16 })
-      .editGraphics({ target: "splitLegendSymbols", property: "height", value: 16 })
-      .editGraphics({
-        target: "splitLegendSymbols",
-        property: "fill",
-        value: legend.items.map(item => item.fill)
-      })
-      .editGraphics({ target: "splitLegendSymbols", property: "stroke", value: "white" })
-      .editGraphics({ target: "splitLegendSymbols", property: "strokeWidth", value: 0.75 })
-      .createGraphics({
-        id: "splitLegendLabels",
-        parent: "canvas",
-        type: "text",
-        length: legend.items.length
-      })
-      .editGraphics({
-        target: "splitLegendLabels",
-        property: "x",
-        value: legend.items.map(item => item.x + 26)
-      })
-      .editGraphics({
-        target: "splitLegendLabels",
-        property: "y",
-        value: legend.items.map(item => item.y + 8)
-      })
-      .editGraphics({
-        target: "splitLegendLabels",
-        property: "text",
-        value: legend.items.map(item => item.label)
-      })
-      .editGraphics({ target: "splitLegendLabels", property: "fill", value: "#334155" })
-      .editGraphics({ target: "splitLegendLabels", property: "fontSize", value: 13 })
-      .editGraphics({ target: "splitLegendLabels", property: "fontFamily", value: "sans-serif" })
-      .editGraphics({ target: "splitLegendLabels", property: "fontWeight", value: "normal" })
-      .editGraphics({ target: "splitLegendLabels", property: "textAlign", value: "left" })
-      .editGraphics({ target: "splitLegendLabels", property: "textBaseline", value: "middle" })
-      .createGraphics({ id: "splitLegendTitle", parent: "canvas", type: "text" })
-      .editGraphics({ target: "splitLegendTitle", property: "x", value: legend.title.x })
-      .editGraphics({ target: "splitLegendTitle", property: "y", value: legend.title.y })
-      .editGraphics({ target: "splitLegendTitle", property: "text", value: legend.title.text })
-      .editGraphics({ target: "splitLegendTitle", property: "fill", value: "#334155" })
-      .editGraphics({ target: "splitLegendTitle", property: "fontSize", value: 14 })
-      .editGraphics({ target: "splitLegendTitle", property: "fontFamily", value: "sans-serif" })
-      .editGraphics({ target: "splitLegendTitle", property: "fontWeight", value: 600 })
-      .editGraphics({ target: "splitLegendTitle", property: "textAlign", value: "left" })
-      .editGraphics({ target: "splitLegendTitle", property: "textBaseline", value: "middle" });
-  }
 
   return Object.freeze({ program, values });
 }

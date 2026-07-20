@@ -69,6 +69,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`editBoxPlot`](current/COMPOSITE_MARKS.md#editboxplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGradientPlot`](current/GRADIENT_PLOTS.md#creategradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGradientPlot`](current/GRADIENT_PLOTS.md#editgradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createViolinPlot`](current/VIOLIN_PLOTS.md#createviolinplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createAxes`](current/AXES.md#createaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createXAxis`](current/AXES.md#createxaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createYAxis`](current/AXES.md#createyaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

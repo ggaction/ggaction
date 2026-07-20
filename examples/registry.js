@@ -2,6 +2,8 @@ import { createCarsBoxPlot } from "./cars-box-plot/program.js";
 import { createCarsGradientPlot } from "./cars-gradient-plot/program.js";
 import { createCarsOriginDonut } from "./cars-origin-donut/program.js";
 import { createCarsDensityArea } from "./cars-density-area/program.js";
+import { createCarsAccelerationViolins } from
+  "./cars-acceleration-violins/program.js";
 import { createCarsErrorBarOverlay } from "./cars-error-bar/program.js";
 import { createCarsHistogram } from "./cars-histogram/program.js";
 import { createCarsLineChart } from "./cars-line-chart/program.js";
@@ -391,6 +393,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsDensityArea,
     docsGroup: "charts",
     browser: { path: "cars-density-area/", canvas: "#chart" }
+  }),
+  example({
+    id: "cars-acceleration-violins",
+    data: "cars",
+    width: 720,
+    height: 520,
+    createProgram: createCarsAccelerationViolins,
+    docsGroup: "charts",
+    browser: { path: "cars-acceleration-violins/", canvas: "#chart" }
   }),
   example({
     id: "cars-error-bar",

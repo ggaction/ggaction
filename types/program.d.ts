@@ -172,6 +172,34 @@ export type DensityKernel =
   | "uniform"
   | "triangular";
 export type DensityNormalization = "unit" | "count";
+export type DensityPlacementSide =
+  | "both"
+  | "left"
+  | "right"
+  | "top"
+  | "bottom";
+export type DensityWidthResolution = "shared" | "independent";
+export interface DensityPlacementWidth {
+  band?: number;
+  resolve?: DensityWidthResolution;
+}
+export interface DensityPlacementSplit {
+  field: string;
+  domain?: readonly [unknown, unknown];
+}
+export interface BaselineDensityPlacement {
+  type: "baseline";
+}
+export interface CategoryDensityPlacement {
+  type: "category";
+  side?: DensityPlacementSide;
+  width?: DensityPlacementWidth;
+  split?: DensityPlacementSplit;
+  scale?: ScaleOptions;
+}
+export type DensityPlacement =
+  | BaselineDensityPlacement
+  | CategoryDensityPlacement;
 export type FilterComparison =
   | { op: "eq" | "neq"; value: unknown }
   | { op: "lt" | "lte" | "gt" | "gte"; value: number | string };
@@ -237,9 +265,24 @@ export interface DatasetDensityTransform {
   normalization?: DensityNormalization;
   as: readonly [string, string];
   resolve: "shared";
+  placement?: {
+    readonly type: "category";
+    readonly channel: "x" | "y";
+    readonly categoryField: string;
+    readonly side: DensityPlacementSide;
+    readonly width: {
+      readonly band: number;
+      readonly resolve: DensityWidthResolution;
+    };
+    readonly split?: {
+      readonly field: string;
+      readonly domain?: readonly [unknown, unknown];
+    };
+  };
   resolved?: {
     readonly bandwidth: number;
     readonly extent: readonly [number, number];
+    readonly splitDomain?: readonly [unknown, unknown];
   };
 }
 export interface DatasetIntervalOutputFields {
@@ -934,14 +977,23 @@ export interface DensityDataOptions {
   as?: readonly [string, string];
 }
 
-export interface DensityEncodingOptions
-  extends Omit<DensityDataOptions, "id"> {
+type DensityEncodingBase = Omit<DensityDataOptions, "id"> & {
   target?: string;
   densityChannel?: "x" | "y";
   coordinate?: string;
   valueScale?: ScaleOptions;
-  densityScale?: ScaleOptions;
-}
+};
+
+export type DensityEncodingOptions = DensityEncodingBase & (
+  | {
+      placement?: BaselineDensityPlacement;
+      densityScale?: ScaleOptions;
+    }
+  | {
+      placement: CategoryDensityPlacement;
+      densityScale?: never;
+    }
+);
 
 export type IntervalCenter = "mean" | "median";
 export type IntervalExtent = "stderr" | "stdev" | "ci" | "iqr";
@@ -1135,6 +1187,45 @@ export interface GradientPlotOptions {
   width?: { band?: number };
   gradient?: GradientPlotAppearanceOptions;
   center?: false | GradientPlotCenterOptions;
+  guides?: false | CreateGuidesOptions;
+}
+
+export type ViolinPlotPositionChannel =
+  | string
+  | BoxPlotPositionChannel;
+
+export interface ViolinPlotDensityOptions
+  extends GradientPlotDensityOptions {
+  width?: DensityPlacementWidth;
+}
+
+export interface ViolinPlotSplitOptions {
+  field: string;
+  domain?: readonly [unknown, unknown];
+}
+
+export type ViolinPlotColorOptions =
+  | string
+  | Omit<CategoricalEncodingOptions, "target">;
+
+export interface ViolinPlotAreaOptions {
+  fill?: string;
+  opacity?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  curve?: CurveInterpolation;
+}
+
+export interface ViolinPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: ViolinPlotPositionChannel;
+  y: ViolinPlotPositionChannel;
+  split?: ViolinPlotSplitOptions;
+  color?: ViolinPlotColorOptions;
+  density?: ViolinPlotDensityOptions;
+  area?: ViolinPlotAreaOptions;
   guides?: false | CreateGuidesOptions;
 }
 
@@ -1360,6 +1451,7 @@ export interface EditDensityOptions {
   steps?: number;
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
+  placement?: DensityPlacement;
 }
 
 export interface OffsetScaleOptions {
@@ -2009,6 +2101,7 @@ export class ChartProgram {
   editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
   createGradientPlot(options?: GradientPlotOptions): ChartProgram;
   editGradientPlot(options: EditGradientPlotOptions): ChartProgram;
+  createViolinPlot(options: ViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;

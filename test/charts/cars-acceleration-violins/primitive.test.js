@@ -165,7 +165,7 @@ test("authors complete primitive trees and renders from graphicSpec alone", () =
     assert.ok(order.indexOf("horizontalGridLines") < order.indexOf("violins"));
     assert.ok(order.indexOf("violins") < order.indexOf("xAxisLine"));
     assert.ok(order.indexOf("violins") < order.indexOf("yAxisLine"));
-    assert.equal(order.includes("splitLegendSymbols"), split);
+    assert.equal(order.includes("colorLegendSymbols"), split);
     assert.equal(
       program.graphicSpec.objects.yAxisTitle.properties.rotation,
       -Math.PI / 2

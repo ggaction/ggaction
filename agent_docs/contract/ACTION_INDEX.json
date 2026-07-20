@@ -1118,6 +1118,24 @@
       }
     },
     {
+      "name": "createViolinPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`editDensity`, `editAreaMark`, encoding, scale, and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "anchor": "createviolinplot"
+      }
+    },
+    {
       "name": "createAxes",
       "layer": "user-facing",
       "domain": "axes",

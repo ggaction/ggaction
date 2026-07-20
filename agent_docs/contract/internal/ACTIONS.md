@@ -64,6 +64,8 @@ domain action을 통해서만 실행한다.
 | `composeFacetGuides` | `facet`, facet layout edits | Remove interior child axes/legends and attach one compatible parent legend |
 | `rebindLayerData` | `facet`, derived-data revision owners | Rebind one layer to a replayed or revised dataset |
 | `rebindGradientPlotProfile` | `facet` | Rebind one gradient owner config to its cell-local source and profile revision |
+| `createCategoricalDensityData` | `encodeDensity`, `editDensity` | Create category/split density provenance before the shared density materializer runs |
+| `configureAreaStrokeFromFill` | `createViolinPlot` | Preserve the intent that each categorical density outline follows its materialized fill |
 | `releaseDerivedData` | derived-data revision owners | Remove an unreferenced old derived revision through `editSemantic({ remove: true })` |
 | `replayDerivedData` | `facet` | Recreate one supported stored transform through its canonical data materializer |
 | `useProgram` | `hconcat`, `vconcat`, and child replacement | Retain one immutable named child program before composition materialization |

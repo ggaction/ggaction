@@ -182,7 +182,7 @@ function applyDensityPosition(program, layerId, definition, groupBy) {
 const encodeDensity = action(
   {
     op: "encodeDensity",
-    description: "Derive and encode a baseline-oriented kernel density area."
+    description: "Derive and encode a baseline or categorical kernel-density area."
   },
   function (args = {}) {
     validateOptions(args, OPTIONS, "encodeDensity");
