@@ -6,6 +6,7 @@
 - 상태: `ready-for-review`
 - 승인: 대기 중
 - Functional/documentation checkpoint: `d8ad673` (`close horizon public slice`)
+- Review package checkpoint: `b33da03` (`prepare phase 9 exit review`)
 - Remote: `origin/main`
 - 승인 전 차단: Roadmap 4 Phase 10
 
