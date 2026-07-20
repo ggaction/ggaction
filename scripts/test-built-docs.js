@@ -327,7 +327,7 @@ try {
   );
 
   await mobile.goto(`${baseUrl}reference/types/`, { waitUntil: "networkidle" });
-  assert.equal(await mobile.locator(".docs-code-label").first().innerText(), "Type contract");
+  assert.equal(await mobile.locator(".docs-code-label").first().textContent(), "Type contract");
   assert.equal(await mobile.locator(".docs-copy-button").count(), 1);
   await mobile.close();
 } finally {

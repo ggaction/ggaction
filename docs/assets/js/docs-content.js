@@ -142,7 +142,8 @@
 
   for (const pre of content.querySelectorAll("pre")) {
     const code = pre.querySelector("code");
-    const language = [...(code?.classList ?? [])]
+    const languageOwner = (code ?? pre).closest('[class*="language-"]');
+    const language = [...(languageOwner?.classList ?? [])]
       .find(name => name.startsWith("language-"))?.slice("language-".length);
     const role = ["bash", "shell", "sh"].includes(language)
       ? "Command"
