@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "phase": "roadmap4/phase7",
+  "gate": "P7-A",
+  "status": "candidate",
+  "actions": [
+    {
+      "name": "encodePathOrder",
+      "status": "candidate",
+      "required": ["field"],
+      "optional": ["target", "fieldType", "order"],
+      "replacement": "reassigns one target path-order encoding and rematerializes its complete paths",
+      "stateOwner": "semanticSpec.layers[target].encoding.pathOrder"
+    },
+    {
+      "name": "removePathOrder",
+      "status": "candidate",
+      "required": [],
+      "optional": ["target"],
+      "replacement": "removes pathOrder and restores the existing automatic independent-position sort",
+      "stateOwner": "semanticSpec.layers[target].encoding.pathOrder"
+    }
+  ]
+}

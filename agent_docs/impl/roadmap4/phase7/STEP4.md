@@ -1,0 +1,12 @@
+# Step 4 — Reassignment, removal과 consumer matrix
+
+## 진행 상태
+
+- [ ] `removePathOrder` automatic sort 복구와 immutable branch preservation
+- [ ] field/direction reassignment, atomic invalid failure와 caller ownership
+- [ ] Canvas/scale/data/filter/selection/highlight rematerialization
+- [ ] facet child replay와 ambiguity rejection
+- [ ] ranged area, curve compatibility와 generated/aggregate/Polar errors
+- [ ] P7-B review package, commit/push와 사용자 승인
+
+P7-A 승인 전에는 시작하지 않는다.

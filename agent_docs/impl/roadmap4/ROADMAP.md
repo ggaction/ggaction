@@ -126,7 +126,7 @@ existing createBoxPlot({ ... })
 | 4 | completed | NCP-003 deterministic bounded point jitter, P4-Exit 승인 완료 |
 | 5 | completed | P-001 window, P-002 2D bin과 binned heatmap; P5-Exit 승인 완료 |
 | 6 | completed | NCP-002 FillPaint linear-gradient variant와 categorical gradient-distribution facade; P6-Exit 승인 완료 |
-| 7 | planned | P-003 ordered path |
+| 7 | in-progress | P-003 ordered path; P7-A contract/oracle/primitive 진행 중 |
 | 8 | planned | NCP-001 categorical density placement |
 | 9 | planned | NCP-005 Horizon encoding |
 | 10 | planned | P-006 overlay/inset composition |
