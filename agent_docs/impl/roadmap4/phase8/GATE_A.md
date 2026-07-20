@@ -92,6 +92,8 @@ chart()
     },
     density: {
       bandwidth: 0.65,
+      extent: [8, 25],
+      steps: 80,
       width: { band: 0.8, resolve: "shared" }
     },
     area: { opacity: 0.8, strokeWidth: 1.2 }
@@ -124,6 +126,8 @@ chart()
   },
   density: {
     bandwidth: 0.65,
+    extent: [8, 25],
+    steps: 80,
     width: { band: 0.8, resolve: "shared" }
   },
   area: { opacity: 0.8, strokeWidth: 1.2 }

@@ -29,6 +29,8 @@ export const fullViolinTargetCallChain = `chart()
     },
     density: {
       bandwidth: 0.65,
+      extent: [8, 25],
+      steps: 80,
       width: { band: 0.8, resolve: "shared" }
     },
     area: { opacity: 0.8, strokeWidth: 1.2 }
@@ -62,8 +64,10 @@ export const splitViolinTargetCallChain = `chart()
       }
     },
     density: {
-      bandwidth: 0.65,
-      width: { band: 0.8, resolve: "shared" }
+    bandwidth: 0.65,
+    extent: [8, 25],
+    steps: 80,
+    width: { band: 0.8, resolve: "shared" }
     },
     area: { opacity: 0.8, strokeWidth: 1.2 }
   })
