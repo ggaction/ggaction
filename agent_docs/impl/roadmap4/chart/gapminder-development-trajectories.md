@@ -2,7 +2,7 @@
 
 ## 상태
 
-`planned` — Roadmap 4 Phase 7의 primitive-first visual contract다. Exact path-order API는 P7-A에서 승인한다.
+`implemented` — P7-A/P7-B에서 exact path-order API, primitive visual과 public parity가 승인되었다.
 
 ## 차트 목표
 

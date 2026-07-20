@@ -17,7 +17,8 @@ independent-position sort를 그대로 유지한다.
 - [x] P7-A 사용자 승인
 - [x] public action과 immutable reassignment/removal 구현
 - [x] P7-B 사용자 승인
-- [ ] consumer matrix, declarations, docs/package와 P7-Exit 사용자 승인
+- [x] consumer matrix, declarations, docs/package와 architecture closeout
+- [ ] P7-Exit 사용자 승인
 
 ## 후보 public API
 

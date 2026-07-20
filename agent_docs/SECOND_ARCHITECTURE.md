@@ -510,6 +510,7 @@ position       x, y, x2, y2, xOffset, yOffset
 polar position theta, radius
 appearance     color, strokeDash, size, shape, opacity
 grouping       group
+topology       pathOrder
 content        text
 ```
 
@@ -547,10 +548,20 @@ materializer는 shared offset consumer의 padding policy와 parent bandwidth가 
 signed step, start와 concrete bandwidth를 `resolvedScales`에 계산한다.
 
 `group`은 path를 series로 나누는 semantic channel이지만 scale이나 guide를 만들지
-않는다. `y2`는 area upper bound이며 기존 y scale을 정확히 공유한다. `xOffset`과 `yOffset`은 ordinal
+않는다. `pathOrder`는 compatible path의 각 series 안에서 vertex topology를 결정하는 semantic encoding이며
+`{ field, fieldType: "quantitative", order: "ascending" | "descending" }`를 저장한다. Scale이나 guide는
+만들지 않고, 같은 order 값은 source row order로 안정화하며 repeated position도 별도 vertex로 보존한다.
+생략하면 기존 independent-position automatic sort가 그대로 동작하고 `removePathOrder`는 explicit branch를
+제거해 그 동작으로 복귀한다. `y2`는 area upper bound이며 기존 y scale을 정확히 공유한다. `xOffset`과 `yOffset`은 ordinal
 category band 안의 grouped-bar sub-band를 표현한다. Primary positional encoding의 optional `title`은
 field 또는 transform provenance에서 추론되는 guide title을 명시적으로 덮어쓰는 semantic text다.
 Guide materializer는 이 값을 가장 먼저 읽으며 renderer가 title을 다시 추론하지 않는다.
+
+첫 path-order 범위는 raw 또는 row-preserving data를 소비하는 ordinary Cartesian line과 ranged area다. Aggregate
+line, Polar line, density/error/regression 같은 generated path와 non-row-preserving transform은 topology owner가
+다르므로 assignment 전에 거부한다. Action은 x/y가 아직 incomplete일 때 semantic intent만 저장할 수 있으며,
+position이 완성되면 owning line/area materializer가 같은 branch를 적용한다. Canvas, scale, data/filter,
+selection/highlight와 facet replay도 이 canonical materializer를 호출해 explicit order를 다시 적용한다.
 
 ### Semantic scale
 
@@ -755,6 +766,11 @@ x/y/width/height를 가진다. Path command는 하나의 `M`으로 시작하고 
 `L`, cubic segment는 `C`, closure는 마지막 `Z`로 명시한다. Open line은 `Z`를 사용하지 않고,
 closed Polar line, filled area와 polygon point shape는 마지막 `Z`를 저장한다. Original point array,
 `closed` flag 또는 renderer-specific path string을 함께 저장하지 않는다.
+
+Line/area materializer는 semantic series grain을 먼저 확정하고 explicit `pathOrder`가 있으면 각 series의 eligible
+row를 stable sort한 뒤 curve command builder에 전달한다. 따라서 curve builder와 renderer는 order field를 읽지
+않으며 이미 순서가 확정된 vertices 또는 concrete commands만 소비한다. Explicit order 재할당과 removal은 같은
+owning mark를 wrapped action으로 rematerialize하고 earlier program의 commands를 변경하지 않는다.
 
 Concrete path bounds는 cubic control-point hull을 그대로 쓰지 않는다. 각 `C` segment의
 x/y 도함수 근을 구해 `[0, 1]` 안의 실제 Bézier extrema와 endpoint만 union한다. Selection
