@@ -3,12 +3,13 @@
 ## 상태
 
 - Gate: `P7-A`
-- 상태: `ready-for-review`
+- 상태: `approved`
+- 승인: 2026-07-20 사용자 명시 승인
 - Review source checkpoint: `62d73b7` (`add ordered path primitive gate`)
 - Remote: `origin/main`
 - 승인 전 차단: public `encodePathOrder`/`removePathOrder`, declarations, public docs와 action inventory
 
-이 Gate는 path topology를 정하는 exact semantic contract와 primitive 결과만 승인한다. 아직 runtime method,
+이 Gate는 path topology를 정하는 exact semantic contract와 primitive 결과를 승인했다. 아직 runtime method,
 TypeScript declaration과 Current action inventory에는 public action이 없다.
 
 ## 승인 대상

@@ -2,11 +2,11 @@
   "version": 1,
   "phase": "roadmap4/phase7",
   "gate": "P7-A",
-  "status": "candidate",
+  "status": "approved",
   "actions": [
     {
       "name": "encodePathOrder",
-      "status": "candidate",
+      "status": "planned",
       "required": ["field"],
       "optional": ["target", "fieldType", "order"],
       "replacement": "reassigns one target path-order encoding and rematerializes its complete paths",
@@ -14,7 +14,7 @@
     },
     {
       "name": "removePathOrder",
-      "status": "candidate",
+      "status": "planned",
       "required": [],
       "optional": ["target"],
       "replacement": "removes pathOrder and restores the existing automatic independent-position sort",
