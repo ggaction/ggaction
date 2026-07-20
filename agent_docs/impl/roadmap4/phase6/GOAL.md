@@ -10,8 +10,8 @@ NCP-002를 범용 backend-neutral `FillPaint` concrete property contract의 첫 
 
 ## 진행 상태
 
-- [ ] P5-Exit 승인 상태와 string fill baseline 확인
-- [ ] exact `FillPaint`/profile/action parameter contract
+- [x] P5-Exit 승인 상태와 string fill baseline 확인
+- [x] exact `FillPaint`/profile/action parameter candidate contract
 - [ ] independent paint/density/profile oracle
 - [ ] Cars primitive gradient plot과 P6-A 승인
 - [ ] `createGradientPlot`/`editGradientPlot` vertical slice와 P6-B 승인
@@ -33,10 +33,11 @@ NCP-002를 범용 backend-neutral `FillPaint` concrete property contract의 첫 
 
 - Density: Gaussian, `bandwidth: "auto"`, shared auto extent, `steps: 64`, `normalization: "unit"`
 - Width: `{ band: 0.7 }`
-- Gradient: sequential `blues`, opacity `[0, 1]`, global density range
+- Gradient: sequential `blues`, opacity `[0, 1]`, global density range. Opacity는 materialization이 각 stop의
+  alpha-bearing concrete color에 반영하며 paint schema에 별도 renderer opacity 명령을 저장하지 않음
 - Center: median, dark stroke, `1.5` logical pixels; `false`로 완전 제거
-- Paint: `FillPaint = string | LinearGradientPaint`, item-local normalized endpoints와 ordered stops; equal adjacent
-  offsets는 hard stop
+- Paint: `FillPaint = string | LinearGradientPaint`, item-local normalized endpoints와 `{ offset, color }` ordered
+  stops; equal adjacent offsets는 hard stop
 
 후보는 P6-A 승인 전 구현 근거를 확인해 조정할 수 있다. Public parameter 이름을 source에 고정하기 전에 primitive
 source, concrete state와 image를 함께 검토한다.

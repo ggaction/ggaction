@@ -15,9 +15,9 @@ type LinearGradientPaint = {
   from: { x: UnitInterval; y: UnitInterval };
   to: { x: UnitInterval; y: UnitInterval };
   stops: readonly [
-    { offset: UnitInterval; color: NonEmptyString; opacity?: UnitInterval },
-    { offset: UnitInterval; color: NonEmptyString; opacity?: UnitInterval },
-    ...{ offset: UnitInterval; color: NonEmptyString; opacity?: UnitInterval }[]
+    { offset: UnitInterval; color: NonEmptyString },
+    { offset: UnitInterval; color: NonEmptyString },
+    ...{ offset: UnitInterval; color: NonEmptyString }[]
   ];
 };
 ```
@@ -30,6 +30,8 @@ type LinearGradientPaint = {
   비선형 density profile은 ordered stop의 offset/color/opacity가 piecewise하게 표현한다.
 - `from`/`to`는 item-local bounds에 대한 normalized 좌표이며 서로 달라야 한다.
 - Stop은 offset ascending으로 저장한다. Equal adjacent offsets는 hard stop을 뜻하고 다른 역순은 거부한다.
+- Stop은 `{ offset, color }`만 저장한다. GradientPlot의 high-level opacity mapping은 materializer가 alpha-bearing
+  concrete color 문자열에 반영한다. Renderer-specific opacity sidecar나 command는 paint에 저장하지 않는다.
 - Caller object를 보존하고 normalized paint와 stops를 immutable graphical state에 저장한다.
 - Paint object와 그 안의 `stops` 배열은 하나의 scalar fill 값이다. `editGraphics` collection value distribution이
   paint 내부 배열을 item별 값으로 잘못 분배해서는 안 된다.
@@ -40,6 +42,24 @@ type LinearGradientPaint = {
 - Existing resource-specific appearance action이 fill을 소유하면 string과 paint를 같은 property에서 교체한다. Advanced
   action author는 public extension primitive `editGraphics`로 같은 concrete value contract를 사용할 수 있다.
 - Exact validation, endpoint orientation과 hard-stop duplicate policy는 P6-A에서 primitive source와 image를 함께 승인한다.
+
+### Exact P6-A candidate validation
+
+| Value | Candidate rule |
+| --- | --- |
+| solid fill | non-empty string; existing behavior unchanged |
+| paint object | plain object with exactly `type`, `from`, `to`, `stops` |
+| `type` | exactly `"linear-gradient"` |
+| `from` / `to` | plain `{ x, y }`; both values finite in `[0, 1]`; points must differ |
+| `stops` | array of at least two plain `{ offset, color }` entries |
+| stop offset | finite in `[0, 1]`, nondecreasing; equal adjacent values form a hard stop |
+| stop color | non-empty Canvas color string; renderer/backend validity remains a draw-time concern like current solid fill |
+| rect bounds | fill box exactly; stroke extent excluded |
+| closed-path bounds | exact command geometry bounds; stroke extent excluded |
+| unsupported owners | circle/text/open path/stroke reject structured paint before partial state is stored |
+
+Stops do not have to begin at `0` or end at `1`; Canvas extends the first/last color to the endpoint. GradientPlot-generated
+profiles always include both endpoints.
 
 ## createGradientPlot
 

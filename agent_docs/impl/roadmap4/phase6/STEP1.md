@@ -2,10 +2,10 @@
 
 ## 진행 상태
 
-- [ ] `FillPaint` owner와 `LinearGradientPaint` exact normalized schema/validation table
-- [ ] string fill compatibility와 별도 paint action을 만들지 않는 API boundary
-- [ ] categorical/quantitative x/y 및 deferred inference contract
-- [ ] density-profile requested/resolved provenance와 one-row-per-category schema
+- [x] `FillPaint` owner와 `LinearGradientPaint` exact normalized schema/validation table candidate
+- [x] string fill compatibility와 별도 paint action을 만들지 않는 API boundary
+- [x] categorical/quantitative x/y 및 deferred inference contract
+- [x] density-profile requested/resolved provenance와 one-row-per-category schema
 - [ ] independent gradient sampling/color interpolation oracle
 - [ ] independent density/profile literal Cars vectors와 invariants
 - [ ] normal/reversed value scale의 sample→pixel→stop offset oracle
