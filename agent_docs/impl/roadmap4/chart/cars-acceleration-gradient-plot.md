@@ -36,13 +36,10 @@ const program = chart()
     },
     width: { band: 0.7 },
     gradient: {
-      palette: "blues",
       opacity: [0, 1]
     },
     center: {
-      type: "median",
-      stroke: "#0f172a",
-      strokeWidth: 1.5
+      type: "median"
     },
     guides: {
       axes: {
@@ -51,6 +48,12 @@ const program = chart()
       },
       legend: { title: "Relative density", position: "right" }
     }
+  })
+  .encodeColor({
+    target: "gradientPlot",
+    field: "Origin",
+    fieldType: "nominal",
+    scale: { palette: "tableau10" }
   })
   .createTitle({
     text: "Acceleration Distribution by Origin",
@@ -66,13 +69,15 @@ Shortest direct call은 x/y만 필요하다. Compatible encoded owner가 하나 
 
 - x는 categorical, y는 quantitative이므로 vertical strip이다. 반대 역할이면 horizontal strip이다.
 - Category order는 first eligible source appearance다.
-- Shared value extent에서 category별 density를 계산하고 one global density range로 intensity를 비교한다.
+- Shared value extent에서 category별 density를 계산하고 one global density range로 intensity를 비교한다. Origin의
+  categorical color가 hue를 정하고 density가 각 hue의 lightness/opacity를 조절한다.
 - Generated profile dataset은 category당 한 row를 가지며 value/intensity samples, lower/upper와 center를 저장한다.
   Palette color와 normalized paint endpoints는 semantic dataset에 저장하지 않는다.
 - Stable GradientPlot config가 palette/opacity intent를 소유하고, materializer가 resolved value scale과 final rect
   bounds를 사용해 category별 concrete `LinearGradientPaint` stops를 만든다. Reversed scale이면 physical endpoint도
   함께 뒤집힌다.
-- Concrete gradient body는 category당 rect 하나다. Median은 optional rule child이며 `center: false`이면 관련
+- Concrete gradient body는 category당 rect 하나이고 기본 outline stroke는 없다. Renderer completeness를 위한
+  concrete stroke는 `transparent`/`0`으로 materialize한다. Median은 optional rule child이며 `center: false`이면 관련
   semantic, config, graphic과 trace child가 모두 없다.
 - Grid는 mark 뒤가 아니라 gradient body 뒤쪽 plot sibling으로 explicit placement되고 axes/legend/title은 위에 온다.
 

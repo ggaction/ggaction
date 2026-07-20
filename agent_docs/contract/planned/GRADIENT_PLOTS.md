@@ -99,7 +99,9 @@ createGradientPlot({
   otherwise retain an incomplete owner until compatible `encodeX`/`encodeY` calls complete it. Both authoring orders converge.
 - First omitted ID resolves to `"gradientPlot"`; a second owner requires an explicit ID.
 - Candidate defaults pending P6-A are Gaussian, auto bandwidth/extent, 64 steps, unit density, width band `0.7`,
-  sequential `blues`, opacity `[0, 1]`, and an enabled median center rule.
+  sequential `blues`, opacity `[0, 1]`, no body outline stroke, and an enabled median center rule.
+- Compatible categorical `encodeColor`가 있으면 그 scale이 category hue를 정하고 density가 각 hue의
+  lightness/opacity를 조절한다. 이 경우 `gradient.palette`는 사용하지 않으며 categorical color scale이 우선한다.
 - Every category owns one semantic density profile and one concrete gradient strip. The profile stores sampled value/intensity
   and center meaning, not renderer colors or backend gradient objects.
 - A shared value extent and one global resolved density range make intensity comparable across categories. Empty categories

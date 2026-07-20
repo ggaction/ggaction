@@ -18,8 +18,8 @@ export const gradientPlotTargetCallChain = `chart()
     y: { field: "Acceleration" },
     density: { bandwidth: "auto", steps: 64 },
     width: { band: 0.7 },
-    gradient: { palette: "blues", opacity: [0, 1] },
-    center: { type: "median", stroke: "#0f172a", strokeWidth: 1.5 },
+    gradient: { opacity: [0, 1] },
+    center: { type: "median" },
     guides: {
       axes: {
         x: { title: { text: "Origin" } },
@@ -27,6 +27,12 @@ export const gradientPlotTargetCallChain = `chart()
       },
       legend: { title: "Relative density", position: "right" }
     }
+  })
+  .encodeColor({
+    target: "gradientPlot",
+    field: "Origin",
+    fieldType: "nominal",
+    scale: { palette: "tableau10" }
   })
   .createTitle({
     text: "Acceleration Distribution by Origin",

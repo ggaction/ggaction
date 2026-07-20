@@ -20,6 +20,17 @@ test("authors one gradient strip and median rule per Cars origin", () => {
     reference.profiles.map(profile => profile.fill)
   );
   assert.equal(centers.every(item => item.properties.strokeWidth === 1.5), true);
+  assert.deepEqual(
+    strips.map(item => item.properties.strokeWidth),
+    [0, 0, 0]
+  );
+  assert.equal(new Set(
+    strips.map(item => item.properties.fill.stops.at(-1).color)
+  ).size, 3);
+  assert.deepEqual(
+    program.semanticSpec.layers[0].encoding.color,
+    { field: "origin", fieldType: "nominal", scale: "color" }
+  );
   assert.deepEqual(program.semanticSpec.layers.map(layer => layer.id), [
     "gradientPlot",
     "gradientPlotCenter"

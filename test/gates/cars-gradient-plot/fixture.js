@@ -22,6 +22,12 @@ export const GRADIENT_PLOT_LAYOUT = Object.freeze({
   legend: Object.freeze({ x: 500, y: 135, width: 22, height: 170 })
 });
 
+export const GRADIENT_PLOT_CATEGORY_COLORS = Object.freeze({
+  USA: Object.freeze({ base: "#4c78a8", ramp: Object.freeze(["#dce8f2", "#4c78a8"]) }),
+  Europe: Object.freeze({ base: "#f58518", ramp: Object.freeze(["#fde8d2", "#f58518"]) }),
+  Japan: Object.freeze({ base: "#e45756", ramp: Object.freeze(["#f9dddd", "#e45756"]) })
+});
+
 const TICKS = Object.freeze([8, 12, 16, 20, 24]);
 
 function scaleY(value, extent) {
@@ -45,6 +51,7 @@ export function createCarsGradientPlotReference(cars) {
     GRADIENT_PLOT_LAYOUT.bounds.right - GRADIENT_PLOT_LAYOUT.bounds.left
   ) / density.categories.length;
   const profiles = density.profiles.map((profile, index) => {
+    const categoryColor = GRADIENT_PLOT_CATEGORY_COLORS[profile.category];
     const centerX = GRADIENT_PLOT_LAYOUT.bounds.left + slotWidth * (index + 0.5);
     return Object.freeze({
       [GRADIENT_PLOT_FIELDS.category]: profile.category,
@@ -60,10 +67,12 @@ export function createCarsGradientPlotReference(cars) {
       width: GRADIENT_PLOT_LAYOUT.stripWidth,
       height: GRADIENT_PLOT_LAYOUT.bounds.bottom - GRADIENT_PLOT_LAYOUT.bounds.top,
       centerY: scaleY(profile.center, density.extent),
+      baseColor: categoryColor.base,
       fill: createDensityPaintReference(profile, {
         extent: density.extent,
         maximumIntensity: density.maximumIntensity,
         orientation: "vertical",
+        palette: categoryColor.ramp,
         opacity: [0, 1]
       })
     });
@@ -80,6 +89,7 @@ export function createCarsGradientPlotReference(cars) {
     yTicks: Object.freeze(yTicks),
     legendPaint: createLegendPaintReference({
       orientation: "vertical",
+      palette: ["#e2e8f0", "#334155"],
       opacity: [0, 1]
     })
   });
