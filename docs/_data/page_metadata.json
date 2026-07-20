@@ -164,6 +164,10 @@
     "title": "Window Data Transforms",
     "description": "createWindowData computes ordered values within optional partitions and stores the result as a new immutable dataset."
   },
+  "/api/data/bin2d/": {
+    "title": "Rectangular 2D Bins",
+    "description": "createBin2DData groups two quantitative fields into a rectangular grid."
+  },
   "/api/marks/": {
     "title": "Marks",
     "description": "Marks define the semantic form of a layer. Create a mark first, then connect it to data through position, grouping, and appearance encodings.",

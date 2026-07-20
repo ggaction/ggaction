@@ -14,6 +14,7 @@ import { createRegressionData, materializeRegressionData } from "./regression.js
 import { createDensityData, materializeDensityData } from "./density.js";
 import { createIntervalData, materializeIntervalData } from "./interval.js";
 import { createWindowData, materializeWindowData } from "./window.js";
+import { createBin2DData, materializeBin2DData } from "./bin2d.js";
 import { createBoxSummaryData, createBoxOutlierData, materializeBoxSummaryData, materializeBoxOutlierData } from "./box.js";
 
 export function registerDataActions(ProgramClass) {
@@ -33,6 +34,8 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.createIntervalData = createIntervalData;
   ProgramClass.prototype.createWindowData = createWindowData;
   ProgramClass.prototype.materializeWindowData = materializeWindowData;
+  ProgramClass.prototype.createBin2DData = createBin2DData;
+  ProgramClass.prototype.materializeBin2DData = materializeBin2DData;
   ProgramClass.prototype.createBoxSummaryData = createBoxSummaryData;
   ProgramClass.prototype.createBoxOutlierData = createBoxOutlierData;
   ProgramClass.prototype.materializeBoxSummaryData = materializeBoxSummaryData;

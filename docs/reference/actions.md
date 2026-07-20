@@ -31,6 +31,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`createAxes`](./actions/guides.md#createaxes) | user-facing | axes |
 | [`createBarMark`](./actions/marks.md#createbarmark) | user-facing | marks |
 | [`createBarPlot`](./actions/charts-data.md#createbarplot) | user-facing | charts |
+| [`createBin2DData`](./actions/charts-data.md#createbin2ddata) | user-facing | core |
 | [`createBoxPlot`](./actions/statistics.md#createboxplot) | user-facing | statistics |
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | user-facing | core |
 | [`createCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |

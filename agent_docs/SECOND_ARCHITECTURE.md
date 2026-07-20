@@ -280,6 +280,13 @@ Density provenance는 requested policy와 materialized revision 결과를 분리
 `resolved: { bandwidth, extent }`에 저장된다. 따라서 derived replay와 `editDensity`는 새 source rows마다
 자동 policy를 다시 계산하면서도 각 immutable revision의 실제 계산값을 해석할 수 있다.
 
+Rectangular 2D-bin provenance도 requested grid policy와 materialized revision 결과를 분리한다. Transform은
+requested `bins`, per-axis automatic/explicit `extent`, output fields와 empty/member policy를 저장하고,
+`resolved`는 해당 revision의 concrete extent, edges, eligible count와 occupied count를 저장한다. 동일 logical
+owner를 다시 author하면 `materializationConfigs.data.bin2d[owner].current`가 current immutable revision ID를
+가리키고 direct layer consumer는 wrapped rebind와 materialization plan으로 갱신된다. Earlier program은 기존
+revision을 유지한다. Facet replay에서는 `resolved`를 제거하고 child partition에서 다시 계산한다.
+
 Facet scale grammar는 channel별 shared/independent intent를 pure normalized plan으로 소유한다. Omitted
 channel은 shared이며, 같은 scale ID에 연결된 channel들이 서로 다른 policy를 요청하면 state 변경 전에 거부한다.
 Shared automatic continuous domain은 child domain의 min/max union, discrete domain은 child order의 stable union,

@@ -268,7 +268,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: Implemented, 필수 새 dataset ID.
 - `source`: Implemented, 필수 existing dataset ID.
 - `transform`: Implemented, 정확히 하나의 transform definition을 가진 tuple. Public direct-authoring union은
-  filter/regression/density/interval/window schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
+  filter/regression/density/interval/window/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
   box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty/multiple transform schema를 거부한다.
@@ -278,7 +278,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createDerivedData`
 
-- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | RegressionTransform | DensityTransform | IntervalTransform | WindowTransform`.
+- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | RegressionTransform | DensityTransform | IntervalTransform | WindowTransform | Bin2DTransform`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -287,7 +287,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`, `source`
   - ✅ Covered: valid IDs, duplicate output, unknown source.
 - `transform`
-  - ✅ Covered: filter/regression/density/interval/window direct schema, object/empty/multiple/unknown rejection,
+  - ✅ Covered: filter/regression/density/interval/window/bin2d direct schema, object/empty/multiple/unknown rejection,
     one-element tuple acceptance와 deep immutable ownership.
   - Built-in value materializer는 owning high-level action이 만든 single-transform resource만 받는다.
 - Evidence: `test/unit/actions/data/derived-data.test.js`, `scripts/package-consumer.js`, 각 high-level data action test.
@@ -331,6 +331,51 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     facet replay, direct `createDerivedData` validation and packaged TypeScript/runtime consumption.
 - Evidence: `test/unit/grammar/transforms/window.test.js`, `test/unit/actions/data/window-data.test.js`,
   `test/unit/actions/data/derived-data.test.js`, `test/gates/cars-binned-heatmap/window-public.test.js`,
+  `scripts/package-consumer.js`.
+
+## `createBin2DData`
+
+- Signature: `createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`
+- Lifecycle: stable logical owner를 가진 mutable resource다. 첫 호출은 `id` dataset을 만들고, 같은 `id`의
+  후속 호출은 deterministic revision dataset을 만든 뒤 direct layer consumer를 명시적으로 rebind하고 이전
+  unreferenced revision을 release한다. Earlier program과 caller input은 바뀌지 않는다.
+- `source`: existing materialized dataset ID다. 첫 호출에서 생략하면 current data를 사용한다. Revision에서
+  생략하면 이전 revision의 source를 보존한다.
+- `x`, `y`: finite numeric pair를 읽을 source field다. 한쪽이라도 invalid/missing인 row는 eligible하지 않다.
+- `bins`: positive integer 또는 `{ x, y }`; 기본 `{ x: 10, y: 10 }`이다.
+- `extent`: optional `{ x?, y? }` explicit increasing finite endpoints다. 생략 axis는 eligible min/max를 쓴다.
+  Explicit extent는 모든 eligible 값을 포함해야 하며 auto extent가 constant면 오류다.
+- `includeEmpty`: 기본 `false`. `true`면 deterministic y-major/x-minor 순서로 빈 cell도 저장한다.
+- `members`: 기본 `false`. `true`면 source row object가 아니라 source row index array를 cell에 저장한다.
+- `as`: generated `x0/x1/y0/y1/count/members` field 이름을 부분 override한다. Default는 `id` namespace를 쓴다.
+- Effect: normalized request와 resolved extent/edges/count metadata를 transform provenance에 저장하고, 각 cell의
+  lower/upper bounds와 count를 immutable values로 저장한다. Cell은 `[lower, upper)`이며 마지막 upper bound만
+  포함한다.
+- Facet: source partition 뒤 requested transform을 child마다 replay하므로 automatic extent와 counts는 child
+  rows에서 다시 계산된다.
+- 오류: invalid field/bin/extent/output contract, eligible row 부재, silent explicit-extent data loss, duplicate output
+  names를 state 생성 전에 거부한다. 현재 direct derived-dataset consumer가 있는 owner revision replacement는
+  dependency를 조용히 stale하게 두지 않고 명확히 거부한다.
+
+### Formal values — `createBin2DData`
+
+- Implemented: `createBin2DData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger }; extent?: { x?: [FiniteNumber, FiniteNumber]; y?: [FiniteNumber, FiniteNumber] }; includeEmpty?: boolean; members?: boolean; as?: { x0?, x1?, y0?, y1?, count?, members? } })`
+- Planned (NOT IMPLEMENTED): dependent derived-dataset revision cascade, weighted cells, hexagonal/adaptive bins.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createBin2DData`
+
+- Grid and boundaries
+  - ✅ Covered: scalar/per-axis counts, automatic/partial/complete explicit extents, interior and final boundaries,
+    row-major order, empty omission/inclusion, constant extent and silent-loss rejection.
+- Output
+  - ✅ Covered: namespaced/partial/custom fields, optional member indexes, unique fields, count conservation and
+    independent Cars oracle parity.
+- Lifecycle and integration
+  - ✅ Covered: source inference, filtered source, repeated immutable revision, direct mark/scale/guide rematerialization,
+    release, facet replay, direct transform schema, runtime and strict TypeScript package consumption.
+- Evidence: `test/unit/grammar/transforms/bin2d.test.js`, `test/unit/actions/data/bin2d-data.test.js`,
+  `test/unit/actions/data/derived-data.test.js`, `test/gates/cars-binned-heatmap/bin2d-public.test.js`,
   `scripts/package-consumer.js`.
 
 ## `createCoordinate`

@@ -146,6 +146,24 @@
       }
     },
     {
+      "name": "createBin2DData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Same logical ID creates and rebinds an immutable derived revision",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createbin2ddata"
+      }
+    },
+    {
       "name": "createIntervalData",
       "layer": "user-facing",
       "domain": "statistics",
@@ -2146,6 +2164,7 @@
       "materializeBoxOutlierData",
       "materializeBoxPlot",
       "materializeBoxSummaryData",
+      "materializeBin2DData",
       "materializeComposition",
       "materializeDensityData",
       "materializeFilteredData",

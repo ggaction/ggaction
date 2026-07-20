@@ -29,6 +29,7 @@ interface ChartProgramActions {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
+  createBin2DData(options: Bin2DDataOptions): ChartProgram;
   createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;

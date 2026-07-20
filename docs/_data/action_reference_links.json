@@ -17,6 +17,7 @@
   "createRegressionData": "/reference/actions/charts-data/#createregressiondata",
   "createDensityData": "/reference/actions/charts-data/#createdensitydata",
   "createWindowData": "/reference/actions/charts-data/#createwindowdata",
+  "createBin2DData": "/reference/actions/charts-data/#createbin2ddata",
   "createPointMark": "/reference/actions/marks/#createpointmark",
   "editPointMark": "/reference/actions/marks/#editpointmark",
   "jitterPoints": "/reference/actions/marks/#jitterpoints",

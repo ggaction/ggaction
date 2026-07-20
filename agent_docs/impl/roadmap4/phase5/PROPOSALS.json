@@ -14,7 +14,7 @@
     },
     {
       "name": "createBin2DData",
-      "status": "proposed",
+      "status": "implemented",
       "required": ["id", "x", "y"],
       "optional": ["source", "bins", "extent", "includeEmpty", "members", "as"],
       "replacement": "recreating the same derived id replaces its revision and rematerializes consumers",

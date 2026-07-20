@@ -67,6 +67,25 @@ test("createDerivedData accepts each documented transform branch as an array", (
         sortBy: [{ field: "x", order: "ascending" }],
         operations: [{ op: "rowNumber", as: "position" }]
       }
+    },
+    {
+      id: "bin2d",
+      transform: {
+        type: "bin2d",
+        x: "x",
+        y: "y",
+        bins: { x: 2, y: 2 },
+        extent: { x: "auto", y: "auto" },
+        includeEmpty: false,
+        members: false,
+        as: {
+          x0: "x0",
+          x1: "x1",
+          y0: "y0",
+          y1: "y1",
+          count: "count"
+        }
+      }
     }
   ];
 

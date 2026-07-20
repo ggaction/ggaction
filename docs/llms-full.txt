@@ -2763,6 +2763,7 @@ operation; marks and renderers never mutate source values.
 | [Filtering](./data/filtering.md) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
 | [Statistical transforms](./data/statistical-transforms.md) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Window transforms](./data/window.md) | `createWindowData` | Compute ordered values within partitions while preserving source row order |
+| [Rectangular 2D bins](./data/bin2d.md) | `createBin2DData` | Aggregate two quantitative fields into immutable ranged cells |
 
 ## Shared invariants
 
@@ -3164,6 +3165,82 @@ instead of replacing or rebinding consumers.
 
 [Data overview](../data.md) · [Source and derived data](./source-and-derived.md) ·
 [Action reference](../../reference/actions.md)
+
+<!-- Source: /api/data/bin2d/ -->
+
+# Rectangular 2D Bins
+
+  source rowsfinite x/y pairs
+  grid edgesautomatic or explicit
+  cell assignmentone cell per eligible row
+  derived rowsbounds + count
+
+`createBin2DData` groups two quantitative fields into a rectangular grid. It
+stores concrete cell bounds and counts as a new dataset, so ordinary ranged
+rectangles or other marks can consume the result without asking the renderer to
+perform data transforms.
+
+## `createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`
+
+```javascript
+const program = chart()
+  .createData({
+    id: "observations",
+    values: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 2 }
+    ]
+  })
+  .createBin2DData({
+    id: "cells",
+    x: "x",
+    y: "y",
+    bins: { x: 2, y: 2 },
+    extent: { x: [0, 2], y: [0, 2] },
+    includeEmpty: true,
+    as: { count: "count" }
+  });
+```
+
+| Option | Type | Default |
+| --- | --- | --- |
+| `id` | logical derived-dataset ID | required |
+| `source` | existing dataset ID | current dataset; previous source on revision |
+| `x`, `y` | quantitative field names | required |
+| `bins` | positive integer or `{ x, y }` | `{ x: 10, y: 10 }` |
+| `extent` | `{ x?: [min, max], y?: [min, max] }` | eligible min/max per axis |
+| `includeEmpty` | boolean | `false` |
+| `members` | boolean | `false` |
+| `as` | partial output-field object | namespaced from `id` |
+
+Only rows with finite values for both fields are eligible. Cells are half-open:
+`[lower, upper)`. The last cell on each axis includes its upper endpoint, so
+every eligible row belongs to exactly one cell. Output rows are ordered from low
+to high y and then low to high x.
+
+The stored transform includes the resolved axis extents and edge arrays. An
+explicit extent must contain every eligible value; the action throws rather
+than silently dropping rows. An automatic axis with no positive span also
+throws instead of guessing a display range.
+
+The default output fields are `__<id>_x0`, `__<id>_x1`, `__<id>_y0`,
+`__<id>_y1`, and `__<id>_count`. Pass `as` to give downstream encodings shorter
+names. With `members: true`, each cell also stores source row indexes. It never
+copies complete source row objects into every cell.
+
+## Revisions
+
+Calling `createBin2DData` again with the same logical `id` creates a new immutable
+revision, rebinds direct visual consumers, rematerializes their scales, marks,
+and guides, and releases the unreferenced previous revision. Earlier programs
+remain unchanged. A dependent derived dataset currently blocks replacement
+with an explicit error; create a new logical ID when that dependency must remain.
+
+## Related
+
+[Data overview](../data.md) · [Source and derived data](./source-and-derived.md) ·
+[Heatmaps](../basic-charts.md#createheatmap) · [Action reference](../../reference/actions.md)
 
 <!-- Source: /api/marks/ -->
 
@@ -8197,6 +8274,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`createAxes`](./actions/guides.md#createaxes) | user-facing | axes |
 | [`createBarMark`](./actions/marks.md#createbarmark) | user-facing | marks |
 | [`createBarPlot`](./actions/charts-data.md#createbarplot) | user-facing | charts |
+| [`createBin2DData`](./actions/charts-data.md#createbin2ddata) | user-facing | core |
 | [`createBoxPlot`](./actions/statistics.md#createboxplot) | user-facing | statistics |
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | user-facing | core |
 | [`createCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |
@@ -8531,6 +8609,18 @@ Create an immutable derived dataset by applying ordered row-number, rank,
 dense-rank, cumulative-sum, lag, or lead operations within optional partitions.
 The calculation follows a stable sort while the output preserves source row order.
 [Window data transforms](../../api/data/window.md)
+
+## `createBin2DData`
+
+```javascript
+createBin2DData({
+  id, source?, x, y, bins?, extent?, includeEmpty?, members?, as?
+})
+```
+
+Aggregate finite x/y pairs into deterministic rectangular cell bounds and
+counts. Reusing the logical ID creates an immutable revision and rematerializes
+direct visual consumers. [Rectangular 2D bins](../../api/data/bin2d.md)
 
 ## Related
 
@@ -9644,7 +9734,7 @@ See [Action authoring](../../extension/action-authoring.md) and
 
 High-level actions call additional wrapped operations for data, scale, mark,
 guide, title, and layout materialization. Names such as
-`materializeDensityData`, `materializeWindowData`, `rematerializeScale`, `rematerializePointMark`,
+`materializeDensityData`, `materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
 `createCategoricalLegend`, `createSizeLegend`, `rematerializeSizeLegend`,
 `createLegendSymbols`, and `createTitleText` may appear in
 `program.trace`. They are deliberately absent from the public TypeScript
@@ -9704,6 +9794,7 @@ interface ChartProgramActions {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
+  createBin2DData(options: Bin2DDataOptions): ChartProgram;
   createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;

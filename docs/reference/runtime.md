@@ -10,7 +10,7 @@ description: Create, compose, render, and inspect programs without confusing pac
 
 High-level actions call additional wrapped operations for data, scale, mark,
 guide, title, and layout materialization. Names such as
-`materializeDensityData`, `materializeWindowData`, `rematerializeScale`, `rematerializePointMark`,
+`materializeDensityData`, `materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
 `createCategoricalLegend`, `createSizeLegend`, `rematerializeSizeLegend`,
 `createLegendSymbols`, and `createTitleText` may appear in
 `program.trace`. They are deliberately absent from the public TypeScript

@@ -48,11 +48,11 @@ test("authors 80 ranged rects from the fixed Cars 2D-bin reference", () => {
   assert.equal(items.every(item => item.properties.height > 0), true);
 });
 
-test("exposes only the approved window slice while later heatmap actions remain absent", () => {
+test("exposes approved derived-data slices while the binned heatmap facade remains absent", () => {
   const program = createCarsBinnedHeatmapPrimitives(loadCars());
 
   assert.equal(typeof program.createWindowData, "function");
-  assert.equal(program.createBin2DData, undefined);
+  assert.equal(typeof program.createBin2DData, "function");
   assert.throws(
     () => program.createHeatmap({
       x: "weight0",

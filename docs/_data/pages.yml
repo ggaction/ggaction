@@ -113,6 +113,9 @@
 - title: Window Data Transforms
   url: /api/data/window/
   parent: /api/data/
+- title: Rectangular 2D Bins
+  url: /api/data/bin2d/
+  parent: /api/data/
 - title: Marks
   url: /api/marks/
   parent: /api/

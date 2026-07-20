@@ -389,6 +389,18 @@ dense-rank, cumulative-sum, lag, or lead operations within optional partitions.
 The calculation follows a stable sort while the output preserves source row order.
 [Window data transforms](../api/data/window.md)
 
+### `createBin2DData`
+
+```javascript
+createBin2DData({
+  id, source?, x, y, bins?, extent?, includeEmpty?, members?, as?
+})
+```
+
+Aggregate finite x/y pairs into deterministic rectangular cell bounds and
+counts. Reusing the logical ID creates an immutable revision and rematerializes
+direct visual consumers. [Rectangular 2D bins](../api/data/bin2d.md)
+
 ### `createPointMark`
 
 ```javascript
@@ -1429,7 +1441,7 @@ See [Action authoring](../extension/action-authoring.md) and
 
 High-level actions call additional wrapped operations for data, scale, mark,
 guide, title, and layout materialization. Names such as
-`materializeDensityData`, `materializeWindowData`, `rematerializeScale`, `rematerializePointMark`,
+`materializeDensityData`, `materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
 `createCategoricalLegend`, `createSizeLegend`, `rematerializeSizeLegend`,
 `createLegendSymbols`, and `createTitleText` may appear in
 `program.trace`. They are deliberately absent from the public TypeScript

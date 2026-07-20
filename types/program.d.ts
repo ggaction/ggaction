@@ -289,7 +289,57 @@ export interface DatasetWindowTransform {
   readonly sortBy: readonly DatasetWindowSort[];
   readonly operations: readonly DatasetWindowOperation[];
 }
+export interface Bin2DCounts {
+  x: number;
+  y: number;
+}
+export interface Bin2DExtent {
+  x?: readonly [number, number];
+  y?: readonly [number, number];
+}
+export interface Bin2DOutputFields {
+  x0?: string;
+  x1?: string;
+  y0?: string;
+  y1?: string;
+  count?: string;
+  members?: string;
+}
+export interface DatasetBin2DOutputFields {
+  readonly x0: string;
+  readonly x1: string;
+  readonly y0: string;
+  readonly y1: string;
+  readonly count: string;
+  readonly members?: string;
+}
+export interface DatasetBin2DTransform {
+  readonly type: "bin2d";
+  readonly x: string;
+  readonly y: string;
+  readonly bins: Readonly<Bin2DCounts>;
+  readonly extent: {
+    readonly x: "auto" | readonly [number, number];
+    readonly y: "auto" | readonly [number, number];
+  };
+  readonly includeEmpty: boolean;
+  readonly members: boolean;
+  readonly as: DatasetBin2DOutputFields;
+  readonly resolved?: {
+    readonly extent: {
+      readonly x: readonly [number, number];
+      readonly y: readonly [number, number];
+    };
+    readonly edges: {
+      readonly x: readonly number[];
+      readonly y: readonly number[];
+    };
+    readonly eligibleCount: number;
+    readonly occupiedCount: number;
+  };
+}
 export type DatasetTransform =
+  | DatasetBin2DTransform
   | DatasetFilterTransform
   | DatasetRegressionTransform
   | DatasetDensityTransform
@@ -900,6 +950,18 @@ export interface WindowDataOptions {
   partitionBy?: string | readonly string[];
   sortBy?: readonly WindowSort[];
   operations: readonly WindowOperation[];
+}
+
+export interface Bin2DDataOptions {
+  id: string;
+  source?: string;
+  x: string;
+  y: string;
+  bins?: number | Bin2DCounts;
+  extent?: Bin2DExtent;
+  includeEmpty?: boolean;
+  members?: boolean;
+  as?: Bin2DOutputFields;
 }
 
 export interface ErrorBarPositionChannel {
@@ -1694,6 +1756,7 @@ export class ChartProgram {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
+  createBin2DData(options: Bin2DDataOptions): ChartProgram;
 
   createPointMark(options?: {
     id?: string;

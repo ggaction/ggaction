@@ -111,6 +111,25 @@ async function testNodeConsumer(directory) {
       windowValues.map(row => [row.rowNumber, row.runningValue]),
       [[2, 5], [1, 2], [1, 4]]
     );
+    const binned = chart()
+      .createData({
+        id: "samples",
+        values: [{ x: 0, y: 0 }, { x: 1, y: 1 }]
+      })
+      .createBin2DData({
+        id: "sampleCells",
+        x: "x",
+        y: "y",
+        bins: 2,
+        extent: { x: [0, 1], y: [0, 1] },
+        includeEmpty: true,
+        as: { count: "count" }
+      });
+    assert.equal(
+      binned.semanticSpec.datasets.find(dataset => dataset.id === "sampleCells")
+        .values.reduce((sum, row) => sum + row.count, 0),
+      2
+    );
     const scatterFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -385,6 +404,7 @@ async function testTypeScriptConsumer(directory) {
       render,
       vconcat,
       type ChartProgram,
+      type Bin2DDataOptions,
       type CreateBarPlotOptions,
       type CreateHeatmapOptions,
       type CreateHistogramOptions,
@@ -501,6 +521,29 @@ async function testTypeScriptConsumer(directory) {
       sortBy: [{ field: "order", order: "ascending" }],
       operations: [{ op: "rowNumber", as: "rowNumber" }]
     };
+    const binOptions: Bin2DDataOptions = {
+      id: "cells",
+      x: "x",
+      y: "y",
+      bins: { x: 2, y: 2 },
+      extent: { x: [0, 2] },
+      includeEmpty: true,
+      members: true,
+      as: { count: "count", members: "members" }
+    };
+    const binTransform: DatasetTransform = {
+      type: "bin2d",
+      x: "x",
+      y: "y",
+      bins: { x: 2, y: 2 },
+      extent: { x: "auto", y: "auto" },
+      includeEmpty: false,
+      members: false,
+      as: { x0: "x0", x1: "x1", y0: "y0", y1: "y1", count: "count" }
+    };
+    const binned: ChartProgram = chart()
+      .createData({ id: "binSource", values: [{ x: 0, y: 0 }, { x: 2, y: 2 }] })
+      .createBin2DData(binOptions);
     const inspected = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2 }] })
@@ -645,6 +688,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "numeric-font-weight",
       "point-jitter",
       "window-data",
+      "bin2d-data",
       "right-categorical-legend-offset",
       "sequential-palette-count",
       "typescript",

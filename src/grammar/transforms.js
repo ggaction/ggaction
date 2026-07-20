@@ -1,5 +1,9 @@
 import { isPlainObject } from "../core/immutable.js";
 import { validateBoxTransform } from "./boxPlot.js";
+import {
+  requestedBin2DTransform,
+  validateBin2DTransform
+} from "./bin2d.js";
 import { validateDensityTransform } from "./density.js";
 import { validateFilterTransform } from "./filter.js";
 import { validateIntervalTransform } from "./interval.js";
@@ -13,6 +17,12 @@ function requestedDensityTransform(transform) {
 }
 
 const TRANSFORM_POLICIES = Object.freeze({
+  bin2d: Object.freeze({
+    validate: validateBin2DTransform,
+    materializeOp: "materializeBin2DData",
+    facetTopology: "statistical",
+    replayTransform: requestedBin2DTransform
+  }),
   boxOutlier: Object.freeze({
     validate: validateBoxTransform,
     materializeOp: "materializeBoxOutlierData",

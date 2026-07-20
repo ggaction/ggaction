@@ -194,6 +194,18 @@ dense-rank, cumulative-sum, lag, or lead operations within optional partitions.
 The calculation follows a stable sort while the output preserves source row order.
 [Window data transforms](../../api/data/window.md)
 
+## `createBin2DData`
+
+```javascript
+createBin2DData({
+  id, source?, x, y, bins?, extent?, includeEmpty?, members?, as?
+})
+```
+
+Aggregate finite x/y pairs into deterministic rectangular cell bounds and
+counts. Reusing the logical ID creates an immutable revision and rematerializes
+direct visual consumers. [Rectangular 2D bins](../../api/data/bin2d.md)
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)
