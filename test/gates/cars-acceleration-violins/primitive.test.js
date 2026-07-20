@@ -166,6 +166,10 @@ test("authors complete primitive trees and renders from graphicSpec alone", () =
     assert.ok(order.indexOf("violins") < order.indexOf("xAxisLine"));
     assert.ok(order.indexOf("violins") < order.indexOf("yAxisLine"));
     assert.equal(order.includes("splitLegendSymbols"), split);
+    assert.equal(
+      program.graphicSpec.objects.yAxisTitle.properties.rotation,
+      -Math.PI / 2
+    );
 
     const context = createMockCanvasContext();
     render({

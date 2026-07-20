@@ -192,7 +192,11 @@ export function createCarsViolinPrimitiveResult(cars, { split = false } = {}) {
     .editGraphics({ target: "yAxisTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "yAxisTitle", property: "textAlign", value: "center" })
     .editGraphics({ target: "yAxisTitle", property: "textBaseline", value: "middle" })
-    .editGraphics({ target: "yAxisTitle", property: "rotation", value: -90 })
+    .editGraphics({
+      target: "yAxisTitle",
+      property: "rotation",
+      value: -Math.PI / 2
+    })
     .createGraphics({ id: "chartTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "chartTitle", property: "x", value: values.title.x })
     .editGraphics({ target: "chartTitle", property: "y", value: 32 })
