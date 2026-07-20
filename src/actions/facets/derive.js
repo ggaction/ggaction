@@ -59,6 +59,23 @@ function replayDatasetId(cell, owner) {
   return `${cell.id}-${owner}-data`;
 }
 
+function rebindReplayedGradientPlots(child, base, datasets) {
+  let next = child;
+  for (const [id, markConfig] of Object.entries(base.markConfigs)) {
+    const gradientPlot = markConfig.gradientPlot;
+    if (gradientPlot?.materialized !== true) continue;
+    const profile = datasets.get(gradientPlot.profileId);
+    const source = datasets.get(gradientPlot.source);
+    if (profile === undefined || source === undefined) {
+      throw new Error(
+        `Facet gradient plot "${id}" is missing replayed profile dependencies.`
+      );
+    }
+    next = next.rebindGradientPlotProfile({ id, profile, source });
+  }
+  return next;
+}
+
 function cellMaterializationPlan(program) {
   const scaleIds = [...new Set(program.semanticSpec.layers.flatMap(layer =>
     Object.values(layer.encoding ?? {})
@@ -109,6 +126,7 @@ function deriveCellProgram(base, definition, cell, histogramBoundaries) {
       histogramBoundaries.get(layer.id)
     );
   }
+  child = rebindReplayedGradientPlots(child, base, datasets);
   return applyMaterializationPlan(child, cellMaterializationPlan(child));
 }
 

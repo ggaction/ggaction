@@ -9,6 +9,7 @@ import {
   materializeGradientPlot,
   materializeGradientPlotFill
 } from "./materialize.js";
+import { rebindGradientPlotProfile } from "./rebind.js";
 
 export function registerGradientPlotActions(ProgramClass) {
   ProgramClass.prototype.createGradientPlot = createGradientPlot;
@@ -19,4 +20,5 @@ export function registerGradientPlotActions(ProgramClass) {
   ProgramClass.prototype.createGradientPlotLegend = createGradientPlotLegend;
   ProgramClass.prototype.rematerializeGradientPlotLegend =
     rematerializeGradientPlotLegend;
+  ProgramClass.prototype.rebindGradientPlotProfile = rebindGradientPlotProfile;
 }

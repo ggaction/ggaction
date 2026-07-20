@@ -4,7 +4,9 @@ import { BAR_GRAINS, resolveBarGrain } from "../bars/policy.js";
 import { planFacetDependencies } from "./dependencies.js";
 import { readNominalField } from "../scales/index.js";
 
-const SUPPORTED_MARKS = new Set(["point", "line", "area", "bar", "rule"]);
+const SUPPORTED_MARKS = new Set([
+  "point", "line", "area", "bar", "rule", "rect"
+]);
 const SUPPORTED_BAR_GRAINS = new Set([
   BAR_GRAINS.histogram,
   BAR_GRAINS.aggregate,
