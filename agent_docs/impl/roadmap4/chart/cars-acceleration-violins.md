@@ -2,7 +2,7 @@
 
 ## 상태
 
-`planned` — Roadmap 4 Phase 8의 primitive-first categorical-density contract다.
+`in-progress` — P8-B review package에서 primitive/public exact parity를 검증한 categorical-density contract다.
 
 ## 차트 목표
 
@@ -37,11 +37,25 @@ chart()
       steps: 80,
       width: { band: 0.8, resolve: "shared" }
     },
-    area: { opacity: 0.78, strokeWidth: 1 }
+    area: { opacity: 0.8, strokeWidth: 1.2 },
+    guides: {
+      axes: {
+        x: {
+          ticksAndLabels: { labels: { fontSize: 13 } },
+          title: { offset: 58, fontSize: 14 }
+        },
+        y: { title: { offset: 54, fontSize: 14 } }
+      },
+      legend: false
+    }
   })
   .createTitle({
     text: "Acceleration Distribution by Origin",
-    subtitle: "Kernel-density profiles for the Cars dataset"
+    subtitle: "Kernel-density profiles for the Cars dataset",
+    align: "center",
+    offset: 4,
+    gap: 11,
+    titleStyle: { fontSize: 24, fontWeight: 700 }
   });
 ```
 
@@ -72,16 +86,44 @@ chart()
       }
     },
     density: {
-    bandwidth: 0.65,
-    extent: [8, 25],
-    steps: 80,
-    width: { band: 0.8, resolve: "shared" }
+      bandwidth: 0.65,
+      extent: [8, 25],
+      steps: 80,
+      width: { band: 0.8, resolve: "shared" }
     },
-    area: { opacity: 0.8, strokeWidth: 1 }
+    area: { opacity: 0.8, strokeWidth: 1.2 },
+    guides: {
+      axes: {
+        x: {
+          ticksAndLabels: { labels: { fontSize: 13 } },
+          title: { offset: 58, fontSize: 14 }
+        },
+        y: { title: { offset: 54, fontSize: 14 } }
+      },
+      legend: {
+        position: "right",
+        direction: "vertical",
+        offset: 28,
+        title: "Model era",
+        symbol: {
+          width: 16,
+          height: 16,
+          stroke: "white",
+          strokeWidth: 0.75
+        },
+        labels: { offset: 10, fontSize: 13 },
+        titleStyle: { fontSize: 14 },
+        itemGap: 42
+      }
+    }
   })
   .createTitle({
     text: "Acceleration Distribution by Origin",
-    subtitle: "Early models on the left, later models on the right"
+    subtitle: "Early models on the left, later models on the right",
+    align: "center",
+    offset: 4,
+    gap: 11,
+    titleStyle: { fontSize: 24, fontWeight: 700 }
   });
 ```
 
@@ -91,10 +133,10 @@ chart()
 createViolinPlot
 ├─ createAreaMark
 ├─ encodeDensity
-│  ├─ createDensityData
-│  ├─ explicit layer rebind
-│  ├─ category/value semantic assignments
-│  └─ materializeDensityArea
+│  ├─ createCategoricalDensityData
+│  ├─ editSemantic (derived-data rebind)
+│  ├─ encodeX / encodeY / encodeGroup
+│  └─ rematerializeAreaMark
 ├─ encodeColor (optional)
 └─ createGuides (optional/applicable)
 ```

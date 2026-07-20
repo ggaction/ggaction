@@ -1,20 +1,20 @@
 {
   "version": 1,
   "phase": "roadmap4/phase8",
-  "gate": "P8-A",
-  "status": "approved",
+  "gate": "P8-B",
+  "status": "ready-for-review",
   "capabilities": [
     {
       "id": "NCP-001",
       "name": "encodeDensity.categoryPlacement",
-      "status": "planned",
+      "status": "in-progress",
       "owner": "encodeDensity/editDensity",
       "stateOwner": "density transform provenance and compatible area layer"
     },
     {
       "id": "NCP-001-FACADE",
       "name": "createViolinPlot",
-      "status": "planned",
+      "status": "in-progress",
       "owner": "chart facade",
       "stateOwner": "wrapped area/density/color/guide child actions"
     }
