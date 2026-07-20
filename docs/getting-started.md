@@ -138,11 +138,11 @@ The source repository also contains complete modules for the
 ## Next
 
 <div class="docs-entry-grid">
-  <a href="./recipes/"><strong>Copy a chart recipe</strong><span>Start from the shortest supported flow for a known chart type.</span></a>
-  <a href="./tutorials/"><strong>Learn a complete workflow</strong><span>Build a chart step by step and understand what each action adds.</span></a>
-  <a href="./reference/actions/"><strong>Find an exact action</strong><span>Look up canonical signatures, defaults, inference, and errors.</span></a>
+  <a href="{{ '/recipes/' | relative_url }}"><strong>Copy a chart recipe</strong><span>Start from the shortest supported flow for a known chart type.</span></a>
+  <a href="{{ '/tutorials/' | relative_url }}"><strong>Learn a complete workflow</strong><span>Build a chart step by step and understand what each action adds.</span></a>
+  <a href="{{ '/reference/actions/' | relative_url }}"><strong>Find an exact action</strong><span>Look up canonical signatures, defaults, inference, and errors.</span></a>
 </div>
 
-Use [Troubleshooting](./troubleshooting.md) when inference or layout cannot make
-one safe choice. Render the same program to a file with
-[PNG output](./api/rendering.md#png-output).
+Use <a href="{{ '/troubleshooting/' | relative_url }}">Troubleshooting</a> when
+inference or layout cannot make one safe choice. Render the same program to a
+file with <a href="{{ '/api/rendering/#png-output' | relative_url }}">PNG output</a>.

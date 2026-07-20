@@ -201,9 +201,9 @@ The source repository also contains complete modules for the
   Learn a complete workflow Build a chart step by step and understand what each action adds.
   Find an exact action Look up canonical signatures, defaults, inference, and errors.
 
-Use [Troubleshooting](./troubleshooting.md) when inference or layout cannot make
-one safe choice. Render the same program to a file with
-[PNG output](./api/rendering.md#png-output).
+Use Troubleshooting  when
+inference or layout cannot make one safe choice. Render the same program to a
+file with PNG output .
 
 <!-- Source: /tutorials/ -->
 
