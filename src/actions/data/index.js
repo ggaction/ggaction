@@ -12,6 +12,10 @@ import {
 } from "./filter.js";
 import { createRegressionData, materializeRegressionData } from "./regression.js";
 import { createDensityData, materializeDensityData } from "./density.js";
+import {
+  createGradientProfileData,
+  materializeGradientProfileData
+} from "./gradientProfile.js";
 import { createIntervalData, materializeIntervalData } from "./interval.js";
 import { createWindowData, materializeWindowData } from "./window.js";
 import { createBin2DData, materializeBin2DData } from "./bin2d.js";
@@ -29,6 +33,9 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.filterMarks = filterMarks;
   ProgramClass.prototype.materializeRegressionData = materializeRegressionData;
   ProgramClass.prototype.materializeDensityData = materializeDensityData;
+  ProgramClass.prototype.createGradientProfileData = createGradientProfileData;
+  ProgramClass.prototype.materializeGradientProfileData =
+    materializeGradientProfileData;
   ProgramClass.prototype.createRegressionData = createRegressionData;
   ProgramClass.prototype.materializeIntervalData = materializeIntervalData;
   ProgramClass.prototype.createIntervalData = createIntervalData;

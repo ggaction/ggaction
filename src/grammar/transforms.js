@@ -6,6 +6,10 @@ import {
 } from "./bin2d.js";
 import { validateDensityTransform } from "./density.js";
 import { validateFilterTransform } from "./filter.js";
+import {
+  requestedGradientProfileTransform,
+  validateGradientProfileTransform
+} from "./gradientProfile.js";
 import { validateIntervalTransform } from "./interval.js";
 import { validateMarkFilterTransform } from "./markFilter.js";
 import { validateRegressionTransform } from "./regression/index.js";
@@ -43,6 +47,12 @@ const TRANSFORM_POLICIES = Object.freeze({
     validate: validateFilterTransform,
     materializeOp: "materializeFilteredData",
     facetTopology: "rowPreserving"
+  }),
+  gradientProfile: Object.freeze({
+    validate: validateGradientProfileTransform,
+    materializeOp: "materializeGradientProfileData",
+    facetTopology: "statistical",
+    replayTransform: requestedGradientProfileTransform
   }),
   interval: Object.freeze({
     validate: validateIntervalTransform,
