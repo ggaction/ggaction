@@ -105,7 +105,7 @@ createViolinPlot({
 
 | Gate | 상태 | 승인 대상 | 승인 전 차단되는 작업 |
 | --- | --- | --- | --- |
-| P8-A | pending | exact API/defaults/state, full/split primitive PNG | production grammar/action 구현 |
+| P8-A | ready-for-review | exact API/defaults/state, full/split primitive PNG | production grammar/action 구현 |
 | P8-B | planned | lower-level lifecycle/consumer matrix, facade chain과 primitive/public exact parity | Phase closeout |
 | P8-Exit | planned | Current inventory, architecture, docs/types/package와 cumulative verification | Phase 9 |
 
