@@ -4,7 +4,7 @@
 
 - Gate: `P5-D`
 - 상태: `ready-for-review`
-- 검토 대상 remote checkpoint: pending
+- 검토 대상 remote checkpoint: `3e77356` (`origin/main`)
 - 승인 전 차단: Phase 5 lifecycle/facet closeout와 P5-Exit
 
 ## 승인 대상 public chain
