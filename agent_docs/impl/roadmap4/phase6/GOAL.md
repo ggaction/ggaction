@@ -68,7 +68,7 @@ Profile은 raw source를 직접 참조하는 하나의 generated revision이다.
 | Gate | 상태 | 승인 대상 | 승인 전 차단되는 작업 |
 | --- | --- | --- | --- |
 | P6-A | approved | exact `FillPaint`/profile/API contract, primitive source와 Cars PNG | public facade 구현 |
-| P6-B | planned | create/edit public chains, state/trace와 primitive/public Browser/PNG parity | Phase closeout |
+| P6-B | ready-for-review | create/edit public chains, state/trace와 primitive/public Browser/PNG parity | Phase closeout |
 | P6-Exit | planned | lifecycle/consumer matrix, Current inventory, docs/package와 누적 test | Phase 7 |
 
 모든 Gate는 hard pause다.
