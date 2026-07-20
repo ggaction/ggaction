@@ -2,7 +2,7 @@
   "version": 1,
   "phase": "roadmap4/phase5",
   "gate": "P5-A",
-  "status": "preparing",
+  "status": "ready-for-review",
   "actions": [
     {
       "name": "createWindowData",

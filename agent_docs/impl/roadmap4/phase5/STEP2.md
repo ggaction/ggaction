@@ -2,11 +2,11 @@
 
 ## 진행 상태
 
-- [ ] `Weight_in_lbs × Miles_per_Gallon` 10×8 cell dataset 생성
-- [ ] ranged rect와 quantitative count color primitive 작성
-- [ ] 축, 연속 legend와 title을 포함한 Node PNG 생성
-- [ ] Browser Canvas parity와 visual contract 검증
-- [ ] P5-A exact checkpoint commit/push
+- [x] `Weight_in_lbs × Miles_per_Gallon` 10×8 cell dataset 생성
+- [x] ranged rect와 quantitative count color primitive 작성
+- [x] 축, 연속 legend와 title을 포함한 Node PNG 생성
+- [x] Browser Canvas parity와 visual contract 검증
+- [x] P5-A exact checkpoint commit/push
 - [ ] 사용자 승인
 
 ## 시각 목표

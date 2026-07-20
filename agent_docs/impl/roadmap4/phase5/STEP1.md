@@ -5,9 +5,9 @@
 - [x] candidate API와 state owner 정의
 - [x] Window stable order/tie/field dependency 규칙 정의
 - [x] 2D bin eligibility/boundary/order/count 규칙 정의
-- [ ] source와 독립적인 Window oracle 구현
-- [ ] source와 독립적인 2D bin oracle 구현
-- [ ] literal vector와 Cars 고정 결과로 oracle 검증
+- [x] source와 독립적인 Window oracle 구현
+- [x] source와 독립적인 2D bin oracle 구현
+- [x] literal vector와 Cars 고정 결과로 oracle 검증
 
 ## 검증 기준
 

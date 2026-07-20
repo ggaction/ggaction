@@ -13,8 +13,8 @@ named dataset이며, `createHeatmap({ bin })`은 그 결과를 ranged rect와 co
 
 - [x] Phase 4 exit 승인과 derived-data baseline 확인
 - [x] exact candidate API와 state owner 설계
-- [ ] independent window/2D-bin oracle과 고정 numeric vector
-- [ ] Cars Weight–MPG primitive binned heatmap
+- [x] independent window/2D-bin oracle과 고정 numeric vector
+- [x] Cars Weight–MPG primitive binned heatmap
 - [ ] P5-A 사용자 승인
 - [ ] `createWindowData` vertical slice와 P5-B 승인
 - [ ] `createBin2DData` lifecycle과 P5-C 승인
@@ -61,6 +61,8 @@ program.createWindowData({
 - operation은 순서대로 실행되므로 뒤 operation이 앞 operation의 `as` field를 읽을 수 있다.
 - `lag`/`lead`의 `offset` default는 1, partition boundary default는 `null`이다.
 - output field는 source field 또는 같은 action의 이전 output을 덮어쓸 수 없다.
+- sort field의 non-null value는 partition 안에서 string, boolean 또는 finite number 중 한 type이어야 한다.
+  Ascending에서 null/missing은 마지막이며 descending은 그 반대다.
 
 ### Rectangular 2D bin derived data
 
@@ -96,6 +98,7 @@ type Bin2DFields = {
 
 - `bins` default는 `{ x: 10, y: 10 }`이며 scalar는 두 axis에 같이 적용한다.
 - extent를 생략한 axis는 finite eligible value의 min/max를 사용한다.
+- auto extent의 min/max가 같으면 positive span을 추측하지 않고 validation error를 낸다.
 - explicit extent는 모든 eligible value를 포함해야 한다. 범위 밖 row를 조용히 버리지 않는다.
 - 두 field가 모두 finite number인 row만 eligible하다.
 - 각 bin은 `[lower, upper)`이고 마지막 bin만 upper bound를 포함한다.
