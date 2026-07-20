@@ -4,7 +4,7 @@
 
 - Gate: `P5-Exit`
 - 상태: `ready-for-review`
-- 검토 대상 remote checkpoint: `TO_BE_RECORDED` (`origin/main`)
+- 검토 대상 remote checkpoint: `5a31adc` (`origin/main`)
 - 승인 전 차단: Phase 6 linear-gradient 구현
 
 ## 승인 대상
