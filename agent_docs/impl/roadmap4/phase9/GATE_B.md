@@ -3,8 +3,8 @@
 ## 상태
 
 - Gate: `P9-B`
-- 상태: `ready-for-review`
-- 승인: 대기 중
+- 상태: `approved`
+- 승인: 2026-07-21 사용자 명시 승인
 - 승인 전 차단: Phase 9 public closeout
 
 Public action hierarchy, primitive/public parity, edit revision, shared/independent facet와 complete consumer matrix를

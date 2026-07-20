@@ -7,6 +7,6 @@
 - [x] filter/facet shared·independent replay
 - [x] Canvas/scale/data/selection/highlight consumer matrix
 - [x] primitive/public exact parity와 P9-B package
-- [ ] P9-B 사용자 승인
+- [x] P9-B 사용자 승인
 
 P9-B 승인 전에는 Phase closeout을 시작하지 않는다.
