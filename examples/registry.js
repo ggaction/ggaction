@@ -1,4 +1,5 @@
 import { createCarsBoxPlot } from "./cars-box-plot/program.js";
+import { createCarsGradientPlot } from "./cars-gradient-plot/program.js";
 import { createCarsOriginDonut } from "./cars-origin-donut/program.js";
 import { createCarsDensityArea } from "./cars-density-area/program.js";
 import { createCarsErrorBarOverlay } from "./cars-error-bar/program.js";
@@ -381,6 +382,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsErrorBarOverlay,
     docsGroup: "charts",
     browser: { path: "cars-error-bar/", canvas: "#chart" }
+  }),
+  example({
+    id: "cars-gradient-plot",
+    data: "cars",
+    width: 620,
+    height: 460,
+    createProgram: createCarsGradientPlot,
+    docsGroup: "charts",
+    browser: { path: "cars-gradient-plot/", canvas: "#chart" }
   }),
   example({
     id: "cars-box-plot",

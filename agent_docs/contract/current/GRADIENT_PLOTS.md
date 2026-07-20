@@ -61,7 +61,11 @@ createGradientPlot({
 ### Coverage
 
 - Complete explicit Cars call chain, encoded-source inference, deferred position order, categorical color after creation,
-  wrapped trace, Browser Canvas, Node PNG, and primitive/public equivalence are executable Gate evidence.
+  wrapped trace, Browser Canvas, Node PNG, and primitive/public equivalence are stable chart evidence.
+- Vertical/horizontal orientation, Canvas/profile edit order, reversed scales, source-first filtering, category-strip
+  selection/highlighting, explicit text fallback, and cell-local Cartesian facet replay are executable consumer evidence.
+- `filterMarks` rejects this composite owner before mutation; users create a filtered source revision before the plot.
+- Default guide titles come from the original category and measure fields rather than generated profile field names.
 
 ### Formal values — `createGradientPlot`
 
@@ -70,8 +74,10 @@ createGradientPlot({
 
 ### Value coverage — `createGradientPlot`
 
-- ✅ Covered: explicit, inferred, deferred, categorical-color, guide, Canvas, PNG, and immutable profile cases.
-- No proposal is required for the approved first implementation. Evidence: `test/unit/actions/statistics/create-gradient-plot.test.js` and `test/gates/cars-gradient-plot/`.
+- ✅ Covered: explicit, inferred, deferred, ambiguous-source, categorical-color, guide, Canvas, PNG, immutable profile,
+  selection/highlight, text, filtered-source, horizontal, and facet cases.
+- No proposal is required for the approved first implementation. Evidence:
+  `test/unit/actions/statistics/gradient-plot-consumers.test.js` and `test/charts/cars-gradient-plot/`.
 
 ## `editGradientPlot`
 
@@ -107,3 +113,13 @@ editGradientPlot({
 normalized endpoints and nondecreasing `{ offset, color }` stops. Renderers create backend gradient objects ephemerally;
 program state stores only immutable backend-neutral data. Rect and closed-path fills support structured paint. Open paths,
 text, circles, and strokes reject it.
+
+## Consumer boundaries
+
+- `selectMarks` and `highlightMarks` resolve one final item per category strip. Opacity/stroke/offset-only highlights preserve
+  the baseline structured fill; explicit `color` or `fill` replaces it.
+- Attached text uses its documented text color when a rect fill is structured. Materialization never samples Canvas pixels or
+  attempts renderer-side contrast inference.
+- Cartesian facets partition raw rows first, replay one namespaced profile per child, rebind body and center layers, and store
+  the replayed source/profile/intensity-domain identity in each child config.
+- Facet legends remain governed by the facet guide contract. A shared custom density legend is not implemented.

@@ -15,7 +15,7 @@ NCP-002를 범용 backend-neutral `FillPaint` concrete property contract의 첫 
 - [x] independent paint/density/profile oracle
 - [x] Cars primitive gradient plot과 P6-A 승인
 - [x] `createGradientPlot`/`editGradientPlot` vertical slice와 P6-B 승인
-- [ ] lifecycle, consumer matrix, declarations, docs와 package parity
+- [x] lifecycle, consumer matrix, declarations, docs와 package parity
 - [ ] P6-Exit 사용자 승인
 
 ## 확정된 public 방향

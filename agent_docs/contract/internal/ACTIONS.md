@@ -16,6 +16,9 @@ domain action을 통해서만 실행한다.
 | `materializeBin2DData` | rectangular 2D-bin data actions |
 | `materializeComposition` | `hconcat`, `vconcat`, and composition edits |
 | `materializeDensityData` | density data actions |
+| `materializeGradientProfileData` | gradient-plot profile data actions |
+| `materializeGradientPlot` | deferred `createGradientPlot` completion and position encodings |
+| `materializeGradientPlotFill` | gradient-plot body, scale, text, and density-legend consumers |
 | `materializeFilteredData` | filter data actions |
 | `materializeMarkFilteredData` | `filterMarks` selected-item member rows |
 | `materializeIntervalData` | interval data actions |
@@ -27,6 +30,7 @@ domain action을 통해서만 실행한다.
 | `rematerializeErrorBandBoundary` | `editErrorBandBoundary` selected boundary appearance |
 | `rematerializeErrorBar` | `editErrorBar` main rule and owned cap reconciliation |
 | `rematerializeGradientLegend` | continuous color legend, scale, and Canvas actions |
+| `rematerializeGradientPlotLegend` | gradient-plot density legend, Canvas, and appearance edits |
 | `rematerializeIntervalLegend` | discretized color legend, scale, and Canvas actions |
 | `rematerializeGrid` | grid aggregate and Canvas actions |
 | `rematerializeHorizontalGrid` | horizontal grid and Canvas actions |
@@ -59,6 +63,7 @@ domain action을 통해서만 실행한다.
 | --- | --- | --- |
 | `composeFacetGuides` | `facet`, facet layout edits | Remove interior child axes/legends and attach one compatible parent legend |
 | `rebindLayerData` | `facet`, derived-data revision owners | Rebind one layer to a replayed or revised dataset |
+| `rebindGradientPlotProfile` | `facet` | Rebind one gradient owner config to its cell-local source and profile revision |
 | `releaseDerivedData` | derived-data revision owners | Remove an unreferenced old derived revision through `editSemantic({ remove: true })` |
 | `replayDerivedData` | `facet` | Recreate one supported stored transform through its canonical data materializer |
 | `useProgram` | `hconcat`, `vconcat`, and child replacement | Retain one immutable named child program before composition materialization |
@@ -98,6 +103,9 @@ primitive edits로 저장하기 위해 호출하는 internal wrapped state trans
 | `createBoxOutlierData` | `createBoxPlot` | immutable owned source-row outliers |
 | `createBoxMedian` | `createBoxPlot` | median rule spanning the concrete ranged-bar body |
 | `createBoxOutliers` | `createBoxPlot` | diamond point realization for existing outlier rows |
+| `createGradientProfileData` | `createGradientPlot`, `editGradientPlot` | immutable sampled category-profile revision |
+| `createGradientPlotCenter` | `createGradientPlot`, `editGradientPlot` | optional center rule for each category strip |
+| `createGradientPlotLegend` | `createGradientPlot`, `editGradientPlot` | neutral relative-density legend |
 | `createErrorBarCap` | `createErrorBar` | compose one namespaced fixed-pixel cap from rule and encoding child actions |
 | `createErrorBandBoundary` | `createErrorBand`, `editErrorBandBoundary` | compose one namespaced lower or upper line boundary from ordinary mark and encoding actions |
 | `applyPointHighlight` | `highlightMarks` | replace selected point child geometry and appearance from one stored selection |

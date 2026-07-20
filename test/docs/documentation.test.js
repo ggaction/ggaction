@@ -181,7 +181,7 @@ test("keeps navigation and page order complete", async () => {
   assert.deepEqual(new Set(order), pageUrls);
   for (const url of navigation) assert.equal(pageUrls.has(url), true, url);
   assert.equal(navigation.includes("/api/"), true);
-  assert.equal(navigation.length, 17);
+  assert.equal(navigation.length, 18);
 
   const byUrl = new Map(registry.map(page => [page.url, page]));
   for (const page of registry) {
@@ -653,7 +653,7 @@ test("keeps concise and full LLM documentation synchronized", async () => {
   assert.match(index, /\.\/llms-full\.txt/);
   assert.match(index, /\.\/reference\/actions\/charts-data\//);
   assert.doesNotMatch(index, /\.md(?:#|\b)/);
-  assert.equal(targets.length, 43);
+  assert.equal(targets.length, 44);
   assert.match(index, /vertical or\s+horizontal grouped statistical\/explicit error bands/);
   assert.match(index, /vertical or horizontal categorical and\s+quantitative pairings/);
   assert.doesNotMatch(index, /Polar line\/arc marks/);

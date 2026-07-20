@@ -101,3 +101,10 @@ The same program module also exports `createCarsHorizontalMinmaxBoxPlot`, which
 uses Horsepower on x, Origin on y, and creates no outlier resources.
 It additionally exports `createCarsStyledFactorBoxPlot` for factor/appearance
 options and `createCarsBoxPlotWithoutOutliers` for the explicit outlier opt-out.
+
+## Cars gradient plot
+
+Open <http://localhost:8000/examples/cars-gradient-plot/>. This chart uses
+`createGradientPlot` to sample one acceleration density profile per Origin,
+fill each category strip with backend-neutral gradient paint, and add median
+rules, guides, categorical color, and a title.

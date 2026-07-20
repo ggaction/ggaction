@@ -260,7 +260,23 @@
   home_order: 4
   recipe_order: 9
   featured: true
+- id: gradient
+  title: Gradient plot
+  image: /assets/images/cars-gradient-plot.png
+  alt: Density gradient strips showing car acceleration distributions by origin
+  width: 1240
+  height: 920
+  thumbnail: /assets/images/cars-gradient-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 475
+  caption: Category strips filled by sampled relative density with median rules.
+  summary: Compare complete distribution shapes across categories in a compact strip.
+  actions: createGradientPlot · editGradientPlot
+  url: /api/gradient-plots/
+  home_group: statistical
+  home_order: 5
 - id: polar
+  title: Polar points
   title: Polar points
   image: /assets/images/cars-polar-scatterplot.png
   alt: Cars Polar scatterplot using acceleration angle and horsepower radius

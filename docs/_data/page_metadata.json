@@ -228,6 +228,11 @@
     "description": "createBoxPlot creates vertical or horizontal box plots from one categorical field and one quantitative field.",
     "image": "/assets/images/cars-box-plot.png"
   },
+  "/api/gradient-plots/": {
+    "title": "Gradient Plots",
+    "description": "createGradientPlot compares a quantitative distribution across categories. Each category becomes one density filled strip plus an optional center rule.",
+    "image": "/assets/images/cars-gradient-plot.png"
+  },
   "/api/guides/": {
     "title": "Guides",
     "description": "Creates the applicable axes, Cartesian or Polar grid, and categorical legend supported by the current semantic encodings.",

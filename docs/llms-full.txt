@@ -2512,6 +2512,7 @@ overview no longer provides enough control.
 - [Error bars](./error-bars.md)
 - [Error bands](./error-bands.md)
 - [Box plots](./box-plots.md)
+- [Gradient plots](./gradient-plots.md)
 
 ## Exact action lookup
 
@@ -4855,6 +4856,116 @@ boxes, and custom whisker appearance are not implemented.
 [Marks](./marks.md) · [Encodings](./encodings.md) ·
 [Error bars](./error-bars.md) · [Guides](./guides.md)
 
+<!-- Source: /api/gradient-plots/ -->
+
+# Gradient Plots
+
+`createGradientPlot` compares a quantitative distribution across categories.
+Each category becomes one density-filled strip plus an optional center rule.
+The action uses the same categorical/quantitative `x` and `y` roles as
+`createBoxPlot`, so orientation follows the fields rather than a separate flag.
+
+## Create a gradient plot
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    width: 620,
+    height: 460,
+    margin: { top: 85, right: 170, bottom: 95, left: 80 }
+  })
+  .createData({ values: cars })
+  .createGradientPlot({
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration" }
+  });
+```
+
+The shortest complete call infers Cartesian scales and creates applicable
+axes, grid lines, a median center rule, and a right-side relative-density
+legend. Axis titles retain the original source fields even though the action
+materializes an internal sampled profile dataset.
+
+Use a categorical color encoding when each category should keep its own hue:
+
+```javascript
+const colored = program.encodeColor({
+  target: "gradientPlot",
+  field: "Origin",
+  fieldType: "nominal",
+  scale: { palette: "tableau10" }
+});
+```
+
+Density still controls lightness and opacity inside each strip. `gradient`
+controls the neutral palette and opacity range when no category color encoding
+is present.
+
+## Options and defaults
+
+```javascript
+createGradientPlot({
+  id?, target?, data?, x?, y?, coordinate?,
+  density?: { bandwidth?, extent?, steps?, kernel?, normalization? },
+  width?: { band? },
+  gradient?: { palette?, opacity? },
+  center?: false | { type?, stroke?, strokeWidth? },
+  guides?: false | { axes?, grid?, legend? }
+} = {})
+```
+
+- `density` defaults to Gaussian, automatic bandwidth and extent, `64` steps,
+  and unit normalization.
+- `width.band` defaults to `0.7` of the category band.
+- `gradient` defaults to `blues` with opacity `[0, 1]`.
+- `center` defaults to a median rule with a `1.5` logical-pixel dark stroke;
+  `false` removes the complete optional component.
+- `guides: false` omits all guide resources. Nested `false` values omit only
+  that component.
+
+Positions can be supplied in the create call, inferred from one compatible
+encoded layer, or completed afterward with `encodeX` and `encodeY`. An omitted
+choice is accepted only when one source or target is unambiguous.
+
+## Edit and compose
+
+```javascript
+const edited = colored.editGradientPlot({
+  density: { bandwidth: 0.8 },
+  width: { band: 0.55 },
+  center: { type: "mean", stroke: "#111827" }
+});
+```
+
+Density or center-statistic changes create a new immutable profile revision.
+Width, palette, opacity, and center appearance retain the current profile.
+Canvas and scale edits rematerialize strips, paint direction, center rules,
+attached text, and guides.
+
+`selectMarks` and `highlightMarks` operate at one category-strip grain. An
+opacity or offset highlight preserves the structured density paint; an
+explicit `fill` replaces it. `filterMarks` intentionally rejects this
+composite resource—filter the source with `filterData` before
+`createGradientPlot` instead.
+
+Cartesian `facet` replays the profile independently inside each cell. Shared
+density legends are not currently supported; omit the facet legend or keep
+legends outside the repeated chart.
+
+## Current limitations
+
+Subgroup offsets, multiple overlaid profiles, independent per-category
+intensity domains, category/measure reassignment, and shared facet density
+legends are not implemented.
+
+## Related
+
+[Box plots](./box-plots.md) · [Data filtering](./data/filtering.md) ·
+[Selection and highlighting](./appearance/selection-and-highlighting.md) ·
+[Statistical action reference](../reference/actions/statistics.md#creategradientplot)
+
 <!-- Source: /api/guides/ -->
 
 # Guides
@@ -6322,8 +6433,8 @@ Operators are strict
 `{ op: "min" | "max", count?, groupBy?, ties? }`. `count` defaults to `1`,
 `ties` to `"first"`, and `inclusive` to `true`. Values are semantic data
 values without coercion. The default `grain: "item"` selects one point symbol,
-one final bar segment/rectangle, one line/area series path, one arc sector, or
-one rule line.
+one final bar segment/rectangle, one gradient-plot category strip, one
+line/area series path, one arc sector, or one rule line.
 Stacked bars additionally accept `grain: "stack"` to treat all segments in one
 bin or category as a single item. A multi-row path field or channel must have
 one unique value at series grain.
@@ -6369,7 +6480,7 @@ const reused = selected.highlightMarks({
 });
 ```
 
-Current highlighting supports point, bar, line, area, arc, and rule marks. Points
+Current highlighting supports point, bar, rect, line, area, arc, and rule marks. Points
 support fill, shape, size, outline, and logical offset. Bars support fill and
 outline. Areas and arc sectors support fill, optional outline, opacity, and path
 offset. Lines and rules support stroke, width, named or numeric `strokeDash`,
@@ -6382,6 +6493,7 @@ graphic attached to one selected semantic item together.
 | --- | --- | --- |
 | Point | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `shape`, `size`, `offset` | `strokeDash` |
 | Bar | `color`/`fill`, `opacity`, `stroke`, `strokeWidth` | `shape`, `size`, `offset`, `strokeDash` |
+| Rect | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
 | Line | `color`/`stroke`, `opacity`, `strokeWidth`, `strokeDash`, `offset` | `fill`, `shape`, `size` |
 | Area | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
 | Arc | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
@@ -6413,6 +6525,12 @@ Selection and highlight intent is immutable and is reapplied after owning mark
 rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
 assignment.
+
+For a gradient plot, opacity, stroke, or offset-only highlights preserve the
+existing structured density paint. Supplying `color` or `fill` deliberately
+replaces that paint on the selected strip. Use `filterData` before
+`createGradientPlot`; `filterMarks` does not partially filter this composite
+body and center-rule resource.
 
 See the complete [mark-selection tutorial](../../tutorials/mark-selection.md) for
 the approved point, stacked-bar, and line-series examples.
@@ -8237,15 +8355,15 @@ remain available for custom layering and editing.
 
 ### Intervals and distributions
 
-| Capability | Error bar | Error band | Box plot |
-| --- | --- | --- | --- |
-| Semantic marks | rule | area | bar + rule + point |
-| Position | categorical/temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis |
-| Nominal color | — | grouped area fill | body fill through ranged-bar color |
-| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers |
-| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | categorical/linear axes; horizontal grid |
-| Legend | — | categorical | optional ranged-bar color legend |
-| Selection/highlight | rule | series | component |
+| Capability | Error bar | Error band | Box plot | Gradient plot |
+| --- | --- | --- | --- | --- |
+| Semantic marks | rule | area | bar + rule + point | rect + rule |
+| Position | categorical/temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile |
+| Nominal color | — | grouped area fill | body fill through ranged-bar color | category hue with density modulation |
+| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers | structured gradient fill, width, optional center rule |
+| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | categorical/linear axes; horizontal grid | categorical/linear axes, grid, density legend |
+| Legend | — | categorical | optional ranged-bar color legend | neutral density; categorical color when requested |
+| Selection/highlight | rule | series | component | category strip |
 
 ### Polar charts
 
@@ -8299,6 +8417,11 @@ not implemented.
 Box plots support vertical or horizontal category/measure pairings, default
 or configurable Tukey summaries, min–max whiskers, band width and component
 appearance overrides, and explicit outlier opt-out without placeholder resources.
+Gradient plots support the same category/measure orientation family, immutable
+sampled profile revisions, configurable density/width/paint/center options,
+source-first filtering, category-strip highlighting, and Cartesian facet
+replay. Shared facet density legends and partial composite `filterMarks` are
+not implemented.
 Mark selection supports point, final-bar item, stacked-bar group, line/area
 series, arc sector, and rule grain. Selector values explicitly distinguish data fields,
 pre-scale semantic channels, and concrete graphic properties.

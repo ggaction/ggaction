@@ -46,15 +46,15 @@ remain available for custom layering and editing.
 
 ### Intervals and distributions
 
-| Capability | Error bar | Error band | Box plot |
-| --- | --- | --- | --- |
-| Semantic marks | rule | area | bar + rule + point |
-| Position | categorical/temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis |
-| Nominal color | — | grouped area fill | body fill through ranged-bar color |
-| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers |
-| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | categorical/linear axes; horizontal grid |
-| Legend | — | categorical | optional ranged-bar color legend |
-| Selection/highlight | rule | series | component |
+| Capability | Error bar | Error band | Box plot | Gradient plot |
+| --- | --- | --- | --- | --- |
+| Semantic marks | rule | area | bar + rule + point | rect + rule |
+| Position | categorical/temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile |
+| Nominal color | — | grouped area fill | body fill through ranged-bar color | category hue with density modulation |
+| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers | structured gradient fill, width, optional center rule |
+| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | categorical/linear axes; horizontal grid | categorical/linear axes, grid, density legend |
+| Legend | — | categorical | optional ranged-bar color legend | neutral density; categorical color when requested |
+| Selection/highlight | rule | series | component | category strip |
 
 ### Polar charts
 
@@ -108,6 +108,11 @@ not implemented.
 Box plots support vertical or horizontal category/measure pairings, default
 or configurable Tukey summaries, min–max whiskers, band width and component
 appearance overrides, and explicit outlier opt-out without placeholder resources.
+Gradient plots support the same category/measure orientation family, immutable
+sampled profile revisions, configurable density/width/paint/center options,
+source-first filtering, category-strip highlighting, and Cartesian facet
+replay. Shared facet density legends and partial composite `filterMarks` are
+not implemented.
 Mark selection supports point, final-bar item, stacked-bar group, line/area
 series, arc sector, and rule grain. Selector values explicitly distinguish data fields,
 pre-scale semantic channels, and concrete graphic properties.

@@ -227,6 +227,7 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
   assert.deepEqual(index.internal.stateTransitions, [
     "composeFacetGuides",
     "rebindLayerData",
+    "rebindGradientPlotProfile",
     "releaseDerivedData",
     "replayDerivedData",
     "setQuantitativeColorScale",

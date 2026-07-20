@@ -44,8 +44,8 @@ Operators are strict
 `{ op: "min" | "max", count?, groupBy?, ties? }`. `count` defaults to `1`,
 `ties` to `"first"`, and `inclusive` to `true`. Values are semantic data
 values without coercion. The default `grain: "item"` selects one point symbol,
-one final bar segment/rectangle, one line/area series path, one arc sector, or
-one rule line.
+one final bar segment/rectangle, one gradient-plot category strip, one
+line/area series path, one arc sector, or one rule line.
 Stacked bars additionally accept `grain: "stack"` to treat all segments in one
 bin or category as a single item. A multi-row path field or channel must have
 one unique value at series grain.
@@ -91,7 +91,7 @@ const reused = selected.highlightMarks({
 });
 ```
 
-Current highlighting supports point, bar, line, area, arc, and rule marks. Points
+Current highlighting supports point, bar, rect, line, area, arc, and rule marks. Points
 support fill, shape, size, outline, and logical offset. Bars support fill and
 outline. Areas and arc sectors support fill, optional outline, opacity, and path
 offset. Lines and rules support stroke, width, named or numeric `strokeDash`,
@@ -104,6 +104,7 @@ graphic attached to one selected semantic item together.
 | --- | --- | --- |
 | Point | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `shape`, `size`, `offset` | `strokeDash` |
 | Bar | `color`/`fill`, `opacity`, `stroke`, `strokeWidth` | `shape`, `size`, `offset`, `strokeDash` |
+| Rect | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
 | Line | `color`/`stroke`, `opacity`, `strokeWidth`, `strokeDash`, `offset` | `fill`, `shape`, `size` |
 | Area | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
 | Arc | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
@@ -135,6 +136,12 @@ Selection and highlight intent is immutable and is reapplied after owning mark
 rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
 assignment.
+
+For a gradient plot, opacity, stroke, or offset-only highlights preserve the
+existing structured density paint. Supplying `color` or `fill` deliberately
+replaces that paint on the selected strip. Use `filterData` before
+`createGradientPlot`; `filterMarks` does not partially filter this composite
+body and center-rule resource.
 
 See the complete [mark-selection tutorial](../../tutorials/mark-selection.md) for
 the approved point, stacked-bar, and line-series examples.

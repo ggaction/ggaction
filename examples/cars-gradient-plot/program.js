@@ -1,6 +1,6 @@
-import { chart } from "../../../src/index.js";
+import { chart } from "../../src/index.js";
 
-export function createCarsGradientPlotActions(cars) {
+export function createCarsGradientPlot(cars) {
   return chart()
     .createCanvas({
       width: 620,

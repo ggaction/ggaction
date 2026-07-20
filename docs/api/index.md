@@ -28,6 +28,7 @@ overview no longer provides enough control.
 - [Error bars](./error-bars.md)
 - [Error bands](./error-bands.md)
 - [Box plots](./box-plots.md)
+- [Gradient plots](./gradient-plots.md)
 
 ## Exact action lookup
 

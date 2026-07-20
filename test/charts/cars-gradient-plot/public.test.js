@@ -3,12 +3,13 @@ import test from "node:test";
 
 import { loadCars } from "../../support/data.js";
 import { assertChartProgramsEquivalent } from "../../support/chart-equivalence.js";
-import { createCarsGradientPlotActions } from "./action.program.js";
+import { createCarsGradientPlot } from
+  "../../../examples/cars-gradient-plot/program.js";
 import { createCarsGradientPlotReference } from "./fixture.js";
 import { createCarsGradientPlotExpanded } from "./expanded.program.js";
 
 test("builds the approved Cars gradient plot through the public facade", () => {
-  const program = createCarsGradientPlotActions(loadCars());
+  const program = createCarsGradientPlot(loadCars());
   const owner = program.markConfigs.gradientPlot.gradientPlot;
   const profile = program.semanticSpec.datasets.find(
     dataset => dataset.id === owner.profileId
@@ -35,7 +36,7 @@ test("builds the approved Cars gradient plot through the public facade", () => {
 });
 
 test("records meaningful wrapped ownership under createGradientPlot", () => {
-  const program = createCarsGradientPlotActions(loadCars());
+  const program = createCarsGradientPlot(loadCars());
   const create = program.trace.children.find(node => node.op === "createGradientPlot");
   const operations = JSON.stringify(create);
 
@@ -55,7 +56,7 @@ test("records meaningful wrapped ownership under createGradientPlot", () => {
 test("matches the independently calculated grouped-density profile", () => {
   const cars = loadCars();
   const reference = createCarsGradientPlotReference(cars);
-  const program = createCarsGradientPlotActions(cars);
+  const program = createCarsGradientPlot(cars);
   const profileId = program.markConfigs.gradientPlot.gradientPlot.profileId;
   const profile = program.semanticSpec.datasets.find(item => item.id === profileId);
 
@@ -84,7 +85,7 @@ test("matches the independently calculated grouped-density profile", () => {
 test("matches the fully expanded component program exactly", () => {
   const cars = loadCars();
   assertChartProgramsEquivalent({
-    publicProgram: createCarsGradientPlotActions(cars),
+    publicProgram: createCarsGradientPlot(cars),
     primitiveProgram: createCarsGradientPlotExpanded(cars)
   });
 });

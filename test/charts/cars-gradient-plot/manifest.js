@@ -2,7 +2,8 @@ import { loadCars } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 
 import { GRADIENT_PLOT_LAYOUT } from "./fixture.js";
-import { createCarsGradientPlotActions } from "./action.program.js";
+import { createCarsGradientPlot } from
+  "../../../examples/cars-gradient-plot/program.js";
 import { createCarsGradientPlotExpanded } from "./expanded.program.js";
 import { createCarsGradientPlotPrimitives } from "./primitive.program.js";
 
@@ -48,7 +49,6 @@ export const visualVariants = Object.freeze([
     variant: "acceleration-by-origin",
     title: "Cars Acceleration Distribution by Origin",
     callChain: gradientPlotTargetCallChain,
-    artifact: { scope: "review" },
     primitive: () => createCarsGradientPlotPrimitives(cars),
     width: GRADIENT_PLOT_LAYOUT.width,
     height: GRADIENT_PLOT_LAYOUT.height,
@@ -77,9 +77,8 @@ export const visualVariants = Object.freeze([
     variant: "action-parity",
     title: "Cars GradientPlot Expanded Action Parity",
     callChain: gradientPlotTargetCallChain,
-    artifact: { scope: "review" },
     primitive: () => createCarsGradientPlotExpanded(cars),
-    userFacing: () => createCarsGradientPlotActions(cars),
+    userFacing: () => createCarsGradientPlot(cars),
     width: GRADIENT_PLOT_LAYOUT.width,
     height: GRADIENT_PLOT_LAYOUT.height,
     colors: ["#334155", "#0f172a"],

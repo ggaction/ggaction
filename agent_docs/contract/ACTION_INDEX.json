@@ -2267,6 +2267,7 @@
     "stateTransitions": [
       "composeFacetGuides",
       "rebindLayerData",
+      "rebindGradientPlotProfile",
       "releaseDerivedData",
       "replayDerivedData",
       "setQuantitativeColorScale",

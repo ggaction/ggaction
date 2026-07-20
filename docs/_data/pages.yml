@@ -156,6 +156,10 @@
   url: /api/box-plots/
   nav_group: statistics
   nav_order: 4
+- title: Gradient Plots
+  url: /api/gradient-plots/
+  nav_group: statistics
+  nav_order: 5
 - title: Guides
   url: /api/guides/
   parent: /api/

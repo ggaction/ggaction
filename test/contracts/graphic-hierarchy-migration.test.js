@@ -172,6 +172,13 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
     "chartTitle", "chartSubtitle"
   ],
+  "cars-gradient-plot": [
+    "canvas", "horizontalGridLines", "gradientPlot", "gradientPlotCenter",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "gradientPlotDensityLegend", "gradientPlotDensityLegendLabels",
+    "gradientPlotDensityLegendTitle", "chartTitle", "chartSubtitle"
+  ],
   "gapminder-error-band": [
     "canvas", "horizontalGridLines", "errorBand", "errorBandLowerBoundary",
     "errorBandUpperBoundary", "xAxisLine", "xAxisTicks", "xAxisLabels",

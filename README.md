@@ -93,7 +93,11 @@ encoding, and guide actions as trace children, and the same resource-specific
 actions remain available for later edits. See the
 [Basic Charts API](https://ggaction.github.io/ggaction/api/basic-charts/).
 
-For the advanced version, follow the [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/) or open the [runnable example](./examples/cars-regression-scatterplot/).
+For an advanced layered example, follow the [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/)
+or open the [runnable regression example](./examples/cars-regression-scatterplot/).
+To compare category distributions with density-filled strips, read the
+[gradient-plot guide](https://ggaction.github.io/ggaction/api/gradient-plots/)
+or open the [runnable example](./examples/cars-gradient-plot/).
 
 ## What it supports
 

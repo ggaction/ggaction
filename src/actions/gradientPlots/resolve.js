@@ -42,7 +42,13 @@ export function resolveGradientSourceLayer(program, target) {
   const eligible = program.semanticSpec.layers.filter(layer =>
     layer.encoding?.x !== undefined && layer.encoding?.y !== undefined
   );
-  return eligible.length === 1 ? eligible[0] : undefined;
+  if (eligible.length === 1) return eligible[0];
+  if (eligible.length > 1) {
+    throw new Error(
+      "createGradientPlot target is ambiguous; provide target or explicit x and y."
+    );
+  }
+  return undefined;
 }
 
 export function resolveGradientPlotId(program, requested) {

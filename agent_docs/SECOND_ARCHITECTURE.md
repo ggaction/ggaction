@@ -1980,6 +1980,8 @@ interval containment을 deterministic invariant로 검증한다.
     window-rank scatterplot
 12. Raw quantitative x/y rows를 immutable 2D-bin revision으로 만들고 ranged rect와 count color에 연결하는
     Cars binned heatmap
+13. Category별 immutable density profile, backend-neutral linear-gradient `FillPaint`, optional center rule,
+    source filtering, category-strip highlighting과 Cartesian facet replay를 가진 Cars gradient plot
 
 이 목록은 chart type별 별도 compiler가 있다는 뜻이 아니다. 같은 data, scale, mark,
 encoding, guide, layout, materialization primitive가 여러 vertical slice에서 재사용된다는
@@ -2072,6 +2074,11 @@ state, explicit materialization, action trace, package boundary와 충돌하지 
 - Action option object의 plain-object shape, closed key vocabulary와 empty-option policy도
   `core/validation.js`의 한 helper가 소유한다. Domain validator는 이 공통 구조 검증 뒤
   서로 연관된 option과 값 의미만 추가로 검증한다.
+- Concrete `fill`은 solid string 또는 immutable backend-neutral `LinearGradientPaint`를 받는 하나의
+  `FillPaint` 계약이다. Gradient profile은 semantic derived data, palette/opacity intent는 owner config,
+  normalized endpoints와 stops는 `graphicSpec`, backend gradient object는 renderer-local ephemeral state가 소유한다.
+- Statistical composite를 facet할 때 raw partition 뒤 registered transform을 cell-local ID로 replay하고,
+  body/sibling layer뿐 아니라 owner의 private source/profile identity도 explicit wrapped transition으로 함께 rebind한다.
 
 Roadmap 3 이후에는 nested Cartesian/Polar composition, Cartesian facet, broad guide editing hierarchy와 generic
 `editScale`도 현재 구현 계약이다. 반대로 SVG mapping 등 구현되지 않은 초기 아이디어는

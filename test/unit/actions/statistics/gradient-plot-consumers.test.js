@@ -262,3 +262,22 @@ test("rejects partial composite mark filtering with source-filter guidance", () 
   assert.equal(program.semanticSpec.datasets.length, 2);
   assert.equal(program.graphicSpec.objects.gradientPlot.items.length, 2);
 });
+
+test("requires a target when multiple encoded sources are eligible", () => {
+  const source = chart()
+    .createCanvas({ width: 420, height: 320 })
+    .createData({ id: "rows", values: rows })
+    .createPointMark({ id: "first" })
+    .encodeX({ field: "value" })
+    .encodeY({ field: "value" })
+    .createPointMark({ id: "second" })
+    .createTextMark({ id: "annotation", data: "rows" });
+
+  assert.throws(
+    () => source.createGradientPlot({ guides: false }),
+    /target is ambiguous/
+  );
+  assert.equal(source.semanticSpec.layers.some(
+    layer => layer.id === "gradientPlot"
+  ), false);
+});
