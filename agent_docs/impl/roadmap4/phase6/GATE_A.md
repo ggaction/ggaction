@@ -4,7 +4,7 @@
 
 - Gate: `P6-A`
 - 상태: `ready-for-review`
-- Review source checkpoint: `924db18` (`prepare gradient plot review gate`)
+- Review source checkpoint: `37ccae6` (`refine gradient plot color defaults`)
 - Remote: `origin/main`
 - 이후 차단: public `createGradientPlot`/`editGradientPlot`, stable owner lifecycle와 materializer
 
