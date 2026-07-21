@@ -28,7 +28,7 @@ export function renderActionCatalog(index) {
     "",
     "This compact index is generated from `ACTION_INDEX.json`. Edit the manifest and linked domain contract together, then run `npm run contracts:catalog`.",
     "",
-    "Contract conventions and shared formal notation live in [`README.md`](README.md).",
+    "Contract conventions live in [`README.md`](README.md); shared formal notation lives in [`FORMAL_TYPES.md`](FORMAL_TYPES.md).",
     "",
     "## Current direct actions",
     "",

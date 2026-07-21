@@ -111,3 +111,17 @@ test("routes architecture work without duplicating the canonical record", () => 
     assert.match(map, new RegExp(route), route);
   }
 });
+
+test("keeps the contract landing page lightweight and action-directed", () => {
+  const contractRoot = path.join(agentDocsRoot, "contract");
+  const readme = readFileSync(path.join(contractRoot, "README.md"), "utf8");
+  const formalTypes = readFileSync(path.join(contractRoot, "FORMAL_TYPES.md"), "utf8");
+
+  assert.match(readme, /ACTION_INDEX\.json/);
+  assert.match(readme, /contract\.file/);
+  assert.match(readme, /contract\.anchor/);
+  assert.match(readme, /FORMAL_TYPES\.md/);
+  assert.doesNotMatch(readme, /type SemanticPropertyPath/);
+  assert.match(formalTypes, /type SemanticPropertyPath/);
+  assert.equal(Buffer.byteLength(readme) < 8_000, true);
+});
