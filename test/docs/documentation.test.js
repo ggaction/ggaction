@@ -198,6 +198,12 @@ test("keeps navigation and page order complete", async () => {
   assert.equal((layout.match(/class="docs-topnav"[\s\S]*?<\/nav>/)?.[0]
     .match(/<a /g) ?? []).length, 4);
   assert.match(layout, /'\/recipes\/' \| relative_url/);
+  assert.match(layout, /<html class="no-js"/);
+  assert.doesNotMatch(read("docs/_includes/sidebar.html"), /\s(?:inert|aria-hidden=)/);
+  assert.match(
+    read("docs/_includes/head.html"),
+    /classList\.replace\("no-js", "js"\)/
+  );
 });
 
 test("keeps the chart-example catalog strict and routable", async () => {

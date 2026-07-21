@@ -998,7 +998,7 @@ h3:hover .docs-heading-anchor,
     display: none;
   }
 
-  .nav-toggle-button {
+  .js .nav-toggle-button {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1012,7 +1012,7 @@ h3:hover .docs-heading-anchor,
     display: block;
   }
 
-  .docs-sidebar {
+  .js .docs-sidebar {
     position: fixed;
     z-index: 15;
     top: var(--docs-topbar);
@@ -1022,6 +1022,19 @@ h3:hover .docs-heading-anchor,
     transition: transform 160ms ease;
     background: #fff;
     box-shadow: 8px 0 24px rgba(15, 23, 42, 0.12);
+  }
+
+  .no-js .docs-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 1rem 1.25rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--docs-border);
+  }
+
+  .no-js .docs-search {
+    display: none;
   }
 
   body.is-navigation-open {

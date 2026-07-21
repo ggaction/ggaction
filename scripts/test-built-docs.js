@@ -215,6 +215,17 @@ try {
   await desktop.screenshot({ path: path.join(artifactRoot, "desktop.png"), fullPage: true });
   await desktop.close();
 
+  const noScriptDesktop = await browser.newPage({
+    javaScriptEnabled: false,
+    viewport: { width: 1440, height: 900 }
+  });
+  await noScriptDesktop.goto(baseUrl, { waitUntil: "networkidle" });
+  assert.equal(await noScriptDesktop.locator("html").getAttribute("class"), "no-js");
+  assert.equal(await noScriptDesktop.locator("#docs-sidebar").getAttribute("inert"), null);
+  assert.equal(await noScriptDesktop.locator("#docs-sidebar").getAttribute("aria-hidden"), null);
+  assert.equal(await noScriptDesktop.locator(".docs-sidenav a").first().isVisible(), true);
+  await noScriptDesktop.close();
+
   const htmlFiles = (await files(siteRoot))
     .filter(file => file.endsWith(".html"))
     .filter(file => !file.endsWith("404.html"));
@@ -330,6 +341,17 @@ try {
   assert.equal(await mobile.locator(".docs-code-label").first().textContent(), "Type contract");
   assert.equal(await mobile.locator(".docs-copy-button").count(), 1);
   await mobile.close();
+
+  const noScriptMobile = await browser.newPage({
+    javaScriptEnabled: false,
+    viewport: { width: 390, height: 844 }
+  });
+  await noScriptMobile.goto(baseUrl, { waitUntil: "networkidle" });
+  assert.equal(await noScriptMobile.locator(".nav-toggle-button").isVisible(), false);
+  assert.equal(await noScriptMobile.locator("#docs-sidebar").getAttribute("inert"), null);
+  assert.equal(await noScriptMobile.locator(".docs-sidenav").isVisible(), true);
+  assert.equal(await noScriptMobile.locator("#main-content").isVisible(), true);
+  await noScriptMobile.close();
 } finally {
   await browser.close();
   await new Promise(resolve => server.close(resolve));
