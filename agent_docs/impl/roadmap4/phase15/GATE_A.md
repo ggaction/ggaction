@@ -3,11 +3,12 @@
 ## 상태
 
 - Gate: `P15-A`
-- 상태: `awaiting approval`
+- 상태: `approved`
+- 승인: `2026-07-21` 사용자 명시 승인 (`exit까지 달려`)
 - D-001 checkpoint: `e710ff5` (`fix documentation fragment offsets`)
 - Public audit checkpoint: `0a4db99` (`clarify cumulative public chart contracts`)
 - Remote: `origin/main`
-- 승인 전 차단: release-readiness report와 P15-Exit 작업
+- 승인으로 해제: release-readiness report와 P15-Exit 작업
 
 ## 승인 대상
 
