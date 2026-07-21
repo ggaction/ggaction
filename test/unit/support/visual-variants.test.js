@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   assertDisplayedProgram,
   defineVisualVariant,
+  displayedActionCalls,
   displayedActionOperations
 } from "../../support/visual-variants.js";
 
