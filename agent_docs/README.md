@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-현재 실행 계획은 **Roadmap 4**이고 다음 미완료 범위는 **Phase 12 — collision-aware label
-layout**이다. 이 포인터의 machine-readable owner는
+현재 실행 계획은 **Roadmap 4**이지만 active Phase는 없다. **Phase 12 — collision-aware label layout**까지
+완료했으며 Phase 13은 별도 요청 전까지 planned 상태로 유지한다. 이 포인터의 machine-readable owner는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 
 ## 작업별 읽기 경로
@@ -35,8 +35,8 @@ layout**이다. 이 포인터의 machine-readable owner는
 
 ### Roadmap 작업을 계속할 때
 
-1. `ROADMAP_INDEX.json`의 `activeRoadmap`과 `activePhase`를 확인한다.
-2. 활성 `ROADMAP.md`의 해당 Phase를 읽는다.
+1. `ROADMAP_INDEX.json`의 `activeRoadmap`, nullable `activePhase`와 `lastCompletedPhase`를 확인한다.
+2. Active Phase가 있을 때만 활성 `ROADMAP.md`의 해당 Phase를 읽는다.
 3. 존재한다면 해당 `phaseN/GOAL.md`, `STEPn.md`, Gate 기록만 추가로 읽는다.
 
 ### 과거 결정 이유를 조사할 때

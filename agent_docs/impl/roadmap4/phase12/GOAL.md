@@ -9,7 +9,7 @@
 - [x] Production grammar, action과 rematerialization lifecycle
 - [x] P12-B public visual/lifecycle 승인
 - [x] Current contract, declarations, docs와 cumulative closeout
-- [ ] P12-Exit 사용자 승인
+- [x] P12-Exit 사용자 승인
 
 ## 목표
 
@@ -78,7 +78,7 @@ Existing labels that already satisfy collision and bounds constraints remain unc
 | --- | --- | --- | --- |
 | P12-A | approved | exact API/default/error/state, independent oracle, Gapminder primitive source와 PNG | production layout/action 구현 |
 | P12-B | approved | public action hierarchy, primitive/public parity, replay/removal/warning lifecycle | public closeout |
-| P12-Exit | ready-for-review | Current inventory, architecture, docs/types/package와 cumulative verification | Phase 13 |
+| P12-Exit | approved | Current inventory, architecture, docs/types/package와 cumulative verification | Phase 13은 별도 요청까지 planned 유지 |
 
 모든 Gate는 hard pause다.
 

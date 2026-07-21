@@ -1,7 +1,8 @@
 # Roadmap 4 — Native Ownership and Advanced Static Charts
 
-> **문서 상태 — 현재 실행 계획.** 현재 Phase 포인터는
-> [`ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유하며, 완료된 Phase의 기록도 이 문서에 보존한다.
+> **문서 상태 — 현재 실행 계획.** 현재는 active Phase 없이 Phase 12 종료 checkpoint에 머문다.
+> 다음 Phase를 여는 결정은 [`ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유하며, 완료된 Phase의 기록도
+> 이 문서에 보존한다.
 
 ## 목표
 
@@ -135,7 +136,7 @@ existing createBoxPlot({ ... })
 | 9 | completed | NCP-005 Horizon encoding; P9-A/P9-B/P9-Exit 승인 완료 |
 | 10 | skipped | P-006 overlay/inset composition을 `Maybe Future`로 이동; public/API 구현 없음 |
 | 11 | completed | NCP-004 Parallel Coordinates; P11-A/P11-B/P11-Exit 승인 완료 |
-| 12 | in-progress | P-005 label layout; P12-A/P12-B 승인, stable closeout와 P12-Exit 준비 |
+| 12 | completed | P-005 label layout; P12-A/P12-B/P12-Exit 승인 완료 |
 | 13 | planned | P-007 hierarchy layout |
 | 14 | planned | 전체 Basic Chart facade consistency closeout |
 | 15 | planned | D-001, 누적 public docs 재검증과 전체 release-readiness 검증 |

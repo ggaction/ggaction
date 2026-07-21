@@ -3,13 +3,14 @@
 ## 상태
 
 - Gate: `P12-Exit`
-- 상태: `ready-for-review`
+- 상태: `approved`
+- 승인: `2026-07-21` 사용자 명시 승인
 - Production checkpoint: `b3198a3` (`implement collision-aware label layout`)
 - Stable chart checkpoint: `d8f5b08` (`graduate label layout chart slice`)
 - Current contract checkpoint: `264bff9` (`close label layout public contract`)
 - Public registry checkpoint: `3b6bc01` (`register label layout example`)
 - Remote: `origin/main`
-- 승인 전 차단: Roadmap 4 Phase 13 구현
+- 승인 결과: Phase 12 종료. 사용자 요청에 따라 Phase 13은 `planned` 상태로 유지하고 열지 않음.
 
 ## 종료 대상 public surface
 
@@ -114,4 +115,5 @@ sandbox after the corresponding sandbox-only attempts were blocked. Documentatio
 4. Current inventory, architecture, package boundary와 public/generated documentation 동기화
 5. 위 누적 검증을 Phase 12 종료 증거로 채택하는 것
 
-승인되면 Phase 12를 `completed`로 닫고 Phase 13 설계와 Gate 계획을 연다.
+P12-Exit 승인으로 Phase 12를 `completed`로 닫았다. Phase 13 설계와 Gate 계획은 별도 사용자 요청 전까지
+시작하지 않는다.

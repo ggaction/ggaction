@@ -9,4 +9,4 @@
 - [x] normal/coverage/package/browser/render/docs 누적 검증
 - [x] Gate slice를 stable capability owner로 이동하고 review artifact 승격
 - [x] P12-Exit remote checkpoint 준비
-- [ ] P12-Exit 사용자 승인
+- [x] P12-Exit 사용자 승인
