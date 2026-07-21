@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "activeRoadmap": "roadmap4",
+  "activePhase": 12,
+  "roadmaps": [
+    {
+      "id": "roadmap1",
+      "title": "Initial Chart Foundations",
+      "status": "completed",
+      "role": "historical-execution-record",
+      "file": "agent_docs/impl/roadmap1/ROADMAP.md",
+      "successor": "roadmap2"
+    },
+    {
+      "id": "roadmap2",
+      "title": "Planned Contract Completion and Initial Release",
+      "status": "completed",
+      "role": "historical-execution-record",
+      "file": "agent_docs/impl/roadmap2/ROADMAP.md",
+      "successor": "roadmap2.1"
+    },
+    {
+      "id": "roadmap2.1",
+      "title": "External Evaluation Corrections",
+      "status": "completed",
+      "role": "historical-execution-record",
+      "file": "agent_docs/impl/roadmap2.1/ROADMAP.md",
+      "successor": "roadmap3"
+    },
+    {
+      "id": "roadmap3",
+      "title": "Polar Coordinates, Program Composition, and Action Ergonomics",
+      "status": "completed",
+      "role": "historical-execution-record",
+      "file": "agent_docs/impl/roadmap3/ROADMAP.md",
+      "successor": "roadmap4"
+    },
+    {
+      "id": "roadmap4",
+      "title": "Native Ownership and Advanced Static Charts",
+      "status": "active",
+      "role": "current-execution-plan",
+      "file": "agent_docs/impl/roadmap4/ROADMAP.md"
+    }
+  ]
+}
