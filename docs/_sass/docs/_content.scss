@@ -9,6 +9,18 @@
   margin-top: 0;
 }
 
+.docs-content blockquote {
+  color: var(--docs-muted);
+}
+
+.docs-content p a,
+.docs-content dd a,
+.docs-content blockquote a {
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
 .docs-breadcrumbs {
   margin: 0 0 1.25rem;
   color: var(--docs-muted);

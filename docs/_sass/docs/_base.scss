@@ -2,7 +2,8 @@
   --docs-accent: #2563eb;
   --docs-accent-soft: #eff6ff;
   --docs-border: #e2e8f0;
-  --docs-muted: #64748b;
+  --docs-link: #1d4ed8;
+  --docs-muted: #475569;
   --docs-sidebar: 17rem;
   --docs-topbar: 3.75rem;
 }
@@ -14,6 +15,10 @@
 body {
   color: #172033;
   background: #fff;
+}
+
+a {
+  color: var(--docs-link);
 }
 
 a:focus-visible,
