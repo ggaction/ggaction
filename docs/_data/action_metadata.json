@@ -219,6 +219,11 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "encodeParallelCoordinates": {
+    "operation": "encode",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
   "removePathOrder": {
     "operation": "remove",
     "layer": "user-facing",
@@ -760,6 +765,11 @@
     "domain": "charts"
   },
   "createHeatmap": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createParallelCoordinates": {
     "operation": "create",
     "layer": "user-facing",
     "domain": "charts"

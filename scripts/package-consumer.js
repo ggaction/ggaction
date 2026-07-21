@@ -234,6 +234,26 @@ async function testNodeConsumer(directory) {
         "encodeY", "encodeY2", "encodeColor"
       ]
     );
+    const parallelFacade = chart()
+      .createCanvas({ width: 200, height: 140, margin: 20 })
+      .createData({ values: [
+        { key: "a", first: 1, second: 4, group: "A" },
+        { key: "b", first: 2, second: 3, group: "B" }
+      ] })
+      .createParallelCoordinates({
+        dimensions: ["first", "second"],
+        key: "key",
+        color: "group",
+        guides: false
+      });
+    assert.equal(parallelFacade.graphicSpec.objects.parallelCoordinates.items.length, 2);
+    assert.deepEqual(
+      parallelFacade.trace.children.at(-1).children.map(node => node.op),
+      [
+        "createCoordinate", "createLineMark", "encodeParallelCoordinates",
+        "encodeColor"
+      ]
+    );
     const gradientPlotFacade = chart()
       .createCanvas({ width: 180, height: 140, margin: 20 })
       .createData({ values: [
@@ -502,6 +522,7 @@ async function testTypeScriptConsumer(directory) {
       type CreateHeatmapOptions,
       type CreateHistogramOptions,
       type CreateLinePlotOptions,
+      type CreateParallelCoordinatesOptions,
       type GradientPlotOptions,
       type HorizonEncodingOptions,
       type EditHorizonOptions,
@@ -510,6 +531,7 @@ async function testTypeScriptConsumer(directory) {
       type DatasetTransform,
       type JitterMaxOffset,
       type JitterPointsOptions,
+      type ParallelCoordinatesEncodingOptions,
       type RemoveJitterOptions,
       type StrokeWidthEncodingOptions,
       type ThetaEncodingOptions,
@@ -559,6 +581,33 @@ async function testTypeScriptConsumer(directory) {
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2, group: "A" }] })
       .createLinePlot(lineOptions);
+    const parallelOptions: CreateParallelCoordinatesOptions = {
+      dimensions: [
+        { field: "first", scale: { zero: false } },
+        { field: "second", title: "Second" }
+      ],
+      key: "row key",
+      missing: "break",
+      color: "group",
+      line: { curve: "linear", closed: false },
+      guides: false
+    };
+    const parallelEncoding: ParallelCoordinatesEncodingOptions = {
+      dimensions: ["first", "second"],
+      key: "row key"
+    };
+    const parallelFacade: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { "row key": "a", first: 1, second: 4, group: "A" },
+        { "row key": "b", first: 2, second: 3, group: "B" }
+      ] })
+      .createParallelCoordinates(parallelOptions);
+    const parallelAdvanced: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ first: 1, second: 2 }] })
+      .createLineMark()
+      .encodeParallelCoordinates(parallelEncoding);
     const orderedLineFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [
@@ -867,6 +916,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "window-data",
       "bin2d-data",
       "binned-heatmap",
+      "parallel-coordinates",
       "horizon",
       "violin-plot",
       "right-categorical-legend-offset",

@@ -149,6 +149,11 @@
     "description": "Basic chart actions create a complete mark, its encodings, and applicable guides in one traceable call.",
     "image": "/assets/images/cars-scatterplot.png"
   },
+  "/api/parallel-coordinates/": {
+    "title": "Parallel Coordinates",
+    "description": "Create and revise row-wise paths across ordered dimension-local scales and axes.",
+    "image": "/assets/images/cars-parallel-coordinates.png"
+  },
   "/api/canvas/": {
     "title": "Canvas",
     "description": "Creates the program's single canvas and establishes bounds for later position encodings.",
@@ -254,7 +259,7 @@
   },
   "/api/guides/": {
     "title": "Guides",
-    "description": "Creates the applicable axes, Cartesian or Polar grid, and categorical legend supported by the current semantic encodings.",
+    "description": "Creates the applicable Cartesian, Polar, or Parallel axes, Cartesian or Polar grid, and categorical legend supported by the current semantic encodings.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/titles/": {
@@ -374,7 +379,7 @@
   },
   "/api/axes/": {
     "title": "Axes",
-    "description": "Creates complete axes for encoded Cartesian x/y or Polar theta/radius channels. This is the recommended axis action for ordinary chart authoring.",
+    "description": "Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis action for ordinary chart authoring.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/grids/": {

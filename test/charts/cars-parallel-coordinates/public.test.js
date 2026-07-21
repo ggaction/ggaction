@@ -2,12 +2,15 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { render } from "../../../src/index.js";
+import { createCarsParallelCoordinates } from
+  "../../../examples/cars-parallel-coordinates/program.js";
 import { resolveMarkSelection } from
   "../../../src/materialization/selection/state.js";
+import { assertChartProgramsEquivalent } from
+  "../../support/chart-equivalence.js";
 import { createMockCanvasContext } from "../../support/canvas.js";
 import { loadCars } from "../../support/data.js";
 import { createCarsParallelPrimitiveResult } from "./primitive.program.js";
-import { createCarsParallelCoordinates } from "./user-facing.program.js";
 
 const cars = loadCars();
 
@@ -17,6 +20,12 @@ test("creates the approved Parallel facade hierarchy and state", () => {
     node => node.op === "createParallelCoordinates"
   );
   const layer = program.semanticSpec.layers[0];
+
+  assertChartProgramsEquivalent({
+    primitiveProgram: createCarsParallelPrimitiveResult(cars).program,
+    publicProgram: program,
+    compareSemanticSpec: false
+  });
 
   assert.deepEqual(facade.children.map(node => node.op), [
     "createCoordinate",

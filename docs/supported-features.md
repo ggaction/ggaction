@@ -69,6 +69,17 @@ remain available for custom layering and editing.
 | Legend | point color + shape | categorical | categorical |
 | Selection/highlight | point | series | sector |
 
+### Parallel coordinates
+
+| Capability | Supported now |
+| --- | --- |
+| Semantic mark | one open line-path item per eligible source row |
+| Position | two or more ordered quantitative or ordinal dimensions, each with a local scale and axis |
+| Missing values | `break` fragments, whole-row `drop-row`, or strict `error` |
+| Appearance | categorical color, categorical or constant stroke dash, line stroke/width/opacity |
+| Automatic guides | one ordinary line/text axis per dimension and applicable categorical legend; no automatic grid |
+| Selection/highlight | source-row item, including immutable `filterMarks` rematerialization |
+
 ## Shared foundations
 
 | Area | Supported now |
@@ -76,7 +87,7 @@ remain available for custom layering and editing.
 | Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar horizontal or vertical composition, stable child replacement, and Cartesian facet repetition |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, grouped kernel-density derivations, and immutable Horizon band revisions |
-| Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
+| Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
@@ -130,3 +141,7 @@ by glyph extent and plot/category slots, and does not perform collision-free
 packing. Polar point jitter is not implemented.
 Polar charts may be direct or nested concat children. Faceting a Polar source is
 not implemented and fails before partial child state is created.
+Parallel coordinates support quantitative/ordinal dimensions, open linear
+paths, dimension-local axes, color/stroke-dash legends, selection and filtering.
+Temporal dimensions, curved paths, axis drag reordering, brushing, bundling,
+faceting, and shared Parallel coordinates across child programs are not implemented.

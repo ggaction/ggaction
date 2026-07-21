@@ -35,6 +35,7 @@ components atomically; use the focused edit actions below for one component.
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
+| Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
 <!-- action-capabilities:axes:end -->
 
 Create also accepts `coordinate`, an existing coordinate ID consumed by the

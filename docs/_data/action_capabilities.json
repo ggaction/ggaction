@@ -54,6 +54,13 @@
         "arc": ["quantitative"]
       },
       "modes": "radial position; arc combines it with a categorical theta band"
+    },
+    {
+      "action": "encodeParallelCoordinates",
+      "support": {
+        "line": ["quantitative", "ordinal"]
+      },
+      "modes": "atomic ordered dimensions; one namespaced scale and axis per dimension"
     }
   ],
   "color": [
@@ -128,6 +135,12 @@
       "create": ["createThetaAxis", "createRadialAxis", "createAxes"],
       "edit": ["editThetaAxis", "editRadialAxis"],
       "components": ["line", "ticks", "labels", "ticksAndLabels", "title", "angle or position"]
+    },
+    {
+      "family": "Parallel dimension axes",
+      "create": ["createAxes"],
+      "edit": [],
+      "components": ["line", "ticks", "labels", "title from each stored dimension"]
     }
   ]
 }

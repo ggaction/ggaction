@@ -52,6 +52,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`encodeXRange`](current/ENCODINGS.md#encodexrange) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeGroup`](current/ENCODINGS.md#encodegroup) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodePathOrder`](current/ENCODINGS.md#encodepathorder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeParallelCoordinates`](current/ENCODINGS.md#encodeparallelcoordinates) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removePathOrder`](current/ENCODINGS.md#removepathorder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeText`](current/ENCODINGS.md#encodetext) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeHistogram`](current/ENCODINGS.md#encodehistogram) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -161,6 +162,7 @@ Contract conventions and shared formal notation live in [`README.md`](README.md)
 | user-facing | [`createBarPlot`](current/BASIC_CHARTS.md#createbarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHistogram`](current/BASIC_CHARTS.md#createhistogram) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHeatmap`](current/BASIC_CHARTS.md#createheatmap) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createParallelCoordinates`](current/BASIC_CHARTS.md#createparallelcoordinates) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRectMark`](current/MARKS.md#createrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRectMark`](current/MARKS.md#editrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 

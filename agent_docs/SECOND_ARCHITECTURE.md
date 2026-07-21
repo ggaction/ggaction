@@ -644,11 +644,17 @@ Coordinate는 named semantic resource이며 layer가 ID로 참조한다.
 { id: "main", type: "cartesian" }
 ```
 
-Vocabulary에는 `cartesian`과 `polar`가 있다. x/y positional encoding은 명시하지 않으면
+Vocabulary에는 `cartesian`, `polar`, `parallel`이 있다. x/y positional encoding은 명시하지 않으면
 `main` Cartesian coordinate를 생성하고 저장한다. theta/radius positional encoding은 compatible한
 유일한 기존 Polar coordinate를 재사용하거나 `polar` coordinate를 생성하고 저장한다. 여러 compatible
 coordinate가 있으면 임의로 선택하지 않고 explicit ID를 요구한다. 한 layer에서 Cartesian x/y와 Polar
 theta/radius를 함께 저장하지 않는다.
+
+Parallel coordinate는 ordered `encoding.parallel.dimensions`와 optional `key`, `missing` policy를
+semantic state로 저장한다. 각 dimension은 독립적인 namespaced scale을 참조하고, target/dimension identity가
+그 generated scale ID를 소유한다. `encodeParallelCoordinates`는 최소 두 dimension, unique field, compatible
+field type과 scale option을 preflight한 뒤 coordinate, encoding, scales를 atomic하게 author한다. Renderer는
+Parallel 의미를 해석하지 않고 materializer가 만든 ordinary path 및 line/text guide collection만 읽는다.
 
 현재 Polar vertical slice는 point, line과 arc mark를 지원한다. Theta의 public 단위는 degree이며 12시 방향의 0에서
 clockwise로 증가한다. 기본 theta range는 `[0, 360]`, 기본 radius range는 현재 plot bounds의 짧은 변
@@ -1249,6 +1255,9 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 
 - Cartesian line은 x/y, Polar line은 theta/radius와 supported raw quantitative 또는
   scalar/parameterized aggregate semantics가 필요하다.
+- Parallel line은 ordered Parallel dimensions를 하나의 source row당 하나의 path로 투영한다. Dimension별
+  scale mapping, missing-value policy, row key와 series appearance는 materializer가 final command/item identity로
+  확정하며 renderer에는 Parallel-specific branch가 없다.
 - group/color/strokeDash에 따라 series를 나눈다.
 - group, color, field-driven strokeDash가 함께 series identity에 참여하면 같은 field여야 한다.
 - `encodeGroup`과 `encodeStrokeDash` 재호출은 기존 assignment를 원자적으로 교체한다.
@@ -1422,8 +1431,8 @@ inference와 collision 검증만 담당하고 이 geometry 결과를 wrapped gra
 
 ### Axis
 
-`createAxes`는 persisted Cartesian encoding과 coordinate를 읽어 x/y axis applicability를
-결정한다.
+`createAxes`는 persisted coordinate family와 encoding을 읽어 axis applicability를 결정한다. Cartesian은
+x/y, Polar는 theta/radius, Parallel은 ordered dimension axis를 사용한다.
 
 ```text
 createXAxis
@@ -1437,6 +1446,11 @@ createXAxis
 Y도 같은 구조를 가진다. Tick value, label text, title text는 scale과 semantic provenance에서
 infer하고 concrete line/text collection을 만든다. Axis는 missing coordinate를 생성하거나
 encoding을 수리하지 않는다.
+
+Parallel axis는 dimension마다 axis line, ticks, labels와 title을 만들고 dimension scale을 독립적으로
+설명한다. 현재 aggregate `createAxes`가 이 family를 dispatch하며 Cartesian channel별 axis option을 Parallel에
+재해석하지 않는다. Parallel grid는 현재 지원하지 않으므로 `createGuides`는 applicable axis와 categorical
+line legend만 조립한다.
 
 ### Grid
 
@@ -2174,3 +2188,9 @@ state, explicit materialization, action trace, package boundary와 충돌하지 
 Roadmap 3 이후에는 nested Cartesian/Polar composition, Cartesian facet, broad guide editing hierarchy와 generic
 `editScale`도 현재 구현 계약이다. 반대로 SVG mapping 등 구현되지 않은 초기 아이디어는
 현재 API인 것처럼 public documentation이나 새 코드에서 가정하지 않는다.
+
+Roadmap 4에서는 Parallel coordinate가 세 번째 current coordinate family가 되었다. Public
+`createParallelCoordinates` facade는 coordinate, line mark, ordered dimension encoding, optional color와 applicable
+guides를 wrapped child action으로 조립한다. Advanced `encodeParallelCoordinates`는 같은 stored schema와
+materialization lifecycle을 직접 author하며 Canvas/scale/data/filter/selection 변경은 ordinary line path와
+dimension guide를 deterministic plan으로 rematerialize한다.

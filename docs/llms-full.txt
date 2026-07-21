@@ -187,6 +187,7 @@ The source repository also contains complete modules for the
 [histogram](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram/),
 [bar chart](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar/),
 [heatmap](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-life-expectancy-heatmap/),
+[parallel coordinates](https://github.com/ggaction/ggaction/tree/main/examples/cars-parallel-coordinates/),
 [regression scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-regression-scatterplot/),
 [density area](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area/),
 [violin plot](https://github.com/ggaction/ggaction/tree/main/examples/cars-acceleration-violins/),
@@ -2657,7 +2658,7 @@ chart. Use the filters to narrow the relationship you want to express.
   <button type="button" class="is-active" data-gallery-filter="all" aria-pressed="true">All</button>
   <button type="button" data-gallery-filter="essentials" aria-pressed="false">Cartesian and composition</button>
   <button type="button" data-gallery-filter="statistical" aria-pressed="false">Statistical layers</button>
-  <button type="button" data-gallery-filter="coordinates" aria-pressed="false">Polar coordinates</button>
+  <button type="button" data-gallery-filter="coordinates" aria-pressed="false">Alternate coordinates</button>
   <button type="button" data-gallery-filter="other" aria-pressed="false">Interaction</button>
 
 ## Choose a next step
@@ -2678,7 +2679,8 @@ overview no longer provides enough control.
   Canvas and data Create the drawing surface, immutable source data, and derived transforms.
   Marks Create point, line, area, bar, and rule layers.
   Encodings Map fields and constants to position, grouping, and appearance.
-  Coordinates and scales Use Cartesian or Polar positions and customize their mappings.
+  Coordinates and scales Use Cartesian, Polar, or Parallel coordinates and customize their mappings.
+  Parallel coordinates Compare each source row across an ordered set of dimension-local scales.
   Guides and titles Create axes, grids, legends, and chart titles from existing encodings.
   Program composition Arrange complete chart programs horizontally or vertically and replace stable child slots.
   Rendering Render the fully materialized program to Browser Canvas or Node PNG.
@@ -2914,6 +2916,38 @@ Add it afterward with
 For direct control over the derived rows, use
 [`createBin2DData`](./data/bin2d.md) before authoring the ranged rect layer.
 
+## `createParallelCoordinates`
+
+```typescript
+createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram
+```
+
+`dimensions` is the only required option. Each source row becomes one open
+path across ordered, independently scaled axes. Optional `color`,
+`strokeDash`, `line`, and `guides` values reuse the existing line, encoding,
+scale, and guide contracts.
+
+```javascript
+const parallel = chart()
+  .createCanvas({ width: 860, height: 500 })
+  .createData({ values: cars })
+  .createParallelCoordinates({
+    dimensions: [
+      "Miles_per_Gallon",
+      "Horsepower",
+      { field: "Weight_in_lbs", title: "Weight (lb)" },
+      "Acceleration"
+    ],
+    key: "Name",
+    color: "Origin"
+  });
+```
+
+The stable default mark ID is `parallelCoordinates`; the coordinate defaults
+to `parallel`. Omitted guides create one axis per dimension and an applicable
+legend. See [Parallel Coordinates](./parallel-coordinates.md) for the complete
+dimension, missing-value, lifecycle, and editing contract.
+
 ## Advanced authoring
 
 Use individual [mark](./marks.md), [encoding](./encodings.md),
@@ -2921,6 +2955,138 @@ Use individual [mark](./marks.md), [encoding](./encodings.md),
 needs custom layering, Polar geometry, a partially constructed state, or
 control between the wrapped steps. Both authoring styles produce the same
 immutable semantic and graphical resources.
+
+<!-- Source: /api/parallel-coordinates/ -->
+
+# Parallel Coordinates
+
+Use Parallel coordinates when each row should remain visible while several
+measurements are compared. Every eligible source row becomes one selectable
+open path. Every dimension owns a local scale and ordinary line/text axis.
+
+## Complete chart action
+
+```typescript
+createParallelCoordinates({
+  id?, data?, coordinate?, dimensions, key?, missing?,
+  color?, strokeDash?, line?, guides?
+}): ChartProgram
+```
+
+Only `dimensions` is required after a Canvas and an unambiguous dataset exist.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    width: 860,
+    height: 500,
+    margin: { top: 110, right: 160, bottom: 65, left: 78 }
+  })
+  .createData({ values: cars })
+  .filterData({
+    id: "cars1970",
+    field: "Year",
+    oneOf: ["1970-01-01"]
+  })
+  .createParallelCoordinates({
+    dimensions: [
+      { field: "Miles_per_Gallon", title: "MPG", scale: { nice: true, zero: false } },
+      { field: "Horsepower", scale: { nice: true, zero: false } },
+      { field: "Weight_in_lbs", title: "Weight (lb)", scale: { nice: true, zero: false } },
+      { field: "Acceleration", scale: { nice: true, zero: false } }
+    ],
+    key: "Name",
+    color: {
+      field: "Origin",
+      fieldType: "nominal",
+      scale: { palette: "tableau10" }
+    },
+    line: { strokeWidth: 1.25, opacity: 0.48 }
+  });
+```
+
+The stable mark ID is `parallelCoordinates`; the coordinate ID is `parallel`.
+Pass explicit IDs only when those roles are already occupied or several
+compatible resources make inference ambiguous.
+
+## Dimensions
+
+A dimension is a field string or an object:
+
+```typescript
+type ParallelDimension = string | {
+  field: string;
+  fieldType?: "quantitative" | "ordinal";
+  title?: string;
+  scale?: Omit<ScaleOptions, "id">;
+};
+```
+
+- At least two unique fields are required, and array order is axis order.
+- Finite numeric values infer `quantitative`; consistent strings infer
+  `ordinal`. Declare numeric categories as `ordinal` explicitly.
+- `title` defaults to the field name.
+- Scale IDs are namespaced from the mark and dimension position. Supply scale
+  behavior such as `type`, `domain`, `range`, `nice`, `zero`, or `reverse`, not
+  another `id`.
+
+## Row identity and missing values
+
+`key` names a dataset field whose values must be present and unique. It is
+optional: omission uses stable source-row lineage and never guesses a field.
+
+| `missing` | Result |
+| --- | --- |
+| `"break"` | Default. Keep the row item and draw each valid multi-point fragment. |
+| `"drop-row"` | Remove any row with an invalid dimension value. |
+| `"error"` | Reject the action before changing the program. |
+
+## Advanced encoding
+
+Use the atomic encoding after creating a line mark when the wrapped steps need
+to remain individually controllable:
+
+```javascript
+const advanced = chart()
+  .createCanvas()
+  .createData({ values })
+  .createLineMark({ id: "profiles" })
+  .encodeParallelCoordinates({
+    target: "profiles",
+    dimensions: ["first", "second", "third"]
+  })
+  .createGuides();
+```
+
+`encodeParallelCoordinates` replaces the complete ordered assignment
+atomically. It cannot mix with x/y or theta/radius position encodings on the
+same layer.
+
+## Appearance, guides, and revisions
+
+- `color` and `strokeDash` reuse the line-series encoding vocabulary.
+- `line` accepts open linear-line appearance: `stroke`, `strokeWidth`, and
+  `opacity`. Curved and closed paths are rejected.
+- Omitted guides create dimension axes and any applicable legend. Use
+  `guides: false` to omit all guides.
+- `editCanvas`, dimension `editScale`, data revisions, and `filterMarks`
+  rematerialize paths, axes, and legends together.
+- `selectMarks`, `highlightMarks`, and `filterMarks` operate at source-row
+  grain. Text is not attached automatically because a path has no unique text
+  anchor.
+
+## Limitations
+
+Temporal dimensions, curved paths, path bundling, interactive brushing,
+drag-to-reorder axes, faceting, and shared Parallel axes across composed child
+programs are not implemented.
+
+## Related
+
+[Basic Charts](./basic-charts.md) · [Coordinates](./coordinates.md) ·
+[Series encodings](./series-encodings.md) · [Selection and Highlighting](./appearance/selection-and-highlighting.md)
 
 <!-- Source: /api/canvas/ -->
 
@@ -4111,6 +4277,7 @@ The tables below are generated from the same reviewed capability registry used b
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
+| `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 
 ### Color channels
 
@@ -4137,6 +4304,7 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
+| Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
 
 ## Position
 
@@ -5365,7 +5533,7 @@ paths.
 
 ## `createGuides(options?)`
 
-Creates the applicable axes, Cartesian or Polar grid, and categorical legend supported
+Creates the applicable Cartesian, Polar, or Parallel axes, Cartesian or Polar grid, and categorical legend supported
 by the current semantic encodings.
 
 ```javascript
@@ -5400,13 +5568,17 @@ program.createGuides({
 program.createGuides({ legend: false });
 ```
 
-Axes are selected from x/y or theta/radius encodings. A horizontal grid is selected
+Axes are selected from x/y, theta/radius, or ordered Parallel dimensions. A horizontal grid is selected
 when a y encoding exists; vertical grid remains off unless requested. Polar grids
 are selected only for the encoded Polar channels: theta creates spokes and radius
 creates concentric circles. A legend is selected for line color/stroke-dash, bar
 color, area or arc color, compatible point
 color+shape encodings, or a standalone quantitative point-size encoding. Size
 adds a second quantitative block when a point-series legend also exists.
+
+Parallel dimensions create one axis per stored field and no automatic grid.
+Their row-path color or stroke-dash encoding uses the ordinary categorical
+line legend.
 
 Density areas can request both grids and forward the complete top-legend
 layout through the aggregate:
@@ -5940,6 +6112,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
+| `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 
 ## Choose an encoding
 
@@ -6445,6 +6618,7 @@ shared offset scale must use the same padding policy and parent bandwidth.
 | `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; independent quantitative scale | Rule-item or line-series widths |
 | `encodePathOrder` | `encodePathOrder({ field: "year" })` | Current or unique compatible Cartesian path; ascending default | Stable per-series vertex order without a scale |
+| `encodeParallelCoordinates` | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Current line, Parallel coordinate, local scales, `break` missing policy | One row path across ordered dimension axes |
 
 Series appearance is authored through color, stroke-dash, and stroke-width families. Each
 focused page owns the complete options, replacement behavior, and errors for
@@ -6475,6 +6649,10 @@ values reject the complete action instead of producing a partial path.
 
   Color Categorical and continuous color, grouping layouts, and aggregate bars.
   Stroke dash Constant and field-driven dash patterns for lines and rules.
+
+Parallel coordinates use one atomic ordered-dimension assignment rather than
+separate x/y calls. See [Parallel Coordinates](./parallel-coordinates.md) for
+dimension scales, row identity, missing policies, and lifecycle behavior.
 
 ## Errors and limitations
 
@@ -7509,10 +7687,14 @@ Position encoding actions normally manage coordinates automatically:
   encodeTheta + encodeR Polar channels
   →
   polar / polar Angle and radial position
+  encodeParallelCoordinates Ordered dimensions
+  →
+  parallel / parallel One local scale per dimension
 
 ```text
 encodeX / encodeY -> main / cartesian
 encodeTheta / encodeR -> polar / polar
+encodeParallelCoordinates -> parallel / parallel
 ```
 
 The resolved coordinate definition and layer reference are stored in
@@ -7526,7 +7708,7 @@ or attached explicitly.
 | Option | Type | Default |
 | --- | --- | --- |
 | `id` | valid user-defined ID | `"main"` |
-| `type` | `"cartesian"` or `"polar"` | `"cartesian"` |
+| `type` | `"cartesian"`, `"polar"`, or `"parallel"` | `"cartesian"` |
 | `layers` | array of existing layer IDs | `[]` |
 
 ```javascript
@@ -7545,11 +7727,18 @@ automatically. The layer stores semantic theta/radius encodings, while
 `graphicSpec` stores only final Cartesian x/y values and path commands for the
 renderer.
 
+`encodeParallelCoordinates` creates or reuses a Parallel coordinate and owns
+the complete ordered dimension assignment on one line layer. Each dimension
+uses its own namespaced scale and axis. Use the complete
+[Parallel Coordinates API](./parallel-coordinates.md) for that contract.
+
 ## Errors and limitations
 
 A layer cannot be silently moved from one coordinate to another, and Cartesian
 x/y cannot be mixed with Polar theta/radius. Polar point, open-line, closed
 radar, donut, rose, and radial-bar charts support theta/radius axes and grids.
+Parallel coordinates support dimension axes but do not create a Cartesian or
+Polar grid.
 
 ## Related
 
@@ -7564,14 +7753,14 @@ radar, donut, rose, and radial-bar charts support theta/radius axes and grids.
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createAxes` | `createAxes()` | Stored coordinate family, position scales, titles | Complete x/y or theta/radius axes |
+| `createAxes` | `createAxes()` | Stored coordinate family, position scales, titles | Complete x/y, theta/radius, or Parallel dimension axes |
 | `editXAxis` | `editXAxis({ line: { lineWidth: 2 } })` | Existing x-axis components | Selected x-axis components rematerialized |
 | `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Existing y-axis components moved together |
 | `removeXAxis` / `removeYAxis` | `removeXAxis()` | Existing complete axis | Semantic, graphic, and stored axis state removed |
 
 ## `createAxes(options?)`
 
-Creates complete axes for encoded Cartesian x/y or Polar theta/radius channels. This is the recommended axis
+Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
 action for ordinary chart authoring.
 
 ```javascript
@@ -7588,7 +7777,7 @@ program.createAxes({
 | `theta` | Polar axis options or `false` | create when theta is encoded |
 | `radius` | Polar axis options or `false` | create when radius is encoded |
 
-`coordinate.type` accepts `"auto"`, `"cartesian"`, or `"polar"` as a stored
+`coordinate.type` accepts `"auto"`, `"cartesian"`, `"polar"`, or `"parallel"` as a stored
 type assertion.
 
 Each x/y axis option supports:
@@ -7683,6 +7872,12 @@ The radial title defaults to `position: "inside"` at the baseline midpoint.
 Use `title: { position: "outside" }` to place it beyond the radial endpoint;
 `offset` is measured from the midpoint normal when inside and from the endpoint
 when outside.
+
+For a Parallel coordinate, `createAxes()` delegates to an internal wrapped
+dimension-axis action. It creates one ordinary baseline, tick/label set, and
+title for each stored dimension. Channel-specific x/y/theta/radius options do
+not apply; revise dimension mapping with `encodeParallelCoordinates` and
+individual mappings with `editScale`.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
@@ -8588,6 +8783,7 @@ components atomically; use the focused edit actions below for one component.
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
+| Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
 
 Create also accepts `coordinate`, an existing coordinate ID consumed by the
 selected channel and scale. `createAxes` supplies this automatically and stores
@@ -8781,6 +8977,17 @@ remain available for custom layering and editing.
 | Legend | point color + shape | categorical | categorical |
 | Selection/highlight | point | series | sector |
 
+### Parallel coordinates
+
+| Capability | Supported now |
+| --- | --- |
+| Semantic mark | one open line-path item per eligible source row |
+| Position | two or more ordered quantitative or ordinal dimensions, each with a local scale and axis |
+| Missing values | `break` fragments, whole-row `drop-row`, or strict `error` |
+| Appearance | categorical color, categorical or constant stroke dash, line stroke/width/opacity |
+| Automatic guides | one ordinary line/text axis per dimension and applicable categorical legend; no automatic grid |
+| Selection/highlight | source-row item, including immutable `filterMarks` rematerialization |
+
 ## Shared foundations
 
 | Area | Supported now |
@@ -8788,7 +8995,7 @@ remain available for custom layering and editing.
 | Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar horizontal or vertical composition, stable child replacement, and Cartesian facet repetition |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, grouped kernel-density derivations, and immutable Horizon band revisions |
-| Coordinates | Named Cartesian and Polar resources; x/y use Cartesian and theta/radius use Polar for points, lines, and arcs |
+| Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
@@ -8842,6 +9049,10 @@ by glyph extent and plot/category slots, and does not perform collision-free
 packing. Polar point jitter is not implemented.
 Polar charts may be direct or nested concat children. Faceting a Polar source is
 not implemented and fails before partial child state is created.
+Parallel coordinates support quantitative/ordinal dimensions, open linear
+paths, dimension-local axes, color/stroke-dash legends, selection and filtering.
+Temporal dimensions, curved paths, axis drag reordering, brushing, bundling,
+faceting, and shared Parallel coordinates across child programs are not implemented.
 
 <!-- Source: /reference/actions/ -->
 
@@ -8890,6 +9101,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`createLegend`](./actions/guides.md#createlegend) | user-facing | legend_and_title |
 | [`createLineMark`](./actions/marks.md#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | user-facing | charts |
+| [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | user-facing | charts |
 | [`createPointMark`](./actions/marks.md#createpointmark) | user-facing | marks |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | user-facing | axes |
 | [`createRadialGrid`](./actions/guides.md#createradialgrid) | user-facing | grid |
@@ -8984,6 +9196,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`encodeHistogram`](./actions/encodings.md#encodehistogram) | user-facing | encodings |
 | [`encodeHorizon`](./actions/encodings.md#encodehorizon) | user-facing | encodings |
 | [`encodeOpacity`](./actions/encodings.md#encodeopacity) | user-facing | encodings |
+| [`encodeParallelCoordinates`](./actions/encodings.md#encodeparallelcoordinates) | user-facing | encodings |
 | [`encodePathOrder`](./actions/encodings.md#encodepathorder) | user-facing | encodings |
 | [`encodePointRadius`](./actions/encodings.md#encodepointradius) | user-facing | encodings |
 | [`encodeR`](./actions/encodings.md#encoder) | user-facing | encodings |
@@ -9139,6 +9352,16 @@ createHeatmap({ id?, data?, coordinate?, x, y, bin?, color?, rect?, guides? })
 
 Create one rect cell per valid pre-gridded row, or bin raw quantitative x/y rows
 into ranged cells colored by count. [Basic Charts](../../api/basic-charts.md#createheatmap)
+
+## `createParallelCoordinates`
+
+```javascript
+createParallelCoordinates({ id?, data?, coordinate?, dimensions, key?, missing?, color?, strokeDash?, line?, guides? })
+```
+
+Create one open line path per source row across an ordered list of dimension-
+local scales and axes. Only `dimensions` is required.
+[Parallel Coordinates](../../api/parallel-coordinates.md)
 
 ## `filterData`
 
@@ -9417,6 +9640,7 @@ source or position. [Text marks](../../api/marks/text.md)
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
+| `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 
 ## Related
 
@@ -9519,6 +9743,16 @@ Order vertices within each compatible Cartesian line or ranged-area series.
 `fieldType` defaults to `"quantitative"`; `order` defaults to `"ascending"`.
 Ties preserve source-row order, and no scale or guide is created.
 [Series encodings](../../api/series-encodings.md)
+
+## `encodeParallelCoordinates`
+
+```javascript
+encodeParallelCoordinates({ dimensions, target?, coordinate?, key?, missing? })
+```
+
+Atomically assign ordered dimensions and their local scales to one line mark.
+The default missing policy is `"break"`.
+[Parallel Coordinates](../../api/parallel-coordinates.md#advanced-encoding)
 
 ## `removePathOrder`
 
@@ -10277,6 +10511,10 @@ editRegressionLine({ target?, strokeWidth?, curve? })
 These actions explicitly author named semantic resources or the component
 layers normally owned by `createRegression`.
 
+`createCoordinate.type` accepts `"cartesian"`, `"polar"`, or `"parallel"`.
+Parallel coordinates normally create their resource through
+`encodeParallelCoordinates` or `createParallelCoordinates`.
+
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Its public `DatasetTransform` union supports
 `filter`, `regression`, `density`, and `interval` objects. A bare object, empty
@@ -10527,6 +10765,7 @@ interface ChartProgramActions {
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+  encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
@@ -10554,6 +10793,7 @@ interface ChartProgramActions {
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
+  createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;

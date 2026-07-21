@@ -325,6 +325,22 @@
   home_group: statistical
   home_order: 6
   recipe_order: 10
+- id: parallel-coordinates
+  title: Parallel coordinates
+  image: /assets/images/cars-parallel-coordinates.png
+  alt: Cars of 1970 connected across fuel economy, horsepower, weight, and acceleration axes
+  width: 1720
+  height: 1000
+  thumbnail: /assets/images/cars-parallel-coordinates-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 372
+  caption: One source row connected across four independently scaled dimensions.
+  summary: Compare multivariate row profiles while retaining row-level identity.
+  actions: createParallelCoordinates · encodeParallelCoordinates
+  url: /api/parallel-coordinates/
+  home_group: coordinates
+  home_order: 0.5
+  featured: true
 - id: polar
   title: Polar points
   title: Polar points

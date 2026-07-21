@@ -13,7 +13,7 @@ chart. Use the filters to narrow the relationship you want to express.
   <button type="button" class="is-active" data-gallery-filter="all" aria-pressed="true">All</button>
   <button type="button" data-gallery-filter="essentials" aria-pressed="false">Cartesian and composition</button>
   <button type="button" data-gallery-filter="statistical" aria-pressed="false">Statistical layers</button>
-  <button type="button" data-gallery-filter="coordinates" aria-pressed="false">Polar coordinates</button>
+  <button type="button" data-gallery-filter="coordinates" aria-pressed="false">Alternate coordinates</button>
   <button type="button" data-gallery-filter="other" aria-pressed="false">Interaction</button>
 </div>
 

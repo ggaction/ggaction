@@ -512,6 +512,40 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Evidence: `test/unit/actions/encodings/path-order.test.js`, `test/unit/grammar/path-order.test.js` and
   `test/charts/gapminder-development-trajectories/`.
 
+## `encodeParallelCoordinates`
+
+- Signature: `encodeParallelCoordinates({ dimensions, target?, coordinate?, key?, missing? })`
+- `dimensions`: 최소 두 개의 ordered unique field. String은 field shorthand이고 object는
+  `{ field, fieldType?, title?, scale? }`다. Finite numeric values는 quantitative, consistent string values는
+  ordinal로 추론하며 numeric categories는 `fieldType: "ordinal"`을 명시한다.
+- `scale`: dimension-local position-scale options. Scale ID는 `<target>-parallel-<index>`가 소유하므로 nested
+  `id`는 허용하지 않는다. Existing type/domain/range/nice/zero/reverse와 transformed-scale vocabulary를 재사용한다.
+- `key`: optional dataset field. 생략하면 source lineage row identity를 사용하고 임의의 field를 추론하지 않는다.
+  명시하면 모든 row에서 non-missing unique value여야 한다.
+- `missing`: `"break" | "drop-row" | "error"`, 기본 `"break"`. Break는 같은 row identity 아래 drawable path
+  fragments를 보존하고, drop-row는 incomplete row 전체를 제외하며, error는 state 변경 전에 거부한다.
+- Effect: target line의 `encoding.parallel`에 ordered dimensions/key/missing을 한 번만 저장하고 compatible Parallel
+  coordinate를 생성 또는 재사용한다. Dimension별 scales와 ordinary path graphics를 materialize한다.
+- Reassignment: complete request를 preflight한 뒤 dimensions/key/missing과 scale consumers를 atomic replacement한다.
+  Cartesian/Polar position encoding과 섞거나 ambiguous target/coordinate를 임의 선택하지 않는다.
+- Consumer lifecycle: Canvas/data/filter/scale edits가 paths와 dimension axes를 함께 replay한다. 한 source row가
+  selection/highlight/filter의 한 semantic item이다.
+
+### Formal values — `encodeParallelCoordinates`
+
+- Implemented: `encodeParallelCoordinates({ dimensions: readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]]; target?: UserId; coordinate?: UserId; key?: FieldName; missing?: "break" | "drop-row" | "error" })`.
+- Planned (NOT IMPLEMENTED): —.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `encodeParallelCoordinates`
+
+- ✅ Covered: 2+ quantitative/ordinal dimensions, inferred/explicit type, explicit/auto domain, reverse and transformed scale.
+- ✅ Covered: stable lineage/explicit key, field names distinct from resource IDs, break/drop-row/error and duplicate rejection.
+- ✅ Covered: coordinate/target inference, assignment replacement, immutable failure, Canvas/data/filter/scale replay.
+- ✅ Covered: selection/highlight/filter, color/strokeDash appearance, ordinary axes and Browser/Node rendering.
+- Evidence: `test/unit/actions/encodings/parallel-coordinates.test.js` and
+  `test/charts/cars-parallel-coordinates/`.
+
 ## `removePathOrder`
 
 - Signature: `removePathOrder({ target? } = {})`

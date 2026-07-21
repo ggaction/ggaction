@@ -100,6 +100,16 @@ Order vertices within each compatible Cartesian line or ranged-area series.
 Ties preserve source-row order, and no scale or guide is created.
 [Series encodings](../../api/series-encodings.md)
 
+## `encodeParallelCoordinates`
+
+```javascript
+encodeParallelCoordinates({ dimensions, target?, coordinate?, key?, missing? })
+```
+
+Atomically assign ordered dimensions and their local scales to one line mark.
+The default missing policy is `"break"`.
+[Parallel Coordinates](../../api/parallel-coordinates.md#advanced-encoding)
+
 ## `removePathOrder`
 
 ```javascript

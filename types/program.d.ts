@@ -718,7 +718,7 @@ export interface CompleteAxisOptions<P extends string> {
 export interface CreateAxesOptions {
   coordinate?: {
     id?: string;
-    type?: "auto" | "cartesian" | "polar";
+    type?: "auto" | "cartesian" | "polar" | "parallel";
   };
   x?: false | CompleteAxisOptions<XAxisPosition>;
   y?: false | CompleteAxisOptions<YAxisPosition>;
@@ -845,7 +845,7 @@ export interface CreateGuidesOptions {
 
 export interface CreateCoordinateOptions {
   id?: string;
-  type?: "cartesian" | "polar";
+  type?: "cartesian" | "polar" | "parallel";
   layers?: readonly string[];
 }
 
@@ -1340,6 +1340,39 @@ export type BasicStrokeDashChannel =
   StrokeDashEncodingOptions extends infer T
     ? T extends unknown ? Omit<T, "target"> : never
     : never;
+
+export type ParallelMissingPolicy = "break" | "drop-row" | "error";
+export type ParallelDimension = string | {
+  field: string;
+  fieldType?: "quantitative" | "ordinal";
+  title?: string;
+  scale?: Omit<ScaleOptions, "id">;
+};
+export interface ParallelCoordinatesEncodingOptions {
+  target?: string;
+  coordinate?: string;
+  dimensions: readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]];
+  key?: string;
+  missing?: ParallelMissingPolicy;
+}
+export interface CreateParallelCoordinatesOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  dimensions: readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]];
+  key?: string;
+  missing?: ParallelMissingPolicy;
+  color?: BasicColorChannel;
+  strokeDash?: BasicStrokeDashChannel;
+  line?: {
+    strokeWidth?: number;
+    stroke?: string;
+    opacity?: number;
+    curve?: "linear";
+    closed?: false;
+  };
+  guides?: false | CreateGuidesOptions;
+}
 
 export interface CreateScatterPlotOptions {
   id?: string;
@@ -2162,6 +2195,7 @@ export class ChartProgram {
   }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+  encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
@@ -2190,6 +2224,7 @@ export class ChartProgram {
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
+  createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;

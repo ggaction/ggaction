@@ -51,6 +51,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`createLegend`](./actions/guides.md#createlegend) | user-facing | legend_and_title |
 | [`createLineMark`](./actions/marks.md#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | user-facing | charts |
+| [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | user-facing | charts |
 | [`createPointMark`](./actions/marks.md#createpointmark) | user-facing | marks |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | user-facing | axes |
 | [`createRadialGrid`](./actions/guides.md#createradialgrid) | user-facing | grid |
@@ -145,6 +146,7 @@ Use document search with `Ctrl+K` or scan the alphabetical list. Each action has
 | [`encodeHistogram`](./actions/encodings.md#encodehistogram) | user-facing | encodings |
 | [`encodeHorizon`](./actions/encodings.md#encodehorizon) | user-facing | encodings |
 | [`encodeOpacity`](./actions/encodings.md#encodeopacity) | user-facing | encodings |
+| [`encodeParallelCoordinates`](./actions/encodings.md#encodeparallelcoordinates) | user-facing | encodings |
 | [`encodePathOrder`](./actions/encodings.md#encodepathorder) | user-facing | encodings |
 | [`encodePointRadius`](./actions/encodings.md#encodepointradius) | user-facing | encodings |
 | [`encodeR`](./actions/encodings.md#encoder) | user-facing | encodings |

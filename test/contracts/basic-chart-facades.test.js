@@ -6,6 +6,8 @@ import { fileURLToPath } from "node:url";
 
 import { createCarsHistogram } from "../../examples/cars-histogram/program.js";
 import { createCarsLineChart } from "../../examples/cars-line-chart/program.js";
+import { createCarsParallelCoordinates } from
+  "../../examples/cars-parallel-coordinates/program.js";
 import { createCarsScatterplot } from "../../examples/cars-scatterplot/program.js";
 import { createGapminderLifeExpectancyHeatmap } from
   "../../examples/gapminder-life-expectancy-heatmap/program.js";
@@ -18,14 +20,16 @@ const FACADE_ACTIONS = Object.freeze([
   "createLinePlot",
   "createBarPlot",
   "createHistogram",
-  "createHeatmap"
+  "createHeatmap",
+  "createParallelCoordinates"
 ]);
 const OPTION_TYPES = Object.freeze([
   "CreateScatterPlotOptions",
   "CreateLinePlotOptions",
   "CreateBarPlotOptions",
   "CreateHistogramOptions",
-  "CreateHeatmapOptions"
+  "CreateHeatmapOptions",
+  "CreateParallelCoordinatesOptions"
 ]);
 
 function read(relativePath) {
@@ -61,7 +65,7 @@ test("keeps every basic chart facade in one Current contract", () => {
   )), false);
 });
 
-test("keeps the five facade declarations and root type exports exact", () => {
+test("keeps every facade declaration and root type export exact", () => {
   const programTypes = read("types/program.d.ts");
   const rootTypes = read("types/index.d.ts");
   for (const [index, name] of FACADE_ACTIONS.entries()) {
@@ -77,10 +81,14 @@ test("keeps every facade program in its canonical chart slice", () => {
     createCarsLineChart(cars),
     createJobsGroupedBar(loadJobs()),
     createCarsHistogram(cars),
-    createGapminderLifeExpectancyHeatmap(loadGapminder())
+    createGapminderLifeExpectancyHeatmap(loadGapminder()),
+    createCarsParallelCoordinates(cars)
   ];
   for (const [index, program] of programs.entries()) {
-    assert.equal(program.trace.children[2].op, FACADE_ACTIONS[index]);
+    assert.equal(
+      program.trace.children.find(node => node.op === FACADE_ACTIONS[index])?.op,
+      FACADE_ACTIONS[index]
+    );
   }
 });
 

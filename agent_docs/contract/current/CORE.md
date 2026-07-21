@@ -382,25 +382,24 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - Signature: `createCoordinate({ id?, type?, layers? })`.
 - `id`: valid user ID, 기본 `"main"`.
-- `type`: `"cartesian" | "polar"`, 기본 cartesian.
+- `type`: `"cartesian" | "polar" | "parallel"`, 기본 cartesian.
 - `layers`: existing unique layer ID array, 기본 `[]`.
 - Effect: named semantic coordinate를 만들고 coordinate가 없는 selected layers에 reference를 저장한다.
   equivalent repeated definition은 idempotent이고 기존 layer를 다른 coordinate로 이동시키지 않는다.
-- Coverage: `test/unit/actions/coordinates/create-coordinate.test.js`가 both types, attachments,
+- Coverage: `test/unit/actions/coordinates/create-coordinate.test.js`와 Parallel chart contract가 all three types, attachments,
   idempotence, conflicts와 validation을 검증한다.
-- Planned: Polar resource storage는 Implemented, Polar positional materialization과 guides는 Planned capability다.
+- Cartesian, Polar와 Parallel resources는 모두 current materialized consumers와 guides를 가진다.
 
 ### Formal values — `createCoordinate`
 
-- Implemented: `createCoordinate({ id?: UserId; type?: "cartesian" | "polar"; layers?: readonly UserId[] } = {})`; Polar resource storage만 현재 materialized behavior다.
-- Proposed (NOT IMPLEMENTED): Polar positional/guide options.
+- Implemented: `createCoordinate({ id?: UserId; type?: "cartesian" | "polar" | "parallel"; layers?: readonly UserId[] } = {})`.
+- Proposed (NOT IMPLEMENTED): —.
 
 ### Value coverage — `createCoordinate`
 
 - `id`: ✅ Covered omission→`"main"`, valid custom IDs, malformed IDs and conflicting duplicate.
 - `type`
-  - ✅ Covered: omission→`"cartesian"`, `"cartesian"`, `"polar"`, unknown value.
-  - Planned capability: Polar resource는 저장되지만 positional/guide materialization은 아직 없다.
+  - ✅ Covered: omission→`"cartesian"`, `"cartesian"`, `"polar"`, `"parallel"`, unknown value.
 - `layers`
   - ✅ Covered: omission/empty, one/multiple existing IDs, duplicates, unknown layer, reattachment conflict.
 - Evidence: `test/unit/actions/coordinates/create-coordinate.test.js`.

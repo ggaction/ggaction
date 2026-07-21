@@ -249,3 +249,49 @@ createHeatmap({
 - Evidence: `test/unit/actions/charts/heatmap-facade.test.js`,
   `test/charts/gapminder-life-expectancy-heatmap/public.test.js`, and
   `test/charts/gapminder-life-expectancy-heatmap/png.render.js`.
+
+## `createParallelCoordinates`
+
+```typescript
+createParallelCoordinates({
+  id?: UserId;
+  data?: UserId;
+  coordinate?: UserId;
+  dimensions: readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]];
+  key?: FieldName;
+  missing?: "break" | "drop-row" | "error";
+  color?: FieldName | ColorEncodingOptionsWithoutTarget;
+  strokeDash?: StrokeDashEncodingOptionsWithoutTarget;
+  line?: { strokeWidth?, stroke?, opacity?, curve?: "linear", closed?: false };
+  guides?: false | CreateGuidesOptions;
+}): ChartProgram;
+```
+
+- Stable default ID는 `parallelCoordinates`, default coordinate ID는 `parallel`이다.
+- Hierarchy: `createCoordinate({ type: "parallel" })`, `createLineMark`, atomic `encodeParallelCoordinates`, optional
+  `encodeColor`/`encodeStrokeDash`, optional `createGuides`.
+- `dimensions`만 최소 의미로 required다. Data는 explicit/current/unique 순서, compatible Parallel coordinate는
+  explicit/current/unique/stable default 순서로만 해결하고 ambiguity는 오류다.
+- Dimension field/type/title/scale와 key/missing policy는 advanced encoding contract를 그대로 사용한다. Facade가
+  projection, scale 또는 axis 계산을 복제하지 않는다.
+- `line`은 existing open linear line appearance를 재사용한다. Curved/closed paths는 Parallel topology와 맞지 않아
+  거부한다. Color와 stroke dash는 row item에 적용되고 applicable legend를 만든다.
+- Omitted guides는 dimension axes와 applicable legend를 만들며 `guides: false`는 guide branch를 만들지 않는다.
+- Semantic/graphic/order/Canvas calls와 Node PNG는 approved Cars primitive와 exact match다.
+
+### Formal values — `createParallelCoordinates`
+
+- Implemented: `createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram`.
+- Required: `dimensions`; optional: `id`, `data`, `coordinate`, `key`, `missing`, `color`, `strokeDash`, `line`, `guides`.
+- Planned (NOT IMPLEMENTED): —.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `createParallelCoordinates`
+
+- ✅ Covered: shortest call, stable/explicit ID, explicit/current/unique/ambiguous data and coordinate.
+- ✅ Covered: mixed dimensions, key/missing, line/color/strokeDash appearance and guide default/disable.
+- ✅ Covered: Canvas/data/filter/scale rematerialization, selection/highlight/filter and immutable errors.
+- ✅ Covered: Browser Canvas, Node PNG, exact primitive equality and package consumption.
+- Evidence: `test/unit/actions/encodings/parallel-coordinates.test.js`,
+  `test/charts/cars-parallel-coordinates/public.test.js`, and
+  `test/charts/cars-parallel-coordinates/png.render.js`.

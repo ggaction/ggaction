@@ -12,6 +12,11 @@ const DIMENSION_OPTIONS = Object.freeze([
 ]);
 const FIELD_TYPES = new Set(["quantitative", "ordinal"]);
 const MISSING_POLICIES = new Set(["break", "drop-row", "error"]);
+const DIMENSION_SCALE_OPTIONS = Object.freeze([
+  "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+  "base", "exponent", "constant", "paddingInner", "paddingOuter",
+  "padding", "align", "unknown"
+]);
 
 function nonEmptyString(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -43,6 +48,11 @@ function validateScaleOptions(value, index) {
   if (!isPlainObject(value)) {
     throw new TypeError(`Parallel dimension ${index} scale must be a plain object.`);
   }
+  validateOptionObject(
+    value,
+    DIMENSION_SCALE_OPTIONS,
+    `Parallel dimension ${index} scale`
+  );
   return { ...value };
 }
 

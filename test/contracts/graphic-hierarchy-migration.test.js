@@ -102,6 +102,12 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle",
     "radialAxisLine", "radialAxisTicks", "radialAxisLabels", "radialAxisTitle"
   ],
+  "cars-parallel-coordinates": [
+    "canvas", "parallelCoordinates",
+    "parallelAxisLines", "parallelAxisTicks", "parallelAxisLabels",
+    "parallelAxisTitles", "seriesLegendSymbols", "seriesLegendLabels",
+    "seriesLegendTitle", "chartTitle", "chartSubtitle"
+  ],
   "gapminder-polar-trends": [
     "canvas", "radialGridCircles", "thetaGridLines", "line",
     "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle",

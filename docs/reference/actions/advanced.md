@@ -47,6 +47,10 @@ editRegressionLine({ target?, strokeWidth?, curve? })
 These actions explicitly author named semantic resources or the component
 layers normally owned by `createRegression`.
 
+`createCoordinate.type` accepts `"cartesian"`, `"polar"`, or `"parallel"`.
+Parallel coordinates normally create their resource through
+`encodeParallelCoordinates` or `createParallelCoordinates`.
+
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Its public `DatasetTransform` union supports
 `filter`, `regression`, `density`, and `interval` objects. A bare object, empty

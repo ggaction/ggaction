@@ -93,6 +93,11 @@ encoding, and guide actions as trace children, and the same resource-specific
 actions remain available for later edits. See the
 [Basic Charts API](https://ggaction.github.io/ggaction/api/basic-charts/).
 
+Use `createParallelCoordinates({ dimensions })` to connect each source row
+across ordered, dimension-local scales and axes. See the
+[Parallel Coordinates API](https://ggaction.github.io/ggaction/api/parallel-coordinates/)
+or the [runnable Cars example](./examples/cars-parallel-coordinates/).
+
 For an advanced layered example, follow the [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/)
 or open the [runnable regression example](./examples/cars-regression-scatterplot/).
 To compare category distributions with density-filled strips, read the
@@ -106,7 +111,7 @@ open the [runnable Gapminder example](./examples/gapminder-horizon/).
 
 ## What it supports
 
-- Cartesian and polar charts
+- Cartesian, Polar, and Parallel-coordinate charts
 - Statistical layers and intervals
 - Faceting and program composition
 - Mark selection and coordinated highlighting

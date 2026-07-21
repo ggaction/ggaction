@@ -66,6 +66,7 @@ interface ChartProgramActions {
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+  encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
@@ -93,6 +94,7 @@ interface ChartProgramActions {
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
+  createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;

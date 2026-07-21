@@ -304,6 +304,16 @@ createHeatmap({ id?, data?, coordinate?, x, y, bin?, color?, rect?, guides? })
 Create one rect cell per valid pre-gridded row, or bin raw quantitative x/y rows
 into ranged cells colored by count. [Basic Charts](../api/basic-charts.md#createheatmap)
 
+### `createParallelCoordinates`
+
+```javascript
+createParallelCoordinates({ id?, data?, coordinate?, dimensions, key?, missing?, color?, strokeDash?, line?, guides? })
+```
+
+Create one open line path per source row across an ordered list of dimension-
+local scales and axes. Only `dimensions` is required.
+[Parallel Coordinates](../api/parallel-coordinates.md)
+
 ### `filterData`
 
 ```javascript
@@ -584,6 +594,7 @@ source or position. [Text marks](../api/marks/text.md)
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
+| `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 <!-- action-capabilities:position:end -->
 
 ### `encodeX`
@@ -677,6 +688,16 @@ Order vertices within each compatible Cartesian line or ranged-area series.
 `fieldType` defaults to `"quantitative"`; `order` defaults to `"ascending"`.
 Ties preserve source-row order, and no scale or guide is created.
 [Series encodings](../api/series-encodings.md)
+
+### `encodeParallelCoordinates`
+
+```javascript
+encodeParallelCoordinates({ dimensions, target?, coordinate?, key?, missing? })
+```
+
+Atomically assign ordered dimensions and their local scales to one line mark.
+The default missing policy is `"break"`.
+[Parallel Coordinates](../api/parallel-coordinates.md#advanced-encoding)
 
 ### `removePathOrder`
 
@@ -1396,6 +1417,10 @@ editRegressionLine({ target?, strokeWidth?, curve? })
 
 These actions explicitly author named semantic resources or the component
 layers normally owned by `createRegression`.
+
+`createCoordinate.type` accepts `"cartesian"`, `"polar"`, or `"parallel"`.
+Parallel coordinates normally create their resource through
+`encodeParallelCoordinates` or `createParallelCoordinates`.
 
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Its public `DatasetTransform` union supports

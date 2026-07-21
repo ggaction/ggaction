@@ -218,6 +218,40 @@ Add it afterward with
 For direct control over the derived rows, use
 [`createBin2DData`](./data/bin2d.md) before authoring the ranged rect layer.
 
+## `createParallelCoordinates`
+
+{% include chart-example.html id="parallel-coordinates" %}
+
+```typescript
+createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram
+```
+
+`dimensions` is the only required option. Each source row becomes one open
+path across ordered, independently scaled axes. Optional `color`,
+`strokeDash`, `line`, and `guides` values reuse the existing line, encoding,
+scale, and guide contracts.
+
+```javascript
+const parallel = chart()
+  .createCanvas({ width: 860, height: 500 })
+  .createData({ values: cars })
+  .createParallelCoordinates({
+    dimensions: [
+      "Miles_per_Gallon",
+      "Horsepower",
+      { field: "Weight_in_lbs", title: "Weight (lb)" },
+      "Acceleration"
+    ],
+    key: "Name",
+    color: "Origin"
+  });
+```
+
+The stable default mark ID is `parallelCoordinates`; the coordinate defaults
+to `parallel`. Omitted guides create one axis per dimension and an applicable
+legend. See [Parallel Coordinates](./parallel-coordinates.md) for the complete
+dimension, missing-value, lifecycle, and editing contract.
+
 ## Advanced authoring
 
 Use individual [mark](./marks.md), [encoding](./encodings.md),

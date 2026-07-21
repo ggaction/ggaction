@@ -17,7 +17,7 @@ import {
 
 const cars = loadCars();
 
-test("locks literal mixed-dimension projection anchors", () => {
+test("locks approved literal mixed-dimension projection anchors", () => {
   const result = calculateParallelCoordinates([
     { id: "a", amount: 0, grade: "high", score: 50 },
     { id: "b", amount: 10, grade: "low", score: 100 }
@@ -113,7 +113,7 @@ test("authors a renderer-neutral primitive Parallel tree", () => {
   input.find(row => row.Year === "1970-01-01").Horsepower = 999;
   assert.notEqual(program.semanticSpec.datasets[0].values[0].Horsepower, 999);
 
-  const paths = program.graphicSpec.objects.parallelLines.items;
+  const paths = program.graphicSpec.objects.parallelCoordinates.items;
   assert.equal(paths.length, 35);
   assert.equal(paths.every(path =>
     path.properties.commands[0].op === "M" &&
@@ -121,14 +121,14 @@ test("authors a renderer-neutral primitive Parallel tree", () => {
   ), true);
   assert.equal(program.graphicSpec.objects.parallelAxisLines.items.length, 4);
   assert.equal(program.graphicSpec.objects.parallelAxisTitles.items.length, 4);
-  assert.equal(program.graphicSpec.objects.originLegendSymbols.items.length, 3);
+  assert.equal(program.graphicSpec.objects.seriesLegendSymbols.items.length, 3);
   assert.equal(program.trace.children.some(node =>
     ["createParallelCoordinates", "encodeParallelCoordinates"].includes(node.op)
   ), false);
 
   const order = [];
   walkGraphicDrawOrder(program.graphicSpec, ({ id }) => order.push(id));
-  assert.ok(order.indexOf("parallelLines") < order.indexOf("parallelAxisLines"));
+  assert.ok(order.indexOf("parallelCoordinates") < order.indexOf("parallelAxisLines"));
   assert.ok(order.indexOf("parallelAxisLines") < order.indexOf("parallelAxisLabels"));
 
   const context = createMockCanvasContext();

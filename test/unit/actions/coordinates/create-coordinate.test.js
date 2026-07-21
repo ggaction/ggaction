@@ -48,6 +48,14 @@ test("createCoordinate reuses an equivalent coordinate", () => {
   assert.deepEqual(twice.trace.children.at(-1).children, []);
 });
 
+test("createCoordinate stores a Parallel coordinate resource", () => {
+  const program = chart().createCoordinate({ id: "parallel", type: "parallel" });
+
+  assert.deepEqual(program.semanticSpec.coordinates, [
+    { id: "parallel", type: "parallel" }
+  ]);
+});
+
 test("createCoordinate rejects conflicting definitions and layer references", () => {
   const program = pointProgram().createCoordinate({
     id: "main",

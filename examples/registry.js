@@ -12,6 +12,8 @@ import { createCarsTemporalBarLine } from
 import { createCarsRegressionScatterplot } from
   "./cars-regression-scatterplot/program.js";
 import { createCarsScatterplot } from "./cars-scatterplot/program.js";
+import { createCarsParallelCoordinates } from
+  "./cars-parallel-coordinates/program.js";
 import { createCarsBinnedHeatmap } from "./cars-binned-heatmap/program.js";
 import { createCarsWindowRankScatterplot } from
   "./cars-window-rank-scatterplot/program.js";
@@ -144,6 +146,22 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsScatterplot,
     docsGroup: "charts",
     browser: { path: "cars-scatterplot/", canvas: "#chart" }
+  }),
+  example({
+    id: "cars-parallel-coordinates",
+    data: "cars",
+    width: 860,
+    height: 500,
+    createProgram: createCarsParallelCoordinates,
+    docsGroup: "charts",
+    browser: {
+      path: "cars-parallel-coordinates/",
+      canvas: "#chart",
+      state: {
+        global: "__carsParallelCoordinates",
+        expected: { width: 860, height: 500, paths: 35, axes: 4 }
+      }
+    }
   }),
   example({
     id: "cars-origin-jitter",

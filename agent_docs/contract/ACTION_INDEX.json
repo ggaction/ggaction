@@ -812,6 +812,24 @@
       }
     },
     {
+      "name": "encodeParallelCoordinates",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action atomically replaces ordered dimensions, key, missing policy and dimension scales",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodeparallelcoordinates"
+      }
+    },
+    {
       "name": "removePathOrder",
       "layer": "user-facing",
       "domain": "encodings",
@@ -2280,6 +2298,7 @@
     ,{ "name": "createBarPlot", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing bar, encoding, scale and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createbarplot" } }
     ,{ "name": "createHistogram", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing histogram, color, scale and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createhistogram" } }
     ,{ "name": "createHeatmap", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing rect, position, color, scale and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createheatmap" } }
+    ,{ "name": "createParallelCoordinates", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing line, Parallel encoding, scale, appearance and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createparallelcoordinates" } }
     ,{ "name": "createRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editRectMark` and position/color encodings", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "createrectmark" } }
     ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],

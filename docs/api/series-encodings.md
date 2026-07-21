@@ -15,6 +15,7 @@ title: Series Encodings
 | `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; independent quantitative scale | Rule-item or line-series widths |
 | `encodePathOrder` | `encodePathOrder({ field: "year" })` | Current or unique compatible Cartesian path; ascending default | Stable per-series vertex order without a scale |
+| `encodeParallelCoordinates` | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Current line, Parallel coordinate, local scales, `break` missing policy | One row path across ordered dimension axes |
 
 Series appearance is authored through color, stroke-dash, and stroke-width families. Each
 focused page owns the complete options, replacement behavior, and errors for
@@ -47,6 +48,10 @@ values reject the complete action instead of producing a partial path.
   <a href="{{ '/api/series/color/' | relative_url }}"><strong>Color</strong><span>Categorical and continuous color, grouping layouts, and aggregate bars.</span></a>
   <a href="{{ '/api/series/stroke-dash/' | relative_url }}"><strong>Stroke dash</strong><span>Constant and field-driven dash patterns for lines and rules.</span></a>
 </div>
+
+Parallel coordinates use one atomic ordered-dimension assignment rather than
+separate x/y calls. See [Parallel Coordinates](./parallel-coordinates.md) for
+dimension scales, row identity, missing policies, and lifecycle behavior.
 
 ## Errors and limitations
 

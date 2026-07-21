@@ -420,6 +420,7 @@ test("routes entry documentation to the canonical example indexes", () => {
     "gapminder-life-expectancy-heatmap",
     "cars-regression-scatterplot",
     "cars-density-area",
+    "cars-parallel-coordinates",
     "cars-acceleration-violins",
     "cars-error-bar",
     "gapminder-error-band",
@@ -445,7 +446,7 @@ test("routes entry documentation to the canonical example indexes", () => {
   assert.match(read("docs/gallery.md"), /data-gallery-filter="statistical"/);
   assert.equal(
     [...catalog.values()].filter(example => example.featured === "true").length,
-    8
+    9
   );
   assert.match(read("docs/index.md"), /where: "featured", true/);
   assert.match(gettingStarted, /point color\s+encoding can produce/);

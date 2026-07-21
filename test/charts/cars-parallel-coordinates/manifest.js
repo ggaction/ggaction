@@ -2,7 +2,8 @@ import { loadCars } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 
 import { createCarsParallelPrimitives } from "./primitive.program.js";
-import { createCarsParallelCoordinates } from "./user-facing.program.js";
+import { createCarsParallelCoordinates } from
+  "../../../examples/cars-parallel-coordinates/program.js";
 import {
   PARALLEL_COLORS,
   PARALLEL_LAYOUT
@@ -60,7 +61,6 @@ export const visualVariants = Object.freeze([
     variant: "cars-1970",
     title: "Cars of 1970 Parallel Coordinates",
     callChain: parallelTargetCallChain,
-    artifact: { scope: "review" },
     primitive: () => createCarsParallelPrimitives(cars),
     userFacing: () => createCarsParallelCoordinates(cars),
     width: PARALLEL_LAYOUT.width,

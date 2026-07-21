@@ -127,6 +127,7 @@ The source repository also contains complete modules for the
 [histogram](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram/),
 [bar chart](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar/),
 [heatmap](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-life-expectancy-heatmap/),
+[parallel coordinates](https://github.com/ggaction/ggaction/tree/main/examples/cars-parallel-coordinates/),
 [regression scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-regression-scatterplot/),
 [density area](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area/),
 [violin plot](https://github.com/ggaction/ggaction/tree/main/examples/cars-acceleration-violins/),

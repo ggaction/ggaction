@@ -121,6 +121,16 @@ createHeatmap({ id?, data?, coordinate?, x, y, bin?, color?, rect?, guides? })
 Create one rect cell per valid pre-gridded row, or bin raw quantitative x/y rows
 into ranged cells colored by count. [Basic Charts](../../api/basic-charts.md#createheatmap)
 
+## `createParallelCoordinates`
+
+```javascript
+createParallelCoordinates({ id?, data?, coordinate?, dimensions, key?, missing?, color?, strokeDash?, line?, guides? })
+```
+
+Create one open line path per source row across an ordered list of dimension-
+local scales and axes. Only `dimensions` is required.
+[Parallel Coordinates](../../api/parallel-coordinates.md)
+
 ## `filterData`
 
 ```javascript

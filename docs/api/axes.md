@@ -11,14 +11,14 @@ title: Axes
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createAxes` | `createAxes()` | Stored coordinate family, position scales, titles | Complete x/y or theta/radius axes |
+| `createAxes` | `createAxes()` | Stored coordinate family, position scales, titles | Complete x/y, theta/radius, or Parallel dimension axes |
 | `editXAxis` | `editXAxis({ line: { lineWidth: 2 } })` | Existing x-axis components | Selected x-axis components rematerialized |
 | `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Existing y-axis components moved together |
 | `removeXAxis` / `removeYAxis` | `removeXAxis()` | Existing complete axis | Semantic, graphic, and stored axis state removed |
 
 ## `createAxes(options?)`
 
-Creates complete axes for encoded Cartesian x/y or Polar theta/radius channels. This is the recommended axis
+Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
 action for ordinary chart authoring.
 
 ```javascript
@@ -35,7 +35,7 @@ program.createAxes({
 | `theta` | Polar axis options or `false` | create when theta is encoded |
 | `radius` | Polar axis options or `false` | create when radius is encoded |
 
-`coordinate.type` accepts `"auto"`, `"cartesian"`, or `"polar"` as a stored
+`coordinate.type` accepts `"auto"`, `"cartesian"`, `"polar"`, or `"parallel"` as a stored
 type assertion.
 
 Each x/y axis option supports:
@@ -130,6 +130,12 @@ The radial title defaults to `position: "inside"` at the baseline midpoint.
 Use `title: { position: "outside" }` to place it beyond the radial endpoint;
 `offset` is measured from the midpoint normal when inside and from the endpoint
 when outside.
+
+For a Parallel coordinate, `createAxes()` delegates to an internal wrapped
+dimension-axis action. It creates one ordinary baseline, tick/label set, and
+title for each stored dimension. Channel-specific x/y/theta/radius options do
+not apply; revise dimension mapping with `encodeParallelCoordinates` and
+individual mappings with `editScale`.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).

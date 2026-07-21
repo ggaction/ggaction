@@ -23,7 +23,7 @@ title: Guides
 
 ## `createGuides(options?)`
 
-Creates the applicable axes, Cartesian or Polar grid, and categorical legend supported
+Creates the applicable Cartesian, Polar, or Parallel axes, Cartesian or Polar grid, and categorical legend supported
 by the current semantic encodings.
 
 ```javascript
@@ -58,13 +58,17 @@ program.createGuides({
 program.createGuides({ legend: false });
 ```
 
-Axes are selected from x/y or theta/radius encodings. A horizontal grid is selected
+Axes are selected from x/y, theta/radius, or ordered Parallel dimensions. A horizontal grid is selected
 when a y encoding exists; vertical grid remains off unless requested. Polar grids
 are selected only for the encoded Polar channels: theta creates spokes and radius
 creates concentric circles. A legend is selected for line color/stroke-dash, bar
 color, area or arc color, compatible point
 color+shape encodings, or a standalone quantitative point-size encoding. Size
 adds a second quantitative block when a point-series legend also exists.
+
+Parallel dimensions create one axis per stored field and no automatic grid.
+Their row-path color or stroke-dash encoding uses the ordinary categorical
+line legend.
 
 Density areas can request both grids and forward the complete top-legend
 layout through the aggregate:

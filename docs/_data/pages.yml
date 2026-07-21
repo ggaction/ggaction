@@ -104,6 +104,9 @@
 - title: Basic Charts
   url: /api/basic-charts/
   parent: /api/
+- title: Parallel Coordinates
+  url: /api/parallel-coordinates/
+  parent: /api/
 - title: Canvas
   url: /api/canvas/
   parent: /api/
