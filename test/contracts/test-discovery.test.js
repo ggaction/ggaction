@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import {
   classifyTestFile,
   collectTestFiles,
+  matchesCapabilityEntry,
   TEST_CAPABILITIES
 } from "../../scripts/run-tests.js";
 import { collectReachableModules } from "../support/module-imports.js";
@@ -124,8 +125,11 @@ test("selects tests by chart, capability, or relative path", () => {
   ]);
   assert.equal(selection.length > 0, true);
   assert.equal(selection.every(file =>
-    TEST_CAPABILITIES.selection.some(candidate =>
-      path.relative(testRoot, file).split(path.sep).join("/").includes(candidate)
+    TEST_CAPABILITIES.selection.some(entry =>
+      matchesCapabilityEntry(
+        path.relative(testRoot, file).split(path.sep).join("/"),
+        entry
+      )
     )
   ), true);
 
@@ -134,15 +138,40 @@ test("selects tests by chart, capability, or relative path", () => {
   assert.equal(scales.every(file => file.includes(
     `${path.sep}unit${path.sep}actions${path.sep}scales${path.sep}`
   )), true);
+
+  assert.deepEqual(collectTestFiles("all", testRoot, ["scales"]), []);
+  assert.deepEqual(
+    collectTestFiles("all", testRoot, ["contracts/test-discovery.test.js"]),
+    [path.join(testRoot, "contracts", "test-discovery.test.js")]
+  );
 });
 
-test("maps every named capability to an explicit non-empty test family", () => {
+test("maps every named capability entry to an exact file or prefix", () => {
+  const discovered = [
+    ...collectTestFiles("all", testRoot),
+    ...collectTestFiles("render", testRoot),
+    ...collectTestFiles("browser", testRoot)
+  ];
   assert.deepEqual(Object.keys(TEST_CAPABILITIES), [...Object.keys(TEST_CAPABILITIES)].sort());
-  for (const [name, paths] of Object.entries(TEST_CAPABILITIES)) {
-    assert.equal(paths.length > 0, true, name);
-    assert.equal(paths.every(value => typeof value === "string" && value.length > 0), true);
+  for (const [name, entries] of Object.entries(TEST_CAPABILITIES)) {
+    assert.equal(entries.length > 0, true, name);
+    for (const entry of entries) {
+      assert.equal(["file", "prefix"].includes(entry.type), true, name);
+      assert.equal(typeof entry.path, "string", name);
+      assert.equal(entry.path.length > 0, true, name);
+      assert.equal(
+        discovered.some(file => matchesCapabilityEntry(
+          path.relative(testRoot, file).split(path.sep).join("/"),
+          entry
+        )),
+        true,
+        `${name}: ${entry.type} ${entry.path}`
+      );
+    }
     assert.equal(
-      collectTestFiles("all", testRoot, [`capability:${name}`]).length > 0,
+      ["all", "render", "browser"].some(suite =>
+        collectTestFiles(suite, testRoot, [`capability:${name}`]).length > 0
+      ),
       true,
       name
     );
@@ -151,4 +180,15 @@ test("maps every named capability to an explicit non-empty test family", () => {
     () => collectTestFiles("all", testRoot, ["capability:unknown"]),
     /Unknown test capability/
   );
+});
+
+test("assigns every normal test file to at least one named capability", () => {
+  const unowned = collectTestFiles("all", testRoot).filter(file => {
+    const relative = path.relative(testRoot, file).split(path.sep).join("/");
+    return !Object.values(TEST_CAPABILITIES).some(entries =>
+      entries.some(entry => matchesCapabilityEntry(relative, entry))
+    );
+  });
+
+  assert.deepEqual(unowned.map(file => path.relative(testRoot, file)), []);
 });

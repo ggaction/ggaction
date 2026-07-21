@@ -14,10 +14,12 @@ npm test -- capability:selection
 npm test -- unit/actions/scales
 ```
 
-Selectors match a chart directory, a named capability in
-`test/capabilities.json`, or a path relative to `test/`. Capability selectors
-have explicit owners and fail on unknown names; they never depend on accidental
-filename substrings. Browser and PNG regressions remain explicit because they
+Selectors match an exact chart directory, a named capability in
+`test/capabilities.json`, an exact test file, or a directory prefix relative to
+`test/`. Each capability entry declares either `file` or `prefix`; unknown
+capabilities and accidental filename substrings never match. Every normal test
+belongs to at least one named capability, so focused runs remain complete as the
+suite grows. Browser and PNG regressions remain explicit because they
 start external rendering resources:
 
 ```sh

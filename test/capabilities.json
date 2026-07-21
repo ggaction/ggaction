@@ -1,62 +1,91 @@
 {
-  "version": 1,
+  "version": 2,
   "capabilities": {
+    "actions": [
+      { "type": "prefix", "path": "unit/actions/" }
+    ],
+    "architecture": [
+      { "type": "prefix", "path": "contracts/" },
+      { "type": "prefix", "path": "unit/core/" }
+    ],
     "artifacts": [
-      "contracts/chart-variant-structure.test.js",
-      "unit/support/artifacts.test.js",
-      "unit/support/visual-variants.test.js"
+      { "type": "file", "path": "contracts/chart-variant-structure.test.js" },
+      { "type": "file", "path": "unit/support/artifacts.test.js" },
+      { "type": "file", "path": "unit/support/visual-variants.test.js" }
+    ],
+    "charts": [
+      { "type": "prefix", "path": "charts/" }
     ],
     "data": [
-      "unit/actions/data/",
-      "charts/cars-binned-heatmap/",
-      "charts/cars-window-rank-scatterplot/",
-      "contracts/dataset-fixtures.test.js",
-      "contracts/transform-registry.test.js"
+      { "type": "prefix", "path": "unit/actions/data/" },
+      { "type": "prefix", "path": "charts/cars-binned-heatmap/" },
+      { "type": "prefix", "path": "charts/cars-window-rank-scatterplot/" },
+      { "type": "file", "path": "contracts/dataset-fixtures.test.js" },
+      { "type": "file", "path": "contracts/transform-registry.test.js" }
+    ],
+    "documentation": [
+      { "type": "prefix", "path": "docs/" }
+    ],
+    "grammar": [
+      { "type": "prefix", "path": "unit/grammar/" }
     ],
     "guides": [
-      "unit/actions/guides/",
-      "unit/layout/guides.test.js",
-      "charts/polar-guides/"
+      { "type": "prefix", "path": "unit/actions/guides/" },
+      { "type": "file", "path": "unit/layout/grid-policy.test.js" },
+      { "type": "file", "path": "unit/layout/legend-policy.test.js" },
+      { "type": "prefix", "path": "charts/polar-guides/" }
     ],
     "horizon": [
-      "unit/grammar/horizon.test.js",
-      "unit/actions/data/horizon-data.test.js",
-      "unit/actions/encodings/encode-horizon.test.js",
-      "unit/actions/encodings/edit-horizon.test.js",
-      "charts/gapminder-horizon/"
+      { "type": "file", "path": "unit/grammar/horizon.test.js" },
+      { "type": "file", "path": "unit/actions/data/horizon-data.test.js" },
+      { "type": "file", "path": "unit/actions/encodings/encode-horizon.test.js" },
+      { "type": "file", "path": "unit/actions/encodings/edit-horizon.test.js" },
+      { "type": "prefix", "path": "charts/gapminder-horizon/" }
+    ],
+    "layout": [
+      { "type": "prefix", "path": "unit/layout/" }
+    ],
+    "materialization": [
+      { "type": "prefix", "path": "unit/materialization/" }
+    ],
+    "oracles": [
+      { "type": "prefix", "path": "unit/oracles/" }
     ],
     "package": [
-      "contracts/package-",
-      "browser/package-consumer.browser.js"
+      { "type": "prefix", "path": "contracts/package-" },
+      { "type": "file", "path": "browser/package-consumer.browser.js" }
     ],
     "polar": [
-      "charts/polar-",
-      "unit/actions/coordinates/",
-      "unit/materialization/polar-",
-      "contracts/visual-capability-",
-      "contracts/composition-integration.test.js"
+      { "type": "prefix", "path": "charts/polar-" },
+      { "type": "prefix", "path": "unit/actions/coordinates/" },
+      { "type": "prefix", "path": "contracts/visual-capability-" },
+      { "type": "file", "path": "contracts/composition-integration.test.js" }
     ],
     "rendering": [
-      "unit/renderers/",
-      "browser/public-examples.browser.js"
+      { "type": "prefix", "path": "unit/renderers/" },
+      { "type": "file", "path": "browser/public-examples.browser.js" }
     ],
     "scales": [
-      "unit/actions/scales/",
-      "unit/materialization/scales/",
-      "contracts/scale-capability-contract.test.js"
+      { "type": "prefix", "path": "unit/actions/scales/" },
+      { "type": "file", "path": "contracts/scale-capability-contract.test.js" }
     ],
     "selection": [
-      "charts/mark-selection-",
-      "unit/actions/selection/",
-      "unit/selectors/",
-      "contracts/selection-policy.test.js",
-      "contracts/selectors.test.js"
+      { "type": "prefix", "path": "charts/mark-selection-" },
+      { "type": "prefix", "path": "unit/actions/selection/" },
+      { "type": "prefix", "path": "unit/selectors/" },
+      { "type": "file", "path": "contracts/selection-policy.test.js" },
+      { "type": "file", "path": "contracts/selectors.test.js" }
+    ],
+    "selectors": [
+      { "type": "prefix", "path": "unit/selectors/" }
     ],
     "statistics": [
-      "unit/actions/statistics/",
-      "unit/materialization/statistics/",
-      "charts/cars-regression-scatterplot/",
-      "charts/cars-box-plot/"
+      { "type": "prefix", "path": "unit/actions/statistics/" },
+      { "type": "prefix", "path": "charts/cars-regression-scatterplot/" },
+      { "type": "prefix", "path": "charts/cars-box-plot/" }
+    ],
+    "support": [
+      { "type": "prefix", "path": "unit/support/" }
     ]
   }
 }

@@ -16,10 +16,30 @@ const capabilityRegistry = JSON.parse(readFileSync(
   "utf8"
 ));
 
+if (capabilityRegistry.version !== 2) {
+  throw new Error("test/capabilities.json must use contract version 2.");
+}
+
+function normalizeCapabilityEntry(name, entry) {
+  if (
+    entry === null ||
+    typeof entry !== "object" ||
+    !["file", "prefix"].includes(entry.type) ||
+    typeof entry.path !== "string" ||
+    entry.path.length === 0 ||
+    entry.path.startsWith("/") ||
+    entry.path.includes("\\") ||
+    entry.path.split("/").includes("..")
+  ) {
+    throw new Error(`Invalid test capability entry for "${name}".`);
+  }
+  return Object.freeze({ type: entry.type, path: entry.path });
+}
+
 export const TEST_CAPABILITIES = Object.freeze(Object.fromEntries(
-  Object.entries(capabilityRegistry.capabilities).map(([name, paths]) => [
+  Object.entries(capabilityRegistry.capabilities).map(([name, entries]) => [
     name,
-    Object.freeze([...paths])
+    Object.freeze(entries.map(entry => normalizeCapabilityEntry(name, entry)))
   ])
 ));
 
@@ -53,6 +73,12 @@ export function classifyTestFile(file, root = testRoot) {
   return undefined;
 }
 
+export function matchesCapabilityEntry(relative, entry) {
+  return entry.type === "file"
+    ? relative === entry.path
+    : relative.startsWith(entry.path);
+}
+
 function matchesSelector(file, root, selector) {
   const relative = path.relative(root, file).split(path.sep).join("/");
   if (selector.startsWith("chart:")) {
@@ -67,10 +93,12 @@ function matchesSelector(file, root, selector) {
         `${Object.keys(TEST_CAPABILITIES).join(", ")}.`
       );
     }
-    return paths.some(candidate => relative.includes(candidate));
+    return paths.some(entry => matchesCapabilityEntry(relative, entry));
   }
-  const value = selector.replace(/^test\//, "");
-  return relative.toLowerCase().includes(value.toLowerCase());
+  const value = selector.replace(/^test\//, "").replace(/\\/g, "/");
+  if (value.endsWith(".js")) return relative === value;
+  const prefix = value.endsWith("/") ? value : `${value}/`;
+  return relative.startsWith(prefix);
 }
 
 export function collectTestFiles(suite = "all", root = testRoot, selectors = []) {
