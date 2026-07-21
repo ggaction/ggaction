@@ -261,7 +261,10 @@ try {
   assert.equal(await noScriptDesktop.locator("html").getAttribute("class"), "no-js");
   assert.equal(await noScriptDesktop.locator("#docs-sidebar").getAttribute("inert"), null);
   assert.equal(await noScriptDesktop.locator("#docs-sidebar").getAttribute("aria-hidden"), null);
-  assert.equal(await noScriptDesktop.locator(".docs-sidenav a").first().isVisible(), true);
+  const noScriptGroup = noScriptDesktop.locator(".docs-nav-group").first();
+  assert.equal(await noScriptGroup.locator("summary").isVisible(), true);
+  await noScriptGroup.locator("summary").click();
+  assert.equal(await noScriptGroup.locator("a").first().isVisible(), true);
   await noScriptDesktop.close();
 
   const htmlFiles = (await files(siteRoot))
