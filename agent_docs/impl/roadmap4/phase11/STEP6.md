@@ -7,6 +7,6 @@
 - [x] canonical example, public wiki/gallery와 generated references
 - [x] normal/chart/contract/render/browser/coverage/package verification
 - [x] active review artifact graduation과 Gate dependency removal
-- [ ] P11-Exit review package와 사용자 승인
+- [x] P11-Exit review package와 사용자 승인
 
 P11-B 승인 전에는 시작하지 않는다. P11-Exit 승인 전에는 Phase 12를 시작하지 않는다.

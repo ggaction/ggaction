@@ -3,11 +3,12 @@
 ## 상태
 
 - Gate: `P11-Exit`
-- 상태: `ready-for-review`
+- 상태: `approved`
+- 승인: `2026-07-21` 사용자 명시 승인
 - Functional checkpoint: `e440a2a` (`complete parallel coordinates facade`)
 - Public closeout checkpoint: `755acd9` (`publish parallel coordinates contract`)
 - Remote: `origin/main`
-- 승인 전 차단: Roadmap 4 Phase 12 설계와 production source
+- 승인으로 해제: Roadmap 4 Phase 12 설계와 Gate 계획
 
 Current inventory, architecture, exact declarations, package boundary, stable chart/example/docs와 누적 검증을
 검토한다. Docs deploy와 package publish는 수행하지 않았다.
@@ -126,4 +127,4 @@ repository가 고정한 `mise ruby@3.2.6`과 locked bundle로 실행했다.
 4. Current architecture와 public/generated docs 동기화
 5. 위 누적 검증을 Phase 11 종료 증거로 채택하는 것
 
-P11-Exit 승인 전에는 Phase 11을 `completed`로 닫거나 Phase 12를 시작하지 않는다.
+P11-Exit 승인으로 Phase 11을 `completed`로 닫고 Phase 12 설계와 Gate 계획을 열었다.
