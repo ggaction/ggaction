@@ -260,6 +260,25 @@ test("keeps every Markdown page structurally readable", async () => {
   }
 });
 
+test("keeps documentation styles split by stable UI responsibility", () => {
+  const entry = read("docs/assets/main.scss");
+  const partials = [
+    "base",
+    "navigation",
+    "content",
+    "gallery",
+    "page-chrome",
+    "responsive"
+  ];
+  assert.deepEqual(
+    [...entry.matchAll(/@import "docs\/([a-z-]+)";/g)].map(match => match[1]),
+    partials
+  );
+  for (const partial of partials) {
+    assert.equal(read(`docs/_sass/docs/_${partial}.scss`).length > 500, true, partial);
+  }
+});
+
 test("generates unique page metadata and canonical social tags", async () => {
   await generateDocPageMetadata({ check: true });
   const metadata = await buildDocPageMetadata();

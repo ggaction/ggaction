@@ -1,0 +1,141 @@
+.docs-page-toc {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--docs-border);
+  border-radius: 0.5rem;
+  background: #f8fafc;
+}
+
+.docs-page-toc summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.docs-page-toc summary::-webkit-details-marker {
+  display: none;
+}
+
+.docs-page-toc summary::after {
+  color: var(--docs-muted);
+  content: "+";
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.docs-page-toc[open] summary::after {
+  content: "−";
+}
+
+.docs-page-toc summary strong {
+  color: #0f172a;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.docs-page-toc summary span {
+  margin-left: auto;
+  color: var(--docs-muted);
+  font-size: 0.74rem;
+}
+
+.docs-page-toc ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin: 0.65rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.docs-page-toc li.is-nested a::before {
+  content: "↳ ";
+  color: var(--docs-muted);
+}
+
+.docs-page-toc a {
+  font-size: 0.84rem;
+}
+
+.docs-page-toc li.is-current > a,
+.docs-page-toc li.is-parent-current > a {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.docs-heading-anchor {
+  margin-left: 0.4rem;
+  color: #94a3b8;
+  font-size: 0.72em;
+  font-weight: 500;
+  opacity: 0;
+}
+
+h2:hover .docs-heading-anchor,
+h3:hover .docs-heading-anchor,
+.docs-heading-anchor:focus {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.docs-page-navigation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--docs-border);
+}
+
+.docs-page-navigation a {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--docs-border);
+  border-radius: 0.5rem;
+}
+
+.docs-page-navigation a:hover {
+  background: var(--docs-accent-soft);
+  text-decoration: none;
+}
+
+.docs-page-navigation span {
+  color: var(--docs-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.docs-page-navigation__next {
+  text-align: right;
+}
+
+.docs-footer {
+  border-top: 1px solid var(--docs-border);
+  background: #f8fafc;
+}
+
+.docs-footer__inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 1.2rem 1.5rem;
+  color: var(--docs-muted);
+  font-size: 0.78rem;
+}
+
+.docs-footer p {
+  margin: 0;
+}
+
+.docs-footer nav {
+  display: flex;
+  gap: 1rem;
+}

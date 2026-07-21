@@ -1,0 +1,134 @@
+:root {
+  --docs-accent: #2563eb;
+  --docs-accent-soft: #eff6ff;
+  --docs-border: #e2e8f0;
+  --docs-muted: #64748b;
+  --docs-sidebar: 17rem;
+  --docs-topbar: 3.75rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #172033;
+  background: #fff;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.32);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -5rem;
+  z-index: 100;
+  padding: 0.6rem 0.9rem;
+  color: #fff;
+  background: #172033;
+  border-radius: 0.35rem;
+}
+
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+.docs-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--docs-topbar);
+  border-bottom: 1px solid var(--docs-border);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+}
+
+.docs-topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 90rem;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.docs-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #0f172a;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.docs-brand:hover {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.docs-version {
+  padding: 0.12rem 0.42rem;
+  color: var(--docs-muted);
+  background: #f1f5f9;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.docs-topnav {
+  display: flex;
+  align-items: center;
+  gap: 1.35rem;
+  margin-left: auto;
+}
+
+.docs-topnav a {
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.docs-topnav a:hover {
+  color: var(--docs-accent);
+  text-decoration: none;
+}
+
+.nav-toggle-button {
+  display: none;
+  width: 2rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-toggle-button span {
+  display: block;
+  height: 2px;
+  margin: 4px 0;
+  background: #334155;
+}
+
+.nav-backdrop,
+.docs-sidebar-close {
+  display: none;
+}
+
+.docs-shell {
+  display: grid;
+  grid-template-columns: var(--docs-sidebar) minmax(0, 1fr);
+  width: 100%;
+  min-width: 0;
+  max-width: 90rem;
+  min-height: calc(100vh - var(--docs-topbar));
+  margin: 0 auto;
+}
