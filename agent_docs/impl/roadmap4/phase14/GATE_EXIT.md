@@ -6,7 +6,7 @@
 - 상태: `ready-for-review`
 - Runtime checkpoint: `94befe8` (`align box plot facade behavior`)
 - P14-B approval checkpoint: `450d269` (`approve basic chart facade gate b`)
-- Closeout checkpoint: pending this Gate package
+- Closeout checkpoint: `b48e2cb` (`prepare basic chart facade exit gate`)
 - Remote: `origin/main`
 - 승인 전 차단: Phase 14 completed 처리와 Phase 15
 
