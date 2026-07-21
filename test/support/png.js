@@ -10,9 +10,66 @@ import { resolvePngArtifactPath } from "./artifact-paths.js";
 
 const signature = [137, 80, 78, 71, 13, 10, 26, 10];
 
-function parseHex(color) {
-  const value = color.replace(/^#/, "");
-  return [0, 2, 4].map(offset => Number.parseInt(value.slice(offset, offset + 2), 16));
+function resolveCssColor(value) {
+  if (typeof value !== "string" || value.length === 0) {
+    throw new TypeError("Expected PNG colors must be non-empty strings.");
+  }
+  const canvas = createCanvas(1, 1);
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, 1, 1);
+  context.fillStyle = value;
+  context.fillRect(0, 0, 1, 1);
+  return [...context.getImageData(0, 0, 1, 1).data];
+}
+
+export function normalizeExpectedColor(expectation) {
+  const normalized = typeof expectation === "string"
+    ? { value: expectation }
+    : expectation;
+  if (
+    normalized === null ||
+    typeof normalized !== "object" ||
+    Array.isArray(normalized) ||
+    !["value", "tolerance", "minimumPixels"].every(key =>
+      Object.keys(normalized).includes(key) || key !== "value"
+    ) ||
+    Object.keys(normalized).some(key =>
+      !["value", "tolerance", "minimumPixels"].includes(key)
+    ) ||
+    !Number.isFinite(normalized.tolerance ?? 0) ||
+    (normalized.tolerance ?? 0) < 0 ||
+    !Number.isInteger(normalized.minimumPixels ?? 1) ||
+    (normalized.minimumPixels ?? 1) <= 0
+  ) {
+    throw new TypeError("Expected PNG color has an invalid contract.");
+  }
+  return Object.freeze({
+    value: normalized.value,
+    rgba: Object.freeze(resolveCssColor(normalized.value)),
+    tolerance: normalized.tolerance ?? 0,
+    minimumPixels: normalized.minimumPixels ?? 1
+  });
+}
+
+export function pixelMatchesColor(pixel, expected) {
+  return pixel.every((channel, index) =>
+    Math.abs(channel - expected.rgba[index]) <= expected.tolerance
+  );
+}
+
+export function pixelDiffersFromBackground(pixel, background, tolerance = 5) {
+  return pixel.some((channel, index) =>
+    Math.abs(channel - background[index]) > tolerance
+  );
+}
+
+function rootBackground(program) {
+  const root = program.graphicSpec.order
+    .map(id => program.graphicSpec.objects[id])
+    .find(graphic => graphic?.type === "canvas");
+  return root?.properties?.background === undefined
+    ? [0, 0, 0, 0]
+    : resolveCssColor(root.properties.background);
 }
 
 export async function assertRenderedPNG(
@@ -25,6 +82,7 @@ export async function assertRenderedPNG(
     pixelRatio = 2,
     colors = ["#4c78a8"],
     minimumInkPixels = 100,
+    backgroundTolerance = 5,
     regions = [],
     visualSignature
   }
@@ -48,17 +106,18 @@ export async function assertRenderedPNG(
   const context = canvas.getContext("2d");
   context.drawImage(image, 0, 0);
   const pixels = context.getImageData(0, 0, image.width, image.height).data;
+  const background = rootBackground(program);
   let inkPixels = 0;
   let inkLeft = image.width;
   let inkTop = image.height;
   let inkRight = -1;
   let inkBottom = -1;
-  const parsedColors = new Map(colors.map(color => [color, parseHex(color)]));
-  const colorCounts = new Map(colors.map(color => [color, 0]));
+  const expectedColors = colors.map(normalizeExpectedColor);
+  const colorCounts = new Map(expectedColors.map(color => [color.value, 0]));
 
   for (let index = 0; index < pixels.length; index += 4) {
     const rgba = [pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3]];
-    if (rgba[3] > 0 && (rgba[0] < 250 || rgba[1] < 250 || rgba[2] < 250)) {
+    if (pixelDiffersFromBackground(rgba, background, backgroundTolerance)) {
       inkPixels += 1;
       const pixelIndex = index / 4;
       const x = pixelIndex % image.width;
@@ -68,17 +127,21 @@ export async function assertRenderedPNG(
       inkRight = Math.max(inkRight, x);
       inkBottom = Math.max(inkBottom, y);
     }
-    for (const [color, [red, green, blue]] of parsedColors) {
-      if (rgba[0] === red && rgba[1] === green && rgba[2] === blue && rgba[3] === 255) {
-        colorCounts.set(color, colorCounts.get(color) + 1);
+    for (const color of expectedColors) {
+      if (pixelMatchesColor(rgba, color)) {
+        colorCounts.set(color.value, colorCounts.get(color.value) + 1);
       }
     }
   }
 
   const label = name ?? `${artifact.chart}/${artifact.variant}/${artifact.kind}`;
   assert.equal(inkPixels >= minimumInkPixels, true, `${label} is unexpectedly blank`);
-  for (const [color, count] of colorCounts) {
-    assert.equal(count > 0, true, `${label} does not contain ${color}`);
+  for (const color of expectedColors) {
+    assert.equal(
+      colorCounts.get(color.value) >= color.minimumPixels,
+      true,
+      `${label} does not contain enough ${color.value} pixels`
+    );
   }
 
   const compactSignature = Object.freeze({
@@ -121,10 +184,8 @@ export async function assertRenderedPNG(
     const right = Math.ceil((region.x + region.width) * pixelRatio);
     const bottom = Math.ceil((region.y + region.height) * pixelRatio);
     let regionInk = 0;
-    const expected = new Map(
-      (region.colors ?? []).map(color => [color, parseHex(color)])
-    );
-    const counts = new Map([...expected.keys()].map(color => [color, 0]));
+    const expected = (region.colors ?? []).map(normalizeExpectedColor);
+    const counts = new Map(expected.map(color => [color.value, 0]));
 
     for (let y = top; y < bottom; y += 1) {
       for (let x = left; x < right; x += 1) {
@@ -135,12 +196,12 @@ export async function assertRenderedPNG(
           pixels[index + 2],
           pixels[index + 3]
         ];
-        if (rgba[3] > 0 && (rgba[0] < 250 || rgba[1] < 250 || rgba[2] < 250)) {
+        if (pixelDiffersFromBackground(rgba, background, backgroundTolerance)) {
           regionInk += 1;
         }
-        for (const [color, [red, green, blue]] of expected) {
-          if (rgba[0] === red && rgba[1] === green && rgba[2] === blue && rgba[3] === 255) {
-            counts.set(color, counts.get(color) + 1);
+        for (const color of expected) {
+          if (pixelMatchesColor(rgba, color)) {
+            counts.set(color.value, counts.get(color.value) + 1);
           }
         }
       }
@@ -153,8 +214,12 @@ export async function assertRenderedPNG(
       true,
       `${regionLabel} is unexpectedly blank`
     );
-    for (const [color, count] of counts) {
-      assert.equal(count > 0, true, `${regionLabel} does not contain ${color}`);
+    for (const color of expected) {
+      assert.equal(
+        counts.get(color.value) >= color.minimumPixels,
+        true,
+        `${regionLabel} does not contain enough ${color.value} pixels`
+      );
     }
     return Object.freeze({ name: region.name, inkPixels: regionInk, colorCounts: counts });
   });

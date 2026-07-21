@@ -25,7 +25,12 @@ start external rendering resources:
 ```sh
 npm run test:browser
 npm run test:render
+npm run test:render -- chart:cars-histogram
 ```
+
+A focused render clears generated PNGs, renders only the selected chart or
+capability, and deliberately skips the full gallery. Running `npm run
+test:render` without selectors rebuilds and validates the complete gallery.
 
 Browser tests share `test/support/browser.js` for navigation, readiness, and
 console/page error capture. Public example-specific state probes belong in the

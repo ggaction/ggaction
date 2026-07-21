@@ -54,7 +54,7 @@
     "test:docs:built": "node scripts/check-built-docs.js _site",
     "test:docs:browser": "node scripts/test-built-docs.js _site",
     "test:coverage": "node scripts/run-tests.js coverage",
-    "test:render": "node test/support/artifacts.js && node scripts/run-tests.js render && node scripts/generate-artifact-gallery.js && node scripts/test-artifact-gallery.js",
+    "test:render": "node scripts/run-render-tests.js",
     "assets:readme": "node scripts/generate-readme-demo.js",
     "artifacts:clean": "node test/support/artifacts.js",
     "artifacts:gallery": "node scripts/generate-artifact-gallery.js",
