@@ -42,6 +42,9 @@
       { "type": "file", "path": "unit/actions/encodings/edit-horizon.test.js" },
       { "type": "prefix", "path": "charts/gapminder-horizon/" }
     ],
+    "label-layout": [
+      { "type": "prefix", "path": "gates/gapminder-country-labels/" }
+    ],
     "layout": [
       { "type": "prefix", "path": "unit/layout/" }
     ],

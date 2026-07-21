@@ -16,7 +16,13 @@ chart()
     margin: { top: 88, right: 38, bottom: 72, left: 76 }
   })
   .createData({ id: "countries2005", values: rows })
-  .createPointMark({ id: "countries", data: "countries2005" })
+  .createPointMark({
+    id: "countries",
+    data: "countries2005",
+    fill: "#2563eb",
+    stroke: "#ffffff",
+    strokeWidth: 0.8
+  })
   .encodeX({
     target: "countries",
     field: "fertility",
