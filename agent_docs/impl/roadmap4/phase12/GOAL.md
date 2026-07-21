@@ -77,7 +77,7 @@ Existing labels that already satisfy collision and bounds constraints remain unc
 | Gate | 상태 | 승인 대상 | 승인 전 차단되는 작업 |
 | --- | --- | --- | --- |
 | P12-A | approved | exact API/default/error/state, independent oracle, Gapminder primitive source와 PNG | production layout/action 구현 |
-| P12-B | planned | public action hierarchy, primitive/public parity, replay/removal/warning lifecycle | public closeout |
+| P12-B | ready-for-review | public action hierarchy, primitive/public parity, replay/removal/warning lifecycle | public closeout |
 | P12-Exit | planned | Current inventory, architecture, docs/types/package와 cumulative verification | Phase 13 |
 
 모든 Gate는 hard pause다.

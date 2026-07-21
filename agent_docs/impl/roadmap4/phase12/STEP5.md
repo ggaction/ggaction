@@ -7,4 +7,5 @@
 - [x] x/y/both, plot/canvas, leader off/on parameter matrix
 - [x] scale/Canvas/font/edit order convergence
 - [x] warning resolution, repeated replacement와 removal lifecycle
-- [ ] P12-B remote checkpoint와 사용자 승인
+- [x] P12-B remote checkpoint
+- [ ] P12-B 사용자 승인
