@@ -1,30 +1,23 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
-import path from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+import {
+  ACTION_INDEX,
+  contractCorpus,
+  markdownAnchors,
+  readContractTarget
+} from "../support/action-contracts.js";
 
-const root = fileURLToPath(new URL("../..", import.meta.url));
-const contractRoot = path.join(root, "agent_docs/contract");
-const index = JSON.parse(readFileSync(path.join(contractRoot, "ACTION_INDEX.json"), "utf8"));
-
-function markdownFiles(directory) {
-  return readdirSync(path.join(contractRoot, directory))
-    .filter(file => file.endsWith(".md"))
-    .map(file => path.join(contractRoot, directory, file));
-}
-
-const currentCorpus = markdownFiles("current").map(file => readFileSync(file, "utf8")).join("\n");
-const plannedCorpus = markdownFiles("planned").map(file => readFileSync(file, "utf8")).join("\n");
+const index = ACTION_INDEX;
+const currentCorpus = contractCorpus("current");
+const plannedCorpus = contractCorpus("planned");
 
 function assertContractTarget(contract) {
-  assert.ok(contract);
-  const file = path.join(root, contract.file);
-  assert.equal(existsSync(file), true, contract.file);
-  const source = readFileSync(file, "utf8");
-  const anchors = [...source.matchAll(/^## (.+)$/gm)]
-    .map(match => match[1].toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""));
-  assert.equal(anchors.includes(contract.anchor.toLowerCase()), true, contract.file + "#" + contract.anchor);
+  const { source } = readContractTarget(contract);
+  assert.equal(
+    markdownAnchors(source).includes(contract.anchor.toLowerCase()),
+    true,
+    `${contract.file}#${contract.anchor}`
+  );
 }
 
 test("keeps accepted planned capabilities linked and non-public", () => {
@@ -218,4 +211,3 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.doesNotMatch(currentCorpus + plannedCorpus, /coordinate-level `clip`\/transform options/);
   assert.doesNotMatch(currentCorpus + plannedCorpus, /custom (palette|scheme)|scheme registration/i);
 });
-

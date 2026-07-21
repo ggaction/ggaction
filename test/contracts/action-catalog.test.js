@@ -2,26 +2,28 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 
 import { ChartProgram } from "../../src/ChartProgram.js";
 import { renderActionCatalog } from "../../scripts/generate-action-catalog.js";
+import {
+  ACTION_CONTRACT_ROOT,
+  ACTION_INDEX,
+  actionSections,
+  contractCorpus,
+  CURRENT_CONTRACT_FILES,
+  markdownAnchors,
+  owningActionSection,
+  readContractTarget,
+  REPOSITORY_ROOT
+} from "../support/action-contracts.js";
 
-const root = fileURLToPath(new URL("../..", import.meta.url));
-const contractRoot = path.join(root, "agent_docs/contract");
-const index = JSON.parse(
-  readFileSync(path.join(contractRoot, "ACTION_INDEX.json"), "utf8")
-);
+const root = REPOSITORY_ROOT;
+const contractRoot = ACTION_CONTRACT_ROOT;
+const index = ACTION_INDEX;
 const catalog = readFileSync(
   path.join(contractRoot, "ACTION_CATALOG.md"),
   "utf8"
 );
-
-function markdownFiles(directory) {
-  return readdirSync(path.join(contractRoot, directory))
-    .filter(file => file.endsWith(".md"))
-    .map(file => path.join(contractRoot, directory, file));
-}
 
 function sourceFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
@@ -31,14 +33,9 @@ function sourceFiles(directory) {
   });
 }
 
-const currentFiles = markdownFiles("current");
-const plannedFiles = markdownFiles("planned");
-const currentCorpus = currentFiles
-  .map(file => readFileSync(file, "utf8"))
-  .join("\n");
-const plannedCorpus = plannedFiles
-  .map(file => readFileSync(file, "utf8"))
-  .join("\n");
+const currentFiles = CURRENT_CONTRACT_FILES;
+const currentCorpus = contractCorpus("current");
+const plannedCorpus = contractCorpus("planned");
 const maybeFutureActions = new Set(
   [...plannedCorpus.matchAll(/^(encode(?:Theta|R)2)\(/gm)].map(match => match[1])
 );
@@ -68,39 +65,8 @@ function runtimeActionMethods() {
     .filter(name => name !== "constructor");
 }
 
-function actionSections(source) {
-  const headings = [...source.matchAll(/^## \`([A-Za-z][A-Za-z0-9]*)\`$/gm)];
-  return headings.map((heading, indexInFile) => {
-    const rest = source.slice(heading.index + heading[0].length);
-    const next = rest.search(/^## /m);
-    return {
-      action: heading[1],
-      source: source.slice(
-        heading.index,
-        next < 0
-          ? source.length
-          : heading.index + heading[0].length + next
-      )
-    };
-  });
-}
-
-function owningSection(action) {
-  const matches = currentFiles.flatMap(file => {
-    const source = readFileSync(file, "utf8");
-    return actionSections(source)
-      .filter(section => section.action === action)
-      .map(section => ({ ...section, file }));
-  });
-  assert.equal(matches.length, 1, `${action} must have one owning contract`);
-  return matches[0];
-}
-
 function assertContractTarget(contract) {
-  assert.ok(contract);
-  const file = path.join(root, contract.file);
-  assert.equal(existsSync(file), true, contract.file);
-  const source = readFileSync(file, "utf8");
+  const { source } = readContractTarget(contract);
   const expectedHeading = contract.file.includes("/current/")
     ? new RegExp(`^## \\\`${contract.anchor}\\\`$`, "mi")
     : new RegExp(
@@ -110,8 +76,7 @@ function assertContractTarget(contract) {
   if (contract.file.includes("/current/")) {
     assert.match(source, expectedHeading, contract.file);
   } else {
-    const anchors = [...source.matchAll(/^## (.+)$/gm)]
-      .map(match => match[1].toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""));
+    const anchors = markdownAnchors(source);
     assert.equal(anchors.includes(contract.anchor), true, `${contract.file}#${contract.anchor}`);
   }
 }
@@ -147,7 +112,7 @@ test("keeps every declared direct action in one current domain contract", () => 
   for (const action of index.actions) {
     assert.equal(action.status, "implemented", action.name);
     assertContractTarget(action.contract);
-    const section = owningSection(action.name).source;
+    const section = owningActionSection(action.name).source;
     assert.match(section, new RegExp(`^### Formal values — \\\`${action.name}\\\`$`, "m"));
     assert.match(section, new RegExp(`^### Value coverage — \\\`${action.name}\\\`$`, "m"));
     assert.match(section, /^- Implemented: /m, action.name);
@@ -312,16 +277,16 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
 });
 
 test("keeps implemented and planned formal values distinct", () => {
-  const data = owningSection("createData").source;
+  const data = owningActionSection("createData").source;
   assert.match(data, /id\?: UserId/);
   assert.match(data, /첫 unnamed source는\s+`"data"`/);
 
-  const encodeY = owningSection("encodeY").source;
+  const encodeY = owningActionSection("encodeY").source;
   assert.match(encodeY, /aggregate\?: AggregateOperation/);
   assert.match(encodeY, /op: "quantile"; probability: UnitInterval/);
   assert.match(encodeY, /op: "first" \| "last";[\s\S]*orderBy: FieldName/);
 
-  const point = owningSection("createPointMark").source;
+  const point = owningActionSection("createPointMark").source;
   assert.match(point, /id\?: UserId/);
   assert.match(point, /omission→`"point"`/);
   assert.match(point, /shape\?: PointShape/);

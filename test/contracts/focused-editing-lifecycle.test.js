@@ -2,17 +2,17 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 
 import { ChartProgram } from "../../src/ChartProgram.js";
 import { visualVariants } from
   "../charts/cross-feature-integration/variants/focused-editing/manifest.js";
+import {
+  ACTION_INDEX,
+  REPOSITORY_ROOT
+} from "../support/action-contracts.js";
 
-const root = fileURLToPath(new URL("../../", import.meta.url));
-const index = JSON.parse(readFileSync(path.join(
-  root,
-  "agent_docs/contract/ACTION_INDEX.json"
-), "utf8"));
+const root = REPOSITORY_ROOT;
+const index = ACTION_INDEX;
 const declarations = readFileSync(path.join(root, "types/program.d.ts"), "utf8");
 const declarationIndex = readFileSync(path.join(root, "types/index.d.ts"), "utf8");
 const actionReference = readFileSync(path.join(

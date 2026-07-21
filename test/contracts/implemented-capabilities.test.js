@@ -1,35 +1,19 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+import {
+  ACTION_CONTRACT_ROOT,
+  ACTION_INDEX,
+  contractCorpus,
+  owningActionSection,
+  REPOSITORY_ROOT
+} from "../support/action-contracts.js";
 
-const root = fileURLToPath(new URL("../..", import.meta.url));
-const contractRoot = path.join(root, "agent_docs/contract");
-const index = JSON.parse(readFileSync(
-  path.join(contractRoot, "ACTION_INDEX.json"),
-  "utf8"
-));
-const currentFiles = readdirSync(path.join(contractRoot, "current"))
-  .filter(file => file.endsWith(".md"))
-  .map(file => path.join(contractRoot, "current", file));
-const plannedCorpus = readdirSync(path.join(contractRoot, "planned"))
-  .filter(file => file.endsWith(".md"))
-  .map(file => readFileSync(path.join(contractRoot, "planned", file), "utf8"))
-  .join("\n");
-
-function owningSection(action) {
-  const heading = `## \`${action}\``;
-  const matches = currentFiles.flatMap(file => {
-    const source = readFileSync(file, "utf8");
-    const start = source.indexOf(heading);
-    if (start < 0) return [];
-    const next = source.indexOf("\n## ", start + heading.length);
-    return [source.slice(start, next < 0 ? source.length : next)];
-  });
-  assert.equal(matches.length, 1, `${action} must have one owning contract`);
-  return matches[0];
-}
+const root = REPOSITORY_ROOT;
+const contractRoot = ACTION_CONTRACT_ROOT;
+const index = ACTION_INDEX;
+const plannedCorpus = contractCorpus("planned");
 
 test("keeps implemented capability groups out of planned inventory", () => {
   const currentNames = new Set(index.actions.map(action => action.name));
@@ -89,7 +73,7 @@ test("keeps implemented capability groups out of planned inventory", () => {
 });
 
 test("keeps the implemented box-plot contract complete", () => {
-  const contract = owningSection("createBoxPlot");
+  const contract = owningActionSection("createBoxPlot").source;
   assert.equal(index.actions.some(action => action.name === "createBoxPlot"), true);
   assert.equal(index.plannedActions.some(action => action.name === "createBoxPlot"), false);
   assert.match(contract, /factor\?: PositiveFinite/);
