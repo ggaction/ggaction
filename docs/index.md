@@ -66,7 +66,7 @@ more directly than Cartesian x and y.
   {% endfor %}
 </div>
 
-<p class="docs-gallery-link"><a href="./gallery/">Browse every chart in the gallery →</a></p>
+<p class="docs-gallery-link"><a href="./gallery/">Browse the curated chart gallery →</a></p>
 
 ## Go deeper
 

@@ -131,6 +131,36 @@
     "description": "Add color: \"category\" for category fills. Use split: { field } when the field has exactly two values, or provide an explicit two value domain when side assignment must be stable…",
     "image": "/assets/images/cars-acceleration-violins.png"
   },
+  "/recipes/composition/": {
+    "title": "Composition Recipe",
+    "description": "pointRows and barRows are arrays of plain row objects containing the named fields. Every child must already have one complete materialized Canvas.",
+    "image": "/assets/images/program-composition.png"
+  },
+  "/recipes/facet/": {
+    "title": "Facet Recipe",
+    "description": "cars is an array of plain row objects containing the encoded fields and Origin. Facet values retain source first appearance order.",
+    "image": "/assets/images/cars-origin-scatterplot-facet.png"
+  },
+  "/recipes/parallel-coordinates/": {
+    "title": "Parallel-Coordinates Recipe",
+    "description": "cars is an array of plain row objects. Every eligible row becomes one open path across the ordered dimensions.",
+    "image": "/assets/images/cars-parallel-coordinates.png"
+  },
+  "/recipes/gradient-plot/": {
+    "title": "Gradient-Plot Recipe",
+    "description": "cars is an array of plain row objects with one categorical field and one quantitative measure.",
+    "image": "/assets/images/cars-gradient-plot.png"
+  },
+  "/recipes/annotations/": {
+    "title": "Annotation Recipe",
+    "description": "films is an array of plain row objects containing the two position fields and the label field.",
+    "image": "/assets/images/annotated-imdb-scatterplot.png"
+  },
+  "/recipes/path-ordering/": {
+    "title": "Path-Ordering Recipe",
+    "description": "observations is an array of plain row objects. Source rows may be shuffled; the order field controls vertices independently inside each color/group series.",
+    "image": "/assets/images/gapminder-development-trajectories.png"
+  },
   "/troubleshooting/": {
     "title": "Troubleshooting",
     "description": "ggaction reports an error when stored state does not determine one safe action. It does not silently select the first mark, scale, dataset, or coordinate."
@@ -138,6 +168,10 @@
   "/gallery/": {
     "title": "Chart Gallery",
     "description": "Browse complete ggaction charts by Cartesian, statistical, Polar, composition, and interaction task."
+  },
+  "/gallery/all/": {
+    "title": "All Chart Examples",
+    "description": "Browse every maintained ggaction chart example by analytical task."
   },
   "/api/": {
     "title": "Chart API",

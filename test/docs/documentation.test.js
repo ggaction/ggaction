@@ -473,11 +473,13 @@ test("routes entry documentation to the canonical example indexes", () => {
   );
   assert.equal(
     [...catalog.values()].filter(example => example.recipe_order).length,
-    12
+    18
   );
   assert.match(read("docs/tutorials/index.md"), /example\.tutorial_order/);
   assert.match(read("docs/recipes/index.md"), /example\.recipe_order/);
-  assert.match(read("docs/gallery.md"), /data-gallery-filter="statistical"/);
+  assert.match(read("docs/_includes/gallery-filter.html"), /data-gallery-filter="distribution"/);
+  assert.match(read("docs/gallery.md"), /where: "gallery_featured", true/);
+  assert.match(read("docs/gallery\/all.md"), /site\.data\.chart_examples/);
   assert.equal(
     [...catalog.values()].filter(example => example.featured === true).length,
     9

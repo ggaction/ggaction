@@ -3,6 +3,7 @@ const ALLOWED_KEYS = new Set([
   "alt",
   "caption",
   "featured",
+  "gallery_featured",
   "height",
   "home_group",
   "home_order",
@@ -10,6 +11,7 @@ const ALLOWED_KEYS = new Set([
   "recipe_order",
   "recipe_url",
   "summary",
+  "tasks",
   "thumbnail",
   "thumbnail_height",
   "thumbnail_width",
@@ -135,11 +137,18 @@ export function validateDocChartCatalog(records) {
     if (!record.image.endsWith(".png") || !record.thumbnail.endsWith("-thumb.png")) {
       throw new Error(`Chart "${record.id}" requires PNG image and thumbnail paths.`);
     }
-    const invalidFeatured = record.featured !== undefined && record.featured !== true;
+    const invalidFeatured = [record.featured, record.gallery_featured]
+      .some(value => value !== undefined && value !== true);
     const invalidGroup = record.home_group !== undefined &&
       !["essentials", "statistical", "coordinates", "other"].includes(record.home_group);
     if (invalidFeatured || invalidGroup) {
       throw new Error(`Chart "${record.id}" has invalid discovery metadata.`);
+    }
+    if (
+      typeof record.tasks !== "string" ||
+      !/^[a-z-]+(?: [a-z-]+)*$/.test(record.tasks)
+    ) {
+      throw new Error(`Chart "${record.id}" requires space-separated task tags.`);
     }
   }
 

@@ -89,6 +89,24 @@
 - title: Violin-Plot Recipe
   url: /recipes/violin-plot/
   parent: /recipes/
+- title: Composition Recipe
+  url: /recipes/composition/
+  parent: /recipes/
+- title: Facet Recipe
+  url: /recipes/facet/
+  parent: /recipes/
+- title: Parallel-Coordinates Recipe
+  url: /recipes/parallel-coordinates/
+  parent: /recipes/
+- title: Gradient-Plot Recipe
+  url: /recipes/gradient-plot/
+  parent: /recipes/
+- title: Annotation Recipe
+  url: /recipes/annotations/
+  parent: /recipes/
+- title: Path-Ordering Recipe
+  url: /recipes/path-ordering/
+  parent: /recipes/
 - title: Troubleshooting
   url: /troubleshooting/
   nav_group: start
@@ -97,6 +115,9 @@
   url: /gallery/
   nav_group: start
   nav_order: 5
+- title: All Chart Examples
+  url: /gallery/all/
+  parent: /gallery/
 - title: Chart API
   url: /api/
   nav_group: chart-api

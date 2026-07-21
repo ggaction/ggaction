@@ -49,6 +49,9 @@ const chartCatalog = await readFile(
 );
 const expectedTutorialCount = (chartCatalog.match(/^  tutorial_order:/gm) ?? []).length;
 const expectedFeaturedCount = (chartCatalog.match(/^  featured: true$/gm) ?? []).length;
+const expectedGalleryFeaturedCount = (
+  chartCatalog.match(/^  gallery_featured: true$/gm) ?? []
+).length;
 const expectedGalleryCount = (chartCatalog.match(/^- id:/gm) ?? []).length;
 await mkdir(artifactRoot, { recursive: true });
 
@@ -203,12 +206,23 @@ try {
     expectedTutorialCount
   );
   await desktop.goto(`${baseUrl}gallery/`, { waitUntil: "networkidle" });
+  assert.equal(
+    await desktop.locator(".docs-chart-gallery article").count(),
+    expectedGalleryFeaturedCount
+  );
+  const distributionFilter = desktop.locator('[data-gallery-filter="distribution"]');
+  await distributionFilter.click();
+  assert.equal(await distributionFilter.getAttribute("aria-pressed"), "true");
+  assert.equal(
+    await desktop.locator('[data-gallery-tasks~="distribution"]:not([hidden])').count() > 0,
+    true
+  );
+  assert.equal(
+    await desktop.locator('[data-gallery-tasks~="interaction"]:not([hidden])').count(),
+    0
+  );
+  await desktop.goto(`${baseUrl}gallery/all/`, { waitUntil: "networkidle" });
   assert.equal(await desktop.locator(".docs-chart-gallery article").count(), expectedGalleryCount);
-  const statisticalFilter = desktop.locator('[data-gallery-filter="statistical"]');
-  await statisticalFilter.click();
-  assert.equal(await statisticalFilter.getAttribute("aria-pressed"), "true");
-  assert.equal(await desktop.locator('[data-gallery-group="statistical"]:not([hidden])').count() > 0, true);
-  assert.equal(await desktop.locator('[data-gallery-group="coordinates"]:not([hidden])').count(), 0);
   await desktop.goto(`${baseUrl}getting-started/`, { waitUntil: "networkidle" });
   assert.equal(await desktop.locator(".docs-example-figure img").count(), 1);
   await desktop.goto(baseUrl, { waitUntil: "networkidle" });

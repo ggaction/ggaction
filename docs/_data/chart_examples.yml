@@ -10,7 +10,11 @@
   caption: The stable main slot retains points while the detail slot shows its replacement bars.
   summary: Compare distinct child panels, edit their layout, and replace one stable slot.
   actions: hconcat · editCompositionLayout · replaceCompositionChild
-  url: /api/composition/
+  tasks: composition comparison
+  url: /recipes/composition/
+  recipe_url: /recipes/composition/
+  recipe_order: 13
+  gallery_featured: true
   home_group: essentials
   home_order: 6
 - id: facet
@@ -25,7 +29,10 @@
   caption: One direct-source chart repeated with shared scales and a parent legend.
   summary: Repeat a complete point or bar chart by field value.
   actions: facet · editFacetHeaders · editCompositionLayout
-  url: /api/composition/#repeat-the-current-chart-by-a-field
+  tasks: composition relationship
+  url: /recipes/facet/
+  recipe_url: /recipes/facet/
+  recipe_order: 14
   home_group: essentials
   home_order: 7
 - id: scatterplot
@@ -40,6 +47,7 @@
   caption: Quantitative positions with nominal color.
   summary: Compare two quantitative fields and encode a category with color.
   actions: createScatterPlot
+  tasks: relationship
   url: /tutorials/scatterplot/
   recipe_url: /recipes/scatterplot/
   home_group: essentials
@@ -47,6 +55,7 @@
   tutorial_order: 1
   recipe_order: 1
   featured: true
+  gallery_featured: true
 - id: line
   title: Line chart
   image: /assets/images/cars-line-chart.png
@@ -59,6 +68,7 @@
   caption: Temporal aggregate paths with grouped series.
   summary: Aggregate values over time and split the result into series.
   actions: createLinePlot
+  tasks: trend
   url: /tutorials/line-chart/
   recipe_url: /recipes/line-chart/
   home_group: essentials
@@ -66,6 +76,7 @@
   tutorial_order: 4
   recipe_order: 2
   featured: true
+  gallery_featured: true
 - id: temporal-bar-line
   title: Temporal bar and line
   image: /assets/images/cars-temporal-bar-line.png
@@ -78,6 +89,7 @@
   caption: One temporal scale shared by aggregate bars and a line.
   summary: Layer compatible marks without repeating the line position encodings.
   actions: createBarMark · encodeX · encodeY · createLineMark
+  tasks: trend comparison
   url: /api/marks/line-area/#line-marks
   recipe_url: /recipes/line-chart/
   home_group: essentials
@@ -94,7 +106,10 @@
   caption: One explicit year order controls each country's path topology.
   summary: Connect repeated and non-monotonic positions by a separate quantitative order field.
   actions: createLineMark · encodePathOrder · removePathOrder
-  url: /api/series-encodings/#explicit-path-topology
+  tasks: trend relationship
+  url: /recipes/path-ordering/
+  recipe_url: /recipes/path-ordering/
+  recipe_order: 18
   home_group: essentials
   home_order: 2.3
 - id: annotation
@@ -109,7 +124,11 @@
   caption: Point positions reused by a field-driven text layer.
   summary: Attach readable data labels to final point, bar, or rule items.
   actions: createTextMark · encodeText · editTextMark
-  url: /api/marks/text/
+  tasks: relationship annotation
+  url: /recipes/annotations/
+  recipe_url: /recipes/annotations/
+  recipe_order: 17
+  gallery_featured: true
   home_group: essentials
   home_order: 1.5
 - id: heatmap
@@ -124,12 +143,14 @@
   caption: Observed discrete cells with continuous color and centered labels.
   summary: Map two discrete fields to cells and a quantitative field to color.
   actions: createHeatmap · createTextMark · encodeText
+  tasks: relationship multivariate
   url: /api/basic-charts/#createheatmap
   recipe_url: /recipes/heatmap/
   home_group: essentials
   home_order: 2.5
   recipe_order: 5
   featured: true
+  gallery_featured: true
 - id: bar
   title: Bar chart
   image: /assets/images/jobs-grouped-bar.png
@@ -142,6 +163,7 @@
   caption: Aggregate ordinal bars with grouped color layout.
   summary: Aggregate ordinal categories and arrange nominal groups side by side.
   actions: createBarPlot
+  tasks: comparison
   url: /tutorials/grouped-bar/
   recipe_url: /recipes/bar-chart/
   home_group: essentials
@@ -149,6 +171,7 @@
   tutorial_order: 6
   recipe_order: 4
   featured: true
+  gallery_featured: true
 - id: horizontal-grouped-bar
   title: Horizontal grouped bar
   image: /assets/images/jobs-horizontal-grouped-bar.png
@@ -161,6 +184,7 @@
   caption: Aggregate categories grouped inside horizontal y bands.
   summary: Compare grouped aggregate values with a horizontal measure axis.
   actions: createBarMark · encodeX · encodeY · encodeColor
+  tasks: comparison
   url: /api/position/offsets/
   recipe_url: /recipes/bar-chart/
   home_group: essentials
@@ -177,6 +201,7 @@
   caption: Binned counts partitioned by a nominal field.
   summary: Bin a quantitative field and count category partitions.
   actions: createHistogram
+  tasks: distribution
   url: /tutorials/histogram/
   recipe_url: /recipes/histogram/
   home_group: essentials
@@ -184,6 +209,7 @@
   tutorial_order: 5
   recipe_order: 3
   featured: true
+  gallery_featured: true
 - id: density
   title: Density area
   image: /assets/images/cars-density-area.png
@@ -196,6 +222,7 @@
   caption: Derived density paths with grouped color and guides.
   summary: Estimate grouped distributions and draw baseline-closed areas.
   actions: createAreaMark · encodeDensity · encodeColor
+  tasks: distribution
   url: /tutorials/density-area/
   recipe_url: /recipes/density-area/
   home_group: essentials
@@ -214,6 +241,7 @@
   caption: Layered points, derived fits, and confidence bands.
   summary: Layer observations, grouped fits, and confidence bands.
   actions: createPointMark · createRegression
+  tasks: relationship uncertainty
   url: /tutorials/regression-scatterplot/
   recipe_url: /recipes/regression-scatterplot/
   home_group: statistical
@@ -221,6 +249,7 @@
   tutorial_order: 7
   recipe_order: 5.5
   featured: true
+  gallery_featured: true
 - id: horizon
   title: Horizon chart
   image: /assets/images/gapminder-horizon.png
@@ -233,6 +262,7 @@
   caption: Signed deviations folded into three compact area bands.
   summary: Compress a long time series by folding values above and below a baseline.
   actions: createAreaMark · encodeHorizon · editHorizon
+  tasks: trend
   url: /tutorials/horizon/
   recipe_url: /recipes/horizon/
   home_group: statistical
@@ -251,6 +281,7 @@
   caption: Observation points layered with fixed-pixel error-bar caps.
   summary: Keep observations visible while summarizing group uncertainty.
   actions: createErrorBar
+  tasks: uncertainty comparison
   url: /tutorials/error-bar/
   recipe_url: /recipes/error-bar/
   home_group: statistical
@@ -269,6 +300,8 @@
   caption: Grouped confidence ribbons with lower and upper paths.
   summary: Show interval ribbons with explicit lower and upper boundaries.
   actions: createErrorBand
+  tasks: uncertainty trend
+  gallery_featured: true
   url: /tutorials/error-band/
   recipe_url: /recipes/error-band/
   home_group: statistical
@@ -287,12 +320,14 @@
   caption: Quartile boxes, medians, whiskers, and outlier points.
   summary: Compose quartiles, whiskers, medians, and outlier points.
   actions: createBoxPlot
+  tasks: distribution uncertainty
   url: /recipes/box-plot/
   recipe_url: /recipes/box-plot/
   home_group: statistical
   home_order: 4
   recipe_order: 9
   featured: true
+  gallery_featured: true
 - id: gradient
   title: Gradient plot
   image: /assets/images/cars-gradient-plot.png
@@ -305,7 +340,11 @@
   caption: Category strips filled by sampled relative density with median rules.
   summary: Compare complete distribution shapes across categories in a compact strip.
   actions: createGradientPlot · editGradientPlot
-  url: /api/gradient-plots/
+  tasks: distribution uncertainty
+  url: /recipes/gradient-plot/
+  recipe_url: /recipes/gradient-plot/
+  recipe_order: 16
+  gallery_featured: true
   home_group: statistical
   home_order: 5
 - id: violin
@@ -320,6 +359,7 @@
   caption: Category-centered kernel-density profiles with shared width resolution.
   summary: Compare complete distribution shapes across categories with symmetric or split density areas.
   actions: createViolinPlot · editDensity
+  tasks: distribution uncertainty
   url: /api/violin-plots/
   recipe_url: /recipes/violin-plot/
   home_group: statistical
@@ -337,10 +377,14 @@
   caption: One source row connected across four independently scaled dimensions.
   summary: Compare multivariate row profiles while retaining row-level identity.
   actions: createParallelCoordinates · encodeParallelCoordinates
-  url: /api/parallel-coordinates/
+  tasks: multivariate
+  url: /recipes/parallel-coordinates/
+  recipe_url: /recipes/parallel-coordinates/
+  recipe_order: 15
   home_group: coordinates
   home_order: 0.5
   featured: true
+  gallery_featured: true
 - id: polar
   title: Polar points
   image: /assets/images/cars-polar-scatterplot.png
@@ -353,11 +397,13 @@
   caption: Quantitative angle and radial position with nominal color.
   summary: Map quantitative fields to clockwise angle and radial distance.
   actions: encodeTheta · encodeR · encodePointRadius
+  tasks: relationship coordinate
   url: /tutorials/polar-points/
   home_group: coordinates
   home_order: 1
   tutorial_order: 2
   featured: true
+  gallery_featured: true
 - id: polar-guides
   title: Polar guides
   image: /assets/images/cars-polar-guides.png
@@ -370,6 +416,7 @@
   caption: Polar point positions with readable theta and radius guides.
   summary: Read angle and radial mappings with aligned axes, labels, and grids.
   actions: createGuides · editRadialAxis
+  tasks: coordinate
   url: /tutorials/polar-points/#add-polar-guides
   home_group: coordinates
   home_order: 2
@@ -385,6 +432,7 @@
   caption: Ordered theta/radius series with explicit open paths.
   summary: Connect ordered angle and radial values as grouped open paths.
   actions: createLineMark · encodeTheta · encodeR
+  tasks: trend coordinate
   url: /tutorials/polar-lines/
   home_group: coordinates
   home_order: 3
@@ -401,6 +449,7 @@
   caption: Nominal theta categories connected as closed series.
   summary: Close nominal-angle series without duplicating the first observation.
   actions: createLineMark · closed
+  tasks: multivariate coordinate
   url: /tutorials/polar-lines/#closed-radar-paths
   home_group: coordinates
   home_order: 4
@@ -416,6 +465,8 @@
   caption: Count aggregation mapped to annular sector angle.
   summary: Build proportional sectors with an inferred categorical color legend.
   actions: createArcMark · encodeTheta · encodeColor
+  tasks: part-to-whole coordinate
+  gallery_featured: true
   url: /tutorials/polar-arcs/
   home_group: coordinates
   home_order: 5
@@ -432,6 +483,7 @@
   caption: Quantitative weights summed into proportional annular sectors.
   summary: Partition a full revolution by category-level sums without expanding rows.
   actions: createArcMark · encodeTheta · encodeColor
+  tasks: part-to-whole coordinate
   url: /tutorials/polar-arcs/#sum-a-field-into-weighted-sectors
   home_group: coordinates
   home_order: 6
@@ -447,6 +499,8 @@
   caption: Equal theta bands with larger-first radial overlays.
   summary: Compare radial magnitudes inside ordered categorical sectors.
   actions: createArcMark · encodeTheta · encodeR
+  tasks: comparison coordinate
+  gallery_featured: true
   url: /tutorials/polar-arcs/#rose-overlays
   home_group: coordinates
   home_order: 7
@@ -462,6 +516,7 @@
   caption: Nominal theta bands and quantitative radius from an inner baseline.
   summary: Compare values as equal-width sectors around a Polar coordinate.
   actions: createArcMark · encodeTheta · encodeR
+  tasks: comparison coordinate
   url: /tutorials/polar-arcs/#radial-bars
   home_group: coordinates
   home_order: 8
@@ -477,5 +532,7 @@
   caption: Final visual items selected and emphasized by their rendered grain.
   summary: Select, filter, and emphasize final point, bar, and line items.
   actions: selectMarks · highlightMarks
+  tasks: interaction
+  gallery_featured: true
   url: /tutorials/mark-selection/
   tutorial_order: 11

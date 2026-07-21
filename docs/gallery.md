@@ -6,24 +6,22 @@ description: Browse complete ggaction charts by Cartesian, statistical, Polar, c
 
 # Chart Gallery
 
-Every card links to the canonical tutorial, recipe, or API page that owns the
-chart. Use the filters to narrow the relationship you want to express.
+This curated set highlights complete, representative charts. Every card links
+to the canonical tutorial, recipe, or API page that owns the chart. Use the
+filters to narrow the analytical relationship you want to express.
 
-<div class="docs-gallery-filter" role="group" aria-label="Filter chart gallery">
-  <button type="button" class="is-active" data-gallery-filter="all" aria-pressed="true">All</button>
-  <button type="button" data-gallery-filter="essentials" aria-pressed="false">Cartesian and composition</button>
-  <button type="button" data-gallery-filter="statistical" aria-pressed="false">Statistical layers</button>
-  <button type="button" data-gallery-filter="coordinates" aria-pressed="false">Alternate coordinates</button>
-  <button type="button" data-gallery-filter="other" aria-pressed="false">Interaction</button>
-</div>
+{% include gallery-filter.html %}
 
 <div class="docs-chart-gallery docs-chart-gallery--catalog">
-  {% for example in site.data.chart_examples %}
-    <div data-gallery-group="{{ example.home_group | default: 'other' }}">
+  {% assign gallery_charts = site.data.chart_examples | where: "gallery_featured", true %}
+  {% for example in gallery_charts %}
+    <div data-gallery-tasks="{{ example.tasks }}">
       {% include chart-gallery-card.html example=example %}
     </div>
   {% endfor %}
 </div>
+
+<p class="docs-gallery-link"><a href="./all/">Browse all supported chart examples →</a></p>
 
 ## Choose a next step
 

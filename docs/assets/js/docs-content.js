@@ -98,7 +98,7 @@
 
   const galleryFilter = content.querySelector(".docs-gallery-filter");
   if (galleryFilter) {
-    const cards = [...content.querySelectorAll("[data-gallery-group]")];
+    const cards = [...content.querySelectorAll("[data-gallery-tasks]")];
     galleryFilter.addEventListener("click", event => {
       const button = event.target.closest("[data-gallery-filter]");
       if (!button) return;
@@ -109,7 +109,8 @@
         candidate.setAttribute("aria-pressed", String(active));
       }
       for (const card of cards) {
-        card.hidden = selected !== "all" && card.dataset.galleryGroup !== selected;
+        const tasks = card.dataset.galleryTasks.split(/\s+/);
+        card.hidden = selected !== "all" && !tasks.includes(selected);
       }
     });
   }
