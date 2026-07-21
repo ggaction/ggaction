@@ -5,6 +5,7 @@
 - Gate: `P14-B`
 - 상태: `ready-for-review`
 - Implementation checkpoint: `94befe8` (`align box plot facade behavior`)
+- Gate package checkpoint: `2a0296a` (`prepare basic chart facade gate b`)
 - Remote: `origin/main`
 - 승인 전 차단: Step 4 public closeout와 P14-Exit
 
