@@ -51,6 +51,7 @@ export const visualVariants = Object.freeze([
     variant: "kenya-life-expectancy",
     title: "Kenya Life Expectancy Horizon",
     callChain: horizonTargetCallChain,
+    compareSemanticSpec: false,
     artifact: { capability: "horizon" },
     primitive: () => createGapminderHorizonPrimitives(gapminder),
     userFacing: () => createGapminderHorizon(gapminder),

@@ -48,6 +48,7 @@ export const visualVariants = Object.freeze([
     variant: "default",
     title: "Annotated IMDb Scatterplot",
     callChain: annotatedImdbTarget,
+    compareSemanticSpec: false,
     artifact: {
       capability: "text-annotation"
     },

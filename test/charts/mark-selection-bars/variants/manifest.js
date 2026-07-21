@@ -81,7 +81,7 @@ export const topmostSegmentHighlightCallChain = `chart()
 
 export const visualVariants = Object.freeze([
   defineVisualVariant({
-    chart: "mark-selection",
+    chart: "mark-selection-bars",
     variant: "bars-tallest-stack",
     title: "Tallest Histogram Stack Highlight",
     callChain: tallestStackHighlightCallChain,
@@ -102,7 +102,7 @@ export const visualVariants = Object.freeze([
     ]
   }),
   defineVisualVariant({
-    chart: "mark-selection",
+    chart: "mark-selection-bars",
     variant: "bars-topmost-segment",
     title: "Topmost Histogram Segment Highlight",
     callChain: topmostSegmentHighlightCallChain,

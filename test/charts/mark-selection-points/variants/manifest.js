@@ -50,7 +50,7 @@ export const pointHighlightCallChain = `chart()
 
 export const visualVariants = Object.freeze([
   defineVisualVariant({
-    chart: "mark-selection",
+    chart: "mark-selection-points",
     variant: "points-grouped-max",
     title: "Grouped Maximum Point Highlight",
     callChain: pointHighlightCallChain,

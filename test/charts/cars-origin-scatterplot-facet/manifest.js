@@ -99,6 +99,7 @@ export const visualVariants = Object.freeze([
     variant: "default-one-row",
     title: "Cars Origin Scatterplot Facet",
     callChain: scatterplotFacetTarget,
+    compareSemanticSpec: false,
     artifact,
     primitive: () => createCarsOriginScatterplotFacetPrimitives(cars),
     userFacing: () => createCarsOriginScatterplotFacet(cars),

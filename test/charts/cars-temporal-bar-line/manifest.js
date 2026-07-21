@@ -41,6 +41,7 @@ export const visualVariants = Object.freeze([
     variant: "shared-position",
     title: "Cars Temporal Bar and Line",
     callChain: carsTemporalBarLineTarget,
+    compareSemanticSpec: false,
     artifact: {
       capability: "shared-position-scale"
     },

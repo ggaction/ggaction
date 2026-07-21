@@ -61,6 +61,7 @@ export const visualVariants = Object.freeze([
     variant: "cars-1970",
     title: "Cars of 1970 Parallel Coordinates",
     callChain: parallelTargetCallChain,
+    compareSemanticSpec: false,
     primitive: () => createCarsParallelPrimitives(cars),
     userFacing: () => createCarsParallelCoordinates(cars),
     width: PARALLEL_LAYOUT.width,

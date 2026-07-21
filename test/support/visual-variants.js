@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { summarizeArgs } from "../../src/core/action.js";
 import { artifactScopeConfig } from "./artifact-schema.js";
 import { assertRenderedPNG } from "./png.js";
+
+const UNRESOLVED = Symbol("unresolved displayed value");
 
 function normalizeArtifactScope(artifact, label) {
   if (artifact === false) return false;
@@ -45,6 +48,8 @@ export function defineVisualVariant({
   colors,
   regions,
   visualSignature,
+  programEquivalence = "state",
+  compareSemanticSpec = true,
   artifact = true
 }) {
   if (typeof chart !== "string" || chart.length === 0) {
@@ -80,6 +85,12 @@ export function defineVisualVariant({
   }
   if (userFacing !== undefined && typeof userFacing !== "function") {
     throw new TypeError(`${chart}/${variant} userFacing must be a program factory.`);
+  }
+  if (!["state", "render"].includes(programEquivalence)) {
+    throw new TypeError(`${chart}/${variant} has an invalid program equivalence mode.`);
+  }
+  if (typeof compareSemanticSpec !== "boolean") {
+    throw new TypeError(`${chart}/${variant} compareSemanticSpec must be boolean.`);
   }
   const boundsTolerance = visualSignature?.inkBounds?.tolerance;
   const hasValidBoundsTolerance =
@@ -123,11 +134,179 @@ export function defineVisualVariant({
     colors,
     regions,
     visualSignature,
+    programEquivalence,
+    compareSemanticSpec,
     artifact: artifactScope
   });
 }
 
-export function displayedActionOperations(source) {
+function skipQuoted(source, start) {
+  const quote = source[start];
+  let index = start + 1;
+  while (index < source.length) {
+    if (source[index] === "\\") {
+      index += 2;
+      continue;
+    }
+    if (source[index] === quote) return index + 1;
+    index += 1;
+  }
+  throw new TypeError("Visual call chain has an unterminated string.");
+}
+
+function closingParenthesis(source, open) {
+  let depth = 1;
+  for (let index = open + 1; index < source.length; index += 1) {
+    if (["\"", "'", "`"].includes(source[index])) {
+      index = skipQuoted(source, index) - 1;
+    } else if (source[index] === "(") {
+      depth += 1;
+    } else if (source[index] === ")") {
+      depth -= 1;
+      if (depth === 0) return index;
+    }
+  }
+  throw new TypeError("Visual call chain has an unclosed action call.");
+}
+
+class DisplayedLiteralParser {
+  constructor(source) {
+    this.source = source;
+    this.index = 0;
+  }
+
+  skipSpace() {
+    while (/\s/.test(this.source[this.index] ?? "")) this.index += 1;
+  }
+
+  string() {
+    const quote = this.source[this.index];
+    let value = "";
+    this.index += 1;
+    while (this.index < this.source.length) {
+      const character = this.source[this.index];
+      if (character === quote) {
+        this.index += 1;
+        return value;
+      }
+      if (character === "\\") {
+        this.index += 1;
+        const escaped = this.source[this.index];
+        value += ({ n: "\n", r: "\r", t: "\t" })[escaped] ?? escaped;
+      } else {
+        value += character;
+      }
+      this.index += 1;
+    }
+    return UNRESOLVED;
+  }
+
+  identifier() {
+    const match = this.source.slice(this.index).match(/^[A-Za-z_$][A-Za-z0-9_$]*/);
+    if (!match) return undefined;
+    this.index += match[0].length;
+    return match[0];
+  }
+
+  skipUnknown() {
+    let braces = 0;
+    let brackets = 0;
+    let parentheses = 0;
+    while (this.index < this.source.length) {
+      const character = this.source[this.index];
+      if (["\"", "'", "`"].includes(character)) {
+        this.index = skipQuoted(this.source, this.index);
+        continue;
+      }
+      if (character === "{") braces += 1;
+      if (character === "}") {
+        if (braces === 0 && brackets === 0 && parentheses === 0) return;
+        braces -= 1;
+      }
+      if (character === "[") brackets += 1;
+      if (character === "]") {
+        if (braces === 0 && brackets === 0 && parentheses === 0) return;
+        brackets -= 1;
+      }
+      if (character === "(") parentheses += 1;
+      if (character === ")") parentheses -= 1;
+      if (character === "," && braces === 0 && brackets === 0 && parentheses === 0) {
+        return;
+      }
+      this.index += 1;
+    }
+  }
+
+  array() {
+    const values = [];
+    this.index += 1;
+    while (this.index < this.source.length) {
+      this.skipSpace();
+      if (this.source[this.index] === "]") {
+        this.index += 1;
+        return values;
+      }
+      const value = this.value();
+      values.push(value === UNRESOLVED ? null : value);
+      this.skipSpace();
+      if (this.source[this.index] === ",") this.index += 1;
+    }
+    return UNRESOLVED;
+  }
+
+  object() {
+    const value = {};
+    this.index += 1;
+    while (this.index < this.source.length) {
+      this.skipSpace();
+      if (this.source[this.index] === "}") {
+        this.index += 1;
+        return value;
+      }
+      const key = ["\"", "'"].includes(this.source[this.index])
+        ? this.string()
+        : this.identifier();
+      this.skipSpace();
+      if (key === undefined || key === UNRESOLVED || this.source[this.index] !== ":") {
+        this.skipUnknown();
+      } else {
+        this.index += 1;
+        const item = this.value();
+        if (item !== UNRESOLVED) value[key] = item;
+      }
+      this.skipSpace();
+      if (this.source[this.index] === ",") this.index += 1;
+    }
+    return UNRESOLVED;
+  }
+
+  value() {
+    this.skipSpace();
+    const character = this.source[this.index];
+    if (["\"", "'"].includes(character)) return this.string();
+    if (character === "{") return this.object();
+    if (character === "[") return this.array();
+    const number = this.source.slice(this.index).match(/^-?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i);
+    if (number) {
+      this.index += number[0].length;
+      return Number(number[0]);
+    }
+    const identifier = this.identifier();
+    if (identifier === "true") return true;
+    if (identifier === "false") return false;
+    if (identifier === "null") return null;
+    this.skipUnknown();
+    return UNRESOLVED;
+  }
+}
+
+function displayedArguments(source) {
+  const parser = new DisplayedLiteralParser(source);
+  const value = parser.value();
+  return value === UNRESOLVED || value === null || Array.isArray(value) ? {} : value;
+}
+
+export function displayedActionCalls(source) {
   if (typeof source !== "string") {
     throw new TypeError("Visual call chain must be a string.");
   }
@@ -135,30 +314,95 @@ export function displayedActionOperations(source) {
   if (!trimmed.endsWith(";")) {
     throw new TypeError("Visual call chain must end with a semicolon.");
   }
-  const methods = [...trimmed.matchAll(/\.([A-Za-z][A-Za-z0-9]*)\s*\(/g)]
-    .map(match => match[1]);
-  if (/^chart\(\)/.test(trimmed)) return methods;
-  const operation = trimmed.match(/^([A-Za-z][A-Za-z0-9]*)\s*\(/)?.[1];
-  if (["hconcat", "vconcat"].includes(operation)) {
-    return [operation, ...methods];
+  let hasEarlierStatementEnd = false;
+  for (let index = 0; index < trimmed.length - 1; index += 1) {
+    if (["\"", "'", "`"].includes(trimmed[index])) {
+      index = skipQuoted(trimmed, index) - 1;
+    } else if (trimmed[index] === ";") {
+      hasEarlierStatementEnd = true;
+      break;
+    }
   }
-  if (/^[A-Za-z][A-Za-z0-9]*\s*\./.test(trimmed)) return methods;
-  throw new TypeError(
-    "Visual call chain must start with chart(), hconcat(), vconcat(), or a program variable."
-  );
+  if (hasEarlierStatementEnd) {
+    throw new TypeError("Visual call chain must contain one expression statement.");
+  }
+  const calls = [];
+  for (let index = 0; index < trimmed.length;) {
+    if (["\"", "'", "`"].includes(trimmed[index])) {
+      index = skipQuoted(trimmed, index);
+      continue;
+    }
+    const dotted = trimmed[index] === ".";
+    const start = dotted ? index + 1 : index;
+    const match = trimmed.slice(start).match(/^[A-Za-z_$][A-Za-z0-9_$]*/);
+    if (!match) {
+      index += 1;
+      continue;
+    }
+    let open = start + match[0].length;
+    while (/\s/.test(trimmed[open] ?? "")) open += 1;
+    if (trimmed[open] !== "(") {
+      index = open;
+      continue;
+    }
+    const close = closingParenthesis(trimmed, open);
+    const operation = match[0];
+    if (dotted || ["hconcat", "vconcat"].includes(operation)) {
+      calls.push({
+        op: operation,
+        args: displayedArguments(trimmed.slice(open + 1, close))
+      });
+    }
+    index = close + 1;
+  }
+  if (calls.length === 0) {
+    throw new TypeError(
+      "Visual call chain must start with chart(), hconcat(), vconcat(), or a program variable."
+    );
+  }
+  return calls;
+}
+
+export function displayedActionOperations(source) {
+  return displayedActionCalls(source).map(call => call.op);
+}
+
+function assertSummarySubset(displayed, traced, path) {
+  for (const [key, value] of Object.entries(displayed)) {
+    assert.equal(Object.hasOwn(traced, key), true, `${path}.${key} is missing from trace args`);
+    if (
+      value !== null &&
+      typeof value === "object" &&
+      !Array.isArray(value)
+    ) {
+      assertSummarySubset(value, traced[key], `${path}.${key}`);
+    } else {
+      assert.deepEqual(traced[key], value, `${path}.${key}`);
+    }
+  }
 }
 
 export function assertDisplayedProgram(variant, program) {
-  const displayed = displayedActionOperations(variant.callChain);
-  const traced = program.trace.children.map(node => node.op);
+  const displayed = displayedActionCalls(variant.callChain);
+  const traced = program.trace.children;
   const startsFromExistingProgram = /^[A-Za-z][A-Za-z0-9]*\s*\./.test(
     variant.callChain.trim()
   );
+  const relevantTrace = startsFromExistingProgram
+    ? traced.slice(-displayed.length)
+    : traced;
   assert.deepEqual(
-    displayed,
-    startsFromExistingProgram ? traced.slice(-displayed.length) : traced,
+    displayed.map(call => call.op),
+    relevantTrace.map(node => node.op),
     `${variant.chart}/${variant.variant} displayed action flow`
   );
+  for (const [index, call] of displayed.entries()) {
+    assertSummarySubset(
+      summarizeArgs(call.args),
+      relevantTrace[index].args ?? {},
+      `${variant.chart}/${variant.variant}/${call.op}`
+    );
+  }
 }
 
 function renderOptions(variant, kind) {

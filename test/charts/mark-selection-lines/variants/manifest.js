@@ -47,7 +47,7 @@ export const lineHighlightCallChain = `chart()
 
 export const visualVariants = Object.freeze([
   defineVisualVariant({
-    chart: "mark-selection",
+    chart: "mark-selection-lines",
     variant: "line-series-japan",
     title: "Japan Line-Series Highlight",
     callChain: lineHighlightCallChain,

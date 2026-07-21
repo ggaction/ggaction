@@ -52,6 +52,7 @@ export const visualVariants = Object.freeze([
     variant: "default",
     title: "Jobs Horizontal Grouped Bar",
     callChain: horizontalGroupedBarTarget,
+    compareSemanticSpec: false,
     artifact: {
       capability: "directional-offset"
     },

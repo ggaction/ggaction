@@ -85,10 +85,19 @@ test("parses displayed chains without evaluating data bindings", () => {
   assert.throws(() => displayedActionOperations("chart().createPointMark()"), /semicolon/);
 });
 
+test("allows semicolons inside displayed string arguments", () => {
+  assert.deepEqual(
+    displayedActionCalls(`chart().createTitle({ subtitle: "Height; color" });`),
+    [
+      { op: "createTitle", args: { subtitle: "Height; color" } }
+    ]
+  );
+});
+
 test("matches displayed actions against the canonical executable trace", () => {
   const variant = defineVisualVariant(required);
   assert.doesNotThrow(() => assertDisplayedProgram(variant, {
-    trace: { children: [{ op: "createPointMark" }] }
+    trace: { children: [{ op: "createPointMark", args: {} }] }
   }));
   assert.throws(() => assertDisplayedProgram(variant, {
     trace: { children: [{ op: "createBarMark" }] }
@@ -100,8 +109,38 @@ test("matches displayed actions against the canonical executable trace", () => {
   }, {
     trace: { children: [
       { op: "hconcat" },
-      { op: "editCompositionLayout" },
-      { op: "replaceCompositionChild" }
+      { op: "editCompositionLayout", args: { gap: 8 } },
+      { op: "replaceCompositionChild", args: { target: "detail", programType: "Object" } }
     ] }
   }));
+});
+
+test("rejects displayed literal arguments that drift from the executable trace", () => {
+  const variant = {
+    chart: "cars",
+    variant: "field-drift",
+    callChain: `chart()
+      .createData({ values: rows })
+      .createPointMark()
+      .encodeX({ field: "Horsepower", scale: { domain: [0, 200] } });`
+  };
+  const matching = {
+    trace: { children: [
+      { op: "createData", args: { valuesCount: 2 } },
+      { op: "createPointMark", args: {} },
+      {
+        op: "encodeX",
+        args: { field: "Horsepower", scale: { domainCount: 2 } }
+      }
+    ] }
+  };
+
+  assert.doesNotThrow(() => assertDisplayedProgram(variant, matching));
+  assert.throws(() => assertDisplayedProgram(variant, {
+    trace: { children: matching.trace.children.map(node =>
+      node.op === "encodeX"
+        ? { ...node, args: { ...node.args, field: "Weight_in_lbs" } }
+        : node
+    ) }
+  }), /encodeX.field/);
 });

@@ -50,10 +50,11 @@ export const replacementTarget = `overview
 
 export const visualVariants = Object.freeze([
   defineVisualVariant({
-    chart: "mixed-program-dashboard",
+    chart: "program-composition",
     variant: "unequal-horizontal",
     title: "Unequal Horizontal Dashboard",
     callChain: unequalHorizontalTarget,
+    programEquivalence: "render",
     artifact,
     primitive: () => createUnequalHorizontalPrimitives(cars, jobs, gapminder),
     userFacing: () => createUnequalHorizontalPublic(cars, jobs, gapminder),
@@ -66,10 +67,11 @@ export const visualVariants = Object.freeze([
     ]
   }),
   defineVisualVariant({
-    chart: "mixed-program-dashboard",
+    chart: "program-composition",
     variant: "nested-dashboard",
     title: "Nested Horizontal and Vertical Dashboard",
     callChain: nestedDashboardTarget,
+    programEquivalence: "render",
     artifact,
     primitive: () => createNestedDashboardPrimitives(cars, jobs, gapminder),
     userFacing: () => createNestedDashboardPublic(cars, jobs, gapminder),
@@ -82,10 +84,11 @@ export const visualVariants = Object.freeze([
     ]
   }),
   defineVisualVariant({
-    chart: "mixed-program-dashboard",
+    chart: "program-composition",
     variant: "replacement",
     title: "Stable Detail Slot Replacement",
     callChain: replacementTarget,
+    programEquivalence: "render",
     artifact,
     primitive: () => createReplacementPrimitives(cars, jobs, gapminder),
     userFacing: () => createReplacementPublic(cars, jobs, gapminder),
