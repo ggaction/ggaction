@@ -59,10 +59,14 @@
   content.insertBefore(navigation, firstHeading);
 
   let scheduled = false;
+  function currentSectionOffset() {
+    const heading = navigationHeadings[0];
+    if (!heading) return 0;
+    return Number.parseFloat(getComputedStyle(heading).scrollMarginTop) || 0;
+  }
   function updateCurrentSection() {
     scheduled = false;
-    const top = parseFloat(getComputedStyle(document.documentElement)
-      .getPropertyValue("--docs-topbar")) + 24;
+    const top = currentSectionOffset();
     let current = navigationHeadings[0];
     for (const heading of navigationHeadings) {
       if (heading.getBoundingClientRect().top > top) break;

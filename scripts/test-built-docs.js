@@ -95,6 +95,31 @@ async function assertAccessible(page, label) {
   );
 }
 
+async function assertFragmentPlacement(page, selector, label) {
+  await page.waitForFunction(target => window.location.hash === target, selector);
+  await page.evaluate(() => new Promise(resolve => {
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  }));
+  const placement = await page.locator(selector).evaluate(heading => {
+    const topbar = document.querySelector(".docs-topbar");
+    return {
+      headingTop: heading.getBoundingClientRect().top,
+      scrollMarginTop: Number.parseFloat(getComputedStyle(heading).scrollMarginTop),
+      topbarBottom: topbar?.getBoundingClientRect().bottom ?? 0
+    };
+  });
+  assert.equal(
+    placement.headingTop >= placement.topbarBottom - 1,
+    true,
+    `${label} is hidden behind the sticky topbar`
+  );
+  assert.equal(
+    Math.abs(placement.headingTop - placement.scrollMarginTop) <= 2,
+    true,
+    `${label} does not use the shared fragment offset`
+  );
+}
+
 async function assertResponsiveContainment(page, file, width) {
   const response = await page.goto(routeFor(file), { waitUntil: "networkidle" });
   assert.equal(response.ok(), true, `${file} at ${width}px`);
@@ -256,6 +281,23 @@ try {
     await desktop.locator(".docs-example-figure img").getAttribute("fetchpriority"),
     "high"
   );
+
+  await desktop.goto(`${baseUrl}api/basic-charts/#createlineplot`, {
+    waitUntil: "networkidle"
+  });
+  await assertFragmentPlacement(desktop, "#createlineplot", "desktop direct h2 fragment");
+  await desktop.screenshot({
+    path: path.join(artifactRoot, "fragment-desktop.png"),
+    fullPage: false
+  });
+
+  await desktop.goto(`${baseUrl}api/encodings/`, { waitUntil: "networkidle" });
+  await desktop.locator("#atomic-density .docs-heading-anchor").click();
+  await assertFragmentPlacement(desktop, "#atomic-density", "desktop h3 permalink");
+  await desktop.goto(`${baseUrl}api/basic-charts/`, { waitUntil: "networkidle" });
+  await desktop.locator('.docs-page-toc a[href="#createheatmap"]').click();
+  await assertFragmentPlacement(desktop, "#createheatmap", "desktop h2 TOC link");
+
   await desktop.goto(baseUrl, { waitUntil: "networkidle" });
   await desktop.screenshot({ path: path.join(artifactRoot, "desktop.png"), fullPage: true });
   await desktopContext.close();
@@ -378,6 +420,19 @@ try {
   await assertAccessible(mobile, "mobile action reference");
   await mobile.screenshot({
     path: path.join(artifactRoot, "mobile-action-reference.png"),
+    fullPage: false
+  });
+
+  await mobile.goto(`${baseUrl}api/encodings/#atomic-density`, { waitUntil: "networkidle" });
+  await assertFragmentPlacement(mobile, "#atomic-density", "mobile direct h3 fragment");
+  await mobile.goto(`${baseUrl}api/basic-charts/`, { waitUntil: "networkidle" });
+  await mobile.locator("#createbarplot .docs-heading-anchor").click();
+  await assertFragmentPlacement(mobile, "#createbarplot", "mobile h2 permalink");
+  await mobile.locator(".docs-page-toc summary").click();
+  await mobile.locator('.docs-page-toc a[href="#createheatmap"]').click();
+  await assertFragmentPlacement(mobile, "#createheatmap", "mobile h2 TOC link");
+  await mobile.screenshot({
+    path: path.join(artifactRoot, "fragment-mobile.png"),
     fullPage: false
   });
 

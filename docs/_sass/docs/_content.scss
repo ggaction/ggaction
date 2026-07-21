@@ -64,6 +64,10 @@
   font-weight: 650;
 }
 
+.docs-content :is(h2, h3)[id] {
+  scroll-margin-top: var(--docs-anchor-offset);
+}
+
 .docs-content .docs-action-heading {
   display: flex;
   align-items: center;

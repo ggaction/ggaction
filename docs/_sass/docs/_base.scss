@@ -6,6 +6,8 @@
   --docs-muted: #475569;
   --docs-sidebar: 17rem;
   --docs-topbar: 3.75rem;
+  --docs-anchor-gap: 1rem;
+  --docs-anchor-offset: calc(var(--docs-topbar) + var(--docs-anchor-gap));
 }
 
 * {
