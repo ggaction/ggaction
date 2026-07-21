@@ -9,8 +9,8 @@
 
 ## Architecture References
 
-- Before architectural or implementation decisions, read `agent_docs/INITIAL_ARCHITECTURE.md` and `agent_docs/SECOND_ARCHITECTURE.md`.
-- Treat `INITIAL_ARCHITECTURE.md` as historical design context and `SECOND_ARCHITECTURE.md` as the current macro-architecture baseline.
+- Before changing module ownership, state boundaries, materialization flow, renderer boundaries, or package boundaries, read `agent_docs/SECOND_ARCHITECTURE.md`.
+- Treat `agent_docs/INITIAL_ARCHITECTURE.md` as historical design context; consult it when original intent or a conflict with the current architecture is relevant rather than loading it for ordinary implementation work.
 - Exact current action behavior belongs to `agent_docs/contract/current/` and `ACTION_INDEX.json`, not to architecture prose or instruction files.
 - Update `SECOND_ARCHITECTURE.md` when a deliberate change alters module ownership, state boundaries, materialization flow, renderer boundaries, or package boundaries.
 - Discuss material changes to public APIs, persisted schemas, or core architecture with the user before implementing them.
