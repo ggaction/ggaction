@@ -1,4 +1,4 @@
-import { mapLinear as mapValue } from "../../../oracles/numeric.js";
+import { mapLinear as mapValue } from "./numeric.js";
 
 export function requireRegressionLayout({ width, height, margin, sizeRange }) {
   if (!Number.isFinite(width) || width <= 0 || !Number.isFinite(height) || height <= 0) {

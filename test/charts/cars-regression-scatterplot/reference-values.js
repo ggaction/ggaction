@@ -3,13 +3,13 @@ import {
   niceDomain as niceLinearDomain,
   numericTicks as niceLinearTicks
 } from "../../oracles/numeric.js";
-import { selectRegressionFilterRows } from "./reference/filter.js";
+import { selectRegressionFilterRows } from "../../oracles/regression-scatterplot-filter.js";
 import {
   createRegressionPointChild,
   requireRegressionLayout
-} from "./reference/layout.js";
+} from "../../oracles/regression-scatterplot-layout.js";
 
-export { selectRegressionFilterRows } from "./reference/filter.js";
+export { selectRegressionFilterRows } from "../../oracles/regression-scatterplot-filter.js";
 
 const LOWER_FIELD = "__regression_ci_lower";
 const UPPER_FIELD = "__regression_ci_upper";
