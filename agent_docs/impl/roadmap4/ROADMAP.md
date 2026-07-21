@@ -137,7 +137,7 @@ existing createBoxPlot({ ... })
 | 11 | completed | NCP-004 Parallel Coordinates; P11-A/P11-B/P11-Exit 승인 완료 |
 | 12 | completed | P-005 label layout; P12-A/P12-B/P12-Exit 승인 완료 |
 | 13 | skipped | P-007 hierarchy layout을 `Maybe Future`로 이동; public/API 구현 없음 |
-| 14 | in-progress | 8개 Basic Chart facade parity audit와 P14-A review |
+| 14 | in-progress | Box parity repair와 8-facade edit handoff 완료; P14-B review |
 | 15 | planned | D-001, 누적 public docs 재검증과 전체 release-readiness 검증 |
 
 ## 승인 Gate 운영

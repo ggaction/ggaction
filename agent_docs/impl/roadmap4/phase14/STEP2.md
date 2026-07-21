@@ -2,10 +2,10 @@
 
 ## 진행 상태
 
-- [ ] P14-R1 unique/ambiguous data inference
-- [ ] P14-R2 guide default/false/options
-- [ ] P14-R3 source ambiguity preflight
-- [ ] P14-R4 `BoxPlotOptions` root type export
-- [ ] runtime/type/trace/immutability regression
+- [x] P14-R1 unique/ambiguous data inference
+- [x] P14-R2 opt-in guide false/options와 deferred replay
+- [x] P14-R3 source ambiguity preflight
+- [x] P14-R4 `BoxPlotOptions` root type export
+- [x] runtime/type/trace/immutability regression
 
-P14-A 승인 전에는 시작하지 않는다.
+Implementation checkpoint: `94befe8` (`align box plot facade behavior`).

@@ -7,8 +7,8 @@
 - [x] Lifecycle 차이를 보존한 candidate parity matrix 작성
 - [x] P14-A remote checkpoint 준비
 - [x] P14-A 사용자 승인
-- [ ] Approved Box parity repairs 구현
-- [ ] Cross-facade edit handoff와 representative visual 검증
+- [x] Approved Box parity repairs 구현
+- [x] Cross-facade edit handoff와 representative visual 검증
 - [ ] P14-B 사용자 승인
 - [ ] Current contract/docs/package와 cumulative closeout
 - [ ] P14-Exit 사용자 승인
@@ -48,7 +48,7 @@ Gradient/Box plot은 generated data와 owned component를 가진 mutable composi
 | Gate | 상태 | 승인 대상 | 승인 전 차단되는 작업 |
 | --- | --- | --- | --- |
 | P14-A | approved | 8-facade matrix, lifecycle classes, P14-R1~R4와 non-goals | — |
-| P14-B | planned | repaired runtime/types/trace, edit handoff matrix와 representative visual | public closeout |
+| P14-B | ready-for-review | repaired runtime/types/trace, edit handoff matrix와 representative visual | public closeout |
 | P14-Exit | planned | Current inventory/docs/package와 cumulative verification | Phase 15 |
 
 모든 Gate는 hard pause다.
