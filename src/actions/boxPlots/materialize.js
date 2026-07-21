@@ -189,6 +189,9 @@ export const materializeBoxPlot = action(
         outlierDataId: hasOutliers ? outlierDataId : undefined
       }
     });
+    if (config.guides !== false) {
+      next = next.createGuides(config.guides);
+    }
     return next._withContext({ currentMark: ownerId, currentData: source });
   }
 );

@@ -24,7 +24,8 @@ const targetCallChain = `chart()
   .createData({ values: cars })
   .createBoxPlot({
     x: { field: "Origin", fieldType: "nominal" },
-    y: { field: "Miles_per_Gallon" }
+    y: { field: "Miles_per_Gallon" },
+    guides: { legend: false }
   })
   .encodeColor({
     target: "boxPlot",
@@ -32,7 +33,6 @@ const targetCallChain = `chart()
     fieldType: "nominal",
     scale: { palette: "tableau10" }
   })
-  .createGuides({ legend: false })
   .createTitle({
     text: "Fuel Economy Distribution by Origin",
     subtitle: "Tukey box plot with 1.5× IQR whiskers",

@@ -19,9 +19,9 @@ const program = chart()
   .createData({ values })
   .createBoxPlot({
     x: { field: "category", fieldType: "nominal" },
-    y: { field: "value" }
-  })
-  .createGuides({ legend: false });
+    y: { field: "value" },
+    guides: { legend: false }
+  });
 ```
 
 ## You must decide

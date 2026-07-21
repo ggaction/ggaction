@@ -2475,9 +2475,9 @@ const program = chart()
   .createData({ values })
   .createBoxPlot({
     x: { field: "category", fieldType: "nominal" },
-    y: { field: "value" }
-  })
-  .createGuides({ legend: false });
+    y: { field: "value" },
+    guides: { legend: false }
+  });
 ```
 
 ## You must decide
@@ -5401,7 +5401,8 @@ const program = chart()
   .createData({ values: cars })
   .createBoxPlot({
     x: { field: "Origin", fieldType: "nominal" },
-    y: { field: "Miles_per_Gallon" }
+    y: { field: "Miles_per_Gallon" },
+    guides: { legend: false }
   });
 ```
 
@@ -5410,7 +5411,7 @@ const program = chart()
 ```javascript
 createBoxPlot({
   id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
-  box?, median?, outlier?
+  box?, median?, outlier?, guides?
 } = {})
 ```
 
@@ -5418,7 +5419,7 @@ createBoxPlot({
 | --- | --- | --- |
 | `id` | box-body owner ID | first instance uses `"boxPlot"` |
 | `target` | compatible encoded source layer | current, then unique eligible layer |
-| `data` | source dataset | source layer, then current dataset |
+| `data` | source dataset | explicit value, source layer, current dataset, then unique dataset |
 | `x` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `y` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `coordinate` | Cartesian coordinate ID | source coordinate, then `"main"` |
@@ -5428,10 +5429,13 @@ createBoxPlot({
 | `box` | `fill`, `opacity`, `stroke`, `strokeWidth` | blue, opaque, `1.5` stroke |
 | `median` | `stroke`, `strokeWidth` | dark stroke with width `1.5` |
 | `outlier` | `shape`, `radius`, `opacity` | black diamond, radius `3`, opacity `0.75` |
+| `guides` | `false` or applicable axis/grid/legend options | omitted: no guides; explicit `{}` creates applicable guides |
 
 `createBoxPlot()` may also establish an incomplete owner first. Compatible
 `encodeX` and `encodeY` calls can follow later; the completed semantic and
 graphical state is the same as supplying both channels at creation time.
+Stored explicit guide options are applied when those deferred positions become
+complete. Omission and `guides: false` preserve the historical no-guide result.
 
 The category/measure pairing determines orientation. This horizontal min–max
 example creates no outlier resources:
@@ -9188,7 +9192,7 @@ remain available for custom layering and editing.
 | Position | categorical/temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile | categorical center; quantitative density profile |
 | Nominal color | — | grouped area fill | body fill through ranged-bar color | category hue with density modulation | category or two-value split fill |
 | Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers | structured gradient fill, width, optional center rule | fill, opacity, outline, 8 curves, shared/independent width |
-| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | categorical/linear axes; horizontal grid | categorical/linear axes, grid, density legend | categorical/linear axes; horizontal grid |
+| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | opt-in categorical/linear axes and horizontal grid | categorical/linear axes, grid, density legend | categorical/linear axes; horizontal grid |
 | Legend | — | categorical | optional ranged-bar color legend | neutral density; categorical color when requested | optional category or split legend |
 | Selection/highlight | rule | series | component | category strip | full or split profile |
 
@@ -9234,8 +9238,9 @@ remain available for custom layering and editing.
 
 Basic chart facades infer only a current or unique dataset and stable unused
 role IDs. Ambiguous data or an occupied default role requires an explicit ID.
-Applicable guides are created by default and can be disabled with
-`guides: false`.
+Complete chart facades create applicable guides by default and accept
+`guides: false`. `createBoxPlot` preserves its historical opt-in behavior:
+pass `guides: {}` or nested options to create applicable guides.
 
 ## Current limitations
 
@@ -10378,7 +10383,7 @@ selection means both. Missing selected boundaries are created from the band.
 ```javascript
 createBoxPlot({
   id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
-  box?, median?, outlier?
+  box?, median?, outlier?, guides?
 } = {})
 ```
 
@@ -10387,6 +10392,8 @@ and one quantitative field. The action infers an encoded source when possible
 and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
 median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../../api/box-plots.md)
+Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
+create them inside the facade; omission and `false` create none.
 
 ## `editBoxPlot`
 

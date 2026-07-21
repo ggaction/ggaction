@@ -30,6 +30,7 @@ createBoxPlot({
     radius?: PositiveFinite;
     opacity?: UnitInterval;
   };
+  guides?: false | CreateGuidesOptions;
 } = {}): ChartProgram;
 ```
 
@@ -37,6 +38,8 @@ createBoxPlot({
   categorical y produces horizontal boxes. Omitted x/y는 current 또는 unique compatible encoded source에서
   data, coordinate와 scale과 함께 추론한다. 아니면 `createBoxPlot()`이 owner를 먼저 만들고 later
   `encodeX`/`encodeY`가 완성할 수 있다.
+- Data resolution은 explicit `data`, inferred source data, current data, unique dataset 순서다. Multiple datasets
+  또는 compatible source가 ambiguous하면 임의 선택하지 않고 explicit `data`/`target` 또는 x/y를 요구한다.
 - Omitted first ID는 `boxPlot`이다. Summary/outlier datasets와 whisker/cap, median, outlier resources는 owner
   ID에서 deterministic하게 namespace된다. 두 번째 box plot은 explicit ID가 필요하다.
 - Linear `(n - 1) × p` quartiles, Tukey factor `1.5`, observed in-fence whiskers와 source-order outliers를
@@ -49,6 +52,9 @@ createBoxPlot({
   Outlier rows가 없으면 outlier dataset/layer/graphic을 만들지 않는다.
 - `width.band`, box fill/opacity/stroke/strokeWidth, median stroke/strokeWidth와 outlier shape/radius/opacity를
   override할 수 있다. `outliers: false`는 Tukey summary를 유지하면서 outlier dataset/layer/graphic을 만들지 않는다.
+- Guide lifecycle은 기존 opt-in behavior를 보존한다. `guides` omission과 `false`는 guide를 만들지 않고,
+  explicit `{}` 또는 `CreateGuidesOptions`만 complete materialization 뒤 applicable guide를 wrapped child로 만든다.
+  Deferred x/y authoring도 stored guide intent를 completion 시 replay한다.
 - Body는 ordinary bar with y/y2 or x/x2, whiskers는 explicit `createErrorBar`, median은 ordinary rule, outliers는
   ordinary point actions를 wrapped children으로 조합한다. Canvas/scale changes rematerialize every concrete consumer.
 - Lifecycle은 mutable aggregate다. `editBoxPlot`은 stable owner를 통해 statistics, topology와 component
@@ -62,7 +68,8 @@ createBoxPlot({
 
 ### Value coverage — `createBoxPlot`
 
-- ✅ Covered: direct and deferred position order, encoded-source inference, deterministic IDs, exact Cars primitive
+- ✅ Covered: direct and deferred position order, unique-data/encoded-source inference, explicit guide opt-in,
+  ambiguity rejection, deterministic IDs, exact Cars primitive
   equality, missing/outlier ownership, Canvas rematerialization, trace and immutability.
 - ✅ Covered: 1.5px box, median and whisker/cap defaults; opaque colored body and black diamond outliers.
 - ✅ Covered: horizontal x/x2 body, minmax provenance, vertical median/caps, no outlier resources and pixel equality.

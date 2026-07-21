@@ -8,10 +8,11 @@ import {
 } from "../../core/validation.js";
 import { validatePointShape } from "../../grammar/pointShapes.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
+import { normalizeGuides } from "../charts/shared.js";
 
 export const BOX_PLOT_OPTIONS = Object.freeze([
   "id", "target", "data", "x", "y", "coordinate", "whisker",
-  "width", "outliers", "box", "median", "outlier"
+  "width", "outliers", "box", "median", "outlier", "guides"
 ]);
 
 const DEFAULT_BOX = Object.freeze({
@@ -50,6 +51,12 @@ export function boxEncodingArgs(value) {
     ...value,
     ...(typeof value.scale === "string" ? { scale: { id: value.scale } } : {})
   };
+}
+
+export function resolveBoxGuides(value) {
+  return value === undefined
+    ? false
+    : normalizeGuides(value, "createBoxPlot");
 }
 
 export function resolveBoxWhisker(value, operation = "createBoxPlot") {

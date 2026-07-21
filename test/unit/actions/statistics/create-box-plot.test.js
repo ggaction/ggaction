@@ -86,6 +86,86 @@ test("converges when compatible owner encodings arrive after createBoxPlot", () 
   assert.deepEqual(deferred.resolvedScales, direct.resolvedScales);
 });
 
+test("preserves opt-in guides and replays them after deferred encodings", () => {
+  const options = {
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Miles_per_Gallon" },
+    guides: { legend: false }
+  };
+  const omitted = complete();
+  const disabled = base().createBoxPlot({
+    x: options.x,
+    y: options.y,
+    guides: false
+  });
+  const direct = base().createBoxPlot(options);
+  const deferred = base()
+    .createBoxPlot({ guides: { legend: false } })
+    .encodeX({ target: "boxPlot", ...options.x })
+    .encodeY({ target: "boxPlot", ...options.y });
+
+  assert.equal(omitted.graphicSpec.objects.xAxisLine, undefined);
+  assert.equal(disabled.graphicSpec.objects.xAxisLine, undefined);
+  assert.equal(findAction(omitted.trace.children.at(-1), "createGuides"), undefined);
+  assert.equal(findAction(disabled.trace.children.at(-1), "createGuides"), undefined);
+  assert.ok(direct.graphicSpec.objects.xAxisLine);
+  assert.ok(direct.graphicSpec.objects.yAxisLine);
+  assert.ok(direct.graphicSpec.objects.horizontalGridLines);
+  assert.ok(findAction(direct.trace.children.at(-1), "createGuides"));
+  assert.deepEqual(deferred.semanticSpec, direct.semanticSpec);
+  assert.deepEqual(deferred.graphicSpec, direct.graphicSpec);
+  assert.deepEqual(deferred.resolvedScales, direct.resolvedScales);
+});
+
+test("infers one dataset without transient context and rejects ambiguous data", () => {
+  const detached = base()._withContext({
+    currentData: undefined,
+    currentMark: undefined
+  });
+  const inferred = complete(detached);
+  assert.equal(
+    inferred.semanticSpec.datasets.find(dataset =>
+      dataset.id === "boxPlotSummaryData"
+    ).source,
+    "data"
+  );
+
+  const ambiguous = detached
+    .createData({ id: "other", values: [{ Origin: "A", Miles_per_Gallon: 1 }] })
+    ._withContext({ currentData: undefined, currentMark: undefined });
+  assert.throws(
+    () => complete(ambiguous),
+    /requires data when multiple datasets are available/
+  );
+  assert.equal(ambiguous.semanticSpec.layers.length, 0);
+});
+
+test("rejects ambiguous encoded sources before authoring and permits explicit positions", () => {
+  const encoded = base(loadCars().filter(row =>
+    typeof row.Origin === "string" && Number.isFinite(row.Miles_per_Gallon)
+  ))
+    .createPointMark({ id: "first" })
+    .encodeX({ target: "first", field: "Origin", fieldType: "nominal", scale: { id: "firstX" } })
+    .encodeY({ target: "first", field: "Miles_per_Gallon", scale: { id: "firstY" } })
+    .createPointMark({ id: "second", data: "data" })
+    .encodeX({ target: "second", field: "Origin", fieldType: "nominal", scale: { id: "secondX" } })
+    .encodeY({ target: "second", field: "Miles_per_Gallon", scale: { id: "secondY" } })
+    ._withContext({ currentMark: undefined, currentData: undefined });
+
+  assert.throws(
+    () => encoded.createBoxPlot(),
+    /target is ambiguous; provide target or explicit x and y/
+  );
+  assert.equal(encoded.semanticSpec.layers.length, 2);
+
+  const explicit = encoded.createBoxPlot({
+    data: "data",
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Miles_per_Gallon" }
+  });
+  assert.ok(explicit.semanticSpec.layers.some(layer => layer.id === "boxPlot"));
+});
+
 test("infers data, coordinate, fields, and scales from an encoded source layer", () => {
   const source = base(loadCars().filter(row =>
     typeof row.Origin === "string" && Number.isFinite(row.Miles_per_Gallon)

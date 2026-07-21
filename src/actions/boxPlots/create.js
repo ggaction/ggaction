@@ -1,7 +1,7 @@
 import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
-import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { resolveFacadeData } from "../charts/shared.js";
 import {
   BOX_PLOT_OPTIONS,
   boxEncodingArgs,
@@ -9,6 +9,7 @@ import {
   resolveBoxMedianAppearance,
   resolveBoxOutlierAppearance,
   resolveBoxPosition,
+  resolveBoxGuides,
   resolveBoxWhisker,
   resolveBoxWidth
 } from "./options.js";
@@ -26,11 +27,14 @@ export const createBoxPlot = action(
   function (args = {}) {
     validateKeys(args, BOX_PLOT_OPTIONS, "createBoxPlot");
     const id = resolveBoxPlotId(this, args.id);
-    const source = resolveBoxSourceLayer(this, args.target);
-    const data = args.data ?? source?.data ?? this.context.currentData;
-    if (findDataset(this, data) === undefined) {
-      throw new Error("createBoxPlot requires data or one inferable dataset.");
-    }
+    const source = resolveBoxSourceLayer(this, args.target, {
+      requiresInference: args.x === undefined || args.y === undefined
+    });
+    const data = resolveFacadeData(
+      this,
+      args.data ?? source?.data,
+      "createBoxPlot"
+    );
     const x = resolveBoxPosition(args.x, "x") ?? source?.encoding?.x;
     const y = resolveBoxPosition(args.y, "y") ?? source?.encoding?.y;
     const whisker = resolveBoxWhisker(args.whisker);
@@ -41,6 +45,7 @@ export const createBoxPlot = action(
     const box = resolveBoxAppearance(args.box);
     const median = resolveBoxMedianAppearance(args.median);
     const outlier = resolveBoxOutlierAppearance(args.outlier);
+    const guides = resolveBoxGuides(args.guides);
     if (x !== undefined && y !== undefined && resolveBoxOrientation(x, y) === undefined) {
       throw new Error(
         "createBoxPlot requires one categorical axis and one quantitative axis."
@@ -62,7 +67,8 @@ export const createBoxPlot = action(
         outliers: args.outliers ?? true,
         box,
         median,
-        outlier
+        outlier,
+        guides
       }
     });
     if (x !== undefined) {

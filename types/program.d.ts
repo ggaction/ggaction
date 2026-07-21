@@ -1212,6 +1212,7 @@ export interface BoxPlotOptions {
     radius?: number;
     opacity?: number;
   };
+  guides?: false | CreateGuidesOptions;
 }
 
 export interface EditBoxPlotOptions {

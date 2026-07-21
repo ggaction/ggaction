@@ -52,7 +52,7 @@ remain available for custom layering and editing.
 | Position | categorical/temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile | categorical center; quantitative density profile |
 | Nominal color | — | grouped area fill | body fill through ranged-bar color | category hue with density modulation | category or two-value split fill |
 | Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers | structured gradient fill, width, optional center rule | fill, opacity, outline, 8 curves, shared/independent width |
-| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | categorical/linear axes; horizontal grid | categorical/linear axes, grid, density legend | categorical/linear axes; horizontal grid |
+| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | opt-in categorical/linear axes and horizontal grid | categorical/linear axes, grid, density legend | categorical/linear axes; horizontal grid |
 | Legend | — | categorical | optional ranged-bar color legend | neutral density; categorical color when requested | optional category or split legend |
 | Selection/highlight | rule | series | component | category strip | full or split profile |
 
@@ -98,8 +98,9 @@ remain available for custom layering and editing.
 
 Basic chart facades infer only a current or unique dataset and stable unused
 role IDs. Ambiguous data or an occupied default role requires an explicit ID.
-Applicable guides are created by default and can be disabled with
-`guides: false`.
+Complete chart facades create applicable guides by default and accept
+`guides: false`. `createBoxPlot` preserves its historical opt-in behavior:
+pass `guides: {}` or nested options to create applicable guides.
 
 ## Current limitations
 

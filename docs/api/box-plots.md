@@ -30,7 +30,8 @@ const program = chart()
   .createData({ values: cars })
   .createBoxPlot({
     x: { field: "Origin", fieldType: "nominal" },
-    y: { field: "Miles_per_Gallon" }
+    y: { field: "Miles_per_Gallon" },
+    guides: { legend: false }
   });
 ```
 
@@ -39,7 +40,7 @@ const program = chart()
 ```javascript
 createBoxPlot({
   id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
-  box?, median?, outlier?
+  box?, median?, outlier?, guides?
 } = {})
 ```
 
@@ -47,7 +48,7 @@ createBoxPlot({
 | --- | --- | --- |
 | `id` | box-body owner ID | first instance uses `"boxPlot"` |
 | `target` | compatible encoded source layer | current, then unique eligible layer |
-| `data` | source dataset | source layer, then current dataset |
+| `data` | source dataset | explicit value, source layer, current dataset, then unique dataset |
 | `x` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `y` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `coordinate` | Cartesian coordinate ID | source coordinate, then `"main"` |
@@ -57,10 +58,13 @@ createBoxPlot({
 | `box` | `fill`, `opacity`, `stroke`, `strokeWidth` | blue, opaque, `1.5` stroke |
 | `median` | `stroke`, `strokeWidth` | dark stroke with width `1.5` |
 | `outlier` | `shape`, `radius`, `opacity` | black diamond, radius `3`, opacity `0.75` |
+| `guides` | `false` or applicable axis/grid/legend options | omitted: no guides; explicit `{}` creates applicable guides |
 
 `createBoxPlot()` may also establish an incomplete owner first. Compatible
 `encodeX` and `encodeY` calls can follow later; the completed semantic and
 graphical state is the same as supplying both channels at creation time.
+Stored explicit guide options are applied when those deferred positions become
+complete. Omission and `guides: false` preserve the historical no-guide result.
 
 The category/measure pairing determines orientation. This horizontal min–max
 example creates no outlier resources:

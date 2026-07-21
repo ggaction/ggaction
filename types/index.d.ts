@@ -13,6 +13,7 @@ export type {
   AxisTitleOptions,
   AxisValue,
   BarWidthOptions,
+  BoxPlotOptions,
   BinnedHeatmapColorOptions,
   BinnedHeatmapOptions,
   BinnedHeatmapPositionChannel,

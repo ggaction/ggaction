@@ -11,7 +11,9 @@ export function resolveBoxOrientation(x, y) {
   return undefined;
 }
 
-export function resolveBoxSourceLayer(program, target) {
+export function resolveBoxSourceLayer(program, target, {
+  requiresInference = true
+} = {}) {
   if (target !== undefined) {
     const layer = findLayer(program, validateUserId(target, "Box source layer id"));
     if (layer === undefined) throw new Error(`Unknown box source layer "${target}".`);
@@ -24,7 +26,13 @@ export function resolveBoxSourceLayer(program, target) {
   const eligible = program.semanticSpec.layers.filter(
     layer => layer.encoding?.x !== undefined && layer.encoding?.y !== undefined
   );
-  return eligible.length === 1 ? eligible[0] : undefined;
+  if (eligible.length === 1) return eligible[0];
+  if (eligible.length > 1 && requiresInference) {
+    throw new Error(
+      "createBoxPlot target is ambiguous; provide target or explicit x and y."
+    );
+  }
+  return undefined;
 }
 
 export function resolveBoxPlotId(program, requested) {

@@ -24,7 +24,7 @@ const FACADE_CONTRACTS = Object.freeze([
   ["createHistogram", "CreateHistogramOptions", "BASIC_CHARTS.md"],
   ["createHeatmap", "CreateHeatmapOptions", "BASIC_CHARTS.md"],
   ["createGradientPlot", "GradientPlotOptions", "GRADIENT_PLOTS.md"],
-  ["createBoxPlot", "BoxPlotOptions", "COMPOSITE_MARKS.md", { rootTypeExport: false }],
+  ["createBoxPlot", "BoxPlotOptions", "COMPOSITE_MARKS.md"],
   ["createParallelCoordinates", "CreateParallelCoordinatesOptions", "BASIC_CHARTS.md"]
 ]);
 const FACADE_ACTIONS = Object.freeze(FACADE_CONTRACTS.map(([name]) => name));
@@ -41,6 +41,20 @@ function javascriptFiles(directory) {
     }
     return entry.endsWith(".js") ? [entry] : [];
   });
+}
+
+function createFacadePrograms() {
+  const cars = loadCars();
+  return [
+    createCarsScatterplot(cars),
+    createCarsLineChart(cars),
+    createJobsGroupedBar(loadJobs()),
+    createCarsHistogram(cars),
+    createGapminderLifeExpectancyHeatmap(loadGapminder()),
+    createCarsGradientPlot(cars),
+    createCarsBoxPlot(cars),
+    createCarsParallelCoordinates(cars)
+  ];
 }
 
 test("keeps every basic chart facade in one canonical Current owner", () => {
@@ -80,22 +94,50 @@ test("keeps every facade declaration and current root type export exact", () => 
 });
 
 test("keeps every facade program in its canonical chart slice", () => {
-  const cars = loadCars();
-  const programs = [
-    createCarsScatterplot(cars),
-    createCarsLineChart(cars),
-    createJobsGroupedBar(loadJobs()),
-    createCarsHistogram(cars),
-    createGapminderLifeExpectancyHeatmap(loadGapminder()),
-    createCarsGradientPlot(cars),
-    createCarsBoxPlot(cars),
-    createCarsParallelCoordinates(cars)
-  ];
+  const programs = createFacadePrograms();
   for (const [index, program] of programs.entries()) {
     assert.equal(
       program.trace.children.find(node => node.op === FACADE_ACTIONS[index])?.op,
       FACADE_ACTIONS[index]
     );
+  }
+});
+
+test("hands every facade result to its documented resource edit path", () => {
+  const edits = [
+    ["editPointMark", program => program.editPointMark({
+      target: "points", opacity: 0.4
+    })],
+    ["editLineMark", program => program.editLineMark({
+      target: "trends", strokeWidth: 4
+    })],
+    ["editBarMark", program => program.editBarMark({
+      target: "bars", opacity: 0.55
+    })],
+    ["editBarMark", program => program.editBarMark({
+      target: "bars", opacity: 0.55
+    })],
+    ["editRectMark", program => program.editRectMark({
+      target: "rect", opacity: 0.55
+    })],
+    ["editGradientPlot", program => program.editGradientPlot({
+      target: "gradientPlot", width: { band: 0.55 }
+    })],
+    ["editBoxPlot", program => program.editBoxPlot({
+      target: "boxPlot", width: { band: 0.55 }
+    })],
+    ["editLineMark", program => program.editLineMark({
+      target: "parallelCoordinates", opacity: 0.3
+    })]
+  ];
+
+  for (const [index, program] of createFacadePrograms().entries()) {
+    const before = structuredClone(program.graphicSpec);
+    const [operation, edit] = edits[index];
+    const edited = edit(program);
+    assert.deepEqual(program.graphicSpec, before, FACADE_ACTIONS[index]);
+    assert.notDeepEqual(edited.graphicSpec, program.graphicSpec, FACADE_ACTIONS[index]);
+    assert.equal(edited.trace.children.at(-1).op, operation, FACADE_ACTIONS[index]);
   }
 });
 

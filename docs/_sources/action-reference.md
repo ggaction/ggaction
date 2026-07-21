@@ -1067,7 +1067,7 @@ selection means both. Missing selected boundaries are created from the band.
 ```javascript
 createBoxPlot({
   id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
-  box?, median?, outlier?
+  box?, median?, outlier?, guides?
 } = {})
 ```
 
@@ -1076,6 +1076,8 @@ and one quantitative field. The action infers an encoded source when possible
 and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
 median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../api/box-plots.md)
+Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
+create them inside the facade; omission and `false` create none.
 
 ### `editBoxPlot`
 
