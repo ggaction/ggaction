@@ -13,10 +13,14 @@ Choose the visual relationship that matches the question you want to answer.
   <a href="../recipes/"><strong>Need only the shortest code?</strong><span>Switch to recipes when you do not need the step-by-step explanation.</span></a>
 </div>
 
+{% include gallery-filter.html %}
+
 <div class="docs-chart-index">
   {% assign tutorial_charts = site.data.chart_examples | where_exp: "example", "example.tutorial_order" | sort: "tutorial_order" %}
   {% for example in tutorial_charts %}
-    {% include chart-card.html id=example.id kind="tutorial" %}
+    <div data-gallery-tasks="{{ example.tasks }}">
+      {% include chart-card.html id=example.id kind="tutorial" %}
+    </div>
   {% endfor %}
 </div>
 

@@ -99,20 +99,42 @@
   const galleryFilter = content.querySelector(".docs-gallery-filter");
   if (galleryFilter) {
     const cards = [...content.querySelectorAll("[data-gallery-tasks]")];
-    galleryFilter.addEventListener("click", event => {
-      const button = event.target.closest("[data-gallery-filter]");
-      if (!button) return;
-      const selected = button.dataset.galleryFilter;
+    const buttons = [...galleryFilter.querySelectorAll("[data-gallery-filter]")];
+    const status = content.querySelector(".docs-gallery-filter__status");
+
+    function applyGalleryFilter(selected, { updateHistory = false } = {}) {
+      const button = buttons.find(candidate => candidate.dataset.galleryFilter === selected) ?? buttons[0];
+      const resolved = button.dataset.galleryFilter;
       for (const candidate of galleryFilter.querySelectorAll("[data-gallery-filter]")) {
         const active = candidate === button;
         candidate.classList.toggle("is-active", active);
         candidate.setAttribute("aria-pressed", String(active));
       }
+      let visible = 0;
       for (const card of cards) {
         const tasks = card.dataset.galleryTasks.split(/\s+/);
-        card.hidden = selected !== "all" && !tasks.includes(selected);
+        card.hidden = resolved !== "all" && !tasks.includes(resolved);
+        if (!card.hidden) visible += 1;
       }
+      if (status) status.textContent = `${visible} ${visible === 1 ? "chart" : "charts"}`;
+      if (updateHistory) {
+        const url = new URL(window.location.href);
+        if (resolved === "all") url.searchParams.delete("chart-task");
+        else url.searchParams.set("chart-task", resolved);
+        window.history.pushState({}, "", url);
+      }
+    }
+
+    galleryFilter.addEventListener("click", event => {
+      const button = event.target.closest("[data-gallery-filter]");
+      if (!button) return;
+      applyGalleryFilter(button.dataset.galleryFilter, { updateHistory: true });
     });
+
+    window.addEventListener("popstate", () => {
+      applyGalleryFilter(new URL(window.location.href).searchParams.get("chart-task") ?? "all");
+    });
+    applyGalleryFilter(new URL(window.location.href).searchParams.get("chart-task") ?? "all");
   }
 
   function updateOverflow(region, element, label) {

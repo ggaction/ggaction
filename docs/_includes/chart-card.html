@@ -13,8 +13,14 @@
     >
   </a>
   <div class="docs-chart-index__body">
-    <a class="docs-chart-index__title" href="{{ card_url | relative_url }}">{{ example.title }}</a>
+    <h3><a class="docs-chart-index__title" href="{{ card_url | relative_url }}">{{ example.title }}</a></h3>
     <p>{{ example.summary }}</p>
-    <span>{{ example.actions }}</span>
+    <span class="docs-chart-index__actions" aria-label="Representative actions">
+      {% assign action_names = example.actions | split: " · " %}
+      {% for action_name in action_names %}
+        {% assign action_url = site.data.action_reference_links[action_name] %}
+        {% if action_url %}<a href="{{ action_url | relative_url }}"><code>{{ action_name }}</code></a>{% else %}<code>{{ action_name }}</code>{% endif %}
+      {% endfor %}
+    </span>
   </div>
 </article>

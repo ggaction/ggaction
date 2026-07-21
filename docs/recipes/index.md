@@ -14,10 +14,14 @@ resources, defaults, and guides that ggaction can infer.
   <a href="../gallery/"><strong>Choosing a chart?</strong><span>Browse complete results before selecting a minimal recipe.</span></a>
 </div>
 
+{% include gallery-filter.html %}
+
 <div class="docs-chart-index">
   {% assign recipe_charts = site.data.chart_examples | where_exp: "example", "example.recipe_order" | sort: "recipe_order" %}
   {% for example in recipe_charts %}
-    {% include chart-card.html id=example.id kind="recipe" %}
+    <div data-gallery-tasks="{{ example.tasks }}">
+      {% include chart-card.html id=example.id kind="recipe" %}
+    </div>
   {% endfor %}
 </div>
 

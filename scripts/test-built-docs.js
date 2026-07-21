@@ -205,6 +205,12 @@ try {
     await desktop.locator(".docs-chart-gallery__title").count(),
     expectedFeaturedCount
   );
+  assert.equal(await desktop.locator(".docs-chart-gallery article h3").count(), expectedFeaturedCount);
+  assert.equal(
+    await desktop.locator(".docs-chart-gallery__full-size[aria-label]").count(),
+    expectedFeaturedCount
+  );
+  assert.equal(await desktop.locator(".docs-chart-gallery__actions a").count() > 0, true);
   assert.equal(
     await desktop.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth),
     false
@@ -268,6 +274,12 @@ try {
     await desktop.locator(".docs-chart-index img").count(),
     expectedTutorialCount
   );
+  const tutorialTrendFilter = desktop.locator('[data-gallery-filter="trend"]');
+  await tutorialTrendFilter.click();
+  assert.match(await desktop.locator(".docs-gallery-filter__status").innerText(), /charts?$/);
+  assert.equal(new URL(desktop.url()).searchParams.get("chart-task"), "trend");
+  await desktop.goBack({ waitUntil: "networkidle" });
+  assert.equal(await desktop.locator('[data-gallery-filter="all"]').getAttribute("aria-pressed"), "true");
   await desktop.goto(`${baseUrl}gallery/`, { waitUntil: "networkidle" });
   assert.deepEqual(
     await desktop.locator(".docs-breadcrumbs li").allInnerTexts(),

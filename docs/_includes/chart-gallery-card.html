@@ -1,4 +1,8 @@
 {% assign example = include.example %}
+{% assign destination_kind = "Guide" %}
+{% if example.url contains "/tutorials/" %}{% assign destination_kind = "Tutorial" %}{% endif %}
+{% if example.url contains "/recipes/" %}{% assign destination_kind = "Recipe" %}{% endif %}
+{% if example.url contains "/api/" %}{% assign destination_kind = "API" %}{% endif %}
 <article>
   <a class="docs-chart-gallery__image" href="{{ example.url | relative_url }}" aria-label="Open {{ example.title }} documentation">
     <img
@@ -10,8 +14,15 @@
       {% if include.eager %}fetchpriority="high"{% endif %}
     >
   </a>
-  <a class="docs-chart-gallery__title" href="{{ example.url | relative_url }}">{{ example.title }}</a>
+  <div class="docs-chart-gallery__eyebrow">{{ destination_kind }}</div>
+  <h3><a class="docs-chart-gallery__title" href="{{ example.url | relative_url }}">{{ example.title }}</a></h3>
   <p>{{ example.summary }}</p>
-  <span class="docs-chart-gallery__actions"><code>{{ example.actions }}</code></span>
-  <a class="docs-chart-gallery__full-size" href="{{ example.image | relative_url }}">View full size</a>
+  <span class="docs-chart-gallery__actions" aria-label="Representative actions">
+    {% assign action_names = example.actions | split: " · " %}
+    {% for action_name in action_names %}
+      {% assign action_url = site.data.action_reference_links[action_name] %}
+      {% if action_url %}<a href="{{ action_url | relative_url }}"><code>{{ action_name }}</code></a>{% else %}<code>{{ action_name }}</code>{% endif %}
+    {% endfor %}
+  </span>
+  <a class="docs-chart-gallery__full-size" href="{{ example.image | relative_url }}" aria-label="View full-size {{ example.title }} image">View full size</a>
 </article>

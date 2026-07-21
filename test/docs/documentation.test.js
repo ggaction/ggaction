@@ -544,7 +544,13 @@ test("routes entry documentation to the canonical example indexes", () => {
   );
   assert.match(read("docs/tutorials/index.md"), /example\.tutorial_order/);
   assert.match(read("docs/recipes/index.md"), /example\.recipe_order/);
+  assert.match(read("docs/tutorials/index.md"), /gallery-filter\.html/);
+  assert.match(read("docs/recipes/index.md"), /gallery-filter\.html/);
   assert.match(read("docs/_includes/gallery-filter.html"), /data-gallery-filter="distribution"/);
+  assert.match(read("docs/_includes/gallery-filter.html"), /aria-live="polite"/);
+  assert.match(read("docs/_includes/chart-gallery-card.html"), /<h3>/);
+  assert.match(read("docs/_includes/chart-gallery-card.html"), /action_reference_links/);
+  assert.match(read("docs/_includes/chart-gallery-card.html"), /full-size \{\{ example\.title \}\} image/);
   assert.match(read("docs/gallery.md"), /where: "gallery_featured", true/);
   assert.match(read("docs/gallery\/all.md"), /site\.data\.chart_examples/);
   assert.equal(
