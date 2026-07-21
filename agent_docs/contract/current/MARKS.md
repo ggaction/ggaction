@@ -560,11 +560,11 @@ independent assembly and does not inherit position encodings.
 
 ### Value coverage — `layoutLabels`
 
-- ⚠️ Partial: covered target inference, complete-policy replacement, deterministic axis-constrained placement,
+- ✅ Covered: target inference, complete-policy replacement, deterministic axis-constrained placement,
   plot/Canvas bounds, leader geometry, impossible-layout warnings, state/trace ownership, replay, validation, and
-  immutability. Public primitive/PNG parity remains pending P12-B.
+  immutability, including exact public/primitive Canvas and Node PNG parity.
 - Evidence: `test/unit/layout/labels.test.js`, `test/unit/actions/marks/label-layout.test.js`, and
-  `test/gates/gapminder-country-labels/`.
+  `test/charts/gapminder-country-labels/`.
 
 ## `removeLabelLayout`
 
@@ -581,6 +581,6 @@ independent assembly and does not inherit position encodings.
 
 ### Value coverage — `removeLabelLayout`
 
-- ⚠️ Partial: covered explicit and inferred ownership, base-position restoration, leader cleanup, mark cleanup,
-  validation, trace, and immutability. Public visual parity remains pending P12-B.
-- Evidence: `test/unit/actions/marks/label-layout.test.js` and `test/gates/gapminder-country-labels/`.
+- ✅ Covered: explicit and inferred ownership, base-position restoration, leader cleanup, mark cleanup,
+  validation, trace, immutability, and exact public/primitive visual parity.
+- Evidence: `test/unit/actions/marks/label-layout.test.js` and `test/charts/gapminder-country-labels/`.

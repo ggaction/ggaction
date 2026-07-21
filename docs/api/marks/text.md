@@ -106,6 +106,10 @@ Calling `layoutLabels()` again replaces the complete policy and recomputes from
 semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
+See the complete
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/main/examples/gapminder-country-labels/program.js)
+for a point-attached label layer with leaders.
+
 ## `removeLabelLayout(options?)`
 
 ```javascript

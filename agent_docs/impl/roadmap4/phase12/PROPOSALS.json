@@ -6,7 +6,7 @@
   "actions": [
     {
       "name": "layoutLabels",
-      "status": "approved",
+      "status": "implemented",
       "required": [],
       "optional": ["target", "axis", "padding", "maxDisplacement", "bounds", "leader"],
       "replacement": "replaces one target text mark's complete graphical label-layout policy",
@@ -14,7 +14,7 @@
     },
     {
       "name": "removeLabelLayout",
-      "status": "approved",
+      "status": "implemented",
       "required": [],
       "optional": ["target"],
       "replacement": "removes the policy and leader collection and restores semantic base text positions",

@@ -203,6 +203,7 @@ materializationConfigs = {
   selections: { ... },
   highlights: { ... },
   jitters: { ... },
+  labelLayouts: { ... },
   canvas: { ... },
   title: { ... }
 };
@@ -886,6 +887,7 @@ rematerialization만 담당한다. 따라서 순수 scale 계산은 trace를 만
 - title/subtitle layout과 typography
 - Canvas margin
 - rule cap data-space anchor와 fixed logical-pixel span
+- text label의 bounded displacement, collision padding, bounds와 optional leader policy
 
 이 값은 `semanticSpec`에 넣지 않고 `materializationConfigs`에 한 번만 저장한다. 실제
 draw property는 다시 `graphicSpec`에 concrete하게 기록한다.
@@ -1434,6 +1436,20 @@ scale 없는 `encoding.text` field/datum assignment이며,
 typography, alignment, rotation과 `dx`/`dy`는 materialization config가 소유한다. Canvas 또는 scale edit은
 registered text policy를 통해 concrete label을 다시 만든다.
 
+Collision-aware label layout은 semantic text position을 다시 author하지 않는다.
+`materializationConfigs.labelLayouts[target]`이 requested axis/padding/distance/bounds/leader policy와 latest
+resolution summary를 소유하고, `layout/labels.js`의 pure deterministic grammar가 shared text metrics로 base label
+bounds와 candidate 순서를 계산한다. Final displacement는 concrete text `x`/`y`에만 적용되고 optional leader는
+ordinary target-owned line collection이다. Source anchor는 persisted text `source` relation에서만 읽으며 arbitrary
+nearby mark를 탐색하지 않는다.
+
+Text rematerializer는 항상 semantic base text를 먼저 완전히 복구한 뒤 stored label policy를 정확히 한 번 replay한다.
+`layoutLabels`의 직접 호출은 같은 base를 다시 만든 뒤 complete policy를 교체하고, `removeLabelLayout`은 policy와
+leader를 structural remove한 뒤 base text를 복구한다. Canvas/data/scale/source-mark/text edit와 owning mark removal도
+같은 owner를 통해 replay 또는 cleanup하므로 이전 displacement가 누적되거나 stale leader가 남지 않는다. Feasible
+zero-overlap candidate가 없으면 deterministic best effort와 structured warning을 저장하며 silent success로 처리하지
+않는다. Renderer는 이 lifecycle이나 collision 의미를 모르고 final text와 line만 그린다.
+
 이 plan은 자동 compiler가 아니다. `editCanvas`, `rematerializeScale` 같은 명시적 action
 또는 responsible encoding action implementation이 planner와 executor를 호출할 때만 실행된다.
 
@@ -1844,7 +1860,7 @@ src/
 │  ├─ regression/      parameter validation, model fitting과 derived rows
 │  ├─ scales/          scale definition, validation, resolution과 mapping
 │  └─ statistics/      shared statistical kernels
-├─ layout/             Canvas/plot bounds와 deterministic text layout
+├─ layout/             Canvas/plot bounds, deterministic text metrics와 collision-aware label grammar
 ├─ materialization/    mark completeness policy와 cross-cutting dependency plan
 │  ├─ bars/            bar completeness와 concrete rectangle 계산
 │  ├─ facetGuides/     legacy categorical, preparation과 placement stages
@@ -2116,6 +2132,9 @@ interval containment을 deterministic invariant로 검증한다.
     source filtering, category-strip highlighting과 Cartesian facet replay를 가진 Cars gradient plot
 14. Category band 안에서 shared-width full density와 two-value split half density를 materialize하고
     positional-family `createViolinPlot({ x, y })` facade와 exact parity를 갖는 Cars acceleration violin plot
+15. Ordered quantitative/ordinal dimension별 local scale/axis와 source-row open path를 가진 Cars Parallel Coordinates
+16. Gapminder point source에 attached text를 bounded collision layout과 optional leader로 배치하고
+    public/primitive exact parity를 갖는 Country Labels chart
 
 이 목록은 chart type별 별도 compiler가 있다는 뜻이 아니다. 같은 data, scale, mark,
 encoding, guide, layout, materialization primitive가 여러 vertical slice에서 재사용된다는

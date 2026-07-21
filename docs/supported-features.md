@@ -139,6 +139,12 @@ Cartesian point jitter supports deterministic pixel offsets and categorical
 band-relative offsets. It preserves semantic channel values, remains bounded
 by glyph extent and plot/category slots, and does not perform collision-free
 packing. Polar point jitter is not implemented.
+Text marks support deterministic collision-aware displacement along x, y, or
+both axes within plot or Canvas bounds. The policy can create ordinary leader
+lines, replays after text/source/data/scale/Canvas edits, and records structured
+warnings when bounded placement cannot eliminate every overlap. It does not
+expand margins, shrink text, arrange guide labels, or search unrelated marks
+for anchors.
 Polar charts may be direct or nested concat children. Faceting a Polar source is
 not implemented and fails before partial child state is created.
 Parallel coordinates support quantitative/ordinal dimensions, open linear
