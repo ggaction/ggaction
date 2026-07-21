@@ -344,6 +344,8 @@ test("renders at a higher pixel density without changing logical coordinates", (
 
   assert.equal(context.canvas.width, 200);
   assert.equal(context.canvas.height, 160);
+  assert.equal(context.canvas.style.width, "100px");
+  assert.equal(context.canvas.style.height, "80px");
   assert.deepEqual(findCanvasCalls(context, "scale")[0].args, [2, 2]);
   assert.deepEqual(findCanvasCalls(context, "arc")[0].args, [
     10,

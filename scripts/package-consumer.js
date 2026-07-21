@@ -18,8 +18,13 @@ const tscCommand = path.join(
   process.platform === "win32" ? "tsc.cmd" : "tsc"
 );
 
-function run(command, args, cwd) {
-  execFileSync(command, args, { cwd, encoding: "utf8", stdio: "pipe" });
+function run(command, args, cwd, options = {}) {
+  execFileSync(command, args, {
+    cwd,
+    encoding: "utf8",
+    stdio: "pipe",
+    ...options
+  });
 }
 
 export async function preparePackageConsumer({
@@ -40,7 +45,12 @@ export async function preparePackageConsumer({
     "--no-audit",
     "--no-fund",
     installSpec
-  ], directory);
+  ], directory, {
+    env: {
+      ...process.env,
+      NPM_CONFIG_CACHE: path.join(directory, ".npm-cache")
+    }
+  });
   const installedManifest = JSON.parse(await readFile(
     path.join(directory, "node_modules", "ggaction", "package.json"),
     "utf8"

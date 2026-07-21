@@ -27,7 +27,8 @@ render(program, context);
 ```
 
 The optional `pixelRatio` increases physical output density while retaining
-logical chart coordinates:
+logical chart coordinates. For an HTML Canvas, ggaction also preserves the
+logical CSS width and height while enlarging the backing store:
 
 ```javascript
 render(program, context, { pixelRatio: 2 });

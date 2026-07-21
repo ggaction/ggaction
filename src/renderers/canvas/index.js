@@ -120,6 +120,13 @@ export function render(program, context, { pixelRatio = 1 } = {}) {
 
   context.canvas.width = Math.round(width * pixelRatio);
   context.canvas.height = Math.round(height * pixelRatio);
+  if (
+    context.canvas.style !== null &&
+    typeof context.canvas.style === "object"
+  ) {
+    context.canvas.style.width = `${width}px`;
+    context.canvas.style.height = `${height}px`;
+  }
   context.save();
 
   try {

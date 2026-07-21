@@ -9,7 +9,7 @@ export function createMockCanvasContext() {
   let textBaseline = "alphabetic";
 
   return {
-    canvas: { width: 0, height: 0 },
+    canvas: { width: 0, height: 0, style: {} },
     calls,
 
     get fillStyle() {

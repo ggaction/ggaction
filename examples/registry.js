@@ -119,7 +119,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     width: 1220,
     height: 866,
     createProgram: createCrossFeatureDashboard,
-    testDirectory: "cross-feature-integration"
+    testDirectory: "cross-feature-integration",
+    browser: {
+      path: "browser-host/?chart=cross-feature-dashboard",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "cross-feature-dashboard", width: 1220, height: 866 }
+      }
+    }
   }),
   example({
     id: "program-composition",
@@ -136,7 +144,11 @@ export const PUBLIC_CHARTS = Object.freeze([
     width: 932,
     height: 282,
     createProgram: createCarsOriginScatterplotFacet,
-    docsGroup: "charts"
+    docsGroup: "charts",
+    browser: {
+      path: "browser-host/?chart=cars-origin-scatterplot-facet",
+      canvas: "#chart"
+    }
   }),
   example({
     id: "cars-scatterplot",
@@ -180,7 +192,11 @@ export const PUBLIC_CHARTS = Object.freeze([
     height: 460,
     createProgram: createGapminderClusterJitter,
     programDirectory: "point-jitter",
-    testDirectory: "point-jitter"
+    testDirectory: "point-jitter",
+    browser: {
+      path: "browser-host/?chart=gapminder-cluster-jitter",
+      canvas: "#chart"
+    }
   }),
   example({
     id: "annotated-imdb-scatterplot",
@@ -472,28 +488,44 @@ export const PUBLIC_CHARTS = Object.freeze([
     data: "gapminder",
     width: 680,
     height: 380,
-    createProgram: createMatchingPopulationColorBars
+    createProgram: createMatchingPopulationColorBars,
+    browser: {
+      path: "browser-host/?chart=gapminder-continuous-color-bars",
+      canvas: "#chart"
+    }
   }),
   example({
     id: "gapminder-discretized-color-scales",
     data: "gapminder",
     width: 480,
     height: 312,
-    createProgram: createGapminderQuantizeColorScale
+    createProgram: createGapminderQuantizeColorScale,
+    browser: {
+      path: "browser-host/?chart=gapminder-discretized-color-scales",
+      canvas: "#chart"
+    }
   }),
   example({
     id: "gapminder-temporal-discrete-scales",
     data: "gapminder",
     width: 456,
     height: 312,
-    createProgram: createGapminderBandPointChart
+    createProgram: createGapminderBandPointChart,
+    browser: {
+      path: "browser-host/?chart=gapminder-temporal-discrete-scales",
+      canvas: "#chart"
+    }
   }),
   example({
     id: "gapminder-transformed-scales",
     data: "gapminder",
     width: 456,
     height: 312,
-    createProgram: createGapminderTransformedScaleScatterplot
+    createProgram: createGapminderTransformedScaleScatterplot,
+    browser: {
+      path: "browser-host/?chart=gapminder-transformed-scales",
+      canvas: "#chart"
+    }
   }),
   example({
     id: "mark-selection-points",

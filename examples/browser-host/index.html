@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ggaction Browser Example</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        color: #1f2937;
+        background: #f3f4f6;
+        font: 16px/1.5 system-ui, sans-serif;
+      }
+      main {
+        margin: 24px;
+        padding: 24px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 12px 36px rgb(15 23 42 / 12%);
+      }
+      h1 { margin: 0 0 4px; font-size: 20px; }
+      p { margin: 0 0 16px; color: #64748b; }
+      canvas { display: block; border: 1px solid #e2e8f0; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 id="title">ggaction chart</h1>
+      <p id="status">Loading chart…</p>
+      <canvas id="chart" aria-label="ggaction chart"></canvas>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
