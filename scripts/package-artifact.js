@@ -1,6 +1,8 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { mkdtempSync, rmSync } from "node:fs";
 import { mkdir, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,16 +31,29 @@ const REQUIRED_FILES = Object.freeze([
 
 const FORBIDDEN_BASENAMES = new Set(["AGENTS.md"]);
 
+export function isolatedPackEnvironment(cache, environment = process.env) {
+  return {
+    ...environment,
+    NPM_CONFIG_CACHE: cache
+  };
+}
+
 function runPack(args, cwd = root) {
-  const output = execFileSync(npmCommand, ["pack", "--json", ...args], {
-    cwd,
-    encoding: "utf8"
-  });
-  const parsed = JSON.parse(output);
-  if (!Array.isArray(parsed) || parsed.length !== 1) {
-    throw new Error("npm pack must describe exactly one package artifact.");
+  const cache = mkdtempSync(path.join(tmpdir(), "ggaction-npm-pack-"));
+  try {
+    const output = execFileSync(npmCommand, ["pack", "--json", ...args], {
+      cwd,
+      encoding: "utf8",
+      env: isolatedPackEnvironment(cache)
+    });
+    const parsed = JSON.parse(output);
+    if (!Array.isArray(parsed) || parsed.length !== 1) {
+      throw new Error("npm pack must describe exactly one package artifact.");
+    }
+    return parsed[0];
+  } finally {
+    rmSync(cache, { recursive: true, force: true });
   }
-  return parsed[0];
 }
 
 export function validatePackageManifest(manifest) {

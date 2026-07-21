@@ -3,9 +3,22 @@ import test from "node:test";
 
 import {
   inspectPackageArtifact,
+  isolatedPackEnvironment,
   PACKAGE_LIMITS,
   validatePackageManifest
 } from "../../scripts/package-artifact.js";
+
+test("isolates npm pack from the caller's global cache", () => {
+  const environment = isolatedPackEnvironment("/tmp/isolated-cache", {
+    HOME: "/users/example",
+    NPM_CONFIG_CACHE: "/users/example/.npm"
+  });
+
+  assert.deepEqual(environment, {
+    HOME: "/users/example",
+    NPM_CONFIG_CACHE: "/tmp/isolated-cache"
+  });
+});
 
 test("publishes only the bounded public package artifact", () => {
   const manifest = inspectPackageArtifact();
