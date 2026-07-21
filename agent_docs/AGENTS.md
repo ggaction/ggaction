@@ -2,42 +2,17 @@
 
 Apply these instructions to architecture records, implementation plans, roadmaps, and action contracts under `agent_docs/` in addition to the repository root instructions.
 
-## Architecture and Implementation Records
+## Scoped Internal Instructions
 
-- Write each new chart implementation contract in Korean at `agent_docs/impl/roadmapN/chart/<chart-name>.md`. Keep the complete chart description, final user-facing API, important action hierarchy, and stored-result contract readable in that one chart document.
-- A phase may contain any number of chart development cycles. Use `agent_docs/impl/roadmapN/phaseM/GOAL.md` and `STEPn.md` flexibly to manage that phase's chart set, shared prerequisites, execution order, integration work, and cleanup; do not impose a fixed mapping between chart cycles and STEP documents.
-- Every Phase STEP document must place a `진행 상태` checklist near the beginning and keep it updated. Phase documents should link the chart contracts they coordinate, but must not split one chart's complete specification across STEP files.
-- Every current and future roadmap must use named approval Gates. Before any Phase implementation starts, its `GOAL.md` must declare each Gate's exact scope and evidence, and the post-Gate work that remains blocked. Use `planned | ready-for-review | approved | changes-requested` for Gate state, and never record `approved` without an explicit user approval.
-- Treat Phase Gates as hard execution boundaries, not retrospective labels. A Phase with multiple independent findings, public-contract decisions, or visual targets must place intermediate Gates at those coherent boundaries in addition to its final exit Gate. Stop at the first unapproved Gate even when later work is technically available.
-- A Gate review package must be self-contained: show the exact executable source or public call chain, the semantic or architectural result under review, focused and cumulative test evidence, compatibility and documentation impact, and rendered output whenever appearance or renderer behavior is in scope. After approval, update the Gate record before starting the unblocked work.
-- Before presenting any Gate review package, commit and push the complete verified Gate scope. Record the pushed commit in the Gate document so later approval refers to one reproducible remote checkpoint. Do not treat PR creation, package publishing, or documentation deployment as implied by this checkpoint rule.
-- At Phase closeout, require executable evidence that every assigned action and capability is current or intentionally removed and that none remains Planned. While the Phase is active, a phase-local audit may read its machine-readable inventory; at closeout, migrate durable assertions to current capability-oriented contracts and remove executable dependencies on the historical roadmap directory.
-- Treat Phase closeout as public-surface synchronization, not only inventory cleanup. Update exact TypeScript declarations, Current contracts, public support/limitation docs, architecture records, generated catalogs, and both Phase and roadmap status checklists in the same closeout change, then enforce the mechanically verifiable parts with tests.
-- Treat a new mark family as complete only when its full consumer matrix is resolved: position and color encodings, text attachment where applicable, guides, selection and highlighting, Canvas/scale/data rematerialization, exact TypeScript, package boundaries, public documentation, and executable evidence. Mark every inapplicable matrix cell explicitly instead of silently omitting it.
-- Resolve every completed Phase's remaining Planned entries explicitly: promote implemented work to Current, move intentionally deferred long-range ideas to Maybe Future, or remove rejected and obsolete entries. A completed capability must never remain Planned, and each closeout classification must be enforced by the executable inventory audit.
-- For roadmap visual work, author the graphical primitive variant first, render its browser/PNG result, and pause for user confirmation before implementing the corresponding user-facing action flow. Revise and reconfirm the primitive when feedback changes the intended appearance.
-- Treat every declared visual Gate as a hard pause. Before requesting approval, show the exact target user-facing call chain or executable source together with the rendered image and explain the specific semantic result being approved; do not implement the post-Gate public flow or advance to a later Gate until the user explicitly approves it.
-- Store approved visual pairs under `.artifacts/test/png/charts/<capability>/<chart>/<variant>/`. Store only active pre-approval evidence under `.artifacts/test/png/review/<chart>/<variant>/`, and remove or graduate that review subtree after approval. Keep the entire artifact tree gitignored.
-- Give every visual variant one generated `variant.json` containing its stable capability/chart/variant identity, display title, and exact target user-facing action call chain. Do not persist roadmap, Phase, or completed Gate identity in approved artifact metadata.
-- Keep each variant's programs, metadata, dimensions, and visual expectations in one manifest. Render primitive and user-facing results from that manifest, require plot-region ink, and compare their decoded same-run pixel hashes exactly.
-- Verify that the action calls displayed by variant metadata match the user-facing program's top-level trace; gallery code must not drift into an unexecutable description.
-- Keep roadmap documents as collaboration history, not executable product dependencies. Completed roadmap directories may be archived or reorganized without breaking stable tests, package validation, public examples, approved artifacts, or current action contracts.
-- Preserve `agent_docs/INITIAL_ARCHITECTURE.md` as an initial design record unless the user explicitly asks to revise it; it does not need to mirror every later implementation decision.
-- Keep historical design references distinct from documentation of the current behavior.
-- Dispatch protected release workflows from the exact annotated tag ref, never from a branch while synthesizing
-  `GITHUB_REF`. Gate evidence must identify the canonical-runtime artifact that the publish job will reuse; a locally
-  packed archive with identical extracted files is not byte-level evidence for a cross-platform registry artifact.
+- Read `agent_docs/impl/AGENTS.md` for roadmaps, Phase goals, STEP documents, approval Gates, visual review evidence, and closeout.
+- Read `agent_docs/contract/AGENTS.md` for action inventory, current/planned contracts, lifecycle, status, coverage evidence, and generated catalogs.
+- For a change spanning implementation history and current contracts, apply both nested files and keep each fact in one canonical record.
 
-## Action Contract Catalog
+## Architecture Records
 
-- Keep `agent_docs/contract/ACTION_INDEX.json` as the canonical machine-readable inventory for every direct user-facing action, public primitive, planned direct action, planned capability, and internal wrapped-action inventory.
-- Keep allowed lifecycle, layer, status, readiness, planned-kind, and coverage vocabularies in `ACTION_INDEX.json.contractSchema`; contract tests must consume that schema rather than repeat closed lists in test code.
-- Keep current action contracts under `agent_docs/contract/current/`, planned contracts under `agent_docs/contract/planned/`, and internal inventories under `agent_docs/contract/internal/`. Every implemented direct action must have exactly one owning current contract.
-- Treat `agent_docs/contract/ACTION_CATALOG.md` as a generated compact index. Regenerate it with `npm run contracts:catalog`; do not maintain duplicate status tables by hand.
-- Keep the lifecycle audit exhaustive: every declared direct action must appear exactly once in the manifest, and every stable resource without an edit path must remain visibly marked Planned or Proposed.
-- Keep an action's parameter status, types, accepted values, defaults and inference, interactions, semantic and graphical effects, rematerialization impact, errors, formal values, coverage ledger, and executable evidence together in its owning domain contract. State shared family rules once per domain.
-- Distinguish `Implemented`, `Planned`, and `Proposed` contracts. Only behavior present in the implementation may be marked `Implemented`; only behavior explicitly agreed with the user may be marked `Planned`; unresolved candidates remain `Proposed` and must not appear as current public API.
-- Before a roadmap approval Gate, keep unresolved candidates in a phase-local machine-readable proposal inventory and mechanically prove that they have not entered `ACTION_INDEX` Planned. Promote only the explicitly approved subset after the Gate decision.
-- Mark a coverage case complete only when a matching executable test exists. Keep missing and partial cases visible rather than estimating a coverage percentage.
-- Update the manifest, owning contract, generated catalog, and contract tests in the same conceptual commit whenever a supported action, parameter, accepted value, default, inference rule, precedence rule, effect, lifecycle, coverage, or public/private classification changes.
-- Enforce mechanically verifiable inventory, classification, contract-link, status, evidence-path, and generation-freshness rules through contract tests; do not test Korean prose placement.
+- Write internal collaboration and implementation records in Korean unless a machine-readable format or public identifier requires English.
+- Preserve `agent_docs/INITIAL_ARCHITECTURE.md` as the initial design record unless the user explicitly requests a revision.
+- Treat `agent_docs/SECOND_ARCHITECTURE.md` as the current macro-architecture record. Update it for deliberate changes to ownership, state boundaries, materialization flow, renderer boundaries, or public package boundaries.
+- Keep historical design rationale distinct from current observable behavior. Current action contracts, declarations, tests, and public documentation take precedence for exact supported behavior.
+- Do not turn architecture records into a duplicate action catalog. Link to the owning current domain contract for exact parameters, values, defaults, and errors.
+- Keep roadmap documents as collaboration history rather than executable product dependencies.
