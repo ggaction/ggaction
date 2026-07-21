@@ -140,7 +140,10 @@ async function assertResponsiveContainment(page, file, width) {
 
 const browser = await chromium.launch({ headless: true });
 try {
-  const desktop = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const desktopContext = await browser.newContext({
+    viewport: { width: 1440, height: 900 }
+  });
+  const desktop = await desktopContext.newPage();
   const desktopErrors = [];
   desktop.on("console", message => {
     if (message.type() === "error") desktopErrors.push(message.text());
@@ -255,12 +258,13 @@ try {
   );
   await desktop.goto(baseUrl, { waitUntil: "networkidle" });
   await desktop.screenshot({ path: path.join(artifactRoot, "desktop.png"), fullPage: true });
-  await desktop.close();
+  await desktopContext.close();
 
-  const noScriptDesktop = await browser.newPage({
+  const noScriptDesktopContext = await browser.newContext({
     javaScriptEnabled: false,
     viewport: { width: 1440, height: 900 }
   });
+  const noScriptDesktop = await noScriptDesktopContext.newPage();
   await noScriptDesktop.goto(baseUrl, { waitUntil: "networkidle" });
   assert.equal(await noScriptDesktop.locator("html").getAttribute("class"), "no-js");
   assert.equal(await noScriptDesktop.locator("#docs-sidebar").getAttribute("inert"), null);
@@ -269,7 +273,7 @@ try {
   assert.equal(await noScriptGroup.locator("summary").isVisible(), true);
   await noScriptGroup.locator("summary").click();
   assert.equal(await noScriptGroup.locator("a").first().isVisible(), true);
-  await noScriptDesktop.close();
+  await noScriptDesktopContext.close();
 
   const htmlFiles = (await files(siteRoot))
     .filter(file => file.endsWith(".html"))
@@ -277,14 +281,20 @@ try {
   assert.equal(htmlFiles.length > 40, true);
 
   for (const width of [320, 390, 768]) {
-    const responsive = await browser.newPage({ viewport: { width, height: 844 } });
+    const responsiveContext = await browser.newContext({
+      viewport: { width, height: 844 }
+    });
+    const responsive = await responsiveContext.newPage();
     for (const file of htmlFiles) {
       await assertResponsiveContainment(responsive, file, width);
     }
-    await responsive.close();
+    await responsiveContext.close();
   }
 
-  const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const mobileContext = await browser.newContext({
+    viewport: { width: 390, height: 844 }
+  });
+  const mobile = await mobileContext.newPage();
   const mobileErrors = [];
   mobile.on("console", message => {
     if (message.type() === "error") mobileErrors.push(message.text());
@@ -386,18 +396,19 @@ try {
   await mobile.goto(`${baseUrl}reference/types/`, { waitUntil: "networkidle" });
   assert.equal(await mobile.locator(".docs-code-label").first().textContent(), "Type contract");
   assert.equal(await mobile.locator(".docs-copy-button").count(), 1);
-  await mobile.close();
+  await mobileContext.close();
 
-  const noScriptMobile = await browser.newPage({
+  const noScriptMobileContext = await browser.newContext({
     javaScriptEnabled: false,
     viewport: { width: 390, height: 844 }
   });
+  const noScriptMobile = await noScriptMobileContext.newPage();
   await noScriptMobile.goto(baseUrl, { waitUntil: "networkidle" });
   assert.equal(await noScriptMobile.locator(".nav-toggle-button").isVisible(), false);
   assert.equal(await noScriptMobile.locator("#docs-sidebar").getAttribute("inert"), null);
   assert.equal(await noScriptMobile.locator(".docs-sidenav").isVisible(), true);
   assert.equal(await noScriptMobile.locator("#main-content").isVisible(), true);
-  await noScriptMobile.close();
+  await noScriptMobileContext.close();
 } finally {
   await browser.close();
   await new Promise(resolve => server.close(resolve));
