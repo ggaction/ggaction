@@ -4,7 +4,7 @@
 
 ## 현재 작업
 
-- [`roadmap4/ROADMAP.md`](roadmap4/ROADMAP.md) — **active**, Phase 14 Basic Chart facade consistency closeout
+- [`roadmap4/ROADMAP.md`](roadmap4/ROADMAP.md) — **active**, Phase 14 완료 checkpoint; 다음 Phase 미개방
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — Roadmap status, nullable active Phase와 마지막 완료 Phase의 machine-readable owner
 
 ## 개발 이력

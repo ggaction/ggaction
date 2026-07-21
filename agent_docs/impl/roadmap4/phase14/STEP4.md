@@ -6,6 +6,6 @@
 - [x] Basic Chart API, task guidance와 generated references
 - [x] normal/coverage/package/browser/render/docs 누적 검증
 - [x] stable artifact graduation과 active Gate cleanup
-- [ ] P14-Exit remote checkpoint와 사용자 승인
+- [x] P14-Exit remote checkpoint와 사용자 승인
 
 Closeout review package: [GATE_EXIT.md](./GATE_EXIT.md).

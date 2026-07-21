@@ -3,12 +3,13 @@
 ## 상태
 
 - Gate: `P14-Exit`
-- 상태: `ready-for-review`
+- 상태: `approved`
+- 승인: 2026-07-21 사용자 승인
 - Runtime checkpoint: `94befe8` (`align box plot facade behavior`)
 - P14-B approval checkpoint: `450d269` (`approve basic chart facade gate b`)
 - Closeout checkpoint: `b48e2cb` (`prepare basic chart facade exit gate`)
 - Remote: `origin/main`
-- 승인 전 차단: Phase 14 completed 처리와 Phase 15
+- 승인 전 차단: 없음; Phase 15는 별도 요청으로 개방
 
 ## 완료 범위
 

@@ -11,7 +11,7 @@
 - [x] Cross-facade edit handoff와 representative visual 검증
 - [x] P14-B 사용자 승인
 - [x] Current contract/docs/package와 cumulative closeout
-- [ ] P14-Exit 사용자 승인
+- [x] P14-Exit 사용자 승인
 
 ## 목표
 
@@ -49,7 +49,7 @@ Gradient/Box plot은 generated data와 owned component를 가진 mutable composi
 | --- | --- | --- | --- |
 | P14-A | approved | 8-facade matrix, lifecycle classes, P14-R1~R4와 non-goals | — |
 | P14-B | approved | repaired runtime/types/trace, edit handoff matrix와 representative visual | — |
-| P14-Exit | ready-for-review | Current inventory/docs/package와 cumulative verification | Phase 15 |
+| P14-Exit | approved | Current inventory/docs/package와 cumulative verification | — |
 
 모든 Gate는 hard pause다.
 
