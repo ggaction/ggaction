@@ -743,6 +743,19 @@ async function testTypeScriptConsumer(directory) {
       .editCompositionLayout({ gap: 8, padding: { left: 4 } })
       .replaceCompositionChild({ target: "view-2", program });
     const nested: ChartProgram = vconcat({ programs: [composed, program] });
+    const faceted: ChartProgram = chart()
+      .createCanvas({ width: 240, height: 180 })
+      .createData({ values: [
+        { group: "A", x: 1, y: 2 },
+        { group: "B", x: 3, y: 4 }
+      ] })
+      .createPointMark()
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .facet({ field: "group", columns: 1 })
+      .editCompositionLayout({ columns: 2 })
+      .editFacetScales({ x: "independent" })
+      .editFacetGuides({ axes: "outer" });
     const draw: typeof render = render;
     const png: Promise<PNGRenderResult> = renderToPNG(program, { output: "chart.png" });
     const wrapped = action(

@@ -211,10 +211,11 @@ Edit Canvas properties and rematerialize connected consumers.
 ### `editCompositionLayout`
 
 ```javascript
-editCompositionLayout({ gap?, align?, padding? })
+editCompositionLayout({ columns?, gap?, align?, padding? })
 ```
 
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
+`columns` changes wrapping only on a facet composition and is rejected for concat.
 Omitted values are preserved, child identity is unchanged, and the parent snapshot
 is rebuilt from retained child programs.
 
@@ -249,6 +250,26 @@ editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? })
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
 without changing child programs or facet value order.
+
+### `editFacetScales`
+
+```javascript
+editFacetScales({ x?, y?, xOffset?, yOffset?, color?, size?, shape?, opacity?, strokeDash? })
+```
+
+Partially change used facet channels between `"shared"` and `"independent"`.
+Every cell is rederived from the retained pre-facet program while field, data,
+value order, child IDs, layout, guides, headers, and title are preserved.
+
+### `editFacetGuides`
+
+```javascript
+editFacetGuides({ axes?, legend? })
+```
+
+Partially change axes between `"each"` and `"outer"`, or legend ownership
+between `false` and `"shared"`. Shared legend promotion requires concretely
+compatible child scales and guide recipes.
 
 ### `createData`
 

@@ -3,33 +3,5 @@
 Roadmap 4.1 Gate R41-P0-A에서 승인된 additive lifecycle 계약이다. 이 문서의 action과 option은 구현 전까지
 public runtime/type에 존재하지 않으며, 구현된 항목은 owning current domain contract로 이동한다.
 
-## `editFacetScales`
-
-```typescript
-editFacetScales(options: FacetScaleResolutions): ChartProgram;
-```
-
-- Existing facet composition과 최소 한 channel policy change를 요구한다.
-- Omitted channel은 current shared/independent policy를 보존한다.
-- Parent에 retained된 pre-facet unit state에서 모든 child를 immutable하게 rederive/replay하고 parent snapshot을
-  교체한다. Facet field/data/value order, layout, headers, title와 guide policy는 보존한다.
-- Status: Planned, accepted.
-
-## `editFacetGuides`
-
-```typescript
-editFacetGuides(options: FacetGuideOptions): ChartProgram;
-```
-
-- `axes?: "each" | "outer"`, `legend?: false | "shared"`를 partial edit한다.
-- Child guide compatibility를 preflight하고 retained children/parent snapshot을 atomic하게 교체한다.
-- Facet field/data/value order, scale policy, layout, headers와 title은 보존한다.
-- Status: Planned, accepted.
-
-## Capability: facet-policy-editing
-
-- `editCompositionLayout`은 facet에서만 `columns?: PositiveInteger`를 받고 concat에서는 거부한다.
-- `editFacetScales`/`editFacetGuides`는 field/data/value replacement 없이 parent-retained unit state와 current
-  derivation/replay registry를 사용한다.
-- Persisted schema와 renderer boundary는 바꾸지 않는다.
-- Status: Planned, accepted.
+Roadmap 4.1에서 승인된 additive lifecycle action과 capability는 모두 Current owning contract로 이동했다.
+현재 이 문서가 소유하는 Planned public behavior는 없다.

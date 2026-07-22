@@ -20,7 +20,8 @@ const ACTIONS = Object.freeze([
   "createArcMark", "editArcMark",
   "createTextMark", "editTextMark", "encodeText", "encodeYOffset",
   "createRectMark", "editRectMark",
-  "editCompositionLayout", "replaceCompositionChild", "facet", "editFacetHeaders"
+  "editCompositionLayout", "replaceCompositionChild", "facet", "editFacetHeaders",
+  "editFacetScales", "editFacetGuides"
 ]);
 
 const EXPECTED_CAPABILITIES = new Set([

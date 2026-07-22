@@ -99,7 +99,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editErrorBand`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBandBoundary`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBar`](./actions/statistics.md#editerrorbar) | user-facing | statistics |
+| [`editFacetGuides`](./actions/charts-data.md#editfacetguides) | user-facing | composition |
 | [`editFacetHeaders`](./actions/charts-data.md#editfacetheaders) | user-facing | composition |
+| [`editFacetScales`](./actions/charts-data.md#editfacetscales) | user-facing | composition |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#extension-actions) | primitive | primitives |
 | [`editGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |

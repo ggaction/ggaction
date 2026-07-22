@@ -41,6 +41,7 @@
 - Evidence: `test/unit/grammar/facets.test.js`, `test/unit/grammar/facet-dependencies.test.js`,
   `test/unit/grammar/facet-scales.test.js`, `test/unit/actions/composition/facet-derivation.test.js`,
   `test/unit/actions/composition/facet.test.js`, `test/unit/actions/composition/facet-derived-families.test.js`,
+  `test/unit/actions/composition/facet-editing.test.js`,
   `test/unit/actions/composition/facet-legend-families.test.js`, `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`,
   `test/charts/cross-feature-integration/variants/facet-resolution/public.test.js`.
 
@@ -65,27 +66,84 @@
 
 ## `editCompositionLayout`
 
-- Signature: `editCompositionLayout({ gap?, align?, padding? })`.
+- Signature: `editCompositionLayout({ columns?, gap?, align?, padding? })`.
 - Requires an existing composition program and at least one layout option.
+- `columns`: facet-only positive integer no larger than the retained child count. Concat compositions reject it.
 - `gap`: non-negative finite distance between adjacent child slots.
 - `align`: `"start" | "center" | "end"` on the cross axis.
 - `padding`: a non-negative scalar for all sides or a partial `{ top?, right?, bottom?, left? }` patch.
 - Effect: preserves the ordered child IDs and child program references, then rebuilds the complete parent snapshot
   from canonical child state. Omitted options preserve current values.
-- Facet compositions use the same action for gap, alignment, and padding. Their derived children and value order are
-  retained; `columns` is structural facet intent and is not edited by this action.
+- Facet compositions use the same action for columns, gap, alignment, and padding. Their derived children, child
+  references, field/data identity and value order are retained while the complete parent snapshot is rebuilt.
 
 ### Formal values — `editCompositionLayout`
 
-- Implemented: `editCompositionLayout({ gap?: NonNegativeFinite; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
+- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editCompositionLayout`
 
-- ✅ Covered: scalar and partial padding, every alignment, gap, child preservation, immutable earlier program,
-  complete rematerialization, facet compatibility, and invalid option rejection.
+- ✅ Covered: scalar and partial padding, every alignment, gap, facet columns, child preservation, immutable earlier
+  program, complete rematerialization, facet compatibility, concat columns rejection, and invalid option rejection.
 - Evidence: `test/unit/actions/composition/concat.test.js`, `test/unit/actions/composition/facet.test.js`,
+  `test/unit/actions/composition/facet-editing.test.js`,
   `test/charts/program-composition/variants/layouts/public.test.js`.
+
+## `editFacetScales`
+
+- Signature: `editFacetScales({ x?, y?, xOffset?, yOffset?, color?, size?, shape?, opacity?, strokeDash? })`.
+- Requires an existing facet composition and at least one used channel whose `"shared" | "independent"` policy
+  changes. Omitted channels preserve the complete current policy. Unused channels and conflicting policies on one
+  shared scale ID are rejected before child replacement.
+- The action reconstructs the current facet definition from the parent-retained pre-facet semantic/materialization
+  state, preserving facet ID, field, source data, first-appearance value order, child IDs, layout, guide policy,
+  headers and title. Every child is immutably rederived through the same filter/derived-data/rebind/materialization
+  registry as `facet`.
+- Shared automatic domains use the complete deterministic union; independent automatic domains are child-local.
+  Explicit semantic domains remain authoritative. Shared histogram x keeps one boundary set; independent x replays
+  each child's requested bin policy. Selection/highlight intent is replayed from the canonical unit state.
+- Complete child derivation, scale resolution, guide compatibility and parent snapshot materialization run on a
+  speculative immutable branch first. A failure preserves the previous parent, children, source and caller options.
+
+### Formal values — `editFacetScales`
+
+- Implemented: `editFacetScales(options: FacetScaleResolutions): ChartProgram` with at least one effective used-channel
+  policy change.
+- Proposed (NOT IMPLEMENTED): Polar theta/radius facet scale editing.
+
+### Value coverage — `editFacetScales`
+
+- ✅ Covered: partial policy preservation, shared↔independent domains, histogram bin replay, stable child IDs,
+  immutable child replacement, title/highlight preservation, child replay trace, equivalent/unused/invalid policy
+  rejection, incompatible shared legend atomicity, and non-facet rejection.
+- Evidence: `test/unit/actions/composition/facet-editing.test.js`,
+  `test/unit/actions/composition/facet-derived-families.test.js`, and
+  `test/contracts/facet-policy-editing.test.js`.
+
+## `editFacetGuides`
+
+- Signature: `editFacetGuides({ axes?, legend? })`.
+- Requires an existing facet composition and at least one supplied guide policy. Omitted policy preserves current
+  intent. `axes` accepts `"each" | "outer"`; `legend` accepts `false | "shared"`.
+- Every child is rederived from the retained canonical unit state under the current scale policy before parent guide
+  ownership is reconciled. `"outer"` keeps only occupied-edge axes for the current columns topology. `"shared"`
+  promotes one concretely compatible legend; incompatible independent child scales reject the complete call.
+- Facet field/data/value order, child IDs, scale and layout policy, headers, title, selections and highlights are
+  preserved. Earlier parent and child programs remain immutable.
+
+### Formal values — `editFacetGuides`
+
+- Implemented: `editFacetGuides({ axes?: "each" | "outer"; legend?: false | "shared" }): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): Polar theta/radius facet guide editing.
+
+### Value coverage — `editFacetGuides`
+
+- ✅ Covered: each↔outer ownership, false↔shared legend promotion, partial omission preservation, stable child IDs,
+  immutable child replacement, incompatible shared legend atomicity, empty edit and non-facet rejection.
+- Evidence: `test/unit/actions/composition/facet-editing.test.js`,
+  `test/unit/actions/composition/facet-legend-families.test.js`, and
+  `test/contracts/facet-policy-editing.test.js`.
 
 ## `replaceCompositionChild`
 

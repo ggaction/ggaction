@@ -42,7 +42,9 @@ test("keeps the implemented visual capability surface callable", () => {
     "createRectMark",
     "editRectMark",
     "facet",
-    "editFacetHeaders"
+    "editFacetHeaders",
+    "editFacetScales",
+    "editFacetGuides"
   ]) {
     assert.equal(typeof program[name], "function", name);
   }

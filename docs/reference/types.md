@@ -179,6 +179,8 @@ interface ChartProgramActions {
   editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
   replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
   facet(options: FacetOptions): ChartProgram;
+  editFacetScales(options: FacetScaleResolutions): ChartProgram;
+  editFacetGuides(options: FacetGuideOptions): ChartProgram;
   editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;
   editSemantic(options: EditSemanticOptions): ChartProgram;
   createGraphics(options: { id: string; type: GraphicType; length?: number; parent?: string; before?: string; after?: string; }): ChartProgram;

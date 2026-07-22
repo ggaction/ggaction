@@ -189,6 +189,7 @@ Facet-header weights follow the shared
 
 ```javascript
 const revised = row.editCompositionLayout({
+  columns: 2,
   gap: 28,
   align: "start",
   padding: { left: 12, right: 12 }
@@ -199,9 +200,35 @@ At least one option is required. Omitted values retain their current settings;
 a partial padding object updates only the named sides. The action preserves all
 child IDs and references and rebuilds the parent snapshot.
 
-Facet parents use this same action for `gap`, `align`, and `padding`; derived
-cell programs and facet value order remain unchanged. Parent-title and header
-anchors are recomputed from the newly translated child plot bounds.
+Facet parents use this same action for `columns`, `gap`, `align`, and `padding`;
+derived cell programs and facet value order remain unchanged. `columns` is
+facet-only and concat compositions reject it. Parent-title and header anchors
+are recomputed from the newly translated child plot bounds.
+
+## Edit facet scale and guide policies
+
+```javascript
+const independent = faceted.editFacetScales({
+  x: "independent"
+});
+
+const outer = independent.editFacetGuides({
+  axes: "outer",
+  legend: "shared"
+});
+```
+
+Both actions preserve the facet field, source data, first-appearance value
+order, child IDs, layout, headers, and title. Omitted policies retain their
+current values. Scale edits require an effective change on a channel used by
+the repeated chart.
+
+Policy edits immutably rederive every cell from the retained pre-facet program.
+This reruns supported statistical descendants, histogram binning, scale
+resolution, marks, guides, selections, and highlights instead of modifying a
+filtered child in place. A shared legend is promoted only when every child has
+a concretely compatible scale and guide recipe; otherwise the entire edit is
+rejected and the earlier facet remains unchanged.
 
 ## Replace one stable slot
 
@@ -230,7 +257,9 @@ tree; renderers read only that concrete state.
 
 `hconcat`, `vconcat`, and `facet` trace `useProgram` children followed by
 `materializeComposition`. Layout edits and replacement rematerialize from the
-retained child programs. Ordinary data, mark, encoding, scale, and guide
+retained child programs. Facet scale and guide edits rederive stable-ID children
+from the parent-retained unit state before replacing the parent snapshot.
+Ordinary data, mark, encoding, scale, and guide
 actions apply only to unit programs and reject a composition parent. Facet
 titles and facet-header edits are explicit parent-owned exceptions. Edit a
 child first, then replace its slot when a concat dashboard needs a changed

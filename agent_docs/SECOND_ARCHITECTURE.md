@@ -269,8 +269,10 @@ row별 leftmost occupied cell만 유지한다. Explicit `guides.legend: "shared"
 discretized-color, size 또는 opacity recipe를 parent-owned concrete graphic으로 승격한다. Repeated header와 chart
 title도 parent-owned concrete graphics다. Canonical title order는 `facet(...).createTitle(...)`이며 이미 valid한 unit
 title은 cell에서 제거하고 parent에 한 번 promote한다. `editFacetHeaders`와 facet-compatible
-`editCompositionLayout`은 child identity를 보존한 채 parent snapshot만 다시 materialize한다. Renderer는 concat과
-마찬가지로 완성된 parent `graphicSpec`만 읽는다.
+`editCompositionLayout({ columns?, gap?, align?, padding? })`은 child identity를 보존한 채 parent snapshot만 다시
+materialize한다. `editFacetScales`와 `editFacetGuides`는 parent에 retained된 pre-facet semantic/materialization
+state와 current field/data/value definition에서 stable child IDs를 다시 derive/replay한 뒤 complete children과 parent
+snapshot을 atomically 교체한다. Renderer는 concat과 마찬가지로 완성된 parent `graphicSpec`만 읽는다.
 각 repeated header의 horizontal anchor는 child Canvas center가 아니라 translated child plot center다.
 
 Facet replay의 pure dataset dependency planner는 visible layer에서 source 방향으로 ancestry를

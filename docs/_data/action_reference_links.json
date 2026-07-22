@@ -5,6 +5,8 @@
   "replaceCompositionChild": "/reference/actions/charts-data/#replacecompositionchild",
   "facet": "/reference/actions/charts-data/#facet",
   "editFacetHeaders": "/reference/actions/charts-data/#editfacetheaders",
+  "editFacetScales": "/reference/actions/charts-data/#editfacetscales",
+  "editFacetGuides": "/reference/actions/charts-data/#editfacetguides",
   "createData": "/reference/actions/charts-data/#createdata",
   "createScatterPlot": "/reference/actions/charts-data/#createscatterplot",
   "createLinePlot": "/reference/actions/charts-data/#createlineplot",

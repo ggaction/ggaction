@@ -784,6 +784,16 @@
     "layer": "user-facing",
     "domain": "composition"
   },
+  "editFacetScales": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "editFacetGuides": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "composition"
+  },
   "createScatterPlot": {
     "operation": "create",
     "layer": "user-facing",

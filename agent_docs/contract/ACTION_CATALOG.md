@@ -165,6 +165,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`replaceCompositionChild`](current/COMPOSITION.md#replaceCompositionChild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`facet`](current/COMPOSITION.md#facet) | composition | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetHeaders`](current/COMPOSITION.md#editFacetHeaders) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFacetScales`](current/COMPOSITION.md#editfacetscales) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFacetGuides`](current/COMPOSITION.md#editfacetguides) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createScatterPlot`](current/BASIC_CHARTS.md#createscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createLinePlot`](current/BASIC_CHARTS.md#createlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBarPlot`](current/BASIC_CHARTS.md#createbarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
@@ -178,14 +180,11 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `editFacetScales` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editfacetscales) |
-| `editFacetGuides` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editfacetguides) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| behavior | Facet policy editing | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-facet-policy-editing) |
 
 ## Internal inventories
 

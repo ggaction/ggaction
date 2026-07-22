@@ -6518,6 +6518,7 @@ Facet-header weights follow the shared
 
 ```javascript
 const revised = row.editCompositionLayout({
+  columns: 2,
   gap: 28,
   align: "start",
   padding: { left: 12, right: 12 }
@@ -6528,9 +6529,35 @@ At least one option is required. Omitted values retain their current settings;
 a partial padding object updates only the named sides. The action preserves all
 child IDs and references and rebuilds the parent snapshot.
 
-Facet parents use this same action for `gap`, `align`, and `padding`; derived
-cell programs and facet value order remain unchanged. Parent-title and header
-anchors are recomputed from the newly translated child plot bounds.
+Facet parents use this same action for `columns`, `gap`, `align`, and `padding`;
+derived cell programs and facet value order remain unchanged. `columns` is
+facet-only and concat compositions reject it. Parent-title and header anchors
+are recomputed from the newly translated child plot bounds.
+
+## Edit facet scale and guide policies
+
+```javascript
+const independent = faceted.editFacetScales({
+  x: "independent"
+});
+
+const outer = independent.editFacetGuides({
+  axes: "outer",
+  legend: "shared"
+});
+```
+
+Both actions preserve the facet field, source data, first-appearance value
+order, child IDs, layout, headers, and title. Omitted policies retain their
+current values. Scale edits require an effective change on a channel used by
+the repeated chart.
+
+Policy edits immutably rederive every cell from the retained pre-facet program.
+This reruns supported statistical descendants, histogram binning, scale
+resolution, marks, guides, selections, and highlights instead of modifying a
+filtered child in place. A shared legend is promoted only when every child has
+a concretely compatible scale and guide recipe; otherwise the entire edit is
+rejected and the earlier facet remains unchanged.
 
 ## Replace one stable slot
 
@@ -6559,7 +6586,9 @@ tree; renderers read only that concrete state.
 
 `hconcat`, `vconcat`, and `facet` trace `useProgram` children followed by
 `materializeComposition`. Layout edits and replacement rematerialize from the
-retained child programs. Ordinary data, mark, encoding, scale, and guide
+retained child programs. Facet scale and guide edits rederive stable-ID children
+from the parent-retained unit state before replacing the parent snapshot.
+Ordinary data, mark, encoding, scale, and guide
 actions apply only to unit programs and reject a composition parent. Facet
 titles and facet-header edits are explicit parent-owned exceptions. Edit a
 child first, then replace its slot when a concat dashboard needs a changed
@@ -9700,7 +9729,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editErrorBand`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBandBoundary`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBar`](./actions/statistics.md#editerrorbar) | user-facing | statistics |
+| [`editFacetGuides`](./actions/charts-data.md#editfacetguides) | user-facing | composition |
 | [`editFacetHeaders`](./actions/charts-data.md#editfacetheaders) | user-facing | composition |
+| [`editFacetScales`](./actions/charts-data.md#editfacetscales) | user-facing | composition |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#extension-actions) | primitive | primitives |
 | [`editGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
@@ -9825,10 +9856,11 @@ Edit Canvas properties and rematerialize connected consumers.
 ## `editCompositionLayout`
 
 ```javascript
-editCompositionLayout({ gap?, align?, padding? })
+editCompositionLayout({ columns?, gap?, align?, padding? })
 ```
 
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
+`columns` changes wrapping only on a facet composition and is rejected for concat.
 Omitted values are preserved, child identity is unchanged, and the parent snapshot
 is rebuilt from retained child programs.
 
@@ -9863,6 +9895,26 @@ editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? })
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
 without changing child programs or facet value order.
+
+## `editFacetScales`
+
+```javascript
+editFacetScales({ x?, y?, xOffset?, yOffset?, color?, size?, shape?, opacity?, strokeDash? })
+```
+
+Partially change used facet channels between `"shared"` and `"independent"`.
+Every cell is rederived from the retained pre-facet program while field, data,
+value order, child IDs, layout, guides, headers, and title are preserved.
+
+## `editFacetGuides`
+
+```javascript
+editFacetGuides({ axes?, legend? })
+```
+
+Partially change axes between `"each"` and `"outer"`, or legend ownership
+between `false` and `"shared"`. Shared legend promotion requires concretely
+compatible child scales and guide recipes.
 
 ## `createData`
 
@@ -11551,6 +11603,8 @@ interface ChartProgramActions {
   editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
   replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
   facet(options: FacetOptions): ChartProgram;
+  editFacetScales(options: FacetScaleResolutions): ChartProgram;
+  editFacetGuides(options: FacetGuideOptions): ChartProgram;
   editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;
   editSemantic(options: EditSemanticOptions): ChartProgram;
   createGraphics(options: { id: string; type: GraphicType; length?: number; parent?: string; before?: string; after?: string; }): ChartProgram;
