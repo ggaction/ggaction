@@ -743,7 +743,7 @@ async function testTypeScriptConsumer(directory) {
       .editCompositionLayout({ gap: 8, padding: { left: 4 } })
       .replaceCompositionChild({ target: "view-2", program });
     const nested: ChartProgram = vconcat({ programs: [composed, program] });
-    const faceted: ChartProgram = chart()
+    const facetPolicyEdited: ChartProgram = chart()
       .createCanvas({ width: 240, height: 180 })
       .createData({ values: [
         { group: "A", x: 1, y: 2 },
