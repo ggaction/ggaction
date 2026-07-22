@@ -15,9 +15,9 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-현재 실행 계획 owner는 **Roadmap 4.1**이며 active Phase 7이다. 새 chart capability가 아니라 encoding,
-selection, guide, statistical owner와 facet의 edit/remove lifecycle을 보강한다. Box/gradient owner의 data와
-categorical/quantitative positional-role revision은 구현·검증을 끝내고 R41-P7-A review를 기다린다.
+현재 실행 계획 owner는 **Roadmap 4.1**이며 active Phase 8이다. 새 chart capability가 아니라 encoding,
+selection, guide, statistical owner와 facet의 edit/remove lifecycle을 보강하며 현재 facet columns, scale policy와
+guide policy editing을 구현 중이다.
 포인터의 machine-readable owner는 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 
 ## 작업별 읽기 경로

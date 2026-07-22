@@ -2,10 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
-Phase 7 implementation, exact Current contract synchronization and full verification are complete at functional
-checkpoints `125fe017` and `2fe415f2` on `origin/codex/roadmap4-1-lifecycle`. User approval is not recorded yet.
+사용자가 2026-07-22에 Gate package `3e13a764`와 functional checkpoints `125fe017`, `2fe415f2`의 Phase 7
+결과를 명시적으로 승인했다. Phase 8 facet columns, scale policy and guide policy editing이 해제되었다.
 
 ## Review target
 
