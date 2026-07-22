@@ -4,7 +4,7 @@
 
 ## 현재 작업
 
-- [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md) — **active owner**, Phase 8 complete and R41-P8-A ready for review
+- [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md) — **active owner**, Phase 9 closeout in progress
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — Roadmap status, nullable active Phase와 마지막 완료 Phase의 machine-readable owner
 
 ## 개발 이력

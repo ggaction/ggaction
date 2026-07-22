@@ -2,10 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
-Phase 8 implementation, Current contract synchronization and full verification are complete at functional checkpoints
-`1726d2aa`, `2dcdd971` and `b818e1ce` on `origin/codex/roadmap4-1-lifecycle`. User approval is not recorded yet.
+사용자가 2026-07-22에 Gate package `716fdd0b`와 functional checkpoints `1726d2aa`, `2dcdd971`,
+`b818e1ce`의 Phase 8 결과를 명시적으로 승인했다. Phase 9 cross-capability regression,
+inventory/docs/package closeout이 해제되었다.
 
 ## Review target
 
