@@ -11,14 +11,14 @@ statistical body와 독립적으로 disable/recreate할 수 있게 한다.
 
 - [x] R41-P5-A explicit approval과 active Phase 전환
 - [x] R41-P6-A Gate 선언
-- [ ] Interval/error-bar/error-band owner와 boundary ownership 전수 mapping
-- [ ] Error bar/band statistical revision과 boundary disable/recreate
-- [ ] Density source/field/group partial revision
-- [ ] Regression data/x/y/group partial revision
-- [ ] Selection/highlight, scale/guide와 component rematerialization 검증
-- [ ] Types/current contracts/ACTION_INDEX/public docs 동기화
-- [ ] Focused/cumulative/Browser/PNG/package verification
-- [ ] R41-P6-A remote checkpoint
+- [x] Interval/error-bar/error-band owner와 boundary ownership 전수 mapping
+- [x] Error bar/band statistical revision과 boundary disable/recreate
+- [x] Density source/field/group partial revision
+- [x] Regression data/x/y/group partial revision
+- [x] Selection/highlight, scale/guide와 component rematerialization 검증
+- [x] Types/current contracts/ACTION_INDEX/public docs 동기화
+- [x] Focused/cumulative/Browser/PNG/package verification
+- [x] R41-P6-A remote checkpoint
 - [ ] 사용자 explicit approval
 
 ## Gate R41-P6-A

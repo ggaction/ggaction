@@ -2,11 +2,11 @@
 
 ## 진행 상태
 
-- [ ] Error bar/band statistical owner and component mapping
-- [ ] Complete statistical candidate preflight
-- [ ] Immutable interval revision, component rebind and rematerialization
-- [ ] Boundary disable, cleanup and ordinary recreate
-- [ ] Focused interval/boundary tests
+- [x] Error bar/band statistical owner and component mapping
+- [x] Complete statistical candidate preflight
+- [x] Immutable interval revision, component rebind and rematerialization
+- [x] Boundary disable, cleanup and ordinary recreate
+- [x] Focused interval/boundary tests
 
 ## 실행 순서
 

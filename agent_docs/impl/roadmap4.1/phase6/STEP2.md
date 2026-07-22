@@ -2,13 +2,13 @@
 
 ## 진행 상태
 
-- [ ] Density source/field/group owner mapping and implementation
-- [ ] Regression data/x/y/group owner mapping and implementation
-- [ ] Complete candidate and consumer/component preflight
-- [ ] Revision/rebind/rematerialization/release and selection replay
-- [ ] Contract/type/docs synchronization
-- [ ] Focused and cumulative verification
-- [ ] Gate evidence/commit/push
+- [x] Density source/field/group owner mapping and implementation
+- [x] Regression data/x/y/group owner mapping and implementation
+- [x] Complete candidate and consumer/component preflight
+- [x] Revision/rebind/rematerialization/release and selection replay
+- [x] Contract/type/docs synchronization
+- [x] Focused and cumulative verification
+- [x] Gate evidence/commit/push
 
 ## 실행 순서
 

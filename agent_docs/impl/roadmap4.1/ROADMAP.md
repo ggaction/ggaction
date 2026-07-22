@@ -1,7 +1,7 @@
 # Roadmap 4.1 — Authoring Lifecycle and Compatibility Completion
 
-> **문서 상태 — 현재 실행 계획.** Phase 5 `editBin2DData` partial revision facade의 R41-P5-A가 승인되었고
-> Phase 6 statistical owner revision and error-band boundary lifecycle을 진행한다.
+> **문서 상태 — 현재 실행 계획.** Phase 6 statistical owner revision and error-band boundary lifecycle 구현과
+> 검증을 완료했고 R41-P6-A가 `ready-for-review`다. Phase 7은 명시적 승인 전까지 차단된다.
 > 현재 observable behavior는
 > [`ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)이 소유하며, active Phase 포인터는
 > [`ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다.
