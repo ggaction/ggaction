@@ -1,8 +1,8 @@
 {
   "version": 1,
   "activeRoadmap": "roadmap4.1",
-  "activePhase": 0,
-  "lastCompletedPhase": null,
+  "activePhase": 1,
+  "lastCompletedPhase": 0,
   "roadmaps": [
     {
       "id": "roadmap1",

@@ -172,11 +172,25 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
+| `removeEncoding` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removeencoding) |
+| `removePointRadius` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removepointradius) |
+| `editMarkSelection` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editmarkselection) |
+| `removeMarkHighlight` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removemarkhighlight) |
+| `removeMarkSelection` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removemarkselection) |
+| `editBin2DData` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editbin2ddata) |
+| `editFacetScales` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editfacetscales) |
+| `editFacetGuides` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editfacetguides) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
+| behavior | Encoding and mark outline removal | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-encoding-and-mark-outline-removal) |
+| behavior | Legend lifecycle completion | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-legend-lifecycle-completion) |
+| behavior | Cartesian axis component removal | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-cartesian-axis-component-removal) |
+| behavior | Statistical owner revisions | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-statistical-owner-revisions) |
+| behavior | Distribution owner role revisions | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-distribution-owner-role-revisions) |
+| behavior | Facet policy editing | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-facet-policy-editing) |
 
 ## Internal inventories
 

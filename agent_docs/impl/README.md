@@ -4,7 +4,7 @@
 
 ## 현재 작업
 
-- [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md) — **active owner**, Phase 0 lifecycle contract Gate
+- [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md) — **active owner**, Phase 1 encoding/appearance teardown
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — Roadmap status, nullable active Phase와 마지막 완료 Phase의 machine-readable owner
 
 ## 개발 이력

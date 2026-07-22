@@ -15,8 +15,8 @@
 - [x] Phase dependency와 Gate 분할 작성
 - [x] Contract/unit baseline 실행
 - [x] R41-P0-A review package commit/push — `ffe163b`
-- [ ] 사용자 explicit approval
-- [ ] Approved subset을 ACTION_INDEX Planned inventory로 승격
+- [x] 사용자 explicit approval — 2026-07-22
+- [x] Approved subset을 ACTION_INDEX Planned inventory로 승격
 
 ## Gate R41-P0-A
 
@@ -46,5 +46,5 @@ Exact 목록과 추천안은 [`../PROPOSALS.json`](../PROPOSALS.json) 및 [`GATE
 
 ## Exit
 
-사용자가 exact proposal 또는 수정된 subset을 명시적으로 승인한다. 승인 응답과 Gate commit을 기록한 뒤에만
-Phase 0을 completed로 바꾸고 Phase 1을 in-progress로 연다.
+사용자가 exact proposal 전체를 명시적으로 승인했다. 승인 응답과 Gate commit을 기록하고 Phase 1을
+in-progress로 열었다.

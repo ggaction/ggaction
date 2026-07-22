@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-07-22. The approved scope is the complete proposal at remote checkpoint
+`ffe163b`; no action or extension was removed or modified during approval.
 
 ## Review target
 
