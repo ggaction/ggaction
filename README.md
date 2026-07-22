@@ -101,6 +101,38 @@ render(program, context);
 Matching color and shape encodings give each origin a redundant visual cue and
 create a labeled categorical legend automatically.
 
+### Branch revisions without mutation
+
+The basic entry above is creation-focused. Import the full entry for editing,
+start a separate program without a shape encoding, and derive alternatives
+without changing the checkpoint:
+
+```javascript
+import { chart as editableChart } from "ggaction";
+
+const checkpoint = editableChart()
+  .createCanvas({ width: 640, height: 400 })
+  .createData({ values: observations })
+  .createScatterPlot({
+    x: "displacement",
+    y: "acceleration",
+    color: "origin"
+  });
+
+const outlined = checkpoint.editPointMark({
+  stroke: "#0f172a",
+  strokeWidth: 2
+});
+const muted = checkpoint.editPointMark({ opacity: 0.35 });
+
+console.log(checkpoint === outlined); // false
+console.log(checkpoint.trace.children.at(-1).op); // "createScatterPlot"
+console.log(outlined.trace.children.at(-1).op);   // "editPointMark"
+```
+
+The checkpoint and both revisions remain independently renderable and
+inspectable. Each revision records only the action added to its own trace.
+
 Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
 the other basic Cartesian charts. The `ggaction/basic` entry keeps this common
 creation path below a 120,000-byte gzip bundle budget while each facade still
