@@ -309,4 +309,12 @@ test("rematerializes a retained block on another target with the same semantic k
   assert.ok(removed.guideConfigs.legend.gradient);
   assert.ok(removed.graphicSpec.objects.colorGradientStrips);
   assert.equal(removed.semanticSpec.guides.legend.color.scale, "amountColor");
+
+  const wholeRemoved = program.removeLegend({ target: "points" });
+  assert.equal(wholeRemoved.guideConfigs.legend.color, undefined);
+  assert.ok(wholeRemoved.guideConfigs.legend.gradient);
+  assert.equal(
+    wholeRemoved.semanticSpec.guides.legend.color.scale,
+    "amountColor"
+  );
 });
