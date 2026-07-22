@@ -8,7 +8,7 @@
 - [x] Last-component cleanup and ordinary recreate
 - [x] Contract/type/docs synchronization
 - [x] Focused and cumulative verification
-- [ ] Gate evidence/commit/push
+- [x] Gate evidence/commit/push
 
 ## 실행 순서
 
@@ -26,3 +26,6 @@
 
 구현 완료 뒤 exact source/state/trace/test/compatibility 결과와 remote commit을 [`GATE_A.md`](./GATE_A.md)에
 기록한다.
+
+Verified functional checkpoint는 `52b26d8`이며 `origin/codex/roadmap4-1-lifecycle`에 push되었다. Gate package는
+[`GATE_A.md`](./GATE_A.md)에 자체 완결적으로 기록했고 Phase 5는 사용자 승인 전까지 시작하지 않는다.
