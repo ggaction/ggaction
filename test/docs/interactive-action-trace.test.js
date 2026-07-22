@@ -43,5 +43,6 @@ test("keeps the release-site demo generated from the example source", async () =
   );
   assert.match(html, /Generated from examples\/interactive-action-trace\/index\.html/);
   assert.match(html, /interactive-action-trace\.js/);
+  assert.match(html, /rel="icon" href="data:image\/svg\+xml,/);
   assert.doesNotMatch(html, /src="\.\/main\.js"/);
 });
