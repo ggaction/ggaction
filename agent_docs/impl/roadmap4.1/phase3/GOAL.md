@@ -9,12 +9,12 @@ Existing `editLegend` kind dispatcher가 stroke-width legend의 bounded edit voc
 
 - [x] R41-P2-A explicit approval과 active Phase 전환
 - [x] R41-P3-A Gate 선언
-- [ ] Legend block ownership, target/channel inference와 materialization flow 전수 mapping
-- [ ] Stroke-width `editLegend` dispatch implementation and focused tests
-- [ ] Selective `removeLegend({ channels })` implementation and focused tests
-- [ ] Types/current contracts/ACTION_INDEX/public docs 동기화
-- [ ] Focused/cumulative/Browser/PNG/package verification
-- [ ] R41-P3-A remote checkpoint
+- [x] Legend block ownership, target/channel inference와 materialization flow 전수 mapping
+- [x] Stroke-width `editLegend` dispatch implementation and focused tests
+- [x] Selective `removeLegend({ channels })` implementation and focused tests
+- [x] Types/current contracts/ACTION_INDEX/public docs 동기화
+- [x] Focused/cumulative/Browser/PNG/package verification
+- [x] R41-P3-A remote checkpoint
 - [ ] 사용자 explicit approval
 
 ## Gate R41-P3-A
