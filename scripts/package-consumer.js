@@ -155,6 +155,16 @@ async function testNodeConsumer(directory) {
         .values.reduce((sum, row) => sum + row.count, 0),
       2
     );
+    const editedBinned = binned.editBin2DData({
+      target: "sampleCells",
+      bins: 1,
+      includeEmpty: false
+    });
+    assert.equal(
+      editedBinned.materializationConfigs.data.bin2d.sampleCells.current,
+      "sampleCellsBin2DDataRevision1"
+    );
+    assert.equal(editedBinned.semanticSpec.datasets.at(-1).values.length, 1);
     const scatterFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -543,6 +553,7 @@ async function testTypeScriptConsumer(directory) {
       vconcat,
       type ChartProgram,
       type Bin2DDataOptions,
+      type EditBin2DDataOptions,
       type CreateBarPlotOptions,
       type CreateHeatmapOptions,
       type CreateHistogramOptions,
@@ -796,6 +807,12 @@ async function testTypeScriptConsumer(directory) {
     const binned: ChartProgram = chart()
       .createData({ id: "binSource", values: [{ x: 0, y: 0 }, { x: 2, y: 2 }] })
       .createBin2DData(binOptions);
+    const binEdit: EditBin2DDataOptions = {
+      target: "cells",
+      bins: 1,
+      includeEmpty: false
+    };
+    const editedBinned: ChartProgram = binned.editBin2DData(binEdit);
     const inspected = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2 }] })

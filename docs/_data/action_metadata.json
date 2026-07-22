@@ -39,6 +39,11 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "editBin2DData": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createIntervalData": {
     "operation": "create",
     "layer": "user-facing",

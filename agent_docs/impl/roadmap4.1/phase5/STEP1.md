@@ -2,12 +2,12 @@
 
 ## 진행 상태
 
-- [ ] Logical owner, current provenance and consumer mapping
-- [ ] Complete proposed-state and dependency preflight
-- [ ] Immutable revision, rebind, rematerialization and orphan release
-- [ ] Repeated-create compatibility and intent distinction
-- [ ] Contract/type/docs synchronization
-- [ ] Focused and cumulative verification
+- [x] Logical owner, current provenance and consumer mapping
+- [x] Complete proposed-state and dependency preflight
+- [x] Immutable revision, rebind, rematerialization and orphan release
+- [x] Repeated-create compatibility and intent distinction
+- [x] Contract/type/docs synchronization
+- [x] Focused and cumulative verification
 - [ ] Gate evidence/commit/push
 
 ## 실행 순서

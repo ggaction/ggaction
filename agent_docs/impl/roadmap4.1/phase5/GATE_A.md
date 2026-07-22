@@ -18,7 +18,7 @@ program.editBin2DData({
   x: "longitude",
   y: "latitude",
   bins: { x: 20, y: 10 },
-  extent: { x: "auto", y: [0, 100] },
+  extent: { y: [0, 100] },
   includeEmpty: true,
   members: false,
   as: {
@@ -26,8 +26,7 @@ program.editBin2DData({
     x1: "x1",
     y0: "y0",
     y1: "y1",
-    count: "count",
-    members: "members"
+    count: "count"
   }
 });
 ```

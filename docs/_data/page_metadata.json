@@ -224,7 +224,7 @@
   },
   "/api/data/bin2d/": {
     "title": "Rectangular 2D Bins",
-    "description": "createBin2DData groups two quantitative fields into a rectangular grid."
+    "description": "createBin2DData groups two quantitative fields into a rectangular grid. editBin2DData partially revises an existing logical grid owner."
   },
   "/api/marks/": {
     "title": "Marks",

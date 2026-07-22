@@ -1122,6 +1122,18 @@ export interface Bin2DDataOptions {
   as?: Bin2DOutputFields;
 }
 
+export interface EditBin2DDataOptions {
+  target?: string;
+  source?: string;
+  x?: string;
+  y?: string;
+  bins?: number | Bin2DCounts;
+  extent?: Bin2DExtent;
+  includeEmpty?: boolean;
+  members?: boolean;
+  as?: DatasetBin2DOutputFields;
+}
+
 export interface ErrorBarPositionChannel {
   field?: string;
   fieldType?: "nominal" | "ordinal" | "temporal";
@@ -2102,6 +2114,7 @@ export class ChartProgram {
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
+  editBin2DData(options: EditBin2DDataOptions): ChartProgram;
 
   createPointMark(options?: {
     id?: string;

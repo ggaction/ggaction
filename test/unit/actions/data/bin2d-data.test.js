@@ -183,3 +183,251 @@ test("rejects invalid calls before creating state", () => {
   );
   assert.equal(source.semanticSpec.datasets.length, 1);
 });
+
+test("partially edits the unique logical owner and preserves omitted provenance", () => {
+  const before = sourceProgram().createBin2DData(binOptions());
+  const options = Object.freeze({ bins: 1 });
+  const after = before.editBin2DData(options);
+  const currentId = after.materializationConfigs.data.bin2d.cells.current;
+  const current = after.semanticSpec.datasets.find(({ id }) => id === currentId);
+  const transform = current.transform[0];
+
+  assert.equal(currentId, "cellsBin2DDataRevision1");
+  assert.equal(current.source, "source");
+  assert.deepEqual(transform.bins, { x: 1, y: 1 });
+  assert.equal(transform.x, "x");
+  assert.equal(transform.y, "y");
+  assert.deepEqual(transform.extent, { x: [0, 3], y: [0, 3] });
+  assert.equal(transform.includeEmpty, true);
+  assert.equal(transform.members, true);
+  assert.deepEqual(transform.as, binOptions().as);
+  assert.equal(before.semanticSpec.datasets.at(-1).id, "cells");
+  assert.deepEqual(options, { bins: 1 });
+  assert.deepEqual(
+    after.semanticSpec,
+    before.createBin2DData(binOptions({ bins: 1 })).semanticSpec
+  );
+});
+
+test("resolves the current owner before unique inference and rejects ambiguity", () => {
+  const twoOwners = sourceProgram()
+    .createBin2DData(binOptions({ id: "first", source: "source" }))
+    .createBin2DData(binOptions({ id: "second", source: "source" }));
+  const current = twoOwners.editBin2DData({ includeEmpty: false });
+
+  assert.equal(
+    current.materializationConfigs.data.bin2d.first.current,
+    "first"
+  );
+  assert.equal(
+    current.materializationConfigs.data.bin2d.second.current,
+    "secondBin2DDataRevision1"
+  );
+
+  const noCurrentOwner = twoOwners.createData({
+    id: "otherSource",
+    values: rows
+  });
+  assert.throws(
+    () => noCurrentOwner.editBin2DData({ bins: 1 }),
+    /owner is ambiguous; provide target/
+  );
+  assert.throws(
+    () => twoOwners.editBin2DData({ target: "missing", bins: 1 }),
+    /Unknown 2D bin owner "missing"/
+  );
+  assert.throws(
+    () => sourceProgram().editBin2DData({ bins: 1 }),
+    /No 2D bin owner is available/
+  );
+});
+
+test("edits source, fields, grid, extent, policies and complete output names", () => {
+  const before = sourceProgram()
+    .createData({
+      id: "replacement",
+      values: rows.map(row => ({ u: row.x + 10, v: row.y + 20 }))
+    })
+    .createBin2DData(binOptions({ source: "source" }));
+  const after = before.editBin2DData({
+    target: "cells",
+    source: "replacement",
+    x: "u",
+    y: "v",
+    bins: { x: 1, y: 2 },
+    extent: { x: [10, 13], y: [20, 23] },
+    includeEmpty: false,
+    members: false,
+    as: {
+      x0: "u0", x1: "u1", y0: "v0", y1: "v1", count: "n"
+    }
+  });
+  const currentId = after.materializationConfigs.data.bin2d.cells.current;
+  const current = after.semanticSpec.datasets.find(({ id }) => id === currentId);
+
+  assert.equal(current.source, "replacement");
+  assert.deepEqual(current.transform[0], {
+    type: "bin2d",
+    x: "u",
+    y: "v",
+    bins: { x: 1, y: 2 },
+    extent: { x: [10, 13], y: [20, 23] },
+    includeEmpty: false,
+    members: false,
+    as: { x0: "u0", x1: "u1", y0: "v0", y1: "v1", count: "n" },
+    resolved: {
+      extent: { x: [10, 13], y: [20, 23] },
+      edges: { x: [10, 13], y: [20, 21.5, 23] },
+      eligibleCount: 4,
+      occupiedCount: 2
+    }
+  });
+});
+
+test("normalizes the members output when members is toggled without as", () => {
+  const withoutMembers = sourceProgram().createBin2DData(binOptions({
+    members: false,
+    as: { x0: "x0", x1: "x1", y0: "y0", y1: "y1", count: "count" }
+  }));
+  const enabled = withoutMembers.editBin2DData({ members: true });
+  const enabledId = enabled.materializationConfigs.data.bin2d.cells.current;
+  const enabledDataset = enabled.semanticSpec.datasets.find(
+    ({ id }) => id === enabledId
+  );
+  const enabledTransform = enabledDataset.transform[0];
+  const disabled = enabled.editBin2DData({ members: false });
+  const disabledId = disabled.materializationConfigs.data.bin2d.cells.current;
+  const disabledTransform = disabled.semanticSpec.datasets.find(
+    ({ id }) => id === disabledId
+  ).transform[0];
+
+  assert.equal(enabledTransform.as.members, "__cells_members");
+  assert.equal(
+    enabledDataset.values.every(row => Array.isArray(row.__cells_members)),
+    true
+  );
+  assert.equal(Object.hasOwn(disabledTransform.as, "members"), false);
+});
+
+test("preserves a prior revision when the new revision uses it as source", () => {
+  const before = sourceProgram().createBin2DData(binOptions());
+  const after = before.editBin2DData({
+    source: "cells",
+    x: "x0",
+    y: "y0",
+    bins: 1,
+    extent: { x: [0, 1.5], y: [0, 1.5] }
+  });
+  const current = after.materializationConfigs.data.bin2d.cells.current;
+  const revision = after.semanticSpec.datasets.find(({ id }) => id === current);
+
+  assert.equal(current, "cellsBin2DDataRevision1");
+  assert.equal(revision.source, "cells");
+  assert.equal(after.semanticSpec.datasets.some(({ id }) => id === "cells"), true);
+  assert.equal(after.semanticSpec.datasets.length, 3);
+});
+
+test("rebinds and rematerializes every direct consumer exactly once", () => {
+  const before = sourceProgram()
+    .createBin2DData(binOptions())
+    .createPointMark({ id: "lower", data: "cells" })
+    .encodeX({ target: "lower", field: "x0" })
+    .encodeY({ target: "lower", field: "y0" })
+    .createPointMark({ id: "upper", data: "cells" })
+    .encodeX({ target: "upper", field: "x1" })
+    .encodeY({ target: "upper", field: "y1" });
+  const after = before.editBin2DData({ target: "cells", bins: 1 });
+  const action = after.trace.children.at(-1);
+  const current = after.materializationConfigs.data.bin2d.cells.current;
+
+  assert.equal(action.op, "editBin2DData");
+  assert.equal(
+    action.children.filter(({ op }) => op === "createDerivedData").length,
+    1
+  );
+  assert.deepEqual(
+    action.children.filter(({ op }) => op === "rebindLayerData")
+      .map(node => node.args.id),
+    ["lower", "upper"]
+  );
+  assert.equal(
+    action.children.filter(({ op }) => op === "releaseDerivedData").length,
+    1
+  );
+  assert.equal(after.semanticSpec.layers.every(layer => layer.data === current), true);
+  assert.equal(after.graphicSpec.objects.lower.items.length, 1);
+  assert.equal(after.graphicSpec.objects.upper.items.length, 1);
+  assert.equal(after.semanticSpec.datasets.some(({ id }) => id === "cells"), false);
+  assert.equal(before.semanticSpec.layers.every(layer => layer.data === "cells"), true);
+  assert.equal(before.graphicSpec.objects.lower.items.length, 4);
+});
+
+test("rejects empty, no-op, incomplete-output and invalid edits atomically", () => {
+  const before = sourceProgram()
+    .createBin2DData(binOptions())
+    .createPointMark({ id: "cellsMark", data: "cells" })
+    .encodeX({ target: "cellsMark", field: "x0" })
+    .encodeY({ target: "cellsMark", field: "y0" });
+  const datasets = before.semanticSpec.datasets;
+  const graphics = before.graphicSpec;
+  const config = before.materializationConfigs.data.bin2d;
+
+  assert.throws(
+    () => before.editBin2DData({ target: "cells" }),
+    /requires at least one transform or source option/
+  );
+  assert.throws(
+    () => before.editBin2DData({ target: "cells", bins: { x: 2, y: 2 } }),
+    /requires an actual transform or source change/
+  );
+  assert.throws(
+    () => before.editBin2DData({ target: "cells", as: { count: "n" } }),
+    /requires the complete "x0" output field/
+  );
+  assert.throws(
+    () => before.editBin2DData({ target: "cells", x: "missing" }),
+    /requires at least one row with finite x and y values/
+  );
+  assert.throws(
+    () => before.editBin2DData({
+      target: "cells",
+      members: false,
+      as: { x0: "u0", x1: "u1", y0: "v0", y1: "v1", count: "n", members: "m" }
+    }),
+    /requires members: true/
+  );
+  assert.throws(
+    () => before.editBin2DData({ target: "cells", extra: true }),
+    /Unknown editBin2DData option "extra"/
+  );
+  assert.throws(
+    () => before.editBin2DData({
+      target: "cells",
+      as: { x0: "u0", x1: "u1", y0: "v0", y1: "v1", count: "n", members: "m" },
+      members: true
+    }),
+    /[Ff]ield "x0"/
+  );
+
+  assert.equal(before.semanticSpec.datasets, datasets);
+  assert.equal(before.graphicSpec, graphics);
+  assert.equal(before.materializationConfigs.data.bin2d, config);
+});
+
+test("rejects a derived consumer before editing its logical owner", () => {
+  const dependent = sourceProgram()
+    .createBin2DData(binOptions())
+    .filterData({
+      id: "occupiedCells",
+      source: "cells",
+      field: "count",
+      predicate: { op: "gt", value: 0 }
+    });
+
+  assert.throws(
+    () => dependent.editBin2DData({ target: "cells", bins: 1 }),
+    /while derived dataset "occupiedCells" depends on it/
+  );
+  assert.equal(dependent.materializationConfigs.data.bin2d.cells.current, "cells");
+  assert.equal(dependent.semanticSpec.datasets.at(-1).id, "occupiedCells");
+});

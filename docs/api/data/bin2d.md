@@ -12,8 +12,9 @@ title: Rectangular 2D Bins
   <span>derived rows<strong>bounds + count</strong></span>
 </div>
 
-`createBin2DData` groups two quantitative fields into a rectangular grid. It
-stores concrete cell bounds and counts as a new dataset, so ordinary ranged
+`createBin2DData` groups two quantitative fields into a rectangular grid.
+`editBin2DData` partially revises an existing logical grid owner. Both store
+concrete cell bounds and counts as immutable datasets, so ordinary ranged
 rectangles or other marks can consume the result without asking the renderer to
 perform data transforms.
 
@@ -68,11 +69,50 @@ copies complete source row objects into every cell.
 
 ## Revisions
 
-Calling `createBin2DData` again with the same logical `id` creates a new immutable
-revision, rebinds direct visual consumers, rematerializes their scales, marks,
-and guides, and releases the unreferenced previous revision. Earlier programs
-remain unchanged. A dependent derived dataset currently blocks replacement
-with an explicit error; create a new logical ID when that dependency must remain.
+Calling `createBin2DData` again with the same logical `id` remains supported as
+a complete reauthoring operation. Supply the complete transform decisions for
+that intent. It creates a new immutable revision, rebinds direct visual
+consumers, rematerializes their scales, marks, and guides, and releases the
+unreferenced previous revision.
+
+## `editBin2DData`
+
+`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as? })`
+
+Use `editBin2DData` when only part of the current transform should change:
+
+```javascript
+const revised = program.editBin2DData({
+  target: "cells",
+  bins: { x: 20, y: 10 },
+  includeEmpty: false
+});
+```
+
+`target` names the logical owner, not a generated revision dataset. It can be
+omitted when the current dataset identifies an owner or exactly one 2D-bin owner
+exists. Multiple owners without a current match are ambiguous and require
+`target`.
+
+Every omitted top-level option is preserved from the current requested
+provenance. Supplying `extent` replaces the complete extent decision and an
+omitted axis inside that object returns to automatic extent. Supplying `as`
+requires the complete `x0`, `x1`, `y0`, `y1`, and `count` output map, plus
+`members` when member indexes are enabled. When `as` is omitted, enabling
+members adds `__<logical-owner>_members`; disabling members removes only that
+output.
+
+An edit must contain at least one transform or source option and must produce an
+actual change. The complete source, transform, and every direct visual consumer
+are validated before the returned action records its first child transition.
+Successful calls create a deterministic immutable revision, explicitly rebind
+each direct layer, rematerialize affected scales, marks, and guides, then release
+the unreferenced prior revision. Earlier programs and caller-owned options remain
+unchanged.
+
+A dependent derived dataset currently blocks both complete reauthoring and
+partial editing with an explicit error; create a new logical ID when that
+dependency must remain.
 
 ## Related
 

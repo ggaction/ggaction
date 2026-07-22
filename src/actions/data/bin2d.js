@@ -3,7 +3,8 @@ import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import {
   deriveBin2DRows,
-  normalizeBin2DTransform
+  normalizeBin2DTransform,
+  requestedBin2DTransform
 } from "../../grammar/bin2d.js";
 import { applyLayerDataRematerialization } from
   "../../materialization/dependencies.js";
@@ -18,9 +19,41 @@ import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
 const OPTIONS = Object.freeze([
   "id", "source", "x", "y", "bins", "extent", "includeEmpty", "members", "as"
 ]);
+const EDIT_OPTIONS = Object.freeze([
+  "target", "source", "x", "y", "bins", "extent", "includeEmpty", "members", "as"
+]);
+const EDITABLE = Object.freeze(EDIT_OPTIONS.slice(1));
+const OUTPUT_FIELDS = Object.freeze([
+  "x0", "x1", "y0", "y1", "count"
+]);
 
 function ownerConfig(program, id) {
   return program.materializationConfigs.data?.bin2d?.[id];
+}
+
+function ownerEntries(program) {
+  return Object.entries(program.materializationConfigs.data?.bin2d ?? {});
+}
+
+function resolveBin2DOwner(program, requested) {
+  if (requested !== undefined) {
+    const owner = validateUserId(requested, "2D bin owner id");
+    if (ownerConfig(program, owner) === undefined) {
+      throw new Error(`Unknown 2D bin owner "${owner}".`);
+    }
+    return owner;
+  }
+  const owners = ownerEntries(program);
+  const current = owners.filter(([, config]) =>
+    config?.current === program.context.currentData
+  );
+  if (current.length === 1) return current[0][0];
+  if (current.length > 1) {
+    throw new Error("2D bin owner is ambiguous; provide target.");
+  }
+  if (owners.length === 1) return owners[0][0];
+  if (owners.length === 0) throw new Error("No 2D bin owner is available.");
+  throw new Error("2D bin owner is ambiguous; provide target.");
 }
 
 function requireCurrentBin2D(program, id, config) {
@@ -57,6 +90,74 @@ function preflight(program, sourceId, transform) {
     throw new Error(`Source dataset "${sourceId}" has no values.`);
   }
   deriveBin2DRows(source.values, transform);
+}
+
+function requireCompleteEditOutputFields(value, members) {
+  const required = [...OUTPUT_FIELDS, ...(members ? ["members"] : [])];
+  const missing = required.find(field => !Object.hasOwn(value, field));
+  if (missing !== undefined) {
+    throw new Error(
+      `editBin2DData as requires the complete "${missing}" output field.`
+    );
+  }
+}
+
+function editedTransform(owner, previous, args) {
+  const prior = requestedBin2DTransform(previous.transform[0]);
+  const option = property => Object.hasOwn(args, property)
+    ? args[property]
+    : prior[property];
+  const members = option("members");
+  let as = option("as");
+  if (!Object.hasOwn(args, "as")) {
+    as = { ...as };
+    if (members && as.members === undefined) {
+      as.members = `__${owner}_members`;
+    } else if (!members) {
+      delete as.members;
+    }
+  }
+  const transform = normalizeBin2DTransform({
+    id: owner,
+    x: option("x"),
+    y: option("y"),
+    bins: option("bins"),
+    extent: option("extent"),
+    includeEmpty: option("includeEmpty"),
+    members,
+    as
+  });
+  if (Object.hasOwn(args, "as")) {
+    requireCompleteEditOutputFields(args.as, members);
+  }
+  return transform;
+}
+
+function sameRequestedTransform(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function applyBin2DRevision(program, { owner, previous, source, transform }) {
+  rejectDerivedConsumers(program, previous.id);
+  const consumers = directLayerConsumers(program, previous.id);
+  const revision = planDerivedDataRevision(program, {
+    owner,
+    role: "Bin2DData",
+    previous: previous.id,
+    consumers
+  });
+  let next = program
+    .createDerivedData({ id: revision.id, source, transform: [transform] })
+    .materializeBin2DData({ id: revision.id });
+  for (const rebind of revision.rebinds) {
+    next = next.rebindLayerData(rebind);
+    next = applyLayerDataRematerialization(next, rebind.id);
+  }
+  next = next.releaseDerivedData(revision.release);
+  return next._withMaterializationConfig(
+    ["data", "bin2d", owner],
+    { current: revision.id }
+  );
 }
 
 export const materializeBin2DData = action(
@@ -113,25 +214,47 @@ export const createBin2DData = action(
         );
     }
 
-    rejectDerivedConsumers(this, previous.id);
-    const consumers = directLayerConsumers(this, previous.id);
-    const revision = planDerivedDataRevision(this, {
+    return applyBin2DRevision(this, {
       owner,
-      role: "Bin2DData",
-      previous: previous.id,
-      consumers
+      previous,
+      source,
+      transform
     });
-    let next = this
-      .createDerivedData({ id: revision.id, source, transform: [transform] })
-      .materializeBin2DData({ id: revision.id });
-    for (const rebind of revision.rebinds) {
-      next = next.rebindLayerData(rebind);
-      next = applyLayerDataRematerialization(next, rebind.id);
+  }
+);
+
+export const editBin2DData = action(
+  {
+    op: "editBin2DData",
+    description: "Partially revise one logical rectangular 2D-bin owner."
+  },
+  function (args = {}) {
+    validateKeys(args, EDIT_OPTIONS, "editBin2DData");
+    if (!EDITABLE.some(option => Object.hasOwn(args, option))) {
+      throw new Error("editBin2DData requires at least one transform or source option.");
     }
-    next = next.releaseDerivedData(revision.release);
-    return next._withMaterializationConfig(
-      ["data", "bin2d", owner],
-      { current: revision.id }
+    const owner = resolveBin2DOwner(this, args.target);
+    const previous = requireCurrentBin2D(this, owner, ownerConfig(this, owner));
+    const source = validateUserId(
+      args.source ?? previous.source,
+      "2D bin source dataset id"
     );
+    const transform = editedTransform(owner, previous, args);
+    if (
+      source === previous.source &&
+      sameRequestedTransform(
+        transform,
+        requestedBin2DTransform(previous.transform[0])
+      )
+    ) {
+      throw new Error("editBin2DData requires an actual transform or source change.");
+    }
+    preflight(this, source, transform);
+    const revision = { owner, previous, source, transform };
+
+    // Execute one speculative immutable branch so every consumer plan is known
+    // to succeed before the returned action trace records its first child.
+    applyBin2DRevision(this, revision);
+    return applyBin2DRevision(this, revision);
   }
 );

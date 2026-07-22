@@ -73,6 +73,7 @@ export type {
   DatasetScalar,
   DatasetTransform,
   EditGraphicsOptions,
+  EditBin2DDataOptions,
   EditHorizonOptions,
   EditCompositionLayoutOptions,
   EditFacetHeadersOptions,

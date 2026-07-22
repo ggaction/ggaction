@@ -10,11 +10,11 @@ revision, explicit layer rebind, dependent rematerialization과 safe orphan rele
 
 - [x] R41-P4-A explicit approval과 active Phase 전환
 - [x] R41-P5-A Gate 선언
-- [ ] Bin2D logical owner/provenance/revision/rebind/release flow 전수 mapping
-- [ ] Partial edit preflight와 implementation
-- [ ] Consumer rematerialization, orphan release와 repeated-create compatibility
-- [ ] Types/current contracts/ACTION_INDEX/public docs 동기화
-- [ ] Focused/cumulative/Browser/PNG/package verification
+- [x] Bin2D logical owner/provenance/revision/rebind/release flow 전수 mapping
+- [x] Partial edit preflight와 implementation
+- [x] Consumer rematerialization, orphan release와 repeated-create compatibility
+- [x] Types/current contracts/ACTION_INDEX/public docs 동기화
+- [x] Focused/cumulative/Browser/PNG/package verification
 - [ ] R41-P5-A remote checkpoint
 - [ ] 사용자 explicit approval
 

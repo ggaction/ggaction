@@ -378,6 +378,47 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `test/unit/actions/data/derived-data.test.js`, `test/charts/cars-binned-heatmap/data.test.js`,
   `scripts/package-consumer.js`.
 
+## `editBin2DData`
+
+- Signature: `editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as? })`.
+- Target: `target`은 materialization registry의 stable logical Bin2D owner ID다. 생략하면
+  `context.currentData`가 가리키는 current revision의 owner, 그 다음 유일한 owner를 사용한다. Current match가 없고
+  owner가 둘 이상이면 명시적 `target`을 요구하며 첫 owner를 선택하지 않는다.
+- Partial edit: `target` 외 최소 한 option과 complete candidate 기준 실제 source/transform 변화가 필요하다. Omitted
+  top-level option은 current revision의 requested transform provenance에서 보존한다. Explicit `bins`와 `extent`는
+  create-time vocabulary 전체를 교체하므로 `extent` object에서 생략한 axis는 automatic extent로 돌아간다.
+- Output and members: explicit `as`는 `x0/x1/y0/y1/count`와, `members: true`일 때 `members`까지 complete output map을
+  요구한다. `as`를 생략하고 members를 켜면 logical owner namespace의 members field를 추가하고, 끄면 prior members
+  output을 제거한다. 다른 output field는 보존한다.
+- Atomic effect: complete source rows와 transform을 계산하고 derived-dataset dependency 및 모든 direct visual
+  consumer의 rematerialization을 speculative immutable branch에서 먼저 검증한다. 성공하면 deterministic revision ID로
+  새 dataset을 만들고 wrapped `rebindLayerData` 뒤 scale/mark/guide materialization plan을 적용하며, 참조가 없어진 prior
+  revision만 `releaseDerivedData`로 정리한다. Logical owner ID와 consumer layer/scale/coordinate/guide identity는 유지한다.
+- Compatibility: `createBin2DData({ id: existing, ...completeTransform })`의 full reauthor/revision 동작은 유지한다.
+  Partial intent에는 `editBin2DData`를 사용한다. Derived dataset이 current revision을 직접 소비하면 silent cascade 대신
+  edit를 state 생성 전에 거부한다.
+- Immutability: previous program, prior revision, source rows와 caller-owned nested options를 변경하지 않는다.
+
+### Formal values — `editBin2DData`
+
+- Implemented: `editBin2DData({ target?: UserId; source?: UserId; x?: FieldName; y?: FieldName; bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger }; extent?: { x?: [FiniteNumber, FiniteNumber]; y?: [FiniteNumber, FiniteNumber] }; includeEmpty?: boolean; members?: boolean; as?: { x0: FieldName; x1: FieldName; y0: FieldName; y1: FieldName; count: FieldName; members?: FieldName } })`.
+- Planned (NOT IMPLEMENTED): dependent derived-dataset revision cascade, weighted cells, hexagonal/adaptive bins.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editBin2DData`
+
+- Owner and partial state
+  - ✅ Covered: explicit/current/unique owner resolution, missing/empty/ambiguous/no-op rejection, every editable top-level
+    option, omission preservation, complete output map and members output transition.
+- Revision and dependencies
+  - ✅ Covered: deterministic immutable revision, every direct layer rebind, scale/mark/guide rematerialization, prior release,
+    derived-consumer rejection, downstream failure preflight and exact trace uniqueness.
+- Compatibility and immutability
+  - ✅ Covered: repeated-create behavior, earlier program, source rows and caller option preservation, runtime/types/contracts,
+    packed Node/TypeScript/Browser and representative Canvas/PNG consumers.
+- Evidence: `test/unit/actions/data/bin2d-data.test.js`, `test/contracts/bin2d-lifecycle-render.test.js`,
+  `test/browser/package-consumer.browser.js`, `scripts/package-consumer.js`.
+
 ## `createCoordinate`
 
 - Signature: `createCoordinate({ id?, type?, layers? })`.

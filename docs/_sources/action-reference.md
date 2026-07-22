@@ -421,6 +421,19 @@ Aggregate finite x/y pairs into deterministic rectangular cell bounds and
 counts. Reusing the logical ID creates an immutable revision and rematerializes
 direct visual consumers. [Rectangular 2D bins](../api/data/bin2d.md)
 
+### `editBin2DData`
+
+```javascript
+editBin2DData({
+  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?
+})
+```
+
+Partially revise the current or unique logical 2D-bin owner. Omitted top-level
+transform options are preserved; successful edits create an immutable revision,
+rebind direct visual consumers, and safely release the prior revision.
+[Rectangular 2D bins](../api/data/bin2d.md#editbin2ddata)
+
 ### `createPointMark`
 
 ```javascript

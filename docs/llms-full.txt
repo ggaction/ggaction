@@ -4064,8 +4064,9 @@ instead of replacing or rebinding consumers.
   cell assignmentone cell per eligible row
   derived rowsbounds + count
 
-`createBin2DData` groups two quantitative fields into a rectangular grid. It
-stores concrete cell bounds and counts as a new dataset, so ordinary ranged
+`createBin2DData` groups two quantitative fields into a rectangular grid.
+`editBin2DData` partially revises an existing logical grid owner. Both store
+concrete cell bounds and counts as immutable datasets, so ordinary ranged
 rectangles or other marks can consume the result without asking the renderer to
 perform data transforms.
 
@@ -4120,11 +4121,50 @@ copies complete source row objects into every cell.
 
 ## Revisions
 
-Calling `createBin2DData` again with the same logical `id` creates a new immutable
-revision, rebinds direct visual consumers, rematerializes their scales, marks,
-and guides, and releases the unreferenced previous revision. Earlier programs
-remain unchanged. A dependent derived dataset currently blocks replacement
-with an explicit error; create a new logical ID when that dependency must remain.
+Calling `createBin2DData` again with the same logical `id` remains supported as
+a complete reauthoring operation. Supply the complete transform decisions for
+that intent. It creates a new immutable revision, rebinds direct visual
+consumers, rematerializes their scales, marks, and guides, and releases the
+unreferenced previous revision.
+
+## `editBin2DData`
+
+`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as? })`
+
+Use `editBin2DData` when only part of the current transform should change:
+
+```javascript
+const revised = program.editBin2DData({
+  target: "cells",
+  bins: { x: 20, y: 10 },
+  includeEmpty: false
+});
+```
+
+`target` names the logical owner, not a generated revision dataset. It can be
+omitted when the current dataset identifies an owner or exactly one 2D-bin owner
+exists. Multiple owners without a current match are ambiguous and require
+`target`.
+
+Every omitted top-level option is preserved from the current requested
+provenance. Supplying `extent` replaces the complete extent decision and an
+omitted axis inside that object returns to automatic extent. Supplying `as`
+requires the complete `x0`, `x1`, `y0`, `y1`, and `count` output map, plus
+`members` when member indexes are enabled. When `as` is omitted, enabling
+members adds `__<logical-owner>_members`; disabling members removes only that
+output.
+
+An edit must contain at least one transform or source option and must produce an
+actual change. The complete source, transform, and every direct visual consumer
+are validated before the returned action records its first child transition.
+Successful calls create a deterministic immutable revision, explicitly rebind
+each direct layer, rematerialize affected scales, marks, and guides, then release
+the unreferenced prior revision. Earlier programs and caller-owned options remain
+unchanged.
+
+A dependent derived dataset currently blocks both complete reauthoring and
+partial editing with an explicit error; create a new logical ID when that
+dependency must remain.
 
 ## Related
 
@@ -9582,6 +9622,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editArcMark`](./actions/marks.md#editarcmark) | user-facing | marks |
 | [`editAreaMark`](./actions/marks.md#editareamark) | user-facing | marks |
 | [`editBarMark`](./actions/marks.md#editbarmark) | user-facing | marks |
+| [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | user-facing | core |
 | [`editBoxPlot`](./actions/statistics.md#editboxplot) | user-facing | statistics |
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | user-facing | core |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | user-facing | composition |
@@ -9911,6 +9952,19 @@ createBin2DData({
 Aggregate finite x/y pairs into deterministic rectangular cell bounds and
 counts. Reusing the logical ID creates an immutable revision and rematerializes
 direct visual consumers. [Rectangular 2D bins](../../api/data/bin2d.md)
+
+## `editBin2DData`
+
+```javascript
+editBin2DData({
+  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?
+})
+```
+
+Partially revise the current or unique logical 2D-bin owner. Omitted top-level
+transform options are preserved; successful edits create an immutable revision,
+rebind direct visual consumers, and safely release the prior revision.
+[Rectangular 2D bins](../../api/data/bin2d.md#editbin2ddata)
 
 ## Related
 
@@ -11272,6 +11326,7 @@ interface ChartProgramActions {
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
+  editBin2DData(options: EditBin2DDataOptions): ChartProgram;
   createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;

@@ -3,22 +3,6 @@
 Roadmap 4.1 Gate R41-P0-A에서 승인된 additive lifecycle 계약이다. 이 문서의 action과 option은 구현 전까지
 public runtime/type에 존재하지 않으며, 구현된 항목은 owning current domain contract로 이동한다.
 
-## `editBin2DData`
-
-```typescript
-editBin2DData({
-  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?
-}): ChartProgram;
-```
-
-- `target`은 current/unique logical Bin2D owner를 선택하고 최소 한 transform/source change를 요구한다.
-- Omitted option은 current transform provenance에서 보존한다. Complete candidate와 dependent datasets를 첫
-  state change 전에 검증한다.
-- 새 immutable revision을 만들고 direct layer consumers를 wrapped `rebindLayerData`로 연결한 뒤 affected
-  scales/marks/guides를 rematerialize하고 unreferenced prior revision만 release한다.
-- Existing `createBin2DData({ id: existing })` revision behavior는 compatibility를 위해 유지한다.
-- Status: Planned, accepted.
-
 ## `editFacetScales`
 
 ```typescript

@@ -23,7 +23,8 @@ test.before(async () => {
     <html><body><p id="status">loading</p>
     <canvas id="chart" aria-label="Encoding removal lifecycle chart"></canvas>
     <canvas id="legend" aria-label="Legend lifecycle chart"></canvas>
-    <canvas id="axis" aria-label="Axis component lifecycle chart"></canvas><script type="importmap">
+    <canvas id="axis" aria-label="Axis component lifecycle chart"></canvas>
+    <canvas id="bin2d" aria-label="2D bin lifecycle chart"></canvas><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js"}}
     </script><script type="module">
       import { chart, render } from "ggaction";
@@ -84,12 +85,35 @@ test.before(async () => {
         .createAxes()
         .editXAxis({ ticksAndLabels: false })
         .editYAxis({ line: false, title: false });
+      const editedBins = chart()
+        .createCanvas({ width: 200, height: 140, margin: 30 })
+        .createData({ id: "samples", values: [
+          { x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }
+        ] })
+        .createBin2DData({
+          id: "cells",
+          x: "x",
+          y: "y",
+          bins: 2,
+          extent: { x: [0, 3], y: [0, 3] },
+          includeEmpty: true,
+          as: { x0: "x0", x1: "x1", y0: "y0", y1: "y1", count: "count" }
+        })
+        .createRectMark({ id: "cellRects", data: "cells" })
+        .encodeX({ target: "cellRects", field: "x0" })
+        .encodeX2({ target: "cellRects", field: "x1" })
+        .encodeY({ target: "cellRects", field: "y0" })
+        .encodeY2({ target: "cellRects", field: "y1" })
+        .encodeColor({ target: "cellRects", field: "count", fieldType: "quantitative" })
+        .editBin2DData({ target: "cells", bins: 1, includeEmpty: false });
       const canvas = document.querySelector("#chart");
       render(program, canvas.getContext("2d"));
       const legendCanvas = document.querySelector("#legend");
       render(editedLegend, legendCanvas.getContext("2d"));
       const axisCanvas = document.querySelector("#axis");
       render(editedAxes, axisCanvas.getContext("2d"));
+      const bin2dCanvas = document.querySelector("#bin2d");
+      render(editedBins, bin2dCanvas.getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
         width: canvas.width,
@@ -131,7 +155,13 @@ test.before(async () => {
           editedAxes.graphicSpec.objects.xAxisLine !== undefined &&
           editedAxes.graphicSpec.objects.xAxisTitle !== undefined &&
           editedAxes.graphicSpec.objects.yAxisTicks !== undefined &&
-          editedAxes.graphicSpec.objects.yAxisLabels !== undefined
+          editedAxes.graphicSpec.objects.yAxisLabels !== undefined,
+        bin2dCanvas: [bin2dCanvas.width, bin2dCanvas.height],
+        bin2dRevision: editedBins.materializationConfigs.data.bin2d.cells.current,
+        bin2dItems: editedBins.graphicSpec.objects.cellRects.items.length,
+        bin2dRebound:
+          editedBins.semanticSpec.layers[0].data ===
+          editedBins.materializationConfigs.data.bin2d.cells.current
       };
     </script></body></html>`);
   server = await startStaticServer(consumer.directory);
@@ -164,7 +194,11 @@ test("imports and renders the packed default entry in a browser", async () => {
     selectiveLegendRemoved: true,
     axisCanvas: [240, 180],
     axisComponentsRemoved: true,
-    axisComponentsRetained: true
+    axisComponentsRetained: true,
+    bin2dCanvas: [200, 140],
+    bin2dRevision: "cellsBin2DDataRevision1",
+    bin2dItems: 1,
+    bin2dRebound: true
   });
   assert.equal(await page.locator("#status").textContent(), "complete");
   assert.equal(
@@ -178,6 +212,10 @@ test("imports and renders the packed default entry in a browser", async () => {
   assert.equal(
     await page.locator("#axis").getAttribute("aria-label"),
     "Axis component lifecycle chart"
+  );
+  assert.equal(
+    await page.locator("#bin2d").getAttribute("aria-label"),
+    "2D bin lifecycle chart"
   );
   assertNoBrowserErrors(errors, "packed consumer");
   await page.close();

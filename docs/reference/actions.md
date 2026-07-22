@@ -91,6 +91,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editArcMark`](./actions/marks.md#editarcmark) | user-facing | marks |
 | [`editAreaMark`](./actions/marks.md#editareamark) | user-facing | marks |
 | [`editBarMark`](./actions/marks.md#editbarmark) | user-facing | marks |
+| [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | user-facing | core |
 | [`editBoxPlot`](./actions/statistics.md#editboxplot) | user-facing | statistics |
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | user-facing | core |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | user-facing | composition |

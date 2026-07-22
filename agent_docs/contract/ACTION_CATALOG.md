@@ -16,6 +16,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createWindowData`](current/CORE.md#createwindowdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBin2DData`](current/CORE.md#createbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editBin2DData`](current/CORE.md#editbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createIntervalData`](current/STATISTICS.md#createintervaldata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTextMark`](current/MARKS.md#createtextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -177,7 +178,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `editBin2DData` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editbin2ddata) |
 | `editFacetScales` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editfacetscales) |
 | `editFacetGuides` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editfacetguides) |
 
