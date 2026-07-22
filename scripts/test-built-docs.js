@@ -210,6 +210,16 @@ try {
     await desktop.locator(".docs-chart-gallery__full-size[aria-label]").count(),
     expectedFeaturedCount
   );
+  assert.deepEqual(
+    await desktop.locator(".docs-chart-gallery__full-size").evaluateAll(links => links
+      .map(link => ({
+        accessibleName: link.getAttribute("aria-label"),
+        visibleLabel: link.textContent.trim()
+      }))
+      .filter(({ accessibleName, visibleLabel }) => !accessibleName?.includes(visibleLabel))),
+    [],
+    "gallery links include their visible label in the accessible name"
+  );
   assert.equal(await desktop.locator(".docs-chart-gallery__actions a").count() > 0, true);
   assert.equal(
     await desktop.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth),
