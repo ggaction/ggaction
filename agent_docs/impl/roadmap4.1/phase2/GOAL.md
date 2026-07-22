@@ -10,13 +10,13 @@ legend reflection을 다시 계산한다.
 
 - [x] R41-P1-A explicit approval과 active Phase 전환
 - [x] R41-P2-A Gate 선언
-- [ ] Current selection/highlight owner와 rematerialization flow 전수 mapping
-- [ ] `editMarkSelection` implementation and focused tests
-- [ ] `removeMarkHighlight` implementation and focused tests
-- [ ] `removeMarkSelection` cascade implementation and focused tests
-- [ ] Types/current contracts/ACTION_INDEX/public docs 동기화
-- [ ] Focused/cumulative/Browser/PNG/package verification
-- [ ] R41-P2-A remote checkpoint
+- [x] Current selection/highlight owner와 rematerialization flow 전수 mapping
+- [x] `editMarkSelection` implementation and focused tests
+- [x] `removeMarkHighlight` implementation and focused tests
+- [x] `removeMarkSelection` cascade implementation and focused tests
+- [x] Types/current contracts/ACTION_INDEX/public docs 동기화
+- [x] Focused/cumulative/Browser/PNG/package verification
+- [x] R41-P2-A remote checkpoint
 - [ ] 사용자 explicit approval
 
 ## Gate R41-P2-A
