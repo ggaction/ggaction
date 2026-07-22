@@ -37,12 +37,12 @@ function plainOptions(value, keys, label, operation = "createBoxPlot") {
   return value;
 }
 
-export function resolveBoxPosition(value, label) {
+export function resolveBoxPosition(value, label, operation = "createBoxPlot") {
   if (value === undefined) return undefined;
   if (!isPlainObject(value)) {
-    throw new TypeError(`createBoxPlot ${label} must be a plain object.`);
+    throw new TypeError(`${operation} ${label} must be a plain object.`);
   }
-  validateKeys(value, ["field", "fieldType", "scale"], `createBoxPlot ${label}`);
+  validateKeys(value, ["field", "fieldType", "scale"], `${operation} ${label}`);
   return value;
 }
 
