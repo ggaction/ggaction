@@ -22,7 +22,7 @@ title: Legends
 | `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide |
 | `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized layout and appearance |
 | Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
-| `removeLegend` | `removeLegend({ target: "points" })` | Existing legend owner | All owned legend blocks removed |
+| `removeLegend` | `removeLegend({ channels: ["size"] })` | Existing legend owner; omitted channels remove all | Selected complete blocks removed |
 
 Legends are inferred from final mark encodings and materialized as concrete
 graphics. Start with the family that matches the encoded channel and use the
@@ -55,10 +55,10 @@ opacity and discretized continuous legends remain point-only. Interactive legend
 Combined point-series and quantitative-size legends require a right or left
 side position so both blocks remain in one vertical stack. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.
-Standalone stroke-width legends currently use the right side and accept
-`count` when created. Edit their quantitative mapping through `editScale`;
-`editLegend` support for that sampled block is not yet part of the public
-contract.
+Standalone stroke-width legends use the right side. `editLegend` supports
+`title`, `count`, `labels`, and `titleStyle`; layout, symbol, border, gradient,
+and item-gap edits remain unsupported for that sampled block. Edit its
+quantitative mapping through `editScale`.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error

@@ -1897,12 +1897,12 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one stable legend",
+      "update": "Edits categorical, continuous, interval, size, and bounded stroke-width legend appearance",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
-        "tests": "partial"
+        "tests": "complete"
       },
       "contract": {
         "file": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
@@ -2023,7 +2023,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Removes every legend block owned by one mark",
+      "update": "Removes every owned block or selected complete channel blocks",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2434,7 +2434,6 @@
     { "name": "editFacetGuides", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "editfacetguides" } }
   ],
   "plannedCapabilities": [
-    { "id": "legend-lifecycle-completion", "name": "Legend lifecycle completion", "kind": "behavior", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "capability-legend-lifecycle-completion" } },
     { "id": "cartesian-axis-component-removal", "name": "Cartesian axis component removal", "kind": "behavior", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "capability-cartesian-axis-component-removal" } },
     { "id": "statistical-owner-revisions", "name": "Statistical owner revisions", "kind": "behavior", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "capability-statistical-owner-revisions" } },
     { "id": "distribution-owner-role-revisions", "name": "Distribution owner role revisions", "kind": "behavior", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "capability-distribution-owner-role-revisions" } },

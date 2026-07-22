@@ -1919,6 +1919,7 @@ export interface RemoveGridOptions {
 
 export interface RemoveLegendOptions {
   target?: string;
+  channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
 }
 
 export interface RemoveMarkOptions {

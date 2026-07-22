@@ -10,6 +10,21 @@ import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
 
 const OPTIONS = Object.freeze(["target", "count"]);
 
+export const STROKE_WIDTH_LEGEND_LABELS = Object.freeze({
+  offset: 12,
+  color: DEFAULT_COLORS.text,
+  fontSize: 12,
+  fontFamily: DEFAULT_FONT_FAMILY,
+  fontWeight: "normal"
+});
+
+export const STROKE_WIDTH_LEGEND_TITLE_STYLE = Object.freeze({
+  color: DEFAULT_COLORS.strongText,
+  fontSize: 13,
+  fontFamily: DEFAULT_FONT_FAMILY,
+  fontWeight: 600
+});
+
 export function isStrokeWidthLegendLayer(layer) {
   return ["line", "rule"].includes(layer?.mark?.type) &&
     layer.encoding?.strokeWidth?.scale !== undefined;
@@ -41,14 +56,12 @@ function requireScale(program, id) {
   return scale;
 }
 
-function styleText(program, id, { title = false } = {}) {
+function styleText(program, id, style) {
   return program
-    .editGraphics({ target: id, property: "fill", value: title
-      ? DEFAULT_COLORS.strongText
-      : DEFAULT_COLORS.text })
-    .editGraphics({ target: id, property: "fontSize", value: title ? 13 : 12 })
-    .editGraphics({ target: id, property: "fontFamily", value: DEFAULT_FONT_FAMILY })
-    .editGraphics({ target: id, property: "fontWeight", value: title ? 600 : "normal" })
+    .editGraphics({ target: id, property: "fill", value: style.color })
+    .editGraphics({ target: id, property: "fontSize", value: style.fontSize })
+    .editGraphics({ target: id, property: "fontFamily", value: style.fontFamily })
+    .editGraphics({ target: id, property: "fontWeight", value: style.fontWeight })
     .editGraphics({ target: id, property: "textAlign", value: "left" })
     .editGraphics({ target: id, property: "textBaseline", value: "middle" });
 }
@@ -60,10 +73,16 @@ export const rematerializeStrokeWidthLegend = action(
   },
   function (args = {}) {
     validateKeys(args, [], "rematerializeStrokeWidthLegend");
-    const config = this.guideConfigs.legend?.strokeWidth;
-    if (config === undefined) {
+    const stored = this.guideConfigs.legend?.strokeWidth;
+    if (stored === undefined) {
       throw new Error("Stroke-width legend requires stored configuration.");
     }
+    const config = {
+      ...stored,
+      labels: stored.labels ?? { ...STROKE_WIDTH_LEGEND_LABELS },
+      titleStyle: stored.titleStyle ?? { ...STROKE_WIDTH_LEGEND_TITLE_STYLE },
+      titleVisible: stored.titleVisible !== false
+    };
     const layer = findLayer(this, config.target);
     const encoding = layer?.encoding?.strokeWidth;
     if (encoding?.scale === undefined) {
@@ -101,18 +120,24 @@ export const rematerializeStrokeWidthLegend = action(
       .editGraphics({ target: "strokeWidthLegendSymbols", property: "stroke", value: DEFAULT_COLORS.mark })
       .editGraphics({ target: "strokeWidthLegendSymbols", property: "strokeWidth", value: widths })
       .editGraphics({ target: "strokeWidthLegendLabels", property: "length", value: values.length })
-      .editGraphics({ target: "strokeWidthLegendLabels", property: "x", value: values.map(() => originX + 44) })
+      .editGraphics({
+        target: "strokeWidthLegendLabels",
+        property: "x",
+        value: values.map(() => originX + 32 + config.labels.offset)
+      })
       .editGraphics({ target: "strokeWidthLegendLabels", property: "y", value: y })
       .editGraphics({
         target: "strokeWidthLegendLabels",
         property: "text",
         value: values.map(value => String(+value.toPrecision(3)))
-      })
+      });
+    next = styleText(next, "strokeWidthLegendLabels", config.labels);
+    if (config.titleVisible === false) return next;
+    next = next
       .editGraphics({ target: "strokeWidthLegendTitle", property: "x", value: originX })
       .editGraphics({ target: "strokeWidthLegendTitle", property: "y", value: titleY })
       .editGraphics({ target: "strokeWidthLegendTitle", property: "text", value: title });
-    next = styleText(next, "strokeWidthLegendLabels");
-    return styleText(next, "strokeWidthLegendTitle", { title: true });
+    return styleText(next, "strokeWidthLegendTitle", config.titleStyle);
   }
 );
 
@@ -140,7 +165,10 @@ export const createStrokeWidthLegend = action(
         scale: encoding.scale,
         title: encoding.field,
         inferredTitle: true,
-        count
+        count,
+        labels: { ...STROKE_WIDTH_LEGEND_LABELS },
+        titleStyle: { ...STROKE_WIDTH_LEGEND_TITLE_STYLE },
+        titleVisible: true
       })
       .createGraphics({
         id: "strokeWidthLegendSymbols",

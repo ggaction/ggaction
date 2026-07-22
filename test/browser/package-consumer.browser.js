@@ -21,7 +21,8 @@ test.before(async () => {
   consumer = await preparePackageConsumer();
   await writeFile(path.join(consumer.directory, "index.html"), `<!doctype html>
     <html><body><p id="status">loading</p>
-    <canvas id="chart" aria-label="Encoding removal lifecycle chart"></canvas><script type="importmap">
+    <canvas id="chart" aria-label="Encoding removal lifecycle chart"></canvas>
+    <canvas id="legend" aria-label="Legend lifecycle chart"></canvas><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js"}}
     </script><script type="module">
       import { chart, render } from "ggaction";
@@ -47,8 +48,36 @@ test.before(async () => {
         })
         .editMarkSelection({ selection: "focus", field: "x", op: "min" })
         .removeMarkSelection({ selection: "focus" });
+      const editedLegend = chart()
+        .createCanvas({
+          width: 160,
+          height: 120,
+          margin: { top: 10, right: 80, bottom: 20, left: 20 }
+        })
+        .createData({ values: [
+          { x: 1, y: 2, group: "A", weight: 2 },
+          { x: 2, y: 4, group: "A", weight: 2 },
+          { x: 1, y: 3, group: "B", weight: 8 },
+          { x: 2, y: 5, group: "B", weight: 8 }
+        ] })
+        .createLineMark({ id: "weightedLines" })
+        .encodeX({ field: "x" })
+        .encodeY({ field: "y" })
+        .encodeGroup({ field: "group" })
+        .encodeStrokeWidth({ field: "weight", scale: { range: [1, 7] } })
+        .createLegend({ channels: ["strokeWidth"] })
+        .editLegend({
+          count: 3,
+          title: "Weight",
+          labels: { color: "#123456" }
+        });
+      const removedLegend = editedLegend.removeLegend({
+        channels: ["strokeWidth"]
+      });
       const canvas = document.querySelector("#chart");
       render(program, canvas.getContext("2d"));
+      const legendCanvas = document.querySelector("#legend");
+      render(editedLegend, legendCanvas.getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
         width: canvas.width,
@@ -68,7 +97,18 @@ test.before(async () => {
         ),
         selectionRemoved:
           program.materializationConfigs.selections === undefined &&
-          program.materializationConfigs.highlights === undefined
+          program.materializationConfigs.highlights === undefined,
+        legendCanvas: [legendCanvas.width, legendCanvas.height],
+        legendCount: editedLegend.guideConfigs.legend.strokeWidth.count,
+        legendTitle:
+          editedLegend.graphicSpec.objects.strokeWidthLegendTitle.properties.text,
+        legendLabelColor:
+          editedLegend.graphicSpec.objects.strokeWidthLegendLabels.items[0]
+            .properties.fill,
+        selectiveLegendRemoved:
+          removedLegend.guideConfigs.legend === undefined &&
+          removedLegend.graphicSpec.objects.strokeWidthLegendSymbols === undefined &&
+          removedLegend.semanticSpec.layers[0].encoding.strokeWidth !== undefined
       };
     </script></body></html>`);
   server = await startStaticServer(consumer.directory);
@@ -93,12 +133,21 @@ test("imports and renders the packed default entry in a browser", async () => {
     fills: ["#4c78a8", "#4c78a8"],
     strokeWidths: [0, 0],
     removedChannels: true,
-    selectionRemoved: true
+    selectionRemoved: true,
+    legendCanvas: [160, 120],
+    legendCount: 3,
+    legendTitle: "Weight",
+    legendLabelColor: "#123456",
+    selectiveLegendRemoved: true
   });
   assert.equal(await page.locator("#status").textContent(), "complete");
   assert.equal(
-    await page.locator("canvas").getAttribute("aria-label"),
+    await page.locator("#chart").getAttribute("aria-label"),
     "Encoding removal lifecycle chart"
+  );
+  assert.equal(
+    await page.locator("#legend").getAttribute("aria-label"),
+    "Legend lifecycle chart"
   );
   assertNoBrowserErrors(errors, "packed consumer");
   await page.close();

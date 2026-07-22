@@ -360,14 +360,25 @@ export const createLegend = action(
         symbol
       });
       if (requestedPoint.encoding?.size?.scale !== undefined) {
-        next = next.createSizeLegend({
-          target: requestedPoint.id,
-          ...(count === undefined ? {} : { count }),
-          inheritAppearance:
-            categoricalArgs.position === "left" ||
-            categoricalArgs.labels !== undefined ||
-            categoricalArgs.titleStyle !== undefined
-        });
+        const existingSize = next.guideConfigs.legend?.size;
+        if (existingSize === undefined) {
+          next = next.createSizeLegend({
+            target: requestedPoint.id,
+            ...(count === undefined ? {} : { count }),
+            inheritAppearance:
+              categoricalArgs.position === "left" ||
+              categoricalArgs.labels !== undefined ||
+              categoricalArgs.titleStyle !== undefined
+          });
+        } else if (existingSize.target !== requestedPoint.id) {
+          throw new Error(
+            "Combined point series legend requires the active size legend to share its target."
+          );
+        } else if (count !== undefined && count !== existingSize.count) {
+          throw new Error(
+            "Existing size legend count must be edited before recreating the categorical block."
+          );
+        }
         next = next.rematerializeLegend();
       }
       return next;

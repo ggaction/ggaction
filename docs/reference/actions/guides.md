@@ -209,7 +209,9 @@ editLegend({
 ```
 
 Partially edit one existing legend. `title` accepts a non-empty string,
-`"auto"`, or `false`; semantic channel bindings cannot be edited.
+`"auto"`, or `false`; semantic channel bindings cannot be edited. A
+stroke-width legend accepts the bounded `title`, `count`, `labels`, and
+`titleStyle` subset and remains right-positioned.
 [Legends](../../api/legends.md)
 
 ## Focused legend edits
@@ -235,11 +237,13 @@ rematerialization as `editLegend`. At least one component change is required.
 ## `removeLegend`
 
 ```javascript
-removeLegend({ target? })
+removeLegend({ target?, channels? })
 ```
 
-Remove every legend block owned by one mark while preserving mark encodings and
-scales. [Legends](../../api/legends.md)
+Remove every legend block owned by one mark when `channels` is omitted, or
+remove selected complete channel blocks while preserving mark encodings,
+scales, and unrelated blocks. Combined categorical blocks require their full
+represented channel set. [Legends](../../api/legends.md)
 
 ## `createTitle`
 

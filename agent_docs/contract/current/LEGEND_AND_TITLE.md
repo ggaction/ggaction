@@ -8,6 +8,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 type LegendPosition = "right" | "bottom" | "top" | "left";
 type LegendAlign = "left" | "center" | "right";
 type LegendDirection = "horizontal" | "vertical";
+type LegendChannel = "color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity";
 type LegendSymbolLayer =
   | { type: "line"; length?: NonNegativeFinite; lineWidth?: NonNegativeFinite }
   | { type: "point"; shape?: "circle"; size?: NonNegativeFinite; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite }
@@ -27,7 +28,8 @@ type TitleWrap = "word" | "character";
 - Signature: `createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient? })`.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다. Sequential gradient는
   point와 aggregate bar를 지원한다.
-- `channels`: unique compatible subset of `"color" | "strokeDash" | "shape" | "size" | "opacity"`. 생략하면
+- `channels`: unique compatible subset of
+  `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`. 생략하면
   target의 compatible channels를 추론한다. Sequential color는 gradient, field-driven opacity는 sampled
   point block을 선택한다. Opacity는 단독 channel만 지원한다.
 - Point의 explicit color-only selection은 color swatch legend를 만들고, shape 또는 composite channel
@@ -35,6 +37,8 @@ type TitleWrap = "word" | "character";
 - Explicit `["size"]` 또는 유일한 size-only point는 categorical dispatch보다 먼저 standalone size legend를
   선택한다. Multiple size points는 explicit target을 요구한다. Standalone은 right만 지원하고 combined
   point-series+size block은 right/left를 지원한다.
+- Explicit `["strokeWidth"]` 또는 유일한 stroke-width-only line/rule은 standalone stroke-width legend를 선택한다.
+  It accepts `count`, uses the encoded quantitative scale and currently supports only right-side placement.
 - `position`: categorical과 continuous color/opacity는 left를 포함한 네 방향을 지원한다.
   combined point-size legend는 right/left side position을 사용한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
@@ -67,7 +71,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly ("color" | "strokeDash" | "shape" | "size" | "opacity")[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -81,6 +85,8 @@ type TitleWrap = "word" | "character";
     duplicates/incompatible combinations.
   - ✅ Covered: explicit/inferred standalone point size, createGuides inference, multiple-target ambiguity and
     unchanged composite point-series+size dispatch.
+  - ✅ Covered: explicit/inferred standalone line/rule stroke width, count, right-side placement and scale
+    rematerialization.
   - ✅ Covered: opacity as one continuous guide channel; constant opacity and incompatible mixes rejected.
 - `position`
   - ✅ Covered: omission→`"right"`, `"right"`, `"bottom"`, `"top"`, invalid value.
@@ -134,6 +140,10 @@ type TitleWrap = "word" | "character";
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
   Interval edits own right/vertical spacing, swatch recipe, text style와 title visibility.
   Kind-incompatible options fail before the prior program changes.
+- Stroke-width edits own `title`, `count`, `labels`, and `titleStyle`. The block remains in its current right-side
+  placement; layout, symbol, border, gradient and item-gap options are rejected before state changes. Label `offset`
+  controls the distance after the fixed 32-pixel line sample. Custom/hidden/auto title transitions and partial text-style
+  merges use the same modes as other legend kinds.
 - Effect: stores graphical config immutably and invokes the corresponding wrapped rematerialization action.
   Categorical symbol recipe changes reconcile concrete graphic types without leaving stale objects.
 - Errors: missing/ambiguous target, empty/unknown edit, invalid title mode, incompatible options, invalid count/style,
@@ -152,8 +162,12 @@ type TitleWrap = "word" | "character";
   equivalence.
 - ✅ Covered: custom/hidden/auto title transitions and symbol recipe reconciliation.
 - ✅ Covered: gradient count/extent and opacity count/gap/symbol edits with incompatible-kind rejection.
+- ✅ Covered: stroke-width count, labels/titleStyle, custom/hidden/auto title, right-side bounded option rejection and
+  scale/Canvas rematerialization.
 - ✅ Covered: Canvas/edit action-order convergence, insufficient margin, immutability, trace, browser/PNG parity.
-- Evidence: `test/unit/actions/guides/legend-edit-actions.test.js` and regression-scatterplot left-legend variant.
+- Evidence: `test/unit/actions/guides/legend-edit-actions.test.js`,
+  `test/unit/actions/guides/stroke-width-legend.test.js`,
+  `test/unit/actions/guides/legend-lifecycle.test.js`, and regression-scatterplot left-legend variant.
 
 ## `editLegendLayout`
 
@@ -241,20 +255,36 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `removeLegend`
 
-- Signature: `removeLegend({ target? } = {})`.
-- One stable mark target에 속한 categorical, size, continuous color and opacity legend blocks를 complete
-  semantic/graphic/config resource 단위로 제거한다. A unique target may be inferred; independent legends require
-  `target`. Mark encodings and scales remain unchanged.
+- Signature: `removeLegend({ target?, channels? } = {})`.
+- `target`은 explicit mark ID 또는 unique existing legend owner로 resolve한다. Multiple owners는 `channels`가 한
+  target에만 존재하더라도 explicit target을 요구해서 기존 target inference를 유지한다.
+- Omitted `channels`는 one stable mark target에 속한 모든 categorical, size, continuous color, interval, opacity와
+  stroke-width block을 complete semantic/graphic/config resource 단위로 제거하는 기존 behavior다.
+- Explicit `channels`는 unique non-empty subset of
+  `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`이며 matching complete block만
+  제거한다. Combined categorical block은 stored represented channel set 전체를 한 call에 지정해야 한다. 일부만
+  요청하면 collateral removal 대신 오류다. Missing block, duplicate/unknown channel과 empty selection도 오류다.
+- Retained block은 그대로 보존하고 categorical+size layout dependency가 바뀌면 existing `rematerializeLegend`를
+  wrapped child로 호출한다. Categorical block만 제거하고 size를 보존하면 inherited categorical typography를
+  해제하고 standalone defaults/position에서 다시 materialize한다. Removed composite block은 retained size를
+  재생성하지 않고 ordinary `createLegend`로 다시 만들 수 있다.
+- Mark encodings, resolved/semantic scales와 source data는 제거하지 않는다. Shared semantic-kind state는 another
+  retained block이 소유할 때 삭제하지 않는다. 모든 selector validation은 첫 state change 전에 끝난다.
 
 ### Formal values — `removeLegend`
 
-- Implemented: `removeLegend(options?: { target?: UserId })`.
+- Implemented: `removeLegend(options?: { target?: UserId; channels?: readonly LegendChannel[] })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `removeLegend`
 
-- ✅ Covered: inferred/explicit target, unknown target, complete categorical cleanup and Gate parity.
-- Evidence: `test/unit/actions/guides/remove-guides.test.js` and Roadmap 3 focused-editing Gate.
+- ✅ Covered: inferred/explicit/ambiguous/unknown target, omitted whole-target compatibility and complete categorical
+  cleanup.
+- ✅ Covered: combined categorical complete/partial selection, independent size/opacity removal, standalone categorical,
+  gradient, interval and stroke-width removal, retained-block rematerialization and recreation.
+- ✅ Covered: empty/duplicate/unknown/missing channels, encoding/scale preservation and prior-program/caller immutability.
+- Evidence: `test/unit/actions/guides/remove-guides.test.js`,
+  `test/unit/actions/guides/legend-lifecycle.test.js`, and `test/contracts/legend-lifecycle-render.test.js`.
 
 ## `createGuides`
 

@@ -80,11 +80,29 @@ test("removes a stroke-width legend by its owning mark", () => {
   assert.notEqual(withLegend.graphicSpec.objects.strokeWidthLegendSymbols, undefined);
 });
 
-test("reports the bounded stroke-width legend editing surface clearly", () => {
+test("edits the bounded stroke-width legend surface", () => {
   const program = lineProgram().createLegend({ channels: ["strokeWidth"] });
-  assert.throws(
-    () => program.editLegend({ count: 3 }),
-    /does not yet support stroke-width legends/
+  const edited = program.editLegend({
+    count: 3,
+    title: "Line weight",
+    labels: { color: "#123456", offset: 18 },
+    titleStyle: { color: "#654321", fontSize: 15 }
+  });
+
+  assert.equal(edited.guideConfigs.legend.strokeWidth.count, 3);
+  assert.equal(edited.semanticSpec.guides.legend.strokeWidth.title, "Line weight");
+  assert.equal(edited.graphicSpec.objects.strokeWidthLegendSymbols.items.length, 3);
+  assert.equal(
+    edited.graphicSpec.objects.strokeWidthLegendLabels.items[0].properties.fill,
+    "#123456"
+  );
+  assert.equal(
+    edited.graphicSpec.objects.strokeWidthLegendTitle.properties.fill,
+    "#654321"
+  );
+  assert.equal(
+    edited.graphicSpec.objects.strokeWidthLegendTitle.properties.fontSize,
+    15
   );
   assert.equal(program.guideConfigs.legend.strokeWidth.count, 5);
 });

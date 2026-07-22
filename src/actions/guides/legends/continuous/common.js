@@ -49,7 +49,7 @@ const DEFAULT_BORDER = Object.freeze({
 export const validatePositive = validatePositiveFinite;
 export const validateNonNegative = validateNonNegativeFinite;
 
-function validateTextOptions(value, label, defaults) {
+export function normalizeLegendTextOptions(value, label, defaults) {
   if (value === undefined) return { ...defaults };
   if (!isPlainObject(value)) {
     throw new TypeError(`${label} must be a plain object.`);
@@ -132,12 +132,12 @@ export function normalizeContinuousLegend(args, kind) {
     count,
     title: args.title,
     inferredTitle: args.title === undefined,
-    labels: validateTextOptions(
+    labels: normalizeLegendTextOptions(
       args.labels,
       "createLegend.labels",
       DEFAULT_LABELS
     ),
-    titleStyle: validateTextOptions(
+    titleStyle: normalizeLegendTextOptions(
       args.titleStyle,
       "createLegend.titleStyle",
       DEFAULT_TITLE

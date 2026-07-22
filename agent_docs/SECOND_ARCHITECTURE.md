@@ -713,6 +713,12 @@ Guide semantic state는 어떤 scale과 coordinate를 설명하는지, 그리고
 보이는 semantic title이 무엇인지 기록한다. Tick 길이, stroke, font, offset, legend
 symbol geometry 같은 appearance는 semantic guide에 저장하지 않는다.
 
+Legend lifecycle은 `materializationConfigs.guides.legend`의 kind별 complete block을 ownership unit으로 사용한다.
+Categorical block은 여러 represented channel을 하나의 resource로 소유하므로 partial channel removal로 분해하지
+않는다. Selective removal은 requested complete block만 semantic/config/graphics에서 해제하고 retained block의
+layout dependency를 existing legend rematerializer로 다시 계산한다. Stroke-width title/count/typography edit도 같은
+config→explicit rematerialization 경계를 사용하며 right-side concrete placement는 materializer가 계속 소유한다.
+
 Chart title은 guide와 별개의 top-level semantic concept다. `title.text`와
 `title.subtitle`만 의미 상태이며 실제 위치와 typography는 materialization config 및
 `graphicSpec`에 저장한다.

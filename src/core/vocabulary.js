@@ -198,6 +198,13 @@ export const CATEGORICAL_LEGEND_CHANNELS = Object.freeze([
   "shape"
 ]);
 
+export const LEGEND_CHANNELS = Object.freeze([
+  ...CATEGORICAL_LEGEND_CHANNELS,
+  "strokeWidth",
+  "size",
+  "opacity"
+]);
+
 export const LEGEND_CONFIG_KINDS = Object.freeze([
   "series",
   "color",

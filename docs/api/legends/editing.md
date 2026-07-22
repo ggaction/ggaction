@@ -28,7 +28,8 @@ Nested label, title, border, and gradient objects merge only the supplied
 leaves. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
 stored semantic title. Gradient and opacity legends accept only their
-kind-compatible options.
+kind-compatible options. Right-side stroke-width legends accept only `title`,
+`count`, `labels`, and `titleStyle`.
 
 ## Focused edits
 
@@ -75,6 +76,21 @@ const withoutLegend = program.removeLegend({ target: "points" });
 `target` may be omitted when exactly one legend owner exists. Independent
 legend owners require an explicit target.
 
+Pass `channels` to remove only matching complete blocks:
+
+```javascript
+const withoutSize = program.removeLegend({
+  target: "points",
+  channels: ["size"]
+});
+```
+
+Accepted channels are `color`, `strokeDash`, `strokeWidth`, `shape`, `size`,
+and `opacity`. A combined categorical block is one resource: if it represents
+both `color` and `shape`, supply both or the action fails without changing the
+program. Retained blocks are rematerialized when their layout depended on the
+removed block. Encodings, scales, and unrelated legend blocks remain.
+
 Canvas changes and relevant encoding actions explicitly rematerialize the
 legend from the latest ordinal domains and ranges. The renderer still reads
 only concrete `graphicSpec` values.
@@ -88,7 +104,8 @@ createLegend
 
 ~~~text
 editLegend
-└─ rematerializeLegend | rematerializeGradientLegend | rematerializeOpacityLegend
+├─ rematerializeLegend | rematerializeGradientLegend | rematerializeOpacityLegend
+└─ rematerializeStrokeWidthLegend
    └─ concrete background?, symbols/strips, labels, title?, and size block
 ~~~
 

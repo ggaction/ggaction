@@ -15,9 +15,9 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-현재 실행 계획 owner는 **Roadmap 4.1**이며 active Phase 2다. 새 chart capability가 아니라 encoding,
-selection, guide, statistical owner와 facet의 edit/remove lifecycle을 보강하며 현재 stable selection revision과
-highlight/selection removal vertical slice를 구현 중이다.
+현재 실행 계획 owner는 **Roadmap 4.1**이며 active Phase 3이다. 새 chart capability가 아니라 encoding,
+selection, guide, statistical owner와 facet의 edit/remove lifecycle을 보강하며 현재 stroke-width legend edit와
+selective complete-block removal vertical slice를 구현 중이다.
 포인터의 machine-readable owner는 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 
 ## 작업별 읽기 경로

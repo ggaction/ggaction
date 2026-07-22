@@ -42,15 +42,6 @@ editFacetGuides(options: FacetGuideOptions): ChartProgram;
 - Facet field/data/value order, scale policy, layout, headers와 title은 보존한다.
 - Status: Planned, accepted.
 
-## Capability: legend-lifecycle-completion
-
-- `editLegend`는 stroke-width target에 title/count/labels/titleStyle을 적용한다. Current right-side placement
-  limitation은 유지하고 unsupported layout/symbol/border option은 preflight error다.
-- `removeLegend({ target?, channels? })`에서 omitted channels는 current whole-target removal을 유지한다.
-  Explicit channels는 matching complete legend block만 제거하고 other target blocks를 보존한다.
-- Combined categorical block의 represented channel 일부만 요청하면 collateral removal 대신 오류다.
-- Status: Planned, accepted.
-
 ## Capability: cartesian-axis-component-removal
 
 - `editXAxis`/`editYAxis`의 `line`, `ticks`, `labels`, `ticksAndLabels`, `title`은 `false`를 받는다.
