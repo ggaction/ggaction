@@ -105,7 +105,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editYAxis`](current/AXES.md#edityaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeXAxis`](current/AXES.md#removexaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeYAxis`](current/AXES.md#removeyaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createGrid`](current/GRID.md#creategrid) | grid | Aggregate create-only | Intentional; planned child edits | ✅ / ✅ / ✅ |
+| user-facing | [`createGrid`](current/GRID.md#creategrid) | grid | Aggregate create-only | Intentional; directional child actions own edits and removal | ✅ / ✅ / ✅ |
 | user-facing | [`createHorizontalGrid`](current/GRID.md#createhorizontalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createVerticalGrid`](current/GRID.md#createverticalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
 | user-facing | [`editHorizontalGrid`](current/GRID.md#edithorizontalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -119,7 +119,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editLegendTitle`](current/LEGEND_AND_TITLE.md#editlegendtitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendSymbols`](current/LEGEND_AND_TITLE.md#editlegendsymbols) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendBorder`](current/LEGEND_AND_TITLE.md#editlegendborder) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createGuides`](current/LEGEND_AND_TITLE.md#createguides) | legend_and_title | Aggregate create-only | Intentional; child edit gaps remain | ✅ / ✅ / ⚠️ |
+| user-facing | [`createGuides`](current/LEGEND_AND_TITLE.md#createguides) | legend_and_title | Aggregate create-only | Intentional; guide child actions own edits and removal | ✅ / ✅ / ⚠️ |
 | user-facing | [`removeLegend`](current/LEGEND_AND_TITLE.md#removelegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTitle`](current/LEGEND_AND_TITLE.md#createtitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTitle`](current/LEGEND_AND_TITLE.md#edittitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |

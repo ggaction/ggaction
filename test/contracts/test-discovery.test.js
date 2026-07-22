@@ -111,6 +111,26 @@ test("keeps stable tests independent from active gate implementations", () => {
   }
 });
 
+test("keeps stable tests independent from implementation roadmap records", () => {
+  const implementationRecordPath = ["agent_docs", "impl"].join("/");
+  const stableModules = walk(testRoot).filter(file =>
+    file.endsWith(".js") &&
+    !file.startsWith(path.join(testRoot, "gates") + path.sep)
+  );
+
+  for (const file of stableModules) {
+    const source = readFileSync(file, "utf8").replaceAll(
+      `${implementationRecordPath}/AGENTS.md`,
+      ""
+    );
+    assert.equal(
+      source.includes(implementationRecordPath),
+      false,
+      path.relative(testRoot, file)
+    );
+  }
+});
+
 test("selects tests by chart, capability, or relative path", () => {
   const histogram = collectTestFiles("all", testRoot, [
     "chart:cars-histogram"

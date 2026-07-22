@@ -6037,6 +6037,10 @@ program.createGuides({
 program.createGuides({ legend: false });
 ```
 
+`createGuides` is an aggregate creation action. Revise or remove existing
+guides through their owning axis, grid, and legend actions; there is no generic
+`editGuides` action.
+
 Axes are selected from x/y, theta/radius, or ordered Parallel dimensions. A horizontal grid is selected
 when a y encoding exists; vertical grid remains off unless requested. Polar grids
 are selected only for the encoded Polar channels: theta creates spokes and radius

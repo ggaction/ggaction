@@ -41,6 +41,8 @@ type EditGridOptions = {
 - `horizontal`: boolean 또는 direction options, 기본 `true`.
 - `vertical`: boolean 또는 direction options, 기본 `false`.
 - `false`는 끄고 `true`/`{}`는 inference로 생성한다. 최소 한 방향이 필요하다.
+- Lifecycle: aggregate create-only다. 생성 뒤 변경과 제거는 `editGrid`, direction-specific edit action과
+  `removeGrid`가 소유하며 aggregate에 별도 edit gap은 없다.
 - Coverage: `test/unit/actions/guides/grid-actions.test.js`가 default/both directions, tick reuse,
   explicit values, rendering order와 rematerialization을 검증한다.
 

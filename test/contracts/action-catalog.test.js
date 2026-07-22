@@ -274,6 +274,15 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
     )
     .map(capability => capability.action);
   assert.deepEqual(new Set(indexedReassignments), new Set(plannedReassignments));
+
+  if (
+    index.plannedActions.length === 0 &&
+    index.plannedCapabilities.length === 0
+  ) {
+    for (const action of index.actions) {
+      assert.doesNotMatch(action.audit, /\bplanned\b/i, action.name);
+    }
+  }
 });
 
 test("keeps implemented and planned formal values distinct", () => {

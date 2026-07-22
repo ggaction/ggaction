@@ -1772,7 +1772,7 @@
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
       "update": "Directional grid children",
-      "audit": "Intentional; planned child edits",
+      "audit": "Intentional; directional child actions own edits and removal",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2024,7 +2024,7 @@
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
       "update": "Guide child actions",
-      "audit": "Intentional; child edit gaps remain",
+      "audit": "Intentional; guide child actions own edits and removal",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
