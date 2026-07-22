@@ -722,6 +722,24 @@
       }
     },
     {
+      "name": "removePointRadius",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Removes explicit point glyph radius and restores the theme default",
+      "audit": "Removal — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "removepointradius"
+      }
+    },
+    {
       "name": "encodeXOffset",
       "layer": "user-facing",
       "domain": "encodings",
@@ -881,6 +899,24 @@
       "contract": {
         "file": "agent_docs/contract/current/ENCODINGS.md",
         "anchor": "removepathorder"
+      }
+    },
+    {
+      "name": "removeEncoding",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Removes one encoding and its owned companions, guides and concrete state",
+      "audit": "Removal — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "removeencoding"
       }
     },
     {
@@ -2339,8 +2375,6 @@
     ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],
   "plannedActions": [
-    { "name": "removeEncoding", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "removeencoding" } },
-    { "name": "removePointRadius", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "removepointradius" } },
     { "name": "editMarkSelection", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "editmarkselection" } },
     { "name": "removeMarkHighlight", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "removemarkhighlight" } },
     { "name": "removeMarkSelection", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "removemarkselection" } },
@@ -2349,7 +2383,6 @@
     { "name": "editFacetGuides", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "editfacetguides" } }
   ],
   "plannedCapabilities": [
-    { "id": "encoding-and-mark-outline-removal", "name": "Encoding and mark outline removal", "kind": "behavior", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "capability-encoding-and-mark-outline-removal" } },
     { "id": "legend-lifecycle-completion", "name": "Legend lifecycle completion", "kind": "behavior", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "capability-legend-lifecycle-completion" } },
     { "id": "cartesian-axis-component-removal", "name": "Cartesian axis component removal", "kind": "behavior", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "capability-cartesian-axis-component-removal" } },
     { "id": "statistical-owner-revisions", "name": "Statistical owner revisions", "kind": "behavior", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "capability-statistical-owner-revisions" } },

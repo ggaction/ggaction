@@ -129,7 +129,9 @@ function resolveJitterEntries({
     const extent = resolvePointShapeExtent({
       shape: shapes[index],
       area: resolvedArea,
-      strokeWidth: config.stroke === undefined ? 0 : config.strokeWidth ?? 1
+      strokeWidth: typeof config.stroke === "string"
+        ? config.strokeWidth ?? 1
+        : 0
     });
     return [{
       index,
@@ -289,7 +291,7 @@ export const rematerializePointMark = action(
           y: centerY,
           area: resolvedArea,
           fill: color,
-          ...(config.stroke === undefined ? {} : { stroke: config.stroke }),
+          ...(typeof config.stroke === "string" ? { stroke: config.stroke } : {}),
           ...(config.strokeWidth === undefined
             ? {}
             : { strokeWidth: config.strokeWidth }),
@@ -371,7 +373,11 @@ export const rematerializePointMark = action(
     } else if (encodedOpacity !== undefined) {
       next = next.editGraphics({ target: id, property: "opacity", value: encodedOpacity });
     }
-    if (config.stroke !== undefined) {
+    if (config.stroke === false) {
+      next = next
+        .editGraphics({ target: id, property: "stroke", value: "transparent" })
+        .editGraphics({ target: id, property: "strokeWidth", value: 0 });
+    } else if (config.stroke !== undefined) {
       next = next.editGraphics({ target: id, property: "stroke", value: config.stroke });
       next = next.editGraphics({
         target: id,

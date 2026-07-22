@@ -12,6 +12,7 @@ title: Appearance Encodings
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `encodeRadius` / `encodePointRadius` | `encodePointRadius({ value: 3 })` | Current point mark | Concrete point glyph radius |
+| `removePointRadius` | `removePointRadius()` | Current point with explicit radius | Theme-default glyph radius |
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
@@ -46,7 +47,8 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 Radius, rule stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
 Field opacity and field-driven stroke width are semantic encodings.
-Size cannot be combined with a constant radius. A constant `editPointMark`
+Size cannot be combined with a constant radius. Remove that assignment with
+`removePointRadius()` before encoding size. A constant `editPointMark`
 shape cannot be combined with field-driven `encodeShape`. Bar width
 requires complete ordinal x, aggregate y, and color semantics; group additionally
 requires matching xOffset semantics.

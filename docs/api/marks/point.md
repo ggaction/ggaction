@@ -40,7 +40,8 @@ Radius is an encoding-owned graphical value rather than a `createPointMark`
 option. Until a constant or field-driven size is authored, materialization uses
 a radius of `3` logical pixels without storing a synthetic semantic encoding.
 Use `encodePointRadius({ value })` for another constant radius or `encodeSize`
-for a field-driven area mapping.
+for a field-driven area mapping. `removePointRadius()` returns an explicitly
+sized point mark to the theme radius without changing Polar position.
 
 ## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })`
 
@@ -59,6 +60,10 @@ are `circle`, `square`, `diamond`, four directional triangles, `plus`, `cross`,
 `star`, `hexagon`, and `wye`. Every recipe preserves the same logical target
 area. A constant shape conflicts with field-driven `encodeShape`, and constant
 fill conflicts with a semantic color encoding.
+
+Pass `stroke: false` to disable an existing outline. This removes its stored
+width, rejects a simultaneous `strokeWidth`, and a later string stroke restores
+the point default width `1`.
 
 ## `jitterPoints({ target?, channel, maxOffset, seed?, key? })`
 
@@ -115,6 +120,7 @@ is not currently supported.
 
 Point IDs must be unique, the dataset must exist, opacity must be between `0`
 and `1`, and stroke width must be non-negative. At least one property is
-required by `editPointMark`. Jitter requires a complete Cartesian x/y point
+required by `editPointMark`; `strokeWidth` requires an active string stroke.
+Jitter requires a complete Cartesian x/y point
 mark, a unique target, a valid offset form, and unique values for an explicit
 identity key.

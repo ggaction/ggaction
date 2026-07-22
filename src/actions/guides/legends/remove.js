@@ -6,6 +6,30 @@ import { resolveLegendTarget } from "./target.js";
 
 const OPTIONS = Object.freeze(["target"]);
 
+export function removeLegendKinds(program, kinds) {
+  const semanticKinds = new Set(
+    kinds.map(kind => legendResourcePolicy(kind).semanticKind)
+  );
+  let next = program;
+  for (const kind of semanticKinds) {
+    if (next.semanticSpec.guides.legend?.[kind] !== undefined) {
+      next = next.editSemantic({
+        property: `guide.legend.${kind}`,
+        remove: true
+      });
+    }
+  }
+  for (const id of new Set(kinds.flatMap(legendGraphicIds))) {
+    if (next.graphicSpec.objects[id] !== undefined) {
+      next = next.editGraphics({ target: id, remove: true });
+    }
+  }
+  for (const kind of kinds) {
+    next = next._withoutMaterializationConfig(["guides", "legend", kind]);
+  }
+  return next;
+}
+
 export const removeLegend = action(
   { op: "removeLegend", description: "Remove every legend block owned by one mark." },
   function (args = {}) {
@@ -14,26 +38,6 @@ export const removeLegend = action(
     const kinds = Object.entries(this.guideConfigs.legend ?? {})
       .filter(([, config]) => config?.target === target)
       .map(([kind]) => kind);
-    const semanticKinds = new Set(
-      kinds.map(kind => legendResourcePolicy(kind).semanticKind)
-    );
-    let next = this;
-    for (const kind of semanticKinds) {
-      if (next.semanticSpec.guides.legend?.[kind] !== undefined) {
-        next = next.editSemantic({
-          property: `guide.legend.${kind}`,
-          remove: true
-        });
-      }
-    }
-    for (const id of new Set(kinds.flatMap(legendGraphicIds))) {
-      if (next.graphicSpec.objects[id] !== undefined) {
-        next = next.editGraphics({ target: id, remove: true });
-      }
-    }
-    for (const kind of kinds) {
-      next = next._withoutMaterializationConfig(["guides", "legend", kind]);
-    }
-    return next;
+    return removeLegendKinds(this, kinds);
   }
 );

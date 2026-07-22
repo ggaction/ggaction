@@ -12,6 +12,7 @@ import { registerStrokeDashEncodingActions } from "./strokeDash.js";
 import { registerRuleAppearanceEncodingActions } from "./ruleAppearance.js";
 import { registerTextEncodingAction } from "./text.js";
 import { registerParallelEncodingAction } from "./parallel.js";
+import { registerEncodingRemovalAction } from "./remove.js";
 
 export function registerEncodingActions(ProgramClass) {
   registerPositionEncodingActions(ProgramClass);
@@ -28,4 +29,5 @@ export function registerEncodingActions(ProgramClass) {
   registerRuleAppearanceEncodingActions(ProgramClass);
   registerTextEncodingAction(ProgramClass);
   registerParallelEncodingAction(ProgramClass);
+  registerEncodingRemovalAction(ProgramClass);
 }

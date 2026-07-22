@@ -27,6 +27,17 @@ It records `encodeRadius` as a wrapped child and remains distinct from
 Radius is fixed appearance. It does not create a semantic field encoding and
 is not a Polar radial position channel.
 
+## `removePointRadius({ target? } = {})`
+
+```javascript
+const defaultSized = program.removePointRadius();
+```
+
+The point must have an explicit constant radius. The action removes that
+graphical config and rematerializes every glyph at the theme radius `3`; it
+does not remove or edit semantic Polar `radius`. An ambiguous target or a point
+without an explicit radius is an error.
+
 ## Point field encodings
 
 ```javascript

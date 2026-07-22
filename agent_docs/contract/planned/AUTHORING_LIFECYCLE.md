@@ -3,34 +3,6 @@
 Roadmap 4.1 Gate R41-P0-A에서 승인된 additive lifecycle 계약이다. 이 문서의 action과 option은 구현 전까지
 public runtime/type에 존재하지 않으며, 구현된 항목은 owning current domain contract로 이동한다.
 
-## `removeEncoding`
-
-```typescript
-type RemovableEncodingChannel =
-  | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset"
-  | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth"
-  | "size" | "shape" | "group" | "opacity" | "text";
-
-removeEncoding({ target?, channel }): ChartProgram;
-```
-
-- `target`은 active channel을 가진 current/unique eligible mark를 추론하고 ambiguity를 거부한다.
-- Semantic assignment, channel-owned mark config, dependent legend/axis/grid와 generated layout companion을
-  atomic하게 정리하고 post-removal mark를 clean baseline에서 rematerialize한다.
-- User-created source dataset, scale와 coordinate resource는 제거하지 않는다.
-- `pathOrder`는 existing `removePathOrder`, Parallel dimensions는 aggregate encoding owner가 계속 소유한다.
-- Status: Planned, accepted.
-
-## `removePointRadius`
-
-```typescript
-removePointRadius({ target? } = {}): ChartProgram;
-```
-
-- Explicit constant point radius config를 제거하고 field size가 없으면 theme default radius로 복원한다.
-- Polar `radius` semantic channel은 바꾸지 않는다. Missing explicit radius와 ambiguous target은 오류다.
-- Status: Planned, accepted.
-
 ## `editMarkSelection`
 
 ```typescript
@@ -100,13 +72,6 @@ editFacetGuides(options: FacetGuideOptions): ChartProgram;
 - `axes?: "each" | "outer"`, `legend?: false | "shared"`를 partial edit한다.
 - Child guide compatibility를 preflight하고 retained children/parent snapshot을 atomic하게 교체한다.
 - Facet field/data/value order, scale policy, layout, headers와 title은 보존한다.
-- Status: Planned, accepted.
-
-## Capability: encoding-and-mark-outline-removal
-
-- `editPointMark`와 `editArcMark`의 `stroke`는 edit-time `false`를 받는다.
-- `stroke: false`는 stored stroke와 width를 함께 비활성화하고 simultaneous `strokeWidth`를 거부한다.
-- Later non-empty stroke는 family default width로 복원되며 existing highlight replay를 유지한다.
 - Status: Planned, accepted.
 
 ## Capability: legend-lifecycle-completion

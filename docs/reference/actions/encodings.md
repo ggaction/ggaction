@@ -119,6 +119,17 @@ removePathOrder({ target? } = {})
 Remove explicit path topology and restore the mark's automatic independent-
 position ordering. [Series encodings](../../api/series-encodings.md)
 
+## `removeEncoding`
+
+```javascript
+removeEncoding({ target?, channel })
+```
+
+Remove one active semantic encoding, its generated companions, matching guide
+blocks, and stale concrete values. Named datasets, scales, and coordinates are
+retained; incomplete marks remain empty until later encoding completion.
+[Encodings](../../api/encodings.md#removing-an-encoding)
+
 ## `encodeText`
 
 ```javascript
@@ -309,6 +320,16 @@ encodePointRadius({ value, target? })
 Apply a constant point glyph radius through a traced `encodeRadius` child. This
 does not assign semantic Polar radial position.
 [Constant appearance](../../api/appearance.md)
+
+## `removePointRadius`
+
+```javascript
+removePointRadius({ target? } = {})
+```
+
+Remove an explicit constant point glyph radius and restore the theme default.
+Semantic Polar radial position is unchanged.
+[Point appearance](../../api/appearance/point.md)
 
 ## `encodeSize`
 

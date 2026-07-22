@@ -22,7 +22,8 @@ Create a semantic point mark with one of 12 equal-area shape realizations. [Mark
 editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items. [Marks](../../api/marks.md)
+Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
+`stroke: false` disables the outline and its width. [Marks](../../api/marks.md)
 
 ## `jitterPoints`
 
@@ -130,6 +131,7 @@ editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, stroke
 ```
 
 Edit arc geometry or appearance and rematerialize complete sector paths.
+`stroke: false` disables the outline and its width.
 [Marks](../../api/marks/line-area.md#arc-marks)
 
 ## `createRuleMark`

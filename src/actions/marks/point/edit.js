@@ -61,12 +61,24 @@ export const editPointMark = action(
     if (Object.hasOwn(args, "opacity")) {
       config.opacity = validateUnitInterval(args.opacity, "Point opacity");
     }
+    if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {
+      throw new Error(
+        "editPointMark cannot set strokeWidth while removing stroke."
+      );
+    }
     if (Object.hasOwn(args, "stroke")) {
-      config.stroke = validateNonEmptyString(args.stroke, "Point stroke");
-      config.strokeWidth ??= 1;
+      if (args.stroke === false) {
+        config.stroke = false;
+        delete config.strokeWidth;
+      } else {
+        const restoresStroke = config.stroke === false;
+        config.stroke = validateNonEmptyString(args.stroke, "Point stroke");
+        if (restoresStroke) config.strokeWidth = 1;
+        else config.strokeWidth ??= 1;
+      }
     }
     if (Object.hasOwn(args, "strokeWidth")) {
-      if (config.stroke === undefined) {
+      if (typeof config.stroke !== "string") {
         throw new Error("Point strokeWidth requires an active stroke.");
       }
       config.strokeWidth = validateNonNegativeFinite(

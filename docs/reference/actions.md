@@ -178,12 +178,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | user-facing | mark-selection |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | user-facing | marks |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
+| [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |
 | [`removeLegend`](./actions/guides.md#removelegend) | user-facing | legend_and_title |
 | [`removeMark`](./actions/marks.md#removemark) | user-facing | marks |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
+| [`removePointRadius`](./actions/encodings.md#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |
 | [`removeThetaAxis`](./actions/guides.md#removethetaaxis) | user-facing | axes |
 | [`removeTitle`](./actions/guides.md#removetitle) | user-facing | legend_and_title |

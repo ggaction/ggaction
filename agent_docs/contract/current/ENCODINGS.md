@@ -31,6 +31,40 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   field type, channel, mark grain과 existing consumers에 맞는 subset을 검증한다.
 - Proposed: —
 
+## `removeEncoding`
+
+- Signature: `removeEncoding({ target?, channel })`.
+- `channel` is the closed vocabulary `"x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" |
+  "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" |
+  "opacity" | "text"`.
+- `target` resolves the current mark when it owns the requested channel, otherwise the unique active owner;
+  ambiguous ownership requires an explicit mark ID. A direct missing assignment is an error.
+- The action removes the semantic assignment and starts rematerialization from an empty concrete mark baseline.
+  Complete marks are rebuilt; incomplete marks remain as empty collections until a later encoding completes them.
+- Primary `x`/`y` removal also removes the same-mark secondary endpoint and directional offset. Grouped-bar color
+  removal removes its generated offset. Removing an area group also removes a same-field dependent color assignment.
+  A normalized bar color layout returns to the ordinary zero baseline.
+- Matching categorical, gradient/interval color, size, opacity and stroke-width legend blocks are removed or
+  reconstructed without deleting other blocks. Axis/grid resources are removed only when the removed primary
+  scale has no remaining same-channel consumer.
+- Stored selections are preserved. Removing a channel directly referenced by a stored selection is rejected before
+  any state change; compatible highlights replay from the clean post-removal mark baseline.
+- Source datasets, named scales and coordinates are retained. `pathOrder` remains owned by `removePathOrder`, and
+  Parallel dimensions remain owned by `encodeParallelCoordinates`.
+
+### Formal values — `removeEncoding`
+
+- Implemented: `removeEncoding({ target?: UserId; channel: RemovableEncodingChannel })`.
+- Proposed (NOT IMPLEMENTED): per-channel remove aliases and scale/data/coordinate deletion.
+
+### Value coverage — `removeEncoding`
+
+- ✅ Covered: all 17 channel values, current/unique/explicit/ambiguous target resolution and missing assignment.
+- ✅ Covered: range endpoint and grouped-bar cascades, guide/legend cleanup, scale preservation, incomplete recovery,
+  clean highlight replay and later Canvas/scale/data rematerialization.
+- ✅ Covered: caller option and earlier-program immutability plus unsupported `pathOrder` rejection.
+- Evidence: `test/unit/actions/encodings/remove-encoding.test.js`.
+
 ## `encodeX`
 
 - Signature: `encodeX({ field, target?, fieldType?, scale?, coordinate?, aggregate?, bin?, stack? })`
@@ -1059,6 +1093,26 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - ✅ Covered: nested action trace, concrete point radius and separation from `encodeR`.
 - Evidence: Polar encoding and public chart tests.
+
+## `removePointRadius`
+
+- Signature: `removePointRadius({ target? } = {})`.
+- Resolves the current or unique point mark with an explicit constant glyph radius. Missing and ambiguous ownership
+  are errors.
+- Removes only `materializationConfigs.marks[target].radius`, clears the concrete point collection and
+  rematerializes it with the theme default radius. Semantic Polar `encoding.radius` is preserved.
+- Field-driven size cannot coexist with the explicit radius and is therefore not changed by this action.
+
+### Formal values — `removePointRadius`
+
+- Implemented: `removePointRadius({ target?: UserId } = {})`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `removePointRadius`
+
+- ✅ Covered: inferred/explicit target, missing assignment, theme-default restoration, earlier-program immutability
+  and Polar radius isolation.
+- Evidence: `test/unit/actions/marks/edit-point-mark.test.js`.
 
 ## `encodeBarWidth`
 

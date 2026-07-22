@@ -194,6 +194,11 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "removePointRadius": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
   "encodeXOffset": {
     "operation": "encode",
     "layer": "user-facing",
@@ -235,6 +240,11 @@
     "domain": "encodings"
   },
   "removePathOrder": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
+  "removeEncoding": {
     "operation": "remove",
     "layer": "user-facing",
     "domain": "encodings"

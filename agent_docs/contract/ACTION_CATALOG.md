@@ -47,6 +47,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`encodeTheta`](current/ENCODINGS.md#encodetheta) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeR`](current/ENCODINGS.md#encoder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodePointRadius`](current/ENCODINGS.md#encodepointradius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`removePointRadius`](current/ENCODINGS.md#removepointradius) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeXOffset`](current/ENCODINGS.md#encodexoffset) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeYOffset`](current/ENCODINGS.md#encodeyoffset) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeY2`](current/ENCODINGS.md#encodey2) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -56,6 +57,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`encodePathOrder`](current/ENCODINGS.md#encodepathorder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeParallelCoordinates`](current/ENCODINGS.md#encodeparallelcoordinates) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removePathOrder`](current/ENCODINGS.md#removepathorder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`removeEncoding`](current/ENCODINGS.md#removeencoding) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeText`](current/ENCODINGS.md#encodetext) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeHistogram`](current/ENCODINGS.md#encodehistogram) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeDensity`](current/ENCODINGS.md#encodedensity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -172,8 +174,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `removeEncoding` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removeencoding) |
-| `removePointRadius` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removepointradius) |
 | `editMarkSelection` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editmarkselection) |
 | `removeMarkHighlight` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removemarkhighlight) |
 | `removeMarkSelection` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removemarkselection) |
@@ -185,7 +185,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| behavior | Encoding and mark outline removal | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-encoding-and-mark-outline-removal) |
 | behavior | Legend lifecycle completion | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-legend-lifecycle-completion) |
 | behavior | Cartesian axis component removal | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-cartesian-axis-component-removal) |
 | behavior | Statistical owner revisions | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#capability-statistical-owner-revisions) |

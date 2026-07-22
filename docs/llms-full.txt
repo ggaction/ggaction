@@ -4251,7 +4251,8 @@ Radius is an encoding-owned graphical value rather than a `createPointMark`
 option. Until a constant or field-driven size is authored, materialization uses
 a radius of `3` logical pixels without storing a synthetic semantic encoding.
 Use `encodePointRadius({ value })` for another constant radius or `encodeSize`
-for a field-driven area mapping.
+for a field-driven area mapping. `removePointRadius()` returns an explicitly
+sized point mark to the theme radius without changing Polar position.
 
 ## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })`
 
@@ -4270,6 +4271,10 @@ are `circle`, `square`, `diamond`, four directional triangles, `plus`, `cross`,
 `star`, `hexagon`, and `wye`. Every recipe preserves the same logical target
 area. A constant shape conflicts with field-driven `encodeShape`, and constant
 fill conflicts with a semantic color encoding.
+
+Pass `stroke: false` to disable an existing outline. This removes its stored
+width, rejects a simultaneous `strokeWidth`, and a later string stroke restores
+the point default width `1`.
 
 ## `jitterPoints({ target?, channel, maxOffset, seed?, key? })`
 
@@ -4326,7 +4331,8 @@ is not currently supported.
 
 Point IDs must be unique, the dataset must exist, opacity must be between `0`
 and `1`, and stroke width must be non-negative. At least one property is
-required by `editPointMark`. Jitter requires a complete Cartesian x/y point
+required by `editPointMark`; `strokeWidth` requires an active string stroke.
+Jitter requires a complete Cartesian x/y point
 mark, a unique target, a valid offset form, and unique values for an explicit
 identity key.
 
@@ -4480,7 +4486,8 @@ interpret Polar semantics.
 
 Geometry and appearance edits rebuild complete sectors. An incomplete arc
 retains the edited settings until both required encodings exist. Constant
-`fill` cannot replace a field-driven color encoding.
+`fill` cannot replace a field-driven color encoding. `stroke: false` disables
+the outline and stored width; a later string stroke restores width `1`.
 
 ## Related
 
@@ -4886,6 +4893,31 @@ Horizon charts intentionally keep only the source-facing x guide.
 rematerialize their connected scales, paths, and guides. The exact option and
 error contracts live in the [Encoding Action Reference](../reference/actions/encodings.md).
 
+## Removing an encoding
+
+Use `removeEncoding({ channel, target? })` to remove one active assignment
+without deleting its named scale, source dataset, or coordinate:
+
+```javascript
+const plainPoints = encodedPoints
+  .removeEncoding({ channel: "size" })
+  .removeEncoding({ channel: "color" });
+```
+
+The closed channel list is `x`, `y`, `x2`, `y2`, `xOffset`, `yOffset`,
+`theta`, `radius`, `color`, `strokeDash`, `strokeWidth`, `size`, `shape`,
+`group`, `opacity`, and `text`. Primary x/y removal also clears its same-mark
+secondary endpoint and offset. Grouped-bar color removal clears its generated
+offset, and matching legends, axes, or grids are removed only when they no
+longer have a valid consumer.
+
+The action rebuilds complete marks from an empty concrete baseline. An
+incomplete mark remains empty and can be completed later by the ordinary
+encoding action using the retained scale. If a stored selection directly reads
+the removed semantic channel, removal fails before changing state; compatible
+highlights are replayed on the rebuilt items. Use `removePathOrder()` for path
+topology and the Parallel aggregate action for ordered dimensions.
+
 ## Shared inference and ordering
 
 - `target` uses the current compatible mark, then one unique compatible mark.
@@ -4902,7 +4934,8 @@ error contracts live in the [Encoding Action Reference](../reference/actions/enc
 ## Errors and limitations
 
 Unsupported mark/channel/field combinations fail before partial state is
-authored. Use the generated compatibility matrix above, then open the focused
+authored. Removing a missing channel, an ambiguous owner, or a channel directly
+referenced by a stored selection also fails atomically. Use the generated compatibility matrix above, then open the focused
 family page for inference and ordering rules. If a valid action still selects
 nothing, see [Troubleshooting](../troubleshooting.md#a-target-cannot-be-inferred).
 
@@ -7256,6 +7289,7 @@ See [Scale options](../scales.md) and [Legends](../legends.md).
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `encodeRadius` / `encodePointRadius` | `encodePointRadius({ value: 3 })` | Current point mark | Concrete point glyph radius |
+| `removePointRadius` | `removePointRadius()` | Current point with explicit radius | Theme-default glyph radius |
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
@@ -7286,7 +7320,8 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 Radius, rule stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
 Field opacity and field-driven stroke width are semantic encodings.
-Size cannot be combined with a constant radius. A constant `editPointMark`
+Size cannot be combined with a constant radius. Remove that assignment with
+`removePointRadius()` before encoding size. A constant `editPointMark`
 shape cannot be combined with field-driven `encodeShape`. Bar width
 requires complete ordinal x, aggregate y, and color semantics; group additionally
 requires matching xOffset semantics.
@@ -7470,6 +7505,17 @@ It records `encodeRadius` as a wrapped child and remains distinct from
 
 Radius is fixed appearance. It does not create a semantic field encoding and
 is not a Polar radial position channel.
+
+## `removePointRadius({ target? } = {})`
+
+```javascript
+const defaultSized = program.removePointRadius();
+```
+
+The point must have an explicit constant radius. The action removes that
+graphical config and rematerializes every glyph at the theme radius `3`; it
+does not remove or edit semantic Polar `radius`. An ambiguous target or a point
+without an explicit radius is an error.
 
 ## Point field encodings
 
@@ -9559,12 +9605,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | user-facing | mark-selection |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | user-facing | marks |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
+| [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |
 | [`removeLegend`](./actions/guides.md#removelegend) | user-facing | legend_and_title |
 | [`removeMark`](./actions/marks.md#removemark) | user-facing | marks |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
+| [`removePointRadius`](./actions/encodings.md#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |
 | [`removeThetaAxis`](./actions/guides.md#removethetaaxis) | user-facing | axes |
 | [`removeTitle`](./actions/guides.md#removetitle) | user-facing | legend_and_title |
@@ -9811,7 +9859,8 @@ Create a semantic point mark with one of 12 equal-area shape realizations. [Mark
 editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items. [Marks](../../api/marks.md)
+Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
+`stroke: false` disables the outline and its width. [Marks](../../api/marks.md)
 
 ## `jitterPoints`
 
@@ -9919,6 +9968,7 @@ editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, stroke
 ```
 
 Edit arc geometry or appearance and rematerialize complete sector paths.
+`stroke: false` disables the outline and its width.
 [Marks](../../api/marks/line-area.md#arc-marks)
 
 ## `createRuleMark`
@@ -10123,6 +10173,17 @@ removePathOrder({ target? } = {})
 Remove explicit path topology and restore the mark's automatic independent-
 position ordering. [Series encodings](../../api/series-encodings.md)
 
+## `removeEncoding`
+
+```javascript
+removeEncoding({ target?, channel })
+```
+
+Remove one active semantic encoding, its generated companions, matching guide
+blocks, and stale concrete values. Named datasets, scales, and coordinates are
+retained; incomplete marks remain empty until later encoding completion.
+[Encodings](../../api/encodings.md#removing-an-encoding)
+
 ## `encodeText`
 
 ```javascript
@@ -10311,6 +10372,16 @@ encodePointRadius({ value, target? })
 Apply a constant point glyph radius through a traced `encodeRadius` child. This
 does not assign semantic Polar radial position.
 [Constant appearance](../../api/appearance.md)
+
+## `removePointRadius`
+
+```javascript
+removePointRadius({ target? } = {})
+```
+
+Remove an explicit constant point glyph radius and restore the theme default.
+Semantic Polar radial position is unchanged.
+[Point appearance](../../api/appearance/point.md)
 
 ## `encodeSize`
 
@@ -11092,7 +11163,7 @@ interface ChartProgramActions {
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
   createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
@@ -11101,7 +11172,7 @@ interface ChartProgramActions {
   editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
@@ -11122,6 +11193,7 @@ interface ChartProgramActions {
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
+  removePointRadius(options?: { target?: string }): ChartProgram;
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
   encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
@@ -11131,6 +11203,7 @@ interface ChartProgramActions {
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
+  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" | "opacity" | "text"; }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;

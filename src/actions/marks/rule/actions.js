@@ -238,7 +238,10 @@ const rematerializeRuleMark = action(
       }
     }
 
-    const resolvedConfig = resolved.markConfigs[id] ?? DEFAULT_RULE_CONFIG;
+    const resolvedConfig = {
+      ...DEFAULT_RULE_CONFIG,
+      ...resolved.markConfigs[id]
+    };
     const dashEncoding = layer.encoding?.strokeDash;
     const opacityEncoding = layer.encoding?.opacity;
     const strokeWidthEncoding = layer.encoding?.strokeWidth;

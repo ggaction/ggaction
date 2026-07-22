@@ -97,6 +97,31 @@ Horizon charts intentionally keep only the source-facing x guide.
 rematerialize their connected scales, paths, and guides. The exact option and
 error contracts live in the [Encoding Action Reference](../reference/actions/encodings.md).
 
+## Removing an encoding
+
+Use `removeEncoding({ channel, target? })` to remove one active assignment
+without deleting its named scale, source dataset, or coordinate:
+
+```javascript
+const plainPoints = encodedPoints
+  .removeEncoding({ channel: "size" })
+  .removeEncoding({ channel: "color" });
+```
+
+The closed channel list is `x`, `y`, `x2`, `y2`, `xOffset`, `yOffset`,
+`theta`, `radius`, `color`, `strokeDash`, `strokeWidth`, `size`, `shape`,
+`group`, `opacity`, and `text`. Primary x/y removal also clears its same-mark
+secondary endpoint and offset. Grouped-bar color removal clears its generated
+offset, and matching legends, axes, or grids are removed only when they no
+longer have a valid consumer.
+
+The action rebuilds complete marks from an empty concrete baseline. An
+incomplete mark remains empty and can be completed later by the ordinary
+encoding action using the retained scale. If a stored selection directly reads
+the removed semantic channel, removal fails before changing state; compatible
+highlights are replayed on the rebuilt items. Use `removePathOrder()` for path
+topology and the Parallel aggregate action for ordered dimensions.
+
 ## Shared inference and ordering
 
 - `target` uses the current compatible mark, then one unique compatible mark.
@@ -113,7 +138,8 @@ error contracts live in the [Encoding Action Reference](../reference/actions/enc
 ## Errors and limitations
 
 Unsupported mark/channel/field combinations fail before partial state is
-authored. Use the generated compatibility matrix above, then open the focused
+authored. Removing a missing channel, an ambiguous owner, or a channel directly
+referenced by a stored selection also fails atomically. Use the generated compatibility matrix above, then open the focused
 family page for inference and ordering rules. If a valid action still selects
 nothing, see [Troubleshooting](../troubleshooting.md#a-target-cannot-be-inferred).
 

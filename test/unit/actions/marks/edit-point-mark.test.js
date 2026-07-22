@@ -95,6 +95,72 @@ test("edits persistent point opacity and outline appearance", () => {
   }
 });
 
+test("disables and restores point outlines without stale widths", () => {
+  const outlined = completePointProgram().editPointMark({
+    stroke: "#111111",
+    strokeWidth: 4
+  });
+  const disabled = outlined.editPointMark({ stroke: false });
+  const resized = disabled.editCanvas({ width: 260 });
+  const restored = resized.editPointMark({ stroke: "#2563eb" });
+
+  assert.equal(disabled.markConfigs.points.stroke, false);
+  assert.equal(disabled.markConfigs.points.strokeWidth, undefined);
+  for (const program of [disabled, resized]) {
+    assert.equal(program.graphicSpec.objects.points.items.every(child =>
+      child.properties.stroke === "transparent" &&
+      child.properties.strokeWidth === 0
+    ), true);
+  }
+  assert.equal(restored.markConfigs.points.stroke, "#2563eb");
+  assert.equal(restored.markConfigs.points.strokeWidth, 1);
+  assert.equal(restored.graphicSpec.objects.points.items.every(child =>
+    child.properties.stroke === "#2563eb" &&
+    child.properties.strokeWidth === 1
+  ), true);
+  assert.throws(
+    () => outlined.editPointMark({ stroke: false, strokeWidth: 2 }),
+    /cannot set strokeWidth while removing stroke/
+  );
+  assert.throws(
+    () => disabled.editPointMark({ strokeWidth: 2 }),
+    /requires an active stroke/
+  );
+});
+
+test("removes explicit point radius and restores the theme radius only", () => {
+  const explicit = completePointProgram().encodeRadius({ value: 6 });
+  const removed = explicit.removePointRadius();
+
+  assert.equal(removed.markConfigs.points.radius, undefined);
+  assert.deepEqual(
+    removed.graphicSpec.objects.points.items.map(child => child.properties.radius),
+    [3, 3]
+  );
+  assert.deepEqual(
+    explicit.graphicSpec.objects.points.items.map(child => child.properties.radius),
+    [6, 6]
+  );
+  assert.throws(() => removed.removePointRadius(), /requires an eligible|explicit radius/);
+
+  const polar = chart()
+    .createCanvas({ width: 220, height: 220, margin: 20 })
+    .createData({ values: [
+      { angle: "A", distance: 1 },
+      { angle: "B", distance: 2 }
+    ] })
+    .createPointMark({ id: "polar" })
+    .encodeTheta({ field: "angle", fieldType: "nominal" })
+    .encodeR({ field: "distance" })
+    .encodePointRadius({ value: 6 });
+  const reset = polar.removePointRadius({ target: "polar" });
+  assert.notEqual(reset.semanticSpec.layers[0].encoding.radius, undefined);
+  assert.deepEqual(
+    reset.graphicSpec.objects.polar.items.map(child => child.properties.radius),
+    [3, 3]
+  );
+});
+
 test("keeps path shapes incomplete until position and size are all available", () => {
   const base = chart()
     .createCanvas({ width: 200, height: 120, margin: 10 })

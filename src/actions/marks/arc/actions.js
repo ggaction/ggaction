@@ -46,8 +46,8 @@ function validateInnerRadius(value) {
   return value;
 }
 
-function normalizeConfig(args, previous = {}) {
-  return {
+function normalizeConfig(args, previous = {}, { allowStrokeRemoval = false } = {}) {
+  let config = {
     ...previous,
     ...(Object.hasOwn(args, "innerRadius")
       ? { innerRadius: validateInnerRadius(args.innerRadius) }
@@ -61,18 +61,28 @@ function normalizeConfig(args, previous = {}) {
     ...(Object.hasOwn(args, "opacity")
       ? { opacity: validateUnitInterval(args.opacity, "Arc opacity") }
       : {}),
-    ...(Object.hasOwn(args, "stroke")
+    ...(Object.hasOwn(args, "stroke") && args.stroke !== false
       ? { stroke: validateNonEmptyString(args.stroke, "Arc stroke") }
-      : {}),
-    ...(Object.hasOwn(args, "strokeWidth")
-      ? {
-          strokeWidth: validateNonNegativeFinite(
-            args.strokeWidth,
-            "Arc strokeWidth"
-          )
-        }
       : {})
   };
+  if (args.stroke === false) {
+    if (!allowStrokeRemoval) {
+      throw new TypeError("Arc stroke must be a non-empty string.");
+    }
+    config.stroke = false;
+    delete config.strokeWidth;
+  } else if (Object.hasOwn(args, "stroke")) {
+    if (previous.stroke === false && !Object.hasOwn(args, "strokeWidth")) {
+      config.strokeWidth = 1;
+    }
+  }
+  if (Object.hasOwn(args, "strokeWidth")) {
+    config.strokeWidth = validateNonNegativeFinite(
+      args.strokeWidth,
+      "Arc strokeWidth"
+    );
+  }
+  return config;
 }
 
 const createArcMark = action(
@@ -189,8 +199,16 @@ const rematerializeArcMark = action(
       .editGraphics({ target: id, property: "commands", value: commands })
       .editGraphics({ target: id, property: "fill", value: fills })
       .editGraphics({ target: id, property: "opacity", value: config.opacity ?? 1 })
-      .editGraphics({ target: id, property: "stroke", value: config.stroke ?? "#ffffff" })
-      .editGraphics({ target: id, property: "strokeWidth", value: config.strokeWidth ?? 1 })
+      .editGraphics({
+        target: id,
+        property: "stroke",
+        value: config.stroke === false ? "transparent" : config.stroke ?? "#ffffff"
+      })
+      .editGraphics({
+        target: id,
+        property: "strokeWidth",
+        value: config.stroke === false ? 0 : config.strokeWidth ?? 1
+      })
       .editGraphics({
         target: id,
         property: "strokeDash",
@@ -222,9 +240,23 @@ const editArcMark = action(
     if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
       throw new Error("editArcMark fill cannot be combined with a color encoding.");
     }
+    if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {
+      throw new Error(
+        "editArcMark cannot set strokeWidth while removing stroke."
+      );
+    }
+    if (
+      Object.hasOwn(args, "strokeWidth") &&
+      !Object.hasOwn(args, "stroke") &&
+      this.markConfigs[layer.id]?.stroke === false
+    ) {
+      throw new Error("editArcMark strokeWidth requires an active stroke.");
+    }
     const next = this._withMarkConfig(
       layer.id,
-      normalizeConfig(args, this.markConfigs[layer.id])
+      normalizeConfig(args, this.markConfigs[layer.id], {
+        allowStrokeRemoval: true
+      })
     );
     return canMaterializeArc(next, layer)
       ? next.rematerializeArcMark({ id: layer.id })

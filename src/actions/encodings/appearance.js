@@ -9,7 +9,10 @@ import {
   resolveAppearanceScaleDefinition,
   resolveOpacityScaleDefinition
 } from "../scales/definitions.js";
-import { findLayer } from "../../selectors/layers.js";
+import {
+  findLayer,
+  resolveEligibleLayer
+} from "../../selectors/layers.js";
 import { applyMaterializationPlan } from "../../materialization/dependencies.js";
 import { planEncodingRematerialization } from "../../materialization/encodings.js";
 import {
@@ -20,6 +23,7 @@ import {
 } from "./shared.js";
 
 const RADIUS_OPTIONS = Object.freeze(["value", "target"]);
+const REMOVE_RADIUS_OPTIONS = Object.freeze(["target"]);
 const OPACITY_OPTIONS = Object.freeze([
   "value", "field", "target", "fieldType", "scale"
 ]);
@@ -126,6 +130,35 @@ const encodePointRadius = action(
   },
   function (args = {}) {
     return this.encodeRadius(args);
+  }
+);
+
+const removePointRadius = action(
+  {
+    op: "removePointRadius",
+    description: "Remove a constant point radius and restore the theme default."
+  },
+  function (args = {}) {
+    validateOptions(args, REMOVE_RADIUS_OPTIONS, "removePointRadius");
+    const requested = args.target === undefined
+      ? undefined
+      : args.target;
+    const layer = resolveEligibleLayer(this, {
+      target: requested,
+      predicate: candidate =>
+        candidate.mark?.type === "point" &&
+        this.markConfigs[candidate.id]?.radius !== undefined,
+      label: "point mark with an explicit radius"
+    });
+    const next = this
+      ._withoutMaterializationConfig(["marks", layer.id, "radius"]);
+    const graphic = next.graphicSpec.objects[layer.id];
+    const baseline = graphic === undefined
+      ? next
+      : graphic.type === "collection"
+        ? next.editGraphics({ target: layer.id, property: "items", value: [] })
+        : next.editGraphics({ target: layer.id, property: "length", value: 0 });
+    return baseline.rematerializePointMark({ id: layer.id });
   }
 );
 
@@ -247,6 +280,7 @@ const encodeOpacity = action(
 export function registerAppearanceEncodingAction(ProgramClass) {
   ProgramClass.prototype.encodeRadius = encodeRadius;
   ProgramClass.prototype.encodePointRadius = encodePointRadius;
+  ProgramClass.prototype.removePointRadius = removePointRadius;
   ProgramClass.prototype.encodeSize = encodeSize;
   ProgramClass.prototype.encodeShape = encodeShape;
   ProgramClass.prototype.encodeOpacity = encodeOpacity;

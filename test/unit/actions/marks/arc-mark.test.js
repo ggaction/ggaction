@@ -134,6 +134,39 @@ test("rematerializes arc geometry after focused mark, scale, and Canvas edits", 
   assert.equal(original.markConfigs.arc.innerRadius, 0.2);
 });
 
+test("disables and restores arc outlines without stale widths", () => {
+  const original = radial().editArcMark({
+    stroke: "#111111",
+    strokeWidth: 5
+  });
+  const disabled = original.editArcMark({ stroke: false });
+  const resized = disabled.editCanvas({ width: 340 });
+  const restored = resized.editArcMark({ stroke: "#2563eb" });
+
+  assert.equal(disabled.markConfigs.arc.stroke, false);
+  assert.equal(disabled.markConfigs.arc.strokeWidth, undefined);
+  for (const program of [disabled, resized]) {
+    assert.equal(program.graphicSpec.objects.arc.items.every(item =>
+      item.properties.stroke === "transparent" &&
+      item.properties.strokeWidth === 0
+    ), true);
+  }
+  assert.equal(restored.markConfigs.arc.stroke, "#2563eb");
+  assert.equal(restored.markConfigs.arc.strokeWidth, 1);
+  assert.equal(restored.graphicSpec.objects.arc.items.every(item =>
+    item.properties.stroke === "#2563eb" &&
+    item.properties.strokeWidth === 1
+  ), true);
+  assert.throws(
+    () => original.editArcMark({ stroke: false, strokeWidth: 2 }),
+    /cannot set strokeWidth while removing stroke/
+  );
+  assert.throws(
+    () => disabled.editArcMark({ strokeWidth: 2 }),
+    /requires an active stroke/
+  );
+});
+
 test("accepts color before complete position without materializing too early", () => {
   const program = base()
     .encodeColor({ field: "series", layout: "overlay" })

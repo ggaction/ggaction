@@ -153,7 +153,8 @@ interpret Polar semantics.
 
 Geometry and appearance edits rebuild complete sectors. An incomplete arc
 retains the edited settings until both required encodings exist. Constant
-`fill` cannot replace a field-driven color encoding.
+`fill` cannot replace a field-driven color encoding. `stroke: false` disables
+the outline and stored width; a later string stroke restores width `1`.
 
 ## Related
 

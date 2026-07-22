@@ -83,14 +83,16 @@ independent assembly and does not inherit position encodings.
 - `shape`은 shared `PointShape` 12종 중 하나다. Field-driven `encodeShape`가 있으면 constant shape
   edit와 충돌하므로 오류다.
 - `fill`은 non-empty color string이며 field-driven `encodeColor`가 있으면 충돌하므로 오류다.
-- `opacity`는 `[0, 1]`, `stroke`는 non-empty color string, `strokeWidth`는 non-negative finite logical pixel이다.
+- `opacity`는 `[0, 1]`, `stroke`는 non-empty color string 또는 edit-time `false`, `strokeWidth`는 non-negative
+  finite logical pixel이다. `stroke: false`는 outline과 stored width를 함께 비활성화하며 simultaneous
+  `strokeWidth`는 오류다. 이후 string stroke는 point default width `1`로 복원한다.
 - 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete items를
   equal-area circle, rect 또는 path recipe로 교체한다. Semantic mark/data/encoding은 바꾸지 않는다.
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ target?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite })`.
+- Implemented: `editPointMark({ target?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -100,6 +102,7 @@ independent assembly and does not inherit position encodings.
 - ✅ Covered: missing/unknown/ambiguous target, invalid shape, field-driven shape conflict and immutable failure.
 - ✅ Covered: fill/opacity/stroke/strokeWidth validation and persistence across position rematerialization;
   field-driven color conflict.
+- ✅ Covered: outline disable, simultaneous/disabled width rejection, default-width restoration, Canvas replay.
 - No proposal: radius and field-driven opacity remain owned by their corresponding encoding actions.
 - Evidence: `test/unit/actions/marks/edit-point-mark.test.js`.
 
@@ -405,16 +408,19 @@ independent assembly and does not inherit position encodings.
 - Target inference follows other focused mark editors. At least one edited property is required.
 - Complete arcs rematerialize immediately; incomplete arcs retain the configuration until their encodings complete.
 - Constant fill cannot replace a field-driven color encoding. Geometry edits re-resolve automatic radial ranges.
+- Edit-time `stroke: false` disables the concrete outline and removes stored width. It rejects simultaneous
+  `strokeWidth`; a later non-empty stroke restores arc default width `1`.
 
 ### Formal values — `editArcMark`
 
-- Implemented: `editArcMark({ target?: UserId; innerRadius?: number; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite })`.
+- Implemented: `editArcMark({ target?: UserId; innerRadius?: number; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editArcMark`
 
 - ✅ Covered: inferred target, geometry/appearance persistence, Canvas and scale rematerialization, color conflict,
   invalid values and earlier-program immutability.
+- ✅ Covered: outline disable, disabled-width rejection and default-width restoration after Canvas rematerialization.
 - Evidence: `test/unit/actions/marks/arc-mark.test.js`.
 
 ## `createRuleMark`

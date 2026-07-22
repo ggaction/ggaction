@@ -2107,7 +2107,7 @@ export class ChartProgram {
     shape?: PointShape;
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: string | false;
     strokeWidth?: number;
   }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
@@ -2169,7 +2169,7 @@ export class ChartProgram {
     padAngle?: number;
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: string | false;
     strokeWidth?: number;
   }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
@@ -2200,6 +2200,7 @@ export class ChartProgram {
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
+  removePointRadius(options?: { target?: string }): ChartProgram;
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
   encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
@@ -2223,6 +2224,13 @@ export class ChartProgram {
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
+  removeEncoding(options: {
+    target?: string;
+    channel:
+      | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset"
+      | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth"
+      | "size" | "shape" | "group" | "opacity" | "text";
+  }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
