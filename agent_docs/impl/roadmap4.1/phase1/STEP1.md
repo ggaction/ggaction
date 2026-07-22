@@ -2,13 +2,13 @@
 
 ## 진행 상태
 
-- [ ] Current encoding writers and materializers 전수 mapping
-- [ ] Channel dependency and owned-companion preflight owner 구현
-- [ ] Domain removal actions 구현
-- [ ] Appearance removal parameter implementation
-- [ ] Contract/type/docs synchronization
-- [ ] Focused and cumulative verification
-- [ ] Gate evidence/commit/push
+- [x] Current encoding writers and materializers 전수 mapping
+- [x] Channel dependency and owned-companion preflight owner 구현
+- [x] Domain removal actions 구현
+- [x] Appearance removal parameter implementation
+- [x] Contract/type/docs synchronization
+- [x] Focused and cumulative verification
+- [x] Gate evidence/commit/push
 
 ## 실행 순서
 
@@ -24,3 +24,6 @@
 
 구현 완료 뒤 exact source/state/trace/test/compatibility 결과와 remote commit을 [`GATE_A.md`](./GATE_A.md)에
 기록한다.
+
+Functional checkpoint는 `b8b968f`이며 `origin/codex/roadmap4-1-lifecycle`에 push되었다. Gate package는
+[`GATE_A.md`](./GATE_A.md)에 자체 완결적으로 기록했고 Phase 2는 사용자 승인 전까지 시작하지 않는다.

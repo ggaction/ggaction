@@ -10,14 +10,14 @@ complete transition으로 정리한다.
 
 - [x] R41-P0-A public contract 승인
 - [x] Planned inventory와 Phase 1 Gate 선언
-- [ ] Encoding channel dependency/cascade matrix 확정
-- [ ] `removeEncoding` implementation and focused tests
-- [ ] `removePointRadius` implementation and focused tests
-- [ ] `editPointMark({ stroke: false })` implementation and focused tests
-- [ ] `editArcMark({ stroke: false })` implementation and focused tests
-- [ ] Types/current contracts/ACTION_INDEX/public docs 동기화
-- [ ] Focused/cumulative/Browser/PNG/package verification
-- [ ] R41-P1-A remote checkpoint
+- [x] Encoding channel dependency/cascade matrix 확정
+- [x] `removeEncoding` implementation and focused tests
+- [x] `removePointRadius` implementation and focused tests
+- [x] `editPointMark({ stroke: false })` implementation and focused tests
+- [x] `editArcMark({ stroke: false })` implementation and focused tests
+- [x] Types/current contracts/ACTION_INDEX/public docs 동기화
+- [x] Focused/cumulative/Browser/PNG/package verification
+- [x] R41-P1-A remote checkpoint
 - [ ] 사용자 explicit approval
 
 ## Gate R41-P1-A
