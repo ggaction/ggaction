@@ -2,10 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
-Phase 1 implementation과 cumulative verification이 완료되었다. Functional checkpoint `b8b968f`는
-`origin/codex/roadmap4-1-lifecycle`에 push되었으며 사용자 explicit approval 전에는 Phase 2를 시작하지 않는다.
+사용자가 2026-07-22에 Gate package `cccbd7d`와 functional checkpoint `b8b968f`의 Phase 1 결과를
+명시적으로 승인했다. Phase 2 selection/highlight lifecycle implementation이 해제되었다.
 
 ## Review target
 
@@ -115,6 +115,6 @@ width, and emits transparent/zero-width concrete output. A later string stroke r
 Approval은 Phase 1 state/trace/cascade/compatibility 결과를 고정하고 Phase 2 selection/highlight lifecycle 구현을
 허용한다. PR creation, npm publishing과 docs deployment 권한은 포함하지 않는다.
 
-## Work blocked before approval
+## Work unblocked by approval
 
 Phase 2 selection/highlight lifecycle implementation.
