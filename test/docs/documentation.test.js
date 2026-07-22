@@ -443,7 +443,7 @@ test("keeps task pages visual and chart figures canonical", async () => {
   for (const reason of exceptions.values()) assert.equal(reason.length > 30, true);
 
   const pages = (await files(docsRoot)).filter(isDocumentationMarkdown);
-  const visualPattern = /!\[[^\]]+\]\([^)]+\)|chart-(?:example|card)\.html|docs-concept-flow/;
+  const visualPattern = /!\[[^\]]+\]\([^)]+\)|(?:chart-(?:example|card)|getting-started-chart)\.html|docs-concept-flow/;
   const visualDirectories = [
     `${path.sep}api${path.sep}`,
     `${path.sep}recipes${path.sep}`,

@@ -5,6 +5,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { renderToPNG } from "ggaction/png";
+import { createGettingStartedChart } from
+  "../examples/getting-started/program.js";
 import { publicCharts } from "../examples/registry.js";
 
 const thumbnailMaxWidth = 640;
@@ -35,8 +37,20 @@ export const chartImages = publicCharts({ docsGroup: "charts" })
   .map(imageDefinition);
 export const tutorialImages = publicCharts({ docsGroup: "tutorials" })
   .map(imageDefinition);
+export const guideImages = Object.freeze([
+  Object.freeze({
+    id: "getting-started",
+    width: 640,
+    height: 400,
+    programFile: new URL(
+      "../examples/getting-started/program.js",
+      import.meta.url
+    ),
+    createProgram: createGettingStartedChart
+  })
+]);
 
-const allImages = [...chartImages, ...tutorialImages];
+const allImages = [...chartImages, ...tutorialImages, ...guideImages];
 
 export function docThumbnailDimensions(width, height) {
   const scale = Math.min(1, thumbnailMaxWidth / width);
@@ -79,19 +93,24 @@ export async function buildDocImageManifest() {
   ]));
   const groups = {
     charts: imageManifest(chartImages),
-    tutorials: imageManifest(tutorialImages)
+    tutorials: imageManifest(tutorialImages),
+    guides: imageManifest(guideImages)
   };
   for (const chart of allImages) {
     const hash = createHash("sha256");
     hash.update(sharedHash);
     hash.update(`${chart.width}x${chart.height}@2`);
     hash.update(await readFile(chart.programFile));
-    hash.update(await readFile(chart.dataFile));
-    const group = chartImages.includes(chart) ? groups.charts : groups.tutorials;
+    if (chart.dataFile) hash.update(await readFile(chart.dataFile));
+    const group = chartImages.includes(chart)
+      ? groups.charts
+      : tutorialImages.includes(chart)
+        ? groups.tutorials
+        : groups.guides;
     group[chart.id].sourceHash = hash.digest("hex");
   }
 
-  return { version: 4, pixelRatio: 2, thumbnailMaxWidth, ...groups };
+  return { version: 5, pixelRatio: 2, thumbnailMaxWidth, ...groups };
 }
 
 export async function generateDocImages() {

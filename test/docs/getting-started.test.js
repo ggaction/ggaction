@@ -50,6 +50,11 @@ test("keeps the first chart identifiable without color alone", () => {
     assert.match(source, /shape: "origin"/);
   }
   assert.match(read("docs/getting-started.md"), /redundant\s+visual cue/);
+  assert.match(read("docs/getting-started.md"), /getting-started-chart\.html/);
+  assert.match(
+    read("docs/_includes/getting-started-chart.html"),
+    /assets\/images\/getting-started\.png/
+  );
 
   const accessibleCanvases = [
     [

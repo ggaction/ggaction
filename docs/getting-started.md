@@ -1,11 +1,12 @@
 ---
 layout: default
 title: Getting Started
+image: /assets/images/getting-started.png
 ---
 
 # Getting Started
 
-{% include chart-example.html id="scatterplot" %}
+{% include getting-started-chart.html %}
 
 This walkthrough installs `ggaction`, creates a complete scatterplot from an
 inline dataset, and renders it to Browser Canvas. Every action returns a new
