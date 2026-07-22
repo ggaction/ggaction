@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-07-22에 Gate package `e7762fb`와 functional checkpoint `4eed2dc`의 Phase 5 결과를
+명시적으로 승인했다. Phase 6 statistical owner revision and error-band boundary implementation이 해제되었다.
 
 ## Review target
 
