@@ -111,6 +111,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendSymbols`](./actions/guides.md#focused-legend-edits) | user-facing | legend_and_title |
 | [`editLegendTitle`](./actions/guides.md#focused-legend-edits) | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | user-facing | marks |
+| [`editMarkSelection`](./actions/advanced.md#editmarkselection) | advanced | mark-selection |
 | [`editPointMark`](./actions/marks.md#editpointmark) | user-facing | marks |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | user-facing | axes |
@@ -184,6 +185,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |
 | [`removeLegend`](./actions/guides.md#removelegend) | user-facing | legend_and_title |
 | [`removeMark`](./actions/marks.md#removemark) | user-facing | marks |
+| [`removeMarkHighlight`](./actions/charts-data.md#removemarkhighlight) | user-facing | mark-selection |
+| [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | advanced | mark-selection |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |

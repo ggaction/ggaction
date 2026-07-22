@@ -137,6 +137,40 @@ rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
 assignment.
 
+## Editing and removing stored intent
+
+Replace a stored selector while keeping its ID and mark target:
+
+```javascript
+const revised = highlighted.editMarkSelection({
+  selection: "highestByOrigin",
+  field: "Horsepower",
+  op: "min",
+  groupBy: "Origin"
+});
+```
+
+The supplied selector is complete, not a partial merge. If the selection has a
+highlight, the mark and matching categorical legend are rebuilt from their
+ordinary baseline before the existing style is applied to the new keys.
+
+Remove only the graphical assignment while retaining reusable selection intent,
+or release both through the selection action:
+
+```javascript
+const selectedOnly = revised.removeMarkHighlight({
+  selection: "highestByOrigin"
+});
+const released = revised.removeMarkSelection({
+  selection: "highestByOrigin"
+});
+```
+
+`removeMarkSelection` removes a dependent highlight first. Direct removal of a
+missing highlight or selection is an error. Omitted `selection` uses the current
+selection, then one unique stored selection; ambiguity requires an explicit ID.
+Changing the target or ID is a remove-then-`selectMarks` operation.
+
 For a gradient plot, opacity, stroke, or offset-only highlights preserve the
 existing structured density paint. Supplying `color` or `fill` deliberately
 replaces that paint on the selected strip. Use `filterData` before

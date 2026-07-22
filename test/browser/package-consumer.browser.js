@@ -38,7 +38,15 @@ test.before(async () => {
         .encodeSize({ field: "amount" })
         .removeEncoding({ channel: "size" })
         .removeEncoding({ channel: "color" })
-        .editPointMark({ stroke: false });
+        .editPointMark({ stroke: false })
+        .selectMarks({ id: "focus", field: "x", op: "max" })
+        .highlightMarks({
+          selection: "focus",
+          color: "#dc2626",
+          dimOthers: { opacity: 0.2 }
+        })
+        .editMarkSelection({ selection: "focus", field: "x", op: "min" })
+        .removeMarkSelection({ selection: "focus" });
       const canvas = document.querySelector("#chart");
       render(program, canvas.getContext("2d"));
       document.querySelector("#status").textContent = "complete";
@@ -57,7 +65,10 @@ test.before(async () => {
         ),
         removedChannels: ["size", "color"].every(
           channel => program.semanticSpec.layers[0].encoding[channel] === undefined
-        )
+        ),
+        selectionRemoved:
+          program.materializationConfigs.selections === undefined &&
+          program.materializationConfigs.highlights === undefined
       };
     </script></body></html>`);
   server = await startStaticServer(consumer.directory);
@@ -81,7 +92,8 @@ test("imports and renders the packed default entry in a browser", async () => {
     radii: [3, 3],
     fills: ["#4c78a8", "#4c78a8"],
     strokeWidths: [0, 0],
-    removedChannels: true
+    removedChannels: true,
+    selectionRemoved: true
   });
   assert.equal(await page.locator("#status").textContent(), "complete");
   assert.equal(

@@ -912,6 +912,12 @@ selected-last order를 순서대로 적용한다. 여러 selection assignment는
 selection의 재호출만 그 assignment를 교체한다. 따라서 이전 highlight property나 item ID가 Canvas, scale,
 encoding 또는 data-cardinality 변경 뒤 새 baseline으로 누출되지 않는다.
 
+Selection revision과 removal도 같은 owner를 사용한다. Selector edit는 stored ID와 target을 유지한 complete
+replacement이며 dependent highlight가 있을 때만 target baseline과 categorical legend symbols를 비운 뒤 모든
+remaining assignment를 다시 replay한다. Highlight-only removal은 selection을 보존하고, selection removal은
+dependent highlight removal을 wrapped child로 먼저 호출한다. Exact parameters와 error contract는 current mark
+selection contract가 소유한다.
+
 ## Context
 
 Context는 다음 action의 생략된 resource를 편리하게 해석한다.

@@ -133,6 +133,9 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editRegressionLine`](current/STATISTICS.md#editregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`filterMarks`](current/MARK_SELECTION.md#filtermarks) | mark-selection | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | advanced | [`selectMarks`](current/MARK_SELECTION.md#selectmarks) | mark-selection | Stable create-only | Complete | ✅ / ✅ / ✅ |
+| advanced | [`editMarkSelection`](current/MARK_SELECTION.md#editmarkselection) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeMarkHighlight`](current/MARK_SELECTION.md#removemarkhighlight) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| advanced | [`removeMarkSelection`](current/MARK_SELECTION.md#removemarkselection) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`highlightMarks`](current/MARK_SELECTION.md#highlightmarks) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | primitive | [`editSemantic`](current/PRIMITIVES.md#editsemantic) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
 | primitive | [`createGraphics`](current/PRIMITIVES.md#creategraphics) | primitives | Primitive | Complete | ✅ / ✅ / ✅ |
@@ -174,9 +177,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `editMarkSelection` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editmarkselection) |
-| `removeMarkHighlight` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removemarkhighlight) |
-| `removeMarkSelection` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#removemarkselection) |
 | `editBin2DData` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editbin2ddata) |
 | `editFacetScales` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editfacetscales) |
 | `editFacetGuides` | accepted | [Open](planned/AUTHORING_LIFECYCLE.md#editfacetguides) |

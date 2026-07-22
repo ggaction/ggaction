@@ -624,6 +624,21 @@
     "layer": "advanced",
     "domain": "mark-selection"
   },
+  "editMarkSelection": {
+    "operation": "edit",
+    "layer": "advanced",
+    "domain": "mark-selection"
+  },
+  "removeMarkHighlight": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "mark-selection"
+  },
+  "removeMarkSelection": {
+    "operation": "remove",
+    "layer": "advanced",
+    "domain": "mark-selection"
+  },
   "highlightMarks": {
     "operation": "highlight",
     "layer": "user-facing",

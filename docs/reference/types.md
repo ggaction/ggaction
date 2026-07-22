@@ -24,6 +24,9 @@ interface ChartProgramActions {
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
+  editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
+  removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;
+  removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;

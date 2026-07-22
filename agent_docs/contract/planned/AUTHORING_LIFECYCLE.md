@@ -3,38 +3,6 @@
 Roadmap 4.1 Gate R41-P0-A에서 승인된 additive lifecycle 계약이다. 이 문서의 action과 option은 구현 전까지
 public runtime/type에 존재하지 않으며, 구현된 항목은 owning current domain contract로 이동한다.
 
-## `editMarkSelection`
-
-```typescript
-editMarkSelection({ selection?, ...selector }): ChartProgram;
-```
-
-- Existing selection ID와 target을 유지하고 normalized selector를 교체한다.
-- Active highlight가 있으면 clean mark baseline을 materialize한 뒤 새 selected keys, complement dimming,
-  selected-last order와 applicable legend reflection을 다시 적용한다.
-- Selection target replacement는 지원하지 않으며 remove+select lifecycle을 사용한다.
-- Status: Planned, accepted.
-
-## `removeMarkHighlight`
-
-```typescript
-removeMarkHighlight({ selection? } = {}): ChartProgram;
-```
-
-- 해당 selection의 highlight assignment만 제거하고 selection resource는 보존한다.
-- Target mark와 applicable legend를 unhighlighted baseline으로 복원한다. Missing/ambiguous highlight는 오류다.
-- Status: Planned, accepted.
-
-## `removeMarkSelection`
-
-```typescript
-removeMarkSelection({ selection? } = {}): ChartProgram;
-```
-
-- Dependent highlight가 있으면 먼저 제거한 뒤 stable selection config와 matching current context를 정리한다.
-- 다른 selection/highlight assignment는 보존한다. Missing/ambiguous selection은 오류다.
-- Status: Planned, accepted.
-
 ## `editBin2DData`
 
 ```typescript

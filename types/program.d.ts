@@ -486,6 +486,12 @@ export type SelectMarksOptions = {
   id?: string;
   target?: string;
 } & MarkSelector;
+export type EditMarkSelectionOptions = {
+  selection?: string;
+} & MarkSelector;
+export interface RemoveMarkSelectionOptions {
+  selection?: string;
+}
 export type FilterMarksOptions = {
   target?: string;
 } & MarkSelector;
@@ -2086,6 +2092,9 @@ export class ChartProgram {
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
+  editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
+  removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;
+  removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;

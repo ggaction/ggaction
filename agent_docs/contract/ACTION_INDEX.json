@@ -2270,6 +2270,60 @@
       }
     },
     {
+      "name": "editMarkSelection",
+      "layer": "advanced",
+      "domain": "mark-selection",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Replace a stored selector while preserving its ID and target",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARK_SELECTION.md",
+        "anchor": "editmarkselection"
+      }
+    },
+    {
+      "name": "removeMarkHighlight",
+      "layer": "user-facing",
+      "domain": "mark-selection",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Remove highlight appearance while preserving selection intent",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARK_SELECTION.md",
+        "anchor": "removemarkhighlight"
+      }
+    },
+    {
+      "name": "removeMarkSelection",
+      "layer": "advanced",
+      "domain": "mark-selection",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Remove a stored selection and its dependent highlight",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARK_SELECTION.md",
+        "anchor": "removemarkselection"
+      }
+    },
+    {
       "name": "highlightMarks",
       "layer": "user-facing",
       "domain": "mark-selection",
@@ -2375,9 +2429,6 @@
     ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],
   "plannedActions": [
-    { "name": "editMarkSelection", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "editmarkselection" } },
-    { "name": "removeMarkHighlight", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "removemarkhighlight" } },
-    { "name": "removeMarkSelection", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "removemarkselection" } },
     { "name": "editBin2DData", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "editbin2ddata" } },
     { "name": "editFacetScales", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "editfacetscales" } },
     { "name": "editFacetGuides", "status": "planned", "readiness": "accepted", "contract": { "file": "agent_docs/contract/planned/AUTHORING_LIFECYCLE.md", "anchor": "editfacetguides" } }

@@ -23,6 +23,27 @@ support `"stack"`. Fields are data values, channels are pre-scale semantic
 values, and properties are concrete graphical values.
 [Mark selection and highlighting](../../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
+## `editMarkSelection`
+
+```javascript
+editMarkSelection({ selection?, grain?, field | channel | property, op, ...operatorOptions })
+```
+
+Replace the complete selector while preserving the stored selection ID and
+mark target. Dependent highlights and exact categorical legend reflection are
+replayed from a clean baseline.
+[Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
+
+## `removeMarkSelection`
+
+```javascript
+removeMarkSelection({ selection? } = {})
+```
+
+Release one stored selection after removing its dependent highlight. Other
+selection and highlight assignments remain active.
+[Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
+
 ## Semantic resources and regression layers
 
 ```javascript

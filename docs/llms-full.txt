@@ -7299,7 +7299,10 @@ See [Scale options](../scales.md) and [Legends](../legends.md).
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
 | `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
+| `editMarkSelection` | `editMarkSelection({ field: "Horsepower", op: "min" })` | Current or unique stored selection | Same ID/target with a replaced selector |
 | `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point/bar/path/rule; red accent; selected-last | Concrete selected-item emphasis |
+| `removeMarkHighlight` | `removeMarkHighlight()` | Current or unique highlighted selection | Clean mark baseline with selection retained |
+| `removeMarkSelection` | `removeMarkSelection()` | Current or unique stored selection | Selection and dependent highlight released |
 
 Appearance actions change final mark style without changing position. Use the
 focused pages below for selection, point appearance, and mark-specific style.
@@ -7468,6 +7471,40 @@ Selection and highlight intent is immutable and is reapplied after owning mark
 rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
 assignment.
+
+## Editing and removing stored intent
+
+Replace a stored selector while keeping its ID and mark target:
+
+```javascript
+const revised = highlighted.editMarkSelection({
+  selection: "highestByOrigin",
+  field: "Horsepower",
+  op: "min",
+  groupBy: "Origin"
+});
+```
+
+The supplied selector is complete, not a partial merge. If the selection has a
+highlight, the mark and matching categorical legend are rebuilt from their
+ordinary baseline before the existing style is applied to the new keys.
+
+Remove only the graphical assignment while retaining reusable selection intent,
+or release both through the selection action:
+
+```javascript
+const selectedOnly = revised.removeMarkHighlight({
+  selection: "highestByOrigin"
+});
+const released = revised.removeMarkSelection({
+  selection: "highestByOrigin"
+});
+```
+
+`removeMarkSelection` removes a dependent highlight first. Direct removal of a
+missing highlight or selection is an error. Omitted `selection` uses the current
+selection, then one unique stored selection; ambiguity requires an explicit ID.
+Changing the target or ID is a remove-then-`selectMarks` operation.
 
 For a gradient plot, opacity, stroke, or offset-only highlights preserve the
 existing structured density paint. Supplying `color` or `fill` deliberately
@@ -9538,6 +9575,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendSymbols`](./actions/guides.md#focused-legend-edits) | user-facing | legend_and_title |
 | [`editLegendTitle`](./actions/guides.md#focused-legend-edits) | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | user-facing | marks |
+| [`editMarkSelection`](./actions/advanced.md#editmarkselection) | advanced | mark-selection |
 | [`editPointMark`](./actions/marks.md#editpointmark) | user-facing | marks |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | user-facing | axes |
@@ -9611,6 +9649,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |
 | [`removeLegend`](./actions/guides.md#removelegend) | user-facing | legend_and_title |
 | [`removeMark`](./actions/marks.md#removemark) | user-facing | marks |
+| [`removeMarkHighlight`](./actions/charts-data.md#removemarkhighlight) | user-facing | mark-selection |
+| [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | advanced | mark-selection |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |
@@ -9784,6 +9824,16 @@ Select point, bar, line, area, arc, or rule items inline or reuse a stored selec
 then apply mark-specific concrete emphasis, optional complement dimming, and
 selected-last order.
 [Mark selection and highlighting](../../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
+
+## `removeMarkHighlight`
+
+```javascript
+removeMarkHighlight({ selection? } = {})
+```
+
+Remove one highlight assignment, restore the target mark and categorical
+legend baseline, and retain the reusable selection.
+[Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
 
 ## `createRegressionData`
 
@@ -10920,6 +10970,27 @@ support `"stack"`. Fields are data values, channels are pre-scale semantic
 values, and properties are concrete graphical values.
 [Mark selection and highlighting](../../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
+## `editMarkSelection`
+
+```javascript
+editMarkSelection({ selection?, grain?, field | channel | property, op, ...operatorOptions })
+```
+
+Replace the complete selector while preserving the stored selection ID and
+mark target. Dependent highlights and exact categorical legend reflection are
+replayed from a clean baseline.
+[Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
+
+## `removeMarkSelection`
+
+```javascript
+removeMarkSelection({ selection? } = {})
+```
+
+Release one stored selection after removing its dependent highlight. Other
+selection and highlight assignments remain active.
+[Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
+
 ## Semantic resources and regression layers
 
 ```javascript
@@ -11156,6 +11227,9 @@ interface ChartProgramActions {
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
+  editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
+  removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;
+  removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;

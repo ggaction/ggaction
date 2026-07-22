@@ -166,6 +166,16 @@ then apply mark-specific concrete emphasis, optional complement dimming, and
 selected-last order.
 [Mark selection and highlighting](../../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
+## `removeMarkHighlight`
+
+```javascript
+removeMarkHighlight({ selection? } = {})
+```
+
+Remove one highlight assignment, restore the target mark and categorical
+legend baseline, and retain the reusable selection.
+[Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
+
 ## `createRegressionData`
 
 ```javascript

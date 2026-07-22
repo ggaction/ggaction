@@ -22,7 +22,10 @@ title: Appearance Encodings
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
 | `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
+| `editMarkSelection` | `editMarkSelection({ field: "Horsepower", op: "min" })` | Current or unique stored selection | Same ID/target with a replaced selector |
 | `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point/bar/path/rule; red accent; selected-last | Concrete selected-item emphasis |
+| `removeMarkHighlight` | `removeMarkHighlight()` | Current or unique highlighted selection | Clean mark baseline with selection retained |
+| `removeMarkSelection` | `removeMarkSelection()` | Current or unique stored selection | Selection and dependent highlight released |
 
 Appearance actions change final mark style without changing position. Use the
 focused pages below for selection, point appearance, and mark-specific style.

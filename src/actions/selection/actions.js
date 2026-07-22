@@ -17,6 +17,7 @@ import {
   findSelectionPolicy,
   requireSelectionPolicy
 } from "../../materialization/selection/policies/index.js";
+import { legendGraphicIds } from "../../materialization/guides/resources.js";
 import {
   normalizeDimOthers,
   validateUnitInterval
@@ -27,6 +28,8 @@ const SELECTOR_KEYS = Object.freeze([
   "inclusive", "count", "groupBy", "ties"
 ]);
 const SELECT_OPTIONS = Object.freeze(["id", "target", ...SELECTOR_KEYS]);
+const EDIT_SELECTION_OPTIONS = Object.freeze(["selection", ...SELECTOR_KEYS]);
+const REMOVE_SELECTION_OPTIONS = Object.freeze(["selection"]);
 const HIGHLIGHT_OPTIONS = Object.freeze([
   "id", "target", "select", "selection", "color", "opacity", "fill",
   "stroke", "strokeWidth", "strokeDash", "shape", "size", "offset",
@@ -63,6 +66,51 @@ function hasLegendSelection(program, target, selection) {
     selector.field === legend.field;
 }
 
+function categoricalLegendKind(program, target) {
+  return ["series", "color"].find(
+    kind => program.guideConfigs.legend?.[kind]?.target === target
+  );
+}
+
+function resetCategoricalLegendSymbols(program, target) {
+  const kind = categoricalLegendKind(program, target);
+  if (kind === undefined) return program;
+  let next = program;
+  for (const id of legendGraphicIds(kind).filter(id => id.includes("Symbol"))) {
+    const graphic = next.graphicSpec.objects[id];
+    if (graphic === undefined) continue;
+    next = graphic.type === "collection"
+      ? next.editGraphics({ target: id, property: "items", value: [] })
+      : next.editGraphics({ target: id, property: "length", value: 0 });
+  }
+  return next.rematerializeLegendSymbols();
+}
+
+function targetHighlightEntries(program, target) {
+  return Object.entries(program.materializationConfigs.highlights ?? {})
+    .filter(([, config]) => config.target === target);
+}
+
+function rebuildTargetHighlights(program, target) {
+  const layer = resolveTarget(program, target, "highlight mark");
+  const highlights = targetHighlightEntries(program, target);
+  let baseline = program;
+  for (const [id] of highlights) {
+    baseline = baseline._withoutMaterializationConfig(["highlights", id]);
+  }
+  const graphic = baseline.graphicSpec.objects[target];
+  baseline = graphic.type === "collection"
+    ? baseline.editGraphics({ target, property: "items", value: [] })
+    : baseline.editGraphics({ target, property: "length", value: 0 });
+  baseline = baseline[requireSelectionPolicy(
+    layer.mark.type
+  ).rematerializeOp]({ id: target });
+  baseline = resetCategoricalLegendSymbols(baseline, target);
+  return highlights.length === 0
+    ? baseline
+    : baseline.rematerializeMarkHighlights({ target, highlights });
+}
+
 function selectedKeys(args, resolved) {
   if (args.keys === undefined) return resolved.keys;
   if (!Array.isArray(args.keys) || !args.keys.every(key =>
@@ -83,6 +131,79 @@ export const selectMarks = action(
     return this
       ._withSelectionConfig(id, { target: layer.id, selector: resolved.selector })
       ._withContext({ currentSelection: id });
+  }
+);
+
+export const editMarkSelection = action(
+  {
+    op: "editMarkSelection",
+    description: "Replace one stored mark selector while preserving its identity and target."
+  },
+  function (args = {}) {
+    validateKeys(args, EDIT_SELECTION_OPTIONS, "editMarkSelection");
+    const current = resolveStoredSelection(this, args.selection);
+    const replacement = resolveMarkSelection(
+      this,
+      current.definition.target,
+      selectorFrom(args)
+    );
+    const next = this
+      ._withSelectionConfig(current.id, {
+        target: current.definition.target,
+        selector: replacement.selector
+      })
+      ._withContext({ currentSelection: current.id });
+    const hasDependentHighlight = Object.values(
+      next.materializationConfigs.highlights ?? {}
+    ).some(config => config.selection === current.id);
+    return hasDependentHighlight
+      ? rebuildTargetHighlights(next, current.definition.target)
+      : next;
+  }
+);
+
+export const removeMarkHighlight = action(
+  {
+    op: "removeMarkHighlight",
+    description: "Remove one stored highlight assignment and restore the clean mark baseline."
+  },
+  function (args = {}) {
+    validateKeys(args, REMOVE_SELECTION_OPTIONS, "removeMarkHighlight");
+    const current = resolveStoredSelection(this, args.selection);
+    const dependent = Object.entries(
+      this.materializationConfigs.highlights ?? {}
+    ).filter(([, config]) => config.selection === current.id);
+    if (dependent.length === 0) {
+      throw new Error(
+        `Selection "${current.id}" has no highlight assignment.`
+      );
+    }
+    let next = this;
+    for (const [id] of dependent) {
+      next = next._withoutMaterializationConfig(["highlights", id]);
+    }
+    return rebuildTargetHighlights(next, current.definition.target);
+  }
+);
+
+export const removeMarkSelection = action(
+  {
+    op: "removeMarkSelection",
+    description: "Remove one stored selection after removing its dependent highlight."
+  },
+  function (args = {}) {
+    validateKeys(args, REMOVE_SELECTION_OPTIONS, "removeMarkSelection");
+    const current = resolveStoredSelection(this, args.selection);
+    const hasDependentHighlight = Object.values(
+      this.materializationConfigs.highlights ?? {}
+    ).some(config => config.selection === current.id);
+    let next = hasDependentHighlight
+      ? this.removeMarkHighlight({ selection: current.id })
+      : this;
+    next = next._withoutMaterializationConfig(["selections", current.id]);
+    return this.context.currentSelection === current.id
+      ? next._withContext({ currentSelection: undefined })
+      : next;
   }
 );
 
@@ -393,8 +514,7 @@ export const highlightMarks = action(
     const existing = next.materializationConfigs.highlights?.[selection];
     if (existing !== undefined) {
       next = next._withoutMaterializationConfig(["highlights", selection]);
-      const policy = requireSelectionPolicy(layer.mark.type);
-      next = next[policy.rematerializeOp]({ id: resolved.definition.target });
+      next = rebuildTargetHighlights(next, resolved.definition.target);
     }
     const policy = requireSelectionPolicy(layer.mark.type);
     next = next[policy.applyHighlightOp]({ selection, style, keys });

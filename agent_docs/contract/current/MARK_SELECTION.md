@@ -126,6 +126,76 @@ type MarkSelector =
   `test/charts/mark-selection-points/public.test.js`,
   `test/charts/mark-selection-bars/public.test.js`.
 
+## `editMarkSelection`
+
+- Signature: `editMarkSelection({ selection?, ...selector })`.
+- `selection`: explicit ID, current selection, unique stored selection 순으로 resolve한다. Existing ID와 target은
+  유지하며 supplied selector는 partial merge가 아니라 complete replacement다. Target replacement는
+  `removeMarkSelection` 뒤 `selectMarks`가 소유한다.
+- Effect: 새 selector 전체를 normalize하고 current target의 final item grain에서 compatibility를 preflight한 뒤
+  `materializationConfigs.selections[selection].selector`를 immutable하게 교체한다. Matching
+  `currentSelection` context를 갱신하고 semantic state는 바꾸지 않는다.
+- Highlight replay: dependent highlight가 없으면 `graphicSpec`을 그대로 공유한다. Dependent highlight가 있으면
+  target의 모든 highlight config를 잠시 분리하고 concrete mark와 categorical legend symbols를 empty baseline에서
+  복구한 뒤 current keys로 remaining highlight, dimming, selected-last와 exact legend reflection을 declaration
+  order대로 다시 적용한다.
+- Empty replacement selection은 valid하다. Missing/ambiguous selection, incomplete selector, unsupported source/grain과
+  incompatible final-item value는 첫 config change 전에 오류다.
+
+### Formal values — `editMarkSelection`
+
+- Implemented: `editMarkSelection({ selection?: UserId } & MarkSelector)` with the complete shared selector algebra.
+- Proposed (NOT IMPLEMENTED): target/ID replacement and partial selector merge.
+
+### Value coverage — `editMarkSelection`
+
+- ✅ Covered: explicit/current/unique/ambiguous resolution, stable ID/target/context and complete replacement.
+- ✅ Covered: every selector source/operator, item/stack grain, empty result, invalid atomic failure and caller ownership.
+- ✅ Covered: multiple highlight replay, selected-last order, categorical legend reflection and Canvas rematerialization.
+- Evidence: `test/unit/actions/selection/selection-lifecycle.test.js`.
+
+## `removeMarkHighlight`
+
+- Signature: `removeMarkHighlight({ selection? } = {})`.
+- Resolves the selection by explicit/current/unique rules and requires its active highlight assignment. Missing direct
+  removal is an error; selection intent and current-selection context are preserved.
+- Removes only dependent highlight config, clears the target concrete mark and categorical legend symbol baseline, then
+  rematerializes the ordinary mark and every remaining same-target highlight in stored order. Stale size, opacity, offset,
+  item order or legend-symbol appearance cannot survive the removal.
+
+### Formal values — `removeMarkHighlight`
+
+- Implemented: `removeMarkHighlight({ selection?: UserId } = {})` for every selectable/highlightable mark policy.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `removeMarkHighlight`
+
+- ✅ Covered: point/bar/rect/line/area/arc/rule baseline restoration, retained selection and missing error.
+- ✅ Covered: remaining same-target highlight preservation and exact categorical legend symbol/label baseline.
+- Evidence: `test/unit/actions/selection/selection-lifecycle.test.js`,
+  `test/contracts/selection-lifecycle-render.test.js`.
+
+## `removeMarkSelection`
+
+- Signature: `removeMarkSelection({ selection? } = {})`.
+- Resolves an existing selection by explicit/current/unique rules. When a dependent highlight exists, calls the real wrapped
+  `removeMarkHighlight({ selection })` child first, then removes the selection config and clears matching
+  `currentSelection`. Other selection/highlight assignments are preserved.
+- Selection has no independent semantic or graphic resource, so selection-only removal does not rematerialize graphics.
+  Missing/ambiguous direct removal fails before state changes.
+
+### Formal values — `removeMarkSelection`
+
+- Implemented: `removeMarkSelection({ selection?: UserId } = {})`.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `removeMarkSelection`
+
+- ✅ Covered: selection-only removal, dependent wrapped cascade, clean mark result, context cleanup and independent state.
+- ✅ Covered: missing/ambiguous selection, unknown options, earlier-program and caller-option immutability.
+- Evidence: `test/unit/actions/selection/selection-lifecycle.test.js`,
+  `test/contracts/selection-lifecycle-render.test.js`.
+
 ## `highlightMarks`
 
 - Signature: `highlightMarks({ id?, target?, select?, selection?, color?, opacity?, fill?, stroke?, strokeWidth?, strokeDash?, shape?, size?, offset?, dimOthers?, bringToFront? })`
