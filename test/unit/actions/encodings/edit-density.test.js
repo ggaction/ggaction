@@ -303,3 +303,81 @@ test("edits the category scale through placement while preserving its id", () =>
   );
   assert.equal(before.semanticSpec.scales[0].paddingInner, 0);
 });
+
+test("revises density source and field while preserving output and position identities", () => {
+  const before = densityProgram()
+    .createData({ id: "observations", values: [
+      { cohort: "A", value: 1 },
+      { cohort: "A", value: 2 },
+      { cohort: "B", value: 3 },
+      { cohort: "B", value: 5 }
+    ] });
+  const layerBefore = before.semanticSpec.layers[0];
+  const after = before.editDensity({
+    source: "observations",
+    field: "value",
+    groupBy: false
+  });
+  const layerAfter = after.semanticSpec.layers[0];
+  const revised = after.semanticSpec.datasets.find(
+    dataset => dataset.id === "densitiesDensityDataRevision1"
+  );
+
+  assert.equal(revised.source, "observations");
+  assert.equal(revised.transform[0].field, "value");
+  assert.equal(revised.transform[0].groupBy, undefined);
+  assert.deepEqual(revised.transform[0].as, [
+    "Acceleration_value", "Acceleration_density"
+  ]);
+  assert.equal(layerAfter.encoding.group, undefined);
+  assert.equal(layerAfter.encoding.x.field, layerBefore.encoding.x.field);
+  assert.equal(layerAfter.encoding.y.field, layerBefore.encoding.y.field);
+  assert.equal(layerAfter.encoding.x.scale, layerBefore.encoding.x.scale);
+  assert.equal(layerAfter.encoding.y.scale, layerBefore.encoding.y.scale);
+  assert.equal(layerAfter.coordinate, layerBefore.coordinate);
+  assert.equal(before.semanticSpec.layers[0].data, "densitiesDensityData");
+});
+
+test("moves category placement and grouping color to a revised group field", () => {
+  const before = categoricalDensityProgram()
+    .encodeColor({ target: "violins", field: "category" });
+  const colorScale = before.semanticSpec.layers[0].encoding.color.scale;
+  const after = before.editDensity({ groupBy: "split" });
+  const layer = after.semanticSpec.layers[0];
+  const transform = after.semanticSpec.datasets[1].transform[0];
+
+  assert.equal(transform.groupBy, "split");
+  assert.equal(transform.placement.categoryField, "split");
+  assert.equal(layer.encoding.group.field, "split");
+  assert.equal(layer.encoding.color.field, "split");
+  assert.equal(layer.encoding.color.scale, colorScale);
+  assert.equal(layer.encoding.x.field, "split");
+  assert.equal(after.graphicSpec.objects.violins.items.length, 2);
+  assert.equal(new Set(
+    after.graphicSpec.objects.violins.items.map(item => item.properties.fill)
+  ).size, 2);
+});
+
+test("removes group-owned color and rejects invalid density provenance atomically", () => {
+  const colored = densityProgram()
+    .encodeColor({ target: "densities", field: "Origin" })
+    .createLegend({ target: "densities" });
+  const ungrouped = colored.editDensity({ groupBy: false });
+
+  assert.equal(ungrouped.semanticSpec.layers[0].encoding.group, undefined);
+  assert.equal(ungrouped.semanticSpec.layers[0].encoding.color, undefined);
+  assert.equal(ungrouped.semanticSpec.guides.legend, undefined);
+  assert.throws(
+    () => colored.editDensity({ source: "missing" }),
+    /Unknown source dataset/
+  );
+  assert.throws(
+    () => colored.editDensity({ field: "missing" }),
+    /at least one valid field\/group row/
+  );
+  assert.throws(
+    () => colored.editDensity({ groupBy: "" }),
+    /Density groupBy must be a non-empty string/
+  );
+  assert.equal(colored.semanticSpec.layers[0].data, "densitiesDensityData");
+});

@@ -15,6 +15,7 @@ import { planDerivedDataRevision } from
 import { validateOptions } from "./shared.js";
 import { normalizeDensityPlacement } from "../../grammar/density.js";
 import { scaleEditPatch } from "../scales/patch.js";
+import { removeLegendKinds } from "../guides/legends/remove.js";
 import {
   requireDensityField,
   resolveDensityCategoryScaleOptions,
@@ -29,8 +30,8 @@ const OPTIONS = Object.freeze([
   "valueScale", "densityScale", "placement"
 ]);
 const EDIT_OPTIONS = Object.freeze([
-  "target", "bandwidth", "extent", "steps", "kernel", "normalization",
-  "placement"
+  "target", "source", "field", "groupBy", "bandwidth", "extent", "steps",
+  "kernel", "normalization", "placement"
 ]);
 const EDITABLE = Object.freeze(EDIT_OPTIONS.filter(option => option !== "target"));
 
@@ -190,6 +191,43 @@ function findDensityArea(program, requested) {
   });
 }
 
+function densityCategoryField(layer, transform, groupBy) {
+  if (transform.placement === undefined) return undefined;
+  if (transform.placement.categoryField !== transform.groupBy) {
+    return transform.placement.categoryField;
+  }
+  return groupBy ?? `${layer.id}DensityCategory`;
+}
+
+function assertGroupingSelectionCompatibility(program, layer, changesGroup) {
+  if (!changesGroup) return;
+  const referenced = Object.entries(
+    program.materializationConfigs.selections ?? {}
+  ).find(([, selection]) =>
+    selection.target === layer.id &&
+    ["group", "color"].includes(selection.selector?.channel)
+  );
+  if (referenced !== undefined) {
+    throw new Error(
+      `editDensity cannot change groupBy while selection "${referenced[0]}" ` +
+      `references ${referenced[1].selector.channel}.`
+    );
+  }
+}
+
+function removeOwnedColorLegends(program, target) {
+  const kinds = Object.entries(program.guideConfigs.legend ?? {})
+    .filter(([kind, config]) =>
+      config?.target === target &&
+      (
+        config.channels?.includes("color") ||
+        ["gradient", "interval"].includes(kind)
+      )
+    )
+    .map(([kind]) => kind);
+  return kinds.length === 0 ? program : removeLegendKinds(program, kinds);
+}
+
 const editDensity = action(
   {
     op: "editDensity",
@@ -203,21 +241,55 @@ const editDensity = action(
     const layer = findDensityArea(this, args.target);
     const previous = findDataset(this, layer.data);
     const transform = previous.transform[0];
+    const source = Object.hasOwn(args, "source")
+      ? validateUserId(args.source, "Density source dataset id")
+      : previous.source;
+    const field = Object.hasOwn(args, "field")
+      ? requireDensityField(args.field, "Density field")
+      : transform.field;
+    const groupBy = Object.hasOwn(args, "groupBy")
+      ? args.groupBy === false
+        ? undefined
+        : requireDensityField(args.groupBy, "Density groupBy")
+      : transform.groupBy;
+    const changesGroup = groupBy !== transform.groupBy;
+    assertGroupingSelectionCompatibility(this, layer, changesGroup);
+    const categoryField = densityCategoryField(layer, transform, groupBy);
     const requestedPlacement = Object.hasOwn(args, "placement")
       ? normalizeDensityPlacement(args.placement, {
           densityChannel: transform.placement?.channel ?? "x",
-          groupBy: transform.groupBy,
-          categoryField: transform.groupBy ??
-            transform.placement?.categoryField ??
+          groupBy,
+          categoryField: categoryField ?? groupBy ??
             `${layer.id}DensityCategory`
         })
-      : transform.placement;
+      : transform.placement === undefined || !changesGroup
+        ? transform.placement
+        : normalizeDensityPlacement({
+            type: "category",
+            ...(transform.placement.side === undefined
+              ? {}
+              : { side: transform.placement.side }),
+            width: transform.placement.width,
+            ...(transform.placement.split === undefined
+              ? {}
+              : { split: transform.placement.split })
+          }, {
+            densityChannel: transform.placement.channel,
+            groupBy,
+            categoryField
+          });
     const colorField = layer.encoding?.color?.field;
+    const colorFollowsGroup = transform.groupBy !== undefined &&
+      colorField === transform.groupBy;
     const availableColorFields = [
-      transform.groupBy,
+      groupBy,
       requestedPlacement?.split?.field
     ].filter(Boolean);
-    if (colorField !== undefined && !availableColorFields.includes(colorField)) {
+    if (
+      colorField !== undefined &&
+      !colorFollowsGroup &&
+      !availableColorFields.includes(colorField)
+    ) {
       throw new Error(
         `editDensity placement would remove color field "${colorField}" from the density series.`
       );
@@ -234,11 +306,11 @@ const editDensity = action(
 
     const dataArgs = {
       id: revision.id,
-      source: previous.source,
-      field: transform.field,
-      ...(transform.groupBy === undefined
+      source,
+      field,
+      ...(groupBy === undefined
         ? {}
-        : { groupBy: transform.groupBy }),
+        : { groupBy }),
       bandwidth: option("bandwidth"),
       extent: option("extent"),
       steps: option("steps"),
@@ -249,78 +321,143 @@ const editDensity = action(
         ? {}
         : { placement: requestedPlacement })
     };
-    let next = requestedPlacement === undefined
-      ? this.createDensityData(dataArgs)
-      : this.createCategoricalDensityData(dataArgs);
-    next = next.rebindLayerData(revision.rebinds[0])
-      .releaseDerivedData(revision.release);
-
     const changesPlacementMode = Object.hasOwn(args, "placement") &&
       (transform.placement === undefined) !== (requestedPlacement === undefined);
-    if (changesPlacementMode) {
-      const xScaleId = layer.encoding?.x?.scale;
-      const yScaleId = layer.encoding?.y?.scale;
-      const scaleDefinitions = resolveDensityTransitionScaleDefinitions(
-        this,
-        layer,
-        transform,
-        requestedPlacement,
-        args.placement
-      );
-      next = next
-        .editSemantic({ property: `layer[${layer.id}].encoding.x`, remove: true })
-        .editSemantic({ property: `layer[${layer.id}].encoding.y`, remove: true });
-      next = next
-        .editScale(scaleEditPatch(xScaleId, scaleDefinitions.x))
-        .editScale(scaleEditPatch(yScaleId, scaleDefinitions.y));
-      const densityChannel = requestedPlacement?.channel ?? (
-        layer.encoding.x.field === transform.as[1] ? "x" : "y"
-      );
-      const definition = resolveDensityPositionDefinition({
-        layer: { densityChannel },
-        output: transform.as,
-        groupBy: transform.groupBy,
-        placement: requestedPlacement,
-        coordinate: layer.coordinate,
-        valueScale: {
-          id: requestedPlacement?.channel === "x" ? yScaleId : xScaleId,
-          ...scaleDefinitions[requestedPlacement?.channel === "x" ? "y" : "x"]
-        },
-        densityScale: requestedPlacement === undefined
-          ? {
-              id: densityChannel === "x" ? xScaleId : yScaleId,
-              ...scaleDefinitions[densityChannel]
-            }
-          : undefined,
-        placementScale: requestedPlacement === undefined
-          ? undefined
-          : {
-              id: requestedPlacement.channel === "x" ? xScaleId : yScaleId,
-              ...scaleDefinitions[requestedPlacement.channel]
-            }
-      });
-      next = applyDensityPosition(next, layer.id, definition);
-    } else if (
-      requestedPlacement !== undefined &&
-      Object.hasOwn(args.placement ?? {}, "scale")
-    ) {
-      const channel = requestedPlacement.channel;
-      const scaleId = layer.encoding[channel].scale;
-      const requestedScale = resolveDensityCategoryScaleOptions(
-        args.placement.scale,
-        scaleId
-      );
-      if (requestedScale.id !== scaleId) {
-        throw new Error("editDensity placement scale cannot change its id.");
-      }
-      next = next.editScale(scaleEditPatch(scaleId, requestedScale));
-    }
+    const applyEdit = program => {
+      let next = requestedPlacement === undefined
+        ? program.createDensityData(dataArgs)
+        : program.createCategoricalDensityData(dataArgs);
+      next = next.rebindLayerData(revision.rebinds[0])
+        .releaseDerivedData(revision.release);
 
-    next = applyMaterializationPlan(
-      next,
-      planDensityRematerialization(next, layer.id)
-    );
-    return next;
+      if (changesGroup) {
+        if (groupBy === undefined) {
+          if (next.semanticSpec.layers.find(
+            candidate => candidate.id === layer.id
+          ).encoding?.group !== undefined) {
+            next = next.editSemantic({
+              property: `layer[${layer.id}].encoding.group`,
+              remove: true
+            });
+          }
+          if (colorFollowsGroup) {
+            next = next.editSemantic({
+              property: `layer[${layer.id}].encoding.color`,
+              remove: true
+            });
+            next = removeOwnedColorLegends(next, layer.id);
+          }
+        } else {
+          next = next
+            .editSemantic({
+              property: `layer[${layer.id}].encoding.group.field`,
+              value: groupBy
+            })
+            .editSemantic({
+              property: `layer[${layer.id}].encoding.group.fieldType`,
+              value: "nominal"
+            });
+          if (colorFollowsGroup) {
+            next = next.editSemantic({
+              property: `layer[${layer.id}].encoding.color.field`,
+              value: groupBy
+            });
+          }
+        }
+        if (
+          requestedPlacement !== undefined &&
+          transform.placement?.categoryField !== requestedPlacement.categoryField
+        ) {
+          next = next.editSemantic({
+            property: `layer[${layer.id}].encoding.${requestedPlacement.channel}.field`,
+            value: requestedPlacement.categoryField
+          });
+        }
+      }
+
+      if (changesPlacementMode) {
+        const xScaleId = layer.encoding?.x?.scale;
+        const yScaleId = layer.encoding?.y?.scale;
+        const scaleDefinitions = resolveDensityTransitionScaleDefinitions(
+          program,
+          layer,
+          transform,
+          requestedPlacement,
+          args.placement
+        );
+        next = next
+          .editSemantic({
+            property: `layer[${layer.id}].encoding.x`,
+            remove: true
+          })
+          .editSemantic({
+            property: `layer[${layer.id}].encoding.y`,
+            remove: true
+          });
+        next = next
+          .editScale(scaleEditPatch(xScaleId, scaleDefinitions.x))
+          .editScale(scaleEditPatch(yScaleId, scaleDefinitions.y));
+        const densityChannel = requestedPlacement?.channel ?? (
+          layer.encoding.x.field === transform.as[1] ? "x" : "y"
+        );
+        const valueChannel = requestedPlacement?.channel === "x" ? "y" : "x";
+        const definition = resolveDensityPositionDefinition({
+          layer: { densityChannel },
+          output: transform.as,
+          groupBy,
+          placement: requestedPlacement,
+          coordinate: layer.coordinate,
+          valueScale: {
+            id: valueChannel === "y" ? yScaleId : xScaleId,
+            ...scaleDefinitions[valueChannel]
+          },
+          densityScale: requestedPlacement === undefined
+            ? {
+                id: densityChannel === "x" ? xScaleId : yScaleId,
+                ...scaleDefinitions[densityChannel]
+              }
+            : undefined,
+          placementScale: requestedPlacement === undefined
+            ? undefined
+            : {
+                id: requestedPlacement.channel === "x" ? xScaleId : yScaleId,
+                ...scaleDefinitions[requestedPlacement.channel]
+              }
+        });
+        next = applyDensityPosition(next, layer.id, definition, groupBy);
+      } else if (
+        requestedPlacement !== undefined &&
+        Object.hasOwn(args.placement ?? {}, "scale")
+      ) {
+        const channel = requestedPlacement.channel;
+        const scaleId = layer.encoding[channel].scale;
+        const requestedScale = resolveDensityCategoryScaleOptions(
+          args.placement.scale,
+          scaleId
+        );
+        if (requestedScale.id !== scaleId) {
+          throw new Error("editDensity placement scale cannot change its id.");
+        }
+        next = next.editScale(scaleEditPatch(scaleId, requestedScale));
+      }
+
+      next = applyMaterializationPlan(
+        next,
+        planDensityRematerialization(next, layer.id)
+      );
+      if (
+        changesGroup &&
+        colorFollowsGroup &&
+        groupBy !== undefined &&
+        Object.values(next.guideConfigs.legend ?? {})
+          .some(config => config?.target === layer.id)
+      ) {
+        next = next.rematerializeLegend();
+      }
+      return next;
+    };
+    applyEdit(this);
+    return applyEdit(this);
   }
 );
 
