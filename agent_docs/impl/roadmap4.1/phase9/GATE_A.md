@@ -2,11 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
-Phase 9 lifecycle audit, cross-capability regression, surface synchronization과 full verification을 완료했다.
-Functional checkpoint `3b16db28`은 `origin/codex/roadmap4-1-lifecycle`에 있다. 사용자 approval은 아직
-기록하지 않았다.
+사용자가 2026-07-23에 Gate package `abfbbbdb`와 functional checkpoint `3b16db28`의 Phase 9 closeout
+결과를 명시적으로 승인했다. Roadmap 4.1 완료 선언과 active roadmap/Phase pointer closeout이 해제되었다.
 
 ## Review target
 

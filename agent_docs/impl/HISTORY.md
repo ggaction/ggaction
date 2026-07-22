@@ -42,9 +42,10 @@ facade consistency를 완료했다. Phase 15에서 public docs verification과 r
 
 ## Roadmap 4.1 — Authoring Lifecycle and Compatibility Completion
 
-현재 실행 계획 owner다. 새 chart capability가 아니라 existing encoding, selection/highlight, guide, statistical
-owner, 2D-bin과 facet의 explicit edit/remove lifecycle을 완성한다.
+Phase 0~9를 완료했다. 새 chart capability를 추가하지 않고 existing encoding, selection/highlight, guide,
+statistical owner, 2D-bin과 facet의 explicit edit/remove lifecycle을 완성했다. Current action inventory,
+cross-capability regression, generated docs와 package consumer를 동기화하고 R41-Exit에서 closeout했다.
 
-- 현재 계획: [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md)
+- 기록: [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md)
 
-Machine-readable 상태와 현재 Phase는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.
+Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.

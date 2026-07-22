@@ -43,25 +43,31 @@ function localMarkdownLinks(source) {
     .filter(link => !/^(?:https?:|mailto:)/u.test(link));
 }
 
-test("keeps one machine-readable active roadmap and optional phase", () => {
-  assert.equal(roadmapIndex.version, 1);
+test("keeps one optional active roadmap and an explicit completed owner", () => {
+  assert.equal(roadmapIndex.version, 2);
   assert.equal(new Set(roadmapIndex.roadmaps.map(entry => entry.id)).size,
     roadmapIndex.roadmaps.length);
 
   const active = roadmapIndex.roadmaps.filter(entry => entry.status === "active");
-  assert.equal(active.length, 1);
-  assert.equal(active[0].id, roadmapIndex.activeRoadmap);
-  assert.equal(active[0].role, "current-execution-plan");
+  assert.equal(active.length, roadmapIndex.activeRoadmap === null ? 0 : 1);
+  if (roadmapIndex.activeRoadmap === null) {
+    assert.equal(roadmapIndex.activePhase, null);
+  } else {
+    assert.equal(active[0].id, roadmapIndex.activeRoadmap);
+    assert.equal(active[0].role, "current-execution-plan");
+  }
   assert.equal(
     roadmapIndex.activePhase === null || Number.isInteger(roadmapIndex.activePhase),
     true
   );
   if (roadmapIndex.activePhase !== null) {
     assert.equal(roadmapIndex.activePhase >= 0, true);
-  } else {
-    assert.equal(Number.isInteger(roadmapIndex.lastCompletedPhase), true);
-    assert.equal(roadmapIndex.lastCompletedPhase >= 0, true);
   }
+  const lastCompleted = roadmap(roadmapIndex.lastCompletedRoadmap);
+  assert.notEqual(lastCompleted, undefined);
+  assert.equal(lastCompleted.status, "completed");
+  assert.equal(Number.isInteger(roadmapIndex.lastCompletedPhase), true);
+  assert.equal(roadmapIndex.lastCompletedPhase >= 0, true);
 
   for (const entry of roadmapIndex.roadmaps) {
     assert.equal(["active", "completed"].includes(entry.status), true, entry.id);
@@ -75,26 +81,32 @@ test("keeps one machine-readable active roadmap and optional phase", () => {
   }
 });
 
-test("keeps human entry points synchronized with the active roadmap", () => {
+test("keeps human entry points synchronized with roadmap activity", () => {
   const rootReadme = readFileSync(path.join(agentDocsRoot, "README.md"), "utf8");
   const implReadme = readFileSync(path.join(agentDocsRoot, "impl", "README.md"), "utf8");
   const active = roadmapIndex.activeRoadmap;
-  const phase = roadmapIndex.activePhase;
-  const phaseLabel = phase ?? roadmapIndex.lastCompletedPhase;
+  const owner = active ?? roadmapIndex.lastCompletedRoadmap;
+  const phaseLabel = roadmapIndex.activePhase ?? roadmapIndex.lastCompletedPhase;
 
-  assert.match(rootReadme, new RegExp(`Roadmap ${active.replace("roadmap", "")}`));
+  assert.match(rootReadme, new RegExp(`Roadmap ${owner.replace("roadmap", "")}`));
   assert.match(rootReadme, new RegExp(`Phase ${phaseLabel}`));
-  assert.match(implReadme, new RegExp(`${active}/ROADMAP\\.md`));
+  assert.match(implReadme, new RegExp(`${owner}/ROADMAP\\.md`));
   assert.match(implReadme, new RegExp(`Phase ${phaseLabel}`));
+  if (active === null) {
+    assert.match(rootReadme, /활성 Roadmap은 없다/);
+    assert.match(implReadme, /활성 Roadmap은 없다/);
+  }
 
   for (const entry of roadmapIndex.roadmaps) {
     assert.match(implReadme, new RegExp(`${entry.id}/ROADMAP\\.md`), entry.id);
   }
 });
 
-test("keeps the active phase aligned with the roadmap status table", () => {
-  const active = roadmap(roadmapIndex.activeRoadmap);
-  const source = readFileSync(path.join(root, active.file), "utf8");
+test("keeps the active or last completed phase aligned with its roadmap", () => {
+  const owner = roadmap(
+    roadmapIndex.activeRoadmap ?? roadmapIndex.lastCompletedRoadmap
+  );
+  const source = readFileSync(path.join(root, owner.file), "utf8");
   if (roadmapIndex.activePhase === null) {
     assert.match(
       source,

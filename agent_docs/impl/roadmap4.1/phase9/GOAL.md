@@ -18,7 +18,7 @@ point는 추가하지 않는다.
 - [x] Contracts/declarations/docs/examples/architecture/package surface 정합성
 - [x] Full normal/coverage/render/browser/package verification
 - [x] R41-Exit remote checkpoint
-- [ ] 사용자 explicit approval
+- [x] 사용자 explicit approval
 
 ## Gate R41-Exit
 

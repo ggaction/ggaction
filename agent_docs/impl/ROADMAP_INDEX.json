@@ -1,8 +1,9 @@
 {
-  "version": 1,
-  "activeRoadmap": "roadmap4.1",
-  "activePhase": 9,
-  "lastCompletedPhase": 8,
+  "version": 2,
+  "activeRoadmap": null,
+  "activePhase": null,
+  "lastCompletedRoadmap": "roadmap4.1",
+  "lastCompletedPhase": 9,
   "roadmaps": [
     {
       "id": "roadmap1",
@@ -47,8 +48,8 @@
     {
       "id": "roadmap4.1",
       "title": "Authoring Lifecycle and Compatibility Completion",
-      "status": "active",
-      "role": "current-execution-plan",
+      "status": "completed",
+      "role": "historical-execution-record",
       "file": "agent_docs/impl/roadmap4.1/ROADMAP.md"
     }
   ]
