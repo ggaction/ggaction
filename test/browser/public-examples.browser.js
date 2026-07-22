@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import AxeBuilder from "@axe-core/playwright";
 import { chromium } from "playwright";
 
-import { publicCharts } from "../../examples/registry.js";
+import { publicBrowserExamples } from "../../examples/registry.js";
 import {
   assertNoBrowserErrors,
   openBrowserPage,
@@ -13,7 +14,7 @@ import {
 import { startStaticServer } from "../support/static-server.js";
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
-const examples = publicCharts({ browser: true });
+const examples = publicBrowserExamples();
 
 let browser;
 let server;
@@ -65,6 +66,85 @@ for (const example of examples) {
     }
     assertNoBrowserErrors(errors, example.id);
     await page.close();
+  });
+}
+
+for (const example of examples.filter(item => item.browser.interaction)) {
+  test(`operates ${example.id} with buttons and arrow keys`, async () => {
+    const context = await browser.newContext();
+    try {
+      const { page, errors } = await openBrowserPage(
+        context,
+        new URL(`examples/${example.browser.path}`, server.baseUrl).href,
+        {
+          waitFor: () => {
+            const status = document.querySelector("#status")?.textContent ?? "";
+            return status.length > 0 && !/^Loading\b/i.test(status);
+          }
+        }
+      );
+      const interaction = example.browser.interaction;
+      const currentStep = () => page.evaluate(
+        name => window[name].step,
+        interaction.stateGlobal
+      );
+      const previous = page.locator(interaction.previous);
+      const next = page.locator(interaction.next);
+
+      assert.equal(await currentStep(), 0);
+      assert.equal(await previous.isDisabled(), true);
+      await next.click();
+      assert.equal(await currentStep(), 1);
+      await page.keyboard.press("ArrowRight");
+      assert.equal(await currentStep(), 2);
+      await page.keyboard.press("ArrowLeft");
+      assert.equal(await currentStep(), 1);
+      await previous.click();
+      assert.equal(await currentStep(), 0);
+
+      for (let step = 0; step < interaction.finalStep; step += 1) {
+        await page.keyboard.press("ArrowRight");
+      }
+      assert.equal(await currentStep(), interaction.finalStep);
+      assert.equal(await next.isDisabled(), true);
+      assert.match(await page.locator("#status").textContent(), /^Ready:/);
+
+      const accessibility = await new AxeBuilder({ page }).analyze();
+      assert.deepEqual(
+        accessibility.violations.map(violation => violation.id),
+        [],
+        `${example.id} accessibility violations`
+      );
+      assertNoBrowserErrors(errors, `${example.id} interaction`);
+    } finally {
+      await context.close();
+    }
+  });
+
+  test(`contains ${example.id} at a narrow mobile width`, async () => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    try {
+      const page = await context.newPage();
+      const errors = [];
+      page.on("console", message => {
+        if (message.type() === "error") errors.push(message.text());
+      });
+      page.on("pageerror", error => errors.push(error.message));
+      const response = await page.goto(
+        new URL(`examples/${example.browser.path}`, server.baseUrl).href,
+        { waitUntil: "networkidle" }
+      );
+      assert.equal(response?.ok(), true);
+      await page.waitForFunction(() => !/^Loading\b/i.test(
+        document.querySelector("#status")?.textContent ?? "Loading"
+      ));
+      assert.equal(await page.evaluate(() =>
+        document.documentElement.scrollWidth === document.documentElement.clientWidth
+      ), true);
+      assertNoBrowserErrors(errors, `${example.id} mobile`);
+    } finally {
+      await context.close();
+    }
   });
 }
 

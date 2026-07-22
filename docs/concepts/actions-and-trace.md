@@ -16,6 +16,10 @@ title: Actions and Trace Trees
 Every chart-authoring method is an action. Calling a high-level action records
 that action and any wrapped actions it invokes as children.
 
+<a href="{{ '/demos/action-trace/' | relative_url }}">Open the interactive
+action-trace demo</a> to step through five immutable versions of one chart while
+watching its resources and trace tree change.
+
 ```text
 createAxes
 ├─ createXAxis

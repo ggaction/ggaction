@@ -357,6 +357,30 @@ try {
   await desktop.screenshot({ path: path.join(artifactRoot, "desktop.png"), fullPage: true });
   await desktopContext.close();
 
+  const demoContext = await browser.newContext({
+    viewport: { width: 1280, height: 900 }
+  });
+  const demo = await demoContext.newPage();
+  const demoErrors = [];
+  demo.on("console", message => {
+    if (message.type() === "error") demoErrors.push(message.text());
+  });
+  demo.on("pageerror", error => demoErrors.push(error.message));
+  const demoResponse = await demo.goto(`${baseUrl}demos/action-trace/`, {
+    waitUntil: "networkidle"
+  });
+  assert.equal(demoResponse.ok(), true);
+  await demo.waitForFunction(() => !/^Loading\b/i.test(
+    document.querySelector("#status")?.textContent ?? "Loading"
+  ));
+  assert.equal(await demo.evaluate(() => window.__ggactionInteractiveTrace.step), 0);
+  await demo.locator("#next").click();
+  await demo.keyboard.press("ArrowRight");
+  assert.equal(await demo.evaluate(() => window.__ggactionInteractiveTrace.step), 2);
+  await assertAccessible(demo, "interactive action trace");
+  assert.deepEqual(demoErrors, []);
+  await demoContext.close();
+
   const noScriptDesktopContext = await browser.newContext({
     javaScriptEnabled: false,
     viewport: { width: 1440, height: 900 }

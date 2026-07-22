@@ -112,6 +112,8 @@ for (const expected of [
   "search-index.json",
   "llms.txt",
   "llms-full.txt",
+  "demos/action-trace/index.html",
+  "assets/js/interactive-action-trace.js",
   "assets/js/docs-navigation.js",
   "assets/js/docs-content.js",
   "assets/js/docs-search.js"

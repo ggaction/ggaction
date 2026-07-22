@@ -575,11 +575,47 @@ export const PUBLIC_CHARTS = Object.freeze([
   })
 ]);
 
+export const PUBLIC_INTERACTIVE_EXAMPLES = Object.freeze([
+  Object.freeze({
+    id: "interactive-action-trace",
+    width: 640,
+    height: 400,
+    browser: Object.freeze({
+      path: "interactive-action-trace/",
+      canvas: "#chart",
+      state: Object.freeze({
+        global: "__ggactionInteractiveTrace",
+        expected: Object.freeze({
+          step: 0,
+          stepId: "canvas",
+          steps: 5,
+          datasets: 0,
+          layers: 0,
+          graphics: 2
+        })
+      }),
+      interaction: Object.freeze({
+        previous: "#previous",
+        next: "#next",
+        stateGlobal: "__ggactionInteractiveTrace",
+        finalStep: 4
+      })
+    })
+  })
+]);
+
 export function publicCharts(options = {}) {
   return PUBLIC_CHARTS.filter(chart =>
     (options.docsGroup === undefined || chart.docsGroup === options.docsGroup) &&
     (options.browser === undefined || Boolean(chart.browser) === options.browser)
   );
+}
+
+export function publicBrowserExamples() {
+  return Object.freeze([
+    ...publicCharts({ browser: true }),
+    ...PUBLIC_INTERACTIVE_EXAMPLES
+  ]);
 }
 
 export function publicChart(id) {

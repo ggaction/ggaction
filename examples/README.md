@@ -1,5 +1,12 @@
 # Examples
 
+## Interactive action trace
+
+Open <http://localhost:8000/examples/interactive-action-trace/> to step through
+five immutable versions of one chart program. The page renders each version,
+shows its resource counts and hierarchical action trace, and supports buttons
+or Left/Right arrow keys.
+
 ## Cars scatterplot
 
 Serve the repository root over HTTP:

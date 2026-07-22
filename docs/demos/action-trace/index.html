@@ -1,0 +1,256 @@
+<!doctype html>
+<!-- Generated from examples/interactive-action-trace/index.html. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Step through an immutable ggaction chart program and inspect its action trace.">
+    <meta property="og:image" content="https://ggaction.github.io/ggaction/assets/images/cars-scatterplot-thumb.png">
+    <link rel="canonical" href="https://ggaction.github.io/ggaction/demos/action-trace/">
+    <title>ggaction — interactive action trace</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #16211c;
+        --muted: #5b6961;
+        --paper: #f5f0e6;
+        --panel: #fffcf6;
+        --line: #d8d0c0;
+        --green: #0f6848;
+        --orange: #e76932;
+        --shadow: 0 24px 70px rgb(59 50 35 / 12%);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 4% 8%, rgb(231 105 50 / 10%), transparent 24rem),
+          linear-gradient(180deg, #fbf8f1 0%, var(--paper) 100%);
+        font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      a { color: inherit; text-underline-offset: 0.18em; }
+      button, code { font: inherit; }
+      .shell {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 34px 0 48px;
+      }
+      header, .stage-head, .controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      header { margin-bottom: 40px; }
+      .brand { font-size: 1.35rem; font-weight: 850; letter-spacing: -0.04em; }
+      .brand span { color: var(--orange); }
+      nav { display: flex; gap: 18px; color: var(--muted); font-size: 0.93rem; }
+      .intro {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 28px;
+      }
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--green);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      h1 {
+        max-width: 760px;
+        margin: 0;
+        font-family: ui-serif, Georgia, serif;
+        font-size: clamp(2.8rem, 7vw, 5.9rem);
+        font-weight: 500;
+        letter-spacing: -0.055em;
+        line-height: 0.94;
+      }
+      .lede { margin: 0; color: var(--muted); font-size: 1.05rem; }
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.75fr);
+        min-height: 610px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+      .stage {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-width: 0;
+        padding: 22px;
+        border-right: 1px solid var(--line);
+      }
+      .step-label { margin: 0; font-weight: 760; }
+      .step-count { color: var(--muted); font-variant-numeric: tabular-nums; }
+      .chart-wrap {
+        display: grid;
+        place-items: center;
+        min-height: 430px;
+        overflow: auto;
+      }
+      canvas {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        background: white;
+      }
+      .controls { padding-top: 14px; border-top: 1px solid var(--line); }
+      .button-row { display: flex; gap: 10px; }
+      button {
+        min-height: 44px;
+        padding: 0 16px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink);
+        background: white;
+        cursor: pointer;
+      }
+      button.primary { color: white; border-color: var(--green); background: var(--green); }
+      button:disabled { cursor: not-allowed; opacity: 0.42; }
+      button:focus-visible, a:focus-visible {
+        outline: 3px solid rgb(231 105 50 / 50%);
+        outline-offset: 3px;
+      }
+      .inspector {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        min-width: 0;
+        padding: 22px;
+        background: #f0f5f0;
+      }
+      .inspector h2 { margin: 0; font-size: 1rem; }
+      .state-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 18px 0;
+      }
+      .metric { padding: 10px; border-radius: 10px; background: rgb(255 255 255 / 68%); }
+      .metric strong { display: block; font-size: 1.22rem; }
+      .metric span {
+        color: var(--muted);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .trace {
+        height: 360px;
+        min-height: 250px;
+        margin: 0;
+        padding: 16px;
+        overflow: auto;
+        border: 1px solid rgb(15 104 72 / 18%);
+        border-radius: 14px;
+        color: #cce9da;
+        background: #173a2d;
+        font: 0.79rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        white-space: pre;
+      }
+      .action-code {
+        margin: 14px 0 0;
+        padding: 12px 14px;
+        border-left: 3px solid var(--orange);
+        border-radius: 0 10px 10px 0;
+        color: #3e4943;
+        background: rgb(255 255 255 / 72%);
+        font: 0.78rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
+      .note {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        margin: 24px 4px 0;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+      .note p { margin: 0; }
+      #status {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+      @media (max-width: 860px) {
+        .intro, .workspace { grid-template-columns: 1fr; }
+        .stage { border-right: 0; border-bottom: 1px solid var(--line); }
+        .chart-wrap { min-height: 360px; }
+      }
+      @media (max-width: 560px) {
+        .shell { width: min(100% - 20px, 1180px); padding-top: 20px; }
+        header { margin-bottom: 28px; }
+        nav a:first-child { display: none; }
+        .intro { gap: 18px; }
+        .stage, .inspector { padding: 16px; }
+        .controls, .note { align-items: flex-start; flex-direction: column; }
+        .chart-wrap { min-height: 300px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div class="brand">gg<span>action</span></div>
+        <nav aria-label="Project links">
+          <a href="https://ggaction.github.io/ggaction/">Documentation</a>
+          <a href="https://github.com/ggaction/ggaction">GitHub</a>
+        </nav>
+      </header>
+      <main class="docs-content">
+        <section class="intro" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">Interactive action trace</p>
+            <h1 id="page-title">A chart is a sequence of actions.</h1>
+          </div>
+          <p class="lede">Step through one immutable program. The chart changes; every authored action remains available as an inspectable trace.</p>
+        </section>
+        <section class="workspace" aria-label="Interactive chart authoring demo">
+          <div class="stage">
+            <div class="stage-head">
+              <p class="step-label" id="step-label">Create the canvas</p>
+              <span class="step-count" id="step-count">1 / 5</span>
+            </div>
+            <div class="chart-wrap" tabindex="0" aria-label="Scrollable chart viewport">
+              <canvas id="chart" width="640" height="400" aria-label="Horsepower versus fuel economy scatterplot"></canvas>
+            </div>
+            <div class="controls">
+              <span class="step-count">Each step returns a new ChartProgram.</span>
+              <div class="button-row">
+                <button id="previous" type="button">Previous</button>
+                <button class="primary" id="next" type="button">Next action</button>
+              </div>
+            </div>
+          </div>
+          <aside class="inspector" aria-labelledby="trace-title">
+            <h2 id="trace-title">Program inspection</h2>
+            <div class="state-grid" aria-label="Current program resource counts">
+              <div class="metric"><strong id="datasets">0</strong><span>datasets</span></div>
+              <div class="metric"><strong id="layers">0</strong><span>layers</span></div>
+              <div class="metric"><strong id="graphics">0</strong><span>graphics</span></div>
+            </div>
+            <pre class="trace" id="trace" tabindex="0" aria-live="polite"></pre>
+            <pre class="action-code" id="action-code"></pre>
+          </aside>
+        </section>
+        <div class="note">
+          <p>Runs directly in your browser. No signup or build step.</p>
+          <p>Prepared by an autonomous AI agent working for the ggaction project.</p>
+        </div>
+        <p id="status" role="status" aria-live="polite">Loading demo</p>
+      </main>
+    </div>
+    <script type="module" src="../../assets/js/interactive-action-trace.js"></script>
+  </body>
+</html>
