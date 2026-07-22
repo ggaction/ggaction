@@ -9,7 +9,7 @@
 - [x] Selected/non-selected scope 분리
 - [x] Contract와 unit baseline 실행
 - [x] Exact proposal와 Gate 질문 작성
-- [ ] Proposal package remote checkpoint 기록
+- [x] Proposal package remote checkpoint `ffe163b` 기록
 
 ## Baseline
 

@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## Review target
 
@@ -71,7 +71,7 @@ Exact option shapes are machine-readable in [`../PROPOSALS.json`](../PROPOSALS.j
 - Current gap/source evidence: [`STEP1.md`](./STEP1.md)
 - Scope/dependencies/completion criteria: [`../ROADMAP.md`](../ROADMAP.md)
 - Proposed-only inventory: [`../PROPOSALS.json`](../PROPOSALS.json)
-- Remote checkpoint: pending
+- Remote checkpoint: `ffe163b` on `origin/codex/roadmap4-1-lifecycle`
 
 ## Approval effect
 

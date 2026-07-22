@@ -14,7 +14,7 @@
 - [x] Proposed-only action/extension inventory 작성
 - [x] Phase dependency와 Gate 분할 작성
 - [x] Contract/unit baseline 실행
-- [ ] R41-P0-A review package commit/push
+- [x] R41-P0-A review package commit/push — `ffe163b`
 - [ ] 사용자 explicit approval
 - [ ] Approved subset을 ACTION_INDEX Planned inventory로 승격
 
