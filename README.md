@@ -1,6 +1,6 @@
 # ggaction
 
-[![npm version](https://img.shields.io/npm/v/ggaction.svg)](https://www.npmjs.com/package/ggaction) [![license](https://img.shields.io/npm/l/ggaction.svg)](./LICENSE) [![documentation](https://img.shields.io/badge/docs-ggaction.github.io-2563eb)](https://ggaction.github.io/ggaction/)
+[![npm version](https://img.shields.io/npm/v/ggaction.svg)](https://www.npmjs.com/package/ggaction) [![CI](https://github.com/ggaction/ggaction/actions/workflows/ci.yml/badge.svg)](https://github.com/ggaction/ggaction/actions/workflows/ci.yml) [![license](https://img.shields.io/npm/l/ggaction.svg)](./LICENSE) [![documentation](https://img.shields.io/badge/docs-ggaction.github.io-2563eb)](https://ggaction.github.io/ggaction/)
 
 ### A grammar for how charts are made.
 
@@ -139,6 +139,12 @@ All entries include TypeScript declarations. The default entry is browser-safe; 
 - [Action Reference](https://ggaction.github.io/ggaction/reference/actions/)
 - [Concepts](https://ggaction.github.io/ggaction/concepts/chart-program/)
 - [Supported Features](https://ggaction.github.io/ggaction/supported-features/)
+
+## Contributing
+
+Bug reports, documentation improvements, examples, and focused code changes are
+welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md) for setup, scope, tests, and
+the extra discussion required before public API or architecture changes.
 
 ## Status and development
 
