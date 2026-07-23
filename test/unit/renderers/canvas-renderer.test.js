@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { render } from "../../../src/renderers/canvas/index.js";
+import {
+  drawResolvedGraphicSpec,
+  render,
+  requireProgramGraphicSpec,
+  resolveGraphicRenderTarget
+} from "../../../src/renderers/canvas/index.js";
 import {
   createMockCanvasContext,
   findCanvasCalls
@@ -70,6 +75,32 @@ test("renders a concrete canvas and circle collection", () => {
     ]),
     [["black", 2]]
   );
+});
+
+test("draws a resolved graphic target without a Canvas backing store", () => {
+  const graphicSpec = createGraphicSpec();
+  const target = resolveGraphicRenderTarget(
+    requireProgramGraphicSpec({ graphicSpec })
+  );
+  const context = createMockCanvasContext();
+  delete context.canvas;
+  delete context.clearRect;
+  delete context.scale;
+
+  drawResolvedGraphicSpec(target, context);
+
+  assert.equal(target.width, 100);
+  assert.equal(target.height, 80);
+  assert.deepEqual(findCanvasCalls(context, "fillRect")[0].args, [0, 0, 100, 80]);
+  assert.deepEqual(
+    findCanvasCalls(context, "arc").map(call => call.args.slice(0, 3)),
+    [
+      [10, 20, 3],
+      [30, 40, 4]
+    ]
+  );
+  assert.equal(findCanvasCalls(context, "clearRect").length, 0);
+  assert.equal(findCanvasCalls(context, "scale").length, 0);
 });
 
 test("renders concrete children from a heterogeneous drawable collection", () => {

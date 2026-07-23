@@ -16,12 +16,13 @@ Phase 1 source와 evidence를 구현한 뒤 다음을 검토한다.
 
 ## Required evidence
 
-- Exact source diff
-- Focused target-boundary test
-- Existing Canvas/PNG unit tests
-- Full unit/contract results
-- Public export/package diff가 없다는 확인
-- Remote checkpoint
+- Exact source diff: `src/renderers/canvas/index.js`
+- Focused target-boundary test: 14/14 pass
+- Other existing Canvas/PNG focused tests: 19/19 pass
+- `npm run test:unit`: 1301/1301 pass
+- `npm run test:contracts`: 156/156 pass
+- Public export/package diff: none
+- Remote checkpoint: pending
 
 ## Approval effect
 
