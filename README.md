@@ -12,11 +12,9 @@ Build, inspect, select, and revise charts one meaningful action at a time.
   <img src="./docs/assets/images/readme-authoring-sequence.gif" width="960" height="540" loading="eager" alt="A ggaction program progressively creates a scatterplot, adds grouped regression fits and confidence bands, highlights the Japan group across chart layers, and finishes with an R-squared annotation.">
 </p>
 
-Every frame is rendered from an immutable `ChartProgram`. The final R² label is a custom traceable action composed from ggaction's public extension primitives.
+Every frame is rendered from an immutable `ChartProgram`. The final R² label is a traceable action built from public extension primitives.
 
-```bash
-npm install ggaction
-```
+[Try the action-trace demo.](https://ggactionbot.github.io/action-trace-demo/)
 
 ## A grammar of graphical action
 
@@ -57,6 +55,8 @@ const program = chart()
 
 ## Quick start
 
+Install the current public release:
+
 ```bash
 npm install ggaction
 ```
@@ -72,7 +72,7 @@ available:
 ```
 
 ```javascript
-import { chart, render } from "ggaction/basic";
+import { chart, render } from "ggaction";
 
 const observations = [
   { displacement: 97, acceleration: 14.5, origin: "Japan" },
@@ -101,10 +101,14 @@ render(program, context);
 Matching color and shape encodings give each origin a redundant visual cue and
 create a labeled categorical legend automatically.
 
+The smaller `ggaction/basic` entry is implemented on the current source branch
+but is not exported by the public `0.0.6` package. It will become available in
+the next release. The Quick Start uses `ggaction` so the example works with the
+install command above today.
+
 ### Branch revisions without mutation
 
-The basic entry above is creation-focused. Import the full entry for editing,
-start a separate program without a shape encoding, and derive alternatives
+Start a separate program without a shape encoding, then derive alternatives
 without changing the checkpoint:
 
 ```javascript
