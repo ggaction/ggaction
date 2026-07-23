@@ -9,7 +9,7 @@
 - [x] Exact API/result/options와 non-goal 작성
 - [x] Full Roadmap와 Gate 분할 작성
 - [x] Contract/unit/package baseline 실행
-- [ ] Proposal package remote checkpoint 기록
+- [x] Proposal package remote checkpoint `bcfe14b0` 기록
 
 ## Baseline
 

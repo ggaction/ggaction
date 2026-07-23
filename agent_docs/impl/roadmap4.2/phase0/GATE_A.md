@@ -2,9 +2,10 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
-Remote checkpoint는 baseline 검증 뒤 기록한다. 사용자의 명시적 승인 전에는 runtime 구현을 시작하지 않는다.
+Complete review package는 remote checkpoint `bcfe14b0`에 있다. 사용자의 명시적 승인 전에는 runtime 구현을
+시작하지 않는다.
 
 ## Review target
 
@@ -82,7 +83,7 @@ Result:
 - `npm run test:contracts` — 156/156 pass
 - `npm run test:unit` — 1300/1300 pass
 - `npm run test:package` — pass, packed `ggaction@0.0.6` consumer verified
-- Remote checkpoint: pending
+- Remote checkpoint: `bcfe14b0` on `origin/codex/roadmap4-2-vector-renderers`
 
 ## Approval effect
 
