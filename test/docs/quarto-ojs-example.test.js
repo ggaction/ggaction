@@ -28,6 +28,10 @@ test("keeps the Quarto example pinned, responsive, and accessible", () => {
   const document = read("index.qmd");
   const styles = read("styles.css");
   const readme = read("README.md");
+  const cdnCheck = readFileSync(
+    path.join(root, "scripts", "check-quarto-ojs-cdn.js"),
+    "utf8"
+  );
   const examplesReadme = readFileSync(
     path.join(root, "examples", "README.md"),
     "utf8"
@@ -83,6 +87,13 @@ test("keeps the Quarto example pinned, responsive, and accessible", () => {
   assert.match(readme, /may\s+return to its collapsed state/);
   assert.match(readme, /can retain arguments and source data/);
   assert.match(readme, /does not[\s\S]*Quarto extension/);
+  assert.match(readme, /node scripts\/check-quarto-ojs-cdn\.js/);
+  assert.match(readme, /separate networked smoke check/);
+  assert.match(cdnCheck, /const expectedVersion = "0\.0\.6"/);
+  assert.match(cdnCheck, /cdn\.jsdelivr\.net\/npm\/ggaction@\$\{expectedVersion\}\/\+esm/);
+  assert.match(cdnCheck, /x-jsd-version/);
+  assert.match(cdnCheck, /await import\(exampleModuleUrl\)/);
+  assert.match(cdnCheck, /example\.buildProgram\(640\)/);
   assert.match(examplesReadme, /quarto-ojs\/README\.md/);
   assert.equal(existsSync(path.join(exampleRoot, "_extension.yml")), false);
   assert.equal(existsSync(path.join(exampleRoot, "index.html")), false);

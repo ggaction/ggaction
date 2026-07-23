@@ -22,6 +22,20 @@ document layout changes. The Canvas has a text alternative, the figure exposes
 its source rows in a semantic HTML table, and the action trace uses nested
 keyboard-operable disclosure controls.
 
+## Verify the pinned CDN package
+
+The regular documentation tests run offline by substituting the repository
+source for the pinned CDN import. Before a release or a manual integration
+review, run this separate networked smoke check from the repository root:
+
+```bash
+node scripts/check-quarto-ojs-cdn.js
+```
+
+It fetches the exact public `ggaction@0.0.6` jsDelivr entry, verifies the
+served version, executes this example against that response, and checks its
+semantic, graphic, and trace results.
+
 ## Files
 
 - `index.qmd` is the Quarto/OJS document.
