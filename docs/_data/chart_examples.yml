@@ -1,4 +1,5 @@
 - id: composition
+  example: /examples/program-composition/
   title: Program composition
   image: /assets/images/program-composition.png
   alt: Blue point panel and orange replacement bar panel aligned in one horizontal dashboard
@@ -18,6 +19,7 @@
   home_group: essentials
   home_order: 110
 - id: facet
+  example: /examples/cars-origin-scatterplot-facet/
   title: Faceted scatterplot
   image: /assets/images/cars-origin-scatterplot-facet.png
   alt: Cars scatterplots repeated by origin with one shared cylinder legend
@@ -36,6 +38,7 @@
   home_group: essentials
   home_order: 120
 - id: scatterplot
+  example: /examples/cars-scatterplot/
   title: Scatterplot
   image: /assets/images/cars-scatterplot.png
   alt: Cars scatterplot of horsepower and fuel economy
@@ -57,6 +60,7 @@
   featured: true
   gallery_featured: true
 - id: line
+  example: /examples/cars-line-chart/
   title: Line chart
   image: /assets/images/cars-line-chart.png
   alt: Aggregate cars line chart grouped by origin
@@ -78,6 +82,7 @@
   featured: true
   gallery_featured: true
 - id: temporal-bar-line
+  example: /examples/cars-temporal-bar-line/
   title: Temporal bar and line
   image: /assets/images/cars-temporal-bar-line.png
   alt: Mean car acceleration shown as aligned temporal bars and a trend line
@@ -95,6 +100,7 @@
   home_group: essentials
   home_order: 40
 - id: development-trajectories
+  example: /examples/gapminder-development-trajectories/
   title: Development trajectories
   image: /assets/images/gapminder-development-trajectories.png
   alt: Three chronological country trajectories through fertility and life expectancy space
@@ -113,6 +119,7 @@
   home_group: essentials
   home_order: 50
 - id: annotation
+  example: /examples/annotated-imdb-scatterplot/
   title: Annotated scatterplot
   image: /assets/images/annotated-imdb-scatterplot.png
   alt: Selected film ratings over release years with title annotations
@@ -132,6 +139,7 @@
   home_group: essentials
   home_order: 20
 - id: heatmap
+  example: /examples/gapminder-life-expectancy-heatmap/
   title: Heatmap
   image: /assets/images/gapminder-life-expectancy-heatmap.png
   alt: Heatmap of life expectancy by country and year with values inside colored cells
@@ -152,6 +160,7 @@
   featured: true
   gallery_featured: true
 - id: bar
+  example: /examples/jobs-grouped-bar/
   title: Bar chart
   image: /assets/images/jobs-grouped-bar.png
   alt: Grouped bar chart of job percentages
@@ -173,6 +182,7 @@
   featured: true
   gallery_featured: true
 - id: horizontal-grouped-bar
+  example: /examples/jobs-horizontal-grouped-bar/
   title: Horizontal grouped bar
   image: /assets/images/jobs-horizontal-grouped-bar.png
   alt: Horizontal grouped bar chart of job percentages
@@ -190,6 +200,7 @@
   home_group: essentials
   home_order: 80
 - id: histogram
+  example: /examples/cars-histogram/
   title: Histogram
   image: /assets/images/cars-histogram.png
   alt: Stacked histogram of car displacement
@@ -211,6 +222,7 @@
   featured: true
   gallery_featured: true
 - id: density
+  example: /examples/cars-density-area/
   title: Density area
   image: /assets/images/cars-density-area.png
   alt: Grouped density area chart of car acceleration
@@ -230,6 +242,7 @@
   tutorial_order: 90
   recipe_order: 70
 - id: regression
+  example: /examples/cars-regression-scatterplot/
   title: Regression scatterplot
   image: /assets/images/cars-regression-scatterplot.png
   alt: Cars scatterplot with grouped regression lines and confidence bands
@@ -251,6 +264,7 @@
   featured: true
   gallery_featured: true
 - id: horizon
+  example: /examples/gapminder-horizon/
   title: Horizon chart
   image: /assets/images/gapminder-horizon.png
   alt: Kenya life expectancy folded into blue and red Horizon bands around 55 years
@@ -270,6 +284,7 @@
   tutorial_order: 100
   recipe_order: 80
 - id: error-bar
+  example: /examples/cars-error-bar/
   title: Error bar
   image: /assets/images/cars-error-bar.png
   alt: Car observations with grouped mean confidence intervals
@@ -289,6 +304,7 @@
   tutorial_order: 110
   recipe_order: 90
 - id: error-band
+  example: /examples/gapminder-error-band/
   title: Error band
   image: /assets/images/gapminder-error-band.png
   alt: Life expectancy confidence bands with explicit boundaries
@@ -309,6 +325,7 @@
   tutorial_order: 120
   recipe_order: 100
 - id: box
+  example: /examples/cars-box-plot/
   title: Box plot
   image: /assets/images/cars-box-plot.png
   alt: Tukey box plot of fuel economy by origin
@@ -329,6 +346,7 @@
   featured: true
   gallery_featured: true
 - id: gradient
+  example: /examples/cars-gradient-plot/
   title: Gradient plot
   image: /assets/images/cars-gradient-plot.png
   alt: Density gradient strips showing car acceleration distributions by origin
@@ -348,6 +366,7 @@
   home_group: statistical
   home_order: 60
 - id: violin
+  example: /examples/cars-acceleration-violins/
   title: Violin plot
   image: /assets/images/cars-acceleration-violins.png
   alt: Three violin shapes comparing car acceleration distributions by origin
@@ -366,6 +385,7 @@
   home_order: 70
   recipe_order: 120
 - id: parallel-coordinates
+  example: /examples/cars-parallel-coordinates/
   title: Parallel coordinates
   image: /assets/images/cars-parallel-coordinates.png
   alt: Cars of 1970 connected across fuel economy, horsepower, weight, and acceleration axes
@@ -386,6 +406,7 @@
   featured: true
   gallery_featured: true
 - id: polar
+  example: /examples/polar-points/
   title: Polar points
   image: /assets/images/cars-polar-scatterplot.png
   alt: Cars Polar scatterplot using acceleration angle and horsepower radius
@@ -404,6 +425,7 @@
   tutorial_order: 20
   gallery_featured: true
 - id: polar-guides
+  example: /examples/polar-guides/
   title: Polar guides
   image: /assets/images/cars-polar-guides.png
   alt: Cars Polar scatterplot with circular and radial axes and grids
@@ -420,6 +442,7 @@
   home_group: coordinates
   home_order: 40
 - id: polar-line
+  example: /examples/gapminder-polar-trends/
   title: Polar lines
   image: /assets/images/gapminder-polar-trends.png
   alt: Open Polar lines showing life-expectancy trends for three countries
@@ -437,6 +460,7 @@
   home_order: 50
   tutorial_order: 30
 - id: radar
+  example: /examples/jobs-radar-chart/
   title: Radar chart
   image: /assets/images/jobs-radar-chart.png
   alt: Closed radar paths comparing job shares for men and women
@@ -453,6 +477,7 @@
   home_group: coordinates
   home_order: 60
 - id: donut
+  example: /examples/cars-origin-donut/
   title: Donut chart
   image: /assets/images/cars-origin-donut.png
   alt: Donut chart showing the number of cars from each origin
@@ -471,6 +496,7 @@
   home_order: 70
   tutorial_order: 40
 - id: weighted-donut
+  example: /examples/gapminder-population-donut/
   title: Weighted donut chart
   image: /assets/images/gapminder-population-donut.png
   alt: Donut chart showing 2005 population totals by Gapminder cluster
@@ -487,6 +513,7 @@
   home_group: coordinates
   home_order: 80
 - id: rose
+  example: /examples/nightingale-rose-chart/
   title: Rose chart
   image: /assets/images/nightingale-rose-chart.png
   alt: Rose chart comparing three mortality causes across twelve months
@@ -507,6 +534,7 @@
   home_order: 20
   featured: true
 - id: radial-bars
+  example: /examples/gapminder-radial-bars/
   title: Radial bars
   image: /assets/images/gapminder-radial-bars.png
   alt: Radial bars comparing life expectancy for twelve countries
@@ -523,6 +551,7 @@
   home_group: coordinates
   home_order: 90
 - id: selection
+  example: /examples/mark-selection/
   title: Mark selection and highlighting
   image: /assets/images/mark-selection-points.png
   alt: Grouped maximum points highlighted as red diamonds

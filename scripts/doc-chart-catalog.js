@@ -2,6 +2,7 @@ const ALLOWED_KEYS = new Set([
   "actions",
   "alt",
   "caption",
+  "example",
   "featured",
   "gallery_featured",
   "height",
@@ -23,6 +24,7 @@ const ALLOWED_KEYS = new Set([
 
 const REQUIRED_KEYS = [
   "title",
+  "example",
   "image",
   "alt",
   "width",
@@ -139,6 +141,11 @@ export function validateDocChartCatalog(records) {
         throw new Error(`Chart "${record.id}" ${key} must be a site-absolute URL.`);
       }
     }
+    if (!/^\/examples\/[a-z0-9-]+\/$/.test(record.example)) {
+      throw new Error(
+        `Chart "${record.id}" example must be a site-absolute examples directory.`
+      );
+    }
     if (!record.image.endsWith(".png") || !record.thumbnail.endsWith("-thumb.png")) {
       throw new Error(`Chart "${record.id}" requires PNG image and thumbnail paths.`);
     }
@@ -169,6 +176,7 @@ export function validateDocChartCatalog(records) {
       key
     );
   }
+  requireUnique(records.map(record => record.example), "example");
   for (const group of ["essentials", "statistical", "coordinates", "other"]) {
     requireUnique(
       records

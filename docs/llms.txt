@@ -20,7 +20,7 @@ HTML routes are canonical; the generated full-text bundle is available at
 - Advanced chart actions: ./reference/actions/advanced/
 - Extension action authoring: ./extension/action-authoring/
 - Primitive extension API: ./extension/primitives/
-- Browser and PNG rendering: ./api/rendering/
+- Canvas, SVG, PNG, and PDF rendering: ./api/rendering/
 - Data and scales: ./api/data/ | ./api/scales/
 - Legends and series encodings: ./api/legends/ | ./api/series-encodings/
 - Mark appearance, selection, and highlighting: ./api/appearance/
@@ -66,33 +66,10 @@ are internal operations.
   point, line, bar, or area mark uses its type name. Repeated roles require an
   explicit ID rather than receiving an automatic numeric suffix.
 
-## Current scope
+## Runtime and support status
 
-The development build supports Cartesian scatterplots with linear, log, power,
-square-root, and symmetric-log point-position scales, temporal mean line
-charts, stacked histograms, ordinal grouped bars, grouped linear, polynomial,
-or LOESS regression scatterplots with optional mean/prediction bands, grouped density areas,
-vertical or horizontal statistical/explicit error bars with encoded-layer
-inference, optional caps, and constant rule appearance, and vertical or
-horizontal grouped statistical/explicit error bands.
-Polar point charts support clockwise degree theta, quantitative radial position, theta/radius axes and grids, ordinary point appearance, filtering, selection, Canvas resizing, and PNG output.
-The box-plot aggregate supports vertical or horizontal categorical and
-quantitative pairings with Tukey or min-max whiskers, immutable summary/outlier data, and
-1.5px median and whisker defaults. The gradient-plot aggregate supports the same
-x/y family, immutable sampled profiles, optional center rules, category-strip
-selection/highlighting, source-first filtering, and Cartesian facet replay.
-Cartesian guides support bottom/top x axes, left/right y axes, and closed
-numeric or UTC label-format tokens. Existing horizontal and vertical grids can
-be edited independently without changing their scale or coordinate binding.
-Categorical, composite point/size, gradient, and opacity legends have stable
-layout/appearance edits. Categorical legends support all four edges; combined
-point/size legends remain side-positioned.
-Chart titles support four edges, deterministic word/character wrapping, and stable partial edits including subtitle removal.
-`selectMarks` creates reusable selections over point, bar-item/bar-stack,
-line/area series, and rule items. Its explicit value sources distinguish data
-fields, pre-scale semantic channels, and concrete graphic properties.
-`highlightMarks` applies mark-specific concrete emphasis, optional complement
-dimming, and front order to point, bar, line/area-series, and rule items.
-It is an ESM-only npm package for Node 20 or later with Browser Canvas, browser-safe SVG, Node PNG, vector PDF, and TypeScript entries for `ggaction`, `ggaction/basic`, `ggaction/extension`, `ggaction/svg`, `ggaction/png`, and `ggaction/pdf`.
-
-Program composition supports concat, nested Cartesian/Polar snapshots, editing, replacement, and Cartesian facets. Polar facets, animation, multi-page PDF, and automatic compilation are unsupported.
+- Exact program and renderer signatures: ./reference/runtime/
+- Exact ChartProgram action type: ./reference/types/
+- Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one
+  backend-neutral graphicSpec contract.
+- The package is ESM-only. Node entry points require Node.js 20 or later.

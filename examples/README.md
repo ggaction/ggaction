@@ -1,136 +1,200 @@
 # Examples
 
-## Cars scatterplot
-
-Serve the repository root over HTTP:
+This index is generated from the canonical public chart catalog. Serve the
+repository root over HTTP, then open any linked directory:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open <http://localhost:8000/examples/cars-scatterplot/>. The example uses
-`createScatterPlot` to materialize 392 circles and the Canvas renderer to draw
-them.
+## Start here
 
-## Getting started
+- [Getting Started](./getting-started/) is the small inline-data browser example
+  used by the Getting Started guide.
+- [Quarto and Observable JS](./quarto-ojs/README.md) embeds the exact public package in a
+  responsive Quarto document and exposes its retained action trace.
+- [Extension TypeScript](./extension-typescript/) demonstrates strict custom
+  action authoring against the installed package.
 
-Open <http://localhost:8000/examples/getting-started/> for the small inline-data
-example used by the Getting Started guide.
+## Curated chart programs
 
-## Quarto and Observable JS
+### [Program composition](./program-composition/)
 
-Open [`quarto-ojs/README.md`](quarto-ojs/README.md) for a responsive Quarto
-document that renders the exact public `ggaction@0.0.6` package and exposes its
-retained action trace.
+Compare distinct child panels, edit their layout, and replace one stable slot.
 
-## Primitive cars line chart
+Representative actions: `hconcat`, `editCompositionLayout`, `replaceCompositionChild`. [Documentation](https://ggaction.github.io/ggaction/recipes/composition/).
 
-Open <http://localhost:8000/examples/cars-line-chart-primitives/>. This
-low-level chart uses the explicit primitive program under
-`test/charts/cars-line-chart/` to
-render three Origin paths, axes, a combined color/dash legend, and chart title.
+### [Faceted scatterplot](./cars-origin-scatterplot-facet/)
 
-## Cars line chart
+Repeat a complete point or bar chart by field value.
 
-Open <http://localhost:8000/examples/cars-line-chart/>. This is the ordinary
-chart-authoring example: it creates the same aggregate line chart entirely with
-`createLinePlot` and a separate title action.
+Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/recipes/facet/).
 
-## Cars histogram
+### [Scatterplot](./cars-scatterplot/)
 
-Open <http://localhost:8000/examples/cars-histogram/>. This chart uses
-`createHistogram` for atomic bins, color stacking, and inferred guides, then
-adds a centered title.
+Compare two quantitative fields and encode a category with color.
 
-## Jobs grouped bar chart
+Representative actions: `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/scatterplot/).
 
-Open <http://localhost:8000/examples/jobs-grouped-bar/>. This chart aggregates
-job percentages by year through `createBarPlot`, groups bars by sex, and infers
-ordinal axes, a horizontal grid, and a right-side legend.
+### [Line chart](./cars-line-chart/)
 
-## Gapminder life-expectancy heatmap
+Aggregate values over time and split the result into series.
 
-Open <http://localhost:8000/examples/gapminder-life-expectancy-heatmap/>. This
-chart uses `createHeatmap` for observed pre-gridded cells, then adds a text layer
-for the displayed values.
+Representative actions: `createLinePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/line-chart/).
 
-## Gapminder development trajectories
+### [Temporal bar and line](./cars-temporal-bar-line/)
 
-Open <http://localhost:8000/examples/gapminder-development-trajectories/>. This
-chart uses `encodePathOrder({ field: "year" })` to connect each country's
-fertility and life-expectancy observations chronologically instead of sorting
-the path by either position axis.
+Layer compatible marks without repeating the line position encodings.
 
-## Cars binned heatmap
+Representative actions: `createBarMark`, `encodeX`, `encodeY`, `createLineMark`. [Documentation](https://ggaction.github.io/ggaction/api/marks/line-area/#line-marks).
 
-Open <http://localhost:8000/examples/cars-binned-heatmap/>. This chart passes
-raw Cars rows to `createHeatmap({ bin })`, which derives a 10 × 8 rectangular
-count grid before materializing ranged cells and a continuous color legend.
+### [Development trajectories](./gapminder-development-trajectories/)
 
-## Cars window-rank scatterplot
+Connect repeated and non-monotonic positions by a separate quantitative order field.
 
-Open <http://localhost:8000/examples/cars-window-rank-scatterplot/>. This chart
-uses `createWindowData` to rank horsepower within each origin, filters to the
-top ranks, and then authors the resulting scatterplot.
+Representative actions: `createLineMark`, `encodePathOrder`, `removePathOrder`. [Documentation](https://ggaction.github.io/ggaction/recipes/path-ordering/).
 
-## Gapminder population donut
+### [Annotated scatterplot](./annotated-imdb-scatterplot/)
 
-The `gapminder-population-donut` program filters one year, then uses
-`encodeTheta({ aggregate: "sum", weight: "pop" })` to size each cluster sector
-by total population without expanding the source rows.
+Attach readable data labels to final point, bar, or rule items.
 
-## Cars regression scatterplot
+Representative actions: `createTextMark`, `encodeText`, `editTextMark`. [Documentation](https://ggaction.github.io/ggaction/recipes/annotations/).
 
-Open <http://localhost:8000/examples/cars-regression-scatterplot/>. This chart
-filters to Japan and the USA, varies point size and shape, layers grouped linear
-fits and 95% mean-response confidence bands, and creates shared axes, grid, and
-composite legends.
+### [Heatmap](./gapminder-life-expectancy-heatmap/)
 
-## Cars density area chart
+Map two discrete fields to cells and a quantitative field to color.
 
-Open <http://localhost:8000/examples/cars-density-area/>. This chart derives
-Gaussian kernel-density values for acceleration by Origin, overlays three
-translucent area paths, and uses two-direction grids with a top legend.
+Representative actions: `createHeatmap`, `createTextMark`, `encodeText`. [Documentation](https://ggaction.github.io/ggaction/recipes/heatmap/).
 
-## Gapminder Horizon chart
+### [Bar chart](./jobs-grouped-bar/)
 
-Open <http://localhost:8000/examples/gapminder-horizon/>. This chart filters to
-Kenya and uses `encodeHorizon` to fold life-expectancy deviations around 55
-years into three compact blue and red area bands.
+Aggregate ordinal categories and arrange nominal groups side by side.
 
-## Cars acceleration violin plot
+Representative actions: `createBarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/grouped-bar/).
 
-Open <http://localhost:8000/examples/cars-acceleration-violins/>. This chart
-uses `createViolinPlot` to center one acceleration density profile in each
-Origin band. The same program exports a split early/late variant with one half
-on each side of the category center.
+### [Horizontal grouped bar](./jobs-horizontal-grouped-bar/)
 
-## Cars error-bar chart
+Compare grouped aggregate values with a horizontal measure axis.
 
-Open <http://localhost:8000/examples/cars-error-bar/>. This chart derives mean
-acceleration and 95% confidence intervals by Origin, then draws vertical rules
-with fixed-width caps.
+Representative actions: `createBarMark`, `encodeX`, `encodeY`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/api/position/offsets/).
 
-## Gapminder error-band chart
+### [Histogram](./cars-histogram/)
 
-Open <http://localhost:8000/examples/gapminder-error-band/>. This chart derives
-mean life expectancy and 95% confidence intervals by year and cluster, then
-draws one translucent closed area path per cluster.
+Bin a quantitative field and count category partitions.
 
-## Cars box plot
+Representative actions: `createHistogram`. [Documentation](https://ggaction.github.io/ggaction/tutorials/histogram/).
 
-Open <http://localhost:8000/examples/cars-box-plot/>. This chart derives
-Origin-wise Tukey quartiles, observed whiskers, and black diamond outliers,
-then renders them through `createBoxPlot`.
+### [Density area](./cars-density-area/)
 
-The same program module also exports `createCarsHorizontalMinmaxBoxPlot`, which
-uses Horsepower on x, Origin on y, and creates no outlier resources.
-It additionally exports `createCarsStyledFactorBoxPlot` for factor/appearance
-options and `createCarsBoxPlotWithoutOutliers` for the explicit outlier opt-out.
+Estimate grouped distributions and draw baseline-closed areas.
 
-## Cars gradient plot
+Representative actions: `createAreaMark`, `encodeDensity`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/tutorials/density-area/).
 
-Open <http://localhost:8000/examples/cars-gradient-plot/>. This chart uses
-`createGradientPlot` to sample one acceleration density profile per Origin,
-fill each category strip with backend-neutral gradient paint, and add median
-rules, guides, categorical color, and a title.
+### [Regression scatterplot](./cars-regression-scatterplot/)
+
+Layer observations, grouped fits, and confidence bands.
+
+Representative actions: `createPointMark`, `createRegression`. [Documentation](https://ggaction.github.io/ggaction/tutorials/regression-scatterplot/).
+
+### [Horizon chart](./gapminder-horizon/)
+
+Compress a long time series by folding values above and below a baseline.
+
+Representative actions: `createAreaMark`, `encodeHorizon`, `editHorizon`. [Documentation](https://ggaction.github.io/ggaction/tutorials/horizon/).
+
+### [Error bar](./cars-error-bar/)
+
+Keep observations visible while summarizing group uncertainty.
+
+Representative actions: `createErrorBar`. [Documentation](https://ggaction.github.io/ggaction/tutorials/error-bar/).
+
+### [Error band](./gapminder-error-band/)
+
+Show interval ribbons with explicit lower and upper boundaries.
+
+Representative actions: `createErrorBand`. [Documentation](https://ggaction.github.io/ggaction/tutorials/error-band/).
+
+### [Box plot](./cars-box-plot/)
+
+Compose quartiles, whiskers, medians, and outlier points.
+
+Representative actions: `createBoxPlot`. [Documentation](https://ggaction.github.io/ggaction/recipes/box-plot/).
+
+### [Gradient plot](./cars-gradient-plot/)
+
+Compare complete distribution shapes across categories in a compact strip.
+
+Representative actions: `createGradientPlot`, `editGradientPlot`. [Documentation](https://ggaction.github.io/ggaction/recipes/gradient-plot/).
+
+### [Violin plot](./cars-acceleration-violins/)
+
+Compare complete distribution shapes across categories with symmetric or split density areas.
+
+Representative actions: `createViolinPlot`, `editDensity`. [Documentation](https://ggaction.github.io/ggaction/api/violin-plots/).
+
+### [Parallel coordinates](./cars-parallel-coordinates/)
+
+Compare multivariate row profiles while retaining row-level identity.
+
+Representative actions: `createParallelCoordinates`, `encodeParallelCoordinates`. [Documentation](https://ggaction.github.io/ggaction/recipes/parallel-coordinates/).
+
+### [Polar points](./polar-points/)
+
+Map quantitative fields to clockwise angle and radial distance.
+
+Representative actions: `encodeTheta`, `encodeR`, `encodePointRadius`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-points/).
+
+### [Polar guides](./polar-guides/)
+
+Read angle and radial mappings with aligned axes, labels, and grids.
+
+Representative actions: `createGuides`, `editRadialAxis`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-points/#add-polar-guides).
+
+### [Polar lines](./gapminder-polar-trends/)
+
+Connect ordered angle and radial values as grouped open paths.
+
+Representative actions: `createLineMark`, `encodeTheta`, `encodeR`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-lines/).
+
+### [Radar chart](./jobs-radar-chart/)
+
+Close nominal-angle series without duplicating the first observation.
+
+Representative actions: `createLineMark`, `closed`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-lines/#closed-radar-paths).
+
+### [Donut chart](./cars-origin-donut/)
+
+Build proportional sectors with an inferred categorical color legend.
+
+Representative actions: `createArcMark`, `encodeTheta`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/).
+
+### [Weighted donut chart](./gapminder-population-donut/)
+
+Partition a full revolution by category-level sums without expanding rows.
+
+Representative actions: `createArcMark`, `encodeTheta`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/#sum-a-field-into-weighted-sectors).
+
+### [Rose chart](./nightingale-rose-chart/)
+
+Compare radial magnitudes inside ordered categorical sectors.
+
+Representative actions: `createArcMark`, `encodeTheta`, `encodeR`. [Documentation](https://ggaction.github.io/ggaction/recipes/rose-chart/).
+
+### [Radial bars](./gapminder-radial-bars/)
+
+Compare values as equal-width sectors around a Polar coordinate.
+
+Representative actions: `createArcMark`, `encodeTheta`, `encodeR`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/#radial-bars).
+
+### [Mark selection and highlighting](./mark-selection/)
+
+Select, filter, and emphasize final point, bar, and line items.
+
+Representative actions: `selectMarks`, `highlightMarks`. [Documentation](https://ggaction.github.io/ggaction/tutorials/mark-selection/).
+
+## Development fixtures
+
+Other directories under `examples/` support focused browser, package, and
+cross-capability tests. They are development fixtures rather than additional
+user-facing chart contracts; use the curated catalog above for supported
+public examples.

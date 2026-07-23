@@ -38,6 +38,9 @@ import {
   parseDocChartCatalog,
   readDocChartCatalog
 } from "../../scripts/doc-chart-catalog.js";
+import {
+  buildExamplesReadme
+} from "../../scripts/generate-examples-readme.js";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const docsRoot = path.join(root, "docs");
@@ -282,6 +285,24 @@ test("keeps the chart-example catalog strict and routable", async () => {
         );
       }
     }
+    assert.equal(
+      existsSync(path.join(root, chart.example.replace(/^\//, ""))),
+      true,
+      `${chart.id} example`
+    );
+  }
+  assert.equal(new Set(catalog.map(chart => chart.example)).size, catalog.length);
+});
+
+test("generates the public example index from the chart catalog", async () => {
+  const index = read("examples/README.md");
+  assert.equal(index, await buildExamplesReadme());
+  assert.match(index, /This index is generated from the canonical public chart catalog/);
+  assert.match(index, /Quarto and Observable JS/);
+  assert.match(index, /Development fixtures/);
+  for (const chart of readDocChartCatalog(read("docs/_data/chart_examples.yml"))) {
+    assert.match(index, new RegExp(`\\[${chart.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\]`));
+    assert.match(index, new RegExp(chart.example.replace(/^\/examples\//, "\\.\\/")));
   }
 });
 
@@ -883,14 +904,16 @@ test("keeps concise and full LLM documentation synchronized", async () => {
     /\.\/(?:llms-full\.txt|(?:[A-Za-z0-9_-]+\/)*(?:#[A-Za-z0-9_-]+)?)/g
   )].map(match => match[0]);
 
-  assert.equal(lines.length < 100, true);
+  assert.equal(lines.length < 80, true);
   assert.match(index, /\.\/llms-full\.txt/);
   assert.match(index, /\.\/reference\/actions\/charts-data\//);
   assert.doesNotMatch(index, /\.md(?:#|\b)/);
-  assert.equal(targets.length, 44);
-  assert.match(index, /vertical or\s+horizontal grouped statistical\/explicit error bands/);
-  assert.match(index, /vertical or horizontal categorical and\s+quantitative pairings/);
-  assert.doesNotMatch(index, /Polar line\/arc marks/);
+  assert.equal(new Set(targets).size, targets.length);
+  assert.equal(targets.length < 50, true);
+  assert.match(index, /Canvas, SVG, PNG, and PDF rendering/);
+  assert.match(index, /Supported features and limitations/);
+  assert.match(index, /Exact program and renderer signatures/);
+  assert.doesNotMatch(index, /^## Current scope$/m);
   assert.equal(index, await buildConciseLlmDocumentation());
   assert.doesNotMatch(
     read(".github/workflows/ci.yml"),
