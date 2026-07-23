@@ -14,7 +14,7 @@ Canvas/PNG public behavior와 draw order를 보존하면서, Node PDF page conte
 - [x] Context에 `.canvas`, `clearRect`, `scale`이 없는 vector target regression 추가
 - [x] Existing Canvas/PNG focused와 cumulative suite 통과
 - [x] R42-P1-A review package commit/push — `97025e92`
-- [ ] 사용자 explicit approval
+- [x] 사용자 explicit approval — 2026-07-23
 
 ## Gate R42-P1-A
 

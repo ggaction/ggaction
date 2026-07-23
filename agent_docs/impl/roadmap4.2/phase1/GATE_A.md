@@ -2,9 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
-Complete source and evidence package is available at remote checkpoint `97025e92`.
+Approved by the user on 2026-07-23. The approved source and evidence package is remote checkpoint
+`97025e92`.
 
 ## Review target
 
