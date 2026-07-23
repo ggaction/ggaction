@@ -55,11 +55,11 @@ test("keeps the README revision branches immutable and independently traced", ()
   });
   const muted = checkpoint.editPointMark({ opacity: 0.35 });
 
-  assert.equal(quickStart.editPointMark, undefined);
   assert.equal(
     quickStart.semanticSpec.layers[0].encoding.shape.field,
     "origin"
   );
+  assert.equal(checkpoint.semanticSpec.layers[0].encoding.shape, undefined);
   assert.notEqual(checkpoint, outlined);
   assert.notEqual(checkpoint, muted);
   assert.notEqual(outlined, muted);
@@ -116,6 +116,10 @@ test("keeps the executable revision example immediately after Quick Start", () =
   assert.match(
     readme,
     /outlined\.trace\.children\.at\(-1\)\.op[\s\S]*"editPointMark"/
+  );
+  assert.match(
+    readme,
+    /immutable values, not an\nautomatic undo stack; the application chooses/
   );
   assert.equal(
     readme.indexOf("### Branch revisions without mutation") >

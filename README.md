@@ -130,8 +130,8 @@ console.log(checkpoint.trace.children.at(-1).op); // "createScatterPlot"
 console.log(outlined.trace.children.at(-1).op);   // "editPointMark"
 ```
 
-The checkpoint and both revisions remain independently renderable and
-inspectable. Each revision records only the action added to its own trace.
+All three remain renderable and inspectable. They are immutable values, not an
+automatic undo stack; the application chooses which to retain or render.
 
 Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
 the other basic Cartesian charts. The `ggaction/basic` entry keeps this common
