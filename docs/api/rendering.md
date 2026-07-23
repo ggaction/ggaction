@@ -7,19 +7,54 @@ title: Rendering
 
 {% include chart-example.html id="scatterplot" %}
 
+Render one fully materialized `ChartProgram` to Browser Canvas, a browser-safe
+SVG string, a Node PNG file, or a single-page vector PDF. Choose the target
+based on where the output runs and how it will be consumed.
+
 ## At a glance
 
-| Target | Shortest call | Density | Result |
+| Target | Environment | Shortest call | Use when |
 | --- | --- | --- | --- |
-| Browser Canvas | `render(program, context)` | Device/Canvas context | Draws concrete `graphicSpec` |
-| SVG | `renderToSVG(program)` | Vector | Complete SVG document string |
-| Node PNG | `renderToPNG(program, { output })` | `pixelRatio`, default `1` | PNG file and physical dimensions |
-| Node PDF | `renderToPDF(program, { output })` | Vector | Single-page PDF file at logical point dimensions |
+| Browser Canvas | Browser | `render(program, context)` | Drawing into an existing interactive page |
+| SVG | Browser or Node.js 20+ | `renderToSVG(program)` | Embedding or saving scalable markup |
+| Node PNG | Node.js 20+ | `renderToPNG(program, { output })` | Producing a raster file at an explicit pixel density |
+| Node PDF | Node.js 20+ | `renderToPDF(program, { output })` | Producing a selectable, single-page vector document |
 
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
 
+## Complete example program
+
+Every rendering fragment below continues from this complete program:
+
+```javascript
+import { chart } from "ggaction";
+
+const observations = [
+  { displacement: 97, acceleration: 14.5, origin: "Japan" },
+  { displacement: 140, acceleration: 15.5, origin: "USA" },
+  { displacement: 86, acceleration: 16.4, origin: "Japan" }
+];
+
+const program = chart()
+  .createCanvas({
+    width: 640,
+    height: 400,
+    margin: { top: 30, right: 130, bottom: 60, left: 70 }
+  })
+  .createData({ values: observations })
+  .createScatterPlot({
+    x: "displacement",
+    y: "acceleration",
+    color: "origin",
+    shape: "origin"
+  });
+```
+
 ## Browser Canvas
+
+In a browser page containing `<canvas id="chart"></canvas>`, render with its 2D
+context:
 
 ```javascript
 import { render } from "ggaction";
@@ -39,7 +74,8 @@ render(program, context, { pixelRatio: 2 });
 ## SVG output
 
 The browser-safe SVG entry returns a complete SVG document string without
-reading the DOM or filesystem.
+reading the DOM or filesystem. Assign it to a trusted application container or
+save the returned string with the file API available in your environment.
 
 ```javascript
 import { renderToSVG } from "ggaction/svg";
@@ -54,6 +90,13 @@ The root `width`, `height`, and `viewBox` use the program's logical Canvas
 dimensions. Optional `title` and `description` strings become escaped
 `<title>` and `<desc>` children. Repeated calls with the same program and
 options return the same string.
+
+For example, a browser application can place the generated document in an
+existing output container:
+
+```javascript
+document.querySelector("#svg-output").innerHTML = svg;
+```
 
 ## PNG output
 

@@ -12,6 +12,7 @@ import {
   sanitizeMarkdown
 } from "../../scripts/generate-llm-docs.js";
 import {
+  buildRuntimeSignatureSection,
   buildSignatureSection,
   declaredActionSignatures
 } from "../../scripts/generate-doc-signatures.js";
@@ -823,8 +824,56 @@ test("classifies every declared ChartProgram action in the reference", async () 
   }
 
   assert.match(landing, /^## Exact action lookup$/m);
-  assert.match(read("docs/reference/runtime.md"), /^## Internal trace operations$/m);
-  assert.match(read("docs/reference/runtime.md"), /absent from the public TypeScript\s+declaration/);
+  const runtime = read("docs/reference/runtime.md");
+  const generatedRuntime = await buildRuntimeSignatureSection();
+  const runtimeStart = runtime.indexOf("<!-- BEGIN GENERATED RUNTIME SIGNATURES -->");
+  const runtimeEnd = runtime.indexOf("<!-- END GENERATED RUNTIME SIGNATURES -->");
+  assert.notEqual(runtimeStart, -1);
+  assert.notEqual(runtimeEnd, -1);
+  assert.equal(
+    runtime.slice(
+      runtimeStart,
+      runtimeEnd + "<!-- END GENERATED RUNTIME SIGNATURES -->".length
+    ),
+    generatedRuntime
+  );
+  assert.equal(
+    runtime.indexOf("### Exact TypeScript signatures") <
+      runtime.indexOf("## Internal trace operations"),
+    true
+  );
+  assert.match(runtime, /Promise<PDFRenderResult>/);
+  assert.match(runtime, /Promise<PNGRenderResult>/);
+  assert.match(runtime, /\): string;/);
+  assert.match(runtime, /^## Internal trace operations$/m);
+  assert.match(runtime, /absent\s+from the public TypeScript\s+declaration/);
+});
+
+test("keeps rendering guidance executable and aligned with the Canvas contract", () => {
+  const rendering = read("docs/api/rendering.md");
+  const program = rendering.match(
+    /^## Complete example program[\s\S]*?```javascript\n([\s\S]*?)```/m
+  )?.[1];
+  assert.notEqual(program, undefined);
+  const executed = spawnSync(
+    process.execPath,
+    ["--input-type=module", "-"],
+    { input: program, encoding: "utf8", cwd: root }
+  );
+  assert.equal(executed.status, 0, executed.stderr);
+  assert.match(rendering, /Every rendering fragment below continues from/);
+  assert.match(rendering, /getContext\("2d"\)/);
+  assert.match(rendering, /document\.querySelector\("#svg-output"\)\.innerHTML = svg/);
+
+  const troubleshooting = read("docs/troubleshooting.md");
+  assert.match(
+    troubleshooting,
+    /const context = document\.querySelector\("#chart"\)\.getContext\("2d"\);\s+render\(program, context\);/
+  );
+  assert.doesNotMatch(
+    troubleshooting,
+    /render\(program, document\.querySelector\("#chart"\)\)/
+  );
 });
 
 test("keeps concise and full LLM documentation synchronized", async () => {

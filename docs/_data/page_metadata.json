@@ -308,7 +308,7 @@
   },
   "/api/rendering/": {
     "title": "Rendering",
-    "description": "Rendering consumes a completed program's graphicSpec. It does not read datasets, semantic encodings, context, or trace to infer missing output.",
+    "description": "Render one fully materialized ChartProgram to Browser Canvas, a browser safe SVG string, a Node PNG file, or a single page vector PDF.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/composition/": {

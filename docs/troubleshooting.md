@@ -180,7 +180,8 @@ program is complete:
 ```javascript
 import { render } from "ggaction";
 
-render(program, document.querySelector("#chart"));
+const context = document.querySelector("#chart").getContext("2d");
+render(program, context);
 ```
 
 If rendering succeeds but the result is blank, inspect `graphicSpec.objects`

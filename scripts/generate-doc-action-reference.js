@@ -2,6 +2,8 @@ import { access, copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { buildRuntimeSignatureSection } from "./generate-doc-signatures.js";
+
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
 const sourceFile = path.join(docsRoot, "_sources/action-reference.md");
@@ -106,9 +108,10 @@ function page({ title, description, introduction, body }) {
 
 export async function buildDocActionReference() {
   await bootstrapSource();
-  const [source, catalogSource] = await Promise.all([
+  const [source, catalogSource, runtimeSignatures] = await Promise.all([
     readFile(sourceFile, "utf8"),
-    readFile(catalogFile, "utf8")
+    readFile(catalogFile, "utf8"),
+    buildRuntimeSignatureSection()
   ]);
   const catalog = JSON.parse(catalogSource);
   const actionByName = new Map(catalog.actions.map(action => [action.name, action]));
@@ -164,9 +167,12 @@ export async function buildDocActionReference() {
   }
 
   const runtime = [
-    h2Section(source, "Internal trace operations", "Program functions"),
-    h2Section(source, "Program functions", "Rendering functions"),
-    h2Section(source, "Rendering functions")
+    h2Section(source, "Program functions", "Rendering functions").replace(
+      /<!-- BEGIN GENERATED RUNTIME SIGNATURES -->[\s\S]*?<!-- END GENERATED RUNTIME SIGNATURES -->/,
+      runtimeSignatures
+    ),
+    h2Section(source, "Rendering functions"),
+    h2Section(source, "Internal trace operations", "Program functions")
   ].join("\n\n");
   outputs.set("reference/runtime.md", [
     "---",

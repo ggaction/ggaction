@@ -88,7 +88,7 @@
     "docs:preflight": "node scripts/check-docs-environment.js",
     "docs:signatures": "node scripts/generate-doc-signatures.js",
     "docs:signatures:check": "node scripts/generate-doc-signatures.js --check",
-    "docs:generate": "npm run docs:signatures && npm run docs:capabilities && npm run docs:actions && npm run docs:reference && npm run docs:metadata && npm run docs:search && npm run docs:images && npm run docs:llms",
+    "docs:generate": "npm run docs:actions && npm run docs:reference && npm run docs:signatures && npm run docs:capabilities && npm run docs:metadata && npm run docs:search && npm run docs:images && npm run docs:llms",
     "docs:build": "bundle exec jekyll build --source docs --destination _site --baseurl /ggaction",
     "docs:verify": "npm run docs:preflight && npm run docs:generate && npm run test:docs && npm run docs:build && npm run test:docs:built && npm run test:docs:browser",
     "contracts:catalog": "node scripts/generate-action-catalog.js",

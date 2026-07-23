@@ -1702,26 +1702,14 @@ and advanced actions instead of calling an undeclared runtime method.
 
 ## Program functions
 
-These package-level functions create programs but are not chainable actions.
+Package-level functions create, compose, or render programs. They are not
+chainable actions and do not modify the action trace.
 
-| Import | Signature |
-| --- | --- |
-| `ggaction` | `chart(): ChartProgram` |
-| `ggaction/basic` | `chart(): BasicChartProgram` |
-| `ggaction` | `hconcat(options: CompositionOptions): ChartProgram` |
-| `ggaction` | `vconcat(options: CompositionOptions): ChartProgram` |
-
-See [Program composition](../api/composition.md) for sizing, nesting, layout
-editing, and stable replacement rules.
+<!-- BEGIN GENERATED RUNTIME SIGNATURES -->
+<!-- END GENERATED RUNTIME SIGNATURES -->
 
 ## Rendering functions
 
-Rendering functions are not actions and do not modify the trace.
-
-| Import | Signature |
-| --- | --- |
-| `ggaction` | `render(program, canvasContext, { pixelRatio? }?)` |
-| `ggaction/basic` | `render(program, canvasContext, { pixelRatio? }?)` |
-| `ggaction/png` | `renderToPNG(program, { output, pixelRatio? })` |
-| `ggaction/pdf` | `renderToPDF(program, { output, metadata? })` |
-| `ggaction/svg` | `renderToSVG(program, { title?, description? }?)` |
+Use [Program composition](../api/composition.md) for sizing, nesting, layout
+editing, and stable child replacement. Use [Rendering](../api/rendering.md) for
+complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
