@@ -83,19 +83,18 @@ const canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"));
 ```
 
-`createScatterPlot` uses the current dataset, creates a point mark, assigns the
-x, y, and optional appearance encodings, and creates applicable guides. It
-records those regular actions as trace children rather than compiling a second
-chart specification. Pass `data` explicitly when a program contains more than
-one dataset candidate; pass `id` when a later multi-resource flow needs that
-mark identity.
+`createScatterPlot` uses the current dataset to create the point mark, x and y
+positions, scales, and applicable guides. Matching nominal color and shape
+encodings also create a composite legend and a redundant visual cue, so origin
+is recognizable without color alone. The right margin reserves room for that
+legend.
 
-The wrapped `createGuides` action infers the applicable axes and horizontal
-grid from the position encodings. Matching nominal color and shape encodings
-also create a composite categorical legend, giving each origin a redundant
-visual cue; the right margin reserves space for that legend. The renderer reads
-only concrete `graphicSpec` values already produced by actions; it does not
-compile `semanticSpec` during rendering.
+Pass `data` when more than one dataset could apply, or `id` when a later edit
+must name this mark. To understand how these calls remain immutable and
+inspectable, continue with
+<a href="{{ '/concepts/chart-program/' | relative_url }}">ChartProgram</a>,
+<a href="{{ '/concepts/semantic-and-graphics/' | relative_url }}">semantic and graphical state</a>,
+and <a href="{{ '/concepts/actions-and-trace/' | relative_url }}">action traces</a>.
 
 This walkthrough uses the creation-focused `ggaction/basic` entry. Import from
 `ggaction` instead when the program needs editing, selection, composition,
@@ -132,22 +131,13 @@ across the supported Node release matrix.
 
 ## Runnable repository examples
 
-The source repository also contains complete modules for the
-[minimal getting-started chart](https://github.com/ggaction/ggaction/tree/main/examples/getting-started/),
-[scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-scatterplot/),
-[line chart](https://github.com/ggaction/ggaction/tree/main/examples/cars-line-chart/),
-[histogram](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram/),
-[bar chart](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar/),
-[heatmap](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-life-expectancy-heatmap/),
-[parallel coordinates](https://github.com/ggaction/ggaction/tree/main/examples/cars-parallel-coordinates/),
-[regression scatterplot](https://github.com/ggaction/ggaction/tree/main/examples/cars-regression-scatterplot/),
-[density area](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area/),
-[violin plot](https://github.com/ggaction/ggaction/tree/main/examples/cars-acceleration-violins/),
-[error bar](https://github.com/ggaction/ggaction/tree/main/examples/cars-error-bar/),
-[error band](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-error-band/),
-[box plot](https://github.com/ggaction/ggaction/tree/main/examples/cars-box-plot/),
-[mark selection](https://github.com/ggaction/ggaction/tree/main/examples/mark-selection/), and
-[program composition](https://github.com/ggaction/ggaction/tree/main/examples/program-composition/).
+Use the
+[generated repository example index](https://github.com/ggaction/ggaction/blob/main/examples/README.md)
+for complete runnable modules. Browse the
+<a href="{{ '/gallery/' | relative_url }}">chart gallery</a> for visual examples,
+or use
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/main/examples/quarto-ojs/)
+when authoring an `.qmd` document.
 
 ## Next
 

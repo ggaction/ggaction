@@ -3,9 +3,17 @@
 The public site is generated from this directory with the same pinned Jekyll
 runtime used by continuous integration.
 
-Install JavaScript and Ruby dependencies once:
+The locked GitHub Pages toolchain requires Node.js 20+ and the exact Ruby
+version in `.ruby-version` (currently 3.2.6). Check the active runtimes first:
 
-The locked GitHub Pages toolchain requires Node.js 20+ and Ruby 3.2+.
+```bash
+node --version
+ruby --version
+```
+
+If Ruby does not match `.ruby-version`, install and activate that version with
+your preferred version manager, such as rbenv, mise, or asdf. Then install the
+JavaScript, Ruby, and browser dependencies once:
 
 ```bash
 npm ci

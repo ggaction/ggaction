@@ -104,11 +104,16 @@ pass `guides: {}` or nested options to create applicable guides.
 
 ## Current limitations
 
+### Data, transforms, and heatmaps
+
 Transforms beyond the documented filters, regressions, density and interval
 derivations, as well as interactive legends, are not implemented.
 Pre-gridded heatmaps do not synthesize missing cells. Binned heatmaps support
 fixed rectangular bins only; weighted, adaptive, hexagonal, and overflow bins
 are not implemented. Cell text must be added as a separate text layer.
+
+### Guides and interval charts
+
 Categorical legends support all four edges; point composite and size legends
 support right and left side layouts.
 Error bars support vertical and horizontal statistical intervals, existing
@@ -117,6 +122,9 @@ Error bands support vertical and horizontal statistical or explicit ranges and
 optional lower/upper boundary lines with shared stroke, width, dash, opacity,
 and inherited or overridden curve. Independent lower/upper style objects are
 not implemented.
+
+### Distribution charts
+
 Box plots support vertical or horizontal category/measure pairings, default
 or configurable Tukey summaries, min–max whiskers, band width and component
 appearance overrides, and explicit outlier opt-out without placeholder resources.
@@ -131,6 +139,9 @@ category-local density width, density revision, source filtering, profile
 selection/highlighting, Cartesian facet replay, and compatible overlay scales.
 Raincloud components, more than two split values, adaptive bandwidth, and
 Polar violin placement are not implemented.
+
+### Selection, appearance, and text
+
 Mark selection supports point, final-bar item, stacked-bar group, line/area
 series, arc sector, and rule grain. Selector values explicitly distinguish data fields,
 pre-scale semantic channels, and concrete graphic properties.
@@ -146,6 +157,9 @@ lines, replays after text/source/data/scale/Canvas edits, and records structured
 warnings when bounded placement cannot eliminate every overlap. It does not
 expand margins, shrink text, arrange guide labels, or search unrelated marks
 for anchors.
+
+### Coordinates and composition
+
 Polar charts may be direct or nested concat children. Faceting a Polar source is
 not implemented and fails before partial child state is created.
 Parallel coordinates support quantitative/ordinal dimensions, open linear

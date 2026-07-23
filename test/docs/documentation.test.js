@@ -537,24 +537,10 @@ test("routes entry documentation to the canonical example indexes", () => {
   const gettingStarted = read("docs/getting-started.md");
   const catalog = chartExampleCatalog();
 
-  for (const name of [
-    "cars-scatterplot",
-    "cars-line-chart",
-    "cars-histogram",
-    "jobs-grouped-bar",
-    "gapminder-life-expectancy-heatmap",
-    "cars-regression-scatterplot",
-    "cars-density-area",
-    "cars-parallel-coordinates",
-    "cars-acceleration-violins",
-    "cars-error-bar",
-    "gapminder-error-band",
-    "cars-box-plot",
-    "mark-selection",
-    "program-composition"
-  ]) {
-    assert.match(gettingStarted, new RegExp(`examples/${name}`));
-  }
+  assert.match(gettingStarted, /examples\/README\.md/);
+  assert.match(gettingStarted, /\/gallery\//);
+  assert.match(gettingStarted, /examples\/quarto-ojs/);
+  assert.doesNotMatch(gettingStarted, /examples\/cars-scatterplot/);
   assert.match(readme, /\.\/examples\/README\.md/);
   assert.match(readme, /\/tutorials\//);
   assert.match(readme, /examples\/cars-regression-scatterplot/);
@@ -594,8 +580,7 @@ test("routes entry documentation to the canonical example indexes", () => {
   assert.equal(catalog.get("rose").featured, true);
   assert.equal(catalog.get("rose").url, "/recipes/rose-chart/");
   assert.equal(catalog.get("rose").recipe_url, "/recipes/rose-chart/");
-  assert.match(gettingStarted, /color and shape encodings\s+also create/);
-  assert.match(gettingStarted, /examples\/getting-started/);
+  assert.match(gettingStarted, /color and shape\s+encodings also create/);
 });
 
 test("keeps the README and documentation home positioning aligned", () => {

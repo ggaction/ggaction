@@ -16,10 +16,13 @@ easiest to review and the most likely to land quickly.
 
 ## Development setup
 
-ggaction is ESM-only and requires Node.js 20 or later.
+ggaction is ESM-only and requires Node.js 20 or later. Documentation work also
+uses the Ruby version pinned in `.ruby-version` and Chromium through Playwright.
 
 ```bash
 npm ci
+bundle install
+npx playwright install chromium
 npm test
 ```
 
@@ -38,13 +41,21 @@ npm run test:browser
 npm run test:render
 ```
 
-Documentation changes should run:
+For a quick content check while editing documentation, run:
 
 ```bash
 npm run test:docs
 ```
 
-See `test/README.md` for selector, rendering, and artifact details.
+Before opening a pull request with documentation changes, run the complete
+generated-content, site-build, link, and browser check:
+
+```bash
+npm run docs:verify
+```
+
+See `docs/README.md` for documentation runtime setup and `test/README.md` for
+selector, rendering, and artifact details.
 
 ## Change expectations
 
