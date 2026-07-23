@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **활성 Roadmap은 Roadmap 4.2 Phase 2이다.** Browser-safe SVG renderer와 PNG 비교 visual Gate를
-  준비한다.
+- **활성 Roadmap은 Roadmap 4.2 Phase 3이다.** Node vector PDF renderer와 Canvas/SVG/PNG/PDF 비교 visual
+  Gate를 준비한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 - [`roadmap4.2/ROADMAP.md`](roadmap4.2/ROADMAP.md) — active, SVG와 PDF vector renderer
 

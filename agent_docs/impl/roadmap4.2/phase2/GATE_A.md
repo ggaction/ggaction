@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-07-23. The approved SVG implementation and Canvas/SVG/PNG visual target are the complete
+review package at remote checkpoint `6fc3124a`.
 
 ## Review target
 
@@ -62,11 +65,11 @@ All three calls consume the same fully materialized `program.graphicSpec`.
 
 ## Review artifacts
 
-- `.artifacts/test/png/review/vector-renderers/svg-parity/canvas-svg-png-comparison.png`
-- `.artifacts/test/png/review/vector-renderers/svg-parity/chart.svg`
-- `.artifacts/test/png/review/vector-renderers/svg-parity/chart.png`
-- `.artifacts/test/png/review/vector-renderers/svg-parity/comparison.html`
-- `.artifacts/test/png/review/vector-renderers/svg-parity/variant.json`
+- `.artifacts/test/png/charts/vector-renderers/cars-regression-scatterplot/svg-parity/canvas-svg-png-comparison.png`
+- `.artifacts/test/png/charts/vector-renderers/cars-regression-scatterplot/svg-parity/chart.svg`
+- `.artifacts/test/png/charts/vector-renderers/cars-regression-scatterplot/svg-parity/chart.png`
+- `.artifacts/test/png/charts/vector-renderers/cars-regression-scatterplot/svg-parity/comparison.html`
+- `.artifacts/test/png/charts/vector-renderers/cars-regression-scatterplot/svg-parity/variant.json`
 
 ## Remote checkpoint
 
