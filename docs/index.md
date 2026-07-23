@@ -14,7 +14,7 @@ chart authoring itself as an immutable, traceable sequence of graphical actions.
 Build, inspect, select, and revise charts one meaningful action at a time.
 
 Start with a complete example, then use the API pages when you need to customize
-one part. The main, basic, extension, SVG, and PNG entry points include TypeScript declarations.
+one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
 <p class="docs-release-status"><strong>Experimental {{ site.version }}</strong> · APIs may change before 1.0.0. Review the <a href="https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md">changelog</a> when upgrading.</p>
 

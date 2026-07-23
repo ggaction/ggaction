@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] Native PDF document/page/context API 확인
-- [ ] Input/metadata/output preflight validation 구현
-- [ ] Shared concrete drawing과 PDF page lifecycle 연결
-- [ ] Atomic file write와 result contract 구현
-- [ ] Public entry/type/package/docs/architecture 구현
-- [ ] Structural/text/metadata/vector verification
-- [ ] All-public-chart PDF contract 실행
-- [ ] Poppler-rendered Canvas/SVG/PNG/PDF comparison 생성
+- [x] Native PDF document/page/context API 확인
+- [x] Input/metadata/output preflight validation 구현
+- [x] Shared concrete drawing과 PDF page lifecycle 연결
+- [x] Complete in-memory document 뒤 file write와 result contract 구현
+- [x] Public entry/type/package/docs/architecture 구현
+- [x] Structural/text/metadata/vector verification
+- [x] All-public-chart PDF contract 실행
+- [x] Poppler-rendered Canvas/SVG/PNG/PDF comparison 생성
 - [ ] Remote checkpoint 기록
 
 ## Output contract

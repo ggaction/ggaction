@@ -10,9 +10,9 @@ chart-authoring API does not support that combination.
 
 ## Complete chart support
 
-Every chart family below supports Browser Canvas, browser-safe SVG, Node PNG, and an optional
-chart title. The smaller family tables keep the comparison readable on narrow
-screens.
+Every chart family below supports Browser Canvas, browser-safe SVG, Node PNG,
+single-page vector PDF, and an optional chart title. The smaller family tables
+keep the comparison readable on narrow screens.
 
 ### Cartesian charts
 
@@ -92,7 +92,7 @@ remain available for custom layering and editing.
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
-| Rendering | Browser Canvas, browser-safe SVG string, and Node PNG |
+| Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
 | Selection | Strict point/bar/rect/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
 

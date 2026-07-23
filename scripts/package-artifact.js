@@ -10,7 +10,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 396,
+  entries: 398,
   packedBytes: 400_000,
   unpackedBytes: 1_750_000
 });
@@ -23,11 +23,13 @@ const REQUIRED_FILES = Object.freeze([
   "src/index.js",
   "src/basic.js",
   "src/extension.js",
+  "src/renderers/pdf.js",
   "src/renderers/png.js",
   "src/renderers/svg.js",
   "types/index.d.ts",
   "types/basic.d.ts",
   "types/extension.d.ts",
+  "types/pdf.d.ts",
   "types/png.d.ts",
   "types/svg.d.ts",
   "types/program.d.ts"

@@ -70,12 +70,14 @@ export async function preparePackageConsumer({
 
 async function testNodeConsumer(directory) {
   const output = path.join(directory, "chart.png");
+  const pdfOutput = path.join(directory, "chart.pdf");
   const fontWeightOutput = path.join(directory, "font-weight.png");
   const source = `
     import assert from "node:assert/strict";
     import { chart, hconcat, render, vconcat } from "ggaction";
     import { chart as basicChart, render as basicRender } from "ggaction/basic";
     import { action, ChartProgram } from "ggaction/extension";
+    import { renderToPDF } from "ggaction/pdf";
     import { renderToPNG } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
 
@@ -418,6 +420,17 @@ async function testNodeConsumer(directory) {
     });
     assert.equal(result.width, 160);
     assert.equal(result.height, 120);
+    const pdf = await renderToPDF(program, {
+      output: ${JSON.stringify(pdfOutput)},
+      metadata: {
+        title: "Package consumer chart",
+        keywords: ["package", "consumer"]
+      }
+    });
+    assert.equal(pdf.width, 160);
+    assert.equal(pdf.height, 120);
+    assert.equal(pdf.pages, 1);
+    assert.ok(pdf.bytes > 0);
     const svg = renderToSVG(program, {
       title: "Package consumer chart"
     });
@@ -596,6 +609,11 @@ async function testTypeScriptConsumer(directory) {
       type WindowDataOptions
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
+    import {
+      renderToPDF,
+      type PDFMetadata,
+      type PDFRenderResult
+    } from "ggaction/pdf";
     import { renderToPNG, type PNGRenderResult } from "ggaction/png";
     import {
       renderToSVG,
@@ -791,6 +809,14 @@ async function testTypeScriptConsumer(directory) {
       .editFacetGuides({ axes: "outer" });
     const draw: typeof render = render;
     const png: Promise<PNGRenderResult> = renderToPNG(program, { output: "chart.png" });
+    const pdfMetadata: PDFMetadata = {
+      title: "Typed PDF",
+      keywords: ["typed", "pdf"]
+    };
+    const pdf: Promise<PDFRenderResult> = renderToPDF(program, {
+      output: "chart.pdf",
+      metadata: pdfMetadata
+    });
     const svgOptions: SVGRenderOptions = { title: "Typed SVG" };
     const svg: string = renderToSVG(program, svgOptions);
     const wrapped = action(
@@ -1030,6 +1056,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     checks: [
       "node",
       "extension",
+      "pdf",
       "png",
       "svg",
       "numeric-font-weight",

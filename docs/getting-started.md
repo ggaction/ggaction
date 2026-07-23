@@ -118,11 +118,13 @@ created in `index.html`.
 | `ggaction/basic` | Modern ESM browsers and Node.js 20+ | Smaller creation path for scatter, line, bar, histogram, and heatmap charts |
 | `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped actions and public primitive authoring |
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
+| `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
 | `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |
 
 All entries include TypeScript declarations. The package does not publish
-CommonJS entry points. Import `ggaction/png` only from Node code; the browser-safe
-entries, including `ggaction/svg`, do not load filesystem or native PNG modules.
+CommonJS entry points. Import `ggaction/png` and `ggaction/pdf` only from Node
+code; the browser-safe entries, including `ggaction/svg`, do not load filesystem
+or native output modules.
 
 The release artifact is tested by installing its exact tarball into fresh
 JavaScript and TypeScript consumer projects. It is also tested in a browser and
@@ -157,4 +159,5 @@ The source repository also contains complete modules for the
 
 Use <a href="{{ '/troubleshooting/' | relative_url }}">Troubleshooting</a> when
 inference or layout cannot make one safe choice. Render the same program to a
-file with <a href="{{ '/api/rendering/#png-output' | relative_url }}">PNG output</a>.
+file with <a href="{{ '/api/rendering/#png-output' | relative_url }}">PNG</a> or
+<a href="{{ '/api/rendering/#pdf-output' | relative_url }}">vector PDF output</a>.

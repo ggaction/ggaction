@@ -8,14 +8,14 @@ vector operators와 Poppler-rendered appearance를 검증한다.
 
 ## 진행 상태
 
-- [ ] PDF document/page lifecycle과 output validation 구현
-- [ ] Existing Canvas-compatible concrete drawing 연결
-- [ ] Single-page logical point dimension과 vector output 검증
-- [ ] Optional title/author/subject/keywords metadata 구현
-- [ ] Selectable/searchable text와 vector path 검증
-- [ ] `ggaction/pdf`, strict declaration, package/docs/architecture 동기화
-- [ ] Unit/contract/package verification
-- [ ] 같은 public chart의 Canvas/SVG/PNG/PDF 4-column review image 생성
+- [x] PDF document/page lifecycle과 output validation 구현
+- [x] Existing Canvas-compatible concrete drawing 연결
+- [x] Single-page logical point dimension과 vector output 검증
+- [x] Optional title/author/subject/keywords metadata 구현
+- [x] Selectable/searchable text와 vector path 검증
+- [x] `ggaction/pdf`, strict declaration, package/docs/architecture 동기화
+- [x] Unit/contract/package verification
+- [x] 같은 public chart의 Canvas/SVG/PNG/PDF 4-column review image 생성
 - [ ] R42-P3-A review package commit/push
 - [ ] 사용자 explicit visual approval
 

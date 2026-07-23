@@ -14,6 +14,7 @@ title: Rendering
 | Browser Canvas | `render(program, context)` | Device/Canvas context | Draws concrete `graphicSpec` |
 | SVG | `renderToSVG(program)` | Vector | Complete SVG document string |
 | Node PNG | `renderToPNG(program, { output })` | `pixelRatio`, default `1` | PNG file and physical dimensions |
+| Node PDF | `renderToPDF(program, { output })` | Vector | Single-page PDF file at logical point dimensions |
 
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
@@ -71,6 +72,34 @@ Missing output directories are created. A logical 640×400 chart at ratio 2
 produces a 1280×800 image. The result contains the absolute `output`, physical
 `width` and `height`, `pixelRatio`, and byte count.
 
+## PDF output
+
+The Node-only PDF entry writes one completed chart as one vector PDF page:
+
+```javascript
+import { renderToPDF } from "ggaction/pdf";
+
+const result = await renderToPDF(program, {
+  output: "./output/chart.pdf",
+  metadata: {
+    title: "Quarterly revenue",
+    author: "Example",
+    subject: "Revenue by quarter",
+    keywords: ["revenue", "quarterly"]
+  }
+});
+```
+
+Missing output directories are created. The page width and height in PDF points
+use the program's logical Canvas dimensions, and the frozen result contains the
+absolute `output`, logical `width` and `height`, `pages: 1`, and byte count.
+Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
+strings plus an array of non-empty `keywords`.
+
+Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
+opacity, dashes, and linear gradients remain vector output; the adapter does not
+rasterize the chart or accept `pixelRatio`.
+
 The current renderers support concrete canvas, collection, circle, rect, line,
 text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
 dash arrays. They validate values with the same concrete property contract used
@@ -83,14 +112,15 @@ Canvas gradient only for the current draw call and never stores backend objects
 in `graphicSpec`.
 
 Line curve actions resolve interpolation into those commands before rendering.
-Canvas and SVG execute `L` and cubic `C` segments but do not read curve names or
-calculate control points.
+Canvas, SVG, and PDF execute `L` and cubic `C` segments but do not read curve
+names or calculate control points.
 
 ## Errors and limitations
 
 Rendering never reads `semanticSpec`. Every drawable property must already be
-concrete. Canvas/PNG `pixelRatio` must be a positive finite number; SVG is vector
-output and does not accept it.
+concrete. Canvas/PNG `pixelRatio` must be a positive finite number; SVG and PDF
+are vector output and do not accept it. PDF options and metadata use closed key
+sets, and invalid input is rejected before writing a new file.
 
 ## Related
 

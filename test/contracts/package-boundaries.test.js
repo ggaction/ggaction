@@ -29,6 +29,11 @@ const PUBLIC_ENTRIES = Object.freeze({
     types: "./types/png.d.ts",
     values: Object.freeze(["renderToPNG"])
   }),
+  "./pdf": Object.freeze({
+    runtime: "./src/renderers/pdf.js",
+    types: "./types/pdf.d.ts",
+    values: Object.freeze(["renderToPDF"])
+  }),
   "./svg": Object.freeze({
     runtime: "./src/renderers/svg.js",
     types: "./types/svg.d.ts",
