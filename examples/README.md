@@ -17,6 +17,12 @@ them.
 Open <http://localhost:8000/examples/getting-started/> for the small inline-data
 example used by the Getting Started guide.
 
+## Quarto and Observable JS
+
+Open [`quarto-ojs/README.md`](quarto-ojs/README.md) for a responsive Quarto
+document that renders the exact public `ggaction@0.0.6` package and exposes its
+retained action trace.
+
 ## Primitive cars line chart
 
 Open <http://localhost:8000/examples/cars-line-chart-primitives/>. This
