@@ -8,14 +8,14 @@ boundary를 동기화한다.
 
 ## 진행 상태
 
-- [ ] SVG root, escaping, stable number/attribute serialization 구현
-- [ ] Circle/rect/line/text/path와 heterogeneous collection 구현
-- [ ] Solid/linear-gradient fill, opacity, dash와 authored order 구현
-- [ ] Nested canvas translation/background/clip 구현
-- [ ] Optional `<title>`/`<desc>` 접근성 contract 구현
-- [ ] `ggaction/svg`, strict declaration, package/docs/architecture 동기화
-- [ ] Unit/contract/browser/package verification
-- [ ] 같은 public chart의 SVG/PNG side-by-side review image 생성
+- [x] SVG root, escaping, stable number/attribute serialization 구현
+- [x] Circle/rect/line/text/path와 heterogeneous collection 구현
+- [x] Solid/linear-gradient fill, opacity, dash와 authored order 구현
+- [x] Nested canvas translation/background/clip 구현
+- [x] Optional `<title>`/`<desc>` 접근성 contract 구현
+- [x] `ggaction/svg`, strict declaration, package/docs/architecture 동기화
+- [x] Unit/contract/browser/package verification
+- [x] 같은 public chart의 Canvas/SVG/PNG 3-column review image 생성
 - [ ] R42-P2-A review package commit/push
 - [ ] 사용자 explicit visual approval
 
@@ -26,14 +26,14 @@ boundary를 동기화한다.
 - `renderToSVG(program, { title?, description? })`의 exact output contract
 - Current concrete graphic schema parity와 deterministic serialization
 - Browser-safe package dependency boundary
-- 같은 public chart의 SVG/PNG rendered appearance
+- 같은 public chart의 Canvas/SVG/PNG rendered appearance
 
 ### Required evidence
 
 - Serializer/unit/contract/browser tests
 - SVG DOM parse, accessibility nodes, authored order, clip/gradient evidence
 - Packed consumer와 TypeScript contract
-- Exact public call chain과 SVG/PNG side-by-side image
+- Exact public call chain과 Canvas/SVG/PNG 3-column image
 - Remote checkpoint
 
 ### 승인 전 차단
@@ -44,4 +44,4 @@ boundary를 동기화한다.
 ## Exit
 
 사용자가 SVG output과 visual comparison을 명시적으로 승인한다. 승인 기록 뒤 Phase 3을 열고 PDF renderer를
-구현하며 같은 chart의 SVG/PNG/PDF 3-column comparison을 생성한다.
+구현하며 같은 chart의 Canvas/SVG/PNG/PDF 4-column comparison을 생성한다.

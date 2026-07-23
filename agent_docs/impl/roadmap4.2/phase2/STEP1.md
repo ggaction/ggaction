@@ -2,13 +2,13 @@
 
 ## 진행 상태
 
-- [ ] Concrete primitive completeness와 SVG mapping 구현
-- [ ] Stable defs/clip/gradient identity 구현
-- [ ] Nested scope와 tree order 구현
-- [ ] Accessibility options와 XML escaping 구현
-- [ ] Public entry/type/package/docs/architecture 구현
-- [ ] Focused와 cumulative verification
-- [ ] Browser-rendered SVG/PNG comparison 생성
+- [x] Concrete primitive completeness와 SVG mapping 구현
+- [x] Stable defs/clip/gradient identity 구현
+- [x] Nested scope와 tree order 구현
+- [x] Accessibility options와 XML escaping 구현
+- [x] Public entry/type/package/docs/architecture 구현
+- [x] Focused와 cumulative verification
+- [x] Browser-rendered Canvas/SVG/PNG comparison 생성
 - [ ] Remote checkpoint 기록
 
 ## Output contract
@@ -42,6 +42,7 @@ escaped, numeric output is finite and stable, and backend definitions never ente
 
 ## Visual review
 
-대표 program은 existing public regression-scatterplot을 사용한다. Phase 2 review는 logical size가 같은 SVG와
-2x PNG를 각각 browser-compatible raster image로 만들고 하나의 left-to-right comparison plate로 제시한다.
-Phase 3은 동일한 plate에 Poppler-rendered PDF column을 추가한다.
+대표 program은 existing public regression-scatterplot을 사용한다. Phase 2 review는 같은 fully materialized
+`graphicSpec`을 Browser Canvas, inline SVG, 2x Node PNG로 렌더링하고 하나의 left-to-right comparison plate로
+제시한다. Canvas와 PNG는 `pixelRatio: 2`를 사용하되 모두 같은 logical size를 유지한다. Phase 3은 동일한
+plate에 Poppler-rendered PDF column을 추가한다.

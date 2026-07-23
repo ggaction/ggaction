@@ -6,10 +6,37 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 215_000,
-  "ggaction/basic": 120_000
+  "ggaction/basic": 120_000,
+  "ggaction/svg": 25_000
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/svg") {
+    return `
+import { renderToSVG } from "ggaction/svg";
+
+const program = {
+  graphicSpec: {
+    objects: {
+      canvas: {
+        type: "canvas",
+        properties: { width: 160, height: 120, background: "white" },
+        children: ["point"]
+      },
+      point: {
+        type: "circle",
+        properties: { x: 80, y: 60, radius: 8, fill: "#4c78a8" }
+      }
+    },
+    order: ["canvas"]
+  }
+};
+
+document.body.innerHTML = renderToSVG(program, {
+  title: "Minimal ggaction SVG"
+});
+`;
+  }
   return `
 import { chart, render } from ${JSON.stringify(specifier)};
 
@@ -42,7 +69,9 @@ export async function measureMinimalBrowserBundle(
   consumerDirectory,
   { specifier = "ggaction" } = {}
 ) {
-  const suffix = specifier === "ggaction" ? "full" : "basic";
+  const suffix = specifier === "ggaction"
+    ? "full"
+    : specifier.slice("ggaction/".length);
   const requestedRoot = path.join(
     consumerDirectory,
     `minimal-browser-bundle-${suffix}`

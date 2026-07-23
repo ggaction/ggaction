@@ -118,10 +118,11 @@ created in `index.html`.
 | `ggaction/basic` | Modern ESM browsers and Node.js 20+ | Smaller creation path for scatter, line, bar, histogram, and heatmap charts |
 | `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped actions and public primitive authoring |
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
+| `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |
 
 All entries include TypeScript declarations. The package does not publish
-CommonJS entry points. Import `ggaction/png` only from Node code; neither
-browser entry loads filesystem or native PNG modules.
+CommonJS entry points. Import `ggaction/png` only from Node code; the browser-safe
+entries, including `ggaction/svg`, do not load filesystem or native PNG modules.
 
 The release artifact is tested by installing its exact tarball into fresh
 JavaScript and TypeScript consumer projects. It is also tested in a browser and

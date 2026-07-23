@@ -77,6 +77,7 @@ async function testNodeConsumer(directory) {
     import { chart as basicChart, render as basicRender } from "ggaction/basic";
     import { action, ChartProgram } from "ggaction/extension";
     import { renderToPNG } from "ggaction/png";
+    import { renderToSVG } from "ggaction/svg";
 
     const program = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -417,6 +418,12 @@ async function testNodeConsumer(directory) {
     });
     assert.equal(result.width, 160);
     assert.equal(result.height, 120);
+    const svg = renderToSVG(program, {
+      title: "Package consumer chart"
+    });
+    assert.match(svg, /^<svg /);
+    assert.match(svg, /<title>Package consumer chart<\\/title>/);
+    assert.match(svg, /<circle /);
 
     const fontWeightProgram = chart()
       .createCanvas({ width: 160, height: 80, margin: 12 })
@@ -590,6 +597,10 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import { renderToPNG, type PNGRenderResult } from "ggaction/png";
+    import {
+      renderToSVG,
+      type SVGRenderOptions
+    } from "ggaction/svg";
     import {
       chart as basicChart,
       render as basicRender,
@@ -780,6 +791,8 @@ async function testTypeScriptConsumer(directory) {
       .editFacetGuides({ axes: "outer" });
     const draw: typeof render = render;
     const png: Promise<PNGRenderResult> = renderToPNG(program, { output: "chart.png" });
+    const svgOptions: SVGRenderOptions = { title: "Typed SVG" };
+    const svg: string = renderToSVG(program, svgOptions);
     const wrapped = action(
       { op: "typed", description: "Compile one extension action." },
       function () { return this; }
@@ -986,7 +999,10 @@ export async function testPackageConsumer(options) {
     const basicBundle = await measureMinimalBrowserBundle(consumer.directory, {
       specifier: "ggaction/basic"
     });
-    for (const bundle of [fullBundle, basicBundle]) {
+    const svgBundle = await measureMinimalBrowserBundle(consumer.directory, {
+      specifier: "ggaction/svg"
+    });
+    for (const bundle of [fullBundle, basicBundle, svgBundle]) {
       const limit = BROWSER_BUNDLE_GZIP_LIMITS[bundle.specifier];
       if (bundle.gzipBytes > limit) {
         throw new Error(
@@ -996,7 +1012,7 @@ export async function testPackageConsumer(options) {
     }
     return {
       ...consumer,
-      browserBundles: { full: fullBundle, basic: basicBundle }
+      browserBundles: { full: fullBundle, basic: basicBundle, svg: svgBundle }
     };
   } finally {
     await consumer.cleanup();
@@ -1015,6 +1031,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "node",
       "extension",
       "png",
+      "svg",
       "numeric-font-weight",
       "point-jitter",
       "path-order",

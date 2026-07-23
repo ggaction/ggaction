@@ -99,12 +99,13 @@ Program execution
 │  └─ shared built-in visual defaults
 └─ renderers
    ├─ backend-neutral graphicSpec → Canvas 2D
+   ├─ backend-neutral graphicSpec → browser-safe SVG string
    └─ Canvas 2D → Node PNG
 ```
 
 ## Public package boundary
 
-패키지는 네 개의 명시적 entry point를 가진다.
+패키지는 다섯 개의 명시적 entry point를 가진다.
 
 ### `ggaction`
 
@@ -162,6 +163,19 @@ import { renderToPNG } from "ggaction/png";
 `@napi-rs/canvas`, filesystem, path 처리는 이 entry point 아래에만 존재한다. Browser
 entry point의 dependency graph에는 들어가지 않는다.
 
+### `ggaction/svg`
+
+Browser-safe vector serializer entry다.
+
+```javascript
+import { renderToSVG } from "ggaction/svg";
+```
+
+DOM, filesystem, Node builtin과 native Canvas 없이 fully materialized `graphicSpec`을
+complete SVG document string으로 변환한다. Optional title/description은 escaped
+`<title>`/`<desc>`를 생성하고 logical Canvas dimension을 root width/height/viewBox에
+그대로 사용한다.
+
 각 JavaScript entry point는 대응하는 TypeScript declaration을 가진다.
 
 ```text
@@ -169,6 +183,7 @@ src/index.js             ↔ types/index.d.ts
 src/basic.js             ↔ types/basic.d.ts
 src/extension.js         ↔ types/extension.d.ts
 src/renderers/png.js     ↔ types/png.d.ts
+src/renderers/svg.js     ↔ types/svg.d.ts
 ChartProgram contract    ↔ types/program.d.ts
 ```
 
@@ -1859,6 +1874,27 @@ Renderer는 다음을 절대 하지 않는다.
 - context나 trace 읽기
 - missing graphic 자동 생성
 
+Canvas backing-store resize, CSS logical size, density scale와 clear는 public Canvas
+adapter가 소유한다. Root target resolution과 concrete draw traversal은 Canvas 2D-compatible
+vector context가 재사용할 수 있는 internal seam으로 분리되어 있지만 public export는 아니다.
+
+## SVG renderer
+
+`renderToSVG(program, { title, description })`은 `program.graphicSpec`만 읽고
+complete SVG document string을 반환한다.
+
+- Root canvas logical width/height를 SVG width/height/viewBox에 동일하게 사용한다.
+- Graphic tree, collection item과 attached child의 authored order를 유지한다.
+- Nested canvas는 translated clipped group과 optional local background가 된다.
+- Linear-gradient backend definitions는 normalized concrete coordinates에서 ephemeral하게
+  생성되며 `graphicSpec`에 저장하지 않는다.
+- Text는 authored content, position, alignment, baseline, rotation과 font style을 사용하고
+  wrapping이나 layout을 다시 계산하지 않는다.
+- Deterministic traversal counter로 clip/gradient ID를 만들고 raw graphic ID를 document
+  identifier로 노출하지 않는다.
+
+`ggaction/svg` dependency graph에는 DOM, filesystem, Node builtin과 native Canvas가 없다.
+
 ## PNG adapter
 
 `renderToPNG`는 Node에서 1×1 native Canvas를 만든 뒤 같은 Canvas renderer를 호출한다.
@@ -2274,7 +2310,7 @@ state, explicit materialization, action trace, package boundary와 충돌하지 
 - Canvas/scale dependency를 deterministic materialization plan으로 실행한다.
 - Generic categorical legend와 graphical symbol recipe가 mark별 fork를 대체한다.
 - Generated aggregate resource는 owning mark ID로 namespace된다.
-- Full Browser, Basic Browser, extension, Node PNG entry point와 TypeScript declaration이 분리된다.
+- Full Browser, Basic Browser, extension, browser-safe SVG, Node PNG entry point와 TypeScript declaration이 분리된다.
 - 현재 source는 chart example이 아니라 reusable capability 기준으로 조직된다.
 - 색상·opacity·크기·선 두께 같은 반복 appearance scalar validation은
   `core/validation.js`가 소유하고, chart-independent appearance default는

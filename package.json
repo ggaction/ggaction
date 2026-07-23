@@ -46,6 +46,10 @@
     "./png": {
       "types": "./types/png.d.ts",
       "default": "./src/renderers/png.js"
+    },
+    "./svg": {
+      "types": "./types/svg.d.ts",
+      "default": "./src/renderers/svg.js"
     }
   },
   "scripts": {

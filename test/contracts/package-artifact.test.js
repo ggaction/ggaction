@@ -53,10 +53,12 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
       "src/basic.js",
       "src/extension.js",
       "src/renderers/png.js",
+      "src/renderers/svg.js",
       "types/index.d.ts",
       "types/basic.d.ts",
       "types/extension.d.ts",
       "types/png.d.ts",
+      "types/svg.d.ts",
       "types/program.d.ts"
     ].map(path => ({ path }))
   };

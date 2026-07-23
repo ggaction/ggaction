@@ -167,7 +167,7 @@ open the [runnable Gapminder example](./examples/gapminder-horizon/).
 - Statistical layers and intervals
 - Faceting and program composition
 - Mark selection and coordinated highlighting
-- Browser Canvas and Node PNG output
+- Browser Canvas, SVG, and Node PNG output
 - TypeScript declarations and traceable extension actions
 
 See the current [supported features](https://ggaction.github.io/ggaction/supported-features/), [tutorials and examples](https://ggaction.github.io/ggaction/tutorials/), and [action reference](https://ggaction.github.io/ggaction/reference/actions/) for exact coverage. Runnable programs are collected in [`examples/`](./examples/README.md).
@@ -182,8 +182,10 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/basic` | Create and render scatter, line, bar, histogram, and heatmap charts with a smaller browser bundle |
 | `ggaction/extension` | Author wrapped actions with public low-level primitives |
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
+| `ggaction/svg` | Serialize a completed program to browser-safe SVG |
 
-All entries include TypeScript declarations. The default and basic entries are browser-safe; the PNG adapter is Node-only.
+All entries include TypeScript declarations. The default, basic, extension, and
+SVG entries are browser-safe; the PNG adapter is Node-only.
 
 ## Documentation
 

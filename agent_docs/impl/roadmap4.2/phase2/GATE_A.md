@@ -24,15 +24,49 @@ const svg = renderToSVG(program, {
 
 ### Visual target
 
-Same public regression-scatterplot rendered as SVG and PNG at the same logical dimensions. The review plate presents SVG
-on the left and PNG on the right. Phase 3 adds the PDF rasterization as a third column.
+Same public regression-scatterplot rendered from the same fully materialized `graphicSpec` at the same logical dimensions.
+The review plate presents Browser Canvas, inline SVG, and Node PNG from left to right. Canvas and PNG use 2x backing
+density for a crisp comparison. Phase 3 adds the Poppler-rendered PDF rasterization as a fourth column.
 
 ## Required evidence
 
 - Focused/unit/contract/browser/package results
 - Exact artifact paths and public call chain
-- SVG/PNG comparison image
+- Canvas/SVG/PNG comparison image
 - Remote checkpoint
+
+## Verification evidence
+
+- SVG serializer unit: 4/4 passed
+- Public-chart SVG contract: 41/41 registered charts serialized
+- Unit suite: 1305/1305 passed
+- Contract suite: 157/157 passed
+- Browser suite: 47/47 passed, including packed `ggaction/svg` DOM insertion
+- Documentation suite: 41/41 passed
+- Installed-package JavaScript/TypeScript consumer and artifact boundary: passed
+- Minimal `ggaction/svg` browser bundle: 5,705 gzip bytes under the 25,000-byte budget
+- Coverage: 94.66% lines, 89.99% branches, 98.44% functions; 68 critical floors passed
+- `xmllint --noout` on the review SVG: passed
+
+## Public call chain
+
+```javascript
+const program = createCarsRegressionScatterplot(cars);
+
+render(program, canvas.getContext("2d"), { pixelRatio: 2 });
+const svg = renderToSVG(program, { title, description });
+await renderToPNG(program, { output, pixelRatio: 2 });
+```
+
+All three calls consume the same fully materialized `program.graphicSpec`.
+
+## Review artifacts
+
+- `.artifacts/test/png/review/vector-renderers/svg-parity/canvas-svg-png-comparison.png`
+- `.artifacts/test/png/review/vector-renderers/svg-parity/chart.svg`
+- `.artifacts/test/png/review/vector-renderers/svg-parity/chart.png`
+- `.artifacts/test/png/review/vector-renderers/svg-parity/comparison.html`
+- `.artifacts/test/png/review/vector-renderers/svg-parity/variant.json`
 
 ## Approval effect
 

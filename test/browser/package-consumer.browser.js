@@ -25,11 +25,13 @@ test.before(async () => {
     <canvas id="legend" aria-label="Legend lifecycle chart"></canvas>
     <canvas id="axis" aria-label="Axis component lifecycle chart"></canvas>
     <canvas id="bin2d" aria-label="2D bin lifecycle chart"></canvas>
-    <canvas id="basic" aria-label="Basic entry scatterplot"></canvas><script type="importmap">
-    {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js"}}
+    <canvas id="basic" aria-label="Basic entry scatterplot"></canvas>
+    <div id="svg"></div><script type="importmap">
+    {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js","ggaction/svg":"/node_modules/ggaction/src/renderers/svg.js"}}
     </script><script type="module">
       import { chart, render } from "ggaction";
       import { chart as basicChart, render as basicRender } from "ggaction/basic";
+      import { renderToSVG } from "ggaction/svg";
       const program = chart()
         .createCanvas({ width: 160, height: 120, margin: 20 })
         .createData({ values: [
@@ -122,6 +124,11 @@ test.before(async () => {
       render(editedBins, bin2dCanvas.getContext("2d"));
       const basicCanvas = document.querySelector("#basic");
       basicRender(basicProgram, basicCanvas.getContext("2d"));
+      const svgHost = document.querySelector("#svg");
+      svgHost.innerHTML = renderToSVG(program, {
+        title: "Packed SVG chart",
+        description: "Two concrete points"
+      });
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
         width: canvas.width,
@@ -172,7 +179,11 @@ test.before(async () => {
           editedBins.materializationConfigs.data.bin2d.cells.current,
         basicCanvas: [basicCanvas.width, basicCanvas.height],
         basicPoints: basicProgram.graphicSpec.objects.scatterPlot.items.length,
-        basicExcludesRegression: basicProgram.createRegression === undefined
+        basicExcludesRegression: basicProgram.createRegression === undefined,
+        svgViewBox: svgHost.querySelector("svg").getAttribute("viewBox"),
+        svgTitle: svgHost.querySelector("title").textContent,
+        svgDescription: svgHost.querySelector("desc").textContent,
+        svgPoints: svgHost.querySelectorAll("circle").length
       };
     </script></body></html>`);
   server = await startStaticServer(consumer.directory);
@@ -212,7 +223,11 @@ test("imports and renders the packed browser entries", async () => {
     bin2dRebound: true,
     basicCanvas: [160, 120],
     basicPoints: 2,
-    basicExcludesRegression: true
+    basicExcludesRegression: true,
+    svgViewBox: "0 0 160 120",
+    svgTitle: "Packed SVG chart",
+    svgDescription: "Two concrete points",
+    svgPoints: 2
   });
   assert.equal(await page.locator("#status").textContent(), "complete");
   assert.equal(
