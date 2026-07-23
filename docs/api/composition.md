@@ -76,7 +76,7 @@ nested compositions keep independent clipping and coordinate scopes.
 A complete Cartesian or Polar chart can be a direct or nested concat child.
 The composition does not reinterpret theta, radius, x, y, scales, guides, or
 selections. It snapshots each finished child into one namespaced concrete
-graphic tree, so Canvas and PNG renderers use the same result.
+graphic tree, so Canvas, SVG, PNG, and PDF renderers use the same result.
 
 When a nested child changes, replace it in each ancestor explicitly:
 

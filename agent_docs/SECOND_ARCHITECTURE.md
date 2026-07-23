@@ -23,7 +23,7 @@ agent가 다음을 빠르게 이해하기 위한 내부 아키텍처 문서다.
 - 의미와 그래픽이 어디에서 분리되는가
 - action이 어떻게 trace와 materialization을 만드는가
 - scale, mark, guide, transform이 어떤 책임 경계를 가지는가
-- Canvas와 PNG renderer가 무엇을 읽는가
+- Canvas, SVG, PNG와 PDF renderer가 무엇을 읽는가
 - 새로운 기능을 어느 계층에 추가해야 하는가
 
 ## 핵심 결론
@@ -69,8 +69,12 @@ Public package
 ├─ ggaction/extension
 │  ├─ ChartProgram
 │  └─ action()
-└─ ggaction/png
-   └─ renderToPNG()
+├─ ggaction/svg
+│  └─ renderToSVG()
+├─ ggaction/png
+│  └─ renderToPNG()
+└─ ggaction/pdf
+   └─ renderToPDF()
 
 Program execution
 ├─ ChartProgram assembly
@@ -98,13 +102,15 @@ Program execution
 ├─ theme
 │  └─ shared built-in visual defaults
 └─ renderers
-   ├─ backend-neutral graphicSpec → Canvas 2D
-   └─ Canvas 2D → Node PNG
+   ├─ backend-neutral graphicSpec → Canvas 2D-compatible drawing target
+   ├─ backend-neutral graphicSpec → browser-safe SVG string
+   ├─ Canvas 2D → Node PNG
+   └─ Canvas-compatible vector context → Node PDF
 ```
 
 ## Public package boundary
 
-패키지는 네 개의 명시적 entry point를 가진다.
+패키지는 여섯 개의 명시적 entry point를 가진다.
 
 ### `ggaction`
 
@@ -162,13 +168,41 @@ import { renderToPNG } from "ggaction/png";
 `@napi-rs/canvas`, filesystem, path 처리는 이 entry point 아래에만 존재한다. Browser
 entry point의 dependency graph에는 들어가지 않는다.
 
+### `ggaction/svg`
+
+Browser-safe vector serializer entry다.
+
+```javascript
+import { renderToSVG } from "ggaction/svg";
+```
+
+DOM, filesystem, Node builtin과 native Canvas 없이 fully materialized `graphicSpec`을
+complete SVG document string으로 변환한다. Optional title/description은 escaped
+`<title>`/`<desc>`를 생성하고 logical Canvas dimension을 root width/height/viewBox에
+그대로 사용한다.
+
+### `ggaction/pdf`
+
+Node 전용 single-page vector adapter다.
+
+```javascript
+import { renderToPDF } from "ggaction/pdf";
+```
+
+`@napi-rs/canvas`의 PDF document/page/context, filesystem과 path 처리는 이 entry
+point 아래에만 존재한다. Fully materialized `graphicSpec`을 logical Canvas
+width/height와 숫자상 같은 point 크기의 한 page에 그리고 optional
+title/author/subject/keywords metadata를 기록한다.
+
 각 JavaScript entry point는 대응하는 TypeScript declaration을 가진다.
 
 ```text
 src/index.js             ↔ types/index.d.ts
 src/basic.js             ↔ types/basic.d.ts
 src/extension.js         ↔ types/extension.d.ts
+src/renderers/pdf.js     ↔ types/pdf.d.ts
 src/renderers/png.js     ↔ types/png.d.ts
+src/renderers/svg.js     ↔ types/svg.d.ts
 ChartProgram contract    ↔ types/program.d.ts
 ```
 
@@ -1692,8 +1726,8 @@ encodeHorizon
 Horizon은 area target의 source x/y를 baseline 기준 signed amplitude로 바꾼 뒤 sign별 repeated band로 fold한다.
 Semantic layer에는 ordinary x/y/y2/group/color encoding을 저장하고 folded y scale을 `[0, 1]`로 고정한다.
 Automatic guide policy는 original x axis/grid만 허용하고 folded y axis와 internal sign/band color legend는 만들지
-않는다. Area materializer와 Canvas/PNG renderer는 Horizon-specific branch 없이 ordinary closed path collection을
-처리한다.
+않는다. Area materializer와 Canvas/PNG/SVG/PDF renderer는 Horizon-specific branch 없이 ordinary closed path
+collection을 처리한다.
 
 ```text
 editHorizon
@@ -1858,6 +1892,45 @@ Renderer는 다음을 절대 하지 않는다.
 - semantic guide 해석
 - context나 trace 읽기
 - missing graphic 자동 생성
+
+Canvas backing-store resize, CSS logical size, density scale와 clear는 public Canvas
+adapter가 소유한다. Root target resolution과 concrete draw traversal은 Canvas 2D-compatible
+vector context가 재사용할 수 있는 internal seam으로 분리되어 있지만 public export는 아니다.
+
+## SVG renderer
+
+`renderToSVG(program, { title, description })`은 `program.graphicSpec`만 읽고
+complete SVG document string을 반환한다.
+
+- Root canvas logical width/height를 SVG width/height/viewBox에 동일하게 사용한다.
+- Graphic tree, collection item과 attached child의 authored order를 유지한다.
+- Nested canvas는 translated clipped group과 optional local background가 된다.
+- Linear-gradient backend definitions는 normalized concrete coordinates에서 ephemeral하게
+  생성되며 `graphicSpec`에 저장하지 않는다.
+- Text는 authored content, position, alignment, baseline, rotation과 font style을 사용하고
+  wrapping이나 layout을 다시 계산하지 않는다.
+- Deterministic traversal counter로 clip/gradient ID를 만들고 raw graphic ID를 document
+  identifier로 노출하지 않는다.
+
+`ggaction/svg` dependency graph에는 DOM, filesystem, Node builtin과 native Canvas가 없다.
+
+## PDF adapter
+
+`renderToPDF(program, { output, metadata })`는 Node에서 native PDF document와 logical-size
+page를 만들고 Phase 1의 Canvas-compatible concrete drawing target으로 같은
+`graphicSpec`을 그린다.
+
+- One chart는 exact logical width/height point의 one page다.
+- Text는 native PDF text operator로 남고 renderer가 glyph outline이나 raster image로
+  바꾸지 않는다.
+- Optional metadata는 title, author, subject와 keyword list만 받는다.
+- PDF document, page, context, gradient와 buffer는 adapter-local ephemeral state다.
+- Complete validation/drawing과 document close 뒤에만 directory/file을 기록한다.
+- 반환값은 absolute output path, logical width/height, `pages: 1`과 byte length다.
+
+PDF는 vector output이므로 `pixelRatio`를 받지 않는다. `ggaction/pdf`와
+`ggaction/png`의 native/filesystem dependency는 browser-safe entry graph에 들어가지
+않는다.
 
 ## PNG adapter
 
@@ -2274,7 +2347,8 @@ state, explicit materialization, action trace, package boundary와 충돌하지 
 - Canvas/scale dependency를 deterministic materialization plan으로 실행한다.
 - Generic categorical legend와 graphical symbol recipe가 mark별 fork를 대체한다.
 - Generated aggregate resource는 owning mark ID로 namespace된다.
-- Full Browser, Basic Browser, extension, Node PNG entry point와 TypeScript declaration이 분리된다.
+- Full Browser, Basic Browser, extension, browser-safe SVG, Node PNG, Node PDF entry point와 TypeScript
+  declaration이 분리된다.
 - 현재 source는 chart example이 아니라 reusable capability 기준으로 조직된다.
 - 색상·opacity·크기·선 두께 같은 반복 appearance scalar validation은
   `core/validation.js`가 소유하고, chart-independent appearance default는

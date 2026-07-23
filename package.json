@@ -46,6 +46,14 @@
     "./png": {
       "types": "./types/png.d.ts",
       "default": "./src/renderers/png.js"
+    },
+    "./pdf": {
+      "types": "./types/pdf.d.ts",
+      "default": "./src/renderers/pdf.js"
+    },
+    "./svg": {
+      "types": "./types/svg.d.ts",
+      "default": "./src/renderers/svg.js"
     }
   },
   "scripts": {
@@ -61,6 +69,7 @@
     "test:coverage": "node scripts/run-tests.js coverage",
     "test:render": "node scripts/run-render-tests.js",
     "assets:readme": "node scripts/generate-readme-demo.js",
+    "artifacts:renderers": "node scripts/generate-renderer-comparison.js",
     "artifacts:clean": "node test/support/artifacts.js",
     "artifacts:gallery": "node scripts/generate-artifact-gallery.js",
     "artifacts:gallery:test": "node scripts/test-artifact-gallery.js",

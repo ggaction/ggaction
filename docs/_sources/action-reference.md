@@ -1723,3 +1723,5 @@ Rendering functions are not actions and do not modify the trace.
 | `ggaction` | `render(program, canvasContext, { pixelRatio? }?)` |
 | `ggaction/basic` | `render(program, canvasContext, { pixelRatio? }?)` |
 | `ggaction/png` | `renderToPNG(program, { output, pixelRatio? })` |
+| `ggaction/pdf` | `renderToPDF(program, { output, metadata? })` |
+| `ggaction/svg` | `renderToSVG(program, { title?, description? }?)` |

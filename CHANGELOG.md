@@ -8,6 +8,12 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Added the browser-safe `ggaction/basic` entry for creation-focused scatter, line, bar, histogram, and heatmap
   programs, with matching TypeScript declarations and an enforced 120,000-byte gzip bundle budget.
+- Added browser-safe `ggaction/svg` output and Node-only `ggaction/pdf` single-page vector files, with matching
+  declarations, metadata/accessibility options, installed-consumer coverage, and Canvas/SVG/PNG/PDF visual evidence.
+
+### Changed
+
+- Applied the documented numeric font-weight normalization consistently across Canvas, SVG, PNG, and PDF rendering.
 
 ## [0.0.6] - 2026-07-23
 

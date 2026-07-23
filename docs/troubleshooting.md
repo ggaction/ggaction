@@ -187,18 +187,21 @@ If rendering succeeds but the result is blank, inspect `graphicSpec.objects`
 before changing the renderer. The renderer does not infer missing mark
 positions, sizes, or paths from `semanticSpec`.
 
-## Node PNG export is unavailable in the browser
+## Node PNG or PDF export is unavailable in the browser
 
-The PNG adapter is a Node-only package entry:
+The PNG and PDF adapters are Node-only package entries:
 
 ```javascript
 import { renderToPNG } from "ggaction/png";
+import { renderToPDF } from "ggaction/pdf";
 
 await renderToPNG(program, { output: "chart.png", pixelRatio: 2 });
+await renderToPDF(program, { output: "chart.pdf" });
 ```
 
-Use `render` from `ggaction` in the browser. Importing `ggaction/png` into a
-browser bundle is unsupported because it depends on the Node Canvas adapter.
+Use `render` from `ggaction` or `renderToSVG` from `ggaction/svg` in the browser.
+Importing `ggaction/png` or `ggaction/pdf` into a browser bundle is unsupported
+because they depend on Node output adapters.
 
 ## Inspect the program
 

@@ -17,32 +17,43 @@ const DRAWERS = Object.freeze({
   path: drawPathGraphic
 });
 
-function requireCanvasContext(context) {
-  const methods = [
-    "save",
-    "restore",
-    "clearRect",
-    "fillRect",
-    "beginPath",
-    "closePath",
-    "arc",
-    "fill",
-    "moveTo",
-    "lineTo",
-    "bezierCurveTo",
-    "setLineDash",
-    "stroke",
-    "translate",
-    "rotate",
-    "fillText",
-    "scale"
-  ];
+const DRAWING_CONTEXT_METHODS = Object.freeze([
+  "save",
+  "restore",
+  "fillRect",
+  "beginPath",
+  "closePath",
+  "arc",
+  "fill",
+  "moveTo",
+  "lineTo",
+  "bezierCurveTo",
+  "setLineDash",
+  "stroke",
+  "translate",
+  "rotate",
+  "fillText"
+]);
 
+function requireDrawingContext(context) {
+  if (context === null || typeof context !== "object") {
+    throw new TypeError("Canvas drawing requires a 2D context.");
+  }
+
+  for (const method of DRAWING_CONTEXT_METHODS) {
+    if (typeof context[method] !== "function") {
+      throw new TypeError(`Canvas context is missing ${method}().`);
+    }
+  }
+}
+
+function requireCanvasContext(context) {
   if (context === null || typeof context !== "object" || !context.canvas) {
     throw new TypeError("render requires a Canvas 2D context.");
   }
 
-  for (const method of methods) {
+  requireDrawingContext(context);
+  for (const method of ["clearRect", "scale"]) {
     if (typeof context[method] !== "function") {
       throw new TypeError(`Canvas context is missing ${method}().`);
     }
@@ -86,7 +97,7 @@ function enterNestedCanvas(context, id, canvas) {
   fillCanvasBackground(context, id, canvas, width, height);
 }
 
-export function render(program, context, { pixelRatio = 1 } = {}) {
+export function requireProgramGraphicSpec(program) {
   const graphicSpec = program?.graphicSpec;
 
   if (
@@ -99,12 +110,10 @@ export function render(program, context, { pixelRatio = 1 } = {}) {
     throw new TypeError("render requires a program with a graphicSpec.");
   }
 
-  requireCanvasContext(context);
+  return graphicSpec;
+}
 
-  if (!Number.isFinite(pixelRatio) || pixelRatio <= 0) {
-    throw new RangeError("render pixelRatio must be a positive finite number.");
-  }
-
+export function resolveGraphicRenderTarget(graphicSpec) {
   const { id: canvasId, object: canvas } =
     requireSingleOrderedGraphicByType(graphicSpec, "canvas");
   const width = requireFiniteProperty(canvas.properties ?? {}, "width", canvasId);
@@ -117,6 +126,65 @@ export function render(program, context, { pixelRatio = 1 } = {}) {
   if (width < 0 || height < 0) {
     throw new Error("Canvas width and height must not be negative.");
   }
+
+  return Object.freeze({
+    graphicSpec,
+    canvasId,
+    canvas,
+    width,
+    height
+  });
+}
+
+export function drawResolvedGraphicSpec(target, context) {
+  requireDrawingContext(context);
+  const { graphicSpec, canvasId, canvas, width, height } = target;
+
+  fillCanvasBackground(context, canvasId, canvas, width, height);
+
+  walkGraphicTreeEvents(graphicSpec, {
+    enter({ id, object }) {
+      if (id === canvasId) return;
+      if (object.type === "canvas") {
+        enterNestedCanvas(context, id, object);
+        return;
+      }
+      if (object.type === "collection") {
+        context.save();
+        return;
+      }
+      if (!Array.isArray(object.items)) {
+        drawConcreteGraphic(context, id, object);
+      }
+    },
+    item({ id, object, owner }) {
+      drawConcreteGraphic(context, id, {
+        ...object,
+        type: object.type ?? owner.type
+      });
+    },
+    exit({ id, object }) {
+      if (
+        id !== canvasId &&
+        (object.type === "collection" || object.type === "canvas")
+      ) {
+        context.restore();
+      }
+    }
+  });
+}
+
+export function render(program, context, { pixelRatio = 1 } = {}) {
+  const graphicSpec = requireProgramGraphicSpec(program);
+
+  requireCanvasContext(context);
+
+  if (!Number.isFinite(pixelRatio) || pixelRatio <= 0) {
+    throw new RangeError("render pixelRatio must be a positive finite number.");
+  }
+
+  const target = resolveGraphicRenderTarget(graphicSpec);
+  const { width, height } = target;
 
   context.canvas.width = Math.round(width * pixelRatio);
   context.canvas.height = Math.round(height * pixelRatio);
@@ -132,39 +200,7 @@ export function render(program, context, { pixelRatio = 1 } = {}) {
   try {
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
-
-    fillCanvasBackground(context, canvasId, canvas, width, height);
-
-    walkGraphicTreeEvents(graphicSpec, {
-      enter({ id, object }) {
-        if (id === canvasId) return;
-        if (object.type === "canvas") {
-          enterNestedCanvas(context, id, object);
-          return;
-        }
-        if (object.type === "collection") {
-          context.save();
-          return;
-        }
-        if (!Array.isArray(object.items)) {
-          drawConcreteGraphic(context, id, object);
-        }
-      },
-      item({ id, object, owner }) {
-        drawConcreteGraphic(context, id, {
-          ...object,
-          type: object.type ?? owner.type
-        });
-      },
-      exit({ id, object }) {
-        if (
-          id !== canvasId &&
-          (object.type === "collection" || object.type === "canvas")
-        ) {
-          context.restore();
-        }
-      }
-    });
+    drawResolvedGraphicSpec(target, context);
   } finally {
     context.restore();
   }

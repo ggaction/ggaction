@@ -7,8 +7,8 @@ easiest to review and the most likely to land quickly.
 
 - Search the existing issues before opening a new one.
 - For a bug, include a minimal program, the expected result, the actual result,
-  your Node.js version, and whether the problem affects Browser Canvas, Node PNG,
-  or both.
+  your Node.js version, and whether the problem affects Browser Canvas, SVG,
+  Node PNG, vector PDF, or more than one output.
 - Open an issue before making a material change to the public API, persisted
   program state, package boundaries, or core architecture. These changes need an
   agreed direction before implementation.
@@ -66,7 +66,7 @@ In the description, explain:
 4. the commands you ran to verify the change.
 
 If the change affects rendered output, include the relevant visual evidence and
-state whether Browser Canvas and Node PNG remain aligned.
+state whether Browser Canvas, SVG, Node PNG, and vector PDF remain aligned.
 
 By contributing, you help make chart authoring more inspectable, traceable, and
 useful to everyone.

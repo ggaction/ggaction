@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "roadmap": "roadmap4.2",
+  "gate": "R42-P0-A",
+  "status": "approved",
+  "source": "2026-07-23 SVG and PDF renderer planning",
+  "packageEntries": [
+    {
+      "entry": "ggaction/svg",
+      "environment": "browser-and-node",
+      "dependencyBoundary": "browser-safe",
+      "export": "renderToSVG",
+      "signature": "renderToSVG(program, options?: { title?: string; description?: string }): string",
+      "result": "complete SVG document string"
+    },
+    {
+      "entry": "ggaction/pdf",
+      "environment": "node-only",
+      "dependencyBoundary": "node-filesystem-and-native-canvas",
+      "export": "renderToPDF",
+      "signature": "renderToPDF(program, options: { output: string; metadata?: PDFMetadata }): Promise<PDFRenderResult>",
+      "result": "{ output: absolutePath; width: logicalWidth; height: logicalHeight; pages: 1; bytes: byteLength }"
+    }
+  ],
+  "optionTypes": [
+    {
+      "name": "PDFMetadata",
+      "shape": "{ title?: string; author?: string; subject?: string; keywords?: readonly string[] }",
+      "policy": "Metadata is optional and does not affect graphicSpec or page layout."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "svg-runtime",
+      "recommended": "browser-safe-pure-javascript-string",
+      "reason": "SVG remains usable without DOM, filesystem, or the Node-only native dependency."
+    },
+    {
+      "id": "pdf-output",
+      "recommended": "node-only-single-page-vector-file",
+      "reason": "It matches the existing PNG file adapter while preserving vector output."
+    },
+    {
+      "id": "dimension-mapping",
+      "recommended": "same-logical-numbers-svg-user-space-pdf-points",
+      "reason": "Vector outputs have no raster density and remain comparable to Canvas logical coordinates."
+    },
+    {
+      "id": "text-policy",
+      "recommended": "selectable-text-no-text-to-path",
+      "reason": "Searchability and small files are more useful than exact glyph-outline portability in the initial scope."
+    },
+    {
+      "id": "parity-scope",
+      "recommended": "full-current-concrete-graphic-schema",
+      "reason": "A renderer entry should not silently support only a subset of charts already materialized by ggaction."
+    },
+    {
+      "id": "pdf-verification",
+      "recommended": "structural-text-and-poppler-visual-no-byte-snapshot",
+      "reason": "PDF metadata and backend encoding can vary while observable content remains equivalent."
+    }
+  ],
+  "nonGoals": [
+    "tagged PDF or PDF/UA",
+    "multi-page composition",
+    "paper fitting and pagination",
+    "raster-in-PDF fallback",
+    "SVG DOM mounting or filesystem writing",
+    "custom font registration or embedding API",
+    "text-to-path",
+    "renderer-side semantic inference or text layout",
+    "new graphic primitives or public actions"
+  ]
+}

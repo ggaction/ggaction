@@ -9,4 +9,4 @@ Apply these instructions to Canvas rendering and output adapters.
 - Render concrete nodes in the explicit graphical placement order rather than action-call or object-enumeration order.
 - Draw resolved text children as authored. Do not remeasure, rewrap, or infer layout topology in a renderer.
 - Keep Node-only adapters and dependencies outside browser-safe entry points.
-- Test Browser Canvas and Node PNG separately against the same concrete schema and representative primitive/public equivalence contracts.
+- Test Browser Canvas, browser-safe SVG, Node PNG, and Node PDF separately against the same concrete schema and representative primitive/public equivalence contracts.

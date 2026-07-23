@@ -10,7 +10,7 @@ title: Horizon Chart Tutorial
 This chart folds Kenya's life expectancy above and below a 55-year baseline
 into three compact bands. The source rows stay immutable. `encodeHorizon`
 creates one derived dataset and ordinary closed area paths, so Browser Canvas
-and Node PNG use the same backend-neutral graphics.
+and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
 [runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-horizon)

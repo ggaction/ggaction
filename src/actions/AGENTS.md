@@ -5,7 +5,7 @@ Apply these instructions to wrapped actions and public authoring APIs in additio
 ## Public API Shape
 
 - Maintain three layers: the default chart-authoring API, the public extension/action-authoring API, and private internals.
-- The default `ggaction` entry point exposes domain-specific authoring and rendering; `ggaction/extension` exposes `ChartProgram`, `action()`, primitives, and trace inspection; `ggaction/png` is Node-only.
+- The default `ggaction` entry point exposes domain-specific authoring and rendering; `ggaction/extension` exposes `ChartProgram`, `action()`, primitives, and trace inspection; `ggaction/svg` is browser-safe; `ggaction/png` and `ggaction/pdf` are Node-only.
 - Name chart-authoring actions after semantic concepts. Keep concrete realizations inside implementations and `graphicSpec`.
 - Every public action accepts one meaningful option object and returns a new `ChartProgram`.
 - Prefer domain actions over raw graphic IDs or property paths. Keep sibling implementation components behind one facade unless each has an independent authoring use case.

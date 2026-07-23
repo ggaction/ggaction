@@ -38,7 +38,7 @@ The `text` option is constant-content shorthand.
 ## Font weights
 
 `fontWeight` accepts a non-empty CSS weight string or a finite number. To keep
-Browser Canvas and Node PNG output consistent, numeric values are rounded to the
+Canvas, SVG, PNG, and PDF output consistent, numeric values are rounded to the
 nearest 100 and clamped to the backend-safe `100`–`900` range before rendering.
 For example, `650` renders as `700`. The authored value remains unchanged in the
 program state. Titles, facet headers, legends, and Cartesian or Polar axis text

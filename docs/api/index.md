@@ -22,7 +22,7 @@ overview no longer provides enough control.
   <a href="./parallel-coordinates/"><strong>Parallel coordinates</strong><span>Compare each source row across an ordered set of dimension-local scales.</span></a>
   <a href="./guides/"><strong>Guides and titles</strong><span>Create axes, grids, legends, and chart titles from existing encodings.</span></a>
   <a href="./composition/"><strong>Program composition</strong><span>Arrange complete chart programs horizontally or vertically and replace stable child slots.</span></a>
-  <a href="./rendering/"><strong>Rendering</strong><span>Render the fully materialized program to Browser Canvas or Node PNG.</span></a>
+  <a href="./rendering/"><strong>Rendering</strong><span>Render the fully materialized program to Browser Canvas, SVG, Node PNG, or vector PDF.</span></a>
 </div>
 
 ## Statistical and distribution facades

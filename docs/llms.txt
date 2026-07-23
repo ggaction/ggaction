@@ -93,6 +93,6 @@ line/area series, and rule items. Its explicit value sources distinguish data
 fields, pre-scale semantic channels, and concrete graphic properties.
 `highlightMarks` applies mark-specific concrete emphasis, optional complement
 dimming, and front order to point, bar, line/area-series, and rule items.
-It is an ESM-only npm package for Node 20 or later with Browser Canvas, Node PNG, and TypeScript entries for `ggaction`, `ggaction/extension`, and `ggaction/png`.
+It is an ESM-only npm package for Node 20 or later with Browser Canvas, browser-safe SVG, Node PNG, vector PDF, and TypeScript entries for `ggaction`, `ggaction/basic`, `ggaction/extension`, `ggaction/svg`, `ggaction/png`, and `ggaction/pdf`.
 
-Program composition supports concat, nested Cartesian/Polar snapshots, editing, replacement, and Cartesian facets. Polar facets, SVG, animation, and automatic compilation are unsupported.
+Program composition supports concat, nested Cartesian/Polar snapshots, editing, replacement, and Cartesian facets. Polar facets, animation, multi-page PDF, and automatic compilation are unsupported.

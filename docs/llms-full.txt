@@ -20,7 +20,7 @@ chart authoring itself as an immutable, traceable sequence of graphical actions.
 Build, inspect, select, and revise charts one meaningful action at a time.
 
 Start with a complete example, then use the API pages when you need to customize
-one part. The main, basic, extension, and PNG entry points include TypeScript declarations.
+one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
 <p class="docs-release-status">Experimental 0.0.6  · APIs may change before 1.0.0. Review the changelog  when upgrading.</p>
 
@@ -180,10 +180,13 @@ created in `index.html`.
 | `ggaction/basic` | Modern ESM browsers and Node.js 20+ | Smaller creation path for scatter, line, bar, histogram, and heatmap charts |
 | `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped actions and public primitive authoring |
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
+| `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
+| `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |
 
 All entries include TypeScript declarations. The package does not publish
-CommonJS entry points. Import `ggaction/png` only from Node code; neither
-browser entry loads filesystem or native PNG modules.
+CommonJS entry points. Import `ggaction/png` and `ggaction/pdf` only from Node
+code; the browser-safe entries, including `ggaction/svg`, do not load filesystem
+or native output modules.
 
 The release artifact is tested by installing its exact tarball into fresh
 JavaScript and TypeScript consumer projects. It is also tested in a browser and
@@ -216,7 +219,8 @@ The source repository also contains complete modules for the
 
 Use Troubleshooting  when
 inference or layout cannot make one safe choice. Render the same program to a
-file with PNG output .
+file with PNG  or
+vector PDF output .
 
 <!-- Source: /tutorials/ -->
 
@@ -1503,7 +1507,7 @@ program
 This chart folds Kenya's life expectancy above and below a 55-year baseline
 into three compact bands. The source rows stay immutable. `encodeHorizon`
 creates one derived dataset and ordinary closed area paths, so Browser Canvas
-and Node PNG use the same backend-neutral graphics.
+and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
 [runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-horizon)
@@ -3094,18 +3098,21 @@ If rendering succeeds but the result is blank, inspect `graphicSpec.objects`
 before changing the renderer. The renderer does not infer missing mark
 positions, sizes, or paths from `semanticSpec`.
 
-## Node PNG export is unavailable in the browser
+## Node PNG or PDF export is unavailable in the browser
 
-The PNG adapter is a Node-only package entry:
+The PNG and PDF adapters are Node-only package entries:
 
 ```javascript
 import { renderToPNG } from "ggaction/png";
+import { renderToPDF } from "ggaction/pdf";
 
 await renderToPNG(program, { output: "chart.png", pixelRatio: 2 });
+await renderToPDF(program, { output: "chart.pdf" });
 ```
 
-Use `render` from `ggaction` in the browser. Importing `ggaction/png` into a
-browser bundle is unsupported because it depends on the Node Canvas adapter.
+Use `render` from `ggaction` or `renderToSVG` from `ggaction/svg` in the browser.
+Importing `ggaction/png` or `ggaction/pdf` into a browser bundle is unsupported
+because they depend on Node output adapters.
 
 ## Inspect the program
 
@@ -3185,7 +3192,7 @@ overview no longer provides enough control.
   Parallel coordinates Compare each source row across an ordered set of dimension-local scales.
   Guides and titles Create axes, grids, legends, and chart titles from existing encodings.
   Program composition Arrange complete chart programs horizontally or vertically and replace stable child slots.
-  Rendering Render the fully materialized program to Browser Canvas or Node PNG.
+  Rendering Render the fully materialized program to Browser Canvas, SVG, Node PNG, or vector PDF.
 
 ## Statistical and distribution facades
 
@@ -4694,7 +4701,7 @@ The `text` option is constant-content shorthand.
 ## Font weights
 
 `fontWeight` accepts a non-empty CSS weight string or a finite number. To keep
-Browser Canvas and Node PNG output consistent, numeric values are rounded to the
+Canvas, SVG, PNG, and PDF output consistent, numeric values are rounded to the
 nearest 100 and clamped to the backend-safe `100`–`900` range before rendering.
 For example, `650` renders as `700`. The authored value remains unchanged in the
 program state. Titles, facet headers, legends, and Cartesian or Polar axis text
@@ -6282,7 +6289,9 @@ font size. Missing margin space and same-edge guide collisions are errors.
 | Target | Shortest call | Density | Result |
 | --- | --- | --- | --- |
 | Browser Canvas | `render(program, context)` | Device/Canvas context | Draws concrete `graphicSpec` |
+| SVG | `renderToSVG(program)` | Vector | Complete SVG document string |
 | Node PNG | `renderToPNG(program, { output })` | `pixelRatio`, default `1` | PNG file and physical dimensions |
+| Node PDF | `renderToPDF(program, { output })` | Vector | Single-page PDF file at logical point dimensions |
 
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
@@ -6304,6 +6313,25 @@ logical CSS width and height while enlarging the backing store:
 render(program, context, { pixelRatio: 2 });
 ```
 
+## SVG output
+
+The browser-safe SVG entry returns a complete SVG document string without
+reading the DOM or filesystem.
+
+```javascript
+import { renderToSVG } from "ggaction/svg";
+
+const svg = renderToSVG(program, {
+  title: "Quarterly revenue",
+  description: "Revenue by quarter"
+});
+```
+
+The root `width`, `height`, and `viewBox` use the program's logical Canvas
+dimensions. Optional `title` and `description` strings become escaped
+`<title>` and `<desc>` children. Repeated calls with the same program and
+options return the same string.
+
 ## PNG output
 
 The Node-only entry point writes a completed program directly to PNG.
@@ -6321,10 +6349,38 @@ Missing output directories are created. A logical 640×400 chart at ratio 2
 produces a 1280×800 image. The result contains the absolute `output`, physical
 `width` and `height`, `pixelRatio`, and byte count.
 
-The current renderer supports concrete canvas, collection, circle, rect, line,
+## PDF output
+
+The Node-only PDF entry writes one completed chart as one vector PDF page:
+
+```javascript
+import { renderToPDF } from "ggaction/pdf";
+
+const result = await renderToPDF(program, {
+  output: "./output/chart.pdf",
+  metadata: {
+    title: "Quarterly revenue",
+    author: "Example",
+    subject: "Revenue by quarter",
+    keywords: ["revenue", "quarterly"]
+  }
+});
+```
+
+Missing output directories are created. The page width and height in PDF points
+use the program's logical Canvas dimensions, and the frozen result contains the
+absolute `output`, logical `width` and `height`, `pages: 1`, and byte count.
+Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
+strings plus an array of non-empty `keywords`.
+
+Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
+opacity, dashes, and linear gradients remain vector output; the adapter does not
+rasterize the chart or accept `pixelRatio`.
+
+The current renderers support concrete canvas, collection, circle, rect, line,
 text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
-dash arrays. The renderer validates values with the same concrete property
-contract used by `editGraphics`.
+dash arrays. They validate values with the same concrete property contract used
+by `editGraphics`.
 
 Rect and closed-path fills may be solid strings or item-local linear-gradient
 paint values. Gradient endpoints are normalized against the final fill geometry;
@@ -6333,13 +6389,15 @@ Canvas gradient only for the current draw call and never stores backend objects
 in `graphicSpec`.
 
 Line curve actions resolve interpolation into those commands before rendering.
-The Canvas renderer executes `L` and cubic `C` segments but does not read curve
+Canvas, SVG, and PDF execute `L` and cubic `C` segments but do not read curve
 names or calculate control points.
 
 ## Errors and limitations
 
 Rendering never reads `semanticSpec`. Every drawable property must already be
-concrete, and `pixelRatio` must be a positive finite number.
+concrete. Canvas/PNG `pixelRatio` must be a positive finite number; SVG and PDF
+are vector output and do not accept it. PDF options and metadata use closed key
+sets, and invalid input is rejected before writing a new file.
 
 ## Related
 
@@ -6419,7 +6477,7 @@ nested compositions keep independent clipping and coordinate scopes.
 A complete Cartesian or Polar chart can be a direct or nested concat child.
 The composition does not reinterpret theta, radius, x, y, scales, guides, or
 selections. It snapshots each finished child into one namespaced concrete
-graphic tree, so Canvas and PNG renderers use the same result.
+graphic tree, so Canvas, SVG, PNG, and PDF renderers use the same result.
 
 When a nested child changes, replace it in each ancestor explicitly:
 
@@ -9506,9 +9564,9 @@ chart-authoring API does not support that combination.
 
 ## Complete chart support
 
-Every chart family below supports Browser Canvas, Node PNG, and an optional
-chart title. The smaller family tables keep the comparison readable on narrow
-screens.
+Every chart family below supports Browser Canvas, browser-safe SVG, Node PNG,
+single-page vector PDF, and an optional chart title. The smaller family tables
+keep the comparison readable on narrow screens.
 
 ### Cartesian charts
 
@@ -9588,7 +9646,7 @@ remain available for custom layering and editing.
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
-| Rendering | Browser Canvas and Node PNG |
+| Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
 | Selection | Strict point/bar/rect/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
 
@@ -11440,6 +11498,8 @@ Rendering functions are not actions and do not modify the trace.
 | `ggaction` | `render(program, canvasContext, { pixelRatio? }?)` |
 | `ggaction/basic` | `render(program, canvasContext, { pixelRatio? }?)` |
 | `ggaction/png` | `renderToPNG(program, { output, pixelRatio? })` |
+| `ggaction/pdf` | `renderToPDF(program, { output, metadata? })` |
+| `ggaction/svg` | `renderToSVG(program, { title?, description? }?)` |
 
 <!-- Source: /reference/types/ -->
 

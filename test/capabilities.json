@@ -68,6 +68,7 @@
     ],
     "rendering": [
       { "type": "prefix", "path": "unit/renderers/" },
+      { "type": "file", "path": "contracts/renderer-consumer-matrix.test.js" },
       { "type": "file", "path": "browser/public-examples.browser.js" }
     ],
     "scales": [

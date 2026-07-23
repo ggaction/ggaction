@@ -15,10 +15,10 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 4.1 Phase 9다. Encoding, selection, guide,
-statistical owner와 facet의 edit/remove lifecycle, cross-capability regression, Current inventory, docs와
-package closeout을 R41-Exit에서 완료했다. Nullable active pointer와 마지막 완료 owner의 machine-readable
-source는 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
+**활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 4.2 Phase 4이며 SVG/PDF vector renderer와
+distribution closeout 기록은 [`impl/roadmap4.2/ROADMAP.md`](impl/roadmap4.2/ROADMAP.md)에서 확인한다.
+Nullable active pointer와 마지막 완료 owner의 machine-readable source는
+[`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 
 ## 작업별 읽기 경로
 
