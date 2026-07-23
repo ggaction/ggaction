@@ -9,7 +9,7 @@ try {
   });
   process.stdout.write(`${JSON.stringify({
     package: `${consumer.installedManifest.name}@${consumer.installedManifest.version}`,
-    source: consumer.artifact.filename,
+    source: consumer.artifact?.filename ?? consumer.packageSpec,
     full,
     basic
   }, null, 2)}\n`);

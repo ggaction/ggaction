@@ -1008,7 +1008,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
   const result = await testPackageConsumer({ packageSpec });
   process.stdout.write(`${JSON.stringify({
     package: `${result.installedManifest.name}@${result.installedManifest.version}`,
-    source: packageSpec ?? result.artifact.filename,
+    source: result.artifact?.filename ?? result.packageSpec,
     ...(result.artifact ? { sha256: result.artifact.sha256 } : {}),
     browserBundles: result.browserBundles,
     checks: [
