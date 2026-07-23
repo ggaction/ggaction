@@ -9,6 +9,7 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 import {
   chartImages,
   docThumbnailDimensions,
+  guideImages,
   tutorialImages
 } from "../../scripts/generate-doc-images.js";
 
@@ -56,7 +57,7 @@ test("keeps one generated gallery image for every public chart", () => {
   assert.match(tutorials, /example\.tutorial_order/);
 
   const manifest = JSON.parse(read("docs/assets/images/manifest.json"));
-  assert.equal(manifest.version, 4);
+  assert.equal(manifest.version, 5);
   assert.deepEqual(
     Object.keys(manifest.charts).sort(),
     chartImages.map(({ id }) => id).sort()
@@ -65,13 +66,29 @@ test("keeps one generated gallery image for every public chart", () => {
     Object.keys(manifest.tutorials).sort(),
     tutorialImages.map(({ id }) => id).sort()
   );
+  assert.deepEqual(
+    Object.keys(manifest.guides).sort(),
+    guideImages.map(({ id }) => id).sort()
+  );
   for (const entry of [
     ...Object.values(manifest.charts),
-    ...Object.values(manifest.tutorials)
+    ...Object.values(manifest.tutorials),
+    ...Object.values(manifest.guides)
   ]) {
     assert.match(entry.sourceHash, /^[a-f0-9]{64}$/);
     assert.equal("pixelHash" in entry, false);
   }
+});
+
+test("keeps the generated Getting Started image aligned with its exact program", () => {
+  assert.deepEqual(guideImages.map(({ id }) => id), ["getting-started"]);
+  assertPng("getting-started", 640, 400);
+  assertThumbnail("getting-started", 640, 400);
+  assert.match(read("docs/getting-started.md"), /getting-started-chart\.html/);
+  assert.match(
+    read("docs/_includes/getting-started-chart.html"),
+    /assets\/images\/getting-started\.png/
+  );
 });
 
 test("keeps generated mark-selection tutorial images canonical and fresh", () => {

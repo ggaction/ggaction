@@ -61,6 +61,16 @@ const program = chart()
 npm install ggaction
 ```
 
+Add the Canvas element that the rendering code targets. Its accessible name and
+fallback text summarize the chart for contexts where Canvas pixels are not
+available:
+
+```html
+<canvas id="chart" aria-label="Scatterplot of displacement versus acceleration by origin">
+  Scatterplot of displacement versus acceleration by origin.
+</canvas>
+```
+
 ```javascript
 import { chart, render } from "ggaction/basic";
 
@@ -80,12 +90,16 @@ const program = chart()
   .createScatterPlot({
     x: "displacement",
     y: "acceleration",
-    color: "origin"
+    color: "origin",
+    shape: "origin"
   });
 
 const context = document.querySelector("#chart").getContext("2d");
 render(program, context);
 ```
+
+Matching color and shape encodings give each origin a redundant visual cue and
+create a labeled categorical legend automatically.
 
 Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
 the other basic Cartesian charts. The `ggaction/basic` entry keeps this common

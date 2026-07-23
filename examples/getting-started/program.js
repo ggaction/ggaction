@@ -11,13 +11,14 @@ export function createGettingStartedChart() {
     .createCanvas({
       width: 640,
       height: 400,
-      margin: { top: 30, right: 30, bottom: 60, left: 70 }
+      margin: { top: 30, right: 130, bottom: 60, left: 70 }
     })
     .createData({ values: cars })
     .createScatterPlot({
       x: "horsepower",
       y: "mpg",
       color: "origin",
+      shape: "origin",
       guides: {
         axes: {
           x: { title: { text: "Horsepower" } },

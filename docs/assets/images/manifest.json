@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "pixelRatio": 2,
   "thumbnailMaxWidth": 640,
   "charts": {
@@ -283,6 +283,17 @@
         "height": 409
       },
       "sourceHash": "cf40cf3bfa3c4806c6e01094385d64851f5583a33855b943d2000e8d539dd956"
+    }
+  },
+  "guides": {
+    "getting-started": {
+      "width": 1280,
+      "height": 800,
+      "thumbnail": {
+        "width": 640,
+        "height": 400
+      },
+      "sourceHash": "b084fc477e4dffd65dcf4969e4c2caf649050c8040d3c389488de139f9366e55"
     }
   }
 }

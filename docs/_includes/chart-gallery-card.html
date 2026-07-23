@@ -24,5 +24,5 @@
       {% if action_url %}<a href="{{ action_url | relative_url }}"><code>{{ action_name }}</code></a>{% else %}<code>{{ action_name }}</code>{% endif %}
     {% endfor %}
   </span>
-  <a class="docs-chart-gallery__full-size" href="{{ example.image | relative_url }}" aria-label="View full-size {{ example.title }} image">View full size</a>
+  <a class="docs-chart-gallery__full-size" href="{{ example.image | relative_url }}" aria-label="View full size: {{ example.title }} image">View full size</a>
 </article>

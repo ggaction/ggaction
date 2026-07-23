@@ -444,7 +444,7 @@ test("keeps task pages visual and chart figures canonical", async () => {
   for (const reason of exceptions.values()) assert.equal(reason.length > 30, true);
 
   const pages = (await files(docsRoot)).filter(isDocumentationMarkdown);
-  const visualPattern = /!\[[^\]]+\]\([^)]+\)|chart-(?:example|card)\.html|docs-concept-flow/;
+  const visualPattern = /!\[[^\]]+\]\([^)]+\)|(?:chart-(?:example|card)|getting-started-chart)\.html|docs-concept-flow/;
   const visualDirectories = [
     `${path.sep}api${path.sep}`,
     `${path.sep}recipes${path.sep}`,
@@ -552,7 +552,10 @@ test("routes entry documentation to the canonical example indexes", () => {
   assert.match(read("docs/_includes/gallery-filter.html"), /aria-live="polite"/);
   assert.match(read("docs/_includes/chart-gallery-card.html"), /<h3>/);
   assert.match(read("docs/_includes/chart-gallery-card.html"), /action_reference_links/);
-  assert.match(read("docs/_includes/chart-gallery-card.html"), /full-size \{\{ example\.title \}\} image/);
+  assert.match(
+    read("docs/_includes/chart-gallery-card.html"),
+    /View full size: \{\{ example\.title \}\} image/
+  );
   assert.match(read("docs/gallery.md"), /where: "gallery_featured", true/);
   assert.match(read("docs/gallery\/all.md"), /site\.data\.chart_examples/);
   assert.equal(
@@ -569,7 +572,7 @@ test("routes entry documentation to the canonical example indexes", () => {
   assert.equal(catalog.get("rose").featured, true);
   assert.equal(catalog.get("rose").url, "/recipes/rose-chart/");
   assert.equal(catalog.get("rose").recipe_url, "/recipes/rose-chart/");
-  assert.match(gettingStarted, /point color\s+encoding can produce/);
+  assert.match(gettingStarted, /color and shape encodings\s+also create/);
   assert.match(gettingStarted, /examples\/getting-started/);
 });
 

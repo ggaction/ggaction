@@ -210,6 +210,11 @@ try {
     await desktop.locator(".docs-chart-gallery__full-size[aria-label]").count(),
     expectedFeaturedCount
   );
+  assert.equal(
+    await desktop.getByRole("link", { name: /^View full size/ }).count(),
+    expectedFeaturedCount,
+    "every gallery full-size link has a computed accessible name beginning with its visible label"
+  );
   assert.equal(await desktop.locator(".docs-chart-gallery__actions a").count() > 0, true);
   assert.equal(
     await desktop.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth),
@@ -328,6 +333,14 @@ try {
   await assertAccessible(desktop, "all chart examples");
   await desktop.goto(`${baseUrl}getting-started/`, { waitUntil: "networkidle" });
   assert.equal(await desktop.locator(".docs-example-figure img").count(), 1);
+  assert.equal(
+    await desktop.locator(".docs-example-figure img").getAttribute("src"),
+    "/ggaction/assets/images/getting-started.png"
+  );
+  assert.equal(
+    await desktop.locator(".docs-example-figure img").getAttribute("alt"),
+    "Three-point scatterplot of horsepower and fuel economy using color and shape for origin"
+  );
   assert.equal(
     await desktop.locator(".docs-example-figure img").getAttribute("fetchpriority"),
     "high"

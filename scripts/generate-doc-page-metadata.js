@@ -79,10 +79,13 @@ export async function buildDocPageMetadata() {
   for (const page of registry(pagesSource)) {
     const source = await readFile(await pathForUrl(page.url), "utf8");
     const chartId = source.match(/chart-example\.html\s+id="([^"]+)"/)?.[1];
+    const explicitImage = source.match(/^image:\s+(\S+)$/m)?.[1];
     metadata[page.url] = {
       title: page.title,
       description: description(source),
-      ...(chartId && chartById.get(chartId)?.image
+      ...(explicitImage
+        ? { image: explicitImage }
+        : chartId && chartById.get(chartId)?.image
         ? { image: chartById.get(chartId).image }
         : {})
     };

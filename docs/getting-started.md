@@ -1,11 +1,12 @@
 ---
 layout: default
 title: Getting Started
+image: /assets/images/getting-started.png
 ---
 
 # Getting Started
 
-{% include chart-example.html id="scatterplot" %}
+{% include getting-started-chart.html %}
 
 This walkthrough installs `ggaction`, creates a complete scatterplot from an
 inline dataset, and renders it to Browser Canvas. Every action returns a new
@@ -37,7 +38,9 @@ Create `index.html`:
     <title>ggaction scatterplot</title>
   </head>
   <body>
-    <canvas id="chart" aria-label="Horsepower versus mileage"></canvas>
+    <canvas id="chart" aria-label="Scatterplot of horsepower versus mileage by origin">
+      Scatterplot of horsepower versus mileage by origin.
+    </canvas>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
@@ -60,13 +63,14 @@ const program = chart()
   .createCanvas({
     width: 640,
     height: 400,
-    margin: { top: 30, right: 30, bottom: 60, left: 70 }
+    margin: { top: 30, right: 130, bottom: 60, left: 70 }
   })
   .createData({ values: cars })
   .createScatterPlot({
     x: "horsepower",
     y: "mpg",
     color: "origin",
+    shape: "origin",
     guides: {
       axes: {
         x: { title: { text: "Horsepower" } },
@@ -87,11 +91,11 @@ one dataset candidate; pass `id` when a later multi-resource flow needs that
 mark identity.
 
 The wrapped `createGuides` action infers the applicable axes and horizontal
-grid from the position encodings. The renderer reads only concrete
-`graphicSpec` values already produced by actions; it does not compile
-`semanticSpec` during rendering.
-A nominal point color encoding can produce a categorical legend; adding a
-matching shape encoding produces a composite color-and-shape legend.
+grid from the position encodings. Matching nominal color and shape encodings
+also create a composite categorical legend, giving each origin a redundant
+visual cue; the right margin reserves space for that legend. The renderer reads
+only concrete `graphicSpec` values already produced by actions; it does not
+compile `semanticSpec` during rendering.
 
 This walkthrough uses the creation-focused `ggaction/basic` entry. Import from
 `ggaction` instead when the program needs editing, selection, composition,
