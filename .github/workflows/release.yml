@@ -39,7 +39,7 @@ jobs:
           RELEASE_TAG: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          test "$GITHUB_REF" = "refs/tags/$RELEASE_TAG"
+          test "$GITHUB_EVENT_NAME" = "workflow_dispatch"
           test "$RELEASE_TAG" = "v$(node -p "require('./package.json').version")"
           test "$(node -p "require('./package-lock.json').version")" = "$(node -p "require('./package.json').version")"
           test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = "tag"
@@ -47,7 +47,7 @@ jobs:
       - name: Pack the exact release candidate once
         env:
           RELEASE_TAG: ${{ inputs.tag }}
-        run: node scripts/release-candidate.js "$RELEASE_TAG"
+        run: GITHUB_REF="refs/tags/$RELEASE_TAG" node scripts/release-candidate.js "$RELEASE_TAG"
       - name: Verify generated contracts and documentation
         run: |
           npm run contracts:catalog:check
@@ -128,7 +128,7 @@ jobs:
       - name: Verify downloaded artifact identity
         env:
           RELEASE_TAG: ${{ inputs.tag }}
-        run: node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+        run: GITHUB_REF="refs/tags/$RELEASE_TAG" node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
       - name: Check whether this exact version is already public
         id: registry
         run: |
