@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## Review target
 
@@ -67,6 +67,11 @@ All three calls consume the same fully materialized `program.graphicSpec`.
 - `.artifacts/test/png/review/vector-renderers/svg-parity/chart.png`
 - `.artifacts/test/png/review/vector-renderers/svg-parity/comparison.html`
 - `.artifacts/test/png/review/vector-renderers/svg-parity/variant.json`
+
+## Remote checkpoint
+
+- Implementation and review package: `e7f8ad14`
+- Branch: `codex/roadmap4-2-vector-renderers`
 
 ## Approval effect
 

@@ -9,7 +9,7 @@
 - [x] Public entry/type/package/docs/architecture 구현
 - [x] Focused와 cumulative verification
 - [x] Browser-rendered Canvas/SVG/PNG comparison 생성
-- [ ] Remote checkpoint 기록
+- [x] Remote checkpoint 기록 — `e7f8ad14`
 
 ## Output contract
 
