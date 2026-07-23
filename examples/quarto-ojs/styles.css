@@ -1,0 +1,71 @@
+.ggaction-chart {
+  margin: 1.5rem 0;
+}
+
+.ggaction-chart canvas {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #d8d3c8;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 1rem rgb(15 23 42 / 8%);
+}
+
+.ggaction-chart figcaption {
+  margin-top: 0.6rem;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.ggaction-data-fallback {
+  margin-top: 0.75rem;
+}
+
+.ggaction-data-fallback summary,
+.ggaction-trace summary {
+  cursor: pointer;
+}
+
+.ggaction-data-fallback table {
+  margin-top: 0.75rem;
+}
+
+.ggaction-trace {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #d8d3c8;
+  border-radius: 0.5rem;
+  background: #fbfaf7;
+}
+
+.ggaction-trace-tree,
+.ggaction-trace-tree ol {
+  padding-left: 1.35rem;
+}
+
+.ggaction-trace-tree li {
+  margin: 0.35rem 0;
+}
+
+.ggaction-trace-args {
+  overflow-x: auto;
+  margin: 0.4rem 0 0.7rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.35rem;
+  background: #f1f5f9;
+  font-size: 0.82rem;
+}
+
+.ggaction-render-fallback {
+  padding: 1rem;
+  border: 1px solid #d8d3c8;
+  border-radius: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ggaction-chart *,
+  .ggaction-trace * {
+    scroll-behavior: auto;
+  }
+}

@@ -1,0 +1,60 @@
+---
+title: "Traceable chart authoring with ggaction"
+subtitle: "A Quarto and Observable JS example"
+format:
+  html:
+    toc: true
+    code-fold: show
+    css: styles.css
+execute:
+  echo: true
+---
+
+This document uses Quarto's reactive Observable JS runtime and the exact public
+`ggaction` 0.0.6 package. The chart is authored with ggaction's public chained
+actions; there is no intermediate chart grammar or translated specification.
+
+```{ojs}
+import {
+  GGActionVersion,
+  buildProgram,
+  createChartFigure,
+  createTraceInspector
+} from "./ggaction-ojs.js"
+```
+
+Quarto exposes `width` as a reactive value. When the document layout changes,
+the program is rebuilt immutably for the available width and the Canvas output
+is rendered again.
+
+```{ojs}
+responsiveProgram = buildProgram(width)
+```
+
+## Chart
+
+```{ojs}
+//| label: fig-ggaction-cars
+//| echo: false
+createChartFigure(responsiveProgram)
+```
+
+The figure includes a concise text alternative and an expandable data table.
+The Canvas renderer uses at most a 2× pixel ratio to stay sharp without
+allocating an unnecessarily large backing bitmap.
+
+## Action trace inspection
+
+The inspector reads `responsiveProgram.trace` directly. Expand any node to see
+the wrapped actions ggaction retained beneath each authored action.
+
+```{ojs}
+//| echo: false
+createTraceInspector(responsiveProgram)
+```
+
+## Version
+
+```{ojs}
+md`This page imports public ggaction ${GGActionVersion} from jsDelivr.`
+```
