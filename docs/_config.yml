@@ -4,7 +4,7 @@ url: https://ggaction.github.io
 baseurl: /ggaction
 lang: en
 social_image: /assets/images/cars-scatterplot-thumb.png
-version: 0.0.6
+version: 0.0.7
 repository_url: https://github.com/ggaction/ggaction
 theme: minima
 markdown: kramdown

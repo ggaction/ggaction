@@ -70,7 +70,7 @@ available:
 ```
 
 ```javascript
-import { chart, render } from "ggaction";
+import { chart, render } from "ggaction/basic";
 
 const observations = [
   { displacement: 97, acceleration: 14.5, origin: "Japan" },
@@ -99,10 +99,9 @@ render(program, context);
 Matching color and shape encodings give each origin a redundant visual cue and
 create a labeled categorical legend automatically.
 
-The smaller `ggaction/basic` entry is implemented on the current source branch
-but is not exported by the public `0.0.6` package. It will become available in
-the next release. The Quick Start uses `ggaction` so the example works with the
-install command above today.
+The Quick Start uses the smaller `ggaction/basic` entry for the common creation
+path. Import from `ggaction` when you need editing, selection, composition,
+alternative coordinates, or statistical layers.
 
 ### Branch revisions without mutation
 
@@ -202,7 +201,7 @@ the extra discussion required before public API or architecture changes.
 
 ## Status and development
 
-> **Status:** `0.0.6` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+> **Status:** `0.0.7` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ```bash
 npm install

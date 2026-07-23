@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const exampleRoot = path.join(root, "examples", "quarto-ojs");
-const cdnUrl = "https://cdn.jsdelivr.net/npm/ggaction@0.0.6/+esm";
+const cdnUrl = "https://cdn.jsdelivr.net/npm/ggaction@0.0.7/+esm";
 
 function read(relative) {
   return readFileSync(path.join(exampleRoot, relative), "utf8");
@@ -89,7 +89,7 @@ test("keeps the Quarto example pinned, responsive, and accessible", () => {
   assert.match(readme, /does not[\s\S]*Quarto extension/);
   assert.match(readme, /node scripts\/check-quarto-ojs-cdn\.js/);
   assert.match(readme, /separate networked smoke check/);
-  assert.match(cdnCheck, /const expectedVersion = "0\.0\.6"/);
+  assert.match(cdnCheck, /const expectedVersion = "0\.0\.7"/);
   assert.match(cdnCheck, /cdn\.jsdelivr\.net\/npm\/ggaction@\$\{expectedVersion\}\/\+esm/);
   assert.match(cdnCheck, /x-jsd-version/);
   assert.match(cdnCheck, /await import\(exampleModuleUrl\)/);
@@ -108,7 +108,7 @@ test("executes the example program against the package source", async () => {
   const encoded = Buffer.from(localModule).toString("base64");
   const example = await import(`data:text/javascript;base64,${encoded}`);
 
-  assert.equal(example.GGActionVersion, "0.0.6");
+  assert.equal(example.GGActionVersion, "0.0.7");
   assert.equal(example.cars.length, 10);
   assert.equal(Object.isFrozen(example.cars), true);
   assert.equal(example.normalizeChartWidth(1000), 760);

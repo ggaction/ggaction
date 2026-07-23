@@ -101,7 +101,9 @@ assert.deepEqual(
 
 const llmsFile = path.join(siteRoot, "llms.txt");
 const llmsTargets = llmReferences(await readFile(llmsFile, "utf8"));
-assert.equal(llmsTargets.length, 44, "Expected every selective LLM documentation target.");
+assert.equal(llmsTargets.length > 40, true, "Expected the selective LLM documentation routes.");
+assert.equal(llmsTargets.length < 50, true, "Expected a concise LLM documentation index.");
+assert.equal(new Set(llmsTargets).size, llmsTargets.length, "LLM documentation routes must be unique.");
 for (const target of llmsTargets) await assertTarget(llmsFile, target);
 
 const searchIndex = JSON.parse(await readFile(path.join(siteRoot, "search-index.json"), "utf8"));

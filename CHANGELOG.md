@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.7] - 2026-07-23
+
 ### Added
 
 - Added the browser-safe `ggaction/basic` entry for creation-focused scatter, line, bar, histogram, and heatmap
@@ -14,6 +16,15 @@ All notable changes to `ggaction` are recorded in this file.
 ### Changed
 
 - Applied the documented numeric font-weight normalization consistently across Canvas, SVG, PNG, and PDF rendering.
+- Generated the repository example index from the canonical chart catalog and reduced the LLM index to concise,
+  non-duplicated routes into exact runtime and support documentation.
+- Simplified Getting Started, grouped the support limitations by topic, and clarified the complete documentation
+  verification workflow for contributors.
+
+### Fixed
+
+- Corrected the Canvas target in troubleshooting guidance and documented complete, executable Canvas, SVG, PNG, and
+  PDF rendering flows with signatures generated from the public TypeScript declarations.
 
 ## [0.0.6] - 2026-07-23
 
@@ -146,6 +157,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
+[0.0.7]: https://github.com/ggaction/ggaction/releases/tag/v0.0.7
 [0.0.6]: https://github.com/ggaction/ggaction/releases/tag/v0.0.6
 [0.0.5]: https://github.com/ggaction/ggaction/releases/tag/v0.0.5
 [0.0.4]: https://github.com/ggaction/ggaction/releases/tag/v0.0.4

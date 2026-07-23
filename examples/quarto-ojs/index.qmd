@@ -11,7 +11,7 @@ execute:
 ---
 
 This document uses Quarto's reactive Observable JS runtime and the exact public
-`ggaction` 0.0.6 package. The chart is authored with ggaction's public chained
+`ggaction` 0.0.7 package. The chart is authored with ggaction's public chained
 actions; there is no intermediate chart grammar or translated specification.
 
 ```{ojs}

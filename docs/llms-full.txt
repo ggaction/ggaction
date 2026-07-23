@@ -22,7 +22,7 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
-<p class="docs-release-status">Experimental 0.0.6  · APIs may change before 1.0.0. Review the changelog  when upgrading.</p>
+<p class="docs-release-status">Experimental 0.0.7  · APIs may change before 1.0.0. Review the changelog  when upgrading.</p>
 
 ## Start here
 

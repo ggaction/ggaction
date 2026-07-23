@@ -272,7 +272,9 @@ try {
   const llmsResponse = await fetch(`${baseUrl}llms.txt`);
   assert.equal(llmsResponse.ok, true);
   const llmsTargets = llmReferences(await llmsResponse.text());
-  assert.equal(llmsTargets.length, 44);
+  assert.equal(llmsTargets.length > 40, true);
+  assert.equal(llmsTargets.length < 50, true);
+  assert.equal(new Set(llmsTargets).size, llmsTargets.length);
   for (const target of llmsTargets) {
     const url = new URL(target, `${baseUrl}llms.txt`);
     const fragment = url.hash.slice(1);

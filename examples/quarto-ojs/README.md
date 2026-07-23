@@ -2,7 +2,7 @@
 
 This example renders an immutable ggaction `ChartProgram` in a Quarto HTML
 document and exposes its retained action trace. It imports the exact public
-`ggaction@0.0.6` browser entry from jsDelivr.
+`ggaction@0.0.7` browser entry from jsDelivr.
 
 The example uses ggaction's public chained API directly. It does not introduce
 another chart grammar, translate a visualization specification, or define a
@@ -32,7 +32,7 @@ review, run this separate networked smoke check from the repository root:
 node scripts/check-quarto-ojs-cdn.js
 ```
 
-It fetches the exact public `ggaction@0.0.6` jsDelivr entry, verifies the
+It fetches the exact public `ggaction@0.0.7` jsDelivr entry, verifies the
 served version, executes this example against that response, and checks its
 semantic, graphic, and trace results.
 
