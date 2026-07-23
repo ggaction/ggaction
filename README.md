@@ -14,8 +14,6 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 
 Every frame is rendered from an immutable `ChartProgram`. The final R² label is a traceable action built from public extension primitives.
 
-[Try the action-trace demo.](https://ggactionbot.github.io/action-trace-demo/)
-
 ## A grammar of graphical action
 
 Actions are verbs:
@@ -210,3 +208,7 @@ npm test
 npm run test:render
 npm run test:docs
 ```
+
+## Related Links
+
+- Action-trace demo: [Link](https://ggactionbot.github.io/action-trace-demo/)
