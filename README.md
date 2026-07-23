@@ -12,11 +12,9 @@ Build, inspect, select, and revise charts one meaningful action at a time.
   <img src="./docs/assets/images/readme-authoring-sequence.gif" width="960" height="540" loading="eager" alt="A ggaction program progressively creates a scatterplot, adds grouped regression fits and confidence bands, highlights the Japan group across chart layers, and finishes with an R-squared annotation.">
 </p>
 
-Every frame is rendered from an immutable `ChartProgram`. The final R² label is a custom traceable action composed from ggaction's public extension primitives.
+Every frame is rendered from an immutable `ChartProgram`. The final R² label is a traceable action built from public extension primitives.
 
-```bash
-npm install ggaction
-```
+[Try the action-trace demo.](https://ggactionbot.github.io/action-trace-demo/)
 
 ## A grammar of graphical action
 
