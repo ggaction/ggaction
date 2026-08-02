@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## Review target
 
@@ -87,7 +87,8 @@ Current contracts와 public docs 동작은 바꾸지 않는다. 승인 뒤 publi
 
 ## Remote checkpoint
 
-첫 verified checkpoint commit/push 뒤 기록한다.
+`8a044b6c` (`test: add directional Tick visual target`),
+`codex/roadmap5-temporal-ordering-directional-marks`에 push 완료.
 
 ## Approval effect
 

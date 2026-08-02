@@ -12,7 +12,7 @@ Complete Cartesian x/y anchor를 가진 centered fixed-length Tick mark와 point
 - [x] Approved Phase 4 contract와 R5-P4-V/R5-P4-A 범위 확인
 - [x] Independent Tick/point rotation geometry와 literal direction fixtures
 - [x] Three-panel primitive visual target과 Canvas/SVG/PNG/PDF review artifacts
-- [ ] R5-P4-V remote checkpoint
+- [x] R5-P4-V remote checkpoint — `8a044b6c`
 - [ ] R5-P4-V 사용자 visual approval
 - [ ] Tick grammar, materialization과 create/edit/remove lifecycle 구현
 - [ ] Point/Tick angle assignment, reassignment와 removal 구현
