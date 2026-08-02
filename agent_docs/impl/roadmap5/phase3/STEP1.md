@@ -3,11 +3,13 @@
 ## 진행 상태
 
 - [x] Existing window grammar/materialization/provenance boundary 확인
-- [ ] Independent row-frame reference values와 literal fixtures 작성
+- [x] Independent row-frame reference values와 literal fixtures 작성
+- [x] Monthly raw/moving primitive visual target과 review PNG 작성
+- [ ] R5-P3-V visual approval
 - [ ] Moving operation normalization and derivation implementation
 - [ ] Direct derived schema, replay and declarations promotion
 - [ ] Current contract/catalog/docs/package synchronization
-- [ ] Monthly moving-average chart and renderer evidence
+- [ ] Public monthly moving-average chart and renderer equivalence evidence
 - [ ] Focused and cumulative verification
 - [ ] Remote Gate checkpoint 기록
 
