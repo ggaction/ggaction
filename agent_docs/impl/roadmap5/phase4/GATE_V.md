@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`changes-requested`
+`ready-for-review`
 
 ## Review target
 
@@ -134,8 +134,9 @@ Current contracts와 public docs 동작은 바꾸지 않는다. 승인 뒤 publi
 
 ## Remote checkpoint
 
-이전 checkpoint `8a044b6c`는 2026-08-02 rug plot 추가 요청으로 supersede되었다. Revised verified checkpoint는
-commit/push 뒤 기록한다.
+이전 checkpoint `8a044b6c`는 2026-08-02 rug plot 추가 요청으로 supersede되었다. Revised checkpoint
+`b2fe55a7` (`test: add actual-data Tick rug target`)을
+`codex/roadmap5-temporal-ordering-directional-marks`에 push 완료했다.
 
 ## Approval effect
 
