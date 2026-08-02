@@ -6,7 +6,7 @@
 - [x] Independent cardinal/intercardinal geometry fixtures 작성
 - [x] Primitive direction comparison과 actual-data rug distribution 작성
 - [x] 두 visual target의 four-renderer review artifacts 작성
-- [ ] R5-P4-V approval
+- [x] R5-P4-V approval — 2026-08-02
 - [ ] Tick create/edit/materialization and generic removal integration
 - [ ] Angle assignment/removal and point/Tick rematerialization
 - [ ] Strict declarations, Current contracts, docs, example와 package synchronization
