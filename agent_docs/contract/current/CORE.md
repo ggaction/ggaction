@@ -345,6 +345,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - `rowNumber`, `rank`, `denseRank`: `{ op, as }`; rank 계열은 non-empty `sortBy`가 필요하다.
   - `cumulativeSum`: `{ op, field, as }`; field 값은 모두 finite number여야 한다.
   - `lag`, `lead`: `{ op, field, as, offset?, default? }`; offset 기본은 `1`, default 기본은 `null`이다.
+  - `movingMean`, `movingSum`: `{ op, field, as, frame }`; `frame.preceding`은 required non-negative
+    integer, `following`은 optional non-negative integer이며 기본 `0`이다. Sorted partition의 current row를
+    포함하고 양쪽 edge에서는 available rows로 truncate한다. Input과 output은 finite number여야 한다.
 - Effect: normalized provenance와 materialized values를 새 dataset에 저장한다. 계산은 partition마다 정렬된
   순서로 수행하지만 최종 rows는 source row order를 보존한다. 모든 input과 output은 구조적으로 복사되고 freeze된다.
 - 오류: duplicate/invalid ID, unknown source, missing field, duplicate sort/output field, output collision,
@@ -354,9 +357,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `createWindowData`
 
 - Implemented: `createWindowData({ id: UserId; source?: UserId; partitionBy?: FieldName | readonly FieldName[]; sortBy?: readonly { field: FieldName; order?: "ascending" | "descending" }[]; operations: readonly WindowOperation[] })`
-- `WindowOperation = { op: "rowNumber" | "rank" | "denseRank"; as: FieldName } | { op: "cumulativeSum"; field: FieldName; as: FieldName } | { op: "lag" | "lead"; field: FieldName; as: FieldName; offset?: PositiveInteger; default?: unknown }`
-- Planned (NOT IMPLEMENTED): edit/revision action, rolling frames, percent rank, ntile.
-- Proposed (NOT IMPLEMENTED): —
+- `WindowOperation = { op: "rowNumber" | "rank" | "denseRank"; as: FieldName } | { op: "cumulativeSum"; field: FieldName; as: FieldName } | { op: "lag" | "lead"; field: FieldName; as: FieldName; offset?: PositiveInteger; default?: unknown } | { op: "movingMean" | "movingSum"; field: FieldName; as: FieldName; frame: { preceding: NonNegativeInteger; following?: NonNegativeInteger } }`
+- Planned (NOT IMPLEMENTED): edit/revision action, percent rank, ntile.
+- Proposed (NOT IMPLEMENTED): duration/weighted windows, `minPeriods`와 missing-row imputation.
 
 ### Value coverage — `createWindowData`
 
@@ -364,14 +367,14 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: omitted/single/multiple partition fields, omitted/multiple sort fields, both directions,
     stable ties, null/missing placement, invalid fields and mixed comparable types.
 - `operations`
-  - ✅ Covered: all six operations, defaults, explicit offsets/defaults, sequential dependency, output collision,
-    missing fields, invalid values and empty operation list.
+  - ✅ Covered: all eight operations, offset/frame defaults, one/two-sided and zero frames, truncated edges,
+    sequential dependency, output collision, missing fields, invalid values and empty operation list.
 - Lifecycle and integration
   - ✅ Covered: source inference, duplicate ID rejection, source immutability, trace hierarchy, registry dispatch,
     facet replay, direct `createDerivedData` validation and packaged TypeScript/runtime consumption.
 - Evidence: `test/unit/grammar/transforms/window.test.js`, `test/unit/actions/data/window-data.test.js`,
   `test/unit/actions/data/derived-data.test.js`, `test/charts/cars-window-rank-scatterplot/data.test.js`,
-  `scripts/package-consumer.js`.
+  `test/charts/airline-passenger-moving-windows/`, `scripts/package-consumer.js`.
 
 ## `createBin2DData`
 

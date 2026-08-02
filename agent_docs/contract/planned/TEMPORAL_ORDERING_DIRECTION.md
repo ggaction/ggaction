@@ -75,7 +75,8 @@ type MovingWindowOperation = {
 - Existing `createWindowData.operations`에 추가한다.
 - Frame은 sorted partition의 row offsets이고 current row를 포함하며 partition edge에서 truncate된다.
 - `following` default는 `0`이다. Duration/weighted window와 `minPeriods`는 범위 밖이다.
-- Status: Planned, accepted for Roadmap 5 Phase 3.
+- Status: Implemented in Roadmap 5 Phase 3. Canonical behavior moved to
+  [`../current/CORE.md`](../current/CORE.md#createwindowdata).
 
 ## `createTickMark`
 

@@ -18,6 +18,8 @@ import { createCarsBinnedHeatmap } from "./cars-binned-heatmap/program.js";
 import { createCarsWindowRankScatterplot } from
   "./cars-window-rank-scatterplot/program.js";
 import { createTimeUnitComparison } from "./time-unit-data/program.js";
+import { createAirlinePassengerMovingWindows } from
+  "./airline-passenger-moving-windows/program.js";
 import { createOrderedCategoryBarComparison } from
   "./ordered-category-bar/program.js";
 import {
@@ -111,6 +113,25 @@ export const PUBLIC_CHARTS = Object.freeze([
       state: {
         global: "__ggactionExample",
         expected: { id: "time-unit-data", width: 928, height: 384 }
+      }
+    }
+  }),
+  example({
+    id: "airline-passenger-moving-windows",
+    data: {},
+    width: 1192,
+    height: 372,
+    createProgram: () => createAirlinePassengerMovingWindows(),
+    browser: {
+      path: "browser-host/?chart=airline-passenger-moving-windows",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: {
+          id: "airline-passenger-moving-windows",
+          width: 1192,
+          height: 372
+        }
       }
     }
   }),

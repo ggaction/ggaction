@@ -241,8 +241,11 @@ createWindowData({ id, source?, partitionBy?, sortBy?, operations })
 ```
 
 Create an immutable derived dataset by applying ordered row-number, rank,
-dense-rank, cumulative-sum, lag, or lead operations within optional partitions.
-The calculation follows a stable sort while the output preserves source row order.
+dense-rank, cumulative-sum, lag, lead, moving-mean, or moving-sum operations
+within optional partitions. Moving frames include the current sorted row, require
+a non-negative `preceding`, default `following` to `0`, and truncate at partition
+edges. The calculation follows a stable sort while the output preserves source
+row order.
 [Window data transforms](../../api/data/window.md)
 
 ## `createBin2DData`

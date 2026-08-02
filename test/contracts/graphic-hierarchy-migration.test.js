@@ -271,6 +271,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "program-composition": [],
   "ordered-category-bar": [],
   "time-unit-data": [],
+  "airline-passenger-moving-windows": [],
   "cars-origin-scatterplot-facet": [],
   "cross-feature-dashboard": []
 });
@@ -279,13 +280,15 @@ const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
   "program-composition": 9,
   "ordered-category-bar": 43,
   "cross-feature-dashboard": 52,
-  "time-unit-data": 29
+  "time-unit-data": 29,
+  "airline-passenger-moving-windows": 45
 });
 
 const EXPECTED_COMPOSITION_CHILDREN = Object.freeze({
   "program-composition": 2,
   "cross-feature-dashboard": 2,
   "time-unit-data": 2,
+  "airline-passenger-moving-windows": 3,
   "ordered-category-bar": 3
 });
 
