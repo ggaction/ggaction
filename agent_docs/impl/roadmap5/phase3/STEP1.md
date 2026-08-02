@@ -5,7 +5,7 @@
 - [x] Existing window grammar/materialization/provenance boundary 확인
 - [x] Independent row-frame reference values와 literal fixtures 작성
 - [x] Monthly raw/moving primitive visual target과 review PNG 작성
-- [ ] R5-P3-V visual approval
+- [x] R5-P3-V visual approval — 2026-08-02
 - [ ] Moving operation normalization and derivation implementation
 - [ ] Direct derived schema, replay and declarations promotion
 - [ ] Current contract/catalog/docs/package synchronization
