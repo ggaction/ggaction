@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`changes-requested` — 2026-08-02 actual-data and multi-option revision
+`ready-for-review` — 2026-08-02 actual-data revision remote checkpoint
 
 ## Review target
 
@@ -80,7 +80,7 @@ const trailingSum = monthly.createWindowData({
 ## Remote checkpoint
 
 - Visual review commit: `e80a77cf` (`test: add moving-window visual target`)
-- Actual-data multi-option revision: pending verified revision commit
+- Actual-data multi-option revision: `731839b2`
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect

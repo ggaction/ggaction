@@ -11,7 +11,7 @@ slice를 구현한다.
 - [x] R5-P2-A explicit approval
 - [x] Approved Phase 3 contract와 R5-P3-A 범위 확인
 - [x] Independent moving-window oracle과 actual BTS passenger moving-options primitive target
-- [x] R5-P3-V remote checkpoint (`e80a77cf`)
+- [x] R5-P3-V actual-data revision remote checkpoint (`731839b2`)
 - [ ] R5-P3-V 사용자 visual approval
 - [ ] Moving operation grammar과 deterministic row-frame resolver 구현
 - [ ] Derived-data provenance, replay와 strict declarations 동기화
