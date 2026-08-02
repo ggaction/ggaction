@@ -4,7 +4,8 @@
 
 ## 현재 작업
 
-- **활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 4.2 Phase 4이다.
+- **Roadmap 5 Phase 0이 활성 상태다.** Temporal derivation, category ordering, moving windows, Tick/Angle과
+  center-stacked area의 exact contract를 R5-P0-A에서 검토한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -17,6 +18,7 @@
 - [`roadmap4/ROADMAP.md`](roadmap4/ROADMAP.md) — completed, native ownership과 advanced static charts
 - [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md) — completed, authoring lifecycle과 compatibility completion
 - [`roadmap4.2/ROADMAP.md`](roadmap4.2/ROADMAP.md) — completed, SVG/PDF vector renderer와 distribution closeout
+- [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md) — active, temporal derivation, ordering과 directional marks
 
 ## 재사용하는 개발 절차
 

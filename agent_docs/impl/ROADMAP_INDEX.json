@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "activeRoadmap": null,
-  "activePhase": null,
+  "activeRoadmap": "roadmap5",
+  "activePhase": 0,
   "lastCompletedRoadmap": "roadmap4.2",
   "lastCompletedPhase": 4,
   "roadmaps": [
@@ -58,7 +58,15 @@
       "title": "SVG and PDF Vector Renderers",
       "status": "completed",
       "role": "historical-execution-record",
-      "file": "agent_docs/impl/roadmap4.2/ROADMAP.md"
+      "file": "agent_docs/impl/roadmap4.2/ROADMAP.md",
+      "successor": "roadmap5"
+    },
+    {
+      "id": "roadmap5",
+      "title": "Temporal Derivation, Ordering, and Directional Marks",
+      "status": "active",
+      "role": "current-execution-plan",
+      "file": "agent_docs/impl/roadmap5/ROADMAP.md"
     }
   ]
 }

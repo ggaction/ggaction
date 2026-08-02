@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "roadmap": "roadmap5",
+  "gate": "R5-P0-A",
+  "status": "proposed",
+  "source": "2026-08-02 visualization autocomplete capability review",
+  "proposedActions": [
+    {
+      "name": "createTimeUnitData",
+      "phase": 1,
+      "layer": "user-facing",
+      "options": "{ id: UserId; source?: UserId; field: FieldName; unit: TimeUnit; as: FieldName }",
+      "reason": "Calendar bucketing should create explicit immutable data rather than hide aggregation inside a position encoding."
+    },
+    {
+      "name": "orderCategories",
+      "phase": 2,
+      "layer": "user-facing",
+      "options": "{ target?: UserId; channel: 'x' | 'y' } & CategoryOrder",
+      "reason": "Category order is persistent chart meaning and should survive guide and geometry rematerialization."
+    },
+    {
+      "name": "removeCategoryOrder",
+      "phase": 2,
+      "layer": "user-facing",
+      "options": "{ target?: UserId; channel: 'x' | 'y' }",
+      "reason": "A persistent semantic order needs an explicit path back to automatic first-appearance order."
+    },
+    {
+      "name": "createTickMark",
+      "phase": 4,
+      "layer": "advanced",
+      "options": "{ id?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval }",
+      "reason": "A centered directional line glyph is a distinct mark family rather than a shortened rule interval."
+    },
+    {
+      "name": "editTickMark",
+      "phase": 4,
+      "layer": "advanced",
+      "options": "{ target?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval }",
+      "reason": "Tick identity and appearance should be revisable without mark recreation."
+    },
+    {
+      "name": "encodeAngle",
+      "phase": 4,
+      "layer": "user-facing",
+      "options": "{ target?: UserId; value: Finite; field?: never } | { target?: UserId; field: FieldName; fieldType?: 'quantitative'; value?: never }",
+      "reason": "Point and Tick need one shared, source-neutral direction assignment with the existing public degree convention."
+    }
+  ],
+  "parameterExtensions": [
+    {
+      "id": "moving-window-operations",
+      "phase": 3,
+      "action": "createWindowData",
+      "contract": "Add movingMean and movingSum operations with a required non-negative row frame preceding value and optional following defaulting to zero."
+    },
+    {
+      "id": "angle-removal",
+      "phase": 4,
+      "action": "removeEncoding",
+      "contract": "Add angle to the closed removable channel vocabulary and rematerialize the point or Tick at its unrotated baseline."
+    },
+    {
+      "id": "center-y-stack",
+      "phase": 5,
+      "action": "encodeY",
+      "contract": "Add stack: 'center' for non-negative grouped area series; each partition begins at negative half of its total."
+    },
+    {
+      "id": "center-color-layout",
+      "phase": 5,
+      "action": "encodeColor",
+      "contract": "Add layout: 'center' for categorical area color and wrap encodeY({ stack: 'center' })."
+    }
+  ],
+  "typeContracts": [
+    {
+      "name": "TimeUnit",
+      "shape": "'year' | 'quarter' | 'month' | 'day' | 'hour' | 'minute' | 'second'",
+      "policy": "Output is a finite UTC bucket-start timestamp; week and configurable timezone are excluded."
+    },
+    {
+      "name": "CategoryOrder",
+      "shape": "{ values: readonly CategoryValue[] } | { by: 'category' | 'count' | { field: FieldName; aggregate: 'sum' | 'mean' | 'min' | 'max' }; direction?: 'ascending' | 'descending' }",
+      "policy": "Explicit lists append omitted observed values in first-appearance order; computed ties use stable first appearance."
+    },
+    {
+      "name": "MovingWindowOperation",
+      "shape": "{ op: 'movingMean' | 'movingSum'; field: FieldName; as: FieldName; frame: { preceding: NonNegativeInteger; following?: NonNegativeInteger } }",
+      "policy": "Frames count sorted rows inside one partition and truncate at partition edges."
+    }
+  ],
+  "gateDecisions": [
+    {
+      "id": "time-bucket-policy",
+      "recommended": "utc-start-timestamp",
+      "reason": "It matches current temporal normalization and keeps derived values directly usable by the existing time scale."
+    },
+    {
+      "id": "category-order-owner",
+      "recommended": "semantic-assignment-with-explicit-reset",
+      "reason": "Ordering changes chart meaning and must replay across scale, guide, facet and Canvas rematerialization."
+    },
+    {
+      "id": "window-frame-policy",
+      "recommended": "required-row-frame-truncated-edges",
+      "reason": "It is deterministic with the existing partition/sort contract and avoids implicit time-interval semantics."
+    },
+    {
+      "id": "tick-position-policy",
+      "recommended": "complete-x-y-centered-glyph",
+      "reason": "It gives Tick one unambiguous geometry contract without inventing plot-edge rug placement."
+    },
+    {
+      "id": "angle-value-policy",
+      "recommended": "direct-degrees-no-scale",
+      "reason": "Directional data remains literal: 0 is up, positive is clockwise, and values are not silently normalized from their data domain."
+    },
+    {
+      "id": "angle-targets",
+      "recommended": "point-and-tick",
+      "reason": "These item glyphs have a clear rotation center; line, area, bar, rule, rect, text and arc require different semantics."
+    },
+    {
+      "id": "center-stack-policy",
+      "recommended": "non-negative-area-symmetric-baseline",
+      "reason": "It produces the useful centered stream layout while avoiding signed and wiggle algorithms with different meaning."
+    }
+  ],
+  "nonGoals": [
+    "geo or projection capability",
+    "join aggregate, impute, flatten, extent or a generic transform executor",
+    "local timezone, DST or week bucketing",
+    "duration windows, weighted windows or minPeriods",
+    "locale category collation or comparator callbacks",
+    "one-dimensional rug placement",
+    "angle scales, legends, radians or arbitrary transform matrices",
+    "angle support for marks other than point and Tick",
+    "negative, diverging or wiggle center stacking",
+    "centered bars",
+    "generic style configuration, image or annotation marks"
+  ]
+}
