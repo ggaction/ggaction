@@ -7,7 +7,7 @@
 - [x] Runtime and declaration implementation
 - [x] Current contract/catalog/docs promotion
 - [x] Focused and cumulative verification
-- [x] Remote Gate checkpoint 기록 (`e98f418d`)
+- [x] Remote Gate checkpoints 기록 (`e98f418d`, `5d419979`)
 
 ## Approved contract
 

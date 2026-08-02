@@ -102,7 +102,7 @@ unchanged.
 ## Remote checkpoint
 
 - Runtime review commit: `e98f418d` (`feat: add UTC time-unit data`)
-- Visual evidence commit: pending verified visual package commit
+- Visual evidence commit: `5d419979` (`test: add time-unit visual review`)
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect
