@@ -92,6 +92,128 @@ test("orders nulls last ascending and first descending without unstable ties", (
   assert.deepEqual(descending.map(row => row.position), [1, 2, 3, 4]);
 });
 
+test("derives truncated trailing and centered moving frames per partition", () => {
+  const input = [
+    { group: "A", order: 3, value: 9 },
+    { group: "A", order: 1, value: 1 },
+    { group: "B", order: 2, value: -2 },
+    { group: "A", order: 2, value: 5 },
+    { group: "B", order: 1, value: 2 }
+  ];
+  const output = deriveWindowRows(input, normalizeWindowTransform({
+    partitionBy: "group",
+    sortBy: [{ field: "order" }],
+    operations: [
+      {
+        op: "movingMean",
+        field: "value",
+        as: "trailingMean",
+        frame: { preceding: 2 }
+      },
+      {
+        op: "movingSum",
+        field: "value",
+        as: "centeredSum",
+        frame: { preceding: 1, following: 1 }
+      }
+    ]
+  }));
+
+  assert.deepEqual(output.map(row => ({
+    trailingMean: row.trailingMean,
+    centeredSum: row.centeredSum
+  })), [
+    { trailingMean: 5, centeredSum: 14 },
+    { trailingMean: 1, centeredSum: 6 },
+    { trailingMean: 0, centeredSum: 0 },
+    { trailingMean: 3, centeredSum: 15 },
+    { trailingMean: 2, centeredSum: 0 }
+  ]);
+});
+
+test("supports zero frames, stable ties, descending sort, and sequential moving fields", () => {
+  const input = [
+    { id: "a", order: 2, value: 1.5 },
+    { id: "b", order: 2, value: 2.5 },
+    { id: "c", order: 1, value: -1 }
+  ];
+  const transform = normalizeWindowTransform({
+    sortBy: [{ field: "order", order: "descending" }],
+    operations: [
+      {
+        op: "movingSum",
+        field: "value",
+        as: "identity",
+        frame: { preceding: 0 }
+      },
+      {
+        op: "movingMean",
+        field: "identity",
+        as: "pairMean",
+        frame: { preceding: 1 }
+      }
+    ]
+  });
+  const output = deriveWindowRows(input, transform);
+
+  assert.deepEqual(transform.operations.map(operation => operation.frame), [
+    { preceding: 0, following: 0 },
+    { preceding: 1, following: 0 }
+  ]);
+  assert.deepEqual(output.map(row => [row.identity, row.pairMean]), [
+    [1.5, 1.5],
+    [2.5, 2],
+    [-1, 0.75]
+  ]);
+});
+
+test("rejects malformed moving frames and non-finite inputs or outputs", () => {
+  for (const [frame, pattern] of [
+    [undefined, /frame must be a plain object/],
+    [{ following: 1 }, /preceding must be a non-negative integer/],
+    [{ preceding: -1 }, /preceding must be a non-negative integer/],
+    [{ preceding: 1.5 }, /preceding must be a non-negative integer/],
+    [{ preceding: 1, following: -1 }, /following must be a non-negative integer/],
+    [{ preceding: 1, unknown: true }, /Unknown window movingMean frame property/]
+  ]) {
+    assert.throws(
+      () => normalizeWindowTransform({
+        operations: [{
+          op: "movingMean",
+          field: "value",
+          as: "moving",
+          frame
+        }]
+      }),
+      pattern
+    );
+  }
+  assert.throws(
+    () => deriveWindowRows([{ value: 1 }, { value: Number.NaN }],
+      normalizeWindowTransform({
+        operations: [{
+          op: "movingSum",
+          field: "value",
+          as: "moving",
+          frame: { preceding: 1 }
+        }]
+      })),
+    /movingSum field "value" must contain finite numbers/
+  );
+  assert.throws(
+    () => deriveWindowRows([{ value: Number.MAX_VALUE }, { value: Number.MAX_VALUE }],
+      normalizeWindowTransform({
+        operations: [{
+          op: "movingSum",
+          field: "value",
+          as: "moving",
+          frame: { preceding: 1 }
+        }]
+      })),
+    /movingSum output "moving" must be finite/
+  );
+});
+
 test("validates ranking, offsets, field dependencies, collisions, and comparable values", () => {
   assert.throws(
     () => normalizeWindowTransform({
