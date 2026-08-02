@@ -419,6 +419,16 @@ Create immutable grouped center/lower/upper summary rows. Mean supports
 standard error, sample standard deviation, and Student-t confidence intervals;
 median supports interquartile range. [Data](../api/data.md)
 
+### `createTimeUnitData`
+
+```javascript
+createTimeUnitData({ id, source?, field, unit, as })
+```
+
+Create an immutable row-preserving dataset with one UTC year, quarter, month,
+day, hour, minute, or second bucket-start timestamp field.
+[Time-unit data transforms](../api/data/time-units.md)
+
 ### `createWindowData`
 
 ```javascript

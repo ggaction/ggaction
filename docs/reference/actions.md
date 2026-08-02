@@ -72,6 +72,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTextMark`](./actions/marks.md#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | user-facing | axes |
 | [`createThetaGrid`](./actions/guides.md#createthetagrid) | user-facing | grid |
+| [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | user-facing | core |
 | [`createTitle`](./actions/guides.md#createtitle) | user-facing | legend_and_title |
 | [`createVerticalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`createViolinPlot`](./actions/statistics.md#createviolinplot) | user-facing | statistics |

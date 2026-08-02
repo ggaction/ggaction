@@ -22,7 +22,8 @@ createTimeUnitData({
 - 모든 source row를 보존하고 `as` field에 UTC bucket-start finite timestamp를 쓴다.
 - Source field와 output field conflict, invalid temporal value와 duplicate dataset ID는 atomic error다.
 - Week, local timezone, DST와 calendar aggregation은 범위 밖이다.
-- Status: Planned, accepted for Roadmap 5 Phase 1.
+- Status: Implemented in Roadmap 5 Phase 1. Canonical behavior moved to
+  [`../current/CORE.md`](../current/CORE.md#createtimeunitdata).
 
 ## `orderCategories`
 

@@ -395,6 +395,20 @@ export interface DatasetWindowTransform {
   readonly sortBy: readonly DatasetWindowSort[];
   readonly operations: readonly DatasetWindowOperation[];
 }
+export type TimeUnit =
+  | "year"
+  | "quarter"
+  | "month"
+  | "day"
+  | "hour"
+  | "minute"
+  | "second";
+export interface DatasetTimeUnitTransform {
+  readonly type: "timeUnit";
+  readonly field: string;
+  readonly unit: TimeUnit;
+  readonly as: string;
+}
 export interface Bin2DCounts {
   x: number;
   y: number;
@@ -451,6 +465,7 @@ export type DatasetTransform =
   | DatasetDensityTransform
   | DatasetHorizonTransform
   | DatasetIntervalTransform
+  | DatasetTimeUnitTransform
   | DatasetWindowTransform;
 export interface CreateDerivedDataOptions {
   id: string;
@@ -1109,6 +1124,14 @@ export interface WindowDataOptions {
   partitionBy?: string | readonly string[];
   sortBy?: readonly WindowSort[];
   operations: readonly WindowOperation[];
+}
+
+export interface TimeUnitDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  unit: TimeUnit;
+  as: string;
 }
 
 export interface Bin2DDataOptions {
@@ -2143,6 +2166,7 @@ export class ChartProgram {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
+  createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;

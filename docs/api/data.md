@@ -18,6 +18,7 @@ operation; marks and renderers never mutate source values.
 | [Source and derived data](./data/source-and-derived.md) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
 | [Filtering](./data/filtering.md) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
 | [Statistical transforms](./data/statistical-transforms.md) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
+| [Time-unit transforms](./data/time-units.md) | `createTimeUnitData` | Add reproducible UTC calendar bucket fields |
 | [Window transforms](./data/window.md) | `createWindowData` | Compute ordered values within partitions while preserving source row order |
 | [Rectangular 2D bins](./data/bin2d.md) | `createBin2DData` | Aggregate two quantitative fields into immutable ranged cells |
 

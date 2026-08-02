@@ -218,6 +218,10 @@
     "description": "Create deterministic regression predictions from an existing dataset. This is an advanced data action used by higher level regression chart actions.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
+  "/api/data/time-units/": {
+    "title": "Time-Unit Data Transforms",
+    "description": "createTimeUnitData adds one reproducible UTC calendar field to every source row."
+  },
   "/api/data/window/": {
     "title": "Window Data Transforms",
     "description": "createWindowData computes ordered values within optional partitions and stores the result as a new immutable dataset."

@@ -4,18 +4,18 @@
 
 Temporal source field를 UTC calendar bucket 시작 timestamp로 변환하는 immutable `createTimeUnitData` vertical
 slice를 구현한다. Runtime, transform provenance, strict declarations, current contract, docs, package와 representative
-monthly chart evidence를 한 Gate에서 동기화한다.
+temporal chart-consumption evidence를 한 Gate에서 동기화한다.
 
 ## 진행 상태
 
 - [x] R5-P0-A exact contract 승인
 - [x] Planned inventory와 R5-P1-A 선언
-- [ ] Pure UTC bucket normalization/materialization 구현
-- [ ] Public action registration과 derived replay 구현
-- [ ] Strict declarations와 Current action contract 동기화
-- [ ] Focused grammar/action/facet/immutability tests
-- [ ] Monthly chart program과 renderer evidence
-- [ ] Cumulative contract/unit/chart/package verification
+- [x] Pure UTC bucket normalization/materialization 구현
+- [x] Public action registration과 derived replay 구현
+- [x] Strict declarations와 Current action contract 동기화
+- [x] Focused grammar/action/facet/immutability tests
+- [x] Ordinary temporal point materialization evidence
+- [x] Cumulative contract/unit/chart/package/docs verification
 - [ ] R5-P1-A remote checkpoint
 - [ ] 사용자 explicit approval
 

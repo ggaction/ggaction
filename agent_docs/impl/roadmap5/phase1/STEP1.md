@@ -2,11 +2,11 @@
 
 ## 진행 상태
 
-- [ ] Current derived-data registry와 replay boundary 확인
-- [ ] Independent UTC bucket oracle/fixtures 작성
-- [ ] Runtime and declaration implementation
-- [ ] Current contract/catalog/docs promotion
-- [ ] Focused and cumulative verification
+- [x] Current derived-data registry와 replay boundary 확인
+- [x] Independent UTC bucket oracle/fixtures 작성
+- [x] Runtime and declaration implementation
+- [x] Current contract/catalog/docs promotion
+- [x] Focused and cumulative verification
 - [ ] Remote Gate checkpoint 기록
 
 ## Approved contract
@@ -36,3 +36,26 @@ program.createTimeUnitData({
 - Meaningful action hierarchy and registered derived replay
 - Filter/facet replay and ordinary time scale/axis consumption
 - Declarations, current contract, catalog, docs and installed consumer
+
+## Implemented slice
+
+- `createTimeUnitData`는 `year | quarter | month | day | hour | minute | second`를 UTC bucket 시작
+  timestamp로 materialize한다.
+- Stored transform은 `{ type: "timeUnit", field, unit, as }`이며 derived replay registry에서
+  `materializeTimeUnitData`로 다시 계산된다.
+- Source/current resolution, create-only ID, row order, caller input ownership, output collision과 invalid date rejection을
+  immutable action chain 안에서 보장한다.
+- Row-preserving facet replay 후에도 각 child가 자기 partition에서 같은 transform을 materialize한다.
+- Derived temporal field는 기존 point mark의 ordinary temporal x encoding과 resolved time scale에 바로 연결된다.
+
+## Verification snapshot
+
+- Focused grammar/action tests: 7 pass.
+- Full repository suite: 1,946 pass.
+- Contract suite: 160 pass.
+- Coverage: 94.67% lines, 90.03% branches, 98.45% functions; 68 critical floors pass.
+- Documentation: 45 source tests, 112 built pages, desktop search와 320/390/768px browser checks pass under
+  repository-pinned Ruby 3.2.6.
+- Installed package consumer: Node runtime, strict TypeScript, tutorials, full/basic/SVG bundles와 private-export checks pass.
+- Package budget는 두 source entries와 declarations/docs 증가를 반영해 entry ceiling `399 → 405`, unpacked ceiling
+  `1,750,000 → 1,780,000`으로 좁게 조정했다. Packed ceiling `400,000`은 유지했다.

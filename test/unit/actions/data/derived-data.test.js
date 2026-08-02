@@ -69,6 +69,15 @@ test("createDerivedData accepts each documented transform branch as an array", (
       }
     },
     {
+      id: "timeUnit",
+      transform: {
+        type: "timeUnit",
+        field: "x",
+        unit: "year",
+        as: "year"
+      }
+    },
+    {
       id: "bin2d",
       transform: {
         type: "bin2d",

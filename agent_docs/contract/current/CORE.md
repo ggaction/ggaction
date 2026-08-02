@@ -268,7 +268,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: Implemented, 필수 새 dataset ID.
 - `source`: Implemented, 필수 existing dataset ID.
 - `transform`: Implemented, 정확히 하나의 transform definition을 가진 tuple. Public direct-authoring union은
-  filter/regression/density/interval/window/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
+  filter/regression/density/interval/time-unit/window/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
   box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty/multiple transform schema를 거부한다.
@@ -278,7 +278,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createDerivedData`
 
-- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | RegressionTransform | DensityTransform | IntervalTransform | WindowTransform | Bin2DTransform`.
+- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | RegressionTransform | DensityTransform | IntervalTransform | TimeUnitTransform | WindowTransform | Bin2DTransform`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -287,10 +287,50 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`, `source`
   - ✅ Covered: valid IDs, duplicate output, unknown source.
 - `transform`
-  - ✅ Covered: filter/regression/density/interval/window/bin2d direct schema, object/empty/multiple/unknown rejection,
+  - ✅ Covered: filter/regression/density/interval/time-unit/window/bin2d direct schema, object/empty/multiple/unknown rejection,
     one-element tuple acceptance와 deep immutable ownership.
   - Built-in value materializer는 owning high-level action이 만든 single-transform resource만 받는다.
 - Evidence: `test/unit/actions/data/derived-data.test.js`, `scripts/package-consumer.js`, 각 high-level data action test.
+
+## `createTimeUnitData`
+
+- Signature: `createTimeUnitData({ id, source?, field, unit, as })`
+- Lifecycle: immutable create-only다. `id`는 필수 새 derived dataset ID이며 existing dataset을 수정하거나 consumer를
+  rebind하지 않는다.
+- `source`: existing dataset ID다. 생략하면 current data를 사용하며 안전하게 추론할 수 없으면 오류다.
+- `field`: 모든 row에 존재하는 temporal input field다. Existing temporal normalization과 동일하게 finite timestamp,
+  ISO/date string 또는 four-digit year를 받는다.
+- `unit`: `"year" | "quarter" | "month" | "day" | "hour" | "minute" | "second"`의 closed vocabulary다.
+- `as`: source의 어느 row에도 존재하지 않는 새 output field다. Input field와 달라야 한다.
+- Effect: source row order와 모든 existing cell을 보존하고 `as`에 UTC calendar bucket 시작의 finite timestamp를
+  추가한다. Stored provenance는 `{ type: "timeUnit", field, unit, as }`이며 wrapped
+  `materializeTimeUnitData`가 concrete values를 기록한다.
+- UTC policy: year는 1월 1일, quarter는 1·4·7·10월 첫날, 나머지는 requested calendar component의 시작이다.
+  Second는 millisecond를 내림한다. Local timezone, DST와 locale에 의존하지 않는다.
+- Facet: row-preserving transform으로 분류한다. Explicit earlier partition anchor를 사용하면 각 child에서 canonical
+  materializer를 replay하고, transform 자체가 latest common anchor이면 materialized rows를 직접 partition한다.
+- 오류: invalid/duplicate ID, unknown source, unknown option/unit, invalid/missing temporal value, input/output identity와
+  existing output collision을 첫 state change 전에 거부한다.
+
+### Formal values — `createTimeUnitData`
+
+- Implemented: `createTimeUnitData({ id: UserId; source?: UserId; field: FieldName; unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second"; as: FieldName })`.
+- `DatasetTimeUnitTransform = { readonly type: "timeUnit"; readonly field: FieldName; readonly unit: TimeUnit; readonly as: FieldName }`.
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): Week, local timezone/DST, aggregation, resampling과 edit/revision action은 없다.
+
+### Value coverage — `createTimeUnitData`
+
+- `unit`
+  - ✅ Covered: seven literal boundaries, quarter endpoints, leap-day input, sub-day precision와 early year.
+- `field`, `as`
+  - ✅ Covered: timestamp/ISO/date/year inputs, missing/invalid input, distinct output와 collision rejection.
+- Lifecycle and integration
+  - ✅ Covered: current/explicit source, immutable provenance/rows/options, action hierarchy, direct transform schema,
+    temporal position consumption, registered replay와 explicit-anchor facet rederivation.
+- Evidence: `test/unit/grammar/transforms/time-unit.test.js`,
+  `test/unit/actions/data/time-unit-data.test.js`, `test/contracts/transform-registry.test.js`,
+  `test/unit/actions/data/derived-data.test.js`, `scripts/package-consumer.js`.
 
 ## `createWindowData`
 

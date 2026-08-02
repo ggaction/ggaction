@@ -24,6 +24,10 @@ import { createIntervalData, materializeIntervalData } from "./interval.js";
 import { createHorizonData, materializeHorizonData } from "./horizon.js";
 import { createWindowData, materializeWindowData } from "./window.js";
 import {
+  createTimeUnitData,
+  materializeTimeUnitData
+} from "./timeUnit.js";
+import {
   createBin2DData,
   editBin2DData,
   materializeBin2DData
@@ -54,6 +58,8 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.materializeHorizonData = materializeHorizonData;
   ProgramClass.prototype.createWindowData = createWindowData;
   ProgramClass.prototype.materializeWindowData = materializeWindowData;
+  ProgramClass.prototype.createTimeUnitData = createTimeUnitData;
+  ProgramClass.prototype.materializeTimeUnitData = materializeTimeUnitData;
   ProgramClass.prototype.createBin2DData = createBin2DData;
   ProgramClass.prototype.editBin2DData = editBin2DData;
   ProgramClass.prototype.materializeBin2DData = materializeBin2DData;

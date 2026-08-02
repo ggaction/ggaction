@@ -15,6 +15,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createWindowData`](current/CORE.md#createwindowdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createTimeUnitData`](current/CORE.md#createtimeunitdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBin2DData`](current/CORE.md#createbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editBin2DData`](current/CORE.md#editbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createIntervalData`](current/STATISTICS.md#createintervaldata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
@@ -180,7 +181,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `createTimeUnitData` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#createtimeunitdata) |
 | `orderCategories` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#ordercategories) |
 | `removeCategoryOrder` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#removecategoryorder) |
 | `createTickMark` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#createtickmark) |

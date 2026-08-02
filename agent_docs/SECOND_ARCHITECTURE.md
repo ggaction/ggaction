@@ -332,7 +332,7 @@ snapshot을 atomically 교체한다. Renderer는 concat과 마찬가지로 완�
 Facet replay의 pure dataset dependency planner는 visible layer에서 source 방향으로 ancestry를
 검증하고, 모든 branch가 공유하는 latest row-preserving partition anchor와 deterministic topological replay order를
 반환한다. 이 planner는 semantic state를 수정하거나 trace를 만들지 않는다. Public facet action은 filter,
-regression, density, Horizon, interval, box-summary와 box-outlier descendant를
+time-unit, regression, density, Horizon, interval, box-summary와 box-outlier descendant를
 `replayDerivedData → createDerivedData → canonical materialize*Data` hierarchy로 실행한다. Transform별 통계 계산은
 facet에 복제하지 않고 각 기존 data materializer가 계속 소유한다.
 
@@ -517,6 +517,7 @@ Derived dataset은 source와 정확히 하나의 transform provenance를 먼저 
 - grouped or ungrouped linear or polynomial least-squares regression, with mean or prediction intervals
 - grouped or ungrouped LOESS regression with deterministic local neighborhoods and line-only output
 - grouped or ungrouped kernel density estimation with Gaussian, Epanechnikov, uniform, or triangular kernels
+- UTC year, quarter, month, day, hour, minute, or second bucket-start field derivation
 - partitioned ordered window calculation with row number, rank, dense rank, cumulative sum, lag, and lead
 
 Transform은 source, input/output field, group, method 및 resolved parameter를 보존한다.
@@ -540,6 +541,11 @@ Window transform은 ordered `partitionBy`, `sortBy`, `operations` provenance를 
 Operation은 선언 순서대로 실행되어 앞 output을 뒤 input으로 사용할 수 있다. Public lifecycle은 immutable
 create-only이다. Window는 row 수를 보존해도 주변 row에 의존하므로 facet은 먼저 source를 partition한 뒤
 registry의 canonical materializer를 cell마다 다시 호출한다.
+
+Time-unit transform은 input temporal field, closed UTC unit과 distinct output field를 저장한다. Materialization은
+source row order와 existing cells를 보존하고 output에 bucket-start timestamp를 추가한다. Transform은
+row-preserving이므로 facet의 latest common partition anchor가 될 수 있고, earlier explicit anchor 뒤에서는 canonical
+time-unit materializer를 child별로 replay한다.
 
 Interval transform은 input field, ordered `groupBy`, `mean | median` center,
 `stderr | stdev | ci | iqr` extent, CI level과 distinct center/lower/upper output fields를 기록한다.

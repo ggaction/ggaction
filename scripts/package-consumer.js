@@ -119,6 +119,22 @@ async function testNodeConsumer(directory) {
     assert.equal(axisLifecycle.graphicSpec.objects.yAxisTitle, undefined);
     assert.ok(axisLifecycle.semanticSpec.layers[0].encoding.x);
     assert.ok(axisLifecycle.resolvedScales.y);
+    const monthly = chart()
+      .createData({
+        id: "datedEvents",
+        values: [{ date: "2024-05-17T13:45:00Z", value: 2 }]
+      })
+      .createTimeUnitData({
+        id: "monthlyEvents",
+        field: "date",
+        unit: "month",
+        as: "month"
+      });
+    assert.equal(
+      monthly.semanticSpec.datasets.find(dataset => dataset.id === "monthlyEvents")
+        .values[0].month,
+      Date.UTC(2024, 4, 1)
+    );
     const windowed = chart()
       .createData({
         id: "events",
@@ -609,6 +625,7 @@ async function testTypeScriptConsumer(directory) {
       type StrokeWidthEncodingOptions,
       type ThetaEncodingOptions,
       type ThetaScaleOptions,
+      type TimeUnitDataOptions,
       type ViolinPlotOptions,
       type WindowDataOptions
     } from "ggaction";
@@ -850,6 +867,21 @@ async function testTypeScriptConsumer(directory) {
     const derived = chart()
       .createData({ id: "source", values: [{ group: "A" }] })
       .createDerivedData(derivedOptions);
+    const timeUnitOptions: TimeUnitDataOptions = {
+      id: "monthlyEvents",
+      field: "date",
+      unit: "month",
+      as: "month"
+    };
+    const monthlyEvents: ChartProgram = chart()
+      .createData({ id: "events", values: [{ date: "2024-05-17", value: 2 }] })
+      .createTimeUnitData(timeUnitOptions);
+    const timeUnitTransform: DatasetTransform = {
+      type: "timeUnit",
+      field: "date",
+      unit: "month",
+      as: "month"
+    };
     const windowOptions: WindowDataOptions = {
       id: "ordered",
       partitionBy: "group",
@@ -1075,6 +1107,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "numeric-font-weight",
       "point-jitter",
       "path-order",
+      "time-unit-data",
       "window-data",
       "bin2d-data",
       "binned-heatmap",

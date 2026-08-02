@@ -224,6 +224,16 @@ to current data, steps to `100`, bandwidth to an automatic Scott-rule estimate,
 kernel to `"gaussian"`, and normalization to `"unit"`.
 [Data](../../api/data.md)
 
+## `createTimeUnitData`
+
+```javascript
+createTimeUnitData({ id, source?, field, unit, as })
+```
+
+Create an immutable row-preserving dataset with one UTC year, quarter, month,
+day, hour, minute, or second bucket-start timestamp field.
+[Time-unit data transforms](../../api/data/time-units.md)
+
 ## `createWindowData`
 
 ```javascript

@@ -146,6 +146,24 @@
       }
     },
     {
+      "name": "createTimeUnitData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a new derived dataset ID",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createtimeunitdata"
+      }
+    },
+    {
       "name": "createBin2DData",
       "layer": "user-facing",
       "domain": "core",
@@ -2450,15 +2468,6 @@
   ],
   "plannedActions": [
     {
-      "name": "createTimeUnitData",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
-        "anchor": "createtimeunitdata"
-      }
-    },
-    {
       "name": "orderCategories",
       "status": "planned",
       "readiness": "accepted",
@@ -2544,6 +2553,7 @@
       "materializeMarkFilteredData",
       "materializeIntervalData",
       "materializeRegressionData",
+      "materializeTimeUnitData",
       "materializeWindowData",
       "materializeRuleSpan",
       "materializeLabelLayout",
