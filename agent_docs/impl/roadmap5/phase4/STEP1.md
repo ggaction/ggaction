@@ -3,8 +3,9 @@
 ## 진행 상태
 
 - [x] Existing point-shape, Cartesian position과 mark lifecycle boundary 확인 시작
-- [ ] Independent cardinal/intercardinal geometry fixtures 작성
-- [ ] Primitive comparison과 R5-P4-V approval
+- [x] Independent cardinal/intercardinal geometry fixtures 작성
+- [x] Primitive comparison과 four-renderer review artifacts 작성
+- [ ] R5-P4-V approval
 - [ ] Tick create/edit/materialization and generic removal integration
 - [ ] Angle assignment/removal and point/Tick rematerialization
 - [ ] Strict declarations, Current contracts, docs, example와 package synchronization

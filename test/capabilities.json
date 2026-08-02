@@ -52,6 +52,9 @@
     "layout": [
       { "type": "prefix", "path": "unit/layout/" }
     ],
+    "marks": [
+      { "type": "prefix", "path": "gates/directional-tick-plot/" }
+    ],
     "materialization": [
       { "type": "prefix", "path": "unit/materialization/" }
     ],
