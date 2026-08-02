@@ -2,10 +2,12 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved` — 2026-08-03 explicit user approval
 
 검증 대상 remote checkpoint: `4ca306f0` on
 `codex/roadmap5-temporal-ordering-directional-marks`.
+
+Gate review package checkpoint: `b9a0bbdc`.
 
 ## Review target
 

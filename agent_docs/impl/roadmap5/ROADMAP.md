@@ -1,6 +1,6 @@
 # Roadmap 5 — Temporal Derivation, Ordering, and Directional Marks
 
-> **문서 상태 — 현재 실행 계획.** R5-P3-A가 승인되어 Phase 4를 진행 중이다. 현재 Phase pointer는
+> **문서 상태 — 현재 실행 계획.** R5-P4-A가 승인되어 Phase 4를 완료했고 Phase 5를 시작할 수 있다. 현재 Phase pointer는
 > [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json), approved proposal은
 > [`PROPOSALS.json`](./PROPOSALS.json)이 소유한다. 현재 observable API는 계속
 > [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)이 소유한다.
@@ -52,7 +52,7 @@
 | 1 | completed | UTC time-unit derived data와 approved before/after month-bucketing evidence |
 | 2 | completed | Semantic category ordering과 approved automatic/ordered/reset evidence |
 | 3 | completed | Moving mean/sum window operations와 approved BTS renderer evidence |
-| 4 | in-progress | Tick primitive visual Gate, Tick lifecycle와 point/tick angle |
+| 4 | completed | Tick primitive visual Gate, Tick lifecycle와 point/tick angle |
 | 5 | planned | Center-stack primitive visual Gate와 area layout |
 | 6 | planned | Cross-capability integration, docs/types/package와 Roadmap closeout |
 
