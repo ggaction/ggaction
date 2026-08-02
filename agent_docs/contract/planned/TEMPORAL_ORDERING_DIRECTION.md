@@ -44,7 +44,8 @@ orderCategories({ target?, channel: "x" | "y", ...order }): ChartProgram;
 - Nominal/ordinal Cartesian x/y category order를 semantic assignment로 저장한다.
 - Explicit list에서 빠진 observed values와 computed ties는 stable first appearance를 사용한다.
 - Resolved scale, marks와 connected guides를 함께 rematerialize한다.
-- Status: Planned, accepted for Roadmap 5 Phase 2.
+- Status: Implemented in Roadmap 5 Phase 2. Canonical behavior moved to
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#ordercategories).
 
 ## `removeCategoryOrder`
 
@@ -54,7 +55,8 @@ removeCategoryOrder({ target?: UserId; channel: "x" | "y" }): ChartProgram;
 
 - Stored order intent를 제거하고 automatic first-appearance order를 복원한다.
 - Missing/ambiguous assignment는 atomic error다.
-- Status: Planned, accepted for Roadmap 5 Phase 2.
+- Status: Implemented in Roadmap 5 Phase 2. Canonical behavior moved to
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#removecategoryorder).
 
 ## Capability — moving window operations
 

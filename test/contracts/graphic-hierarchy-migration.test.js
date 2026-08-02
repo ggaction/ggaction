@@ -269,6 +269,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "chartTitle", "chartSubtitle"
   ],
   "program-composition": [],
+  "ordered-category-bar": [],
   "time-unit-data": [],
   "cars-origin-scatterplot-facet": [],
   "cross-feature-dashboard": []
@@ -276,8 +277,16 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
 
 const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
   "program-composition": 9,
+  "ordered-category-bar": 43,
   "cross-feature-dashboard": 52,
   "time-unit-data": 29
+});
+
+const EXPECTED_COMPOSITION_CHILDREN = Object.freeze({
+  "program-composition": 2,
+  "cross-feature-dashboard": 2,
+  "time-unit-data": 2,
+  "ordered-category-bar": 3
 });
 
 function loadChartData(data) {
@@ -306,7 +315,10 @@ test("locks the complete public graphic hierarchy inventory", () => {
     const expected = EXPECTED_DRAW_ORDER[chart.id];
     if (program.compositionSpec?.direction) {
       assert.deepEqual(program.graphicSpec.order, ["canvas"]);
-      assert.equal(program.graphicSpec.objects.canvas.children.length, 2);
+      assert.equal(
+        program.graphicSpec.objects.canvas.children.length,
+        EXPECTED_COMPOSITION_CHILDREN[chart.id]
+      );
       for (const childId of program.graphicSpec.objects.canvas.children) {
         assert.equal(program.graphicSpec.objects[childId].type, "canvas");
         assert.equal(findGraphicParent(program.graphicSpec, childId).id, "canvas");

@@ -72,6 +72,12 @@ Aggregate ordinal categories and arrange nominal groups side by side.
 
 Representative actions: `createBarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/grouped-bar/).
 
+### [Ordered category bars](./ordered-category-bar/)
+
+Order categorical x or y positions explicitly or from a stable aggregate summary.
+
+Representative actions: `orderCategories`, `removeCategoryOrder`. [Documentation](https://ggaction.github.io/ggaction/api/position/category-ordering/).
+
 ### [Horizontal grouped bar](./jobs-horizontal-grouped-bar/)
 
 Compare grouped aggregate values with a horizontal measure axis.

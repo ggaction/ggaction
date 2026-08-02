@@ -10,12 +10,12 @@ Nominal/ordinal Cartesian x/y category order를 semantic assignment로 저장하
 
 - [x] R5-P1-A explicit approval
 - [x] Approved Phase 2 contract와 R5-P2-A 범위 선언
-- [ ] Ordering grammar와 deterministic domain resolver 구현
-- [ ] Public assignment/removal actions와 materialization flow 구현
-- [ ] Strict declarations, Current contracts와 public docs 동기화
-- [ ] Focused explicit/computed/tie/reset/facet/guide tests
-- [ ] Ordered-category bar executable visual evidence
-- [ ] Cumulative repository/package/docs verification
+- [x] Ordering grammar와 deterministic domain resolver 구현
+- [x] Public assignment/removal actions와 materialization flow 구현
+- [x] Strict declarations, Current contracts와 public docs 동기화
+- [x] Focused explicit/computed/tie/reset/facet/guide tests
+- [x] Ordered-category bar executable visual evidence
+- [x] Cumulative repository/package/docs verification
 - [ ] R5-P2-A remote checkpoint
 - [ ] 사용자 explicit approval
 

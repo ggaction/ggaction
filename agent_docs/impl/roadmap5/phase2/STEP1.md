@@ -3,11 +3,11 @@
 ## 진행 상태
 
 - [x] Existing categorical scale/mark/guide materialization boundary 확인 시작
-- [ ] Independent ordering reference values와 literal fixtures 작성
-- [ ] Semantic grammar and resolved-domain implementation
-- [ ] Public action registration and declarations
-- [ ] Current contract/catalog/docs promotion
-- [ ] Focused and cumulative verification
+- [x] Independent ordering reference values와 literal fixtures 작성
+- [x] Semantic grammar and resolved-domain implementation
+- [x] Public action registration and declarations
+- [x] Current contract/catalog/docs promotion
+- [x] Focused and cumulative verification
 - [ ] Remote Gate checkpoint 기록
 
 ## Approved contract

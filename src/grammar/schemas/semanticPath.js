@@ -31,7 +31,8 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.parallel.missing",
   ...CARTESIAN_POSITION_CHANNELS.flatMap(channel => [
     `encoding.${channel}.aggregate`,
-    `encoding.${channel}.stack`
+    `encoding.${channel}.stack`,
+    `encoding.${channel}.categoryOrder`
   ])
 ]);
 

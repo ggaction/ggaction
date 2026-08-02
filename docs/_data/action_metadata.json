@@ -254,6 +254,16 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "orderCategories": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
+  "removeCategoryOrder": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
   "removeEncoding": {
     "operation": "remove",
     "layer": "user-facing",

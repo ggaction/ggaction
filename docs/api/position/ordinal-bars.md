@@ -36,6 +36,9 @@ program.encodeX({ field: "year", fieldType: "ordinal" });
 Automatic domains preserve first-appearance order. Automatic ranges use the
 horizontal plot bounds and resolve a shared `step` and `bandwidth`. This action
 leaves the rect collection empty because aggregate y and layout are incomplete.
+Use [`orderCategories`](./category-ordering.md) after the position pair is
+complete to assign an explicit, count-based, or aggregate-summary order without
+changing source rows.
 
 ## Aggregate ordinal bar `encodeY(options)`
 
@@ -100,5 +103,5 @@ fill, and diverging layouts use the quantitative x measure.
 
 ## Related
 
-[Offsets](./offsets.md) · [Series encodings](../series-encodings.md) ·
+[Category ordering](./category-ordering.md) · [Offsets](./offsets.md) · [Series encodings](../series-encodings.md) ·
 [Constant appearance](../appearance.md) · [Bar chart tutorial](../../tutorials/grouped-bar.md)

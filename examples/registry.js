@@ -18,6 +18,8 @@ import { createCarsBinnedHeatmap } from "./cars-binned-heatmap/program.js";
 import { createCarsWindowRankScatterplot } from
   "./cars-window-rank-scatterplot/program.js";
 import { createTimeUnitComparison } from "./time-unit-data/program.js";
+import { createOrderedCategoryBarComparison } from
+  "./ordered-category-bar/program.js";
 import {
   createCarsOriginJitter,
   createGapminderClusterJitter
@@ -109,6 +111,22 @@ export const PUBLIC_CHARTS = Object.freeze([
       state: {
         global: "__ggactionExample",
         expected: { id: "time-unit-data", width: 928, height: 384 }
+      }
+    }
+  }),
+  example({
+    id: "ordered-category-bar",
+    data: {},
+    width: 936,
+    height: 332,
+    createProgram: () => createOrderedCategoryBarComparison(),
+    docsGroup: "charts",
+    browser: {
+      path: "browser-host/?chart=ordered-category-bar",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "ordered-category-bar", width: 936, height: 332 }
       }
     }
   }),

@@ -2121,6 +2121,31 @@ export interface RemovePathOrderOptions {
   target?: string;
 }
 
+export type CategoryValue = string | number | boolean;
+export type CategoryOrderSummary = {
+  field: string;
+  aggregate: "sum" | "mean" | "min" | "max";
+};
+export type CategoryOrder =
+  | {
+      values: readonly CategoryValue[];
+      by?: never;
+      direction?: never;
+    }
+  | {
+      values?: never;
+      by: "category" | "count" | CategoryOrderSummary;
+      direction?: "ascending" | "descending";
+    };
+export type OrderCategoriesOptions = {
+  target?: string;
+  channel: "x" | "y";
+} & CategoryOrder;
+export interface RemoveCategoryOrderOptions {
+  target?: string;
+  channel: "x" | "y";
+}
+
 export interface TitleOptions {
   text: string;
   subtitle?: string;
@@ -2300,8 +2325,10 @@ export class ChartProgram {
   }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+  orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
+  removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
   removeEncoding(options: {
     target?: string;
     channel:

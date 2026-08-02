@@ -228,6 +228,9 @@
 - title: Ordinal Bar Positions
   url: /api/position/ordinal-bars/
   parent: /api/position-encodings/
+- title: Category Ordering
+  url: /api/position/category-ordering/
+  parent: /api/position-encodings/
 - title: Histogram Positions
   url: /api/position/histogram/
   parent: /api/position-encodings/

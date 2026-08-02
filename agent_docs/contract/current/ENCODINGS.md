@@ -600,6 +600,67 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   preservation, missing/ambiguous owner와 wrapped trace.
 - Evidence: `test/unit/actions/encodings/path-order.test.js`.
 
+## `orderCategories`
+
+- Signature: `orderCategories({ target?, channel, values } | { target?, channel, by, direction? })`.
+- `channel`: nominal/ordinal Cartesian `"x" | "y"`. Temporal/quantitative position과 appearance channel은
+  지원하지 않는다.
+- `target`: explicit compatible mark ID. 생략하면 current compatible mark, 아니면 unique compatible mark만
+  추론하며 ambiguity는 explicit ID를 요구한다.
+- `values`: non-empty unique observed category list. 빠진 observed category는 source first appearance 순서로
+  뒤에 붙고, dataset에 없는 값은 state 변경 전에 거부한다. Explicit mode는 `direction`과 함께 쓸 수 없다.
+- `by`: `"category" | "count" | { field, aggregate }`. Summary `aggregate`는
+  `"sum" | "mean" | "min" | "max"`이며 모든 source row의 summary field가 finite number여야 한다.
+  Category mode는 하나의 primitive type만 비교하고 number는 numeric, boolean은 `false < true`, string은
+  code-point lexical order를 사용한다.
+- `direction`: computed mode의 `"ascending" | "descending"`, 기본값은 ascending이다. Count/summary/category
+  tie는 source first appearance 순서를 유지한다.
+- Effect: normalized intent를 `semanticSpec.layers[target].encoding[channel].categoryOrder`에 저장한다. Source
+  row와 semantic scale domain은 바꾸지 않고 resolved scale domain, 모든 compatible scale consumer의 mark
+  geometry, connected axis와 selection item order를 한 action에서 rematerialize한다.
+- Scale authority: semantic scale domain은 `"auto"`여야 한다. Existing explicit domain과 category-order
+  assignment를 동시에 두어 precedence를 추측하지 않는다.
+- Shared scales: 같은 dataset/field를 읽는 consumer만 assignment를 공유할 수 있다. Facet shared policy는 base
+  resolved order를 모든 셀에 적용하고 independent policy는 각 cell dataset에서 computed intent를 다시 푼다.
+- Reassignment: 같은 target/channel 호출은 stored intent를 교체한다. Earlier program과 caller-owned arrays 및
+  objects는 변경하지 않는다.
+
+### Formal values — `orderCategories`
+
+- Implemented: `orderCategories({ target?: UserId; channel: "x" | "y" } & ({ values: readonly CategoryValue[] } | { by: "category" | "count" | { field: FieldName; aggregate: "sum" | "mean" | "min" | "max" }; direction?: "ascending" | "descending" }))`.
+- Proposed (NOT IMPLEMENTED): locale/natural collation, comparator callbacks, null placement, temporal ordering,
+  appearance-channel ordering and source-row reordering.
+
+### Value coverage — `orderCategories`
+
+- ✅ Covered: complete/partial explicit list, unknown/duplicate values and first-appearance completion.
+- ✅ Covered: category/count and sum/mean/min/max in both direction families, stable ties and caller ownership.
+- ✅ Covered: x/y, bar/point, current/unique/explicit/ambiguous target, incompatible channel/type and shared consumers.
+- ✅ Covered: scale domain, mark geometry, axes, selection item order, reassignment, shared/independent facet replay.
+- Evidence: `test/unit/grammar/category-order.test.js`,
+  `test/unit/actions/encodings/category-order.test.js` and
+  `test/gates/ordered-category-bar/`.
+
+## `removeCategoryOrder`
+
+- Signature: `removeCategoryOrder({ target?, channel })`.
+- Target/channel resolution은 `orderCategories`와 같고 active category-order assignment가 반드시 있어야 한다.
+- Effect: complete `encoding[channel].categoryOrder` assignment를 structural removal하고 automatic observed
+  first-appearance domain, mark geometry, connected axis와 selection item order를 다시 materialize한다.
+- Earlier program, source row order, semantic scale definition과 guide identity는 유지한다.
+
+### Formal values — `removeCategoryOrder`
+
+- Implemented: `removeCategoryOrder({ target?: UserId; channel: "x" | "y" })`.
+- Proposed (NOT IMPLEMENTED): generic scale-domain removal alias.
+
+### Value coverage — `removeCategoryOrder`
+
+- ✅ Covered: inferred/explicit removal, automatic-order restoration, immutable branch preservation,
+  missing/ambiguous assignment와 wrapped trace.
+- Evidence: `test/unit/actions/encodings/category-order.test.js` and
+  `test/gates/ordered-category-bar/`.
+
 ## `encodeHistogram`
 
 - Signature: `encodeHistogram({ field, target?, coordinate?, maxBins?, binStep?, binBoundaries?, stack?, xScale?, yScale? })`

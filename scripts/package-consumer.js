@@ -261,6 +261,26 @@ async function testNodeConsumer(directory) {
         y: { field: "value", aggregate: "mean" },
         guides: false
       });
+    const orderedCategories = chart()
+      .createCanvas({ width: 180, height: 130, margin: 30 })
+      .createData({ values: [
+        { category: "Beta", value: 2 },
+        { category: "Alpha", value: 7 }
+      ] })
+      .createBarMark()
+      .encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "value", aggregate: "sum" })
+      .orderCategories({
+        channel: "x",
+        by: { field: "value", aggregate: "sum" },
+        direction: "descending"
+      });
+    assert.deepEqual(orderedCategories.resolvedScales.x.domain, ["Alpha", "Beta"]);
+    assert.deepEqual(
+      orderedCategories.removeCategoryOrder({ channel: "x" })
+        .resolvedScales.x.domain,
+      ["Beta", "Alpha"]
+    );
     assert.equal(barFacade.graphicSpec.objects.barPlot.items.length, 2);
     const histogramFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -611,6 +631,7 @@ async function testTypeScriptConsumer(directory) {
       type CreateHistogramOptions,
       type CreateLinePlotOptions,
       type CreateParallelCoordinatesOptions,
+      type OrderCategoriesOptions,
       type GradientPlotOptions,
       type HorizonEncodingOptions,
       type EditHorizonOptions,
@@ -733,6 +754,22 @@ async function testTypeScriptConsumer(directory) {
       .encodeY({ field: "y" })
       .encodePathOrder({ field: "order", order: "descending" })
       .removePathOrder();
+    const categoryOrderOptions: OrderCategoriesOptions = {
+      channel: "x",
+      by: { field: "value", aggregate: "sum" },
+      direction: "descending"
+    };
+    const orderedCategoryBars: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { category: "Beta", value: 2 },
+        { category: "Alpha", value: 7 }
+      ] })
+      .createBarMark()
+      .encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "value", aggregate: "sum" })
+      .orderCategories(categoryOrderOptions)
+      .removeCategoryOrder({ channel: "x" });
     const barOptions: CreateBarPlotOptions = {
       x: { field: "category", fieldType: "ordinal" },
       y: { field: "value", aggregate: "mean" },

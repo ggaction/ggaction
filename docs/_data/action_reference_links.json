@@ -54,6 +54,8 @@
   "encodePathOrder": "/reference/actions/encodings/#encodepathorder",
   "encodeParallelCoordinates": "/reference/actions/encodings/#encodeparallelcoordinates",
   "removePathOrder": "/reference/actions/encodings/#removepathorder",
+  "orderCategories": "/reference/actions/encodings/#ordercategories",
+  "removeCategoryOrder": "/reference/actions/encodings/#removecategoryorder",
   "removeEncoding": "/reference/actions/encodings/#removeencoding",
   "encodeText": "/reference/actions/encodings/#encodetext",
   "encodeXOffset": "/reference/actions/encodings/#encodexoffset",

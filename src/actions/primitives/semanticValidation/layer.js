@@ -16,6 +16,7 @@ import {
   validateParallelMissingPolicy
 } from "../../../grammar/parallelCoordinates.js";
 import { validatePathOrderDirection } from "../../../grammar/pathOrder.js";
+import { normalizeCategoryOrder } from "../../../grammar/categoryOrder.js";
 import { validateSemanticFieldType } from "../../../grammar/scales/index.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { validateNonEmptySemanticString } from "./shared.js";
@@ -50,6 +51,7 @@ export function validateLayerSemanticValue(program, parsed, value) {
   }
   if (property.endsWith(".fieldType")) validateSemanticFieldType(value);
   if (property === "encoding.pathOrder.order") validatePathOrderDirection(value);
+  if (property.endsWith(".categoryOrder")) normalizeCategoryOrder(value);
   if (property === "encoding.parallel.dimensions") {
     validateParallelDimensions(value, { normalized: true });
   }

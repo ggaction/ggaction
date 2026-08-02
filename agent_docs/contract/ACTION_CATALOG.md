@@ -59,6 +59,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`encodePathOrder`](current/ENCODINGS.md#encodepathorder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeParallelCoordinates`](current/ENCODINGS.md#encodeparallelcoordinates) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removePathOrder`](current/ENCODINGS.md#removepathorder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`orderCategories`](current/ENCODINGS.md#ordercategories) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`removeCategoryOrder`](current/ENCODINGS.md#removecategoryorder) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeEncoding`](current/ENCODINGS.md#removeencoding) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeText`](current/ENCODINGS.md#encodetext) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeHistogram`](current/ENCODINGS.md#encodehistogram) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -181,8 +183,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `orderCategories` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#ordercategories) |
-| `removeCategoryOrder` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#removecategoryorder) |
 | `createTickMark` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#createtickmark) |
 | `editTickMark` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#edittickmark) |
 | `encodeAngle` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#encodeangle) |

@@ -19,6 +19,7 @@ import { resolveScaleMaterialization } from
 import {
   findScale,
   findScaleConsumers,
+  resolveConsumerCategoryOrder,
   resolveConsumerValues,
   resolveSeriesLayoutScaleValues
 } from "./consumers/index.js";
@@ -62,6 +63,7 @@ export const rematerializeScale = action(
     const valuesByConsumer = consumers.map(consumer => ({
       consumer,
       values: resolveConsumerValues(this, consumer),
+      categoryOrder: resolveConsumerCategoryOrder(this, consumer),
       seriesLayout: resolveSeriesLayoutScaleValues(this, consumer)
     }));
     const resolvedScale = resolveScaleMaterialization({

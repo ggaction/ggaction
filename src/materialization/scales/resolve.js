@@ -72,6 +72,20 @@ function resolveDefaultDomain({
   });
 }
 
+function resolveCategoryOrderDomain(valuesByConsumer) {
+  const orders = valuesByConsumer
+    .map(item => item.categoryOrder)
+    .filter(order => order !== undefined);
+  if (orders.length === 0) return undefined;
+  const [first, ...rest] = orders;
+  if (rest.some(order =>
+    order.length !== first.length ||
+    order.some((value, index) => !Object.is(value, first[index])))) {
+    throw new Error("Shared scale category order assignments must resolve identically.");
+  }
+  return first;
+}
+
 function resolveRange({
   scale,
   channel,
@@ -225,9 +239,17 @@ export function resolveScaleMaterialization({
         valuesByConsumer,
         seriesLayouts
       });
+  const categoryOrderDomain = isDiscretizedColor
+    ? undefined
+    : resolveCategoryOrderDomain(valuesByConsumer);
+  if (categoryOrderDomain !== undefined && scale.domain !== "auto") {
+    throw new Error(
+      `Scale "${id}" cannot combine an explicit domain with category order.`
+    );
+  }
   const domain = isDiscretizedColor
     ? discretizedScale.domain
-    : binnedDomain ?? seriesDomain ?? resolveDefaultDomain({
+    : categoryOrderDomain ?? binnedDomain ?? seriesDomain ?? resolveDefaultDomain({
         scale,
         allValues,
         isOrdinalAppearance,
@@ -272,7 +294,7 @@ export function resolveScaleMaterialization({
       : isDiscretePosition
         ? resolveDiscretePositionScale({
             type: scale.type,
-            domain: scale.domain,
+            domain: categoryOrderDomain ?? scale.domain,
             values: allValues,
             range: channel === "theta" && consumers.every(
               consumer => consumer.layer.mark?.type === "arc"
@@ -290,7 +312,7 @@ export function resolveScaleMaterialization({
           })
         : isOrdinalPosition
           ? resolveOrdinalPositionScale({
-              domain: scale.domain,
+              domain: categoryOrderDomain ?? scale.domain,
               values: allValues,
               range: scale.range,
               channel,

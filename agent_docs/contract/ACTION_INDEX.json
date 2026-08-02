@@ -938,6 +938,42 @@
       }
     },
     {
+      "name": "orderCategories",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces category-order intent for one categorical position",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "ordercategories"
+      }
+    },
+    {
+      "name": "removeCategoryOrder",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Removes category-order intent and restores automatic first-appearance order",
+      "audit": "Removal — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "removecategoryorder"
+      }
+    },
+    {
       "name": "removeEncoding",
       "layer": "user-facing",
       "domain": "encodings",
@@ -2467,24 +2503,6 @@
     ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],
   "plannedActions": [
-    {
-      "name": "orderCategories",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
-        "anchor": "ordercategories"
-      }
-    },
-    {
-      "name": "removeCategoryOrder",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
-        "anchor": "removecategoryorder"
-      }
-    },
     {
       "name": "createTickMark",
       "status": "planned",

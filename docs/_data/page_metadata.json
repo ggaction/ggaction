@@ -340,6 +340,11 @@
     "description": "Automatic domains preserve first appearance order. Automatic ranges use the horizontal plot bounds and resolve a shared step and bandwidth.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
+  "/api/position/category-ordering/": {
+    "title": "Category Ordering",
+    "description": "Use orderCategories when a nominal or ordinal x/y position should follow an explicit list or a data derived order.",
+    "image": "/assets/images/ordered-category-bar.png"
+  },
   "/api/position/histogram/": {
     "title": "Histogram Positions",
     "description": "Prefer the atomic action for ordinary chart authoring:",

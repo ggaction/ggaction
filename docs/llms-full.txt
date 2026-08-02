@@ -6799,6 +6799,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
 | Build horizontal aggregate bars | bar mark, quantitative x and ordinal/temporal y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
+| Order categorical positions | nominal/ordinal x or y | `orderCategories`, `removeCategoryOrder` | [Category ordering](./position/category-ordering.md) |
 | Bin and count values | bar mark, quantitative field | `encodeHistogram` or `encodeX` + `encodeY` | [Histograms](./position/histogram.md) |
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./encodings.md#atomic-density) |
 | Draw full-span or bounded rules | rule mark, field or datum endpoints | `encodeX`, `encodeY`, `encodeX2`, `encodeY2` | [Rule endpoints](#rule-endpoints) |
@@ -7073,6 +7074,9 @@ program.encodeX({ field: "year", fieldType: "ordinal" });
 Automatic domains preserve first-appearance order. Automatic ranges use the
 horizontal plot bounds and resolve a shared `step` and `bandwidth`. This action
 leaves the rect collection empty because aggregate y and layout are incomplete.
+Use [`orderCategories`](./category-ordering.md) after the position pair is
+complete to assign an explicit, count-based, or aggregate-summary order without
+changing source rows.
 
 ## Aggregate ordinal bar `encodeY(options)`
 
@@ -7137,8 +7141,71 @@ fill, and diverging layouts use the quantitative x measure.
 
 ## Related
 
-[Offsets](./offsets.md) · [Series encodings](../series-encodings.md) ·
+[Category ordering](./category-ordering.md) · [Offsets](./offsets.md) · [Series encodings](../series-encodings.md) ·
 [Constant appearance](../appearance.md) · [Bar chart tutorial](../../tutorials/grouped-bar.md)
+
+<!-- Source: /api/position/category-ordering/ -->
+
+# Category Ordering
+
+Use `orderCategories` when a nominal or ordinal x/y position should follow an
+explicit list or a data-derived order. The assignment changes the resolved
+position domain, mark geometry, axis labels, and final selection-item order
+together. It never reorders source rows.
+
+## `orderCategories(options)`
+
+```javascript
+const ordered = program.orderCategories({
+  target: "bars",
+  channel: "x",
+  by: { field: "value", aggregate: "sum" },
+  direction: "descending"
+});
+```
+
+`target` defaults to the current compatible mark, then the unique compatible
+mark. `channel` is required and accepts categorical Cartesian `"x"` or `"y"`.
+
+Choose exactly one ordering mode:
+
+| Mode | Value | Result |
+| --- | --- | --- |
+| Explicit | `values: readonly (string | number | boolean)[]` | Listed categories first; omitted observed categories appended in first-appearance order |
+| Category | `by: "category"` | Numeric, boolean, or code-point lexical category order |
+| Frequency | `by: "count"` | Row count per category |
+| Summary | `by: { field, aggregate }` | `sum`, `mean`, `min`, or `max` of a finite quantitative field per category |
+
+Computed modes accept `direction: "ascending" | "descending"`; the default is
+`"ascending"`. Ties preserve the categories' source first-appearance order.
+Category sorting requires one consistent primitive type. An explicit list must
+be non-empty and unique, and every listed value must occur in the target data.
+
+The normalized ordering intent is stored on the target encoding. This means a
+later facet replay can apply one shared order or recompute an independent order
+from each cell's data. Marks that share the ordered scale must read the same
+field from the same dataset. The semantic scale domain must remain `"auto"`;
+an explicit scale domain and a category-order assignment are two competing
+authorities and cannot be combined.
+
+## `removeCategoryOrder({ target?, channel })`
+
+```javascript
+const automatic = ordered.removeCategoryOrder({
+  target: "bars",
+  channel: "x"
+});
+```
+
+Removal deletes the stored order assignment and restores the automatic
+first-appearance domain. The mark and existing connected axis are updated in
+place; the dataset, semantic scale definition, mark ID, and guide identity are
+preserved. Removing a missing assignment is an error.
+
+## Related
+
+[Bar positions](./ordinal-bars.md) · [Position scales](../scales/position.md) ·
+[Facets](../../recipes/facet.md) · [Selection and highlighting](../appearance/selection-and-highlighting.md)
 
 <!-- Source: /api/position/histogram/ -->
 
@@ -9746,7 +9813,7 @@ remain available for custom layering and editing.
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, grouped kernel-density derivations, and immutable Horizon band revisions |
 | Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
-| Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
+| Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position with semantic explicit/count/category/summary ordering, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
@@ -10001,6 +10068,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | user-facing | mark-selection |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | user-facing | marks |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
+| [`orderCategories`](./actions/encodings.md#ordercategories) | user-facing | encodings |
+| [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | user-facing | encodings |
 | [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
@@ -10624,6 +10693,27 @@ removePathOrder({ target? } = {})
 
 Remove explicit path topology and restore the mark's automatic independent-
 position ordering. [Series encodings](../../api/series-encodings.md)
+
+## `orderCategories`
+
+```javascript
+orderCategories({ target?, channel, values })
+orderCategories({ target?, channel, by, direction? })
+```
+
+Assign explicit or computed semantic order to a nominal/ordinal Cartesian x or
+y position. Omitted explicit values and computed ties preserve source
+first-appearance order. The scale, connected marks, axis, and selection-item
+order are updated together. [Category ordering](../../api/position/category-ordering.md)
+
+## `removeCategoryOrder`
+
+```javascript
+removeCategoryOrder({ target?, channel })
+```
+
+Remove one active category-order assignment and restore automatic
+first-appearance order. [Category ordering](../../api/position/category-ordering.md)
 
 ## `removeEncoding`
 
@@ -11774,8 +11864,10 @@ interface ChartProgramActions {
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+  orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
+  removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
   removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" | "opacity" | "text"; }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
