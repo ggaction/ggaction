@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review` — 2026-08-02 remote implementation checkpoint
+`approved` — 2026-08-02 explicit user approval
 
 ## Review target
 

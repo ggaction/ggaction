@@ -19,7 +19,7 @@ slice를 구현한다.
 - [x] UTC monthly raw/moving line executable visual evidence
 - [x] Current contracts, docs, package와 cumulative verification
 - [x] R5-P3-A remote implementation checkpoint (`19b2a2a4`)
-- [ ] 사용자 explicit approval
+- [x] 사용자 explicit approval — 2026-08-02
 
 ## Gate R5-P3-V
 
