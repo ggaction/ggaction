@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-02에 remote proposal checkpoint `9c64e13c`의 전체 제안을 명시적으로 승인했다. Action,
+extension, decision과 non-goal은 검토 package에서 변경되지 않았다.
 
 ## 쉽게 보는 승인 내용
 

@@ -1,7 +1,7 @@
 # Roadmap 5 — Temporal Derivation, Ordering, and Directional Marks
 
-> **문서 상태 — 현재 실행 계획.** Phase 0에서 구현 전 public contract를 검토 중이다. 현재 Phase pointer는
-> [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json), 아직 승인되지 않은 제안은
+> **문서 상태 — 현재 실행 계획.** R5-P0-A contract가 승인되어 Phase 1을 진행 중이다. 현재 Phase pointer는
+> [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json), approved proposal은
 > [`PROPOSALS.json`](./PROPOSALS.json)이 소유한다. 현재 observable API는 계속
 > [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)이 소유한다.
 
@@ -42,14 +42,14 @@
   의미를 추론하지 않는다.
 - Center stack은 non-negative area series만 받으며 wiggle baseline이나 signed stacking을 몰래 포함하지 않는다.
 - Persistent assignment에는 명시적 edit/reassignment 또는 removal 경로를 함께 제공한다.
-- 승인 전 proposal은 `ACTION_INDEX.json`의 Planned/Current surface에 넣지 않는다.
+- 승인된 future contract만 `ACTION_INDEX.json` Planned surface에 두고 구현 전에는 Current로 승격하지 않는다.
 
 ## 진행 상태
 
 | Phase | 상태 | 범위 |
 | ---: | --- | --- |
-| 0 | in-progress | Exact public contract, chart contract, compatibility와 Gate R5-P0-A |
-| 1 | planned | UTC time-unit derived data와 monthly trend chart |
+| 0 | completed | Exact public contract, chart contract, compatibility와 R5-P0-A approved |
+| 1 | in-progress | UTC time-unit derived data와 monthly trend chart |
 | 2 | planned | Semantic category ordering과 reset lifecycle |
 | 3 | planned | Moving mean/sum window operations |
 | 4 | planned | Tick primitive visual Gate, Tick lifecycle와 point/tick angle |

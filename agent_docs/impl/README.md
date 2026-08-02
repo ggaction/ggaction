@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **Roadmap 5 Phase 0이 활성 상태다.** Temporal derivation, category ordering, moving windows, Tick/Angle과
-  center-stacked area의 exact contract를 R5-P0-A에서 검토한다.
+- **Roadmap 5 Phase 1이 활성 상태다.** R5-P0-A에서 승인된 exact contract 중 UTC
+  `createTimeUnitData` vertical slice를 구현한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력

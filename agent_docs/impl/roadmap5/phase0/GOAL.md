@@ -23,8 +23,8 @@
 - [x] Phase dependency와 Approval Gate 작성
 - [x] Contract/unit/package baseline 실행
 - [x] R5-P0-A review package commit/push — `9c64e13c`
-- [ ] 사용자 explicit approval
-- [ ] Approved subset을 current Planned inventory로 승격
+- [x] 사용자 explicit approval — 2026-08-02
+- [x] Approved subset을 current Planned inventory로 승격
 
 ## Gate R5-P0-A
 
@@ -60,5 +60,5 @@ Exact machine-readable 목록은 [`../PROPOSALS.json`](../PROPOSALS.json), 사�
 
 ## Exit
 
-사용자가 exact proposal을 명시적으로 승인하면 approved checkpoint를 기록하고 accepted subset만 Planned inventory로
-승격한다. 그 뒤 Phase 1의 `createTimeUnitData` 구현을 시작한다.
+사용자가 exact proposal checkpoint `9c64e13c` 전체를 명시적으로 승인했다. Accepted contract를 Planned
+inventory로 승격하고 Phase 1의 `createTimeUnitData` 구현을 열었다.

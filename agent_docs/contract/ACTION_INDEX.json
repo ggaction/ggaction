@@ -2448,8 +2448,86 @@
     ,{ "name": "createRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editRectMark` and position/color encodings", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "createrectmark" } }
     ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],
-  "plannedActions": [],
-  "plannedCapabilities": [],
+  "plannedActions": [
+    {
+      "name": "createTimeUnitData",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
+        "anchor": "createtimeunitdata"
+      }
+    },
+    {
+      "name": "orderCategories",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
+        "anchor": "ordercategories"
+      }
+    },
+    {
+      "name": "removeCategoryOrder",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
+        "anchor": "removecategoryorder"
+      }
+    },
+    {
+      "name": "createTickMark",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
+        "anchor": "createtickmark"
+      }
+    },
+    {
+      "name": "editTickMark",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
+        "anchor": "edittickmark"
+      }
+    },
+    {
+      "name": "encodeAngle",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
+        "anchor": "encodeangle"
+      }
+    }
+  ],
+  "plannedCapabilities": [
+    {
+      "id": "moving-window-operations",
+      "name": "Moving window operations",
+      "kind": "parameter",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
+        "anchor": "capability-moving-window-operations"
+      }
+    },
+    {
+      "id": "center-stacked-area",
+      "name": "Center-stacked area",
+      "kind": "behavior",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
+        "anchor": "capability-center-stacked-area"
+      }
+    }
+  ],
   "internal": {
     "materialization": [
       "materializeBoxOutlierData",

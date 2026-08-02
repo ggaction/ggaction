@@ -180,11 +180,19 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
+| `createTimeUnitData` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#createtimeunitdata) |
+| `orderCategories` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#ordercategories) |
+| `removeCategoryOrder` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#removecategoryorder) |
+| `createTickMark` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#createtickmark) |
+| `editTickMark` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#edittickmark) |
+| `encodeAngle` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#encodeangle) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
+| parameter | Moving window operations | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#capability-moving-window-operations) |
+| behavior | Center-stacked area | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#capability-center-stacked-area) |
 
 ## Internal inventories
 
