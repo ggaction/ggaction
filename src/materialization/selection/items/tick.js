@@ -34,5 +34,9 @@ export function resolveTickItems(program, layer, dataset) {
       ...definitions.filter(definition => selected.has(definition.key))
     ];
   }
+  definitions = definitions.map((definition, index) => ({
+    ...definition,
+    properties: concreteProperties(graphic.items[index]?.properties)
+  }));
   return finalizeItems(program, layer, "tick", definitions, "line");
 }

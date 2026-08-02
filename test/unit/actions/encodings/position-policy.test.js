@@ -3,6 +3,8 @@ import test from "node:test";
 
 import { resolveMarkPositionPolicy } from
   "../../../../src/actions/encodings/position/policies/index.js";
+import { resolveTickPositionPolicy } from
+  "../../../../src/actions/encodings/position/policies/tick.js";
 
 function context(mark, channel, fieldType, args = {}, options = {}) {
   return {
@@ -50,6 +52,12 @@ test("dispatches point, rule, line, area, and bar position policies", () => {
     {},
     { encoding: { x: { fieldType: "nominal" } } }
   )), { bin: undefined, aggregate: "mean", stack: null });
+  for (const fieldType of ["quantitative", "temporal", "ordinal", "nominal"]) {
+    assert.deepEqual(
+      resolveMarkPositionPolicy(context("tick", "x", fieldType)),
+      { bin: undefined, aggregate: undefined, stack: undefined }
+    );
+  }
 });
 
 test("rejects unsupported mark and mark-specific position options", () => {
@@ -63,4 +71,23 @@ test("rejects unsupported mark and mark-specific position options", () => {
     resolveMarkPositionPolicy(context("text", "x", "quantitative")),
     { bin: undefined, aggregate: undefined, stack: undefined }
   );
+  assert.throws(
+    () => resolveTickPositionPolicy({ args: {}, fieldType: "invalid" }),
+    /requires quantitative, temporal, ordinal, or nominal fields/
+  );
+  for (const [option, value] of [
+    ["aggregate", "mean"],
+    ["bin", true],
+    ["stack", "zero"]
+  ]) {
+    assert.throws(
+      () => resolveMarkPositionPolicy(context(
+        "tick",
+        "x",
+        "quantitative",
+        { [option]: value }
+      )),
+      new RegExp(`does not support ${option}`)
+    );
+  }
 });
