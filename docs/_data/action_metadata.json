@@ -59,6 +59,11 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "createTickMark": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createTextMark": {
     "operation": "create",
     "layer": "user-facing",
@@ -80,6 +85,11 @@
     "domain": "marks"
   },
   "editPointMark": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editTickMark": {
     "operation": "edit",
     "layer": "user-facing",
     "domain": "marks"

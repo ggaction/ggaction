@@ -32,6 +32,10 @@ export function canMaterializePoint(_program, layer) {
   );
 }
 
+export function canMaterializeTick(_program, layer) {
+  return layer.mark?.type === "tick" && hasCartesianPositionScales(layer);
+}
+
 export function canMaterializeLine(program, layer) {
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined) {

@@ -72,6 +72,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTextMark`](./actions/marks.md#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | user-facing | axes |
 | [`createThetaGrid`](./actions/guides.md#createthetagrid) | user-facing | grid |
+| [`createTickMark`](./actions/marks.md#createtickmark) | user-facing | marks |
 | [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | user-facing | core |
 | [`createTitle`](./actions/guides.md#createtitle) | user-facing | legend_and_title |
 | [`createVerticalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
@@ -136,6 +137,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editThetaAxisTicks`](./actions/guides.md#editthetaaxisticks) | user-facing | axes |
 | [`editThetaAxisTitle`](./actions/guides.md#editthetaaxistitle) | user-facing | axes |
 | [`editThetaGrid`](./actions/guides.md#editthetagrid) | user-facing | grid |
+| [`editTickMark`](./actions/marks.md#edittickmark) | user-facing | marks |
 | [`editTitle`](./actions/guides.md#edittitle) | user-facing | legend_and_title |
 | [`editVerticalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`editXAxis`](./actions/advanced.md#complete-single-channel-axes) | user-facing | axes |

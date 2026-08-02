@@ -26,6 +26,8 @@
   "editBin2DData": "/reference/actions/charts-data/#editbin2ddata",
   "createPointMark": "/reference/actions/marks/#createpointmark",
   "editPointMark": "/reference/actions/marks/#editpointmark",
+  "createTickMark": "/reference/actions/marks/#createtickmark",
+  "editTickMark": "/reference/actions/marks/#edittickmark",
   "jitterPoints": "/reference/actions/marks/#jitterpoints",
   "removeJitter": "/reference/actions/marks/#removejitter",
   "removeMark": "/reference/actions/marks/#removemark",

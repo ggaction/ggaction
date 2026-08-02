@@ -20,11 +20,13 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editBin2DData`](current/CORE.md#editbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createIntervalData`](current/STATISTICS.md#createintervaldata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createTickMark`](current/MARKS.md#createtickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTextMark`](current/MARKS.md#createtextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTextMark`](current/MARKS.md#edittextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutLabels`](current/MARKS.md#layoutlabels) | marks | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
 | user-facing | [`removeLabelLayout`](current/MARKS.md#removelabellayout) | marks | Assignment | Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`editPointMark`](current/MARKS.md#editpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editTickMark`](current/MARKS.md#edittickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`jitterPoints`](current/MARKS.md#jitterpoints) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeJitter`](current/MARKS.md#removejitter) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeMark`](current/MARKS.md#removemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -183,8 +185,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `createTickMark` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#createtickmark) |
-| `editTickMark` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#edittickmark) |
 | `encodeAngle` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#encodeangle) |
 
 ## Planned capabilities

@@ -485,6 +485,24 @@ editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
 `stroke: false` disables the outline and its width. [Marks](../api/marks.md)
 
+### `createTickMark`
+
+```javascript
+createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+```
+
+Create a centered line glyph that materializes after both x and y are complete.
+Length defaults to `14`; stroke width defaults to `2`. [Marks](../api/marks.md)
+
+### `editTickMark`
+
+```javascript
+editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
+```
+
+Partially edit Tick length or constant line appearance while preserving data,
+position, and other assignments. [Marks](../api/marks.md)
+
 ### `jitterPoints`
 
 ```javascript
@@ -669,8 +687,8 @@ semantic base positions. [Text marks](../api/marks/text.md)
 <!-- action-capabilities:position:start -->
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |

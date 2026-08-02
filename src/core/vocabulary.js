@@ -5,6 +5,7 @@ export const MARK_TYPES = Object.freeze([
   "area",
   "arc",
   "rule",
+  "tick",
   "text",
   "rect"
 ]);
@@ -16,6 +17,7 @@ export const MARK_GRAPHIC_TYPES = Object.freeze({
   area: Object.freeze(["path"]),
   arc: Object.freeze(["path"]),
   rule: Object.freeze(["line"]),
+  tick: Object.freeze(["line"]),
   text: Object.freeze(["text"]),
   rect: Object.freeze(["rect"])
 });
@@ -41,7 +43,7 @@ export const ENCODING_CHANNELS = Object.freeze([
 ]);
 
 const CARTESIAN_MARK_TYPES = Object.freeze([
-  "point", "line", "bar", "area", "rule", "text", "rect"
+  "point", "line", "bar", "area", "rule", "tick", "text", "rect"
 ]);
 const POLAR_MARK_TYPES = Object.freeze(["point", "line", "arc"]);
 

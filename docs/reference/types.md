@@ -37,6 +37,8 @@ interface ChartProgramActions {
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
   createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createTickMark(options?: { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  editTickMark(options: { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;

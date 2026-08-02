@@ -4296,6 +4296,9 @@ each type infers its ID and current dataset when those choices are unambiguous.
     Rule marks
     Full-span references, bounded intervals, and diagonal endpoints.
 
+    Tick marks
+    Centered fixed-length glyphs for directional and rug-like displays.
+
     Text marks
     Data labels and annotations attached to points, bars, or rules.
 
@@ -4315,6 +4318,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Arc | `createArcMark` | `editArcMark` | Closed sector path collection |
 | Bar | `createBarMark` | `editBarMark` | Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
+| Tick | `createTickMark` | `editTickMark` | Centered line collection |
 | Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout` | Text collection |
 | Rect | `createRectMark` | `editRectMark` | Rect collection |
 
@@ -4339,7 +4343,7 @@ those graphics.
 
 - `data` defaults to the current dataset.
 - The first omitted mark ID uses the semantic role: `"point"`, `"line"`,
-  `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, or `"text"`.
+  `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, `"tick"`, or `"text"`.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
   encodings from the current layer, or one unique source on the current dataset.
@@ -4351,6 +4355,35 @@ those graphics.
   type are inherited. Incompatible channels remain unencoded.
 - Passing `data` explicitly starts independent mark assembly and disables
   layered position inheritance.
+
+## Tick marks
+
+`createTickMark` creates a centered fixed-length line glyph for every source
+row after both x and y encodings are complete:
+
+```javascript
+const rug = chart()
+  .createCanvas({ width: 800, height: 240 })
+  .createData({
+    id: "cars",
+    values: cars.map(car => ({ ...car, Baseline: 0 }))
+  })
+  .createTickMark({
+    id: "ticks",
+    length: 14,
+    stroke: "#2563eb",
+    strokeWidth: 1.5,
+    opacity: 0.3
+  })
+  .encodeX({ target: "ticks", field: "Horsepower" })
+  .encodeY({ target: "ticks", field: "Baseline" });
+```
+
+The default length is `14`, stroke width is `2`, opacity is `1`, and stroke
+uses the theme mark color. `editTickMark` partially edits those values.
+Incomplete x or y is retained semantically without fabricated geometry.
+Fixed-y rug plots use an explicit y field; x-only plot-edge placement is not
+inferred.
 
 ## Related
 
@@ -4971,8 +5004,8 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -6807,8 +6840,8 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -9984,6 +10017,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTextMark`](./actions/marks.md#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | user-facing | axes |
 | [`createThetaGrid`](./actions/guides.md#createthetagrid) | user-facing | grid |
+| [`createTickMark`](./actions/marks.md#createtickmark) | user-facing | marks |
 | [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | user-facing | core |
 | [`createTitle`](./actions/guides.md#createtitle) | user-facing | legend_and_title |
 | [`createVerticalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
@@ -10048,6 +10082,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editThetaAxisTicks`](./actions/guides.md#editthetaaxisticks) | user-facing | axes |
 | [`editThetaAxisTitle`](./actions/guides.md#editthetaaxistitle) | user-facing | axes |
 | [`editThetaGrid`](./actions/guides.md#editthetagrid) | user-facing | grid |
+| [`editTickMark`](./actions/marks.md#edittickmark) | user-facing | marks |
 | [`editTitle`](./actions/guides.md#edittitle) | user-facing | legend_and_title |
 | [`editVerticalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`editXAxis`](./actions/advanced.md#complete-single-channel-axes) | user-facing | axes |
@@ -10413,6 +10448,24 @@ editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
 `stroke: false` disables the outline and its width. [Marks](../../api/marks.md)
 
+## `createTickMark`
+
+```javascript
+createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+```
+
+Create a centered line glyph that materializes after both x and y are complete.
+Length defaults to `14`; stroke width defaults to `2`. [Marks](../../api/marks.md)
+
+## `editTickMark`
+
+```javascript
+editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
+```
+
+Partially edit Tick length or constant line appearance while preserving data,
+position, and other assignments. [Marks](../../api/marks.md)
+
 ## `jitterPoints`
 
 ```javascript
@@ -10596,8 +10649,8 @@ semantic base positions. [Text marks](../../api/marks/text.md)
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -11857,6 +11910,8 @@ interface ChartProgramActions {
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
   createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createTickMark(options?: { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  editTickMark(options: { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;

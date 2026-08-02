@@ -17,7 +17,7 @@ This closed vocabulary is owned by the shared point-shape grammar and reused by 
 shape encoding, concrete materialization, and legend symbols.
 
 Ordinary mark creation may omit `id` for the first mark of that semantic type. The library persists the
-  deterministic role ID `"point" | "line" | "bar" | "area" | "arc" | "rule" | "text"`. A second mark of the same type requires an
+  deterministic role ID `"point" | "line" | "bar" | "area" | "arc" | "rule" | "tick" | "text"`. A second mark of the same type requires an
 explicit user ID; the library never invents numbered public-resource IDs. Explicit IDs retain the existing
 validation and uniqueness contract.
 
@@ -105,6 +105,57 @@ independent assembly and does not inherit position encodings.
 - ✅ Covered: outline disable, simultaneous/disabled width rejection, default-width restoration, Canvas replay.
 - No proposal: radius and field-driven opacity remain owned by their corresponding encoding actions.
 - Evidence: `test/unit/actions/marks/edit-point-mark.test.js`.
+
+## `createTickMark`
+
+- Signature: `createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})`.
+- `id`: 첫 unnamed Tick은 `"tick"`을 사용한다. 같은 type의 두 번째 mark는 explicit ID가 필요하다.
+- `data`: existing dataset ID. 생략하면 current data를 사용하고, compatible current/unique Cartesian
+  layer가 있으면 data, coordinate와 x/y field encoding을 shared layered-inference policy로 상속한다.
+- `length`: positive finite logical pixel, default `14`.
+- `stroke`: non-empty string, default shared theme mark color `"#4c78a8"`.
+- `strokeWidth`: non-negative finite logical pixel, default `2`.
+- `opacity`: unit interval, default `1`.
+- Completeness: complete Cartesian x/y scale pair가 있을 때만 source row마다 centered line item을 만든다.
+  x 또는 y 하나만 있는 상태는 semantic assignment와 scale을 보존하고 line collection을 비운다.
+- Geometry: unrotated baseline은 `0°`가 위쪽인 vertical segment이며 center와 length를 보존한 concrete
+  `x1/y1/x2/y2`만 `graphicSpec`에 저장한다. Renderer는 Tick identity를 읽지 않는다.
+- Fixed-y rug plot은 ordinary y field를 명시해 작성한다. x-only plot-edge placement inference는 지원하지 않는다.
+
+### Formal values — `createTickMark`
+
+- Implemented: `createTickMark({ id?: UserId; data?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval } = {})`.
+- Planned (NOT IMPLEMENTED): angle assignment은 `encodeAngle` owner에 남아 있다.
+- Proposed (NOT IMPLEMENTED): x-only rug placement inference.
+
+### Value coverage — `createTickMark`
+
+- ✅ Covered: default/explicit ID와 data, empty/incomplete/complete x/y, x/y authoring order independence.
+- ✅ Covered: default/explicit appearance, exact center/length, Canvas rematerialization과 earlier-program immutability.
+- ✅ Covered: compatible layered inference, ambiguous/unknown/duplicate resources와 invalid options.
+- Evidence: `test/unit/actions/marks/tick-mark.test.js`,
+  `test/unit/grammar/direction.test.js`, and
+  `test/unit/materialization/materialization-policies.test.js`.
+
+## `editTickMark`
+
+- Signature: `editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })`.
+- `target`: current compatible Tick, otherwise unique Tick으로 infer하며 ambiguity는 explicit target을 요구한다.
+- 최소 한 edit property가 필요하다. Omitted properties는 current config를 보존한다.
+- Validation은 create action과 동일한 positive length, non-empty stroke, non-negative width와 unit opacity를 사용한다.
+- Effect: identity, data, coordinate, x/y와 future angle assignment를 보존하고 mark config를 structural copy한 뒤
+  wrapped `rematerializeTickMark`로 concrete endpoints와 appearance를 다시 만든다.
+
+### Formal values — `editTickMark`
+
+- Implemented: `editTickMark({ target?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval })`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editTickMark`
+
+- ✅ Covered: inferred/explicit target, partial/full edit, resize persistence, immutable earlier program과 nested trace.
+- ✅ Covered: missing/unknown/ambiguous target, empty edit와 invalid scalar rejection.
+- Evidence: `test/unit/actions/marks/tick-mark.test.js`.
 
 ## `jitterPoints`
 

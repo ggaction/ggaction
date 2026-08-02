@@ -471,7 +471,7 @@ semantic kind의 closed vocabulary와 value shape만 소유한다. Dispatcher �
 변경하지 않는다.
 
 첫 source dataset의 omitted ID는 `"data"`, 첫 semantic mark type별 omitted ID는
-`"point" | "line" | "bar" | "rect" | "area" | "rule" | "arc" | "text"`로 materialize한다. 이 결정은 context에만 두지 않고
+`"point" | "line" | "bar" | "rect" | "area" | "rule" | "arc" | "tick" | "text"`로 materialize한다. 이 결정은 context에만 두지 않고
 각 resource의 canonical `id`로 저장한다. 같은 dataset slot 또는 같은 mark type을 다시 만들 때
 counter suffix를 자동 생성하지 않으며 explicit user ID를 요구한다. Derived data, explicit scale,
 regression component처럼 다른 resource가 직접 참조하는 advanced creation action은 자체 contract가
@@ -1437,6 +1437,16 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
   concrete line child에 적용된다. Renderer는 semantic endpoint나 full-span intent를 추론하지 않는다.
 - Composite cap은 ordinary x/y anchor encoding과 graphical `fixedSpan` config를 결합한다. Canvas 또는
   scale 변경 시 span을 다시 concrete endpoint로 계산하며 renderer는 cap role이나 pixel span을 모른다.
+
+### Tick
+
+- Tick은 complete Cartesian x/y anchor를 요구하는 centered fixed-length line glyph다.
+- `length`, `stroke`, `strokeWidth`, `opacity`는 mark materialization config가 소유한다. Default length는 `14`,
+  stroke width는 `2`, opacity는 `1`이며 stroke는 shared theme mark color를 사용한다.
+- x 또는 y 하나만 있는 중간 상태는 semantic assignment와 scale을 보존하지만 line item을 만들지 않는다.
+  두 position이 완성되면 source row마다 concrete `x1/y1/x2/y2`를 materialize한다.
+- Fixed-y rug distribution은 ordinary y field를 명시해 작성하며 x-only plot-edge placement를 추론하지 않는다.
+- Renderer는 Tick identity, center 또는 length를 해석하지 않고 ordinary concrete line collection만 읽는다.
 
 ### Aggregate bar provenance와 completeness
 

@@ -80,36 +80,13 @@ type MovingWindowOperation = {
 
 ## `createTickMark`
 
-```typescript
-createTickMark({
-  id?: UserId;
-  length?: PositiveFinite;
-  stroke?: NonEmptyString;
-  strokeWidth?: NonNegativeFinite;
-  opacity?: UnitInterval;
-}): ChartProgram;
-```
-
-- Complete x/y anchor를 요구하는 centered fixed-length line glyph다. Fixed-y field를 명시한 rug plot은 이
-  ordinary Cartesian 계약으로 작성할 수 있다.
-- x-only plot-edge placement inference는 범위 밖이다.
-- Status: Planned, accepted for Roadmap 5 Phase 4 after visual primitive approval.
+- Status: Implemented in Roadmap 5 Phase 4. Canonical behavior moved to
+  [`../current/MARKS.md`](../current/MARKS.md#createtickmark).
 
 ## `editTickMark`
 
-```typescript
-editTickMark({
-  target?: UserId;
-  length?: PositiveFinite;
-  stroke?: NonEmptyString;
-  strokeWidth?: NonNegativeFinite;
-  opacity?: UnitInterval;
-}): ChartProgram;
-```
-
-- Tick identity, x/y와 angle assignment를 보존하며 appearance를 partial-edit한다.
-- Generic `removeMark`가 Tick removal을 소유한다.
-- Status: Planned, accepted for Roadmap 5 Phase 4 after visual primitive approval.
+- Status: Implemented in Roadmap 5 Phase 4. Canonical behavior moved to
+  [`../current/MARKS.md`](../current/MARKS.md#edittickmark).
 
 ## `encodeAngle`
 

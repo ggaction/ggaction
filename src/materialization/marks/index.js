@@ -9,7 +9,8 @@ export {
   canMaterializePoint,
   canMaterializeRect,
   canMaterializeRule,
-  canMaterializeText
+  canMaterializeText,
+  canMaterializeTick
 } from "./capabilities.js";
 
 export function getMarkRematerializationStep(layer) {

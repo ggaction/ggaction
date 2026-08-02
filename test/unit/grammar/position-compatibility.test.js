@@ -25,6 +25,10 @@ test("owns the accepted mark, channel, and field-type matrix", () => {
     "nominal"
   );
   assert.equal(
+    validatePositionFieldCompatibility("tick", "y", "temporal"),
+    "temporal"
+  );
+  assert.equal(
     validatePositionFieldCompatibility("point", "theta", "temporal"),
     "temporal"
   );
