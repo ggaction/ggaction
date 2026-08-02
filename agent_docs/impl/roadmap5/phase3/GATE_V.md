@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review` — 2026-08-02 remote checkpoint
 
 ## Review target
 
@@ -66,7 +66,7 @@ Final example은 이 derived data flow 뒤에 orange raw line과 blue moving-mea
 
 ## Remote checkpoint
 
-- Visual review commit: pending verified visual package commit
+- Visual review commit: `e80a77cf` (`test: add moving-window visual target`)
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect
