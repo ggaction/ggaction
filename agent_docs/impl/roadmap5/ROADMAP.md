@@ -66,7 +66,7 @@ Gate 상태는 `planned | ready-for-review | approved | changes-requested`만 �
 | R5-P0-A | 0 | Exact API, semantics, initial limits, chart contracts와 Phase 순서 | 모든 runtime 구현 |
 | R5-P1-A | 1 | UTC bucket values, provenance, immutability와 monthly chart | Category ordering 구현 |
 | R5-P2-A | 2 | Ordering modes, ties, reset, guide/facet replay | Moving window 구현 |
-| R5-P3-V | 3 | Raw monthly line과 truncated three-row moving-mean primitive visual | Moving window public flow |
+| R5-P3-V | 3 | Actual BTS passenger data의 trailing/centered mean과 trailing sum visual | Moving window public flow |
 | R5-P3-A | 3 | Frame boundaries, partitions, moving values와 combined trend | Tick primitive 구현 |
 | R5-P4-V | 4 | Unrotated/rotated Tick과 point concrete geometry의 시각 비교 | Public Tick/Angle flow |
 | R5-P4-A | 4 | Tick lifecycle, angle reassignment/removal, chart parity | Center-stack 구현 |

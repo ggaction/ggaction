@@ -1,72 +1,86 @@
-# Gate R5-P3-V — Monthly Moving-Mean Primitive
+# Gate R5-P3-V — Airline Passenger Moving Windows Primitive
 
 ## Gate state
 
-`ready-for-review` — 2026-08-02 remote checkpoint
+`changes-requested` — 2026-08-02 actual-data and multi-option revision
 
 ## Review target
 
-Phase 3 public implementation 전에 고정하는 monthly raw value과 truncated three-row moving mean의 primitive
-visual target이다.
+Phase 3 public implementation 전에 고정하는 actual U.S. airline passenger data의 trailing/centered
+moving mean과 trailing moving sum primitive visual target이다.
 
 ## Exact target public call
 
 ```javascript
-chart()
-  .createCanvas({ width: 760, height: 420 })
-  .createData({ id: "events", values })
-  .createTimeUnitData({
-    id: "monthlyEvents",
-    source: "events",
-    field: "date",
-    unit: "month",
-    as: "month"
-  })
-  .createWindowData({
-    id: "monthlyMoving",
-    source: "monthlyEvents",
-    sortBy: [{ field: "month" }],
-    operations: [{
-      op: "movingMean",
-      field: "value",
-      as: "movingMean",
-      frame: { preceding: 2 }
-    }]
-  });
+const trailingMean = monthly.createWindowData({
+  id: "trailingMean",
+  sortBy: [{ field: "month" }],
+  operations: [{
+    op: "movingMean",
+    field: "passengers",
+    as: "movingMean",
+    frame: { preceding: 2 }
+  }]
+});
+
+const centeredMean = monthly.createWindowData({
+  id: "centeredMean",
+  sortBy: [{ field: "month" }],
+  operations: [{
+    op: "movingMean",
+    field: "passengers",
+    as: "movingMean",
+    frame: { preceding: 2, following: 2 }
+  }]
+});
+
+const trailingSum = monthly.createWindowData({
+  id: "trailingSum",
+  sortBy: [{ field: "month" }],
+  operations: [{
+    op: "movingSum",
+    field: "passengers",
+    as: "movingSum",
+    frame: { preceding: 2 }
+  }]
+});
 ```
 
-Final example은 이 derived data flow 뒤에 orange raw line과 blue moving-mean line을 같은 x/y scale로
-소비한다.
+`monthly`은 BTS의 2024–2025 monthly observations을 Phase 1 `createTimeUnitData` 결과로 저장한 program이다.
 
 ## Visual evidence
 
-- Orange: 월별 one-row raw value, 2 px line
-- Blue: current row plus two preceding rows의 mean, 4 px line
-- First output uses 1 row, second uses 2 rows, third onward uses 3 rows.
-- UTC x ticks: January, March, May, July, September, November 2024
-- Fixed y domain: `[0, 60]`
+- Source: U.S. Bureau of Transportation Statistics, monthly domestic + international scheduled-airline passengers.
+- Rows: January 2024–December 2025, 24 observations, millions of passengers.
+- Panel 1: orange raw line + blue trailing 3-month `movingMean`, `preceding: 2`.
+- Panel 2: orange raw line + green centered 5-month `movingMean`, `preceding: 2, following: 2`.
+- Panel 3: purple trailing 3-month `movingSum`, `preceding: 2`.
+- Mean domains: `[60, 100]`; sum domain: `[0, 280]`; partition edges truncate.
+- Data source:
+  `https://www.bts.gov/newsroom/monthly-passengers-us-scheduled-airlines-domestic-international-april-2023-april-2026`
 - Primitive source: `test/gates/monthly-moving-average/primitive.program.js`
 - Independent values: `test/gates/monthly-moving-average/reference-values.js`
 - Manifest: `test/gates/monthly-moving-average/manifest.js`
 - Review PNG:
-  `.artifacts/test/png/review/monthly-moving-average/raw-and-three-month-mean/primitive.png`
-- Physical size: 1520×840 at pixel ratio 2; logical size 760×420.
+  `.artifacts/test/png/review/airline-passenger-moving-windows/trailing-centered-and-sum/primitive.png`
+- Physical size: 2384×744 at pixel ratio 2; logical size 1192×372.
 - PNG SHA-256:
-  `49f999f05e19335fd3d3308a72c3e59c0b1e6d61d6bf08d6e94c1e8eaa03bb25`.
+  `faba89412e35ade4ab229482c3e21aaa1df7c9cbd1297fe54ab6da1757f4392f`.
 
 ## Verification
 
 | Check | Result |
 | --- | --- |
-| Literal moving means and truncated edges | 1 pass |
-| Primitive structure and no future action trace | 1 pass |
+| Published source anchors and three moving option boundaries | 2 pass |
+| Three-panel primitive structure and no future action trace | 1 pass |
 | Focused review render | 1 pass |
 | Gate discovery and capability ownership | 9 pass |
-| Full repository suite | 1,966 pass |
+| Full repository suite | 1,967 pass |
 
 ## Remote checkpoint
 
 - Visual review commit: `e80a77cf` (`test: add moving-window visual target`)
+- Actual-data multi-option revision: pending verified revision commit
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect

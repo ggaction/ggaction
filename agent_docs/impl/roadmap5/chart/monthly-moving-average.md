@@ -1,46 +1,68 @@
-# Monthly Moving Average
+# Airline Passenger Moving Windows
 
 ## 차트 목적
 
-월 안의 임의 날짜로 기록된 월별 관측값을 UTC month 시작으로 맞춘 뒤 raw value와 3-month moving mean을 함께
-그린다. Time bucketing과 moving window가 독립적인 immutable dataset으로 남고, 원본 timestamp를 바꾸지 않는지
-검증한다.
+U.S. Bureau of Transportation Statistics의 2024–2025 월별 미국 정기항공 domestic + international
+passenger observations에 세 가지 row frame을 적용한다. Trailing mean, centered mean과 trailing sum을
+한 이미지에서 비교해 `movingMean | movingSum`과 `preceding | following`의 의미를 바로 읽을 수 있게 한다.
+
+- Source:
+  `https://www.bts.gov/newsroom/monthly-passengers-us-scheduled-airlines-domestic-international-april-2023-april-2026`
+- Selected range: January 2024–December 2025
+- Unit: millions of passengers
 
 ## Proposed final user-facing API
 
 ```javascript
-chart()
-  .createCanvas({ width: 760, height: 420 })
+const monthly = chart()
   .createData({ id: "events", values })
   .createTimeUnitData({
-    id: "monthly-events",
+    id: "monthlyPassengers",
     source: "events",
     field: "date",
     unit: "month",
     as: "month"
-  })
-  .createWindowData({
-    id: "monthly-moving",
-    source: "monthly-events",
-    sortBy: [{ field: "month" }],
-    operations: [{
-      op: "movingMean",
-      field: "value",
-      as: "movingMean",
-      frame: { preceding: 2 }
-    }]
-  })
-  .createLineMark({ id: "monthly", data: "monthly-events" })
-  .encodeX({ target: "monthly", field: "month", fieldType: "temporal" })
-  .encodeY({ target: "monthly", field: "value", fieldType: "quantitative" })
-  .createLineMark({ id: "moving", data: "monthly-moving", strokeWidth: 3 })
-  .encodeX({ target: "moving", field: "month", fieldType: "temporal" })
-  .encodeY({ target: "moving", field: "movingMean", fieldType: "quantitative" })
-  .createGuides();
+  });
+
+const trailingMean = monthly.createWindowData({
+  id: "trailingMean",
+  source: "monthlyPassengers",
+  sortBy: [{ field: "month" }],
+  operations: [{
+    op: "movingMean",
+    field: "passengers",
+    as: "movingMean",
+    frame: { preceding: 2 }
+  }]
+});
+
+const centeredMean = monthly.createWindowData({
+  id: "centeredMean",
+  source: "monthlyPassengers",
+  sortBy: [{ field: "month" }],
+  operations: [{
+    op: "movingMean",
+    field: "passengers",
+    as: "movingMean",
+    frame: { preceding: 2, following: 2 }
+  }]
+});
+
+const trailingSum = monthly.createWindowData({
+  id: "trailingSum",
+  source: "monthlyPassengers",
+  sortBy: [{ field: "month" }],
+  operations: [{
+    op: "movingSum",
+    field: "passengers",
+    as: "movingSum",
+    frame: { preceding: 2 }
+  }]
+});
 ```
 
-Input은 month별 한 row를 가지며 date는 그 month 안의 어느 valid timestamp여도 된다. Multiple events를 month별로
-집계하는 generic aggregation이나 missing-month imputation은 이 chart와 Roadmap의 범위가 아니다.
+Final example은 세 program을 hconcat한다. Mean panels은 orange raw line과 blue/green moving line을 같은
+`[60, 100]` domain에 겹치고, sum panel은 purple line을 `[0, 280]` domain에 그린다.
 
 ## Action hierarchy
 
@@ -56,20 +78,22 @@ createWindowData
 
 ## Stored-result contract
 
-- Source datasets are immutable.
-- Time-unit transform stores source field, unit, output field and UTC policy.
-- Window transform stores partition, normalized sort, operations and normalized row frames.
-- Derived values are concrete data values; line marks use ordinary temporal/quantitative encodings.
-- Renderer sees only materialized line paths and guides.
+- BTS source values, source rows과 caller-owned options은 immutable이다.
+- Time-unit transform은 source field, UTC month unit과 output field를 저장한다.
+- Window transform은 normalized sort, operation과 explicit `{ preceding, following }` row frame을 저장한다.
+- Moving output은 sorted partition에서 계산하지만 final dataset rows는 source order를 보존한다.
+- Derived values는 ordinary temporal/quantitative line encodings에서 소비하며 renderer는 concrete path만 읽는다.
 
 ## Visual acceptance
 
-- Month positions and axis labels match UTC calendar starts.
-- First two moving values use 1 and 2 available months; later values use current plus two preceding months.
-- Raw monthly observation line and moving line remain distinguishable in all four renderers.
+- Trailing mean은 current + preceding 2 rows, centered mean은 preceding 2 + current + following 2 rows다.
+- Trailing sum은 current + preceding 2 passenger values의 합이다.
+- Partition 앞/뒤 edge에서 available rows로 truncate되는 것이 literal values와 line endpoints에서 일치한다.
+- Orange raw, blue trailing mean, green centered mean과 purple trailing sum이 Canvas/SVG/PNG/PDF에서 구분된다.
+- Panel title은 operation/window direction을, subtitle은 BTS source/range를 밝힌다.
 
 ## Non-goals
 
-- Resampling missing months, imputation or join aggregate
-- Local timezone, DST, week start or business calendar
-- Duration window or smoothing interpolation
+- Missing-month resampling, imputation 또는 generic monthly aggregation
+- Duration/weighted windows, `minPeriods` 또는 smoothing interpolation
+- Forecast, seasonal adjustment 또는 airline-domain analysis

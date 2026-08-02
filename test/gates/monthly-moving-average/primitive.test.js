@@ -1,22 +1,22 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createMonthlyMovingAveragePrimitives } from "./primitive.program.js";
-import { MONTHLY_MOVING_ROWS, MONTHLY_ROWS } from "./reference-values.js";
+import { createAirlinePassengerMovingWindowPrimitives } from
+  "./primitive.program.js";
 
-test("authors the monthly moving-average visual target without future window actions", () => {
-  const program = createMonthlyMovingAveragePrimitives();
-  assert.equal(
-    program.graphicSpec.objects.monthly.items[0].properties.commands.length,
-    MONTHLY_ROWS.length
-  );
-  assert.equal(
-    program.graphicSpec.objects.moving.items[0].properties.commands.length,
-    MONTHLY_MOVING_ROWS.length
-  );
-  assert.equal(
-    program.trace.children.some(node => node.op === "createWindowData"),
-    false
-  );
-  assert.deepEqual(program.resolvedScales.y.domain, [0, 60]);
+test("authors three actual-data moving-window targets without future actions", () => {
+  const program = createAirlinePassengerMovingWindowPrimitives();
+  assert.deepEqual(Object.keys(program.children), [
+    "trailingMean", "centeredMean", "trailingSum"
+  ]);
+  for (const child of Object.values(program.children)) {
+    assert.equal(child.graphicSpec.objects.moving.items[0].properties.commands.length, 24);
+    assert.equal(
+      child.trace.children.some(node => node.op === "createWindowData"),
+      false
+    );
+  }
+  assert.deepEqual(program.children.trailingMean.resolvedScales.y.domain, [60, 100]);
+  assert.deepEqual(program.children.centeredMean.resolvedScales.y.domain, [60, 100]);
+  assert.deepEqual(program.children.trailingSum.resolvedScales.y.domain, [0, 280]);
 });

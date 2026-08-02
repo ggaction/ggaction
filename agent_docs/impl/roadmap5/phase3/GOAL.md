@@ -10,7 +10,7 @@ slice를 구현한다.
 
 - [x] R5-P2-A explicit approval
 - [x] Approved Phase 3 contract와 R5-P3-A 범위 확인
-- [x] Independent moving-window oracle과 monthly raw/moving primitive visual target
+- [x] Independent moving-window oracle과 actual BTS passenger moving-options primitive target
 - [x] R5-P3-V remote checkpoint (`e80a77cf`)
 - [ ] R5-P3-V 사용자 visual approval
 - [ ] Moving operation grammar과 deterministic row-frame resolver 구현
@@ -25,9 +25,9 @@ slice를 구현한다.
 
 ### 승인 대상
 
-- Orange monthly raw line과 blue three-row moving-mean line의 시각적 구분
-- Current row plus two preceding rows, truncated first/second month edge를 보여주는 형태
-- UTC month axis, fixed 0–60 y domain, minimal title/subtitle과 horizontal grid
+- BTS 2024–2025 U.S. scheduled-airline monthly passenger source values
+- Trailing 3-month mean, centered 5-month mean과 trailing 3-month sum의 시각적 차이
+- Truncated partition edges, UTC month axis, option-specific domains과 minimal title/subtitle/grid
 - Target public chain이 Phase 1 `createTimeUnitData`와 Phase 3 `createWindowData` extension을 결합하는 방식
 
 ### 승인 전 차단

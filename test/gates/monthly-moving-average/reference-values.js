@@ -1,56 +1,72 @@
 import { createWindowReference } from "../../oracles/window.js";
 
-export const MONTHLY_MOVING_LAYOUT = Object.freeze({
-  width: 760,
-  height: 420,
-  margin: Object.freeze({ top: 76, right: 30, bottom: 58, left: 62 })
+export const AIRLINE_DATA_SOURCE =
+  "https://www.bts.gov/newsroom/monthly-passengers-us-scheduled-airlines-domestic-international-april-2023-april-2026";
+
+export const MOVING_WINDOW_LAYOUT = Object.freeze({
+  panelWidth: 380,
+  panelHeight: 360,
+  gap: 20,
+  padding: 6,
+  margin: Object.freeze({ top: 74, right: 14, bottom: 50, left: 70 })
 });
 
-export const MONTHLY_EVENT_ROWS = Object.freeze([
-  Object.freeze({ date: "2024-01-18T12:00:00Z", value: 12 }),
-  Object.freeze({ date: "2024-02-09T12:00:00Z", value: 20 }),
-  Object.freeze({ date: "2024-03-21T12:00:00Z", value: 16 }),
-  Object.freeze({ date: "2024-04-11T12:00:00Z", value: 28 }),
-  Object.freeze({ date: "2024-05-24T12:00:00Z", value: 24 }),
-  Object.freeze({ date: "2024-06-07T12:00:00Z", value: 36 }),
-  Object.freeze({ date: "2024-07-19T12:00:00Z", value: 32 }),
-  Object.freeze({ date: "2024-08-13T12:00:00Z", value: 44 }),
-  Object.freeze({ date: "2024-09-26T12:00:00Z", value: 38 }),
-  Object.freeze({ date: "2024-10-10T12:00:00Z", value: 50 }),
-  Object.freeze({ date: "2024-11-22T12:00:00Z", value: 46 }),
-  Object.freeze({ date: "2024-12-05T12:00:00Z", value: 58 })
+const PASSENGERS = Object.freeze([
+  70.1, 70.4, 84.9, 81.2, 87.1, 89.7, 91.8, 86.8, 77.5, 82.8, 77.1, 83.3,
+  70.7, 67.2, 83.7, 80.4, 85.3, 88.7, 92.2, 86.8, 76.8, 84.2, 74.8, 81.2
 ]);
 
-export const MONTHLY_ROWS = Object.freeze(MONTHLY_EVENT_ROWS.map((row, index) =>
-  Object.freeze({ ...row, month: Date.UTC(2024, index, 1) })
+export const AIRLINE_PASSENGER_ROWS = Object.freeze(PASSENGERS.map((passengers, index) =>
+  Object.freeze({
+    date: new Date(Date.UTC(2024 + Math.floor(index / 12), index % 12, 1)).toISOString(),
+    month: Date.UTC(2024 + Math.floor(index / 12), index % 12, 1),
+    passengers
+  })
 ));
 
-export const MONTHLY_MOVING_TRANSFORM = Object.freeze({
-  type: "window",
-  partitionBy: Object.freeze([]),
-  sortBy: Object.freeze([
-    Object.freeze({ field: "month", order: "ascending" })
-  ]),
-  operations: Object.freeze([
-    Object.freeze({
-      op: "movingMean",
-      field: "value",
-      as: "movingMean",
-      frame: Object.freeze({ preceding: 2, following: 0 })
-    })
-  ])
+function movingTransform(op, { preceding, following = 0 }) {
+  return Object.freeze({
+    type: "window",
+    partitionBy: Object.freeze([]),
+    sortBy: Object.freeze([
+      Object.freeze({ field: "month", order: "ascending" })
+    ]),
+    operations: Object.freeze([
+      Object.freeze({
+        op,
+        field: "passengers",
+        as: op,
+        frame: Object.freeze({ preceding, following })
+      })
+    ])
+  });
+}
+
+export const TRAILING_MEAN_TRANSFORM = movingTransform("movingMean", {
+  preceding: 2
+});
+export const CENTERED_MEAN_TRANSFORM = movingTransform("movingMean", {
+  preceding: 2,
+  following: 2
+});
+export const TRAILING_SUM_TRANSFORM = movingTransform("movingSum", {
+  preceding: 2
 });
 
-export const MONTHLY_MOVING_ROWS = createWindowReference(MONTHLY_ROWS, {
-  sortBy: MONTHLY_MOVING_TRANSFORM.sortBy,
-  operations: MONTHLY_MOVING_TRANSFORM.operations
-});
+function derive(transform) {
+  return createWindowReference(AIRLINE_PASSENGER_ROWS, {
+    sortBy: transform.sortBy,
+    operations: transform.operations
+  });
+}
+
+export const TRAILING_MEAN_ROWS = derive(TRAILING_MEAN_TRANSFORM);
+export const CENTERED_MEAN_ROWS = derive(CENTERED_MEAN_TRANSFORM);
+export const TRAILING_SUM_ROWS = derive(TRAILING_SUM_TRANSFORM);
 
 export const MONTH_TICKS = Object.freeze([
   Date.UTC(2024, 0, 1),
-  Date.UTC(2024, 2, 1),
-  Date.UTC(2024, 4, 1),
   Date.UTC(2024, 6, 1),
-  Date.UTC(2024, 8, 1),
-  Date.UTC(2024, 10, 1)
+  Date.UTC(2025, 0, 1),
+  Date.UTC(2025, 6, 1)
 ]);
