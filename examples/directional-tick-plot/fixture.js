@@ -1,8 +1,3 @@
-import {
-  centeredDirectionalSegment,
-  directionalTriangleCommands
-} from "../../oracles/directional-glyph.js";
-
 export const DIRECTION_LAYOUT = Object.freeze({
   panelWidth: 340,
   panelHeight: 360,
@@ -15,7 +10,10 @@ export const DIRECTION_LAYOUT = Object.freeze({
   triangleRadius: 12
 });
 
-const DIRECTIONS = Object.freeze([
+export const DIRECTIONAL_TRIANGLE_AREA = 3 * Math.sqrt(3) / 4 *
+  DIRECTION_LAYOUT.triangleRadius ** 2;
+
+export const DIRECTIONS = Object.freeze([
   Object.freeze({ label: "N · 0°", direction: 0 }),
   Object.freeze({ label: "NE · 45°", direction: 45 }),
   Object.freeze({ label: "E · 90°", direction: 90 }),
@@ -34,40 +32,29 @@ function pointAt(direction, radius) {
   });
 }
 
+function mapDirectionPosition(value, channel) {
+  const [rangeStart, rangeEnd] = channel === "x"
+    ? [90, 250]
+    : [290, 130];
+  const proportion = (value - -1) / 2;
+  return rangeStart + proportion * (rangeEnd - rangeStart);
+}
+
 export const DIRECTION_ROWS = Object.freeze(DIRECTIONS.map(item => {
   const x = Math.sin(item.direction * Math.PI / 180);
   const y = Math.cos(item.direction * Math.PI / 180);
   return Object.freeze({ ...item, x, y });
 }));
 
-export const ANCHORS = Object.freeze(DIRECTIONS.map(item =>
-  pointAt(item.direction, DIRECTION_LAYOUT.anchorRadius)
-));
+export const ANCHORS = Object.freeze(DIRECTION_ROWS.map(row => Object.freeze({
+  x: mapDirectionPosition(row.x, "x"),
+  y: mapDirectionPosition(row.y, "y")
+})));
 
 export const LABELS = Object.freeze(DIRECTIONS.map(item => Object.freeze({
   ...pointAt(item.direction, DIRECTION_LAYOUT.labelRadius),
   text: item.label
 })));
-
-export const BASELINE_TICKS = Object.freeze(ANCHORS.map(anchor =>
-  centeredDirectionalSegment(anchor, 0, DIRECTION_LAYOUT.tickLength)
-));
-
-export const DIRECTIONAL_TICKS = Object.freeze(ANCHORS.map((anchor, index) =>
-  centeredDirectionalSegment(
-    anchor,
-    DIRECTIONS[index].direction,
-    DIRECTION_LAYOUT.tickLength
-  )
-));
-
-export const DIRECTIONAL_TRIANGLES = Object.freeze(ANCHORS.map((anchor, index) =>
-  directionalTriangleCommands(
-    anchor,
-    DIRECTIONS[index].direction,
-    DIRECTION_LAYOUT.triangleRadius
-  )
-));
 
 const CIRCLE_KAPPA = 0.5522847498307936;
 const { x: CENTER_X, y: CENTER_Y } = DIRECTION_LAYOUT.center;
@@ -134,7 +121,7 @@ function mapHorsepower(horsepower) {
     (RUG_LAYOUT.right - RUG_LAYOUT.left);
 }
 
-export function createHorsepowerRugReference(cars) {
+export function prepareHorsepowerRug(cars) {
   if (!Array.isArray(cars)) throw new TypeError("cars must be an array.");
   const rows = cars
     .filter(car => Number.isFinite(car?.Horsepower))
@@ -143,13 +130,8 @@ export function createHorsepowerRugReference(cars) {
       Horsepower: car.Horsepower,
       Baseline: 0
     }));
-  const x = rows.map(row => mapHorsepower(row.Horsepower));
-  const half = RUG_LAYOUT.tickLength / 2;
   return Object.freeze({
     rows: Object.freeze(rows),
-    x: Object.freeze(x),
-    y1: RUG_LAYOUT.rugY - half,
-    y2: RUG_LAYOUT.rugY + half,
     axisX: Object.freeze(RUG_LAYOUT.axisValues.map(mapHorsepower)),
     labels: Object.freeze(RUG_LAYOUT.axisValues.map(String))
   });

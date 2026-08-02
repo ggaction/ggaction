@@ -97,9 +97,10 @@ const rug = chart()
   });
 ```
 
-현재 executable source는
-[`test/gates/directional-tick-plot/primitive.program.js`](../../../../test/gates/directional-tick-plot/primitive.program.js)이고,
-아직 `createTickMark` 또는 `encodeAngle`을 호출하지 않는 concrete primitive baseline이다.
+승인된 concrete baseline은
+[`test/charts/directional-tick-plot/primitive.program.js`](../../../../test/charts/directional-tick-plot/primitive.program.js)에,
+같은 결과를 만드는 public program은
+[`examples/directional-tick-plot/program.js`](../../../../examples/directional-tick-plot/program.js)에 정식 승격되었다.
 
 ## Semantic and visual result
 
@@ -117,11 +118,11 @@ const rug = chart()
 ## Evidence
 
 - Independent oracle: `test/oracles/directional-glyph.js`
-- Literal fixtures와 invariants: `test/gates/directional-tick-plot/reference-values.test.js`
-- Primitive ownership: `test/gates/directional-tick-plot/primitive.test.js`
-- Review manifest와 PNG: `test/gates/directional-tick-plot/manifest.js`,
-  `.artifacts/test/png/review/directional-tick-plot/`
-- Canvas/SVG/PNG/PDF artifacts: `.artifacts/test/renderers/review/directional-tick-plot/`
+- Literal fixtures와 invariants: `test/charts/directional-tick-plot/reference-values.test.js`
+- Primitive ownership: `test/charts/directional-tick-plot/primitive.test.js`
+- Stable manifest와 PNG: `test/charts/directional-tick-plot/manifest.js`,
+  `.artifacts/test/png/charts/marks/directional-tick-plot/`
+- Canvas/SVG/PNG/PDF artifacts: `.artifacts/test/renderers/charts/marks/directional-tick-plot/`
 - Compass PNG SHA-256: `0b148cf673eb87a66a14a4eeefe0814ebc3dca5d34fc51d761336608e512ce05`
 - Rug PNG SHA-256: `b91ddbc793b13c0e093fee36ac4c76e2ad00a6d56ae7c4d484bdd1f8f4641a0f`
 - Focused normal verification: 22 tests passed

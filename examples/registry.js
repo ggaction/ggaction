@@ -20,6 +20,8 @@ import { createCarsWindowRankScatterplot } from
 import { createTimeUnitComparison } from "./time-unit-data/program.js";
 import { createAirlinePassengerMovingWindows } from
   "./airline-passenger-moving-windows/program.js";
+import { createDirectionalTickPointComparison } from
+  "./directional-tick-plot/program.js";
 import { createOrderedCategoryBarComparison } from
   "./ordered-category-bar/program.js";
 import {
@@ -86,6 +88,21 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "directional-tick-plot",
+    data: {},
+    width: 1072,
+    height: 372,
+    createProgram: () => createDirectionalTickPointComparison(),
+    browser: {
+      path: "browser-host/?chart=directional-tick-plot",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "directional-tick-plot", width: 1072, height: 372 }
+      }
+    }
+  }),
   example({
     id: "cars-binned-heatmap",
     data: "cars",

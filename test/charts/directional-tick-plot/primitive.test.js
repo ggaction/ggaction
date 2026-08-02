@@ -46,7 +46,7 @@ test("authors an actual-data one-dimensional distribution without x-only inferen
   assert.equal(new Set(tickItems.map(item => item.properties.y2)).size, 1);
   assert.deepEqual(
     [tickItems[0].properties.y1, tickItems[0].properties.y2],
-    [118, 146]
+    [146, 118]
   );
   assert.deepEqual(
     program.graphicSpec.objects.canvas.properties,

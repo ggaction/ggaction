@@ -1,31 +1,33 @@
-import { chart, hconcat } from "../../../src/index.js";
+import { chart, hconcat } from "../../src/index.js";
 
 import {
   ANCHORS,
-  BASELINE_TICKS,
   COMPASS_RING,
   DIRECTION_ROWS,
-  DIRECTIONAL_TICKS,
-  DIRECTIONAL_TRIANGLES,
   DIRECTION_LAYOUT,
+  DIRECTIONAL_TRIANGLE_AREA,
   LABELS,
   RUG_LAYOUT,
-  createHorsepowerRugReference
-} from "./reference-values.js";
+  prepareHorsepowerRug
+} from "./fixture.js";
 
 function panelBase({ title, subtitle }) {
   return chart()
-    .createData({ id: "directions", values: DIRECTION_ROWS })
-    .createGraphics({ id: "canvas", type: "canvas" })
-    .editGraphics({ target: "canvas", property: "width", value: DIRECTION_LAYOUT.panelWidth })
-    .editGraphics({ target: "canvas", property: "height", value: DIRECTION_LAYOUT.panelHeight })
-    .editGraphics({ target: "canvas", property: "background", value: "#ffffff" })
-    .createGraphics({ id: "plot", parent: "canvas", type: "collection" })
-    .createGraphics({ id: "compassRing", parent: "plot", type: "path" })
+    .createCanvas({
+      width: DIRECTION_LAYOUT.panelWidth,
+      height: DIRECTION_LAYOUT.panelHeight,
+      margin: { top: 130, right: 90, bottom: 70, left: 90 },
+      background: "#ffffff"
+    })
+    .createData({
+      id: "directions",
+      values: DIRECTION_ROWS.map(row => ({ ...row, area: 0.5 }))
+    })
+    .createGraphics({ id: "compassRing", parent: "plot-main", type: "path" })
     .editGraphics({ target: "compassRing", property: "commands", value: COMPASS_RING })
     .editGraphics({ target: "compassRing", property: "stroke", value: "#e2e8f0" })
     .editGraphics({ target: "compassRing", property: "strokeWidth", value: 1 })
-    .createGraphics({ id: "crosshair", parent: "plot", type: "line", length: 2 })
+    .createGraphics({ id: "crosshair", parent: "plot-main", type: "line", length: 2 })
     .editGraphics({
       target: "crosshair",
       property: "x1",
@@ -48,12 +50,22 @@ function panelBase({ title, subtitle }) {
     })
     .editGraphics({ target: "crosshair", property: "stroke", value: "#f1f5f9" })
     .editGraphics({ target: "crosshair", property: "strokeWidth", value: 1 })
-    .createGraphics({ id: "anchors", parent: "plot", type: "circle", length: ANCHORS.length })
+    .createGraphics({
+      id: "anchors",
+      parent: "plot-main",
+      type: "circle",
+      length: ANCHORS.length
+    })
     .editGraphics({ target: "anchors", property: "x", value: ANCHORS.map(point => point.x) })
     .editGraphics({ target: "anchors", property: "y", value: ANCHORS.map(point => point.y) })
     .editGraphics({ target: "anchors", property: "radius", value: 3 })
     .editGraphics({ target: "anchors", property: "fill", value: "#cbd5e1" })
-    .createGraphics({ id: "directionLabels", parent: "plot", type: "text", length: LABELS.length })
+    .createGraphics({
+      id: "directionLabels",
+      parent: "plot-main",
+      type: "text",
+      length: LABELS.length
+    })
     .editGraphics({ target: "directionLabels", property: "x", value: LABELS.map(label => label.x) })
     .editGraphics({ target: "directionLabels", property: "y", value: LABELS.map(label => label.y) })
     .editGraphics({ target: "directionLabels", property: "text", value: LABELS.map(label => label.text) })
@@ -85,54 +97,60 @@ function panelBase({ title, subtitle }) {
     .editGraphics({ target: "panelSubtitle", property: "textBaseline", value: "middle" });
 }
 
-function addTicks(program, { id, values, stroke }) {
+function positions(program, target) {
   return program
-    .createGraphics({ id, parent: "plot", type: "line", length: values.length })
-    .editGraphics({ target: id, property: "x1", value: values.map(line => line.x1) })
-    .editGraphics({ target: id, property: "y1", value: values.map(line => line.y1) })
-    .editGraphics({ target: id, property: "x2", value: values.map(line => line.x2) })
-    .editGraphics({ target: id, property: "y2", value: values.map(line => line.y2) })
-    .editGraphics({ target: id, property: "stroke", value: stroke })
-    .editGraphics({ target: id, property: "strokeWidth", value: 4 });
+    .encodeX({
+      target,
+      field: "x",
+      scale: { domain: [-1, 1] }
+    })
+    .encodeY({
+      target,
+      field: "y",
+      scale: { domain: [-1, 1] }
+    });
 }
 
-export function createDirectionalTickPointPrimitives() {
-  const baseline = addTicks(panelBase({
+export function createDirectionalTickPointComparison() {
+  const baseline = positions(panelBase({
     title: "Tick · 0° baseline",
     subtitle: "All centered glyphs stay vertical"
-  }), {
+  }).createTickMark({
     id: "ticks",
-    values: BASELINE_TICKS,
-    stroke: "#64748b"
-  });
+    length: DIRECTION_LAYOUT.tickLength,
+    stroke: "#64748b",
+    strokeWidth: 4
+  }), "ticks");
 
-  const directionalTicks = addTicks(panelBase({
+  const directionalTicks = positions(panelBase({
     title: "Tick · direction field",
     subtitle: "0° up · clockwise positive"
-  }), {
+  }).createTickMark({
     id: "ticks",
-    values: DIRECTIONAL_TICKS,
-    stroke: "#2563eb"
-  });
+    length: DIRECTION_LAYOUT.tickLength,
+    stroke: "#2563eb",
+    strokeWidth: 4
+  }), "ticks").encodeAngle({ target: "ticks", field: "direction" });
 
-  const directionalPoints = panelBase({
+  const directionalPoints = positions(panelBase({
     title: "Point · direction field",
     subtitle: "Same angles · triangle-up"
-  })
-    .createGraphics({
-      id: "points",
-      parent: "plot",
-      type: "path",
-      length: DIRECTIONAL_TRIANGLES.length
-    })
-    .editGraphics({
+  }).createPointMark({
+    id: "points",
+    shape: "triangle-up",
+    fill: "#f97316",
+    stroke: "#ffffff",
+    strokeWidth: 1
+  }), "points")
+    .encodeSize({
       target: "points",
-      property: "commands",
-      value: DIRECTIONAL_TRIANGLES
+      field: "area",
+      scale: {
+        domain: [0, 1],
+        range: [DIRECTIONAL_TRIANGLE_AREA, DIRECTIONAL_TRIANGLE_AREA]
+      }
     })
-    .editGraphics({ target: "points", property: "fill", value: "#f97316" })
-    .editGraphics({ target: "points", property: "stroke", value: "#ffffff" })
-    .editGraphics({ target: "points", property: "strokeWidth", value: 1 });
+    .encodeAngle({ target: "points", field: "direction" });
 
   return hconcat({
     id: "directionalTickPointComparison",
@@ -147,39 +165,58 @@ export function createDirectionalTickPointPrimitives() {
   });
 }
 
-export function createHorsepowerRugPrimitives(cars) {
-  const values = createHorsepowerRugReference(cars);
-
+export function createHorsepowerRug(cars) {
+  const values = prepareHorsepowerRug(cars);
   return chart()
+    .createCanvas({
+      width: RUG_LAYOUT.width,
+      height: RUG_LAYOUT.height,
+      margin: { top: 76, right: 40, bottom: 90, left: 60 },
+      background: "#ffffff"
+    })
     .createData({ id: "cars", values: values.rows })
-    .createGraphics({ id: "canvas", type: "canvas" })
-    .editGraphics({ target: "canvas", property: "width", value: RUG_LAYOUT.width })
-    .editGraphics({ target: "canvas", property: "height", value: RUG_LAYOUT.height })
-    .editGraphics({ target: "canvas", property: "background", value: "#ffffff" })
-    .createGraphics({ id: "plot", parent: "canvas", type: "collection" })
-    .createGraphics({ id: "grid", parent: "plot", type: "line", length: values.axisX.length })
+    .createGraphics({
+      id: "grid",
+      parent: "plot-main",
+      type: "line",
+      length: values.axisX.length
+    })
     .editGraphics({ target: "grid", property: "x1", value: values.axisX })
     .editGraphics({ target: "grid", property: "y1", value: 76 })
     .editGraphics({ target: "grid", property: "x2", value: values.axisX })
     .editGraphics({ target: "grid", property: "y2", value: RUG_LAYOUT.axisY })
     .editGraphics({ target: "grid", property: "stroke", value: "#e2e8f0" })
     .editGraphics({ target: "grid", property: "strokeWidth", value: 1 })
-    .createGraphics({ id: "axis", parent: "plot", type: "line" })
+    .createGraphics({ id: "axis", parent: "plot-main", type: "line" })
     .editGraphics({ target: "axis", property: "x1", value: RUG_LAYOUT.left })
     .editGraphics({ target: "axis", property: "y1", value: RUG_LAYOUT.axisY })
     .editGraphics({ target: "axis", property: "x2", value: RUG_LAYOUT.right })
     .editGraphics({ target: "axis", property: "y2", value: RUG_LAYOUT.axisY })
     .editGraphics({ target: "axis", property: "stroke", value: "#94a3b8" })
     .editGraphics({ target: "axis", property: "strokeWidth", value: 1 })
-    .createGraphics({ id: "ticks", parent: "plot", type: "line", length: values.rows.length })
-    .editGraphics({ target: "ticks", property: "x1", value: values.x })
-    .editGraphics({ target: "ticks", property: "y1", value: values.y1 })
-    .editGraphics({ target: "ticks", property: "x2", value: values.x })
-    .editGraphics({ target: "ticks", property: "y2", value: values.y2 })
-    .editGraphics({ target: "ticks", property: "stroke", value: "#2563eb" })
-    .editGraphics({ target: "ticks", property: "strokeWidth", value: 1.4 })
-    .editGraphics({ target: "ticks", property: "opacity", value: 0.28 })
-    .createGraphics({ id: "axisLabels", parent: "plot", type: "text", length: values.labels.length })
+    .createTickMark({
+      id: "ticks",
+      length: RUG_LAYOUT.tickLength,
+      stroke: "#2563eb",
+      strokeWidth: 1.4,
+      opacity: 0.28
+    })
+    .encodeX({
+      target: "ticks",
+      field: "Horsepower",
+      scale: { domain: RUG_LAYOUT.domain }
+    })
+    .encodeY({
+      target: "ticks",
+      field: "Baseline",
+      scale: { domain: [-1, 1], range: [RUG_LAYOUT.rugY, RUG_LAYOUT.rugY] }
+    })
+    .createGraphics({
+      id: "axisLabels",
+      parent: "plot-main",
+      type: "text",
+      length: values.labels.length
+    })
     .editGraphics({ target: "axisLabels", property: "x", value: values.axisX })
     .editGraphics({ target: "axisLabels", property: "y", value: 169 })
     .editGraphics({ target: "axisLabels", property: "text", value: values.labels })
@@ -211,7 +248,11 @@ export function createHorsepowerRugPrimitives(cars) {
     .createGraphics({ id: "subtitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "subtitle", property: "x", value: 400 })
     .editGraphics({ target: "subtitle", property: "y", value: 49 })
-    .editGraphics({ target: "subtitle", property: "text", value: `${values.rows.length} observations · one Tick per car` })
+    .editGraphics({
+      target: "subtitle",
+      property: "text",
+      value: `${values.rows.length} observations · one Tick per car`
+    })
     .editGraphics({ target: "subtitle", property: "fill", value: "#64748b" })
     .editGraphics({ target: "subtitle", property: "fontSize", value: 11 })
     .editGraphics({ target: "subtitle", property: "fontFamily", value: "sans-serif" })

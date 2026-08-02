@@ -57,3 +57,36 @@ export function directionalTriangleCommands(value, degrees, radius) {
     Object.freeze({ op: "Z" })
   ]);
 }
+
+export function directionalEqualAreaTriangleCommands(value, degrees, area) {
+  const center = anchor(value);
+  if (!Number.isFinite(area) || area <= 0) {
+    throw new RangeError("Directional triangle area must be positive and finite.");
+  }
+  const base = Array.from({ length: 3 }, (_, index) => {
+    const angle = -Math.PI / 2 + index * Math.PI * 2 / 3;
+    return { x: Math.cos(angle), y: Math.sin(angle) };
+  });
+  const radians = finite(degrees, "Directional glyph degrees") * Math.PI / 180;
+  const cosine = Math.cos(radians);
+  const sine = Math.sin(radians);
+  const rotated = base.map(point => ({
+    x: point.x * cosine - point.y * sine,
+    y: point.x * sine + point.y * cosine
+  }));
+  const polygonArea = Math.abs(rotated.reduce((sum, point, index) => {
+    const next = rotated[(index + 1) % rotated.length];
+    return sum + point.x * next.y - next.x * point.y;
+  }, 0)) / 2;
+  const scale = Math.sqrt(area / polygonArea);
+  const points = rotated.map(point => ({
+    x: center.x + point.x * scale,
+    y: center.y + point.y * scale
+  }));
+  return Object.freeze([
+    Object.freeze({ op: "M", ...points[0] }),
+    Object.freeze({ op: "L", ...points[1] }),
+    Object.freeze({ op: "L", ...points[2] }),
+    Object.freeze({ op: "Z" })
+  ]);
+}
