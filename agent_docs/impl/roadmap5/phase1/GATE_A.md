@@ -60,7 +60,9 @@ unchanged.
 
 ## Remote checkpoint
 
-Pending the verified package commit. A metadata-only follow-up records its exact commit after push.
+- Review commit: `e98f418d` (`feat: add UTC time-unit data`)
+- Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
+- The commit contains the complete verified runtime, declarations, contracts, tests, generated docs and package evidence above.
 
 ## Approval effect
 
