@@ -35,16 +35,57 @@ program.createTimeUnitData({
 - Runtime registration, strict declarations, Current/internal contracts, generated catalog/reference/search/LLM docs,
   installed package consumer를 같은 slice로 동기화했다.
 
+## Visual review evidence
+
+왼쪽은 source timestamp를 그대로 temporal x에 사용하고, 오른쪽은 아래 public action으로 만든 `month` field를
+동일한 x domain에 사용한다. 따라서 orange points가 월 안에 흩어진 상태에서 blue points가 1월·2월·3월의 UTC
+month-start vertical columns로 정렬되는 변화를 직접 비교할 수 있다.
+
+```javascript
+chart()
+  .createCanvas({ width: 440, height: 360 })
+  .createData({ id: "events", values: rows })
+  .createTimeUnitData({
+    id: "monthlyEvents",
+    field: "date",
+    unit: "month",
+    as: "month"
+  })
+  .createScatterPlot({
+    id: "bucketedEvents",
+    data: "monthlyEvents",
+    x: { field: "month", fieldType: "temporal" },
+    y: { field: "order", fieldType: "quantitative" }
+  })
+  .encodePointRadius({ target: "bucketedEvents", value: 7 })
+  .createTitle({
+    text: "After",
+    subtitle: "Each event snaps to its UTC month start",
+    align: "center"
+  });
+```
+
+- Exact executable public source: `test/gates/time-unit-data/public.program.js`
+- Independent primitive source: `test/gates/time-unit-data/primitive.program.js`
+- Manifest and displayed chains: `test/gates/time-unit-data/manifest.js`
+- Primitive: `.artifacts/test/png/review/time-unit-data/month-bucketing/primitive.png`
+- Public: `.artifacts/test/png/review/time-unit-data/month-bucketing/user-facing.png`
+- Physical size: 1856×768 at pixel ratio 2; logical size 928×384.
+- Primitive/public PNG SHA-256 identity:
+  `941539b5878db9dbd815b3de3c1546e789eaf59e5c4404050369f596b69c8645`.
+- Gate normal tests prove nine literal month outputs, source-field preservation, exact public trace and graphic equivalence.
+
 ## Verification
 
 | Check | Result |
 | --- | --- |
 | Focused time-unit grammar/action | 7 pass |
-| Full repository suite | 1,946 pass |
+| Full repository suite | 1,948 pass, including active visual Gate |
 | Contract suite | 160 pass |
 | Coverage | 94.67% lines, 90.03% branches, 98.45% functions; 68 floors pass |
 | Documentation | 45 source tests; 112 built pages; desktop and 320/390/768px browser pass |
 | Installed package | Runtime, strict TypeScript, tutorials, three bundle entries and export checks pass |
+| Active visual Gate | 2 normal tests and 1 primitive/public render pair pass; decoded pixels are identical |
 
 The first network-enabled package run encountered the existing asynchronous tutorial Canvas ink check once; an immediate
 no-code-change rerun and the final package run both passed. Documentation source/build checks ran with pinned Ruby 3.2.6;
@@ -60,9 +101,9 @@ unchanged.
 
 ## Remote checkpoint
 
-- Review commit: `e98f418d` (`feat: add UTC time-unit data`)
+- Runtime review commit: `e98f418d` (`feat: add UTC time-unit data`)
+- Visual evidence commit: pending verified visual package commit
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
-- The commit contains the complete verified runtime, declarations, contracts, tests, generated docs and package evidence above.
 
 ## Approval effect
 

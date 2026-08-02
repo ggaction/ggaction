@@ -36,6 +36,7 @@ program.createTimeUnitData({
 - Meaningful action hierarchy and registered derived replay
 - Filter/facet replay and ordinary time scale/axis consumption
 - Declarations, current contract, catalog, docs and installed consumer
+- Primitive/public pixel-identical before/after UTC month-bucketing comparison
 
 ## Implemented slice
 
@@ -47,11 +48,13 @@ program.createTimeUnitData({
   immutable action chain 안에서 보장한다.
 - Row-preserving facet replay 후에도 각 child가 자기 partition에서 같은 transform을 materialize한다.
 - Derived temporal field는 기존 point mark의 ordinary temporal x encoding과 resolved time scale에 바로 연결된다.
+- Review comparison은 original dates가 월 안에 흩어진 왼쪽 panel과 UTC month-start 세로열로 정렬된 오른쪽
+  panel을 같은 domain과 event order로 나란히 보여준다.
 
 ## Verification snapshot
 
 - Focused grammar/action tests: 7 pass.
-- Full repository suite: 1,946 pass.
+- Full repository suite: 1,948 pass, including the active visual Gate.
 - Contract suite: 160 pass.
 - Coverage: 94.67% lines, 90.03% branches, 98.45% functions; 68 critical floors pass.
 - Documentation: 45 source tests, 112 built pages, desktop search와 320/390/768px browser checks pass under

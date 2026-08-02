@@ -15,6 +15,7 @@ temporal chart-consumption evidence를 한 Gate에서 동기화한다.
 - [x] Strict declarations와 Current action contract 동기화
 - [x] Focused grammar/action/facet/immutability tests
 - [x] Ordinary temporal point materialization evidence
+- [x] Before/after UTC month-bucketing visual review evidence
 - [x] Cumulative contract/unit/chart/package/docs verification
 - [x] R5-P1-A remote checkpoint (`e98f418d`)
 - [ ] 사용자 explicit approval
