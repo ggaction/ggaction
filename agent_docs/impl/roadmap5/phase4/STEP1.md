@@ -9,9 +9,9 @@
 - [x] R5-P4-V approval — 2026-08-02
 - [x] Tick create/edit/materialization and generic removal integration
 - [x] Angle assignment/removal and point/Tick rematerialization
-- [ ] Strict declarations, Current contracts, docs, example와 package synchronization
-- [ ] Stable visual graduation and four-renderer equivalence
-- [ ] Focused/cumulative verification and remote Gate checkpoint
+- [x] Strict declarations, Current contracts, docs, example와 package synchronization
+- [x] Stable visual graduation and four-renderer equivalence
+- [x] Focused/cumulative verification and remote Gate checkpoint
 
 ## Approved contract
 

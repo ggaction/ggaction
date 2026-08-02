@@ -6,7 +6,7 @@ x/y 위치마다 짧은 Tick을 놓고 direction field를 degree로 회전한다
 두 mark가 동일한 angle convention을 쓰는지 검증한다. 별도 actual-data variant는 fixed baseline y를 명시해
 Tick rug distribution을 보여준다.
 
-## Proposed final user-facing API
+## Final user-facing API
 
 ```javascript
 chart()
