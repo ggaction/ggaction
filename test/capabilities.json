@@ -18,7 +18,7 @@
     ],
     "data": [
       { "type": "prefix", "path": "unit/actions/data/" },
-      { "type": "prefix", "path": "gates/time-unit-data/" },
+      { "type": "prefix", "path": "charts/time-unit-data/" },
       { "type": "prefix", "path": "charts/cars-binned-heatmap/" },
       { "type": "prefix", "path": "charts/cars-window-rank-scatterplot/" },
       { "type": "file", "path": "contracts/dataset-fixtures.test.js" },

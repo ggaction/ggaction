@@ -54,7 +54,7 @@ program.createTimeUnitData({
 ## Verification snapshot
 
 - Focused grammar/action tests: 7 pass.
-- Full repository suite: 1,948 pass, including the active visual Gate.
+- Full repository suite: 1,949 pass, including the approved stable visual slice.
 - Contract suite: 160 pass.
 - Coverage: 94.67% lines, 90.03% branches, 98.45% functions; 68 critical floors pass.
 - Documentation: 45 source tests, 112 built pages, desktop search와 320/390/768px browser checks pass under

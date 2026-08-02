@@ -43,7 +43,7 @@ export const visualVariants = Object.freeze([
     variant: "month-bucketing",
     title: "Raw Dates and UTC Month Buckets",
     callChain: comparisonCallChain,
-    artifact: { scope: "review" },
+    artifact: { capability: "data" },
     programEquivalence: "render",
     primitive: createTimeUnitComparisonPrimitives,
     userFacing: createTimeUnitComparison,

@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved` — 2026-08-02 사용자 승인
 
 ## Review target
 
@@ -65,27 +65,27 @@ chart()
   });
 ```
 
-- Exact executable public source: `test/gates/time-unit-data/public.program.js`
-- Independent primitive source: `test/gates/time-unit-data/primitive.program.js`
-- Manifest and displayed chains: `test/gates/time-unit-data/manifest.js`
-- Primitive: `.artifacts/test/png/review/time-unit-data/month-bucketing/primitive.png`
-- Public: `.artifacts/test/png/review/time-unit-data/month-bucketing/user-facing.png`
+- Exact executable public source: `examples/time-unit-data/program.js`
+- Independent primitive source: `test/charts/time-unit-data/primitive.program.js`
+- Manifest and displayed chains: `test/charts/time-unit-data/manifest.js`
+- Primitive: `.artifacts/test/png/charts/data/time-unit-data/month-bucketing/primitive.png`
+- Public: `.artifacts/test/png/charts/data/time-unit-data/month-bucketing/user-facing.png`
 - Physical size: 1856×768 at pixel ratio 2; logical size 928×384.
 - Primitive/public PNG SHA-256 identity:
   `941539b5878db9dbd815b3de3c1546e789eaf59e5c4404050369f596b69c8645`.
-- Gate normal tests prove nine literal month outputs, source-field preservation, exact public trace and graphic equivalence.
+- Stable chart tests prove nine literal month outputs, source-field preservation, exact public trace and graphic equivalence.
 
 ## Verification
 
 | Check | Result |
 | --- | --- |
 | Focused time-unit grammar/action | 7 pass |
-| Full repository suite | 1,948 pass, including active visual Gate |
+| Full repository suite | 1,949 pass, including approved stable visual slice |
 | Contract suite | 160 pass |
 | Coverage | 94.67% lines, 90.03% branches, 98.45% functions; 68 floors pass |
 | Documentation | 45 source tests; 112 built pages; desktop and 320/390/768px browser pass |
 | Installed package | Runtime, strict TypeScript, tutorials, three bundle entries and export checks pass |
-| Active visual Gate | 2 normal tests and 1 primitive/public render pair pass; decoded pixels are identical |
+| Approved visual slice | 3 normal tests and 1 primitive/public render pair pass; decoded pixels are identical |
 
 The first network-enabled package run encountered the existing asynchronous tutorial Canvas ink check once; an immediate
 no-code-change rerun and the final package run both passed. Documentation source/build checks ran with pinned Ruby 3.2.6;
@@ -103,14 +103,14 @@ unchanged.
 
 - Runtime review commit: `e98f418d` (`feat: add UTC time-unit data`)
 - Visual evidence commit: `5d419979` (`test: add time-unit visual review`)
+- Approval/graduation commit: pending verified approval package commit
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect
 
-승인하면 Phase 2 semantic category ordering implementation을 시작할 수 있다. PR creation, publish, deployment와
-release 권한은 포함하지 않는다.
+Phase 2 semantic category ordering implementation이 열렸다. PR creation, publish, deployment와 release 권한은
+포함하지 않는다.
 
-## Work blocked before approval
+## Work remaining blocked
 
-- `orderCategories`/`removeCategoryOrder` runtime implementation
-- Phase 3 이후 capability implementation
+- Phase 3 이후 capability implementation은 R5-P2-A 승인 전까지 차단한다.

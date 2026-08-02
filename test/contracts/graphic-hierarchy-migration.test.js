@@ -269,13 +269,15 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "chartTitle", "chartSubtitle"
   ],
   "program-composition": [],
+  "time-unit-data": [],
   "cars-origin-scatterplot-facet": [],
   "cross-feature-dashboard": []
 });
 
 const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
   "program-composition": 9,
-  "cross-feature-dashboard": 52
+  "cross-feature-dashboard": 52,
+  "time-unit-data": 29
 });
 
 function loadChartData(data) {

@@ -17,6 +17,7 @@ import { createCarsParallelCoordinates } from
 import { createCarsBinnedHeatmap } from "./cars-binned-heatmap/program.js";
 import { createCarsWindowRankScatterplot } from
   "./cars-window-rank-scatterplot/program.js";
+import { createTimeUnitComparison } from "./time-unit-data/program.js";
 import {
   createCarsOriginJitter,
   createGapminderClusterJitter
@@ -93,6 +94,21 @@ export const PUBLIC_CHARTS = Object.freeze([
       state: {
         global: "__carsBinnedHeatmap",
         expected: { width: 700, height: 500, cells: 80 }
+      }
+    }
+  }),
+  example({
+    id: "time-unit-data",
+    data: {},
+    width: 928,
+    height: 384,
+    createProgram: () => createTimeUnitComparison(),
+    browser: {
+      path: "browser-host/?chart=time-unit-data",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "time-unit-data", width: 928, height: 384 }
       }
     }
   }),
