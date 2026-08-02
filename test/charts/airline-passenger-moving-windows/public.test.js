@@ -25,7 +25,7 @@ test("matches all approved moving-window primitives through public actions", () 
   for (const [id, child] of Object.entries(publicProgram.children)) {
     assert.deepEqual(
       child.semanticSpec.datasets.find(dataset =>
-        dataset.id === "movingPassengers"
+        dataset.id === id
       ).values,
       expectedRows[id]
     );

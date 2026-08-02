@@ -14,7 +14,7 @@ import {
   TIME_UNIT_TRANSFORM
 } from "./reference-values.js";
 
-function basePanel({ values, transform, field, domain, stroke }) {
+function basePanel({ id, values, transform, field, domain, stroke }) {
   return chart()
     .createCanvas({
       width: MOVING_WINDOW_LAYOUT.panelWidth,
@@ -32,17 +32,17 @@ function basePanel({ values, transform, field, domain, stroke }) {
       value: AIRLINE_PASSENGER_ROWS
     })
     .createDerivedData({
-      id: "movingPassengers",
+      id,
       source: "monthlyPassengers",
       transform: [transform]
     })
     .editSemantic({
-      property: "dataset[movingPassengers].values",
+      property: `dataset[${id}].values`,
       value: values
     })
     .createLineMark({
       id: "moving",
-      data: "movingPassengers",
+      data: id,
       stroke,
       strokeWidth: 4,
       opacity: 1
@@ -109,6 +109,7 @@ function finishPanel(program, { title, subtitle, yTitle }) {
 
 export function createAirlinePassengerMovingWindowPrimitives() {
   const trailingMean = finishPanel(addRawLine(basePanel({
+    id: "trailingMean",
     values: TRAILING_MEAN_ROWS,
     transform: TRAILING_MEAN_TRANSFORM,
     field: "movingMean",
@@ -121,6 +122,7 @@ export function createAirlinePassengerMovingWindowPrimitives() {
   });
 
   const centeredMean = finishPanel(addRawLine(basePanel({
+    id: "centeredMean",
     values: CENTERED_MEAN_ROWS,
     transform: CENTERED_MEAN_TRANSFORM,
     field: "movingMean",
@@ -133,6 +135,7 @@ export function createAirlinePassengerMovingWindowPrimitives() {
   });
 
   const trailingSum = finishPanel(basePanel({
+    id: "trailingSum",
     values: TRAILING_SUM_ROWS,
     transform: TRAILING_SUM_TRANSFORM,
     field: "movingSum",

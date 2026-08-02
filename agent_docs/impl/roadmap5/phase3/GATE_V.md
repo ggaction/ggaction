@@ -14,6 +14,7 @@ moving mean과 trailing moving sum primitive visual target이다.
 ```javascript
 const trailingMean = monthly.createWindowData({
   id: "trailingMean",
+  source: "monthlyPassengers",
   sortBy: [{ field: "month" }],
   operations: [{
     op: "movingMean",
@@ -25,6 +26,7 @@ const trailingMean = monthly.createWindowData({
 
 const centeredMean = monthly.createWindowData({
   id: "centeredMean",
+  source: "monthlyPassengers",
   sortBy: [{ field: "month" }],
   operations: [{
     op: "movingMean",
@@ -36,6 +38,7 @@ const centeredMean = monthly.createWindowData({
 
 const trailingSum = monthly.createWindowData({
   id: "trailingSum",
+  source: "monthlyPassengers",
   sortBy: [{ field: "month" }],
   operations: [{
     op: "movingSum",
@@ -58,11 +61,11 @@ const trailingSum = monthly.createWindowData({
 - Mean domains: `[60, 100]`; sum domain: `[0, 280]`; partition edges truncate.
 - Data source:
   `https://www.bts.gov/newsroom/monthly-passengers-us-scheduled-airlines-domestic-international-april-2023-april-2026`
-- Primitive source: `test/gates/monthly-moving-average/primitive.program.js`
-- Independent values: `test/gates/monthly-moving-average/reference-values.js`
-- Manifest: `test/gates/monthly-moving-average/manifest.js`
+- Primitive source: `test/charts/airline-passenger-moving-windows/primitive.program.js`
+- Independent values: `test/charts/airline-passenger-moving-windows/reference-values.js`
+- Manifest: `test/charts/airline-passenger-moving-windows/manifest.js`
 - Review PNG:
-  `.artifacts/test/png/review/airline-passenger-moving-windows/trailing-centered-and-sum/primitive.png`
+  `.artifacts/test/png/charts/data/airline-passenger-moving-windows/trailing-centered-and-sum/primitive.png`
 - Physical size: 2384×744 at pixel ratio 2; logical size 1192×372.
 - PNG SHA-256:
   `faba89412e35ade4ab229482c3e21aaa1df7c9cbd1297fe54ab6da1757f4392f`.
@@ -81,6 +84,7 @@ const trailingSum = monthly.createWindowData({
 
 - Visual review commit: `e80a77cf` (`test: add moving-window visual target`)
 - Actual-data multi-option revision: `731839b2`
+- Approved artifact graduation and public equivalence: `4ddfdb89`
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect

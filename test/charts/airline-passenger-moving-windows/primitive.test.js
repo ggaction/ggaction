@@ -9,7 +9,7 @@ test("authors three actual-data moving-window targets through data primitives", 
   assert.deepEqual(Object.keys(program.children), [
     "trailingMean", "centeredMean", "trailingSum"
   ]);
-  for (const child of Object.values(program.children)) {
+  for (const [id, child] of Object.entries(program.children)) {
     assert.equal(child.graphicSpec.objects.moving.items[0].properties.commands.length, 24);
     assert.equal(
       child.trace.children.some(node => node.op === "createWindowData"),
@@ -21,7 +21,7 @@ test("authors three actual-data moving-window targets through data primitives", 
     );
     assert.deepEqual(
       child.semanticSpec.datasets.map(dataset => dataset.id),
-      ["airlinePassengerEvents", "monthlyPassengers", "movingPassengers"]
+      ["airlinePassengerEvents", "monthlyPassengers", id]
     );
   }
   assert.deepEqual(program.children.trailingMean.resolvedScales.y.domain, [60, 100]);

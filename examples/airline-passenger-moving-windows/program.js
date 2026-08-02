@@ -47,11 +47,11 @@ function monthlyProgram(rows) {
     });
 }
 
-function addMovingLine(program, { field, domain, stroke }) {
+function addMovingLine(program, { data, field, domain, stroke }) {
   return program
     .createLineMark({
       id: "moving",
-      data: "movingPassengers",
+      data,
       stroke,
       strokeWidth: 4,
       opacity: 1
@@ -121,7 +121,7 @@ export function createAirlinePassengerMovingWindows(
 ) {
   const trailingMean = finishPanel(addRawLine(addMovingLine(
     monthlyProgram(rows).createWindowData({
-      id: "movingPassengers",
+      id: "trailingMean",
       source: "monthlyPassengers",
       sortBy: [{ field: "month" }],
       operations: [{
@@ -131,7 +131,12 @@ export function createAirlinePassengerMovingWindows(
         frame: { preceding: 2 }
       }]
     }),
-    { field: "movingMean", domain: [60, 100], stroke: "#2563eb" }
+    {
+      data: "trailingMean",
+      field: "movingMean",
+      domain: [60, 100],
+      stroke: "#2563eb"
+    }
   )), {
     title: "movingMean · trailing 3 months",
     subtitle: "BTS U.S. passengers, 2024–2025",
@@ -140,7 +145,7 @@ export function createAirlinePassengerMovingWindows(
 
   const centeredMean = finishPanel(addRawLine(addMovingLine(
     monthlyProgram(rows).createWindowData({
-      id: "movingPassengers",
+      id: "centeredMean",
       source: "monthlyPassengers",
       sortBy: [{ field: "month" }],
       operations: [{
@@ -150,7 +155,12 @@ export function createAirlinePassengerMovingWindows(
         frame: { preceding: 2, following: 2 }
       }]
     }),
-    { field: "movingMean", domain: [60, 100], stroke: "#059669" }
+    {
+      data: "centeredMean",
+      field: "movingMean",
+      domain: [60, 100],
+      stroke: "#059669"
+    }
   )), {
     title: "movingMean · centered 5 months",
     subtitle: "BTS U.S. passengers, 2024–2025",
@@ -159,7 +169,7 @@ export function createAirlinePassengerMovingWindows(
 
   const trailingSum = finishPanel(addMovingLine(
     monthlyProgram(rows).createWindowData({
-      id: "movingPassengers",
+      id: "trailingSum",
       source: "monthlyPassengers",
       sortBy: [{ field: "month" }],
       operations: [{
@@ -169,7 +179,12 @@ export function createAirlinePassengerMovingWindows(
         frame: { preceding: 2 }
       }]
     }),
-    { field: "movingSum", domain: [0, 280], stroke: "#7c3aed" }
+    {
+      data: "trailingSum",
+      field: "movingSum",
+      domain: [0, 280],
+      stroke: "#7c3aed"
+    }
   ), {
     title: "movingSum · trailing 3 months",
     subtitle: "BTS U.S. passengers, 2024–2025",

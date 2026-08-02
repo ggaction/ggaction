@@ -7,6 +7,7 @@ import { MOVING_WINDOW_LAYOUT } from "./reference-values.js";
 
 export const trailingMeanCallChain = `monthly.createWindowData({
   id: "trailingMean",
+  source: "monthlyPassengers",
   sortBy: [{ field: "month" }],
   operations: [{
     op: "movingMean",
@@ -18,6 +19,7 @@ export const trailingMeanCallChain = `monthly.createWindowData({
 
 export const centeredMeanCallChain = `monthly.createWindowData({
   id: "centeredMean",
+  source: "monthlyPassengers",
   sortBy: [{ field: "month" }],
   operations: [{
     op: "movingMean",
@@ -29,6 +31,7 @@ export const centeredMeanCallChain = `monthly.createWindowData({
 
 export const trailingSumCallChain = `monthly.createWindowData({
   id: "trailingSum",
+  source: "monthlyPassengers",
   sortBy: [{ field: "month" }],
   operations: [{
     op: "movingSum",
