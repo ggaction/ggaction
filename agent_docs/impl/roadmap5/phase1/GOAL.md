@@ -17,7 +17,7 @@ temporal chart-consumption evidence를 한 Gate에서 동기화한다.
 - [x] Ordinary temporal point materialization evidence
 - [x] Before/after UTC month-bucketing visual review evidence
 - [x] Cumulative contract/unit/chart/package/docs verification
-- [x] R5-P1-A runtime and visual remote checkpoints (`e98f418d`, `5d419979`)
+- [x] R5-P1-A runtime, visual and approval remote checkpoints (`e98f418d`, `5d419979`, `3f74a073`)
 - [x] 사용자 explicit approval — 2026-08-02
 
 ## Gate R5-P1-A

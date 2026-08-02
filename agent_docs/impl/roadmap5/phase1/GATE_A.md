@@ -103,7 +103,7 @@ unchanged.
 
 - Runtime review commit: `e98f418d` (`feat: add UTC time-unit data`)
 - Visual evidence commit: `5d419979` (`test: add time-unit visual review`)
-- Approval/graduation commit: pending verified approval package commit
+- Approval/graduation commit: `3f74a073` (`docs: approve roadmap 5 phase 1`)
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect
