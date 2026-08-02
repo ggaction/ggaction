@@ -3,7 +3,8 @@
 ## 차트 목적
 
 x/y 위치마다 짧은 Tick을 놓고 direction field를 degree로 회전한다. 같은 위치의 rotated point variant와 비교해
-두 mark가 동일한 angle convention을 쓰는지 검증한다.
+두 mark가 동일한 angle convention을 쓰는지 검증한다. 별도 actual-data variant는 fixed baseline y를 명시해
+Tick rug distribution을 보여준다.
 
 ## Proposed final user-facing API
 
@@ -52,9 +53,10 @@ encodeAngle
 - Tick and triangle point agree at every direction.
 - Length/area and center remain invariant under rotation.
 - Canvas, SVG, PNG and PDF align when shown side by side.
+- Actual-data rug variant는 각 observation을 하나의 Tick으로 보존하고 explicit fixed-y anchor를 사용한다.
 
 ## Non-goals
 
-- Plot-edge rug placement or one-axis Tick inference
+- x-only plot-edge rug placement automation or one-axis Tick inference
 - Angle scale/legend, radians or data-domain normalization
 - Rotation for text, line, rule, bar, area, rect or arc

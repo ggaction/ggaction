@@ -1,7 +1,13 @@
 import { defineVisualVariant } from "../../support/visual-variants.js";
+import { loadCars } from "../../support/data.js";
 
-import { createDirectionalTickPointPrimitives } from "./primitive.program.js";
-import { DIRECTION_LAYOUT } from "./reference-values.js";
+import {
+  createDirectionalTickPointPrimitives,
+  createHorsepowerRugPrimitives
+} from "./primitive.program.js";
+import { DIRECTION_LAYOUT, RUG_LAYOUT } from "./reference-values.js";
+
+const cars = loadCars();
 
 export const comparisonCallChain = `hconcat({
   id: "directionalTickPointComparison",
@@ -14,6 +20,41 @@ export const comparisonCallChain = `hconcat({
   padding: 6,
   align: "start"
 });`;
+
+export const rugCallChain = `chart()
+  .createCanvas({
+    width: 800,
+    height: 240,
+    margin: { top: 70, right: 40, bottom: 70, left: 60 }
+  })
+  .createData({ id: "cars", values: rows })
+  .createTickMark({
+    id: "ticks",
+    length: 28,
+    stroke: "#2563eb",
+    strokeWidth: 1.4,
+    opacity: 0.28
+  })
+  .encodeX({
+    target: "ticks",
+    field: "Horsepower",
+    fieldType: "quantitative",
+    scale: { domain: [40, 240] }
+  })
+  .encodeY({
+    target: "ticks",
+    field: "Baseline",
+    fieldType: "quantitative",
+    scale: { domain: [-1, 1] }
+  })
+  .createGuides({
+    axes: {
+      x: { title: { text: "Horsepower" } },
+      y: false
+    },
+    grid: false,
+    legend: false
+  });`;
 
 export const visualVariants = Object.freeze([
   defineVisualVariant({
@@ -39,5 +80,24 @@ export const visualVariants = Object.freeze([
         minimumInkPixels: 500
       })
     )
+  }),
+  defineVisualVariant({
+    chart: "directional-tick-plot",
+    variant: "cars-horsepower-rug",
+    title: "Cars Horsepower Rug Plot",
+    callChain: rugCallChain,
+    artifact: { scope: "review" },
+    primitive: () => createHorsepowerRugPrimitives(cars),
+    width: RUG_LAYOUT.width,
+    height: RUG_LAYOUT.height,
+    colors: [{ value: "#c2d4f9", tolerance: 1, minimumPixels: 1000 }],
+    regions: [{
+      name: "horsepower rug",
+      x: RUG_LAYOUT.left,
+      y: 76,
+      width: RUG_LAYOUT.right - RUG_LAYOUT.left,
+      height: RUG_LAYOUT.axisY - 76,
+      minimumInkPixels: 700
+    }]
   })
 ]);

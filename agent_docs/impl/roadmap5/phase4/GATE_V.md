@@ -2,12 +2,13 @@
 
 ## Gate state
 
-`ready-for-review`
+`changes-requested`
 
 ## Review target
 
-Phase 4 public implementation 전에 고정하는 unrotated Tick, field-rotated Tick과 field-rotated triangle point의
-three-panel primitive visual target이다. Eight compass directions share identical x/y anchors across panels.
+Phase 4 public implementation 전에 두 visual target을 고정한다. 첫 target은 unrotated Tick, field-rotated Tick과
+field-rotated triangle point의 three-panel comparison이며, 둘째 target은 actual Cars horsepower 400개를 각각
+하나의 centered Tick으로 표시하는 one-dimensional rug plot이다.
 
 ## Exact target public call chains
 
@@ -51,6 +52,49 @@ const directionalPoints = chart()
   .encodeAngle({ target: "points", field: "direction" });
 ```
 
+Cars rug target은 x-only inference를 추가하지 않는다. 각 row의 `Baseline: 0`을 explicit y field로 사용한다.
+
+```javascript
+const rows = cars
+  .filter(car => Number.isFinite(car.Horsepower))
+  .map(car => ({ ...car, Baseline: 0 }));
+
+const rug = chart()
+  .createCanvas({
+    width: 800,
+    height: 240,
+    margin: { top: 70, right: 40, bottom: 70, left: 60 }
+  })
+  .createData({ id: "cars", values: rows })
+  .createTickMark({
+    id: "ticks",
+    length: 28,
+    stroke: "#2563eb",
+    strokeWidth: 1.4,
+    opacity: 0.28
+  })
+  .encodeX({
+    target: "ticks",
+    field: "Horsepower",
+    fieldType: "quantitative",
+    scale: { domain: [40, 240] }
+  })
+  .encodeY({
+    target: "ticks",
+    field: "Baseline",
+    fieldType: "quantitative",
+    scale: { domain: [-1, 1] }
+  })
+  .createGuides({
+    axes: {
+      x: { title: { text: "Horsepower" } },
+      y: false
+    },
+    grid: false,
+    legend: false
+  });
+```
+
 현재 executable source는
 [`test/gates/directional-tick-plot/primitive.program.js`](../../../../test/gates/directional-tick-plot/primitive.program.js)이고,
 아직 `createTickMark` 또는 `encodeAngle`을 호출하지 않는 concrete primitive baseline이다.
@@ -64,6 +108,9 @@ const directionalPoints = chart()
 - Centered line Tick은 축 방향만 보이므로 `0°/180°`, `90°/270°`가 각각 같은 선 모양이다. Triangle panel이
   반대 heading을 구별하며 direct-degree convention을 확인한다.
 - 전체 logical extent는 `1072 × 372`, PNG review pixel extent는 `2144 × 744`다.
+- Rug plot은 repo의 actual Cars fixture 중 finite Horsepower 400개를 보존한다. 모든 Tick의 y center는 같은
+  `Baseline`이며 opacity overlap이 repeated/nearby horsepower의 밀도를 드러낸다.
+- Rug logical extent는 `800 × 240`, PNG review pixel extent는 `1600 × 480`이다.
 
 ## Evidence
 
@@ -71,13 +118,13 @@ const directionalPoints = chart()
 - Literal fixtures와 invariants: `test/gates/directional-tick-plot/reference-values.test.js`
 - Primitive ownership: `test/gates/directional-tick-plot/primitive.test.js`
 - Review manifest와 PNG: `test/gates/directional-tick-plot/manifest.js`,
-  `.artifacts/test/png/review/directional-tick-plot/baseline-tick-point-directions/`
-- Canvas/SVG/PNG/PDF artifacts:
-  `.artifacts/test/renderers/review/directional-tick-plot/baseline-tick-point-directions/`
-- PNG SHA-256: `0b148cf673eb87a66a14a4eeefe0814ebc3dca5d34fc51d761336608e512ce05`
-- Focused normal verification: 20 tests passed
-- Focused four-renderer verification: 2 tests passed
-- Cumulative normal verification: 1,978 tests passed
+  `.artifacts/test/png/review/directional-tick-plot/`
+- Canvas/SVG/PNG/PDF artifacts: `.artifacts/test/renderers/review/directional-tick-plot/`
+- Compass PNG SHA-256: `0b148cf673eb87a66a14a4eeefe0814ebc3dca5d34fc51d761336608e512ce05`
+- Rug PNG SHA-256: `b91ddbc793b13c0e093fee36ac4c76e2ad00a6d56ae7c4d484bdd1f8f4641a0f`
+- Focused normal verification: 22 tests passed
+- Focused four-renderer verification: 3 tests passed
+- Cumulative normal verification: 1,980 tests passed
 
 ## Compatibility and documentation impact
 
@@ -87,8 +134,8 @@ Current contracts와 public docs 동작은 바꾸지 않는다. 승인 뒤 publi
 
 ## Remote checkpoint
 
-`8a044b6c` (`test: add directional Tick visual target`),
-`codex/roadmap5-temporal-ordering-directional-marks`에 push 완료.
+이전 checkpoint `8a044b6c`는 2026-08-02 rug plot 추가 요청으로 supersede되었다. Revised verified checkpoint는
+commit/push 뒤 기록한다.
 
 ## Approval effect
 

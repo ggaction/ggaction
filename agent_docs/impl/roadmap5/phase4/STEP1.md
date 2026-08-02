@@ -4,7 +4,8 @@
 
 - [x] Existing point-shape, Cartesian position과 mark lifecycle boundary 확인 시작
 - [x] Independent cardinal/intercardinal geometry fixtures 작성
-- [x] Primitive comparison과 four-renderer review artifacts 작성
+- [x] Primitive direction comparison과 actual-data rug distribution 작성
+- [x] 두 visual target의 four-renderer review artifacts 작성
 - [ ] R5-P4-V approval
 - [ ] Tick create/edit/materialization and generic removal integration
 - [ ] Angle assignment/removal and point/Tick rematerialization

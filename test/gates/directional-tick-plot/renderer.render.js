@@ -9,51 +9,47 @@ import { renderToPNG } from "../../../src/renderers/png.js";
 import { renderToSVG } from "../../../src/renderers/svg.js";
 import { createMockCanvasContext } from "../../support/canvas.js";
 
-import { createDirectionalTickPointPrimitives } from "./primitive.program.js";
-import { DIRECTION_LAYOUT } from "./reference-values.js";
+import { visualVariants } from "./manifest.js";
 
-const artifactRoot = resolve(
-  ".artifacts/test/renderers/review/directional-tick-plot/" +
-  "baseline-tick-point-directions"
-);
+test("renders every Tick visual target in Canvas, SVG, PNG, and PDF", async () => {
+  for (const variant of visualVariants) {
+    const primitive = variant.primitive();
+    const canvas = createMockCanvasContext();
+    const artifactRoot = resolve(
+      ".artifacts/test/renderers/review",
+      variant.chart,
+      variant.variant
+    );
 
-const expectedWidth = DIRECTION_LAYOUT.padding * 2 +
-  DIRECTION_LAYOUT.panelWidth * 3 + DIRECTION_LAYOUT.gap * 2;
-const expectedHeight = DIRECTION_LAYOUT.padding * 2 +
-  DIRECTION_LAYOUT.panelHeight;
+    render(primitive, canvas);
+    assert.ok(canvas.calls.length > 0);
 
-test("renders the directional primitive in Canvas, SVG, PNG, and PDF", async () => {
-  const primitive = createDirectionalTickPointPrimitives();
-  const canvas = createMockCanvasContext();
+    await mkdir(artifactRoot, { recursive: true });
+    await writeFile(
+      `${artifactRoot}/canvas.json`,
+      `${JSON.stringify(canvas.calls, null, 2)}\n`
+    );
 
-  render(primitive, canvas);
-  assert.ok(canvas.calls.length > 0);
+    const svg = renderToSVG(primitive);
+    assert.match(svg, new RegExp(`<svg[^>]+width="${variant.width}"`));
+    assert.match(svg, new RegExp(`height="${variant.height}"`));
+    await writeFile(`${artifactRoot}/primitive.svg`, svg);
 
-  await mkdir(artifactRoot, { recursive: true });
-  await writeFile(
-    `${artifactRoot}/canvas.json`,
-    `${JSON.stringify(canvas.calls, null, 2)}\n`
-  );
+    const png = await renderToPNG(primitive, {
+      output: `${artifactRoot}/primitive.png`,
+      pixelRatio: 2
+    });
+    assert.deepEqual(
+      [png.width, png.height],
+      [variant.width * 2, variant.height * 2]
+    );
 
-  const svg = renderToSVG(primitive);
-  assert.match(svg, new RegExp(`<svg[^>]+width="${expectedWidth}"`));
-  assert.match(svg, new RegExp(`height="${expectedHeight}"`));
-  await writeFile(`${artifactRoot}/primitive.svg`, svg);
-
-  const png = await renderToPNG(primitive, {
-    output: `${artifactRoot}/primitive.png`,
-    pixelRatio: 2
-  });
-  assert.deepEqual(
-    [png.width, png.height],
-    [expectedWidth * 2, expectedHeight * 2]
-  );
-
-  const pdf = await renderToPDF(primitive, {
-    output: `${artifactRoot}/primitive.pdf`
-  });
-  assert.deepEqual(
-    [pdf.width, pdf.height, pdf.pages],
-    [expectedWidth, expectedHeight, 1]
-  );
+    const pdf = await renderToPDF(primitive, {
+      output: `${artifactRoot}/primitive.pdf`
+    });
+    assert.deepEqual(
+      [pdf.width, pdf.height, pdf.pages],
+      [variant.width, variant.height, 1]
+    );
+  }
 });

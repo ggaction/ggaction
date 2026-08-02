@@ -114,3 +114,43 @@ export const COMPASS_RING = Object.freeze([
   }),
   Object.freeze({ op: "Z" })
 ]);
+
+export const RUG_LAYOUT = Object.freeze({
+  width: 800,
+  height: 240,
+  left: 60,
+  right: 760,
+  rugY: 132,
+  axisY: 150,
+  tickLength: 28,
+  domain: Object.freeze([40, 240]),
+  axisValues: Object.freeze([50, 100, 150, 200])
+});
+
+function mapHorsepower(horsepower) {
+  const [domainStart, domainEnd] = RUG_LAYOUT.domain;
+  return RUG_LAYOUT.left +
+    (horsepower - domainStart) / (domainEnd - domainStart) *
+    (RUG_LAYOUT.right - RUG_LAYOUT.left);
+}
+
+export function createHorsepowerRugReference(cars) {
+  if (!Array.isArray(cars)) throw new TypeError("cars must be an array.");
+  const rows = cars
+    .filter(car => Number.isFinite(car?.Horsepower))
+    .map((car, index) => Object.freeze({
+      id: index,
+      Horsepower: car.Horsepower,
+      Baseline: 0
+    }));
+  const x = rows.map(row => mapHorsepower(row.Horsepower));
+  const half = RUG_LAYOUT.tickLength / 2;
+  return Object.freeze({
+    rows: Object.freeze(rows),
+    x: Object.freeze(x),
+    y1: RUG_LAYOUT.rugY - half,
+    y2: RUG_LAYOUT.rugY + half,
+    axisX: Object.freeze(RUG_LAYOUT.axisValues.map(mapHorsepower)),
+    labels: Object.freeze(RUG_LAYOUT.axisValues.map(String))
+  });
+}

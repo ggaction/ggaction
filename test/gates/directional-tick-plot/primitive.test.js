@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createDirectionalTickPointPrimitives } from "./primitive.program.js";
+import { loadCars } from "../../support/data.js";
+
+import {
+  createDirectionalTickPointPrimitives,
+  createHorsepowerRugPrimitives
+} from "./primitive.program.js";
 import { DIRECTION_LAYOUT } from "./reference-values.js";
 
 test("authors the three-panel directional target without future actions", () => {
@@ -29,4 +34,26 @@ test("authors the three-panel directional target without future actions", () => 
     { width: 1072, height: 372, background: "white" }
   );
   assert.equal(DIRECTION_LAYOUT.tickLength, 26);
+});
+
+test("authors an actual-data one-dimensional distribution without x-only inference", () => {
+  const program = createHorsepowerRugPrimitives(loadCars());
+  const tickItems = program.graphicSpec.objects.ticks.items;
+
+  assert.equal(program.semanticSpec.datasets[0].values.length, 400);
+  assert.equal(tickItems.length, 400);
+  assert.equal(new Set(tickItems.map(item => item.properties.y1)).size, 1);
+  assert.equal(new Set(tickItems.map(item => item.properties.y2)).size, 1);
+  assert.deepEqual(
+    [tickItems[0].properties.y1, tickItems[0].properties.y2],
+    [118, 146]
+  );
+  assert.deepEqual(
+    program.graphicSpec.objects.canvas.properties,
+    { width: 800, height: 240, background: "#ffffff" }
+  );
+  assert.equal(
+    program.trace.children.some(node => node.op === "createTickMark"),
+    false
+  );
 });

@@ -8,7 +8,9 @@ import {
   DIRECTIONAL_TICKS,
   DIRECTIONAL_TRIANGLES,
   DIRECTION_LAYOUT,
-  LABELS
+  LABELS,
+  RUG_LAYOUT,
+  createHorsepowerRugReference
 } from "./reference-values.js";
 
 function panelBase({ title, subtitle }) {
@@ -143,4 +145,76 @@ export function createDirectionalTickPointPrimitives() {
     padding: DIRECTION_LAYOUT.padding,
     align: "start"
   });
+}
+
+export function createHorsepowerRugPrimitives(cars) {
+  const values = createHorsepowerRugReference(cars);
+
+  return chart()
+    .createData({ id: "cars", values: values.rows })
+    .createGraphics({ id: "canvas", type: "canvas" })
+    .editGraphics({ target: "canvas", property: "width", value: RUG_LAYOUT.width })
+    .editGraphics({ target: "canvas", property: "height", value: RUG_LAYOUT.height })
+    .editGraphics({ target: "canvas", property: "background", value: "#ffffff" })
+    .createGraphics({ id: "plot", parent: "canvas", type: "collection" })
+    .createGraphics({ id: "grid", parent: "plot", type: "line", length: values.axisX.length })
+    .editGraphics({ target: "grid", property: "x1", value: values.axisX })
+    .editGraphics({ target: "grid", property: "y1", value: 76 })
+    .editGraphics({ target: "grid", property: "x2", value: values.axisX })
+    .editGraphics({ target: "grid", property: "y2", value: RUG_LAYOUT.axisY })
+    .editGraphics({ target: "grid", property: "stroke", value: "#e2e8f0" })
+    .editGraphics({ target: "grid", property: "strokeWidth", value: 1 })
+    .createGraphics({ id: "axis", parent: "plot", type: "line" })
+    .editGraphics({ target: "axis", property: "x1", value: RUG_LAYOUT.left })
+    .editGraphics({ target: "axis", property: "y1", value: RUG_LAYOUT.axisY })
+    .editGraphics({ target: "axis", property: "x2", value: RUG_LAYOUT.right })
+    .editGraphics({ target: "axis", property: "y2", value: RUG_LAYOUT.axisY })
+    .editGraphics({ target: "axis", property: "stroke", value: "#94a3b8" })
+    .editGraphics({ target: "axis", property: "strokeWidth", value: 1 })
+    .createGraphics({ id: "ticks", parent: "plot", type: "line", length: values.rows.length })
+    .editGraphics({ target: "ticks", property: "x1", value: values.x })
+    .editGraphics({ target: "ticks", property: "y1", value: values.y1 })
+    .editGraphics({ target: "ticks", property: "x2", value: values.x })
+    .editGraphics({ target: "ticks", property: "y2", value: values.y2 })
+    .editGraphics({ target: "ticks", property: "stroke", value: "#2563eb" })
+    .editGraphics({ target: "ticks", property: "strokeWidth", value: 1.4 })
+    .editGraphics({ target: "ticks", property: "opacity", value: 0.28 })
+    .createGraphics({ id: "axisLabels", parent: "plot", type: "text", length: values.labels.length })
+    .editGraphics({ target: "axisLabels", property: "x", value: values.axisX })
+    .editGraphics({ target: "axisLabels", property: "y", value: 169 })
+    .editGraphics({ target: "axisLabels", property: "text", value: values.labels })
+    .editGraphics({ target: "axisLabels", property: "fill", value: "#64748b" })
+    .editGraphics({ target: "axisLabels", property: "fontSize", value: 11 })
+    .editGraphics({ target: "axisLabels", property: "fontFamily", value: "sans-serif" })
+    .editGraphics({ target: "axisLabels", property: "textAlign", value: "center" })
+    .editGraphics({ target: "axisLabels", property: "textBaseline", value: "middle" })
+    .createGraphics({ id: "axisTitle", parent: "canvas", type: "text" })
+    .editGraphics({ target: "axisTitle", property: "x", value: 410 })
+    .editGraphics({ target: "axisTitle", property: "y", value: 205 })
+    .editGraphics({ target: "axisTitle", property: "text", value: "Horsepower" })
+    .editGraphics({ target: "axisTitle", property: "fill", value: "#475569" })
+    .editGraphics({ target: "axisTitle", property: "fontSize", value: 12 })
+    .editGraphics({ target: "axisTitle", property: "fontFamily", value: "sans-serif" })
+    .editGraphics({ target: "axisTitle", property: "fontWeight", value: 500 })
+    .editGraphics({ target: "axisTitle", property: "textAlign", value: "center" })
+    .editGraphics({ target: "axisTitle", property: "textBaseline", value: "middle" })
+    .createGraphics({ id: "title", parent: "canvas", type: "text" })
+    .editGraphics({ target: "title", property: "x", value: 400 })
+    .editGraphics({ target: "title", property: "y", value: 25 })
+    .editGraphics({ target: "title", property: "text", value: "Cars · Horsepower distribution" })
+    .editGraphics({ target: "title", property: "fill", value: "#0f172a" })
+    .editGraphics({ target: "title", property: "fontSize", value: 16 })
+    .editGraphics({ target: "title", property: "fontFamily", value: "sans-serif" })
+    .editGraphics({ target: "title", property: "fontWeight", value: 600 })
+    .editGraphics({ target: "title", property: "textAlign", value: "center" })
+    .editGraphics({ target: "title", property: "textBaseline", value: "middle" })
+    .createGraphics({ id: "subtitle", parent: "canvas", type: "text" })
+    .editGraphics({ target: "subtitle", property: "x", value: 400 })
+    .editGraphics({ target: "subtitle", property: "y", value: 49 })
+    .editGraphics({ target: "subtitle", property: "text", value: `${values.rows.length} observations · one Tick per car` })
+    .editGraphics({ target: "subtitle", property: "fill", value: "#64748b" })
+    .editGraphics({ target: "subtitle", property: "fontSize", value: 11 })
+    .editGraphics({ target: "subtitle", property: "fontFamily", value: "sans-serif" })
+    .editGraphics({ target: "subtitle", property: "textAlign", value: "center" })
+    .editGraphics({ target: "subtitle", property: "textBaseline", value: "middle" });
 }

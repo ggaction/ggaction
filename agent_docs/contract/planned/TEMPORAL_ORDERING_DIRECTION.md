@@ -90,8 +90,9 @@ createTickMark({
 }): ChartProgram;
 ```
 
-- Complete x/y anchor를 요구하는 centered fixed-length line glyph다.
-- One-dimensional plot-edge rug placement은 범위 밖이다.
+- Complete x/y anchor를 요구하는 centered fixed-length line glyph다. Fixed-y field를 명시한 rug plot은 이
+  ordinary Cartesian 계약으로 작성할 수 있다.
+- x-only plot-edge placement inference는 범위 밖이다.
 - Status: Planned, accepted for Roadmap 5 Phase 4 after visual primitive approval.
 
 ## `editTickMark`

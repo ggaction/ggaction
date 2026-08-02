@@ -1,13 +1,17 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { loadCars } from "../../support/data.js";
+
 import {
   ANCHORS,
   BASELINE_TICKS,
   DIRECTION_ROWS,
   DIRECTIONAL_TICKS,
   DIRECTIONAL_TRIANGLES,
-  DIRECTION_LAYOUT
+  DIRECTION_LAYOUT,
+  RUG_LAYOUT,
+  createHorsepowerRugReference
 } from "./reference-values.js";
 
 function close(actual, expected, tolerance = 1e-10) {
@@ -58,4 +62,23 @@ test("keeps rotated triangle centers and areas invariant", () => {
     close(points.reduce((sum, point) => sum + point.y, 0) / 3, ANCHORS[index].y);
     close(triangleArea(commands), expectedArea);
   }
+});
+
+test("anchors the actual Cars horsepower rug to one Tick per valid row", () => {
+  const values = createHorsepowerRugReference(loadCars());
+
+  assert.equal(values.rows.length, 400);
+  assert.deepEqual(
+    [Math.min(...values.rows.map(row => row.Horsepower)),
+      Math.max(...values.rows.map(row => row.Horsepower))],
+    [46, 230]
+  );
+  [95, 270, 445, 620].forEach((expected, index) => {
+    close(values.axisX[index], expected);
+  });
+  assert.deepEqual(values.labels, ["50", "100", "150", "200"]);
+  close(Math.min(...values.x), 81);
+  close(Math.max(...values.x), 725);
+  assert.deepEqual([values.y1, values.y2], [118, 146]);
+  assert.equal(values.y2 - values.y1, RUG_LAYOUT.tickLength);
 });
