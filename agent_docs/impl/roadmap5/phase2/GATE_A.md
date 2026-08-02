@@ -82,7 +82,7 @@ filesystem sandbox only to permit the local `127.0.0.1` test server.
 
 - Review commit: `2ef1b103` (`feat: add semantic category ordering`)
 - Gate preparation commit: `45ff3d24` (`docs: prepare roadmap 5 phase 2 gate`)
-- Approval/graduation commit: pending verified approval package commit
+- Approval/graduation commit: `83c993b7` (`docs: approve roadmap 5 phase 2`)
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect
