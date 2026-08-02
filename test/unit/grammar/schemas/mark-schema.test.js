@@ -63,6 +63,35 @@ test("normalizes every point-shape recipe to one target area", () => {
   );
 });
 
+test("rotates directional point paths without changing area or center", () => {
+  for (const shape of POINT_SHAPES.slice(1)) {
+    const graphic = createPointShapeGraphic({
+      shape,
+      x: 20,
+      y: 30,
+      area: 144,
+      fill: "#123456",
+      angle: 45
+    });
+    const points = linearCommandPoints(graphic.properties.commands);
+    assert.equal(graphic.type, "path");
+    assert.equal(Math.abs(graphicArea(graphic) - 144) < 1e-9, true);
+    assert.equal(Number.isFinite(points[0].x), true);
+    assert.equal(Number.isFinite(points[0].y), true);
+  }
+  assert.throws(
+    () => createPointShapeGraphic({
+      shape: "triangle-up",
+      x: 0,
+      y: 0,
+      area: 1,
+      fill: "red",
+      angle: Infinity
+    }),
+    /angle must be finite/
+  );
+});
+
 test("rejects unsupported point shapes", () => {
   assert.throws(() => validatePointShape("triangle"), /Unsupported point shape/);
   assert.throws(() => validatePointShape(undefined), /Unsupported point shape/);

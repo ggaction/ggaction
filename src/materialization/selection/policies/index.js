@@ -6,6 +6,7 @@ import { barSelectionPolicy } from "./bar.js";
 import { lineSelectionPolicy } from "./line.js";
 import { pointSelectionPolicy } from "./point.js";
 import { ruleSelectionPolicy } from "./rule.js";
+import { tickSelectionPolicy } from "./tick.js";
 import { rectSelectionPolicy } from "./rect.js";
 
 const POLICIES = Object.freeze({
@@ -15,6 +16,7 @@ const POLICIES = Object.freeze({
   line: lineSelectionPolicy,
   point: pointSelectionPolicy,
   rule: ruleSelectionPolicy,
+  tick: tickSelectionPolicy,
   rect: rectSelectionPolicy
 });
 

@@ -1446,6 +1446,13 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 - x 또는 y 하나만 있는 중간 상태는 semantic assignment와 scale을 보존하지만 line item을 만들지 않는다.
   두 position이 완성되면 source row마다 concrete `x1/y1/x2/y2`를 materialize한다.
 - Fixed-y rug distribution은 ordinary y field를 명시해 작성하며 x-only plot-edge placement를 추론하지 않는다.
+- `encodeAngle`은 point/Tick에 finite constant 또는 quantitative field degree를 scale 없이 직접 저장한다.
+  0°는 위쪽이고 양수는 clockwise이며 reassignment는 datum/field branch 전체를 교체한다.
+- Tick은 angle마다 centered endpoint를 다시 계산한다. Point는 circle을 시각적으로 그대로 두고 square를
+  포함한 polygon glyph를 center 주위의 concrete path command로 회전한다. Jitter extent도 같은 회전된
+  geometry를 사용한다.
+- `removeEncoding({ channel: "angle" })`는 assignment를 제거하고 unrotated baseline을 재물질화한다.
+  Filter, facet, Canvas/scale 변경과 stored highlight replay도 mark policy를 통해 같은 concrete geometry를 만든다.
 - Renderer는 Tick identity, center 또는 length를 해석하지 않고 ordinary concrete line collection만 읽는다.
 
 ### Aggregate bar provenance와 completeness

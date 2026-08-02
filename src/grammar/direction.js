@@ -1,4 +1,5 @@
 import { cloneAndFreeze } from "../core/immutable.js";
+import { readQuantitativeField } from "./scales/index.js";
 
 function finite(value, label) {
   if (!Number.isFinite(value)) {
@@ -30,4 +31,16 @@ export function centeredDirectionalSegment({ x, y, degrees = 0, length }) {
     x2: centerX + vector.x * half,
     y2: centerY + vector.y * half
   });
+}
+
+export function resolveDirectionValues(rows, encoding) {
+  if (encoding === undefined) return undefined;
+  if (Object.hasOwn(encoding, "datum")) {
+    const value = finite(encoding.datum, "Direction value");
+    return cloneAndFreeze(rows.map(() => value));
+  }
+  if (encoding.fieldType !== "quantitative") {
+    throw new Error("Direction field must be quantitative.");
+  }
+  return readQuantitativeField(rows, encoding.field);
 }

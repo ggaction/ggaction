@@ -36,6 +36,7 @@ export const ENCODING_CHANNELS = Object.freeze([
   "strokeWidth",
   "size",
   "shape",
+  "angle",
   "group",
   "pathOrder",
   "opacity",
@@ -116,7 +117,7 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
 
 export const SCALED_ENCODING_CHANNELS = Object.freeze(
   ENCODING_CHANNELS.filter(channel =>
-    !["group", "pathOrder", "text"].includes(channel)
+    !["angle", "group", "pathOrder", "text"].includes(channel)
   )
 );
 

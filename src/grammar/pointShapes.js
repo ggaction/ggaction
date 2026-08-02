@@ -77,6 +77,12 @@ function shapePolygon(shape) {
     { x: -1, y: -arm }, { x: -arm, y: -arm }
   ];
   return {
+    square: [
+      { x: -1, y: -1 },
+      { x: 1, y: -1 },
+      { x: 1, y: 1 },
+      { x: -1, y: 1 }
+    ],
     diamond: [
       { x: 0, y: -1 },
       { x: 1, y: 0 },
@@ -120,7 +126,8 @@ export function createPointShapeGraphic({
   fill,
   stroke,
   strokeWidth,
-  opacity
+  opacity,
+  angle
 }) {
   const validated = validatePointShape(shape);
   if (![x, y, area].every(Number.isFinite) || area < 0) {
@@ -130,13 +137,16 @@ export function createPointShapeGraphic({
     throw new TypeError("Point shape fill must be a non-empty string.");
   }
   const shared = appearance(fill, stroke, strokeWidth, opacity);
+  if (angle !== undefined && !Number.isFinite(angle)) {
+    throw new TypeError("Point shape angle must be finite degrees.");
+  }
   if (validated === "circle") {
     return {
       type: "circle",
       properties: { x, y, radius: Math.sqrt(area / Math.PI), ...shared }
     };
   }
-  if (validated === "square") {
+  if (validated === "square" && angle === undefined) {
     const side = Math.sqrt(area);
     return {
       type: "rect",
@@ -155,7 +165,12 @@ export function createPointShapeGraphic({
     type: "path",
     properties: {
       commands: buildLinearPathCommands(
-        normalizePolygon(shapePolygon(validated), x, y, area),
+        normalizePolygon(
+          rotate(shapePolygon(validated), (angle ?? 0) * Math.PI / 180),
+          x,
+          y,
+          area
+        ),
         { close: true }
       ),
       ...shared
@@ -163,7 +178,12 @@ export function createPointShapeGraphic({
   };
 }
 
-export function resolvePointShapeExtent({ shape, area, strokeWidth = 0 }) {
+export function resolvePointShapeExtent({
+  shape,
+  area,
+  strokeWidth = 0,
+  angle
+}) {
   const validated = validatePointShape(shape);
   if (!Number.isFinite(area) || area < 0) {
     throw new TypeError("Point shape area must be finite and non-negative.");
@@ -176,11 +196,19 @@ export function resolvePointShapeExtent({ shape, area, strokeWidth = 0 }) {
     const radius = Math.sqrt(area / Math.PI) + strokeExtent;
     return cloneAndFreeze({ x: radius, y: radius });
   }
-  if (validated === "square") {
+  if (angle !== undefined && !Number.isFinite(angle)) {
+    throw new TypeError("Point shape angle must be finite degrees.");
+  }
+  if (validated === "square" && angle === undefined) {
     const halfSide = Math.sqrt(area) / 2 + strokeExtent;
     return cloneAndFreeze({ x: halfSide, y: halfSide });
   }
-  const points = normalizePolygon(shapePolygon(validated), 0, 0, area);
+  const points = normalizePolygon(
+    rotate(shapePolygon(validated), (angle ?? 0) * Math.PI / 180),
+    0,
+    0,
+    area
+  );
   return cloneAndFreeze({
     x: Math.max(0, ...points.map(point => Math.abs(point.x))) + strokeExtent,
     y: Math.max(0, ...points.map(point => Math.abs(point.y))) + strokeExtent

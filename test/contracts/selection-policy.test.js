@@ -7,7 +7,7 @@ import {
 } from "../../src/materialization/selection/policies/index.js";
 
 test("keeps one complete selection policy beside every supported mark", () => {
-  for (const mark of ["point", "bar", "line", "area", "arc", "rule"]) {
+  for (const mark of ["point", "bar", "line", "area", "arc", "rule", "tick"]) {
     const policy = requireSelectionPolicy(mark);
     assert.equal(typeof policy.resolveItems, "function");
     assert.equal(typeof policy.normalizeHighlightStyle, "function");

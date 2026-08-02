@@ -8,7 +8,7 @@
 - [x] 두 visual target의 four-renderer review artifacts 작성
 - [x] R5-P4-V approval — 2026-08-02
 - [x] Tick create/edit/materialization and generic removal integration
-- [ ] Angle assignment/removal and point/Tick rematerialization
+- [x] Angle assignment/removal and point/Tick rematerialization
 - [ ] Strict declarations, Current contracts, docs, example와 package synchronization
 - [ ] Stable visual graduation and four-renderer equivalence
 - [ ] Focused/cumulative verification and remote Gate checkpoint

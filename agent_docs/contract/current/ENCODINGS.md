@@ -36,7 +36,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Signature: `removeEncoding({ target?, channel })`.
 - `channel` is the closed vocabulary `"x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" |
   "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" |
-  "opacity" | "text"`.
+  "angle" | "opacity" | "text"`.
 - `target` resolves the current mark when it owns the requested channel, otherwise the unique active owner;
   ambiguous ownership requires an explicit mark ID. A direct missing assignment is an error.
 - The action removes the semantic assignment and starts rematerialization from an empty concrete mark baseline.
@@ -1029,6 +1029,38 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: automatic and explicit 12-shape range, unique validation, capacity error and heterogeneous output.
   - ✅ Covered: equal-area mark/legend recipes and Canvas path-ready concrete geometry.
 - Evidence: point appearance, mark-schema and regression chart/guide tests.
+
+## `encodeAngle`
+
+- Signature: `encodeAngle({ target?, value } | { target?, field, fieldType? })`.
+- `target`: current compatible point/Tick, otherwise the unique compatible mark. Ambiguity requires an explicit ID.
+- Exactly one of `value` or `field` is required. Constant values are finite degrees; fields are non-empty names whose
+  every source row contains a finite number. `fieldType` defaults to and only accepts `"quantitative"`.
+- Degrees are direct graphical values with no scale or legend. 0° points up and positive values rotate clockwise;
+  negative and greater-than-360 values retain their literal semantic value and use periodic geometry.
+- Reassignment replaces the complete prior datum/field branch. Point and Tick identity, data, positions, appearance,
+  selection, and highlight state remain intact.
+- Tick endpoints rotate around each x/y anchor while preserving center and length. Non-circular point glyphs store
+  rotated concrete path commands with unchanged area; circle rotation is a valid visual no-op.
+- `removeEncoding({ target?, channel: "angle" })` removes the assignment and rematerializes the unrotated baseline.
+- Filter, facet, Canvas/scale edits, point jitter, and durable highlight replay recompute from stored semantics.
+- Renderers read only the resulting line endpoints, circle/rect children, or path commands from `graphicSpec`.
+
+### Formal values — `encodeAngle`
+
+- Implemented: `encodeAngle({ target?: UserId; value: Finite; field?: never; fieldType?: never } | { target?: UserId; field: FieldName; fieldType?: "quantitative"; value?: never })`.
+- Proposed (NOT IMPLEMENTED): angle scales/legends, radians, automatic normalization, and rotation for other marks.
+
+### Value coverage — `encodeAngle`
+
+- ✅ Covered: point/Tick inferred and explicit targets, constant/field assignment, reassignment, and removal.
+- ✅ Covered: cardinal/intercardinal direction, negative/greater-than-360 periodic geometry, Tick center/length and
+  point-area invariance.
+- ✅ Covered: incomplete/complete positions, Canvas, filter, facet, jitter, selection/highlight replay, and immutable
+  earlier programs.
+- ✅ Covered: missing/non-finite fields, invalid field type, exclusive arguments, unsupported/ambiguous targets.
+- Evidence: `test/unit/actions/encodings/angle.test.js`, `test/unit/grammar/direction.test.js`,
+  `test/unit/grammar/schemas/mark-schema.test.js`, and the Roadmap 5 Phase 4 chart parity suite.
 
 ## `encodeOpacity`
 

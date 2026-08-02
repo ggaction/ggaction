@@ -90,22 +90,8 @@ type MovingWindowOperation = {
 
 ## `encodeAngle`
 
-```typescript
-encodeAngle(
-  | { target?: UserId; value: Finite; field?: never }
-  | {
-      target?: UserId;
-      field: FieldName;
-      fieldType?: "quantitative";
-      value?: never;
-    }
-): ChartProgram;
-```
-
-- Point와 Tick만 지원하고 value/field degree를 scale 없이 직접 사용한다.
-- 0°는 위쪽이고 양수는 시계 방향이다. `removeEncoding({ channel: "angle" })`가 reset을 소유한다.
-- Angle scale/legend, radians와 다른 mark family rotation은 범위 밖이다.
-- Status: Planned, accepted for Roadmap 5 Phase 4 after visual primitive approval.
+- Status: Implemented in Roadmap 5 Phase 4. Canonical behavior moved to
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodeangle).
 
 ## Capability — center-stacked area
 

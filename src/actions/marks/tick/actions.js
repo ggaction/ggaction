@@ -6,7 +6,10 @@ import {
   validatePositiveFinite,
   validateUnitInterval
 } from "../../../core/validation.js";
-import { centeredDirectionalSegment } from "../../../grammar/direction.js";
+import {
+  centeredDirectionalSegment,
+  resolveDirectionValues
+} from "../../../grammar/direction.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { resolveRowEncodingValues } from
@@ -14,6 +17,7 @@ import { resolveRowEncodingValues } from
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
+import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import {
   applyLayeredMarkInheritance,
   assertMarkAvailable,
@@ -158,6 +162,13 @@ export const rematerializeTickMark = action(
       "rematerializeTickMark"
     );
     const id = validateUserId(args.id, "Tick mark id");
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializeTickMark",
+      resetProperty: "length",
+      resetValue: 0
+    });
+    if (highlighted !== undefined) return highlighted;
     const layer = findLayer(this, id);
     if (layer?.mark?.type !== "tick") {
       throw new Error(`Unknown tick mark "${id}".`);
@@ -181,6 +192,7 @@ export const rematerializeTickMark = action(
 
     const x = resolveRowEncodingValues(this, layer, dataset, "x");
     const y = resolveRowEncodingValues(this, layer, dataset, "y");
+    const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = validateTickConfig({}, {
       ...DEFAULT_TICK_CONFIG,
       ...this.markConfigs[id]
@@ -189,6 +201,7 @@ export const rematerializeTickMark = action(
       centeredDirectionalSegment({
         x: x[index],
         y: y[index],
+        degrees: angles?.[index] ?? 0,
         length: config.length
       })
     );

@@ -46,6 +46,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`encodeStrokeWidth`](current/ENCODINGS.md#encodestrokewidth) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeSize`](current/ENCODINGS.md#encodesize) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeShape`](current/ENCODINGS.md#encodeshape) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeAngle`](current/ENCODINGS.md#encodeangle) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeOpacity`](current/ENCODINGS.md#encodeopacity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeRadius`](current/ENCODINGS.md#encoderadius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeTheta`](current/ENCODINGS.md#encodetheta) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -185,7 +186,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `encodeAngle` | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#encodeangle) |
 
 ## Planned capabilities
 

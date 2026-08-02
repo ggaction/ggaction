@@ -4385,6 +4385,11 @@ Incomplete x or y is retained semantically without fabricated geometry.
 Fixed-y rug plots use an explicit y field; x-only plot-edge placement is not
 inferred.
 
+Add a direct constant or quantitative-field direction with `encodeAngle`.
+Zero degrees is vertical/up and positive values rotate clockwise; Tick length
+and center remain fixed. `removeEncoding({ channel: "angle" })` restores the
+unrotated baseline.
+
 ## Related
 
 [Encodings](./encodings.md) · [Statistical layers](./regression.md) ·
@@ -5023,7 +5028,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Supported marks | Grain | Result |
 | --- | --- | --- | --- |
-| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
+| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule, tick | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
 
 | Legend family | Supported marks | Channels |
 | --- | --- | --- |
@@ -5037,6 +5042,26 @@ The tables below are generated from the same reviewed capability registry used b
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
 | Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
+
+## Direction
+
+`encodeAngle` rotates point and Tick glyphs with finite direct degrees. It
+accepts either one constant `value` or one quantitative `field`; it does not
+create a scale or legend. `0` points up and positive values rotate clockwise.
+
+```javascript
+const directional = chart()
+  .createCanvas({ width: 640, height: 360 })
+  .createData({ values: directions })
+  .createTickMark({ id: "ticks", length: 14 })
+  .encodeX({ target: "ticks", field: "x" })
+  .encodeY({ target: "ticks", field: "y" })
+  .encodeAngle({ target: "ticks", field: "direction" });
+```
+
+Calling `encodeAngle` again replaces the complete constant/field assignment.
+Use `removeEncoding({ target: "ticks", channel: "angle" })` to restore the
+unrotated vertical baseline. Tick length and point area remain unchanged.
 
 ## Atomic relationships
 
@@ -5085,7 +5110,7 @@ const plainPoints = encodedPoints
 
 The closed channel list is `x`, `y`, `x2`, `y2`, `xOffset`, `yOffset`,
 `theta`, `radius`, `color`, `strokeDash`, `strokeWidth`, `size`, `shape`,
-`group`, `opacity`, and `text`. Primary x/y removal also clears its same-mark
+`angle`, `group`, `opacity`, and `text`. Primary x/y removal also clears its same-mark
 secondary endpoint and offset. Grouped-bar color removal clears its generated
 offset, and matching legends, axes, or grids are removed only when they no
 longer have a valid consumer.
@@ -7732,6 +7757,7 @@ See [Scale options](../scales.md) and [Legends](../legends.md).
 | `removePointRadius` | `removePointRadius()` | Current point with explicit radius | Theme-default glyph radius |
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
+| `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
 | `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current point; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
@@ -7751,7 +7777,7 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 | Action | Supported marks | Grain | Result |
 | --- | --- | --- | --- |
-| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
+| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule, tick | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
 
 ## Focused appearance families
 
@@ -7763,6 +7789,8 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 Radius, rule stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
 Field opacity and field-driven stroke width are semantic encodings.
+Angle is a scale-free semantic encoding for point and Tick glyphs; circles
+accept it as a visual no-op.
 Size cannot be combined with a constant radius. Remove that assignment with
 `removePointRadius()` before encoding size. A constant `editPointMark`
 shape cannot be combined with field-driven `encodeShape`. Bar width
@@ -10097,6 +10125,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editYAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | user-facing | axes |
 | [`editYAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | user-facing | axes |
 | [`editYAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | user-facing | axes |
+| [`encodeAngle`](./actions/encodings.md#encodeangle) | user-facing | encodings |
 | [`encodeBarWidth`](./actions/encodings.md#encodebarwidth) | user-facing | encodings |
 | [`encodeColor`](./actions/encodings.md#encodecolor) | user-facing | encodings |
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | user-facing | encodings |
@@ -10132,7 +10161,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | user-facing | encodings |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | user-facing | encodings |
-| [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
+| [`removeEncoding`](./actions/encodings.md#encodeangle) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |
@@ -10808,6 +10837,18 @@ Remove one active semantic encoding, its generated companions, matching guide
 blocks, and stale concrete values. Named datasets, scales, and coordinates are
 retained; incomplete marks remain empty until later encoding completion.
 [Encodings](../../api/encodings.md#removing-an-encoding)
+
+## `encodeAngle`
+
+```javascript
+encodeAngle({ target?, value })
+encodeAngle({ target?, field, fieldType? })
+```
+
+Rotate point or Tick glyphs with direct clockwise degrees: `0` points up and
+no scale or legend is created. Reassignment replaces the prior constant/field
+branch; remove it with `removeEncoding({ channel: "angle" })`.
+[Encodings](../../api/encodings.md#direction)
 
 ## `encodeText`
 
@@ -11938,6 +11979,7 @@ interface ChartProgramActions {
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
   encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: ScaleOptions }): ChartProgram;
   encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ScaleOptions }): ChartProgram;
+  encodeAngle(options: | { target?: string; value: number; field?: never; fieldType?: never } | { target?: string; field: string; fieldType?: "quantitative"; value?: never } ): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
@@ -11953,7 +11995,7 @@ interface ChartProgramActions {
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
-  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" | "opacity" | "text"; }): ChartProgram;
+  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;

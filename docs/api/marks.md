@@ -125,6 +125,11 @@ Incomplete x or y is retained semantically without fabricated geometry.
 Fixed-y rug plots use an explicit y field; x-only plot-edge placement is not
 inferred.
 
+Add a direct constant or quantitative-field direction with `encodeAngle`.
+Zero degrees is vertical/up and positive values rotate clockwise; Tick length
+and center remain fixed. `removeEncoding({ channel: "angle" })` restores the
+unrotated baseline.
+
 ## Related
 
 [Encodings](./encodings.md) · [Statistical layers](./regression.md) ·

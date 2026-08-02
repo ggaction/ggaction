@@ -152,6 +152,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editYAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | user-facing | axes |
 | [`editYAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | user-facing | axes |
 | [`editYAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | user-facing | axes |
+| [`encodeAngle`](./actions/encodings.md#encodeangle) | user-facing | encodings |
 | [`encodeBarWidth`](./actions/encodings.md#encodebarwidth) | user-facing | encodings |
 | [`encodeColor`](./actions/encodings.md#encodecolor) | user-facing | encodings |
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | user-facing | encodings |
@@ -187,7 +188,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | user-facing | encodings |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | user-facing | encodings |
-| [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
+| [`removeEncoding`](./actions/encodings.md#encodeangle) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |

@@ -704,6 +704,24 @@
       }
     },
     {
+      "name": "encodeAngle",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces the complete constant or field direction assignment",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodeangle"
+      }
+    },
+    {
       "name": "encodeOpacity",
       "layer": "user-facing",
       "domain": "encodings",
@@ -2538,17 +2556,7 @@
     ,{ "name": "createRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editRectMark` and position/color encodings", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "createrectmark" } }
     ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
   ],
-  "plannedActions": [
-    {
-      "name": "encodeAngle",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/TEMPORAL_ORDERING_DIRECTION.md",
-        "anchor": "encodeangle"
-      }
-    }
-  ],
+  "plannedActions": [],
   "plannedCapabilities": [
     {
       "id": "moving-window-operations",

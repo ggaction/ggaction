@@ -2333,6 +2333,10 @@ export class ChartProgram {
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
   encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: ScaleOptions }): ChartProgram;
   encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ScaleOptions }): ChartProgram;
+  encodeAngle(options:
+    | { target?: string; value: number; field?: never; fieldType?: never }
+    | { target?: string; field: string; fieldType?: "quantitative"; value?: never }
+  ): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
@@ -2367,7 +2371,7 @@ export class ChartProgram {
     channel:
       | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset"
       | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth"
-      | "size" | "shape" | "group" | "opacity" | "text";
+      | "size" | "shape" | "angle" | "group" | "opacity" | "text";
   }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;

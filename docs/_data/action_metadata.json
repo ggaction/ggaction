@@ -189,6 +189,11 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "encodeAngle": {
+    "operation": "encode",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
   "encodeOpacity": {
     "operation": "encode",
     "layer": "user-facing",

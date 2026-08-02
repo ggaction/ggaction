@@ -151,6 +151,18 @@ blocks, and stale concrete values. Named datasets, scales, and coordinates are
 retained; incomplete marks remain empty until later encoding completion.
 [Encodings](../../api/encodings.md#removing-an-encoding)
 
+## `encodeAngle`
+
+```javascript
+encodeAngle({ target?, value })
+encodeAngle({ target?, field, fieldType? })
+```
+
+Rotate point or Tick glyphs with direct clockwise degrees: `0` points up and
+no scale or legend is created. Reassignment replaces the prior constant/field
+branch; remove it with `removeEncoding({ channel: "angle" })`.
+[Encodings](../../api/encodings.md#direction)
+
 ## `encodeText`
 
 ```javascript

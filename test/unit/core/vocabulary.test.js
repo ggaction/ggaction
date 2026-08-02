@@ -56,9 +56,11 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
   assert.equal(ENCODING_CHANNELS.includes("x2"), true);
   assert.equal(ENCODING_CHANNELS.includes("strokeWidth"), true);
   assert.equal(ENCODING_CHANNELS.includes("pathOrder"), true);
+  assert.equal(ENCODING_CHANNELS.includes("angle"), true);
   assert.equal(SCALED_ENCODING_CHANNELS.includes("group"), false);
   assert.equal(SCALED_ENCODING_CHANNELS.includes("pathOrder"), false);
   assert.equal(SCALED_ENCODING_CHANNELS.includes("text"), false);
+  assert.equal(SCALED_ENCODING_CHANNELS.includes("angle"), false);
   for (const vocabulary of [
     MARK_TYPES,
     POSITION_ENCODING_CHANNELS,

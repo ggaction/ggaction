@@ -16,7 +16,7 @@ Complete Cartesian x/y anchor를 가진 centered fixed-length Tick mark와 point
 - [x] Revised R5-P4-V remote checkpoint — `b2fe55a7`
 - [x] R5-P4-V 사용자 visual approval — 2026-08-02
 - [x] Tick grammar, materialization과 create/edit/remove lifecycle 구현
-- [ ] Point/Tick angle assignment, reassignment와 removal 구현
+- [x] Point/Tick angle assignment, reassignment와 removal 구현
 - [ ] Declarations, Current contracts, docs, package와 stable chart 동기화
 - [ ] Focused/cumulative verification과 R5-P4-A remote checkpoint
 - [ ] 사용자 explicit approval

@@ -98,7 +98,7 @@
   "highlight": [
     {
       "action": "selectMarks / highlightMarks",
-      "marks": ["point", "bar", "line", "area", "rect", "arc", "rule"],
+      "marks": ["point", "bar", "line", "area", "rect", "arc", "rule", "tick"],
       "grain": "item; stacked bars also support stack",
       "result": "selection intent and mark-specific durable emphasis"
     }

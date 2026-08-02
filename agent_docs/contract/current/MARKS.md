@@ -125,7 +125,7 @@ independent assembly and does not inherit position encodings.
 ### Formal values — `createTickMark`
 
 - Implemented: `createTickMark({ id?: UserId; data?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval } = {})`.
-- Planned (NOT IMPLEMENTED): angle assignment은 `encodeAngle` owner에 남아 있다.
+- Implemented direction assignment은 `encodeAngle`이 소유한다.
 - Proposed (NOT IMPLEMENTED): x-only rug placement inference.
 
 ### Value coverage — `createTickMark`
@@ -143,7 +143,7 @@ independent assembly and does not inherit position encodings.
 - `target`: current compatible Tick, otherwise unique Tick으로 infer하며 ambiguity는 explicit target을 요구한다.
 - 최소 한 edit property가 필요하다. Omitted properties는 current config를 보존한다.
 - Validation은 create action과 동일한 positive length, non-empty stroke, non-negative width와 unit opacity를 사용한다.
-- Effect: identity, data, coordinate, x/y와 future angle assignment를 보존하고 mark config를 structural copy한 뒤
+- Effect: identity, data, coordinate, x/y와 angle assignment를 보존하고 mark config를 structural copy한 뒤
   wrapped `rematerializeTickMark`로 concrete endpoints와 appearance를 다시 만든다.
 
 ### Formal values — `editTickMark`
