@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review` — 2026-08-02 remote checkpoint
+`approved` — 2026-08-02 사용자 승인
 
 ## Review target
 
@@ -51,9 +51,12 @@ domain action에서 같이 rematerialize된다.
 3. `Reset`: `removeCategoryOrder`로 automatic order 복원
 
 - Executable public source: `examples/ordered-category-bar/program.js`
-- Independent primitive source: `test/gates/ordered-category-bar/primitive.program.js`
-- Manifest and displayed calls: `test/gates/ordered-category-bar/manifest.js`
-- Review PNG: `.artifacts/test/png/review/ordered-category-bar/automatic-ordered-reset/user-facing.png`
+- Independent primitive source: `test/charts/ordered-category-bar/primitive.program.js`
+- Manifest and displayed calls: `test/charts/ordered-category-bar/manifest.js`
+- Primitive PNG:
+  `.artifacts/test/png/charts/category-order/ordered-category-bar/automatic-ordered-reset/primitive.png`
+- Public PNG:
+  `.artifacts/test/png/charts/category-order/ordered-category-bar/automatic-ordered-reset/user-facing.png`
 - Physical size: 1872×664 at pixel ratio 2; logical size 936×332.
 - Public PNG SHA-256:
   `d320b6c74503b4da89c34b2a79669a9a89dedd3aef1d2a0c5881a3894664da8b`.
@@ -64,8 +67,9 @@ domain action에서 같이 rematerialize된다.
 | Check | Result |
 | --- | --- |
 | Focused grammar/action/contract | 15 pass |
-| Stable and active visual slice | 6 pass, including two render executions |
-| Full repository suite | 1,966 pass |
+| Approved stable visual slice | 3 normal tests and 1 primitive/public render pair pass |
+| Full repository suite | 1,964 pass, including approved stable visual slice |
+| Full render suite | 126 pass; 125-variant charts gallery and empty review gallery verified |
 | Documentation | 45 source tests; 113 built pages; built-site browser pass |
 | Browser | Capability pages, packed browser entries and every public chart pass |
 | Installed package | Runtime, strict TypeScript, export and browser-bundle checks pass |
@@ -77,14 +81,15 @@ filesystem sandbox only to permit the local `127.0.0.1` test server.
 ## Remote checkpoint
 
 - Review commit: `2ef1b103` (`feat: add semantic category ordering`)
+- Gate preparation commit: `45ff3d24` (`docs: prepare roadmap 5 phase 2 gate`)
+- Approval/graduation commit: pending verified approval package commit
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect
 
-승인하면 Phase 3 moving mean/sum window implementation을 시작할 수 있다. PR creation, publish, deployment와
-release 권한은 포함하지 않는다.
+Phase 3 moving mean/sum window implementation이 열렸다. PR creation, publish, deployment와 release 권한은
+포함하지 않는다.
 
-## Work blocked before approval
+## Work remaining blocked
 
-- `movingMean`/`movingSum` runtime implementation
-- Phase 4 이후 capability implementation
+- Phase 4 이후 capability implementation은 R5-P3-A 승인 전까지 차단한다.

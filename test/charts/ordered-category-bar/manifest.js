@@ -5,6 +5,33 @@ import { createOrderedCategoryBarComparisonPrimitives } from
 import { createOrderedCategoryBarComparison } from "./public.program.js";
 import { ORDERED_CATEGORY_LAYOUT } from "./reference-values.js";
 
+export const orderedCallChain = `base
+  .orderCategories({
+    target: "bars",
+    channel: "x",
+    by: { field: "value", aggregate: "sum" },
+    direction: "descending"
+  })
+  .createTitle({
+    text: "Descending total",
+    subtitle: "Product → Sales → Operations → Support",
+    align: "center"
+  });`;
+
+export const resetCallChain = `base
+  .orderCategories({
+    target: "bars",
+    channel: "x",
+    by: { field: "value", aggregate: "sum" },
+    direction: "descending"
+  })
+  .removeCategoryOrder({ target: "bars", channel: "x" })
+  .createTitle({
+    text: "Reset",
+    subtitle: "Automatic order restored",
+    align: "center"
+  });`;
+
 export const comparisonCallChain = `hconcat({
   id: "orderedCategoryBarComparison",
   programs: [
@@ -23,7 +50,7 @@ export const visualVariants = Object.freeze([
     variant: "automatic-ordered-reset",
     title: "Automatic, Descending Total, and Reset Category Order",
     callChain: comparisonCallChain,
-    artifact: false,
+    artifact: { capability: "category-order" },
     programEquivalence: "render",
     primitive: createOrderedCategoryBarComparisonPrimitives,
     userFacing: createOrderedCategoryBarComparison,

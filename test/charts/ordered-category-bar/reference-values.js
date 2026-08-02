@@ -10,3 +10,9 @@ export const AUTOMATIC_DOMAIN = Object.freeze([
 export const DESCENDING_TOTAL_DOMAIN = Object.freeze([
   "Product", "Sales", "Operations", "Support"
 ]);
+export const CATEGORY_TOTALS = Object.freeze({
+  Support: 14,
+  Product: 31,
+  Sales: 24,
+  Operations: 18
+});

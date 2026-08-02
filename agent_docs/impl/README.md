@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **Roadmap 5 Phase 2가 활성 상태다.** R5-P1-A까지 승인된 상태에서 semantic category ordering과
-  reset lifecycle을 구현한다.
+- **Roadmap 5 Phase 3가 활성 상태다.** R5-P2-A까지 승인된 상태에서 moving mean/sum
+  window operations을 구현한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력

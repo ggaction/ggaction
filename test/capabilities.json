@@ -14,8 +14,7 @@
       { "type": "file", "path": "unit/support/visual-variants.test.js" }
     ],
     "charts": [
-      { "type": "prefix", "path": "charts/" },
-      { "type": "prefix", "path": "gates/ordered-category-bar/" }
+      { "type": "prefix", "path": "charts/" }
     ],
     "data": [
       { "type": "prefix", "path": "unit/actions/data/" },
