@@ -150,15 +150,21 @@ async function testNodeConsumer(directory) {
         sortBy: [{ field: "order" }],
         operations: [
           { op: "rowNumber", as: "rowNumber" },
-          { op: "cumulativeSum", field: "value", as: "runningValue" }
+          { op: "cumulativeSum", field: "value", as: "runningValue" },
+          {
+            op: "movingMean",
+            field: "value",
+            as: "movingValue",
+            frame: { preceding: 1 }
+          }
         ]
       });
     const windowValues = windowed.semanticSpec.datasets.find(
       dataset => dataset.id === "windowedEvents"
     ).values;
     assert.deepEqual(
-      windowValues.map(row => [row.rowNumber, row.runningValue]),
-      [[2, 5], [1, 2], [1, 4]]
+      windowValues.map(row => [row.rowNumber, row.runningValue, row.movingValue]),
+      [[2, 5, 2.5], [1, 2, 2], [1, 4, 4]]
     );
     const binned = chart()
       .createData({
@@ -925,7 +931,13 @@ async function testTypeScriptConsumer(directory) {
       sortBy: [{ field: "order", order: "descending" }],
       operations: [
         { op: "rowNumber", as: "rowNumber" },
-        { op: "lag", field: "value", as: "previousValue" }
+        { op: "lag", field: "value", as: "previousValue" },
+        {
+          op: "movingSum",
+          field: "value",
+          as: "movingValue",
+          frame: { preceding: 2, following: 1 }
+        }
       ]
     };
     const windowed: ChartProgram = chart()
@@ -938,7 +950,12 @@ async function testTypeScriptConsumer(directory) {
       type: "window",
       partitionBy: ["group"],
       sortBy: [{ field: "order", order: "ascending" }],
-      operations: [{ op: "rowNumber", as: "rowNumber" }]
+      operations: [{
+        op: "movingMean",
+        field: "value",
+        as: "movingValue",
+        frame: { preceding: 2, following: 0 }
+      }]
     };
     const binOptions: Bin2DDataOptions = {
       id: "cells",

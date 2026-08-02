@@ -71,6 +71,55 @@ test("uses an explicit source or infers the unique current dataset", () => {
   assert.deepEqual(explicit.semanticSpec.datasets[1].values.map(row => row.next), [3, 5, null]);
 });
 
+test("stores normalized moving frames and materializes sequential moving values", () => {
+  const source = chart().createData({ id: "source", values: [
+    { group: "A", order: 3, value: 9 },
+    { group: "A", order: 1, value: 1 },
+    { group: "A", order: 2, value: 5 }
+  ] });
+  const options = [{
+    op: "movingSum",
+    field: "value",
+    as: "trailingSum",
+    frame: { preceding: 1 }
+  }, {
+    op: "movingMean",
+    field: "trailingSum",
+    as: "centeredMean",
+    frame: { preceding: 1, following: 1 }
+  }];
+  const program = source.createWindowData({
+    id: "moving",
+    partitionBy: "group",
+    sortBy: [{ field: "order" }],
+    operations: options
+  });
+  const dataset = program.semanticSpec.datasets[1];
+
+  assert.deepEqual(dataset.transform[0].operations, [
+    {
+      op: "movingSum",
+      field: "value",
+      as: "trailingSum",
+      frame: { preceding: 1, following: 0 }
+    },
+    {
+      op: "movingMean",
+      field: "trailingSum",
+      as: "centeredMean",
+      frame: { preceding: 1, following: 1 }
+    }
+  ]);
+  assert.deepEqual(dataset.values.map(row => [row.trailingSum, row.centeredMean]), [
+    [14, 10],
+    [1, 3.5],
+    [6, 7]
+  ]);
+  options[0].frame.preceding = 0;
+  assert.equal(dataset.transform[0].operations[0].frame.preceding, 1);
+  assert.equal(source.semanticSpec.datasets.length, 1);
+});
+
 test("composes after filtering and can feed ordinary marks", () => {
   const program = chart()
     .createCanvas({ width: 400, height: 300, margin: 40 })
@@ -147,6 +196,49 @@ test("facets source rows before replaying window values in every child", () => {
     assert.equal(
       child.trace.children.at(-1).children.some(node => node.op === "replayDerivedData"),
       true
+    );
+  }
+});
+
+test("replays moving windows independently after facet partitioning", () => {
+  const base = chart()
+    .createCanvas({ width: 320, height: 220, margin: 30 })
+    .createData({ id: "source", values: [
+      { facet: "left", order: 2, value: 30 },
+      { facet: "left", order: 1, value: 10 },
+      { facet: "right", order: 2, value: 20 },
+      { facet: "right", order: 1, value: 10 }
+    ] })
+    .createWindowData({
+      id: "moving",
+      sortBy: [{ field: "order" }],
+      operations: [{
+        op: "movingMean",
+        field: "value",
+        as: "movingMean",
+        frame: { preceding: 1 }
+      }]
+    })
+    .createPointMark({ id: "points", data: "moving" })
+    .encodeX({ target: "points", field: "order" })
+    .encodeY({ target: "points", field: "movingMean" });
+  const faceted = base.facet({ field: "facet", guides: { legend: false } });
+  const expected = new Map([
+    ["left", [20, 10]],
+    ["right", [15, 10]]
+  ]);
+
+  for (const id of faceted.compositionSpec.children) {
+    const child = faceted.children[id];
+    const sourceRows = child.semanticSpec.datasets.find(dataset =>
+      dataset.id === `${id}-data`
+    ).values;
+    const replayed = child.semanticSpec.datasets.find(dataset =>
+      dataset.id.startsWith(`${id}-moving-data`)
+    );
+    assert.deepEqual(
+      replayed.values.map(row => row.movingMean),
+      expected.get(sourceRows[0].facet)
     );
   }
 });

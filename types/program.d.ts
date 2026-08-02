@@ -370,6 +370,15 @@ export type WindowOperation =
       as: string;
       offset?: number;
       default?: unknown;
+    }
+  | {
+      op: "movingMean" | "movingSum";
+      field: string;
+      as: string;
+      frame: {
+        preceding: number;
+        following?: number;
+      };
     };
 export interface DatasetWindowSort {
   readonly field: string;
@@ -388,6 +397,15 @@ export type DatasetWindowOperation =
       readonly as: string;
       readonly offset: number;
       readonly default: unknown;
+    }
+  | {
+      readonly op: "movingMean" | "movingSum";
+      readonly field: string;
+      readonly as: string;
+      readonly frame: {
+        readonly preceding: number;
+        readonly following: number;
+      };
     };
 export interface DatasetWindowTransform {
   readonly type: "window";
