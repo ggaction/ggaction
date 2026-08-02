@@ -1,4 +1,6 @@
 import { createWindowReference } from "../../oracles/window.js";
+import { airlinePassengerRows } from
+  "../../../examples/airline-passenger-moving-windows/program.js";
 
 export const AIRLINE_DATA_SOURCE =
   "https://www.bts.gov/newsroom/monthly-passengers-us-scheduled-airlines-domestic-international-april-2023-april-2026";
@@ -11,18 +13,21 @@ export const MOVING_WINDOW_LAYOUT = Object.freeze({
   margin: Object.freeze({ top: 74, right: 14, bottom: 50, left: 70 })
 });
 
-const PASSENGERS = Object.freeze([
-  70.1, 70.4, 84.9, 81.2, 87.1, 89.7, 91.8, 86.8, 77.5, 82.8, 77.1, 83.3,
-  70.7, 67.2, 83.7, 80.4, 85.3, 88.7, 92.2, 86.8, 76.8, 84.2, 74.8, 81.2
-]);
+export const AIRLINE_PASSENGER_EVENTS = airlinePassengerRows;
 
-export const AIRLINE_PASSENGER_ROWS = Object.freeze(PASSENGERS.map((passengers, index) =>
-  Object.freeze({
-    date: new Date(Date.UTC(2024 + Math.floor(index / 12), index % 12, 1)).toISOString(),
-    month: Date.UTC(2024 + Math.floor(index / 12), index % 12, 1),
-    passengers
-  })
-));
+export const AIRLINE_PASSENGER_ROWS = Object.freeze(
+  AIRLINE_PASSENGER_EVENTS.map(row => Object.freeze({
+    ...row,
+    month: new Date(row.date).getTime()
+  }))
+);
+
+export const TIME_UNIT_TRANSFORM = Object.freeze({
+  type: "timeUnit",
+  field: "date",
+  unit: "month",
+  as: "month"
+});
 
 function movingTransform(op, { preceding, following = 0 }) {
   return Object.freeze({

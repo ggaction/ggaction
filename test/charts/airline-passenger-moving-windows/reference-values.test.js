@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   AIRLINE_DATA_SOURCE,
+  AIRLINE_PASSENGER_EVENTS,
   AIRLINE_PASSENGER_ROWS,
   CENTERED_MEAN_ROWS,
   TRAILING_MEAN_ROWS,
@@ -15,6 +16,7 @@ function close(actual, expected) {
 
 test("anchors the published 2024-2025 U.S. airline passenger values", () => {
   assert.match(AIRLINE_DATA_SOURCE, /^https:\/\/www\.bts\.gov\//);
+  assert.equal(AIRLINE_PASSENGER_EVENTS.every(row => !Object.hasOwn(row, "month")), true);
   assert.equal(AIRLINE_PASSENGER_ROWS.length, 24);
   assert.deepEqual(AIRLINE_PASSENGER_ROWS.slice(0, 3).map(row => row.passengers), [
     70.1, 70.4, 84.9

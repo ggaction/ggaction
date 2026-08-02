@@ -18,7 +18,7 @@
     ],
     "data": [
       { "type": "prefix", "path": "unit/actions/data/" },
-      { "type": "prefix", "path": "gates/monthly-moving-average/" },
+      { "type": "prefix", "path": "charts/airline-passenger-moving-windows/" },
       { "type": "prefix", "path": "charts/time-unit-data/" },
       { "type": "prefix", "path": "charts/cars-binned-heatmap/" },
       { "type": "prefix", "path": "charts/cars-window-rank-scatterplot/" },

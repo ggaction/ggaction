@@ -2,6 +2,7 @@ import { defineVisualVariant } from "../../support/visual-variants.js";
 
 import { createAirlinePassengerMovingWindowPrimitives } from
   "./primitive.program.js";
+import { createAirlinePassengerMovingWindows } from "./public.program.js";
 import { MOVING_WINDOW_LAYOUT } from "./reference-values.js";
 
 export const trailingMeanCallChain = `monthly.createWindowData({
@@ -55,8 +56,10 @@ export const visualVariants = Object.freeze([
     variant: "trailing-centered-and-sum",
     title: "U.S. Airline Passenger Moving Windows",
     callChain: comparisonCallChain,
-    artifact: { scope: "review" },
+    artifact: { capability: "data" },
+    programEquivalence: "render",
     primitive: createAirlinePassengerMovingWindowPrimitives,
+    userFacing: createAirlinePassengerMovingWindows,
     width: MOVING_WINDOW_LAYOUT.padding * 2 +
       MOVING_WINDOW_LAYOUT.panelWidth * 3 + MOVING_WINDOW_LAYOUT.gap * 2,
     height: MOVING_WINDOW_LAYOUT.padding * 2 + MOVING_WINDOW_LAYOUT.panelHeight,

@@ -4,7 +4,7 @@ import test from "node:test";
 import { createAirlinePassengerMovingWindowPrimitives } from
   "./primitive.program.js";
 
-test("authors three actual-data moving-window targets without future actions", () => {
+test("authors three actual-data moving-window targets through data primitives", () => {
   const program = createAirlinePassengerMovingWindowPrimitives();
   assert.deepEqual(Object.keys(program.children), [
     "trailingMean", "centeredMean", "trailingSum"
@@ -14,6 +14,14 @@ test("authors three actual-data moving-window targets without future actions", (
     assert.equal(
       child.trace.children.some(node => node.op === "createWindowData"),
       false
+    );
+    assert.equal(
+      child.trace.children.some(node => node.op === "createTimeUnitData"),
+      false
+    );
+    assert.deepEqual(
+      child.semanticSpec.datasets.map(dataset => dataset.id),
+      ["airlinePassengerEvents", "monthlyPassengers", "movingPassengers"]
     );
   }
   assert.deepEqual(program.children.trailingMean.resolvedScales.y.domain, [60, 100]);
