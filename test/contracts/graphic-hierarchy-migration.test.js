@@ -269,6 +269,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "chartTitle", "chartSubtitle"
   ],
   "program-composition": [],
+  "directional-tick-plot": [],
   "ordered-category-bar": [],
   "time-unit-data": [],
   "airline-passenger-moving-windows": [],
@@ -278,6 +279,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
 
 const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
   "program-composition": 9,
+  "directional-tick-plot": 28,
   "ordered-category-bar": 43,
   "cross-feature-dashboard": 52,
   "time-unit-data": 29,
@@ -286,6 +288,7 @@ const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
 
 const EXPECTED_COMPOSITION_CHILDREN = Object.freeze({
   "program-composition": 2,
+  "directional-tick-plot": 3,
   "cross-feature-dashboard": 2,
   "time-unit-data": 2,
   "airline-passenger-moving-windows": 3,
