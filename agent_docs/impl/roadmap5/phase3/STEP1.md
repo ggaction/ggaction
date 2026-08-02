@@ -6,12 +6,12 @@
 - [x] Independent row-frame reference values와 literal fixtures 작성
 - [x] Monthly raw/moving primitive visual target과 review PNG 작성
 - [x] R5-P3-V visual approval — 2026-08-02
-- [ ] Moving operation normalization and derivation implementation
-- [ ] Direct derived schema, replay and declarations promotion
-- [ ] Current contract/catalog/docs/package synchronization
-- [ ] Public monthly moving-average chart and renderer equivalence evidence
-- [ ] Focused and cumulative verification
-- [ ] Remote Gate checkpoint 기록
+- [x] Moving operation normalization and derivation implementation
+- [x] Direct derived schema, replay and declarations promotion
+- [x] Current contract/catalog/docs/package synchronization
+- [x] Public monthly moving-average chart and renderer equivalence evidence
+- [x] Focused and cumulative verification
+- [x] Remote Gate implementation checkpoint (`19b2a2a4`)
 
 ## Approved contract
 

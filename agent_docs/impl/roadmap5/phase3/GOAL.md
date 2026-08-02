@@ -13,12 +13,12 @@ slice를 구현한다.
 - [x] Independent moving-window oracle과 actual BTS passenger moving-options primitive target
 - [x] R5-P3-V actual-data revision remote checkpoint (`731839b2`)
 - [x] R5-P3-V 사용자 visual approval — 2026-08-02
-- [ ] Moving operation grammar과 deterministic row-frame resolver 구현
-- [ ] Derived-data provenance, replay와 strict declarations 동기화
-- [ ] Truncated edges, partitions, stable ties, sequential operations tests
-- [ ] UTC monthly raw/moving line executable visual evidence
-- [ ] Current contracts, docs, package와 cumulative verification
-- [ ] R5-P3-A remote checkpoint
+- [x] Moving operation grammar과 deterministic row-frame resolver 구현
+- [x] Derived-data provenance, replay와 strict declarations 동기화
+- [x] Truncated edges, partitions, stable ties, sequential operations tests
+- [x] UTC monthly raw/moving line executable visual evidence
+- [x] Current contracts, docs, package와 cumulative verification
+- [x] R5-P3-A remote implementation checkpoint (`19b2a2a4`)
 - [ ] 사용자 explicit approval
 
 ## Gate R5-P3-V
