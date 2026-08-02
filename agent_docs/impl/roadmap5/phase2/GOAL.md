@@ -16,7 +16,7 @@ Nominal/ordinal Cartesian x/y category order를 semantic assignment로 저장하
 - [x] Focused explicit/computed/tie/reset/facet/guide tests
 - [x] Ordered-category bar executable visual evidence
 - [x] Cumulative repository/package/docs verification
-- [ ] R5-P2-A remote checkpoint
+- [x] R5-P2-A remote checkpoint
 - [ ] 사용자 explicit approval
 
 ## Gate R5-P2-A

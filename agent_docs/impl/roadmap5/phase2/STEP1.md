@@ -8,7 +8,7 @@
 - [x] Public action registration and declarations
 - [x] Current contract/catalog/docs promotion
 - [x] Focused and cumulative verification
-- [ ] Remote Gate checkpoint 기록
+- [x] Remote Gate checkpoint 기록
 
 ## Approved contract
 
