@@ -10,7 +10,7 @@
 - [x] Area layout/stack vocabulary 확인
 - [x] Proposed-only inventory와 Gate 질문 작성
 - [x] Baseline test 결과 기록
-- [ ] Proposal package remote checkpoint 기록
+- [x] Proposal package remote checkpoint `9c64e13c` 기록
 
 ## Baseline
 

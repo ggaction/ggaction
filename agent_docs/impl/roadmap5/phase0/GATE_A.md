@@ -77,7 +77,8 @@ Exact option/type shapes는 [`../PROPOSALS.json`](../PROPOSALS.json)이 소유�
 - `npm run test:contracts` — 160/160 pass
 - `npm run test:unit` — 1308/1308 pass
 - `npm run test:package` — pass, packed `ggaction@0.0.7` consumer verified
-- Remote checkpoint: pending commit/push
+- Remote checkpoint: `9c64e13c` on
+  `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
 ## Approval effect
 

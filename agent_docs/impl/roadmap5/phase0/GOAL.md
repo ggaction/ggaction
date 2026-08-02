@@ -22,7 +22,7 @@
 - [x] Representative chart contract 네 개 작성
 - [x] Phase dependency와 Approval Gate 작성
 - [x] Contract/unit/package baseline 실행
-- [ ] R5-P0-A review package commit/push
+- [x] R5-P0-A review package commit/push — `9c64e13c`
 - [ ] 사용자 explicit approval
 - [ ] Approved subset을 current Planned inventory로 승격
 
