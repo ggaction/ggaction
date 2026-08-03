@@ -112,9 +112,7 @@ function editContinuous(program, kind, previous, args) {
     before: kind === "gradient" ? "colorGradientStrips" : "opacityLegendSymbols"
   });
   next = reconcileGraphic(next, `${prefix}Title`, titleVisible, { type: "text" });
-  return kind === "gradient"
-    ? next.rematerializeGradientLegend()
-    : next.rematerializeOpacityLegend();
+  return next.rematerializeLegend();
 }
 
 function editInterval(program, previous, args) {
@@ -165,7 +163,7 @@ function editInterval(program, previous, args) {
   next = reconcileGraphic(next, "colorLegendTitle", titleVisible, {
     type: "text"
   });
-  return next.rematerializeIntervalLegend();
+  return next.rematerializeLegend();
 }
 
 function editStrokeWidth(program, previous, args) {
@@ -220,7 +218,7 @@ function editStrokeWidth(program, previous, args) {
   next = reconcileGraphic(next, "strokeWidthLegendTitle", titleVisible, {
     type: "text"
   });
-  return next.rematerializeStrokeWidthLegend();
+  return next.rematerializeLegend();
 }
 
 function categoricalSymbolIds(config) {

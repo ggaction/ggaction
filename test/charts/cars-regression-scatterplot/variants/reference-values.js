@@ -7,14 +7,14 @@ const LAYOUT = Object.freeze({
 });
 
 const LEGEND = Object.freeze({
-  originX: 23,
+  originX: 34.68000000000001,
   offset: 80,
   padding: 10,
   background: Object.freeze({
-    x: 13,
-    y: 42,
-    width: 97,
-    height: 356,
+    x: 23.180000000000007,
+    y: 43,
+    width: 96.82,
+    height: 325.8986541696686,
     fill: "#f8fafc",
     stroke: "#94a3b8",
     strokeWidth: 1
@@ -33,13 +33,15 @@ const LEGEND = Object.freeze({
   })
 });
 
-function translateSymbol(symbol, delta) {
+function translateSymbol(symbol, sourceX, targetX) {
   const properties = structuredClone(symbol.properties);
-  if (Number.isFinite(properties.x)) properties.x += delta;
+  if (Number.isFinite(properties.x)) {
+    properties.x = targetX + (properties.x - sourceX);
+  }
   if (Array.isArray(properties.commands)) {
     properties.commands = properties.commands.map(command =>
       Number.isFinite(command.x)
-        ? { ...command, x: command.x + delta }
+        ? { ...command, x: targetX + (command.x - sourceX) }
         : { ...command }
     );
   }
@@ -49,22 +51,20 @@ function translateSymbol(symbol, delta) {
 export function createLeftLegendPrimitiveValues(cars) {
   const chart = createCarsRegressionScatterplotValues(cars, LAYOUT);
   const sourceOriginX = chart.legends.origin.title.x;
-  const originDelta = LEGEND.originX - sourceOriginX;
-  const sizeDelta = LEGEND.originX - chart.legends.size.title.x;
   const originItems = chart.legends.origin.items.map(item => ({
     ...item,
     line: {
       ...item.line,
-      x1: item.line.x1 + originDelta,
-      x2: item.line.x2 + originDelta
+      x1: LEGEND.originX,
+      x2: LEGEND.originX + 32
     },
-    symbol: translateSymbol(item.symbol, originDelta),
-    label: { ...item.label, x: item.label.x + originDelta }
+    symbol: translateSymbol(item.symbol, sourceOriginX, LEGEND.originX),
+    label: { ...item.label, x: LEGEND.originX + 44 }
   }));
   const sizeItems = chart.legends.size.items.map(item => ({
     ...item,
-    symbol: { ...item.symbol, x: item.symbol.x + sizeDelta },
-    label: { ...item.label, x: item.label.x + sizeDelta }
+    symbol: { ...item.symbol, x: LEGEND.originX + 16 },
+    label: { ...item.label, x: LEGEND.originX + 44 }
   }));
 
   return Object.freeze({

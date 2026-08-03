@@ -3,27 +3,15 @@ import test from "node:test";
 
 import {
   CARS_LEGEND_TARGET,
-  MULTI_LEGEND_CURRENT,
   MULTI_LEGEND_TARGET
 } from "./reference-values.js";
 
-test("locks the independent multi-legend review coordinates", () => {
-  assert.equal(CARS_LEGEND_TARGET.categoricalTitleShiftX, 22);
+test("locks the independently approved legend columns", () => {
+  assert.equal(CARS_LEGEND_TARGET.titleX, 600);
   assert.equal(CARS_LEGEND_TARGET.symbolCenterX, 616);
   assert.equal(CARS_LEGEND_TARGET.labelX, 644);
-  assert.equal(
-    MULTI_LEGEND_CURRENT.sizeTitle.x -
-      MULTI_LEGEND_CURRENT.categoricalTitle.x,
-    22
-  );
-  assert.deepEqual(
-    MULTI_LEGEND_CURRENT.categoricalTitle,
-    { x: 528, y: 60 }
-  );
-  assert.deepEqual(
-    MULTI_LEGEND_CURRENT.opacityTitle,
-    { x: 550, y: 60 }
-  );
+  assert.equal(CARS_LEGEND_TARGET.symbolCenterX - CARS_LEGEND_TARGET.titleX, 16);
+  assert.equal(CARS_LEGEND_TARGET.labelX - CARS_LEGEND_TARGET.titleX, 44);
 });
 
 test("keeps target blocks aligned and at least 24 pixels apart", () => {

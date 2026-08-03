@@ -41,7 +41,7 @@ function pointLifecycleProgram() {
   return chart()
     .createCanvas({
       width: 320,
-      height: 220,
+      height: 380,
       margin: { top: 20, right: 120, bottom: 40, left: 40 }
     })
     .createData({ id: "rows", values: pointRows })

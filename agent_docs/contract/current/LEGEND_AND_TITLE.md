@@ -64,6 +64,13 @@ type TitleWrap = "word" | "character";
   graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용한다.
 - Composite layers share one item-local origin. Their concrete union bounds determine label placement and
   declared layer order determines rendering order in right, top, and bottom layouts.
+- Two or more right- or left-side legend blocks share one side lane. Every block uses the same title start,
+  symbol center, and label start columns, and adjacent occupied bounds keep at least 24 logical pixels of
+  vertical space. Blocks are ordered by owning layer declaration and then color/series, size, opacity,
+  stroke-width family order.
+- Same-target categorical and size blocks retain their shared border group. Independent categorical,
+  gradient, interval, opacity, and stroke-width blocks keep their own group bounds while participating in
+  the same lane. A lane that does not fit the requested margin or Canvas height fails atomically.
 - Coverage: series/histogram/grouped-bar/top/bottom/regression legend tests가 주요 layouts, recipes,
   borders, rematerialization과 invalid values를 검증한다. 모든 symbol-layer parameter pair는 부분적이다.
 - Left categorical/point-composite/size는 vertical block order와 symbol→label/domain order를 유지한다.
@@ -125,7 +132,10 @@ type TitleWrap = "word" | "character";
   - ✅ Covered: positive length/thickness, four position-derived orientations, point/aggregate-bar consumers and
     categorical-option conflicts.
 - ✅ Covered: left point-composite/size side layout and occupied-bounds failure.
-- Evidence: series, histogram, grouped-bar, top categorical, Phase 2 composite and regression legend tests.
+- ✅ Covered: right/left multi-block column alignment, deterministic authoring order, 24-pixel stacking,
+  gradient/opacity, interval/stroke-width, atomic overflow, and the actual-data Cars visual Gate.
+- Evidence: series, histogram, grouped-bar, top categorical, regression legend tests,
+  `test/unit/actions/guides/multi-legend-lane.test.js`, and `test/gates/multi-legend-layout/`.
 
 ## `editLegend`
 
@@ -145,7 +155,8 @@ type TitleWrap = "word" | "character";
   controls the distance after the fixed 32-pixel line sample. Custom/hidden/auto title transitions and partial text-style
   merges use the same modes as other legend kinds.
 - Effect: stores graphical config immutably and invokes the corresponding wrapped rematerialization action.
-  Categorical symbol recipe changes reconcile concrete graphic types without leaving stale objects.
+  Categorical symbol recipe changes reconcile concrete graphic types without leaving stale objects. If the
+  edited block participates in a side lane, all sibling blocks rematerialize before the lane is placed again.
 - Errors: missing/ambiguous target, empty/unknown edit, invalid title mode, incompatible options, invalid count/style,
   insufficient margin, and overlap with left y-axis guides.
 
@@ -264,8 +275,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
   `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`이며 matching complete block만
   제거한다. Combined categorical block은 stored represented channel set 전체를 한 call에 지정해야 한다. 일부만
   요청하면 collateral removal 대신 오류다. Missing block, duplicate/unknown channel과 empty selection도 오류다.
-- Retained block은 그대로 보존하고 categorical+size layout dependency가 바뀌면 existing `rematerializeLegend`를
-  wrapped child로 호출한다. Categorical block만 제거하고 size를 보존하면 inherited categorical typography를
+- Retained block은 그대로 보존하고 categorical+size 또는 same-side lane layout dependency가 바뀌면 existing
+  `rematerializeLegend`를 wrapped child로 호출한다. Categorical block만 제거하고 size를 보존하면 inherited categorical typography를
   해제하고 standalone defaults/position에서 다시 materialize한다. Removed composite block은 retained size를
   재생성하지 않고 ordinary `createLegend`로 다시 만들 수 있다.
 - Mark encodings, resolved/semantic scales와 source data는 제거하지 않는다. Shared semantic-kind state는 another

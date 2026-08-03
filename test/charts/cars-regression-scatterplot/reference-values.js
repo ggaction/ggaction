@@ -572,8 +572,8 @@ export function createCarsRegressionScatterplotValues(
     position: mapValue(value, yDomain, yRange),
     label: String(value)
   }));
-  const originLegendX = bounds.x + bounds.width + 8;
-  const sizeLegendX = bounds.x + bounds.width + 30;
+  const originLegendX = bounds.x + bounds.width + 30;
+  const sizeLegendX = originLegendX;
   const originLegendItems = groupDomain.map((group, index) => {
     const y = bounds.y + 52 + index * 28;
     const radius = Math.sqrt(64 / Math.PI);
@@ -636,7 +636,7 @@ export function createCarsRegressionScatterplotValues(
         strokeDash: []
       },
       symbol,
-      label: { x: originLegendX + 42, y, text: group }
+      label: { x: originLegendX + 44, y, text: group }
     };
   });
   const sizeLegendValues = Array.from(
@@ -645,7 +645,7 @@ export function createCarsRegressionScatterplotValues(
       index / (DEFAULT_SIZE_LEGEND_COUNT - 1) *
       (sizeDomain[1] - sizeDomain[0])
   );
-  const sizeLegendTitleY = bounds.y + 56 + groupDomain.length * 34 + 22;
+  const sizeLegendTitleY = bounds.y + 89 + (groupDomain.length - 1) * 28;
   const sizeLegendItems = sizeLegendValues.map((value, index) => {
     const area = mapValue(value, sizeDomain, sizeRange);
     const y = sizeLegendTitleY + 34 + index * 40;

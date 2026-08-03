@@ -790,8 +790,9 @@ symbol geometry 같은 appearance는 semantic guide에 저장하지 않는다.
 Legend lifecycle은 `materializationConfigs.guides.legend`의 kind별 complete block을 ownership unit으로 사용한다.
 Categorical block은 여러 represented channel을 하나의 resource로 소유하므로 partial channel removal로 분해하지
 않는다. Selective removal은 requested complete block만 semantic/config/graphics에서 해제하고 retained block의
-layout dependency를 existing legend rematerializer로 다시 계산한다. Stroke-width title/count/typography edit도 같은
-config→explicit rematerialization 경계를 사용하며 right-side concrete placement는 materializer가 계속 소유한다.
+layout dependency를 existing legend rematerializer로 다시 계산한다. Side lane은 retained family graphics를 모두
+intrinsic 상태로 materialize한 뒤 한 번 배치하므로 create/edit/remove, scale과 Canvas replay가 같은 concrete
+결과로 수렴한다. Stroke-width title/count/typography edit도 같은 config→explicit rematerialization 경계를 사용한다.
 
 Chart title은 guide와 별개의 top-level semantic concept다. `title.text`와
 `title.subtitle`만 의미 상태이며 실제 위치와 typography는 materialization config 및
@@ -1653,9 +1654,14 @@ Encoding reassignment는 existing categorical legend의 inferred field/title/dom
 
 Chart-independent legend default는 right다. Top/bottom, horizontal/vertical direction,
 columns, alignment, title position, border 등은 explicit option이다.
-Categorical/composite/size의 left side layout은 item 내부 symbol→label 순서와 resolved domain
-순서를 보존하고 multiple blocks를 top-to-bottom으로 쌓는다. Categorical과 size가 같은 target이면
-하나의 occupied bounds와 border를 공유하며 y-axis guide와 left margin 충돌을 함께 검증한다.
+Right/left에 둘 이상의 legend block이 있으면 각 family materializer가 intrinsic concrete graphics를 먼저
+만들고 `layout/legendLane.js`의 pure lane grammar가 공통 title-start, symbol-center, label-start 열과
+top-to-bottom block placement를 계산한다. `rematerializeSideLegendLane`은 이 결과를 concrete graphics에
+적용하는 유일한 wrapped owner다. Ordering은 owning layer declaration 뒤 family order이며 block 사이에는
+최소 24 logical pixels를 둔다. Categorical과 size가 같은 target이면 하나의 occupied bounds와 border를
+공유하고, independent gradient/interval/opacity/stroke-width block은 각 group bounds를 유지한 채 같은 lane에
+참여한다. Left lane도 item 내부 symbol→label 순서와 resolved domain 순서를 보존하며 y-axis guide와 margin
+충돌을 함께 검증한다. 공간이 부족하면 Canvas를 확장하거나 block을 옮기지 않고 전체 action이 실패한다.
 `editLegend`는 channel/scale binding을 바꾸지 않고 nested appearance/layout config만 부분 merge한 뒤
 kind별 wrapped rematerialization을 호출한다.
 
@@ -2103,12 +2109,14 @@ directory 구조를 만들기 위한 분할은 하지 않는다.
 
 Guide module은 concrete recipe 기준으로 나눈다. Continuous legend의 공통 validation/layout
 utility, gradient strip recipe, opacity symbol recipe를 분리하며, quantitative size legend는 generic
-`point`가 아니라 `size`라는 실제 책임 이름을 사용한다.
+`point`가 아니라 `size`라는 실제 책임 이름을 사용한다. Right/left multi-block placement만 family recipe에서
+분리해 shared lane owner가 맡으며 renderer는 그 최종 좌표만 읽는다.
 
 구현된 mark type, encoding channel, categorical legend channel, legend config kind는
 `core/vocabulary.js`가 canonical owner다. Schema parser, action validation, private config와
 materialization discovery는 이 목록을 import하며 별도의 문자열 목록을 만들지 않는다. 현재 legend
-kind는 `series`, `color`, `size`, `gradient`, `opacity`이고 사용되지 않는 `point` kind는 없다.
+kind는 `series`, `color`, `size`, `gradient`, `interval`, `opacity`, `strokeWidth`이고 사용되지 않는
+`point` kind는 없다.
 
 Palette 이름과 concrete color table은 `grammar/palettes.js`가 한 번만 소유한다. 기본 categorical
 range인 `TABLEAU10`도 별도 literal이 아니라 palette registry에서 resolve한 immutable result다.

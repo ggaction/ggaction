@@ -20,7 +20,7 @@ function pointBase() {
   return chart()
     .createCanvas({
       width: 680,
-      height: 380,
+      height: 480,
       margin: { top: 40, right: 240, bottom: 60, left: 60 }
     })
     .createData({ id: "rows", values: rows })

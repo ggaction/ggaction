@@ -9,7 +9,6 @@ import {
 } from "./primitive.program.js";
 import {
   CARS_LEGEND_TARGET,
-  MULTI_LEGEND_CURRENT,
   MULTI_LEGEND_TARGET
 } from "./reference-values.js";
 
@@ -37,18 +36,15 @@ function itemCenters(program, id) {
   });
 }
 
-test("shows the exact Cars combined-legend offset and aligned target", () => {
+test("matches the approved Cars combined-legend lane", () => {
   const comparison = createCarsCombinedLegendComparison(loadCars());
   const current = comparison.children.current;
   const target = comparison.children.target;
 
-  assert.equal(
-    title(current, "sizeLegendTitle").x -
-      title(current, "seriesLegendTitle").x,
-    CARS_LEGEND_TARGET.categoricalTitleShiftX
-  );
-  assert.equal(title(target, "seriesLegendTitle").x, CARS_LEGEND_TARGET.titleX);
-  assert.equal(title(target, "sizeLegendTitle").x, CARS_LEGEND_TARGET.titleX);
+  for (const program of [current, target]) {
+    assert.equal(title(program, "seriesLegendTitle").x, CARS_LEGEND_TARGET.titleX);
+    assert.equal(title(program, "sizeLegendTitle").x, CARS_LEGEND_TARGET.titleX);
+  }
   assert.deepEqual(
     itemCenters(target, "seriesLegendSymbolLines"),
     Array(2).fill(CARS_LEGEND_TARGET.symbolCenterX)
@@ -76,40 +72,17 @@ test("shows the exact Cars combined-legend offset and aligned target", () => {
   );
 });
 
-test("shows current overlap and the aligned non-overlapping three-block target", () => {
+test("matches the approved non-overlapping three-block lane", () => {
   const comparison = createThreeBlockLegendComparison(loadCars());
   const current = comparison.children.current;
   const target = comparison.children.target;
 
-  assert.deepEqual(
-    {
-      category: {
-        x: title(current, "colorLegendTitle").x,
-        y: title(current, "colorLegendTitle").y
-      },
-      size: {
-        x: title(current, "sizeLegendTitle").x,
-        y: title(current, "sizeLegendTitle").y
-      },
-      opacity: {
-        x: title(current, "opacityLegendTitle").x,
-        y: title(current, "opacityLegendTitle").y
-      }
-    },
-    {
-      category: MULTI_LEGEND_CURRENT.categoricalTitle,
-      size: MULTI_LEGEND_CURRENT.sizeTitle,
-      opacity: MULTI_LEGEND_CURRENT.opacityTitle
+  for (const program of [current, target]) {
+    for (const id of [
+      "colorLegendTitle", "sizeLegendTitle", "opacityLegendTitle"
+    ]) {
+      assert.equal(title(program, id).x, MULTI_LEGEND_TARGET.titleX);
     }
-  );
-  assert.equal(
-    title(current, "colorLegendTitle").y,
-    title(current, "opacityLegendTitle").y
-  );
-  for (const id of [
-    "colorLegendTitle", "sizeLegendTitle", "opacityLegendTitle"
-  ]) {
-    assert.equal(title(target, id).x, MULTI_LEGEND_TARGET.titleX);
   }
   assert.deepEqual(
     itemCenters(target, "colorLegendSymbols"),
