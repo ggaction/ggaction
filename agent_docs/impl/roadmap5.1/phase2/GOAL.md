@@ -9,14 +9,14 @@ Top/bottom edge의 여러 legend block을 plot에서 바깥 방향으로 쌓는�
 ## 진행 상태
 
 - [x] R51-P1-A 승인 — 2026-08-03
-- [ ] Pure horizontal-edge lane placement 구현
-- [ ] Top/bottom alignment와 24-pixel occupied-bounds gap
-- [ ] Same-target와 independent-target deterministic ordering
-- [ ] Create/edit/remove/scale/Canvas order convergence
-- [ ] Atomic margin/Canvas overflow
-- [ ] Actual-data top/bottom visual Gate와 four-renderer parity
-- [ ] Full normal/coverage/docs/package verification
-- [ ] R51-P2-A remote checkpoint
+- [x] Pure horizontal-edge lane placement 구현
+- [x] Top/bottom alignment와 24-pixel occupied-bounds gap
+- [x] Same-target와 independent-target deterministic ordering
+- [x] Create/edit/remove/scale/Canvas order convergence
+- [x] Atomic margin/Canvas overflow
+- [x] Actual-data top/bottom visual Gate와 four-renderer parity
+- [x] Full normal/coverage/docs/package verification
+- [x] R51-P2-A remote checkpoint
 - [ ] R51-P2-A 사용자 approval
 
 ## Gate R51-P2-A

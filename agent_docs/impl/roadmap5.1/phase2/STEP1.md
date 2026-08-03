@@ -2,13 +2,13 @@
 
 ## 진행 상태
 
-- [ ] Existing top/bottom family bounds normalization
-- [ ] Stable horizontal-edge group ordering
-- [ ] Plot-outward top/bottom placement grammar
-- [ ] Family rematerializers와 sibling-wide lane replay 연결
-- [ ] Create/edit/remove/scale/Canvas convergence evidence
-- [ ] Actual-data visual and Canvas/SVG/PNG/PDF evidence
-- [ ] Gate checkpoint commit/push
+- [x] Existing top/bottom family bounds normalization
+- [x] Stable horizontal-edge group ordering
+- [x] Plot-outward top/bottom placement grammar
+- [x] Family rematerializers와 sibling-wide lane replay 연결
+- [x] Create/edit/remove/scale/Canvas convergence evidence
+- [x] Actual-data visual and Canvas/SVG/PNG/PDF evidence
+- [x] Gate checkpoint commit/push — `482fe739`
 
 ## Implementation boundary
 

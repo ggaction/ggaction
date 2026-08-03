@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## Approval target
 
@@ -20,4 +20,29 @@ publish or documentation deployment.
 
 ## Remote checkpoint
 
-The complete verified Phase 2 package must be committed and pushed before this Gate becomes `ready-for-review`.
+- Implementation checkpoint: `482fe739` (`origin/codex/roadmap5-1-multi-legend-layout`)
+- Gate record checkpoint: this document's commit on the same remote branch
+
+## Implemented result
+
+- Top keeps the first stable block nearest the plot and moves later blocks upward; bottom moves them downward.
+- Block-local left/center/right alignment, direction, item grid and title placement remain unchanged.
+- Categorical, gradient and opacity horizontal recipes share the same lane when two or more occupy one edge.
+- Layer declaration and family order produce the same coordinates regardless of authoring call order.
+- Legend edit, sibling removal, scale edit and Canvas edit replay every retained block before lane placement.
+- Final occupied bounds include optional backgrounds and fail atomically on Canvas or guide/title collision.
+- The review chart uses 398 valid Cars rows rather than a synthetic two-point example.
+
+## Verification
+
+- `npm test`: 2,042 passed
+- `npm run test:coverage`: passed
+- `npm run test:docs`: 45 passed
+- `npm run test:gates`: 6 passed
+- `node scripts/run-tests.js render test/gates/multi-legend-layout`: 6 passed
+- Package artifact: 412 entries, 383,788 packed bytes, 1,814,495 unpacked bytes
+- Render parity: Canvas, SVG, PNG and PDF consume the same final `graphicSpec` coordinates
+
+## Review artifact
+
+- `.artifacts/test/png/review/multi-legend-layout/cars-top-bottom-lanes/primitive.png`
