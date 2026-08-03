@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "activeRoadmap": null,
-  "activePhase": null,
+  "activeRoadmap": "roadmap5.1",
+  "activePhase": 0,
   "lastCompletedRoadmap": "roadmap5",
   "lastCompletedPhase": 6,
   "roadmaps": [
@@ -66,7 +66,15 @@
       "title": "Temporal Derivation, Ordering, and Directional Marks",
       "status": "completed",
       "role": "historical-execution-record",
-      "file": "agent_docs/impl/roadmap5/ROADMAP.md"
+      "file": "agent_docs/impl/roadmap5/ROADMAP.md",
+      "successor": "roadmap5.1"
+    },
+    {
+      "id": "roadmap5.1",
+      "title": "Multi-Legend Layout Completion",
+      "status": "active",
+      "role": "current-execution-plan",
+      "file": "agent_docs/impl/roadmap5.1/ROADMAP.md"
     }
   ]
 }

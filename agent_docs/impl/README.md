@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **활성 Roadmap은 없다.** 마지막으로 완료된 Roadmap 5 Phase 6가 temporal derivation, ordering,
-  moving windows, Tick/Angle과 center-stacked area를 Current surface로 닫았다.
+- **Roadmap 5.1 Phase 0가 활성 상태다.** Same-edge multi-legend의 공통 lane layout과 before/after visual
+  target을 검토한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -19,6 +19,7 @@
 - [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md) — completed, authoring lifecycle과 compatibility completion
 - [`roadmap4.2/ROADMAP.md`](roadmap4.2/ROADMAP.md) — completed, SVG/PDF vector renderer와 distribution closeout
 - [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md) — completed, temporal derivation, ordering과 directional marks
+- [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md) — active, multi-legend layout completion
 
 ## 재사용하는 개발 절차
 

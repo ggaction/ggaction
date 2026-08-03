@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "roadmap": "roadmap5.1",
+  "gate": "R51-P0-V",
+  "status": "reviewing",
+  "capability": {
+    "id": "same-edge-multi-legend-layout",
+    "kind": "behavior-correction",
+    "publicApiChange": false,
+    "summary": "Lay out every legend block on the same edge through one deterministic lane instead of independent plot-relative anchors."
+  },
+  "decisions": [
+    {
+      "id": "layout-owner",
+      "recommended": "shared-legend-lane",
+      "reason": "Per-family absolute coordinates cannot prevent sibling overlap or preserve convergence after edits."
+    },
+    {
+      "id": "block-order",
+      "recommended": "layer-declaration-then-family",
+      "reason": "Final placement must not depend on authoring call order or incidental object enumeration."
+    },
+    {
+      "id": "side-placement",
+      "recommended": "common-anchor-top-to-bottom",
+      "reason": "Side legends should read as one aligned vertical lane."
+    },
+    {
+      "id": "horizontal-placement",
+      "recommended": "stack-away-from-plot",
+      "reason": "Existing per-block alignment can be preserved while avoiding same-edge overlap."
+    },
+    {
+      "id": "block-gap",
+      "recommended": "fixed-24-logical-pixels",
+      "reason": "The correction needs one deterministic initial rhythm without adding a new public option."
+    },
+    {
+      "id": "overflow",
+      "recommended": "atomic-layout-error",
+      "reason": "The existing Canvas contract forbids silent expansion, relocation or content loss."
+    }
+  ],
+  "nonGoals": [
+    "automatic Canvas or margin expansion",
+    "public legend block order or gap options",
+    "free-positioned legends",
+    "new legend families or renderer primitives",
+    "responsive layout or a generic collision solver"
+  ]
+}
