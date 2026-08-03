@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## Review target
 
@@ -45,8 +45,11 @@ filter/facet/Canvas/scale/guide replay and Canvas/SVG/PNG/PDF renderer boundarie
 
 ## Remote checkpoint
 
-The complete Phase 6 review package must be committed and pushed to
-`origin/codex/roadmap5-temporal-ordering-directional-marks` before this Gate becomes `ready-for-review`.
+- Phase 5 implementation: `49951629`
+- Phase 6 integration and closeout: `909a5271`
+- Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
+
+Both checkpoints are committed and pushed. User R5-Exit approval remains pending.
 
 ## Work blocked before approval
 

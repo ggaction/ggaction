@@ -8,7 +8,7 @@
 - [x] Docs images, action/reference/signature/search/LLM output 재생성
 - [x] Installed JavaScript/TypeScript consumer와 package size guard 확인
 - [x] Normal 2,015개와 render 133개 cumulative suite 통과
-- [ ] R5-Exit checkpoint commit/push와 Gate review 전환
+- [x] R5-Exit checkpoint commit/push와 Gate review 전환 — `909a5271`
 
 Review package와 승인 상태는 [`GATE_EXIT.md`](./GATE_EXIT.md)에 기록한다.
 

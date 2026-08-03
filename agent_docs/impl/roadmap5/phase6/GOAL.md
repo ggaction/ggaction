@@ -14,7 +14,8 @@ Roadmap 완료 상태나 active pointer를 변경하지 않는다.
 - [x] Roadmap 5 implemented capability의 Planned inventory 잔재 제거
 - [x] Current contracts, strict declarations, generated docs와 package consumer 동기화
 - [x] Full normal/render/package verification
-- [ ] R5-Exit remote checkpoint 기록과 사용자 explicit approval
+- [x] R5-Exit remote checkpoint 기록 — `909a5271`
+- [ ] 사용자 explicit R5-Exit approval
 
 ## Gate R5-Exit
 
