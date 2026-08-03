@@ -96,4 +96,5 @@ declarations, Current contracts, docs와 stable example을 구현한다.
 
 ## Remote checkpoint
 
-Gate implementation commit을 아래 checkpoint에 기록하고 Roadmap 5 branch에 push한 뒤 approval을 요청한다.
+- Visual Gate implementation: `df168136` (`test: add center stack visual gate`)
+- Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
