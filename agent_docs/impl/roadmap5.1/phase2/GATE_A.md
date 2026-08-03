@@ -2,12 +2,14 @@
 
 ## Gate state
 
-`ready-for-review`
+`changes-requested`
 
 ## Approval target
 
-- Top and bottom same-edge blocks stack away from the plot with at least 24 logical pixels between occupied bounds
-- Existing block-local left/center/right alignment, direction, grid and title placement remain intact
+- Horizontally disjoint top/bottom blocks share one row; only colliding occupied ranges create a new outward row
+- Every shared row uses one title baseline, one graphical-element start line and a 12-pixel title-to-element gap
+- Top gradient and opacity labels sit below their graphical elements, consistently with bottom legends
+- Existing block-local left/center/right alignment, direction and grid remain intact
 - Layer declaration and family order determine placement independently of authoring call order
 - Create/edit/remove, scale and Canvas replay converge without stale sibling geometry
 - Insufficient margin or Canvas space fails atomically without resizing, relocation or hidden content
@@ -46,3 +48,10 @@ publish or documentation deployment.
 ## Review artifact
 
 - `.artifacts/test/png/review/multi-legend-layout/cars-top-bottom-lanes/primitive.png`
+
+## Review feedback — 2026-08-03
+
+The first Phase 2 checkpoint was rejected because horizontally separated legends were still forced into different
+rows, while categorical, gradient and opacity recipes used different title and graphical-element geometry. The
+replacement Gate must demonstrate the corrected approval target above in both focused geometry tests and the
+actual-data four-renderer artifact.

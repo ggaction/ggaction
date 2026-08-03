@@ -2,7 +2,7 @@
   "version": 1,
   "roadmap": "roadmap5.1",
   "gate": "R51-P2-A",
-  "status": "ready-for-review",
+  "status": "changes-requested",
   "capability": {
     "id": "same-edge-multi-legend-layout",
     "kind": "behavior-correction",
@@ -27,8 +27,13 @@
     },
     {
       "id": "horizontal-placement",
-      "recommended": "stack-away-from-plot",
-      "reason": "Existing per-block alignment can be preserved while avoiding same-edge overlap."
+      "recommended": "same-row-first-packing",
+      "reason": "Horizontally disjoint blocks belong on one row; only colliding occupied ranges need an outward row."
+    },
+    {
+      "id": "horizontal-row-alignment",
+      "recommended": "shared-title-baseline-and-element-start",
+      "reason": "Every family on one row must align both its title and its graphical object with one 12-pixel gap."
     },
     {
       "id": "block-gap",

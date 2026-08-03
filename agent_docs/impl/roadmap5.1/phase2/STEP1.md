@@ -2,18 +2,19 @@
 
 ## 진행 상태
 
-- [x] Existing top/bottom family bounds normalization
+- [ ] Existing top/bottom family bounds normalization
 - [x] Stable horizontal-edge group ordering
-- [x] Plot-outward top/bottom placement grammar
-- [x] Family rematerializers와 sibling-wide lane replay 연결
-- [x] Create/edit/remove/scale/Canvas convergence evidence
-- [x] Actual-data visual and Canvas/SVG/PNG/PDF evidence
-- [x] Gate checkpoint commit/push — `482fe739`
+- [ ] Same-row-first top/bottom placement grammar
+- [ ] Shared title baseline, element start와 12-pixel gap
+- [ ] Family rematerializers와 sibling-wide lane replay 연결
+- [ ] Create/edit/remove/scale/Canvas convergence evidence
+- [ ] Actual-data visual and Canvas/SVG/PNG/PDF evidence
+- [ ] Replacement Gate checkpoint commit/push
 
 ## Implementation boundary
 
 - Public legend signatures와 stored semantic schema는 바꾸지 않는다.
-- Existing single top/bottom legend output은 보존한다.
-- Multi-block horizontal edge에서만 shared placement를 적용한다.
-- Block 내부 grid, direction, align, titlePosition은 family materializer가 계속 소유한다.
-- Lane grammar는 block 전체를 translation하며 renderer는 final `graphicSpec`만 읽는다.
+- Existing single top/bottom legend의 public contract는 보존하되 잘못된 top continuous label overlap은 수정한다.
+- Multi-block horizontal edge에서는 겹치지 않는 block을 같은 row에 먼저 배치한다.
+- Block 내부 grid와 direction은 family materializer가, row baseline과 vertical alignment는 lane이 소유한다.
+- Lane grammar는 title과 content를 각각 정렬한 final `graphicSpec`을 만들며 renderer는 그 좌표만 읽는다.

@@ -2,21 +2,22 @@
 
 ## 목표
 
-Top/bottom edge의 여러 legend block을 plot에서 바깥 방향으로 쌓는다. 각 block의 left/center/right 정렬을
-보존하고 create/edit/remove, scale와 Canvas replay가 authoring order와 무관하게 같은 final `graphicSpec`으로
-수렴하도록 한다.
+Top/bottom edge의 여러 legend block을 horizontal collision에 따라 row로 packing한다. 같은 row의 title
+baseline, graphical-element start와 12-pixel title-to-element gap을 통일하고 create/edit/remove, scale와 Canvas
+replay가 authoring order와 무관하게 같은 final `graphicSpec`으로 수렴하도록 한다.
 
 ## 진행 상태
 
 - [x] R51-P1-A 승인 — 2026-08-03
-- [x] Pure horizontal-edge lane placement 구현
-- [x] Top/bottom alignment와 24-pixel occupied-bounds gap
+- [ ] Pure horizontal-edge row packing 구현
+- [ ] Shared title baseline, element start와 12-pixel gap
+- [ ] Top continuous legend label placement normalization
 - [x] Same-target와 independent-target deterministic ordering
 - [x] Create/edit/remove/scale/Canvas order convergence
 - [x] Atomic margin/Canvas overflow
-- [x] Actual-data top/bottom visual Gate와 four-renderer parity
-- [x] Full normal/coverage/docs/package verification
-- [x] R51-P2-A remote checkpoint
+- [ ] Actual-data top/bottom visual Gate와 four-renderer parity
+- [ ] Full normal/coverage/docs/package verification
+- [ ] R51-P2-A replacement remote checkpoint
 - [ ] R51-P2-A 사용자 approval
 
 ## Gate R51-P2-A
