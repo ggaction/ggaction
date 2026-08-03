@@ -1662,6 +1662,11 @@ top-to-bottom block placement를 계산한다. `rematerializeSideLegendLane`은 
 공유하고, independent gradient/interval/opacity/stroke-width block은 각 group bounds를 유지한 채 같은 lane에
 참여한다. Left lane도 item 내부 symbol→label 순서와 resolved domain 순서를 보존하며 y-axis guide와 margin
 충돌을 함께 검증한다. 공간이 부족하면 Canvas를 확장하거나 block을 옮기지 않고 전체 action이 실패한다.
+Top/bottom에 둘 이상의 compatible block이 있으면 `resolveHorizontalLegendLane`이 stable order의 첫 block을
+plot 가까이에 유지하고 다음 block 전체를 바깥 방향으로 translation한다. 이 단계는 block-local horizontal
+align, direction, item grid와 title placement를 다시 계산하지 않는다. `rematerializeHorizontalLegendLane`이
+categorical, gradient와 opacity graphics 및 optional background를 함께 옮기고 chart title 또는 x-axis guide
+collision과 final Canvas bounds를 검증한다.
 `editLegend`는 channel/scale binding을 바꾸지 않고 nested appearance/layout config만 부분 merge한 뒤
 kind별 wrapped rematerialization을 호출한다.
 
@@ -2110,7 +2115,8 @@ directory 구조를 만들기 위한 분할은 하지 않는다.
 Guide module은 concrete recipe 기준으로 나눈다. Continuous legend의 공통 validation/layout
 utility, gradient strip recipe, opacity symbol recipe를 분리하며, quantitative size legend는 generic
 `point`가 아니라 `size`라는 실제 책임 이름을 사용한다. Right/left multi-block placement만 family recipe에서
-분리해 shared lane owner가 맡으며 renderer는 그 최종 좌표만 읽는다.
+분리해 shared lane owner가 맡는다. Top/bottom multi-block placement도 같은 `layout/legendLane.js`의 pure
+geometry와 별도 wrapped horizontal owner를 사용하며 renderer는 그 최종 좌표만 읽는다.
 
 구현된 mark type, encoding channel, categorical legend channel, legend config kind는
 `core/vocabulary.js`가 canonical owner다. Schema parser, action validation, private config와

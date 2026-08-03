@@ -113,13 +113,9 @@ export const removeLegend = action(
     let next = removeLegendKinds(this, kinds);
     const retainedKinds = Object.keys(next.guideConfigs.legend ?? {});
     if (args.channels === undefined) {
-      const removedSemanticKinds = new Set(
-        kinds.map(kind => legendResourcePolicy(kind).semanticKind)
-      );
-      const hasSharedSemanticKind = retainedKinds.some(kind =>
-        removedSemanticKinds.has(legendResourcePolicy(kind).semanticKind)
-      );
-      return hasSharedSemanticKind ? next.rematerializeLegend() : next;
+      return retainedKinds.length === 0
+        ? next
+        : next.rematerializeLegend();
     }
     const remainingTargetKinds = targetKinds.filter(kind => !kinds.includes(kind));
     const removedCategorical = kinds.some(kind => ["series", "color"].includes(kind));

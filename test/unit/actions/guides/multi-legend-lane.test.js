@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
+import { unionConcreteGraphicBounds } from
+  "../../../../src/grammar/schemas/graphicBounds.js";
 
 const rows = Object.freeze([
   Object.freeze({ x: 1, y: 2, group: "A", amount: 4, alpha: 0.2 }),
@@ -65,6 +67,71 @@ function laneCoordinates(program) {
     ],
     labels: ["colorLegendLabels", "sizeLegendLabels", "opacityLegendLabels"]
       .map(id => values(program, id, "x"))
+  };
+}
+
+function horizontalBase(position, options = {}) {
+  return chart()
+    .createCanvas({
+      width: 760,
+      height: 620,
+      margin: {
+        top: position === "top" ? options.margin ?? 250 : 40,
+        right: 70,
+        bottom: position === "bottom" ? options.margin ?? 250 : 60,
+        left: 70
+      }
+    })
+    .createData({ id: "rows", values: rows })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "group", fieldType: "nominal" })
+    .encodeOpacity({ field: "alpha" });
+}
+
+function createHorizontal(program, position, reverse = false) {
+  const calls = [
+    next => next.createLegend({
+      target: "points",
+      channels: ["color"],
+      position,
+      align: "left",
+      columns: 3
+    }),
+    next => next.createLegend({
+      target: "points",
+      channels: ["opacity"],
+      position,
+      align: "right",
+      count: 3
+    })
+  ];
+  return (reverse ? [...calls].reverse() : calls).reduce(
+    (next, create) => create(next),
+    program
+  );
+}
+
+function horizontalBounds(program, kind) {
+  const ids = kind === "color"
+    ? ["colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"]
+    : ["opacityLegendSymbols", "opacityLegendLabels", "opacityLegendTitle"];
+  return unionConcreteGraphicBounds(program.graphicSpec, ids);
+}
+
+function horizontalCoordinates(program) {
+  return {
+    color: ["colorLegendSymbols", "colorLegendLabels"]
+      .map(id => program.graphicSpec.objects[id].items.map(
+        item => ({ x: item.properties.x, y: item.properties.y })
+      )),
+    colorTitle: program.graphicSpec.objects.colorLegendTitle.properties,
+    opacity: ["opacityLegendSymbols", "opacityLegendLabels"]
+      .map(id => program.graphicSpec.objects[id].items.map(
+        item => ({ x: item.properties.x, y: item.properties.y })
+      )),
+    opacityTitle: program.graphicSpec.objects.opacityLegendTitle.properties
   };
 }
 
@@ -171,4 +238,187 @@ test("orders independent interval and stroke-width recipes by layer", () => {
   assert.ok(intervalTitle.y < strokeTitle.y);
   assert.equal(centers(program, "colorLegendSymbols").every(x => x === 576), true);
   assert.equal(values(program, "strokeWidthLegendLabels", "x").every(x => x === 604), true);
+});
+
+for (const position of ["top", "bottom"]) {
+  test(`stacks ${position} blocks outward and preserves their alignment`, () => {
+    const program = createHorizontal(horizontalBase(position), position);
+    const color = horizontalBounds(program, "color");
+    const opacity = horizontalBounds(program, "opacity");
+    if (position === "top") {
+      assert.equal(color.top - opacity.bottom, 24);
+    } else {
+      assert.equal(opacity.top - color.bottom, 24);
+    }
+    assert.equal(
+      program.graphicSpec.objects.colorLegendSymbols.items[0].properties.x,
+      70
+    );
+    assert.equal(
+      program.graphicSpec.objects.opacityLegendSymbols.items.at(-1).properties.x,
+      690
+    );
+  });
+
+  test(`converges ${position} coordinates across authoring order`, () => {
+    const forward = createHorizontal(horizontalBase(position), position);
+    const reverse = createHorizontal(horizontalBase(position), position, true);
+    assert.deepEqual(
+      horizontalCoordinates(reverse),
+      horizontalCoordinates(forward)
+    );
+  });
+}
+
+test("replays top lanes after Canvas edits", () => {
+  const before = createHorizontal(horizontalBase("top"), "top");
+  const resized = before.editCanvas({
+    width: 820,
+    height: 660,
+    margin: { top: 270, right: 80, bottom: 60, left: 80 }
+  });
+  const direct = createHorizontal(
+    chart()
+      .createCanvas({
+        width: 820,
+        height: 660,
+        margin: { top: 270, right: 80, bottom: 60, left: 80 }
+      })
+      .createData({ id: "rows", values: rows })
+      .createPointMark({ id: "points" })
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .encodeColor({ field: "group", fieldType: "nominal" })
+      .encodeOpacity({ field: "alpha" }),
+    "top"
+  );
+  assert.deepEqual(horizontalCoordinates(resized), horizontalCoordinates(direct));
+});
+
+test("converges horizontal lanes across legend, scale, and Canvas edits", () => {
+  const program = createHorizontal(horizontalBase("top"), "top");
+  const editedLegend = program.editLegend({
+    target: "points",
+    align: "center",
+    itemGap: 30
+  });
+  assert.equal(
+    horizontalBounds(editedLegend, "color").top -
+      horizontalBounds(editedLegend, "opacity").bottom,
+    24
+  );
+  const canvas = {
+    width: 820,
+    height: 660,
+    margin: { top: 270, right: 80, bottom: 60, left: 80 }
+  };
+  const scaleThenCanvas = program
+    .editScale({ id: "opacity", domain: [0, 1] })
+    .editCanvas(canvas);
+  const canvasThenScale = program
+    .editCanvas(canvas)
+    .editScale({ id: "opacity", domain: [0, 1] });
+  assert.deepEqual(
+    horizontalCoordinates(scaleThenCanvas),
+    horizontalCoordinates(canvasThenScale)
+  );
+});
+
+test("stacks top gradient and opacity recipes without changing their x layout", () => {
+  const program = chart()
+    .createCanvas({
+      width: 760,
+      height: 620,
+      margin: { top: 280, right: 70, bottom: 60, left: 70 }
+    })
+    .createData({ id: "rows", values: rows })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "amount", fieldType: "quantitative" })
+    .encodeOpacity({ field: "alpha" })
+    .createLegend({ channels: ["color"], position: "top", align: "left" })
+    .createLegend({
+      channels: ["opacity"],
+      position: "top",
+      align: "right",
+      count: 3
+    });
+  const gradient = unionConcreteGraphicBounds(program.graphicSpec, [
+    "colorGradientStrips", "colorGradientTicks", "colorGradientLabels",
+    "colorGradientTitle"
+  ]);
+  const opacity = horizontalBounds(program, "opacity");
+
+  assert.equal(gradient.top - opacity.bottom, 24);
+  assert.equal(
+    program.graphicSpec.objects.colorGradientStrips.items[0].properties.x,
+    70
+  );
+  assert.equal(
+    program.graphicSpec.objects.opacityLegendSymbols.items.at(-1).properties.x,
+    690
+  );
+});
+
+test("restores a retained horizontal block after removing its sibling target", () => {
+  const encoded = chart()
+    .createCanvas({
+      width: 760,
+      height: 620,
+      margin: { top: 250, right: 70, bottom: 60, left: 70 }
+    })
+    .createData({ id: "rows", values: rows })
+    .createPointMark({ id: "colorPoints" })
+    .encodeColor({ target: "colorPoints", field: "group", fieldType: "nominal" })
+    .createPointMark({ id: "opacityPoints", data: "rows" })
+    .encodeOpacity({ target: "opacityPoints", field: "alpha" });
+  const standalone = encoded.createLegend({
+    target: "opacityPoints",
+    channels: ["opacity"],
+    position: "top",
+    count: 3
+  });
+  const program = encoded
+    .createLegend({
+      target: "colorPoints",
+      channels: ["color"],
+      position: "top"
+    })
+    .createLegend({
+      target: "opacityPoints",
+      channels: ["opacity"],
+      position: "top",
+      count: 3
+    });
+  const removed = program.removeLegend({ target: "colorPoints" });
+  const opacity = horizontalBounds(removed, "opacity");
+
+  assert.equal(removed.guideConfigs.legend.color, undefined);
+  assert.equal(opacity.bottom < 250, true);
+  for (const id of ["opacityLegendSymbols", "opacityLegendLabels"]) {
+    assert.deepEqual(
+      removed.graphicSpec.objects[id].items,
+      standalone.graphicSpec.objects[id].items
+    );
+  }
+  assert.deepEqual(
+    removed.graphicSpec.objects.opacityLegendTitle.properties,
+    standalone.graphicSpec.objects.opacityLegendTitle.properties
+  );
+});
+
+test("rejects horizontal lane overflow without changing the source", () => {
+  const program = horizontalBase("top", { margin: 80 })
+    .createLegend({ channels: ["color"], position: "top" });
+  assert.throws(
+    () => program.createLegend({
+      channels: ["opacity"],
+      position: "top",
+      count: 3
+    }),
+    /requires more top-margin or Canvas space/
+  );
+  assert.equal(program.guideConfigs.legend.opacity, undefined);
+  assert.equal(program.graphicSpec.objects.opacityLegendSymbols, undefined);
 });

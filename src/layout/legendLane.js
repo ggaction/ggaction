@@ -157,3 +157,51 @@ export function resolveSideLegendLane({
     occupied
   };
 }
+
+function translateBounds(bounds, dy) {
+  return {
+    left: bounds.left,
+    right: bounds.right,
+    top: bounds.top + dy,
+    bottom: bounds.bottom + dy
+  };
+}
+
+export function resolveHorizontalLegendLane({
+  edge,
+  canvas,
+  groups,
+  collisionBounds = []
+}) {
+  if (!["top", "bottom"].includes(edge)) {
+    throw new Error(`Unsupported horizontal legend lane "${edge}".`);
+  }
+  if (groups.length < 2) return undefined;
+  const placements = [];
+  let previous;
+  for (const group of groups) {
+    let dy = 0;
+    if (previous !== undefined) {
+      dy = edge === "bottom"
+        ? previous.bottom + SIDE_LEGEND_BLOCK_GAP - group.bounds.top
+        : previous.top - SIDE_LEGEND_BLOCK_GAP - group.bounds.bottom;
+    }
+    const bounds = translateBounds(group.bounds, dy);
+    placements.push({ id: group.id, dy, bounds });
+    previous = bounds;
+  }
+  const occupied = unionBounds(placements.map(item => item.bounds));
+  if (
+    occupied.left < 0 || occupied.right > canvas.width ||
+    occupied.top < 0 || occupied.bottom > canvas.height
+  ) {
+    throw new Error(`Legend lane requires more ${edge}-margin or Canvas space.`);
+  }
+  if (collisionBounds.some(bounds => overlap(occupied, bounds))) {
+    const owner = edge === "top" ? "chart titles" : "x-axis guides";
+    throw new Error(
+      `${edge[0].toUpperCase()}${edge.slice(1)} legend lane and ${owner} require more margin space.`
+    );
+  }
+  return { edge, placements, occupied };
+}

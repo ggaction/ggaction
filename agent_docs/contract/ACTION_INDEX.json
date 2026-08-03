@@ -2588,6 +2588,7 @@
       "rematerializeIntervalLegend",
       "rematerializeGrid",
       "rematerializeHorizontalGrid",
+      "rematerializeHorizontalLegendLane",
       "rematerializeLegend",
       "rematerializeLegendBackground",
       "rematerializeLegendHighlights",

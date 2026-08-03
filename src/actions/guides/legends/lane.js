@@ -5,7 +5,10 @@ import {
   unionConcreteGraphicBounds
 } from "../../../grammar/schemas/graphicBounds.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
-import { resolveSideLegendLane } from "../../../layout/legendLane.js";
+import {
+  resolveHorizontalLegendLane,
+  resolveSideLegendLane
+} from "../../../layout/legendLane.js";
 import { findCanvasGraphic } from
   "../../../materialization/graphicHierarchy.js";
 import { legendResourcePolicy } from
@@ -27,7 +30,7 @@ function categoricalFor(program, target) {
     .find(config => config?.target === target);
 }
 
-function sidePosition(program, kind, config) {
+function legendPosition(program, kind, config) {
   if (kind === "size") {
     return categoricalFor(program, config.target)?.position ?? "right";
   }
@@ -124,6 +127,12 @@ function blockDescriptor(program, kind, config) {
       x: textAnchor(program, components.labelId),
       width: labels.right - labels.left
     },
+    occupiedBounds: components.backgroundId === undefined
+      ? bounds
+      : resolveConcreteGraphicBounds(
+          program.graphicSpec,
+          components.backgroundId
+        ),
     ...components,
     foregroundIds
   };
@@ -164,13 +173,13 @@ function groupBlocks(blocks, configs) {
   return groups;
 }
 
-function sideKinds(program, side) {
+function edgeKinds(program, edge) {
   const configs = program.guideConfigs.legend ?? {};
   const layerOrder = new Map(program.semanticSpec.layers.map(
     (layer, index) => [layer.id, index]
   ));
   return Object.entries(configs)
-    .filter(([kind, config]) => sidePosition(program, kind, config) === side)
+    .filter(([kind, config]) => legendPosition(program, kind, config) === edge)
     .sort(([kindA, configA], [kindB, configB]) =>
       (layerOrder.get(configA.target) - layerOrder.get(configB.target)) ||
       (FAMILY_ORDER[kindA] - FAMILY_ORDER[kindB])
@@ -178,7 +187,16 @@ function sideKinds(program, side) {
 }
 
 export function hasMultiSideLegendLane(program) {
-  return ["right", "left"].some(side => sideKinds(program, side).length > 1);
+  return ["right", "left"].some(side => edgeKinds(program, side).length > 1);
+}
+
+export function hasMultiHorizontalLegendLane(program) {
+  return ["top", "bottom"].some(edge => edgeKinds(program, edge).length > 1);
+}
+
+export function hasMultiLegendLane(program) {
+  return hasMultiSideLegendLane(program) ||
+    hasMultiHorizontalLegendLane(program);
 }
 
 function translateCommands(commands, dx, dy) {
@@ -256,6 +274,34 @@ function yAxisBounds(program) {
     : unionConcreteGraphicBounds(program.graphicSpec, ids);
 }
 
+function horizontalCollisionBounds(program, edge) {
+  const ids = edge === "top"
+    ? ["chartTitle", "chartSubtitle"]
+    : ["xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle"];
+  return ids
+    .filter(id => program.graphicSpec.objects[id] !== undefined)
+    .map(id => resolveConcreteGraphicBounds(program.graphicSpec, id))
+    .filter(bounds => bounds !== undefined);
+}
+
+function horizontalGroups(program, groups) {
+  return groups.map(group => ({
+    id: group.id,
+    bounds: group.backgroundId === undefined
+      ? unionBoundsForBlocks(group.blocks)
+      : resolveConcreteGraphicBounds(program.graphicSpec, group.backgroundId)
+  }));
+}
+
+function unionBoundsForBlocks(blocks) {
+  return {
+    left: Math.min(...blocks.map(block => block.occupiedBounds.left)),
+    right: Math.max(...blocks.map(block => block.occupiedBounds.right)),
+    top: Math.min(...blocks.map(block => block.occupiedBounds.top)),
+    bottom: Math.max(...blocks.map(block => block.occupiedBounds.bottom))
+  };
+}
+
 export const rematerializeSideLegendLane = action(
   {
     op: "rematerializeSideLegendLane",
@@ -270,7 +316,7 @@ export const rematerializeSideLegendLane = action(
     }
     const configs = this.guideConfigs.legend ?? {};
     const plans = ["right", "left"].flatMap(side => {
-      const entries = sideKinds(this, side);
+      const entries = edgeKinds(this, side);
       if (entries.length < 2) return [];
       const blocks = entries.map(([kind, config]) =>
         blockDescriptor(this, kind, config)
@@ -327,6 +373,57 @@ export const rematerializeSideLegendLane = action(
             property,
             value: background[property]
           });
+        }
+      }
+    }
+    return next;
+  }
+);
+
+export const rematerializeHorizontalLegendLane = action(
+  {
+    op: "rematerializeHorizontalLegendLane",
+    description: "Stack every top or bottom legend block away from the plot."
+  },
+  function (args = {}) {
+    noOptions(args, "rematerializeHorizontalLegendLane");
+    const canvas = findCanvasGraphic(this)?.properties;
+    if (canvas === undefined) {
+      throw new Error("Legend lane requires resolved Canvas bounds.");
+    }
+    const configs = this.guideConfigs.legend ?? {};
+    const plans = ["top", "bottom"].flatMap(edge => {
+      const entries = edgeKinds(this, edge);
+      if (entries.length < 2) return [];
+      const blocks = entries.map(([kind, config]) =>
+        blockDescriptor(this, kind, config)
+      );
+      const groups = groupBlocks(blocks, configs);
+      const plan = resolveHorizontalLegendLane({
+        edge,
+        canvas,
+        groups: horizontalGroups(this, groups),
+        collisionBounds: horizontalCollisionBounds(this, edge)
+      });
+      return [{ plan, groups }];
+    });
+    let next = this;
+    for (const { plan, groups } of plans) {
+      const byId = new Map(groups.map(group => [group.id, group]));
+      for (const placement of plan.placements) {
+        const group = byId.get(placement.id);
+        for (const block of group.blocks) {
+          for (const id of block.foregroundIds) {
+            next = translateGraphic(next, id, 0, placement.dy);
+          }
+        }
+        if (group.backgroundId !== undefined) {
+          next = translateGraphic(
+            next,
+            group.backgroundId,
+            0,
+            placement.dy
+          );
         }
       }
     }

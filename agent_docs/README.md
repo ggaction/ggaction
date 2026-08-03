@@ -15,7 +15,7 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**Roadmap 5.1 Phase 1이 활성 상태다.** Approved same-edge multi-legend target의 right/left shared lane 구현을
+**Roadmap 5.1 Phase 2가 활성 상태다.** Approved side lane 위에 top/bottom multi-legend lane과 lifecycle 수렴을
 [`impl/roadmap5.1/ROADMAP.md`](impl/roadmap5.1/ROADMAP.md)에서 진행한다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.

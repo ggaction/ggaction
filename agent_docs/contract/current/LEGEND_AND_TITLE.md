@@ -71,6 +71,10 @@ type TitleWrap = "word" | "character";
 - Same-target categorical and size blocks retain their shared border group. Independent categorical,
   gradient, interval, opacity, and stroke-width blocks keep their own group bounds while participating in
   the same lane. A lane that does not fit the requested margin or Canvas height fails atomically.
+- Two or more top- or bottom-positioned categorical, gradient, or opacity blocks share a horizontal-edge lane.
+  The first block in stable layer/family order remains closest to the plot and later blocks move outward with
+  at least 24 logical pixels between occupied bounds. Each block keeps its own horizontal
+  `align`, item grid, direction, and title placement.
 - Coverage: series/histogram/grouped-bar/top/bottom/regression legend tests가 주요 layouts, recipes,
   borders, rematerialization과 invalid values를 검증한다. 모든 symbol-layer parameter pair는 부분적이다.
 - Left categorical/point-composite/size는 vertical block order와 symbol→label/domain order를 유지한다.
@@ -134,8 +138,11 @@ type TitleWrap = "word" | "character";
 - ✅ Covered: left point-composite/size side layout and occupied-bounds failure.
 - ✅ Covered: right/left multi-block column alignment, deterministic authoring order, 24-pixel stacking,
   gradient/opacity, interval/stroke-width, atomic overflow, and the actual-data Cars visual Gate.
+- ✅ Covered: top/bottom plot-outward stacking, preserved left/right alignment, categorical/gradient/opacity,
+  authoring-order independence, edit/remove/scale/Canvas convergence, collision and overflow failure.
 - Evidence: series, histogram, grouped-bar, top categorical, regression legend tests,
-  `test/unit/actions/guides/multi-legend-lane.test.js`, and `test/gates/multi-legend-layout/`.
+  `test/unit/layout/legend-lane.test.js`, `test/unit/actions/guides/multi-legend-lane.test.js`, and
+  `test/gates/multi-legend-layout/`.
 
 ## `editLegend`
 

@@ -4,7 +4,7 @@
 
 ## 현재 작업
 
-- **Roadmap 5.1 Phase 1이 활성 상태다.** Approved same-edge multi-legend target의 right/left shared lane을
+- **Roadmap 5.1 Phase 2가 활성 상태다.** Approved side lane 위에 top/bottom multi-legend lane과 lifecycle 수렴을
   구현한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 

@@ -5,6 +5,7 @@ import {
   createCarsCombinedLegendComparison,
   createThreeBlockLegendComparison
 } from "./primitive.program.js";
+import { createHorizontalLegendLaneComparison } from "./horizontal.program.js";
 import { REVIEW_LAYOUT } from "./reference-values.js";
 
 const cars = loadCars();
@@ -25,6 +26,17 @@ export const threeBlockCallChain = `hconcat({
   programs: [
     { id: "current", program: current },
     { id: "target", program: target }
+  ],
+  gap: 24,
+  padding: 8,
+  align: "start"
+});`;
+
+export const horizontalCallChain = `hconcat({
+  id: "horizontalLegendLaneComparison",
+  programs: [
+    { id: "top", program: top },
+    { id: "bottom", program: bottom }
   ],
   gap: 24,
   padding: 8,
@@ -78,5 +90,20 @@ export const visualVariants = Object.freeze([
       { value: "#e45756", minimumPixels: 20 }
     ],
     regions: panelRegions(REVIEW_LAYOUT.multiWidth, REVIEW_LAYOUT.multiHeight)
+  }),
+  defineVisualVariant({
+    chart: "multi-legend-layout",
+    variant: "cars-top-bottom-lanes",
+    title: "Cars Multi-Legend Scatterplot · Top and Bottom Lanes",
+    callChain: horizontalCallChain,
+    artifact: { scope: "review" },
+    primitive: () => createHorizontalLegendLaneComparison(cars),
+    ...comparisonDimensions(REVIEW_LAYOUT.multiWidth, 620),
+    colors: [
+      { value: "#4c78a8", minimumPixels: 100 },
+      { value: "#f58518", minimumPixels: 20 },
+      { value: "#e45756", minimumPixels: 20 }
+    ],
+    regions: panelRegions(REVIEW_LAYOUT.multiWidth, 620)
   })
 ]);
