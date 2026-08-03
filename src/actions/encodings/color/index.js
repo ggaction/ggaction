@@ -70,8 +70,18 @@ const encodeColor = action(
     const horizonColor = horizonTransform !== undefined &&
       horizonTransform.as?.color === args.field &&
       layer.encoding?.group?.field === horizonTransform.as?.group;
+    const barGrain = resolveBarGrain(layer);
+    if (layer.mark.type === "bar" && barGrain === undefined) {
+      throw new Error(
+        "Bar color encoding requires a complete histogram encoding or a complete ordinal aggregate encoding."
+      );
+    }
+    const layout = resolveColorLayout(layer, args.layout, barGrain);
+    const createsCenterGroup = layer.mark.type === "area" &&
+      layout === "center" && layer.encoding?.group?.field === undefined;
     if (
       layer.mark.type === "area" &&
+      !createsCenterGroup &&
       (layer.encoding?.group?.field === undefined ||
         layer.encoding.group.field !== args.field) &&
       !densitySeriesFields.includes(args.field) &&
@@ -82,14 +92,6 @@ const encodeColor = action(
       );
     }
     validateLineSeriesCompatibility(layer, "color", args.field);
-
-    const barGrain = resolveBarGrain(layer);
-    if (layer.mark.type === "bar" && barGrain === undefined) {
-      throw new Error(
-        "Bar color encoding requires a complete histogram encoding or a complete ordinal aggregate encoding."
-      );
-    }
-    const layout = resolveColorLayout(layer, args.layout, barGrain);
     const requestedScale = resolveReassignmentScaleOptions(
       layer.encoding?.color,
       resolveColorScaleOptions(args)
@@ -112,11 +114,13 @@ const encodeColor = action(
       readNominalField(dataset.values, args.field);
     }
 
-    let next = this
-      .editSemantic({
-        property: `layer[${target}].encoding.color.field`,
-        value: args.field
-      })
+    let next = createsCenterGroup
+      ? this.encodeGroup({ target, field: args.field })
+      : this;
+    next = next.editSemantic({
+      property: `layer[${target}].encoding.color.field`,
+      value: args.field
+    })
       .editSemantic({
         property: `layer[${target}].encoding.color.fieldType`,
         value: fieldType

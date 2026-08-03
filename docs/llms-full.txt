@@ -4623,9 +4623,12 @@ const area = chart()
 ```
 
 Area fill defaults to `"#4c78a8"`, opacity to `0.2`, and curve to `"linear"`.
-An area becomes renderable with exactly one ranged orientation, or with a
-complete density value/density pair. `encodeGroup` creates one closed path per
-nominal group without creating a scale or legend.
+An area becomes renderable with exactly one ranged orientation, a complete
+density value/density pair, or aligned grouped x/y values whose y encoding uses
+`stack: "center"`. `encodeGroup` creates one closed path per nominal group
+without creating a scale or legend. For a center-stacked area,
+`encodeColor({ field, layout: "center" })` can author the matching group and
+center y policy atomically.
 
 ### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })`
 
@@ -6887,12 +6890,20 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Order categorical positions | nominal/ordinal x or y | `orderCategories`, `removeCategoryOrder` | [Category ordering](./position/category-ordering.md) |
 | Bin and count values | bar mark, quantitative field | `encodeHistogram` or `encodeX` + `encodeY` | [Histograms](./position/histogram.md) |
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./encodings.md#atomic-density) |
+| Center aligned area series | area mark, quantitative/temporal x, non-negative quantitative y, nominal group | `encodeY({ stack: "center" })` or `encodeColor({ layout: "center" })` | [Color encoding](./series/color.md#center-stacked-areas) |
 | Draw full-span or bounded rules | rule mark, field or datum endpoints | `encodeX`, `encodeY`, `encodeX2`, `encodeY2` | [Rule endpoints](#rule-endpoints) |
 | Control within-band grouping | complete ordinal-bar positions | `encodeXOffset`, `encodeYOffset` | [Offsets](./position/offsets.md) |
 
 For ordinary grouped bar charts, prefer
 `encodeColor({ field, layout: "group" })`; it calls the matching advanced
 directional offset action for the same field.
+
+For a center-stacked area, each group must have exactly one non-negative value
+at every x position. `encodeY({ stack: "center" })` preserves the original y
+field and creates concrete lower/upper area boundaries around zero. The
+equivalent `encodeColor({ layout: "center" })` also creates the matching nominal
+group when it is absent. Center stacking is not supported for bars, ranged
+areas, signed values, duplicate group/x rows, or missing positions.
 
 ## Shared inference
 
@@ -7505,7 +7516,8 @@ bar fills, rect fills, or arc-sector fills. Ordinal fields may contain ordered n
 engine cylinder counts. Quantitative or temporal point and rect fields use continuous color
 scales; point fields also support discretized color. Aggregate bars additionally support one aggregate quantitative
 color value per final rectangle. Line and categorical bar materializers may use
-the field for grouping. Area color must match an existing `encodeGroup` field.
+the field for grouping. Area color normally matches an existing `encodeGroup`
+field; `layout: "center"` creates that matching nominal group when absent.
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
@@ -7519,7 +7531,7 @@ the field for grouping. Area color must match an existing `encodeGroup` field.
 | `target` | point, line, area, bar, rect, or arc mark ID | current mark |
 | `fieldType` | `"nominal"`, `"ordinal"`, `"quantitative"`, or `"temporal"` | `"nominal"` |
 | `aggregate` | aggregate operation; quantitative aggregate bars only | matching measure aggregate |
-| `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, or `"diverging"` | mark policy |
+| `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, `"diverging"`, or `"center"` | mark policy |
 | `palette` | palette name or `{ name, count?, extent? }`; shorthand for `scale.palette` | omitted |
 | `scale.id` | scale ID | `"color"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
@@ -7621,8 +7633,8 @@ endpoint and reject explicit measure domains that exclude zero. Call
 histogram.encodeColor({ field: "Origin", layout: "fill" });
 ```
 
-On an area mark, color never creates grouping implicitly. Author grouping
-directly or through `encodeDensity({ groupBy })`, then encode that same field:
+On an area mark, author grouping directly or through
+`encodeDensity({ groupBy })`, then encode that same field:
 
 ```javascript
 densityArea.encodeColor({
@@ -7632,13 +7644,42 @@ densityArea.encodeColor({
 });
 ```
 
-Area layouts support `stack`, `fill`, `overlay`, and `diverging`; `group` is
+Area layouts support `stack`, `fill`, `overlay`, `diverging`, and `center`; `group` is
 bar-only. Each existing path receives the resolved color for its group. Path order,
 color domain order, and later legend order share the same ordered categories;
 Canvas and shared-scale changes rematerialize every affected area fill.
 Once a color layout exists, changing it to another layout is rejected until a
 future companion-cleanup contract is implemented; the earlier program remains
 unchanged.
+
+### Center-stacked areas
+
+`layout: "center"` is the area-only shorthand for matching grouping, color, and
+`encodeY({ stack: "center" })` in one atomic call:
+
+```javascript
+const stream = chart()
+  .createCanvas({ width: 690, height: 420 })
+  .createData({ values: rows })
+  .createAreaMark({ id: "occupations", opacity: 1 })
+  .encodeX({ target: "occupations", field: "year" })
+  .encodeY({ target: "occupations", field: "count" })
+  .encodeColor({
+    target: "occupations",
+    field: "job",
+    layout: "center"
+  })
+  .createGuides();
+```
+
+Every category must contribute exactly one finite non-negative value at every
+quantitative or temporal x position. First appearance determines stable series
+order. At each position, the total partition spans `[-total / 2, total / 2]`;
+each series keeps its original thickness. Missing positions, duplicate
+group/x rows, negative values, ranged areas, and centered bars are rejected
+before semantic state changes. An explicit y domain must contain every resolved
+lower and upper bound. Wiggle baselines and automatic imputation are not part
+of this mode.
 
 ### Continuous aggregate-bar color
 
@@ -10149,7 +10190,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`encodeX2`](./actions/encodings.md#encodex2) | user-facing | encodings |
 | [`encodeXOffset`](./actions/encodings.md#encodexoffset) | user-facing | encodings |
 | [`encodeXRange`](./actions/encodings.md#encodexrange) | user-facing | encodings |
-| [`encodeY`](./actions/encodings.md#encodey) | user-facing | encodings |
+| [`encodeY`](./actions/encodings.md#encodecolor) | user-facing | encodings |
 | [`encodeY2`](./actions/encodings.md#encodey2) | user-facing | encodings |
 | [`encodeYOffset`](./actions/encodings.md#encodeyoffset) | user-facing | encodings |
 | [`encodeYRange`](./actions/encodings.md#encodeyrange) | user-facing | encodings |
@@ -10977,7 +11018,8 @@ encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? 
 Create or compatibly replace point fill, line-series color, grouped area fill,
 bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share an ordinal palette scale;
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
-and `diverging`; area accepts all except `group`. Quantitative and temporal
+and `diverging`; area also accepts `center` and rejects only `group` from the
+shared layout vocabulary. Quantitative and temporal
 point fields use a sequential scale; quantitative point fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
@@ -10985,6 +11027,9 @@ orientation. Reassigning grouped color also atomically reassigns its offset and
 rematerializes an existing legend. Aggregate
 bars accept quantitative sequential color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
+Area `layout: "center"` creates a matching nominal group when needed and records
+wrapped `encodeY({ stack: "center" })`. It requires non-negative values aligned
+at every x position and stacks each partition from `-total / 2`.
 Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.
 [Series encodings](../../api/series-encodings.md)
@@ -11971,7 +12016,7 @@ interface ChartProgramActions {
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
   editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
-  encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
+  encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
   encodeR(options: RadialEncodingOptions): ChartProgram;
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;

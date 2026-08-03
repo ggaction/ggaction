@@ -24,6 +24,8 @@ import { createDirectionalTickPointComparison } from
   "./directional-tick-plot/program.js";
 import { createOrderedCategoryBarComparison } from
   "./ordered-category-bar/program.js";
+import { createCenteredAreaStream } from
+  "./centered-area-stream/program.js";
 import {
   createCarsOriginJitter,
   createGapminderClusterJitter
@@ -88,6 +90,22 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "centered-area-stream",
+    data: "jobs",
+    width: 690,
+    height: 420,
+    createProgram: createCenteredAreaStream,
+    docsGroup: "charts",
+    browser: {
+      path: "browser-host/?chart=centered-area-stream",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "centered-area-stream", width: 690, height: 420 }
+      }
+    }
+  }),
   example({
     id: "directional-tick-plot",
     data: {},

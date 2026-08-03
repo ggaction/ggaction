@@ -96,6 +96,12 @@ Estimate grouped distributions and draw baseline-closed areas.
 
 Representative actions: `createAreaMark`, `encodeDensity`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/tutorials/density-area/).
 
+### [Center-stacked area](./centered-area-stream/)
+
+Preserve series thickness while centering each time partition around zero.
+
+Representative actions: `createAreaMark`, `encodeX`, `encodeY`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/api/series/color/#center-stacked-areas).
+
 ### [Regression scatterplot](./cars-regression-scatterplot/)
 
 Layer observations, grouped fits, and confidence bands.

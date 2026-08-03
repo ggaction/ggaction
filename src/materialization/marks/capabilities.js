@@ -80,8 +80,13 @@ export function canMaterializeArea(program, layer) {
     densityTransform !== undefined &&
     (densityTransform.groupBy === undefined ||
       layer.encoding?.group?.field === densityTransform.groupBy);
+  const completeCenter =
+    densityTransform === undefined &&
+    layer.encoding?.y?.stack === "center" &&
+    layer.encoding?.group?.fieldType === "nominal";
   return (
     completeDensity ||
+    completeCenter ||
     layer.encoding?.y2?.scale === layer.encoding.y.scale ||
     layer.encoding?.x2?.scale === layer.encoding.x.scale
   );

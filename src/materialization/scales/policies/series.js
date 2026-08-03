@@ -40,6 +40,15 @@ export function resolveSeriesLayoutDomain({
     ...activeLayouts.flatMap(item => item.values),
     ...directConsumers.flatMap(item => item.values)
   ];
+  if (layout === "center" && scale.domain !== "auto") {
+    const minimum = Math.min(...values);
+    const maximum = Math.max(...values);
+    if (Math.min(...scale.domain) > minimum || Math.max(...scale.domain) < maximum) {
+      throw new Error(
+        `Center layout scale "${id}" explicit domain must contain every centered bound.`
+      );
+    }
+  }
   if (
     ["group", "overlay"].includes(layout) &&
     scale.domain !== "auto" &&

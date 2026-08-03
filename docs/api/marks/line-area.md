@@ -109,9 +109,12 @@ const area = chart()
 ```
 
 Area fill defaults to `"#4c78a8"`, opacity to `0.2`, and curve to `"linear"`.
-An area becomes renderable with exactly one ranged orientation, or with a
-complete density value/density pair. `encodeGroup` creates one closed path per
-nominal group without creating a scale or legend.
+An area becomes renderable with exactly one ranged orientation, a complete
+density value/density pair, or aligned grouped x/y values whose y encoding uses
+`stack: "center"`. `encodeGroup` creates one closed path per nominal group
+without creating a scale or legend. For a center-stacked area,
+`encodeColor({ field, layout: "center" })` can author the matching group and
+center y policy atomically.
 
 ### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })`
 

@@ -156,6 +156,13 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
+  "centered-area-stream": [
+    "canvas", "horizontalGridLines", "occupations",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "jobs-grouped-bar": [
     "canvas", "horizontalGridLines", "bars",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

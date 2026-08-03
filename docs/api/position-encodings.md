@@ -39,12 +39,20 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Order categorical positions | nominal/ordinal x or y | `orderCategories`, `removeCategoryOrder` | [Category ordering](./position/category-ordering.md) |
 | Bin and count values | bar mark, quantitative field | `encodeHistogram` or `encodeX` + `encodeY` | [Histograms](./position/histogram.md) |
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./encodings.md#atomic-density) |
+| Center aligned area series | area mark, quantitative/temporal x, non-negative quantitative y, nominal group | `encodeY({ stack: "center" })` or `encodeColor({ layout: "center" })` | [Color encoding](./series/color.md#center-stacked-areas) |
 | Draw full-span or bounded rules | rule mark, field or datum endpoints | `encodeX`, `encodeY`, `encodeX2`, `encodeY2` | [Rule endpoints](#rule-endpoints) |
 | Control within-band grouping | complete ordinal-bar positions | `encodeXOffset`, `encodeYOffset` | [Offsets](./position/offsets.md) |
 
 For ordinary grouped bar charts, prefer
 `encodeColor({ field, layout: "group" })`; it calls the matching advanced
 directional offset action for the same field.
+
+For a center-stacked area, each group must have exactly one non-negative value
+at every x position. `encodeY({ stack: "center" })` preserves the original y
+field and creates concrete lower/upper area boundaries around zero. The
+equivalent `encodeColor({ layout: "center" })` also creates the matching nominal
+group when it is absent. Center stacking is not supported for bars, ranged
+areas, signed values, duplicate group/x rows, or missing positions.
 
 ## Shared inference
 

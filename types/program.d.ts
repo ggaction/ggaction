@@ -78,6 +78,7 @@ export type ScaleType =
   | "quantile"
   | "threshold";
 export type StackMode = "zero" | "normalize" | null;
+export type YStackMode = StackMode | "center";
 export type CompositionAlign = "start" | "center" | "end";
 export interface CompositionPadding {
   top?: number;
@@ -551,7 +552,8 @@ export type ColorLayout =
   | "fill"
   | "group"
   | "overlay"
-  | "diverging";
+  | "diverging"
+  | "center";
 export type ScalarAggregateOperation =
   | "count" | "sum" | "mean" | "median" | "min" | "max"
   | "distinct" | "valid" | "missing"
@@ -950,6 +952,9 @@ export interface PositionEncodingOptions {
       };
   stack?: StackMode;
 }
+
+export type YPositionEncodingOptions =
+  Omit<PositionEncodingOptions, "stack"> & { stack?: YStackMode };
 
 export interface ThetaScaleOptions {
   id?: string;
@@ -2325,7 +2330,7 @@ export class ChartProgram {
   }): ChartProgram;
 
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
-  encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
+  encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
   encodeR(options: RadialEncodingOptions): ChartProgram;
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;

@@ -258,6 +258,23 @@
   home_order: 100
   tutorial_order: 90
   recipe_order: 70
+- id: centered-area-stream
+  example: /examples/centered-area-stream/
+  title: Center-stacked area
+  image: /assets/images/centered-area-stream.png
+  alt: Center-stacked area chart of U.S. occupation counts over time
+  width: 1380
+  height: 840
+  thumbnail: /assets/images/centered-area-stream-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 390
+  caption: Aligned non-negative series centered around half of each total.
+  summary: Preserve series thickness while centering each time partition around zero.
+  actions: createAreaMark · encodeX · encodeY · encodeColor
+  tasks: time-series comparison
+  url: /api/series/color/#center-stacked-areas
+  home_group: statistical
+  home_order: 15
 - id: regression
   example: /examples/cars-regression-scatterplot/
   title: Regression scatterplot

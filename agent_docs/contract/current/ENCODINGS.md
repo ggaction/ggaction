@@ -177,11 +177,14 @@ type AggregateOperation =
   source order fallback으로 정렬한 뒤 encoded finite quantitative value를 선택한다. `order`는
   `"ascending"`으로 normalize되어 semantic state에 저장된다. 유효한 candidate가 없거나 order-key
   type이 한 group 안에서 섞이면 해당 group을 생략한다.
-- `stack`: Implemented values `"zero" | "normalize" | null`. `"normalize"`은 각 non-negative
+- `stack`: Implemented values `"zero" | "normalize" | "center" | null`. `"normalize"`은 각 non-negative
   partition을 합계 1로 정규화하고 automatic y domain을 `[0, 1]`로 고정한다. 합계가 0인 partition은
   graphic을 만들지 않는다. Aggregate bar의 group/overlay는 `stack: null`이어도 semantic start endpoint
   `0`을 domain과 geometry가 함께 사용한다. Automatic domain은 `zero: false`와 무관하게 이 endpoint를
-  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다.
+  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다. `"center"`는 nominal group을 가진
+  non-negative raw/density area의 y에서만 허용한다. 모든 group은 같은 x position을 정확히 한 번씩 가져야
+  하며 각 partition은 deterministic first-appearance group order로 `-total / 2`부터 쌓인다. Missing position,
+  duplicate group/x, ranged area, negative value와 bar center stack은 atomic하게 거부한다.
 - `bin`: 현재 y에서는 지원되지 않는다.
 - Effect: y semantic, scale, final bar/line aggregate grain을 저장하고 mark geometry와
   existing guides를 rematerialize한다.
@@ -199,10 +202,10 @@ type AggregateOperation =
 
 ### Formal values — `encodeY`
 
-- Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | "normalize" | null })`; nominal은 compatible count-style aggregate에만 허용되고 mark/pair policy가 조합을 제한한다.
+- Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | "normalize" | "center" | null })`; `"center"`는 aligned non-negative grouped area y 전용이고, nominal은 compatible count-style aggregate에만 허용되며 mark/pair policy가 조합을 제한한다.
 - Implemented quantitative extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }` for compatible point, line, area, bar and rule materializers.
 - Implemented point fallback: `{ scale?: { unknown?: Finite } }`; temporal `time` remains UTC-only.
-- Proposed (NOT IMPLEMENTED): `{ stack?: "center" }`; full-item extreme selection은 Planned `selectMarks`가 소유한다.
+- Proposed (NOT IMPLEMENTED): full-item extreme selection은 Planned `selectMarks`가 소유한다.
 
 ### Value coverage — `encodeY`
 
@@ -218,9 +221,8 @@ type AggregateOperation =
     candidates, final grain, inferred title, rematerialization과 caller-owned object isolation.
   - 🟡 Planned: full-item min/max selection은 scalar aggregate가 아닌 `selectMarks` selector로 제공한다.
 - `stack`
-  - ✅ Covered: `"zero"`, `"normalize"`, `null`, positive/zero partition, auto `[0, 1]` domain과
-    incompatible policy rejection.
-  - 🟣 Proposed: `"center"`; streamgraph baseline contract가 필요하다.
+  - ✅ Covered: `"zero"`, `"normalize"`, `"center"`, `null`, positive/zero partition, auto `[0, 1]`,
+    symmetric center domain, direct/order-independent area authoring과 incompatible policy rejection.
 - `scale`
   - ✅ Covered: auto/explicit domain/range, nice/zero precedence, shared consumer conflicts.
   - ⚠️ Partial: aggregate/stack/scale option pairwise matrix.
@@ -867,9 +869,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `target`: point, line, bar, rect 또는 area ID; current/unique inference를 지원한다.
 - `fieldType`: `"nominal" | "ordinal" | "quantitative" | "temporal"`; 기본값은 nominal이다.
   Ordinal은 숫자를 포함한 ordered category를 categorical palette와 first-appearance domain으로 매핑한다.
-- `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외한
-  네 layout을 지원한다. Histogram default는 stack, ordinal aggregate bar default는 group, area default는
-  overlay다. Point/line과 continuous color는 layout을 거부하며 `"center"`는 Proposed다.
+- `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외하고
+  `"center"`를 포함한 다섯 layout을 지원한다. Histogram default는 stack, ordinal aggregate bar default는
+  group, area default는 overlay다. Point/line과 continuous color는 layout을 거부한다.
 - `aggregate`: aggregate bar continuous color에서만 사용한다. Color field가 measure field와 같으면 measure
   aggregate를 상속하고, 다른 field는 compatible aggregate를 명시해야 한다. 집계는 최종 category rect
   grain에서 독립적으로 계산한다.
@@ -887,8 +889,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   Missing color나 incomplete position row는 cell과 automatic domain에서 함께 생략한다.
 - Effect: color semantic, resolved layout과 scale을 저장한다. `group`은 orientation에 따라 wrapped
   `encodeXOffset` 또는 `encodeYOffset`, `fill`은
-  wrapped `encodeY({ stack: "normalize" })`, overlay는 non-stacked y, stack/diverging은 zero-stack y를
-  사용한다. Aggregate bar group/overlay의 semantic start endpoint는 0이며 scale domain과 concrete rect가
+  wrapped `encodeY({ stack: "normalize" })`, center는 wrapped `encodeY({ stack: "center" })`, overlay는
+  non-stacked y, stack/diverging은 zero-stack y를 사용한다. Raw area center는 color field의 nominal group이
+  없을 때 wrapped `encodeGroup`으로 같은 field를 원자적으로 만든다. Aggregate bar group/overlay의 semantic
+  start endpoint는 0이며 scale domain과 concrete rect가
   같은 endpoint를 소비한다. Bar는 rect, area는 closed path로 concrete materialize한다.
 - Reassignment: 같은 target의 categorical color field를 교체한다. omitted scale ID는 current color scale을
   재사용하고 explicit new ID는 새 scale을 만든다. Existing compatible legend의 domain, symbols,
@@ -901,8 +905,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales require quantitative point color, aggregate is valid only for quantitative aggregate bars, and mark compatibility narrows the categorical layout set.
-- Proposed (NOT IMPLEMENTED): `{ layout?: "center" }`.
+- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales require quantitative point color, aggregate is valid only for quantitative aggregate bars, and mark compatibility narrows the categorical layout set.
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeColor`
 
@@ -914,10 +918,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `aggregate`
   - ✅ Covered: matching-field inheritance, explicit alternate-field aggregate, ambiguous omission and invalid operation.
 - `layout`
-  - ✅ Covered: omission, all five values, bar/area compatibility, normalized and signed baseline policies,
+  - ✅ Covered: omission, all six values, bar/area compatibility, normalized, signed and centered baseline policies,
     group/overlay zero endpoint, positive/mixed/all-negative/zero partitions, incompatible explicit domain,
-    no-auto-opacity overlay, invalid transition atomicity와 `encodeGroup`과의 distinct ownership.
-  - 🟣 Proposed: `"center"` streamgraph layout.
+    aligned/missing/duplicate center topology, no-auto-opacity overlay, invalid transition atomicity와
+    center의 wrapped `encodeGroup` ownership.
 - `scale.id/type/domain`
   - ✅ Covered: ordinal scale default, nominal/ordinal field types, explicit ID/order, incomplete explicit domain rejection.
 - `scale.range/palette`

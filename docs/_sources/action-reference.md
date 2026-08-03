@@ -979,7 +979,8 @@ encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? 
 Create or compatibly replace point fill, line-series color, grouped area fill,
 bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share an ordinal palette scale;
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
-and `diverging`; area accepts all except `group`. Quantitative and temporal
+and `diverging`; area also accepts `center` and rejects only `group` from the
+shared layout vocabulary. Quantitative and temporal
 point fields use a sequential scale; quantitative point fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
@@ -987,6 +988,9 @@ orientation. Reassigning grouped color also atomically reassigns its offset and
 rematerializes an existing legend. Aggregate
 bars accept quantitative sequential color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
+Area `layout: "center"` creates a matching nominal group when needed and records
+wrapped `encodeY({ stack: "center" })`. It requires non-negative values aligned
+at every x position and stacks each partition from `-total / 2`.
 Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.
 [Series encodings](../api/series-encodings.md)

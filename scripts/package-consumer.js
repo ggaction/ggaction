@@ -636,10 +636,12 @@ async function testTypeScriptConsumer(directory) {
       type CreateHeatmapOptions,
       type CreateHistogramOptions,
       type CreateLinePlotOptions,
+      type ColorLayout,
       type CreateParallelCoordinatesOptions,
       type OrderCategoriesOptions,
       type GradientPlotOptions,
       type HorizonEncodingOptions,
+      type HistogramEncodingOptions,
       type EditHorizonOptions,
       type EditAxisOptions,
       type CreateDerivedDataOptions,
@@ -654,7 +656,8 @@ async function testTypeScriptConsumer(directory) {
       type ThetaScaleOptions,
       type TimeUnitDataOptions,
       type ViolinPlotOptions,
-      type WindowDataOptions
+      type WindowDataOptions,
+      type YStackMode
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import {
@@ -674,6 +677,26 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction/basic";
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
+    const centerLayout: ColorLayout = "center";
+    const centerStack: YStackMode = "center";
+    const centeredArea: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { x: 0, group: "A", value: 1 },
+        { x: 1, group: "A", value: 2 }
+      ] })
+      .createAreaMark()
+      .encodeGroup({ field: "group" })
+      .encodeX({ field: "x" })
+      .encodeY({ field: "value", stack: centerStack })
+      .encodeColor({ field: "group", layout: centerLayout });
+    void centeredArea;
+    // @ts-expect-error Histogram stacking excludes the area-only center mode.
+    const invalidCenteredHistogram: HistogramEncodingOptions = {
+      field: "value",
+      stack: "center"
+    };
+    void invalidCenteredHistogram;
     const axisRemovalOptions: EditAxisOptions<"bottom" | "top"> = {
       line: false,
       ticksAndLabels: false,

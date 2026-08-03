@@ -14,7 +14,7 @@
       { "type": "file", "path": "unit/support/visual-variants.test.js" }
     ],
     "center-stack": [
-      { "type": "prefix", "path": "gates/centered-area-stream/" }
+      { "type": "prefix", "path": "charts/centered-area-stream/" }
     ],
     "charts": [
       { "type": "prefix", "path": "charts/" }

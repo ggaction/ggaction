@@ -1,4 +1,5 @@
 import {
+  deriveCenteredAreaSeries,
   deriveAreaSeries,
   deriveDensityAreaSeries
 } from "../../../grammar/areaSeries.js";
@@ -73,7 +74,9 @@ export function resolveLineItems(program, layer, dataset) {
 export function resolveAreaItems(program, layer, dataset) {
   const transform = findUpstreamTransform(program, dataset, "density");
   const derived = transform === undefined
-    ? deriveAreaSeries(dataset.values, layer)
+    ? layer.encoding?.y?.stack === "center"
+      ? deriveCenteredAreaSeries(dataset.values, layer)
+      : deriveAreaSeries(dataset.values, layer)
     : deriveDensityAreaSeries(dataset.values, layer, transform);
   return finalizeItems(
     program,

@@ -58,6 +58,10 @@ test("keeps implemented capability groups out of planned inventory", () => {
         "editThetaGrid", "editRadialGrid"
       ],
       capabilities: ["polar-guides"]
+    },
+    {
+      actions: [],
+      capabilities: ["center-stacked-area"]
     }
   ];
 

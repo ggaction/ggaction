@@ -159,10 +159,12 @@ const rematerializeAreaMark = action(
     const yScaleId = layer.encoding?.y?.scale;
     const verticalRange = layer.encoding?.y2?.scale === yScaleId;
     const horizontalRange = layer.encoding?.x2?.scale === xScaleId;
+    const centered = densityTransform === undefined &&
+      layer.encoding?.y?.stack === "center";
     if (
       xScaleId === undefined ||
       yScaleId === undefined ||
-      (densityTransform === undefined && verticalRange === horizontalRange)
+      (densityTransform === undefined && !centered && verticalRange === horizontalRange)
     ) {
       throw new Error(
         densityTransform === undefined

@@ -47,7 +47,7 @@
   "layoutLabels": "/reference/actions/marks/#layoutlabels",
   "removeLabelLayout": "/reference/actions/marks/#removelabellayout",
   "encodeX": "/reference/actions/encodings/#encodex",
-  "encodeY": "/reference/actions/encodings/#encodey",
+  "encodeY": "/reference/actions/encodings/#encodecolor",
   "encodeY2": "/reference/actions/encodings/#encodey2",
   "encodeX2": "/reference/actions/encodings/#encodex2",
   "encodeYRange": "/reference/actions/encodings/#encodeyrange",

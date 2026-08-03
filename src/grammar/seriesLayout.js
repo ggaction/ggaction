@@ -78,6 +78,14 @@ export function resolveSeriesLayoutDomainValues(partitions, layout) {
       ...partition
     ]);
   }
+  if (layout === "center") {
+    return partitions.flatMap(partition => {
+      const segments = layoutSeriesPartition(partition, layout);
+      return segments.length === 0
+        ? [DEFAULT_SERIES_BASELINE]
+        : segments.flatMap(segment => [segment.start, segment.end]);
+    });
+  }
   return partitions.flatMap(partition =>
     layoutSeriesPartition(partition, layout).flatMap(segment => [
       segment.start,

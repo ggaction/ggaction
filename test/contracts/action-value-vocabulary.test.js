@@ -79,9 +79,10 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /op: "quantile"; probability: UnitInterval/);
   assert.match(currentCorpus, /op: "first" \| "last"/);
   assert.match(currentCorpus, /mean ± 1\.96 \* stderr/);
-  assert.match(currentCorpus, /layout\?: "stack" \| "fill" \| "group" \| "overlay" \| "diverging"/);
-  assert.match(currentCorpus, /`"center"`는 Proposed/);
-  assert.match(currentCorpus, /`encodeGroup`과의 distinct ownership/);
+  assert.match(currentCorpus, /layout\?: "stack" \| "fill" \| "group" \| "overlay" \| "diverging" \| "center"/);
+  assert.match(currentCorpus, /center는 wrapped `encodeY\(\{ stack: "center" \}\)`/);
+  assert.match(currentCorpus, /center의 wrapped `encodeGroup` ownership/);
+  assert.doesNotMatch(plannedCorpus, /Status: Planned[\s\S]*center-stacked area/i);
   const paletteType = currentCorpus.match(
     /type PaletteName =([\s\S]*?);\n\ntype Palette =/
   )?.[1];
@@ -137,7 +138,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.doesNotMatch(currentCorpus, /unit\?: "radius" \| "area"/);
   assert.match(currentCorpus, /## Position field-type compatibility/);
   assert.match(currentCorpus, /Canonical owner: `src\/grammar\/positionCompatibility\.js`/);
-  assert.match(currentCorpus, /Implemented values `"zero" \| "normalize" \| null`/);
+  assert.match(currentCorpus, /Implemented values `"zero" \| "normalize" \| "center" \| null`/);
   for (const heading of [
     "grouped-bar reassignment",
     "bar width",

@@ -95,12 +95,5 @@ type MovingWindowOperation = {
 
 ## Capability — center-stacked area
 
-```typescript
-encodeY({ ..., stack: "center" }): ChartProgram;
-encodeColor({ ..., layout: "center" }): ChartProgram;
-```
-
-- Non-negative aligned area series에서 각 partition을 `-total / 2`부터 deterministic series order로 쌓는다.
-- `encodeColor`의 center layout은 wrapped `encodeY({ stack: "center" })`를 사용한다.
-- Negative/diverging values, wiggle baseline와 centered bar는 범위 밖이다.
-- Status: Planned, accepted for Roadmap 5 Phase 5 after visual primitive approval.
+- Status: Implemented in Roadmap 5 Phase 5. Canonical behavior moved to
+  [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodecolor).

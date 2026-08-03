@@ -37,6 +37,8 @@ export function applyColorLayoutCompanion(
   }
   const stack = layout === "fill"
     ? "normalize"
+    : layout === "center"
+      ? "center"
     : layout === "overlay" || layout === "group"
       ? null
       : "zero";
