@@ -49,9 +49,9 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
     "strokeWidth"
   ]);
   assert.deepEqual(COLOR_LAYOUTS, [
-    "stack", "fill", "group", "overlay", "diverging"
+    "stack", "fill", "center", "group", "overlay", "diverging"
   ]);
-  assert.deepEqual(STACK_MODES, ["zero", "normalize"]);
+  assert.deepEqual(STACK_MODES, ["zero", "normalize", "center"]);
   assert.equal(ENCODING_CHANNELS.includes("group"), true);
   assert.equal(ENCODING_CHANNELS.includes("x2"), true);
   assert.equal(ENCODING_CHANNELS.includes("strokeWidth"), true);

@@ -233,13 +233,19 @@ export function layoutDensityAreaSeries(derived, layout = "overlay") {
         segment
       ])
     );
+    let zeroThicknessEndpoint = layout === "center"
+      ? -densities.reduce((sum, value) => sum + value, 0) / 2
+      : 0;
     for (let index = 0; index < derived.series.length; index += 1) {
       const segment = segments.get(index);
       valuesBySeries[index].push({
         x,
-        lower: segment?.start ?? 0,
-        upper: segment?.end ?? 0
+        lower: segment?.start ?? zeroThicknessEndpoint,
+        upper: segment?.end ?? zeroThicknessEndpoint
       });
+      if (segment !== undefined && ["stack", "fill", "center"].includes(layout)) {
+        zeroThicknessEndpoint = segment.end;
+      }
     }
   }
 

@@ -188,12 +188,13 @@ export function getMarkGraphicTypes(markType) {
 export const COLOR_LAYOUTS = Object.freeze([
   "stack",
   "fill",
+  "center",
   "group",
   "overlay",
   "diverging"
 ]);
 
-export const STACK_MODES = Object.freeze(["zero", "normalize"]);
+export const STACK_MODES = Object.freeze(["zero", "normalize", "center"]);
 
 export const CATEGORICAL_LEGEND_CHANNELS = Object.freeze([
   "color",

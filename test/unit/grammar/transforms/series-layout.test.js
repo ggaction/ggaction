@@ -32,6 +32,18 @@ test("lays out absolute and normalized non-negative stacks", () => {
   assert.throws(() => layoutSeriesPartition([1, -1], "fill"), /non-negative/);
 });
 
+test("lays out a non-negative stack symmetrically around zero", () => {
+  assert.deepEqual(layoutSeriesPartition([2, 0, 3], "center"), [
+    { index: 0, value: 2, start: -2.5, end: -0.5 },
+    { index: 2, value: 3, start: -0.5, end: 2.5 }
+  ]);
+  assert.deepEqual(layoutSeriesPartition([0, 0], "center"), []);
+  assert.throws(
+    () => layoutSeriesPartition([1, -1], "center"),
+    /center layout requires non-negative/
+  );
+});
+
 test("accumulates positive and negative values independently", () => {
   assert.deepEqual(layoutSeriesPartition([3, -2, 4, -1, 0], "diverging"), [
     { index: 0, value: 3, start: 0, end: 3 },
@@ -57,6 +69,10 @@ test("resolves layout domain inputs from complete partitions", () => {
     [0, 2, 2, 5, 0, 4, 4, 5]
   );
   assert.deepEqual(
+    resolveSeriesLayoutDomainValues(partitions, "center"),
+    [-2.5, -0.5, -0.5, 2.5, -2.5, 1.5, 1.5, 2.5]
+  );
+  assert.deepEqual(
     resolveSeriesLayoutDomainValues([[3, -2], [1, -4]], "diverging"),
     [0, 3, 0, -2, 0, 1, 0, -4]
   );
@@ -64,7 +80,7 @@ test("resolves layout domain inputs from complete partitions", () => {
 
 test("validates layout vocabulary and numeric inputs", () => {
   assert.equal(validateColorLayout("overlay"), "overlay");
-  assert.throws(() => validateColorLayout("center"), /Unsupported color layout/);
+  assert.equal(validateColorLayout("center"), "center");
   assert.throws(() => layoutSeriesPartition([1, NaN], "stack"), /finite numbers/);
   assert.throws(
     () => layoutSeriesPartition([1], "overlay", { baseline: NaN }),
@@ -82,6 +98,7 @@ test("aligns density series into stacked and normalized area bounds", () => {
   };
   const stacked = layoutDensityAreaSeries(derived, "stack");
   const filled = layoutDensityAreaSeries(derived, "fill");
+  const centered = layoutDensityAreaSeries(derived, "center");
 
   assert.deepEqual(stacked.series[1].values, [
     { x: 0, lower: 1, upper: 2 },
@@ -91,9 +108,33 @@ test("aligns density series into stacked and normalized area bounds", () => {
     { x: 0, lower: 0, upper: 0.5 },
     { x: 1, lower: 0, upper: 0.75 }
   ]);
+  assert.deepEqual(centered.series[0].values, [
+    { x: 0, lower: -1, upper: 0 },
+    { x: 1, lower: -2, upper: 1 }
+  ]);
+  assert.deepEqual(centered.series[1].values, [
+    { x: 0, lower: 0, upper: 1 },
+    { x: 1, lower: 1, upper: 2 }
+  ]);
   assert.throws(
     () => layoutDensityAreaSeries(derived, "group"),
     /do not support "group"/
   );
   assert.equal(Object.isFrozen(stacked.series[0].values), true);
+});
+
+test("keeps zero-thickness centered area series on the current stack boundary", () => {
+  const derived = {
+    mode: "y-density",
+    series: [
+      { key: { group: "A" }, values: [{ x: 0, y: 2 }, { x: 1, y: 1 }] },
+      { key: { group: "B" }, values: [{ x: 0, y: 0 }, { x: 1, y: 0 }] },
+      { key: { group: "C" }, values: [{ x: 0, y: 4 }, { x: 1, y: 3 }] }
+    ]
+  };
+  const centered = layoutDensityAreaSeries(derived, "center");
+  assert.deepEqual(centered.series[1].values, [
+    { x: 0, lower: -1, upper: -1 },
+    { x: 1, lower: -1, upper: -1 }
+  ]);
 });
