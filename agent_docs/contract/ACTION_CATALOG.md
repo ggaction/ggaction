@@ -191,7 +191,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| parameter | Moving window operations | accepted | [Open](planned/TEMPORAL_ORDERING_DIRECTION.md#capability-moving-window-operations) |
 
 ## Internal inventories
 

@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **Roadmap 5 Phase 5가 활성 상태다.** R5-P4-A까지 승인된 상태에서 center-stacked area layout을
-  구현한다.
+- **Roadmap 5 Phase 6가 활성 상태다.** 여섯 capability의 Current contract, declarations, public docs,
+  renderer와 installed-package evidence를 통합하고 R5-Exit review package를 준비한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력

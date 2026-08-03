@@ -7,10 +7,10 @@
 - [x] Independent zero/center reference values와 invariants 작성
 - [x] Primitive comparison, review metadata와 four-renderer artifacts 작성
 - [x] R5-P5-V approval — 2026-08-03
-- [ ] Center partition grammar와 area series derivation 구현
-- [ ] Position/color orchestration, scale domain과 rematerialization 구현
-- [ ] Runtime/type/current contract/docs/package synchronization
-- [ ] Stable visual graduation, focused/cumulative verification와 Roadmap closeout 준비
+- [x] Center partition grammar와 area series derivation 구현
+- [x] Position/color orchestration, scale domain과 rematerialization 구현
+- [x] Runtime/type/current contract/docs/package synchronization
+- [x] Stable visual graduation, focused/cumulative verification와 Roadmap closeout 준비 — `49951629`
 
 ## Approved contract
 

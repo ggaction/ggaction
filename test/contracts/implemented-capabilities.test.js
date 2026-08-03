@@ -61,7 +61,7 @@ test("keeps implemented capability groups out of planned inventory", () => {
     },
     {
       actions: [],
-      capabilities: ["center-stacked-area"]
+      capabilities: ["moving-window-operations", "center-stacked-area"]
     }
   ];
 

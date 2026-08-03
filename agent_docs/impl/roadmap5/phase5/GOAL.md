@@ -13,11 +13,11 @@ baseline만 대칭으로 이동하는 primitive visual target을 승인받는다
 - [x] Actual Jobs data의 zero/center independent reference values
 - [x] Two-panel primitive visual target과 Canvas/SVG/PNG/PDF review artifacts
 - [x] R5-P5-V remote checkpoint와 사용자 visual approval — 2026-08-03
-- [ ] Center layout grammar, scale-domain policy와 area materialization 구현
-- [ ] `encodeY({ stack: "center" })`와 `encodeColor({ layout: "center" })` public flow
-- [ ] Selection, filter/facet/Canvas replay와 renderer parity
-- [ ] Declarations, Current contracts, docs, package와 stable chart 동기화
-- [ ] Focused/cumulative verification과 Phase 5 remote checkpoint
+- [x] Center layout grammar, scale-domain policy와 area materialization 구현
+- [x] `encodeY({ stack: "center" })`와 `encodeColor({ layout: "center" })` public flow
+- [x] Selection, filter/facet/Canvas replay와 renderer parity
+- [x] Declarations, Current contracts, docs, package와 stable chart 동기화
+- [x] Focused/cumulative verification과 Phase 5 remote checkpoint — `49951629`
 
 ## Gate R5-P5-V
 
