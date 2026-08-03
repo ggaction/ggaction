@@ -3,30 +3,30 @@ export const REVIEW_LAYOUT = Object.freeze({
   gap: 24,
   carsWidth: 760,
   carsHeight: 480,
-  multiWidth: 680,
-  multiHeight: 460
+  multiWidth: 760,
+  multiHeight: 480
 });
-
-export const MULTI_LEGEND_ROWS = Object.freeze([
-  Object.freeze({ x: 1, y: 2, group: "A", amount: 4, alpha: 0.2 }),
-  Object.freeze({ x: 2, y: 5, group: "B", amount: 9, alpha: 0.6 }),
-  Object.freeze({ x: 3, y: 3, group: "C", amount: 16, alpha: 1 })
-]);
 
 export const CARS_LEGEND_TARGET = Object.freeze({
   titleX: 600,
-  categoricalShiftX: 22
+  symbolCenterX: 616,
+  labelX: 644,
+  categoricalTitleShiftX: 22,
+  categoricalSymbolShiftX: 22,
+  categoricalLabelShiftX: 24
 });
 
 export const MULTI_LEGEND_CURRENT = Object.freeze({
-  categoricalTitle: Object.freeze({ x: 448, y: 60 }),
-  sizeTitle: Object.freeze({ x: 470, y: 220 }),
-  opacityTitle: Object.freeze({ x: 470, y: 60 })
+  categoricalTitle: Object.freeze({ x: 528, y: 60 }),
+  sizeTitle: Object.freeze({ x: 550, y: 220 }),
+  opacityTitle: Object.freeze({ x: 550, y: 60 })
 });
 
 export const MULTI_LEGEND_TARGET = Object.freeze({
-  titleX: 470,
-  categoricalShiftX: 22,
+  titleX: 550,
+  symbolCenterX: 566,
+  labelX: 594,
+  categoricalRectX: 559,
   category: Object.freeze({
     titleY: 60,
     itemY: Object.freeze([92, 120, 148]),

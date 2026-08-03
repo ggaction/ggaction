@@ -66,11 +66,11 @@ export const visualVariants = Object.freeze([
   }),
   defineVisualVariant({
     chart: "multi-legend-layout",
-    variant: "color-size-opacity-stack",
-    title: "Three Legend Blocks · Overlap vs 24 px Stack",
+    variant: "cars-color-size-opacity-stack",
+    title: "Cars Three-Legend Scatterplot · Drift vs Aligned Lane",
     callChain: threeBlockCallChain,
     artifact: { scope: "review" },
-    primitive: createThreeBlockLegendComparison,
+    primitive: () => createThreeBlockLegendComparison(cars),
     ...comparisonDimensions(REVIEW_LAYOUT.multiWidth, REVIEW_LAYOUT.multiHeight),
     colors: [
       { value: "#4c78a8", minimumPixels: 100 },

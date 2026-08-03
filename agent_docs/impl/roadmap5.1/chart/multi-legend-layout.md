@@ -5,7 +5,7 @@
 두 visual variant가 current bug와 target behavior를 각각 before/after로 비교한다.
 
 1. Actual Cars regression chart의 categorical `Origin`과 quantitative-size `Acceleration` block
-2. Synthetic point chart의 categorical color, quantitative size와 field opacity 세 block
+2. 392-row Cars scatterplot의 categorical color, quantitative size와 field opacity 세 block
 
 ## 최종 사용자 API
 
@@ -14,14 +14,21 @@ placement만 corrected lane layout으로 바뀐다.
 
 ```javascript
 chart()
-  .createCanvas({ width: 680, height: 460, margin: { top: 40, right: 240, bottom: 60, left: 60 } })
-  .createData({ id: "rows", values })
+  .createCanvas({ width: 760, height: 480, margin: { top: 40, right: 240, bottom: 60, left: 70 } })
+  .createData({ id: "cars", values: rows })
   .createPointMark({ id: "points" })
-  .encodeX({ field: "x" })
-  .encodeY({ field: "y" })
-  .encodeColor({ field: "group", fieldType: "nominal" })
-  .encodeSize({ field: "amount" })
-  .encodeOpacity({ field: "alpha" })
+  .encodeX({ field: "Displacement" })
+  .encodeY({ field: "Miles_per_Gallon" })
+  .encodeColor({ field: "Origin", fieldType: "nominal" })
+  .encodeSize({ field: "Horsepower" })
+  .encodeOpacity({ field: "Acceleration" })
+  .createGuides({
+    axes: {
+      x: { title: { text: "Displacement" } },
+      y: { title: { text: "Miles per Gallon" } }
+    },
+    legend: false
+  })
   .createLegend({ target: "points", channels: ["color"] })
   .createLegend({ target: "points", channels: ["size"], count: 3 })
   .createLegend({ target: "points", channels: ["opacity"], count: 3 });
@@ -45,6 +52,7 @@ ownership과 observable output만 승인하며 runtime action을 추가하지 �
 - Existing semantic guide branches와 per-kind `guideConfigs.legend` meaning은 유지한다.
 - Lane order는 owning layer declaration order와 stable family order에서 파생하며 별도 public semantic state를 만들지 않는다.
 - Right-side multi-block titles share one content-start anchor.
+- All symbol kinds share one center column and all labels share one start column 28 logical pixels after it.
 - Block occupied bounds는 24 logical pixels 이상 떨어지고 겹치지 않는다.
 - Earlier program과 caller-owned options/rows는 변하지 않는다.
 - Canvas/SVG/PNG/PDF는 같은 final concrete coordinates와 drawing order를 소비한다.
