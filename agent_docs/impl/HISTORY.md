@@ -59,9 +59,10 @@ installed consumer와 Canvas/SVG/PNG/PDF visual parity를 R42-Exit에서 닫았�
 
 ## Roadmap 5 — Temporal Derivation, Ordering, and Directional Marks
 
-Phase 0에서 UTC time-unit derivation, semantic category ordering, moving windows, Tick/Angle과 center-stacked area의
-exact public contract와 visual-first Gate를 검토 중이다. 승인되지 않은 후보는 current action inventory와 분리한다.
+Phase 0~6을 완료했다. UTC time-unit derivation, semantic category ordering, moving mean/sum, Tick mark lifecycle,
+point/tick angle과 non-negative center-stacked area를 Current surface로 추가했다. Stable examples,
+Canvas/SVG/PNG/PDF parity, generated docs, strict declarations와 installed-package evidence를 R5-Exit에서 닫았다.
 
-- 현재 계획: [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md)
+- 기록: [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md)
 
 Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.

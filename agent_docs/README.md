@@ -15,9 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**Roadmap 5 Phase 6가 활성 상태다.** 구현된 여섯 capability의 계약·타입·문서·패키지와
-renderer evidence를 [`impl/roadmap5/ROADMAP.md`](impl/roadmap5/ROADMAP.md)에서 통합하고
-R5-Exit review package를 닫는다.
+**활성 Roadmap은 없다.** 마지막으로 완료된 Roadmap 5 Phase 6의 결과와 R5-Exit 기록은
+[`impl/roadmap5/ROADMAP.md`](impl/roadmap5/ROADMAP.md)에서 확인한다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 

@@ -15,7 +15,7 @@ Roadmap 완료 상태나 active pointer를 변경하지 않는다.
 - [x] Current contracts, strict declarations, generated docs와 package consumer 동기화
 - [x] Full normal/render/package verification
 - [x] R5-Exit remote checkpoint 기록 — `909a5271`
-- [ ] 사용자 explicit R5-Exit approval
+- [x] 사용자 explicit R5-Exit approval — 2026-08-03
 
 ## Gate R5-Exit
 
@@ -31,3 +31,8 @@ Canonical review record는 [`GATE_EXIT.md`](./GATE_EXIT.md)가 소유한다.
 
 - Roadmap 5 completed 전환과 active pointer 해제
 - PR creation, merge, release, publish 또는 documentation deployment
+
+## 완료
+
+R5-Exit 승인으로 Roadmap 5 completed 전환과 active pointer 해제가 허용되었다. PR creation, merge, release,
+publish와 documentation deployment는 계속 별도 권한이다.

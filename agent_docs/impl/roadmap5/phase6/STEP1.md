@@ -23,7 +23,7 @@ Review package와 승인 상태는 [`GATE_EXIT.md`](./GATE_EXIT.md)에 기록한
 - Renderer suite: 133/133; approved gallery 128 variants, active review gallery 0 variants
 - Package: 410 entries, 379,274 packed bytes, 1,794,457 unpacked bytes
 
-## Remaining boundary
+## Closeout boundary
 
-R5-Exit 승인 뒤 문서-only 상태 전환으로 Roadmap 5를 completed 처리하고 active pointer를 해제한다. PR, merge,
-release, publish와 docs deployment는 별도 권한이다.
+R5-Exit 승인에 따라 문서-only 상태 전환으로 Roadmap 5를 completed 처리하고 active pointer를 해제했다. PR,
+merge, release, publish와 docs deployment는 별도 권한이다.

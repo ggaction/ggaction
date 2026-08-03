@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "activeRoadmap": "roadmap5",
-  "activePhase": 6,
-  "lastCompletedRoadmap": "roadmap4.2",
-  "lastCompletedPhase": 4,
+  "activeRoadmap": null,
+  "activePhase": null,
+  "lastCompletedRoadmap": "roadmap5",
+  "lastCompletedPhase": 6,
   "roadmaps": [
     {
       "id": "roadmap1",
@@ -64,8 +64,8 @@
     {
       "id": "roadmap5",
       "title": "Temporal Derivation, Ordering, and Directional Marks",
-      "status": "active",
-      "role": "current-execution-plan",
+      "status": "completed",
+      "role": "historical-execution-record",
       "file": "agent_docs/impl/roadmap5/ROADMAP.md"
     }
   ]

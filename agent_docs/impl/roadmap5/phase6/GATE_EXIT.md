@@ -2,7 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-03에 implementation checkpoint `49951629`, integration checkpoint `909a5271`와
+R5-Exit review checkpoint `79162d53`을 명시적으로 승인했다. Roadmap 5 완료 선언과 active Roadmap/Phase
+pointer closeout이 해제되었다.
 
 ## Review target
 
@@ -49,7 +53,12 @@ filter/facet/Canvas/scale/guide replay and Canvas/SVG/PNG/PDF renderer boundarie
 - Phase 6 integration and closeout: `909a5271`
 - Remote branch: `origin/codex/roadmap5-temporal-ordering-directional-marks`
 
-Both checkpoints are committed and pushed. User R5-Exit approval remains pending.
+Both implementation checkpoints and the review checkpoint `79162d53` were committed and pushed before approval.
+
+## Approval effect
+
+Approval permitted the documentation-only Roadmap completion transition. It did not authorize PR creation, merge,
+package publish, documentation deployment or release.
 
 ## Work blocked before approval
 

@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **Roadmap 5 Phase 6가 활성 상태다.** 여섯 capability의 Current contract, declarations, public docs,
-  renderer와 installed-package evidence를 통합하고 R5-Exit review package를 준비한다.
+- **활성 Roadmap은 없다.** 마지막으로 완료된 Roadmap 5 Phase 6가 temporal derivation, ordering,
+  moving windows, Tick/Angle과 center-stacked area를 Current surface로 닫았다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -18,7 +18,7 @@
 - [`roadmap4/ROADMAP.md`](roadmap4/ROADMAP.md) — completed, native ownership과 advanced static charts
 - [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md) — completed, authoring lifecycle과 compatibility completion
 - [`roadmap4.2/ROADMAP.md`](roadmap4.2/ROADMAP.md) — completed, SVG/PDF vector renderer와 distribution closeout
-- [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md) — active, temporal derivation, ordering과 directional marks
+- [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md) — completed, temporal derivation, ordering과 directional marks
 
 ## 재사용하는 개발 절차
 
