@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] Existing top/bottom family bounds normalization
+- [x] Existing top/bottom family bounds normalization
 - [x] Stable horizontal-edge group ordering
-- [ ] Same-row-first top/bottom placement grammar
-- [ ] Shared title baseline, element start와 12-pixel gap
-- [ ] Family rematerializers와 sibling-wide lane replay 연결
-- [ ] Create/edit/remove/scale/Canvas convergence evidence
-- [ ] Actual-data visual and Canvas/SVG/PNG/PDF evidence
-- [ ] Replacement Gate checkpoint commit/push
+- [x] Same-row-first top/bottom placement grammar
+- [x] Shared title baseline, element start와 12-pixel gap
+- [x] Family rematerializers와 sibling-wide lane replay 연결
+- [x] Create/edit/remove/scale/Canvas convergence evidence
+- [x] Actual-data visual and Canvas/SVG/PNG/PDF evidence
+- [x] Replacement Gate checkpoint commit/push — `313b2c63`
 
 ## Implementation boundary
 

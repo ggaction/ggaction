@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`changes-requested`
+`ready-for-review`
 
 ## Approval target
 
@@ -22,14 +22,16 @@ publish or documentation deployment.
 
 ## Remote checkpoint
 
-- Implementation checkpoint: `482fe739` (`origin/codex/roadmap5-1-multi-legend-layout`)
+- Replacement implementation checkpoint: `313b2c63` (`origin/codex/roadmap5-1-multi-legend-layout`)
 - Gate record checkpoint: this document's commit on the same remote branch
 
 ## Implemented result
 
-- Top keeps the first stable block nearest the plot and moves later blocks upward; bottom moves them downward.
-- Block-local left/center/right alignment, direction, item grid and title placement remain unchanged.
-- Categorical, gradient and opacity horizontal recipes share the same lane when two or more occupy one edge.
+- Disjoint occupied x-ranges share the nearest row; only actual overlap creates an outward row with a 24-pixel gap.
+- Every row aligns title baselines and graphical-element tops with an exact 12-pixel internal gap.
+- Top and bottom gradient/opacity labels follow their graphical elements with the configured label gap.
+- Block-local left/center/right alignment, direction and item grid remain unchanged.
+- Categorical, gradient and opacity recipes align across top and bottom, including bordered three-family combinations.
 - Layer declaration and family order produce the same coordinates regardless of authoring call order.
 - Legend edit, sibling removal, scale edit and Canvas edit replay every retained block before lane placement.
 - Final occupied bounds include optional backgrounds and fail atomically on Canvas or guide/title collision.
@@ -37,21 +39,24 @@ publish or documentation deployment.
 
 ## Verification
 
-- `npm test`: 2,042 passed
-- `npm run test:coverage`: passed
+- `npm test`: 2,044 passed
+- `npm run test:unit`: 1,383 passed
+- `npm run test:contracts`: 161 passed
+- `npm run test:coverage`: 94.75% lines, 90.18% branches, 98.5% functions; 71 critical floors passed
 - `npm run test:docs`: 45 passed
 - `npm run test:gates`: 6 passed
 - `node scripts/run-tests.js render test/gates/multi-legend-layout`: 6 passed
-- Package artifact: 412 entries, 383,788 packed bytes, 1,814,495 unpacked bytes
+- Package artifact: 412 entries, 384,793 packed bytes, 1,819,082 unpacked bytes
 - Render parity: Canvas, SVG, PNG and PDF consume the same final `graphicSpec` coordinates
 
 ## Review artifact
 
 - `.artifacts/test/png/review/multi-legend-layout/cars-top-bottom-lanes/primitive.png`
+- `.artifacts/test/renderers/review/multi-legend-layout/cars-top-bottom-lanes/primitive.{svg,png,pdf}`
 
 ## Review feedback — 2026-08-03
 
 The first Phase 2 checkpoint was rejected because horizontally separated legends were still forced into different
 rows, while categorical, gradient and opacity recipes used different title and graphical-element geometry. The
-replacement Gate must demonstrate the corrected approval target above in both focused geometry tests and the
+replacement checkpoint now demonstrates the corrected approval target above in focused geometry tests and the
 actual-data four-renderer artifact.

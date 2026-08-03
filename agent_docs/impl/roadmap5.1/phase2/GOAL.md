@@ -9,15 +9,15 @@ replay가 authoring order와 무관하게 같은 final `graphicSpec`으로 수�
 ## 진행 상태
 
 - [x] R51-P1-A 승인 — 2026-08-03
-- [ ] Pure horizontal-edge row packing 구현
-- [ ] Shared title baseline, element start와 12-pixel gap
-- [ ] Top continuous legend label placement normalization
+- [x] Pure horizontal-edge row packing 구현
+- [x] Shared title baseline, element start와 12-pixel gap
+- [x] Top continuous legend label placement normalization
 - [x] Same-target와 independent-target deterministic ordering
 - [x] Create/edit/remove/scale/Canvas order convergence
 - [x] Atomic margin/Canvas overflow
-- [ ] Actual-data top/bottom visual Gate와 four-renderer parity
-- [ ] Full normal/coverage/docs/package verification
-- [ ] R51-P2-A replacement remote checkpoint
+- [x] Actual-data top/bottom visual Gate와 four-renderer parity
+- [x] Full normal/coverage/docs/package verification
+- [x] R51-P2-A replacement remote checkpoint
 - [ ] R51-P2-A 사용자 approval
 
 ## Gate R51-P2-A
