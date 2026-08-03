@@ -9,14 +9,15 @@ title-start, symbol-center, label-start columns와 24 logical-pixel inter-block 
 ## 진행 상태
 
 - [x] R51-P0-V exact visual target 승인 — 2026-08-03
-- [ ] Pure side-lane block measurement/order/placement 구현
-- [ ] Categorical, size, gradient, interval, opacity와 stroke-width intrinsic block integration
-- [ ] Combined same-target와 independent-target deterministic order
-- [ ] Right/left common columns, 24-pixel gap와 atomic margin overflow
-- [ ] Create/edit/remove/Canvas/scale convergence tests
-- [ ] Approved Gate comparison과 runtime exact parity
-- [ ] Full normal/render/package verification
-- [ ] R51-P1-A remote checkpoint와 사용자 approval
+- [x] Pure side-lane block measurement/order/placement 구현
+- [x] Categorical, size, gradient, interval, opacity와 stroke-width intrinsic block integration
+- [x] Combined same-target와 independent-target deterministic order
+- [x] Right/left common columns, 24-pixel gap와 atomic margin overflow
+- [x] Create/edit/remove/Canvas/scale convergence tests
+- [x] Approved Gate comparison과 runtime exact parity
+- [x] Full normal/render/package verification
+- [x] R51-P1-A remote checkpoint
+- [ ] R51-P1-A 사용자 approval
 
 ## Gate R51-P1-A
 

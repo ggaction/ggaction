@@ -2,13 +2,13 @@
 
 ## 진행 상태
 
-- [ ] Existing family layout inputs와 occupied bounds normalization
-- [ ] Stable block descriptor/order policy
-- [ ] Right/left lane column and vertical placement grammar
-- [ ] Family rematerializers를 lane placement에 연결
-- [ ] Sibling-wide rematerialization owner와 trace hierarchy
-- [ ] Focused unit/action/lifecycle/render evidence
-- [ ] Gate checkpoint commit/push
+- [x] Existing family layout inputs와 occupied bounds normalization
+- [x] Stable block descriptor/order policy
+- [x] Right/left lane column and vertical placement grammar
+- [x] Family rematerializers를 lane placement에 연결
+- [x] Sibling-wide rematerialization owner와 trace hierarchy
+- [x] Focused unit/action/lifecycle/render evidence
+- [x] Gate checkpoint commit/push — `450092da`
 
 ## Implementation boundary
 
