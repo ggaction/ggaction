@@ -53,7 +53,7 @@
 | 2 | completed | Semantic category ordering과 approved automatic/ordered/reset evidence |
 | 3 | completed | Moving mean/sum window operations와 approved BTS renderer evidence |
 | 4 | completed | Tick primitive visual Gate, Tick lifecycle와 point/tick angle |
-| 5 | planned | Center-stack primitive visual Gate와 area layout |
+| 5 | in-progress | Center-stack primitive visual Gate와 area layout |
 | 6 | planned | Cross-capability integration, docs/types/package와 Roadmap closeout |
 
 ## Approval Gates

@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **Roadmap 5 Phase 4가 활성 상태다.** R5-P3-A까지 승인된 상태에서 Tick mark와 point/Tick
-  direction encoding을 구현한다.
+- **Roadmap 5 Phase 5가 활성 상태다.** R5-P4-A까지 승인된 상태에서 center-stacked area layout을
+  구현한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력

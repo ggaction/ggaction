@@ -15,7 +15,7 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**Roadmap 5 Phase 4가 활성 상태다.** 승인된 exact contract 중 Tick mark와 point/Tick direction encoding을
+**Roadmap 5 Phase 5가 활성 상태다.** 승인된 exact contract 중 center-stacked area layout을
 [`impl/roadmap5/ROADMAP.md`](impl/roadmap5/ROADMAP.md)에서 진행한다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
