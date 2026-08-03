@@ -10,8 +10,8 @@ current/target concrete comparison을 R51-P0-V로 검토한다.
 - [x] Current combined categorical/size 22-pixel offset 재현
 - [x] Independent gradient/opacity와 categorical/size/opacity overlap 재현
 - [x] Shared lane ownership, deterministic order와 non-goal 제안
-- [ ] Two before/after primitive variants와 independent coordinates
-- [ ] Canvas/SVG/PNG/PDF review artifacts와 focused verification
+- [x] Two before/after primitive variants와 independent coordinates
+- [x] Canvas/SVG/PNG/PDF review artifacts와 focused verification
 - [ ] R51-P0-V remote checkpoint와 사용자 visual approval
 
 ## Gate R51-P0-V

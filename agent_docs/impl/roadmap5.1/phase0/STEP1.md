@@ -5,10 +5,10 @@
 - [x] Per-family absolute anchor와 missing sibling-layout owner 확인
 - [x] Existing Cars regression oracle가 `+8`/`+30` offset을 고정함을 확인
 - [x] Multiple-owner tests가 addressability만 보고 geometry를 검증하지 않음을 확인
-- [ ] Actual Cars combined right-lane before/after target 작성
-- [ ] Categorical/size/opacity three-block before/after target 작성
-- [ ] Common title anchor, stable order, 24-pixel gap와 non-overlap assertion
-- [ ] Review PNG와 four-renderer artifact 생성
+- [x] Actual Cars combined right-lane before/after target 작성
+- [x] Categorical/size/opacity three-block before/after target 작성
+- [x] Common title anchor, stable order, 24-pixel gap와 non-overlap assertion
+- [x] Review PNG와 four-renderer artifact 생성
 - [ ] Gate checkpoint commit/push
 
 ## Current root cause
