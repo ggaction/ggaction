@@ -2,14 +2,16 @@
 
 ## Gate state
 
-`ready-for-review`
+`changes-requested`
 
 ## Approval target
 
-- Horizontally disjoint top/bottom blocks share one row; only colliding occupied ranges create a new outward row
+- Multi-legend top/bottom rows start at the plot's left edge and place blocks consecutively in stable order
+- Adjacent blocks keep 24 logical pixels between occupied bounds; width overflow alone creates a new outward row
 - Every shared row uses one title baseline, one graphical-element start line and a 12-pixel title-to-element gap
 - Top gradient and opacity labels sit below their graphical elements, consistently with bottom legends
-- Existing block-local left/center/right alignment, direction and grid remain intact
+- Multi-legend placement ignores block-level absolute `align`; single legends retain existing left/center/right behavior
+- Existing block-local direction and grid remain intact
 - Layer declaration and family order determine placement independently of authoring call order
 - Create/edit/remove, scale and Canvas replay converge without stale sibling geometry
 - Insufficient margin or Canvas space fails atomically without resizing, relocation or hidden content
@@ -60,3 +62,9 @@ The first Phase 2 checkpoint was rejected because horizontally separated legends
 rows, while categorical, gradient and opacity recipes used different title and graphical-element geometry. The
 replacement checkpoint now demonstrates the corrected approval target above in focused geometry tests and the
 actual-data four-renderer artifact.
+
+## Review feedback — 2026-08-04
+
+The replacement checkpoint was rejected because preserving each block's absolute `align` pushed the two Cars
+legends to opposite ends of the plot. The next checkpoint must left-pack every multi-legend row in stable order,
+using 24 pixels between final occupied bounds and wrapping only when the available plot width is exhausted.
