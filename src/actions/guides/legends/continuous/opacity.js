@@ -114,21 +114,27 @@ function resolveOpacityLayout(program, config, scale) {
     const startX = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - width
         : plot.x + (plot.width - width) / 2;
+    const titleHalf = config.titleStyle.fontSize / 2;
+    const labelHalf = config.labels.fontSize / 2;
     const y = config.position === "top"
-      ? plot.y - config.offset - radius
-      : plot.y + plot.height + config.offset + radius;
+      ? plot.y - config.offset - config.labels.fontSize -
+        config.labels.offset - radius
+      : plot.y + plot.height + config.offset +
+        config.titleStyle.fontSize + 12 + radius;
     symbols = values.map((_, index) => ({
       x: startX + index * width / (values.length - 1),
       y
     }));
     labels = symbols.map(symbol => ({
       x: symbol.x,
-      y: config.position === "top"
-        ? symbol.y - radius - config.labels.offset
-        : symbol.y + radius + config.labels.offset,
+      y: symbol.y + radius + config.labels.offset + labelHalf,
       align: "center"
     }));
-    title = { x: startX + width / 2, y: y - 26, align: "center" };
+    title = {
+      x: startX + width / 2,
+      y: y - radius - 12 - titleHalf,
+      align: "center"
+    };
   }
   assertLegendInsideCanvas(
     [title, ...symbols, ...labels],

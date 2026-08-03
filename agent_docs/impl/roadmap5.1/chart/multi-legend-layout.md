@@ -53,6 +53,9 @@ ownership과 observable output만 승인하며 runtime action을 추가하지 �
 - Lane order는 owning layer declaration order와 stable family order에서 파생하며 별도 public semantic state를 만들지 않는다.
 - Right-side multi-block titles share one content-start anchor.
 - All symbol kinds share one center column and all labels share one start column 28 logical pixels after it.
-- Block occupied bounds는 24 logical pixels 이상 떨어지고 겹치지 않는다.
+- Right/left block occupied bounds와 colliding top/bottom rows는 24 logical pixels 이상 떨어지고 겹치지 않는다.
+- Top/bottom의 disjoint occupied x-range는 같은 row를 쓰고, 같은 row의 title baseline과 graphical-element
+  start는 일치하며 둘 사이 간격은 12 logical pixels다.
+- Top/bottom gradient와 opacity label은 graphical element 아래에 놓인다.
 - Earlier program과 caller-owned options/rows는 변하지 않는다.
 - Canvas/SVG/PNG/PDF는 같은 final concrete coordinates와 drawing order를 소비한다.

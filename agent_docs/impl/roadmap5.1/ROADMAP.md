@@ -18,7 +18,7 @@ rematerialization 뒤에도 같은 최종 `graphicSpec`으로 수렴해야 한�
 | ML-01 | Exact layout contract | block identity, order, alignment, gap와 overflow policy | 0 |
 | ML-02 | Primitive visual target | combined categorical/size와 categorical/size/opacity before/after | 0 |
 | ML-03 | Side lanes | right/left common anchor와 vertical non-overlap | 1 |
-| ML-04 | Horizontal-edge lanes | top/bottom block stacking과 alignment preservation | 2 |
+| ML-04 | Horizontal-edge lanes | top/bottom same-row packing과 cross-family alignment | 2 |
 | ML-05 | Lifecycle convergence | create/edit/remove/scale/Canvas order independence | 2 |
 | ML-06 | Integration | contracts, architecture, docs, stable charts와 renderer/package evidence | 3 |
 
@@ -27,8 +27,8 @@ rematerialization 뒤에도 같은 최종 `graphicSpec`으로 수렴해야 한�
 - 각 legend family는 intrinsic content와 bounds를 계산하고, lane owner가 absolute placement를 결정한다.
 - Same-edge block order는 action 호출 순서가 아니라 owning layer declaration order와 stable family order에서 파생한다.
 - 같은 target의 categorical/continuous-color block 뒤에 size, opacity, stroke-width 순으로 배치한다.
-- Right/left lane은 top-to-bottom, top/bottom lane은 plot에서 바깥 방향으로 block을 쌓는다.
-- Initial inter-block gap은 24 logical pixels이며 새 public option으로 노출하지 않는다.
+- Right/left lane은 top-to-bottom이고 top/bottom lane은 disjoint block을 같은 row에 먼저 packing한다.
+- Colliding horizontal rows와 side blocks 사이 gap은 24 logical pixels이며 새 public option으로 노출하지 않는다.
 - Existing single-legend output은 가능한 한 보존하고 multi-block일 때만 lane placement를 적용한다.
 - Final occupied bounds가 requested margin에 맞지 않으면 Canvas를 확장하거나 block을 숨기지 않고 atomic error를 낸다.
 - Renderer는 계속 fully materialized `graphicSpec`만 읽고 legend 의미나 배치를 추론하지 않는다.
@@ -39,7 +39,7 @@ rematerialization 뒤에도 같은 최종 `graphicSpec`으로 수렴해야 한�
 | ---: | --- | --- |
 | 0 | completed | Diagnosis, exact contract와 primitive visual Gate |
 | 1 | completed | Right/left shared legend lane implementation |
-| 2 | changes-requested | Top/bottom row packing과 cross-family alignment revision |
+| 2 | in-progress | Top/bottom row packing과 cross-family alignment revision |
 | 3 | planned | Stable evidence, docs/contracts/package와 Roadmap closeout |
 
 ## Approval Gates
@@ -67,8 +67,9 @@ target block을 deterministic order로 배치하고 creation/edit/removal이 sib
 
 ## Phase 2 — Horizontal edges and lifecycle
 
-Top/bottom block을 plot에서 바깥 방향으로 쌓고 existing per-block `align`을 보존한다. Scale, Canvas, encoding,
-selection/highlight와 composition/facet rematerialization의 최종 수렴과 margin collision을 검증한다.
+Top/bottom block을 same-row-first로 packing하고 title baseline, graphical-element start와 12-pixel gap을 통일한다.
+Scale, Canvas, encoding, selection/highlight와 composition/facet rematerialization의 최종 수렴과 margin collision을
+검증한다.
 
 ## Phase 3 — Integration and closeout
 

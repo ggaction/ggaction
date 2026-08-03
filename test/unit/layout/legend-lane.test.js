@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP,
   SIDE_LEGEND_BLOCK_GAP,
   resolveHorizontalLegendLane,
   resolveSideLegendLane
@@ -20,6 +21,36 @@ function block({ id, x, y, width = 72, height = 80, offset = 30 }) {
 
 const plot = Object.freeze({ x: 80, y: 40, width: 420, height: 360 });
 const canvas = Object.freeze({ width: 760, height: 520 });
+
+function horizontalGroup({
+  id,
+  x,
+  y,
+  width = 160,
+  titleY = y + 8,
+  titleHeight = 16,
+  elementTop = y + 28,
+  contentBottom = y + 60,
+  inset = 0
+}) {
+  return {
+    id,
+    title: {
+      y: titleY,
+      bounds: {
+        left: x,
+        right: x + 72,
+        top: titleY - titleHeight / 2,
+        bottom: titleY + titleHeight / 2
+      }
+    },
+    element: { left: x, right: x + width, top: elementTop, bottom: elementTop + 12 },
+    content: { left: x, right: x + width, top: elementTop, bottom: contentBottom },
+    horizontal: { left: x, right: x + width, top: y, bottom: contentBottom },
+    inset,
+    padding: 0
+  };
+}
 
 test("resolves one shared right-side title, symbol, and label column", () => {
   const plan = resolveSideLegendLane({
@@ -74,43 +105,53 @@ test("rejects a lane that cannot fit without changing the Canvas", () => {
   );
 });
 
-test("stacks bottom groups away from the plot", () => {
+test("packs horizontally disjoint bottom groups into one aligned row", () => {
   const plan = resolveHorizontalLegendLane({
     edge: "bottom",
     canvas: { ...canvas, height: 600 },
     groups: [
-      { id: "color", bounds: { left: 80, right: 240, top: 410, bottom: 460 } },
-      { id: "opacity", bounds: { left: 300, right: 500, top: 410, bottom: 470 } }
+      horizontalGroup({ id: "color", x: 80, y: 410 }),
+      horizontalGroup({
+        id: "opacity",
+        x: 250,
+        y: 410,
+        titleY: 420,
+        titleHeight: 20,
+        elementTop: 446,
+        contentBottom: 480
+      })
     ]
   });
 
-  assert.equal(plan.placements[0].dy, 0);
-  assert.equal(plan.placements[1].bounds.top, 460 + SIDE_LEGEND_BLOCK_GAP);
-  assert.equal(plan.placements[1].bounds.left, 300);
+  assert.equal(plan.rowCount, 1);
+  const titleY = 418 + plan.placements[0].titleDy;
+  const elementTop = 438 + plan.placements[0].contentDy;
+  assert.equal(titleY, 420 + plan.placements[1].titleDy);
+  assert.equal(elementTop, 446 + plan.placements[1].contentDy);
+  assert.equal(elementTop - (titleY + 10), HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP);
 });
 
-test("stacks top groups upward while preserving horizontal bounds", () => {
+test("moves only horizontally colliding top groups into an outward row", () => {
   const plan = resolveHorizontalLegendLane({
     edge: "top",
     canvas,
     groups: [
-      { id: "color", bounds: { left: 80, right: 240, top: 90, bottom: 140 } },
-      { id: "opacity", bounds: { left: 300, right: 500, top: 80, bottom: 140 } }
+      horizontalGroup({ id: "color", x: 80, y: 160 }),
+      horizontalGroup({ id: "opacity", x: 180, y: 160 })
     ]
   });
 
-  assert.equal(plan.placements[0].dy, 0);
-  assert.equal(plan.placements[1].bounds.bottom, 90 - SIDE_LEGEND_BLOCK_GAP);
-  assert.deepEqual(
-    [plan.placements[1].bounds.left, plan.placements[1].bounds.right],
-    [300, 500]
+  assert.equal(plan.rowCount, 2);
+  assert.equal(
+    plan.placements[0].occupied.top - plan.placements[1].occupied.bottom,
+    SIDE_LEGEND_BLOCK_GAP
   );
 });
 
 test("rejects horizontal overflow and guide collisions atomically", () => {
   const groups = [
-    { id: "color", bounds: { left: 80, right: 240, top: 30, bottom: 80 } },
-    { id: "opacity", bounds: { left: 300, right: 500, top: 30, bottom: 80 } }
+    horizontalGroup({ id: "color", x: 80, y: -20 }),
+    horizontalGroup({ id: "opacity", x: 300, y: -20 })
   ];
   assert.throws(
     () => resolveHorizontalLegendLane({ edge: "top", canvas, groups }),
@@ -120,12 +161,12 @@ test("rejects horizontal overflow and guide collisions atomically", () => {
     () => resolveHorizontalLegendLane({
       edge: "bottom",
       canvas,
-      groups: groups.map(group => ({
-        ...group,
-        bounds: { ...group.bounds, top: 350, bottom: 400 }
-      })),
+      groups: [
+        horizontalGroup({ id: "color", x: 80, y: 350 }),
+        horizontalGroup({ id: "opacity", x: 300, y: 350 })
+      ],
       collisionBounds: [
-        { left: 0, right: 760, top: 410, bottom: 520 }
+        { left: 0, right: 760, top: 405, bottom: 520 }
       ]
     }),
     /x-axis guides require more margin space/

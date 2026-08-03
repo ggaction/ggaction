@@ -63,6 +63,12 @@ test("lays gradient legends out in all four positions", () => {
     } else {
       assert.notEqual(first.x, last.x);
       assert.equal(first.y, last.y);
+      assert.equal(
+        program.graphicSpec.objects.colorGradientLabels.items.every(
+          label => label.properties.y > first.y + first.height
+        ),
+        true
+      );
     }
   }
 });
@@ -149,6 +155,13 @@ test("lays opacity legends out in all four positions", () => {
     } else {
       assert.notEqual(symbols[0].properties.x, symbols.at(-1).properties.x);
       assert.equal(symbols[0].properties.y, symbols.at(-1).properties.y);
+      assert.equal(
+        program.graphicSpec.objects.opacityLegendLabels.items.every(
+          (label, index) => label.properties.y >
+            symbols[index].properties.y + symbols[index].properties.radius
+        ),
+        true
+      );
     }
   }
 });

@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { unionConcreteGraphicBounds } from
+import {
+  resolveConcreteGraphicBounds,
+  unionConcreteGraphicBounds
+} from
   "../../../src/grammar/schemas/graphicBounds.js";
 import { loadCars } from "../../support/data.js";
 
@@ -44,20 +47,47 @@ test("matches the approved actual-Cars top and bottom lane coordinates", () => {
       itemX(program, "opacityLegendSymbols"),
       target.opacitySymbolX
     );
+    assert.equal(
+      program.graphicSpec.objects.colorLegendTitle.properties.y,
+      target.titleY
+    );
+    assert.equal(
+      program.graphicSpec.objects.opacityLegendTitle.properties.y,
+      target.titleY
+    );
   }
 });
 
-test("keeps exactly 24 pixels between plot-outward horizontal blocks", () => {
+test("shares title and graphical rows with exact internal spacing", () => {
   const comparison = createHorizontalLegendLaneComparison(loadCars());
-  const top = comparison.children.top;
-  const bottom = comparison.children.bottom;
-
-  assert.equal(
-    blockBounds(top, "color").top - blockBounds(top, "opacity").bottom,
-    HORIZONTAL_LEGEND_TARGET.blockGap
-  );
-  assert.equal(
-    blockBounds(bottom, "opacity").top - blockBounds(bottom, "color").bottom,
-    HORIZONTAL_LEGEND_TARGET.blockGap
-  );
+  for (const position of ["top", "bottom"]) {
+    const program = comparison.children[position];
+    const target = HORIZONTAL_LEGEND_TARGET[position];
+    const titleIds = ["colorLegendTitle", "opacityLegendTitle"];
+    const elementIds = ["colorLegendSymbols", "opacityLegendSymbols"];
+    const titles = titleIds.map(id =>
+      resolveConcreteGraphicBounds(program.graphicSpec, id)
+    );
+    const elements = elementIds.map(id =>
+      resolveConcreteGraphicBounds(program.graphicSpec, id)
+    );
+    assert.deepEqual(elements.map(bounds => bounds.top), [
+      target.elementTop,
+      target.elementTop
+    ]);
+    for (let index = 0; index < titles.length; index += 1) {
+      assert.equal(
+        elements[index].top - titles[index].bottom,
+        HORIZONTAL_LEGEND_TARGET.titleElementGap
+      );
+    }
+    const opacityLabels = resolveConcreteGraphicBounds(
+      program.graphicSpec,
+      "opacityLegendLabels"
+    );
+    assert.equal(
+      opacityLabels.top - elements[1].bottom,
+      HORIZONTAL_LEGEND_TARGET.titleElementGap
+    );
+  }
 });

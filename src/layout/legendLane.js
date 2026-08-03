@@ -1,6 +1,7 @@
 export const SIDE_LEGEND_BLOCK_GAP = 24;
 export const SIDE_LEGEND_SYMBOL_CENTER = 16;
 export const SIDE_LEGEND_LABEL_START = 44;
+export const HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP = 12;
 
 function unionBounds(bounds) {
   return {
@@ -167,6 +168,79 @@ function translateBounds(bounds, dy) {
   };
 }
 
+function expandBounds(bounds, inset) {
+  return {
+    left: bounds.left - inset,
+    right: bounds.right + inset,
+    top: bounds.top - inset,
+    bottom: bounds.bottom + inset
+  };
+}
+
+function horizontalCollision(a, b) {
+  return a.left < b.right && a.right > b.left;
+}
+
+function packHorizontalRows(groups) {
+  const rows = [];
+  for (const group of groups) {
+    const interval = expandBounds(group.horizontal, group.inset);
+    let row = rows.find(candidate => candidate.every(
+      entry => !horizontalCollision(interval, entry.interval)
+    ));
+    if (row === undefined) {
+      row = [];
+      rows.push(row);
+    }
+    row.push({ group, interval });
+  }
+  return rows;
+}
+
+function normalizeHorizontalRow(entries) {
+  const titled = entries.filter(entry => entry.group.title !== undefined);
+  const commonTitleY = titled[0]?.group.title.y;
+  const titleDescent = titled.length === 0
+    ? 0
+    : Math.max(...titled.map(
+        entry => entry.group.title.bounds.bottom - entry.group.title.y
+      ));
+  const elementTop = commonTitleY === undefined
+    ? entries[0].group.element.top
+    : commonTitleY + titleDescent + HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP;
+  return entries.map(({ group }) => {
+    const titleDy = group.title === undefined
+      ? 0
+      : commonTitleY - group.title.y;
+    const contentDy = elementTop - group.element.top;
+    const foreground = unionBounds([
+      ...(group.title === undefined
+        ? []
+        : [translateBounds(group.title.bounds, titleDy)]),
+      translateBounds(group.content, contentDy)
+    ]);
+    return {
+      id: group.id,
+      titleDy,
+      contentDy,
+      foreground,
+      occupied: expandBounds(foreground, group.inset),
+      padding: group.padding,
+      backgroundId: group.backgroundId
+    };
+  });
+}
+
+function translateHorizontalPlacement(placement, dy) {
+  return {
+    ...placement,
+    titleDy: placement.titleDy + dy,
+    contentDy: placement.contentDy + dy,
+    foreground: translateBounds(placement.foreground, dy),
+    occupied: translateBounds(placement.occupied, dy)
+  };
+}
+
 export function resolveHorizontalLegendLane({
   edge,
   canvas,
@@ -177,31 +251,64 @@ export function resolveHorizontalLegendLane({
     throw new Error(`Unsupported horizontal legend lane "${edge}".`);
   }
   if (groups.length < 2) return undefined;
+  const packed = packHorizontalRows(groups);
+  const normalized = packed.map(normalizeHorizontalRow);
   const placements = [];
-  let previous;
-  for (const group of groups) {
-    let dy = 0;
-    if (previous !== undefined) {
+  let previousRowBounds;
+  for (let index = 0; index < normalized.length; index += 1) {
+    const row = normalized[index];
+    const rowBounds = unionBounds(row.map(item => item.occupied));
+    let dy;
+    if (index === 0) {
+      const anchor = edge === "top"
+        ? Math.max(...packed[index].map(item => item.group.horizontal.bottom))
+        : Math.min(...packed[index].map(item => item.group.horizontal.top));
+      dy = edge === "top"
+        ? anchor - rowBounds.bottom
+        : anchor - rowBounds.top;
+    } else {
       dy = edge === "bottom"
-        ? previous.bottom + SIDE_LEGEND_BLOCK_GAP - group.bounds.top
-        : previous.top - SIDE_LEGEND_BLOCK_GAP - group.bounds.bottom;
+        ? previousRowBounds.bottom + SIDE_LEGEND_BLOCK_GAP - rowBounds.top
+        : previousRowBounds.top - SIDE_LEGEND_BLOCK_GAP - rowBounds.bottom;
     }
-    const bounds = translateBounds(group.bounds, dy);
-    placements.push({ id: group.id, dy, bounds });
-    previous = bounds;
+    const translated = row.map(item => translateHorizontalPlacement(item, dy));
+    placements.push(...translated);
+    previousRowBounds = unionBounds(translated.map(item => item.occupied));
   }
-  const occupied = unionBounds(placements.map(item => item.bounds));
-  if (
-    occupied.left < 0 || occupied.right > canvas.width ||
-    occupied.top < 0 || occupied.bottom > canvas.height
-  ) {
+  const occupied = unionBounds(placements.map(item => item.occupied));
+  if (placements.some(placement =>
+    placement.occupied.left < 0 || placement.occupied.right > canvas.width ||
+    placement.occupied.top < 0 || placement.occupied.bottom > canvas.height
+  )) {
     throw new Error(`Legend lane requires more ${edge}-margin or Canvas space.`);
   }
-  if (collisionBounds.some(bounds => overlap(occupied, bounds))) {
+  if (placements.some(placement =>
+    collisionBounds.some(bounds => overlap(placement.occupied, bounds))
+  )) {
     const owner = edge === "top" ? "chart titles" : "x-axis guides";
     throw new Error(
       `${edge[0].toUpperCase()}${edge.slice(1)} legend lane and ${owner} require more margin space.`
     );
   }
-  return { edge, placements, occupied };
+  return {
+    edge,
+    placements: placements.map(placement => ({
+      ...placement,
+      ...(placement.backgroundId === undefined
+        ? {}
+        : {
+            background: {
+              id: placement.backgroundId,
+              x: placement.foreground.left - placement.padding,
+              y: placement.foreground.top - placement.padding,
+              width: placement.foreground.right - placement.foreground.left +
+                placement.padding * 2,
+              height: placement.foreground.bottom - placement.foreground.top +
+                placement.padding * 2
+            }
+          })
+    })),
+    occupied,
+    rowCount: packed.length
+  };
 }

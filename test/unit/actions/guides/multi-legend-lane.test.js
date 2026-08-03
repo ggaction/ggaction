@@ -2,8 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
-import { unionConcreteGraphicBounds } from
+import {
+  resolveConcreteGraphicBounds,
+  unionConcreteGraphicBounds
+} from
   "../../../../src/grammar/schemas/graphicBounds.js";
+import { HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP } from
+  "../../../../src/layout/legendLane.js";
 
 const rows = Object.freeze([
   Object.freeze({ x: 1, y: 2, group: "A", amount: 4, alpha: 0.2 }),
@@ -135,6 +140,37 @@ function horizontalCoordinates(program) {
   };
 }
 
+function horizontalAlignment(program, kind) {
+  const prefix = kind === "gradient" ? "colorGradient" : `${kind}Legend`;
+  const titleId = `${prefix}Title`;
+  const elementId = kind === "gradient"
+    ? "colorGradientStrips"
+    : `${prefix}Symbols`;
+  const title = program.graphicSpec.objects[titleId].properties;
+  const titleBounds = resolveConcreteGraphicBounds(program.graphicSpec, titleId);
+  const elementBounds = resolveConcreteGraphicBounds(
+    program.graphicSpec,
+    elementId
+  );
+  return {
+    titleY: title.y,
+    titleBottom: titleBounds.bottom,
+    elementTop: elementBounds.top
+  };
+}
+
+function assertSharedHorizontalRow(program, kinds) {
+  const alignments = kinds.map(kind => horizontalAlignment(program, kind));
+  assert.equal(new Set(alignments.map(item => item.titleY)).size, 1);
+  assert.equal(new Set(alignments.map(item => item.elementTop)).size, 1);
+  for (const alignment of alignments) {
+    assert.equal(
+      alignment.elementTop - alignment.titleBottom,
+      HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP
+    );
+  }
+}
+
 test("aligns real multi-legend graphics and stacks their blocks", () => {
   const program = createThree(base());
   const coordinates = laneCoordinates(program);
@@ -241,15 +277,9 @@ test("orders independent interval and stroke-width recipes by layer", () => {
 });
 
 for (const position of ["top", "bottom"]) {
-  test(`stacks ${position} blocks outward and preserves their alignment`, () => {
+  test(`packs ${position} blocks into one aligned row`, () => {
     const program = createHorizontal(horizontalBase(position), position);
-    const color = horizontalBounds(program, "color");
-    const opacity = horizontalBounds(program, "opacity");
-    if (position === "top") {
-      assert.equal(color.top - opacity.bottom, 24);
-    } else {
-      assert.equal(opacity.top - color.bottom, 24);
-    }
+    assertSharedHorizontalRow(program, ["color", "opacity"]);
     assert.equal(
       program.graphicSpec.objects.colorLegendSymbols.items[0].properties.x,
       70
@@ -302,11 +332,7 @@ test("converges horizontal lanes across legend, scale, and Canvas edits", () => 
     align: "center",
     itemGap: 30
   });
-  assert.equal(
-    horizontalBounds(editedLegend, "color").top -
-      horizontalBounds(editedLegend, "opacity").bottom,
-    24
-  );
+  assertSharedHorizontalRow(editedLegend, ["color", "opacity"]);
   const canvas = {
     width: 820,
     height: 660,
@@ -324,7 +350,7 @@ test("converges horizontal lanes across legend, scale, and Canvas edits", () => 
   );
 });
 
-test("stacks top gradient and opacity recipes without changing their x layout", () => {
+test("aligns top gradient and opacity recipes in one row", () => {
   const program = chart()
     .createCanvas({
       width: 760,
@@ -344,13 +370,7 @@ test("stacks top gradient and opacity recipes without changing their x layout", 
       align: "right",
       count: 3
     });
-  const gradient = unionConcreteGraphicBounds(program.graphicSpec, [
-    "colorGradientStrips", "colorGradientTicks", "colorGradientLabels",
-    "colorGradientTitle"
-  ]);
-  const opacity = horizontalBounds(program, "opacity");
-
-  assert.equal(gradient.top - opacity.bottom, 24);
+  assertSharedHorizontalRow(program, ["gradient", "opacity"]);
   assert.equal(
     program.graphicSpec.objects.colorGradientStrips.items[0].properties.x,
     70
@@ -360,6 +380,85 @@ test("stacks top gradient and opacity recipes without changing their x layout", 
     690
   );
 });
+
+function createThreeFamilyHorizontal(position) {
+  return chart()
+    .createCanvas({
+      width: 760,
+      height: 620,
+      margin: {
+        top: position === "top" ? 280 : 40,
+        right: 70,
+        bottom: position === "bottom" ? 280 : 60,
+        left: 70
+      }
+    })
+    .createData({ id: "rows", values: rows })
+    .createPointMark({ id: "categorical" })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "group", fieldType: "nominal" })
+    .encodeOpacity({ field: "alpha" })
+    .createPointMark({ id: "quantitative", data: "rows" })
+    .encodeX({ target: "quantitative", field: "x", scale: { id: "x" } })
+    .encodeY({ target: "quantitative", field: "y", scale: { id: "y" } })
+    .encodeColor({
+      target: "quantitative",
+      field: "amount",
+      fieldType: "quantitative",
+      scale: { id: "amountColor", type: "sequential" }
+    })
+    .createLegend({
+      target: "categorical",
+      channels: ["color"],
+      position,
+      align: "left",
+      columns: 3,
+      border: true
+    })
+    .createLegend({
+      target: "categorical",
+      channels: ["opacity"],
+      position,
+      align: "right",
+      count: 3,
+      border: true
+    })
+    .createLegend({
+      target: "quantitative",
+      channels: ["color"],
+      position,
+      align: "center",
+      border: true
+    });
+}
+
+for (const position of ["top", "bottom"]) {
+  test(`aligns categorical, gradient, and opacity ${position} recipes`, () => {
+    const program = createThreeFamilyHorizontal(position);
+    assertSharedHorizontalRow(program, ["color", "opacity", "gradient"]);
+    for (const [elementId, labelId] of [
+      ["colorGradientStrips", "colorGradientLabels"],
+      ["opacityLegendSymbols", "opacityLegendLabels"]
+    ]) {
+      const element = resolveConcreteGraphicBounds(program.graphicSpec, elementId);
+      const labels = resolveConcreteGraphicBounds(program.graphicSpec, labelId);
+      assert.equal(labels.top - element.bottom, 12);
+    }
+    for (const id of [
+      "colorLegendBackground",
+      "opacityLegendBackground",
+      "colorGradientBackground"
+    ]) {
+      const background = resolveConcreteGraphicBounds(program.graphicSpec, id);
+      assert.ok(background.top < horizontalAlignment(
+        program,
+        id.startsWith("colorGradient") ? "gradient"
+          : id.startsWith("opacity") ? "opacity" : "color"
+      ).titleBottom);
+    }
+  });
+}
 
 test("restores a retained horizontal block after removing its sibling target", () => {
   const encoded = chart()
@@ -417,7 +516,7 @@ test("rejects horizontal lane overflow without changing the source", () => {
       position: "top",
       count: 3
     }),
-    /requires more top-margin or Canvas space/
+    /requires more (top-margin or )?Canvas margin space/
   );
   assert.equal(program.guideConfigs.legend.opacity, undefined);
   assert.equal(program.graphicSpec.objects.opacityLegendSymbols, undefined);

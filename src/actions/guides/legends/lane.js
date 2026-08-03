@@ -105,7 +105,8 @@ function blockDescriptor(program, kind, config) {
           x: graphic.properties.x,
           y: graphic.properties.y,
           fontSize: graphic.properties.fontSize,
-          width: titleBounds.right - titleBounds.left
+          width: titleBounds.right - titleBounds.left,
+          bounds: titleBounds
         };
       })();
   if ([bounds, symbolAnchor, symbolBounds, labels].includes(undefined)) {
@@ -121,7 +122,8 @@ function blockDescriptor(program, kind, config) {
     symbol: {
       centerX: (symbolAnchor.left + symbolAnchor.right) / 2,
       left: symbolBounds.left,
-      right: symbolBounds.right
+      right: symbolBounds.right,
+      bounds: symbolAnchor
     },
     labels: {
       x: textAnchor(program, components.labelId),
@@ -285,21 +287,37 @@ function horizontalCollisionBounds(program, edge) {
 }
 
 function horizontalGroups(program, groups) {
-  return groups.map(group => ({
-    id: group.id,
-    bounds: group.backgroundId === undefined
-      ? unionBoundsForBlocks(group.blocks)
-      : resolveConcreteGraphicBounds(program.graphicSpec, group.backgroundId)
-  }));
-}
-
-function unionBoundsForBlocks(blocks) {
-  return {
-    left: Math.min(...blocks.map(block => block.occupiedBounds.left)),
-    right: Math.max(...blocks.map(block => block.occupiedBounds.right)),
-    top: Math.min(...blocks.map(block => block.occupiedBounds.top)),
-    bottom: Math.max(...blocks.map(block => block.occupiedBounds.bottom))
-  };
+  return groups.map(group => {
+    const representative = group.blocks[0];
+    const titleId = representative.titleId;
+    const contentIds = group.blocks.flatMap(block => block.foregroundIds)
+      .filter(id => id !== titleId);
+    const content = unionConcreteGraphicBounds(program.graphicSpec, contentIds);
+    const foreground = unionConcreteGraphicBounds(
+      program.graphicSpec,
+      group.blocks.flatMap(block => block.foregroundIds)
+    );
+    if (content === undefined || foreground === undefined) {
+      throw new Error(`Legend lane could not measure ${group.id} content.`);
+    }
+    const border = group.border;
+    const inset = border === false
+      ? 0
+      : border.padding + border.lineWidth / 2;
+    return {
+      id: group.id,
+      titleId,
+      contentIds,
+      title: representative.title,
+      element: representative.symbol.bounds,
+      content,
+      horizontal: { left: foreground.left, right: foreground.right,
+        top: foreground.top, bottom: foreground.bottom },
+      inset,
+      padding: border === false ? 0 : border.padding,
+      backgroundId: group.backgroundId
+    };
+  });
 }
 
 export const rematerializeSideLegendLane = action(
@@ -383,7 +401,7 @@ export const rematerializeSideLegendLane = action(
 export const rematerializeHorizontalLegendLane = action(
   {
     op: "rematerializeHorizontalLegendLane",
-    description: "Stack every top or bottom legend block away from the plot."
+    description: "Pack and align every top or bottom legend block."
   },
   function (args = {}) {
     noOptions(args, "rematerializeHorizontalLegendLane");
@@ -399,31 +417,35 @@ export const rematerializeHorizontalLegendLane = action(
         blockDescriptor(this, kind, config)
       );
       const groups = groupBlocks(blocks, configs);
+      if (groups.length < 2) return [];
+      const horizontal = horizontalGroups(this, groups);
       const plan = resolveHorizontalLegendLane({
         edge,
         canvas,
-        groups: horizontalGroups(this, groups),
+        groups: horizontal,
         collisionBounds: horizontalCollisionBounds(this, edge)
       });
-      return [{ plan, groups }];
+      return [{ plan, groups: horizontal }];
     });
     let next = this;
     for (const { plan, groups } of plans) {
       const byId = new Map(groups.map(group => [group.id, group]));
       for (const placement of plan.placements) {
         const group = byId.get(placement.id);
-        for (const block of group.blocks) {
-          for (const id of block.foregroundIds) {
-            next = translateGraphic(next, id, 0, placement.dy);
-          }
+        if (group.titleId !== undefined) {
+          next = translateGraphic(next, group.titleId, 0, placement.titleDy);
         }
-        if (group.backgroundId !== undefined) {
-          next = translateGraphic(
-            next,
-            group.backgroundId,
-            0,
-            placement.dy
-          );
+        for (const id of group.contentIds) {
+          next = translateGraphic(next, id, 0, placement.contentDy);
+        }
+        if (placement.background !== undefined) {
+          for (const property of ["x", "y", "width", "height"]) {
+            next = next.editGraphics({
+              target: placement.background.id,
+              property,
+              value: placement.background[property]
+            });
+          }
         }
       }
     }
