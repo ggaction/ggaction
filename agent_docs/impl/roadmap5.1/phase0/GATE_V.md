@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`changes-requested`
+`ready-for-review`
 
 ## Review target
 
@@ -102,4 +102,6 @@ It does not authorize top/bottom implementation, PR creation, merge, release, pu
 
 - Superseded visual package: `fd917b66763cdc611112f5ac0a1f62a45c9e2d2a`
 - 2026-08-03 review requested common symbol/label columns and an actual-data second chart.
-- Revised visual package commit/push is pending before this Gate returns to `ready-for-review`.
+- Revised visual package: `42f24353ba367ade4ac7630b92026cc384ab3502`
+- Remote branch: `origin/codex/roadmap5-1-multi-legend-layout`
+- The revised package was verified, committed and pushed before this Gate returned to `ready-for-review`.
