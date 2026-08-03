@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## Review target
 
@@ -89,4 +89,6 @@ It does not authorize top/bottom implementation, PR creation, merge, release, pu
 
 ## Remote checkpoint
 
-The verified visual package must be committed and pushed before this Gate becomes `ready-for-review`.
+- Visual package commit: `fd917b66763cdc611112f5ac0a1f62a45c9e2d2a`
+- Remote branch: `origin/codex/roadmap5-1-multi-legend-layout`
+- The visual package was committed and pushed before this Gate became `ready-for-review`.

@@ -9,7 +9,7 @@
 - [x] Categorical/size/opacity three-block before/after target 작성
 - [x] Common title anchor, stable order, 24-pixel gap와 non-overlap assertion
 - [x] Review PNG와 four-renderer artifact 생성
-- [ ] Gate checkpoint commit/push
+- [x] Gate checkpoint commit/push
 
 ## Current root cause
 

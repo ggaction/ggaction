@@ -12,7 +12,8 @@ current/target concrete comparison을 R51-P0-V로 검토한다.
 - [x] Shared lane ownership, deterministic order와 non-goal 제안
 - [x] Two before/after primitive variants와 independent coordinates
 - [x] Canvas/SVG/PNG/PDF review artifacts와 focused verification
-- [ ] R51-P0-V remote checkpoint와 사용자 visual approval
+- [x] R51-P0-V remote checkpoint
+- [ ] 사용자 visual approval
 
 ## Gate R51-P0-V
 
