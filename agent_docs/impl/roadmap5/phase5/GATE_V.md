@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## Review target
 
@@ -14,7 +14,11 @@ comparison을 고정한다. 두 panel은 동일한 series order, values, fills�
 
 ```javascript
 const zero = chart()
-  .createCanvas({ width: 700, height: 420 })
+  .createCanvas({
+    width: 690,
+    height: 420,
+    margin: { top: 92, right: 142, bottom: 70, left: 72 }
+  })
   .createData({ id: "jobs", values })
   .createAreaMark({ id: "occupations", curve: "linear" })
   .encodeX({ target: "occupations", field: "year", fieldType: "quantitative" })
@@ -28,7 +32,11 @@ const zero = chart()
   .createGuides();
 
 const center = chart()
-  .createCanvas({ width: 700, height: 420 })
+  .createCanvas({
+    width: 690,
+    height: 420,
+    margin: { top: 92, right: 142, bottom: 70, left: 72 }
+  })
   .createData({ id: "jobs", values })
   .createAreaMark({ id: "occupations", curve: "linear" })
   .encodeX({ target: "occupations", field: "year", fieldType: "quantitative" })
@@ -56,11 +64,19 @@ primitive는 future public center action을 호출하지 않고 independent refe
 
 ## Evidence required before review
 
-- Independent Jobs aggregation와 literal endpoint fixtures
-- Primitive-only trace/structure assertions and source immutability
-- Active review `variant.json`, PNG와 four-renderer artifacts
-- Focused visual/reference tests and cumulative repository tests
-- Complete verified commit pushed to the Roadmap 5 branch
+- Independent Jobs aggregation와 literal endpoint fixtures:
+  `test/gates/centered-area-stream/reference-values.js`
+- Primitive-only trace/structure assertions and source immutability: 4 pass
+- Active review metadata and PNG:
+  `.artifacts/test/png/review/centered-area-stream/jobs-zero-vs-center/`
+- Canvas/SVG/PNG/PDF artifacts:
+  `.artifacts/test/renderers/review/centered-area-stream/jobs-zero-vs-center/`
+- Logical size: `1416 × 436`; PNG pixel size: `2832 × 872`
+- PNG SHA-256: `b941b70b88e274973ccb0d0ddb30c891e776cd8eaf8efdafc0fe58bbbedfb58f`
+- Focused normal verification: 13 pass including discovery/capability ownership
+- Focused render verification: 2 pass
+- Cumulative normal verification: 2,005 pass
+- Cumulative render verification: 133 pass; charts/review galleries verified
 
 ## Compatibility and documentation impact
 
@@ -77,3 +93,7 @@ declarations, Current contracts, docs와 stable example을 구현한다.
 - Production `layoutSeriesPartition(..., "center")`와 area derivation/materialization
 - Public `encodeY({ stack: "center" })` and `encodeColor({ layout: "center" })`
 - Strict declarations, Current contracts, public docs and package promotion
+
+## Remote checkpoint
+
+Gate implementation commit을 아래 checkpoint에 기록하고 Roadmap 5 branch에 push한 뒤 approval을 요청한다.

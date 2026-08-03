@@ -10,8 +10,8 @@ baseline만 대칭으로 이동하는 primitive visual target을 승인받는다
 
 - [x] R5-P4-A explicit approval — 2026-08-03
 - [x] Approved Phase 5 contract와 R5-P5-V/R5-Exit 경계 확인
-- [ ] Actual Jobs data의 zero/center independent reference values
-- [ ] Two-panel primitive visual target과 Canvas/SVG/PNG/PDF review artifacts
+- [x] Actual Jobs data의 zero/center independent reference values
+- [x] Two-panel primitive visual target과 Canvas/SVG/PNG/PDF review artifacts
 - [ ] R5-P5-V remote checkpoint와 사용자 visual approval
 - [ ] Center layout grammar, scale-domain policy와 area materialization 구현
 - [ ] `encodeY({ stack: "center" })`와 `encodeColor({ layout: "center" })` public flow

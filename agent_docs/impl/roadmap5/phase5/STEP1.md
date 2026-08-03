@@ -4,8 +4,8 @@
 
 - [x] Existing area derivation, color layout, stack vocabulary와 scale-domain boundary 확인
 - [x] Visual target data와 two-panel comparison 범위 선택
-- [ ] Independent zero/center reference values와 invariants 작성
-- [ ] Primitive comparison, review metadata와 four-renderer artifacts 작성
+- [x] Independent zero/center reference values와 invariants 작성
+- [x] Primitive comparison, review metadata와 four-renderer artifacts 작성
 - [ ] R5-P5-V approval
 - [ ] Center partition grammar와 area series derivation 구현
 - [ ] Position/color orchestration, scale domain과 rematerialization 구현
