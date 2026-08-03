@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+User approval: 2026-08-03
 
 ## Approval target
 

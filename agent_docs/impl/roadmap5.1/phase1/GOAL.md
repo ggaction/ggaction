@@ -17,7 +17,7 @@ title-start, symbol-center, label-start columns와 24 logical-pixel inter-block 
 - [x] Approved Gate comparison과 runtime exact parity
 - [x] Full normal/render/package verification
 - [x] R51-P1-A remote checkpoint
-- [ ] R51-P1-A 사용자 approval
+- [x] R51-P1-A 사용자 approval — 2026-08-03
 
 ## Gate R51-P1-A
 
