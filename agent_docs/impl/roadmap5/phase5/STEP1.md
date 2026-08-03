@@ -6,7 +6,7 @@
 - [x] Visual target data와 two-panel comparison 범위 선택
 - [x] Independent zero/center reference values와 invariants 작성
 - [x] Primitive comparison, review metadata와 four-renderer artifacts 작성
-- [ ] R5-P5-V approval
+- [x] R5-P5-V approval — 2026-08-03
 - [ ] Center partition grammar와 area series derivation 구현
 - [ ] Position/color orchestration, scale domain과 rematerialization 구현
 - [ ] Runtime/type/current contract/docs/package synchronization
