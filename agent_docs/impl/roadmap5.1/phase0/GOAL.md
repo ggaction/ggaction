@@ -13,7 +13,7 @@ current/target concrete comparison을 R51-P0-V로 검토한다.
 - [x] Two before/after primitive variants와 independent coordinates
 - [x] Canvas/SVG/PNG/PDF review artifacts와 focused verification
 - [x] R51-P0-V remote checkpoint
-- [ ] 사용자 visual approval
+- [x] 사용자 visual approval — 2026-08-03
 
 ## Gate R51-P0-V
 

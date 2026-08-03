@@ -1,8 +1,8 @@
 {
   "version": 1,
   "roadmap": "roadmap5.1",
-  "gate": "R51-P0-V",
-  "status": "reviewing",
+  "gate": "R51-P1-A",
+  "status": "implementing",
   "capability": {
     "id": "same-edge-multi-legend-layout",
     "kind": "behavior-correction",

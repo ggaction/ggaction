@@ -23,4 +23,4 @@
 사용자는 2026-08-03에 narrow pixel patch 대신 all same-edge multi-legend lane correction을 Phase 0에서
 구체화하는 방향을 승인했다. 2026-08-03 첫 review에서 title뿐 아니라 symbol center와 label start도
 공통 column으로 맞추고 synthetic rows를 actual Cars chart로 교체하라는 changes가 요청되었다.
-Exact revised target은 R51-P0-V에서 별도로 승인받는다.
+Exact revised target은 2026-08-03 R51-P0-V에서 승인되었다.

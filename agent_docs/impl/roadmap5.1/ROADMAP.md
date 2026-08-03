@@ -37,8 +37,8 @@ rematerialization 뒤에도 같은 최종 `graphicSpec`으로 수렴해야 한�
 
 | Phase | 상태 | 범위 |
 | ---: | --- | --- |
-| 0 | in-progress | Diagnosis, exact contract와 primitive visual Gate |
-| 1 | planned | Right/left shared legend lane implementation |
+| 0 | completed | Diagnosis, exact contract와 primitive visual Gate |
+| 1 | in-progress | Right/left shared legend lane implementation |
 | 2 | planned | Top/bottom lanes와 lifecycle/rematerialization convergence |
 | 3 | planned | Stable evidence, docs/contracts/package와 Roadmap closeout |
 

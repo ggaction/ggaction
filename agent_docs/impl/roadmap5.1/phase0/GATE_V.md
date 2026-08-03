@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 ## Review target
 
@@ -105,3 +105,8 @@ It does not authorize top/bottom implementation, PR creation, merge, release, pu
 - Revised visual package: `42f24353ba367ade4ac7630b92026cc384ab3502`
 - Remote branch: `origin/codex/roadmap5-1-multi-legend-layout`
 - The revised package was verified, committed and pushed before this Gate returned to `ready-for-review`.
+
+## Approval
+
+- Approved explicitly by the user on 2026-08-03.
+- Approval covers the revised title-start, symbol-center, label-start and 24-pixel block-stack target.
