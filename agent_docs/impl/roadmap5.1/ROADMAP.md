@@ -40,8 +40,8 @@ rematerialization 뒤에도 같은 최종 `graphicSpec`으로 수렴해야 한�
 | ---: | --- | --- |
 | 0 | completed | Diagnosis, exact contract와 primitive visual Gate |
 | 1 | completed | Right/left shared legend lane implementation |
-| 2 | in-progress | R51-P2-A review 대기 — top/bottom row packing과 cross-family alignment revision |
-| 3 | planned | Stable evidence, docs/contracts/package와 Roadmap closeout |
+| 2 | completed | Top/bottom row packing, cross-family alignment와 lifecycle convergence |
+| 3 | in-progress | Stable evidence, docs/contracts/package와 Roadmap closeout |
 
 ## Approval Gates
 

@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 ## Approval target
 
@@ -22,6 +22,11 @@
 
 Approval permits Phase 3 integration and Roadmap closeout. It does not authorize PR creation, merge, release,
 publish or documentation deployment.
+
+## Approval record
+
+- Approved by the user on 2026-08-04.
+- Phase 3 integration and Roadmap closeout work may proceed to R51-Exit.
 
 ## Remote checkpoint
 
@@ -98,4 +103,4 @@ User approved the fully inline candidate with a fixed 40-pixel inter-block gap. 
 existing title-above grammar by default and activate the title → symbol → label reading line only for
 `titlePosition: "left"`. Continuous labels use 8 pixels after their symbol and 20 pixels before the next sample.
 This approval authorized the corresponding public-contract implementation and evidence update. Checkpoint `019e4e54`
-now implements and verifies that target, so R51-P2-A is ready for separate final approval.
+implements and verifies that target; the user separately approved R51-P2-A on 2026-08-04.
