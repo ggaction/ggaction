@@ -105,9 +105,10 @@ test("rejects a lane that cannot fit without changing the Canvas", () => {
   );
 });
 
-test("packs horizontally disjoint bottom groups into one aligned row", () => {
+test("packs bottom groups from the plot left with a fixed gap", () => {
   const plan = resolveHorizontalLegendLane({
     edge: "bottom",
+    plot,
     canvas: { ...canvas, height: 600 },
     groups: [
       horizontalGroup({ id: "color", x: 80, y: 410 }),
@@ -129,22 +130,47 @@ test("packs horizontally disjoint bottom groups into one aligned row", () => {
   assert.equal(titleY, 420 + plan.placements[1].titleDy);
   assert.equal(elementTop, 446 + plan.placements[1].contentDy);
   assert.equal(elementTop - (titleY + 10), HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP);
+  assert.equal(plan.placements[0].occupied.left, plot.x);
+  assert.equal(
+    plan.placements[1].occupied.left - plan.placements[0].occupied.right,
+    SIDE_LEGEND_BLOCK_GAP
+  );
 });
 
-test("moves only horizontally colliding top groups into an outward row", () => {
+test("wraps a top group only when the packed row exceeds plot width", () => {
   const plan = resolveHorizontalLegendLane({
     edge: "top",
+    plot,
     canvas,
     groups: [
-      horizontalGroup({ id: "color", x: 80, y: 160 }),
-      horizontalGroup({ id: "opacity", x: 180, y: 160 })
+      horizontalGroup({ id: "color", x: 80, y: 160, width: 220 }),
+      horizontalGroup({ id: "opacity", x: 180, y: 160, width: 220 })
     ]
   });
 
   assert.equal(plan.rowCount, 2);
+  assert.deepEqual(
+    plan.placements.map(placement => placement.occupied.left),
+    [plot.x, plot.x]
+  );
   assert.equal(
     plan.placements[0].occupied.top - plan.placements[1].occupied.bottom,
     SIDE_LEGEND_BLOCK_GAP
+  );
+});
+
+test("rejects one horizontal block wider than the plot", () => {
+  assert.throws(
+    () => resolveHorizontalLegendLane({
+      edge: "top",
+      plot,
+      canvas,
+      groups: [
+        horizontalGroup({ id: "color", x: 80, y: 160, width: 440 }),
+        horizontalGroup({ id: "opacity", x: 300, y: 160 })
+      ]
+    }),
+    /requires more plot width/
   );
 });
 
@@ -154,12 +180,13 @@ test("rejects horizontal overflow and guide collisions atomically", () => {
     horizontalGroup({ id: "opacity", x: 300, y: -20 })
   ];
   assert.throws(
-    () => resolveHorizontalLegendLane({ edge: "top", canvas, groups }),
+    () => resolveHorizontalLegendLane({ edge: "top", plot, canvas, groups }),
     /requires more top-margin or Canvas space/
   );
   assert.throws(
     () => resolveHorizontalLegendLane({
       edge: "bottom",
+      plot,
       canvas,
       groups: [
         horizontalGroup({ id: "color", x: 80, y: 350 }),

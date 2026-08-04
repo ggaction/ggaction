@@ -47,6 +47,8 @@ test("matches the approved actual-Cars top and bottom lane coordinates", () => {
       itemX(program, "opacityLegendSymbols"),
       target.opacitySymbolX
     );
+    assert.equal(color.left, 70);
+    assert.equal(opacity.left - color.right, 24);
     assert.equal(
       program.graphicSpec.objects.colorLegendTitle.properties.y,
       target.titleY

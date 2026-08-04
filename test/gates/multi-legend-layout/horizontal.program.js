@@ -72,11 +72,11 @@ function createCarsHorizontalLegendProgram(cars, position) {
 export function createHorizontalLegendLaneComparison(cars) {
   const top = addReviewLabel(
     createCarsHorizontalLegendProgram(cars, "top"),
-    "TOP · title and symbol rows aligned"
+    "TOP · left-packed aligned legends"
   );
   const bottom = addReviewLabel(
     createCarsHorizontalLegendProgram(cars, "bottom"),
-    "BOTTOM · same-row legends"
+    "BOTTOM · left-packed aligned legends"
   );
   return hconcat({
     id: "horizontalLegendLaneComparison",

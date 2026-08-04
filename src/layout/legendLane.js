@@ -168,6 +168,15 @@ function translateBounds(bounds, dy) {
   };
 }
 
+function translateBoundsX(bounds, dx) {
+  return {
+    left: bounds.left + dx,
+    right: bounds.right + dx,
+    top: bounds.top,
+    bottom: bounds.bottom
+  };
+}
+
 function expandBounds(bounds, inset) {
   return {
     left: bounds.left - inset,
@@ -177,23 +186,29 @@ function expandBounds(bounds, inset) {
   };
 }
 
-function horizontalCollision(a, b) {
-  return a.left < b.right && a.right > b.left;
-}
-
-function packHorizontalRows(groups) {
+function packHorizontalRows(groups, plot) {
   const rows = [];
+  let row = [];
+  let cursor = plot.x;
   for (const group of groups) {
     const interval = expandBounds(group.horizontal, group.inset);
-    let row = rows.find(candidate => candidate.every(
-      entry => !horizontalCollision(interval, entry.interval)
-    ));
-    if (row === undefined) {
-      row = [];
-      rows.push(row);
+    const width = interval.right - interval.left;
+    if (width > plot.width) {
+      throw new Error("Horizontal legend block requires more plot width.");
     }
-    row.push({ group, interval });
+    let dx = cursor - interval.left;
+    let placed = translateBoundsX(interval, dx);
+    if (row.length > 0 && placed.right > plot.x + plot.width) {
+      rows.push(row);
+      row = [];
+      cursor = plot.x;
+      dx = cursor - interval.left;
+      placed = translateBoundsX(interval, dx);
+    }
+    row.push({ group, interval: placed, dx });
+    cursor = placed.right + SIDE_LEGEND_BLOCK_GAP;
   }
+  if (row.length > 0) rows.push(row);
   return rows;
 }
 
@@ -208,7 +223,7 @@ function normalizeHorizontalRow(entries) {
   const elementTop = commonTitleY === undefined
     ? entries[0].group.element.top
     : commonTitleY + titleDescent + HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP;
-  return entries.map(({ group }) => {
+  return entries.map(({ group, dx }) => {
     const titleDy = group.title === undefined
       ? 0
       : commonTitleY - group.title.y;
@@ -216,11 +231,12 @@ function normalizeHorizontalRow(entries) {
     const foreground = unionBounds([
       ...(group.title === undefined
         ? []
-        : [translateBounds(group.title.bounds, titleDy)]),
-      translateBounds(group.content, contentDy)
+        : [translateBoundsX(translateBounds(group.title.bounds, titleDy), dx)]),
+      translateBoundsX(translateBounds(group.content, contentDy), dx)
     ]);
     return {
       id: group.id,
+      dx,
       titleDy,
       contentDy,
       foreground,
@@ -243,6 +259,7 @@ function translateHorizontalPlacement(placement, dy) {
 
 export function resolveHorizontalLegendLane({
   edge,
+  plot,
   canvas,
   groups,
   collisionBounds = []
@@ -251,7 +268,7 @@ export function resolveHorizontalLegendLane({
     throw new Error(`Unsupported horizontal legend lane "${edge}".`);
   }
   if (groups.length < 2) return undefined;
-  const packed = packHorizontalRows(groups);
+  const packed = packHorizontalRows(groups, plot);
   const normalized = packed.map(normalizeHorizontalRow);
   const placements = [];
   let previousRowBounds;

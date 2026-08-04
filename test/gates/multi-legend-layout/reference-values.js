@@ -44,15 +44,15 @@ export const HORIZONTAL_LEGEND_TARGET = Object.freeze({
     elementTop: 154.25,
     colorBounds: Object.freeze({ top: 129.25, bottom: 166.75 }),
     opacityBounds: Object.freeze({ top: 129.25, bottom: 192.25 }),
-    colorSymbolX: Object.freeze([70, 137, 218]),
-    opacitySymbolX: Object.freeze([578, 634, 690])
+    colorSymbolX: Object.freeze([70.25, 137.25, 218.25]),
+    opacitySymbolX: Object.freeze([306.77, 362.77, 418.77])
   }),
   bottom: Object.freeze({
     titleY: 486.5,
     elementTop: 505,
     colorBounds: Object.freeze({ top: 480, bottom: 517.5 }),
     opacityBounds: Object.freeze({ top: 480, bottom: 543 }),
-    colorSymbolX: Object.freeze([70, 133, 210]),
-    opacitySymbolX: Object.freeze([578, 634, 690])
+    colorSymbolX: Object.freeze([70.25, 133.25, 210.25]),
+    opacitySymbolX: Object.freeze([298.77, 354.77, 410.77])
   })
 });

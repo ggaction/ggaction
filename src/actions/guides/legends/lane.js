@@ -405,9 +405,10 @@ export const rematerializeHorizontalLegendLane = action(
   },
   function (args = {}) {
     noOptions(args, "rematerializeHorizontalLegendLane");
+    const plot = resolveGraphicBounds(this);
     const canvas = findCanvasGraphic(this)?.properties;
-    if (canvas === undefined) {
-      throw new Error("Legend lane requires resolved Canvas bounds.");
+    if (plot === undefined || canvas === undefined) {
+      throw new Error("Legend lane requires resolved Canvas and plot bounds.");
     }
     const configs = this.guideConfigs.legend ?? {};
     const plans = ["top", "bottom"].flatMap(edge => {
@@ -421,6 +422,7 @@ export const rematerializeHorizontalLegendLane = action(
       const horizontal = horizontalGroups(this, groups);
       const plan = resolveHorizontalLegendLane({
         edge,
+        plot,
         canvas,
         groups: horizontal,
         collisionBounds: horizontalCollisionBounds(this, edge)
@@ -433,10 +435,20 @@ export const rematerializeHorizontalLegendLane = action(
       for (const placement of plan.placements) {
         const group = byId.get(placement.id);
         if (group.titleId !== undefined) {
-          next = translateGraphic(next, group.titleId, 0, placement.titleDy);
+          next = translateGraphic(
+            next,
+            group.titleId,
+            placement.dx,
+            placement.titleDy
+          );
         }
         for (const id of group.contentIds) {
-          next = translateGraphic(next, id, 0, placement.contentDy);
+          next = translateGraphic(
+            next,
+            id,
+            placement.dx,
+            placement.contentDy
+          );
         }
         if (placement.background !== undefined) {
           for (const property of ["x", "y", "width", "height"]) {

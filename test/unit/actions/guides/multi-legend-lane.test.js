@@ -280,14 +280,13 @@ for (const position of ["top", "bottom"]) {
   test(`packs ${position} blocks into one aligned row`, () => {
     const program = createHorizontal(horizontalBase(position), position);
     assertSharedHorizontalRow(program, ["color", "opacity"]);
+    const color = horizontalBounds(program, "color");
+    const opacity = horizontalBounds(program, "opacity");
     assert.equal(
-      program.graphicSpec.objects.colorLegendSymbols.items[0].properties.x,
+      color.left,
       70
     );
-    assert.equal(
-      program.graphicSpec.objects.opacityLegendSymbols.items.at(-1).properties.x,
-      690
-    );
+    assert.ok(Math.abs(opacity.left - color.right - 24) < 1e-9);
   });
 
   test(`converges ${position} coordinates across authoring order`, () => {
@@ -371,14 +370,16 @@ test("aligns top gradient and opacity recipes in one row", () => {
       count: 3
     });
   assertSharedHorizontalRow(program, ["gradient", "opacity"]);
+  const gradient = unionConcreteGraphicBounds(program.graphicSpec, [
+    "colorGradientStrips", "colorGradientTicks", "colorGradientLabels",
+    "colorGradientTitle"
+  ]);
+  const opacity = horizontalBounds(program, "opacity");
   assert.equal(
-    program.graphicSpec.objects.colorGradientStrips.items[0].properties.x,
+    gradient.left,
     70
   );
-  assert.equal(
-    program.graphicSpec.objects.opacityLegendSymbols.items.at(-1).properties.x,
-    690
-  );
+  assert.ok(Math.abs(opacity.left - gradient.right - 24) < 1e-9);
 });
 
 function createThreeFamilyHorizontal(position) {
