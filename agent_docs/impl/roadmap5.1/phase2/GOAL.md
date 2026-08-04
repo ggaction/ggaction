@@ -17,7 +17,7 @@ create/edit/remove, scale와 Canvas replay가 같은 final `graphicSpec`으로 �
 - [x] Atomic margin/Canvas overflow
 - [x] Actual-data top/bottom visual Gate와 four-renderer parity
 - [x] Full normal/coverage/docs/package verification
-- [x] R51-P2-A second replacement remote checkpoint — `257fc895`
+- [x] R51-P2-A final replacement remote checkpoint — `019e4e54`
 - [ ] R51-P2-A 사용자 approval
 
 ## Gate R51-P2-A

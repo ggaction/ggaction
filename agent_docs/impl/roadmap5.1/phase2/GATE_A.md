@@ -2,15 +2,15 @@
 
 ## Gate state
 
-`changes-requested`
+`ready-for-review`
 
 ## Approval target
 
 - Multi-legend top/bottom rows start at the plot's left edge and place blocks consecutively in stable order
 - Adjacent blocks keep 40 logical pixels between occupied bounds; width overflow alone creates a new outward row
 - Every shared row uses one title baseline, one graphical-element start line and a 12-pixel title-to-element gap
-- `titlePosition: "left"` creates one title → symbol → label line for categorical and continuous blocks
-- Top gradient and opacity labels sit below their graphical elements, consistently with bottom legends
+- `titlePosition: "left"` creates one title → symbol → label line for categorical and sampled-opacity blocks
+- Default title-above gradient and opacity labels sit below their graphical elements; left-title opacity labels sit beside their symbols
 - Multi-legend placement ignores block-level absolute `align`; single legends retain existing left/center/right behavior
 - Existing block-local direction and grid remain intact
 - Layer declaration and family order determine placement independently of authoring call order
@@ -25,18 +25,21 @@ publish or documentation deployment.
 
 ## Remote checkpoint
 
-- Replacement implementation checkpoint: `257fc895` (`origin/codex/roadmap5-1-multi-legend-layout`)
+- Replacement implementation checkpoint: `019e4e54` (`origin/codex/roadmap5-1-multi-legend-layout`)
 - Gate record checkpoint: this document's commit on the same remote branch
 
 ## Implemented result
 
 - Every multi-legend top/bottom row starts at the plot's left edge and places blocks consecutively in stable order.
-- Adjacent final occupied bounds keep exactly 24 logical pixels; only plot-width exhaustion creates an outward row.
+- Adjacent final occupied bounds keep exactly 40 logical pixels; only plot-width exhaustion creates an outward row.
 - Every wrapped row restarts at the plot's left edge, while a block wider than the plot fails atomically.
-- Every row aligns title baselines and graphical-element tops with an exact 12-pixel internal gap.
-- Top and bottom gradient/opacity labels follow their graphical elements with the configured label gap.
+- Default title-above rows align title baselines and graphical-element tops with an exact 12-pixel internal gap.
+- `titlePosition: "left"` aligns categorical and sampled-opacity titles, symbols and labels on one common center line.
+- Inline opacity legends keep 8 pixels from each symbol to its label and 20 pixels before the next sample.
+- Gradient and side opacity legends reject `titlePosition: "left"` rather than silently changing their layout.
 - Multi-legend rows ignore block-local absolute alignment; single legends preserve their existing alignment behavior.
 - Block-local direction and item grid remain unchanged.
+- Side lanes retain their existing 24-pixel inter-block gap.
 - Categorical, gradient and opacity recipes align across top and bottom, including bordered three-family combinations.
 - Layer declaration and family order produce the same coordinates regardless of authoring call order.
 - Legend edit, sibling removal, scale edit and Canvas edit replay every retained block before lane placement.
@@ -45,13 +48,14 @@ publish or documentation deployment.
 
 ## Verification
 
-- `npm test`: 2,045 passed
+- `npm test`: 2,052 passed
 - `npm run test:contracts`: 161 passed
-- `npm run test:coverage`: 94.76% lines, 90.16% branches, 98.5% functions; 71 critical floors passed
+- `npm run test:unit`: 1,388 passed
+- `npm run test:coverage`: 94.76% lines, 90.24% branches, 98.5% functions; 71 critical floors passed
 - `npm run test:docs`: 45 passed
-- `npm run test:gates`: 6 passed
-- `node scripts/run-tests.js render test/gates/multi-legend-layout`: 6 passed
-- Package artifact: 412 entries, 384,914 packed bytes, 1,819,873 unpacked bytes
+- `npm run test:gates`: 9 passed
+- `node scripts/run-tests.js render test/gates/multi-legend-layout`: 16 passed
+- Package artifact: 412 entries, 385,599 packed bytes, 1,822,996 unpacked bytes
 - Render parity: Canvas, SVG, PNG and PDF consume the same final `graphicSpec` coordinates
 
 ## Review artifact
@@ -93,5 +97,5 @@ label side by side on the common reading line. Both candidates remain primitive 
 User approved the fully inline candidate with a fixed 40-pixel inter-block gap. The implementation must preserve the
 existing title-above grammar by default and activate the title → symbol → label reading line only for
 `titlePosition: "left"`. Continuous labels use 8 pixels after their symbol and 20 pixels before the next sample.
-This approval authorizes the corresponding public-contract implementation and evidence update, but R51-P2-A remains
-`changes-requested` until the runtime replacement checkpoint is complete and separately approved.
+This approval authorized the corresponding public-contract implementation and evidence update. Checkpoint `019e4e54`
+now implements and verifies that target, so R51-P2-A is ready for separate final approval.
