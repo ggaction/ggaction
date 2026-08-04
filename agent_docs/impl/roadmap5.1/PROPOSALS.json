@@ -2,7 +2,7 @@
   "version": 1,
   "roadmap": "roadmap5.1",
   "gate": "R51-P2-A",
-  "status": "ready-for-review",
+  "status": "changes-requested",
   "capability": {
     "id": "same-edge-multi-legend-layout",
     "kind": "behavior-correction",

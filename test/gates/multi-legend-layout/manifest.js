@@ -5,7 +5,10 @@ import {
   createCarsCombinedLegendComparison,
   createThreeBlockLegendComparison
 } from "./primitive.program.js";
-import { createHorizontalLegendLaneComparison } from "./horizontal.program.js";
+import {
+  createHorizontalLegendLaneComparison,
+  createHorizontalLegendOptionProgram
+} from "./horizontal.program.js";
 import { REVIEW_LAYOUT } from "./reference-values.js";
 
 const cars = loadCars();
@@ -42,6 +45,10 @@ export const horizontalCallChain = `hconcat({
   padding: 8,
   align: "start"
 });`;
+
+function optionCallChain({ gap, inlineTitles }) {
+  return `horizontalLegendOption({ gap: ${gap}, inlineTitles: ${inlineTitles} });`;
+}
 
 function comparisonDimensions(width, height) {
   return {
@@ -105,5 +112,57 @@ export const visualVariants = Object.freeze([
       { value: "#e45756", minimumPixels: 20 }
     ],
     regions: panelRegions(REVIEW_LAYOUT.multiWidth, 620)
-  })
+  }),
+  ...[
+    {
+      variant: "cars-top-legends-gap-24",
+      title: "Cars Top Legends · 24 Pixel Block Gap",
+      gap: 24,
+      inlineTitles: false,
+      label: "24 PX · titles above"
+    },
+    {
+      variant: "cars-top-legends-gap-32",
+      title: "Cars Top Legends · 32 Pixel Block Gap",
+      gap: 32,
+      inlineTitles: false,
+      label: "32 PX · titles above"
+    },
+    {
+      variant: "cars-top-legends-gap-40",
+      title: "Cars Top Legends · 40 Pixel Block Gap",
+      gap: 40,
+      inlineTitles: false,
+      label: "40 PX · titles above"
+    },
+    {
+      variant: "cars-top-legends-inline-gap-40",
+      title: "Cars Top Legends · Inline Titles and 40 Pixel Gap",
+      gap: 40,
+      inlineTitles: true,
+      label: "40 PX · inline titles"
+    }
+  ].map(options => defineVisualVariant({
+    chart: "multi-legend-layout",
+    variant: options.variant,
+    title: options.title,
+    callChain: optionCallChain(options),
+    artifact: { scope: "review" },
+    primitive: () => createHorizontalLegendOptionProgram(cars, options),
+    width: REVIEW_LAYOUT.multiWidth,
+    height: 620,
+    colors: [
+      { value: "#4c78a8", minimumPixels: 50 },
+      { value: "#f58518", minimumPixels: 10 },
+      { value: "#e45756", minimumPixels: 10 }
+    ],
+    regions: [{
+      name: "chart",
+      x: 0,
+      y: 0,
+      width: REVIEW_LAYOUT.multiWidth,
+      height: 620,
+      minimumInkPixels: 900
+    }]
+  }))
 ]);

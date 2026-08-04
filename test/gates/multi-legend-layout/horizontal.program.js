@@ -1,4 +1,8 @@
 import { chart, hconcat } from "../../../src/index.js";
+import {
+  resolveConcreteGraphicBounds,
+  unionConcreteGraphicBounds
+} from "../../../src/grammar/schemas/graphicBounds.js";
 
 import { REVIEW_LAYOUT } from "./reference-values.js";
 
@@ -67,6 +71,105 @@ function createCarsHorizontalLegendProgram(cars, position) {
       count: 3,
       ...(position === "bottom" ? { offset: 60 } : {})
     });
+}
+
+const HORIZONTAL_BLOCKS = Object.freeze({
+  color: Object.freeze({
+    title: "colorLegendTitle",
+    element: "colorLegendSymbols",
+    content: Object.freeze(["colorLegendSymbols", "colorLegendLabels"])
+  }),
+  opacity: Object.freeze({
+    title: "opacityLegendTitle",
+    element: "opacityLegendSymbols",
+    content: Object.freeze(["opacityLegendSymbols", "opacityLegendLabels"])
+  })
+});
+
+function translateGraphicX(program, id, dx) {
+  const graphic = program.graphicSpec.objects[id];
+  if (graphic.items !== undefined) {
+    return program.editGraphics({
+      target: id,
+      property: "items",
+      value: graphic.items.map(item => ({
+        type: item.type ?? graphic.type,
+        properties: { ...item.properties, x: item.properties.x + dx }
+      }))
+    });
+  }
+  return program.editGraphics({
+    target: id,
+    property: "x",
+    value: graphic.properties.x + dx
+  });
+}
+
+function translateBlockX(program, kind, dx) {
+  const block = HORIZONTAL_BLOCKS[kind];
+  return [block.title, ...block.content].reduce(
+    (next, id) => translateGraphicX(next, id, dx),
+    program
+  );
+}
+
+function widenHorizontalGap(program, gap) {
+  return translateBlockX(program, "opacity", gap - 24);
+}
+
+function placeInlineBlock(program, kind, cursor, gap) {
+  const block = HORIZONTAL_BLOCKS[kind];
+  const title = resolveConcreteGraphicBounds(program.graphicSpec, block.title);
+  const element = resolveConcreteGraphicBounds(program.graphicSpec, block.element);
+  const content = unionConcreteGraphicBounds(program.graphicSpec, block.content);
+  const titleWidth = title.right - title.left;
+  const contentDx = cursor + titleWidth + 20 - content.left;
+  let next = block.content.reduce(
+    (current, id) => translateGraphicX(current, id, contentDx),
+    program
+  );
+  next = next
+    .editGraphics({ target: block.title, property: "x", value: cursor })
+    .editGraphics({
+      target: block.title,
+      property: "y",
+      value: (element.top + element.bottom) / 2
+    })
+    .editGraphics({
+      target: block.title,
+      property: "textAlign",
+      value: "left"
+    });
+  return {
+    program: next,
+    cursor: Math.max(
+      cursor + titleWidth,
+      content.right + contentDx
+    ) + gap
+  };
+}
+
+function placeInlineTitles(program, gap) {
+  let next = program;
+  let cursor = 70;
+  for (const kind of ["color", "opacity"]) {
+    const placement = placeInlineBlock(next, kind, cursor, gap);
+    next = placement.program;
+    cursor = placement.cursor;
+  }
+  return next;
+}
+
+export function createHorizontalLegendOptionProgram(cars, {
+  gap,
+  inlineTitles = false,
+  label
+}) {
+  const base = createCarsHorizontalLegendProgram(cars, "top");
+  const placed = inlineTitles
+    ? placeInlineTitles(base, gap)
+    : widenHorizontalGap(base, gap);
+  return addReviewLabel(placed, label);
 }
 
 export function createHorizontalLegendLaneComparison(cars) {

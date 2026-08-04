@@ -8,7 +8,10 @@ import {
   "../../../src/grammar/schemas/graphicBounds.js";
 import { loadCars } from "../../support/data.js";
 
-import { createHorizontalLegendLaneComparison } from "./horizontal.program.js";
+import {
+  createHorizontalLegendLaneComparison,
+  createHorizontalLegendOptionProgram
+} from "./horizontal.program.js";
 import { HORIZONTAL_LEGEND_TARGET } from "./reference-values.js";
 
 function blockBounds(program, kind) {
@@ -90,6 +93,47 @@ test("shares title and graphical rows with exact internal spacing", () => {
     assert.equal(
       opacityLabels.top - elements[1].bottom,
       HORIZONTAL_LEGEND_TARGET.titleElementGap
+    );
+  }
+});
+
+test("compares exact 24, 32, and 40 pixel block gaps", () => {
+  for (const gap of [24, 32, 40]) {
+    const program = createHorizontalLegendOptionProgram(loadCars(), {
+      gap,
+      label: `${gap} PX`,
+      inlineTitles: false
+    });
+    const color = blockBounds(program, "color");
+    const opacity = blockBounds(program, "opacity");
+    assert.equal(color.left, 70);
+    assert.equal(opacity.left - color.right, gap);
+  }
+});
+
+test("places both titles inline before their graphical content", () => {
+  const program = createHorizontalLegendOptionProgram(loadCars(), {
+    gap: 40,
+    label: "INLINE",
+    inlineTitles: true
+  });
+  const color = blockBounds(program, "color");
+  const opacity = blockBounds(program, "opacity");
+  assert.equal(color.left, 70);
+  assert.equal(opacity.left - color.right, 40);
+  for (const kind of ["color", "opacity"]) {
+    const title = resolveConcreteGraphicBounds(
+      program.graphicSpec,
+      `${kind}LegendTitle`
+    );
+    const symbols = resolveConcreteGraphicBounds(
+      program.graphicSpec,
+      `${kind}LegendSymbols`
+    );
+    assert.ok(Math.abs(symbols.left - title.right - 20) < 1e-9);
+    assert.equal(
+      program.graphicSpec.objects[`${kind}LegendTitle`].properties.y,
+      (symbols.top + symbols.bottom) / 2
     );
   }
 });

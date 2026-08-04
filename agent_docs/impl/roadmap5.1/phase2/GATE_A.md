@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`changes-requested`
 
 ## Approval target
 
@@ -70,3 +70,15 @@ actual-data four-renderer artifact.
 The replacement checkpoint was rejected because preserving each block's absolute `align` pushed the two Cars
 legends to opposite ends of the plot. Checkpoint `257fc895` now left-packs every multi-legend row in stable order,
 uses exactly 24 pixels between final occupied bounds and wraps only when the available plot width is exhausted.
+
+## Review feedback — spacing and title flow — 2026-08-04
+
+The left-packed checkpoint remains unapproved because 24 pixels reads as a collision minimum rather than a clear
+separation between legend blocks. The revision must compare 24, 32 and 40-pixel occupied-bound gaps on the same
+actual Cars chart before choosing a default. It must also compare the current title-above grammar with a true inline
+`title -> graphical element -> label` flow. The inline target must apply consistently to categorical and continuous
+legend families; the current categorical-only `titlePosition: "left"` behavior is not sufficient for a mixed lane.
+
+The comparison is primitive review evidence only. Selecting the inline target would require an explicit public-contract
+decision for continuous `titlePosition: "left"`; selecting an adjustable inter-block gap would require a distinct option
+because existing `itemGap` owns spacing inside one block.
