@@ -332,7 +332,7 @@ snapshot을 atomically 교체한다. Renderer는 concat과 마찬가지로 완�
 Facet replay의 pure dataset dependency planner는 visible layer에서 source 방향으로 ancestry를
 검증하고, 모든 branch가 공유하는 latest row-preserving partition anchor와 deterministic topological replay order를
 반환한다. 이 planner는 semantic state를 수정하거나 trace를 만들지 않는다. Public facet action은 filter,
-regression, density, Horizon, interval, box-summary와 box-outlier descendant를
+time-unit, regression, density, Horizon, interval, box-summary와 box-outlier descendant를
 `replayDerivedData → createDerivedData → canonical materialize*Data` hierarchy로 실행한다. Transform별 통계 계산은
 facet에 복제하지 않고 각 기존 data materializer가 계속 소유한다.
 
@@ -471,7 +471,7 @@ semantic kind의 closed vocabulary와 value shape만 소유한다. Dispatcher �
 변경하지 않는다.
 
 첫 source dataset의 omitted ID는 `"data"`, 첫 semantic mark type별 omitted ID는
-`"point" | "line" | "bar" | "rect" | "area" | "rule" | "arc" | "text"`로 materialize한다. 이 결정은 context에만 두지 않고
+`"point" | "line" | "bar" | "rect" | "area" | "rule" | "arc" | "tick" | "text"`로 materialize한다. 이 결정은 context에만 두지 않고
 각 resource의 canonical `id`로 저장한다. 같은 dataset slot 또는 같은 mark type을 다시 만들 때
 counter suffix를 자동 생성하지 않으며 explicit user ID를 요구한다. Derived data, explicit scale,
 regression component처럼 다른 resource가 직접 참조하는 advanced creation action은 자체 contract가
@@ -517,6 +517,7 @@ Derived dataset은 source와 정확히 하나의 transform provenance를 먼저 
 - grouped or ungrouped linear or polynomial least-squares regression, with mean or prediction intervals
 - grouped or ungrouped LOESS regression with deterministic local neighborhoods and line-only output
 - grouped or ungrouped kernel density estimation with Gaussian, Epanechnikov, uniform, or triangular kernels
+- UTC year, quarter, month, day, hour, minute, or second bucket-start field derivation
 - partitioned ordered window calculation with row number, rank, dense rank, cumulative sum, lag, and lead
 
 Transform은 source, input/output field, group, method 및 resolved parameter를 보존한다.
@@ -540,6 +541,11 @@ Window transform은 ordered `partitionBy`, `sortBy`, `operations` provenance를 
 Operation은 선언 순서대로 실행되어 앞 output을 뒤 input으로 사용할 수 있다. Public lifecycle은 immutable
 create-only이다. Window는 row 수를 보존해도 주변 row에 의존하므로 facet은 먼저 source를 partition한 뒤
 registry의 canonical materializer를 cell마다 다시 호출한다.
+
+Time-unit transform은 input temporal field, closed UTC unit과 distinct output field를 저장한다. Materialization은
+source row order와 existing cells를 보존하고 output에 bucket-start timestamp를 추가한다. Transform은
+row-preserving이므로 facet의 latest common partition anchor가 될 수 있고, earlier explicit anchor 뒤에서는 canonical
+time-unit materializer를 child별로 replay한다.
 
 Interval transform은 input field, ordered `groupBy`, `mean | median` center,
 `stderr | stdev | ci | iqr` extent, CI level과 distinct center/lower/upper output fields를 기록한다.
@@ -656,6 +662,14 @@ line, Polar line, density/error/regression 같은 generated path와 non-row-pres
 position이 완성되면 owning line/area materializer가 같은 branch를 적용한다. Canvas, scale, data/filter,
 selection/highlight와 facet replay도 이 canonical materializer를 호출해 explicit order를 다시 적용한다.
 
+Categorical Cartesian `x | y` order도 scale definition mutation이 아니라 position encoding이 소유하는 semantic
+assignment다. `encoding[channel].categoryOrder`에는 explicit category list 또는 category/count/summary 계산
+intent를 저장하고 semantic scale의 `domain: "auto"`는 유지한다. Scale materializer가 current dataset에서
+deterministic domain을 풀고, owning action이 scale → connected marks → guides 순서로 explicit materialization
+plan을 실행한다. 그래서 data/facet replay는 stored intent를 다시 계산할 수 있고 source row 순서는 바뀌지
+않는다. Shared facet scale은 base resolved order를 사용하며 independent scale은 각 cell dataset에서 intent를
+다시 푼다. `removeCategoryOrder`는 assignment만 제거해 automatic first-appearance domain으로 복귀한다.
+
 ### Semantic scale
 
 Scale은 named semantic resource다.
@@ -696,7 +710,8 @@ Encoding이나 interval action이 `{ id }`만 전달해 existing scale을 참조
 
 Automatic continuous domain에는 `zero`가 먼저 적용되고 그 뒤 `nice`가 적용된다.
 사용자가 explicit domain 또는 range를 주면 automatic policy보다 우선한다. Ordinal
-domain은 source의 deterministic first-appearance order를 기본으로 사용한다.
+domain은 source의 deterministic first-appearance order를 기본으로 사용하며 compatible position encoding의
+`categoryOrder` assignment가 있으면 그 resolved order가 current concrete domain을 덮어쓴다.
 Band/point padding과 align edit는 같은 scale을 소비하는 marks와 guides를 모두 rematerialize하며,
 bar consumer가 남아 있으면 bandwidth가 없는 point type으로의 전환을 거부한다.
 
@@ -775,8 +790,9 @@ symbol geometry 같은 appearance는 semantic guide에 저장하지 않는다.
 Legend lifecycle은 `materializationConfigs.guides.legend`의 kind별 complete block을 ownership unit으로 사용한다.
 Categorical block은 여러 represented channel을 하나의 resource로 소유하므로 partial channel removal로 분해하지
 않는다. Selective removal은 requested complete block만 semantic/config/graphics에서 해제하고 retained block의
-layout dependency를 existing legend rematerializer로 다시 계산한다. Stroke-width title/count/typography edit도 같은
-config→explicit rematerialization 경계를 사용하며 right-side concrete placement는 materializer가 계속 소유한다.
+layout dependency를 existing legend rematerializer로 다시 계산한다. Side lane은 retained family graphics를 모두
+intrinsic 상태로 materialize한 뒤 한 번 배치하므로 create/edit/remove, scale과 Canvas replay가 같은 concrete
+결과로 수렴한다. Stroke-width title/count/typography edit도 같은 config→explicit rematerialization 경계를 사용한다.
 
 Chart title은 guide와 별개의 top-level semantic concept다. `title.text`와
 `title.subtitle`만 의미 상태이며 실제 위치와 typography는 materialization config 및
@@ -1423,6 +1439,23 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 - Composite cap은 ordinary x/y anchor encoding과 graphical `fixedSpan` config를 결합한다. Canvas 또는
   scale 변경 시 span을 다시 concrete endpoint로 계산하며 renderer는 cap role이나 pixel span을 모른다.
 
+### Tick
+
+- Tick은 complete Cartesian x/y anchor를 요구하는 centered fixed-length line glyph다.
+- `length`, `stroke`, `strokeWidth`, `opacity`는 mark materialization config가 소유한다. Default length는 `14`,
+  stroke width는 `2`, opacity는 `1`이며 stroke는 shared theme mark color를 사용한다.
+- x 또는 y 하나만 있는 중간 상태는 semantic assignment와 scale을 보존하지만 line item을 만들지 않는다.
+  두 position이 완성되면 source row마다 concrete `x1/y1/x2/y2`를 materialize한다.
+- Fixed-y rug distribution은 ordinary y field를 명시해 작성하며 x-only plot-edge placement를 추론하지 않는다.
+- `encodeAngle`은 point/Tick에 finite constant 또는 quantitative field degree를 scale 없이 직접 저장한다.
+  0°는 위쪽이고 양수는 clockwise이며 reassignment는 datum/field branch 전체를 교체한다.
+- Tick은 angle마다 centered endpoint를 다시 계산한다. Point는 circle을 시각적으로 그대로 두고 square를
+  포함한 polygon glyph를 center 주위의 concrete path command로 회전한다. Jitter extent도 같은 회전된
+  geometry를 사용한다.
+- `removeEncoding({ channel: "angle" })`는 assignment를 제거하고 unrotated baseline을 재물질화한다.
+  Filter, facet, Canvas/scale 변경과 stored highlight replay도 mark policy를 통해 같은 concrete geometry를 만든다.
+- Renderer는 Tick identity, center 또는 length를 해석하지 않고 ordinary concrete line collection만 읽는다.
+
 ### Aggregate bar provenance와 completeness
 
 - Histogram은 binned x, count y, zero stack이 함께 있어야 한다.
@@ -1621,9 +1654,24 @@ Encoding reassignment는 existing categorical legend의 inferred field/title/dom
 
 Chart-independent legend default는 right다. Top/bottom, horizontal/vertical direction,
 columns, alignment, title position, border 등은 explicit option이다.
-Categorical/composite/size의 left side layout은 item 내부 symbol→label 순서와 resolved domain
-순서를 보존하고 multiple blocks를 top-to-bottom으로 쌓는다. Categorical과 size가 같은 target이면
-하나의 occupied bounds와 border를 공유하며 y-axis guide와 left margin 충돌을 함께 검증한다.
+Right/left에 둘 이상의 legend block이 있으면 각 family materializer가 intrinsic concrete graphics를 먼저
+만들고 `layout/legendLane.js`의 pure lane grammar가 공통 title-start, symbol-center, label-start 열과
+top-to-bottom block placement를 계산한다. `rematerializeSideLegendLane`은 이 결과를 concrete graphics에
+적용하는 유일한 wrapped owner다. Ordering은 owning layer declaration 뒤 family order이며 block 사이에는
+최소 24 logical pixels를 둔다. Categorical과 size가 같은 target이면 하나의 occupied bounds와 border를
+공유하고, independent gradient/interval/opacity/stroke-width block은 각 group bounds를 유지한 채 같은 lane에
+참여한다. Left lane도 item 내부 symbol→label 순서와 resolved domain 순서를 보존하며 y-axis guide와 margin
+충돌을 함께 검증한다. 공간이 부족하면 Canvas를 확장하거나 block을 옮기지 않고 전체 action이 실패한다.
+Top/bottom에 둘 이상의 compatible block이 있으면 `resolveHorizontalLegendLane`이 concrete occupied width를
+stable order로 측정하고 plot left부터 40 logical pixels 간격으로 배치한다. 남은 plot width에 맞지 않는 block만
+바깥의 다음 row로 넘어가며 각 새 row도 plot left에서 시작한다. 이때 multi-legend의 absolute `align`은 placement에
+쓰지 않고 single legend에서만 기존 의미를 유지한다. 각 row는 concrete title baseline과 graphical-element start를
+공유하며 둘 사이를 12 logical pixels로 고정한다. `rematerializeHorizontalLegendLane`은 title과 나머지 content를
+x/y로 별도 translation한 뒤 optional background를 final foreground bounds에서 다시 계산하고 chart title 또는
+x-axis guide collision과 final Canvas bounds를 검증한다. Gradient와 opacity의 top/bottom label은 모두 graphical
+element 뒤에 놓인다. Horizontal categorical과 sampled opacity의 `titlePosition: "left"`는 이 stacked-title
+grammar 대신 하나의 graphical center line을 공유한다. Opacity sample은 symbol 뒤 8 pixels에 label을 두고 다음
+sample 전 20 pixels를 유지한다.
 `editLegend`는 channel/scale binding을 바꾸지 않고 nested appearance/layout config만 부분 merge한 뒤
 kind별 wrapped rematerialization을 호출한다.
 
@@ -2071,12 +2119,15 @@ directory 구조를 만들기 위한 분할은 하지 않는다.
 
 Guide module은 concrete recipe 기준으로 나눈다. Continuous legend의 공통 validation/layout
 utility, gradient strip recipe, opacity symbol recipe를 분리하며, quantitative size legend는 generic
-`point`가 아니라 `size`라는 실제 책임 이름을 사용한다.
+`point`가 아니라 `size`라는 실제 책임 이름을 사용한다. Right/left multi-block placement만 family recipe에서
+분리해 shared lane owner가 맡는다. Top/bottom multi-block placement도 같은 `layout/legendLane.js`의 pure
+geometry와 별도 wrapped horizontal owner를 사용하며 renderer는 그 최종 좌표만 읽는다.
 
 구현된 mark type, encoding channel, categorical legend channel, legend config kind는
 `core/vocabulary.js`가 canonical owner다. Schema parser, action validation, private config와
 materialization discovery는 이 목록을 import하며 별도의 문자열 목록을 만들지 않는다. 현재 legend
-kind는 `series`, `color`, `size`, `gradient`, `opacity`이고 사용되지 않는 `point` kind는 없다.
+kind는 `series`, `color`, `size`, `gradient`, `interval`, `opacity`, `strokeWidth`이고 사용되지 않는
+`point` kind는 없다.
 
 Palette 이름과 concrete color table은 `grammar/palettes.js`가 한 번만 소유한다. 기본 categorical
 range인 `TABLEAU10`도 별도 literal이 아니라 palette registry에서 resolve한 immutable result다.

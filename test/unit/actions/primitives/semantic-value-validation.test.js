@@ -405,8 +405,8 @@ test("validates exact histogram bin semantics through the primitive API", () => 
   }
 });
 
-test("validates planned stack and color-layout semantics through primitives", () => {
-  for (const stack of ["zero", "normalize", null]) {
+test("validates stack and color-layout semantics through primitives", () => {
+  for (const stack of ["zero", "normalize", "center", null]) {
     for (const channel of ["x", "y"]) {
       const program = chart().editSemantic({
         property: `layer[bars].encoding.${channel}.stack`,
@@ -415,7 +415,9 @@ test("validates planned stack and color-layout semantics through primitives", ()
       assert.equal(program.semanticSpec.layers[0].encoding[channel].stack, stack);
     }
   }
-  for (const layout of ["stack", "fill", "group", "overlay", "diverging"]) {
+  for (const layout of [
+    "stack", "fill", "group", "overlay", "diverging", "center"
+  ]) {
     const program = chart().editSemantic({
       property: "layer[bars].encoding.color.layout",
       value: layout
@@ -425,14 +427,14 @@ test("validates planned stack and color-layout semantics through primitives", ()
   assert.throws(
     () => chart().editSemantic({
       property: "layer[bars].encoding.y.stack",
-      value: "center"
+      value: "middle"
     }),
     /Unsupported stack/
   );
   assert.throws(
     () => chart().editSemantic({
       property: "layer[bars].encoding.color.layout",
-      value: "center"
+      value: "middle"
     }),
     /Unsupported color layout/
   );

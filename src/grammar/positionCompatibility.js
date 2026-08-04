@@ -23,6 +23,10 @@ export const POSITION_FIELD_COMPATIBILITY = Object.freeze({
     x: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"]),
     y: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"])
   }),
+  tick: Object.freeze({
+    x: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"]),
+    y: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"])
+  }),
   bar: Object.freeze({
     x: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"]),
     y: Object.freeze(["quantitative", "temporal", "ordinal", "nominal"])

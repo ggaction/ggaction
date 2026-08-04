@@ -36,6 +36,12 @@ Compare two quantitative fields and encode a category with color.
 
 Representative actions: `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/scatterplot/).
 
+### [Multi-legend layout](./cars-multi-legend-layout/)
+
+Place categorical and sampled opacity legends on one aligned horizontal reading line.
+
+Representative actions: `createLegend`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/api/legends/continuous/#continuous-color-and-opacity).
+
 ### [Line chart](./cars-line-chart/)
 
 Aggregate values over time and split the result into series.
@@ -72,6 +78,12 @@ Aggregate ordinal categories and arrange nominal groups side by side.
 
 Representative actions: `createBarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/grouped-bar/).
 
+### [Ordered category bars](./ordered-category-bar/)
+
+Order categorical x or y positions explicitly or from a stable aggregate summary.
+
+Representative actions: `orderCategories`, `removeCategoryOrder`. [Documentation](https://ggaction.github.io/ggaction/api/position/category-ordering/).
+
 ### [Horizontal grouped bar](./jobs-horizontal-grouped-bar/)
 
 Compare grouped aggregate values with a horizontal measure axis.
@@ -89,6 +101,12 @@ Representative actions: `createHistogram`. [Documentation](https://ggaction.gith
 Estimate grouped distributions and draw baseline-closed areas.
 
 Representative actions: `createAreaMark`, `encodeDensity`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/tutorials/density-area/).
+
+### [Center-stacked area](./centered-area-stream/)
+
+Preserve series thickness while centering each time partition around zero.
+
+Representative actions: `createAreaMark`, `encodeX`, `encodeY`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/api/series/color/#center-stacked-areas).
 
 ### [Regression scatterplot](./cars-regression-scatterplot/)
 

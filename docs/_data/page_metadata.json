@@ -218,6 +218,10 @@
     "description": "Create deterministic regression predictions from an existing dataset. This is an advanced data action used by higher level regression chart actions.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
+  "/api/data/time-units/": {
+    "title": "Time-Unit Data Transforms",
+    "description": "createTimeUnitData adds one reproducible UTC calendar field to every source row."
+  },
   "/api/data/window/": {
     "title": "Window Data Transforms",
     "description": "createWindowData computes ordered values within optional partitions and stores the result as a new immutable dataset."
@@ -336,6 +340,11 @@
     "description": "Automatic domains preserve first appearance order. Automatic ranges use the horizontal plot bounds and resolve a shared step and bandwidth.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
+  "/api/position/category-ordering/": {
+    "title": "Category Ordering",
+    "description": "Use orderCategories when a nominal or ordinal x/y position should follow an explicit list or a data derived order.",
+    "image": "/assets/images/ordered-category-bar.png"
+  },
   "/api/position/histogram/": {
     "title": "Histogram Positions",
     "description": "Prefer the atomic action for ordinary chart authoring:",
@@ -439,7 +448,7 @@
   "/api/legends/continuous/": {
     "title": "Continuous Legends",
     "description": "A point color encoding with a quantitative or temporal field produces a continuous gradient. Right/left positions orient it vertically; top/bottom orient it horizontally.",
-    "image": "/assets/images/cars-density-area.png"
+    "image": "/assets/images/cars-multi-legend-layout.png"
   },
   "/api/legends/composite/": {
     "title": "Composite Legend Symbols",

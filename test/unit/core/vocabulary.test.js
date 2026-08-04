@@ -22,7 +22,7 @@ import {
 
 test("owns the implemented semantic and legend vocabularies in one module", () => {
   assert.deepEqual(MARK_TYPES, [
-    "point", "line", "bar", "area", "arc", "rule", "text", "rect"
+    "point", "line", "bar", "area", "arc", "rule", "tick", "text", "rect"
   ]);
   assert.deepEqual(CARTESIAN_POSITION_CHANNELS, ["x", "y"]);
   assert.deepEqual(POLAR_POSITION_CHANNELS, ["theta", "radius"]);
@@ -39,6 +39,7 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
     "circle", "rect", "path", "collection"
   ]);
   assert.deepEqual(getMarkGraphicTypes("arc"), ["path"]);
+  assert.deepEqual(getMarkGraphicTypes("tick"), ["line"]);
   assert.equal(Object.isFrozen(MARK_GRAPHIC_TYPES), true);
   assert.deepEqual(CATEGORICAL_LEGEND_CHANNELS, [
     "color", "strokeDash", "shape"
@@ -48,16 +49,18 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
     "strokeWidth"
   ]);
   assert.deepEqual(COLOR_LAYOUTS, [
-    "stack", "fill", "group", "overlay", "diverging"
+    "stack", "fill", "center", "group", "overlay", "diverging"
   ]);
-  assert.deepEqual(STACK_MODES, ["zero", "normalize"]);
+  assert.deepEqual(STACK_MODES, ["zero", "normalize", "center"]);
   assert.equal(ENCODING_CHANNELS.includes("group"), true);
   assert.equal(ENCODING_CHANNELS.includes("x2"), true);
   assert.equal(ENCODING_CHANNELS.includes("strokeWidth"), true);
   assert.equal(ENCODING_CHANNELS.includes("pathOrder"), true);
+  assert.equal(ENCODING_CHANNELS.includes("angle"), true);
   assert.equal(SCALED_ENCODING_CHANNELS.includes("group"), false);
   assert.equal(SCALED_ENCODING_CHANNELS.includes("pathOrder"), false);
   assert.equal(SCALED_ENCODING_CHANNELS.includes("text"), false);
+  assert.equal(SCALED_ENCODING_CHANNELS.includes("angle"), false);
   for (const vocabulary of [
     MARK_TYPES,
     POSITION_ENCODING_CHANNELS,

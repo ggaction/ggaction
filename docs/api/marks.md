@@ -30,6 +30,10 @@ each type infers its ID and current dataset when those choices are unambiguous.
     <strong>Rule marks</strong>
     <span>Full-span references, bounded intervals, and diagonal endpoints.</span>
   </a>
+  <a href="#tick-marks">
+    <strong>Tick marks</strong>
+    <span>Centered fixed-length glyphs for directional and rug-like displays.</span>
+  </a>
   <a href="./text/">
     <strong>Text marks</strong>
     <span>Data labels and annotations attached to points, bars, or rules.</span>
@@ -54,6 +58,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Arc | `createArcMark` | `editArcMark` | Closed sector path collection |
 | Bar | `createBarMark` | `editBarMark` | Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
+| Tick | `createTickMark` | `editTickMark` | Centered line collection |
 | Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout` | Text collection |
 | Rect | `createRectMark` | `editRectMark` | Rect collection |
 
@@ -78,7 +83,7 @@ those graphics.
 
 - `data` defaults to the current dataset.
 - The first omitted mark ID uses the semantic role: `"point"`, `"line"`,
-  `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, or `"text"`.
+  `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, `"tick"`, or `"text"`.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
   encodings from the current layer, or one unique source on the current dataset.
@@ -90,6 +95,40 @@ those graphics.
   type are inherited. Incompatible channels remain unencoded.
 - Passing `data` explicitly starts independent mark assembly and disables
   layered position inheritance.
+
+## Tick marks
+
+`createTickMark` creates a centered fixed-length line glyph for every source
+row after both x and y encodings are complete:
+
+```javascript
+const rug = chart()
+  .createCanvas({ width: 800, height: 240 })
+  .createData({
+    id: "cars",
+    values: cars.map(car => ({ ...car, Baseline: 0 }))
+  })
+  .createTickMark({
+    id: "ticks",
+    length: 14,
+    stroke: "#2563eb",
+    strokeWidth: 1.5,
+    opacity: 0.3
+  })
+  .encodeX({ target: "ticks", field: "Horsepower" })
+  .encodeY({ target: "ticks", field: "Baseline" });
+```
+
+The default length is `14`, stroke width is `2`, opacity is `1`, and stroke
+uses the theme mark color. `editTickMark` partially edits those values.
+Incomplete x or y is retained semantically without fabricated geometry.
+Fixed-y rug plots use an explicit y field; x-only plot-edge placement is not
+inferred.
+
+Add a direct constant or quantitative-field direction with `encodeAngle`.
+Zero degrees is vertical/up and positive values rotate clockwise; Tick length
+and center remain fixed. `removeEncoding({ channel: "angle" })` restores the
+unrotated baseline.
 
 ## Related
 

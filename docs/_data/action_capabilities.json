@@ -10,6 +10,7 @@
         "bar": ["quantitative", "temporal", "ordinal", "nominal"],
         "rect": ["quantitative", "temporal", "ordinal", "nominal"],
         "rule": ["quantitative", "temporal", "ordinal", "nominal"],
+        "tick": ["quantitative", "temporal", "ordinal", "nominal"],
         "text": ["quantitative", "temporal", "ordinal", "nominal"]
       },
       "modes": "field; rule also accepts datum; bar accepts aggregate or bin"
@@ -23,6 +24,7 @@
         "bar": ["quantitative", "temporal", "ordinal", "nominal"],
         "rect": ["quantitative", "temporal", "ordinal", "nominal"],
         "rule": ["quantitative", "temporal", "ordinal", "nominal"],
+        "tick": ["quantitative", "temporal", "ordinal", "nominal"],
         "text": ["quantitative", "temporal", "ordinal", "nominal"]
       },
       "modes": "field; rule also accepts datum; bar accepts aggregate or count"
@@ -96,7 +98,7 @@
   "highlight": [
     {
       "action": "selectMarks / highlightMarks",
-      "marks": ["point", "bar", "line", "area", "rect", "arc", "rule"],
+      "marks": ["point", "bar", "line", "area", "rect", "arc", "rule", "tick"],
       "grain": "item; stacked bars also support stack",
       "result": "selection intent and mark-specific durable emphasis"
     }

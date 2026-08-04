@@ -14,7 +14,8 @@ bar fills, rect fills, or arc-sector fills. Ordinal fields may contain ordered n
 engine cylinder counts. Quantitative or temporal point and rect fields use continuous color
 scales; point fields also support discretized color. Aggregate bars additionally support one aggregate quantitative
 color value per final rectangle. Line and categorical bar materializers may use
-the field for grouping. Area color must match an existing `encodeGroup` field.
+the field for grouping. Area color normally matches an existing `encodeGroup`
+field; `layout: "center"` creates that matching nominal group when absent.
 
 <!-- action-capabilities:color:start -->
 | Mode | Supported marks | Field types | Important options |
@@ -30,7 +31,7 @@ the field for grouping. Area color must match an existing `encodeGroup` field.
 | `target` | point, line, area, bar, rect, or arc mark ID | current mark |
 | `fieldType` | `"nominal"`, `"ordinal"`, `"quantitative"`, or `"temporal"` | `"nominal"` |
 | `aggregate` | aggregate operation; quantitative aggregate bars only | matching measure aggregate |
-| `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, or `"diverging"` | mark policy |
+| `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, `"diverging"`, or `"center"` | mark policy |
 | `palette` | palette name or `{ name, count?, extent? }`; shorthand for `scale.palette` | omitted |
 | `scale.id` | scale ID | `"color"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
@@ -132,8 +133,8 @@ endpoint and reject explicit measure domains that exclude zero. Call
 histogram.encodeColor({ field: "Origin", layout: "fill" });
 ```
 
-On an area mark, color never creates grouping implicitly. Author grouping
-directly or through `encodeDensity({ groupBy })`, then encode that same field:
+On an area mark, author grouping directly or through
+`encodeDensity({ groupBy })`, then encode that same field:
 
 ```javascript
 densityArea.encodeColor({
@@ -143,13 +144,44 @@ densityArea.encodeColor({
 });
 ```
 
-Area layouts support `stack`, `fill`, `overlay`, and `diverging`; `group` is
+Area layouts support `stack`, `fill`, `overlay`, `diverging`, and `center`; `group` is
 bar-only. Each existing path receives the resolved color for its group. Path order,
 color domain order, and later legend order share the same ordered categories;
 Canvas and shared-scale changes rematerialize every affected area fill.
 Once a color layout exists, changing it to another layout is rejected until a
 future companion-cleanup contract is implemented; the earlier program remains
 unchanged.
+
+### Center-stacked areas
+
+`layout: "center"` is the area-only shorthand for matching grouping, color, and
+`encodeY({ stack: "center" })` in one atomic call:
+
+```javascript
+const stream = chart()
+  .createCanvas({ width: 690, height: 420 })
+  .createData({ values: rows })
+  .createAreaMark({ id: "occupations", opacity: 1 })
+  .encodeX({ target: "occupations", field: "year" })
+  .encodeY({ target: "occupations", field: "count" })
+  .encodeColor({
+    target: "occupations",
+    field: "job",
+    layout: "center"
+  })
+  .createGuides();
+```
+
+{% include chart-example.html id="centered-area-stream" %}
+
+Every category must contribute exactly one finite non-negative value at every
+quantitative or temporal x position. First appearance determines stable series
+order. At each position, the total partition spans `[-total / 2, total / 2]`;
+each series keeps its original thickness. Missing positions, duplicate
+group/x rows, negative values, ranged areas, and centered bars are rejected
+before semantic state changes. An explicit y domain must contain every resolved
+lower and upper bound. Wiggle baselines and automatic imputation are not part
+of this mode.
 
 ### Continuous aggregate-bar color
 

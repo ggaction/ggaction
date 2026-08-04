@@ -18,6 +18,7 @@ import {
 import { validateMarkFilterTransform } from "./markFilter.js";
 import { validateRegressionTransform } from "./regression/index.js";
 import { validateWindowTransform } from "./window.js";
+import { validateTimeUnitTransform } from "./timeUnit.js";
 
 function requestedDensityTransform(transform) {
   const { resolved: _resolved, ...requested } = transform;
@@ -93,6 +94,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     validate: validateRegressionTransform,
     materializeOp: "materializeRegressionData",
     facetTopology: "statistical"
+  }),
+  timeUnit: Object.freeze({
+    validate: validateTimeUnitTransform,
+    materializeOp: "materializeTimeUnitData",
+    facetTopology: "rowPreserving"
   }),
   window: Object.freeze({
     validate: validateWindowTransform,

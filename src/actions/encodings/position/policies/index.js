@@ -9,6 +9,7 @@ import { resolveBarPositionPolicy } from "./bar.js";
 import { resolveLinePositionPolicy } from "./line.js";
 import { resolvePointPositionPolicy } from "./point.js";
 import { resolveRulePositionPolicy } from "./rule.js";
+import { resolveTickPositionPolicy } from "./tick.js";
 
 const POSITION_POLICIES = Object.freeze({
   area: resolveAreaPositionPolicy,
@@ -17,6 +18,7 @@ const POSITION_POLICIES = Object.freeze({
   line: resolveLinePositionPolicy,
   point: resolvePointPositionPolicy,
   rule: resolveRulePositionPolicy,
+  tick: resolveTickPositionPolicy,
   text: resolvePointPositionPolicy,
   rect: resolvePointPositionPolicy
 });

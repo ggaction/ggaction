@@ -10,7 +10,10 @@ import {
   findHistogramBinIndex,
   resolveHistogramBins
 } from "../../../grammar/histogram.js";
-import { deriveDensityAreaSeries } from "../../../grammar/areaSeries.js";
+import {
+  deriveCenteredAreaSeries,
+  deriveDensityAreaSeries
+} from "../../../grammar/areaSeries.js";
 import {
   resolveSeriesLayoutDomainValues
 } from "../../../grammar/seriesLayout.js";
@@ -122,6 +125,16 @@ function resolveAreaPartitions(program, consumer) {
     dataset.transform[0].type === "density"
     ? dataset.transform[0]
     : undefined;
+  if (
+    transform === undefined &&
+    layer.encoding?.y?.stack === "center" &&
+    layer.encoding?.x !== undefined
+  ) {
+    const derived = deriveCenteredAreaSeries(dataset.values, layer);
+    return Array.from({ length: derived.series[0].values.length }, (_, index) =>
+      derived.series.map(series => series.values[index].y)
+    );
+  }
   if (transform === undefined) return undefined;
   const derived = deriveDensityAreaSeries(dataset.values, layer, transform);
   if (derived.mode !== "y-density") return undefined;
@@ -153,10 +166,17 @@ export function resolveSeriesLayoutScaleValues(program, consumer) {
   }
   if (consumer.channel !== "y") return undefined;
   if (consumer.layer.mark?.type === "area") {
-    const layout = consumer.layer.encoding?.color?.layout;
+    const layout = consumer.layer.encoding?.y?.stack === "center"
+      ? "center"
+      : consumer.layer.encoding?.color?.layout;
     if (layout === undefined || layout === "overlay") return undefined;
     const partitions = resolveAreaPartitions(program, consumer);
     if (partitions === undefined) {
+      if (
+        layout === "center" &&
+        consumer.layer.encoding?.y?.stack === "center" &&
+        consumer.layer.encoding?.x === undefined
+      ) return undefined;
       throw new Error(
         `Area layout "${layout}" currently requires vertical density series.`
       );

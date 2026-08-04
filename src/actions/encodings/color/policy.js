@@ -74,6 +74,9 @@ export function resolveColorLayout(layer, requested, barGrain) {
   if (layer.mark.type === "area" && layout === "group") {
     throw new Error('Area color layout does not support "group".');
   }
+  if (layer.mark.type === "bar" && layout === "center") {
+    throw new Error("Centered bars are not supported.");
+  }
   if (
     layer.mark.type === "arc" &&
     layout !== undefined &&

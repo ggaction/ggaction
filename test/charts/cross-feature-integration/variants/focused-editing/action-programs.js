@@ -84,7 +84,7 @@ export function createFocusedLegendActions(rows) {
     .encodeOpacity({ value: 0.27 })
     .filterMarks({ field: "Origin", op: "oneOf", values: ["Japan", "USA"] })
     .createRegression()
-    .createGuides()
+    .createGuides({ legend: { position: "left", offset: 80 } })
     .editLegendLayout({
       target: "points",
       position: "left",
@@ -366,4 +366,3 @@ export function createBoxPlotEditActions(rows) {
       outlier: { shape: "diamond", radius: 4, opacity: 0.9 }
     });
 }
-

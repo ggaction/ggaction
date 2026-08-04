@@ -52,6 +52,9 @@ export function resolveBarPositionPolicy({
       throw new Error('Histogram bar y aggregate must be "count".');
     }
     stack = validateStack(stack, "Histogram bar y encoding");
+    if (stack === "center") {
+      throw new Error("Centered bars are not supported.");
+    }
   } else if (fieldType === "quantitative") {
     if (args.bin !== undefined) {
       throw new Error(
@@ -80,6 +83,9 @@ export function resolveBarPositionPolicy({
     aggregate = validateAggregate(aggregate);
     validateAggregateFieldType(aggregate, fieldType);
     stack = validateStack(stack, `Bar ${channel} encoding`);
+    if (stack === "center") {
+      throw new Error("Centered bars are not supported.");
+    }
   } else {
     throw new Error(
       "Bar position requires quantitative, temporal, ordinal, or nominal fields."

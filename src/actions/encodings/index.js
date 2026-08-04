@@ -1,4 +1,5 @@
 import { registerAppearanceEncodingAction } from "./appearance.js";
+import { registerAngleEncodingAction } from "./angle.js";
 import { registerBarWidthEncodingAction } from "./barWidth.js";
 import { registerColorEncodingAction } from "./color/index.js";
 import { registerDensityEncodingAction } from "./density.js";
@@ -26,6 +27,7 @@ export function registerEncodingActions(ProgramClass) {
   registerColorEncodingAction(ProgramClass);
   registerStrokeDashEncodingActions(ProgramClass);
   registerAppearanceEncodingAction(ProgramClass);
+  registerAngleEncodingAction(ProgramClass);
   registerRuleAppearanceEncodingActions(ProgramClass);
   registerTextEncodingAction(ProgramClass);
   registerParallelEncodingAction(ProgramClass);

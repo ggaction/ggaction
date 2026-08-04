@@ -7,6 +7,7 @@ import {
   canMaterializeRect,
   canMaterializeRule,
   canMaterializeText,
+  canMaterializeTick,
   isIntentionallyEmptyArea
 } from "./capabilities.js";
 
@@ -21,6 +22,18 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
       position: "rematerialize",
       deferredChannels: Object.freeze(["size", "shape"]),
       default: "direct"
+    }),
+    rematerializeIncompleteExisting: true
+  }),
+  tick: Object.freeze({
+    canMaterialize: canMaterializeTick,
+    op: "rematerializeTickMark",
+    positionEncoding: Object.freeze({ incomplete: "mark", scaleFirst: true }),
+    encoding: Object.freeze({ scaleFirst: true }),
+    scaleApplication: Object.freeze({
+      deferWithMark: true,
+      position: "rematerialize",
+      default: "defer"
     }),
     rematerializeIncompleteExisting: true
   }),

@@ -10,7 +10,11 @@ const rows = Object.freeze([
 
 function pointBase(options = {}) {
   return chart()
-    .createCanvas({ width: 240, height: 160, margin: 30 })
+    .createCanvas({
+      width: 360,
+      height: 380,
+      margin: { top: 30, right: 150, bottom: 30, left: 30 }
+    })
     .createData({ id: "rows", values: rows })
     .createPointMark({ id: "points", ...options })
     .encodeX({ target: "points", field: "x" })

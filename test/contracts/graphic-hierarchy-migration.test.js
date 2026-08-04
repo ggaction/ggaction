@@ -80,6 +80,13 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
+  "cars-multi-legend-layout": [
+    "canvas", "horizontalGridLines", "points",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
+    "opacityLegendSymbols", "opacityLegendLabels", "opacityLegendTitle"
+  ],
   "gapminder-development-trajectories": [
     "canvas", "horizontalGridLines", "verticalGridLines",
     "trajectories",
@@ -151,6 +158,13 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   ],
   "cars-histogram": [
     "canvas", "horizontalGridLines", "bars",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
+    "chartTitle", "chartSubtitle"
+  ],
+  "centered-area-stream": [
+    "canvas", "horizontalGridLines", "occupations",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
     "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
@@ -269,13 +283,30 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "chartTitle", "chartSubtitle"
   ],
   "program-composition": [],
+  "directional-tick-plot": [],
+  "ordered-category-bar": [],
+  "time-unit-data": [],
+  "airline-passenger-moving-windows": [],
   "cars-origin-scatterplot-facet": [],
   "cross-feature-dashboard": []
 });
 
 const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
   "program-composition": 9,
-  "cross-feature-dashboard": 52
+  "directional-tick-plot": 28,
+  "ordered-category-bar": 43,
+  "cross-feature-dashboard": 52,
+  "time-unit-data": 29,
+  "airline-passenger-moving-windows": 45
+});
+
+const EXPECTED_COMPOSITION_CHILDREN = Object.freeze({
+  "program-composition": 2,
+  "directional-tick-plot": 3,
+  "cross-feature-dashboard": 2,
+  "time-unit-data": 2,
+  "airline-passenger-moving-windows": 3,
+  "ordered-category-bar": 3
 });
 
 function loadChartData(data) {
@@ -304,7 +335,10 @@ test("locks the complete public graphic hierarchy inventory", () => {
     const expected = EXPECTED_DRAW_ORDER[chart.id];
     if (program.compositionSpec?.direction) {
       assert.deepEqual(program.graphicSpec.order, ["canvas"]);
-      assert.equal(program.graphicSpec.objects.canvas.children.length, 2);
+      assert.equal(
+        program.graphicSpec.objects.canvas.children.length,
+        EXPECTED_COMPOSITION_CHILDREN[chart.id]
+      );
       for (const childId of program.graphicSpec.objects.canvas.children) {
         assert.equal(program.graphicSpec.objects[childId].type, "canvas");
         assert.equal(findGraphicParent(program.graphicSpec, childId).id, "canvas");

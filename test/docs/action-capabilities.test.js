@@ -70,7 +70,7 @@ test("matches primary position capability rows to runtime compatibility", () => 
 test("matches documented highlight marks to runtime policies", () => {
   const marks = registry.highlight[0].marks;
   assert.deepEqual([...marks].sort(), [
-    "arc", "area", "bar", "line", "point", "rect", "rule"
+    "arc", "area", "bar", "line", "point", "rect", "rule", "tick"
   ]);
   for (const mark of marks) assert.notEqual(findSelectionPolicy(mark), undefined, mark);
 });

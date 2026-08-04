@@ -98,7 +98,7 @@ test("rematerializes both legend blocks after Canvas edits", () => {
   const after = before.editCanvas({ width: 860 });
   assert.equal(
     after.graphicSpec.objects.seriesLegendSymbolLines.items[0].properties.x1,
-    678
+    700
   );
   assert.equal(
     after.graphicSpec.objects.sizeLegendSymbols.items[0].properties.x,
@@ -111,7 +111,8 @@ test("rematerializes both legend blocks after Canvas edits", () => {
     "rematerializeLegendSymbols",
     "rematerializeLegendLabels",
     "rematerializeLegendTitle",
-    "rematerializeSizeLegend"
+    "rematerializeSizeLegend",
+    "rematerializeSideLegendLane"
   ]);
 });
 

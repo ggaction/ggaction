@@ -99,7 +99,10 @@ function normalizeOperations(operations, rows, sortBy) {
     if (operation === null || typeof operation !== "object" || Array.isArray(operation)) {
       throw new TypeError(`Window operation ${index} must be an object.`);
     }
-    const supported = ["rowNumber", "rank", "denseRank", "cumulativeSum", "lag", "lead"];
+    const supported = [
+      "rowNumber", "rank", "denseRank", "cumulativeSum", "lag", "lead",
+      "movingMean", "movingSum"
+    ];
     if (!supported.includes(operation.op)) {
       throw new Error(`Unsupported window operation "${operation.op}".`);
     }
@@ -112,7 +115,9 @@ function normalizeOperations(operations, rows, sortBy) {
     if (["rank", "denseRank"].includes(operation.op) && sortBy.length === 0) {
       throw new Error(`${operation.op} requires a non-empty sortBy.`);
     }
-    if (["cumulativeSum", "lag", "lead"].includes(operation.op) && (
+    if (["cumulativeSum", "lag", "lead", "movingMean", "movingSum"].includes(
+      operation.op
+    ) && (
       typeof operation.field !== "string" || operation.field.length === 0
     )) {
       throw new TypeError(`${operation.op} requires a non-empty field.`);
@@ -121,13 +126,41 @@ function normalizeOperations(operations, rows, sortBy) {
     if (["lag", "lead"].includes(operation.op) && (!Number.isInteger(offset) || offset <= 0)) {
       throw new RangeError(`${operation.op} offset must be a positive integer.`);
     }
+    let frame;
+    if (["movingMean", "movingSum"].includes(operation.op)) {
+      if (
+        operation.frame === null ||
+        typeof operation.frame !== "object" ||
+        Array.isArray(operation.frame)
+      ) {
+        throw new TypeError(`${operation.op} requires a row frame.`);
+      }
+      const unknown = Object.keys(operation.frame).find(key =>
+        !["preceding", "following"].includes(key)
+      );
+      if (unknown !== undefined) {
+        throw new Error(`${operation.op} frame has unknown property "${unknown}".`);
+      }
+      const following = operation.frame.following ?? 0;
+      if (!Number.isInteger(operation.frame.preceding) || operation.frame.preceding < 0) {
+        throw new RangeError(`${operation.op} preceding must be a non-negative integer.`);
+      }
+      if (!Number.isInteger(following) || following < 0) {
+        throw new RangeError(`${operation.op} following must be a non-negative integer.`);
+      }
+      frame = Object.freeze({
+        preceding: operation.frame.preceding,
+        following
+      });
+    }
     fields.add(operation.as);
     return Object.freeze({
       ...operation,
       ...(["lag", "lead"].includes(operation.op) ? {
         offset,
         default: Object.hasOwn(operation, "default") ? operation.default : null
-      } : {})
+      } : {}),
+      ...(frame === undefined ? {} : { frame })
     });
   });
 }
@@ -178,6 +211,26 @@ function applyOperation(partition, operation, sortBy) {
       total += value;
       entry.row[operation.as] = total;
     }
+    return;
+  }
+  if (["movingMean", "movingSum"].includes(operation.op)) {
+    partition.forEach((entry, index) => {
+      const start = Math.max(0, index - operation.frame.preceding);
+      const end = Math.min(partition.length - 1, index + operation.frame.following);
+      const values = partition.slice(start, end + 1).map(peer => {
+        const value = peer.row[operation.field];
+        if (!Number.isFinite(value)) {
+          throw new TypeError(
+            `${operation.op} field "${operation.field}" must contain finite numbers.`
+          );
+        }
+        return value;
+      });
+      const total = values.reduce((sum, value) => sum + value, 0);
+      entry.row[operation.as] = operation.op === "movingMean"
+        ? total / values.length
+        : total;
+    });
     return;
   }
   const direction = operation.op === "lag" ? -1 : 1;

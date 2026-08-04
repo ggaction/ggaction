@@ -63,6 +63,12 @@ test("lays gradient legends out in all four positions", () => {
     } else {
       assert.notEqual(first.x, last.x);
       assert.equal(first.y, last.y);
+      assert.equal(
+        program.graphicSpec.objects.colorGradientLabels.items.every(
+          label => label.properties.y > first.y + first.height
+        ),
+        true
+      );
     }
   }
 });
@@ -149,7 +155,40 @@ test("lays opacity legends out in all four positions", () => {
     } else {
       assert.notEqual(symbols[0].properties.x, symbols.at(-1).properties.x);
       assert.equal(symbols[0].properties.y, symbols.at(-1).properties.y);
+      assert.equal(
+        program.graphicSpec.objects.opacityLegendLabels.items.every(
+          (label, index) => label.properties.y >
+            symbols[index].properties.y + symbols[index].properties.radius
+        ),
+        true
+      );
     }
+  }
+});
+
+test("lays out a horizontal opacity title and samples on one reading line", () => {
+  const program = pointProgram({ top: 120, left: 70, right: 70, bottom: 60 })
+    .encodeOpacity({ field: "value" })
+    .createLegend({
+      channels: ["opacity"],
+      position: "top",
+      titlePosition: "left",
+      count: 3
+    });
+  const title = program.graphicSpec.objects.opacityLegendTitle.properties;
+  const symbols = program.graphicSpec.objects.opacityLegendSymbols.items;
+  const labels = program.graphicSpec.objects.opacityLegendLabels.items;
+  assert.equal(title.textAlign, "left");
+  assert.equal(program.guideConfigs.legend.opacity.titlePosition, "left");
+  assert.equal(program.guideConfigs.legend.opacity.itemGap, 20);
+  assert.equal(program.guideConfigs.legend.opacity.labels.offset, 8);
+  for (let index = 0; index < symbols.length; index += 1) {
+    const symbol = symbols[index].properties;
+    const label = labels[index].properties;
+    assert.equal(symbol.y, title.y);
+    assert.equal(label.y, title.y);
+    assert.equal(label.x - symbol.x - symbol.radius, 8);
+    assert.equal(label.textAlign, "left");
   }
 });
 
@@ -213,12 +252,28 @@ test("rejects incompatible options and insufficient margins atomically", () => {
     () => color.createLegend({ channels: ["color"], columns: 2 }),
     /does not accept columns/
   );
+  assert.throws(
+    () => color.createLegend({
+      channels: ["color"],
+      position: "top",
+      titlePosition: "left"
+    }),
+    /Only horizontal opacity legends support left titlePosition/
+  );
 
   const opacity = pointProgram()
     .encodeOpacity({ field: "value" });
   assert.throws(
     () => opacity.createLegend({ channels: ["opacity"], gradient: {} }),
     /does not accept gradient/
+  );
+  assert.throws(
+    () => opacity.createLegend({
+      channels: ["opacity"],
+      position: "right",
+      titlePosition: "left"
+    }),
+    /Only horizontal opacity legends support left titlePosition/
   );
   assert.equal(color.graphicSpec.objects.colorGradientStrips, undefined);
 });

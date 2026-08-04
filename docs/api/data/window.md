@@ -63,6 +63,32 @@ Supported operations are:
 | cumulative sum | `{ op: "cumulativeSum", field, as }` | requires finite numeric values |
 | lag | `{ op: "lag", field, as, offset?, default? }` | defaults to offset `1` and value `null` |
 | lead | `{ op: "lead", field, as, offset?, default? }` | defaults to offset `1` and value `null` |
+| moving mean | `{ op: "movingMean", field, as, frame }` | finite mean inside a row frame |
+| moving sum | `{ op: "movingSum", field, as, frame }` | finite sum inside a row frame |
+
+Moving frames always include the current sorted row. `frame.preceding` is a
+required non-negative integer; `frame.following` is optional and defaults to
+`0`. A trailing three-row mean therefore uses `{ preceding: 2 }`, while a
+centered five-row mean uses `{ preceding: 2, following: 2 }`:
+
+```javascript
+const trailing = monthly.createWindowData({
+  id: "trailingMean",
+  sortBy: [{ field: "month" }],
+  operations: [{
+    op: "movingMean",
+    field: "passengers",
+    as: "movingMean",
+    frame: { preceding: 2 }
+  }]
+});
+```
+
+At a partition boundary, the frame uses only available rows. The first value in
+the example uses one row, the second uses two, and later values use three.
+`movingMean` and `movingSum` require finite numeric input and produce finite
+numeric output. Duration-based, weighted, and minimum-period windows are not
+supported.
 
 The action computes each partition in sorted order, then returns the materialized
 rows in their original source order. The source dataset remains unchanged. Output
@@ -73,4 +99,5 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](../data.md) · [Source and derived data](./source-and-derived.md) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/main/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](../../reference/actions.md)

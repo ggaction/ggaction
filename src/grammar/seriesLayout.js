@@ -35,13 +35,13 @@ export function layoutSeriesPartition(
     ));
   }
 
-  if (layout === "stack" || layout === "fill") {
+  if (["stack", "fill", "center"].includes(layout)) {
     if (values.some(value => value < 0)) {
       throw new RangeError(`${layout} layout requires non-negative values.`);
     }
     const total = values.reduce((sum, value) => sum + value, 0);
     if (layout === "fill" && total === 0) return cloneAndFreeze([]);
-    let offset = 0;
+    let offset = layout === "center" ? -total / 2 : 0;
     return cloneAndFreeze(values.flatMap((value, index) => {
       if (value === 0) return [];
       const resolvedValue = layout === "fill" ? value / total : value;
@@ -77,6 +77,14 @@ export function resolveSeriesLayoutDomainValues(partitions, layout) {
       DEFAULT_SERIES_BASELINE,
       ...partition
     ]);
+  }
+  if (layout === "center") {
+    return partitions.flatMap(partition => {
+      const segments = layoutSeriesPartition(partition, layout);
+      return segments.length === 0
+        ? [DEFAULT_SERIES_BASELINE]
+        : segments.flatMap(segment => [segment.start, segment.end]);
+    });
   }
   return partitions.flatMap(partition =>
     layoutSeriesPartition(partition, layout).flatMap(segment => [

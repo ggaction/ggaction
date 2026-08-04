@@ -15,6 +15,7 @@ title: Appearance Encodings
 | `removePointRadius` | `removePointRadius()` | Current point with explicit radius | Theme-default glyph radius |
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
+| `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
 | `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current point; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
@@ -35,7 +36,7 @@ focused pages below for selection, point appearance, and mark-specific style.
 <!-- action-capabilities:highlight:start -->
 | Action | Supported marks | Grain | Result |
 | --- | --- | --- | --- |
-| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
+| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule, tick | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
 <!-- action-capabilities:highlight:end -->
 
 ## Focused appearance families
@@ -50,6 +51,8 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 Radius, rule stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
 Field opacity and field-driven stroke width are semantic encodings.
+Angle is a scale-free semantic encoding for point and Tick glyphs; circles
+accept it as a visual no-op.
 Size cannot be combined with a constant radius. Remove that assignment with
 `removePointRadius()` before encoding size. A constant `editPointMark`
 shape cannot be combined with field-driven `encodeShape`. Bar width

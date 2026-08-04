@@ -59,6 +59,23 @@
   recipe_order: 10
   featured: true
   gallery_featured: true
+- id: multi-legend-layout
+  example: /examples/cars-multi-legend-layout/
+  title: Multi-legend layout
+  image: /assets/images/cars-multi-legend-layout.png
+  alt: Cars scatterplot with origin and acceleration legends aligned in one top row
+  width: 1520
+  height: 1240
+  thumbnail: /assets/images/cars-multi-legend-layout-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 522
+  caption: Categorical and sampled-opacity blocks share one fully inline reading lane.
+  summary: Place categorical and sampled opacity legends on one aligned horizontal reading line.
+  actions: createLegend · editLegend
+  tasks: relationship guides
+  url: /api/legends/continuous/#continuous-color-and-opacity
+  home_group: essentials
+  home_order: 15
 - id: line
   example: /examples/cars-line-chart/
   title: Line chart
@@ -181,6 +198,23 @@
   recipe_order: 40
   featured: true
   gallery_featured: true
+- id: ordered-category-bar
+  example: /examples/ordered-category-bar/
+  title: Ordered category bars
+  image: /assets/images/ordered-category-bar.png
+  alt: Three orange bar charts showing automatic category order, descending total order, and reset order
+  width: 1872
+  height: 664
+  thumbnail: /assets/images/ordered-category-bar-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 227
+  caption: Semantic category ordering changes bands, bars, and labels together; reset restores first appearance.
+  summary: Order categorical x or y positions explicitly or from a stable aggregate summary.
+  actions: orderCategories · removeCategoryOrder
+  tasks: comparison
+  url: /api/position/category-ordering/
+  home_group: essentials
+  home_order: 75
 - id: horizontal-grouped-bar
   example: /examples/jobs-horizontal-grouped-bar/
   title: Horizontal grouped bar
@@ -241,6 +275,23 @@
   home_order: 100
   tutorial_order: 90
   recipe_order: 70
+- id: centered-area-stream
+  example: /examples/centered-area-stream/
+  title: Center-stacked area
+  image: /assets/images/centered-area-stream.png
+  alt: Center-stacked area chart of U.S. occupation counts over time
+  width: 1380
+  height: 840
+  thumbnail: /assets/images/centered-area-stream-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 390
+  caption: Aligned non-negative series centered around half of each total.
+  summary: Preserve series thickness while centering each time partition around zero.
+  actions: createAreaMark · encodeX · encodeY · encodeColor
+  tasks: time-series comparison
+  url: /api/series/color/#center-stacked-areas
+  home_group: statistical
+  home_order: 15
 - id: regression
   example: /examples/cars-regression-scatterplot/
   title: Regression scatterplot

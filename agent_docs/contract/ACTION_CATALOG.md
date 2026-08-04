@@ -15,15 +15,18 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
 | user-facing | [`createWindowData`](current/CORE.md#createwindowdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createTimeUnitData`](current/CORE.md#createtimeunitdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBin2DData`](current/CORE.md#createbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editBin2DData`](current/CORE.md#editbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createIntervalData`](current/STATISTICS.md#createintervaldata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createTickMark`](current/MARKS.md#createtickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTextMark`](current/MARKS.md#createtextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTextMark`](current/MARKS.md#edittextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutLabels`](current/MARKS.md#layoutlabels) | marks | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
 | user-facing | [`removeLabelLayout`](current/MARKS.md#removelabellayout) | marks | Assignment | Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`editPointMark`](current/MARKS.md#editpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editTickMark`](current/MARKS.md#edittickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`jitterPoints`](current/MARKS.md#jitterpoints) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeJitter`](current/MARKS.md#removejitter) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeMark`](current/MARKS.md#removemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -43,6 +46,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`encodeStrokeWidth`](current/ENCODINGS.md#encodestrokewidth) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeSize`](current/ENCODINGS.md#encodesize) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
 | user-facing | [`encodeShape`](current/ENCODINGS.md#encodeshape) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeAngle`](current/ENCODINGS.md#encodeangle) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeOpacity`](current/ENCODINGS.md#encodeopacity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeRadius`](current/ENCODINGS.md#encoderadius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeTheta`](current/ENCODINGS.md#encodetheta) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -58,6 +62,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`encodePathOrder`](current/ENCODINGS.md#encodepathorder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeParallelCoordinates`](current/ENCODINGS.md#encodeparallelcoordinates) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removePathOrder`](current/ENCODINGS.md#removepathorder) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`orderCategories`](current/ENCODINGS.md#ordercategories) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`removeCategoryOrder`](current/ENCODINGS.md#removecategoryorder) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeEncoding`](current/ENCODINGS.md#removeencoding) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeText`](current/ENCODINGS.md#encodetext) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeHistogram`](current/ENCODINGS.md#encodehistogram) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |

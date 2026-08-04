@@ -119,6 +119,22 @@ async function testNodeConsumer(directory) {
     assert.equal(axisLifecycle.graphicSpec.objects.yAxisTitle, undefined);
     assert.ok(axisLifecycle.semanticSpec.layers[0].encoding.x);
     assert.ok(axisLifecycle.resolvedScales.y);
+    const monthly = chart()
+      .createData({
+        id: "datedEvents",
+        values: [{ date: "2024-05-17T13:45:00Z", value: 2 }]
+      })
+      .createTimeUnitData({
+        id: "monthlyEvents",
+        field: "date",
+        unit: "month",
+        as: "month"
+      });
+    assert.equal(
+      monthly.semanticSpec.datasets.find(dataset => dataset.id === "monthlyEvents")
+        .values[0].month,
+      Date.UTC(2024, 4, 1)
+    );
     const windowed = chart()
       .createData({
         id: "events",
@@ -134,15 +150,21 @@ async function testNodeConsumer(directory) {
         sortBy: [{ field: "order" }],
         operations: [
           { op: "rowNumber", as: "rowNumber" },
-          { op: "cumulativeSum", field: "value", as: "runningValue" }
+          { op: "cumulativeSum", field: "value", as: "runningValue" },
+          {
+            op: "movingMean",
+            field: "value",
+            as: "movingValue",
+            frame: { preceding: 1 }
+          }
         ]
       });
     const windowValues = windowed.semanticSpec.datasets.find(
       dataset => dataset.id === "windowedEvents"
     ).values;
     assert.deepEqual(
-      windowValues.map(row => [row.rowNumber, row.runningValue]),
-      [[2, 5], [1, 2], [1, 4]]
+      windowValues.map(row => [row.rowNumber, row.runningValue, row.movingValue]),
+      [[2, 5, 2.5], [1, 2, 2], [1, 4, 4]]
     );
     const binned = chart()
       .createData({
@@ -245,6 +267,26 @@ async function testNodeConsumer(directory) {
         y: { field: "value", aggregate: "mean" },
         guides: false
       });
+    const orderedCategories = chart()
+      .createCanvas({ width: 180, height: 130, margin: 30 })
+      .createData({ values: [
+        { category: "Beta", value: 2 },
+        { category: "Alpha", value: 7 }
+      ] })
+      .createBarMark()
+      .encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "value", aggregate: "sum" })
+      .orderCategories({
+        channel: "x",
+        by: { field: "value", aggregate: "sum" },
+        direction: "descending"
+      });
+    assert.deepEqual(orderedCategories.resolvedScales.x.domain, ["Alpha", "Beta"]);
+    assert.deepEqual(
+      orderedCategories.removeCategoryOrder({ channel: "x" })
+        .resolvedScales.x.domain,
+      ["Beta", "Alpha"]
+    );
     assert.equal(barFacade.graphicSpec.objects.barPlot.items.length, 2);
     const histogramFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -594,9 +636,12 @@ async function testTypeScriptConsumer(directory) {
       type CreateHeatmapOptions,
       type CreateHistogramOptions,
       type CreateLinePlotOptions,
+      type ColorLayout,
       type CreateParallelCoordinatesOptions,
+      type OrderCategoriesOptions,
       type GradientPlotOptions,
       type HorizonEncodingOptions,
+      type HistogramEncodingOptions,
       type EditHorizonOptions,
       type EditAxisOptions,
       type CreateDerivedDataOptions,
@@ -609,8 +654,10 @@ async function testTypeScriptConsumer(directory) {
       type StrokeWidthEncodingOptions,
       type ThetaEncodingOptions,
       type ThetaScaleOptions,
+      type TimeUnitDataOptions,
       type ViolinPlotOptions,
-      type WindowDataOptions
+      type WindowDataOptions,
+      type YStackMode
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import {
@@ -630,6 +677,26 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction/basic";
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
+    const centerLayout: ColorLayout = "center";
+    const centerStack: YStackMode = "center";
+    const centeredArea: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { x: 0, group: "A", value: 1 },
+        { x: 1, group: "A", value: 2 }
+      ] })
+      .createAreaMark()
+      .encodeGroup({ field: "group" })
+      .encodeX({ field: "x" })
+      .encodeY({ field: "value", stack: centerStack })
+      .encodeColor({ field: "group", layout: centerLayout });
+    void centeredArea;
+    const invalidCenteredHistogram: HistogramEncodingOptions = {
+      field: "value",
+      // @ts-expect-error Histogram stacking excludes the area-only center mode.
+      stack: "center"
+    };
+    void invalidCenteredHistogram;
     const axisRemovalOptions: EditAxisOptions<"bottom" | "top"> = {
       line: false,
       ticksAndLabels: false,
@@ -716,6 +783,22 @@ async function testTypeScriptConsumer(directory) {
       .encodeY({ field: "y" })
       .encodePathOrder({ field: "order", order: "descending" })
       .removePathOrder();
+    const categoryOrderOptions: OrderCategoriesOptions = {
+      channel: "x",
+      by: { field: "value", aggregate: "sum" },
+      direction: "descending"
+    };
+    const orderedCategoryBars: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { category: "Beta", value: 2 },
+        { category: "Alpha", value: 7 }
+      ] })
+      .createBarMark()
+      .encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "value", aggregate: "sum" })
+      .orderCategories(categoryOrderOptions)
+      .removeCategoryOrder({ channel: "x" });
     const barOptions: CreateBarPlotOptions = {
       x: { field: "category", fieldType: "ordinal" },
       y: { field: "value", aggregate: "mean" },
@@ -850,13 +933,34 @@ async function testTypeScriptConsumer(directory) {
     const derived = chart()
       .createData({ id: "source", values: [{ group: "A" }] })
       .createDerivedData(derivedOptions);
+    const timeUnitOptions: TimeUnitDataOptions = {
+      id: "monthlyEvents",
+      field: "date",
+      unit: "month",
+      as: "month"
+    };
+    const monthlyEvents: ChartProgram = chart()
+      .createData({ id: "events", values: [{ date: "2024-05-17", value: 2 }] })
+      .createTimeUnitData(timeUnitOptions);
+    const timeUnitTransform: DatasetTransform = {
+      type: "timeUnit",
+      field: "date",
+      unit: "month",
+      as: "month"
+    };
     const windowOptions: WindowDataOptions = {
       id: "ordered",
       partitionBy: "group",
       sortBy: [{ field: "order", order: "descending" }],
       operations: [
         { op: "rowNumber", as: "rowNumber" },
-        { op: "lag", field: "value", as: "previousValue" }
+        { op: "lag", field: "value", as: "previousValue" },
+        {
+          op: "movingSum",
+          field: "value",
+          as: "movingValue",
+          frame: { preceding: 2, following: 1 }
+        }
       ]
     };
     const windowed: ChartProgram = chart()
@@ -869,7 +973,12 @@ async function testTypeScriptConsumer(directory) {
       type: "window",
       partitionBy: ["group"],
       sortBy: [{ field: "order", order: "ascending" }],
-      operations: [{ op: "rowNumber", as: "rowNumber" }]
+      operations: [{
+        op: "movingMean",
+        field: "value",
+        as: "movingValue",
+        frame: { preceding: 2, following: 0 }
+      }]
     };
     const binOptions: Bin2DDataOptions = {
       id: "cells",
@@ -1075,6 +1184,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "numeric-font-weight",
       "point-jitter",
       "path-order",
+      "time-unit-data",
       "window-data",
       "bin2d-data",
       "binned-heatmap",

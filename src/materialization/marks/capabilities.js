@@ -32,6 +32,10 @@ export function canMaterializePoint(_program, layer) {
   );
 }
 
+export function canMaterializeTick(_program, layer) {
+  return layer.mark?.type === "tick" && hasCartesianPositionScales(layer);
+}
+
 export function canMaterializeLine(program, layer) {
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined) {
@@ -76,8 +80,13 @@ export function canMaterializeArea(program, layer) {
     densityTransform !== undefined &&
     (densityTransform.groupBy === undefined ||
       layer.encoding?.group?.field === densityTransform.groupBy);
+  const completeCenter =
+    densityTransform === undefined &&
+    layer.encoding?.y?.stack === "center" &&
+    layer.encoding?.group?.fieldType === "nominal";
   return (
     completeDensity ||
+    completeCenter ||
     layer.encoding?.y2?.scale === layer.encoding.y.scale ||
     layer.encoding?.x2?.scale === layer.encoding.x.scale
   );

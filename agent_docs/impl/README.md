@@ -4,7 +4,8 @@
 
 ## 현재 작업
 
-- **활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 4.2 Phase 4이다.
+- **활성 Roadmap은 없다.** 마지막으로 완료된 Roadmap 5.1 Phase 3가 all-edge multi-legend layout,
+  lifecycle convergence, stable evidence와 package 검증을 R51-Exit에서 닫았다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -17,6 +18,8 @@
 - [`roadmap4/ROADMAP.md`](roadmap4/ROADMAP.md) — completed, native ownership과 advanced static charts
 - [`roadmap4.1/ROADMAP.md`](roadmap4.1/ROADMAP.md) — completed, authoring lifecycle과 compatibility completion
 - [`roadmap4.2/ROADMAP.md`](roadmap4.2/ROADMAP.md) — completed, SVG/PDF vector renderer와 distribution closeout
+- [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md) — completed, temporal derivation, ordering과 directional marks
+- [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md) — completed, multi-legend layout completion
 
 ## 재사용하는 개발 절차
 

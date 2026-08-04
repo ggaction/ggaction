@@ -6,6 +6,7 @@ import {
   canMaterializeBar,
   canMaterializeLine,
   canMaterializePoint,
+  canMaterializeTick,
   getMarkMaterializationStep,
   getPositionEncodingMaterializationSteps,
   getScaleConsumerMaterializationMode
@@ -31,6 +32,11 @@ test("keeps mark completeness policies beside mark actions", () => {
       x: { scale: "x", fieldType: "temporal" },
       y: { scale: "y", aggregate: "mean" }
     }
+  };
+  const tick = {
+    id: "ticks",
+    mark: { type: "tick" },
+    encoding: { x: { scale: "x" }, y: { scale: "y" } }
   };
   const area = {
     id: "areas",
@@ -58,12 +64,17 @@ test("keeps mark completeness policies beside mark actions", () => {
   });
 
   assert.equal(canMaterializePoint(program, point), true);
+  assert.equal(canMaterializeTick(program, tick), true);
   assert.equal(canMaterializeLine(program, line), true);
   assert.equal(canMaterializeArea(program, area), true);
   assert.equal(canMaterializeBar(program, bar), true);
   assert.deepEqual(getMarkMaterializationStep(program, point), {
     op: "rematerializePointMark",
     args: { id: "points" }
+  });
+  assert.deepEqual(getMarkMaterializationStep(program, tick), {
+    op: "rematerializeTickMark",
+    args: { id: "ticks" }
   });
 
   assert.equal(

@@ -146,6 +146,24 @@
       }
     },
     {
+      "name": "createTimeUnitData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a new derived dataset ID",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createtimeunitdata"
+      }
+    },
+    {
       "name": "createBin2DData",
       "layer": "user-facing",
       "domain": "core",
@@ -215,6 +233,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createpointmark"
+      }
+    },
+    {
+      "name": "createTickMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTickMark`, position encodings, and generic `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createtickmark"
       }
     },
     {
@@ -305,6 +341,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "editpointmark"
+      }
+    },
+    {
+      "name": "editTickMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits Tick length and constant appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "edittickmark"
       }
     },
     {
@@ -650,6 +704,24 @@
       }
     },
     {
+      "name": "encodeAngle",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces the complete constant or field direction assignment",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodeangle"
+      }
+    },
+    {
       "name": "encodeOpacity",
       "layer": "user-facing",
       "domain": "encodings",
@@ -917,6 +989,42 @@
       "contract": {
         "file": "agent_docs/contract/current/ENCODINGS.md",
         "anchor": "removepathorder"
+      }
+    },
+    {
+      "name": "orderCategories",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces category-order intent for one categorical position",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "ordercategories"
+      }
+    },
+    {
+      "name": "removeCategoryOrder",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Removes category-order intent and restores automatic first-appearance order",
+      "audit": "Removal — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "removecategoryorder"
       }
     },
     {
@@ -2466,6 +2574,7 @@
       "materializeMarkFilteredData",
       "materializeIntervalData",
       "materializeRegressionData",
+      "materializeTimeUnitData",
       "materializeWindowData",
       "materializeRuleSpan",
       "materializeLabelLayout",
@@ -2479,6 +2588,7 @@
       "rematerializeIntervalLegend",
       "rematerializeGrid",
       "rematerializeHorizontalGrid",
+      "rematerializeHorizontalLegendLane",
       "rematerializeLegend",
       "rematerializeLegendBackground",
       "rematerializeLegendHighlights",
@@ -2498,9 +2608,11 @@
       "rematerializeRuleMark",
       "rematerializeTextMark",
       "rematerializeScale",
+      "rematerializeSideLegendLane",
       "rematerializeSizeLegend",
       "rematerializeStrokeWidthLegend",
       "rematerializeThetaGrid",
+      "rematerializeTickMark",
       "rematerializeTitle",
       "rematerializeVerticalGrid"
     ],

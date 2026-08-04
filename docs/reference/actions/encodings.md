@@ -119,6 +119,27 @@ removePathOrder({ target? } = {})
 Remove explicit path topology and restore the mark's automatic independent-
 position ordering. [Series encodings](../../api/series-encodings.md)
 
+## `orderCategories`
+
+```javascript
+orderCategories({ target?, channel, values })
+orderCategories({ target?, channel, by, direction? })
+```
+
+Assign explicit or computed semantic order to a nominal/ordinal Cartesian x or
+y position. Omitted explicit values and computed ties preserve source
+first-appearance order. The scale, connected marks, axis, and selection-item
+order are updated together. [Category ordering](../../api/position/category-ordering.md)
+
+## `removeCategoryOrder`
+
+```javascript
+removeCategoryOrder({ target?, channel })
+```
+
+Remove one active category-order assignment and restore automatic
+first-appearance order. [Category ordering](../../api/position/category-ordering.md)
+
 ## `removeEncoding`
 
 ```javascript
@@ -129,6 +150,18 @@ Remove one active semantic encoding, its generated companions, matching guide
 blocks, and stale concrete values. Named datasets, scales, and coordinates are
 retained; incomplete marks remain empty until later encoding completion.
 [Encodings](../../api/encodings.md#removing-an-encoding)
+
+## `encodeAngle`
+
+```javascript
+encodeAngle({ target?, value })
+encodeAngle({ target?, field, fieldType? })
+```
+
+Rotate point or Tick glyphs with direct clockwise degrees: `0` points up and
+no scale or legend is created. Reassignment replaces the prior constant/field
+branch; remove it with `removeEncoding({ channel: "angle" })`.
+[Encodings](../../api/encodings.md#direction)
 
 ## `encodeText`
 
@@ -259,7 +292,8 @@ encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? 
 Create or compatibly replace point fill, line-series color, grouped area fill,
 bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share an ordinal palette scale;
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
-and `diverging`; area accepts all except `group`. Quantitative and temporal
+and `diverging`; area also accepts `center` and rejects only `group` from the
+shared layout vocabulary. Quantitative and temporal
 point fields use a sequential scale; quantitative point fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
@@ -267,6 +301,9 @@ orientation. Reassigning grouped color also atomically reassigns its offset and
 rematerializes an existing legend. Aggregate
 bars accept quantitative sequential color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
+Area `layout: "center"` creates a matching nominal group when needed and records
+wrapped `encodeY({ stack: "center" })`. It requires non-negative values aligned
+at every x position and stacks each partition from `-total / 2`.
 Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.
 [Series encodings](../../api/series-encodings.md)

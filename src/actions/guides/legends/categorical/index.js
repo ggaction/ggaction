@@ -24,6 +24,10 @@ import {
   rematerializeLegendHighlights
 } from "./symbols.js";
 import { editLegend } from "../edit.js";
+import {
+  rematerializeHorizontalLegendLane,
+  rematerializeSideLegendLane
+} from "../lane.js";
 
 export function registerBasicCategoricalLegendActions(ProgramClass) {
   ProgramClass.prototype.createLegend = createLegend;
@@ -45,6 +49,10 @@ export function registerBasicCategoricalLegendActions(ProgramClass) {
   ProgramClass.prototype.createLegendTitle = createLegendTitle;
   ProgramClass.prototype.rematerializeLegendTitle = rematerializeLegendTitle;
   ProgramClass.prototype.rematerializeLegend = rematerializeLegend;
+  ProgramClass.prototype.rematerializeSideLegendLane =
+    rematerializeSideLegendLane;
+  ProgramClass.prototype.rematerializeHorizontalLegendLane =
+    rematerializeHorizontalLegendLane;
 }
 
 export function registerCategoricalLegendActions(ProgramClass) {

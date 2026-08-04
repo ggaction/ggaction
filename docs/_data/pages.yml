@@ -147,6 +147,9 @@
 - title: Statistical Data Transforms
   url: /api/data/statistical-transforms/
   parent: /api/data/
+- title: Time-Unit Data Transforms
+  url: /api/data/time-units/
+  parent: /api/data/
 - title: Window Data Transforms
   url: /api/data/window/
   parent: /api/data/
@@ -224,6 +227,9 @@
   parent: /api/position-encodings/
 - title: Ordinal Bar Positions
   url: /api/position/ordinal-bars/
+  parent: /api/position-encodings/
+- title: Category Ordering
+  url: /api/position/category-ordering/
   parent: /api/position-encodings/
 - title: Histogram Positions
   url: /api/position/histogram/

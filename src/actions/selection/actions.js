@@ -340,8 +340,11 @@ export const applyRuleHighlight = action(
     validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyRuleHighlight");
     const resolved = resolveStoredSelection(this, args.selection);
     const keys = selectedKeys(args, resolved);
-    if (resolved.items[0]?.markType !== "rule" && resolved.items.length > 0) {
-      throw new Error("applyRuleHighlight requires a rule selection.");
+    if (
+      resolved.items.length > 0 &&
+      !["rule", "tick"].includes(resolved.items[0]?.markType)
+    ) {
+      throw new Error("applyRuleHighlight requires a rule or Tick selection.");
     }
     if (keys.length === 0) return this;
     const selected = new Set(keys);

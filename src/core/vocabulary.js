@@ -5,6 +5,7 @@ export const MARK_TYPES = Object.freeze([
   "area",
   "arc",
   "rule",
+  "tick",
   "text",
   "rect"
 ]);
@@ -16,6 +17,7 @@ export const MARK_GRAPHIC_TYPES = Object.freeze({
   area: Object.freeze(["path"]),
   arc: Object.freeze(["path"]),
   rule: Object.freeze(["line"]),
+  tick: Object.freeze(["line"]),
   text: Object.freeze(["text"]),
   rect: Object.freeze(["rect"])
 });
@@ -34,6 +36,7 @@ export const ENCODING_CHANNELS = Object.freeze([
   "strokeWidth",
   "size",
   "shape",
+  "angle",
   "group",
   "pathOrder",
   "opacity",
@@ -41,7 +44,7 @@ export const ENCODING_CHANNELS = Object.freeze([
 ]);
 
 const CARTESIAN_MARK_TYPES = Object.freeze([
-  "point", "line", "bar", "area", "rule", "text", "rect"
+  "point", "line", "bar", "area", "rule", "tick", "text", "rect"
 ]);
 const POLAR_MARK_TYPES = Object.freeze(["point", "line", "arc"]);
 
@@ -114,7 +117,7 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
 
 export const SCALED_ENCODING_CHANNELS = Object.freeze(
   ENCODING_CHANNELS.filter(channel =>
-    !["group", "pathOrder", "text"].includes(channel)
+    !["angle", "group", "pathOrder", "text"].includes(channel)
   )
 );
 
@@ -185,12 +188,13 @@ export function getMarkGraphicTypes(markType) {
 export const COLOR_LAYOUTS = Object.freeze([
   "stack",
   "fill",
+  "center",
   "group",
   "overlay",
   "diverging"
 ]);
 
-export const STACK_MODES = Object.freeze(["zero", "normalize"]);
+export const STACK_MODES = Object.freeze(["zero", "normalize", "center"]);
 
 export const CATEGORICAL_LEGEND_CHANNELS = Object.freeze([
   "color",

@@ -419,6 +419,16 @@ Create immutable grouped center/lower/upper summary rows. Mean supports
 standard error, sample standard deviation, and Student-t confidence intervals;
 median supports interquartile range. [Data](../api/data.md)
 
+### `createTimeUnitData`
+
+```javascript
+createTimeUnitData({ id, source?, field, unit, as })
+```
+
+Create an immutable row-preserving dataset with one UTC year, quarter, month,
+day, hour, minute, or second bucket-start timestamp field.
+[Time-unit data transforms](../api/data/time-units.md)
+
 ### `createWindowData`
 
 ```javascript
@@ -426,8 +436,11 @@ createWindowData({ id, source?, partitionBy?, sortBy?, operations })
 ```
 
 Create an immutable derived dataset by applying ordered row-number, rank,
-dense-rank, cumulative-sum, lag, or lead operations within optional partitions.
-The calculation follows a stable sort while the output preserves source row order.
+dense-rank, cumulative-sum, lag, lead, moving-mean, or moving-sum operations
+within optional partitions. Moving frames include the current sorted row, require
+a non-negative `preceding`, default `following` to `0`, and truncate at partition
+edges. The calculation follows a stable sort while the output preserves source
+row order.
 [Window data transforms](../api/data/window.md)
 
 ### `createBin2DData`
@@ -471,6 +484,24 @@ editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
 `stroke: false` disables the outline and its width. [Marks](../api/marks.md)
+
+### `createTickMark`
+
+```javascript
+createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+```
+
+Create a centered line glyph that materializes after both x and y are complete.
+Length defaults to `14`; stroke width defaults to `2`. [Marks](../api/marks.md)
+
+### `editTickMark`
+
+```javascript
+editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
+```
+
+Partially edit Tick length or constant line appearance while preserving data,
+position, and other assignments. [Marks](../api/marks.md)
 
 ### `jitterPoints`
 
@@ -656,8 +687,8 @@ semantic base positions. [Text marks](../api/marks/text.md)
 <!-- action-capabilities:position:start -->
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -775,6 +806,27 @@ removePathOrder({ target? } = {})
 Remove explicit path topology and restore the mark's automatic independent-
 position ordering. [Series encodings](../api/series-encodings.md)
 
+### `orderCategories`
+
+```javascript
+orderCategories({ target?, channel, values })
+orderCategories({ target?, channel, by, direction? })
+```
+
+Assign explicit or computed semantic order to a nominal/ordinal Cartesian x or
+y position. Omitted explicit values and computed ties preserve source
+first-appearance order. The scale, connected marks, axis, and selection-item
+order are updated together. [Category ordering](../api/position/category-ordering.md)
+
+### `removeCategoryOrder`
+
+```javascript
+removeCategoryOrder({ target?, channel })
+```
+
+Remove one active category-order assignment and restore automatic
+first-appearance order. [Category ordering](../api/position/category-ordering.md)
+
 ### `removeEncoding`
 
 ```javascript
@@ -785,6 +837,18 @@ Remove one active semantic encoding, its generated companions, matching guide
 blocks, and stale concrete values. Named datasets, scales, and coordinates are
 retained; incomplete marks remain empty until later encoding completion.
 [Encodings](../api/encodings.md#removing-an-encoding)
+
+### `encodeAngle`
+
+```javascript
+encodeAngle({ target?, value })
+encodeAngle({ target?, field, fieldType? })
+```
+
+Rotate point or Tick glyphs with direct clockwise degrees: `0` points up and
+no scale or legend is created. Reassignment replaces the prior constant/field
+branch; remove it with `removeEncoding({ channel: "angle" })`.
+[Encodings](../api/encodings.md#direction)
 
 ### `encodeText`
 
@@ -915,7 +979,8 @@ encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? 
 Create or compatibly replace point fill, line-series color, grouped area fill,
 bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share an ordinal palette scale;
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
-and `diverging`; area accepts all except `group`. Quantitative and temporal
+and `diverging`; area also accepts `center` and rejects only `group` from the
+shared layout vocabulary. Quantitative and temporal
 point fields use a sequential scale; quantitative point fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
@@ -923,6 +988,9 @@ orientation. Reassigning grouped color also atomically reassigns its offset and
 rematerializes an existing legend. Aggregate
 bars accept quantitative sequential color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
+Area `layout: "center"` creates a matching nominal group when needed and records
+wrapped `encodeY({ stack: "center" })`. It requires non-negative values aligned
+at every x position and stacks each partition from `-total / 2`.
 Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.
 [Series encodings](../api/series-encodings.md)
@@ -1398,7 +1466,10 @@ createLegend({
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Continuous legends support right, left, top, and bottom
 placement. Categorical legends also support left side placement; composite
-point and size blocks remain in deterministic vertical order.
+point and size blocks remain in deterministic vertical order. Horizontal
+sampled-opacity legends accept `titlePosition: "left"` for one inline
+title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
+with a 40-pixel occupied-bound gap.
 [Legends](../api/legends.md)
 
 ### `editLegend`
@@ -1412,6 +1483,8 @@ editLegend({
 
 Partially edit one existing legend. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited. A
+horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
+spacing edits. A
 stroke-width legend accepts the bounded `title`, `count`, `labels`, and
 `titleStyle` subset and remains right-positioned.
 [Legends](../api/legends.md)

@@ -12,7 +12,7 @@ function pointProgram({ titles = {} } = {}) {
   return chart()
     .createCanvas({
       width: 420,
-      height: 260,
+      height: 420,
       margin: { top: 20, right: 140, bottom: 60, left: 60 }
     })
     .createData({ id: "data", values })
@@ -111,7 +111,7 @@ test("reassigns color, size, and shape with their existing legends", () => {
   assert.equal(shape.semanticSpec.guides.legend.series.title, "category");
 
   let size = chart()
-    .createCanvas({ width: 420, height: 300, margin: { top: 20, right: 140, bottom: 40, left: 40 } })
+    .createCanvas({ width: 420, height: 420, margin: { top: 20, right: 140, bottom: 40, left: 40 } })
     .createData({ id: "data", values })
     .createPointMark({ id: "points" })
     .encodeColor({ field: "color" })

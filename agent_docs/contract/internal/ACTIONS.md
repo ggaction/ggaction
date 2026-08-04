@@ -24,6 +24,7 @@ domain action을 통해서만 실행한다.
 | `materializeMarkFilteredData` | `filterMarks` selected-item member rows |
 | `materializeIntervalData` | interval data actions |
 | `materializeRegressionData` | regression data actions |
+| `materializeTimeUnitData` | time-unit data actions |
 | `materializeWindowData` | window data actions |
 | `materializeRuleSpan` | error-bar cap components and rule rematerialization |
 | `rematerializeAreaMark` | area mark and encoding actions |

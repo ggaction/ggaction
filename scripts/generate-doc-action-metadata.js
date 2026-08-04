@@ -16,6 +16,7 @@ function operation(name) {
   if (
     name === "jitterPoints" ||
     name === "layoutLabels" ||
+    name === "orderCategories" ||
     name === "replaceCompositionChild"
   ) return "edit";
   throw new Error(`Public action ${name} needs a documentation operation classification.`);

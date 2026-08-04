@@ -1,4 +1,5 @@
 import {
+  deriveCenteredAreaSeries,
   deriveAreaSeries,
   deriveDensityAreaSeries,
   layoutDensityAreaSeries
@@ -81,13 +82,17 @@ function resolveAreaPaths({
       xScale
     );
     const lowerValues = densityTransform === undefined
-      ? series.values.map(value => value.y)
+      ? derived.mode === "y-center"
+        ? series.values.map(value => value.lower)
+        : series.values.map(value => value.y)
       : derived.mode === "y-density"
         ? series.values.map(value => value.lower)
         : series.values.map(value => value.y);
     const lower = mapContinuousScaleValues(lowerValues, yScale);
     const upperValues = densityTransform === undefined
-      ? series.values.map(value => value.y2)
+      ? derived.mode === "y-center"
+        ? series.values.map(value => value.upper)
+        : series.values.map(value => value.y2)
       : series.values.map(value => value.upper);
     const upper = mapContinuousScaleValues(upperValues, yScale);
     if (densityTransform !== undefined && layout === "overlay") {
@@ -122,8 +127,12 @@ export function resolveAreaMaterialization({
 }) {
   const xScale = resolvedScales[layer.encoding.x.scale];
   const yScale = resolvedScales[layer.encoding.y.scale];
+  const centered = densityTransform === undefined &&
+    layer.encoding?.y?.stack === "center";
   const rawDerived = densityTransform === undefined
-    ? deriveAreaSeries(rows, layer)
+    ? centered
+      ? deriveCenteredAreaSeries(rows, layer)
+      : deriveAreaSeries(rows, layer)
     : deriveDensityAreaSeries(rows, layer, densityTransform);
   const colorEncoding = layer.encoding?.color;
   const layout = colorEncoding?.layout ?? "overlay";

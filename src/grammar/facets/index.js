@@ -5,7 +5,7 @@ import { planFacetDependencies } from "./dependencies.js";
 import { readNominalField } from "../scales/index.js";
 
 const SUPPORTED_MARKS = new Set([
-  "point", "line", "area", "bar", "rule", "rect"
+  "point", "line", "area", "bar", "rule", "tick", "rect"
 ]);
 const SUPPORTED_BAR_GRAINS = new Set([
   BAR_GRAINS.histogram,

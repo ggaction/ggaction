@@ -12,6 +12,7 @@ import {
   resolvePointJitter
 } from "../../../grammar/jitter.js";
 import { polarToCartesian, resolvePolarFrame } from "../../../grammar/polar.js";
+import { resolveDirectionValues } from "../../../grammar/direction.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { validateMarkOptions } from "../shared.js";
 import {
@@ -60,8 +61,10 @@ function compactProperties(properties) {
   );
 }
 
-function incompleteShapeGraphic(shape, properties) {
-  const type = getPointGraphicType(shape);
+function incompleteShapeGraphic(shape, properties, angle) {
+  const type = angle !== undefined && shape === "square"
+    ? "path"
+    : getPointGraphicType(shape);
   const incomplete = type === "path"
     ? { fill: properties.fill, opacity: properties.opacity }
     : properties;
@@ -99,6 +102,7 @@ function resolveJitterEntries({
   y,
   area,
   shapes,
+  angles,
   config,
   graphic,
   existingChildren
@@ -131,7 +135,8 @@ function resolveJitterEntries({
       area: resolvedArea,
       strokeWidth: typeof config.stroke === "string"
         ? config.strokeWidth ?? 1
-        : 0
+        : 0,
+      angle: angles?.[index]
     });
     return [{
       index,
@@ -150,6 +155,7 @@ function applyPointJitter(program, {
   y,
   area,
   shapes,
+  angles,
   config,
   graphic,
   existingChildren
@@ -172,6 +178,7 @@ function applyPointJitter(program, {
     y,
     area,
     shapes,
+    angles,
     config,
     graphic,
     existingChildren
@@ -234,6 +241,7 @@ export const rematerializePointMark = action(
     const area = resolveRowEncodingValues(this, layer, dataset, "size");
     const encodedShape = resolveRowEncodingValues(this, layer, dataset, "shape");
     const encodedOpacity = resolveRowEncodingValues(this, layer, dataset, "opacity");
+    const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = this.markConfigs[id] ?? {};
     const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
@@ -241,6 +249,7 @@ export const rematerializePointMark = action(
     const constantShape = validatePointShape(config.shape ?? "circle");
     const requiresMixedCollection =
       encodedShape !== undefined ||
+      angles !== undefined ||
       graphic.type === "collection" ||
       getPointGraphicType(constantShape) !== graphic.type;
     const jittered = applyPointJitter(this, {
@@ -251,6 +260,7 @@ export const rematerializePointMark = action(
       y: positions.y,
       area,
       shapes,
+      angles,
       config,
       graphic,
       existingChildren
@@ -273,6 +283,7 @@ export const rematerializePointMark = action(
         );
         const centerX = x?.[index] ?? existing.x;
         const centerY = y?.[index] ?? existing.y;
+        const angle = angles?.[index];
         if (
           resolvedArea === undefined ||
           !Number.isFinite(centerX) ||
@@ -283,7 +294,7 @@ export const rematerializePointMark = action(
             y: centerY,
             fill: color,
             opacity
-          });
+          }, angle);
         }
         return createPointShapeGraphic({
           shape,
@@ -295,7 +306,8 @@ export const rematerializePointMark = action(
           ...(config.strokeWidth === undefined
             ? {}
             : { strokeWidth: config.strokeWidth }),
-          opacity
+          opacity,
+          angle
         });
       });
       return jittered.program.editGraphics({

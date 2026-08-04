@@ -170,7 +170,7 @@ test("keeps cross-cutting planners independent from concrete mark names", () => 
 
 test("keeps every ordinary mark family behind a stable directory entry", () => {
   for (const mark of [
-    "point", "line", "area", "arc", "bar", "rect", "rule", "text"
+    "point", "line", "area", "arc", "bar", "rect", "rule", "tick", "text"
   ]) {
     assert.equal(
       existsSync(path.join(root, "actions", "marks", mark, "index.js")),

@@ -6,10 +6,13 @@ const TRANSFORM_KEYS = Object.freeze([
 const SORT_KEYS = Object.freeze(["field", "order"]);
 const ORDER_VALUES = Object.freeze(["ascending", "descending"]);
 const OPERATION_VALUES = Object.freeze([
-  "rowNumber", "rank", "denseRank", "cumulativeSum", "lag", "lead"
+  "rowNumber", "rank", "denseRank", "cumulativeSum", "lag", "lead",
+  "movingMean", "movingSum"
 ]);
 const POSITION_OPERATIONS = new Set(["rowNumber", "rank", "denseRank"]);
 const OFFSET_OPERATIONS = new Set(["lag", "lead"]);
+const MOVING_OPERATIONS = new Set(["movingMean", "movingSum"]);
+const FRAME_KEYS = Object.freeze(["preceding", "following"]);
 
 function requireField(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -63,7 +66,27 @@ function operationKeys(operation) {
   if (OFFSET_OPERATIONS.has(operation.op)) {
     return ["op", "field", "as", "offset", "default"];
   }
+  if (MOVING_OPERATIONS.has(operation.op)) {
+    return ["op", "field", "as", "frame"];
+  }
   return ["op"];
+}
+
+function validateFrame(frame, operation) {
+  if (!isPlainObject(frame)) {
+    throw new TypeError(`Window ${operation} frame must be a plain object.`);
+  }
+  rejectUnknownKeys(frame, FRAME_KEYS, `window ${operation} frame`);
+  if (!Number.isInteger(frame.preceding) || frame.preceding < 0) {
+    throw new RangeError(
+      `Window ${operation} frame preceding must be a non-negative integer.`
+    );
+  }
+  if (!Number.isInteger(frame.following) || frame.following < 0) {
+    throw new RangeError(
+      `Window ${operation} frame following must be a non-negative integer.`
+    );
+  }
 }
 
 function validateOperations(operations, sortBy) {
@@ -97,6 +120,9 @@ function validateOperations(operations, sortBy) {
       if (!Object.hasOwn(operation, "default")) {
         throw new TypeError(`Window ${operation.op} requires a default value.`);
       }
+    }
+    if (MOVING_OPERATIONS.has(operation.op)) {
+      validateFrame(operation.frame, operation.op);
     }
   });
 }
@@ -132,14 +158,26 @@ function normalizeSortBy(value) {
 function normalizeOperations(value) {
   if (!Array.isArray(value)) return value;
   return value.map(operation => {
-    if (!isPlainObject(operation) || !OFFSET_OPERATIONS.has(operation.op)) {
+    if (!isPlainObject(operation)) {
       return operation;
     }
-    return {
-      ...operation,
-      offset: operation.offset ?? 1,
-      default: Object.hasOwn(operation, "default") ? operation.default : null
-    };
+    if (OFFSET_OPERATIONS.has(operation.op)) {
+      return {
+        ...operation,
+        offset: operation.offset ?? 1,
+        default: Object.hasOwn(operation, "default") ? operation.default : null
+      };
+    }
+    if (MOVING_OPERATIONS.has(operation.op) && isPlainObject(operation.frame)) {
+      return {
+        ...operation,
+        frame: {
+          ...operation.frame,
+          following: operation.frame.following ?? 0
+        }
+      };
+    }
+    return operation;
   });
 }
 
@@ -303,6 +341,34 @@ function applyOperation(partition, operation, sortBy) {
       total += value;
       entry.row[operation.as] = total;
     }
+    return;
+  }
+  if (MOVING_OPERATIONS.has(operation.op)) {
+    partition.forEach((entry, index) => {
+      const first = Math.max(0, index - operation.frame.preceding);
+      const last = Math.min(
+        partition.length - 1,
+        index + operation.frame.following
+      );
+      let total = 0;
+      for (let peerIndex = first; peerIndex <= last; peerIndex += 1) {
+        const value = partition[peerIndex].row[operation.field];
+        if (!Number.isFinite(value)) {
+          throw new TypeError(
+            `Window ${operation.op} field "${operation.field}" must contain finite numbers.`
+          );
+        }
+        total += value;
+        if (!Number.isFinite(total)) {
+          throw new RangeError(
+            `Window ${operation.op} output "${operation.as}" must be finite.`
+          );
+        }
+      }
+      entry.row[operation.as] = operation.op === "movingMean"
+        ? total / (last - first + 1)
+        : total;
+    });
     return;
   }
   const direction = operation.op === "lag" ? -1 : 1;

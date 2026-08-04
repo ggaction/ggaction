@@ -6,6 +6,7 @@ import {
   requireConsumerDataset
 } from "./common.js";
 import { resolveMarkFamilyConsumerValues } from "./families.js";
+import { resolveCategoryOrder } from "../../../grammar/categoryOrder.js";
 
 export { findScale, findScaleConsumers } from "./common.js";
 export {
@@ -38,4 +39,11 @@ export function resolveConsumerValues(program, consumer) {
   return family.matched
     ? family.values
     : readConsumerFieldValues(program, consumer, dataset, scale);
+}
+
+export function resolveConsumerCategoryOrder(program, consumer) {
+  const order = consumer.encoding.categoryOrder;
+  if (order === undefined) return undefined;
+  const dataset = requireConsumerDataset(program, consumer);
+  return resolveCategoryOrder(dataset.values, consumer.encoding.field, order);
 }

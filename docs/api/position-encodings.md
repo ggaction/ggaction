@@ -16,8 +16,8 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 <!-- action-capabilities:position:start -->
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -36,14 +36,23 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
 | Build horizontal aggregate bars | bar mark, quantitative x and ordinal/temporal y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
+| Order categorical positions | nominal/ordinal x or y | `orderCategories`, `removeCategoryOrder` | [Category ordering](./position/category-ordering.md) |
 | Bin and count values | bar mark, quantitative field | `encodeHistogram` or `encodeX` + `encodeY` | [Histograms](./position/histogram.md) |
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./encodings.md#atomic-density) |
+| Center aligned area series | area mark, quantitative/temporal x, non-negative quantitative y, nominal group | `encodeY({ stack: "center" })` or `encodeColor({ layout: "center" })` | [Color encoding](./series/color.md#center-stacked-areas) |
 | Draw full-span or bounded rules | rule mark, field or datum endpoints | `encodeX`, `encodeY`, `encodeX2`, `encodeY2` | [Rule endpoints](#rule-endpoints) |
 | Control within-band grouping | complete ordinal-bar positions | `encodeXOffset`, `encodeYOffset` | [Offsets](./position/offsets.md) |
 
 For ordinary grouped bar charts, prefer
 `encodeColor({ field, layout: "group" })`; it calls the matching advanced
 directional offset action for the same field.
+
+For a center-stacked area, each group must have exactly one non-negative value
+at every x position. `encodeY({ stack: "center" })` preserves the original y
+field and creates concrete lower/upper area boundaries around zero. The
+equivalent `encodeColor({ layout: "center" })` also creates the matching nominal
+group when it is absent. Center stacking is not supported for bars, ranged
+areas, signed values, duplicate group/x rows, or missing positions.
 
 ## Shared inference
 

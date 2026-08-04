@@ -69,6 +69,15 @@ test("createDerivedData accepts each documented transform branch as an array", (
       }
     },
     {
+      id: "timeUnit",
+      transform: {
+        type: "timeUnit",
+        field: "x",
+        unit: "year",
+        as: "year"
+      }
+    },
+    {
       id: "bin2d",
       transform: {
         type: "bin2d",
@@ -140,6 +149,47 @@ test("createDerivedData rejects object, empty, multiple, and unknown transform i
       transform: [{ type: "unknown" }]
     }),
     /Unsupported dataset transform/
+  );
+});
+
+test("createDerivedData validates complete normalized moving-window provenance", () => {
+  const program = sourceProgram().createDerivedData({
+    id: "moving",
+    source: "source",
+    transform: [{
+      type: "window",
+      partitionBy: ["group"],
+      sortBy: [{ field: "x", order: "ascending" }],
+      operations: [{
+        op: "movingMean",
+        field: "y",
+        as: "movingMean",
+        frame: { preceding: 1, following: 0 }
+      }]
+    }]
+  });
+
+  assert.deepEqual(program.semanticSpec.datasets[1].transform[0].operations[0].frame, {
+    preceding: 1,
+    following: 0
+  });
+  assert.throws(
+    () => sourceProgram().createDerivedData({
+      id: "incompleteMoving",
+      source: "source",
+      transform: [{
+        type: "window",
+        partitionBy: [],
+        sortBy: [],
+        operations: [{
+          op: "movingMean",
+          field: "y",
+          as: "movingMean",
+          frame: { preceding: 1 }
+        }]
+      }]
+    }),
+    /following must be a non-negative integer/
   );
 });
 

@@ -107,7 +107,7 @@ const legendCallChain = `chart()
   .encodeOpacity({ value: 0.27 })
   .filterMarks({ field: "Origin", op: "oneOf", values: ["Japan", "USA"] })
   .createRegression()
-  .createGuides()
+  .createGuides({ legend: { position: "left", offset: 80 } })
   .editLegendLayout({
     target: "points",
     position: "left",
@@ -512,4 +512,3 @@ export const visualVariants = Object.freeze([
     regions: [{ name: "bars", x: 60, y: 60, width: 336, height: 190 }]
   })
 ]);
-

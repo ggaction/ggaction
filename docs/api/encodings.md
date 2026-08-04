@@ -31,8 +31,8 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, text | point/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, text | point/line/bar/rect/rule/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -50,7 +50,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Supported marks | Grain | Result |
 | --- | --- | --- | --- |
-| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
+| `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule, tick | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
 
 | Legend family | Supported marks | Channels |
 | --- | --- | --- |
@@ -65,6 +65,26 @@ The tables below are generated from the same reviewed capability registry used b
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
 | Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
 <!-- action-capabilities:summary:end -->
+
+## Direction
+
+`encodeAngle` rotates point and Tick glyphs with finite direct degrees. It
+accepts either one constant `value` or one quantitative `field`; it does not
+create a scale or legend. `0` points up and positive values rotate clockwise.
+
+```javascript
+const directional = chart()
+  .createCanvas({ width: 640, height: 360 })
+  .createData({ values: directions })
+  .createTickMark({ id: "ticks", length: 14 })
+  .encodeX({ target: "ticks", field: "x" })
+  .encodeY({ target: "ticks", field: "y" })
+  .encodeAngle({ target: "ticks", field: "direction" });
+```
+
+Calling `encodeAngle` again replaces the complete constant/field assignment.
+Use `removeEncoding({ target: "ticks", channel: "angle" })` to restore the
+unrotated vertical baseline. Tick length and point area remain unchanged.
 
 ## Atomic relationships
 
@@ -113,7 +133,7 @@ const plainPoints = encodedPoints
 
 The closed channel list is `x`, `y`, `x2`, `y2`, `xOffset`, `yOffset`,
 `theta`, `radius`, `color`, `strokeDash`, `strokeWidth`, `size`, `shape`,
-`group`, `opacity`, and `text`. Primary x/y removal also clears its same-mark
+`angle`, `group`, `opacity`, and `text`. Primary x/y removal also clears its same-mark
 secondary endpoint and offset. Grouped-bar color removal clears its generated
 offset, and matching legends, axes, or grids are removed only when they no
 longer have a valid consumer.

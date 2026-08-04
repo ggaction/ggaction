@@ -11,12 +11,23 @@ import { createCarsTemporalBarLine } from
   "./cars-temporal-bar-line/program.js";
 import { createCarsRegressionScatterplot } from
   "./cars-regression-scatterplot/program.js";
+import { createCarsMultiLegendLayout } from
+  "./cars-multi-legend-layout/program.js";
 import { createCarsScatterplot } from "./cars-scatterplot/program.js";
 import { createCarsParallelCoordinates } from
   "./cars-parallel-coordinates/program.js";
 import { createCarsBinnedHeatmap } from "./cars-binned-heatmap/program.js";
 import { createCarsWindowRankScatterplot } from
   "./cars-window-rank-scatterplot/program.js";
+import { createTimeUnitComparison } from "./time-unit-data/program.js";
+import { createAirlinePassengerMovingWindows } from
+  "./airline-passenger-moving-windows/program.js";
+import { createDirectionalTickPointComparison } from
+  "./directional-tick-plot/program.js";
+import { createOrderedCategoryBarComparison } from
+  "./ordered-category-bar/program.js";
+import { createCenteredAreaStream } from
+  "./centered-area-stream/program.js";
 import {
   createCarsOriginJitter,
   createGapminderClusterJitter
@@ -82,6 +93,37 @@ function example({ id, data, width, height, createProgram, ...options }) {
 
 export const PUBLIC_CHARTS = Object.freeze([
   example({
+    id: "centered-area-stream",
+    data: "jobs",
+    width: 690,
+    height: 420,
+    createProgram: createCenteredAreaStream,
+    docsGroup: "charts",
+    browser: {
+      path: "browser-host/?chart=centered-area-stream",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "centered-area-stream", width: 690, height: 420 }
+      }
+    }
+  }),
+  example({
+    id: "directional-tick-plot",
+    data: {},
+    width: 1072,
+    height: 372,
+    createProgram: () => createDirectionalTickPointComparison(),
+    browser: {
+      path: "browser-host/?chart=directional-tick-plot",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "directional-tick-plot", width: 1072, height: 372 }
+      }
+    }
+  }),
+  example({
     id: "cars-binned-heatmap",
     data: "cars",
     width: 700,
@@ -93,6 +135,56 @@ export const PUBLIC_CHARTS = Object.freeze([
       state: {
         global: "__carsBinnedHeatmap",
         expected: { width: 700, height: 500, cells: 80 }
+      }
+    }
+  }),
+  example({
+    id: "time-unit-data",
+    data: {},
+    width: 928,
+    height: 384,
+    createProgram: () => createTimeUnitComparison(),
+    browser: {
+      path: "browser-host/?chart=time-unit-data",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "time-unit-data", width: 928, height: 384 }
+      }
+    }
+  }),
+  example({
+    id: "airline-passenger-moving-windows",
+    data: {},
+    width: 1192,
+    height: 372,
+    createProgram: () => createAirlinePassengerMovingWindows(),
+    browser: {
+      path: "browser-host/?chart=airline-passenger-moving-windows",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: {
+          id: "airline-passenger-moving-windows",
+          width: 1192,
+          height: 372
+        }
+      }
+    }
+  }),
+  example({
+    id: "ordered-category-bar",
+    data: {},
+    width: 936,
+    height: 332,
+    createProgram: () => createOrderedCategoryBarComparison(),
+    docsGroup: "charts",
+    browser: {
+      path: "browser-host/?chart=ordered-category-bar",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "ordered-category-bar", width: 936, height: 332 }
       }
     }
   }),
@@ -432,6 +524,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsRegressionScatterplot,
     docsGroup: "charts",
     browser: { path: "cars-regression-scatterplot/", canvas: "#chart" }
+  }),
+  example({
+    id: "cars-multi-legend-layout",
+    data: "cars",
+    width: 760,
+    height: 620,
+    createProgram: createCarsMultiLegendLayout,
+    docsGroup: "charts",
+    browser: { path: "cars-multi-legend-layout/", canvas: "#chart" }
   }),
   example({
     id: "cars-density-area",

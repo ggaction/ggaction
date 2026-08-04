@@ -72,6 +72,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTextMark`](./actions/marks.md#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | user-facing | axes |
 | [`createThetaGrid`](./actions/guides.md#createthetagrid) | user-facing | grid |
+| [`createTickMark`](./actions/marks.md#createtickmark) | user-facing | marks |
+| [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | user-facing | core |
 | [`createTitle`](./actions/guides.md#createtitle) | user-facing | legend_and_title |
 | [`createVerticalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`createViolinPlot`](./actions/statistics.md#createviolinplot) | user-facing | statistics |
@@ -135,6 +137,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editThetaAxisTicks`](./actions/guides.md#editthetaaxisticks) | user-facing | axes |
 | [`editThetaAxisTitle`](./actions/guides.md#editthetaaxistitle) | user-facing | axes |
 | [`editThetaGrid`](./actions/guides.md#editthetagrid) | user-facing | grid |
+| [`editTickMark`](./actions/marks.md#edittickmark) | user-facing | marks |
 | [`editTitle`](./actions/guides.md#edittitle) | user-facing | legend_and_title |
 | [`editVerticalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`editXAxis`](./actions/advanced.md#complete-single-channel-axes) | user-facing | axes |
@@ -149,6 +152,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editYAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | user-facing | axes |
 | [`editYAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | user-facing | axes |
 | [`editYAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | user-facing | axes |
+| [`encodeAngle`](./actions/encodings.md#encodeangle) | user-facing | encodings |
 | [`encodeBarWidth`](./actions/encodings.md#encodebarwidth) | user-facing | encodings |
 | [`encodeColor`](./actions/encodings.md#encodecolor) | user-facing | encodings |
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | user-facing | encodings |
@@ -172,7 +176,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`encodeX2`](./actions/encodings.md#encodex2) | user-facing | encodings |
 | [`encodeXOffset`](./actions/encodings.md#encodexoffset) | user-facing | encodings |
 | [`encodeXRange`](./actions/encodings.md#encodexrange) | user-facing | encodings |
-| [`encodeY`](./actions/encodings.md#encodey) | user-facing | encodings |
+| [`encodeY`](./actions/encodings.md#encodecolor) | user-facing | encodings |
 | [`encodeY2`](./actions/encodings.md#encodey2) | user-facing | encodings |
 | [`encodeYOffset`](./actions/encodings.md#encodeyoffset) | user-facing | encodings |
 | [`encodeYRange`](./actions/encodings.md#encodeyrange) | user-facing | encodings |
@@ -182,7 +186,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | user-facing | mark-selection |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | user-facing | marks |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
-| [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
+| [`orderCategories`](./actions/encodings.md#ordercategories) | user-facing | encodings |
+| [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | user-facing | encodings |
+| [`removeEncoding`](./actions/encodings.md#encodeangle) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |

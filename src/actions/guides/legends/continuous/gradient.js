@@ -39,12 +39,18 @@ function resolveGradientLayout(program, config, scale) {
       : config.align === "right" ? plot.x + plot.width - length
         : plot.x + (plot.width - length) / 2;
     y = config.position === "top"
-      ? plot.y - config.offset - thickness
-      : plot.y + plot.height + config.offset;
+      ? plot.y - config.offset - thickness - config.labels.offset -
+        config.labels.fontSize
+      : plot.y + plot.height + config.offset +
+        config.titleStyle.fontSize + 12;
   }
   const title = vertical
     ? { x, y: plot.y + 20, align: "left" }
-    : { x: x + length / 2, y: y - 20, align: "center" };
+    : {
+        x: x + length / 2,
+        y: y - 12 - config.titleStyle.fontSize / 2,
+        align: "center"
+      };
   const values = sampleContinuousValues(scale.domain, config.count);
   const fractions = values.map((_, index) => index / (values.length - 1));
   const labelOffset = config.labels.offset;
@@ -58,9 +64,7 @@ function resolveGradientLayout(program, config, scale) {
       }))
     : fractions.map(fraction => ({
         x: x + length * fraction,
-        y: config.position === "top"
-          ? y - labelOffset
-          : y + thickness + labelOffset,
+        y: y + thickness + labelOffset + config.labels.fontSize / 2,
         align: "center"
       }));
   const ticks = vertical
@@ -72,9 +76,9 @@ function resolveGradientLayout(program, config, scale) {
       }))
     : labels.map(label => ({
         x1: label.x,
-        y1: config.position === "top" ? y : y + thickness,
+        y1: y + thickness,
         x2: label.x,
-        y2: config.position === "top" ? y - 6 : y + thickness + 6
+        y2: y + thickness + 6
       }));
   assertLegendInsideCanvas([
     title,

@@ -9,6 +9,7 @@ import {
 import { registerRectMarkActions } from "./rect/index.js";
 import { registerRuleMarkActions } from "./rule/index.js";
 import { registerTextMarkActions } from "./text/index.js";
+import { registerTickMarkActions } from "./tick/index.js";
 import { removeMark } from "./remove.js";
 
 export function registerMarkActions(ProgramClass) {
@@ -21,5 +22,6 @@ export function registerMarkActions(ProgramClass) {
   registerBarMarkActions(ProgramClass);
   registerRuleMarkActions(ProgramClass);
   registerTextMarkActions(ProgramClass);
+  registerTickMarkActions(ProgramClass);
   ProgramClass.prototype.removeMark = removeMark;
 }

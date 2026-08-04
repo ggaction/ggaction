@@ -1,4 +1,6 @@
 import { validateStack, emptyPositionPolicy } from "./common.js";
+import { deriveCenteredAreaSeries } from "../../../../grammar/areaSeries.js";
+import { readQuantitativeField } from "../../../../grammar/scales/index.js";
 
 export function isCategoricalDensityPosition({
   layer,
@@ -15,7 +17,14 @@ export function isCategoricalDensityPosition({
     density.placement.categoryField === field;
 }
 
-export function resolveAreaPositionPolicy({ dataset, channel, args, fieldType, field }) {
+export function resolveAreaPositionPolicy({
+  dataset,
+  layer,
+  channel,
+  args,
+  fieldType,
+  field
+}) {
   const density = dataset.transform?.find(transform => transform.type === "density");
   if (["nominal", "ordinal"].includes(fieldType)) {
     if (
@@ -41,6 +50,35 @@ export function resolveAreaPositionPolicy({ dataset, channel, args, fieldType, f
     throw new Error("Area position encoding does not support aggregate or bin.");
   }
   if (args.stack === undefined) return emptyPositionPolicy();
+  const stack = validateStack(args.stack, "Area y encoding");
+  if (stack === "center") {
+    if (channel !== "y") {
+      throw new Error("Area center stack requires a y encoding.");
+    }
+    if (layer.encoding?.group?.fieldType !== "nominal") {
+      throw new Error("Area center stack requires a nominal group encoding.");
+    }
+    if (
+      layer.encoding?.color?.layout !== undefined &&
+      layer.encoding.color.layout !== "center"
+    ) {
+      throw new Error("Area center stack requires a matching center color layout.");
+    }
+    const values = readQuantitativeField(dataset.values, field);
+    if (values.some(value => value < 0)) {
+      throw new RangeError("Area center stack requires non-negative values.");
+    }
+    if (layer.encoding?.x !== undefined) {
+      deriveCenteredAreaSeries(dataset.values, {
+        ...layer,
+        encoding: {
+          ...layer.encoding,
+          y: { field, fieldType, stack: "center" }
+        }
+      });
+    }
+    return { bin: undefined, aggregate: undefined, stack };
+  }
   if (
     channel !== "y" ||
     density === undefined
@@ -50,6 +88,6 @@ export function resolveAreaPositionPolicy({ dataset, channel, args, fieldType, f
   return {
     bin: undefined,
     aggregate: undefined,
-    stack: validateStack(args.stack, "Area y encoding")
+    stack
   };
 }

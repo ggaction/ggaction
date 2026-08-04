@@ -48,7 +48,8 @@ type TitleWrap = "word" | "character";
 - `position: "bottom"`만 지정한 기존 호출은 Canvas bottom에 고정된 compact single-row layout을 유지한다.
   `columns`, `direction`, `offset`, `titlePosition`, `itemGap` 중 하나를 명시하면 reserved-margin grid를 사용한다.
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
-- `titlePosition`: `"top" | "left"`, 기본 top.
+- `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
+  legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
 - `title`: non-empty string; 생략하면 encoded source field를 사용한다.
 - `symbol`: `"auto"`, mark-specific shorthand, 또는 `{ layers: [...] }`. layer type은 `line | point | swatch`;
   각 layer는 non-negative size/stroke parameters와 supported point shape를 사용한다.
@@ -64,6 +65,22 @@ type TitleWrap = "word" | "character";
   graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용한다.
 - Composite layers share one item-local origin. Their concrete union bounds determine label placement and
   declared layer order determines rendering order in right, top, and bottom layouts.
+- Two or more right- or left-side legend blocks share one side lane. Every block uses the same title start,
+  symbol center, and label start columns, and adjacent occupied bounds keep at least 24 logical pixels of
+  vertical space. Blocks are ordered by owning layer declaration and then color/series, size, opacity,
+  stroke-width family order.
+- Same-target categorical and size blocks retain their shared border group. Independent categorical,
+  gradient, interval, opacity, and stroke-width blocks keep their own group bounds while participating in
+  the same lane. A lane that does not fit the requested margin or Canvas height fails atomically.
+- Two or more top- or bottom-positioned categorical, gradient, or opacity blocks share a horizontal-edge lane.
+  The lane starts at the plot's left edge and places blocks consecutively in stable layer/family order with
+  40 logical pixels between occupied bounds. A block moves to the next outward row only when it does not fit
+  the remaining plot width. Each row shares one title baseline, one graphical-element start line, and an exact
+  12-pixel title-to-element gap for default top titles. With `titlePosition: "left"`, categorical and sampled
+  opacity blocks instead align one common center line; opacity uses 8 pixels from symbol to label and 20 pixels
+  before the next sample. Top and bottom gradient/opacity labels otherwise follow their graphical element.
+  Multi-legend placement ignores absolute block `align`; a single legend retains left/center/right placement.
+  Each block keeps its item grid and direction.
 - Coverage: series/histogram/grouped-bar/top/bottom/regression legend tests가 주요 layouts, recipes,
   borders, rematerialization과 invalid values를 검증한다. 모든 symbol-layer parameter pair는 부분적이다.
 - Left categorical/point-composite/size는 vertical block order와 symbol→label/domain order를 유지한다.
@@ -101,7 +118,8 @@ type TitleWrap = "word" | "character";
 - `offset`
   - ✅ Covered: default `8`, zero/positive, negative/non-finite rejection.
 - `titlePosition`
-  - ✅ Covered: `"top" | "left"`, defaults and invalid value.
+  - ✅ Covered: categorical `"top" | "left"`; horizontal sampled opacity `"top" | "left"`; gradient and side
+    opacity left-title rejection; defaults and invalid value.
 - `title`
   - ✅ Covered: inferred field, explicit non-empty, empty/non-string rejection.
 - `symbol`
@@ -125,7 +143,14 @@ type TitleWrap = "word" | "character";
   - ✅ Covered: positive length/thickness, four position-derived orientations, point/aggregate-bar consumers and
     categorical-option conflicts.
 - ✅ Covered: left point-composite/size side layout and occupied-bounds failure.
-- Evidence: series, histogram, grouped-bar, top categorical, Phase 2 composite and regression legend tests.
+- ✅ Covered: right/left multi-block column alignment, deterministic authoring order, 24-pixel stacking,
+  gradient/opacity, interval/stroke-width, atomic overflow, and the actual-data Cars visual Gate.
+- ✅ Covered: top/bottom plot-left sequential packing with 40-pixel gaps and width wrapping, shared top-title/element
+  rows with exact 12-pixel spacing, fully inline categorical/opacity center lines, categorical/gradient/opacity with
+  and without borders, authoring-order independence, edit/remove/scale/Canvas convergence, collision and overflow failure.
+- Evidence: series, histogram, grouped-bar, top categorical, regression legend tests,
+  `test/unit/layout/legend-lane.test.js`, `test/unit/actions/guides/multi-legend-lane.test.js`, and
+  `test/charts/cars-multi-legend-layout/`.
 
 ## `editLegend`
 
@@ -138,6 +163,8 @@ type TitleWrap = "word" | "character";
 - Categorical and combined point-size legends accept left/right side layout; the first left contract requires
   center alignment and vertical flow. `count` rematerializes an existing size block.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
+  Horizontal opacity edits also own `titlePosition`; entering `"left"` without explicit spacing selects the inline
+  8-pixel symbol-label and 20-pixel sample defaults.
   Interval edits own right/vertical spacing, swatch recipe, text style와 title visibility.
   Kind-incompatible options fail before the prior program changes.
 - Stroke-width edits own `title`, `count`, `labels`, and `titleStyle`. The block remains in its current right-side
@@ -145,7 +172,8 @@ type TitleWrap = "word" | "character";
   controls the distance after the fixed 32-pixel line sample. Custom/hidden/auto title transitions and partial text-style
   merges use the same modes as other legend kinds.
 - Effect: stores graphical config immutably and invokes the corresponding wrapped rematerialization action.
-  Categorical symbol recipe changes reconcile concrete graphic types without leaving stale objects.
+  Categorical symbol recipe changes reconcile concrete graphic types without leaving stale objects. If the
+  edited block participates in a side lane, all sibling blocks rematerialize before the lane is placed again.
 - Errors: missing/ambiguous target, empty/unknown edit, invalid title mode, incompatible options, invalid count/style,
   insufficient margin, and overlap with left y-axis guides.
 
@@ -264,8 +292,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
   `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`이며 matching complete block만
   제거한다. Combined categorical block은 stored represented channel set 전체를 한 call에 지정해야 한다. 일부만
   요청하면 collateral removal 대신 오류다. Missing block, duplicate/unknown channel과 empty selection도 오류다.
-- Retained block은 그대로 보존하고 categorical+size layout dependency가 바뀌면 existing `rematerializeLegend`를
-  wrapped child로 호출한다. Categorical block만 제거하고 size를 보존하면 inherited categorical typography를
+- Retained block은 그대로 보존하고 categorical+size 또는 same-side lane layout dependency가 바뀌면 existing
+  `rematerializeLegend`를 wrapped child로 호출한다. Categorical block만 제거하고 size를 보존하면 inherited categorical typography를
   해제하고 standalone defaults/position에서 다시 materialize한다. Removed composite block은 retained size를
   재생성하지 않고 ordinary `createLegend`로 다시 만들 수 있다.
 - Mark encodings, resolved/semantic scales와 source data는 제거하지 않는다. Shared semantic-kind state는 another

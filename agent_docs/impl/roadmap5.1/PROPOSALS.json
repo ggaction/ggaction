@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "roadmap": "roadmap5.1",
+  "gate": "R51-P2-A",
+  "status": "approved",
+  "capability": {
+    "id": "same-edge-multi-legend-layout",
+    "kind": "behavior-correction",
+    "publicApiChange": false,
+    "summary": "Lay out every legend block on the same edge through one deterministic lane instead of independent plot-relative anchors."
+  },
+  "decisions": [
+    {
+      "id": "layout-owner",
+      "recommended": "shared-legend-lane",
+      "reason": "Per-family absolute coordinates cannot prevent sibling overlap or preserve convergence after edits."
+    },
+    {
+      "id": "block-order",
+      "recommended": "layer-declaration-then-family",
+      "reason": "Final placement must not depend on authoring call order or incidental object enumeration."
+    },
+    {
+      "id": "side-placement",
+      "recommended": "common-anchor-top-to-bottom",
+      "reason": "Side legends should read as one aligned vertical lane."
+    },
+    {
+      "id": "horizontal-placement",
+      "recommended": "plot-left-sequential-packing",
+      "reason": "Multi-legend rows should read from the plot's left edge in stable order instead of preserving separated absolute alignments."
+    },
+    {
+      "id": "horizontal-row-alignment",
+      "recommended": "shared-title-baseline-and-element-start",
+      "reason": "Every family on one row must align both its title and its graphical object with one 12-pixel gap."
+    },
+    {
+      "id": "horizontal-left-title-flow",
+      "recommended": "fully-inline-title-symbol-label",
+      "reason": "A left-positioned title should create one reading line for categorical and continuous legend families."
+    },
+    {
+      "id": "block-gap",
+      "recommended": "fixed-40-horizontal-24-side-logical-pixels",
+      "reason": "The approved horizontal comparison needs clearer separation while existing side-lane rhythm remains unchanged."
+    },
+    {
+      "id": "overflow",
+      "recommended": "atomic-layout-error",
+      "reason": "The existing Canvas contract forbids silent expansion, relocation or content loss."
+    }
+  ],
+  "nonGoals": [
+    "automatic Canvas or margin expansion",
+    "public legend block order or gap options",
+    "free-positioned legends",
+    "new legend families or renderer primitives",
+    "responsive layout or a generic collision solver"
+  ]
+}

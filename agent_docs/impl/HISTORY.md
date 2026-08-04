@@ -57,4 +57,20 @@ installed consumer와 Canvas/SVG/PNG/PDF visual parity를 R42-Exit에서 닫았�
 
 - 기록: [`roadmap4.2/ROADMAP.md`](roadmap4.2/ROADMAP.md)
 
+## Roadmap 5 — Temporal Derivation, Ordering, and Directional Marks
+
+Phase 0~6을 완료했다. UTC time-unit derivation, semantic category ordering, moving mean/sum, Tick mark lifecycle,
+point/tick angle과 non-negative center-stacked area를 Current surface로 추가했다. Stable examples,
+Canvas/SVG/PNG/PDF parity, generated docs, strict declarations와 installed-package evidence를 R5-Exit에서 닫았다.
+
+- 기록: [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md)
+
+## Roadmap 5.1 — Multi-Legend Layout Completion
+
+Phase 0~3을 완료했다. Same-edge legend block을 right/left shared columns와 top/bottom left-packed rows로
+통합하고 title, symbol, label 기준선과 간격을 맞췄다. Lifecycle convergence, actual Cars stable evidence,
+Canvas/SVG/PNG/PDF parity, public docs와 installed-package 검증을 R51-Exit에서 닫았다.
+
+- 기록: [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md)
+
 Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.

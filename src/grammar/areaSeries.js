@@ -120,6 +120,110 @@ export function deriveAreaSeries(rows, layer) {
   });
 }
 
+export function deriveCenteredAreaSeries(rows, layer) {
+  if (layer?.mark?.type !== "area") {
+    throw new Error("Centered area series derivation requires an area mark.");
+  }
+  const { x, y, x2, y2, group, color } = layer.encoding ?? {};
+  if (
+    !["quantitative", "temporal"].includes(x?.fieldType) ||
+    y?.fieldType !== "quantitative" ||
+    y?.stack !== "center" ||
+    x2 !== undefined ||
+    y2 !== undefined
+  ) {
+    throw new Error(
+      `Centered area mark "${layer.id}" requires one x field and one quantitative y field without ranged endpoints.`
+    );
+  }
+  if (group?.fieldType !== "nominal") {
+    throw new Error(`Centered area mark "${layer.id}" requires a nominal group encoding.`);
+  }
+  if (color !== undefined && color.field !== group.field) {
+    throw new Error(
+      `Centered area color on mark "${layer.id}" must match its group field.`
+    );
+  }
+  const xValues = x.fieldType === "temporal"
+    ? readTemporalField(rows, x.field)
+    : readQuantitativeField(rows, x.field);
+  const yValues = readQuantitativeField(rows, y.field);
+  const groups = readNominalField(rows, group.field);
+  const groupOrder = [];
+  const positions = new Set();
+  const byGroup = new Map();
+  for (let index = 0; index < rows.length; index += 1) {
+    const key = groups[index];
+    if (!byGroup.has(key)) {
+      groupOrder.push(key);
+      byGroup.set(key, new Map());
+    }
+    const values = byGroup.get(key);
+    if (values.has(xValues[index])) {
+      throw new Error(
+        `Centered area mark "${layer.id}" has duplicate ${group.field}/${x.field} rows.`
+      );
+    }
+    values.set(xValues[index], yValues[index]);
+    positions.add(xValues[index]);
+  }
+  const orderedPositions = [...positions].sort((left, right) => left - right);
+  if (groupOrder.length === 0 || orderedPositions.length < 2) {
+    throw new Error(
+      `Centered area mark "${layer.id}" requires at least two aligned positions.`
+    );
+  }
+  for (const [key, values] of byGroup) {
+    if (
+      values.size !== orderedPositions.length ||
+      orderedPositions.some(position => !values.has(position))
+    ) {
+      throw new Error(
+        `Centered area series "${String(key)}" requires one aligned value at every x position.`
+      );
+    }
+  }
+
+  const valuesBySeries = groupOrder.map(() => []);
+  for (const position of orderedPositions) {
+    const partition = groupOrder.map(key => byGroup.get(key).get(position));
+    const segments = new Map(
+      layoutSeriesPartition(partition, "center").map(segment => [
+        segment.index,
+        segment
+      ])
+    );
+    let endpoint = -partition.reduce((sum, value) => sum + value, 0) / 2;
+    for (let index = 0; index < groupOrder.length; index += 1) {
+      const segment = segments.get(index);
+      valuesBySeries[index].push({
+        x: position,
+        y: partition[index],
+        lower: segment?.start ?? endpoint,
+        upper: segment?.end ?? endpoint
+      });
+      if (segment !== undefined) endpoint = segment.end;
+    }
+  }
+  const series = groupOrder.map((key, index) => ({
+    key: {
+      [group.field]: key,
+      ...(color === undefined ? {} : { [color.field]: key })
+    },
+    values: valuesBySeries[index]
+  }));
+  return cloneAndFreeze({
+    mode: "y-center",
+    orientation: "vertical",
+    xValues: orderedPositions,
+    yValues: series.flatMap(item => item.values.flatMap(value => [
+      value.lower,
+      value.upper
+    ])),
+    series
+  });
+}
+
 export function deriveDensityAreaSeries(rows, layer, transform) {
   if (layer?.mark?.type !== "area") {
     throw new Error("Density area derivation requires a semantic area mark.");
@@ -233,13 +337,19 @@ export function layoutDensityAreaSeries(derived, layout = "overlay") {
         segment
       ])
     );
+    let zeroThicknessEndpoint = layout === "center"
+      ? -densities.reduce((sum, value) => sum + value, 0) / 2
+      : 0;
     for (let index = 0; index < derived.series.length; index += 1) {
       const segment = segments.get(index);
       valuesBySeries[index].push({
         x,
-        lower: segment?.start ?? 0,
-        upper: segment?.end ?? 0
+        lower: segment?.start ?? zeroThicknessEndpoint,
+        upper: segment?.end ?? zeroThicknessEndpoint
       });
+      if (segment !== undefined && ["stack", "fill", "center"].includes(layout)) {
+        zeroThicknessEndpoint = segment.end;
+      }
     }
   }
 

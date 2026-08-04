@@ -78,6 +78,7 @@ export type ScaleType =
   | "quantile"
   | "threshold";
 export type StackMode = "zero" | "normalize" | null;
+export type YStackMode = StackMode | "center";
 export type CompositionAlign = "start" | "center" | "end";
 export interface CompositionPadding {
   top?: number;
@@ -370,6 +371,15 @@ export type WindowOperation =
       as: string;
       offset?: number;
       default?: unknown;
+    }
+  | {
+      op: "movingMean" | "movingSum";
+      field: string;
+      as: string;
+      frame: {
+        preceding: number;
+        following?: number;
+      };
     };
 export interface DatasetWindowSort {
   readonly field: string;
@@ -388,12 +398,35 @@ export type DatasetWindowOperation =
       readonly as: string;
       readonly offset: number;
       readonly default: unknown;
+    }
+  | {
+      readonly op: "movingMean" | "movingSum";
+      readonly field: string;
+      readonly as: string;
+      readonly frame: {
+        readonly preceding: number;
+        readonly following: number;
+      };
     };
 export interface DatasetWindowTransform {
   readonly type: "window";
   readonly partitionBy: readonly string[];
   readonly sortBy: readonly DatasetWindowSort[];
   readonly operations: readonly DatasetWindowOperation[];
+}
+export type TimeUnit =
+  | "year"
+  | "quarter"
+  | "month"
+  | "day"
+  | "hour"
+  | "minute"
+  | "second";
+export interface DatasetTimeUnitTransform {
+  readonly type: "timeUnit";
+  readonly field: string;
+  readonly unit: TimeUnit;
+  readonly as: string;
 }
 export interface Bin2DCounts {
   x: number;
@@ -451,6 +484,7 @@ export type DatasetTransform =
   | DatasetDensityTransform
   | DatasetHorizonTransform
   | DatasetIntervalTransform
+  | DatasetTimeUnitTransform
   | DatasetWindowTransform;
 export interface CreateDerivedDataOptions {
   id: string;
@@ -518,7 +552,8 @@ export type ColorLayout =
   | "fill"
   | "group"
   | "overlay"
-  | "diverging";
+  | "diverging"
+  | "center";
 export type ScalarAggregateOperation =
   | "count" | "sum" | "mean" | "median" | "min" | "max"
   | "distinct" | "valid" | "missing"
@@ -918,6 +953,9 @@ export interface PositionEncodingOptions {
   stack?: StackMode;
 }
 
+export type YPositionEncodingOptions =
+  Omit<PositionEncodingOptions, "stack"> & { stack?: YStackMode };
+
 export interface ThetaScaleOptions {
   id?: string;
   type?: "linear" | "time" | "band" | "point";
@@ -1109,6 +1147,14 @@ export interface WindowDataOptions {
   partitionBy?: string | readonly string[];
   sortBy?: readonly WindowSort[];
   operations: readonly WindowOperation[];
+}
+
+export interface TimeUnitDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  unit: TimeUnit;
+  as: string;
 }
 
 export interface Bin2DDataOptions {
@@ -2098,6 +2144,31 @@ export interface RemovePathOrderOptions {
   target?: string;
 }
 
+export type CategoryValue = string | number | boolean;
+export type CategoryOrderSummary = {
+  field: string;
+  aggregate: "sum" | "mean" | "min" | "max";
+};
+export type CategoryOrder =
+  | {
+      values: readonly CategoryValue[];
+      by?: never;
+      direction?: never;
+    }
+  | {
+      values?: never;
+      by: "category" | "count" | CategoryOrderSummary;
+      direction?: "ascending" | "descending";
+    };
+export type OrderCategoriesOptions = {
+  target?: string;
+  channel: "x" | "y";
+} & CategoryOrder;
+export interface RemoveCategoryOrderOptions {
+  target?: string;
+  channel: "x" | "y";
+}
+
 export interface TitleOptions {
   text: string;
   subtitle?: string;
@@ -2143,6 +2214,7 @@ export class ChartProgram {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
+  createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
@@ -2163,6 +2235,21 @@ export class ChartProgram {
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
+  }): ChartProgram;
+  createTickMark(options?: {
+    id?: string;
+    data?: string;
+    length?: number;
+    stroke?: string;
+    strokeWidth?: number;
+    opacity?: number;
+  }): ChartProgram;
+  editTickMark(options: {
+    target?: string;
+    length?: number;
+    stroke?: string;
+    strokeWidth?: number;
+    opacity?: number;
   }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
@@ -2243,7 +2330,7 @@ export class ChartProgram {
   }): ChartProgram;
 
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
-  encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
+  encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
   encodeR(options: RadialEncodingOptions): ChartProgram;
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
@@ -2251,6 +2338,10 @@ export class ChartProgram {
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
   encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: ScaleOptions }): ChartProgram;
   encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ScaleOptions }): ChartProgram;
+  encodeAngle(options:
+    | { target?: string; value: number; field?: never; fieldType?: never }
+    | { target?: string; field: string; fieldType?: "quantitative"; value?: never }
+  ): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
@@ -2276,14 +2367,16 @@ export class ChartProgram {
   }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+  orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
+  removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
   removeEncoding(options: {
     target?: string;
     channel:
       | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset"
       | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth"
-      | "size" | "shape" | "group" | "opacity" | "text";
+      | "size" | "shape" | "angle" | "group" | "opacity" | "text";
   }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;

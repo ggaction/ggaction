@@ -5,7 +5,7 @@ title: Continuous Legends
 
 # Continuous Legends
 
-{% include chart-example.html id="density" %}
+{% include chart-example.html id="multi-legend-layout" %}
 
 ## Continuous color and opacity
 
@@ -32,8 +32,23 @@ override it.
 program.createLegend({ channels: ["opacity"], position: "left" });
 ~~~
 
+For a top or bottom sampled-opacity legend, `titlePosition: "left"` places the
+title, every sample circle, and its numeric label on one reading line. The
+inline defaults use 8 logical pixels from a circle to its label and 20 pixels
+before the next sample. `labels.offset` and `itemGap` override those distances.
+
+~~~javascript
+program.createLegend({
+  channels: ["opacity"],
+  position: "top",
+  titlePosition: "left",
+  count: 3
+});
+~~~
+
 Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
 `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
+Gradient and side-positioned opacity legends require `titlePosition: "top"`.
 Both forms require enough requested Canvas margin and never resize the Canvas.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call

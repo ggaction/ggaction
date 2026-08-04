@@ -36,7 +36,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Signature: `removeEncoding({ target?, channel })`.
 - `channel` is the closed vocabulary `"x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" |
   "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" |
-  "opacity" | "text"`.
+  "angle" | "opacity" | "text"`.
 - `target` resolves the current mark when it owns the requested channel, otherwise the unique active owner;
   ambiguous ownership requires an explicit mark ID. A direct missing assignment is an error.
 - The action removes the semantic assignment and starts rematerialization from an empty concrete mark baseline.
@@ -177,11 +177,14 @@ type AggregateOperation =
   source order fallback으로 정렬한 뒤 encoded finite quantitative value를 선택한다. `order`는
   `"ascending"`으로 normalize되어 semantic state에 저장된다. 유효한 candidate가 없거나 order-key
   type이 한 group 안에서 섞이면 해당 group을 생략한다.
-- `stack`: Implemented values `"zero" | "normalize" | null`. `"normalize"`은 각 non-negative
+- `stack`: Implemented values `"zero" | "normalize" | "center" | null`. `"normalize"`은 각 non-negative
   partition을 합계 1로 정규화하고 automatic y domain을 `[0, 1]`로 고정한다. 합계가 0인 partition은
   graphic을 만들지 않는다. Aggregate bar의 group/overlay는 `stack: null`이어도 semantic start endpoint
   `0`을 domain과 geometry가 함께 사용한다. Automatic domain은 `zero: false`와 무관하게 이 endpoint를
-  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다.
+  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다. `"center"`는 nominal group을 가진
+  non-negative raw/density area의 y에서만 허용한다. 모든 group은 같은 x position을 정확히 한 번씩 가져야
+  하며 각 partition은 deterministic first-appearance group order로 `-total / 2`부터 쌓인다. Missing position,
+  duplicate group/x, ranged area, negative value와 bar center stack은 atomic하게 거부한다.
 - `bin`: 현재 y에서는 지원되지 않는다.
 - Effect: y semantic, scale, final bar/line aggregate grain을 저장하고 mark geometry와
   existing guides를 rematerialize한다.
@@ -199,10 +202,10 @@ type AggregateOperation =
 
 ### Formal values — `encodeY`
 
-- Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | "normalize" | null })`; nominal은 compatible count-style aggregate에만 허용되고 mark/pair policy가 조합을 제한한다.
+- Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | "normalize" | "center" | null })`; `"center"`는 aligned non-negative grouped area y 전용이고, nominal은 compatible count-style aggregate에만 허용되며 mark/pair policy가 조합을 제한한다.
 - Implemented quantitative extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }` for compatible point, line, area, bar and rule materializers.
 - Implemented point fallback: `{ scale?: { unknown?: Finite } }`; temporal `time` remains UTC-only.
-- Proposed (NOT IMPLEMENTED): `{ stack?: "center" }`; full-item extreme selection은 Planned `selectMarks`가 소유한다.
+- Proposed (NOT IMPLEMENTED): full-item extreme selection은 Planned `selectMarks`가 소유한다.
 
 ### Value coverage — `encodeY`
 
@@ -218,9 +221,8 @@ type AggregateOperation =
     candidates, final grain, inferred title, rematerialization과 caller-owned object isolation.
   - 🟡 Planned: full-item min/max selection은 scalar aggregate가 아닌 `selectMarks` selector로 제공한다.
 - `stack`
-  - ✅ Covered: `"zero"`, `"normalize"`, `null`, positive/zero partition, auto `[0, 1]` domain과
-    incompatible policy rejection.
-  - 🟣 Proposed: `"center"`; streamgraph baseline contract가 필요하다.
+  - ✅ Covered: `"zero"`, `"normalize"`, `"center"`, `null`, positive/zero partition, auto `[0, 1]`,
+    symmetric center domain, direct/order-independent area authoring과 incompatible policy rejection.
 - `scale`
   - ✅ Covered: auto/explicit domain/range, nice/zero precedence, shared consumer conflicts.
   - ⚠️ Partial: aggregate/stack/scale option pairwise matrix.
@@ -600,6 +602,67 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   preservation, missing/ambiguous owner와 wrapped trace.
 - Evidence: `test/unit/actions/encodings/path-order.test.js`.
 
+## `orderCategories`
+
+- Signature: `orderCategories({ target?, channel, values } | { target?, channel, by, direction? })`.
+- `channel`: nominal/ordinal Cartesian `"x" | "y"`. Temporal/quantitative position과 appearance channel은
+  지원하지 않는다.
+- `target`: explicit compatible mark ID. 생략하면 current compatible mark, 아니면 unique compatible mark만
+  추론하며 ambiguity는 explicit ID를 요구한다.
+- `values`: non-empty unique observed category list. 빠진 observed category는 source first appearance 순서로
+  뒤에 붙고, dataset에 없는 값은 state 변경 전에 거부한다. Explicit mode는 `direction`과 함께 쓸 수 없다.
+- `by`: `"category" | "count" | { field, aggregate }`. Summary `aggregate`는
+  `"sum" | "mean" | "min" | "max"`이며 모든 source row의 summary field가 finite number여야 한다.
+  Category mode는 하나의 primitive type만 비교하고 number는 numeric, boolean은 `false < true`, string은
+  code-point lexical order를 사용한다.
+- `direction`: computed mode의 `"ascending" | "descending"`, 기본값은 ascending이다. Count/summary/category
+  tie는 source first appearance 순서를 유지한다.
+- Effect: normalized intent를 `semanticSpec.layers[target].encoding[channel].categoryOrder`에 저장한다. Source
+  row와 semantic scale domain은 바꾸지 않고 resolved scale domain, 모든 compatible scale consumer의 mark
+  geometry, connected axis와 selection item order를 한 action에서 rematerialize한다.
+- Scale authority: semantic scale domain은 `"auto"`여야 한다. Existing explicit domain과 category-order
+  assignment를 동시에 두어 precedence를 추측하지 않는다.
+- Shared scales: 같은 dataset/field를 읽는 consumer만 assignment를 공유할 수 있다. Facet shared policy는 base
+  resolved order를 모든 셀에 적용하고 independent policy는 각 cell dataset에서 computed intent를 다시 푼다.
+- Reassignment: 같은 target/channel 호출은 stored intent를 교체한다. Earlier program과 caller-owned arrays 및
+  objects는 변경하지 않는다.
+
+### Formal values — `orderCategories`
+
+- Implemented: `orderCategories({ target?: UserId; channel: "x" | "y" } & ({ values: readonly CategoryValue[] } | { by: "category" | "count" | { field: FieldName; aggregate: "sum" | "mean" | "min" | "max" }; direction?: "ascending" | "descending" }))`.
+- Proposed (NOT IMPLEMENTED): locale/natural collation, comparator callbacks, null placement, temporal ordering,
+  appearance-channel ordering and source-row reordering.
+
+### Value coverage — `orderCategories`
+
+- ✅ Covered: complete/partial explicit list, unknown/duplicate values and first-appearance completion.
+- ✅ Covered: category/count and sum/mean/min/max in both direction families, stable ties and caller ownership.
+- ✅ Covered: x/y, bar/point, current/unique/explicit/ambiguous target, incompatible channel/type and shared consumers.
+- ✅ Covered: scale domain, mark geometry, axes, selection item order, reassignment, shared/independent facet replay.
+- Evidence: `test/unit/grammar/category-order.test.js`,
+  `test/unit/actions/encodings/category-order.test.js` and
+  `test/gates/ordered-category-bar/`.
+
+## `removeCategoryOrder`
+
+- Signature: `removeCategoryOrder({ target?, channel })`.
+- Target/channel resolution은 `orderCategories`와 같고 active category-order assignment가 반드시 있어야 한다.
+- Effect: complete `encoding[channel].categoryOrder` assignment를 structural removal하고 automatic observed
+  first-appearance domain, mark geometry, connected axis와 selection item order를 다시 materialize한다.
+- Earlier program, source row order, semantic scale definition과 guide identity는 유지한다.
+
+### Formal values — `removeCategoryOrder`
+
+- Implemented: `removeCategoryOrder({ target?: UserId; channel: "x" | "y" })`.
+- Proposed (NOT IMPLEMENTED): generic scale-domain removal alias.
+
+### Value coverage — `removeCategoryOrder`
+
+- ✅ Covered: inferred/explicit removal, automatic-order restoration, immutable branch preservation,
+  missing/ambiguous assignment와 wrapped trace.
+- Evidence: `test/unit/actions/encodings/category-order.test.js` and
+  `test/gates/ordered-category-bar/`.
+
 ## `encodeHistogram`
 
 - Signature: `encodeHistogram({ field, target?, coordinate?, maxBins?, binStep?, binBoundaries?, stack?, xScale?, yScale? })`
@@ -806,9 +869,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `target`: point, line, bar, rect 또는 area ID; current/unique inference를 지원한다.
 - `fieldType`: `"nominal" | "ordinal" | "quantitative" | "temporal"`; 기본값은 nominal이다.
   Ordinal은 숫자를 포함한 ordered category를 categorical palette와 first-appearance domain으로 매핑한다.
-- `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외한
-  네 layout을 지원한다. Histogram default는 stack, ordinal aggregate bar default는 group, area default는
-  overlay다. Point/line과 continuous color는 layout을 거부하며 `"center"`는 Proposed다.
+- `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외하고
+  `"center"`를 포함한 다섯 layout을 지원한다. Histogram default는 stack, ordinal aggregate bar default는
+  group, area default는 overlay다. Point/line과 continuous color는 layout을 거부한다.
 - `aggregate`: aggregate bar continuous color에서만 사용한다. Color field가 measure field와 같으면 measure
   aggregate를 상속하고, 다른 field는 compatible aggregate를 명시해야 한다. 집계는 최종 category rect
   grain에서 독립적으로 계산한다.
@@ -826,8 +889,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   Missing color나 incomplete position row는 cell과 automatic domain에서 함께 생략한다.
 - Effect: color semantic, resolved layout과 scale을 저장한다. `group`은 orientation에 따라 wrapped
   `encodeXOffset` 또는 `encodeYOffset`, `fill`은
-  wrapped `encodeY({ stack: "normalize" })`, overlay는 non-stacked y, stack/diverging은 zero-stack y를
-  사용한다. Aggregate bar group/overlay의 semantic start endpoint는 0이며 scale domain과 concrete rect가
+  wrapped `encodeY({ stack: "normalize" })`, center는 wrapped `encodeY({ stack: "center" })`, overlay는
+  non-stacked y, stack/diverging은 zero-stack y를 사용한다. Raw area center는 color field의 nominal group이
+  없을 때 wrapped `encodeGroup`으로 같은 field를 원자적으로 만든다. Aggregate bar group/overlay의 semantic
+  start endpoint는 0이며 scale domain과 concrete rect가
   같은 endpoint를 소비한다. Bar는 rect, area는 closed path로 concrete materialize한다.
 - Reassignment: 같은 target의 categorical color field를 교체한다. omitted scale ID는 current color scale을
   재사용하고 explicit new ID는 새 scale을 만든다. Existing compatible legend의 domain, symbols,
@@ -840,8 +905,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales require quantitative point color, aggregate is valid only for quantitative aggregate bars, and mark compatibility narrows the categorical layout set.
-- Proposed (NOT IMPLEMENTED): `{ layout?: "center" }`.
+- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales require quantitative point color, aggregate is valid only for quantitative aggregate bars, and mark compatibility narrows the categorical layout set.
+- Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeColor`
 
@@ -853,10 +918,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `aggregate`
   - ✅ Covered: matching-field inheritance, explicit alternate-field aggregate, ambiguous omission and invalid operation.
 - `layout`
-  - ✅ Covered: omission, all five values, bar/area compatibility, normalized and signed baseline policies,
+  - ✅ Covered: omission, all six values, bar/area compatibility, normalized, signed and centered baseline policies,
     group/overlay zero endpoint, positive/mixed/all-negative/zero partitions, incompatible explicit domain,
-    no-auto-opacity overlay, invalid transition atomicity와 `encodeGroup`과의 distinct ownership.
-  - 🟣 Proposed: `"center"` streamgraph layout.
+    aligned/missing/duplicate center topology, no-auto-opacity overlay, invalid transition atomicity와
+    center의 wrapped `encodeGroup` ownership.
 - `scale.id/type/domain`
   - ✅ Covered: ordinal scale default, nominal/ordinal field types, explicit ID/order, incomplete explicit domain rejection.
 - `scale.range/palette`
@@ -968,6 +1033,38 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: automatic and explicit 12-shape range, unique validation, capacity error and heterogeneous output.
   - ✅ Covered: equal-area mark/legend recipes and Canvas path-ready concrete geometry.
 - Evidence: point appearance, mark-schema and regression chart/guide tests.
+
+## `encodeAngle`
+
+- Signature: `encodeAngle({ target?, value } | { target?, field, fieldType? })`.
+- `target`: current compatible point/Tick, otherwise the unique compatible mark. Ambiguity requires an explicit ID.
+- Exactly one of `value` or `field` is required. Constant values are finite degrees; fields are non-empty names whose
+  every source row contains a finite number. `fieldType` defaults to and only accepts `"quantitative"`.
+- Degrees are direct graphical values with no scale or legend. 0° points up and positive values rotate clockwise;
+  negative and greater-than-360 values retain their literal semantic value and use periodic geometry.
+- Reassignment replaces the complete prior datum/field branch. Point and Tick identity, data, positions, appearance,
+  selection, and highlight state remain intact.
+- Tick endpoints rotate around each x/y anchor while preserving center and length. Non-circular point glyphs store
+  rotated concrete path commands with unchanged area; circle rotation is a valid visual no-op.
+- `removeEncoding({ target?, channel: "angle" })` removes the assignment and rematerializes the unrotated baseline.
+- Filter, facet, Canvas/scale edits, point jitter, and durable highlight replay recompute from stored semantics.
+- Renderers read only the resulting line endpoints, circle/rect children, or path commands from `graphicSpec`.
+
+### Formal values — `encodeAngle`
+
+- Implemented: `encodeAngle({ target?: UserId; value: Finite; field?: never; fieldType?: never } | { target?: UserId; field: FieldName; fieldType?: "quantitative"; value?: never })`.
+- Proposed (NOT IMPLEMENTED): angle scales/legends, radians, automatic normalization, and rotation for other marks.
+
+### Value coverage — `encodeAngle`
+
+- ✅ Covered: point/Tick inferred and explicit targets, constant/field assignment, reassignment, and removal.
+- ✅ Covered: cardinal/intercardinal direction, negative/greater-than-360 periodic geometry, Tick center/length and
+  point-area invariance.
+- ✅ Covered: incomplete/complete positions, Canvas, filter, facet, jitter, selection/highlight replay, and immutable
+  earlier programs.
+- ✅ Covered: missing/non-finite fields, invalid field type, exclusive arguments, unsupported/ambiguous targets.
+- Evidence: `test/unit/actions/encodings/angle.test.js`, `test/unit/grammar/direction.test.js`,
+  `test/unit/grammar/schemas/mark-schema.test.js`, and the Roadmap 5 Phase 4 chart parity suite.
 
 ## `encodeOpacity`
 

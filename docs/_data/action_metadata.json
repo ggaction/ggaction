@@ -34,6 +34,11 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "createTimeUnitData": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createBin2DData": {
     "operation": "create",
     "layer": "user-facing",
@@ -50,6 +55,11 @@
     "domain": "statistics"
   },
   "createPointMark": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createTickMark": {
     "operation": "create",
     "layer": "user-facing",
     "domain": "marks"
@@ -75,6 +85,11 @@
     "domain": "marks"
   },
   "editPointMark": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editTickMark": {
     "operation": "edit",
     "layer": "user-facing",
     "domain": "marks"
@@ -174,6 +189,11 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "encodeAngle": {
+    "operation": "encode",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
   "encodeOpacity": {
     "operation": "encode",
     "layer": "user-facing",
@@ -245,6 +265,16 @@
     "domain": "encodings"
   },
   "removePathOrder": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
+  "orderCategories": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
+  "removeCategoryOrder": {
     "operation": "remove",
     "layer": "user-facing",
     "domain": "encodings"

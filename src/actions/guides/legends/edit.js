@@ -54,7 +54,7 @@ function editContinuous(program, kind, previous, args) {
     ? ["target", "position", "align", "offset", "title", "labels",
       "titleStyle", "border", "count", "gradient"]
     : ["target", "position", "align", "offset", "title", "symbol", "labels",
-      "titleStyle", "itemGap", "border", "count"];
+      "titleStyle", "titlePosition", "itemGap", "border", "count"];
   for (const key of Object.keys(args)) {
     if (!allowed.includes(key)) throw new Error(`${kind} legend does not accept ${key}.`);
   }
@@ -69,18 +69,25 @@ function editContinuous(program, kind, previous, args) {
   const title = titleMode === "auto"
     ? inferred
     : typeof titleMode === "string" ? titleMode : previous.title;
+  const titlePosition = args.titlePosition ?? previous.titlePosition;
+  const enteringInline = kind === "opacity" &&
+    titlePosition === "left" && previous.titlePosition !== "left";
+  const labels = mergeObject(previous.labels, args.labels);
   const normalized = normalizeContinuousLegend({
     target: previous.target,
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,
     offset: args.offset ?? previous.offset,
     count: args.count ?? previous.count,
+    titlePosition,
     title,
-    labels: mergeObject(previous.labels, args.labels),
+    labels: enteringInline && args.labels?.offset === undefined
+      ? { ...labels, offset: 8 }
+      : labels,
     titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
     border: mergeBorder(previous.border, args.border),
     ...(kind === "opacity" ? {
-      itemGap: args.itemGap ?? previous.itemGap,
+      itemGap: args.itemGap ?? (enteringInline ? 20 : previous.itemGap),
       symbol: args.symbol ?? previous.symbol
     } : {})
   }, kind);
@@ -112,9 +119,7 @@ function editContinuous(program, kind, previous, args) {
     before: kind === "gradient" ? "colorGradientStrips" : "opacityLegendSymbols"
   });
   next = reconcileGraphic(next, `${prefix}Title`, titleVisible, { type: "text" });
-  return kind === "gradient"
-    ? next.rematerializeGradientLegend()
-    : next.rematerializeOpacityLegend();
+  return next.rematerializeLegend();
 }
 
 function editInterval(program, previous, args) {
@@ -165,7 +170,7 @@ function editInterval(program, previous, args) {
   next = reconcileGraphic(next, "colorLegendTitle", titleVisible, {
     type: "text"
   });
-  return next.rematerializeIntervalLegend();
+  return next.rematerializeLegend();
 }
 
 function editStrokeWidth(program, previous, args) {
@@ -220,7 +225,7 @@ function editStrokeWidth(program, previous, args) {
   next = reconcileGraphic(next, "strokeWidthLegendTitle", titleVisible, {
     type: "text"
   });
-  return next.rematerializeStrokeWidthLegend();
+  return next.rematerializeLegend();
 }
 
 function categoricalSymbolIds(config) {
