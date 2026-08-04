@@ -82,3 +82,7 @@ legend families; the current categorical-only `titlePosition: "left"` behavior i
 The comparison is primitive review evidence only. Selecting the inline target would require an explicit public-contract
 decision for continuous `titlePosition: "left"`; selecting an adjustable inter-block gap would require a distinct option
 because existing `itemGap` owns spacing inside one block.
+
+The follow-up comparison holds the 40-pixel block gap and inline titles constant, then isolates continuous label flow:
+the first candidate retains numeric labels below their sampled symbols, while the second places each symbol and numeric
+label side by side on the common reading line. Both candidates remain primitive targets until one is approved.

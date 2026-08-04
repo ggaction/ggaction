@@ -137,3 +137,34 @@ test("places both titles inline before their graphical content", () => {
     );
   }
 });
+
+test("places continuous symbols and labels in one horizontal reading line", () => {
+  const program = createHorizontalLegendOptionProgram(loadCars(), {
+    gap: 40,
+    label: "FULLY INLINE",
+    inlineTitles: true,
+    inlineContinuousLabels: true
+  });
+  const color = blockBounds(program, "color");
+  const opacity = blockBounds(program, "opacity");
+  const title = program.graphicSpec.objects.opacityLegendTitle.properties;
+  const symbols = program.graphicSpec.objects.opacityLegendSymbols.items;
+  const labels = program.graphicSpec.objects.opacityLegendLabels.items;
+  const labelWidths = [6.36, 19.2, 22.32];
+  assert.equal(opacity.left - color.right, 40);
+  for (let index = 0; index < symbols.length; index += 1) {
+    const symbol = symbols[index].properties;
+    const label = labels[index].properties;
+    assert.equal(symbol.y, title.y);
+    assert.equal(label.y, title.y);
+    assert.equal(label.textAlign, "left");
+    assert.equal(label.x - (symbol.x + symbol.radius), 8);
+    if (index > 0) {
+      const previous = labels[index - 1].properties;
+      assert.ok(Math.abs(
+        symbol.x - symbol.radius -
+        (previous.x + labelWidths[index - 1]) - 20
+      ) < 1e-9);
+    }
+  }
+});

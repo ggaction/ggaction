@@ -46,8 +46,11 @@ export const horizontalCallChain = `hconcat({
   align: "start"
 });`;
 
-function optionCallChain({ gap, inlineTitles }) {
-  return `horizontalLegendOption({ gap: ${gap}, inlineTitles: ${inlineTitles} });`;
+function optionCallChain({ gap, inlineTitles, inlineContinuousLabels = false }) {
+  const continuous = inlineContinuousLabels
+    ? ", inlineContinuousLabels: true"
+    : "";
+  return `horizontalLegendOption({ gap: ${gap}, inlineTitles: ${inlineTitles}${continuous} });`;
 }
 
 function comparisonDimensions(width, height) {
@@ -140,7 +143,16 @@ export const visualVariants = Object.freeze([
       title: "Cars Top Legends · Inline Titles and 40 Pixel Gap",
       gap: 40,
       inlineTitles: true,
+      inlineContinuousLabels: false,
       label: "40 PX · inline titles"
+    },
+    {
+      variant: "cars-top-legends-single-line-gap-40",
+      title: "Cars Top Legends · Single-Line Continuous Labels",
+      gap: 40,
+      inlineTitles: true,
+      inlineContinuousLabels: true,
+      label: "40 PX · fully inline"
     }
   ].map(options => defineVisualVariant({
     chart: "multi-legend-layout",

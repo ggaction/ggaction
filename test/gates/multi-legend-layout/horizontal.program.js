@@ -3,6 +3,7 @@ import {
   resolveConcreteGraphicBounds,
   unionConcreteGraphicBounds
 } from "../../../src/grammar/schemas/graphicBounds.js";
+import { measureTextWidth } from "../../../src/core/textMetrics.js";
 
 import { REVIEW_LAYOUT } from "./reference-values.js";
 
@@ -160,15 +161,65 @@ function placeInlineTitles(program, gap) {
   return next;
 }
 
+function placeContinuousLabelsInline(program) {
+  const title = program.graphicSpec.objects.opacityLegendTitle.properties;
+  const symbols = program.graphicSpec.objects.opacityLegendSymbols;
+  const labels = program.graphicSpec.objects.opacityLegendLabels;
+  const titleBounds = resolveConcreteGraphicBounds(
+    program.graphicSpec,
+    "opacityLegendTitle"
+  );
+  let cursor = titleBounds.right + 20;
+  const nextSymbols = [];
+  const nextLabels = [];
+  for (let index = 0; index < symbols.items.length; index += 1) {
+    const symbol = symbols.items[index];
+    const label = labels.items[index];
+    const radius = symbol.properties.radius;
+    const symbolX = cursor + radius;
+    nextSymbols.push({
+      type: symbol.type ?? symbols.type,
+      properties: { ...symbol.properties, x: symbolX, y: title.y }
+    });
+    cursor = symbolX + radius + 8;
+    nextLabels.push({
+      type: label.type ?? labels.type,
+      properties: {
+        ...label.properties,
+        x: cursor,
+        y: title.y,
+        textAlign: "left"
+      }
+    });
+    cursor += measureTextWidth(label.properties.text, {
+      fontSize: label.properties.fontSize
+    });
+    if (index < symbols.items.length - 1) cursor += 20;
+  }
+  return program
+    .editGraphics({
+      target: "opacityLegendSymbols",
+      property: "items",
+      value: nextSymbols
+    })
+    .editGraphics({
+      target: "opacityLegendLabels",
+      property: "items",
+      value: nextLabels
+    });
+}
+
 export function createHorizontalLegendOptionProgram(cars, {
   gap,
   inlineTitles = false,
+  inlineContinuousLabels = false,
   label
 }) {
   const base = createCarsHorizontalLegendProgram(cars, "top");
-  const placed = inlineTitles
+  let placed = inlineTitles
     ? placeInlineTitles(base, gap)
     : widenHorizontalGap(base, gap);
+  if (inlineContinuousLabels) placed = placeContinuousLabelsInline(placed);
   return addReviewLabel(placed, label);
 }
 
