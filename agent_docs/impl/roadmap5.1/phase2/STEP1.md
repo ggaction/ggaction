@@ -4,12 +4,12 @@
 
 - [x] Existing top/bottom family bounds normalization
 - [x] Stable horizontal-edge group ordering
-- [ ] Plot-left sequential top/bottom placement grammar
+- [x] Plot-left sequential top/bottom placement grammar
 - [x] Shared title baseline, element start와 12-pixel gap
 - [x] Family rematerializers와 sibling-wide lane replay 연결
 - [x] Create/edit/remove/scale/Canvas convergence evidence
-- [ ] Actual-data visual and Canvas/SVG/PNG/PDF evidence
-- [ ] Second replacement Gate checkpoint commit/push
+- [x] Actual-data visual and Canvas/SVG/PNG/PDF evidence
+- [x] Second replacement Gate checkpoint commit/push — `257fc895`
 
 ## Implementation boundary
 

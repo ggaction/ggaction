@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`changes-requested`
+`ready-for-review`
 
 ## Approval target
 
@@ -24,15 +24,18 @@ publish or documentation deployment.
 
 ## Remote checkpoint
 
-- Replacement implementation checkpoint: `313b2c63` (`origin/codex/roadmap5-1-multi-legend-layout`)
+- Replacement implementation checkpoint: `257fc895` (`origin/codex/roadmap5-1-multi-legend-layout`)
 - Gate record checkpoint: this document's commit on the same remote branch
 
 ## Implemented result
 
-- Disjoint occupied x-ranges share the nearest row; only actual overlap creates an outward row with a 24-pixel gap.
+- Every multi-legend top/bottom row starts at the plot's left edge and places blocks consecutively in stable order.
+- Adjacent final occupied bounds keep exactly 24 logical pixels; only plot-width exhaustion creates an outward row.
+- Every wrapped row restarts at the plot's left edge, while a block wider than the plot fails atomically.
 - Every row aligns title baselines and graphical-element tops with an exact 12-pixel internal gap.
 - Top and bottom gradient/opacity labels follow their graphical elements with the configured label gap.
-- Block-local left/center/right alignment, direction and item grid remain unchanged.
+- Multi-legend rows ignore block-local absolute alignment; single legends preserve their existing alignment behavior.
+- Block-local direction and item grid remain unchanged.
 - Categorical, gradient and opacity recipes align across top and bottom, including bordered three-family combinations.
 - Layer declaration and family order produce the same coordinates regardless of authoring call order.
 - Legend edit, sibling removal, scale edit and Canvas edit replay every retained block before lane placement.
@@ -41,14 +44,13 @@ publish or documentation deployment.
 
 ## Verification
 
-- `npm test`: 2,044 passed
-- `npm run test:unit`: 1,383 passed
+- `npm test`: 2,045 passed
 - `npm run test:contracts`: 161 passed
-- `npm run test:coverage`: 94.75% lines, 90.18% branches, 98.5% functions; 71 critical floors passed
+- `npm run test:coverage`: 94.76% lines, 90.16% branches, 98.5% functions; 71 critical floors passed
 - `npm run test:docs`: 45 passed
 - `npm run test:gates`: 6 passed
 - `node scripts/run-tests.js render test/gates/multi-legend-layout`: 6 passed
-- Package artifact: 412 entries, 384,793 packed bytes, 1,819,082 unpacked bytes
+- Package artifact: 412 entries, 384,914 packed bytes, 1,819,873 unpacked bytes
 - Render parity: Canvas, SVG, PNG and PDF consume the same final `graphicSpec` coordinates
 
 ## Review artifact
@@ -66,5 +68,5 @@ actual-data four-renderer artifact.
 ## Review feedback — 2026-08-04
 
 The replacement checkpoint was rejected because preserving each block's absolute `align` pushed the two Cars
-legends to opposite ends of the plot. The next checkpoint must left-pack every multi-legend row in stable order,
-using 24 pixels between final occupied bounds and wrapping only when the available plot width is exhausted.
+legends to opposite ends of the plot. Checkpoint `257fc895` now left-packs every multi-legend row in stable order,
+uses exactly 24 pixels between final occupied bounds and wraps only when the available plot width is exhausted.
