@@ -691,9 +691,9 @@ async function testTypeScriptConsumer(directory) {
       .encodeY({ field: "value", stack: centerStack })
       .encodeColor({ field: "group", layout: centerLayout });
     void centeredArea;
-    // @ts-expect-error Histogram stacking excludes the area-only center mode.
     const invalidCenteredHistogram: HistogramEncodingOptions = {
       field: "value",
+      // @ts-expect-error Histogram stacking excludes the area-only center mode.
       stack: "center"
     };
     void invalidCenteredHistogram;
