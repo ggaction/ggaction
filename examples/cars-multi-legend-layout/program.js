@@ -18,9 +18,9 @@ export function createCarsMultiLegendLayoutBase(cars, {
       width: 760,
       height: 620,
       margin: {
-        top: position === "top" ? 200 : 40,
+        top: 40,
         right: 70,
-        bottom: position === "bottom" ? 200 : 60,
+        bottom: position === "bottom" ? 100 : 60,
         left: 70
       }
     })

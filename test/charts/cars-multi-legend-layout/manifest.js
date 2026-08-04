@@ -9,8 +9,8 @@ const cars = loadCars();
 
 function callChain(position) {
   const margin = position === "top"
-    ? "{ top: 200, right: 70, bottom: 60, left: 70 }"
-    : "{ top: 40, right: 70, bottom: 200, left: 70 }";
+    ? "{ top: 40, right: 70, bottom: 60, left: 70 }"
+    : "{ top: 40, right: 70, bottom: 100, left: 70 }";
   const offset = position === "bottom" ? ",\n    offset: 60" : "";
   return `chart()
   .createCanvas({
@@ -64,9 +64,9 @@ function variant(position) {
     regions: [{
       name: "plot",
       x: 70,
-      y: position === "top" ? 200 : 40,
+      y: 40,
       width: 620,
-      height: position === "top" ? 360 : 380,
+      height: position === "top" ? 520 : 480,
       minimumInkPixels: 700
     }]
   });

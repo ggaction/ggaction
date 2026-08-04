@@ -27,6 +27,8 @@ PR, merge, release, publish 또는 documentation deployment 권한을 포함하�
 - Both horizontal edges left-pack categorical color and sampled opacity blocks with a 40-pixel occupied-bound gap.
   Titles, symbols and labels share one center line; opacity samples retain 8-pixel symbol-label and 20-pixel
   inter-sample gaps.
+- The stable Cars example reserves only the space the inline lane needs: 40 pixels above the plot for the top
+  variant and 100 pixels below it for the bottom variant, including the x-axis title and its safe separation.
 - Existing stable right/left examples and unit suites retain the approved 24-pixel side-lane grammar, shared
   graphical columns, lifecycle replay and atomic overflow behavior.
 - `legend-layout` capability ownership points only to stable chart/unit tests. `test/gates/multi-legend-layout/`
@@ -43,9 +45,9 @@ PR, merge, release, publish 또는 documentation deployment 권한을 포함하�
 - Public example: `examples/cars-multi-legend-layout/program.js`
 - Stable slice: `test/charts/cars-multi-legend-layout/`
 - Top PNG: `.artifacts/test/png/charts/legend-layout/cars-multi-legend-layout/top-inline-lane/primitive.png`
-  - 1520 × 1240, SHA-256 `22fc1098c77ad1d011537f3a73bd0513887cf0c2bf2b5361dcd0ac9e154f436b`
+  - 1520 × 1240, SHA-256 `4a0b1baecfbdd7ebe6af922e6dc4c652ed765b27c0e4cfe07f2409a313ca1b17`
 - Bottom PNG: `.artifacts/test/png/charts/legend-layout/cars-multi-legend-layout/bottom-inline-lane/primitive.png`
-  - 1520 × 1240, SHA-256 `b6acc9695025719c2b6a2a5e389be682dff72227ac95a1e1c60f1da595c2ba1b`
+  - 1520 × 1240, SHA-256 `85c59647073a0dc2bd11c2125fce39630d99db02b31b403425f1f61fc6d7269b`
 - Renderer artifacts: `.artifacts/test/renderers/charts/legend-layout/cars-multi-legend-layout/`
 
 ## Verification evidence
