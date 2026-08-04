@@ -9,7 +9,7 @@
 - [x] Dependency, workflow annotation와 bundle state 기록
 - [x] Recommended exact boundary와 non-goals 작성
 - [x] Baseline contract verification — `npm run test:contracts`, 161/161 pass
-- [ ] Remote Gate checkpoint 기록
+- [x] Remote Gate checkpoint `c4a8cce3` 기록
 
 ## Baseline
 

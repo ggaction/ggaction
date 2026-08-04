@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## 쉽게 보는 승인 내용
 
@@ -55,4 +55,6 @@ pre-approve later Gate results, public API changes, PR creation, merge, package 
 
 ## Remote checkpoint
 
-- Pending verification and push.
+- Verified scope checkpoint: `c4a8cce3fa596d9e46a43cfa2cbbc995e716dd64`
+- Remote branch: `origin/codex/roadmap5-2-hardening`
+- Verification: `npm run test:contracts` — 161/161 pass
