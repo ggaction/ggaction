@@ -2,15 +2,15 @@
 
 ## 진행 상태
 
-- [ ] Approved horizontal Cars target의 independent reference values 고정
-- [ ] Stable primitive program과 shortest public action chain exact equivalence
-- [ ] Stable chart manifest, PNG expectation과 four-renderer artifact
-- [ ] `legend-layout` capability를 stable chart slice로 연결
-- [ ] Active review test/artifact ownership 제거
-- [ ] Current contract, architecture, public/generated docs drift audit
-- [ ] Installed JavaScript/TypeScript consumer와 package size guard
-- [ ] Full normal/render/coverage/package suite
-- [ ] R51-Exit checkpoint commit/push와 Gate review 전환
+- [x] Approved horizontal Cars target의 independent reference values 고정
+- [x] Stable primitive program과 shortest public action chain exact equivalence
+- [x] Stable chart manifest, PNG expectation과 four-renderer artifact
+- [x] `legend-layout` capability를 stable chart slice로 연결
+- [x] Active review test/artifact ownership 제거
+- [x] Current contract, architecture, public/generated docs drift audit
+- [x] Installed JavaScript/TypeScript consumer와 package size guard
+- [x] Full normal/render/coverage/package suite
+- [x] R51-Exit checkpoint commit/push와 Gate review 전환 — `ca3f5d63`
 
 ## Stable evidence target
 

@@ -9,13 +9,13 @@ package를 원격 체크포인트로 만든 뒤 사용자의 explicit 승인 전
 
 ## 진행 상태
 
-- [ ] Phase 1~2 승인 결과와 Current contract 재감사
-- [ ] Actual Cars horizontal lane을 stable primitive/public chart pair로 승격
-- [ ] Gate-only 비교 artifact와 test ownership 정리
-- [ ] Canvas/SVG/PNG/PDF stable artifact와 exact parity 검증
-- [ ] Public docs, generated docs, declarations와 package consumer 동기화
-- [ ] Full normal/render/coverage/package verification
-- [ ] R51-Exit remote checkpoint 기록
+- [x] Phase 1~2 승인 결과와 Current contract 재감사
+- [x] Actual Cars horizontal lane을 stable primitive/public chart pair로 승격
+- [x] Gate-only 비교 artifact와 test ownership 정리
+- [x] Canvas/SVG/PNG/PDF stable artifact와 exact parity 검증
+- [x] Public docs, generated docs, declarations와 package consumer 동기화
+- [x] Full normal/render/coverage/package verification
+- [x] R51-Exit remote checkpoint 기록 — `ca3f5d63`
 - [ ] 사용자 explicit R51-Exit approval
 
 ## Gate R51-Exit
