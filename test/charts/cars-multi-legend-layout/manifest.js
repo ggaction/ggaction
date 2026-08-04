@@ -11,7 +11,7 @@ function callChain(position) {
   const margin = position === "top"
     ? "{ top: 40, right: 70, bottom: 60, left: 70 }"
     : "{ top: 40, right: 70, bottom: 100, left: 70 }";
-  const offset = position === "bottom" ? ",\n    offset: 60" : "";
+  const offset = position === "top" ? 14 : 69;
   return `chart()
   .createCanvas({
     width: 760,
@@ -37,7 +37,8 @@ function callChain(position) {
     position: "${position}",
     align: "left",
     columns: 3,
-    titlePosition: "left"${offset}
+    titlePosition: "left",
+    offset: ${offset}
   })
   .createLegend({
     target: "points",
@@ -45,7 +46,8 @@ function callChain(position) {
     position: "${position}",
     align: "right",
     count: 3,
-    titlePosition: "left"${offset}
+    titlePosition: "left",
+    offset: ${offset}
   });`;
 }
 

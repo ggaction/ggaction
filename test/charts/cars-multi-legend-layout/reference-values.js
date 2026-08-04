@@ -18,7 +18,8 @@ export const LEGEND_LAYOUT = Object.freeze({
   opacityItems: OPACITY_ITEMS,
   opacityLabelWidth: Object.freeze([6.36, 19.2, 22.32]),
   top: Object.freeze({
-    lineY: 25.5,
+    lineY: 19.5,
+    chartGap: 13.5,
     colorSymbolX: Object.freeze([132, 199, 280]),
     colorLabelX: Object.freeze([154, 221, 302]),
     opacityTitleX: 377.52,
@@ -26,7 +27,8 @@ export const LEGEND_LAYOUT = Object.freeze({
     opacityLabelX: Object.freeze([489.46, 537.8199999999999, 599.02])
   }),
   bottom: Object.freeze({
-    lineY: 586.5,
+    lineY: 595.5,
+    chartGap: 20,
     colorSymbolX: Object.freeze([132, 195, 272]),
     colorLabelX: Object.freeze([154, 217, 294]),
     opacityTitleX: 369.52,

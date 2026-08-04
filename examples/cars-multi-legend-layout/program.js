@@ -42,7 +42,7 @@ export function createCarsMultiLegendLayoutBase(cars, {
 export function createCarsMultiLegendLayout(cars, {
   position = "top"
 } = {}) {
-  const offset = position === "bottom" ? { offset: 60 } : {};
+  const offset = position === "top" ? 14 : 69;
   return createCarsMultiLegendLayoutBase(cars, { position })
     .createLegend({
       target: "points",
@@ -51,7 +51,7 @@ export function createCarsMultiLegendLayout(cars, {
       align: "left",
       columns: 3,
       titlePosition: "left",
-      ...offset
+      offset
     })
     .createLegend({
       target: "points",
@@ -60,6 +60,6 @@ export function createCarsMultiLegendLayout(cars, {
       align: "right",
       count: 3,
       titlePosition: "left",
-      ...offset
+      offset
     });
 }

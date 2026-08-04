@@ -29,6 +29,7 @@ PR, merge, release, publish 또는 documentation deployment 권한을 포함하�
   inter-sample gaps.
 - The stable Cars example reserves only the space the inline lane needs: 40 pixels above the plot for the top
   variant and 100 pixels below it for the bottom variant, including the x-axis title and its safe separation.
+  Its nearest visible chart-to-legend gaps are 13.5 pixels above and 20 pixels below.
 - Existing stable right/left examples and unit suites retain the approved 24-pixel side-lane grammar, shared
   graphical columns, lifecycle replay and atomic overflow behavior.
 - `legend-layout` capability ownership points only to stable chart/unit tests. `test/gates/multi-legend-layout/`
@@ -45,9 +46,9 @@ PR, merge, release, publish 또는 documentation deployment 권한을 포함하�
 - Public example: `examples/cars-multi-legend-layout/program.js`
 - Stable slice: `test/charts/cars-multi-legend-layout/`
 - Top PNG: `.artifacts/test/png/charts/legend-layout/cars-multi-legend-layout/top-inline-lane/primitive.png`
-  - 1520 × 1240, SHA-256 `4a0b1baecfbdd7ebe6af922e6dc4c652ed765b27c0e4cfe07f2409a313ca1b17`
+  - 1520 × 1240, SHA-256 `147c88a84ad68e30bdb655db67df1604307c511a7038c708d857caba6fce449e`
 - Bottom PNG: `.artifacts/test/png/charts/legend-layout/cars-multi-legend-layout/bottom-inline-lane/primitive.png`
-  - 1520 × 1240, SHA-256 `85c59647073a0dc2bd11c2125fce39630d99db02b31b403425f1f61fc6d7269b`
+  - 1520 × 1240, SHA-256 `cb0ce4bf84a03734df956e862a08b8dd4e2f1b9b4a0735316f517e82daa54dbb`
 - Renderer artifacts: `.artifacts/test/renderers/charts/legend-layout/cars-multi-legend-layout/`
 
 ## Verification evidence

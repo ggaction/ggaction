@@ -38,6 +38,14 @@ test("left-packs inline legend blocks with the approved reading rhythm", () => {
     const values = LEGEND_LAYOUT[position];
     const color = blockBounds(program, "color");
     const opacity = blockBounds(program, "opacity");
+    const legend = unionConcreteGraphicBounds(program.graphicSpec, [
+      "colorLegendTitle",
+      "colorLegendSymbols",
+      "colorLegendLabels",
+      "opacityLegendTitle",
+      "opacityLegendSymbols",
+      "opacityLegendLabels"
+    ]);
     const objects = program.graphicSpec.objects;
 
     assert.equal(objects.points.items.length, 398);
@@ -45,6 +53,15 @@ test("left-packs inline legend blocks with the approved reading rhythm", () => {
     assert.equal(opacity.left - color.right, LEGEND_LAYOUT.blockGap);
     assert.equal(objects.colorLegendTitle.properties.y, values.lineY);
     assert.equal(objects.opacityLegendTitle.properties.y, values.lineY);
+    assert.equal(
+      position === "top"
+        ? 40 - legend.bottom
+        : legend.top - resolveConcreteGraphicBounds(
+            program.graphicSpec,
+            "xAxisTitle"
+          ).bottom,
+      values.chartGap
+    );
     assert.equal(
       objects.colorLegendSymbols.items.every(item =>
         item.properties.y + item.properties.height / 2 === values.lineY
