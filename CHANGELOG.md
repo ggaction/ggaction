@@ -4,6 +4,25 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.8] - 2026-08-04
+
+### Added
+
+- Added immutable UTC time-unit derivation, semantic category ordering and reset, and partitioned moving mean/sum
+  windows with matching public actions, strict declarations, examples, and Current contracts.
+- Added the Tick mark lifecycle, point/Tick angle encoding, and non-negative centered area stacking with stable
+  Canvas, SVG, PNG, and PDF evidence.
+
+### Changed
+
+- Expanded the public example and documentation corpus with actual-data temporal, ordering, directional Tick,
+  centered-area, and multi-legend charts, plus installed-package coverage for their supported workflows.
+
+### Fixed
+
+- Replaced independent same-edge legend placement with deterministic shared right/left lanes and left-packed
+  top/bottom rows, aligning titles, symbols, and labels while preserving lifecycle convergence and compact margins.
+
 ## [0.0.7] - 2026-07-23
 
 ### Added
@@ -157,6 +176,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
+[0.0.8]: https://github.com/ggaction/ggaction/releases/tag/v0.0.8
 [0.0.7]: https://github.com/ggaction/ggaction/releases/tag/v0.0.7
 [0.0.6]: https://github.com/ggaction/ggaction/releases/tag/v0.0.6
 [0.0.5]: https://github.com/ggaction/ggaction/releases/tag/v0.0.5

@@ -201,7 +201,7 @@ the extra discussion required before public API or architecture changes.
 
 ## Status and development
 
-> **Status:** `0.0.7` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+> **Status:** `0.0.8` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ```bash
 npm install
