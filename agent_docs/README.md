@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**활성 Roadmap은 없다.** 마지막으로 완료된 Roadmap 5.1 Phase 3의 all-edge multi-legend 결과와
-R51-Exit 기록은 [`impl/roadmap5.1/ROADMAP.md`](impl/roadmap5.1/ROADMAP.md)에서 확인한다.
+**현재 활성 Roadmap은 Roadmap 5.2 Phase 0이다.** Repository integrity와 maintainer hardening의 exact scope,
+baseline과 R52-P0-A는 [`impl/roadmap5.2/ROADMAP.md`](impl/roadmap5.2/ROADMAP.md)에서 확인한다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 

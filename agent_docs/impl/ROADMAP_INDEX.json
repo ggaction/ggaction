@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "activeRoadmap": null,
-  "activePhase": null,
+  "activeRoadmap": "roadmap5.2",
+  "activePhase": 0,
   "lastCompletedRoadmap": "roadmap5.1",
   "lastCompletedPhase": 3,
   "roadmaps": [
@@ -74,7 +74,15 @@
       "title": "Multi-Legend Layout Completion",
       "status": "completed",
       "role": "historical-execution-record",
-      "file": "agent_docs/impl/roadmap5.1/ROADMAP.md"
+      "file": "agent_docs/impl/roadmap5.1/ROADMAP.md",
+      "successor": "roadmap5.2"
+    },
+    {
+      "id": "roadmap5.2",
+      "title": "Repository Integrity and Maintainer Hardening",
+      "status": "active",
+      "role": "current-execution-plan",
+      "file": "agent_docs/impl/roadmap5.2/ROADMAP.md"
     }
   ]
 }
