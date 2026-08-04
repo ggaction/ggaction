@@ -1663,13 +1663,15 @@ top-to-bottom block placement를 계산한다. `rematerializeSideLegendLane`은 
 참여한다. Left lane도 item 내부 symbol→label 순서와 resolved domain 순서를 보존하며 y-axis guide와 margin
 충돌을 함께 검증한다. 공간이 부족하면 Canvas를 확장하거나 block을 옮기지 않고 전체 action이 실패한다.
 Top/bottom에 둘 이상의 compatible block이 있으면 `resolveHorizontalLegendLane`이 concrete occupied width를
-stable order로 측정하고 plot left부터 24 logical pixels 간격으로 배치한다. 남은 plot width에 맞지 않는 block만
+stable order로 측정하고 plot left부터 40 logical pixels 간격으로 배치한다. 남은 plot width에 맞지 않는 block만
 바깥의 다음 row로 넘어가며 각 새 row도 plot left에서 시작한다. 이때 multi-legend의 absolute `align`은 placement에
 쓰지 않고 single legend에서만 기존 의미를 유지한다. 각 row는 concrete title baseline과 graphical-element start를
 공유하며 둘 사이를 12 logical pixels로 고정한다. `rematerializeHorizontalLegendLane`은 title과 나머지 content를
 x/y로 별도 translation한 뒤 optional background를 final foreground bounds에서 다시 계산하고 chart title 또는
 x-axis guide collision과 final Canvas bounds를 검증한다. Gradient와 opacity의 top/bottom label은 모두 graphical
-element 뒤에 놓인다.
+element 뒤에 놓인다. Horizontal categorical과 sampled opacity의 `titlePosition: "left"`는 이 stacked-title
+grammar 대신 하나의 graphical center line을 공유한다. Opacity sample은 symbol 뒤 8 pixels에 label을 두고 다음
+sample 전 20 pixels를 유지한다.
 `editLegend`는 channel/scale binding을 바꾸지 않고 nested appearance/layout config만 부분 merge한 뒤
 kind별 wrapped rematerialization을 호출한다.
 

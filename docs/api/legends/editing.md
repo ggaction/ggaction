@@ -28,7 +28,10 @@ Nested label, title, border, and gradient objects merge only the supplied
 leaves. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
 stored semantic title. Gradient and opacity legends accept only their
-kind-compatible options. Right-side stroke-width legends accept only `title`,
+kind-compatible options. A horizontal opacity legend can switch to
+`titlePosition: "left"`; unless spacing is supplied in the same edit, the
+inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
+Right-side stroke-width legends accept only `title`,
 `count`, `labels`, and `titleStyle`.
 
 ## Focused edits

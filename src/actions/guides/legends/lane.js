@@ -289,6 +289,7 @@ function horizontalCollisionBounds(program, edge) {
 function horizontalGroups(program, groups) {
   return groups.map(group => {
     const representative = group.blocks[0];
+    const config = program.guideConfigs.legend?.[representative.kind];
     const titleId = representative.titleId;
     const contentIds = group.blocks.flatMap(block => block.foregroundIds)
       .filter(id => id !== titleId);
@@ -309,6 +310,7 @@ function horizontalGroups(program, groups) {
       titleId,
       contentIds,
       title: representative.title,
+      inline: config?.titlePosition === "left",
       element: representative.symbol.bounds,
       content,
       horizontal: { left: foreground.left, right: foreground.right,

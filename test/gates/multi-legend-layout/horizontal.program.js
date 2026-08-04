@@ -31,7 +31,9 @@ function addReviewLabel(program, text) {
     .editGraphics({ target: "reviewLabel", property: "textBaseline", value: "middle" });
 }
 
-function createCarsHorizontalLegendProgram(cars, position) {
+export function createCarsHorizontalLegendProgram(cars, position, {
+  inline = false
+} = {}) {
   return chart()
     .createCanvas({
       width: REVIEW_LAYOUT.multiWidth,
@@ -62,6 +64,7 @@ function createCarsHorizontalLegendProgram(cars, position) {
       position,
       align: "left",
       columns: 3,
+      ...(inline ? { titlePosition: "left" } : {}),
       ...(position === "bottom" ? { offset: 60 } : {})
     })
     .createLegend({
@@ -70,6 +73,7 @@ function createCarsHorizontalLegendProgram(cars, position) {
       position,
       align: "right",
       count: 3,
+      ...(inline ? { titlePosition: "left" } : {}),
       ...(position === "bottom" ? { offset: 60 } : {})
     });
 }
@@ -115,7 +119,7 @@ function translateBlockX(program, kind, dx) {
 }
 
 function widenHorizontalGap(program, gap) {
-  return translateBlockX(program, "opacity", gap - 24);
+  return translateBlockX(program, "opacity", gap - 40);
 }
 
 function placeInlineBlock(program, kind, cursor, gap) {
@@ -225,12 +229,12 @@ export function createHorizontalLegendOptionProgram(cars, {
 
 export function createHorizontalLegendLaneComparison(cars) {
   const top = addReviewLabel(
-    createCarsHorizontalLegendProgram(cars, "top"),
-    "TOP · left-packed aligned legends"
+    createCarsHorizontalLegendProgram(cars, "top", { inline: true }),
+    "TOP · 40 PX · fully inline"
   );
   const bottom = addReviewLabel(
-    createCarsHorizontalLegendProgram(cars, "bottom"),
-    "BOTTOM · left-packed aligned legends"
+    createCarsHorizontalLegendProgram(cars, "bottom", { inline: true }),
+    "BOTTOM · 40 PX · fully inline"
   );
   return hconcat({
     id: "horizontalLegendLaneComparison",

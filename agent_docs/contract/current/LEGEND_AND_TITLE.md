@@ -48,7 +48,8 @@ type TitleWrap = "word" | "character";
 - `position: "bottom"`만 지정한 기존 호출은 Canvas bottom에 고정된 compact single-row layout을 유지한다.
   `columns`, `direction`, `offset`, `titlePosition`, `itemGap` 중 하나를 명시하면 reserved-margin grid를 사용한다.
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
-- `titlePosition`: `"top" | "left"`, 기본 top.
+- `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
+  legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
 - `title`: non-empty string; 생략하면 encoded source field를 사용한다.
 - `symbol`: `"auto"`, mark-specific shorthand, 또는 `{ layers: [...] }`. layer type은 `line | point | swatch`;
   각 layer는 non-negative size/stroke parameters와 supported point shape를 사용한다.
@@ -73,9 +74,11 @@ type TitleWrap = "word" | "character";
   the same lane. A lane that does not fit the requested margin or Canvas height fails atomically.
 - Two or more top- or bottom-positioned categorical, gradient, or opacity blocks share a horizontal-edge lane.
   The lane starts at the plot's left edge and places blocks consecutively in stable layer/family order with
-  24 logical pixels between occupied bounds. A block moves to the next outward row only when it does not fit
+  40 logical pixels between occupied bounds. A block moves to the next outward row only when it does not fit
   the remaining plot width. Each row shares one title baseline, one graphical-element start line, and an exact
-  12-pixel title-to-element gap. Top and bottom gradient/opacity labels both follow their graphical element.
+  12-pixel title-to-element gap for default top titles. With `titlePosition: "left"`, categorical and sampled
+  opacity blocks instead align one common center line; opacity uses 8 pixels from symbol to label and 20 pixels
+  before the next sample. Top and bottom gradient/opacity labels otherwise follow their graphical element.
   Multi-legend placement ignores absolute block `align`; a single legend retains left/center/right placement.
   Each block keeps its item grid and direction.
 - Coverage: series/histogram/grouped-bar/top/bottom/regression legend tests가 주요 layouts, recipes,
@@ -115,7 +118,8 @@ type TitleWrap = "word" | "character";
 - `offset`
   - ✅ Covered: default `8`, zero/positive, negative/non-finite rejection.
 - `titlePosition`
-  - ✅ Covered: `"top" | "left"`, defaults and invalid value.
+  - ✅ Covered: categorical `"top" | "left"`; horizontal sampled opacity `"top" | "left"`; gradient and side
+    opacity left-title rejection; defaults and invalid value.
 - `title`
   - ✅ Covered: inferred field, explicit non-empty, empty/non-string rejection.
 - `symbol`
@@ -141,9 +145,9 @@ type TitleWrap = "word" | "character";
 - ✅ Covered: left point-composite/size side layout and occupied-bounds failure.
 - ✅ Covered: right/left multi-block column alignment, deterministic authoring order, 24-pixel stacking,
   gradient/opacity, interval/stroke-width, atomic overflow, and the actual-data Cars visual Gate.
-- ✅ Covered: top/bottom plot-left sequential packing and width wrapping, shared title/element rows, exact 12-pixel spacing,
-  categorical/gradient/opacity with and without borders, authoring-order independence, edit/remove/scale/Canvas
-  convergence, collision and overflow failure.
+- ✅ Covered: top/bottom plot-left sequential packing with 40-pixel gaps and width wrapping, shared top-title/element
+  rows with exact 12-pixel spacing, fully inline categorical/opacity center lines, categorical/gradient/opacity with
+  and without borders, authoring-order independence, edit/remove/scale/Canvas convergence, collision and overflow failure.
 - Evidence: series, histogram, grouped-bar, top categorical, regression legend tests,
   `test/unit/layout/legend-lane.test.js`, `test/unit/actions/guides/multi-legend-lane.test.js`, and
   `test/gates/multi-legend-layout/`.
@@ -159,6 +163,8 @@ type TitleWrap = "word" | "character";
 - Categorical and combined point-size legends accept left/right side layout; the first left contract requires
   center alignment and vertical flow. `count` rematerializes an existing size block.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
+  Horizontal opacity edits also own `titlePosition`; entering `"left"` without explicit spacing selects the inline
+  8-pixel symbol-label and 20-pixel sample defaults.
   Interval edits own right/vertical spacing, swatch recipe, text style와 title visibility.
   Kind-incompatible options fail before the prior program changes.
 - Stroke-width edits own `title`, `count`, `labels`, and `titleStyle`. The block remains in its current right-side

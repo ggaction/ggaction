@@ -38,21 +38,20 @@ export const MULTI_LEGEND_TARGET = Object.freeze({
 
 export const HORIZONTAL_LEGEND_TARGET = Object.freeze({
   pointCount: 398,
-  titleElementGap: 12,
+  blockGap: 40,
+  symbolLabelGap: 8,
   top: Object.freeze({
-    titleY: 135.75,
-    elementTop: 154.25,
-    colorBounds: Object.freeze({ top: 129.25, bottom: 166.75 }),
-    opacityBounds: Object.freeze({ top: 129.25, bottom: 192.25 }),
-    colorSymbolX: Object.freeze([70.25, 137.25, 218.25]),
-    opacitySymbolX: Object.freeze([306.77, 362.77, 418.77])
+    lineY: 185.5,
+    colorBounds: Object.freeze({ top: 179, bottom: 192 }),
+    opacityBounds: Object.freeze({ top: 178.5, bottom: 192.5 }),
+    colorSymbolX: Object.freeze([132, 199, 280]),
+    opacitySymbolX: Object.freeze([474.46, 522.8199999999999, 584.02])
   }),
   bottom: Object.freeze({
-    titleY: 486.5,
-    elementTop: 505,
-    colorBounds: Object.freeze({ top: 480, bottom: 517.5 }),
-    opacityBounds: Object.freeze({ top: 480, bottom: 543 }),
-    colorSymbolX: Object.freeze([70.25, 133.25, 210.25]),
-    opacitySymbolX: Object.freeze([298.77, 354.77, 410.77])
+    lineY: 486.5,
+    colorBounds: Object.freeze({ top: 480, bottom: 493 }),
+    opacityBounds: Object.freeze({ top: 479.5, bottom: 493.5 }),
+    colorSymbolX: Object.freeze([132, 195, 272]),
+    opacitySymbolX: Object.freeze([466.46, 514.8199999999999, 576.02])
   })
 });

@@ -9166,6 +9166,11 @@ first. `align` positions the complete title-plus-items block within plot
 bounds. The title appears above the grid by default, or beside it with
 `titlePosition: "left"`.
 
+When two or more legend blocks share the top or bottom edge, the lane starts at
+the plot's left edge and keeps 40 logical pixels between complete occupied
+blocks. A left-positioned categorical title participates in the same inline
+center line as a left-positioned sampled-opacity title.
+
 ~~~javascript
 densityArea.createLegend({
   position: "top",
@@ -9209,8 +9214,23 @@ override it.
 program.createLegend({ channels: ["opacity"], position: "left" });
 ~~~
 
+For a top or bottom sampled-opacity legend, `titlePosition: "left"` places the
+title, every sample circle, and its numeric label on one reading line. The
+inline defaults use 8 logical pixels from a circle to its label and 20 pixels
+before the next sample. `labels.offset` and `itemGap` override those distances.
+
+~~~javascript
+program.createLegend({
+  channels: ["opacity"],
+  position: "top",
+  titlePosition: "left",
+  count: 3
+});
+~~~
+
 Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
 `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
+Gradient and side-positioned opacity legends require `titlePosition: "top"`.
 Both forms require enough requested Canvas margin and never resize the Canvas.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
@@ -9356,7 +9376,10 @@ Nested label, title, border, and gradient objects merge only the supplied
 leaves. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
 stored semantic title. Gradient and opacity legends accept only their
-kind-compatible options. Right-side stroke-width legends accept only `title`,
+kind-compatible options. A horizontal opacity legend can switch to
+`titlePosition: "left"`; unless spacing is supplied in the same edit, the
+inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
+Right-side stroke-width legends accept only `title`,
 `count`, `labels`, and `titleStyle`.
 
 ## Focused edits
@@ -11537,7 +11560,10 @@ createLegend({
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Continuous legends support right, left, top, and bottom
 placement. Categorical legends also support left side placement; composite
-point and size blocks remain in deterministic vertical order.
+point and size blocks remain in deterministic vertical order. Horizontal
+sampled-opacity legends accept `titlePosition: "left"` for one inline
+title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
+with a 40-pixel occupied-bound gap.
 [Legends](../../api/legends.md)
 
 ## `editLegend`
@@ -11551,6 +11577,8 @@ editLegend({
 
 Partially edit one existing legend. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited. A
+horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
+spacing edits. A
 stroke-width legend accepts the bounded `title`, `count`, `labels`, and
 `titleStyle` subset and remains right-positioned.
 [Legends](../../api/legends.md)

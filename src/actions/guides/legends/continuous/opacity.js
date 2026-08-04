@@ -2,6 +2,7 @@ import { action } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { validateKeys } from "../../../../core/validation.js";
 import { mapLinearValues } from "../../../../grammar/scales/index.js";
+import { measureTextWidth } from "../../../../core/textMetrics.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
 import {
   assertLegendInsideCanvas,
@@ -84,6 +85,7 @@ function resolveOpacityLayout(program, config, scale) {
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const values = sampleContinuousValues(scale.domain, config.count);
+  const texts = formatContinuousValues(values, scale.domain, "quantitative");
   const radius = config.symbol.radius;
   let symbols;
   let labels;
@@ -109,6 +111,38 @@ function resolveOpacityLayout(program, config, scale) {
       y: plot.y + 20,
       align: config.position === "right" ? "left" : "right"
     };
+  } else if (config.titlePosition === "left") {
+    const titleWidth = measureTextWidth(config.title, config.titleStyle);
+    const labelWidths = texts.map(text =>
+      measureTextWidth(text, config.labels)
+    );
+    const samplesWidth = labelWidths.reduce(
+      (sum, width) => sum + radius * 2 + config.labels.offset + width,
+      0
+    ) + config.itemGap * (values.length - 1);
+    const width = titleWidth + 20 + samplesWidth;
+    const startX = config.align === "left" ? plot.x
+      : config.align === "right" ? plot.x + plot.width - width
+        : plot.x + (plot.width - width) / 2;
+    const height = Math.max(
+      radius * 2,
+      config.labels.fontSize,
+      config.titleStyle.fontSize
+    );
+    const centerY = config.position === "top"
+      ? plot.y - config.offset - height / 2
+      : plot.y + plot.height + config.offset + height / 2;
+    title = { x: startX, y: centerY, align: "left" };
+    let cursor = startX + titleWidth + 20;
+    symbols = [];
+    labels = [];
+    for (let index = 0; index < values.length; index += 1) {
+      const symbolX = cursor + radius;
+      symbols.push({ x: symbolX, y: centerY });
+      const labelX = symbolX + radius + config.labels.offset;
+      labels.push({ x: labelX, y: centerY, align: "left" });
+      cursor = labelX + labelWidths[index] + config.itemGap;
+    }
   } else {
     const width = (values.length - 1) * Math.max(56, config.itemGap * 2);
     const startX = config.align === "left" ? plot.x
@@ -136,8 +170,22 @@ function resolveOpacityLayout(program, config, scale) {
       align: "center"
     };
   }
+  const titleWidth = measureTextWidth(config.title, config.titleStyle);
+  const titleEdge = {
+    x: title.x + (title.align === "left" ? titleWidth : -titleWidth),
+    y: title.y
+  };
+  const labelEdges = labels.map((label, index) => {
+    const width = measureTextWidth(texts[index], config.labels);
+    return {
+      x: label.x + (label.align === "left"
+        ? width
+        : label.align === "right" ? -width : width / 2),
+      y: label.y
+    };
+  });
   assertLegendInsideCanvas(
-    [title, ...symbols, ...labels],
+    [title, titleEdge, ...symbols, ...labels, ...labelEdges],
     canvas,
     "Opacity legend layout"
   );
@@ -151,14 +199,17 @@ function resolveOpacityLayout(program, config, scale) {
       x: symbol.x - radius,
       y: symbol.y - radius
     })),
-    ...labels.map(label => ({
-      x: label.x + (
-        label.align === "left" ? 42 : label.align === "right" ? -42 : 0
-      ),
+    ...labels.map((label, index) => ({
+      x: label.x + (label.align === "left"
+        ? measureTextWidth(
+            texts[index],
+            config.labels
+          )
+        : label.align === "right" ? -42 : 0),
       y: label.y
     }))
   ], config.border, canvas, "Opacity legend");
-  return { values, symbols, labels, title, background };
+  return { values, texts, symbols, labels, title, background };
 }
 
 export const rematerializeOpacityLegend = action(
@@ -235,11 +286,7 @@ export const rematerializeOpacityLegend = action(
       .editGraphics({
         target: "opacityLegendLabels",
         property: "text",
-        value: formatContinuousValues(
-          layout.values,
-          scale.domain,
-          "quantitative"
-        )
+        value: layout.texts
       });
     next = editLegendBackground(
       next,

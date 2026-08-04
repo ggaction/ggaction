@@ -51,49 +51,46 @@ test("matches the approved actual-Cars top and bottom lane coordinates", () => {
       target.opacitySymbolX
     );
     assert.equal(color.left, 70);
-    assert.equal(opacity.left - color.right, 24);
+    assert.equal(opacity.left - color.right, HORIZONTAL_LEGEND_TARGET.blockGap);
     assert.equal(
       program.graphicSpec.objects.colorLegendTitle.properties.y,
-      target.titleY
+      target.lineY
     );
     assert.equal(
       program.graphicSpec.objects.opacityLegendTitle.properties.y,
-      target.titleY
+      target.lineY
     );
   }
 });
 
-test("shares title and graphical rows with exact internal spacing", () => {
+test("keeps titles, symbols, and labels on one horizontal reading line", () => {
   const comparison = createHorizontalLegendLaneComparison(loadCars());
   for (const position of ["top", "bottom"]) {
     const program = comparison.children[position];
     const target = HORIZONTAL_LEGEND_TARGET[position];
-    const titleIds = ["colorLegendTitle", "opacityLegendTitle"];
-    const elementIds = ["colorLegendSymbols", "opacityLegendSymbols"];
-    const titles = titleIds.map(id =>
-      resolveConcreteGraphicBounds(program.graphicSpec, id)
+    const objects = program.graphicSpec.objects;
+    assert.equal(objects.colorLegendTitle.properties.y, target.lineY);
+    assert.equal(objects.opacityLegendTitle.properties.y, target.lineY);
+    assert.equal(
+      objects.colorLegendSymbols.items.every(item =>
+        item.properties.y + item.properties.height / 2 === target.lineY
+      ),
+      true
     );
-    const elements = elementIds.map(id =>
-      resolveConcreteGraphicBounds(program.graphicSpec, id)
-    );
-    assert.deepEqual(elements.map(bounds => bounds.top), [
-      target.elementTop,
-      target.elementTop
-    ]);
-    for (let index = 0; index < titles.length; index += 1) {
+    for (const id of ["colorLegendLabels", "opacityLegendSymbols", "opacityLegendLabels"]) {
       assert.equal(
-        elements[index].top - titles[index].bottom,
-        HORIZONTAL_LEGEND_TARGET.titleElementGap
+        objects[id].items.every(item => item.properties.y === target.lineY),
+        true
       );
     }
-    const opacityLabels = resolveConcreteGraphicBounds(
-      program.graphicSpec,
-      "opacityLegendLabels"
-    );
-    assert.equal(
-      opacityLabels.top - elements[1].bottom,
-      HORIZONTAL_LEGEND_TARGET.titleElementGap
-    );
+    for (let index = 0; index < objects.opacityLegendSymbols.items.length; index += 1) {
+      const symbol = objects.opacityLegendSymbols.items[index].properties;
+      const label = objects.opacityLegendLabels.items[index].properties;
+      assert.equal(
+        label.x - symbol.x - symbol.radius,
+        HORIZONTAL_LEGEND_TARGET.symbolLabelGap
+      );
+    }
   }
 });
 

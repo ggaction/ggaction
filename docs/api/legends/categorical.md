@@ -81,6 +81,11 @@ first. `align` positions the complete title-plus-items block within plot
 bounds. The title appears above the grid by default, or beside it with
 `titlePosition: "left"`.
 
+When two or more legend blocks share the top or bottom edge, the lane starts at
+the plot's left edge and keeps 40 logical pixels between complete occupied
+blocks. A left-positioned categorical title participates in the same inline
+center line as a left-positioned sampled-opacity title.
+
 ~~~javascript
 densityArea.createLegend({
   position: "top",

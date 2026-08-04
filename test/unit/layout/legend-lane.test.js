@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  HORIZONTAL_LEGEND_BLOCK_GAP,
   HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP,
   SIDE_LEGEND_BLOCK_GAP,
   resolveHorizontalLegendLane,
@@ -31,10 +32,12 @@ function horizontalGroup({
   titleHeight = 16,
   elementTop = y + 28,
   contentBottom = y + 60,
-  inset = 0
+  inset = 0,
+  inline = false
 }) {
   return {
     id,
+    inline,
     title: {
       y: titleY,
       bounds: {
@@ -133,7 +136,36 @@ test("packs bottom groups from the plot left with a fixed gap", () => {
   assert.equal(plan.placements[0].occupied.left, plot.x);
   assert.equal(
     plan.placements[1].occupied.left - plan.placements[0].occupied.right,
-    SIDE_LEGEND_BLOCK_GAP
+    HORIZONTAL_LEGEND_BLOCK_GAP
+  );
+});
+
+test("aligns fully inline blocks on one graphical center line", () => {
+  const plan = resolveHorizontalLegendLane({
+    edge: "top",
+    plot,
+    canvas,
+    groups: [
+      horizontalGroup({ id: "color", x: 80, y: 160, inline: true }),
+      horizontalGroup({
+        id: "opacity",
+        x: 260,
+        y: 160,
+        elementTop: 166,
+        inline: true
+      })
+    ]
+  });
+  const centers = plan.placements.map((placement, index) => {
+    const element = index === 0
+      ? { top: 188, bottom: 200 }
+      : { top: 166, bottom: 178 };
+    return (element.top + element.bottom) / 2 + placement.contentDy;
+  });
+  assert.equal(centers[0], centers[1]);
+  assert.deepEqual(
+    plan.placements.map(placement => placement.titleDy),
+    plan.placements.map(placement => placement.contentDy)
   );
 });
 
@@ -155,7 +187,7 @@ test("wraps a top group only when the packed row exceeds plot width", () => {
   );
   assert.equal(
     plan.placements[0].occupied.top - plan.placements[1].occupied.bottom,
-    SIDE_LEGEND_BLOCK_GAP
+    HORIZONTAL_LEGEND_BLOCK_GAP
   );
 });
 

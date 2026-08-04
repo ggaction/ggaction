@@ -1,4 +1,5 @@
 export const SIDE_LEGEND_BLOCK_GAP = 24;
+export const HORIZONTAL_LEGEND_BLOCK_GAP = 40;
 export const SIDE_LEGEND_SYMBOL_CENTER = 16;
 export const SIDE_LEGEND_LABEL_START = 44;
 export const HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP = 12;
@@ -206,28 +207,34 @@ function packHorizontalRows(groups, plot) {
       placed = translateBoundsX(interval, dx);
     }
     row.push({ group, interval: placed, dx });
-    cursor = placed.right + SIDE_LEGEND_BLOCK_GAP;
+    cursor = placed.right + HORIZONTAL_LEGEND_BLOCK_GAP;
   }
   if (row.length > 0) rows.push(row);
   return rows;
 }
 
 function normalizeHorizontalRow(entries) {
-  const titled = entries.filter(entry => entry.group.title !== undefined);
-  const commonTitleY = titled[0]?.group.title.y;
-  const titleDescent = titled.length === 0
+  const stacked = entries.filter(entry =>
+    entry.group.title !== undefined && entry.group.inline !== true
+  );
+  const commonTitleY = stacked[0]?.group.title.y;
+  const titleDescent = stacked.length === 0
     ? 0
-    : Math.max(...titled.map(
+    : Math.max(...stacked.map(
         entry => entry.group.title.bounds.bottom - entry.group.title.y
       ));
-  const elementTop = commonTitleY === undefined
-    ? entries[0].group.element.top
+  const elementAnchor = commonTitleY === undefined
+    ? (entries[0].group.element.top + entries[0].group.element.bottom) / 2
     : commonTitleY + titleDescent + HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP;
   return entries.map(({ group, dx }) => {
+    const contentDy = commonTitleY === undefined
+      ? elementAnchor - (group.element.top + group.element.bottom) / 2
+      : elementAnchor - group.element.top;
     const titleDy = group.title === undefined
       ? 0
-      : commonTitleY - group.title.y;
-    const contentDy = elementTop - group.element.top;
+      : group.inline === true
+        ? contentDy
+        : commonTitleY - group.title.y;
     const foreground = unionBounds([
       ...(group.title === undefined
         ? []
@@ -285,8 +292,8 @@ export function resolveHorizontalLegendLane({
         : anchor - rowBounds.top;
     } else {
       dy = edge === "bottom"
-        ? previousRowBounds.bottom + SIDE_LEGEND_BLOCK_GAP - rowBounds.top
-        : previousRowBounds.top - SIDE_LEGEND_BLOCK_GAP - rowBounds.bottom;
+        ? previousRowBounds.bottom + HORIZONTAL_LEGEND_BLOCK_GAP - rowBounds.top
+        : previousRowBounds.top - HORIZONTAL_LEGEND_BLOCK_GAP - rowBounds.bottom;
     }
     const translated = row.map(item => translateHorizontalPlacement(item, dy));
     placements.push(...translated);

@@ -105,12 +105,21 @@ export function normalizeContinuousLegend(args, kind) {
   }
   const offset = args.offset ?? 30;
   validateNonNegative(offset, "Legend offset");
-  const itemGap = args.itemGap ?? 28;
+  const titlePosition = args.titlePosition ?? "top";
+  if (!["top", "left"].includes(titlePosition)) {
+    throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
+  }
+  if (
+    titlePosition === "left" &&
+    (!["top", "bottom"].includes(position) || kind !== "opacity")
+  ) {
+    throw new Error(
+      "Only horizontal opacity legends support left titlePosition."
+    );
+  }
+  const itemGap = args.itemGap ?? (titlePosition === "left" ? 20 : 28);
   validatePositive(itemGap, "Legend itemGap");
   if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
-  if (args.titlePosition !== undefined && args.titlePosition !== "top") {
-    throw new Error("Continuous legends currently require top titlePosition.");
-  }
   if (kind === "gradient") {
     for (const key of ["symbol", "columns", "direction", "itemGap"]) {
       if (Object.hasOwn(args, key)) {
@@ -135,7 +144,9 @@ export function normalizeContinuousLegend(args, kind) {
     labels: normalizeLegendTextOptions(
       args.labels,
       "createLegend.labels",
-      DEFAULT_LABELS
+      titlePosition === "left"
+        ? { ...DEFAULT_LABELS, offset: 8 }
+        : DEFAULT_LABELS
     ),
     titleStyle: normalizeLegendTextOptions(
       args.titleStyle,
@@ -143,6 +154,7 @@ export function normalizeContinuousLegend(args, kind) {
       DEFAULT_TITLE
     ),
     itemGap,
+    titlePosition,
     border: normalizeBorder(args.border)
   };
 }

@@ -9,6 +9,8 @@ import {
   "../../../../src/grammar/schemas/graphicBounds.js";
 import { HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP } from
   "../../../../src/layout/legendLane.js";
+import { HORIZONTAL_LEGEND_BLOCK_GAP } from
+  "../../../../src/layout/legendLane.js";
 
 const rows = Object.freeze([
   Object.freeze({ x: 1, y: 2, group: "A", amount: 4, alpha: 0.2 }),
@@ -286,7 +288,9 @@ for (const position of ["top", "bottom"]) {
       color.left,
       70
     );
-    assert.ok(Math.abs(opacity.left - color.right - 24) < 1e-9);
+    assert.ok(Math.abs(
+      opacity.left - color.right - HORIZONTAL_LEGEND_BLOCK_GAP
+    ) < 1e-9);
   });
 
   test(`converges ${position} coordinates across authoring order`, () => {
@@ -296,6 +300,54 @@ for (const position of ["top", "bottom"]) {
       horizontalCoordinates(reverse),
       horizontalCoordinates(forward)
     );
+  });
+}
+
+for (const position of ["top", "bottom"]) {
+  test(`keeps ${position} left-positioned titles and samples fully inline`, () => {
+    const program = horizontalBase(position)
+      .createLegend({
+        target: "points",
+        channels: ["color"],
+        position,
+        align: "left",
+        columns: 3,
+        titlePosition: "left"
+      })
+      .createLegend({
+        target: "points",
+        channels: ["opacity"],
+        position,
+        align: "right",
+        count: 3,
+        titlePosition: "left"
+      });
+    const color = horizontalBounds(program, "color");
+    const opacity = horizontalBounds(program, "opacity");
+    const objects = program.graphicSpec.objects;
+    const lineY = objects.colorLegendTitle.properties.y;
+    assert.ok(Math.abs(
+      opacity.left - color.right - HORIZONTAL_LEGEND_BLOCK_GAP
+    ) < 1e-9);
+    assert.equal(objects.opacityLegendTitle.properties.y, lineY);
+    assert.equal(centers(program, "colorLegendSymbols").length, 3);
+    assert.equal(
+      objects.colorLegendSymbols.items.every(item =>
+        item.properties.y + item.properties.height / 2 === lineY
+      ),
+      true
+    );
+    for (const id of ["colorLegendLabels", "opacityLegendSymbols", "opacityLegendLabels"]) {
+      assert.equal(objects[id].items.every(item => item.properties.y === lineY), true);
+    }
+    for (let index = 0; index < 3; index += 1) {
+      const symbol = objects.opacityLegendSymbols.items[index].properties;
+      const label = objects.opacityLegendLabels.items[index].properties;
+      assert.equal(label.x - symbol.x - symbol.radius, 8);
+      assert.equal(label.textAlign, "left");
+    }
+    assert.equal(program.guideConfigs.legend.opacity.itemGap, 20);
+    assert.equal(program.guideConfigs.legend.opacity.labels.offset, 8);
   });
 }
 
@@ -379,7 +431,9 @@ test("aligns top gradient and opacity recipes in one row", () => {
     gradient.left,
     70
   );
-  assert.ok(Math.abs(opacity.left - gradient.right - 24) < 1e-9);
+  assert.ok(Math.abs(
+    opacity.left - gradient.right - HORIZONTAL_LEGEND_BLOCK_GAP
+  ) < 1e-9);
 });
 
 function createThreeFamilyHorizontal(position) {

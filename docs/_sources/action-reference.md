@@ -1466,7 +1466,10 @@ createLegend({
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Continuous legends support right, left, top, and bottom
 placement. Categorical legends also support left side placement; composite
-point and size blocks remain in deterministic vertical order.
+point and size blocks remain in deterministic vertical order. Horizontal
+sampled-opacity legends accept `titlePosition: "left"` for one inline
+title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
+with a 40-pixel occupied-bound gap.
 [Legends](../api/legends.md)
 
 ### `editLegend`
@@ -1480,6 +1483,8 @@ editLegend({
 
 Partially edit one existing legend. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited. A
+horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
+spacing edits. A
 stroke-width legend accepts the bounded `title`, `count`, `labels`, and
 `titleStyle` subset and remains right-positioned.
 [Legends](../api/legends.md)

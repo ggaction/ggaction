@@ -166,6 +166,32 @@ test("lays opacity legends out in all four positions", () => {
   }
 });
 
+test("lays out a horizontal opacity title and samples on one reading line", () => {
+  const program = pointProgram({ top: 120, left: 70, right: 70, bottom: 60 })
+    .encodeOpacity({ field: "value" })
+    .createLegend({
+      channels: ["opacity"],
+      position: "top",
+      titlePosition: "left",
+      count: 3
+    });
+  const title = program.graphicSpec.objects.opacityLegendTitle.properties;
+  const symbols = program.graphicSpec.objects.opacityLegendSymbols.items;
+  const labels = program.graphicSpec.objects.opacityLegendLabels.items;
+  assert.equal(title.textAlign, "left");
+  assert.equal(program.guideConfigs.legend.opacity.titlePosition, "left");
+  assert.equal(program.guideConfigs.legend.opacity.itemGap, 20);
+  assert.equal(program.guideConfigs.legend.opacity.labels.offset, 8);
+  for (let index = 0; index < symbols.length; index += 1) {
+    const symbol = symbols[index].properties;
+    const label = labels[index].properties;
+    assert.equal(symbol.y, title.y);
+    assert.equal(label.y, title.y);
+    assert.equal(label.x - symbol.x - symbol.radius, 8);
+    assert.equal(label.textAlign, "left");
+  }
+});
+
 test("rematerializes continuous legends after scale and Canvas edits", () => {
   const gradient = pointProgram({ top: 30, left: 70, bottom: 60 })
     .encodeColor({ field: "value", fieldType: "quantitative" })
@@ -226,12 +252,28 @@ test("rejects incompatible options and insufficient margins atomically", () => {
     () => color.createLegend({ channels: ["color"], columns: 2 }),
     /does not accept columns/
   );
+  assert.throws(
+    () => color.createLegend({
+      channels: ["color"],
+      position: "top",
+      titlePosition: "left"
+    }),
+    /Only horizontal opacity legends support left titlePosition/
+  );
 
   const opacity = pointProgram()
     .encodeOpacity({ field: "value" });
   assert.throws(
     () => opacity.createLegend({ channels: ["opacity"], gradient: {} }),
     /does not accept gradient/
+  );
+  assert.throws(
+    () => opacity.createLegend({
+      channels: ["opacity"],
+      position: "right",
+      titlePosition: "left"
+    }),
+    /Only horizontal opacity legends support left titlePosition/
   );
   assert.equal(color.graphicSpec.objects.colorGradientStrips, undefined);
 });

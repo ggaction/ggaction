@@ -132,6 +132,22 @@ test("edits gradient and opacity legend-specific options", () => {
   assert.equal(opacity.graphicSpec.objects.opacityLegendSymbols.items[0]
     .properties.radius, 5);
   assert.equal(opacity.graphicSpec.objects.opacityLegendTitle, undefined);
+
+  const inline = continuousProgram("opacity").editLegend({
+    position: "top",
+    titlePosition: "left",
+    count: 3
+  });
+  assert.equal(inline.guideConfigs.legend.opacity.titlePosition, "left");
+  assert.equal(inline.guideConfigs.legend.opacity.itemGap, 20);
+  assert.equal(inline.guideConfigs.legend.opacity.labels.offset, 8);
+  const inlineTitleY = inline.graphicSpec.objects.opacityLegendTitle.properties.y;
+  assert.equal(
+    inline.graphicSpec.objects.opacityLegendLabels.items.every(
+      item => item.properties.y === inlineTitleY
+    ),
+    true
+  );
 });
 
 test("converges across legend and Canvas edit order", () => {
