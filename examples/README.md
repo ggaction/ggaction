@@ -36,6 +36,12 @@ Compare two quantitative fields and encode a category with color.
 
 Representative actions: `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/scatterplot/).
 
+### [Multi-legend layout](./cars-multi-legend-layout/)
+
+Place categorical and sampled opacity legends on one aligned horizontal reading line.
+
+Representative actions: `createLegend`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/api/legends/continuous/#continuous-color-and-opacity).
+
 ### [Line chart](./cars-line-chart/)
 
 Aggregate values over time and split the result into series.

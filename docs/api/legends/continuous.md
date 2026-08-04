@@ -5,7 +5,7 @@ title: Continuous Legends
 
 # Continuous Legends
 
-{% include chart-example.html id="density" %}
+{% include chart-example.html id="multi-legend-layout" %}
 
 ## Continuous color and opacity
 

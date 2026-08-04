@@ -11,6 +11,8 @@ import { createCarsTemporalBarLine } from
   "./cars-temporal-bar-line/program.js";
 import { createCarsRegressionScatterplot } from
   "./cars-regression-scatterplot/program.js";
+import { createCarsMultiLegendLayout } from
+  "./cars-multi-legend-layout/program.js";
 import { createCarsScatterplot } from "./cars-scatterplot/program.js";
 import { createCarsParallelCoordinates } from
   "./cars-parallel-coordinates/program.js";
@@ -522,6 +524,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createCarsRegressionScatterplot,
     docsGroup: "charts",
     browser: { path: "cars-regression-scatterplot/", canvas: "#chart" }
+  }),
+  example({
+    id: "cars-multi-legend-layout",
+    data: "cars",
+    width: 760,
+    height: 620,
+    createProgram: createCarsMultiLegendLayout,
+    docsGroup: "charts",
+    browser: { path: "cars-multi-legend-layout/", canvas: "#chart" }
   }),
   example({
     id: "cars-density-area",

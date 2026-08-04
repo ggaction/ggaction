@@ -448,7 +448,7 @@
   "/api/legends/continuous/": {
     "title": "Continuous Legends",
     "description": "A point color encoding with a quantitative or temporal field produces a continuous gradient. Right/left positions orient it vertically; top/bottom orient it horizontally.",
-    "image": "/assets/images/cars-density-area.png"
+    "image": "/assets/images/cars-multi-legend-layout.png"
   },
   "/api/legends/composite/": {
     "title": "Composite Legend Symbols",

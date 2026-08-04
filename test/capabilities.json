@@ -56,7 +56,7 @@
       { "type": "prefix", "path": "unit/layout/" }
     ],
     "legend-layout": [
-      { "type": "prefix", "path": "gates/multi-legend-layout/" },
+      { "type": "prefix", "path": "charts/cars-multi-legend-layout/" },
       { "type": "file", "path": "unit/layout/legend-policy.test.js" },
       { "type": "file", "path": "unit/layout/legend-lane.test.js" },
       { "type": "prefix", "path": "unit/actions/guides/" }

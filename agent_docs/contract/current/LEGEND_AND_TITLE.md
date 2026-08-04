@@ -150,7 +150,7 @@ type TitleWrap = "word" | "character";
   and without borders, authoring-order independence, edit/remove/scale/Canvas convergence, collision and overflow failure.
 - Evidence: series, histogram, grouped-bar, top categorical, regression legend tests,
   `test/unit/layout/legend-lane.test.js`, `test/unit/actions/guides/multi-legend-lane.test.js`, and
-  `test/gates/multi-legend-layout/`.
+  `test/charts/cars-multi-legend-layout/`.
 
 ## `editLegend`
 

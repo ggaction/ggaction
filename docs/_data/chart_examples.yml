@@ -59,6 +59,23 @@
   recipe_order: 10
   featured: true
   gallery_featured: true
+- id: multi-legend-layout
+  example: /examples/cars-multi-legend-layout/
+  title: Multi-legend layout
+  image: /assets/images/cars-multi-legend-layout.png
+  alt: Cars scatterplot with origin and acceleration legends aligned in one top row
+  width: 1520
+  height: 1240
+  thumbnail: /assets/images/cars-multi-legend-layout-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 522
+  caption: Categorical and sampled-opacity blocks share one fully inline reading lane.
+  summary: Place categorical and sampled opacity legends on one aligned horizontal reading line.
+  actions: createLegend · editLegend
+  tasks: relationship guides
+  url: /api/legends/continuous/#continuous-color-and-opacity
+  home_group: essentials
+  home_order: 15
 - id: line
   example: /examples/cars-line-chart/
   title: Line chart
