@@ -15,8 +15,8 @@ package를 원격 체크포인트로 만든 뒤 사용자의 explicit 승인 전
 - [x] Canvas/SVG/PNG/PDF stable artifact와 exact parity 검증
 - [x] Public docs, generated docs, declarations와 package consumer 동기화
 - [x] Full normal/render/coverage/package verification
-- [x] R51-Exit remote checkpoint 기록 — `ca3f5d63`
-- [ ] 사용자 explicit R51-Exit approval
+- [x] R51-Exit remote checkpoint 기록 — `fb91806d`
+- [x] 사용자 explicit R51-Exit approval — 2026-08-04
 
 ## Gate R51-Exit
 
@@ -32,3 +32,8 @@ Canonical review record는 [`GATE_EXIT.md`](./GATE_EXIT.md)가 소유한다.
 
 - Roadmap 5.1 completed 전환과 active pointer 해제
 - PR creation, merge, release, publish 또는 documentation deployment
+
+## 완료
+
+R51-Exit 승인으로 Roadmap 5.1 completed 전환과 active pointer 해제가 허용되었다. PR creation, merge,
+release, publish와 documentation deployment는 계속 별도 권한이다.

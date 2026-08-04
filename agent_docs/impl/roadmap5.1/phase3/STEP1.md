@@ -10,7 +10,7 @@
 - [x] Current contract, architecture, public/generated docs drift audit
 - [x] Installed JavaScript/TypeScript consumer와 package size guard
 - [x] Full normal/render/coverage/package suite
-- [x] R51-Exit checkpoint commit/push와 Gate review 전환 — `ca3f5d63`
+- [x] R51-Exit checkpoint commit/push와 Gate review 전환 — `fb91806d`
 
 ## Stable evidence target
 
@@ -23,5 +23,5 @@
 
 ## Closeout boundary
 
-R51-Exit 승인 전에는 Roadmap status, `activeRoadmap`, `activePhase`와 historical owner를 완료 상태로
-바꾸지 않는다. PR, merge, release, publish와 docs deployment는 계속 별도 권한이다.
+R51-Exit 승인에 따라 문서-only 상태 전환으로 Roadmap 5.1을 completed 처리하고 active pointer를 해제했다.
+PR, merge, release, publish와 docs deployment는 계속 별도 권한이다.

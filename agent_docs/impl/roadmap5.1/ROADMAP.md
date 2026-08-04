@@ -1,9 +1,8 @@
 # Roadmap 5.1 — Multi-Legend Layout Completion
 
-> **문서 상태 — 현재 실행 계획.** Phase 0에서 same-edge multi-legend의 exact layout contract와 concrete
-> before/after visual target을 검토한다. 현재 Phase pointer는
-> [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json), proposal은 [`PROPOSALS.json`](./PROPOSALS.json)이 소유한다.
-> 현재 observable API는 계속 [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)이 소유한다.
+> **문서 상태 — 완료된 실행 기록.** 2026-08-04 R51-Exit 승인을 받아 Phase 0~3과 Roadmap 5.1을
+> 완료했다. 현재 observable API는 [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)이
+> 소유하며, roadmap 상태와 nullable active pointer는 [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다.
 
 ## 목표
 
@@ -41,7 +40,7 @@ rematerialization 뒤에도 같은 최종 `graphicSpec`으로 수렴해야 한�
 | 0 | completed | Diagnosis, exact contract와 primitive visual Gate |
 | 1 | completed | Right/left shared legend lane implementation |
 | 2 | completed | Top/bottom row packing, cross-family alignment와 lifecycle convergence |
-| 3 | in-progress | Stable evidence, docs/contracts/package와 Roadmap closeout |
+| 3 | completed | Stable evidence, docs/contracts/package와 R51-Exit approved closeout |
 
 ## Approval Gates
 

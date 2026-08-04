@@ -2,7 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-04에 final reviewed checkpoint `fb91806d`의 top/bottom margin과 chart-gap 보정을 포함한
+R51-Exit 결과를 명시적으로 승인했다. Roadmap 5.1 완료 선언과 active Roadmap/Phase pointer closeout이
+해제되었다.
 
 ## Review target
 
@@ -70,11 +74,12 @@ PR, merge, release, publish 또는 documentation deployment 권한을 포함하�
 - Stable chart, docs and evidence promotion: `122b7eea`
 - Margin-safe focused legend fixture: `d02c7556`
 - Installed package consumer and bundle guards: `ca3f5d63`
-- Gate review record: this document's commit on the same remote branch
+- Gate review checkpoint with final visual spacing: `fb91806d`
+- Closeout record: this document's commit on the same remote branch
 
 ## Approval effect
 
-Approval permits the documentation-only Roadmap 5.1 completion transition and active pointer closeout. It does not
+Approval permitted the documentation-only Roadmap 5.1 completion transition and active pointer closeout. It did not
 authorize PR creation, merge, package publish, documentation deployment or release.
 
 ## Work blocked before approval

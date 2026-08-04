@@ -67,10 +67,10 @@ Canvas/SVG/PNG/PDF parity, generated docs, strict declarations와 installed-pack
 
 ## Roadmap 5.1 — Multi-Legend Layout Completion
 
-Same-edge legend block이 서로 독립적인 plot-relative 좌표를 계산해 결합 categorical/size 제목이 어긋나고
-독립 gradient/opacity block이 겹치는 문제를 닫는다. Phase 0에서 공통 lane contract와 concrete before/after
-visual target을 먼저 검토한다.
+Phase 0~3을 완료했다. Same-edge legend block을 right/left shared columns와 top/bottom left-packed rows로
+통합하고 title, symbol, label 기준선과 간격을 맞췄다. Lifecycle convergence, actual Cars stable evidence,
+Canvas/SVG/PNG/PDF parity, public docs와 installed-package 검증을 R51-Exit에서 닫았다.
 
-- 현재 계획: [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md)
+- 기록: [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md)
 
 Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.
