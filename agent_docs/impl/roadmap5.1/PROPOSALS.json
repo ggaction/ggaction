@@ -36,9 +36,14 @@
       "reason": "Every family on one row must align both its title and its graphical object with one 12-pixel gap."
     },
     {
+      "id": "horizontal-left-title-flow",
+      "recommended": "fully-inline-title-symbol-label",
+      "reason": "A left-positioned title should create one reading line for categorical and continuous legend families."
+    },
+    {
       "id": "block-gap",
-      "recommended": "fixed-24-logical-pixels",
-      "reason": "The correction needs one deterministic initial rhythm without adding a new public option."
+      "recommended": "fixed-40-horizontal-24-side-logical-pixels",
+      "reason": "The approved horizontal comparison needs clearer separation while existing side-lane rhythm remains unchanged."
     },
     {
       "id": "overflow",

@@ -53,10 +53,12 @@ ownership과 observable output만 승인하며 runtime action을 추가하지 �
 - Lane order는 owning layer declaration order와 stable family order에서 파생하며 별도 public semantic state를 만들지 않는다.
 - Right-side multi-block titles share one content-start anchor.
 - All symbol kinds share one center column and all labels share one start column 28 logical pixels after it.
-- Right/left block occupied bounds와 colliding top/bottom rows는 24 logical pixels 이상 떨어지고 겹치지 않는다.
-- Top/bottom multi-legend는 plot left부터 stable order로 24 pixels 간격을 두고 이어지며, 남은 plot width가
+- Right/left block occupied bounds는 24 logical pixels 이상 떨어지고 겹치지 않는다.
+- Top/bottom multi-legend는 plot left부터 stable order로 40 pixels 간격을 두고 이어지며, 남은 plot width가
   부족할 때만 다음 outward row로 넘어간다.
 - 같은 row의 title baseline과 graphical-element start는 일치하며 둘 사이 간격은 12 logical pixels다.
-- Top/bottom gradient와 opacity label은 graphical element 아래에 놓인다.
+- Default top title에서는 top/bottom gradient와 opacity label이 graphical element 아래에 놓인다.
+- `titlePosition: "left"`인 horizontal block은 categorical과 continuous 모두 title, symbol, label을 한 reading
+  line으로 배치한다. Continuous sample은 symbol 뒤 8 pixels, 다음 sample 전 20 pixels를 사용한다.
 - Earlier program과 caller-owned options/rows는 변하지 않는다.
 - Canvas/SVG/PNG/PDF는 같은 final concrete coordinates와 drawing order를 소비한다.

@@ -7,8 +7,9 @@
 ## Approval target
 
 - Multi-legend top/bottom rows start at the plot's left edge and place blocks consecutively in stable order
-- Adjacent blocks keep 24 logical pixels between occupied bounds; width overflow alone creates a new outward row
+- Adjacent blocks keep 40 logical pixels between occupied bounds; width overflow alone creates a new outward row
 - Every shared row uses one title baseline, one graphical-element start line and a 12-pixel title-to-element gap
+- `titlePosition: "left"` creates one title → symbol → label line for categorical and continuous blocks
 - Top gradient and opacity labels sit below their graphical elements, consistently with bottom legends
 - Multi-legend placement ignores block-level absolute `align`; single legends retain existing left/center/right behavior
 - Existing block-local direction and grid remain intact
@@ -86,3 +87,11 @@ because existing `itemGap` owns spacing inside one block.
 The follow-up comparison holds the 40-pixel block gap and inline titles constant, then isolates continuous label flow:
 the first candidate retains numeric labels below their sampled symbols, while the second places each symbol and numeric
 label side by side on the common reading line. Both candidates remain primitive targets until one is approved.
+
+## Revision visual target approval — 2026-08-04
+
+User approved the fully inline candidate with a fixed 40-pixel inter-block gap. The implementation must preserve the
+existing title-above grammar by default and activate the title → symbol → label reading line only for
+`titlePosition: "left"`. Continuous labels use 8 pixels after their symbol and 20 pixels before the next sample.
+This approval authorizes the corresponding public-contract implementation and evidence update, but R51-P2-A remains
+`changes-requested` until the runtime replacement checkpoint is complete and separately approved.
