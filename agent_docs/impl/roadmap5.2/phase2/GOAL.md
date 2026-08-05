@@ -14,7 +14,7 @@ browser bundle ceiling이 다시 달라지면 stable contract가 즉시 실패�
 - [x] Browser bundle ceiling guard
 - [x] Existing package/docs version alignment verification
 - [x] Focused and cumulative verification
-- [ ] R52-P2-A remote checkpoint
+- [x] R52-P2-A remote checkpoint
 - [ ] 사용자 explicit approval
 
 ## Gate R52-P2-A

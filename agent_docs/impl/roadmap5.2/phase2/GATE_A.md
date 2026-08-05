@@ -62,4 +62,5 @@ authorize CI/dependency/bundle implementation, PR creation, merge, publish, depl
 
 ## Remote checkpoint
 
-- Pending verified commit and push.
+- Verified implementation checkpoint: `b101b5d6f783f86b186fd1b04a8bc48ddbc7fb75`
+- Remote branch: `origin/codex/roadmap5-2-hardening`
