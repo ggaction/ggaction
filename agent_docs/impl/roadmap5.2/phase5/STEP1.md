@@ -2,12 +2,12 @@
 
 ## 진행 상태
 
-- [ ] Roadmap scope/action/current-contract inventory audit
-- [ ] Public declarations, package exports, docs와 architecture truth audit
-- [ ] Generated catalogs/references/search/signatures drift checks
+- [x] Roadmap scope/action/current-contract inventory audit
+- [x] Public declarations, package exports, docs와 architecture truth audit
+- [x] Generated catalogs/references/search/signatures drift checks
 - [x] Ruleset, repository, environment와 community profile baseline
 - [x] Default-branch Dependabot alert baseline
-- [ ] Candidate/main reconciliation requirements 확정
+- [x] Candidate/main reconciliation requirements 확정
 
 ## 검증 계약
 
@@ -28,3 +28,14 @@
   entry가 merge되기 전이므로 expected pre-merge state다.
 - Default-branch Dependabot medium PostCSS alert 1건은 open이다. Phase 4 patched lockfile가 main에 merge되면 다시
   평가해야 한다.
+
+## 검증 결과
+
+- `ACTION_INDEX.json`: implemented actions 173; contract/effects/tests partial 0, missing 0; active planned actions와
+  capabilities 0.
+- Current contract corpus: `⚠️ Partial` 0, `❌ Missing` 0. Current 문서의 `Planned (NOT IMPLEMENTED)` 표기는 모두
+  빈 값 또는 명시적 future boundary이며 active proposal inventory에는 남지 않는다.
+- Action catalog, docs action metadata/reference/signatures/capabilities/page metadata/search와 examples index의 모든
+  generated `--check` 명령이 diff 없이 통과했다.
+- Focused action catalog/documentation/package/renderer/governance/release contracts: 27/27 pass.
+- Public runtime exports, declaration mapping, version/legal metadata, renderer matrix와 bundle numeric truth가 일치한다.

@@ -9,7 +9,7 @@ default-branch 상태를 모두 닫은 뒤 R52-Exit에서 완료 여부를 승�
 
 - [x] Phase 4 explicit approval과 Phase 5 전환
 - [x] Current GitHub settings/community/security baseline 재확인
-- [ ] Repository truth와 generated artifact drift audit
+- [x] Repository truth와 generated artifact drift audit
 - [ ] Complete local/package/docs/browser/render verification
 - [ ] R52-P5-A remote candidate checkpoint
 - [ ] 사용자 R52-P5-A explicit approval
