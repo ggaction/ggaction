@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **Roadmap 5.2 Phase 4가 활성 상태다.** 승인된 repository truth와 complete contract coverage 위에서 CI runtime,
-  dependencies와 browser bundle budgets를 [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md)에서 정리한다.
+- **Roadmap 5.2 Phase 5가 활성 상태다.** 승인된 repository truth, governance, coverage와 hardening 결과를 통합
+  검증하고 closeout한다. 실행 순서는 [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력

@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.2 Phase 4이다.** 승인된 repository truth와 complete contract coverage 위에서
-CI runtime, dependencies와 browser bundle budgets를 [`impl/roadmap5.2/ROADMAP.md`](impl/roadmap5.2/ROADMAP.md)에서 정리한다.
+**현재 활성 Roadmap은 Roadmap 5.2 Phase 5이다.** 승인된 repository truth, governance, coverage와 hardening 결과를
+통합 검증하고 closeout한다. 실행 순서는 [`impl/roadmap5.2/ROADMAP.md`](impl/roadmap5.2/ROADMAP.md)가 소유한다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 
