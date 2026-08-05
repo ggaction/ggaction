@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { chart } from "../../../../src/basic.js";
+import { chart as basicChart } from "../../../../src/basic.js";
+import { chart as fullChart } from "../../../../src/index.js";
 
 const rows = Object.freeze([
   Object.freeze({ x: 1, y: 2, category: "A", value: 3 }),
@@ -9,7 +10,7 @@ const rows = Object.freeze([
 ]);
 
 function base(values = rows) {
-  return chart()
+  return basicChart()
     .createCanvas({
       width: 360,
       height: 260,
@@ -17,6 +18,38 @@ function base(values = rows) {
     })
     .createData({ values });
 }
+
+function scatter(factory) {
+  return factory()
+    .createCanvas({
+      width: 360,
+      height: 260,
+      margin: { top: 50, right: 110, bottom: 50, left: 50 }
+    })
+    .createData({ values: rows })
+    .createScatterPlot({
+      x: "x",
+      y: "y",
+      color: "category",
+      point: { stroke: "#111111", strokeWidth: 1 }
+    });
+}
+
+test("matches full-entry output while preserving the Basic trace composition", () => {
+  const basic = scatter(basicChart);
+  const full = scatter(fullChart);
+
+  assert.deepEqual(basic.semanticSpec, full.semanticSpec);
+  assert.deepEqual(basic.graphicSpec, full.graphicSpec);
+  assert.deepEqual(
+    basic.trace.children.map(entry => entry.op),
+    ["createCanvas", "createData", "createScatterPlot"]
+  );
+  assert.deepEqual(
+    basic.trace.children.at(-1).children.map(entry => entry.op),
+    ["createPointMark", "encodeX", "encodeY", "encodeColor", "createGuides"]
+  );
+});
 
 test("creates every chart facade exposed by the basic entry", () => {
   const scatter = base().createScatterPlot({

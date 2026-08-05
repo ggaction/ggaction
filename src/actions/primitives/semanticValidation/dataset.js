@@ -1,9 +1,13 @@
 import { validateUserId } from "../../../core/identifiers.js";
 import { isPlainObject } from "../../../core/immutable.js";
-import { validateDatasetTransforms } from "../../../grammar/transforms.js";
 import { hasDataset } from "../../../selectors/datasets.js";
 
-export function validateDatasetSemanticValue(program, parsed, value) {
+export function validateDatasetSemanticValue(
+  program,
+  parsed,
+  value,
+  validateTransforms
+) {
   const property = parsed.path[0];
   if (property === "values") {
     if (!Array.isArray(value) || !value.every(isPlainObject)) {
@@ -18,5 +22,5 @@ export function validateDatasetSemanticValue(program, parsed, value) {
     }
     return;
   }
-  if (property === "transform") validateDatasetTransforms(value);
+  if (property === "transform") validateTransforms(value);
 }

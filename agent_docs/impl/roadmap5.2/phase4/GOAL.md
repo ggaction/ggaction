@@ -11,9 +11,9 @@ compatible dependency drift와 Basic browser bundle의 120,000-byte gzip promise
 - [x] Official GitHub Action runtime/release와 npm outdated/audit 기준선 재확인
 - [x] Supported Node 24 GitHub Action revisions 적용 및 workflow contract 검증
 - [x] Compatible dependency update와 audit/package/browser 검증
-- [ ] Basic browser bundle 120,000-byte gzip 이하 복원
-- [ ] Full/basic/SVG executable ceilings와 documentation truth 동기화
-- [ ] Focused, cumulative, coverage, package와 renderer verification
+- [x] Basic browser bundle 120,000-byte gzip 이하 복원
+- [x] Full/basic/SVG executable ceilings와 documentation truth 동기화
+- [x] Focused, cumulative, coverage, package와 renderer verification
 - [ ] R52-P4-A remote checkpoint
 - [ ] 사용자 explicit approval
 
