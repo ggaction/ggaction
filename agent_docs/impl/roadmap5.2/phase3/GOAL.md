@@ -14,7 +14,7 @@ bounded matrix, child-action delegation 또는 명시적 contract boundary로 �
 - [x] Action inventory test coverage partial 0개
 - [x] Generated action catalog synchronization
 - [x] Focused and cumulative verification
-- [ ] R52-P3-A remote checkpoint
+- [x] R52-P3-A remote checkpoint
 - [ ] 사용자 explicit approval
 
 ## Gate R52-P3-A

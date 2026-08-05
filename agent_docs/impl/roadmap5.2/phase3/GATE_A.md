@@ -63,4 +63,6 @@ authorize PR creation, merge, publish, deploy or release.
 
 ## Remote checkpoint
 
-- Pending verified commit and push.
+- Implementation checkpoint: `4105d5dea28f740497708fb18e3c50fdffa947be`
+- Remote branch: `origin/codex/roadmap5-2-hardening`
+- Local and remote implementation checkpoint hashes matched before this Gate record was finalized.
