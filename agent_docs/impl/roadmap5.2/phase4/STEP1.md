@@ -4,9 +4,9 @@
 
 - [x] Current release workflow action revisions와 official latest releases audit
 - [x] Selected releases의 official `action.yml` runtime 확인
-- [ ] Release workflow revisions 갱신
-- [ ] Immutable-tag, exact-artifact와 protected publish invariants 검증
-- [ ] Focused workflow contract와 YAML structure 검증
+- [x] Release workflow revisions 갱신
+- [x] Immutable-tag, exact-artifact와 protected publish invariants 검증
+- [x] Focused workflow contract 4/4와 YAML structure 검증
 
 ## 실행 계약
 
