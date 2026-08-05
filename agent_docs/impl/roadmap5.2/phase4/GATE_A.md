@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-05에 supported workflow, compatible dependency set, Basic bundle budget 복원과 cumulative
+regression evidence를 명시적으로 승인했다.
 
 ## Review target
 
@@ -68,6 +71,11 @@
 
 Approval freezes the supported workflow, dependency set and browser bundle ceilings and opens Phase 5 integration and
 closeout. It does not authorize PR creation, merge, publish, documentation deployment or release.
+
+## Approval
+
+- Approved explicitly by the user on 2026-08-05.
+- Approval freezes the Phase 4 workflow/dependency/bundle result and opens Phase 5 integration and closeout.
 
 ## Work blocked before approval
 

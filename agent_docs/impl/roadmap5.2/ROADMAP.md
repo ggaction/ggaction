@@ -50,8 +50,8 @@
 | 1 | completed | GitHub governance, community와 security settings; R52-P1-A approved |
 | 2 | completed | Documentation truth alignment와 mechanical drift guards; R52-P2-A approved |
 | 3 | completed | Partial coverage completion과 cumulative regression; R52-P3-A approved |
-| 4 | in-progress | CI action runtime, dependency와 bundle hardening |
-| 5 | planned | Integration, repository verification와 R52-Exit |
+| 4 | completed | CI action runtime, dependency와 bundle hardening; R52-P4-A approved |
+| 5 | in-progress | Integration, repository verification와 R52-Exit |
 
 ## Approval Gates
 

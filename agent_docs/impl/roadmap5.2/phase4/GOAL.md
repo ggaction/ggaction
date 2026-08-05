@@ -15,7 +15,7 @@ compatible dependency drift와 Basic browser bundle의 120,000-byte gzip promise
 - [x] Full/basic/SVG executable ceilings와 documentation truth 동기화
 - [x] Focused, cumulative, coverage, package와 renderer verification
 - [x] R52-P4-A remote checkpoint
-- [ ] 사용자 explicit approval
+- [x] 사용자 explicit approval — 2026-08-05
 
 ## 적용 경계
 
