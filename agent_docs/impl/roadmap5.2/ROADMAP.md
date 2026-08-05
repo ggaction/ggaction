@@ -47,8 +47,8 @@
 | Phase | 상태 | 범위 |
 | ---: | --- | --- |
 | 0 | completed | Exact baseline, policy decisions와 R52-P0-A approved |
-| 1 | in-progress | GitHub governance, community와 security settings |
-| 2 | planned | Documentation truth alignment와 mechanical drift guards |
+| 1 | completed | GitHub governance, community와 security settings; R52-P1-A approved |
+| 2 | in-progress | Documentation truth alignment와 mechanical drift guards |
 | 3 | planned | Partial coverage completion과 cumulative regression |
 | 4 | planned | CI action runtime, dependency와 bundle hardening |
 | 5 | planned | Integration, repository verification와 R52-Exit |

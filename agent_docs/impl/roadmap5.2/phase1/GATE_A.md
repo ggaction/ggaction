@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-05에 applied `main` ruleset, contributor entry, security automation, recovery path와 Phase 4로
+넘긴 dependency alert를 명시적으로 승인했다.
 
 ## Review target
 
@@ -61,6 +64,11 @@
 
 Approval freezes the Phase 1 governance/community/security baseline and opens Phase 2 truth alignment. It does not authorize
 PR creation, merge, publish, deploy, release or later Phase results.
+
+## Approval
+
+- Approved explicitly by the user on 2026-08-05.
+- Approval freezes the Phase 1 repository governance/community/security baseline and opens Phase 2 truth alignment.
 
 ## Work blocked before approval
 
