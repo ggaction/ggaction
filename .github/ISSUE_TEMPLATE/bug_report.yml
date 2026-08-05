@@ -1,0 +1,83 @@
+name: Bug report
+description: Report reproducible incorrect behavior in ggaction.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. A small reproducible program helps us identify the shared cause quickly.
+        Do not include secrets, private datasets, or security vulnerabilities in a public issue.
+  - type: input
+    id: version
+    attributes:
+      label: ggaction version
+      description: The exact installed package version, such as 0.0.8.
+      placeholder: 0.0.8
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Browser
+        - Node.js
+        - Browser and Node.js
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: outputs
+    attributes:
+      label: Affected outputs
+      description: Select every output where you reproduced the problem.
+      options:
+        - label: Browser Canvas
+        - label: SVG
+        - label: Node PNG
+        - label: Vector PDF
+        - label: Program state or action trace
+        - label: TypeScript declarations or package boundary
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide the smallest complete program and data that reproduce the problem.
+      render: javascript
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: What happened instead? Include the complete error message when applicable.
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime details
+      description: Browser and version, or Node.js version and operating system.
+      placeholder: Node.js 22.18.0 on macOS 15
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: I removed secrets and private data from the reproduction.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true
