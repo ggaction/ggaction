@@ -5,7 +5,7 @@
 - [x] R52-P5-A explicit approval — 2026-08-05
 - [x] Separate PR creation authorization — 2026-08-05
 - [x] Draft PR [#23](https://github.com/ggaction/ggaction/pull/23) created from `codex/roadmap5-2-hardening`
-- [ ] Required six checks and exact candidate review
+- [x] Required six checks and exact candidate review — `0210348206fadae8fed6f7bcea0b767c0533fbc1`, [CI run 30980129347](https://github.com/ggaction/ggaction/actions/runs/30980129347)
 - [ ] Separate merge authorization and merge
 - [ ] Main community profile 재확인
 - [ ] Main Dependabot alert와 security settings 재확인
@@ -24,3 +24,8 @@
 - Merged main commit이 approved candidate를 포함하고 required checks가 모두 success다.
 
 R52-Exit 승인 뒤에도 package publish, documentation deployment와 `0.0.9` release는 별도 권한이다.
+
+## Pre-merge CI evidence
+
+2026-08-05에 PR #23의 exact head `0210348206fadae8fed6f7bcea0b767c0533fbc1`에서 다음 required jobs가 모두
+success였다: `package (20)`, `package (22)`, `package (24)`, `test`, `coverage`, `documentation`.
