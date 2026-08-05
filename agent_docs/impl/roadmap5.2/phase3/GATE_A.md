@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-05에 current contract의 complete coverage ledger, direct boundary tests, bounded resolution policy와
+cumulative regression evidence를 명시적으로 승인했다.
 
 ## Review target
 
@@ -54,6 +57,11 @@
 
 Approval freezes the complete current coverage ledger and opens Phase 4 CI/dependency/bundle hardening. It does not
 authorize PR creation, merge, publish, deploy or release.
+
+## Approval
+
+- Approved explicitly by the user on 2026-08-05.
+- Approval freezes the Phase 3 coverage ledger and opens Phase 4 CI, dependency and bundle hardening.
 
 ## Work blocked before approval
 
