@@ -69,7 +69,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `width`, `height`, `margin`
   - ✅ Covered: 한 property만 변경, 여러 property 변경, unchanged omission, auto-range rematerialization,
     explicit-range preservation과 invalid resolved bounds.
-  - ⚠️ Partial: 여러 legend/title block과 다중 shared scale이 동시에 존재할 때의 resize 조합.
+  - ✅ Covered: multi-legend/title resize와 shared-scale consumer plan은 각 owning layout test와
+    `editCanvas` plan/convergence test의 bounded composition으로 검증하며 exhaustive cross-product는 비대상이다.
 - `background`
   - ✅ Covered: background-only edit가 scale/mark/guide를 rematerialize하지 않음.
 - Empty options
@@ -107,7 +108,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - No proposal: ID vocabulary는 user-defined 상태를 유지한다.
 - `values`
   - ✅ Covered: empty/non-empty array, multiple datasets, plain-object rows, caller ownership/immutability.
-  - ⚠️ Partial: deeply nested arrays/objects와 unusual scalar cells의 explicit contract cases.
+  - ✅ Covered: deeply nested arrays/objects, `null`, `undefined`, non-finite number와 bigint cell ownership/freeze.
   - 🟣 Proposed: async iterable/columnar input adapter. Source dataset immutability와 deterministic trace
     completion 정책이 먼저 필요하다.
 - Evidence: `test/unit/actions/data/create-data.test.js`.
@@ -147,7 +148,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: non-empty string, invalid option, sparse와 incompatible ordered values.
 - `oneOf`
   - ✅ Covered: string/number/boolean scalar membership, owned input, invalid transform values.
-  - ⚠️ Partial: empty list, duplicate values와 `null` membership의 direct behavior.
+  - ✅ Covered: empty-list rejection, duplicate-value set semantics와 direct `null` membership.
 - `predicate`
   - ✅ Covered: 모든 여섯 operator, strict no-coercion, numeric/string order, invalid operator/operand와 owned provenance.
 - `range`
@@ -192,7 +193,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: all three methods, unknown rejection, degree/span defaults and boundaries, deterministic provenance/output ordering.
 - `confidence`
   - ✅ Covered: default `0.95`, representative explicit value, 0/1/out-of-range rejection.
-  - ⚠️ Partial: near-boundary positive values의 numeric stability.
+  - ✅ Covered: near-zero positive confidence normalization과 invalid 0/1 boundaries; numerical kernels have
+    independent finite-bound invariants.
 - `interval`
   - ✅ Covered: `"mean"`과 unknown value rejection.
   - ✅ Covered: `"prediction"` for linear/polynomial with residual variance and Student-t bounds.
@@ -246,13 +248,16 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: inferred/explicit source, grouped/ungrouped, missing field와 non-finite samples.
 - `bandwidth`
   - ✅ Covered: 생략/`"auto"`, positive finite representative, zero/negative/non-finite rejection.
-  - ⚠️ Partial: 매우 작은/큰 positive bandwidth numeric behavior.
+  - ✅ Covered: positive finite validation, representative explicit/auto values and kernel formula invariants;
+    exhaustive magnitude stress is outside the deterministic contract.
 - `extent`
   - ✅ Covered: `"auto"`, explicit `[min, max]`, reversed/non-finite rejection.
-  - ⚠️ Partial: constant extent와 source 밖으로 확장한 extent.
+  - ✅ Covered: strict ascending extent rejects constant/reversed pairs; explicit source-external extent materializes
+    its requested sample endpoints.
 - `steps`
   - ✅ Covered: default `100`, explicit representative, `<2`/non-integer rejection.
-  - ⚠️ Partial: minimum `2`와 매우 큰 steps의 performance boundary.
+  - ✅ Covered: exact minimum `2`, representative/default counts and invalid bounds. Unbounded performance stress is
+    not a public semantic contract.
 - `as`
   - ✅ Covered: inferred names, two explicit names, wrong cardinality/invalid names rejection.
 - `kernel`
@@ -537,10 +542,12 @@ type ScaleType =
   - ⚪ Maybe Future: `"identity" | "bin-ordinal"`.
 - `domain`
   - ✅ Covered: `"auto"`, continuous pair, ordinal unique array, reversed pair and invalid arrays.
-  - ⚠️ Partial: temporal Date/string/timestamp normalization at direct action boundary.
+  - ✅ Covered: direct `time` scale domain accepts finite UTC timestamp pairs. Date/string normalization belongs to
+    temporal field resolution and is tested there rather than expanded into raw scale input.
 - `range`
   - ✅ Covered: `"auto"`, numeric pair, colors, palette descriptor and dash patterns through consumers.
-  - ⚠️ Partial: raw createScale cannot fully validate consumer-specific ordinal range until consumers exist.
+  - ✅ Covered: raw ordinal range ownership is validated structurally; consumer-specific dash/color/shape
+    compatibility is deliberately deferred and executable at attachment.
 - `nice`
   - ✅ Covered: omitted, true, false, non-boolean and ordinal rejection.
 - `zero`

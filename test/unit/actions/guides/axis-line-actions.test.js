@@ -50,6 +50,15 @@ test("edits style while re-inferring geometry", () => {
   assert.equal(created.graphicSpec.objects.xAxisLine.properties.stroke, "#334155");
 });
 
+test("allows an empty x-axis line edit to re-infer geometry", () => {
+  const created = encodedProgram().createXAxisLine();
+  const edited = created.editXAxisLine({});
+
+  assert.deepEqual(edited.graphicSpec.objects.xAxisLine, created.graphicSpec.objects.xAxisLine);
+  assert.deepEqual(edited.trace.children.at(-1).args, {});
+  assert.equal(edited.trace.children.at(-1).children.length > 0, true);
+});
+
 test("validates positions, style, scale state, duplicates, and missing edits", () => {
   const program = encodedProgram();
 

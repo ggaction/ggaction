@@ -386,10 +386,9 @@ independent assembly and does not inherit position encodings.
 - `id`, `data`
   - ✅ Covered: omission→`"area"`, current/explicit derived dataset, second unnamed ambiguity와 invalid resources.
 - `fill`
-  - ⚠️ Partial: omission/theme default와 representative explicit color; empty/non-string rejection은 action
-    validation에 있으나 dedicated boundary test가 부족하다.
+  - ✅ Covered: omission/theme default, explicit color and direct empty/non-string rejection.
 - `opacity`
-  - ⚠️ Partial: default `0.2`, representative `0.18`/`0.5`, invalid range; exact 0/1 endpoints direct test가 부족하다.
+  - ✅ Covered: default `0.2`, representative values, exact 0/1 endpoints and out-of-range rejection.
 - `stroke`, `strokeWidth`
   - ✅ Covered: omission/no outline, string with default/explicit/zero width, width-without-stroke rejection,
     edit replacement/removal and Canvas rematerialization persistence.

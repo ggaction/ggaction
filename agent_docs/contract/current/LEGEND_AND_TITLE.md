@@ -124,15 +124,17 @@ type TitleWrap = "word" | "character";
   - ✅ Covered: inferred field, explicit non-empty, empty/non-string rejection.
 - `symbol`
   - ✅ Covered: `"auto"`, line shorthand, swatch shorthand, layered line+point recipes.
-  - ⚠️ Partial: every layer type's zero/max dimensions, fill/stroke combinations and invalid nested keys.
+  - ✅ Covered: schema-driven layer validation covers circle/rect/line/path dimensions, fill/stroke and unknown keys;
+    representative composite recipes prove authored order without exhaustive recipe products.
   - ✅ Covered: shared 12-shape point layers through the point-shape vocabulary.
   - ✅ Covered: point-composite symbols in top/bottom item grids with shared anchors and declared layer order.
   - ✅ Covered: sequential-color gradient block and opacity sample points with auto/explicit recipe.
 - `labels`, `titleStyle`
   - ✅ Covered: representative color/font overrides and invalid styles.
-  - ⚠️ Partial: numeric/string fontWeight boundaries across every position.
+  - ✅ Covered: shared text validation covers numeric/string boundaries and position-independent layout tests prove
+    top/bottom/left/right forwarding.
 - `itemGap`
-  - ✅ Covered: defaults and positive representative; ⚠️ Partial exact near-zero boundary.
+  - ✅ Covered: default, zero, near-zero and positive item-gap boundaries with non-finite/negative rejection.
 - `border`
   - ✅ Covered: omission/`false`, `true`, explicit color/lineWidth/padding/background and invalid objects.
 - `count`
@@ -341,7 +343,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
   - ✅ Covered: omission/applicability inference, `{}` explicit selection, nested options, `false` opt-out.
   - ✅ Covered: theta-only arc의 theta axis/grid + color legend, radial guide absence.
   - ✅ Covered: unsupported/non-object values, no selected guide and ambiguous child errors.
-  - ⚠️ Partial: explicit selection of all three with every nested option family simultaneously.
+  - ✅ Covered: all-three selection, nested forwarding and child order are executable; leaf actions own exhaustive
+    nested value classes so the aggregate does not duplicate their Cartesian product.
 - ✅ Covered: automatic continuous-color/opacity selection and nested continuous legend options.
   - ✅ Covered: nested top/right axes and categorical left legend forwarding.
 - No proposal: title remains intentionally separate. New guide types should be added only with a concrete domain action.

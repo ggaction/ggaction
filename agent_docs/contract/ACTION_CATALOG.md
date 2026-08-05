@@ -12,8 +12,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editCanvas`](current/CORE.md#editcanvas) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createData`](current/CORE.md#createdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`filterData`](current/CORE.md#filterdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
-| user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
-| user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ⚠️ |
+| user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createWindowData`](current/CORE.md#createwindowdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createTimeUnitData`](current/CORE.md#createtimeunitdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBin2DData`](current/CORE.md#createbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -23,8 +23,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createTickMark`](current/MARKS.md#createtickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTextMark`](current/MARKS.md#createtextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTextMark`](current/MARKS.md#edittextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`layoutLabels`](current/MARKS.md#layoutlabels) | marks | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
-| user-facing | [`removeLabelLayout`](current/MARKS.md#removelabellayout) | marks | Assignment | Implemented | ✅ / ✅ / ⚠️ |
+| user-facing | [`layoutLabels`](current/MARKS.md#layoutlabels) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeLabelLayout`](current/MARKS.md#removelabellayout) | marks | Assignment | Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`editPointMark`](current/MARKS.md#editpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTickMark`](current/MARKS.md#edittickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`jitterPoints`](current/MARKS.md#jitterpoints) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -37,15 +37,15 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createAreaMark`](current/MARKS.md#createareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createRuleMark`](current/MARKS.md#createrulemark) | marks | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editAreaMark`](current/MARKS.md#editareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`encodeX`](current/ENCODINGS.md#encodex) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
-| user-facing | [`encodeY`](current/ENCODINGS.md#encodey) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeX`](current/ENCODINGS.md#encodex) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeY`](current/ENCODINGS.md#encodey) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeX2`](current/ENCODINGS.md#encodex2) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeColor`](current/ENCODINGS.md#encodecolor) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeStrokeDash`](current/ENCODINGS.md#encodestrokedash) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeStroke`](current/ENCODINGS.md#encodestroke) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeStrokeWidth`](current/ENCODINGS.md#encodestrokewidth) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
-| user-facing | [`encodeSize`](current/ENCODINGS.md#encodesize) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
-| user-facing | [`encodeShape`](current/ENCODINGS.md#encodeshape) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ⚠️ |
+| user-facing | [`encodeSize`](current/ENCODINGS.md#encodesize) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeShape`](current/ENCODINGS.md#encodeshape) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeAngle`](current/ENCODINGS.md#encodeangle) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeOpacity`](current/ENCODINGS.md#encodeopacity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeRadius`](current/ENCODINGS.md#encoderadius) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -72,7 +72,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`encodeHorizon`](current/ENCODINGS.md#encodehorizon) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`editHorizon`](current/ENCODINGS.md#edithorizon) | encodings | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`encodeBarWidth`](current/ENCODINGS.md#encodebarwidth) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
-| user-facing | [`createRegression`](current/STATISTICS.md#createregression) | statistics | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`createRegression`](current/STATISTICS.md#createregression) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRegression`](current/STATISTICS.md#editregression) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createErrorBar`](current/STATISTICS.md#createerrorbar) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editErrorBar`](current/STATISTICS.md#editerrorbar) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -84,48 +84,48 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createGradientPlot`](current/GRADIENT_PLOTS.md#creategradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGradientPlot`](current/GRADIENT_PLOTS.md#editgradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createViolinPlot`](current/VIOLIN_PLOTS.md#createviolinplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
-| user-facing | [`createAxes`](current/AXES.md#createaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
-| user-facing | [`createXAxis`](current/AXES.md#createxaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ⚠️ |
+| user-facing | [`createAxes`](current/AXES.md#createaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createXAxis`](current/AXES.md#createxaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createYAxis`](current/AXES.md#createyaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createXAxisLine`](current/AXES.md#createxaxisline) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createYAxisLine`](current/AXES.md#createyaxisline) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`editXAxisLine`](current/AXES.md#editxaxisline) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`editXAxisLine`](current/AXES.md#editxaxisline) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxisLine`](current/AXES.md#edityaxisline) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createXAxisTicks`](current/AXES.md#createxaxisticks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createYAxisTicks`](current/AXES.md#createyaxisticks) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`createYAxisTicks`](current/AXES.md#createyaxisticks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxisTicks`](current/AXES.md#editxaxisticks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`editYAxisTicks`](current/AXES.md#edityaxisticks) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`editYAxisTicks`](current/AXES.md#edityaxisticks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createXAxisLabels`](current/AXES.md#createxaxislabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createYAxisLabels`](current/AXES.md#createyaxislabels) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`createYAxisLabels`](current/AXES.md#createyaxislabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxisLabels`](current/AXES.md#editxaxislabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`editYAxisLabels`](current/AXES.md#edityaxislabels) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
-| user-facing | [`createXAxisTicksAndLabels`](current/AXES.md#createxaxisticksandlabels) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
-| user-facing | [`createYAxisTicksAndLabels`](current/AXES.md#createyaxisticksandlabels) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`editYAxisLabels`](current/AXES.md#edityaxislabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createXAxisTicksAndLabels`](current/AXES.md#createxaxisticksandlabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createYAxisTicksAndLabels`](current/AXES.md#createyaxisticksandlabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxisTicksAndLabels`](current/AXES.md#editxaxisticksandlabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxisTicksAndLabels`](current/AXES.md#edityaxisticksandlabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createXAxisTitle`](current/AXES.md#createxaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createYAxisTitle`](current/AXES.md#createyaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxisTitle`](current/AXES.md#editxaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`editYAxisTitle`](current/AXES.md#edityaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`editYAxisTitle`](current/AXES.md#edityaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxis`](current/AXES.md#editxaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxis`](current/AXES.md#edityaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeXAxis`](current/AXES.md#removexaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeYAxis`](current/AXES.md#removeyaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGrid`](current/GRID.md#creategrid) | grid | Aggregate create-only | Intentional; directional child actions own edits and removal | ✅ / ✅ / ✅ |
 | user-facing | [`createHorizontalGrid`](current/GRID.md#createhorizontalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createVerticalGrid`](current/GRID.md#createverticalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`createVerticalGrid`](current/GRID.md#createverticalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editHorizontalGrid`](current/GRID.md#edithorizontalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`editVerticalGrid`](current/GRID.md#editverticalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`editVerticalGrid`](current/GRID.md#editverticalgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGrid`](current/GRID.md#editgrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeGrid`](current/GRID.md#removegrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createLegend`](current/LEGEND_AND_TITLE.md#createlegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ⚠️ |
+| user-facing | [`createLegend`](current/LEGEND_AND_TITLE.md#createlegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegend`](current/LEGEND_AND_TITLE.md#editlegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendLayout`](current/LEGEND_AND_TITLE.md#editlegendlayout) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendLabels`](current/LEGEND_AND_TITLE.md#editlegendlabels) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendTitle`](current/LEGEND_AND_TITLE.md#editlegendtitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendSymbols`](current/LEGEND_AND_TITLE.md#editlegendsymbols) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendBorder`](current/LEGEND_AND_TITLE.md#editlegendborder) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createGuides`](current/LEGEND_AND_TITLE.md#createguides) | legend_and_title | Aggregate create-only | Intentional; guide child actions own edits and removal | ✅ / ✅ / ⚠️ |
+| user-facing | [`createGuides`](current/LEGEND_AND_TITLE.md#createguides) | legend_and_title | Aggregate create-only | Intentional; guide child actions own edits and removal | ✅ / ✅ / ✅ |
 | user-facing | [`removeLegend`](current/LEGEND_AND_TITLE.md#removelegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTitle`](current/LEGEND_AND_TITLE.md#createtitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTitle`](current/LEGEND_AND_TITLE.md#edittitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -144,9 +144,9 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`removeMarkHighlight`](current/MARK_SELECTION.md#removemarkhighlight) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | advanced | [`removeMarkSelection`](current/MARK_SELECTION.md#removemarkselection) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`highlightMarks`](current/MARK_SELECTION.md#highlightmarks) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| primitive | [`editSemantic`](current/PRIMITIVES.md#editsemantic) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
+| primitive | [`editSemantic`](current/PRIMITIVES.md#editsemantic) | primitives | Primitive | Complete | ✅ / ✅ / ✅ |
 | primitive | [`createGraphics`](current/PRIMITIVES.md#creategraphics) | primitives | Primitive | Complete | ✅ / ✅ / ✅ |
-| primitive | [`editGraphics`](current/PRIMITIVES.md#editgraphics) | primitives | Primitive | Complete | ✅ / ✅ / ⚠️ |
+| primitive | [`editGraphics`](current/PRIMITIVES.md#editgraphics) | primitives | Primitive | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createArcMark`](current/MARKS.md#createarcmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editArcMark`](current/MARKS.md#editarcmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createThetaAxis`](current/AXES.md#createThetaAxis) | axes | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
