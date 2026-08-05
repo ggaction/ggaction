@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.2 Phase 2다.** 승인된 repository governance 기반에서 documentation truth와
-mechanical drift guard를 [`impl/roadmap5.2/ROADMAP.md`](impl/roadmap5.2/ROADMAP.md)에서 정렬한다.
+**현재 활성 Roadmap은 Roadmap 5.2 Phase 3이다.** 승인된 repository/documentation 기반에서 current contract의
+partial coverage를 [`impl/roadmap5.2/ROADMAP.md`](impl/roadmap5.2/ROADMAP.md)에서 executable evidence로 닫는다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 

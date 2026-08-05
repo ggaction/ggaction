@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **Roadmap 5.2 Phase 2가 활성 상태다.** 승인된 governance 기반에서 documentation truth와 mechanical drift
-  guard를 [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md)에서 정렬한다.
+- **Roadmap 5.2 Phase 3이 활성 상태다.** 승인된 governance와 documentation truth 위에서 current contract의
+  partial coverage를 [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md)에서 executable evidence로 닫는다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력

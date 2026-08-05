@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-05에 corrected README/architecture truth, package export·renderer·bundle drift guards와 Phase 4에
+남겨 둔 Basic 120,000-byte 복원 경계를 명시적으로 승인했다.
 
 ## Review target
 
@@ -52,6 +55,11 @@
 
 Approval freezes the corrected current facts and drift guards and opens Phase 3 partial-coverage completion. It does not
 authorize CI/dependency/bundle implementation, PR creation, merge, publish, deploy or release.
+
+## Approval
+
+- Approved explicitly by the user on 2026-08-05.
+- Approval freezes the Phase 2 corrected facts and mechanical guards and opens Phase 3 partial-coverage completion.
 
 ## Work blocked before approval
 
