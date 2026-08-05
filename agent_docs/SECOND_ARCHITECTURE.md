@@ -139,7 +139,7 @@ import { chart, render } from "ggaction/basic";
   program을 반환한다.
 - public declaration은 편집 lifecycle, selection, composition, Polar/Parallel coordinate,
   statistical layer를 노출하지 않는다. 이 기능이 필요하면 `ggaction`을 사용한다.
-- production Vite consumer의 minimal scatter build는 gzip 120,000 byte 이하로 검증한다.
+- production Vite consumer의 minimal scatter build는 아래 browser bundle regression ceiling으로 검증한다.
 - `render()`는 default entry와 동일한 `graphicSpec`-only Canvas renderer다.
 
 ### `ggaction/extension`
@@ -208,6 +208,19 @@ ChartProgram contract    ↔ types/program.d.ts
 
 `package.json`의 export map, JavaScript export, declaration, package-boundary test는 하나의
 public contract로 함께 관리한다.
+
+### Browser bundle regression ceilings
+
+Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
+
+| Entry | Gzip ceiling |
+| --- | ---: |
+| `ggaction` | 225,000 bytes |
+| `ggaction/basic` | 128,000 bytes |
+| `ggaction/svg` | 25,000 bytes |
+
+이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
+`scripts/browser-bundle-size.js`이고 package consumer와 documentation contract가 같은 값을 검증한다.
 
 ## `ChartProgram`의 canonical state
 
@@ -2038,7 +2051,7 @@ src/
 │  ├─ facetGuides/     legacy categorical, preparation과 placement stages
 │  ├─ marks/           capability registry와 rematerialization policies
 │  └─ scaleGuideDependencies.js scale-to-guide dependency descriptors
-├─ renderers/          Canvas primitive renderer와 PNG adapter
+├─ renderers/          Canvas, SVG, PNG와 PDF renderer/adapter
 ├─ selectors/          named semantic resource lookup
 └─ theme/              shared built-in visual token
 ```
@@ -2363,7 +2376,6 @@ encoding, guide, layout, materialization primitive가 여러 vertical slice에�
 
 - semanticSpec 전체를 입력받아 자동으로 graphicSpec을 compile하는 기능
 - animation과 transition
-- SVG renderer
 - Polar source의 theta/radius scale과 guide를 반복하는 facet
 - 한 channel의 여러 독립 guide 자동 배치
 - 임의의 외부 chart specification ingestion
@@ -2423,7 +2435,7 @@ state, explicit materialization, action trace, package boundary와 충돌하지 
   body/sibling layer뿐 아니라 owner의 private source/profile identity도 explicit wrapped transition으로 함께 rebind한다.
 
 Roadmap 3 이후에는 nested Cartesian/Polar composition, Cartesian facet, broad guide editing hierarchy와 generic
-`editScale`도 현재 구현 계약이다. 반대로 SVG mapping 등 구현되지 않은 초기 아이디어는
+`editScale`도 현재 구현 계약이다. 반대로 animation과 transition 등 구현되지 않은 초기 아이디어는
 현재 API인 것처럼 public documentation이나 새 코드에서 가정하지 않는다.
 
 Roadmap 4에서는 Parallel coordinate가 세 번째 current coordinate family가 되었다. Public

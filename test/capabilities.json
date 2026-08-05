@@ -29,7 +29,8 @@
       { "type": "file", "path": "contracts/transform-registry.test.js" }
     ],
     "documentation": [
-      { "type": "prefix", "path": "docs/" }
+      { "type": "prefix", "path": "docs/" },
+      { "type": "file", "path": "contracts/documentation-truth.test.js" }
     ],
     "grammar": [
       { "type": "prefix", "path": "unit/grammar/" }
