@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-05에 Roadmap 5.2의 exact scope, repository/coverage/dependency/bundle policy와 Phase 순서를
+명시적으로 승인했다.
 
 ## 쉽게 보는 승인 내용
 
@@ -44,6 +47,11 @@
 
 Approval permits Phase 1 repository governance/community/security work under the exact recommended policy. It does not
 pre-approve later Gate results, public API changes, PR creation, merge, package publish, documentation deployment or release.
+
+## Approval
+
+- Approved explicitly by the user on 2026-08-05.
+- Approval opens Phase 1 repository governance/community/security work under the ten recommended decisions above.
 
 ## Work blocked before approval
 

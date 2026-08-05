@@ -23,7 +23,7 @@ Runtime, tests, public docs와 GitHub settings를 바꾸기 전에 Roadmap 5.2�
 - [x] Recommended repository, coverage, dependency와 bundle policy 작성
 - [x] Focused agent-documentation verification — contract suite 161/161 pass
 - [x] R52-P0-A review package commit/push — `c4a8cce3`
-- [ ] 사용자 explicit approval
+- [x] 사용자 explicit approval — 2026-08-05
 
 ## Gate R52-P0-A
 
