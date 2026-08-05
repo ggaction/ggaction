@@ -38,6 +38,9 @@ Dependabot은 npm, GitHub Actions와 Bundler를 monthly로 확인한다. Patch/m
 - Secret scanning and push protection are enabled.
 - Private vulnerability reporting is enabled and both public issue entry points route security reports to it.
 - Dependabot checks npm, GitHub Actions and Bundler monthly while excluding semantic-version major updates.
+- Enabling Dependabot surfaced one pre-existing medium alert in the development-only transitive `postcss` dependency
+  (`GHSA-fxqj-rqcc-2cmp`, patched in `8.5.23`). Phase 1 does not change dependencies; Phase 4 owns the compatible update and
+  verification.
 - GitHub's default-branch community profile remains 50% until this branch is merged because the API evaluates `main`, not
   the review branch. The stable repository-governance contract verifies the complete pending file set before merge; the
   profile must be checked again from `main` at Roadmap closeout.

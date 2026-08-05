@@ -15,7 +15,7 @@
 - [x] Merged branch auto-delete 적용
 - [x] Dependabot/security/private-reporting/secret-scanning 설정 적용
 - [x] GitHub community profile과 settings API 검증
-- [ ] R52-P1-A remote checkpoint
+- [x] R52-P1-A remote checkpoint
 - [ ] 사용자 explicit approval
 
 ## Gate R52-P1-A

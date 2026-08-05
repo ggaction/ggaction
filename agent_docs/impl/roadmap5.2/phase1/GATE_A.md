@@ -45,6 +45,8 @@
 - Dependabot vulnerability alerts, security updates and automated security fixes: enabled.
 - Secret scanning and push protection: enabled.
 - Private vulnerability reporting: enabled.
+- Security automation surfaced one pre-existing medium alert for the development-only transitive `postcss` dependency:
+  `GHSA-fxqj-rqcc-2cmp`, vulnerable through `8.5.22`, first patched in `8.5.23`. Dependency changes remain Phase 4 work.
 - GitHub community profile reports 50% against current `main`; it cannot evaluate unmerged review-branch files. Local stable
   contracts verify the complete pending file set, and R52-Exit must recheck the profile after merge.
 
@@ -69,4 +71,5 @@ PR creation, merge, publish, deploy, release or later Phase results.
 
 ## Remote checkpoint
 
-- Pending verified commit and push.
+- Verified implementation checkpoint: `550efb2abaffab0643afab8028d7e2a444b5c7c2`
+- Remote branch: `origin/codex/roadmap5-2-hardening`
