@@ -3,7 +3,8 @@
 ## 진행 상태
 
 - [x] R52-P5-A explicit approval — 2026-08-05
-- [ ] Separate PR creation authorization
+- [x] Separate PR creation authorization — 2026-08-05
+- [x] Draft PR [#23](https://github.com/ggaction/ggaction/pull/23) created from `codex/roadmap5-2-hardening`
 - [ ] Required six checks and exact candidate review
 - [ ] Separate merge authorization and merge
 - [ ] Main community profile 재확인

@@ -13,7 +13,8 @@ default-branch 상태를 모두 닫은 뒤 R52-Exit에서 완료 여부를 승�
 - [x] Complete local/package/docs/browser/render verification
 - [x] R52-P5-A remote candidate checkpoint
 - [x] 사용자 R52-P5-A explicit approval — 2026-08-05
-- [ ] 별도 PR creation/merge authorization과 required checks
+- [x] 별도 PR creation authorization과 draft PR [#23](https://github.com/ggaction/ggaction/pull/23) 생성 — 2026-08-05
+- [ ] Required checks와 별도 merge authorization
 - [ ] Merged `main` community/security/settings reconciliation
 - [ ] R52-Exit remote checkpoint와 explicit approval
 
