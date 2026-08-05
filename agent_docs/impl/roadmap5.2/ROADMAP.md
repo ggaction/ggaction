@@ -65,6 +65,7 @@ Gate 상태는 `planned | ready-for-review | approved | changes-requested`만 �
 | R52-P2-A | 2 | Corrected facts와 renderer/export/bundle drift guards | Partial coverage 변경 |
 | R52-P3-A | 3 | 47 contract gaps, 25 action statuses와 cumulative regression evidence | CI/dependency/bundle 변경 |
 | R52-P4-A | 4 | Warning-free workflow, dependency compatibility와 browser bundle budgets | Closeout |
+| R52-P5-A | 5 | Pre-merge integration candidate와 complete local/remote verification | PR/merge와 main reconciliation |
 | R52-Exit | 5 | Current truth, GitHub settings, package, docs와 full suite | 완료 선언과 release preparation |
 
 Visual output 변경은 범위 밖이므로 기본 visual Gate는 없다. 기존 approved chart의 concrete pixels가 달라지면
@@ -100,8 +101,10 @@ Release annotation을 발생시키는 deprecated action runtime을 supported rev
 ## Phase 5 — Integration and closeout
 
 Repository settings, current contracts, architecture, public docs, generated references, full tests, coverage,
-Canvas/SVG/PNG/PDF, installed package와 browser bundles를 함께 검증한다. R52-Exit 승인 뒤에만 Roadmap을 완료하고
-`0.0.9` release preparation을 별도 제안한다.
+Canvas/SVG/PNG/PDF, installed package와 browser bundles를 함께 검증한다. R52-P5-A는 merge 전 최종 후보를
+고정한다. 별도 PR/merge 승인 뒤 exact candidate를 `main`에 반영하고 community profile과 security alert를
+default branch에서 재검증한 다음 R52-Exit를 연다. R52-Exit 승인 뒤에만 Roadmap을 완료하고 `0.0.9` release
+preparation을 별도 제안한다.
 
 ## Explicit non-goals
 
