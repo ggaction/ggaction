@@ -2,7 +2,7 @@
 
 ## 진행 상태
 
-- [ ] R52-P5-A explicit approval
+- [x] R52-P5-A explicit approval — 2026-08-05
 - [ ] Separate PR creation authorization
 - [ ] Required six checks and exact candidate review
 - [ ] Separate merge authorization and merge

@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-05에 pre-merge integration candidate의 repository truth, GitHub baseline, clean-install package,
+docs/browser와 Canvas/SVG/PNG/PDF regression evidence를 명시적으로 승인했다.
 
 ## Review target
 
@@ -50,6 +53,12 @@
 
 Approval freezes the pre-merge Roadmap 5.2 candidate and opens separately authorized PR creation and merge work. Approval
 itself does not authorize PR creation, merge, publish, deployment or release.
+
+## Approval
+
+- Approved explicitly by the user on 2026-08-05.
+- Approval freezes candidate `058f9131af41f996340d6b83cff1c75f26c538c6` and opens separately authorized PR
+  creation and merge work.
 
 ## Work blocked before approval
 
