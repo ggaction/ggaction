@@ -46,7 +46,9 @@
         "selectMarks",
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -111,7 +113,9 @@
         "selectMarks",
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -182,7 +186,9 @@
       "relatedActions": [
         "selectMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -245,7 +251,10 @@
         "selectMarks",
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -306,7 +315,10 @@
         "selectMarks",
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -374,7 +386,9 @@
       "relatedActions": [
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",

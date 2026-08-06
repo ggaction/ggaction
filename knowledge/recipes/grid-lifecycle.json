@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "id": "grid-lifecycle",
+  "title": "Grid Lifecycle",
+  "intent": "Create, revise, selectively remove, and recreate Cartesian or Polar grid directions.",
+  "useWhen": [
+    "Use this recipe when reference lines need direction-specific values or appearance instead of guide defaults."
+  ],
+  "avoidWhen": [
+    "Avoid this recipe when the chart has no compatible scale or when grid lines would add clutter without aiding comparison."
+  ],
+  "prerequisites": [
+    "Provide immutable row objects containing every field named by the selected actions and example program.",
+    "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+  ],
+  "inputs": [
+    {
+      "name": "values",
+      "description": "An array of plain row objects containing the fields required by this task.",
+      "required": true
+    },
+    {
+      "name": "options",
+      "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+      "required": false
+    }
+  ],
+  "outcomes": [
+    "Create, revise, selectively remove, and recreate Cartesian or Polar grid directions."
+  ],
+  "steps": [
+    {
+      "id": "author-primary-result",
+      "instruction": "Apply the primary action that produces the recognizable grid lifecycle result or workflow.",
+      "actions": [
+        {
+          "name": "createGrid",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "add-supporting-variants",
+      "instruction": "Choose only the focused grid lifecycle components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+      "actions": [
+        {
+          "name": "createHorizontalGrid",
+          "role": "supporting"
+        },
+        {
+          "name": "createRadialGrid",
+          "role": "supporting"
+        },
+        {
+          "name": "createThetaGrid",
+          "role": "supporting"
+        },
+        {
+          "name": "createVerticalGrid",
+          "role": "supporting"
+        }
+      ]
+    },
+    {
+      "id": "revise-or-remove-owned-state",
+      "instruction": "Use the focused lifecycle actions only after their owned grid lifecycle resources exist and are uniquely targeted.",
+      "actions": [
+        {
+          "name": "editGrid",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editHorizontalGrid",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editRadialGrid",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editThetaGrid",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editVerticalGrid",
+          "role": "lifecycle"
+        },
+        {
+          "name": "removeGrid",
+          "role": "lifecycle"
+        }
+      ]
+    }
+  ],
+  "alternatives": [
+    {
+      "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+      "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+      "actions": []
+    }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+      "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+    }
+  ],
+  "example": {
+    "path": "test/llm/recipe-knowledge-examples.js",
+    "export": "recipeExamples"
+  },
+  "relatedRecipes": [
+    "ranged-and-specialized-encodings"
+  ],
+  "docs": [
+    {
+      "path": "docs/api/grids.md"
+    }
+  ]
+}

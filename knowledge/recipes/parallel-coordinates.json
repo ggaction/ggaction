@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "id": "parallel-coordinates",
+  "title": "Parallel Coordinates",
+  "intent": "Create one polyline per observation across an ordered set of quantitative or categorical dimensions.",
+  "useWhen": [
+    "Use this recipe when multivariate profiles and tradeoffs across several dimensions need comparison."
+  ],
+  "avoidWhen": [
+    "Avoid this recipe for fewer than three useful dimensions or datasets whose overplotting cannot be reduced."
+  ],
+  "prerequisites": [
+    "Provide immutable row objects containing every field named by the selected actions and example program.",
+    "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+  ],
+  "inputs": [
+    {
+      "name": "values",
+      "description": "An array of plain row objects containing the fields required by this task.",
+      "required": true
+    },
+    {
+      "name": "options",
+      "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+      "required": false
+    }
+  ],
+  "outcomes": [
+    "Create one polyline per observation across an ordered set of quantitative or categorical dimensions."
+  ],
+  "steps": [
+    {
+      "id": "prepare-required-state",
+      "instruction": "Create the data, marks, encodings, and owned resources required before authoring the parallel coordinates result.",
+      "actions": [
+        {
+          "name": "createCanvas",
+          "role": "supporting"
+        },
+        {
+          "name": "createData",
+          "role": "supporting"
+        }
+      ]
+    },
+    {
+      "id": "author-primary-result",
+      "instruction": "Apply the primary action that produces the recognizable parallel coordinates result or workflow.",
+      "actions": [
+        {
+          "name": "createParallelCoordinates",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "add-supporting-variants",
+      "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested parallel coordinates variant.",
+      "actions": [
+        {
+          "name": "encodeParallelCoordinates",
+          "role": "supporting"
+        },
+        {
+          "name": "filterData",
+          "role": "supporting"
+        }
+      ]
+    }
+  ],
+  "alternatives": [
+    {
+      "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+      "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+      "actions": []
+    }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+      "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+    }
+  ],
+  "example": {
+    "path": "examples/cars-parallel-coordinates/program.js",
+    "export": "createCarsParallelCoordinates"
+  },
+  "relatedRecipes": [
+    "ranged-and-specialized-encodings",
+    "resource-and-facet-policies"
+  ],
+  "docs": [
+    {
+      "path": "docs/recipes/parallel-coordinates.md"
+    }
+  ]
+}

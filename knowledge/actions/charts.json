@@ -75,7 +75,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "bar-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -152,7 +154,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "heatmap"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -234,7 +238,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "histogram"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -327,7 +333,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "line-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -412,7 +420,11 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "parallel-coordinates",
+        "ranged-and-specialized-encodings",
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -498,7 +510,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",

@@ -1,0 +1,1480 @@
+{
+  "schemaVersion": 1,
+  "actions": [
+    {
+      "name": "createArcMark",
+      "classification": "primary",
+      "recipeIds": [
+        "mark-lifecycle",
+        "rose-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createAreaMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "density-area",
+        "horizon"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createAxes",
+      "classification": "primary",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createBarMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "category-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createBarPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "bar-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createBin2DData",
+      "classification": "supporting",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createBoxPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "box-plot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createCanvas",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "bar-chart",
+        "box-plot",
+        "category-ordering",
+        "density-area",
+        "error-band",
+        "error-bar",
+        "facet",
+        "gradient-plot",
+        "heatmap",
+        "histogram",
+        "horizon",
+        "line-chart",
+        "parallel-coordinates",
+        "path-ordering",
+        "regression-scatterplot",
+        "resource-and-facet-policies",
+        "rose-chart",
+        "scatterplot",
+        "tick-distribution",
+        "time-series-derivation",
+        "violin-plot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createCoordinate",
+      "classification": "supporting",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createData",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "bar-chart",
+        "box-plot",
+        "category-ordering",
+        "density-area",
+        "error-band",
+        "error-bar",
+        "facet",
+        "gradient-plot",
+        "heatmap",
+        "histogram",
+        "horizon",
+        "line-chart",
+        "parallel-coordinates",
+        "path-ordering",
+        "regression-scatterplot",
+        "rose-chart",
+        "scatterplot",
+        "tick-distribution",
+        "time-series-derivation",
+        "violin-plot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createDensityData",
+      "classification": "supporting",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createDerivedData",
+      "classification": "primary",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createErrorBand",
+      "classification": "primary",
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createErrorBar",
+      "classification": "primary",
+      "recipeIds": [
+        "error-bar",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createGradientPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "gradient-plot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createGraphics",
+      "classification": "extension-only",
+      "recipeIds": [
+        "extension-domain-action"
+      ],
+      "reason": "This primitive belongs inside an extension-authored domain action rather than the ordinary chart-authoring workflow."
+    },
+    {
+      "name": "createGrid",
+      "classification": "primary",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createGuides",
+      "classification": "supporting",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createHeatmap",
+      "classification": "primary",
+      "recipeIds": [
+        "heatmap"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createHistogram",
+      "classification": "primary",
+      "recipeIds": [
+        "histogram"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createHorizontalGrid",
+      "classification": "supporting",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createIntervalData",
+      "classification": "supporting",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createLegend",
+      "classification": "supporting",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createLineMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "path-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createLinePlot",
+      "classification": "primary",
+      "recipeIds": [
+        "line-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createParallelCoordinates",
+      "classification": "primary",
+      "recipeIds": [
+        "parallel-coordinates",
+        "ranged-and-specialized-encodings",
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createPointMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "facet",
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRadialAxis",
+      "classification": "supporting",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRadialGrid",
+      "classification": "supporting",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRectMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "heatmap",
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRegression",
+      "classification": "primary",
+      "recipeIds": [
+        "regression-scatterplot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRegressionBand",
+      "classification": "supporting",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRegressionData",
+      "classification": "supporting",
+      "recipeIds": [
+        "derived-data-workflows",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRegressionLine",
+      "classification": "supporting",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRuleMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createScale",
+      "classification": "supporting",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createScatterPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createTextMark",
+      "classification": "primary",
+      "recipeIds": [
+        "annotations",
+        "heatmap",
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createThetaAxis",
+      "classification": "primary",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createThetaGrid",
+      "classification": "supporting",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createTickMark",
+      "classification": "primary",
+      "recipeIds": [
+        "mark-lifecycle",
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createTimeUnitData",
+      "classification": "supporting",
+      "recipeIds": [
+        "time-series-derivation"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createTitle",
+      "classification": "supporting",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createVerticalGrid",
+      "classification": "supporting",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createViolinPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "violin-plot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createWindowData",
+      "classification": "primary",
+      "recipeIds": [
+        "time-series-derivation"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxis",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisLine",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisTicks",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisTicksAndLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisTitle",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxis",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisLine",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisTicks",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisTicksAndLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisTitle",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editArcMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editAreaMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "density-area"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editBarMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "bar-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editBin2DData",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editBoxPlot",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "box-plot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editCanvas",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editCompositionLayout",
+      "classification": "primary",
+      "recipeIds": [
+        "composition"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editDensity",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "density-area"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editErrorBand",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editErrorBandBoundary",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editErrorBar",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "error-bar",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editFacetGuides",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editFacetHeaders",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "facet"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editFacetScales",
+      "classification": "primary",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editGradientPlot",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "gradient-plot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editGraphics",
+      "classification": "extension-only",
+      "recipeIds": [
+        "extension-domain-action"
+      ],
+      "reason": "This primitive belongs inside an extension-authored domain action rather than the ordinary chart-authoring workflow."
+    },
+    {
+      "name": "editGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editHorizon",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "horizon",
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editHorizontalGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle",
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegend",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendBorder",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendLayout",
+      "classification": "primary",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendSymbols",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLineMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "line-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editMarkSelection",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editPointMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxisLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxisLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxisTicks",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxisTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle",
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRectMark",
+      "classification": "primary",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRegression",
+      "classification": "primary",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRegressionBand",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRegressionLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editScale",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editSemantic",
+      "classification": "extension-only",
+      "recipeIds": [
+        "extension-domain-action"
+      ],
+      "reason": "This primitive belongs inside an extension-authored domain action rather than the ordinary chart-authoring workflow."
+    },
+    {
+      "name": "editTextMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "annotations",
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxisLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxisLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxisTicks",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxisTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle",
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editTickMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle",
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editVerticalGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisTicks",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisTicksAndLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisTicks",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisTicksAndLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeAngle",
+      "classification": "supporting",
+      "recipeIds": [
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeBarWidth",
+      "classification": "supporting",
+      "recipeIds": [
+        "bar-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeColor",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot",
+        "rose-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeDensity",
+      "classification": "primary",
+      "recipeIds": [
+        "density-area"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeGroup",
+      "classification": "supporting",
+      "recipeIds": [
+        "scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeHistogram",
+      "classification": "supporting",
+      "recipeIds": [
+        "histogram"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeHorizon",
+      "classification": "primary",
+      "recipeIds": [
+        "horizon"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeOpacity",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeParallelCoordinates",
+      "classification": "supporting",
+      "recipeIds": [
+        "parallel-coordinates",
+        "ranged-and-specialized-encodings",
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodePathOrder",
+      "classification": "primary",
+      "recipeIds": [
+        "path-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodePointRadius",
+      "classification": "supporting",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeR",
+      "classification": "supporting",
+      "recipeIds": [
+        "rose-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeRadius",
+      "classification": "supporting",
+      "recipeIds": [
+        "scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeShape",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeSize",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeStroke",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeStrokeDash",
+      "classification": "supporting",
+      "recipeIds": [
+        "line-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeStrokeWidth",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeText",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "heatmap"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeTheta",
+      "classification": "supporting",
+      "recipeIds": [
+        "rose-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeX",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "category-ordering",
+        "facet",
+        "path-ordering",
+        "regression-scatterplot",
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeX2",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeXOffset",
+      "classification": "supporting",
+      "recipeIds": [
+        "bar-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeXRange",
+      "classification": "primary",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeY",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "category-ordering",
+        "facet",
+        "path-ordering",
+        "regression-scatterplot",
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeY2",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeYOffset",
+      "classification": "supporting",
+      "recipeIds": [
+        "bar-chart",
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeYRange",
+      "classification": "supporting",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "facet",
+      "classification": "primary",
+      "recipeIds": [
+        "facet"
+      ],
+      "reason": null
+    },
+    {
+      "name": "filterData",
+      "classification": "supporting",
+      "recipeIds": [
+        "parallel-coordinates"
+      ],
+      "reason": null
+    },
+    {
+      "name": "filterMarks",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "highlightMarks",
+      "classification": "supporting",
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "jitterPoints",
+      "classification": "supporting",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "layoutLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations"
+      ],
+      "reason": null
+    },
+    {
+      "name": "orderCategories",
+      "classification": "primary",
+      "recipeIds": [
+        "category-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeCategoryOrder",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "category-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeEncoding",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeJitter",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeLabelLayout",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "annotations",
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeLegend",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeMarkHighlight",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle",
+        "selection-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeMarkSelection",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle",
+        "selection-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removePathOrder",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "path-ordering",
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removePointRadius",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeRadialAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeThetaAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeXAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeYAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "replaceCompositionChild",
+      "classification": "supporting",
+      "recipeIds": [
+        "composition"
+      ],
+      "reason": null
+    },
+    {
+      "name": "selectMarks",
+      "classification": "primary",
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
+      "reason": null
+    }
+  ]
+}

@@ -2,11 +2,8 @@ import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
-import {
-  actionSourceRoot,
-  buildActionKnowledge
-} from "../../scripts/action-knowledge.js";
-import { generateActionKnowledge } from "../../scripts/generate-action-knowledge.js";
+import { actionSourceRoot } from "../../scripts/action-knowledge.js";
+import { buildKnowledge, generateActionKnowledge } from "../../scripts/generate-action-knowledge.js";
 import { actionExamples } from "../llm/action-knowledge-examples.js";
 
 async function json(relative) {
@@ -20,8 +17,8 @@ function traceIncludes(node, action) {
 }
 
 test("publishes complete deterministic action knowledge", async () => {
-  const [{ document, report }, generated, published] = await Promise.all([
-    buildActionKnowledge(),
+  const [{ document, actionDocument, report }, generated, published] = await Promise.all([
+    buildKnowledge(),
     json("knowledge/index.json"),
     json("docs/llms-actions.json")
   ]);
@@ -30,15 +27,15 @@ test("publishes complete deterministic action knowledge", async () => {
     actions: 173,
     domains: 11,
     parameterNotes: 443,
-    exampleCoverage: { canonical: 72, focused: 100, "not-applicable": 1 }
+    actionExamples: { canonical: 72, focused: 100, "not-applicable": 1 },
+    recipes: 33,
+    recipeActions: 173,
+    recipeExamples: { canonical: 22, focused: 11 },
+    classifications: { primary: 32, supporting: 67, lifecycle: 71, "extension-only": 3 }
   });
   assert.deepEqual(generated, document);
-  assert.deepEqual(published, {
-    schemaVersion: document.schemaVersion,
-    generated: document.generated,
-    actions: document.actions
-  });
-  assert.deepEqual(document.recipes, []);
+  assert.deepEqual(published, actionDocument);
+  assert.equal(document.recipes.length, 33);
   assert.deepEqual(
     document.actions.map(action => action.name),
     document.actions.map(action => action.name).toSorted()
@@ -75,7 +72,7 @@ test("keeps canonical action sources informative and schema-shaped", async () =>
       assert.equal(action.avoidWhen.length > 0, true, action.name);
       assert.equal(action.commonErrors.length > 0, true, action.name);
       assert.equal(action.docs.length > 0, true, action.name);
-      assert.deepEqual(action.recipeIds, [], action.name);
+      assert.equal(action.recipeIds.length > 0, true, action.name);
       assert.doesNotMatch(action.summary, /\b(?:Createss|Editss)\b|matrix above/i);
     }
   }

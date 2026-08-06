@@ -55,7 +55,10 @@
       "relatedActions": [
         "editArcMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "rose-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -128,7 +131,10 @@
       "relatedActions": [
         "editAreaMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "density-area",
+        "horizon"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -201,7 +207,9 @@
       "relatedActions": [
         "editBarMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "category-ordering"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -274,7 +282,9 @@
       "relatedActions": [
         "editLineMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "path-ordering"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -347,7 +357,11 @@
       "relatedActions": [
         "editPointMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "facet",
+        "regression-scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -420,7 +434,10 @@
       "relatedActions": [
         "editRectMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "heatmap",
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -479,7 +496,9 @@
         "export": "createRuleGeometryExample"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -554,7 +573,11 @@
         "editTextMark",
         "encodeText"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "heatmap",
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -629,7 +652,10 @@
         "editTickMark",
         "removeMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "tick-distribution"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -695,7 +721,9 @@
       "relatedActions": [
         "createArcMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -761,7 +789,9 @@
       "relatedActions": [
         "createAreaMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "density-area"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -827,7 +857,9 @@
       "relatedActions": [
         "createBarMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "bar-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -890,7 +922,9 @@
       "relatedActions": [
         "createLineMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "line-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -959,7 +993,9 @@
       "relatedActions": [
         "createPointMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -1022,7 +1058,9 @@
       "relatedActions": [
         "createRectMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -1085,7 +1123,10 @@
       "relatedActions": [
         "createTextMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -1148,7 +1189,10 @@
       "relatedActions": [
         "createTickMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "tick-distribution"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -1210,7 +1254,9 @@
       "relatedActions": [
         "removeJitter"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -1271,7 +1317,9 @@
       "relatedActions": [
         "removeLabelLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -1333,7 +1381,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -1392,7 +1442,10 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -1451,7 +1504,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",

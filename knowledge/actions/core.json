@@ -61,7 +61,9 @@
       "relatedActions": [
         "editBin2DData"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -134,7 +136,30 @@
       "relatedActions": [
         "editCanvas"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "bar-chart",
+        "box-plot",
+        "category-ordering",
+        "density-area",
+        "error-band",
+        "error-bar",
+        "facet",
+        "gradient-plot",
+        "heatmap",
+        "histogram",
+        "horizon",
+        "line-chart",
+        "parallel-coordinates",
+        "path-ordering",
+        "regression-scatterplot",
+        "resource-and-facet-policies",
+        "rose-chart",
+        "scatterplot",
+        "tick-distribution",
+        "time-series-derivation",
+        "violin-plot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -203,7 +228,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -258,7 +285,29 @@
         "export": "createAirlinePassengerMovingWindows"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "bar-chart",
+        "box-plot",
+        "category-ordering",
+        "density-area",
+        "error-band",
+        "error-bar",
+        "facet",
+        "gradient-plot",
+        "heatmap",
+        "histogram",
+        "horizon",
+        "line-chart",
+        "parallel-coordinates",
+        "path-ordering",
+        "regression-scatterplot",
+        "rose-chart",
+        "scatterplot",
+        "tick-distribution",
+        "time-series-derivation",
+        "violin-plot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -333,7 +382,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -394,7 +445,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -467,7 +520,10 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -525,7 +581,9 @@
       "relatedActions": [
         "editScale"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -593,7 +651,9 @@
         "export": "createAirlinePassengerMovingWindows"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "time-series-derivation"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -658,7 +718,9 @@
         "export": "createAirlinePassengerMovingWindows"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "time-series-derivation"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -731,7 +793,9 @@
       "relatedActions": [
         "createBin2DData"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -806,7 +870,9 @@
       "relatedActions": [
         "createCanvas"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -888,7 +954,9 @@
       "relatedActions": [
         "createScale"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -959,7 +1027,9 @@
         "export": "createCarsParallelCoordinates"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "parallel-coordinates"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",

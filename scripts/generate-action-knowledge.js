@@ -3,24 +3,61 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { buildActionKnowledge, root } from "./action-knowledge.js";
+import { buildRecipeKnowledge } from "./recipe-knowledge.js";
 
 const knowledgeOutput = path.join(root, "knowledge/index.json");
-const docsOutput = path.join(root, "docs/llms-actions.json");
+const docsActionOutput = path.join(root, "docs/llms-actions.json");
+const docsRecipeOutput = path.join(root, "docs/llms-recipes.json");
 
 function serialized(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-export async function generateActionKnowledge({ check = false } = {}) {
-  const { document, report } = await buildActionKnowledge();
-  const publicDocument = {
-    schemaVersion: document.schemaVersion,
-    generated: document.generated,
-    actions: document.actions
+export async function buildKnowledge() {
+  const actionKnowledge = await buildActionKnowledge();
+  const recipeKnowledge = await buildRecipeKnowledge(actionKnowledge.document.actions);
+  const generated = {
+    ...actionKnowledge.document.generated,
+    ...recipeKnowledge.generated
   };
+  return {
+    document: {
+      schemaVersion: 1,
+      generated,
+      actions: actionKnowledge.document.actions,
+      recipes: recipeKnowledge.document.recipes,
+      coverage: recipeKnowledge.document.coverage
+    },
+    actionDocument: {
+      schemaVersion: 1,
+      generated,
+      actions: actionKnowledge.document.actions
+    },
+    recipeDocument: {
+      schemaVersion: 1,
+      generated,
+      recipes: recipeKnowledge.document.recipes,
+      coverage: recipeKnowledge.document.coverage
+    },
+    report: {
+      actions: actionKnowledge.report.actions,
+      domains: actionKnowledge.report.domains,
+      parameterNotes: actionKnowledge.report.parameterNotes,
+      actionExamples: actionKnowledge.report.exampleCoverage,
+      recipes: recipeKnowledge.report.recipes,
+      recipeActions: recipeKnowledge.report.recipeActions,
+      recipeExamples: recipeKnowledge.report.exampleCoverage,
+      classifications: recipeKnowledge.report.classifications
+    }
+  };
+}
+
+export async function generateActionKnowledge({ check = false } = {}) {
+  const { document, actionDocument, recipeDocument, report } = await buildKnowledge();
   const outputs = [
     [knowledgeOutput, serialized(document)],
-    [docsOutput, serialized(publicDocument)]
+    [docsActionOutput, serialized(actionDocument)],
+    [docsRecipeOutput, serialized(recipeDocument)]
   ];
 
   if (check) {

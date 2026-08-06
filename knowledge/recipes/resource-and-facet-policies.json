@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "id": "resource-and-facet-policies",
+  "title": "Resource and Facet Policies",
+  "intent": "Create explicit coordinates and scales, resize a chart, and revise facet guide or scale resolution policies.",
+  "useWhen": [
+    "Use this recipe when inference is ambiguous or existing facet children need explicit shared and independent policies."
+  ],
+  "avoidWhen": [
+    "Avoid this recipe when one unique current resource and the default facet policy already match the task."
+  ],
+  "prerequisites": [
+    "Provide immutable row objects containing every field named by the selected actions and example program.",
+    "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+  ],
+  "inputs": [
+    {
+      "name": "values",
+      "description": "An array of plain row objects containing the fields required by this task.",
+      "required": true
+    },
+    {
+      "name": "options",
+      "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+      "required": false
+    }
+  ],
+  "outcomes": [
+    "Create explicit coordinates and scales, resize a chart, and revise facet guide or scale resolution policies."
+  ],
+  "steps": [
+    {
+      "id": "prepare-required-state",
+      "instruction": "Prepare only the existing resource and facet policies state required by the selected focused operation.",
+      "actions": [
+        {
+          "name": "createParallelCoordinates",
+          "role": "supporting"
+        }
+      ]
+    },
+    {
+      "id": "author-primary-result",
+      "instruction": "Apply the primary action that produces the recognizable resource and facet policies result or workflow.",
+      "actions": [
+        {
+          "name": "editFacetScales",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "add-supporting-variants",
+      "instruction": "Choose only the focused resource and facet policies components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+      "actions": [
+        {
+          "name": "createCanvas",
+          "role": "supporting"
+        },
+        {
+          "name": "createCoordinate",
+          "role": "supporting"
+        },
+        {
+          "name": "createScale",
+          "role": "supporting"
+        },
+        {
+          "name": "encodeParallelCoordinates",
+          "role": "supporting"
+        }
+      ]
+    },
+    {
+      "id": "revise-or-remove-owned-state",
+      "instruction": "Use the focused lifecycle actions only after their owned resource and facet policies resources exist and are uniquely targeted.",
+      "actions": [
+        {
+          "name": "editFacetGuides",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editCanvas",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editScale",
+          "role": "lifecycle"
+        }
+      ]
+    }
+  ],
+  "alternatives": [
+    {
+      "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+      "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+      "actions": []
+    }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+      "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+    }
+  ],
+  "example": {
+    "path": "test/llm/recipe-knowledge-examples.js",
+    "export": "recipeExamples"
+  },
+  "relatedRecipes": [
+    "parallel-coordinates",
+    "ranged-and-specialized-encodings"
+  ],
+  "docs": [
+    {
+      "path": "docs/api/composition.md"
+    }
+  ]
+}

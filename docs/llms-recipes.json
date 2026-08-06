@@ -1,0 +1,5098 @@
+{
+  "schemaVersion": 1,
+  "generated": {
+    "actionCount": 173,
+    "actionIndexSha256": "5ba78038a620f50c79878d29404f7739a55ab5f59406d84ad1b16b68a188d7f6",
+    "actionSourceSha256": "1a2a4a50656eb9c6b2924f071b3e5c3aadecf92400baf73af4b58a3563d9e4fc",
+    "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
+    "recipeCount": 33,
+    "recipeSourceSha256": "6f9307a9e053837c129ad833f49e2264124da3e2fe9df2a772c99691882e1c06",
+    "recipeCoverageSha256": "d9b7a19a141bd1e4798985e584c9dd58622766e231ffb5a96f98be347b93ed9d"
+  },
+  "recipes": [
+    {
+      "schemaVersion": 1,
+      "id": "annotations",
+      "title": "Annotations and Label Layout",
+      "intent": "Add data-driven text to marks and resolve avoidable collisions within bounded chart or Canvas space.",
+      "useWhen": [
+        "Use this recipe when selected or complete observations need readable labels anchored to final mark positions."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when dense labels cannot fit or when a legend communicates the categories more clearly."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Add data-driven text to marks and resolve avoidable collisions within bounded chart or Canvas space."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the annotations and label layout result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "createPointMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeX",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeY",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable annotations and label layout result or workflow.",
+          "actions": [
+            {
+              "name": "createTextMark",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested annotations and label layout variant.",
+          "actions": [
+            {
+              "name": "encodeText",
+              "role": "supporting"
+            },
+            {
+              "name": "layoutLabels",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned annotations and label layout resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editTextMark",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeLabelLayout",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/annotated-imdb-scatterplot/program.js",
+        "export": "createAnnotatedImdbScatterplot"
+      },
+      "relatedRecipes": [
+        "facet",
+        "heatmap",
+        "mark-lifecycle",
+        "regression-scatterplot"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/annotations.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "bar-chart",
+      "title": "Bar Chart",
+      "intent": "Create vertical or horizontal bars for comparing aggregate values across categories and optional groups.",
+      "useWhen": [
+        "Use this recipe when categorical comparison is more important than precise row-level positions."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe for continuous distributions or relationships between two quantitative fields."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create vertical or horizontal bars for comparing aggregate values across categories and optional groups."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the bar chart result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable bar chart result or workflow.",
+          "actions": [
+            {
+              "name": "createBarPlot",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested bar chart variant.",
+          "actions": [
+            {
+              "name": "encodeXOffset",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeYOffset",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeBarWidth",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned bar chart resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editBarMark",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/jobs-grouped-bar/program.js",
+        "export": "createJobsGroupedBar"
+      },
+      "relatedRecipes": [
+        "ranged-and-specialized-encodings"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/bar-chart.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "box-plot",
+      "title": "Box Plot",
+      "intent": "Create grouped boxes, medians, whiskers, and optional outliers from quantitative observations.",
+      "useWhen": [
+        "Use this recipe when robust distribution summaries and outliers should be compared across groups."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when the complete distribution shape or individual observations must remain visible."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create grouped boxes, medians, whiskers, and optional outliers from quantitative observations."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the box plot result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable box plot result or workflow.",
+          "actions": [
+            {
+              "name": "createBoxPlot",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned box plot resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editBoxPlot",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-box-plot/program.js",
+        "export": "createCarsBoxPlot"
+      },
+      "relatedRecipes": [
+        "statistical-owner-revisions"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/box-plot.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "cartesian-guide-lifecycle",
+      "title": "Cartesian Guide Lifecycle",
+      "intent": "Create, revise, remove, and recreate complete or focused Cartesian axis components.",
+      "useWhen": [
+        "Use this recipe when Cartesian axes need component-level control beyond createGuides defaults."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe before compatible x or y scales exist, or when createGuides already produces the desired axes."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create, revise, remove, and recreate complete or focused Cartesian axis components."
+      ],
+      "steps": [
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable cartesian guide lifecycle result or workflow.",
+          "actions": [
+            {
+              "name": "createAxes",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Choose only the focused cartesian guide lifecycle components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+          "actions": [
+            {
+              "name": "createXAxis",
+              "role": "supporting"
+            },
+            {
+              "name": "createXAxisLabels",
+              "role": "supporting"
+            },
+            {
+              "name": "createXAxisLine",
+              "role": "supporting"
+            },
+            {
+              "name": "createXAxisTicks",
+              "role": "supporting"
+            },
+            {
+              "name": "createXAxisTicksAndLabels",
+              "role": "supporting"
+            },
+            {
+              "name": "createXAxisTitle",
+              "role": "supporting"
+            },
+            {
+              "name": "createYAxis",
+              "role": "supporting"
+            },
+            {
+              "name": "createYAxisLabels",
+              "role": "supporting"
+            },
+            {
+              "name": "createYAxisLine",
+              "role": "supporting"
+            },
+            {
+              "name": "createYAxisTicks",
+              "role": "supporting"
+            },
+            {
+              "name": "createYAxisTicksAndLabels",
+              "role": "supporting"
+            },
+            {
+              "name": "createYAxisTitle",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned cartesian guide lifecycle resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editXAxis",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editXAxisLabels",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editXAxisLine",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editXAxisTicks",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editXAxisTicksAndLabels",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editXAxisTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editYAxis",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editYAxisLabels",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editYAxisLine",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editYAxisTicks",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editYAxisTicksAndLabels",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editYAxisTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeXAxis",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeYAxis",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "legend-title-lifecycle"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/axes.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "category-ordering",
+      "title": "Category Ordering and Reset",
+      "intent": "Order categorical position domains explicitly or by aggregate summaries and restore first-appearance order when needed.",
+      "useWhen": [
+        "Use this recipe when bar, point, or label order should communicate rank instead of source first appearance."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when a fixed scale domain already owns the order or when sorting rows rather than categories is required."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Order categorical position domains explicitly or by aggregate summaries and restore first-appearance order when needed."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the category ordering and reset result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "createBarMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeX",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeY",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable category ordering and reset result or workflow.",
+          "actions": [
+            {
+              "name": "orderCategories",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned category ordering and reset resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "removeCategoryOrder",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/ordered-category-bar/program.js",
+        "export": "createOrderedCategoryBarComparison"
+      },
+      "relatedRecipes": [],
+      "docs": [
+        {
+          "path": "docs/api/position/category-ordering.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "composition",
+      "title": "Program Composition",
+      "intent": "Combine complete child charts into a stable layered, horizontal, or vertical program composition.",
+      "useWhen": [
+        "Use this recipe when independently authored charts must share one ordered dashboard or overlay."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when one mark layer inside a single shared coordinate is sufficient."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Combine complete child charts into a stable layered, horizontal, or vertical program composition."
+      ],
+      "steps": [
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable program composition result or workflow.",
+          "actions": [
+            {
+              "name": "editCompositionLayout",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested program composition variant.",
+          "actions": [
+            {
+              "name": "replaceCompositionChild",
+              "role": "supporting"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/program-composition/program.js",
+        "export": "createProgramCompositionExample"
+      },
+      "relatedRecipes": [],
+      "docs": [
+        {
+          "path": "docs/recipes/composition.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "density-area",
+      "title": "Density Area",
+      "intent": "Create a smooth one-dimensional density estimate and render it as one or more filled area profiles.",
+      "useWhen": [
+        "Use this recipe when distribution shape should be compared without committing to visible histogram bins."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe for very small samples or when exact counts per fixed bin are required."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create a smooth one-dimensional density estimate and render it as one or more filled area profiles."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the density area result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "createAreaMark",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable density area result or workflow.",
+          "actions": [
+            {
+              "name": "encodeDensity",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned density area resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editDensity",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editAreaMark",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-density-area/program.js",
+        "export": "createCarsDensityArea"
+      },
+      "relatedRecipes": [
+        "horizon"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/density-area.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "derived-data-workflows",
+      "title": "Derived Data Workflows",
+      "intent": "Create reusable filtered, density, interval, regression, and two-dimensional bin datasets with explicit identities.",
+      "useWhen": [
+        "Use this recipe when downstream marks or charts must share a named immutable derived dataset."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when a chart facade already owns the complete transform and no other consumer needs the intermediate rows."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create reusable filtered, density, interval, regression, and two-dimensional bin datasets with explicit identities."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Prepare only the existing derived data workflows state required by the selected focused operation.",
+          "actions": [
+            {
+              "name": "createBin2DData",
+              "role": "supporting"
+            },
+            {
+              "name": "createDensityData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable derived data workflows result or workflow.",
+          "actions": [
+            {
+              "name": "createDerivedData",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Choose only the focused derived data workflows components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+          "actions": [
+            {
+              "name": "createRegressionData",
+              "role": "supporting"
+            },
+            {
+              "name": "createIntervalData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned derived data workflows resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editBin2DData",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "statistical-owner-revisions"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/data/statistical-transforms.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "error-band",
+      "title": "Error Band",
+      "intent": "Create an uncertainty ribbon around an ordered series from explicit bounds or statistical intervals.",
+      "useWhen": [
+        "Use this recipe when lower and upper uncertainty bounds should follow an x or time series continuously."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe for isolated category estimates that are clearer as individual error bars."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create an uncertainty ribbon around an ordered series from explicit bounds or statistical intervals."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the error band result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable error band result or workflow.",
+          "actions": [
+            {
+              "name": "createErrorBand",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned error band resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editErrorBand",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editErrorBandBoundary",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/gapminder-error-band/program.js",
+        "export": "createGapminderCurvedBoundaryErrorBand"
+      },
+      "relatedRecipes": [
+        "statistical-owner-revisions"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/error-band.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "error-bar",
+      "title": "Error Bar",
+      "intent": "Create point or aggregate estimates with vertical or horizontal interval rules and optional caps.",
+      "useWhen": [
+        "Use this recipe when a central estimate and its uncertainty or spread must be shown compactly."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when uncertainty varies continuously along an ordered series and should form a band."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create point or aggregate estimates with vertical or horizontal interval rules and optional caps."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the error bar result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable error bar result or workflow.",
+          "actions": [
+            {
+              "name": "createErrorBar",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested error bar variant.",
+          "actions": [
+            {
+              "name": "createRuleMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeStroke",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeStrokeWidth",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeX2",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeY2",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned error bar resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editErrorBar",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-error-bar/program.js",
+        "export": "createCarsErrorBarOverlay"
+      },
+      "relatedRecipes": [
+        "statistical-owner-revisions"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/error-bar.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "extension-domain-action",
+      "title": "Extension-Authored Domain Action",
+      "intent": "Wrap semantic and graphical primitives inside one traceable extension action with explicit ownership and materialization.",
+      "useWhen": [
+        "Use this recipe when an extension author must add a domain operation not provided by the ordinary chart-authoring API."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe for ordinary charts that can be expressed with existing domain actions, facades, or focused edits."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Wrap semantic and graphical primitives inside one traceable extension action with explicit ownership and materialization."
+      ],
+      "steps": [
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable extension-authored domain action result or workflow.",
+          "actions": [
+            {
+              "name": "createGraphics",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Choose only the focused extension-authored domain action components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+          "actions": [
+            {
+              "name": "editSemantic",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned extension-authored domain action resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editGraphics",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [],
+      "docs": [
+        {
+          "path": "docs/extension/action-authoring.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "facet",
+      "title": "Facet",
+      "intent": "Repeat one complete chart for each value of a categorical field with controlled headers, scales, and guides.",
+      "useWhen": [
+        "Use this recipe when small multiples should preserve the same chart grammar across category values."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when each panel needs a different chart structure or a fixed manual composition."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Repeat one complete chart for each value of a categorical field with controlled headers, scales, and guides."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the facet result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "createPointMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeX",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeY",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable facet result or workflow.",
+          "actions": [
+            {
+              "name": "facet",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned facet resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editFacetHeaders",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-origin-scatterplot-facet/program.js",
+        "export": "createCarsOriginScatterplotFacet"
+      },
+      "relatedRecipes": [
+        "annotations",
+        "regression-scatterplot"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/facet.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "gradient-plot",
+      "title": "Gradient Plot",
+      "intent": "Create within-category quantitative gradients with optional center lines for compact distribution comparison.",
+      "useWhen": [
+        "Use this recipe when each category needs a continuous density-colored quantitative span and center indicator."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when readers need familiar quartile boxes or fully mirrored density silhouettes."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create within-category quantitative gradients with optional center lines for compact distribution comparison."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the gradient plot result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable gradient plot result or workflow.",
+          "actions": [
+            {
+              "name": "createGradientPlot",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned gradient plot resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editGradientPlot",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-gradient-plot/program.js",
+        "export": "createCarsGradientPlot"
+      },
+      "relatedRecipes": [
+        "statistical-owner-revisions"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/gradient-plot.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "grid-lifecycle",
+      "title": "Grid Lifecycle",
+      "intent": "Create, revise, selectively remove, and recreate Cartesian or Polar grid directions.",
+      "useWhen": [
+        "Use this recipe when reference lines need direction-specific values or appearance instead of guide defaults."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when the chart has no compatible scale or when grid lines would add clutter without aiding comparison."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create, revise, selectively remove, and recreate Cartesian or Polar grid directions."
+      ],
+      "steps": [
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable grid lifecycle result or workflow.",
+          "actions": [
+            {
+              "name": "createGrid",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Choose only the focused grid lifecycle components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+          "actions": [
+            {
+              "name": "createHorizontalGrid",
+              "role": "supporting"
+            },
+            {
+              "name": "createRadialGrid",
+              "role": "supporting"
+            },
+            {
+              "name": "createThetaGrid",
+              "role": "supporting"
+            },
+            {
+              "name": "createVerticalGrid",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned grid lifecycle resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editGrid",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editHorizontalGrid",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editRadialGrid",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editThetaGrid",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editVerticalGrid",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeGrid",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "ranged-and-specialized-encodings"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/grids.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "heatmap",
+      "title": "Heatmap",
+      "intent": "Create a rectangular cell chart that maps two discrete positions and a quantitative value to color.",
+      "useWhen": [
+        "Use this recipe when values should be compared across a two-dimensional categorical or binned grid."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when empty cells or continuous positions would make the rectangular grid misleading."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create a rectangular cell chart that maps two discrete positions and a quantitative value to color."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the heatmap result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable heatmap result or workflow.",
+          "actions": [
+            {
+              "name": "createHeatmap",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested heatmap variant.",
+          "actions": [
+            {
+              "name": "createRectMark",
+              "role": "supporting"
+            },
+            {
+              "name": "createTextMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeText",
+              "role": "supporting"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/gapminder-life-expectancy-heatmap/program.js",
+        "export": "createGapminderLifeExpectancyHeatmap"
+      },
+      "relatedRecipes": [
+        "annotations",
+        "mark-lifecycle"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/heatmap.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "histogram",
+      "title": "Histogram",
+      "intent": "Create a one-dimensional binned distribution whose bar lengths or heights represent observation counts.",
+      "useWhen": [
+        "Use this recipe when the shape of one quantitative field matters more than individual observations."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when bins already exist as categorical data or when a smooth density estimate is required."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create a one-dimensional binned distribution whose bar lengths or heights represent observation counts."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the histogram result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable histogram result or workflow.",
+          "actions": [
+            {
+              "name": "createHistogram",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested histogram variant.",
+          "actions": [
+            {
+              "name": "encodeHistogram",
+              "role": "supporting"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-histogram/program.js",
+        "export": "createCarsHistogram"
+      },
+      "relatedRecipes": [],
+      "docs": [
+        {
+          "path": "docs/recipes/histogram.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "horizon",
+      "title": "Horizon Chart",
+      "intent": "Create a compact folded area chart for comparing signed time-series magnitude in limited vertical space.",
+      "useWhen": [
+        "Use this recipe when long aligned series need a dense overview and readers can interpret folded bands."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when exact signed values or unfamiliar audiences make a conventional line chart clearer."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create a compact folded area chart for comparing signed time-series magnitude in limited vertical space."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the horizon chart result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "createAreaMark",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable horizon chart result or workflow.",
+          "actions": [
+            {
+              "name": "encodeHorizon",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned horizon chart resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editHorizon",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/gapminder-horizon/program.js",
+        "export": "createGapminderHorizon"
+      },
+      "relatedRecipes": [
+        "density-area",
+        "ranged-and-specialized-encodings"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/horizon.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "legend-title-lifecycle",
+      "title": "Legend and Title Lifecycle",
+      "intent": "Revise legend layout and components, edit chart titles, or remove complete guide-owned resources.",
+      "useWhen": [
+        "Use this recipe after legends or a chart title already exist and need focused layout or content changes."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when semantic encodings should change; edit or remove the encoding instead of restyling its legend."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Revise legend layout and components, edit chart titles, or remove complete guide-owned resources."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Prepare only the existing legend and title lifecycle state required by the selected focused operation.",
+          "actions": [
+            {
+              "name": "createXAxisTitle",
+              "role": "supporting"
+            },
+            {
+              "name": "createYAxisTitle",
+              "role": "supporting"
+            },
+            {
+              "name": "createLegend",
+              "role": "supporting"
+            },
+            {
+              "name": "createTitle",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable legend and title lifecycle result or workflow.",
+          "actions": [
+            {
+              "name": "editLegendLayout",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Choose only the focused legend and title lifecycle components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+          "actions": [
+            {
+              "name": "createGuides",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned legend and title lifecycle resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editRadialAxisTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editThetaAxisTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editXAxisTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editYAxisTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editLegend",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editLegendBorder",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editLegendLabels",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editLegendSymbols",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editLegendTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeLegend",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeTitle",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "cartesian-guide-lifecycle",
+        "polar-guide-lifecycle"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/legends.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "line-chart",
+      "title": "Line Chart",
+      "intent": "Create one or more ordered Cartesian paths for temporal trends or another meaningful sequence.",
+      "useWhen": [
+        "Use this recipe when values should be connected by time or another stable ordering field."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when connecting observations would imply an order that the data does not contain."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create one or more ordered Cartesian paths for temporal trends or another meaningful sequence."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the line chart result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable line chart result or workflow.",
+          "actions": [
+            {
+              "name": "createLinePlot",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested line chart variant.",
+          "actions": [
+            {
+              "name": "encodeStrokeDash",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned line chart resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editLineMark",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-line-chart/program.js",
+        "export": "createCarsLineChart"
+      },
+      "relatedRecipes": [],
+      "docs": [
+        {
+          "path": "docs/recipes/line-chart.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "mark-lifecycle",
+      "title": "Mark Lifecycle",
+      "intent": "Create and restyle specialized marks, then remove jitter, label layout, radius, or complete mark resources.",
+      "useWhen": [
+        "Use this recipe when an existing chart needs focused mark appearance changes or complete graphical lifecycle cleanup."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when field-driven appearance or position should be changed through an encoding instead."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create and restyle specialized marks, then remove jitter, label layout, radius, or complete mark resources."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Prepare only the existing mark lifecycle state required by the selected focused operation.",
+          "actions": [
+            {
+              "name": "createArcMark",
+              "role": "supporting"
+            },
+            {
+              "name": "createRectMark",
+              "role": "supporting"
+            },
+            {
+              "name": "createTextMark",
+              "role": "supporting"
+            },
+            {
+              "name": "createTickMark",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable mark lifecycle result or workflow.",
+          "actions": [
+            {
+              "name": "editRectMark",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Choose only the focused mark lifecycle components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+          "actions": [
+            {
+              "name": "jitterPoints",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned mark lifecycle resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "removeMarkHighlight",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeMarkSelection",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editArcMark",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editTextMark",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editTickMark",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeJitter",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeLabelLayout",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeMark",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editPointMark",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "annotations",
+        "heatmap",
+        "rose-chart",
+        "selection-lifecycle",
+        "tick-distribution"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/marks.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "parallel-coordinates",
+      "title": "Parallel Coordinates",
+      "intent": "Create one polyline per observation across an ordered set of quantitative or categorical dimensions.",
+      "useWhen": [
+        "Use this recipe when multivariate profiles and tradeoffs across several dimensions need comparison."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe for fewer than three useful dimensions or datasets whose overplotting cannot be reduced."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create one polyline per observation across an ordered set of quantitative or categorical dimensions."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the parallel coordinates result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable parallel coordinates result or workflow.",
+          "actions": [
+            {
+              "name": "createParallelCoordinates",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested parallel coordinates variant.",
+          "actions": [
+            {
+              "name": "encodeParallelCoordinates",
+              "role": "supporting"
+            },
+            {
+              "name": "filterData",
+              "role": "supporting"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-parallel-coordinates/program.js",
+        "export": "createCarsParallelCoordinates"
+      },
+      "relatedRecipes": [
+        "ranged-and-specialized-encodings",
+        "resource-and-facet-policies"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/parallel-coordinates.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "path-ordering",
+      "title": "Path Ordering",
+      "intent": "Order vertices inside each line or ranged-area series independently from source row order.",
+      "useWhen": [
+        "Use this recipe when repeated positions must connect according to a separate temporal or quantitative order field."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when source row order is already canonical or when observations should remain unconnected."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Order vertices inside each line or ranged-area series independently from source row order."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the path ordering result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "createLineMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeX",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeY",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable path ordering result or workflow.",
+          "actions": [
+            {
+              "name": "encodePathOrder",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned path ordering resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "removePathOrder",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/gapminder-development-trajectories/program.js",
+        "export": "createGapminderDevelopmentTrajectories"
+      },
+      "relatedRecipes": [
+        "ranged-and-specialized-encodings"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/path-ordering.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "polar-guide-lifecycle",
+      "title": "Polar Guide Lifecycle",
+      "intent": "Create, revise, remove, and recreate theta and radial axes for an existing Polar coordinate.",
+      "useWhen": [
+        "Use this recipe when Polar marks need explicit perimeter or radial guide control."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe for Cartesian marks or before compatible theta and radial scales exist."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create, revise, remove, and recreate theta and radial axes for an existing Polar coordinate."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Prepare only the existing polar guide lifecycle state required by the selected focused operation.",
+          "actions": [
+            {
+              "name": "createRadialAxis",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable polar guide lifecycle result or workflow.",
+          "actions": [
+            {
+              "name": "createThetaAxis",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned polar guide lifecycle resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editRadialAxis",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editRadialAxisLabels",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editRadialAxisLine",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editRadialAxisTicks",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editRadialAxisTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editThetaAxis",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editThetaAxisLabels",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editThetaAxisLine",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editThetaAxisTicks",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editThetaAxisTitle",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeRadialAxis",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeThetaAxis",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "legend-title-lifecycle"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/axes.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "ranged-and-specialized-encodings",
+      "title": "Ranged and Specialized Encodings",
+      "intent": "Encode interval ranges, offsets, Parallel dimensions, and remove complete encoding assignments safely.",
+      "useWhen": [
+        "Use this recipe when a mark needs two endpoints, grouped offsets, ordered path state, or a complete encoding teardown."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when a single x or y field is sufficient or when the target mark does not support the specialized channel."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Encode interval ranges, offsets, Parallel dimensions, and remove complete encoding assignments safely."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Prepare only the existing ranged and specialized encodings state required by the selected focused operation.",
+          "actions": [
+            {
+              "name": "createParallelCoordinates",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeParallelCoordinates",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable ranged and specialized encodings result or workflow.",
+          "actions": [
+            {
+              "name": "encodeXRange",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Choose only the focused ranged and specialized encodings components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+          "actions": [
+            {
+              "name": "encodeYOffset",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeYRange",
+              "role": "supporting"
+            },
+            {
+              "name": "encodePointRadius",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned ranged and specialized encodings resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editHorizon",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeEncoding",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removePathOrder",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removePointRadius",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editHorizontalGrid",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "bar-chart",
+        "grid-lifecycle",
+        "horizon",
+        "parallel-coordinates",
+        "path-ordering"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/position-encodings.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "regression-scatterplot",
+      "title": "Regression Scatterplot",
+      "intent": "Create a scatter plot with grouped fitted lines and optional confidence or prediction interval bands.",
+      "useWhen": [
+        "Use this recipe when a fitted relationship should be compared with the observed quantitative points."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when the requested model is unsupported or when each fitted group has too few varying observations."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create a scatter plot with grouped fitted lines and optional confidence or prediction interval bands."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the regression scatterplot result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "createPointMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeX",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeY",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeColor",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeSize",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeShape",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeOpacity",
+              "role": "supporting"
+            },
+            {
+              "name": "filterMarks",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable regression scatterplot result or workflow.",
+          "actions": [
+            {
+              "name": "createRegression",
+              "role": "primary"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-regression-scatterplot/program.js",
+        "export": "createCarsRegressionScatterplot"
+      },
+      "relatedRecipes": [
+        "annotations",
+        "facet",
+        "statistical-owner-revisions"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/regression-scatterplot.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "resource-and-facet-policies",
+      "title": "Resource and Facet Policies",
+      "intent": "Create explicit coordinates and scales, resize a chart, and revise facet guide or scale resolution policies.",
+      "useWhen": [
+        "Use this recipe when inference is ambiguous or existing facet children need explicit shared and independent policies."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when one unique current resource and the default facet policy already match the task."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create explicit coordinates and scales, resize a chart, and revise facet guide or scale resolution policies."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Prepare only the existing resource and facet policies state required by the selected focused operation.",
+          "actions": [
+            {
+              "name": "createParallelCoordinates",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable resource and facet policies result or workflow.",
+          "actions": [
+            {
+              "name": "editFacetScales",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Choose only the focused resource and facet policies components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createCoordinate",
+              "role": "supporting"
+            },
+            {
+              "name": "createScale",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeParallelCoordinates",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned resource and facet policies resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editFacetGuides",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editCanvas",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editScale",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "parallel-coordinates",
+        "ranged-and-specialized-encodings"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/composition.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "rose-chart",
+      "title": "Rose Chart",
+      "intent": "Create equal-angle Polar sectors whose radial lengths compare quantitative magnitudes across categories.",
+      "useWhen": [
+        "Use this recipe when a cyclic or radial category arrangement materially supports the comparison."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when ordinary Cartesian bars would provide more accurate and familiar magnitude comparison."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create equal-angle Polar sectors whose radial lengths compare quantitative magnitudes across categories."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the rose chart result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable rose chart result or workflow.",
+          "actions": [
+            {
+              "name": "createArcMark",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested rose chart variant.",
+          "actions": [
+            {
+              "name": "encodeTheta",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeR",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeColor",
+              "role": "supporting"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/nightingale-rose-chart/program.js",
+        "export": "createNightingaleRoseChart"
+      },
+      "relatedRecipes": [
+        "mark-lifecycle"
+      ],
+      "docs": [
+        {
+          "path": "docs/recipes/rose-chart.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "scatterplot",
+      "title": "Scatterplot",
+      "intent": "Create a Cartesian scatter plot that reveals relationships, clusters, trends, and outliers between two quantitative fields.",
+      "useWhen": [
+        "Use this recipe when each row should become a point positioned by two quantitative fields."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when one axis is categorical or when observations must be connected in an explicit order."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create a Cartesian scatter plot that reveals relationships, clusters, trends, and outliers between two quantitative fields."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the scatterplot result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable scatterplot result or workflow.",
+          "actions": [
+            {
+              "name": "createScatterPlot",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested scatterplot variant.",
+          "actions": [
+            {
+              "name": "encodeGroup",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeRadius",
+              "role": "supporting"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-scatterplot/program.js",
+        "export": "createCarsScatterplot"
+      },
+      "relatedRecipes": [],
+      "docs": [
+        {
+          "path": "docs/recipes/scatterplot.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "selection-lifecycle",
+      "title": "Selection and Highlight Lifecycle",
+      "intent": "Select final mark items, revise the selector, apply or remove highlighting, and release stored selection state.",
+      "useWhen": [
+        "Use this recipe when final rendered items need a reusable visual selection and explicit cleanup lifecycle."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when source rows should be filtered before materialization or when all mark items should change uniformly."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Select final mark items, revise the selector, apply or remove highlighting, and release stored selection state."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Prepare only the existing selection and highlight lifecycle state required by the selected focused operation.",
+          "actions": [
+            {
+              "name": "highlightMarks",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable selection and highlight lifecycle result or workflow.",
+          "actions": [
+            {
+              "name": "selectMarks",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned selection and highlight lifecycle resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editMarkSelection",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeMarkHighlight",
+              "role": "lifecycle"
+            },
+            {
+              "name": "removeMarkSelection",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "mark-lifecycle"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/appearance/selection-and-highlighting.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "statistical-owner-revisions",
+      "title": "Statistical Owner Revisions",
+      "intent": "Revise fitted models, intervals, distribution summaries, and their owned graphical components without rebuilding charts manually.",
+      "useWhen": [
+        "Use this recipe after a regression, error chart, box plot, or gradient plot exists and needs a stable owner revision."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe before the statistical owner exists or when a new independent chart should be created instead."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Revise fitted models, intervals, distribution summaries, and their owned graphical components without rebuilding charts manually."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Prepare only the existing statistical owner revisions state required by the selected focused operation.",
+          "actions": [
+            {
+              "name": "createRegressionData",
+              "role": "supporting"
+            },
+            {
+              "name": "createBoxPlot",
+              "role": "supporting"
+            },
+            {
+              "name": "createErrorBand",
+              "role": "supporting"
+            },
+            {
+              "name": "createErrorBar",
+              "role": "supporting"
+            },
+            {
+              "name": "createGradientPlot",
+              "role": "supporting"
+            },
+            {
+              "name": "createRegression",
+              "role": "supporting"
+            },
+            {
+              "name": "createRegressionBand",
+              "role": "supporting"
+            },
+            {
+              "name": "createRegressionLine",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable statistical owner revisions result or workflow.",
+          "actions": [
+            {
+              "name": "editRegression",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned statistical owner revisions resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editBoxPlot",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editErrorBand",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editErrorBandBoundary",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editErrorBar",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editGradientPlot",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editRegressionBand",
+              "role": "lifecycle"
+            },
+            {
+              "name": "editRegressionLine",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "test/llm/recipe-knowledge-examples.js",
+        "export": "recipeExamples"
+      },
+      "relatedRecipes": [
+        "box-plot",
+        "derived-data-workflows",
+        "error-band",
+        "error-bar",
+        "gradient-plot"
+      ],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tick-distribution",
+      "title": "Tick Distribution and Direction",
+      "intent": "Create a one-dimensional tick distribution or rotate tick and point glyphs with a quantitative angle field.",
+      "useWhen": [
+        "Use this recipe when compact one-dimensional observations or directional glyph orientation should remain individually visible."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when a histogram or density summary communicates the distribution more clearly than individual ticks."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create a one-dimensional tick distribution or rotate tick and point glyphs with a quantitative angle field."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the tick distribution and direction result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable tick distribution and direction result or workflow.",
+          "actions": [
+            {
+              "name": "createTickMark",
+              "role": "primary"
+            }
+          ]
+        },
+        {
+          "id": "add-supporting-variants",
+          "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested tick distribution and direction variant.",
+          "actions": [
+            {
+              "name": "encodeX",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeY",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeAngle",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "revise-or-remove-owned-state",
+          "instruction": "Use the focused lifecycle actions only after their owned tick distribution and direction resources exist and are uniquely targeted.",
+          "actions": [
+            {
+              "name": "editTickMark",
+              "role": "lifecycle"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/directional-tick-plot/program.js",
+        "export": "createDirectionalTickPointComparison"
+      },
+      "relatedRecipes": [
+        "mark-lifecycle"
+      ],
+      "docs": [
+        {
+          "path": "docs/api/marks.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "time-series-derivation",
+      "title": "Time-Unit and Window Derivation",
+      "intent": "Derive calendar units and ordered moving, ranking, lag, lead, or cumulative calculations for later chart encodings.",
+      "useWhen": [
+        "Use this recipe when an ordered series needs reusable temporal or window fields before marks are authored."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when the required fields already exist or when a simple aggregate encoding fully answers the task."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Derive calendar units and ordered moving, ranking, lag, lead, or cumulative calculations for later chart encodings."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the time-unit and window derivation result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "createTimeUnitData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable time-unit and window derivation result or workflow.",
+          "actions": [
+            {
+              "name": "createWindowData",
+              "role": "primary"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/airline-passenger-moving-windows/program.js",
+        "export": "createAirlinePassengerMovingWindows"
+      },
+      "relatedRecipes": [],
+      "docs": [
+        {
+          "path": "docs/api/data/window.md"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "violin-plot",
+      "title": "Violin Plot",
+      "intent": "Create compact mirrored density profiles for comparing quantitative distributions across categorical groups.",
+      "useWhen": [
+        "Use this recipe when several group distributions need shape comparison in aligned categorical slots."
+      ],
+      "avoidWhen": [
+        "Avoid this recipe when quartiles and outliers are more important than the smoothed distribution shape."
+      ],
+      "prerequisites": [
+        "Provide immutable row objects containing every field named by the selected actions and example program.",
+        "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+      ],
+      "inputs": [
+        {
+          "name": "values",
+          "description": "An array of plain row objects containing the fields required by this task.",
+          "required": true
+        },
+        {
+          "name": "options",
+          "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+          "required": false
+        }
+      ],
+      "outcomes": [
+        "Create compact mirrored density profiles for comparing quantitative distributions across categorical groups."
+      ],
+      "steps": [
+        {
+          "id": "prepare-required-state",
+          "instruction": "Create the data, marks, encodings, and owned resources required before authoring the violin plot result.",
+          "actions": [
+            {
+              "name": "createCanvas",
+              "role": "supporting"
+            },
+            {
+              "name": "createData",
+              "role": "supporting"
+            }
+          ]
+        },
+        {
+          "id": "author-primary-result",
+          "instruction": "Apply the primary action that produces the recognizable violin plot result or workflow.",
+          "actions": [
+            {
+              "name": "createViolinPlot",
+              "role": "primary"
+            }
+          ]
+        }
+      ],
+      "alternatives": [
+        {
+          "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+          "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+          "actions": []
+        }
+      ],
+      "pitfalls": [
+        {
+          "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+          "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        }
+      ],
+      "example": {
+        "path": "examples/cars-acceleration-violins/program.js",
+        "export": "createCarsAccelerationViolins"
+      },
+      "relatedRecipes": [],
+      "docs": [
+        {
+          "path": "docs/recipes/violin-plot.md"
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "name": "createArcMark",
+      "classification": "primary",
+      "recipeIds": [
+        "mark-lifecycle",
+        "rose-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createAreaMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "density-area",
+        "horizon"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createAxes",
+      "classification": "primary",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createBarMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "category-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createBarPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "bar-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createBin2DData",
+      "classification": "supporting",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createBoxPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "box-plot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createCanvas",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "bar-chart",
+        "box-plot",
+        "category-ordering",
+        "density-area",
+        "error-band",
+        "error-bar",
+        "facet",
+        "gradient-plot",
+        "heatmap",
+        "histogram",
+        "horizon",
+        "line-chart",
+        "parallel-coordinates",
+        "path-ordering",
+        "regression-scatterplot",
+        "resource-and-facet-policies",
+        "rose-chart",
+        "scatterplot",
+        "tick-distribution",
+        "time-series-derivation",
+        "violin-plot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createCoordinate",
+      "classification": "supporting",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createData",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "bar-chart",
+        "box-plot",
+        "category-ordering",
+        "density-area",
+        "error-band",
+        "error-bar",
+        "facet",
+        "gradient-plot",
+        "heatmap",
+        "histogram",
+        "horizon",
+        "line-chart",
+        "parallel-coordinates",
+        "path-ordering",
+        "regression-scatterplot",
+        "rose-chart",
+        "scatterplot",
+        "tick-distribution",
+        "time-series-derivation",
+        "violin-plot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createDensityData",
+      "classification": "supporting",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createDerivedData",
+      "classification": "primary",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createErrorBand",
+      "classification": "primary",
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createErrorBar",
+      "classification": "primary",
+      "recipeIds": [
+        "error-bar",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createGradientPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "gradient-plot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createGraphics",
+      "classification": "extension-only",
+      "recipeIds": [
+        "extension-domain-action"
+      ],
+      "reason": "This primitive belongs inside an extension-authored domain action rather than the ordinary chart-authoring workflow."
+    },
+    {
+      "name": "createGrid",
+      "classification": "primary",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createGuides",
+      "classification": "supporting",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createHeatmap",
+      "classification": "primary",
+      "recipeIds": [
+        "heatmap"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createHistogram",
+      "classification": "primary",
+      "recipeIds": [
+        "histogram"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createHorizontalGrid",
+      "classification": "supporting",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createIntervalData",
+      "classification": "supporting",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createLegend",
+      "classification": "supporting",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createLineMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "path-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createLinePlot",
+      "classification": "primary",
+      "recipeIds": [
+        "line-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createParallelCoordinates",
+      "classification": "primary",
+      "recipeIds": [
+        "parallel-coordinates",
+        "ranged-and-specialized-encodings",
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createPointMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "facet",
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRadialAxis",
+      "classification": "supporting",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRadialGrid",
+      "classification": "supporting",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRectMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "heatmap",
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRegression",
+      "classification": "primary",
+      "recipeIds": [
+        "regression-scatterplot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRegressionBand",
+      "classification": "supporting",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRegressionData",
+      "classification": "supporting",
+      "recipeIds": [
+        "derived-data-workflows",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRegressionLine",
+      "classification": "supporting",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createRuleMark",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createScale",
+      "classification": "supporting",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createScatterPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createTextMark",
+      "classification": "primary",
+      "recipeIds": [
+        "annotations",
+        "heatmap",
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createThetaAxis",
+      "classification": "primary",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createThetaGrid",
+      "classification": "supporting",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createTickMark",
+      "classification": "primary",
+      "recipeIds": [
+        "mark-lifecycle",
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createTimeUnitData",
+      "classification": "supporting",
+      "recipeIds": [
+        "time-series-derivation"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createTitle",
+      "classification": "supporting",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createVerticalGrid",
+      "classification": "supporting",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createViolinPlot",
+      "classification": "primary",
+      "recipeIds": [
+        "violin-plot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createWindowData",
+      "classification": "primary",
+      "recipeIds": [
+        "time-series-derivation"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxis",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisLine",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisTicks",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisTicksAndLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createXAxisTitle",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxis",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisLine",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisTicks",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisTicksAndLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "createYAxisTitle",
+      "classification": "supporting",
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editArcMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editAreaMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "density-area"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editBarMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "bar-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editBin2DData",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editBoxPlot",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "box-plot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editCanvas",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editCompositionLayout",
+      "classification": "primary",
+      "recipeIds": [
+        "composition"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editDensity",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "density-area"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editErrorBand",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editErrorBandBoundary",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editErrorBar",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "error-bar",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editFacetGuides",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editFacetHeaders",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "facet"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editFacetScales",
+      "classification": "primary",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editGradientPlot",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "gradient-plot",
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editGraphics",
+      "classification": "extension-only",
+      "recipeIds": [
+        "extension-domain-action"
+      ],
+      "reason": "This primitive belongs inside an extension-authored domain action rather than the ordinary chart-authoring workflow."
+    },
+    {
+      "name": "editGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editHorizon",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "horizon",
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editHorizontalGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle",
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegend",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendBorder",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendLayout",
+      "classification": "primary",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendSymbols",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLegendTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editLineMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "line-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editMarkSelection",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editPointMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxisLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxisLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxisTicks",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialAxisTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle",
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRadialGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRectMark",
+      "classification": "primary",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRegression",
+      "classification": "primary",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRegressionBand",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editRegressionLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editScale",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editSemantic",
+      "classification": "extension-only",
+      "recipeIds": [
+        "extension-domain-action"
+      ],
+      "reason": "This primitive belongs inside an extension-authored domain action rather than the ordinary chart-authoring workflow."
+    },
+    {
+      "name": "editTextMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "annotations",
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxisLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxisLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxisTicks",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaAxisTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle",
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editThetaGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editTickMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle",
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editVerticalGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisTicks",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisTicksAndLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editXAxisTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisLine",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisTicks",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisTicksAndLabels",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "editYAxisTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeAngle",
+      "classification": "supporting",
+      "recipeIds": [
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeBarWidth",
+      "classification": "supporting",
+      "recipeIds": [
+        "bar-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeColor",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot",
+        "rose-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeDensity",
+      "classification": "primary",
+      "recipeIds": [
+        "density-area"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeGroup",
+      "classification": "supporting",
+      "recipeIds": [
+        "scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeHistogram",
+      "classification": "supporting",
+      "recipeIds": [
+        "histogram"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeHorizon",
+      "classification": "primary",
+      "recipeIds": [
+        "horizon"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeOpacity",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeParallelCoordinates",
+      "classification": "supporting",
+      "recipeIds": [
+        "parallel-coordinates",
+        "ranged-and-specialized-encodings",
+        "resource-and-facet-policies"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodePathOrder",
+      "classification": "primary",
+      "recipeIds": [
+        "path-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodePointRadius",
+      "classification": "supporting",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeR",
+      "classification": "supporting",
+      "recipeIds": [
+        "rose-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeRadius",
+      "classification": "supporting",
+      "recipeIds": [
+        "scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeShape",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeSize",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeStroke",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeStrokeDash",
+      "classification": "supporting",
+      "recipeIds": [
+        "line-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeStrokeWidth",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeText",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "heatmap"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeTheta",
+      "classification": "supporting",
+      "recipeIds": [
+        "rose-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeX",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "category-ordering",
+        "facet",
+        "path-ordering",
+        "regression-scatterplot",
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeX2",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeXOffset",
+      "classification": "supporting",
+      "recipeIds": [
+        "bar-chart"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeXRange",
+      "classification": "primary",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeY",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations",
+        "category-ordering",
+        "facet",
+        "path-ordering",
+        "regression-scatterplot",
+        "tick-distribution"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeY2",
+      "classification": "supporting",
+      "recipeIds": [
+        "error-bar"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeYOffset",
+      "classification": "supporting",
+      "recipeIds": [
+        "bar-chart",
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "encodeYRange",
+      "classification": "supporting",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "facet",
+      "classification": "primary",
+      "recipeIds": [
+        "facet"
+      ],
+      "reason": null
+    },
+    {
+      "name": "filterData",
+      "classification": "supporting",
+      "recipeIds": [
+        "parallel-coordinates"
+      ],
+      "reason": null
+    },
+    {
+      "name": "filterMarks",
+      "classification": "supporting",
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
+      "reason": null
+    },
+    {
+      "name": "highlightMarks",
+      "classification": "supporting",
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "jitterPoints",
+      "classification": "supporting",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "layoutLabels",
+      "classification": "supporting",
+      "recipeIds": [
+        "annotations"
+      ],
+      "reason": null
+    },
+    {
+      "name": "orderCategories",
+      "classification": "primary",
+      "recipeIds": [
+        "category-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeCategoryOrder",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "category-ordering"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeEncoding",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeGrid",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeJitter",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeLabelLayout",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "annotations",
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeLegend",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeMark",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeMarkHighlight",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle",
+        "selection-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeMarkSelection",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "mark-lifecycle",
+        "selection-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removePathOrder",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "path-ordering",
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removePointRadius",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeRadialAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeThetaAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeTitle",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeXAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "removeYAxis",
+      "classification": "lifecycle",
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
+      "reason": null
+    },
+    {
+      "name": "replaceCompositionChild",
+      "classification": "supporting",
+      "recipeIds": [
+        "composition"
+      ],
+      "reason": null
+    },
+    {
+      "name": "selectMarks",
+      "classification": "primary",
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
+      "reason": null
+    }
+  ]
+}

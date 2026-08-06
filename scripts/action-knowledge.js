@@ -242,7 +242,11 @@ export async function buildActionKnowledge() {
         assert(exact.has(related), `${action.name}: unknown related action ${related}`);
         assert(related !== action.name, `${action.name}: cannot relate to itself`);
       }
-      assert(action.recipeIds.length === 0, `${action.name}: recipe IDs remain empty before Phase 3`);
+      assert(Array.isArray(action.recipeIds), `${action.name}: recipeIds must be an array`);
+      assert(new Set(action.recipeIds).size === action.recipeIds.length, `${action.name}: recipeIds must be unique`);
+      for (const recipeId of action.recipeIds) {
+        assert(/^[a-z][a-z0-9-]*$/.test(recipeId), `${action.name}: invalid recipe ID ${recipeId}`);
+      }
       await validateDocs(action);
       exampleCoverage[await validateExample(action)] += 1;
       records.push({

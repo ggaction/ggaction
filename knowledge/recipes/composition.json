@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "composition",
+  "title": "Program Composition",
+  "intent": "Combine complete child charts into a stable layered, horizontal, or vertical program composition.",
+  "useWhen": [
+    "Use this recipe when independently authored charts must share one ordered dashboard or overlay."
+  ],
+  "avoidWhen": [
+    "Avoid this recipe when one mark layer inside a single shared coordinate is sufficient."
+  ],
+  "prerequisites": [
+    "Provide immutable row objects containing every field named by the selected actions and example program.",
+    "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+  ],
+  "inputs": [
+    {
+      "name": "values",
+      "description": "An array of plain row objects containing the fields required by this task.",
+      "required": true
+    },
+    {
+      "name": "options",
+      "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+      "required": false
+    }
+  ],
+  "outcomes": [
+    "Combine complete child charts into a stable layered, horizontal, or vertical program composition."
+  ],
+  "steps": [
+    {
+      "id": "author-primary-result",
+      "instruction": "Apply the primary action that produces the recognizable program composition result or workflow.",
+      "actions": [
+        {
+          "name": "editCompositionLayout",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "add-supporting-variants",
+      "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested program composition variant.",
+      "actions": [
+        {
+          "name": "replaceCompositionChild",
+          "role": "supporting"
+        }
+      ]
+    }
+  ],
+  "alternatives": [
+    {
+      "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+      "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+      "actions": []
+    }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+      "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+    }
+  ],
+  "example": {
+    "path": "examples/program-composition/program.js",
+    "export": "createProgramCompositionExample"
+  },
+  "relatedRecipes": [],
+  "docs": [
+    {
+      "path": "docs/recipes/composition.md"
+    }
+  ]
+}

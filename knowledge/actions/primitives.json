@@ -65,7 +65,9 @@
       "relatedActions": [
         "editGraphics"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "extension-domain-action"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -137,7 +139,9 @@
       "relatedActions": [
         "createGraphics"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "extension-domain-action"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -200,7 +204,9 @@
         "reason": "This low-level extension primitive is demonstrated only inside an extension-authored domain action, not as a standalone chart-authoring program."
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "extension-domain-action"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",

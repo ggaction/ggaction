@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "id": "cartesian-guide-lifecycle",
+  "title": "Cartesian Guide Lifecycle",
+  "intent": "Create, revise, remove, and recreate complete or focused Cartesian axis components.",
+  "useWhen": [
+    "Use this recipe when Cartesian axes need component-level control beyond createGuides defaults."
+  ],
+  "avoidWhen": [
+    "Avoid this recipe before compatible x or y scales exist, or when createGuides already produces the desired axes."
+  ],
+  "prerequisites": [
+    "Provide immutable row objects containing every field named by the selected actions and example program.",
+    "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+  ],
+  "inputs": [
+    {
+      "name": "values",
+      "description": "An array of plain row objects containing the fields required by this task.",
+      "required": true
+    },
+    {
+      "name": "options",
+      "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+      "required": false
+    }
+  ],
+  "outcomes": [
+    "Create, revise, remove, and recreate complete or focused Cartesian axis components."
+  ],
+  "steps": [
+    {
+      "id": "author-primary-result",
+      "instruction": "Apply the primary action that produces the recognizable cartesian guide lifecycle result or workflow.",
+      "actions": [
+        {
+          "name": "createAxes",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "add-supporting-variants",
+      "instruction": "Choose only the focused cartesian guide lifecycle components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+      "actions": [
+        {
+          "name": "createXAxis",
+          "role": "supporting"
+        },
+        {
+          "name": "createXAxisLabels",
+          "role": "supporting"
+        },
+        {
+          "name": "createXAxisLine",
+          "role": "supporting"
+        },
+        {
+          "name": "createXAxisTicks",
+          "role": "supporting"
+        },
+        {
+          "name": "createXAxisTicksAndLabels",
+          "role": "supporting"
+        },
+        {
+          "name": "createXAxisTitle",
+          "role": "supporting"
+        },
+        {
+          "name": "createYAxis",
+          "role": "supporting"
+        },
+        {
+          "name": "createYAxisLabels",
+          "role": "supporting"
+        },
+        {
+          "name": "createYAxisLine",
+          "role": "supporting"
+        },
+        {
+          "name": "createYAxisTicks",
+          "role": "supporting"
+        },
+        {
+          "name": "createYAxisTicksAndLabels",
+          "role": "supporting"
+        },
+        {
+          "name": "createYAxisTitle",
+          "role": "supporting"
+        }
+      ]
+    },
+    {
+      "id": "revise-or-remove-owned-state",
+      "instruction": "Use the focused lifecycle actions only after their owned cartesian guide lifecycle resources exist and are uniquely targeted.",
+      "actions": [
+        {
+          "name": "editXAxis",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editXAxisLabels",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editXAxisLine",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editXAxisTicks",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editXAxisTicksAndLabels",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editXAxisTitle",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editYAxis",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editYAxisLabels",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editYAxisLine",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editYAxisTicks",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editYAxisTicksAndLabels",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editYAxisTitle",
+          "role": "lifecycle"
+        },
+        {
+          "name": "removeXAxis",
+          "role": "lifecycle"
+        },
+        {
+          "name": "removeYAxis",
+          "role": "lifecycle"
+        }
+      ]
+    }
+  ],
+  "alternatives": [
+    {
+      "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+      "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+      "actions": []
+    }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+      "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+    }
+  ],
+  "example": {
+    "path": "test/llm/recipe-knowledge-examples.js",
+    "export": "recipeExamples"
+  },
+  "relatedRecipes": [
+    "legend-title-lifecycle"
+  ],
+  "docs": [
+    {
+      "path": "docs/api/axes.md"
+    }
+  ]
+}

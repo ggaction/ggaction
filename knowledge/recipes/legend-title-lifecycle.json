@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "id": "legend-title-lifecycle",
+  "title": "Legend and Title Lifecycle",
+  "intent": "Revise legend layout and components, edit chart titles, or remove complete guide-owned resources.",
+  "useWhen": [
+    "Use this recipe after legends or a chart title already exist and need focused layout or content changes."
+  ],
+  "avoidWhen": [
+    "Avoid this recipe when semantic encodings should change; edit or remove the encoding instead of restyling its legend."
+  ],
+  "prerequisites": [
+    "Provide immutable row objects containing every field named by the selected actions and example program.",
+    "Use explicit public resource identifiers whenever current program state contains more than one compatible candidate."
+  ],
+  "inputs": [
+    {
+      "name": "values",
+      "description": "An array of plain row objects containing the fields required by this task.",
+      "required": true
+    },
+    {
+      "name": "options",
+      "description": "Task-specific field names, resource identifiers, and supported visual or statistical choices.",
+      "required": false
+    }
+  ],
+  "outcomes": [
+    "Revise legend layout and components, edit chart titles, or remove complete guide-owned resources."
+  ],
+  "steps": [
+    {
+      "id": "prepare-required-state",
+      "instruction": "Prepare only the existing legend and title lifecycle state required by the selected focused operation.",
+      "actions": [
+        {
+          "name": "createXAxisTitle",
+          "role": "supporting"
+        },
+        {
+          "name": "createYAxisTitle",
+          "role": "supporting"
+        },
+        {
+          "name": "createLegend",
+          "role": "supporting"
+        },
+        {
+          "name": "createTitle",
+          "role": "supporting"
+        }
+      ]
+    },
+    {
+      "id": "author-primary-result",
+      "instruction": "Apply the primary action that produces the recognizable legend and title lifecycle result or workflow.",
+      "actions": [
+        {
+          "name": "editLegendLayout",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "add-supporting-variants",
+      "instruction": "Choose only the focused legend and title lifecycle components required by the task; mutually exclusive creation alternatives are demonstrated as independent chart variants.",
+      "actions": [
+        {
+          "name": "createGuides",
+          "role": "supporting"
+        }
+      ]
+    },
+    {
+      "id": "revise-or-remove-owned-state",
+      "instruction": "Use the focused lifecycle actions only after their owned legend and title lifecycle resources exist and are uniquely targeted.",
+      "actions": [
+        {
+          "name": "editRadialAxisTitle",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editThetaAxisTitle",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editXAxisTitle",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editYAxisTitle",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editLegend",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editLegendBorder",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editLegendLabels",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editLegendSymbols",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editLegendTitle",
+          "role": "lifecycle"
+        },
+        {
+          "name": "editTitle",
+          "role": "lifecycle"
+        },
+        {
+          "name": "removeLegend",
+          "role": "lifecycle"
+        },
+        {
+          "name": "removeTitle",
+          "role": "lifecycle"
+        }
+      ]
+    }
+  ],
+  "alternatives": [
+    {
+      "when": "Choose a neighboring recipe when its stated result and data roles match the requested chart more directly.",
+      "instruction": "Prefer one complete domain facade or task recipe before composing lower-level actions manually.",
+      "actions": []
+    }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
+      "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+    }
+  ],
+  "example": {
+    "path": "test/llm/recipe-knowledge-examples.js",
+    "export": "recipeExamples"
+  },
+  "relatedRecipes": [
+    "cartesian-guide-lifecycle",
+    "polar-guide-lifecycle"
+  ],
+  "docs": [
+    {
+      "path": "docs/api/legends.md"
+    }
+  ]
+}

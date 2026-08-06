@@ -79,7 +79,10 @@
       "relatedActions": [
         "editBoxPlot"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "box-plot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -171,7 +174,10 @@
         "editErrorBand",
         "editErrorBandBoundary"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -264,7 +270,10 @@
       "relatedActions": [
         "editErrorBar"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -361,7 +370,10 @@
       "relatedActions": [
         "editGradientPlot"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "gradient-plot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -439,7 +451,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -497,7 +511,10 @@
       "relatedActions": [
         "editRegression"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "regression-scatterplot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -582,7 +599,9 @@
       "relatedActions": [
         "editRegressionBand"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -662,7 +681,9 @@
       "relatedActions": [
         "editRegressionLine"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -744,7 +765,9 @@
         "editDensity",
         "editAreaMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "violin-plot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -826,7 +849,10 @@
       "relatedActions": [
         "createBoxPlot"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "box-plot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -889,7 +915,10 @@
       "relatedActions": [
         "createErrorBand"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -948,7 +977,10 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -1011,7 +1043,10 @@
       "relatedActions": [
         "createErrorBar"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -1090,7 +1125,10 @@
       "relatedActions": [
         "createGradientPlot"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "gradient-plot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -1177,7 +1215,9 @@
       "relatedActions": [
         "createRegression"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -1240,7 +1280,9 @@
       "relatedActions": [
         "createRegressionBand"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -1303,7 +1345,9 @@
       "relatedActions": [
         "createRegressionLine"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",

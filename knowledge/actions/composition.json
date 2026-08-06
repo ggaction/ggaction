@@ -42,7 +42,9 @@
         "export": "createProgramCompositionExample"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "composition"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -107,7 +109,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -163,7 +167,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "facet"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -219,7 +225,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -292,7 +300,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "facet"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -359,7 +369,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "composition"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",

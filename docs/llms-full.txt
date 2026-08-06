@@ -3020,6 +3020,8 @@ current action to its exact signature, prerequisites, effects, errors, example, 
 Use a recipe when the requested chart or workflow is recognizable. A recipe gives the shortest supported action flow,
 required decisions, inferred state, and links to deeper tutorials or APIs. Use the [recipe catalog](../recipes/index.md) if
 none of the groups below matches.
+For structured retrieval, use the [complete machine-readable recipe metadata](../llms-recipes.json), which joins each
+task intent to ordered action roles, executable examples, related recipes, and complete 173-action coverage.
 
 ## Basic relationships and comparison
 

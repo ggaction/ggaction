@@ -57,7 +57,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -124,7 +126,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -191,7 +195,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -270,7 +276,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -346,7 +354,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -411,7 +421,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -484,7 +496,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -557,7 +571,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -630,7 +646,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -709,7 +728,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -782,7 +803,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -844,7 +867,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -914,7 +939,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -987,7 +1014,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -1057,7 +1086,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -1120,7 +1152,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1187,7 +1221,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1243,7 +1279,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1304,7 +1342,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1365,7 +1405,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle",
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1431,7 +1474,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1495,7 +1540,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1554,7 +1601,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1615,7 +1664,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1676,7 +1727,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle",
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1743,7 +1797,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -1816,7 +1872,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -1873,7 +1931,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -1946,7 +2006,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2019,7 +2081,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2089,7 +2153,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2159,7 +2226,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2232,7 +2301,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2292,7 +2363,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2362,7 +2435,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2432,7 +2507,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2505,7 +2582,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2572,7 +2652,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -2642,7 +2724,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -2712,7 +2796,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2782,7 +2868,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",

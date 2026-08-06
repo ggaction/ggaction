@@ -55,7 +55,9 @@
         "export": "createAirlinePassengerMovingWindows"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -139,7 +141,9 @@
         "removeLegend",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -215,7 +219,9 @@
         "removeTitle",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -286,7 +292,9 @@
         "removeLegend",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -352,7 +360,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -415,7 +425,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -485,7 +497,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -548,7 +562,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -615,7 +631,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -680,7 +698,9 @@
         "removeTitle",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -752,7 +772,9 @@
         "editLegend",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -815,7 +837,9 @@
         "editTitle",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",

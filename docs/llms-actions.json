@@ -3,8 +3,11 @@
   "generated": {
     "actionCount": 173,
     "actionIndexSha256": "5ba78038a620f50c79878d29404f7739a55ab5f59406d84ad1b16b68a188d7f6",
-    "actionSourceSha256": "15535ea4969fa2d37f306c586fe339413f07d6097651b3a2dcc1da223bfa13dd",
-    "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8"
+    "actionSourceSha256": "1a2a4a50656eb9c6b2924f071b3e5c3aadecf92400baf73af4b58a3563d9e4fc",
+    "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
+    "recipeCount": 33,
+    "recipeSourceSha256": "6f9307a9e053837c129ad833f49e2264124da3e2fe9df2a772c99691882e1c06",
+    "recipeCoverageSha256": "d9b7a19a141bd1e4798985e584c9dd58622766e231ffb5a96f98be347b93ed9d"
   },
   "actions": [
     {
@@ -69,7 +72,10 @@
       "relatedActions": [
         "editArcMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "rose-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -151,7 +157,10 @@
       "relatedActions": [
         "editAreaMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "density-area",
+        "horizon"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -235,7 +244,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -311,7 +322,9 @@
       "relatedActions": [
         "editBarMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "category-ordering"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -413,7 +426,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "bar-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -501,7 +516,9 @@
       "relatedActions": [
         "editBin2DData"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -601,7 +618,10 @@
       "relatedActions": [
         "editBoxPlot"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "box-plot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -686,7 +706,30 @@
       "relatedActions": [
         "editCanvas"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "bar-chart",
+        "box-plot",
+        "category-ordering",
+        "density-area",
+        "error-band",
+        "error-bar",
+        "facet",
+        "gradient-plot",
+        "heatmap",
+        "histogram",
+        "horizon",
+        "line-chart",
+        "parallel-coordinates",
+        "path-ordering",
+        "regression-scatterplot",
+        "resource-and-facet-policies",
+        "rose-chart",
+        "scatterplot",
+        "tick-distribution",
+        "time-series-derivation",
+        "violin-plot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -764,7 +807,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -828,7 +873,29 @@
         "export": "createAirlinePassengerMovingWindows"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "bar-chart",
+        "box-plot",
+        "category-ordering",
+        "density-area",
+        "error-band",
+        "error-bar",
+        "facet",
+        "gradient-plot",
+        "heatmap",
+        "histogram",
+        "horizon",
+        "line-chart",
+        "parallel-coordinates",
+        "path-ordering",
+        "regression-scatterplot",
+        "rose-chart",
+        "scatterplot",
+        "tick-distribution",
+        "time-series-derivation",
+        "violin-plot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -912,7 +979,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -982,7 +1051,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -1080,7 +1151,10 @@
         "editErrorBand",
         "editErrorBandBoundary"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -1182,7 +1256,10 @@
       "relatedActions": [
         "editErrorBar"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -1288,7 +1365,10 @@
       "relatedActions": [
         "editGradientPlot"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "gradient-plot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -1377,7 +1457,9 @@
       "relatedActions": [
         "editGraphics"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "extension-domain-action"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -1450,7 +1532,9 @@
         "removeGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1526,7 +1610,9 @@
         "export": "createAirlinePassengerMovingWindows"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -1612,7 +1698,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "heatmap"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -1703,7 +1791,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "histogram"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -1791,7 +1881,9 @@
         "createGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -1872,7 +1964,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -1959,7 +2053,9 @@
         "removeLegend",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -2041,7 +2137,9 @@
       "relatedActions": [
         "editLineMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "path-ordering"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -2143,7 +2241,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "line-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -2237,7 +2337,11 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "parallel-coordinates",
+        "ranged-and-specialized-encodings",
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -2316,7 +2420,11 @@
       "relatedActions": [
         "editPointMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "facet",
+        "regression-scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -2398,7 +2506,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -2480,7 +2590,9 @@
         "createGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -2553,7 +2665,10 @@
       "relatedActions": [
         "editRectMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "heatmap",
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -2620,7 +2735,10 @@
       "relatedActions": [
         "editRegression"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "regression-scatterplot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -2714,7 +2832,9 @@
       "relatedActions": [
         "editRegressionBand"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2793,7 +2913,10 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -2885,7 +3008,9 @@
       "relatedActions": [
         "editRegressionLine"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -2950,7 +3075,9 @@
         "export": "createRuleGeometryExample"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -3020,7 +3147,9 @@
       "relatedActions": [
         "editScale"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -3115,7 +3244,9 @@
         "createData",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -3202,7 +3333,11 @@
         "editTextMark",
         "encodeText"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "heatmap",
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -3284,7 +3419,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -3366,7 +3503,9 @@
         "createGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -3441,7 +3580,10 @@
         "editTickMark",
         "removeMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "tick-distribution"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -3518,7 +3660,9 @@
         "export": "createAirlinePassengerMovingWindows"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "time-series-derivation"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -3597,7 +3741,9 @@
         "removeTitle",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -3685,7 +3831,9 @@
         "createGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -3776,7 +3924,9 @@
         "editDensity",
         "editAreaMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "violin-plot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -3853,7 +4003,9 @@
         "export": "createAirlinePassengerMovingWindows"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "time-series-derivation"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -3941,7 +4093,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4026,7 +4180,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4100,7 +4256,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4182,7 +4340,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4264,7 +4424,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4346,7 +4508,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4434,7 +4599,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4516,7 +4683,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4587,7 +4756,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4666,7 +4837,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4748,7 +4921,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4827,7 +5002,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -4896,7 +5074,9 @@
       "relatedActions": [
         "createArcMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -4971,7 +5151,9 @@
       "relatedActions": [
         "createAreaMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "density-area"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -5046,7 +5228,9 @@
       "relatedActions": [
         "createBarMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "bar-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -5128,7 +5312,9 @@
       "relatedActions": [
         "createBin2DData"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "derived-data-workflows"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -5216,7 +5402,10 @@
       "relatedActions": [
         "createBoxPlot"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "box-plot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -5300,7 +5489,9 @@
       "relatedActions": [
         "createCanvas"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -5366,7 +5557,9 @@
         "export": "createProgramCompositionExample"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "composition"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -5448,7 +5641,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "density-area"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -5520,7 +5715,10 @@
       "relatedActions": [
         "createErrorBand"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -5588,7 +5786,10 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-band",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -5660,7 +5861,10 @@
       "relatedActions": [
         "createErrorBar"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -5734,7 +5938,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -5799,7 +6005,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "facet"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -5864,7 +6072,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -5952,7 +6162,10 @@
       "relatedActions": [
         "createGradientPlot"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "gradient-plot",
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -6030,7 +6243,9 @@
       "relatedActions": [
         "createGraphics"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "extension-domain-action"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -6102,7 +6317,9 @@
         "removeGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -6172,7 +6389,10 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "horizon",
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -6249,7 +6469,10 @@
         "createGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle",
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -6323,7 +6546,9 @@
         "removeLegend",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -6398,7 +6623,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -6470,7 +6697,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -6549,7 +6778,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -6621,7 +6852,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -6697,7 +6930,9 @@
       "relatedActions": [
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -6769,7 +7004,9 @@
       "relatedActions": [
         "createLineMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "line-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -6842,7 +7079,9 @@
         "selectMarks",
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -6917,7 +7156,9 @@
       "relatedActions": [
         "createPointMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -6992,7 +7233,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -7068,7 +7311,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -7133,7 +7378,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -7203,7 +7450,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -7273,7 +7522,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle",
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -7347,7 +7599,9 @@
         "createGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -7416,7 +7670,9 @@
       "relatedActions": [
         "createRectMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -7512,7 +7768,9 @@
       "relatedActions": [
         "createRegression"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/statistics.md",
@@ -7584,7 +7842,9 @@
       "relatedActions": [
         "createRegressionBand"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -7656,7 +7916,9 @@
       "relatedActions": [
         "createRegressionLine"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "statistical-owner-revisions"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -7744,7 +8006,9 @@
       "relatedActions": [
         "createScale"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -7819,7 +8083,9 @@
         "reason": "This low-level extension primitive is demonstrated only inside an extension-authored domain action, not as a standalone chart-authoring program."
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "extension-domain-action"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/extension.md",
@@ -7894,7 +8160,10 @@
       "relatedActions": [
         "createTextMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -7969,7 +8238,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -8042,7 +8313,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -8110,7 +8383,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -8180,7 +8455,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -8250,7 +8527,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle",
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -8321,7 +8601,9 @@
         "createGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -8390,7 +8672,10 @@
       "relatedActions": [
         "createTickMark"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "tick-distribution"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -8461,7 +8746,9 @@
         "removeTitle",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -8538,7 +8825,9 @@
         "createGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -8617,7 +8906,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -8699,7 +8990,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -8765,7 +9058,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -8847,7 +9142,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -8929,7 +9226,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -9008,7 +9307,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -9087,7 +9389,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -9169,7 +9473,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -9238,7 +9544,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -9317,7 +9625,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -9396,7 +9706,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -9478,7 +9790,10 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle",
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -9557,7 +9872,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "tick-distribution"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -9625,7 +9942,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "bar-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -9725,7 +10044,10 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "regression-scatterplot",
+        "rose-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -9797,7 +10119,9 @@
         "editDensity",
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "density-area"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -9877,7 +10201,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -9958,7 +10284,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "histogram"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10055,7 +10383,9 @@
         "editHorizon",
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "horizon"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10135,7 +10465,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10219,7 +10551,11 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "parallel-coordinates",
+        "ranged-and-specialized-encodings",
+        "resource-and-facet-policies"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10303,7 +10639,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "path-ordering"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10376,7 +10714,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10468,7 +10808,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "rose-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10544,7 +10886,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10648,7 +10992,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10752,7 +11098,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10828,7 +11176,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -10920,7 +11270,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "line-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11012,7 +11364,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11088,7 +11442,10 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "heatmap"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11184,7 +11541,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "rose-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11280,7 +11639,14 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "category-ordering",
+        "facet",
+        "path-ordering",
+        "regression-scatterplot",
+        "tick-distribution"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11372,7 +11738,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11437,7 +11805,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "bar-chart"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11541,7 +11911,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11620,7 +11992,14 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "category-ordering",
+        "facet",
+        "path-ordering",
+        "regression-scatterplot",
+        "tick-distribution"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11712,7 +12091,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "error-bar"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11780,7 +12161,10 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "bar-chart",
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11878,7 +12262,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -11960,7 +12346,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "facet"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -12040,7 +12428,9 @@
         "export": "createCarsParallelCoordinates"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "parallel-coordinates"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -12117,7 +12507,9 @@
         "selectMarks",
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "regression-scatterplot"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -12197,7 +12589,9 @@
       "relatedActions": [
         "selectMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -12277,7 +12671,9 @@
       "relatedActions": [
         "removeJitter"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -12347,7 +12743,9 @@
       "relatedActions": [
         "removeLabelLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -12424,7 +12822,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "category-ordering"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -12498,7 +12898,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "category-ordering"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -12570,7 +12972,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -12642,7 +13046,9 @@
         "editGrid",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "grid-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -12710,7 +13116,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -12778,7 +13186,10 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "annotations",
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -12856,7 +13267,9 @@
         "editLegend",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -12927,7 +13340,9 @@
         "export": "actionExamples"
       },
       "relatedActions": [],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/marks.md",
@@ -12993,7 +13408,10 @@
         "selectMarks",
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -13063,7 +13481,10 @@
         "selectMarks",
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "mark-lifecycle",
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -13136,7 +13557,10 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "path-ordering",
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -13207,7 +13631,9 @@
       "relatedActions": [
         "removeEncoding"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "ranged-and-specialized-encodings"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/encodings.md",
@@ -13292,7 +13718,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -13371,7 +13799,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "polar-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -13440,7 +13870,9 @@
         "editTitle",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "legend-title-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/guides.md",
@@ -13519,7 +13951,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -13598,7 +14032,9 @@
         "createAxes",
         "createGuides"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "cartesian-guide-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
@@ -13668,7 +14104,9 @@
       "relatedActions": [
         "editCompositionLayout"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "composition"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/charts-data.md",
@@ -13742,7 +14180,9 @@
       "relatedActions": [
         "highlightMarks"
       ],
-      "recipeIds": [],
+      "recipeIds": [
+        "selection-lifecycle"
+      ],
       "docs": [
         {
           "path": "docs/reference/actions/advanced.md",
