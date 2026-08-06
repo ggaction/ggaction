@@ -2,7 +2,16 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
+
+Implementation checkpoints:
+
+- `d5bca383` — local MCP server and package boundary
+- `89aaa4ec` — installed tarball and stdio verification
+- `0c6ec0c5` — Condition C local evaluation adapter
+- `96841eea` — browser import and bundle isolation
+- `5b212572` — concise public local MCP usage
+- Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 승인 대상
 
@@ -23,6 +32,41 @@
 - Source/import proof for fixed package-local reads and absence of HTTP, code/chart execution/render tools
 - Root/basic/svg bundle measurements and forbidden dependency/import checks
 - Complete checkpoint pushed to `origin/codex/roadmap5-3-llm-friendly`
+
+## 구현 결과
+
+Existing package에 official stable SDK 기반 local stdio executable을 추가했다. Exact package/resource/tool, installed
+consumer, read-only negative cases, browser isolation과 Condition C mock/dry result는 [`MCP_REPORT.md`](./MCP_REPORT.md)가
+소유한다.
+
+핵심 결과는 다음과 같다.
+
+- Installed artifact: 417 entries, 478,664 packed / 3,115,694 unpacked bytes
+- Installed bin mode `0755`, SHA-256 `058862d81153db53e27cb49152ed7aea7a039412d584beac384cdf9666a077dd`
+- Knowledge: 173 actions, 33 recipes, four docs sections
+- Protocol: one overview, three resource templates, one read-only search tool
+- Browser forbidden MCP modules: root/basic/svg 모두 0
+- Browser gzip: 222,930 / 112,984 / 5,760 bytes, prior baseline과 동일
+- A/B/C synthetic dry results: 72/72, external calls 0, spend $0.00
+- Mocked C executable flow: final valid, 2 model calls, 3 MCP calls, repair 0
+
+## 검증 증거
+
+- `npm run knowledge:check`: passed
+- `npm test` and `npm run test:coverage`: passed
+- `npm run test:contracts`: 208/208 passed
+- `npm run test:docs`: 45/45 passed
+- `npm run package:check`, `npm run package:mcp-check`, `npm run test:package`: passed
+- Installed Node/TypeScript/Canvas/SVG/PNG/PDF and root/basic/svg production bundles: passed
+- `git diff --check`: passed
+
+## 호환성과 경계
+
+- Public chart export map, declarations, action behavior, state와 renderer output은 바뀌지 않았다.
+- `ggaction-mcp`는 importable export가 아니라 existing package의 Node-only bin이다.
+- Root/basic/extension/svg/png/pdf source graph가 MCP SDK, `zod`, generated knowledge와 `mcp/`를 import하지 않는다.
+- Hosted transport, arbitrary file/network/code/chart execution, rendering, write tool, account/auth/database는 추가하지 않았다.
+- External paid B/C evaluation, PR Ready/merge, publish/deploy/release는 승인 범위가 아니다.
 
 ## Approval effect
 

@@ -8,8 +8,8 @@
 - [x] Prove no arbitrary file, network, code, chart execution, or rendering surface
 - [x] Re-run package artifact and all browser bundle ceilings
 - [x] Add Condition C local adapter mock/dry evidence without paid calls
-- [ ] Run focused and cumulative verification
-- [ ] R53-P5-A Gate package commit/push
+- [x] Run focused and cumulative verification
+- [x] R53-P5-A Gate package commit/push
 
 ## 실행 순서
 
