@@ -1,0 +1,1321 @@
+{
+  "schemaVersion": 1,
+  "domain": "statistics",
+  "actions": [
+    {
+      "name": "createBoxPlot",
+      "summary": "Creates a vertical or horizontal Tukey/min–max box plot from one categorical and one quantitative field.",
+      "useWhen": [
+        "Use this action when you need to create a vertical or horizontal Tukey/min–max box plot from one categorical and one quantitative field."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        },
+        {
+          "path": "width",
+          "description": "Sets the finite logical width used by the Canvas, mark, guide, or component owned by this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a vertical or horizontal Tukey/min–max box plot from one categorical and one quantitative field. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editBoxPlot"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-box-plot/program.js",
+        "export": "createCarsBoxPlot"
+      },
+      "relatedActions": [
+        "editBoxPlot"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "createboxplot"
+        },
+        {
+          "path": "docs/api/box-plots.md"
+        },
+        {
+          "path": "docs/recipes/box-plot.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createErrorBand",
+      "summary": "Creates a vertical or horizontal statistical or explicit interval ribbon.",
+      "useWhen": [
+        "Use this action when you need to create a vertical or horizontal statistical or explicit interval ribbon."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a vertical or horizontal statistical or explicit interval ribbon. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editErrorBand",
+          "editErrorBandBoundary"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/gapminder-error-band/program.js",
+        "export": "createGapminderErrorBand"
+      },
+      "relatedActions": [
+        "editErrorBand",
+        "editErrorBandBoundary"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "createerrorband"
+        },
+        {
+          "path": "docs/api/error-bands.md"
+        },
+        {
+          "path": "docs/recipes/error-band.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/error-band.md"
+        }
+      ]
+    },
+    {
+      "name": "createErrorBar",
+      "summary": "Creates vertical or horizontal statistical or explicit intervals.",
+      "useWhen": [
+        "Use this action when you need to create vertical or horizontal statistical or explicit intervals."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates vertical or horizontal statistical or explicit intervals. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editErrorBar"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-error-bar/program.js",
+        "export": "createCarsErrorBar"
+      },
+      "relatedActions": [
+        "editErrorBar"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "createerrorbar"
+        },
+        {
+          "path": "docs/api/error-bars.md"
+        },
+        {
+          "path": "docs/recipes/error-bar.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/error-bar.md"
+        }
+      ]
+    },
+    {
+      "name": "createGradientPlot",
+      "summary": "Creates one density gradient strip per category from categorical and quantitative x/y roles.",
+      "useWhen": [
+        "Use this action when you need to create one density gradient strip per category from categorical and quantitative x/y roles."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        },
+        {
+          "path": "width",
+          "description": "Sets the finite logical width used by the Canvas, mark, guide, or component owned by this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates one density gradient strip per category from categorical and quantitative x/y roles. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editGradientPlot"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-gradient-plot/program.js",
+        "export": "createCarsGradientPlot"
+      },
+      "relatedActions": [
+        "editGradientPlot"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "creategradientplot"
+        },
+        {
+          "path": "docs/api/gradient-plots.md"
+        },
+        {
+          "path": "docs/recipes/gradient-plot.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createIntervalData",
+      "summary": "Creates immutable grouped center/lower/upper summary rows.",
+      "useWhen": [
+        "Use this action when you need to create immutable grouped center/lower/upper summary rows."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        },
+        {
+          "path": "level",
+          "description": "Sets the confidence level used by a supported confidence interval calculation."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates immutable grouped center/lower/upper summary rows. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "createintervaldata"
+        },
+        {
+          "path": "docs/api/data/statistical-transforms.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createRegression",
+      "summary": "Infer an eligible point layer and create immutable fitted data, optional grouped interval band paths, and grouped line paths.",
+      "useWhen": [
+        "Use this action when an encoded point layer needs a fitted model with its derived data and line, plus an optional confidence band."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Infer an eligible point layer and create immutable fitted data, optional grouped interval band paths, and grouped line paths. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editRegression"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-regression-scatterplot/program.js",
+        "export": "createCarsRegressionScatterplot"
+      },
+      "relatedActions": [
+        "editRegression"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "createregression"
+        },
+        {
+          "path": "docs/api/regression.md"
+        },
+        {
+          "path": "docs/recipes/regression-scatterplot.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/regression-scatterplot.md"
+        }
+      ]
+    },
+    {
+      "name": "createRegressionBand",
+      "summary": "Creates the interval area component for existing compatible regression data, scales, and grouping.",
+      "useWhen": [
+        "Use this focused action when compatible regression data already exists and only its interval band component should be materialized."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates the interval area component for existing compatible regression data, scales, and grouping. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editRegressionBand"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editRegressionBand"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "semantic-resources-and-regression-layers"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createRegressionLine",
+      "summary": "Creates the fitted line component for existing compatible regression data, scales, and grouping.",
+      "useWhen": [
+        "Use this focused action when compatible regression data already exists and only its fitted line component should be materialized."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates the fitted line component for existing compatible regression data, scales, and grouping. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editRegressionLine"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editRegressionLine"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "semantic-resources-and-regression-layers"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createViolinPlot",
+      "summary": "Creates a vertical or horizontal categorical density plot from exactly one categorical and one quantitative x/y role.",
+      "useWhen": [
+        "Use this action when you need to create a vertical or horizontal categorical density plot from exactly one categorical and one quantitative x/y role."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A compatible source dataset or encoded layer must exist, and statistical field roles must determine one unambiguous orientation and owner."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a vertical or horizontal categorical density plot from exactly one categorical and one quantitative x/y role. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editDensity",
+          "editAreaMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-acceleration-violins/program.js",
+        "export": "createCarsAccelerationViolins"
+      },
+      "relatedActions": [
+        "editDensity",
+        "editAreaMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "createviolinplot"
+        },
+        {
+          "path": "docs/api/violin-plots.md"
+        },
+        {
+          "path": "docs/recipes/violin-plot.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editBoxPlot",
+      "summary": "Revises box statistics, optional outlier topology, width, and component appearance through the stable box owner without addressing generated child IDs.",
+      "useWhen": [
+        "Use this action when you need to revise box statistics, optional outliers, width, or component appearance without addressing generated child IDs."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "width",
+          "description": "Sets the finite logical width used by the Canvas, mark, guide, or component owned by this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Revises box statistics, optional outlier topology, width, and component appearance through the stable box owner without addressing generated child IDs. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createBoxPlot"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createBoxPlot"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "editboxplot"
+        },
+        {
+          "path": "docs/api/box-plots.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editErrorBand",
+      "summary": "Revises one error band's interval data, area appearance, or optional boundary lines through its stable owner.",
+      "useWhen": [
+        "Use this action when an existing error-band owner needs revised statistics, source roles, body appearance, curve, or boundary topology."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Revises one error band's interval data, area appearance, or optional boundary lines through its stable owner. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createErrorBand"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createErrorBand"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "editerrorband-and-editerrorbandboundary"
+        },
+        {
+          "path": "docs/api/error-bands.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editErrorBandBoundary",
+      "summary": "Edits or removes one error band's lower and upper boundary line appearance without changing its interval area.",
+      "useWhen": [
+        "Use this action when only the lower or upper boundary appearance of an existing error band should change or be removed."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits or removes one error band's lower and upper boundary line appearance without changing its interval area. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "editerrorband-and-editerrorbandboundary"
+        },
+        {
+          "path": "docs/api/error-bands.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editErrorBar",
+      "summary": "Partially edits one error bar and its owned caps. statistics revises a statistical interval through immutable data; explicit interval owners reject that option. caps: false removes both caps and caps: true restores them.",
+      "useWhen": [
+        "Use this action when you need to partially edit one error bar and its owned caps. statistics revises a statistical interval through immutable data; explicit interval owners reject that option. caps: false removes both caps and caps: true restores them."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Partially edits one error bar and its owned caps. statistics revises a statistical interval through immutable data; explicit interval owners reject that option. caps: false removes both caps and caps: true restores them. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createErrorBar"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createErrorBar"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "editerrorbar"
+        },
+        {
+          "path": "docs/api/error-bars.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editGradientPlot",
+      "summary": "Revises the data, layout, statistics, or appearance of one gradient plot owner.",
+      "useWhen": [
+        "Use this action when an existing gradient plot needs revised data roles, density settings, layout, or component appearance."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "width",
+          "description": "Sets the finite logical width used by the Canvas, mark, guide, or component owned by this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Revises the data, layout, statistics, or appearance of one gradient plot owner. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createGradientPlot"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createGradientPlot"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "editgradientplot"
+        },
+        {
+          "path": "docs/api/gradient-plots.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRegression",
+      "summary": "Revises a fitted regression model and its band or line through the stable point owner.",
+      "useWhen": [
+        "Use this action when an existing fitted model, confidence band, or regression line needs revision through its stable point owner."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        },
+        {
+          "path": "method",
+          "description": "Chooses the supported statistical or transformation method used to derive the result."
+        },
+        {
+          "path": "interval",
+          "description": "Chooses the supported uncertainty or dispersion interval surrounding the derived center."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Revises a fitted regression model and its band or line through the stable point owner. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createRegression"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createRegression"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/statistics.md",
+          "anchor": "editregression"
+        },
+        {
+          "path": "docs/api/regression.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRegressionBand",
+      "summary": "Edits the appearance of an existing regression interval band without refitting the statistical model.",
+      "useWhen": [
+        "Use this focused action when only the appearance of an existing regression interval band should change without refitting."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits the appearance of an existing regression interval band without refitting the statistical model. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createRegressionBand"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-regression-scatterplot/program.js",
+        "export": "createComponentEditCarsRegressionScatterplot"
+      },
+      "relatedActions": [
+        "createRegressionBand"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "semantic-resources-and-regression-layers"
+        },
+        {
+          "path": "docs/api/regression.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRegressionLine",
+      "summary": "Edits the appearance of an existing regression line without refitting its statistical model.",
+      "useWhen": [
+        "Use this focused action when only the appearance of an existing regression line should change without refitting."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits the appearance of an existing regression line without refitting its statistical model. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createRegressionLine"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-regression-scatterplot/program.js",
+        "export": "createComponentEditCarsRegressionScatterplot"
+      },
+      "relatedActions": [
+        "createRegressionLine"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "semantic-resources-and-regression-layers"
+        },
+        {
+          "path": "docs/api/regression.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "domain": "primitives",
+  "actions": [
+    {
+      "name": "createGraphics",
+      "summary": "Creates a validated backend-neutral graphical object or collection at an explicit position in the graphic hierarchy.",
+      "useWhen": [
+        "Use this extension primitive inside a domain action when a validated graphical subtree must be attached at one explicit hierarchy position."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "An extension-authored domain action must provide a validated semantic or graphical target path and preserve ChartProgram immutability."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "type",
+          "description": "Chooses the supported resource, scale, coordinate, graphic, transform, or selector type for this action."
+        },
+        {
+          "path": "parent",
+          "description": "Names the graphical parent collection that receives a newly created extension-authored object."
+        },
+        {
+          "path": "before",
+          "description": "Places a new graphical object immediately before this existing sibling inside the same parent."
+        },
+        {
+          "path": "after",
+          "description": "Places a new graphical object immediately after this existing sibling inside the same parent."
+        }
+      ],
+      "effects": {
+        "semantic": [],
+        "graphic": [
+          "Creates a validated backend-neutral graphical object or collection at an explicit position in the graphic hierarchy."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editGraphics"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/directional-tick-plot/program.js",
+        "export": "createHorsepowerRug"
+      },
+      "relatedActions": [
+        "editGraphics"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/extension.md",
+          "anchor": "extension-actions"
+        },
+        {
+          "path": "docs/extension/action-authoring.md"
+        },
+        {
+          "path": "docs/extension/primitives.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editGraphics",
+      "summary": "Edits one validated graphical property or removes one named graphic subtree through the public extension primitive.",
+      "useWhen": [
+        "Use this extension primitive inside a domain action when one validated graphical property or complete top-level subtree must change."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "value",
+          "description": "Provides the constant value assigned by this action instead of a field-driven mapping."
+        },
+        {
+          "path": "property",
+          "description": "Names the validated semantic or graphical property path affected by this extension primitive."
+        }
+      ],
+      "effects": {
+        "semantic": [],
+        "graphic": [
+          "Edits one validated graphical property or removes one named graphic subtree through the public extension primitive."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createGraphics"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/directional-tick-plot/program.js",
+        "export": "createHorsepowerRug"
+      },
+      "relatedActions": [
+        "createGraphics"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/extension.md",
+          "anchor": "extension-actions"
+        },
+        {
+          "path": "docs/extension/action-authoring.md"
+        },
+        {
+          "path": "docs/extension/primitives.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editSemantic",
+      "summary": "Creates, replaces, or removes one supported semantic property path for extension-authored domain actions.",
+      "useWhen": [
+        "Use this extension primitive inside a domain action when one supported semantic path must be created, replaced, or explicitly removed."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "value",
+          "description": "Provides the constant value assigned by this action instead of a field-driven mapping."
+        },
+        {
+          "path": "property",
+          "description": "Names the validated semantic or graphical property path affected by this extension primitive."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates, replaces, or removes one supported semantic property path for extension-authored domain actions."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "not-applicable",
+        "reason": "This low-level extension primitive is demonstrated only inside an extension-authored domain action, not as a standalone chart-authoring program."
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/extension.md",
+          "anchor": "extension-actions"
+        },
+        {
+          "path": "docs/extension/primitives.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/regression-scatterplot.md"
+        }
+      ]
+    }
+  ]
+}

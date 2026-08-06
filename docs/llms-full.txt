@@ -2962,6 +2962,8 @@ reversible editing history matters.
 Choose the result or resource being changed, then follow the linked canonical page. Use the
 [complete action reference](../reference/actions.md) when an exact action name is already known. Exact signatures come
 from the reference and public TypeScript declarations, not from this routing page.
+For structured retrieval, use the [complete machine-readable action metadata](../llms-actions.json), which joins every
+current action to its exact signature, prerequisites, effects, errors, example, related actions, and canonical docs.
 
 ## Complete chart facades
 

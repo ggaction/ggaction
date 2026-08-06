@@ -1,0 +1,1469 @@
+{
+  "schemaVersion": 1,
+  "domain": "marks",
+  "actions": [
+    {
+      "name": "createArcMark",
+      "summary": "Creates a semantic arc mark and empty closed path collection.",
+      "useWhen": [
+        "Use this action when you need to create a semantic arc mark and empty closed path collection."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a semantic arc mark and empty closed path collection. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editArcMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-origin-donut/program.js",
+        "export": "createCarsOriginDonut"
+      },
+      "relatedActions": [
+        "editArcMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createarcmark"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/recipes/rose-chart.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/polar-arcs.md"
+        }
+      ]
+    },
+    {
+      "name": "createAreaMark",
+      "summary": "Creates a semantic area mark and empty path collection.",
+      "useWhen": [
+        "Use this action when you need to create a semantic area mark and empty path collection."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a semantic area mark and empty path collection. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editAreaMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-density-area/program.js",
+        "export": "createCarsDensityArea"
+      },
+      "relatedActions": [
+        "editAreaMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createareamark"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/api/series/color.md"
+        },
+        {
+          "path": "docs/recipes/density-area.md"
+        },
+        {
+          "path": "docs/recipes/horizon.md"
+        }
+      ]
+    },
+    {
+      "name": "createBarMark",
+      "summary": "Creates a semantic bar mark and empty rect collection.",
+      "useWhen": [
+        "Use this action when you need to create a semantic bar mark and empty rect collection."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a semantic bar mark and empty rect collection. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editBarMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-histogram/program.js",
+        "export": "createNormalizedStackCarsHistogram"
+      },
+      "relatedActions": [
+        "editBarMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createbarmark"
+        },
+        {
+          "path": "docs/api/marks/bar.md"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/recipes/line-chart.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createLineMark",
+      "summary": "Creates a semantic line mark and empty path collection.",
+      "useWhen": [
+        "Use this action when you need to create a semantic line mark and empty path collection."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a semantic line mark and empty path collection. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editLineMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/airline-passenger-moving-windows/program.js",
+        "export": "createAirlinePassengerMovingWindows"
+      },
+      "relatedActions": [
+        "editLineMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createlinemark"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/api/parallel-coordinates.md"
+        },
+        {
+          "path": "docs/api/position-encodings.md"
+        },
+        {
+          "path": "docs/extension/primitives.md"
+        }
+      ]
+    },
+    {
+      "name": "createPointMark",
+      "summary": "Creates a semantic point mark with one of 12 equal area shape realizations.",
+      "useWhen": [
+        "Use this action when you need to create a semantic point mark with one of 12 equal area shape realizations."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a semantic point mark with one of 12 equal area shape realizations. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editPointMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/annotated-imdb-scatterplot/program.js",
+        "export": "createAnnotatedImdbScatterplot"
+      },
+      "relatedActions": [
+        "editPointMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createpointmark"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/api/data/filtering.md"
+        },
+        {
+          "path": "docs/api/error-bars.md"
+        },
+        {
+          "path": "docs/api/marks/point.md"
+        }
+      ]
+    },
+    {
+      "name": "createRectMark",
+      "summary": "Creates a semantic rect mark and empty rect collection.",
+      "useWhen": [
+        "Use this action when you need to create a semantic rect mark and empty rect collection."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a semantic rect mark and empty rect collection. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editRectMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editRectMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createrectmark"
+        },
+        {
+          "path": "docs/api/marks/rect.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createRuleMark",
+      "summary": "Creates a semantic rule mark and empty line collection.",
+      "useWhen": [
+        "Use this action when you need to create a semantic rule mark and empty line collection."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a semantic rule mark and empty line collection. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-error-bar/program.js",
+        "export": "createRuleGeometryExample"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createrulemark"
+        },
+        {
+          "path": "docs/api/marks/rule.md"
+        },
+        {
+          "path": "docs/api/position-encodings.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createTextMark",
+      "summary": "Creates a semantic text layer for data-driven or constant labels.",
+      "useWhen": [
+        "Use this action when you need to create a semantic text layer."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "text",
+          "description": "Provides the visible text content assigned to the title, label, or text mark."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a semantic text layer. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editTextMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/annotated-imdb-scatterplot/program.js",
+        "export": "createAnnotatedImdbScatterplot"
+      },
+      "relatedActions": [
+        "editTextMark",
+        "encodeText"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createtextmark"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/api/marks/rect.md"
+        },
+        {
+          "path": "docs/api/marks/text.md"
+        },
+        {
+          "path": "docs/recipes/annotations.md"
+        }
+      ]
+    },
+    {
+      "name": "createTickMark",
+      "summary": "Creates a centered line glyph that materializes after both x and y are complete.",
+      "useWhen": [
+        "Use this action when you need to create a centered line glyph that materializes after both x and y are complete."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a centered line glyph that materializes after both x and y are complete. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editTickMark",
+          "removeMark"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/directional-tick-plot/program.js",
+        "export": "createDirectionalTickPointComparison"
+      },
+      "relatedActions": [
+        "editTickMark",
+        "removeMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "createtickmark"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/api/marks.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editArcMark",
+      "summary": "Edits arc geometry or appearance and rematerialize complete sector paths. stroke: false disables the outline and its width.",
+      "useWhen": [
+        "Use this action when you need to edit arc geometry or appearance and rematerialize complete sector paths. stroke: false disables the outline and its width."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits arc geometry or appearance and rematerialize complete sector paths. stroke: false disables the outline and its width. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createArcMark"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createArcMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "editarcmark"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/polar-arcs.md"
+        }
+      ]
+    },
+    {
+      "name": "editAreaMark",
+      "summary": "Edits constant area appearance. stroke: false removes an existing outline.",
+      "useWhen": [
+        "Use this action when you need to edit constant area appearance. stroke: false removes an existing outline."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits constant area appearance. stroke: false removes an existing outline. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAreaMark"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-density-area/program.js",
+        "export": "createAreaOutlineEditCarsDensityArea"
+      },
+      "relatedActions": [
+        "createAreaMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "editareamark"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/api/violin-plots.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editBarMark",
+      "summary": "Edits whole bar appearance and rematerialize every concrete rectangle. stroke: false removes the visible outline; constant fill conflicts with a field driven color encoding.",
+      "useWhen": [
+        "Use this action when you need to edit whole bar appearance and rematerialize every concrete rectangle. stroke: false removes the visible outline; constant fill conflicts with a field driven color encoding."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits whole bar appearance and rematerialize every concrete rectangle. stroke: false removes the visible outline; constant fill conflicts with a field driven color encoding. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createBarMark"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/gapminder-temporal-discrete-scales/program.js",
+        "export": "createGapminderBandPointChart"
+      },
+      "relatedActions": [
+        "createBarMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "editbarmark"
+        },
+        {
+          "path": "docs/api/marks/bar.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editLineMark",
+      "summary": "Edits line appearance and rematerialize concrete path commands without changing semantic encodings.",
+      "useWhen": [
+        "Use this action when you need to edit line appearance and rematerialize concrete path commands without changing semantic encodings."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits line appearance and rematerialize concrete path commands without changing semantic encodings. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createLineMark"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-line-chart/program.js",
+        "export": "createMonotoneEditCarsLineChart"
+      },
+      "relatedActions": [
+        "createLineMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "editlinemark"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/extension/primitives.md"
+        },
+        {
+          "path": "docs/recipes/line-chart.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editPointMark",
+      "summary": "Changes constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items. stroke: false disables the outline and its width.",
+      "useWhen": [
+        "Use this action when you need to change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items. stroke: false disables the outline and its width."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Changes constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items. stroke: false disables the outline and its width. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createPointMark"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-scatterplot/program.js",
+        "export": "createDiamondCarsScatterplot"
+      },
+      "relatedActions": [
+        "createPointMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "editpointmark"
+        },
+        {
+          "path": "docs/api/marks/point.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRectMark",
+      "summary": "Edits rect appearance and rematerialize complete cells.",
+      "useWhen": [
+        "Use this action when you need to edit rect appearance and rematerialize complete cells."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits rect appearance and rematerialize complete cells. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createRectMark"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createRectMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "editrectmark"
+        },
+        {
+          "path": "docs/api/marks/rect.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editTextMark",
+      "summary": "Edits text typography and graphical offsets without changing its semantic source or position.",
+      "useWhen": [
+        "Use this action when you need to edit text typography and graphical offsets without changing its semantic source or position."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits text typography and graphical offsets without changing its semantic source or position. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createTextMark"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createTextMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "edittextmark"
+        },
+        {
+          "path": "docs/api/marks/text.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editTickMark",
+      "summary": "Partially edits tick length or constant line appearance while preserving data, position, and other assignments.",
+      "useWhen": [
+        "Use this action when you need to partially edit Tick length or constant line appearance while preserving data, position, and other assignments."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Partially edits tick length or constant line appearance while preserving data, position, and other assignments. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createTickMark"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createTickMark"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "edittickmark"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "jitterPoints",
+      "summary": "Assigns deterministic bounded graphical jitter to one Cartesian point mark.",
+      "useWhen": [
+        "Use this action when you need to assign deterministic bounded graphical jitter to one Cartesian point mark."
+      ],
+      "avoidWhen": [
+        "Avoid this action for non-point marks, missing complete positions, or charts where displacement would obscure precise position comparison."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "channel",
+          "description": "Selects the exact semantic encoding channel that this action creates, edits, or removes."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Assigns deterministic bounded graphical jitter to one Cartesian point mark. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/point-jitter/program.js",
+        "export": "createCarsOriginJitter"
+      },
+      "relatedActions": [
+        "removeJitter"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "jitterpoints"
+        },
+        {
+          "path": "docs/api/marks/point.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "layoutLabels",
+      "summary": "Assigns deterministic collision aware placement to one complete text mark.",
+      "useWhen": [
+        "Use this action when you need to assign deterministic collision aware placement to one complete text mark."
+      ],
+      "avoidWhen": [
+        "Avoid this action for non-text marks, incomplete label positions, or charts whose labels do not overlap."
+      ],
+      "requiredState": [
+        "A Canvas and compatible dataset must exist unless this action explicitly receives all required data and owner identifiers."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Assigns deterministic collision aware placement to one complete text mark. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/gapminder-country-labels/program.js",
+        "export": "createGapminderCountryLabels"
+      },
+      "relatedActions": [
+        "removeLabelLayout"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "layoutlabels"
+        },
+        {
+          "path": "docs/api/marks/text.md"
+        },
+        {
+          "path": "docs/recipes/annotations.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeJitter",
+      "summary": "Removes the target point mark's jitter assignment and restore positions derived directly from its semantic encodings.",
+      "useWhen": [
+        "Use this action when you need to remove the target point mark's jitter assignment and restore positions derived directly from its semantic encodings."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removes the target point mark's jitter assignment and restore positions derived directly from its semantic encodings. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "removejitter"
+        },
+        {
+          "path": "docs/api/marks/point.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeLabelLayout",
+      "summary": "Removes one text mark's layout policy and leader collection, then restore its semantic base positions.",
+      "useWhen": [
+        "Use this action when you need to remove one text mark's layout policy and leader collection, then restore its semantic base positions."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removes one text mark's layout policy and leader collection, then restore its semantic base positions. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "removelabellayout"
+        },
+        {
+          "path": "docs/api/marks/text.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeMark",
+      "summary": "Removes one stable mark owner and its owned state while preserving source data and independently shared resources.",
+      "useWhen": [
+        "Use this action when you need to remove one stable mark owner and its owned state while preserving source data and independently shared resources."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removes one stable mark owner and its owned state while preserving source data and independently shared resources. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/marks.md",
+          "anchor": "removemark"
+        },
+        {
+          "path": "docs/api/marks.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    }
+  ]
+}

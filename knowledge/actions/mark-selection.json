@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 1,
+  "domain": "mark-selection",
+  "actions": [
+    {
+      "name": "editMarkSelection",
+      "summary": "Replaces the complete selector while preserving the stored selection ID and mark target.",
+      "useWhen": [
+        "Use this action when you need to replace the complete selector while preserving the stored selection ID and mark target."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Replaces the complete selector while preserving the stored selection ID and mark target. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "removeMarkSelection",
+        "selectMarks",
+        "highlightMarks"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "editmarkselection"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/selection-and-highlighting.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "filterMarks",
+      "summary": "Retains matching final mark items through the shared selector grammar, create one namespaced immutable member row dataset, rebind the mark, and rematerialize its scales and connected guides without changing the source.",
+      "useWhen": [
+        "Use this action when you need to retain matching final mark items through the shared selector grammar, create one namespaced immutable member row dataset, rebind the mark, and rematerialize its scales and connected guides without changing the source."
+      ],
+      "avoidWhen": [
+        "Avoid this action when downstream transforms must consume filtered rows; use filterData to create a reusable derived dataset instead."
+      ],
+      "requiredState": [
+        "A materialized compatible mark must exist so selection predicates can be evaluated against final semantic and graphical items."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Retains matching final mark items through the shared selector grammar, create one namespaced immutable member row dataset, rebind the mark, and rematerialize its scales and connected guides without changing the source. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-regression-scatterplot/program.js",
+        "export": "createCarsRegressionScatterplot"
+      },
+      "relatedActions": [
+        "selectMarks",
+        "highlightMarks"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "filtermarks"
+        },
+        {
+          "path": "docs/api/data/filtering.md"
+        },
+        {
+          "path": "docs/recipes/regression-scatterplot.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/regression-scatterplot.md"
+        }
+      ]
+    },
+    {
+      "name": "highlightMarks",
+      "summary": "Selects point, bar, line, area, arc, or rule items inline or reuse a stored selection, then apply mark specific concrete emphasis, optional complement dimming, and selected last order.",
+      "useWhen": [
+        "Use this action when you need to select point, bar, line, area, arc, or rule items inline or reuse a stored selection, then apply mark specific concrete emphasis, optional complement dimming, and selected last order."
+      ],
+      "avoidWhen": [
+        "Avoid this action before a valid inline or stored selection exists, or when the underlying mark style rather than selected items should change."
+      ],
+      "requiredState": [
+        "A materialized compatible mark must exist so selection predicates can be evaluated against final semantic and graphical items."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Selects point, bar, line, area, arc, or rule items inline or reuse a stored selection, then apply mark specific concrete emphasis, optional complement dimming, and selected last order. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/mark-selection/program.js",
+        "export": "createJapanLineSeriesHighlight"
+      },
+      "relatedActions": [
+        "selectMarks"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "highlightmarks"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/selection-and-highlighting.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/mark-selection.md"
+        }
+      ]
+    },
+    {
+      "name": "removeMarkHighlight",
+      "summary": "Removes one highlight assignment, restore the target mark and categorical legend baseline, and retain the reusable selection.",
+      "useWhen": [
+        "Use this action when you need to remove one highlight assignment, restore the target mark and categorical legend baseline, and retain the reusable selection."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Removes one highlight assignment, restore the target mark and categorical legend baseline, and retain the reusable selection. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "selectMarks",
+        "highlightMarks"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "removemarkhighlight"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/selection-and-highlighting.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeMarkSelection",
+      "summary": "Releases one stored selection after removing its dependent highlight.",
+      "useWhen": [
+        "Use this action when you need to release one stored selection after removing its dependent highlight."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Releases one stored selection after removing its dependent highlight. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editMarkSelection",
+        "selectMarks",
+        "highlightMarks"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "removemarkselection"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/selection-and-highlighting.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "selectMarks",
+      "summary": "Stores a reusable semantic selection of final mark items without changing the current graphical output.",
+      "useWhen": [
+        "Use this action when final rendered mark items must be named by a field, channel, or graphical-property predicate for later highlighting or editing."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark is absent or ambiguous, or when source rows should be filtered before materialization instead."
+      ],
+      "requiredState": [
+        "A materialized compatible mark must exist so selection predicates can be evaluated against final semantic and graphical items."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Stores a reusable semantic selection of final mark items without changing the current graphical output. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "highlightMarks"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "reusable-mark-selections"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/selection-and-highlighting.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/mark-selection.md"
+        }
+      ]
+    }
+  ]
+}

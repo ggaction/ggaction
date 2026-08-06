@@ -1,0 +1,983 @@
+{
+  "schemaVersion": 1,
+  "domain": "core",
+  "actions": [
+    {
+      "name": "createBin2DData",
+      "summary": "Aggregate finite x/y pairs into deterministic rectangular cell bounds and counts.",
+      "useWhen": [
+        "Use this action when two quantitative fields must be summarized into a rectangular bin grid for a heatmap or another cell-based view."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Aggregate finite x/y pairs into deterministic rectangular cell bounds and counts. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editBin2DData"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editBin2DData"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createbin2ddata"
+        },
+        {
+          "path": "docs/api/data/bin2d.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createCanvas",
+      "summary": "Creates the program's Canvas and plot bounds.",
+      "useWhen": [
+        "Use this action when you need to create the program's Canvas and plot bounds."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [],
+      "parameterNotes": [
+        {
+          "path": "width",
+          "description": "Sets the finite logical width used by the Canvas, mark, guide, or component owned by this action."
+        },
+        {
+          "path": "height",
+          "description": "Sets the finite logical height used by the Canvas or component owned by this action."
+        },
+        {
+          "path": "margin",
+          "description": "Reserves Canvas space around the plot using one finite value or explicit side values."
+        },
+        {
+          "path": "background",
+          "description": "Sets the Canvas background color without changing semantic chart meaning."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates the program's Canvas and plot bounds. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editCanvas"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/airline-passenger-moving-windows/program.js",
+        "export": "createAirlinePassengerMovingWindows"
+      },
+      "relatedActions": [
+        "editCanvas"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createcanvas"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/api/box-plots.md"
+        },
+        {
+          "path": "docs/api/canvas.md"
+        },
+        {
+          "path": "docs/api/composition.md"
+        }
+      ]
+    },
+    {
+      "name": "createCoordinate",
+      "summary": "Creates a named Cartesian, Polar, or parallel coordinate resource for marks, guides, and later explicit targeting.",
+      "useWhen": [
+        "Use this action when marks or guides need a named coordinate resource before explicit assignment or when the default coordinate is inappropriate."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "type",
+          "description": "Chooses the supported resource, scale, coordinate, graphic, transform, or selector type for this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a named Cartesian, Polar, or parallel coordinate resource for marks, guides, and later explicit targeting. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "semantic-resources-and-regression-layers"
+        },
+        {
+          "path": "docs/api/coordinates.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createData",
+      "summary": "Creates one immutable named dataset from caller-provided row values.",
+      "useWhen": [
+        "Use this action when you need to create one immutable named dataset."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates one immutable named dataset. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/airline-passenger-moving-windows/program.js",
+        "export": "createAirlinePassengerMovingWindows"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createdata"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/api/box-plots.md"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/api/data/bin2d.md"
+        }
+      ]
+    },
+    {
+      "name": "createDensityData",
+      "summary": "Creates immutable KDE rows on one shared inclusive sample grid.",
+      "useWhen": [
+        "Use this action when you need to create immutable KDE rows on one shared inclusive sample grid."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates immutable KDE rows on one shared inclusive sample grid. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createdensitydata"
+        },
+        {
+          "path": "docs/api/data/statistical-transforms.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createDerivedData",
+      "summary": "Creates a named immutable derived dataset from an explicit transform pipeline and source dataset.",
+      "useWhen": [
+        "Use this action when an explicit supported transform pipeline should produce a reusable named dataset; prefer a focused data action when one describes the task."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a named immutable derived dataset from an explicit transform pipeline and source dataset. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "semantic-resources-and-regression-layers"
+        },
+        {
+          "path": "docs/api/data/source-and-derived.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createRegressionData",
+      "summary": "Creates immutable linear, polynomial, or LOESS fitted rows at observed unique x values.",
+      "useWhen": [
+        "Use this action when you need to create immutable linear, polynomial, or LOESS fitted rows at observed unique x values."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates immutable linear, polynomial, or LOESS fitted rows at observed unique x values. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createregressiondata"
+        },
+        {
+          "path": "docs/api/data/statistical-transforms.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createScale",
+      "summary": "Creates an immutable named scale with an explicit type, domain, range, and supported mapping options.",
+      "useWhen": [
+        "Use this action when a reusable named mapping must exist before a mark, encoding, or guide explicitly targets it."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Creates an immutable named scale with an explicit type, domain, range, and supported mapping options. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editScale"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editScale"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/extension.md",
+          "anchor": "extension-actions"
+        },
+        {
+          "path": "docs/api/scales.md"
+        },
+        {
+          "path": "docs/extension/primitives.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createTimeUnitData",
+      "summary": "Creates an immutable row preserving dataset with one UTC year, quarter, month, day, hour, minute, or second bucket start timestamp field.",
+      "useWhen": [
+        "Use this action when you need to create an immutable row preserving dataset with one UTC year, quarter, month, day, hour, minute, or second bucket start timestamp field."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates an immutable row preserving dataset with one UTC year, quarter, month, day, hour, minute, or second bucket start timestamp field. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/airline-passenger-moving-windows/program.js",
+        "export": "createAirlinePassengerMovingWindows"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createtimeunitdata"
+        },
+        {
+          "path": "docs/api/data/time-units.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createWindowData",
+      "summary": "Creates an immutable derived dataset by applying ordered row number, rank, dense rank, cumulative sum, lag, lead, moving mean, or moving sum operations within optional partitions.",
+      "useWhen": [
+        "Use this action when you need to create an immutable derived dataset by applying ordered row number, rank, dense rank, cumulative sum, lag, lead, moving mean, or moving sum operations within optional partitions."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "operations",
+          "description": "Defines the ordered set of window operations and output fields created for each source row."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates an immutable derived dataset by applying ordered row number, rank, dense rank, cumulative sum, lag, lead, moving mean, or moving sum operations within optional partitions. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/airline-passenger-moving-windows/program.js",
+        "export": "createAirlinePassengerMovingWindows"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createwindowdata"
+        },
+        {
+          "path": "docs/api/data/window.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editBin2DData",
+      "summary": "Revises the current or uniquely targeted logical two-dimensional bin-data owner.",
+      "useWhen": [
+        "Use this action when an existing two-dimensional bin dataset needs revised fields, bin counts, extents, or output settings."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Revises the current or uniquely targeted logical two-dimensional bin-data owner. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [
+          "createBin2DData"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createBin2DData"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "editbin2ddata"
+        },
+        {
+          "path": "docs/api/data/bin2d.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editCanvas",
+      "summary": "Edits Canvas properties and rematerialize connected consumers.",
+      "useWhen": [
+        "Use this action when you need to edit Canvas properties and rematerialize connected consumers."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "width",
+          "description": "Sets the finite logical width used by the Canvas, mark, guide, or component owned by this action."
+        },
+        {
+          "path": "height",
+          "description": "Sets the finite logical height used by the Canvas or component owned by this action."
+        },
+        {
+          "path": "margin",
+          "description": "Reserves Canvas space around the plot using one finite value or explicit side values."
+        },
+        {
+          "path": "background",
+          "description": "Sets the Canvas background color without changing semantic chart meaning."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits Canvas properties and rematerialize connected consumers. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createCanvas"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createCanvas"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "editcanvas"
+        },
+        {
+          "path": "docs/api/canvas.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/density-area.md"
+        }
+      ]
+    },
+    {
+      "name": "editScale",
+      "summary": "Revises one named scale and rematerializes every connected mark and guide without mutating the earlier program.",
+      "useWhen": [
+        "Use this action when one named scale needs a revised domain, range, transform, palette, or mapping option without recreating its consumers."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "domain",
+          "description": "Sets the semantic input domain explicitly when automatic domain derivation is unsuitable."
+        },
+        {
+          "path": "range",
+          "description": "Sets the concrete output range explicitly instead of using the action's documented default range."
+        },
+        {
+          "path": "palette",
+          "description": "Selects the named or explicit color palette used to materialize a field-driven color mapping."
+        },
+        {
+          "path": "type",
+          "description": "Chooses the supported resource, scale, coordinate, graphic, transform, or selector type for this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Revises one named scale and rematerializes every connected mark and guide without mutating the earlier program. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createScale"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-scatterplot/program.js",
+        "export": "createScaleReverseCarsScatterplot"
+      },
+      "relatedActions": [
+        "createScale"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/extension.md",
+          "anchor": "extension-actions"
+        },
+        {
+          "path": "docs/api/scales.md"
+        },
+        {
+          "path": "docs/api/series/color.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/polar-points.md"
+        }
+      ]
+    },
+    {
+      "name": "filterData",
+      "summary": "Creates an immutable named derived dataset using exactly one membership, comparison, or range filter.",
+      "useWhen": [
+        "Use this action when you need to create an immutable named derived dataset using exactly one membership, comparison, or range filter."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only final rendered items should be hidden; use filterMarks for graphical filtering without deriving a new dataset."
+      ],
+      "requiredState": [
+        "The source dataset, resource identifiers, and dependent state required by the exact public signature must be present unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates an immutable named derived dataset using exactly one membership, comparison, or range filter. The derived or source rows are stored as immutable semantic data in the returned program."
+        ],
+        "graphic": []
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-parallel-coordinates/program.js",
+        "export": "createCarsParallelCoordinates"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "filterdata"
+        },
+        {
+          "path": "docs/api/data/filtering.md"
+        },
+        {
+          "path": "docs/api/parallel-coordinates.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/troubleshooting.md"
+        }
+      ]
+    }
+  ]
+}

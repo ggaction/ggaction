@@ -1,0 +1,2800 @@
+{
+  "schemaVersion": 1,
+  "domain": "axes",
+  "actions": [
+    {
+      "name": "createAxes",
+      "summary": "Creates Cartesian or Polar axes directly, including inferred titles and ticks.",
+      "useWhen": [
+        "Use this action when you need to create Cartesian or Polar axes directly, including inferred titles and ticks."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates Cartesian or Polar axes directly, including inferred titles and ticks. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "createaxes"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createRadialAxis",
+      "summary": "Creates the complete center to edge radial axis; angle defaults to 90 .",
+      "useWhen": [
+        "Use this action when you need to create the complete center to edge radial axis; angle defaults to 90 ."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "title",
+          "description": "Sets or configures the visible title for the owned chart, guide, or component resource."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates the complete center to edge radial axis; angle defaults to 90 . The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editRadialAxis",
+          "removeRadialAxis"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editRadialAxis",
+        "removeRadialAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "createradialaxis"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createThetaAxis",
+      "summary": "Creates the complete outer circular theta axis.",
+      "useWhen": [
+        "Use this action when you need to create the complete outer circular theta axis."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "title",
+          "description": "Sets or configures the visible title for the owned chart, guide, or component resource."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates the complete outer circular theta axis. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editThetaAxis",
+          "removeThetaAxis"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editThetaAxis",
+        "removeThetaAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "createthetaaxis"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createXAxis",
+      "summary": "Creates a complete x axis from an existing compatible x scale and Cartesian coordinate.",
+      "useWhen": [
+        "Use this action when an existing x scale needs a complete x axis with its baseline, ticks, labels, and optional title."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "title",
+          "description": "Sets or configures the visible title for the owned chart, guide, or component resource."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a complete x axis from an existing compatible x scale and Cartesian coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editXAxis",
+          "removeXAxis"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editXAxis",
+        "removeXAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "complete-single-channel-axes"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createXAxisLabels",
+      "summary": "Creates labels for an existing x axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when an existing x scale needs labels without automatically creating the other x-axis components."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates labels for an existing x axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editXAxisLabels"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editXAxisLabels",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createXAxisLine",
+      "summary": "Creates a baseline for an existing x axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when you need to creates baseline for an existing x axis using its compatible scale and coordinate."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a baseline for an existing x axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editXAxisLine"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editXAxisLine",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createXAxisTicks",
+      "summary": "Creates ticks for an existing x axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when an existing x scale needs ticks without automatically creating labels or the other x-axis components."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates ticks for an existing x axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editXAxisTicks"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editXAxisTicks",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createXAxisTicksAndLabels",
+      "summary": "Creates coordinated ticks and labels for an existing x axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when an existing x scale needs coordinated ticks and labels without a complete x axis."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates coordinated ticks and labels for an existing x axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editXAxisTicksAndLabels"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editXAxisTicksAndLabels",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "ticklabel-groups-and-axis-titles"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createXAxisTitle",
+      "summary": "Creates a title for an existing x axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when you need to creates title for an existing x axis using its compatible scale and coordinate."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "text",
+          "description": "Provides the visible text content assigned to the title, label, or text mark."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a title for an existing x axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editXAxisTitle"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editXAxisTitle",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "ticklabel-groups-and-axis-titles"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createYAxis",
+      "summary": "Creates a complete y axis from an existing compatible y scale and Cartesian coordinate.",
+      "useWhen": [
+        "Use this action when an existing y scale needs a complete y axis with its baseline, ticks, labels, and optional title."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "title",
+          "description": "Sets or configures the visible title for the owned chart, guide, or component resource."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a complete y axis from an existing compatible y scale and Cartesian coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editYAxis",
+          "removeYAxis"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editYAxis",
+        "removeYAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "complete-single-channel-axes"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createYAxisLabels",
+      "summary": "Creates labels for an existing y axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when an existing y scale needs labels without automatically creating the other y-axis components."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates labels for an existing y axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editYAxisLabels"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editYAxisLabels",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createYAxisLine",
+      "summary": "Creates a baseline for an existing y axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when you need to creates baseline for an existing y axis using its compatible scale and coordinate."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a baseline for an existing y axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editYAxisLine"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editYAxisLine",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createYAxisTicks",
+      "summary": "Creates ticks for an existing y axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when an existing y scale needs ticks without automatically creating labels or the other y-axis components."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates ticks for an existing y axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editYAxisTicks"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editYAxisTicks",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createYAxisTicksAndLabels",
+      "summary": "Creates coordinated ticks and labels for an existing y axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when an existing y scale needs coordinated ticks and labels without a complete y axis."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates coordinated ticks and labels for an existing y axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editYAxisTicksAndLabels"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editYAxisTicksAndLabels",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "ticklabel-groups-and-axis-titles"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createYAxisTitle",
+      "summary": "Creates a title for an existing y axis using its compatible scale and coordinate.",
+      "useWhen": [
+        "Use this action when you need to creates title for an existing y axis using its compatible scale and coordinate."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "text",
+          "description": "Provides the visible text content assigned to the title, label, or text mark."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a title for an existing y axis using its compatible scale and coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editYAxisTitle"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editYAxisTitle",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "ticklabel-groups-and-axis-titles"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRadialAxis",
+      "summary": "Edits selected radial components; angle moves the whole axis.",
+      "useWhen": [
+        "Use this action when you need to edit selected radial components; angle moves the whole axis."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "title",
+          "description": "Sets or configures the visible title for the owned chart, guide, or component resource."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits selected radial components; angle moves the whole axis. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createRadialAxis"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createRadialAxis",
+        "removeRadialAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editradialaxis"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/polar-points.md"
+        }
+      ]
+    },
+    {
+      "name": "editRadialAxisLabels",
+      "summary": "Edits the text, placement, and style of radial value labels.",
+      "useWhen": [
+        "Use this action when you need to edit radial value labels."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits radial value labels. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAxes"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editradialaxislabels"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRadialAxisLine",
+      "summary": "Edits the color, width, and dash style of the radial baseline.",
+      "useWhen": [
+        "Use this action when you need to edit the radial baseline style."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Edits the radial baseline style. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAxes"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editradialaxisline"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRadialAxisTicks",
+      "summary": "Edits radial tick values, geometry, and visual style.",
+      "useWhen": [
+        "Use this action when you need to edit radial tick geometry and style."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits radial tick geometry and style. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAxes"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editradialaxisticks"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRadialAxisTitle",
+      "summary": "Edits the radial title. position accepts \"inside\" or \"outside\" and defaults to the baseline midpoint inside the plot.",
+      "useWhen": [
+        "Use this action when you need to edit the radial title. position accepts \"inside\" or \"outside\" and defaults to the baseline midpoint inside the plot."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits the radial title. position accepts \"inside\" or \"outside\" and defaults to the baseline midpoint inside the plot. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAxes"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editradialaxistitle"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editThetaAxis",
+      "summary": "Edits selected components of one existing theta axis.",
+      "useWhen": [
+        "Use this action when you need to edit selected theta axis components."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "title",
+          "description": "Sets or configures the visible title for the owned chart, guide, or component resource."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits selected theta axis components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createThetaAxis"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createThetaAxis",
+        "removeThetaAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editthetaaxis"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editThetaAxisLabels",
+      "summary": "Edits the text, placement, and style of perimeter theta labels.",
+      "useWhen": [
+        "Use this action when you need to edit perimeter theta labels."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits perimeter theta labels. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAxes"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editthetaaxislabels"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/polar-points.md"
+        }
+      ]
+    },
+    {
+      "name": "editThetaAxisLine",
+      "summary": "Edits the color, width, and dash style of the outer theta baseline.",
+      "useWhen": [
+        "Use this action when you need to edit the outer baseline style."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Edits the outer baseline style. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAxes"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editthetaaxisline"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editThetaAxisTicks",
+      "summary": "Edits theta tick values, geometry, and visual style.",
+      "useWhen": [
+        "Use this action when you need to edit theta tick geometry and style."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits theta tick geometry and style. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAxes"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editthetaaxisticks"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editThetaAxisTitle",
+      "summary": "Edits the text, placement, and style of the theta axis title.",
+      "useWhen": [
+        "Use this action when you need to edit the theta title."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "text",
+          "description": "Provides the visible text content assigned to the title, label, or text mark."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits the theta title. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createAxes"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editthetaaxistitle"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editXAxis",
+      "summary": "Edits selected components of one complete x axis while preserving omitted component settings.",
+      "useWhen": [
+        "Use this action when several components of one existing x axis should change together in a single immutable revision."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "title",
+          "description": "Sets or configures the visible title for the owned chart, guide, or component resource."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits selected components of one complete x axis while preserving omitted component settings. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createXAxis"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createXAxis",
+        "removeXAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "complete-single-channel-axes"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editXAxisLabels",
+      "summary": "Edits labels on one existing x axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when only the labels of one existing x axis need revised values, formatting, placement, or typography."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits labels on one existing x axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createXAxisLabels"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createXAxisLabels",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editXAxisLine",
+      "summary": "Edits baseline on one existing x axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when only the baseline of one existing x axis needs a different color, width, or dash style."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Edits baseline on one existing x axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createXAxisLine"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createXAxisLine",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editXAxisTicks",
+      "summary": "Edits ticks on one existing x axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when only the ticks of one existing x axis need revised values, count, geometry, or styling."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits ticks on one existing x axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createXAxisTicks"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createXAxisTicks",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editXAxisTicksAndLabels",
+      "summary": "Edits coordinated ticks and labels on one existing x axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when the ticks and labels of one existing x axis must share revised values or counts."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits coordinated ticks and labels on one existing x axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createXAxisTicksAndLabels"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createXAxisTicksAndLabels",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "ticklabel-groups-and-axis-titles"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editXAxisTitle",
+      "summary": "Edits title on one existing x axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when only the title of one existing x axis needs revised text, placement, or typography."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "text",
+          "description": "Provides the visible text content assigned to the title, label, or text mark."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits title on one existing x axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createXAxisTitle"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createXAxisTitle",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "ticklabel-groups-and-axis-titles"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editYAxis",
+      "summary": "Edits selected components of one complete y axis while preserving omitted component settings.",
+      "useWhen": [
+        "Use this action when several components of one existing y axis should change together in a single immutable revision."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "title",
+          "description": "Sets or configures the visible title for the owned chart, guide, or component resource."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits selected components of one complete y axis while preserving omitted component settings. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createYAxis"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createYAxis",
+        "removeYAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "complete-single-channel-axes"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editYAxisLabels",
+      "summary": "Edits labels on one existing y axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when only the labels of one existing y axis need revised values, formatting, placement, or typography."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits labels on one existing y axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createYAxisLabels"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createYAxisLabels",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editYAxisLine",
+      "summary": "Edits baseline on one existing y axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when only the baseline of one existing y axis needs a different color, width, or dash style."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Edits baseline on one existing y axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createYAxisLine"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createYAxisLine",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editYAxisTicks",
+      "summary": "Edits ticks on one existing y axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when only the ticks of one existing y axis need revised values, count, geometry, or styling."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits ticks on one existing y axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createYAxisTicks"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createYAxisTicks",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "axis-lines-ticks-and-labels"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editYAxisTicksAndLabels",
+      "summary": "Edits coordinated ticks and labels on one existing y axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when the ticks and labels of one existing y axis must share revised values or counts."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits coordinated ticks and labels on one existing y axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createYAxisTicksAndLabels"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createYAxisTicksAndLabels",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "ticklabel-groups-and-axis-titles"
+        },
+        {
+          "path": "docs/advanced/axis-components.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editYAxisTitle",
+      "summary": "Edits title on one existing y axis while preserving its other components.",
+      "useWhen": [
+        "Use this action when only the title of one existing y axis needs revised text, placement, or typography."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "text",
+          "description": "Provides the visible text content assigned to the title, label, or text mark."
+        },
+        {
+          "path": "position",
+          "description": "Chooses the supported side or placement for the owned axis, legend, title, or component."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits title on one existing y axis while preserving its other components. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createYAxisTitle"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createYAxisTitle",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "ticklabel-groups-and-axis-titles"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeRadialAxis",
+      "summary": "Removes the complete radial axis and all of its owned components.",
+      "useWhen": [
+        "Use this action when you need to remove the complete radial axis resource."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removes the complete radial axis resource. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createRadialAxis"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createRadialAxis",
+        "editRadialAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "removeradialaxis"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeThetaAxis",
+      "summary": "Removes the complete theta axis and all of its owned components.",
+      "useWhen": [
+        "Use this action when you need to remove the complete theta axis resource."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removes the complete theta axis resource. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createThetaAxis"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createThetaAxis",
+        "editThetaAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "removethetaaxis"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeXAxis",
+      "summary": "Removess one complete x axis without removing its position encoding, scale, or coordinate.",
+      "useWhen": [
+        "Use this action when you need to removes one complete x axis without removing its position encoding, scale, or coordinate."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removess one complete x axis without removing its position encoding, scale, or coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createXAxis"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createXAxis",
+        "editXAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "complete-axis-removal"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeYAxis",
+      "summary": "Removess one complete y axis without removing its position encoding, scale, or coordinate.",
+      "useWhen": [
+        "Use this action when you need to removes one complete y axis without removing its position encoding, scale, or coordinate."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removess one complete y axis without removing its position encoding, scale, or coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createYAxis"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createYAxis",
+        "editYAxis",
+        "createAxes",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "complete-axis-removal"
+        },
+        {
+          "path": "docs/api/axes.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    }
+  ]
+}

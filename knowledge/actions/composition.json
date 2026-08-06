@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 1,
+  "domain": "composition",
+  "actions": [
+    {
+      "name": "editCompositionLayout",
+      "summary": "Edits spacing, cross axis alignment, or outer padding on an existing composition. columns changes wrapping only on a facet composition and is rejected for concat.",
+      "useWhen": [
+        "Use this action when you need to edit spacing, cross axis alignment, or outer padding on an existing composition. columns changes wrapping only on a facet composition and is rejected for concat."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Edits spacing, cross axis alignment, or outer padding on an existing composition. columns changes wrapping only on a facet composition and is rejected for concat. Composition ownership and child identity are structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Rebuilds the parent composition snapshot from complete child graphical specifications without mutating any child program."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/program-composition/program.js",
+        "export": "createProgramCompositionExample"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "editcompositionlayout"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editFacetGuides",
+      "summary": "Changes facet axes between \"each\" and \"outer\", or legend ownership between false and \"shared\".",
+      "useWhen": [
+        "Use this action when an existing facet needs different axis repetition or legend ownership without rebuilding its children."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "axes",
+          "description": "Configures applicable axis creation or explicitly suppresses axes for this guide-producing action."
+        },
+        {
+          "path": "legend",
+          "description": "Configures applicable legend creation or explicitly suppresses legends for this guide-producing action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Changes facet axes between \"each\" and \"outer\", or legend ownership between false and \"shared\". Composition ownership and child identity are structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Rebuilds the parent composition snapshot from complete child graphical specifications without mutating any child program."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editCompositionLayout"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "editfacetguides"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editFacetHeaders",
+      "summary": "Edits the parent owned repeated facet headers and rebuild the parent snapshot without changing child programs or facet value order.",
+      "useWhen": [
+        "Use this action when you need to edit the parent owned repeated facet headers and rebuild the parent snapshot without changing child programs or facet value order."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Edits the parent owned repeated facet headers and rebuild the parent snapshot without changing child programs or facet value order. Composition ownership and child identity are structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Rebuilds the parent composition snapshot from complete child graphical specifications without mutating any child program."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-origin-scatterplot-facet/program.js",
+        "export": "createCarsOriginScatterplotFacet"
+      },
+      "relatedActions": [
+        "editCompositionLayout"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "editfacetheaders"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editFacetScales",
+      "summary": "Changes used facet scale channels between \"shared\" and \"independent\" resolution.",
+      "useWhen": [
+        "Use this action when existing facet children need shared or independent scales on selected position channels."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Changes used facet scale channels between \"shared\" and \"independent\" resolution. Composition ownership and child identity are structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Rebuilds the parent composition snapshot from complete child graphical specifications without mutating any child program."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editCompositionLayout"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "editfacetscales"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "facet",
+      "summary": "Repeats one complete chart by a field on its common row preserving dataset ancestor.",
+      "useWhen": [
+        "Use this action when you need to repeat one complete chart by a field on its common row preserving dataset ancestor."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the facet field is missing, the child cannot be replayed safely, or a fixed manual composition is the intended layout."
+      ],
+      "requiredState": [
+        "The referenced child or facet owner must be a complete stored program, and every target identifier must resolve to one exact composition resource."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Repeats one complete chart by a field on its common row preserving dataset ancestor. Composition ownership and child identity are structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Rebuilds the parent composition snapshot from complete child graphical specifications without mutating any child program."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-origin-histogram-facet/program.js",
+        "export": "createCarsOriginHistogramFacet"
+      },
+      "relatedActions": [
+        "editCompositionLayout"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "facet"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/recipes/facet.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/troubleshooting.md"
+        }
+      ]
+    },
+    {
+      "name": "replaceCompositionChild",
+      "summary": "Replaces one named child while preserving its slot ID and order.",
+      "useWhen": [
+        "Use this action when you need to replace one named child while preserving its slot ID and order."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the child slot is unknown or when adding a new layer or composition slot is the actual task."
+      ],
+      "requiredState": [
+        "The referenced child or facet owner must be a complete stored program, and every target identifier must resolve to one exact composition resource."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Replaces one named child while preserving its slot ID and order. Composition ownership and child identity are structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Rebuilds the parent composition snapshot from complete child graphical specifications without mutating any child program."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cross-feature-dashboard/program.js",
+        "export": "createCrossFeatureDashboardState"
+      },
+      "relatedActions": [
+        "editCompositionLayout"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "replacecompositionchild"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    }
+  ]
+}

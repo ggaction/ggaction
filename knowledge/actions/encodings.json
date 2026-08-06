@@ -1,0 +1,2619 @@
+{
+  "schemaVersion": 1,
+  "domain": "encodings",
+  "actions": [
+    {
+      "name": "editDensity",
+      "summary": "Creates an immutable density-data revision, rebinds the selected density area, and rematerializes its graphical consumers; source, field, and groupBy may revise creation-time data roles, while groupBy: false removes grouping.",
+      "useWhen": [
+        "Use this action when an existing density area needs a revised source, field, grouping, bandwidth, or sampling configuration."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates an immutable density-data revision, rebinds the selected density area, and rematerializes its graphical consumers; source, field, and groupBy may revise creation-time data roles, while groupBy: false removes grouping. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-density-area/program.js",
+        "export": "createDensityRevisionCarsDensityArea"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "editdensity"
+        },
+        {
+          "path": "docs/api/violin-plots.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editHorizon",
+      "summary": "Creates and bind an immutable Horizon revision, preserve omitted settings and scale identities, and rematerialize affected consumers. groupBy: false removes grouping.",
+      "useWhen": [
+        "Use this action when you need to create and bind an immutable Horizon revision, preserve omitted settings and scale identities, and rematerialize affected consumers. groupBy: false removes grouping."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates and bind an immutable Horizon revision, preserve omitted settings and scale identities, and rematerialize affected consumers. groupBy: false removes grouping. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "edithorizon"
+        },
+        {
+          "path": "docs/recipes/horizon.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/horizon.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeAngle",
+      "summary": "Rotates point or Tick glyphs with direct clockwise degrees: 0 points up and no scale or legend is created.",
+      "useWhen": [
+        "Use this action when you need to rotate point or Tick glyphs with direct clockwise degrees: 0 points up and no scale or legend is created."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "value",
+          "description": "Provides the constant value assigned by this action instead of a field-driven mapping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Rotates point or Tick glyphs with direct clockwise degrees: 0 points up and no scale or legend is created. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/directional-tick-plot/program.js",
+        "export": "createDirectionalTickPointComparison"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodeangle"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeBarWidth",
+      "summary": "Sets aggregate bar band occupancy or a fixed logical pixel width and materialize concrete rectangles.",
+      "useWhen": [
+        "Use this action when you need to set aggregate bar band occupancy or a fixed logical pixel width and materialize concrete rectangles."
+      ],
+      "avoidWhen": [
+        "Avoid this action for non-bar marks or when ranged endpoints already determine the complete bar width."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Sets aggregate bar band occupancy or a fixed logical pixel width and materialize concrete rectangles. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/gapminder-continuous-color-bars/program.js",
+        "export": "createMatchingPopulationColorBars"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodebarwidth"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/mark-style.md"
+        },
+        {
+          "path": "docs/api/marks/bar.md"
+        },
+        {
+          "path": "docs/recipes/bar-chart.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeColor",
+      "summary": "Mapss a field or constant to mark color, optionally grouping series and creating a categorical or continuous color scale.",
+      "useWhen": [
+        "Use this action when you need to maps a field or constant to mark color, optionally grouping series and creating a categorical or continuous color scale."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "aggregate",
+          "description": "Chooses how source rows are aggregated before position or graphical materialization."
+        },
+        {
+          "path": "palette",
+          "description": "Selects the named or explicit color palette used to materialize a field-driven color mapping."
+        },
+        {
+          "path": "layout",
+          "description": "Chooses or configures the supported layout policy applied to grouped marks, guides, or compositions."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Mapss a field or constant to mark color, optionally grouping series and creating a categorical or continuous color scale. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-box-plot/program.js",
+        "export": "createCarsBoxPlot"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodecolor"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/api/error-bands.md"
+        },
+        {
+          "path": "docs/api/gradient-plots.md"
+        },
+        {
+          "path": "docs/api/marks/bar.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeDensity",
+      "summary": "Creates immutable KDE data, bind it to an area mark, encode its value and density fields, and materialize baseline closed paths.",
+      "useWhen": [
+        "Use this action when you need to create immutable KDE data, bind it to an area mark, encode its value and density fields, and materialize baseline closed paths."
+      ],
+      "avoidWhen": [
+        "Avoid this action when no compatible area mark and quantitative source field exist; use createDensityData when only reusable density rows are needed."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Creates immutable KDE data, bind it to an area mark, encode its value and density fields, and materialize baseline closed paths. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-density-area/program.js",
+        "export": "createCarsDensityArea"
+      },
+      "relatedActions": [
+        "editDensity",
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodedensity"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/api/series/color.md"
+        },
+        {
+          "path": "docs/recipes/density-area.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeGroup",
+      "summary": "Splits line or area paths by a nominal field without creating a scale or guide.",
+      "useWhen": [
+        "Use this action when you need to split line or area paths by a nominal field without creating a scale or guide."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Splits line or area paths by a nominal field without creating a scale or guide. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-line-chart/program.js",
+        "export": "createGroupReassignmentCarsLineChart"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodegroup"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/polar-lines.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeHistogram",
+      "summary": "Compose binned bar encodeX and count encodeY as one atomic histogram action.",
+      "useWhen": [
+        "Use this composite encoding when a bar mark should bin one quantitative field and encode bin position plus counts as a histogram."
+      ],
+      "avoidWhen": [
+        "Avoid this action for non-bar marks or when the bins and count fields already exist and should be encoded directly."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Compose binned bar encodeX and count encodeY as one atomic histogram action. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-histogram/program.js",
+        "export": "createNormalizedStackCarsHistogram"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodehistogram"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/api/marks/bar.md"
+        },
+        {
+          "path": "docs/api/position/histogram.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeHorizon",
+      "summary": "Creates immutable folded band data, bind it to an area mark, and author the ordinary x, y/y2, group, and color encodings needed for a compact Horizon chart.",
+      "useWhen": [
+        "Use this action when you need to create immutable folded band data, bind it to an area mark, and author the ordinary x, y/y2, group, and color encodings needed for a compact Horizon chart."
+      ],
+      "avoidWhen": [
+        "Avoid this action for non-area marks, missing quantitative values, or tasks that need an ordinary signed area rather than folded bands."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "source",
+          "description": "Names the immutable source dataset or owner from which this action derives its new result."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        },
+        {
+          "path": "palette",
+          "description": "Selects the named or explicit color palette used to materialize a field-driven color mapping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates immutable folded band data, bind it to an area mark, and author the ordinary x, y/y2, group, and color encodings needed for a compact Horizon chart. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/gapminder-horizon/program.js",
+        "export": "createGapminderHorizon"
+      },
+      "relatedActions": [
+        "editHorizon",
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodehorizon"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/recipes/horizon.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/horizon.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeOpacity",
+      "summary": "Applies a constant point or rule opacity from 0 to 1, or maps a quantitative field through a linear opacity scale.",
+      "useWhen": [
+        "Use this action when a point or rule needs constant opacity, or a quantitative field should drive opacity through a linear scale."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the compatible point or rule target is absent or ambiguous, or when another appearance channel should encode the field."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "value",
+          "description": "Provides the constant value assigned by this action instead of a field-driven mapping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Applies a constant point or rule opacity from 0 to 1, or maps a quantitative field through a linear opacity scale. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-error-bar/program.js",
+        "export": "createCarsErrorBarOverlay"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodeopacity"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/point.md"
+        },
+        {
+          "path": "docs/recipes/regression-scatterplot.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeParallelCoordinates",
+      "summary": "Atomically assign ordered dimensions and their local scales to one line mark.",
+      "useWhen": [
+        "Use this composite encoding when one line per row should traverse an ordered list of quantitative or categorical dimensions."
+      ],
+      "avoidWhen": [
+        "Avoid this action for non-line marks, fewer than two dimensions, or tasks that need independent Cartesian x and y encodings."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "dimensions",
+          "description": "Defines the ordered fields and local scale options used by a parallel-coordinates chart."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Atomically assign ordered dimensions and their local scales to one line mark. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodeparallelcoordinates"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/api/parallel-coordinates.md"
+        },
+        {
+          "path": "docs/api/series-encodings.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodePathOrder",
+      "summary": "Orders vertices within each compatible Cartesian line or ranged-area series; fieldType defaults to \"quantitative\" and order defaults to \"ascending\".",
+      "useWhen": [
+        "Use this action when you need to order vertices within each compatible Cartesian line or ranged area series. fieldType defaults to \"quantitative\" ; order defaults to \"ascending\" ."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the compatible path target or ordering field is absent or ambiguous."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Orders vertices within each compatible Cartesian line or ranged-area series; fieldType defaults to \"quantitative\" and order defaults to \"ascending\". The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/gapminder-development-trajectories/program.js",
+        "export": "createGapminderDevelopmentTrajectories"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodepathorder"
+        },
+        {
+          "path": "docs/api/series-encodings.md"
+        },
+        {
+          "path": "docs/recipes/path-ordering.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodePointRadius",
+      "summary": "Applies a constant point glyph radius through a traced encodeRadius child.",
+      "useWhen": [
+        "Use this action when you need to apply a constant point glyph radius through a traced encodeRadius child."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "value",
+          "description": "Provides the constant value assigned by this action instead of a field-driven mapping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Applies a constant point glyph radius through a traced encodeRadius child. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-window-rank-scatterplot/program.js",
+        "export": "createCarsWindowRankScatterplot"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodepointradius"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/point.md"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/api/marks/point.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeR",
+      "summary": "Encodes a quantitative field as Polar radial distance.",
+      "useWhen": [
+        "Use this action when you need to encode a quantitative field as Polar radial distance."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Encodes a quantitative field as Polar radial distance. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/gapminder-polar-trends/program.js",
+        "export": "createGapminderPolarTrends"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encoder"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/api/position-encodings.md"
+        },
+        {
+          "path": "docs/recipes/rose-chart.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeRadius",
+      "summary": "Applies a constant rendered radius to an existing point mark.",
+      "useWhen": [
+        "Use this action when you need to apply a constant point radius."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the required target or input state for “Applies a constant point radius” is absent or ambiguous."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "value",
+          "description": "Provides the constant value assigned by this action instead of a field-driven mapping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Applies a constant point radius. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/annotated-imdb-scatterplot/program.js",
+        "export": "createAnnotatedImdbScatterplot"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encoderadius"
+        },
+        {
+          "path": "docs/api/appearance/point.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/error-bar.md"
+        },
+        {
+          "path": "docs/tutorials/scatterplot.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeShape",
+      "summary": "Encodes or replace a nominal field with the shared 12 value point shape vocabulary.",
+      "useWhen": [
+        "Use this action when you need to encode or replace a nominal field with the shared 12 value point shape vocabulary."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "domain",
+          "description": "Sets the semantic input domain explicitly when automatic domain derivation is unsuitable."
+        },
+        {
+          "path": "range",
+          "description": "Sets the concrete output range explicitly instead of using the action's documented default range."
+        },
+        {
+          "path": "palette",
+          "description": "Selects the named or explicit color palette used to materialize a field-driven color mapping."
+        },
+        {
+          "path": "type",
+          "description": "Chooses the supported resource, scale, coordinate, graphic, transform, or selector type for this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Encodes or replace a nominal field with the shared 12 value point shape vocabulary. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-regression-scatterplot/program.js",
+        "export": "createCarsRegressionScatterplot"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodeshape"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/point.md"
+        },
+        {
+          "path": "docs/recipes/regression-scatterplot.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeSize",
+      "summary": "Encodes or replace a quantitative field as equal area point size.",
+      "useWhen": [
+        "Use this action when you need to encode or replace a quantitative field as equal area point size."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "domain",
+          "description": "Sets the semantic input domain explicitly when automatic domain derivation is unsuitable."
+        },
+        {
+          "path": "range",
+          "description": "Sets the concrete output range explicitly instead of using the action's documented default range."
+        },
+        {
+          "path": "palette",
+          "description": "Selects the named or explicit color palette used to materialize a field-driven color mapping."
+        },
+        {
+          "path": "type",
+          "description": "Chooses the supported resource, scale, coordinate, graphic, transform, or selector type for this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Encodes or replace a quantitative field as equal area point size. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-regression-scatterplot/program.js",
+        "export": "createCarsRegressionScatterplot"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodesize"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/point.md"
+        },
+        {
+          "path": "docs/recipes/regression-scatterplot.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeStroke",
+      "summary": "Assigns a constant non-empty stroke string to a rule mark.",
+      "useWhen": [
+        "Use this action when you need to assign a constant non-empty stroke string to a rule mark."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Assigns a constant non-empty stroke string to a rule mark. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-error-bar/program.js",
+        "export": "createRuleGeometryExample"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodestroke"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/mark-style.md"
+        },
+        {
+          "path": "docs/api/marks/rule.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeStrokeDash",
+      "summary": "Creates or replace nominal line series or rule dash patterns, or apply one constant named/direct pattern.",
+      "useWhen": [
+        "Use this action when you need to create or replace nominal line series or rule dash patterns, or apply one constant named/direct pattern."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "value",
+          "description": "Provides the constant value assigned by this action instead of a field-driven mapping."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates or replace nominal line series or rule dash patterns, or apply one constant named/direct pattern. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-line-chart/program.js",
+        "export": "createStepCarsLineChart"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodestrokedash"
+        },
+        {
+          "path": "docs/api/scales/ordinal-and-dash.md"
+        },
+        {
+          "path": "docs/api/series-encodings.md"
+        },
+        {
+          "path": "docs/api/series/stroke-dash.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeStrokeWidth",
+      "summary": "Assigns a non negative finite logical Canvas width to a rule mark.",
+      "useWhen": [
+        "Use this action when you need to assign a non negative finite logical Canvas width to a rule mark."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "value",
+          "description": "Provides the constant value assigned by this action instead of a field-driven mapping."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Assigns a non negative finite logical Canvas width to a rule mark. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-error-bar/program.js",
+        "export": "createRuleGeometryExample"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodestrokewidth"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/mark-style.md"
+        },
+        {
+          "path": "docs/api/marks/rule.md"
+        },
+        {
+          "path": "docs/api/series-encodings.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeText",
+      "summary": "Assigns exactly one field or constant value to a text mark. format accepts \"auto\" or fixed decimal tokens from \".0f\" through \".12f\" .",
+      "useWhen": [
+        "Use this action when you need to assign exactly one field or constant value to a text mark. format accepts \"auto\" or fixed decimal tokens from \".0f\" through \".12f\" ."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Assigns exactly one field or constant value to a text mark. format accepts \"auto\" or fixed decimal tokens from \".0f\" through \".12f\" . The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/annotated-imdb-scatterplot/program.js",
+        "export": "createAnnotatedImdbScatterplot"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodetext"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/api/marks/text.md"
+        },
+        {
+          "path": "docs/recipes/annotations.md"
+        },
+        {
+          "path": "docs/recipes/heatmap.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeTheta",
+      "summary": "Encodes Polar angle in clockwise degrees from 12 o'clock.",
+      "useWhen": [
+        "Use this action when you need to encode Polar angle in clockwise degrees from 12 o'clock."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "aggregate",
+          "description": "Chooses how source rows are aggregated before position or graphical materialization."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Encodes Polar angle in clockwise degrees from 12 o'clock. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-origin-donut/program.js",
+        "export": "createCarsOriginDonut"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodetheta"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/api/position-encodings.md"
+        },
+        {
+          "path": "docs/recipes/rose-chart.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeX",
+      "summary": "Creates or compatibly replaces an x-position encoding for the targeted mark and field type.",
+      "useWhen": [
+        "Use this action when a compatible mark needs an x-position encoding driven by a source field."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the compatible mark, source field, or explicit target is absent or ambiguous."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "aggregate",
+          "description": "Chooses how source rows are aggregated before position or graphical materialization."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates or compatibly replaces an x-position encoding for the targeted mark and field type. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/airline-passenger-moving-windows/program.js",
+        "export": "createAirlinePassengerMovingWindows"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodex"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/api/data/filtering.md"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/api/error-bars.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeX2",
+      "summary": "Assigns an area, ranged bar, or rect upper edge, or a rule secondary x endpoint.",
+      "useWhen": [
+        "Use this action when you need to assign an area, ranged bar, or rect upper edge, or a rule secondary x endpoint."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Assigns an area, ranged bar, or rect upper edge, or a rule secondary x endpoint. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-error-bar/program.js",
+        "export": "createRuleGeometryExample"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodex2"
+        },
+        {
+          "path": "docs/api/marks/rect.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeXOffset",
+      "summary": "Creates or compatibly update an advanced nominal offset scale within an ordinal bar x band.",
+      "useWhen": [
+        "Use this action when you need to create or compatibly update an advanced nominal offset scale within an ordinal bar x band."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Creates or compatibly update an advanced nominal offset scale within an ordinal bar x band. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/jobs-grouped-bar/program.js",
+        "export": "createJobsGroupedBar"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodexoffset"
+        },
+        {
+          "path": "docs/api/position/offsets.md"
+        },
+        {
+          "path": "docs/recipes/bar-chart.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/grouped-bar.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeXRange",
+      "summary": "Atomically composes area or ranged bar encodeX and encodeX2 .",
+      "useWhen": [
+        "Use this action when you need to atomically compose area or ranged bar encodeX and encodeX2 ."
+      ],
+      "avoidWhen": [
+        "Avoid this action when lower and upper fields are missing, the target mark cannot render a range, or a single position field is sufficient."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "domain",
+          "description": "Sets the semantic input domain explicitly when automatic domain derivation is unsuitable."
+        },
+        {
+          "path": "range",
+          "description": "Sets the concrete output range explicitly instead of using the action's documented default range."
+        },
+        {
+          "path": "palette",
+          "description": "Selects the named or explicit color palette used to materialize a field-driven color mapping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Atomically composes area or ranged bar encodeX and encodeX2 . The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodexrange"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeY",
+      "summary": "Creates or compatibly replaces a y-position encoding for the targeted mark and field type.",
+      "useWhen": [
+        "Use this action when you need to create or compatibly replace a y encoding."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the compatible mark, source field, or explicit target is absent or ambiguous."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates or compatibly replaces a y-position encoding for the targeted mark and field type. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/airline-passenger-moving-windows/program.js",
+        "export": "createAirlinePassengerMovingWindows"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodecolor"
+        },
+        {
+          "path": "docs/api/composition.md"
+        },
+        {
+          "path": "docs/api/data/filtering.md"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/api/error-bars.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeY2",
+      "summary": "Assigns an area, ranged bar, or rect upper edge, or a rule secondary y endpoint.",
+      "useWhen": [
+        "Use this action when you need to assign an area, ranged bar, or rect upper edge, or a rule secondary y endpoint."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Assigns an area, ranged bar, or rect upper edge, or a rule secondary y endpoint. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-error-bar/program.js",
+        "export": "createRuleGeometryExample"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodey2"
+        },
+        {
+          "path": "docs/api/marks/rect.md"
+        },
+        {
+          "path": "docs/api/position-encodings.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeYOffset",
+      "summary": "Creates or compatibly update the corresponding categorical offset scale within an ordinal bar y band.",
+      "useWhen": [
+        "Use this action when you need to create or compatibly update the corresponding categorical offset scale within an ordinal bar y band."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the target mark does not support the channel, the source field is absent, or a constant mark-style edit is the intended result."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Creates or compatibly update the corresponding categorical offset scale within an ordinal bar y band. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodeyoffset"
+        },
+        {
+          "path": "docs/api/position/offsets.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "encodeYRange",
+      "summary": "Atomically composes area or ranged bar encodeY and encodeY2 .",
+      "useWhen": [
+        "Use this action when you need to atomically compose area or ranged bar encodeY and encodeY2 ."
+      ],
+      "avoidWhen": [
+        "Avoid this action when lower and upper fields are missing, the target mark cannot render a range, or a single position field is sufficient."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "domain",
+          "description": "Sets the semantic input domain explicitly when automatic domain derivation is unsuitable."
+        },
+        {
+          "path": "range",
+          "description": "Sets the concrete output range explicitly instead of using the action's documented default range."
+        },
+        {
+          "path": "palette",
+          "description": "Selects the named or explicit color palette used to materialize a field-driven color mapping."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Atomically composes area or ranged bar encodeY and encodeY2 . The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodeyrange"
+        },
+        {
+          "path": "docs/api/marks/line-area.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "orderCategories",
+      "summary": "Assigns explicit or computed semantic order to a nominal/ordinal Cartesian x or y position.",
+      "useWhen": [
+        "Use this action when you need to assign explicit or computed semantic order to a nominal/ordinal Cartesian x or y position."
+      ],
+      "avoidWhen": [
+        "Avoid this action when the categorical scale is absent, a fixed domain already defines the order, or row order rather than category order must change."
+      ],
+      "requiredState": [
+        "A compatible mark and source dataset must already exist, with explicit targeting whenever more than one compatible mark is stored."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "channel",
+          "description": "Selects the exact semantic encoding channel that this action creates, edits, or removes."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Assigns explicit or computed semantic order to a nominal/ordinal Cartesian x or y position. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/ordered-category-bar/program.js",
+        "export": "createOrderedCategoryBarComparison"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "ordercategories"
+        },
+        {
+          "path": "docs/api/position/category-ordering.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeCategoryOrder",
+      "summary": "Removes one active category order assignment and restore automatic first appearance order.",
+      "useWhen": [
+        "Use this action when you need to remove one active category order assignment and restore automatic first appearance order."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "channel",
+          "description": "Selects the exact semantic encoding channel that this action creates, edits, or removes."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removes one active category order assignment and restore automatic first appearance order. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/ordered-category-bar/program.js",
+        "export": "createOrderedCategoryBarComparison"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "removecategoryorder"
+        },
+        {
+          "path": "docs/api/position/category-ordering.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeEncoding",
+      "summary": "Removes one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values.",
+      "useWhen": [
+        "Use this action when you need to remove one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        },
+        {
+          "path": "channel",
+          "description": "Selects the exact semantic encoding channel that this action creates, edits, or removes."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removes one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "encodeangle"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/api/marks.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removePathOrder",
+      "summary": "Removes explicit path topology and restore the mark's automatic independent position ordering.",
+      "useWhen": [
+        "Use this action when you need to remove explicit path topology and restore the mark's automatic independent position ordering."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "target",
+          "description": "Names the exact existing resource to change when current state does not identify one unique compatible target."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Removes explicit path topology and restore the mark's automatic independent position ordering. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "removepathorder"
+        },
+        {
+          "path": "docs/api/encodings.md"
+        },
+        {
+          "path": "docs/api/series-encodings.md"
+        },
+        {
+          "path": "docs/recipes/path-ordering.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removePointRadius",
+      "summary": "Removes an explicit constant point glyph radius and restore the theme default.",
+      "useWhen": [
+        "Use this action when you need to remove an explicit constant point glyph radius and restore the theme default."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Removes an explicit constant point glyph radius and restore the theme default. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "removeEncoding"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/encodings.md",
+          "anchor": "removepointradius"
+        },
+        {
+          "path": "docs/api/appearance.md"
+        },
+        {
+          "path": "docs/api/appearance/point.md"
+        },
+        {
+          "path": "docs/api/marks/point.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    }
+  ]
+}

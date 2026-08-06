@@ -1,0 +1,522 @@
+{
+  "schemaVersion": 1,
+  "domain": "charts",
+  "actions": [
+    {
+      "name": "createBarPlot",
+      "summary": "Creates a complete vertical, horizontal, aggregate, ranged, grouped, or stacked bar chart through the existing bar policies.",
+      "useWhen": [
+        "Use this action when you need to create a complete vertical, horizontal, aggregate, ranged, grouped, or stacked bar chart through the existing bar policies."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and one compatible source dataset must already exist; multiple datasets require an explicit data identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        },
+        {
+          "path": "width",
+          "description": "Sets the finite logical width used by the Canvas, mark, guide, or component owned by this action."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a complete vertical, horizontal, aggregate, ranged, grouped, or stacked bar chart through the existing bar policies. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/jobs-grouped-bar/program.js",
+        "export": "createJobsGroupedBar"
+      },
+      "relatedActions": [
+        "createCanvas",
+        "createData",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createbarplot"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/recipes/bar-chart.md"
+        },
+        {
+          "path": "docs/recipes/composition.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createHeatmap",
+      "summary": "Creates one rect cell per valid pre gridded row, or bin raw quantitative x/y rows into ranged cells colored by count.",
+      "useWhen": [
+        "Use this action when you need to create one rect cell per valid pre gridded row, or bin raw quantitative x/y rows into ranged cells colored by count."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and one compatible source dataset must already exist; multiple datasets require an explicit data identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "fieldType",
+          "description": "Declares the field measurement type when it cannot be inferred safely from the action and stored state."
+        },
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates one rect cell per valid pre gridded row, or bin raw quantitative x/y rows into ranged cells colored by count. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-binned-heatmap/program.js",
+        "export": "createCarsBinnedHeatmap"
+      },
+      "relatedActions": [
+        "createCanvas",
+        "createData",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createheatmap"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/recipes/heatmap.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createHistogram",
+      "summary": "Creates a bar layer with atomic bin and count encodings.",
+      "useWhen": [
+        "Use this action when you need to create a bar layer with atomic bin and count encodings."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and one compatible source dataset must already exist; multiple datasets require an explicit data identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "field",
+          "description": "Names the source-row field whose values drive this action's semantic or graphical result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a bar layer with atomic bin and count encodings. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-histogram/program.js",
+        "export": "createCarsHistogram"
+      },
+      "relatedActions": [
+        "createCanvas",
+        "createData",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createhistogram"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/recipes/histogram.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/histogram.md"
+        }
+      ]
+    },
+    {
+      "name": "createLinePlot",
+      "summary": "Creates a complete Cartesian line chart, including optional series grouping and appearance.",
+      "useWhen": [
+        "Use this action when you need to create a complete Cartesian line chart, including optional series grouping and appearance."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and one compatible source dataset must already exist; multiple datasets require an explicit data identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "groupBy",
+          "description": "Names the field that partitions rows into independent groups; false removes supported existing grouping."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a complete Cartesian line chart, including optional series grouping and appearance. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-line-chart/program.js",
+        "export": "createCarsLineChart"
+      },
+      "relatedActions": [
+        "createCanvas",
+        "createData",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createlineplot"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/recipes/line-chart.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        },
+        {
+          "path": "docs/tutorials/line-chart.md"
+        }
+      ]
+    },
+    {
+      "name": "createParallelCoordinates",
+      "summary": "Creates one open line path per source row across an ordered list of dimension local scales and axes.",
+      "useWhen": [
+        "Use this action when you need to create one open line path per source row across an ordered list of dimension local scales and axes."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and one compatible source dataset must already exist; multiple datasets require an explicit data identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        },
+        {
+          "path": "dimensions",
+          "description": "Defines the ordered fields and local scale options used by a parallel-coordinates chart."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates one open line path per source row across an ordered list of dimension local scales and axes. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-parallel-coordinates/program.js",
+        "export": "createCarsParallelCoordinates"
+      },
+      "relatedActions": [
+        "createCanvas",
+        "createData",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createparallelcoordinates"
+        },
+        {
+          "path": "docs/api/parallel-coordinates.md"
+        },
+        {
+          "path": "docs/recipes/parallel-coordinates.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createScatterPlot",
+      "summary": "Creates a complete Cartesian point chart from required x/y fields and optional appearance encodings.",
+      "useWhen": [
+        "Use this action when you need to create a complete Cartesian point chart from required x/y fields and optional appearance encodings."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "A Canvas and one compatible source dataset must already exist; multiple datasets require an explicit data identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "id",
+          "description": "Assigns a stable resource identifier so later actions can target this exact owner without relying on inference."
+        },
+        {
+          "path": "data",
+          "description": "Names the source dataset used by this action instead of relying on the current or uniquely compatible dataset."
+        },
+        {
+          "path": "x",
+          "description": "Defines the horizontal field or x-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "y",
+          "description": "Defines the vertical field or y-role options used to construct or revise the requested result."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "guides",
+          "description": "Controls the axes, grids, and legends created for the completed result; false suppresses guide creation."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates a complete Cartesian point chart from required x/y fields and optional appearance encodings. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "examples/cars-scatterplot/program.js",
+        "export": "createCarsScatterplot"
+      },
+      "relatedActions": [
+        "createCanvas",
+        "createData",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/charts-data.md",
+          "anchor": "createscatterplot"
+        },
+        {
+          "path": "docs/api/basic-charts.md"
+        },
+        {
+          "path": "docs/api/rendering.md"
+        },
+        {
+          "path": "docs/getting-started.md"
+        },
+        {
+          "path": "docs/recipes/annotations.md"
+        }
+      ]
+    }
+  ]
+}

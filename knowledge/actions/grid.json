@@ -1,0 +1,721 @@
+{
+  "schemaVersion": 1,
+  "domain": "grid",
+  "actions": [
+    {
+      "name": "createGrid",
+      "summary": "Creates inferred horizontal and/or vertical Cartesian grid lines behind related marks, or infer the Polar grid families backed by stored theta/radius encodings.",
+      "useWhen": [
+        "Use this action when you need to create inferred horizontal and/or vertical Cartesian grid lines behind related marks, or infer the Polar grid families backed by stored theta/radius encodings."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Creates inferred horizontal and/or vertical Cartesian grid lines behind related marks, or infer the Polar grid families backed by stored theta/radius encodings. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editGrid",
+          "removeGrid"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editGrid",
+        "removeGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "creategrid"
+        },
+        {
+          "path": "docs/api/grids.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createHorizontalGrid",
+      "summary": "Creates horizontal grid lines from an existing compatible y scale and Cartesian coordinate.",
+      "useWhen": [
+        "Use this action when an existing y scale needs horizontal reference lines without also creating a vertical grid."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates horizontal grid lines from an existing compatible y scale and Cartesian coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editHorizontalGrid"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editHorizontalGrid",
+        "createGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "directional-grids"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createRadialGrid",
+      "summary": "Creates concentric radial paths behind related marks.",
+      "useWhen": [
+        "Use this action when you need to create concentric radial paths behind related marks."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates concentric radial paths behind related marks. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editRadialGrid"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editRadialGrid",
+        "createGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "createradialgrid"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createThetaGrid",
+      "summary": "Creates theta-aligned spoke grid lines behind related Polar marks.",
+      "useWhen": [
+        "Use this action when you need to create theta spokes behind related marks."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates theta spokes behind related marks. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editThetaGrid"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editThetaGrid",
+        "createGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "createthetagrid"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "createVerticalGrid",
+      "summary": "Creates vertical grid lines from an existing compatible x scale and Cartesian coordinate.",
+      "useWhen": [
+        "Use this action when an existing x scale needs vertical reference lines without also creating a horizontal grid."
+      ],
+      "avoidWhen": [
+        "Avoid this action when an existing owned resource should be revised, or when required inputs leave multiple compatible sources unnamed."
+      ],
+      "requiredState": [
+        "The compatible encoding, scale, coordinate, mark, or guide owner required by this component must already be stored unambiguously."
+      ],
+      "parameterNotes": [
+        {
+          "path": "scale",
+          "description": "Configures or identifies the scale that maps semantic field values into concrete graphical values."
+        },
+        {
+          "path": "coordinate",
+          "description": "Names the coordinate resource used for position materialization when inference is not unique."
+        },
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Creates vertical grid lines from an existing compatible x scale and Cartesian coordinate. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [],
+        "after": [
+          "editVerticalGrid"
+        ],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Leaving multiple compatible datasets, marks, scales, coordinates, or owners unnamed causes an ambiguity error instead of first-item selection.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "editVerticalGrid",
+        "createGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "directional-grids"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editGrid",
+      "summary": "Edits one or both directional Cartesian grids through their focused grid actions.",
+      "useWhen": [
+        "Use this action when horizontal and vertical Cartesian grid settings should be revised together."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Edits one or both directional Cartesian grids through their focused grid actions. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createGrid"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createGrid",
+        "removeGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "directional-grids"
+        },
+        {
+          "path": "docs/api/grids.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editHorizontalGrid",
+      "summary": "Edits values or line appearance for one existing horizontal Cartesian grid.",
+      "useWhen": [
+        "Use this action when only an existing horizontal Cartesian grid needs revised values or line appearance."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits values or line appearance for one existing horizontal Cartesian grid. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createHorizontalGrid"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createHorizontalGrid",
+        "createGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "directional-grids"
+        },
+        {
+          "path": "docs/api/grids.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editRadialGrid",
+      "summary": "Edits the values and appearance of one existing radial grid.",
+      "useWhen": [
+        "Use this action when you need to edit the existing radial grid."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits the existing radial grid. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createRadialGrid"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createRadialGrid",
+        "createGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editradialgrid"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editThetaGrid",
+      "summary": "Edits the values and appearance of one existing theta grid.",
+      "useWhen": [
+        "Use this action when you need to edit the existing theta grid."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits the existing theta grid. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createThetaGrid"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createThetaGrid",
+        "createGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/guides.md",
+          "anchor": "editthetagrid"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "editVerticalGrid",
+      "summary": "Edits values or line appearance for one existing vertical Cartesian grid.",
+      "useWhen": [
+        "Use this action when only an existing vertical Cartesian grid needs revised values or line appearance."
+      ],
+      "avoidWhen": [
+        "Avoid this action before the owned resource exists or when more than one compatible target remains unnamed; create or target it explicitly first."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [
+        {
+          "path": "values",
+          "description": "Provides the source rows or explicit values consumed by this action; caller-owned input remains unchanged."
+        }
+      ],
+      "effects": {
+        "semantic": [
+          "Edits values or line appearance for one existing vertical Cartesian grid. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createVerticalGrid"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createVerticalGrid",
+        "createGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "directional-grids"
+        },
+        {
+          "path": "docs/api/grids.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    },
+    {
+      "name": "removeGrid",
+      "summary": "Removess the complete Cartesian grid resource while retaining related axes, scales, and encodings.",
+      "useWhen": [
+        "Use this action when you need to removes the complete Cartesian grid resource while retaining related axes, scales, and encodings."
+      ],
+      "avoidWhen": [
+        "Avoid this action when only one property should change; use the matching edit action and retain the resource instead."
+      ],
+      "requiredState": [
+        "The exact existing owned resource must be present and uniquely inferable, or the action must receive its explicit target identifier."
+      ],
+      "parameterNotes": [],
+      "effects": {
+        "semantic": [
+          "Removess the complete Cartesian grid resource while retaining related axes, scales, and encodings. The changed semantic owner or assignment is structurally copied into the returned program."
+        ],
+        "graphic": [
+          "Materializes or rematerializes the affected backend-neutral graphical subtree when the required semantic state is complete."
+        ]
+      },
+      "composition": {
+        "before": [
+          "createGrid"
+        ],
+        "after": [],
+        "notes": [
+          "Compose this action only after its required state is unambiguous; use explicit public identifiers when several compatible resources exist."
+        ]
+      },
+      "commonErrors": [
+        {
+          "problem": "Calling the action without an existing unique owner causes a missing-target or ambiguous-target error.",
+          "fix": "Pass the exact public identifier required by the signature, or create the missing prerequisite before calling this action."
+        }
+      ],
+      "example": {
+        "kind": "program",
+        "path": "test/llm/action-knowledge-examples.js",
+        "export": "actionExamples"
+      },
+      "relatedActions": [
+        "createGrid",
+        "editGrid",
+        "createGuides"
+      ],
+      "recipeIds": [],
+      "docs": [
+        {
+          "path": "docs/reference/actions/advanced.md",
+          "anchor": "directional-grids"
+        },
+        {
+          "path": "docs/api/grids.md"
+        },
+        {
+          "path": "docs/reference/types.md"
+        }
+      ]
+    }
+  ]
+}
