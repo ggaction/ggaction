@@ -170,6 +170,7 @@ export async function runEvaluationTask({
     repetition,
     rounds: []
   };
+  const taskSignal = AbortSignal.timeout(plan.sampling.timeoutMsPerTask);
 
   while (modelCalls < plan.sampling.maximumModelCallsPerTask && !finalScore.valid) {
     const remainingOutput = plan.tokenBudgetPerTask.maximumCumulativeOutputTokens - usage.completionTokens;
@@ -212,9 +213,11 @@ export async function runEvaluationTask({
 
     let response;
     try {
-      response = await createOpenAIResponse({ apiKey, request, fetchImpl });
+      response = await createOpenAIResponse({ apiKey, request, fetchImpl, signal: taskSignal });
     } catch (error) {
-      providerError = error.code ?? `provider-http-${error.status ?? "error"}`;
+      providerError = ["AbortError", "TimeoutError"].includes(error.name)
+        ? "timeout"
+        : error.code ?? `provider-http-${error.status ?? "error"}`;
       runtimeError = error.message;
       break;
     }
@@ -292,8 +295,8 @@ export async function runEvaluationTask({
   }
 
   const finalValid = finalScore.valid;
-  const failure = providerError === "budget-exceeded"
-    ? "budget-exceeded"
+  const failure = ["budget-exceeded", "timeout"].includes(providerError)
+    ? providerError
     : providerError === null
       ? submissions === 0
         ? "invalid-program"

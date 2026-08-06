@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "approvalStatus": "approved",
+  "approvedOn": "2026-08-07",
+  "candidateCommit": "ea50b0c15d9f747b6e5b8e41ded657d67868fa3a",
+  "evaluationPlanSha256": "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  "corpusSha256": "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  "taskId": "cars-scatter-origin",
+  "repetition": 1,
+  "conditions": ["B", "C"],
+  "maximumRuns": 2,
+  "outputRoot": ".artifacts/llm-eval/corrective-smoke-ea50b0c1",
+  "spendUsd": {
+    "expectedPerRun": 0.072,
+    "calculatedMaximumPerRun": 0.156,
+    "approvedCapPerCondition": 0.2,
+    "approvedCombinedCap": 0.4
+  }
+}

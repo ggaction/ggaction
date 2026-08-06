@@ -56,7 +56,7 @@ export function estimateResponseCostUsd(usage, pricing) {
   ) / 1_000_000;
 }
 
-export async function createOpenAIResponse({ apiKey, request, fetchImpl = globalThis.fetch }) {
+export async function createOpenAIResponse({ apiKey, request, fetchImpl = globalThis.fetch, signal }) {
   if (typeof apiKey !== "string" || apiKey.length < 20) {
     throw new Error("An OpenAI API key is required.");
   }
@@ -67,7 +67,8 @@ export async function createOpenAIResponse({ apiKey, request, fetchImpl = global
       authorization: `Bearer ${apiKey}`,
       "content-type": "application/json"
     },
-    body: JSON.stringify(request)
+    body: JSON.stringify(request),
+    ...(signal === undefined ? {} : { signal })
   });
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
