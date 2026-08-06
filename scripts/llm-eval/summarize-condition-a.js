@@ -140,6 +140,13 @@ dataset과 package로 실행한 뒤 요청된 Canvas/SVG/PNG/PDF output을 통�
 | Total model calls | ${summary.totals.modelCalls} |
 | Actual estimated cost | $${summary.totals.estimatedCostUsd.toFixed(4)} |
 
+## 성공한 대표 렌더
+
+아래 이미지는 성공한 17개 run 중 basic, binned, distribution, specialized, polar와 renderer-parity task의 Canvas
+output을 고른 것이다. 별도 예제 코드를 손으로 보정하지 않았고, benchmark가 제출받아 실제 package로 렌더한 결과다.
+
+![Condition A representative successful renders](./CURRENT_DOCS_BASELINE_GALLERY.png)
+
 ## 실패 분포
 
 ${Object.entries(overall.failureCategories).map(([category, count]) => `- \`${category}\`: ${count}`).join("\n")}

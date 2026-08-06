@@ -13,10 +13,16 @@
 - [x] Canonical metadata/recipe ownership proposal
 - [x] Local dry run and contract tests
 - [x] Commit/push and R53-P0-A review package
+- [x] Approved 48-run current-doc baseline execution and deterministic regrade
+- [x] Sanitized aggregate, representative render gallery and failure-preserving report
+- [x] Final action/recipe/coverage schemas and Phase 1~5 boundary
+- [x] R53-P0-B review package
 
 Inventory evidence는 [`CURRENT_KNOWLEDGE_INVENTORY.json`](./CURRENT_KNOWLEDGE_INVENTORY.json), 사람이 읽는
 해석은 [`BASELINE.md`](./BASELINE.md)가 소유한다.
 Exact evaluation proposal는 [`BENCHMARK_CONTRACT.md`](./BENCHMARK_CONTRACT.md)가 소유한다.
+Executed baseline은 [`CURRENT_DOCS_BASELINE.md`](./CURRENT_DOCS_BASELINE.md), 후속 knowledge contract는
+[`KNOWLEDGE_CONTRACT.md`](./KNOWLEDGE_CONTRACT.md)가 소유한다.
 
 ## 쉽게 보는 작업 결과
 

@@ -19,8 +19,8 @@
 - [x] Focused and cumulative documentation-contract verification
 - [x] R53-P0-A remote checkpoint commit/push
 - [x] 사용자 R53-P0-A explicit approval
-- [ ] Approved configuration으로 current-doc A baseline 실행
-- [ ] R53-P0-B baseline/schema review package
+- [x] Approved configuration으로 current-doc A baseline 실행
+- [x] R53-P0-B baseline/schema review package
 
 ## 현재 확인된 시작점
 
@@ -35,6 +35,9 @@
 
 Current inventory와 해석은 [`CURRENT_KNOWLEDGE_INVENTORY.json`](./CURRENT_KNOWLEDGE_INVENTORY.json)과
 [`BASELINE.md`](./BASELINE.md)가 소유한다.
+
+Current-doc LLM 결과는 [`CURRENT_DOCS_BASELINE.md`](./CURRENT_DOCS_BASELINE.md), final knowledge/file/package 경계는
+[`KNOWLEDGE_CONTRACT.md`](./KNOWLEDGE_CONTRACT.md), Phase 1 진행 승인 요청은 [`GATE_B.md`](./GATE_B.md)가 소유한다.
 
 ## Gate R53-P0-A
 
