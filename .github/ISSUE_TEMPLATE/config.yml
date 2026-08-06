@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://ggaction.github.io/ggaction/
+    about: Read supported features, examples, API guides, and troubleshooting.
+  - name: Security vulnerability
+    url: https://github.com/ggaction/ggaction/security/advisories/new
+    about: Report vulnerabilities privately instead of opening a public issue.

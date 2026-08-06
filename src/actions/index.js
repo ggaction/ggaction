@@ -1,7 +1,7 @@
 import { registerCanvasActions } from "./canvas/index.js";
 import { registerChartActions } from "./charts/index.js";
 import { registerCategoryOrderActions } from "./categoryOrder/index.js";
-import { registerCoordinateActions } from "./coordinates/index.js";
+import { registerCoordinateActions } from "./coordinates/actions.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerDataActions } from "./data/index.js";
 import { registerEncodingActions } from "./encodings/index.js";

@@ -1,0 +1,56 @@
+name: Feature request
+description: Propose a user-facing capability or workflow improvement.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Start with the chart-authoring problem rather than an implementation. Public API, persisted state,
+        renderer boundary, and package-boundary changes require an agreed design before implementation.
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: What are you trying to express or accomplish, and why is the current API insufficient?
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Desired authoring workflow
+      description: Show the shortest program you would like to write, if you have one.
+      render: javascript
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected semantic and visual result
+      description: Describe what the program should mean and what should be rendered.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe existing actions, extensions, or workarounds you tried.
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Possible boundaries
+      options:
+        - label: This may add or change a public API.
+        - label: This may change persisted program state or rematerialization.
+        - label: This may affect Canvas, SVG, PNG, or PDF output.
+        - label: This may affect package entry points or dependencies.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues and supported features first.
+          required: true
+        - label: I have not opened an implementation PR for a material contract change before design agreement.
+          required: true

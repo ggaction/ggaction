@@ -34,3 +34,16 @@ test("requires an explicit id for another area role", () => {
   );
   assert.equal(program.createAreaMark({ id: "second" }).context.currentMark, "second");
 });
+
+test("accepts exact area opacity endpoints and validates fill directly", () => {
+  const source = chart().createData({ values: [] });
+  const transparent = source.createAreaMark({ fill: "orange", opacity: 0 });
+  const opaque = source.createAreaMark({ id: "opaque", fill: "#0f172a", opacity: 1 });
+
+  assert.deepEqual(transparent.markConfigs.area, { fill: "orange", opacity: 0 });
+  assert.deepEqual(opaque.markConfigs.opaque, { fill: "#0f172a", opacity: 1 });
+  assert.throws(() => source.createAreaMark({ fill: "" }), /non-empty/);
+  assert.throws(() => source.createAreaMark({ fill: 3 }), /non-empty/);
+  assert.throws(() => source.createAreaMark({ opacity: -Number.EPSILON }), /between 0 and 1/);
+  assert.throws(() => source.createAreaMark({ opacity: 1 + Number.EPSILON }), /between 0 and 1/);
+});

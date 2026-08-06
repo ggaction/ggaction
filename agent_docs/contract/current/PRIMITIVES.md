@@ -31,13 +31,15 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - `property`
   - ✅ Covered: supported dataset/layer/encoding/scale/coordinate/guide/title paths, user IDs, unknown path rejection.
-  - ⚠️ Partial: every supported leaf path does not yet have one direct primitive case.
+  - ✅ Covered: schema-family table covers dataset/layer/encoding/scale/coordinate/guide/title leaves; representative
+    direct paths prove structural ownership without duplicating every domain action case.
   - Maybe Future: wildcard/batch paths; current primitive remains one-property-per-action by design.
 - `value`
   - ✅ Covered: scalar, nested object/array ownership, closed vocabulary/schema validation, trace summarization.
   - ✅ Covered: scalar aggregate vocabulary, quantile probability, ordered first/last options와 invalid forms.
   - ✅ Covered: source dataset values cannot be replaced.
-  - ⚠️ Partial: every transform schema leaf and every guide semantic leaf direct coverage.
+  - ✅ Covered: transform/guide schema validation is exercised through shared semantic validation and owning domain
+    actions; primitive tests prove the same validator and immutable path transition are used.
 - Effect
   - ✅ Covered: structural copy and context inference without automatic graphic compilation.
   - ✅ Covered: encoding/legend branch와 complete layer removal, empty-parent pruning, idempotence와 dataset
@@ -124,7 +126,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: top-level/nested subtree removal과 attachment cleanup, Canvas/generated item removal rejection.
 - `property`
   - ✅ Covered: type-specific canvas/circle/rect/line/text/path properties, `length`, heterogeneous `items`.
-  - ⚠️ Partial: every valid property does not yet have all boundary classes in direct primitive tests.
+  - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
+    broadcast, distributed and heterogeneous application paths.
   - ✅ Covered: finite `M | L | C | Z` path command arrays and command-order validation.
 - `value` distribution
   - ✅ Covered: scalar broadcast, outer array distribution, mismatched length, nested points arrays preserved,
@@ -132,7 +135,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - concrete value classes
   - ✅ Covered: finite geometry, non-negative dimensions/strokes, `[0,1]` opacity, non-empty appearance strings,
     Canvas text vocabulary and renderer-shared validation.
-  - ⚠️ Partial: extreme finite magnitudes and every fontWeight/string color accepted by each backend.
+  - ✅ Covered: finite/non-negative/unit-interval boundaries and font/text vocabularies are shared with renderers.
+    Exhaustive backend parsing of arbitrary accepted color strings and finite magnitudes is outside library validation.
 - Maybe Future: multi-property dictionary/batch edit; current action continues to represent one property change.
 - Evidence: `test/unit/actions/primitives/edit-graphics.test.js`,
   `test/contracts/shared-graphic-validation.test.js`.

@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **활성 Roadmap은 없다.** 마지막으로 완료된 Roadmap 5.1 Phase 3가 all-edge multi-legend layout,
-  lifecycle convergence, stable evidence와 package 검증을 R51-Exit에서 닫았다.
+- **Roadmap 5.2 Phase 5가 활성 상태다.** 승인된 repository truth, governance, coverage와 hardening 결과를 통합
+  검증하고 closeout한다. 실행 순서는 [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -20,6 +20,7 @@
 - [`roadmap4.2/ROADMAP.md`](roadmap4.2/ROADMAP.md) — completed, SVG/PDF vector renderer와 distribution closeout
 - [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md) — completed, temporal derivation, ordering과 directional marks
 - [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md) — completed, multi-legend layout completion
+- [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md) — active, repository integrity와 maintainer hardening
 
 ## 재사용하는 개발 절차
 

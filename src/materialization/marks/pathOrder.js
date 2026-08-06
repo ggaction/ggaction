@@ -1,5 +1,5 @@
 import { isAggregate } from "../../grammar/aggregate.js";
-import { findTransformPolicy } from "../../grammar/transforms.js";
+import { findTransformTopology } from "../../grammar/transformTopology.js";
 import { findDataset } from "../../selectors/datasets.js";
 
 function hasRowPreservingProvenance(program, dataset) {
@@ -8,7 +8,7 @@ function hasRowPreservingProvenance(program, dataset) {
   while (current?.source !== undefined) {
     if (visited.has(current.id) || current.transform?.length !== 1) return false;
     visited.add(current.id);
-    const policy = findTransformPolicy(current.transform[0].type);
+    const policy = findTransformTopology(current.transform[0].type);
     if (
       policy?.facetTopology !== "rowPreserving" &&
       policy?.provenanceTransparent !== true

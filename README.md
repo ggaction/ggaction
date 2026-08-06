@@ -136,8 +136,9 @@ automatic undo stack; the application chooses which to retain or render.
 
 Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
 the other basic Cartesian charts. The `ggaction/basic` entry keeps this common
-creation path below a 120,000-byte gzip bundle budget while each facade still
-records its mark, encoding, and guide actions as trace children. Import from
+creation path at or below the current 120,000-byte gzip regression ceiling while
+each facade still records its mark, encoding, and guide actions as trace
+children. Import from
 `ggaction` when you need editing, selection, composition, alternative
 coordinates, or statistical layers. See the
 [Basic Charts API](https://ggaction.github.io/ggaction/api/basic-charts/).
