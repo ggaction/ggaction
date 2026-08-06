@@ -2,8 +2,8 @@
 
 ## 진행 상태
 
-- [ ] Exercise stdio initialize/list/read/search with the official client
-- [ ] Install the packed tarball into a clean consumer and run its bin
+- [x] Exercise stdio initialize/list/read/search with the official client
+- [x] Install the packed tarball into a clean consumer and run its bin
 - [ ] Reject malformed/unknown resource and tool inputs
 - [ ] Prove no arbitrary file, network, code, chart execution, or rendering surface
 - [ ] Re-run package artifact and all browser bundle ceilings

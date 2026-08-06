@@ -10,7 +10,7 @@ knowledge와 deterministic search만 읽으며 chart 실행, rendering, arbitrar
 - [x] R53-P4-A explicit approval and Phase 5 activation
 - [x] Stable official MCP SDK and package boundary
 - [x] Read-only resources and bounded search tool
-- [ ] Installed tarball and clean-consumer stdio evidence
+- [x] Installed tarball and clean-consumer stdio evidence
 - [ ] Invalid-input and no-file/no-network/no-execution evidence
 - [ ] Browser/package import isolation and bundle regression evidence
 - [ ] Condition C local adapter mock/dry evidence

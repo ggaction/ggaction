@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
 import { createGgactionMcpServer } from "../../mcp/server.js";
@@ -140,4 +141,31 @@ test("keeps MCP source on fixed local reads without network, code, chart, or ren
   assert.equal((source.match(/registerTool\s*\(/gu) ?? []).length, 1);
   assert.match(source, /new URL\("\.\.\/knowledge\/index\.json", import\.meta\.url\)/u);
   assert.match(source, /new URL\("\.\.\/knowledge\/search-index\.json", import\.meta\.url\)/u);
+});
+
+test("serves protocol-only stdout through the package executable", async () => {
+  const transport = new StdioClientTransport({
+    command: process.execPath,
+    args: [new URL("../../bin/ggaction-mcp.js", import.meta.url).pathname],
+    cwd: new URL("../../", import.meta.url).pathname,
+    stderr: "pipe"
+  });
+  const client = new Client({ name: "ggaction-stdio-contract", version: "1.0.0" });
+  try {
+    await client.connect(transport);
+    const [resources, tools, search] = await Promise.all([
+      client.listResources(),
+      client.listTools(),
+      client.callTool({
+        name: "search_ggaction",
+        arguments: { query: "edit legend layout", limit: 2 }
+      })
+    ]);
+    assert.deepEqual(resources.resources.map(resource => resource.uri), ["ggaction://overview"]);
+    assert.deepEqual(tools.tools.map(tool => tool.name), ["search_ggaction"]);
+    assert.equal(JSON.parse(search.content[0].text)[0].id, "editLegendLayout");
+    assert.equal(transport.stderr?.read()?.toString() ?? "", "");
+  } finally {
+    await client.close();
+  }
 });

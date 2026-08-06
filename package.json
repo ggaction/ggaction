@@ -108,6 +108,7 @@
     "contracts:catalog:check": "node scripts/generate-action-catalog.js --check",
     "package:check": "node scripts/package-artifact.js --check",
     "package:pack": "node scripts/package-artifact.js --pack",
+    "package:mcp-check": "node scripts/mcp-package-check.js",
     "package:bundle": "node scripts/measure-browser-bundle.js",
     "test:package": "node scripts/package-consumer.js",
     "release:notes": "node scripts/release-notes.js"

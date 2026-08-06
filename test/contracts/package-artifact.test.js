@@ -38,6 +38,7 @@ test("publishes only the bounded public package artifact", () => {
     "knowledge/index.json",
     "knowledge/search-index.json"
   ]);
+  assert.equal(manifest.files.find(file => file.path === "bin/ggaction-mcp.js").mode, 0o755);
   assert.equal(paths.some(path => path.startsWith("test/")), false);
   assert.equal(paths.some(path => path.startsWith("agent_docs/")), false);
   assert.equal(paths.some(path => path.startsWith(".github/")), false);
