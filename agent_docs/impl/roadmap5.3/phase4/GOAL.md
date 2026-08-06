@@ -9,9 +9,9 @@ budget, 실행기와 oracle은 공유하는 local benchmark harness를 만든다
 ## 진행 상태
 
 - [x] R53-P3-A explicit approval and Phase 4 activation
-- [ ] Search corpus, query/result contract and ranking baseline
-- [ ] Deterministic generated search index and bounded Node-only search/read API
-- [ ] Stable tie-break, repeated-query identity, malformed-input and zero-gap validation
+- [x] Search corpus, query/result contract and ranking baseline
+- [x] Deterministic generated search index and bounded Node-only search/read API
+- [x] Stable tie-break, repeated-query identity, malformed-input and zero-gap validation
 - [ ] Condition A/B shared runner and structured-knowledge adapter
 - [ ] 24-task dry/mock reproducibility and executable-program evidence
 - [ ] R53-P4-A remote review checkpoint

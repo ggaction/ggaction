@@ -2,12 +2,12 @@
 
 ## 진행 상태
 
-- [ ] Inventory action/recipe/LLM-route fields and representative task queries
-- [ ] Freeze normalized record and bounded result schemas
-- [ ] Generate complete stable-sorted search index from canonical knowledge
-- [ ] Implement exact read and weighted lexical search without runtime dependencies
-- [ ] Validate malformed input, limits, hash drift, zero-gap indexing and repeated identity
-- [ ] Measure 24-task retrieval evidence and review low-ranked intents
+- [x] Inventory action/recipe/LLM-route fields and representative task queries
+- [x] Freeze normalized record and bounded result schemas
+- [x] Generate complete stable-sorted search index from canonical knowledge
+- [x] Implement exact read and weighted lexical search without runtime dependencies
+- [x] Validate malformed input, limits, hash drift, zero-gap indexing and repeated identity
+- [x] Measure 24-task retrieval evidence and review low-ranked intents
 
 ## 실행 순서
 
@@ -25,3 +25,5 @@
 - Limit 1~10, maximum query characters/tokens와 fixed result fields가 강제된다.
 - Unknown read ID, blank/oversized query, invalid limit와 stale generated index가 실패한다.
 - Browser entry와 package public surface에 knowledge/search import가 생기지 않는다.
+
+Exact 구현 결과와 representative ranking은 [`RETRIEVAL_REPORT.md`](./RETRIEVAL_REPORT.md)가 소유한다.

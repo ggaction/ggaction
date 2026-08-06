@@ -3,6 +3,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { buildActionKnowledge, root } from "./action-knowledge.js";
+import { generateKnowledgeSearch } from "./generate-knowledge-search.js";
 import { buildRecipeKnowledge } from "./recipe-knowledge.js";
 
 const knowledgeOutput = path.join(root, "knowledge/index.json");
@@ -66,10 +67,13 @@ export async function generateActionKnowledge({ check = false } = {}) {
         throw new Error(`Generated action knowledge is stale: ${path.relative(root, file)}`);
       }
     }
+    await generateKnowledgeSearch({ knowledgeDocument: document, check: true });
     return report;
   }
 
   await Promise.all(outputs.map(([file, content]) => writeFile(file, content)));
+  const search = await generateKnowledgeSearch({ knowledgeDocument: document });
+  report.search = search;
   process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
   return report;
 }

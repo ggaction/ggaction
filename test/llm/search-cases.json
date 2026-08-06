@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    { "taskId": "cars-scatter-origin", "expectedAny": ["action:createScatterPlot", "recipe:scatterplot"] },
+    { "taskId": "cars-regression-japan", "expectedAny": ["action:createRegression", "recipe:regression-scatterplot"] },
+    { "taskId": "cars-histogram-origin", "expectedAny": ["action:createHistogram", "recipe:histogram"] },
+    { "taskId": "cars-binned-heatmap", "expectedAny": ["action:createHeatmap", "recipe:heatmap"] },
+    { "taskId": "cars-temporal-line-origin", "expectedAny": ["action:createLinePlot", "recipe:line-chart"] },
+    { "taskId": "jobs-grouped-bar", "expectedAny": ["action:createBarPlot", "recipe:bar-chart", "action:orderCategories"] },
+    { "taskId": "cars-density-origin", "expectedAny": ["action:encodeDensity", "recipe:density-area"] },
+    { "taskId": "cars-error-bar-origin", "expectedAny": ["action:createErrorBar", "recipe:error-bar"] },
+    { "taskId": "gapminder-error-band", "expectedAny": ["action:createErrorBand", "action:editErrorBandBoundary", "recipe:error-band"] },
+    { "taskId": "cars-box-plot", "expectedAny": ["action:createBoxPlot", "recipe:box-plot"] },
+    { "taskId": "cars-violin", "expectedAny": ["action:createViolinPlot", "recipe:violin-plot"] },
+    { "taskId": "cars-parallel-coordinates", "expectedAny": ["action:createParallelCoordinates", "recipe:parallel-coordinates"] },
+    { "taskId": "nightingale-rose", "expectedAny": ["action:createArcMark", "recipe:rose-chart"] },
+    { "taskId": "cars-facet-origin", "expectedAny": ["action:facet", "recipe:facet"] },
+    { "taskId": "cars-multi-legend", "expectedAny": ["action:createLegend", "recipe:legend-title-lifecycle"] },
+    { "taskId": "cars-selection-highlight", "expectedAny": ["action:highlightMarks", "recipe:selection-lifecycle"] },
+    { "taskId": "gapminder-moving-window", "expectedAny": ["action:createWindowData", "recipe:time-series-derivation"] },
+    { "taskId": "cars-time-unit", "expectedAny": ["action:createTimeUnitData", "recipe:time-series-derivation"] },
+    { "taskId": "cars-rug-distribution", "expectedAny": ["action:createTickMark", "recipe:tick-distribution"] },
+    { "taskId": "cars-gradient-profile", "expectedAny": ["action:createGradientPlot", "recipe:gradient-plot"] },
+    { "taskId": "gapminder-horizon", "expectedAny": ["action:encodeHorizon", "recipe:horizon"] },
+    { "taskId": "imdb-label-layout", "expectedAny": ["action:layoutLabels", "recipe:annotations"] },
+    { "taskId": "composed-dashboard", "expectedAny": ["action:replaceCompositionChild", "recipe:composition"] },
+    { "taskId": "renderer-parity", "expectedAny": ["action:createScatterPlot", "recipe:scatterplot"] }
+  ]
+}
