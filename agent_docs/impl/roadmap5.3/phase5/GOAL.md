@@ -11,8 +11,8 @@ knowledge와 deterministic search만 읽으며 chart 실행, rendering, arbitrar
 - [x] Stable official MCP SDK and package boundary
 - [x] Read-only resources and bounded search tool
 - [x] Installed tarball and clean-consumer stdio evidence
-- [ ] Invalid-input and no-file/no-network/no-execution evidence
-- [ ] Browser/package import isolation and bundle regression evidence
+- [x] Invalid-input and no-file/no-network/no-execution evidence
+- [x] Browser/package import isolation and bundle regression evidence
 - [x] Condition C local adapter mock/dry evidence
 - [ ] R53-P5-A remote review checkpoint
 

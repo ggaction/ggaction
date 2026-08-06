@@ -1157,6 +1157,11 @@ export async function testPackageConsumer(options) {
           `${bundle.specifier} gzip bundle ${bundle.gzipBytes} exceeds ${limit}.`
         );
       }
+      if (bundle.forbiddenModules.length > 0) {
+        throw new Error(
+          `${bundle.specifier} imported MCP-only modules: ${bundle.forbiddenModules.join(", ")}.`
+        );
+      }
     }
     return {
       ...consumer,

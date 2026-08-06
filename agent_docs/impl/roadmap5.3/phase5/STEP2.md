@@ -4,9 +4,9 @@
 
 - [x] Exercise stdio initialize/list/read/search with the official client
 - [x] Install the packed tarball into a clean consumer and run its bin
-- [ ] Reject malformed/unknown resource and tool inputs
-- [ ] Prove no arbitrary file, network, code, chart execution, or rendering surface
-- [ ] Re-run package artifact and all browser bundle ceilings
+- [x] Reject malformed/unknown resource and tool inputs
+- [x] Prove no arbitrary file, network, code, chart execution, or rendering surface
+- [x] Re-run package artifact and all browser bundle ceilings
 - [x] Add Condition C local adapter mock/dry evidence without paid calls
 - [ ] Run focused and cumulative verification
 - [ ] R53-P5-A Gate package commit/push

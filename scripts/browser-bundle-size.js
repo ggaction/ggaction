@@ -108,6 +108,14 @@ export async function measureMinimalBrowserBundle(
   }
 
   const modules = new Set(chunks.flatMap(chunk => Object.keys(chunk.modules)));
+  const forbiddenModules = [...modules]
+    .filter(module =>
+      module.includes("/node_modules/@modelcontextprotocol/") ||
+      module.includes("/node_modules/zod/") ||
+      module.includes("/node_modules/ggaction/mcp/") ||
+      module.includes("/node_modules/ggaction/knowledge/")
+    )
+    .sort();
   const minifiedBytes = chunks.reduce(
     (sum, chunk) => sum + Buffer.byteLength(chunk.code),
     0
@@ -121,6 +129,7 @@ export async function measureMinimalBrowserBundle(
     specifier,
     chunks: chunks.length,
     modules: modules.size,
+    forbiddenModules,
     minifiedBytes,
     gzipBytes
   });

@@ -59,6 +59,27 @@ test("keeps source imports inside their architectural boundaries", () => {
   }
 });
 
+test("keeps chart and renderer source independent from MCP knowledge dependencies", () => {
+  for (const file of sourceFiles()) {
+    const imports = moduleSpecifiers(readFileSync(file, "utf8"));
+    for (const entry of imports) {
+      assert.equal(
+        entry.specifier === "zod" || entry.specifier?.startsWith("@modelcontextprotocol/"),
+        false,
+        `${path.relative(root, file)} must not import ${entry.specifier}`
+      );
+      if (!entry.specifier?.startsWith(".")) continue;
+      const dependency = resolveLocalModule(file, entry.specifier);
+      assert.equal(
+        dependency.includes(`${path.sep}mcp${path.sep}`) ||
+          dependency.includes(`${path.sep}knowledge${path.sep}`),
+        false,
+        `${path.relative(root, file)} must not import MCP knowledge files`
+      );
+    }
+  }
+});
+
 test("parses static, re-exported, and dynamic module references", () => {
   assert.deepEqual(moduleSpecifiers(`
     // import "./ignored-comment.js";
