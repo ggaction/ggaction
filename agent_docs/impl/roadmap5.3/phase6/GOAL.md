@@ -20,7 +20,7 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-B explicit approval of failed evidence and non-integration
 - [x] Root-cause analysis across condition isolation, retrieval, payload, MCP surface and tool loop
 - [x] Corrective knowledge-delivery contract prepared for review
-- [ ] R53-P6-C corrective contract approval
+- [x] R53-P6-C corrective contract approval
 - [ ] Generated knowledge/search v2 and evaluation-adapter correction
 - [ ] R53-P6-D complete unpaid corrective evidence
 - [ ] Separately authorized one-run B/C paid smoke

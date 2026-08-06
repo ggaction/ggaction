@@ -2,11 +2,13 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Gate package checkpoint: `8b266ec6`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
+
+Approved by the user on 2026-08-07.
 
 ## 한눈에 보는 결정
 
