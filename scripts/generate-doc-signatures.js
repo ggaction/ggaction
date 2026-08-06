@@ -20,10 +20,32 @@ export async function declaredActionSignatures() {
   const sourceText = await readFile(declarationFile, "utf8");
   const classStart = sourceText.indexOf("export class ChartProgram {");
   if (classStart === -1) throw new Error("ChartProgram declaration was not found.");
-  const classBody = sourceText.slice(classStart);
-  return [...classBody.matchAll(
-    /^\s{2}([A-Za-z][A-Za-z0-9]*)\(([\s\S]*?)\): ChartProgram;$/gm
-  )].map(match => match[0].trim().replace(/\s+/g, " "));
+  const bodyStart = sourceText.indexOf("{", classStart) + 1;
+  const members = [];
+  let memberStart = bodyStart;
+  let braces = 0;
+  let parentheses = 0;
+  let brackets = 0;
+
+  for (let index = bodyStart; index < sourceText.length; index += 1) {
+    const character = sourceText[index];
+    if (character === "{") braces += 1;
+    else if (character === "}") {
+      if (braces === 0 && parentheses === 0 && brackets === 0) break;
+      braces -= 1;
+    } else if (character === "(") parentheses += 1;
+    else if (character === ")") parentheses -= 1;
+    else if (character === "[") brackets += 1;
+    else if (character === "]") brackets -= 1;
+    else if (character === ";" && braces === 0 && parentheses === 0 && brackets === 0) {
+      members.push(sourceText.slice(memberStart, index + 1).trim());
+      memberStart = index + 1;
+    }
+  }
+
+  return members
+    .filter(member => /^[A-Za-z][A-Za-z0-9]*\(/.test(member) && /\): ChartProgram;$/.test(member))
+    .map(member => member.replace(/\s+/g, " "));
 }
 
 export async function buildSignatureSection() {

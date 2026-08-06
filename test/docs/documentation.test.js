@@ -826,7 +826,10 @@ test("classifies every declared ChartProgram action in the reference", async () 
     ),
     generated
   );
-  assert.equal((await declaredActionSignatures()).length, methods.length);
+  const declaredSignatures = await declaredActionSignatures();
+  assert.equal(declaredSignatures.length, methods.length);
+  assert.match(declaredSignatures[0], /^createCanvas\(/);
+  assert.doesNotMatch(declaredSignatures.join("\n"), /constructor\(|readonly semanticSpec/);
 
   assert.equal(new Set(methods).size, methods.length);
   for (const method of methods) {
