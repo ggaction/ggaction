@@ -87,6 +87,7 @@
     "knowledge:actions": "npm run knowledge:generate",
     "knowledge:actions:check": "npm run knowledge:check",
     "eval:corrective-smoke": "node scripts/llm-eval/run-corrective-smoke.js",
+    "eval:corrective-smoke-retry": "node scripts/llm-eval/run-corrective-smoke-retry.js",
     "docs:capabilities": "node scripts/generate-doc-capabilities.js",
     "docs:capabilities:check": "node scripts/generate-doc-capabilities.js --check",
     "docs:actions": "node scripts/generate-doc-action-metadata.js",

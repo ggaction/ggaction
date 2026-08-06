@@ -7,11 +7,15 @@ import test from "node:test";
 import { runConditionATask } from "../../scripts/llm-eval/condition-a-runner.js";
 import {
   assertCorrectiveSmokePlan,
+  assertCorrectiveSmokeRetryPlan,
   prepareCorrectiveSmoke,
-  runCorrectiveSmoke
+  prepareCorrectiveSmokeRetry,
+  runCorrectiveSmoke,
+  runCorrectiveSmokeSequence
 } from "../../scripts/llm-eval/run-corrective-smoke.js";
 
 const smokePlanUrl = new URL("../llm/corrective-smoke-plan.json", import.meta.url);
+const retryPlanUrl = new URL("../llm/corrective-smoke-retry-plan.json", import.meta.url);
 const evaluationPlanUrl = new URL("../llm/evaluation-plan.json", import.meta.url);
 const corpusUrl = new URL("../llm/tasks.json", import.meta.url);
 
@@ -69,6 +73,73 @@ test("locks paid smoke scope and spend before credentials are read", async () =>
     /not approved/u
   );
   assert.equal(credentialReads, 0);
+});
+
+test("locks the corrected paid smoke retry and stops before C on an unsafe B outcome", async () => {
+  const [retryPlanBytes, evaluationPlanBytes, corpusBytes] = await Promise.all([
+    readFile(retryPlanUrl),
+    readFile(evaluationPlanUrl),
+    readFile(corpusUrl)
+  ]);
+  const retryPlan = JSON.parse(retryPlanBytes);
+  const validated = assertCorrectiveSmokeRetryPlan(retryPlan, { evaluationPlanBytes, corpusBytes });
+  const prepared = await prepareCorrectiveSmokeRetry();
+
+  assert.equal(validated.candidateCommit, "060a13f1017485f2a19579ef640a768b86a63417");
+  assert.deepEqual(validated.conditions, ["B", "C"]);
+  assert.equal(validated.maximumRuns, 2);
+  assert.equal(validated.outputRoot, ".artifacts/llm-eval/corrective-smoke-retry-060a13f1");
+  assert.deepEqual(validated.spendUsd, {
+    expectedPerRun: 0.072,
+    calculatedMaximumPerRun: 0.156,
+    approvedCapPerCondition: 0.2,
+    approvedCombinedCap: 0.4
+  });
+  assert.equal(prepared.task.id, validated.taskId);
+
+  for (const mutation of [
+    { approvalStatus: "planned" },
+    { taskId: "cars-multi-legend" },
+    { repetition: 2 },
+    { conditions: ["C", "B"] },
+    { maximumRuns: 3 },
+    { candidateCommit: "f".repeat(40) },
+    { outputRoot: ".artifacts/llm-eval/other" },
+    { spendUsd: { ...retryPlan.spendUsd, approvedCombinedCap: 1 } }
+  ]) {
+    assert.throws(
+      () => assertCorrectiveSmokeRetryPlan(
+        { ...retryPlan, ...mutation },
+        { evaluationPlanBytes, corpusBytes }
+      ),
+      /Corrective/u
+    );
+  }
+
+  const calls = [];
+  const result = await runCorrectiveSmokeSequence({
+    prepared,
+    apiKey: `sk-${"x".repeat(40)}`,
+    runnersByCondition: {
+      B: async () => {
+        calls.push("B");
+        return {
+          model: { resolvedName: prepared.evaluationPlan.model.name },
+          metrics: { estimatedCostUsd: 0 },
+          outcome: { failureCategory: "provider-error" }
+        };
+      },
+      C: async () => {
+        calls.push("C");
+        throw new Error("Condition C must not start after an unsafe B outcome.");
+      }
+    },
+    appendResult: async () => {}
+  });
+
+  assert.deepEqual(calls, ["B"]);
+  assert.equal(result.results.length, 1);
+  assert.equal(result.actualCombinedSpendUsd, 0);
 });
 
 test("classifies an evaluation deadline before starting a second model call", async () => {
