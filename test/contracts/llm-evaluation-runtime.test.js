@@ -339,7 +339,10 @@ test("isolates A, B, and C knowledge tools behind one evaluation envelope", asyn
   const conditionB = conditionBKnowledge("b".repeat(40));
   const conditionC = conditionCKnowledge("c".repeat(40));
   assert.deepEqual(conditionAKnowledge.tools.map(tool => tool.name), ["search_docs", "read_doc"]);
-  assert.deepEqual(conditionB.tools.map(tool => tool.name), ["search_ggaction", "read_ggaction"]);
+  assert.deepEqual(
+    conditionB.tools.map(tool => tool.name),
+    ["search_docs", "read_doc", "search_ggaction", "read_ggaction"]
+  );
   assert.equal(conditionAKnowledge.mode, "current-docs");
   assert.equal(conditionB.mode, "structured-knowledge");
   assert.equal(conditionC.mode, "local-mcp");
@@ -348,7 +351,14 @@ test("isolates A, B, and C knowledge tools behind one evaluation envelope", asyn
     Object.keys(conditionAKnowledge).filter(key => !["condition", "mode", "commit", "tools", "instruction", "routingLabel"].includes(key)),
     Object.keys(conditionB).filter(key => !["condition", "mode", "commit", "tools", "instruction", "routingLabel"].includes(key))
   );
-  await assert.rejects(() => conditionB.handle({ name: "read_doc", arguments: "{}" }), /Unknown structured-knowledge tool/);
+  const currentRouting = await conditionAKnowledge.routingText();
+  const enhancedRouting = await conditionB.routingText();
+  assert.equal(enhancedRouting.startsWith(currentRouting), true);
+  assert.equal(enhancedRouting.includes("Structured knowledge overview"), true);
+  assert.equal(
+    JSON.parse(await conditionB.handle({ name: "read_doc", arguments: JSON.stringify({ route: "llms.txt" }) })).text,
+    currentRouting
+  );
   await assert.rejects(() => conditionC.handle({ name: "read_doc", arguments: "{}" }), /Unknown local MCP knowledge tool/);
   await conditionC.close();
 });
@@ -400,6 +410,7 @@ test("runs a mocked structured-knowledge search and one repair through Condition
     }]
   ];
   const requests = [];
+  const outputRoot = new URL("../../.artifacts/llm-eval/runner-b-contract", import.meta.url).pathname;
   const result = await runConditionBTask({
     knowledgeCommit: "b".repeat(40),
     apiKey: `sk-${"x".repeat(40)}`,
@@ -407,7 +418,7 @@ test("runs a mocked structured-knowledge search and one repair through Condition
     task,
     repetition: 1,
     plan,
-    outputRoot: new URL("../../.artifacts/llm-eval/runner-b-contract", import.meta.url).pathname,
+    outputRoot,
     fetchImpl: async (_url, init) => {
       requests.push(JSON.parse(init.body));
       const output = outputs.shift();
@@ -432,7 +443,10 @@ test("runs a mocked structured-knowledge search and one repair through Condition
   });
 
   assert.equal(requests.length, 3);
-  assert.deepEqual(requests[0].tools.map(tool => tool.name), ["search_ggaction", "read_ggaction", "submit_program"]);
+  assert.deepEqual(
+    requests[0].tools.map(tool => tool.name),
+    ["search_docs", "read_doc", "search_ggaction", "read_ggaction", "submit_program"]
+  );
   assert.equal(result.condition, "B");
   assert.deepEqual(result.knowledge, { commit: "b".repeat(40), mode: "structured-knowledge" });
   assert.equal(result.outcome.firstPassValid, false);
@@ -441,6 +455,20 @@ test("runs a mocked structured-knowledge search and one repair through Condition
   assert.equal(result.metrics.mcpCalls, 0);
   assert.equal(result.metrics.repairRounds, 1);
   assert.equal(result.artifacts.rendererFiles.length, 1);
+  const traceText = await readFile(`${outputRoot}/${result.runId}/trace.json`, "utf8");
+  const trace = JSON.parse(traceText);
+  assert.equal(trace.schemaVersion, 1);
+  assert.equal(trace.rounds.length, 3);
+  assert.deepEqual(trace.rounds.map(round => round.remainingModelCallsAtStart), [3, 2, 1]);
+  assert.deepEqual(trace.rounds[0].calls[0].arguments, {
+    query: "scatter plot quantitative relationship"
+  });
+  assert.equal(trace.rounds[0].calls[0].result.identities.includes("action:createScatterPlot"), true);
+  assert.equal(trace.rounds[0].calls[1].result.identity, "action:createScatterPlot");
+  assert.equal(trace.rounds[1].calls[0].submission.valid, false);
+  assert.equal(trace.rounds[2].calls[0].submission.valid, true);
+  assert.equal(traceText.includes("export function buildChart"), false);
+  assert.equal(traceText.includes(`sk-${"x".repeat(40)}`), false);
 });
 
 test("runs mocked chart authoring through the real local MCP Condition C adapter", async () => {

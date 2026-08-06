@@ -42,6 +42,51 @@ function failureCategory(failures, runtimeError) {
   return null;
 }
 
+function sanitizedCallArguments(call) {
+  let args;
+  try {
+    args = JSON.parse(call.arguments);
+  } catch {
+    return { invalidJson: true };
+  }
+  if (call.name === "submit_program") return { submission: true };
+  const sanitized = {};
+  if (typeof args.query === "string") sanitized.query = args.query.slice(0, 500);
+  if (Number.isInteger(args.limit)) sanitized.limit = args.limit;
+  for (const key of ["kind", "id", "route", "uri"]) {
+    if (typeof args[key] === "string") sanitized[key] = args[key].slice(0, 500);
+  }
+  return sanitized;
+}
+
+function sanitizedKnowledgeResult(output) {
+  const summary = { bytes: Buffer.byteLength(output, "utf8") };
+  try {
+    const parsed = JSON.parse(output);
+    if (typeof parsed?.kind === "string" && typeof parsed?.id === "string") {
+      summary.identity = `${parsed.kind}:${parsed.id}`;
+    } else if (typeof parsed?.route === "string") {
+      summary.identity = `docs:${parsed.route}`;
+    }
+    const results = Array.isArray(parsed) ? parsed : parsed?.results;
+    if (Array.isArray(results)) {
+      summary.identities = results.slice(0, 10).flatMap(result => {
+        if (typeof result?.kind === "string" && typeof result?.id === "string") {
+          return [`${result.kind}:${result.id}`];
+        }
+        if (typeof result?.kind === "string" && typeof result?.url === "string") {
+          return [`${result.kind}:${result.url}`];
+        }
+        return [];
+      });
+    }
+    if (typeof parsed?.error === "string") summary.error = parsed.error.slice(0, 500);
+  } catch {
+    summary.unparseable = true;
+  }
+  return summary;
+}
+
 function programInstructions(task, routingText, knowledge) {
   const datasetFields = task.data.map(selection =>
     `${selection.id}: ${selection.fields.join(", ")}`
@@ -116,6 +161,14 @@ export async function runEvaluationTask({
   let providerError = null;
   let resolvedName = plan.model.name;
   const started = Date.now();
+  const trace = {
+    schemaVersion: 1,
+    runId,
+    condition: knowledge.condition,
+    taskId: task.id,
+    repetition,
+    rounds: []
+  };
 
   while (modelCalls < plan.sampling.maximumModelCallsPerTask && !finalScore.valid) {
     const remainingOutput = plan.tokenBudgetPerTask.maximumCumulativeOutputTokens - usage.completionTokens;
@@ -149,6 +202,13 @@ export async function runEvaluationTask({
       break;
     }
 
+    const traceRound = {
+      round: modelCalls + 1,
+      remainingModelCallsAtStart: plan.sampling.maximumModelCallsPerTask - modelCalls,
+      calls: []
+    };
+    trace.rounds.push(traceRound);
+
     let response;
     try {
       response = await createOpenAIResponse({ apiKey, request, fetchImpl });
@@ -170,6 +230,11 @@ export async function runEvaluationTask({
     }
     for (const call of calls) {
       let output;
+      const traceCall = {
+        name: call.name,
+        arguments: sanitizedCallArguments(call)
+      };
+      traceRound.calls.push(traceCall);
       if (call.name === "submit_program") {
         submissions += 1;
         try {
@@ -192,11 +257,21 @@ export async function runEvaluationTask({
           finalScore = scoreEvaluationEvidence(task, evidence);
           if (submissions === 1) firstPassValid = finalScore.valid;
           output = JSON.stringify({ valid: finalScore.valid, failures: finalScore.failures });
+          traceCall.submission = {
+            present: true,
+            valid: finalScore.valid,
+            failures: finalScore.failures.slice(0, 20)
+          };
         } catch (error) {
           runtimeError = error.message;
           finalScore = { valid: false, failures: [`runtime-error:${error.message}`] };
           if (submissions === 1) firstPassValid = false;
           output = JSON.stringify({ valid: false, failures: ["program execution failed"], error: error.message });
+          traceCall.submission = {
+            present: true,
+            valid: false,
+            failures: ["program execution failed"]
+          };
         }
       } else {
         if (knowledgeCalls >= plan.sampling.maximumMcpCallsPerTask) {
@@ -209,6 +284,7 @@ export async function runEvaluationTask({
             output = JSON.stringify({ error: error.message });
           }
         }
+        traceCall.result = sanitizedKnowledgeResult(output);
       }
       input.push({ type: "function_call_output", call_id: call.call_id, output });
     }
@@ -277,6 +353,7 @@ export async function runEvaluationTask({
       rendererFiles: (finalEvaluation?.artifacts.rendererFiles ?? []).map(relative)
     }
   };
+  await writeFile(path.join(artifactRoot, "trace.json"), `${JSON.stringify(trace, null, 2)}\n`);
   await knowledge.close?.();
   validateEvaluationResult(result, corpus);
   return result;

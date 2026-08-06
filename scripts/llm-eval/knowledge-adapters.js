@@ -41,7 +41,10 @@ export const structuredKnowledgeTools = Object.freeze([
       type: "object",
       additionalProperties: false,
       required: ["query"],
-      properties: { query: { type: "string", minLength: 1, maxLength: 500 } }
+      properties: {
+        query: { type: "string", minLength: 1, maxLength: 500 },
+        limit: { type: "integer", minimum: 1, maximum: 10 }
+      }
     }
   },
   {
@@ -87,15 +90,21 @@ export function conditionBKnowledge(commit) {
     condition: "B",
     mode: "structured-knowledge",
     commit,
-    tools: structuredKnowledgeTools,
-    instruction: "Use only public ggaction APIs found through the provided structured-knowledge tools.",
-    routingLabel: "Structured ggaction knowledge overview",
+    tools: Object.freeze([...currentDocTools, ...structuredKnowledgeTools]),
+    instruction: "Use only public ggaction APIs. The current-doc tools remain available; prefer one structured search and one exact structured read when they directly match the task.",
+    routingLabel: "Current ggaction documentation routing index followed by the structured knowledge overview",
     async routingText() {
-      return JSON.stringify(await readKnowledge({ kind: "docs", id: "overview" }));
+      const currentRouting = (await readCurrentDoc("llms.txt")).text;
+      const structuredOverview = JSON.stringify(await readKnowledge({ kind: "docs", id: "overview" }));
+      return `${currentRouting}\n\n--- Structured knowledge overview ---\n${structuredOverview}`;
     },
     async handle(call) {
       const args = JSON.parse(call.arguments);
-      if (call.name === "search_ggaction") return JSON.stringify(await searchKnowledge({ query: args.query }));
+      if (call.name === "search_docs") return JSON.stringify(await searchCurrentDocs(args.query));
+      if (call.name === "read_doc") return JSON.stringify(await readCurrentDoc(args.route));
+      if (call.name === "search_ggaction") {
+        return JSON.stringify(await searchKnowledge({ query: args.query, limit: args.limit }));
+      }
       if (call.name === "read_ggaction") return JSON.stringify(await readKnowledge({ kind: args.kind, id: args.id }));
       throw new Error(`Unknown structured-knowledge tool ${call.name}.`);
     }
