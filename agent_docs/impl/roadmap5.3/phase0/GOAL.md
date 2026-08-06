@@ -12,10 +12,10 @@
 - [x] Roadmap 5.3 branch와 top-level Phase/Gate dependency 작성
 - [x] Current docs/action/example/contract route inventory 생성
 - [x] Existing metadata와 executable-example gap classification
-- [ ] Versioned authoring/held-out task corpus와 correctness oracle 작성
-- [ ] A/B/C benchmark harness contract와 raw-result schema 작성
-- [ ] Provider/model/settings/repetitions, 예상 최대 비용과 acceptance threshold 제안
-- [ ] Metadata/recipe canonical source, generated outputs와 package inclusion 제안
+- [x] Versioned authoring/held-out task corpus와 correctness oracle 작성
+- [x] A/B/C benchmark harness contract와 raw-result schema 작성
+- [x] Provider/model/settings/repetitions, 예상 최대 비용과 acceptance threshold 제안
+- [x] Metadata/recipe canonical source, generated outputs와 package inclusion 제안
 - [ ] Focused and cumulative documentation-contract verification
 - [ ] R53-P0-A remote checkpoint commit/push
 - [ ] 사용자 R53-P0-A explicit approval

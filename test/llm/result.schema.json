@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ggaction.dev/schemas/llm-evaluation-result-v1.json",
+  "title": "ggaction LLM Evaluation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "runId", "condition", "taskId", "knowledge", "model", "metrics", "outcome", "evidence", "artifacts"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "runId": { "type": "string", "minLength": 1 },
+    "condition": { "enum": ["A", "B", "C"] },
+    "taskId": { "type": "string", "minLength": 1 },
+    "knowledge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "mode"],
+      "properties": {
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "mode": { "enum": ["current-docs", "structured-knowledge", "local-mcp"] }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "name", "reasoningEffort", "reasoningMode", "textVerbosity", "serviceTier", "store", "maxOutputTokensPerCall", "maxCumulativeInputTokens", "maxCumulativeOutputTokens"],
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "reasoningEffort": { "enum": ["none", "low", "medium", "high", "xhigh", "max"] },
+        "reasoningMode": { "enum": ["standard", "pro"] },
+        "textVerbosity": { "enum": ["low", "medium", "high"] },
+        "serviceTier": { "enum": ["default", "flex", "fast"] },
+        "store": { "type": "boolean" },
+        "maxOutputTokensPerCall": { "type": "integer", "minimum": 1 },
+        "maxCumulativeInputTokens": { "type": "integer", "minimum": 1 },
+        "maxCumulativeOutputTokens": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["promptTokens", "cachedInputTokens", "cacheWriteTokens", "completionTokens", "reasoningTokens", "totalTokens", "modelCalls", "mcpCalls", "repairRounds", "timeToValidMs", "estimatedCostUsd"],
+      "properties": {
+        "promptTokens": { "type": "integer", "minimum": 0 },
+        "cachedInputTokens": { "type": "integer", "minimum": 0 },
+        "cacheWriteTokens": { "type": "integer", "minimum": 0 },
+        "completionTokens": { "type": "integer", "minimum": 0 },
+        "reasoningTokens": { "type": "integer", "minimum": 0 },
+        "totalTokens": { "type": "integer", "minimum": 0 },
+        "modelCalls": { "type": "integer", "minimum": 0 },
+        "mcpCalls": { "type": "integer", "minimum": 0 },
+        "repairRounds": { "type": "integer", "minimum": 0 },
+        "timeToValidMs": { "type": ["integer", "null"], "minimum": 0 },
+        "estimatedCostUsd": { "type": "number", "minimum": 0 }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["firstPassValid", "finalValid", "failureCategory"],
+      "properties": {
+        "firstPassValid": { "type": "boolean" },
+        "finalValid": { "type": "boolean" },
+        "failureCategory": {
+          "type": ["string", "null"],
+          "enum": [null, "invalid-program", "forbidden-primitive", "missing-action", "runtime-error", "validation-failed", "renderer-failed", "package-failed", "timeout", "provider-error", "budget-exceeded"]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actions", "runtimeFunctions", "validations", "renderers"],
+      "properties": {
+        "actions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "runtimeFunctions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "validations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "passed"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "passed": { "type": "boolean" },
+              "detail": { "type": "string" }
+            }
+          }
+        },
+        "renderers": { "type": "array", "items": { "enum": ["canvas", "svg", "png", "pdf"] }, "uniqueItems": true },
+        "runtimeError": { "type": ["string", "null"] }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["programFile", "programSha256", "validationLogFile", "rendererFiles"],
+      "properties": {
+        "programFile": { "type": ["string", "null"] },
+        "programSha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+        "validationLogFile": { "type": "string", "minLength": 1 },
+        "rendererFiles": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    }
+  }
+}

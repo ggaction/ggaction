@@ -5,17 +5,18 @@
 - [x] Exact merged-main identity, version와 action count 기록
 - [x] Current LLM entry routes와 knowledge sources inventory
 - [x] Action별 English description/example/recipe availability matrix
-- [ ] Representative chart task taxonomy와 versioned dataset identities
-- [ ] Executable correctness oracle와 invalid-result taxonomy
-- [ ] Benchmark condition isolation, run order와 raw-result schema
-- [ ] Token/call/time/cost collection method
-- [ ] Exact paid-run proposal와 predeclared acceptance rule
-- [ ] Canonical metadata/recipe ownership proposal
-- [ ] Local dry run and contract tests
+- [x] Representative chart task taxonomy와 versioned dataset identities
+- [x] Executable correctness oracle와 invalid-result taxonomy
+- [x] Benchmark condition isolation, run order와 raw-result schema
+- [x] Token/call/time/cost collection method
+- [x] Exact paid-run proposal와 predeclared acceptance rule
+- [x] Canonical metadata/recipe ownership proposal
+- [x] Local dry run and contract tests
 - [ ] Commit/push and R53-P0-A review package
 
 Inventory evidence는 [`CURRENT_KNOWLEDGE_INVENTORY.json`](./CURRENT_KNOWLEDGE_INVENTORY.json), 사람이 읽는
 해석은 [`BASELINE.md`](./BASELINE.md)가 소유한다.
+Exact evaluation proposal는 [`BENCHMARK_CONTRACT.md`](./BENCHMARK_CONTRACT.md)가 소유한다.
 
 ## 쉽게 보는 작업 결과
 
@@ -62,7 +63,7 @@ Task별 oracle은 required semantic/graphic facts, allowed alternatives, forbidd
 
 ## Measurement contract
 
-모든 condition은 같은 model, temperature, token limit, system prompt envelope와 task order randomization policy를
+모든 condition은 같은 model, reasoning effort, token limit, system prompt envelope와 task order randomization policy를
 사용한다. A는 starting commit의 docs, B는 structured knowledge, C는 local MCP만 추가한다.
 
 Raw result에는 최소한 다음을 저장한다.

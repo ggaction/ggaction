@@ -1,0 +1,429 @@
+{
+  "schemaVersion": 1,
+  "datasets": {
+    "cars-v1": {
+      "path": "data/cars.json",
+      "sha256": "f686a53678b21f4231e2f6a5ba7ce5761d9d39204fccdea1caa29fb8c460e319",
+      "fields": [
+        "Name",
+        "Miles_per_Gallon",
+        "Cylinders",
+        "Displacement",
+        "Horsepower",
+        "Weight_in_lbs",
+        "Acceleration",
+        "Year",
+        "Origin"
+      ]
+    },
+    "gapminder-v1": {
+      "path": "data/gapminder.json",
+      "sha256": "70630efd862153116c1518a098a5a3bc4ca8c9f037306f86fba282a2720909b9",
+      "fields": ["year", "country", "cluster", "pop", "life_expect", "fertility"]
+    },
+    "jobs-v1": {
+      "path": "data/jobs.json",
+      "sha256": "bc9a798eba79dd166939d040c92641943a0b031955eb6fd897223a9cdab8a7e6",
+      "fields": ["job", "sex", "year", "count", "perc"]
+    },
+    "nightingale-v1": {
+      "path": "data/nightingale_rose.json",
+      "sha256": "ab332b25f7b26770f4fb1d782e774e9e7140c12b8af231da50643872d3c7f1b0",
+      "fields": ["month", "cause", "value"]
+    },
+    "imdb-v1": {
+      "path": "data/imdb_selected.json",
+      "sha256": "756e1f343bb57cae20b423d2428f250b2fb6a765937f114dc90a257913c28e9f",
+      "fields": ["Series_Title", "Released_Year", "IMDB_Rating"]
+    }
+  },
+  "tasks": [
+    {
+      "id": "cars-scatter-origin",
+      "split": "authoring",
+      "category": "basic-chart",
+      "difficulty": "direct",
+      "data": [{ "id": "cars-v1", "fields": ["Horsepower", "Miles_per_Gallon", "Origin"] }],
+      "prompt": "Using dataset cars-v1, create a Cartesian scatter plot of Horsepower versus Miles_per_Gallon, color points by Origin, add labeled x/y axes, and render a non-empty Canvas chart.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createGuides"],
+        "anyOfActionSets": [["createScatterPlot"], ["createPointMark", "encodeX", "encodeY", "encodeColor"]],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:point", "encoding:x:Horsepower", "encoding:y:Miles_per_Gallon", "encoding:color:Origin", "guides:cartesian", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-regression-japan",
+      "split": "authoring",
+      "category": "statistical-overlay",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Horsepower", "Miles_per_Gallon", "Origin"] }],
+      "prompt": "Using dataset cars-v1, draw Horsepower versus Miles_per_Gallon as points, highlight rows whose Origin equals Japan with a darker orange fill, add a black linear regression line for Japan, label its R-squared value near the line in black, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot", "filterData", "createRegression", "createTextMark", "encodeText"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:point", "semantic:regression-line", "filter:Origin:Japan", "style:highlight:orange-no-stroke", "style:regression:black", "annotation:r-squared:black", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-histogram-origin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "direct",
+      "data": [{ "id": "cars-v1", "fields": ["Horsepower", "Origin"] }],
+      "prompt": "Using dataset cars-v1, create a 12-bin Horsepower histogram grouped and colored by Origin, include readable Cartesian guides and a title, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createHistogram", "createGuides", "createTitle"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:histogram", "bin:count:12", "encoding:x:Horsepower", "encoding:group:Origin", "guides:cartesian", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-binned-heatmap",
+      "split": "authoring",
+      "category": "binned-chart",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Weight_in_lbs", "Miles_per_Gallon"] }],
+      "prompt": "Using dataset cars-v1, create a 10 by 8 rectangular heatmap that bins Weight_in_lbs against Miles_per_Gallon, colors cells by count with a blue quantitative legend, labels both axes, and renders to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createHeatmap", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:bin2d", "bin:x:10", "bin:y:8", "encoding:x:Weight_in_lbs", "encoding:y:Miles_per_Gallon", "legend:color", "graphic:rect-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-temporal-line-origin",
+      "split": "authoring",
+      "category": "temporal-chart",
+      "difficulty": "direct",
+      "data": [{ "id": "cars-v1", "fields": ["Year", "Miles_per_Gallon", "Origin"] }],
+      "prompt": "Using dataset cars-v1, create temporal line series of Miles_per_Gallon over Year grouped and colored by Origin, use a monotone curve, add axes and legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createLinePlot", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:line", "encoding:x:Year:temporal", "encoding:y:Miles_per_Gallon", "encoding:group:Origin", "curve:monotone", "legend:color", "graphic:path-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "jobs-grouped-bar",
+      "split": "authoring",
+      "category": "categorical-chart",
+      "difficulty": "composed",
+      "data": [{ "id": "jobs-v1", "fields": ["job", "sex", "year", "perc"] }],
+      "prompt": "Using dataset jobs-v1, filter to one explicit year, create grouped bars with job on x, perc on y, side-by-side groups and color by sex, order categories by descending total perc, add guides, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "filterData", "createBarPlot", "orderCategories", "createGuides"],
+        "anyOfActionSets": [["encodeXOffset"], ["encodeGroup"]],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "filter:year:explicit", "semantic:bar", "encoding:x:job", "encoding:y:perc", "encoding:group:sex", "order:descending-total", "graphic:bar-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-density-origin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Acceleration", "Origin"] }],
+      "prompt": "Using dataset cars-v1, create filled kernel-density areas for Acceleration grouped and colored by Origin, use bandwidth 0.6, add axes and a legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createAreaMark", "encodeDensity", "encodeColor", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:density", "density:bandwidth:0.6", "density:field:Acceleration", "density:group:Origin", "legend:color", "graphic:area-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-error-bar-origin",
+      "split": "authoring",
+      "category": "statistical-interval",
+      "difficulty": "direct",
+      "data": [{ "id": "cars-v1", "fields": ["Origin", "Acceleration"] }],
+      "prompt": "Using dataset cars-v1, show mean Acceleration by Origin with vertical 95 percent confidence-interval error bars, include axis guides and a title, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createErrorBar", "createGuides", "createTitle"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:error-bar:vertical", "interval:ci95", "encoding:x:Origin", "encoding:y:Acceleration", "graphic:rule-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "gapminder-error-band",
+      "split": "authoring",
+      "category": "statistical-interval",
+      "difficulty": "composed",
+      "data": [{ "id": "gapminder-v1", "fields": ["year", "life_expect", "cluster"] }],
+      "prompt": "Using dataset gapminder-v1, create temporal 95 percent confidence bands for life_expect over year grouped and colored by cluster, add matching boundary lines, axes and legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createErrorBand", "encodeColor", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:error-band:vertical", "interval:ci95", "encoding:x:year:temporal", "encoding:y:life_expect", "encoding:group:cluster", "boundary:visible", "graphic:area-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-box-plot",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "direct",
+      "data": [{ "id": "cars-v1", "fields": ["Origin", "Miles_per_Gallon"] }],
+      "prompt": "Using dataset cars-v1, create Tukey box plots of Miles_per_Gallon by Origin with visible outliers, color boxes by Origin, suppress the redundant legend, add axes, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createBoxPlot", "encodeColor", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:box-plot", "whisker:tukey", "outliers:visible", "encoding:x:Origin", "encoding:y:Miles_per_Gallon", "legend:absent", "graphic:box-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-violin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Origin", "Acceleration"] }],
+      "prompt": "Using dataset cars-v1, create violin plots of Acceleration by Origin with bandwidth 0.65, color each violin by Origin, add axes without a redundant legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createViolinPlot", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:violin", "density:bandwidth:0.65", "encoding:x:Origin", "encoding:y:Acceleration", "encoding:color:Origin", "legend:absent", "graphic:area-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-parallel-coordinates",
+      "split": "authoring",
+      "category": "multivariate-chart",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Horsepower", "Weight_in_lbs", "Acceleration", "Miles_per_Gallon", "Origin"] }],
+      "prompt": "Using dataset cars-v1, create a parallel-coordinates chart across Horsepower, Weight_in_lbs, Acceleration and Miles_per_Gallon, color paths by Origin, add readable guides and a legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createParallelCoordinates", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:parallel-coordinates", "parallel:dimensions:4", "encoding:color:Origin", "legend:color", "graphic:path-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "nightingale-rose",
+      "split": "heldout",
+      "category": "polar-chart",
+      "difficulty": "composed",
+      "data": [{ "id": "nightingale-v1", "fields": ["month", "cause", "value"] }],
+      "prompt": "Using dataset nightingale-v1, create a rose chart with month as equal angular categories, value as radial extent and cause as color groups, add polar guides and a legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createArcMark", "encodeTheta", "encodeR", "encodeColor", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:arc", "coordinate:polar", "encoding:theta:month", "encoding:r:value", "encoding:color:cause", "guides:polar", "graphic:path-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-facet-origin",
+      "split": "heldout",
+      "category": "composition",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Origin", "Horsepower", "Miles_per_Gallon"] }],
+      "prompt": "Using dataset cars-v1, create one Horsepower versus Miles_per_Gallon scatter panel per Origin with two columns, shared compatible scales, clear facet headers and coordinated guides, and render the composition to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot", "facet"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "composition:facet", "facet:field:Origin", "facet:columns:2", "facet:headers", "facet:shared-scales", "graphic:multi-panel-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-multi-legend",
+      "split": "heldout",
+      "category": "guide-layout",
+      "difficulty": "repair",
+      "data": [{ "id": "cars-v1", "fields": ["Displacement", "Miles_per_Gallon", "Origin", "Acceleration"] }],
+      "prompt": "Using dataset cars-v1, plot Displacement versus Miles_per_Gallon with color mapped to Origin and opacity mapped to Acceleration. Place separate color and opacity legends at the top, stacking left-to-right with aligned titles, symbols and labels plus comfortable spacing from each other and the plot. Render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createPointMark", "encodeX", "encodeY", "encodeColor", "encodeOpacity", "createLegend"],
+        "anyOfActionSets": [["createGuides"], ["createAxes"]],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "legend:count:2", "legend:position:top", "legend:order:left-to-right", "legend:titles-aligned", "legend:symbols-aligned", "legend:label-gaps-aligned", "legend:inter-block-gap", "legend:plot-offset", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-selection-highlight",
+      "split": "heldout",
+      "category": "selection",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Horsepower", "Miles_per_Gallon", "Origin"] }],
+      "prompt": "Using dataset cars-v1, create a Horsepower versus Miles_per_Gallon scatter plot, define a reusable selection for Origin equal to Japan, highlight the selected points with a darker orange fill and no stroke while dimming other points, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot", "selectMarks", "highlightMarks"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "selection:Origin:Japan", "highlight:selected:dark-orange", "highlight:selected:no-stroke", "highlight:others:dimmed", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "gapminder-moving-window",
+      "split": "heldout",
+      "category": "data-transform",
+      "difficulty": "composed",
+      "data": [{ "id": "gapminder-v1", "fields": ["year", "country", "life_expect"] }],
+      "prompt": "Using dataset gapminder-v1, filter to country Kenya, calculate a centered three-row moving mean of life_expect ordered by year, draw the original and moving series as distinct lines with a legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "filterData", "createWindowData", "createLineMark", "encodeX", "encodeY", "createLegend"],
+        "anyOfActionSets": [["encodeColor"], ["encodeStrokeDash"]],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "filter:country:Kenya", "window:mean:life_expect", "window:frame:-1:1", "window:order:year", "series:original-and-moving", "legend:series", "graphic:path-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-time-unit",
+      "split": "heldout",
+      "category": "data-transform",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Year", "Miles_per_Gallon", "Origin"] }],
+      "prompt": "Using dataset cars-v1, derive a calendar year field from Year, aggregate or summarize Miles_per_Gallon by that year and Origin, draw temporal line series colored by Origin with guides, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createTimeUnitData", "createLinePlot", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "time-unit:year", "encoding:x:derived-year:temporal", "encoding:y:Miles_per_Gallon", "encoding:group:Origin", "graphic:path-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-rug-distribution",
+      "split": "heldout",
+      "category": "one-dimensional-distribution",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Horsepower"] }],
+      "prompt": "Using dataset cars-v1, create a one-dimensional rug distribution of Horsepower with one short vertical tick per valid row along a shared baseline, add a labeled quantitative x axis, keep the y dimension visually constant, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createTickMark", "encodeX", "encodeY", "createXAxis"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:tick", "encoding:x:Horsepower", "encoding:y:constant-baseline", "tick:one-per-valid-row", "axis:x:quantitative", "graphic:tick-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-gradient-profile",
+      "split": "heldout",
+      "category": "statistical-chart",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Origin", "Acceleration", "Horsepower"] }],
+      "prompt": "Using dataset cars-v1, create a categorical gradient plot by Origin whose profile uses Acceleration and whose fill varies with Horsepower, include a continuous color legend and axes, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createGradientPlot", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:gradient-plot", "encoding:category:Origin", "encoding:profile:Acceleration", "encoding:color:Horsepower", "legend:continuous-color", "graphic:gradient-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "gapminder-horizon",
+      "split": "heldout",
+      "category": "specialized-chart",
+      "difficulty": "composed",
+      "data": [{ "id": "gapminder-v1", "fields": ["year", "country", "life_expect"] }],
+      "prompt": "Using dataset gapminder-v1, filter rows whose country equals Kenya and create a three-band horizon chart of life_expect over year around baseline 55, using blue above and red below the baseline, add only the useful x guide, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "filterData", "createAreaMark", "encodeHorizon", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "filter:country:Kenya", "semantic:horizon", "horizon:bands:3", "horizon:baseline:55", "horizon:positive:blue", "horizon:negative:red", "axis:y:absent", "graphic:area-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "imdb-label-layout",
+      "split": "heldout",
+      "category": "annotation",
+      "difficulty": "composed",
+      "data": [{ "id": "imdb-v1", "fields": ["Series_Title", "Released_Year", "IMDB_Rating"] }],
+      "prompt": "Using dataset imdb-v1, create a Released_Year versus IMDB_Rating scatter plot, label every point with Series_Title, apply a label-layout policy that reduces overlaps while preserving leader lines, add axes and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot", "createTextMark", "encodeText", "layoutLabels", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render"],
+        "requiredValidations": ["program:builds", "semantic:point", "semantic:text", "encoding:x:Released_Year", "encoding:y:IMDB_Rating", "encoding:text:Series_Title", "layout:labels", "layout:leader-lines", "graphic:text-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "composed-dashboard",
+      "split": "heldout",
+      "category": "composition",
+      "difficulty": "repair",
+      "data": [
+        { "id": "cars-v1", "fields": ["Horsepower", "Miles_per_Gallon", "Origin"] },
+        { "id": "nightingale-v1", "fields": ["month", "cause", "value"] }
+      ],
+      "prompt": "Build two complete child charts from cars-v1 and nightingale-v1: a Horsepower versus Miles_per_Gallon scatter plot colored by Origin and a month/value polar rose chart colored by cause. Compose them horizontally with a 24-pixel gap, then replace the rose child with a valid bar summary child while preserving slot identity. Render the final composition to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot", "createArcMark", "editCompositionLayout", "replaceCompositionChild"],
+        "anyOfActionSets": [["createBarPlot"], ["createBarMark", "encodeX", "encodeY"]],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "hconcat", "render"],
+        "requiredValidations": ["program:builds", "composition:hconcat", "composition:gap:24", "composition:replace-child", "composition:slot-identity-preserved", "graphic:multi-panel-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "renderer-parity",
+      "split": "heldout",
+      "category": "rendering",
+      "difficulty": "repair",
+      "data": [{ "id": "cars-v1", "fields": ["Horsepower", "Miles_per_Gallon", "Origin"] }],
+      "prompt": "Using dataset cars-v1, create one completed Horsepower versus Miles_per_Gallon scatter plot colored by Origin and render that same immutable program to Browser Canvas, SVG, PNG at pixelRatio 2, and one-page vector PDF. Do not rebuild or mutate the program between renderers.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "render", "renderToSVG", "renderToPNG", "renderToPDF"],
+        "requiredValidations": ["program:builds", "program:immutable-across-renderers", "renderer:canvas:non-empty", "renderer:svg:valid", "renderer:png:pixel-ratio:2", "renderer:pdf:one-page-vector", "renderer:logical-dimensions-equal"],
+        "renderers": ["canvas", "svg", "png", "pdf"]
+      }
+    }
+  ]
+}

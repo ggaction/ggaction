@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "approvalStatus": "proposed",
+  "provider": "openai",
+  "api": "responses",
+  "model": {
+    "name": "gpt-5.6-terra",
+    "reasoningEffort": "medium",
+    "reasoningMode": "standard",
+    "textVerbosity": "low",
+    "serviceTier": "default",
+    "store": false
+  },
+  "sampling": {
+    "repetitionsPerTask": 2,
+    "taskCount": 24,
+    "runsPerCondition": 48,
+    "orderSeed": "roadmap5.3-eval-v1",
+    "maximumModelCallsPerTask": 3,
+    "maximumMcpCallsPerTask": 8,
+    "timeoutMsPerTask": 180000
+  },
+  "tokenBudgetPerTask": {
+    "expectedInputTokens": 12000,
+    "expectedOutputTokens": 4000,
+    "maximumCumulativeInputTokens": 24000,
+    "maximumCumulativeOutputTokens": 8000,
+    "maximumOutputTokensPerCall": 5000
+  },
+  "pricingUsdPerMillionTokens": {
+    "uncachedInput": 2.5,
+    "cachedInput": 0.25,
+    "cacheWrite": 3.125,
+    "output": 15
+  },
+  "costPerConditionUsd": {
+    "expected": 4.32,
+    "calculatedMaximum": 9.36,
+    "approvedSpendCap": 10
+  },
+  "conditions": {
+    "A": "current-docs",
+    "B": "structured-knowledge",
+    "C": "local-mcp"
+  },
+  "acceptance": {
+    "maximumFinalCorrectnessRegressionPercentagePoints": 2,
+    "minimumFirstPassCorrectnessGainPercentagePoints": 10,
+    "highBaselineFirstPassCorrectnessPercent": 90,
+    "minimumTokenReductionPercent": 20,
+    "minimumModelCallReductionPercent": 20,
+    "minimumTimeToValidReductionPercent": 15,
+    "maximumRemainingEfficiencyRegressionPercent": 5,
+    "requiredEfficiencyThresholdsPassed": 2
+  }
+}

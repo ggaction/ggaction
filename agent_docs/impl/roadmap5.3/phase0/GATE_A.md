@@ -14,7 +14,7 @@
 1. Versioned authoring/held-out task corpus와 dataset identities
 2. Task별 executable correctness oracle와 failure taxonomy
 3. A/B/C condition isolation과 raw-result schema
-4. Provider, exact model/version, temperature/token limit와 repetition count
+4. Provider, exact model/version, reasoning/token limit와 repetition count
 5. Expected cost, maximum spend와 timeout limit
 6. Tokens, model/MCP calls, repair rounds와 time-to-valid collection method
 7. Predeclared correctness/efficiency acceptance threshold
