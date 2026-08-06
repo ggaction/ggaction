@@ -4,12 +4,14 @@
 
 - [x] Apply the approved pricing and spend caps to the runner
 - [x] Verify the key source without exposing or copying it into the repository
-- [ ] Run and preserve all 48 Condition B records
-- [ ] Run and preserve all 48 Condition C records
-- [ ] Confirm the same resolved model identity across A/B/C
-- [ ] Generate aggregate, split, task and failure reports
-- [ ] Apply the frozen acceptance thresholds
-- [ ] Prepare R53-P6-B and stop for approval
+- [x] Run and preserve all 48 Condition B records
+- [x] Run and preserve all 48 Condition C records
+- [x] Confirm the same resolved model identity across A/B/C
+- [x] Generate aggregate, split, task and failure reports
+- [x] Apply the frozen acceptance thresholds
+- [x] Record the failed integration candidate without changing the benchmark
+- [x] Prepare R53-P6-B review package
+- [ ] Commit/push the R53-P6-B remote checkpoint and stop for review
 
 ## 판정 원칙
 
@@ -24,3 +26,14 @@
 Resolved model mismatch, condition cap $5 또는 combined cap $10 도달, corpus/knowledge hash mismatch, 반복적인
 provider failure 중 하나가 발생하면 새 paid request를 시작하지 않는다. 완료되지 않은 condition은 benchmark pass로
 판정하지 않고 원인과 사용 비용을 보고한 뒤 새 승인을 기다린다.
+
+## 실행 결과
+
+- B: 48 runs, 0 first-pass/final success, 48 invalid-program, $0.795406
+- C: 48 runs, 0 first-pass/final success, 48 invalid-program, 380 MCP calls, $0.729342
+- Combined paid spend: $1.524748 / approved $10
+- Resolved model: all `gpt-5.6-terra`; provider error 0
+- Acceptance: failed; successful-chart efficiency는 candidate success가 0이라 계산 불가
+
+Exact aggregate와 sanitized run evidence는 [`LLM_COMPARISON.md`](./LLM_COMPARISON.md)와
+[`LLM_COMPARISON.json`](./LLM_COMPARISON.json)이 소유한다.

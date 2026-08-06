@@ -62,7 +62,11 @@ function aggregate(results) {
   };
 }
 
-export function summarizeConditionAResults(results, corpus) {
+export function summarizeEvaluationResults(results, corpus, {
+  condition,
+  knowledgeMode,
+  knowledgeCommit
+}) {
   const tasks = new Map(corpus.tasks.map(task => [task.id, task]));
   const enriched = results.map(result => ({ ...result, task: tasks.get(result.taskId) }));
   const splits = Object.fromEntries(["authoring", "heldout"].map(split => [
@@ -71,9 +75,9 @@ export function summarizeConditionAResults(results, corpus) {
   ]));
   return {
     schemaVersion: 1,
-    condition: "A",
-    knowledgeMode: "current-docs",
-    knowledgeCommit: "9414d07179c9e7c6bbfdf00b762fc35de0ff25ec",
+    condition,
+    knowledgeMode,
+    knowledgeCommit,
     models: [...new Set(results.map(result => result.model.resolvedName))].sort(),
     taskCount: corpus.tasks.length,
     repetitionsPerTask: results.length / corpus.tasks.length,
@@ -91,6 +95,7 @@ export function summarizeConditionAResults(results, corpus) {
       reasoningTokens: results.reduce((sum, result) => sum + result.metrics.reasoningTokens, 0),
       totalTokens: results.reduce((sum, result) => sum + result.metrics.totalTokens, 0),
       modelCalls: results.reduce((sum, result) => sum + result.metrics.modelCalls, 0),
+      mcpCalls: results.reduce((sum, result) => sum + result.metrics.mcpCalls, 0),
       estimatedCostUsd: round(results.reduce((sum, result) => sum + result.metrics.estimatedCostUsd, 0), 6)
     },
     runs: results.map(result => ({
@@ -111,6 +116,14 @@ export function summarizeConditionAResults(results, corpus) {
       programSha256: result.artifacts.programSha256
     }))
   };
+}
+
+export function summarizeConditionAResults(results, corpus) {
+  return summarizeEvaluationResults(results, corpus, {
+    condition: "A",
+    knowledgeMode: "current-docs",
+    knowledgeCommit: "9414d07179c9e7c6bbfdf00b762fc35de0ff25ec"
+  });
 }
 
 function formatDistribution(value, unit = "") {
