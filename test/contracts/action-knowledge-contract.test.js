@@ -35,6 +35,8 @@ test("publishes complete deterministic action knowledge", async () => {
   });
   assert.deepEqual(generated, document);
   assert.deepEqual(published, actionDocument);
+  assert.equal(document.schemaVersion, 2);
+  assert.equal(actionDocument.schemaVersion, 2);
   assert.equal(document.recipes.length, 33);
   assert.deepEqual(
     document.actions.map(action => action.name),
@@ -45,6 +47,26 @@ test("publishes complete deterministic action knowledge", async () => {
   )) {
     assert.match(hash, /^[a-f0-9]{64}$/);
   }
+  for (const action of document.actions) {
+    assert.equal(Array.isArray(action.typeDefinitions), true, action.name);
+    assert.equal(new Set(action.typeDefinitions.map(entry => entry.name)).size, action.typeDefinitions.length, action.name);
+    for (const definition of action.typeDefinitions) {
+      assert.match(definition.name, /^[A-Z][A-Za-z0-9]*$/, action.name);
+      assert.match(definition.path, /^types\/[A-Za-z0-9_./-]+\.d\.ts$/, action.name);
+      assert.match(definition.source, /^(?:export\s+)?(?:declare\s+)?(?:interface|type|enum)\s+/, action.name);
+    }
+    if (action.example.kind === "not-applicable") {
+      assert.equal(action.callExample, null, action.name);
+      assert.equal(action.callExamplePath, null, action.name);
+    } else {
+      assert.match(action.callExample, new RegExp(`^\\.${action.name}\\s*\\(`), action.name);
+      assert.equal(action.callExamplePath, action.example.path, action.name);
+    }
+    assert.equal(Buffer.byteLength(JSON.stringify(action)) < 24_000, true, `${action.name}: exact read must stay bounded`);
+  }
+  const regression = document.actions.find(action => action.name === "createRegression");
+  assert.equal(regression.typeDefinitions.some(entry => entry.name === "RegressionOptions"), true);
+  assert.equal(regression.typeDefinitions.some(entry => entry.name === "RegressionParameterOptions"), true);
   await generateActionKnowledge({ check: true });
 });
 

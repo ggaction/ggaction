@@ -28,6 +28,21 @@ Legends are inferred from final mark encodings and materialized as concrete
 graphics. Start with the family that matches the encoded channel and use the
 editing page when changing an existing guide.
 
+## Minimal lifecycle flow
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })
+  .createData({ values: [
+    { x: 1, y: 2, group: "A" },
+    { x: 2, y: 4, group: "B" }
+  ] })
+  .createScatterPlot({ x: "x", y: "y", color: "group" })
+  .editLegendLayout({ position: "right", offset: 18 });
+```
+
 ## Supported legend families
 
 <!-- action-capabilities:legends:start -->

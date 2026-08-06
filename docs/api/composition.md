@@ -208,6 +208,20 @@ are recomputed from the newly translated child plot bounds.
 ## Edit facet scale and guide policies
 
 ```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { group: "A", x: 1, y: 2 },
+    { group: "B", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .facet({ field: "group" })
+  .editFacetScales({ x: "independent" });
+```
+
+```javascript
 const independent = faceted.editFacetScales({
   x: "independent"
 });

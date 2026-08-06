@@ -47,6 +47,23 @@ For ordinary grouped bar charts, prefer
 `encodeColor({ field, layout: "group" })`; it calls the matching advanced
 directional offset action for the same field.
 
+For a ranged bar, create one categorical position and then bind the lower and
+upper quantitative fields together:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { category: "A", low: 1, high: 3 },
+    { category: "B", low: 2, high: 5 }
+  ] })
+  .createBarMark({ id: "ranges" })
+  .encodeY({ target: "ranges", field: "category", fieldType: "nominal" })
+  .encodeXRange({ target: "ranges", lower: "low", upper: "high" });
+```
+
 For a center-stacked area, each group must have exactly one non-negative value
 at every x position. `encodeY({ stack: "center" })` preserves the original y
 field and creates concrete lower/upper area boundaries around zero. The

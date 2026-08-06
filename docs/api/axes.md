@@ -18,6 +18,23 @@ title: Axes
 
 ## `createAxes(options?)`
 
+### Minimal Cartesian flow
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { x: 1, y: 2 },
+    { x: 2, y: 4 }
+  ] })
+  .createPointMark()
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .createAxes();
+```
+
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
 action for ordinary chart authoring.
 
@@ -139,6 +156,25 @@ individual mappings with `editScale`.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
+
+### Minimal Polar flow
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { angle: 0, radius: 1 },
+    { angle: 120, radius: 2 },
+    { angle: 240, radius: 3 }
+  ] })
+  .createPointMark()
+  .encodeTheta({ field: "angle" })
+  .encodeR({ field: "radius" })
+  .createThetaAxis()
+  .createRadialAxis();
+```
 
 ## Editing a complete axis
 

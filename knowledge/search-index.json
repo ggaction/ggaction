@@ -5,7 +5,7 @@
     "recipeCount": 33,
     "docsCount": 4,
     "recordCount": 210,
-    "knowledgeSha256": "5952b0d4828f12d9b0792b183cb97fd6760f673f11384f69fb399a24aaebf0b8",
+    "knowledgeSha256": "3ead2c2da2374005ebf0841592febb8221db1f9ee07e5ccccfe8af6f0440f83f",
     "routeSourceSha256": "bcf91c695c2904c986e3c9c1fab6a0214f0f256291827282e987f5fba13dcfb2"
   },
   "limits": {
@@ -26461,7 +26461,7 @@
       "id": "statistical-owner-revisions",
       "title": "Statistical Owner Revisions",
       "summary": "Revise fitted models, intervals, distribution summaries, and their owned graphical components without rebuilding charts manually.",
-      "route": "/reference/actions/statistics/",
+      "route": "/api/regression/",
       "terms": {
         "identity": [
           "owner",

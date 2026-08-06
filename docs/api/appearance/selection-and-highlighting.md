@@ -9,6 +9,20 @@ title: Selection and Highlighting
 
 ## Mark selection and highlighting
 
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { id: "a", x: 1, y: 2 },
+    { id: "b", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .selectMarks({ id: "highest", field: "y", op: "max" })
+  .highlightMarks({ selection: "highest", fill: "#f97316" });
+```
+
 `selectMarks` is the advanced reusable-selection action. Selection by itself
 does not alter `semanticSpec` or `graphicSpec`:
 

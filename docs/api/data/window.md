@@ -19,6 +19,8 @@ running totals, or neighboring values without changing the source rows.
 ## `createWindowData({ id, source?, partitionBy?, sortBy?, operations })`
 
 ```javascript
+import { chart } from "ggaction";
+
 const program = chart()
   .createData({
     id: "sales",

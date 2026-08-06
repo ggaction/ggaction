@@ -23,19 +23,19 @@ export async function buildKnowledge() {
   };
   return {
     document: {
-      schemaVersion: 1,
+      schemaVersion: 2,
       generated,
       actions: actionKnowledge.document.actions,
       recipes: recipeKnowledge.document.recipes,
       coverage: recipeKnowledge.document.coverage
     },
     actionDocument: {
-      schemaVersion: 1,
+      schemaVersion: 2,
       generated,
       actions: actionKnowledge.document.actions
     },
     recipeDocument: {
-      schemaVersion: 1,
+      schemaVersion: 2,
       generated,
       recipes: recipeKnowledge.document.recipes,
       coverage: recipeKnowledge.document.coverage

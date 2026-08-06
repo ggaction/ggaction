@@ -79,6 +79,19 @@ Concrete graphics appear when the required encodings make the mark renderable.
 Later Canvas, scale, grouping, or appearance edits explicitly rematerialize
 those graphics.
 
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { x: "A", y: "One" },
+    { x: "B", y: "Two" }
+  ] })
+  .createRectMark({ id: "cells" })
+  .editRectMark({ target: "cells", fill: "#60a5fa", opacity: 0.8 });
+```
+
 ## Shared inference
 
 - `data` defaults to the current dataset.
@@ -102,6 +115,8 @@ those graphics.
 row after both x and y encodings are complete:
 
 ```javascript
+import { chart } from "ggaction";
+
 const rug = chart()
   .createCanvas({ width: 800, height: 240 })
   .createData({

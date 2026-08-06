@@ -2575,7 +2575,7 @@ const dashboard = hconcat({
     { id: "detail", program: bars }
   ],
   gap: 20
-});
+}).editCompositionLayout({ gap: 24, align: "center" });
 ```
 
 `pointRows` and `barRows` are arrays of plain row objects containing the named
@@ -4098,6 +4098,32 @@ creating derived state.
 
 # Statistical Data Transforms
 
+## `createDerivedData({ id, source?, transform })`
+
+Use the general derived-data action when a named transform pipeline should be
+stored for reuse by later marks or statistical actions.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({
+    id: "rows",
+    values: [
+      { category: "A", value: 2 },
+      { category: "B", value: 5 }
+    ]
+  })
+  .createDerivedData({
+    id: "selectedRows",
+    source: "rows",
+    transform: [
+      { type: "filter", field: "category", oneOf: ["A"] }
+    ]
+  });
+```
+
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
 
 Create deterministic regression predictions from an existing dataset. This is
@@ -4283,6 +4309,8 @@ running totals, or neighboring values without changing the source rows.
 ## `createWindowData({ id, source?, partitionBy?, sortBy?, operations })`
 
 ```javascript
+import { chart } from "ggaction";
+
 const program = chart()
   .createData({
     id: "sales",
@@ -4547,6 +4575,19 @@ Concrete graphics appear when the required encodings make the mark renderable.
 Later Canvas, scale, grouping, or appearance edits explicitly rematerialize
 those graphics.
 
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { x: "A", y: "One" },
+    { x: "B", y: "Two" }
+  ] })
+  .createRectMark({ id: "cells" })
+  .editRectMark({ target: "cells", fill: "#60a5fa", opacity: 0.8 });
+```
+
 ## Shared inference
 
 - `data` defaults to the current dataset.
@@ -4570,6 +4611,8 @@ those graphics.
 row after both x and y encodings are complete:
 
 ```javascript
+import { chart } from "ggaction";
+
 const rug = chart()
   .createCanvas({ width: 800, height: 240 })
   .createData({
@@ -5448,6 +5491,21 @@ decomposition matters.
 ## Editing a regression
 
 Use the original point owner, not generated band or line IDs:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { x: 1, y: 2 },
+    { x: 2, y: 4 },
+    { x: 3, y: 5 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .createRegression()
+  .editRegression({ line: { strokeWidth: 3 } });
+```
 
 ```javascript
 const revised = program.editRegression({
@@ -7007,6 +7065,20 @@ are recomputed from the newly translated child plot bounds.
 ## Edit facet scale and guide policies
 
 ```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { group: "A", x: 1, y: 2 },
+    { group: "B", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .facet({ field: "group" })
+  .editFacetScales({ x: "independent" });
+```
+
+```javascript
 const independent = faceted.editFacetScales({
   x: "independent"
 });
@@ -7105,6 +7177,23 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 For ordinary grouped bar charts, prefer
 `encodeColor({ field, layout: "group" })`; it calls the matching advanced
 directional offset action for the same field.
+
+For a ranged bar, create one categorical position and then bind the lower and
+upper quantitative fields together:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { category: "A", low: 1, high: 3 },
+    { category: "B", low: 2, high: 5 }
+  ] })
+  .createBarMark({ id: "ranges" })
+  .encodeY({ target: "ranges", field: "category", fieldType: "nominal" })
+  .encodeXRange({ target: "ranges", lower: "low", upper: "high" });
+```
 
 For a center-stacked area, each group must have exactly one non-negative value
 at every x position. `encodeY({ stack: "center" })` preserves the original y
@@ -7460,12 +7549,21 @@ together. It never reorders source rows.
 ## `orderCategories(options)`
 
 ```javascript
-const ordered = program.orderCategories({
-  target: "bars",
-  channel: "x",
-  by: { field: "value", aggregate: "sum" },
-  direction: "descending"
-});
+import { chart } from "ggaction";
+
+const ordered = chart()
+  .createCanvas()
+  .createData({ values: [
+    { category: "A", value: 2 },
+    { category: "B", value: 5 }
+  ] })
+  .createBarPlot({ id: "bars", x: "category", y: "value" })
+  .orderCategories({
+    target: "bars",
+    channel: "x",
+    by: { field: "value", aggregate: "sum" },
+    direction: "descending"
+  });
 ```
 
 `target` defaults to the current compatible mark, then the unique compatible
@@ -8060,6 +8158,20 @@ properties listed on the focused selection page.
 # Selection and Highlighting
 
 ## Mark selection and highlighting
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { id: "a", x: 1, y: 2 },
+    { id: "b", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .selectMarks({ id: "highest", field: "y", op: "max" })
+  .highlightMarks({ selection: "highest", fill: "#f97316" });
+```
 
 `selectMarks` is the advanced reusable-selection action. Selection by itself
 does not alter `semanticSpec` or `graphicSpec`:
@@ -8887,6 +8999,23 @@ Polar grid.
 
 ## `createAxes(options?)`
 
+### Minimal Cartesian flow
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { x: 1, y: 2 },
+    { x: 2, y: 4 }
+  ] })
+  .createPointMark()
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .createAxes();
+```
+
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
 action for ordinary chart authoring.
 
@@ -9009,6 +9138,25 @@ individual mappings with `editScale`.
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
 
+### Minimal Polar flow
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { angle: 0, radius: 1 },
+    { angle: 120, radius: 2 },
+    { angle: 240, radius: 3 }
+  ] })
+  .createPointMark()
+  .encodeTheta({ field: "angle" })
+  .encodeR({ field: "radius" })
+  .createThetaAxis()
+  .createRadialAxis();
+```
+
 ## Editing a complete axis
 
 Use `editXAxis()` or `editYAxis()` when several components of one existing
@@ -9103,6 +9251,21 @@ has one semantic axis, so parallel duplicate axes cannot be created.
 | `removeGrid` | `removeGrid({ vertical: true })` | Existing selected directions | Semantic, graphic, and stored grid state removed |
 
 ## `createGrid(options?)`
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { x: 1, y: 2 },
+    { x: 2, y: 4 }
+  ] })
+  .createPointMark()
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .createGrid({ horizontal: true, vertical: true });
+```
 
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
 defaults to horizontal only. A Polar-only chart creates theta spokes when theta
@@ -9258,6 +9421,21 @@ Cartesian or Polar coordinate. Ambiguous resources require explicit IDs.
 Legends are inferred from final mark encodings and materialized as concrete
 graphics. Start with the family that matches the encoded channel and use the
 editing page when changing an existing guide.
+
+## Minimal lifecycle flow
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })
+  .createData({ values: [
+    { x: 1, y: 2, group: "A" },
+    { x: 2, y: 4, group: "B" }
+  ] })
+  .createScatterPlot({ x: "x", y: "y", color: "group" })
+  .editLegendLayout({ position: "right", offset: 18 });
+```
 
 ## Supported legend families
 
@@ -12407,6 +12585,17 @@ The extension entry point is for developers adding traceable domain actions.
 
 ```javascript
 import { action, ChartProgram } from "ggaction/extension";
+
+const addBadge = action(
+  { op: "addBadge", description: "Add one extension-owned badge." },
+  function () {
+    return this
+      .createGraphics({ id: "badge", type: "text" })
+      .editGraphics({ target: "badge", property: "text", value: "Ready" });
+  }
+);
+
+const program = addBadge.call(new ChartProgram());
 ```
 
 Subclass `ChartProgram` so independent extensions do not overwrite methods on

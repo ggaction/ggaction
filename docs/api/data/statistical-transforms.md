@@ -7,7 +7,31 @@ title: Statistical Data Transforms
 
 {% include chart-example.html id="regression" %}
 
-{% include chart-example.html id="regression" %}
+## `createDerivedData({ id, source?, transform })`
+
+Use the general derived-data action when a named transform pipeline should be
+stored for reuse by later marks or statistical actions.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({
+    id: "rows",
+    values: [
+      { category: "A", value: 2 },
+      { category: "B", value: 5 }
+    ]
+  })
+  .createDerivedData({
+    id: "selectedRows",
+    source: "rows",
+    transform: [
+      { type: "filter", field: "category", oneOf: ["A"] }
+    ]
+  });
+```
 
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
 

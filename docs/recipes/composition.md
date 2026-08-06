@@ -30,7 +30,7 @@ const dashboard = hconcat({
     { id: "detail", program: bars }
   ],
   gap: 20
-});
+}).editCompositionLayout({ gap: 24, align: "center" });
 ```
 
 `pointRows` and `barRows` are arrays of plain row objects containing the named

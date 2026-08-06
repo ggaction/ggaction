@@ -17,6 +17,17 @@ The extension entry point is for developers adding traceable domain actions.
 
 ```javascript
 import { action, ChartProgram } from "ggaction/extension";
+
+const addBadge = action(
+  { op: "addBadge", description: "Add one extension-owned badge." },
+  function () {
+    return this
+      .createGraphics({ id: "badge", type: "text" })
+      .editGraphics({ target: "badge", property: "text", value: "Ready" });
+  }
+);
+
+const program = addBadge.call(new ChartProgram());
 ```
 
 Subclass `ChartProgram` so independent extensions do not overwrite methods on

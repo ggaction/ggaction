@@ -17,6 +17,21 @@ title: Grids
 
 ## `createGrid(options?)`
 
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { x: 1, y: 2 },
+    { x: 2, y: 4 }
+  ] })
+  .createPointMark()
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .createGrid({ horizontal: true, vertical: true });
+```
+
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
 defaults to horizontal only. A Polar-only chart creates theta spokes when theta
 is encoded and radial circles when radius is encoded; charts with both channels

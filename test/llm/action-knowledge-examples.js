@@ -107,63 +107,65 @@ function regression() {
   return points().createRegression({ confidence: 0.9 });
 }
 
-const cartesianCreateActions = [
-  "createAxes", "createXAxis", "createXAxisLabels", "createXAxisLine", "createXAxisTicks",
-  "createXAxisTicksAndLabels", "createXAxisTitle", "createYAxis", "createYAxisLabels",
-  "createYAxisLine", "createYAxisTicks", "createYAxisTicksAndLabels", "createYAxisTitle"
-];
-
-const cartesianEditOptions = Object.freeze({
-  editXAxis: { title: { text: "Horizontal value" } },
-  editXAxisLabels: { fontSize: 11 },
-  editXAxisLine: { lineWidth: 2 },
-  editXAxisTicks: { count: 3 },
-  editXAxisTicksAndLabels: { count: 3 },
-  editXAxisTitle: { text: "Horizontal value" },
-  editYAxis: { title: { text: "Vertical value" } },
-  editYAxisLabels: { fontSize: 11 },
-  editYAxisLine: { lineWidth: 2 },
-  editYAxisTicks: { count: 3 },
-  editYAxisTicksAndLabels: { count: 3 },
-  editYAxisTitle: { text: "Vertical value" }
-});
-
-const polarCreateActions = ["createThetaAxis", "createRadialAxis"];
-const polarEditOptions = Object.freeze({
-  editThetaAxis: { title: { text: "Angle" } },
-  editThetaAxisLabels: { fontSize: 11 },
-  editThetaAxisLine: { lineWidth: 2 },
-  editThetaAxisTicks: { count: 3 },
-  editThetaAxisTitle: { text: "Angle" },
-  editRadialAxis: { angle: 45 },
-  editRadialAxisLabels: { fontSize: 11 },
-  editRadialAxisLine: { lineWidth: 2 },
-  editRadialAxisTicks: { count: 3 },
-  editRadialAxisTitle: { text: "Radius" }
-});
-
-const gridCreateActions = [
-  "createGrid", "createHorizontalGrid", "createVerticalGrid"
-];
-const gridEditOptions = Object.freeze({
-  editGrid: { horizontal: { color: "#cbd5e1" }, vertical: { color: "#e2e8f0" } },
-  editHorizontalGrid: { color: "#cbd5e1" },
-  editVerticalGrid: { color: "#e2e8f0" }
-});
+function regressionData() {
+  return points().createRegressionData({
+    id: "regression",
+    source: "rows",
+    x: "x",
+    y: "y"
+  });
+}
 
 export const actionExamples = Object.fromEntries([
-  ...cartesianCreateActions.map(name => [name, () => points()[name]()]),
-  ...Object.entries(cartesianEditOptions).map(([name, options]) => [name, () => cartesianGuides()[name](options)]),
+  ["createAxes", () => points().createAxes()],
+  ["createXAxis", () => points().createXAxis()],
+  ["createXAxisLabels", () => points().createXAxisLabels()],
+  ["createXAxisLine", () => points().createXAxisLine()],
+  ["createXAxisTicks", () => points().createXAxisTicks()],
+  ["createXAxisTicksAndLabels", () => points().createXAxisTicksAndLabels()],
+  ["createXAxisTitle", () => points().createXAxisTitle()],
+  ["createYAxis", () => points().createYAxis()],
+  ["createYAxisLabels", () => points().createYAxisLabels()],
+  ["createYAxisLine", () => points().createYAxisLine()],
+  ["createYAxisTicks", () => points().createYAxisTicks()],
+  ["createYAxisTicksAndLabels", () => points().createYAxisTicksAndLabels()],
+  ["createYAxisTitle", () => points().createYAxisTitle()],
+  ["editXAxis", () => cartesianGuides().editXAxis({ title: { text: "Horizontal value" } })],
+  ["editXAxisLabels", () => cartesianGuides().editXAxisLabels({ fontSize: 11 })],
+  ["editXAxisLine", () => cartesianGuides().editXAxisLine({ lineWidth: 2 })],
+  ["editXAxisTicks", () => cartesianGuides().editXAxisTicks({ count: 3 })],
+  ["editXAxisTicksAndLabels", () => cartesianGuides().editXAxisTicksAndLabels({ count: 3 })],
+  ["editXAxisTitle", () => cartesianGuides().editXAxisTitle({ text: "Horizontal value" })],
+  ["editYAxis", () => cartesianGuides().editYAxis({ title: { text: "Vertical value" } })],
+  ["editYAxisLabels", () => cartesianGuides().editYAxisLabels({ fontSize: 11 })],
+  ["editYAxisLine", () => cartesianGuides().editYAxisLine({ lineWidth: 2 })],
+  ["editYAxisTicks", () => cartesianGuides().editYAxisTicks({ count: 3 })],
+  ["editYAxisTicksAndLabels", () => cartesianGuides().editYAxisTicksAndLabels({ count: 3 })],
+  ["editYAxisTitle", () => cartesianGuides().editYAxisTitle({ text: "Vertical value" })],
   ["removeXAxis", () => cartesianGuides().removeXAxis()],
   ["removeYAxis", () => cartesianGuides().removeYAxis()],
 
-  ...polarCreateActions.map(name => [name, () => polar()[name]()]),
-  ...Object.entries(polarEditOptions).map(([name, options]) => [name, () => polarAxes()[name](options)]),
+  ["createThetaAxis", () => polar().createThetaAxis()],
+  ["createRadialAxis", () => polar().createRadialAxis()],
+  ["editThetaAxis", () => polarAxes().editThetaAxis({ title: { text: "Angle" } })],
+  ["editThetaAxisLabels", () => polarAxes().editThetaAxisLabels({ fontSize: 11 })],
+  ["editThetaAxisLine", () => polarAxes().editThetaAxisLine({ lineWidth: 2 })],
+  ["editThetaAxisTicks", () => polarAxes().editThetaAxisTicks({ count: 3 })],
+  ["editThetaAxisTitle", () => polarAxes().editThetaAxisTitle({ text: "Angle" })],
+  ["editRadialAxis", () => polarAxes().editRadialAxis({ angle: 45 })],
+  ["editRadialAxisLabels", () => polarAxes().editRadialAxisLabels({ fontSize: 11 })],
+  ["editRadialAxisLine", () => polarAxes().editRadialAxisLine({ lineWidth: 2 })],
+  ["editRadialAxisTicks", () => polarAxes().editRadialAxisTicks({ count: 3 })],
+  ["editRadialAxisTitle", () => polarAxes().editRadialAxisTitle({ text: "Radius" })],
   ["removeThetaAxis", () => polarAxes().removeThetaAxis()],
   ["removeRadialAxis", () => polarAxes().removeRadialAxis()],
 
-  ...gridCreateActions.map(name => [name, () => points()[name]()]),
-  ...Object.entries(gridEditOptions).map(([name, options]) => [name, () => cartesianGuides()[name](options)]),
+  ["createGrid", () => points().createGrid()],
+  ["createHorizontalGrid", () => points().createHorizontalGrid()],
+  ["createVerticalGrid", () => points().createVerticalGrid()],
+  ["editGrid", () => cartesianGuides().editGrid({ horizontal: { color: "#cbd5e1" }, vertical: { color: "#e2e8f0" } })],
+  ["editHorizontalGrid", () => cartesianGuides().editHorizontalGrid({ color: "#cbd5e1" })],
+  ["editVerticalGrid", () => cartesianGuides().editVerticalGrid({ color: "#e2e8f0" })],
   ["createThetaGrid", () => polar().createThetaGrid()],
   ["createRadialGrid", () => polar().createRadialGrid()],
   ["editThetaGrid", () => polarGrid().editThetaGrid({ count: 3 })],
@@ -215,8 +217,25 @@ export const actionExamples = Object.fromEntries([
   ["removeMarkHighlight", () => selection().highlightMarks({ selection: "selected", fill: "#f97316" }).removeMarkHighlight({ selection: "selected" })],
   ["removeMarkSelection", () => selection().removeMarkSelection({ selection: "selected" })],
 
-  ["createRegressionLine", () => regression()],
-  ["createRegressionBand", () => regression()],
+  ["createRegressionLine", () => regressionData().createRegressionLine({
+    id: "regressionLine",
+    data: "regression",
+    x: "x",
+    y: "y",
+    coordinate: "main",
+    xScale: "x",
+    yScale: "y"
+  })],
+  ["createRegressionBand", () => regressionData().createRegressionBand({
+    id: "regressionBand",
+    data: "regression",
+    x: "x",
+    lower: "__regression_ci_lower",
+    upper: "__regression_ci_upper",
+    coordinate: "main",
+    xScale: "x",
+    yScale: "y"
+  })],
   ["editRegression", () => regression().editRegression({ line: { strokeWidth: 3 } })],
   ["editErrorBar", () => errorBar().editErrorBar({ strokeWidth: 2 })],
   ["editErrorBand", () => errorBand().editErrorBand({ opacity: 0.3 })],

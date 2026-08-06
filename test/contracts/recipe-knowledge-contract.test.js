@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
@@ -28,6 +29,8 @@ test("publishes deterministic recipe knowledge with exact action backlinks", asy
   ]);
 
   assert.deepEqual(published, recipeDocument);
+  assert.equal(document.schemaVersion, 2);
+  assert.equal(recipeDocument.schemaVersion, 2);
   assert.deepEqual(document.recipes, recipeDocument.recipes);
   assert.deepEqual(document.coverage, recipeDocument.coverage);
   assert.deepEqual(document.coverage, coverageSource.actions);
@@ -35,6 +38,21 @@ test("publishes deterministic recipe knowledge with exact action backlinks", asy
   assert.equal(document.coverage.length, 173);
   assert.equal(new Set(document.coverage.map(row => row.name)).size, 173);
   assert.equal(document.coverage.every(row => row.recipeIds.length > 0), true);
+
+  for (const recipe of document.recipes) {
+    const primary = recipe.steps.flatMap(step => step.actions)
+      .filter(action => action.role === "primary")
+      .map(action => action.name);
+    assert.match(recipe.exampleSource, /from\s+["']ggaction(?:\/[A-Za-z0-9_-]+)?["']/u, recipe.id);
+    assert.equal(primary.some(name => recipe.exampleSource.includes(`.${name}(`)), true, recipe.id);
+    assert.equal(recipe.docs.some(entry => entry.path === recipe.exampleSourcePath), true, recipe.id);
+    assert.equal(recipe.exampleSource.length <= 30_000, true, recipe.id);
+    const checked = spawnSync(process.execPath, ["--input-type=module", "--check", "-"], {
+      input: recipe.exampleSource,
+      encoding: "utf8"
+    });
+    assert.equal(checked.status, 0, `${recipe.id}: ${checked.stderr}`);
+  }
 
   const actionBacklinks = new Map(document.actions.map(action => [action.name, action.recipeIds]));
   for (const row of document.coverage) assert.deepEqual(row.recipeIds, actionBacklinks.get(row.name), row.name);

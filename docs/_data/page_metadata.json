@@ -231,7 +231,7 @@
   },
   "/api/data/statistical-transforms/": {
     "title": "Statistical Data Transforms",
-    "description": "Create deterministic regression predictions from an existing dataset. This is an advanced data action used by higher level regression chart actions.",
+    "description": "Use the general derived data action when a named transform pipeline should be stored for reuse by later marks or statistical actions.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/data/time-units/": {

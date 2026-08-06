@@ -53,6 +53,28 @@ function headingIds(markdown) {
   }));
 }
 
+function javascriptBlocks(markdown) {
+  return [...markdown.matchAll(/```javascript\n([\s\S]*?)\n```/g)].map(match => match[1].trim());
+}
+
+async function generatedExampleSource(recipe) {
+  const primaryActions = recipe.steps.flatMap(step => step.actions)
+    .filter(action => action.role === "primary")
+    .map(action => action.name);
+  for (const entry of recipe.docs) {
+    const markdown = await readFile(path.join(root, entry.path), "utf8");
+    const source = javascriptBlocks(markdown).find(block =>
+      /from\s+["']ggaction(?:\/[A-Za-z0-9_-]+)?["']/u.test(block) &&
+      primaryActions.some(name => block.includes(`.${name}(`))
+    );
+    if (source !== undefined) {
+      assert(source.length <= 30_000, `${recipe.id}: generated example source is too large`);
+      return { exampleSource: source, exampleSourcePath: entry.path };
+    }
+  }
+  throw new Error(`${recipe.id}: public docs need a ggaction JavaScript example containing a primary action`);
+}
+
 async function validateDocs(recipe) {
   assert(Array.isArray(recipe.docs) && recipe.docs.length > 0, `${recipe.id}: docs must not be empty`);
   for (const entry of recipe.docs) {
@@ -219,14 +241,18 @@ export async function buildRecipeKnowledge(actions) {
     await validateDocs(recipe);
     exampleCoverage[await executeExample(recipe)] += 1;
   }
-  recipes.sort((left, right) => left.id.localeCompare(right.id));
+  const generatedRecipes = await Promise.all(recipes.map(async recipe => ({
+    ...recipe,
+    ...await generatedExampleSource(recipe)
+  })));
+  generatedRecipes.sort((left, right) => left.id.localeCompare(right.id));
   const coverage = validateCoverage(JSON.parse(coverageSource), actions, recipes, actionUses);
   const classifications = Object.fromEntries([...coverageClassifications].map(classification => [
     classification,
     coverage.filter(row => row.classification === classification).length
   ]).filter(([, count]) => count > 0));
   return {
-    document: { recipes, coverage },
+    document: { recipes: generatedRecipes, coverage },
     generated: {
       recipeCount: recipes.length,
       recipeSourceSha256: sha256(sources.join("\n")),

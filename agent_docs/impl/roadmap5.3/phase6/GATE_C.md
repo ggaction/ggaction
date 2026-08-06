@@ -71,10 +71,11 @@ behavior와 narrative ownership도 바꾸지 않는다. 생성물인 `knowledge/
 - `exampleSource`: recipe가 가리키는 공개 문서의 첫 `javascript` Minimal flow code fence
 - `exampleSourcePath`: 해당 공개 문서 경로
 
-현재 33개 중 32개는 이미 이 source를 갖고 있다. `legend-title-lifecycle`만 `docs/api/legends.md`에 완전한 최소 흐름을
-추가한다. Generator는 public `ggaction` import와 recipe primary action call이 source에 있는지, 30,000-character program
-limit 안인지 검증한다. 현재 path/export example을 실제로 실행하는 검증도 그대로 유지한다. Path/export linkage는
-provenance로 유지하되 더 이상 유일한 실행 정보로 사용하지 않는다.
+승인 뒤 엄격한 inventory에서 33개 중 32개에 임의의 JavaScript fence가 있었지만, public `ggaction` import와 해당 recipe의
+primary action call을 함께 가진 fence는 18개뿐임을 확인했다. 자기완결성 기준을 우선해 나머지 15개 public page에도 짧은
+primary flow를 보강한다. Generator는 이 두 조건과 30,000-character program limit을 검증한다. 현재 path/export example을
+실제로 실행하는 검증도 그대로 유지한다. Path/export linkage는 provenance로 유지하되 더 이상 유일한 실행 정보로
+사용하지 않는다.
 
 ### Action exact read
 

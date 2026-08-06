@@ -15,12 +15,21 @@ together. It never reorders source rows.
 ## `orderCategories(options)`
 
 ```javascript
-const ordered = program.orderCategories({
-  target: "bars",
-  channel: "x",
-  by: { field: "value", aggregate: "sum" },
-  direction: "descending"
-});
+import { chart } from "ggaction";
+
+const ordered = chart()
+  .createCanvas()
+  .createData({ values: [
+    { category: "A", value: 2 },
+    { category: "B", value: 5 }
+  ] })
+  .createBarPlot({ id: "bars", x: "category", y: "value" })
+  .orderCategories({
+    target: "bars",
+    channel: "x",
+    by: { field: "value", aggregate: "sum" },
+    direction: "descending"
+  });
 ```
 
 `target` defaults to the current compatible mark, then the unique compatible

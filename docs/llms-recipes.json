@@ -1,12 +1,12 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generated": {
     "actionCount": 173,
     "actionIndexSha256": "5ba78038a620f50c79878d29404f7739a55ab5f59406d84ad1b16b68a188d7f6",
     "actionSourceSha256": "1a2a4a50656eb9c6b2924f071b3e5c3aadecf92400baf73af4b58a3563d9e4fc",
     "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
     "recipeCount": 33,
-    "recipeSourceSha256": "6f9307a9e053837c129ad833f49e2264124da3e2fe9df2a772c99691882e1c06",
+    "recipeSourceSha256": "a1fcc145d177040a02ced031c79a3b58b33b002cfddadbdb7083ae677befe0c7",
     "recipeCoverageSha256": "d9b7a19a141bd1e4798985e584c9dd58622766e231ffb5a96f98be347b93ed9d"
   },
   "recipes": [
@@ -133,7 +133,9 @@
         {
           "path": "docs/recipes/annotations.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: films })\n  .createScatterPlot({ x: \"Released_Year\", y: \"IMDB_Rating\" })\n  .createTextMark({ dx: 7, dy: -6, align: \"left\", baseline: \"bottom\" })\n  .encodeText({ field: \"Series_Title\" })\n  .layoutLabels({\n    padding: 3,\n    maxDisplacement: 48,\n    leader: { stroke: \"#94a3b8\", opacity: 0.8 }\n  });",
+      "exampleSourcePath": "docs/recipes/annotations.md"
     },
     {
       "schemaVersion": 1,
@@ -243,7 +245,9 @@
         {
           "path": "docs/recipes/bar-chart.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 140 } })\n  .createData({ values })\n  .createBarPlot({\n    x: { field: \"category\", fieldType: \"ordinal\" },\n    y: { field: \"value\", aggregate: \"mean\" },\n    color: { field: \"group\", layout: \"group\" },\n    width: { band: 0.72 }\n  });",
+      "exampleSourcePath": "docs/recipes/bar-chart.md"
     },
     {
       "schemaVersion": 1,
@@ -335,7 +339,9 @@
         {
           "path": "docs/recipes/box-plot.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createBoxPlot({\n    x: { field: \"category\", fieldType: \"nominal\" },\n    y: { field: \"value\" },\n    guides: { legend: false }\n  });",
+      "exampleSourcePath": "docs/recipes/box-plot.md"
     },
     {
       "schemaVersion": 1,
@@ -519,7 +525,9 @@
         {
           "path": "docs/api/axes.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { x: 1, y: 2 },\n    { x: 2, y: 4 }\n  ] })\n  .createPointMark()\n  .encodeX({ field: \"x\" })\n  .encodeY({ field: \"y\" })\n  .createAxes();",
+      "exampleSourcePath": "docs/api/axes.md"
     },
     {
       "schemaVersion": 1,
@@ -621,7 +629,9 @@
         {
           "path": "docs/api/position/category-ordering.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst ordered = chart()\n  .createCanvas()\n  .createData({ values: [\n    { category: \"A\", value: 2 },\n    { category: \"B\", value: 5 }\n  ] })\n  .createBarPlot({ id: \"bars\", x: \"category\", y: \"value\" })\n  .orderCategories({\n    target: \"bars\",\n    channel: \"x\",\n    by: { field: \"value\", aggregate: \"sum\" },\n    direction: \"descending\"\n  });",
+      "exampleSourcePath": "docs/api/position/category-ordering.md"
     },
     {
       "schemaVersion": 1,
@@ -697,7 +707,9 @@
         {
           "path": "docs/recipes/composition.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart, hconcat } from \"ggaction\";\n\nconst points = chart()\n  .createCanvas({ width: 280, height: 220 })\n  .createData({ values: pointRows })\n  .createScatterPlot({ x: \"x\", y: \"y\" });\n\nconst bars = chart()\n  .createCanvas({ width: 260, height: 220 })\n  .createData({ values: barRows })\n  .createBarPlot({ x: \"category\", y: \"value\" });\n\nconst dashboard = hconcat({\n  programs: [\n    { id: \"main\", program: points },\n    { id: \"detail\", program: bars }\n  ],\n  gap: 20\n}).editCompositionLayout({ gap: 24, align: \"center\" });",
+      "exampleSourcePath": "docs/recipes/composition.md"
     },
     {
       "schemaVersion": 1,
@@ -797,7 +809,9 @@
         {
           "path": "docs/recipes/density-area.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 100, right: 140 } })\n  .createData({ values })\n  .createAreaMark()\n  .encodeDensity({ field: \"value\", groupBy: \"group\" })\n  .encodeColor({ field: \"group\" })\n  .createGuides();",
+      "exampleSourcePath": "docs/recipes/density-area.md"
     },
     {
       "schemaVersion": 1,
@@ -903,7 +917,9 @@
         {
           "path": "docs/api/data/statistical-transforms.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({\n    id: \"rows\",\n    values: [\n      { category: \"A\", value: 2 },\n      { category: \"B\", value: 5 }\n    ]\n  })\n  .createDerivedData({\n    id: \"selectedRows\",\n    source: \"rows\",\n    transform: [\n      { type: \"filter\", field: \"category\", oneOf: [\"A\"] }\n    ]\n  });",
+      "exampleSourcePath": "docs/api/data/statistical-transforms.md"
     },
     {
       "schemaVersion": 1,
@@ -999,7 +1015,9 @@
         {
           "path": "docs/recipes/error-band.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createErrorBand({\n    x: { field: \"time\", fieldType: \"temporal\" },\n    y: { field: \"value\" },\n    groupBy: \"series\"\n  })\n  .encodeColor({ target: \"errorBand\", field: \"series\" })\n  .createGuides();",
+      "exampleSourcePath": "docs/recipes/error-band.md"
     },
     {
       "schemaVersion": 1,
@@ -1117,7 +1135,9 @@
         {
           "path": "docs/recipes/error-bar.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createErrorBar({\n    x: { field: \"group\", fieldType: \"nominal\" },\n    y: { field: \"value\" }\n  })\n  .createGuides();",
+      "exampleSourcePath": "docs/recipes/error-bar.md"
     },
     {
       "schemaVersion": 1,
@@ -1203,7 +1223,9 @@
         {
           "path": "docs/extension/action-authoring.md"
         }
-      ]
+      ],
+      "exampleSource": "import { action, ChartProgram } from \"ggaction/extension\";\n\nconst addBadge = action(\n  { op: \"addBadge\", description: \"Add one extension-owned badge.\" },\n  function () {\n    return this\n      .createGraphics({ id: \"badge\", type: \"text\" })\n      .editGraphics({ target: \"badge\", property: \"text\", value: \"Ready\" });\n  }\n);\n\nconst program = addBadge.call(new ChartProgram());",
+      "exampleSourcePath": "docs/extension/action-authoring.md"
     },
     {
       "schemaVersion": 1,
@@ -1308,7 +1330,9 @@
         {
           "path": "docs/recipes/facet.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ width: 250, height: 230 })\n  .createData({ values: cars })\n  .createScatterPlot({\n    x: \"Horsepower\",\n    y: \"Miles_per_Gallon\",\n    color: \"Cylinders\"\n  })\n  .facet({\n    field: \"Origin\",\n    columns: 3,\n    guides: { legend: \"shared\" }\n  });",
+      "exampleSourcePath": "docs/recipes/facet.md"
     },
     {
       "schemaVersion": 1,
@@ -1400,7 +1424,9 @@
         {
           "path": "docs/recipes/gradient-plot.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 70, right: 150, bottom: 70, left: 70 } })\n  .createData({ values: cars })\n  .createGradientPlot({\n    x: \"Origin\",\n    y: \"Acceleration\"\n  })\n  .encodeColor({ field: \"Origin\" });",
+      "exampleSourcePath": "docs/recipes/gradient-plot.md"
     },
     {
       "schemaVersion": 1,
@@ -1520,7 +1546,9 @@
         {
           "path": "docs/api/grids.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { x: 1, y: 2 },\n    { x: 2, y: 4 }\n  ] })\n  .createPointMark()\n  .encodeX({ field: \"x\" })\n  .encodeY({ field: \"y\" })\n  .createGrid({ horizontal: true, vertical: true });",
+      "exampleSourcePath": "docs/api/grids.md"
     },
     {
       "schemaVersion": 1,
@@ -1621,7 +1649,9 @@
         {
           "path": "docs/recipes/heatmap.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 120 } })\n  .createData({ values: cells })\n  .createHeatmap({\n    x: { field: \"column\", fieldType: \"ordinal\" },\n    y: { field: \"row\", fieldType: \"nominal\" },\n    color: {\n      field: \"value\",\n      fieldType: \"quantitative\",\n      scale: { type: \"sequential\", palette: \"viridis\" }\n    }\n  });",
+      "exampleSourcePath": "docs/recipes/heatmap.md"
     },
     {
       "schemaVersion": 1,
@@ -1711,7 +1741,9 @@
         {
           "path": "docs/recipes/histogram.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 140 } })\n  .createData({ values })\n  .createHistogram({ field: \"value\" });",
+      "exampleSourcePath": "docs/recipes/histogram.md"
     },
     {
       "schemaVersion": 1,
@@ -1808,7 +1840,9 @@
         {
           "path": "docs/recipes/horizon.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createAreaMark({ curve: \"monotone\" })\n  .encodeHorizon({ x: \"time\", y: \"value\" })\n  .createGuides();",
+      "exampleSourcePath": "docs/recipes/horizon.md"
     },
     {
       "schemaVersion": 1,
@@ -1963,7 +1997,9 @@
         {
           "path": "docs/api/legends.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })\n  .createData({ values: [\n    { x: 1, y: 2, group: \"A\" },\n    { x: 2, y: 4, group: \"B\" }\n  ] })\n  .createScatterPlot({ x: \"x\", y: \"y\", color: \"group\" })\n  .editLegendLayout({ position: \"right\", offset: 18 });",
+      "exampleSourcePath": "docs/api/legends.md"
     },
     {
       "schemaVersion": 1,
@@ -2063,7 +2099,9 @@
         {
           "path": "docs/recipes/line-chart.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 140 } })\n  .createData({ values })\n  .createLinePlot({\n    x: { field: \"date\", fieldType: \"temporal\" },\n    y: { field: \"value\", aggregate: \"mean\" }\n  });",
+      "exampleSourcePath": "docs/recipes/line-chart.md"
     },
     {
       "schemaVersion": 1,
@@ -2209,7 +2247,9 @@
         {
           "path": "docs/api/marks.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { x: \"A\", y: \"One\" },\n    { x: \"B\", y: \"Two\" }\n  ] })\n  .createRectMark({ id: \"cells\" })\n  .editRectMark({ target: \"cells\", fill: \"#60a5fa\", opacity: 0.8 });",
+      "exampleSourcePath": "docs/api/marks.md"
     },
     {
       "schemaVersion": 1,
@@ -2306,7 +2346,9 @@
         {
           "path": "docs/recipes/parallel-coordinates.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 80, right: 140, bottom: 60, left: 70 } })\n  .createData({ values: cars })\n  .createParallelCoordinates({\n    dimensions: [\n      \"Miles_per_Gallon\",\n      \"Horsepower\",\n      \"Weight_in_lbs\",\n      \"Acceleration\"\n    ],\n    color: \"Origin\"\n  });",
+      "exampleSourcePath": "docs/recipes/parallel-coordinates.md"
     },
     {
       "schemaVersion": 1,
@@ -2410,7 +2452,9 @@
         {
           "path": "docs/recipes/path-ordering.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: observations })\n  .createLineMark()\n  .encodeX({ field: \"fertility\" })\n  .encodeY({ field: \"life_expect\" })\n  .encodeColor({ field: \"country\" })\n  .encodePathOrder({ field: \"year\", order: \"ascending\" })\n  .createGuides();",
+      "exampleSourcePath": "docs/recipes/path-ordering.md"
     },
     {
       "schemaVersion": 1,
@@ -2542,7 +2586,9 @@
         {
           "path": "docs/api/axes.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { angle: 0, radius: 1 },\n    { angle: 120, radius: 2 },\n    { angle: 240, radius: 3 }\n  ] })\n  .createPointMark()\n  .encodeTheta({ field: \"angle\" })\n  .encodeR({ field: \"radius\" })\n  .createThetaAxis()\n  .createRadialAxis();",
+      "exampleSourcePath": "docs/api/axes.md"
     },
     {
       "schemaVersion": 1,
@@ -2672,7 +2718,9 @@
         {
           "path": "docs/api/position-encodings.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { category: \"A\", low: 1, high: 3 },\n    { category: \"B\", low: 2, high: 5 }\n  ] })\n  .createBarMark({ id: \"ranges\" })\n  .encodeY({ target: \"ranges\", field: \"category\", fieldType: \"nominal\" })\n  .encodeXRange({ target: \"ranges\", lower: \"low\", upper: \"high\" });",
+      "exampleSourcePath": "docs/api/position-encodings.md"
     },
     {
       "schemaVersion": 1,
@@ -2788,7 +2836,9 @@
         {
           "path": "docs/recipes/regression-scatterplot.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({\n    width: 760,\n    height: 480,\n    margin: { top: 40, right: 190, bottom: 70, left: 80 }\n  })\n  .createData({ values: cars })\n  .createPointMark()\n  .encodeX({ field: \"Displacement\", scale: { nice: true, zero: false } })\n  .encodeY({ field: \"Acceleration\", scale: { nice: true, zero: false } })\n  .encodeColor({ field: \"Origin\", scale: { palette: \"tableau10\" } })\n  .encodeSize({ field: \"Acceleration\" })\n  .encodeShape({ field: \"Origin\" })\n  .encodeOpacity({ value: 0.27 })\n  .filterMarks({\n    field: \"Origin\",\n    op: \"oneOf\",\n    values: [\"Japan\", \"USA\"]\n  })\n  .createRegression()\n  .createGuides();",
+      "exampleSourcePath": "docs/recipes/regression-scatterplot.md"
     },
     {
       "schemaVersion": 1,
@@ -2907,7 +2957,9 @@
         {
           "path": "docs/api/composition.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { group: \"A\", x: 1, y: 2 },\n    { group: \"B\", x: 2, y: 4 }\n  ] })\n  .createScatterPlot({ x: \"x\", y: \"y\" })\n  .facet({ field: \"group\" })\n  .editFacetScales({ x: \"independent\" });",
+      "exampleSourcePath": "docs/api/composition.md"
     },
     {
       "schemaVersion": 1,
@@ -3007,7 +3059,9 @@
         {
           "path": "docs/recipes/rose-chart.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst monthOrder = [\n  \"April\", \"May\", \"June\", \"July\", \"August\", \"September\",\n  \"October\", \"November\", \"December\", \"January\", \"February\", \"March\"\n];\nconst causeOrder = [\"Zymotic Diseases\", \"Other Causes\", \"Wounds & Injuries\"];\n\nconst program = chart()\n  .createCanvas({\n    width: 780,\n    height: 640,\n    margin: { top: 80, right: 210, bottom: 80, left: 80 }\n  })\n  .createData({ values: nightingaleRows })\n  .createArcMark({ padAngle: 1, opacity: 0.9, strokeWidth: 0.5 })\n  .encodeTheta({\n    field: \"month\",\n    fieldType: \"ordinal\",\n    scale: { domain: monthOrder }\n  })\n  .encodeR({ field: \"value\", scale: { domain: [0, 6.5], zero: true } })\n  .encodeColor({\n    field: \"cause\",\n    layout: \"overlay\",\n    scale: {\n      domain: causeOrder,\n      range: [\"#599ad3\", \"#727272\", \"#f1595f\"]\n    }\n  })\n  .createGuides({\n    axes: {\n      theta: { title: false },\n      radius: {\n        ticksAndLabels: { values: [2, 4, 6] },\n        title: { text: \"Mortality rate\", position: \"inside\" }\n      }\n    },\n    grid: { theta: false, radial: { values: [2, 4, 6] } },\n    legend: { position: \"right\", title: \"Cause\" }\n  });",
+      "exampleSourcePath": "docs/recipes/rose-chart.md"
     },
     {
       "schemaVersion": 1,
@@ -3101,7 +3155,9 @@
         {
           "path": "docs/recipes/scatterplot.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createScatterPlot({ x: \"x\", y: \"y\" });",
+      "exampleSourcePath": "docs/recipes/scatterplot.md"
     },
     {
       "schemaVersion": 1,
@@ -3197,7 +3253,9 @@
         {
           "path": "docs/api/appearance/selection-and-highlighting.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { id: \"a\", x: 1, y: 2 },\n    { id: \"b\", x: 2, y: 4 }\n  ] })\n  .createScatterPlot({ x: \"x\", y: \"y\" })\n  .selectMarks({ id: \"highest\", field: \"y\", op: \"max\" })\n  .highlightMarks({ selection: \"highest\", fill: \"#f97316\" });",
+      "exampleSourcePath": "docs/api/appearance/selection-and-highlighting.md"
     },
     {
       "schemaVersion": 1,
@@ -3339,9 +3397,11 @@
       ],
       "docs": [
         {
-          "path": "docs/reference/actions/statistics.md"
+          "path": "docs/api/regression.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { x: 1, y: 2 },\n    { x: 2, y: 4 },\n    { x: 3, y: 5 }\n  ] })\n  .createScatterPlot({ x: \"x\", y: \"y\" })\n  .createRegression()\n  .editRegression({ line: { strokeWidth: 3 } });",
+      "exampleSourcePath": "docs/api/regression.md"
     },
     {
       "schemaVersion": 1,
@@ -3451,7 +3511,9 @@
         {
           "path": "docs/api/marks.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst rug = chart()\n  .createCanvas({ width: 800, height: 240 })\n  .createData({\n    id: \"cars\",\n    values: cars.map(car => ({ ...car, Baseline: 0 }))\n  })\n  .createTickMark({\n    id: \"ticks\",\n    length: 14,\n    stroke: \"#2563eb\",\n    strokeWidth: 1.5,\n    opacity: 0.3\n  })\n  .encodeX({ target: \"ticks\", field: \"Horsepower\" })\n  .encodeY({ target: \"ticks\", field: \"Baseline\" });",
+      "exampleSourcePath": "docs/api/marks.md"
     },
     {
       "schemaVersion": 1,
@@ -3535,7 +3597,9 @@
         {
           "path": "docs/api/data/window.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createData({\n    id: \"sales\",\n    values: [\n      { region: \"East\", month: 2, amount: 30 },\n      { region: \"East\", month: 1, amount: 20 },\n      { region: \"West\", month: 1, amount: 15 }\n    ]\n  })\n  .createWindowData({\n    id: \"rankedSales\",\n    partitionBy: \"region\",\n    sortBy: [{ field: \"month\" }],\n    operations: [\n      { op: \"rowNumber\", as: \"monthOrder\" },\n      { op: \"cumulativeSum\", field: \"amount\", as: \"runningAmount\" },\n      { op: \"lag\", field: \"amount\", as: \"previousAmount\" }\n    ]\n  });",
+      "exampleSourcePath": "docs/api/data/window.md"
     },
     {
       "schemaVersion": 1,
@@ -3615,7 +3679,9 @@
         {
           "path": "docs/recipes/violin-plot.md"
         }
-      ]
+      ],
+      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createViolinPlot({\n    x: \"category\",\n    y: \"value\"\n  });",
+      "exampleSourcePath": "docs/recipes/violin-plot.md"
     }
   ],
   "coverage": [

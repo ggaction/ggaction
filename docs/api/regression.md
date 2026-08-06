@@ -93,6 +93,21 @@ decomposition matters.
 Use the original point owner, not generated band or line IDs:
 
 ```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ values: [
+    { x: 1, y: 2 },
+    { x: 2, y: 4 },
+    { x: 3, y: 5 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .createRegression()
+  .editRegression({ line: { strokeWidth: 3 } });
+```
+
+```javascript
 const revised = program.editRegression({
   target: "points",
   method: "polynomial",
