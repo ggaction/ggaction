@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-06. Gate package checkpoint: `e6c59a83`
+(`docs: prepare roadmap 5.3 phase 2 gate`).
 
 Implementation checkpoint: `0d59bd83` (`docs: add complete action knowledge`).
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`.
@@ -102,8 +105,11 @@ loopback listen 제한 때문에 승인된 local test-server 권한으로 재실
 승인하면 Phase 3의 high-coverage structured recipe authoring과 173-action recipe classification을 시작할 수 있다.
 Retrieval/MCP, B/C 유료 LLM 평가, PR Ready/merge, publish/deploy/release는 승인하지 않는다.
 
-## Work blocked before approval
+## Unblocked work
 
 - `knowledge/recipes/*.json` bulk authoring and final recipe coverage source
+
+## Still blocked
+
 - Deterministic retrieval and MCP implementation
 - External or paid B/C LLM runs

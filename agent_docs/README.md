@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.3 Phase 2이다.** 173개 public action을 informative English metadata와 검증된
-example로 설명하고 signature·parameter·link drift를 차단한다. 실행 순서는
+**현재 활성 Roadmap은 Roadmap 5.3 Phase 3이다.** 실제 chart task 중심 structured recipe를 만들고 173개 action의
+primary/supporting/lifecycle 또는 explicit exception classification을 zero-gap으로 검증한다. 실행 순서는
 [`impl/roadmap5.3/ROADMAP.md`](impl/roadmap5.3/ROADMAP.md)가 소유한다. Active pointer와 마지막 완료 owner의
 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
