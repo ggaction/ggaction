@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-07. Approval-record checkpoint: `pending-record`.
 
 Candidate behavior checkpoint: `ea50b0c15d9f747b6e5b8e41ded657d67868fa3a`
 
@@ -137,7 +139,7 @@ Full rerun Gate를 준비하려면 B와 C가 모두 다음을 만족해야 한�
 - Official model: <https://developers.openai.com/api/docs/models/gpt-5.6-terra>
 - Official pricing: <https://developers.openai.com/api/docs/pricing>
 
-## 검토 요청
+## 승인 효과
 
-R53-P6-E를 승인해 smoke-only 실행 가드를 먼저 검증하고, 통과하면 `cars-scatter-origin`의 B/C 각 한 번을 합계 최대
-$0.40 안에서 실행해도 되는가?
+이 Gate 승인으로 smoke-only 실행 가드의 구현·무과금 검증과, 검증 통과 뒤 `cars-scatter-origin`의 B/C 각 한 번을
+합계 최대 $0.40 안에서 실행하는 범위가 해제되었다.

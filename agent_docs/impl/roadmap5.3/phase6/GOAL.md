@@ -23,7 +23,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-C corrective contract approval
 - [x] Generated knowledge/search v2 and evaluation-adapter correction
 - [x] R53-P6-D complete unpaid corrective evidence approval
-- [ ] R53-P6-E exact one-run B/C paid smoke proposal
+- [x] R53-P6-E exact one-run B/C paid smoke approval
+- [ ] Smoke-only guard, paid B/C run and result review
 - [ ] Separately authorized one-run B/C paid smoke
 - [ ] Separately authorized full B/C paid rerun and result decision
 - [ ] Separately authorized PR preparation and merge
