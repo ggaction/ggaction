@@ -199,12 +199,12 @@ export async function runEvaluationTask({
           output = JSON.stringify({ valid: false, failures: ["program execution failed"], error: error.message });
         }
       } else {
-        knowledgeCalls += 1;
-        if (knowledgeCalls > plan.sampling.maximumMcpCallsPerTask) {
+        if (knowledgeCalls >= plan.sampling.maximumMcpCallsPerTask) {
           output = JSON.stringify({ error: "Documentation call limit reached." });
         } else {
           try {
             output = await knowledge.handle(call);
+            knowledgeCalls += 1;
           } catch (error) {
             output = JSON.stringify({ error: error.message });
           }

@@ -488,7 +488,10 @@ test("runs mocked chart authoring through the real local MCP Condition C adapter
     corpus,
     task,
     repetition: 1,
-    plan,
+    plan: {
+      ...plan,
+      sampling: { ...plan.sampling, maximumMcpCallsPerTask: 2 }
+    },
     outputRoot: new URL("../../.artifacts/llm-eval/runner-c-contract", import.meta.url).pathname,
     fetchImpl: async (_url, init) => {
       requests.push(JSON.parse(init.body));
@@ -519,7 +522,7 @@ test("runs mocked chart authoring through the real local MCP Condition C adapter
   assert.equal(result.outcome.firstPassValid, true);
   assert.equal(result.outcome.finalValid, true);
   assert.equal(result.metrics.modelCalls, 2);
-  assert.equal(result.metrics.mcpCalls, 3);
+  assert.equal(result.metrics.mcpCalls, 2);
   assert.equal(result.metrics.repairRounds, 0);
   assert.equal(result.artifacts.rendererFiles.length, 1);
 });
