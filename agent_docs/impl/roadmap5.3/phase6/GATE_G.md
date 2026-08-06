@@ -2,11 +2,13 @@
 
 ## Gate state
 
-`approved`
+`ready-for-review`
 
 Approved by the user on 2026-08-07.
 
 Candidate behavior checkpoint: `e88fbea9761ddc46268c400be1af280e838b71a2`
+
+Paid-smoke guard checkpoint: `d703cc83`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
@@ -115,6 +117,63 @@ efficiency gain을 입증하지 않으므로 benefit claim은 계속 금지한�
 - Correctness/efficiency benefit claim
 - PR preparation/Ready 전환과 merge
 - Package publish, docs deployment와 release
+
+## 실행 결과 — 2026-08-07
+
+Guard checkpoint `d703cc83`을 push한 뒤 승인된 순서대로 B를 한 번 실행했다. B가 first-pass와 final validation을
+모두 통과한 것을 확인한 뒤에만 C를 한 번 실행했다. 두 조건 모두 정확한 `scatterplot` recipe를 읽어 첫 제출에서
+실행 가능한 Canvas program을 만들었다.
+
+| 항목 | Condition B | Condition C |
+| --- | ---: | ---: |
+| Run ID | `B-cars-scatter-origin-r1` | `C-cars-scatter-origin-r1` |
+| Knowledge mode | structured knowledge | local MCP |
+| Call sequence | search → recipe read → submit | search → MCP resource read → submit |
+| Model calls | 3 | 3 |
+| MCP calls | 0 | 3 |
+| Input / output tokens | 6,021 / 501 | 5,104 / 407 |
+| Total tokens | 6,522 | 5,511 |
+| Time to valid | 9,299 ms | 7,704 ms |
+| Actual cost | $0.0134217 | $0.0113674 |
+| First-pass / final valid | true / true | true / true |
+| Validations | 7/7 passed | 7/7 passed |
+| Canvas | 1280 × 800, non-empty | 1280 × 800, non-empty |
+
+- Actual combined spend: **$0.0247891** / approved $0.20
+- Resolved model: both exactly `gpt-5.6-terra`
+- Repair rounds: both 0
+- C observed versus B: 1,011 fewer total tokens, 1,595 ms shorter time-to-valid, $0.0020543 lower estimated cost
+- Program difference: only Canvas right margin, B `140` and C `30`; data, encoding, guides와 render flow는 동일
+- Sanitized evidence scan: credential, raw provider response, reasoning text, complete submitted source와 knowledge source 없음
+
+C의 관측치는 B보다 작지만 각 조건 1회만 실행한 smoke이므로 efficiency improvement로 일반화하지 않는다. 이 결과가
+입증하는 범위는 Gate F의 self-contained recipe가 B와 C 양쪽에서 첫 제출 executable program을 만들었다는 것뿐이다.
+48-run correctness/efficiency comparison은 여전히 별도 제안과 승인이 필요하다.
+
+### 봉인된 실행 증거
+
+Evidence root: `.artifacts/llm-eval/executable-recipe-smoke-e88fbea9/`
+
+| Evidence | Condition B SHA-256 | Condition C SHA-256 |
+| --- | --- | --- |
+| Result | `0427f5ae77260f1b0c73fcc8b8049a6b753c356b1d1efb239021946a9f88ff2d` | `cb00ee5b18ac61bf875ba3ad68be4cbcd56da4c373ac051e4c62d2572120b00c` |
+| Sanitized trace | `91c55311a59b5d8f10751b176d761d8ba0d6e8fd60e7bf5f40774c0ceba3b345` | `f1b9b26eb6c8ea8c8e8338585accf2310f1f22d5722c811f515421c4153b6fda` |
+| Submitted program | `4f92146941432ba489ab069ad86a0809aa15e8609fe156b0052d1259da30a14f` | `a0e8ae9ffe869698b554a4a7cf4bc978cbcbb7b42430efdfb35d8d29cb7cddb8` |
+| Validation | `9b660741965f63a154b643e01affe461295af323bbc522865187684d18ea6946` | `9b660741965f63a154b643e01affe461295af323bbc522865187684d18ea6946` |
+| Canvas PNG | `a29fcaeb61658720d27e92040a4095f61a9b9a94496e6d0d02a39ecfe615c45d` | `6e7ecb86c9668b0a663a26d1b9d318b194d9f48590550c2b0093ca233b163a5c` |
+
+## 누적 검증
+
+- Paid-smoke guard focused tests: **18 / 18 passed**
+- `npm test`: **2,109 / 2,109 passed**
+- `knowledge:check`, `docs:metadata:check`, `docs:search:check`: passed
+- `package:mcp-check`: passed
+- `git diff --check`: passed
+
+## Review decision
+
+Gate G의 smoke 통과 조건을 모두 충족했다. 결과는 사용자 검토를 위해 `ready-for-review`이며, 이 검토는 full B/C rerun,
+PR, merge, publish, deploy 또는 release를 승인하지 않는다.
 
 ## 공식 근거
 
