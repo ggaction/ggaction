@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "approvalStatus": "approved",
+  "approvedOn": "2026-08-07",
+  "candidateCommit": "e88fbea9761ddc46268c400be1af280e838b71a2",
+  "evaluationPlanSha256": "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  "corpusSha256": "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  "knowledgeSha256": "eba175e202473c54202e0f5be6f988064efd2ba0790c46b8218119e758a254bf",
+  "knowledgeSearchSha256": "58fdde3a8069cb207cdef655b0dbe0a08a1adc055ab314c6646451caaa54ca52",
+  "publicRecipeSha256": "f94e5b3197c1ade2b1da4b2aca8a59820e5384a5202ad252a77e0ceba722fe92",
+  "taskId": "cars-scatter-origin",
+  "repetition": 1,
+  "conditions": ["B", "C"],
+  "maximumRuns": 2,
+  "outputRoot": ".artifacts/llm-eval/executable-recipe-smoke-e88fbea9",
+  "spendUsd": {
+    "expectedPerRun": 0.025,
+    "calculatedMaximumPerRun": 0.156,
+    "approvedCapPerCondition": 0.1,
+    "approvedCombinedCap": 0.2
+  }
+}

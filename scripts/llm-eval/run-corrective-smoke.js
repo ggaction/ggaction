@@ -11,8 +11,12 @@ import { loadApiKey } from "./openai-responses.js";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const defaultSmokePlanFile = path.join(root, "test/llm/corrective-smoke-plan.json");
 const retrySmokePlanFile = path.join(root, "test/llm/corrective-smoke-retry-plan.json");
+const executableRecipeSmokePlanFile = path.join(root, "test/llm/executable-recipe-smoke-plan.json");
 const evaluationPlanFile = path.join(root, "test/llm/evaluation-plan.json");
 const corpusFile = path.join(root, "test/llm/tasks.json");
+const knowledgeFile = path.join(root, "knowledge/index.json");
+const knowledgeSearchFile = path.join(root, "knowledge/search-index.json");
+const publicRecipeFile = path.join(root, "docs/llms-recipes.json");
 const defaultTokenFile = "/Users/hj/Desktop/visualization-autocomplete/TOKEN.txt";
 const runners = Object.freeze({ B: runConditionBTask, C: runConditionCTask });
 
@@ -23,6 +27,8 @@ const initialApprovedContract = Object.freeze({
   conditions: Object.freeze(["B", "C"]),
   maximumRuns: 2,
   outputRoot: ".artifacts/llm-eval/corrective-smoke-ea50b0c1",
+  expectedPerRun: 0.072,
+  calculatedMaximumPerRun: 0.156,
   approvedCapPerCondition: 0.2,
   approvedCombinedCap: 0.4
 });
@@ -34,8 +40,23 @@ const retryApprovedContract = Object.freeze({
   conditions: Object.freeze(["B", "C"]),
   maximumRuns: 2,
   outputRoot: ".artifacts/llm-eval/corrective-smoke-retry-060a13f1",
+  expectedPerRun: 0.072,
+  calculatedMaximumPerRun: 0.156,
   approvedCapPerCondition: 0.2,
   approvedCombinedCap: 0.4
+});
+
+const executableRecipeApprovedContract = Object.freeze({
+  candidateCommit: "e88fbea9761ddc46268c400be1af280e838b71a2",
+  taskId: "cars-scatter-origin",
+  repetition: 1,
+  conditions: Object.freeze(["B", "C"]),
+  maximumRuns: 2,
+  outputRoot: ".artifacts/llm-eval/executable-recipe-smoke-e88fbea9",
+  expectedPerRun: 0.025,
+  calculatedMaximumPerRun: 0.156,
+  approvedCapPerCondition: 0.1,
+  approvedCombinedCap: 0.2
 });
 
 function sha256(value) {
@@ -75,7 +96,9 @@ function assertApprovedSmokePlan(smokePlan, approvedContract, { evaluationPlanBy
   requireCondition(smokePlan.maximumRuns === approvedContract.maximumRuns, "Corrective smoke run count changed.");
   requireCondition(smokePlan.outputRoot === approvedContract.outputRoot, "Corrective smoke output root changed.");
   requireCondition(
-    smokePlan.spendUsd?.approvedCapPerCondition === approvedContract.approvedCapPerCondition &&
+    smokePlan.spendUsd?.expectedPerRun === approvedContract.expectedPerRun &&
+      smokePlan.spendUsd?.calculatedMaximumPerRun === approvedContract.calculatedMaximumPerRun &&
+      smokePlan.spendUsd?.approvedCapPerCondition === approvedContract.approvedCapPerCondition &&
       smokePlan.spendUsd?.approvedCombinedCap === approvedContract.approvedCombinedCap,
     "Corrective smoke spend cap changed."
   );
@@ -98,6 +121,20 @@ export function assertCorrectiveSmokePlan(smokePlan, hashes = {}) {
 
 export function assertCorrectiveSmokeRetryPlan(smokePlan, hashes = {}) {
   return assertApprovedSmokePlan(smokePlan, retryApprovedContract, hashes);
+}
+
+export function assertExecutableRecipeSmokePlan(smokePlan, hashes = {}) {
+  const validated = assertApprovedSmokePlan(smokePlan, executableRecipeApprovedContract, hashes);
+  for (const [field, bytes] of [
+    ["knowledgeSha256", hashes.knowledgeBytes],
+    ["knowledgeSearchSha256", hashes.knowledgeSearchBytes],
+    ["publicRecipeSha256", hashes.publicRecipeBytes]
+  ]) {
+    if (bytes !== undefined) {
+      requireCondition(sha256(bytes) === smokePlan[field], `Executable recipe smoke ${field} changed.`);
+    }
+  }
+  return validated;
 }
 
 async function prepareApprovedSmoke(smokePlanFile, approvedContract) {
@@ -132,6 +169,43 @@ export function prepareCorrectiveSmokeRetry(smokePlanFile = retrySmokePlanFile) 
   return prepareApprovedSmoke(smokePlanFile, retryApprovedContract);
 }
 
+export async function prepareExecutableRecipeSmoke(smokePlanFile = executableRecipeSmokePlanFile) {
+  const [
+    smokePlanBytes,
+    evaluationPlanBytes,
+    corpusBytes,
+    knowledgeBytes,
+    knowledgeSearchBytes,
+    publicRecipeBytes
+  ] = await Promise.all([
+    readFile(smokePlanFile),
+    readFile(evaluationPlanFile),
+    readFile(corpusFile),
+    readFile(knowledgeFile),
+    readFile(knowledgeSearchFile),
+    readFile(publicRecipeFile)
+  ]);
+  const smokePlan = assertExecutableRecipeSmokePlan(JSON.parse(smokePlanBytes), {
+    evaluationPlanBytes,
+    corpusBytes,
+    knowledgeBytes,
+    knowledgeSearchBytes,
+    publicRecipeBytes
+  });
+  const evaluationPlan = JSON.parse(evaluationPlanBytes);
+  const corpus = await loadEvaluationCorpus(corpusFile);
+  await validateEvaluationCorpus(corpus);
+  const task = corpus.tasks.find(candidate => candidate.id === smokePlan.taskId);
+  requireCondition(task !== undefined, `Unknown corrective smoke task ${smokePlan.taskId}.`);
+  return Object.freeze({
+    smokePlan,
+    evaluationPlan,
+    corpus,
+    task,
+    outputRoot: resolvedOutputRoot(smokePlan)
+  });
+}
+
 async function requireEmptyOutputRoot(outputRoot) {
   try {
     requireCondition((await readdir(outputRoot)).length === 0, "Corrective smoke output root is not empty.");
@@ -150,7 +224,8 @@ export async function runCorrectiveSmokeSequence({
   apiKey,
   fetchImpl = globalThis.fetch,
   runnersByCondition = runners,
-  appendResult = appendEvaluationResult
+  appendResult = appendEvaluationResult,
+  stopAfterInvalid = false
 }) {
   const { smokePlan, evaluationPlan, corpus, task, outputRoot } = prepared;
   const results = [];
@@ -176,7 +251,7 @@ export async function runCorrectiveSmokeSequence({
     await appendResult(path.join(conditionRoot, "results.jsonl"), result);
     combinedSpendUsd += result.metrics.estimatedCostUsd;
     results.push(result);
-    if (unsafeOutcome(result, evaluationPlan.model.name)) break;
+    if (unsafeOutcome(result, evaluationPlan.model.name) || (stopAfterInvalid && !result.outcome.finalValid)) break;
   }
   return Object.freeze({
     schemaVersion: 1,
@@ -193,7 +268,8 @@ async function runApprovedCorrectiveSmoke({
   prepare,
   tokenFile = defaultTokenFile,
   fetchImpl = globalThis.fetch,
-  loadApiKeyImpl = loadApiKey
+  loadApiKeyImpl = loadApiKey,
+  stopAfterInvalid = false
 }) {
   const prepared = await prepare();
   await requireEmptyOutputRoot(prepared.outputRoot);
@@ -202,7 +278,8 @@ async function runApprovedCorrectiveSmoke({
   return runCorrectiveSmokeSequence({
     prepared,
     apiKey,
-    fetchImpl
+    fetchImpl,
+    stopAfterInvalid
   });
 }
 
@@ -220,6 +297,17 @@ export function runCorrectiveSmokeRetry(options = {}) {
   return runApprovedCorrectiveSmoke({
     ...options,
     prepare: () => prepareCorrectiveSmokeRetry()
+  });
+}
+
+export function runExecutableRecipeSmoke({
+  smokePlanFile = executableRecipeSmokePlanFile,
+  ...options
+} = {}) {
+  return runApprovedCorrectiveSmoke({
+    ...options,
+    stopAfterInvalid: true,
+    prepare: () => prepareExecutableRecipeSmoke(smokePlanFile)
   });
 }
 

@@ -8,16 +8,23 @@ import { runConditionATask } from "../../scripts/llm-eval/condition-a-runner.js"
 import {
   assertCorrectiveSmokePlan,
   assertCorrectiveSmokeRetryPlan,
+  assertExecutableRecipeSmokePlan,
   prepareCorrectiveSmoke,
   prepareCorrectiveSmokeRetry,
+  prepareExecutableRecipeSmoke,
   runCorrectiveSmoke,
-  runCorrectiveSmokeSequence
+  runCorrectiveSmokeSequence,
+  runExecutableRecipeSmoke
 } from "../../scripts/llm-eval/run-corrective-smoke.js";
 
 const smokePlanUrl = new URL("../llm/corrective-smoke-plan.json", import.meta.url);
 const retryPlanUrl = new URL("../llm/corrective-smoke-retry-plan.json", import.meta.url);
+const executableRecipePlanUrl = new URL("../llm/executable-recipe-smoke-plan.json", import.meta.url);
 const evaluationPlanUrl = new URL("../llm/evaluation-plan.json", import.meta.url);
 const corpusUrl = new URL("../llm/tasks.json", import.meta.url);
+const knowledgeUrl = new URL("../../knowledge/index.json", import.meta.url);
+const knowledgeSearchUrl = new URL("../../knowledge/search-index.json", import.meta.url);
+const publicRecipeUrl = new URL("../../docs/llms-recipes.json", import.meta.url);
 
 test("locks paid smoke scope and spend before credentials are read", async () => {
   const [smokePlanBytes, evaluationPlanBytes, corpusBytes] = await Promise.all([
@@ -140,6 +147,132 @@ test("locks the corrected paid smoke retry and stops before C on an unsafe B out
   assert.deepEqual(calls, ["B"]);
   assert.equal(result.results.length, 1);
   assert.equal(result.actualCombinedSpendUsd, 0);
+});
+
+test("locks the executable recipe smoke and requires a valid B before C", async () => {
+  const [
+    smokePlanBytes,
+    evaluationPlanBytes,
+    corpusBytes,
+    knowledgeBytes,
+    knowledgeSearchBytes,
+    publicRecipeBytes
+  ] = await Promise.all([
+    readFile(executableRecipePlanUrl),
+    readFile(evaluationPlanUrl),
+    readFile(corpusUrl),
+    readFile(knowledgeUrl),
+    readFile(knowledgeSearchUrl),
+    readFile(publicRecipeUrl)
+  ]);
+  const smokePlan = JSON.parse(smokePlanBytes);
+  const hashes = {
+    evaluationPlanBytes,
+    corpusBytes,
+    knowledgeBytes,
+    knowledgeSearchBytes,
+    publicRecipeBytes
+  };
+  const validated = assertExecutableRecipeSmokePlan(smokePlan, hashes);
+  const prepared = await prepareExecutableRecipeSmoke();
+
+  assert.equal(validated.candidateCommit, "e88fbea9761ddc46268c400be1af280e838b71a2");
+  assert.deepEqual(validated.conditions, ["B", "C"]);
+  assert.equal(validated.maximumRuns, 2);
+  assert.equal(validated.outputRoot, ".artifacts/llm-eval/executable-recipe-smoke-e88fbea9");
+  assert.deepEqual(validated.spendUsd, {
+    expectedPerRun: 0.025,
+    calculatedMaximumPerRun: 0.156,
+    approvedCapPerCondition: 0.1,
+    approvedCombinedCap: 0.2
+  });
+  assert.equal(prepared.task.id, validated.taskId);
+
+  for (const mutation of [
+    { approvalStatus: "planned" },
+    { taskId: "cars-multi-legend" },
+    { repetition: 2 },
+    { conditions: ["C", "B"] },
+    { maximumRuns: 3 },
+    { candidateCommit: "f".repeat(40) },
+    { outputRoot: ".artifacts/llm-eval/other" },
+    { knowledgeSha256: "f".repeat(64) },
+    { knowledgeSearchSha256: "f".repeat(64) },
+    { publicRecipeSha256: "f".repeat(64) },
+    { spendUsd: { ...smokePlan.spendUsd, approvedCombinedCap: 1 } }
+  ]) {
+    assert.throws(
+      () => assertExecutableRecipeSmokePlan({ ...smokePlan, ...mutation }, hashes),
+      /(?:Corrective|Executable recipe)/u
+    );
+  }
+
+  const temporary = await mkdtemp(path.join(tmpdir(), "ggaction-recipe-smoke-guard-"));
+  const unapprovedPlan = path.join(temporary, "plan.json");
+  await writeFile(unapprovedPlan, JSON.stringify({ ...smokePlan, approvalStatus: "planned" }));
+  let credentialReads = 0;
+  await assert.rejects(
+    () => runExecutableRecipeSmoke({
+      smokePlanFile: unapprovedPlan,
+      loadApiKeyImpl: async () => {
+        credentialReads += 1;
+        return `sk-${"x".repeat(40)}`;
+      }
+    }),
+    /not approved/u
+  );
+  assert.equal(credentialReads, 0);
+
+  const calls = [];
+  const invalid = await runCorrectiveSmokeSequence({
+    prepared,
+    apiKey: `sk-${"x".repeat(40)}`,
+    stopAfterInvalid: true,
+    runnersByCondition: {
+      B: async () => {
+        calls.push("B-invalid");
+        return {
+          model: { resolvedName: prepared.evaluationPlan.model.name },
+          metrics: { estimatedCostUsd: 0.01 },
+          outcome: { finalValid: false, failureCategory: "runtime-error" }
+        };
+      },
+      C: async () => {
+        calls.push("C-invalid");
+        throw new Error("Condition C must not start after an invalid B result.");
+      }
+    },
+    appendResult: async () => {}
+  });
+  assert.deepEqual(calls, ["B-invalid"]);
+  assert.equal(invalid.results.length, 1);
+
+  calls.length = 0;
+  const validResult = condition => ({
+    model: { resolvedName: prepared.evaluationPlan.model.name },
+    metrics: { estimatedCostUsd: 0.01 },
+    outcome: { finalValid: true, failureCategory: null },
+    condition
+  });
+  const valid = await runCorrectiveSmokeSequence({
+    prepared,
+    apiKey: `sk-${"x".repeat(40)}`,
+    stopAfterInvalid: true,
+    runnersByCondition: {
+      B: async () => {
+        calls.push("B-valid");
+        return validResult("B");
+      },
+      C: async () => {
+        calls.push("C-valid");
+        return validResult("C");
+      }
+    },
+    appendResult: async () => {}
+  });
+  assert.deepEqual(calls, ["B-valid", "C-valid"]);
+  assert.equal(valid.results.length, 2);
+  assert.equal(valid.actualCombinedSpendUsd, 0.02);
 });
 
 test("classifies an evaluation deadline before starting a second model call", async () => {
