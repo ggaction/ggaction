@@ -174,6 +174,36 @@ test("validates composite statistical actions from their public input trace", as
   assert.equal(result.validations.every(validation => validation.passed), true);
 });
 
+test("validates binned facade inputs before their generated fields replace them", async () => {
+  const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
+  const task = corpus.tasks.find(candidate => candidate.id === "cars-binned-heatmap");
+  const cars = JSON.parse(await readFile(new URL("../../data/cars.json", import.meta.url), "utf8"));
+  const source = `
+    import { chart, render } from "ggaction";
+    export function buildChart(datasets) {
+      const values = datasets["cars-v1"].filter(row => row.Weight_in_lbs != null && row.Miles_per_Gallon != null);
+      return chart()
+        .createCanvas({ width: 640, height: 400, margin: { top: 30, right: 130, bottom: 65, left: 85 } })
+        .createData({ values })
+        .createHeatmap({
+          x: "Weight_in_lbs",
+          y: "Miles_per_Gallon",
+          bin: { bins: { x: 10, y: 8 } },
+          color: { scale: { palette: "blues" } },
+          guides: { axes: { x: {}, y: {} } }
+        });
+    }
+  `;
+  const result = await evaluateGeneratedProgram({
+    source,
+    task,
+    datasets: { "cars-v1": cars },
+    artifactRoot: new URL("../../.artifacts/llm-eval/heatmap-contract", import.meta.url).pathname
+  });
+
+  assert.equal(result.validations.every(validation => validation.passed), true);
+});
+
 test("runs one condition-A task through a mocked model and records executable evidence", async () => {
   const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
   const plan = JSON.parse(await readFile(new URL("../llm/evaluation-plan.json", import.meta.url), "utf8"));

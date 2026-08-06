@@ -87,7 +87,7 @@ function hasEncoding(layers, channel, field, temporal = false) {
 function hasTraceEncoding(nodes, channel, field, temporal = false) {
   return nodes.some(node => {
     const encoding = node.args?.[channel];
-    if (encoding?.field !== field) return false;
+    if (encoding !== field && encoding?.field !== field) return false;
     return !temporal || encoding.fieldType === "temporal" || encoding.type === "temporal";
   });
 }
@@ -169,7 +169,8 @@ function validationPassed(id, context) {
   if (id === "legend:absent") return legendEntries(programs).length === 0;
   if (id === "legend:count:2") return legendEntries(programs).length === 2;
   if (id === "legend:color" || id === "legend:continuous-color") {
-    return legendEntries(programs).some(legend => legend.channels?.includes("color"));
+    return programs.some(program => program.semanticSpec?.guides?.legend?.color !== undefined) ||
+      legendEntries(programs).some(legend => legend.channels?.includes("color"));
   }
   if (id === "legend:series") return legendEntries(programs).length > 0;
   if (id === "legend:position:top") return hasDeepPair(deep, "position", "top") || hasDeepPair(deep, "side", "top");
@@ -203,8 +204,14 @@ function validationPassed(id, context) {
   if (id.startsWith("density:field:")) return hasDeepPair(deep, "field", id.split(":")[2]);
   if (id.startsWith("density:group:")) return hasDeepPair(deep, "group", id.split(":")[2]) || hasEncoding(layers, "group", id.split(":")[2]);
   if (id.startsWith("bin:count:")) return hasDeepPair(deep, "bins", Number(id.split(":")[2])) || hasDeepPair(deep, "binCount", Number(id.split(":")[2]));
-  if (id.startsWith("bin:x:")) return hasDeepPair(deep, "xBins", Number(id.split(":")[2])) || hasDeepPair(deep, "bins", Number(id.split(":")[2]));
-  if (id.startsWith("bin:y:")) return hasDeepPair(deep, "yBins", Number(id.split(":")[2])) || hasDeepPair(deep, "bins", Number(id.split(":")[2]));
+  if (id.startsWith("bin:x:")) {
+    const count = Number(id.split(":")[2]);
+    return hasDeepPair(deep, "xBins", count) || nodes.some(node => node.args?.bin?.bins?.x === count);
+  }
+  if (id.startsWith("bin:y:")) {
+    const count = Number(id.split(":")[2]);
+    return hasDeepPair(deep, "yBins", count) || nodes.some(node => node.args?.bin?.bins?.y === count);
+  }
   if (id === "interval:ci95") return (
     hasDeepPair(deep, "interval", "ci95") ||
     hasDeepPair(deep, "confidence", 0.95) ||
