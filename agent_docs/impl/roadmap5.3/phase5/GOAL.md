@@ -15,6 +15,7 @@ knowledge와 deterministic search만 읽으며 chart 실행, rendering, arbitrar
 - [x] Browser/package import isolation and bundle regression evidence
 - [x] Condition C local adapter mock/dry evidence
 - [x] R53-P5-A remote review checkpoint
+- [x] R53-P5-A explicit approval
 
 ## 고정 결과
 

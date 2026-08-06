@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-06. Gate package checkpoint: `4f78aa93`
 
 Implementation checkpoints:
 
@@ -70,8 +72,8 @@ consumer, read-only negative cases, browser isolation과 Condition C mock/dry re
 
 ## Approval effect
 
-승인하면 Phase 6 final B/C comparison의 exact model/repetition/cost proposal인 R53-P6-A를 준비할 수 있다. 이 Gate는 external
-paid model calls, PR Ready/merge, package publish, docs deployment 또는 release를 승인하지 않는다.
+승인으로 Phase 6 final B/C comparison의 exact model/repetition/cost proposal인 R53-P6-A 준비가 해제되었다. 이 Gate는
+external paid model calls, PR Ready/merge, package publish, docs deployment 또는 release를 승인하지 않는다.
 
 ## Work blocked before approval
 
