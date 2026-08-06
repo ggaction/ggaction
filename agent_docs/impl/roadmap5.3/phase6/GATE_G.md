@@ -10,6 +10,8 @@ Candidate behavior checkpoint: `e88fbea9761ddc46268c400be1af280e838b71a2`
 
 Paid-smoke guard checkpoint: `d703cc83`
 
+Result evidence checkpoint: `87913cde`
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 한눈에 보는 제안
