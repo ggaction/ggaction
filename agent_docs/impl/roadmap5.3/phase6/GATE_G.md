@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-07.
 
 Candidate behavior checkpoint: `e88fbea9761ddc46268c400be1af280e838b71a2`
 
@@ -104,6 +106,8 @@ efficiency gain을 입증하지 않으므로 benefit claim은 계속 금지한�
 
 명시적으로 승인하면 위 smoke-only guard의 무과금 구현·검증과, guard checkpoint push 뒤 최대 B/C 각 한 번의 API
 실행을 합계 $0.20 hard cap 안에서 허용한다.
+
+이 Gate는 승인되었으며 위 범위만 해제되었다.
 
 ## 계속 차단되는 범위
 

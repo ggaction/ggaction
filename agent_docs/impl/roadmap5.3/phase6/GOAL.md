@@ -32,7 +32,7 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-F executable-recipe correction approval
 - [x] Self-contained recipe implementation and complete unpaid evidence
 - [x] R53-P6-F completion approval
-- [ ] R53-P6-G executable-recipe paid-smoke approval
+- [x] R53-P6-G executable-recipe paid-smoke approval
 - [ ] Guarded B/C smoke and result review
 - [ ] Separately authorized full B/C paid rerun and result decision
 - [ ] Separately authorized PR preparation and merge
