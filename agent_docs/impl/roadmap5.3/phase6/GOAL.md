@@ -30,7 +30,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] Corrected retry guard, paid B/C smoke and result review
 - [x] Exact retrieval success and self-contained recipe payload failure isolated
 - [x] R53-P6-F executable-recipe correction approval
-- [ ] Self-contained recipe implementation and complete unpaid evidence
+- [x] Self-contained recipe implementation and complete unpaid evidence
+- [ ] R53-P6-F completion approval
 - [ ] Separately authorized full B/C paid rerun and result decision
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
