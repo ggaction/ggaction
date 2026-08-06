@@ -10,8 +10,8 @@
 
 - [x] Starting `main` commit, package version와 action count 확인
 - [x] Roadmap 5.3 branch와 top-level Phase/Gate dependency 작성
-- [ ] Current docs/action/example/contract route inventory 생성
-- [ ] Existing metadata와 executable-example gap classification
+- [x] Current docs/action/example/contract route inventory 생성
+- [x] Existing metadata와 executable-example gap classification
 - [ ] Versioned authoring/held-out task corpus와 correctness oracle 작성
 - [ ] A/B/C benchmark harness contract와 raw-result schema 작성
 - [ ] Provider/model/settings/repetitions, 예상 최대 비용과 acceptance threshold 제안
@@ -32,6 +32,9 @@
 | Branch | `codex/roadmap5-3-llm-friendly` |
 | MCP distribution decision | Existing package bin `ggaction-mcp` |
 | MCP transport/scope | Local `stdio`, read-only |
+
+Current inventory와 해석은 [`CURRENT_KNOWLEDGE_INVENTORY.json`](./CURRENT_KNOWLEDGE_INVENTORY.json)과
+[`BASELINE.md`](./BASELINE.md)가 소유한다.
 
 ## Gate R53-P0-A
 

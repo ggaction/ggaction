@@ -3,8 +3,8 @@
 ## 진행 상태
 
 - [x] Exact merged-main identity, version와 action count 기록
-- [ ] Current LLM entry routes와 knowledge sources inventory
-- [ ] Action별 English description/example/recipe availability matrix
+- [x] Current LLM entry routes와 knowledge sources inventory
+- [x] Action별 English description/example/recipe availability matrix
 - [ ] Representative chart task taxonomy와 versioned dataset identities
 - [ ] Executable correctness oracle와 invalid-result taxonomy
 - [ ] Benchmark condition isolation, run order와 raw-result schema
@@ -13,6 +13,9 @@
 - [ ] Canonical metadata/recipe ownership proposal
 - [ ] Local dry run and contract tests
 - [ ] Commit/push and R53-P0-A review package
+
+Inventory evidence는 [`CURRENT_KNOWLEDGE_INVENTORY.json`](./CURRENT_KNOWLEDGE_INVENTORY.json), 사람이 읽는
+해석은 [`BASELINE.md`](./BASELINE.md)가 소유한다.
 
 ## 쉽게 보는 작업 결과
 
