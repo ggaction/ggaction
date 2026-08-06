@@ -114,7 +114,8 @@ C는 color 대신 `encodeGroup`을 적용한 뒤 `path mark requires an eligible
 
 3-call limit이나 공통 evaluator prompt를 지금 바꾸면 frozen A/B/C axis가 달라진다. 다음 교정은 평가기를 유리하게
 바꾸는 방식이 아니라, B/C가 전달하는 recipe를 정확한 runtime import와 흔한 variant까지 포함한 완결된 executable
-knowledge로 만드는 방향이어야 한다. 이 작업과 추가 paid retry는 아직 승인되지 않았다.
+knowledge로 만드는 방향이어야 한다. 이 무과금 교정은 이후 [`GATE_F.md`](./GATE_F.md)에서 별도 승인되었으며, 추가
+paid retry는 여전히 승인되지 않았다.
 
 ### 봉인된 실행 증거
 

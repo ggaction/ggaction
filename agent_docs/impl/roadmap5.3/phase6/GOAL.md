@@ -29,7 +29,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-E-Retry explicit approval
 - [x] Corrected retry guard, paid B/C smoke and result review
 - [x] Exact retrieval success and self-contained recipe payload failure isolated
-- [ ] Separately approved executable-recipe correction
+- [x] R53-P6-F executable-recipe correction approval
+- [ ] Self-contained recipe implementation and complete unpaid evidence
 - [ ] Separately authorized full B/C paid rerun and result decision
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
@@ -51,4 +52,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_D.md`](./GATE_D.md) — complete unpaid corrective evidence와 paid-smoke 진입 판단
 - [`GATE_E.md`](./GATE_E.md) — exact one-run B/C paid smoke와 spend ceiling
 - [`GATE_E_RETRY.md`](./GATE_E_RETRY.md) — provider-schema correction 뒤 별도 B/C smoke 재시도
+- [`GATE_F.md`](./GATE_F.md) — self-contained executable recipe correction과 무과금 증거
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
