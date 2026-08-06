@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 Roadmap 5.3 Phase 1이다.** 작은 English overview에서 action, recipe와 상세 문서로
-  좁혀 가는 stable route와 drift guard를 만든다. 실행 순서는
+- **현재 활성 Roadmap은 Roadmap 5.3 Phase 2이다.** 173개 action의 English metadata, example와 zero-gap
+  validation을 구현한다. 실행 순서는
   [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 

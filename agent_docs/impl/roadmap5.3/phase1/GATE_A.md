@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-06. Gate package checkpoint: `c6c01d41`
+(`docs: prepare roadmap 5.3 phase 1 gate`).
 
 Implementation checkpoint: `dd900b13` (`docs: add stable llm routing`).
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`.

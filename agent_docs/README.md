@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.3 Phase 1이다.** LLM이 작은 overview에서 필요한 action, recipe와 상세 문서로
-빠르게 좁혀 갈 수 있는 stable public route를 만든다. 실행 순서는
+**현재 활성 Roadmap은 Roadmap 5.3 Phase 2이다.** 173개 public action을 informative English metadata와 검증된
+example로 설명하고 signature·parameter·link drift를 차단한다. 실행 순서는
 [`impl/roadmap5.3/ROADMAP.md`](impl/roadmap5.3/ROADMAP.md)가 소유한다. Active pointer와 마지막 완료 owner의
 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
