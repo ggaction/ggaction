@@ -1,0 +1,3341 @@
+{
+  "schemaVersion": 1,
+  "condition": "A",
+  "knowledgeMode": "current-docs",
+  "knowledgeCommit": "9414d07179c9e7c6bbfdf00b762fc35de0ff25ec",
+  "models": [
+    "gpt-5.6-terra"
+  ],
+  "taskCount": 24,
+  "repetitionsPerTask": 2,
+  "overall": {
+    "runs": 48,
+    "firstPassSuccessful": 17,
+    "firstPassCorrectnessPercent": 35.42,
+    "finalSuccessful": 17,
+    "finalCorrectnessPercent": 35.42,
+    "failureCategories": {
+      "invalid-program": 27,
+      "missing-action": 2,
+      "runtime-error": 2
+    },
+    "allRuns": {
+      "totalTokens": {
+        "count": 48,
+        "mean": 13413.4583,
+        "median": 13262,
+        "p95": 18017
+      },
+      "modelCalls": {
+        "count": 48,
+        "mean": 3,
+        "median": 3,
+        "p95": 3
+      },
+      "estimatedCostUsd": {
+        "count": 48,
+        "mean": 0.0353,
+        "median": 0.0343,
+        "p95": 0.0476
+      }
+    },
+    "successfulRuns": {
+      "totalTokens": {
+        "count": 17,
+        "mean": 12676.8235,
+        "median": 12682,
+        "p95": 16811
+      },
+      "modelCalls": {
+        "count": 17,
+        "mean": 3,
+        "median": 3,
+        "p95": 3
+      },
+      "timeToValidMs": {
+        "count": 17,
+        "mean": 9853.5882,
+        "median": 9536,
+        "p95": 15419
+      }
+    }
+  },
+  "splits": {
+    "authoring": {
+      "runs": 24,
+      "firstPassSuccessful": 12,
+      "firstPassCorrectnessPercent": 50,
+      "finalSuccessful": 12,
+      "finalCorrectnessPercent": 50,
+      "failureCategories": {
+        "invalid-program": 12
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 24,
+          "mean": 12797.5417,
+          "median": 12341,
+          "p95": 15827
+        },
+        "modelCalls": {
+          "count": 24,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 24,
+          "mean": 0.0335,
+          "median": 0.0332,
+          "p95": 0.043
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 12,
+          "mean": 12493.5833,
+          "median": 12227,
+          "p95": 15479
+        },
+        "modelCalls": {
+          "count": 12,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 12,
+          "mean": 9338.75,
+          "median": 8906,
+          "p95": 11281
+        }
+      }
+    },
+    "heldout": {
+      "runs": 24,
+      "firstPassSuccessful": 5,
+      "firstPassCorrectnessPercent": 20.83,
+      "finalSuccessful": 5,
+      "finalCorrectnessPercent": 20.83,
+      "failureCategories": {
+        "invalid-program": 15,
+        "missing-action": 2,
+        "runtime-error": 2
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 24,
+          "mean": 14029.375,
+          "median": 13806,
+          "p95": 18017
+        },
+        "modelCalls": {
+          "count": 24,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 24,
+          "mean": 0.0371,
+          "median": 0.0375,
+          "p95": 0.0524
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 5,
+          "mean": 13116.6,
+          "median": 13262,
+          "p95": 16811
+        },
+        "modelCalls": {
+          "count": 5,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 5,
+          "mean": 11089.2,
+          "median": 10158,
+          "p95": 15419
+        }
+      }
+    }
+  },
+  "categories": {
+    "annotation": {
+      "runs": 2,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 2
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 14673,
+          "median": 13298,
+          "p95": 16048
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0402,
+          "median": 0.0383,
+          "p95": 0.0422
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "basic-chart": {
+      "runs": 2,
+      "firstPassSuccessful": 2,
+      "firstPassCorrectnessPercent": 100,
+      "finalSuccessful": 2,
+      "finalCorrectnessPercent": 100,
+      "failureCategories": {},
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 12926,
+          "median": 12227,
+          "p95": 13625
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0374,
+          "median": 0.0358,
+          "p95": 0.039
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 12926,
+          "median": 12227,
+          "p95": 13625
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 2,
+          "mean": 8379.5,
+          "median": 8347,
+          "p95": 8412
+        }
+      }
+    },
+    "binned-chart": {
+      "runs": 2,
+      "firstPassSuccessful": 2,
+      "firstPassCorrectnessPercent": 100,
+      "finalSuccessful": 2,
+      "finalCorrectnessPercent": 100,
+      "failureCategories": {},
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 13520.5,
+          "median": 12682,
+          "p95": 14359
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0391,
+          "median": 0.038,
+          "p95": 0.0403
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 13520.5,
+          "median": 12682,
+          "p95": 14359
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 2,
+          "mean": 10854,
+          "median": 10427,
+          "p95": 11281
+        }
+      }
+    },
+    "categorical-chart": {
+      "runs": 2,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 2
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 10992.5,
+          "median": 9753,
+          "p95": 12232
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0257,
+          "median": 0.0235,
+          "p95": 0.028
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "composition": {
+      "runs": 4,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 4
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 4,
+          "mean": 15563,
+          "median": 15941,
+          "p95": 16348
+        },
+        "modelCalls": {
+          "count": 4,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 4,
+          "mean": 0.0402,
+          "median": 0.0383,
+          "p95": 0.0457
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "data-transform": {
+      "runs": 4,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 2,
+        "missing-action": 1,
+        "runtime-error": 1
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 4,
+          "mean": 12830.75,
+          "median": 11572,
+          "p95": 15666
+        },
+        "modelCalls": {
+          "count": 4,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 4,
+          "mean": 0.0354,
+          "median": 0.0302,
+          "p95": 0.0524
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "distribution": {
+      "runs": 8,
+      "firstPassSuccessful": 3,
+      "firstPassCorrectnessPercent": 37.5,
+      "finalSuccessful": 3,
+      "finalCorrectnessPercent": 37.5,
+      "failureCategories": {
+        "invalid-program": 5
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 8,
+          "mean": 13714,
+          "median": 12845,
+          "p95": 18744
+        },
+        "modelCalls": {
+          "count": 8,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 8,
+          "mean": 0.034,
+          "median": 0.0341,
+          "p95": 0.043
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 3,
+          "mean": 11872,
+          "median": 12046,
+          "p95": 12845
+        },
+        "modelCalls": {
+          "count": 3,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 3,
+          "mean": 8768.6667,
+          "median": 8649,
+          "p95": 11095
+        }
+      }
+    },
+    "guide-layout": {
+      "runs": 2,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 1,
+        "runtime-error": 1
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 17433,
+          "median": 13814,
+          "p95": 21052
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0444,
+          "median": 0.0326,
+          "p95": 0.0563
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "multivariate-chart": {
+      "runs": 2,
+      "firstPassSuccessful": 2,
+      "firstPassCorrectnessPercent": 100,
+      "finalSuccessful": 2,
+      "finalCorrectnessPercent": 100,
+      "failureCategories": {},
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 10294.5,
+          "median": 9375,
+          "p95": 11214
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.029,
+          "median": 0.0249,
+          "p95": 0.0332
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 10294.5,
+          "median": 9375,
+          "p95": 11214
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 2,
+          "mean": 8721.5,
+          "median": 8537,
+          "p95": 8906
+        }
+      }
+    },
+    "one-dimensional-distribution": {
+      "runs": 2,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 2
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 13784,
+          "median": 13762,
+          "p95": 13806
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0346,
+          "median": 0.0334,
+          "p95": 0.0357
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "polar-chart": {
+      "runs": 2,
+      "firstPassSuccessful": 2,
+      "firstPassCorrectnessPercent": 100,
+      "finalSuccessful": 2,
+      "finalCorrectnessPercent": 100,
+      "failureCategories": {},
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 12985,
+          "median": 12145,
+          "p95": 13825
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0381,
+          "median": 0.0376,
+          "p95": 0.0386
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 12985,
+          "median": 12145,
+          "p95": 13825
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 2,
+          "mean": 9296.5,
+          "median": 8435,
+          "p95": 10158
+        }
+      }
+    },
+    "rendering": {
+      "runs": 2,
+      "firstPassSuccessful": 2,
+      "firstPassCorrectnessPercent": 100,
+      "finalSuccessful": 2,
+      "finalCorrectnessPercent": 100,
+      "failureCategories": {},
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 15036.5,
+          "median": 13262,
+          "p95": 16811
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0437,
+          "median": 0.0399,
+          "p95": 0.0476
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 15036.5,
+          "median": 13262,
+          "p95": 16811
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 2,
+          "mean": 10717,
+          "median": 9536,
+          "p95": 11898
+        }
+      }
+    },
+    "selection": {
+      "runs": 2,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 2
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 16068.5,
+          "median": 14120,
+          "p95": 18017
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0382,
+          "median": 0.0375,
+          "p95": 0.0389
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "specialized-chart": {
+      "runs": 2,
+      "firstPassSuccessful": 1,
+      "firstPassCorrectnessPercent": 50,
+      "finalSuccessful": 1,
+      "finalCorrectnessPercent": 50,
+      "failureCategories": {
+        "missing-action": 1
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 9749,
+          "median": 9540,
+          "p95": 9958
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0259,
+          "median": 0.0238,
+          "p95": 0.028
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 1,
+          "mean": 9540,
+          "median": 9540,
+          "p95": 9540
+        },
+        "modelCalls": {
+          "count": 1,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 1,
+          "mean": 15419,
+          "median": 15419,
+          "p95": 15419
+        }
+      }
+    },
+    "statistical-chart": {
+      "runs": 2,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 2
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 11836,
+          "median": 9751,
+          "p95": 13921
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0291,
+          "median": 0.025,
+          "p95": 0.0331
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "statistical-interval": {
+      "runs": 4,
+      "firstPassSuccessful": 2,
+      "firstPassCorrectnessPercent": 50,
+      "finalSuccessful": 2,
+      "finalCorrectnessPercent": 50,
+      "failureCategories": {
+        "invalid-program": 2
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 4,
+          "mean": 13979,
+          "median": 13591,
+          "p95": 15479
+        },
+        "modelCalls": {
+          "count": 4,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 4,
+          "mean": 0.0388,
+          "median": 0.0344,
+          "p95": 0.0468
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 14535,
+          "median": 13591,
+          "p95": 15479
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 2,
+          "mean": 10453.5,
+          "median": 9897,
+          "p95": 11010
+        }
+      }
+    },
+    "statistical-overlay": {
+      "runs": 2,
+      "firstPassSuccessful": 0,
+      "firstPassCorrectnessPercent": 0,
+      "finalSuccessful": 0,
+      "finalCorrectnessPercent": 0,
+      "failureCategories": {
+        "invalid-program": 2
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 11135.5,
+          "median": 9976,
+          "p95": 12295
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0261,
+          "median": 0.0239,
+          "p95": 0.0284
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "modelCalls": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        },
+        "timeToValidMs": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null
+        }
+      }
+    },
+    "temporal-chart": {
+      "runs": 2,
+      "firstPassSuccessful": 1,
+      "firstPassCorrectnessPercent": 50,
+      "finalSuccessful": 1,
+      "finalCorrectnessPercent": 50,
+      "failureCategories": {
+        "invalid-program": 1
+      },
+      "allRuns": {
+        "totalTokens": {
+          "count": 2,
+          "mean": 11887.5,
+          "median": 11755,
+          "p95": 12020
+        },
+        "modelCalls": {
+          "count": 2,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "estimatedCostUsd": {
+          "count": 2,
+          "mean": 0.0308,
+          "median": 0.0303,
+          "p95": 0.0313
+        }
+      },
+      "successfulRuns": {
+        "totalTokens": {
+          "count": 1,
+          "mean": 11755,
+          "median": 11755,
+          "p95": 11755
+        },
+        "modelCalls": {
+          "count": 1,
+          "mean": 3,
+          "median": 3,
+          "p95": 3
+        },
+        "timeToValidMs": {
+          "count": 1,
+          "mean": 8942,
+          "median": 8942,
+          "p95": 8942
+        }
+      }
+    }
+  },
+  "totals": {
+    "promptTokens": 616642,
+    "cachedInputTokens": 222815,
+    "cacheWriteTokens": 393395,
+    "completionTokens": 27204,
+    "reasoningTokens": 8999,
+    "totalTokens": 643846,
+    "modelCalls": 144,
+    "estimatedCostUsd": 1.694203
+  },
+  "runs": [
+    {
+      "runId": "A-cars-error-bar-origin-r2",
+      "taskId": "cars-error-bar-origin",
+      "split": "authoring",
+      "category": "statistical-interval",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 14828,
+        "cachedInputTokens": 3221,
+        "cacheWriteTokens": 11598,
+        "completionTokens": 651,
+        "reasoningTokens": 190,
+        "totalTokens": 15479,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 9897,
+        "estimatedCostUsd": 0.0468365
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDerivedData",
+          "createErrorBar",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createIntervalData",
+          "createRuleMark",
+          "createScale",
+          "createTitle",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeOpacity",
+          "encodeStroke",
+          "encodeStrokeDash",
+          "encodeStrokeWidth",
+          "encodeX",
+          "encodeY",
+          "encodeY2"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "f346d345de145e8ac1037b46bfe53f58038e48edf96b0631f7b7e2cf427d320c"
+    },
+    {
+      "runId": "A-cars-facet-origin-r2",
+      "taskId": "cars-facet-origin",
+      "split": "heldout",
+      "category": "composition",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 15778,
+        "cachedInputTokens": 3833,
+        "cacheWriteTokens": 11936,
+        "completionTokens": 454,
+        "reasoningTokens": 215,
+        "totalTokens": 16232,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.04509075
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-binned-heatmap-r1",
+      "taskId": "cars-binned-heatmap",
+      "split": "authoring",
+      "category": "binned-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 11896,
+        "cachedInputTokens": 3829,
+        "cacheWriteTokens": 8058,
+        "completionTokens": 786,
+        "reasoningTokens": 298,
+        "totalTokens": 12682,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 11281,
+        "estimatedCostUsd": 0.037951
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createBin2DData",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDerivedData",
+          "createGuides",
+          "createHeatmap",
+          "createLegend",
+          "createRectMark",
+          "createScale",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editRectMark",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeX",
+          "encodeX2",
+          "encodeY",
+          "encodeY2"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "29b93b5203952bf2ad70845908045b1bb40151949a6af825b93fb2507cdc20f3"
+    },
+    {
+      "runId": "A-cars-error-bar-origin-r1",
+      "taskId": "cars-error-bar-origin",
+      "split": "authoring",
+      "category": "statistical-interval",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13229,
+        "cachedInputTokens": 4935,
+        "cacheWriteTokens": 8285,
+        "completionTokens": 481,
+        "reasoningTokens": 204,
+        "totalTokens": 13710,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.034361875
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-multi-legend-r1",
+      "taskId": "cars-multi-legend",
+      "split": "heldout",
+      "category": "guide-layout",
+      "difficulty": "repair",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 19758,
+        "cachedInputTokens": 8651,
+        "cacheWriteTokens": 11098,
+        "completionTokens": 1294,
+        "reasoningTokens": 564,
+        "totalTokens": 21052,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.0562765
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "runtime-error"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": "Legend layout requires more right-margin space."
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-scatter-origin-r1",
+      "taskId": "cars-scatter-origin",
+      "split": "authoring",
+      "category": "basic-chart",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 11630,
+        "cachedInputTokens": 3308,
+        "cacheWriteTokens": 8313,
+        "completionTokens": 597,
+        "reasoningTokens": 144,
+        "totalTokens": 12227,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 8347,
+        "estimatedCostUsd": 0.035782625
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createPointMark",
+          "createScale",
+          "createScatterPlot",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "0e31416d1dd98d4fd62538335ce8c1d7cffd2cde317bf46c9352d1c25a2c713f"
+    },
+    {
+      "runId": "A-imdb-label-layout-r2",
+      "taskId": "imdb-label-layout",
+      "split": "heldout",
+      "category": "annotation",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12639,
+        "cachedInputTokens": 3858,
+        "cacheWriteTokens": 8772,
+        "completionTokens": 659,
+        "reasoningTokens": 366,
+        "totalTokens": 13298,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.0382845
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-multi-legend-r2",
+      "taskId": "cars-multi-legend",
+      "split": "heldout",
+      "category": "guide-layout",
+      "difficulty": "repair",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13490,
+        "cachedInputTokens": 5019,
+        "cacheWriteTokens": 8462,
+        "completionTokens": 324,
+        "reasoningTokens": 43,
+        "totalTokens": 13814,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.032581
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-rug-distribution-r2",
+      "taskId": "cars-rug-distribution",
+      "split": "heldout",
+      "category": "one-dimensional-distribution",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13426,
+        "cachedInputTokens": 3920,
+        "cacheWriteTokens": 9497,
+        "completionTokens": 336,
+        "reasoningTokens": 43,
+        "totalTokens": 13762,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.035720625
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-time-unit-r1",
+      "taskId": "cars-time-unit",
+      "split": "heldout",
+      "category": "data-transform",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 10902,
+        "cachedInputTokens": 3819,
+        "cacheWriteTokens": 7074,
+        "completionTokens": 337,
+        "reasoningTokens": 76,
+        "totalTokens": 11239,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.0281385
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-renderer-parity-r2",
+      "taskId": "renderer-parity",
+      "split": "heldout",
+      "category": "rendering",
+      "difficulty": "repair",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12439,
+        "cachedInputTokens": 3951,
+        "cacheWriteTokens": 8479,
+        "completionTokens": 823,
+        "reasoningTokens": 309,
+        "totalTokens": 13262,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 11898,
+        "estimatedCostUsd": 0.039852125
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createLegend",
+          "createPointMark",
+          "createScale",
+          "createScatterPlot",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas",
+          "svg",
+          "png",
+          "pdf"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "c90a587a67ef0e8e13d4f6761eb9f0e7822572858ba13e77cd3a3d98e4e52299"
+    },
+    {
+      "runId": "A-cars-regression-japan-r1",
+      "taskId": "cars-regression-japan",
+      "split": "authoring",
+      "category": "statistical-overlay",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 9679,
+        "cachedInputTokens": 3772,
+        "cacheWriteTokens": 5898,
+        "completionTokens": 297,
+        "reasoningTokens": 36,
+        "totalTokens": 9976,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.023851749999999998
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-imdb-label-layout-r1",
+      "taskId": "imdb-label-layout",
+      "split": "heldout",
+      "category": "annotation",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 15489,
+        "cachedInputTokens": 5083,
+        "cacheWriteTokens": 10397,
+        "completionTokens": 559,
+        "reasoningTokens": 227,
+        "totalTokens": 16048,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.042168875
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-renderer-parity-r1",
+      "taskId": "renderer-parity",
+      "split": "heldout",
+      "category": "rendering",
+      "difficulty": "repair",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 16021,
+        "cachedInputTokens": 4974,
+        "cacheWriteTokens": 11038,
+        "completionTokens": 790,
+        "reasoningTokens": 270,
+        "totalTokens": 16811,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 9536,
+        "estimatedCostUsd": 0.04760975
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createPointMark",
+          "createScale",
+          "createScatterPlot",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editPointMark",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas",
+          "svg",
+          "png",
+          "pdf"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "e400c873962b7bfae1f454b0f814042575525dbc9fe0f8c1f7ea32190da5683a"
+    },
+    {
+      "runId": "A-gapminder-moving-window-r1",
+      "taskId": "gapminder-moving-window",
+      "split": "heldout",
+      "category": "data-transform",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 14328,
+        "cachedInputTokens": 4327,
+        "cacheWriteTokens": 9992,
+        "completionTokens": 1338,
+        "reasoningTokens": 618,
+        "totalTokens": 15666,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.052399249999999994
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "missing-action"
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createLegend",
+          "createLineMark",
+          "createLinePlot",
+          "createScale",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeGroup",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [
+          "filter:country:Kenya",
+          "window:mean:life_expect",
+          "window:frame:-1:1",
+          "series:original-and-moving"
+        ],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "de71aa00696c74bcd63bf69e9d39e25c35faea85aa2f51dace0e1fbbe30d7ce4"
+    },
+    {
+      "runId": "A-jobs-grouped-bar-r2",
+      "taskId": "jobs-grouped-bar",
+      "split": "authoring",
+      "category": "categorical-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 9440,
+        "cachedInputTokens": 3708,
+        "cacheWriteTokens": 5723,
+        "completionTokens": 313,
+        "reasoningTokens": 42,
+        "totalTokens": 9753,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.023528874999999998
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-gapminder-moving-window-r2",
+      "taskId": "gapminder-moving-window",
+      "split": "heldout",
+      "category": "data-transform",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12465,
+        "cachedInputTokens": 5024,
+        "cacheWriteTokens": 7432,
+        "completionTokens": 381,
+        "reasoningTokens": 97,
+        "totalTokens": 12846,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.0302185
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-histogram-origin-r2",
+      "taskId": "cars-histogram-origin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12012,
+        "cachedInputTokens": 4008,
+        "cacheWriteTokens": 7995,
+        "completionTokens": 329,
+        "reasoningTokens": 66,
+        "totalTokens": 12341,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.030943875
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-jobs-grouped-bar-r1",
+      "taskId": "jobs-grouped-bar",
+      "split": "authoring",
+      "category": "categorical-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 11859,
+        "cachedInputTokens": 5112,
+        "cacheWriteTokens": 6738,
+        "completionTokens": 373,
+        "reasoningTokens": 86,
+        "totalTokens": 12232,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.027951749999999997
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-rug-distribution-r1",
+      "taskId": "cars-rug-distribution",
+      "split": "heldout",
+      "category": "one-dimensional-distribution",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13396,
+        "cachedInputTokens": 5075,
+        "cacheWriteTokens": 8312,
+        "completionTokens": 410,
+        "reasoningTokens": 135,
+        "totalTokens": 13806,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.03341625
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-facet-origin-r1",
+      "taskId": "cars-facet-origin",
+      "split": "heldout",
+      "category": "composition",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13450,
+        "cachedInputTokens": 5025,
+        "cacheWriteTokens": 8416,
+        "completionTokens": 281,
+        "reasoningTokens": 70,
+        "totalTokens": 13731,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.031793749999999996
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-binned-heatmap-r2",
+      "taskId": "cars-binned-heatmap",
+      "split": "authoring",
+      "category": "binned-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13537,
+        "cachedInputTokens": 4991,
+        "cacheWriteTokens": 8537,
+        "completionTokens": 822,
+        "reasoningTokens": 327,
+        "totalTokens": 14359,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 10427,
+        "estimatedCostUsd": 0.040278375
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createBin2DData",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDerivedData",
+          "createGuides",
+          "createHeatmap",
+          "createLegend",
+          "createRectMark",
+          "createScale",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editRectMark",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeX",
+          "encodeX2",
+          "encodeY",
+          "encodeY2"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "86add95fe7d053a4536dc15937c948e100251bdf230576413af83b3662285e95"
+    },
+    {
+      "runId": "A-gapminder-error-band-r1",
+      "taskId": "gapminder-error-band",
+      "split": "authoring",
+      "category": "statistical-interval",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12599,
+        "cachedInputTokens": 4265,
+        "cacheWriteTokens": 8325,
+        "completionTokens": 992,
+        "reasoningTokens": 447,
+        "totalTokens": 13591,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 11010,
+        "estimatedCostUsd": 0.041984375
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAreaMark",
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDerivedData",
+          "createErrorBand",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createIntervalData",
+          "createLegend",
+          "createLineMark",
+          "createScale",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeGroup",
+          "encodeX",
+          "encodeY",
+          "encodeY2",
+          "encodeYRange"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "d6d0b5d3dc6bc64914c587dc19fe48738a56efb0dd5be01fb0acfa2a1e4ccd1f"
+    },
+    {
+      "runId": "A-cars-gradient-profile-r1",
+      "taskId": "cars-gradient-profile",
+      "split": "heldout",
+      "category": "statistical-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 9418,
+        "cachedInputTokens": 3264,
+        "cacheWriteTokens": 6145,
+        "completionTokens": 333,
+        "reasoningTokens": 77,
+        "totalTokens": 9751,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.025036625
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-box-plot-r1",
+      "taskId": "cars-box-plot",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13922,
+        "cachedInputTokens": 3737,
+        "cacheWriteTokens": 10176,
+        "completionTokens": 380,
+        "reasoningTokens": 83,
+        "totalTokens": 14302,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.03845675
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-gradient-profile-r2",
+      "taskId": "cars-gradient-profile",
+      "split": "heldout",
+      "category": "statistical-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13598,
+        "cachedInputTokens": 4945,
+        "cacheWriteTokens": 8644,
+        "completionTokens": 323,
+        "reasoningTokens": 40,
+        "totalTokens": 13921,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.03311625
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-gapminder-horizon-r1",
+      "taskId": "gapminder-horizon",
+      "split": "heldout",
+      "category": "specialized-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 8888,
+        "cachedInputTokens": 3323,
+        "cacheWriteTokens": 5556,
+        "completionTokens": 652,
+        "reasoningTokens": 229,
+        "totalTokens": 9540,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 15419,
+        "estimatedCostUsd": 0.02799575
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAreaMark",
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDerivedData",
+          "createGrid",
+          "createGuides",
+          "createScale",
+          "createVerticalGrid",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "editAreaMark",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "encodeColor",
+          "encodeGroup",
+          "encodeHorizon",
+          "encodeX",
+          "encodeY",
+          "encodeY2",
+          "filterData"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "17f8b92614b20e9633152aae451d3e7c0b27fddd97564b917852f5e44bd4007b"
+    },
+    {
+      "runId": "A-cars-temporal-line-origin-r1",
+      "taskId": "cars-temporal-line-origin",
+      "split": "authoring",
+      "category": "temporal-chart",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 11584,
+        "cachedInputTokens": 3964,
+        "cacheWriteTokens": 7611,
+        "completionTokens": 436,
+        "reasoningTokens": 231,
+        "totalTokens": 12020,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.031337875
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-selection-highlight-r2",
+      "taskId": "cars-selection-highlight",
+      "split": "heldout",
+      "category": "selection",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13542,
+        "cachedInputTokens": 4198,
+        "cacheWriteTokens": 9335,
+        "completionTokens": 578,
+        "reasoningTokens": 271,
+        "totalTokens": 14120,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.038913875
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-violin-r1",
+      "taskId": "cars-violin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 10268,
+        "cachedInputTokens": 3785,
+        "cacheWriteTokens": 6474,
+        "completionTokens": 457,
+        "reasoningTokens": 66,
+        "totalTokens": 10725,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 6562,
+        "estimatedCostUsd": 0.028055
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAreaMark",
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDerivedData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createScale",
+          "createViolinPlot",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeDensity",
+          "encodeGroup",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "ecf5e6c6caf08270ffb349d0929d3090700d4775775a1a346dac2e945bb6fc7c"
+    },
+    {
+      "runId": "A-cars-box-plot-r2",
+      "taskId": "cars-box-plot",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 18366,
+        "cachedInputTokens": 9993,
+        "cacheWriteTokens": 8364,
+        "completionTokens": 378,
+        "reasoningTokens": 109,
+        "totalTokens": 18744,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.034328250000000005
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-selection-highlight-r1",
+      "taskId": "cars-selection-highlight",
+      "split": "heldout",
+      "category": "selection",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 17624,
+        "cachedInputTokens": 8147,
+        "cacheWriteTokens": 9468,
+        "completionTokens": 393,
+        "reasoningTokens": 182,
+        "totalTokens": 18017,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.03754175
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-parallel-coordinates-r1",
+      "taskId": "cars-parallel-coordinates",
+      "split": "authoring",
+      "category": "multivariate-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 10569,
+        "cachedInputTokens": 3305,
+        "cacheWriteTokens": 7255,
+        "completionTokens": 645,
+        "reasoningTokens": 116,
+        "totalTokens": 11214,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 8537,
+        "estimatedCostUsd": 0.033195625
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGuides",
+          "createLegend",
+          "createLineMark",
+          "createParallelCoordinates",
+          "createScale",
+          "editCanvas",
+          "editLineMark",
+          "encodeColor",
+          "encodeParallelCoordinates"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "4e8aaf995e6515638dc6695790d77193a6e4916f64f48631baa0fb393a962b55"
+    },
+    {
+      "runId": "A-cars-temporal-line-origin-r2",
+      "taskId": "cars-temporal-line-origin",
+      "split": "authoring",
+      "category": "temporal-chart",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 11195,
+        "cachedInputTokens": 4533,
+        "cacheWriteTokens": 6653,
+        "completionTokens": 560,
+        "reasoningTokens": 135,
+        "totalTokens": 11755,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 8942,
+        "estimatedCostUsd": 0.030346375000000002
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createLegend",
+          "createLineMark",
+          "createLinePlot",
+          "createScale",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeGroup",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "ae5695f8d13445140ad31b6924a0e0d982be8c87ffaa4972c75b299f10aec2ba"
+    },
+    {
+      "runId": "A-composed-dashboard-r1",
+      "taskId": "composed-dashboard",
+      "split": "heldout",
+      "category": "composition",
+      "difficulty": "repair",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 15760,
+        "cachedInputTokens": 4301,
+        "cacheWriteTokens": 11450,
+        "completionTokens": 588,
+        "reasoningTokens": 298,
+        "totalTokens": 16348,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.045699000000000004
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-parallel-coordinates-r2",
+      "taskId": "cars-parallel-coordinates",
+      "split": "authoring",
+      "category": "multivariate-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 8645,
+        "cachedInputTokens": 4559,
+        "cacheWriteTokens": 4077,
+        "completionTokens": 730,
+        "reasoningTokens": 167,
+        "totalTokens": 9375,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 8906,
+        "estimatedCostUsd": 0.024852875
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGuides",
+          "createLegend",
+          "createLineMark",
+          "createParallelCoordinates",
+          "createScale",
+          "editCanvas",
+          "editLineMark",
+          "encodeColor",
+          "encodeParallelCoordinates"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "90350839a46137ab9faf3671457a4ba9dfdcc6e2a4cb12329bb4a029708180f7"
+    },
+    {
+      "runId": "A-cars-violin-r2",
+      "taskId": "cars-violin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12576,
+        "cachedInputTokens": 5451,
+        "cacheWriteTokens": 7116,
+        "completionTokens": 306,
+        "reasoningTokens": 96,
+        "totalTokens": 12882,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.02821275
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-nightingale-rose-r1",
+      "taskId": "nightingale-rose",
+      "split": "heldout",
+      "category": "polar-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 11192,
+        "cachedInputTokens": 3699,
+        "cacheWriteTokens": 7484,
+        "completionTokens": 953,
+        "reasoningTokens": 240,
+        "totalTokens": 12145,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 10158,
+        "estimatedCostUsd": 0.038629750000000004
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createArcMark",
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGrid",
+          "createGuides",
+          "createLegend",
+          "createRadialAxis",
+          "createRadialGrid",
+          "createScale",
+          "createThetaAxis",
+          "editCanvas",
+          "editRadialAxisLabels",
+          "editRadialAxisLine",
+          "editRadialAxisTicks",
+          "editRadialAxisTitle",
+          "editThetaAxisLabels",
+          "editThetaAxisLine",
+          "editThetaAxisTicks",
+          "encodeColor",
+          "encodeR",
+          "encodeTheta"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "fc4032fd0efdbce111dcc593270df8a4af0539e36b79e932fe71b6bcda78a046"
+    },
+    {
+      "runId": "A-cars-time-unit-r2",
+      "taskId": "cars-time-unit",
+      "split": "heldout",
+      "category": "data-transform",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 10798,
+        "cachedInputTokens": 5059,
+        "cacheWriteTokens": 5730,
+        "completionTokens": 774,
+        "reasoningTokens": 160,
+        "totalTokens": 11572,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.030803499999999998
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "runtime-error"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": "createXAxis.title must be a plain object."
+      },
+      "programSha256": "c9ee295db3b717503c555a9a66d11f1c18a4ebc37043ee9f904d9e5029bde3cd"
+    },
+    {
+      "runId": "A-cars-histogram-origin-r1",
+      "taskId": "cars-histogram-origin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 15199,
+        "cachedInputTokens": 4848,
+        "cacheWriteTokens": 10342,
+        "completionTokens": 628,
+        "reasoningTokens": 383,
+        "totalTokens": 15827,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.042973250000000005
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-scatter-origin-r2",
+      "taskId": "cars-scatter-origin",
+      "split": "authoring",
+      "category": "basic-chart",
+      "difficulty": "direct",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12995,
+        "cachedInputTokens": 3858,
+        "cacheWriteTokens": 9128,
+        "completionTokens": 630,
+        "reasoningTokens": 178,
+        "totalTokens": 13625,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 8412,
+        "estimatedCostUsd": 0.038962
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createPointMark",
+          "createScale",
+          "createScatterPlot",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editPointMark",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "03cdb503f4a28d318b537666cfa963a44c711b236e789d64793341ee22a41fc0"
+    },
+    {
+      "runId": "A-gapminder-error-band-r2",
+      "taskId": "gapminder-error-band",
+      "split": "authoring",
+      "category": "statistical-interval",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12675,
+        "cachedInputTokens": 5053,
+        "cacheWriteTokens": 7613,
+        "completionTokens": 461,
+        "reasoningTokens": 172,
+        "totalTokens": 13136,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.031991375
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-cars-density-origin-r1",
+      "taskId": "cars-density-origin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 11418,
+        "cachedInputTokens": 3642,
+        "cacheWriteTokens": 7767,
+        "completionTokens": 628,
+        "reasoningTokens": 142,
+        "totalTokens": 12046,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 8649,
+        "estimatedCostUsd": 0.034624875
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAreaMark",
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDensityData",
+          "createDerivedData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createLegend",
+          "createScale",
+          "createVerticalGrid",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeDensity",
+          "encodeGroup",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "762c832fcfe2be025c42e3afc0f8f9ea85579455c126e6e15e73c6c16acc98c9"
+    },
+    {
+      "runId": "A-cars-density-origin-r2",
+      "taskId": "cars-density-origin",
+      "split": "authoring",
+      "category": "distribution",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 12159,
+        "cachedInputTokens": 4938,
+        "cacheWriteTokens": 7212,
+        "completionTokens": 686,
+        "reasoningTokens": 219,
+        "totalTokens": 12845,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 11095,
+        "estimatedCostUsd": 0.034084500000000004
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createAreaMark",
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDensityData",
+          "createDerivedData",
+          "createGrid",
+          "createGuides",
+          "createHorizontalGrid",
+          "createLegend",
+          "createScale",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "createYAxis",
+          "createYAxisLabels",
+          "createYAxisLine",
+          "createYAxisTicks",
+          "createYAxisTicksAndLabels",
+          "createYAxisTitle",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "editYAxisLabels",
+          "editYAxisLine",
+          "editYAxisTicks",
+          "editYAxisTitle",
+          "encodeColor",
+          "encodeDensity",
+          "encodeGroup",
+          "encodeX",
+          "encodeY"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "0b1e48c75412453b9ead223050b5744aa092447bbdbb7633c70c80a264c80cbe"
+    },
+    {
+      "runId": "A-gapminder-horizon-r2",
+      "taskId": "gapminder-horizon",
+      "split": "heldout",
+      "category": "specialized-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 9353,
+        "cachedInputTokens": 5055,
+        "cacheWriteTokens": 4289,
+        "completionTokens": 605,
+        "reasoningTokens": 173,
+        "totalTokens": 9958,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.023764375
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "missing-action"
+      },
+      "evidence": {
+        "actions": [
+          "createAreaMark",
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createDerivedData",
+          "createGrid",
+          "createGuides",
+          "createScale",
+          "createVerticalGrid",
+          "createXAxis",
+          "createXAxisLabels",
+          "createXAxisLine",
+          "createXAxisTicks",
+          "createXAxisTicksAndLabels",
+          "createXAxisTitle",
+          "editAreaMark",
+          "editCanvas",
+          "editXAxisLabels",
+          "editXAxisLine",
+          "editXAxisTicks",
+          "editXAxisTitle",
+          "encodeColor",
+          "encodeGroup",
+          "encodeHorizon",
+          "encodeX",
+          "encodeY",
+          "encodeY2"
+        ],
+        "failedValidations": [
+          "filter:country:Kenya"
+        ],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "6cd103f965ecf108229d67d2a163651cbb8a00c3ff1cc74bf69f8f0028c52485"
+    },
+    {
+      "runId": "A-cars-regression-japan-r2",
+      "taskId": "cars-regression-japan",
+      "split": "authoring",
+      "category": "statistical-overlay",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 11938,
+        "cachedInputTokens": 4974,
+        "cacheWriteTokens": 6955,
+        "completionTokens": 357,
+        "reasoningTokens": 74,
+        "totalTokens": 12295,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.028355375
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    },
+    {
+      "runId": "A-nightingale-rose-r2",
+      "taskId": "nightingale-rose",
+      "split": "heldout",
+      "category": "polar-chart",
+      "difficulty": "composed",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 13083,
+        "cachedInputTokens": 5004,
+        "cacheWriteTokens": 8070,
+        "completionTokens": 742,
+        "reasoningTokens": 213,
+        "totalTokens": 13825,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": 8435,
+        "estimatedCostUsd": 0.03762225
+      },
+      "outcome": {
+        "firstPassValid": true,
+        "finalValid": true,
+        "failureCategory": null
+      },
+      "evidence": {
+        "actions": [
+          "createArcMark",
+          "createAxes",
+          "createCanvas",
+          "createCoordinate",
+          "createData",
+          "createGrid",
+          "createGuides",
+          "createLegend",
+          "createRadialAxis",
+          "createRadialGrid",
+          "createScale",
+          "createThetaAxis",
+          "createThetaGrid",
+          "editCanvas",
+          "editRadialAxisLabels",
+          "editRadialAxisLine",
+          "editRadialAxisTicks",
+          "editRadialAxisTitle",
+          "editThetaAxisLabels",
+          "editThetaAxisLine",
+          "editThetaAxisTicks",
+          "encodeColor",
+          "encodeR",
+          "encodeTheta"
+        ],
+        "failedValidations": [],
+        "renderers": [
+          "canvas"
+        ],
+        "runtimeError": null
+      },
+      "programSha256": "8fd6ca6bb95438c370c1659c7c74afbde91bf1fd6372a19af0e03ec6db3a0a02"
+    },
+    {
+      "runId": "A-composed-dashboard-r2",
+      "taskId": "composed-dashboard",
+      "split": "heldout",
+      "category": "composition",
+      "difficulty": "repair",
+      "model": "gpt-5.6-terra",
+      "metrics": {
+        "promptTokens": 15587,
+        "cachedInputTokens": 5472,
+        "cacheWriteTokens": 10106,
+        "completionTokens": 354,
+        "reasoningTokens": 72,
+        "totalTokens": 15941,
+        "modelCalls": 3,
+        "mcpCalls": 0,
+        "repairRounds": 0,
+        "timeToValidMs": null,
+        "estimatedCostUsd": 0.03828175
+      },
+      "outcome": {
+        "firstPassValid": false,
+        "finalValid": false,
+        "failureCategory": "invalid-program"
+      },
+      "evidence": {
+        "actions": [],
+        "failedValidations": [],
+        "renderers": [],
+        "runtimeError": null
+      },
+      "programSha256": null
+    }
+  ]
+}

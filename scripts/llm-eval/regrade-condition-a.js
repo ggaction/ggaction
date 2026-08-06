@@ -84,7 +84,7 @@ export async function regradeConditionA(file = defaultResultsFile) {
       metrics: {
         ...result.metrics,
         timeToValidMs: score.valid
-          ? Math.max(0, Math.round(validationStats.mtimeMs - directoryStats.birthtimeMs))
+          ? Math.max(0, Math.round(validationStats.birthtimeMs - directoryStats.birthtimeMs))
           : null
       },
       outcome: {

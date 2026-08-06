@@ -9,6 +9,7 @@ import {
 } from "../../scripts/llm-eval/corpus.js";
 import { runEvaluationDryRun, syntheticPassingResult } from "../../scripts/llm-eval/dry-run.js";
 import { scoreEvaluationEvidence } from "../../scripts/llm-eval/score.js";
+import { summarizeConditionAResults } from "../../scripts/llm-eval/summarize-condition-a.js";
 
 const evaluationPlanFile = new URL("../llm/evaluation-plan.json", import.meta.url);
 
@@ -81,4 +82,47 @@ test("rejects missing oracle evidence and mismatched result conditions", async (
     }, corpus),
     /matching knowledge mode/
   );
+});
+
+test("summarizes correctness and efficiency without dropping failed runs", async () => {
+  const corpus = await loadEvaluationCorpus();
+  const task = corpus.tasks[0];
+  const passing = syntheticPassingResult(task);
+  const failed = {
+    ...syntheticPassingResult(task),
+    runId: "failed",
+    metrics: {
+      ...syntheticPassingResult(task).metrics,
+      promptTokens: 80,
+      completionTokens: 20,
+      totalTokens: 100,
+      modelCalls: 3,
+      timeToValidMs: null,
+      estimatedCostUsd: 0.01
+    },
+    outcome: { firstPassValid: false, finalValid: false, failureCategory: "invalid-program" }
+  };
+  const successful = {
+    ...passing,
+    metrics: {
+      ...passing.metrics,
+      promptTokens: 40,
+      completionTokens: 10,
+      totalTokens: 50,
+      modelCalls: 2,
+      timeToValidMs: 500,
+      estimatedCostUsd: 0.005
+    }
+  };
+  const summary = summarizeConditionAResults([successful, failed], {
+    ...corpus,
+    tasks: [task]
+  });
+
+  assert.equal(summary.overall.runs, 2);
+  assert.equal(summary.overall.finalCorrectnessPercent, 50);
+  assert.deepEqual(summary.overall.failureCategories, { "invalid-program": 1 });
+  assert.equal(summary.overall.successfulRuns.totalTokens.median, 50);
+  assert.equal(summary.totals.totalTokens, 150);
+  assert.equal(summary.totals.modelCalls, 5);
 });
