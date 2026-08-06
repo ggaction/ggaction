@@ -144,6 +144,36 @@ test("rejects generated programs with capabilities outside the chart sandbox", (
   `), ["chart", "render", "renderToSVG"]);
 });
 
+test("validates composite statistical actions from their public input trace", async () => {
+  const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
+  const task = corpus.tasks.find(candidate => candidate.id === "cars-error-bar-origin");
+  const cars = JSON.parse(await readFile(new URL("../../data/cars.json", import.meta.url), "utf8"));
+  const source = `
+    import { chart, render } from "ggaction";
+    export function buildChart(datasets) {
+      const values = datasets["cars-v1"].filter(row => row.Origin != null && row.Acceleration != null);
+      return chart()
+        .createCanvas({ width: 640, height: 400, margin: { top: 70, right: 40, bottom: 65, left: 80 } })
+        .createData({ id: "cars", values })
+        .createErrorBar({
+          data: "cars",
+          x: { field: "Origin", fieldType: "nominal" },
+          y: { field: "Acceleration", center: "mean", extent: "ci", level: 0.95 }
+        })
+        .createGuides({ grid: { horizontal: true, vertical: false } })
+        .createTitle({ text: "Mean Acceleration by Origin (95% CI)" });
+    }
+  `;
+  const result = await evaluateGeneratedProgram({
+    source,
+    task,
+    datasets: { "cars-v1": cars },
+    artifactRoot: new URL("../../.artifacts/llm-eval/error-bar-contract", import.meta.url).pathname
+  });
+
+  assert.equal(result.validations.every(validation => validation.passed), true);
+});
+
 test("runs one condition-A task through a mocked model and records executable evidence", async () => {
   const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
   const plan = JSON.parse(await readFile(new URL("../llm/evaluation-plan.json", import.meta.url), "utf8"));

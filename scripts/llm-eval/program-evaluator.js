@@ -84,6 +84,14 @@ function hasEncoding(layers, channel, field, temporal = false) {
   }));
 }
 
+function hasTraceEncoding(nodes, channel, field, temporal = false) {
+  return nodes.some(node => {
+    const encoding = node.args?.[channel];
+    if (encoding?.field !== field) return false;
+    return !temporal || encoding.fieldType === "temporal" || encoding.type === "temporal";
+  });
+}
+
 function hasGraphicInk(graphics, types) {
   return graphics.some(graphic => types.includes(graphic.type) && (
     (Number.isInteger(graphic.length) && graphic.length > 0) ||
@@ -111,6 +119,7 @@ function traceHas(nodes, op, pairs = {}) {
 }
 
 function semanticMark(layers, type) {
+  const normalizedType = type.replace(/:(?:vertical|horizontal)$/u, "");
   const aliases = {
     "regression-line": "line",
     "error-band": "area",
@@ -123,7 +132,7 @@ function semanticMark(layers, type) {
     bin2d: "rect",
     horizon: "area"
   };
-  return layers.some(layer => layer.mark?.type === (aliases[type] ?? type));
+  return layers.some(layer => layer.mark?.type === (aliases[normalizedType] ?? normalizedType));
 }
 
 function validationPassed(id, context) {
@@ -142,7 +151,8 @@ function validationPassed(id, context) {
     if (field === "constant-baseline") {
       return layers.some(layer => layer.encoding?.[channel]?.value !== undefined || layer.encoding?.[channel]?.datum !== undefined);
     }
-    return hasEncoding(layers, channel, field, modifier === "temporal");
+    return hasEncoding(layers, channel, field, modifier === "temporal") ||
+      hasTraceEncoding(nodes, channel, field, modifier === "temporal");
   }
   if (id === "coordinate:polar") return coordinates.some(coordinate => coordinate.type === "polar");
   if (id === "guides:cartesian") return programs.some(program => {
@@ -195,7 +205,11 @@ function validationPassed(id, context) {
   if (id.startsWith("bin:count:")) return hasDeepPair(deep, "bins", Number(id.split(":")[2])) || hasDeepPair(deep, "binCount", Number(id.split(":")[2]));
   if (id.startsWith("bin:x:")) return hasDeepPair(deep, "xBins", Number(id.split(":")[2])) || hasDeepPair(deep, "bins", Number(id.split(":")[2]));
   if (id.startsWith("bin:y:")) return hasDeepPair(deep, "yBins", Number(id.split(":")[2])) || hasDeepPair(deep, "bins", Number(id.split(":")[2]));
-  if (id === "interval:ci95") return hasDeepPair(deep, "interval", "ci95") || hasDeepPair(deep, "confidence", 0.95);
+  if (id === "interval:ci95") return (
+    hasDeepPair(deep, "interval", "ci95") ||
+    hasDeepPair(deep, "confidence", 0.95) ||
+    (hasDeepPair(deep, "extent", "ci") && hasDeepPair(deep, "level", 0.95))
+  );
   if (id === "curve:monotone") return hasDeepPair(deep, "curve", "monotone") || hasDeepPair(deep, "type", "monotone");
   if (id === "boundary:visible") return nodes.some(node => /Boundary/u.test(node.op));
   if (id === "outliers:visible") return !hasDeepPair(deep, "outliers", false);
