@@ -2,9 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
-Planning checkpoint: this Gate package's commit on `origin/codex/roadmap5-3-llm-friendly`.
+Approved by the user on 2026-08-06. Gate package checkpoint: `9a70f075`
 
 ## 승인 대상
 
@@ -35,7 +35,7 @@ A의 실제 token mix를 현재 가격으로 다시 계산한 참고액은 $1.35
 
 ## 승인 효과
 
-승인하면 evaluation plan의 가격/cap을 동기화하고 external paid Condition B와 C를 순서대로 실행할 수 있다. 이 승인은
+승인으로 evaluation plan의 가격/cap 동기화와 external paid Condition B/C 순차 실행이 해제되었다. 이 승인은
 R53-P6-B, PR Ready/merge, package publish, docs deployment 또는 release를 승인하지 않는다.
 
 ## 승인 전 차단 범위

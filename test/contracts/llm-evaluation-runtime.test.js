@@ -22,6 +22,10 @@ import { runConditionATask } from "../../scripts/llm-eval/condition-a-runner.js"
 import { runConditionBTask } from "../../scripts/llm-eval/condition-b-runner.js";
 import { runConditionCTask } from "../../scripts/llm-eval/condition-c-runner.js";
 import {
+  assertPaidEvaluationPlan,
+  remainingPaidBudgetUsd
+} from "../../scripts/llm-eval/run-paid-conditions.js";
+import {
   conditionAKnowledge,
   conditionBKnowledge,
   conditionCKnowledge
@@ -74,6 +78,18 @@ test("normalizes response usage and uses the conservative price classes", () => 
     cacheWrite: 3.125,
     output: 15
   }), 0.0082375);
+});
+
+test("enforces separate and combined paid-condition spend caps", async () => {
+  const plan = JSON.parse(await readFile(new URL("../llm/evaluation-plan.json", import.meta.url), "utf8"));
+
+  assert.doesNotThrow(() => assertPaidEvaluationPlan(plan));
+  assert.equal(remainingPaidBudgetUsd(plan, { conditionSpentUsd: 1.25, combinedSpentUsd: 4 }), 3.75);
+  assert.equal(remainingPaidBudgetUsd(plan, { conditionSpentUsd: 4.75, combinedSpentUsd: 8 }), 0.25);
+  assert.throws(
+    () => assertPaidEvaluationPlan({ ...plan, paidConditionsApprovalStatus: "planned" }),
+    /not approved/u
+  );
 });
 
 test("sends one bounded Responses request and never logs the credential", async () => {

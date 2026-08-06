@@ -11,7 +11,7 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P5-A explicit approval and Phase 6 activation
 - [x] Current official model role and pricing verification
 - [x] Exact B/C model, repetitions and spend proposal
-- [ ] R53-P6-A explicit approval
+- [x] R53-P6-A explicit approval
 - [ ] Paid Condition B and C runs
 - [ ] Aggregate, failure analysis and acceptance decision
 - [ ] Integration candidate synchronization and cumulative verification

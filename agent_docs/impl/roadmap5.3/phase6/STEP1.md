@@ -7,6 +7,7 @@
 - [x] Recalculate expected and hard-cap cost from current official pricing
 - [x] Define cap exhaustion and resolved-model mismatch behavior
 - [x] Prepare R53-P6-A without making external model calls
+- [x] Record R53-P6-A explicit approval
 
 ## 결정 근거
 

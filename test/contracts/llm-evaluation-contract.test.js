@@ -97,9 +97,27 @@ test("keeps the approved paid evaluation bounded and internally consistent", asy
 
   assert.equal(plan.approvalStatus, "approved");
   assert.equal(runs, plan.sampling.runsPerCondition);
-  assert.equal(Number((expectedPerRun * runs).toFixed(2)), plan.costPerConditionUsd.expected);
-  assert.equal(Number((maximumPerRun * runs).toFixed(2)), plan.costPerConditionUsd.calculatedMaximum);
+  assert.equal(Number((expectedPerRun * runs).toFixed(3)), plan.costPerConditionUsd.expected);
+  assert.equal(Number((maximumPerRun * runs).toFixed(3)), plan.costPerConditionUsd.calculatedMaximum);
   assert.equal(plan.costPerConditionUsd.calculatedMaximum < plan.costPerConditionUsd.approvedSpendCap, true);
+  assert.equal(plan.paidConditionsApprovalStatus, "approved");
+  assert.deepEqual(plan.paidConditionsBCUsd.conditions, ["B", "C"]);
+  assert.equal(
+    Number((plan.costPerConditionUsd.expected * 2).toFixed(3)),
+    plan.paidConditionsBCUsd.expected
+  );
+  assert.equal(
+    Number((plan.costPerConditionUsd.calculatedMaximum * 2).toFixed(3)),
+    plan.paidConditionsBCUsd.calculatedMaximum
+  );
+  assert.equal(
+    plan.costPerConditionUsd.expected < plan.paidConditionsBCUsd.approvedSpendCapPerCondition,
+    true
+  );
+  assert.equal(
+    plan.paidConditionsBCUsd.approvedSpendCapPerCondition * 2,
+    plan.paidConditionsBCUsd.approvedCombinedSpendCap
+  );
   assert.deepEqual(plan.conditions, {
     A: "current-docs",
     B: "structured-knowledge",

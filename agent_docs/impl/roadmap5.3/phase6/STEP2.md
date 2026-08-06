@@ -2,8 +2,8 @@
 
 ## 진행 상태
 
-- [ ] Apply the approved pricing and spend caps to the runner
-- [ ] Verify the key source without exposing or copying it into the repository
+- [x] Apply the approved pricing and spend caps to the runner
+- [x] Verify the key source without exposing or copying it into the repository
 - [ ] Run and preserve all 48 Condition B records
 - [ ] Run and preserve all 48 Condition C records
 - [ ] Confirm the same resolved model identity across A/B/C

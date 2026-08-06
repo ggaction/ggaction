@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "approvalStatus": "approved",
+  "paidConditionsApprovalStatus": "approved",
   "provider": "openai",
   "api": "responses",
   "model": {
@@ -28,15 +29,22 @@
     "maximumOutputTokensPerCall": 5000
   },
   "pricingUsdPerMillionTokens": {
-    "uncachedInput": 2.5,
-    "cachedInput": 0.25,
-    "cacheWrite": 3.125,
-    "output": 15
+    "uncachedInput": 2,
+    "cachedInput": 0.2,
+    "cacheWrite": 2.5,
+    "output": 12
   },
   "costPerConditionUsd": {
-    "expected": 4.32,
-    "calculatedMaximum": 9.36,
+    "expected": 3.456,
+    "calculatedMaximum": 7.488,
     "approvedSpendCap": 10
+  },
+  "paidConditionsBCUsd": {
+    "conditions": ["B", "C"],
+    "expected": 6.912,
+    "calculatedMaximum": 14.976,
+    "approvedSpendCapPerCondition": 5,
+    "approvedCombinedSpendCap": 10
   },
   "conditions": {
     "A": "current-docs",
