@@ -11,6 +11,7 @@
 - [x] Main Dependabot alert와 security settings 재확인
 - [x] Ruleset, environments, auto-delete와 merged commit identity 재확인
 - [x] R52-Exit evidence package — `8f5c87457a179513dc50269c6d8c7176b61932ce`
+- [x] R52-Exit explicit approval — 2026-08-06
 
 ## 실행 경계
 

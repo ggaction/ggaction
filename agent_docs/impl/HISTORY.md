@@ -73,4 +73,13 @@ Canvas/SVG/PNG/PDF parity, public docs와 installed-package 검증을 R51-Exit�
 
 - 기록: [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md)
 
+## Roadmap 5.2 — Repository Integrity and Maintainer Hardening
+
+Phase 0~5를 완료했다. Protected `main`과 strict six checks, community/security entry points, dependency automation,
+documentation truth guards와 current-contract coverage를 정리했다. CI action runtime과 compatible dependencies를
+갱신하고 Basic browser bundle promise를 복원했다. PR #23 merge 뒤 community profile, Dependabot, ruleset,
+environments와 merged-main identity를 재검증해 R52-Exit에서 닫았다.
+
+- 기록: [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md)
+
 Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.

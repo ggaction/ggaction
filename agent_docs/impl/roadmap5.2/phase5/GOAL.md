@@ -18,7 +18,7 @@ default-branch 상태를 모두 닫은 뒤 R52-Exit에서 완료 여부를 승�
 - [x] 별도 merge authorization과 PR #23 merge — 2026-08-06
 - [x] Merged `main` community/security/settings reconciliation
 - [x] R52-Exit remote checkpoint — `8f5c87457a179513dc50269c6d8c7176b61932ce`
-- [ ] R52-Exit explicit approval
+- [x] R52-Exit explicit approval — 2026-08-06
 
 ## 두 단계 closeout 경계
 
@@ -40,3 +40,8 @@ Dependabot alert는 open 0, closed 1이다.
 
 R52-P5-A 전에는 PR/merge를 하지 않는다. R52-Exit 전에는 Roadmap completed 선언, package publish, docs deployment나
 `0.0.9` release preparation을 하지 않는다.
+
+## 완료
+
+R52-Exit 승인으로 Roadmap 5.2 completed 전환과 active pointer 해제가 허용되었다. Package publish,
+documentation deployment와 release는 계속 별도 권한이다.

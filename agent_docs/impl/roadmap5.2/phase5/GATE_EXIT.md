@@ -2,7 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-06에 merged-main review target `8f5c87457a179513dc50269c6d8c7176b61932ce`의
+R52-Exit 결과를 명시적으로 승인했다. Roadmap 5.2 완료 선언과 active Roadmap/Phase pointer closeout이
+허용되었다.
 
 ## Review target
 
