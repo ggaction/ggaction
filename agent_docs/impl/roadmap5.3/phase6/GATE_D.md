@@ -10,7 +10,7 @@ Corrective implementation checkpoints:
 - `673b6716` — task-oriented deterministic search v2
 - `ce9ab851` — Condition B baseline restoration and sanitized trace sidecars
 - `66ebd521` — actual MCP discovery adapter and installed-package parity
-- Gate package checkpoint: `pending-record`
+- Gate package checkpoint: `40ac24ab`
 - Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 한눈에 보는 결과
