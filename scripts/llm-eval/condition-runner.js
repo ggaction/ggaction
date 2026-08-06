@@ -139,6 +139,7 @@ export async function runEvaluationTask({
   const runId = `${knowledge.condition}-${task.id}-r${repetition}`;
   const artifactRoot = path.join(outputRoot, runId);
   await mkdir(artifactRoot, { recursive: true });
+  await knowledge.initialize?.();
   const routingText = await knowledge.routingText();
   const input = [{ role: "user", content: programInstructions(task, routingText, knowledge) }];
   const usage = {

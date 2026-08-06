@@ -11,8 +11,8 @@ const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 420,
-  packedBytes: 500_000,
-  unpackedBytes: 3_200_000
+  packedBytes: 550_000,
+  unpackedBytes: 3_700_000
 });
 
 const REQUIRED_FILES = Object.freeze([

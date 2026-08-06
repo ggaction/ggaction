@@ -338,6 +338,7 @@ test("runs one condition-A task through a mocked model and records executable ev
 test("isolates A, B, and C knowledge tools behind one evaluation envelope", async () => {
   const conditionB = conditionBKnowledge("b".repeat(40));
   const conditionC = conditionCKnowledge("c".repeat(40));
+  await conditionC.initialize();
   assert.deepEqual(conditionAKnowledge.tools.map(tool => tool.name), ["search_docs", "read_doc"]);
   assert.deepEqual(
     conditionB.tools.map(tool => tool.name),
@@ -346,7 +347,14 @@ test("isolates A, B, and C knowledge tools behind one evaluation envelope", asyn
   assert.equal(conditionAKnowledge.mode, "current-docs");
   assert.equal(conditionB.mode, "structured-knowledge");
   assert.equal(conditionC.mode, "local-mcp");
-  assert.deepEqual(conditionC.tools.map(tool => tool.name), ["search_ggaction", "read_ggaction"]);
+  assert.deepEqual(conditionC.tools.map(tool => tool.name), ["search_ggaction", "read_mcp_resource"]);
+  assert.equal(conditionC.tools[0].parameters.$schema, "http://json-schema.org/draft-07/schema#");
+  assert.equal(conditionC.tools[0].parameters.additionalProperties, false);
+  assert.deepEqual(conditionC.tools[0].parameters.required, ["query"]);
+  assert.deepEqual(
+    Object.keys(conditionC.tools[0].parameters.properties),
+    ["query", "limit"]
+  );
   assert.deepEqual(
     Object.keys(conditionAKnowledge).filter(key => !["condition", "mode", "commit", "tools", "instruction", "routingLabel"].includes(key)),
     Object.keys(conditionB).filter(key => !["condition", "mode", "commit", "tools", "instruction", "routingLabel"].includes(key))
@@ -359,7 +367,23 @@ test("isolates A, B, and C knowledge tools behind one evaluation envelope", asyn
     JSON.parse(await conditionB.handle({ name: "read_doc", arguments: JSON.stringify({ route: "llms.txt" }) })).text,
     currentRouting
   );
+  const mcpRouting = JSON.parse(await conditionC.routingText());
+  assert.match(mcpRouting.instructions, /Search once/u);
+  assert.deepEqual(mcpRouting.tools.map(tool => tool.name), ["search_ggaction"]);
+  assert.deepEqual(mcpRouting.resourceTemplates.map(template => template.uriTemplate), [
+    "ggaction://actions/{name}",
+    "ggaction://recipes/{id}",
+    "ggaction://docs/{section}"
+  ]);
+  assert.equal(mcpRouting.overview.schemaVersion, 2);
   await assert.rejects(() => conditionC.handle({ name: "read_doc", arguments: "{}" }), /Unknown local MCP knowledge tool/);
+  await assert.rejects(
+    () => conditionC.handle({
+      name: "read_mcp_resource",
+      arguments: JSON.stringify({ uri: "file:///etc/passwd" })
+    }),
+    /discovered ggaction resource template/u
+  );
   await conditionC.close();
 });
 
@@ -498,9 +522,9 @@ test("runs mocked chart authoring through the real local MCP Condition C adapter
       arguments: JSON.stringify({ query: "scatter plot with categorical color" })
     }, {
       type: "function_call",
-      name: "read_ggaction",
+      name: "read_mcp_resource",
       call_id: "mcp_read",
-      arguments: JSON.stringify({ kind: "action", id: "createScatterPlot" })
+      arguments: JSON.stringify({ uri: "ggaction://actions/createScatterPlot" })
     }],
     [{
       type: "function_call",
@@ -510,6 +534,7 @@ test("runs mocked chart authoring through the real local MCP Condition C adapter
     }]
   ];
   const requests = [];
+  const outputRoot = new URL("../../.artifacts/llm-eval/runner-c-contract", import.meta.url).pathname;
   const result = await runConditionCTask({
     knowledgeCommit: "c".repeat(40),
     apiKey: `sk-${"x".repeat(40)}`,
@@ -518,9 +543,9 @@ test("runs mocked chart authoring through the real local MCP Condition C adapter
     repetition: 1,
     plan: {
       ...plan,
-      sampling: { ...plan.sampling, maximumMcpCallsPerTask: 2 }
+      sampling: { ...plan.sampling, maximumMcpCallsPerTask: 3 }
     },
-    outputRoot: new URL("../../.artifacts/llm-eval/runner-c-contract", import.meta.url).pathname,
+    outputRoot,
     fetchImpl: async (_url, init) => {
       requests.push(JSON.parse(init.body));
       return {
@@ -544,13 +569,19 @@ test("runs mocked chart authoring through the real local MCP Condition C adapter
   });
 
   assert.equal(requests.length, 2);
-  assert.deepEqual(requests[0].tools.map(tool => tool.name), ["search_ggaction", "read_ggaction", "submit_program"]);
+  assert.deepEqual(requests[0].tools.map(tool => tool.name), ["search_ggaction", "read_mcp_resource", "submit_program"]);
   assert.equal(result.condition, "C");
   assert.deepEqual(result.knowledge, { commit: "c".repeat(40), mode: "local-mcp" });
   assert.equal(result.outcome.firstPassValid, true);
   assert.equal(result.outcome.finalValid, true);
   assert.equal(result.metrics.modelCalls, 2);
-  assert.equal(result.metrics.mcpCalls, 2);
+  assert.equal(result.metrics.mcpCalls, 3);
   assert.equal(result.metrics.repairRounds, 0);
   assert.equal(result.artifacts.rendererFiles.length, 1);
+  const trace = JSON.parse(await readFile(`${outputRoot}/${result.runId}/trace.json`, "utf8"));
+  assert.deepEqual(trace.rounds[0].calls.map(call => call.name), ["search_ggaction", "read_mcp_resource"]);
+  assert.deepEqual(trace.rounds[0].calls[1].arguments, {
+    uri: "ggaction://actions/createScatterPlot"
+  });
+  assert.equal(trace.rounds[0].calls[1].result.identity, "action:createScatterPlot");
 });

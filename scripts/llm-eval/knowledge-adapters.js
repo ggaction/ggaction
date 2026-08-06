@@ -64,6 +64,80 @@ export const structuredKnowledgeTools = Object.freeze([
   }
 ]);
 
+function escapeRegularExpression(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+}
+
+function resourceTemplatePattern(template) {
+  if (typeof template !== "string" || !template.startsWith("ggaction://")) {
+    throw new Error("Condition C only accepts discovered ggaction resource templates.");
+  }
+  const placeholder = /\{[A-Za-z][A-Za-z0-9]*\}/gu;
+  let source = "^";
+  let cursor = 0;
+  let match;
+  while ((match = placeholder.exec(template)) !== null) {
+    source += escapeRegularExpression(template.slice(cursor, match.index));
+    source += "[A-Za-z][A-Za-z0-9-]*";
+    cursor = match.index + match[0].length;
+  }
+  source += `${escapeRegularExpression(template.slice(cursor))}$`;
+  return source;
+}
+
+function discoveredMcpSurface(discovery) {
+  if (typeof discovery.instructions !== "string" || discovery.instructions.length === 0) {
+    throw new Error("The local MCP server did not advertise instructions.");
+  }
+  const tools = discovery.tools.map(tool => {
+    if (
+      typeof tool.name !== "string" ||
+      typeof tool.description !== "string" ||
+      tool.inputSchema?.type !== "object" ||
+      tool.annotations?.readOnlyHint !== true
+    ) {
+      throw new Error("Condition C requires discovered read-only MCP tools with descriptions and object schemas.");
+    }
+    return Object.freeze({
+      type: "function",
+      name: tool.name,
+      description: tool.description,
+      strict: true,
+      parameters: tool.inputSchema
+    });
+  });
+  const templates = discovery.resourceTemplates.filter(template =>
+    typeof template.uriTemplate === "string" && template.uriTemplate.startsWith("ggaction://")
+  );
+  if (tools.length === 0 || templates.length === 0) {
+    throw new Error("The local MCP server must advertise a search tool and ggaction resource templates.");
+  }
+  const patternSources = templates.map(template => resourceTemplatePattern(template.uriTemplate));
+  const readTool = Object.freeze({
+    type: "function",
+    name: "read_mcp_resource",
+    description: `Read one exact resource advertised by the local MCP server. Allowed templates: ${templates.map(template => template.uriTemplate).join(", ")}`,
+    strict: true,
+    parameters: {
+      type: "object",
+      additionalProperties: false,
+      required: ["uri"],
+      properties: {
+        uri: { type: "string", pattern: `(?:${patternSources.join("|")})` }
+      }
+    }
+  });
+  const overview = discovery.resources.find(resource => resource.uri === "ggaction://overview");
+  if (!overview) throw new Error("The local MCP server did not advertise ggaction://overview.");
+  return Object.freeze({
+    discovery,
+    tools: Object.freeze([...tools, readTool]),
+    toolNames: new Set(tools.map(tool => tool.name)),
+    resourcePatterns: Object.freeze(patternSources.map(source => new RegExp(source, "u"))),
+    overview
+  });
+}
+
 export const conditionAKnowledge = Object.freeze({
   condition: "A",
   mode: "current-docs",
@@ -116,28 +190,47 @@ export function conditionCKnowledge(commit, clientOptions) {
     throw new TypeError("Condition C knowledge commit must be an exact 40-character lowercase Git SHA.");
   }
   const mcp = createLocalMcpKnowledgeClient(clientOptions);
-  const resourceUri = ({ kind, id }) => {
-    const families = { action: "actions", recipe: "recipes", docs: "docs" };
-    if (!(kind in families)) throw new TypeError("MCP knowledge kind must be action, recipe, or docs.");
-    if (typeof id !== "string" || !/^[A-Za-z][A-Za-z0-9-]*$/.test(id)) {
-      throw new TypeError("MCP knowledge ID is invalid.");
-    }
-    return `ggaction://${families[kind]}/${id}`;
+  let surface;
+  const initialize = async () => {
+    surface ??= discoveredMcpSurface(await mcp.discover());
+    return surface;
   };
   return Object.freeze({
     condition: "C",
     mode: "local-mcp",
     commit,
-    tools: structuredKnowledgeTools,
-    instruction: "Use only public ggaction APIs found through the provided local MCP knowledge tools.",
-    routingLabel: "Local ggaction MCP overview resource",
-    routingText() {
-      return mcp.read("ggaction://overview");
+    get tools() {
+      if (!surface) throw new Error("Condition C MCP discovery must finish before reading its tools.");
+      return surface.tools;
+    },
+    instruction: "Use only public ggaction APIs found through the discovered local MCP surface. Search once, read one exact action or recipe resource, then submit the program without another search.",
+    routingLabel: "Discovered local ggaction MCP instructions, catalog, and overview resource",
+    initialize,
+    async routingText() {
+      const current = await initialize();
+      const overviewText = await mcp.read(current.overview.uri);
+      return JSON.stringify({
+        server: current.discovery.server,
+        instructions: current.discovery.instructions,
+        tools: current.discovery.tools,
+        resources: current.discovery.resources,
+        resourceTemplates: current.discovery.resourceTemplates,
+        overview: JSON.parse(overviewText)
+      });
     },
     async handle(call) {
+      const current = await initialize();
       const args = JSON.parse(call.arguments);
-      if (call.name === "search_ggaction") return mcp.search(args);
-      if (call.name === "read_ggaction") return mcp.read(resourceUri(args));
+      if (current.toolNames.has(call.name)) return mcp.callTool(call.name, args);
+      if (call.name === "read_mcp_resource") {
+        if (
+          typeof args.uri !== "string" ||
+          !current.resourcePatterns.some(pattern => pattern.test(args.uri))
+        ) {
+          throw new TypeError("MCP resource URI must match a discovered ggaction resource template.");
+        }
+        return mcp.read(args.uri);
+      }
       throw new Error(`Unknown local MCP knowledge tool ${call.name}.`);
     },
     close() {

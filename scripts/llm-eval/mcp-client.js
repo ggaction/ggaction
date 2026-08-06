@@ -29,17 +29,31 @@ export function createLocalMcpKnowledgeClient({
     return connecting;
   }
 
+  async function callTool(name, arguments_) {
+    const result = await (await connection()).callTool({ name, arguments: arguments_ });
+    if (result.isError) throw new Error(result.content?.[0]?.text ?? `MCP tool ${name} failed.`);
+    const text = result.content?.find(item => item.type === "text")?.text;
+    if (typeof text !== "string") throw new Error(`MCP tool ${name} returned no text content.`);
+    return text;
+  }
+
   return Object.freeze({
-    async search({ query, limit }) {
-      const result = await (await connection()).callTool({
-        name: "search_ggaction",
-        arguments: { query, ...(limit === undefined ? {} : { limit }) }
+    async discover() {
+      const connected = await connection();
+      const [resources, templates, tools] = await Promise.all([
+        connected.listResources(),
+        connected.listResourceTemplates(),
+        connected.listTools()
+      ]);
+      return Object.freeze({
+        server: connected.getServerVersion(),
+        instructions: connected.getInstructions(),
+        resources: Object.freeze(resources.resources),
+        resourceTemplates: Object.freeze(templates.resourceTemplates),
+        tools: Object.freeze(tools.tools)
       });
-      if (result.isError) throw new Error(result.content?.[0]?.text ?? "MCP search failed.");
-      const text = result.content?.find(item => item.type === "text")?.text;
-      if (typeof text !== "string") throw new Error("MCP search returned no text content.");
-      return text;
     },
+    callTool,
     async read(uri) {
       const result = await (await connection()).readResource({ uri });
       const text = result.contents?.find(item => "text" in item)?.text;
