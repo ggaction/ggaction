@@ -99,8 +99,8 @@ Renderer와 browser entry에 MCP runtime dependency가 섞이지 않도록 insta
 
 | Phase | 상태 | 범위 |
 | ---: | --- | --- |
-| 0 | in-progress | Exact knowledge baseline, benchmark/cost contract와 source-of-truth 결정 |
-| 1 | planned | LLM-readable documentation routing과 stable chunks |
+| 0 | completed | Exact knowledge baseline, benchmark/cost contract와 source-of-truth 결정 |
+| 1 | in-progress | LLM-readable documentation routing과 stable chunks |
 | 2 | planned | 173-action informative English metadata |
 | 3 | planned | High-coverage executable task recipes |
 | 4 | planned | Deterministic retrieval, local harness와 mechanical coverage reports |

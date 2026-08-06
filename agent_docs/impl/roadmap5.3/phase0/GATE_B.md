@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-06. Gate package checkpoint: `83a3588b` (`docs: prepare roadmap 5.3 gate b`).
 
 Evidence checkpoints:
 
