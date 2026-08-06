@@ -2,7 +2,11 @@
 
 ## Gate state
 
-`planned`
+`approved`
+
+사용자가 2026-08-06에 merged-main review target `8f5c87457a179513dc50269c6d8c7176b61932ce`의
+R52-Exit 결과를 명시적으로 승인했다. Roadmap 5.2 완료 선언과 active Roadmap/Phase pointer closeout이
+허용되었다.
 
 ## Review target
 
@@ -34,4 +38,19 @@ authorize package publish, documentation deployment or release.
 
 ## Remote checkpoint
 
-- Pending merged-main reconciliation and closeout checkpoint.
+- Review target: `8f5c87457a179513dc50269c6d8c7176b61932ce`
+- Branch: `codex/roadmap5-2-closeout`
+
+## Merged-main evidence — 2026-08-06
+
+- PR: [#23](https://github.com/ggaction/ggaction/pull/23), Ready 전환과 merge 별도 승인 완료
+- Exact PR head: `ac1c55e3e163c75b857e47de50f3c0a4d01a779f`
+- Required checks: [CI run 30980501139](https://github.com/ggaction/ggaction/actions/runs/30980501139), six jobs success
+- Merged main: `73e8aebae6ccf3d9a029366f3fe2c21107260051`, second parent가 exact PR head이고 tree diff 없음
+- Community: Roadmap 대상 Description/README/conduct/contributing/license/security/issue/PR 항목 모두 `Added`
+- Dependabot: PostCSS `8.5.25`, open alerts 0, closed alerts 1
+- Security: private reporting, Dependabot alerts/security updates, secret scanning과 push protection enabled
+- Ruleset: `20421930` active, PR + strict six checks + deletion/force-push protection + maintainer bypass 유지
+- Environments: `npm-release`와 `github-pages`의 reviewer/deployment protection 유지
+- Repository: merged branch auto-delete enabled
+- Product truth: approved implementation과 public/render/package output은 merge 과정에서 변경되지 않음

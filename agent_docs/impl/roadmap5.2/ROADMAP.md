@@ -1,8 +1,8 @@
 # Roadmap 5.2 — Repository Integrity and Maintainer Hardening
 
-> **문서 상태 — 현재 실행 계획.** Roadmap 5.2는 새 chart capability나 public API를 추가하지 않고
-> `0.0.8`의 문서 정확성, executable coverage, GitHub 운영 안전장치와 CI/package 유지보수 기반을 닫는다.
-> 활성 Phase와 Gate 상태는 [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다.
+> **문서 상태 — 완료된 실행 기록.** 2026-08-06 R52-Exit 승인을 받아 Phase 0~5와 Roadmap 5.2를
+> 완료했다. 현재 observable API는 [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)이
+> 소유하며, roadmap 상태와 nullable active pointer는 [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다.
 
 ## 목표
 
@@ -51,7 +51,7 @@
 | 2 | completed | Documentation truth alignment와 mechanical drift guards; R52-P2-A approved |
 | 3 | completed | Partial coverage completion과 cumulative regression; R52-P3-A approved |
 | 4 | completed | CI action runtime, dependency와 bundle hardening; R52-P4-A approved |
-| 5 | in-progress | Integration, repository verification와 R52-Exit |
+| 5 | completed | Integration, merged-main repository verification와 R52-Exit approved closeout |
 
 ## Approval Gates
 

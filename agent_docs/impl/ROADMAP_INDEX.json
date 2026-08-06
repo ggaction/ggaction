@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "activeRoadmap": "roadmap5.2",
-  "activePhase": 5,
-  "lastCompletedRoadmap": "roadmap5.1",
-  "lastCompletedPhase": 3,
+  "activeRoadmap": null,
+  "activePhase": null,
+  "lastCompletedRoadmap": "roadmap5.2",
+  "lastCompletedPhase": 5,
   "roadmaps": [
     {
       "id": "roadmap1",
@@ -80,8 +80,8 @@
     {
       "id": "roadmap5.2",
       "title": "Repository Integrity and Maintainer Hardening",
-      "status": "active",
-      "role": "current-execution-plan",
+      "status": "completed",
+      "role": "historical-execution-record",
       "file": "agent_docs/impl/roadmap5.2/ROADMAP.md"
     }
   ]
