@@ -31,8 +31,13 @@ test("publishes only the bounded public package artifact", () => {
   assert.ok(manifest.unpackedSize <= PACKAGE_LIMITS.unpackedBytes);
   assert.ok(paths.every(path =>
     ["CHANGELOG.md", "LICENSE", "README.md", "package.json"].includes(path) ||
-    path.startsWith("src/") || path.startsWith("types/")
+    path.startsWith("src/") || path.startsWith("types/") ||
+    path.startsWith("bin/") || path.startsWith("mcp/") || path.startsWith("knowledge/")
   ));
+  assert.deepEqual(paths.filter(path => path.startsWith("knowledge/")), [
+    "knowledge/index.json",
+    "knowledge/search-index.json"
+  ]);
   assert.equal(paths.some(path => path.startsWith("test/")), false);
   assert.equal(paths.some(path => path.startsWith("agent_docs/")), false);
   assert.equal(paths.some(path => path.startsWith(".github/")), false);
@@ -48,6 +53,11 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
       "CHANGELOG.md",
       "LICENSE",
       "README.md",
+      "bin/ggaction-mcp.js",
+      "knowledge/index.json",
+      "knowledge/search-index.json",
+      "mcp/knowledge.js",
+      "mcp/server.js",
       "package.json",
       "src/index.js",
       "src/basic.js",

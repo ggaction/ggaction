@@ -8,8 +8,8 @@ knowledge와 deterministic search만 읽으며 chart 실행, rendering, arbitrar
 ## 진행 상태
 
 - [x] R53-P4-A explicit approval and Phase 5 activation
-- [ ] Stable official MCP SDK and package boundary
-- [ ] Read-only resources and bounded search tool
+- [x] Stable official MCP SDK and package boundary
+- [x] Read-only resources and bounded search tool
 - [ ] Installed tarball and clean-consumer stdio evidence
 - [ ] Invalid-input and no-file/no-network/no-execution evidence
 - [ ] Browser/package import isolation and bundle regression evidence

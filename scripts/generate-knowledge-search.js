@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { normalizeKnowledgeText } from "../mcp/knowledge.js";
 import { root } from "./action-knowledge.js";
 
 export const knowledgeSearchOutput = path.join(root, "knowledge/search-index.json");
@@ -27,26 +28,7 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
-function canonicalWord(word) {
-  const exceptions = { axes: "axis", series: "series", analyses: "analysis" };
-  if (exceptions[word]) return exceptions[word];
-  if (word.length > 4 && word.endsWith("ies")) return `${word.slice(0, -3)}y`;
-  if (word.length > 3 && word.endsWith("s") && !/(?:ss|us|is)$/.test(word)) return word.slice(0, -1);
-  return word;
-}
-
-export function normalizeKnowledgeText(value) {
-  return String(value)
-    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .toLowerCase()
-    .replace(/\b(scatter)(plot)\b/g, "$1 $2")
-    .replace(/\b(heat)(map)\b/g, "$1 $2")
-    .replace(/\b(box|violin|gradient)(plot)\b/g, "$1 $2")
-    .match(/[a-z0-9]+/g)
-    ?.map(canonicalWord)
-    .join(" ") ?? "";
-}
+export { normalizeKnowledgeText };
 
 function tokens(values) {
   const words = values.flatMap(value => normalizeKnowledgeText(value).split(/\s+/).filter(Boolean));
@@ -121,7 +103,8 @@ function routeRecord(route, source) {
     title: route.title,
     summary: summaryFromMarkdown(source),
     route: route.route,
-    sourcePath: route.path,
+    text: source.slice(0, limits.maximumReadCharacters),
+    truncated: source.length > limits.maximumReadCharacters,
     terms: {
       identity: tokens([route.id, route.title]),
       title: tokens([route.title]),

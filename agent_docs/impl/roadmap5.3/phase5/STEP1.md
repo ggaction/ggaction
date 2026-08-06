@@ -2,11 +2,11 @@
 
 ## 진행 상태
 
-- [ ] Pin the current stable official MCP SDK and required validator
-- [ ] Extract package-safe deterministic knowledge search/read ownership
-- [ ] Register the four bounded resource routes and one search tool
-- [ ] Add the `ggaction-mcp` stdio executable and publish files
-- [ ] Update package-boundary architecture and focused contracts
+- [x] Pin the current stable official MCP SDK and required validator
+- [x] Extract package-safe deterministic knowledge search/read ownership
+- [x] Register the four bounded resource routes and one search tool
+- [x] Add the `ggaction-mcp` stdio executable and publish files
+- [x] Update package-boundary architecture and focused contracts
 
 ## 실행 순서
 

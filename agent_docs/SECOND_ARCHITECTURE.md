@@ -73,8 +73,11 @@ Public package
 │  └─ renderToSVG()
 ├─ ggaction/png
 │  └─ renderToPNG()
-└─ ggaction/pdf
-   └─ renderToPDF()
+├─ ggaction/pdf
+│  └─ renderToPDF()
+└─ ggaction-mcp
+   ├─ local stdio resources
+   └─ deterministic read-only search
 
 Program execution
 ├─ ChartProgram assembly
@@ -110,7 +113,7 @@ Program execution
 
 ## Public package boundary
 
-패키지는 여섯 개의 명시적 entry point를 가진다.
+패키지는 여섯 개의 명시적 JavaScript entry point와 하나의 Node-only executable을 가진다.
 
 ### `ggaction`
 
@@ -194,7 +197,27 @@ point 아래에만 존재한다. Fully materialized `graphicSpec`을 logical Can
 width/height와 숫자상 같은 point 크기의 한 page에 그리고 optional
 title/author/subject/keywords metadata를 기록한다.
 
-각 JavaScript entry point는 대응하는 TypeScript declaration을 가진다.
+### `ggaction-mcp`
+
+기존 package가 제공하는 Node-only local `stdio` executable이다. Export map에 importable chart API로 추가하지 않고
+`package.json`의 `bin`만 소유한다. Official MCP SDK와 `zod`, fixed package-local generated knowledge는 이 executable
+아래에서만 import한다.
+
+```text
+ggaction://overview
+ggaction://actions/{name}
+ggaction://recipes/{id}
+ggaction://docs/{section}
+search_ggaction({ query, limit })
+```
+
+Resource는 canonical generated action/recipe/docs knowledge를 읽고 tool은 같은 deterministic ranking을 사용한다.
+Caller-controlled filesystem path, URL, source code와 chart program을 입력으로 받지 않으며 network, chart execution,
+rendering, arbitrary code execution과 write operation을 등록하지 않는다. Protocol output은 stdout, startup/terminal
+diagnostic은 stderr로 분리한다.
+
+각 importable JavaScript entry point는 대응하는 TypeScript declaration을 가진다. `ggaction-mcp`는 protocol executable이며
+importable export가 아니므로 별도 public declaration을 만들지 않는다.
 
 ```text
 src/index.js             ↔ types/index.d.ts
@@ -208,6 +231,10 @@ ChartProgram contract    ↔ types/program.d.ts
 
 `package.json`의 export map, JavaScript export, declaration, package-boundary test는 하나의
 public contract로 함께 관리한다.
+
+Package artifact는 `src/`, `types/`와 함께 executable `bin/ggaction-mcp.js`, Node-only `mcp/`와 generated
+`knowledge/index.json`/`knowledge/search-index.json`만 포함한다. Root/basic/extension/svg/png/pdf import graph는 `mcp/`,
+generated knowledge, MCP SDK와 `zod`를 import하지 않는다.
 
 ### Browser bundle regression ceilings
 
@@ -2010,6 +2037,11 @@ const result = await renderToPNG(program, {
 Pixel ratio는 renderer option일 뿐 `graphicSpec`의 logical coordinate를 바꾸지 않는다.
 
 ## Source ownership
+
+Package root의 `mcp/knowledge.js`는 fixed package-local generated knowledge의 bounded search/read를 소유한다.
+`mcp/server.js`는 resource/tool registration만 소유하고 `bin/ggaction-mcp.js`는 stdio startup과 stderr failure boundary만
+소유한다. 이 Node-only tree는 `src/` chart state, action, materialization 또는 renderer tree의 dependency가 아니며
+`scripts/knowledge-search.js`만 development compatibility facade로 같은 search/read owner를 re-export한다.
 
 ```text
 src/

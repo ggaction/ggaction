@@ -22,6 +22,10 @@
   "type": "module",
   "sideEffects": false,
   "files": [
+    "bin/",
+    "knowledge/index.json",
+    "knowledge/search-index.json",
+    "mcp/",
     "src/",
     "!src/**/AGENTS.md",
     "types/",
@@ -29,6 +33,9 @@
     "CHANGELOG.md",
     "LICENSE"
   ],
+  "bin": {
+    "ggaction-mcp": "./bin/ggaction-mcp.js"
+  },
   "types": "./types/index.d.ts",
   "exports": {
     ".": {
@@ -114,7 +121,9 @@
     "tag": "latest"
   },
   "dependencies": {
-    "@napi-rs/canvas": "^1.0.2"
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@napi-rs/canvas": "^1.0.2",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",

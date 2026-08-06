@@ -10,15 +10,20 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 412,
-  packedBytes: 400_000,
-  unpackedBytes: 1_835_000
+  entries: 420,
+  packedBytes: 500_000,
+  unpackedBytes: 3_200_000
 });
 
 const REQUIRED_FILES = Object.freeze([
   "CHANGELOG.md",
   "LICENSE",
   "README.md",
+  "bin/ggaction-mcp.js",
+  "knowledge/index.json",
+  "knowledge/search-index.json",
+  "mcp/knowledge.js",
+  "mcp/server.js",
   "package.json",
   "src/index.js",
   "src/basic.js",
@@ -78,7 +83,12 @@ export function validatePackageManifest(manifest) {
       "LICENSE",
       "README.md",
       "package.json"
-    ].includes(file) && !file.startsWith("src/") && !file.startsWith("types/")) {
+    ].includes(file) &&
+      !file.startsWith("src/") &&
+      !file.startsWith("types/") &&
+      !file.startsWith("bin/") &&
+      !file.startsWith("mcp/") &&
+      !file.startsWith("knowledge/")) {
       throw new Error(`Package artifact includes forbidden file "${file}".`);
     }
   }

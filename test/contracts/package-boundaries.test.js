@@ -98,6 +98,23 @@ test("maps every public entry point to a declaration file", () => {
   }
 });
 
+test("keeps the local MCP executable outside browser and chart export maps", () => {
+  const packageJson = JSON.parse(readFileSync(
+    new URL("../../package.json", import.meta.url),
+    "utf8"
+  ));
+  assert.deepEqual(packageJson.bin, { "ggaction-mcp": "./bin/ggaction-mcp.js" });
+  assert.deepEqual(packageJson.files.slice(0, 4), [
+    "bin/",
+    "knowledge/index.json",
+    "knowledge/search-index.json",
+    "mcp/"
+  ]);
+  assert.equal(packageJson.dependencies["@modelcontextprotocol/sdk"], "1.30.0");
+  assert.equal(packageJson.dependencies.zod, "4.4.3");
+  assert.equal(Object.keys(packageJson.exports).some(key => key.includes("mcp")), false);
+});
+
 test("keeps runtime values and declarations in exact public-entry parity", async () => {
   for (const [specifier, entry] of Object.entries(PUBLIC_ENTRIES)) {
     const runtime = await import(new URL(`../../${entry.runtime.slice(2)}`, import.meta.url));
