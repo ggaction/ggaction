@@ -23,9 +23,9 @@ function packageSpecifiers(packageJson) {
   );
 }
 
-test("keeps current package exports visible in public and architecture documentation", () => {
+test("keeps current package modules and executable visible in public and architecture documentation", () => {
   const packageJson = JSON.parse(read("package.json"));
-  const expected = packageSpecifiers(packageJson).sort();
+  const expected = [...packageSpecifiers(packageJson), ...Object.keys(packageJson.bin)].sort();
   const readmeEntries = [...section(read("README.md"), "Package entries").matchAll(
     /^\| `([^`]+)` \|/gm
   )].map(match => match[1]).sort();
@@ -36,6 +36,7 @@ test("keeps current package exports visible in public and architecture documenta
 
   assert.deepEqual(readmeEntries, expected);
   assert.deepEqual(architectureEntries, expected);
+  assert.match(section(read("README.md"), "Package entries"), /Communication is local stdio/u);
 });
 
 test("keeps the current renderer set out of architecture limitations", () => {

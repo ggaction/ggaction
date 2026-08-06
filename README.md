@@ -182,9 +182,21 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
 | `ggaction/pdf` | Render a completed program to a single-page vector PDF file in Node.js |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
+| `ggaction-mcp` | Run the local read-only MCP knowledge server over stdio |
 
-All entries include TypeScript declarations. The default, basic, extension, and
-SVG entries are browser-safe; the PNG and PDF adapters are Node-only.
+All importable entries include TypeScript declarations. The default, basic,
+extension, and SVG entries are browser-safe; the PNG and PDF adapters and the
+MCP executable are Node-only.
+
+An MCP host can launch the executable installed with the package:
+
+```text
+./node_modules/.bin/ggaction-mcp
+```
+
+It serves bounded action, recipe, and documentation resources plus the
+read-only `search_ggaction` tool. Communication is local stdio; no hosted
+server, account, authentication, chart execution, or rendering is involved.
 
 ## Documentation
 
