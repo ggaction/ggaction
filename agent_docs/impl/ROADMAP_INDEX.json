@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "activeRoadmap": null,
-  "activePhase": null,
+  "activeRoadmap": "roadmap5.3",
+  "activePhase": 0,
   "lastCompletedRoadmap": "roadmap5.2",
   "lastCompletedPhase": 5,
   "roadmaps": [
@@ -82,7 +82,15 @@
       "title": "Repository Integrity and Maintainer Hardening",
       "status": "completed",
       "role": "historical-execution-record",
-      "file": "agent_docs/impl/roadmap5.2/ROADMAP.md"
+      "file": "agent_docs/impl/roadmap5.2/ROADMAP.md",
+      "successor": "roadmap5.3"
+    },
+    {
+      "id": "roadmap5.3",
+      "title": "LLM-Friendly Knowledge and Local MCP",
+      "status": "active",
+      "role": "current-execution-plan",
+      "file": "agent_docs/impl/roadmap5.3/ROADMAP.md"
     }
   ]
 }

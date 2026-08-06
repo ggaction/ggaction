@@ -4,8 +4,9 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 5.2 Phase 5이며 repository integrity와
-  maintainer hardening을 R52-Exit에서 닫았다. 기록은 [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md)가 소유한다.
+- **현재 활성 Roadmap은 Roadmap 5.3 Phase 0이다.** Current documentation과 action inventory를 LLM 관점에서
+  측정하고 benchmark·knowledge·local MCP 계약을 고정한다. 실행 순서는
+  [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -21,6 +22,7 @@
 - [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md) — completed, temporal derivation, ordering과 directional marks
 - [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md) — completed, multi-legend layout completion
 - [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md) — completed, repository integrity와 maintainer hardening
+- [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md) — active, LLM-readable knowledge, task recipes와 local MCP
 
 ## 재사용하는 개발 절차
 
