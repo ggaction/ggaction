@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "9f0bb77c",
+  "actionCount": 173,
+  "publicRecipePages": {
+    "count": 19,
+    "ids": [
+      "annotations",
+      "bar-chart",
+      "box-plot",
+      "composition",
+      "density-area",
+      "error-band",
+      "error-bar",
+      "facet",
+      "gradient-plot",
+      "heatmap",
+      "histogram",
+      "horizon",
+      "line-chart",
+      "parallel-coordinates",
+      "path-ordering",
+      "regression-scatterplot",
+      "rose-chart",
+      "scatterplot",
+      "violin-plot"
+    ]
+  },
+  "publicChartPrograms": {
+    "registered": 47,
+    "executed": 46,
+    "compoundDataSkipped": [
+      "cross-feature-dashboard"
+    ]
+  },
+  "traceCoverage": {
+    "directActions": 52,
+    "wrappedActions": 117,
+    "focusedPhase2Examples": 100,
+    "focusedPhase2ExampleFailures": 0
+  },
+  "directGapsByDomain": {
+    "axes": 41,
+    "charts": 0,
+    "composition": 2,
+    "core": 10,
+    "encodings": 18,
+    "grid": 11,
+    "legend_and_title": 9,
+    "mark-selection": 4,
+    "marks": 12,
+    "primitives": 3,
+    "statistics": 11
+  },
+  "wrappedGapsByDomain": {
+    "axes": 10,
+    "charts": 0,
+    "composition": 2,
+    "core": 3,
+    "encodings": 9,
+    "grid": 6,
+    "legend_and_title": 9,
+    "mark-selection": 3,
+    "marks": 6,
+    "primitives": 0,
+    "statistics": 8
+  },
+  "conclusions": [
+    "The 19 current public recipe pages are canonical starting tasks rather than sufficient all-action recipe coverage.",
+    "Existing public chart programs already execute every chart facade and cover 117 actions when wrapped trace nodes are included.",
+    "Focused task recipes are still required for guide editing, lifecycle removal, owner revision, range encodings, selection release, and extension authoring.",
+    "Wrapped implementation actions must not be presented as user-authored steps unless the recipe calls them explicitly."
+  ]
+}

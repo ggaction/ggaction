@@ -2,8 +2,8 @@
 
 ## 진행 상태
 
-- [ ] Existing `docs/recipes`, canonical examples and Phase 2 action examples inventory
-- [ ] Distinct task taxonomy and initial action-role matrix
+- [x] Existing `docs/recipes`, canonical examples and Phase 2 action examples inventory
+- [x] Distinct task taxonomy and initial action-role matrix
 - [ ] Canonical recipe source authoring with runnable examples
 - [ ] Focused executable examples only for real uncovered workflows
 - [ ] Recipe schema, prose quality, action existence/order and example-trace validation
