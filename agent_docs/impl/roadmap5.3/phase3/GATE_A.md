@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-06. Gate package checkpoint: `f6269020`
+(`docs: prepare roadmap 5.3 phase 3 gate`).
 
 Implementation checkpoint: `8da9dd65` (`docs: add structured task recipes`).
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`.
@@ -123,8 +126,11 @@ loopback listen 제한 때문에 승인된 local test-server 권한으로 재실
 승인하면 Phase 4의 deterministic retrieval index, bounded search API와 local benchmark harness 구현을 시작할 수 있다.
 MCP implementation, B/C 유료 LLM 평가, PR Ready/merge, publish/deploy/release는 승인하지 않는다.
 
-## Work blocked before approval
+## Unblocked work
 
-- Deterministic retrieval/search implementation and benchmark B/C harness integration
-- Local MCP package/bin/dependency changes
+- Phase 4 deterministic retrieval index, bounded Node-only search/read API and local benchmark harness
+
+## Still blocked
+
+- Local MCP package/bin/dependency changes before R53-P4-A approval
 - External or paid B/C LLM runs

@@ -1,6 +1,6 @@
 # Roadmap 5.3 — LLM-Friendly Knowledge and Local MCP
 
-> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 3이다. Exact pointer는
+> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 4이다. Exact pointer는
 > [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다. 현재 observable action behavior는
 > [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)과 `contract/current/`가 소유한다.
 
@@ -102,8 +102,8 @@ Renderer와 browser entry에 MCP runtime dependency가 섞이지 않도록 insta
 | 0 | completed | Exact knowledge baseline, benchmark/cost contract와 source-of-truth 결정 |
 | 1 | completed | LLM-readable documentation routing과 stable chunks |
 | 2 | completed | 173-action informative English metadata |
-| 3 | in-progress | High-coverage executable task recipes; R53-P3-A ready for review |
-| 4 | planned | Deterministic retrieval, local harness와 mechanical coverage reports |
+| 3 | completed | High-coverage executable task recipes |
+| 4 | in-progress | Deterministic retrieval, local harness와 mechanical coverage reports |
 | 5 | planned | Existing-package local MCP integration |
 | 6 | planned | A/B/C real LLM benchmark, integration와 closeout |
 
