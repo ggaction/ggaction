@@ -2,9 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Approved by the user on 2026-08-07.
+
+Completion evidence approved by the user on 2026-08-07.
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
@@ -119,3 +121,5 @@ Evaluation task, oracle, program instructions와 limits는 수정하지 않았�
 
 Gate F의 무과금 구현 범위는 완료됐다. 이 증거 승인은 추가 paid smoke를 자동 승인하지 않는다. Paid smoke가 필요하면
 새 candidate SHA, isolated output root와 spend ceiling을 별도 Gate로 제안해야 한다.
+
+사용자는 위 완료 증거를 승인했다. Gate F는 닫혔으며 paid smoke와 full rerun은 계속 차단된다.
