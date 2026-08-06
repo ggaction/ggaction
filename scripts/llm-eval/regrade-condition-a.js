@@ -34,20 +34,41 @@ export async function regradeConditionA(file = defaultResultsFile) {
   const results = [];
 
   for (const result of original) {
-    if (result.condition !== "A" || result.artifacts.programFile === null) {
+    if (result.condition !== "A") {
       results.push(result);
+      continue;
+    }
+    if (result.artifacts.programFile === null) {
+      const normalizedFailure = result.evidence.runtimeError === null
+        ? "invalid-program"
+        : "runtime-error";
+      const normalized = result.outcome.finalValid || result.outcome.failureCategory === normalizedFailure
+        ? result
+        : {
+            ...result,
+            outcome: { ...result.outcome, failureCategory: normalizedFailure }
+          };
+      validateEvaluationResult(normalized, corpus);
+      if (JSON.stringify(normalized.outcome) !== JSON.stringify(result.outcome)) changed.push(result.runId);
+      results.push(normalized);
       continue;
     }
     const task = corpus.tasks.find(candidate => candidate.id === result.taskId);
     const programFile = path.join(root, result.artifacts.programFile);
     const artifactRoot = path.dirname(programFile);
     const source = await readFile(programFile, "utf8");
-    const evaluation = await evaluateGeneratedProgram({
-      source,
-      task,
-      datasets: await datasetsFor(corpus, task),
-      artifactRoot
-    });
+    let evaluation;
+    try {
+      evaluation = await evaluateGeneratedProgram({
+        source,
+        task,
+        datasets: await datasetsFor(corpus, task),
+        artifactRoot
+      });
+    } catch {
+      results.push(result);
+      continue;
+    }
     const evidence = {
       actions: evaluation.actions,
       runtimeFunctions: evaluation.runtimeFunctions,

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -145,6 +146,7 @@ export async function runConditionATask({
   let submissions = 0;
   let firstPassValid = false;
   let finalEvaluation;
+  let lastSubmittedSource = null;
   let finalScore = { valid: false, failures: ["no-valid-submission"] };
   let runtimeError = null;
   let providerError = null;
@@ -208,6 +210,8 @@ export async function runConditionATask({
         submissions += 1;
         try {
           const args = JSON.parse(call.arguments);
+          lastSubmittedSource = args.source;
+          await writeFile(path.join(artifactRoot, "program.mjs"), lastSubmittedSource);
           finalEvaluation = await evaluateGeneratedProgram({
             source: args.source,
             task,
@@ -250,10 +254,13 @@ export async function runConditionATask({
   const failure = providerError === "budget-exceeded"
     ? "budget-exceeded"
     : providerError === null
-      ? failureCategory(finalScore.failures, runtimeError)
+      ? submissions === 0
+        ? "invalid-program"
+        : failureCategory(finalScore.failures, runtimeError)
       : "provider-error";
   const validationLogFile = path.join(artifactRoot, "validation.json");
   const relative = file => file === null ? null : path.relative(root, file);
+  const submittedProgramFile = lastSubmittedSource === null ? null : path.join(artifactRoot, "program.mjs");
   const evidence = finalEvaluation === undefined ? {
     actions: [],
     runtimeFunctions: [],
@@ -298,8 +305,10 @@ export async function runConditionATask({
     outcome: { firstPassValid, finalValid, failureCategory: failure },
     evidence,
     artifacts: {
-      programFile: finalEvaluation === undefined ? null : relative(finalEvaluation.artifacts.programFile),
-      programSha256: finalEvaluation?.artifacts.programSha256 ?? null,
+      programFile: finalEvaluation === undefined ? relative(submittedProgramFile) : relative(finalEvaluation.artifacts.programFile),
+      programSha256: finalEvaluation?.artifacts.programSha256 ?? (
+        lastSubmittedSource === null ? null : createHash("sha256").update(lastSubmittedSource).digest("hex")
+      ),
       validationLogFile: relative(validationLogFile),
       rendererFiles: (finalEvaluation?.artifacts.rendererFiles ?? []).map(relative)
     }
