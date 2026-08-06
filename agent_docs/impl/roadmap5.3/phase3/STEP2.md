@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] Every ACTION_INDEX action appears exactly once in recipe coverage
-- [ ] Primary/supporting/lifecycle backlinks are non-empty and bidirectionally exact
-- [ ] Extension-only/metadata-only/not-applicable reasons are concrete and schema-valid
-- [ ] Action `recipeIds`, recipe records and coverage source join deterministically
-- [ ] Generated `knowledge/index.json` and public `docs/llms-recipes.json`
-- [ ] Recipe router, full LLM docs and generated drift synchronization
-- [ ] Focused, docs, contract and package-boundary verification
-- [ ] R53-P3-A Gate package commit/push
+- [x] Every ACTION_INDEX action appears exactly once in recipe coverage
+- [x] Primary/supporting/lifecycle backlinks are non-empty and bidirectionally exact
+- [x] Extension-only/metadata-only/not-applicable reasons are concrete and schema-valid
+- [x] Action `recipeIds`, recipe records and coverage source join deterministically
+- [x] Generated `knowledge/index.json` and public `docs/llms-recipes.json`
+- [x] Recipe router, full LLM docs and generated drift synchronization
+- [x] Focused, docs, contract and package-boundary verification
+- [x] R53-P3-A Gate package commit/push
 
 ## Coverage 규칙
 

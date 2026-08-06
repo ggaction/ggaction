@@ -102,7 +102,7 @@ Renderer와 browser entry에 MCP runtime dependency가 섞이지 않도록 insta
 | 0 | completed | Exact knowledge baseline, benchmark/cost contract와 source-of-truth 결정 |
 | 1 | completed | LLM-readable documentation routing과 stable chunks |
 | 2 | completed | 173-action informative English metadata |
-| 3 | in-progress | High-coverage executable task recipes |
+| 3 | in-progress | High-coverage executable task recipes; R53-P3-A ready for review |
 | 4 | planned | Deterministic retrieval, local harness와 mechanical coverage reports |
 | 5 | planned | Existing-package local MCP integration |
 | 6 | planned | A/B/C real LLM benchmark, integration와 closeout |

@@ -9,12 +9,12 @@ LLM이 action 173개를 개별 이름으로만 찾는 데서 끝나지 않고, �
 ## 진행 상태
 
 - [x] R53-P2-A explicit approval and Phase 3 activation
-- [ ] Existing public recipe/example and action-role inventory
-- [ ] Canonical structured recipe source catalog
-- [ ] Focused executable recipe examples for uncovered workflows
-- [ ] 173-action zero-gap classification and bidirectional backlinks
-- [ ] Generated index/public recipe JSON/router integration
-- [ ] R53-P3-A remote review checkpoint
+- [x] Existing public recipe/example and action-role inventory
+- [x] Canonical structured recipe source catalog
+- [x] Focused executable recipe examples for uncovered workflows
+- [x] 173-action zero-gap classification and bidirectional backlinks
+- [x] Generated index/public recipe JSON/router integration
+- [x] R53-P3-A remote review checkpoint
 
 ## 고정 결과
 
