@@ -1,6 +1,6 @@
 # Roadmap 5.3 — LLM-Friendly Knowledge and Local MCP
 
-> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 0이다. Exact pointer는
+> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 2다. Exact pointer는
 > [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다. 현재 observable action behavior는
 > [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)과 `contract/current/`가 소유한다.
 

@@ -12,11 +12,11 @@ lifecycle/contract route는 기존 canonical owner에서 생성 시 결합한다
 - [x] Canonical public example path schema amendment approval
 - [x] Exact signature generator constructor/property contamination fix
 - [x] Phase 2 source, generation, example and quality boundary 결정
-- [ ] 11 domain action source files and generated knowledge index
-- [ ] 173 informative English records and parameter-note validation
-- [ ] Canonical/focused executable example coverage
-- [ ] Generated public JSON and action router integration
-- [ ] R53-P2-A remote review checkpoint
+- [x] 11 domain action source files and generated knowledge index
+- [x] 173 informative English records and parameter-note validation
+- [x] Canonical/focused executable example coverage
+- [x] Generated public JSON and action router integration
+- [x] R53-P2-A remote review checkpoint
 
 ## 고정 결과
 

@@ -5,14 +5,14 @@
 - [x] Exact action/domain/layer/lifecycle and existing-example inventory
 - [x] Narrative source and generated output ownership
 - [x] Example schema correction and signature parser repair
-- [ ] Knowledge loader, validator, generator and deterministic hashes
-- [ ] Domain source bootstrap from canonical contracts/docs
-- [ ] Family-level review of summary, use/avoid, state, effects, errors and relations
-- [ ] Parameter-note path validation against exact action option types
-- [ ] Existing and focused executable example validation
-- [ ] Public JSON/router generation and docs synchronization
-- [ ] Focused, docs, contract and package-boundary verification
-- [ ] R53-P2-A Gate package commit/push
+- [x] Knowledge loader, validator, generator and deterministic hashes
+- [x] Domain source bootstrap from canonical contracts/docs
+- [x] Family-level review of summary, use/avoid, state, effects, errors and relations
+- [x] Parameter-note path validation against exact action option types
+- [x] Existing and focused executable example validation
+- [x] Public JSON/router generation and docs synchronization
+- [x] Focused, docs, contract and package-boundary verification
+- [x] R53-P2-A Gate package commit/push
 
 ## 품질 기준
 
