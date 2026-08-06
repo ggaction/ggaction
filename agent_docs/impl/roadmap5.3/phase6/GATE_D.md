@@ -4,7 +4,7 @@
 
 `approved`
 
-Approved by the user on 2026-08-07. Approval-record checkpoint: `pending-record`.
+Approved by the user on 2026-08-07. Approval-record checkpoint: `24e52d32`.
 
 Corrective implementation checkpoints:
 

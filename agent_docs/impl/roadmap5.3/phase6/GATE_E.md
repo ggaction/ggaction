@@ -6,7 +6,7 @@
 
 Candidate behavior checkpoint: `ea50b0c15d9f747b6e5b8e41ded657d67868fa3a`
 
-Gate package checkpoint: `pending-record`
+Gate package checkpoint: `24e52d32`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
