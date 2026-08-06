@@ -36,7 +36,7 @@ test("dry-runs every task without an external model call", async () => {
   assert.equal(dryRun.summary.modelCallsPerSuccessfulChart, 0);
 });
 
-test("keeps the proposed paid evaluation bounded and internally consistent", async () => {
+test("keeps the approved paid evaluation bounded and internally consistent", async () => {
   const plan = JSON.parse(await readFile(evaluationPlanFile, "utf8"));
   const runs = plan.sampling.taskCount * plan.sampling.repetitionsPerTask;
   const expectedPerRun = (
@@ -48,7 +48,7 @@ test("keeps the proposed paid evaluation bounded and internally consistent", asy
     plan.tokenBudgetPerTask.maximumCumulativeOutputTokens * plan.pricingUsdPerMillionTokens.output
   ) / 1_000_000;
 
-  assert.equal(plan.approvalStatus, "proposed");
+  assert.equal(plan.approvalStatus, "approved");
   assert.equal(runs, plan.sampling.runsPerCondition);
   assert.equal(Number((expectedPerRun * runs).toFixed(2)), plan.costPerConditionUsd.expected);
   assert.equal(Number((maximumPerRun * runs).toFixed(2)), plan.costPerConditionUsd.calculatedMaximum);

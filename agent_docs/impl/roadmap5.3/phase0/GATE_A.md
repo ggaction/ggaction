@@ -2,9 +2,12 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Evidence checkpoint: `32ab6621fd94346e4a3f6226e8f5f670bc6b2df5`
+
+Approved by the user on 2026-08-06 after reviewing the exact 48-run, $4.32 expected, $9.36 calculated maximum and $10.00
+hard-cap proposal. The user then supplied the local credential-file location for the approved run.
 
 ## 쉽게 보는 승인 내용
 

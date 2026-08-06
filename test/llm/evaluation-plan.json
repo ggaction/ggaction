@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "approvalStatus": "proposed",
+  "approvalStatus": "approved",
   "provider": "openai",
   "api": "responses",
   "model": {
