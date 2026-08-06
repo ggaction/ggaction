@@ -17,7 +17,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] Failed-candidate evidence and public benefit-claim boundary
 - [x] Cumulative product/package verification
 - [ ] R53-P6-B remote checkpoint
-- [ ] R53-P6-B explicit approval
+- [x] R53-P6-B explicit approval of failed evidence and non-integration
+- [x] Root-cause analysis across condition isolation, retrieval, payload, MCP surface and tool loop
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 

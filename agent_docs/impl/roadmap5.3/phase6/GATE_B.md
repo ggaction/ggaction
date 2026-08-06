@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-07. Gate package checkpoint: `397d5bd2`
 
 Evaluation checkpoints:
 
@@ -64,8 +66,10 @@ mock/dry evidence를 먼저 검토하고, 실제 B/C 재실행에는 새 model/r
 
 ## Review effect
 
-이 failed-evidence와 non-integration 결론을 승인해도 PR Ready/merge는 해제되지 않는다. 승인은 corrective plan 제안
-준비까지만 해제하며 external paid rerun은 새 비용 Gate 전까지 계속 차단한다.
+이 failed-evidence와 non-integration 결론의 승인으로 corrective failure analysis 준비가 해제되었다. PR Ready/merge는
+해제되지 않았으며 external paid rerun은 새 비용 Gate 전까지 계속 차단한다.
+
+승인 뒤 root-cause evidence는 [`FAILURE_ANALYSIS.md`](./FAILURE_ANALYSIS.md)에 기록했다.
 
 ## 승인 전 차단 범위
 
