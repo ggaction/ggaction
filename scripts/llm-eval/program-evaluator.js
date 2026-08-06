@@ -87,8 +87,9 @@ function hasEncoding(layers, channel, field, temporal = false) {
 function hasTraceEncoding(nodes, channel, field, temporal = false) {
   return nodes.some(node => {
     const encoding = node.args?.[channel];
-    if (encoding !== field && encoding?.field !== field) return false;
-    return !temporal || encoding.fieldType === "temporal" || encoding.type === "temporal";
+    const directEncodingAction = node.op.toLowerCase() === `encode${channel.toLowerCase()}` && node.args?.field === field;
+    if (!directEncodingAction && encoding !== field && encoding?.field !== field) return false;
+    return !temporal || encoding?.fieldType === "temporal" || encoding?.type === "temporal" || node.args?.fieldType === "temporal";
   });
 }
 
@@ -127,6 +128,7 @@ function semanticMark(layers, type) {
     "gradient-plot": "rect",
     "parallel-coordinates": "line",
     "box-plot": "rect",
+    density: "area",
     violin: "area",
     histogram: "bar",
     bin2d: "rect",

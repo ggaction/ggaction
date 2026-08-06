@@ -204,6 +204,49 @@ test("validates binned facade inputs before their generated fields replace them"
   assert.equal(result.validations.every(validation => validation.passed), true);
 });
 
+test("validates transformed density semantics and direct radial action fields", async () => {
+  const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
+  const cars = JSON.parse(await readFile(new URL("../../data/cars.json", import.meta.url), "utf8"));
+  const nightingale = JSON.parse(await readFile(new URL("../../data/nightingale_rose.json", import.meta.url), "utf8"));
+  const densityTask = corpus.tasks.find(candidate => candidate.id === "cars-density-origin");
+  const roseTask = corpus.tasks.find(candidate => candidate.id === "nightingale-rose");
+  const densitySource = `
+    import { chart, render } from "ggaction";
+    export function buildChart(datasets) {
+      const values = datasets["cars-v1"].filter(row => row.Acceleration != null && row.Origin != null);
+      return chart().createCanvas({ width: 640, height: 400, margin: { top: 80, right: 100, bottom: 60, left: 70 } })
+        .createData({ values }).createAreaMark({ id: "densities", opacity: 0.5 })
+        .encodeDensity({ field: "Acceleration", groupBy: "Origin", bandwidth: 0.6 })
+        .encodeColor({ field: "Origin" }).createGuides({ axes: { x: {}, y: {} }, legend: {} });
+    }
+  `;
+  const roseSource = `
+    import { chart, render } from "ggaction";
+    export function buildChart(datasets) {
+      const values = datasets["nightingale-v1"].filter(row => row.month != null && row.cause != null && row.value != null);
+      return chart().createCanvas({ width: 640, height: 400, margin: { top: 40, right: 160, bottom: 50, left: 60 } })
+        .createData({ values }).createArcMark({}).encodeTheta({ field: "month", fieldType: "ordinal" })
+        .encodeR({ field: "value" }).encodeColor({ field: "cause" })
+        .createGuides({ axes: { theta: {}, radius: {} }, grid: { radial: {} }, legend: {} });
+    }
+  `;
+  const density = await evaluateGeneratedProgram({
+    source: densitySource,
+    task: densityTask,
+    datasets: { "cars-v1": cars },
+    artifactRoot: new URL("../../.artifacts/llm-eval/density-contract", import.meta.url).pathname
+  });
+  const rose = await evaluateGeneratedProgram({
+    source: roseSource,
+    task: roseTask,
+    datasets: { "nightingale-v1": nightingale },
+    artifactRoot: new URL("../../.artifacts/llm-eval/rose-contract", import.meta.url).pathname
+  });
+
+  assert.equal(density.validations.every(validation => validation.passed), true);
+  assert.equal(rose.validations.every(validation => validation.passed), true);
+});
+
 test("runs one condition-A task through a mocked model and records executable evidence", async () => {
   const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
   const plan = JSON.parse(await readFile(new URL("../llm/evaluation-plan.json", import.meta.url), "utf8"));
