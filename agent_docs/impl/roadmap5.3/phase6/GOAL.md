@@ -24,8 +24,9 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] Generated knowledge/search v2 and evaluation-adapter correction
 - [x] R53-P6-D complete unpaid corrective evidence approval
 - [x] R53-P6-E exact one-run B/C paid smoke approval
-- [ ] Smoke-only guard, paid B/C run and result review
-- [ ] Separately authorized one-run B/C paid smoke
+- [x] Smoke-only guard and first paid-smoke attempt stopped safely before C
+- [x] Zero-cost provider-schema failure analysis and compatible schema correction
+- [ ] Separately authorized corrected one-run B/C paid-smoke retry
 - [ ] Separately authorized full B/C paid rerun and result decision
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
@@ -46,4 +47,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_C.md`](./GATE_C.md) — corrective knowledge delivery와 evaluation isolation contract
 - [`GATE_D.md`](./GATE_D.md) — complete unpaid corrective evidence와 paid-smoke 진입 판단
 - [`GATE_E.md`](./GATE_E.md) — exact one-run B/C paid smoke와 spend ceiling
+- [`GATE_E_RETRY.md`](./GATE_E_RETRY.md) — provider-schema correction 뒤 별도 B/C smoke 재시도
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout

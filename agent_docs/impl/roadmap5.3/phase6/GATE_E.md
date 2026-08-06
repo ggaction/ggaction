@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`approved`
+`executed — stopped before C`
 
 Approved by the user on 2026-08-07. Approval-record checkpoint: `c3645e83`.
 
@@ -143,3 +143,35 @@ Full rerun Gate를 준비하려면 B와 C가 모두 다음을 만족해야 한�
 
 이 Gate 승인으로 smoke-only 실행 가드의 구현·무과금 검증과, 검증 통과 뒤 `cars-scatter-origin`의 B/C 각 한 번을
 합계 최대 $0.40 안에서 실행하는 범위가 해제되었다.
+
+## 실행 결과 — 2026-08-07
+
+승인된 guard checkpoint `b46575c945c0c89a3cc4c41a3e40e017b4d4ef7a`에서 B를 먼저 요청했다. OpenAI가
+model execution 전에 `search_ggaction`의 function schema를 거부했으며, guard는 계약대로 C를 시작하지 않았다.
+
+| 항목 | 결과 |
+| --- | --- |
+| B run | `B-cars-scatter-origin-r1` |
+| B outcome | `provider-error`, `finalValid: false` |
+| Provider code | `invalid_function_parameters` |
+| 원인 | 선택적인 `limit` 속성이 있는 schema를 `strict: true`로 제출함 |
+| Model calls / tokens | 0 / 0 |
+| Actual cost | B $0.00, combined $0.00 |
+| C run | 시작하지 않음 |
+| Full rerun 판단 | 제안하지 않음 |
+
+오류 메시지는 strict function schema의 모든 property가 `required`에 포함되어야 하는데 `limit`가 빠졌다고 명시했다.
+검색 API의 `limit`는 의도적으로 선택 사항이므로, 이를 필수로 바꾸지 않고 해당 도구만 non-strict로 제출하는 것이
+계약을 보존하는 수정이다.
+
+### 봉인된 실행 증거
+
+- B result: `5a55e6bab5c8a2953069b2a516c8394568e936cad4b382d71d85c0da99cb5ec8`
+- B sanitized trace: `e289cc0447f8c31984450b6bdfc470d6a3e5ca2e7801e4320880f94399ee5ba0`
+- B validation: `83b148f972472170de5870c98394ff7a2dd8f35d3ae3025ad93049f44376e96e`
+- Evidence root: `.artifacts/llm-eval/corrective-smoke-ea50b0c1/`
+
+Schema correction checkpoint `060a13f1017485f2a19579ef640a768b86a63417`은 B와 C 양쪽의 선택 인자 schema를
+OpenAI-compatible non-strict tool로 제출한다. Focused contract 16개, 전체 2,106개 테스트와 `knowledge:check`가
+통과했다. 이 수정은 외부 호출 없이 검증됐으며, 새 API 요청은 [`GATE_E_RETRY.md`](./GATE_E_RETRY.md)의 별도 승인을
+요구한다.
