@@ -7,7 +7,7 @@
 - [ ] Reject malformed/unknown resource and tool inputs
 - [ ] Prove no arbitrary file, network, code, chart execution, or rendering surface
 - [ ] Re-run package artifact and all browser bundle ceilings
-- [ ] Add Condition C local adapter mock/dry evidence without paid calls
+- [x] Add Condition C local adapter mock/dry evidence without paid calls
 - [ ] Run focused and cumulative verification
 - [ ] R53-P5-A Gate package commit/push
 

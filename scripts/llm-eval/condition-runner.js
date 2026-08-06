@@ -88,8 +88,8 @@ export async function runEvaluationTask({
   fetchImpl = globalThis.fetch,
   remainingSpendUsd = plan.costPerConditionUsd.approvedSpendCap
 }) {
-  if (!knowledge || !["A", "B"].includes(knowledge.condition)) {
-    throw new TypeError("Evaluation knowledge adapter must be Condition A or B.");
+  if (!knowledge || !["A", "B", "C"].includes(knowledge.condition)) {
+    throw new TypeError("Evaluation knowledge adapter must be Condition A, B, or C.");
   }
   const runId = `${knowledge.condition}-${task.id}-r${repetition}`;
   const artifactRoot = path.join(outputRoot, runId);
@@ -106,7 +106,7 @@ export async function runEvaluationTask({
   };
   let estimatedCostUsd = 0;
   let modelCalls = 0;
-  let knowledgeCalls = 0;
+  let knowledgeCalls = knowledge.condition === "C" ? 1 : 0;
   let submissions = 0;
   let firstPassValid = false;
   let finalEvaluation;
@@ -261,7 +261,7 @@ export async function runEvaluationTask({
     metrics: {
       ...usage,
       modelCalls,
-      mcpCalls: 0,
+      mcpCalls: knowledge.condition === "C" ? knowledgeCalls : 0,
       repairRounds: Math.max(0, submissions - 1),
       timeToValidMs: finalValid ? Date.now() - started : null,
       estimatedCostUsd
@@ -277,6 +277,7 @@ export async function runEvaluationTask({
       rendererFiles: (finalEvaluation?.artifacts.rendererFiles ?? []).map(relative)
     }
   };
+  await knowledge.close?.();
   validateEvaluationResult(result, corpus);
   return result;
 }

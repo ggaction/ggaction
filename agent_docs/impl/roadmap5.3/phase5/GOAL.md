@@ -13,7 +13,7 @@ knowledge와 deterministic search만 읽으며 chart 실행, rendering, arbitrar
 - [x] Installed tarball and clean-consumer stdio evidence
 - [ ] Invalid-input and no-file/no-network/no-execution evidence
 - [ ] Browser/package import isolation and bundle regression evidence
-- [ ] Condition C local adapter mock/dry evidence
+- [x] Condition C local adapter mock/dry evidence
 - [ ] R53-P5-A remote review checkpoint
 
 ## 고정 결과

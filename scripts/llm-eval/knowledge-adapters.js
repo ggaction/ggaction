@@ -1,5 +1,6 @@
 import { readKnowledge, searchKnowledge } from "../knowledge-search.js";
 import { readCurrentDoc, searchCurrentDocs } from "./current-docs.js";
+import { createLocalMcpKnowledgeClient } from "./mcp-client.js";
 
 const startingCommit = "9414d07179c9e7c6bbfdf00b762fc35de0ff25ec";
 
@@ -30,7 +31,7 @@ const currentDocTools = Object.freeze([
   }
 ]);
 
-const structuredKnowledgeTools = Object.freeze([
+export const structuredKnowledgeTools = Object.freeze([
   {
     type: "function",
     name: "search_ggaction",
@@ -97,6 +98,41 @@ export function conditionBKnowledge(commit) {
       if (call.name === "search_ggaction") return JSON.stringify(await searchKnowledge({ query: args.query }));
       if (call.name === "read_ggaction") return JSON.stringify(await readKnowledge({ kind: args.kind, id: args.id }));
       throw new Error(`Unknown structured-knowledge tool ${call.name}.`);
+    }
+  });
+}
+
+export function conditionCKnowledge(commit, clientOptions) {
+  if (typeof commit !== "string" || !/^[0-9a-f]{40}$/.test(commit)) {
+    throw new TypeError("Condition C knowledge commit must be an exact 40-character lowercase Git SHA.");
+  }
+  const mcp = createLocalMcpKnowledgeClient(clientOptions);
+  const resourceUri = ({ kind, id }) => {
+    const families = { action: "actions", recipe: "recipes", docs: "docs" };
+    if (!(kind in families)) throw new TypeError("MCP knowledge kind must be action, recipe, or docs.");
+    if (typeof id !== "string" || !/^[A-Za-z][A-Za-z0-9-]*$/.test(id)) {
+      throw new TypeError("MCP knowledge ID is invalid.");
+    }
+    return `ggaction://${families[kind]}/${id}`;
+  };
+  return Object.freeze({
+    condition: "C",
+    mode: "local-mcp",
+    commit,
+    tools: structuredKnowledgeTools,
+    instruction: "Use only public ggaction APIs found through the provided local MCP knowledge tools.",
+    routingLabel: "Local ggaction MCP overview resource",
+    routingText() {
+      return mcp.read("ggaction://overview");
+    },
+    async handle(call) {
+      const args = JSON.parse(call.arguments);
+      if (call.name === "search_ggaction") return mcp.search(args);
+      if (call.name === "read_ggaction") return mcp.read(resourceUri(args));
+      throw new Error(`Unknown local MCP knowledge tool ${call.name}.`);
+    },
+    close() {
+      return mcp.close();
     }
   });
 }

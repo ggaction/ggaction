@@ -51,7 +51,7 @@ export function syntheticPassingResult(task, condition = "A") {
       reasoningTokens: 0,
       totalTokens: 0,
       modelCalls: 0,
-      mcpCalls: 0,
+      mcpCalls: condition === "C" ? 1 : 0,
       repairRounds: 0,
       timeToValidMs: 0,
       estimatedCostUsd: 0
@@ -80,9 +80,9 @@ export function syntheticPassingResult(task, condition = "A") {
   };
 }
 
-export async function runEvaluationDryRun({ conditions = ["A", "B"] } = {}) {
-  if (!Array.isArray(conditions) || conditions.length === 0 || conditions.some(condition => !["A", "B"].includes(condition))) {
-    throw new TypeError("Local evaluation dry-run conditions must contain A and/or B.");
+export async function runEvaluationDryRun({ conditions = ["A", "B", "C"] } = {}) {
+  if (!Array.isArray(conditions) || conditions.length === 0 || conditions.some(condition => !["A", "B", "C"].includes(condition))) {
+    throw new TypeError("Local evaluation dry-run conditions must contain A, B, and/or C.");
   }
   const corpus = await loadEvaluationCorpus();
   const corpusSummary = await validateEvaluationCorpus(corpus);
