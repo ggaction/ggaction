@@ -28,6 +28,7 @@ export function syntheticPassingResult(task, condition = "A") {
     model: {
       provider: "local-dry-run",
       name: "synthetic",
+      resolvedName: "synthetic",
       reasoningEffort: "none",
       reasoningMode: "standard",
       textVerbosity: "low",

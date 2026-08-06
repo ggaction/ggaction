@@ -22,10 +22,11 @@
     "model": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["provider", "name", "reasoningEffort", "reasoningMode", "textVerbosity", "serviceTier", "store", "maxOutputTokensPerCall", "maxCumulativeInputTokens", "maxCumulativeOutputTokens"],
+      "required": ["provider", "name", "resolvedName", "reasoningEffort", "reasoningMode", "textVerbosity", "serviceTier", "store", "maxOutputTokensPerCall", "maxCumulativeInputTokens", "maxCumulativeOutputTokens"],
       "properties": {
         "provider": { "type": "string", "minLength": 1 },
         "name": { "type": "string", "minLength": 1 },
+        "resolvedName": { "type": "string", "minLength": 1 },
         "reasoningEffort": { "enum": ["none", "low", "medium", "high", "xhigh", "max"] },
         "reasoningMode": { "enum": ["standard", "pro"] },
         "textVerbosity": { "enum": ["low", "medium", "high"] },

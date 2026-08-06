@@ -135,6 +135,7 @@ export function validateEvaluationResult(result, corpus) {
   requireCondition(/^[0-9a-f]{40}$/u.test(result.knowledge?.commit ?? ""), "Result knowledge commit must be a full SHA.");
   requireCondition(typeof result.model?.provider === "string" && result.model.provider.length > 0, "Result model provider is required.");
   requireCondition(typeof result.model?.name === "string" && result.model.name.length > 0, "Result model name is required.");
+  requireCondition(typeof result.model?.resolvedName === "string" && result.model.resolvedName.length > 0, "Result resolvedName is required.");
   requireCondition(reasoningEfforts.has(result.model?.reasoningEffort), "Result reasoningEffort is invalid.");
   requireCondition(reasoningModes.has(result.model?.reasoningMode), "Result reasoningMode is invalid.");
   requireCondition(textVerbosities.has(result.model?.textVerbosity), "Result textVerbosity is invalid.");
