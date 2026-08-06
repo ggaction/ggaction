@@ -6,10 +6,10 @@
 - [x] Separate PR creation authorization — 2026-08-05
 - [x] Draft PR [#23](https://github.com/ggaction/ggaction/pull/23) created from `codex/roadmap5-2-hardening`
 - [x] Required six checks and exact candidate review — `0210348206fadae8fed6f7bcea0b767c0533fbc1`, [CI run 30980129347](https://github.com/ggaction/ggaction/actions/runs/30980129347)
-- [ ] Separate merge authorization and merge
-- [ ] Main community profile 재확인
-- [ ] Main Dependabot alert와 security settings 재확인
-- [ ] Ruleset, environments, auto-delete와 merged commit identity 재확인
+- [x] Separate merge authorization and merge — PR #23, 2026-08-06
+- [x] Main community profile 재확인
+- [x] Main Dependabot alert와 security settings 재확인
+- [x] Ruleset, environments, auto-delete와 merged commit identity 재확인
 - [ ] R52-Exit evidence package
 
 ## 실행 경계
@@ -29,3 +29,21 @@ R52-Exit 승인 뒤에도 package publish, documentation deployment와 `0.0.9` r
 
 2026-08-05에 PR #23의 exact head `0210348206fadae8fed6f7bcea0b767c0533fbc1`에서 다음 required jobs가 모두
 success였다: `package (20)`, `package (22)`, `package (24)`, `test`, `coverage`, `documentation`.
+
+PR 기록과 CI 증거만 추가한 final head `ac1c55e3e163c75b857e47de50f3c0a4d01a779f`에서도 같은 여섯 jobs가
+[CI run 30980501139](https://github.com/ggaction/ggaction/actions/runs/30980501139)에서 모두 success였다.
+
+## Merged-main reconciliation — 2026-08-06
+
+- PR #23은 사용자의 별도 merge 승인 뒤 Ready로 전환하고 merge commit
+  `73e8aebae6ccf3d9a029366f3fe2c21107260051`로 병합했다. Merge commit의 second parent는 exact PR head
+  `ac1c55e3e163c75b857e47de50f3c0a4d01a779f`이며 두 tree 사이 diff는 없다.
+- Community Standards는 Description, README, Code of Conduct, Contributing, License, Security policy, issue templates와
+  pull request template을 모두 `Added`로 인식한다. Repository content reports는 Roadmap 범위가 아니므로 제외한다.
+- Dependabot PostCSS alert는 main의 `8.5.25` lockfile을 재평가해 open 0, closed 1이 됐다.
+- Private vulnerability reporting, Dependabot alerts/security updates, secret scanning과 push protection은 enabled다.
+- Ruleset `20421930`은 active이며 default branch에 PR, strict up-to-date, 여섯 required checks, deletion과
+  force-push protection, `hj-n` emergency bypass를 유지한다.
+- `npm-release`는 required reviewer `hj-n`, self-review 허용, `main`/`v*` deployment policy를 유지한다.
+  `github-pages`도 기존 `main`/`v*` policy를 유지하며 두 environment의 protection count는 각각 2와 1이다.
+- `delete_branch_on_merge`는 enabled다.
