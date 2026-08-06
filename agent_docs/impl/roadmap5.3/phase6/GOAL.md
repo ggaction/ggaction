@@ -22,7 +22,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] Corrective knowledge-delivery contract prepared for review
 - [x] R53-P6-C corrective contract approval
 - [x] Generated knowledge/search v2 and evaluation-adapter correction
-- [ ] R53-P6-D complete unpaid corrective evidence ready for review
+- [x] R53-P6-D complete unpaid corrective evidence approval
+- [ ] R53-P6-E exact one-run B/C paid smoke proposal
 - [ ] Separately authorized one-run B/C paid smoke
 - [ ] Separately authorized full B/C paid rerun and result decision
 - [ ] Separately authorized PR preparation and merge
@@ -43,4 +44,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_B.md`](./GATE_B.md) — A/B/C result와 integration candidate
 - [`GATE_C.md`](./GATE_C.md) — corrective knowledge delivery와 evaluation isolation contract
 - [`GATE_D.md`](./GATE_D.md) — complete unpaid corrective evidence와 paid-smoke 진입 판단
+- [`GATE_E.md`](./GATE_E.md) — exact one-run B/C paid smoke와 spend ceiling
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout

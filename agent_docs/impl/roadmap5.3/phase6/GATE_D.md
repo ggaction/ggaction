@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-07. Approval-record checkpoint: `pending-record`.
 
 Corrective implementation checkpoints:
 
@@ -114,6 +116,7 @@ Smoke에서 다음이 확인되어야 full rerun Gate를 제안할 수 있다.
 - PR preparation/Ready transition, merge와 exact-main verification
 - Package publish, docs deployment와 release
 
-## 검토 요청
+## 승인 효과
 
-위 무과금 교정 결과를 R53-P6-D로 승인하고, 다음에는 대표 B/C one-run paid smoke의 exact 비용 제안서를 준비해도 되는가?
+이 Gate 승인으로 대표 B/C one-run paid smoke의 exact 비용 제안서 준비만 해제되었다. 유료 호출은 별도 R53-P6-E
+승인 전까지 계속 차단한다.
