@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.3 Phase 4이다.** 같은 action/recipe knowledge를 결정론적으로 찾는 bounded search와
-조건 A/B/C가 같은 규칙으로 재현되는 local benchmark harness를 구현한다. 실행 순서는
+**현재 활성 Roadmap은 Roadmap 5.3 Phase 5이다.** 같은 action/recipe knowledge를 local read-only MCP resource와
+bounded search tool로 제공하고 installed package와 browser isolation을 검증한다. 실행 순서는
 [`impl/roadmap5.3/ROADMAP.md`](impl/roadmap5.3/ROADMAP.md)가 소유한다. Active pointer와 마지막 완료 owner의
 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.

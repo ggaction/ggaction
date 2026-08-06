@@ -2,7 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-06. Gate package checkpoint: `0002133f`
+(`docs: prepare roadmap 5.3 phase 4 gate`).
 
 Retrieval implementation checkpoint: `9ea6abe7` (`feat: add deterministic knowledge search`).
 Harness implementation checkpoint: `72a856df` (`test: unify structured knowledge evaluation`).

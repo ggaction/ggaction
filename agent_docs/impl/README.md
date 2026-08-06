@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 Roadmap 5.3 Phase 4이다.** deterministic structured-knowledge retrieval과 동일 조건의 local
-  benchmark harness를 구현한다. 실행 순서는
+- **현재 활성 Roadmap은 Roadmap 5.3 Phase 5이다.** existing package에 read-only local MCP executable을 추가하고
+  installed-package behavior와 browser isolation을 검증한다. 실행 순서는
   [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
