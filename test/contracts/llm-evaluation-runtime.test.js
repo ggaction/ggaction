@@ -344,10 +344,19 @@ test("isolates A, B, and C knowledge tools behind one evaluation envelope", asyn
     conditionB.tools.map(tool => tool.name),
     ["search_docs", "read_doc", "search_ggaction", "read_ggaction"]
   );
+  assert.equal(conditionB.tools.find(tool => tool.name === "search_ggaction").strict, false);
   assert.equal(conditionAKnowledge.mode, "current-docs");
   assert.equal(conditionB.mode, "structured-knowledge");
   assert.equal(conditionC.mode, "local-mcp");
   assert.deepEqual(conditionC.tools.map(tool => tool.name), ["search_ggaction", "read_mcp_resource"]);
+  assert.equal(conditionC.tools.find(tool => tool.name === "search_ggaction").strict, false);
+  for (const tool of [...conditionB.tools, ...conditionC.tools].filter(tool => tool.strict)) {
+    assert.deepEqual(
+      new Set(tool.parameters.required),
+      new Set(Object.keys(tool.parameters.properties)),
+      `${tool.name} strict schema must require every property`
+    );
+  }
   assert.equal(conditionC.tools[0].parameters.$schema, "http://json-schema.org/draft-07/schema#");
   assert.equal(conditionC.tools[0].parameters.additionalProperties, false);
   assert.deepEqual(conditionC.tools[0].parameters.required, ["query"]);

@@ -36,7 +36,7 @@ export const structuredKnowledgeTools = Object.freeze([
     type: "function",
     name: "search_ggaction",
     description: "Search bounded structured ggaction action, recipe, and documentation knowledge.",
-    strict: true,
+    strict: false,
     parameters: {
       type: "object",
       additionalProperties: false,
@@ -98,11 +98,14 @@ function discoveredMcpSurface(discovery) {
     ) {
       throw new Error("Condition C requires discovered read-only MCP tools with descriptions and object schemas.");
     }
+    const propertyNames = Object.keys(tool.inputSchema.properties ?? {});
+    const required = new Set(tool.inputSchema.required ?? []);
     return Object.freeze({
       type: "function",
       name: tool.name,
       description: tool.description,
-      strict: true,
+      strict: tool.inputSchema.additionalProperties === false &&
+        propertyNames.every(name => required.has(name)),
       parameters: tool.inputSchema
     });
   });
