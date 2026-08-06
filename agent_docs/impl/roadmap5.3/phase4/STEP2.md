@@ -8,7 +8,7 @@
 - [x] Add B search/read tool contracts and bounded call accounting
 - [x] Run 24-task synthetic dry runs and representative mocked A/B repair flows
 - [x] Verify result schema, deterministic order, no credential output and zero paid calls
-- [ ] R53-P4-A Gate package commit/push
+- [x] R53-P4-A Gate package commit/push
 
 ## 실행 순서
 
