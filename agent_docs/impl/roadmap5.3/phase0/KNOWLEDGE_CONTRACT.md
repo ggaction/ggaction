@@ -20,6 +20,10 @@ LLM용 설명을 추가하면서 action behavior, TypeScript signature와 public
 Action source가 exact signature나 required/optional boolean을 다시 적지 않는 것은 의도적이다. `parameterNotes.path`는
 생성된 signature의 실제 path와 일치해야 하며, generator가 없는 parameter와 stale note를 실패시킨다.
 
+Executable example은 canonical public `examples/**/program.js`를 우선 재사용하고, 해당 action을 독립적으로
+증명해야 할 때만 focused `test/**/*.js` export를 사용한다. 이 두 경로를 허용하는 schema amendment는 Phase 2 시작
+전에 사용자가 2026-08-06 승인했다.
+
 ## Final source schemas
 
 - [`action-knowledge.schema.json`](../../../../test/llm/action-knowledge.schema.json): Informative English action metadata.

@@ -55,7 +55,7 @@
       "required": ["kind", "path", "export"],
       "properties": {
         "kind": { "const": "program" },
-        "path": { "type": "string", "pattern": "^test/[A-Za-z0-9_./-]+\\.js$" },
+        "path": { "type": "string", "pattern": "^(?:examples|test)/[A-Za-z0-9_./-]+\\.js$" },
         "export": { "type": "string", "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$" }
       }
     },

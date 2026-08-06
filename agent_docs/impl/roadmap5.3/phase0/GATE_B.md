@@ -5,6 +5,8 @@
 `approved`
 
 Approved by the user on 2026-08-06. Gate package checkpoint: `83a3588b` (`docs: prepare roadmap 5.3 gate b`).
+The user approved a Phase 2 schema amendment on 2026-08-06 so executable examples can reuse canonical
+`examples/**/program.js` exports as well as focused `test/**/*.js` exports.
 
 Evidence checkpoints:
 

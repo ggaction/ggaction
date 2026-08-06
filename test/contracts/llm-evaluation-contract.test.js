@@ -45,6 +45,16 @@ test("freezes closed, internally resolvable knowledge source schemas", async () 
   }
 });
 
+test("allows canonical public and focused test programs as knowledge examples", async () => {
+  for (const relative of ["action-knowledge.schema.json", "recipe-knowledge.schema.json"]) {
+    const schema = JSON.parse(await readFile(new URL(`../llm/${relative}`, import.meta.url), "utf8"));
+    const pattern = new RegExp(schema.$defs.programExample.properties.path.pattern);
+    assert.equal(pattern.test("examples/cars-scatterplot/program.js"), true);
+    assert.equal(pattern.test("test/llm/action-knowledge-examples.js"), true);
+    assert.equal(pattern.test("src/actions/marks.js"), false);
+  }
+});
+
 test("keeps a balanced, versioned, unambiguous LLM evaluation corpus", async () => {
   const corpus = await loadEvaluationCorpus();
   const summary = await validateEvaluationCorpus(corpus);
