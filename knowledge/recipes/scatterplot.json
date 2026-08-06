@@ -58,7 +58,7 @@
       "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested scatterplot variant.",
       "actions": [
         {
-          "name": "encodeGroup",
+          "name": "encodeColor",
           "role": "supporting"
         },
         {

@@ -5,7 +5,7 @@
     "recipeCount": 33,
     "docsCount": 4,
     "recordCount": 210,
-    "knowledgeSha256": "3ead2c2da2374005ebf0841592febb8221db1f9ee07e5ccccfe8af6f0440f83f",
+    "knowledgeSha256": "a31fad424a2d1627437378bf533ea988b7089b1703cf01449246d9688c0ae2e0",
     "routeSourceSha256": "bcf91c695c2904c986e3c9c1fab6a0214f0f256291827282e987f5fba13dcfb2"
   },
   "limits": {
@@ -15069,10 +15069,10 @@
           "you"
         ],
         "relations": [
+          "chart",
           "encoding",
-          "plot",
-          "remove",
-          "scatter"
+          "line",
+          "remove"
         ]
       }
     },
@@ -24942,6 +24942,7 @@
           "data",
           "edit",
           "encode",
+          "group",
           "line",
           "mark",
           "plot",
@@ -26438,10 +26439,10 @@
         ],
         "relations": [
           "canva",
+          "color",
           "create",
           "data",
           "encode",
-          "group",
           "plot",
           "radius",
           "scatter"

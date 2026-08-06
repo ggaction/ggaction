@@ -11,13 +11,34 @@ title: Scatterplot Recipe
 
 {% include runnable-recipe-note.html %}
 
+In a browser module, provide a `<canvas id="chart">` element as the rendering
+target.
+
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({
+    width: 640,
+    height: 400,
+    margin: { top: 30, right: 140, bottom: 60, left: 70 }
+  })
   .createData({ values })
-  .createScatterPlot({ x: "x", y: "y" });
+  .createScatterPlot({
+    x: "x",
+    y: "y",
+    color: "group",
+    guides: {
+      axes: {
+        x: { title: { text: "X" } },
+        y: { title: { text: "Y" } }
+      }
+    }
+  });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## You must decide

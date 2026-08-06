@@ -73,7 +73,7 @@
   },
   "/recipes/scatterplot/": {
     "title": "Scatterplot Recipe",
-    "description": "Add color: \"group\", size: \"amount\", or shape: \"category\" to the same call for field driven appearance. The default point radius is 3.",
+    "description": "In a browser module, provide a element as the rendering target.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/recipes/line-chart/": {

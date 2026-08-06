@@ -4,6 +4,7 @@ import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 import { buildKnowledge } from "../../scripts/generate-action-knowledge.js";
+import { evaluateGeneratedProgram } from "../../scripts/llm-eval/program-evaluator.js";
 import { recipeCoverageFile, recipeSourceRoot } from "../../scripts/recipe-knowledge.js";
 import { focusedRecipeActions, recipeExamples } from "../llm/recipe-knowledge-examples.js";
 
@@ -96,4 +97,62 @@ test("executes every focused recipe workflow and records every assigned action",
 test("routes LLM readers to the public structured recipe document", async () => {
   const router = await readFile(new URL("../../docs/llms/recipes.md", import.meta.url), "utf8");
   assert.match(router, /\[complete machine-readable recipe metadata\]\(\.\.\/llms-recipes\.json\)/);
+});
+
+test("keeps the scatterplot recipe executable for the frozen Canvas task", async () => {
+  const [{ document }, corpus] = await Promise.all([
+    buildKnowledge(),
+    json("test/llm/tasks.json")
+  ]);
+  const recipe = document.recipes.find(entry => entry.id === "scatterplot");
+  const lineRecipe = document.recipes.find(entry => entry.id === "line-chart");
+  const task = corpus.tasks.find(entry => entry.id === "cars-scatter-origin");
+  const expression = recipe.exampleSource.match(/const program = ([\s\S]+?);\n\nconst context/u)?.[1]
+    .replace('x: "x"', 'x: "Horsepower"')
+    .replace('y: "y"', 'y: "Miles_per_Gallon"')
+    .replace('color: "group"', 'color: "Origin"')
+    .replace('text: "X"', 'text: "Horsepower"')
+    .replace('text: "Y"', 'text: "Miles per Gallon"');
+
+  assert.match(recipe.exampleSource, /^import \{ chart, render \} from "ggaction";/u);
+  assert.match(recipe.exampleSource, /color: "group"/u);
+  assert.match(recipe.exampleSource, /guides: \{[\s\S]*axes: \{/u);
+  assert.match(recipe.exampleSource, /render\(program, context\);/u);
+  assert.equal(expression?.includes('x: "Horsepower"'), true);
+  assert.equal(
+    recipe.steps.flatMap(step => step.actions).some(action => action.name === "encodeColor"),
+    true
+  );
+  assert.equal(
+    recipe.steps.flatMap(step => step.actions).some(action => action.name === "encodeGroup"),
+    false
+  );
+  assert.equal(
+    lineRecipe.steps.flatMap(step => step.actions).some(action => action.name === "encodeGroup"),
+    true
+  );
+
+  const source = `import { chart, render } from "ggaction";
+
+export function buildChart(datasets) {
+  const values = datasets["cars-v1"].filter(row =>
+    row.Horsepower !== null && row.Miles_per_Gallon !== null && row.Origin !== null
+  );
+  return ${expression};
+}
+
+export { render };`;
+  const datasets = {
+    "cars-v1": await json(corpus.datasets["cars-v1"].path)
+  };
+  const evaluated = await evaluateGeneratedProgram({
+    source,
+    task,
+    datasets,
+    artifactRoot: new URL("../../.artifacts/llm-eval/executable-recipe-contract", import.meta.url).pathname
+  });
+
+  assert.deepEqual(evaluated.runtimeFunctions, ["chart", "render"]);
+  assert.equal(evaluated.validations.every(validation => validation.passed), true);
+  assert.deepEqual(evaluated.renderers, ["canvas"]);
 });

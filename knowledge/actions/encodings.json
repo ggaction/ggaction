@@ -359,7 +359,8 @@
       ],
       "recipeIds": [
         "regression-scatterplot",
-        "rose-chart"
+        "rose-chart",
+        "scatterplot"
       ],
       "docs": [
         {
@@ -497,7 +498,7 @@
         "removeEncoding"
       ],
       "recipeIds": [
-        "scatterplot"
+        "line-chart"
       ],
       "docs": [
         {

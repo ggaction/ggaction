@@ -3,11 +3,11 @@
   "generated": {
     "actionCount": 173,
     "actionIndexSha256": "5ba78038a620f50c79878d29404f7739a55ab5f59406d84ad1b16b68a188d7f6",
-    "actionSourceSha256": "1a2a4a50656eb9c6b2924f071b3e5c3aadecf92400baf73af4b58a3563d9e4fc",
+    "actionSourceSha256": "e1b6234caf8389b8f9c1c946b853821f1a9e4d4e65f2c38a99d852797e3ea546",
     "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
     "recipeCount": 33,
-    "recipeSourceSha256": "a1fcc145d177040a02ced031c79a3b58b33b002cfddadbdb7083ae677befe0c7",
-    "recipeCoverageSha256": "d9b7a19a141bd1e4798985e584c9dd58622766e231ffb5a96f98be347b93ed9d"
+    "recipeSourceSha256": "bca67b6fc2b3d84af155a785f1c91691513788a4a05a319fb4c29a0ca9809cf7",
+    "recipeCoverageSha256": "4bcd0cd4b1e5d5a949b9e9c82ef1bf54e1b3afb9ced822acd04421ff95086591"
   },
   "actions": [
     {
@@ -15394,7 +15394,8 @@
       ],
       "recipeIds": [
         "regression-scatterplot",
-        "rose-chart"
+        "rose-chart",
+        "scatterplot"
       ],
       "docs": [
         {
@@ -15642,7 +15643,7 @@
         "removeEncoding"
       ],
       "recipeIds": [
-        "scatterplot"
+        "line-chart"
       ],
       "docs": [
         {
@@ -22741,6 +22742,10 @@
           "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested line chart variant.",
           "actions": [
             {
+              "name": "encodeGroup",
+              "role": "supporting"
+            },
+            {
               "name": "encodeStrokeDash",
               "role": "supporting"
             }
@@ -23803,7 +23808,7 @@
           "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested scatterplot variant.",
           "actions": [
             {
-              "name": "encodeGroup",
+              "name": "encodeColor",
               "role": "supporting"
             },
             {
@@ -23836,7 +23841,7 @@
           "path": "docs/recipes/scatterplot.md"
         }
       ],
-      "exampleSource": "import { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createScatterPlot({ x: \"x\", y: \"y\" });",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({\n    width: 640,\n    height: 400,\n    margin: { top: 30, right: 140, bottom: 60, left: 70 }\n  })\n  .createData({ values })\n  .createScatterPlot({\n    x: \"x\",\n    y: \"y\",\n    color: \"group\",\n    guides: {\n      axes: {\n        x: { title: { text: \"X\" } },\n        y: { title: { text: \"Y\" } }\n      }\n    }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/scatterplot.md"
     },
     {
@@ -25418,7 +25423,8 @@
       "classification": "supporting",
       "recipeIds": [
         "regression-scatterplot",
-        "rose-chart"
+        "rose-chart",
+        "scatterplot"
       ],
       "reason": null
     },
@@ -25434,7 +25440,7 @@
       "name": "encodeGroup",
       "classification": "supporting",
       "recipeIds": [
-        "scatterplot"
+        "line-chart"
       ],
       "reason": null
     },

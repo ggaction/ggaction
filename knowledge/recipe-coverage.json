@@ -1054,7 +1054,8 @@
       "classification": "supporting",
       "recipeIds": [
         "regression-scatterplot",
-        "rose-chart"
+        "rose-chart",
+        "scatterplot"
       ],
       "reason": null
     },
@@ -1070,7 +1071,7 @@
       "name": "encodeGroup",
       "classification": "supporting",
       "recipeIds": [
-        "scatterplot"
+        "line-chart"
       ],
       "reason": null
     },

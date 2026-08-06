@@ -58,6 +58,10 @@
       "instruction": "Add only the supporting encodings, marks, and owned resources needed for the requested line chart variant.",
       "actions": [
         {
+          "name": "encodeGroup",
+          "role": "supporting"
+        },
+        {
           "name": "encodeStrokeDash",
           "role": "supporting"
         }
