@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ggaction.dev/schemas/recipe-coverage-source-v1.json",
+  "title": "ggaction Recipe Coverage Source",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "actions"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/actionCoverage" }
+    }
+  },
+  "$defs": {
+    "actionCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "classification", "recipeIds", "reason"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]*$" },
+        "classification": {
+          "enum": ["primary", "supporting", "lifecycle", "extension-only", "metadata-only", "not-applicable"]
+        },
+        "recipeIds": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "uniqueItems": true
+        },
+        "reason": { "type": ["string", "null"], "minLength": 20, "maxLength": 500 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "classification": { "const": "primary" } } },
+          "then": {
+            "properties": {
+              "recipeIds": { "minItems": 1 },
+              "reason": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": { "enum": ["extension-only", "metadata-only", "not-applicable"] }
+            }
+          },
+          "then": { "properties": { "reason": { "type": "string", "minLength": 20 } } }
+        }
+      ]
+    }
+  }
+}

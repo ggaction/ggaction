@@ -12,6 +12,38 @@ import { scoreEvaluationEvidence } from "../../scripts/llm-eval/score.js";
 import { summarizeConditionAResults } from "../../scripts/llm-eval/summarize-condition-a.js";
 
 const evaluationPlanFile = new URL("../llm/evaluation-plan.json", import.meta.url);
+const knowledgeSchemaFiles = [
+  new URL("../llm/action-knowledge.schema.json", import.meta.url),
+  new URL("../llm/recipe-knowledge.schema.json", import.meta.url),
+  new URL("../llm/recipe-coverage.schema.json", import.meta.url)
+];
+
+function resolveInternalReference(schema, reference) {
+  assert.match(reference, /^#\//);
+  return reference.slice(2).split("/").reduce((value, segment) => value?.[segment], schema);
+}
+
+test("freezes closed, internally resolvable knowledge source schemas", async () => {
+  for (const file of knowledgeSchemaFiles) {
+    const schema = JSON.parse(await readFile(file, "utf8"));
+    assert.equal(schema.$schema, "https://json-schema.org/draft/2020-12/schema");
+    assert.equal(schema.additionalProperties, false);
+    assert.equal(schema.properties.schemaVersion.const, 1);
+
+    const visit = value => {
+      if (Array.isArray(value)) {
+        value.forEach(visit);
+        return;
+      }
+      if (!value || typeof value !== "object") return;
+      if (value.$ref?.startsWith("#/")) {
+        assert.ok(resolveInternalReference(schema, value.$ref), `${file.pathname}: unresolved ${value.$ref}`);
+      }
+      Object.values(value).forEach(visit);
+    };
+    visit(schema);
+  }
+});
 
 test("keeps a balanced, versioned, unambiguous LLM evaluation corpus", async () => {
   const corpus = await loadEvaluationCorpus();

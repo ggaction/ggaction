@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ggaction.dev/schemas/action-knowledge-source-v1.json",
+  "title": "ggaction Action Knowledge Source",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "domain", "actions"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "domain": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/action" }
+    }
+  },
+  "$defs": {
+    "sentence": { "type": "string", "minLength": 20, "maxLength": 500 },
+    "sentenceList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sentence" },
+      "uniqueItems": true
+    },
+    "actionName": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]*$" },
+    "parameterNote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "description"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*(\\.[A-Za-z][A-Za-z0-9]*)*$" },
+        "description": { "$ref": "#/$defs/sentence" }
+      }
+    },
+    "commonError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["problem", "fix"],
+      "properties": {
+        "problem": { "$ref": "#/$defs/sentence" },
+        "fix": { "$ref": "#/$defs/sentence" }
+      }
+    },
+    "docsLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^docs/[A-Za-z0-9_./-]+\\.md$" },
+        "anchor": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$" }
+      }
+    },
+    "programExample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path", "export"],
+      "properties": {
+        "kind": { "const": "program" },
+        "path": { "type": "string", "pattern": "^test/[A-Za-z0-9_./-]+\\.js$" },
+        "export": { "type": "string", "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$" }
+      }
+    },
+    "notApplicableExample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "reason"],
+      "properties": {
+        "kind": { "const": "not-applicable" },
+        "reason": { "$ref": "#/$defs/sentence" }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "summary",
+        "useWhen",
+        "avoidWhen",
+        "requiredState",
+        "parameterNotes",
+        "effects",
+        "composition",
+        "commonErrors",
+        "example",
+        "relatedActions",
+        "recipeIds",
+        "docs"
+      ],
+      "properties": {
+        "name": { "$ref": "#/$defs/actionName" },
+        "summary": { "$ref": "#/$defs/sentence" },
+        "useWhen": {
+          "allOf": [
+            { "$ref": "#/$defs/sentenceList" },
+            { "minItems": 1 }
+          ]
+        },
+        "avoidWhen": {
+          "allOf": [
+            { "$ref": "#/$defs/sentenceList" },
+            { "minItems": 1 }
+          ]
+        },
+        "requiredState": { "$ref": "#/$defs/sentenceList" },
+        "parameterNotes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/parameterNote" }
+        },
+        "effects": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["semantic", "graphic"],
+          "properties": {
+            "semantic": { "$ref": "#/$defs/sentenceList" },
+            "graphic": { "$ref": "#/$defs/sentenceList" }
+          }
+        },
+        "composition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["before", "after", "notes"],
+          "properties": {
+            "before": { "type": "array", "items": { "$ref": "#/$defs/actionName" }, "uniqueItems": true },
+            "after": { "type": "array", "items": { "$ref": "#/$defs/actionName" }, "uniqueItems": true },
+            "notes": { "$ref": "#/$defs/sentenceList" }
+          }
+        },
+        "commonErrors": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/commonError" }
+        },
+        "example": {
+          "oneOf": [
+            { "$ref": "#/$defs/programExample" },
+            { "$ref": "#/$defs/notApplicableExample" }
+          ]
+        },
+        "relatedActions": { "type": "array", "items": { "$ref": "#/$defs/actionName" }, "uniqueItems": true },
+        "recipeIds": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }, "uniqueItems": true },
+        "docs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/docsLink" }, "uniqueItems": true }
+      }
+    }
+  }
+}

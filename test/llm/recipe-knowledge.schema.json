@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ggaction.dev/schemas/recipe-knowledge-source-v1.json",
+  "title": "ggaction Recipe Knowledge Source",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "intent",
+    "useWhen",
+    "avoidWhen",
+    "prerequisites",
+    "inputs",
+    "outcomes",
+    "steps",
+    "alternatives",
+    "pitfalls",
+    "example",
+    "relatedRecipes",
+    "docs"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/recipeId" },
+    "title": { "type": "string", "minLength": 3, "maxLength": 100 },
+    "intent": { "$ref": "#/$defs/sentence" },
+    "useWhen": { "$ref": "#/$defs/nonemptySentenceList" },
+    "avoidWhen": { "$ref": "#/$defs/nonemptySentenceList" },
+    "prerequisites": { "$ref": "#/$defs/sentenceList" },
+    "inputs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/input" }
+    },
+    "outcomes": { "$ref": "#/$defs/nonemptySentenceList" },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/step" }
+    },
+    "alternatives": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/alternative" }
+    },
+    "pitfalls": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/pitfall" }
+    },
+    "example": { "$ref": "#/$defs/programExample" },
+    "relatedRecipes": { "type": "array", "items": { "$ref": "#/$defs/recipeId" }, "uniqueItems": true },
+    "docs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/docsLink" }, "uniqueItems": true }
+  },
+  "$defs": {
+    "sentence": { "type": "string", "minLength": 20, "maxLength": 700 },
+    "sentenceList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sentence" },
+      "uniqueItems": true
+    },
+    "nonemptySentenceList": {
+      "allOf": [
+        { "$ref": "#/$defs/sentenceList" },
+        { "minItems": 1 }
+      ]
+    },
+    "recipeId": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "actionName": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]*$" },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description", "required"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" },
+        "description": { "$ref": "#/$defs/sentence" },
+        "required": { "type": "boolean" }
+      }
+    },
+    "actionUse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "role"],
+      "properties": {
+        "name": { "$ref": "#/$defs/actionName" },
+        "role": { "enum": ["primary", "supporting", "lifecycle"] }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "instruction", "actions"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "instruction": { "$ref": "#/$defs/sentence" },
+        "actions": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/actionUse" } }
+      }
+    },
+    "alternative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "instruction", "actions"],
+      "properties": {
+        "when": { "$ref": "#/$defs/sentence" },
+        "instruction": { "$ref": "#/$defs/sentence" },
+        "actions": { "type": "array", "items": { "$ref": "#/$defs/actionName" }, "uniqueItems": true }
+      }
+    },
+    "pitfall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["problem", "fix"],
+      "properties": {
+        "problem": { "$ref": "#/$defs/sentence" },
+        "fix": { "$ref": "#/$defs/sentence" }
+      }
+    },
+    "programExample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "export"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^test/[A-Za-z0-9_./-]+\\.js$" },
+        "export": { "type": "string", "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$" }
+      }
+    },
+    "docsLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^docs/[A-Za-z0-9_./-]+\\.md$" },
+        "anchor": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$" }
+      }
+    }
+  }
+}
