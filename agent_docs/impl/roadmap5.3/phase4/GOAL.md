@@ -12,8 +12,8 @@ budget, 실행기와 oracle은 공유하는 local benchmark harness를 만든다
 - [x] Search corpus, query/result contract and ranking baseline
 - [x] Deterministic generated search index and bounded Node-only search/read API
 - [x] Stable tie-break, repeated-query identity, malformed-input and zero-gap validation
-- [ ] Condition A/B shared runner and structured-knowledge adapter
-- [ ] 24-task dry/mock reproducibility and executable-program evidence
+- [x] Condition A/B shared runner and structured-knowledge adapter
+- [x] 24-task dry/mock reproducibility and executable-program evidence
 - [ ] R53-P4-A remote review checkpoint
 
 ## 고정 결과

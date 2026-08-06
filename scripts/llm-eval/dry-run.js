@@ -16,13 +16,18 @@ export function syntheticPassingResult(task, condition = "A") {
     B: "structured-knowledge",
     C: "local-mcp"
   };
+  const knowledgeCommits = {
+    A: "9414d07179c9e7c6bbfdf00b762fc35de0ff25ec",
+    B: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    C: "cccccccccccccccccccccccccccccccccccccccc"
+  };
   return {
     schemaVersion: 1,
     runId: `dry-run-${condition}-${task.id}`,
     condition,
     taskId: task.id,
     knowledge: {
-      commit: "9414d07179c9e7c6bbfdf00b762fc35de0ff25ec",
+      commit: knowledgeCommits[condition],
       mode: knowledgeModes[condition]
     },
     model: {
@@ -75,19 +80,26 @@ export function syntheticPassingResult(task, condition = "A") {
   };
 }
 
-export async function runEvaluationDryRun() {
+export async function runEvaluationDryRun({ conditions = ["A", "B"] } = {}) {
+  if (!Array.isArray(conditions) || conditions.length === 0 || conditions.some(condition => !["A", "B"].includes(condition))) {
+    throw new TypeError("Local evaluation dry-run conditions must contain A and/or B.");
+  }
   const corpus = await loadEvaluationCorpus();
   const corpusSummary = await validateEvaluationCorpus(corpus);
-  const scoredResults = corpus.tasks.map(task => {
-    const result = syntheticPassingResult(task);
+  const scoredResults = conditions.flatMap(condition => corpus.tasks.map(task => {
+    const result = syntheticPassingResult(task, condition);
     validateEvaluationResult(result, corpus);
     return { task, result, score: scoreEvaluationEvidence(task, result.evidence) };
-  });
+  }));
   const summary = summarizeEvaluationResults(scoredResults);
-  if (summary.successful !== corpus.tasks.length) {
+  const summaries = Object.fromEntries(conditions.map(condition => [
+    condition,
+    summarizeEvaluationResults(scoredResults.filter(entry => entry.result.condition === condition))
+  ]));
+  if (summary.successful !== corpus.tasks.length * conditions.length) {
     throw new Error("Synthetic dry run did not satisfy every task oracle.");
   }
-  return { corpusSummary, summary };
+  return { corpusSummary, conditions, summaries, summary };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

@@ -19,6 +19,8 @@ import {
   validateGeneratedSource
 } from "../../scripts/llm-eval/program-evaluator.js";
 import { runConditionATask } from "../../scripts/llm-eval/condition-a-runner.js";
+import { runConditionBTask } from "../../scripts/llm-eval/condition-b-runner.js";
+import { conditionAKnowledge, conditionBKnowledge } from "../../scripts/llm-eval/knowledge-adapters.js";
 
 test("keeps condition A documentation reads bounded inside public docs", async () => {
   const routing = await readCurrentDoc("./llms.txt");
@@ -309,5 +311,108 @@ test("runs one condition-A task through a mocked model and records executable ev
   assert.equal(result.outcome.failureCategory, null);
   assert.equal(result.metrics.modelCalls, 1);
   assert.equal(result.metrics.totalTokens, 1500);
+  assert.equal(result.artifacts.rendererFiles.length, 1);
+});
+
+test("isolates A and B knowledge tools behind one evaluation envelope", async () => {
+  const conditionB = conditionBKnowledge("b".repeat(40));
+  assert.deepEqual(conditionAKnowledge.tools.map(tool => tool.name), ["search_docs", "read_doc"]);
+  assert.deepEqual(conditionB.tools.map(tool => tool.name), ["search_ggaction", "read_ggaction"]);
+  assert.equal(conditionAKnowledge.mode, "current-docs");
+  assert.equal(conditionB.mode, "structured-knowledge");
+  assert.deepEqual(
+    Object.keys(conditionAKnowledge).filter(key => !["condition", "mode", "commit", "tools", "instruction", "routingLabel"].includes(key)),
+    Object.keys(conditionB).filter(key => !["condition", "mode", "commit", "tools", "instruction", "routingLabel"].includes(key))
+  );
+  await assert.rejects(() => conditionB.handle({ name: "read_doc", arguments: "{}" }), /Unknown structured-knowledge tool/);
+});
+
+test("runs a mocked structured-knowledge search and one repair through Condition B", async () => {
+  const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
+  const plan = JSON.parse(await readFile(new URL("../llm/evaluation-plan.json", import.meta.url), "utf8"));
+  const task = corpus.tasks.find(candidate => candidate.id === "cars-scatter-origin");
+  const incompleteSource = `
+    import { chart, render } from "ggaction";
+    export function buildChart(datasets) {
+      const values = datasets["cars-v1"].filter(row =>
+        row.Horsepower != null && row.Miles_per_Gallon != null && row.Origin != null
+      );
+      return chart().createCanvas({ width: 640, height: 400 })
+        .createData({ values }).createScatterPlot({ x: "Horsepower", y: "Miles_per_Gallon" });
+    }
+  `;
+  const completeSource = `
+    import { chart, render } from "ggaction";
+    export function buildChart(datasets) {
+      const values = datasets["cars-v1"].filter(row =>
+        row.Horsepower != null && row.Miles_per_Gallon != null && row.Origin != null
+      );
+      return chart()
+        .createCanvas({ width: 640, height: 400, margin: { top: 30, right: 130, bottom: 60, left: 70 } })
+        .createData({ values })
+        .createScatterPlot({
+          x: "Horsepower", y: "Miles_per_Gallon", color: "Origin",
+          guides: { axes: { x: {}, y: {} }, legend: {} }
+        });
+    }
+  `;
+  const outputs = [
+    [{
+      type: "function_call", name: "search_ggaction", call_id: "search_1",
+      arguments: JSON.stringify({ query: "scatter plot quantitative relationship" })
+    }, {
+      type: "function_call", name: "read_ggaction", call_id: "read_1",
+      arguments: JSON.stringify({ kind: "action", id: "createScatterPlot" })
+    }],
+    [{
+      type: "function_call", name: "submit_program", call_id: "submit_1",
+      arguments: JSON.stringify({ source: incompleteSource })
+    }],
+    [{
+      type: "function_call", name: "submit_program", call_id: "submit_2",
+      arguments: JSON.stringify({ source: completeSource })
+    }]
+  ];
+  const requests = [];
+  const result = await runConditionBTask({
+    knowledgeCommit: "b".repeat(40),
+    apiKey: `sk-${"x".repeat(40)}`,
+    corpus,
+    task,
+    repetition: 1,
+    plan,
+    outputRoot: new URL("../../.artifacts/llm-eval/runner-b-contract", import.meta.url).pathname,
+    fetchImpl: async (_url, init) => {
+      requests.push(JSON.parse(init.body));
+      const output = outputs.shift();
+      return {
+        ok: true,
+        async json() {
+          return {
+            id: `resp_${requests.length}`,
+            model: plan.model.name,
+            output,
+            usage: {
+              input_tokens: 1000,
+              input_tokens_details: { cached_tokens: 0, cache_write_tokens: 0 },
+              output_tokens: 300,
+              output_tokens_details: { reasoning_tokens: 100 },
+              total_tokens: 1300
+            }
+          };
+        }
+      };
+    }
+  });
+
+  assert.equal(requests.length, 3);
+  assert.deepEqual(requests[0].tools.map(tool => tool.name), ["search_ggaction", "read_ggaction", "submit_program"]);
+  assert.equal(result.condition, "B");
+  assert.deepEqual(result.knowledge, { commit: "b".repeat(40), mode: "structured-knowledge" });
+  assert.equal(result.outcome.firstPassValid, false);
+  assert.equal(result.outcome.finalValid, true);
+  assert.equal(result.metrics.modelCalls, 3);
+  assert.equal(result.metrics.mcpCalls, 0);
+  assert.equal(result.metrics.repairRounds, 1);
   assert.equal(result.artifacts.rendererFiles.length, 1);
 });

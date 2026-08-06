@@ -2,12 +2,12 @@
 
 ## 진행 상태
 
-- [ ] Extract one condition-neutral model/tool/evaluation loop without changing Condition A semantics
-- [ ] Keep current-doc A and structured-knowledge B behind explicit adapters
-- [ ] Enforce identical task/model/token/call/time/evaluator/oracle settings across conditions
-- [ ] Add B search/read tool contracts and bounded call accounting
-- [ ] Run 24-task synthetic dry runs and representative mocked A/B repair flows
-- [ ] Verify result schema, deterministic order, no credential output and zero paid calls
+- [x] Extract one condition-neutral model/tool/evaluation loop without changing Condition A semantics
+- [x] Keep current-doc A and structured-knowledge B behind explicit adapters
+- [x] Enforce identical task/model/token/call/time/evaluator/oracle settings across conditions
+- [x] Add B search/read tool contracts and bounded call accounting
+- [x] Run 24-task synthetic dry runs and representative mocked A/B repair flows
+- [x] Verify result schema, deterministic order, no credential output and zero paid calls
 - [ ] R53-P4-A Gate package commit/push
 
 ## 실행 순서
@@ -26,3 +26,5 @@
 - A/B가 task prompt, datasets, model settings, evaluator와 oracle을 공유한다는 contract가 기계적으로 검증된다.
 - Mock/dry run만으로 model tool loop, repair, result validation과 summary가 재현된다.
 - MCP implementation과 paid B/C run 없이 R53-P4-A package가 검토 가능하다.
+
+Exact shared-runner 결과와 isolation evidence는 [`HARNESS_REPORT.md`](./HARNESS_REPORT.md)가 소유한다.

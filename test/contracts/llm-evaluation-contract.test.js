@@ -72,11 +72,14 @@ test("keeps a balanced, versioned, unambiguous LLM evaluation corpus", async () 
 test("dry-runs every task without an external model call", async () => {
   const dryRun = await runEvaluationDryRun();
 
-  assert.equal(dryRun.summary.total, 24);
-  assert.equal(dryRun.summary.successful, 24);
+  assert.deepEqual(dryRun.conditions, ["A", "B"]);
+  assert.equal(dryRun.summary.total, 48);
+  assert.equal(dryRun.summary.successful, 48);
   assert.equal(dryRun.summary.failed, 0);
   assert.equal(dryRun.summary.tokensPerSuccessfulChart, 0);
   assert.equal(dryRun.summary.modelCallsPerSuccessfulChart, 0);
+  assert.equal(dryRun.summaries.A.successful, 24);
+  assert.equal(dryRun.summaries.B.successful, 24);
 });
 
 test("keeps the approved paid evaluation bounded and internally consistent", async () => {
