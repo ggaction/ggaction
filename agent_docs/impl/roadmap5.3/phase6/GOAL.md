@@ -26,7 +26,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-E exact one-run B/C paid smoke approval
 - [x] Smoke-only guard and first paid-smoke attempt stopped safely before C
 - [x] Zero-cost provider-schema failure analysis and compatible schema correction
-- [ ] Separately authorized corrected one-run B/C paid-smoke retry
+- [x] R53-P6-E-Retry explicit approval
+- [ ] Corrected retry guard, paid B/C smoke and result review
 - [ ] Separately authorized full B/C paid rerun and result decision
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval

@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`proposed — explicit approval required`
+`approved`
+
+Approved by the user on 2026-08-07.
 
 Candidate behavior checkpoint: `060a13f1017485f2a19579ef640a768b86a63417`
 
@@ -66,3 +68,5 @@ correctness/efficiency benefit claim은 금지한다.
 
 명시적으로 승인하면 위 retry plan/guard의 무과금 구현·검증과, guard checkpoint push 뒤 B/C 각 한 번의 API 실행을
 합계 최대 $0.40 범위에서 허용한다.
+
+이 Gate는 승인되었으며 위 범위만 해제되었다.
