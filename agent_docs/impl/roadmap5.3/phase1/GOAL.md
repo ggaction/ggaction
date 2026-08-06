@@ -11,9 +11,9 @@ LLM이 476 KB full bundle이나 전체 사이트를 먼저 읽지 않고, 작은
 - [x] R53-P0-B explicit approval and remote checkpoint
 - [x] Existing `llms.txt`, full bundle, page manifest와 search route 조사
 - [x] Phase 1 route/chunk/source boundary 결정
-- [ ] Stable English overview/action/recipe/detail route 구현
-- [ ] Generated entry, link/size/drift guard와 built-site 검증
-- [ ] R53-P1-A remote review checkpoint
+- [x] Stable English overview/action/recipe/detail route 구현
+- [x] Generated entry, link/size/drift guard와 built-site 검증
+- [x] R53-P1-A remote review checkpoint
 
 ## 고정 경계
 

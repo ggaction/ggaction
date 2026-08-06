@@ -4,12 +4,12 @@
 
 - [x] Current entry/full bundle and generator audit
 - [x] Route names, source ownership and size budgets
-- [ ] Canonical `docs/_sources/llms.txt` and generated concise entry
-- [ ] English overview/action/recipe/detail routing pages
-- [ ] Page manifest, metadata, search and full-bundle synchronization
-- [ ] Source/output drift, link, fragment, duplicate and chunk-budget tests
-- [ ] Built-site link, accessibility and browser smoke verification
-- [ ] R53-P1-A Gate package commit/push
+- [x] Canonical `docs/_sources/llms.txt` and generated concise entry
+- [x] English overview/action/recipe/detail routing pages
+- [x] Page manifest, metadata, search and full-bundle synchronization
+- [x] Source/output drift, link, fragment, duplicate and chunk-budget tests
+- [x] Built-site link, accessibility and browser smoke verification
+- [x] R53-P1-A Gate package commit/push
 
 ## 구현 순서
 
