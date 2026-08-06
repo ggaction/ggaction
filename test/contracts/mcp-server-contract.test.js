@@ -61,6 +61,7 @@ test("reads packaged overview, action, recipe, and documentation knowledge", asy
   const connection = await connectedClient();
   try {
     const overview = parsedResource(await connection.client.readResource({ uri: "ggaction://overview" }));
+    assert.equal(overview.schemaVersion, 2);
     assert.deepEqual(overview.counts, { actions: 173, recipes: 33, docs: 4 });
     assert.deepEqual(overview.resources, [
       "ggaction://overview",
@@ -79,7 +80,10 @@ test("reads packaged overview, action, recipe, and documentation knowledge", asy
       uri: "ggaction://docs/overview"
     }));
     assert.equal(action.value.name, "createScatterPlot");
+    assert.equal(action.value.typeDefinitions.length > 0, true);
     assert.equal(recipe.value.id, "scatterplot");
+    assert.match(recipe.value.exampleSource, /from "ggaction"/u);
+    assert.match(recipe.nextStep, /submit_program/u);
     assert.match(docs.value.text, /# LLM Guide/u);
   } finally {
     await connection.close();
@@ -96,9 +100,11 @@ test("keeps search deterministic, bounded, and strict about invalid input", asyn
     const first = await call({ query: "scatter plot relationship", limit: 3 });
     const second = await call({ query: "scatter plot relationship", limit: 3 });
     assert.deepEqual(second, first);
-    const results = JSON.parse(first.content[0].text);
-    assert.equal(results.length, 3);
-    assert.equal(results[0].id, "scatterplot");
+    const response = JSON.parse(first.content[0].text);
+    assert.equal(response.schemaVersion, 2);
+    assert.equal(response.results.length, 3);
+    assert.equal(response.results[0].id, "scatterplot");
+    assert.equal(response.nextStep, "Read one best matching action or recipe.");
 
     for (const invalid of [
       { query: "" },
@@ -163,7 +169,7 @@ test("serves protocol-only stdout through the package executable", async () => {
     ]);
     assert.deepEqual(resources.resources.map(resource => resource.uri), ["ggaction://overview"]);
     assert.deepEqual(tools.tools.map(tool => tool.name), ["search_ggaction"]);
-    assert.equal(JSON.parse(search.content[0].text)[0].id, "editLegendLayout");
+    assert.equal(JSON.parse(search.content[0].text).results[0].id, "editLegendLayout");
     assert.equal(transport.stderr?.read()?.toString() ?? "", "");
   } finally {
     await client.close();

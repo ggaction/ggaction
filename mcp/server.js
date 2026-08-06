@@ -25,7 +25,7 @@ export function createGgactionMcpServer() {
   const server = new McpServer(
     { name: "ggaction", version },
     {
-      instructions: "Search for a chart task, then read the exact action or recipe resource before writing public ggaction code. This server is read-only and does not execute or render charts."
+      instructions: "Search once for the chart task, read one best matching self-contained action or recipe resource, then write public ggaction code without another search. This server is read-only and does not execute or render charts."
     }
   );
 
@@ -45,7 +45,7 @@ export function createGgactionMcpServer() {
     knowledgeTemplate("ggaction://actions/{name}"),
     {
       title: "ggaction Action Knowledge",
-      description: "Exact structured metadata for one public or extension action.",
+      description: "Self-contained signatures, option types, call example, and structured metadata for one public or extension action.",
       mimeType: "application/json"
     },
     async (uri, { name }) => jsonResource(uri, await readKnowledge({ kind: "action", id: name }))
@@ -56,7 +56,7 @@ export function createGgactionMcpServer() {
     knowledgeTemplate("ggaction://recipes/{id}"),
     {
       title: "ggaction Task Recipe",
-      description: "Ordered actions, alternatives, pitfalls, and executable evidence for one chart task.",
+      description: "Ordered actions, alternatives, pitfalls, and public JavaScript source for one chart task.",
       mimeType: "application/json"
     },
     async (uri, { id }) => jsonResource(uri, await readKnowledge({ kind: "recipe", id }))

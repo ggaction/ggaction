@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generated": {
     "actionCount": 173,
     "recipeCount": 33,
@@ -23,6 +23,7 @@
       "title": "createArcMark",
       "summary": "Creates a semantic arc mark and empty closed path collection.",
       "route": "/reference/actions/marks/#createarcmark",
+      "priority": 50,
       "terms": {
         "identity": [
           "arc",
@@ -145,6 +146,7 @@
       "title": "createAreaMark",
       "summary": "Creates a semantic area mark and empty path collection.",
       "route": "/reference/actions/marks/#createareamark",
+      "priority": 0,
       "terms": {
         "identity": [
           "area",
@@ -262,6 +264,7 @@
       "title": "createAxes",
       "summary": "Creates Cartesian or Polar axes directly, including inferred titles and ticks.",
       "route": "/reference/actions/guides/#createaxes",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -373,6 +376,7 @@
       "title": "createBarMark",
       "summary": "Creates a semantic bar mark and empty rect collection.",
       "route": "/reference/actions/marks/#createbarmark",
+      "priority": 0,
       "terms": {
         "identity": [
           "bar",
@@ -488,6 +492,7 @@
       "title": "createBarPlot",
       "summary": "Creates a complete vertical, horizontal, aggregate, ranged, grouped, or stacked bar chart through the existing bar policies.",
       "route": "/reference/actions/charts-data/#createbarplot",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -643,6 +648,7 @@
       "title": "createBin2DData",
       "summary": "Aggregate finite x/y pairs into deterministic rectangular cell bounds and counts.",
       "route": "/reference/actions/charts-data/#createbin2ddata",
+      "priority": 0,
       "terms": {
         "identity": [
           "bin2",
@@ -768,7 +774,7 @@
           "bin2",
           "d",
           "data",
-          "derived",
+          "derive",
           "edit",
           "workflow"
         ]
@@ -780,6 +786,7 @@
       "title": "createBoxPlot",
       "summary": "Creates a vertical or horizontal Tukey/min–max box plot from one categorical and one quantitative field.",
       "route": "/reference/actions/statistics/#createboxplot",
+      "priority": 50,
       "terms": {
         "identity": [
           "box",
@@ -941,6 +948,7 @@
       "title": "createCanvas",
       "summary": "Creates the program's Canvas and plot bounds.",
       "route": "/reference/actions/charts-data/#createcanvas",
+      "priority": 0,
       "terms": {
         "identity": [
           "canva",
@@ -1037,7 +1045,7 @@
           "chart",
           "coordinate",
           "density",
-          "derivation",
+          "derive",
           "distribution",
           "edit",
           "error",
@@ -1070,6 +1078,7 @@
       "title": "createCoordinate",
       "summary": "Creates a named Cartesian, Polar, or parallel coordinate resource for marks, guides, and later explicit targeting.",
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
+      "priority": 0,
       "terms": {
         "identity": [
           "coordinate",
@@ -1187,6 +1196,7 @@
       "title": "createData",
       "summary": "Creates one immutable named dataset from caller-provided row values.",
       "route": "/reference/actions/charts-data/#createdata",
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -1276,7 +1286,7 @@
           "chart",
           "coordinate",
           "density",
-          "derivation",
+          "derive",
           "distribution",
           "error",
           "facet",
@@ -1306,6 +1316,7 @@
       "title": "createDensityData",
       "summary": "Creates immutable KDE rows on one shared inclusive sample grid.",
       "route": "/reference/actions/charts-data/#createdensitydata",
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -1424,7 +1435,7 @@
         ],
         "relations": [
           "data",
-          "derived",
+          "derive",
           "workflow"
         ]
       }
@@ -1435,12 +1446,13 @@
       "title": "createDerivedData",
       "summary": "Creates a named immutable derived dataset from an explicit transform pipeline and source dataset.",
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
+      "priority": 50,
       "terms": {
         "identity": [
           "core",
           "create",
           "data",
-          "derived",
+          "derive",
           "facing",
           "immutable",
           "only",
@@ -1449,7 +1461,7 @@
         "title": [
           "create",
           "data",
-          "derived"
+          "derive"
         ],
         "summary": [
           "a",
@@ -1457,7 +1469,7 @@
           "and",
           "create",
           "dataset",
-          "derived",
+          "derive",
           "explicit",
           "from",
           "immutable",
@@ -1483,7 +1495,6 @@
           "dataset",
           "dependent",
           "derive",
-          "derived",
           "describe",
           "exact",
           "existing",
@@ -1542,7 +1553,7 @@
         ],
         "relations": [
           "data",
-          "derived",
+          "derive",
           "workflow"
         ]
       }
@@ -1553,6 +1564,7 @@
       "title": "createErrorBand",
       "summary": "Creates a vertical or horizontal statistical or explicit interval ribbon.",
       "route": "/reference/actions/statistics/#createerrorband",
+      "priority": 50,
       "terms": {
         "identity": [
           "band",
@@ -1698,6 +1710,7 @@
       "title": "createErrorBar",
       "summary": "Creates vertical or horizontal statistical or explicit intervals.",
       "route": "/reference/actions/statistics/#createerrorbar",
+      "priority": 50,
       "terms": {
         "identity": [
           "bar",
@@ -1839,6 +1852,7 @@
       "title": "createGradientPlot",
       "summary": "Creates one density gradient strip per category from categorical and quantitative x/y roles.",
       "route": "/reference/actions/statistics/#creategradientplot",
+      "priority": 50,
       "terms": {
         "identity": [
           "create",
@@ -1999,6 +2013,7 @@
       "title": "createGraphics",
       "summary": "Creates a validated backend-neutral graphical object or collection at an explicit position in the graphic hierarchy.",
       "route": "/reference/actions/extension/#extension-actions",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -2133,6 +2148,7 @@
       "title": "createGrid",
       "summary": "Creates inferred horizontal and/or vertical Cartesian grid lines behind related marks, or infer the Polar grid families backed by stored theta/radius encodings.",
       "route": "/reference/actions/guides/#creategrid",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -2243,6 +2259,7 @@
       "title": "createGuides",
       "summary": "Creates applicable Cartesian or Polar axes and grids plus supported legends.",
       "route": "/reference/actions/guides/#createguides",
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -2342,6 +2359,7 @@
       "title": "createHeatmap",
       "summary": "Creates one rect cell per valid pre gridded row, or bin raw quantitative x/y rows into ranged cells colored by count.",
       "route": "/reference/actions/charts-data/#createheatmap",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -2481,6 +2499,7 @@
       "title": "createHistogram",
       "summary": "Creates a bar layer with atomic bin and count encodings.",
       "route": "/reference/actions/charts-data/#createhistogram",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -2618,6 +2637,7 @@
       "title": "createHorizontalGrid",
       "summary": "Creates horizontal grid lines from an existing compatible y scale and Cartesian coordinate.",
       "route": "/reference/actions/advanced/#directional-grids",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -2741,6 +2761,7 @@
       "title": "createIntervalData",
       "summary": "Creates immutable grouped center/lower/upper summary rows.",
       "route": "/reference/actions/statistics/#createintervaldata",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -2864,7 +2885,7 @@
         ],
         "relations": [
           "data",
-          "derived",
+          "derive",
           "workflow"
         ]
       }
@@ -2875,6 +2896,7 @@
       "title": "createLegend",
       "summary": "Creates categorical, point size, continuous color gradient, discretized color interval, or field opacity sample legends.",
       "route": "/reference/actions/guides/#createlegend",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -3003,6 +3025,7 @@
       "title": "createLineMark",
       "summary": "Creates a semantic line mark and empty path collection.",
       "route": "/reference/actions/marks/#createlinemark",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -3121,6 +3144,7 @@
       "title": "createLinePlot",
       "summary": "Creates a complete Cartesian line chart, including optional series grouping and appearance.",
       "route": "/reference/actions/charts-data/#createlineplot",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -3274,6 +3298,7 @@
       "title": "createParallelCoordinates",
       "summary": "Creates one open line path per source row across an ordered list of dimension local scales and axes.",
       "route": "/reference/actions/charts-data/#createparallelcoordinates",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -3427,6 +3452,7 @@
       "title": "createPointMark",
       "summary": "Creates a semantic point mark with one of 12 equal area shape realizations.",
       "route": "/reference/actions/marks/#createpointmark",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -3553,6 +3579,7 @@
       "title": "createRadialAxis",
       "summary": "Creates the complete center to edge radial axis; angle defaults to 90 .",
       "route": "/reference/actions/guides/#createradialaxis",
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -3654,6 +3681,7 @@
       "title": "createRadialGrid",
       "summary": "Creates concentric radial paths behind related marks.",
       "route": "/reference/actions/guides/#createradialgrid",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -3769,6 +3797,7 @@
       "title": "createRectMark",
       "summary": "Creates a semantic rect mark and empty rect collection.",
       "route": "/reference/actions/marks/#createrectmark",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -3877,6 +3906,7 @@
       "title": "createRegression",
       "summary": "Infer an eligible point layer and create immutable fitted data, optional grouped interval band paths, and grouped line paths.",
       "route": "/reference/actions/statistics/#createregression",
+      "priority": 50,
       "terms": {
         "identity": [
           "create",
@@ -3923,7 +3953,7 @@
           "create",
           "data",
           "dataset",
-          "derived",
+          "derive",
           "determine",
           "encoded",
           "exist",
@@ -3981,6 +4011,7 @@
       "title": "createRegressionBand",
       "summary": "Creates the interval area component for existing compatible regression data, scales, and grouping.",
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
+      "priority": 0,
       "terms": {
         "identity": [
           "band",
@@ -4125,6 +4156,7 @@
       "title": "createRegressionData",
       "summary": "Creates immutable linear, polynomial, or LOESS fitted rows at observed unique x values.",
       "route": "/reference/actions/charts-data/#createregressiondata",
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -4252,7 +4284,7 @@
         ],
         "relations": [
           "data",
-          "derived",
+          "derive",
           "owner",
           "revision",
           "statistical",
@@ -4266,6 +4298,7 @@
       "title": "createRegressionLine",
       "summary": "Creates the fitted line component for existing compatible regression data, scales, and grouping.",
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -4412,6 +4445,7 @@
       "title": "createRuleMark",
       "summary": "Creates a semantic rule mark and empty line collection.",
       "route": "/reference/actions/marks/#createrulemark",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -4511,6 +4545,7 @@
       "title": "createScale",
       "summary": "Creates an immutable named scale with an explicit type, domain, range, and supported mapping options.",
       "route": "/reference/actions/extension/#extension-actions",
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -4609,6 +4644,7 @@
       "title": "createScatterPlot",
       "summary": "Creates a complete Cartesian point chart from required x/y fields and optional appearance encodings.",
       "route": "/reference/actions/charts-data/#createscatterplot",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -4757,6 +4793,7 @@
       "title": "createTextMark",
       "summary": "Creates a semantic text layer for data-driven or constant labels.",
       "route": "/reference/actions/marks/#createtextmark",
+      "priority": 50,
       "terms": {
         "identity": [
           "create",
@@ -4875,6 +4912,7 @@
       "title": "createThetaAxis",
       "summary": "Creates the complete outer circular theta axis.",
       "route": "/reference/actions/guides/#createthetaaxis",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -4970,6 +5008,7 @@
       "title": "createThetaGrid",
       "summary": "Creates theta-aligned spoke grid lines behind related Polar marks.",
       "route": "/reference/actions/guides/#createthetagrid",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -5087,6 +5126,7 @@
       "title": "createTickMark",
       "summary": "Creates a centered line glyph that materializes after both x and y are complete.",
       "route": "/reference/actions/marks/#createtickmark",
+      "priority": 50,
       "terms": {
         "identity": [
           "create",
@@ -5215,6 +5255,7 @@
       "title": "createTimeUnitData",
       "summary": "Creates an immutable row preserving dataset with one UTC year, quarter, month, day, hour, minute, or second bucket start timestamp field.",
       "route": "/reference/actions/charts-data/#createtimeunitdata",
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -5345,7 +5386,7 @@
           "you"
         ],
         "relations": [
-          "derivation",
+          "derive",
           "series",
           "time"
         ]
@@ -5357,6 +5398,7 @@
       "title": "createTitle",
       "summary": "Creates a chart title and optional subtitle.",
       "route": "/reference/actions/guides/#createtitle",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -5459,6 +5501,7 @@
       "title": "createVerticalGrid",
       "summary": "Creates vertical grid lines from an existing compatible x scale and Cartesian coordinate.",
       "route": "/reference/actions/advanced/#directional-grids",
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -5582,6 +5625,7 @@
       "title": "createViolinPlot",
       "summary": "Creates a vertical or horizontal categorical density plot from exactly one categorical and one quantitative x/y role.",
       "route": "/reference/actions/statistics/#createviolinplot",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
@@ -5731,6 +5775,7 @@
       "title": "createWindowData",
       "summary": "Creates an immutable derived dataset by applying ordered row number, rank, dense rank, cumulative sum, lag, lead, moving mean, or moving sum operations within optional partitions.",
       "route": "/reference/actions/charts-data/#createwindowdata",
+      "priority": 50,
       "terms": {
         "identity": [
           "core",
@@ -5755,7 +5800,7 @@
           "cumulative",
           "dataset",
           "dense",
-          "derived",
+          "derive",
           "immutable",
           "lag",
           "lead",
@@ -5794,7 +5839,6 @@
           "dense",
           "dependent",
           "derive",
-          "derived",
           "each",
           "exact",
           "existing",
@@ -5863,7 +5907,7 @@
           "you"
         ],
         "relations": [
-          "derivation",
+          "derive",
           "series",
           "time"
         ]
@@ -5875,6 +5919,7 @@
       "title": "createXAxis",
       "summary": "Creates a complete x axis from an existing compatible x scale and Cartesian coordinate.",
       "route": "/reference/actions/advanced/#complete-single-channel-axes",
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -6001,6 +6046,7 @@
       "title": "createXAxisLabels",
       "summary": "Creates labels for an existing x axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -6123,6 +6169,7 @@
       "title": "createXAxisLine",
       "summary": "Creates a baseline for an existing x axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -6237,6 +6284,7 @@
       "title": "createXAxisTicks",
       "summary": "Creates ticks for an existing x axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -6360,6 +6408,7 @@
       "title": "createXAxisTicksAndLabels",
       "summary": "Creates coordinated ticks and labels for an existing x axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -6492,6 +6541,7 @@
       "title": "createXAxisTitle",
       "summary": "Creates a title for an existing x axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -6615,6 +6665,7 @@
       "title": "createYAxis",
       "summary": "Creates a complete y axis from an existing compatible y scale and Cartesian coordinate.",
       "route": "/reference/actions/advanced/#complete-single-channel-axes",
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -6741,6 +6792,7 @@
       "title": "createYAxisLabels",
       "summary": "Creates labels for an existing y axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -6863,6 +6915,7 @@
       "title": "createYAxisLine",
       "summary": "Creates a baseline for an existing y axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -6977,6 +7030,7 @@
       "title": "createYAxisTicks",
       "summary": "Creates ticks for an existing y axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -7100,6 +7154,7 @@
       "title": "createYAxisTicksAndLabels",
       "summary": "Creates coordinated ticks and labels for an existing y axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -7232,6 +7287,7 @@
       "title": "createYAxisTitle",
       "summary": "Creates a title for an existing y axis using its compatible scale and coordinate.",
       "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -7355,6 +7411,7 @@
       "title": "editArcMark",
       "summary": "Edits arc geometry or appearance and rematerialize complete sector paths. stroke: false disables the outline and its width.",
       "route": "/reference/actions/marks/#editarcmark",
+      "priority": 0,
       "terms": {
         "identity": [
           "arc",
@@ -7475,6 +7532,7 @@
       "title": "editAreaMark",
       "summary": "Edits constant area appearance. stroke: false removes an existing outline.",
       "route": "/reference/actions/marks/#editareamark",
+      "priority": 0,
       "terms": {
         "identity": [
           "area",
@@ -7583,6 +7641,7 @@
       "title": "editBarMark",
       "summary": "Edits whole bar appearance and rematerialize every concrete rectangle. stroke: false removes the visible outline; constant fill conflicts with a field driven color encoding.",
       "route": "/reference/actions/marks/#editbarmark",
+      "priority": 0,
       "terms": {
         "identity": [
           "bar",
@@ -7715,6 +7774,7 @@
       "title": "editBin2DData",
       "summary": "Revises the current or uniquely targeted logical two-dimensional bin-data owner.",
       "route": "/reference/actions/charts-data/#editbin2ddata",
+      "priority": 0,
       "terms": {
         "identity": [
           "bin2",
@@ -7834,7 +7894,7 @@
           "create",
           "d",
           "data",
-          "derived",
+          "derive",
           "workflow"
         ]
       }
@@ -7845,6 +7905,7 @@
       "title": "editBoxPlot",
       "summary": "Revises box statistics, optional outlier topology, width, and component appearance through the stable box owner without addressing generated child IDs.",
       "route": "/reference/actions/statistics/#editboxplot",
+      "priority": 0,
       "terms": {
         "identity": [
           "box",
@@ -7990,6 +8051,7 @@
       "title": "editCanvas",
       "summary": "Edits Canvas properties and rematerialize connected consumers.",
       "route": "/reference/actions/charts-data/#editcanvas",
+      "priority": 0,
       "terms": {
         "identity": [
           "canva",
@@ -8101,9 +8163,10 @@
       "title": "editCompositionLayout",
       "summary": "Edits spacing, cross axis alignment, or outer padding on an existing composition. columns changes wrapping only on a facet composition and is rejected for concat.",
       "route": "/reference/actions/charts-data/#editcompositionlayout",
+      "priority": 50,
       "terms": {
         "identity": [
-          "composition",
+          "compose",
           "edit",
           "facing",
           "layout",
@@ -8112,7 +8175,7 @@
           "user"
         ],
         "title": [
-          "composition",
+          "compose",
           "edit",
           "layout"
         ],
@@ -8124,7 +8187,7 @@
           "axis",
           "change",
           "column",
-          "composition",
+          "compose",
           "concat",
           "cross",
           "edit",
@@ -8155,7 +8218,7 @@
           "chart",
           "column",
           "compatible",
-          "composition",
+          "compose",
           "concat",
           "create",
           "cross",
@@ -8205,7 +8268,7 @@
           "you"
         ],
         "relations": [
-          "composition"
+          "compose"
         ]
       }
     },
@@ -8215,6 +8278,7 @@
       "title": "editDensity",
       "summary": "Creates an immutable density-data revision, rebinds the selected density area, and rematerializes its graphical consumers; source, field, and groupBy may revise creation-time data roles, while groupBy: false removes grouping.",
       "route": "/reference/actions/encodings/#editdensity",
+      "priority": 0,
       "terms": {
         "identity": [
           "density",
@@ -8253,7 +8317,7 @@
           "revise",
           "revision",
           "role",
-          "selected",
+          "select",
           "source",
           "the",
           "time",
@@ -8358,6 +8422,7 @@
       "title": "editErrorBand",
       "summary": "Revises one error band's interval data, area appearance, or optional boundary lines through its stable owner.",
       "route": "/reference/actions/statistics/#editerrorband-and-editerrorbandboundary",
+      "priority": 0,
       "terms": {
         "identity": [
           "band",
@@ -8472,6 +8537,7 @@
       "title": "editErrorBandBoundary",
       "summary": "Edits or removes one error band's lower and upper boundary line appearance without changing its interval area.",
       "route": "/reference/actions/statistics/#editerrorband-and-editerrorbandboundary",
+      "priority": 0,
       "terms": {
         "identity": [
           "band",
@@ -8585,6 +8651,7 @@
       "title": "editErrorBar",
       "summary": "Partially edits one error bar and its owned caps. statistics revises a statistical interval through immutable data; explicit interval owners reject that option. caps: false removes both caps and caps: true restores them.",
       "route": "/reference/actions/statistics/#editerrorbar",
+      "priority": 0,
       "terms": {
         "identity": [
           "bar",
@@ -8719,9 +8786,10 @@
       "title": "editFacetGuides",
       "summary": "Changes facet axes between \"each\" and \"outer\", or legend ownership between false and \"shared\".",
       "route": "/reference/actions/charts-data/#editfacetguides",
+      "priority": 0,
       "terms": {
         "identity": [
-          "composition",
+          "compose",
           "edit",
           "facet",
           "facing",
@@ -8809,7 +8877,7 @@
         ],
         "relations": [
           "and",
-          "composition",
+          "compose",
           "edit",
           "facet",
           "layout",
@@ -8824,9 +8892,10 @@
       "title": "editFacetHeaders",
       "summary": "Edits the parent owned repeated facet headers and rebuild the parent snapshot without changing child programs or facet value order.",
       "route": "/reference/actions/charts-data/#editfacetheaders",
+      "priority": 0,
       "terms": {
         "identity": [
-          "composition",
+          "compose",
           "edit",
           "facet",
           "facing",
@@ -8914,7 +8983,7 @@
           "you"
         ],
         "relations": [
-          "composition",
+          "compose",
           "edit",
           "facet",
           "layout"
@@ -8927,9 +8996,10 @@
       "title": "editFacetScales",
       "summary": "Changes used facet scale channels between \"shared\" and \"independent\" resolution.",
       "route": "/reference/actions/charts-data/#editfacetscales",
+      "priority": 50,
       "terms": {
         "identity": [
-          "composition",
+          "compose",
           "edit",
           "facet",
           "facing",
@@ -8995,7 +9065,7 @@
           "resolution",
           "resource",
           "scale",
-          "selected",
+          "select",
           "shared",
           "target",
           "than",
@@ -9008,7 +9078,7 @@
         ],
         "relations": [
           "and",
-          "composition",
+          "compose",
           "edit",
           "facet",
           "layout",
@@ -9023,6 +9093,7 @@
       "title": "editGradientPlot",
       "summary": "Revises the data, layout, statistics, or appearance of one gradient plot owner.",
       "route": "/reference/actions/statistics/#editgradientplot",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -9155,6 +9226,7 @@
       "title": "editGraphics",
       "summary": "Edits one validated graphical property or removes one named graphic subtree through the public extension primitive.",
       "route": "/reference/actions/extension/#extension-actions",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -9272,6 +9344,7 @@
       "title": "editGrid",
       "summary": "Edits one or both directional Cartesian grids through their focused grid actions.",
       "route": "/reference/actions/advanced/#directional-grids",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -9362,6 +9435,7 @@
       "title": "editHorizon",
       "summary": "Creates and bind an immutable Horizon revision, preserve omitted settings and scale identities, and rematerialize affected consumers. groupBy: false removes grouping.",
       "route": "/reference/actions/encodings/#edithorizon",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -9483,6 +9557,7 @@
       "title": "editHorizontalGrid",
       "summary": "Edits values or line appearance for one existing horizontal Cartesian grid.",
       "route": "/reference/actions/advanced/#directional-grids",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -9588,6 +9663,7 @@
       "title": "editLegend",
       "summary": "Partially edits one existing legend; title accepts a non-empty string, \"auto\", or false, while semantic channel bindings remain unchanged.",
       "route": "/reference/actions/guides/#editlegend",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -9698,6 +9774,7 @@
       "title": "editLegendBorder",
       "summary": "Edits or removes the border and background styling around one existing legend.",
       "route": "/reference/actions/guides/#focused-legend-edits",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -9800,6 +9877,7 @@
       "title": "editLegendLabels",
       "summary": "Edits the label formatting and typography of one existing legend while preserving its symbols and channel bindings.",
       "route": "/reference/actions/guides/#focused-legend-edits",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -9907,6 +9985,7 @@
       "title": "editLegendLayout",
       "summary": "Edits one legend's placement, orientation, spacing, and alignment without changing its semantic channels.",
       "route": "/reference/actions/guides/#focused-legend-edits",
+      "priority": 50,
       "terms": {
         "identity": [
           "and",
@@ -10020,6 +10099,7 @@
       "title": "editLegendSymbols",
       "summary": "Edits symbol size, spacing, or appearance for one existing categorical legend.",
       "route": "/reference/actions/guides/#focused-legend-edits",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -10123,6 +10203,7 @@
       "title": "editLegendTitle",
       "summary": "Edits or removes the title of one existing legend without changing its represented channels.",
       "route": "/reference/actions/guides/#focused-legend-edits",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -10233,6 +10314,7 @@
       "title": "editLineMark",
       "summary": "Edits line appearance and rematerialize concrete path commands without changing semantic encodings.",
       "route": "/reference/actions/marks/#editlinemark",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -10347,6 +10429,7 @@
       "title": "editMarkSelection",
       "summary": "Replaces the complete selector while preserving the stored selection ID and mark target.",
       "route": "/reference/actions/advanced/#editmarkselection",
+      "priority": 0,
       "terms": {
         "identity": [
           "advanced",
@@ -10354,12 +10437,12 @@
           "mark",
           "mutable",
           "resource",
-          "selection"
+          "select"
         ],
         "title": [
           "edit",
           "mark",
-          "selection"
+          "select"
         ],
         "summary": [
           "and",
@@ -10368,7 +10451,7 @@
           "mark",
           "preserving",
           "replace",
-          "selection",
+          "select",
           "selector",
           "stored",
           "target",
@@ -10412,7 +10495,7 @@
           "remain",
           "replace",
           "resource",
-          "selection",
+          "select",
           "selector",
           "stored",
           "target",
@@ -10432,8 +10515,7 @@
           "lifecycle",
           "mark",
           "remove",
-          "select",
-          "selection"
+          "select"
         ]
       }
     },
@@ -10443,6 +10525,7 @@
       "title": "editPointMark",
       "summary": "Changes constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items. stroke: false disables the outline and its width.",
       "route": "/reference/actions/marks/#editpointmark",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -10561,6 +10644,7 @@
       "title": "editRadialAxis",
       "summary": "Edits selected radial components; angle moves the whole axis.",
       "route": "/reference/actions/guides/#editradialaxis",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -10583,7 +10667,7 @@
           "edit",
           "move",
           "radial",
-          "selected",
+          "select",
           "the",
           "whole"
         ],
@@ -10627,7 +10711,7 @@
           "receive",
           "remain",
           "resource",
-          "selected",
+          "select",
           "set",
           "target",
           "than",
@@ -10660,6 +10744,7 @@
       "title": "editRadialAxisLabels",
       "summary": "Edits the text, placement, and style of radial value labels.",
       "route": "/reference/actions/guides/#editradialaxislabels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -10760,6 +10845,7 @@
       "title": "editRadialAxisLine",
       "summary": "Edits the color, width, and dash style of the radial baseline.",
       "route": "/reference/actions/guides/#editradialaxisline",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -10852,6 +10938,7 @@
       "title": "editRadialAxisTicks",
       "summary": "Edits radial tick values, geometry, and visual style.",
       "route": "/reference/actions/guides/#editradialaxisticks",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -10952,6 +11039,7 @@
       "title": "editRadialAxisTitle",
       "summary": "Edits the radial title. position accepts \"inside\" or \"outside\" and defaults to the baseline midpoint inside the plot.",
       "route": "/reference/actions/guides/#editradialaxistitle",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -11064,6 +11152,7 @@
       "title": "editRadialGrid",
       "summary": "Edits the values and appearance of one existing radial grid.",
       "route": "/reference/actions/guides/#editradialgrid",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -11161,6 +11250,7 @@
       "title": "editRectMark",
       "summary": "Edits rect appearance and rematerialize complete cells.",
       "route": "/reference/actions/marks/#editrectmark",
+      "priority": 50,
       "terms": {
         "identity": [
           "edit",
@@ -11256,6 +11346,7 @@
       "title": "editRegression",
       "summary": "Revises a fitted regression model and its band or line through the stable point owner.",
       "route": "/reference/actions/statistics/#editregression",
+      "priority": 50,
       "terms": {
         "identity": [
           "edit",
@@ -11309,7 +11400,6 @@
           "dataset",
           "define",
           "derive",
-          "derived",
           "dispersion",
           "doe",
           "edit",
@@ -11405,6 +11495,7 @@
       "title": "editRegressionBand",
       "summary": "Edits the appearance of an existing regression interval band without refitting the statistical model.",
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
+      "priority": 0,
       "terms": {
         "identity": [
           "band",
@@ -11521,6 +11612,7 @@
       "title": "editRegressionLine",
       "summary": "Edits the appearance of an existing regression line without refitting its statistical model.",
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -11633,6 +11725,7 @@
       "title": "editScale",
       "summary": "Revises one named scale and rematerializes every connected mark and guide without mutating the earlier program.",
       "route": "/reference/actions/extension/#extension-actions",
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -11683,7 +11776,7 @@
           "coordinate",
           "create",
           "default",
-          "derivation",
+          "derive",
           "documented",
           "domain",
           "driven",
@@ -11772,6 +11865,7 @@
       "title": "editSemantic",
       "summary": "Creates, replaces, or removes one supported semantic property path for extension-authored domain actions.",
       "route": "/reference/actions/extension/#extension-actions",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -11877,6 +11971,7 @@
       "title": "editTextMark",
       "summary": "Edits text typography and graphical offsets without changing its semantic source or position.",
       "route": "/reference/actions/marks/#edittextmark",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -11983,6 +12078,7 @@
       "title": "editThetaAxis",
       "summary": "Edits selected components of one existing theta axis.",
       "route": "/reference/actions/guides/#editthetaaxis",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -12005,7 +12101,7 @@
           "existing",
           "of",
           "one",
-          "selected",
+          "select",
           "theta"
         ],
         "guidance": [
@@ -12048,7 +12144,7 @@
           "receive",
           "remain",
           "resource",
-          "selected",
+          "select",
           "set",
           "target",
           "than",
@@ -12081,6 +12177,7 @@
       "title": "editThetaAxisLabels",
       "summary": "Edits the text, placement, and style of perimeter theta labels.",
       "route": "/reference/actions/guides/#editthetaaxislabels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -12182,6 +12279,7 @@
       "title": "editThetaAxisLine",
       "summary": "Edits the color, width, and dash style of the outer theta baseline.",
       "route": "/reference/actions/guides/#editthetaaxisline",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -12276,6 +12374,7 @@
       "title": "editThetaAxisTicks",
       "summary": "Edits theta tick values, geometry, and visual style.",
       "route": "/reference/actions/guides/#editthetaaxisticks",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -12376,6 +12475,7 @@
       "title": "editThetaAxisTitle",
       "summary": "Edits the text, placement, and style of the theta axis title.",
       "route": "/reference/actions/guides/#editthetaaxistitle",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -12476,6 +12576,7 @@
       "title": "editThetaGrid",
       "summary": "Edits the values and appearance of one existing theta grid.",
       "route": "/reference/actions/guides/#editthetagrid",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -12573,6 +12674,7 @@
       "title": "editTickMark",
       "summary": "Partially edits tick length or constant line appearance while preserving data, position, and other assignments.",
       "route": "/reference/actions/marks/#edittickmark",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -12689,6 +12791,7 @@
       "title": "editTitle",
       "summary": "Partially edits the existing title. subtitle: false removes the subtitle; omitted properties remain unchanged.",
       "route": "/reference/actions/guides/#edittitle",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -12792,6 +12895,7 @@
       "title": "editVerticalGrid",
       "summary": "Edits values or line appearance for one existing vertical Cartesian grid.",
       "route": "/reference/actions/advanced/#directional-grids",
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -12893,6 +12997,7 @@
       "title": "editXAxis",
       "summary": "Edits selected components of one complete x axis while preserving omitted component settings.",
       "route": "/reference/actions/advanced/#complete-single-channel-axes",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -12917,7 +13022,7 @@
           "omitted",
           "one",
           "preserving",
-          "selected",
+          "select",
           "setting",
           "while",
           "x"
@@ -13004,6 +13109,7 @@
       "title": "editXAxisLabels",
       "summary": "Edits labels on one existing x axis while preserving its other components.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -13130,6 +13236,7 @@
       "title": "editXAxisLine",
       "summary": "Edits baseline on one existing x axis while preserving its other components.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -13232,6 +13339,7 @@
       "title": "editXAxisTicks",
       "summary": "Edits ticks on one existing x axis while preserving its other components.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -13359,6 +13467,7 @@
       "title": "editXAxisTicksAndLabels",
       "summary": "Edits coordinated ticks and labels on one existing x axis while preserving its other components.",
       "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -13493,6 +13602,7 @@
       "title": "editXAxisTitle",
       "summary": "Edits title on one existing x axis while preserving its other components.",
       "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -13618,6 +13728,7 @@
       "title": "editYAxis",
       "summary": "Edits selected components of one complete y axis while preserving omitted component settings.",
       "route": "/reference/actions/advanced/#complete-single-channel-axes",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -13642,7 +13753,7 @@
           "omitted",
           "one",
           "preserving",
-          "selected",
+          "select",
           "setting",
           "while",
           "y"
@@ -13729,6 +13840,7 @@
       "title": "editYAxisLabels",
       "summary": "Edits labels on one existing y axis while preserving its other components.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -13855,6 +13967,7 @@
       "title": "editYAxisLine",
       "summary": "Edits baseline on one existing y axis while preserving its other components.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -13957,6 +14070,7 @@
       "title": "editYAxisTicks",
       "summary": "Edits ticks on one existing y axis while preserving its other components.",
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -14084,6 +14198,7 @@
       "title": "editYAxisTicksAndLabels",
       "summary": "Edits coordinated ticks and labels on one existing y axis while preserving its other components.",
       "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -14218,6 +14333,7 @@
       "title": "editYAxisTitle",
       "summary": "Edits title on one existing y axis while preserving its other components.",
       "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -14343,6 +14459,7 @@
       "title": "encodeAngle",
       "summary": "Rotates point or Tick glyphs with direct clockwise degrees: 0 points up and no scale or legend is created.",
       "route": "/reference/actions/encodings/#encodeangle",
+      "priority": 0,
       "terms": {
         "identity": [
           "angle",
@@ -14485,6 +14602,7 @@
       "title": "encodeBarWidth",
       "summary": "Sets aggregate bar band occupancy or a fixed logical pixel width and materialize concrete rectangles.",
       "route": "/reference/actions/encodings/#encodebarwidth",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -14583,6 +14701,7 @@
       "title": "encodeColor",
       "summary": "Mapss a field or constant to mark color, optionally grouping series and creating a categorical or continuous color scale.",
       "route": "/reference/actions/encodings/#encodecolor",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -14738,6 +14857,7 @@
       "title": "encodeDensity",
       "summary": "Creates immutable KDE data, bind it to an area mark, encode its value and density fields, and materialize baseline closed paths.",
       "route": "/reference/actions/encodings/#encodedensity",
+      "priority": 50,
       "terms": {
         "identity": [
           "assignment",
@@ -14844,6 +14964,7 @@
       "title": "encodeGroup",
       "summary": "Splits line or area paths by a nominal field without creating a scale or guide.",
       "route": "/reference/actions/encodings/#encodegroup",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -14961,6 +15082,7 @@
       "title": "encodeHistogram",
       "summary": "Compose binned bar encodeX and count encodeY as one atomic histogram action.",
       "route": "/reference/actions/encodings/#encodehistogram",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15075,6 +15197,7 @@
       "title": "encodeHorizon",
       "summary": "Creates immutable folded band data, bind it to an area mark, and author the ordinary x, y/y2, group, and color encodings needed for a compact Horizon chart.",
       "route": "/reference/actions/encodings/#encodehorizon",
+      "priority": 50,
       "terms": {
         "identity": [
           "assignment",
@@ -15237,6 +15360,7 @@
       "title": "encodeOpacity",
       "summary": "Applies a constant point or rule opacity from 0 to 1, or maps a quantitative field through a linear opacity scale.",
       "route": "/reference/actions/encodings/#encodeopacity",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15349,6 +15473,7 @@
       "title": "encodeParallelCoordinates",
       "summary": "Atomically assign ordered dimensions and their local scales to one line mark.",
       "route": "/reference/actions/encodings/#encodeparallelcoordinates",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15478,6 +15603,7 @@
       "title": "encodePathOrder",
       "summary": "Orders vertices within each compatible Cartesian line or ranged-area series; fieldType defaults to \"quantitative\" and order defaults to \"ascending\".",
       "route": "/reference/actions/encodings/#encodepathorder",
+      "priority": 50,
       "terms": {
         "identity": [
           "assignment",
@@ -15608,6 +15734,7 @@
       "title": "encodePointRadius",
       "summary": "Applies a constant point glyph radius through a traced encodeRadius child.",
       "route": "/reference/actions/encodings/#encodepointradius",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15713,6 +15840,7 @@
       "title": "encodeR",
       "summary": "Encodes a quantitative field as Polar radial distance.",
       "route": "/reference/actions/encodings/#encoder",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15840,6 +15968,7 @@
       "title": "encodeRadius",
       "summary": "Applies a constant rendered radius to an existing point mark.",
       "route": "/reference/actions/encodings/#encoderadius",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15935,6 +16064,7 @@
       "title": "encodeShape",
       "summary": "Encodes or replace a nominal field with the shared 12 value point shape vocabulary.",
       "route": "/reference/actions/encodings/#encodeshape",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15990,7 +16120,7 @@
           "dataset",
           "declare",
           "default",
-          "derivation",
+          "derive",
           "documented",
           "doe",
           "domain",
@@ -16101,6 +16231,7 @@
       "title": "encodeSize",
       "summary": "Encodes or replace a quantitative field as equal area point size.",
       "route": "/reference/actions/encodings/#encodesize",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -16154,7 +16285,7 @@
           "dataset",
           "declare",
           "default",
-          "derivation",
+          "derive",
           "documented",
           "doe",
           "domain",
@@ -16264,6 +16395,7 @@
       "title": "encodeStroke",
       "summary": "Assigns a constant non-empty stroke string to a rule mark.",
       "route": "/reference/actions/encodings/#encodestroke",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -16365,6 +16497,7 @@
       "title": "encodeStrokeDash",
       "summary": "Creates or replace nominal line series or rule dash patterns, or apply one constant named/direct pattern.",
       "route": "/reference/actions/encodings/#encodestrokedash",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -16507,6 +16640,7 @@
       "title": "encodeStrokeWidth",
       "summary": "Assigns a non negative finite logical Canvas width to a rule mark.",
       "route": "/reference/actions/encodings/#encodestrokewidth",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -16643,6 +16777,7 @@
       "title": "encodeText",
       "summary": "Assigns exactly one field or constant value to a text mark. format accepts \"auto\" or fixed decimal tokens from \".0f\" through \".12f\" .",
       "route": "/reference/actions/encodings/#encodetext",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -16764,6 +16899,7 @@
       "title": "encodeTheta",
       "summary": "Encodes Polar angle in clockwise degrees from 12 o'clock.",
       "route": "/reference/actions/encodings/#encodetheta",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -16902,6 +17038,7 @@
       "title": "encodeX",
       "summary": "Creates or compatibly replaces an x-position encoding for the targeted mark and field type.",
       "route": "/reference/actions/encodings/#encodex",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -17043,6 +17180,7 @@
       "title": "encodeX2",
       "summary": "Assigns an area, ranged bar, or rect upper edge, or a rule secondary x endpoint.",
       "route": "/reference/actions/encodings/#encodex2",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -17183,6 +17321,7 @@
       "title": "encodeXOffset",
       "summary": "Creates or compatibly update an advanced nominal offset scale within an ordinal bar x band.",
       "route": "/reference/actions/encodings/#encodexoffset",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -17288,6 +17427,7 @@
       "title": "encodeXRange",
       "summary": "Atomically composes area or ranged bar encodeX and encodeX2 .",
       "route": "/reference/actions/encodings/#encodexrange",
+      "priority": 50,
       "terms": {
         "identity": [
           "assignment",
@@ -17342,7 +17482,7 @@
           "dataset",
           "declare",
           "default",
-          "derivation",
+          "derive",
           "documented",
           "doe",
           "domain",
@@ -17450,6 +17590,7 @@
       "title": "encodeY",
       "summary": "Creates or compatibly replaces a y-position encoding for the targeted mark and field type.",
       "route": "/reference/actions/encodings/#encodecolor",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -17581,6 +17722,7 @@
       "title": "encodeY2",
       "summary": "Assigns an area, ranged bar, or rect upper edge, or a rule secondary y endpoint.",
       "route": "/reference/actions/encodings/#encodey2",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -17721,6 +17863,7 @@
       "title": "encodeYOffset",
       "summary": "Creates or compatibly update the corresponding categorical offset scale within an ordinal bar y band.",
       "route": "/reference/actions/encodings/#encodeyoffset",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -17830,6 +17973,7 @@
       "title": "encodeYRange",
       "summary": "Atomically composes area or ranged bar encodeY and encodeY2 .",
       "route": "/reference/actions/encodings/#encodeyrange",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -17884,7 +18028,7 @@
           "dataset",
           "declare",
           "default",
-          "derivation",
+          "derive",
           "documented",
           "doe",
           "domain",
@@ -17992,10 +18136,11 @@
       "title": "facet",
       "summary": "Repeats one complete chart by a field on its common row preserving dataset ancestor.",
       "route": "/reference/actions/charts-data/#facet",
+      "priority": 50,
       "terms": {
         "identity": [
           "aggregate",
-          "composition",
+          "compose",
           "create",
           "facet",
           "facing",
@@ -18039,7 +18184,7 @@
           "compatible",
           "complete",
           "completed",
-          "composition",
+          "compose",
           "control",
           "created",
           "creation",
@@ -18110,7 +18255,7 @@
           "you"
         ],
         "relations": [
-          "composition",
+          "compose",
           "edit",
           "facet",
           "layout"
@@ -18123,6 +18268,7 @@
       "title": "filterData",
       "summary": "Creates an immutable named derived dataset using exactly one membership, comparison, or range filter.",
       "route": "/reference/actions/charts-data/#filterdata",
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -18143,7 +18289,7 @@
           "comparison",
           "create",
           "dataset",
-          "derived",
+          "derive",
           "exactly",
           "filter",
           "immutable",
@@ -18171,8 +18317,6 @@
           "dataset",
           "dependent",
           "derive",
-          "derived",
-          "deriving",
           "drive",
           "exact",
           "exactly",
@@ -18248,6 +18392,7 @@
       "title": "filterMarks",
       "summary": "Retains matching final mark items through the shared selector grammar, create one namespaced immutable member row dataset, rebind the mark, and rematerialize its scales and connected guides without changing the source.",
       "route": "/reference/actions/charts-data/#filtermarks",
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -18256,7 +18401,7 @@
           "filter",
           "mark",
           "only",
-          "selection",
+          "select",
           "user"
         ],
         "title": [
@@ -18310,7 +18455,7 @@
           "current",
           "data",
           "dataset",
-          "derived",
+          "derive",
           "doe",
           "downstream",
           "evaluated",
@@ -18348,7 +18493,7 @@
           "reusable",
           "row",
           "scale",
-          "selection",
+          "select",
           "selector",
           "semantic",
           "shared",
@@ -18383,6 +18528,7 @@
       "title": "highlightMarks",
       "summary": "Selects point, bar, line, area, arc, or rule items inline or reuse a stored selection, then apply mark specific concrete emphasis, optional complement dimming, and selected last order.",
       "route": "/reference/actions/charts-data/#highlightmarks",
+      "priority": 0,
       "terms": {
         "identity": [
           "facing",
@@ -18390,7 +18536,7 @@
           "mark",
           "mutable",
           "resource",
-          "selection",
+          "select",
           "user"
         ],
         "title": [
@@ -18420,8 +18566,6 @@
           "reuse",
           "rule",
           "select",
-          "selected",
-          "selection",
           "specific",
           "stored",
           "then"
@@ -18487,8 +18631,6 @@
           "reuse",
           "rule",
           "select",
-          "selected",
-          "selection",
           "semantic",
           "should",
           "so",
@@ -18514,8 +18656,7 @@
         "relations": [
           "lifecycle",
           "mark",
-          "select",
-          "selection"
+          "select"
         ]
       }
     },
@@ -18525,6 +18666,7 @@
       "title": "jitterPoints",
       "summary": "Assigns deterministic bounded graphical jitter to one Cartesian point mark.",
       "route": "/reference/actions/marks/#jitterpoints",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -18634,6 +18776,7 @@
       "title": "layoutLabels",
       "summary": "Assigns deterministic collision aware placement to one complete text mark.",
       "route": "/reference/actions/marks/#layoutlabels",
+      "priority": 0,
       "terms": {
         "identity": [
           "facing",
@@ -18734,6 +18877,7 @@
       "title": "orderCategories",
       "summary": "Assigns explicit or computed semantic order to a nominal/ordinal Cartesian x or y position.",
       "route": "/reference/actions/encodings/#ordercategories",
+      "priority": 50,
       "terms": {
         "identity": [
           "assignment",
@@ -18848,6 +18992,7 @@
       "title": "removeCategoryOrder",
       "summary": "Removes one active category order assignment and restore automatic first appearance order.",
       "route": "/reference/actions/encodings/#removecategoryorder",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -18952,6 +19097,7 @@
       "title": "removeEncoding",
       "summary": "Removes one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values.",
       "route": "/reference/actions/encodings/#encodeangle",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -19075,6 +19221,7 @@
       "title": "removeGrid",
       "summary": "Removess the complete Cartesian grid resource while retaining related axes, scales, and encodings.",
       "route": "/reference/actions/advanced/#directional-grids",
+      "priority": 0,
       "terms": {
         "identity": [
           "facing",
@@ -19167,6 +19314,7 @@
       "title": "removeJitter",
       "summary": "Removes the target point mark's jitter assignment and restore positions derived directly from its semantic encodings.",
       "route": "/reference/actions/marks/#removejitter",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -19183,7 +19331,7 @@
         "summary": [
           "and",
           "assignment",
-          "derived",
+          "derive",
           "directly",
           "encoding",
           "from",
@@ -19209,7 +19357,7 @@
           "chart",
           "compatible",
           "current",
-          "derived",
+          "derive",
           "directly",
           "doe",
           "edit",
@@ -19271,6 +19419,7 @@
       "title": "removeLabelLayout",
       "summary": "Removes one text mark's layout policy and leader collection, then restore its semantic base positions.",
       "route": "/reference/actions/marks/#removelabellayout",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -19378,6 +19527,7 @@
       "title": "removeLegend",
       "summary": "Removes every legend block owned by one mark when channels is omitted, or removes selected channel blocks while preserving mark encodings, scales, and unrelated blocks.",
       "route": "/reference/actions/guides/#removelegend",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -19410,7 +19560,7 @@
           "preserving",
           "remove",
           "scale",
-          "selected",
+          "select",
           "unrelated",
           "when",
           "while"
@@ -19463,7 +19613,6 @@
           "retain",
           "scale",
           "select",
-          "selected",
           "set",
           "should",
           "state",
@@ -19493,6 +19642,7 @@
       "title": "removeMark",
       "summary": "Removes one stable mark owner and its owned state while preserving source data and independently shared resources.",
       "route": "/reference/actions/marks/#removemark",
+      "priority": 0,
       "terms": {
         "identity": [
           "facing",
@@ -19593,6 +19743,7 @@
       "title": "removeMarkHighlight",
       "summary": "Removes one highlight assignment, restore the target mark and categorical legend baseline, and retain the reusable selection.",
       "route": "/reference/actions/charts-data/#removemarkhighlight",
+      "priority": 0,
       "terms": {
         "identity": [
           "facing",
@@ -19601,7 +19752,7 @@
           "mutable",
           "remove",
           "resource",
-          "selection",
+          "select",
           "user"
         ],
         "title": [
@@ -19622,7 +19773,7 @@
           "restore",
           "retain",
           "reusable",
-          "selection",
+          "select",
           "target",
           "the"
         ],
@@ -19664,7 +19815,7 @@
           "restore",
           "retain",
           "reusable",
-          "selection",
+          "select",
           "should",
           "target",
           "the",
@@ -19679,8 +19830,7 @@
           "highlight",
           "lifecycle",
           "mark",
-          "select",
-          "selection"
+          "select"
         ]
       }
     },
@@ -19690,6 +19840,7 @@
       "title": "removeMarkSelection",
       "summary": "Releases one stored selection after removing its dependent highlight.",
       "route": "/reference/actions/advanced/#removemarkselection",
+      "priority": 0,
       "terms": {
         "identity": [
           "advanced",
@@ -19697,12 +19848,12 @@
           "mutable",
           "remove",
           "resource",
-          "selection"
+          "select"
         ],
         "title": [
           "mark",
           "remove",
-          "selection"
+          "select"
         ],
         "summary": [
           "after",
@@ -19712,7 +19863,7 @@
           "one",
           "release",
           "removing",
-          "selection",
+          "select",
           "stored"
         ],
         "guidance": [
@@ -19751,7 +19902,7 @@
           "removing",
           "resource",
           "retain",
-          "selection",
+          "select",
           "should",
           "stored",
           "target",
@@ -19768,8 +19919,7 @@
           "highlight",
           "lifecycle",
           "mark",
-          "select",
-          "selection"
+          "select"
         ]
       }
     },
@@ -19779,6 +19929,7 @@
       "title": "removePathOrder",
       "summary": "Removes explicit path topology and restore the mark's automatic independent position ordering.",
       "route": "/reference/actions/encodings/#removepathorder",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -19884,6 +20035,7 @@
       "title": "removePointRadius",
       "summary": "Removes an explicit constant point glyph radius and restore the theme default.",
       "route": "/reference/actions/encodings/#removepointradius",
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -19977,6 +20129,7 @@
       "title": "removeRadialAxis",
       "summary": "Removes the complete radial axis and all of its owned components.",
       "route": "/reference/actions/guides/#removeradialaxis",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -20086,6 +20239,7 @@
       "title": "removeThetaAxis",
       "summary": "Removes the complete theta axis and all of its owned components.",
       "route": "/reference/actions/guides/#removethetaaxis",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -20195,6 +20349,7 @@
       "title": "removeTitle",
       "summary": "Removes the complete chart title and subtitle resource.",
       "route": "/reference/actions/guides/#removetitle",
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -20278,6 +20433,7 @@
       "title": "removeXAxis",
       "summary": "Removess one complete x axis without removing its position encoding, scale, or coordinate.",
       "route": "/reference/actions/advanced/#complete-axis-removal",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -20392,6 +20548,7 @@
       "title": "removeYAxis",
       "summary": "Removess one complete y axis without removing its position encoding, scale, or coordinate.",
       "route": "/reference/actions/advanced/#complete-axis-removal",
+      "priority": 0,
       "terms": {
         "identity": [
           "axis",
@@ -20506,10 +20663,11 @@
       "title": "replaceCompositionChild",
       "summary": "Replaces one named child while preserving its slot ID and order.",
       "route": "/reference/actions/charts-data/#replacecompositionchild",
+      "priority": 0,
       "terms": {
         "identity": [
           "child",
-          "composition",
+          "compose",
           "facing",
           "mutable",
           "replace",
@@ -20518,7 +20676,7 @@
         ],
         "title": [
           "child",
-          "composition",
+          "compose",
           "replace"
         ],
         "summary": [
@@ -20547,7 +20705,7 @@
           "child",
           "compatible",
           "complete",
-          "composition",
+          "compose",
           "current",
           "doe",
           "every",
@@ -20593,7 +20751,7 @@
           "you"
         ],
         "relations": [
-          "composition",
+          "compose",
           "edit",
           "layout"
         ]
@@ -20605,6 +20763,7 @@
       "title": "selectMarks",
       "summary": "Stores a reusable semantic selection of final mark items without changing the current graphical output.",
       "route": "/reference/actions/advanced/#reusable-mark-selections",
+      "priority": 50,
       "terms": {
         "identity": [
           "advanced",
@@ -20612,7 +20771,6 @@
           "mark",
           "only",
           "select",
-          "selection",
           "stable"
         ],
         "title": [
@@ -20630,7 +20788,7 @@
           "of",
           "output",
           "reusable",
-          "selection",
+          "select",
           "semantic",
           "store",
           "the",
@@ -20665,7 +20823,7 @@
           "final",
           "for",
           "graphical",
-          "highlighting",
+          "highlight",
           "id",
           "identifier",
           "identify",
@@ -20694,7 +20852,6 @@
           "resource",
           "row",
           "select",
-          "selection",
           "semantic",
           "should",
           "so",
@@ -20714,7 +20871,7 @@
           "highlight",
           "lifecycle",
           "mark",
-          "selection"
+          "select"
         ]
       }
     },
@@ -20724,6 +20881,7 @@
       "title": "LLM Action Router",
       "summary": "Choose the result or resource being changed, then follow the linked canonical page. Use the complete action reference when an exact action name is already known. Exact signatures come from the reference and public TypeScript declarations, not from this routing page. For structured retrieval, use the complete machine-readable action metadata, which joins every current action to its exact signature, prerequisites, effects, errors, example, related actions, and canonical docs.",
       "route": "/llms/actions/",
+      "priority": 0,
       "text": "---\nlayout: default\ntitle: LLM Action Router\n---\n\n# LLM Action Router\n\nChoose the result or resource being changed, then follow the linked canonical page. Use the\n[complete action reference](../reference/actions.md) when an exact action name is already known. Exact signatures come\nfrom the reference and public TypeScript declarations, not from this routing page.\nFor structured retrieval, use the [complete machine-readable action metadata](../llms-actions.json), which joins every\ncurrent action to its exact signature, prerequisites, effects, errors, example, related actions, and canonical docs.\n\n## Complete chart facades\n\n- Common Cartesian scatter, line, bar, histogram, and heatmap charts: [Basic Charts](../api/basic-charts.md)\n- Parallel coordinate profiles: [Parallel Coordinates](../api/parallel-coordinates.md)\n- Distribution and statistical chart families: [Statistics Actions](../reference/actions/statistics.md)\n\n## Program, data, and composition\n\n- Canvas and source data creation: [Canvas](../api/canvas.md) and [Data](../api/data.md)\n- Filtering and derived data: [Data Filtering](../api/data/filtering.md) and\n  [Statistical Transforms](../api/data/statistical-transforms.md)\n- Time-unit and moving/window calculations: [Time Units](../api/data/time-units.md) and\n  [Window Transforms](../api/data/window.md)\n- Layer, concatenate, facet, and child replacement: [Program Composition](../api/composition.md)\n\n## Marks and positions\n\n- Point, line, area, bar, rule, text, and rect owners: [Marks](../api/marks.md)\n- Cartesian x/y positions, secondary endpoints, offsets, and ordering: [Position Encodings](../api/position-encodings.md)\n- Polar theta/r positions and directional ticks: [Polar Positions](../api/position-encodings.md#polar-positions)\n- Constant mark styling and field-driven appearance: [Appearance Encodings](../api/appearance.md)\n\n## Scales and guides\n\n- Scale creation, editing, transforms, and palettes: [Scales](../api/scales.md)\n- Axes, grids, legends, and combined guide creation: [Guides](../api/guides.md)\n- Titles, subtitles, and title layout: [Titles](../api/titles.md)\n\n## Statistical overlays and specialized layouts\n\n- Regression models and fitted layers: [Regression](../api/regression.md)\n- Error bars and interval modes: [Error Bars](../api/error-bars.md)\n- Error bands: [Error Bands](../api/error-bands.md)\n- Box, violin, gradient, and horizon plots: [Advanced Action Reference](../reference/actions/advanced.md)\n\n## Selection, inspection, and output\n\n- Select, highlight, edit, and remove final visual items: [Selection and Highlighting](../api/appearance/selection-and-highlighting.md)\n- Read public semantic, graphical, trace, and resolved-scale state: [ChartProgram](../concepts/chart-program.md)\n- Render Canvas/SVG or export PNG/PDF: [Rendering](../api/rendering.md)\n- Exact runtime and renderer signatures: [Runtime Reference](../reference/runtime.md)\n\n## Extension-only actions\n\n- Author a domain action before using primitives directly: [Action Authoring](../extension/action-authoring.md)\n- Primitive semantic/graphic editing contract: [Extension Primitives](../extension/primitives.md)\n- Extension action signatures: [Extension Action Reference](../reference/actions/extension.md)\n",
       "truncated": false,
       "terms": {
@@ -20818,11 +20976,10 @@
           "chart",
           "child",
           "choose",
-          "combined",
           "come",
           "common",
           "complete",
-          "composition",
+          "compose",
           "concatenate",
           "concept",
           "constant",
@@ -20833,7 +20990,7 @@
           "data",
           "declaration",
           "default",
-          "derived",
+          "derive",
           "directional",
           "directly",
           "distribution",
@@ -20868,7 +21025,6 @@
           "guide",
           "heat",
           "highlight",
-          "highlighting",
           "histogram",
           "horizon",
           "inspection",
@@ -20941,7 +21097,6 @@
           "script",
           "secondary",
           "select",
-          "selection",
           "semantic",
           "signature",
           "source",
@@ -20985,6 +21140,7 @@
       "title": "LLM Documentation Router",
       "summary": "Use this page for concepts, complete tutorials, detailed API behavior, rendering, troubleshooting, and extension work. For a known chart task use the recipe router; for a known capability use the action router.",
       "route": "/llms/docs/",
+      "priority": 0,
       "text": "---\nlayout: default\ntitle: LLM Documentation Router\n---\n\n# LLM Documentation Router\n\nUse this page for concepts, complete tutorials, detailed API behavior, rendering, troubleshooting, and extension work.\nFor a known chart task use the [recipe router](./recipes.md); for a known capability use the\n[action router](./actions.md).\n\n## Start and learn complete workflows\n\n- Installation and first runnable chart: [Getting Started](../getting-started.md)\n- Complete chart walkthroughs: [Tutorials](../tutorials/index.md)\n- Representative finished charts: [Chart Gallery](../gallery.md)\n\n## Understand the program model\n\n- Immutable authoring state: [ChartProgram](../concepts/chart-program.md)\n- Semantic meaning and concrete graphics: [Semantic and Graphical State](../concepts/semantic-and-graphics.md)\n- Hierarchical history and ownership: [Actions and Trace](../concepts/actions-and-trace.md)\n\n## Find detailed authoring behavior\n\n- Data, marks, encodings, scales, guides, composition, and rendering: [Chart API](../api/index.md)\n- Exact signatures grouped by authoring audience: [Action Reference](../reference/actions.md)\n- Public program, renderer, and state types: [Type Reference](../reference/types.md)\n- Capability boundaries and known limitations: [Supported Features](../supported-features.md)\n\n## Diagnose a program\n\n- Ambiguous state, missing resources, layout, and renderer failures: [Troubleshooting](../troubleshooting.md)\n- Inspect semantic, graphical, trace, and resolved-scale state:\n  [ChartProgram](../concepts/chart-program.md#inspecting-authored-and-materialized-state)\n- Decide whether a name is a public action or wrapped trace operation:\n  [Action Reference](../reference/actions.md#exact-action-lookup)\n\n## Render and distribute output\n\n- Browser Canvas, browser-safe SVG, Node PNG, and vector PDF: [Rendering](../api/rendering.md)\n- Exact renderer arguments and return values: [Runtime Reference](../reference/runtime.md)\n\n## Extend ggaction\n\n- Extension workflow, public boundaries, and immutable domain actions:\n  [Action Authoring](../extension/action-authoring.md)\n- Use low-level semantic and graphical primitives: [Extension Primitives](../extension/primitives.md)\n\n## Full-text fallback\n\nThe generated [`llms-full.txt`](../llms-full.txt) follows the canonical page-manifest order. Load it only when selective\nroutes do not identify the required page; it is intentionally much larger than these routing chunks.\n",
       "truncated": false,
       "terms": {
@@ -21045,7 +21201,7 @@
           "chart",
           "chunk",
           "complete",
-          "composition",
+          "compose",
           "concept",
           "concrete",
           "data",
@@ -21179,6 +21335,7 @@
       "title": "LLM Guide",
       "summary": "Use this guide to reach the smallest authoritative ggaction documentation chunk for a chart-authoring task. These pages route to public documentation; they do not replace exact action signatures, behavior contracts, or runnable examples.",
       "route": "/llms/",
+      "priority": 0,
       "text": "---\nlayout: default\ntitle: LLM Guide\n---\n\n# LLM Guide\n\nUse this guide to reach the smallest authoritative ggaction documentation chunk for a chart-authoring task. These pages\nroute to public documentation; they do not replace exact action signatures, behavior contracts, or runnable examples.\n\n## What ggaction builds\n\nggaction represents chart authoring as an immutable `ChartProgram`. Each public action receives one options object and\nreturns a new program. The semantic specification records chart meaning, the graphical specification records concrete\nbackend-neutral output, and Canvas, SVG, PNG, and PDF renderers consume the graphical specification.\n\n## Retrieval workflow\n\n1. If the desired result is a recognizable chart or workflow, start with [task recipes](./recipes.md).\n2. If the action name or capability family is known, use the [action router](./actions.md), then read the canonical action\n   reference for its exact signature.\n3. For concepts, data flow, layout, rendering, troubleshooting, or extension authoring, use the\n   [documentation router](./docs.md).\n4. Use [`llms-full.txt`](../llms-full.txt) only when these selective routes cannot identify the relevant page.\n\n## Minimal authoring shape\n\n```javascript\nimport { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createScatterPlot({ x: \"horsepower\", y: \"efficiency\" });\n```\n\nContinue from the returned program with domain actions. Keep the earlier program when a before/after comparison or\nreversible editing history matters.\n\n## Decision rules\n\n- Prefer a basic chart facade when it directly matches the requested chart; use lower-level mark and encoding actions\n  when the chart needs custom composition.\n- Supply explicit IDs or targets when more than one compatible resource exists. ggaction does not silently choose the\n  first dataset, mark, scale, coordinate, or view.\n- Treat action traces as history and ownership evidence. Do not call wrapped trace operations unless the public\n  `ChartProgram` type declares them.\n- Render the same completed program through the required backend rather than authoring renderer-specific chart state.\n\n## Fast destinations\n\n- First runnable chart: [Getting Started](../getting-started.md)\n- Supported and unsupported capabilities: [Supported Features](../supported-features.md)\n- Ambiguity and layout errors: [Troubleshooting](../troubleshooting.md)\n- Exact public action list: [Action Reference](../reference/actions.md)\n",
       "truncated": false,
       "terms": {
@@ -21255,7 +21412,7 @@
           "comparison",
           "compatible",
           "completed",
-          "composition",
+          "compose",
           "concept",
           "concrete",
           "const",
@@ -21431,6 +21588,7 @@
       "title": "LLM Recipe Router",
       "summary": "Use a recipe when the requested chart or workflow is recognizable. A recipe gives the shortest supported action flow, required decisions, inferred state, and links to deeper tutorials or APIs. Use the recipe catalog if none of the groups below matches. For structured retrieval, use the complete machine-readable recipe metadata, which joins each task intent to ordered action roles, executable examples, related recipes, and complete 173-action coverage.",
       "route": "/llms/recipes/",
+      "priority": 0,
       "text": "---\nlayout: default\ntitle: LLM Recipe Router\n---\n\n# LLM Recipe Router\n\nUse a recipe when the requested chart or workflow is recognizable. A recipe gives the shortest supported action flow,\nrequired decisions, inferred state, and links to deeper tutorials or APIs. Use the [recipe catalog](../recipes/index.md) if\nnone of the groups below matches.\nFor structured retrieval, use the [complete machine-readable recipe metadata](../llms-recipes.json), which joins each\ntask intent to ordered action roles, executable examples, related recipes, and complete 173-action coverage.\n\n## Basic relationships and comparison\n\n- Relationship between two quantitative fields: [Scatterplot](../recipes/scatterplot.md)\n- Ordered or temporal trajectories: [Line Chart](../recipes/line-chart.md)\n- Categorical comparison, including grouped bars: [Bar Chart](../recipes/bar-chart.md)\n- One-dimensional binned distribution: [Histogram](../recipes/histogram.md)\n- Two-dimensional binned counts: [Heatmap](../recipes/heatmap.md)\n\n## Statistical summaries and distributions\n\n- Points with grouped fitted lines: [Regression Scatterplot](../recipes/regression-scatterplot.md)\n- Smoothed one-dimensional distribution: [Density Area](../recipes/density-area.md)\n- Compact per-group distribution shape: [Violin Plot](../recipes/violin-plot.md)\n- Quartiles, whiskers, and outliers: [Box Plot](../recipes/box-plot.md)\n- Point or aggregate estimates with intervals: [Error Bar](../recipes/error-bar.md)\n- Time or x-series uncertainty ribbon: [Error Band](../recipes/error-band.md)\n- Within-category quantitative gradient: [Gradient Plot](../recipes/gradient-plot.md)\n\n## Multivariate, compact, and polar charts\n\n- Many dimensions per observation: [Parallel Coordinates](../recipes/parallel-coordinates.md)\n- Folded compact time series: [Horizon](../recipes/horizon.md)\n- Equal-angle polar magnitude comparison: [Rose Chart](../recipes/rose-chart.md)\n\n## Structure and editing workflows\n\n- Layer or concatenate complete child programs: [Composition](../recipes/composition.md)\n- Repeat a chart by categories: [Facet](../recipes/facet.md)\n- Add rules, labels, and collision-aware text: [Annotations](../recipes/annotations.md)\n- Control line/path vertex order independently of source rows: [Path Ordering](../recipes/path-ordering.md)\n\n## If no recipe matches\n\nUse the [action router](./actions.md) to compose a chart from data, mark, position, appearance, guide, and rendering\nactions. Check [Supported Features](../supported-features.md) before inventing an action name or assuming a capability.\n",
       "truncated": false,
       "terms": {
@@ -21534,7 +21692,6 @@
           "comparison",
           "complete",
           "compose",
-          "composition",
           "concatenate",
           "control",
           "coordinate",
@@ -21678,6 +21835,7 @@
       "title": "Annotations and Label Layout",
       "summary": "Add data-driven text to marks and resolve avoidable collisions within bounded chart or Canvas space.",
       "route": "/recipes/annotations/",
+      "priority": 70,
       "terms": {
         "identity": [
           "and",
@@ -21732,7 +21890,7 @@
           "communicate",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -21806,8 +21964,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "state",
@@ -21859,6 +22016,7 @@
       "title": "Bar Chart",
       "summary": "Create vertical or horizontal bars for comparing aggregate values across categories and optional groups.",
       "route": "/recipes/bar-chart/",
+      "priority": 70,
       "terms": {
         "identity": [
           "bar",
@@ -21905,7 +22063,7 @@
           "comparison",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "continuous",
@@ -21977,8 +22135,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "state",
@@ -22026,6 +22183,7 @@
       "title": "Box Plot",
       "summary": "Create grouped boxes, medians, whiskers, and optional outliers from quantitative observations.",
       "route": "/recipes/box-plot/",
+      "priority": 70,
       "terms": {
         "identity": [
           "box",
@@ -22068,7 +22226,7 @@
           "compared",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -22139,8 +22297,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "shape",
           "should",
@@ -22182,6 +22339,7 @@
       "title": "Cartesian Guide Lifecycle",
       "summary": "Create, revise, remove, and recreate complete or focused Cartesian axis components.",
       "route": "/api/axes/",
+      "priority": 70,
       "terms": {
         "identity": [
           "cartesian",
@@ -22228,7 +22386,7 @@
           "compatible",
           "complete",
           "component",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "control",
@@ -22298,8 +22456,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "state",
@@ -22344,6 +22501,7 @@
       "title": "Category Ordering and Reset",
       "summary": "Order categorical position domains explicitly or by aggregate summaries and restore first-appearance order when needed.",
       "route": "/api/position/category-ordering/",
+      "priority": 70,
       "terms": {
         "identity": [
           "and",
@@ -22395,7 +22553,7 @@
           "communicate",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -22467,8 +22625,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -22511,22 +22668,22 @@
       "title": "Program Composition",
       "summary": "Combine complete child charts into a stable layered, horizontal, or vertical program composition.",
       "route": "/recipes/composition/",
+      "priority": 70,
       "terms": {
         "identity": [
-          "composition",
+          "compose",
           "program"
         ],
         "title": [
-          "composition",
+          "compose",
           "program"
         ],
         "summary": [
           "a",
           "chart",
           "child",
-          "combine",
           "complete",
-          "composition",
+          "compose",
           "horizontal",
           "into",
           "layered",
@@ -22550,8 +22707,7 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
-          "composition",
+          "compose",
           "contain",
           "containing",
           "coordinate",
@@ -22620,8 +22776,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "share",
           "shared",
@@ -22645,7 +22800,7 @@
         ],
         "relations": [
           "child",
-          "composition",
+          "compose",
           "edit",
           "layout",
           "replace"
@@ -22658,6 +22813,7 @@
       "title": "Density Area",
       "summary": "Create a smooth one-dimensional density estimate and render it as one or more filled area profiles.",
       "route": "/recipes/density-area/",
+      "priority": 70,
       "terms": {
         "identity": [
           "area",
@@ -22706,7 +22862,7 @@
           "compared",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "count",
@@ -22776,8 +22932,7 @@
           "same",
           "sample",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "shape",
           "should",
@@ -22822,15 +22977,16 @@
       "title": "Derived Data Workflows",
       "summary": "Create reusable filtered, density, interval, regression, and two-dimensional bin datasets with explicit identities.",
       "route": "/api/data/statistical-transforms/",
+      "priority": 70,
       "terms": {
         "identity": [
           "data",
-          "derived",
+          "derive",
           "workflow"
         ],
         "title": [
           "data",
-          "derived",
+          "derive",
           "workflow"
         ],
         "summary": [
@@ -22868,7 +23024,7 @@
           "compatible",
           "complete",
           "component",
-          "composing",
+          "compose",
           "consumer",
           "contain",
           "containing",
@@ -22877,7 +23033,7 @@
           "data",
           "dataset",
           "demonstrated",
-          "derived",
+          "derive",
           "directly",
           "domain",
           "downstream",
@@ -22945,8 +23101,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "share",
           "signature",
@@ -22974,7 +23129,7 @@
           "d",
           "data",
           "density",
-          "derived",
+          "derive",
           "edit",
           "interval",
           "owner",
@@ -22990,6 +23145,7 @@
       "title": "Error Band",
       "summary": "Create an uncertainty ribbon around an ordered series from explicit bounds or statistical intervals.",
       "route": "/recipes/error-band/",
+      "priority": 70,
       "terms": {
         "identity": [
           "band",
@@ -23037,7 +23193,7 @@
           "clearer",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "continuously",
@@ -23106,8 +23262,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "series",
           "several",
           "should",
@@ -23152,6 +23307,7 @@
       "title": "Error Bar",
       "summary": "Create point or aggregate estimates with vertical or horizontal interval rules and optional caps.",
       "route": "/recipes/error-bar/",
+      "priority": 70,
       "terms": {
         "identity": [
           "bar",
@@ -23200,7 +23356,7 @@
           "compactly",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "continuously",
@@ -23270,8 +23426,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "series",
           "several",
           "should",
@@ -23324,6 +23479,7 @@
       "title": "Extension-Authored Domain Action",
       "summary": "Wrap semantic and graphical primitives inside one traceable extension action with explicit ownership and materialization.",
       "route": "/extension/action-authoring/",
+      "priority": 70,
       "terms": {
         "identity": [
           "action",
@@ -23379,7 +23535,7 @@
           "compatible",
           "complete",
           "component",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "creation",
@@ -23454,8 +23610,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "state",
@@ -23490,6 +23645,7 @@
       "title": "Facet",
       "summary": "Repeat one complete chart for each value of a categorical field with controlled headers, scales, and guides.",
       "route": "/recipes/facet/",
+      "priority": 70,
       "terms": {
         "identity": [
           "facet"
@@ -23534,8 +23690,7 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
-          "composition",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -23607,8 +23762,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -23656,6 +23810,7 @@
       "title": "Gradient Plot",
       "summary": "Create within-category quantitative gradients with optional center lines for compact distribution comparison.",
       "route": "/recipes/gradient-plot/",
+      "priority": 70,
       "terms": {
         "identity": [
           "gradient",
@@ -23700,7 +23855,7 @@
           "colored",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "continuous",
@@ -23775,8 +23930,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "silhouette",
@@ -23816,6 +23970,7 @@
       "title": "Grid Lifecycle",
       "summary": "Create, revise, selectively remove, and recreate Cartesian or Polar grid directions.",
       "route": "/api/grids/",
+      "priority": 70,
       "terms": {
         "identity": [
           "grid",
@@ -23861,7 +24016,7 @@
           "compatible",
           "complete",
           "component",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "creation",
@@ -23934,8 +24089,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "specific",
@@ -23981,6 +24135,7 @@
       "title": "Heatmap",
       "summary": "Create a rectangular cell chart that maps two discrete positions and a quantitative value to color.",
       "route": "/recipes/heatmap/",
+      "priority": 70,
       "terms": {
         "identity": [
           "heat",
@@ -24028,7 +24183,7 @@
           "compared",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "continuous",
@@ -24100,8 +24255,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -24144,6 +24298,7 @@
       "title": "Histogram",
       "summary": "Create a one-dimensional binned distribution whose bar lengths or heights represent observation counts.",
       "route": "/recipes/histogram/",
+      "priority": 70,
       "terms": {
         "identity": [
           "histogram"
@@ -24186,7 +24341,7 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -24256,8 +24411,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "shape",
           "signature",
@@ -24292,6 +24446,7 @@
       "title": "Horizon Chart",
       "summary": "Create a compact folded area chart for comparing signed time-series magnitude in limited vertical space.",
       "route": "/recipes/horizon/",
+      "priority": 70,
       "terms": {
         "identity": [
           "chart",
@@ -24340,7 +24495,7 @@
           "clearer",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "conventional",
@@ -24413,8 +24568,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "series",
           "several",
           "signature",
@@ -24460,6 +24614,7 @@
       "title": "Legend and Title Lifecycle",
       "summary": "Revise legend layout and components, edit chart titles, or remove complete guide-owned resources.",
       "route": "/api/legends/",
+      "priority": 70,
       "terms": {
         "identity": [
           "and",
@@ -24509,7 +24664,7 @@
           "compatible",
           "complete",
           "component",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "content",
@@ -24585,8 +24740,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "semantic",
           "several",
           "should",
@@ -24637,6 +24791,7 @@
       "title": "Line Chart",
       "summary": "Create one or more ordered Cartesian paths for temporal trends or another meaningful sequence.",
       "route": "/recipes/line-chart/",
+      "priority": 70,
       "terms": {
         "identity": [
           "chart",
@@ -24681,7 +24836,7 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "connected",
           "connecting",
           "contain",
@@ -24754,8 +24909,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -24801,6 +24955,7 @@
       "title": "Mark Lifecycle",
       "summary": "Create and restyle specialized marks, then remove jitter, label layout, radius, or complete mark resources.",
       "route": "/api/marks/",
+      "priority": 70,
       "terms": {
         "identity": [
           "lifecycle",
@@ -24850,7 +25005,7 @@
           "compatible",
           "complete",
           "component",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "creation",
@@ -24923,8 +25078,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -24965,7 +25119,7 @@
           "rect",
           "remove",
           "rose",
-          "selection",
+          "select",
           "text",
           "tick"
         ]
@@ -24977,6 +25131,7 @@
       "title": "Parallel Coordinates",
       "summary": "Create one polyline per observation across an ordered set of quantitative or categorical dimensions.",
       "route": "/recipes/parallel-coordinates/",
+      "priority": 70,
       "terms": {
         "identity": [
           "coordinate",
@@ -25021,7 +25176,7 @@
           "comparison",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "coordinate",
@@ -25092,8 +25247,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "state",
@@ -25139,6 +25293,7 @@
       "title": "Path Ordering",
       "summary": "Order vertices inside each line or ranged-area series independently from source row order.",
       "route": "/recipes/path-ordering/",
+      "priority": 70,
       "terms": {
         "identity": [
           "ordering",
@@ -25182,7 +25337,7 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "connect",
           "contain",
           "containing",
@@ -25255,8 +25410,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "separate",
           "several",
           "should",
@@ -25306,6 +25460,7 @@
       "title": "Polar Guide Lifecycle",
       "summary": "Create, revise, remove, and recreate theta and radial axes for an existing Polar coordinate.",
       "route": "/api/axes/",
+      "priority": 70,
       "terms": {
         "identity": [
           "guide",
@@ -25348,7 +25503,7 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "control",
@@ -25417,8 +25572,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "state",
@@ -25460,6 +25614,7 @@
       "title": "Ranged and Specialized Encodings",
       "summary": "Encode interval ranges, offsets, Parallel dimensions, and remove complete encoding assignments safely.",
       "route": "/api/position-encodings/",
+      "priority": 70,
       "terms": {
         "identity": [
           "and",
@@ -25506,7 +25661,7 @@
           "compatible",
           "complete",
           "component",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "creation",
@@ -25585,8 +25740,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "single",
@@ -25647,6 +25801,7 @@
       "title": "Regression Scatterplot",
       "summary": "Create a scatter plot with grouped fitted lines and optional confidence or prediction interval bands.",
       "route": "/recipes/regression-scatterplot/",
+      "priority": 70,
       "terms": {
         "identity": [
           "plot",
@@ -25691,7 +25846,7 @@
           "compared",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -25765,8 +25920,7 @@
           "same",
           "scale",
           "scatter",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -25816,6 +25970,7 @@
       "title": "Resource and Facet Policies",
       "summary": "Create explicit coordinates and scales, resize a chart, and revise facet guide or scale resolution policies.",
       "route": "/api/composition/",
+      "priority": 70,
       "terms": {
         "identity": [
           "and",
@@ -25866,7 +26021,7 @@
           "compatible",
           "complete",
           "component",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "creation",
@@ -25940,8 +26095,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "shared",
           "signature",
@@ -25986,6 +26140,7 @@
       "title": "Rose Chart",
       "summary": "Create equal-angle Polar sectors whose radial lengths compare quantitative magnitudes across categories.",
       "route": "/recipes/rose-chart/",
+      "priority": 70,
       "terms": {
         "identity": [
           "chart",
@@ -26031,7 +26186,7 @@
           "comparison",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -26100,8 +26255,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "signature",
           "state",
@@ -26141,6 +26295,7 @@
       "title": "Scatterplot",
       "summary": "Create a Cartesian scatter plot that reveals relationships, clusters, trends, and outliers between two quantitative fields.",
       "route": "/recipes/scatterplot/",
+      "priority": 70,
       "terms": {
         "identity": [
           "plot",
@@ -26188,7 +26343,7 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "connected",
           "contain",
           "containing",
@@ -26261,8 +26416,7 @@
           "same",
           "scale",
           "scatter",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -26300,24 +26454,25 @@
       "title": "Selection and Highlight Lifecycle",
       "summary": "Select final mark items, revise the selector, apply or remove highlighting, and release stored selection state.",
       "route": "/api/appearance/selection-and-highlighting/",
+      "priority": 70,
       "terms": {
         "identity": [
           "and",
           "highlight",
           "lifecycle",
-          "selection"
+          "select"
         ],
         "title": [
           "and",
           "highlight",
           "lifecycle",
-          "selection"
+          "select"
         ],
         "summary": [
           "and",
           "apply",
           "final",
-          "highlighting",
+          "highlight",
           "item",
           "mark",
           "or",
@@ -26325,7 +26480,6 @@
           "remove",
           "revise",
           "select",
-          "selection",
           "selector",
           "state",
           "stored",
@@ -26350,7 +26504,7 @@
           "cleanup",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "current",
@@ -26421,8 +26575,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -26451,8 +26604,7 @@
           "lifecycle",
           "mark",
           "remove",
-          "select",
-          "selection"
+          "select"
         ]
       }
     },
@@ -26462,6 +26614,7 @@
       "title": "Statistical Owner Revisions",
       "summary": "Revise fitted models, intervals, distribution summaries, and their owned graphical components without rebuilding charts manually.",
       "route": "/api/regression/",
+      "priority": 70,
       "terms": {
         "identity": [
           "owner",
@@ -26507,7 +26660,7 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "created",
@@ -26579,8 +26732,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -26609,7 +26761,7 @@
           "box",
           "create",
           "data",
-          "derived",
+          "derive",
           "edit",
           "error",
           "gradient",
@@ -26626,6 +26778,7 @@
       "title": "Tick Distribution and Direction",
       "summary": "Create a one-dimensional tick distribution or rotate tick and point glyphs with a quantitative angle field.",
       "route": "/api/marks/",
+      "priority": 70,
       "terms": {
         "identity": [
           "and",
@@ -26676,7 +26829,7 @@
           "compact",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -26752,8 +26905,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "should",
           "signature",
@@ -26799,10 +26951,11 @@
       "title": "Time-Unit and Window Derivation",
       "summary": "Derive calendar units and ordered moving, ranking, lag, lead, or cumulative calculations for later chart encodings.",
       "route": "/api/data/window/",
+      "priority": 70,
       "terms": {
         "identity": [
           "and",
-          "derivation",
+          "derive",
           "series",
           "time",
           "unit",
@@ -26810,7 +26963,7 @@
         ],
         "title": [
           "and",
-          "derivation",
+          "derive",
           "time",
           "unit",
           "window"
@@ -26853,14 +27006,14 @@
           "choose",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
           "current",
           "data",
           "dataset",
-          "derivation",
+          "derive",
           "directly",
           "domain",
           "encoding",
@@ -26917,8 +27070,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "series",
           "several",
           "signature",
@@ -26956,6 +27108,7 @@
       "title": "Violin Plot",
       "summary": "Create compact mirrored density profiles for comparing quantitative distributions across categorical groups.",
       "route": "/recipes/violin-plot/",
+      "priority": 70,
       "terms": {
         "identity": [
           "plot",
@@ -26997,7 +27150,7 @@
           "comparison",
           "compatible",
           "complete",
-          "composing",
+          "compose",
           "contain",
           "containing",
           "create",
@@ -27063,8 +27216,7 @@
           "row",
           "same",
           "scale",
-          "selected",
-          "selection",
+          "select",
           "several",
           "shape",
           "signature",

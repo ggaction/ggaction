@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    { "id": "scatter", "query": "Show the relationship between two numeric measures as colored points.", "expectedAny": ["action:createScatterPlot", "recipe:scatterplot"] },
+    { "id": "regression", "query": "Layer a fitted trend for one subgroup over observed points and annotate the fit.", "expectedAny": ["action:createRegression", "recipe:regression-scatterplot"] },
+    { "id": "histogram", "query": "Compare a numeric distribution across groups with a colored histogram.", "expectedAny": ["action:createHistogram", "recipe:histogram"] },
+    { "id": "heatmap", "query": "Build a two-dimensional binned count matrix with rectangular cells.", "expectedAny": ["action:createHeatmap", "recipe:heatmap"] },
+    { "id": "temporal-line", "query": "Draw a temporal line chart with separate colored series and a smooth curve.", "expectedAny": ["action:createLinePlot", "recipe:line-chart"] },
+    { "id": "grouped-bars", "query": "Compare categories with side-by-side colored bars sorted by total magnitude.", "expectedAny": ["action:createBarPlot", "recipe:bar-chart", "action:orderCategories"] },
+    { "id": "density", "query": "Estimate and fill one smooth probability distribution per group.", "expectedAny": ["action:encodeDensity", "recipe:density-area"] },
+    { "id": "error-bars", "query": "Show group means with vertical confidence-interval error bars.", "expectedAny": ["action:createErrorBar", "recipe:error-bar"] },
+    { "id": "error-band", "query": "Draw grouped error bands over time with visible boundary paths.", "expectedAny": ["action:createErrorBand", "action:editErrorBandBoundary", "recipe:error-band"] },
+    { "id": "box-plot", "query": "Compare category distributions with quartile boxes, Tukey whiskers, and outliers.", "expectedAny": ["action:createBoxPlot", "recipe:box-plot"] },
+    { "id": "violin", "query": "Compare category distributions with mirrored violin density silhouettes.", "expectedAny": ["action:createViolinPlot", "recipe:violin-plot"] },
+    { "id": "parallel", "query": "Compare multivariate records as colored paths across several parallel dimensions.", "expectedAny": ["action:createParallelCoordinates", "recipe:parallel-coordinates"] },
+    { "id": "rose", "query": "Use equal angular categories and radial magnitude to form a grouped rose display.", "expectedAny": ["action:createArcMark", "recipe:rose-chart"] },
+    { "id": "facet", "query": "Repeat one faceted plot as small multiples for each category with shared scales.", "expectedAny": ["action:facet", "recipe:facet"] },
+    { "id": "legends", "query": "Place two guide blocks above the plot with aligned titles, symbols, labels, and spacing.", "expectedAny": ["action:createLegend", "recipe:legend-title-lifecycle"] },
+    { "id": "selection", "query": "Store a reusable point selection, highlight its matches, and dim the remainder.", "expectedAny": ["action:highlightMarks", "recipe:selection-lifecycle"] },
+    { "id": "moving-average", "query": "Smooth an ordered yearly series with a centered three-observation rolling mean.", "expectedAny": ["action:createWindowData", "recipe:time-series-derivation"] },
+    { "id": "calendar-unit", "query": "Extract calendar years before summarizing a temporal trend by group.", "expectedAny": ["action:createTimeUnitData", "recipe:time-series-derivation"] },
+    { "id": "rug", "query": "Show a rug distribution with one short vertical tick mark per numeric observation.", "expectedAny": ["action:createTickMark", "recipe:tick-distribution"] },
+    { "id": "gradient", "query": "Create a categorical gradient plot whose density profile fill varies by another numeric measure.", "expectedAny": ["action:createGradientPlot", "recipe:gradient-plot"] },
+    { "id": "horizon", "query": "Fold a signed time series into compact positive and negative magnitude bands.", "expectedAny": ["action:encodeHorizon", "recipe:horizon"] },
+    { "id": "labels", "query": "Apply label layout to point text, reduce collisions, and retain leader lines.", "expectedAny": ["action:layoutLabels", "recipe:annotations"] },
+    { "id": "dashboard", "query": "Arrange independent child charts horizontally, adjust the gap, then replace one stable slot.", "expectedAny": ["action:replaceCompositionChild", "recipe:composition"] },
+    { "id": "renderers", "query": "Reuse one immutable scatter plot program for browser drawing and SVG, PNG, and PDF output.", "expectedAny": ["action:createScatterPlot", "recipe:scatterplot"] }
+  ]
+}

@@ -19,6 +19,7 @@ test("generates one stable search record for every action, recipe, and LLM route
   const rebuilt = await buildKnowledgeSearchIndex(document);
   assert.deepEqual(generated, rebuilt);
   assert.deepEqual(stored, rebuilt);
+  assert.equal(generated.schemaVersion, 2);
   assert.deepEqual(generated.generated, {
     actionCount: 173,
     recipeCount: 33,
@@ -30,47 +31,74 @@ test("generates one stable search record for every action, recipe, and LLM route
   assert.match(generated.generated.knowledgeSha256, /^[a-f0-9]{64}$/);
   assert.match(generated.generated.routeSourceSha256, /^[a-f0-9]{64}$/);
   assert.equal(new Set(generated.records.map(record => `${record.kind}:${record.id}`)).size, 210);
+  assert.equal(generated.records.filter(record => record.kind === "recipe").every(record => record.priority === 70), true);
+  assert.equal(generated.records.filter(record => record.kind === "docs").every(record => record.priority === 0), true);
 });
 
 test("ranks exact actions and recognizable tasks deterministically", async () => {
   const exact = await searchKnowledge({ query: "createScatterPlot" });
-  assert.equal(exact[0].kind, "action");
-  assert.equal(exact[0].id, "createScatterPlot");
+  assert.equal(exact.schemaVersion, 2);
+  assert.equal(exact.results[0].kind, "action");
+  assert.equal(exact.results[0].id, "createScatterPlot");
+  assert.equal(exact.nextStep, "Read one best matching action or recipe.");
 
   const first = await searchKnowledge({ query: "scatter plot relationship between horsepower and efficiency" });
   const second = await searchKnowledge({ query: "scatter plot relationship between horsepower and efficiency" });
   assert.deepEqual(second, first);
-  assert.deepEqual(first.slice(0, 3).map(result => `${result.kind}:${result.id}`), [
+  assert.deepEqual(first.results.slice(0, 3).map(result => `${result.kind}:${result.id}`), [
     "recipe:scatterplot",
     "recipe:regression-scatterplot",
     "action:createScatterPlot"
   ]);
 
   const lifecycle = await searchKnowledge({ query: "remove a Cartesian x axis" });
-  assert.equal(`${lifecycle[0].kind}:${lifecycle[0].id}`, "action:removeXAxis");
-  for (const result of [...exact, ...first, ...lifecycle]) {
+  assert.equal(`${lifecycle.results[0].kind}:${lifecycle.results[0].id}`, "action:removeXAxis");
+  for (const result of [...exact.results, ...first.results, ...lifecycle.results]) {
     assert.deepEqual(Object.keys(result), ["kind", "id", "title", "summary", "route", "score", "matchedTerms"]);
   }
 });
 
-test("retrieves meaningful structured knowledge for every evaluation task", async () => {
-  const [tasks, cases] = await Promise.all([
+test("keeps every evaluation task in the production default top three", async () => {
+  const [tasks, cases, paraphrases] = await Promise.all([
     json("test/llm/tasks.json"),
-    json("test/llm/search-cases.json")
+    json("test/llm/search-cases.json"),
+    json("test/llm/search-paraphrases.json")
   ]);
   assert.equal(cases.cases.length, 24);
+  assert.equal(paraphrases.cases.length, 24);
   assert.deepEqual(cases.cases.map(entry => entry.taskId).toSorted(), tasks.tasks.map(entry => entry.id).toSorted());
   for (const entry of cases.cases) {
     const task = tasks.tasks.find(candidate => candidate.id === entry.taskId);
-    const results = await searchKnowledge({ query: task.prompt, limit: 10 });
+    const response = await searchKnowledge({ query: task.prompt });
+    const results = response.results;
     const identities = new Set(results.map(result => `${result.kind}:${result.id}`));
     assert.equal(entry.expectedAny.some(identity => identities.has(identity)), true, entry.taskId);
-    assert.equal(JSON.stringify(results).length < 6000, true, entry.taskId);
+    assert.equal(results.findIndex(result => entry.expectedAny.includes(`${result.kind}:${result.id}`)) < 3, true, entry.taskId);
+    assert.equal(results.length <= 6, true, entry.taskId);
+    assert.equal(JSON.stringify(response).length < 6000, true, entry.taskId);
+  }
+  for (const entry of paraphrases.cases) {
+    const results = (await searchKnowledge({ query: entry.query })).results;
+    assert.equal(results.findIndex(result => entry.expectedAny.includes(`${result.kind}:${result.id}`)) < 3, true, entry.id);
+  }
+});
+
+test("ranks every exact action and recipe identity first", async () => {
+  const index = await loadKnowledgeSearchIndex();
+  const records = index.records.filter(record => record.kind !== "docs");
+  const counts = new Map(records.map(record => [
+    record.id,
+    records.filter(candidate => candidate.id === record.id).length
+  ]));
+  for (const record of records) {
+    const query = counts.get(record.id) === 1 ? record.id : `${record.kind}:${record.id}`;
+    const response = await searchKnowledge({ query, limit: 1 });
+    assert.equal(`${response.results[0].kind}:${response.results[0].id}`, `${record.kind}:${record.id}`);
   }
 });
 
 test("bounds search and exact reads without exposing arbitrary files", async () => {
-  assert.equal((await searchKnowledge({ query: "legend", limit: 1 })).length, 1);
+  assert.equal((await searchKnowledge({ query: "legend", limit: 1 })).results.length, 1);
   await assert.rejects(() => searchKnowledge(), /options must be an object/);
   await assert.rejects(() => searchKnowledge({ query: "" }), /non-empty string/);
   await assert.rejects(() => searchKnowledge({ query: "the and with" }), /searchable term/);
@@ -81,8 +109,12 @@ test("bounds search and exact reads without exposing arbitrary files", async () 
   const action = await readKnowledge({ kind: "action", id: "createScatterPlot" });
   const recipe = await readKnowledge({ kind: "recipe", id: "scatterplot" });
   const docs = await readKnowledge({ kind: "docs", id: "overview" });
+  assert.equal(action.schemaVersion, 2);
   assert.equal(action.value.name, "createScatterPlot");
+  assert.equal(action.nextStep, "Write the complete program and call submit_program now; do not search again.");
+  assert.equal(action.value.typeDefinitions.length > 0, true);
   assert.equal(recipe.value.id, "scatterplot");
+  assert.match(recipe.value.exampleSource, /from "ggaction"/);
   assert.match(docs.value.text, /# LLM Guide/);
   assert.equal(docs.value.truncated, false);
   await assert.rejects(() => readKnowledge({ kind: "action", id: "../../package" }), /ID is invalid/);

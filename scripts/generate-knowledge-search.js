@@ -48,13 +48,14 @@ function summaryFromMarkdown(source) {
     .replace(/\s+/g, " ") ?? "";
 }
 
-function actionRecord(action) {
+function actionRecord(action, classification) {
   return {
     kind: "action",
     id: action.name,
     title: action.name,
     summary: action.summary,
     route: action.publicReference,
+    priority: classification === "primary" ? 50 : 0,
     terms: {
       identity: tokens([action.name, action.domain, action.layer, action.lifecycle]),
       title: tokens([action.name]),
@@ -79,6 +80,7 @@ function recipeRecord(recipe) {
     title: recipe.title,
     summary: recipe.intent,
     route: siteRoute(recipe.docs[0].path),
+    priority: 70,
     terms: {
       identity: tokens([recipe.id, recipe.title]),
       title: tokens([recipe.title]),
@@ -103,6 +105,7 @@ function routeRecord(route, source) {
     title: route.title,
     summary: summaryFromMarkdown(source),
     route: route.route,
+    priority: 0,
     text: source.slice(0, limits.maximumReadCharacters),
     truncated: source.length > limits.maximumReadCharacters,
     terms: {
@@ -120,15 +123,16 @@ export async function buildKnowledgeSearchIndex(knowledgeDocument) {
     route,
     source: await readFile(path.join(root, route.path), "utf8")
   })));
+  const classifications = new Map(knowledgeDocument.coverage.map(row => [row.name, row.classification]));
   const records = [
-    ...knowledgeDocument.actions.map(actionRecord),
+    ...knowledgeDocument.actions.map(action => actionRecord(action, classifications.get(action.name))),
     ...knowledgeDocument.recipes.map(recipeRecord),
     ...routeSources.map(({ route, source }) => routeRecord(route, source))
   ].sort((left, right) => left.kind.localeCompare(right.kind) || left.id.localeCompare(right.id));
   const identities = new Set(records.map(record => `${record.kind}:${record.id}`));
   if (identities.size !== records.length) throw new Error("Knowledge search records must have unique kind and ID pairs.");
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     generated: {
       actionCount: knowledgeDocument.actions.length,
       recipeCount: knowledgeDocument.recipes.length,

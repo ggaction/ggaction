@@ -4,15 +4,36 @@ const knowledgeFile = new URL("../knowledge/index.json", import.meta.url);
 const searchIndexFile = new URL("../knowledge/search-index.json", import.meta.url);
 
 const stopwords = new Set([
-  "a", "an", "and", "are", "as", "at", "be", "by", "chart", "create", "for", "from", "in", "into", "is",
-  "it", "of", "on", "or", "that", "the", "this", "to", "use", "using", "with"
+  "a", "add", "an", "and", "are", "as", "at", "be", "by", "canva", "canvas", "chart", "complete", "create", "data",
+  "dataset", "for", "from", "in", "into", "is", "it", "its", "of", "on", "one", "only", "or", "per", "render",
+  "row", "rows", "that", "the", "them", "this", "to", "two", "use", "using", "whose", "with"
 ]);
 const fieldWeights = Object.freeze({ identity: 30, title: 20, summary: 8, guidance: 4, relations: 2 });
 const kindPriority = Object.freeze({ recipe: 0, action: 1, docs: 2 });
 const knowledgeKinds = new Set(["action", "recipe", "docs"]);
 
 function canonicalWord(word) {
-  const exceptions = { axes: "axis", series: "series", analyses: "analysis" };
+  const exceptions = {
+    analyses: "analysis",
+    axes: "axis",
+    combine: "compose",
+    combined: "compose",
+    composed: "compose",
+    composing: "compose",
+    composition: "compose",
+    derivation: "derive",
+    derived: "derive",
+    deriving: "derive",
+    faceted: "facet",
+    highlighted: "highlight",
+    highlighting: "highlight",
+    horizontally: "horizontal",
+    selected: "select",
+    selecting: "select",
+    selection: "select",
+    series: "series",
+    vertically: "vertical"
+  };
   if (exceptions[word]) return exceptions[word];
   if (word.length > 4 && word.endsWith("ies")) return `${word.slice(0, -3)}y`;
   if (word.length > 3 && word.endsWith("s") && !/(?:ss|us|is)$/u.test(word)) return word.slice(0, -1);
@@ -33,9 +54,11 @@ export function normalizeKnowledgeText(value) {
 }
 
 function queryTerms(query, maximumTerms) {
-  const terms = normalizeKnowledgeText(query)
-    .split(/\s+/u)
-    .filter(term => term.length > 0 && !stopwords.has(term));
+  const normalized = normalizeKnowledgeText(query).split(/\s+/u).filter(Boolean);
+  const searchable = normalized.filter(term => !stopwords.has(term));
+  const terms = searchable.length === 0 && /[a-z0-9][A-Z]/u.test(query)
+    ? normalized
+    : searchable;
   return [...new Set(terms)].slice(0, maximumTerms);
 }
 
@@ -61,12 +84,12 @@ function validateSearch(options, limits) {
 function scoreRecord(record, query) {
   const id = normalizeKnowledgeText(record.id);
   const title = normalizeKnowledgeText(record.title);
-  const identity = `${id} ${title}`;
-  let score = id === query.query || title === query.query
+  const identity = `${record.kind} ${id} ${title}`;
+  let score = (record.priority ?? 0) + (id === query.query || title === query.query
     ? 240
     : identity.includes(query.query)
       ? 80
-      : 0;
+      : 0);
   const matchedTerms = [];
   for (const term of query.terms) {
     let matched = false;
@@ -78,7 +101,10 @@ function scoreRecord(record, query) {
     }
     if (matched) matchedTerms.push(term);
   }
-  if (matchedTerms.length > 0) score += Math.round(20 * matchedTerms.length / query.terms.length);
+  if (matchedTerms.length > 0) {
+    score += matchedTerms.length * 10;
+    score += Math.round(20 * matchedTerms.length / query.terms.length);
+  }
   return { score, matchedTerms };
 }
 
@@ -104,7 +130,7 @@ export async function loadKnowledgeSearchIndex() {
 export async function searchKnowledge(options) {
   const index = await loadKnowledgeSearchIndex();
   const query = validateSearch(options, index.limits);
-  return index.records
+  const results = index.records
     .map(record => ({ record, scored: scoreRecord(record, query) }))
     .filter(entry => entry.scored.score > 0)
     .sort((left, right) =>
@@ -114,6 +140,12 @@ export async function searchKnowledge(options) {
     )
     .slice(0, query.limit)
     .map(entry => result(entry.record, entry.scored, index.limits.maximumSummaryCharacters));
+  return Object.freeze({
+    schemaVersion: 2,
+    query: query.query,
+    results: Object.freeze(results),
+    nextStep: "Read one best matching action or recipe."
+  });
 }
 
 export async function readKnowledge(options) {
@@ -135,19 +167,28 @@ export async function readKnowledge(options) {
   if (kind === "action") value = knowledge.actions.find(action => action.name === id);
   if (kind === "recipe") value = knowledge.recipes.find(recipe => recipe.id === id);
   if (kind === "docs") value = { text: searchRecord.text, truncated: searchRecord.truncated };
-  return Object.freeze({ kind, id, route: searchRecord.route, value });
+  return Object.freeze({
+    schemaVersion: 2,
+    kind,
+    id,
+    route: searchRecord.route,
+    value,
+    nextStep: kind === "docs"
+      ? "Search for the task, then read one best matching action or recipe."
+      : "Write the complete program and call submit_program now; do not search again."
+  });
 }
 
 export async function knowledgeOverview() {
   const index = await loadKnowledgeSearchIndex();
   return Object.freeze({
+    schemaVersion: 2,
     name: "ggaction",
     purpose: "Build immutable chart programs through public domain actions and render their materialized graphics.",
     workflow: Object.freeze([
-      "Read ggaction://overview for routing.",
-      "Search with search_ggaction using the chart task or exact action name.",
-      "Read the matching action or recipe resource before authoring code.",
-      "Use ggaction://docs/docs for detailed public documentation routes."
+      "Search once with search_ggaction using the chart task or exact action name.",
+      "Read one best matching action or recipe resource.",
+      "Write the complete public ggaction program without another knowledge search."
     ]),
     resources: Object.freeze([
       "ggaction://overview",
