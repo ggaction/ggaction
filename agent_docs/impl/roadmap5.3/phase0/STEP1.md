@@ -12,7 +12,7 @@
 - [x] Exact paid-run proposal와 predeclared acceptance rule
 - [x] Canonical metadata/recipe ownership proposal
 - [x] Local dry run and contract tests
-- [ ] Commit/push and R53-P0-A review package
+- [x] Commit/push and R53-P0-A review package
 
 Inventory evidence는 [`CURRENT_KNOWLEDGE_INVENTORY.json`](./CURRENT_KNOWLEDGE_INVENTORY.json), 사람이 읽는
 해석은 [`BASELINE.md`](./BASELINE.md)가 소유한다.

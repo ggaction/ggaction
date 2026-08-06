@@ -16,8 +16,8 @@
 - [x] A/B/C benchmark harness contract와 raw-result schema 작성
 - [x] Provider/model/settings/repetitions, 예상 최대 비용과 acceptance threshold 제안
 - [x] Metadata/recipe canonical source, generated outputs와 package inclusion 제안
-- [ ] Focused and cumulative documentation-contract verification
-- [ ] R53-P0-A remote checkpoint commit/push
+- [x] Focused and cumulative documentation-contract verification
+- [x] R53-P0-A remote checkpoint commit/push
 - [ ] 사용자 R53-P0-A explicit approval
 - [ ] Approved configuration으로 current-doc A baseline 실행
 - [ ] R53-P0-B baseline/schema review package

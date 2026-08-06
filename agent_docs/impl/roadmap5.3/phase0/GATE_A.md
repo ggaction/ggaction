@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
+
+Evidence checkpoint: `32ab6621fd94346e4a3f6226e8f5f670bc6b2df5`
 
 ## 쉽게 보는 승인 내용
 
@@ -40,6 +42,23 @@ Exact percentages are decided from the evidence package before calls. The rule m
 - Predeclared reductions in tokens per successful chart, model calls and time-to-valid
 - C to pass correctness plus at least two efficiency thresholds, with no large regression in the remaining metric
 - Held-out results and failures to remain in the reported denominator
+
+## Exact paid baseline proposal
+
+- `gpt-5.6-terra`, Responses API, `medium` reasoning, standard mode, low verbosity
+- 24 tasks × 2 repetitions = 48 condition-A runs
+- Maximum 3 model calls and 180 seconds per task
+- Expected $4.32, conservative calculated maximum $9.36, hard approval cap $10.00
+- Exact token budgets, pricing basis and acceptance numbers are owned by
+  [`BENCHMARK_CONTRACT.md`](./BENCHMARK_CONTRACT.md) and [`test/llm/evaluation-plan.json`](../../../../test/llm/evaluation-plan.json)
+
+## Verification
+
+- `node scripts/llm-eval/dry-run.js`: 24/24 synthetic tasks valid, zero external calls
+- Focused knowledge/evaluation/navigation contracts: 13/13 passed
+- `npm run test:contracts`: 173/173 passed
+- `git diff --check`: passed before evidence commit
+- Evidence commit pushed to `origin/codex/roadmap5-3-llm-friendly`
 
 ## Approval effect
 
