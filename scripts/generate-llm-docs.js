@@ -11,6 +11,13 @@ const siteConfig = fileURLToPath(
 );
 const output = fileURLToPath(new URL("../docs/llms-full.txt", import.meta.url));
 const conciseOutput = fileURLToPath(new URL("../docs/llms.txt", import.meta.url));
+const conciseSource = fileURLToPath(new URL("../docs/_sources/llms.txt", import.meta.url));
+const routingPages = [
+  "llms/index.md",
+  "llms/actions.md",
+  "llms/recipes.md",
+  "llms/docs.md"
+];
 
 function stripFrontMatter(markdown) {
   return markdown.replace(/^---\n[\s\S]*?\n---\n+/, "").trim();
@@ -75,7 +82,7 @@ function routeToken(url) {
 }
 
 export async function buildConciseLlmDocumentation() {
-  const source = await readFile(conciseOutput, "utf8");
+  const source = await readFile(conciseSource, "utf8");
   const registry = await pageRegistry();
   const canonical = source.replace(
     /\.\/([A-Za-z0-9_./-]+\.md)(#[A-Za-z0-9_-]+)?/g,
@@ -108,6 +115,42 @@ export async function buildConciseLlmDocumentation() {
   return canonical;
 }
 
+export async function validateLlmRoutingPages() {
+  const registry = await pageRegistry();
+  const report = [];
+
+  for (const relative of routingPages) {
+    const url = registry.routes.get(relative);
+    if (url === undefined) {
+      throw new Error(`LLM routing page is not registered: ${relative}`);
+    }
+    const source = await readFile(resolve(docsRoot, relative), "utf8");
+    const content = sanitizeMarkdown(source);
+    const targets = [...source.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)]
+      .map(match => match[1]);
+    if (new Set(targets).size !== targets.length) {
+      throw new Error(`LLM routing page repeats a target: ${relative}`);
+    }
+    const entry = {
+      url,
+      bytes: Buffer.byteLength(content),
+      lines: content.split("\n").length,
+      targets: targets.length
+    };
+    if (entry.bytes > 12 * 1024) {
+      throw new Error(`LLM routing page exceeds 12 KiB: ${relative}`);
+    }
+    if (entry.lines > 120) {
+      throw new Error(`LLM routing page exceeds 120 lines: ${relative}`);
+    }
+    if (entry.targets > 40) {
+      throw new Error(`LLM routing page exceeds 40 targets: ${relative}`);
+    }
+    report.push(entry);
+  }
+  return report;
+}
+
 export async function buildFullLlmDocumentation() {
   const order = await readFile(pageOrder, "utf8");
   const config = await readFile(siteConfig, "utf8");
@@ -135,7 +178,8 @@ export async function buildFullLlmDocumentation() {
 export async function generateFullLlmDocumentation() {
   const [concise, full] = await Promise.all([
     buildConciseLlmDocumentation(),
-    buildFullLlmDocumentation()
+    buildFullLlmDocumentation(),
+    validateLlmRoutingPages()
   ]);
   await Promise.all([
     writeFile(conciseOutput, concise),

@@ -9,7 +9,8 @@ import { fileURLToPath } from "node:url";
 import {
   buildConciseLlmDocumentation,
   buildFullLlmDocumentation,
-  sanitizeMarkdown
+  sanitizeMarkdown,
+  validateLlmRoutingPages
 } from "../../scripts/generate-llm-docs.js";
 import {
   buildRuntimeSignatureSection,
@@ -184,7 +185,7 @@ test("keeps navigation and page order complete", async () => {
   assert.deepEqual(new Set(order), pageUrls);
   for (const url of navigation) assert.equal(pageUrls.has(url), true, url);
   assert.equal(navigation.includes("/api/"), true);
-  assert.equal(navigation.length, 19);
+  assert.equal(navigation.length, 20);
 
   const byUrl = new Map(registry.map(page => [page.url, page]));
   for (const page of registry) {
@@ -461,7 +462,15 @@ test("keeps task pages visual and chart figures canonical", async () => {
   );
   assert.deepEqual(
     [...exceptions.keys()],
-    ["/reference/actions/", "/supported-features/", "/troubleshooting/"]
+    [
+      "/reference/actions/",
+      "/supported-features/",
+      "/troubleshooting/",
+      "/llms/",
+      "/llms/actions/",
+      "/llms/recipes/",
+      "/llms/docs/"
+    ]
   );
   for (const reason of exceptions.values()) assert.equal(reason.length > 30, true);
 
@@ -884,22 +893,36 @@ test("keeps rendering guidance executable and aligned with the Canvas contract",
 
 test("keeps concise and full LLM documentation synchronized", async () => {
   const index = read("docs/llms.txt");
+  const source = read("docs/_sources/llms.txt");
   const lines = index.trim().split("\n");
   const targets = [...index.matchAll(
     /\.\/(?:llms-full\.txt|(?:[A-Za-z0-9_-]+\/)*(?:#[A-Za-z0-9_-]+)?)/g
   )].map(match => match[0]);
 
-  assert.equal(lines.length < 80, true);
-  assert.match(index, /\.\/llms-full\.txt/);
-  assert.match(index, /\.\/reference\/actions\/charts-data\//);
+  assert.equal(Buffer.byteLength(index) <= 4 * 1024, true);
+  assert.equal(lines.length < 50, true);
+  assert.deepEqual(targets, [
+    "./llms/",
+    "./llms/actions/",
+    "./llms/recipes/",
+    "./llms/docs/",
+    "./llms-full.txt"
+  ]);
+  assert.match(source, /\.\/llms\/actions\.md/);
   assert.doesNotMatch(index, /\.md(?:#|\b)/);
   assert.equal(new Set(targets).size, targets.length);
-  assert.equal(targets.length < 50, true);
-  assert.match(index, /Canvas, SVG, PNG, and PDF rendering/);
-  assert.match(index, /Supported features and limitations/);
-  assert.match(index, /Exact program and renderer signatures/);
   assert.doesNotMatch(index, /^## Current scope$/m);
   assert.equal(index, await buildConciseLlmDocumentation());
+  const routing = await validateLlmRoutingPages();
+  assert.equal(routing.length, 4);
+  for (const route of routing) {
+    assert.equal(route.bytes <= 12 * 1024, true, route.url);
+    assert.equal(route.lines <= 120, true, route.url);
+    assert.equal(route.targets <= 40, true, route.url);
+  }
+  assert.match(read("docs/llms/actions.md"), /Exact runtime and renderer signatures/);
+  assert.match(read("docs/llms/docs.md"), /Supported Features/);
+  assert.match(read("docs/llms/docs.md"), /Canvas, browser-safe SVG, Node PNG, and vector PDF/);
   assert.doesNotMatch(
     read(".github/workflows/ci.yml"),
     /npm run docs:(?:signatures|capabilities|images|llms)\s*$/m

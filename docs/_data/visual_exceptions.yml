@@ -4,3 +4,11 @@
   reason: The support matrix is the visual comparison and an additional chart would not clarify coverage.
 - url: /troubleshooting/
   reason: The diagnostic index routes by error and remedy rather than by a single graphical outcome.
+- url: /llms/
+  reason: This compact LLM entry routes to canonical task, action, and documentation chunks rather than teaching one visual result.
+- url: /llms/actions/
+  reason: This action-family router points to exact canonical references and does not explain one visual result.
+- url: /llms/recipes/
+  reason: This task router links to recipes that own their corresponding chart visuals.
+- url: /llms/docs/
+  reason: This documentation router groups canonical learning and reference pages rather than demonstrating one chart.

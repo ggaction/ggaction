@@ -166,6 +166,22 @@
     "description": "observations is an array of plain row objects. Source rows may be shuffled; the order field controls vertices independently inside each color/group series.",
     "image": "/assets/images/gapminder-development-trajectories.png"
   },
+  "/llms/": {
+    "title": "LLM Guide",
+    "description": "Use this guide to reach the smallest authoritative ggaction documentation chunk for a chart authoring task."
+  },
+  "/llms/actions/": {
+    "title": "LLM Action Router",
+    "description": "Choose the result or resource being changed, then follow the linked canonical page. Use the complete action reference when an exact action name is already known."
+  },
+  "/llms/recipes/": {
+    "title": "LLM Recipe Router",
+    "description": "Use a recipe when the requested chart or workflow is recognizable. A recipe gives the shortest supported action flow, required decisions, inferred state, and links to deeper…"
+  },
+  "/llms/docs/": {
+    "title": "LLM Documentation Router",
+    "description": "Use this page for concepts, complete tutorials, detailed API behavior, rendering, troubleshooting, and extension work."
+  },
   "/troubleshooting/": {
     "title": "Troubleshooting",
     "description": "ggaction reports an error when stored state does not determine one safe action. It does not silently select the first mark, scale, dataset, or coordinate."

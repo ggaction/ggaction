@@ -5,10 +5,10 @@ route that matches the task instead of loading the full documentation bundle.
 
 ## Read in this order
 
-1. Library model and retrieval workflow: ./llms/
-2. Choose an action family and find exact signatures: ./llms/actions/
-3. Follow a task-centered chart recipe: ./llms/recipes/
-4. Find tutorials, concepts, rendering, support, and extension docs: ./llms/docs/
+1. Library model and retrieval workflow: ./llms/index.md
+2. Choose an action family and find exact signatures: ./llms/actions.md
+3. Follow a task-centered chart recipe: ./llms/recipes.md
+4. Find tutorials, concepts, rendering, support, and extension docs: ./llms/docs.md
 
 The generated canonical-order full-text fallback is ./llms-full.txt. Use it only when the four selective routes do not
 identify the needed page.

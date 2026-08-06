@@ -111,14 +111,27 @@
 - title: Path Ordering Recipe
   url: /recipes/path-ordering/
   parent: /recipes/
+- title: LLM Guide
+  url: /llms/
+  nav_group: start
+  nav_order: 5
+- title: LLM Action Router
+  url: /llms/actions/
+  parent: /llms/
+- title: LLM Recipe Router
+  url: /llms/recipes/
+  parent: /llms/
+- title: LLM Documentation Router
+  url: /llms/docs/
+  parent: /llms/
 - title: Troubleshooting
   url: /troubleshooting/
   nav_group: start
-  nav_order: 6
+  nav_order: 7
 - title: Chart Gallery
   url: /gallery/
   nav_group: start
-  nav_order: 5
+  nav_order: 6
 - title: All Chart Examples
   url: /gallery/all/
   parent: /gallery/

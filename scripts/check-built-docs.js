@@ -101,8 +101,13 @@ assert.deepEqual(
 
 const llmsFile = path.join(siteRoot, "llms.txt");
 const llmsTargets = llmReferences(await readFile(llmsFile, "utf8"));
-assert.equal(llmsTargets.length > 40, true, "Expected the selective LLM documentation routes.");
-assert.equal(llmsTargets.length < 50, true, "Expected a concise LLM documentation index.");
+assert.deepEqual(llmsTargets, [
+  "./llms/",
+  "./llms/actions/",
+  "./llms/recipes/",
+  "./llms/docs/",
+  "./llms-full.txt"
+], "Expected the stable selective LLM documentation routes.");
 assert.equal(new Set(llmsTargets).size, llmsTargets.length, "LLM documentation routes must be unique.");
 for (const target of llmsTargets) await assertTarget(llmsFile, target);
 
@@ -123,6 +128,10 @@ assert.match(home, /data-root-url="\/ggaction\/"/);
 for (const expected of [
   "index.html",
   "getting-started/index.html",
+  "llms/index.html",
+  "llms/actions/index.html",
+  "llms/recipes/index.html",
+  "llms/docs/index.html",
   "reference/actions/index.html",
   "search-index.json",
   "sitemap.xml",
