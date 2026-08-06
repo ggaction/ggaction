@@ -17,7 +17,8 @@ default-branch 상태를 모두 닫은 뒤 R52-Exit에서 완료 여부를 승�
 - [x] PR #23 required six checks — exact head `0210348206fadae8fed6f7bcea0b767c0533fbc1`
 - [x] 별도 merge authorization과 PR #23 merge — 2026-08-06
 - [x] Merged `main` community/security/settings reconciliation
-- [ ] R52-Exit remote checkpoint와 explicit approval
+- [x] R52-Exit remote checkpoint — `8f5c87457a179513dc50269c6d8c7176b61932ce`
+- [ ] R52-Exit explicit approval
 
 ## 두 단계 closeout 경계
 

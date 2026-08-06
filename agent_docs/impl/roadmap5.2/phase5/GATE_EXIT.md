@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 ## Review target
 
@@ -34,7 +34,8 @@ authorize package publish, documentation deployment or release.
 
 ## Remote checkpoint
 
-- Pending merged-main reconciliation and closeout checkpoint.
+- Review target: `8f5c87457a179513dc50269c6d8c7176b61932ce`
+- Branch: `codex/roadmap5-2-closeout`
 
 ## Merged-main evidence — 2026-08-06
 
