@@ -19,6 +19,12 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [ ] R53-P6-B remote checkpoint
 - [x] R53-P6-B explicit approval of failed evidence and non-integration
 - [x] Root-cause analysis across condition isolation, retrieval, payload, MCP surface and tool loop
+- [x] Corrective knowledge-delivery contract prepared for review
+- [ ] R53-P6-C corrective contract approval
+- [ ] Generated knowledge/search v2 and evaluation-adapter correction
+- [ ] R53-P6-D complete unpaid corrective evidence
+- [ ] Separately authorized one-run B/C paid smoke
+- [ ] Separately authorized full B/C paid rerun and result decision
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
@@ -35,4 +41,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 
 - [`GATE_A.md`](./GATE_A.md) — exact paid-run proposal
 - [`GATE_B.md`](./GATE_B.md) — A/B/C result와 integration candidate
+- [`GATE_C.md`](./GATE_C.md) — corrective knowledge delivery와 evaluation isolation contract
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
