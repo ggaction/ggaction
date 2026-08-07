@@ -8,6 +8,7 @@ import {
   createPairedKnowledgeAdapter
 } from "../../scripts/llm-eval/paired-knowledge-adapters.js";
 import { createLocalMcpKnowledgeClient } from "../../scripts/llm-eval/mcp-client.js";
+import { captureCurrentDocumentationSnapshot } from "../../scripts/llm-eval/current-docs.js";
 
 const commit = "d".repeat(40);
 const apiKey = `sk-${"x".repeat(40)}`;
@@ -112,6 +113,18 @@ test("keeps direct and MCP structured knowledge byte-equivalent for the model", 
   }
 });
 
+test("pins public documentation reads and search to one identified snapshot", async () => {
+  const snapshot = await captureCurrentDocumentationSnapshot();
+  assert.match(snapshot.artifact.sha256, /^[0-9a-f]{64}$/u);
+  assert.equal(snapshot.artifact.fileCount > 10, true);
+  assert.equal(snapshot.artifact.bytes > 10_000, true);
+  const first = await snapshot.read("llms.txt");
+  const second = await snapshot.read("llms.txt");
+  assert.deepEqual(second, first);
+  const results = await snapshot.search("scatter plot");
+  assert.equal(results.length > 0, true);
+});
+
 test("reserves a forced final submission and two real repair calls", async () => {
   const [corpus, plan] = await fixtures();
   const probe = createLocalMcpKnowledgeClient();
@@ -205,4 +218,3 @@ test("reuses one MCP session while reporting per-task protocol deltas", async ()
     await Promise.all([probe.close(), mcp.close()]);
   }
 });
-

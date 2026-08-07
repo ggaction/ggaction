@@ -1,4 +1,5 @@
-import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -72,8 +73,15 @@ export async function searchCurrentDocs(query, { limit = 6 } = {}) {
   if (!Number.isInteger(limit) || limit <= 0 || limit > 10) {
     throw new TypeError("Documentation search limit must be between 1 and 10.");
   }
-  const queryTerms = terms(query);
   const index = JSON.parse(await readFile(path.join(docsRoot, "search-index.json"), "utf8"));
+  return searchDocumentationIndex(index, query, { limit });
+}
+
+function searchDocumentationIndex(index, query, { limit = 6 } = {}) {
+  if (!Number.isInteger(limit) || limit <= 0 || limit > 10) {
+    throw new TypeError("Documentation search limit must be between 1 and 10.");
+  }
+  const queryTerms = terms(query);
   return index
     .map((entry, order) => {
       const title = `${entry.pageTitle ?? ""} ${entry.sectionTitle ?? ""}`.toLowerCase();
@@ -93,4 +101,68 @@ export async function searchCurrentDocs(query, { limit = 6 } = {}) {
       kind: entry.kind,
       summary: entry.summary
     }));
+}
+
+async function documentationFiles(directory = docsRoot) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const nested = await Promise.all(entries.map(entry => {
+    const file = path.join(directory, entry.name);
+    if (entry.isDirectory()) return documentationFiles(file);
+    return /\.(?:md|txt)$/u.test(entry.name) ? [file] : [];
+  }));
+  return nested.flat().sort();
+}
+
+function snapshotDigest(files, searchIndexSource) {
+  const hash = createHash("sha256");
+  for (const [relative, text] of [...files.entries()].sort(([left], [right]) => left.localeCompare(right))) {
+    hash.update(`${relative}\0${Buffer.byteLength(text, "utf8")}\0${text}\0`);
+  }
+  hash.update(`search-index.json\0${Buffer.byteLength(searchIndexSource, "utf8")}\0${searchIndexSource}\0`);
+  return hash.digest("hex");
+}
+
+export async function captureCurrentDocumentationSnapshot() {
+  const [paths, searchIndexSource] = await Promise.all([
+    documentationFiles(),
+    readFile(path.join(docsRoot, "search-index.json"), "utf8")
+  ]);
+  const entries = await Promise.all(paths.map(async file => [
+    path.relative(docsRoot, file),
+    await readFile(file, "utf8")
+  ]));
+  const files = new Map(entries);
+  const searchIndex = JSON.parse(searchIndexSource);
+  const bytes = entries.reduce((sum, [, text]) => sum + Buffer.byteLength(text, "utf8"), 0) +
+    Buffer.byteLength(searchIndexSource, "utf8");
+
+  const read = async (route, { maximumCharacters = defaultMaximumCharacters } = {}) => {
+    if (!Number.isInteger(maximumCharacters) || maximumCharacters <= 0) {
+      throw new TypeError("maximumCharacters must be a positive integer.");
+    }
+    for (const file of candidateDocFiles(route)) {
+      const relative = path.relative(docsRoot, file);
+      const text = files.get(relative);
+      if (text === undefined) continue;
+      return Object.freeze({
+        route,
+        file: path.join("docs", relative),
+        truncated: text.length > maximumCharacters,
+        text: text.slice(0, maximumCharacters)
+      });
+    }
+    throw new Error(`Unknown documentation route "${route}" in the pinned snapshot.`);
+  };
+
+  return Object.freeze({
+    route: "llms.txt",
+    read,
+    search: (query, options) => Promise.resolve(searchDocumentationIndex(searchIndex, query, options)),
+    artifact: Object.freeze({
+      source: "in-memory-documentation-snapshot",
+      sha256: snapshotDigest(files, searchIndexSource),
+      fileCount: files.size + 1,
+      bytes
+    })
+  });
 }
