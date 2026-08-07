@@ -18,6 +18,8 @@ Full-evaluation guard checkpoint: `ca680ab6`
 
 Result evidence checkpoint: `6b506463`
 
+Gate H closeout checkpoint: `d88e2b5d`
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 한눈에 보는 제안
