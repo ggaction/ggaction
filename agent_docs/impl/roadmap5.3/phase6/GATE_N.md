@@ -12,7 +12,7 @@ Gate M evidence checkpoint: `660cfa49`
 
 Guard checkpoint: `a298c4a1`
 
-Result evidence checkpoint: pending
+Result evidence checkpoint: `1f1707d1`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
