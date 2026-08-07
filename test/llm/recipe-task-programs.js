@@ -24,7 +24,7 @@ function completeRows(rows, fields) {
   return rows.filter(row => fields.every(field => row[field] !== null && row[field] !== undefined));
 }
 
-function regressionRSquared(rows, x, y) {
+function linearRegression(rows, x, y) {
   const xMean = rows.reduce((sum, row) => sum + row[x], 0) / rows.length;
   const yMean = rows.reduce((sum, row) => sum + row[y], 0) / rows.length;
   const xVariance = rows.reduce((sum, row) => sum + ((row[x] - xMean) ** 2), 0);
@@ -33,7 +33,7 @@ function regressionRSquared(rows, x, y) {
   const intercept = yMean - (slope * xMean);
   const total = rows.reduce((sum, row) => sum + ((row[y] - yMean) ** 2), 0);
   const residual = rows.reduce((sum, row) => sum + ((row[y] - (intercept + slope * row[x])) ** 2), 0);
-  return 1 - (residual / total);
+  return { slope, intercept, rSquared: 1 - (residual / total) };
 }
 
 function carsScatterOrigin({ cars }) {
@@ -52,8 +52,9 @@ function carsScatterOrigin({ cars }) {
 function carsRegressionJapan({ cars }) {
   const rows = completeCars(cars, ["Horsepower", "Miles_per_Gallon", "Origin"]);
   const japan = rows.filter(row => row.Origin === "Japan");
-  const labelRow = japan[Math.floor(japan.length * 0.7)];
-  const label = `R² = ${regressionRSquared(japan, "Horsepower", "Miles_per_Gallon").toFixed(2)}`;
+  const fit = linearRegression(japan, "Horsepower", "Miles_per_Gallon");
+  const labelX = japan.map(row => row.Horsepower).toSorted((left, right) => left - right)[Math.floor(japan.length * 0.7)];
+  const label = `R² = ${fit.rSquared.toFixed(2)}`;
   return chart()
     .createCanvas({ width: 720, height: 470, margin: { top: 54, right: 36, bottom: 70, left: 76 } })
     .createData({ id: "cars", values: rows })
@@ -70,8 +71,6 @@ function carsRegressionJapan({ cars }) {
       target: "points",
       selection: "japanSelection",
       fill: "#c65d00",
-      stroke: "#c65d00",
-      strokeWidth: 0,
       opacity: 1,
       dimOthers: { opacity: 0.12 },
       bringToFront: true
@@ -88,8 +87,8 @@ function carsRegressionJapan({ cars }) {
       strokeWidth: 3
     })
     .createData({ id: "fitLabel", values: [{
-      Horsepower: labelRow.Horsepower,
-      Miles_per_Gallon: labelRow.Miles_per_Gallon,
+      Horsepower: labelX,
+      Miles_per_Gallon: fit.intercept + fit.slope * labelX,
       label
     }] })
     .createTextMark({ id: "fitText", data: "fitLabel", fill: "#000000", fontSize: 13, fontWeight: 700, dx: 10, dy: -10 })
