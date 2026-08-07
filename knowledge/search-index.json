@@ -23,7 +23,7 @@
       "title": "createArcMark",
       "summary": "Creates a semantic arc mark and empty closed path collection.",
       "route": "/reference/actions/marks/#createarcmark",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "arc",
@@ -264,7 +264,7 @@
       "title": "createAxes",
       "summary": "Creates Cartesian or Polar axes directly, including inferred titles and ticks.",
       "route": "/reference/actions/guides/#createaxes",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -492,7 +492,7 @@
       "title": "createBarPlot",
       "summary": "Creates a complete vertical, horizontal, aggregate, ranged, grouped, or stacked bar chart through the existing bar policies.",
       "route": "/reference/actions/charts-data/#createbarplot",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -786,7 +786,7 @@
       "title": "createBoxPlot",
       "summary": "Creates a vertical or horizontal Tukey/min–max box plot from one categorical and one quantitative field.",
       "route": "/reference/actions/statistics/#createboxplot",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "box",
@@ -1446,7 +1446,7 @@
       "title": "createDerivedData",
       "summary": "Creates a named immutable derived dataset from an explicit transform pipeline and source dataset.",
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -1564,7 +1564,7 @@
       "title": "createErrorBand",
       "summary": "Creates a vertical or horizontal statistical or explicit interval ribbon.",
       "route": "/reference/actions/statistics/#createerrorband",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "band",
@@ -1710,7 +1710,7 @@
       "title": "createErrorBar",
       "summary": "Creates vertical or horizontal statistical or explicit intervals.",
       "route": "/reference/actions/statistics/#createerrorbar",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "bar",
@@ -1852,7 +1852,7 @@
       "title": "createGradientPlot",
       "summary": "Creates one density gradient strip per category from categorical and quantitative x/y roles.",
       "route": "/reference/actions/statistics/#creategradientplot",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -2148,7 +2148,7 @@
       "title": "createGrid",
       "summary": "Creates inferred horizontal and/or vertical Cartesian grid lines behind related marks, or infer the Polar grid families backed by stored theta/radius encodings.",
       "route": "/reference/actions/guides/#creategrid",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -2359,7 +2359,7 @@
       "title": "createHeatmap",
       "summary": "Creates one rect cell per valid pre gridded row, or bin raw quantitative x/y rows into ranged cells colored by count.",
       "route": "/reference/actions/charts-data/#createheatmap",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -2499,7 +2499,7 @@
       "title": "createHistogram",
       "summary": "Creates a bar layer with atomic bin and count encodings.",
       "route": "/reference/actions/charts-data/#createhistogram",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -3144,7 +3144,7 @@
       "title": "createLinePlot",
       "summary": "Creates a complete Cartesian line chart, including optional series grouping and appearance.",
       "route": "/reference/actions/charts-data/#createlineplot",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -3298,7 +3298,7 @@
       "title": "createParallelCoordinates",
       "summary": "Creates one open line path per source row across an ordered list of dimension local scales and axes.",
       "route": "/reference/actions/charts-data/#createparallelcoordinates",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -3906,7 +3906,7 @@
       "title": "createRegression",
       "summary": "Infer an eligible point layer and create immutable fitted data, optional grouped interval band paths, and grouped line paths.",
       "route": "/reference/actions/statistics/#createregression",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -4644,7 +4644,7 @@
       "title": "createScatterPlot",
       "summary": "Creates a complete Cartesian point chart from required x/y fields and optional appearance encodings.",
       "route": "/reference/actions/charts-data/#createscatterplot",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -4793,7 +4793,7 @@
       "title": "createTextMark",
       "summary": "Creates a semantic text layer for data-driven or constant labels.",
       "route": "/reference/actions/marks/#createtextmark",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -4912,7 +4912,7 @@
       "title": "createThetaAxis",
       "summary": "Creates the complete outer circular theta axis.",
       "route": "/reference/actions/guides/#createthetaaxis",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -5126,7 +5126,7 @@
       "title": "createTickMark",
       "summary": "Creates a centered line glyph that materializes after both x and y are complete.",
       "route": "/reference/actions/marks/#createtickmark",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "create",
@@ -5625,7 +5625,7 @@
       "title": "createViolinPlot",
       "summary": "Creates a vertical or horizontal categorical density plot from exactly one categorical and one quantitative x/y role.",
       "route": "/reference/actions/statistics/#createviolinplot",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -5775,7 +5775,7 @@
       "title": "createWindowData",
       "summary": "Creates an immutable derived dataset by applying ordered row number, rank, dense rank, cumulative sum, lag, lead, moving mean, or moving sum operations within optional partitions.",
       "route": "/reference/actions/charts-data/#createwindowdata",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "core",
@@ -8163,7 +8163,7 @@
       "title": "editCompositionLayout",
       "summary": "Edits spacing, cross axis alignment, or outer padding on an existing composition. columns changes wrapping only on a facet composition and is rejected for concat.",
       "route": "/reference/actions/charts-data/#editcompositionlayout",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "compose",
@@ -8996,7 +8996,7 @@
       "title": "editFacetScales",
       "summary": "Changes used facet scale channels between \"shared\" and \"independent\" resolution.",
       "route": "/reference/actions/charts-data/#editfacetscales",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "compose",
@@ -9985,7 +9985,7 @@
       "title": "editLegendLayout",
       "summary": "Edits one legend's placement, orientation, spacing, and alignment without changing its semantic channels.",
       "route": "/reference/actions/guides/#focused-legend-edits",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "and",
@@ -11250,7 +11250,7 @@
       "title": "editRectMark",
       "summary": "Edits rect appearance and rematerialize complete cells.",
       "route": "/reference/actions/marks/#editrectmark",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -11346,7 +11346,7 @@
       "title": "editRegression",
       "summary": "Revises a fitted regression model and its band or line through the stable point owner.",
       "route": "/reference/actions/statistics/#editregression",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "edit",
@@ -14857,7 +14857,7 @@
       "title": "encodeDensity",
       "summary": "Creates immutable KDE data, bind it to an area mark, encode its value and density fields, and materialize baseline closed paths.",
       "route": "/reference/actions/encodings/#encodedensity",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15197,7 +15197,7 @@
       "title": "encodeHorizon",
       "summary": "Creates immutable folded band data, bind it to an area mark, and author the ordinary x, y/y2, group, and color encodings needed for a compact Horizon chart.",
       "route": "/reference/actions/encodings/#encodehorizon",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -15603,7 +15603,7 @@
       "title": "encodePathOrder",
       "summary": "Orders vertices within each compatible Cartesian line or ranged-area series; fieldType defaults to \"quantitative\" and order defaults to \"ascending\".",
       "route": "/reference/actions/encodings/#encodepathorder",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -17427,7 +17427,7 @@
       "title": "encodeXRange",
       "summary": "Atomically composes area or ranged bar encodeX and encodeX2 .",
       "route": "/reference/actions/encodings/#encodexrange",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -18136,7 +18136,7 @@
       "title": "facet",
       "summary": "Repeats one complete chart by a field on its common row preserving dataset ancestor.",
       "route": "/reference/actions/charts-data/#facet",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "aggregate",
@@ -18877,7 +18877,7 @@
       "title": "orderCategories",
       "summary": "Assigns explicit or computed semantic order to a nominal/ordinal Cartesian x or y position.",
       "route": "/reference/actions/encodings/#ordercategories",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "assignment",
@@ -20763,7 +20763,7 @@
       "title": "selectMarks",
       "summary": "Stores a reusable semantic selection of final mark items without changing the current graphical output.",
       "route": "/reference/actions/advanced/#reusable-mark-selections",
-      "priority": 50,
+      "priority": 0,
       "terms": {
         "identity": [
           "advanced",
@@ -21835,13 +21835,17 @@
       "title": "Annotations and Label Layout",
       "summary": "Add data-driven text to marks and resolve avoidable collisions within bounded chart or Canvas space.",
       "route": "/recipes/annotations/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "and",
           "annotation",
+          "collision",
           "label",
-          "layout"
+          "layout",
+          "leader",
+          "line",
+          "text"
         ],
         "title": [
           "and",
@@ -22016,11 +22020,25 @@
       "title": "Bar Chart",
       "summary": "Create vertical or horizontal bars for comparing aggregate values across categories and optional groups.",
       "route": "/recipes/bar-chart/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "bar",
-          "chart"
+          "by",
+          "categorical",
+          "category",
+          "chart",
+          "colored",
+          "compare",
+          "comparison",
+          "grouped",
+          "horizontal",
+          "magnitude",
+          "order",
+          "side",
+          "sorted",
+          "total",
+          "vertical"
         ],
         "title": [
           "bar",
@@ -22183,11 +22201,16 @@
       "title": "Box Plot",
       "summary": "Create grouped boxes, medians, whiskers, and optional outliers from quantitative observations.",
       "route": "/recipes/box-plot/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "box",
-          "plot"
+          "distribution",
+          "outlier",
+          "plot",
+          "quartile",
+          "tukey",
+          "whisker"
         ],
         "title": [
           "box",
@@ -22339,7 +22362,7 @@
       "title": "Cartesian Guide Lifecycle",
       "summary": "Create, revise, remove, and recreate complete or focused Cartesian axis components.",
       "route": "/api/axes/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "cartesian",
@@ -22501,7 +22524,7 @@
       "title": "Category Ordering and Reset",
       "summary": "Order categorical position domains explicitly or by aggregate summaries and restore first-appearance order when needed.",
       "route": "/api/position/category-ordering/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "and",
@@ -22668,11 +22691,20 @@
       "title": "Program Composition",
       "summary": "Combine complete child charts into a stable layered, horizontal, or vertical program composition.",
       "route": "/recipes/composition/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "child",
           "compose",
-          "program"
+          "concatenate",
+          "dashboard",
+          "identity",
+          "immutable",
+          "panel",
+          "preserving",
+          "program",
+          "replace",
+          "slot"
         ],
         "title": [
           "compose",
@@ -22813,11 +22845,15 @@
       "title": "Density Area",
       "summary": "Create a smooth one-dimensional density estimate and render it as one or more filled area profiles.",
       "route": "/recipes/density-area/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "area",
-          "density"
+          "curve",
+          "density",
+          "distribution",
+          "filled",
+          "group"
         ],
         "title": [
           "area",
@@ -22977,7 +23013,7 @@
       "title": "Derived Data Workflows",
       "summary": "Create reusable filtered, density, interval, regression, and two-dimensional bin datasets with explicit identities.",
       "route": "/api/data/statistical-transforms/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "data",
@@ -23145,11 +23181,19 @@
       "title": "Error Band",
       "summary": "Create an uncertainty ribbon around an ordered series from explicit bounds or statistical intervals.",
       "route": "/recipes/error-band/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "band",
-          "error"
+          "boundary",
+          "confidence",
+          "error",
+          "grouped",
+          "interval",
+          "legend",
+          "line",
+          "temporal",
+          "uncertainty"
         ],
         "title": [
           "band",
@@ -23307,11 +23351,15 @@
       "title": "Error Bar",
       "summary": "Create point or aggregate estimates with vertical or horizontal interval rules and optional caps.",
       "route": "/recipes/error-bar/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "bar",
-          "error"
+          "cap",
+          "error",
+          "interval",
+          "rule",
+          "uncertainty"
         ],
         "title": [
           "bar",
@@ -23479,7 +23527,7 @@
       "title": "Extension-Authored Domain Action",
       "summary": "Wrap semantic and graphical primitives inside one traceable extension action with explicit ownership and materialization.",
       "route": "/extension/action-authoring/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "action",
@@ -23645,10 +23693,17 @@
       "title": "Facet",
       "summary": "Repeat one complete chart for each value of a categorical field with controlled headers, scales, and guides.",
       "route": "/recipes/facet/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
-          "facet"
+          "column",
+          "facet",
+          "header",
+          "multiple",
+          "panel",
+          "scale",
+          "shared",
+          "small"
         ],
         "title": [
           "facet"
@@ -23810,11 +23865,16 @@
       "title": "Gradient Plot",
       "summary": "Create within-category quantitative gradients with optional center lines for compact distribution comparison.",
       "route": "/recipes/gradient-plot/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "categorical",
+          "continuous",
+          "distribution",
           "gradient",
-          "plot"
+          "legend",
+          "plot",
+          "profile"
         ],
         "title": [
           "gradient",
@@ -23970,7 +24030,7 @@
       "title": "Grid Lifecycle",
       "summary": "Create, revise, selectively remove, and recreate Cartesian or Polar grid directions.",
       "route": "/api/grids/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "grid",
@@ -24135,11 +24195,17 @@
       "title": "Heatmap",
       "summary": "Create a rectangular cell chart that maps two discrete positions and a quantitative value to color.",
       "route": "/recipes/heatmap/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "binned",
+          "cell",
+          "count",
+          "dimensional",
           "heat",
-          "map"
+          "map",
+          "rectangular",
+          "two"
         ],
         "title": [
           "heat",
@@ -24298,10 +24364,22 @@
       "title": "Histogram",
       "summary": "Create a one-dimensional binned distribution whose bar lengths or heights represent observation counts.",
       "route": "/recipes/histogram/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
-          "histogram"
+          "bin",
+          "color",
+          "colored",
+          "compare",
+          "count",
+          "distribution",
+          "frequency",
+          "group",
+          "grouped",
+          "histogram",
+          "legend",
+          "numeric",
+          "title"
         ],
         "title": [
           "histogram"
@@ -24446,11 +24524,18 @@
       "title": "Horizon Chart",
       "summary": "Create a compact folded area chart for comparing signed time-series magnitude in limited vertical space.",
       "route": "/recipes/horizon/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "band",
+          "baseline",
           "chart",
-          "horizon"
+          "folded",
+          "horizon",
+          "negative",
+          "positive",
+          "series",
+          "time"
         ],
         "title": [
           "chart",
@@ -24614,12 +24699,18 @@
       "title": "Legend and Title Lifecycle",
       "summary": "Revise legend layout and components, edit chart titles, or remove complete guide-owned resources.",
       "route": "/api/legends/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "alignment",
           "and",
+          "label",
           "legend",
           "lifecycle",
+          "multiple",
+          "position",
+          "spacing",
+          "symbol",
           "title"
         ],
         "title": [
@@ -24791,11 +24882,21 @@
       "title": "Line Chart",
       "summary": "Create one or more ordered Cartesian paths for temporal trends or another meaningful sequence.",
       "route": "/recipes/line-chart/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "aggregate",
+          "axis",
           "chart",
-          "line"
+          "color",
+          "grouped",
+          "legend",
+          "line",
+          "mean",
+          "series",
+          "temporal",
+          "time",
+          "trend"
         ],
         "title": [
           "chart",
@@ -24956,7 +25057,7 @@
       "title": "Mark Lifecycle",
       "summary": "Create and restyle specialized marks, then remove jitter, label layout, radius, or complete mark resources.",
       "route": "/api/marks/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "lifecycle",
@@ -25132,11 +25233,14 @@
       "title": "Parallel Coordinates",
       "summary": "Create one polyline per observation across an ordered set of quantitative or categorical dimensions.",
       "route": "/recipes/parallel-coordinates/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "coordinate",
-          "parallel"
+          "dimension",
+          "multivariate",
+          "parallel",
+          "path"
         ],
         "title": [
           "coordinate",
@@ -25294,7 +25398,7 @@
       "title": "Path Ordering",
       "summary": "Order vertices inside each line or ranged-area series independently from source row order.",
       "route": "/recipes/path-ordering/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "ordering",
@@ -25461,7 +25565,7 @@
       "title": "Polar Guide Lifecycle",
       "summary": "Create, revise, remove, and recreate theta and radial axes for an existing Polar coordinate.",
       "route": "/api/axes/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "guide",
@@ -25615,7 +25719,7 @@
       "title": "Ranged and Specialized Encodings",
       "summary": "Encode interval ranges, offsets, Parallel dimensions, and remove complete encoding assignments safely.",
       "route": "/api/position-encodings/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "and",
@@ -25802,12 +25906,18 @@
       "title": "Regression Scatterplot",
       "summary": "Create a scatter plot with grouped fitted lines and optional confidence or prediction interval bands.",
       "route": "/recipes/regression-scatterplot/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "band",
+          "confidence",
+          "fit",
+          "line",
           "plot",
+          "r",
           "regression",
-          "scatter"
+          "scatter",
+          "squared"
         ],
         "title": [
           "plot",
@@ -25971,7 +26081,7 @@
       "title": "Resource and Facet Policies",
       "summary": "Create explicit coordinates and scales, resize a chart, and revise facet guide or scale resolution policies.",
       "route": "/api/composition/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "and",
@@ -26141,10 +26251,15 @@
       "title": "Rose Chart",
       "summary": "Create equal-angle Polar sectors whose radial lengths compare quantitative magnitudes across categories.",
       "route": "/recipes/rose-chart/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "arc",
+          "category",
           "chart",
+          "overlay",
+          "polar",
+          "radial",
           "rose"
         ],
         "title": [
@@ -26296,11 +26411,20 @@
       "title": "Scatterplot",
       "summary": "Create a Cartesian scatter plot that reveals relationships, clusters, trends, and outliers between two quantitative fields.",
       "route": "/recipes/scatterplot/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "export",
+          "immutable",
+          "pdf",
           "plot",
-          "scatter"
+          "png",
+          "point",
+          "program",
+          "relationship",
+          "renderer",
+          "scatter",
+          "svg"
         ],
         "title": [
           "plot",
@@ -26455,13 +26579,22 @@
       "title": "Selection and Highlight Lifecycle",
       "summary": "Select final mark items, revise the selector, apply or remove highlighting, and release stored selection state.",
       "route": "/api/appearance/selection-and-highlighting/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "and",
+          "dim",
+          "fill",
           "highlight",
           "lifecycle",
-          "select"
+          "orange",
+          "predicate",
+          "qualifying",
+          "reusable",
+          "select",
+          "stroke",
+          "style",
+          "unselected"
         ],
         "title": [
           "and",
@@ -26615,7 +26748,7 @@
       "title": "Statistical Owner Revisions",
       "summary": "Revise fitted models, intervals, distribution summaries, and their owned graphical components without rebuilding charts manually.",
       "route": "/api/regression/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "owner",
@@ -26779,12 +26912,16 @@
       "title": "Tick Distribution and Direction",
       "summary": "Create a one-dimensional tick distribution or rotate tick and point glyphs with a quantitative angle field.",
       "route": "/api/marks/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "and",
+          "baseline",
+          "dimensional",
           "direction",
           "distribution",
+          "one",
+          "rug",
           "tick"
         ],
         "title": [
@@ -26952,15 +27089,31 @@
       "title": "Time-Unit and Window Derivation",
       "summary": "Derive calendar units and ordered moving, ranking, lag, lead, or cumulative calculations for later chart encodings.",
       "route": "/api/data/window/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
           "and",
+          "calendar",
+          "centered",
           "derive",
+          "extract",
+          "group",
+          "mean",
+          "moving",
+          "observation",
+          "ordered",
+          "original",
+          "overlay",
+          "rolling",
           "series",
+          "smooth",
+          "summarize",
+          "temporal",
           "time",
+          "trend",
           "unit",
-          "window"
+          "window",
+          "year"
         ],
         "title": [
           "and",
@@ -27109,10 +27262,14 @@
       "title": "Violin Plot",
       "summary": "Create compact mirrored density profiles for comparing quantitative distributions across categorical groups.",
       "route": "/recipes/violin-plot/",
-      "priority": 70,
+      "priority": 100,
       "terms": {
         "identity": [
+          "bandwidth",
+          "density",
+          "distribution",
           "plot",
+          "shape",
           "violin"
         ],
         "title": [

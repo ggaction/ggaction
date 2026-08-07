@@ -81,12 +81,23 @@ function validateSearch(options, limits) {
   return { query: normalizeKnowledgeText(query), terms, limit };
 }
 
-function scoreRecord(record, query) {
+function recordHasTerm(record, term) {
+  return Object.values(record.terms).some(values => values.includes(term));
+}
+
+function rarityBonus(term, records) {
+  const documentFrequency = records.filter(record => recordHasTerm(record, term)).length;
+  return Math.min(36, Math.round(12 * Math.log2((records.length + 1) / (documentFrequency + 1))));
+}
+
+function scoreRecord(record, query, records) {
   const id = normalizeKnowledgeText(record.id);
   const title = normalizeKnowledgeText(record.title);
   const identity = `${record.kind} ${id} ${title}`;
-  let score = (record.priority ?? 0) + (id === query.query || title === query.query
-    ? 240
+  const exactIdentity = id === query.query || title === query.query;
+  const exactTypedIdentity = query.query === `${record.kind} ${id}` || query.query === `${record.kind} ${title}`;
+  let score = (record.priority ?? 0) + (exactIdentity || exactTypedIdentity
+    ? 1000
     : identity.includes(query.query)
       ? 80
       : 0);
@@ -99,7 +110,10 @@ function scoreRecord(record, query) {
         matched = true;
       }
     }
-    if (matched) matchedTerms.push(term);
+    if (matched) {
+      score += rarityBonus(term, records);
+      matchedTerms.push(term);
+    }
   }
   if (matchedTerms.length > 0) {
     score += matchedTerms.length * 10;
@@ -131,7 +145,7 @@ export async function searchKnowledge(options) {
   const index = await loadKnowledgeSearchIndex();
   const query = validateSearch(options, index.limits);
   const results = index.records
-    .map(record => ({ record, scored: scoreRecord(record, query) }))
+    .map(record => ({ record, scored: scoreRecord(record, query, index.records) }))
     .filter(entry => entry.scored.score > 0)
     .sort((left, right) =>
       right.scored.score - left.scored.score ||

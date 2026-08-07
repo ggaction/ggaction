@@ -31,7 +31,8 @@ test("generates one stable search record for every action, recipe, and LLM route
   assert.match(generated.generated.knowledgeSha256, /^[a-f0-9]{64}$/);
   assert.match(generated.generated.routeSourceSha256, /^[a-f0-9]{64}$/);
   assert.equal(new Set(generated.records.map(record => `${record.kind}:${record.id}`)).size, 210);
-  assert.equal(generated.records.filter(record => record.kind === "recipe").every(record => record.priority === 70), true);
+  assert.equal(generated.records.filter(record => record.kind === "recipe").every(record => record.priority === 100), true);
+  assert.equal(generated.records.filter(record => record.kind === "action").every(record => record.priority === 0), true);
   assert.equal(generated.records.filter(record => record.kind === "docs").every(record => record.priority === 0), true);
 });
 
@@ -45,14 +46,14 @@ test("ranks exact actions and recognizable tasks deterministically", async () =>
   const first = await searchKnowledge({ query: "scatter plot relationship between horsepower and efficiency" });
   const second = await searchKnowledge({ query: "scatter plot relationship between horsepower and efficiency" });
   assert.deepEqual(second, first);
-  assert.deepEqual(first.results.slice(0, 3).map(result => `${result.kind}:${result.id}`), [
+  assert.deepEqual(first.results.slice(0, 2).map(result => `${result.kind}:${result.id}`), [
     "recipe:scatterplot",
-    "recipe:regression-scatterplot",
-    "action:createScatterPlot"
+    "recipe:regression-scatterplot"
   ]);
+  assert.equal(first.results.some(result => `${result.kind}:${result.id}` === "action:createScatterPlot"), true);
 
   const lifecycle = await searchKnowledge({ query: "remove a Cartesian x axis" });
-  assert.equal(`${lifecycle.results[0].kind}:${lifecycle.results[0].id}`, "action:removeXAxis");
+  assert.equal(`${lifecycle.results[0].kind}:${lifecycle.results[0].id}`, "recipe:cartesian-guide-lifecycle");
   for (const result of [...exact.results, ...first.results, ...lifecycle.results]) {
     assert.deepEqual(Object.keys(result), ["kind", "id", "title", "summary", "route", "score", "matchedTerms"]);
   }
@@ -72,6 +73,9 @@ test("keeps every evaluation task in the production default top three", async ()
     const response = await searchKnowledge({ query: task.prompt });
     const results = response.results;
     const identities = new Set(results.map(result => `${result.kind}:${result.id}`));
+    const primaryRecipes = entry.expectedAny.filter(identity => identity.startsWith("recipe:"));
+    assert.equal(primaryRecipes.length, 1, `${entry.taskId}: one primary recipe route`);
+    assert.equal(`${results[0].kind}:${results[0].id}`, primaryRecipes[0], `${entry.taskId}: recipe-first`);
     assert.equal(entry.expectedAny.some(identity => identities.has(identity)), true, entry.taskId);
     assert.equal(results.findIndex(result => entry.expectedAny.includes(`${result.kind}:${result.id}`)) < 3, true, entry.taskId);
     assert.equal(results.length <= 6, true, entry.taskId);
@@ -79,6 +83,9 @@ test("keeps every evaluation task in the production default top three", async ()
   }
   for (const entry of paraphrases.cases) {
     const results = (await searchKnowledge({ query: entry.query })).results;
+    const primaryRecipes = entry.expectedAny.filter(identity => identity.startsWith("recipe:"));
+    assert.equal(primaryRecipes.length, 1, `${entry.id}: one primary recipe route`);
+    assert.equal(`${results[0].kind}:${results[0].id}`, primaryRecipes[0], `${entry.id}: recipe-first`);
     assert.equal(results.findIndex(result => entry.expectedAny.includes(`${result.kind}:${result.id}`)) < 3, true, entry.id);
   }
 });

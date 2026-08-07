@@ -24,6 +24,31 @@ const limits = Object.freeze({
   maximumReadCharacters: 16_000
 });
 
+const recipeTaskAliases = Object.freeze({
+  annotations: "annotation labels text collision layout leader lines",
+  "bar-chart": "bar grouped comparison compare categorical category order horizontal vertical side by side colored sorted total magnitude",
+  "box-plot": "box plot distribution quartile whisker outlier tukey",
+  composition: "dashboard composition concatenate replace child slot panel preserving identity immutable",
+  "density-area": "density area distribution filled curve group",
+  "error-band": "error band uncertainty confidence interval boundary grouped line temporal legend",
+  "error-bar": "error bar uncertainty interval rule cap",
+  facet: "facet small multiples panel shared scales headers columns",
+  "gradient-plot": "gradient profile continuous distribution categorical legend",
+  heatmap: "heat map binned rectangular cells two dimensional count",
+  histogram: "histogram distribution bins frequency counts grouped group color colored legend title compare numeric",
+  horizon: "horizon folded time series positive negative bands baseline",
+  "legend-title-lifecycle": "multiple legends title symbol label spacing alignment position",
+  "line-chart": "line chart temporal time series trend grouped series aggregate mean color axes legend",
+  "parallel-coordinates": "parallel coordinates multivariate dimensions paths",
+  "regression-scatterplot": "regression scatter plot fit line confidence band r squared",
+  "rose-chart": "rose polar radial categories arc overlay",
+  scatterplot: "scatter plot relationship points renderer export svg png pdf immutable program",
+  "selection-lifecycle": "selection highlight selected dim unselected reusable predicate qualifying fill stroke orange style",
+  "tick-distribution": "tick rug one dimensional distribution baseline",
+  "time-series-derivation": "moving window mean original overlay ordered time unit calendar temporal derived series observation smooth rolling centered extract summarize trend group year",
+  "violin-plot": "violin distribution density bandwidth shape"
+});
+
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
@@ -48,14 +73,14 @@ function summaryFromMarkdown(source) {
     .replace(/\s+/g, " ") ?? "";
 }
 
-function actionRecord(action, classification) {
+function actionRecord(action) {
   return {
     kind: "action",
     id: action.name,
     title: action.name,
     summary: action.summary,
     route: action.publicReference,
-    priority: classification === "primary" ? 50 : 0,
+    priority: 0,
     terms: {
       identity: tokens([action.name, action.domain, action.layer, action.lifecycle]),
       title: tokens([action.name]),
@@ -74,15 +99,16 @@ function actionRecord(action, classification) {
 
 function recipeRecord(recipe) {
   const actions = recipe.steps.flatMap(step => step.actions.map(action => action.name));
+  const taskAliases = recipeTaskAliases[recipe.id] ?? "";
   return {
     kind: "recipe",
     id: recipe.id,
     title: recipe.title,
     summary: recipe.intent,
     route: siteRoute(recipe.docs[0].path),
-    priority: 70,
+    priority: 100,
     terms: {
-      identity: tokens([recipe.id, recipe.title]),
+      identity: tokens([recipe.id, recipe.title, taskAliases]),
       title: tokens([recipe.title]),
       summary: tokens([recipe.intent, ...recipe.outcomes]),
       guidance: tokens([
@@ -123,9 +149,8 @@ export async function buildKnowledgeSearchIndex(knowledgeDocument) {
     route,
     source: await readFile(path.join(root, route.path), "utf8")
   })));
-  const classifications = new Map(knowledgeDocument.coverage.map(row => [row.name, row.classification]));
   const records = [
-    ...knowledgeDocument.actions.map(action => actionRecord(action, classifications.get(action.name))),
+    ...knowledgeDocument.actions.map(actionRecord),
     ...knowledgeDocument.recipes.map(recipeRecord),
     ...routeSources.map(({ route, source }) => routeRecord(route, source))
   ].sort((left, right) => left.kind.localeCompare(right.kind) || left.id.localeCompare(right.id));
