@@ -66,7 +66,7 @@ function efficiencyMetric(baseline, candidate, requiredReductionPercent) {
   };
 }
 
-function acceptanceDecision(a, b, c, thresholds) {
+export function acceptanceDecision(a, b, c, thresholds) {
   const heldout = correctnessDecision(a.splits.heldout, c.splits.heldout, thresholds);
   const overall = correctnessDecision(a.overall, c.overall, thresholds);
   const cVsBRegression = round(b.overall.finalCorrectnessPercent - c.overall.finalCorrectnessPercent, 2);
@@ -114,7 +114,7 @@ function acceptanceDecision(a, b, c, thresholds) {
   };
 }
 
-function compact(summary) {
+export function compact(summary) {
   return {
     condition: summary.condition,
     knowledgeMode: summary.knowledgeMode,

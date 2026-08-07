@@ -18,7 +18,7 @@ function argumentValue(name) {
   return index === -1 ? undefined : process.argv[index + 1];
 }
 
-function orderedRuns(corpus, plan) {
+export function orderedRuns(corpus, plan) {
   const runs = [];
   for (let repetition = 1; repetition <= plan.sampling.repetitionsPerTask; repetition += 1) {
     for (const task of corpus.tasks) runs.push({ task, repetition });
