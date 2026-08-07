@@ -12,6 +12,8 @@ Gate G approval checkpoint: `839aea46`
 
 Proposal checkpoint: `7cd462dd`
 
+Full-evaluation guard checkpoint: `ca680ab6`
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 한눈에 보는 제안
@@ -131,6 +133,16 @@ Responses API 실행을 합계 **$6 hard cap** 안에서 허용한다.
 
 사용자는 위 범위와 합계 $6 hard cap을 승인했다. Full-evaluation guard checkpoint가 push되기 전에는 API를
 실행하지 않는다.
+
+## 실행 전 guard 증거
+
+- Exact full-plan SHA-256: `4ff7726b0e0019b6dd0e87864c42dcad2b8792af4b8dc2dab3f200db67230a3c`
+- Focused full-evaluation guard: **6 / 6 passed**
+- `npm test`: **2,115 / 2,115 passed**
+- `knowledge:check`, `docs:metadata:check`, `docs:search:check`: passed
+- `package:check`: passed
+- Output root absent before checkpoint: confirmed
+- External model calls and additional spend during guard implementation: **0**
 
 ## 계속 차단되는 범위
 
