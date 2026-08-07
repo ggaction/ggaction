@@ -4,7 +4,7 @@
 
 `ready-for-review`
 
-Proposal checkpoint: pending
+Proposal checkpoint: `43e503e2`
 
 Candidate behavior checkpoint: `5606b1d509192006799042a43f76928b03062dc1`
 
