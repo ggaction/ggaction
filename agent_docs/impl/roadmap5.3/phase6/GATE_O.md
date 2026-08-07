@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Proposal checkpoint: `24ce2cac`
 
@@ -11,6 +11,8 @@ Gate N result approval checkpoint: `432f245c`
 Gate N closeout link checkpoint: `c14539a6`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
+
+Approved by the user on 2026-08-07.
 
 ## 한눈에 보는 제안
 
