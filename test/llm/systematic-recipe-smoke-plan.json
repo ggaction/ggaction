@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "approvalStatus": "approved",
+  "approvedOn": "2026-08-07",
+  "candidateCommit": "a44d3d4eb2c99526f8174d6af5fa2ebed087ec60",
+  "evaluationPlanSha256": "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  "corpusSha256": "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  "knowledgeSha256": "c8bd63f75021673a86c4d2f22a941cbb24647f8b0f4b615400148ce4934d504c",
+  "knowledgeSearchSha256": "df98a5216253af792fb1c1b4765127199c3bb2a91288c96d12808f25119538ed",
+  "publicRecipeSha256": "f0452d6d235618fc45e3dfaad20ade128096d39379371d0b842a7f114d0efa13",
+  "taskIds": [
+    "cars-box-plot",
+    "composed-dashboard",
+    "renderer-parity"
+  ],
+  "repetition": 1,
+  "conditions": ["B", "C"],
+  "maximumRuns": 6,
+  "outputRoot": ".artifacts/llm-eval/systematic-recipe-smoke-a44d3d4e",
+  "spendUsd": {
+    "expectedPerRun": 0.025,
+    "calculatedMaximumPerRun": 0.156,
+    "approvedCapPerCondition": 0.3,
+    "approvedCombinedCap": 0.6
+  }
+}
