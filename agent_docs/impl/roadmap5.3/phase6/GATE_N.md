@@ -14,7 +14,7 @@ Guard checkpoint: `a298c4a1`
 
 Result evidence checkpoint: `1f1707d1`
 
-Result approval checkpoint: pending
+Result approval checkpoint: `432f245c`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
