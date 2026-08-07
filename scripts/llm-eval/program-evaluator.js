@@ -137,6 +137,20 @@ function semanticMark(layers, type) {
   return layers.some(layer => layer.mark?.type === (aliases[normalizedType] ?? normalizedType));
 }
 
+function semanticAction(nodes, type) {
+  const actions = {
+    "box-plot": "createBoxPlot",
+    "error-band": "createErrorBand",
+    "error-bar": "createErrorBar",
+    "gradient-plot": "createGradientPlot",
+    histogram: "createHistogram",
+    horizon: "encodeHorizon",
+    "parallel-coordinates": "createParallelCoordinates",
+    violin: "createViolinPlot"
+  };
+  return actions[type] !== undefined && nodes.some(node => node.op === actions[type]);
+}
+
 function validationPassed(id, context) {
   const { programs, layers, datasets, coordinates, graphics, nodes, deep, renderEvidence } = context;
   if (id === "program:builds") return true;
@@ -147,11 +161,31 @@ function validationPassed(id, context) {
   if (id === "renderer:pdf:one-page-vector") return renderEvidence.pdf === true;
   if (id === "renderer:logical-dimensions-equal") return renderEvidence.logicalDimensionsEqual === true;
 
-  if (id.startsWith("semantic:")) return semanticMark(layers, id.slice("semantic:".length));
+  if (id.startsWith("semantic:")) {
+    const type = id.slice("semantic:".length);
+    return semanticMark(layers, type) || semanticAction(nodes, type);
+  }
   if (id.startsWith("encoding:")) {
     const [, channel, field, modifier] = id.split(":");
     if (field === "constant-baseline") {
-      return layers.some(layer => layer.encoding?.[channel]?.value !== undefined || layer.encoding?.[channel]?.datum !== undefined);
+      return layers.some(layer => {
+        const encoding = layer.encoding?.[channel];
+        if (encoding?.value !== undefined || encoding?.datum !== undefined) return true;
+        if (typeof encoding?.field !== "string") return false;
+        const dataset = datasets.find(candidate => candidate.id === layer.data);
+        const values = (dataset?.values ?? []).map(row => row[encoding.field]).filter(value => value !== undefined);
+        return values.length > 0 && new Set(values).size === 1;
+      });
+    }
+    if (field === "derived-year") {
+      return hasEncoding(layers, channel, "year", modifier === "temporal") &&
+        nodes.some(node => node.op === "createTimeUnitData" && node.args?.unit === "year");
+    }
+    if (["category", "profile"].includes(channel)) {
+      const create = nodes.find(node => node.op === "createGradientPlot");
+      const roles = [create?.args?.x, create?.args?.y].filter(Boolean);
+      const expectedTypes = channel === "category" ? ["nominal", "ordinal"] : ["quantitative"];
+      if (roles.some(role => role?.field === field && expectedTypes.includes(role?.fieldType ?? "quantitative"))) return true;
     }
     return hasEncoding(layers, channel, field, modifier === "temporal") ||
       hasTraceEncoding(nodes, channel, field, modifier === "temporal");
@@ -205,7 +239,10 @@ function validationPassed(id, context) {
   if (id.startsWith("density:bandwidth:")) return hasDeepPair(deep, "bandwidth", Number(id.split(":")[2]));
   if (id.startsWith("density:field:")) return hasDeepPair(deep, "field", id.split(":")[2]);
   if (id.startsWith("density:group:")) return hasDeepPair(deep, "group", id.split(":")[2]) || hasEncoding(layers, "group", id.split(":")[2]);
-  if (id.startsWith("bin:count:")) return hasDeepPair(deep, "bins", Number(id.split(":")[2])) || hasDeepPair(deep, "binCount", Number(id.split(":")[2]));
+  if (id.startsWith("bin:count:")) {
+    const count = Number(id.split(":")[2]);
+    return hasDeepPair(deep, "bins", count) || hasDeepPair(deep, "binCount", count) || hasDeepPair(deep, "maxBins", count);
+  }
   if (id.startsWith("bin:x:")) {
     const count = Number(id.split(":")[2]);
     return hasDeepPair(deep, "xBins", count) || nodes.some(node => node.args?.bin?.bins?.x === count);
@@ -229,7 +266,9 @@ function validationPassed(id, context) {
   if (id === "facet:headers") return graphics.some(graphic => /facet.*header/i.test(graphic.id));
   if (id === "facet:shared-scales") return !hasDeepPair(deep, "scales", "independent");
   if (id === "composition:facet") return programs.some(program => program.compositionSpec?.type === "facet");
-  if (id === "composition:hconcat") return programs.some(program => program.compositionSpec?.type === "hconcat");
+  if (id === "composition:hconcat") return programs.some(program =>
+    program.compositionSpec?.type === "hconcat" || program.compositionSpec?.direction === "horizontal"
+  );
   if (id === "composition:gap:24") return programs.some(program => program.compositionSpec?.gap === 24 || program.compositionSpec?.padding === 24);
   if (id === "composition:replace-child") return nodes.some(node => node.op === "replaceCompositionChild");
   if (id === "composition:slot-identity-preserved") return nodes.some(node => node.op === "replaceCompositionChild");
@@ -237,8 +276,13 @@ function validationPassed(id, context) {
   if (id.startsWith("horizon:baseline:")) return hasDeepPair(deep, "baseline", Number(id.split(":")[2]));
   if (id === "horizon:negative:red") return deep.some(entry => typeof entry.value === "string" && /red|#(?:[89a-f][0-9a-f]{5})/iu.test(entry.value));
   if (id === "horizon:positive:blue") return deep.some(entry => typeof entry.value === "string" && /blue|#(?:[0-7][0-9a-f]{5})/iu.test(entry.value));
-  if (id === "window:frame:-1:1") return hasDeepPair(deep, "frameCount", 2) || (hasDeepPair(deep, "start", -1) && hasDeepPair(deep, "end", 1));
-  if (id === "window:mean:life_expect") return hasDeepPair(deep, "operation", "mean") && hasDeepPair(deep, "field", "life_expect");
+  if (id === "window:frame:-1:1") return hasDeepPair(deep, "frameCount", 2) ||
+    (hasDeepPair(deep, "start", -1) && hasDeepPair(deep, "end", 1)) ||
+    (hasDeepPair(deep, "preceding", 1) && hasDeepPair(deep, "following", 1));
+  if (id === "window:mean:life_expect") return (
+    (hasDeepPair(deep, "operation", "mean") || hasDeepPair(deep, "op", "movingMean")) &&
+    hasDeepPair(deep, "field", "life_expect")
+  );
   if (id === "window:order:year") return hasDeepPair(deep, "field", "year");
   if (id === "series:original-and-moving") return layers.filter(layer => layer.mark?.type === "line").length >= 2;
   if (id === "time-unit:year") return hasDeepPair(deep, "unit", "year") || hasDeepPair(deep, "timeUnit", "year");
@@ -250,7 +294,9 @@ function validationPassed(id, context) {
   if (id === "annotation:r-squared:black") return graphics.some(graphic => graphic.type === "text" && JSON.stringify(graphic).match(/r(?:²|\^2|2)/iu));
   if (id === "layout:labels") return nodes.some(node => node.op === "layoutLabels");
   if (id === "layout:leader-lines") return nodes.some(node => /Leader/u.test(node.op)) || graphics.some(graphic => /leader/i.test(graphic.id));
-  if (id === "order:descending-total") return nodes.some(node => node.op === "orderCategories") && hasDeepPair(deep, "order", "descending");
+  if (id === "order:descending-total") return nodes.some(node => node.op === "orderCategories") &&
+    (hasDeepPair(deep, "order", "descending") || hasDeepPair(deep, "direction", "descending")) &&
+    hasDeepPair(deep, "aggregate", "sum");
 
   return false;
 }
@@ -285,6 +331,13 @@ export function runtimeFunctionsFromSource(source) {
     }
   }
   return [...names].sort();
+}
+
+export function actionFunctionsFromSource(source, actionNames) {
+  const candidates = new Set(
+    [...source.matchAll(/\.([A-Za-z][A-Za-z0-9]*)\s*\(/gu)].map(match => match[1])
+  );
+  return [...actionNames].filter(name => candidates.has(name)).sort();
 }
 
 function rootCanvas(program) {
@@ -336,15 +389,26 @@ async function renderProgram(program, task, artifactRoot) {
   return { evidence, files };
 }
 
-export async function evaluateGeneratedProgram({ source, task, datasets, artifactRoot }) {
-  validateGeneratedSource(source);
-  await mkdir(artifactRoot, { recursive: true });
-  const programFile = path.join(artifactRoot, "program.mjs");
-  await writeFile(programFile, source);
-  const module = await import(`${pathToFileURL(programFile).href}?v=${Date.now()}`);
-  const program = await module.buildChart(datasets);
+export async function evaluatePreparedProgram({
+  program,
+  task,
+  artifactRoot,
+  runtimeFunctions,
+  programFile,
+  programSha256,
+  workflowActions = []
+}) {
   if (program === null || typeof program !== "object" || program.graphicSpec === undefined || program.semanticSpec === undefined) {
-    throw new Error("buildChart(datasets) must return a ChartProgram.");
+    throw new Error("Evaluation requires a ChartProgram.");
+  }
+  await mkdir(artifactRoot, { recursive: true });
+  let evidenceProgramFile = programFile;
+  let evidenceProgramSha256 = programSha256;
+  if (evidenceProgramFile === undefined) {
+    const snapshot = `${JSON.stringify(program, null, 2)}\n`;
+    evidenceProgramFile = path.join(artifactRoot, "program.json");
+    evidenceProgramSha256 = createHash("sha256").update(snapshot).digest("hex");
+    await writeFile(evidenceProgramFile, snapshot);
   }
 
   const programs = collectPrograms(program);
@@ -356,7 +420,8 @@ export async function evaluateGeneratedProgram({ source, task, datasets, artifac
     .map(node => node.op);
   const actions = [...new Set([
     ...nodes.filter(node => ["user-facing", "advanced"].includes(layersByAction.get(node.op))).map(node => node.op),
-    ...directPrimitiveActions
+    ...directPrimitiveActions,
+    ...workflowActions.filter(action => layersByAction.has(action))
   ])].sort();
   const renderResult = await renderProgram(program, task, artifactRoot);
   const context = {
@@ -375,17 +440,35 @@ export async function evaluateGeneratedProgram({ source, task, datasets, artifac
     renderEvidence: renderResult.evidence
   };
   const validations = task.oracle.requiredValidations.map(id => ({ id, passed: validationPassed(id, context) }));
-  const sourceHash = createHash("sha256").update(source).digest("hex");
   return Object.freeze({
     program,
     actions,
-    runtimeFunctions: runtimeFunctionsFromSource(source),
+    runtimeFunctions: [...runtimeFunctions].sort(),
     validations,
     renderers: task.oracle.renderers.filter(renderer => renderResult.evidence[renderer] === true),
     artifacts: {
-      programFile,
-      programSha256: sourceHash,
+      programFile: evidenceProgramFile,
+      programSha256: evidenceProgramSha256,
       rendererFiles: renderResult.files
     }
+  });
+}
+
+export async function evaluateGeneratedProgram({ source, task, datasets, artifactRoot }) {
+  validateGeneratedSource(source);
+  await mkdir(artifactRoot, { recursive: true });
+  const programFile = path.join(artifactRoot, "program.mjs");
+  await writeFile(programFile, source);
+  const module = await import(`${pathToFileURL(programFile).href}?v=${Date.now()}`);
+  const program = await module.buildChart(datasets);
+  const actionIndex = JSON.parse(await readFile(new URL("../../agent_docs/contract/ACTION_INDEX.json", import.meta.url), "utf8"));
+  return evaluatePreparedProgram({
+    program,
+    task,
+    artifactRoot,
+    runtimeFunctions: runtimeFunctionsFromSource(source),
+    programFile,
+    programSha256: createHash("sha256").update(source).digest("hex"),
+    workflowActions: actionFunctionsFromSource(source, actionIndex.actions.map(action => action.name))
   });
 }

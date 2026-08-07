@@ -31,6 +31,7 @@ test("publishes complete deterministic action knowledge", async () => {
     recipes: 33,
     recipeActions: 173,
     recipeExamples: { canonical: 22, focused: 11 },
+    recipeExecutableExamples: { complete: 33, incomplete: 0, incompleteRecipes: [] },
     classifications: { primary: 32, supporting: 67, lifecycle: 71, "extension-only": 3 }
   });
   assert.deepEqual(generated, document);

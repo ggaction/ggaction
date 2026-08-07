@@ -14,6 +14,7 @@ import {
   normalizeResponseUsage
 } from "../../scripts/llm-eval/openai-responses.js";
 import {
+  actionFunctionsFromSource,
   evaluateGeneratedProgram,
   runtimeFunctionsFromSource,
   validateGeneratedSource
@@ -165,6 +166,13 @@ test("rejects generated programs with capabilities outside the chart sandbox", (
     import { chart, render as draw } from "ggaction";
     import { renderToSVG } from "ggaction/svg";
   `), ["chart", "render", "renderToSVG"]);
+  assert.deepEqual(actionFunctionsFromSource(`
+    const rose = chart().createArcMark();
+    return dashboard.replaceCompositionChild({ target: "detail", program: bars });
+  `, ["createArcMark", "createBarPlot", "replaceCompositionChild"]), [
+    "createArcMark",
+    "replaceCompositionChild"
+  ]);
 });
 
 test("validates composite statistical actions from their public input trace", async () => {
@@ -496,7 +504,7 @@ test("runs a mocked structured-knowledge search and one repair through Condition
   assert.deepEqual(trace.rounds[0].calls[0].arguments, {
     query: "scatter plot quantitative relationship"
   });
-  assert.equal(trace.rounds[0].calls[0].result.identities.includes("action:createScatterPlot"), true);
+  assert.equal(trace.rounds[0].calls[0].result.identities[0], "recipe:scatterplot");
   assert.equal(trace.rounds[0].calls[1].result.identity, "action:createScatterPlot");
   assert.equal(trace.rounds[1].calls[0].submission.valid, false);
   assert.equal(trace.rounds[2].calls[0].submission.valid, true);
