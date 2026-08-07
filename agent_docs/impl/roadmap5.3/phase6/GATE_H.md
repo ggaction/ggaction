@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`approved`
+`changes-requested`
 
 Approved by the user on 2026-08-07.
 
@@ -150,6 +150,66 @@ Responses API 실행을 합계 **$6 hard cap** 안에서 허용한다.
 - PR preparation/Ready 전환과 merge
 - Package publish, docs deployment와 release
 - Roadmap 5.3 closeout
+
+## 실행 결과 — 2026-08-07
+
+Guard checkpoint `ca680ab6`과 evidence checkpoint `f72a7c5e`를 push한 뒤 B 48회와 C 48회를 exact deterministic
+order로 실행했다. 두 condition 모두 완료됐고 model/provider/budget infrastructure failure는 없었다.
+
+| 항목 | Condition B | Condition C |
+| --- | ---: | ---: |
+| Runs | 48 | 48 |
+| First-pass / final valid | 2 / 2 | 2 / 2 |
+| Final correctness | 4.17% | 4.17% |
+| Held-out final correctness | 0% | 0% |
+| Failure categories | 19 invalid, 27 runtime | 46 runtime |
+| Model calls | 144 | 144 |
+| MCP calls | 0 | 144 |
+| Total tokens | 362,050 | 306,752 |
+| Actual cost | $0.7649018 | $0.8986558 |
+
+- Actual combined spend: **$1.6635576** / approved $6
+- Successful task: B/C 모두 `cars-scatter-origin`의 `r1`, `r2`만 통과
+- Resolved model: 모든 run이 정확히 `gpt-5.6-terra`
+- Provider, timeout, budget failures: **0**
+- Successful Canvas evidence: 4개, 모두 1280 × 800 non-empty PNG
+- Final frozen acceptance: **FAILED**
+
+Primary held-out final correctness는 A 20.83%에서 C 0%로 20.83 percentage points 낮아져 최대 2pp regression guard를
+통과하지 못했다. Overall final correctness도 A 35.42%에서 C 4.17%로 낮아졌다. 성공한 두 scatterplot의 token
+56.87%와 time-to-valid 35.71% 감소는 efficiency threshold를 통과했지만 correctness failure를 상쇄하지 않는다.
+
+## 실패 원인
+
+92개 실패 중 73개가 제출 뒤 runtime error였고, 그중 66개가 존재하지 않는 `renderCanvas`, `renderToCanvas` 또는
+`renderPDF` import였다. Generated 33개 recipe 중 정확한 `chart, render` import와 Canvas invocation을 모두 제공하는
+recipe는 Gate F에서 교정한 `scatterplot` 하나뿐이며, 이것이 유일한 성공 task와 일치한다.
+
+B는 19회에서 세 번째 model call을 추가 탐색에 사용해 제출하지 못했다. C는 48회 모두 MCP resource read 뒤
+제출했으므로 local MCP route는 submission 전환을 개선했지만, incomplete recipe의 runtime API 추측을 해결하지는
+못했다.
+
+상세 분석은 [`CORRECTED_FAILURE_ANALYSIS.md`](./CORRECTED_FAILURE_ANALYSIS.md), aggregate와 sanitized task evidence는
+[`LLM_CORRECTED_COMPARISON.md`](./LLM_CORRECTED_COMPARISON.md)와
+[`LLM_CORRECTED_COMPARISON.json`](./LLM_CORRECTED_COMPARISON.json)이 소유한다.
+
+## 봉인된 증거
+
+- Output root: `.artifacts/llm-eval/executable-recipe-full-e88fbea9/`
+- Evidence files: 276
+- Evidence-tree digest: `5dd3f5ce698c8af0e3b6c45a887b898ef5f6c69d7e95bd949baf93a64b2e7a36`
+- Manifest: `642ff704e0c2c73722b74c3a6b6fae17137ca55e056bb7dce2b8378765da2781`
+- B raw result: `091c139bdc2c0ed31d5c8b1e1848fb3895adac9a0c724dc6b72a4a7fbd151ffd`
+- C raw result: `97e35c048a177d7124311e8ec88afe64880d034dae89092012e4ce8841be52a8`
+- Corrected comparison JSON: `27a6bdd559d1c7cc3c8b2af47de666b9c78a6c6140b73be32ac8977ab391eb81`
+- Corrected comparison Markdown: `989c9253d9b5a6087b9de2d0af242288a6c0abb36dc9cf813b2e8b9f9cd42e09`
+- Sanitized trace/result/validation credential and raw-response scan: passed
+
+## Review decision
+
+Candidate는 acceptance threshold를 통과하지 못했으므로 Gate H는 `changes-requested`다. Integration, PR, merge와
+benefit claim을 제안하지 않는다. 사용자가 이 failed evidence와 non-integration 판정을 승인하면 Gate H 결과를 닫고,
+추가 correction 여부를 별도로 결정한다.
 
 ## 공식 근거
 
