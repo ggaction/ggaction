@@ -620,7 +620,7 @@ test("runs the corrected one-read box recipe flow through mocked Conditions B an
         row.Origin != null && row.Miles_per_Gallon != null
       );
       return chart()
-        .createCanvas({ width: 640, height: 400, margin: { top: 35, right: 40, bottom: 65, left: 75 } })
+        .createCanvas({ width: 640, height: 400, margin: { top: 30, right: 30, bottom: 60, left: 70 } })
         .createData({ values })
         .createBoxPlot({
           x: { field: "Origin", fieldType: "nominal" },
@@ -707,18 +707,18 @@ test("runs the bounded two-read composition flow through mocked Conditions B and
         row.month != null && row.cause != null && row.value != null
       );
       const scatter = chart()
-        .createCanvas({ width: 300, height: 300, margin: { top: 30, right: 30, bottom: 60, left: 65 } })
+        .createCanvas({ width: 360, height: 300, margin: { top: 30, right: 120, bottom: 60, left: 65 } })
         .createData({ values: cars })
         .createScatterPlot({ x: "Horsepower", y: "Miles_per_Gallon", color: "Origin" });
       const rose = chart()
-        .createCanvas({ width: 300, height: 300, margin: { top: 35, right: 35, bottom: 35, left: 35 } })
+        .createCanvas({ width: 360, height: 300, margin: { top: 35, right: 120, bottom: 35, left: 35 } })
         .createData({ values: nightingale })
         .createArcMark({ padAngle: 1 })
         .encodeTheta({ field: "month", fieldType: "ordinal" })
         .encodeR({ field: "value" })
         .encodeColor({ field: "cause", layout: "overlay" });
       const summary = chart()
-        .createCanvas({ width: 300, height: 300, margin: { top: 30, right: 30, bottom: 80, left: 65 } })
+        .createCanvas({ width: 300, height: 300, margin: { top: 30, right: 24, bottom: 80, left: 65 } })
         .createData({ values: nightingale })
         .createBarPlot({
           x: { field: "cause", fieldType: "nominal" },
