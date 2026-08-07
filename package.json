@@ -92,6 +92,7 @@
     "eval:corrective-smoke-retry": "node scripts/llm-eval/run-corrective-smoke-retry.js",
     "eval:executable-recipe-smoke": "node scripts/llm-eval/run-executable-recipe-smoke.js",
     "eval:systematic-recipe-smoke": "node scripts/llm-eval/run-systematic-recipe-smoke.js",
+    "eval:task-closed-smoke": "node scripts/llm-eval/run-task-closed-smoke.js",
     "eval:corrective-full": "node scripts/llm-eval/run-executable-recipe-full.js",
     "eval:corrected-comparison": "node scripts/llm-eval/summarize-corrected-comparison.js",
     "docs:capabilities": "node scripts/generate-doc-capabilities.js",

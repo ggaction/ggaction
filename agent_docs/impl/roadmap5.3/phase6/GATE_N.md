@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`proposed — paid execution blocked`
+`approved — guard verified, remote checkpoint pending, paid execution pending`
 
 Proposal checkpoint: `c4ccc5b5`
 
@@ -11,6 +11,10 @@ Candidate behavior checkpoint: `622286f9501bd76b89e0a4e8a694c5f3b603f098`
 Gate M evidence checkpoint: `660cfa49`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
+
+Approved by the user on 2026-08-07 with a combined `$0.60` hard cap.
+
+Task-closed smoke plan SHA-256: `0fbbb6022b26fb0f55c204c82585786ce1cb5ce80fd3c41f50f9108569f7be13`
 
 ## 한눈에 보는 제안
 
@@ -110,6 +114,18 @@ run당 `$0.025`, 최대 6회 `$0.15`를 expected cost로 둔다.
 Guard 구현 중 candidate behavior나 generated knowledge가 바뀌면 이 proposal의 hash가 무효가 되므로 paid execution을 멈추고
 다시 제안한다.
 
+## 무과금 guard 검증 결과
+
+- Gate N 전용 guard: `6/6` pass
+- 관련 evaluation/knowledge/MCP/recipe 집중 검증: `41/41` pass
+- 전체 suite: `2,135` total, `2,121` pass, `14` expected historical paid-plan SHA guard rejects
+- Package MCP check: pass (`173` actions, `33` recipes, `4` docs)
+- 전용 output root: absent
+- Credential reads / external model calls / actual spend: `0 / 0 / $0`
+
+전체 suite의 14건은 이전 Gate G/H/K runner가 새 candidate knowledge SHA를 의도대로 거부한 결과다. 이전 paid plan 파일의
+내용과 SHA-256은 변경하지 않았으며, Gate N runner는 그 세 historical plan digest 자체도 별도로 고정한다.
+
 ## Smoke 통과 조건
 
 1. B/C 최대 6개 result의 resolved model이 정확히 `gpt-5.6-terra`다.
@@ -135,7 +151,8 @@ Guard 구현 중 candidate behavior나 generated knowledge가 바뀌면 이 prop
 4. Combined **$0.60 hard cap** 안의 Responses API 호출
 5. Sanitized result/evidence 기록과 별도 review 요청
 
-현재는 proposal만 작성했으며 credential을 읽지 않았고 external model call과 추가 비용은 **0**이다.
+사용자가 위 범위와 combined `$0.60` hard cap을 승인했다. Guard checkpoint가 push되기 전에는 credential을 읽거나
+external model call을 실행하지 않는다.
 
 ## 계속 차단되는 범위
 

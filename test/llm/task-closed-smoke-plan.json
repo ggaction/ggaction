@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "approvalStatus": "approved",
+  "approvedOn": "2026-08-07",
+  "candidateCommit": "622286f9501bd76b89e0a4e8a694c5f3b603f098",
+  "evaluationPlanSha256": "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  "corpusSha256": "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  "knowledgeSha256": "9dc09e3faabed04eb36aaa6121072d9860e027e680b6d13d7bdd854f1684a9df",
+  "knowledgeSearchSha256": "2aa288d2c805a02d3c9f675fc5e8a8f7bbe203dff8af7f5b72ddae45cab352d4",
+  "publicRecipeSha256": "221a4bda37bd960800068f289051969855045c9bbe30b549cec995b027ae1cb3",
+  "deliveryMatrixSha256": "4c1d854d01478d9601509bde370b48999f44f06825475aa366642b031cdc9507",
+  "taskIds": [
+    "cars-box-plot",
+    "composed-dashboard",
+    "renderer-parity"
+  ],
+  "repetition": 1,
+  "conditions": ["B", "C"],
+  "maximumRuns": 6,
+  "outputRoot": ".artifacts/llm-eval/task-closed-smoke-622286f9",
+  "spendUsd": {
+    "expectedPerRun": 0.025,
+    "calculatedMaximumPerRun": 0.156,
+    "approvedCapPerCondition": 0.3,
+    "approvedCombinedCap": 0.6
+  }
+}
