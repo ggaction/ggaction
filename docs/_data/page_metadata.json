@@ -133,7 +133,7 @@
   },
   "/recipes/composition/": {
     "title": "Composition Recipe",
-    "description": "values is an array of plain row objects containing the named fields and a kind value of \"point\" or \"bar\".",
+    "description": "values is an array of plain row objects containing the named fields, a kind value of \"point\" or \"bar\", and a group value for point colors.",
     "image": "/assets/images/program-composition.png"
   },
   "/recipes/facet/": {
