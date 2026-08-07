@@ -9,19 +9,42 @@ const executable = fileURLToPath(new URL("../../bin/ggaction-mcp.js", import.met
 export function createLocalMcpKnowledgeClient({
   command = process.execPath,
   args = [executable],
-  cwd = root
+  cwd = root,
+  artifact = null
 } = {}) {
   let client;
   let transport;
   let connecting;
+  let startupStartedAt;
+  let startupDurationMs;
+  const operations = {
+    initialize: 0,
+    listResources: 0,
+    listResourceTemplates: 0,
+    listTools: 0,
+    readResource: 0,
+    callTool: 0
+  };
+
+  const count = name => {
+    operations[name] += 1;
+  };
+
+  const snapshot = () => Object.freeze({
+    ...operations,
+    total: Object.values(operations).reduce((sum, value) => sum + value, 0)
+  });
 
   async function connection() {
     if (client) return client;
     if (!connecting) {
       connecting = (async () => {
+        startupStartedAt = Date.now();
         transport = new StdioClientTransport({ command, args, cwd, stderr: "pipe" });
         const next = new Client({ name: "ggaction-evaluation", version: "1.0.0" });
+        count("initialize");
         await next.connect(transport);
+        startupDurationMs = Date.now() - startupStartedAt;
         client = next;
         return next;
       })();
@@ -30,6 +53,7 @@ export function createLocalMcpKnowledgeClient({
   }
 
   async function callTool(name, arguments_) {
+    count("callTool");
     const result = await (await connection()).callTool({ name, arguments: arguments_ });
     if (result.isError) throw new Error(result.content?.[0]?.text ?? `MCP tool ${name} failed.`);
     const text = result.content?.find(item => item.type === "text")?.text;
@@ -40,6 +64,9 @@ export function createLocalMcpKnowledgeClient({
   return Object.freeze({
     async discover() {
       const connected = await connection();
+      count("listResources");
+      count("listResourceTemplates");
+      count("listTools");
       const [resources, templates, tools] = await Promise.all([
         connected.listResources(),
         connected.listResourceTemplates(),
@@ -55,10 +82,20 @@ export function createLocalMcpKnowledgeClient({
     },
     callTool,
     async read(uri) {
+      count("readResource");
       const result = await (await connection()).readResource({ uri });
       const text = result.contents?.find(item => "text" in item)?.text;
       if (typeof text !== "string") throw new Error(`MCP resource ${uri} returned no text content.`);
       return text;
+    },
+    operationSnapshot: snapshot,
+    lifecycleSnapshot() {
+      return Object.freeze({
+        connected: client !== undefined,
+        startupStartedAt: startupStartedAt ?? null,
+        startupDurationMs: startupDurationMs ?? null,
+        artifact
+      });
     },
     async close() {
       await client?.close();
