@@ -123,6 +123,7 @@ commit/push한 뒤에만 승인을 요청한다.
 | R53-P5-A | 5 | `ggaction-mcp` installed-package behavior, read-only boundary와 browser isolation | Final paid comparison |
 | R53-P6-A | 6 | Final model/repetition/cost proposal for B/C comparison | Final 유료 LLM 호출 |
 | R53-P6-B | 6 | A/B/C benchmark result, acceptance decision와 integration candidate | PR preparation |
+| R53-P6-H | 6 | Corrective candidate의 96-run B/C scope, 비용과 최종 판정 | Corrective 전체 유료 재평가 |
 | R53-Exit | 6 | Merged-main package/docs/contracts/tests와 reproducible benchmark evidence | 완료 선언과 release preparation |
 
 ## Phase 0 — Baseline and measurement contract

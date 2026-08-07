@@ -58,4 +58,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_E_RETRY.md`](./GATE_E_RETRY.md) — provider-schema correction 뒤 별도 B/C smoke 재시도
 - [`GATE_F.md`](./GATE_F.md) — self-contained executable recipe correction과 무과금 증거
 - [`GATE_G.md`](./GATE_G.md) — executable recipe의 exact B/C paid smoke와 $0.20 hard cap
+- [`GATE_H.md`](./GATE_H.md) — complete corrective B/C evaluation의 96-run scope와 $6 hard cap
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
