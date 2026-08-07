@@ -91,6 +91,10 @@
       "fix": "Set guides.legend to false in createBoxPlot or manage the legend explicitly through guide lifecycle actions."
     },
     {
+      "problem": "A copied box-plot recipe with an implicit Canvas leaves its dimensions and guide space unresolved.",
+      "fix": "Keep the example's explicit Canvas width, height, and margins when adapting fields or returning the program to a host renderer."
+    },
+    {
       "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
       "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
     }

@@ -116,7 +116,7 @@ test("delivers the supported box color and composition replacement variants", as
   assert.match(inventedFacadeWarning, /createArcMark[\s\S]*encodeTheta[\s\S]*encodeR[\s\S]*encodeColor/u);
 });
 
-test("reproduces incomplete Canvas guidance and a narrow colored replacement", async () => {
+test("publishes complete box Canvas guidance and reproduces a narrow colored replacement", async () => {
   const { document } = await buildKnowledge();
   const box = document.recipes.find(recipe => recipe.id === "box-plot");
   const values = [
@@ -125,7 +125,15 @@ test("reproduces incomplete Canvas guidance and a narrow colored replacement", a
     { month: "June", cause: "Wounds & Injuries", value: 2 }
   ];
 
-  assert.match(box.exampleSource, /\.createCanvas\(\)/u);
+  assert.match(
+    box.exampleSource,
+    /\.createCanvas\(\{[\s\S]*width:\s*640,[\s\S]*height:\s*400,[\s\S]*margin:\s*\{ top: 30, right: 30, bottom: 60, left: 70 \}[\s\S]*\}\)/u
+  );
+  assert.doesNotMatch(box.exampleSource, /\.createCanvas\(\)/u);
+  assert.match(
+    box.pitfalls.map(pitfall => pitfall.fix).join("\n"),
+    /explicit Canvas width, height, and margins/u
+  );
   assert.throws(
     () => chart()
       .createCanvas({

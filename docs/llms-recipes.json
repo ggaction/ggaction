@@ -6,7 +6,7 @@
     "actionSourceSha256": "2245022872d3131c15a7f539ee66ff9e79e2e7a6c1f0a04aee0f799ec830cc42",
     "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
     "recipeCount": 33,
-    "recipeSourceSha256": "638a22159e52b4540f9d758e7633d84b6c051d59d634dc5175ce1de1a8418e0f",
+    "recipeSourceSha256": "0140b2bccf8a1199b06a162bf8d4bfa5d3676429425df514646c5292422d6573",
     "recipeCoverageSha256": "13d9ee4ea560b4d01ae94ed9ac77828d82a8d52989051f51637027500071dc19"
   },
   "recipes": [
@@ -350,6 +350,10 @@
           "fix": "Set guides.legend to false in createBoxPlot or manage the legend explicitly through guide lifecycle actions."
         },
         {
+          "problem": "A copied box-plot recipe with an implicit Canvas leaves its dimensions and guide space unresolved.",
+          "fix": "Keep the example's explicit Canvas width, height, and margins when adapting fields or returning the program to a host renderer."
+        },
+        {
           "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
           "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
         }
@@ -366,7 +370,7 @@
           "path": "docs/recipes/box-plot.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createBoxPlot({\n    x: { field: \"category\", fieldType: \"nominal\" },\n    y: { field: \"value\" },\n    guides: { legend: false }\n  })\n  .encodeColor({\n    target: \"boxPlot\",\n    field: \"category\",\n    fieldType: \"nominal\"\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({\n    width: 640,\n    height: 400,\n    margin: { top: 30, right: 30, bottom: 60, left: 70 }\n  })\n  .createData({ values })\n  .createBoxPlot({\n    x: { field: \"category\", fieldType: \"nominal\" },\n    y: { field: \"value\" },\n    guides: { legend: false }\n  })\n  .encodeColor({\n    target: \"boxPlot\",\n    field: \"category\",\n    fieldType: \"nominal\"\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/box-plot.md"
     },
     {

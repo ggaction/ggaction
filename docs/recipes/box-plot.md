@@ -15,7 +15,11 @@ title: Box Plot Recipe
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({
+    width: 640,
+    height: 400,
+    margin: { top: 30, right: 30, bottom: 60, left: 70 }
+  })
   .createData({ values })
   .createBoxPlot({
     x: { field: "category", fieldType: "nominal" },
@@ -52,7 +56,9 @@ component appearance through the stable box-plot owner. Color is a post-facade
 encoding: call `encodeColor({ target: "boxPlot", ... })` instead of passing an
 unsupported `color` option to `createBoxPlot`. When color repeats the x or y
 category, keep the redundant legend disabled through `guides.legend` or manage
-it explicitly with the guide lifecycle actions.
+it explicitly with the guide lifecycle actions. Keep the explicit Canvas size
+and margins when adapting this recipe so the axes, labels, and box geometry
+have defined drawing space without another layout lookup.
 
 ## Continue
 
