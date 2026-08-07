@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Approved by the user on 2026-08-07.
 
 Candidate behavior checkpoint: `e88fbea9761ddc46268c400be1af280e838b71a2`
 
@@ -126,6 +128,9 @@ Responses API 실행을 합계 **$6 hard cap** 안에서 허용한다.
 
 승인은 corrected comparison 결과 자체의 승인이나 PR/merge를 뜻하지 않는다. 실행 뒤 이 Gate를
 `ready-for-review`로 다시 제출하고 멈춘다.
+
+사용자는 위 범위와 합계 $6 hard cap을 승인했다. Full-evaluation guard checkpoint가 push되기 전에는 API를
+실행하지 않는다.
 
 ## 계속 차단되는 범위
 
