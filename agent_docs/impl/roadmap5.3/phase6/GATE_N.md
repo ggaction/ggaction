@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`approved — guard checkpoint ready, paid execution pending`
+`ready-for-review`
 
 Proposal checkpoint: `c4ccc5b5`
 
@@ -11,6 +11,8 @@ Candidate behavior checkpoint: `622286f9501bd76b89e0a4e8a694c5f3b603f098`
 Gate M evidence checkpoint: `660cfa49`
 
 Guard checkpoint: `a298c4a1`
+
+Result evidence checkpoint: pending
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
@@ -158,13 +160,44 @@ external model call을 실행하지 않는다.
 
 ## 계속 차단되는 범위
 
-- Gate N 명시적 승인 전의 credential read와 paid call
+- Condition C 실행과 Gate N paid retry
 - Frozen 24-task full B/C rerun
 - Correctness/efficiency benefit claim
 - Historical paid-plan hash 변경
 - PR preparation, Ready 전환과 merge
 - Package publish, docs deployment와 release
 - Roadmap 5.3 closeout
+
+## 실행 결과 — 2026-08-07
+
+Guard checkpoint `a298c4a1`과 그 원격 연결 커밋 `bc7d57d8`을 push한 뒤 Condition B 세 건을 exact order로 실행했다.
+`renderer-parity`만 first-pass/final valid였고 나머지 두 task가 실패했으므로 guard가 Condition C를 한 건도 시작하지
+않았다.
+
+| Task | First-pass / final | Failure | Tokens | Cost |
+| --- | --- | --- | ---: | ---: |
+| `cars-box-plot` | false / false | 마지막 call이 추가 docs search; no submission | 6,436 | $0.0096989 |
+| `composed-dashboard` | false / false | replacement bar legend right-margin error | 9,021 | $0.0268898 |
+| `renderer-parity` | true / true | none; four renderers valid | 7,087 | $0.0150817 |
+
+- B first-pass/final valid: **1 / 3**
+- C runs: **0 / 3**
+- Model calls: **9**
+- Total tokens: **22,544**
+- Actual combined spend: **$0.0516704 / $0.60**
+- Provider, model, timeout와 budget failure: **0**
+- Stop reason: `condition-b-not-first-pass-valid`
+- Full rerun and benefit claim decision: **blocked by failed smoke**
+
+Box와 composition은 모두 expected primary recipe를 top 1에서 검색했다. Composition은 dependency recipe도 같은 response에서
+정확히 읽어 Gate K의 guessed API를 제거했지만 guide layout에서 실패했다. Box는 exact recipe가 task-required flow를
+포함했는데도 제출 전 current-doc fallback으로 이탈했다. 상세 분석과 봉인된 artifact digest는
+[`TASK_CLOSED_SMOKE_ANALYSIS.md`](./TASK_CLOSED_SMOKE_ANALYSIS.md)가 소유한다.
+
+## Review decision
+
+Gate N의 승인된 유료 실행 범위는 끝났다. Failed evidence와 non-integration 판단은 사용자 review 전이며, 이 review가
+끝나기 전에는 correction, 재시도, Condition C, full evaluation, PR 또는 benefit claim을 진행하지 않는다.
 
 ## 근거
 

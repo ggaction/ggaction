@@ -50,7 +50,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] Task-closed recipe delivery correction and complete unpaid evidence
 - [x] R53-P6-M completion evidence approval
 - [x] R53-P6-N representative paid retry approval
-- [ ] R53-P6-N guard checkpoint and paid execution
+- [x] R53-P6-N guard checkpoint and paid execution
+- [ ] R53-P6-N failed result and non-integration review
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
