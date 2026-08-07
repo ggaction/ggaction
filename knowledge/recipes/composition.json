@@ -63,6 +63,10 @@
       "fix": "Build the child with createArcMark, encodeTheta, encodeR, and encodeColor from the rose-chart recipe before composing it."
     },
     {
+      "problem": "A parent composition cannot repair an automatic legend that exceeds one child Canvas margin.",
+      "fix": "Build every child independently; reserve explicit side margin when keeping a meaningful legend, or set guides.legend to false when it is unnecessary or redundant."
+    },
+    {
       "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
       "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
     }

@@ -116,9 +116,10 @@ test("delivers the supported box color and composition replacement variants", as
   assert.match(inventedFacadeWarning, /createArcMark[\s\S]*encodeTheta[\s\S]*encodeR[\s\S]*encodeColor/u);
 });
 
-test("publishes complete box Canvas guidance and reproduces a narrow colored replacement", async () => {
+test("publishes submit-ready Canvas and layout-safe composition guidance", async () => {
   const { document } = await buildKnowledge();
   const box = document.recipes.find(recipe => recipe.id === "box-plot");
+  const composition = document.recipes.find(recipe => recipe.id === "composition");
   const values = [
     { month: "April", cause: "Zymotic Diseases", value: 5 },
     { month: "May", cause: "Other Causes", value: 3 },
@@ -149,6 +150,40 @@ test("publishes complete box Canvas guidance and reproduces a narrow colored rep
       }),
     /Legend layout requires more right-margin space/u
   );
+
+  assert.doesNotThrow(() => chart()
+    .createCanvas({
+      width: 308,
+      height: 400,
+      margin: { top: 48, right: 120, bottom: 70, left: 58 }
+    })
+    .createData({ values })
+    .createBarPlot({
+      x: { field: "month", fieldType: "ordinal" },
+      y: { field: "value" },
+      color: { field: "cause", fieldType: "nominal" }
+    }));
+  assert.doesNotThrow(() => chart()
+    .createCanvas({
+      width: 308,
+      height: 400,
+      margin: { top: 48, right: 24, bottom: 70, left: 58 }
+    })
+    .createData({ values })
+    .createBarPlot({
+      x: { field: "month", fieldType: "ordinal" },
+      y: { field: "value" },
+      color: { field: "cause", fieldType: "nominal" },
+      guides: { axes: { x: {}, y: {} }, legend: false }
+    }));
+  assert.match(
+    composition.exampleSource,
+    /margin:\s*\{ top: 24, right: 120, bottom: 48, left: 54 \}[\s\S]*color:\s*\{ field: "group", fieldType: "nominal" \}/u
+  );
+  assert.match(composition.exampleSource, /guides:\s*\{ axes: \{ x: \{\}, y: \{\} \}, legend: false \}/u);
+  const compositionGuidance = composition.pitfalls.map(pitfall => `${pitfall.problem}\n${pitfall.fix}`).join("\n");
+  assert.match(compositionGuidance, /parent composition cannot repair an automatic legend/u);
+  assert.match(compositionGuidance, /Build every child independently/u);
 });
 
 test("closes every frozen task from the exact delivered recipe payload", async () => {

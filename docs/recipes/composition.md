@@ -15,12 +15,24 @@ title: Composition Recipe
 import { chart, hconcat, render } from "ggaction";
 
 const points = chart()
-  .createCanvas({ width: 280, height: 220 })
+  .createCanvas({
+    width: 360,
+    height: 220,
+    margin: { top: 24, right: 120, bottom: 48, left: 54 }
+  })
   .createData({ values: values.filter(row => row.kind === "point") })
-  .createScatterPlot({ x: "x", y: "y" });
+  .createScatterPlot({
+    x: "x",
+    y: "y",
+    color: { field: "group", fieldType: "nominal" }
+  });
 
 const bars = chart()
-  .createCanvas({ width: 260, height: 220 })
+  .createCanvas({
+    width: 300,
+    height: 220,
+    margin: { top: 24, right: 24, bottom: 48, left: 54 }
+  })
   .createData({ values: values.filter(row => row.kind === "bar") })
   .createBarPlot({
     x: { field: "category", fieldType: "nominal" },
@@ -28,7 +40,11 @@ const bars = chart()
   });
 
 const replacement = chart()
-  .createCanvas({ width: 260, height: 220 })
+  .createCanvas({
+    width: 300,
+    height: 220,
+    margin: { top: 24, right: 24, bottom: 48, left: 54 }
+  })
   .createData({ values: values.filter(row => row.kind === "bar") })
   .createBarPlot({
     x: { field: "category", fieldType: "nominal" },
@@ -52,9 +68,9 @@ if (!context) throw new Error("Missing #chart Canvas context.");
 render(program, context);
 ```
 
-`values` is an array of plain row objects containing the named fields and a
-`kind` value of `"point"` or `"bar"`. Every child and replacement must already
-have one complete materialized Canvas.
+`values` is an array of plain row objects containing the named fields, a
+`kind` value of `"point"` or `"bar"`, and a `group` value for point colors.
+Every child and replacement must already have one complete materialized Canvas.
 
 ## You must decide
 
@@ -73,6 +89,10 @@ Use `editCompositionLayout` to revise gap, alignment, or padding. Use
 earlier composition. A rose chart is built from the primitive
 `createArcMark → encodeTheta → encodeR → encodeColor` flow shown in the
 [rose chart recipe](./rose-chart.md); there is no `createRoseChart` action.
+Composition does not repair a child's guide layout. Keep enough explicit margin
+on a child that retains a meaningful legend, as the point child does above, or
+set `guides.legend: false` when the legend is unnecessary or redundant, as the
+replacement child does. Build each child successfully before composing it.
 
 ## Continue
 
