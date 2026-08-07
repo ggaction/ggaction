@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`approved`
+`executed — stopped before C`
 
 Proposal checkpoint: `68e89447`
 
@@ -165,6 +165,36 @@ Gate K를 명시적으로 승인하면 다음 범위만 허용한다.
 - PR preparation, Ready 전환과 merge
 - Package publish, docs deployment와 release
 - Roadmap 5.3 closeout
+
+## 실행 결과 — 2026-08-07
+
+Guard checkpoint `74baecfd`와 실행 전 evidence checkpoint `09f6c912`를 push한 뒤 Condition B 세 건을 exact order로
+실행했다. `renderer-parity`만 first-pass/final valid였고, 다른 두 task가 runtime error였으므로 guard가 Condition C를
+한 건도 시작하지 않았다.
+
+| Task | First-pass / final | Failure | Tokens | Cost |
+| --- | --- | --- | ---: | ---: |
+| `cars-box-plot` | false / false | unsupported `createBoxPlot({ color })` | 6,575 | $0.0150212 |
+| `composed-dashboard` | false / false | nonexistent `createRoseChart` | 7,547 | $0.0239596 |
+| `renderer-parity` | true / true | none; four renderers valid | 6,869 | $0.0144768 |
+
+- B first-pass/final valid: **1 / 3**
+- C runs: **0 / 3**
+- Model calls: **9**
+- Actual combined spend: **$0.0534576 / $0.60**
+- Provider, model, timeout와 budget failure: **0**
+- Stop reason: `condition-b-not-first-pass-valid`
+- Full rerun and benefit claim decision: **blocked by failed smoke**
+
+세 task 모두 expected recipe가 search top 1이었고 exact recipe를 읽었다. 실패 원인은 search나 transport가 아니라 box의
+색상 변형과 composition의 rose/replacement 변형이 읽은 한 개 recipe payload 안에서 task-closed하지 않았기 때문이다.
+상세 증거와 Gate J offline evidence의 한계는
+[`SYSTEMATIC_SMOKE_ANALYSIS.md`](./SYSTEMATIC_SMOKE_ANALYSIS.md)가 소유한다.
+
+## Review decision
+
+Gate K의 실행 범위는 끝났고 결과 승인을 기다린다. 이 failed result를 승인해도 correction 구현, 재시도, Condition C,
+full evaluation, PR 또는 benefit claim은 허용되지 않는다. 다음 correction은 별도 제안과 승인이 필요하다.
 
 ## 공식 근거
 
