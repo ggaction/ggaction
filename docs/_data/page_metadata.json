@@ -153,7 +153,7 @@
   },
   "/recipes/gradient-plot/": {
     "title": "Gradient Plot Recipe",
-    "description": "cars is an array of plain row objects with one categorical field and one quantitative measure.",
+    "description": "values is an array of plain row objects with one categorical field and one quantitative measure.",
     "image": "/assets/images/cars-gradient-plot.png"
   },
   "/recipes/annotations/": {

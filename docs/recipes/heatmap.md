@@ -16,7 +16,7 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { right: 120 } })
-  .createData({ values: cells })
+  .createData({ values })
   .createHeatmap({
     x: { field: "column", fieldType: "ordinal" },
     y: { field: "row", fieldType: "nominal" },

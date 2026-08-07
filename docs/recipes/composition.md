@@ -16,13 +16,16 @@ import { chart, hconcat, render } from "ggaction";
 
 const points = chart()
   .createCanvas({ width: 280, height: 220 })
-  .createData({ values: pointRows })
+  .createData({ values: values.filter(row => row.kind === "point") })
   .createScatterPlot({ x: "x", y: "y" });
 
 const bars = chart()
   .createCanvas({ width: 260, height: 220 })
-  .createData({ values: barRows })
-  .createBarPlot({ x: "category", y: "value" });
+  .createData({ values: values.filter(row => row.kind === "bar") })
+  .createBarPlot({
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" }
+  });
 
 const program = hconcat({
   programs: [

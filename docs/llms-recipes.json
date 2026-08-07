@@ -134,7 +134,7 @@
           "path": "docs/recipes/annotations.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: films })\n  .createScatterPlot({ x: \"Released_Year\", y: \"IMDB_Rating\" })\n  .createTextMark({ dx: 7, dy: -6, align: \"left\", baseline: \"bottom\" })\n  .encodeText({ field: \"Series_Title\" })\n  .layoutLabels({\n    padding: 3,\n    maxDisplacement: 48,\n    leader: { stroke: \"#94a3b8\", opacity: 0.8 }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createScatterPlot({ x: \"Released_Year\", y: \"IMDB_Rating\" })\n  .createTextMark({ dx: 7, dy: -6, align: \"left\", baseline: \"bottom\" })\n  .encodeText({ field: \"Series_Title\" })\n  .layoutLabels({\n    padding: 3,\n    maxDisplacement: 48,\n    leader: { stroke: \"#94a3b8\", opacity: 0.8 }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/annotations.md"
     },
     {
@@ -630,7 +630,7 @@
           "path": "docs/api/position/category-ordering.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { category: \"A\", value: 2 },\n    { category: \"B\", value: 5 }\n  ] })\n  .createBarPlot({ id: \"bars\", x: \"category\", y: \"value\" })\n  .orderCategories({\n    target: \"bars\",\n    channel: \"x\",\n    by: { field: \"value\", aggregate: \"sum\" },\n    direction: \"descending\"\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: [\n    { category: \"A\", value: 2 },\n    { category: \"B\", value: 5 }\n  ] })\n  .createBarPlot({\n    id: \"bars\",\n    x: { field: \"category\", fieldType: \"nominal\" },\n    y: { field: \"value\" }\n  })\n  .orderCategories({\n    target: \"bars\",\n    channel: \"x\",\n    by: { field: \"value\", aggregate: \"sum\" },\n    direction: \"descending\"\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/api/position/category-ordering.md"
     },
     {
@@ -708,7 +708,7 @@
           "path": "docs/recipes/composition.md"
         }
       ],
-      "exampleSource": "import { chart, hconcat, render } from \"ggaction\";\n\nconst points = chart()\n  .createCanvas({ width: 280, height: 220 })\n  .createData({ values: pointRows })\n  .createScatterPlot({ x: \"x\", y: \"y\" });\n\nconst bars = chart()\n  .createCanvas({ width: 260, height: 220 })\n  .createData({ values: barRows })\n  .createBarPlot({ x: \"category\", y: \"value\" });\n\nconst program = hconcat({\n  programs: [\n    { id: \"main\", program: points },\n    { id: \"detail\", program: bars }\n  ],\n  gap: 20\n}).editCompositionLayout({ gap: 24, align: \"center\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, hconcat, render } from \"ggaction\";\n\nconst points = chart()\n  .createCanvas({ width: 280, height: 220 })\n  .createData({ values: values.filter(row => row.kind === \"point\") })\n  .createScatterPlot({ x: \"x\", y: \"y\" });\n\nconst bars = chart()\n  .createCanvas({ width: 260, height: 220 })\n  .createData({ values: values.filter(row => row.kind === \"bar\") })\n  .createBarPlot({\n    x: { field: \"category\", fieldType: \"nominal\" },\n    y: { field: \"value\" }\n  });\n\nconst program = hconcat({\n  programs: [\n    { id: \"main\", program: points },\n    { id: \"detail\", program: bars }\n  ],\n  gap: 20\n}).editCompositionLayout({ gap: 24, align: \"center\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/composition.md"
     },
     {
@@ -918,7 +918,7 @@
           "path": "docs/api/data/statistical-transforms.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({\n    id: \"rows\",\n    values: [\n      { category: \"A\", value: 2 },\n      { category: \"B\", value: 5 }\n    ]\n  })\n  .createDerivedData({\n    id: \"selectedRows\",\n    source: \"rows\",\n    transform: [\n      { type: \"filter\", field: \"category\", oneOf: [\"A\"] }\n    ]\n  })\n  .createBarPlot({\n    data: \"selectedRows\",\n    x: { field: \"category\", fieldType: \"nominal\" },\n    y: { field: \"value\" }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({\n    id: \"rows\",\n    values: [\n      { category: \"A\", value: 2 },\n      { category: \"B\", value: 5 }\n    ]\n  })\n  .createDerivedData({\n    id: \"selectedRows\",\n    source: \"rows\",\n    transform: [\n      { type: \"filter\", field: \"category\", oneOf: [\"A\"] }\n    ]\n  })\n  .createBarPlot({\n    data: \"rows\",\n    x: { field: \"category\", fieldType: \"nominal\" },\n    y: { field: \"value\" }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/api/data/statistical-transforms.md"
     },
     {
@@ -1016,7 +1016,7 @@
           "path": "docs/recipes/error-band.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createErrorBand({\n    x: { field: \"time\", fieldType: \"temporal\" },\n    y: { field: \"value\" },\n    groupBy: \"series\"\n  })\n  .encodeColor({ target: \"errorBand\", field: \"series\" })\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 140 } })\n  .createData({ values })\n  .createErrorBand({\n    x: { field: \"time\", fieldType: \"temporal\" },\n    y: { field: \"value\" },\n    groupBy: \"series\"\n  })\n  .encodeColor({ target: \"errorBand\", field: \"series\" })\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/error-band.md"
     },
     {
@@ -1224,7 +1224,7 @@
           "path": "docs/extension/action-authoring.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\nimport { action } from \"ggaction/extension\";\n\nconst addBadge = action(\n  { op: \"addBadge\", description: \"Add one extension-owned badge.\" },\n  function () {\n    return this\n      .createGraphics({ id: \"badge\", type: \"text\" })\n      .editGraphics({ target: \"badge\", property: \"text\", value: \"Ready\" });\n  }\n);\n\nconst program = addBadge.call(chart().createCanvas());\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\nimport { action } from \"ggaction/extension\";\n\nconst addBadge = action(\n  { op: \"addBadge\", description: \"Add one extension-owned badge.\" },\n  function () {\n    return this\n      .createGraphics({ id: \"badge\", type: \"text\" })\n      .editGraphics({ target: \"badge\", property: \"x\", value: 16 })\n      .editGraphics({ target: \"badge\", property: \"y\", value: 24 })\n      .editGraphics({ target: \"badge\", property: \"fill\", value: \"#334155\" })\n      .editGraphics({ target: \"badge\", property: \"fontSize\", value: 14 })\n      .editGraphics({ target: \"badge\", property: \"fontFamily\", value: \"sans-serif\" })\n      .editGraphics({ target: \"badge\", property: \"textAlign\", value: \"left\" })\n      .editGraphics({ target: \"badge\", property: \"textBaseline\", value: \"alphabetic\" })\n      .editGraphics({ target: \"badge\", property: \"text\", value: \"Ready\" });\n  }\n);\n\nconst program = addBadge.call(chart().createCanvas());\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/extension/action-authoring.md"
     },
     {
@@ -1331,7 +1331,7 @@
           "path": "docs/recipes/facet.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ width: 250, height: 230 })\n  .createData({ values: cars })\n  .createScatterPlot({\n    x: \"Horsepower\",\n    y: \"Miles_per_Gallon\",\n    color: \"Cylinders\"\n  })\n  .facet({\n    field: \"Origin\",\n    columns: 3,\n    guides: { legend: \"shared\" }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ width: 250, height: 230 })\n  .createData({ values })\n  .createScatterPlot({\n    x: \"Horsepower\",\n    y: \"Miles_per_Gallon\",\n    color: \"Cylinders\"\n  })\n  .facet({\n    field: \"Origin\",\n    columns: 3,\n    guides: { legend: \"shared\" }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/facet.md"
     },
     {
@@ -1425,7 +1425,7 @@
           "path": "docs/recipes/gradient-plot.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 70, right: 150, bottom: 70, left: 70 } })\n  .createData({ values: cars })\n  .createGradientPlot({\n    x: \"Origin\",\n    y: \"Acceleration\"\n  })\n  .encodeColor({ field: \"Origin\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 70, right: 150, bottom: 70, left: 70 } })\n  .createData({ values })\n  .createGradientPlot({\n    x: { field: \"Origin\", fieldType: \"nominal\" },\n    y: { field: \"Acceleration\", fieldType: \"quantitative\" }\n  })\n  .encodeColor({ target: \"gradientPlot\", field: \"Origin\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/gradient-plot.md"
     },
     {
@@ -1650,7 +1650,7 @@
           "path": "docs/recipes/heatmap.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 120 } })\n  .createData({ values: cells })\n  .createHeatmap({\n    x: { field: \"column\", fieldType: \"ordinal\" },\n    y: { field: \"row\", fieldType: \"nominal\" },\n    color: {\n      field: \"value\",\n      fieldType: \"quantitative\",\n      scale: { type: \"sequential\", palette: \"viridis\" }\n    }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 120 } })\n  .createData({ values })\n  .createHeatmap({\n    x: { field: \"column\", fieldType: \"ordinal\" },\n    y: { field: \"row\", fieldType: \"nominal\" },\n    color: {\n      field: \"value\",\n      fieldType: \"quantitative\",\n      scale: { type: \"sequential\", palette: \"viridis\" }\n    }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/heatmap.md"
     },
     {
@@ -1998,7 +1998,7 @@
           "path": "docs/api/legends.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })\n  .createData({ values: [\n    { x: 1, y: 2, group: \"A\" },\n    { x: 2, y: 4, group: \"B\" }\n  ] })\n  .createScatterPlot({ x: \"x\", y: \"y\", color: \"group\" })\n  .editLegendLayout({ position: \"right\", offset: 18 });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })\n  .createData({ values: [\n    { x: 1, y: 2, group: \"A\" },\n    { x: 2, y: 4, group: \"B\" }\n  ] })\n  .createScatterPlot({ id: \"points\", x: \"x\", y: \"y\", color: \"group\" })\n  .createLegend({ target: \"points\" })\n  .editLegendLayout({ target: \"points\", position: \"right\", offset: 18 });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/api/legends.md"
     },
     {
@@ -2351,7 +2351,7 @@
           "path": "docs/recipes/parallel-coordinates.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 80, right: 140, bottom: 60, left: 70 } })\n  .createData({ values: cars })\n  .createParallelCoordinates({\n    dimensions: [\n      \"Miles_per_Gallon\",\n      \"Horsepower\",\n      \"Weight_in_lbs\",\n      \"Acceleration\"\n    ],\n    color: \"Origin\"\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 80, right: 140, bottom: 60, left: 70 } })\n  .createData({ values })\n  .createParallelCoordinates({\n    dimensions: [\n      \"Miles_per_Gallon\",\n      \"Horsepower\",\n      \"Weight_in_lbs\",\n      \"Acceleration\"\n    ],\n    color: \"Origin\"\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/parallel-coordinates.md"
     },
     {
@@ -2457,7 +2457,7 @@
           "path": "docs/recipes/path-ordering.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values: observations })\n  .createLineMark()\n  .encodeX({ field: \"fertility\" })\n  .encodeY({ field: \"life_expect\" })\n  .encodeColor({ field: \"country\" })\n  .encodePathOrder({ field: \"year\", order: \"ascending\" })\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 140 } })\n  .createData({ values })\n  .createLineMark()\n  .encodeX({ field: \"fertility\" })\n  .encodeY({ field: \"life_expect\" })\n  .encodeColor({ field: \"country\" })\n  .encodePathOrder({ field: \"year\", order: \"ascending\" })\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/path-ordering.md"
     },
     {
@@ -2841,7 +2841,7 @@
           "path": "docs/recipes/regression-scatterplot.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({\n    width: 760,\n    height: 480,\n    margin: { top: 40, right: 190, bottom: 70, left: 80 }\n  })\n  .createData({ values: cars })\n  .createPointMark()\n  .encodeX({ field: \"Displacement\", scale: { nice: true, zero: false } })\n  .encodeY({ field: \"Acceleration\", scale: { nice: true, zero: false } })\n  .encodeColor({ field: \"Origin\", scale: { palette: \"tableau10\" } })\n  .encodeSize({ field: \"Acceleration\" })\n  .encodeShape({ field: \"Origin\" })\n  .encodeOpacity({ value: 0.27 })\n  .filterMarks({\n    field: \"Origin\",\n    op: \"oneOf\",\n    values: [\"Japan\", \"USA\"]\n  })\n  .createRegression()\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({\n    width: 760,\n    height: 480,\n    margin: { top: 40, right: 190, bottom: 70, left: 80 }\n  })\n  .createData({ values })\n  .createPointMark()\n  .encodeX({ field: \"Displacement\", scale: { nice: true, zero: false } })\n  .encodeY({ field: \"Acceleration\", scale: { nice: true, zero: false } })\n  .encodeColor({ field: \"Origin\", scale: { palette: \"tableau10\" } })\n  .encodeSize({ field: \"Acceleration\" })\n  .encodeShape({ field: \"Origin\" })\n  .encodeOpacity({ value: 0.27 })\n  .filterMarks({\n    field: \"Origin\",\n    op: \"oneOf\",\n    values: [\"Japan\", \"USA\"]\n  })\n  .createRegression()\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/regression-scatterplot.md"
     },
     {
@@ -3064,7 +3064,7 @@
           "path": "docs/recipes/rose-chart.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst monthOrder = [\n  \"April\", \"May\", \"June\", \"July\", \"August\", \"September\",\n  \"October\", \"November\", \"December\", \"January\", \"February\", \"March\"\n];\nconst causeOrder = [\"Zymotic Diseases\", \"Other Causes\", \"Wounds & Injuries\"];\n\nconst program = chart()\n  .createCanvas({\n    width: 780,\n    height: 640,\n    margin: { top: 80, right: 210, bottom: 80, left: 80 }\n  })\n  .createData({ values: nightingaleRows })\n  .createArcMark({ padAngle: 1, opacity: 0.9, strokeWidth: 0.5 })\n  .encodeTheta({\n    field: \"month\",\n    fieldType: \"ordinal\",\n    scale: { domain: monthOrder }\n  })\n  .encodeR({ field: \"value\", scale: { domain: [0, 6.5], zero: true } })\n  .encodeColor({\n    field: \"cause\",\n    layout: \"overlay\",\n    scale: {\n      domain: causeOrder,\n      range: [\"#599ad3\", \"#727272\", \"#f1595f\"]\n    }\n  })\n  .createGuides({\n    axes: {\n      theta: { title: false },\n      radius: {\n        ticksAndLabels: { values: [2, 4, 6] },\n        title: { text: \"Mortality rate\", position: \"inside\" }\n      }\n    },\n    grid: { theta: false, radial: { values: [2, 4, 6] } },\n    legend: { position: \"right\", title: \"Cause\" }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst monthOrder = [\n  \"April\", \"May\", \"June\", \"July\", \"August\", \"September\",\n  \"October\", \"November\", \"December\", \"January\", \"February\", \"March\"\n];\nconst causeOrder = [\"Zymotic Diseases\", \"Other Causes\", \"Wounds & Injuries\"];\n\nconst program = chart()\n  .createCanvas({\n    width: 780,\n    height: 640,\n    margin: { top: 80, right: 210, bottom: 80, left: 80 }\n  })\n  .createData({ values })\n  .createArcMark({ padAngle: 1, opacity: 0.9, strokeWidth: 0.5 })\n  .encodeTheta({\n    field: \"month\",\n    fieldType: \"ordinal\",\n    scale: { domain: monthOrder }\n  })\n  .encodeR({ field: \"value\", scale: { domain: [0, 6.5], zero: true } })\n  .encodeColor({\n    field: \"cause\",\n    layout: \"overlay\",\n    scale: {\n      domain: causeOrder,\n      range: [\"#599ad3\", \"#727272\", \"#f1595f\"]\n    }\n  })\n  .createGuides({\n    axes: {\n      theta: { title: false },\n      radius: {\n        ticksAndLabels: { values: [2, 4, 6] },\n        title: { text: \"Mortality rate\", position: \"inside\" }\n      }\n    },\n    grid: { theta: false, radial: { values: [2, 4, 6] } },\n    legend: { position: \"right\", title: \"Cause\" }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/rose-chart.md"
     },
     {
@@ -3516,7 +3516,7 @@
           "path": "docs/api/marks.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ width: 800, height: 240 })\n  .createData({\n    id: \"cars\",\n    values: cars.map(car => ({ ...car, Baseline: 0 }))\n  })\n  .createTickMark({\n    id: \"ticks\",\n    length: 14,\n    stroke: \"#2563eb\",\n    strokeWidth: 1.5,\n    opacity: 0.3\n  })\n  .encodeX({ target: \"ticks\", field: \"Horsepower\" })\n  .encodeY({ target: \"ticks\", field: \"Baseline\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ width: 800, height: 240 })\n  .createData({\n    id: \"cars\",\n    values: values.map(row => ({ ...row, Baseline: 0 }))\n  })\n  .createTickMark({\n    id: \"ticks\",\n    length: 14,\n    stroke: \"#2563eb\",\n    strokeWidth: 1.5,\n    opacity: 0.3\n  })\n  .encodeX({ target: \"ticks\", field: \"Horsepower\" })\n  .encodeY({ target: \"ticks\", field: \"Baseline\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/api/marks.md"
     },
     {

@@ -15,8 +15,8 @@ title: Path Ordering Recipe
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas()
-  .createData({ values: observations })
+  .createCanvas({ margin: { right: 140 } })
+  .createData({ values })
   .createLineMark()
   .encodeX({ field: "fertility" })
   .encodeY({ field: "life_expect" })

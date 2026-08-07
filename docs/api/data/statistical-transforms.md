@@ -32,7 +32,7 @@ const program = chart()
     ]
   })
   .createBarPlot({
-    data: "selectedRows",
+    data: "rows",
     x: { field: "category", fieldType: "nominal" },
     y: { field: "value" }
   });

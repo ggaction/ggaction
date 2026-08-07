@@ -24,6 +24,13 @@ const addBadge = action(
   function () {
     return this
       .createGraphics({ id: "badge", type: "text" })
+      .editGraphics({ target: "badge", property: "x", value: 16 })
+      .editGraphics({ target: "badge", property: "y", value: 24 })
+      .editGraphics({ target: "badge", property: "fill", value: "#334155" })
+      .editGraphics({ target: "badge", property: "fontSize", value: 14 })
+      .editGraphics({ target: "badge", property: "fontFamily", value: "sans-serif" })
+      .editGraphics({ target: "badge", property: "textAlign", value: "left" })
+      .editGraphics({ target: "badge", property: "textBaseline", value: "alphabetic" })
       .editGraphics({ target: "badge", property: "text", value: "Ready" });
   }
 );

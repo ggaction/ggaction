@@ -16,19 +16,19 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { top: 70, right: 150, bottom: 70, left: 70 } })
-  .createData({ values: cars })
+  .createData({ values })
   .createGradientPlot({
-    x: "Origin",
-    y: "Acceleration"
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration", fieldType: "quantitative" }
   })
-  .encodeColor({ field: "Origin" });
+  .encodeColor({ target: "gradientPlot", field: "Origin" });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");
 render(program, context);
 ```
 
-`cars` is an array of plain row objects with one categorical field and one
+`values` is an array of plain row objects with one categorical field and one
 quantitative measure.
 
 ## You must decide

@@ -16,7 +16,7 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { top: 80, right: 140, bottom: 60, left: 70 } })
-  .createData({ values: cars })
+  .createData({ values })
   .createParallelCoordinates({
     dimensions: [
       "Miles_per_Gallon",

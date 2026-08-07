@@ -15,7 +15,7 @@ title: Error Band Recipe
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { right: 140 } })
   .createData({ values })
   .createErrorBand({
     x: { field: "time", fieldType: "temporal" },

@@ -39,8 +39,9 @@ const program = chart()
     { x: 1, y: 2, group: "A" },
     { x: 2, y: 4, group: "B" }
   ] })
-  .createScatterPlot({ x: "x", y: "y", color: "group" })
-  .editLegendLayout({ position: "right", offset: 18 });
+  .createScatterPlot({ id: "points", x: "x", y: "y", color: "group" })
+  .createLegend({ target: "points" })
+  .editLegendLayout({ target: "points", position: "right", offset: 18 });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");

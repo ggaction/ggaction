@@ -29,7 +29,7 @@ const program = chart()
     height: 640,
     margin: { top: 80, right: 210, bottom: 80, left: 80 }
   })
-  .createData({ values: nightingaleRows })
+  .createData({ values })
   .createArcMark({ padAngle: 1, opacity: 0.9, strokeWidth: 0.5 })
   .encodeTheta({
     field: "month",

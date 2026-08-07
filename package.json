@@ -86,6 +86,7 @@
     "knowledge:check": "node scripts/generate-action-knowledge.js --check",
     "knowledge:actions": "npm run knowledge:generate",
     "knowledge:actions:check": "npm run knowledge:check",
+    "recipes:check": "node scripts/verify-executable-recipes.js",
     "eval:corrective-smoke": "node scripts/llm-eval/run-corrective-smoke.js",
     "eval:corrective-smoke-retry": "node scripts/llm-eval/run-corrective-smoke-retry.js",
     "eval:executable-recipe-smoke": "node scripts/llm-eval/run-executable-recipe-smoke.js",

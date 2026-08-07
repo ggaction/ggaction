@@ -16,7 +16,7 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
-  .createData({ values: films })
+  .createData({ values })
   .createScatterPlot({ x: "Released_Year", y: "IMDB_Rating" })
   .createTextMark({ dx: 7, dy: -6, align: "left", baseline: "bottom" })
   .encodeText({ field: "Series_Title" })

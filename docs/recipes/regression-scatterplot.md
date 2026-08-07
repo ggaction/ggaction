@@ -23,7 +23,7 @@ const program = chart()
     height: 480,
     margin: { top: 40, right: 190, bottom: 70, left: 80 }
   })
-  .createData({ values: cars })
+  .createData({ values })
   .createPointMark()
   .encodeX({ field: "Displacement", scale: { nice: true, zero: false } })
   .encodeY({ field: "Acceleration", scale: { nice: true, zero: false } })

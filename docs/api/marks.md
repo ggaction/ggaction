@@ -127,7 +127,7 @@ const program = chart()
   .createCanvas({ width: 800, height: 240 })
   .createData({
     id: "cars",
-    values: cars.map(car => ({ ...car, Baseline: 0 }))
+    values: values.map(row => ({ ...row, Baseline: 0 }))
   })
   .createTickMark({
     id: "ticks",

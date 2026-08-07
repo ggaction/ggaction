@@ -2208,7 +2208,7 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { right: 120 } })
-  .createData({ values: cells })
+  .createData({ values })
   .createHeatmap({
     x: { field: "column", fieldType: "ordinal" },
     y: { field: "row", fieldType: "nominal" },
@@ -2296,7 +2296,7 @@ const program = chart()
     height: 480,
     margin: { top: 40, right: 190, bottom: 70, left: 80 }
   })
-  .createData({ values: cars })
+  .createData({ values })
   .createPointMark()
   .encodeX({ field: "Displacement", scale: { nice: true, zero: false } })
   .encodeY({ field: "Acceleration", scale: { nice: true, zero: false } })
@@ -2485,7 +2485,7 @@ options to reuse its fields, data, coordinate, and scales.
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { right: 140 } })
   .createData({ values })
   .createErrorBand({
     x: { field: "time", fieldType: "temporal" },
@@ -2626,13 +2626,16 @@ import { chart, hconcat, render } from "ggaction";
 
 const points = chart()
   .createCanvas({ width: 280, height: 220 })
-  .createData({ values: pointRows })
+  .createData({ values: values.filter(row => row.kind === "point") })
   .createScatterPlot({ x: "x", y: "y" });
 
 const bars = chart()
   .createCanvas({ width: 260, height: 220 })
-  .createData({ values: barRows })
-  .createBarPlot({ x: "category", y: "value" });
+  .createData({ values: values.filter(row => row.kind === "bar") })
+  .createBarPlot({
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" }
+  });
 
 const program = hconcat({
   programs: [
@@ -2682,7 +2685,7 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ width: 250, height: 230 })
-  .createData({ values: cars })
+  .createData({ values })
   .createScatterPlot({
     x: "Horsepower",
     y: "Miles_per_Gallon",
@@ -2733,7 +2736,7 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { top: 80, right: 140, bottom: 60, left: 70 } })
-  .createData({ values: cars })
+  .createData({ values })
   .createParallelCoordinates({
     dimensions: [
       "Miles_per_Gallon",
@@ -2793,7 +2796,7 @@ const program = chart()
     height: 640,
     margin: { top: 80, right: 210, bottom: 80, left: 80 }
   })
-  .createData({ values: nightingaleRows })
+  .createData({ values })
   .createArcMark({ padAngle: 1, opacity: 0.9, strokeWidth: 0.5 })
   .encodeTheta({
     field: "month",
@@ -2861,19 +2864,19 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { top: 70, right: 150, bottom: 70, left: 70 } })
-  .createData({ values: cars })
+  .createData({ values })
   .createGradientPlot({
-    x: "Origin",
-    y: "Acceleration"
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration", fieldType: "quantitative" }
   })
-  .encodeColor({ field: "Origin" });
+  .encodeColor({ target: "gradientPlot", field: "Origin" });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");
 render(program, context);
 ```
 
-`cars` is an array of plain row objects with one categorical field and one
+`values` is an array of plain row objects with one categorical field and one
 quantitative measure.
 
 ## You must decide
@@ -2907,7 +2910,7 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
-  .createData({ values: films })
+  .createData({ values })
   .createScatterPlot({ x: "Released_Year", y: "IMDB_Rating" })
   .createTextMark({ dx: 7, dy: -6, align: "left", baseline: "bottom" })
   .encodeText({ field: "Series_Title" })
@@ -2959,8 +2962,8 @@ rows when every label still cannot fit.
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas()
-  .createData({ values: observations })
+  .createCanvas({ margin: { right: 140 } })
+  .createData({ values })
   .createLineMark()
   .encodeX({ field: "fertility" })
   .encodeY({ field: "life_expect" })
@@ -4216,7 +4219,7 @@ const program = chart()
     ]
   })
   .createBarPlot({
-    data: "selectedRows",
+    data: "rows",
     x: { field: "category", fieldType: "nominal" },
     y: { field: "value" }
   });
@@ -4737,7 +4740,7 @@ const program = chart()
   .createCanvas({ width: 800, height: 240 })
   .createData({
     id: "cars",
-    values: cars.map(car => ({ ...car, Baseline: 0 }))
+    values: values.map(row => ({ ...row, Baseline: 0 }))
   })
   .createTickMark({
     id: "ticks",
@@ -7693,7 +7696,11 @@ const program = chart()
     { category: "A", value: 2 },
     { category: "B", value: 5 }
   ] })
-  .createBarPlot({ id: "bars", x: "category", y: "value" })
+  .createBarPlot({
+    id: "bars",
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" }
+  })
   .orderCategories({
     target: "bars",
     channel: "x",
@@ -9589,8 +9596,9 @@ const program = chart()
     { x: 1, y: 2, group: "A" },
     { x: 2, y: 4, group: "B" }
   ] })
-  .createScatterPlot({ x: "x", y: "y", color: "group" })
-  .editLegendLayout({ position: "right", offset: 18 });
+  .createScatterPlot({ id: "points", x: "x", y: "y", color: "group" })
+  .createLegend({ target: "points" })
+  .editLegendLayout({ target: "points", position: "right", offset: 18 });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");
@@ -12752,6 +12760,13 @@ const addBadge = action(
   function () {
     return this
       .createGraphics({ id: "badge", type: "text" })
+      .editGraphics({ target: "badge", property: "x", value: 16 })
+      .editGraphics({ target: "badge", property: "y", value: 24 })
+      .editGraphics({ target: "badge", property: "fill", value: "#334155" })
+      .editGraphics({ target: "badge", property: "fontSize", value: 14 })
+      .editGraphics({ target: "badge", property: "fontFamily", value: "sans-serif" })
+      .editGraphics({ target: "badge", property: "textAlign", value: "left" })
+      .editGraphics({ target: "badge", property: "textBaseline", value: "alphabetic" })
       .editGraphics({ target: "badge", property: "text", value: "Ready" });
   }
 );

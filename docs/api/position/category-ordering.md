@@ -23,7 +23,11 @@ const program = chart()
     { category: "A", value: 2 },
     { category: "B", value: 5 }
   ] })
-  .createBarPlot({ id: "bars", x: "category", y: "value" })
+  .createBarPlot({
+    id: "bars",
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" }
+  })
   .orderCategories({
     target: "bars",
     channel: "x",

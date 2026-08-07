@@ -16,7 +16,7 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ width: 250, height: 230 })
-  .createData({ values: cars })
+  .createData({ values })
   .createScatterPlot({
     x: "Horsepower",
     y: "Miles_per_Gallon",
