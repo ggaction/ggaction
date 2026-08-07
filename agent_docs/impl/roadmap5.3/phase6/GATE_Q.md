@@ -14,7 +14,7 @@ Gate P evidence approval checkpoint: `fb2b511c`
 
 Gate P approval link checkpoint: `137088be`
 
-Guard checkpoint: pending
+Guard checkpoint: `9687eada`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
