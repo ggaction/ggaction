@@ -2,13 +2,15 @@
 
 ## Gate state
 
-`approved — guard verified, remote checkpoint pending, paid execution pending`
+`approved — guard checkpoint ready, paid execution pending`
 
 Proposal checkpoint: `c4ccc5b5`
 
 Candidate behavior checkpoint: `622286f9501bd76b89e0a4e8a694c5f3b603f098`
 
 Gate M evidence checkpoint: `660cfa49`
+
+Guard checkpoint: `a298c4a1`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
