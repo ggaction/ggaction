@@ -8,6 +8,7 @@ import { render } from "ggaction";
 import { renderToPDF } from "ggaction/pdf";
 import { renderToPNG } from "ggaction/png";
 import { renderToSVG } from "ggaction/svg";
+import { ChartProgram as RuntimeChartProgram } from "../../src/ChartProgram.js";
 
 const allowedImports = new Set([
   "ggaction",
@@ -333,11 +334,31 @@ export function runtimeFunctionsFromSource(source) {
   return [...names].sort();
 }
 
-export function actionFunctionsFromSource(source, actionNames) {
-  const candidates = new Set(
-    [...source.matchAll(/\.([A-Za-z][A-Za-z0-9]*)\s*\(/gu)].map(match => match[1])
-  );
-  return [...actionNames].filter(name => candidates.has(name)).sort();
+export async function captureProgramWorkflow(createProgram, actionNames) {
+  const executed = new Set();
+  const descriptors = new Map();
+  for (const name of actionNames) {
+    const descriptor = Object.getOwnPropertyDescriptor(RuntimeChartProgram.prototype, name);
+    if (descriptor?.value === undefined || typeof descriptor.value !== "function") continue;
+    descriptors.set(name, descriptor);
+    Object.defineProperty(RuntimeChartProgram.prototype, name, {
+      ...descriptor,
+      value: function (...args) {
+        if ((this.actionStack?.length ?? 0) === 0) executed.add(name);
+        return descriptor.value.apply(this, args);
+      }
+    });
+  }
+  try {
+    return Object.freeze({
+      program: await createProgram(),
+      actions: Object.freeze([...executed].sort())
+    });
+  } finally {
+    for (const [name, descriptor] of descriptors) {
+      Object.defineProperty(RuntimeChartProgram.prototype, name, descriptor);
+    }
+  }
 }
 
 function rootCanvas(program) {
@@ -460,15 +481,18 @@ export async function evaluateGeneratedProgram({ source, task, datasets, artifac
   const programFile = path.join(artifactRoot, "program.mjs");
   await writeFile(programFile, source);
   const module = await import(`${pathToFileURL(programFile).href}?v=${Date.now()}`);
-  const program = await module.buildChart(datasets);
   const actionIndex = JSON.parse(await readFile(new URL("../../agent_docs/contract/ACTION_INDEX.json", import.meta.url), "utf8"));
+  const captured = await captureProgramWorkflow(
+    () => module.buildChart(datasets),
+    actionIndex.actions.map(action => action.name)
+  );
   return evaluatePreparedProgram({
-    program,
+    program: captured.program,
     task,
     artifactRoot,
     runtimeFunctions: runtimeFunctionsFromSource(source),
     programFile,
     programSha256: createHash("sha256").update(source).digest("hex"),
-    workflowActions: actionFunctionsFromSource(source, actionIndex.actions.map(action => action.name))
+    workflowActions: captured.actions
   });
 }

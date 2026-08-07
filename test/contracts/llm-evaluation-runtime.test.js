@@ -14,7 +14,7 @@ import {
   normalizeResponseUsage
 } from "../../scripts/llm-eval/openai-responses.js";
 import {
-  actionFunctionsFromSource,
+  captureProgramWorkflow,
   evaluateGeneratedProgram,
   runtimeFunctionsFromSource,
   validateGeneratedSource
@@ -31,6 +31,7 @@ import {
   conditionBKnowledge,
   conditionCKnowledge
 } from "../../scripts/llm-eval/knowledge-adapters.js";
+import { chart } from "../../src/index.js";
 
 test("keeps condition A documentation reads bounded inside public docs", async () => {
   const routing = await readCurrentDoc("./llms.txt");
@@ -156,7 +157,7 @@ test("executes and renders a bounded generated chart program", async () => {
   assert.deepEqual(result.renderers, ["canvas"]);
 });
 
-test("rejects generated programs with capabilities outside the chart sandbox", () => {
+test("rejects generated programs with capabilities outside the chart sandbox", async () => {
   assert.throws(() => validateGeneratedSource(`
     import { chart } from "ggaction";
     import { readFile } from "node:fs/promises";
@@ -166,13 +167,13 @@ test("rejects generated programs with capabilities outside the chart sandbox", (
     import { chart, render as draw } from "ggaction";
     import { renderToSVG } from "ggaction/svg";
   `), ["chart", "render", "renderToSVG"]);
-  assert.deepEqual(actionFunctionsFromSource(`
-    const rose = chart().createArcMark();
-    return dashboard.replaceCompositionChild({ target: "detail", program: bars });
-  `, ["createArcMark", "createBarPlot", "replaceCompositionChild"]), [
-    "createArcMark",
-    "replaceCompositionChild"
+  const captured = await captureProgramWorkflow(() => chart()
+    .createCanvas()
+    .createData({ values: [{ x: 1, y: 2 }] })
+    .createScatterPlot({ x: "x", y: "y" }), [
+    "createCanvas", "createData", "createPointMark", "createScatterPlot", "encodeX", "encodeY"
   ]);
+  assert.deepEqual(captured.actions, ["createCanvas", "createData", "createScatterPlot"]);
 });
 
 test("validates composite statistical actions from their public input trace", async () => {

@@ -380,7 +380,7 @@ const DEFINITIONS = Object.freeze([
   ["cars-gradient-profile", "gradient-plot", carsGradientProfile],
   ["gapminder-horizon", "horizon", ({ gapminder }) => createGapminderHorizon(gapminder)],
   ["imdb-label-layout", "annotations", imdbLabelLayout],
-  ["composed-dashboard", "composition", composedDashboard, ["chart", "hconcat", "render"], ["createArcMark"]],
+  ["composed-dashboard", "composition", composedDashboard, ["chart", "hconcat", "render"]],
   ["renderer-parity", "scatterplot", rendererParity, ["chart", "render", "renderToSVG", "renderToPNG", "renderToPDF"]]
 ]);
 
@@ -388,15 +388,13 @@ export const recipeTaskPrograms = Object.freeze(Object.fromEntries(DEFINITIONS.m
   taskId,
   recipeId,
   createProgram,
-  runtimeFunctions = ROOT_RUNTIME,
-  workflowActions = []
+  runtimeFunctions = ROOT_RUNTIME
 ]) => [
   taskId,
   Object.freeze({
     taskId,
     recipeId,
     runtimeFunctions: Object.freeze(runtimeFunctions),
-    workflowActions: Object.freeze(workflowActions),
     createProgram
   })
 ])));

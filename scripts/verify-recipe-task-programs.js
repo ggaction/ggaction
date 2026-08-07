@@ -6,7 +6,10 @@ import { pathToFileURL } from "node:url";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 import { root } from "./action-knowledge.js";
-import { evaluatePreparedProgram } from "./llm-eval/program-evaluator.js";
+import {
+  captureProgramWorkflow,
+  evaluatePreparedProgram
+} from "./llm-eval/program-evaluator.js";
 import { scoreEvaluationEvidence } from "./llm-eval/score.js";
 import { recipeTaskPrograms } from "../test/llm/recipe-task-programs.js";
 import {
@@ -147,6 +150,8 @@ async function createRendererParitySheet(results, artifactRoot) {
 
 export async function verifyRecipeTaskPrograms({ artifactRoot = defaultRecipeTaskArtifactRoot } = {}) {
   const corpus = JSON.parse(await readFile(corpusFile, "utf8"));
+  const actionIndex = JSON.parse(await readFile(path.join(root, "agent_docs/contract/ACTION_INDEX.json"), "utf8"));
+  const actionNames = actionIndex.actions.map(action => action.name);
   const data = datasets();
   const results = [];
   await mkdir(artifactRoot, { recursive: true });
@@ -159,13 +164,13 @@ export async function verifyRecipeTaskPrograms({ artifactRoot = defaultRecipeTas
     const definition = recipeTaskPrograms[task.id];
     if (definition === undefined) throw new Error(`${task.id}: missing recipe-backed task program.`);
     const taskRoot = path.join(artifactRoot, task.id);
-    const program = definition.createProgram(data);
+    const captured = await captureProgramWorkflow(() => definition.createProgram(data), actionNames);
     const evaluation = await evaluatePreparedProgram({
-      program,
+      program: captured.program,
       task,
       artifactRoot: taskRoot,
       runtimeFunctions: definition.runtimeFunctions,
-      workflowActions: definition.workflowActions
+      workflowActions: captured.actions
     });
     const score = scoreEvaluationEvidence(task, evaluation);
     const canvasFile = evaluation.artifacts.rendererFiles.find(file => path.basename(file) === "canvas.png");
