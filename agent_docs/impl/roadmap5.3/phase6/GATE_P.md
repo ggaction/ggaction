@@ -10,7 +10,7 @@ Implementation checkpoint: `5606b1d509192006799042a43f76928b03062dc1`
 
 Implementation tree: `80b5fe92e5640b235a830744547369226edb093d`
 
-Evidence record checkpoint: pending
+Evidence record checkpoint: `e4ea8689`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
