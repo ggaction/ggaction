@@ -8,6 +8,8 @@ Candidate behavior checkpoint: `e88fbea9761ddc46268c400be1af280e838b71a2`
 
 Gate G approval checkpoint: `839aea46`
 
+Proposal checkpoint: `7cd462dd`
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 한눈에 보는 제안
