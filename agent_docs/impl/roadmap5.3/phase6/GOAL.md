@@ -2,9 +2,9 @@
 
 ## 목표
 
-Phase 0에서 고정한 current-doc A 기준선과 Phase 2~5에서 만든 structured knowledge(B), local MCP(C)를 같은
-model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준을 바꾸지 않으며, 통과한 경우에만 LLM-friendly 개선의
-효과를 주장한다.
+Gate R에서 다시 고정한 current-doc A, structured direct B, structured MCP C와 docs + MCP D를 같은 model, fresh
+generalization corpus, 반복 수와 strict oracle로 비교한다. B/C는 transport 차이만 해석하고 D는 실제 권장 product
+path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, 통과한 경우에만 LLM-friendly 개선의 효과를 주장한다.
 
 ## 진행 상태
 
@@ -70,10 +70,12 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 
 ## 고정 경계
 
-- R53-P6-A 전에는 external model call을 실행하지 않는다.
-- Phase 0의 task, dataset, oracle, shuffle seed, limits와 acceptance threshold를 바꾸지 않는다.
-- B/C는 A와 같은 model/settings를 사용한다. Model identity가 달라지면 비교를 중단한다.
+- Checked-in paired plan은 credential read, external model call과 spend를 항상 `0`으로 유지한다.
+- Gate R 이전 corpus와 결과는 historical diagnostic evidence로 보존하며 current candidate 통계와 합치지 않는다.
+- Gate R의 fresh corpus, dataset, strict oracle, limits와 paired-statistics rule을 결과 확인 뒤 바꾸지 않는다.
+- A/B/C/D는 같은 model/settings를 사용한다. Model identity가 달라지면 비교를 중단한다.
 - Spend cap에 도달하면 새 요청을 시작하지 않고, 불완전 결과를 통과로 해석하지 않는다.
+- Provider가 complete billable usage를 반환하지 않으면 비용을 0으로 추정해 계속하지 않고 전체 pilot을 중단한다.
 - Acceptance를 통과하지 못한 candidate는 PR/merge 대상으로 제안하거나 LLM benefit을 주장하지 않는다.
 - PR Ready, merge, package publish, docs deploy와 release는 각각 별도 승인 대상이다.
 

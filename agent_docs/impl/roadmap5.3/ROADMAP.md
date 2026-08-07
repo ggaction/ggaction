@@ -65,15 +65,16 @@ Recipe coverage는 action을 `primary`, `supporting`, `lifecycle`, `extension-on
 
 ## Benchmark contract 방향
 
-Benchmark는 고정된 model/settings와 versioned task/dataset을 사용하고 순서를 섞어 A/B/C 조건을 비교한다.
+Benchmark는 고정된 model/settings와 versioned task/dataset을 사용하고 순서를 섞어 A/B/C/D 조건을 비교한다.
 
 - **A — Current docs:** Roadmap 시작 commit의 기존 public documentation만 제공
-- **B — Structured knowledge:** overview, action metadata와 recipes 제공
-- **C — Local MCP:** B와 같은 canonical knowledge를 MCP resource/search로 제공
+- **B — Structured direct:** overview, action metadata와 recipes를 direct adapter로 제공
+- **C — Structured MCP:** B와 model-visible content가 같은 canonical knowledge를 MCP transport로 제공
+- **D — Docs + MCP:** current documentation과 local MCP를 함께 제공하는 권장 product path
 
-Task corpus는 simple chart, multi-step composition, transform/statistics, guide/layout, selection/highlighting,
-renderer/export와 error-repair를 포함한다. 모든 task는 dataset identity, required result와 허용 가능한 public call
-chain을 명시하며 authoring set과 held-out set을 분리한다.
+Gate R 이전 corpus와 결과는 tuning/evaluation history로 보존한다. 현재 비교에는 그 이력과 분리된 frozen
+generalization corpus를 사용한다. Task는 simple chart, multi-step composition, transform/statistics, guide/layout,
+selection/highlighting, renderer/export와 error-repair를 포함하며 dataset identity와 required result를 명시한다.
 
 측정값은 first-pass/final correctness, tokens per successful chart, model calls, MCP calls, repair rounds,
 time-to-valid, timeout/failure와 추정 비용이다. Exact acceptance threshold와 유료 run 설정은 결과를 보기 전에
@@ -123,10 +124,24 @@ commit/push한 뒤에만 승인을 요청한다.
 | R53-P5-A | 5 | `ggaction-mcp` installed-package behavior, read-only boundary와 browser isolation | Final paid comparison |
 | R53-P6-A | 6 | Final model/repetition/cost proposal for B/C comparison | Final 유료 LLM 호출 |
 | R53-P6-B | 6 | A/B/C benchmark result, acceptance decision와 integration candidate | PR preparation |
+| R53-P6-C | 6 | Corrective knowledge-delivery와 evaluation-isolation contract | Corrective implementation |
+| R53-P6-D | 6 | Corrective candidate의 complete unpaid evidence | Corrective paid smoke |
+| R53-P6-E | 6 | Exact one-run B/C smoke와 spend ceiling | External model call |
+| R53-P6-E-Retry | 6 | Provider-schema correction 뒤 exact B/C retry | External model call |
+| R53-P6-F | 6 | Self-contained executable-recipe correction | Recipe implementation |
+| R53-P6-G | 6 | Executable-recipe B/C smoke와 spend ceiling | External model call |
 | R53-P6-H | 6 | Corrective candidate의 96-run B/C scope, 비용과 최종 판정 | Corrective 전체 유료 재평가 |
 | R53-P6-I | 6 | 32개 incomplete recipe의 systematic executable correction contract | Recipe correction 구현 |
 | R53-P6-J | 6 | 33/33 recipe와 frozen 24/24 task의 complete unpaid evidence | 새 paid smoke 제안 |
 | R53-P6-K | 6 | 새 candidate의 representative paid smoke scope와 비용 | External model call |
+| R53-P6-L | 6 | Task-closed recipe variants와 bounded two-read contract | Delivery correction |
+| R53-P6-M | 6 | Task-closed recipe의 complete unpaid evidence | 새 paid retry 제안 |
+| R53-P6-N | 6 | Representative B/C paid retry와 spend ceiling | External model call |
+| R53-P6-O | 6 | Submit-ready source와 layout-safe composition contract | Delivery correction |
+| R53-P6-P | 6 | Submit-ready/layout-safe complete unpaid evidence | 새 paid retry 제안 |
+| R53-P6-Q | 6 | Representative B/C paid retry와 spend ceiling | External model call |
+| R53-P6-R | 6 | Production MCP와 benchmark integrity reset | 새 paid pilot 제안 |
+| R53-P6-S | 6 | Fresh A/B/C/D paid pilot scope, 비용과 중단 규칙 | External model call |
 | R53-Exit | 6 | Merged-main package/docs/contracts/tests와 reproducible benchmark evidence | 완료 선언과 release preparation |
 
 ## Phase 0 — Baseline and measurement contract
@@ -168,10 +183,11 @@ boundary와 browser bundle isolation을 검증한다.
 
 ## Phase 6 — Evaluation, integration, and closeout
 
-별도 비용 승인 뒤 B/C를 current-doc A baseline과 같은 corpus/model/settings로 반복 비교한다. 실패 사례는 숨기지
-않고 task별 raw result와 aggregate median/p95를 함께 보존한다. 사전 합의한 threshold를 통과할 때만 product
-benefit을 주장한다. Package, docs, current contracts, architecture, generated knowledge와 full suite를 동기화하고
-별도 PR/merge 승인 뒤 exact merged main을 재검증해 R53-Exit를 연다.
+별도 비용 승인 뒤 fresh A/B/C/D를 같은 corpus/model/settings로 반복 비교한다. B/C는 transport만 비교하고 D는 실제
+권장 product path로 별도 해석한다. 실패 사례는 숨기지 않고 task별 raw result, paired result와 task-level uncertainty를
+함께 보존한다. 사전 합의한 threshold를 통과할 때만 product benefit을 주장한다. Package, docs, current contracts,
+architecture, generated knowledge와 full suite를 동기화하고 별도 PR/merge 승인 뒤 exact merged main을 재검증해
+R53-Exit를 연다.
 
 ## Explicit non-goals
 
