@@ -358,6 +358,7 @@
         "removeEncoding"
       ],
       "recipeIds": [
+        "box-plot",
         "regression-scatterplot",
         "rose-chart",
         "scatterplot"

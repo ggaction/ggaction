@@ -59,6 +59,10 @@
   ],
   "pitfalls": [
     {
+      "problem": "There is no createRoseChart facade for a specialized radial child in a composition.",
+      "fix": "Build the child with createArcMark, encodeTheta, encodeR, and encodeColor from the rose-chart recipe before composing it."
+    },
+    {
       "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
       "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
     }
@@ -67,7 +71,9 @@
     "path": "examples/program-composition/program.js",
     "export": "createProgramCompositionExample"
   },
-  "relatedRecipes": [],
+  "relatedRecipes": [
+    "rose-chart"
+  ],
   "docs": [
     {
       "path": "docs/recipes/composition.md"

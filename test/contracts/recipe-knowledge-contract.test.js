@@ -89,6 +89,30 @@ test("keeps recipe sources schema-shaped and task-centered", async () => {
   assert.equal(recipeCoverageFile.endsWith("knowledge/recipe-coverage.json"), true);
 });
 
+test("delivers the supported box color and composition replacement variants", async () => {
+  const { document } = await buildKnowledge();
+  const box = document.recipes.find(recipe => recipe.id === "box-plot");
+  const composition = document.recipes.find(recipe => recipe.id === "composition");
+  const rose = document.recipes.find(recipe => recipe.id === "rose-chart");
+
+  assert.match(box.exampleSource, /\.createBoxPlot\(\{[\s\S]*?guides:\s*\{ legend: false \}[\s\S]*?\}\)\s*\.encodeColor\(\{/u);
+  assert.match(box.exampleSource, /target:\s*["']boxPlot["']/u);
+  assert.equal(
+    box.steps.flatMap(step => step.actions).some(action => action.name === "encodeColor"),
+    true
+  );
+  assert.match(box.pitfalls.map(pitfall => pitfall.problem).join("\n"), /does not accept a color option/u);
+
+  assert.match(composition.exampleSource, /\.editCompositionLayout\(\{ gap: 24, align: "center" \}\)/u);
+  assert.match(composition.exampleSource, /\.replaceCompositionChild\(\{ target: "detail", program: replacement \}\)/u);
+  assert.deepEqual(composition.relatedRecipes, ["rose-chart"]);
+  const inventedFacadeWarning = [...composition.pitfalls, ...rose.pitfalls]
+    .map(pitfall => `${pitfall.problem}\n${pitfall.fix}`)
+    .join("\n");
+  assert.match(inventedFacadeWarning, /no createRoseChart/u);
+  assert.match(inventedFacadeWarning, /createArcMark[\s\S]*encodeTheta[\s\S]*encodeR[\s\S]*encodeColor/u);
+});
+
 test("audits complete recipe runtime wrappers without accepting invented APIs", () => {
   const complete = `import { chart, render } from "ggaction";
 

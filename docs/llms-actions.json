@@ -3,11 +3,11 @@
   "generated": {
     "actionCount": 173,
     "actionIndexSha256": "5ba78038a620f50c79878d29404f7739a55ab5f59406d84ad1b16b68a188d7f6",
-    "actionSourceSha256": "e1b6234caf8389b8f9c1c946b853821f1a9e4d4e65f2c38a99d852797e3ea546",
+    "actionSourceSha256": "b62b4b42cf2b9f06c35d4bb64f7e816d610a1b81b6c558d345c2daad20c03851",
     "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
     "recipeCount": 33,
-    "recipeSourceSha256": "cc863341669d1be06677e31437f1207193de446bab8da565a374c3f09ee23503",
-    "recipeCoverageSha256": "4bcd0cd4b1e5d5a949b9e9c82ef1bf54e1b3afb9ced822acd04421ff95086591"
+    "recipeSourceSha256": "b56ea1481e8ca5a8b23829eb70ca0bde23e655030f5264bb5627bc370bf8331a",
+    "recipeCoverageSha256": "acdd3afb8614009e55fd64f4a30d2d89507b058a21a3f9cefd926181091f12b5"
   },
   "actions": [
     {
@@ -15393,6 +15393,7 @@
         "removeEncoding"
       ],
       "recipeIds": [
+        "box-plot",
         "regression-scatterplot",
         "rose-chart",
         "scatterplot"

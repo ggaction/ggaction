@@ -27,21 +27,34 @@ const bars = chart()
     y: { field: "value" }
   });
 
+const replacement = chart()
+  .createCanvas({ width: 260, height: 220 })
+  .createData({ values: values.filter(row => row.kind === "bar") })
+  .createBarPlot({
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" },
+    color: { field: "category", fieldType: "nominal" },
+    guides: { axes: { x: {}, y: {} }, legend: false }
+  });
+
 const program = hconcat({
   programs: [
     { id: "main", program: points },
     { id: "detail", program: bars }
   ],
   gap: 20
-}).editCompositionLayout({ gap: 24, align: "center" });
+})
+  .editCompositionLayout({ gap: 24, align: "center" })
+  .replaceCompositionChild({ target: "detail", program: replacement });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");
 render(program, context);
 ```
 
-`pointRows` and `barRows` are arrays of plain row objects containing the named
-fields. Every child must already have one complete materialized Canvas.
+`values` is an array of plain row objects containing the named fields and a
+`kind` value of `"point"` or `"bar"`. Every child and replacement must already
+have one complete materialized Canvas.
 
 ## You must decide
 
@@ -57,7 +70,9 @@ fields. Every child must already have one complete materialized Canvas.
 
 Use `editCompositionLayout` to revise gap, alignment, or padding. Use
 `replaceCompositionChild` to replace one named slot without mutating the
-earlier composition.
+earlier composition. A rose chart is built from the primitive
+`createArcMark → encodeTheta → encodeR → encodeColor` flow shown in the
+[rose chart recipe](./rose-chart.md); there is no `createRoseChart` action.
 
 ## Continue
 

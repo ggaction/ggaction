@@ -81,6 +81,10 @@
   ],
   "pitfalls": [
     {
+      "problem": "There is no createRoseChart facade that constructs this radial chart family in one call.",
+      "fix": "Use createArcMark followed by encodeTheta, encodeR, and encodeColor as shown in the executable source."
+    },
+    {
       "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
       "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
     }

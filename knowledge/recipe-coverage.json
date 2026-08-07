@@ -1053,6 +1053,7 @@
       "name": "encodeColor",
       "classification": "supporting",
       "recipeIds": [
+        "box-plot",
         "regression-scatterplot",
         "rose-chart",
         "scatterplot"

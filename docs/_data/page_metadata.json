@@ -133,7 +133,7 @@
   },
   "/recipes/composition/": {
     "title": "Composition Recipe",
-    "description": "pointRows and barRows are arrays of plain row objects containing the named fields. Every child must already have one complete materialized Canvas.",
+    "description": "values is an array of plain row objects containing the named fields and a kind value of \"point\" or \"bar\".",
     "image": "/assets/images/program-composition.png"
   },
   "/recipes/facet/": {

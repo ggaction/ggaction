@@ -54,6 +54,16 @@
       ]
     },
     {
+      "id": "add-supporting-variants",
+      "instruction": "Apply color after the box-plot facade and target the stable box-plot owner explicitly.",
+      "actions": [
+        {
+          "name": "encodeColor",
+          "role": "supporting"
+        }
+      ]
+    },
+    {
       "id": "revise-or-remove-owned-state",
       "instruction": "Use the focused lifecycle actions only after their owned box plot resources exist and are uniquely targeted.",
       "actions": [
@@ -72,6 +82,14 @@
     }
   ],
   "pitfalls": [
+    {
+      "problem": "The createBoxPlot action does not accept a color option even when categories should use distinct fills.",
+      "fix": "Call encodeColor after createBoxPlot with target boxPlot, the categorical field, and nominal fieldType."
+    },
+    {
+      "problem": "Coloring boxes by the same category shown on an axis can create a redundant legend.",
+      "fix": "Set guides.legend to false in createBoxPlot or manage the legend explicitly through guide lifecycle actions."
+    },
     {
       "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
       "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."

@@ -21,6 +21,11 @@ const program = chart()
     x: { field: "category", fieldType: "nominal" },
     y: { field: "value" },
     guides: { legend: false }
+  })
+  .encodeColor({
+    target: "boxPlot",
+    field: "category",
+    fieldType: "nominal"
   });
 
 const context = document.querySelector("#chart")?.getContext("2d");
@@ -43,7 +48,11 @@ render(program, context);
 
 Use `whisker: { type: "minmax" }` for observed minimum and maximum whiskers
 without an outlier layer. Use `editBoxPlot` to revise statistics, width, or
-component appearance through the stable box-plot owner.
+component appearance through the stable box-plot owner. Color is a post-facade
+encoding: call `encodeColor({ target: "boxPlot", ... })` instead of passing an
+unsupported `color` option to `createBoxPlot`. When color repeats the x or y
+category, keep the redundant legend disabled through `guides.legend` or manage
+it explicitly with the guide lifecycle actions.
 
 ## Continue
 
