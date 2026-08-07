@@ -1,6 +1,4 @@
-import { execFileSync } from "node:child_process";
-import { mkdtemp, mkdir, rm, stat } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { stat } from "node:fs/promises";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -8,10 +6,12 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
-import { createPackageArtifact } from "./package-artifact.js";
+import {
+  loadInstalledDirectKnowledge,
+  prepareInstalledMcpArtifact
+} from "./llm-eval/installed-mcp-artifact.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 async function discoverySnapshot(client) {
   const [resources, templates, tools, overview, search] = await Promise.all([
@@ -42,37 +42,14 @@ async function closeClients(...clients) {
 }
 
 export async function verifyInstalledMcpPackage() {
-  const temporary = await mkdtemp(path.join(tmpdir(), "ggaction-mcp-package-"));
-  const packed = path.join(temporary, "packed");
-  const consumer = path.join(temporary, "consumer");
-  const cache = path.join(temporary, "npm-cache");
+  const installed = await prepareInstalledMcpArtifact();
   let client;
   let sourceClient;
   try {
-    await Promise.all([mkdir(packed), mkdir(consumer), mkdir(cache)]);
-    const artifact = await createPackageArtifact({ cwd: root, outputDirectory: packed });
-    execFileSync(npmCommand, [
-      "install",
-      artifact.file,
-      "--ignore-scripts",
-      "--no-audit",
-      "--no-fund",
-      "--package-lock=false"
-    ], {
-      cwd: consumer,
-      env: { ...process.env, NPM_CONFIG_CACHE: cache },
-      encoding: "utf8"
-    });
-
-    const executable = path.join(
-      consumer,
-      "node_modules",
-      ".bin",
-      process.platform === "win32" ? "ggaction-mcp.cmd" : "ggaction-mcp"
-    );
+    const directKnowledge = await loadInstalledDirectKnowledge(installed);
     const transport = new StdioClientTransport({
-      command: executable,
-      cwd: consumer,
+      command: installed.executable,
+      cwd: installed.clientOptions.cwd,
       stderr: "pipe"
     });
     client = new Client({ name: "ggaction-installed-package-check", version: "1.0.0" });
@@ -96,17 +73,28 @@ export async function verifyInstalledMcpPackage() {
       throw new Error("Installed MCP discovery differs from the source MCP discovery.");
     }
     const parsed = result => JSON.parse(result.contents[0].text);
+    const [directSearch, directRecipe] = await Promise.all([
+      directKnowledge.search({ query: "scatter plot", limit: 3 }),
+      directKnowledge.read({ kind: "recipe", id: "scatterplot" })
+    ]);
+    if (!isDeepStrictEqual(directSearch, installedDiscovery.search)) {
+      throw new Error("Installed direct search payload differs from installed MCP transport.");
+    }
+    if (!isDeepStrictEqual(directRecipe, parsed(recipe))) {
+      throw new Error("Installed direct resource payload differs from installed MCP transport.");
+    }
     return Object.freeze({
       package: {
-        name: artifact.name,
-        version: artifact.version,
-        entryCount: artifact.entryCount,
-        packedBytes: artifact.size,
-        unpackedBytes: artifact.unpackedSize,
-        sha256: artifact.sha256
+        name: installed.artifact.name,
+        version: installed.artifact.version,
+        entryCount: installed.artifact.entryCount,
+        packedBytes: installed.artifact.packedBytes,
+        unpackedBytes: installed.artifact.unpackedBytes,
+        sha256: installed.artifact.sha256
       },
-      executableMode: process.platform === "win32" ? null : (await stat(executable)).mode & 0o777,
+      executableMode: process.platform === "win32" ? null : (await stat(installed.executable)).mode & 0o777,
       discoveryMatchesSource: true,
+      directPayloadMatchesTransport: true,
       instructions: installedDiscovery.instructions,
       resources: installedDiscovery.resources.map(resource => resource.uri),
       templates: installedDiscovery.resourceTemplates.map(template => template.uriTemplate),
@@ -120,7 +108,7 @@ export async function verifyInstalledMcpPackage() {
     });
   } finally {
     await closeClients(client, sourceClient);
-    await rm(temporary, { recursive: true, force: true });
+    await installed.cleanup();
   }
 }
 

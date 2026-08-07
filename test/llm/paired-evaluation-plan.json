@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "status": "unpaid-validation-only",
+  "provider": "openai",
+  "api": "responses",
+  "model": {
+    "name": "gpt-5.6-terra",
+    "reasoningEffort": "medium",
+    "reasoningMode": "standard",
+    "textVerbosity": "low",
+    "serviceTier": "default",
+    "store": false
+  },
+  "conditions": {
+    "A": "docs-only",
+    "B": "structured-direct",
+    "C": "structured-mcp",
+    "D": "docs-plus-mcp"
+  },
+  "isolation": {
+    "transportPair": ["B", "C"],
+    "sameModelVisibleStructuredSurface": true,
+    "recommendedProductCondition": "D",
+    "historicalResultsAreDiagnosticOnly": true
+  },
+  "sampling": {
+    "repetitionsPerTask": 1,
+    "maximumModelCallsPerTask": 6,
+    "maximumNaturalModelCallsBeforeForcedSubmission": 3,
+    "maximumKnowledgeToolCallsPerTask": 3,
+    "maximumRepairSubmissions": 2,
+    "timeoutMsPerTask": 180000,
+    "persistentMcpSessionPerCondition": true
+  },
+  "tokenBudgetPerTask": {
+    "maximumCumulativeInputTokens": 36000,
+    "maximumCumulativeOutputTokens": 12000,
+    "maximumOutputTokensPerCall": 5000
+  },
+  "pricingUsdPerMillionTokens": {
+    "uncachedInput": 2,
+    "cachedInput": 0.2,
+    "cacheWrite": 2.5,
+    "output": 12
+  },
+  "artifactPolicy": {
+    "documentationSnapshotRequired": true,
+    "installedPackageSha256Required": true,
+    "sourceMcpForbiddenForPaidRuns": true,
+    "candidateCommitRequired": true,
+    "freshOutputRootRequired": true
+  },
+  "measurement": {
+    "separateStages": [
+      "retrieval",
+      "natural-submission",
+      "forced-submission-correctness",
+      "first-submission-correctness",
+      "final-correctness"
+    ],
+    "latencies": ["setup", "task-loop", "end-to-end", "time-to-first-submission", "time-to-valid"],
+    "mcpOperations": [
+      "initialize",
+      "listResources",
+      "listResourceTemplates",
+      "listTools",
+      "readResource",
+      "callTool"
+    ],
+    "pairedEfficiencyOnly": true,
+    "taskLevelUncertainty": true
+  },
+  "paidPilot": {
+    "status": "blocked-pending-gate-s",
+    "credentialReadsAllowed": false,
+    "externalModelCallsAllowed": false,
+    "approvedSpendUsd": 0
+  }
+}
