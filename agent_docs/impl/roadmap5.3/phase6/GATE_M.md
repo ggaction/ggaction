@@ -10,6 +10,8 @@ Implementation checkpoint: `622286f9501bd76b89e0a4e8a694c5f3b603f098`
 
 Implementation tree: `061c1bdd3607928d74e19d80c2674662f1e0f83d`
 
+Evidence record checkpoint: `660cfa49`
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 한눈에 보는 결과

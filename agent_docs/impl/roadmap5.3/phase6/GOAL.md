@@ -78,4 +78,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_K.md`](./GATE_K.md) — 세 failure surface를 대표하는 B/C paid smoke와 $0.60 hard cap
 - [`GATE_L.md`](./GATE_L.md) — task-closed recipe variants와 bounded two-read correction contract
 - [`GATE_M.md`](./GATE_M.md) — 24-task delivered-payload closure와 complete unpaid evidence
+- [`GATE_N.md`](./GATE_N.md) — 같은 세 task의 새 candidate B/C paid retry와 $0.60 hard cap
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
