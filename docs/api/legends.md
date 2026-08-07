@@ -31,7 +31,7 @@ editing page when changing an existing guide.
 ## Minimal lifecycle flow
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })
@@ -41,6 +41,10 @@ const program = chart()
   ] })
   .createScatterPlot({ x: "x", y: "y", color: "group" })
   .editLegendLayout({ position: "right", offset: 18 });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## Supported legend families

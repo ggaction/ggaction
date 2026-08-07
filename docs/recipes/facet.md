@@ -12,7 +12,7 @@ title: Facet Recipe
 {% include runnable-recipe-note.html %}
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ width: 250, height: 230 })
@@ -27,6 +27,10 @@ const program = chart()
     columns: 3,
     guides: { legend: "shared" }
   });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 `cars` is an array of plain row objects containing the encoded fields and

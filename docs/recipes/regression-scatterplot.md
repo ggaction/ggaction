@@ -15,7 +15,7 @@ bands over a point chart.
 {% include runnable-recipe-note.html %}
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({
@@ -38,6 +38,10 @@ const program = chart()
   })
   .createRegression()
   .createGuides();
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## You must decide

@@ -12,7 +12,7 @@ title: Parallel Coordinates Recipe
 {% include runnable-recipe-note.html %}
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { top: 80, right: 140, bottom: 60, left: 70 } })
@@ -26,6 +26,10 @@ const program = chart()
     ],
     color: "Origin"
   });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 `cars` is an array of plain row objects. Every eligible row becomes one open

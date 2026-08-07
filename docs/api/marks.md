@@ -115,9 +115,9 @@ const program = chart()
 row after both x and y encodings are complete:
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
-const rug = chart()
+const program = chart()
   .createCanvas({ width: 800, height: 240 })
   .createData({
     id: "cars",
@@ -132,6 +132,10 @@ const rug = chart()
   })
   .encodeX({ target: "ticks", field: "Horsepower" })
   .encodeY({ target: "ticks", field: "Baseline" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 The default length is `14`, stroke width is `2`, opacity is `1`, and stroke

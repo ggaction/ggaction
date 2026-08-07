@@ -12,7 +12,7 @@ title: Path Ordering Recipe
 {% include runnable-recipe-note.html %}
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -23,6 +23,10 @@ const program = chart()
   .encodeColor({ field: "country" })
   .encodePathOrder({ field: "year", order: "ascending" })
   .createGuides();
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 `observations` is an array of plain row objects. Source rows may be shuffled;

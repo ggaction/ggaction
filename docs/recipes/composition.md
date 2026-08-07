@@ -12,7 +12,7 @@ title: Composition Recipe
 {% include runnable-recipe-note.html %}
 
 ```javascript
-import { chart, hconcat } from "ggaction";
+import { chart, hconcat, render } from "ggaction";
 
 const points = chart()
   .createCanvas({ width: 280, height: 220 })
@@ -24,13 +24,17 @@ const bars = chart()
   .createData({ values: barRows })
   .createBarPlot({ x: "category", y: "value" });
 
-const dashboard = hconcat({
+const program = hconcat({
   programs: [
     { id: "main", program: points },
     { id: "detail", program: bars }
   ],
   gap: 20
 }).editCompositionLayout({ gap: 24, align: "center" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 `pointRows` and `barRows` are arrays of plain row objects containing the named

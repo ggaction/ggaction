@@ -19,9 +19,10 @@ running totals, or neighboring values without changing the source rows.
 ## `createWindowData({ id, source?, partitionBy?, sortBy?, operations })`
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
+  .createCanvas({ margin: { right: 120 } })
   .createData({
     id: "sales",
     values: [
@@ -39,7 +40,18 @@ const program = chart()
       { op: "cumulativeSum", field: "amount", as: "runningAmount" },
       { op: "lag", field: "amount", as: "previousAmount" }
     ]
+  })
+  .createLinePlot({
+    id: "runningSales",
+    data: "rankedSales",
+    x: { field: "month", fieldType: "quantitative" },
+    y: { field: "runningAmount" },
+    color: "region"
   });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 | Option | Type | Default |

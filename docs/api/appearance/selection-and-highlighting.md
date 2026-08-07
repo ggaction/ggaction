@@ -10,7 +10,7 @@ title: Selection and Highlighting
 ## Mark selection and highlighting
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -21,6 +21,10 @@ const program = chart()
   .createScatterPlot({ x: "x", y: "y" })
   .selectMarks({ id: "highest", field: "y", op: "max" })
   .highlightMarks({ selection: "highest", fill: "#f97316" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 `selectMarks` is the advanced reusable-selection action. Selection by itself

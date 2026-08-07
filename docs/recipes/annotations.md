@@ -12,7 +12,7 @@ title: Annotation Recipe
 {% include runnable-recipe-note.html %}
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -25,6 +25,10 @@ const program = chart()
     maxDisplacement: 48,
     leader: { stroke: "#94a3b8", opacity: 0.8 }
   });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 `films` is an array of plain row objects containing the two position fields and
