@@ -4,6 +4,8 @@
 
 `ready-for-review`
 
+Gate package checkpoint: `9f73bd7d`
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 한눈에 보는 결정
