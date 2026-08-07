@@ -41,7 +41,8 @@ test("ranks exact actions and recognizable tasks deterministically", async () =>
   assert.equal(exact.schemaVersion, 2);
   assert.equal(exact.results[0].kind, "action");
   assert.equal(exact.results[0].id, "createScatterPlot");
-  assert.equal(exact.nextStep, "Read one best matching action or recipe.");
+  assert.match(exact.nextStep, /best matching primary action or recipe/u);
+  assert.match(exact.nextStep, /at most one dependency recipe in the same model response/u);
 
   const first = await searchKnowledge({ query: "scatter plot relationship between horsepower and efficiency" });
   const second = await searchKnowledge({ query: "scatter plot relationship between horsepower and efficiency" });
@@ -118,7 +119,8 @@ test("bounds search and exact reads without exposing arbitrary files", async () 
   const docs = await readKnowledge({ kind: "docs", id: "overview" });
   assert.equal(action.schemaVersion, 2);
   assert.equal(action.value.name, "createScatterPlot");
-  assert.equal(action.nextStep, "Write the complete program and call submit_program now; do not search again.");
+  assert.match(action.nextStep, /at most one dependency recipe in this same model response/u);
+  assert.match(action.nextStep, /call submit_program without another search/u);
   assert.equal(action.value.typeDefinitions.length > 0, true);
   assert.equal(recipe.value.id, "scatterplot");
   assert.match(recipe.value.exampleSource, /from "ggaction"/);

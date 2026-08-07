@@ -168,7 +168,7 @@ export function conditionBKnowledge(commit) {
     mode: "structured-knowledge",
     commit,
     tools: Object.freeze([...currentDocTools, ...structuredKnowledgeTools]),
-    instruction: "Use only public ggaction APIs. The current-doc tools remain available; prefer one structured search and one exact structured read when they directly match the task.",
+    instruction: "Use only public ggaction APIs. Search structured knowledge once. Read the best matching primary action or recipe and, only when a composite task clearly needs another chart family, read at most one dependency recipe in the same model response. Then submit without another structured search or read. The current-doc tools remain available.",
     routingLabel: "Current ggaction documentation routing index followed by the structured knowledge overview",
     async routingText() {
       const currentRouting = (await readCurrentDoc("llms.txt")).text;
@@ -206,7 +206,7 @@ export function conditionCKnowledge(commit, clientOptions) {
       if (!surface) throw new Error("Condition C MCP discovery must finish before reading its tools.");
       return surface.tools;
     },
-    instruction: "Use only public ggaction APIs found through the discovered local MCP surface. Search once, read one exact action or recipe resource, then submit the program without another search.",
+    instruction: "Use only public ggaction APIs found through the discovered local MCP surface. Search once. Read the best matching primary action or recipe and, only when a composite task clearly needs another chart family, read at most one dependency recipe in the same model response. Then submit without another search or resource read.",
     routingLabel: "Discovered local ggaction MCP instructions, catalog, and overview resource",
     initialize,
     async routingText() {

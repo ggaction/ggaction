@@ -158,7 +158,7 @@ export async function searchKnowledge(options) {
     schemaVersion: 2,
     query: query.query,
     results: Object.freeze(results),
-    nextStep: "Read one best matching action or recipe."
+    nextStep: "Read the best matching primary action or recipe and, only for a composite task that clearly needs another chart family, at most one dependency recipe in the same model response."
   });
 }
 
@@ -188,8 +188,8 @@ export async function readKnowledge(options) {
     route: searchRecord.route,
     value,
     nextStep: kind === "docs"
-      ? "Search for the task, then read one best matching action or recipe."
-      : "Write the complete program and call submit_program now; do not search again."
+      ? "Search once for the task, then read the best matching primary resource and at most one required dependency recipe."
+      : "If the same search results clearly require another chart family, read at most one dependency recipe in this same model response; otherwise write the complete program and call submit_program without another search."
   });
 }
 
@@ -201,8 +201,9 @@ export async function knowledgeOverview() {
     purpose: "Build immutable chart programs through public domain actions and render their materialized graphics.",
     workflow: Object.freeze([
       "Search once with search_ggaction using the chart task or exact action name.",
-      "Read one best matching action or recipe resource.",
-      "Write the complete public ggaction program without another knowledge search."
+      "Read the best matching primary action or recipe resource.",
+      "Only for a composite task that clearly needs another chart family, read at most one dependency recipe in the same model response.",
+      "Write the complete public ggaction program without another knowledge search or resource read."
     ]),
     resources: Object.freeze([
       "ggaction://overview",

@@ -104,7 +104,8 @@ test("keeps search deterministic, bounded, and strict about invalid input", asyn
     assert.equal(response.schemaVersion, 2);
     assert.equal(response.results.length, 3);
     assert.equal(response.results[0].id, "scatterplot");
-    assert.equal(response.nextStep, "Read one best matching action or recipe.");
+    assert.match(response.nextStep, /best matching primary action or recipe/u);
+    assert.match(response.nextStep, /at most one dependency recipe in the same model response/u);
 
     for (const invalid of [
       { query: "" },

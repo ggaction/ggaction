@@ -357,6 +357,11 @@ test("isolates A, B, and C knowledge tools behind one evaluation envelope", asyn
   assert.equal(conditionAKnowledge.mode, "current-docs");
   assert.equal(conditionB.mode, "structured-knowledge");
   assert.equal(conditionC.mode, "local-mcp");
+  for (const instruction of [conditionB.instruction, conditionC.instruction]) {
+    assert.match(instruction, /Search (?:structured knowledge )?once/u);
+    assert.match(instruction, /at most one dependency recipe in the same model response/u);
+    assert.match(instruction, /without another (?:structured )?search or (?:resource )?read/u);
+  }
   assert.deepEqual(conditionC.tools.map(tool => tool.name), ["search_ggaction", "read_mcp_resource"]);
   assert.equal(conditionC.tools.find(tool => tool.name === "search_ggaction").strict, false);
   for (const tool of [...conditionB.tools, ...conditionC.tools].filter(tool => tool.strict)) {

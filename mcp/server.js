@@ -25,7 +25,7 @@ export function createGgactionMcpServer() {
   const server = new McpServer(
     { name: "ggaction", version },
     {
-      instructions: "Search once for the chart task, read one best matching self-contained action or recipe resource, then write public ggaction code without another search. This server is read-only and does not execute or render charts."
+      instructions: "Search once for the chart task. Read the best matching primary action or recipe and, only when a composite task clearly needs another chart family, read at most one dependency recipe in the same model response. Then write public ggaction code without another search or resource read. This server is read-only and does not execute or render charts."
     }
   );
 
