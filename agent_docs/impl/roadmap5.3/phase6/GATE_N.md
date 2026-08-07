@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Proposal checkpoint: `c4ccc5b5`
 
@@ -14,9 +14,13 @@ Guard checkpoint: `a298c4a1`
 
 Result evidence checkpoint: `1f1707d1`
 
+Result approval checkpoint: pending
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 Approved by the user on 2026-08-07 with a combined `$0.60` hard cap.
+
+Failed result evidence and the non-integration decision were approved by the user on 2026-08-07.
 
 Task-closed smoke plan SHA-256: `0fbbb6022b26fb0f55c204c82585786ce1cb5ce80fd3c41f50f9108569f7be13`
 
@@ -196,8 +200,9 @@ Box와 composition은 모두 expected primary recipe를 top 1에서 검색했다
 
 ## Review decision
 
-Gate N의 승인된 유료 실행 범위는 끝났다. Failed evidence와 non-integration 판단은 사용자 review 전이며, 이 review가
-끝나기 전에는 correction, 재시도, Condition C, full evaluation, PR 또는 benefit claim을 진행하지 않는다.
+Gate N의 승인된 유료 실행 범위는 끝났고 사용자는 failed evidence와 non-integration 판단을 승인했다. 이 승인으로
+correction, 재시도, Condition C, full evaluation, PR 또는 benefit claim은 허용되지 않는다. 다음 correction은 별도
+제안과 승인이 필요하다.
 
 ## 근거
 
