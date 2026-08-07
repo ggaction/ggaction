@@ -4,7 +4,7 @@
 
 `proposed — paid execution blocked`
 
-Proposal checkpoint: `pending remote checkpoint`
+Proposal checkpoint: `c4ccc5b5`
 
 Candidate behavior checkpoint: `622286f9501bd76b89e0a4e8a694c5f3b603f098`
 
