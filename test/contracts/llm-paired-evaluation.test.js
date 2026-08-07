@@ -162,6 +162,7 @@ test("reserves a forced final submission and two real repair calls", async () =>
     assert.equal(result.metrics.submissions, 3);
     assert.equal(result.metrics.repairRounds, 2);
     assert.equal(result.metrics.modelCalls, 6);
+    assert.equal(result.metrics.unreportedCostUpperBoundUsd, 0);
     assert.equal(result.metrics.mcpOperations.total, 0);
     assert.equal(result.outcome.retrievalSucceeded, true);
     assert.equal(result.outcome.naturalSubmission, false);
@@ -216,5 +217,37 @@ test("reuses one MCP session while reporting per-task protocol deltas", async ()
     assert.deepEqual(second.metrics.mcpSession.artifact, { sha256: "a".repeat(64), kind: "test-package" });
   } finally {
     await Promise.all([probe.close(), mcp.close()]);
+  }
+});
+
+test("records a conservative request bound when provider usage is incomplete", async () => {
+  const [corpus, plan] = await fixtures();
+  const probe = createLocalMcpKnowledgeClient();
+  try {
+    const surface = await captureStructuredKnowledgeSurface(probe);
+    const knowledge = createPairedKnowledgeAdapter({ condition: "B", commit, structuredSurface: surface });
+    const task = corpus.tasks.find(candidate => candidate.id === "cars-scatter-origin");
+    const result = await runPairedEvaluationTask({
+      knowledge,
+      apiKey,
+      corpus,
+      task,
+      repetition: 1,
+      plan,
+      outputRoot: new URL("../../.artifacts/llm-eval/paired-usage-contract", import.meta.url).pathname,
+      fetchImpl: async () => ({
+        ok: true,
+        async json() {
+          return { model: plan.model.name, output: [], usage: { input_tokens: 100, output_tokens: 10 } };
+        }
+      })
+    });
+
+    assert.equal(result.outcome.failureCategory, "provider-error");
+    assert.equal(result.metrics.modelCalls, 1);
+    assert.equal(result.metrics.estimatedCostUsd, 0);
+    assert.equal(result.metrics.unreportedCostUpperBoundUsd > 0, true);
+  } finally {
+    await probe.close();
   }
 });

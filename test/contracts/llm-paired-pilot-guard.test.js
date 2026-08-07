@@ -4,8 +4,10 @@ import test from "node:test";
 
 import {
   assertPairedPilotApproval,
+  assertPairedPilotRunCanContinue,
   orderedPairedPilotRuns
 } from "../../scripts/llm-eval/run-paired-pilot.js";
+import { hasCompleteBillingUsage } from "../../scripts/llm-eval/openai-responses.js";
 import { assertArchivedEvaluationExecution } from "../../scripts/llm-eval/archived-evaluation.js";
 import { loadGeneralizationCorpus } from "../../scripts/llm-eval/paired-corpus.js";
 
@@ -71,6 +73,33 @@ test("keeps the checked-in paired plan incapable of spending", async () => {
     externalModelCallsAllowed: false,
     approvedSpendUsd: 0
   });
+});
+
+test("stops after any request whose billable usage is unknown", async () => {
+  const { plan } = await fixtures();
+  const result = failureCategory => ({
+    model: { resolvedName: plan.model.name },
+    outcome: { failureCategory }
+  });
+  assert.equal(assertPairedPilotRunCanContinue(result(null), plan), true);
+  assert.throws(() => assertPairedPilotRunCanContinue(result("provider-error"), plan), /billable usage/iu);
+  assert.throws(() => assertPairedPilotRunCanContinue(result("timeout"), plan), /billable usage/iu);
+  assert.throws(() => assertPairedPilotRunCanContinue(result("budget-exceeded"), plan), /hard cap/iu);
+  assert.throws(() => assertPairedPilotRunCanContinue({
+    ...result(null), model: { resolvedName: "unexpected-model" }
+  }, plan), /model mismatch/iu);
+});
+
+test("requires all token fields used by paid cost accounting", () => {
+  const complete = {
+    input_tokens: 100,
+    input_tokens_details: { cached_tokens: 10, cache_write_tokens: 20 },
+    output_tokens: 30,
+    total_tokens: 130
+  };
+  assert.equal(hasCompleteBillingUsage(complete), true);
+  assert.equal(hasCompleteBillingUsage({ ...complete, input_tokens_details: { cached_tokens: 10 } }), false);
+  assert.equal(hasCompleteBillingUsage({ ...complete, total_tokens: undefined }), false);
 });
 
 test("prevents an archived paid candidate from running at current HEAD", () => {

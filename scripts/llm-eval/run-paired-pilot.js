@@ -85,6 +85,16 @@ export function orderedPairedPilotRuns({ approval, corpus }) {
   return runs.toSorted((left, right) => orderKey(left).localeCompare(orderKey(right)));
 }
 
+export function assertPairedPilotRunCanContinue(result, plan) {
+  invariant(result.model.resolvedName === plan.model.name,
+    `Resolved model mismatch: expected ${plan.model.name}, received ${result.model.resolvedName}.`);
+  invariant(result.outcome.failureCategory !== "budget-exceeded",
+    "Paid pilot stopped before a request that could not fit under the remaining hard cap.");
+  invariant(!["provider-error", "timeout"].includes(result.outcome.failureCategory),
+    "Paid pilot stopped after a request without complete billable usage; no further paid request is safe.");
+  return true;
+}
+
 export function assertCandidateTree({ approval, cwd = root }) {
   const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd, encoding: "utf8" }).trim();
   invariant(head === approval.gateRecordCommit, "Current HEAD is not the approved Gate S record commit.");
@@ -201,7 +211,6 @@ export async function runApprovedPairedPilot({
     const apiKey = await loadApiKey(tokenFile);
     const results = [];
     let spentUsd = 0;
-    let consecutiveProviderErrors = 0;
     for (const run of runs) {
       const remainingSpendUsd = approval.hardSpendCapUsd - spentUsd;
       invariant(remainingSpendUsd > 0, "Paid pilot hard spend cap has been reached.");
@@ -229,17 +238,10 @@ export async function runApprovedPairedPilot({
         modelCalls: result.metrics.modelCalls,
         totalTokens: result.metrics.totalTokens,
         costUsd: result.metrics.estimatedCostUsd,
+        unreportedCostUpperBoundUsd: result.metrics.unreportedCostUpperBoundUsd,
         cumulativeCostUsd: spentUsd
       })}\n`);
-      invariant(result.model.resolvedName === plan.model.name,
-        `Resolved model mismatch: expected ${plan.model.name}, received ${result.model.resolvedName}.`);
-      if (result.outcome.failureCategory === "budget-exceeded") {
-        throw new Error("Paid pilot stopped before a request that could not fit under the remaining hard cap.");
-      }
-      consecutiveProviderErrors = result.outcome.failureCategory === "provider-error"
-        ? consecutiveProviderErrors + 1
-        : 0;
-      invariant(consecutiveProviderErrors < 3, "Paid pilot stopped after three consecutive provider errors.");
+      assertPairedPilotRunCanContinue(result, plan);
     }
     return Object.freeze({ outputRoot, runs: results.length, spentUsd, manifest });
   } finally {

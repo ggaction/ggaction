@@ -3,7 +3,12 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createOpenAIResponse, estimateResponseCostUsd, normalizeResponseUsage } from "./openai-responses.js";
+import {
+  createOpenAIResponse,
+  estimateResponseCostUsd,
+  hasCompleteBillingUsage,
+  normalizeResponseUsage
+} from "./openai-responses.js";
 import { evaluateGeneratedProgram } from "./program-evaluator.js";
 import { scoreEvaluationEvidence } from "./score.js";
 
@@ -152,6 +157,9 @@ export function validatePairedEvaluationResult(result, corpus) {
   for (const key of ["modelCalls", "knowledgeToolCalls", "submissions", "repairRounds"]) {
     if (!Number.isInteger(result.metrics[key]) || result.metrics[key] < 0) throw new Error(`Invalid paired metric ${key}.`);
   }
+  if (!Number.isFinite(result.metrics.unreportedCostUpperBoundUsd) || result.metrics.unreportedCostUpperBoundUsd < 0) {
+    throw new Error("Paired result requires a non-negative unreported request cost upper bound.");
+  }
   if (result.metrics.repairRounds !== Math.max(0, result.metrics.submissions - 1)) {
     throw new Error("Paired repairRounds must count submissions after the first.");
   }
@@ -209,6 +217,7 @@ export async function runPairedEvaluationTask({
   const sampling = plan.sampling;
   const taskSignal = AbortSignal.timeout(sampling.timeoutMsPerTask);
   let estimatedCostUsd = 0;
+  let unreportedCostUpperBoundUsd = 0;
   let modelCalls = 0;
   let knowledgeToolCalls = 0;
   let submissions = 0;
@@ -277,6 +286,7 @@ export async function runPairedEvaluationTask({
     try {
       response = await createOpenAIResponse({ apiKey, request, fetchImpl, signal: taskSignal });
     } catch (error) {
+      unreportedCostUpperBoundUsd = maximumNextCost;
       providerError = ["AbortError", "TimeoutError"].includes(error.name)
         ? "timeout"
         : error.code ?? `provider-http-${error.status ?? "error"}`;
@@ -285,6 +295,12 @@ export async function runPairedEvaluationTask({
     }
     modelCalls += 1;
     resolvedName = response.model ?? resolvedName;
+    if (!hasCompleteBillingUsage(response.usage)) {
+      unreportedCostUpperBoundUsd = maximumNextCost;
+      providerError = "usage-unavailable";
+      runtimeError = "OpenAI response did not include complete billable token usage.";
+      break;
+    }
     addUsage(usage, response.usage);
     estimatedCostUsd += estimateResponseCostUsd(response.usage, plan.pricingUsdPerMillionTokens);
     input.push(...(response.output ?? []));
@@ -384,6 +400,7 @@ export async function runPairedEvaluationTask({
       timeToFirstSubmissionMs: firstSubmissionAtMs,
       timeToValidMs: firstValidAtMs,
       estimatedCostUsd,
+      unreportedCostUpperBoundUsd,
       mcpOperations: operationDelta(operationsBefore, operationsAfter),
       mcpSession: knowledge.sessionSnapshot()
     },

@@ -25,6 +25,16 @@ function nonNegativeInteger(value) {
   return Number.isInteger(value) && value >= 0 ? value : 0;
 }
 
+export function hasCompleteBillingUsage(usage) {
+  return Number.isInteger(usage?.input_tokens) && usage.input_tokens >= 0 &&
+    Number.isInteger(usage?.input_tokens_details?.cached_tokens) &&
+    usage.input_tokens_details.cached_tokens >= 0 &&
+    Number.isInteger(usage?.input_tokens_details?.cache_write_tokens) &&
+    usage.input_tokens_details.cache_write_tokens >= 0 &&
+    Number.isInteger(usage?.output_tokens) && usage.output_tokens >= 0 &&
+    Number.isInteger(usage?.total_tokens) && usage.total_tokens >= 0;
+}
+
 export function normalizeResponseUsage(usage = {}) {
   const inputDetails = usage.input_tokens_details ?? {};
   const outputDetails = usage.output_tokens_details ?? {};
