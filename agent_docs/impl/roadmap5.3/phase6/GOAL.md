@@ -64,7 +64,8 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [x] Strict program oracle
 - [x] Fresh generalization corpus and paired statistics
 - [x] Complete unpaid reset evidence
-- [ ] R53-P6-S paid pilot proposal and separate approval
+- [x] R53-P6-S exact paid pilot proposal
+- [ ] R53-P6-S separate cost approval and guarded execution
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
@@ -100,4 +101,5 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [`GATE_P.md`](./GATE_P.md) — complete unpaid submit-ready/layout-safe evidence와 paid-retry 진입 판단
 - [`GATE_Q.md`](./GATE_Q.md) — 같은 세 task의 submit-ready/layout-safe B/C paid retry와 $0.60 hard cap
 - [`GATE_R.md`](./GATE_R.md) — production MCP와 benchmark의 무과금 integrity reset
+- [`GATE_S.md`](./GATE_S.md) — fresh A/B/C/D paid pilot의 exact scope, 비용과 stop rules
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
