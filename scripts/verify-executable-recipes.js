@@ -123,6 +123,10 @@ export function renderedPNG() {
 `;
 }
 
+function builderExecutionModule(source, values) {
+  return `${source}\n\nexport const __verifiedProgram = buildChart(${JSON.stringify(values)});\n`;
+}
+
 export async function verifyExecutableRecipes({ artifactRoot = defaultArtifactRoot } = {}) {
   const published = JSON.parse(await readFile(publishedRecipeFile, "utf8"));
   const results = [];
@@ -131,9 +135,11 @@ export async function verifyExecutableRecipes({ artifactRoot = defaultArtifactRo
   for (const recipe of published.recipes) {
     const recipeRoot = path.join(artifactRoot, recipe.id);
     const moduleFile = path.join(recipeRoot, "program.mjs");
+    const builderModuleFile = path.join(recipeRoot, "builder.mjs");
     const pngFile = path.join(recipeRoot, "canvas.png");
     await mkdir(recipeRoot, { recursive: true });
     await writeFile(moduleFile, executionModule(recipe.exampleSource, valuesForRecipe(recipe.id)));
+    await writeFile(builderModuleFile, builderExecutionModule(recipe.builderSource, valuesForRecipe(recipe.id)));
     let module;
     try {
       module = await import(`${pathToFileURL(moduleFile).href}?source=${sha256(recipe.exampleSource)}`);
@@ -141,14 +147,27 @@ export async function verifyExecutableRecipes({ artifactRoot = defaultArtifactRo
       throw new Error(`${recipe.id}: exampleSource execution failed: ${error.message}`, { cause: error });
     }
     const { program } = module;
+    let builderModule;
+    try {
+      builderModule = await import(`${pathToFileURL(builderModuleFile).href}?source=${sha256(recipe.builderSource)}`);
+    } catch (error) {
+      throw new Error(`${recipe.id}: builderSource execution failed: ${error.message}`, { cause: error });
+    }
+    const builderProgram = builderModule.__verifiedProgram;
     if (!program?.semanticSpec || !program?.graphicSpec || !program?.trace) {
       throw new Error(`${recipe.id}: exampleSource did not produce a ChartProgram.`);
+    }
+    if (!builderProgram?.semanticSpec || !builderProgram?.graphicSpec || !builderProgram?.trace) {
+      throw new Error(`${recipe.id}: builderSource did not return a ChartProgram.`);
     }
     const primaryActions = recipe.steps.flatMap(step => step.actions)
       .filter(action => action.role === "primary")
       .map(action => action.name);
     if (!primaryActions.some(action => programIncludes(program, action))) {
       throw new Error(`${recipe.id}: exampleSource trace lacks its primary recipe action.`);
+    }
+    if (!primaryActions.some(action => programIncludes(builderProgram, action))) {
+      throw new Error(`${recipe.id}: builderSource trace lacks its primary recipe action.`);
     }
     const png = module.renderedPNG();
     if (png.length <= 100 || png.subarray(1, 4).toString() !== "PNG") {
@@ -159,13 +178,19 @@ export async function verifyExecutableRecipes({ artifactRoot = defaultArtifactRo
       id: recipe.id,
       exampleSourcePath: recipe.exampleSourcePath,
       exampleSourceSha256: sha256(recipe.exampleSource),
+      builderSourceSha256: sha256(recipe.builderSource),
       programModule: path.relative(root, moduleFile),
+      builderModule: path.relative(root, builderModuleFile),
       canvasPNG: path.relative(root, pngFile),
       canvasBytes: png.length,
       primaryActions: Object.freeze(primaryActions),
       deliveredActions: collectProgramActions(program),
       deliveredRuntimeFunctions: Object.freeze([
-        ...new Set([...importedRuntimeFunctions(recipe.exampleSource), ...guidedRuntimeFunctions(recipe)])
+        ...new Set([
+          ...importedRuntimeFunctions(recipe.exampleSource),
+          ...importedRuntimeFunctions(recipe.builderSource),
+          ...guidedRuntimeFunctions(recipe)
+        ])
       ].sort())
     }));
   }

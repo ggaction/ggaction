@@ -2046,6 +2046,9 @@ Package root의 `mcp/knowledge.js`는 fixed package-local generated knowledge의
 `mcp/server.js`는 resource/tool registration만 소유하고 `bin/ggaction-mcp.js`는 stdio startup과 stderr failure boundary만
 소유한다. 이 Node-only tree는 `src/` chart state, action, materialization 또는 renderer tree의 dependency가 아니며
 `scripts/knowledge-search.js`만 development compatibility facade로 같은 search/read owner를 re-export한다.
+Generated recipe는 browser Canvas host까지 포함한 `exampleSource`와 renderer/DOM에서 독립적인
+`builderSource`의 `buildChart(values)`를 함께 제공한다. 두 source는 같은 documented action sequence에서 생성되며 package
+verification은 둘을 모두 실행해 fully materialized `ChartProgram`을 만드는지 확인한다.
 
 ```text
 src/

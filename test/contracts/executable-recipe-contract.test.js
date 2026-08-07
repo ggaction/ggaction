@@ -9,4 +9,5 @@ test("executes and renders every generated recipe source with only declared host
   assert.equal(manifest.results.length, 33);
   assert.equal(manifest.results.every(result => result.canvasBytes > 100), true);
   assert.equal(new Set(manifest.results.map(result => result.exampleSourceSha256)).size, 33);
+  assert.equal(new Set(manifest.results.map(result => result.builderSourceSha256)).size, 33);
 });

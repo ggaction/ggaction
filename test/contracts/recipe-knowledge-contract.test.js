@@ -10,7 +10,8 @@ import { chart } from "../../src/index.js";
 import {
   executableExampleSourceViolations,
   recipeCoverageFile,
-  recipeSourceRoot
+  recipeSourceRoot,
+  reusableBuilderSourceViolations
 } from "../../scripts/recipe-knowledge.js";
 import { verifyExecutableRecipes } from "../../scripts/verify-executable-recipes.js";
 import { focusedRecipeActions, recipeExamples } from "../llm/recipe-knowledge-examples.js";
@@ -57,13 +58,18 @@ test("publishes deterministic recipe knowledge with exact action backlinks", asy
       .map(action => action.name);
     assert.match(recipe.exampleSource, /from\s+["']ggaction(?:\/[A-Za-z0-9_-]+)?["']/u, recipe.id);
     assert.equal(primary.some(name => recipe.exampleSource.includes(`.${name}(`)), true, recipe.id);
+    assert.equal(primary.some(name => recipe.builderSource.includes(`.${name}(`)), true, recipe.id);
     assert.equal(recipe.docs.some(entry => entry.path === recipe.exampleSourcePath), true, recipe.id);
     assert.equal(recipe.exampleSource.length <= 30_000, true, recipe.id);
-    const checked = spawnSync(process.execPath, ["--input-type=module", "--check", "-"], {
-      input: recipe.exampleSource,
-      encoding: "utf8"
-    });
-    assert.equal(checked.status, 0, `${recipe.id}: ${checked.stderr}`);
+    assert.equal(recipe.builderSource.length <= 30_000, true, recipe.id);
+    assert.deepEqual(reusableBuilderSourceViolations(recipe.builderSource), [], recipe.id);
+    for (const source of [recipe.exampleSource, recipe.builderSource]) {
+      const checked = spawnSync(process.execPath, ["--input-type=module", "--check", "-"], {
+        input: source,
+        encoding: "utf8"
+      });
+      assert.equal(checked.status, 0, `${recipe.id}: ${checked.stderr}`);
+    }
   }
 
   const actionBacklinks = new Map(document.actions.map(action => [action.name, action.recipeIds]));

@@ -83,6 +83,32 @@ export function executableExampleSourceViolations(source) {
   return violations;
 }
 
+export function reusableBuilderSource(exampleSource) {
+  const contextMarker = "\nconst context = document.querySelector";
+  const contextIndex = exampleSource.indexOf(contextMarker);
+  assert(contextIndex !== -1, "Reusable recipe source requires the canonical Canvas host boundary");
+  const chartSource = exampleSource.slice(0, contextIndex).trimEnd();
+  const importBlock = chartSource.match(/^(?:import\s*\{[^}]*\}\s*from\s*["']ggaction(?:\/[A-Za-z0-9_-]+)?["'];\n?)+/u)?.[0];
+  assert(importBlock, "Reusable recipe source requires canonical ggaction imports");
+  const normalizedImports = [...importBlock.matchAll(/import\s*\{([^}]*)\}\s*from\s*(["']ggaction(?:\/[A-Za-z0-9_-]+)?["']);/gu)]
+    .map(match => {
+      const imports = match[1].split(",").map(value => value.trim()).filter(value => value !== "render");
+      return `import { ${imports.join(", ")} } from ${match[2]};`;
+    })
+    .join("\n");
+  const body = chartSource.slice(importBlock.length).trim().split("\n").map(line => `  ${line}`).join("\n");
+  return `${normalizedImports}\n\nexport function buildChart(values) {\n${body}\n  return program;\n}`;
+}
+
+export function reusableBuilderSourceViolations(source) {
+  const violations = [];
+  if (!/export\s+function\s+buildChart\(values\)/u.test(source)) violations.push("missing buildChart(values) export");
+  if (!/const\s+program\s*=/u.test(source)) violations.push("missing final program binding");
+  if (!/return\s+program;/u.test(source)) violations.push("missing final program return");
+  if (/\bdocument\b|\.getContext\(|\brender\s*\(/u.test(source)) violations.push("contains a renderer host dependency");
+  return violations;
+}
+
 async function generatedExampleSource(recipe) {
   const primaryActions = recipe.steps.flatMap(step => step.actions)
     .filter(action => action.role === "primary")
@@ -95,7 +121,9 @@ async function generatedExampleSource(recipe) {
     );
     if (source !== undefined) {
       assert(source.length <= 30_000, `${recipe.id}: generated example source is too large`);
-      return { exampleSource: source, exampleSourcePath: entry.path };
+      const builderSource = reusableBuilderSource(source);
+      assert(builderSource.length <= 30_000, `${recipe.id}: generated builder source is too large`);
+      return { exampleSource: source, exampleSourcePath: entry.path, builderSource };
     }
   }
   throw new Error(`${recipe.id}: public docs need a ggaction JavaScript example containing a primary action`);
@@ -274,7 +302,10 @@ export async function buildRecipeKnowledge(actions) {
   generatedRecipes.sort((left, right) => left.id.localeCompare(right.id));
   const executableExampleAudit = generatedRecipes.map(recipe => ({
     id: recipe.id,
-    violations: executableExampleSourceViolations(recipe.exampleSource)
+    violations: [
+      ...executableExampleSourceViolations(recipe.exampleSource),
+      ...reusableBuilderSourceViolations(recipe.builderSource)
+    ]
   }));
   const incompleteExamples = executableExampleAudit.filter(entry => entry.violations.length > 0);
   assert(
