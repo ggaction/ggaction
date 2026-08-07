@@ -6,7 +6,7 @@
     "actionSourceSha256": "e1b6234caf8389b8f9c1c946b853821f1a9e4d4e65f2c38a99d852797e3ea546",
     "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
     "recipeCount": 33,
-    "recipeSourceSha256": "bca67b6fc2b3d84af155a785f1c91691513788a4a05a319fb4c29a0ca9809cf7",
+    "recipeSourceSha256": "cc863341669d1be06677e31437f1207193de446bab8da565a374c3f09ee23503",
     "recipeCoverageSha256": "4bcd0cd4b1e5d5a949b9e9c82ef1bf54e1b3afb9ced822acd04421ff95086591"
   },
   "recipes": [
@@ -3148,6 +3148,22 @@
         {
           "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
           "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
+        },
+        {
+          "problem": "Invented Canvas helpers such as renderCanvas or renderToCanvas are not package exports.",
+          "fix": "Import { render } from \"ggaction\" and call render(program, context) with an existing Browser Canvas 2D context."
+        },
+        {
+          "problem": "SVG output does not use the root Canvas renderer or a guessed generic export function.",
+          "fix": "Import { renderToSVG } from \"ggaction/svg\" and call renderToSVG(program) with the same immutable program."
+        },
+        {
+          "problem": "PNG output requires the Node-specific entry and an explicit filesystem destination.",
+          "fix": "Import { renderToPNG } from \"ggaction/png\" and await renderToPNG(program, { output: \"./chart.png\", pixelRatio: 2 })."
+        },
+        {
+          "problem": "The PDF entry does not export renderPDF and must not rasterize or rebuild the chart.",
+          "fix": "Import { renderToPDF } from \"ggaction/pdf\" and await renderToPDF(program, { output: \"./chart.pdf\" })."
         }
       ],
       "example": {
@@ -3158,6 +3174,9 @@
       "docs": [
         {
           "path": "docs/recipes/scatterplot.md"
+        },
+        {
+          "path": "docs/api/rendering.md"
         }
       ],
       "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({\n    width: 640,\n    height: 400,\n    margin: { top: 30, right: 140, bottom: 60, left: 70 }\n  })\n  .createData({ values })\n  .createScatterPlot({\n    x: \"x\",\n    y: \"y\",\n    color: \"group\",\n    guides: {\n      axes: {\n        x: { title: { text: \"X\" } },\n        y: { title: { text: \"Y\" } }\n      }\n    }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",

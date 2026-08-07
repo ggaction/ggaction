@@ -151,6 +151,12 @@ test("keeps the scatterplot recipe executable for the frozen Canvas task", async
   assert.match(recipe.exampleSource, /color: "group"/u);
   assert.match(recipe.exampleSource, /guides: \{[\s\S]*axes: \{/u);
   assert.match(recipe.exampleSource, /render\(program, context\);/u);
+  const rendererGuidance = recipe.pitfalls.map(pitfall => pitfall.fix).join("\n");
+  assert.match(rendererGuidance, /Import \{ render \} from "ggaction"/u);
+  assert.match(rendererGuidance, /Import \{ renderToSVG \} from "ggaction\/svg"/u);
+  assert.match(rendererGuidance, /Import \{ renderToPNG \} from "ggaction\/png"/u);
+  assert.match(rendererGuidance, /Import \{ renderToPDF \} from "ggaction\/pdf"/u);
+  assert.doesNotMatch(rendererGuidance, /renderCanvas|renderToCanvas|renderPDF\(/u);
   assert.equal(expression?.includes('x: "Horsepower"'), true);
   assert.equal(
     recipe.steps.flatMap(step => step.actions).some(action => action.name === "encodeColor"),

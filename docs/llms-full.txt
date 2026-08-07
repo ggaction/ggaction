@@ -1988,6 +1988,21 @@ if (!context) throw new Error("Missing #chart Canvas context.");
 render(program, context);
 ```
 
+## Render the same immutable program elsewhere
+
+Do not rebuild the program or invent renderer names. Keep the completed `program`
+and select the package entry for the output environment:
+
+| Output | Exact import | Exact call |
+| --- | --- | --- |
+| Browser Canvas | `import { render } from "ggaction"` | `render(program, context)` |
+| SVG | `import { renderToSVG } from "ggaction/svg"` | `renderToSVG(program)` |
+| Node PNG | `import { renderToPNG } from "ggaction/png"` | `await renderToPNG(program, { output: "./chart.png", pixelRatio: 2 })` |
+| Node PDF | `import { renderToPDF } from "ggaction/pdf"` | `await renderToPDF(program, { output: "./chart.pdf" })` |
+
+See [Rendering](../api/rendering.md) for complete environment-specific examples
+and output contracts.
+
 ## You must decide
 
 - Dataset values
