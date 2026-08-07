@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Proposal checkpoint: `43e503e2`
 
@@ -13,6 +13,8 @@ Gate P evidence approval checkpoint: `fb2b511c`
 Gate P approval link checkpoint: `137088be`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
+
+Approved by the user on 2026-08-07 with a combined `$0.60` hard cap.
 
 ## 한눈에 보는 제안
 
@@ -138,11 +140,12 @@ Gate Q를 승인하면 다음만 허용된다.
 4. Combined **$0.60 hard cap** 안의 Responses API 호출
 5. Sanitized result/evidence 기록과 별도 review 요청
 
-현재는 proposal만 작성했다. Credential read, external model call과 추가 비용은 **0 / 0 / $0**이다.
+사용자가 위 범위와 combined `$0.60` hard cap을 승인했다. Guard checkpoint가 push되기 전에는 credential을 읽거나
+external model call을 실행하지 않는다.
 
 ## 계속 차단되는 범위
 
-- Gate Q 명시적 승인 전 credential read와 paid call
+- Guard checkpoint 전 credential read와 paid call
 - Frozen 24-task full B/C rerun
 - Correctness/efficiency benefit claim
 - Historical paid-plan hash 변경
