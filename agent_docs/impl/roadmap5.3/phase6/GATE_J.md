@@ -4,6 +4,8 @@
 
 `ready-for-review`
 
+Gate evidence checkpoint: `9ad707f4`
+
 Implementation checkpoints:
 
 - `cf2c20b3` — frozen 24-task executable evaluator와 renderer evidence
