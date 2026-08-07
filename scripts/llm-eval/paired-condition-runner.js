@@ -379,7 +379,9 @@ export async function runPairedEvaluationTask({
       mcpSession: knowledge.sessionSnapshot()
     },
     outcome: {
-      retrievalSucceeded: trace.rounds.some(round => round.calls.some(call => call.result?.primaryIdentity)),
+      retrievalSucceeded: trace.rounds.some(round => round.calls.some(call =>
+        call.result?.primaryIdentity !== undefined || call.result?.identity !== undefined
+      )),
       naturalSubmission,
       forcedSubmissionUsed,
       firstSubmissionValid,
