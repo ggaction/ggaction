@@ -36,7 +36,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] Guarded B/C smoke and result review
 - [x] R53-P6-G result evidence approval
 - [x] R53-P6-H complete corrective evaluation approval
-- [x] Separately authorized full B/C paid rerun and failed result decision
+- [x] Separately authorized full B/C paid rerun
+- [x] R53-P6-H failed evidence and non-integration decision approval
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 

@@ -2,9 +2,11 @@
 
 ## Gate state
 
-`changes-requested`
+`approved`
 
 Approved by the user on 2026-08-07.
+
+Failed evaluation evidence and the non-integration decision were approved by the user on 2026-08-07.
 
 Candidate behavior checkpoint: `e88fbea9761ddc46268c400be1af280e838b71a2`
 
@@ -148,7 +150,7 @@ Responses API 실행을 합계 **$6 hard cap** 안에서 허용한다.
 
 ## 계속 차단되는 범위
 
-- Corrected A/B/C result와 benefit claim의 사전 승인
+- Corrected A/B/C result에 근거한 benefit claim
 - PR preparation/Ready 전환과 merge
 - Package publish, docs deployment와 release
 - Roadmap 5.3 closeout
@@ -209,9 +211,9 @@ B는 19회에서 세 번째 model call을 추가 탐색에 사용해 제출하�
 
 ## Review decision
 
-Candidate는 acceptance threshold를 통과하지 못했으므로 Gate H는 `changes-requested`다. Integration, PR, merge와
-benefit claim을 제안하지 않는다. 사용자가 이 failed evidence와 non-integration 판정을 승인하면 Gate H 결과를 닫고,
-추가 correction 여부를 별도로 결정한다.
+Candidate는 acceptance threshold를 통과하지 못했다. 사용자는 failed evidence와 non-integration 판정을 승인했으며,
+Gate H는 실패 결과를 숨기거나 기준을 바꾸지 않은 채 `approved`로 닫혔다. 이 승인은 candidate의 integration, PR,
+merge 또는 benefit claim을 허용하지 않는다. 추가 correction은 별도 계획과 승인 없이는 시작하지 않는다.
 
 ## 공식 근거
 
