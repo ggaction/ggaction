@@ -16,6 +16,8 @@ Gate P approval link checkpoint: `137088be`
 
 Guard checkpoint: `9687eada`
 
+Result evidence checkpoint: pending
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 Approved by the user on 2026-08-07 with a combined `$0.60` hard cap.
@@ -164,9 +166,40 @@ Gate Q를 승인하면 다음만 허용된다.
 사용자가 위 범위와 combined `$0.60` hard cap을 승인했다. Guard checkpoint가 push되기 전에는 credential을 읽거나
 external model call을 실행하지 않는다.
 
+## 실행 결과 — 2026-08-07
+
+Guard checkpoint `9687eada`와 원격 연결 커밋 `31c0b974`을 push한 뒤 Condition B 세 건을 exact order로 실행했다.
+`composed-dashboard`와 `renderer-parity`는 first-pass/final valid였지만 `cars-box-plot`이 exact recipe read 뒤 마지막 call을
+추가 docs search에 사용해 제출하지 않았다. 따라서 guard가 Condition C를 한 건도 시작하지 않았다.
+
+| Task | First-pass / final | Failure | Tokens | Cost |
+| --- | --- | --- | ---: | ---: |
+| `cars-box-plot` | false / false | 마지막 call이 추가 docs search; no submission | 6,533 | $0.0102540 |
+| `composed-dashboard` | true / true | none; composition layout valid | 9,096 | $0.0267781 |
+| `renderer-parity` | true / true | none; four renderers valid | 7,368 | $0.0190927 |
+
+- B first-pass/final valid: **2 / 3**
+- C runs: **0 / 3**
+- Model calls: **9**
+- Total tokens: **22,997**
+- Actual combined spend: **$0.0561248 / $0.60**
+- Provider, model, timeout와 budget failure: **0**
+- Stop reason: `condition-b-not-first-pass-valid`
+- Full rerun and benefit claim decision: **blocked by failed smoke**
+
+Composition의 이전 legend margin 오류는 교정됐고 Renderer parity도 회귀하지 않았다. Box는 explicit Canvas와 complete renderer
+snippet을 읽고도 Gate N과 같은 tool-choice pattern을 반복했으므로 같은 candidate의 추가 retry를 권장하지 않는다. 상세
+원인과 봉인된 artifact digest는 [`LAYOUT_SAFE_SMOKE_ANALYSIS.md`](./LAYOUT_SAFE_SMOKE_ANALYSIS.md)가 소유한다.
+
+## Review decision
+
+Gate Q의 승인된 유료 실행 범위는 끝났다. Failed smoke evidence와 non-integration 판단은 별도 사용자 review 전까지
+`ready-for-review`이며, 이 결과만으로 correction, 추가 paid retry, full evaluation, PR 또는 benefit claim은 허용되지 않는다.
+
 ## 계속 차단되는 범위
 
-- Guard checkpoint 전 credential read와 paid call
+- 추가 credential read와 paid call
+- Condition C 실행 또는 Gate Q 재개
 - Frozen 24-task full B/C rerun
 - Correctness/efficiency benefit claim
 - Historical paid-plan hash 변경
@@ -179,6 +212,7 @@ external model call을 실행하지 않는다.
 - Approved unpaid evidence: [`GATE_P.md`](./GATE_P.md)
 - Previous paid retry and actual cost: [`GATE_N.md`](./GATE_N.md)
 - Approved correction contract: [`GATE_O.md`](./GATE_O.md)
+- Paid result analysis: [`LAYOUT_SAFE_SMOKE_ANALYSIS.md`](./LAYOUT_SAFE_SMOKE_ANALYSIS.md)
 - Frozen benchmark contract: [`../phase0/BENCHMARK_CONTRACT.md`](../phase0/BENCHMARK_CONTRACT.md)
 - Model: <https://developers.openai.com/api/docs/models/gpt-5.6-terra>
 - Pricing: <https://developers.openai.com/api/docs/pricing>
