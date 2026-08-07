@@ -46,6 +46,10 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-K representative paid-smoke approval
 - [x] R53-P6-K guarded execution
 - [x] R53-P6-K result evidence approval
+- [ ] R53-P6-L task-closed recipe correction approval
+- [ ] Task-closed recipe delivery correction and complete unpaid evidence
+- [ ] R53-P6-M completion evidence approval
+- [ ] Separately authorized Gate K representative paid retry
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
@@ -72,4 +76,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_I.md`](./GATE_I.md) — 32개 incomplete recipe의 systematic executable correction contract
 - [`GATE_J.md`](./GATE_J.md) — 33개 executable recipe와 24-task complete unpaid evidence
 - [`GATE_K.md`](./GATE_K.md) — 세 failure surface를 대표하는 B/C paid smoke와 $0.60 hard cap
+- [`GATE_L.md`](./GATE_L.md) — task-closed recipe variants와 bounded two-read correction contract
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
