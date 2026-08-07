@@ -2,13 +2,15 @@
 
 ## Gate state
 
-`executed — stopped before C`
+`approved — failed smoke, stopped before C`
 
 Proposal checkpoint: `68e89447`
 
 Approved by the user on 2026-08-07 with a combined $0.60 hard cap.
 
 Result evidence checkpoint: `720ffce9`
+
+Failed result evidence and the non-integration decision were approved by the user on 2026-08-07.
 
 Candidate behavior checkpoint: `a44d3d4eb2c99526f8174d6af5fa2ebed087ec60`
 
@@ -195,8 +197,9 @@ Guard checkpoint `74baecfd`와 실행 전 evidence checkpoint `09f6c912`를 push
 
 ## Review decision
 
-Gate K의 실행 범위는 끝났고 결과 승인을 기다린다. 이 failed result를 승인해도 correction 구현, 재시도, Condition C,
-full evaluation, PR 또는 benefit claim은 허용되지 않는다. 다음 correction은 별도 제안과 승인이 필요하다.
+Gate K의 실행 범위는 끝났고 사용자는 failed result와 non-integration 판단을 승인했다. 이 승인으로 correction 구현,
+재시도, Condition C, full evaluation, PR 또는 benefit claim은 허용되지 않는다. 다음 correction은 별도 제안과 승인이
+필요하다.
 
 ## 공식 근거
 
