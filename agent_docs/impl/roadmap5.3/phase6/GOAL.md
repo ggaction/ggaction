@@ -53,7 +53,7 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-N guard checkpoint and paid execution
 - [x] R53-P6-N failed result and non-integration review
 - [x] R53-P6-O submit-ready and layout-safe correction approval
-- [ ] Submit-ready recipe correction and complete unpaid evidence
+- [x] Submit-ready recipe correction and complete unpaid evidence
 - [ ] R53-P6-P completion evidence approval
 - [ ] Separately authorized representative paid retry
 - [ ] Separately authorized PR preparation and merge
@@ -86,4 +86,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_M.md`](./GATE_M.md) — 24-task delivered-payload closure와 complete unpaid evidence
 - [`GATE_N.md`](./GATE_N.md) — 같은 세 task의 새 candidate B/C paid retry와 $0.60 hard cap
 - [`GATE_O.md`](./GATE_O.md) — submit-ready Canvas source와 composition child layout-safety correction
+- [`GATE_P.md`](./GATE_P.md) — complete unpaid submit-ready/layout-safe evidence와 paid-retry 진입 판단
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
