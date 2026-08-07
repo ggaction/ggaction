@@ -143,6 +143,20 @@ Gate K를 명시적으로 승인하면 다음 범위만 허용한다.
 사용자는 위 범위와 combined $0.60 hard cap을 명시적으로 승인했다. Guard checkpoint가 push되기 전에는 credential을
 읽거나 API를 실행하지 않는다.
 
+## 실행 전 guard 증거
+
+- Guard checkpoint: `74baecfd`
+- Exact smoke-plan SHA-256: `c0bcfe75443b70fe929aa3513b48e88360a82f05027839c59f43732f476ca550`
+- Systematic smoke guard: **7 / 7 passed**
+- Focused evaluation/recipe/search contracts: **32 / 32 passed**
+- Generated recipe execution: **33 / 33 passed**
+- `knowledge:check`, `docs:metadata:check`, `docs:search:check`: passed
+- `package:check` and installed-package local MCP parity: passed
+- `npm test`: **2,118 / 2,125 passed**, 기존 historical paid-plan SHA guard 7개만 expected rejection
+- New product/guard failures: **0**
+- Dedicated output root absent before checkpoint: confirmed
+- Credential reads, external model calls and additional spend during guard implementation: **0**
+
 ## 계속 차단되는 범위
 
 - Frozen 24-task full B/C rerun
