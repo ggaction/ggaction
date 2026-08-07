@@ -57,7 +57,13 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-P completion evidence approval
 - [x] R53-P6-Q representative paid retry approval
 - [x] R53-P6-Q guard checkpoint and paid execution
-- [ ] R53-P6-Q failed result and non-integration review
+- [x] R53-P6-Q failed result and non-integration review
+- [x] R53-P6-R benchmark and MCP integrity reset approval
+- [ ] Production MCP decontamination and one-call primary retrieval
+- [ ] Fair A/B/C/D evaluation harness and transport accounting
+- [ ] Strict program oracle and fresh generalization corpus
+- [ ] Complete unpaid reset evidence
+- [ ] R53-P6-S paid pilot proposal and separate approval
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
@@ -90,4 +96,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_O.md`](./GATE_O.md) — submit-ready Canvas source와 composition child layout-safety correction
 - [`GATE_P.md`](./GATE_P.md) — complete unpaid submit-ready/layout-safe evidence와 paid-retry 진입 판단
 - [`GATE_Q.md`](./GATE_Q.md) — 같은 세 task의 submit-ready/layout-safe B/C paid retry와 $0.60 hard cap
+- [`GATE_R.md`](./GATE_R.md) — production MCP와 benchmark의 무과금 integrity reset
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout

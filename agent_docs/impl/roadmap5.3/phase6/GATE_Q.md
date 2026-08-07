@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`approved`
+`closed-failed`
 
 Proposal checkpoint: `43e503e2`
 
@@ -17,6 +17,8 @@ Gate P approval link checkpoint: `137088be`
 Guard checkpoint: `9687eada`
 
 Result evidence checkpoint: `5d032c90`
+
+Result review checkpoint: `pending`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
@@ -193,8 +195,9 @@ snippet을 읽고도 Gate N과 같은 tool-choice pattern을 반복했으므로 
 
 ## Review decision
 
-Gate Q의 승인된 유료 실행 범위는 끝났다. Failed smoke evidence와 non-integration 판단은 별도 사용자 review 전까지
-`ready-for-review`이며, 이 결과만으로 correction, 추가 paid retry, full evaluation, PR 또는 benefit claim은 허용되지 않는다.
+사용자는 2026-08-07에 MCP와 benchmark를 처음부터 고치라는 방향을 승인했다. 따라서 Gate Q의 failed smoke evidence와
+non-integration 판단을 승인된 것으로 닫고, 이 결과는 새 candidate의 비교 기준이나 재시도 근거가 아닌 diagnostic evidence로만
+보존한다. 추가 paid retry, full evaluation, PR 또는 benefit claim은 Gate Q로 허용되지 않는다.
 
 ## 계속 차단되는 범위
 
