@@ -18,6 +18,9 @@ const coverageClassifications = new Set([
   "primary", "supporting", "lifecycle", "extension-only", "metadata-only", "not-applicable"
 ]);
 const stepRoles = new Set(["primary", "supporting", "lifecycle"]);
+const forbiddenRuntimeIdentifiers = Object.freeze([
+  "Chart", "createSelection", "renderCanvas", "renderPDF", "renderToCanvas"
+]);
 let focusedRecipesPromise;
 
 function assert(condition, message) {
@@ -55,6 +58,29 @@ function headingIds(markdown) {
 
 function javascriptBlocks(markdown) {
   return [...markdown.matchAll(/```javascript\n([\s\S]*?)\n```/g)].map(match => match[1].trim());
+}
+
+export function executableExampleSourceViolations(source) {
+  const violations = [];
+  const rootImports = [...source.matchAll(/import\s*\{([^}]*)\}\s*from\s*["']ggaction["']/gu)]
+    .flatMap(match => match[1].split(","))
+    .map(name => name.trim().split(/\s+as\s+/u)[0]);
+  if (!rootImports.includes("chart")) violations.push("missing chart import from ggaction");
+  if (!rootImports.includes("render")) violations.push("missing render import from ggaction");
+  if (!/const\s+program\s*=/u.test(source)) violations.push("missing final program binding");
+  if (!/\.getContext\(["']2d["']\)/u.test(source)) violations.push("missing Canvas 2D context lookup");
+  if (!/if\s*\(\s*!context\s*\)\s*throw\s+new\s+Error/u.test(source)) {
+    violations.push("missing Canvas context guard");
+  }
+  if (!/render\(\s*program\s*,\s*context(?:\s*,|\s*\))/u.test(source)) {
+    violations.push("missing final Canvas render invocation");
+  }
+  for (const identifier of forbiddenRuntimeIdentifiers) {
+    if (new RegExp(`\\b${identifier}\\b`, "u").test(source)) {
+      violations.push(`forbidden runtime identifier ${identifier}`);
+    }
+  }
+  return violations;
 }
 
 async function generatedExampleSource(recipe) {
@@ -246,6 +272,11 @@ export async function buildRecipeKnowledge(actions) {
     ...await generatedExampleSource(recipe)
   })));
   generatedRecipes.sort((left, right) => left.id.localeCompare(right.id));
+  const executableExampleAudit = generatedRecipes.map(recipe => ({
+    id: recipe.id,
+    violations: executableExampleSourceViolations(recipe.exampleSource)
+  }));
+  const incompleteExamples = executableExampleAudit.filter(entry => entry.violations.length > 0);
   const coverage = validateCoverage(JSON.parse(coverageSource), actions, recipes, actionUses);
   const classifications = Object.fromEntries([...coverageClassifications].map(classification => [
     classification,
@@ -262,6 +293,11 @@ export async function buildRecipeKnowledge(actions) {
       recipes: recipes.length,
       recipeActions: actionUses.size === 0 ? 0 : new Set([...actionUses.values()].flatMap(set => [...set])).size,
       exampleCoverage,
+      executableExamples: {
+        complete: executableExampleAudit.length - incompleteExamples.length,
+        incomplete: incompleteExamples.length,
+        incompleteRecipes: incompleteExamples
+      },
       classifications
     }
   };

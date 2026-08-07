@@ -5,7 +5,11 @@ import test from "node:test";
 
 import { buildKnowledge } from "../../scripts/generate-action-knowledge.js";
 import { evaluateGeneratedProgram } from "../../scripts/llm-eval/program-evaluator.js";
-import { recipeCoverageFile, recipeSourceRoot } from "../../scripts/recipe-knowledge.js";
+import {
+  executableExampleSourceViolations,
+  recipeCoverageFile,
+  recipeSourceRoot
+} from "../../scripts/recipe-knowledge.js";
 import { focusedRecipeActions, recipeExamples } from "../llm/recipe-knowledge-examples.js";
 
 async function json(relative) {
@@ -79,6 +83,31 @@ test("keeps recipe sources schema-shaped and task-centered", async () => {
     assert.equal(recipe.docs.length > 0, true, recipe.id);
   }
   assert.equal(recipeCoverageFile.endsWith("knowledge/recipe-coverage.json"), true);
+});
+
+test("audits complete recipe runtime wrappers without accepting invented APIs", () => {
+  const complete = `import { chart, render } from "ggaction";
+
+const program = chart().createCanvas();
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);`;
+  assert.deepEqual(executableExampleSourceViolations(complete), []);
+
+  const incomplete = `import { chart, renderCanvas } from "ggaction";
+const result = new Chart().createSelection();
+renderToCanvas(result);`;
+  assert.deepEqual(executableExampleSourceViolations(incomplete), [
+    "missing render import from ggaction",
+    "missing final program binding",
+    "missing Canvas 2D context lookup",
+    "missing Canvas context guard",
+    "missing final Canvas render invocation",
+    "forbidden runtime identifier Chart",
+    "forbidden runtime identifier createSelection",
+    "forbidden runtime identifier renderCanvas",
+    "forbidden runtime identifier renderToCanvas"
+  ]);
 });
 
 test("executes every focused recipe workflow and records every assigned action", () => {

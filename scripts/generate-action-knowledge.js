@@ -48,6 +48,7 @@ export async function buildKnowledge() {
       recipes: recipeKnowledge.report.recipes,
       recipeActions: recipeKnowledge.report.recipeActions,
       recipeExamples: recipeKnowledge.report.exampleCoverage,
+      recipeExecutableExamples: recipeKnowledge.report.executableExamples,
       classifications: recipeKnowledge.report.classifications
     }
   };
