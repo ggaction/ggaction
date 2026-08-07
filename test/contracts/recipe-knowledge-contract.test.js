@@ -40,6 +40,10 @@ test("publishes deterministic recipe knowledge with exact action backlinks", asy
   assert.deepEqual(document.coverage, recipeDocument.coverage);
   assert.deepEqual(document.coverage, coverageSource.actions);
   assert.equal(document.recipes.length, 33);
+  assert.equal(
+    document.recipes.every(recipe => executableExampleSourceViolations(recipe.exampleSource).length === 0),
+    true
+  );
   assert.equal(document.coverage.length, 173);
   assert.equal(new Set(document.coverage.map(row => row.name)).size, 173);
   assert.equal(document.coverage.every(row => row.recipeIds.length > 0), true);

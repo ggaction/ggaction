@@ -80,7 +80,7 @@ Later Canvas, scale, grouping, or appearance edits explicitly rematerialize
 those graphics.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -89,7 +89,13 @@ const program = chart()
     { x: "B", y: "Two" }
   ] })
   .createRectMark({ id: "cells" })
-  .editRectMark({ target: "cells", fill: "#60a5fa", opacity: 0.8 });
+  .editRectMark({ target: "cells", fill: "#60a5fa", opacity: 0.8 })
+  .encodeX({ target: "cells", field: "x", fieldType: "nominal" })
+  .encodeY({ target: "cells", field: "y", fieldType: "nominal" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## Shared inference

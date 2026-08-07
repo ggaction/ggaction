@@ -21,7 +21,7 @@ title: Axes
 ### Minimal Cartesian flow
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -33,6 +33,10 @@ const program = chart()
   .encodeX({ field: "x" })
   .encodeY({ field: "y" })
   .createAxes();
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
@@ -160,7 +164,7 @@ For individual lines, ticks, labels, and titles, see
 ### Minimal Polar flow
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -174,6 +178,10 @@ const program = chart()
   .encodeR({ field: "radius" })
   .createThetaAxis()
   .createRadialAxis();
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## Editing a complete axis

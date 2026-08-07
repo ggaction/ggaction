@@ -13,7 +13,7 @@ Use the general derived-data action when a named transform pipeline should be
 stored for reuse by later marks or statistical actions.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -30,7 +30,16 @@ const program = chart()
     transform: [
       { type: "filter", field: "category", oneOf: ["A"] }
     ]
+  })
+  .createBarPlot({
+    data: "selectedRows",
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" }
   });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`

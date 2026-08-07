@@ -105,7 +105,7 @@ Call `facet` on one complete unit chart to repeat it for each observed field
 value:
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const faceted = chart()
   .createCanvas({ width: 250, height: 230 })
@@ -208,7 +208,7 @@ are recomputed from the newly translated child plot bounds.
 ## Edit facet scale and guide policies
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -219,6 +219,10 @@ const program = chart()
   .createScatterPlot({ x: "x", y: "y" })
   .facet({ field: "group" })
   .editFacetScales({ x: "independent" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ```javascript

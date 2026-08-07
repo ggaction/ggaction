@@ -51,7 +51,7 @@ For a ranged bar, create one categorical position and then bind the lower and
 upper quantitative fields together:
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -62,6 +62,10 @@ const program = chart()
   .createBarMark({ id: "ranges" })
   .encodeY({ target: "ranges", field: "category", fieldType: "nominal" })
   .encodeXRange({ target: "ranges", lower: "low", upper: "high" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 For a center-stacked area, each group must have exactly one non-negative value

@@ -277,6 +277,12 @@ export async function buildRecipeKnowledge(actions) {
     violations: executableExampleSourceViolations(recipe.exampleSource)
   }));
   const incompleteExamples = executableExampleAudit.filter(entry => entry.violations.length > 0);
+  assert(
+    incompleteExamples.length === 0,
+    `Incomplete executable recipe examples: ${incompleteExamples.map(entry =>
+      `${entry.id} (${entry.violations.join(", ")})`
+    ).join("; ")}`
+  );
   const coverage = validateCoverage(JSON.parse(coverageSource), actions, recipes, actionUses);
   const classifications = Object.fromEntries([...coverageClassifications].map(classification => [
     classification,

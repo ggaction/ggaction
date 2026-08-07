@@ -4197,7 +4197,7 @@ Use the general derived-data action when a named transform pipeline should be
 stored for reuse by later marks or statistical actions.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -4214,7 +4214,16 @@ const program = chart()
     transform: [
       { type: "filter", field: "category", oneOf: ["A"] }
     ]
+  })
+  .createBarPlot({
+    data: "selectedRows",
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" }
   });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
@@ -4681,7 +4690,7 @@ Later Canvas, scale, grouping, or appearance edits explicitly rematerialize
 those graphics.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -4690,7 +4699,13 @@ const program = chart()
     { x: "B", y: "Two" }
   ] })
   .createRectMark({ id: "cells" })
-  .editRectMark({ target: "cells", fill: "#60a5fa", opacity: 0.8 });
+  .editRectMark({ target: "cells", fill: "#60a5fa", opacity: 0.8 })
+  .encodeX({ target: "cells", field: "x", fieldType: "nominal" })
+  .encodeY({ target: "cells", field: "y", fieldType: "nominal" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## Shared inference
@@ -5602,7 +5617,7 @@ decomposition matters.
 Use the original point owner, not generated band or line IDs:
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -5614,6 +5629,10 @@ const program = chart()
   .createScatterPlot({ x: "x", y: "y" })
   .createRegression()
   .editRegression({ line: { strokeWidth: 3 } });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ```javascript
@@ -7071,7 +7090,7 @@ Call `facet` on one complete unit chart to repeat it for each observed field
 value:
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const faceted = chart()
   .createCanvas({ width: 250, height: 230 })
@@ -7174,7 +7193,7 @@ are recomputed from the newly translated child plot bounds.
 ## Edit facet scale and guide policies
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -7185,6 +7204,10 @@ const program = chart()
   .createScatterPlot({ x: "x", y: "y" })
   .facet({ field: "group" })
   .editFacetScales({ x: "independent" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ```javascript
@@ -7291,7 +7314,7 @@ For a ranged bar, create one categorical position and then bind the lower and
 upper quantitative fields together:
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -7302,6 +7325,10 @@ const program = chart()
   .createBarMark({ id: "ranges" })
   .encodeY({ target: "ranges", field: "category", fieldType: "nominal" })
   .encodeXRange({ target: "ranges", lower: "low", upper: "high" });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 For a center-stacked area, each group must have exactly one non-negative value
@@ -7658,9 +7685,9 @@ together. It never reorders source rows.
 ## `orderCategories(options)`
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
-const ordered = chart()
+const program = chart()
   .createCanvas()
   .createData({ values: [
     { category: "A", value: 2 },
@@ -7673,6 +7700,10 @@ const ordered = chart()
     by: { field: "value", aggregate: "sum" },
     direction: "descending"
   });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 `target` defaults to the current compatible mark, then the unique compatible
@@ -9115,7 +9146,7 @@ Polar grid.
 ### Minimal Cartesian flow
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -9127,6 +9158,10 @@ const program = chart()
   .encodeX({ field: "x" })
   .encodeY({ field: "y" })
   .createAxes();
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
@@ -9254,7 +9289,7 @@ For individual lines, ticks, labels, and titles, see
 ### Minimal Polar flow
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -9268,6 +9303,10 @@ const program = chart()
   .encodeR({ field: "radius" })
   .createThetaAxis()
   .createRadialAxis();
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ## Editing a complete axis
@@ -9366,7 +9405,7 @@ has one semantic axis, so parallel duplicate axes cannot be created.
 ## `createGrid(options?)`
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -9378,6 +9417,10 @@ const program = chart()
   .encodeX({ field: "x" })
   .encodeY({ field: "y" })
   .createGrid({ horizontal: true, vertical: true });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
@@ -12701,7 +12744,8 @@ interface ChartProgramActions {
 The extension entry point is for developers adding traceable domain actions.
 
 ```javascript
-import { action, ChartProgram } from "ggaction/extension";
+import { chart, render } from "ggaction";
+import { action } from "ggaction/extension";
 
 const addBadge = action(
   { op: "addBadge", description: "Add one extension-owned badge." },
@@ -12712,7 +12756,11 @@ const addBadge = action(
   }
 );
 
-const program = addBadge.call(new ChartProgram());
+const program = addBadge.call(chart().createCanvas());
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 Subclass `ChartProgram` so independent extensions do not overwrite methods on

@@ -16,7 +16,8 @@ title: Action Authoring
 The extension entry point is for developers adding traceable domain actions.
 
 ```javascript
-import { action, ChartProgram } from "ggaction/extension";
+import { chart, render } from "ggaction";
+import { action } from "ggaction/extension";
 
 const addBadge = action(
   { op: "addBadge", description: "Add one extension-owned badge." },
@@ -27,7 +28,11 @@ const addBadge = action(
   }
 );
 
-const program = addBadge.call(new ChartProgram());
+const program = addBadge.call(chart().createCanvas());
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 Subclass `ChartProgram` so independent extensions do not overwrite methods on

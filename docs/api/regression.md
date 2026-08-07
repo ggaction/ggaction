@@ -93,7 +93,7 @@ decomposition matters.
 Use the original point owner, not generated band or line IDs:
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -105,6 +105,10 @@ const program = chart()
   .createScatterPlot({ x: "x", y: "y" })
   .createRegression()
   .editRegression({ line: { strokeWidth: 3 } });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 ```javascript

@@ -15,9 +15,9 @@ together. It never reorders source rows.
 ## `orderCategories(options)`
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
-const ordered = chart()
+const program = chart()
   .createCanvas()
   .createData({ values: [
     { category: "A", value: 2 },
@@ -30,6 +30,10 @@ const ordered = chart()
     by: { field: "value", aggregate: "sum" },
     direction: "descending"
   });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 `target` defaults to the current compatible mark, then the unique compatible

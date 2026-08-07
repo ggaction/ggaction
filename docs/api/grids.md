@@ -18,7 +18,7 @@ title: Grids
 ## `createGrid(options?)`
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
@@ -30,6 +30,10 @@ const program = chart()
   .encodeX({ field: "x" })
   .encodeY({ field: "y" })
   .createGrid({ horizontal: true, vertical: true });
+
+const context = document.querySelector("#chart")?.getContext("2d");
+if (!context) throw new Error("Missing #chart Canvas context.");
+render(program, context);
 ```
 
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
