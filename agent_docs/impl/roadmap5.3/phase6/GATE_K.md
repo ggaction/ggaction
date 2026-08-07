@@ -8,6 +8,8 @@ Proposal checkpoint: `68e89447`
 
 Approved by the user on 2026-08-07 with a combined $0.60 hard cap.
 
+Result evidence checkpoint: `720ffce9`
+
 Candidate behavior checkpoint: `a44d3d4eb2c99526f8174d6af5fa2ebed087ec60`
 
 Gate J approval checkpoint: `c8475309`
