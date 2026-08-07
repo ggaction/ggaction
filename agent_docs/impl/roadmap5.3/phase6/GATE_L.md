@@ -2,13 +2,15 @@
 
 ## Gate state
 
-`proposed`
+`approved`
 
 Proposal checkpoint: `3c3665e3`
 
 Gate K result approval checkpoint: `df8f348c`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
+
+Approved by user on 2026-08-07.
 
 ## 한눈에 보는 제안
 
@@ -178,7 +180,8 @@ code-execution 또는 renderer capability를 추가하지 않는다.
 
 ## 승인 효과와 계속 차단되는 범위
 
-Gate L을 명시적으로 승인하면 위 task-closed delivery correction과 무과금 Gate M evidence 준비만 허용된다.
+Gate L 승인으로 위 task-closed delivery correction과 무과금 Gate M evidence 준비가 허용되었다. 사용자의
+"다음 돈쓰는 게이트까지 밀어" 지시에 따라 Gate M까지 완료하고, 다음 유료 Gate N 제안에서 멈춘다.
 
 계속 차단된다.
 

@@ -46,7 +46,7 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-K representative paid-smoke approval
 - [x] R53-P6-K guarded execution
 - [x] R53-P6-K result evidence approval
-- [ ] R53-P6-L task-closed recipe correction approval
+- [x] R53-P6-L task-closed recipe correction approval
 - [ ] Task-closed recipe delivery correction and complete unpaid evidence
 - [ ] R53-P6-M completion evidence approval
 - [ ] Separately authorized Gate K representative paid retry
