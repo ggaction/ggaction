@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "approvalStatus": "approved",
+  "approvedOn": "2026-08-07",
+  "candidateCommit": "5606b1d509192006799042a43f76928b03062dc1",
+  "evaluationPlanSha256": "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  "corpusSha256": "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  "knowledgeSha256": "e29dd05976d7eb685184fb391de29ac297a2cb49ea09425a52a28229a073d612",
+  "knowledgeSearchSha256": "215e2cd640c644f929767a8301cb9e859341f617b1f6cb93d3be89211f8a61b7",
+  "publicRecipeSha256": "ed29100aa47fa25625ae05fc808ef1bc921ad70f55673af355ec789ea1fd1e67",
+  "deliveryMatrixSha256": "4c1d854d01478d9601509bde370b48999f44f06825475aa366642b031cdc9507",
+  "deliveredClosureManifestSha256": "08f786b7237deef3af583975f425d35e4964353a026aafdaf021a21fe8598d5f",
+  "taskIds": [
+    "cars-box-plot",
+    "composed-dashboard",
+    "renderer-parity"
+  ],
+  "repetition": 1,
+  "conditions": ["B", "C"],
+  "maximumRuns": 6,
+  "outputRoot": ".artifacts/llm-eval/layout-safe-smoke-5606b1d5",
+  "spendUsd": {
+    "expectedPerRun": 0.025,
+    "calculatedMaximumPerRun": 0.156,
+    "approvedCapPerCondition": 0.3,
+    "approvedCombinedCap": 0.6
+  }
+}

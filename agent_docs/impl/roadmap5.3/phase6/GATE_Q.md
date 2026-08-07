@@ -6,11 +6,15 @@
 
 Proposal checkpoint: `43e503e2`
 
+Approval checkpoint: `053dc0cc`
+
 Candidate behavior checkpoint: `5606b1d509192006799042a43f76928b03062dc1`
 
 Gate P evidence approval checkpoint: `fb2b511c`
 
 Gate P approval link checkpoint: `137088be`
+
+Guard checkpoint: pending
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
@@ -67,6 +71,8 @@ Frozen input digests:
 Historical Gate G/H/K/N plan, hash와 evidence root는 수정하거나 재사용하지 않는다. Gate Q가 승인되면 별도 immutable plan,
 runner guard와 새 output root를 만든다.
 
+Layout-safe smoke plan SHA-256: `8d840328c176cb0d52c3df5cbbcee3fdf48bfa4e9995584c7d30c3b4e0365f98`
+
 ## Model과 평가 설정
 
 Phase 0과 Gate N의 비교 조건을 그대로 유지한다.
@@ -112,6 +118,21 @@ Standard short-context 가격은 1M tokens당 input $2.00, cached input $0.20, c
 
 Guard 구현 중 candidate behavior나 generated knowledge가 바뀌면 이 proposal의 hash가 무효가 되므로 paid execution을 멈추고
 다시 제안한다.
+
+## 무과금 guard 검증 결과
+
+- Gate Q 전용 guard: **6 / 6 pass**
+- 관련 evaluation/knowledge/search/MCP/recipe/task-program 계약: **51 / 51 pass**
+- 전체 suite: **2,142 total, 2,122 pass, 20 expected historical paid-plan SHA guard rejects**
+- `knowledge:check`: pass
+- `package:check`: pass, 417 entries
+- Installed package local MCP: pass, 173 actions, 33 recipes, 4 docs; source discovery/payload parity pass
+- 전용 output root: absent
+- Credential reads / external model calls / actual spend: **0 / 0 / $0**
+
+전체 suite의 20건은 Gate H corrective full 6건, Gate G executable smoke 1건, Gate K systematic smoke 7건과 Gate N
+task-closed smoke 6건이 현재 candidate knowledge SHA를 이전 approved candidate로 오인하지 않도록 거부한 결과다. 네 historical
+plan 파일의 내용과 SHA-256은 변경하지 않았다.
 
 ## Smoke 통과 조건
 
