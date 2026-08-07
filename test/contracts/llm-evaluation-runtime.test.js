@@ -608,3 +608,205 @@ test("runs mocked chart authoring through the real local MCP Condition C adapter
   });
   assert.equal(trace.rounds[0].calls[1].result.identity, "action:createScatterPlot");
 });
+
+test("runs the corrected one-read box recipe flow through mocked Conditions B and C", async () => {
+  const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
+  const plan = JSON.parse(await readFile(new URL("../llm/evaluation-plan.json", import.meta.url), "utf8"));
+  const task = corpus.tasks.find(candidate => candidate.id === "cars-box-plot");
+  const source = `
+    import { chart, render } from "ggaction";
+    export function buildChart(datasets) {
+      const values = datasets["cars-v1"].filter(row =>
+        row.Origin != null && row.Miles_per_Gallon != null
+      );
+      return chart()
+        .createCanvas({ width: 640, height: 400, margin: { top: 35, right: 40, bottom: 65, left: 75 } })
+        .createData({ values })
+        .createBoxPlot({
+          x: { field: "Origin", fieldType: "nominal" },
+          y: { field: "Miles_per_Gallon" },
+          guides: { axes: { x: {}, y: {} }, legend: false }
+        })
+        .encodeColor({ target: "boxPlot", field: "Origin", fieldType: "nominal" });
+    }
+  `;
+
+  for (const condition of ["B", "C"]) {
+    const readName = condition === "B" ? "read_ggaction" : "read_mcp_resource";
+    const readArguments = condition === "B"
+      ? { kind: "recipe", id: "box-plot" }
+      : { uri: "ggaction://recipes/box-plot" };
+    const outputs = [[
+      {
+        type: "function_call",
+        name: "search_ggaction",
+        call_id: `${condition}_box_search`,
+        arguments: JSON.stringify({ query: task.prompt })
+      },
+      {
+        type: "function_call",
+        name: readName,
+        call_id: `${condition}_box_read`,
+        arguments: JSON.stringify(readArguments)
+      }
+    ], [{
+      type: "function_call",
+      name: "submit_program",
+      call_id: `${condition}_box_submit`,
+      arguments: JSON.stringify({ source })
+    }]];
+    const requests = [];
+    const outputRoot = new URL(`../../.artifacts/llm-eval/runner-${condition.toLowerCase()}-box-contract`, import.meta.url).pathname;
+    const options = {
+      knowledgeCommit: condition.toLowerCase().repeat(40),
+      apiKey: `sk-${"x".repeat(40)}`,
+      corpus,
+      task,
+      repetition: 1,
+      plan,
+      outputRoot,
+      fetchImpl: async (_url, init) => {
+        requests.push(JSON.parse(init.body));
+        return {
+          ok: true,
+          async json() {
+            return {
+              id: `resp_${condition}_box_${requests.length}`,
+              model: plan.model.name,
+              output: outputs.shift(),
+              usage: { input_tokens: 1000, output_tokens: 300, total_tokens: 1300 }
+            };
+          }
+        };
+      }
+    };
+    const result = condition === "B"
+      ? await runConditionBTask(options)
+      : await runConditionCTask(options);
+    const trace = JSON.parse(await readFile(`${outputRoot}/${result.runId}/trace.json`, "utf8"));
+
+    assert.equal(result.outcome.firstPassValid, true, condition);
+    assert.equal(result.outcome.finalValid, true, condition);
+    assert.equal(result.metrics.modelCalls, 2, condition);
+    assert.deepEqual(trace.rounds[0].calls.map(call => call.name), ["search_ggaction", readName], condition);
+    assert.equal(trace.rounds[0].calls[1].result.identity, "recipe:box-plot", condition);
+  }
+});
+
+test("runs the bounded two-read composition flow through mocked Conditions B and C", async () => {
+  const corpus = JSON.parse(await readFile(new URL("../llm/tasks.json", import.meta.url), "utf8"));
+  const plan = JSON.parse(await readFile(new URL("../llm/evaluation-plan.json", import.meta.url), "utf8"));
+  const task = corpus.tasks.find(candidate => candidate.id === "composed-dashboard");
+  const source = `
+    import { chart, hconcat, render } from "ggaction";
+    export function buildChart(datasets) {
+      const cars = datasets["cars-v1"].filter(row =>
+        row.Horsepower != null && row.Miles_per_Gallon != null && row.Origin != null
+      );
+      const nightingale = datasets["nightingale-v1"].filter(row =>
+        row.month != null && row.cause != null && row.value != null
+      );
+      const scatter = chart()
+        .createCanvas({ width: 300, height: 300, margin: { top: 30, right: 30, bottom: 60, left: 65 } })
+        .createData({ values: cars })
+        .createScatterPlot({ x: "Horsepower", y: "Miles_per_Gallon", color: "Origin" });
+      const rose = chart()
+        .createCanvas({ width: 300, height: 300, margin: { top: 35, right: 35, bottom: 35, left: 35 } })
+        .createData({ values: nightingale })
+        .createArcMark({ padAngle: 1 })
+        .encodeTheta({ field: "month", fieldType: "ordinal" })
+        .encodeR({ field: "value" })
+        .encodeColor({ field: "cause", layout: "overlay" });
+      const summary = chart()
+        .createCanvas({ width: 300, height: 300, margin: { top: 30, right: 30, bottom: 80, left: 65 } })
+        .createData({ values: nightingale })
+        .createBarPlot({
+          x: { field: "cause", fieldType: "nominal" },
+          y: { field: "value", aggregate: "sum" },
+          color: "cause",
+          guides: { axes: { x: {}, y: {} }, legend: false }
+        });
+      return hconcat({
+        id: "dashboard",
+        programs: [{ id: "scatter", program: scatter }, { id: "detail", program: rose }]
+      })
+        .editCompositionLayout({ gap: 24, align: "start" })
+        .replaceCompositionChild({ target: "detail", program: summary });
+    }
+  `;
+
+  for (const condition of ["B", "C"]) {
+    const readName = condition === "B" ? "read_ggaction" : "read_mcp_resource";
+    const readArguments = id => condition === "B"
+      ? { kind: "recipe", id }
+      : { uri: `ggaction://recipes/${id}` };
+    const outputs = [[
+      {
+        type: "function_call",
+        name: "search_ggaction",
+        call_id: `${condition}_composition_search`,
+        arguments: JSON.stringify({ query: task.prompt })
+      },
+      {
+        type: "function_call",
+        name: readName,
+        call_id: `${condition}_composition_read`,
+        arguments: JSON.stringify(readArguments("composition"))
+      },
+      {
+        type: "function_call",
+        name: readName,
+        call_id: `${condition}_rose_read`,
+        arguments: JSON.stringify(readArguments("rose-chart"))
+      }
+    ], [{
+      type: "function_call",
+      name: "submit_program",
+      call_id: `${condition}_composition_submit`,
+      arguments: JSON.stringify({ source })
+    }]];
+    const requests = [];
+    const outputRoot = new URL(`../../.artifacts/llm-eval/runner-${condition.toLowerCase()}-composition-contract`, import.meta.url).pathname;
+    const options = {
+      knowledgeCommit: condition.toLowerCase().repeat(40),
+      apiKey: `sk-${"x".repeat(40)}`,
+      corpus,
+      task,
+      repetition: 1,
+      plan,
+      outputRoot,
+      fetchImpl: async (_url, init) => {
+        requests.push(JSON.parse(init.body));
+        return {
+          ok: true,
+          async json() {
+            return {
+              id: `resp_${condition}_composition_${requests.length}`,
+              model: plan.model.name,
+              output: outputs.shift(),
+              usage: { input_tokens: 1000, output_tokens: 300, total_tokens: 1300 }
+            };
+          }
+        };
+      }
+    };
+    const result = condition === "B"
+      ? await runConditionBTask(options)
+      : await runConditionCTask(options);
+    const trace = JSON.parse(await readFile(`${outputRoot}/${result.runId}/trace.json`, "utf8"));
+
+    assert.equal(result.outcome.firstPassValid, true, condition);
+    assert.equal(result.outcome.finalValid, true, condition);
+    assert.equal(result.metrics.modelCalls, 2, condition);
+    assert.deepEqual(
+      trace.rounds[0].calls.map(call => call.name),
+      ["search_ggaction", readName, readName],
+      condition
+    );
+    assert.deepEqual(
+      trace.rounds[0].calls.slice(1).map(call => call.result.identity),
+      ["recipe:composition", "recipe:rose-chart"],
+      condition
+    );
+  }
+});
