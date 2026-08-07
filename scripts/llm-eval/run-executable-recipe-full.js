@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { appendEvaluationResult, runConditionBTask } from "./condition-b-runner.js";
+import { assertArchivedEvaluationExecution } from "./archived-evaluation.js";
 import { runConditionCTask } from "./condition-c-runner.js";
 import {
   loadEvaluationCorpus,
@@ -40,7 +41,12 @@ const approvedContract = Object.freeze({
   calculatedMaximumPerRun: 0.156,
   planningPerCondition: 1.2,
   approvedCapPerCondition: 3,
-  approvedCombinedCap: 6
+  approvedCombinedCap: 6,
+  evaluationPlanSha256: "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  corpusSha256: "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  knowledgeSha256: "eba175e202473c54202e0f5be6f988064efd2ba0790c46b8218119e758a254bf",
+  knowledgeSearchSha256: "58fdde3a8069cb207cdef655b0dbe0a08a1adc055ab314c6646451caaa54ca52",
+  publicRecipeSha256: "f94e5b3197c1ade2b1da4b2aca8a59820e5384a5202ad252a77e0ceba722fe92"
 });
 
 function requireCondition(value, message) {
@@ -70,7 +76,7 @@ function resolvedOutputRoot(fullPlan) {
   return resolved;
 }
 
-export function assertCorrectiveFullEvaluationPlan(fullPlan, hashes = {}) {
+export function assertCorrectiveFullEvaluationPlan(fullPlan, _hashes = {}) {
   requireCondition(fullPlan?.schemaVersion === 1, "Corrective full evaluation schemaVersion must be 1.");
   requireCondition(fullPlan.approvalStatus === "approved", "Corrective full evaluation is not approved.");
   for (const field of [
@@ -98,16 +104,10 @@ export function assertCorrectiveFullEvaluationPlan(fullPlan, hashes = {}) {
       fullPlan.spendUsd?.approvedCombinedCap === approvedContract.approvedCombinedCap,
     "Corrective full evaluation spend contract changed."
   );
-  for (const [field, bytes] of [
-    ["evaluationPlanSha256", hashes.evaluationPlanBytes],
-    ["corpusSha256", hashes.corpusBytes],
-    ["knowledgeSha256", hashes.knowledgeBytes],
-    ["knowledgeSearchSha256", hashes.knowledgeSearchBytes],
-    ["publicRecipeSha256", hashes.publicRecipeBytes]
+  for (const field of [
+    "evaluationPlanSha256", "corpusSha256", "knowledgeSha256", "knowledgeSearchSha256", "publicRecipeSha256"
   ]) {
-    if (bytes !== undefined) {
-      requireCondition(sha256(bytes) === fullPlan[field], `Corrective full evaluation ${field} changed.`);
-    }
+    requireCondition(fullPlan[field] === approvedContract[field], `Corrective full evaluation ${field} changed.`);
   }
   resolvedOutputRoot(fullPlan);
   return fullPlan;
@@ -473,6 +473,7 @@ export async function runExecutableRecipeFull({
   const state = await initializeOrValidateFullEvaluationOutput(prepared);
   const stopReason = preflightStopReason(prepared, state);
   if (stopReason !== null) return frozenRunSummary(prepared, state.results, state.spentUsd, stopReason);
+  assertArchivedEvaluationExecution(prepared.fullPlan.candidateCommit);
   const apiKey = await loadApiKeyImpl(tokenFile);
   return runCorrectiveFullEvaluationSequence({
     prepared,

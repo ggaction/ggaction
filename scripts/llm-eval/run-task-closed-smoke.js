@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { appendEvaluationResult } from "./condition-b-runner.js";
+import { assertArchivedEvaluationExecution } from "./archived-evaluation.js";
 import { loadEvaluationCorpus, validateEvaluationCorpus } from "./corpus.js";
 import { loadApiKey } from "./openai-responses.js";
 import { runSystematicRecipeSmokeSequence } from "./run-systematic-recipe-smoke.js";
@@ -28,7 +29,13 @@ const approvedContract = Object.freeze({
   expectedPerRun: 0.025,
   calculatedMaximumPerRun: 0.156,
   approvedCapPerCondition: 0.3,
-  approvedCombinedCap: 0.6
+  approvedCombinedCap: 0.6,
+  evaluationPlanSha256: "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  corpusSha256: "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  knowledgeSha256: "9dc09e3faabed04eb36aaa6121072d9860e027e680b6d13d7bdd854f1684a9df",
+  knowledgeSearchSha256: "2aa288d2c805a02d3c9f675fc5e8a8f7bbe203dff8af7f5b72ddae45cab352d4",
+  publicRecipeSha256: "221a4bda37bd960800068f289051969855045c9bbe30b549cec995b027ae1cb3",
+  deliveryMatrixSha256: "4c1d854d01478d9601509bde370b48999f44f06825475aa366642b031cdc9507"
 });
 
 const historicalPlanDigests = Object.freeze({
@@ -64,7 +71,7 @@ function resolvedOutputRoot(plan) {
   return resolved;
 }
 
-export function assertTaskClosedSmokePlan(plan, hashes = {}) {
+export function assertTaskClosedSmokePlan(plan, _hashes = {}) {
   requireCondition(plan?.schemaVersion === 1, "Task-closed smoke schemaVersion must be 1.");
   requireCondition(plan.approvalStatus === "approved", "Task-closed paid smoke is not approved.");
   requireCondition(plan.candidateCommit === approvedContract.candidateCommit, "Task-closed smoke candidate SHA changed.");
@@ -80,17 +87,11 @@ export function assertTaskClosedSmokePlan(plan, hashes = {}) {
       plan.spendUsd?.approvedCombinedCap === approvedContract.approvedCombinedCap,
     "Task-closed smoke spend cap changed."
   );
-  for (const [field, bytes] of [
-    ["evaluationPlanSha256", hashes.evaluationPlanBytes],
-    ["corpusSha256", hashes.corpusBytes],
-    ["knowledgeSha256", hashes.knowledgeBytes],
-    ["knowledgeSearchSha256", hashes.knowledgeSearchBytes],
-    ["publicRecipeSha256", hashes.publicRecipeBytes],
-    ["deliveryMatrixSha256", hashes.deliveryMatrixBytes]
+  for (const field of [
+    "evaluationPlanSha256", "corpusSha256", "knowledgeSha256", "knowledgeSearchSha256",
+    "publicRecipeSha256", "deliveryMatrixSha256"
   ]) {
-    if (bytes !== undefined) {
-      requireCondition(sha256(bytes) === plan[field], `Task-closed smoke ${field} changed.`);
-    }
+    requireCondition(plan[field] === approvedContract[field], `Task-closed smoke ${field} changed.`);
   }
   resolvedOutputRoot(plan);
   return plan;
@@ -168,6 +169,7 @@ export async function runTaskClosedSmoke({
 } = {}) {
   const prepared = await prepareTaskClosedSmoke(planFile);
   await requireEmptyOutputRootImpl(prepared.outputRoot);
+  assertArchivedEvaluationExecution(prepared.plan.candidateCommit);
   const apiKey = await loadApiKeyImpl(tokenFile);
   return runSystematicRecipeSmokeSequence({
     prepared,

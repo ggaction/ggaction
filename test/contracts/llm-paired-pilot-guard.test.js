@@ -6,6 +6,7 @@ import {
   assertPairedPilotApproval,
   orderedPairedPilotRuns
 } from "../../scripts/llm-eval/run-paired-pilot.js";
+import { assertArchivedEvaluationExecution } from "../../scripts/llm-eval/archived-evaluation.js";
 import { loadGeneralizationCorpus } from "../../scripts/llm-eval/paired-corpus.js";
 
 async function fixtures() {
@@ -70,4 +71,8 @@ test("keeps the checked-in paired plan incapable of spending", async () => {
     externalModelCallsAllowed: false,
     approvedSpendUsd: 0
   });
+});
+
+test("prevents an archived paid candidate from running at current HEAD", () => {
+  assert.throws(() => assertArchivedEvaluationExecution("a".repeat(40)), /cannot run at current HEAD/u);
 });

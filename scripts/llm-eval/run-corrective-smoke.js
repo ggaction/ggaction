@@ -1,9 +1,9 @@
-import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { appendEvaluationResult, runConditionBTask } from "./condition-b-runner.js";
+import { assertArchivedEvaluationExecution } from "./archived-evaluation.js";
 import { runConditionCTask } from "./condition-c-runner.js";
 import { loadEvaluationCorpus, validateEvaluationCorpus } from "./corpus.js";
 import { loadApiKey } from "./openai-responses.js";
@@ -30,7 +30,9 @@ const initialApprovedContract = Object.freeze({
   expectedPerRun: 0.072,
   calculatedMaximumPerRun: 0.156,
   approvedCapPerCondition: 0.2,
-  approvedCombinedCap: 0.4
+  approvedCombinedCap: 0.4,
+  evaluationPlanSha256: "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  corpusSha256: "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1"
 });
 
 const retryApprovedContract = Object.freeze({
@@ -43,7 +45,9 @@ const retryApprovedContract = Object.freeze({
   expectedPerRun: 0.072,
   calculatedMaximumPerRun: 0.156,
   approvedCapPerCondition: 0.2,
-  approvedCombinedCap: 0.4
+  approvedCombinedCap: 0.4,
+  evaluationPlanSha256: "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  corpusSha256: "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1"
 });
 
 const executableRecipeApprovedContract = Object.freeze({
@@ -56,12 +60,13 @@ const executableRecipeApprovedContract = Object.freeze({
   expectedPerRun: 0.025,
   calculatedMaximumPerRun: 0.156,
   approvedCapPerCondition: 0.1,
-  approvedCombinedCap: 0.2
+  approvedCombinedCap: 0.2,
+  evaluationPlanSha256: "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  corpusSha256: "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  knowledgeSha256: "eba175e202473c54202e0f5be6f988064efd2ba0790c46b8218119e758a254bf",
+  knowledgeSearchSha256: "58fdde3a8069cb207cdef655b0dbe0a08a1adc055ab314c6646451caaa54ca52",
+  publicRecipeSha256: "f94e5b3197c1ade2b1da4b2aca8a59820e5384a5202ad252a77e0ceba722fe92"
 });
-
-function sha256(value) {
-  return createHash("sha256").update(value).digest("hex");
-}
 
 function requireCondition(value, message) {
   if (!value) throw new Error(message);
@@ -86,7 +91,7 @@ function resolvedOutputRoot(smokePlan) {
   return resolved;
 }
 
-function assertApprovedSmokePlan(smokePlan, approvedContract, { evaluationPlanBytes, corpusBytes } = {}) {
+function assertApprovedSmokePlan(smokePlan, approvedContract) {
   requireCondition(smokePlan?.schemaVersion === 1, "Corrective smoke schemaVersion must be 1.");
   requireCondition(smokePlan.approvalStatus === "approved", "Corrective paid smoke is not approved.");
   requireCondition(smokePlan.candidateCommit === approvedContract.candidateCommit, "Corrective smoke candidate SHA changed.");
@@ -102,14 +107,8 @@ function assertApprovedSmokePlan(smokePlan, approvedContract, { evaluationPlanBy
       smokePlan.spendUsd?.approvedCombinedCap === approvedContract.approvedCombinedCap,
     "Corrective smoke spend cap changed."
   );
-  if (evaluationPlanBytes !== undefined) {
-    requireCondition(
-      sha256(evaluationPlanBytes) === smokePlan.evaluationPlanSha256,
-      "Frozen evaluation plan digest changed."
-    );
-  }
-  if (corpusBytes !== undefined) {
-    requireCondition(sha256(corpusBytes) === smokePlan.corpusSha256, "Frozen corpus digest changed.");
+  for (const field of ["evaluationPlanSha256", "corpusSha256"]) {
+    requireCondition(smokePlan[field] === approvedContract[field], `Corrective smoke ${field} changed.`);
   }
   resolvedOutputRoot(smokePlan);
   return smokePlan;
@@ -125,14 +124,8 @@ export function assertCorrectiveSmokeRetryPlan(smokePlan, hashes = {}) {
 
 export function assertExecutableRecipeSmokePlan(smokePlan, hashes = {}) {
   const validated = assertApprovedSmokePlan(smokePlan, executableRecipeApprovedContract, hashes);
-  for (const [field, bytes] of [
-    ["knowledgeSha256", hashes.knowledgeBytes],
-    ["knowledgeSearchSha256", hashes.knowledgeSearchBytes],
-    ["publicRecipeSha256", hashes.publicRecipeBytes]
-  ]) {
-    if (bytes !== undefined) {
-      requireCondition(sha256(bytes) === smokePlan[field], `Executable recipe smoke ${field} changed.`);
-    }
+  for (const field of ["knowledgeSha256", "knowledgeSearchSha256", "publicRecipeSha256"]) {
+    requireCondition(smokePlan[field] === executableRecipeApprovedContract[field], `Executable recipe smoke ${field} changed.`);
   }
   return validated;
 }
@@ -273,6 +266,7 @@ async function runApprovedCorrectiveSmoke({
 }) {
   const prepared = await prepare();
   await requireEmptyOutputRoot(prepared.outputRoot);
+  assertArchivedEvaluationExecution(prepared.smokePlan.candidateCommit);
 
   const apiKey = await loadApiKeyImpl(tokenFile);
   return runCorrectiveSmokeSequence({

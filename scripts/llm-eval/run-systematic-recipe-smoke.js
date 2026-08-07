@@ -1,9 +1,9 @@
-import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { appendEvaluationResult, runConditionBTask } from "./condition-b-runner.js";
+import { assertArchivedEvaluationExecution } from "./archived-evaluation.js";
 import { runConditionCTask } from "./condition-c-runner.js";
 import { loadEvaluationCorpus, validateEvaluationCorpus } from "./corpus.js";
 import { loadApiKey } from "./openai-responses.js";
@@ -28,12 +28,13 @@ const approvedContract = Object.freeze({
   expectedPerRun: 0.025,
   calculatedMaximumPerRun: 0.156,
   approvedCapPerCondition: 0.3,
-  approvedCombinedCap: 0.6
+  approvedCombinedCap: 0.6,
+  evaluationPlanSha256: "c30b33a7d3b2f5118a8d8b8818023339a1f01f6170fba62edaf7ed8feefc1671",
+  corpusSha256: "1a87b9b9cbbcd382aef6f82c94bf2080b545425be5d366a95b29cb3b1c942ad1",
+  knowledgeSha256: "c8bd63f75021673a86c4d2f22a941cbb24647f8b0f4b615400148ce4934d504c",
+  knowledgeSearchSha256: "df98a5216253af792fb1c1b4765127199c3bb2a91288c96d12808f25119538ed",
+  publicRecipeSha256: "f0452d6d235618fc45e3dfaad20ade128096d39379371d0b842a7f114d0efa13"
 });
-
-function sha256(value) {
-  return createHash("sha256").update(value).digest("hex");
-}
 
 function requireCondition(value, message) {
   if (!value) throw new Error(message);
@@ -58,7 +59,7 @@ function resolvedOutputRoot(plan) {
   return resolved;
 }
 
-export function assertSystematicRecipeSmokePlan(plan, hashes = {}) {
+export function assertSystematicRecipeSmokePlan(plan, _hashes = {}) {
   requireCondition(plan?.schemaVersion === 1, "Systematic recipe smoke schemaVersion must be 1.");
   requireCondition(plan.approvalStatus === "approved", "Systematic recipe paid smoke is not approved.");
   requireCondition(plan.candidateCommit === approvedContract.candidateCommit, "Systematic recipe smoke candidate SHA changed.");
@@ -74,16 +75,10 @@ export function assertSystematicRecipeSmokePlan(plan, hashes = {}) {
       plan.spendUsd?.approvedCombinedCap === approvedContract.approvedCombinedCap,
     "Systematic recipe smoke spend cap changed."
   );
-  for (const [field, bytes] of [
-    ["evaluationPlanSha256", hashes.evaluationPlanBytes],
-    ["corpusSha256", hashes.corpusBytes],
-    ["knowledgeSha256", hashes.knowledgeBytes],
-    ["knowledgeSearchSha256", hashes.knowledgeSearchBytes],
-    ["publicRecipeSha256", hashes.publicRecipeBytes]
+  for (const field of [
+    "evaluationPlanSha256", "corpusSha256", "knowledgeSha256", "knowledgeSearchSha256", "publicRecipeSha256"
   ]) {
-    if (bytes !== undefined) {
-      requireCondition(sha256(bytes) === plan[field], `Systematic recipe smoke ${field} changed.`);
-    }
+    requireCondition(plan[field] === approvedContract[field], `Systematic recipe smoke ${field} changed.`);
   }
   resolvedOutputRoot(plan);
   return plan;
@@ -234,6 +229,7 @@ export async function runSystematicRecipeSmoke({
 } = {}) {
   const prepared = await prepareSystematicRecipeSmoke(planFile);
   await requireEmptyOutputRootImpl(prepared.outputRoot);
+  assertArchivedEvaluationExecution(prepared.plan.candidateCommit);
   const apiKey = await loadApiKeyImpl(tokenFile);
   return runSystematicRecipeSmokeSequence({
     prepared,
