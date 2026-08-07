@@ -2,9 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Approved by the user on 2026-08-07.
+
+Result evidence approved by the user on 2026-08-07.
 
 Candidate behavior checkpoint: `e88fbea9761ddc46268c400be1af280e838b71a2`
 
@@ -174,8 +176,8 @@ Evidence root: `.artifacts/llm-eval/executable-recipe-smoke-e88fbea9/`
 
 ## Review decision
 
-Gate G의 smoke 통과 조건을 모두 충족했다. 결과는 사용자 검토를 위해 `ready-for-review`이며, 이 검토는 full B/C rerun,
-PR, merge, publish, deploy 또는 release를 승인하지 않는다.
+Gate G의 smoke 통과 조건을 모두 충족했고 사용자가 결과 증거를 승인했다. 이 승인으로 Gate G는 닫혔지만 full B/C rerun,
+PR, merge, publish, deploy 또는 release는 승인되지 않았다.
 
 ## 공식 근거
 
