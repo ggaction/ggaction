@@ -62,8 +62,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] Production MCP decontamination and one-call primary retrieval
 - [x] Fair A/B/C/D evaluation harness and transport accounting
 - [x] Strict program oracle
-- [ ] Fresh generalization corpus and paired statistics
-- [ ] Complete unpaid reset evidence
+- [x] Fresh generalization corpus and paired statistics
+- [x] Complete unpaid reset evidence
 - [ ] R53-P6-S paid pilot proposal and separate approval
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval

@@ -10,6 +10,20 @@ Fair harness checkpoint: `0536c1e4`
 
 Strict oracle checkpoint: `249b27ed`
 
+Generalization corpus checkpoint: `a51e888c`
+
+Paired statistics checkpoint: `948e6721`
+
+Pinned documentation checkpoint: `2705f501`
+
+Guarded paid-pilot runner checkpoint: `a0487a04`
+
+Offline installed-package checkpoint: `bc00dfd4`
+
+Strict recipe-oracle checkpoint: `3eb417bd`
+
+Archived evaluation boundary checkpoint: `0c41b4ad`
+
 Approved by the user on 2026-08-07 with the instruction to correct the full MCP and benchmark stack up to, but not including, the next paid call.
 
 ## 한눈에 보는 결정
@@ -107,6 +121,27 @@ hard cap, early-stop rule과 immutable artifact hashes를 적는다. 사용자�
 call을 시작하지 않는다.
 
 PR preparation, Ready 전환, merge, package publish, docs deployment와 release도 이 Gate에 포함되지 않는다.
+
+## 완료 증거
+
+Gate R 구현은 2026-08-07에 무과금 범위 안에서 완료됐다.
+
+- 새 generalization corpus: 17 tasks, SHA-256
+  `aaac35d26f5ea022743a0cf9cb07312136ff8cd14a32ede7d36a9f267454e59c`.
+- 문서 snapshot: 125 files, 1,385,929 bytes, SHA-256
+  `bf57efce712d92a145485290d2ae9b6576620e56c418352829fa7ef1029908ba`.
+- npm artifact: 417 entries, 529,252 packed bytes, 3,603,121 unpacked bytes, SHA-256
+  `2751c4b86ac8c08d5853b81fe20cf23ddb8a32b6251415079b3683b1bbe533f2`.
+- `npm test`: 2,163 passed, 0 failed.
+- `npm run recipes:check`: 33/33 executable recipes.
+- `npm run eval:recipes-offline`: 24/24 tasks, authoring 12/12, heldout 12/12.
+- `npm run knowledge:check`, `npm run package:check`, `npm run package:mcp-check`,
+  `npm run eval:paired-corpus:check`: 모두 통과.
+- Installed MCP discovery는 source와 같고, installed direct payload는 MCP transport payload와 byte-equivalent다.
+- 과거 paid plan의 승인 당시 hash는 그대로 보존했고, 그 runner는 현재 HEAD에서 credential을 읽기 전에 중단한다.
+- External model calls / credential reads / paid spend: `0 / 0 / $0`.
+
+Gate R 완료 remote checkpoint는 다음 문서-only commit에서 연결한다.
 
 ## 근거
 
