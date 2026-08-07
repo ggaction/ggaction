@@ -343,6 +343,95 @@ function semanticAction(nodes, type) {
   return actions[type] !== undefined && nodes.some(node => node.op === actions[type]);
 }
 
+const exactProgramValidations = new Set([
+  "annotation:r-squared:black",
+  "axis:x:quantitative",
+  "axis:y:absent",
+  "boundary:visible",
+  "composition:facet",
+  "composition:gap:24",
+  "composition:hconcat",
+  "composition:replace-child",
+  "composition:slot-identity-preserved",
+  "coordinate:polar",
+  "curve:monotone",
+  "facet:columns:2",
+  "facet:headers",
+  "facet:shared-scales",
+  "graphic:area-ink",
+  "graphic:bar-ink",
+  "graphic:box-ink",
+  "graphic:gradient-ink",
+  "graphic:multi-panel-ink",
+  "graphic:path-ink",
+  "graphic:plot-ink",
+  "graphic:rect-ink",
+  "graphic:rule-ink",
+  "graphic:text-ink",
+  "graphic:tick-ink",
+  "guides:cartesian",
+  "guides:polar",
+  "horizon:negative:red",
+  "horizon:positive:blue",
+  "interval:ci95",
+  "layout:labels",
+  "layout:leader-lines",
+  "legend:absent",
+  "legend:color",
+  "legend:continuous-color",
+  "legend:count:2",
+  "legend:inter-block-gap",
+  "legend:label-gaps-aligned",
+  "legend:order:left-to-right",
+  "legend:plot-offset",
+  "legend:series",
+  "legend:symbols-aligned",
+  "legend:titles-aligned",
+  "order:descending-total",
+  "outliers:visible",
+  "parallel:dimensions:4",
+  "program:builds",
+  "program:immutable-across-renderers",
+  "renderer:canvas:non-empty",
+  "renderer:logical-dimensions-equal",
+  "renderer:pdf:one-page-vector",
+  "renderer:png:pixel-ratio:2",
+  "renderer:svg:valid",
+  "series:original-and-moving",
+  "style:highlight:orange-no-stroke",
+  "style:regression:black",
+  "tick:one-per-valid-row",
+  "time-unit:year",
+  "whisker:tukey",
+  "window:frame:-1:1",
+  "window:mean:life_expect",
+  "window:order:year"
+]);
+const parameterizedProgramValidationPrefixes = Object.freeze([
+  "bin:count:",
+  "bin:x:",
+  "bin:y:",
+  "density:bandwidth:",
+  "density:field:",
+  "density:group:",
+  "encoding:",
+  "facet:field:",
+  "filter:",
+  "highlight:",
+  "horizon:bands:",
+  "horizon:baseline:",
+  "legend:position:",
+  "selection:",
+  "semantic:"
+]);
+
+export function supportsProgramValidation(id) {
+  return typeof id === "string" && (
+    exactProgramValidations.has(id) ||
+    parameterizedProgramValidationPrefixes.some(prefix => id.startsWith(prefix))
+  );
+}
+
 function validationPassed(id, context) {
   const { programs, layers, datasets, coordinates, graphics, nodes, deep, renderEvidence } = context;
   if (id === "program:builds") return true;
@@ -401,7 +490,13 @@ function validationPassed(id, context) {
       legendEntries(programs).some(legend => legend.channels?.includes("color"));
   }
   if (id === "legend:series") return legendEntries(programs).length > 0;
-  if (id === "legend:position:top") return hasDeepPair(deep, "position", "top") || hasDeepPair(deep, "side", "top");
+  if (id.startsWith("legend:position:")) {
+    const position = id.slice("legend:position:".length);
+    const blocks = legendBlocks(programs);
+    return blocks.length > 0 && blocks.every(block =>
+      block.program.materializationConfigs?.guides?.legend?.[block.channel]?.position === position
+    );
+  }
   if (id === "legend:order:left-to-right") {
     const blocks = legendBlocks(programs);
     return blocks.length >= 2 && blocks.slice(1).every((block, index) => block.bounds.left > blocks[index].bounds.right);
@@ -495,7 +590,9 @@ function validationPassed(id, context) {
   if (id === "whisker:tukey") return boxPlotConfigs(programs).some(({ config }) =>
     config.whisker?.type === "tukey" && Number.isFinite(config.whisker.factor)
   );
-  if (id === "parallel:dimensions:4") return hasDeepPair(deep, "dimensionsCount", 4) || deep.filter(entry => entry.key === "field" && ["Horsepower", "Weight_in_lbs", "Acceleration", "Miles_per_Gallon"].includes(entry.value)).length >= 4;
+  if (id === "parallel:dimensions:4") return nodes.some(node =>
+    node.op === "createParallelCoordinates" && Array.isArray(node.args?.dimensions) && node.args.dimensions.length === 4
+  ) || hasDeepPair(deep, "dimensionsCount", 4);
   if (id.startsWith("facet:field:")) return hasDeepPair(deep, "field", id.split(":")[2]);
   if (id === "facet:columns:2") return hasDeepPair(deep, "columns", 2);
   if (id === "facet:headers") return graphics.some(graphic => /facet.*header/i.test(graphic.id));

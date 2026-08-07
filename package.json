@@ -94,6 +94,7 @@
     "eval:systematic-recipe-smoke": "node scripts/llm-eval/run-systematic-recipe-smoke.js",
     "eval:task-closed-smoke": "node scripts/llm-eval/run-task-closed-smoke.js",
     "eval:layout-safe-smoke": "node scripts/llm-eval/run-layout-safe-smoke.js",
+    "eval:paired-corpus:check": "node scripts/llm-eval/check-paired-corpus.js",
     "eval:corrective-full": "node scripts/llm-eval/run-executable-recipe-full.js",
     "eval:corrected-comparison": "node scripts/llm-eval/summarize-corrected-comparison.js",
     "docs:capabilities": "node scripts/generate-doc-capabilities.js",

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "role": "frozen-generalization",
+  "corpusSha256": "aaac35d26f5ea022743a0cf9cb07312136ff8cd14a32ede7d36a9f267454e59c",
+  "taskCount": 17,
+  "datasetSha256": {
+    "cars-v1": "f686a53678b21f4231e2f6a5ba7ce5761d9d39204fccdea1caa29fb8c460e319",
+    "gapminder-v1": "70630efd862153116c1518a098a5a3bc4ca8c9f037306f86fba282a2720909b9",
+    "jobs-v1": "bc9a798eba79dd166939d040c92641943a0b031955eb6fd897223a9cdab8a7e6",
+    "nightingale-v1": "ab332b25f7b26770f4fb1d782e774e9e7140c12b8af231da50643872d3c7f1b0",
+    "imdb-v1": "756e1f343bb57cae20b423d2428f250b2fb6a765937f114dc90a257913c28e9f"
+  },
+  "adaptationPolicy": "Do not change production knowledge, search aliases, recipes, prompts, or oracles in response to results from this corpus."
+}

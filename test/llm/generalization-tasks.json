@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 2,
+  "role": "frozen-generalization",
+  "adaptationPolicy": "Do not change production knowledge, search aliases, recipes, prompts, or oracles in response to results from this corpus.",
+  "datasets": {
+    "cars-v1": {
+      "path": "data/cars.json",
+      "sha256": "f686a53678b21f4231e2f6a5ba7ce5761d9d39204fccdea1caa29fb8c460e319",
+      "fields": ["Name", "Miles_per_Gallon", "Cylinders", "Displacement", "Horsepower", "Weight_in_lbs", "Acceleration", "Year", "Origin"]
+    },
+    "gapminder-v1": {
+      "path": "data/gapminder.json",
+      "sha256": "70630efd862153116c1518a098a5a3bc4ca8c9f037306f86fba282a2720909b9",
+      "fields": ["year", "country", "cluster", "pop", "life_expect", "fertility"]
+    },
+    "jobs-v1": {
+      "path": "data/jobs.json",
+      "sha256": "bc9a798eba79dd166939d040c92641943a0b031955eb6fd897223a9cdab8a7e6",
+      "fields": ["job", "sex", "year", "count", "perc"]
+    },
+    "nightingale-v1": {
+      "path": "data/nightingale_rose.json",
+      "sha256": "ab332b25f7b26770f4fb1d782e774e9e7140c12b8af231da50643872d3c7f1b0",
+      "fields": ["month", "cause", "value"]
+    },
+    "imdb-v1": {
+      "path": "data/imdb_selected.json",
+      "sha256": "756e1f343bb57cae20b423d2428f250b2fb6a765937f114dc90a257913c28e9f",
+      "fields": ["Series_Title", "Released_Year", "IMDB_Rating"]
+    }
+  },
+  "tasks": [
+    {
+      "id": "cars-weight-horsepower-sized-scatter",
+      "split": "generalization",
+      "category": "relationship",
+      "difficulty": "direct",
+      "data": [{ "id": "cars-v1", "fields": ["Weight_in_lbs", "Horsepower", "Acceleration"] }],
+      "prompt": "From cars-v1, make a scatter plot of Weight_in_lbs against Horsepower, map Acceleration to point size, include labeled Cartesian axes, and produce a Canvas chart.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:point", "encoding:x:Weight_in_lbs", "encoding:y:Horsepower", "encoding:size:Acceleration", "guides:cartesian", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "gapminder-population-life-log-scatter",
+      "split": "generalization",
+      "category": "scale-editing",
+      "difficulty": "composed",
+      "data": [{ "id": "gapminder-v1", "fields": ["pop", "life_expect", "cluster"] }],
+      "prompt": "Using gapminder-v1, plot pop versus life_expect as points colored by cluster, change the population x scale to logarithmic, retain axes and the color legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot", "editScale"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:point", "encoding:x:pop", "encoding:y:life_expect", "encoding:color:cluster", "legend:color", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "imdb-rating-histogram-twelve-bins",
+      "split": "generalization",
+      "category": "distribution",
+      "difficulty": "direct",
+      "data": [{ "id": "imdb-v1", "fields": ["IMDB_Rating"] }],
+      "prompt": "Using imdb-v1, build a twelve-bin histogram of IMDB_Rating with a quantitative rating axis, a frequency axis, no redundant legend, and a non-empty Canvas rendering.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createHistogram"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:histogram", "bin:count:12", "legend:absent", "graphic:bar-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "jobs-sex-count-time-series",
+      "split": "generalization",
+      "category": "time-series",
+      "difficulty": "direct",
+      "data": [{ "id": "jobs-v1", "fields": ["year", "count", "sex"] }],
+      "prompt": "From jobs-v1, draw year versus count as separate line series grouped and colored by sex, order each path by year, add axes and a series legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createLinePlot"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:line", "encoding:x:year", "encoding:y:count", "encoding:group:sex", "legend:series", "graphic:path-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "nightingale-cause-total-bars",
+      "split": "generalization",
+      "category": "categorical-comparison",
+      "difficulty": "direct",
+      "data": [{ "id": "nightingale-v1", "fields": ["cause", "value"] }],
+      "prompt": "Using nightingale-v1, aggregate value by cause into a categorical bar chart, color bars by cause while suppressing the redundant legend, add axes, and render the result to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createBarPlot"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:bar", "encoding:x:cause", "encoding:y:value", "encoding:color:cause", "legend:absent", "graphic:bar-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-displacement-rug",
+      "split": "generalization",
+      "category": "one-dimensional-distribution",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Displacement"] }],
+      "prompt": "Using cars-v1, show the one-dimensional distribution of Displacement with exactly one short vertical Tick per valid observation, a constant baseline, a quantitative x axis, and Canvas output.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createTickMark", "encodeX", "encodeY", "createXAxis"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:tick", "encoding:x:Displacement", "encoding:y:constant-baseline", "tick:one-per-valid-row", "axis:x:quantitative", "graphic:tick-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "gapminder-fertility-density-clusters",
+      "split": "generalization",
+      "category": "density",
+      "difficulty": "composed",
+      "data": [{ "id": "gapminder-v1", "fields": ["fertility", "cluster"] }],
+      "prompt": "From gapminder-v1, estimate filled fertility density curves separately for cluster with bandwidth 0.45, color the groups, include a legend and quantitative axis, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createAreaMark", "encodeDensity", "encodeColor", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:density", "density:bandwidth:0.45", "density:field:fertility", "density:group:cluster", "legend:color", "graphic:area-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-cylinder-displacement-box-plots",
+      "split": "generalization",
+      "category": "distribution",
+      "difficulty": "direct",
+      "data": [{ "id": "cars-v1", "fields": ["Cylinders", "Displacement"] }],
+      "prompt": "Using cars-v1, compare Displacement across Cylinders categories with Tukey box plots and visible outliers, color boxes by Cylinders, omit the duplicate legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createBoxPlot", "encodeColor"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:box-plot", "whisker:tukey", "outliers:visible", "encoding:x:Cylinders", "encoding:y:Displacement", "legend:absent", "graphic:box-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "imdb-rating-title-label-layout",
+      "split": "generalization",
+      "category": "annotation-layout",
+      "difficulty": "repair",
+      "data": [{ "id": "imdb-v1", "fields": ["Released_Year", "IMDB_Rating", "Series_Title"] }],
+      "prompt": "Using imdb-v1, plot Released_Year against IMDB_Rating, label selected points with Series_Title, run collision-aware label layout with leader lines, retain axes, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot", "createTextMark", "encodeText", "layoutLabels"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:point", "semantic:text", "encoding:x:Released_Year", "encoding:y:IMDB_Rating", "encoding:text:Series_Title", "layout:labels", "layout:leader-lines", "graphic:text-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "gapminder-four-measure-parallel-coordinates",
+      "split": "generalization",
+      "category": "multivariate",
+      "difficulty": "composed",
+      "data": [{ "id": "gapminder-v1", "fields": ["pop", "life_expect", "fertility", "year", "cluster"] }],
+      "prompt": "From gapminder-v1, create parallel coordinates across pop, life_expect, fertility, and year, color paths by cluster, show the dimensional guides and color legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createParallelCoordinates", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:parallel-coordinates", "parallel:dimensions:4", "encoding:color:cluster", "legend:color", "graphic:path-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-bottom-color-opacity-legends",
+      "split": "generalization",
+      "category": "guide-layout",
+      "difficulty": "repair",
+      "data": [{ "id": "cars-v1", "fields": ["Weight_in_lbs", "Miles_per_Gallon", "Origin", "Horsepower"] }],
+      "prompt": "Using cars-v1, plot Weight_in_lbs versus Miles_per_Gallon with color for Origin and opacity for Horsepower, place separate color and opacity legends in one bottom row with aligned symbols and labels, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createPointMark", "encodeX", "encodeY", "encodeColor", "encodeOpacity", "createLegend"],
+        "anyOfActionSets": [["createGuides"], ["createAxes"]],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "legend:count:2", "legend:position:bottom", "legend:order:left-to-right", "legend:titles-aligned", "legend:symbols-aligned", "legend:label-gaps-aligned", "legend:inter-block-gap", "legend:plot-offset", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "jobs-imdb-composed-summary",
+      "split": "generalization",
+      "category": "composition",
+      "difficulty": "repair",
+      "data": [
+        { "id": "jobs-v1", "fields": ["year", "count", "sex"] },
+        { "id": "imdb-v1", "fields": ["Released_Year", "IMDB_Rating"] }
+      ],
+      "prompt": "Build complete charts from jobs-v1 year, count, and sex plus imdb-v1 Released_Year and IMDB_Rating, compose a grouped time series and rating histogram horizontally with a 24-pixel gap, and render every panel to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createLinePlot", "createHistogram"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart", "hconcat"],
+        "requiredValidations": ["program:builds", "composition:hconcat", "composition:gap:24", "graphic:multi-panel-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "nightingale-renderer-parity-bars",
+      "split": "generalization",
+      "category": "renderer-parity",
+      "difficulty": "repair",
+      "data": [{ "id": "nightingale-v1", "fields": ["cause", "value"] }],
+      "prompt": "Using nightingale-v1, build a cause-by-value aggregate bar chart once and verify the same immutable program through Canvas, SVG, two-times PNG, and one-page vector PDF rendering.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createBarPlot"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "program:immutable-across-renderers", "renderer:canvas:non-empty", "renderer:svg:valid", "renderer:png:pixel-ratio:2", "renderer:pdf:one-page-vector", "renderer:logical-dimensions-equal", "graphic:bar-ink"],
+        "renderers": ["canvas", "svg", "png", "pdf"]
+      }
+    },
+    {
+      "id": "gapminder-brazil-horizon",
+      "split": "generalization",
+      "category": "compact-time-series",
+      "difficulty": "composed",
+      "data": [{ "id": "gapminder-v1", "fields": ["country", "year", "life_expect"] }],
+      "prompt": "From gapminder-v1, filter country to Brazil and draw a three-band horizon chart of life_expect over year around baseline 60, use blue positive and red negative bands, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "filterData", "createAreaMark", "encodeHorizon", "createGuides"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "filter:country:Brazil", "semantic:horizon", "horizon:bands:3", "horizon:baseline:60", "horizon:positive:blue", "horizon:negative:red", "axis:y:absent", "graphic:area-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-high-horsepower-selection",
+      "split": "generalization",
+      "category": "selection",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Horsepower", "Acceleration", "Origin"] }],
+      "prompt": "Using cars-v1, scatter Horsepower against Acceleration and create a reusable selection for the highest-Horsepower marks, highlight the selected points without mutating the source chart, keep Origin color context, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createScatterPlot", "selectMarks", "highlightMarks"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:point", "encoding:x:Horsepower", "encoding:y:Acceleration", "encoding:color:Origin", "selection:field:Horsepower", "highlight:selected", "graphic:plot-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "jobs-year-job-heatmap",
+      "split": "generalization",
+      "category": "matrix",
+      "difficulty": "direct",
+      "data": [{ "id": "jobs-v1", "fields": ["year", "job", "count"] }],
+      "prompt": "Using jobs-v1, create a heatmap with year on x, job on y, and aggregated count mapped to continuous color, include both axes plus the color legend, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createHeatmap"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:rect", "encoding:x:year", "encoding:y:job", "encoding:color:count", "legend:continuous-color", "graphic:rect-ink"],
+        "renderers": ["canvas"]
+      }
+    },
+    {
+      "id": "cars-acceleration-origin-violin",
+      "split": "generalization",
+      "category": "distribution",
+      "difficulty": "composed",
+      "data": [{ "id": "cars-v1", "fields": ["Origin", "Acceleration"] }],
+      "prompt": "Using cars-v1, compare the Acceleration distribution for each Origin with violin plots using a fixed bandwidth, color the violins by Origin without a duplicate legend, add axes, and render to Canvas.",
+      "oracle": {
+        "requiredActions": ["createCanvas", "createData", "createViolinPlot", "encodeColor"],
+        "anyOfActionSets": [],
+        "forbiddenActions": ["editSemantic", "createGraphics", "editGraphics"],
+        "requiredRuntimeFunctions": ["chart"],
+        "requiredValidations": ["program:builds", "semantic:violin", "density:field:Acceleration", "encoding:x:Origin", "encoding:y:Acceleration", "legend:absent", "graphic:area-ink"],
+        "renderers": ["canvas"]
+      }
+    }
+  ]
+}
