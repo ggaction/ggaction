@@ -4,7 +4,7 @@
 
 `ready-for-review`
 
-Proposal checkpoint: pending
+Proposal checkpoint: `24ce2cac`
 
 Gate N result approval checkpoint: `432f245c`
 
