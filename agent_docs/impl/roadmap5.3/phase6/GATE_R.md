@@ -4,7 +4,7 @@
 
 `approved`
 
-Approval checkpoint: `pending`
+Approval checkpoint: `a1c56b89`
 
 Approved by the user on 2026-08-07 with the instruction to correct the full MCP and benchmark stack up to, but not including, the next paid call.
 

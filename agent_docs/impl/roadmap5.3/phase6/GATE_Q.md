@@ -18,7 +18,7 @@ Guard checkpoint: `9687eada`
 
 Result evidence checkpoint: `5d032c90`
 
-Result review checkpoint: `pending`
+Result review checkpoint: `a1c56b89`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
