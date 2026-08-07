@@ -40,7 +40,7 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-H failed evidence and non-integration decision approval
 - [x] Systematic executable-recipe correction selected
 - [x] R53-P6-I correction contract prepared for review
-- [ ] R53-P6-I explicit approval
+- [x] R53-P6-I explicit approval
 - [ ] 32-recipe correction and complete unpaid evidence
 - [ ] R53-P6-J completion evidence approval
 - [ ] Separately authorized representative paid smoke

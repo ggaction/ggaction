@@ -2,9 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Gate package checkpoint: `9f73bd7d`
+
+Approved by the user on 2026-08-07.
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
@@ -153,6 +155,8 @@ Evaluator나 acceptance 기준을 완화해 통과시키지 않는다.
 ## 승인 효과와 계속 차단되는 범위
 
 Gate I를 명시적으로 승인하면 위 32-recipe correction과 무과금 Gate J evidence 준비만 해제된다.
+
+사용자는 위 범위를 승인했다. 구현은 verified conceptual checkpoint마다 commit·push하고 Gate J에서 다시 멈춘다.
 
 계속 차단된다.
 
