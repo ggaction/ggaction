@@ -122,13 +122,14 @@ function snapshotDigest(files, searchIndexSource) {
   return hash.digest("hex");
 }
 
-export async function captureCurrentDocumentationSnapshot() {
+export async function captureCurrentDocumentationSnapshot({ sourceRoot = root } = {}) {
+  const snapshotDocsRoot = path.join(sourceRoot, "docs");
   const [paths, searchIndexSource] = await Promise.all([
-    documentationFiles(),
-    readFile(path.join(docsRoot, "search-index.json"), "utf8")
+    documentationFiles(snapshotDocsRoot),
+    readFile(path.join(snapshotDocsRoot, "search-index.json"), "utf8")
   ]);
   const entries = await Promise.all(paths.map(async file => [
-    path.relative(docsRoot, file),
+    path.relative(snapshotDocsRoot, file),
     await readFile(file, "utf8")
   ]));
   const files = new Map(entries);

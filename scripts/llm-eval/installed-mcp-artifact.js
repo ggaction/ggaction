@@ -9,7 +9,7 @@ import { createPackageArtifact } from "../package-artifact.js";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
-export async function prepareInstalledMcpArtifact() {
+export async function prepareInstalledMcpArtifact({ sourceRoot = root } = {}) {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-evaluation-package-"));
   const packedDirectory = path.join(directory, "packed");
   const consumerDirectory = path.join(directory, "consumer");
@@ -20,7 +20,7 @@ export async function prepareInstalledMcpArtifact() {
       mkdir(consumerDirectory),
       mkdir(cacheDirectory)
     ]);
-    const packed = await createPackageArtifact({ cwd: root, outputDirectory: packedDirectory });
+    const packed = await createPackageArtifact({ cwd: sourceRoot, outputDirectory: packedDirectory });
     execFileSync(npmCommand, [
       "install",
       packed.file,

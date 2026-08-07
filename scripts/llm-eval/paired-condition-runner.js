@@ -39,6 +39,10 @@ function requestTokenEstimate(request) {
   return Math.ceil(JSON.stringify(request).length / 3.5);
 }
 
+function requestTokenUpperBound(request) {
+  return Buffer.byteLength(JSON.stringify(request), "utf8");
+}
+
 function operationDelta(before, after) {
   return Object.freeze(Object.fromEntries(Object.keys(after).map(key => [key, after[key] - (before[key] ?? 0)])));
 }
@@ -248,8 +252,13 @@ export async function runPairedEvaluationTask({
       providerError = "budget-exceeded";
       break;
     }
+    const maximumInputPrice = Math.max(
+      plan.pricingUsdPerMillionTokens.uncachedInput,
+      plan.pricingUsdPerMillionTokens.cachedInput,
+      plan.pricingUsdPerMillionTokens.cacheWrite
+    );
     const maximumNextCost = (
-      estimatedInput * plan.pricingUsdPerMillionTokens.cacheWrite +
+      requestTokenUpperBound(request) * maximumInputPrice +
       maxOutputTokens * plan.pricingUsdPerMillionTokens.output
     ) / 1_000_000;
     if (estimatedCostUsd + maximumNextCost > remainingSpendUsd) {
