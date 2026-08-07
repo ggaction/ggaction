@@ -38,6 +38,12 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-H complete corrective evaluation approval
 - [x] Separately authorized full B/C paid rerun
 - [x] R53-P6-H failed evidence and non-integration decision approval
+- [x] Systematic executable-recipe correction selected
+- [x] R53-P6-I correction contract prepared for review
+- [ ] R53-P6-I explicit approval
+- [ ] 32-recipe correction and complete unpaid evidence
+- [ ] R53-P6-J completion evidence approval
+- [ ] Separately authorized representative paid smoke
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
@@ -61,4 +67,5 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [`GATE_F.md`](./GATE_F.md) — self-contained executable recipe correction과 무과금 증거
 - [`GATE_G.md`](./GATE_G.md) — executable recipe의 exact B/C paid smoke와 $0.20 hard cap
 - [`GATE_H.md`](./GATE_H.md) — complete corrective B/C evaluation의 96-run scope와 $6 hard cap
+- [`GATE_I.md`](./GATE_I.md) — 32개 incomplete recipe의 systematic executable correction contract
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout

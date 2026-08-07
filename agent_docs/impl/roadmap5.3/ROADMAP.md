@@ -124,6 +124,9 @@ commit/push한 뒤에만 승인을 요청한다.
 | R53-P6-A | 6 | Final model/repetition/cost proposal for B/C comparison | Final 유료 LLM 호출 |
 | R53-P6-B | 6 | A/B/C benchmark result, acceptance decision와 integration candidate | PR preparation |
 | R53-P6-H | 6 | Corrective candidate의 96-run B/C scope, 비용과 최종 판정 | Corrective 전체 유료 재평가 |
+| R53-P6-I | 6 | 32개 incomplete recipe의 systematic executable correction contract | Recipe correction 구현 |
+| R53-P6-J | 6 | 33/33 recipe와 frozen 24/24 task의 complete unpaid evidence | 새 paid smoke 제안 |
+| R53-P6-K | 6 | 새 candidate의 representative paid smoke scope와 비용 | External model call |
 | R53-Exit | 6 | Merged-main package/docs/contracts/tests와 reproducible benchmark evidence | 완료 선언과 release preparation |
 
 ## Phase 0 — Baseline and measurement contract
