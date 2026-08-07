@@ -41,8 +41,10 @@ test("ranks exact actions and recognizable tasks deterministically", async () =>
   assert.equal(exact.schemaVersion, 2);
   assert.equal(exact.results[0].kind, "action");
   assert.equal(exact.results[0].id, "createScatterPlot");
-  assert.match(exact.nextStep, /best matching primary action or recipe/u);
-  assert.match(exact.nextStep, /at most one dependency recipe in the same model response/u);
+  assert.equal(exact.results[0].resourceUri, "ggaction://actions/createScatterPlot");
+  assert.equal(exact.primaryResource.value.name, "createScatterPlot");
+  assert.match(exact.nextStep, /primaryResource/u);
+  assert.match(exact.nextStep, /resourceUri/u);
 
   const first = await searchKnowledge({ query: "scatter plot relationship between horsepower and efficiency" });
   const second = await searchKnowledge({ query: "scatter plot relationship between horsepower and efficiency" });
@@ -56,7 +58,9 @@ test("ranks exact actions and recognizable tasks deterministically", async () =>
   const lifecycle = await searchKnowledge({ query: "remove a Cartesian x axis" });
   assert.equal(`${lifecycle.results[0].kind}:${lifecycle.results[0].id}`, "recipe:cartesian-guide-lifecycle");
   for (const result of [...exact.results, ...first.results, ...lifecycle.results]) {
-    assert.deepEqual(Object.keys(result), ["kind", "id", "title", "summary", "route", "score", "matchedTerms"]);
+    assert.deepEqual(Object.keys(result), [
+      "kind", "id", "title", "summary", "route", "resourceUri", "score", "matchedTerms"
+    ]);
   }
 });
 
@@ -80,7 +84,9 @@ test("keeps every evaluation task in the production default top three", async ()
     assert.equal(entry.expectedAny.some(identity => identities.has(identity)), true, entry.taskId);
     assert.equal(results.findIndex(result => entry.expectedAny.includes(`${result.kind}:${result.id}`)) < 3, true, entry.taskId);
     assert.equal(results.length <= 6, true, entry.taskId);
-    assert.equal(JSON.stringify(response).length < 6000, true, entry.taskId);
+    assert.equal(response.primaryResource.kind, results[0].kind, entry.taskId);
+    assert.equal(response.primaryResource.id, results[0].id, entry.taskId);
+    assert.equal(JSON.stringify(response).length < 50_000, true, entry.taskId);
   }
   for (const entry of paraphrases.cases) {
     const results = (await searchKnowledge({ query: entry.query })).results;
@@ -119,13 +125,21 @@ test("bounds search and exact reads without exposing arbitrary files", async () 
   const docs = await readKnowledge({ kind: "docs", id: "overview" });
   assert.equal(action.schemaVersion, 2);
   assert.equal(action.value.name, "createScatterPlot");
-  assert.match(action.nextStep, /at most one dependency recipe in this same model response/u);
-  assert.match(action.nextStep, /call submit_program without another search/u);
+  assert.match(action.nextStep, /complete resource/u);
+  assert.doesNotMatch(action.nextStep, /submit_program/u);
   assert.equal(action.value.typeDefinitions.length > 0, true);
   assert.equal(recipe.value.id, "scatterplot");
   assert.match(recipe.value.exampleSource, /from "ggaction"/);
   assert.match(docs.value.text, /# LLM Guide/);
   assert.equal(docs.value.truncated, false);
+  for (const query of ["scatter plot", "createScatterPlot", "LLM Guide"]) {
+    const response = await searchKnowledge({ query, limit: 1 });
+    assert.equal(response.results[0].resourceUri, `ggaction://${
+      response.results[0].kind === "action" ? "actions" : response.results[0].kind === "recipe" ? "recipes" : "docs"
+    }/${response.results[0].id}`);
+    assert.equal(response.primaryResource.kind, response.results[0].kind);
+    assert.equal(response.primaryResource.id, response.results[0].id);
+  }
   await assert.rejects(() => readKnowledge({ kind: "action", id: "../../package" }), /ID is invalid/);
   await assert.rejects(() => readKnowledge({ kind: "action", id: "unknownAction" }), /Unknown action knowledge ID/);
 });

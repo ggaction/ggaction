@@ -132,9 +132,16 @@ function result(record, scored, maximumSummaryCharacters) {
     title: record.title,
     summary,
     route: record.route,
+    resourceUri: knowledgeResourceUri(record.kind, record.id),
     score: scored.score,
     matchedTerms: Object.freeze(scored.matchedTerms)
   });
+}
+
+function knowledgeResourceUri(kind, id) {
+  if (kind === "action") return `ggaction://actions/${id}`;
+  if (kind === "recipe") return `ggaction://recipes/${id}`;
+  return `ggaction://docs/${id}`;
 }
 
 export async function loadKnowledgeSearchIndex() {
@@ -154,11 +161,17 @@ export async function searchKnowledge(options) {
     )
     .slice(0, query.limit)
     .map(entry => result(entry.record, entry.scored, index.limits.maximumSummaryCharacters));
+  const primaryResource = results.length === 0
+    ? null
+    : await readKnowledge({ kind: results[0].kind, id: results[0].id });
   return Object.freeze({
     schemaVersion: 2,
     query: query.query,
     results: Object.freeze(results),
-    nextStep: "Read the best matching primary action or recipe and, only for a composite task that clearly needs another chart family, at most one dependency recipe in the same model response."
+    primaryResource,
+    nextStep: primaryResource === null
+      ? "Refine the query using a concrete chart task or exact public action name."
+      : "Use primaryResource as the complete knowledge for the top result. Read another result's resourceUri only when the task genuinely requires an additional capability."
   });
 }
 
@@ -188,8 +201,8 @@ export async function readKnowledge(options) {
     route: searchRecord.route,
     value,
     nextStep: kind === "docs"
-      ? "Search once for the task, then read the best matching primary resource and at most one required dependency recipe."
-      : "If the same search results clearly require another chart family, read at most one dependency recipe in this same model response; otherwise write the complete program and call submit_program without another search."
+      ? "Search for the concrete chart task; the search response includes the complete top-ranked primaryResource."
+      : "Use this complete resource to author the chart. Read a related resource only when the task requires an additional capability not covered here."
   });
 }
 
@@ -201,9 +214,9 @@ export async function knowledgeOverview() {
     purpose: "Build immutable chart programs through public domain actions and render their materialized graphics.",
     workflow: Object.freeze([
       "Search once with search_ggaction using the chart task or exact action name.",
-      "Read the best matching primary action or recipe resource.",
-      "Only for a composite task that clearly needs another chart family, read at most one dependency recipe in the same model response.",
-      "Write the complete public ggaction program without another knowledge search or resource read."
+      "Use the complete primaryResource embedded for the top-ranked result.",
+      "Read another result's resourceUri only when the task requires an additional capability.",
+      "Write the complete public ggaction program using only documented public APIs."
     ]),
     resources: Object.freeze([
       "ggaction://overview",

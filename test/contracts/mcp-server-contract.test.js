@@ -83,7 +83,7 @@ test("reads packaged overview, action, recipe, and documentation knowledge", asy
     assert.equal(action.value.typeDefinitions.length > 0, true);
     assert.equal(recipe.value.id, "scatterplot");
     assert.match(recipe.value.exampleSource, /from "ggaction"/u);
-    assert.match(recipe.nextStep, /submit_program/u);
+    assert.doesNotMatch(recipe.nextStep, /submit_program/u);
     assert.match(docs.value.text, /# LLM Guide/u);
   } finally {
     await connection.close();
@@ -104,8 +104,10 @@ test("keeps search deterministic, bounded, and strict about invalid input", asyn
     assert.equal(response.schemaVersion, 2);
     assert.equal(response.results.length, 3);
     assert.equal(response.results[0].id, "scatterplot");
-    assert.match(response.nextStep, /best matching primary action or recipe/u);
-    assert.match(response.nextStep, /at most one dependency recipe in the same model response/u);
+    assert.equal(response.results[0].resourceUri, "ggaction://recipes/scatterplot");
+    assert.equal(response.primaryResource.id, "scatterplot");
+    assert.match(response.primaryResource.value.exampleSource, /from "ggaction"/u);
+    assert.match(response.nextStep, /primaryResource/u);
 
     for (const invalid of [
       { query: "" },
@@ -148,6 +150,7 @@ test("keeps MCP source on fixed local reads without network, code, chart, or ren
   assert.equal((source.match(/registerTool\s*\(/gu) ?? []).length, 1);
   assert.match(source, /new URL\("\.\.\/knowledge\/index\.json", import\.meta\.url\)/u);
   assert.match(source, /new URL\("\.\.\/knowledge\/search-index\.json", import\.meta\.url\)/u);
+  assert.doesNotMatch(source, /submit_program/u);
 });
 
 test("serves protocol-only stdout through the package executable", async () => {

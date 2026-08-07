@@ -59,7 +59,7 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-Q guard checkpoint and paid execution
 - [x] R53-P6-Q failed result and non-integration review
 - [x] R53-P6-R benchmark and MCP integrity reset approval
-- [ ] Production MCP decontamination and one-call primary retrieval
+- [x] Production MCP decontamination and one-call primary retrieval
 - [ ] Fair A/B/C/D evaluation harness and transport accounting
 - [ ] Strict program oracle and fresh generalization corpus
 - [ ] Complete unpaid reset evidence

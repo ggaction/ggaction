@@ -197,6 +197,9 @@ An MCP host can launch the executable installed with the package:
 It serves bounded action, recipe, and documentation resources plus the
 read-only `search_ggaction` tool. Communication is local stdio; no hosted
 server, account, authentication, chart execution, or rendering is involved.
+Every result includes an exact resource URI, and the search response embeds
+the complete top-ranked resource so a single-capability task needs only one
+knowledge lookup.
 
 ## Documentation
 

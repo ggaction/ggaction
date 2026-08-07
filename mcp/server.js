@@ -25,7 +25,7 @@ export function createGgactionMcpServer() {
   const server = new McpServer(
     { name: "ggaction", version },
     {
-      instructions: "Search once for the chart task. Read the best matching primary action or recipe and, only when a composite task clearly needs another chart family, read at most one dependency recipe in the same model response. Then write public ggaction code without another search or resource read. This server is read-only and does not execute or render charts."
+      instructions: "Search for the concrete chart task or exact public action. The response embeds the complete top-ranked primaryResource and gives a resourceUri for every result. Read another resource only when the task requires an additional capability. Write code with documented public ggaction APIs. This server is read-only and does not execute or render charts."
     }
   );
 
@@ -77,7 +77,7 @@ export function createGgactionMcpServer() {
     "search_ggaction",
     {
       title: "Search ggaction Knowledge",
-      description: "Search bounded action, recipe, and documentation knowledge using deterministic local ranking.",
+      description: "Search bounded local knowledge and return ranked resource URIs plus the complete top-ranked primary resource.",
       inputSchema: z.strictObject({
         query: z.string().min(1).max(500).describe("A chart task, capability, lifecycle operation, or exact action name."),
         limit: z.number().int().min(1).max(10).optional().describe("Maximum ranked results; defaults to 6.")

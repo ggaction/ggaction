@@ -391,7 +391,7 @@ test("isolates A, B, and C knowledge tools behind one evaluation envelope", asyn
     currentRouting
   );
   const mcpRouting = JSON.parse(await conditionC.routingText());
-  assert.match(mcpRouting.instructions, /Search once/u);
+  assert.match(mcpRouting.instructions, /primaryResource/u);
   assert.deepEqual(mcpRouting.tools.map(tool => tool.name), ["search_ggaction"]);
   assert.deepEqual(mcpRouting.resourceTemplates.map(template => template.uriTemplate), [
     "ggaction://actions/{name}",

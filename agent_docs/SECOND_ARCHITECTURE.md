@@ -212,6 +212,10 @@ search_ggaction({ query, limit })
 ```
 
 Resource는 canonical generated action/recipe/docs knowledge를 읽고 tool은 같은 deterministic ranking을 사용한다.
+각 search result는 exact `resourceUri`를 가지며 search response는 top result의 complete read payload를
+`primaryResource`로 함께 반환한다. 따라서 ordinary single-capability task는 search 한 번으로 knowledge retrieval을 끝내고,
+추가 capability가 실제로 필요한 task만 다른 resource를 읽는다. MCP knowledge와 server instruction은 host나 evaluator의
+submission tool을 알지 못한다.
 Caller-controlled filesystem path, URL, source code와 chart program을 입력으로 받지 않으며 network, chart execution,
 rendering, arbitrary code execution과 write operation을 등록하지 않는다. Protocol output은 stdout, startup/terminal
 diagnostic은 stderr로 분리한다.
@@ -2038,7 +2042,7 @@ Pixel ratio는 renderer option일 뿐 `graphicSpec`의 logical coordinate를 바
 
 ## Source ownership
 
-Package root의 `mcp/knowledge.js`는 fixed package-local generated knowledge의 bounded search/read를 소유한다.
+Package root의 `mcp/knowledge.js`는 fixed package-local generated knowledge의 bounded search/read와 top-result inline retrieval을 소유한다.
 `mcp/server.js`는 resource/tool registration만 소유하고 `bin/ggaction-mcp.js`는 stdio startup과 stderr failure boundary만
 소유한다. 이 Node-only tree는 `src/` chart state, action, materialization 또는 renderer tree의 dependency가 아니며
 `scripts/knowledge-search.js`만 development compatibility facade로 같은 search/read owner를 re-export한다.
