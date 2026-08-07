@@ -14,6 +14,8 @@ Proposal checkpoint: `7cd462dd`
 
 Full-evaluation guard checkpoint: `ca680ab6`
 
+Result evidence checkpoint: `6b506463`
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
 ## 한눈에 보는 제안
