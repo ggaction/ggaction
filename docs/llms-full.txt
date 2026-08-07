@@ -2116,9 +2116,10 @@ The accepted curve vocabulary is `linear`, `step`, `step-before`, `step-after`,
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas({ margin: { right: 140 } })
+  .createCanvas({ margin: { top: 70, right: 140 } })
   .createData({ values })
-  .createHistogram({ field: "value" });
+  .createHistogram({ field: "value" })
+  .createTitle({ text: "Value distribution" });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");
@@ -2169,12 +2170,22 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
-  .createData({ values })
+  .createData({ id: "rows", values })
+  .filterData({ id: "selected", source: "rows", field: "group", oneOf: ["A", "B"] })
   .createBarPlot({
+    id: "bars",
+    data: "selected",
     x: { field: "category", fieldType: "ordinal" },
     y: { field: "value", aggregate: "mean" },
     color: { field: "group", layout: "group" },
-    width: { band: 0.72 }
+    width: { band: 0.72 },
+    guides: { axes: { x: {}, y: {} }, legend: {} }
+  })
+  .orderCategories({
+    target: "bars",
+    channel: "x",
+    by: { field: "value", aggregate: "sum" },
+    direction: "descending"
   });
 
 const context = document.querySelector("#chart")?.getContext("2d");
@@ -2311,20 +2322,28 @@ const program = chart()
     height: 480,
     margin: { top: 40, right: 190, bottom: 70, left: 80 }
   })
-  .createData({ values })
-  .createPointMark()
-  .encodeX({ field: "Displacement", scale: { nice: true, zero: false } })
-  .encodeY({ field: "Acceleration", scale: { nice: true, zero: false } })
-  .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
-  .encodeSize({ field: "Acceleration" })
-  .encodeShape({ field: "Origin" })
-  .encodeOpacity({ value: 0.27 })
-  .filterMarks({
-    field: "Origin",
-    op: "oneOf",
-    values: ["Japan", "USA"]
+  .createData({ id: "observations", values })
+  .createScatterPlot({
+    id: "points",
+    data: "observations",
+    x: { field: "Displacement", scale: { id: "x", nice: true, zero: false } },
+    y: { field: "Acceleration", scale: { id: "y", nice: true, zero: false } },
+    color: { field: "Origin", scale: { palette: "tableau10" } },
+    guides: false
   })
-  .createRegression()
+  .filterData({ id: "focus", source: "observations", field: "Origin", oneOf: ["Japan"] })
+  .createPointMark({ id: "focusPoints", data: "focus", opacity: 0 })
+  .encodeX({ target: "focusPoints", field: "Displacement", scale: { id: "x" } })
+  .encodeY({ target: "focusPoints", field: "Acceleration", scale: { id: "y" } })
+  .createRegression({ target: "focusPoints", band: false })
+  .createData({
+    id: "fitLabel",
+    values: [{ Displacement: 140, Acceleration: 15, label: "R² = 0.82" }]
+  })
+  .createTextMark({ id: "fitText", data: "fitLabel", fill: "#000000" })
+  .encodeX({ target: "fitText", field: "Displacement", scale: { id: "x" } })
+  .encodeY({ target: "fitText", field: "Acceleration", scale: { id: "y" } })
+  .encodeText({ target: "fitText", field: "label" })
   .createGuides();
 
 const context = document.querySelector("#chart")?.getContext("2d");
@@ -2413,8 +2432,9 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
-  .createData({ values })
-  .createAreaMark({ curve: "monotone" })
+  .createData({ id: "series", values })
+  .filterData({ id: "focus", source: "series", field: "group", oneOf: ["A"] })
+  .createAreaMark({ data: "focus", curve: "monotone" })
   .encodeHorizon({ x: "time", y: "value" })
   .createGuides();
 
@@ -2456,13 +2476,14 @@ comparison is intentional.
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { top: 70 } })
   .createData({ values })
   .createErrorBar({
     x: { field: "group", fieldType: "nominal" },
     y: { field: "value" }
   })
-  .createGuides();
+  .createGuides()
+  .createTitle({ text: "Group intervals" });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");
@@ -4457,30 +4478,25 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { right: 120 } })
-  .createData({
-    id: "sales",
-    values: [
-      { region: "East", month: 2, amount: 30 },
-      { region: "East", month: 1, amount: 20 },
-      { region: "West", month: 1, amount: 15 }
-    ]
-  })
+  .createData({ id: "series", values })
+  .filterData({ id: "focus", source: "series", field: "group", oneOf: ["A"] })
+  .createTimeUnitData({ id: "yearly", source: "focus", field: "date", unit: "year", as: "calendarYear" })
   .createWindowData({
-    id: "rankedSales",
-    partitionBy: "region",
-    sortBy: [{ field: "month" }],
+    id: "smoothed",
+    source: "yearly",
+    partitionBy: "group",
+    sortBy: [{ field: "date" }],
     operations: [
-      { op: "rowNumber", as: "monthOrder" },
-      { op: "cumulativeSum", field: "amount", as: "runningAmount" },
-      { op: "lag", field: "amount", as: "previousAmount" }
+      { op: "movingMean", field: "value", as: "movingValue", frame: { preceding: 1, following: 1 } }
     ]
   })
   .createLinePlot({
-    id: "runningSales",
-    data: "rankedSales",
-    x: { field: "month", fieldType: "quantitative" },
-    y: { field: "runningAmount" },
-    color: "region"
+    id: "movingSeries",
+    data: "smoothed",
+    x: { field: "date", fieldType: "temporal" },
+    y: { field: "movingValue", aggregate: "mean" },
+    color: "group",
+    guides: { axes: { x: {}, y: {} }, legend: {} }
   });
 
 const context = document.querySelector("#chart")?.getContext("2d");
@@ -4789,7 +4805,8 @@ const program = chart()
     opacity: 0.3
   })
   .encodeX({ target: "ticks", field: "Horsepower" })
-  .encodeY({ target: "ticks", field: "Baseline" });
+  .encodeY({ target: "ticks", field: "Baseline" })
+  .createXAxis({ title: { text: "Horsepower" } });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");
@@ -9630,14 +9647,20 @@ editing page when changing an existing guide.
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })
+  .createCanvas({ width: 760, height: 620, margin: { top: 140, right: 70, bottom: 60, left: 70 } })
   .createData({ values: [
-    { x: 1, y: 2, group: "A" },
-    { x: 2, y: 4, group: "B" }
+    { x: 1, y: 2, group: "A", confidence: 0.4 },
+    { x: 2, y: 4, group: "B", confidence: 0.9 }
   ] })
-  .createScatterPlot({ id: "points", x: "x", y: "y", color: "group" })
-  .createLegend({ target: "points" })
-  .editLegendLayout({ target: "points", position: "right", offset: 18 });
+  .createPointMark({ id: "points" })
+  .encodeX({ target: "points", field: "x" })
+  .encodeY({ target: "points", field: "y" })
+  .encodeColor({ target: "points", field: "group", fieldType: "nominal" })
+  .encodeOpacity({ target: "points", field: "confidence" })
+  .createGuides({ axes: { x: {}, y: {} }, legend: false })
+  .createLegend({ target: "points", channels: ["color"], position: "top", titlePosition: "left" })
+  .createLegend({ target: "points", channels: ["opacity"], position: "top", titlePosition: "left" })
+  .editLegendLayout({ target: "points", position: "top", offset: 18, itemGap: 12 });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");

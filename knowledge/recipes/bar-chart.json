@@ -40,6 +40,10 @@
         {
           "name": "createData",
           "role": "supporting"
+        },
+        {
+          "name": "filterData",
+          "role": "supporting"
         }
       ]
     },
@@ -67,6 +71,10 @@
         },
         {
           "name": "encodeBarWidth",
+          "role": "supporting"
+        },
+        {
+          "name": "orderCategories",
           "role": "supporting"
         }
       ]

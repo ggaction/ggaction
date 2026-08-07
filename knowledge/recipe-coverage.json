@@ -264,6 +264,7 @@
       "recipeIds": [
         "annotations",
         "facet",
+        "legend-title-lifecycle",
         "regression-scatterplot"
       ],
       "reason": null
@@ -347,6 +348,7 @@
       "name": "createScatterPlot",
       "classification": "primary",
       "recipeIds": [
+        "regression-scatterplot",
         "scatterplot"
       ],
       "reason": null
@@ -357,7 +359,8 @@
       "recipeIds": [
         "annotations",
         "heatmap",
-        "mark-lifecycle"
+        "mark-lifecycle",
+        "regression-scatterplot"
       ],
       "reason": null
     },
@@ -398,6 +401,8 @@
       "name": "createTitle",
       "classification": "supporting",
       "recipeIds": [
+        "error-bar",
+        "histogram",
         "legend-title-lifecycle"
       ],
       "reason": null
@@ -430,7 +435,8 @@
       "name": "createXAxis",
       "classification": "supporting",
       "recipeIds": [
-        "cartesian-guide-lifecycle"
+        "cartesian-guide-lifecycle",
+        "tick-distribution"
       ],
       "reason": null
     },
@@ -1054,6 +1060,7 @@
       "classification": "supporting",
       "recipeIds": [
         "box-plot",
+        "legend-title-lifecycle",
         "regression-scatterplot",
         "rose-chart",
         "scatterplot"
@@ -1096,6 +1103,7 @@
       "name": "encodeOpacity",
       "classification": "supporting",
       "recipeIds": [
+        "legend-title-lifecycle",
         "regression-scatterplot"
       ],
       "reason": null
@@ -1187,7 +1195,8 @@
       "classification": "supporting",
       "recipeIds": [
         "annotations",
-        "heatmap"
+        "heatmap",
+        "regression-scatterplot"
       ],
       "reason": null
     },
@@ -1206,6 +1215,7 @@
         "annotations",
         "category-ordering",
         "facet",
+        "legend-title-lifecycle",
         "path-ordering",
         "regression-scatterplot",
         "tick-distribution"
@@ -1243,6 +1253,7 @@
         "annotations",
         "category-ordering",
         "facet",
+        "legend-title-lifecycle",
         "path-ordering",
         "regression-scatterplot",
         "tick-distribution"
@@ -1286,7 +1297,11 @@
       "name": "filterData",
       "classification": "supporting",
       "recipeIds": [
-        "parallel-coordinates"
+        "bar-chart",
+        "horizon",
+        "parallel-coordinates",
+        "regression-scatterplot",
+        "time-series-derivation"
       ],
       "reason": null
     },
@@ -1326,6 +1341,7 @@
       "name": "orderCategories",
       "classification": "primary",
       "recipeIds": [
+        "bar-chart",
         "category-ordering"
       ],
       "reason": null

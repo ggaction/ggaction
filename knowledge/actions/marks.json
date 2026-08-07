@@ -360,6 +360,7 @@
       "recipeIds": [
         "annotations",
         "facet",
+        "legend-title-lifecycle",
         "regression-scatterplot"
       ],
       "docs": [
@@ -576,7 +577,8 @@
       "recipeIds": [
         "annotations",
         "heatmap",
-        "mark-lifecycle"
+        "mark-lifecycle",
+        "regression-scatterplot"
       ],
       "docs": [
         {

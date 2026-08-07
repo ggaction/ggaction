@@ -60,6 +60,10 @@
         {
           "name": "encodeHistogram",
           "role": "supporting"
+        },
+        {
+          "name": "createTitle",
+          "role": "supporting"
         }
       ]
     }

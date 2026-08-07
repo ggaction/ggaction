@@ -16,8 +16,9 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas()
-  .createData({ values })
-  .createAreaMark({ curve: "monotone" })
+  .createData({ id: "series", values })
+  .filterData({ id: "focus", source: "series", field: "group", oneOf: ["A"] })
+  .createAreaMark({ data: "focus", curve: "monotone" })
   .encodeHorizon({ x: "time", y: "value" })
   .createGuides();
 

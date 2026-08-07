@@ -33,7 +33,7 @@ test("generates one stable search record for every action, recipe, and LLM route
   assert.equal(new Set(generated.records.map(record => `${record.kind}:${record.id}`)).size, 210);
   assert.equal(generated.records.filter(record => record.kind === "recipe").every(record => record.priority === 100), true);
   assert.equal(generated.records.filter(record => record.kind === "action").every(record => record.priority === 0), true);
-  assert.equal(generated.records.filter(record => record.kind === "docs").every(record => record.priority === 0), true);
+  assert.equal(generated.records.filter(record => record.kind === "docs").every(record => record.priority === -50), true);
 });
 
 test("ranks exact actions and recognizable tasks deterministically", async () => {

@@ -19,12 +19,22 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
-  .createData({ values })
+  .createData({ id: "rows", values })
+  .filterData({ id: "selected", source: "rows", field: "group", oneOf: ["A", "B"] })
   .createBarPlot({
+    id: "bars",
+    data: "selected",
     x: { field: "category", fieldType: "ordinal" },
     y: { field: "value", aggregate: "mean" },
     color: { field: "group", layout: "group" },
-    width: { band: 0.72 }
+    width: { band: 0.72 },
+    guides: { axes: { x: {}, y: {} }, legend: {} }
+  })
+  .orderCategories({
+    target: "bars",
+    channel: "x",
+    by: { field: "value", aggregate: "sum" },
+    direction: "descending"
   });
 
 const context = document.querySelector("#chart")?.getContext("2d");

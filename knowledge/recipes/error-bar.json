@@ -76,6 +76,10 @@
         {
           "name": "encodeY2",
           "role": "supporting"
+        },
+        {
+          "name": "createTitle",
+          "role": "supporting"
         }
       ]
     },

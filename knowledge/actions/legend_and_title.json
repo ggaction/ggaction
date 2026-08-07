@@ -220,6 +220,8 @@
         "createGuides"
       ],
       "recipeIds": [
+        "error-bar",
+        "histogram",
         "legend-title-lifecycle"
       ],
       "docs": [

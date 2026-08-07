@@ -137,7 +137,8 @@ const program = chart()
     opacity: 0.3
   })
   .encodeX({ target: "ticks", field: "Horsepower" })
-  .encodeY({ target: "ticks", field: "Baseline" });
+  .encodeY({ target: "ticks", field: "Baseline" })
+  .createXAxis({ title: { text: "Horsepower" } });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");

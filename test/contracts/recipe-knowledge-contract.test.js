@@ -5,11 +5,13 @@ import test from "node:test";
 
 import { buildKnowledge } from "../../scripts/generate-action-knowledge.js";
 import { evaluateGeneratedProgram } from "../../scripts/llm-eval/program-evaluator.js";
+import { searchKnowledge } from "../../scripts/knowledge-search.js";
 import {
   executableExampleSourceViolations,
   recipeCoverageFile,
   recipeSourceRoot
 } from "../../scripts/recipe-knowledge.js";
+import { verifyExecutableRecipes } from "../../scripts/verify-executable-recipes.js";
 import { focusedRecipeActions, recipeExamples } from "../llm/recipe-knowledge-examples.js";
 
 async function json(relative) {
@@ -111,6 +113,77 @@ test("delivers the supported box color and composition replacement variants", as
     .join("\n");
   assert.match(inventedFacadeWarning, /no createRoseChart/u);
   assert.match(inventedFacadeWarning, /createArcMark[\s\S]*encodeTheta[\s\S]*encodeR[\s\S]*encodeColor/u);
+});
+
+test("closes every frozen task from the exact delivered recipe payload", async () => {
+  const [corpus, matrix, paraphrases, { document }, manifest] = await Promise.all([
+    json("test/llm/tasks.json"),
+    json("test/llm/recipe-delivery-matrix.json"),
+    json("test/llm/search-paraphrases.json"),
+    buildKnowledge(),
+    verifyExecutableRecipes({
+      artifactRoot: new URL("../../.artifacts/test/recipe-delivery-closure", import.meta.url).pathname
+    })
+  ]);
+  assert.equal(matrix.schemaVersion, 1);
+  assert.equal(matrix.rows.length, 24);
+  assert.deepEqual(matrix.rows.map(row => row.taskId).toSorted(), corpus.tasks.map(task => task.id).toSorted());
+  const recipes = new Map(document.recipes.map(recipe => [recipe.id, recipe]));
+  const executions = new Map(manifest.results.map(result => [result.id, result]));
+
+  assert.equal(paraphrases.cases.length, matrix.rows.length);
+  const failures = [];
+  for (const [index, row] of matrix.rows.entries()) {
+    const task = corpus.tasks.find(candidate => candidate.id === row.taskId);
+    assert.equal(row.dependencyRecipeIds.length <= 1, true, `${row.taskId}: bounded dependency count`);
+    assert.equal(row.dependencyRecipeIds.includes(row.primaryRecipeId), false, `${row.taskId}: distinct dependency`);
+    const deliveryIds = [row.primaryRecipeId, ...row.dependencyRecipeIds];
+    const deliveredActions = new Set(deliveryIds.flatMap(id => executions.get(id).deliveredActions));
+    const deliveredRuntimeFunctions = new Set(deliveryIds.flatMap(id => executions.get(id).deliveredRuntimeFunctions));
+    const deliveredText = deliveryIds.map(id => {
+      const recipe = recipes.get(id);
+      return [
+        recipe.exampleSource,
+        ...recipe.pitfalls.flatMap(pitfall => [pitfall.problem, pitfall.fix])
+      ].join("\n");
+    }).join("\n");
+
+    for (const action of task.oracle.requiredActions) {
+      if (!deliveredActions.has(action)) failures.push(`${row.taskId}: missing delivered action ${action}`);
+    }
+    if (task.oracle.anyOfActionSets.length > 0) {
+      if (!task.oracle.anyOfActionSets.some(set => set.every(action => deliveredActions.has(action)))) {
+        failures.push(`${row.taskId}: no delivered alternative action set`);
+      }
+    }
+    for (const action of task.oracle.forbiddenActions) {
+      if (deliveredText.includes(`.${action}(`)) failures.push(`${row.taskId}: forbidden delivered action ${action}`);
+    }
+    for (const runtimeFunction of task.oracle.requiredRuntimeFunctions) {
+      if (!deliveredRuntimeFunctions.has(runtimeFunction)) {
+        failures.push(`${row.taskId}: missing delivered runtime function ${runtimeFunction}`);
+      }
+    }
+    for (const trap of row.knownTrapCoverage) {
+      if (!deliveredText.includes(trap.warning)) failures.push(`${row.taskId}: missing trap warning ${trap.warning}`);
+      if (!deliveredText.includes(trap.forbiddenIdentifier)) failures.push(`${row.taskId}: unnamed trap ${trap.forbiddenIdentifier}`);
+    }
+
+    const taskSearch = await searchKnowledge({ query: task.prompt });
+    if (`${taskSearch.results[0].kind}:${taskSearch.results[0].id}` !== `recipe:${row.primaryRecipeId}`) {
+      failures.push(`${row.taskId}: primary task rank`);
+    }
+    for (const dependencyId of row.dependencyRecipeIds) {
+      if (!taskSearch.results.some(result => result.kind === "recipe" && result.id === dependencyId)) {
+        failures.push(`${row.taskId}: dependency route ${dependencyId}`);
+      }
+    }
+    const paraphraseSearch = await searchKnowledge({ query: paraphrases.cases[index].query });
+    if (`${paraphraseSearch.results[0].kind}:${paraphraseSearch.results[0].id}` !== `recipe:${row.primaryRecipeId}`) {
+      failures.push(`${row.taskId}: paraphrase primary rank`);
+    }
+  }
+  assert.deepEqual(failures, []);
 });
 
 test("audits complete recipe runtime wrappers without accepting invented APIs", () => {

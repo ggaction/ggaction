@@ -359,6 +359,7 @@
       ],
       "recipeIds": [
         "box-plot",
+        "legend-title-lifecycle",
         "regression-scatterplot",
         "rose-chart",
         "scatterplot"
@@ -736,6 +737,7 @@
         "removeEncoding"
       ],
       "recipeIds": [
+        "legend-title-lifecycle",
         "regression-scatterplot"
       ],
       "docs": [
@@ -1615,7 +1617,8 @@
       ],
       "recipeIds": [
         "annotations",
-        "heatmap"
+        "heatmap",
+        "regression-scatterplot"
       ],
       "docs": [
         {
@@ -1796,6 +1799,7 @@
         "annotations",
         "category-ordering",
         "facet",
+        "legend-title-lifecycle",
         "path-ordering",
         "regression-scatterplot",
         "tick-distribution"
@@ -2113,6 +2117,7 @@
         "annotations",
         "category-ordering",
         "facet",
+        "legend-title-lifecycle",
         "path-ordering",
         "regression-scatterplot",
         "tick-distribution"
@@ -2420,6 +2425,7 @@
         "removeEncoding"
       ],
       "recipeIds": [
+        "bar-chart",
         "category-ordering"
       ],
       "docs": [

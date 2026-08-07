@@ -15,9 +15,10 @@ title: Histogram Recipe
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas({ margin: { right: 140 } })
+  .createCanvas({ margin: { top: 70, right: 140 } })
   .createData({ values })
-  .createHistogram({ field: "value" });
+  .createHistogram({ field: "value" })
+  .createTitle({ text: "Value distribution" });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");

@@ -23,30 +23,25 @@ import { chart, render } from "ggaction";
 
 const program = chart()
   .createCanvas({ margin: { right: 120 } })
-  .createData({
-    id: "sales",
-    values: [
-      { region: "East", month: 2, amount: 30 },
-      { region: "East", month: 1, amount: 20 },
-      { region: "West", month: 1, amount: 15 }
-    ]
-  })
+  .createData({ id: "series", values })
+  .filterData({ id: "focus", source: "series", field: "group", oneOf: ["A"] })
+  .createTimeUnitData({ id: "yearly", source: "focus", field: "date", unit: "year", as: "calendarYear" })
   .createWindowData({
-    id: "rankedSales",
-    partitionBy: "region",
-    sortBy: [{ field: "month" }],
+    id: "smoothed",
+    source: "yearly",
+    partitionBy: "group",
+    sortBy: [{ field: "date" }],
     operations: [
-      { op: "rowNumber", as: "monthOrder" },
-      { op: "cumulativeSum", field: "amount", as: "runningAmount" },
-      { op: "lag", field: "amount", as: "previousAmount" }
+      { op: "movingMean", field: "value", as: "movingValue", frame: { preceding: 1, following: 1 } }
     ]
   })
   .createLinePlot({
-    id: "runningSales",
-    data: "rankedSales",
-    x: { field: "month", fieldType: "quantitative" },
-    y: { field: "runningAmount" },
-    color: "region"
+    id: "movingSeries",
+    data: "smoothed",
+    x: { field: "date", fieldType: "temporal" },
+    y: { field: "movingValue", aggregate: "mean" },
+    color: "group",
+    guides: { axes: { x: {}, y: {} }, legend: {} }
   });
 
 const context = document.querySelector("#chart")?.getContext("2d");

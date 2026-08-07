@@ -48,6 +48,26 @@
         {
           "name": "createTitle",
           "role": "supporting"
+        },
+        {
+          "name": "createPointMark",
+          "role": "supporting"
+        },
+        {
+          "name": "encodeX",
+          "role": "supporting"
+        },
+        {
+          "name": "encodeY",
+          "role": "supporting"
+        },
+        {
+          "name": "encodeColor",
+          "role": "supporting"
+        },
+        {
+          "name": "encodeOpacity",
+          "role": "supporting"
         }
       ]
     },

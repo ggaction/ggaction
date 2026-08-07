@@ -3,11 +3,11 @@
   "generated": {
     "actionCount": 173,
     "actionIndexSha256": "5ba78038a620f50c79878d29404f7739a55ab5f59406d84ad1b16b68a188d7f6",
-    "actionSourceSha256": "b62b4b42cf2b9f06c35d4bb64f7e816d610a1b81b6c558d345c2daad20c03851",
+    "actionSourceSha256": "2245022872d3131c15a7f539ee66ff9e79e2e7a6c1f0a04aee0f799ec830cc42",
     "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
     "recipeCount": 33,
-    "recipeSourceSha256": "b56ea1481e8ca5a8b23829eb70ca0bde23e655030f5264bb5627bc370bf8331a",
-    "recipeCoverageSha256": "acdd3afb8614009e55fd64f4a30d2d89507b058a21a3f9cefd926181091f12b5"
+    "recipeSourceSha256": "638a22159e52b4540f9d758e7633d84b6c051d59d634dc5175ce1de1a8418e0f",
+    "recipeCoverageSha256": "13d9ee4ea560b4d01ae94ed9ac77828d82a8d52989051f51637027500071dc19"
   },
   "actions": [
     {
@@ -4908,6 +4908,7 @@
       "recipeIds": [
         "annotations",
         "facet",
+        "legend-title-lifecycle",
         "regression-scatterplot"
       ],
       "docs": [
@@ -6199,6 +6200,7 @@
         "createGuides"
       ],
       "recipeIds": [
+        "regression-scatterplot",
         "scatterplot"
       ],
       "docs": [
@@ -6299,7 +6301,8 @@
       "recipeIds": [
         "annotations",
         "heatmap",
-        "mark-lifecycle"
+        "mark-lifecycle",
+        "regression-scatterplot"
       ],
       "docs": [
         {
@@ -6804,6 +6807,8 @@
         "createGuides"
       ],
       "recipeIds": [
+        "error-bar",
+        "histogram",
         "legend-title-lifecycle"
       ],
       "docs": [
@@ -7502,7 +7507,8 @@
         "createGuides"
       ],
       "recipeIds": [
-        "cartesian-guide-lifecycle"
+        "cartesian-guide-lifecycle",
+        "tick-distribution"
       ],
       "docs": [
         {
@@ -15394,6 +15400,7 @@
       ],
       "recipeIds": [
         "box-plot",
+        "legend-title-lifecycle",
         "regression-scatterplot",
         "rose-chart",
         "scatterplot"
@@ -16035,6 +16042,7 @@
         "removeEncoding"
       ],
       "recipeIds": [
+        "legend-title-lifecycle",
         "regression-scatterplot"
       ],
       "docs": [
@@ -17214,7 +17222,8 @@
       ],
       "recipeIds": [
         "annotations",
-        "heatmap"
+        "heatmap",
+        "regression-scatterplot"
       ],
       "docs": [
         {
@@ -17506,6 +17515,7 @@
         "annotations",
         "category-ordering",
         "facet",
+        "legend-title-lifecycle",
         "path-ordering",
         "regression-scatterplot",
         "tick-distribution"
@@ -18050,6 +18060,7 @@
         "annotations",
         "category-ordering",
         "facet",
+        "legend-title-lifecycle",
         "path-ordering",
         "regression-scatterplot",
         "tick-distribution"
@@ -18648,7 +18659,11 @@
       "callExamplePath": "examples/cars-parallel-coordinates/program.js",
       "relatedActions": [],
       "recipeIds": [
-        "parallel-coordinates"
+        "bar-chart",
+        "horizon",
+        "parallel-coordinates",
+        "regression-scatterplot",
+        "time-series-derivation"
       ],
       "docs": [
         {
@@ -19157,6 +19172,7 @@
         "removeEncoding"
       ],
       "recipeIds": [
+        "bar-chart",
         "category-ordering"
       ],
       "docs": [
@@ -20861,6 +20877,10 @@
             {
               "name": "createData",
               "role": "supporting"
+            },
+            {
+              "name": "filterData",
+              "role": "supporting"
             }
           ]
         },
@@ -20888,6 +20908,10 @@
             },
             {
               "name": "encodeBarWidth",
+              "role": "supporting"
+            },
+            {
+              "name": "orderCategories",
               "role": "supporting"
             }
           ]
@@ -20928,7 +20952,7 @@
           "path": "docs/recipes/bar-chart.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 140 } })\n  .createData({ values })\n  .createBarPlot({\n    x: { field: \"category\", fieldType: \"ordinal\" },\n    y: { field: \"value\", aggregate: \"mean\" },\n    color: { field: \"group\", layout: \"group\" },\n    width: { band: 0.72 }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 140 } })\n  .createData({ id: \"rows\", values })\n  .filterData({ id: \"selected\", source: \"rows\", field: \"group\", oneOf: [\"A\", \"B\"] })\n  .createBarPlot({\n    id: \"bars\",\n    data: \"selected\",\n    x: { field: \"category\", fieldType: \"ordinal\" },\n    y: { field: \"value\", aggregate: \"mean\" },\n    color: { field: \"group\", layout: \"group\" },\n    width: { band: 0.72 },\n    guides: { axes: { x: {}, y: {} }, legend: {} }\n  })\n  .orderCategories({\n    target: \"bars\",\n    channel: \"x\",\n    by: { field: \"value\", aggregate: \"sum\" },\n    direction: \"descending\"\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/bar-chart.md"
     },
     {
@@ -21803,6 +21827,10 @@
             {
               "name": "encodeY2",
               "role": "supporting"
+            },
+            {
+              "name": "createTitle",
+              "role": "supporting"
             }
           ]
         },
@@ -21842,7 +21870,7 @@
           "path": "docs/recipes/error-bar.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createErrorBar({\n    x: { field: \"group\", fieldType: \"nominal\" },\n    y: { field: \"value\" }\n  })\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 70 } })\n  .createData({ values })\n  .createErrorBar({\n    x: { field: \"group\", fieldType: \"nominal\" },\n    y: { field: \"value\" }\n  })\n  .createGuides()\n  .createTitle({ text: \"Group intervals\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/error-bar.md"
     },
     {
@@ -22421,6 +22449,10 @@
             {
               "name": "encodeHistogram",
               "role": "supporting"
+            },
+            {
+              "name": "createTitle",
+              "role": "supporting"
             }
           ]
         }
@@ -22448,7 +22480,7 @@
           "path": "docs/recipes/histogram.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 140 } })\n  .createData({ values })\n  .createHistogram({ field: \"value\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 70, right: 140 } })\n  .createData({ values })\n  .createHistogram({ field: \"value\" })\n  .createTitle({ text: \"Value distribution\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/histogram.md"
     },
     {
@@ -22492,6 +22524,10 @@
             },
             {
               "name": "createData",
+              "role": "supporting"
+            },
+            {
+              "name": "filterData",
               "role": "supporting"
             },
             {
@@ -22547,7 +22583,7 @@
           "path": "docs/recipes/horizon.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createAreaMark({ curve: \"monotone\" })\n  .encodeHorizon({ x: \"time\", y: \"value\" })\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ id: \"series\", values })\n  .filterData({ id: \"focus\", source: \"series\", field: \"group\", oneOf: [\"A\"] })\n  .createAreaMark({ data: \"focus\", curve: \"monotone\" })\n  .encodeHorizon({ x: \"time\", y: \"value\" })\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/horizon.md"
     },
     {
@@ -22599,6 +22635,26 @@
             },
             {
               "name": "createTitle",
+              "role": "supporting"
+            },
+            {
+              "name": "createPointMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeX",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeY",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeColor",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeOpacity",
               "role": "supporting"
             }
           ]
@@ -22704,7 +22760,7 @@
           "path": "docs/api/legends.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })\n  .createData({ values: [\n    { x: 1, y: 2, group: \"A\" },\n    { x: 2, y: 4, group: \"B\" }\n  ] })\n  .createScatterPlot({ id: \"points\", x: \"x\", y: \"y\", color: \"group\" })\n  .createLegend({ target: \"points\" })\n  .editLegendLayout({ target: \"points\", position: \"right\", offset: 18 });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ width: 760, height: 620, margin: { top: 140, right: 70, bottom: 60, left: 70 } })\n  .createData({ values: [\n    { x: 1, y: 2, group: \"A\", confidence: 0.4 },\n    { x: 2, y: 4, group: \"B\", confidence: 0.9 }\n  ] })\n  .createPointMark({ id: \"points\" })\n  .encodeX({ target: \"points\", field: \"x\" })\n  .encodeY({ target: \"points\", field: \"y\" })\n  .encodeColor({ target: \"points\", field: \"group\", fieldType: \"nominal\" })\n  .encodeOpacity({ target: \"points\", field: \"confidence\" })\n  .createGuides({ axes: { x: {}, y: {} }, legend: false })\n  .createLegend({ target: \"points\", channels: [\"color\"], position: \"top\", titlePosition: \"left\" })\n  .createLegend({ target: \"points\", channels: [\"opacity\"], position: \"top\", titlePosition: \"left\" })\n  .editLegendLayout({ target: \"points\", position: \"top\", offset: 18, itemGap: 12 });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/api/legends.md"
     },
     {
@@ -23476,6 +23532,14 @@
               "role": "supporting"
             },
             {
+              "name": "createScatterPlot",
+              "role": "supporting"
+            },
+            {
+              "name": "filterData",
+              "role": "supporting"
+            },
+            {
               "name": "createPointMark",
               "role": "supporting"
             },
@@ -23505,6 +23569,14 @@
             },
             {
               "name": "filterMarks",
+              "role": "supporting"
+            },
+            {
+              "name": "createTextMark",
+              "role": "supporting"
+            },
+            {
+              "name": "encodeText",
               "role": "supporting"
             }
           ]
@@ -23547,7 +23619,7 @@
           "path": "docs/recipes/regression-scatterplot.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({\n    width: 760,\n    height: 480,\n    margin: { top: 40, right: 190, bottom: 70, left: 80 }\n  })\n  .createData({ values })\n  .createPointMark()\n  .encodeX({ field: \"Displacement\", scale: { nice: true, zero: false } })\n  .encodeY({ field: \"Acceleration\", scale: { nice: true, zero: false } })\n  .encodeColor({ field: \"Origin\", scale: { palette: \"tableau10\" } })\n  .encodeSize({ field: \"Acceleration\" })\n  .encodeShape({ field: \"Origin\" })\n  .encodeOpacity({ value: 0.27 })\n  .filterMarks({\n    field: \"Origin\",\n    op: \"oneOf\",\n    values: [\"Japan\", \"USA\"]\n  })\n  .createRegression()\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({\n    width: 760,\n    height: 480,\n    margin: { top: 40, right: 190, bottom: 70, left: 80 }\n  })\n  .createData({ id: \"observations\", values })\n  .createScatterPlot({\n    id: \"points\",\n    data: \"observations\",\n    x: { field: \"Displacement\", scale: { id: \"x\", nice: true, zero: false } },\n    y: { field: \"Acceleration\", scale: { id: \"y\", nice: true, zero: false } },\n    color: { field: \"Origin\", scale: { palette: \"tableau10\" } },\n    guides: false\n  })\n  .filterData({ id: \"focus\", source: \"observations\", field: \"Origin\", oneOf: [\"Japan\"] })\n  .createPointMark({ id: \"focusPoints\", data: \"focus\", opacity: 0 })\n  .encodeX({ target: \"focusPoints\", field: \"Displacement\", scale: { id: \"x\" } })\n  .encodeY({ target: \"focusPoints\", field: \"Acceleration\", scale: { id: \"y\" } })\n  .createRegression({ target: \"focusPoints\", band: false })\n  .createData({\n    id: \"fitLabel\",\n    values: [{ Displacement: 140, Acceleration: 15, label: \"R² = 0.82\" }]\n  })\n  .createTextMark({ id: \"fitText\", data: \"fitLabel\", fill: \"#000000\" })\n  .encodeX({ target: \"fitText\", field: \"Displacement\", scale: { id: \"x\" } })\n  .encodeY({ target: \"fitText\", field: \"Acceleration\", scale: { id: \"y\" } })\n  .encodeText({ target: \"fitText\", field: \"label\" })\n  .createGuides();\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/recipes/regression-scatterplot.md"
     },
     {
@@ -24206,6 +24278,10 @@
             {
               "name": "encodeAngle",
               "role": "supporting"
+            },
+            {
+              "name": "createXAxis",
+              "role": "supporting"
             }
           ]
         },
@@ -24245,7 +24321,7 @@
           "path": "docs/api/marks.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ width: 800, height: 240 })\n  .createData({\n    id: \"cars\",\n    values: values.map(row => ({ ...row, Baseline: 0 }))\n  })\n  .createTickMark({\n    id: \"ticks\",\n    length: 14,\n    stroke: \"#2563eb\",\n    strokeWidth: 1.5,\n    opacity: 0.3\n  })\n  .encodeX({ target: \"ticks\", field: \"Horsepower\" })\n  .encodeY({ target: \"ticks\", field: \"Baseline\" });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ width: 800, height: 240 })\n  .createData({\n    id: \"cars\",\n    values: values.map(row => ({ ...row, Baseline: 0 }))\n  })\n  .createTickMark({\n    id: \"ticks\",\n    length: 14,\n    stroke: \"#2563eb\",\n    strokeWidth: 1.5,\n    opacity: 0.3\n  })\n  .encodeX({ target: \"ticks\", field: \"Horsepower\" })\n  .encodeY({ target: \"ticks\", field: \"Baseline\" })\n  .createXAxis({ title: { text: \"Horsepower\" } });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/api/marks.md"
     },
     {
@@ -24294,6 +24370,10 @@
             {
               "name": "createTimeUnitData",
               "role": "supporting"
+            },
+            {
+              "name": "filterData",
+              "role": "supporting"
             }
           ]
         },
@@ -24331,7 +24411,7 @@
           "path": "docs/api/data/window.md"
         }
       ],
-      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 120 } })\n  .createData({\n    id: \"sales\",\n    values: [\n      { region: \"East\", month: 2, amount: 30 },\n      { region: \"East\", month: 1, amount: 20 },\n      { region: \"West\", month: 1, amount: 15 }\n    ]\n  })\n  .createWindowData({\n    id: \"rankedSales\",\n    partitionBy: \"region\",\n    sortBy: [{ field: \"month\" }],\n    operations: [\n      { op: \"rowNumber\", as: \"monthOrder\" },\n      { op: \"cumulativeSum\", field: \"amount\", as: \"runningAmount\" },\n      { op: \"lag\", field: \"amount\", as: \"previousAmount\" }\n    ]\n  })\n  .createLinePlot({\n    id: \"runningSales\",\n    data: \"rankedSales\",\n    x: { field: \"month\", fieldType: \"quantitative\" },\n    y: { field: \"runningAmount\" },\n    color: \"region\"\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
+      "exampleSource": "import { chart, render } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas({ margin: { right: 120 } })\n  .createData({ id: \"series\", values })\n  .filterData({ id: \"focus\", source: \"series\", field: \"group\", oneOf: [\"A\"] })\n  .createTimeUnitData({ id: \"yearly\", source: \"focus\", field: \"date\", unit: \"year\", as: \"calendarYear\" })\n  .createWindowData({\n    id: \"smoothed\",\n    source: \"yearly\",\n    partitionBy: \"group\",\n    sortBy: [{ field: \"date\" }],\n    operations: [\n      { op: \"movingMean\", field: \"value\", as: \"movingValue\", frame: { preceding: 1, following: 1 } }\n    ]\n  })\n  .createLinePlot({\n    id: \"movingSeries\",\n    data: \"smoothed\",\n    x: { field: \"date\", fieldType: \"temporal\" },\n    y: { field: \"movingValue\", aggregate: \"mean\" },\n    color: \"group\",\n    guides: { axes: { x: {}, y: {} }, legend: {} }\n  });\n\nconst context = document.querySelector(\"#chart\")?.getContext(\"2d\");\nif (!context) throw new Error(\"Missing #chart Canvas context.\");\nrender(program, context);",
       "exampleSourcePath": "docs/api/data/window.md"
     },
     {
@@ -24681,6 +24761,7 @@
       "recipeIds": [
         "annotations",
         "facet",
+        "legend-title-lifecycle",
         "regression-scatterplot"
       ],
       "reason": null
@@ -24764,6 +24845,7 @@
       "name": "createScatterPlot",
       "classification": "primary",
       "recipeIds": [
+        "regression-scatterplot",
         "scatterplot"
       ],
       "reason": null
@@ -24774,7 +24856,8 @@
       "recipeIds": [
         "annotations",
         "heatmap",
-        "mark-lifecycle"
+        "mark-lifecycle",
+        "regression-scatterplot"
       ],
       "reason": null
     },
@@ -24815,6 +24898,8 @@
       "name": "createTitle",
       "classification": "supporting",
       "recipeIds": [
+        "error-bar",
+        "histogram",
         "legend-title-lifecycle"
       ],
       "reason": null
@@ -24847,7 +24932,8 @@
       "name": "createXAxis",
       "classification": "supporting",
       "recipeIds": [
-        "cartesian-guide-lifecycle"
+        "cartesian-guide-lifecycle",
+        "tick-distribution"
       ],
       "reason": null
     },
@@ -25471,6 +25557,7 @@
       "classification": "supporting",
       "recipeIds": [
         "box-plot",
+        "legend-title-lifecycle",
         "regression-scatterplot",
         "rose-chart",
         "scatterplot"
@@ -25513,6 +25600,7 @@
       "name": "encodeOpacity",
       "classification": "supporting",
       "recipeIds": [
+        "legend-title-lifecycle",
         "regression-scatterplot"
       ],
       "reason": null
@@ -25604,7 +25692,8 @@
       "classification": "supporting",
       "recipeIds": [
         "annotations",
-        "heatmap"
+        "heatmap",
+        "regression-scatterplot"
       ],
       "reason": null
     },
@@ -25623,6 +25712,7 @@
         "annotations",
         "category-ordering",
         "facet",
+        "legend-title-lifecycle",
         "path-ordering",
         "regression-scatterplot",
         "tick-distribution"
@@ -25660,6 +25750,7 @@
         "annotations",
         "category-ordering",
         "facet",
+        "legend-title-lifecycle",
         "path-ordering",
         "regression-scatterplot",
         "tick-distribution"
@@ -25703,7 +25794,11 @@
       "name": "filterData",
       "classification": "supporting",
       "recipeIds": [
-        "parallel-coordinates"
+        "bar-chart",
+        "horizon",
+        "parallel-coordinates",
+        "regression-scatterplot",
+        "time-series-derivation"
       ],
       "reason": null
     },
@@ -25743,6 +25838,7 @@
       "name": "orderCategories",
       "classification": "primary",
       "recipeIds": [
+        "bar-chart",
         "category-ordering"
       ],
       "reason": null

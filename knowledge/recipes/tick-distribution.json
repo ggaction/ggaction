@@ -68,6 +68,10 @@
         {
           "name": "encodeAngle",
           "role": "supporting"
+        },
+        {
+          "name": "createXAxis",
+          "role": "supporting"
         }
       ]
     },

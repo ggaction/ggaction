@@ -34,14 +34,20 @@ editing page when changing an existing guide.
 import { chart, render } from "ggaction";
 
 const program = chart()
-  .createCanvas({ margin: { top: 60, right: 150, bottom: 50, left: 50 } })
+  .createCanvas({ width: 760, height: 620, margin: { top: 140, right: 70, bottom: 60, left: 70 } })
   .createData({ values: [
-    { x: 1, y: 2, group: "A" },
-    { x: 2, y: 4, group: "B" }
+    { x: 1, y: 2, group: "A", confidence: 0.4 },
+    { x: 2, y: 4, group: "B", confidence: 0.9 }
   ] })
-  .createScatterPlot({ id: "points", x: "x", y: "y", color: "group" })
-  .createLegend({ target: "points" })
-  .editLegendLayout({ target: "points", position: "right", offset: 18 });
+  .createPointMark({ id: "points" })
+  .encodeX({ target: "points", field: "x" })
+  .encodeY({ target: "points", field: "y" })
+  .encodeColor({ target: "points", field: "group", fieldType: "nominal" })
+  .encodeOpacity({ target: "points", field: "confidence" })
+  .createGuides({ axes: { x: {}, y: {} }, legend: false })
+  .createLegend({ target: "points", channels: ["color"], position: "top", titlePosition: "left" })
+  .createLegend({ target: "points", channels: ["opacity"], position: "top", titlePosition: "left" })
+  .editLegendLayout({ target: "points", position: "top", offset: 18, itemGap: 12 });
 
 const context = document.querySelector("#chart")?.getContext("2d");
 if (!context) throw new Error("Missing #chart Canvas context.");

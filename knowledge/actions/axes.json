@@ -277,7 +277,8 @@
         "createGuides"
       ],
       "recipeIds": [
-        "cartesian-guide-lifecycle"
+        "cartesian-guide-lifecycle",
+        "tick-distribution"
       ],
       "docs": [
         {

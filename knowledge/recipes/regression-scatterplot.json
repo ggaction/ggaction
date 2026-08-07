@@ -42,6 +42,14 @@
           "role": "supporting"
         },
         {
+          "name": "createScatterPlot",
+          "role": "supporting"
+        },
+        {
+          "name": "filterData",
+          "role": "supporting"
+        },
+        {
           "name": "createPointMark",
           "role": "supporting"
         },
@@ -71,6 +79,14 @@
         },
         {
           "name": "filterMarks",
+          "role": "supporting"
+        },
+        {
+          "name": "createTextMark",
+          "role": "supporting"
+        },
+        {
+          "name": "encodeText",
           "role": "supporting"
         }
       ]

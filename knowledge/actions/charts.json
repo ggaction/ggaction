@@ -511,6 +511,7 @@
         "createGuides"
       ],
       "recipeIds": [
+        "regression-scatterplot",
         "scatterplot"
       ],
       "docs": [

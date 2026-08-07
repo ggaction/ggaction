@@ -23,20 +23,28 @@ const program = chart()
     height: 480,
     margin: { top: 40, right: 190, bottom: 70, left: 80 }
   })
-  .createData({ values })
-  .createPointMark()
-  .encodeX({ field: "Displacement", scale: { nice: true, zero: false } })
-  .encodeY({ field: "Acceleration", scale: { nice: true, zero: false } })
-  .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
-  .encodeSize({ field: "Acceleration" })
-  .encodeShape({ field: "Origin" })
-  .encodeOpacity({ value: 0.27 })
-  .filterMarks({
-    field: "Origin",
-    op: "oneOf",
-    values: ["Japan", "USA"]
+  .createData({ id: "observations", values })
+  .createScatterPlot({
+    id: "points",
+    data: "observations",
+    x: { field: "Displacement", scale: { id: "x", nice: true, zero: false } },
+    y: { field: "Acceleration", scale: { id: "y", nice: true, zero: false } },
+    color: { field: "Origin", scale: { palette: "tableau10" } },
+    guides: false
   })
-  .createRegression()
+  .filterData({ id: "focus", source: "observations", field: "Origin", oneOf: ["Japan"] })
+  .createPointMark({ id: "focusPoints", data: "focus", opacity: 0 })
+  .encodeX({ target: "focusPoints", field: "Displacement", scale: { id: "x" } })
+  .encodeY({ target: "focusPoints", field: "Acceleration", scale: { id: "y" } })
+  .createRegression({ target: "focusPoints", band: false })
+  .createData({
+    id: "fitLabel",
+    values: [{ Displacement: 140, Acceleration: 15, label: "R² = 0.82" }]
+  })
+  .createTextMark({ id: "fitText", data: "fitLabel", fill: "#000000" })
+  .encodeX({ target: "fitText", field: "Displacement", scale: { id: "x" } })
+  .encodeY({ target: "fitText", field: "Acceleration", scale: { id: "y" } })
+  .encodeText({ target: "fitText", field: "label" })
   .createGuides();
 
 const context = document.querySelector("#chart")?.getContext("2d");

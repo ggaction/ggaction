@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "rows": [
+    { "taskId": "cars-scatter-origin", "primaryRecipeId": "scatterplot", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-regression-japan", "primaryRecipeId": "regression-scatterplot", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-histogram-origin", "primaryRecipeId": "histogram", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-binned-heatmap", "primaryRecipeId": "heatmap", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-temporal-line-origin", "primaryRecipeId": "line-chart", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "jobs-grouped-bar", "primaryRecipeId": "bar-chart", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-density-origin", "primaryRecipeId": "density-area", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-error-bar-origin", "primaryRecipeId": "error-bar", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "gapminder-error-band", "primaryRecipeId": "error-band", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    {
+      "taskId": "cars-box-plot",
+      "primaryRecipeId": "box-plot",
+      "dependencyRecipeIds": [],
+      "knownTrapCoverage": [
+        { "forbiddenIdentifier": "createBoxPlot", "warning": "does not accept a color option" }
+      ]
+    },
+    { "taskId": "cars-violin", "primaryRecipeId": "violin-plot", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-parallel-coordinates", "primaryRecipeId": "parallel-coordinates", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "nightingale-rose", "primaryRecipeId": "rose-chart", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-facet-origin", "primaryRecipeId": "facet", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-multi-legend", "primaryRecipeId": "legend-title-lifecycle", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-selection-highlight", "primaryRecipeId": "selection-lifecycle", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "gapminder-moving-window", "primaryRecipeId": "time-series-derivation", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-time-unit", "primaryRecipeId": "time-series-derivation", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-rug-distribution", "primaryRecipeId": "tick-distribution", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "cars-gradient-profile", "primaryRecipeId": "gradient-plot", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "gapminder-horizon", "primaryRecipeId": "horizon", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    { "taskId": "imdb-label-layout", "primaryRecipeId": "annotations", "dependencyRecipeIds": [], "knownTrapCoverage": [] },
+    {
+      "taskId": "composed-dashboard",
+      "primaryRecipeId": "composition",
+      "dependencyRecipeIds": ["rose-chart"],
+      "knownTrapCoverage": [
+        { "forbiddenIdentifier": "createRoseChart", "warning": "no createRoseChart" }
+      ]
+    },
+    { "taskId": "renderer-parity", "primaryRecipeId": "scatterplot", "dependencyRecipeIds": [], "knownTrapCoverage": [] }
+  ]
+}

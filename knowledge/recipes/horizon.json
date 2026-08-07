@@ -42,6 +42,10 @@
           "role": "supporting"
         },
         {
+          "name": "filterData",
+          "role": "supporting"
+        },
+        {
           "name": "createAreaMark",
           "role": "supporting"
         }

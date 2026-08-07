@@ -5,7 +5,7 @@
     "recipeCount": 33,
     "docsCount": 4,
     "recordCount": 210,
-    "knowledgeSha256": "ac7b58342d544f5d7ae311abe3621ca91cc9ae5e9898bd74f069e3ca22d9c029",
+    "knowledgeSha256": "8bca87dc58540eec9a4ae2cdf987c8d8d3dfd8a1dc65af4fee1ef1656b025834",
     "routeSourceSha256": "bcf91c695c2904c986e3c9c1fab6a0214f0f256291827282e987f5fba13dcfb2"
   },
   "limits": {
@@ -3565,11 +3565,14 @@
           "annotation",
           "edit",
           "facet",
+          "legend",
+          "lifecycle",
           "mark",
           "plot",
           "point",
           "regression",
-          "scatter"
+          "scatter",
+          "title"
         ]
       }
     },
@@ -4783,6 +4786,7 @@
           "data",
           "guide",
           "plot",
+          "regression",
           "scatter"
         ]
       }
@@ -4902,6 +4906,9 @@
           "lifecycle",
           "map",
           "mark",
+          "plot",
+          "regression",
+          "scatter",
           "text"
         ]
       }
@@ -5485,9 +5492,12 @@
           "you"
         ],
         "relations": [
+          "bar",
           "create",
           "edit",
+          "error",
           "guide",
+          "histogram",
           "legend",
           "lifecycle",
           "remove",
@@ -6032,10 +6042,12 @@
           "axis",
           "cartesian",
           "create",
+          "distribution",
           "edit",
           "guide",
           "lifecycle",
           "remove",
+          "tick",
           "x"
         ]
       }
@@ -14844,11 +14856,14 @@
           "box",
           "chart",
           "encoding",
+          "legend",
+          "lifecycle",
           "plot",
           "regression",
           "remove",
           "rose",
-          "scatter"
+          "scatter",
+          "title"
         ]
       }
     },
@@ -15461,10 +15476,13 @@
         ],
         "relations": [
           "encoding",
+          "legend",
+          "lifecycle",
           "plot",
           "regression",
           "remove",
-          "scatter"
+          "scatter",
+          "title"
         ]
       }
     },
@@ -16890,7 +16908,10 @@
           "encoding",
           "heat",
           "map",
-          "remove"
+          "plot",
+          "regression",
+          "remove",
+          "scatter"
         ]
       }
     },
@@ -17165,13 +17186,16 @@
           "distribution",
           "encoding",
           "facet",
+          "legend",
+          "lifecycle",
           "ordering",
           "path",
           "plot",
           "regression",
           "remove",
           "scatter",
-          "tick"
+          "tick",
+          "title"
         ]
       }
     },
@@ -17707,13 +17731,16 @@
           "distribution",
           "encoding",
           "facet",
+          "legend",
+          "lifecycle",
           "ordering",
           "path",
           "plot",
           "regression",
           "remove",
           "scatter",
-          "tick"
+          "tick",
+          "title"
         ]
       }
     },
@@ -18382,8 +18409,17 @@
           "you"
         ],
         "relations": [
+          "bar",
+          "chart",
           "coordinate",
-          "parallel"
+          "derive",
+          "horizon",
+          "parallel",
+          "plot",
+          "regression",
+          "scatter",
+          "series",
+          "time"
         ]
       }
     },
@@ -18980,7 +19016,9 @@
           "you"
         ],
         "relations": [
+          "bar",
           "category",
+          "chart",
           "encoding",
           "ordering",
           "remove"
@@ -20882,7 +20920,7 @@
       "title": "LLM Action Router",
       "summary": "Choose the result or resource being changed, then follow the linked canonical page. Use the complete action reference when an exact action name is already known. Exact signatures come from the reference and public TypeScript declarations, not from this routing page. For structured retrieval, use the complete machine-readable action metadata, which joins every current action to its exact signature, prerequisites, effects, errors, example, related actions, and canonical docs.",
       "route": "/llms/actions/",
-      "priority": 0,
+      "priority": -50,
       "text": "---\nlayout: default\ntitle: LLM Action Router\n---\n\n# LLM Action Router\n\nChoose the result or resource being changed, then follow the linked canonical page. Use the\n[complete action reference](../reference/actions.md) when an exact action name is already known. Exact signatures come\nfrom the reference and public TypeScript declarations, not from this routing page.\nFor structured retrieval, use the [complete machine-readable action metadata](../llms-actions.json), which joins every\ncurrent action to its exact signature, prerequisites, effects, errors, example, related actions, and canonical docs.\n\n## Complete chart facades\n\n- Common Cartesian scatter, line, bar, histogram, and heatmap charts: [Basic Charts](../api/basic-charts.md)\n- Parallel coordinate profiles: [Parallel Coordinates](../api/parallel-coordinates.md)\n- Distribution and statistical chart families: [Statistics Actions](../reference/actions/statistics.md)\n\n## Program, data, and composition\n\n- Canvas and source data creation: [Canvas](../api/canvas.md) and [Data](../api/data.md)\n- Filtering and derived data: [Data Filtering](../api/data/filtering.md) and\n  [Statistical Transforms](../api/data/statistical-transforms.md)\n- Time-unit and moving/window calculations: [Time Units](../api/data/time-units.md) and\n  [Window Transforms](../api/data/window.md)\n- Layer, concatenate, facet, and child replacement: [Program Composition](../api/composition.md)\n\n## Marks and positions\n\n- Point, line, area, bar, rule, text, and rect owners: [Marks](../api/marks.md)\n- Cartesian x/y positions, secondary endpoints, offsets, and ordering: [Position Encodings](../api/position-encodings.md)\n- Polar theta/r positions and directional ticks: [Polar Positions](../api/position-encodings.md#polar-positions)\n- Constant mark styling and field-driven appearance: [Appearance Encodings](../api/appearance.md)\n\n## Scales and guides\n\n- Scale creation, editing, transforms, and palettes: [Scales](../api/scales.md)\n- Axes, grids, legends, and combined guide creation: [Guides](../api/guides.md)\n- Titles, subtitles, and title layout: [Titles](../api/titles.md)\n\n## Statistical overlays and specialized layouts\n\n- Regression models and fitted layers: [Regression](../api/regression.md)\n- Error bars and interval modes: [Error Bars](../api/error-bars.md)\n- Error bands: [Error Bands](../api/error-bands.md)\n- Box, violin, gradient, and horizon plots: [Advanced Action Reference](../reference/actions/advanced.md)\n\n## Selection, inspection, and output\n\n- Select, highlight, edit, and remove final visual items: [Selection and Highlighting](../api/appearance/selection-and-highlighting.md)\n- Read public semantic, graphical, trace, and resolved-scale state: [ChartProgram](../concepts/chart-program.md)\n- Render Canvas/SVG or export PNG/PDF: [Rendering](../api/rendering.md)\n- Exact runtime and renderer signatures: [Runtime Reference](../reference/runtime.md)\n\n## Extension-only actions\n\n- Author a domain action before using primitives directly: [Action Authoring](../extension/action-authoring.md)\n- Primitive semantic/graphic editing contract: [Extension Primitives](../extension/primitives.md)\n- Extension action signatures: [Extension Action Reference](../reference/actions/extension.md)\n",
       "truncated": false,
       "terms": {
@@ -21141,7 +21179,7 @@
       "title": "LLM Documentation Router",
       "summary": "Use this page for concepts, complete tutorials, detailed API behavior, rendering, troubleshooting, and extension work. For a known chart task use the recipe router; for a known capability use the action router.",
       "route": "/llms/docs/",
-      "priority": 0,
+      "priority": -50,
       "text": "---\nlayout: default\ntitle: LLM Documentation Router\n---\n\n# LLM Documentation Router\n\nUse this page for concepts, complete tutorials, detailed API behavior, rendering, troubleshooting, and extension work.\nFor a known chart task use the [recipe router](./recipes.md); for a known capability use the\n[action router](./actions.md).\n\n## Start and learn complete workflows\n\n- Installation and first runnable chart: [Getting Started](../getting-started.md)\n- Complete chart walkthroughs: [Tutorials](../tutorials/index.md)\n- Representative finished charts: [Chart Gallery](../gallery.md)\n\n## Understand the program model\n\n- Immutable authoring state: [ChartProgram](../concepts/chart-program.md)\n- Semantic meaning and concrete graphics: [Semantic and Graphical State](../concepts/semantic-and-graphics.md)\n- Hierarchical history and ownership: [Actions and Trace](../concepts/actions-and-trace.md)\n\n## Find detailed authoring behavior\n\n- Data, marks, encodings, scales, guides, composition, and rendering: [Chart API](../api/index.md)\n- Exact signatures grouped by authoring audience: [Action Reference](../reference/actions.md)\n- Public program, renderer, and state types: [Type Reference](../reference/types.md)\n- Capability boundaries and known limitations: [Supported Features](../supported-features.md)\n\n## Diagnose a program\n\n- Ambiguous state, missing resources, layout, and renderer failures: [Troubleshooting](../troubleshooting.md)\n- Inspect semantic, graphical, trace, and resolved-scale state:\n  [ChartProgram](../concepts/chart-program.md#inspecting-authored-and-materialized-state)\n- Decide whether a name is a public action or wrapped trace operation:\n  [Action Reference](../reference/actions.md#exact-action-lookup)\n\n## Render and distribute output\n\n- Browser Canvas, browser-safe SVG, Node PNG, and vector PDF: [Rendering](../api/rendering.md)\n- Exact renderer arguments and return values: [Runtime Reference](../reference/runtime.md)\n\n## Extend ggaction\n\n- Extension workflow, public boundaries, and immutable domain actions:\n  [Action Authoring](../extension/action-authoring.md)\n- Use low-level semantic and graphical primitives: [Extension Primitives](../extension/primitives.md)\n\n## Full-text fallback\n\nThe generated [`llms-full.txt`](../llms-full.txt) follows the canonical page-manifest order. Load it only when selective\nroutes do not identify the required page; it is intentionally much larger than these routing chunks.\n",
       "truncated": false,
       "terms": {
@@ -21336,7 +21374,7 @@
       "title": "LLM Guide",
       "summary": "Use this guide to reach the smallest authoritative ggaction documentation chunk for a chart-authoring task. These pages route to public documentation; they do not replace exact action signatures, behavior contracts, or runnable examples.",
       "route": "/llms/",
-      "priority": 0,
+      "priority": -50,
       "text": "---\nlayout: default\ntitle: LLM Guide\n---\n\n# LLM Guide\n\nUse this guide to reach the smallest authoritative ggaction documentation chunk for a chart-authoring task. These pages\nroute to public documentation; they do not replace exact action signatures, behavior contracts, or runnable examples.\n\n## What ggaction builds\n\nggaction represents chart authoring as an immutable `ChartProgram`. Each public action receives one options object and\nreturns a new program. The semantic specification records chart meaning, the graphical specification records concrete\nbackend-neutral output, and Canvas, SVG, PNG, and PDF renderers consume the graphical specification.\n\n## Retrieval workflow\n\n1. If the desired result is a recognizable chart or workflow, start with [task recipes](./recipes.md).\n2. If the action name or capability family is known, use the [action router](./actions.md), then read the canonical action\n   reference for its exact signature.\n3. For concepts, data flow, layout, rendering, troubleshooting, or extension authoring, use the\n   [documentation router](./docs.md).\n4. Use [`llms-full.txt`](../llms-full.txt) only when these selective routes cannot identify the relevant page.\n\n## Minimal authoring shape\n\n```javascript\nimport { chart } from \"ggaction\";\n\nconst program = chart()\n  .createCanvas()\n  .createData({ values })\n  .createScatterPlot({ x: \"horsepower\", y: \"efficiency\" });\n```\n\nContinue from the returned program with domain actions. Keep the earlier program when a before/after comparison or\nreversible editing history matters.\n\n## Decision rules\n\n- Prefer a basic chart facade when it directly matches the requested chart; use lower-level mark and encoding actions\n  when the chart needs custom composition.\n- Supply explicit IDs or targets when more than one compatible resource exists. ggaction does not silently choose the\n  first dataset, mark, scale, coordinate, or view.\n- Treat action traces as history and ownership evidence. Do not call wrapped trace operations unless the public\n  `ChartProgram` type declares them.\n- Render the same completed program through the required backend rather than authoring renderer-specific chart state.\n\n## Fast destinations\n\n- First runnable chart: [Getting Started](../getting-started.md)\n- Supported and unsupported capabilities: [Supported Features](../supported-features.md)\n- Ambiguity and layout errors: [Troubleshooting](../troubleshooting.md)\n- Exact public action list: [Action Reference](../reference/actions.md)\n",
       "truncated": false,
       "terms": {
@@ -21589,7 +21627,7 @@
       "title": "LLM Recipe Router",
       "summary": "Use a recipe when the requested chart or workflow is recognizable. A recipe gives the shortest supported action flow, required decisions, inferred state, and links to deeper tutorials or APIs. Use the recipe catalog if none of the groups below matches. For structured retrieval, use the complete machine-readable recipe metadata, which joins each task intent to ordered action roles, executable examples, related recipes, and complete 173-action coverage.",
       "route": "/llms/recipes/",
-      "priority": 0,
+      "priority": -50,
       "text": "---\nlayout: default\ntitle: LLM Recipe Router\n---\n\n# LLM Recipe Router\n\nUse a recipe when the requested chart or workflow is recognizable. A recipe gives the shortest supported action flow,\nrequired decisions, inferred state, and links to deeper tutorials or APIs. Use the [recipe catalog](../recipes/index.md) if\nnone of the groups below matches.\nFor structured retrieval, use the [complete machine-readable recipe metadata](../llms-recipes.json), which joins each\ntask intent to ordered action roles, executable examples, related recipes, and complete 173-action coverage.\n\n## Basic relationships and comparison\n\n- Relationship between two quantitative fields: [Scatterplot](../recipes/scatterplot.md)\n- Ordered or temporal trajectories: [Line Chart](../recipes/line-chart.md)\n- Categorical comparison, including grouped bars: [Bar Chart](../recipes/bar-chart.md)\n- One-dimensional binned distribution: [Histogram](../recipes/histogram.md)\n- Two-dimensional binned counts: [Heatmap](../recipes/heatmap.md)\n\n## Statistical summaries and distributions\n\n- Points with grouped fitted lines: [Regression Scatterplot](../recipes/regression-scatterplot.md)\n- Smoothed one-dimensional distribution: [Density Area](../recipes/density-area.md)\n- Compact per-group distribution shape: [Violin Plot](../recipes/violin-plot.md)\n- Quartiles, whiskers, and outliers: [Box Plot](../recipes/box-plot.md)\n- Point or aggregate estimates with intervals: [Error Bar](../recipes/error-bar.md)\n- Time or x-series uncertainty ribbon: [Error Band](../recipes/error-band.md)\n- Within-category quantitative gradient: [Gradient Plot](../recipes/gradient-plot.md)\n\n## Multivariate, compact, and polar charts\n\n- Many dimensions per observation: [Parallel Coordinates](../recipes/parallel-coordinates.md)\n- Folded compact time series: [Horizon](../recipes/horizon.md)\n- Equal-angle polar magnitude comparison: [Rose Chart](../recipes/rose-chart.md)\n\n## Structure and editing workflows\n\n- Layer or concatenate complete child programs: [Composition](../recipes/composition.md)\n- Repeat a chart by categories: [Facet](../recipes/facet.md)\n- Add rules, labels, and collision-aware text: [Annotations](../recipes/annotations.md)\n- Control line/path vertex order independently of source rows: [Path Ordering](../recipes/path-ordering.md)\n\n## If no recipe matches\n\nUse the [action router](./actions.md) to compose a chart from data, mark, position, appearance, guide, and rendering\nactions. Check [Supported Features](../supported-features.md) before inventing an action name or assuming a capability.\n",
       "truncated": false,
       "terms": {
@@ -22180,13 +22218,16 @@
           "and",
           "bar",
           "canva",
+          "category",
           "create",
           "data",
           "edit",
           "encode",
           "encoding",
+          "filter",
           "mark",
           "offset",
+          "order",
           "plot",
           "ranged",
           "specialized",
@@ -23567,6 +23608,7 @@
           "rule",
           "statistical",
           "stroke",
+          "title",
           "width",
           "x2",
           "y2"
@@ -24566,7 +24608,8 @@
           "create",
           "data",
           "encode",
-          "histogram"
+          "histogram",
+          "title"
         ]
       }
     },
@@ -24738,6 +24781,7 @@
           "edit",
           "encode",
           "encoding",
+          "filter",
           "horizon",
           "mark",
           "ranged",
@@ -24910,13 +24954,18 @@
           "axis",
           "border",
           "cartesian",
+          "color",
           "create",
           "edit",
+          "encode",
           "guide",
           "label",
           "layout",
           "legend",
           "lifecycle",
+          "mark",
+          "opacity",
+          "point",
           "polar",
           "radial",
           "remove",
@@ -26116,12 +26165,15 @@
           "mark",
           "opacity",
           "owner",
+          "plot",
           "point",
           "regression",
           "revision",
+          "scatter",
           "shape",
           "size",
           "statistical",
+          "text",
           "x",
           "y"
         ]
@@ -27180,6 +27232,7 @@
         ],
         "relations": [
           "angle",
+          "axis",
           "canva",
           "create",
           "data",
@@ -27360,6 +27413,7 @@
           "canva",
           "create",
           "data",
+          "filter",
           "time",
           "unit",
           "window"

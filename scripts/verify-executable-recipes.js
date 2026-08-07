@@ -64,6 +64,37 @@ function programIncludes(program, action) {
   );
 }
 
+function collectTraceActions(node, actions) {
+  if (typeof node?.op === "string") actions.add(node.op);
+  for (const child of node?.children ?? []) collectTraceActions(child, actions);
+}
+
+export function collectProgramActions(program, actions = new Set()) {
+  collectTraceActions(program?.trace, actions);
+  for (const child of Object.values(program?.children ?? {})) collectProgramActions(child, actions);
+  return Object.freeze([...actions].sort());
+}
+
+export function importedRuntimeFunctions(source) {
+  const functions = new Set();
+  for (const match of source.matchAll(/import\s*\{([^}]*)\}\s*from\s*["']ggaction(?:\/[A-Za-z0-9_-]+)?["']/gu)) {
+    for (const entry of match[1].split(",")) {
+      const name = entry.trim().split(/\s+as\s+/u)[0];
+      if (name) functions.add(name);
+    }
+  }
+  return Object.freeze([...functions].sort());
+}
+
+export function guidedRuntimeFunctions(recipe) {
+  const guidance = recipe.pitfalls.map(pitfall => `${pitfall.problem}\n${pitfall.fix}`).join("\n");
+  const functions = new Set();
+  for (const match of guidance.matchAll(/Import\s*\{\s*([A-Za-z][A-Za-z0-9]*)\s*\}\s*from\s*["']ggaction(?:\/[A-Za-z0-9_-]+)?["']/gu)) {
+    functions.add(match[1]);
+  }
+  return Object.freeze([...functions].sort());
+}
+
 function valuesForRecipe(recipeId) {
   if (recipeId !== "error-band") return executableRecipeValues;
   return executableRecipeValues.map((row, index) => ({
@@ -131,7 +162,11 @@ export async function verifyExecutableRecipes({ artifactRoot = defaultArtifactRo
       programModule: path.relative(root, moduleFile),
       canvasPNG: path.relative(root, pngFile),
       canvasBytes: png.length,
-      primaryActions: Object.freeze(primaryActions)
+      primaryActions: Object.freeze(primaryActions),
+      deliveredActions: collectProgramActions(program),
+      deliveredRuntimeFunctions: Object.freeze([
+        ...new Set([...importedRuntimeFunctions(recipe.exampleSource), ...guidedRuntimeFunctions(recipe)])
+      ].sort())
     }));
   }
 

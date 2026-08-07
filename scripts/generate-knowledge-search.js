@@ -131,7 +131,7 @@ function routeRecord(route, source) {
     title: route.title,
     summary: summaryFromMarkdown(source),
     route: route.route,
-    priority: 0,
+    priority: -50,
     text: source.slice(0, limits.maximumReadCharacters),
     truncated: source.length > limits.maximumReadCharacters,
     terms: {
