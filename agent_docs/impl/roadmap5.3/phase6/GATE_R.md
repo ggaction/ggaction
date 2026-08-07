@@ -6,7 +6,7 @@
 
 Approval checkpoint: `a1c56b89`
 
-Fair harness checkpoint: `pending`
+Fair harness checkpoint: `0536c1e4`
 
 Approved by the user on 2026-08-07 with the instruction to correct the full MCP and benchmark stack up to, but not including, the next paid call.
 
