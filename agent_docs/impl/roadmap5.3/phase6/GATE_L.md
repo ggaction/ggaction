@@ -4,6 +4,8 @@
 
 `proposed`
 
+Proposal checkpoint: `3c3665e3`
+
 Gate K result approval checkpoint: `df8f348c`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
