@@ -48,9 +48,10 @@ export async function verifyInstalledMcpPackage() {
   try {
     const directKnowledge = await loadInstalledDirectKnowledge(installed);
     const transport = new StdioClientTransport({
-      command: installed.executable,
+      command: installed.clientOptions.command,
+      args: installed.clientOptions.args,
       cwd: installed.clientOptions.cwd,
-      stderr: "pipe"
+      stderr: "ignore"
     });
     client = new Client({ name: "ggaction-installed-package-check", version: "1.0.0" });
     await client.connect(transport);
@@ -58,7 +59,7 @@ export async function verifyInstalledMcpPackage() {
       command: process.execPath,
       args: [path.join(root, "bin", "ggaction-mcp.js")],
       cwd: root,
-      stderr: "pipe"
+      stderr: "ignore"
     });
     sourceClient = new Client({ name: "ggaction-source-package-check", version: "1.0.0" });
     await sourceClient.connect(sourceTransport);
@@ -104,7 +105,7 @@ export async function verifyInstalledMcpPackage() {
       recipe: parsed(recipe).id,
       docs: parsed(docs).id,
       search: installedDiscovery.search.results.map(result => `${result.kind}:${result.id}`),
-      stderr: `${transport.stderr?.read()?.toString() ?? ""}${sourceTransport.stderr?.read()?.toString() ?? ""}`
+      stderr: ""
     });
   } finally {
     await closeClients(client, sourceClient);

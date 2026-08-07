@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtemp, mkdir, readFile, rm } from "node:fs/promises";
+import { chmod, mkdtemp, mkdir, readFile, rename, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -7,33 +7,33 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { createPackageArtifact } from "../package-artifact.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
-export async function prepareInstalledMcpArtifact({ sourceRoot = root } = {}) {
+async function linkDependency({ consumerDirectory, dependencyRoot, name }) {
+  const source = path.join(dependencyRoot, "node_modules", ...name.split("/"));
+  const target = path.join(consumerDirectory, "node_modules", ...name.split("/"));
+  await mkdir(path.dirname(target), { recursive: true });
+  await symlink(source, target, process.platform === "win32" ? "junction" : "dir");
+}
+
+export async function prepareInstalledMcpArtifact({ sourceRoot = root, dependencyRoot = root } = {}) {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-evaluation-package-"));
   const packedDirectory = path.join(directory, "packed");
   const consumerDirectory = path.join(directory, "consumer");
-  const cacheDirectory = path.join(directory, "npm-cache");
   try {
     await Promise.all([
       mkdir(packedDirectory),
-      mkdir(consumerDirectory),
-      mkdir(cacheDirectory)
+      mkdir(path.join(consumerDirectory, "node_modules"), { recursive: true })
     ]);
     const packed = await createPackageArtifact({ cwd: sourceRoot, outputDirectory: packedDirectory });
-    execFileSync(npmCommand, [
-      "install",
-      packed.file,
-      "--ignore-scripts",
-      "--no-audit",
-      "--no-fund",
-      "--package-lock=false"
-    ], {
-      cwd: consumerDirectory,
-      env: { ...process.env, NPM_CONFIG_CACHE: cacheDirectory },
+    execFileSync("tar", ["-xzf", packed.file, "-C", path.join(consumerDirectory, "node_modules")], {
       encoding: "utf8",
-      stdio: "pipe"
+      stdio: "pipe",
+      timeout: 30_000
     });
+    await rename(
+      path.join(consumerDirectory, "node_modules", "package"),
+      path.join(consumerDirectory, "node_modules", "ggaction")
+    );
     const manifest = JSON.parse(await readFile(
       path.join(consumerDirectory, "node_modules", "ggaction", "package.json"),
       "utf8"
@@ -41,12 +41,11 @@ export async function prepareInstalledMcpArtifact({ sourceRoot = root } = {}) {
     if (manifest.name !== packed.name || manifest.version !== packed.version) {
       throw new Error("Installed MCP package identity differs from the packed artifact.");
     }
-    const executable = path.join(
-      consumerDirectory,
-      "node_modules",
-      ".bin",
-      process.platform === "win32" ? "ggaction-mcp.cmd" : "ggaction-mcp"
-    );
+    await Promise.all(Object.keys(manifest.dependencies ?? {}).map(name =>
+      linkDependency({ consumerDirectory, dependencyRoot, name })
+    ));
+    const executable = path.join(consumerDirectory, "node_modules", "ggaction", "bin", "ggaction-mcp.js");
+    await chmod(executable, 0o755);
     const knowledgeModule = path.join(consumerDirectory, "node_modules", "ggaction", "mcp", "knowledge.js");
     const artifact = Object.freeze({
       name: packed.name,
@@ -62,7 +61,12 @@ export async function prepareInstalledMcpArtifact({ sourceRoot = root } = {}) {
       executable,
       knowledgeModule,
       artifact,
-      clientOptions: Object.freeze({ command: executable, cwd: consumerDirectory, artifact }),
+      clientOptions: Object.freeze({
+        command: process.platform === "win32" ? process.execPath : executable,
+        args: process.platform === "win32" ? [executable] : [],
+        cwd: consumerDirectory,
+        artifact
+      }),
       cleanup: () => rm(directory, { recursive: true, force: true })
     });
   } catch (error) {
