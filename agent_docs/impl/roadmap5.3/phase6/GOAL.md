@@ -43,7 +43,8 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-I explicit approval
 - [x] 32-recipe correction and complete unpaid evidence
 - [x] R53-P6-J completion evidence approval
-- [ ] R53-P6-K representative paid-smoke approval and guarded execution
+- [x] R53-P6-K representative paid-smoke approval
+- [ ] R53-P6-K guarded execution
 - [ ] R53-P6-K result evidence approval
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval

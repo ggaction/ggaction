@@ -2,9 +2,11 @@
 
 ## Gate state
 
-`proposed`
+`approved`
 
 Proposal checkpoint: `68e89447`
+
+Approved by the user on 2026-08-07 with a combined $0.60 hard cap.
 
 Candidate behavior checkpoint: `a44d3d4eb2c99526f8174d6af5fa2ebed087ec60`
 
@@ -138,7 +140,8 @@ Gate K를 명시적으로 승인하면 다음 범위만 허용한다.
 3. Combined **$0.60 hard cap** 안의 Responses API 실행
 4. Sanitized result/evidence 작성과 별도 review 요청
 
-제안서 작성만으로는 API 실행이 허용되지 않는다. 사용자의 명시적 승인 전에는 credential을 읽지 않는다.
+사용자는 위 범위와 combined $0.60 hard cap을 명시적으로 승인했다. Guard checkpoint가 push되기 전에는 credential을
+읽거나 API를 실행하지 않는다.
 
 ## 계속 차단되는 범위
 
