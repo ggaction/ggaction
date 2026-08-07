@@ -141,7 +141,7 @@ Gate R 구현은 2026-08-07에 무과금 범위 안에서 완료됐다.
 - 과거 paid plan의 승인 당시 hash는 그대로 보존했고, 그 runner는 현재 HEAD에서 credential을 읽기 전에 중단한다.
 - External model calls / credential reads / paid spend: `0 / 0 / $0`.
 
-Gate R 완료 remote checkpoint는 다음 문서-only commit에서 연결한다.
+Gate R completion checkpoint: `156b8e2d`
 
 ## 근거
 
