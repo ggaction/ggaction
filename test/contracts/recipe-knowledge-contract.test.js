@@ -6,6 +6,7 @@ import test from "node:test";
 import { buildKnowledge } from "../../scripts/generate-action-knowledge.js";
 import { evaluateGeneratedProgram } from "../../scripts/llm-eval/program-evaluator.js";
 import { searchKnowledge } from "../../scripts/knowledge-search.js";
+import { chart } from "../../src/index.js";
 import {
   executableExampleSourceViolations,
   recipeCoverageFile,
@@ -113,6 +114,33 @@ test("delivers the supported box color and composition replacement variants", as
     .join("\n");
   assert.match(inventedFacadeWarning, /no createRoseChart/u);
   assert.match(inventedFacadeWarning, /createArcMark[\s\S]*encodeTheta[\s\S]*encodeR[\s\S]*encodeColor/u);
+});
+
+test("reproduces incomplete Canvas guidance and a narrow colored replacement", async () => {
+  const { document } = await buildKnowledge();
+  const box = document.recipes.find(recipe => recipe.id === "box-plot");
+  const values = [
+    { month: "April", cause: "Zymotic Diseases", value: 5 },
+    { month: "May", cause: "Other Causes", value: 3 },
+    { month: "June", cause: "Wounds & Injuries", value: 2 }
+  ];
+
+  assert.match(box.exampleSource, /\.createCanvas\(\)/u);
+  assert.throws(
+    () => chart()
+      .createCanvas({
+        width: 308,
+        height: 400,
+        margin: { top: 48, right: 24, bottom: 70, left: 58 }
+      })
+      .createData({ values })
+      .createBarPlot({
+        x: { field: "month", fieldType: "ordinal" },
+        y: { field: "value" },
+        color: { field: "cause", fieldType: "nominal" }
+      }),
+    /Legend layout requires more right-margin space/u
+  );
 });
 
 test("closes every frozen task from the exact delivered recipe payload", async () => {
