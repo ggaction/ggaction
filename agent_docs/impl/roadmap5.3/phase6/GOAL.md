@@ -54,7 +54,7 @@ model, corpus, 반복 수와 판정기로 비교한다. 결과를 본 뒤 기준
 - [x] R53-P6-N failed result and non-integration review
 - [x] R53-P6-O submit-ready and layout-safe correction approval
 - [x] Submit-ready recipe correction and complete unpaid evidence
-- [ ] R53-P6-P completion evidence approval
+- [x] R53-P6-P completion evidence approval
 - [ ] Separately authorized representative paid retry
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval

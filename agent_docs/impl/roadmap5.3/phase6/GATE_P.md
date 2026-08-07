@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Gate O approval checkpoint: `3112476a`
 
@@ -12,7 +12,11 @@ Implementation tree: `80b5fe92e5640b235a830744547369226edb093d`
 
 Evidence record checkpoint: `e4ea8689`
 
+Evidence approval checkpoint: pending
+
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
+
+Approved by the user on 2026-08-07, including the recorded local Jekyll environment limitation.
 
 ## 한눈에 보는 결과
 
@@ -143,9 +147,9 @@ Historical plan의 frozen SHA를 현재 candidate로 고치거나 기존 evidenc
 
 ## Review decision
 
-Gate P evidence는 user review 전이다. 이 evidence를 승인해도 external model call, paid retry, full evaluation, PR, merge,
-publish 또는 benefit claim은 허용되지 않는다. 승인 뒤 같은 세 frozen task의 representative B/C paid retry 범위와
-hard cap을 별도 Gate Q로 제안할 수 있다.
+사용자는 Gate P evidence와 correction completion을 승인했다. 이 승인으로 external model call, paid retry, full
+evaluation, PR, merge, publish 또는 benefit claim은 허용되지 않는다. 같은 세 frozen task의 representative B/C paid
+retry는 별도 Gate Q 제안과 승인이 필요하다.
 
 ## 계속 차단되는 범위
 
