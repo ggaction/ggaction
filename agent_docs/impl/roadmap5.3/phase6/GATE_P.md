@@ -12,7 +12,7 @@ Implementation tree: `80b5fe92e5640b235a830744547369226edb093d`
 
 Evidence record checkpoint: `e4ea8689`
 
-Evidence approval checkpoint: pending
+Evidence approval checkpoint: `fb2b511c`
 
 Remote branch: `origin/codex/roadmap5-3-llm-friendly`
 
