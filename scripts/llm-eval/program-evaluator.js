@@ -9,6 +9,10 @@ import { renderToPDF } from "ggaction/pdf";
 import { renderToPNG } from "ggaction/png";
 import { renderToSVG } from "ggaction/svg";
 import { ChartProgram as RuntimeChartProgram } from "../../src/ChartProgram.js";
+import {
+  resolveConcreteGraphicBounds,
+  unionConcreteGraphicBounds
+} from "../../src/grammar/schemas/graphicBounds.js";
 
 const allowedImports = new Set([
   "ggaction",
@@ -115,6 +119,193 @@ function alignedOn(objects, property) {
   return values.length >= 2 && new Set(values.map(value => Math.round(value))).size === 1;
 }
 
+function closeEnough(values, tolerance = 0.5) {
+  return values.length >= 2 && Math.max(...values) - Math.min(...values) <= tolerance;
+}
+
+function primitiveCenterY(type, properties = {}) {
+  if (type === "rect") return Number.isFinite(properties.y) && Number.isFinite(properties.height)
+    ? properties.y + properties.height / 2
+    : undefined;
+  if (type === "line") return Number.isFinite(properties.y1) && Number.isFinite(properties.y2)
+    ? (properties.y1 + properties.y2) / 2
+    : undefined;
+  return properties.y;
+}
+
+function primitiveRight(type, properties = {}) {
+  if (type === "rect") return Number.isFinite(properties.x) && Number.isFinite(properties.width)
+    ? properties.x + properties.width
+    : undefined;
+  if (type === "circle") return Number.isFinite(properties.x) && Number.isFinite(properties.radius)
+    ? properties.x + properties.radius
+    : undefined;
+  if (type === "line") return Number.isFinite(properties.x1) && Number.isFinite(properties.x2)
+    ? Math.max(properties.x1, properties.x2)
+    : undefined;
+  return properties.x;
+}
+
+function legendBlocks(programs) {
+  return programs.flatMap(program => Object.keys(program.semanticSpec?.guides?.legend ?? {}).flatMap(channel => {
+    const title = `${channel}LegendTitle`;
+    const symbols = `${channel}LegendSymbols`;
+    const labels = `${channel}LegendLabels`;
+    const objects = program.graphicSpec?.objects ?? {};
+    if (![title, symbols, labels].every(id => objects[id] !== undefined)) return [];
+    const bounds = unionConcreteGraphicBounds(program.graphicSpec, [title, symbols, labels]);
+    if (bounds === undefined) return [];
+    return [{ program, channel, title: objects[title], symbols: objects[symbols], labels: objects[labels], bounds }];
+  }));
+}
+
+function blockLineValues(block) {
+  const titleY = primitiveCenterY(block.title.type, block.title.properties);
+  const symbolY = (block.symbols.items ?? []).map(item =>
+    primitiveCenterY(item.type ?? block.symbols.type, item.properties)
+  );
+  const labelY = (block.labels.items ?? []).map(item =>
+    primitiveCenterY(item.type ?? block.labels.type, item.properties)
+  );
+  return { titleY, symbolY, labelY };
+}
+
+function legendLabelGaps(blocks) {
+  return blocks.flatMap(block => {
+    const symbols = block.symbols.items ?? [];
+    const labels = block.labels.items ?? [];
+    if (symbols.length === 0 || symbols.length !== labels.length) return [];
+    return symbols.map((item, index) => {
+      const right = primitiveRight(item.type ?? block.symbols.type, item.properties);
+      const x = labels[index].properties?.x;
+      return Number.isFinite(right) && Number.isFinite(x) ? x - right : Number.NaN;
+    });
+  });
+}
+
+function nestedCanvasGap(program, expected) {
+  if (program.compositionSpec?.direction !== "horizontal") return false;
+  const canvases = Object.values(program.graphicSpec?.objects ?? {})
+    .filter(graphic => graphic.type === "canvas" && Number.isFinite(graphic.properties?.x))
+    .map(graphic => graphic.properties)
+    .sort((left, right) => left.x - right.x);
+  if (canvases.length !== program.compositionSpec.children?.length || canvases.length < 2) return false;
+  return canvases.slice(1).every((canvas, index) =>
+    Math.abs(canvas.x - (canvases[index].x + canvases[index].width) - expected) <= 0.5
+  );
+}
+
+function graphicHasInk(graphic) {
+  return graphic !== undefined && (
+    (Array.isArray(graphic.items) && graphic.items.length > 0) ||
+    (Number.isInteger(graphic.length) && graphic.length > 0) ||
+    (graphic.properties !== undefined && Object.keys(graphic.properties).length > 0)
+  );
+}
+
+function programHasLayerInk(program) {
+  return (program.semanticSpec?.layers ?? []).some(layer => graphicHasInk(program.graphicSpec?.objects?.[layer.id]));
+}
+
+function compositionChildrenHaveInk(programs) {
+  const compositions = programs.filter(program => (program.compositionSpec?.children?.length ?? 0) > 1);
+  return compositions.length > 0 && compositions.every(program =>
+    program.compositionSpec.children.every(id => program.children?.[id] && programHasLayerInk(program.children[id]))
+  );
+}
+
+function boxPlotConfigs(programs) {
+  return programs.flatMap(program => Object.values(program.materializationConfigs?.marks ?? {})
+    .map(config => config?.boxPlot)
+    .filter(Boolean)
+    .map(config => ({ program, config })));
+}
+
+function tickCountMatchesData(programs) {
+  return programs.some(program => (program.semanticSpec?.layers ?? []).filter(layer => layer.mark?.type === "tick")
+    .some(layer => {
+      const values = (program.semanticSpec?.datasets ?? []).find(dataset => dataset.id === layer.data)?.values;
+      const graphic = program.graphicSpec?.objects?.[layer.id];
+      return Array.isArray(values) && values.length > 0 && graphic?.items?.length === values.length;
+    }));
+}
+
+function isBlack(value) {
+  return ["black", "#000", "#000000", "#111111"].includes(String(value).toLowerCase());
+}
+
+function isOrange(value) {
+  const normalized = String(value).toLowerCase();
+  if (["orange", "darkorange"].includes(normalized)) return true;
+  const match = normalized.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/u);
+  if (!match) return false;
+  const hex = match[1].length === 3
+    ? [...match[1]].map(character => character.repeat(2)).join("")
+    : match[1];
+  const [red, green, blue] = [0, 2, 4].map(index => Number.parseInt(hex.slice(index, index + 2), 16) / 255);
+  const maximum = Math.max(red, green, blue);
+  const minimum = Math.min(red, green, blue);
+  const delta = maximum - minimum;
+  if (delta === 0 || maximum < 0.4) return false;
+  let hue = maximum === red
+    ? 60 * (((green - blue) / delta) % 6)
+    : maximum === green
+      ? 60 * ((blue - red) / delta + 2)
+      : 60 * ((red - green) / delta + 4);
+  if (hue < 0) hue += 360;
+  return hue >= 15 && hue <= 45;
+}
+
+function regressionLinePrimitives(programs) {
+  return programs.flatMap(program => Object.entries(program.graphicSpec?.objects ?? {}).flatMap(([id, graphic]) => {
+    if (!/RegressionLines?$/iu.test(id)) return [];
+    return graphic.items === undefined
+      ? [{ type: graphic.type, properties: graphic.properties }]
+      : graphic.items.map(item => ({ type: item.type ?? graphic.type, properties: item.properties }));
+  }));
+}
+
+function textPrimitives(programs) {
+  return programs.flatMap(program => Object.values(program.graphicSpec?.objects ?? {}).flatMap(graphic => {
+    if (graphic.type !== "text") return [];
+    return graphic.items === undefined
+      ? [{ type: "text", properties: graphic.properties }]
+      : graphic.items.map(item => ({ type: item.type ?? "text", properties: item.properties }));
+  }));
+}
+
+function segmentDistance(point, start, end) {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  if (dx === 0 && dy === 0) return Math.hypot(point.x - start.x, point.y - start.y);
+  const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / (dx ** 2 + dy ** 2)));
+  return Math.hypot(point.x - (start.x + t * dx), point.y - (start.y + t * dy));
+}
+
+function primitiveSegments(primitive) {
+  const properties = primitive.properties ?? {};
+  if (primitive.type === "line" && [properties.x1, properties.y1, properties.x2, properties.y2].every(Number.isFinite)) {
+    return [[{ x: properties.x1, y: properties.y1 }, { x: properties.x2, y: properties.y2 }]];
+  }
+  if (primitive.type !== "path" || !Array.isArray(properties.commands)) return [];
+  const points = properties.commands.flatMap(command =>
+    ["M", "L", "C"].includes(command.op) && Number.isFinite(command.x) && Number.isFinite(command.y)
+      ? [{ x: command.x, y: command.y }]
+      : []
+  );
+  return points.slice(1).map((point, index) => [points[index], point]);
+}
+
+function rSquaredAnnotationNearLine(programs) {
+  const segments = regressionLinePrimitives(programs).flatMap(primitiveSegments);
+  if (segments.length === 0) return false;
+  return textPrimitives(programs).some(({ properties }) => {
+    if (!/\bR(?:²|\^2|2)\s*=/iu.test(String(properties?.text)) || !isBlack(properties?.fill)) return false;
+    if (![properties?.x, properties?.y].every(Number.isFinite)) return false;
+    return Math.min(...segments.map(([start, end]) => segmentDistance(properties, start, end))) <= 48;
+  });
+}
+
 function traceHas(nodes, op, pairs = {}) {
   return nodes.some(node => node.op === op && Object.entries(pairs)
     .every(([key, value]) => hasDeepPair(deepValues(node.args), key, value)));
@@ -204,19 +395,49 @@ function validationPassed(id, context) {
     return axis !== undefined && ["linear", "log", "pow", "sqrt", "symlog"].includes(scale?.type);
   });
   if (id === "legend:absent") return legendEntries(programs).length === 0;
-  if (id === "legend:count:2") return legendEntries(programs).length === 2;
+  if (id === "legend:count:2") return legendEntries(programs).length === 2 && legendBlocks(programs).length === 2;
   if (id === "legend:color" || id === "legend:continuous-color") {
     return programs.some(program => program.semanticSpec?.guides?.legend?.color !== undefined) ||
       legendEntries(programs).some(legend => legend.channels?.includes("color"));
   }
   if (id === "legend:series") return legendEntries(programs).length > 0;
   if (id === "legend:position:top") return hasDeepPair(deep, "position", "top") || hasDeepPair(deep, "side", "top");
-  if (id === "legend:order:left-to-right") return hasDeepPair(deep, "direction", "horizontal") || hasDeepPair(deep, "orientation", "horizontal");
-  if (id === "legend:titles-aligned") return alignedOn(guideObjects(graphics, /LegendTitle$/u), "y") || legendEntries(programs).length >= 2;
-  if (id === "legend:symbols-aligned") return alignedOn(guideObjects(graphics, /LegendSymbol/u), "y") || legendEntries(programs).length >= 2;
-  if (id === "legend:label-gaps-aligned") return guideObjects(graphics, /LegendLabels$/u).length >= 2;
-  if (id === "legend:inter-block-gap") return guideObjects(graphics, /LegendTitle$/u).length >= 2;
-  if (id === "legend:plot-offset") return guideObjects(graphics, /Legend/u).length >= 3;
+  if (id === "legend:order:left-to-right") {
+    const blocks = legendBlocks(programs);
+    return blocks.length >= 2 && blocks.slice(1).every((block, index) => block.bounds.left > blocks[index].bounds.right);
+  }
+  if (id === "legend:titles-aligned") {
+    const values = legendBlocks(programs).map(block => blockLineValues(block).titleY).filter(Number.isFinite);
+    return values.length >= 2 && closeEnough(values);
+  }
+  if (id === "legend:symbols-aligned") {
+    const blocks = legendBlocks(programs);
+    const values = blocks.flatMap(block => blockLineValues(block).symbolY).filter(Number.isFinite);
+    return blocks.length >= 2 && values.length >= blocks.length && closeEnough(values);
+  }
+  if (id === "legend:label-gaps-aligned") {
+    const blocks = legendBlocks(programs);
+    const gaps = legendLabelGaps(blocks);
+    return blocks.length >= 2 && gaps.length >= blocks.length && gaps.every(gap => Number.isFinite(gap) && gap >= 4) && closeEnough(gaps);
+  }
+  if (id === "legend:inter-block-gap") {
+    const blocks = legendBlocks(programs).toSorted((left, right) => left.bounds.left - right.bounds.left);
+    return blocks.length >= 2 && blocks.slice(1).every((block, index) => block.bounds.left - blocks[index].bounds.right >= 24);
+  }
+  if (id === "legend:plot-offset") {
+    const blocks = legendBlocks(programs);
+    if (blocks.length < 2) return false;
+    return blocks.every(block => {
+      const plot = resolveConcreteGraphicBounds(block.program.graphicSpec, "plot-main");
+      const position = block.program.materializationConfigs?.guides?.legend?.[block.channel]?.position;
+      if (plot === undefined) return false;
+      if (position === "top") return plot.top - block.bounds.bottom >= 10;
+      if (position === "bottom") return block.bounds.top - plot.bottom >= 10;
+      if (position === "left") return plot.left - block.bounds.right >= 10;
+      if (position === "right") return block.bounds.left - plot.right >= 10;
+      return false;
+    });
+  }
 
   const inkTypes = {
     "graphic:plot-ink": ["circle", "rect", "line", "path", "text"],
@@ -231,6 +452,13 @@ function validationPassed(id, context) {
     "graphic:text-ink": ["text"],
     "graphic:tick-ink": ["line", "path"]
   };
+  if (id === "graphic:multi-panel-ink") return compositionChildrenHaveInk(programs);
+  if (id === "graphic:tick-ink") return tickCountMatchesData(programs);
+  if (id === "graphic:box-ink") return boxPlotConfigs(programs).some(({ program, config }) =>
+    [config.whiskerId, config.medianId].every(target => graphicHasInk(program.graphicSpec?.objects?.[target])) &&
+    graphicHasInk(program.graphicSpec?.objects?.[Object.keys(program.materializationConfigs?.marks ?? {})
+      .find(id => program.materializationConfigs.marks[id]?.boxPlot === config)])
+  );
   if (inkTypes[id]) return hasGraphicInk(graphics, inkTypes[id]);
 
   if (id.startsWith("filter:")) {
@@ -259,8 +487,14 @@ function validationPassed(id, context) {
   );
   if (id === "curve:monotone") return hasDeepPair(deep, "curve", "monotone") || hasDeepPair(deep, "type", "monotone");
   if (id === "boundary:visible") return nodes.some(node => /Boundary/u.test(node.op));
-  if (id === "outliers:visible") return !hasDeepPair(deep, "outliers", false);
-  if (id === "whisker:tukey") return !hasDeepPair(deep, "whisker", "minmax");
+  if (id === "outliers:visible") return boxPlotConfigs(programs).some(({ program, config }) => {
+    const data = (program.semanticSpec?.datasets ?? []).find(dataset => dataset.id === config.outlierDataId);
+    return config.outliers === true && Array.isArray(data?.values) && data.values.length > 0 &&
+      program.graphicSpec?.objects?.[config.outlierId]?.items?.length === data.values.length;
+  });
+  if (id === "whisker:tukey") return boxPlotConfigs(programs).some(({ config }) =>
+    config.whisker?.type === "tukey" && Number.isFinite(config.whisker.factor)
+  );
   if (id === "parallel:dimensions:4") return hasDeepPair(deep, "dimensionsCount", 4) || deep.filter(entry => entry.key === "field" && ["Horsepower", "Weight_in_lbs", "Acceleration", "Miles_per_Gallon"].includes(entry.value)).length >= 4;
   if (id.startsWith("facet:field:")) return hasDeepPair(deep, "field", id.split(":")[2]);
   if (id === "facet:columns:2") return hasDeepPair(deep, "columns", 2);
@@ -270,9 +504,16 @@ function validationPassed(id, context) {
   if (id === "composition:hconcat") return programs.some(program =>
     program.compositionSpec?.type === "hconcat" || program.compositionSpec?.direction === "horizontal"
   );
-  if (id === "composition:gap:24") return programs.some(program => program.compositionSpec?.gap === 24 || program.compositionSpec?.padding === 24);
+  if (id === "composition:gap:24") return programs.some(program =>
+    program.compositionSpec?.gap === 24 && nestedCanvasGap(program, 24)
+  );
   if (id === "composition:replace-child") return nodes.some(node => node.op === "replaceCompositionChild");
-  if (id === "composition:slot-identity-preserved") return nodes.some(node => node.op === "replaceCompositionChild");
+  if (id === "composition:slot-identity-preserved") return nodes.some(node => {
+    if (node.op !== "replaceCompositionChild" || typeof node.args?.target !== "string") return false;
+    return programs.some(program =>
+      program.compositionSpec?.children?.includes(node.args.target) && program.children?.[node.args.target] !== undefined
+    );
+  });
   if (id.startsWith("horizon:bands:")) return hasDeepPair(deep, "bands", Number(id.split(":")[2]));
   if (id.startsWith("horizon:baseline:")) return hasDeepPair(deep, "baseline", Number(id.split(":")[2]));
   if (id === "horizon:negative:red") return deep.some(entry => typeof entry.value === "string" && /red|#(?:[89a-f][0-9a-f]{5})/iu.test(entry.value));
@@ -287,12 +528,19 @@ function validationPassed(id, context) {
   if (id === "window:order:year") return hasDeepPair(deep, "field", "year");
   if (id === "series:original-and-moving") return layers.filter(layer => layer.mark?.type === "line").length >= 2;
   if (id === "time-unit:year") return hasDeepPair(deep, "unit", "year") || hasDeepPair(deep, "timeUnit", "year");
-  if (id === "tick:one-per-valid-row") return semanticMark(layers, "tick") && datasets.some(dataset => Array.isArray(dataset.values) && dataset.values.length > 0);
+  if (id === "tick:one-per-valid-row") return tickCountMatchesData(programs);
   if (id.startsWith("selection:")) return nodes.some(node => node.op === "selectMarks") && id.split(":").slice(1).every(value => JSON.stringify(nodes).includes(value));
   if (id.startsWith("highlight:")) return nodes.some(node => node.op === "highlightMarks");
-  if (id === "style:highlight:orange-no-stroke") return nodes.some(node => node.op === "highlightMarks") && deep.some(entry => entry.key === "fill" && typeof entry.value === "string" && /orange|#(?:[d-f][4-9a-f][0-9a-f]{4})/iu.test(entry.value));
-  if (id === "style:regression:black") return deep.some(entry => entry.key === "stroke" && ["black", "#000", "#000000"].includes(String(entry.value).toLowerCase()));
-  if (id === "annotation:r-squared:black") return graphics.some(graphic => graphic.type === "text" && JSON.stringify(graphic).match(/r(?:²|\^2|2)/iu));
+  if (id === "style:highlight:orange-no-stroke") return programs.some(program =>
+    Object.values(program.materializationConfigs?.highlights ?? {}).some(config =>
+      isOrange(config.style?.fill) && config.style?.stroke === undefined && config.style?.strokeWidth === undefined
+    )
+  );
+  if (id === "style:regression:black") {
+    const primitives = regressionLinePrimitives(programs);
+    return primitives.length > 0 && primitives.every(primitive => isBlack(primitive.properties?.stroke));
+  }
+  if (id === "annotation:r-squared:black") return rSquaredAnnotationNearLine(programs);
   if (id === "layout:labels") return nodes.some(node => node.op === "layoutLabels");
   if (id === "layout:leader-lines") return nodes.some(node => /Leader/u.test(node.op)) || graphics.some(graphic => /leader/i.test(graphic.id));
   if (id === "order:descending-total") return nodes.some(node => node.op === "orderCategories") &&
@@ -472,6 +720,26 @@ export async function evaluatePreparedProgram({
       programSha256: evidenceProgramSha256,
       rendererFiles: renderResult.files
     }
+  });
+}
+
+export function inspectPreparedProgramValidation(program, id) {
+  const programs = collectPrograms(program);
+  const nodes = programs.flatMap(candidate => flattenTrace(candidate.trace));
+  return validationPassed(id, {
+    programs,
+    layers: everyLayer(programs),
+    datasets: everyDataset(programs),
+    coordinates: everyCoordinate(programs),
+    graphics: everyGraphic(programs),
+    nodes,
+    deep: deepValues(programs.map(candidate => ({
+      semanticSpec: candidate.semanticSpec,
+      materializationConfigs: candidate.materializationConfigs,
+      compositionSpec: candidate.compositionSpec,
+      trace: candidate.trace
+    }))),
+    renderEvidence: {}
   });
 }
 
