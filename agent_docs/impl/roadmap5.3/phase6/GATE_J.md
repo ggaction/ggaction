@@ -2,9 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Gate evidence checkpoint: `9ad707f4`
+
+Approved by the user on 2026-08-07.
 
 Implementation checkpoints:
 
@@ -152,7 +154,7 @@ candidate `e88fbea…`의 고정 SHA와 현재 corrected knowledge SHA가 다르
 
 ## 승인 요청과 효과
 
-Gate J 승인은 이번 systematic recipe correction과 무과금 evidence가 계획대로 완료되었다는 판단만 닫는다.
+사용자는 이번 systematic recipe correction과 무과금 evidence가 계획대로 완료되었다는 판단을 승인했다.
 
 승인해도 자동으로 허용되지 않는다.
 
