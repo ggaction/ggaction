@@ -81,6 +81,11 @@ evidence로 취급하고, 동등 priority provider가 요청에 등장한 순서
 이 failed Gate는 어떤 후속 범위도 열지 않는다. 특히 paid smoke, full paid evaluation,
 PR/merge/publish/deploy/release를 승인하지 않는다.
 
+## Evidence identity
+
+- Failed Gate review target: `61ebf31e0ae5b1ad19a3419e1391cf63b1dc7570`
+- Remote branch: `codex/roadmap5-4-compact-knowledge`
+
 ## 승인 전 차단 범위
 
 - Credential read, external model call와 비용 지출
