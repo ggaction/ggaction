@@ -2,7 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-08에 review target `110245b9335082946dd039ee6f81325d3ef65ae5`의 compact delivery,
+conditional same-package budget, local one-tool MCP surface와 fresh evaluation isolation을 명시적으로 승인했다.
+이 승인은 Phase 1 compact knowledge source와 generator 구현만 연다.
 
 ## 쉽게 보는 승인 내용
 

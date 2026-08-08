@@ -9,7 +9,7 @@
 - [x] Fresh corpus and staged paid evaluation separation proposed
 - [x] R54-P0-A review package verified — contract suite 167 / 167 pass
 - [x] Review target committed for remote push — `110245b9335082946dd039ee6f81325d3ef65ae5`
-- [ ] User approval
+- [x] User approval — 2026-08-08
 
 ## 작업
 

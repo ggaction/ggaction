@@ -17,7 +17,7 @@ Compact knowledge를 구현하기 전에 scientific isolation, payload/package b
 - [x] Offline and staged paid evaluation policy 작성
 - [x] Agent-documentation verification — contract suite 167 / 167 pass
 - [x] Remote Gate review target — `110245b9335082946dd039ee6f81325d3ef65ae5`
-- [ ] R54-P0-A explicit approval
+- [x] R54-P0-A explicit approval — 2026-08-08
 
 ## Gate R54-P0-A
 
