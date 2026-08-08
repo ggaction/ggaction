@@ -26,7 +26,7 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Attempt 3 immutable result와 causal failure analysis
 - [x] R54-P5-E Option A knowledge/evaluation boundary repair approval — 2026-08-09
 - [x] Schema v3 candidate repair and unpaid validation — product candidate `4eb8ce78`
-- [ ] R54-P5-F exact v4 paid-smoke authorization
+- [x] R54-P5-F exact v4 paid-smoke authorization — 2026-08-09
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion

@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Product candidate: `4eb8ce78b705c160394e0a0e0bafc557f54008c0`.
 
@@ -85,4 +85,8 @@ paid evaluation, PR, merge, publish, deploy와 release는 열지 않는다. Vali
 
 ## Approval record
 
-아직 승인되지 않았다. 현재 credential reads / external calls / additional spend는 0 / 0 / `$0`다.
+- 사용자가 2026-08-09에 Option A의 exact product candidate, plan과 route oracle hash, 16 task-runs,
+  expected 37 calls / `$1.152`, calculated maximum `$2.496`와 hard global stop `< $3` 범위를 명시적으로 승인했다.
+- 이 승인은 previously identified single credential file의 1회 read와 v4 paid smoke 단일 실행만 연다.
+- Retry, 새 plan, complete paid evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.
+- 승인 기록 시점의 credential reads / external calls / additional spend는 0 / 0 / `$0`다.
