@@ -125,3 +125,5 @@ documentation deployment 또는 release를 열지 않는다.
 - 2026-08-08: 사용자가 frozen candidate `b1bb16c6`, plan SHA-256 `95010b28…`, 16 task-runs,
   최대 48 Responses API requests와 `$3.00` hard cap을 명시적으로 승인했다.
 - 이 승인은 paid smoke만 열며 full evaluation과 integration/release 범위는 열지 않는다.
+- Approved attempt는 9 model calls와 `$0.0593232` 뒤 provider schema stop rule로 중단됐다. Canonical result는
+  [`../phase5/ATTEMPT1.md`](../phase5/ATTEMPT1.md)가 소유하며 이 Gate는 retry를 열지 않는다.
