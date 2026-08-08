@@ -38,6 +38,8 @@ function result({
       totalTokens: tokens,
       modelCalls: calls,
       knowledgeToolCalls: condition === "A" ? 0 : 1,
+      knowledgeToolCallsExecuted: condition === "A" ? 0 : 1,
+      knowledgeToolCallsRejected: 0,
       submissions: 1,
       taskLoopDurationMs: tokens * 2,
       endToEndDurationMs: tokens * 2 + 5,
@@ -79,7 +81,7 @@ test("includes failed runs in accuracy and failure cost", () => {
   ]);
   const condition = summary.conditions.A;
   assert.equal(condition.stages.finalCorrectness.rate, 0.5);
-  assert.equal(condition.stages.retrieval.eligibleRuns, 0);
+  assert.equal(condition.stages.retrieval.eligibleRuns, 2);
   assert.equal(condition.failureCost.runs, 1);
   assert.equal(condition.failureCost.totalTokens, 700);
   assert.equal(condition.failureCost.modelCalls, 6);

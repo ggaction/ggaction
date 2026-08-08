@@ -209,10 +209,10 @@ export function createPairedKnowledgeAdapter({
       ...(includesStructured ? structuredSurface.tools : [])
     ]),
     instruction: condition === "A"
-      ? "Use only the pinned public ggaction documentation."
+      ? "Use only the pinned public ggaction documentation. Start with one search_docs call using the task's chart and layout terms. Read the most task-specific returned URL only when the search summary is insufficient; do not read generic routing pages when a task-specific result exists."
       : condition === "D"
-        ? `${structuredSurface.instructions} The pinned public documentation is also available for supplementary context.`
-        : structuredSurface.instructions,
+        ? `${structuredSurface.instructions} Start with search_ggaction and use its inline primaryResource without rereading it. Read another structured resource only for a distinct missing capability. Use the pinned public documentation only when structured knowledge does not cover that capability.`
+        : `${structuredSurface.instructions} Start with one search_ggaction call and use its inline primaryResource without rereading it. Read another resource only for a distinct missing capability.`,
     routingLabel: includesDocs && includesStructured
       ? "Pinned public documentation and structured knowledge routing"
       : includesDocs ? "Pinned public documentation routing" : "Pinned structured knowledge routing",

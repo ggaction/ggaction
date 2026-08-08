@@ -162,6 +162,9 @@ test("reserves a forced final submission and two real repair calls", async () =>
     assert.equal(result.metrics.submissions, 3);
     assert.equal(result.metrics.repairRounds, 2);
     assert.equal(result.metrics.modelCalls, 6);
+    assert.equal(result.metrics.knowledgeToolCalls, 2);
+    assert.equal(result.metrics.knowledgeToolCallsExecuted, 2);
+    assert.equal(result.metrics.knowledgeToolCallsRejected, 0);
     assert.equal(result.metrics.unreportedCostUpperBoundUsd, 0);
     assert.equal(result.metrics.mcpOperations.total, 0);
     assert.equal(result.outcome.retrievalSucceeded, true);
@@ -169,9 +172,56 @@ test("reserves a forced final submission and two real repair calls", async () =>
     assert.equal(result.outcome.forcedSubmissionUsed, true);
     assert.equal(result.outcome.firstSubmissionValid, false);
     assert.equal(result.outcome.finalValid, true);
+    assert.equal(result.artifacts.submissions.length, 3);
+    assert.match(result.artifacts.submissions[0].programFile, /program-submission-1\.mjs$/u);
+    assert.match(result.artifacts.submissions[2].programFile, /program-submission-3\.mjs$/u);
+    assert.notEqual(result.artifacts.submissions[0].programSha256, result.artifacts.submissions[2].programSha256);
   } finally {
     await probe.close();
   }
+});
+
+test("counts docs retrieval and separates attempted, executed, and rejected knowledge calls", async () => {
+  const [corpus, plan] = await fixtures();
+  const documentation = {
+    route: "llms.txt",
+    async search() {
+      return [{ title: "Scatter plot", url: "examples/scatterplot", kind: "example", summary: "Build a scatter plot." }];
+    },
+    async read(route) {
+      return { route, file: `docs/${route}.md`, truncated: false, text: "Pinned documentation." };
+    }
+  };
+  const knowledge = createPairedKnowledgeAdapter({ condition: "A", commit, documentation });
+  const task = corpus.tasks.find(candidate => candidate.id === "cars-scatter-origin");
+  const outputs = [
+    [
+      call("search_docs", { query: "scatter plot" }, "search"),
+      call("read_doc", { route: "examples/scatterplot" }, "read_1"),
+      call("read_doc", { route: "api/canvas" }, "read_2"),
+      call("read_doc", { route: "api/actions" }, "rejected")
+    ],
+    [call("submit_program", { source: validScatterSource }, "submit")]
+  ];
+  const requests = [];
+  const outputRoot = new URL("../../.artifacts/llm-eval/paired-docs-accounting-contract", import.meta.url).pathname;
+  const result = await runPairedEvaluationTask({
+    knowledge,
+    apiKey,
+    corpus,
+    task,
+    repetition: 1,
+    plan,
+    outputRoot,
+    fetchImpl: mockFetch(outputs, requests)
+  });
+
+  assert.match(requests[0].input[0].content, /at most 3 knowledge-tool calls/u);
+  assert.match(requests[0].input[0].content, /Start with one search_docs call/u);
+  assert.equal(result.metrics.knowledgeToolCalls, 4);
+  assert.equal(result.metrics.knowledgeToolCallsExecuted, 3);
+  assert.equal(result.metrics.knowledgeToolCallsRejected, 1);
+  assert.equal(result.outcome.retrievalSucceeded, true);
 });
 
 test("reuses one MCP session while reporting per-task protocol deltas", async () => {

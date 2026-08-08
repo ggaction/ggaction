@@ -9,6 +9,8 @@ const efficiencyMetrics = Object.freeze([
   "totalTokens",
   "modelCalls",
   "knowledgeToolCalls",
+  "knowledgeToolCallsExecuted",
+  "knowledgeToolCallsRejected",
   "taskLoopDurationMs",
   "endToEndDurationMs",
   "estimatedCostUsd"
@@ -101,7 +103,6 @@ function conditionSummary(condition, rows) {
     stages: {
       retrieval: stageSummary(rows, {
         id: `${condition}:retrieval`,
-        eligible: row => row.knowledge.mode !== "docs-only",
         success: row => row.outcome.retrievalSucceeded
       }),
       naturalSubmission: stageSummary(rows, {

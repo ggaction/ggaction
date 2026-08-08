@@ -93,6 +93,13 @@ function sanitizedKnowledgeResult(output) {
           ? [`${result.kind}:${result.id}`]
           : []
       );
+      summary.routes = results.slice(0, 10).flatMap(result =>
+        typeof result?.url === "string" ? [result.url] : []
+      );
+    }
+    if (typeof parsed?.route === "string" && typeof parsed?.file === "string") {
+      summary.documentationRoute = parsed.route;
+      summary.documentationFile = parsed.file;
     }
     if (typeof parsed?.error === "string") summary.error = parsed.error.slice(0, 500);
   } catch {
@@ -101,11 +108,13 @@ function sanitizedKnowledgeResult(output) {
   return summary;
 }
 
-function programInstructions(task, knowledge, routingText) {
+function programInstructions(task, knowledge, routingText, maximumKnowledgeToolCalls) {
   const datasetFields = task.data.map(selection => `${selection.id}: ${selection.fields.join(", ")}`).join("\n");
   return `Write one executable ggaction chart program.
 
 ${knowledge.instruction}
+
+You may make at most ${maximumKnowledgeToolCalls} knowledge-tool calls. Use returned routes and resource URIs exactly; never guess one.
 
 Use domain actions for ordinary chart authoring. Do not invent action names or option keys. Do not use editSemantic, createGraphics, or editGraphics unless the task explicitly asks for extension authoring.
 
@@ -154,9 +163,20 @@ export function validatePairedEvaluationResult(result, corpus) {
   }
   if (!corpus.tasks.some(task => task.id === result.taskId)) throw new Error("Paired result references an unknown task.");
   if (!/^[0-9a-f]{40}$/u.test(result.knowledge.commit)) throw new Error("Paired result requires an exact knowledge commit.");
-  for (const key of ["modelCalls", "knowledgeToolCalls", "submissions", "repairRounds"]) {
+  for (const key of [
+    "modelCalls",
+    "knowledgeToolCalls",
+    "knowledgeToolCallsExecuted",
+    "knowledgeToolCallsRejected",
+    "submissions",
+    "repairRounds"
+  ]) {
     if (!Number.isInteger(result.metrics[key]) || result.metrics[key] < 0) throw new Error(`Invalid paired metric ${key}.`);
   }
+  if (
+    result.metrics.knowledgeToolCalls !==
+    result.metrics.knowledgeToolCallsExecuted + result.metrics.knowledgeToolCallsRejected
+  ) throw new Error("Paired knowledge tool attempts must equal executed plus rejected calls.");
   if (!Number.isFinite(result.metrics.unreportedCostUpperBoundUsd) || result.metrics.unreportedCostUpperBoundUsd < 0) {
     throw new Error("Paired result requires a non-negative unreported request cost upper bound.");
   }
@@ -197,7 +217,11 @@ export async function runPairedEvaluationTask({
   await knowledge.initialize();
   const routingText = await knowledge.routingText();
   const taskLoopStarted = Date.now();
-  const input = [{ role: "user", content: programInstructions(task, knowledge, routingText) }];
+  const sampling = plan.sampling;
+  const input = [{
+    role: "user",
+    content: programInstructions(task, knowledge, routingText, sampling.maximumKnowledgeToolCallsPerTask)
+  }];
   const usage = {
     promptTokens: 0,
     cachedInputTokens: 0,
@@ -214,13 +238,15 @@ export async function runPairedEvaluationTask({
     repetition,
     rounds: []
   };
-  const sampling = plan.sampling;
   const taskSignal = AbortSignal.timeout(sampling.timeoutMsPerTask);
   let estimatedCostUsd = 0;
   let unreportedCostUpperBoundUsd = 0;
   let modelCalls = 0;
   let knowledgeToolCalls = 0;
+  let knowledgeToolCallsExecuted = 0;
+  let knowledgeToolCallsRejected = 0;
   let submissions = 0;
+  const submissionArtifacts = [];
   let firstSubmissionValid = false;
   let naturalSubmission = false;
   let forcedSubmissionUsed = false;
@@ -316,6 +342,7 @@ export async function runPairedEvaluationTask({
       let output;
       if (call.name === "submit_program") {
         submissions += 1;
+        let submissionSource = null;
         if (forceSubmission) forcedSubmissionUsed = true;
         if (submissions === 1) {
           naturalSubmission = !forceSubmission;
@@ -323,10 +350,14 @@ export async function runPairedEvaluationTask({
         }
         try {
           const args = JSON.parse(call.arguments);
-          lastSource = args.source;
-          await writeFile(path.join(artifactRoot, "program.mjs"), lastSource);
+          submissionSource = args.source;
+          lastSource = submissionSource;
+          const submissionFile = path.join(artifactRoot, `program-submission-${submissions}.mjs`);
+          await writeFile(submissionFile, submissionSource);
+          await writeFile(path.join(artifactRoot, "program.mjs"), submissionSource);
+          evaluation = undefined;
           evaluation = await evaluateGeneratedProgram({
-            source: lastSource,
+            source: submissionSource,
             task,
             datasets: await taskDatasets(corpus, task),
             artifactRoot
@@ -337,18 +368,44 @@ export async function runPairedEvaluationTask({
           if (score.valid && firstValidAtMs === null) firstValidAtMs = Date.now() - taskLoopStarted;
           output = JSON.stringify({ valid: score.valid, failures: score.failures });
           traceCall.submission = { valid: score.valid, failures: score.failures.slice(0, 20) };
+          submissionArtifacts.push({
+            submission: submissions,
+            programFile: submissionFile,
+            programSha256: createHash("sha256").update(submissionSource).digest("hex"),
+            valid: score.valid,
+            failures: score.failures.slice(0, 20),
+            error: null
+          });
         } catch (error) {
           runtimeError = error.message;
           score = { valid: false, failures: [`runtime-error:${error.message}`] };
           if (submissions === 1) firstSubmissionValid = false;
           output = JSON.stringify({ valid: false, failures: ["program execution failed"], error: error.message });
-          traceCall.submission = { valid: false, failures: ["program execution failed"] };
+          traceCall.submission = {
+            valid: false,
+            failures: ["program execution failed"],
+            error: error.message.slice(0, 1000)
+          };
+          submissionArtifacts.push({
+            submission: submissions,
+            programFile: submissionSource === null
+              ? null
+              : path.join(artifactRoot, `program-submission-${submissions}.mjs`),
+            programSha256: submissionSource === null
+              ? null
+              : createHash("sha256").update(submissionSource).digest("hex"),
+            valid: false,
+            failures: ["program execution failed"],
+            error: error.message.slice(0, 1000)
+          });
         }
       } else {
         knowledgeToolCalls += 1;
         if (knowledgeToolCalls > sampling.maximumKnowledgeToolCallsPerTask) {
+          knowledgeToolCallsRejected += 1;
           output = JSON.stringify({ error: "Knowledge tool call limit reached." });
         } else {
+          knowledgeToolCallsExecuted += 1;
           try {
             output = await knowledge.handle(call);
           } catch (error) {
@@ -392,6 +449,8 @@ export async function runPairedEvaluationTask({
       ...usage,
       modelCalls,
       knowledgeToolCalls,
+      knowledgeToolCallsExecuted,
+      knowledgeToolCallsRejected,
       submissions,
       repairRounds: Math.max(0, submissions - 1),
       setupDurationMs: taskLoopStarted - endToEndStarted,
@@ -406,7 +465,11 @@ export async function runPairedEvaluationTask({
     },
     outcome: {
       retrievalSucceeded: trace.rounds.some(round => round.calls.some(call =>
-        call.result?.primaryIdentity !== undefined || call.result?.identity !== undefined
+        call.result?.primaryIdentity !== undefined ||
+        call.result?.identity !== undefined ||
+        call.result?.identities?.length > 0 ||
+        call.result?.routes?.length > 0 ||
+        call.result?.documentationRoute !== undefined
       )),
       naturalSubmission,
       forcedSubmissionUsed,
@@ -422,6 +485,10 @@ export async function runPairedEvaluationTask({
       programSha256: evaluation?.artifacts.programSha256 ?? (
         lastSource === null ? null : createHash("sha256").update(lastSource).digest("hex")
       ),
+      submissions: submissionArtifacts.map(submission => ({
+        ...submission,
+        programFile: relative(submission.programFile)
+      })),
       validationLogFile: relative(validationLogFile),
       traceFile: relative(path.join(artifactRoot, "trace.json")),
       rendererFiles: (evaluation?.artifacts.rendererFiles ?? []).map(relative)
