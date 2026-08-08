@@ -184,6 +184,23 @@ test("preserves the aborted replacement attempt byte-for-byte", async () => {
   );
 });
 
+test("preserves the completed v3 paid smoke byte-for-byte", async () => {
+  const completedRoot = path.join(root, "evaluation", "compact-authoring-paid-smoke-v3");
+  const [plan, progress, result] = await Promise.all([
+    readFile(path.join(completedRoot, "PLAN.json")),
+    readFile(path.join(completedRoot, "results", "IN_PROGRESS.json")),
+    readFile(path.join(completedRoot, "results", "RESULT.json"))
+  ]);
+  assert.equal(sha256(plan), "261a53c96913eededc7bbed898abc38104d223508701eba7c0f2daf5ebd01d37");
+  assert.equal(sha256(progress), "73f9322c3c07defb8a26e280ae2abfa7fbf70611359c9f6d1520ce714e353c62");
+  assert.equal(sha256(result), "197a1c567aa34d5b054928586a58bd621eb2f369317f3ad1051f7801a667a15c");
+  const parsed = JSON.parse(result);
+  assert.equal(parsed.taskRuns, 16);
+  assert.equal(parsed.passedTaskRuns, 7);
+  assert.equal(parsed.ledger.modelCalls, 42);
+  assert.equal(parsed.ledger.costUsd, 0.20685649999999994);
+});
+
 test("preflights every model-visible schema against the provider subset", async () => {
   await preflightPaidSmokeTools();
   assert.throws(

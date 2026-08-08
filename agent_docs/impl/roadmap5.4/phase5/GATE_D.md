@@ -106,3 +106,12 @@ evaluation, PR, merge, publish, deploy와 release는 열지 않는다.
   expected `$1.152`, calculated maximum `$2.496`와 hard global stop `< $3` 범위를 명시적으로 승인했다.
 - 이 승인은 previously identified single credential file의 1회 read와 replacement v3 paid smoke 실행만 연다.
 - Attempt 1/2 resume, automatic retry, complete evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.
+
+## Execution result
+
+승인된 v3 smoke는 16 / 16 task-runs를 정상 완료했고 7 / 16이 strict pass였다. 42 model calls, 47,468 input
+tokens, 9,926 output tokens와 `$0.2068565`를 사용했다. Automatic retry는 없고 runner stop rule이나 cost ceiling은
+발동하지 않았다.
+
+Exact immutable evidence와 실패 분류는 [`ATTEMPT3.md`](./ATTEMPT3.md)가 소유한다. 7 / 16 결과는 integration acceptance를
+통과하지 않았으므로 full evaluation을 제안하지 않는다. 다음 repair/closeout 결정은 [`GATE_E.md`](./GATE_E.md)가 소유한다.

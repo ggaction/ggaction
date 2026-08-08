@@ -27,6 +27,10 @@
 - [x] Sanitized every-call active progress persistence
 - [x] Replacement v3 plan and 16 / 16 zero-spend dry-run
 - [x] R54-P5-D replacement v3 paid-smoke approval — 2026-08-09
+- [x] Replacement v3 paid smoke — 16 / 16 complete, 7 / 16 strict pass
+- [x] Credential read 1, model calls 42, spend `$0.2068565`, automatic retry 0
+- [x] Immutable result와 failure classification — [`ATTEMPT3.md`](./ATTEMPT3.md)
+- [x] R54-P5-E repair/closeout decision Gate prepared
 
 ## Execution discipline
 
@@ -43,5 +47,6 @@
 - Attempt 2 result overwrite, resume 또는 retry
 - Public packet schema/contract 변경
 - Replacement v3 credential read, external model call과 additional spend
+- Result 확인 뒤 failed run의 success 재분류 또는 same-plan retry
 - Complete paid evaluation
 - Integration, PR, merge, publish, deploy와 release

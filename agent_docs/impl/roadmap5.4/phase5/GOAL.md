@@ -22,7 +22,9 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Paid runner accounting repair and unpaid validation
 - [x] Replacement v3 plan and paid authorization Gate 준비
 - [x] R54-P5-D replacement v3 paid-smoke approval — 2026-08-09
-- [ ] Valid small paid smoke
+- [x] Valid small paid smoke execution — 16 / 16 complete, 7 / 16 strict pass
+- [x] Attempt 3 immutable result와 causal failure analysis
+- [ ] R54-P5-E candidate repair 또는 non-integration closeout decision
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion

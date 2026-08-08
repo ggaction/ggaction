@@ -1,0 +1,1651 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-paid-smoke-v3",
+  "planSha256": "261a53c96913eededc7bbed898abc38104d223508701eba7c0f2daf5ebd01d37",
+  "productCandidateCommit": "6ed5af76c80e56c5a3cde833c5a702de183e4d7a",
+  "startedAt": "2026-08-08T15:41:14.032Z",
+  "completedAt": "2026-08-08T15:43:24.710Z",
+  "taskRuns": 16,
+  "passedTaskRuns": 7,
+  "ledger": {
+    "usage": {
+      "inputTokens": 47468,
+      "cachedInputTokens": 9300,
+      "cacheWriteTokens": 19097,
+      "outputTokens": 9926,
+      "reasoningTokens": 7053,
+      "totalTokens": 57394
+    },
+    "costUsd": 0.20685649999999994,
+    "modelCalls": 42
+  },
+  "conditions": {
+    "A": {
+      "tasks": 4,
+      "passed": 0,
+      "modelCalls": 12,
+      "usage": {
+        "inputTokens": 14443,
+        "cachedInputTokens": 2835,
+        "cacheWriteTokens": 6823,
+        "outputTokens": 4008,
+        "reasoningTokens": 3472,
+        "totalTokens": 18451
+      },
+      "costUsd": 0.07529050000000001,
+      "timeToValidMilliseconds": 0
+    },
+    "B": {
+      "tasks": 4,
+      "passed": 3,
+      "modelCalls": 9,
+      "usage": {
+        "inputTokens": 9407,
+        "cachedInputTokens": 1232,
+        "cacheWriteTokens": 3589,
+        "outputTokens": 1979,
+        "reasoningTokens": 1274,
+        "totalTokens": 11386
+      },
+      "costUsd": 0.04213889999999999,
+      "timeToValidMilliseconds": 14046.371375000002
+    },
+    "C": {
+      "tasks": 4,
+      "passed": 3,
+      "modelCalls": 10,
+      "usage": {
+        "inputTokens": 11745,
+        "cachedInputTokens": 2875,
+        "cacheWriteTokens": 4302,
+        "outputTokens": 2276,
+        "reasoningTokens": 1418,
+        "totalTokens": 14021
+      },
+      "costUsd": 0.047778,
+      "timeToValidMilliseconds": 20822.439999999988
+    },
+    "D": {
+      "tasks": 4,
+      "passed": 1,
+      "modelCalls": 11,
+      "usage": {
+        "inputTokens": 11873,
+        "cachedInputTokens": 2358,
+        "cacheWriteTokens": 4383,
+        "outputTokens": 1663,
+        "reasoningTokens": 889,
+        "totalTokens": 13536
+      },
+      "costUsd": 0.0416491,
+      "timeToValidMilliseconds": 7613.800042000003
+    }
+  },
+  "results": [
+    {
+      "id": "repair-val-histogram:A",
+      "task": "repair-val-histogram",
+      "condition": "A",
+      "stratum": "simple",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 3803,
+        "cachedInputTokens": 1286,
+        "cacheWriteTokens": 1708,
+        "outputTokens": 1952,
+        "reasoningTokens": 1700,
+        "totalTokens": 5755
+      },
+      "costUsd": 0.0295692,
+      "requestBodyBytes": 19049,
+      "projectedInputTokens": 16927,
+      "knowledge": {
+        "toolCalls": 2,
+        "searches": 1,
+        "docsReads": 1
+      },
+      "failures": [
+        "generated-program-error:SyntaxError: The requested module 'ggaction' does not provide an export named 'Canvas'"
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 3424,
+          "projectedInputTokens": 3424,
+          "functionCallCount": 1,
+          "tool": "search_docs",
+          "arguments": {
+            "query": "ggaction histogram binned distribution bin axis guides SVG Canvas createData ChartProgram"
+          },
+          "usage": {
+            "inputTokens": 803,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 56,
+            "reasoningTokens": 22,
+            "totalTokens": 859
+          },
+          "costUsd": 0.002278,
+          "billingUsageComplete": true,
+          "toolResultBytes": 1849
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 6948,
+          "projectedInputTokens": 5887,
+          "functionCallCount": 1,
+          "tool": "read_doc",
+          "arguments": {
+            "url": "/api/position/histogram/#binned-bar-encodexoptions"
+          },
+          "usage": {
+            "inputTokens": 1289,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1286,
+            "outputTokens": 33,
+            "reasoningTokens": 0,
+            "totalTokens": 1322
+          },
+          "costUsd": 0.003617,
+          "billingUsageComplete": true,
+          "toolResultBytes": 1321
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 8677,
+          "projectedInputTokens": 7616,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unresolved": [],
+            "sourceBytes": 472,
+            "sourceSha256": "a300267f4c5ffdb394c5f83d9d55dc0ad00ec7d95e8511e7a81bf628af7db99d"
+          },
+          "usage": {
+            "inputTokens": 1711,
+            "cachedInputTokens": 1286,
+            "cacheWriteTokens": 422,
+            "outputTokens": 1863,
+            "reasoningTokens": 1678,
+            "totalTokens": 3574
+          },
+          "costUsd": 0.0236742,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:SyntaxError: The requested module 'ggaction' does not provide an export named 'Canvas'"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "repair-val-histogram:B",
+      "task": "repair-val-histogram",
+      "condition": "B",
+      "stratum": "simple",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 4016,
+        "cachedInputTokens": 1232,
+        "cacheWriteTokens": 1953,
+        "outputTokens": 934,
+        "reasoningTokens": 593,
+        "totalTokens": 4950
+      },
+      "costUsd": 0.017998899999999998,
+      "requestBodyBytes": 23215,
+      "projectedInputTokens": 16331,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReads": 0
+      },
+      "failures": [
+        "generated-program-error:Error: Unknown createData option \"rows\"."
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 3463,
+          "projectedInputTokens": 3463,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Draw a binned distribution as a histogram with one dimensional bins, axis guides, and SVG output."
+          },
+          "usage": {
+            "inputTokens": 825,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 53,
+            "reasoningTokens": 12,
+            "totalTokens": 878
+          },
+          "costUsd": 0.002286,
+          "billingUsageComplete": true,
+          "toolResultBytes": 1464
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 6604,
+          "projectedInputTokens": 5597,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unresolved": [],
+            "sourceBytes": 413,
+            "sourceSha256": "c65ee5288d1a9f899b348c4b70c68eba41ce8ff70ef00f7ea206008fe2dee504"
+          },
+          "usage": {
+            "inputTokens": 1235,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1232,
+            "outputTokens": 685,
+            "reasoningTokens": 536,
+            "totalTokens": 1920
+          },
+          "costUsd": 0.011306,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: Action arguments must be a plain object."
+            ]
+          }
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 13148,
+          "projectedInputTokens": 7271,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unresolved": [],
+            "sourceBytes": 417,
+            "sourceSha256": "00d1fca5a8b570e7b7afc4c53a38a9bed6d2556b7f5dbca87713392f7e3a16f7"
+          },
+          "usage": {
+            "inputTokens": 1956,
+            "cachedInputTokens": 1232,
+            "cacheWriteTokens": 721,
+            "outputTokens": 196,
+            "reasoningTokens": 45,
+            "totalTokens": 2152
+          },
+          "costUsd": 0.0044069,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:Error: Unknown createData option \"rows\"."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "repair-val-histogram:C",
+      "task": "repair-val-histogram",
+      "condition": "C",
+      "stratum": "simple",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 3795,
+        "cachedInputTokens": 1234,
+        "cacheWriteTokens": 1731,
+        "outputTokens": 703,
+        "reasoningTokens": 380,
+        "totalTokens": 4498
+      },
+      "costUsd": 0.0146703,
+      "requestBodyBytes": 20726,
+      "projectedInputTokens": 15976,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "failures": [
+        "generated-program-error:Error: Unknown createData option \"rows\"."
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 3463,
+          "projectedInputTokens": 3463,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Draw a binned distribution as a histogram with one dimensional bins, axis guides, and SVG output."
+          },
+          "usage": {
+            "inputTokens": 824,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 56,
+            "reasoningTokens": 15,
+            "totalTokens": 880
+          },
+          "costUsd": 0.00232,
+          "billingUsageComplete": true,
+          "toolResultBytes": 1464
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 6624,
+          "projectedInputTokens": 5600,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unresolved": [],
+            "sourceBytes": 377,
+            "sourceSha256": "333bbe81e13ec48624ed19a03c15a18dcbe38f9c8ccacb34415cfe08bc6c6c78"
+          },
+          "usage": {
+            "inputTokens": 1237,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1234,
+            "outputTokens": 461,
+            "reasoningTokens": 321,
+            "totalTokens": 1698
+          },
+          "costUsd": 0.008623,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: Action arguments must be a plain object."
+            ]
+          }
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 10639,
+          "projectedInputTokens": 6913,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unresolved": [],
+            "sourceBytes": 381,
+            "sourceSha256": "3c2a4cae1d84cd4fd30784aa5a631c66ebb9ffd5b0cd68e0c98d1dfea5b3dc21"
+          },
+          "usage": {
+            "inputTokens": 1734,
+            "cachedInputTokens": 1234,
+            "cacheWriteTokens": 497,
+            "outputTokens": 186,
+            "reasoningTokens": 44,
+            "totalTokens": 1920
+          },
+          "costUsd": 0.0037273000000000002,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:Error: Unknown createData option \"rows\"."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "repair-val-histogram:D",
+      "task": "repair-val-histogram",
+      "condition": "D",
+      "stratum": "simple",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 3840,
+        "cachedInputTokens": 1326,
+        "cacheWriteTokens": 1587,
+        "outputTokens": 511,
+        "reasoningTokens": 170,
+        "totalTokens": 4351
+      },
+      "costUsd": 0.012218699999999999,
+      "requestBodyBytes": 20817,
+      "projectedInputTokens": 17436,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "failures": [
+        "generated-program-error:Error: Unknown createData option \"rows\"."
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 4022,
+          "projectedInputTokens": 4022,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Draw a binned distribution as a histogram with one dimensional bins, axis guides, and SVG output."
+          },
+          "usage": {
+            "inputTokens": 921,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 51,
+            "reasoningTokens": 10,
+            "totalTokens": 972
+          },
+          "costUsd": 0.002454,
+          "billingUsageComplete": true,
+          "toolResultBytes": 1464
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 7139,
+          "projectedInputTokens": 6154,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unresolved": [],
+            "sourceBytes": 413,
+            "sourceSha256": "c65ee5288d1a9f899b348c4b70c68eba41ce8ff70ef00f7ea206008fe2dee504"
+          },
+          "usage": {
+            "inputTokens": 1329,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1326,
+            "outputTokens": 225,
+            "reasoningTokens": 76,
+            "totalTokens": 1554
+          },
+          "costUsd": 0.006021,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: Action arguments must be a plain object."
+            ]
+          }
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 9656,
+          "projectedInputTokens": 7260,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unresolved": [],
+            "sourceBytes": 417,
+            "sourceSha256": "00d1fca5a8b570e7b7afc4c53a38a9bed6d2556b7f5dbca87713392f7e3a16f7"
+          },
+          "usage": {
+            "inputTokens": 1590,
+            "cachedInputTokens": 1326,
+            "cacheWriteTokens": 261,
+            "outputTokens": 235,
+            "reasoningTokens": 84,
+            "totalTokens": 1825
+          },
+          "costUsd": 0.0037437,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:Error: Unknown createData option \"rows\"."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "repair-hold-regression-layers:A",
+      "task": "repair-hold-regression-layers",
+      "condition": "A",
+      "stratum": "complex",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 4185,
+        "cachedInputTokens": 1549,
+        "cacheWriteTokens": 1713,
+        "outputTokens": 1622,
+        "reasoningTokens": 1514,
+        "totalTokens": 5807
+      },
+      "costUsd": 0.0259023,
+      "requestBodyBytes": 20381,
+      "projectedInputTokens": 18303,
+      "knowledge": {
+        "toolCalls": 2,
+        "searches": 1,
+        "docsReads": 1
+      },
+      "failures": [
+        "unresolved-mismatch:[\"deriveRegressionData\",\"createTrendLine\",\"createUncertaintyRibbon\"]",
+        "expected-program-status",
+        "supported-task-reported-unresolved"
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 3755,
+          "projectedInputTokens": 3755,
+          "functionCallCount": 1,
+          "tool": "search_docs",
+          "arguments": {
+            "query": "ggaction regression trend line uncertainty ribbon path mark map x y axis guides createData Canvas ChartProgram"
+          },
+          "usage": {
+            "inputTokens": 917,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 58,
+            "reasoningTokens": 20,
+            "totalTokens": 975
+          },
+          "costUsd": 0.00253,
+          "billingUsageComplete": true,
+          "toolResultBytes": 2441
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 7872,
+          "projectedInputTokens": 6833,
+          "functionCallCount": 1,
+          "tool": "read_doc",
+          "arguments": {
+            "url": "/#statistics-and-uncertainty"
+          },
+          "usage": {
+            "inputTokens": 1552,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1549,
+            "outputTokens": 25,
+            "reasoningTokens": 0,
+            "totalTokens": 1577
+          },
+          "costUsd": 0.0041785,
+          "billingUsageComplete": true,
+          "toolResultBytes": 530
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 8754,
+          "projectedInputTokens": 7715,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": "canvas",
+            "unresolved": [
+              "deriveRegressionData",
+              "createTrendLine",
+              "createUncertaintyRibbon"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 1716,
+            "cachedInputTokens": 1549,
+            "cacheWriteTokens": 164,
+            "outputTokens": 1539,
+            "reasoningTokens": 1494,
+            "totalTokens": 3255
+          },
+          "costUsd": 0.0191938,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "unresolved-mismatch:[\"deriveRegressionData\",\"createTrendLine\",\"createUncertaintyRibbon\"]",
+              "expected-program-status",
+              "supported-task-reported-unresolved"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "repair-hold-regression-layers:B",
+      "task": "repair-hold-regression-layers",
+      "condition": "B",
+      "stratum": "complex",
+      "passed": true,
+      "modelCalls": 2,
+      "timeToValidMilliseconds": 9075.589374999996,
+      "usage": {
+        "inputTokens": 2578,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 1636,
+        "outputTokens": 789,
+        "reasoningTokens": 563,
+        "totalTokens": 3367
+      },
+      "costUsd": 0.015442,
+      "requestBodyBytes": 12075,
+      "projectedInputTokens": 11069,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 3794,
+          "projectedInputTokens": 3794,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Derive regression data, add a path mark with map to x and map to y, create a trend line, add an uncertainty ribbon, and axis guides."
+          },
+          "usage": {
+            "inputTokens": 939,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 66,
+            "reasoningTokens": 13,
+            "totalTokens": 1005
+          },
+          "costUsd": 0.00267,
+          "billingUsageComplete": true,
+          "toolResultBytes": 2659
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 8281,
+          "projectedInputTokens": 7275,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "canvas",
+            "unresolved": [],
+            "sourceBytes": 474,
+            "sourceSha256": "9aa3578c134df51dd91e36fd8f0056ded942afa4bb06a3a5fd8be5f54cbfea12"
+          },
+          "usage": {
+            "inputTokens": 1639,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1636,
+            "outputTokens": 723,
+            "reasoningTokens": 550,
+            "totalTokens": 2362
+          },
+          "costUsd": 0.012772,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "9aa3578c134df51dd91e36fd8f0056ded942afa4bb06a3a5fd8be5f54cbfea12",
+            "sourceBytes": 474
+          }
+        }
+      ]
+    },
+    {
+      "id": "repair-hold-regression-layers:C",
+      "task": "repair-hold-regression-layers",
+      "condition": "C",
+      "stratum": "complex",
+      "passed": true,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": 15101.477207999997,
+      "usage": {
+        "inputTokens": 5156,
+        "cachedInputTokens": 1641,
+        "cacheWriteTokens": 2571,
+        "outputTokens": 1345,
+        "reasoningTokens": 948,
+        "totalTokens": 6501
+      },
+      "costUsd": 0.024783700000000002,
+      "requestBodyBytes": 28110,
+      "projectedInputTokens": 20294,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 3794,
+          "projectedInputTokens": 3794,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Derive regression data, add a path mark with map to x and map to y, create a trend line, add an uncertainty ribbon, and axis guides."
+          },
+          "usage": {
+            "inputTokens": 938,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 72,
+            "reasoningTokens": 19,
+            "totalTokens": 1010
+          },
+          "costUsd": 0.00274,
+          "billingUsageComplete": true,
+          "toolResultBytes": 2659
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 8321,
+          "projectedInputTokens": 7281,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "canvas",
+            "unresolved": [],
+            "sourceBytes": 463,
+            "sourceSha256": "688146f1b5497c2d9d4f578cf913104b9f2597ca4f3eedd5b7311be1f063ce24"
+          },
+          "usage": {
+            "inputTokens": 1644,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1641,
+            "outputTokens": 894,
+            "reasoningTokens": 718,
+            "totalTokens": 2538
+          },
+          "costUsd": 0.0148365,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:Error: Graphical layout requires Canvas dimensions and margin."
+            ]
+          }
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 15995,
+          "projectedInputTokens": 9219,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "canvas",
+            "unresolved": [],
+            "sourceBytes": 460,
+            "sourceSha256": "35fb5a99b108ece899395fa116edfc15599dc0291c5ae0fcdfd48fd97dfb3486"
+          },
+          "usage": {
+            "inputTokens": 2574,
+            "cachedInputTokens": 1641,
+            "cacheWriteTokens": 930,
+            "outputTokens": 379,
+            "reasoningTokens": 211,
+            "totalTokens": 2953
+          },
+          "costUsd": 0.0072071999999999995,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "35fb5a99b108ece899395fa116edfc15599dc0291c5ae0fcdfd48fd97dfb3486",
+            "sourceBytes": 460
+          }
+        }
+      ]
+    },
+    {
+      "id": "repair-hold-regression-layers:D",
+      "task": "repair-hold-regression-layers",
+      "condition": "D",
+      "stratum": "complex",
+      "passed": true,
+      "modelCalls": 2,
+      "timeToValidMilliseconds": 7613.800042000003,
+      "usage": {
+        "inputTokens": 2770,
+        "cachedInputTokens": 1032,
+        "cacheWriteTokens": 1732,
+        "outputTokens": 666,
+        "reasoningTokens": 440,
+        "totalTokens": 3436
+      },
+      "costUsd": 0.0125404,
+      "requestBodyBytes": 13193,
+      "projectedInputTokens": 12187,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 4353,
+          "projectedInputTokens": 4353,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Derive regression data, add a path mark with map to x and map to y, create a trend line, add an uncertainty ribbon, and axis guides."
+          },
+          "usage": {
+            "inputTokens": 1035,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1032,
+            "outputTokens": 66,
+            "reasoningTokens": 13,
+            "totalTokens": 1101
+          },
+          "costUsd": 0.003378,
+          "billingUsageComplete": true,
+          "toolResultBytes": 2659
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 8840,
+          "projectedInputTokens": 7834,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "canvas",
+            "unresolved": [],
+            "sourceBytes": 474,
+            "sourceSha256": "9aa3578c134df51dd91e36fd8f0056ded942afa4bb06a3a5fd8be5f54cbfea12"
+          },
+          "usage": {
+            "inputTokens": 1735,
+            "cachedInputTokens": 1032,
+            "cacheWriteTokens": 700,
+            "outputTokens": 600,
+            "reasoningTokens": 427,
+            "totalTokens": 2335
+          },
+          "costUsd": 0.0091624,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "9aa3578c134df51dd91e36fd8f0056ded942afa4bb06a3a5fd8be5f54cbfea12",
+            "sourceBytes": 474
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-hold-pdf-and-jpg:A",
+      "task": "policy-hold-pdf-and-jpg",
+      "condition": "A",
+      "stratum": "simple",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 3779,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 2217,
+        "outputTokens": 169,
+        "reasoningTokens": 83,
+        "totalTokens": 3948
+      },
+      "costUsd": 0.0106945,
+      "requestBodyBytes": 20891,
+      "projectedInputTokens": 18589,
+      "knowledge": {
+        "toolCalls": 2,
+        "searches": 1,
+        "docsReads": 1
+      },
+      "failures": [
+        "unresolved-mismatch:[\"JPG\"]"
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 2719,
+          "projectedInputTokens": 2719,
+          "functionCallCount": 1,
+          "tool": "search_docs",
+          "arguments": {
+            "query": "ggaction public API supported renderers PDF JPG export"
+          },
+          "usage": {
+            "inputTokens": 549,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 65,
+            "reasoningTokens": 36,
+            "totalTokens": 614
+          },
+          "costUsd": 0.001878,
+          "billingUsageComplete": true,
+          "toolResultBytes": 1861
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 6312,
+          "projectedInputTokens": 5161,
+          "functionCallCount": 1,
+          "tool": "read_doc",
+          "arguments": {
+            "url": "/supported-features/"
+          },
+          "usage": {
+            "inputTokens": 1010,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 22,
+            "reasoningTokens": 0,
+            "totalTokens": 1032
+          },
+          "costUsd": 0.002284,
+          "billingUsageComplete": true,
+          "toolResultBytes": 5163
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 11860,
+          "projectedInputTokens": 10709,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": "pdf",
+            "unresolved": [
+              "JPG"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 2220,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 2217,
+            "outputTokens": 82,
+            "reasoningTokens": 47,
+            "totalTokens": 2302
+          },
+          "costUsd": 0.0065325,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "unresolved-mismatch:[\"JPG\"]"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-hold-pdf-and-jpg:B",
+      "task": "policy-hold-pdf-and-jpg",
+      "condition": "B",
+      "stratum": "simple",
+      "passed": true,
+      "modelCalls": 2,
+      "timeToValidMilliseconds": 2390.6757910000015,
+      "usage": {
+        "inputTokens": 1450,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 0,
+        "outputTokens": 112,
+        "reasoningTokens": 48,
+        "totalTokens": 1562
+      },
+      "costUsd": 0.0042439999999999995,
+      "requestBodyBytes": 8137,
+      "projectedInputTokens": 7076,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 2758,
+          "projectedInputTokens": 2758,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Produce PDF output and also export JPG."
+          },
+          "usage": {
+            "inputTokens": 571,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 51,
+            "reasoningTokens": 22,
+            "totalTokens": 622
+          },
+          "costUsd": 0.001754,
+          "billingUsageComplete": true,
+          "toolResultBytes": 990
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 5379,
+          "projectedInputTokens": 4318,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": "pdf",
+            "unresolved": [
+              "unsupported.jpg"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 879,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 61,
+            "reasoningTokens": 26,
+            "totalTokens": 940
+          },
+          "costUsd": 0.00249,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": true,
+            "failures": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-hold-pdf-and-jpg:C",
+      "task": "policy-hold-pdf-and-jpg",
+      "condition": "C",
+      "stratum": "simple",
+      "passed": true,
+      "modelCalls": 2,
+      "timeToValidMilliseconds": 2630.900041999994,
+      "usage": {
+        "inputTokens": 1438,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 0,
+        "outputTokens": 101,
+        "reasoningTokens": 37,
+        "totalTokens": 1539
+      },
+      "costUsd": 0.004088,
+      "requestBodyBytes": 8073,
+      "projectedInputTokens": 7066,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 2758,
+          "projectedInputTokens": 2758,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Produce PDF output and also export JPG."
+          },
+          "usage": {
+            "inputTokens": 570,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 41,
+            "reasoningTokens": 12,
+            "totalTokens": 611
+          },
+          "costUsd": 0.001632,
+          "billingUsageComplete": true,
+          "toolResultBytes": 990
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 5315,
+          "projectedInputTokens": 4308,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": "pdf",
+            "unresolved": [
+              "unsupported.jpg"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 868,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 60,
+            "reasoningTokens": 25,
+            "totalTokens": 928
+          },
+          "costUsd": 0.002456,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": true,
+            "failures": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-hold-pdf-and-jpg:D",
+      "task": "policy-hold-pdf-and-jpg",
+      "condition": "D",
+      "stratum": "simple",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 2699,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 1064,
+        "outputTokens": 220,
+        "reasoningTokens": 126,
+        "totalTokens": 2919
+      },
+      "costUsd": 0.008570000000000001,
+      "requestBodyBytes": 16800,
+      "projectedInputTokens": 13687,
+      "knowledge": {
+        "toolCalls": 2,
+        "searches": 1,
+        "docsReadCalls": 1,
+        "docsReads": 1
+      },
+      "failures": [
+        "knowledge-docs-read-count:0",
+        "knowledge-docs-call-count:0",
+        "knowledge-tool-call-count:1"
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 3317,
+          "projectedInputTokens": 3317,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Produce PDF output and also export JPG."
+          },
+          "usage": {
+            "inputTokens": 667,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 41,
+            "reasoningTokens": 12,
+            "totalTokens": 708
+          },
+          "costUsd": 0.001826,
+          "billingUsageComplete": true,
+          "toolResultBytes": 990
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 5874,
+          "projectedInputTokens": 4867,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": "pdf",
+            "unresolved": [
+              "unsupported.jpg"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 965,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 59,
+            "reasoningTokens": 24,
+            "totalTokens": 1024
+          },
+          "costUsd": 0.002638,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "knowledge-docs-read-count:0",
+              "knowledge-docs-call-count:0",
+              "knowledge-tool-call-count:1"
+            ]
+          }
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 7609,
+          "projectedInputTokens": 5503,
+          "functionCallCount": 1,
+          "tool": "read_mcp_resources",
+          "arguments": {
+            "uris": [
+              "ggaction://docs/unsupported-capabilities"
+            ]
+          },
+          "usage": {
+            "inputTokens": 1067,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1064,
+            "outputTokens": 120,
+            "reasoningTokens": 90,
+            "totalTokens": 1187
+          },
+          "costUsd": 0.004106,
+          "billingUsageComplete": true,
+          "toolResultBytes": 477
+        }
+      ]
+    },
+    {
+      "id": "policy-val-3d-jpeg:A",
+      "task": "policy-val-3d-jpeg",
+      "condition": "A",
+      "stratum": "complex",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 2676,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 1185,
+        "outputTokens": 265,
+        "reasoningTokens": 175,
+        "totalTokens": 2941
+      },
+      "costUsd": 0.0091245,
+      "requestBodyBytes": 16837,
+      "projectedInputTokens": 13582,
+      "knowledge": {
+        "toolCalls": 2,
+        "searches": 1,
+        "docsReads": 1
+      },
+      "failures": [
+        "unresolved-mismatch:[\"3d\",\"jpeg\"]"
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 2728,
+          "projectedInputTokens": 2728,
+          "functionCallCount": 1,
+          "tool": "search_docs",
+          "arguments": {
+            "query": "ggaction supported renderers 3D JPEG output"
+          },
+          "usage": {
+            "inputTokens": 554,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 61,
+            "reasoningTokens": 32,
+            "totalTokens": 615
+          },
+          "costUsd": 0.00184,
+          "billingUsageComplete": true,
+          "toolResultBytes": 1502
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 5911,
+          "projectedInputTokens": 4796,
+          "functionCallCount": 1,
+          "tool": "read_doc",
+          "arguments": {
+            "url": "/#go-deeper"
+          },
+          "usage": {
+            "inputTokens": 934,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 38,
+            "reasoningTokens": 14,
+            "totalTokens": 972
+          },
+          "costUsd": 0.002324,
+          "billingUsageComplete": true,
+          "toolResultBytes": 821
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 8198,
+          "projectedInputTokens": 6058,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": null,
+            "unresolved": [
+              "3d",
+              "jpeg"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 1188,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1185,
+            "outputTokens": 166,
+            "reasoningTokens": 129,
+            "totalTokens": 1354
+          },
+          "costUsd": 0.0049605,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "unresolved-mismatch:[\"3d\",\"jpeg\"]"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-val-3d-jpeg:B",
+      "task": "policy-val-3d-jpeg",
+      "condition": "B",
+      "stratum": "complex",
+      "passed": true,
+      "modelCalls": 2,
+      "timeToValidMilliseconds": 2580.106209000005,
+      "usage": {
+        "inputTokens": 1363,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 0,
+        "outputTokens": 144,
+        "reasoningTokens": 70,
+        "totalTokens": 1507
+      },
+      "costUsd": 0.004454,
+      "requestBodyBytes": 7723,
+      "projectedInputTokens": 6663,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 2767,
+          "projectedInputTokens": 2767,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Make a 3d chart with JPEG output."
+          },
+          "usage": {
+            "inputTokens": 576,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 54,
+            "reasoningTokens": 23,
+            "totalTokens": 630
+          },
+          "costUsd": 0.0018,
+          "billingUsageComplete": true,
+          "toolResultBytes": 614
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 4956,
+          "projectedInputTokens": 3896,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": null,
+            "unresolved": [
+              "unsupported.3d",
+              "unsupported.jpg",
+              "renderer.format"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 787,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 90,
+            "reasoningTokens": 47,
+            "totalTokens": 877
+          },
+          "costUsd": 0.002654,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": true,
+            "failures": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-val-3d-jpeg:C",
+      "task": "policy-val-3d-jpeg",
+      "condition": "C",
+      "stratum": "complex",
+      "passed": true,
+      "modelCalls": 2,
+      "timeToValidMilliseconds": 3090.0627499999973,
+      "usage": {
+        "inputTokens": 1356,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 0,
+        "outputTokens": 127,
+        "reasoningTokens": 53,
+        "totalTokens": 1483
+      },
+      "costUsd": 0.004236,
+      "requestBodyBytes": 7679,
+      "projectedInputTokens": 6658,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 2767,
+          "projectedInputTokens": 2767,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Make a 3d chart with JPEG output."
+          },
+          "usage": {
+            "inputTokens": 575,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 49,
+            "reasoningTokens": 18,
+            "totalTokens": 624
+          },
+          "costUsd": 0.001738,
+          "billingUsageComplete": true,
+          "toolResultBytes": 614
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 4912,
+          "projectedInputTokens": 3891,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": null,
+            "unresolved": [
+              "unsupported.3d",
+              "unsupported.jpg",
+              "renderer.format"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 781,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 78,
+            "reasoningTokens": 35,
+            "totalTokens": 859
+          },
+          "costUsd": 0.002498,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": true,
+            "failures": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-val-3d-jpeg:D",
+      "task": "policy-val-3d-jpeg",
+      "condition": "D",
+      "stratum": "complex",
+      "passed": false,
+      "modelCalls": 3,
+      "timeToValidMilliseconds": null,
+      "usage": {
+        "inputTokens": 2564,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 0,
+        "outputTokens": 266,
+        "reasoningTokens": 153,
+        "totalTokens": 2830
+      },
+      "costUsd": 0.008320000000000001,
+      "requestBodyBytes": 16215,
+      "projectedInputTokens": 12924,
+      "knowledge": {
+        "toolCalls": 2,
+        "searches": 1,
+        "docsReadCalls": 1,
+        "docsReads": 2
+      },
+      "failures": [
+        "knowledge-docs-read-count:0",
+        "knowledge-docs-call-count:0",
+        "knowledge-tool-call-count:1"
+      ],
+      "trace": [
+        {
+          "modelCall": 1,
+          "requestBytes": 3326,
+          "projectedInputTokens": 3326,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Make a 3d chart with JPEG output."
+          },
+          "usage": {
+            "inputTokens": 672,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 56,
+            "reasoningTokens": 25,
+            "totalTokens": 728
+          },
+          "costUsd": 0.002016,
+          "billingUsageComplete": true,
+          "toolResultBytes": 614
+        },
+        {
+          "modelCall": 2,
+          "requestBytes": 5515,
+          "projectedInputTokens": 4457,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "unsupported",
+            "renderer": null,
+            "unresolved": [
+              "unsupported.3d",
+              "unsupported.jpg",
+              "renderer.format"
+            ],
+            "sourceBytes": 0,
+            "sourceSha256": null
+          },
+          "usage": {
+            "inputTokens": 885,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 79,
+            "reasoningTokens": 36,
+            "totalTokens": 964
+          },
+          "costUsd": 0.002718,
+          "billingUsageComplete": true,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "knowledge-docs-read-count:0",
+              "knowledge-docs-call-count:0",
+              "knowledge-tool-call-count:1"
+            ]
+          }
+        },
+        {
+          "modelCall": 3,
+          "requestBytes": 7374,
+          "projectedInputTokens": 5141,
+          "functionCallCount": 1,
+          "tool": "read_mcp_resources",
+          "arguments": {
+            "uris": [
+              "ggaction://docs/unsupported-capabilities",
+              "ggaction://docs/choose-renderer"
+            ]
+          },
+          "usage": {
+            "inputTokens": 1007,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 131,
+            "reasoningTokens": 92,
+            "totalTokens": 1138
+          },
+          "costUsd": 0.003586,
+          "billingUsageComplete": true,
+          "toolResultBytes": 917
+        }
+      ]
+    }
+  ]
+}
