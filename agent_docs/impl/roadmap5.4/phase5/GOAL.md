@@ -21,7 +21,7 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Paid runner budget-accounting decision — R54-P5-C Option A approved
 - [x] Paid runner accounting repair and unpaid validation
 - [x] Replacement v3 plan and paid authorization Gate 준비
-- [ ] R54-P5-D replacement v3 paid-smoke approval
+- [x] R54-P5-D replacement v3 paid-smoke approval — 2026-08-09
 - [ ] Valid small paid smoke
 - [ ] Complete evaluation proposal or non-integration closeout
 

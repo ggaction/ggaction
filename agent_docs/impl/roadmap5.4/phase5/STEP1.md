@@ -26,7 +26,7 @@
 - [x] Realistic A/D 3-call opaque-reasoning mock
 - [x] Sanitized every-call active progress persistence
 - [x] Replacement v3 plan and 16 / 16 zero-spend dry-run
-- [ ] R54-P5-D replacement v3 paid-smoke approval
+- [x] R54-P5-D replacement v3 paid-smoke approval — 2026-08-09
 
 ## Execution discipline
 
