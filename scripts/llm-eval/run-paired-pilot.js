@@ -13,7 +13,10 @@ import {
   captureStructuredKnowledgeSurface,
   createPairedKnowledgeAdapter
 } from "./paired-knowledge-adapters.js";
-import { summarizePairedEvaluationResults } from "./paired-summary.js";
+import {
+  evaluatePairedAcceptance,
+  summarizePairedEvaluationResults
+} from "./paired-summary.js";
 import { loadApiKey } from "./openai-responses.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
@@ -264,6 +267,7 @@ export async function runApprovedPairedPilot({
     const apiKey = await loadApiKey(tokenFile);
     const results = [];
     let spentUsd = 0;
+    let finalSummary;
     for (const run of runs) {
       const remainingSpendUsd = approval.hardSpendCapUsd - spentUsd;
       invariant(remainingSpendUsd > 0, "Paid pilot hard spend cap has been reached.");
@@ -282,8 +286,8 @@ export async function runApprovedPairedPilot({
       spentUsd += result.metrics.estimatedCostUsd;
       invariant(spentUsd <= approval.hardSpendCapUsd + Number.EPSILON, "Paid pilot exceeded its hard spend cap.");
       await appendFile(path.join(outputRoot, "results.jsonl"), `${JSON.stringify(result)}\n`);
-      const summary = summarizePairedEvaluationResults(results, { corpusSha256: loadedCorpus.sha256 });
-      await writeFile(path.join(outputRoot, "summary.json"), `${JSON.stringify(summary, null, 2)}\n`);
+      finalSummary = summarizePairedEvaluationResults(results, { corpusSha256: loadedCorpus.sha256 });
+      await writeFile(path.join(outputRoot, "summary.json"), `${JSON.stringify(finalSummary, null, 2)}\n`);
       process.stdout.write(`${JSON.stringify({
         runId: result.runId,
         valid: result.outcome.finalValid,
@@ -296,7 +300,17 @@ export async function runApprovedPairedPilot({
       })}\n`);
       assertPairedPilotRunCanContinue(result, plan);
     }
-    return Object.freeze({ outputRoot, runs: results.length, spentUsd, manifest });
+    invariant(results.length === approval.maximumRuns && finalSummary,
+      "Paired acceptance requires every approved run to finish.");
+    const acceptance = Object.freeze({
+      schemaVersion: 1,
+      gate: approval.gate,
+      candidateCommit: approval.candidateCommit,
+      primaryStructuredMcp: evaluatePairedAcceptance(finalSummary, { candidate: "C" }),
+      recommendedDocsPlusMcp: evaluatePairedAcceptance(finalSummary, { candidate: "D" })
+    });
+    await writeFile(path.join(outputRoot, "acceptance.json"), `${JSON.stringify(acceptance, null, 2)}\n`);
+    return Object.freeze({ outputRoot, runs: results.length, spentUsd, manifest, acceptance });
   } finally {
     await knowledge?.close();
     await installed.cleanup();
