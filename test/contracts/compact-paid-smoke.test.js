@@ -429,6 +429,37 @@ test("stops before accepting incomplete billing usage", async () => {
   assert.equal(currentLedger.costUsd, 0);
 });
 
+test("persists billed usage before a malformed provider response aborts", async () => {
+  const oracle = await loadRouteOracleV4();
+  const task = oracle.tasks[0];
+  const currentLedger = ledger();
+  const progress = [];
+  await assert.rejects(
+    runPaidSmokeTaskV4({
+      plan: planForMocks(),
+      task,
+      condition: "B",
+      apiKey: "test-key-with-more-than-twenty-characters",
+      ledger: currentLedger,
+      artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-v4-malformed"),
+      createResponse: async () => ({
+        model: "gpt-5.6-terra",
+        service_tier: "default",
+        output: [],
+        usage: usage()
+      }),
+      onProgress: async snapshot => progress.push(snapshot)
+    }),
+    /expected one function call/u
+  );
+  assert.equal(currentLedger.modelCalls, 1);
+  assert.ok(currentLedger.costUsd > 0);
+  assert.equal(progress.length, 1);
+  assert.equal(progress[0].trace[0].billingUsageComplete, true);
+  assert.equal(progress[0].trace[0].functionCallCount, 0);
+  assert.equal(progress[0].trace[0].tool, null);
+});
+
 test("keeps opaque transport bytes outside the projected billable input", () => {
   const base = {
     model: "gpt-5.6-terra",

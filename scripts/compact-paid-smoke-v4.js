@@ -360,6 +360,13 @@ function assertPlanShapeV4(plan) {
     throw new Error("Paid smoke v4 run order must contain 16 unique task-condition pairs.");
   }
   if (
+    !plan.sourceFiles || typeof plan.sourceFiles !== "object" || Array.isArray(plan.sourceFiles) ||
+    !plan.sourceTrees || typeof plan.sourceTrees !== "object" || Array.isArray(plan.sourceTrees) ||
+    Object.keys(plan.sourceTrees).length === 0
+  ) {
+    throw new Error("Paid smoke v4 source files and trees must be frozen.");
+  }
+  if (
     plan.limits.maximumModelCallsPerTask !== 3 ||
     plan.limits.projectedInputBytesPerToken !== 1 ||
     plan.limits.maximumRequestBodyBytesPerCall !== 262144 ||
@@ -390,6 +397,24 @@ export async function loadPaidSmokePlanV4() {
   for (const [relative, expected] of Object.entries(plan.sourceFiles)) {
     const actual = sha256(await readFile(path.join(root, relative)));
     if (actual !== expected) throw new Error(`Paid smoke v4 source hash drifted: ${relative}`);
+  }
+  for (const [relative, expected] of Object.entries(plan.sourceTrees)) {
+    let actual;
+    try {
+      actual = execFileSync("git", ["rev-parse", `HEAD:${relative}`], {
+        cwd: root,
+        encoding: "utf8"
+      }).trim();
+    } catch {
+      throw new Error(`Paid smoke v4 source tree is unavailable: ${relative}`);
+    }
+    if (actual !== expected) throw new Error(`Paid smoke v4 source tree drifted: ${relative}`);
+    const dirty = execFileSync(
+      "git",
+      ["status", "--porcelain", "--untracked-files=all", "--", relative],
+      { cwd: root, encoding: "utf8" }
+    ).trim();
+    if (dirty.length > 0) throw new Error(`Paid smoke v4 source tree is dirty: ${relative}`);
   }
   try {
     execFileSync("git", ["merge-base", "--is-ancestor", plan.productCandidateCommit, "HEAD"], {
