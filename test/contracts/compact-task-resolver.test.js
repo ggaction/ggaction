@@ -11,6 +11,7 @@ import {
   taskPacketBytes,
   validateResolverKnowledge
 } from "../../knowledge/task-resolver.js";
+import { docsFallbackResources } from "../../src/mcp/adapter.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const knowledgeRoot = path.join(root, "knowledge");
@@ -160,6 +161,33 @@ test("preserves request order only within one lifecycle priority", () => {
     "action.encodeSize",
     "action.encodeShape"
   ]);
+});
+
+test("keeps unsupported output and missing supported renderer as separate decisions", () => {
+  const unsupportedOnly = searchGgaction("Build a bar plot and render JPEG.");
+  assert.deepEqual(
+    unsupportedOnly.unresolved.map(entry => entry.constraint),
+    ["unsupported.jpg", "renderer.format"]
+  );
+  assert.deepEqual(
+    docsFallbackResources(unsupportedOnly).map(resource => resource.uri),
+    [
+      "ggaction://docs/unsupported-capabilities",
+      "ggaction://docs/choose-renderer"
+    ]
+  );
+
+  const withSupportedAlternative = searchGgaction(
+    "Build a bar plot, export PDF, and also export JPG."
+  );
+  assert.deepEqual(
+    withSupportedAlternative.unresolved.map(entry => entry.constraint),
+    ["unsupported.jpg"]
+  );
+  assert.deepEqual(
+    docsFallbackResources(withSupportedAlternative).map(resource => resource.uri),
+    ["ggaction://docs/unsupported-capabilities"]
+  );
 });
 
 test("design fixtures prove bounded one-call task closure without silent partials", async () => {

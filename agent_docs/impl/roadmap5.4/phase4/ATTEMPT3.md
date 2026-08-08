@@ -24,9 +24,9 @@
 
 - [x] Policy corpus support와 source 작성
 - [x] Structural counts, required coverage와 overlap 검사 — 9 tasks / 10 required constraints / overlap 0
-- [ ] Policy corpus SHA-256 freeze checkpoint commit/push
-- [ ] Approved policy stable resolver contract 추가
-- [ ] Development 1 / 1 strict pass와 result lock
+- [x] Policy corpus SHA-256 freeze checkpoint commit/push — `4be0358b`
+- [x] Approved policy stable resolver contract 추가
+- [x] Development 1 / 1 strict pass와 result lock
 - [ ] Candidate 3 commit lock
 - [ ] Fresh validation 4개 one-pass 실행
 - [ ] Validation 통과 뒤 fresh held-out 4개 one-pass 실행

@@ -289,6 +289,13 @@ The MCP response and the deterministic direct adapter use the same serialized
 task packet. A packet is never silently truncated; it fails if it exceeds its
 6,144-byte hard ceiling.
 
+Unsupported output and a missing supported renderer are separate decisions.
+For example, `render JPEG` reports both `unsupported.jpg` and
+`renderer.format`, then recommends the bounded unsupported-capabilities and
+renderer-choice sections. If the same request already names SVG, PNG, PDF, or
+Browser Canvas, it reports `unsupported.jpg` without adding
+`renderer.format`.
+
 ## Read-only resources
 
 MCP resource discovery provides a small overview, bounded task recipes, and
