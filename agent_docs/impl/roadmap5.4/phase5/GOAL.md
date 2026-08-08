@@ -25,7 +25,7 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Valid small paid smoke execution — 16 / 16 complete, 7 / 16 strict pass
 - [x] Attempt 3 immutable result와 causal failure analysis
 - [x] R54-P5-E Option A knowledge/evaluation boundary repair approval — 2026-08-09
-- [ ] Schema v3 candidate repair and unpaid validation
+- [x] Schema v3 candidate repair and unpaid validation — product candidate `4eb8ce78`
 - [ ] R54-P5-F exact v4 paid-smoke authorization
 - [ ] Complete evaluation proposal or non-integration closeout
 
@@ -46,5 +46,5 @@ Recommended task-packet schema v2와 대안은 [`GATE_A.md`](./GATE_A.md)가 소
 - Failed task를 success로 재분류하거나 efficiency threshold에 포함 금지
 - Unapproved packet schema/public MCP behavior 변경 금지
 - Credential 재읽기, external retry와 추가 spend 금지
-- R54-P5-D 승인 전 replacement v3 paid smoke 실행 금지
+- R54-P5-F 승인 전 replacement v4 paid smoke 실행 금지
 - Full evaluation, PR Ready/merge, publish, deploy와 release 금지

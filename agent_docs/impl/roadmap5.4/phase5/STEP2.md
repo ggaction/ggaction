@@ -10,8 +10,8 @@
 - [x] Versioned v4 route oracle and terminal/open route mocks
 - [x] Fixed-task regression and fresh-query closure
 - [x] Package, browser, docs, contract and full repository validation
-- [ ] Exact v4 candidate/plan/cost freeze
-- [ ] R54-P5-F paid authorization Gate preparation
+- [x] Exact v4 candidate/plan/cost freeze — candidate `4eb8ce78`, plan `68006c3b`
+- [x] R54-P5-F paid authorization Gate preparation — [`GATE_F.md`](./GATE_F.md)
 
 ## 구현 순서
 

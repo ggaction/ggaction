@@ -7,6 +7,7 @@ import test from "node:test";
 import { searchGgaction } from "../../knowledge/task-resolver.js";
 import {
   evaluateSubmissionV4,
+  loadPaidSmokePlanV4,
   loadRouteOracleV4,
   preflightPaidSmokeToolsV4,
   projectedRequestInputTokens,
@@ -127,6 +128,34 @@ test("freezes terminal and open decisions in the current paid-smoke route oracle
       ["search_ggaction", "read_mcp_resources", "submit_result"]
     ]
   ]);
+});
+
+test("freezes the exact v4 paid-smoke candidate, plan, source trees, and cost envelope", async () => {
+  const plan = await loadPaidSmokePlanV4();
+  assert.equal(plan.id, "compact-authoring-paid-smoke-v4");
+  assert.equal(plan.requiredGate, "R54-P5-F");
+  assert.equal(
+    plan.productCandidateCommit,
+    "4eb8ce78b705c160394e0a0e0bafc557f54008c0"
+  );
+  assert.equal(
+    plan.planSha256,
+    "68006c3b61751108eb91a75a4a8eb5f4a93862a00762efa95d22340673bf7228"
+  );
+  assert.equal(
+    plan.routeOracleSha256,
+    "1b9e7adeb8f29d3f1f43818082ac74beff76c44c533c0d7076b70f3265ce48e8"
+  );
+  assert.equal(plan.runOrder.length, 16);
+  assert.equal(plan.costProjection.expectedModelCallsIfFirstPass, 37);
+  assert.equal(plan.costProjection.expectedUsd, 1.152);
+  assert.equal(plan.costProjection.calculatedMaximumUsd, 2.496);
+  assert.equal(plan.limits.hardCostUsd, 3);
+  assert.deepEqual(plan.sourceTrees, {
+    src: "3ed263f6d92164e5ebc276b3f7db6a4dc74ad370",
+    types: "5cc5082ec2000ed8c89abfd4ee2004bccd3c40b1",
+    knowledge: "d98fc7e277099bca443c43b2d2e9cd45ec982076"
+  });
 });
 
 test("preserves all three historical paid attempts byte-for-byte", async () => {
