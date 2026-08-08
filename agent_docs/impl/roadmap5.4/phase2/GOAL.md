@@ -19,7 +19,7 @@ runtime operation으로 덮는 bounded task packet을 만든다. 지원하지 �
 - [x] 생성된 unique call 213개를 current TypeScript declarations로 compile
 - [x] Packet 최대 1,980 bytes, 중앙값 1,109 bytes
 - [x] Credential reads, external calls와 spend 0 / 0 / $0
-- [ ] R54-P2-A explicit approval
+- [x] R54-P2-A explicit approval — 2026-08-08
 
 ## 결과물
 

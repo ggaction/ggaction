@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 이 Gate는 compact cards를 query에 맞는 ordered task packet으로 조합하는 resolver를 승인받는다. 승인 전에는 MCP,
 package/dependency, public docs fallback와 evaluation corpus를 구현하지 않는다.
@@ -90,3 +90,8 @@ release는 승인하지 않는다.
 
 - Implementation review target: `9a7d35c9dec63c5f45a7d86ea4474f1747c8654b`
 - Remote branch: `codex/roadmap5-4-compact-knowledge`
+
+## Approval record
+
+- 2026-08-08: 사용자가 implementation review target을 승인하고 Phase 3 구현 진행을 지시했다.
+- 이 승인은 Phase 3 범위만 연다. Phase 4 corpus, credential read, external model call과 비용 지출은 계속 차단한다.

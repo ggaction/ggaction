@@ -13,7 +13,7 @@
 - [x] Focused contract tests pass
 - [x] Cumulative contract suite recorded in Gate package — 175 / 175 pass
 - [x] Review target committed and pushed — `9a7d35c9dec63c5f45a7d86ea4474f1747c8654b`
-- [ ] R54-P2-A user approval
+- [x] R54-P2-A user approval — 2026-08-08
 
 ## Resolution flow
 
