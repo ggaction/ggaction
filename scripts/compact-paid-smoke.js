@@ -22,7 +22,7 @@ export const root = fileURLToPath(new URL("../", import.meta.url));
 export const paidSmokeRoot = path.join(
   root,
   "evaluation",
-  "compact-authoring-paid-smoke"
+  "compact-authoring-paid-smoke-v2"
 );
 export const paidSmokePlanFile = path.join(paidSmokeRoot, "PLAN.json");
 const paidSmokeGateFile = path.join(
@@ -30,8 +30,8 @@ const paidSmokeGateFile = path.join(
   "agent_docs",
   "impl",
   "roadmap5.4",
-  "phase4",
-  "GATE_D.md"
+  "phase5",
+  "GATE_B.md"
 );
 const execFile = promisify(execFileCallback);
 const generatedProgramHarness = path.join(
@@ -121,8 +121,8 @@ function planCost(plan) {
 function assertPlanShape(plan) {
   if (
     plan.schemaVersion !== 1 ||
-    plan.id !== "compact-authoring-paid-smoke-v1" ||
-    plan.requiredGate !== "R54-P4-D"
+    plan.id !== "compact-authoring-paid-smoke-v2" ||
+    plan.requiredGate !== "R54-P5-B"
   ) {
     throw new Error("Paid smoke plan identity is invalid.");
   }

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
@@ -23,6 +24,10 @@ function usage(input = 100, output = 50) {
   };
 }
 
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
 function histogramSource() {
   return [
     'import { chart } from "ggaction";',
@@ -40,8 +45,9 @@ function histogramSource() {
 
 test("freezes the exact approved paid-smoke matrix and cost ceiling", async () => {
   const plan = await loadPaidSmokePlan();
-  assert.equal(plan.productCandidateCommit, "b1bb16c600ef0eea80729570b12b96652060644f");
-  assert.equal(plan.requiredGate, "R54-P4-D");
+  assert.equal(plan.id, "compact-authoring-paid-smoke-v2");
+  assert.equal(plan.productCandidateCommit, "6ed5af76c80e56c5a3cde833c5a702de183e4d7a");
+  assert.equal(plan.requiredGate, "R54-P5-B");
   assert.deepEqual(plan.conditions.map(condition => condition.id), ["A", "B", "C", "D"]);
   assert.deepEqual(plan.tasks.map(task => [task.id, task.stratum, task.role]), [
     ["repair-val-histogram", "simple", "supported"],
@@ -59,6 +65,22 @@ test("freezes the exact approved paid-smoke matrix and cost ceiling", async () =
   assert.equal(plan.limits.requestTokenEstimateBytesPerToken, 1);
   assert.equal(plan.costProjection.expectedUsd, 1.152);
   assert.equal(plan.costProjection.calculatedMaximumUsd, 2.496);
+});
+
+test("preserves the first paid attempt and its approved plan byte-for-byte", async () => {
+  const historicalRoot = path.join(root, "evaluation", "compact-authoring-paid-smoke");
+  const [plan, result] = await Promise.all([
+    readFile(path.join(historicalRoot, "PLAN.json")),
+    readFile(path.join(historicalRoot, "results", "IN_PROGRESS.json"))
+  ]);
+  assert.equal(
+    sha256(plan),
+    "95010b28aacb596f18398a9e259ed9bec1de9280e78ccd2316a525a73f08bc54"
+  );
+  assert.equal(
+    sha256(result),
+    "a6176c64010795da419cc6f49c4cec645f95fdfdfb938e98c0f216a441dbb745"
+  );
 });
 
 test("preflights every model-visible schema against the provider subset", async () => {
