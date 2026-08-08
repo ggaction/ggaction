@@ -6,6 +6,8 @@
 
 Attempt 2 evidence: [`ATTEMPT2.md`](./ATTEMPT2.md).
 
+Verified diagnosis and review checkpoint: `b3f1d47064efd31a3cfdb7676f0e070183132839`.
+
 ## 결정이 필요한 이유
 
 Attempt 2는 actual provider input 2,096 tokens와 `$0.006121`만 사용했지만 raw HTTP request bytes를 billable tokens로
