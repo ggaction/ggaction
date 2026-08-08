@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Verified runner checkpoint: `9a51829857fb3682e9084a30809962c5f35fbbd2`.
 
@@ -122,4 +122,6 @@ documentation deployment 또는 release를 열지 않는다.
 
 ## Approval record
 
-- Pending user review.
+- 2026-08-08: 사용자가 frozen candidate `b1bb16c6`, plan SHA-256 `95010b28…`, 16 task-runs,
+  최대 48 Responses API requests와 `$3.00` hard cap을 명시적으로 승인했다.
+- 이 승인은 paid smoke만 열며 full evaluation과 integration/release 범위는 열지 않는다.

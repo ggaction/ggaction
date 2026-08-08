@@ -53,7 +53,7 @@ render가 모두 생성되는지 검증한다.
 - [x] Full regression suite와 cumulative tests — 2,091 / 2,091, docs 45 / 45, package/install pass
 - [x] Paid smoke runner/plan dry-run — 16 / 16 routes, external calls/spend 0 / $0
 - [x] Replacement candidate와 Gate R54-P4-D checkpoint — candidate `b1bb16c6`, runner `9a518298`
-- [ ] User reapproval
+- [x] User reapproval — R54-P4-D approved 2026-08-08
 
 R54-P4-C가 승인한 model, settings, 네 task identity, 16-run count와 `$3.00` hard cap은 바꾸지 않는다. 다만 product
 candidate hash가 달라지므로 R54-P4-D가 승인되기 전까지 credential read, external model call와 spend는 계속
