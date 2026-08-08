@@ -8,15 +8,15 @@ Phase 2의 deterministic task packet을 설치된 npm package의 local stdio MCP
 
 ## 진행 상태
 
-- [ ] Direct adapter와 MCP tool result의 byte equality
-- [ ] 정확히 한 개의 model-visible tool `search_ggaction({ query })`
-- [ ] Overview, action card, task recipe와 bounded docs resources
-- [ ] Resolved packet에는 docs fallback 0, unresolved packet에만 bounded fallback
-- [ ] Installed package에서 stdio initialize/list/call/read 검증
-- [ ] Chart execution, arbitrary file/network/code access와 telemetry 없음
-- [ ] Browser entry dependency graph에 MCP/Node knowledge module 없음
-- [ ] Phase 0 same-package ceiling 충족
-- [ ] Public docs, generated LLM routes와 exact signature artifact 동기화
+- [x] Direct adapter와 MCP tool result의 byte equality
+- [x] 정확히 한 개의 model-visible tool `search_ggaction({ query })`
+- [x] Overview, action card, task recipe와 bounded docs resources
+- [x] Resolved packet에는 docs fallback 0, unresolved packet에만 bounded fallback
+- [x] Installed package에서 stdio initialize/list/call/read 검증
+- [x] Chart execution, arbitrary file/network/code access와 telemetry 없음
+- [x] Browser entry dependency graph에 MCP/Node knowledge module 없음
+- [x] Phase 0 same-package ceiling 충족
+- [x] Public docs, generated LLM routes와 exact signature artifact 동기화
 - [ ] R54-P3-A explicit approval
 
 ## Hard budgets

@@ -2,17 +2,17 @@
 
 ## 진행 상태
 
-- [ ] MCP SDK/runtime dependency를 production manifest에 고정
-- [ ] Shared direct serializer 구현
-- [ ] Local stdio server와 `ggaction-mcp` executable 구현
-- [ ] Resource URI와 bounded read contract 구현
-- [ ] Unresolved-only docs fallback routing 구현
-- [ ] Focused direct/server/resource tests 구현
-- [ ] Installed package consumer에서 실제 child process 검증
-- [ ] Package and browser budgets 검증
-- [ ] Public docs와 generated artifacts 갱신
-- [ ] Cumulative tests와 Gate evidence 기록
-- [ ] Review target commit/push
+- [x] MCP SDK/runtime dependency를 production manifest에 고정 — `@modelcontextprotocol/sdk@1.30.0`
+- [x] Shared direct serializer 구현
+- [x] Local stdio server와 `ggaction-mcp` executable 구현
+- [x] Resource URI와 bounded read contract 구현
+- [x] Unresolved-only docs fallback routing 구현
+- [x] Focused direct/server/resource tests 구현
+- [x] Installed package consumer에서 실제 child process 검증
+- [x] Package and browser budgets 검증
+- [x] Public docs와 generated artifacts 갱신
+- [x] Cumulative tests와 Gate evidence 기록
+- [x] Review target commit/push — `bde05166e16fe08fca6fa3109d9761215ad44f92`
 - [ ] R54-P3-A user approval
 
 ## 구현 흐름
