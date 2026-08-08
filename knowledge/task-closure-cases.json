@@ -1,0 +1,306 @@
+{
+  "schemaVersion": 1,
+  "role": "resolver-design-fixtures-not-evaluation-corpus",
+  "cases": [
+    {
+      "id": "scatter-color-legend-svg",
+      "query": "scatter plot with a color legend at bottom as svg",
+      "constraints": ["chart.scatter", "encoding.color", "guide.legend", "layout.legend.bottom", "renderer.svg"],
+      "plan": [
+        { "id": "action.createScatterPlot", "options": ["x", "y", "color", "guides"] },
+        { "id": "action.legendBottom", "options": ["position"] },
+        { "id": "runtime.renderToSVG", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "moving-line-png",
+      "query": "moving average line chart with axes and export png",
+      "constraints": ["chart.line", "transform.window", "guide.axes", "renderer.png"],
+      "plan": [
+        { "id": "action.createWindowData", "options": ["id", "operations"] },
+        { "id": "action.createLinePlot", "options": ["x", "y", "guides"] },
+        { "id": "runtime.renderToPNG", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "histogram-color-pdf",
+      "query": "histogram with a color legend and axes as pdf",
+      "constraints": ["chart.histogram", "encoding.color", "guide.axes", "guide.legend", "renderer.pdf"],
+      "plan": [
+        { "id": "action.createHistogram", "options": ["field", "color", "guides"] },
+        { "id": "runtime.renderToPDF", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "binned-heatmap-png",
+      "query": "binned heatmap with color legend and axes as png",
+      "constraints": ["chart.heatmap", "transform.bin2d", "encoding.color", "guide.axes", "guide.legend", "renderer.png"],
+      "plan": [
+        { "id": "action.createHeatmap", "options": ["x", "y", "bin", "color", "guides"] },
+        { "id": "runtime.renderToPNG", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "parallel-style-svg",
+      "query": "parallel coordinates with color encoding, stroke dash encoding, axes, and legend as svg",
+      "constraints": ["chart.parallel", "encoding.color", "encoding.strokeDash", "guide.axes", "guide.legend", "renderer.svg"],
+      "plan": [
+        { "id": "action.createParallelCoordinates", "options": ["dimensions", "color", "strokeDash", "guides"] },
+        { "id": "runtime.renderToSVG", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "tick-angle-axis",
+      "query": "tick mark with x encoding, angle encoding, and x axis",
+      "constraints": ["mark.tick", "encoding.x", "encoding.angle", "guide.xAxis"],
+      "plan": [
+        { "id": "action.createTickMark", "options": [] },
+        { "id": "action.encodeX", "options": ["field"] },
+        { "id": "action.encodeAngle", "options": ["value"] },
+        { "id": "action.createXAxis", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "filter-scatter",
+      "query": "filter data then draw a scatter plot with axes",
+      "constraints": ["chart.scatter", "transform.filter", "guide.axes"],
+      "plan": [
+        { "id": "action.filterData", "options": ["id", "field", "predicate"] },
+        { "id": "action.createScatterPlot", "options": ["x", "y", "guides"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "regression-data-line-svg",
+      "query": "create regression data and a line chart as svg",
+      "constraints": ["chart.line", "transform.regression", "renderer.svg"],
+      "plan": [
+        { "id": "action.createRegressionData", "options": ["id", "x", "y"] },
+        { "id": "action.createLinePlot", "options": ["x", "y"] },
+        { "id": "runtime.renderToSVG", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "scatter-regression",
+      "query": "scatter plot with a regression line",
+      "constraints": ["chart.scatter", "statistics.regression"],
+      "plan": [
+        { "id": "action.createScatterPlot", "options": ["x", "y"] },
+        { "id": "action.createRegression", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "box-axes",
+      "query": "box plot with axes",
+      "constraints": ["chart.box", "guide.axes"],
+      "plan": [
+        { "id": "action.createBoxPlot", "options": ["guides"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "violin-legend",
+      "query": "violin plot with legend",
+      "constraints": ["chart.violin", "guide.legend"],
+      "plan": [
+        { "id": "action.createViolinPlot", "options": ["x", "y", "guides"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "density-axis",
+      "query": "density plot with x axis",
+      "constraints": ["chart.density", "guide.xAxis"],
+      "plan": [
+        { "id": "action.encodeDensity", "options": ["field"] },
+        { "id": "action.createXAxis", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "line-error-band",
+      "query": "line chart with an error band",
+      "constraints": ["chart.line", "statistics.errorBand"],
+      "plan": [
+        { "id": "action.createLinePlot", "options": ["x", "y"] },
+        { "id": "action.createErrorBand", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "text-label-layout",
+      "query": "text mark with label collision avoidance",
+      "constraints": ["mark.text", "layout.labels"],
+      "plan": [
+        { "id": "action.createTextMark", "options": [] },
+        { "id": "action.layoutLabels", "options": ["axis"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "point-jitter",
+      "query": "point mark with point jitter to reduce overplotting",
+      "constraints": ["mark.point", "layout.jitter"],
+      "plan": [
+        { "id": "action.createPointMark", "options": [] },
+        { "id": "action.jitterPoints", "options": ["channel", "maxOffset"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "ordered-bars",
+      "query": "bar chart and sort categories",
+      "constraints": ["chart.bar", "layout.categoryOrder"],
+      "plan": [
+        { "id": "action.createBarPlot", "options": ["x", "y"] },
+        { "id": "action.orderCategories", "options": ["channel", "by"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "stored-highlight",
+      "query": "store selection then highlight marks",
+      "constraints": ["selection.store", "selection.highlight"],
+      "plan": [
+        { "id": "action.selectMarks", "options": ["id", "field", "op", "value"] },
+        { "id": "action.highlightMarks", "options": ["selection", "color"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "filter-marks",
+      "query": "retain matching marks with filter marks",
+      "constraints": ["selection.filter"],
+      "plan": [
+        { "id": "action.filterMarks", "options": ["field", "op", "value"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "facet-shared-guides",
+      "query": "small multiples with shared legend and axes",
+      "constraints": ["guide.axes", "guide.legend", "layout.facet"],
+      "plan": [
+        { "id": "action.facet", "options": ["field", "guides"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "horizontal-svg",
+      "query": "put charts side by side and export svg",
+      "constraints": ["composition.horizontal", "renderer.svg"],
+      "plan": [
+        { "id": "runtime.hconcat", "options": [] },
+        { "id": "runtime.renderToSVG", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "vertical-pdf",
+      "query": "stack charts vertically and export pdf",
+      "constraints": ["composition.vertical", "renderer.pdf"],
+      "plan": [
+        { "id": "runtime.vconcat", "options": [] },
+        { "id": "runtime.renderToPDF", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "polar-arc-guides",
+      "query": "arc mark with theta encoding, radius encoding, and automatic guides",
+      "constraints": ["mark.arc", "encoding.theta", "encoding.radius", "guide.all"],
+      "plan": [
+        { "id": "action.createArcMark", "options": [] },
+        { "id": "action.encodeR", "options": ["field"] },
+        { "id": "action.encodeTheta", "options": ["field"] },
+        { "id": "action.createGuides", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "bar-grid-title-png",
+      "query": "bar chart with grid lines and chart title as png",
+      "constraints": ["chart.bar", "guide.grid", "guide.title", "renderer.png"],
+      "plan": [
+        { "id": "action.createBarPlot", "options": ["x", "y"] },
+        { "id": "action.createGrid", "options": [] },
+        { "id": "action.createTitle", "options": ["text"] },
+        { "id": "runtime.renderToPNG", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "geo-unresolved",
+      "query": "map chart as svg",
+      "constraints": ["renderer.svg", "unsupported.geo"],
+      "plan": [
+        { "id": "runtime.renderToSVG", "options": [] }
+      ],
+      "unresolved": ["unsupported.geo"]
+    },
+    {
+      "id": "generic-chart-unresolved",
+      "query": "make a chart",
+      "constraints": [],
+      "plan": [],
+      "unresolved": ["chart.type"]
+    },
+    {
+      "id": "exact-legend-border",
+      "query": "editLegendBorder",
+      "constraints": ["action.editLegendBorder"],
+      "plan": [
+        { "id": "exact.editLegendBorder", "options": ["border"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "exact-log-scale",
+      "query": "createScale with log scale",
+      "constraints": ["scale.log", "action.createScale"],
+      "plan": [
+        { "id": "exact.createScale", "options": ["id", "type"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "scatter-canvas",
+      "query": "point chart and render to canvas",
+      "constraints": ["chart.scatter", "renderer.canvas"],
+      "plan": [
+        { "id": "action.createScatterPlot", "options": ["x", "y"] },
+        { "id": "runtime.render", "options": [] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "time-unit-bars",
+      "query": "month bucket then bar chart with axes",
+      "constraints": ["chart.bar", "transform.timeUnit", "guide.axes"],
+      "plan": [
+        { "id": "action.createTimeUnitData", "options": ["id", "field", "unit", "as"] },
+        { "id": "action.createBarPlot", "options": ["x", "y", "guides"] }
+      ],
+      "unresolved": []
+    },
+    {
+      "id": "error-bars",
+      "query": "bar chart with error bars and y axis",
+      "constraints": ["chart.bar", "statistics.errorBar", "guide.yAxis"],
+      "plan": [
+        { "id": "action.createBarPlot", "options": ["x", "y"] },
+        { "id": "action.createErrorBar", "options": [] },
+        { "id": "action.createYAxis", "options": [] }
+      ],
+      "unresolved": []
+    }
+  ]
+}
