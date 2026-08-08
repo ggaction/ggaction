@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Canonical result: [`ATTEMPT3.md`](./ATTEMPT3.md).
 
@@ -120,3 +120,10 @@ deploy와 release는 열지 않는다.
 - v3 overwrite/resume/retry와 additional spend
 - v4 paid-smoke execution과 complete evaluation
 - PR, merge, publish, deploy와 release
+
+## Approval record
+
+- 사용자가 2026-08-09에 Option A를 명시적으로 승인했다.
+- 이 승인은 schema v3 product knowledge, public docs, MCP와 별도 v4 route contract 구현 및 무비용 검증만 연다.
+- Credential read, external model call, additional spend, v3 retry/resume, v4 paid execution, full evaluation, PR, merge,
+  publish, deploy와 release는 계속 차단한다.

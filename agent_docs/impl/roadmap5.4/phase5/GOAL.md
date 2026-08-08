@@ -24,7 +24,9 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] R54-P5-D replacement v3 paid-smoke approval — 2026-08-09
 - [x] Valid small paid smoke execution — 16 / 16 complete, 7 / 16 strict pass
 - [x] Attempt 3 immutable result와 causal failure analysis
-- [ ] R54-P5-E candidate repair 또는 non-integration closeout decision
+- [x] R54-P5-E Option A knowledge/evaluation boundary repair approval — 2026-08-09
+- [ ] Schema v3 candidate repair and unpaid validation
+- [ ] R54-P5-F exact v4 paid-smoke authorization
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion
