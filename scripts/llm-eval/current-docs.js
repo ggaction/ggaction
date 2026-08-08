@@ -3,7 +3,10 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { hasCompositionLayoutIntent } from "../../mcp/knowledge.js";
+import {
+  hasCompositionLayoutIntent,
+  hasMultiLegendLayoutIntent
+} from "../../mcp/knowledge.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const docsRoot = path.join(root, "docs");
@@ -85,6 +88,11 @@ function searchDocumentationIndex(index, query, { limit = 6 } = {}) {
   }
   const queryTerms = terms(query);
   const compositionIntent = hasCompositionLayoutIntent(query);
+  const multiLegendIntent = hasMultiLegendLayoutIntent(query);
+  const bottomLegendIntent = multiLegendIntent &&
+    ["below", "bottom", "under"].some(term => queryTerms.includes(term));
+  const topLegendIntent = multiLegendIntent &&
+    ["above", "over", "top"].some(term => queryTerms.includes(term));
   return index
     .map((entry, order) => {
       const title = `${entry.pageTitle ?? ""} ${entry.sectionTitle ?? ""}`.toLowerCase();
@@ -95,6 +103,15 @@ function searchDocumentationIndex(index, query, { limit = 6 } = {}) {
         compositionIntent && /(?:^|\/)composition(?:\/|#|$)/u.test(entry.url)
           ? 100
           : 0
+      ) + (
+        bottomLegendIntent && entry.url === "/api/legends/#bottom-multi-legend-row"
+          ? 100
+          : topLegendIntent && entry.url === "/api/legends/#minimal-lifecycle-flow"
+            ? 100
+            : multiLegendIntent && !bottomLegendIntent && !topLegendIntent &&
+                entry.url === "/api/legends/"
+              ? 100
+              : 0
       );
       return { entry, order, score };
     })

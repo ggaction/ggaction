@@ -78,7 +78,7 @@ export function hasMultiLegendLayoutIntent(value) {
   const words = new Set(normalized.split(/\s+/u).filter(Boolean));
   const multiple = [...multiLegendTerms].some(word => words.has(word)) ||
     (words.has("color") && words.has("opacity"));
-  return words.has("legend") && multiple &&
+  return (words.has("legend") || words.has("guide")) && multiple &&
     [...legendLayoutTerms].some(word => words.has(word));
 }
 

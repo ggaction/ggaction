@@ -59,6 +59,27 @@ test("routes compound docs searches to the composition documentation", async () 
   }
 });
 
+test("routes compound docs searches to the matching multi-legend section", async () => {
+  const cases = [
+    [
+      "scatter plot color opacity legends bottom row aligned symbols labels Canvas",
+      "/api/legends/#bottom-multi-legend-row"
+    ],
+    [
+      "separate color and opacity guides below the plot in one aligned row",
+      "/api/legends/#bottom-multi-legend-row"
+    ],
+    [
+      "separate color and opacity legends above the plot with aligned labels",
+      "/api/legends/#minimal-lifecycle-flow"
+    ]
+  ];
+  for (const [query, route] of cases) {
+    const results = await searchCurrentDocs(query, { limit: 3 });
+    assert.equal(results[0].url, route, query);
+  }
+});
+
 test("normalizes API key files without exposing or weakening the token", () => {
   const token = `sk-${"x".repeat(40)}`;
 
