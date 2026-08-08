@@ -272,7 +272,9 @@ function resolveBottomLayout(program, bounds, canvas, config, width, count) {
     axisTitle?.type === "text" &&
     axisTitle.properties.y + axisTitle.properties.fontSize / 2 >= occupiedTop
   ) {
-    throw new Error("Bottom legend and x-axis title require more bottom-margin space.");
+    throw new Error(
+      "Bottom legend overlaps the x-axis title; increase the legend offset and reserve enough bottom-margin space."
+    );
   }
   const occupiedBottom = config.border === false
     ? blockBottom

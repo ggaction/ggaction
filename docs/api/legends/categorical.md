@@ -75,6 +75,12 @@ single-row layout anchored near the Canvas bottom edge. Supplying any grid
 control such as `columns`, `direction`, `offset`, `titlePosition`, or `itemGap`
 selects the general reserved-margin grid.
 
+For a bottom row beside an x-axis title, use the general grid and set the same
+`position`, `titlePosition`, `offset`, and `itemGap` on every block. The
+`offset` creates clearance from the plot and axis title; the bottom Canvas
+margin only reserves room to contain the resulting legend. See the complete
+[two-block example](../legends.md#bottom-multi-legend-row).
+
 Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns
 first. `align` positions the complete title-plus-items block within plot

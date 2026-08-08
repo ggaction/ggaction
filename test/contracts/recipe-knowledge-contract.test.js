@@ -190,6 +190,44 @@ test("publishes submit-ready Canvas and layout-safe composition guidance", async
   const compositionGuidance = composition.pitfalls.map(pitfall => `${pitfall.problem}\n${pitfall.fix}`).join("\n");
   assert.match(compositionGuidance, /parent composition cannot repair an automatic legend/u);
   assert.match(compositionGuidance, /Build every child independently/u);
+  assert.match(compositionGuidance, /do not provide concat, compose, or composeCharts methods/u);
+  assert.match(compositionGuidance, /Import hconcat or vconcat from ggaction/u);
+
+  const legend = document.recipes.find(recipe => recipe.id === "legend-title-lifecycle");
+  const legendGuidance = legend.pitfalls.map(pitfall => `${pitfall.problem}\n${pitfall.fix}`).join("\n");
+  assert.match(legendGuidance, /bottom Canvas margin alone does not move a bottom legend/u);
+  assert.match(legendGuidance, /same position, titlePosition, offset, and itemGap/u);
+  assert.match(legendGuidance, /52 pixels with a 120-pixel bottom margin/u);
+
+  const bottomRow = chart()
+    .createCanvas({
+      width: 640,
+      height: 400,
+      margin: { top: 30, right: 30, bottom: 120, left: 70 }
+    })
+    .createData({ values: [
+      { weight: 2200, mileage: 34, origin: "USA", power: 75 },
+      { weight: 2600, mileage: 29, origin: "Japan", power: 95 },
+      { weight: 3100, mileage: 24, origin: "Europe", power: 130 }
+    ] })
+    .createPointMark({ id: "points" })
+    .encodeX({ target: "points", field: "weight" })
+    .encodeY({ target: "points", field: "mileage" })
+    .encodeColor({ target: "points", field: "origin", fieldType: "nominal" })
+    .encodeOpacity({ target: "points", field: "power" })
+    .createGuides({ axes: { x: {}, y: {} }, legend: false })
+    .createLegend({
+      target: "points", channels: ["color"], position: "bottom",
+      titlePosition: "left", offset: 52, itemGap: 12
+    })
+    .createLegend({
+      target: "points", channels: ["opacity"], position: "bottom",
+      titlePosition: "left", offset: 52, itemGap: 12
+    });
+  assert.equal(bottomRow.guideConfigs.legend.color.offset, 52);
+  assert.equal(bottomRow.guideConfigs.legend.opacity.offset, 52);
+  assert.equal(bottomRow.graphicSpec.objects.colorLegendSymbols.items.length, 3);
+  assert.equal(bottomRow.graphicSpec.objects.opacityLegendSymbols.items.length, 5);
 });
 
 test("closes every frozen task from the exact delivered recipe payload", async () => {

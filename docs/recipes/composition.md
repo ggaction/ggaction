@@ -78,6 +78,10 @@ Every child and replacement must already have one complete materialized Canvas.
 - The ordered child programs
 - Stable child IDs only when later replacement must address a slot
 
+`hconcat` and `vconcat` are package functions imported from `ggaction`; they
+are not `ChartProgram` methods. There is no `chart().concat(...)`,
+`chart().compose(...)`, or `composeCharts(...)` API.
+
 ## The library infers
 
 - Parent Canvas dimensions from the child Canvases, gap, and padding

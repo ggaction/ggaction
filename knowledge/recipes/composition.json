@@ -59,6 +59,10 @@
   ],
   "pitfalls": [
     {
+      "problem": "ChartProgram instances do not provide concat, compose, or composeCharts methods for arranging complete children.",
+      "fix": "Import hconcat or vconcat from ggaction and call the selected package function with a programs array of complete child ChartPrograms."
+    },
+    {
       "problem": "There is no createRoseChart facade for a specialized radial child in a composition.",
       "fix": "Build the child with createArcMark, encodeTheta, encodeR, and encodeColor from the rose-chart recipe before composing it."
     },

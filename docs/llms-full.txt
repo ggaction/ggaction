@@ -2739,6 +2739,10 @@ Every child and replacement must already have one complete materialized Canvas.
 - The ordered child programs
 - Stable child IDs only when later replacement must address a slot
 
+`hconcat` and `vconcat` are package functions imported from `ggaction`; they
+are not `ChartProgram` methods. There is no `chart().concat(...)`,
+`chart().compose(...)`, or `composeCharts(...)` API.
+
 ## The library infers
 
 - Parent Canvas dimensions from the child Canvases, gap, and padding
@@ -9693,6 +9697,55 @@ if (!context) throw new Error("Missing #chart Canvas context.");
 render(program, context);
 ```
 
+## Bottom multi-legend row
+
+Bottom legends need two separate kinds of space: `offset` moves the row away
+from the plot and its x-axis title, while the Canvas bottom margin contains the
+row. Increasing the margin alone does not increase the separation. Give every
+legend in one row the same placement options:
+
+```javascript
+import { chart } from "ggaction";
+
+const bottomRow = chart()
+  .createCanvas({
+    width: 640,
+    height: 400,
+    margin: { top: 30, right: 30, bottom: 120, left: 70 }
+  })
+  .createData({ values: [
+    { weight: 2200, mileage: 34, origin: "USA", power: 75 },
+    { weight: 2600, mileage: 29, origin: "Japan", power: 95 },
+    { weight: 3100, mileage: 24, origin: "Europe", power: 130 }
+  ] })
+  .createPointMark({ id: "points" })
+  .encodeX({ target: "points", field: "weight" })
+  .encodeY({ target: "points", field: "mileage" })
+  .encodeColor({ target: "points", field: "origin", fieldType: "nominal" })
+  .encodeOpacity({ target: "points", field: "power" })
+  .createGuides({ axes: { x: {}, y: {} }, legend: false })
+  .createLegend({
+    target: "points",
+    channels: ["color"],
+    position: "bottom",
+    titlePosition: "left",
+    offset: 52,
+    itemGap: 12
+  })
+  .createLegend({
+    target: "points",
+    channels: ["opacity"],
+    position: "bottom",
+    titlePosition: "left",
+    offset: 52,
+    itemGap: 12
+  });
+```
+
+The explicit channel lists create two blocks instead of one inferred guide.
+Matching placement options keep their titles, symbols, label gaps, and lane
+baseline aligned from left to right.
+
 ## Supported legend families
 
 | Legend family | Supported marks | Channels |
@@ -9720,8 +9773,9 @@ Standalone stroke-width legends use the right side. `editLegend` supports
 `title`, `count`, `labels`, and `titleStyle`; layout, symbol, border, gradient,
 and item-gap edits remain unsupported for that sampled block. Edit its
 quantitative mapping through `editScale`.
-Right-side layout requires sufficient right margin; bottom layout requires
-sufficient bottom margin; top layout requires enough top margin for its title,
+Right-side layout requires sufficient right margin. Bottom layout requires an
+offset that clears x-axis guides plus sufficient bottom margin for the legend
+block itself. Top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
 instead of resizing the Canvas or dropping symbol layers.
 
@@ -9801,6 +9855,12 @@ For compatibility, `createLegend({ position: "bottom" })` keeps the compact
 single-row layout anchored near the Canvas bottom edge. Supplying any grid
 control such as `columns`, `direction`, `offset`, `titlePosition`, or `itemGap`
 selects the general reserved-margin grid.
+
+For a bottom row beside an x-axis title, use the general grid and set the same
+`position`, `titlePosition`, `offset`, and `itemGap` on every block. The
+`offset` creates clearance from the plot and axis title; the bottom Canvas
+margin only reserves room to contain the resulting legend. See the complete
+[two-block example](../legends.md#bottom-multi-legend-row).
 
 Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns

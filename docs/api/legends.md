@@ -54,6 +54,55 @@ if (!context) throw new Error("Missing #chart Canvas context.");
 render(program, context);
 ```
 
+## Bottom multi-legend row
+
+Bottom legends need two separate kinds of space: `offset` moves the row away
+from the plot and its x-axis title, while the Canvas bottom margin contains the
+row. Increasing the margin alone does not increase the separation. Give every
+legend in one row the same placement options:
+
+```javascript
+import { chart } from "ggaction";
+
+const bottomRow = chart()
+  .createCanvas({
+    width: 640,
+    height: 400,
+    margin: { top: 30, right: 30, bottom: 120, left: 70 }
+  })
+  .createData({ values: [
+    { weight: 2200, mileage: 34, origin: "USA", power: 75 },
+    { weight: 2600, mileage: 29, origin: "Japan", power: 95 },
+    { weight: 3100, mileage: 24, origin: "Europe", power: 130 }
+  ] })
+  .createPointMark({ id: "points" })
+  .encodeX({ target: "points", field: "weight" })
+  .encodeY({ target: "points", field: "mileage" })
+  .encodeColor({ target: "points", field: "origin", fieldType: "nominal" })
+  .encodeOpacity({ target: "points", field: "power" })
+  .createGuides({ axes: { x: {}, y: {} }, legend: false })
+  .createLegend({
+    target: "points",
+    channels: ["color"],
+    position: "bottom",
+    titlePosition: "left",
+    offset: 52,
+    itemGap: 12
+  })
+  .createLegend({
+    target: "points",
+    channels: ["opacity"],
+    position: "bottom",
+    titlePosition: "left",
+    offset: 52,
+    itemGap: 12
+  });
+```
+
+The explicit channel lists create two blocks instead of one inferred guide.
+Matching placement options keep their titles, symbols, label gaps, and lane
+baseline aligned from left to right.
+
 ## Supported legend families
 
 <!-- action-capabilities:legends:start -->
@@ -85,8 +134,9 @@ Standalone stroke-width legends use the right side. `editLegend` supports
 `title`, `count`, `labels`, and `titleStyle`; layout, symbol, border, gradient,
 and item-gap edits remain unsupported for that sampled block. Edit its
 quantitative mapping through `editScale`.
-Right-side layout requires sufficient right margin; bottom layout requires
-sufficient bottom margin; top layout requires enough top margin for its title,
+Right-side layout requires sufficient right margin. Bottom layout requires an
+offset that clears x-axis guides plus sufficient bottom margin for the legend
+block itself. Top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
 instead of resizing the Canvas or dropping symbol layers.
 

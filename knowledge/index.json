@@ -6,7 +6,7 @@
     "actionSourceSha256": "2245022872d3131c15a7f539ee66ff9e79e2e7a6c1f0a04aee0f799ec830cc42",
     "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
     "recipeCount": 33,
-    "recipeSourceSha256": "61f22ace45d3af9071dd01aa6ed8f23d5ea765c4cb4455b4c9c5f52a54d2f48f",
+    "recipeSourceSha256": "c97b2c32c85a05c83e09be9d4260571c94f54e6ac51ffd52541fc122d0057975",
     "recipeCoverageSha256": "13d9ee4ea560b4d01ae94ed9ac77828d82a8d52989051f51637027500071dc19"
   },
   "actions": [
@@ -21427,6 +21427,10 @@
       ],
       "pitfalls": [
         {
+          "problem": "ChartProgram instances do not provide concat, compose, or composeCharts methods for arranging complete children.",
+          "fix": "Import hconcat or vconcat from ggaction and call the selected package function with a programs array of complete child ChartPrograms."
+        },
+        {
           "problem": "There is no createRoseChart facade for a specialized radial child in a composition.",
           "fix": "Build the child with createArcMark, encodeTheta, encodeR, and encodeColor from the rose-chart recipe before composing it."
         },
@@ -22767,6 +22771,10 @@
         }
       ],
       "pitfalls": [
+        {
+          "problem": "Increasing the bottom Canvas margin alone does not move a bottom legend away from an x-axis title.",
+          "fix": "Give every legend in the row the same position, titlePosition, offset, and itemGap; use an explicit offset that clears the axis title, such as 52 pixels with a 120-pixel bottom margin on a 640 by 400 Canvas."
+        },
         {
           "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
           "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."

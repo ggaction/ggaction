@@ -240,6 +240,15 @@ test("rematerializes bottom composite layout and fails atomically when cramped",
   assert.equal(before.graphicSpec.objects.canvas.properties.width, 500);
 });
 
+test("tells bottom legend authors to change offset when an x-axis title overlaps", () => {
+  const titled = createBottomSeriesLine().createXAxisTitle();
+
+  assert.throws(
+    () => titled.createLegend({ position: "bottom", offset: 8 }),
+    /increase the legend offset and reserve enough bottom-margin space/u
+  );
+});
+
 test("keeps color and shape point composites compatible with top grids", () => {
   const before = createTopPointSeries().createLegend({
     position: "top",

@@ -155,6 +155,10 @@
   ],
   "pitfalls": [
     {
+      "problem": "Increasing the bottom Canvas margin alone does not move a bottom legend away from an x-axis title.",
+      "fix": "Give every legend in the row the same position, titlePosition, offset, and itemGap; use an explicit offset that clears the axis title, such as 52 pixels with a 120-pixel bottom margin on a 640 by 400 Canvas."
+    },
+    {
       "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
       "fix": "Pass the exact public identifier named by the action signature instead of relying on first-resource selection."
     }
