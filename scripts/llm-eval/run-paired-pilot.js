@@ -21,10 +21,17 @@ const outputBoundary = path.join(root, ".artifacts", "llm-eval", "paired-pilot")
 const approvalBoundary = path.join(root, ".artifacts", "llm-eval", "approvals");
 const allowedPostCandidateFiles = new Set([
   "agent_docs/impl/roadmap5.3/ROADMAP.md",
-  "agent_docs/impl/roadmap5.3/phase6/GATE_T.md",
+  "agent_docs/impl/roadmap5.3/phase6/GATE_U.md",
   "agent_docs/impl/roadmap5.3/phase6/GOAL.md"
 ]);
-const currentPaidGate = "R53-P6-T";
+const currentPaidGate = Object.freeze({
+  id: "R53-P6-U",
+  taskIds: Object.freeze(["cars-bottom-color-opacity-legends"]),
+  repetitionsPerTask: 1,
+  maximumRuns: 4,
+  hardSpendCapUsd: 1,
+  orderSeed: "r53-p6-u-20260808"
+});
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
@@ -51,7 +58,10 @@ export function assertPairedPilotApproval({ approval, plan, loadedCorpus }) {
   invariant(plan.paidPilot.externalModelCallsAllowed === false, "Source plan must not authorize external calls.");
   invariant(plan.paidPilot.approvedSpendUsd === 0, "Source plan must retain zero approved spend.");
   invariant(approval?.schemaVersion === 1, "Paired pilot approval schemaVersion must be 1.");
-  invariant(approval.gate === currentPaidGate && approval.status === "approved", "Gate T approval is required.");
+  invariant(
+    approval.gate === currentPaidGate.id && approval.status === "approved",
+    `${currentPaidGate.id} approval is required.`
+  );
   for (const key of ["candidateCommit", "gateRecordCommit"]) {
     invariant(/^[0-9a-f]{40}$/u.test(approval[key]), `Approval ${key} must be an exact Git SHA.`);
   }
@@ -62,16 +72,36 @@ export function assertPairedPilotApproval({ approval, plan, loadedCorpus }) {
     "Paired pilot approval requires unique task IDs.");
   const knownTaskIds = new Set(loadedCorpus.corpus.tasks.map(task => task.id));
   invariant(approval.taskIds.every(id => knownTaskIds.has(id)), "Paired pilot approval contains an unknown task ID.");
+  invariant(
+    JSON.stringify(approval.taskIds) === JSON.stringify(currentPaidGate.taskIds),
+    `${currentPaidGate.id} must cover only its exact approved task.`
+  );
   invariant(Number.isInteger(approval.repetitionsPerTask) && approval.repetitionsPerTask > 0,
     "Paired pilot repetitionsPerTask must be positive.");
+  invariant(
+    approval.repetitionsPerTask === currentPaidGate.repetitionsPerTask,
+    `${currentPaidGate.id} repetitions do not match the approved scope.`
+  );
   invariant(approval.maximumRuns === approval.conditions.length * approval.taskIds.length * approval.repetitionsPerTask,
     "Paired pilot maximumRuns must equal the approved condition/task/repetition product.");
+  invariant(
+    approval.maximumRuns === currentPaidGate.maximumRuns,
+    `${currentPaidGate.id} maximum runs do not match the approved scope.`
+  );
   invariant(Number.isFinite(approval.hardSpendCapUsd) && approval.hardSpendCapUsd > 0,
     "Paired pilot hard spend cap must be positive.");
+  invariant(
+    approval.hardSpendCapUsd === currentPaidGate.hardSpendCapUsd,
+    `${currentPaidGate.id} hard spend cap does not match the approved scope.`
+  );
   invariant(approval.credentialReadsAllowed === true && approval.externalModelCallsAllowed === true,
     "Paired pilot approval must explicitly authorize credential reads and external model calls.");
   invariant(typeof approval.orderSeed === "string" && approval.orderSeed.length >= 8,
     "Paired pilot approval requires an order seed.");
+  invariant(
+    approval.orderSeed === currentPaidGate.orderSeed,
+    `${currentPaidGate.id} order seed does not match the approved scope.`
+  );
   return true;
 }
 
@@ -99,7 +129,10 @@ export function assertPairedPilotRunCanContinue(result, plan) {
 
 export function assertCandidateTree({ approval, cwd = root }) {
   const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd, encoding: "utf8" }).trim();
-  invariant(head === approval.gateRecordCommit, "Current HEAD is not the approved Gate T record commit.");
+  invariant(
+    head === approval.gateRecordCommit,
+    `Current HEAD is not the approved ${currentPaidGate.id} record commit.`
+  );
   const status = execFileSync("git", ["status", "--porcelain", "--untracked-files=no"], { cwd, encoding: "utf8" }).trim();
   invariant(status === "", "Tracked files must be clean before a paid pilot.");
   execFileSync("git", ["cat-file", "-e", `${approval.candidateCommit}^{commit}`], { cwd, stdio: "pipe" });
@@ -108,7 +141,7 @@ export function assertCandidateTree({ approval, cwd = root }) {
     encoding: "utf8"
   }).trim().split("\n").filter(Boolean);
   invariant(changed.every(file => allowedPostCandidateFiles.has(file)),
-    "Only Gate T approval records may differ from the candidate commit.");
+    `Only ${currentPaidGate.id} approval records may differ from the candidate commit.`);
   return Object.freeze({ head, changed: Object.freeze(changed) });
 }
 

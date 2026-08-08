@@ -16,10 +16,10 @@ async function fixtures() {
     loadGeneralizationCorpus(),
     readFile(new URL("../llm/paired-evaluation-plan.json", import.meta.url), "utf8").then(JSON.parse)
   ]);
-  const taskIds = loadedCorpus.corpus.tasks.slice(0, 3).map(task => task.id);
+  const taskIds = ["cars-bottom-color-opacity-legends"];
   const approval = {
     schemaVersion: 1,
-    gate: "R53-P6-T",
+    gate: "R53-P6-U",
     status: "approved",
     candidateCommit: "a".repeat(40),
     gateRecordCommit: "b".repeat(40),
@@ -27,16 +27,16 @@ async function fixtures() {
     conditions: ["A", "B", "C", "D"],
     taskIds,
     repetitionsPerTask: 1,
-    maximumRuns: taskIds.length * 4,
-    hardSpendCapUsd: 2,
+    maximumRuns: 4,
+    hardSpendCapUsd: 1,
     credentialReadsAllowed: true,
     externalModelCallsAllowed: true,
-    orderSeed: "paired-pilot-contract"
+    orderSeed: "r53-p6-u-20260808"
   };
   return { loadedCorpus, plan, approval };
 }
 
-test("requires an explicit zero-to-positive Gate T approval transition", async () => {
+test("requires the exact explicit zero-to-positive Gate U approval transition", async () => {
   const { loadedCorpus, plan, approval } = await fixtures();
   assert.equal(assertPairedPilotApproval({ approval, plan, loadedCorpus }), true);
   for (const [field, value] of [
@@ -50,6 +50,22 @@ test("requires an explicit zero-to-positive Gate T approval transition", async (
   assert.throws(() => assertPairedPilotApproval({
     approval: { ...approval, hardSpendCapUsd: 0 }, plan, loadedCorpus
   }), /spend cap/u);
+  for (const patch of [
+    { taskIds: ["cars-weight-horsepower-sized-scatter"] },
+    { repetitionsPerTask: 2, maximumRuns: 8 },
+    { maximumRuns: 8 },
+    { hardSpendCapUsd: 2 },
+    { orderSeed: "different-order" }
+  ]) {
+    assert.throws(
+      () => assertPairedPilotApproval({
+        approval: { ...approval, ...patch },
+        plan,
+        loadedCorpus
+      }),
+      /R53-P6-U|maximumRuns|spend cap|order seed/iu
+    );
+  }
 });
 
 test("creates a deterministic complete block-randomized pilot order", async () => {
