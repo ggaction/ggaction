@@ -4,9 +4,11 @@
 
 `approved`
 
-사용자가 2026-08-08 별도 비용 승인을 했다. Gate S, T와 U approval을 재사용하지 않고 이 Gate의 exact local approval
-artifact만으로 credential read와 OpenAI Responses API 호출을 허용한다. 승인 기록을 원격 checkpoint로 고정하고 모든
-무과금 preflight를 통과하기 전까지 credential을 읽지 않는다.
+사용자가 2026-08-08 별도 비용 승인을 했고 exact guarded evaluation을 실행했다. 실행은 136 / 136 runs를 안전하게
+완료하고 `$3.5252135`를 사용했다. C와 D는 correctness guards를 통과했지만 efficiency threshold를 0 / 3 통과해 final
+acceptance가 모두 실패했다. Raw identity, 분석과 non-integration decision은
+[`PAIRED_FULL_EVALUATION_ANALYSIS.md`](./PAIRED_FULL_EVALUATION_ANALYSIS.md)에 고정한다. 이 승인으로 추가 유료 실행이나
+PR/merge/publish/deploy를 허용하지 않는다.
 
 ## 한눈에 보는 제안
 
