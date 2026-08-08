@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { summarizePairedEvaluationResults } from "../../scripts/llm-eval/paired-summary.js";
+import {
+  evaluatePairedAcceptance,
+  summarizePairedEvaluationResults
+} from "../../scripts/llm-eval/paired-summary.js";
 
 const commit = "e".repeat(40);
 
@@ -13,6 +16,7 @@ function result({
   tokens = 100,
   calls = 2,
   cost = 0.01,
+  timeToValidMs = tokens * 2 - 1,
   forced = false,
   firstValid = valid,
   retrieval = condition !== "A"
@@ -43,6 +47,7 @@ function result({
       submissions: 1,
       taskLoopDurationMs: tokens * 2,
       endToEndDurationMs: tokens * 2 + 5,
+      timeToValidMs: valid ? timeToValidMs : null,
       estimatedCostUsd: cost,
       mcpOperations: { total: ["C", "D"].includes(condition) ? 1 : 0 }
     },
@@ -72,6 +77,8 @@ test("compares efficiency only for the same successful task and repetition", () 
   assert.equal(comparison.pairedCoverage, 1 / 3);
   assert.equal(comparison.metrics.totalTokens.meanDelta, -30);
   assert.equal(comparison.metrics.totalTokens.meanRelativeReduction, 0.3);
+  assert.equal(comparison.metrics.totalTokens.medianRelativeReduction, 0.3);
+  assert.equal(comparison.metrics.timeToValidMs.medianRelativeReduction, 60 / 199);
 });
 
 test("includes failed runs in accuracy and failure cost", () => {
@@ -103,7 +110,66 @@ test("groups repetitions under task-level uncertainty", () => {
   assert.equal(metric.pairedRunCount, 3);
   assert.equal(metric.taskCount, 2);
   assert.equal(metric.meanDelta, -27.5);
+  assert.equal(metric.medianRelativeReduction, (13 / 60 + 0.15) / 2);
   assert.deepEqual(metric.uncertainty95, second.comparisons["transport-b-vs-c"].metrics.totalTokens.uncertainty95);
+});
+
+test("applies the predeclared correctness and task-level median efficiency rule", () => {
+  const rows = [];
+  for (let task = 1; task <= 10; task += 1) {
+    const taskId = `task-${task}`;
+    rows.push(
+      result({ condition: "A", taskId, tokens: 100, calls: 2, timeToValidMs: 200 }),
+      result({ condition: "B", taskId, tokens: 75, calls: 2, timeToValidMs: 170 }),
+      result({ condition: "C", taskId, tokens: 70, calls: 1, timeToValidMs: 150 }),
+      result({ condition: "D", taskId, tokens: 95, calls: 2, timeToValidMs: 230 })
+    );
+  }
+  const summary = summarizePairedEvaluationResults(rows);
+  const mcp = evaluatePairedAcceptance(summary, { candidate: "C" });
+  assert.equal(mcp.accepted, true);
+  assert.equal(mcp.efficiencyThresholdsPassed, 3);
+  assert.deepEqual(mcp.efficiency.map(check => check.actual), [0.3, 0.5, 0.25]);
+
+  const combined = evaluatePairedAcceptance(summary, { candidate: "D" });
+  assert.equal(combined.accepted, false);
+  assert.equal(combined.efficiencyThresholdsPassed, 0);
+  assert.equal(combined.efficiency.find(check => check.metric === "timeToValidMs").noLargeRegression, false);
+});
+
+test("enforces low-baseline first-pass improvement and structured transport correctness", () => {
+  const lowFirstPassRows = [];
+  for (let task = 1; task <= 10; task += 1) {
+    const taskId = `low-first-${task}`;
+    lowFirstPassRows.push(
+      result({ condition: "A", taskId, firstValid: task > 2, tokens: 100, calls: 2, timeToValidMs: 200 }),
+      result({ condition: "B", taskId, tokens: 75, calls: 2, timeToValidMs: 170 }),
+      result({ condition: "C", taskId, firstValid: task > 2, tokens: 70, calls: 1, timeToValidMs: 150 })
+    );
+  }
+  const lowFirstPass = evaluatePairedAcceptance(summarizePairedEvaluationResults(lowFirstPassRows));
+  assert.equal(lowFirstPass.accepted, false);
+  assert.equal(
+    lowFirstPass.correctness.find(check => check.id === "first-submission-correctness-vs-docs").passed,
+    false
+  );
+
+  const transportRows = [];
+  for (let task = 1; task <= 10; task += 1) {
+    const taskId = `transport-${task}`;
+    const valid = task > 1;
+    transportRows.push(
+      result({ condition: "A", taskId, valid, tokens: 100, calls: 2, timeToValidMs: 200 }),
+      result({ condition: "B", taskId, tokens: 75, calls: 2, timeToValidMs: 170 }),
+      result({ condition: "C", taskId, valid, tokens: 70, calls: 1, timeToValidMs: 150 })
+    );
+  }
+  const transport = evaluatePairedAcceptance(summarizePairedEvaluationResults(transportRows));
+  assert.equal(transport.accepted, false);
+  assert.equal(
+    transport.correctness.find(check => check.id === "final-correctness-vs-structured-direct").passed,
+    false
+  );
 });
 
 test("rejects mixed commits and duplicate run identities", () => {

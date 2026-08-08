@@ -15,6 +15,25 @@ const efficiencyMetrics = Object.freeze([
   "endToEndDurationMs",
   "estimatedCostUsd"
 ]);
+const pairedEfficiencyMetrics = Object.freeze([
+  ...efficiencyMetrics,
+  "timeToValidMs"
+]);
+
+export const pairedAcceptanceThresholds = Object.freeze({
+  finalCorrectnessMaximumRegression: 0.02,
+  firstPassBaselineCutoff: 0.9,
+  firstPassRequiredImprovement: 0.1,
+  firstPassMaximumRegression: 0.02,
+  structuredFinalMaximumRegression: 0.02,
+  efficiency: Object.freeze({
+    totalTokens: 0.2,
+    modelCalls: 0.2,
+    timeToValidMs: 0.15
+  }),
+  minimumEfficiencyThresholdsPassed: 2,
+  maximumEfficiencyRegression: 0.05
+});
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
@@ -154,13 +173,15 @@ function metricComparison(successfulPairs, metric, label) {
     pairValues.filter(pair => Number.isFinite(pair.relativeReduction)),
     pair => pair.relativeReduction
   );
+  const taskRelativeReductions = [...reductionsByTask.values()].map(mean);
   return {
     direction: "right-minus-left",
     pairedRunCount: pairValues.length,
     taskCount: deltasByTask.size,
     meanDelta: mean([...deltasByTask.values()].map(mean)),
     medianDelta: median([...deltasByTask.values()].map(mean)),
-    meanRelativeReduction: mean([...reductionsByTask.values()].map(mean)),
+    meanRelativeReduction: mean(taskRelativeReductions),
+    medianRelativeReduction: median(taskRelativeReductions),
     uncertainty95: taskBootstrap(deltasByTask, `${label}:${metric}`)
   };
 }
@@ -182,7 +203,7 @@ function pairedComparison(pair, rows) {
     successfulPairs: successfulPairs.length,
     pairedCoverage: matchedKeys.length === 0 ? null : successfulPairs.length / matchedKeys.length,
     excludedFailedPairs: matchedKeys.length - successfulPairs.length,
-    metrics: Object.fromEntries(efficiencyMetrics.map(metric => [
+    metrics: Object.fromEntries(pairedEfficiencyMetrics.map(metric => [
       metric,
       metricComparison(successfulPairs, metric, pair.id)
     ]))
@@ -197,6 +218,9 @@ function validateRows(rows) {
   invariant(rows.every(row => row.schemaVersion === 2), "Paired summary requires result schemaVersion 2.");
   invariant(rows.every(row => efficiencyMetrics.every(metric => Number.isFinite(row.metrics?.[metric]) && row.metrics[metric] >= 0)),
     "Paired summary requires finite non-negative efficiency metrics.");
+  invariant(rows.every(row => !row.outcome.finalValid ||
+    (Number.isFinite(row.metrics?.timeToValidMs) && row.metrics.timeToValidMs >= 0)),
+  "Successful paired results require a finite non-negative timeToValidMs.");
   const commits = new Set(rows.map(row => row.knowledge.commit));
   invariant(commits.size === 1, "Paired summary cannot mix candidate commits.");
   const modelSettings = new Set(rows.map(row => JSON.stringify({
@@ -223,5 +247,76 @@ export function summarizePairedEvaluationResults(rows, { corpusSha256 = null } =
       conditionSummary(condition, rows.filter(row => row.condition === condition))
     ])),
     comparisons: Object.fromEntries(comparisonPairs.map(pair => [pair.id, pairedComparison(pair, rows)]))
+  });
+}
+
+function correctnessRate(summary, condition, stage) {
+  const rate = summary?.conditions?.[condition]?.stages?.[stage]?.rate;
+  invariant(Number.isFinite(rate), `Paired acceptance requires ${condition} ${stage}.`);
+  return rate;
+}
+
+export function evaluatePairedAcceptance(summary, { candidate = "C" } = {}) {
+  invariant(["C", "D"].includes(candidate), "Paired acceptance candidate must be C or D.");
+  const thresholds = pairedAcceptanceThresholds;
+  const baselineFinal = correctnessRate(summary, "A", "finalCorrectness");
+  const candidateFinal = correctnessRate(summary, candidate, "finalCorrectness");
+  const baselineFirst = correctnessRate(summary, "A", "firstSubmissionCorrectness");
+  const candidateFirst = correctnessRate(summary, candidate, "firstSubmissionCorrectness");
+  const requiredFirst = baselineFirst < thresholds.firstPassBaselineCutoff
+    ? baselineFirst + thresholds.firstPassRequiredImprovement
+    : baselineFirst - thresholds.firstPassMaximumRegression;
+  const correctness = [
+    Object.freeze({
+      id: "final-correctness-vs-docs",
+      actual: candidateFinal - baselineFinal,
+      minimum: -thresholds.finalCorrectnessMaximumRegression,
+      passed: candidateFinal >= baselineFinal - thresholds.finalCorrectnessMaximumRegression
+    }),
+    Object.freeze({
+      id: "first-submission-correctness-vs-docs",
+      actual: candidateFirst,
+      minimum: requiredFirst,
+      passed: candidateFirst >= requiredFirst
+    })
+  ];
+  if (candidate === "C") {
+    const structuredFinal = correctnessRate(summary, "B", "finalCorrectness");
+    correctness.push(Object.freeze({
+      id: "final-correctness-vs-structured-direct",
+      actual: candidateFinal - structuredFinal,
+      minimum: -thresholds.structuredFinalMaximumRegression,
+      passed: candidateFinal >= structuredFinal - thresholds.structuredFinalMaximumRegression
+    }));
+  }
+
+  const comparisonId = candidate === "C" ? "product-a-vs-c" : "product-a-vs-d";
+  const comparison = summary?.comparisons?.[comparisonId];
+  invariant(comparison?.matchedRuns > 0, `Paired acceptance requires ${comparisonId}.`);
+  const efficiency = Object.entries(thresholds.efficiency).map(([metric, minimum]) => {
+    const measured = comparison.metrics?.[metric]?.medianRelativeReduction;
+    invariant(Number.isFinite(measured), `Paired acceptance requires task-level median ${metric}.`);
+    return Object.freeze({
+      metric,
+      actual: measured,
+      minimum,
+      passedThreshold: measured >= minimum,
+      noLargeRegression: measured >= -thresholds.maximumEfficiencyRegression
+    });
+  });
+  const efficiencyThresholdsPassed = efficiency.filter(check => check.passedThreshold).length;
+  const accepted = correctness.every(check => check.passed) &&
+    efficiencyThresholdsPassed >= thresholds.minimumEfficiencyThresholdsPassed &&
+    efficiency.every(check => check.noLargeRegression);
+
+  return Object.freeze({
+    schemaVersion: 1,
+    candidate,
+    comparisonId,
+    thresholds,
+    correctness: Object.freeze(correctness),
+    efficiency: Object.freeze(efficiency),
+    efficiencyThresholdsPassed,
+    accepted
   });
 }
