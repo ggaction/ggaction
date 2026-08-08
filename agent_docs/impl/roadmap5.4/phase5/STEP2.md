@@ -3,13 +3,13 @@
 ## 진행 상태
 
 - [x] R54-P5-E Option A user approval — 2026-08-09
-- [ ] Authoring prerequisite closure contract
-- [ ] Terminal `unsupported` / open `unresolved` schema v3 contract
-- [ ] Direct/local-MCP byte-equal schema v3 delivery
-- [ ] Public LLM docs bootstrap and canonical capability identities
-- [ ] Versioned v4 route oracle and terminal/open route mocks
-- [ ] Fixed-task regression and fresh-query closure
-- [ ] Package, browser, docs, contract and full repository validation
+- [x] Authoring prerequisite closure contract
+- [x] Terminal `unsupported` / open `unresolved` schema v3 contract
+- [x] Direct/local-MCP byte-equal schema v3 delivery
+- [x] Public LLM docs bootstrap and canonical capability identities
+- [x] Versioned v4 route oracle and terminal/open route mocks
+- [x] Fixed-task regression and fresh-query closure
+- [x] Package, browser, docs, contract and full repository validation
 - [ ] Exact v4 candidate/plan/cost freeze
 - [ ] R54-P5-F paid authorization Gate preparation
 

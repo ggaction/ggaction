@@ -184,7 +184,7 @@ test("keeps navigation and page order complete", async () => {
   assert.deepEqual(new Set(order), pageUrls);
   for (const url of navigation) assert.equal(pageUrls.has(url), true, url);
   assert.equal(navigation.includes("/api/"), true);
-  assert.equal(navigation.length, 20);
+  assert.equal(navigation.length, 21);
 
   const byUrl = new Map(registry.map(page => [page.url, page]));
   for (const page of registry) {

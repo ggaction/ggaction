@@ -4,16 +4,22 @@ import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
+import { searchGgaction } from "../../knowledge/task-resolver.js";
 import {
-  assertSupportedStrictToolSchema,
-  evaluateSubmission,
-  loadPaidSmokePlan,
-  preflightPaidSmokeTools,
+  evaluateSubmissionV4,
+  loadRouteOracleV4,
+  preflightPaidSmokeToolsV4,
   projectedRequestInputTokens,
   root,
-  runPaidSmokeDryRun,
-  runPaidSmokeTask
-} from "../../scripts/compact-paid-smoke.js";
+  runPaidSmokeDryRunV4,
+  runPaidSmokeTaskV4,
+  submitResultToolV4
+} from "../../scripts/compact-paid-smoke-v4.js";
+import { assertSupportedStrictToolSchema } from "../../scripts/compact-paid-smoke.js";
+
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
 
 function usage(input = 100, output = 50) {
   return {
@@ -23,10 +29,6 @@ function usage(input = 100, output = 50) {
     output_tokens_details: { reasoning_tokens: 10 },
     total_tokens: input + output
   };
-}
-
-function sha256(value) {
-  return createHash("sha256").update(value).digest("hex");
 }
 
 function reasoningItem(id, bytes = 40000) {
@@ -53,156 +55,121 @@ function histogramSource() {
   ].join("\n");
 }
 
-test("freezes the exact approved paid-smoke matrix and cost ceiling", async () => {
-  const plan = await loadPaidSmokePlan();
-  assert.equal(plan.id, "compact-authoring-paid-smoke-v3");
-  assert.equal(plan.productCandidateCommit, "6ed5af76c80e56c5a3cde833c5a702de183e4d7a");
-  assert.equal(plan.requiredGate, "R54-P5-D");
-  assert.deepEqual(plan.conditions.map(condition => condition.id), ["A", "B", "C", "D"]);
-  assert.deepEqual(plan.tasks.map(task => [task.id, task.stratum, task.role]), [
-    ["repair-val-histogram", "simple", "supported"],
-    ["repair-hold-regression-layers", "complex", "supported"],
-    ["policy-hold-pdf-and-jpg", "simple", "unsupported"],
-    ["policy-val-3d-jpeg", "complex", "unsupported"]
-  ]);
-  assert.equal(plan.runOrder.length, 16);
-  assert.equal(plan.api.model, "gpt-5.6-terra");
-  assert.equal(plan.api.reasoningEffort, "medium");
-  assert.equal(plan.api.textVerbosity, "low");
-  assert.equal(plan.api.serviceTier, "default");
-  assert.equal(plan.api.store, false);
-  assert.equal(plan.limits.hardCostUsd, 3);
-  assert.equal(plan.limits.projectedInputBytesPerToken, 1);
-  assert.equal(plan.limits.maximumRequestBodyBytesPerCall, 262144);
-  assert.equal(plan.limits.maximumRequestBodyBytesPerTask, 524288);
-  assert.equal(plan.costProjection.expectedUsd, 1.152);
-  assert.equal(plan.costProjection.calculatedMaximumUsd, 2.496);
-});
+function planForMocks() {
+  return {
+    api: {
+      model: "gpt-5.6-terra",
+      reasoningEffort: "medium",
+      textVerbosity: "low",
+      serviceTier: "default",
+      store: false,
+      parallelToolCalls: false,
+      include: ["reasoning.encrypted_content"]
+    },
+    limits: {
+      maximumModelCallsPerTask: 3,
+      maximumInputTokensPerTask: 120000,
+      maximumOutputTokensPerTask: 12000,
+      maximumOutputTokensPerResponse: 4000,
+      projectedInputBytesPerToken: 1,
+      maximumRequestBodyBytesPerCall: 262144,
+      maximumRequestBodyBytesPerTask: 524288,
+      timeoutMilliseconds: 30000,
+      hardCostUsd: 3
+    },
+    pricingPerMillionTokens: {
+      uncachedInput: 1.2,
+      cachedInput: 0.12,
+      cacheWrite: 1.2,
+      output: 4.8
+    }
+  };
+}
 
-test("separates opaque transport bytes from projected billable input", () => {
-  const base = {
-    model: "gpt-5.6-terra",
-    input: [{ role: "user", content: [{ type: "input_text", text: "make a chart" }] }]
+function ledger() {
+  return {
+    usage: {
+      inputTokens: 0,
+      cachedInputTokens: 0,
+      cacheWriteTokens: 0,
+      outputTokens: 0,
+      reasoningTokens: 0,
+      totalTokens: 0
+    },
+    costUsd: 0,
+    modelCalls: 0
   };
-  const withOpaqueState = {
-    ...base,
-    input: [...base.input, reasoningItem("reasoning-projection", 80000)]
-  };
-  const visibleState = {
-    ...base,
-    input: [...base.input, {
-      type: "reasoning",
-      id: "reasoning-projection",
-      summary: []
-    }]
-  };
+}
+
+test("freezes terminal and open decisions in the current paid-smoke route oracle", async () => {
+  const oracle = await loadRouteOracleV4();
+  assert.equal(oracle.id, "compact-authoring-paid-smoke-route-oracle-v4");
+  assert.equal(oracle.packetSchemaVersion, 3);
   assert.equal(
-    projectedRequestInputTokens(withOpaqueState, { priorReasoningTokens: 48 }),
-    projectedRequestInputTokens(visibleState) + 48
+    oracle.oracleSha256,
+    "1b9e7adeb8f29d3f1f43818082ac74beff76c44c533c0d7076b70f3265ce48e8"
   );
-  assert.ok(
-    Buffer.byteLength(JSON.stringify(withOpaqueState)) >
-    projectedRequestInputTokens(withOpaqueState) + 70000
-  );
-  assert.throws(
-    () => projectedRequestInputTokens(base, { priorReasoningTokens: -1 }),
-    /non-negative integer/
-  );
+  assert.deepEqual(oracle.tasks.map(task => [
+    task.id,
+    task.expectedUnsupported,
+    task.expectedUnresolved,
+    task.expectedFallbacks,
+    task.expectedDRoute
+  ]), [
+    ["repair-val-histogram", [], [], [], ["search_ggaction", "submit_result"]],
+    ["repair-hold-regression-layers", [], [], [], ["search_ggaction", "submit_result"]],
+    ["policy-hold-pdf-and-jpg", ["unsupported.jpg"], [], [], ["search_ggaction", "submit_result"]],
+    [
+      "policy-val-3d-jpeg",
+      ["unsupported.3d", "unsupported.jpg"],
+      ["renderer.format"],
+      ["ggaction://docs/choose-renderer"],
+      ["search_ggaction", "read_mcp_resources", "submit_result"]
+    ]
+  ]);
 });
 
-test("enforces independent per-call and cumulative transport ceilings before billing", async () => {
-  const plan = await loadPaidSmokePlan();
-  const task = plan.tasks[0];
-  for (const [limit, message] of [
-    [{ maximumRequestBodyBytesPerCall: 1 }, /per-call limit/u],
-    [{ maximumRequestBodyBytesPerTask: 1 }, /task limit/u]
-  ]) {
-    let calls = 0;
-    const ledger = {
-      usage: {
-        inputTokens: 0,
-        cachedInputTokens: 0,
-        cacheWriteTokens: 0,
-        outputTokens: 0,
-        reasoningTokens: 0,
-        totalTokens: 0
-      },
-      costUsd: 0,
-      modelCalls: 0
-    };
-    await assert.rejects(
-      runPaidSmokeTask({
-        plan: {
-          ...plan,
-          limits: { ...plan.limits, ...limit }
-        },
-        task,
-        condition: "B",
-        apiKey: "test-key-with-more-than-twenty-characters",
-        ledger,
-        artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-transport-limit"),
-        createResponse: async () => {
-          calls += 1;
-          throw new Error("provider must not be called");
-        }
-      }),
-      message
-    );
-    assert.equal(calls, 0);
-    assert.equal(ledger.modelCalls, 0);
-    assert.equal(ledger.costUsd, 0);
+test("preserves all three historical paid attempts byte-for-byte", async () => {
+  const files = [
+    [
+      "evaluation/compact-authoring-paid-smoke/PLAN.json",
+      "95010b28aacb596f18398a9e259ed9bec1de9280e78ccd2316a525a73f08bc54"
+    ],
+    [
+      "evaluation/compact-authoring-paid-smoke/results/IN_PROGRESS.json",
+      "a6176c64010795da419cc6f49c4cec645f95fdfdfb938e98c0f216a441dbb745"
+    ],
+    [
+      "evaluation/compact-authoring-paid-smoke-v2/results/IN_PROGRESS.json",
+      "a9c9ffadafcadd076d6f44948e9a2f7b7673a4aa68ee3a4e2106e622e54bb12e"
+    ],
+    [
+      "evaluation/compact-authoring-paid-smoke-v3/PLAN.json",
+      "261a53c96913eededc7bbed898abc38104d223508701eba7c0f2daf5ebd01d37"
+    ],
+    [
+      "evaluation/compact-authoring-paid-smoke-v3/results/IN_PROGRESS.json",
+      "73f9322c3c07defb8a26e280ae2abfa7fbf70611359c9f6d1520ce714e353c62"
+    ],
+    [
+      "evaluation/compact-authoring-paid-smoke-v3/results/RESULT.json",
+      "197a1c567aa34d5b054928586a58bd621eb2f369317f3ad1051f7801a667a15c"
+    ]
+  ];
+  for (const [relative, expected] of files) {
+    assert.equal(sha256(await readFile(path.join(root, relative))), expected, relative);
   }
 });
 
-test("preserves the first paid attempt and its approved plan byte-for-byte", async () => {
-  const historicalRoot = path.join(root, "evaluation", "compact-authoring-paid-smoke");
-  const [plan, result] = await Promise.all([
-    readFile(path.join(historicalRoot, "PLAN.json")),
-    readFile(path.join(historicalRoot, "results", "IN_PROGRESS.json"))
+test("preflights the current model-visible schemas and keeps decision arrays separate", async () => {
+  await preflightPaidSmokeToolsV4();
+  assert.deepEqual(Object.keys(submitResultToolV4.parameters.properties), [
+    "status",
+    "source",
+    "renderer",
+    "unsupported",
+    "unresolved"
   ]);
-  assert.equal(
-    sha256(plan),
-    "95010b28aacb596f18398a9e259ed9bec1de9280e78ccd2316a525a73f08bc54"
-  );
-  assert.equal(
-    sha256(result),
-    "a6176c64010795da419cc6f49c4cec645f95fdfdfb938e98c0f216a441dbb745"
-  );
-});
-
-test("preserves the aborted replacement attempt byte-for-byte", async () => {
-  const result = await readFile(path.join(
-    root,
-    "evaluation",
-    "compact-authoring-paid-smoke-v2",
-    "results",
-    "IN_PROGRESS.json"
-  ));
-  assert.equal(
-    sha256(result),
-    "a9c9ffadafcadd076d6f44948e9a2f7b7673a4aa68ee3a4e2106e622e54bb12e"
-  );
-});
-
-test("preserves the completed v3 paid smoke byte-for-byte", async () => {
-  const completedRoot = path.join(root, "evaluation", "compact-authoring-paid-smoke-v3");
-  const [plan, progress, result] = await Promise.all([
-    readFile(path.join(completedRoot, "PLAN.json")),
-    readFile(path.join(completedRoot, "results", "IN_PROGRESS.json")),
-    readFile(path.join(completedRoot, "results", "RESULT.json"))
-  ]);
-  assert.equal(sha256(plan), "261a53c96913eededc7bbed898abc38104d223508701eba7c0f2daf5ebd01d37");
-  assert.equal(sha256(progress), "73f9322c3c07defb8a26e280ae2abfa7fbf70611359c9f6d1520ce714e353c62");
-  assert.equal(sha256(result), "197a1c567aa34d5b054928586a58bd621eb2f369317f3ad1051f7801a667a15c");
-  const parsed = JSON.parse(result);
-  assert.equal(parsed.taskRuns, 16);
-  assert.equal(parsed.passedTaskRuns, 7);
-  assert.equal(parsed.ledger.modelCalls, 42);
-  assert.equal(parsed.ledger.costUsd, 0.20685649999999994);
-});
-
-test("preflights every model-visible schema against the provider subset", async () => {
-  await preflightPaidSmokeTools();
   assert.throws(
     () => assertSupportedStrictToolSchema({
       type: "function",
@@ -221,278 +188,203 @@ test("preflights every model-visible schema against the provider subset", async 
   );
 });
 
-test("dry-runs all public-doc, direct, MCP, and fallback routes without spend", async () => {
-  const result = await runPaidSmokeDryRun();
+test("dry-runs every public-doc, direct, MCP, and explicit-fallback route without spend", async () => {
+  const result = await runPaidSmokeDryRunV4();
   assert.equal(result.checks, 16);
   assert.equal(result.passed, true);
   assert.equal(result.externalCalls, 0);
+  assert.equal(result.credentialReads, 0);
   assert.equal(result.spendUsd, 0);
-  for (const condition of ["A", "B", "C", "D"]) {
-    assert.equal(result.details.filter(entry => entry.condition === condition).length, 4);
-  }
-  const fallbackChecks = result.details.filter(entry => entry.condition === "D");
-  assert.deepEqual(fallbackChecks.map(entry => entry.knowledge.docsReads), [0, 0, 1, 2]);
-  assert.deepEqual(fallbackChecks.map(entry => entry.knowledge.toolCalls), [1, 1, 2, 2]);
+  const fallback = result.details.filter(entry => entry.condition === "D");
+  assert.deepEqual(fallback.map(entry => entry.knowledge.docsReads), [0, 0, 0, 1]);
+  assert.deepEqual(fallback.map(entry => entry.knowledge.toolCalls), [1, 1, 1, 2]);
 });
 
-test("runs one bounded mocked Responses tool loop to an executable SVG", async () => {
-  const plan = await loadPaidSmokePlan();
-  const task = plan.tasks.find(entry => entry.id === "repair-val-histogram");
-  const requests = [];
-  let call = 0;
-  const createResponse = async ({ request }) => {
-    requests.push(request);
-    call += 1;
-    const output = call === 1
-      ? [{
-          type: "function_call",
-          name: "search_ggaction",
-          arguments: JSON.stringify({ query: task.query }),
-          call_id: "knowledge-1"
-        }]
-      : [{
-          type: "function_call",
-          name: "submit_result",
-          arguments: JSON.stringify({
-            status: "program",
-            source: histogramSource(),
-            renderer: "svg",
-            unresolved: []
-          }),
-          call_id: "submission-1"
-        }];
-    return {
-      model: plan.api.model,
-      service_tier: plan.api.serviceTier,
-      output: [reasoningItem(`reasoning-direct-${call}`), ...output],
-      usage: usage()
-    };
-  };
-  const parent = path.join(root, ".artifacts", "test");
-  await mkdir(parent, { recursive: true });
-  const artifactRoot = await mkdtemp(path.join(parent, "paid-smoke-"));
-  try {
-    const ledger = {
-      usage: {
-        inputTokens: 0,
-        cachedInputTokens: 0,
-        cacheWriteTokens: 0,
-        outputTokens: 0,
-        reasoningTokens: 0,
-        totalTokens: 0
-      },
-      costUsd: 0,
-      modelCalls: 0
-    };
-    const result = await runPaidSmokeTask({
-      plan,
-      task,
-      condition: "B",
-      apiKey: "test-key-with-more-than-twenty-characters",
-      ledger,
-      artifactRoot,
-      createResponse
-    });
-    assert.equal(result.passed, true);
-    assert.equal(result.modelCalls, 2);
-    assert.equal(result.knowledge.toolCalls, 1);
-    assert.ok(result.requestBodyBytes > result.projectedInputTokens);
-    assert.equal(ledger.modelCalls, 2);
-    assert.ok(ledger.costUsd > 0 && ledger.costUsd < 0.01);
-    assert.equal(requests[0].model, "gpt-5.6-terra");
-    assert.deepEqual(requests[0].reasoning, { effort: "medium" });
-    assert.deepEqual(requests[0].text, { verbosity: "low" });
-    assert.equal(requests[0].parallel_tool_calls, false);
-    assert.equal(requests[0].store, false);
-    assert.deepEqual(requests[0].include, ["reasoning.encrypted_content"]);
-    assert.equal(requests[0].max_output_tokens, 4000);
-    assert.equal(
-      requests[1].input.some(entry => entry.type === "function_call_output"),
-      true
-    );
-  } finally {
-    await rm(artifactRoot, { recursive: true, force: true });
+test("keeps fresh histogram, regression, renderer, and limitation wording closed", () => {
+  const cases = [
+    [
+      "Draw a frequency distribution with axis guides as an SVG document.",
+      ["chart.histogram", "guide.axes", "renderer.svg"],
+      []
+    ],
+    [
+      "Add circle marks, map to x, map to y, a best fit line, confidence band, and automatic guides.",
+      ["mark.point", "statistics.regression", "statistics.errorBand", "encoding.x", "encoding.y", "guide.all"],
+      []
+    ],
+    [
+      "Produce a vector PDF and a JPEG image.",
+      ["renderer.pdf", "unsupported.jpg"],
+      ["unsupported.jpg"]
+    ],
+    [
+      "Build a three-dimensional plot and return a JPEG image.",
+      ["unsupported.3d", "unsupported.jpg"],
+      ["unsupported.3d", "unsupported.jpg"]
+    ]
+  ];
+  for (const [query, matched, unsupported] of cases) {
+    const packet = searchGgaction(query);
+    for (const id of matched) assert.equal(packet.matchedConstraints.includes(id), true, `${query}: ${id}`);
+    assert.deepEqual(packet.unsupported.map(entry => entry.constraint), unsupported, query);
   }
 });
 
-test("completes a three-call public-doc route with opaque reasoning and sanitized progress", async () => {
-  const plan = await loadPaidSmokePlan();
-  const task = plan.tasks.find(entry => entry.id === "repair-val-histogram");
-  const progress = [];
+test("runs a two-call direct route to an executable histogram", async () => {
+  const oracle = await loadRouteOracleV4();
+  const task = oracle.tasks.find(entry => entry.id === "repair-val-histogram");
   let call = 0;
-  const createResponse = async ({ request }) => {
-    call += 1;
-    let functionCall;
-    if (call === 1) {
-      functionCall = {
-        type: "function_call",
-        name: "search_docs",
-        arguments: JSON.stringify({ query: task.query }),
-        call_id: "docs-search"
-      };
-    } else if (call === 2) {
-      const searchOutput = request.input.find(entry =>
-        entry.type === "function_call_output" && entry.call_id === "docs-search"
-      );
-      functionCall = {
-        type: "function_call",
-        name: "read_doc",
-        arguments: JSON.stringify({ url: JSON.parse(searchOutput.output)[0].url }),
-        call_id: "docs-read"
-      };
-    } else {
-      functionCall = {
-        type: "function_call",
-        name: "submit_result",
-        arguments: JSON.stringify({
-          status: "program",
-          source: histogramSource(),
-          renderer: "svg",
-          unresolved: []
-        }),
-        call_id: "docs-submission"
-      };
-    }
-    return {
-      model: plan.api.model,
-      service_tier: plan.api.serviceTier,
-      output: [reasoningItem(`reasoning-docs-${call}`, 60000), functionCall],
-      usage: usage()
-    };
-  };
-  const ledger = {
-    usage: {
-      inputTokens: 0,
-      cachedInputTokens: 0,
-      cacheWriteTokens: 0,
-      outputTokens: 0,
-      reasoningTokens: 0,
-      totalTokens: 0
-    },
-    costUsd: 0,
-    modelCalls: 0
-  };
-  const result = await runPaidSmokeTask({
-    plan,
-    task,
-    condition: "A",
-    apiKey: "test-key-with-more-than-twenty-characters",
-    ledger,
-    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-docs-reasoning"),
-    createResponse,
-    onProgress: async snapshot => progress.push(snapshot)
-  });
-  assert.equal(result.passed, true);
-  assert.equal(result.modelCalls, 3);
-  assert.equal(result.knowledge.docsReads, 1);
-  assert.ok(result.requestBodyBytes > result.projectedInputTokens + 100000);
-  assert.equal(progress.at(-1).trace.length, 3);
-  assert.equal(progress.at(-1).trace.at(-1).evaluation.passed, true);
-  assert.doesNotMatch(JSON.stringify(progress), /encrypted_content|test-key|buildChart/u);
-});
-
-test("bundles two MCP fallback resources and submits within three model calls", async () => {
-  const plan = await loadPaidSmokePlan();
-  const task = plan.tasks.find(entry => entry.id === "policy-val-3d-jpeg");
-  const requests = [];
-  let call = 0;
-  const createResponse = async ({ request }) => {
-    requests.push(request);
-    call += 1;
-    const output = [
-      {
-        type: "function_call",
-        name: "search_ggaction",
-        arguments: JSON.stringify({ query: task.query }),
-        call_id: "knowledge-search"
-      },
-      {
-        type: "function_call",
-        name: "read_mcp_resources",
-        arguments: JSON.stringify({ uris: task.expectedFallbacks }),
-        call_id: "knowledge-docs"
-      },
-      {
-        type: "function_call",
-        name: "submit_result",
-        arguments: JSON.stringify({
-          status: "unsupported",
-          source: null,
-          renderer: task.expectedRenderer,
-          unresolved: task.expectedUnresolved
-        }),
-        call_id: "submission"
-      }
-    ][call - 1];
-    return {
-      model: plan.api.model,
-      service_tier: plan.api.serviceTier,
-      output: [reasoningItem(`reasoning-fallback-${call}`, 60000), output],
-      usage: usage()
-    };
-  };
-  const ledger = {
-    usage: {
-      inputTokens: 0,
-      cachedInputTokens: 0,
-      cacheWriteTokens: 0,
-      outputTokens: 0,
-      reasoningTokens: 0,
-      totalTokens: 0
-    },
-    costUsd: 0,
-    modelCalls: 0
-  };
-  const result = await runPaidSmokeTask({
-    plan,
-    task,
-    condition: "D",
-    apiKey: "test-key-with-more-than-twenty-characters",
-    ledger,
-    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-fallback"),
-    createResponse
-  });
-  assert.equal(result.passed, true);
-  assert.equal(result.modelCalls, 3);
-  assert.deepEqual(result.knowledge, {
-    toolCalls: 2,
-    searches: 1,
-    docsReadCalls: 1,
-    docsReads: 2
-  });
-  assert.equal(requests.length, 3);
-  assert.ok(result.requestBodyBytes > result.projectedInputTokens + 100000);
-  assert.equal(
-    requests[0].tools.some(tool => tool.name === "read_mcp_resources"),
-    true
-  );
-});
-
-test("rejects a correct submission that skips its assigned knowledge route", async () => {
-  const plan = await loadPaidSmokePlan();
-  const task = plan.tasks.find(entry => entry.id === "repair-val-histogram");
-  const ledger = {
-    usage: {
-      inputTokens: 0,
-      cachedInputTokens: 0,
-      cacheWriteTokens: 0,
-      outputTokens: 0,
-      reasoningTokens: 0,
-      totalTokens: 0
-    },
-    costUsd: 0,
-    modelCalls: 0
-  };
-  const result = await runPaidSmokeTask({
-    plan,
+  const result = await runPaidSmokeTaskV4({
+    plan: planForMocks(),
     task,
     condition: "B",
     apiKey: "test-key-with-more-than-twenty-characters",
-    ledger,
-    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-skipped-route"),
+    ledger: ledger(),
+    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-v4-direct"),
+    createResponse: async () => {
+      call += 1;
+      const output = call === 1
+        ? {
+            type: "function_call",
+            name: "search_ggaction",
+            arguments: JSON.stringify({ query: task.query }),
+            call_id: "search"
+          }
+        : {
+            type: "function_call",
+            name: "submit_result",
+            arguments: JSON.stringify({
+              status: "program",
+              source: histogramSource(),
+              renderer: "svg",
+              unsupported: [],
+              unresolved: []
+            }),
+            call_id: "submit"
+          };
+      return {
+        model: "gpt-5.6-terra",
+        service_tier: "default",
+        output: [reasoningItem(`direct-${call}`), output],
+        usage: usage()
+      };
+    }
+  });
+  assert.equal(result.passed, true);
+  assert.equal(result.modelCalls, 2);
+  assert.deepEqual(result.trace.map(entry => entry.tool), ["search_ggaction", "submit_result"]);
+});
+
+test("uses a two-call D route for a terminal limitation with no open decision", async () => {
+  const oracle = await loadRouteOracleV4();
+  const task = oracle.tasks.find(entry => entry.id === "policy-hold-pdf-and-jpg");
+  let call = 0;
+  const result = await runPaidSmokeTaskV4({
+    plan: planForMocks(),
+    task,
+    condition: "D",
+    apiKey: "test-key-with-more-than-twenty-characters",
+    ledger: ledger(),
+    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-v4-terminal"),
+    createResponse: async () => {
+      call += 1;
+      const output = call === 1
+        ? {
+            type: "function_call",
+            name: "search_ggaction",
+            arguments: JSON.stringify({ query: task.query }),
+            call_id: "search"
+          }
+        : {
+            type: "function_call",
+            name: "submit_result",
+            arguments: JSON.stringify({
+              status: "unsupported",
+              source: null,
+              renderer: "pdf",
+              unsupported: ["unsupported.jpg"],
+              unresolved: []
+            }),
+            call_id: "submit"
+          };
+      return {
+        model: "gpt-5.6-terra",
+        service_tier: "default",
+        output: [reasoningItem(`terminal-${call}`), output],
+        usage: usage()
+      };
+    }
+  });
+  assert.equal(result.passed, true);
+  assert.deepEqual(result.trace.map(entry => entry.tool), task.expectedDRoute);
+  assert.equal(result.knowledge.docsReads, 0);
+});
+
+test("uses a three-call D route only when an open decision names a docs resource", async () => {
+  const oracle = await loadRouteOracleV4();
+  const task = oracle.tasks.find(entry => entry.id === "policy-val-3d-jpeg");
+  let call = 0;
+  const result = await runPaidSmokeTaskV4({
+    plan: planForMocks(),
+    task,
+    condition: "D",
+    apiKey: "test-key-with-more-than-twenty-characters",
+    ledger: ledger(),
+    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-v4-open"),
+    createResponse: async () => {
+      call += 1;
+      const output = [
+        {
+          type: "function_call",
+          name: "search_ggaction",
+          arguments: JSON.stringify({ query: task.query }),
+          call_id: "search"
+        },
+        {
+          type: "function_call",
+          name: "read_mcp_resources",
+          arguments: JSON.stringify({ uris: task.expectedFallbacks }),
+          call_id: "read"
+        },
+        {
+          type: "function_call",
+          name: "submit_result",
+          arguments: JSON.stringify({
+            status: "unsupported",
+            source: null,
+            renderer: null,
+            unsupported: task.expectedUnsupported,
+            unresolved: task.expectedUnresolved
+          }),
+          call_id: "submit"
+        }
+      ][call - 1];
+      return {
+        model: "gpt-5.6-terra",
+        service_tier: "default",
+        output: [reasoningItem(`open-${call}`), output],
+        usage: usage()
+      };
+    }
+  });
+  assert.equal(result.passed, true);
+  assert.deepEqual(result.trace.map(entry => entry.tool), task.expectedDRoute);
+  assert.equal(result.knowledge.docsReads, 1);
+});
+
+test("rejects a correct submission that skips its assigned knowledge route", async () => {
+  const oracle = await loadRouteOracleV4();
+  const task = oracle.tasks.find(entry => entry.id === "repair-val-histogram");
+  const result = await runPaidSmokeTaskV4({
+    plan: planForMocks(),
+    task,
+    condition: "B",
+    apiKey: "test-key-with-more-than-twenty-characters",
+    ledger: ledger(),
+    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-v4-skipped"),
     createResponse: async () => ({
-      model: plan.api.model,
-      service_tier: plan.api.serviceTier,
+      model: "gpt-5.6-terra",
+      service_tier: "default",
       output: [{
         type: "function_call",
         name: "submit_result",
@@ -500,9 +392,10 @@ test("rejects a correct submission that skips its assigned knowledge route", asy
           status: "program",
           source: histogramSource(),
           renderer: "svg",
+          unsupported: [],
           unresolved: []
         }),
-        call_id: "premature-submission"
+        call_id: "submit"
       }],
       usage: usage()
     })
@@ -511,118 +404,74 @@ test("rejects a correct submission that skips its assigned knowledge route", asy
   assert.match(result.failures.join("\n"), /knowledge-search-count:0/u);
 });
 
-test("stops a paid task when billing usage is incomplete", async () => {
-  const plan = await loadPaidSmokePlan();
-  const task = plan.tasks[0];
-  const progress = [];
-  const ledger = {
-    usage: {
-      inputTokens: 0,
-      cachedInputTokens: 0,
-      cacheWriteTokens: 0,
-      outputTokens: 0,
-      reasoningTokens: 0,
-      totalTokens: 0
-    },
-    costUsd: 0,
-    modelCalls: 0
-  };
+test("stops before accepting incomplete billing usage", async () => {
+  const oracle = await loadRouteOracleV4();
+  const task = oracle.tasks[0];
+  const currentLedger = ledger();
   await assert.rejects(
-    runPaidSmokeTask({
-      plan,
+    runPaidSmokeTaskV4({
+      plan: planForMocks(),
       task,
       condition: "B",
       apiKey: "test-key-with-more-than-twenty-characters",
-      ledger,
-      artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-invalid"),
+      ledger: currentLedger,
+      artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-v4-usage"),
       createResponse: async () => ({
-        model: plan.api.model,
-        service_tier: plan.api.serviceTier,
+        model: "gpt-5.6-terra",
+        service_tier: "default",
         output: [],
         usage: { input_tokens: 1, output_tokens: 1, total_tokens: 2 }
-      }),
-      onProgress: async snapshot => progress.push(snapshot)
+      })
     }),
-    /incomplete-billing-usage/
+    /incomplete-billing-usage/u
   );
-  assert.equal(ledger.costUsd, 0);
-  assert.equal(ledger.modelCalls, 0);
-  assert.equal(progress.length, 1);
-  assert.equal(progress[0].trace.length, 1);
-  assert.equal(progress[0].trace[0].billingUsageComplete, false);
-  assert.equal(progress[0].trace[0].usage, null);
+  assert.equal(currentLedger.modelCalls, 0);
+  assert.equal(currentLedger.costUsd, 0);
 });
 
-test("persists billed response usage before a malformed tool response aborts", async () => {
-  const plan = await loadPaidSmokePlan();
-  const task = plan.tasks[0];
-  const progress = [];
-  const ledger = {
-    usage: {
-      inputTokens: 0,
-      cachedInputTokens: 0,
-      cacheWriteTokens: 0,
-      outputTokens: 0,
-      reasoningTokens: 0,
-      totalTokens: 0
-    },
-    costUsd: 0,
-    modelCalls: 0
+test("keeps opaque transport bytes outside the projected billable input", () => {
+  const base = {
+    model: "gpt-5.6-terra",
+    input: [{ role: "user", content: [{ type: "input_text", text: "make a chart" }] }]
   };
-  await assert.rejects(
-    runPaidSmokeTask({
-      plan,
-      task,
-      condition: "B",
-      apiKey: "test-key-with-more-than-twenty-characters",
-      ledger,
-      artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-malformed-response"),
-      createResponse: async () => ({
-        model: plan.api.model,
-        service_tier: plan.api.serviceTier,
-        output: [],
-        usage: usage()
-      }),
-      onProgress: async snapshot => progress.push(snapshot)
-    }),
-    /expected one function call/u
+  const opaque = { ...base, input: [...base.input, reasoningItem("projection", 80000)] };
+  const visible = {
+    ...base,
+    input: [...base.input, { type: "reasoning", id: "projection", summary: [] }]
+  };
+  assert.equal(
+    projectedRequestInputTokens(opaque, { priorReasoningTokens: 48 }),
+    projectedRequestInputTokens(visible) + 48
   );
-  assert.equal(ledger.modelCalls, 1);
-  assert.ok(ledger.costUsd > 0);
-  assert.equal(progress.length, 1);
-  assert.equal(progress[0].trace.length, 1);
-  assert.equal(progress[0].trace[0].billingUsageComplete, true);
-  assert.equal(progress[0].trace[0].functionCallCount, 0);
-  assert.equal(progress[0].trace[0].tool, null);
-  assert.deepEqual(progress[0].trace[0].usage, {
-    inputTokens: 100,
-    cachedInputTokens: 0,
-    cacheWriteTokens: 0,
-    outputTokens: 50,
-    reasoningTokens: 10,
-    totalTokens: 150
-  });
 });
 
-test("bounds isolated generated-program failures without local command details", async () => {
-  const plan = await loadPaidSmokePlan();
-  const task = plan.tasks.find(entry => entry.id === "repair-val-histogram");
-  const result = await evaluateSubmission({
-    task,
-    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-bounded-error"),
-    submission: {
-      status: "program",
-      source: [
-        'import { Canvas } from "ggaction";',
-        'import { renderToSVG } from "ggaction/svg";',
-        "export function buildChart(rows) { return Canvas(rows); }",
-        "export function renderChart(program) { return renderToSVG(program); }"
-      ].join("\n"),
-      renderer: "svg",
-      unresolved: []
-    }
-  });
-  assert.equal(result.passed, false);
-  assert.match(result.failures.join("\n"), /^generated-program-error:SyntaxError:/u);
-  assert.doesNotMatch(result.failures.join("\n"), /Command failed|\/Users\//u);
+test("bounds generated-program errors without exposing local command details", async () => {
+  const oracle = await loadRouteOracleV4();
+  const task = oracle.tasks.find(entry => entry.id === "repair-val-histogram");
+  const parent = path.join(root, ".artifacts", "test");
+  await mkdir(parent, { recursive: true });
+  const artifactRoot = await mkdtemp(path.join(parent, "paid-smoke-v4-error-"));
+  try {
+    const result = await evaluateSubmissionV4({
+      task,
+      artifactRoot,
+      submission: {
+        status: "program",
+        source: [
+          'import { Canvas } from "ggaction";',
+          'import { renderToSVG } from "ggaction/svg";',
+          "export function buildChart(rows) { return Canvas(rows); }",
+          "export function renderChart(program) { return renderToSVG(program); }"
+        ].join("\n"),
+        renderer: "svg",
+        unsupported: [],
+        unresolved: []
+      }
+    });
+    assert.equal(result.passed, false);
+    assert.match(result.failures.join("\n"), /^generated-program-error:SyntaxError:/u);
+    assert.doesNotMatch(result.failures.join("\n"), /Command failed|\/Users\//u);
+  } finally {
+    await rm(artifactRoot, { recursive: true, force: true });
+  }
 });

@@ -64,38 +64,42 @@ The result is a bounded JSON task packet with:
 - `matchedConstraints` — recognized parts of the request
 - `actionPlan` — actions and runtime operations in execution order
 - `exactCalls` — short calls with current option names
-- `authoring` — exact package imports, `chart()` initialization, immutable
-  reassignment steps, and the selected renderer call
-- `unresolved` — unsupported, conflicting, or underspecified requirements
+- `authoring` — exact package imports, `chart()` initialization, reusable
+  Canvas/data prerequisites, immutable reassignment steps, and the selected
+  renderer call
+- `unsupported` — terminal requirements outside the current contract
+- `unresolved` — conflicting or underspecified decisions, each with the exact
+  bounded documentation resource needed to continue
 - `candidates` — at most three exact resource identities
 
 The MCP response and the deterministic direct adapter use the same serialized
 task packet. A packet is never silently truncated; it fails if it exceeds its
 6,144-byte hard ceiling.
 
-`authoring.steps` are executable statements in order. Keep the returned
-`program = ...` assignments: every action returns a new immutable
-`ChartProgram`. Add the task's data and Canvas setup after `initialize`, then
-run the returned steps. The following fragment shows the bootstrap around an
-SVG request's task-specific action calls; it requires Canvas and data setup at
-the marked line:
+`authoring.prerequisites` gives the exact signatures and calls for the common
+Canvas and data setup. Supply every name listed in a prerequisite's `bindings`
+array—currently the caller-owned `values` array—then run the prerequisite calls
+that the existing program has not already satisfied. Keep every returned
+`program = ...` assignment because each action returns a new immutable
+`ChartProgram`. Run `authoring.steps` in order after those prerequisites:
 
 ```javascript
 import { chart } from "ggaction";
 import { renderToSVG } from "ggaction/svg";
 
 let program = chart()
-// Add createCanvas(...) and createData(...) for the task here.
+program = program.createCanvas({})
+program = program.createData({ values })
 program = program.createScatterPlot({ x: "x", y: "y" })
 const output = renderToSVG(program)
 ```
 
 Unsupported output and a missing supported renderer are separate decisions.
-For example, `render JPEG` reports both `unsupported.jpg` and
-`renderer.format`, then recommends the bounded unsupported-capabilities and
-renderer-choice sections. If the same request already names SVG, PNG, PDF, or
-Browser Canvas, it reports `unsupported.jpg` without adding
-`renderer.format`.
+For example, `render JPEG` reports terminal `unsupported.jpg` and open
+`renderer.format`, but recommends only the bounded renderer-choice section.
+The unsupported entry itself requires no documentation read. If the same
+request already names SVG, PNG, PDF, or Browser Canvas, it reports only the
+terminal `unsupported.jpg` decision.
 
 ## Read-only resources
 
@@ -103,10 +107,11 @@ MCP resource discovery provides a small overview, bounded task recipes, and
 templates for one exact action card. These resources are for selective reads,
 not a replacement full-documentation preload.
 
-Documentation fallback is stricter. A docs section is readable only when the
-latest `search_ggaction` result contains an `unresolved` constraint that maps to
-that section. A later fully resolved search removes that access again. This
-keeps the default flow compact:
+Documentation fallback is stricter. A docs section is readable only when its
+exact URI appears in an `unresolved[].resources` list from the latest
+`search_ggaction` result. `unsupported` entries do not unlock documentation. A
+later result without that URI removes access again. This keeps the default flow
+compact:
 
 ```text
 complete request

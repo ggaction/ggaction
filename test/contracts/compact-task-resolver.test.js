@@ -22,6 +22,20 @@ const knowledgeRoot = path.join(root, "knowledge");
 const typesRoot = path.join(root, "types");
 const tscFile = path.join(root, "node_modules/.bin/tsc");
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+const authoringPrerequisites = [
+  {
+    id: "action.createCanvas",
+    signature: "createCanvas(options?: CanvasOptions): ChartProgram;",
+    call: "program = program.createCanvas({})",
+    bindings: []
+  },
+  {
+    id: "action.createData",
+    signature: "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+    call: "program = program.createData({ values })",
+    bindings: ["values"]
+  }
+];
 
 async function json(name) {
   return JSON.parse(await readFile(path.join(knowledgeRoot, name), "utf8"));
@@ -58,8 +72,7 @@ async function executeAuthoring(packet, { rows, renderer }) {
   const context = canvas.getContext("2d");
   const source = [
     packet.authoring.initialize,
-    "program = program.createCanvas({ width: 320, height: 220, margin: 40 })",
-    "program = program.createData({ values: rows })",
+    ...packet.authoring.prerequisites.map(entry => entry.call),
     ...packet.authoring.steps,
     renderer === "svg" ? "return { program, output }" : "return { program }"
   ].join(";\n");
@@ -68,7 +81,7 @@ async function executeAuthoring(packet, { rows, renderer }) {
     "render",
     "renderToSVG",
     "context",
-    "rows",
+    "values",
     source
   )(chart, render, renderToSVG, context, rows);
 }
@@ -133,12 +146,14 @@ test("every exact action name resolves to its compact card without gaps", async 
       assert.equal(first.actionPlan[0].requiredOptions.includes(option.name), true, `${card.name}.${option.name}`);
     }
     assert.deepEqual(first.exactCalls, [card.snippet], card.name);
-    assert.equal(first.schemaVersion, 2, card.name);
+    assert.equal(first.schemaVersion, 3, card.name);
     assert.deepEqual(first.authoring, {
       imports: ['import { chart } from "ggaction";'],
       initialize: "let program = chart()",
+      prerequisites: authoringPrerequisites,
       steps: [`program = ${card.snippet}`]
     }, card.name);
+    assert.deepEqual(first.unsupported, [], card.name);
     assert.deepEqual(first.unresolved, [], card.name);
     assert.equal(first.candidates.length, 1, card.name);
     assert.equal(taskPacketBytes(first) <= 6144, true, card.name);
@@ -159,6 +174,7 @@ test("provides exact executable Canvas and SVG authoring bootstraps", async () =
       'import { renderToSVG } from "ggaction/svg";'
     ],
     initialize: "let program = chart()",
+    prerequisites: authoringPrerequisites,
     steps: [
       'program = program.createScatterPlot({ x: "x", y: "y" })',
       "const output = renderToSVG(program)"
@@ -167,6 +183,19 @@ test("provides exact executable Canvas and SVG authoring bootstraps", async () =
   const svgResult = await executeAuthoring(svgPacket, { rows, renderer: "svg" });
   assert.equal(svgResult.output.startsWith("<svg"), true);
   assert.ok(svgResult.program.graphicSpec.objects.scatterPlot.items.length > 0);
+
+  const legendPacket = searchGgaction(
+    "scatter plot with a color legend at bottom as svg"
+  );
+  assert.deepEqual(legendPacket.actionPlan.map(entry => entry.id), [
+    "action.createScatterPlot",
+    "runtime.renderToSVG"
+  ]);
+  const legendResult = await executeAuthoring(legendPacket, {
+    rows: rows.map((row, index) => ({ ...row, category: index % 2 ? "B" : "A" })),
+    renderer: "svg"
+  });
+  assert.ok(legendResult.program.graphicSpec.objects.seriesLegendSymbols.items.length > 0);
 
   const canvasPacket = searchGgaction("scatter plot as browser canvas");
   assert.deepEqual(canvasPacket.authoring.imports, [
@@ -285,30 +314,32 @@ test("preserves request order only within one lifecycle priority", () => {
   ]);
 });
 
-test("keeps unsupported output and missing supported renderer as separate decisions", () => {
+test("keeps terminal unsupported output separate from open renderer decisions", () => {
   const unsupportedOnly = searchGgaction("Build a bar plot and render JPEG.");
   assert.deepEqual(
+    unsupportedOnly.unsupported.map(entry => entry.constraint),
+    ["unsupported.jpg"]
+  );
+  assert.deepEqual(
     unsupportedOnly.unresolved.map(entry => entry.constraint),
-    ["unsupported.jpg", "renderer.format"]
+    ["renderer.format"]
   );
   assert.deepEqual(
     docsFallbackResources(unsupportedOnly).map(resource => resource.uri),
-    [
-      "ggaction://docs/unsupported-capabilities",
-      "ggaction://docs/choose-renderer"
-    ]
+    ["ggaction://docs/choose-renderer"]
   );
 
   const withSupportedAlternative = searchGgaction(
     "Build a bar plot, export PDF, and also export JPG."
   );
   assert.deepEqual(
-    withSupportedAlternative.unresolved.map(entry => entry.constraint),
+    withSupportedAlternative.unsupported.map(entry => entry.constraint),
     ["unsupported.jpg"]
   );
+  assert.deepEqual(withSupportedAlternative.unresolved, []);
   assert.deepEqual(
     docsFallbackResources(withSupportedAlternative).map(resource => resource.uri),
-    ["ggaction://docs/unsupported-capabilities"]
+    []
   );
 });
 
@@ -318,10 +349,11 @@ test("design fixtures prove bounded one-call task closure without silent partial
     json("task-packet.schema.json")
   ]);
   assert.equal(fixtures.role, "resolver-design-fixtures-not-evaluation-corpus");
-  assert.equal(schema.properties.schemaVersion.const, 2);
+  assert.equal(schema.properties.schemaVersion.const, 3);
   assert.deepEqual(schema.properties.authoring.required, [
     "imports",
     "initialize",
+    "prerequisites",
     "steps"
   ]);
   assert.equal(schema.properties.authoring.properties.imports.maxItems, 4);
@@ -341,11 +373,17 @@ test("design fixtures prove bounded one-call task closure without silent partial
       fixture.unresolved,
       fixture.id
     );
+    assert.deepEqual(
+      packet.unsupported.map(entry => entry.constraint),
+      fixture.unsupported ?? [],
+      fixture.id
+    );
     const covered = new Set(packet.actionPlan.flatMap(entry => entry.constraints));
     const unresolved = new Set(packet.unresolved.map(entry => entry.constraint));
+    const unsupported = new Set(packet.unsupported.map(entry => entry.constraint));
     for (const constraint of packet.matchedConstraints) {
       assert.equal(
-        covered.has(constraint) || unresolved.has(constraint),
+        covered.has(constraint) || unresolved.has(constraint) || unsupported.has(constraint),
         true,
         `${fixture.id}: ${constraint}`
       );
@@ -375,7 +413,7 @@ test("every supported constraint and fresh-corpus authoring step type-checks", a
   const authoringSteps = new Set(cards.cards.flatMap(card =>
     searchGgaction(card.name).authoring.steps
   ));
-  for (const constraint of taxonomy.constraints.filter(entry => entry.unresolved === undefined)) {
+  for (const constraint of taxonomy.constraints.filter(entry => entry.unsupported === undefined)) {
     const packet = searchGgaction(constraint.phrases[0]);
     assert.equal(packet.matchedConstraints.includes(constraint.id), true, constraint.id);
     const covered = packet.actionPlan.flatMap(entry => entry.constraints);
@@ -394,8 +432,9 @@ test("every supported constraint and fresh-corpus authoring step type-checks", a
   assert.equal(freshTasks.length, 48);
   for (const task of freshTasks) {
     const packet = searchGgaction(task.query);
-    assert.equal(packet.schemaVersion, 2, task.id);
+    assert.equal(packet.schemaVersion, 3, task.id);
     assert.equal(packet.authoring.initialize, "let program = chart()", task.id);
+    assert.deepEqual(packet.authoring.prerequisites, authoringPrerequisites, task.id);
     assert.equal(packet.authoring.steps.length, packet.actionPlan.length, task.id);
     assert.equal(packet.authoring.imports[0].includes("chart"), true, task.id);
     freshPacketSizes.push(taskPacketBytes(packet));
@@ -459,7 +498,8 @@ test("task packets reject ambiguous, unsupported, empty, and oversized input exp
   assert.equal(conflict.actionPlan.some(entry => entry.name === "editLegendLayout"), false);
 
   const geo = searchGgaction("map chart");
-  assert.deepEqual(geo.unresolved.map(entry => entry.constraint), ["unsupported.geo"]);
+  assert.deepEqual(geo.unsupported.map(entry => entry.constraint), ["unsupported.geo"]);
+  assert.deepEqual(geo.unresolved, []);
   assert.throws(() => searchGgaction(""), /non-empty string/);
   assert.throws(() => searchGgaction("x".repeat(501)), /at most 500 characters/);
 

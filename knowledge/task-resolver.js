@@ -20,6 +20,12 @@ const rendererImports = Object.freeze({
   renderToPNG: Object.freeze({ entry: "ggaction/png", output: "png" }),
   renderToPDF: Object.freeze({ entry: "ggaction/pdf", output: "pdf" })
 });
+const authoringPrerequisiteNames = Object.freeze(["createCanvas", "createData"]);
+const docsResourceByDecision = Object.freeze({
+  "chart.type": "ggaction://docs/choose-chart-type",
+  "renderer.format": "ggaction://docs/choose-renderer",
+  "query.intent": "ggaction://docs/getting-started"
+});
 
 export class TaskPacketBudgetError extends Error {
   constructor(bytes) {
@@ -164,7 +170,8 @@ function conflictResult(matched) {
     for (const entry of entries) {
       unresolved.push({
         constraint: entry.id,
-        reason: `This conflicts within ${group}: ${entries.map(candidate => candidate.id).join(", ")}.`
+        reason: `This conflicts within ${group}: ${entries.map(candidate => candidate.id).join(", ")}.`,
+        resources: ["ggaction://docs/legend-layout"]
       });
     }
   }
@@ -233,6 +240,50 @@ function adaptProviderDependencies(selected) {
     if (!point) throw new Error("createRegression requires the createPointMark provider.");
     adapted = [{ provider: point, coverage: [] }, ...adapted];
   }
+  const legendLayout = adapted.find(entry =>
+    entry.provider.name === "editLegendLayout" &&
+    entry.coverage.some(constraint => constraint.startsWith("layout.legend."))
+  );
+  if (legendLayout) {
+    const owner = adapted.find(entry =>
+      entry.coverage.includes("guide.legend") &&
+      (
+        entry.provider.name === "createLegend" ||
+        entry.provider.optionsByConstraint?.["guide.legend"]?.guides !== undefined
+      )
+    );
+    if (owner) {
+      const position = legendLayout.provider.baseOptions?.position;
+      if (position === undefined) {
+        throw new Error(`${legendLayout.provider.id} lacks a legend position.`);
+      }
+      const layoutConstraints = legendLayout.coverage.filter(constraint =>
+        constraint.startsWith("layout.legend.")
+      );
+      adapted = adapted.filter(entry => entry !== legendLayout).map(entry => {
+        if (entry !== owner) return entry;
+        const provider = entry.provider.name === "createLegend"
+          ? {
+              ...entry.provider,
+              baseOptions: { ...(entry.provider.baseOptions ?? {}), position }
+            }
+          : {
+              ...entry.provider,
+              optionsByConstraint: {
+                ...(entry.provider.optionsByConstraint ?? {}),
+                "guide.legend": {
+                  ...(entry.provider.optionsByConstraint?.["guide.legend"] ?? {}),
+                  guides: `{ legend: { position: ${position} } }`
+                }
+              }
+            };
+        return {
+          provider,
+          coverage: [...entry.coverage, ...layoutConstraints]
+        };
+      });
+    }
+  }
   return adapted;
 }
 
@@ -251,6 +302,10 @@ function mergeOptionValues(provider, covered) {
     )) {
       const previous = options.get(name);
       if (previous !== undefined && previous !== value) {
+        if (name === "guides" && (previous === "{}" || value === "{}")) {
+          options.set(name, previous === "{}" ? value : previous);
+          continue;
+        }
         throw new Error(
           `${provider.id} assigns conflicting values to option ${name}.`
         );
@@ -341,8 +396,27 @@ function authoringBlock(entries) {
   return {
     imports: authoringImports(entries),
     initialize: "let program = chart()",
+    prerequisites: authoringPrerequisiteNames.map(name => {
+      const card = cards.get(name);
+      return {
+        id: `action.${name}`,
+        signature: card.signature,
+        call: name === "createCanvas"
+          ? "program = program.createCanvas({})"
+          : "program = program.createData({ values })",
+        bindings: name === "createData" ? ["values"] : []
+      };
+    }),
     steps: authoringSteps(entries)
   };
+}
+
+function unresolvedDecision(constraint, reason) {
+  const resource = docsResourceByDecision[constraint] ??
+    (constraint.startsWith("layout.legend.")
+      ? "ggaction://docs/legend-layout"
+      : "ggaction://docs/action-reference");
+  return { constraint, reason, resources: [resource] };
 }
 
 function genericUnresolved(normalizedQuery, matchedIds, exactNames) {
@@ -356,26 +430,26 @@ function genericUnresolved(normalizedQuery, matchedIds, exactNames) {
     ![...matchedIds].some(id => id.startsWith("unsupported.")) &&
     exactNames.length === 0
   ) {
-    unresolved.push({
-      constraint: "chart.type",
-      reason: "A chart or mark type is required; for example scatter plot, line chart, bar chart, or tick mark."
-    });
+    unresolved.push(unresolvedDecision(
+      "chart.type",
+      "A chart or mark type is required; for example scatter plot, line chart, bar chart, or tick mark."
+    ));
   }
   if (
     /\b(render|export|output)\b/.test(normalizedQuery) &&
     ![...matchedIds].some(id => id.startsWith("renderer."))
   ) {
-    unresolved.push({
-      constraint: "renderer.format",
-      reason: "A supported output format is required: Browser Canvas, SVG, PNG, or PDF."
-    });
+    unresolved.push(unresolvedDecision(
+      "renderer.format",
+      "A supported output format is required: Browser Canvas, SVG, PNG, or PDF."
+    ));
   }
   return unresolved;
 }
 
 export function validateResolverKnowledge() {
-  if (cardsArtifact.schemaVersion !== 1 || taxonomy.schemaVersion !== 1) {
-    throw new Error("Compact knowledge files must use schemaVersion 1.");
+  if (cardsArtifact.schemaVersion !== 1 || taxonomy.schemaVersion !== 2) {
+    throw new Error("Compact action cards must use schemaVersion 1 and the intent taxonomy schemaVersion 2.");
   }
   if (constraints.size !== taxonomy.constraints.length) {
     throw new Error("Intent constraint IDs must be unique.");
@@ -433,17 +507,29 @@ export function validateResolverKnowledge() {
     }
   }
   const missing = taxonomy.constraints.filter(constraint =>
-    constraint.unresolved === undefined && !anchored.has(constraint.id)
+    constraint.unsupported === undefined && !anchored.has(constraint.id)
   );
   if (missing.length > 0) {
     throw new Error(`Supported constraints lack providers: ${missing.map(entry => entry.id).join(", ")}.`);
+  }
+  const invalidTerminal = taxonomy.constraints.filter(constraint =>
+    (constraint.unsupported !== undefined) !== constraint.id.startsWith("unsupported.") ||
+    (constraint.unsupported !== undefined && anchored.has(constraint.id))
+  );
+  if (invalidTerminal.length > 0) {
+    throw new Error(
+      `Terminal constraints must use unsupported.* IDs without providers: ${invalidTerminal.map(entry => entry.id).join(", ")}.`
+    );
+  }
+  for (const name of authoringPrerequisiteNames) {
+    if (!cards.has(name)) throw new Error(`Missing authoring prerequisite action card: ${name}.`);
   }
   return {
     cards: cards.size,
     constraints: constraints.size,
     providers: taxonomy.providers.length,
-    supported: taxonomy.constraints.filter(entry => entry.unresolved === undefined).length,
-    unsupported: taxonomy.constraints.filter(entry => entry.unresolved !== undefined).length
+    supported: taxonomy.constraints.filter(entry => entry.unsupported === undefined).length,
+    unsupported: taxonomy.constraints.filter(entry => entry.unsupported !== undefined).length
   };
 }
 
@@ -466,30 +552,31 @@ export function searchGgaction(query) {
     ...matched.map(constraint => constraint.id),
     ...exactNames.map(name => `action.${name}`)
   ]);
-  const unresolved = matched
-    .filter(constraint => constraint.unresolved !== undefined)
-    .map(constraint => ({ constraint: constraint.id, reason: constraint.unresolved }));
+  const unsupported = matched
+    .filter(constraint => constraint.unsupported !== undefined)
+    .map(constraint => ({ constraint: constraint.id, reason: constraint.unsupported }));
+  const unresolved = [];
   const { blocked, unresolved: conflicts } = conflictResult(matched);
   unresolved.push(...conflicts);
 
   const supportedIds = new Set([...matchedIds].filter(id => {
     const constraint = constraints.get(id);
-    return !blocked.has(id) && (constraint === undefined || constraint.unresolved === undefined);
+    return !blocked.has(id) && (constraint === undefined || constraint.unsupported === undefined);
   }));
   const providers = candidateProviders(supportedIds, exactNames);
   const { selected, uncovered } = selectProviders(supportedIds, providers);
   for (const constraint of uncovered) {
-    unresolved.push({
+    unresolved.push(unresolvedDecision(
       constraint,
-      reason: "No current action or runtime operation covers this recognized constraint."
-    });
+      "No current action or runtime operation covers this recognized constraint."
+    ));
   }
   unresolved.push(...genericUnresolved(normalizedQuery, matchedIds, exactNames));
   if (matchedIds.size === 0 && unresolved.length === 0) {
-    unresolved.push({
-      constraint: "query.intent",
-      reason: "No current ggaction constraint was recognized; use an exact action name or a supported chart task."
-    });
+    unresolved.push(unresolvedDecision(
+      "query.intent",
+      "No current ggaction constraint was recognized; use an exact action name or a supported chart task."
+    ));
   }
 
   const ordered = adaptProviderDependencies(selected).sort((left, right) =>
@@ -499,12 +586,13 @@ export function searchGgaction(query) {
   );
   const entries = ordered.map((entry, index) => planEntry(entry, index + 1));
   const packet = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     query: query.trim(),
     matchedConstraints: [...matchedIds],
     actionPlan: entries.map(entry => entry.plan),
     exactCalls: entries.map(entry => entry.call),
     authoring: authoringBlock(entries),
+    unsupported,
     unresolved: unique(unresolved.map(entry => JSON.stringify(entry))).map(JSON.parse),
     candidates: entries.slice(0, 3).map(entry => ({
       id: entry.plan.id,

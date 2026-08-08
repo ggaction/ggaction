@@ -631,8 +631,8 @@ async function testMcpConsumer(directory) {
     path.join(installedRoot, "knowledge", "task-packet.schema.json"),
     "utf8"
   ));
-  if (taskPacketSchema.properties?.schemaVersion?.const !== 2) {
-    throw new Error("Installed task packet schema must require schemaVersion 2.");
+  if (taskPacketSchema.properties?.schemaVersion?.const !== 3) {
+    throw new Error("Installed task packet schema must require schemaVersion 3.");
   }
   const transport = new StdioClientTransport({
     command: executable,
@@ -660,20 +660,23 @@ async function testMcpConsumer(directory) {
       throw new Error("Installed direct and MCP payloads are not byte-equal.");
     }
     const packet = JSON.parse(result.content[0].text);
-    if (packet.schemaVersion !== 2 || packet.authoring?.initialize !== "let program = chart()") {
-      throw new Error("Installed MCP did not return the task packet v2 authoring bootstrap.");
+    if (
+      packet.schemaVersion !== 3 ||
+      packet.authoring?.initialize !== "let program = chart()" ||
+      packet.authoring?.prerequisites?.length !== 2
+    ) {
+      throw new Error("Installed MCP did not return the task packet v3 authoring bootstrap.");
     }
     const authoringSource = [
       'import assert from "node:assert/strict";',
       ...packet.authoring.imports,
-      "const rows = [",
+      "const values = [",
       '  { x: 1, y: 4, category: "A" },',
       '  { x: 2, y: 7, category: "B" },',
       '  { x: 3, y: 6, category: "A" }',
       "];",
       `${packet.authoring.initialize};`,
-      "program = program.createCanvas({ width: 320, height: 220, margin: 40 });",
-      "program = program.createData({ values: rows });",
+      ...packet.authoring.prerequisites.map(entry => `${entry.call};`),
       ...packet.authoring.steps.map(step => `${step};`),
       'assert.equal(output.startsWith("<svg"), true);',
       "assert.ok(program.graphicSpec.objects.scatterPlot.items.length > 0);",
@@ -711,6 +714,19 @@ async function testMcpConsumer(directory) {
     });
     if (!fallback.contents[0]?.text.startsWith("# Choose a chart or mark type")) {
       throw new Error("Installed MCP did not expose the recommended bounded fallback.");
+    }
+    await client.callTool({
+      name: "search_ggaction",
+      arguments: { query: "map chart" }
+    });
+    let deniedTerminalFallback = false;
+    try {
+      await client.readResource({ uri: "ggaction://docs/unsupported-capabilities" });
+    } catch (error) {
+      deniedTerminalFallback = /available only when recommended/.test(String(error));
+    }
+    if (!deniedTerminalFallback) {
+      throw new Error("Installed MCP required documentation for a terminal unsupported result.");
     }
     let deniedArbitraryFile = false;
     try {
@@ -1318,8 +1334,9 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "private-export-rejection",
       "installed-local-mcp",
       "direct-mcp-byte-equality",
-      "task-packet-v2-authoring-execution",
-      "unresolved-only-docs-fallback"
+      "task-packet-v3-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
     ]
   }, null, 2)}\n`);
 }

@@ -11,10 +11,14 @@
   url: /mcp/
   nav_group: start
   nav_order: 3
+- title: LLM Chart Authoring Contract
+  url: /llm-authoring/
+  nav_group: start
+  nav_order: 4
 - title: Tutorials
   url: /tutorials/
   nav_group: start
-  nav_order: 4
+  nav_order: 5
 - title: Scatterplot Tutorial
   url: /tutorials/scatterplot/
   parent: /tutorials/
@@ -57,7 +61,7 @@
 - title: Chart Recipes
   url: /recipes/
   nav_group: start
-  nav_order: 5
+  nav_order: 6
 - title: Scatterplot Recipe
   url: /recipes/scatterplot/
   parent: /recipes/

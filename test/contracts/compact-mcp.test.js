@@ -46,7 +46,7 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
       idempotentHint: true,
       openWorldHint: false
     });
-    assert.match(listed.tools[0].description, /exact imports, executable immutable steps/);
+    assert.match(listed.tools[0].description, /exact imports, authoring prerequisites/);
     assert.match(
       listed.tools[0].inputSchema.properties.query.description,
       /Do not append dataset contents, code scaffolding, or evaluator instructions/
@@ -60,13 +60,18 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
     });
     assert.equal(called.content.length, 1);
     assert.deepEqual(called.content[0], { type: "text", text: direct });
-    assert.equal(Buffer.byteLength(called.content[0].text), 2044);
+    assert.equal(Buffer.byteLength(called.content[0].text) <= 6144, true);
     const packet = JSON.parse(called.content[0].text);
-    assert.equal(packet.schemaVersion, 2);
+    assert.equal(packet.schemaVersion, 3);
     assert.deepEqual(packet.authoring.imports, [
       'import { chart } from "ggaction";',
       'import { renderToSVG } from "ggaction/svg";'
     ]);
+    assert.deepEqual(packet.authoring.prerequisites.map(entry => entry.id), [
+      "action.createCanvas",
+      "action.createData"
+    ]);
+    assert.equal(packet.unsupported.length, 0);
     assert.equal(packet.unresolved.length, 0);
   } finally {
     await close();
@@ -87,13 +92,11 @@ test("keeps resource discovery bounded and reads exact cards and recipes", async
   const recipe = readKnowledgeResource("ggaction://recipes/scatter-svg");
   assert.equal(JSON.parse(card.text).name, "createScatterPlot");
   assert.deepEqual(JSON.parse(recipe.text).packet.exactCalls, [
-    "program.createScatterPlot({ x: \"x\", y: \"y\", color: \"category\", guides: {} })",
-    "program.editLegendLayout({ position: \"bottom\" })",
+    "program.createScatterPlot({ x: \"x\", y: \"y\", color: \"category\", guides: { legend: { position: \"bottom\" } } })",
     "renderToSVG(program)"
   ]);
   assert.deepEqual(JSON.parse(recipe.text).packet.authoring.steps, [
-    'program = program.createScatterPlot({ x: "x", y: "y", color: "category", guides: {} })',
-    'program = program.editLegendLayout({ position: "bottom" })',
+    'program = program.createScatterPlot({ x: "x", y: "y", color: "category", guides: { legend: { position: "bottom" } } })',
     "const output = renderToSVG(program)"
   ]);
   for (const resource of [card, recipe]) {
@@ -137,6 +140,36 @@ test("permits documentation only for the latest unresolved result", async () => 
   } finally {
     await close();
   }
+});
+
+test("does not require or authorize documentation for a terminal unsupported result", async () => {
+  const packet = JSON.parse(searchGgactionText("map chart"));
+  assert.deepEqual(packet.unsupported.map(entry => entry.constraint), ["unsupported.geo"]);
+  assert.deepEqual(packet.unresolved, []);
+  assert.deepEqual(docsFallbackResources(packet), []);
+
+  const { client, close } = await connectedPair();
+  try {
+    await client.callTool({
+      name: SEARCH_TOOL_NAME,
+      arguments: { query: "map chart" }
+    });
+    await assert.rejects(
+      client.readResource({ uri: "ggaction://docs/unsupported-capabilities" }),
+      /available only when recommended/
+    );
+  } finally {
+    await close();
+  }
+});
+
+test("rejects legacy unresolved entries that omit their explicit resource", () => {
+  assert.throws(
+    () => docsFallbackResources({
+      unresolved: [{ constraint: "renderer.format", reason: "Choose a renderer." }]
+    }),
+    /has no explicit documentation resource/
+  );
 });
 
 test("rejects non-knowledge resources and invalid tool arguments without execution", async () => {

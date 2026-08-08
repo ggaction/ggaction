@@ -11,11 +11,12 @@
     "actionPlan",
     "exactCalls",
     "authoring",
+    "unsupported",
     "unresolved",
     "candidates"
   ],
   "properties": {
-    "schemaVersion": { "const": 2 },
+    "schemaVersion": { "const": 3 },
     "query": { "type": "string", "minLength": 1, "maxLength": 500 },
     "matchedConstraints": {
       "type": "array",
@@ -68,7 +69,7 @@
     "authoring": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["imports", "initialize", "steps"],
+      "required": ["imports", "initialize", "prerequisites", "steps"],
       "properties": {
         "imports": {
           "type": "array",
@@ -78,10 +79,44 @@
           "items": { "type": "string", "minLength": 30, "maxLength": 90 }
         },
         "initialize": { "const": "let program = chart()" },
+        "prerequisites": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "signature", "call", "bindings"],
+            "properties": {
+              "id": { "enum": ["action.createCanvas", "action.createData"] },
+              "signature": { "type": "string", "minLength": 8, "maxLength": 180 },
+              "call": { "type": "string", "minLength": 12, "maxLength": 180 },
+              "bindings": {
+                "type": "array",
+                "maxItems": 4,
+                "uniqueItems": true,
+                "items": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" }
+              }
+            }
+          }
+        },
         "steps": {
           "type": "array",
           "maxItems": 20,
           "items": { "type": "string", "minLength": 3, "maxLength": 760 }
+        }
+      }
+    },
+    "unsupported": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["constraint", "reason"],
+        "properties": {
+          "constraint": { "type": "string", "pattern": "^unsupported\\." },
+          "reason": { "type": "string", "minLength": 10, "maxLength": 240 }
         }
       }
     },
@@ -91,10 +126,17 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["constraint", "reason"],
+        "required": ["constraint", "reason", "resources"],
         "properties": {
           "constraint": { "type": "string", "minLength": 3 },
-          "reason": { "type": "string", "minLength": 10, "maxLength": 240 }
+          "reason": { "type": "string", "minLength": 10, "maxLength": 240 },
+          "resources": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^ggaction://docs/[a-z0-9-]+$" }
+          }
         }
       }
     },

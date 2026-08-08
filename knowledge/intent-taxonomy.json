@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "constraints": [
     { "id": "program.canvas", "phrases": ["chart canvas", "create canvas", "plot bounds"] },
     { "id": "program.data", "phrases": ["create dataset", "load rows", "inline data"] },
@@ -7,7 +7,7 @@
     { "id": "chart.scatter", "phrases": ["scatter plot", "scatter chart", "point chart"] },
     { "id": "chart.line", "phrases": ["line chart", "line plot", "time series chart"] },
     { "id": "chart.bar", "phrases": ["bar chart", "bar plot", "column chart"] },
-    { "id": "chart.histogram", "phrases": ["histogram", "binned distribution"] },
+    { "id": "chart.histogram", "phrases": ["histogram", "binned distribution", "frequency distribution", "frequency histogram"] },
     { "id": "chart.heatmap", "phrases": ["heatmap", "heat map", "two dimensional distribution"] },
     { "id": "chart.parallel", "phrases": ["parallel coordinates", "parallel coordinate plot"] },
     { "id": "chart.box", "phrases": ["box plot", "boxplot", "quartile plot"] },
@@ -34,9 +34,9 @@
     { "id": "transform.bin2d", "phrases": ["bin two fields", "two dimensional bins", "rectangular bins", "binned heatmap"] },
     { "id": "transform.interval", "phrases": ["interval data", "confidence interval data", "summary interval"] },
 
-    { "id": "statistics.regression", "phrases": ["regression line", "trend line", "fitted line", "regression fit"] },
+    { "id": "statistics.regression", "phrases": ["regression line", "trend line", "fitted line", "regression fit", "best fit line", "fitted trend"] },
     { "id": "statistics.errorBar", "phrases": ["error bars", "error bar"] },
-    { "id": "statistics.errorBand", "phrases": ["error band", "uncertainty ribbon"] },
+    { "id": "statistics.errorBand", "phrases": ["error band", "uncertainty ribbon", "confidence band"] },
 
     { "id": "scale.create", "phrases": ["create scale", "named scale", "custom scale"] },
     { "id": "scale.log", "phrases": ["log scale", "logarithmic scale"] },
@@ -83,28 +83,28 @@
     { "id": "composition.vertical", "phrases": ["vertical concat", "vertically concatenate", "stack charts vertically"] },
 
     { "id": "renderer.canvas", "phrases": ["render to canvas", "browser canvas", "canvas renderer"] },
-    { "id": "renderer.svg", "phrases": ["render svg", "export svg", "svg output", "as svg"] },
+    { "id": "renderer.svg", "phrases": ["render svg", "export svg", "svg output", "as svg", "vector svg", "svg document"] },
     { "id": "renderer.png", "phrases": ["render png", "export png", "png output", "as png"] },
-    { "id": "renderer.pdf", "phrases": ["render pdf", "export pdf", "pdf output", "as pdf"] },
+    { "id": "renderer.pdf", "phrases": ["render pdf", "export pdf", "pdf output", "as pdf", "vector pdf", "pdf document"] },
 
-    { "id": "unsupported.geo", "phrases": ["map chart", "geographic chart", "geo projection", "choropleth"], "unresolved": "Geographic projections and map marks are outside the current ggaction contract." },
-    { "id": "unsupported.animation", "phrases": ["animate chart", "chart animation", "animated transition"], "unresolved": "Animation is outside the current static-chart contract." },
-    { "id": "unsupported.interaction", "phrases": ["interactive tooltip", "zoom interaction", "pan interaction", "brush interaction"], "unresolved": "Interactive runtime behaviors are outside the current static-chart contract." },
-    { "id": "unsupported.3d", "phrases": ["3d chart", "three dimensional chart"], "unresolved": "Three-dimensional charts are not supported." },
-    { "id": "unsupported.jpg", "phrases": ["export jpg", "render jpeg", "jpeg output"], "unresolved": "JPEG is not a current renderer; use SVG, PNG, PDF, or Browser Canvas." }
+    { "id": "unsupported.geo", "phrases": ["map chart", "geographic chart", "geo projection", "choropleth"], "unsupported": "Geographic projections and map marks are outside the current ggaction contract." },
+    { "id": "unsupported.animation", "phrases": ["animate chart", "chart animation", "animated transition"], "unsupported": "Animation is outside the current static-chart contract." },
+    { "id": "unsupported.interaction", "phrases": ["interactive tooltip", "zoom interaction", "pan interaction", "brush interaction"], "unsupported": "Interactive runtime behaviors are outside the current static-chart contract." },
+    { "id": "unsupported.3d", "phrases": ["3d chart", "three dimensional chart", "three dimensional plot"], "unsupported": "Three-dimensional charts are not supported." },
+    { "id": "unsupported.jpg", "phrases": ["export jpg", "render jpeg", "jpeg output", "jpeg image", "jpg image"], "unsupported": "JPEG is not a current renderer; use SVG, PNG, PDF, or Browser Canvas." }
   ],
   "providers": [
     { "id": "action.createCanvas", "kind": "action", "name": "createCanvas", "order": 10, "anchors": ["program.canvas"], "covers": ["program.canvas"], "baseOptions": {} },
     { "id": "action.createData", "kind": "action", "name": "createData", "order": 20, "anchors": ["program.data"], "covers": ["program.data"], "baseOptions": { "values": "[{ category: \"A\", x: 1, y: 2, value: 3 }]" } },
 
-    { "id": "action.createScatterPlot", "kind": "action", "name": "createScatterPlot", "order": 40, "anchors": ["chart.scatter"], "covers": ["chart.scatter", "encoding.x", "encoding.y", "encoding.color", "encoding.size", "encoding.shape", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.size": { "size": "\"value\"" }, "encoding.shape": { "shape": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{}" } } },
-    { "id": "action.createLinePlot", "kind": "action", "name": "createLinePlot", "order": 40, "anchors": ["chart.line"], "covers": ["chart.line", "encoding.x", "encoding.y", "encoding.color", "encoding.group", "encoding.strokeDash", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.group": { "groupBy": "\"category\"" }, "encoding.strokeDash": { "strokeDash": "{ field: \"category\" }" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{}" } } },
-    { "id": "action.createBarPlot", "kind": "action", "name": "createBarPlot", "order": 40, "anchors": ["chart.bar"], "covers": ["chart.bar", "encoding.x", "encoding.y", "encoding.color", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"category\"", "y": "\"value\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{}" } } },
-    { "id": "action.createHistogram", "kind": "action", "name": "createHistogram", "order": 40, "anchors": ["chart.histogram"], "covers": ["chart.histogram", "transform.bin1d", "encoding.color", "guide.axes", "guide.legend"], "baseOptions": { "field": "\"value\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{}" } } },
-    { "id": "action.createHeatmap", "kind": "action", "name": "createHeatmap", "order": 40, "anchors": ["chart.heatmap"], "covers": ["chart.heatmap", "transform.bin2d", "encoding.x", "encoding.y", "encoding.color", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"", "bin": "{}" }, "optionsByConstraint": { "encoding.color": { "color": "{}" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{}" } } },
-    { "id": "action.createParallelCoordinates", "kind": "action", "name": "createParallelCoordinates", "order": 40, "anchors": ["chart.parallel"], "covers": ["chart.parallel", "encoding.parallel", "encoding.color", "encoding.strokeDash", "guide.axes", "guide.legend"], "baseOptions": { "dimensions": "[\"a\", \"b\"]" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.strokeDash": { "strokeDash": "{ field: \"category\" }" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{}" } } },
+    { "id": "action.createScatterPlot", "kind": "action", "name": "createScatterPlot", "order": 40, "anchors": ["chart.scatter"], "covers": ["chart.scatter", "encoding.x", "encoding.y", "encoding.color", "encoding.size", "encoding.shape", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.size": { "size": "\"value\"" }, "encoding.shape": { "shape": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
+    { "id": "action.createLinePlot", "kind": "action", "name": "createLinePlot", "order": 40, "anchors": ["chart.line"], "covers": ["chart.line", "encoding.x", "encoding.y", "encoding.color", "encoding.group", "encoding.strokeDash", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.group": { "groupBy": "\"category\"" }, "encoding.strokeDash": { "strokeDash": "{ field: \"category\" }" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
+    { "id": "action.createBarPlot", "kind": "action", "name": "createBarPlot", "order": 40, "anchors": ["chart.bar"], "covers": ["chart.bar", "encoding.x", "encoding.y", "encoding.color", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"category\"", "y": "\"value\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
+    { "id": "action.createHistogram", "kind": "action", "name": "createHistogram", "order": 40, "anchors": ["chart.histogram"], "covers": ["chart.histogram", "transform.bin1d", "encoding.color", "guide.axes", "guide.legend"], "baseOptions": { "field": "\"value\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
+    { "id": "action.createHeatmap", "kind": "action", "name": "createHeatmap", "order": 40, "anchors": ["chart.heatmap"], "covers": ["chart.heatmap", "transform.bin2d", "encoding.x", "encoding.y", "encoding.color", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"", "bin": "{}" }, "optionsByConstraint": { "encoding.color": { "color": "{}" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
+    { "id": "action.createParallelCoordinates", "kind": "action", "name": "createParallelCoordinates", "order": 40, "anchors": ["chart.parallel"], "covers": ["chart.parallel", "encoding.parallel", "encoding.color", "encoding.strokeDash", "guide.axes", "guide.legend"], "baseOptions": { "dimensions": "[\"a\", \"b\"]" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.strokeDash": { "strokeDash": "{ field: \"category\" }" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
     { "id": "action.createBoxPlot", "kind": "action", "name": "createBoxPlot", "order": 40, "anchors": ["chart.box"], "covers": ["chart.box", "guide.axes"], "baseOptions": {}, "optionsByConstraint": { "guide.axes": { "guides": "{}" } } },
-    { "id": "action.createViolinPlot", "kind": "action", "name": "createViolinPlot", "order": 40, "anchors": ["chart.violin"], "covers": ["chart.violin", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"category\"", "y": "\"value\"" }, "optionsByConstraint": { "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{}" } } },
+    { "id": "action.createViolinPlot", "kind": "action", "name": "createViolinPlot", "order": 40, "anchors": ["chart.violin"], "covers": ["chart.violin", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"category\"", "y": "\"value\"" }, "optionsByConstraint": { "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
     { "id": "action.createGradientPlot", "kind": "action", "name": "createGradientPlot", "order": 40, "anchors": ["chart.gradient"], "covers": ["chart.gradient", "guide.axes"], "baseOptions": {}, "optionsByConstraint": { "guide.axes": { "guides": "{}" } } },
     { "id": "action.encodeDensity", "kind": "action", "name": "encodeDensity", "order": 50, "anchors": ["chart.density"], "covers": ["chart.density"], "baseOptions": { "field": "\"value\"" } },
 

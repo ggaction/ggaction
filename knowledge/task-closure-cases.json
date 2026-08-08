@@ -8,7 +8,6 @@
       "constraints": ["chart.scatter", "encoding.color", "guide.legend", "layout.legend.bottom", "renderer.svg"],
       "plan": [
         { "id": "action.createScatterPlot", "options": ["x", "y", "color", "guides"] },
-        { "id": "action.legendBottom", "options": ["position"] },
         { "id": "runtime.renderToSVG", "options": [] }
       ],
       "unresolved": []
@@ -244,7 +243,8 @@
       "plan": [
         { "id": "runtime.renderToSVG", "options": [] }
       ],
-      "unresolved": ["unsupported.geo"]
+      "unsupported": ["unsupported.geo"],
+      "unresolved": []
     },
     {
       "id": "generic-chart-unresolved",

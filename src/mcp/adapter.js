@@ -18,13 +18,17 @@ const cards = new Map(cardsArtifact.cards.map(card => [card.name, card]));
 const recipes = new Map(resourcesArtifact.recipes.map(recipe => [recipe.id, recipe]));
 const docs = new Map(resourcesArtifact.docs.map(section => [section.id, section]));
 
+function unique(values) {
+  return [...new Set(values)];
+}
+
 export const SEARCH_TOOL_NAME = "search_ggaction";
 export const OVERVIEW_URI = "ggaction://overview";
 
 export const SEARCH_TOOL = Object.freeze({
   name: SEARCH_TOOL_NAME,
   title: "Search ggaction authoring knowledge",
-  description: "Resolve one complete ggaction chart request into a bounded ordered task packet with exact imports, executable immutable steps, and explicit unresolved constraints.",
+  description: "Resolve one complete ggaction chart request into a bounded ordered task packet with exact imports, authoring prerequisites, executable immutable steps, terminal unsupported constraints, and explicit unresolved decisions.",
   inputSchema: Object.freeze({
     type: "object",
     additionalProperties: false,
@@ -73,15 +77,6 @@ function encodedUri(owner, id) {
   return `ggaction://${owner}/${encodeURIComponent(id)}`;
 }
 
-function routeForUnresolved(constraint) {
-  if (constraint === "chart.type") return "choose-chart-type";
-  if (constraint === "renderer.format") return "choose-renderer";
-  if (constraint === "query.intent") return "getting-started";
-  if (constraint.startsWith("layout.legend.")) return "legend-layout";
-  if (constraint.startsWith("unsupported.")) return "unsupported-capabilities";
-  return "action-reference";
-}
-
 function parseResourceUri(uri) {
   let parsed;
   try {
@@ -104,13 +99,26 @@ export function docsFallbackResources(packet) {
   if (!packet || !Array.isArray(packet.unresolved) || packet.unresolved.length === 0) {
     return [];
   }
-  const sectionIds = [...new Set(packet.unresolved.map(entry =>
-    routeForUnresolved(entry.constraint)
-  ))];
-  return sectionIds.map(id => {
+  for (const entry of packet.unresolved) {
+    if (!Array.isArray(entry.resources) || entry.resources.length === 0) {
+      throw new KnowledgeResourceError(
+        `Unresolved constraint ${entry.constraint ?? "unknown"} has no explicit documentation resource.`
+      );
+    }
+  }
+  const resources = unique(packet.unresolved.flatMap(entry => entry.resources));
+  return resources.map(uri => {
+    const { owner, segments } = parseResourceUri(uri);
+    if (owner !== "docs" || segments.length !== 1) {
+      throw new KnowledgeResourceError(`Invalid unresolved documentation resource: ${uri}`);
+    }
+    const id = decodeURIComponent(segments[0]);
     const section = docs.get(id);
+    if (!section) {
+      throw new KnowledgeResourceError(`Unknown unresolved documentation resource: ${uri}`);
+    }
     return Object.freeze({
-      uri: encodedUri("docs", id),
+      uri,
       name: section.title,
       description: `Read only for the unresolved constraint; public route ${section.route}.`,
       mimeType: "text/markdown"
@@ -193,6 +201,6 @@ export function readKnowledgeResource(uri, { allowedDocs = [] } = {}) {
   throw new KnowledgeResourceError(`Unknown knowledge resource URI: ${uri}`);
 }
 
-if (cardsArtifact.schemaVersion !== 1 || resourcesArtifact.schemaVersion !== 1) {
-  throw new Error("MCP knowledge artifacts must use schemaVersion 1.");
+if (cardsArtifact.schemaVersion !== 1 || resourcesArtifact.schemaVersion !== 2) {
+  throw new Error("MCP action cards must use schemaVersion 1 and resources schemaVersion 2.");
 }
