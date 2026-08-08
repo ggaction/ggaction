@@ -8,7 +8,7 @@
 - [x] Same-package stop rule and package-boundary fallback proposed
 - [x] Fresh corpus and staged paid evaluation separation proposed
 - [x] R54-P0-A review package verified — contract suite 167 / 167 pass
-- [ ] Review package committed and pushed
+- [x] Review target committed for remote push — `110245b9335082946dd039ee6f81325d3ef65ae5`
 - [ ] User approval
 
 ## 작업

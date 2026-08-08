@@ -143,5 +143,7 @@ intent resolver, MCP, dependency/package change, corpus freeze, external model c
 - Full Phase sequence and Gates: [`../ROADMAP.md`](../ROADMAP.md)
 - Phase progress: [`GOAL.md`](./GOAL.md)
 - Contract suite: 167 / 167 pass
+- Review target: `110245b9335082946dd039ee6f81325d3ef65ae5`
+- Remote branch: `codex/roadmap5-4-compact-knowledge`
 - Roadmap 5.3 immutable evidence branch: `codex/roadmap5-3-llm-friendly` at
   `23212bf5d4dcdca1e842de889c8258ac662c7945`

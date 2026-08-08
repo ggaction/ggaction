@@ -16,7 +16,7 @@ Compact knowledge를 구현하기 전에 scientific isolation, payload/package b
 - [x] Local stdio MCP, one-tool surface와 docs fallback policy 작성
 - [x] Offline and staged paid evaluation policy 작성
 - [x] Agent-documentation verification — contract suite 167 / 167 pass
-- [ ] Remote Gate checkpoint
+- [x] Remote Gate review target — `110245b9335082946dd039ee6f81325d3ef65ae5`
 - [ ] R54-P0-A explicit approval
 
 ## Gate R54-P0-A
