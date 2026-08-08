@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Attempt 2 evidence: [`ATTEMPT2.md`](./ATTEMPT2.md).
 
@@ -79,4 +79,8 @@ Option A 승인 시 다음 무비용 범위만 구현한다.
 
 ## Approval record
 
-- Pending explicit user decision among A, B, and C.
+- 사용자가 2026-08-09에 Option A를 명시적으로 승인했다.
+- 이 승인은 runner accounting repair, sanitized active progress, realistic mock, 무비용 검증과 v3 paid authorization Gate
+  준비만 연다.
+- Credential read, external model call, additional spend, Attempt 2 resume/retry, v3 paid execution, full evaluation, PR,
+  merge, publish, deploy와 release는 계속 차단한다.

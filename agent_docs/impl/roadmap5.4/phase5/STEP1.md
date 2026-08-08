@@ -21,7 +21,8 @@
 - [x] Replacement paid smoke execution and immutable result — [`ATTEMPT2.md`](./ATTEMPT2.md)
 - [x] Automatic retry 0, additional credential read 0
 - [x] Budget-estimator and partial-trace root-cause analysis
-- [ ] R54-P5-C runner accounting decision
+- [x] R54-P5-C Option A user approval — 2026-08-09
+- [ ] Runner accounting repair and unpaid validation
 
 ## Execution discipline
 
