@@ -76,7 +76,7 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [x] Complete repaired-candidate unpaid verification
 - [x] R53-P6-U bottom multi-legend paid confirmation proposal
 - [x] R53-P6-U separate cost approval
-- [ ] R53-P6-U guarded execution and result review
+- [x] R53-P6-U guarded execution and result review
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
@@ -117,4 +117,5 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [`GATE_T.md`](./GATE_T.md) — corrected candidate의 A/B/C/D confirmation scope, 비용과 중단 규칙
 - [`PAIRED_CONFIRMATION_ANALYSIS.md`](./PAIRED_CONFIRMATION_ANALYSIS.md) — Gate T immutable result, bottom multi-legend 실패와 재수정 근거
 - [`GATE_U.md`](./GATE_U.md) — bottom multi-legend corrected A/B/C/D confirmation scope와 $1 hard cap
+- [`PAIRED_LEGEND_CONFIRMATION_ANALYSIS.md`](./PAIRED_LEGEND_CONFIRMATION_ANALYSIS.md) — Gate U immutable 4/4 result와 acceptance audit
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout

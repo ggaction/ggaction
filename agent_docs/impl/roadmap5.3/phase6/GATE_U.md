@@ -4,9 +4,10 @@
 
 `approved`
 
-사용자가 2026-08-08 별도 비용 승인을 했다. Gate T approval을 재사용하지 않고 이 Gate의 exact local approval
-artifact만으로 credential read와 OpenAI Responses API 호출을 허용한다. 승인 기록을 원격 checkpoint로 고정하고 모든
-무과금 preflight를 통과하기 전까지 credential을 읽지 않는다.
+사용자가 2026-08-08 별도 비용 승인을 했고 exact guarded confirmation을 실행했다. 실행은 4 / 4 runs, first-submission과
+final correctness 4 / 4, actual spend `$0.0703787`로 모든 acceptance를 통과했다. Raw identity와 판정은
+[`PAIRED_LEGEND_CONFIRMATION_ANALYSIS.md`](./PAIRED_LEGEND_CONFIRMATION_ANALYSIS.md)에 고정한다. 이 승인으로 추가 유료
+실행이나 PR/merge/publish/deploy를 허용하지 않는다.
 
 ## 한눈에 보는 제안
 
