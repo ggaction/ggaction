@@ -6,6 +6,7 @@ import test from "node:test";
 import {
   assertFrozenManifest,
   evaluationRoot,
+  policyEvaluationRoot,
   repairEvaluationRoot,
   sha256,
   validateCorpusSource
@@ -157,4 +158,50 @@ test("freezes the approved unsupported-output policy corpus independently", asyn
   assert.equal(manifest.corpusId, "compact-authoring-policy-v1");
   assert.equal(manifest.summary.requiredConstraints, 10);
   assert.equal(manifest.summary.priorCorpusQueryOverlap, 0);
+});
+
+test("records the approved unsupported-output policy candidate and one-pass results", async () => {
+  const [candidateBytes, developmentBytes, validationBytes, heldOutBytes] = await Promise.all([
+    readFile(path.join(policyEvaluationRoot, "CANDIDATE.json")),
+    readFile(path.join(policyEvaluationRoot, "results", "development.json")),
+    readFile(path.join(policyEvaluationRoot, "results", "validation.json")),
+    readFile(path.join(policyEvaluationRoot, "results", "held-out.json"))
+  ]);
+  const candidate = JSON.parse(candidateBytes);
+  const development = JSON.parse(developmentBytes);
+  const validation = JSON.parse(validationBytes);
+  const heldOut = JSON.parse(heldOutBytes);
+
+  assert.equal(candidate.candidateCommit, "9206f0c3623c6f6676e70313811e7873ef97b405");
+  assert.equal(candidate.frozenManifestSha256, development.frozenManifestSha256);
+  assert.equal(candidate.developmentResultSha256, sha256(developmentBytes));
+  assert.equal(development.passed, true);
+  assert.equal(development.exactConstraintTasks, 1);
+  assert.equal(development.exactPlanTasks, 1);
+  assert.equal(validation.candidateCommit, candidate.candidateCommit);
+  assert.equal(validation.passed, true);
+  assert.equal(validation.exactConstraintTasks, 4);
+  assert.equal(validation.exactPlanTasks, 4);
+  assert.equal(validation.exactUnresolvedTasks, 4);
+  assert.equal(validation.exactFallbackTasks, 4);
+  assert.equal(heldOut.candidateCommit, candidate.candidateCommit);
+  assert.equal(heldOut.passed, true);
+  assert.equal(heldOut.exactConstraintTasks, 4);
+  assert.equal(heldOut.exactPlanTasks, 4);
+  assert.equal(heldOut.exactUnresolvedTasks, 4);
+  assert.equal(heldOut.exactFallbackTasks, 4);
+  assert.equal(Math.max(
+    development.maximumPacketBytes,
+    validation.maximumPacketBytes,
+    heldOut.maximumPacketBytes
+  ), 1009);
+  assert.equal(development.silentPartialCount, 0);
+  assert.equal(validation.silentPartialCount, 0);
+  assert.equal(heldOut.silentPartialCount, 0);
+  assert.equal(development.typescriptErrorCount, 0);
+  assert.equal(validation.typescriptErrorCount, 0);
+  assert.equal(heldOut.typescriptErrorCount, 0);
+  assert.deepEqual(development.failures, []);
+  assert.deepEqual(validation.failures, []);
+  assert.deepEqual(heldOut.failures, []);
 });

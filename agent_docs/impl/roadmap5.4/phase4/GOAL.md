@@ -18,8 +18,9 @@ Phase 5의 작은 paid smoke 범위와 최대 비용을 제안한다.
 - [ ] Closure, exact action/option, payload, fallback와 compile gates 통과 — plan order 1건 불일치
 - [ ] Package/MCP/browser regression budgets 재검증 — full suite/package pass; failed candidate를 Gate로 승격하지 않음
 - [x] Credential reads, external model calls와 spend 0 / 0 / $0
-- [ ] Exact paid-smoke proposal and hard cost cap — unpaid failure로 제안하지 않음
-- [ ] R54-P4-A explicit approval
+- [x] Exact paid-smoke proposal and hard cost cap — policy replacement acceptance 통과 뒤 R54-P4-C에 고정
+- [x] R54-P4-A와 R54-P4-B failure record 보존
+- [ ] R54-P4-C explicit approval — ready-for-review
 
 ## Predeclared unpaid acceptance
 
@@ -45,3 +46,10 @@ Canonical review record는 [`GATE_A.md`](./GATE_A.md)가 소유한다. 승인 �
 Repair attempt의 one-pass result와 정책 결정은 [`GATE_B.md`](./GATE_B.md)가 소유한다.
 
 승인된 dual-signal policy의 작은 fresh acceptance는 [`ATTEMPT3.md`](./ATTEMPT3.md)가 소유한다.
+
+## Replacement acceptance
+
+Candidate 2의 request-order repair는 validation과 held-out의 exact action plan을 모두 통과했다. Held-out strict failure로
+발견한 unsupported JPEG dual-signal 의미는 사용자가 policy A로 결정했고, production behavior를 변경하지 않은 채 별도의
+fresh policy corpus 9개에서 development 1 / 1, validation 4 / 4, held-out 4 / 4 strict pass를 얻었다. Original과 repair
+result는 수정하지 않으며 최종 unpaid evidence와 exact paid-smoke proposal은 [`GATE_C.md`](./GATE_C.md)가 소유한다.

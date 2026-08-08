@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "compact-authoring-policy-v1",
+  "frozenManifestSha256": "00556c96310714a2aef605fb096be8322dc03845b7e8a3d64d28fbb72f7475e4",
+  "split": "held-out",
+  "candidateCommit": "9206f0c3623c6f6676e70313811e7873ef97b405",
+  "taskCount": 4,
+  "simpleTasks": 2,
+  "complexTasks": 2,
+  "exactConstraintTasks": 4,
+  "exactPlanTasks": 4,
+  "exactUnresolvedTasks": 4,
+  "exactFallbackTasks": 4,
+  "silentPartialCount": 0,
+  "resolvedFallbackCount": 0,
+  "uniqueTypedCalls": 3,
+  "typescriptErrorCount": 0,
+  "maximumPacketBytes": 1009,
+  "medianPacketBytes": 977,
+  "passed": true,
+  "failures": []
+}

@@ -27,11 +27,11 @@
 - [x] Policy corpus SHA-256 freeze checkpoint commit/push — `4be0358b`
 - [x] Approved policy stable resolver contract 추가
 - [x] Development 1 / 1 strict pass와 result lock
-- [ ] Candidate 3 commit lock
-- [ ] Fresh validation 4개 one-pass 실행
-- [ ] Validation 통과 뒤 fresh held-out 4개 one-pass 실행
-- [ ] Full tests, package, installed MCP와 browser ceilings 실행
-- [ ] 모든 unpaid checks 통과 시 exact paid-smoke proposal 작성
+- [x] Candidate 3 commit lock — `9206f0c3623c6f6676e70313811e7873ef97b405`
+- [x] Fresh validation 4개 one-pass 실행 — 4 / 4 strict pass
+- [x] Validation 통과 뒤 fresh held-out 4개 one-pass 실행 — 4 / 4 strict pass
+- [x] Full tests, package, installed MCP와 browser ceilings 실행
+- [x] 모든 unpaid checks 통과 시 exact paid-smoke proposal 작성
 - [ ] R54-P4-C review checkpoint commit/push
 - [ ] User approval
 
@@ -42,3 +42,15 @@
 - Packet maximum ≤ 6,144 bytes; split median ≤ 4,096 bytes
 - Candidate lock 뒤 validation과 held-out은 각각 one-pass이며 결과 확인 뒤 tuning하지 않는다.
 - Credential read, external model call와 spend는 R54-P4-C 승인 전까지 0 / 0 / $0다.
+
+## One-pass 결과
+
+| Split | Exact constraint | Exact plan | Exact unresolved | Exact fallback | 최대 / 중앙 packet bytes | 결과 |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| Development | 1 / 1 | 1 / 1 | 1 / 1 | 1 / 1 | 397 / 397 | pass |
+| Validation | 4 / 4 | 4 / 4 | 4 / 4 | 4 / 4 | 855 / 811 | pass |
+| Held-out | 4 / 4 | 4 / 4 | 4 / 4 | 4 / 4 | 1,009 / 977 | pass |
+
+세 split 모두 silent partial, resolved fallback와 TypeScript error가 0이다. Validation과 held-out 결과를 본 뒤
+resolver, corpus 또는 oracle을 수정하거나 재실행하지 않았다. Candidate/result identity와 paid smoke 제안은
+[`GATE_C.md`](./GATE_C.md)가 소유한다.
