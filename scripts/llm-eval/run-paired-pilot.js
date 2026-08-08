@@ -20,9 +20,11 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 const outputBoundary = path.join(root, ".artifacts", "llm-eval", "paired-pilot");
 const approvalBoundary = path.join(root, ".artifacts", "llm-eval", "approvals");
 const allowedPostCandidateFiles = new Set([
-  "agent_docs/impl/roadmap5.3/phase6/GATE_S.md",
+  "agent_docs/impl/roadmap5.3/ROADMAP.md",
+  "agent_docs/impl/roadmap5.3/phase6/GATE_T.md",
   "agent_docs/impl/roadmap5.3/phase6/GOAL.md"
 ]);
+const currentPaidGate = "R53-P6-T";
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
@@ -44,12 +46,12 @@ function insideBoundary(file, boundary) {
 
 export function assertPairedPilotApproval({ approval, plan, loadedCorpus }) {
   invariant(plan?.status === "unpaid-validation-only", "Paired plan must remain unpaid-validation-only in source control.");
-  invariant(plan.paidPilot?.status === "blocked-pending-gate-s", "Source plan must remain blocked pending Gate S.");
+  invariant(plan.paidPilot?.status === "blocked-pending-paid-gate", "Source plan must remain blocked pending a paid Gate.");
   invariant(plan.paidPilot.credentialReadsAllowed === false, "Source plan must not authorize credential reads.");
   invariant(plan.paidPilot.externalModelCallsAllowed === false, "Source plan must not authorize external calls.");
   invariant(plan.paidPilot.approvedSpendUsd === 0, "Source plan must retain zero approved spend.");
   invariant(approval?.schemaVersion === 1, "Paired pilot approval schemaVersion must be 1.");
-  invariant(approval.gate === "R53-P6-S" && approval.status === "approved", "Gate S approval is required.");
+  invariant(approval.gate === currentPaidGate && approval.status === "approved", "Gate T approval is required.");
   for (const key of ["candidateCommit", "gateRecordCommit"]) {
     invariant(/^[0-9a-f]{40}$/u.test(approval[key]), `Approval ${key} must be an exact Git SHA.`);
   }
@@ -97,7 +99,7 @@ export function assertPairedPilotRunCanContinue(result, plan) {
 
 export function assertCandidateTree({ approval, cwd = root }) {
   const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd, encoding: "utf8" }).trim();
-  invariant(head === approval.gateRecordCommit, "Current HEAD is not the approved Gate S record commit.");
+  invariant(head === approval.gateRecordCommit, "Current HEAD is not the approved Gate T record commit.");
   const status = execFileSync("git", ["status", "--porcelain", "--untracked-files=no"], { cwd, encoding: "utf8" }).trim();
   invariant(status === "", "Tracked files must be clean before a paid pilot.");
   execFileSync("git", ["cat-file", "-e", `${approval.candidateCommit}^{commit}`], { cwd, stdio: "pipe" });
@@ -106,7 +108,7 @@ export function assertCandidateTree({ approval, cwd = root }) {
     encoding: "utf8"
   }).trim().split("\n").filter(Boolean);
   invariant(changed.every(file => allowedPostCandidateFiles.has(file)),
-    "Only Gate S approval records may differ from the candidate commit.");
+    "Only Gate T approval records may differ from the candidate commit.");
   return Object.freeze({ head, changed: Object.freeze(changed) });
 }
 

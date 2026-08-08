@@ -19,7 +19,7 @@ async function fixtures() {
   const taskIds = loadedCorpus.corpus.tasks.slice(0, 3).map(task => task.id);
   const approval = {
     schemaVersion: 1,
-    gate: "R53-P6-S",
+    gate: "R53-P6-T",
     status: "approved",
     candidateCommit: "a".repeat(40),
     gateRecordCommit: "b".repeat(40),
@@ -36,7 +36,7 @@ async function fixtures() {
   return { loadedCorpus, plan, approval };
 }
 
-test("requires an explicit zero-to-positive Gate S approval transition", async () => {
+test("requires an explicit zero-to-positive Gate T approval transition", async () => {
   const { loadedCorpus, plan, approval } = await fixtures();
   assert.equal(assertPairedPilotApproval({ approval, plan, loadedCorpus }), true);
   for (const [field, value] of [
@@ -68,7 +68,7 @@ test("keeps the checked-in paired plan incapable of spending", async () => {
   const { plan } = await fixtures();
   assert.equal(plan.status, "unpaid-validation-only");
   assert.deepEqual(plan.paidPilot, {
-    status: "blocked-pending-gate-s",
+    status: "blocked-pending-paid-gate",
     credentialReadsAllowed: false,
     externalModelCallsAllowed: false,
     approvedSpendUsd: 0

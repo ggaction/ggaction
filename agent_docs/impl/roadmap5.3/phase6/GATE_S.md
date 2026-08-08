@@ -2,11 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
-이 문서는 비용 승인이 아니다. 사용자의 별도 승인이 있어야만 approval artifact를 만들고 credential을 읽으며 OpenAI
-Responses API를 호출할 수 있다. Checked-in plan은 계속 `unpaid-validation-only`, credential/external call/spend는
-`false / false / $0`을 유지한다.
+사용자가 2026-08-08 별도 비용 승인을 했고 exact approval artifact를 통해 guarded pilot을 실행했다. Checked-in plan은
+계속 `unpaid-validation-only`, credential/external call/spend는 `false / false / $0`을 유지한다.
 
 ## 한눈에 보는 제안
 
@@ -184,3 +183,19 @@ Gate S commit으로 승인 요청 메시지에 제시한다.
 
 이 승인은 PR preparation, merge, package publish, docs deployment, release 또는 후속 full paid evaluation을 포함하지 않는다.
 
+## 10. Executed result
+
+- Completed runs: **12 / 12**
+- Valid programs: **5 / 12**
+- Estimated spend: **$0.3886566 / $3.00**
+- Model calls / total tokens: **55 / 201,637**
+- Provider, timeout, usage, model-identity or spend-cap failure: **0**
+- Manifest / results / summary SHA-256:
+  - `57af8987165035ef355688788420c52f780315f01af03ce8fc0622f75ebb8795`
+  - `1645cb11974ad1800f399273f18510c99030aa04017095ab39e3deb49be67922`
+  - `0a19007ab5d3cfde1a92aef1a73a1a1580261a0bb712c73be0a2d440957d702a`
+
+Safety와 provider execution은 통과했지만 legend는 네 condition 모두 실패했고 composition은 B만 통과했다. 또한 docs-only
+retrieval을 성공으로 집계하지 않고 rejected knowledge call을 실행 call과 섞으며 repair source를 덮어쓰는 측정 결함이
+드러났다. 따라서 이 결과로 product benefit이나 condition efficiency를 주장하지 않는다. Immutable evidence, task별 결과,
+원인과 후속 무과금 correction은 [`PAIRED_PILOT_ANALYSIS.md`](./PAIRED_PILOT_ANALYSIS.md)가 소유한다.

@@ -71,7 +71,7 @@
     "taskLevelUncertainty": true
   },
   "paidPilot": {
-    "status": "blocked-pending-gate-s",
+    "status": "blocked-pending-paid-gate",
     "credentialReadsAllowed": false,
     "externalModelCallsAllowed": false,
     "approvedSpendUsd": 0
