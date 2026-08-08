@@ -245,7 +245,7 @@ test("tells bottom legend authors to change offset when an x-axis title overlaps
 
   assert.throws(
     () => titled.createLegend({ position: "bottom", offset: 8 }),
-    /increase the legend offset and reserve enough bottom-margin space/u
+    /set a larger offset on this create or edit call and reserve enough bottom-margin space/u
   );
 });
 

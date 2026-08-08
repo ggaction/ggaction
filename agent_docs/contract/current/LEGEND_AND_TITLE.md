@@ -48,6 +48,9 @@ type TitleWrap = "word" | "character";
 - `position: "bottom"`만 지정한 기존 호출은 Canvas bottom에 고정된 compact single-row layout을 유지한다.
   `columns`, `direction`, `offset`, `titlePosition`, `itemGap` 중 하나를 명시하면 reserved-margin grid를 사용한다.
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
+- Bottom legend action은 실행 중 즉시 collision을 검증한다. 현재 create/edit call의 `offset`이 x-axis guides를
+  피해야 하며, 실패한 call 뒤에 연결한 edit는 실행되지 않는다. Bottom margin은 containment를 소유하고 horizontal
+  plot width와 `columns`/`count`는 한 row 적합성을 별도로 결정한다.
 - `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
   legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
 - `title`: non-empty string; 생략하면 encoded source field를 사용한다.

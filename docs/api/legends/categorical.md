@@ -76,9 +76,12 @@ control such as `columns`, `direction`, `offset`, `titlePosition`, or `itemGap`
 selects the general reserved-margin grid.
 
 For a bottom row beside an x-axis title, use the general grid and set the same
-`position`, `titlePosition`, `offset`, and `itemGap` on every block. The
-`offset` creates clearance from the plot and axis title; the bottom Canvas
-margin only reserves room to contain the resulting legend. See the complete
+`position`, `titlePosition`, `offset`, and `itemGap` on every block as each
+block is created. The `offset` creates clearance from the plot and axis title;
+the bottom Canvas margin only reserves room to contain the resulting legend.
+A later edit cannot run if an earlier creation already failed. The combined
+item widths must also fit the plot: use `columns` and sampled-guide `count` to
+bound a row, or widen the plot. See the complete
 [two-block example](../legends.md#bottom-multi-legend-row).
 
 Top and bottom legends use a general item grid. `columns` caps the column count;

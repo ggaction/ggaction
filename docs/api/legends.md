@@ -56,10 +56,12 @@ render(program, context);
 
 ## Bottom multi-legend row
 
-Bottom legends need two separate kinds of space: `offset` moves the row away
-from the plot and its x-axis title, while the Canvas bottom margin contains the
-row. Increasing the margin alone does not increase the separation. Give every
-legend in one row the same placement options:
+Bottom legends need three separate layout decisions: `offset` moves the row
+away from the plot and its x-axis title, the Canvas bottom margin contains the
+row, and the number and width of items determine whether every block fits on
+one row. Increasing the margin alone does not increase the separation or the
+available row width. Give every legend in one row the same placement options
+and bound wide sampled blocks explicitly:
 
 ```javascript
 import { chart } from "ggaction";
@@ -86,7 +88,8 @@ const bottomRow = chart()
     channels: ["color"],
     position: "bottom",
     titlePosition: "left",
-    offset: 52,
+    columns: 3,
+    offset: 69,
     itemGap: 12
   })
   .createLegend({
@@ -94,14 +97,20 @@ const bottomRow = chart()
     channels: ["opacity"],
     position: "bottom",
     titlePosition: "left",
-    offset: 52,
+    count: 3,
+    offset: 69,
     itemGap: 12
   });
 ```
 
 The explicit channel lists create two blocks instead of one inferred guide.
 Matching placement options keep their titles, symbols, label gaps, and lane
-baseline aligned from left to right.
+baseline aligned from left to right. Actions execute immediately, so put the
+safe bottom placement on each `createLegend` call. A later
+`editLegendLayout` call cannot repair an earlier `createLegend` call that has
+already failed because it overlapped the x-axis title. `columns: 3` and
+`count: 3` also keep this 640-pixel example in one row; wider labels or more
+samples may require a wider plot.
 
 ## Supported legend families
 

@@ -4,7 +4,10 @@ import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 import { buildKnowledge } from "../../scripts/generate-action-knowledge.js";
-import { evaluateGeneratedProgram } from "../../scripts/llm-eval/program-evaluator.js";
+import {
+  evaluateGeneratedProgram,
+  inspectPreparedProgramValidation
+} from "../../scripts/llm-eval/program-evaluator.js";
 import { searchKnowledge } from "../../scripts/knowledge-search.js";
 import { chart } from "../../src/index.js";
 import {
@@ -197,7 +200,9 @@ test("publishes submit-ready Canvas and layout-safe composition guidance", async
   const legendGuidance = legend.pitfalls.map(pitfall => `${pitfall.problem}\n${pitfall.fix}`).join("\n");
   assert.match(legendGuidance, /bottom Canvas margin alone does not move a bottom legend/u);
   assert.match(legendGuidance, /same position, titlePosition, offset, and itemGap/u);
-  assert.match(legendGuidance, /52 pixels with a 120-pixel bottom margin/u);
+  assert.match(legendGuidance, /offset 69/u);
+  assert.match(legendGuidance, /later editLegendLayout cannot run/u);
+  assert.match(legendGuidance, /columns 3 and count 3/u);
 
   const bottomRow = chart()
     .createCanvas({
@@ -218,16 +223,32 @@ test("publishes submit-ready Canvas and layout-safe composition guidance", async
     .createGuides({ axes: { x: {}, y: {} }, legend: false })
     .createLegend({
       target: "points", channels: ["color"], position: "bottom",
-      titlePosition: "left", offset: 52, itemGap: 12
+      titlePosition: "left", columns: 3, offset: 69, itemGap: 12
     })
     .createLegend({
       target: "points", channels: ["opacity"], position: "bottom",
-      titlePosition: "left", offset: 52, itemGap: 12
+      titlePosition: "left", count: 3, offset: 69, itemGap: 12
     });
-  assert.equal(bottomRow.guideConfigs.legend.color.offset, 52);
-  assert.equal(bottomRow.guideConfigs.legend.opacity.offset, 52);
+  assert.equal(bottomRow.guideConfigs.legend.color.offset, 69);
+  assert.equal(bottomRow.guideConfigs.legend.opacity.offset, 69);
   assert.equal(bottomRow.graphicSpec.objects.colorLegendSymbols.items.length, 3);
-  assert.equal(bottomRow.graphicSpec.objects.opacityLegendSymbols.items.length, 5);
+  assert.equal(bottomRow.graphicSpec.objects.opacityLegendSymbols.items.length, 3);
+  for (const validation of [
+    "legend:count:2",
+    "legend:position:bottom",
+    "legend:order:left-to-right",
+    "legend:titles-aligned",
+    "legend:symbols-aligned",
+    "legend:label-gaps-aligned",
+    "legend:inter-block-gap",
+    "legend:plot-offset"
+  ]) {
+    assert.equal(
+      inspectPreparedProgramValidation(bottomRow, validation),
+      true,
+      validation
+    );
+  }
 });
 
 test("closes every frozen task from the exact delivered recipe payload", async () => {

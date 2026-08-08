@@ -63,6 +63,57 @@ test("measures complete multi-legend geometry instead of semantic presence", () 
   expect(plotOffsetMismatch, ["legend:plot-offset"], false);
 });
 
+test("accepts the documented bottom-row options with actual Cars label widths", () => {
+  const values = loadCars().filter(row =>
+    row.Weight_in_lbs != null &&
+    row.Miles_per_Gallon != null &&
+    row.Origin != null &&
+    row.Horsepower != null
+  );
+  const program = chart()
+    .createCanvas({
+      width: 640,
+      height: 400,
+      margin: { top: 30, right: 30, bottom: 120, left: 70 }
+    })
+    .createData({ values })
+    .createPointMark({ id: "points" })
+    .encodeX({ target: "points", field: "Weight_in_lbs" })
+    .encodeY({ target: "points", field: "Miles_per_Gallon" })
+    .encodeColor({ target: "points", field: "Origin", fieldType: "nominal" })
+    .encodeOpacity({ target: "points", field: "Horsepower" })
+    .createGuides({ axes: { x: {}, y: {} }, legend: false })
+    .createLegend({
+      target: "points",
+      channels: ["color"],
+      position: "bottom",
+      titlePosition: "left",
+      columns: 3,
+      offset: 69,
+      itemGap: 12
+    })
+    .createLegend({
+      target: "points",
+      channels: ["opacity"],
+      position: "bottom",
+      titlePosition: "left",
+      count: 3,
+      offset: 69,
+      itemGap: 12
+    });
+
+  expect(program, [
+    "legend:count:2",
+    "legend:position:bottom",
+    "legend:order:left-to-right",
+    "legend:titles-aligned",
+    "legend:symbols-aligned",
+    "legend:label-gaps-aligned",
+    "legend:inter-block-gap",
+    "legend:plot-offset"
+  ]);
+});
+
 test("requires concrete Tukey configuration and materialized outlier rows", () => {
   const values = loadCars().filter(row => row.Origin != null && row.Miles_per_Gallon != null);
   const base = () => chart()
@@ -196,4 +247,3 @@ test("reads orange no-stroke highlighting from the owned highlight config", () =
   });
   expect(red, ["style:highlight:orange-no-stroke"], false);
 });
-

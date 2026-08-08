@@ -6,7 +6,7 @@
     "actionSourceSha256": "2245022872d3131c15a7f539ee66ff9e79e2e7a6c1f0a04aee0f799ec830cc42",
     "signatureSha256": "42b6d854c939ce1db015c2d5b97902e8f9247a3d3c0dd06197fddc0882bbcff8",
     "recipeCount": 33,
-    "recipeSourceSha256": "c97b2c32c85a05c83e09be9d4260571c94f54e6ac51ffd52541fc122d0057975",
+    "recipeSourceSha256": "9d45b9b957daa78057f52427e9e26186e1e9889f8259e9ea9c6d4833cff753b1",
     "recipeCoverageSha256": "13d9ee4ea560b4d01ae94ed9ac77828d82a8d52989051f51637027500071dc19"
   },
   "actions": [
@@ -22619,9 +22619,9 @@
       "schemaVersion": 1,
       "id": "legend-title-lifecycle",
       "title": "Legend and Title Lifecycle",
-      "intent": "Revise legend layout and components, edit chart titles, or remove complete guide-owned resources.",
+      "intent": "Create aligned multi-block legends, revise guide layout and components, or remove complete guide-owned resources.",
       "useWhen": [
-        "Use this recipe after legends or a chart title already exist and need focused layout or content changes."
+        "Use this recipe when separate legend blocks must share one aligned lane or existing legends and titles need focused changes."
       ],
       "avoidWhen": [
         "Avoid this recipe when semantic encodings should change; edit or remove the encoding instead of restyling its legend."
@@ -22643,7 +22643,7 @@
         }
       ],
       "outcomes": [
-        "Revise legend layout and components, edit chart titles, or remove complete guide-owned resources."
+        "Create or revise aligned legend blocks, edit chart titles, or remove complete guide-owned resources."
       ],
       "steps": [
         {
@@ -22773,7 +22773,11 @@
       "pitfalls": [
         {
           "problem": "Increasing the bottom Canvas margin alone does not move a bottom legend away from an x-axis title.",
-          "fix": "Give every legend in the row the same position, titlePosition, offset, and itemGap; use an explicit offset that clears the axis title, such as 52 pixels with a 120-pixel bottom margin on a 640 by 400 Canvas."
+          "fix": "Give every legend in the row the same position, titlePosition, offset, and itemGap directly on its createLegend call; the 640 by 400 example with a 120-pixel bottom margin uses position bottom, titlePosition left, offset 69, and itemGap 12 because a later editLegendLayout cannot run after an earlier createLegend has already failed."
+        },
+        {
+          "problem": "Two individually valid horizontal legend blocks can wrap onto separate rows when their combined occupied width exceeds the plot width.",
+          "fix": "Bound the categorical grid with columns and the sampled opacity block with count, such as columns 3 and count 3 in the 640-pixel bottom-row example, or create a wider plot."
         },
         {
           "problem": "Implicit targeting fails when several compatible datasets, marks, scales, guides, or owners exist in the same program.",
