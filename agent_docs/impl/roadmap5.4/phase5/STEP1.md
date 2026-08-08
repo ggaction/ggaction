@@ -18,7 +18,10 @@
 - [x] Immutable Attempt 1 plan/result hash contract
 - [x] Replacement v2 plan and 16 / 16 zero-spend dry-run
 - [x] R54-P5-B user approval — 2026-08-09
-- [ ] Replacement paid smoke execution and immutable result
+- [x] Replacement paid smoke execution and immutable result — [`ATTEMPT2.md`](./ATTEMPT2.md)
+- [x] Automatic retry 0, additional credential read 0
+- [x] Budget-estimator and partial-trace root-cause analysis
+- [ ] R54-P5-C runner accounting decision
 
 ## Execution discipline
 

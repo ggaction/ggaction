@@ -83,6 +83,20 @@ test("preserves the first paid attempt and its approved plan byte-for-byte", asy
   );
 });
 
+test("preserves the aborted replacement attempt byte-for-byte", async () => {
+  const result = await readFile(path.join(
+    root,
+    "evaluation",
+    "compact-authoring-paid-smoke-v2",
+    "results",
+    "IN_PROGRESS.json"
+  ));
+  assert.equal(
+    sha256(result),
+    "a9c9ffadafcadd076d6f44948e9a2f7b7673a4aa68ee3a4e2106e622e54bb12e"
+  );
+});
+
 test("preflights every model-visible schema against the provider subset", async () => {
   await preflightPaidSmokeTools();
   assert.throws(

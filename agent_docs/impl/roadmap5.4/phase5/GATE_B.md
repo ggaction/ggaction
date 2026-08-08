@@ -123,3 +123,9 @@ publish, deploy와 release는 열지 않는다.
   calculated maximum `$2.496`와 hard global stop `< $3` 범위를 명시적으로 승인했다.
 - 이 승인은 previously identified single credential file의 1회 read와 replacement paid smoke 실행만 연다.
 - Automatic retry, complete evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.
+
+## Execution result
+
+승인된 replacement v2는 첫 run에서 2 billed calls와 `$0.006121` 사용 뒤 pre-request task-envelope guard에 의해 중단됐다.
+Automatic retry는 없었고 0 / 16 task-runs가 완료됐다. Immutable result와 root-cause boundary는
+[`ATTEMPT2.md`](./ATTEMPT2.md)가 소유한다.

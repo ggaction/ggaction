@@ -17,7 +17,8 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Authoring bootstrap contract decision — R54-P5-A Option A approved
 - [x] Task packet schema v2 implementation and unpaid validation — product candidate `6ed5af76`
 - [x] Replacement paid-smoke scope/cost approval — R54-P5-B approved
-- [ ] Replacement paid-smoke execution and immutable result
+- [x] Replacement paid-smoke execution and immutable result — Attempt 2 aborted, 2 calls / `$0.006121`
+- [ ] Paid runner budget-accounting decision — R54-P5-C ready for review
 - [ ] Valid small paid smoke
 - [ ] Complete evaluation proposal or non-integration closeout
 
