@@ -4,7 +4,10 @@ import path from "node:path";
 import test from "node:test";
 
 import {
+  assertSupportedStrictToolSchema,
+  evaluateSubmission,
   loadPaidSmokePlan,
+  preflightPaidSmokeTools,
   root,
   runPaidSmokeDryRun,
   runPaidSmokeTask
@@ -56,6 +59,26 @@ test("freezes the exact approved paid-smoke matrix and cost ceiling", async () =
   assert.equal(plan.limits.requestTokenEstimateBytesPerToken, 1);
   assert.equal(plan.costProjection.expectedUsd, 1.152);
   assert.equal(plan.costProjection.calculatedMaximumUsd, 2.496);
+});
+
+test("preflights every model-visible schema against the provider subset", async () => {
+  await preflightPaidSmokeTools();
+  assert.throws(
+    () => assertSupportedStrictToolSchema({
+      type: "function",
+      name: "invalid_array",
+      strict: true,
+      parameters: {
+        type: "object",
+        additionalProperties: false,
+        required: ["values"],
+        properties: {
+          values: { type: "array", uniqueItems: true, items: { type: "string" } }
+        }
+      }
+    }),
+    /unsupported keyword uniqueItems/u
+  );
 });
 
 test("dry-runs all public-doc, direct, MCP, and fallback routes without spend", async () => {
@@ -305,4 +328,27 @@ test("stops a paid task when billing usage is incomplete", async () => {
   );
   assert.equal(ledger.costUsd, 0);
   assert.equal(ledger.modelCalls, 0);
+});
+
+test("bounds isolated generated-program failures without local command details", async () => {
+  const plan = await loadPaidSmokePlan();
+  const task = plan.tasks.find(entry => entry.id === "repair-val-histogram");
+  const result = await evaluateSubmission({
+    task,
+    artifactRoot: path.join(root, ".artifacts", "test", "paid-smoke-bounded-error"),
+    submission: {
+      status: "program",
+      source: [
+        'import { Canvas } from "ggaction";',
+        'import { renderToSVG } from "ggaction/svg";',
+        "export function buildChart(rows) { return Canvas(rows); }",
+        "export function renderChart(program) { return renderToSVG(program); }"
+      ].join("\n"),
+      renderer: "svg",
+      unresolved: []
+    }
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.failures.join("\n"), /^generated-program-error:SyntaxError:/u);
+  assert.doesNotMatch(result.failures.join("\n"), /Command failed|\/Users\//u);
 });

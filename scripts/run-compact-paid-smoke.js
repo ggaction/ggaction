@@ -5,6 +5,7 @@ import {
   assertPaidSmokeAuthorized,
   loadApiKey,
   paidSmokeRoot,
+  preflightPaidSmokeTools,
   runPaidSmoke,
   runPaidSmokeDryRun
 } from "./compact-paid-smoke.js";
@@ -31,6 +32,7 @@ if (process.argv.includes("--dry-run")) {
   const apiKeyFile = argument("--api-key-file");
   if (!apiKeyFile) throw new Error("Paid execution requires --api-key-file with one explicit path.");
   const plan = await assertPaidSmokeAuthorized();
+  await preflightPaidSmokeTools();
   const resultFile = path.join(resultsRoot, "RESULT.json");
   const progressFile = path.join(resultsRoot, "IN_PROGRESS.json");
   await assertAbsent(resultFile);

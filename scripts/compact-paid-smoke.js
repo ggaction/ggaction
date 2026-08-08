@@ -59,6 +59,30 @@ const forbiddenSourcePatterns = Object.freeze([
   [/\bimport\s*\(/u, "dynamic import"],
   [/\b(?:while|for)\s*\(\s*;\s*;/u, "unbounded loop"]
 ]);
+const supportedSchemaKeywords = new Set([
+  "$defs",
+  "$ref",
+  "additionalProperties",
+  "anyOf",
+  "const",
+  "description",
+  "enum",
+  "exclusiveMaximum",
+  "exclusiveMinimum",
+  "format",
+  "items",
+  "maximum",
+  "maxItems",
+  "maxLength",
+  "minimum",
+  "minItems",
+  "minLength",
+  "multipleOf",
+  "pattern",
+  "properties",
+  "required",
+  "type"
+]);
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -251,7 +275,6 @@ const readMcpResourcesTool = functionTool(
       type: "array",
       minItems: 1,
       maxItems: 2,
-      uniqueItems: true,
       items: { type: "string", pattern: "^ggaction://docs/[a-z0-9-]+$" }
     }
   },
@@ -415,7 +438,7 @@ function createDirectAdapter() {
   let calls = 0;
   return Object.freeze({
     tools: Object.freeze([compactSearchTool]),
-    instruction: "Call search_ggaction exactly once with the complete request, then submit.",
+    instruction: "Call search_ggaction exactly once with the exact text after Task:. Do not copy the dataset, scaffold, or commentary into the query. Then submit.",
     async handle(call) {
       if (call.name !== SEARCH_TOOL_NAME) throw new Error(`Unknown direct tool: ${call.name}`);
       const args = JSON.parse(call.arguments);
@@ -461,8 +484,8 @@ function createMcpAdapter({ fallback }) {
       ? [compactSearchTool, readMcpResourcesTool]
       : [compactSearchTool]),
     instruction: fallback
-      ? "Call search_ggaction once. If it returns fallback resources, read every URI together in one read_mcp_resources call, then submit. unsupported.* maps to unsupported-capabilities and renderer.format maps to choose-renderer."
-      : "Call search_ggaction exactly once through local MCP, do not read docs, then submit.",
+      ? "Call search_ggaction once with the exact text after Task:, without dataset or scaffold. If it returns fallback resources, read every URI together in one read_mcp_resources call, then submit. unsupported.* maps to unsupported-capabilities and renderer.format maps to choose-renderer."
+      : "Call search_ggaction exactly once through local MCP with the exact text after Task:, without dataset or scaffold. Do not read docs, then submit.",
     async handle(call) {
       const connected = await connection();
       const args = JSON.parse(call.arguments);
@@ -524,6 +547,59 @@ export async function createKnowledgeAdapter(condition) {
   throw new Error(`Unknown paid smoke condition: ${condition}`);
 }
 
+function assertSchemaNode(node, pathLabel) {
+  if (!node || typeof node !== "object" || Array.isArray(node)) {
+    throw new Error(`provider-schema-preflight: ${pathLabel} is not a schema object`);
+  }
+  for (const keyword of Object.keys(node)) {
+    if (!supportedSchemaKeywords.has(keyword)) {
+      throw new Error(
+        `provider-schema-preflight: unsupported keyword ${keyword} at ${pathLabel}`
+      );
+    }
+  }
+  if (node.type === "object") {
+    if (node.additionalProperties !== false) {
+      throw new Error(`provider-schema-preflight: ${pathLabel} must close additionalProperties`);
+    }
+    const properties = node.properties ?? {};
+    const propertyNames = Object.keys(properties);
+    if (!same(node.required ?? [], propertyNames)) {
+      throw new Error(`provider-schema-preflight: ${pathLabel} must require every property in order`);
+    }
+    for (const [name, property] of Object.entries(properties)) {
+      assertSchemaNode(property, `${pathLabel}.properties.${name}`);
+    }
+  }
+  if (node.items) assertSchemaNode(node.items, `${pathLabel}.items`);
+  for (const [index, branch] of (node.anyOf ?? []).entries()) {
+    assertSchemaNode(branch, `${pathLabel}.anyOf[${index}]`);
+  }
+  for (const [name, definition] of Object.entries(node.$defs ?? {})) {
+    assertSchemaNode(definition, `${pathLabel}.$defs.${name}`);
+  }
+}
+
+export function assertSupportedStrictToolSchema(tool) {
+  if (tool?.type !== "function" || tool.strict !== true) {
+    throw new Error("provider-schema-preflight: every model-visible tool must be strict function");
+  }
+  assertSchemaNode(tool.parameters, tool.name);
+}
+
+export async function preflightPaidSmokeTools() {
+  for (const condition of ["A", "B", "C", "D"]) {
+    const adapter = await createKnowledgeAdapter(condition);
+    try {
+      for (const tool of [...adapter.tools, submitResultTool]) {
+        assertSupportedStrictToolSchema(tool);
+      }
+    } finally {
+      await adapter.close();
+    }
+  }
+}
+
 function importsFromSource(source) {
   return [
     ...source.matchAll(/\bimport\s+(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']/gu),
@@ -573,25 +649,33 @@ async function executeGeneratedProgram({ artifactRoot, programFile, task, render
   const datasetFile = path.join(artifactRoot, "dataset.json");
   const resultFile = path.join(artifactRoot, "execution.json");
   await writeFile(datasetFile, `${JSON.stringify(task.dataset.values)}\n`);
-  await execFile(process.execPath, [
-    "--experimental-permission",
-    "--max-old-space-size=128",
-    `--allow-fs-read=${generatedProgramHarness}`,
-    `--allow-fs-read=${path.join(root, "package.json")}`,
-    `--allow-fs-read=${path.join(root, "src")}`,
-    `--allow-fs-read=${artifactRoot}`,
-    `--allow-fs-write=${artifactRoot}`,
-    generatedProgramHarness,
-    programFile,
-    datasetFile,
-    resultFile,
-    renderer
-  ], {
-    cwd: root,
-    env: {},
-    timeout: 10_000,
-    maxBuffer: 1_000_000
-  });
+  try {
+    await execFile(process.execPath, [
+      "--experimental-permission",
+      "--max-old-space-size=128",
+      `--allow-fs-read=${generatedProgramHarness}`,
+      `--allow-fs-read=${path.join(root, "package.json")}`,
+      `--allow-fs-read=${path.join(root, "src")}`,
+      `--allow-fs-read=${artifactRoot}`,
+      `--allow-fs-write=${artifactRoot}`,
+      generatedProgramHarness,
+      programFile,
+      datasetFile,
+      resultFile,
+      renderer
+    ], {
+      cwd: root,
+      env: {},
+      timeout: 10_000,
+      maxBuffer: 1_000_000
+    });
+  } catch (error) {
+    const text = String(error?.stderr ?? error?.message ?? error);
+    const issue = text.split("\n").find(line =>
+      /^(?:Error|RangeError|ReferenceError|SyntaxError|TypeError):/u.test(line)
+    );
+    throw new Error(`generated-program-error:${(issue ?? "isolated execution failed").slice(0, 500)}`);
+  }
   return json(resultFile);
 }
 
@@ -1030,6 +1114,7 @@ export async function runPaidSmoke({
   onProgress = async () => {}
 } = {}) {
   const plan = await assertPaidSmokeAuthorized(suppliedPlan ?? await loadPaidSmokePlan());
+  await preflightPaidSmokeTools();
   const taskById = new Map(plan.tasks.map(task => [task.id, task]));
   const ledger = { usage: emptyUsage(), costUsd: 0, modelCalls: 0 };
   const results = [];
