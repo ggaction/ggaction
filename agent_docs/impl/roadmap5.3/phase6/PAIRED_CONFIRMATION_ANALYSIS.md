@@ -94,3 +94,27 @@ block bounds, wrap 여부, current gap 또는 failing operation을 볼 수 없�
 Gate T raw 결과와 비용은 수정하지 않는다. 위 unpaid corrections가 complete suite에서 검증되고 새 candidate가 고정되기 전에는
 credential read나 external model call을 하지 않는다. 이후에도 같은 task의 provider confirmation은 새 비용 Gate와 별도 사용자
 승인이 필요하다.
+
+## Unpaid correction completion
+
+Correction code candidate는 `5be79c124dd46404566d882532c51b41f7b4a44b`로 고정했다.
+
+| Commit | Correction |
+| --- | --- |
+| `32eee952` | Bottom-row public example을 offset 69, color columns 3, opacity count 3으로 수정하고 actual Cars strict-oracle regression 추가 |
+| `96740b3e` | Failed legend validation에 block bounds, aligned rows, gaps와 repair direction을 bounded diagnostic으로 전달 |
+| `8e07c254` | Separate color+opacity multi-legend intent를 structured direct/MCP search 1위로 고정 |
+| `5be79c12` | Docs-only search를 bottom/top multi-legend section으로 edge-aware routing |
+
+무과금 검증 결과:
+
+- `npm test`: **2,174 / 2,174 pass**
+- `npm run test:docs`: **45 / 45 pass**
+- Focused evaluator, paired repair, search와 MCP contracts: pass
+- `knowledge:check`, `docs:search:check`, installed-package MCP check: pass
+- Installed-package MCP direct payload와 protocol transport byte equality: pass
+- Corrected 640×400 actual-Cars program은 legend count/position/order/title/symbol/label-gap/inter-block-gap/plot-offset를 모두 pass
+- Mock paired repair는 count 5 submission을 strict oracle로 reject하고 measured geometry를 다음 call에 전달한 뒤 count 3만 pass
+- Credential read / external model call / additional spend: **0 / 0 / $0**
+
+Gate T의 성공 task를 다시 소비하지 않고 bottom multi-legend만 A/B/C/D 한 번씩 확인하는 새 비용 Gate가 다음 경계다.

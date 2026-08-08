@@ -72,7 +72,9 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [x] R53-P6-T corrected confirmation proposal
 - [x] Separately approved corrected paid confirmation
 - [x] Immutable Gate T failure analysis and no-benefit decision
-- [ ] Unpaid bottom multi-legend knowledge and benchmark repair
+- [x] Unpaid bottom multi-legend knowledge and benchmark repair
+- [x] Complete repaired-candidate unpaid verification
+- [ ] R53-P6-U bottom multi-legend paid confirmation proposal
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
