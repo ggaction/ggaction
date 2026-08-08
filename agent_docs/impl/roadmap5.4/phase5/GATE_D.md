@@ -6,7 +6,7 @@
 
 Product candidate: `6ed5af76c80e56c5a3cde833c5a702de183e4d7a`.
 
-Verified review checkpoint: package commit 뒤 기록한다.
+Verified review checkpoint: `5c3c97d94d3608f7840e6ebd25148d2ac8a19816`.
 
 Replacement plan: `evaluation/compact-authoring-paid-smoke-v3/PLAN.json`.
 
