@@ -2,7 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-08에 remote Gate package `396daf6a0432030a20e497f820a6281338f175be`와 Gate V의
+immutable failed acceptance를 확인한 뒤 Roadmap 5.4 재설계를 진행하도록 명시적으로 승인했다. 이 승인은 Roadmap
+5.3을 completed, not integrated execution record로 닫는 documentation-only transition만 허용한다.
 
 ## 승인 대상
 

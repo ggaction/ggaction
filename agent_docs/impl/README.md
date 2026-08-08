@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 Roadmap 5.3 Phase 6이다.** 동일한 model/corpus/settings로 current docs, structured
-  knowledge와 local MCP를 비교하고 integration candidate를 판정한다. 실행 순서는
+- **현재 활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 5.3 Phase 6이다. Structured knowledge가
+  correctness를 높였지만 frozen Gate V efficiency acceptance를 실패해 product integration 없이 닫았다. 기록은
   [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
@@ -22,7 +22,7 @@
 - [`roadmap5/ROADMAP.md`](roadmap5/ROADMAP.md) — completed, temporal derivation, ordering과 directional marks
 - [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md) — completed, multi-legend layout completion
 - [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md) — completed, repository integrity와 maintainer hardening
-- [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md) — active, LLM-readable knowledge, task recipes와 local MCP
+- [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md) — completed, LLM knowledge/MCP 실험과 non-integration 결과
 
 ## 재사용하는 개발 절차
 

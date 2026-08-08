@@ -15,11 +15,10 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.3 Phase 6이다.** 동일한 model/corpus/settings로 current docs, structured
-knowledge와 local MCP를 비교하고 사전 고정한 acceptance threshold로 integration candidate를 판정한다. 실행 순서는
-[`impl/roadmap5.3/ROADMAP.md`](impl/roadmap5.3/ROADMAP.md)가 소유한다. Active pointer와 마지막 완료 owner의
-machine-readable source는
-[`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
+**현재 활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 5.3 Phase 6이다. Structured knowledge와 local MCP는
+correctness를 높였지만 frozen Gate V efficiency acceptance를 실패해 product integration 없이 종료했다. 기록은
+[`impl/roadmap5.3/ROADMAP.md`](impl/roadmap5.3/ROADMAP.md)가 소유한다. Nullable active pointer와 마지막 완료 owner의
+machine-readable source는 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 
 ## 작업별 읽기 경로
 

@@ -1,8 +1,9 @@
 # Roadmap 5.3 — LLM-Friendly Knowledge and Local MCP
 
-> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 6이다. Exact pointer는
-> [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다. 현재 observable action behavior는
-> [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)과 `contract/current/`가 소유한다.
+> **문서 상태 — 완료된 실행 기록.** 2026-08-08 R53-Exit 승인을 받아 Phase 0~6의 실험과 판정을
+> 완료했지만 Gate V efficiency acceptance 실패로 product integration은 하지 않았다. 현재 observable action behavior는
+> [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)과 `contract/current/`가 소유하며, roadmap 상태와
+> nullable active pointer는 [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다.
 
 ## 목표
 
@@ -106,7 +107,7 @@ Renderer와 browser entry에 MCP runtime dependency가 섞이지 않도록 insta
 | 3 | completed | High-coverage executable task recipes |
 | 4 | completed | Deterministic retrieval, local harness와 mechanical coverage reports |
 | 5 | completed | Existing-package local MCP integration |
-| 6 | in-progress | A/B/C real LLM benchmark, integration와 closeout |
+| 6 | completed | A/B/C/D real LLM benchmark, failed acceptance와 non-integration closeout |
 
 ## Approval Gates
 

@@ -84,8 +84,8 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [x] Immutable full result and non-integration decision
 - [x] Failed acceptance mechanically blocked PR/merge eligibility
 - [x] R53-Exit non-integration closeout package prepared
-- [ ] R53-Exit explicit closeout approval
-- [ ] Documentation-only branch closeout and final remote checkpoint
+- [x] R53-Exit explicit closeout approval
+- [x] Documentation-only branch closeout prepared and verified
 
 ## 고정 경계
 

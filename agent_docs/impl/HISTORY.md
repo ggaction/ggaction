@@ -82,4 +82,15 @@ environments와 merged-main identity를 재검증해 R52-Exit에서 닫았다.
 
 - 기록: [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md)
 
+## Roadmap 5.3 — LLM-Friendly Knowledge and Local MCP
+
+Phase 0~6을 실행했다. 173개 action metadata, executable recipes, deterministic retrieval, local stdio MCP와
+strict real-LLM evaluation harness를 구현했다. Frozen Gate V 136-run 결과에서 structured knowledge는 docs-only보다
+final correctness를 20.6 percentage points 높였지만 task-level median token이 89.5% 증가하고 call/time threshold도
+미달해 predeclared acceptance를 실패했다. R53-Exit에서 branch evidence를 보존하고 product integration 없이 닫았다.
+
+- 기록: [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md)
+- 최종 판정: [`roadmap5.3/phase6/PAIRED_FULL_EVALUATION_ANALYSIS.md`](roadmap5.3/phase6/PAIRED_FULL_EVALUATION_ANALYSIS.md)
+- Closeout: [`roadmap5.3/phase6/GATE_EXIT.md`](roadmap5.3/phase6/GATE_EXIT.md)
+
 Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.
