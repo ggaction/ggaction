@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ggaction.github.io/ggaction/schemas/compact-evaluation-task.schema.json",
+  "title": "ggaction compact authoring evaluation task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "split", "stratum", "dataset", "query", "expected"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]+$" },
+    "split": { "enum": ["development", "validation", "held-out"] },
+    "stratum": { "enum": ["simple", "complex"] },
+    "dataset": { "type": "string", "pattern": "^[a-z][a-z0-9-]+-v1$" },
+    "query": { "type": "string", "minLength": 12, "maxLength": 500 },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["constraints", "plan", "unresolved", "fallbacks"],
+      "properties": {
+        "constraints": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 3 }
+        },
+        "plan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "options"],
+            "properties": {
+              "id": { "type": "string", "minLength": 3 },
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" }
+              }
+            }
+          }
+        },
+        "unresolved": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 3 }
+        },
+        "fallbacks": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^ggaction://docs/" }
+        }
+      }
+    }
+  }
+}

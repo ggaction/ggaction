@@ -16,6 +16,25 @@ import {
 
 export const root = fileURLToPath(new URL("../", import.meta.url));
 export const evaluationRoot = path.join(root, "evaluation", "compact-authoring");
+export const repairEvaluationRoot = path.join(
+  root,
+  "evaluation",
+  "compact-authoring-repair"
+);
+export const EVALUATION_CORPORA = Object.freeze({
+  original: Object.freeze({
+    directory: evaluationRoot,
+    corpusId: "compact-authoring-fresh-v1",
+    productBaseCommit: "9414d07179c9e7c6bbfdf00b762fc35de0ff25ec",
+    overlapDirectories: Object.freeze([])
+  }),
+  repair: Object.freeze({
+    directory: repairEvaluationRoot,
+    corpusId: "compact-authoring-repair-v1",
+    productBaseCommit: "c1abbd6392603f05a0784ab045e76d2202ed2dd7",
+    overlapDirectories: Object.freeze([evaluationRoot])
+  })
+});
 const typesRoot = path.join(root, "types");
 const tscFile = path.join(
   root,
@@ -51,16 +70,25 @@ async function json(file) {
   return JSON.parse(await readFile(file, "utf8"));
 }
 
-export async function loadCorpusSources() {
+export function corpusConfig(corpus = "original") {
+  const config = EVALUATION_CORPORA[corpus];
+  if (!config) {
+    throw new Error(`Unknown compact evaluation corpus: ${corpus}`);
+  }
+  return config;
+}
+
+export async function loadCorpusSources(corpus = "original") {
+  const config = corpusConfig(corpus);
   const [datasets, oracle, taxonomy, cards, design, ...splitArtifacts] = await Promise.all([
-    json(path.join(evaluationRoot, "datasets.json")),
-    json(path.join(evaluationRoot, "oracle-policy.json")),
+    json(path.join(config.directory, "datasets.json")),
+    json(path.join(config.directory, "oracle-policy.json")),
     json(path.join(root, "knowledge", "intent-taxonomy.json")),
     json(path.join(root, "knowledge", "action-cards.json")),
     json(path.join(root, "knowledge", "task-closure-cases.json")),
-    ...SPLITS.map(split => json(path.join(evaluationRoot, `${split}.json`)))
+    ...SPLITS.map(split => json(path.join(config.directory, `${split}.json`)))
   ]);
-  return { datasets, oracle, taxonomy, cards, design, splitArtifacts };
+  return { config, datasets, oracle, taxonomy, cards, design, splitArtifacts };
 }
 
 function countBy(values, key) {
@@ -69,9 +97,9 @@ function countBy(values, key) {
     .map(name => [name, values.filter(value => value[key] === name).length]));
 }
 
-export async function validateCorpusSource() {
-  const { datasets, oracle, taxonomy, cards, design, splitArtifacts } =
-    await loadCorpusSources();
+export async function validateCorpusSource(corpus = "original") {
+  const { config, datasets, oracle, taxonomy, cards, design, splitArtifacts } =
+    await loadCorpusSources(corpus);
   const errors = [];
   const datasetIds = new Set(datasets.datasets.map(dataset => dataset.id));
   const constraints = new Set(taxonomy.constraints.map(constraint => constraint.id));
@@ -167,6 +195,18 @@ export async function validateCorpusSource() {
     errors.push(`Phase 2 design query overlap: ${designOverlap.map(task => task.id).join(", ")}`);
   }
 
+  const priorQueries = new Set();
+  for (const directory of config.overlapDirectories) {
+    for (const split of SPLITS) {
+      const artifact = await json(path.join(directory, `${split}.json`));
+      for (const task of artifact.tasks) priorQueries.add(normalizeQuery(task.query));
+    }
+  }
+  const priorOverlap = tasks.filter(task => priorQueries.has(normalizeQuery(task.query)));
+  if (priorOverlap.length > 0) {
+    errors.push(`Prior compact corpus query overlap: ${priorOverlap.map(task => task.id).join(", ")}`);
+  }
+
   if (errors.length > 0) throw new Error(errors.join("\n"));
   return Object.freeze({
     tasks: tasks.length,
@@ -175,22 +215,26 @@ export async function validateCorpusSource() {
     datasets: datasetIds.size,
     constraints: coveredConstraints.size,
     phase2DesignQueryOverlap: designOverlap.length,
+    ...(config.overlapDirectories.length > 0
+      ? { priorCorpusQueryOverlap: priorOverlap.length }
+      : {}),
     querySha256: sha256(tasks.map(task => normalizeQuery(task.query)).sort().join("\n"))
   });
 }
 
-export async function buildFrozenManifest() {
-  const summary = await validateCorpusSource();
+export async function buildFrozenManifest(corpus = "original") {
+  const config = corpusConfig(corpus);
+  const summary = await validateCorpusSource(corpus);
   const files = {};
   for (const relative of FROZEN_SOURCE_FILES) {
-    const bytes = await readFile(path.join(evaluationRoot, relative));
+    const bytes = await readFile(path.join(config.directory, relative));
     files[relative] = { bytes: bytes.length, sha256: sha256(bytes) };
   }
   return {
     schemaVersion: 1,
-    corpusId: "compact-authoring-fresh-v1",
+    corpusId: config.corpusId,
     frozenOn: "2026-08-08",
-    productBaseCommit: "9414d07179c9e7c6bbfdf00b762fc35de0ff25ec",
+    productBaseCommit: config.productBaseCommit,
     exclusions: {
       roadmap53FrozenCorpus: "not-read-not-reused",
       phase2DesignFixtures: "overlap-check-only-not-evaluation"
@@ -200,9 +244,10 @@ export async function buildFrozenManifest() {
   };
 }
 
-export async function assertFrozenManifest() {
-  const expected = await buildFrozenManifest();
-  const actual = await json(path.join(evaluationRoot, "FROZEN.json"));
+export async function assertFrozenManifest(corpus = "original") {
+  const config = corpusConfig(corpus);
+  const expected = await buildFrozenManifest(corpus);
+  const actual = await json(path.join(config.directory, "FROZEN.json"));
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
     throw new Error("Compact evaluation freeze is stale. Run the freeze generator before evaluation.");
   }
@@ -250,11 +295,12 @@ function same(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
-export async function evaluateSplit(split, { candidateCommit } = {}) {
+export async function evaluateSplit(split, { candidateCommit, corpus = "original" } = {}) {
   if (!SPLITS.includes(split)) throw new Error(`Unknown compact evaluation split: ${split}`);
-  const frozen = await assertFrozenManifest();
-  const artifact = await json(path.join(evaluationRoot, `${split}.json`));
-  const policy = await json(path.join(evaluationRoot, "oracle-policy.json"));
+  const config = corpusConfig(corpus);
+  const frozen = await assertFrozenManifest(corpus);
+  const artifact = await json(path.join(config.directory, `${split}.json`));
+  const policy = await json(path.join(config.directory, "oracle-policy.json"));
   const failures = [];
   const sizes = [];
   const calls = new Set();
@@ -315,7 +361,7 @@ export async function evaluateSplit(split, { candidateCommit } = {}) {
     failures.push(`${split}: resolved fallback count ${resolvedFallbackCount}`);
   }
 
-  const frozenBytes = await readFile(path.join(evaluationRoot, "FROZEN.json"));
+  const frozenBytes = await readFile(path.join(config.directory, "FROZEN.json"));
   return {
     schemaVersion: 1,
     corpusId: frozen.corpusId,
@@ -341,7 +387,10 @@ export async function evaluateSplit(split, { candidateCommit } = {}) {
 }
 
 export async function writeEvaluationResult(result) {
-  const directory = path.join(evaluationRoot, "results");
+  const config = Object.values(EVALUATION_CORPORA)
+    .find(candidate => candidate.corpusId === result.corpusId);
+  if (!config) throw new Error(`Unknown result corpus: ${result.corpusId}`);
+  const directory = path.join(config.directory, "results");
   await mkdir(directory, { recursive: true });
   const file = path.join(directory, `${result.split}.json`);
   await writeFile(file, `${JSON.stringify(result, null, 2)}\n`);

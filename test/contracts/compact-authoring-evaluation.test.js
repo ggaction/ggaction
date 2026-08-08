@@ -71,3 +71,32 @@ test("records the locked candidate and its one-pass validation result", async ()
     "val-point-appearance-encodings: plan mismatch [{\"id\":\"action.createPointMark\",\"options\":[]},{\"id\":\"action.encodeX\",\"options\":[\"field\"]},{\"id\":\"action.encodeY\",\"options\":[\"field\"]},{\"id\":\"action.encodeOpacity\",\"options\":[\"field\"]},{\"id\":\"action.encodeShape\",\"options\":[\"field\"]},{\"id\":\"action.encodeSize\",\"options\":[\"field\"]},{\"id\":\"action.createAxes\",\"options\":[]}]"
   ]);
 });
+
+test("freezes the repair evaluation before changing the candidate", async () => {
+  assert.deepEqual(await validateCorpusSource("repair"), {
+    tasks: 31,
+    splits: {
+      development: 1,
+      "held-out": 15,
+      validation: 15
+    },
+    strata: {
+      complex: 17,
+      simple: 14
+    },
+    datasets: 3,
+    constraints: 79,
+    phase2DesignQueryOverlap: 0,
+    priorCorpusQueryOverlap: 0,
+    querySha256: "70dd5e062cff6ccb0919b6d29e3aadd8e67296564338088f01a01383908d1b47"
+  });
+
+  const manifest = await assertFrozenManifest("repair");
+  assert.equal(manifest.corpusId, "compact-authoring-repair-v1");
+  assert.equal(
+    manifest.productBaseCommit,
+    "c1abbd6392603f05a0784ab045e76d2202ed2dd7"
+  );
+  assert.equal(manifest.summary.constraints, 79);
+  assert.equal(manifest.summary.priorCorpusQueryOverlap, 0);
+});

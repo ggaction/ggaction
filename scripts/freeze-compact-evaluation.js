@@ -3,11 +3,13 @@ import path from "node:path";
 
 import {
   buildFrozenManifest,
-  evaluationRoot
+  corpusConfig
 } from "./compact-evaluation.js";
 
-const output = path.join(evaluationRoot, "FROZEN.json");
-const expected = `${JSON.stringify(await buildFrozenManifest(), null, 2)}\n`;
+const corpusIndex = process.argv.indexOf("--corpus");
+const corpus = corpusIndex === -1 ? "original" : process.argv[corpusIndex + 1];
+const output = path.join(corpusConfig(corpus).directory, "FROZEN.json");
+const expected = `${JSON.stringify(await buildFrozenManifest(corpus), null, 2)}\n`;
 
 if (process.argv.includes("--check")) {
   const current = await readFile(output, "utf8");

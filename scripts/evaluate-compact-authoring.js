@@ -4,7 +4,7 @@ import path from "node:path";
 
 import {
   evaluateSplit,
-  evaluationRoot,
+  corpusConfig,
   SPLITS,
   writeEvaluationResult
 } from "./compact-evaluation.js";
@@ -15,6 +15,8 @@ function argument(name) {
 }
 
 const split = argument("--split");
+const corpus = argument("--corpus") ?? "original";
+const evaluationRoot = corpusConfig(corpus).directory;
 if (!SPLITS.includes(split)) {
   throw new Error(`Use --split with one of: ${SPLITS.join(", ")}.`);
 }
@@ -41,7 +43,7 @@ if (split !== "development") {
   }
 }
 
-const result = await evaluateSplit(split, { candidateCommit });
+const result = await evaluateSplit(split, { candidateCommit, corpus });
 if (process.argv.includes("--record")) await writeEvaluationResult(result);
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 if (!result.passed) process.exitCode = 1;

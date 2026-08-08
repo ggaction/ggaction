@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "split": "validation",
+  "tasks": [
+    {
+      "id": "repair-val-base-scatter",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "mixed-observations-v1",
+      "query": "Create canvas plot bounds, load rows, then make a scatter chart with map to x, map to y, encode color, encode size, encode shape, automatic guides, and export PNG.",
+      "expected": {
+        "constraints": ["program.canvas", "program.data", "chart.scatter", "encoding.x", "encoding.y", "encoding.color", "encoding.size", "encoding.shape", "guide.all", "renderer.png"],
+        "plan": [
+          { "id": "action.createCanvas", "options": [] },
+          { "id": "action.createData", "options": ["values"] },
+          { "id": "action.createScatterPlot", "options": ["x", "y", "color", "size", "shape"] },
+          { "id": "action.createGuides", "options": [] },
+          { "id": "runtime.renderToPNG", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-line-style",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "temporal-groups-v1",
+      "query": "Make a time series chart with group series, encode opacity, line style encoding, axis guides, chart grid, and SVG output.",
+      "expected": {
+        "constraints": ["chart.line", "encoding.opacity", "encoding.strokeDash", "encoding.group", "guide.axes", "guide.grid", "renderer.svg"],
+        "plan": [
+          { "id": "action.createLinePlot", "options": ["x", "y", "groupBy", "strokeDash", "guides"] },
+          { "id": "action.encodeOpacity", "options": ["field"] },
+          { "id": "action.createGrid", "options": [] },
+          { "id": "runtime.renderToSVG", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-ordered-bars",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "mixed-observations-v1",
+      "query": "Build a column chart with a palette scale, color encoding and legend, order categories, move the legend at bottom, and render PDF.",
+      "expected": {
+        "constraints": ["chart.bar", "scale.color", "encoding.color", "guide.legend", "layout.legend.bottom", "layout.categoryOrder", "renderer.pdf"],
+        "plan": [
+          { "id": "action.createColorScale", "options": ["id", "type", "range"] },
+          { "id": "action.createBarPlot", "options": ["x", "y", "color", "guides"] },
+          { "id": "action.orderCategories", "options": ["channel", "by"] },
+          { "id": "action.legendBottom", "options": ["position"] },
+          { "id": "runtime.renderToPDF", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-histogram",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "mixed-observations-v1",
+      "query": "Draw a binned distribution as a histogram with one dimensional bins, axis guides, and SVG output.",
+      "expected": {
+        "constraints": ["chart.histogram", "transform.bin1d", "guide.axes", "renderer.svg"],
+        "plan": [
+          { "id": "action.createHistogram", "options": ["field", "guides"] },
+          { "id": "runtime.renderToSVG", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-heatmap",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "mixed-observations-v1",
+      "query": "Create a heat map using two dimensional bins, map to x, map to y, encode color, add an encoding key and reference grid.",
+      "expected": {
+        "constraints": ["chart.heatmap", "transform.bin2d", "encoding.x", "encoding.y", "encoding.color", "guide.legend", "guide.grid"],
+        "plan": [
+          { "id": "action.createHeatmap", "options": ["x", "y", "bin", "color", "guides"] },
+          { "id": "action.createGrid", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-parallel",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "mixed-observations-v1",
+      "query": "Use a parallel coordinate plot with dimension axes, encode color, line style encoding, axis guides, and an encoding key.",
+      "expected": {
+        "constraints": ["chart.parallel", "encoding.color", "encoding.strokeDash", "encoding.parallel", "guide.axes", "guide.legend"],
+        "plan": [
+          { "id": "action.createParallelCoordinates", "options": ["dimensions", "color", "strokeDash", "guides"] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-box-interval",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "mixed-observations-v1",
+      "query": "Derive summary interval data, create a boxplot with axis guides, and add error bars.",
+      "expected": {
+        "constraints": ["chart.box", "transform.interval", "statistics.errorBar", "guide.axes"],
+        "plan": [
+          { "id": "action.createIntervalData", "options": ["id", "field"] },
+          { "id": "action.createBoxPlot", "options": ["guides"] },
+          { "id": "action.createErrorBar", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-violin-density",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "mixed-observations-v1",
+      "query": "Derive kernel density data, create a violin chart with an encoding key, then place the legend at top.",
+      "expected": {
+        "constraints": ["chart.violin", "transform.density", "guide.legend", "layout.legend.top"],
+        "plan": [
+          { "id": "action.createDensityData", "options": ["id", "field"] },
+          { "id": "action.createViolinPlot", "options": ["x", "y", "guides"] },
+          { "id": "action.legendTop", "options": ["position"] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-gradient-log",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "mixed-observations-v1",
+      "query": "Create a logarithmic scale, build a density gradient, and add a horizontal axis.",
+      "expected": {
+        "constraints": ["chart.gradient", "scale.log", "guide.xAxis"],
+        "plan": [
+          { "id": "action.createLogScale", "options": ["id", "type"] },
+          { "id": "action.createGradientPlot", "options": [] },
+          { "id": "action.createXAxis", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-density-time",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "temporal-groups-v1",
+      "query": "Create a month bucket, create a temporal scale, draw a kernel density plot, and add a vertical axis.",
+      "expected": {
+        "constraints": ["chart.density", "transform.timeUnit", "scale.time", "guide.yAxis"],
+        "plan": [
+          { "id": "action.createTimeUnitData", "options": ["id", "field", "unit", "as"] },
+          { "id": "action.createTimeScale", "options": ["id", "type"] },
+          { "id": "action.encodeDensity", "options": ["field"] },
+          { "id": "action.createYAxis", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-point-order",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "mixed-observations-v1",
+      "query": "Use circle marks; map to y, then map to x; encode shape, encode opacity, and encode size in that order.",
+      "expected": {
+        "constraints": ["mark.point", "encoding.x", "encoding.y", "encoding.size", "encoding.shape", "encoding.opacity"],
+        "plan": [
+          { "id": "action.createPointMark", "options": [] },
+          { "id": "action.encodeY", "options": ["field"] },
+          { "id": "action.encodeX", "options": ["field"] },
+          { "id": "action.encodeShape", "options": ["field"] },
+          { "id": "action.encodeOpacity", "options": ["field"] },
+          { "id": "action.encodeSize", "options": ["field"] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-tick-angle",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "polar-observations-v1",
+      "query": "Draw a strip plot, encode x, rotate ticks, and add a horizontal axis.",
+      "expected": {
+        "constraints": ["mark.tick", "encoding.x", "encoding.angle", "guide.xAxis"],
+        "plan": [
+          { "id": "action.createTickMark", "options": [] },
+          { "id": "action.encodeX", "options": ["field"] },
+          { "id": "action.encodeAngle", "options": ["value"] },
+          { "id": "action.createXAxis", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-text-layout",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "mixed-observations-v1",
+      "query": "Create data labels, map the label field to text, add title, then avoid label overlap.",
+      "expected": {
+        "constraints": ["mark.text", "encoding.text", "guide.title", "layout.labels"],
+        "plan": [
+          { "id": "action.createTextMark", "options": [] },
+          { "id": "action.encodeText", "options": ["field"] },
+          { "id": "action.createTitle", "options": ["text"] },
+          { "id": "action.layoutLabels", "options": ["axis"] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-composition",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "mixed-observations-v1",
+      "query": "Put complete charts side by side, then stack charts vertically, and render to canvas.",
+      "expected": {
+        "constraints": ["composition.horizontal", "composition.vertical", "renderer.canvas"],
+        "plan": [
+          { "id": "runtime.hconcat", "options": [] },
+          { "id": "runtime.vconcat", "options": [] },
+          { "id": "runtime.render", "options": [] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    },
+    {
+      "id": "repair-val-selection-facet",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "mixed-observations-v1",
+      "query": "Store selection, filter marks, highlight selected, repeat chart by field with an encoding key, then place the legend at right.",
+      "expected": {
+        "constraints": ["guide.legend", "layout.legend.right", "layout.facet", "selection.store", "selection.highlight", "selection.filter"],
+        "plan": [
+          { "id": "action.selectMarks", "options": ["id", "field", "op", "value"] },
+          { "id": "action.filterMarks", "options": ["field", "op", "value"] },
+          { "id": "action.highlightMarks", "options": ["selection", "color"] },
+          { "id": "action.facet", "options": ["field", "guides"] },
+          { "id": "action.legendRight", "options": ["position"] }
+        ],
+        "unresolved": [],
+        "fallbacks": []
+      }
+    }
+  ]
+}
