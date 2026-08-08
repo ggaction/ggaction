@@ -6,7 +6,7 @@
 
 Canonical result: [`ATTEMPT3.md`](./ATTEMPT3.md).
 
-Verified review checkpoint: result package commit 뒤 기록한다.
+Verified review checkpoint: `fd2aebf4f43930ae2fc8bb5cb4dd7b04195aec7b`.
 
 ## 결정이 필요한 이유
 
