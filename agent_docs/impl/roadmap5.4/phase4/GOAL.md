@@ -43,3 +43,5 @@ Canonical review record는 [`GATE_A.md`](./GATE_A.md)가 소유한다. 승인 �
 [`ATTEMPT2.md`](./ATTEMPT2.md)가 소유한다.
 
 Repair attempt의 one-pass result와 정책 결정은 [`GATE_B.md`](./GATE_B.md)가 소유한다.
+
+승인된 dual-signal policy의 작은 fresh acceptance는 [`ATTEMPT3.md`](./ATTEMPT3.md)가 소유한다.

@@ -89,3 +89,9 @@ PR/merge/publish/deploy/release를 열지 않는다. 사용자가 정책 A 또�
 - Failed Gate review target: `d215c2b63283a22bcb80a153a6b8c0f85b57ecd2`
 - Candidate 2: `cf43c1f1b3c05bbdbc1711b880a0bd256af81358`
 - Remote branch: `codex/roadmap5-4-compact-knowledge`
+
+## Policy decision
+
+- 2026-08-08: 사용자가 정책 A, 즉 unsupported JPEG와 supported renderer 재선택 요구를 함께 반환하는 dual signal을
+  승인했다.
+- 이 승인은 current resolver policy와 작은 fresh unpaid policy acceptance만 연다. Paid call과 release 범위는 열지 않는다.
