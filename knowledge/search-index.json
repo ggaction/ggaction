@@ -5032,7 +5032,7 @@
           "theta"
         ],
         "summary": [
-          "aligned",
+          "align",
           "behind",
           "create",
           "grid",
@@ -8193,7 +8193,7 @@
         ],
         "summary": [
           "a",
-          "alignment",
+          "align",
           "an",
           "and",
           "axis",
@@ -8219,7 +8219,7 @@
         "guidance": [
           "a",
           "action",
-          "alignment",
+          "align",
           "an",
           "and",
           "avoid",
@@ -10016,7 +10016,7 @@
           "legend"
         ],
         "summary": [
-          "alignment",
+          "align",
           "and",
           "changing",
           "channel",
@@ -10033,7 +10033,7 @@
         ],
         "guidance": [
           "action",
-          "alignment",
+          "align",
           "and",
           "avoid",
           "axis",
@@ -24706,7 +24706,7 @@
           "a",
           "action",
           "after",
-          "aligned",
+          "align",
           "and",
           "apply",
           "are",
@@ -24846,16 +24846,24 @@
       "priority": 100,
       "terms": {
         "identity": [
-          "alignment",
+          "align",
           "and",
+          "bottom",
+          "color",
+          "column",
+          "count",
           "label",
           "legend",
           "lifecycle",
           "multiple",
+          "opacity",
           "position",
+          "row",
+          "separate",
           "spacing",
           "symbol",
-          "title"
+          "title",
+          "top"
         ],
         "title": [
           "and",
@@ -24864,7 +24872,7 @@
           "title"
         ],
         "summary": [
-          "aligned",
+          "align",
           "and",
           "block",
           "chart",
@@ -24893,7 +24901,7 @@
           "a",
           "action",
           "after",
-          "aligned",
+          "align",
           "alone",
           "already",
           "alternative",
@@ -27570,7 +27578,7 @@
         "guidance": [
           "a",
           "action",
-          "aligned",
+          "align",
           "and",
           "apply",
           "are",

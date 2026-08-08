@@ -15,10 +15,16 @@ const compositionVerbs = new Set(["arrange", "combine", "compose", "concat", "co
 const compositionLayoutTerms = new Set([
   "child", "dashboard", "gap", "horizontal", "layer", "overlay", "panel", "side", "slot", "vertical"
 ]);
+const multiLegendTerms = new Set(["multiple", "separate"]);
+const legendLayoutTerms = new Set([
+  "align", "bottom", "label", "position", "spacing", "symbol", "title", "top"
+]);
 
 function canonicalWord(word) {
   const exceptions = {
     analyses: "analysis",
+    aligned: "align",
+    alignment: "align",
     axes: "axis",
     combine: "compose",
     combined: "compose",
@@ -65,6 +71,15 @@ export function hasCompositionLayoutIntent(value) {
     [...compositionVerbs].some(word => words.has(word)) &&
     [...compositionLayoutTerms].some(word => words.has(word))
   ) || normalized.includes("side by side");
+}
+
+export function hasMultiLegendLayoutIntent(value) {
+  const normalized = normalizeKnowledgeText(value);
+  const words = new Set(normalized.split(/\s+/u).filter(Boolean));
+  const multiple = [...multiLegendTerms].some(word => words.has(word)) ||
+    (words.has("color") && words.has("opacity"));
+  return words.has("legend") && multiple &&
+    [...legendLayoutTerms].some(word => words.has(word));
 }
 
 function queryTerms(query, maximumTerms) {
@@ -134,6 +149,13 @@ function scoreRecord(record, query, records) {
     score += Math.round(20 * matchedTerms.length / query.terms.length);
   }
   if (record.kind === "recipe" && record.id === "composition" && hasCompositionLayoutIntent(query.query)) {
+    score += 400;
+  }
+  if (
+    record.kind === "recipe" &&
+    record.id === "legend-title-lifecycle" &&
+    hasMultiLegendLayoutIntent(query.query)
+  ) {
     score += 400;
   }
   return { score, matchedTerms };

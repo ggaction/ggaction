@@ -37,7 +37,7 @@ const recipeTaskAliases = Object.freeze({
   heatmap: "heat map binned rectangular cells two dimensional count",
   histogram: "histogram distribution bins frequency counts grouped group color colored legend title compare numeric",
   horizon: "horizon folded time series positive negative bands baseline",
-  "legend-title-lifecycle": "multiple legends title symbol label spacing alignment position",
+  "legend-title-lifecycle": "multiple separate legends color opacity title symbol label spacing alignment position top bottom row columns count",
   "line-chart": "line chart temporal time series trend grouped series aggregate mean color axes legend",
   "parallel-coordinates": "parallel coordinates multivariate dimensions paths",
   "regression-scatterplot": "regression scatter plot fit line confidence band r squared",

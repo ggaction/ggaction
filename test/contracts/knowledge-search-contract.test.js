@@ -77,6 +77,27 @@ test("routes compound chart-layout requests to program composition", async () =>
   }
 });
 
+test("routes compound multi-legend requests directly to the legend recipe", async () => {
+  const queries = [
+    "Using cars-v1 scatter plot Weight_in_lbs versus Miles_per_Gallon color Origin opacity Horsepower separate color and opacity legends one bottom row Canvas",
+    "Place separate color and opacity guide blocks below the plot with aligned symbols and labels"
+  ];
+  for (const query of queries) {
+    const response = await searchKnowledge({ query });
+    assert.equal(
+      `${response.results[0].kind}:${response.results[0].id}`,
+      "recipe:legend-title-lifecycle",
+      query
+    );
+    assert.equal(response.primaryResource.id, "legend-title-lifecycle", query);
+    const guidance = response.primaryResource.value.pitfalls.map(pitfall =>
+      `${pitfall.problem}\n${pitfall.fix}`
+    ).join("\n");
+    assert.match(guidance, /later editLegendLayout cannot run/u);
+    assert.match(guidance, /columns 3 and count 3/u);
+  }
+});
+
 test("keeps every evaluation task in the production default top three", async () => {
   const [tasks, cases, paraphrases] = await Promise.all([
     json("test/llm/tasks.json"),
