@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 Roadmap 5.4 Phase 4다.** Fresh corpus identity를 고정하고 strict oracle, unpaid validation과
-  exact paid-smoke proposal을 준비한다. 실행 순서는
+- **현재 활성 Roadmap은 Roadmap 5.4 Phase 5다.** Paid smoke evidence를 보존하고 runner repair, authoring-bootstrap
+  contract와 replacement evaluation을 순서대로 검토한다. 실행 순서는
   [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
