@@ -183,6 +183,99 @@ function legendLabelGaps(blocks) {
   });
 }
 
+function compactNumber(value) {
+  return Number.isFinite(value) ? Number(value.toFixed(2)) : null;
+}
+
+function compactRange(values) {
+  const finite = values.filter(Number.isFinite);
+  if (finite.length === 0) return null;
+  return [compactNumber(Math.min(...finite)), compactNumber(Math.max(...finite))];
+}
+
+function legendBlockMeasurements(programs) {
+  return legendBlocks(programs).map(block => {
+    const lines = blockLineValues(block);
+    const plot = resolveConcreteGraphicBounds(block.program.graphicSpec, "plot-main");
+    const position = block.program.materializationConfigs?.guides?.legend?.[block.channel]?.position;
+    const plotGap = plot === undefined ? null
+      : position === "top" ? plot.top - block.bounds.bottom
+        : position === "bottom" ? block.bounds.top - plot.bottom
+          : position === "left" ? plot.left - block.bounds.right
+            : position === "right" ? block.bounds.left - plot.right
+              : null;
+    return {
+      channel: block.channel,
+      position: position ?? null,
+      bounds: {
+        left: compactNumber(block.bounds.left),
+        right: compactNumber(block.bounds.right),
+        top: compactNumber(block.bounds.top),
+        bottom: compactNumber(block.bounds.bottom)
+      },
+      titleY: compactNumber(lines.titleY),
+      symbolYRange: compactRange(lines.symbolY),
+      labelGapRange: compactRange(legendLabelGaps([block])),
+      plotGap: compactNumber(plotGap)
+    };
+  });
+}
+
+function legendValidationDiagnostic(id, context) {
+  if (!id.startsWith("legend:")) return undefined;
+  const blocks = legendBlockMeasurements(context.programs);
+  if (id === "legend:count:2") {
+    return `Expected 2 complete legend blocks; measured ${blocks.length}.`;
+  }
+  if (id.startsWith("legend:position:")) {
+    const expected = id.slice("legend:position:".length);
+    return `Expected every block at ${expected}; measured ${blocks.map(block =>
+      `${block.channel}:${block.position ?? "missing"}`).join(", ") || "no complete blocks"}.`;
+  }
+  if (blocks.length < 2) {
+    return `This check needs at least 2 complete legend blocks; measured ${blocks.length}.`;
+  }
+  if (id === "legend:order:left-to-right") {
+    return `Expected each later block to start after the prior block ends; measured ${blocks.map(block =>
+      `${block.channel}[${block.bounds.left},${block.bounds.right}]`).join(", ")}. If horizontal bounds overlap, reduce sampled count/item widths or widen the plot so the blocks stay in one row.`;
+  }
+  if (id === "legend:titles-aligned") {
+    return `Expected title center y values within 0.5px; measured ${blocks.map(block =>
+      `${block.channel}:${block.titleY}`).join(", ")}. Different values usually mean the blocks wrapped onto separate rows.`;
+  }
+  if (id === "legend:symbols-aligned") {
+    return `Expected all symbol center y values within 0.5px; measured ${blocks.map(block =>
+      `${block.channel}:${JSON.stringify(block.symbolYRange)}`).join(", ")}. Different ranges usually mean the blocks wrapped onto separate rows.`;
+  }
+  if (id === "legend:label-gaps-aligned") {
+    return `Expected symbol-to-label gaps of at least 4px and within 0.5px; measured ${blocks.map(block =>
+      `${block.channel}:${JSON.stringify(block.labelGapRange)}`).join(", ")}.`;
+  }
+  if (id === "legend:inter-block-gap") {
+    const ordered = blocks.toSorted((left, right) => left.bounds.left - right.bounds.left);
+    const gaps = ordered.slice(1).map((block, index) => compactNumber(
+      block.bounds.left - ordered[index].bounds.right
+    ));
+    return `Expected at least 24px between consecutive occupied blocks; measured gaps ${JSON.stringify(gaps)}. Negative gaps mean the blocks overlap horizontally or occupy different rows.`;
+  }
+  if (id === "legend:plot-offset") {
+    return `Expected every block to clear the protected plot/guide bound by at least 10px; measured ${blocks.map(block =>
+      `${block.channel}:${block.plotGap}px`).join(", ")}. Increase offset on every createLegend call that needs to move.`;
+  }
+  return undefined;
+}
+
+function validationEvidence(id, context) {
+  const passed = validationPassed(id, context);
+  if (passed) return { id, passed };
+  const diagnostic = legendValidationDiagnostic(id, context);
+  return {
+    id,
+    passed,
+    ...(diagnostic === undefined ? {} : { diagnostic })
+  };
+}
+
 function nestedCanvasGap(program, expected) {
   if (program.compositionSpec?.direction !== "horizontal") return false;
   const canvases = Object.values(program.graphicSpec?.objects ?? {})
@@ -805,7 +898,9 @@ export async function evaluatePreparedProgram({
     }))),
     renderEvidence: renderResult.evidence
   };
-  const validations = task.oracle.requiredValidations.map(id => ({ id, passed: validationPassed(id, context) }));
+  const validations = task.oracle.requiredValidations.map(id =>
+    validationEvidence(id, context)
+  );
   return Object.freeze({
     program,
     actions,

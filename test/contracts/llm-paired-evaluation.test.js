@@ -78,6 +78,35 @@ export function buildChart(datasets) {
 }
 `;
 
+function topLegendSource(opacityCount) {
+  return `
+import { chart, render } from "ggaction";
+export function buildChart(datasets) {
+  const values = datasets["cars-v1"].filter(row =>
+    row.Displacement != null && row.Miles_per_Gallon != null &&
+    row.Origin != null && row.Acceleration != null
+  );
+  return chart()
+    .createCanvas({ width: 640, height: 400, margin: { top: 160, right: 30, bottom: 60, left: 70 } })
+    .createData({ values })
+    .createPointMark({ id: "points" })
+    .encodeX({ target: "points", field: "Displacement" })
+    .encodeY({ target: "points", field: "Miles_per_Gallon" })
+    .encodeColor({ target: "points", field: "Origin", fieldType: "nominal" })
+    .encodeOpacity({ target: "points", field: "Acceleration" })
+    .createGuides({ axes: { x: {}, y: {} }, legend: false })
+    .createLegend({
+      target: "points", channels: ["color"], position: "top",
+      titlePosition: "left", columns: 3, offset: 18, itemGap: 12
+    })
+    .createLegend({
+      target: "points", channels: ["opacity"], position: "top",
+      titlePosition: "left", count: ${opacityCount}, offset: 18, itemGap: 12
+    });
+}
+`;
+}
+
 test("keeps direct and MCP structured knowledge byte-equivalent for the model", async () => {
   const probe = createLocalMcpKnowledgeClient();
   const mcp = createLocalMcpKnowledgeClient();
@@ -176,6 +205,59 @@ test("reserves a forced final submission and two real repair calls", async () =>
     assert.match(result.artifacts.submissions[0].programFile, /program-submission-1\.mjs$/u);
     assert.match(result.artifacts.submissions[2].programFile, /program-submission-3\.mjs$/u);
     assert.notEqual(result.artifacts.submissions[0].programSha256, result.artifacts.submissions[2].programSha256);
+  } finally {
+    await probe.close();
+  }
+});
+
+test("returns measured legend geometry to the repair call without weakening the oracle", async () => {
+  const [corpus, plan] = await fixtures();
+  const probe = createLocalMcpKnowledgeClient();
+  try {
+    const surface = await captureStructuredKnowledgeSurface(probe);
+    const knowledge = createPairedKnowledgeAdapter({
+      condition: "B",
+      commit,
+      structuredSurface: surface
+    });
+    const task = corpus.tasks.find(candidate => candidate.id === "cars-multi-legend");
+    const requests = [];
+    const result = await runPairedEvaluationTask({
+      knowledge,
+      apiKey,
+      corpus,
+      task,
+      repetition: 1,
+      plan,
+      outputRoot: new URL(
+        "../../.artifacts/llm-eval/paired-legend-diagnostic-contract",
+        import.meta.url
+      ).pathname,
+      fetchImpl: mockFetch([
+        [call("submit_program", { source: topLegendSource(5) }, "invalid")],
+        [call("submit_program", { source: topLegendSource(3) }, "repaired")]
+      ], requests)
+    });
+
+    const priorOutput = requests[1].input.find(item =>
+      item.type === "function_call_output" && item.call_id === "invalid"
+    );
+    const feedback = JSON.parse(priorOutput.output);
+    assert.equal(feedback.valid, false);
+    assert.equal(feedback.failures.includes(
+      "failed-validation:legend:order:left-to-right"
+    ), true);
+    assert.equal(feedback.diagnostics.some(entry =>
+      entry.id === "legend:order:left-to-right" &&
+      /reduce sampled count\/item widths or widen the plot/u.test(entry.diagnostic)
+    ), true);
+    assert.equal(feedback.diagnostics.some(entry =>
+      entry.id === "legend:titles-aligned" &&
+      /wrapped onto separate rows/u.test(entry.diagnostic)
+    ), true);
+    assert.equal(result.artifacts.submissions[0].diagnostics.length >= 2, true);
+    assert.equal(result.outcome.firstSubmissionValid, false);
+    assert.equal(result.outcome.finalValid, true);
   } finally {
     await probe.close();
   }

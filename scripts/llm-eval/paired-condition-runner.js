@@ -156,6 +156,15 @@ function evidenceFrom(evaluation, runtimeError) {
   };
 }
 
+function failedValidationDiagnostics(evaluation) {
+  return (evaluation?.validations ?? [])
+    .filter(validation => !validation.passed && typeof validation.diagnostic === "string")
+    .map(validation => ({
+      id: validation.id,
+      diagnostic: validation.diagnostic.slice(0, 1000)
+    }));
+}
+
 export function validatePairedEvaluationResult(result, corpus) {
   if (result?.schemaVersion !== 2) throw new Error("Paired result schemaVersion must be 2.");
   if (conditionModes[result.condition] !== result.knowledge?.mode) {
@@ -191,6 +200,16 @@ export function validatePairedEvaluationResult(result, corpus) {
   }
   if (typeof result.outcome.naturalSubmission !== "boolean" || typeof result.outcome.forcedSubmissionUsed !== "boolean") {
     throw new Error("Paired result must separate natural and forced submission.");
+  }
+  if (!(result.evidence.validations ?? []).every(validation =>
+    validation.diagnostic === undefined || (
+      validation.passed === false &&
+      typeof validation.diagnostic === "string" &&
+      validation.diagnostic.length > 0 &&
+      validation.diagnostic.length <= 1000
+    )
+  )) {
+    throw new Error("Paired validation diagnostics must be bounded failed-check explanations.");
   }
   return true;
 }
@@ -364,16 +383,26 @@ export async function runPairedEvaluationTask({
           });
           runtimeError = null;
           score = scoreEvaluationEvidence(task, evidenceFrom(evaluation, null));
+          const diagnostics = failedValidationDiagnostics(evaluation);
           if (submissions === 1) firstSubmissionValid = score.valid;
           if (score.valid && firstValidAtMs === null) firstValidAtMs = Date.now() - taskLoopStarted;
-          output = JSON.stringify({ valid: score.valid, failures: score.failures });
-          traceCall.submission = { valid: score.valid, failures: score.failures.slice(0, 20) };
+          output = JSON.stringify({
+            valid: score.valid,
+            failures: score.failures,
+            diagnostics
+          });
+          traceCall.submission = {
+            valid: score.valid,
+            failures: score.failures.slice(0, 20),
+            diagnostics
+          };
           submissionArtifacts.push({
             submission: submissions,
             programFile: submissionFile,
             programSha256: createHash("sha256").update(submissionSource).digest("hex"),
             valid: score.valid,
             failures: score.failures.slice(0, 20),
+            diagnostics,
             error: null
           });
         } catch (error) {
@@ -384,6 +413,7 @@ export async function runPairedEvaluationTask({
           traceCall.submission = {
             valid: false,
             failures: ["program execution failed"],
+            diagnostics: [],
             error: error.message.slice(0, 1000)
           };
           submissionArtifacts.push({
@@ -396,6 +426,7 @@ export async function runPairedEvaluationTask({
               : createHash("sha256").update(submissionSource).digest("hex"),
             valid: false,
             failures: ["program execution failed"],
+            diagnostics: [],
             error: error.message.slice(0, 1000)
           });
         }

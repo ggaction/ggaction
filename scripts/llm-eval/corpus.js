@@ -178,6 +178,14 @@ export function validateEvaluationResult(result, corpus) {
   const validationIds = result.evidence.validations.map(validation => validation.id);
   uniqueStrings(validationIds, "Result validation IDs");
   requireCondition(result.evidence.validations.every(validation => typeof validation.passed === "boolean"), "Every validation needs a boolean passed value.");
+  requireCondition(result.evidence.validations.every(validation =>
+    validation.diagnostic === undefined || (
+      validation.passed === false &&
+      typeof validation.diagnostic === "string" &&
+      validation.diagnostic.length > 0 &&
+      validation.diagnostic.length <= 1000
+    )
+  ), "Validation diagnostics must be bounded failed-check explanations.");
   requireCondition(result.evidence.runtimeError === undefined || result.evidence.runtimeError === null || typeof result.evidence.runtimeError === "string", "Result runtimeError must be null or a string.");
 
   requireCondition(typeof result.artifacts?.validationLogFile === "string" && result.artifacts.validationLogFile.length > 0, "Result validationLogFile is required.");

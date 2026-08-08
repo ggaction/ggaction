@@ -87,6 +87,15 @@ function sanitizedKnowledgeResult(output) {
   return summary;
 }
 
+function failedValidationDiagnostics(evaluation) {
+  return (evaluation?.validations ?? [])
+    .filter(validation => !validation.passed && typeof validation.diagnostic === "string")
+    .map(validation => ({
+      id: validation.id,
+      diagnostic: validation.diagnostic.slice(0, 1000)
+    }));
+}
+
 function programInstructions(task, routingText, knowledge) {
   const datasetFields = task.data.map(selection =>
     `${selection.id}: ${selection.fields.join(", ")}`
@@ -259,12 +268,18 @@ export async function runEvaluationTask({
             runtimeError: null
           };
           finalScore = scoreEvaluationEvidence(task, evidence);
+          const diagnostics = failedValidationDiagnostics(finalEvaluation);
           if (submissions === 1) firstPassValid = finalScore.valid;
-          output = JSON.stringify({ valid: finalScore.valid, failures: finalScore.failures });
+          output = JSON.stringify({
+            valid: finalScore.valid,
+            failures: finalScore.failures,
+            diagnostics
+          });
           traceCall.submission = {
             present: true,
             valid: finalScore.valid,
-            failures: finalScore.failures.slice(0, 20)
+            failures: finalScore.failures.slice(0, 20),
+            diagnostics
           };
         } catch (error) {
           runtimeError = error.message;
