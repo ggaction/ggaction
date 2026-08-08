@@ -6,6 +6,8 @@
 
 Product candidate: `6ed5af76c80e56c5a3cde833c5a702de183e4d7a`.
 
+Verified review checkpoint: `3d02a7c384ea5ca87ad16281a0782c558f4fa15c`.
+
 Replacement plan: `evaluation/compact-authoring-paid-smoke-v2/PLAN.json`.
 
 Plan SHA-256: `24325b73b1e0e3751f5fb9346c31e8f998a7de4a8b1735ec9a63835a1c6e6c6c`.
