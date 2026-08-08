@@ -143,6 +143,7 @@ commit/push한 뒤에만 승인을 요청한다.
 | R53-P6-R | 6 | Production MCP와 benchmark integrity reset | 새 paid pilot 제안 |
 | R53-P6-S | 6 | Fresh A/B/C/D paid pilot scope, 비용과 중단 규칙 | External model call |
 | R53-P6-T | 6 | Corrected A/B/C/D confirmation scope, 비용과 중단 규칙 | External model call |
+| R53-P6-U | 6 | Bottom multi-legend corrected A/B/C/D confirmation scope와 spend ceiling | External model call |
 | R53-Exit | 6 | Merged-main package/docs/contracts/tests와 reproducible benchmark evidence | 완료 선언과 release preparation |
 
 ## Phase 0 — Baseline and measurement contract
