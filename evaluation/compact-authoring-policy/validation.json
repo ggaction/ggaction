@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "split": "validation",
+  "tasks": [
+    {
+      "id": "policy-val-export-jpg",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "output-observations-v1",
+      "query": "Export JPG for a report.",
+      "expected": {
+        "constraints": ["unsupported.jpg"],
+        "plan": [],
+        "unresolved": ["unsupported.jpg", "renderer.format"],
+        "fallbacks": ["ggaction://docs/unsupported-capabilities", "ggaction://docs/choose-renderer"]
+      }
+    },
+    {
+      "id": "policy-val-3d-jpeg",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "output-observations-v1",
+      "query": "Make a 3d chart with JPEG output.",
+      "expected": {
+        "constraints": ["unsupported.3d", "unsupported.jpg"],
+        "plan": [],
+        "unresolved": ["unsupported.3d", "unsupported.jpg", "renderer.format"],
+        "fallbacks": ["ggaction://docs/unsupported-capabilities", "ggaction://docs/choose-renderer"]
+      }
+    },
+    {
+      "id": "policy-val-bar-jpeg",
+      "split": "validation",
+      "stratum": "complex",
+      "dataset": "output-observations-v1",
+      "query": "Build a bar plot and render JPEG.",
+      "expected": {
+        "constraints": ["chart.bar", "unsupported.jpg"],
+        "plan": [
+          { "id": "action.createBarPlot", "options": ["x", "y"] }
+        ],
+        "unresolved": ["unsupported.jpg", "renderer.format"],
+        "fallbacks": ["ggaction://docs/unsupported-capabilities", "ggaction://docs/choose-renderer"]
+      }
+    },
+    {
+      "id": "policy-val-canvas-jpg",
+      "split": "validation",
+      "stratum": "simple",
+      "dataset": "output-observations-v1",
+      "query": "Create canvas, then export JPG.",
+      "expected": {
+        "constraints": ["program.canvas", "unsupported.jpg"],
+        "plan": [
+          { "id": "action.createCanvas", "options": [] }
+        ],
+        "unresolved": ["unsupported.jpg", "renderer.format"],
+        "fallbacks": ["ggaction://docs/unsupported-capabilities", "ggaction://docs/choose-renderer"]
+      }
+    }
+  ]
+}

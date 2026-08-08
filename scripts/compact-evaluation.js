@@ -21,6 +21,11 @@ export const repairEvaluationRoot = path.join(
   "evaluation",
   "compact-authoring-repair"
 );
+export const policyEvaluationRoot = path.join(
+  root,
+  "evaluation",
+  "compact-authoring-policy"
+);
 export const EVALUATION_CORPORA = Object.freeze({
   original: Object.freeze({
     directory: evaluationRoot,
@@ -33,6 +38,12 @@ export const EVALUATION_CORPORA = Object.freeze({
     corpusId: "compact-authoring-repair-v1",
     productBaseCommit: "c1abbd6392603f05a0784ab045e76d2202ed2dd7",
     overlapDirectories: Object.freeze([evaluationRoot])
+  }),
+  policy: Object.freeze({
+    directory: policyEvaluationRoot,
+    corpusId: "compact-authoring-policy-v1",
+    productBaseCommit: "38de968fe24bd7e53bac8819b30824e180debad8",
+    overlapDirectories: Object.freeze([evaluationRoot, repairEvaluationRoot])
   })
 });
 const typesRoot = path.join(root, "types");
@@ -51,6 +62,11 @@ export const FROZEN_SOURCE_FILES = Object.freeze([
   "oracle-policy.json",
   "task.schema.json",
   "validation.json"
+]);
+const GENERIC_UNRESOLVED = new Set([
+  "chart.type",
+  "query.intent",
+  "renderer.format"
 ]);
 
 export function sha256(value) {
@@ -142,7 +158,7 @@ export async function validateCorpusSource(corpus = "original") {
         if (!constraints.has(constraint)) errors.push(`${task.id}: unknown constraint ${constraint}`);
       }
       for (const unresolved of task.expected.unresolved) {
-        if (!constraints.has(unresolved) && unresolved !== "query.intent") {
+        if (!constraints.has(unresolved) && !GENERIC_UNRESOLVED.has(unresolved)) {
           errors.push(`${task.id}: unknown unresolved constraint ${unresolved}`);
         }
       }
@@ -182,8 +198,12 @@ export async function validateCorpusSource(corpus = "original") {
   }
 
   const coveredConstraints = new Set(tasks.flatMap(task => task.expected.constraints));
-  const missingConstraints = taxonomy.constraints
-    .map(constraint => constraint.id)
+  const requiredConstraints = oracle.requiredConstraints ?? taxonomy.constraints
+    .map(constraint => constraint.id);
+  for (const id of requiredConstraints) {
+    if (!constraints.has(id)) errors.push(`unknown required constraint: ${id}`);
+  }
+  const missingConstraints = requiredConstraints
     .filter(id => !coveredConstraints.has(id));
   if (missingConstraints.length > 0) {
     errors.push(`evaluation corpus misses constraints: ${missingConstraints.join(", ")}`);
@@ -214,6 +234,9 @@ export async function validateCorpusSource(corpus = "original") {
     strata,
     datasets: datasetIds.size,
     constraints: coveredConstraints.size,
+    ...(oracle.requiredConstraints
+      ? { requiredConstraints: requiredConstraints.length }
+      : {}),
     phase2DesignQueryOverlap: designOverlap.length,
     ...(config.overlapDirectories.length > 0
       ? { priorCorpusQueryOverlap: priorOverlap.length }

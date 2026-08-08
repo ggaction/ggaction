@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "split": "held-out",
+  "tasks": [
+    {
+      "id": "policy-hold-scatter-jpeg",
+      "split": "held-out",
+      "stratum": "complex",
+      "dataset": "output-observations-v1",
+      "query": "Create a scatter chart with color encoding and JPEG output.",
+      "expected": {
+        "constraints": ["chart.scatter", "encoding.color", "unsupported.jpg"],
+        "plan": [
+          { "id": "action.createScatterPlot", "options": ["x", "y", "color"] }
+        ],
+        "unresolved": ["unsupported.jpg", "renderer.format"],
+        "fallbacks": ["ggaction://docs/unsupported-capabilities", "ggaction://docs/choose-renderer"]
+      }
+    },
+    {
+      "id": "policy-hold-geo-jpg",
+      "split": "held-out",
+      "stratum": "simple",
+      "dataset": "output-observations-v1",
+      "query": "Render a geographic chart and export JPG.",
+      "expected": {
+        "constraints": ["unsupported.geo", "unsupported.jpg"],
+        "plan": [],
+        "unresolved": ["unsupported.geo", "unsupported.jpg", "renderer.format"],
+        "fallbacks": ["ggaction://docs/unsupported-capabilities", "ggaction://docs/choose-renderer"]
+      }
+    },
+    {
+      "id": "policy-hold-animated-line-jpeg",
+      "split": "held-out",
+      "stratum": "complex",
+      "dataset": "output-observations-v1",
+      "query": "Animate chart, make a time series chart, and render JPEG.",
+      "expected": {
+        "constraints": ["chart.line", "unsupported.animation", "unsupported.jpg"],
+        "plan": [
+          { "id": "action.createLinePlot", "options": ["x", "y"] }
+        ],
+        "unresolved": ["unsupported.animation", "unsupported.jpg", "renderer.format"],
+        "fallbacks": ["ggaction://docs/unsupported-capabilities", "ggaction://docs/choose-renderer"]
+      }
+    },
+    {
+      "id": "policy-hold-pdf-and-jpg",
+      "split": "held-out",
+      "stratum": "simple",
+      "dataset": "output-observations-v1",
+      "query": "Produce PDF output and also export JPG.",
+      "expected": {
+        "constraints": ["renderer.pdf", "unsupported.jpg"],
+        "plan": [
+          { "id": "runtime.renderToPDF", "options": [] }
+        ],
+        "unresolved": ["unsupported.jpg"],
+        "fallbacks": ["ggaction://docs/unsupported-capabilities"]
+      }
+    }
+  ]
+}

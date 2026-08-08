@@ -22,8 +22,8 @@
 
 ## 실행 순서
 
-- [ ] Policy corpus support와 source 작성
-- [ ] Structural counts, required coverage와 overlap 검사
+- [x] Policy corpus support와 source 작성
+- [x] Structural counts, required coverage와 overlap 검사 — 9 tasks / 10 required constraints / overlap 0
 - [ ] Policy corpus SHA-256 freeze checkpoint commit/push
 - [ ] Approved policy stable resolver contract 추가
 - [ ] Development 1 / 1 strict pass와 result lock

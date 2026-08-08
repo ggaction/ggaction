@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "compact-authoring-policy-v1",
+  "frozenOn": "2026-08-08",
+  "productBaseCommit": "38de968fe24bd7e53bac8819b30824e180debad8",
+  "exclusions": {
+    "roadmap53FrozenCorpus": "not-read-not-reused",
+    "phase2DesignFixtures": "overlap-check-only-not-evaluation"
+  },
+  "summary": {
+    "tasks": 9,
+    "splits": {
+      "development": 1,
+      "held-out": 4,
+      "validation": 4
+    },
+    "strata": {
+      "complex": 4,
+      "simple": 5
+    },
+    "datasets": 1,
+    "constraints": 10,
+    "requiredConstraints": 10,
+    "phase2DesignQueryOverlap": 0,
+    "priorCorpusQueryOverlap": 0,
+    "querySha256": "9fbd23a11c71a8dbb78333b828386b96622c24619c4a6c495e6966051094f2a0"
+  },
+  "files": {
+    "datasets.json": {
+      "bytes": 450,
+      "sha256": "554587800bd792aa80989940de42c5eba4281b18d360fa95b3caa08a67ebea30"
+    },
+    "development.json": {
+      "bytes": 525,
+      "sha256": "007e7437ff9d87a9a5c32408cedde7f2d60ec0c5c298965352f9cc14654ae488"
+    },
+    "held-out.json": {
+      "bytes": 2288,
+      "sha256": "76500ae875caaa90f47e68faea5e2ef56bb0844f6bdaa9a1166ec6b6081b99ba"
+    },
+    "oracle-policy.json": {
+      "bytes": 1523,
+      "sha256": "524744638ba59731cfeb054f87287df083e53f75a88b8d97d122174c2735cf68"
+    },
+    "task.schema.json": {
+      "bytes": 1659,
+      "sha256": "f062573030097c7223e4f7539117a921c2e1140e8cd24b5c7af40b8dc09b7850"
+    },
+    "validation.json": {
+      "bytes": 2085,
+      "sha256": "139d1289931ab095d158b0500596b0ab8b8924101aab6a4d20b6f4f4cfbb075a"
+    }
+  }
+}

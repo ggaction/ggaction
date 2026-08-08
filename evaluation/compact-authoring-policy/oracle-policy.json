@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "role": "predeclared-dual-renderer-policy-acceptance",
+  "taskCount": 9,
+  "splits": {
+    "development": 1,
+    "validation": 4,
+    "held-out": 4
+  },
+  "strata": {
+    "simple": 5,
+    "complex": 4
+  },
+  "requiredConstraints": [
+    "program.canvas",
+    "chart.scatter",
+    "chart.line",
+    "chart.bar",
+    "encoding.color",
+    "renderer.pdf",
+    "unsupported.geo",
+    "unsupported.animation",
+    "unsupported.3d",
+    "unsupported.jpg"
+  ],
+  "requiredChecks": [
+    "exact-constraints",
+    "exact-plan-ids-and-order",
+    "exact-required-options",
+    "exact-unresolved-ids",
+    "exact-docs-fallback-uris",
+    "recognized-constraint-closure",
+    "direct-repeat-determinism",
+    "direct-mcp-byte-contract",
+    "typescript-call-compilation",
+    "task-packet-hard-budget",
+    "corpus-packet-median-budget"
+  ],
+  "thresholds": {
+    "constraintRecall": 1,
+    "planRecall": 1,
+    "requiredOptionRecall": 1,
+    "expectedUnresolvedRecall": 1,
+    "silentPartialCount": 0,
+    "typescriptErrorCount": 0,
+    "resolvedFallbackCount": 0,
+    "maximumPacketBytes": 6144,
+    "medianPacketBytes": 4096
+  },
+  "discipline": {
+    "approvedPolicyOnly": true,
+    "productionChangeAllowed": false,
+    "validationRunsAfterCandidateLock": true,
+    "heldOutRequiresPassingValidation": true,
+    "postValidationTuning": false,
+    "postHeldOutTuning": false,
+    "roadmap53CorpusReads": false,
+    "priorCompactCorpusAcceptanceReuse": false,
+    "phase2DesignQueriesAllowed": false
+  }
+}

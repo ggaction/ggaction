@@ -133,3 +133,28 @@ test("records the repair candidate without rewriting its held-out failure", asyn
     "repair-hold-3d-jpeg: fallback mismatch [\"ggaction://docs/unsupported-capabilities\",\"ggaction://docs/choose-renderer\"]"
   ]);
 });
+
+test("freezes the approved unsupported-output policy corpus independently", async () => {
+  assert.deepEqual(await validateCorpusSource("policy"), {
+    tasks: 9,
+    splits: {
+      development: 1,
+      "held-out": 4,
+      validation: 4
+    },
+    strata: {
+      complex: 4,
+      simple: 5
+    },
+    datasets: 1,
+    constraints: 10,
+    requiredConstraints: 10,
+    phase2DesignQueryOverlap: 0,
+    priorCorpusQueryOverlap: 0,
+    querySha256: "9fbd23a11c71a8dbb78333b828386b96622c24619c4a6c495e6966051094f2a0"
+  });
+  const manifest = await assertFrozenManifest("policy");
+  assert.equal(manifest.corpusId, "compact-authoring-policy-v1");
+  assert.equal(manifest.summary.requiredConstraints, 10);
+  assert.equal(manifest.summary.priorCorpusQueryOverlap, 0);
+});
