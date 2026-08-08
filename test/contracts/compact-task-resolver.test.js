@@ -113,6 +113,28 @@ test("every exact action name resolves to its compact card without gaps", async 
   }
 });
 
+test("prefers the complete reference-line phrase without hiding separate marks", () => {
+  assert.deepEqual(
+    searchGgaction("Use a reference line mark").matchedConstraints,
+    ["mark.rule"]
+  );
+  assert.deepEqual(
+    searchGgaction("Use a line mark and a reference line mark").matchedConstraints,
+    ["mark.line", "mark.rule"]
+  );
+});
+
+test("orders a fitted line before a separately requested uncertainty ribbon", () => {
+  const packet = searchGgaction(
+    "Create a scatter plot with a fitted line and an uncertainty ribbon."
+  );
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createScatterPlot",
+    "action.createRegression",
+    "action.createErrorBand"
+  ]);
+});
+
 test("design fixtures prove bounded one-call task closure without silent partials", async () => {
   const [fixtures, schema] = await Promise.all([
     json("task-closure-cases.json"),

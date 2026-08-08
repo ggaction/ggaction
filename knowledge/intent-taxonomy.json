@@ -21,7 +21,7 @@
     { "id": "mark.line", "phrases": ["line mark", "path mark"] },
     { "id": "mark.bar", "phrases": ["bar mark", "rectangle bars"] },
     { "id": "mark.area", "phrases": ["area mark", "filled area"] },
-    { "id": "mark.rule", "phrases": ["rule mark", "reference line mark"] },
+    { "id": "mark.rule", "phrases": ["rule mark", "reference line mark"], "shadows": ["mark.line"] },
     { "id": "mark.arc", "phrases": ["arc mark", "polar sectors"] },
     { "id": "mark.rect", "phrases": ["rect mark", "rectangle cells"] },
 
@@ -129,7 +129,7 @@
 
     { "id": "action.createRegression", "kind": "action", "name": "createRegression", "order": 60, "anchors": ["statistics.regression"], "covers": ["statistics.regression"], "baseOptions": {} },
     { "id": "action.createErrorBar", "kind": "action", "name": "createErrorBar", "order": 60, "anchors": ["statistics.errorBar"], "covers": ["statistics.errorBar"], "baseOptions": {} },
-    { "id": "action.createErrorBand", "kind": "action", "name": "createErrorBand", "order": 60, "anchors": ["statistics.errorBand"], "covers": ["statistics.errorBand"], "baseOptions": {} },
+    { "id": "action.createErrorBand", "kind": "action", "name": "createErrorBand", "order": 61, "anchors": ["statistics.errorBand"], "covers": ["statistics.errorBand"], "baseOptions": {} },
 
     { "id": "action.createScale", "kind": "action", "name": "createScale", "order": 35, "anchors": ["scale.create"], "covers": ["scale.create"], "baseOptions": { "id": "\"scale-1\"" } },
     { "id": "action.createLogScale", "kind": "action", "name": "createScale", "order": 35, "anchors": ["scale.log"], "covers": ["scale.log"], "baseOptions": { "id": "\"scale-1\"", "type": "\"log\"" } },

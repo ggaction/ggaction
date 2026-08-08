@@ -36,9 +36,19 @@ function normalize(value) {
     .replace(/\s+/g, " ");
 }
 
-function includesPhrase(query, phrase) {
+function phraseOccurrences(query, phrase) {
   const normalizedPhrase = normalize(phrase);
-  return ` ${query} `.includes(` ${normalizedPhrase} `);
+  const paddedQuery = ` ${query} `;
+  const paddedPhrase = ` ${normalizedPhrase} `;
+  const occurrences = [];
+  let offset = 0;
+  while (offset < paddedQuery.length) {
+    const start = paddedQuery.indexOf(paddedPhrase, offset);
+    if (start === -1) break;
+    occurrences.push({ start: start + 1, end: start + paddedPhrase.length - 1 });
+    offset = start + 1;
+  }
+  return occurrences;
 }
 
 function exactActionNames(query) {
@@ -51,8 +61,20 @@ function exactActionNames(query) {
 }
 
 function semanticMatches(normalizedQuery) {
+  const occurrences = taxonomy.constraints.flatMap(constraint =>
+    constraint.phrases.flatMap(phrase =>
+      phraseOccurrences(normalizedQuery, phrase).map(span => ({ constraint, ...span }))
+    )
+  );
   return taxonomy.constraints.filter(constraint =>
-    constraint.phrases.some(phrase => includesPhrase(normalizedQuery, phrase))
+    occurrences.some(occurrence =>
+      occurrence.constraint.id === constraint.id &&
+      !occurrences.some(candidate =>
+        candidate.constraint.shadows?.includes(constraint.id) &&
+        candidate.start <= occurrence.start &&
+        candidate.end >= occurrence.end
+      )
+    )
   );
 }
 
@@ -288,6 +310,13 @@ export function validateResolverKnowledge() {
     throw new Error("Intent provider IDs must be unique.");
   }
   const anchored = new Set();
+  for (const constraint of taxonomy.constraints) {
+    for (const shadowed of constraint.shadows ?? []) {
+      if (!constraints.has(shadowed) || shadowed === constraint.id) {
+        throw new Error(`${constraint.id} shadows invalid constraint ${shadowed}.`);
+      }
+    }
+  }
   for (const provider of taxonomy.providers) {
     for (const id of [...provider.anchors, ...provider.covers]) {
       if (!constraints.has(id)) throw new Error(`${provider.id} references unknown constraint ${id}.`);
