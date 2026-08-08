@@ -8,17 +8,17 @@ Phase 5의 작은 paid smoke 범위와 최대 비용을 제안한다.
 
 ## 진행 상태
 
-- [ ] Fresh tasks 48개: development 18 / validation 15 / held-out 15
-- [ ] Simple 23 / complex 25와 supported/unsupported constraint coverage 동결
-- [ ] Dataset identity, task file, oracle policy와 SHA-256 manifest 동결
-- [ ] Phase 2 design query overlap 0; Roadmap 5.3 corpus read/reuse 0
-- [ ] Development split unpaid strict validation
-- [ ] Candidate commit lock 뒤 validation split one-pass validation
-- [ ] Validation 통과 뒤 held-out split one-pass final validation
-- [ ] Closure, exact action/option, payload, fallback와 compile gates 통과
-- [ ] Package/MCP/browser regression budgets 재검증
-- [ ] Credential reads, external model calls와 spend 0 / 0 / $0
-- [ ] Exact paid-smoke proposal and hard cost cap
+- [x] Fresh tasks 48개: development 18 / validation 15 / held-out 15
+- [x] Simple 23 / complex 25와 supported/unsupported constraint coverage 동결
+- [x] Dataset identity, task file, oracle policy와 SHA-256 manifest 동결
+- [x] Phase 2 design query overlap 0; Roadmap 5.3 corpus read/reuse 0
+- [x] Development split unpaid strict validation — 18 / 18 pass
+- [x] Candidate commit lock 뒤 validation split one-pass validation — 14 / 15 exact-plan pass, strict failure
+- [ ] Validation 통과 뒤 held-out split one-pass final validation — failure protocol에 따라 열지 않음
+- [ ] Closure, exact action/option, payload, fallback와 compile gates 통과 — plan order 1건 불일치
+- [ ] Package/MCP/browser regression budgets 재검증 — full suite/package pass; failed candidate를 Gate로 승격하지 않음
+- [x] Credential reads, external model calls와 spend 0 / 0 / $0
+- [ ] Exact paid-smoke proposal and hard cost cap — unpaid failure로 제안하지 않음
 - [ ] R54-P4-A explicit approval
 
 ## Predeclared unpaid acceptance

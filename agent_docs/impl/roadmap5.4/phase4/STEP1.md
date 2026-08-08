@@ -2,17 +2,17 @@
 
 ## 진행 상태
 
-- [ ] Corpus, dataset catalog와 oracle schema 작성
-- [ ] Reproducible SHA freeze generator and checker 구현
-- [ ] Strict split evaluator 구현
-- [ ] Corpus identity checkpoint commit/push
-- [ ] Development split 실행
-- [ ] Candidate implementation commit lock
-- [ ] Validation split one-pass 실행
-- [ ] Held-out split one-pass 실행
-- [ ] Unpaid result artifact and summary 생성
-- [ ] Package/install/browser cumulative checks 재실행
-- [ ] Paid-smoke exact proposal 작성
+- [x] Corpus, dataset catalog와 oracle schema 작성
+- [x] Reproducible SHA freeze generator and checker 구현
+- [x] Strict split evaluator 구현
+- [x] Corpus identity checkpoint commit/push — `85fc5bde`
+- [x] Development split 실행 — 18 / 18 pass
+- [x] Candidate implementation commit lock — `33be9c37f84884243568061a42aaf334aca18d4d`
+- [x] Validation split one-pass 실행 — strict failure, 재실행 금지
+- [ ] Held-out split one-pass 실행 — validation failure로 열지 않음
+- [x] Unpaid result artifact and summary 생성
+- [ ] Package/install/browser cumulative checks 재실행 — full suite/package pass 뒤 strict failure에서 중단
+- [ ] Paid-smoke exact proposal 작성 — unpaid pass prerequisite 미충족
 - [ ] Review target commit/push
 - [ ] R54-P4-A user approval
 

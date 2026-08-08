@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "compact-authoring-fresh-v1",
+  "frozenManifestSha256": "7f15c5a00fb6e9d66a3a344fb88cffccafd76fac824ec12084310d51c5bb42f8",
+  "split": "validation",
+  "candidateCommit": "33be9c37f84884243568061a42aaf334aca18d4d",
+  "taskCount": 15,
+  "simpleTasks": 7,
+  "complexTasks": 8,
+  "exactConstraintTasks": 15,
+  "exactPlanTasks": 14,
+  "exactUnresolvedTasks": 15,
+  "exactFallbackTasks": 15,
+  "silentPartialCount": 0,
+  "resolvedFallbackCount": 0,
+  "uniqueTypedCalls": 42,
+  "typescriptErrorCount": 0,
+  "maximumPacketBytes": 2984,
+  "medianPacketBytes": 1717,
+  "passed": false,
+  "failures": [
+    "val-point-appearance-encodings: plan mismatch [{\"id\":\"action.createPointMark\",\"options\":[]},{\"id\":\"action.encodeX\",\"options\":[\"field\"]},{\"id\":\"action.encodeY\",\"options\":[\"field\"]},{\"id\":\"action.encodeOpacity\",\"options\":[\"field\"]},{\"id\":\"action.encodeShape\",\"options\":[\"field\"]},{\"id\":\"action.encodeSize\",\"options\":[\"field\"]},{\"id\":\"action.createAxes\",\"options\":[]}]"
+  ]
+}
