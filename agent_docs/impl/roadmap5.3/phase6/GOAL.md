@@ -75,7 +75,8 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [x] Unpaid bottom multi-legend knowledge and benchmark repair
 - [x] Complete repaired-candidate unpaid verification
 - [x] R53-P6-U bottom multi-legend paid confirmation proposal
-- [ ] R53-P6-U separate cost approval and guarded execution
+- [x] R53-P6-U separate cost approval
+- [ ] R53-P6-U guarded execution and result review
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 

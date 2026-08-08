@@ -2,11 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
-이 문서는 새 비용 승인 제안이다. Gate T approval은 재사용하지 않는다. 사용자가 이 Gate를 별도로 승인해야만 exact local
-approval artifact를 만들고 credential을 읽으며 OpenAI Responses API를 호출할 수 있다. 현재까지 이 Gate를 위한
-credential read, external model call과 추가 spend는 **0 / 0 / $0**이다.
+사용자가 2026-08-08 별도 비용 승인을 했다. Gate T approval을 재사용하지 않고 이 Gate의 exact local approval
+artifact만으로 credential read와 OpenAI Responses API 호출을 허용한다. 승인 기록을 원격 checkpoint로 고정하고 모든
+무과금 preflight를 통과하기 전까지 credential을 읽지 않는다.
 
 ## 한눈에 보는 제안
 
