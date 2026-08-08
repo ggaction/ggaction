@@ -17,6 +17,7 @@ import {
   submitResultToolV4
 } from "../../scripts/compact-paid-smoke-v4.js";
 import { assertSupportedStrictToolSchema } from "../../scripts/compact-paid-smoke.js";
+import { loadFullOracleV1 } from "../../scripts/compact-full-evaluation-v1.js";
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -128,6 +129,29 @@ test("freezes terminal and open decisions in the current paid-smoke route oracle
       ["search_ggaction", "read_mcp_resources", "submit_result"]
     ]
   ]);
+});
+
+test("freezes the failed full-evaluation precheck route set before any repair", async () => {
+  const oracle = await loadFullOracleV1();
+  assert.equal(oracle.id, "compact-authoring-full-route-oracle-v1");
+  assert.equal(
+    oracle.oracleSha256,
+    "5bd5372d5cb02559240558e9650d417f221451328253373f2ddb53778ba71bcf"
+  );
+  assert.equal(oracle.tasks.length, 38);
+  assert.deepEqual(
+    Object.fromEntries(["supported", "unsupported", "needs-input"].map(role => [
+      role,
+      oracle.tasks.filter(task => task.role === role).length
+    ])),
+    { supported: 26, unsupported: 11, "needs-input": 1 }
+  );
+  const open = oracle.tasks.filter(task => task.expectedFallbacks.length > 0);
+  assert.equal(open.length, 9);
+  assert.deepEqual(
+    open.find(task => task.id === "repair-hold-legend-conflict")?.expectedUnresolved,
+    ["layout.legend.bottom", "layout.legend.top"]
+  );
 });
 
 test("freezes the exact v4 paid-smoke candidate, plan, source trees, and cost envelope", async () => {

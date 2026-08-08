@@ -28,6 +28,8 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Schema v3 candidate repair and unpaid validation — product candidate `4eb8ce78`
 - [x] R54-P5-F exact v4 paid-smoke authorization — 2026-08-09
 - [x] Valid v4 paid smoke execution — 16 / 16 complete, 13 / 16 strict pass, `$0.1465093`
+- [x] Complete evaluation unpaid precheck — routes 152 / 152; executable 19 / 38, failed
+- [x] R54-P5-G failure decision Gate prepared
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion
