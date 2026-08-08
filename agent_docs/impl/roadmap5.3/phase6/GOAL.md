@@ -79,7 +79,8 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [x] R53-P6-U guarded execution and result review
 - [x] R53-P6-V full paired scope and mechanical acceptance candidate
 - [x] R53-P6-V exact full paid evaluation proposal
-- [ ] R53-P6-V separate cost approval and guarded execution
+- [x] R53-P6-V separate cost approval
+- [ ] R53-P6-V guarded execution
 - [ ] Immutable full result and integration decision
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
