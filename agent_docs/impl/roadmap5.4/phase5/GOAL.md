@@ -13,8 +13,8 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Attempt 1 external model calls / spend — 9 / `$0.0593232`
 - [x] Attempt 1 stop rule 발동 — `repair-val-histogram:D` request schema rejection
 - [x] Attempt 1 immutable result 보존
-- [ ] Provider-compatible runner repair와 unpaid validation
-- [ ] Authoring bootstrap contract decision
+- [x] Provider-compatible runner repair와 unpaid validation — `935611a9`, focused 8 / 8, contracts 199 / 199
+- [ ] Authoring bootstrap contract decision — R54-P5-A ready for review
 - [ ] Replacement paid-smoke scope/cost approval
 - [ ] Valid small paid smoke
 - [ ] Complete evaluation proposal or non-integration closeout
@@ -27,6 +27,8 @@ Attempt 1은 valid A/B/C/D comparison이 아니다. A/B/C는 모두 ggaction pac
 
 자동 retry는 하지 않는다. 새 external call은 runner/candidate/plan을 다시 동결하고 별도 replacement Gate를 승인받기 전까지
 차단한다.
+
+Recommended task-packet schema v2와 대안은 [`GATE_A.md`](./GATE_A.md)가 소유한다.
 
 ## Remaining boundaries
 

@@ -11,8 +11,9 @@
 - [x] Automatic retry 0
 - [x] Raw progress/result artifact 보존
 - [x] Failure classification and root-cause analysis
-- [ ] Independent runner repair
-- [ ] Public task-packet decision Gate
+- [x] Independent runner repair — `935611a9`, provider preflight와 bounded feedback
+- [x] Public task-packet decision Gate prepared
+- [ ] R54-P5-A user decision
 - [ ] Replacement paid execution Gate
 
 ## Execution discipline

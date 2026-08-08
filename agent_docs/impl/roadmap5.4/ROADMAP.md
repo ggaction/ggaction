@@ -87,14 +87,15 @@ commit/push한 뒤에만 승인을 요청한다.
 | R54-P4-B | 4 | Failed repair result와 unsupported-output policy decision | Policy acceptance와 external model call |
 | R54-P4-C | 4 | Fresh policy acceptance와 exact paid-smoke scope/cost | Paid-smoke runner와 external model call |
 | R54-P4-D | 4 | Regression runtime closure, frozen runner/candidate/plan과 교체 승인 | Credential read와 paid smoke |
-| R54-P5-A | 5 | Small representative paid smoke, model/settings와 spend ceiling | Paid smoke |
-| R54-P5-B | 5 | Smoke result와 complete paid evaluation scope/cost | Full external evaluation |
-| R54-P5-C | 5 | Full result, predeclared acceptance와 integration candidate | PR preparation |
+| R54-P5-A | 5 | Attempt 1 failure, runner repair와 LLM authoring-bootstrap contract | Public packet v2 implementation |
+| R54-P5-B | 5 | Packet v2 evidence와 exact replacement paid-smoke scope/cost | Replacement paid smoke |
+| R54-P5-C | 5 | Valid smoke result와 complete paid evaluation scope/cost | Full external evaluation |
+| R54-P5-D | 5 | Full result, predeclared acceptance와 integration candidate | PR preparation |
 | R54-Exit | 5 | Passed merged-main evidence 또는 failed non-integration closeout | 완료 선언 |
 
-R54-P4-C와 그 runtime-closure replacement인 R54-P4-D가 originally planned R54-P5-A의 paid-smoke authorization을
-Phase 4의 exact corpus/cost review와 함께 수행한다. R54-P4-D가 승인되고 smoke가 끝나면 다음 미승인 범위는 R54-P5-B의
-complete paid evaluation proposal이다.
+R54-P4-C와 runtime-closure replacement R54-P4-D는 첫 paid-smoke authorization을 Phase 4 exact corpus/cost review와
+함께 수행했다. Attempt 1은 provider schema와 authoring-bootstrap gap으로 중단됐고, R54-P5-A부터 repair와 replacement
+evaluation을 별도 evidence와 승인으로 진행한다.
 
 ## Phase 0 — Baseline and contract
 
