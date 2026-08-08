@@ -3,6 +3,8 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { hasCompositionLayoutIntent } from "../../mcp/knowledge.js";
+
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const docsRoot = path.join(root, "docs");
 const defaultMaximumCharacters = 16_000;
@@ -82,12 +84,18 @@ function searchDocumentationIndex(index, query, { limit = 6 } = {}) {
     throw new TypeError("Documentation search limit must be between 1 and 10.");
   }
   const queryTerms = terms(query);
+  const compositionIntent = hasCompositionLayoutIntent(query);
   return index
     .map((entry, order) => {
       const title = `${entry.pageTitle ?? ""} ${entry.sectionTitle ?? ""}`.toLowerCase();
       const haystack = `${title} ${entry.summary ?? ""} ${(entry.keywords ?? []).join(" ")}`.toLowerCase();
-      const score = queryTerms.reduce((total, term) =>
+      const termScore = queryTerms.reduce((total, term) =>
         total + (title.includes(term) ? 4 : 0) + (haystack.includes(term) ? 1 : 0), 0);
+      const score = termScore + (
+        compositionIntent && /(?:^|\/)composition(?:\/|#|$)/u.test(entry.url)
+          ? 100
+          : 0
+      );
       return { entry, order, score };
     })
     .filter(result => result.score > 0)

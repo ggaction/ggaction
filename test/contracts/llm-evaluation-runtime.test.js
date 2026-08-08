@@ -48,6 +48,17 @@ test("keeps condition A documentation reads bounded inside public docs", async (
   await assert.rejects(() => readCurrentDoc("../../package.json"), /inside docs/u);
 });
 
+test("routes compound docs searches to the composition documentation", async () => {
+  for (const query of [
+    "compose grouped time series and histogram horizontally Canvas",
+    "grouped time series and histogram side by side",
+    "arrange line chart and histogram into horizontal panels"
+  ]) {
+    const results = await searchCurrentDocs(query, { limit: 3 });
+    assert.equal(results[0].url.includes("/composition/"), true, query);
+  }
+});
+
 test("normalizes API key files without exposing or weakening the token", () => {
   const token = `sk-${"x".repeat(40)}`;
 

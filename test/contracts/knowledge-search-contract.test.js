@@ -64,6 +64,19 @@ test("ranks exact actions and recognizable tasks deterministically", async () =>
   }
 });
 
+test("routes compound chart-layout requests to program composition", async () => {
+  const queries = [
+    "compose grouped time series and histogram horizontally Canvas",
+    "grouped time series and histogram side by side",
+    "arrange line chart and histogram into horizontal panels"
+  ];
+  for (const query of queries) {
+    const response = await searchKnowledge({ query });
+    assert.equal(`${response.results[0].kind}:${response.results[0].id}`, "recipe:composition", query);
+    assert.equal(response.primaryResource.id, "composition", query);
+  }
+});
+
 test("keeps every evaluation task in the production default top three", async () => {
   const [tasks, cases, paraphrases] = await Promise.all([
     json("test/llm/tasks.json"),

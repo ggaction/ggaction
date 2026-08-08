@@ -11,6 +11,10 @@ const stopwords = new Set([
 const fieldWeights = Object.freeze({ identity: 30, title: 20, summary: 8, guidance: 4, relations: 2 });
 const kindPriority = Object.freeze({ recipe: 0, action: 1, docs: 2 });
 const knowledgeKinds = new Set(["action", "recipe", "docs"]);
+const compositionVerbs = new Set(["arrange", "combine", "compose", "concat", "concatenate"]);
+const compositionLayoutTerms = new Set([
+  "child", "dashboard", "gap", "horizontal", "layer", "overlay", "panel", "side", "slot", "vertical"
+]);
 
 function canonicalWord(word) {
   const exceptions = {
@@ -51,6 +55,16 @@ export function normalizeKnowledgeText(value) {
     .match(/[a-z0-9]+/gu)
     ?.map(canonicalWord)
     .join(" ") ?? "";
+}
+
+export function hasCompositionLayoutIntent(value) {
+  const normalized = normalizeKnowledgeText(value);
+  const words = new Set(normalized.split(/\s+/u).filter(Boolean));
+  if (words.has("facet")) return false;
+  return (
+    [...compositionVerbs].some(word => words.has(word)) &&
+    [...compositionLayoutTerms].some(word => words.has(word))
+  ) || normalized.includes("side by side");
 }
 
 function queryTerms(query, maximumTerms) {
@@ -118,6 +132,9 @@ function scoreRecord(record, query, records) {
   if (matchedTerms.length > 0) {
     score += matchedTerms.length * 10;
     score += Math.round(20 * matchedTerms.length / query.terms.length);
+  }
+  if (record.kind === "recipe" && record.id === "composition" && hasCompositionLayoutIntent(query.query)) {
+    score += 400;
   }
   return { score, matchedTerms };
 }
