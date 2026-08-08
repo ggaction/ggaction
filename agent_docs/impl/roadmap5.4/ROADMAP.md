@@ -1,6 +1,6 @@
 # Roadmap 5.4 — Compact Knowledge Delivery and Intent Resolution
 
-> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 0이다. Exact pointer는
+> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 1이다. Exact pointer는
 > [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다. 현재 observable action behavior는
 > [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)과 `contract/current/`가 소유한다.
 
@@ -65,8 +65,8 @@ Default search는 query를 atomic constraints로 분해해 `matchedConstraints`,
 
 | Phase | 상태 | 범위 |
 | ---: | --- | --- |
-| 0 | in-progress | Baseline, isolation, delivery/package budgets와 public MCP contract |
-| 1 | planned | 173 compact action cards와 compact task variants |
+| 0 | completed | Baseline, isolation, delivery/package budgets와 public MCP contract |
+| 1 | in-progress | 173 compact action cards와 compact task variants |
 | 2 | planned | Multi-intent resolver와 one-call closure |
 | 3 | planned | Local MCP, package budget과 docs fallback |
 | 4 | planned | Fresh corpus, unpaid validation과 paid proposal |

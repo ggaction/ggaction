@@ -15,7 +15,7 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.4 Phase 0이다.** Roadmap 5.3의 non-integration 결과를 바탕으로 compact knowledge,
+**현재 활성 Roadmap은 Roadmap 5.4 Phase 1이다.** Roadmap 5.3의 non-integration 결과를 바탕으로 compact knowledge,
 multi-intent resolution과 one-call task closure의 계약과 예산을 먼저 고정한다. 실행 순서는
 [`impl/roadmap5.4/ROADMAP.md`](impl/roadmap5.4/ROADMAP.md)가 소유한다. Active pointer와 마지막 완료 owner의
 machine-readable source는 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
