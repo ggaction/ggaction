@@ -24,7 +24,7 @@
     "historicalResultsAreDiagnosticOnly": true
   },
   "sampling": {
-    "repetitionsPerTask": 1,
+    "repetitionsPerTask": 2,
     "maximumModelCallsPerTask": 6,
     "maximumNaturalModelCallsBeforeForcedSubmission": 3,
     "maximumKnowledgeToolCallsPerTask": 3,

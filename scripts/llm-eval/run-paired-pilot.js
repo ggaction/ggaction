@@ -21,16 +21,34 @@ const outputBoundary = path.join(root, ".artifacts", "llm-eval", "paired-pilot")
 const approvalBoundary = path.join(root, ".artifacts", "llm-eval", "approvals");
 const allowedPostCandidateFiles = new Set([
   "agent_docs/impl/roadmap5.3/ROADMAP.md",
-  "agent_docs/impl/roadmap5.3/phase6/GATE_U.md",
+  "agent_docs/impl/roadmap5.3/phase6/GATE_V.md",
   "agent_docs/impl/roadmap5.3/phase6/GOAL.md"
 ]);
 const currentPaidGate = Object.freeze({
-  id: "R53-P6-U",
-  taskIds: Object.freeze(["cars-bottom-color-opacity-legends"]),
-  repetitionsPerTask: 1,
-  maximumRuns: 4,
-  hardSpendCapUsd: 1,
-  orderSeed: "r53-p6-u-20260808"
+  id: "R53-P6-V",
+  taskIds: Object.freeze([
+    "cars-weight-horsepower-sized-scatter",
+    "gapminder-population-life-log-scatter",
+    "imdb-rating-histogram-twelve-bins",
+    "jobs-sex-count-time-series",
+    "nightingale-cause-total-bars",
+    "cars-displacement-rug",
+    "gapminder-fertility-density-clusters",
+    "cars-cylinder-displacement-box-plots",
+    "imdb-rating-title-label-layout",
+    "gapminder-four-measure-parallel-coordinates",
+    "cars-bottom-color-opacity-legends",
+    "jobs-imdb-composed-summary",
+    "nightingale-renderer-parity-bars",
+    "gapminder-brazil-horizon",
+    "cars-high-horsepower-selection",
+    "jobs-year-job-heatmap",
+    "cars-acceleration-origin-violin"
+  ]),
+  repetitionsPerTask: 2,
+  maximumRuns: 136,
+  hardSpendCapUsd: 32,
+  orderSeed: "r53-p6-v-20260808"
 });
 
 function invariant(condition, message) {

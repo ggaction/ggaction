@@ -16,27 +16,27 @@ async function fixtures() {
     loadGeneralizationCorpus(),
     readFile(new URL("../llm/paired-evaluation-plan.json", import.meta.url), "utf8").then(JSON.parse)
   ]);
-  const taskIds = ["cars-bottom-color-opacity-legends"];
+  const taskIds = loadedCorpus.corpus.tasks.map(task => task.id);
   const approval = {
     schemaVersion: 1,
-    gate: "R53-P6-U",
+    gate: "R53-P6-V",
     status: "approved",
     candidateCommit: "a".repeat(40),
     gateRecordCommit: "b".repeat(40),
     corpusSha256: loadedCorpus.sha256,
     conditions: ["A", "B", "C", "D"],
     taskIds,
-    repetitionsPerTask: 1,
-    maximumRuns: 4,
-    hardSpendCapUsd: 1,
+    repetitionsPerTask: 2,
+    maximumRuns: 136,
+    hardSpendCapUsd: 32,
     credentialReadsAllowed: true,
     externalModelCallsAllowed: true,
-    orderSeed: "r53-p6-u-20260808"
+    orderSeed: "r53-p6-v-20260808"
   };
   return { loadedCorpus, plan, approval };
 }
 
-test("requires the exact explicit zero-to-positive Gate U approval transition", async () => {
+test("requires the exact explicit zero-to-positive current paid-gate transition", async () => {
   const { loadedCorpus, plan, approval } = await fixtures();
   assert.equal(assertPairedPilotApproval({ approval, plan, loadedCorpus }), true);
   for (const [field, value] of [
@@ -52,9 +52,9 @@ test("requires the exact explicit zero-to-positive Gate U approval transition", 
   }), /spend cap/u);
   for (const patch of [
     { taskIds: ["cars-weight-horsepower-sized-scatter"] },
-    { repetitionsPerTask: 2, maximumRuns: 8 },
-    { maximumRuns: 8 },
-    { hardSpendCapUsd: 2 },
+    { repetitionsPerTask: 1, maximumRuns: 68 },
+    { maximumRuns: 68 },
+    { hardSpendCapUsd: 31 },
     { orderSeed: "different-order" }
   ]) {
     assert.throws(
@@ -63,7 +63,7 @@ test("requires the exact explicit zero-to-positive Gate U approval transition", 
         plan,
         loadedCorpus
       }),
-      /R53-P6-U|maximumRuns|spend cap|order seed/iu
+      /R53-P6-V|maximumRuns|spend cap|order seed/iu
     );
   }
 });
@@ -76,7 +76,15 @@ test("creates a deterministic complete block-randomized pilot order", async () =
     second.map(run => `${run.condition}:${run.task.id}:r${run.repetition}`));
   assert.equal(first.length, approval.maximumRuns);
   for (const taskId of approval.taskIds) {
-    assert.deepEqual(first.filter(run => run.task.id === taskId).map(run => run.condition).sort(), ["A", "B", "C", "D"]);
+    for (let repetition = 1; repetition <= approval.repetitionsPerTask; repetition += 1) {
+      assert.deepEqual(
+        first
+          .filter(run => run.task.id === taskId && run.repetition === repetition)
+          .map(run => run.condition)
+          .sort(),
+        ["A", "B", "C", "D"]
+      );
+    }
   }
 });
 
