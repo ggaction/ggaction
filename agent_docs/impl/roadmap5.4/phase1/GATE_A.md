@@ -87,6 +87,5 @@ MCP, package/dependency, public docs, corpus freeze, credential read, external c
 
 ## Evidence identity
 
-- Implementation review target: `PENDING`
-- Gate checkpoint: `PENDING`
+- Implementation review target: `73e99a77131adcbff3fdaf242ad816fb32638dd4`
 - Remote branch: `codex/roadmap5-4-compact-knowledge`
