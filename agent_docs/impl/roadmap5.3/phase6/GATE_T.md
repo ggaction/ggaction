@@ -2,7 +2,12 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 별도로 승인했고 exact guarded pilot을 실행했다. 실행은 12 / 12 runs와 비용·provider guard를 지켰지만
+correctness acceptance는 8 / 12로 실패했다. Raw 결과와 후속 분석은
+[`PAIRED_CONFIRMATION_ANALYSIS.md`](./PAIRED_CONFIRMATION_ANALYSIS.md)에 고정하며, 이 승인으로 추가 유료 실행이나
+PR/merge/publish/deploy를 허용하지 않는다.
 
 이 문서는 새 비용 승인 제안이다. Gate S approval은 재사용하지 않는다. 사용자가 이 Gate를 별도로 승인해야만 exact local
 approval artifact를 만들고 credential을 읽으며 OpenAI Responses API를 호출할 수 있다. Checked-in plan은 계속

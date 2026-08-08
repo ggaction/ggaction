@@ -70,7 +70,9 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [x] Unpaid benchmark observability, composition routing and legend/composition guidance correction
 - [x] Complete corrected-candidate unpaid verification
 - [x] R53-P6-T corrected confirmation proposal
-- [ ] Separately approved corrected paid confirmation
+- [x] Separately approved corrected paid confirmation
+- [x] Immutable Gate T failure analysis and no-benefit decision
+- [ ] Unpaid bottom multi-legend knowledge and benchmark repair
 - [ ] Separately authorized PR preparation and merge
 - [ ] Exact merged-main verification and R53-Exit approval
 
@@ -109,4 +111,5 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [`GATE_S.md`](./GATE_S.md) — fresh A/B/C/D paid pilot의 exact scope, 비용과 stop rules
 - [`PAIRED_PILOT_ANALYSIS.md`](./PAIRED_PILOT_ANALYSIS.md) — Gate S immutable result, 측정 결함과 correction 근거
 - [`GATE_T.md`](./GATE_T.md) — corrected candidate의 A/B/C/D confirmation scope, 비용과 중단 규칙
+- [`PAIRED_CONFIRMATION_ANALYSIS.md`](./PAIRED_CONFIRMATION_ANALYSIS.md) — Gate T immutable result, bottom multi-legend 실패와 재수정 근거
 - [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
