@@ -145,7 +145,7 @@ commit/push한 뒤에만 승인을 요청한다.
 | R53-P6-T | 6 | Corrected A/B/C/D confirmation scope, 비용과 중단 규칙 | External model call |
 | R53-P6-U | 6 | Bottom multi-legend corrected A/B/C/D confirmation scope와 spend ceiling | External model call |
 | R53-P6-V | 6 | Full 17-task A/B/C/D paired evaluation, acceptance와 spend ceiling | External model call |
-| R53-Exit | 6 | Merged-main package/docs/contracts/tests와 reproducible benchmark evidence | 완료 선언과 release preparation |
+| R53-Exit | 6 | Frozen failed acceptance, unchanged main과 non-integration execution record | 완료 선언과 history/index closeout |
 
 ## Phase 0 — Baseline and measurement contract
 
@@ -191,6 +191,10 @@ boundary와 browser bundle isolation을 검증한다.
 함께 보존한다. 사전 합의한 threshold를 통과할 때만 product benefit을 주장한다. Package, docs, current contracts,
 architecture, generated knowledge와 full suite를 동기화하고 별도 PR/merge 승인 뒤 exact merged main을 재검증해
 R53-Exit를 연다.
+
+Gate V는 correctness를 높였지만 predeclared efficiency acceptance를 실패했다. 따라서 merged-main 경로는 열지 않고
+product `main`을 변경하지 않은 채 branch evidence를 보존한다. R53-Exit는 실패를 통과로 재해석하지 않으며, 별도 승인
+뒤 Roadmap을 **completed, not integrated** historical execution record로 닫는 경로만 제공한다.
 
 ## Explicit non-goals
 

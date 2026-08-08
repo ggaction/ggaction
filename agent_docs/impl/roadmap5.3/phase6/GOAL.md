@@ -82,8 +82,10 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [x] R53-P6-V separate cost approval
 - [x] R53-P6-V guarded execution
 - [x] Immutable full result and non-integration decision
-- [ ] Separately authorized PR preparation and merge
-- [ ] Exact merged-main verification and R53-Exit approval
+- [x] Failed acceptance mechanically blocked PR/merge eligibility
+- [x] R53-Exit non-integration closeout package prepared
+- [ ] R53-Exit explicit closeout approval
+- [ ] Documentation-only branch closeout and final remote checkpoint
 
 ## 고정 경계
 
@@ -125,4 +127,4 @@ path로 별도 해석한다. 결과를 본 뒤 기준을 바꾸지 않으며, �
 - [`PAIRED_LEGEND_CONFIRMATION_ANALYSIS.md`](./PAIRED_LEGEND_CONFIRMATION_ANALYSIS.md) — Gate U immutable 4/4 result와 acceptance audit
 - [`GATE_V.md`](./GATE_V.md) — full 17-task A/B/C/D two-repetition evaluation scope와 $32 hard cap
 - [`PAIRED_FULL_EVALUATION_ANALYSIS.md`](./PAIRED_FULL_EVALUATION_ANALYSIS.md) — Gate V immutable full result와 failed acceptance
-- [`GATE_EXIT.md`](./GATE_EXIT.md) — exact merged-main evidence와 Roadmap closeout
+- [`GATE_EXIT.md`](./GATE_EXIT.md) — failed acceptance를 보존하는 non-integration Roadmap closeout
