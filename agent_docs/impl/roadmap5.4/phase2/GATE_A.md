@@ -88,5 +88,5 @@ release는 승인하지 않는다.
 
 ## Evidence identity
 
-- Implementation review target: `PENDING`
+- Implementation review target: `9a7d35c9dec63c5f45a7d86ea4474f1747c8654b`
 - Remote branch: `codex/roadmap5-4-compact-knowledge`
