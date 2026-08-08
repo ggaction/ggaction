@@ -4,7 +4,7 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 Roadmap 5.4 Phase 1이다.** Compact delivery, intent resolution, package budget과
+- **현재 활성 Roadmap은 Roadmap 5.4 Phase 2다.** Compact delivery, intent resolution, package budget과
   fresh evaluation isolation을 먼저 승인한다. 실행 순서는 [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 

@@ -16,7 +16,7 @@ reference를 다시 복사하지 않고 current declaration, action inventory와
 - [x] 173개 snippet을 exact `ChartProgram` declaration으로 TypeScript compile
 - [x] Individual payload budget 검증 — 최대 1,501 bytes, 중앙값 993 bytes
 - [x] Existing action behavior, source, declarations, renderer, public/generated docs와 package surface 미변경
-- [ ] R54-P1-A explicit approval
+- [x] R54-P1-A explicit approval — 2026-08-08
 
 ## 결과물
 

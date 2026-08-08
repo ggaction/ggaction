@@ -2,7 +2,11 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+사용자가 2026-08-08에 implementation review target
+`73e99a77131adcbff3fdaf242ad816fb32638dd4`의 compact cards, call variants, zero-gap coverage와 payload
+budget을 명시적으로 승인했다. 이 승인은 Phase 2 intent resolver와 bounded task packet 구현만 연다.
 
 이 Gate는 173개 compact action card의 exactness, coverage와 크기를 승인받는다. 승인 전에는 query를 분해하거나 여러
 card를 task packet으로 조합하는 intent resolver를 구현하지 않는다.
