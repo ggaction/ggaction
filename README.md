@@ -182,15 +182,22 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
 | `ggaction/pdf` | Render a completed program to a single-page vector PDF file in Node.js |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
+| `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |
 
-All entries include TypeScript declarations. The default, basic, extension, and
-SVG entries are browser-safe; the PNG and PDF adapters are Node-only.
+All module entries include TypeScript declarations. The default, basic,
+extension, and SVG entries are browser-safe; the PNG and PDF adapters are
+Node-only.
+
+The installed package also includes the Node-only `ggaction-mcp` executable. It
+provides one local, read-only chart-authoring search tool and stays outside every
+browser entry. See the [local MCP guide](https://ggaction.github.io/ggaction/mcp/).
 
 ## Documentation
 
 - [Getting Started](https://ggaction.github.io/ggaction/getting-started/)
 - [Tutorials and Examples](https://ggaction.github.io/ggaction/tutorials/)
 - [Action Reference](https://ggaction.github.io/ggaction/reference/actions/)
+- [Local MCP for LLM Chart Authoring](https://ggaction.github.io/ggaction/mcp/)
 - [Concepts](https://ggaction.github.io/ggaction/concepts/chart-program/)
 - [Supported Features](https://ggaction.github.io/ggaction/supported-features/)
 

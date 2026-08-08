@@ -8,6 +8,7 @@ HTML routes are canonical; the generated full-text bundle is available at
 
 - Documentation overview: ./
 - npm installation and first runnable chart: ./getting-started/
+- Local one-tool MCP for compact chart-authoring knowledge: ./mcp/
 - Chart recipes: ./recipes/
 - Complete public action reference: ./reference/actions/
 - Supported features and limitations: ./supported-features/

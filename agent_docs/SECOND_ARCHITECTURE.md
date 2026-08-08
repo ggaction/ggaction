@@ -73,8 +73,10 @@ Public package
 │  └─ renderToSVG()
 ├─ ggaction/png
 │  └─ renderToPNG()
-└─ ggaction/pdf
-   └─ renderToPDF()
+├─ ggaction/pdf
+│  └─ renderToPDF()
+└─ ggaction-mcp
+   └─ search_ggaction({ query }) over local stdio
 
 Program execution
 ├─ ChartProgram assembly
@@ -110,7 +112,7 @@ Program execution
 
 ## Public package boundary
 
-패키지는 여섯 개의 명시적 entry point를 가진다.
+패키지는 여섯 개의 명시적 module entry point와 하나의 Node executable을 가진다.
 
 ### `ggaction`
 
@@ -194,6 +196,16 @@ point 아래에만 존재한다. Fully materialized `graphicSpec`을 logical Can
 width/height와 숫자상 같은 point 크기의 한 page에 그리고 optional
 title/author/subject/keywords metadata를 기록한다.
 
+### `ggaction-mcp`
+
+설치된 package가 제공하는 Node-only local stdio executable이다. Model-visible tool은
+`search_ggaction({ query })` 하나이며 direct adapter와 같은 serialized compact task packet을 반환한다. Overview,
+exact action card, bounded task recipe와 unresolved-only documentation section은 read-only MCP resources로만 제공한다.
+
+MCP boundary는 chart program이나 renderer를 import하거나 실행하지 않는다. Request-selected filesystem path, network,
+shell/code execution과 telemetry surface를 노출하지 않는다. 자체 package에 포함된 bounded knowledge artifact만 읽으며,
+documentation section은 직전 search packet의 `unresolved` constraint가 추천한 URI에 한해 읽을 수 있다.
+
 각 JavaScript entry point는 대응하는 TypeScript declaration을 가진다.
 
 ```text
@@ -204,10 +216,12 @@ src/renderers/pdf.js     ↔ types/pdf.d.ts
 src/renderers/png.js     ↔ types/png.d.ts
 src/renderers/svg.js     ↔ types/svg.d.ts
 ChartProgram contract    ↔ types/program.d.ts
+src/mcp/cli.js           ↔ package `ggaction-mcp` executable
 ```
 
 `package.json`의 export map, JavaScript export, declaration, package-boundary test는 하나의
-public contract로 함께 관리한다.
+public contract로 함께 관리한다. MCP executable은 module export map에 추가하지 않으며 Node-only dependency graph를
+browser-safe entry에 연결하지 않는다.
 
 ### Browser bundle regression ceilings
 

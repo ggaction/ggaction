@@ -23,9 +23,12 @@ function packageSpecifiers(packageJson) {
   );
 }
 
-test("keeps current package exports visible in public and architecture documentation", () => {
+test("keeps current package surfaces visible in public and architecture documentation", () => {
   const packageJson = JSON.parse(read("package.json"));
-  const expected = packageSpecifiers(packageJson).sort();
+  const expected = [
+    ...packageSpecifiers(packageJson),
+    ...Object.keys(packageJson.bin ?? {})
+  ].sort();
   const readmeEntries = [...section(read("README.md"), "Package entries").matchAll(
     /^\| `([^`]+)` \|/gm
   )].map(match => match[1]).sort();

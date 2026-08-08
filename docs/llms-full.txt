@@ -35,6 +35,9 @@ one part. The main, basic, extension, SVG, PNG, and PDF entry points include Typ
     Find an action
     Look up exact signatures, defaults, inference, and related guides.
 
+    Connect an LLM locally
+    Use one read-only MCP search tool without preloading the full documentation.
+
 ## Common chart types
 
 Start with common Cartesian charts for relationships, comparisons, trends,
@@ -60,7 +63,7 @@ continue with [action authoring](./extension/action-authoring.md) and the
 [primitive API](./extension/primitives.md). For boundaries and failures, see
 [supported features](./supported-features.md) and
 [troubleshooting](./troubleshooting.md). Language models can use the concise
-[documentation index](./llms.txt) or the generated
+[documentation index](./llms.txt), the local read-only [MCP server](./mcp.md), or the generated
 [full-text bundle](./llms-full.txt).
 
 Source, issues, and development history are available on
@@ -187,6 +190,11 @@ CommonJS entry points. Import `ggaction/png` and `ggaction/pdf` only from Node
 code; the browser-safe entries, including `ggaction/svg`, do not load filesystem
 or native output modules.
 
+The installed package also provides the Node-only `ggaction-mcp` executable for
+local, read-only language-model authoring support. It is not imported by any
+browser entry. See [Local MCP for LLM Chart Authoring](./mcp.md) for setup and
+the one-tool workflow.
+
 The release artifact is tested by installing its exact tarball into fresh
 JavaScript and TypeScript consumer projects. It is also tested in a browser and
 across the supported Node release matrix.
@@ -211,6 +219,113 @@ Use Troubleshooting  when
 inference or layout cannot make one safe choice. Render the same program to a
 file with PNG  or
 vector PDF output .
+
+<!-- Source: /mcp/ -->
+
+# Local MCP for LLM Chart Authoring
+
+The `ggaction` package includes a local, read-only MCP server that helps a
+language model choose current actions and exact call shapes without preloading
+the complete documentation. It runs over standard input/output on the user's
+machine. It does not require a hosted server, account, or authentication.
+
+The server does not execute chart code, render output, read request-selected
+files, make network requests, or collect telemetry.
+
+## Install and launch
+
+Install `ggaction` in the project where the MCP client will run:
+
+```bash
+npm install ggaction
+```
+
+Launch the installed executable from that project:
+
+```bash
+npx --no-install ggaction-mcp
+```
+
+For an MCP client configuration, prefer the absolute path to the project-local
+executable so the selected `ggaction` version is reproducible:
+
+```json
+{
+  "mcpServers": {
+    "ggaction": {
+      "command": "/absolute/path/to/project/node_modules/.bin/ggaction-mcp"
+    }
+  }
+}
+```
+
+The exact configuration container varies by MCP client, but the command always
+starts the same local stdio process. Node.js 20 or later is required.
+
+## One-tool workflow
+
+The server exposes exactly one model-visible tool:
+
+```text
+search_ggaction({ query })
+```
+
+Send the complete request in one query, including chart or mark type,
+transforms, encodings, guides, layout, and output format when they matter:
+
+```text
+scatter plot with a color legend at bottom as svg
+```
+
+The result is a bounded JSON task packet with:
+
+- `matchedConstraints` — recognized parts of the request
+- `actionPlan` — actions and runtime operations in execution order
+- `exactCalls` — short calls with current option names
+- `unresolved` — unsupported, conflicting, or underspecified requirements
+- `candidates` — at most three exact resource identities
+
+The MCP response and the deterministic direct adapter use the same serialized
+task packet. A packet is never silently truncated; it fails if it exceeds its
+6,144-byte hard ceiling.
+
+## Read-only resources
+
+MCP resource discovery provides a small overview, bounded task recipes, and
+templates for one exact action card. These resources are for selective reads,
+not a replacement full-documentation preload.
+
+Documentation fallback is stricter. A docs section is readable only when the
+latest `search_ggaction` result contains an `unresolved` constraint that maps to
+that section. A later fully resolved search removes that access again. This
+keeps the default flow compact:
+
+```text
+complete request
+  → search_ggaction
+  → use the task packet when resolved
+  → read only the recommended bounded section when unresolved
+  → clarify and search again
+```
+
+## What the server does not provide
+
+- Hosted or HTTP transport
+- Authentication, accounts, or telemetry
+- Chart execution or renderer tools
+- Arbitrary filesystem, network, shell, or code access
+- A generic tool that returns the complete documentation bundle
+
+Use the [complete action reference](./reference/actions.md) manually when a
+human needs the full contract. For normal model-assisted authoring, start with
+the one search call and add documentation only for explicit gaps.
+
+## Related
+
+[Getting Started](./getting-started.md) ·
+[Chart Recipes](./recipes/index.md) ·
+[Rendering](./api/rendering.md) ·
+[Supported Features](./supported-features.md)
 
 <!-- Source: /tutorials/ -->
 
@@ -12005,7 +12120,7 @@ The action entries below provide the readable form, behavior, defaults, and rout
 
 ```typescript
 interface ChartProgramActions {
-  constructor(state?: ActionOptions); readonly semanticSpec: SemanticSpec; readonly graphicSpec: GraphicSpec; readonly resolvedScales: Readonly<Record<string, Readonly<Record<string, unknown>>>>; readonly materializationConfigs: Readonly<Record<string, unknown>>; readonly children: Readonly<Record<string, ChartProgram>>; readonly compositionSpec?: CompositionSpec; readonly context: Readonly<Record<string, unknown>>; readonly trace: TraceNode; readonly actionStack: readonly unknown[]; createCanvas(options?: CanvasOptions): ChartProgram;
+  createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;

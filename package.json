@@ -24,11 +24,18 @@
   "files": [
     "src/",
     "!src/**/AGENTS.md",
+    "knowledge/action-cards.json",
+    "knowledge/intent-taxonomy.json",
+    "knowledge/mcp-resources.json",
+    "knowledge/task-resolver.js",
     "types/",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
   ],
+  "bin": {
+    "ggaction-mcp": "./src/mcp/cli.js"
+  },
   "types": "./types/index.d.ts",
   "exports": {
     ".": {
@@ -110,6 +117,7 @@
     "tag": "latest"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
     "@napi-rs/canvas": "^1.0.2"
   },
   "devDependencies": {
