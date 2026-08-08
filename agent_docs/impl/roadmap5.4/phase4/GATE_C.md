@@ -2,9 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Verified Gate checkpoint: `caf066cc35e11e9e80377e0526b29c931dd66c58`.
+Approved by the user on 2026-08-08.
 
 ## 승인 대상
 

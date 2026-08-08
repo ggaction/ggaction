@@ -33,7 +33,7 @@
 - [x] Full tests, package, installed MCP와 browser ceilings 실행
 - [x] 모든 unpaid checks 통과 시 exact paid-smoke proposal 작성
 - [x] R54-P4-C review checkpoint commit/push — `caf066cc35e11e9e80377e0526b29c931dd66c58`
-- [ ] User approval
+- [x] User approval — 2026-08-08
 
 ## Strict acceptance
 

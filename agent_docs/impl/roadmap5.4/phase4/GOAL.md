@@ -20,7 +20,7 @@ Phase 5의 작은 paid smoke 범위와 최대 비용을 제안한다.
 - [x] Credential reads, external model calls와 spend 0 / 0 / $0
 - [x] Exact paid-smoke proposal and hard cost cap — policy replacement acceptance 통과 뒤 R54-P4-C에 고정
 - [x] R54-P4-A와 R54-P4-B failure record 보존
-- [ ] R54-P4-C explicit approval — ready-for-review
+- [x] R54-P4-C explicit approval — 2026-08-08
 
 ## Predeclared unpaid acceptance
 
