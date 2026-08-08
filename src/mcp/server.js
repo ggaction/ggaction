@@ -45,7 +45,7 @@ function validateToolArguments(args) {
 export function createGgactionMcpServer() {
   const server = new Server(SERVER_INFO, {
     capabilities: { tools: {}, resources: {} },
-    instructions: "Call search_ggaction once with the complete task. Read a docs resource only when that call reports unresolved constraints and recommends the section. The server is read-only and does not execute chart code."
+    instructions: "Call search_ggaction once with only the exact user task; do not append dataset contents, code scaffolding, or evaluator instructions. Use authoring imports, initialization, and immutable steps in order. Read a docs resource only when that call reports unresolved constraints and recommends the section. The server is read-only and does not execute chart code."
   });
   let allowedDocs = new Set();
 

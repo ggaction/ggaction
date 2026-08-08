@@ -46,6 +46,11 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
       idempotentHint: true,
       openWorldHint: false
     });
+    assert.match(listed.tools[0].description, /exact imports, executable immutable steps/);
+    assert.match(
+      listed.tools[0].inputSchema.properties.query.description,
+      /Do not append dataset contents, code scaffolding, or evaluator instructions/
+    );
 
     const query = "scatter plot with a color legend at bottom as svg";
     const direct = searchGgactionText(query);
@@ -55,8 +60,14 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
     });
     assert.equal(called.content.length, 1);
     assert.deepEqual(called.content[0], { type: "text", text: direct });
-    assert.equal(Buffer.byteLength(called.content[0].text), 1689);
-    assert.equal(JSON.parse(called.content[0].text).unresolved.length, 0);
+    assert.equal(Buffer.byteLength(called.content[0].text), 2044);
+    const packet = JSON.parse(called.content[0].text);
+    assert.equal(packet.schemaVersion, 2);
+    assert.deepEqual(packet.authoring.imports, [
+      'import { chart } from "ggaction";',
+      'import { renderToSVG } from "ggaction/svg";'
+    ]);
+    assert.equal(packet.unresolved.length, 0);
   } finally {
     await close();
   }
@@ -79,6 +90,11 @@ test("keeps resource discovery bounded and reads exact cards and recipes", async
     "program.createScatterPlot({ x: \"x\", y: \"y\", color: \"category\", guides: {} })",
     "program.editLegendLayout({ position: \"bottom\" })",
     "renderToSVG(program)"
+  ]);
+  assert.deepEqual(JSON.parse(recipe.text).packet.authoring.steps, [
+    'program = program.createScatterPlot({ x: "x", y: "y", color: "category", guides: {} })',
+    'program = program.editLegendLayout({ position: "bottom" })',
+    "const output = renderToSVG(program)"
   ]);
   for (const resource of [card, recipe]) {
     assert.ok(Buffer.byteLength(resource.text) <= 6144, resource.uri);

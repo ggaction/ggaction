@@ -14,6 +14,12 @@ const taxonomy = JSON.parse(readFileSync(
 
 const cards = new Map(cardsArtifact.cards.map(card => [card.name, card]));
 const constraints = new Map(taxonomy.constraints.map(constraint => [constraint.id, constraint]));
+const mainRuntimeImports = Object.freeze(["hconcat", "vconcat", "render"]);
+const rendererImports = Object.freeze({
+  renderToSVG: Object.freeze({ entry: "ggaction/svg", output: "svg" }),
+  renderToPNG: Object.freeze({ entry: "ggaction/png", output: "png" }),
+  renderToPDF: Object.freeze({ entry: "ggaction/pdf", output: "pdf" })
+});
 
 export class TaskPacketBudgetError extends Error {
   constructor(bytes) {
@@ -299,6 +305,46 @@ function planEntry(entry, step) {
   };
 }
 
+function authoringImports(entries) {
+  const runtimeNames = new Set(entries
+    .filter(entry => entry.plan.kind === "runtime")
+    .map(entry => entry.plan.name));
+  const mainNames = [
+    "chart",
+    ...mainRuntimeImports.filter(name => runtimeNames.has(name))
+  ];
+  return [
+    `import { ${mainNames.join(", ")} } from "ggaction";`,
+    ...Object.entries(rendererImports)
+      .filter(([name]) => runtimeNames.has(name))
+      .map(([name, renderer]) => `import { ${name} } from "${renderer.entry}";`)
+  ];
+}
+
+function authoringSteps(entries) {
+  const outputRenderers = entries.filter(entry => rendererImports[entry.plan.name]);
+  return entries.map(entry => {
+    if (entry.plan.kind === "action" || ["hconcat", "vconcat"].includes(entry.plan.name)) {
+      return `program = ${entry.call}`;
+    }
+    if (entry.plan.name === "render") return entry.call;
+    const renderer = rendererImports[entry.plan.name];
+    if (!renderer) throw new Error(`Unknown authoring runtime ${entry.plan.name}.`);
+    const outputName = outputRenderers.length === 1
+      ? "output"
+      : `${renderer.output}Output`;
+    return `const ${outputName} = ${entry.call}`;
+  });
+}
+
+function authoringBlock(entries) {
+  return {
+    imports: authoringImports(entries),
+    initialize: "let program = chart()",
+    steps: authoringSteps(entries)
+  };
+}
+
 function genericUnresolved(normalizedQuery, matchedIds, exactNames) {
   const unresolved = [];
   const taskSpecificMatches = [...matchedIds].filter(id =>
@@ -379,6 +425,11 @@ export function validateResolverKnowledge() {
       !provider.route.startsWith("/reference/")
     ) {
       throw new Error(`${provider.id} has an invalid runtime contract.`);
+    } else if (
+      !mainRuntimeImports.includes(provider.name) &&
+      rendererImports[provider.name] === undefined
+    ) {
+      throw new Error(`${provider.id} lacks an authoring runtime mapping.`);
     }
   }
   const missing = taxonomy.constraints.filter(constraint =>
@@ -448,11 +499,12 @@ export function searchGgaction(query) {
   );
   const entries = ordered.map((entry, index) => planEntry(entry, index + 1));
   const packet = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     query: query.trim(),
     matchedConstraints: [...matchedIds],
     actionPlan: entries.map(entry => entry.plan),
     exactCalls: entries.map(entry => entry.call),
+    authoring: authoringBlock(entries),
     unresolved: unique(unresolved.map(entry => JSON.stringify(entry))).map(JSON.parse),
     candidates: entries.slice(0, 3).map(entry => ({
       id: entry.plan.id,

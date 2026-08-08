@@ -627,6 +627,13 @@ async function testMcpConsumer(directory) {
   const { searchGgactionText } = await import(
     pathToFileURL(path.join(installedRoot, "src", "mcp", "adapter.js")).href
   );
+  const taskPacketSchema = JSON.parse(await readFile(
+    path.join(installedRoot, "knowledge", "task-packet.schema.json"),
+    "utf8"
+  ));
+  if (taskPacketSchema.properties?.schemaVersion?.const !== 2) {
+    throw new Error("Installed task packet schema must require schemaVersion 2.");
+  }
   const transport = new StdioClientTransport({
     command: executable,
     cwd: directory,
@@ -652,6 +659,29 @@ async function testMcpConsumer(directory) {
     if (result.content[0]?.text !== searchGgactionText(query)) {
       throw new Error("Installed direct and MCP payloads are not byte-equal.");
     }
+    const packet = JSON.parse(result.content[0].text);
+    if (packet.schemaVersion !== 2 || packet.authoring?.initialize !== "let program = chart()") {
+      throw new Error("Installed MCP did not return the task packet v2 authoring bootstrap.");
+    }
+    const authoringSource = [
+      'import assert from "node:assert/strict";',
+      ...packet.authoring.imports,
+      "const rows = [",
+      '  { x: 1, y: 4, category: "A" },',
+      '  { x: 2, y: 7, category: "B" },',
+      '  { x: 3, y: 6, category: "A" }',
+      "];",
+      `${packet.authoring.initialize};`,
+      "program = program.createCanvas({ width: 320, height: 220, margin: 40 });",
+      "program = program.createData({ values: rows });",
+      ...packet.authoring.steps.map(step => `${step};`),
+      'assert.equal(output.startsWith("<svg"), true);',
+      "assert.ok(program.graphicSpec.objects.scatterPlot.items.length > 0);",
+      ""
+    ].join("\n");
+    const authoringFile = path.join(directory, "mcp-authoring-smoke.mjs");
+    await writeFile(authoringFile, authoringSource);
+    run(process.execPath, [authoringFile], directory);
     const resources = await client.listResources();
     if (
       resources.resources.length !== 9 ||
@@ -1288,6 +1318,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "private-export-rejection",
       "installed-local-mcp",
       "direct-mcp-byte-equality",
+      "task-packet-v2-authoring-execution",
       "unresolved-only-docs-fallback"
     ]
   }, null, 2)}\n`);

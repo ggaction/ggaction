@@ -51,8 +51,9 @@ The server exposes exactly one model-visible tool:
 search_ggaction({ query })
 ```
 
-Send the complete request in one query, including chart or mark type,
-transforms, encodings, guides, layout, and output format when they matter:
+Send only the exact user request in one query, including chart or mark type,
+transforms, encodings, guides, layout, and output format when they matter. Do
+not append dataset contents, code scaffolding, or evaluator instructions:
 
 ```text
 scatter plot with a color legend at bottom as svg
@@ -63,12 +64,31 @@ The result is a bounded JSON task packet with:
 - `matchedConstraints` — recognized parts of the request
 - `actionPlan` — actions and runtime operations in execution order
 - `exactCalls` — short calls with current option names
+- `authoring` — exact package imports, `chart()` initialization, immutable
+  reassignment steps, and the selected renderer call
 - `unresolved` — unsupported, conflicting, or underspecified requirements
 - `candidates` — at most three exact resource identities
 
 The MCP response and the deterministic direct adapter use the same serialized
 task packet. A packet is never silently truncated; it fails if it exceeds its
 6,144-byte hard ceiling.
+
+`authoring.steps` are executable statements in order. Keep the returned
+`program = ...` assignments: every action returns a new immutable
+`ChartProgram`. Add the task's data and Canvas setup after `initialize`, then
+run the returned steps. The following fragment shows the bootstrap around an
+SVG request's task-specific action calls; it requires Canvas and data setup at
+the marked line:
+
+```javascript
+import { chart } from "ggaction";
+import { renderToSVG } from "ggaction/svg";
+
+let program = chart()
+// Add createCanvas(...) and createData(...) for the task here.
+program = program.createScatterPlot({ x: "x", y: "y" })
+const output = renderToSVG(program)
+```
 
 Unsupported output and a missing supported renderer are separate decisions.
 For example, `render JPEG` reports both `unsupported.jpg` and

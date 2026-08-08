@@ -24,7 +24,7 @@ export const OVERVIEW_URI = "ggaction://overview";
 export const SEARCH_TOOL = Object.freeze({
   name: SEARCH_TOOL_NAME,
   title: "Search ggaction authoring knowledge",
-  description: "Resolve one complete ggaction chart request into a bounded ordered task packet with exact calls and explicit unresolved constraints.",
+  description: "Resolve one complete ggaction chart request into a bounded ordered task packet with exact imports, executable immutable steps, and explicit unresolved constraints.",
   inputSchema: Object.freeze({
     type: "object",
     additionalProperties: false,
@@ -34,7 +34,7 @@ export const SEARCH_TOOL = Object.freeze({
         type: "string",
         minLength: 1,
         maxLength: 500,
-        description: "The complete chart-authoring request, including chart, encodings, guides, layout, and output format."
+        description: "The exact user chart-authoring request, including chart, encodings, guides, layout, and output format. Do not append dataset contents, code scaffolding, or evaluator instructions."
       })
     })
   }),

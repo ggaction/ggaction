@@ -277,7 +277,7 @@ export async function assertFrozenManifest(corpus = "original") {
   return actual;
 }
 
-async function compileCalls(calls) {
+async function compileCalls(calls, authoringSteps) {
   const temporary = await mkdtemp(path.join(os.tmpdir(), "ggaction-compact-evaluation-"));
   try {
     for (const name of ["program.d.ts", "index.d.ts", "svg.d.ts", "png.d.ts", "pdf.d.ts"]) {
@@ -285,7 +285,7 @@ async function compileCalls(calls) {
     }
     const source = [
       'import type { ChartProgram } from "./program.js";',
-      'import { hconcat, render, vconcat } from "./index.js";',
+      'import { chart, hconcat, render, vconcat } from "./index.js";',
       'import { renderToSVG } from "./svg.js";',
       'import { renderToPNG } from "./png.js";',
       'import { renderToPDF } from "./pdf.js";',
@@ -293,6 +293,12 @@ async function compileCalls(calls) {
       "declare const context: CanvasRenderingContext2D;",
       "async function verifyEvaluationCalls() {",
       ...[...calls].sort().map(call => `  ${call};`),
+      ...[...authoringSteps].sort().flatMap(step => [
+        "  {",
+        "    let program = chart();",
+        `    ${step};`,
+        "  }"
+      ]),
       "}",
       "void verifyEvaluationCalls;",
       ""
@@ -327,6 +333,7 @@ export async function evaluateSplit(split, { candidateCommit, corpus = "original
   const failures = [];
   const sizes = [];
   const calls = new Set();
+  const authoringSteps = new Set();
   let silentPartialCount = 0;
   let resolvedFallbackCount = 0;
 
@@ -369,9 +376,10 @@ export async function evaluateSplit(split, { candidateCommit, corpus = "original
       failures.push(`${task.id}: packet is ${bytes} bytes`);
     }
     for (const call of packet.exactCalls) calls.add(call);
+    for (const step of packet.authoring.steps) authoringSteps.add(step);
   }
 
-  failures.push(...await compileCalls(calls));
+  failures.push(...await compileCalls(calls, authoringSteps));
   sizes.sort((left, right) => left - right);
   const medianPacketBytes = sizes[Math.floor(sizes.length / 2)];
   if (medianPacketBytes > policy.thresholds.medianPacketBytes) {

@@ -202,6 +202,12 @@ title/author/subject/keywords metadata를 기록한다.
 `search_ggaction({ query })` 하나이며 direct adapter와 같은 serialized compact task packet을 반환한다. Overview,
 exact action card, bounded task recipe와 unresolved-only documentation section은 read-only MCP resources로만 제공한다.
 
+Task packet schema v2는 action identity를 위한 `actionPlan`/`exactCalls`와 별도로 executable-module closure를 위한
+`authoring`을 소유한다. `authoring.imports`는 task가 고른 public package entry, `initialize`는 `let program = chart()`,
+`steps`는 immutable `program = ...` action/composition과 renderer call을 순서대로 제공한다. Query에는 exact user task만
+전달하며 dataset, code scaffold와 evaluator instruction은 넣지 않는다. Direct adapter와 MCP는 이 전체 packet을 byte-equal하게
+직렬화한다.
+
 MCP boundary는 chart program이나 renderer를 import하거나 실행하지 않는다. Request-selected filesystem path, network,
 shell/code execution과 telemetry surface를 노출하지 않는다. 자체 package에 포함된 bounded knowledge artifact만 읽으며,
 documentation section은 직전 search packet의 `unresolved` constraint가 추천한 URI에 한해 읽을 수 있다.

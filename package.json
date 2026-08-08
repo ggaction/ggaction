@@ -27,6 +27,7 @@
     "knowledge/action-cards.json",
     "knowledge/intent-taxonomy.json",
     "knowledge/mcp-resources.json",
+    "knowledge/task-packet.schema.json",
     "knowledge/task-resolver.js",
     "types/",
     "README.md",

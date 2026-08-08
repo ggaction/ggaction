@@ -23,6 +23,7 @@ const REQUIRED_FILES = Object.freeze([
   "knowledge/action-cards.json",
   "knowledge/intent-taxonomy.json",
   "knowledge/mcp-resources.json",
+  "knowledge/task-packet.schema.json",
   "knowledge/task-resolver.js",
   "src/index.js",
   "src/basic.js",
@@ -92,6 +93,7 @@ export function validatePackageManifest(manifest) {
         "knowledge/action-cards.json",
         "knowledge/intent-taxonomy.json",
         "knowledge/mcp-resources.json",
+        "knowledge/task-packet.schema.json",
         "knowledge/task-resolver.js"
       ].includes(file)
     ) {

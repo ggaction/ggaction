@@ -35,6 +35,7 @@ test("publishes only the bounded public package artifact", () => {
       "knowledge/action-cards.json",
       "knowledge/intent-taxonomy.json",
       "knowledge/mcp-resources.json",
+      "knowledge/task-packet.schema.json",
       "knowledge/task-resolver.js"
     ].includes(path)
   ));
@@ -57,6 +58,7 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
       "knowledge/action-cards.json",
       "knowledge/intent-taxonomy.json",
       "knowledge/mcp-resources.json",
+      "knowledge/task-packet.schema.json",
       "knowledge/task-resolver.js",
       "src/index.js",
       "src/basic.js",

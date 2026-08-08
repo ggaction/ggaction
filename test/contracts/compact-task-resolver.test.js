@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { createCanvas } from "@napi-rs/canvas";
 
 import { chart, render } from "../../src/index.js";
+import { renderToSVG } from "../../src/renderers/svg.js";
 import {
   searchGgaction,
   taskPacketBytes,
@@ -20,6 +21,7 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 const knowledgeRoot = path.join(root, "knowledge");
 const typesRoot = path.join(root, "types");
 const tscFile = path.join(root, "node_modules/.bin/tsc");
+const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 
 async function json(name) {
   return JSON.parse(await readFile(path.join(knowledgeRoot, name), "utf8"));
@@ -49,6 +51,26 @@ function runtimeSignature(source, name) {
     .replace(/\(\s+/g, "(")
     .replace(/\s+\)/g, ")")
     .trim();
+}
+
+async function executeAuthoring(packet, { rows, renderer }) {
+  const canvas = createCanvas(320, 220);
+  const context = canvas.getContext("2d");
+  const source = [
+    packet.authoring.initialize,
+    "program = program.createCanvas({ width: 320, height: 220, margin: 40 })",
+    "program = program.createData({ values: rows })",
+    ...packet.authoring.steps,
+    renderer === "svg" ? "return { program, output }" : "return { program }"
+  ].join(";\n");
+  return new AsyncFunction(
+    "chart",
+    "render",
+    "renderToSVG",
+    "context",
+    "rows",
+    source
+  )(chart, render, renderToSVG, context, rows);
 }
 
 test("intent taxonomy covers every supported constraint with exact owners", async () => {
@@ -111,10 +133,57 @@ test("every exact action name resolves to its compact card without gaps", async 
       assert.equal(first.actionPlan[0].requiredOptions.includes(option.name), true, `${card.name}.${option.name}`);
     }
     assert.deepEqual(first.exactCalls, [card.snippet], card.name);
+    assert.equal(first.schemaVersion, 2, card.name);
+    assert.deepEqual(first.authoring, {
+      imports: ['import { chart } from "ggaction";'],
+      initialize: "let program = chart()",
+      steps: [`program = ${card.snippet}`]
+    }, card.name);
     assert.deepEqual(first.unresolved, [], card.name);
     assert.equal(first.candidates.length, 1, card.name);
     assert.equal(taskPacketBytes(first) <= 6144, true, card.name);
   }
+});
+
+test("provides exact executable Canvas and SVG authoring bootstraps", async () => {
+  const rows = [
+    { x: 1, y: 4 },
+    { x: 2, y: 7 },
+    { x: 3, y: 6 },
+    { x: 4, y: 10 }
+  ];
+  const svgPacket = searchGgaction("scatter plot as svg");
+  assert.deepEqual(svgPacket.authoring, {
+    imports: [
+      'import { chart } from "ggaction";',
+      'import { renderToSVG } from "ggaction/svg";'
+    ],
+    initialize: "let program = chart()",
+    steps: [
+      'program = program.createScatterPlot({ x: "x", y: "y" })',
+      "const output = renderToSVG(program)"
+    ]
+  });
+  const svgResult = await executeAuthoring(svgPacket, { rows, renderer: "svg" });
+  assert.equal(svgResult.output.startsWith("<svg"), true);
+  assert.ok(svgResult.program.graphicSpec.objects.scatterPlot.items.length > 0);
+
+  const canvasPacket = searchGgaction("scatter plot as browser canvas");
+  assert.deepEqual(canvasPacket.authoring.imports, [
+    'import { chart, render } from "ggaction";'
+  ]);
+  assert.equal(
+    canvasPacket.authoring.steps.at(-1),
+    "render(program, context)"
+  );
+  const canvasResult = await executeAuthoring(canvasPacket, { rows, renderer: "canvas" });
+  assert.ok(canvasResult.program.graphicSpec.objects.scatterPlot.items.length > 0);
+
+  const multiOutput = searchGgaction("scatter plot export svg and export png");
+  assert.deepEqual(multiOutput.authoring.steps.slice(-2), [
+    "const svgOutput = renderToSVG(program)",
+    'const pngOutput = await renderToPNG(program, { output: "chart.png" })'
+  ]);
 });
 
 test("prefers the complete reference-line phrase without hiding separate marks", () => {
@@ -249,6 +318,14 @@ test("design fixtures prove bounded one-call task closure without silent partial
     json("task-packet.schema.json")
   ]);
   assert.equal(fixtures.role, "resolver-design-fixtures-not-evaluation-corpus");
+  assert.equal(schema.properties.schemaVersion.const, 2);
+  assert.deepEqual(schema.properties.authoring.required, [
+    "imports",
+    "initialize",
+    "steps"
+  ]);
+  assert.equal(schema.properties.authoring.properties.imports.maxItems, 4);
+  assert.equal(schema.properties.authoring.properties.steps.maxItems, 20);
   const sizes = [];
   for (const fixture of fixtures.cases) {
     const packet = searchGgaction(fixture.query);
@@ -284,13 +361,20 @@ test("design fixtures prove bounded one-call task closure without silent partial
   assert.equal(sizes[Math.floor(sizes.length / 2)] <= 4096, true);
 });
 
-test("every supported semantic constraint resolves and every produced call type-checks", async () => {
-  const [taxonomy, cards, fixtures] = await Promise.all([
+test("every supported constraint and fresh-corpus authoring step type-checks", async () => {
+  const [taxonomy, cards, fixtures, ...freshSplits] = await Promise.all([
     json("intent-taxonomy.json"),
     json("action-cards.json"),
-    json("task-closure-cases.json")
+    json("task-closure-cases.json"),
+    ...["development", "validation", "held-out"].map(split =>
+      readFile(path.join(root, "evaluation", "compact-authoring", `${split}.json`), "utf8")
+        .then(JSON.parse)
+    )
   ]);
   const calls = new Set(cards.cards.map(card => searchGgaction(card.name).exactCalls[0]));
+  const authoringSteps = new Set(cards.cards.flatMap(card =>
+    searchGgaction(card.name).authoring.steps
+  ));
   for (const constraint of taxonomy.constraints.filter(entry => entry.unresolved === undefined)) {
     const packet = searchGgaction(constraint.phrases[0]);
     assert.equal(packet.matchedConstraints.includes(constraint.id), true, constraint.id);
@@ -298,10 +382,28 @@ test("every supported semantic constraint resolves and every produced call type-
     assert.equal(covered.includes(constraint.id), true, constraint.id);
     assert.equal(packet.unresolved.some(entry => entry.constraint === constraint.id), false, constraint.id);
     for (const call of packet.exactCalls) calls.add(call);
+    for (const step of packet.authoring.steps) authoringSteps.add(step);
   }
   for (const fixture of fixtures.cases) {
-    for (const call of searchGgaction(fixture.query).exactCalls) calls.add(call);
+    const packet = searchGgaction(fixture.query);
+    for (const call of packet.exactCalls) calls.add(call);
+    for (const step of packet.authoring.steps) authoringSteps.add(step);
   }
+  const freshPacketSizes = [];
+  const freshTasks = freshSplits.flatMap(split => split.tasks);
+  assert.equal(freshTasks.length, 48);
+  for (const task of freshTasks) {
+    const packet = searchGgaction(task.query);
+    assert.equal(packet.schemaVersion, 2, task.id);
+    assert.equal(packet.authoring.initialize, "let program = chart()", task.id);
+    assert.equal(packet.authoring.steps.length, packet.actionPlan.length, task.id);
+    assert.equal(packet.authoring.imports[0].includes("chart"), true, task.id);
+    freshPacketSizes.push(taskPacketBytes(packet));
+    for (const step of packet.authoring.steps) authoringSteps.add(step);
+  }
+  freshPacketSizes.sort((left, right) => left - right);
+  assert.equal(Math.max(...freshPacketSizes) <= 6144, true);
+  assert.equal(freshPacketSizes[Math.floor(freshPacketSizes.length / 2)] <= 4096, true);
 
   const temporary = await mkdtemp(path.join(os.tmpdir(), "ggaction-task-resolver-"));
   try {
@@ -310,15 +412,20 @@ test("every supported semantic constraint resolves and every produced call type-
     }
     const source = [
       'import type { ChartProgram } from "./program.js";',
-      'import { hconcat, render, vconcat } from "./index.js";',
+      'import { chart, hconcat, render, vconcat } from "./index.js";',
       'import { renderToSVG } from "./svg.js";',
       'import { renderToPNG } from "./png.js";',
       'import { renderToPDF } from "./pdf.js";',
       "declare let program: ChartProgram;",
-      "declare const chart: () => ChartProgram;",
       "declare const context: CanvasRenderingContext2D;",
       "async function verifyCompactCalls() {",
       ...[...calls].map(call => `  ${call};`),
+      ...[...authoringSteps].flatMap(step => [
+        "  {",
+        "    let program = chart();",
+        `    ${step};`,
+        "  }"
+      ]),
       "}",
       "void verifyCompactCalls;",
       ""
