@@ -6,6 +6,7 @@ import test from "node:test";
 import {
   assertFrozenManifest,
   evaluationRoot,
+  repairEvaluationRoot,
   sha256,
   validateCorpusSource
 } from "../../scripts/compact-evaluation.js";
@@ -99,4 +100,36 @@ test("freezes the repair evaluation before changing the candidate", async () => 
   );
   assert.equal(manifest.summary.constraints, 79);
   assert.equal(manifest.summary.priorCorpusQueryOverlap, 0);
+});
+
+test("records the repair candidate without rewriting its held-out failure", async () => {
+  const [candidateBytes, developmentBytes, validationBytes, heldOutBytes] = await Promise.all([
+    readFile(path.join(repairEvaluationRoot, "CANDIDATE.json")),
+    readFile(path.join(repairEvaluationRoot, "results", "development.json")),
+    readFile(path.join(repairEvaluationRoot, "results", "validation.json")),
+    readFile(path.join(repairEvaluationRoot, "results", "held-out.json"))
+  ]);
+  const candidate = JSON.parse(candidateBytes);
+  const development = JSON.parse(developmentBytes);
+  const validation = JSON.parse(validationBytes);
+  const heldOut = JSON.parse(heldOutBytes);
+
+  assert.equal(candidate.candidateCommit, "cf43c1f1b3c05bbdbc1711b880a0bd256af81358");
+  assert.equal(candidate.frozenManifestSha256, development.frozenManifestSha256);
+  assert.equal(candidate.developmentResultSha256, sha256(developmentBytes));
+  assert.equal(development.passed, true);
+  assert.equal(validation.passed, true);
+  assert.equal(validation.exactPlanTasks, 15);
+  assert.equal(heldOut.candidateCommit, candidate.candidateCommit);
+  assert.equal(heldOut.passed, false);
+  assert.equal(heldOut.exactConstraintTasks, 15);
+  assert.equal(heldOut.exactPlanTasks, 15);
+  assert.equal(heldOut.exactUnresolvedTasks, 14);
+  assert.equal(heldOut.exactFallbackTasks, 14);
+  assert.equal(heldOut.silentPartialCount, 0);
+  assert.equal(heldOut.typescriptErrorCount, 0);
+  assert.deepEqual(heldOut.failures, [
+    "repair-hold-3d-jpeg: unresolved mismatch [\"unsupported.3d\",\"unsupported.jpg\",\"renderer.format\"]",
+    "repair-hold-3d-jpeg: fallback mismatch [\"ggaction://docs/unsupported-capabilities\",\"ggaction://docs/choose-renderer\"]"
+  ]);
 });

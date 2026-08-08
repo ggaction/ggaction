@@ -35,11 +35,11 @@ SHA-256으로 먼저 동결하여 correction 뒤의 일반화를 검증한다.
 - [x] Development-only request-order correction 구현
 - [x] Known failure와 cumulative resolver contracts 통과
 - [x] Development 1 / 1 strict pass 기록
-- [ ] Candidate 2 commit과 exact result hashes lock
-- [ ] Fresh validation 15개 one-pass 실행
-- [ ] Validation 통과 시 fresh held-out 15개 one-pass 실행
-- [ ] Full tests, package, installed MCP와 browser budgets 실행
-- [ ] 모든 unpaid gate 통과 시에만 exact paid-smoke proposal 작성
+- [x] Candidate 2 commit과 exact result hashes lock — `cf43c1f1b3c05bbdbc1711b880a0bd256af81358`
+- [x] Fresh validation 15개 one-pass 실행 — 15 / 15 strict pass
+- [x] Validation 통과 시 fresh held-out 15개 one-pass 실행 — 14 / 15 unresolved/fallback exact, strict failure
+- [ ] Full tests, package, installed MCP와 browser budgets 실행 — 2,081 tests/package pass; failed Gate에서 installed/browser 승격 중단
+- [ ] 모든 unpaid gate 통과 시에만 exact paid-smoke proposal 작성 — held-out failure로 제안하지 않음
 - [ ] R54-P4-A replacement Gate review checkpoint commit/push
 - [ ] User approval
 

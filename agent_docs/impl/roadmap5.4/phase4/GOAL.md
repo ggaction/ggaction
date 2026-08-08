@@ -41,3 +41,5 @@ Canonical review record는 [`GATE_A.md`](./GATE_A.md)가 소유한다. 승인 �
 2026-08-08 사용자가 failed Gate의 원인을 development evidence로 편입하고 새 validation/held-out identity로 다시
 검증하는 시도를 승인했다. 기존 corpus, candidate와 result는 수정하지 않는다. 새 시도의 사전 계획과 진행 기록은
 [`ATTEMPT2.md`](./ATTEMPT2.md)가 소유한다.
+
+Repair attempt의 one-pass result와 정책 결정은 [`GATE_B.md`](./GATE_B.md)가 소유한다.
