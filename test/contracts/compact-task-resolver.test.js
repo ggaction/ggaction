@@ -6,6 +6,9 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { createCanvas } from "@napi-rs/canvas";
+
+import { chart, render } from "../../src/index.js";
 import {
   searchGgaction,
   taskPacketBytes,
@@ -125,15 +128,65 @@ test("prefers the complete reference-line phrase without hiding separate marks",
   );
 });
 
-test("orders a fitted line before a separately requested uncertainty ribbon", () => {
+test("uses the regression owner for its fitted line and uncertainty ribbon", () => {
   const packet = searchGgaction(
     "Create a scatter plot with a fitted line and an uncertainty ribbon."
   );
   assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
     "action.createScatterPlot",
-    "action.createRegression",
-    "action.createErrorBand"
+    "action.createRegression"
   ]);
+  assert.deepEqual(packet.actionPlan[1].constraints, [
+    "statistics.regression",
+    "statistics.errorBand"
+  ]);
+});
+
+test("injects an executable point source for an explicit regression-layer request", () => {
+  const packet = searchGgaction(
+    "Derive regression data, add a path mark with map to x and map to y, " +
+    "create a trend line, add an uncertainty ribbon, and axis guides."
+  );
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createPointMark",
+    "action.encodeX",
+    "action.encodeY",
+    "action.createRegression",
+    "action.createAxes"
+  ]);
+  assert.deepEqual(packet.actionPlan[3].constraints, [
+    "mark.line",
+    "transform.regression",
+    "statistics.regression",
+    "statistics.errorBand"
+  ]);
+  assert.deepEqual(packet.exactCalls, [
+    "program.createPointMark({})",
+    "program.encodeX({ field: \"x\" })",
+    "program.encodeY({ field: \"y\" })",
+    "program.createRegression({})",
+    "program.createAxes({})"
+  ]);
+
+  const rows = [
+    { x: 1, y: 4 },
+    { x: 2, y: 7 },
+    { x: 3, y: 6 },
+    { x: 4, y: 10 }
+  ];
+  const program = chart()
+    .createCanvas({ width: 320, height: 220, margin: 40 })
+    .createData({ values: rows })
+    .createPointMark({})
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .createRegression({})
+    .createAxes({});
+  const canvas = createCanvas(320, 220);
+  render(program, canvas.getContext("2d"));
+  assert.ok(program.graphicSpec.objects.point.items.length > 0);
+  assert.ok(program.graphicSpec.objects.pointRegressionLines.items.length > 0);
+  assert.ok(program.graphicSpec.objects.pointRegressionBands.items.length > 0);
 });
 
 test("preserves request order only within one lifecycle priority", () => {

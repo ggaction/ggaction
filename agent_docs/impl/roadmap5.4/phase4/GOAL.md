@@ -47,6 +47,10 @@ Repair attempt의 one-pass result와 정책 결정은 [`GATE_B.md`](./GATE_B.md)
 
 승인된 dual-signal policy의 작은 fresh acceptance는 [`ATTEMPT3.md`](./ATTEMPT3.md)가 소유한다.
 
+Paid-smoke runner preflight에서 발견한 regression packet runtime closure repair는
+[`ATTEMPT4.md`](./ATTEMPT4.md)가 소유한다. R54-P4-C의 비용 범위는 유지하지만 candidate hash가 바뀌므로 replacement
+Gate R54-P4-D 전까지 외부 호출을 시작하지 않는다.
+
 ## Replacement acceptance
 
 Candidate 2의 request-order repair는 validation과 held-out의 exact action plan을 모두 통과했다. Held-out strict failure로

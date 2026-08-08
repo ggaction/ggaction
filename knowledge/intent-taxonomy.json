@@ -127,7 +127,7 @@
     { "id": "action.createBin2DData", "kind": "action", "name": "createBin2DData", "order": 30, "anchors": ["transform.bin2d"], "covers": ["transform.bin2d"], "baseOptions": { "id": "\"bins\"", "x": "\"x\"", "y": "\"y\"" } },
     { "id": "action.createIntervalData", "kind": "action", "name": "createIntervalData", "order": 30, "anchors": ["transform.interval"], "covers": ["transform.interval"], "baseOptions": { "id": "\"interval\"", "field": "\"value\"" } },
 
-    { "id": "action.createRegression", "kind": "action", "name": "createRegression", "order": 60, "anchors": ["statistics.regression"], "covers": ["statistics.regression"], "baseOptions": {} },
+    { "id": "action.createRegression", "kind": "action", "name": "createRegression", "order": 60, "anchors": ["statistics.regression"], "covers": ["mark.line", "transform.regression", "statistics.regression", "statistics.errorBand"], "baseOptions": {} },
     { "id": "action.createErrorBar", "kind": "action", "name": "createErrorBar", "order": 60, "anchors": ["statistics.errorBar"], "covers": ["statistics.errorBar"], "baseOptions": {} },
     { "id": "action.createErrorBand", "kind": "action", "name": "createErrorBand", "order": 61, "anchors": ["statistics.errorBand"], "covers": ["statistics.errorBand"], "baseOptions": {} },
 

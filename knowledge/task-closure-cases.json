@@ -78,11 +78,11 @@
     },
     {
       "id": "regression-data-line-svg",
-      "query": "create regression data and a line chart as svg",
-      "constraints": ["chart.line", "transform.regression", "renderer.svg"],
+      "query": "create a scatter plot with a line mark, regression data, a fitted line, an uncertainty ribbon, encode x, encode y, axes, and svg output",
+      "constraints": ["chart.scatter", "mark.line", "transform.regression", "statistics.regression", "statistics.errorBand", "encoding.x", "encoding.y", "guide.axes", "renderer.svg"],
       "plan": [
-        { "id": "action.createRegressionData", "options": ["id", "x", "y"] },
-        { "id": "action.createLinePlot", "options": ["x", "y"] },
+        { "id": "action.createScatterPlot", "options": ["x", "y", "guides"] },
+        { "id": "action.createRegression", "options": [] },
         { "id": "runtime.renderToSVG", "options": [] }
       ],
       "unresolved": []

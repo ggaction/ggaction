@@ -198,21 +198,36 @@ function selectProviders(supportedIds, providers) {
 }
 
 function adaptProviderDependencies(selected) {
+  let adapted = selected;
   const hasStoredSelection = selected.some(entry => entry.provider.name === "selectMarks");
-  if (!hasStoredSelection) return selected;
-  return selected.map(entry => {
-    if (entry.provider.name !== "highlightMarks") return entry;
-    return {
-      ...entry,
-      provider: {
-        ...entry.provider,
-        baseOptions: {
-          selection: "\"selection-1\"",
-          color: "\"#f28e2b\""
+  if (hasStoredSelection) {
+    adapted = adapted.map(entry => {
+      if (entry.provider.name !== "highlightMarks") return entry;
+      return {
+        ...entry,
+        provider: {
+          ...entry.provider,
+          baseOptions: {
+            selection: "\"selection-1\"",
+            color: "\"#f28e2b\""
+          }
         }
-      }
-    };
-  });
+      };
+    });
+  }
+
+  const hasRegression = adapted.some(entry =>
+    entry.provider.name === "createRegression" && !entry.provider.id.startsWith("exact.")
+  );
+  const hasPointSource = adapted.some(entry =>
+    ["createPointMark", "createScatterPlot"].includes(entry.provider.name)
+  );
+  if (hasRegression && !hasPointSource) {
+    const point = taxonomy.providers.find(provider => provider.name === "createPointMark");
+    if (!point) throw new Error("createRegression requires the createPointMark provider.");
+    adapted = [{ provider: point, coverage: [] }, ...adapted];
+  }
+  return adapted;
 }
 
 function providerRequestPosition(entry, positions) {
