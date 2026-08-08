@@ -13,7 +13,8 @@
 - [x] Failure classification and root-cause analysis
 - [x] Independent runner repair — `935611a9`, provider preflight와 bounded feedback
 - [x] Public task-packet decision Gate prepared
-- [ ] R54-P5-A user decision
+- [x] R54-P5-A Option A user approval — 2026-08-09
+- [ ] Task packet schema v2 implementation and unpaid validation
 - [ ] Replacement paid execution Gate
 
 ## Execution discipline

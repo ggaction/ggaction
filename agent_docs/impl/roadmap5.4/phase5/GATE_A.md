@@ -2,9 +2,10 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Verified diagnosis and runner-repair checkpoint: `935611a9bf4dcaf57126febad7cf849a020012f7`.
+Reviewed Gate checkpoint: `1a0762104aa271f022a807557263692e86a7e647`.
 
 ## 결정이 필요한 이유
 
@@ -118,4 +119,7 @@ publish/deploy/release를 열지 않는다.
 
 ## Approval record
 
-- Pending user decision among A, B, and C.
+- 사용자가 2026-08-09에 Option A를 명시적으로 승인했다.
+- 이 승인은 task packet schema v2 구현과 무비용 검증만 연다.
+- Credential read, external model call, additional spend, replacement paid smoke, PR, merge, publish,
+  deploy와 release는 계속 차단한다.
