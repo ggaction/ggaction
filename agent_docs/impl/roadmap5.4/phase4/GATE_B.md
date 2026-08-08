@@ -83,3 +83,9 @@ implementation과 fresh evaluation이 필요하다.
 이 failed Gate는 paid smoke, credential read, external model call, spend,
 PR/merge/publish/deploy/release를 열지 않는다. 사용자가 정책 A 또는 B를 결정한 뒤에만 다음 fresh acceptance plan을
 작성한다.
+
+## Evidence identity
+
+- Failed Gate review target: `d215c2b63283a22bcb80a153a6b8c0f85b57ecd2`
+- Candidate 2: `cf43c1f1b3c05bbdbc1711b880a0bd256af81358`
+- Remote branch: `codex/roadmap5-4-compact-knowledge`

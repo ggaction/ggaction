@@ -40,7 +40,7 @@ SHA-256으로 먼저 동결하여 correction 뒤의 일반화를 검증한다.
 - [x] Validation 통과 시 fresh held-out 15개 one-pass 실행 — 14 / 15 unresolved/fallback exact, strict failure
 - [ ] Full tests, package, installed MCP와 browser budgets 실행 — 2,081 tests/package pass; failed Gate에서 installed/browser 승격 중단
 - [ ] 모든 unpaid gate 통과 시에만 exact paid-smoke proposal 작성 — held-out failure로 제안하지 않음
-- [ ] R54-P4-A replacement Gate review checkpoint commit/push
+- [x] R54-P4-B replacement Gate review checkpoint commit/push — `d215c2b63283a22bcb80a153a6b8c0f85b57ecd2`
 - [ ] User approval
 
 ## Strict acceptance
