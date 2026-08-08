@@ -135,6 +135,33 @@ test("orders a fitted line before a separately requested uncertainty ribbon", ()
   ]);
 });
 
+test("preserves request order only within one lifecycle priority", () => {
+  const packet = searchGgaction(
+    "Point mark with encode x, encode y, size encoding, shape encoding, opacity encoding, and axis guides."
+  );
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createPointMark",
+    "action.encodeX",
+    "action.encodeY",
+    "action.encodeSize",
+    "action.encodeShape",
+    "action.encodeOpacity",
+    "action.createAxes"
+  ]);
+
+  const reversed = searchGgaction(
+    "Use circle marks, map to y, map to x, encode opacity, encode size, then encode shape."
+  );
+  assert.deepEqual(reversed.actionPlan.map(entry => entry.id), [
+    "action.createPointMark",
+    "action.encodeY",
+    "action.encodeX",
+    "action.encodeOpacity",
+    "action.encodeSize",
+    "action.encodeShape"
+  ]);
+});
+
 test("design fixtures prove bounded one-call task closure without silent partials", async () => {
   const [fixtures, schema] = await Promise.all([
     json("task-closure-cases.json"),

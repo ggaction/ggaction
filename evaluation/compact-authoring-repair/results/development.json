@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "compact-authoring-repair-v1",
+  "frozenManifestSha256": "506548b7a4e3b1cc214910d9fd18c5ffdf7d1cd0785a904dcbcfc62c2dafdda0",
+  "split": "development",
+  "candidateCommit": null,
+  "taskCount": 1,
+  "simpleTasks": 0,
+  "complexTasks": 1,
+  "exactConstraintTasks": 1,
+  "exactPlanTasks": 1,
+  "exactUnresolvedTasks": 1,
+  "exactFallbackTasks": 1,
+  "silentPartialCount": 0,
+  "resolvedFallbackCount": 0,
+  "uniqueTypedCalls": 7,
+  "typescriptErrorCount": 0,
+  "maximumPacketBytes": 3021,
+  "medianPacketBytes": 3021,
+  "passed": true,
+  "failures": []
+}

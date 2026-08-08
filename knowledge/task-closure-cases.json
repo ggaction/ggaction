@@ -219,8 +219,8 @@
       "constraints": ["mark.arc", "encoding.theta", "encoding.radius", "guide.all"],
       "plan": [
         { "id": "action.createArcMark", "options": [] },
-        { "id": "action.encodeR", "options": ["field"] },
         { "id": "action.encodeTheta", "options": ["field"] },
+        { "id": "action.encodeR", "options": ["field"] },
         { "id": "action.createGuides", "options": [] }
       ],
       "unresolved": []

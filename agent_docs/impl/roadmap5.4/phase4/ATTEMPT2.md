@@ -31,10 +31,10 @@ SHA-256으로 먼저 동결하여 correction 뒤의 일반화를 검증한다.
 - [x] Generic multi-corpus freeze/evaluator support 구현
 - [x] Repair dataset/task/oracle source 작성
 - [x] Structural count, coverage와 overlap 검사 — 31 tasks / 79 constraints / overlap 0
-- [ ] Repair corpus SHA-256 freeze checkpoint commit/push
-- [ ] Development-only request-order correction 구현
-- [ ] Known failure와 cumulative resolver contracts 통과
-- [ ] Development 1 / 1 strict pass 기록
+- [x] Repair corpus SHA-256 freeze checkpoint commit/push — `c0effcbe`
+- [x] Development-only request-order correction 구현
+- [x] Known failure와 cumulative resolver contracts 통과
+- [x] Development 1 / 1 strict pass 기록
 - [ ] Candidate 2 commit과 exact result hashes lock
 - [ ] Fresh validation 15개 one-pass 실행
 - [ ] Validation 통과 시 fresh held-out 15개 one-pass 실행

@@ -60,22 +60,29 @@ function exactActionNames(query) {
     .map(card => card.name);
 }
 
-function semanticMatches(normalizedQuery) {
+function semanticMatchResult(normalizedQuery) {
   const occurrences = taxonomy.constraints.flatMap(constraint =>
     constraint.phrases.flatMap(phrase =>
       phraseOccurrences(normalizedQuery, phrase).map(span => ({ constraint, ...span }))
     )
   );
-  return taxonomy.constraints.filter(constraint =>
-    occurrences.some(occurrence =>
-      occurrence.constraint.id === constraint.id &&
-      !occurrences.some(candidate =>
-        candidate.constraint.shadows?.includes(constraint.id) &&
-        candidate.start <= occurrence.start &&
-        candidate.end >= occurrence.end
-      )
+  const visible = occurrences.filter(occurrence =>
+    !occurrences.some(candidate =>
+      candidate.constraint.shadows?.includes(occurrence.constraint.id) &&
+      candidate.start <= occurrence.start &&
+      candidate.end >= occurrence.end
     )
   );
+  const matched = taxonomy.constraints.filter(constraint =>
+    visible.some(occurrence => occurrence.constraint.id === constraint.id)
+  );
+  const positions = new Map(matched.map(constraint => [
+    constraint.id,
+    Math.min(...visible
+      .filter(occurrence => occurrence.constraint.id === constraint.id)
+      .map(occurrence => occurrence.start))
+  ]));
+  return { matched, positions };
 }
 
 function orderForCard(card) {
@@ -206,6 +213,13 @@ function adaptProviderDependencies(selected) {
       }
     };
   });
+}
+
+function providerRequestPosition(entry, positions) {
+  const matchedPositions = entry.coverage
+    .map(constraint => positions.get(constraint))
+    .filter(position => position !== undefined);
+  return matchedPositions.length === 0 ? Number.POSITIVE_INFINITY : Math.min(...matchedPositions);
 }
 
 function mergeOptionValues(provider, covered) {
@@ -377,7 +391,11 @@ export function searchGgaction(query) {
   validateResolverKnowledge();
   const normalizedQuery = normalize(query);
   const exactNames = exactActionNames(query);
-  const matched = semanticMatches(normalizedQuery);
+  const { matched, positions } = semanticMatchResult(normalizedQuery);
+  for (const name of exactNames) {
+    const [occurrence] = phraseOccurrences(normalizedQuery, normalize(name));
+    if (occurrence) positions.set(`action.${name}`, occurrence.start);
+  }
   const matchedIds = new Set([
     ...matched.map(constraint => constraint.id),
     ...exactNames.map(name => `action.${name}`)
@@ -410,6 +428,7 @@ export function searchGgaction(query) {
 
   const ordered = adaptProviderDependencies(selected).sort((left, right) =>
     left.provider.order - right.provider.order ||
+    providerRequestPosition(left, positions) - providerRequestPosition(right, positions) ||
     left.provider.id.localeCompare(right.provider.id)
   );
   const entries = ordered.map((entry, index) => planEntry(entry, index + 1));
