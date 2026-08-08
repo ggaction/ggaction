@@ -158,7 +158,7 @@ test("freezes the exact v4 paid-smoke candidate, plan, source trees, and cost en
   });
 });
 
-test("preserves all three historical paid attempts byte-for-byte", async () => {
+test("preserves all four paid attempts byte-for-byte", async () => {
   const files = [
     [
       "evaluation/compact-authoring-paid-smoke/PLAN.json",
@@ -183,6 +183,14 @@ test("preserves all three historical paid attempts byte-for-byte", async () => {
     [
       "evaluation/compact-authoring-paid-smoke-v3/results/RESULT.json",
       "197a1c567aa34d5b054928586a58bd621eb2f369317f3ad1051f7801a667a15c"
+    ],
+    [
+      "evaluation/compact-authoring-paid-smoke-v4/results/IN_PROGRESS.json",
+      "6fb42eff29df87989402aec67f54d90ef1c008201577d1255d44700e2a7bdc80"
+    ],
+    [
+      "evaluation/compact-authoring-paid-smoke-v4/results/RESULT.json",
+      "09bf0e82c3dcffce68dca839f9565eb65549249c9eb9ef39ecd323e494159cf7"
     ]
   ];
   for (const [relative, expected] of files) {

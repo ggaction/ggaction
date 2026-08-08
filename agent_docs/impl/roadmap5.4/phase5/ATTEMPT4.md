@@ -1,4 +1,4 @@
-# Paid Smoke Attempt 4 — v4 무비용 준비 결과
+# Paid Smoke Attempt 4 — Valid v4 Result
 
 ## Immutable identity
 
@@ -10,9 +10,12 @@
 | Plan SHA-256 | `68006c3b61751108eb91a75a4a8eb5f4a93862a00762efa95d22340673bf7228` |
 | Route oracle | `evaluation/compact-authoring-paid-smoke-v4/ROUTE_ORACLE.json` |
 | Route oracle SHA-256 | `1b9e7adeb8f29d3f1f43818082ac74beff76c44c533c0d7076b70f3265ce48e8` |
-| Credential reads | 0 |
-| External model calls | 0 |
-| Additional spend | `$0` |
+| Final result | `evaluation/compact-authoring-paid-smoke-v4/results/RESULT.json` |
+| Final result SHA-256 | `09bf0e82c3dcffce68dca839f9565eb65549249c9eb9ef39ecd323e494159cf7` |
+| Final progress | `evaluation/compact-authoring-paid-smoke-v4/results/IN_PROGRESS.json` |
+| Final progress SHA-256 | `6fb42eff29df87989402aec67f54d90ef1c008201577d1255d44700e2a7bdc80` |
+| Credential reads | 1 |
+| Automatic retries | 0 |
 
 ## 원인별 수정
 
@@ -61,9 +64,53 @@ Evaluation prompt는 function name과 caller data variable 같은 실행 context
 | Full repository suite | 2,100 / 2,100 pass |
 | Historical Attempt 1/2/3 hash contracts | pass |
 
-Gate package가 추가한 exact-plan hash contract와 최종 누적 수치는 [`GATE_F.md`](./GATE_F.md)가 소유한다.
+Gate package가 추가한 exact-plan hash contract와 누적 수치는 [`GATE_F.md`](./GATE_F.md)가 소유한다.
+
+## Exact paid outcome
+
+Runner/provider error, budget stop 또는 retry 없이 fixed 16 task-runs를 모두 완료했다. Strict pass는 13 / 16이며 실패 3건을
+성공으로 재분류하지 않는다.
+
+| Metric | Result |
+| --- | ---: |
+| Completed task-runs | 16 / 16 |
+| Strict pass | 13 / 16 |
+| Billed model calls | 37 / 48 maximum |
+| Input tokens | 41,928 |
+| Cached input tokens | 5,734 |
+| Cache-write tokens | 19,757 |
+| Output tokens | 5,258 |
+| Reasoning tokens | 2,841 |
+| Total tokens | 47,186 |
+| Spend | `$0.1465093` |
+
+| Condition | Pass | Calls | Input | Output | Cost |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| A — public docs | 1 / 4 | 12 | 15,431 | 2,222 | `$0.0548708` |
+| B — compact direct | 4 / 4 | 8 | 8,173 | 1,013 | `$0.0300855` |
+| C — compact MCP | 4 / 4 | 8 | 8,221 | 1,007 | `$0.0301220` |
+| D — MCP-first/docs fallback | 4 / 4 | 9 | 10,103 | 1,016 | `$0.0314310` |
+
+## 실패 3건의 분류
+
+실패는 모두 A public-docs condition에만 있다. B/C/D compact routes는 12 / 12를 통과했다.
+
+1. **Regression program:** 모델은 `/recipes/regression-scatterplot/`을 읽고도
+   `createData({ rows })`를 제출했다. 읽은 문서 예시는 정확히 `createData({ values: cars })`이므로 current docs의 signature
+   부재가 아니라 한 번의 model application failure다.
+2. **PDF + JPG:** 모델은 `/llm-authoring/#complete-program-bootstrap`을 읽었지만 canonical `unsupported.jpg` 대신 `JPG`를
+   제출했다. 같은 페이지에 canonical ID가 있으나 읽은 fragment가 bootstrap으로 제한되어 identity section을 직접 읽지는
+   않았다. 이는 broad public-doc search/read의 bounded-route weakness다.
+3. **3D + JPEG:** 모델은 `/llm-authoring/`을 읽고 `unsupported.3d`와 `unsupported.jpg`는 정확히 제출했지만 open
+   `renderer.format`을 누락했다. 이는 prose에서 terminal limitation과 open decision을 함께 적용하는 데 실패한 docs-route
+   application error다.
+
+이 분류 뒤 public docs, search rank, task, oracle, evaluator 또는 threshold를 수정하지 않는다. 세 실패는 A baseline의 exact
+결과로 남기며 추가 호출로 재시도하지 않는다.
 
 ## 결론
 
-Candidate는 product, delivery와 unpaid evaluation closure를 통과했다. 아직 실제 모델 correctness 결과는 없으므로 integration,
-complete paid evaluation 또는 PR 대상으로 승격하지 않는다. Exact v4 1회 실행 여부는 R54-P5-F에서 별도로 결정한다.
+v4는 valid complete smoke다. Compact direct/local-MCP/MCP-first가 모두 4 / 4이고 direct/MCP usage도 근접해 candidate knowledge와
+transport가 실제 호출에서 닫혔다는 positive signal을 제공한다. A의 1 / 4와 candidate routes의 12 / 12 차이는 full evaluation
+범위를 별도 R54-P5-G에서 제안할 근거는 되지만, 한 repetition으로 efficiency 우위나 statistical superiority를 주장하지 않는다.
+Complete paid evaluation, integration과 PR은 아직 승인되지 않았다.

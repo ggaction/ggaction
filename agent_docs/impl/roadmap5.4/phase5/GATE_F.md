@@ -90,3 +90,12 @@ paid evaluation, PR, merge, publish, deploy와 release는 열지 않는다. Vali
 - 이 승인은 previously identified single credential file의 1회 read와 v4 paid smoke 단일 실행만 연다.
 - Retry, 새 plan, complete paid evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.
 - 승인 기록 시점의 credential reads / external calls / additional spend는 0 / 0 / `$0`다.
+
+## Execution result
+
+승인된 v4 smoke는 runner/provider error나 budget stop 없이 16 / 16 task-runs를 완료했고 13 / 16이 strict pass였다.
+37 model calls, 41,928 input tokens, 5,258 output tokens와 `$0.1465093`를 사용했다. Automatic retry는 없었다.
+
+Public docs A는 1 / 4, compact direct B와 local MCP C, MCP-first D는 각각 4 / 4를 통과했다. Exact immutable evidence와 실패
+분류는 [`ATTEMPT4.md`](./ATTEMPT4.md)가 소유한다. 이 결과는 complete paid evaluation, PR 또는 integration을 자동 승인하지
+않으며 다음 범위와 비용은 R54-P5-G에서 별도로 결정한다.
