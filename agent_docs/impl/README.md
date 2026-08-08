@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 Roadmap 5.4 Phase 3다.** Local stdio MCP, conditional same-package budget,
-  read-only boundary와 unresolved-only docs fallback을 구현한다. 실행 순서는
+- **현재 활성 Roadmap은 Roadmap 5.4 Phase 4다.** Fresh corpus identity를 고정하고 strict oracle, unpaid validation과
+  exact paid-smoke proposal을 준비한다. 실행 순서는
   [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 

@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.4 Phase 3다.** Compact task packet과 resolver 승인을 바탕으로 local stdio MCP,
-installed package budget, read-only boundary와 unresolved-only docs fallback을 구현한다. 실행 순서는
+**현재 활성 Roadmap은 Roadmap 5.4 Phase 4다.** Fresh development/validation/held-out corpus를 분리하고 strict oracle과
+unpaid validation을 통과한 뒤 exact paid-smoke proposal만 작성한다. 실행 순서는
 [`impl/roadmap5.4/ROADMAP.md`](impl/roadmap5.4/ROADMAP.md)가 소유한다. Active pointer와 마지막 완료 owner의
 machine-readable source는 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 

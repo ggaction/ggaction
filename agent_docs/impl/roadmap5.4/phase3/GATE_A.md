@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 이 Gate는 installed local stdio MCP, byte-equal direct adapter, conditional same-package budget, read-only resource boundary와
 unresolved-only docs fallback을 승인받는다. 승인 전에는 Phase 4 evaluation corpus를 만들지 않는다.
@@ -108,3 +108,9 @@ browser-safe measurements passed with zero such modules.
 
 - Implementation review target: `bde05166e16fe08fca6fa3109d9761215ad44f92`
 - Remote branch: `codex/roadmap5-4-compact-knowledge`
+
+## Approval record
+
+- 2026-08-08: 사용자가 R54-P3-A를 명시적으로 승인했다.
+- 이 승인은 Phase 4 fresh corpus와 unpaid validation만 연다. Credential read, external model call과 비용 지출은 계속
+  차단한다.
