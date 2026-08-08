@@ -21,6 +21,7 @@ Phase 5의 작은 paid smoke 범위와 최대 비용을 제안한다.
 - [x] Exact paid-smoke proposal and hard cost cap — policy replacement acceptance 통과 뒤 R54-P4-C에 고정
 - [x] R54-P4-A와 R54-P4-B failure record 보존
 - [x] R54-P4-C explicit approval — 2026-08-08
+- [ ] R54-P4-D runtime-closure replacement approval — ready for review
 
 ## Predeclared unpaid acceptance
 
@@ -49,7 +50,8 @@ Repair attempt의 one-pass result와 정책 결정은 [`GATE_B.md`](./GATE_B.md)
 
 Paid-smoke runner preflight에서 발견한 regression packet runtime closure repair는
 [`ATTEMPT4.md`](./ATTEMPT4.md)가 소유한다. R54-P4-C의 비용 범위는 유지하지만 candidate hash가 바뀌므로 replacement
-Gate R54-P4-D 전까지 외부 호출을 시작하지 않는다.
+Gate R54-P4-D 전까지 외부 호출을 시작하지 않는다. Frozen candidate, runner, plan hash와 새 approval effect는
+[`GATE_D.md`](./GATE_D.md)가 소유한다.
 
 ## Replacement acceptance
 

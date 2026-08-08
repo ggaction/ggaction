@@ -84,10 +84,17 @@ commit/push한 뒤에만 승인을 요청한다.
 | R54-P2-A | 2 | Constraint decomposition, task packet과 one-call closure evidence | MCP implementation |
 | R54-P3-A | 3 | Installed MCP, conditional package budget, docs fallback와 browser isolation | Fresh evaluation corpus |
 | R54-P4-A | 4 | New corpus split, strict oracle, unpaid result와 exact paid-smoke proposal | External model call |
+| R54-P4-B | 4 | Failed repair result와 unsupported-output policy decision | Policy acceptance와 external model call |
+| R54-P4-C | 4 | Fresh policy acceptance와 exact paid-smoke scope/cost | Paid-smoke runner와 external model call |
+| R54-P4-D | 4 | Regression runtime closure, frozen runner/candidate/plan과 교체 승인 | Credential read와 paid smoke |
 | R54-P5-A | 5 | Small representative paid smoke, model/settings와 spend ceiling | Paid smoke |
 | R54-P5-B | 5 | Smoke result와 complete paid evaluation scope/cost | Full external evaluation |
 | R54-P5-C | 5 | Full result, predeclared acceptance와 integration candidate | PR preparation |
 | R54-Exit | 5 | Passed merged-main evidence 또는 failed non-integration closeout | 완료 선언 |
+
+R54-P4-C와 그 runtime-closure replacement인 R54-P4-D가 originally planned R54-P5-A의 paid-smoke authorization을
+Phase 4의 exact corpus/cost review와 함께 수행한다. R54-P4-D가 승인되고 smoke가 끝나면 다음 미승인 범위는 R54-P5-B의
+complete paid evaluation proposal이다.
 
 ## Phase 0 — Baseline and contract
 
