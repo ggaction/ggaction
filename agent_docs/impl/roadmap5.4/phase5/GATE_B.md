@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Product candidate: `6ed5af76c80e56c5a3cde833c5a702de183e4d7a`.
 
@@ -119,4 +119,7 @@ publish, deploy와 release는 열지 않는다.
 
 ## Approval record
 
-- Pending explicit user approval.
+- 사용자가 2026-08-09에 exact product candidate, plan SHA-256, 16 task-runs, 최대 48 model calls,
+  calculated maximum `$2.496`와 hard global stop `< $3` 범위를 명시적으로 승인했다.
+- 이 승인은 previously identified single credential file의 1회 read와 replacement paid smoke 실행만 연다.
+- Automatic retry, complete evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.

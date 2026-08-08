@@ -16,7 +16,8 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Provider-compatible runner repair와 unpaid validation — `935611a9`, focused 8 / 8, contracts 199 / 199
 - [x] Authoring bootstrap contract decision — R54-P5-A Option A approved
 - [x] Task packet schema v2 implementation and unpaid validation — product candidate `6ed5af76`
-- [ ] Replacement paid-smoke scope/cost approval — R54-P5-B ready for review
+- [x] Replacement paid-smoke scope/cost approval — R54-P5-B approved
+- [ ] Replacement paid-smoke execution and immutable result
 - [ ] Valid small paid smoke
 - [ ] Complete evaluation proposal or non-integration closeout
 

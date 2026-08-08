@@ -17,8 +17,8 @@
 - [x] Task packet schema v2 implementation and unpaid validation — `6ed5af76`
 - [x] Immutable Attempt 1 plan/result hash contract
 - [x] Replacement v2 plan and 16 / 16 zero-spend dry-run
-- [ ] R54-P5-B user approval
-- [ ] Replacement paid execution Gate
+- [x] R54-P5-B user approval — 2026-08-09
+- [ ] Replacement paid smoke execution and immutable result
 
 ## Execution discipline
 
