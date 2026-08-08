@@ -4,7 +4,7 @@
 
 `ready-for-review`
 
-Review checkpoint: pending first verified Gate commit.
+Verified Gate checkpoint: `caf066cc35e11e9e80377e0526b29c931dd66c58`.
 
 ## 승인 대상
 

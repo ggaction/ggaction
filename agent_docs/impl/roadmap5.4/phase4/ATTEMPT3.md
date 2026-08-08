@@ -32,7 +32,7 @@
 - [x] Validation 통과 뒤 fresh held-out 4개 one-pass 실행 — 4 / 4 strict pass
 - [x] Full tests, package, installed MCP와 browser ceilings 실행
 - [x] 모든 unpaid checks 통과 시 exact paid-smoke proposal 작성
-- [ ] R54-P4-C review checkpoint commit/push
+- [x] R54-P4-C review checkpoint commit/push — `caf066cc35e11e9e80377e0526b29c931dd66c58`
 - [ ] User approval
 
 ## Strict acceptance
