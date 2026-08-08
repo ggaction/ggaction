@@ -84,3 +84,12 @@ Option A 승인 시 다음 무비용 범위만 구현한다.
   준비만 연다.
 - Credential read, external model call, additional spend, Attempt 2 resume/retry, v3 paid execution, full evaluation, PR,
   merge, publish, deploy와 release는 계속 차단한다.
+
+## Implementation result
+
+Option A를 별도 runner checkpoint로 구현했다. Raw request transport, projected billable input과 actual provider usage를
+분리하고, independent transport ceiling과 sanitized active-task progress를 추가했다. 60 KB opaque reasoning payload가 있는
+A/D 3-call mock, 16 / 16 zero-spend dry-run, cumulative contract suite와 full repository suite가 모두 통과했다.
+
+Exact repaired runner와 replacement v3 paid-smoke 승인 범위는 [`GATE_D.md`](./GATE_D.md)가 소유한다. 이 Gate의 승인을 새
+external call 승인으로 재사용하지 않는다.

@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-paid-smoke-v3",
+  "requiredGate": "R54-P5-D",
+  "productCandidateCommit": "6ed5af76c80e56c5a3cde833c5a702de183e4d7a",
+  "api": {
+    "endpoint": "https://api.openai.com/v1/responses",
+    "model": "gpt-5.6-terra",
+    "reasoningEffort": "medium",
+    "textVerbosity": "low",
+    "serviceTier": "default",
+    "store": false,
+    "parallelToolCalls": false,
+    "include": ["reasoning.encrypted_content"]
+  },
+  "limits": {
+    "repetitions": 1,
+    "maximumModelCallsPerTask": 3,
+    "maximumOutputTokensPerResponse": 4000,
+    "maximumInputTokensPerTask": 24000,
+    "maximumOutputTokensPerTask": 8000,
+    "projectedInputBytesPerToken": 1,
+    "maximumRequestBodyBytesPerCall": 262144,
+    "maximumRequestBodyBytesPerTask": 524288,
+    "timeoutMilliseconds": 180000,
+    "hardCostUsd": 3
+  },
+  "pricingPerMillionTokens": {
+    "uncachedInput": 2,
+    "cachedInput": 0.2,
+    "cacheWrite": 2.5,
+    "output": 12
+  },
+  "costProjection": {
+    "taskRunExpectedInputTokens": 12000,
+    "taskRunExpectedOutputTokens": 4000,
+    "expectedUsd": 1.152,
+    "calculatedMaximumUsd": 2.496
+  },
+  "conditions": [
+    { "id": "A", "mode": "public-docs" },
+    { "id": "B", "mode": "compact-direct" },
+    { "id": "C", "mode": "compact-mcp" },
+    { "id": "D", "mode": "mcp-first-docs-fallback" }
+  ],
+  "tasks": [
+    {
+      "id": "repair-val-histogram",
+      "source": { "corpus": "repair", "split": "validation" },
+      "stratum": "simple",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        { "id": "action.createHistogram", "options": ["field", "guides"] },
+        { "id": "runtime.renderToSVG", "options": [] }
+      ],
+      "expectedUnresolved": [],
+      "expectedFallbacks": []
+    },
+    {
+      "id": "repair-hold-regression-layers",
+      "source": { "corpus": "repair", "split": "held-out" },
+      "stratum": "complex",
+      "role": "supported",
+      "expectedRenderer": "canvas",
+      "expectedPlan": [
+        { "id": "action.createPointMark", "options": [] },
+        { "id": "action.encodeX", "options": ["field"] },
+        { "id": "action.encodeY", "options": ["field"] },
+        { "id": "action.createRegression", "options": [] },
+        { "id": "action.createAxes", "options": [] }
+      ],
+      "expectedUnresolved": [],
+      "expectedFallbacks": []
+    },
+    {
+      "id": "policy-hold-pdf-and-jpg",
+      "source": { "corpus": "policy", "split": "held-out" },
+      "stratum": "simple",
+      "role": "unsupported",
+      "expectedRenderer": "pdf",
+      "expectedPlan": [
+        { "id": "runtime.renderToPDF", "options": [] }
+      ],
+      "expectedUnresolved": ["unsupported.jpg"],
+      "expectedFallbacks": ["ggaction://docs/unsupported-capabilities"]
+    },
+    {
+      "id": "policy-val-3d-jpeg",
+      "source": { "corpus": "policy", "split": "validation" },
+      "stratum": "complex",
+      "role": "unsupported",
+      "expectedRenderer": null,
+      "expectedPlan": [],
+      "expectedUnresolved": ["unsupported.3d", "unsupported.jpg", "renderer.format"],
+      "expectedFallbacks": [
+        "ggaction://docs/unsupported-capabilities",
+        "ggaction://docs/choose-renderer"
+      ]
+    }
+  ],
+  "runOrder": [
+    "repair-val-histogram:A",
+    "repair-val-histogram:B",
+    "repair-val-histogram:C",
+    "repair-val-histogram:D",
+    "repair-hold-regression-layers:A",
+    "repair-hold-regression-layers:B",
+    "repair-hold-regression-layers:C",
+    "repair-hold-regression-layers:D",
+    "policy-hold-pdf-and-jpg:A",
+    "policy-hold-pdf-and-jpg:B",
+    "policy-hold-pdf-and-jpg:C",
+    "policy-hold-pdf-and-jpg:D",
+    "policy-val-3d-jpeg:A",
+    "policy-val-3d-jpeg:B",
+    "policy-val-3d-jpeg:C",
+    "policy-val-3d-jpeg:D"
+  ],
+  "sourceFiles": {
+    "evaluation/compact-authoring-repair/validation.json": "86339df920a58bb0e01afac817f66e516863545f3ded0c4ab022d9cb634a30c3",
+    "evaluation/compact-authoring-repair/held-out.json": "909eee77d65e124531161296e3a3a9cf5d1665493561d52441e35250ab998399",
+    "evaluation/compact-authoring-repair/datasets.json": "47b051a670f3e303391ddbc5dbfa762c9ffaec5d3dc9ba5e897a2de6cb8c9ca3",
+    "evaluation/compact-authoring-policy/validation.json": "139d1289931ab095d158b0500596b0ab8b8924101aab6a4d20b6f4f4cfbb075a",
+    "evaluation/compact-authoring-policy/held-out.json": "76500ae875caaa90f47e68faea5e2ef56bb0844f6bdaa9a1166ec6b6081b99ba",
+    "evaluation/compact-authoring-policy/datasets.json": "554587800bd792aa80989940de42c5eba4281b18d360fa95b3caa08a67ebea30",
+    "knowledge/action-cards.json": "7e73d6199db326a4711e609abd1afc92913a6baf43cfd23852c2ff6d4db03d64",
+    "knowledge/intent-taxonomy.json": "df57703628e2dc933dca437c17b621ec4665a89a85f1f68586a3a86534f359f6",
+    "knowledge/task-closure-cases.json": "4801300bc8c507a23e4b2490df5ca6e81f2e46ae92d61919373c0a1ba82e7730",
+    "knowledge/task-packet.schema.json": "355862b20c7d7f652aeca6e29aa5d6ab75f65733de321b78b0effd957ebce0da",
+    "knowledge/task-resolver.js": "3ee564e5ba849619c9ad1a36a4396dae2e9494426e8fa5d8be7f9ee2ebb9fb31",
+    "knowledge/mcp-resources.json": "b59cb5db36b033d36c61a0fb047f64ee761a91f4f1407b5dfc15d088e5a50959",
+    "src/mcp/adapter.js": "fe96c2a9200373386c8955f4be8b40430ab5e3fcda6e4203bf5c57da0283eabd",
+    "src/mcp/server.js": "31ca583e921ffb2f2482a6901d1d7b86b39913a593b7f379005ddaae6322c383",
+    "src/mcp/cli.js": "6584ff8a94a53cd95b7a039741038fc7c5ea2d43e5fbe8667e7b8783271756a6",
+    "scripts/compact-paid-smoke.js": "2a944487e6a7fac24011cd4e9dd53b6b04aa05bf1213e2dc2505cf988a387f04",
+    "scripts/run-compact-paid-smoke.js": "905abb40b062f9b87327d03e1a70fb8669ec1c3c873cbf4d24a7ba2bdaf980c3",
+    "scripts/run-compact-generated-program.js": "d6c604b314b6c329e13ba0cbfb9ede546924b588aac6ddf7f306494f3abc039f",
+    "docs/search-index.json": "cc97e42f12d79baa4c84ffcd83a676274e69834112970bd03b661d09a362184d",
+    "docs/llms.txt": "5942d908cafbe3f26e221ed98bbab656ff1f6c5278c8dbe5132a4017ee156c41",
+    "docs/mcp.md": "aae21b1403a98383fe18d9c71ed9127c7907cc7859a33e573728d71c562bf798",
+    "package.json": "4de1c1f2b9f0661587e6b605d61bdf6b91e0982fcf9aca217a2f9abbef2a6ad9"
+  },
+  "stopRules": [
+    "model-mismatch",
+    "service-tier-mismatch",
+    "source-hash-mismatch",
+    "incomplete-billing-usage",
+    "provider-failure",
+    "request-transport-envelope",
+    "task-token-envelope",
+    "global-cost-cap"
+  ]
+}

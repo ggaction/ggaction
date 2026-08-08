@@ -22,7 +22,7 @@ export const root = fileURLToPath(new URL("../", import.meta.url));
 export const paidSmokeRoot = path.join(
   root,
   "evaluation",
-  "compact-authoring-paid-smoke-v2"
+  "compact-authoring-paid-smoke-v3"
 );
 export const paidSmokePlanFile = path.join(paidSmokeRoot, "PLAN.json");
 const paidSmokeGateFile = path.join(
@@ -31,7 +31,7 @@ const paidSmokeGateFile = path.join(
   "impl",
   "roadmap5.4",
   "phase5",
-  "GATE_B.md"
+  "GATE_D.md"
 );
 const execFile = promisify(execFileCallback);
 const generatedProgramHarness = path.join(
@@ -121,8 +121,8 @@ function planCost(plan) {
 function assertPlanShape(plan) {
   if (
     plan.schemaVersion !== 1 ||
-    plan.id !== "compact-authoring-paid-smoke-v2" ||
-    plan.requiredGate !== "R54-P5-B"
+    plan.id !== "compact-authoring-paid-smoke-v3" ||
+    plan.requiredGate !== "R54-P5-D"
   ) {
     throw new Error("Paid smoke plan identity is invalid.");
   }
@@ -136,7 +136,9 @@ function assertPlanShape(plan) {
     plan.limits.maximumModelCallsPerTask !== 3 ||
     plan.limits.maximumInputTokensPerTask <= 0 ||
     plan.limits.maximumOutputTokensPerTask <= 0 ||
-    plan.limits.requestTokenEstimateBytesPerToken !== 1
+    plan.limits.projectedInputBytesPerToken !== 1 ||
+    plan.limits.maximumRequestBodyBytesPerCall !== 262144 ||
+    plan.limits.maximumRequestBodyBytesPerTask !== 524288
   ) {
     throw new Error("Paid smoke token and model-call limits are invalid.");
   }
@@ -904,27 +906,70 @@ function responseFunctionCalls(response) {
   return (response.output ?? []).filter(entry => entry.type === "function_call");
 }
 
-function recordBudgetBeforeRequest({ plan, ledger, taskState, request }) {
-  const bytes = Buffer.byteLength(JSON.stringify(request), "utf8");
-  const estimatedInputTokens = Math.ceil(
-    bytes / plan.limits.requestTokenEstimateBytesPerToken
+function requestProjectionBytes(request) {
+  const projected = JSON.stringify(request, (key, value) =>
+    key === "encrypted_content" ? undefined : value
   );
+  return Buffer.byteLength(projected, "utf8");
+}
+
+export function projectedRequestInputTokens(request, {
+  bytesPerToken = 1,
+  priorReasoningTokens = 0
+} = {}) {
+  if (!Number.isFinite(bytesPerToken) || bytesPerToken <= 0) {
+    throw new TypeError("Projected input bytes-per-token must be positive.");
+  }
+  if (!Number.isInteger(priorReasoningTokens) || priorReasoningTokens < 0) {
+    throw new TypeError("Prior reasoning tokens must be a non-negative integer.");
+  }
+  return Math.ceil(requestProjectionBytes(request) / bytesPerToken) + priorReasoningTokens;
+}
+
+function recordBudgetBeforeRequest({ plan, ledger, taskState, request, priorReasoningTokens }) {
+  const bytes = Buffer.byteLength(JSON.stringify(request), "utf8");
+  if (bytes > plan.limits.maximumRequestBodyBytesPerCall) {
+    throw new Error("request-transport-envelope: request body exceeds the per-call limit");
+  }
+  if (taskState.requestBodyBytes + bytes > plan.limits.maximumRequestBodyBytesPerTask) {
+    throw new Error("request-transport-envelope: cumulative request bodies exceed the task limit");
+  }
+  const projectedInputTokens = projectedRequestInputTokens(request, {
+    bytesPerToken: plan.limits.projectedInputBytesPerToken,
+    priorReasoningTokens
+  });
   if (
-    taskState.estimatedInputTokens + estimatedInputTokens >
+    taskState.projectedInputTokens + projectedInputTokens >
     plan.limits.maximumInputTokensPerTask
   ) {
-    throw new Error("task-token-envelope: conservative input estimate would be exceeded");
+    throw new Error("task-token-envelope: projected billable input would be exceeded");
   }
   const worstRequestCost = (
-    estimatedInputTokens * plan.pricingPerMillionTokens.cacheWrite +
+    projectedInputTokens * plan.pricingPerMillionTokens.cacheWrite +
     request.max_output_tokens * plan.pricingPerMillionTokens.output
   ) / 1_000_000;
   if (ledger.costUsd + worstRequestCost > plan.limits.hardCostUsd) {
     throw new Error("global-cost-cap: next request could exceed the approved hard cap");
   }
   taskState.requestBodyBytes += bytes;
-  taskState.estimatedInputTokens += estimatedInputTokens;
-  return { bytes, estimatedInputTokens };
+  taskState.projectedInputTokens += projectedInputTokens;
+  return { bytes, projectedInputTokens };
+}
+
+function activeTaskSnapshot({ task, condition, usage, taskState, adapter, trace }) {
+  return JSON.parse(JSON.stringify({
+    id: `${task.id}:${condition}`,
+    task: task.id,
+    condition,
+    stratum: task.stratum,
+    modelCalls: trace.length,
+    usage,
+    costUsd: trace.reduce((sum, entry) => sum + entry.costUsd, 0),
+    requestBodyBytes: taskState.requestBodyBytes,
+    projectedInputTokens: taskState.projectedInputTokens,
+    knowledge: adapter.snapshot(),
+    trace
+  }));
 }
 
 function knowledgeRouteFailures(condition, task, snapshot) {
@@ -959,12 +1004,13 @@ export async function runPaidSmokeTask({
   apiKey,
   ledger,
   artifactRoot,
-  createResponse = createOpenAIResponse
+  createResponse = createOpenAIResponse,
+  onProgress = async () => {}
 }) {
   const adapter = await createKnowledgeAdapter(condition);
   const started = performance.now();
   const usage = emptyUsage();
-  const taskState = { requestBodyBytes: 0, estimatedInputTokens: 0 };
+  const taskState = { requestBodyBytes: 0, projectedInputTokens: 0 };
   const trace = [];
   let input = [{
     role: "user",
@@ -982,21 +1028,38 @@ export async function runPaidSmokeTask({
         input,
         Math.min(plan.limits.maximumOutputTokensPerResponse, remainingOutput)
       );
-      const requestBudget = recordBudgetBeforeRequest({ plan, ledger, taskState, request });
+      const requestBudget = recordBudgetBeforeRequest({
+        plan,
+        ledger,
+        taskState,
+        request,
+        priorReasoningTokens: usage.reasoningTokens
+      });
       const response = await createResponse({
         apiKey,
         request,
         timeoutMilliseconds: plan.limits.timeoutMilliseconds
       });
-      if (response.model !== plan.api.model) {
-        throw new Error(`model-mismatch: expected ${plan.api.model}, received ${response.model}`);
-      }
-      if (response.service_tier !== plan.api.serviceTier) {
-        throw new Error(
-          `service-tier-mismatch: expected ${plan.api.serviceTier}, received ${response.service_tier}`
-        );
-      }
       if (!completeUsage(response.usage)) {
+        trace.push({
+          modelCall: callIndex + 1,
+          requestBytes: requestBudget.bytes,
+          projectedInputTokens: requestBudget.projectedInputTokens,
+          functionCallCount: responseFunctionCalls(response).length,
+          tool: null,
+          arguments: null,
+          usage: null,
+          costUsd: null,
+          billingUsageComplete: false
+        });
+        await onProgress(activeTaskSnapshot({
+          task,
+          condition,
+          usage,
+          taskState,
+          adapter,
+          trace
+        }));
         throw new Error("incomplete-billing-usage: response omitted required billing fields");
       }
       const responseUsage = normalizedUsage(response.usage);
@@ -1005,6 +1068,34 @@ export async function runPaidSmokeTask({
       const costUsd = usageCost(responseUsage, plan.pricingPerMillionTokens);
       ledger.costUsd += costUsd;
       ledger.modelCalls += 1;
+      const calls = responseFunctionCalls(response);
+      trace.push({
+        modelCall: callIndex + 1,
+        requestBytes: requestBudget.bytes,
+        projectedInputTokens: requestBudget.projectedInputTokens,
+        functionCallCount: calls.length,
+        tool: null,
+        arguments: null,
+        usage: responseUsage,
+        costUsd,
+        billingUsageComplete: true
+      });
+      await onProgress(activeTaskSnapshot({
+        task,
+        condition,
+        usage,
+        taskState,
+        adapter,
+        trace
+      }));
+      if (response.model !== plan.api.model) {
+        throw new Error(`model-mismatch: expected ${plan.api.model}, received ${response.model}`);
+      }
+      if (response.service_tier !== plan.api.serviceTier) {
+        throw new Error(
+          `service-tier-mismatch: expected ${plan.api.serviceTier}, received ${response.service_tier}`
+        );
+      }
       if (
         usage.inputTokens > plan.limits.maximumInputTokensPerTask ||
         usage.outputTokens > plan.limits.maximumOutputTokensPerTask
@@ -1014,20 +1105,20 @@ export async function runPaidSmokeTask({
       if (ledger.costUsd > plan.limits.hardCostUsd) {
         throw new Error("global-cost-cap: provider usage exceeded the approved hard cap");
       }
-      const calls = responseFunctionCalls(response);
       if (calls.length !== 1) {
         throw new Error(`provider-failure: expected one function call, received ${calls.length}`);
       }
       const call = calls[0];
-      trace.push({
-        modelCall: callIndex + 1,
-        requestBytes: requestBudget.bytes,
-        estimatedInputTokens: requestBudget.estimatedInputTokens,
-        tool: call.name,
-        arguments: sanitizedArguments(call),
-        usage: responseUsage,
-        costUsd
-      });
+      trace.at(-1).tool = call.name;
+      trace.at(-1).arguments = sanitizedArguments(call);
+      await onProgress(activeTaskSnapshot({
+        task,
+        condition,
+        usage,
+        taskState,
+        adapter,
+        trace
+      }));
       input = [...input, ...(response.output ?? [])];
       if (call.name === "submit_result") {
         const submission = JSON.parse(call.arguments);
@@ -1036,6 +1127,14 @@ export async function runPaidSmokeTask({
           ? { passed: false, failures: routeFailures }
           : await evaluateSubmission({ submission, task, artifactRoot });
         trace.at(-1).evaluation = lastEvaluation;
+        await onProgress(activeTaskSnapshot({
+          task,
+          condition,
+          usage,
+          taskState,
+          adapter,
+          trace
+        }));
         if (lastEvaluation.passed) {
           return {
             id: `${task.id}:${condition}`,
@@ -1048,7 +1147,7 @@ export async function runPaidSmokeTask({
             usage,
             costUsd: trace.reduce((sum, entry) => sum + entry.costUsd, 0),
             requestBodyBytes: taskState.requestBodyBytes,
-            estimatedInputTokens: taskState.estimatedInputTokens,
+            projectedInputTokens: taskState.projectedInputTokens,
             knowledge: adapter.snapshot(),
             trace
           };
@@ -1062,6 +1161,14 @@ export async function runPaidSmokeTask({
         const output = await adapter.handle(call);
         trace.at(-1).toolResultBytes = Buffer.byteLength(output, "utf8");
         input.push({ type: "function_call_output", call_id: call.call_id, output });
+        await onProgress(activeTaskSnapshot({
+          task,
+          condition,
+          usage,
+          taskState,
+          adapter,
+          trace
+        }));
       }
     }
     return {
@@ -1075,7 +1182,7 @@ export async function runPaidSmokeTask({
       usage,
       costUsd: trace.reduce((sum, entry) => sum + entry.costUsd, 0),
       requestBodyBytes: taskState.requestBodyBytes,
-      estimatedInputTokens: taskState.estimatedInputTokens,
+      projectedInputTokens: taskState.projectedInputTokens,
       knowledge: adapter.snapshot(),
       failures: lastEvaluation?.failures ?? ["No passing submission within the call limit."],
       trace
@@ -1118,6 +1225,7 @@ export async function runPaidSmoke({
   const taskById = new Map(plan.tasks.map(task => [task.id, task]));
   const ledger = { usage: emptyUsage(), costUsd: 0, modelCalls: 0 };
   const results = [];
+  let activeTask = null;
   const startedAt = now().toISOString();
   for (const run of plan.runOrder) {
     const separator = run.lastIndexOf(":");
@@ -1132,7 +1240,11 @@ export async function runPaidSmoke({
         apiKey,
         ledger,
         artifactRoot: path.join(artifactRoot, `${taskId}-${condition}`),
-        createResponse
+        createResponse,
+        onProgress: async progress => {
+          activeTask = progress;
+          await onProgress({ plan, ledger, results: [...results], activeTask });
+        }
       });
     } catch (error) {
       const failure = {
@@ -1145,13 +1257,15 @@ export async function runPaidSmoke({
         abortedRun: run,
         error: error instanceof Error ? error.message : String(error),
         ledger,
+        activeTask,
         results
       };
       await onProgress({ plan, ledger, results: [...results], failure });
       throw Object.assign(new Error(failure.error), { paidSmokeFailure: failure });
     }
     results.push(result);
-    await onProgress({ plan, ledger, results: [...results] });
+    activeTask = null;
+    await onProgress({ plan, ledger, results: [...results], activeTask });
   }
   return {
     schemaVersion: 1,

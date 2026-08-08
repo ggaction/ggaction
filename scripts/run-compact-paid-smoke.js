@@ -50,6 +50,7 @@ if (process.argv.includes("--dry-run")) {
           productCandidateCommit: progress.plan.productCandidateCommit,
           completedTaskRuns: progress.results.length,
           ledger: progress.ledger,
+          activeTask: progress.activeTask ?? null,
           results: progress.results
         };
         await writeFile(progressFile, `${JSON.stringify(record, null, 2)}\n`);

@@ -22,7 +22,11 @@
 - [x] Automatic retry 0, additional credential read 0
 - [x] Budget-estimator and partial-trace root-cause analysis
 - [x] R54-P5-C Option A user approval — 2026-08-09
-- [ ] Runner accounting repair and unpaid validation
+- [x] Runner accounting repair and unpaid validation
+- [x] Realistic A/D 3-call opaque-reasoning mock
+- [x] Sanitized every-call active progress persistence
+- [x] Replacement v3 plan and 16 / 16 zero-spend dry-run
+- [ ] R54-P5-D replacement v3 paid-smoke approval
 
 ## Execution discipline
 
@@ -36,6 +40,8 @@
 
 - Credential read와 external model call
 - Attempt 1 result overwrite, resume 또는 retry
+- Attempt 2 result overwrite, resume 또는 retry
 - Public packet schema/contract 변경
+- Replacement v3 credential read, external model call과 additional spend
 - Complete paid evaluation
 - Integration, PR, merge, publish, deploy와 release

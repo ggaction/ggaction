@@ -89,8 +89,10 @@ commit/push한 뒤에만 승인을 요청한다.
 | R54-P4-D | 4 | Regression runtime closure, frozen runner/candidate/plan과 교체 승인 | Credential read와 paid smoke |
 | R54-P5-A | 5 | Attempt 1 failure, runner repair와 LLM authoring-bootstrap contract | Public packet v2 implementation |
 | R54-P5-B | 5 | Packet v2 evidence와 exact replacement paid-smoke scope/cost | Replacement paid smoke |
-| R54-P5-C | 5 | Valid smoke result와 complete paid evaluation scope/cost | Full external evaluation |
-| R54-P5-D | 5 | Full result, predeclared acceptance와 integration candidate | PR preparation |
+| R54-P5-C | 5 | Attempt 2 실패와 paid runner budget-accounting repair | Runner repair와 새 paid smoke proposal |
+| R54-P5-D | 5 | Repaired runner evidence와 exact v3 paid-smoke scope/cost | Replacement v3 paid smoke |
+| R54-P5-E | 5 | Valid smoke result와 complete paid evaluation scope/cost | Full external evaluation |
+| R54-P5-F | 5 | Full result, predeclared acceptance와 integration candidate | PR preparation |
 | R54-Exit | 5 | Passed merged-main evidence 또는 failed non-integration closeout | 완료 선언 |
 
 R54-P4-C와 runtime-closure replacement R54-P4-D는 첫 paid-smoke authorization을 Phase 4 exact corpus/cost review와
