@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-paid-smoke-route-oracle-v5",
+  "sourceFinalCorpus": "compact-authoring-final-v3",
+  "sourceFinalOracleSha256": "38662943c5d4e1cda1783ab84df724416a5760d9dc95f90cbe3054eee0a66688",
+  "productCandidateCommit": "4e211ba418cd437d7c66c4fb986fcc714cf579ea",
+  "packetSchemaVersion": 3,
+  "conditions": [
+    { "id": "A", "mode": "public-docs" },
+    { "id": "B", "mode": "compact-direct" },
+    { "id": "C", "mode": "compact-mcp" },
+    { "id": "D", "mode": "mcp-first-explicit-fallback" }
+  ],
+  "tasks": [
+    {
+      "id": "final3-03-bars-png",
+      "role": "supported",
+      "repairCoverage": "bar color-scale ownership and legend handoff",
+      "expectedDRoute": ["search_ggaction", "submit_result"]
+    },
+    {
+      "id": "final3-08-violin-canvas",
+      "role": "supported",
+      "repairCoverage": "violin-owned density derivation and color encoding",
+      "expectedDRoute": ["search_ggaction", "submit_result"]
+    },
+    {
+      "id": "final3-12-rule-canvas",
+      "role": "supported",
+      "repairCoverage": "complete rule geometry with stroke width, title, and subtitle intents",
+      "expectedDRoute": ["search_ggaction", "submit_result"]
+    },
+    {
+      "id": "final3-18-raw-bars-canvas",
+      "role": "supported",
+      "repairCoverage": "categorical-before-quantitative raw bar ordering",
+      "expectedDRoute": ["search_ggaction", "submit_result"]
+    },
+    {
+      "id": "final3-22-composition-svg",
+      "role": "supported",
+      "repairCoverage": "composed program source and SVG evaluation",
+      "expectedDRoute": ["search_ggaction", "submit_result"]
+    },
+    {
+      "id": "final3-23-labels-png",
+      "role": "supported",
+      "repairCoverage": "positioned point-to-text overlay dependency",
+      "expectedDRoute": ["search_ggaction", "submit_result"]
+    },
+    {
+      "id": "final3-37-rule-endpoint",
+      "role": "needs-input",
+      "repairCoverage": "incomplete rule endpoint decision",
+      "expectedDRoute": ["search_ggaction", "read_mcp_resources", "submit_result"]
+    },
+    {
+      "id": "final3-38-scale-consumer",
+      "role": "needs-input",
+      "repairCoverage": "unconsumed scale decision",
+      "expectedDRoute": ["search_ggaction", "read_mcp_resources", "submit_result"]
+    }
+  ]
+}

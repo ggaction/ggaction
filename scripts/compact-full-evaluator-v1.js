@@ -69,15 +69,67 @@ function hasGraphicInk(program) {
 }
 
 function expectedActionNames(task) {
+  const composition = task.expectedPlan.findLast(entry =>
+    entry.kind === "runtime" && ["hconcat", "vconcat"].includes(entry.name)
+  );
+  if (composition) return [composition.name];
   return task.expectedPlan
-    .filter(entry => entry.id.startsWith("action."))
-    .map(entry => entry.id.slice("action.".length))
+    .filter(entry => entry.kind === "action")
+    .map(entry => entry.name)
     .filter(name => !["createCanvas", "createData"].includes(name));
+}
+
+function collectScaleReferences(value, output) {
+  if (Array.isArray(value)) {
+    for (const entry of value) collectScaleReferences(entry, output);
+    return;
+  }
+  if (!value || typeof value !== "object") return;
+  for (const [key, entry] of Object.entries(value)) {
+    if (key === "scale" && typeof entry === "string") output.add(entry);
+    else collectScaleReferences(entry, output);
+  }
+}
+
+function semanticResourceFailures(program, location = "root") {
+  const failures = [];
+  const semantic = program.semanticSpec;
+  if (semantic) {
+    const datasetConsumers = new Set([
+      ...(semantic.layers ?? []).map(layer => layer.data).filter(Boolean),
+      ...(semantic.datasets ?? []).map(dataset => dataset.source).filter(Boolean)
+    ]);
+    for (const dataset of semantic.datasets ?? []) {
+      if (dataset.source !== undefined && !datasetConsumers.has(dataset.id)) {
+        failures.push(`unused-derived-dataset:${location}:${dataset.id}`);
+      }
+    }
+    const scaleReferences = new Set();
+    for (const layer of semantic.layers ?? []) {
+      collectScaleReferences(layer.encoding, scaleReferences);
+    }
+    collectScaleReferences(semantic.guides, scaleReferences);
+    for (const scale of semantic.scales ?? []) {
+      if (!scaleReferences.has(scale.id)) failures.push(`unused-scale:${location}:${scale.id}`);
+    }
+  }
+  for (const [id, child] of Object.entries(program.children ?? {})) {
+    failures.push(...semanticResourceFailures(child, `${location}/${id}`));
+  }
+  return failures;
 }
 
 function canvasGraphic(program) {
   return Object.values(program.graphicSpec?.objects ?? {})
     .find(graphic => graphic.type === "canvas");
+}
+
+function containsSourceDataset(program, values) {
+  if (program.semanticSpec?.datasets?.some(dataset => same(dataset.values, values))) {
+    return true;
+  }
+  return Object.values(program.children ?? {})
+    .some(child => containsSourceDataset(child, values));
 }
 
 function outputExtension(renderer) {
@@ -145,10 +197,10 @@ async function evaluateProgramSubmission({ submission, task, artifactRoot }) {
     if (!program?.semanticSpec || !program?.graphicSpec || !program?.trace) {
       throw new Error("buildChart did not return a ChartProgram.");
     }
-    const sourceOwned = program.semanticSpec.datasets?.some(dataset =>
-      same(dataset.values, task.dataset.values)
-    );
-    if (!sourceOwned) failures.push("source-dataset-mismatch");
+    if (!containsSourceDataset(program, task.dataset.values)) {
+      failures.push("source-dataset-mismatch");
+    }
+    failures.push(...semanticResourceFailures(program));
     const actualActions = (program.trace.children ?? [])
       .map(node => node.op)
       .filter(name => !["createCanvas", "createData"].includes(name));

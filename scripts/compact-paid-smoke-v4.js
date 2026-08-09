@@ -554,7 +554,14 @@ function taskPromptV4(task, adapter) {
   ].join("\n");
 }
 
-function baseRequestV4(plan, task, adapter, input, maximumOutputTokens) {
+function baseRequestV4(
+  plan,
+  task,
+  adapter,
+  input,
+  maximumOutputTokens,
+  submitTool = submitResultToolV4
+) {
   return {
     model: plan.api.model,
     reasoning: { effort: plan.api.reasoningEffort },
@@ -565,7 +572,7 @@ function baseRequestV4(plan, task, adapter, input, maximumOutputTokens) {
     include: plan.api.include,
     max_output_tokens: maximumOutputTokens,
     tool_choice: "auto",
-    tools: [...adapter.tools, submitResultToolV4],
+    tools: [...adapter.tools, submitTool],
     instructions: "Complete one bounded ggaction authoring task. Use the assigned knowledge route before submitting. A passing submit_result ends the task.",
     input
   };
@@ -664,14 +671,22 @@ export async function runPaidSmokeTaskV4({
   ledger,
   artifactRoot,
   createResponse = createOpenAIResponse,
+  createAdapter = createKnowledgeAdapterV4,
+  submitTool = submitResultToolV4,
+  evaluateSubmission = evaluateSubmissionV4,
+  promptBuilder = taskPromptV4,
+  validateRoute = routeFailuresV4,
   onProgress = async () => {}
 }) {
-  const adapter = await createKnowledgeAdapterV4(condition);
+  const adapter = await createAdapter(condition);
   const started = performance.now();
   const usage = emptyUsage();
   const state = { requestBodyBytes: 0, projectedInputTokens: 0 };
   const trace = [];
-  let input = [{ role: "user", content: [{ type: "input_text", text: taskPromptV4(task, adapter) }] }];
+  let input = [{
+    role: "user",
+    content: [{ type: "input_text", text: promptBuilder(task, adapter) }]
+  }];
   let lastEvaluation;
   try {
     for (let callIndex = 0; callIndex < plan.limits.maximumModelCallsPerTask; callIndex += 1) {
@@ -682,7 +697,8 @@ export async function runPaidSmokeTaskV4({
         task,
         adapter,
         input,
-        Math.min(plan.limits.maximumOutputTokensPerResponse, remainingOutput)
+        Math.min(plan.limits.maximumOutputTokensPerResponse, remainingOutput),
+        submitTool
       );
       const budget = recordBudgetBeforeRequest({
         plan,
@@ -765,10 +781,10 @@ export async function runPaidSmokeTaskV4({
       input = [...input, ...(response.output ?? [])];
       if (call.name === "submit_result") {
         const submission = JSON.parse(call.arguments);
-        const failures = routeFailuresV4(condition, task, adapter.snapshot());
+        const failures = validateRoute(condition, task, adapter.snapshot());
         lastEvaluation = failures.length > 0
           ? { passed: false, failures }
-          : await evaluateSubmissionV4({ submission, task, artifactRoot });
+          : await evaluateSubmission({ submission, task, artifactRoot });
         trace.at(-1).evaluation = lastEvaluation;
         await onProgress(activeTaskSnapshotV4({
           task,
