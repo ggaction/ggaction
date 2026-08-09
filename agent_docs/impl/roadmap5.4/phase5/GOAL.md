@@ -42,7 +42,9 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] v7 comprehensive response-aware comparison integration — evaluator checkpoint `ee47a8c8`
 - [x] R54-P5-J Option A comprehensive v7 paid-comparison authorization — 2026-08-09
 - [x] v7 paid-comparison execution — Attempt 7 aborted at 10 / 32 completed, 29 billed responses / `$0.29928613` conservative spend
-- [ ] R54-P5-K provider-failure policy and replacement comparison decision
+- [x] R54-P5-K provider-resilient 256-run Terra/Luna comparison design approval — 2026-08-09
+- [ ] Provider-resilient dual-model evaluator implementation and unpaid validation
+- [ ] R54-P5-L exact paid-comparison authorization
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion
