@@ -129,3 +129,16 @@ spend만 연다. Retry, task나 threshold 수정, full paid evaluation, PR, merg
 - 이 승인은 previously identified single credential file의 1회 read와 v5 paid smoke 단일 실행만 연다.
 - Retry, task나 threshold 수정, full paid evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.
 - 승인 기록 시점의 credential reads / external calls / additional spend는 `0 / 0 / $0`다.
+
+## Execution result
+
+승인된 v5 smoke는 `final3-03-bars-png:A`를 완료하고 `final3-03-bars-png:B`를 진행하던 중
+`provider-failure: expected one function call, received 0` stop rule로 중단됐다. 6 billed model calls, 9,186 input tokens,
+2,525 output tokens와 `$0.0428280`를 사용했다. Credential read는 1회였고 automatic retry는 없었다.
+
+A는 invented namespace API로 strict 실패했다. B의 첫 program은 compact packet의 chart action을 따랐지만 evaluator가 주입하는
+output path 대신 packet 예시의 `"chart.png"`를 고정해 permission failure가 났고, feedback 뒤 response가 function call을
+반환하지 않았다. 정확한 immutable evidence와 causal analysis는 [`ATTEMPT5.md`](./ATTEMPT5.md)가 소유한다.
+
+이 승인은 해당 중단으로 소진됐다. Retry, replacement smoke, full paid evaluation, PR, merge, publish, deploy와 release는 별도
+승인 전까지 계속 차단한다.

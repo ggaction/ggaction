@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
@@ -11,6 +13,10 @@ import {
   runPaidSmokeTaskV5,
   submitResultToolV5
 } from "../../scripts/compact-paid-smoke-v5.js";
+
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
 
 function planForMocks() {
   return {
@@ -193,4 +199,40 @@ test("uses the explicit fallback before submitting an exact needs-input decision
   assert.equal(result.passed, true);
   assert.equal(result.modelCalls, 3);
   assert.deepEqual(result.trace.map(entry => entry.tool), task.expectedDRoute);
+});
+
+test("preserves the aborted fifth paid attempt and its billed ledger", async () => {
+  const bytes = await readFile(path.join(
+    root,
+    "evaluation",
+    "compact-authoring-paid-smoke-v5",
+    "results",
+    "IN_PROGRESS.json"
+  ));
+  const result = JSON.parse(bytes);
+  assert.equal(sha256(bytes), "594ff3718551001aa3b4bad2c8b4ffe4e699e2911bc8247c7659383d3f5e943a");
+  assert.equal(result.planSha256, "490612751a1348fdfa9aa08a39a3915f086e96d48d20c8585ef6c3ccf061c90e");
+  assert.equal(result.abortedRun, "final3-03-bars-png:B");
+  assert.equal(result.error, "provider-failure: expected one function call, received 0");
+  assert.equal(result.results.length, 1);
+  assert.equal(result.results[0].id, "final3-03-bars-png:A");
+  assert.equal(result.results[0].passed, false);
+  assert.deepEqual(result.results[0].failures, [
+    "generated-program-error:TypeError: ggaction.Canvas is not a constructor"
+  ]);
+  assert.equal(result.activeTask.id, "final3-03-bars-png:B");
+  assert.deepEqual(result.activeTask.trace[1].evaluation.failures, [
+    "generated-program-error:Error: Access to this API has been restricted"
+  ]);
+  assert.equal(result.activeTask.trace[2].functionCallCount, 0);
+  assert.equal(result.ledger.modelCalls, 6);
+  assert.equal(result.ledger.costUsd, 0.042828000000000005);
+  assert.deepEqual(result.ledger.usage, {
+    inputTokens: 9186,
+    cachedInputTokens: 4315,
+    cacheWriteTokens: 3846,
+    outputTokens: 2525,
+    reasoningTokens: 1825,
+    totalTokens: 11711
+  });
 });
