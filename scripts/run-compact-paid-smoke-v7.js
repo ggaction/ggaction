@@ -63,6 +63,7 @@ if (process.argv.includes("--dry-run")) {
       taskRuns: result.taskRuns,
       passedTaskRuns: result.passedTaskRuns,
       modelCalls: result.ledger.modelCalls,
+      standardCostUsd: result.ledger.standardCostUsd,
       costUsd: result.ledger.costUsd
     }, null, 2)}\n`);
   } catch (error) {

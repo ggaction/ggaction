@@ -19,6 +19,7 @@ import {
   taskPromptV6
 } from "./compact-paid-smoke-v6.js";
 import { runBoundedToolStateMachineV2 } from "./compact-paid-state-machine-v2.js";
+import { summarizePaidSmokeComparisonV1 } from "./compact-paid-comparison-v1.js";
 
 export { createOpenAIResponse, loadApiKey, root };
 
@@ -44,15 +45,19 @@ function sha256(value) {
 
 function planCost(plan) {
   const taskRuns = plan.runOrder.length;
-  return {
-    expected: taskRuns * (
+  const expected = taskRuns * (
       plan.costProjection.taskRunExpectedInputTokens * plan.pricingPerMillionTokens.uncachedInput +
       plan.costProjection.taskRunExpectedOutputTokens * plan.pricingPerMillionTokens.output
-    ) / 1_000_000,
-    maximum: taskRuns * (
+    ) / 1_000_000;
+  const maximum = taskRuns * (
       plan.limits.maximumInputTokensPerTask * plan.pricingPerMillionTokens.cacheWrite +
       plan.limits.maximumOutputTokensPerTask * plan.pricingPerMillionTokens.output
-    ) / 1_000_000
+    ) / 1_000_000;
+  return {
+    expected,
+    maximum,
+    conservativeExpected: expected * plan.costAccountingMultiplier,
+    conservativeMaximum: maximum * plan.costAccountingMultiplier
   };
 }
 
@@ -78,14 +83,17 @@ function assertPlanShapeV7(plan) {
     throw new Error("Paid smoke v7 evaluator files and product trees must be frozen.");
   }
   if (
-    plan.limits.maximumModelCallsPerTask !== 4 ||
-    plan.limits.maximumModelCallsTotal !== 128 ||
-    plan.limits.maximumInputTokensPerTask !== 36000 ||
-    plan.limits.maximumOutputTokensPerTask !== 12000 ||
-    plan.limits.maximumOutputTokensPerResponse !== 4000 ||
+    plan.limits.maximumModelCallsPerTask !== 5 ||
+    plan.limits.maximumModelCallsTotal !== 138 ||
+    plan.limits.maximumSubmissionAttemptsPerTask !== 3 ||
+    plan.limits.maximumInputTokensPerTask !== 80000 ||
+    plan.limits.maximumOutputTokensPerTask !== 28000 ||
+    plan.limits.maximumKnowledgeOutputTokensPerResponse !== 2000 ||
+    plan.limits.maximumSubmissionOutputTokensPerResponse !== 8000 ||
     plan.limits.projectedInputBytesPerToken !== 1 ||
-    plan.limits.maximumRequestBodyBytesPerCall !== 262144 ||
-    plan.limits.maximumRequestBodyBytesPerTask !== 786432
+    plan.limits.maximumRequestBodyBytesPerCall !== 524288 ||
+    plan.limits.maximumRequestBodyBytesPerTask !== 2097152 ||
+    plan.costAccountingMultiplier !== 1.1
   ) {
     throw new Error("Paid smoke v7 limits are invalid.");
   }
@@ -93,10 +101,43 @@ function assertPlanShapeV7(plan) {
   if (
     Math.abs(cost.expected - plan.costProjection.expectedUsd) > 1e-12 ||
     Math.abs(cost.maximum - plan.costProjection.calculatedMaximumUsd) > 1e-12 ||
-    plan.costProjection.calculatedMaximumWithRegionalUpliftUsd >= plan.limits.hardCostUsd
+    Math.abs(
+      cost.conservativeExpected - plan.costProjection.expectedWithRegionalUpliftUsd
+    ) > 1e-12 ||
+    Math.abs(
+      cost.conservativeMaximum - plan.costProjection.calculatedMaximumWithRegionalUpliftUsd
+    ) > 1e-12 ||
+    cost.conservativeMaximum >= plan.limits.hardCostUsd
   ) {
     throw new Error("Paid smoke v7 cost projection does not match its envelopes.");
   }
+}
+
+export function counterbalancedRunOrderV7(tasks, conditionIds = ["A", "B", "C", "D"]) {
+  if (
+    conditionIds.length !== 4 ||
+    new Set(conditionIds).size !== conditionIds.length ||
+    !tasks.every(task => typeof task?.id === "string" && task.id.length > 0)
+  ) {
+    throw new Error("Paid smoke v7 counterbalance requires tasks and four unique conditions.");
+  }
+  return tasks.flatMap((task, taskIndex) => conditionIds.map((_, conditionOffset) => {
+    const condition = conditionIds[(taskIndex + conditionOffset) % conditionIds.length];
+    return `${task.id}:${condition}`;
+  }));
+}
+
+export function modelCallEnvelopeV7(tasks, conditionIds, maximumSubmissionAttempts) {
+  let expected = 0;
+  let maximum = 0;
+  for (const task of tasks) {
+    for (const condition of conditionIds) {
+      const route = paidSmokeRouteV6(condition, task);
+      expected += route.length;
+      maximum += route.length - 1 + maximumSubmissionAttempts;
+    }
+  }
+  return { expected, maximum };
 }
 
 function commitFile(commit, relative, label) {
@@ -157,6 +198,24 @@ export async function loadPaidSmokePlanV7() {
   assertPlanShapeV7(plan);
   if (plan.routeOracleSha256 !== oracle.oracleSha256) {
     throw new Error("Paid smoke v7 route oracle hash drifted.");
+  }
+  const expectedRunOrder = counterbalancedRunOrderV7(
+    oracle.tasks,
+    oracle.conditions.map(condition => condition.id)
+  );
+  if (JSON.stringify(plan.runOrder) !== JSON.stringify(expectedRunOrder)) {
+    throw new Error("Paid smoke v7 run order is not the frozen counterbalanced matrix.");
+  }
+  const callEnvelope = modelCallEnvelopeV7(
+    oracle.tasks,
+    oracle.conditions.map(condition => condition.id),
+    plan.limits.maximumSubmissionAttemptsPerTask
+  );
+  if (
+    callEnvelope.expected !== plan.costProjection.expectedModelCallsIfFirstPass ||
+    callEnvelope.maximum !== plan.limits.maximumModelCallsTotal
+  ) {
+    throw new Error("Paid smoke v7 model-call envelope drifted from the frozen routes.");
   }
   for (const [relative, expected] of Object.entries(plan.evaluatorSourceFiles)) {
     const frozen = commitFile(plan.evaluatorCheckpointCommit, relative, "evaluator source");
@@ -244,7 +303,17 @@ export async function runPaidSmokeTaskV7(options) {
 export async function runPaidSmokeDryRunV7({
   artifactRoot = path.join(root, ".artifacts", "evaluation", "compact-paid-smoke-v7-dry")
 } = {}) {
-  return runPaidSmokeDryRunV6({ artifactRoot });
+  const [result, oracle] = await Promise.all([
+    runPaidSmokeDryRunV6({ artifactRoot }),
+    loadRouteOracleV5()
+  ]);
+  return {
+    ...result,
+    runOrder: counterbalancedRunOrderV7(
+      oracle.tasks,
+      oracle.conditions.map(condition => condition.id)
+    )
+  };
 }
 
 function emptyUsage() {
@@ -258,30 +327,6 @@ function emptyUsage() {
   };
 }
 
-function addUsage(target, usage) {
-  for (const key of Object.keys(target)) target[key] += usage[key] ?? 0;
-}
-
-function summarizeResults(results) {
-  const conditions = {};
-  for (const condition of ["A", "B", "C", "D"]) {
-    const entries = results.filter(result => result.condition === condition);
-    const usage = emptyUsage();
-    for (const entry of entries) addUsage(usage, entry.usage);
-    conditions[condition] = {
-      tasks: entries.length,
-      passed: entries.filter(entry => entry.passed).length,
-      modelCalls: entries.reduce((sum, entry) => sum + entry.modelCalls, 0),
-      usage,
-      costUsd: entries.reduce((sum, entry) => sum + entry.costUsd, 0),
-      timeToValidMilliseconds: entries
-        .filter(entry => entry.passed)
-        .reduce((sum, entry) => sum + entry.timeToValidMilliseconds, 0)
-    };
-  }
-  return conditions;
-}
-
 export async function runPaidSmokeV7({
   plan: suppliedPlan,
   apiKey,
@@ -292,8 +337,27 @@ export async function runPaidSmokeV7({
 } = {}) {
   const plan = await assertPaidSmokeAuthorizedV7(suppliedPlan ?? await loadPaidSmokePlanV7());
   await preflightPaidSmokeToolsV7();
+  return runPaidSmokeMatrixV7({
+    plan,
+    apiKey,
+    createResponse,
+    artifactRoot,
+    now,
+    onProgress
+  });
+}
+
+export async function runPaidSmokeMatrixV7({
+  plan,
+  apiKey,
+  createResponse = createOpenAIResponse,
+  artifactRoot = path.join(root, ".artifacts", "evaluation", "compact-paid-smoke-v7"),
+  now = () => new Date(),
+  onProgress = async () => {},
+  runTask = runPaidSmokeTaskV7
+}) {
   const taskById = new Map(plan.tasks.map(task => [task.id, task]));
-  const ledger = { usage: emptyUsage(), costUsd: 0, modelCalls: 0 };
+  const ledger = { usage: emptyUsage(), standardCostUsd: 0, costUsd: 0, modelCalls: 0 };
   const results = [];
   let activeTask = null;
   const startedAt = now().toISOString();
@@ -302,7 +366,7 @@ export async function runPaidSmokeV7({
     const taskId = run.slice(0, separator);
     const condition = run.slice(separator + 1);
     try {
-      const result = await runPaidSmokeTaskV7({
+      const result = await runTask({
         plan,
         task: taskById.get(taskId),
         condition,
@@ -315,7 +379,7 @@ export async function runPaidSmokeV7({
           await onProgress({ plan, ledger, results: [...results], activeTask });
         }
       });
-      results.push(result);
+      results.push({ ...result, runPosition: results.length + 1 });
       activeTask = null;
       await onProgress({ plan, ledger, results: [...results], activeTask: null });
     } catch (error) {
@@ -350,7 +414,10 @@ export async function runPaidSmokeV7({
     taskRuns: results.length,
     passedTaskRuns: results.filter(result => result.passed).length,
     ledger,
-    conditions: summarizeResults(results),
+    comparison: summarizePaidSmokeComparisonV1(
+      results,
+      plan.conditions.map(condition => condition.id)
+    ),
     results
   };
 }

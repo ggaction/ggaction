@@ -45,11 +45,11 @@ function addUsage(target, usage) {
   for (const key of Object.keys(target)) target[key] += usage[key] ?? 0;
 }
 
-function usageCost(usage, pricing) {
+function usageCost(usage, pricing, multiplier = 1) {
   const cached = Math.min(usage.cachedInputTokens, usage.inputTokens);
   const writes = Math.min(usage.cacheWriteTokens, usage.inputTokens - cached);
   const uncached = usage.inputTokens - cached - writes;
-  return (
+  return multiplier * (
     uncached * pricing.uncachedInput +
     cached * pricing.cachedInput +
     writes * pricing.cacheWrite +
@@ -157,7 +157,7 @@ function recordBudgetBeforeRequest({ plan, ledger, state, request, priorReasonin
   if (state.projectedInputTokens + projectedInputTokens > plan.limits.maximumInputTokensPerTask) {
     throw new Error("task-token-envelope: projected billable input would be exceeded");
   }
-  const worstRequestCost = (
+  const worstRequestCost = (plan.costAccountingMultiplier ?? 1) * (
     projectedInputTokens * plan.pricingPerMillionTokens.cacheWrite +
     request.max_output_tokens * plan.pricingPerMillionTokens.output
   ) / 1_000_000;
@@ -176,7 +176,9 @@ function activeTaskSnapshot({ task, condition, usage, state, adapter, trace, rou
     condition,
     stratum: task.stratum,
     modelCalls: trace.length,
+    submissionAttempts: trace.filter(entry => entry.phase === "submission").length,
     usage,
+    standardCostUsd: trace.reduce((sum, entry) => sum + (entry.standardCostUsd ?? 0), 0),
     costUsd: trace.reduce((sum, entry) => sum + (entry.costUsd ?? 0), 0),
     requestBodyBytes: state.requestBodyBytes,
     projectedInputTokens: state.projectedInputTokens,
@@ -190,15 +192,25 @@ function activeTaskSnapshot({ task, condition, usage, state, adapter, trace, rou
   }));
 }
 
-function protocolFailure(forcedTool, calls) {
+function protocolFailureLabel(forcedTool, calls) {
   const names = calls.map(call => call.name);
-  return new Error(
-    `provider-protocol-mismatch: forced ${forcedTool}, received ${calls.length} function calls` +
+  return (
+    `model-protocol-noncompliance:forced-${forcedTool}:received-${calls.length}-function-calls` +
     (names.length > 0 ? ` (${names.join(",")})` : "")
   );
 }
 
-function failedTaskResult({ task, condition, started, usage, state, adapter, trace, failures }) {
+function failedTaskResult({
+  task,
+  condition,
+  started,
+  usage,
+  state,
+  adapter,
+  trace,
+  submissionAttempts,
+  failures
+}) {
   return {
     id: `${task.id}:${condition}`,
     task: task.id,
@@ -206,9 +218,11 @@ function failedTaskResult({ task, condition, started, usage, state, adapter, tra
     stratum: task.stratum,
     passed: false,
     modelCalls: trace.length,
+    submissionAttempts,
     timeToValidMilliseconds: null,
     elapsedMilliseconds: performance.now() - started,
     usage,
+    standardCostUsd: trace.reduce((sum, entry) => sum + (entry.standardCostUsd ?? 0), 0),
     costUsd: trace.reduce((sum, entry) => sum + (entry.costUsd ?? 0), 0),
     requestBodyBytes: state.requestBodyBytes,
     projectedInputTokens: state.projectedInputTokens,
@@ -222,6 +236,12 @@ function incompleteFailure(metadata) {
   const reason = metadata.incompleteDetails?.reason;
   if (metadata.status === "incomplete" && reason === "max_output_tokens") {
     return "model-output-budget-exhausted:max_output_tokens";
+  }
+  if (metadata.status === "incomplete") {
+    return `model-incomplete:${reason ?? "unknown"}`;
+  }
+  if (metadata.status === "failed") {
+    return `model-response-failed:${metadata.error?.code ?? metadata.error?.type ?? "unknown"}`;
   }
   return null;
 }
@@ -251,8 +271,10 @@ export async function runBoundedToolStateMachineV2({
   if (!Array.isArray(route) || route.length === 0 || route.at(-1) !== "submit_result") {
     throw new Error("state-machine-contract: route must end with submit_result");
   }
-  if (route.length > plan.limits.maximumModelCallsPerTask) {
-    throw new Error("state-machine-contract: route cannot fit within the task call limit");
+  const knowledgeCalls = route.length - 1;
+  const maximumCallsForRoute = knowledgeCalls + plan.limits.maximumSubmissionAttemptsPerTask;
+  if (maximumCallsForRoute > plan.limits.maximumModelCallsPerTask) {
+    throw new Error("state-machine-contract: route and equal submission attempts cannot fit within the task call limit");
   }
   const adapter = await createAdapter(condition);
   const started = performance.now();
@@ -265,18 +287,23 @@ export async function runBoundedToolStateMachineV2({
     content: [{ type: "input_text", text: promptBuilder(task, adapter) }]
   }];
   let lastEvaluation;
+  let submissionAttempts = 0;
   try {
-    for (let callIndex = 0; callIndex < plan.limits.maximumModelCallsPerTask; callIndex += 1) {
+    for (let callIndex = 0; callIndex < maximumCallsForRoute; callIndex += 1) {
       const remainingOutput = plan.limits.maximumOutputTokensPerTask - usage.outputTokens;
       if (remainingOutput <= 0) break;
       const forcedTool = route[Math.min(routeIndex, route.length - 1)];
+      const submissionPhase = forcedTool === "submit_result";
+      const phaseOutputLimit = submissionPhase
+        ? plan.limits.maximumSubmissionOutputTokensPerResponse
+        : plan.limits.maximumKnowledgeOutputTokensPerResponse;
       const request = baseRequest({
         plan,
         adapter,
         submitTool,
         input,
         maximumOutputTokens: Math.min(
-          plan.limits.maximumOutputTokensPerResponse,
+          phaseOutputLimit,
           remainingOutput
         ),
         forcedTool
@@ -288,11 +315,13 @@ export async function runBoundedToolStateMachineV2({
         request,
         priorReasoningTokens: usage.reasoningTokens
       });
+      const modelStarted = performance.now();
       const response = await createResponse({
         apiKey,
         request,
         timeoutMilliseconds: plan.limits.timeoutMilliseconds
       });
+      const modelLatencyMilliseconds = performance.now() - modelStarted;
       const calls = responseFunctionCalls(response);
       const metadata = responseMetadata(response);
       const traceEntry = {
@@ -302,6 +331,7 @@ export async function runBoundedToolStateMachineV2({
         toolChoice: request.tool_choice,
         requestBytes: budget.bytes,
         projectedInputTokens: budget.projectedInputTokens,
+        modelLatencyMilliseconds,
         provider: metadata,
         functionCallCount: calls.length,
         tool: null,
@@ -320,11 +350,19 @@ export async function runBoundedToolStateMachineV2({
       const responseUsage = normalizedUsage(response.usage);
       addUsage(usage, responseUsage);
       addUsage(ledger.usage, responseUsage);
-      const costUsd = usageCost(responseUsage, plan.pricingPerMillionTokens);
+      const standardCostUsd = usageCost(responseUsage, plan.pricingPerMillionTokens);
+      const costUsd = usageCost(
+        responseUsage,
+        plan.pricingPerMillionTokens,
+        plan.costAccountingMultiplier ?? 1
+      );
+      ledger.standardCostUsd = (ledger.standardCostUsd ?? 0) + standardCostUsd;
       ledger.costUsd += costUsd;
       ledger.modelCalls += 1;
+      if (submissionPhase) submissionAttempts += 1;
       Object.assign(traceEntry, {
         usage: responseUsage,
+        standardCostUsd,
         costUsd,
         billingUsageComplete: true
       });
@@ -353,6 +391,7 @@ export async function runBoundedToolStateMachineV2({
           state,
           adapter,
           trace,
+          submissionAttempts,
           failures: [...(lastEvaluation?.failures ?? []), boundedFailure]
         });
         await onProgress(activeTaskSnapshot({
@@ -362,18 +401,71 @@ export async function runBoundedToolStateMachineV2({
       }
       if (metadata.status !== "completed") throw responseStatusFailure(metadata);
       if (calls.length !== 1 || calls[0].name !== forcedTool) {
-        throw protocolFailure(forcedTool, calls);
+        return failedTaskResult({
+          task,
+          condition,
+          started,
+          usage,
+          state,
+          adapter,
+          trace,
+          submissionAttempts,
+          failures: [protocolFailureLabel(forcedTool, calls)]
+        });
       }
       const call = calls[0];
       if (typeof call.call_id !== "string" || call.call_id.length === 0) {
-        throw new Error(`provider-protocol-mismatch: ${forcedTool} omitted call_id`);
+        return failedTaskResult({
+          task,
+          condition,
+          started,
+          usage,
+          state,
+          adapter,
+          trace,
+          submissionAttempts,
+          failures: [`model-protocol-noncompliance:${forcedTool}:missing-call-id`]
+        });
       }
       traceEntry.tool = call.name;
-      traceEntry.arguments = sanitizedArguments(call);
+      try {
+        traceEntry.arguments = sanitizedArguments(call);
+      } catch {
+        return failedTaskResult({
+          task,
+          condition,
+          started,
+          usage,
+          state,
+          adapter,
+          trace,
+          submissionAttempts,
+          failures: [`model-protocol-noncompliance:${forcedTool}:invalid-arguments`]
+        });
+      }
       input = [...input, ...(response.output ?? [])];
 
       if (forcedTool !== "submit_result") {
-        const output = await adapter.handle(call);
+        let output;
+        const toolStarted = performance.now();
+        try {
+          output = await adapter.handle(call);
+        } catch {
+          traceEntry.toolLatencyMilliseconds = performance.now() - toolStarted;
+          traceEntry.toolError = true;
+          return failedTaskResult({
+            task,
+            condition,
+            started,
+            usage,
+            state,
+            adapter,
+            trace,
+            submissionAttempts,
+            failures: [`knowledge-tool-failure:${forcedTool}`]
+          });
+        }
+        traceEntry.toolLatencyMilliseconds = performance.now() - toolStarted;
         traceEntry.toolResultBytes = Buffer.byteLength(output, "utf8");
         input.push({ type: "function_call_output", call_id: call.call_id, output });
         routeIndex += 1;
@@ -385,9 +477,11 @@ export async function runBoundedToolStateMachineV2({
 
       const submission = parseArguments(call);
       const routeFailures = validateRoute(condition, task, adapter.snapshot());
+      const evaluationStarted = performance.now();
       lastEvaluation = routeFailures.length > 0
         ? { passed: false, failures: routeFailures }
         : await evaluateSubmission({ submission, task, artifactRoot });
+      traceEntry.evaluationLatencyMilliseconds = performance.now() - evaluationStarted;
       traceEntry.evaluation = lastEvaluation;
       await onProgress(activeTaskSnapshot({
         task, condition, usage, state, adapter, trace, route, routeIndex
@@ -400,8 +494,11 @@ export async function runBoundedToolStateMachineV2({
           stratum: task.stratum,
           passed: true,
           modelCalls: callIndex + 1,
+          submissionAttempts,
           timeToValidMilliseconds: performance.now() - started,
+          elapsedMilliseconds: performance.now() - started,
           usage,
+          standardCostUsd: trace.reduce((sum, entry) => sum + entry.standardCostUsd, 0),
           costUsd: trace.reduce((sum, entry) => sum + entry.costUsd, 0),
           requestBodyBytes: state.requestBodyBytes,
           projectedInputTokens: state.projectedInputTokens,
@@ -423,7 +520,12 @@ export async function runBoundedToolStateMachineV2({
       state,
       adapter,
       trace,
-      failures: lastEvaluation?.failures ?? ["No passing submission within the call limit."]
+      submissionAttempts,
+      failures: lastEvaluation?.failures ?? [
+        usage.outputTokens >= plan.limits.maximumOutputTokensPerTask
+          ? "model-output-budget-exhausted:task-total"
+          : "No passing submission within the call limit."
+      ]
     });
   } finally {
     await adapter.close();

@@ -29,9 +29,11 @@ function plan() {
     limits: {
       maximumModelCallsPerTask: 1,
       maximumModelCallsTotal: 1,
+      maximumSubmissionAttemptsPerTask: 1,
       maximumInputTokensPerTask: 10000,
       maximumOutputTokensPerTask: 4000,
-      maximumOutputTokensPerResponse: 4000,
+      maximumKnowledgeOutputTokensPerResponse: 2000,
+      maximumSubmissionOutputTokensPerResponse: 4000,
       projectedInputBytesPerToken: 1,
       maximumRequestBodyBytesPerCall: 262144,
       maximumRequestBodyBytesPerTask: 262144,
@@ -94,6 +96,8 @@ function options({
   createResponse,
   runPlan = plan(),
   evaluateSubmission = async () => ({ passed: true, failures: [] }),
+  route = ["submit_result"],
+  createAdapter = async () => adapter(),
   onProgress = async () => {}
 }) {
   return {
@@ -103,8 +107,8 @@ function options({
     apiKey: "test-key-with-more-than-twenty-characters",
     ledger: runLedger,
     artifactRoot: "/unused",
-    route: ["submit_result"],
-    createAdapter: async () => adapter(),
+    route,
+    createAdapter,
     submitTool,
     evaluateSubmission,
     promptBuilder: () => "Build one program.",
@@ -113,11 +117,78 @@ function options({
   };
 }
 
+function emptyTool(name) {
+  return Object.freeze({
+    type: "function",
+    name,
+    description: `Call ${name}.`,
+    strict: true,
+    parameters: Object.freeze({
+      type: "object",
+      additionalProperties: false,
+      required: [],
+      properties: Object.freeze({})
+    })
+  });
+}
+
+test("gives routes with different knowledge lengths the same three submission attempts", async () => {
+  async function run(route) {
+    const runPlan = plan();
+    runPlan.limits.maximumModelCallsPerTask = 5;
+    runPlan.limits.maximumModelCallsTotal = 20;
+    runPlan.limits.maximumSubmissionAttemptsPerTask = 3;
+    runPlan.limits.maximumOutputTokensPerTask = 28000;
+    runPlan.limits.maximumKnowledgeOutputTokensPerResponse = 2000;
+    runPlan.limits.maximumSubmissionOutputTokensPerResponse = 8000;
+    const limits = [];
+    const result = await runBoundedToolStateMachineV2(options({
+      runLedger: ledger(),
+      runPlan,
+      route,
+      createAdapter: async () => ({
+        tools: route.slice(0, -1).map(emptyTool),
+        snapshot: () => ({ toolCalls: route.length - 1 }),
+        async handle() { return "{}"; },
+        async close() {}
+      }),
+      evaluateSubmission: async () => ({ passed: false, failures: ["invalid-program"] }),
+      createResponse: async ({ request }) => {
+        limits.push({ tool: request.tool_choice.name, output: request.max_output_tokens });
+        const name = request.tool_choice.name;
+        return response({
+          status: "completed",
+          outputTokens: 10,
+          reasoningTokens: 5,
+          output: [{
+            type: "function_call",
+            status: "completed",
+            name,
+            call_id: `${name}-${limits.length}`,
+            arguments: JSON.stringify(name === "submit_result" ? { status: "program" } : {})
+          }]
+        });
+      }
+    }));
+    return { result, limits };
+  }
+
+  const long = await run(["search", "read", "submit_result"]);
+  const short = await run(["search", "submit_result"]);
+  assert.equal(long.result.submissionAttempts, 3);
+  assert.equal(short.result.submissionAttempts, 3);
+  assert.equal(long.result.modelCalls, 5);
+  assert.equal(short.result.modelCalls, 4);
+  assert.deepEqual(long.limits.map(entry => entry.output), [2000, 2000, 8000, 8000, 8000]);
+  assert.deepEqual(short.limits.map(entry => entry.output), [2000, 8000, 8000, 8000]);
+});
+
 test("retains the prior evaluator failure when a correction exhausts its output budget", async () => {
   const runLedger = ledger();
   const runPlan = plan();
   runPlan.limits.maximumModelCallsPerTask = 2;
   runPlan.limits.maximumModelCallsTotal = 2;
+  runPlan.limits.maximumSubmissionAttemptsPerTask = 2;
   runPlan.limits.maximumOutputTokensPerTask = 8000;
   let call = 0;
   const result = await runBoundedToolStateMachineV2(options({
@@ -183,37 +254,37 @@ test("records max-output incompleteness as a bounded task failure and preserves 
   assert.equal(progress.at(-1).trace[0].billingUsageComplete, true);
 });
 
-test("keeps completed zero-call responses as provider protocol mismatches after accounting", async () => {
+test("records completed zero-call responses as task-local protocol failures after accounting", async () => {
   const runLedger = ledger();
-  await assert.rejects(
-    runBoundedToolStateMachineV2(options({
-      runLedger,
-      createResponse: async () => response({
-        status: "completed",
-        output: [{ type: "reasoning", status: "completed" }],
-        outputTokens: 50,
-        reasoningTokens: 40
-      })
-    })),
-    /provider-protocol-mismatch: forced submit_result, received 0 function calls/u
-  );
+  const result = await runBoundedToolStateMachineV2(options({
+    runLedger,
+    createResponse: async () => response({
+      status: "completed",
+      output: [{ type: "reasoning", status: "completed" }],
+      outputTokens: 50,
+      reasoningTokens: 40
+    })
+  }));
+  assert.equal(result.passed, false);
+  assert.deepEqual(result.failures, [
+    "model-protocol-noncompliance:forced-submit_result:received-0-function-calls"
+  ]);
   assert.equal(runLedger.modelCalls, 1);
   assert.equal(runLedger.usage.outputTokens, 50);
 });
 
-test("stops the run for unknown incomplete reasons after preserving usage", async () => {
+test("records other incomplete reasons as task-local outcomes after preserving usage", async () => {
   const runLedger = ledger();
-  await assert.rejects(
-    runBoundedToolStateMachineV2(options({
-      runLedger,
-      createResponse: async () => response({
-        status: "incomplete",
-        reason: "content_filter",
-        output: []
-      })
-    })),
-    /provider-response-status:incomplete:content_filter/u
-  );
+  const result = await runBoundedToolStateMachineV2(options({
+    runLedger,
+    createResponse: async () => response({
+      status: "incomplete",
+      reason: "content_filter",
+      output: []
+    })
+  }));
+  assert.equal(result.passed, false);
+  assert.deepEqual(result.failures, ["model-incomplete:content_filter"]);
   assert.equal(runLedger.modelCalls, 1);
   assert.equal(runLedger.usage.outputTokens, 4000);
 });
