@@ -56,9 +56,13 @@ export function planForModelV9(plan, modelId) {
 }
 
 function projectionCost(plan, maximum = false) {
-  let standard = 0;
+  const runCounts = new Map(plan.models.map(model => [model.id, 0]));
   for (const run of plan.runOrder) {
     const { model } = parseThreeModelRunV9(run);
+    runCounts.set(model, runCounts.get(model) + 1);
+  }
+  let standard = 0;
+  for (const [model, count] of runCounts) {
     const pricing = modelConfig(plan, model).pricingPerMillionTokens;
     const inputTokens = maximum
       ? plan.limits.maximumInputTokensPerTask
@@ -66,7 +70,7 @@ function projectionCost(plan, maximum = false) {
     const outputTokens = maximum
       ? plan.limits.maximumOutputTokensPerTask
       : plan.costProjection.taskRunExpectedOutputTokens;
-    standard += (
+    standard += count * (
       inputTokens * (maximum ? pricing.maximumInput : pricing.uncachedInput) +
       outputTokens * pricing.output
     ) / 1_000_000;

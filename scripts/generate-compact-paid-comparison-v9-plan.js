@@ -56,11 +56,17 @@ function committedFile(commit, relative) {
 
 function projection(runOrder, models, inputTokens, outputTokens, maximum = false) {
   const byId = new Map(models.map(model => [model.id, model]));
-  const standard = runOrder.reduce((sum, run) => {
+  const runCounts = new Map(models.map(model => [model.id, 0]));
+  for (const run of runOrder) {
     const modelId = run.split(":").at(-2);
+    runCounts.set(modelId, runCounts.get(modelId) + 1);
+  }
+  const standard = [...runCounts].reduce((sum, [modelId, count]) => {
     const pricing = byId.get(modelId).pricingPerMillionTokens;
     const inputRate = maximum ? pricing.maximumInput : pricing.uncachedInput;
-    return sum + (inputTokens * inputRate + outputTokens * pricing.output) / 1_000_000;
+    return sum + count * (
+      inputTokens * inputRate + outputTokens * pricing.output
+    ) / 1_000_000;
   }, 0);
   return { standard, conservative: standard * 1.1 };
 }
