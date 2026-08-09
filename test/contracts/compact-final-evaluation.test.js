@@ -89,18 +89,21 @@ test("preserves the second frozen final attempt and its three failures", async (
   assert.equal(result.spendUsd, 0);
 });
 
-test("freezes the third final corpus before its one-shot execution", async () => {
-  const [corpusBytes, datasetsBytes, oracleBytes] = await Promise.all([
+test("preserves the third frozen final attempt and its passing result", async () => {
+  const [corpusBytes, datasetsBytes, oracleBytes, resultBytes] = await Promise.all([
     readFile(path.join(thirdDirectory, "corpus.json")),
     readFile(path.join(thirdDirectory, "datasets.json")),
-    readFile(path.join(thirdDirectory, "ROUTE_ORACLE.json"))
+    readFile(path.join(thirdDirectory, "ROUTE_ORACLE.json")),
+    readFile(path.join(thirdDirectory, "RESULT.json"))
   ]);
   const corpus = JSON.parse(corpusBytes);
   const oracle = JSON.parse(oracleBytes);
+  const result = JSON.parse(resultBytes);
 
   assert.equal(sha256(corpusBytes), "332cbe1d35a02038a8e0e7a1f2c63136d0114fa2d5c8eb2a5880f8139f17f3a0");
   assert.equal(sha256(datasetsBytes), "eb57f77c860d1974a878d66fbb752fdc0f9b6f6c49e9d5556df264c15462e1ed");
   assert.equal(sha256(oracleBytes), "38662943c5d4e1cda1783ab84df724416a5760d9dc95f90cbe3054eee0a66688");
+  assert.equal(sha256(resultBytes), "001a1f134eb3ebfce3bf044fc20d1392f1c325e94b29b2400164f6ad73fac7e9");
   assert.equal(corpus.productCandidateCommit, "4e211ba418cd437d7c66c4fb986fcc714cf579ea");
   assert.equal(oracle.productCandidateCommit, corpus.productCandidateCommit);
   assert.deepEqual(oracle.roleCounts, {
@@ -115,4 +118,15 @@ test("freezes the third final corpus before its one-shot execution", async () =>
   });
   assert.equal(oracle.tasks.length, 38);
   assert.equal(oracle.tasks.length * oracle.conditions.length, 152);
+  assert.equal(result.oracleSha256, sha256(oracleBytes));
+  assert.equal(result.productCandidateCommit, corpus.productCandidateCommit);
+  assert.equal(result.tasks, 38);
+  assert.equal(result.routeChecks, 152);
+  assert.equal(result.evaluatorChecks, 38);
+  assert.equal(result.passed, true);
+  assert.equal(result.evaluations.length, 38);
+  assert.deepEqual(result.evaluations.filter(entry => !entry.passed), []);
+  assert.equal(result.externalCalls, 0);
+  assert.equal(result.credentialReads, 0);
+  assert.equal(result.spendUsd, 0);
 });

@@ -1,4 +1,4 @@
-# Gate R54-P5-G — Full Evaluation Precheck Failure Decision
+# Gate R54-P5-G — Full Evaluation Precheck and Repair Decision
 
 ## Gate state
 
@@ -8,11 +8,13 @@ Canonical evidence: [`FULL_PRECHECK.md`](./FULL_PRECHECK.md).
 
 ## 현재 결론
 
-사용자가 권장한 38 tasks × A/B/C/D × 2 repetitions 범위를 구현하기 전에 strict executable precheck를 추가했다. Knowledge
-route 152 / 152는 통과했지만 complete evaluator는 19 / 38만 통과했다. Supported program은 7 / 26만 실행됐으므로 exact
-paid plan을 동결하거나 약 `$21.888` expected spend를 요청할 수 없다.
+초기 strict executable precheck의 `19 / 38` 실패를 근거로 사용자가 Option A 수리를 승인했다. Runtime closure와 evaluator를
+일반 규칙으로 수리하고 실패한 final v1/v2를 불변 증거로 보존한 뒤, 독립 intent oracle을 가진 fresh final v3가
+`38 / 38`을 통과했다.
 
-현재까지 이 Gate 준비에서 credential reads / external calls / spend는 0 / 0 / `$0`다.
+Option A의 무비용 수리·검증 범위는 완료됐다. 현재까지 이 Gate 준비에서 credential reads / external calls / spend는
+`0 / 0 / $0`다. 다음 단계는 새 후보를 대상으로 한 replacement paid smoke의 정확한 범위·호출 수·비용 상한을 별도 승인받는
+것이며, 이 Gate의 기존 승인은 그 실행을 열지 않는다.
 
 ## Options
 
@@ -157,3 +159,27 @@ query/dataset의 final v3에서만 검증한다.
 기존 development set의 현재 의미 분류는 supported `19`, terminal unsupported `12`, needs-input `7`로 교정됐다. 과거
 `21 / 12 / 5` snapshot은 당시 후보의 증거로 보존하되, 두 task를 실행 가능한 것으로 과장하지 않는다. 교정된 38개 closure와
 152개 route는 모두 무비용으로 통과한다.
+
+## Fresh final v3 실행 결과
+
+- Frozen corpus checkpoint: `d33b2ee9`
+- Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`
+- Tasks / routes / evaluator checks: `38 / 38`, `152 / 152`, `38 / 38`
+- Roles: supported `26`, terminal unsupported `6`, needs-input `6`
+- Prior overlap: normalized query `0`, dataset contents `0`
+- Independent intent oracle: constraints, ordered plan IDs, unsupported IDs와 unresolved IDs `38 / 38`
+- Oracle SHA-256: `38662943c5d4e1cda1783ab84df724416a5760d9dc95f90cbe3054eee0a66688`
+- Result SHA-256: `001a1f134eb3ebfce3bf044fc20d1392f1c325e94b29b2400164f6ad73fac7e9`
+- Result: `38 / 38` closed, final verdict `passed`
+- Credential reads / external calls / spend: `0 / 0 / $0`
+
+Final v3도 제품을 바꾸지 않은 동결 체크포인트에서 정확히 한 번 실행했다. `corpus.json`, `datasets.json`,
+`ROUTE_ORACLE.json`, `RESULT.json`의 바이트 해시와 후보 커밋은 회귀 테스트로 잠겼으며 이후 수정하지 않는다. 이 성공은
+runtime authoring closure와 evaluator가 fresh corpus에서 일치한다는 무비용 근거다. 외부 LLM 품질과 route별 효율 개선은 아직
+입증하지 않으므로 replacement paid smoke와 full paid evaluation을 대신하지 않는다.
+
+## 다음 승인 경계
+
+다음 Gate는 product candidate `4e211ba4`에만 적용되는 representative paid smoke의 task 표본, A/B/C/D route, 반복 수,
+expected/max cost와 hard cap을 먼저 동결해야 한다. Credential read, external model call, spend, v4 재사용, full paid evaluation,
+PR, merge, publish, deploy와 release는 새 승인 전까지 계속 차단한다.

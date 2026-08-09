@@ -1,0 +1,1222 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-final-v3-result",
+  "oracleSha256": "38662943c5d4e1cda1783ab84df724416a5760d9dc95f90cbe3054eee0a66688",
+  "productCandidateCommit": "4e211ba418cd437d7c66c4fb986fcc714cf579ea",
+  "tasks": 38,
+  "routeChecks": 152,
+  "evaluatorChecks": 38,
+  "roles": {
+    "supported": 26,
+    "unsupported": 6,
+    "needs-input": 6
+  },
+  "passed": true,
+  "externalCalls": 0,
+  "credentialReads": 0,
+  "spendUsd": 0,
+  "routes": [
+    {
+      "task": "final3-01-scatter-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-01-scatter-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-01-scatter-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-01-scatter-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-02-line-pdf",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-02-line-pdf",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-02-line-pdf",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-02-line-pdf",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-03-bars-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-03-bars-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-03-bars-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-03-bars-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-04-histogram-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-04-histogram-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-04-histogram-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-04-histogram-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-05-heatmap-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-05-heatmap-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-05-heatmap-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-05-heatmap-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-06-parallel-pdf",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-06-parallel-pdf",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-06-parallel-pdf",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-06-parallel-pdf",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-07-box-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-07-box-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-07-box-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-07-box-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-08-violin-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-08-violin-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-08-violin-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-08-violin-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-09-gradient-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-09-gradient-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-09-gradient-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-09-gradient-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-10-density-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-10-density-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-10-density-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-10-density-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-11-tick-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-11-tick-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-11-tick-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-11-tick-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-12-rule-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-12-rule-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-12-rule-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-12-rule-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-13-arc-pdf",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-13-arc-pdf",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-13-arc-pdf",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-13-arc-pdf",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-14-bins-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-14-bins-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-14-bins-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-14-bins-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-15-regression-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-15-regression-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-15-regression-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-15-regression-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-16-window-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-16-window-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-16-window-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-16-window-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-17-month-bars-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-17-month-bars-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-17-month-bars-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-17-month-bars-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-18-raw-bars-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-18-raw-bars-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-18-raw-bars-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-18-raw-bars-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-19-jitter-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-19-jitter-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-19-jitter-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-19-jitter-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-20-highlight-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-20-highlight-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-20-highlight-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-20-highlight-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-21-facet-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-21-facet-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-21-facet-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-21-facet-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-22-composition-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-22-composition-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-22-composition-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-22-composition-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-23-labels-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-23-labels-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-23-labels-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-23-labels-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-24-interval-pdf",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-24-interval-pdf",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-24-interval-pdf",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-24-interval-pdf",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-25-point-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-25-point-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-25-point-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-25-point-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-26-log-point-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-26-log-point-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-26-log-point-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-26-log-point-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-27-geo",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-27-geo",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-27-geo",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-27-geo",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-28-animation",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-28-animation",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-28-animation",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-28-animation",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-29-interaction",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-29-interaction",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-29-interaction",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-29-interaction",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-30-three-d",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-30-three-d",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-30-three-d",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-30-three-d",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-31-jpeg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-31-jpeg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-31-jpeg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-31-jpeg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-32-area-dash",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-32-area-dash",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-32-area-dash",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-32-area-dash",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-33-chart-type",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-33-chart-type",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-33-chart-type",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-33-chart-type",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-34-renderer",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-34-renderer",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-34-renderer",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-34-renderer",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-35-selection-legend",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-35-selection-legend",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-35-selection-legend",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-35-selection-legend",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-36-composition-children",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-36-composition-children",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-36-composition-children",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-36-composition-children",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-37-rule-endpoint",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-37-rule-endpoint",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-37-rule-endpoint",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-37-rule-endpoint",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final3-38-scale-consumer",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final3-38-scale-consumer",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final3-38-scale-consumer",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final3-38-scale-consumer",
+      "condition": "D",
+      "passed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "task": "final3-01-scatter-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "17fb5d1dadb1876ec9692f2355c55889123e8cbfc61e32d3d88a9bb0fa783cca",
+      "sourceBytes": 582,
+      "outputBytes": 5156,
+      "actions": [
+        "createScatterPlot"
+      ]
+    },
+    {
+      "task": "final3-02-line-pdf",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "3b87d5850e0d5ecd5bc4034ed68cf51f44965488a3fd4c28aa6e471799ab3e85",
+      "sourceBytes": 534,
+      "outputBytes": 7637,
+      "actions": [
+        "createLinePlot"
+      ]
+    },
+    {
+      "task": "final3-03-bars-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "4c5630664a7ddafcc7aad06f30e9c8cfffb26d35feadeffba7e7118539be669c",
+      "sourceBytes": 769,
+      "outputBytes": 14917,
+      "actions": [
+        "createScale",
+        "createBarPlot"
+      ]
+    },
+    {
+      "task": "final3-04-histogram-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "1a22e8a935a9ecd88490f1ba00bc10f3d101cf751ec5b4a672335db899fab813",
+      "sourceBytes": 485,
+      "outputBytes": 5924,
+      "actions": [
+        "createHistogram"
+      ]
+    },
+    {
+      "task": "final3-05-heatmap-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "f38317b6430c445d0f804324247c8a893137aa84ff6c4a0707c1dc073474930b",
+      "sourceBytes": 554,
+      "outputBytes": 12318,
+      "actions": [
+        "createHeatmap",
+        "createGrid"
+      ]
+    },
+    {
+      "task": "final3-06-parallel-pdf",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "752936134d83644a6ab0a3158c8ded7e4176d464bb02905fb1376307e5056211",
+      "sourceBytes": 560,
+      "outputBytes": 22189,
+      "actions": [
+        "createParallelCoordinates"
+      ]
+    },
+    {
+      "task": "final3-07-box-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "d6fc5dcc83581614c0ca5a6e1960cdf707c99384cd8ba82c79e204d85d1323ce",
+      "sourceBytes": 535,
+      "outputBytes": 10483,
+      "actions": [
+        "createBoxPlot"
+      ]
+    },
+    {
+      "task": "final3-08-violin-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "e04e77ff7ad43bc80d801ce4bfd3d75f0f71d35b0a82fc6876690c051b7eab9a",
+      "sourceBytes": 512,
+      "outputBytes": 22505,
+      "actions": [
+        "createViolinPlot"
+      ]
+    },
+    {
+      "task": "final3-09-gradient-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "911e1b1ff744599b716815caca960731aa8f22d9eaf6ff42085d94c345ce837b",
+      "sourceBytes": 663,
+      "outputBytes": 18239,
+      "actions": [
+        "createScale",
+        "createGradientPlot"
+      ]
+    },
+    {
+      "task": "final3-10-density-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "8007daa4f5d07c0d87b16ce65caab027567a4ecebb24df6e69843d7e49e1132d",
+      "sourceBytes": 560,
+      "outputBytes": 11337,
+      "actions": [
+        "createAreaMark",
+        "encodeDensity",
+        "createYAxis"
+      ]
+    },
+    {
+      "task": "final3-11-tick-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "e307eab9b9bd274eb2294ab57e48ae8e7fd703b20076dd79ba116d853efdd1cd",
+      "sourceBytes": 612,
+      "outputBytes": 4941,
+      "actions": [
+        "createTickMark",
+        "encodeX",
+        "encodeAngle",
+        "createXAxis"
+      ]
+    },
+    {
+      "task": "final3-12-rule-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "2b220aafba511e2a0ab6d560bbca8ad4fdc104b45979979cfb417e9f9579dc3f",
+      "sourceBytes": 673,
+      "outputBytes": 7875,
+      "actions": [
+        "createRuleMark",
+        "encodeY",
+        "encodeStrokeWidth",
+        "createGrid",
+        "createTitle"
+      ]
+    },
+    {
+      "task": "final3-13-arc-pdf",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "0c21d6d88ed2283d6f7ca3042b90f16f125ade3960bf2f87ce9c4728b06d395d",
+      "sourceBytes": 632,
+      "outputBytes": 1003,
+      "actions": [
+        "createArcMark",
+        "encodeTheta",
+        "encodeR"
+      ]
+    },
+    {
+      "task": "final3-14-bins-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "66b6f212c9cbf28b9693b99c67d7387d05a59ab14ce8a01936b11b6fa91bb962",
+      "sourceBytes": 1294,
+      "outputBytes": 6698,
+      "actions": [
+        "createBin2DData",
+        "createScale",
+        "createRectMark",
+        "encodeX",
+        "encodeX2",
+        "encodeY",
+        "encodeY2",
+        "encodeColor",
+        "createLegend"
+      ]
+    },
+    {
+      "task": "final3-15-regression-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "9846bb9855f434339d1dcb4366021c468394ea571c466e1f24dd9b1fe03bbe3b",
+      "sourceBytes": 625,
+      "outputBytes": 4825,
+      "actions": [
+        "createPointMark",
+        "encodeX",
+        "encodeY",
+        "createRegression",
+        "createAxes"
+      ]
+    },
+    {
+      "task": "final3-16-window-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "4c392aa6e9dcfeb0798916d7374ee10cb6a518aa2427b7f2a859390552db49ce",
+      "sourceBytes": 960,
+      "outputBytes": 16953,
+      "actions": [
+        "filterData",
+        "createWindowData",
+        "createScale",
+        "createLinePlot"
+      ]
+    },
+    {
+      "task": "final3-17-month-bars-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "bcefe0394928e3740fa32cda866931e8b71808f67d73c42b2d7c7a8e6facc274",
+      "sourceBytes": 700,
+      "outputBytes": 6102,
+      "actions": [
+        "createTimeUnitData",
+        "createBarPlot"
+      ]
+    },
+    {
+      "task": "final3-18-raw-bars-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "cff5d4e19afdf20751737b689bc1665f10408e0bae5c6aec89706c524c32138e",
+      "sourceBytes": 738,
+      "outputBytes": 4234,
+      "actions": [
+        "createBarMark",
+        "encodeX",
+        "encodeY",
+        "encodeColor",
+        "createGrid",
+        "orderCategories"
+      ]
+    },
+    {
+      "task": "final3-19-jitter-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "cf07793901884cf5924f969853cd057ad30e3b548b761b3a6dd0b763a8ae3cc0",
+      "sourceBytes": 783,
+      "outputBytes": 11719,
+      "actions": [
+        "createScatterPlot",
+        "encodeOpacity",
+        "jitterPoints"
+      ]
+    },
+    {
+      "task": "final3-20-highlight-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "4c076a663461cdb16e3804c44bd348f141f49455ae76f410de7a43278590f0cc",
+      "sourceBytes": 751,
+      "outputBytes": 5156,
+      "actions": [
+        "createScatterPlot",
+        "selectMarks",
+        "highlightMarks"
+      ]
+    },
+    {
+      "task": "final3-21-facet-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "d5b8c2ebaf047fd95f28a5d65f8dda0538deeec15b96d57dd16656a1f37c6952",
+      "sourceBytes": 670,
+      "outputBytes": 18787,
+      "actions": [
+        "createScatterPlot",
+        "facet"
+      ]
+    },
+    {
+      "task": "final3-22-composition-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "2057fa46fac24a1211908b9ec9163845d8a1ad9695443d0f7a89ee13d60ded5f",
+      "sourceBytes": 615,
+      "outputBytes": 10602,
+      "actions": [
+        "hconcat"
+      ]
+    },
+    {
+      "task": "final3-23-labels-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "8fc0b033d07b28da80a7227d94765b7ee682d39a42cd05b618fe9a0c872b2b89",
+      "sourceBytes": 714,
+      "outputBytes": 6963,
+      "actions": [
+        "createPointMark",
+        "encodeX",
+        "encodeY",
+        "createTextMark",
+        "encodeText",
+        "layoutLabels"
+      ]
+    },
+    {
+      "task": "final3-24-interval-pdf",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "a24988875db27baf0632800b3dffefae980db1cc687b2bd4c0fa4df729bec027",
+      "sourceBytes": 970,
+      "outputBytes": 21706,
+      "actions": [
+        "createIntervalData",
+        "createBoxPlot",
+        "createErrorBar"
+      ]
+    },
+    {
+      "task": "final3-25-point-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "26d50ea38e33f44bc9fe54d40a77f7cd1aba45f2b83deb08b85d99d82033c250",
+      "sourceBytes": 710,
+      "outputBytes": 1380,
+      "actions": [
+        "createPointMark",
+        "encodeX",
+        "encodeY",
+        "encodeSize",
+        "encodeShape",
+        "encodeOpacity"
+      ]
+    },
+    {
+      "task": "final3-26-log-point-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "961b6b84f1f2c8cfb90626a52ca5a9051d84a646c7833038ce08c234631d0723",
+      "sourceBytes": 674,
+      "outputBytes": 3227,
+      "actions": [
+        "createScale",
+        "createPointMark",
+        "encodeX",
+        "encodeY",
+        "createAxes"
+      ]
+    },
+    {
+      "task": "final3-27-geo",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-28-animation",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-29-interaction",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-30-three-d",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-31-jpeg",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-32-area-dash",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-33-chart-type",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-34-renderer",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-35-selection-legend",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-36-composition-children",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-37-rule-endpoint",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final3-38-scale-consumer",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    }
+  ]
+}
