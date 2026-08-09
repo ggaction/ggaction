@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const directory = path.join(root, "evaluation", "compact-authoring-final-v1");
 const secondDirectory = path.join(root, "evaluation", "compact-authoring-final-v2");
+const thirdDirectory = path.join(root, "evaluation", "compact-authoring-final-v3");
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -86,4 +87,32 @@ test("preserves the second frozen final attempt and its three failures", async (
   assert.equal(result.externalCalls, 0);
   assert.equal(result.credentialReads, 0);
   assert.equal(result.spendUsd, 0);
+});
+
+test("freezes the third final corpus before its one-shot execution", async () => {
+  const [corpusBytes, datasetsBytes, oracleBytes] = await Promise.all([
+    readFile(path.join(thirdDirectory, "corpus.json")),
+    readFile(path.join(thirdDirectory, "datasets.json")),
+    readFile(path.join(thirdDirectory, "ROUTE_ORACLE.json"))
+  ]);
+  const corpus = JSON.parse(corpusBytes);
+  const oracle = JSON.parse(oracleBytes);
+
+  assert.equal(sha256(corpusBytes), "332cbe1d35a02038a8e0e7a1f2c63136d0114fa2d5c8eb2a5880f8139f17f3a0");
+  assert.equal(sha256(datasetsBytes), "eb57f77c860d1974a878d66fbb752fdc0f9b6f6c49e9d5556df264c15462e1ed");
+  assert.equal(sha256(oracleBytes), "38662943c5d4e1cda1783ab84df724416a5760d9dc95f90cbe3054eee0a66688");
+  assert.equal(corpus.productCandidateCommit, "4e211ba418cd437d7c66c4fb986fcc714cf579ea");
+  assert.equal(oracle.productCandidateCommit, corpus.productCandidateCommit);
+  assert.deepEqual(oracle.roleCounts, {
+    supported: 26,
+    unsupported: 6,
+    "needs-input": 6
+  });
+  assert.deepEqual(oracle.overlap, {
+    normalizedQueries: 0,
+    datasetContents: 0,
+    previousProgramSources: 23
+  });
+  assert.equal(oracle.tasks.length, 38);
+  assert.equal(oracle.tasks.length * oracle.conditions.length, 152);
 });
