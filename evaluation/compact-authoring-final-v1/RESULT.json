@@ -1,0 +1,1218 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-final-v1-result",
+  "oracleSha256": "fcddf6ff7b0ac885f65cd68d62827695df27435b2a955b52781e138543671835",
+  "productCandidateCommit": "ccc8997717a554ee49c45baf089211922609ef0b",
+  "tasks": 38,
+  "routeChecks": 152,
+  "evaluatorChecks": 38,
+  "roles": {
+    "supported": 26,
+    "unsupported": 6,
+    "needs-input": 6
+  },
+  "passed": false,
+  "externalCalls": 0,
+  "credentialReads": 0,
+  "spendUsd": 0,
+  "routes": [
+    {
+      "task": "final-01-scatter-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-01-scatter-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-01-scatter-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-01-scatter-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-02-line-pdf",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-02-line-pdf",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-02-line-pdf",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-02-line-pdf",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-03-bars-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-03-bars-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-03-bars-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-03-bars-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-04-histogram-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-04-histogram-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-04-histogram-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-04-histogram-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-05-heatmap-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-05-heatmap-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-05-heatmap-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-05-heatmap-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-06-parallel-pdf",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-06-parallel-pdf",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-06-parallel-pdf",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-06-parallel-pdf",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-07-box-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-07-box-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-07-box-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-07-box-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-08-violin-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-08-violin-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-08-violin-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-08-violin-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-09-gradient-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-09-gradient-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-09-gradient-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-09-gradient-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-10-density-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-10-density-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-10-density-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-10-density-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-11-tick-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-11-tick-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-11-tick-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-11-tick-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-12-rule-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-12-rule-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-12-rule-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-12-rule-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-13-arc-pdf",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-13-arc-pdf",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-13-arc-pdf",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-13-arc-pdf",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-14-bins-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-14-bins-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-14-bins-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-14-bins-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-15-regression-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-15-regression-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-15-regression-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-15-regression-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-16-window-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-16-window-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-16-window-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-16-window-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-17-month-bars-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-17-month-bars-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-17-month-bars-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-17-month-bars-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-18-raw-bars-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-18-raw-bars-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-18-raw-bars-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-18-raw-bars-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-19-jitter-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-19-jitter-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-19-jitter-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-19-jitter-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-20-highlight-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-20-highlight-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-20-highlight-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-20-highlight-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-21-facet-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-21-facet-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-21-facet-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-21-facet-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-22-composition-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-22-composition-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-22-composition-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-22-composition-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-23-labels-png",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-23-labels-png",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-23-labels-png",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-23-labels-png",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-24-interval-pdf",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-24-interval-pdf",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-24-interval-pdf",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-24-interval-pdf",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-25-point-svg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-25-point-svg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-25-point-svg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-25-point-svg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-26-density-time-canvas",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-26-density-time-canvas",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-26-density-time-canvas",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-26-density-time-canvas",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-27-geo",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-27-geo",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-27-geo",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-27-geo",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-28-animation",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-28-animation",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-28-animation",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-28-animation",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-29-interaction",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-29-interaction",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-29-interaction",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-29-interaction",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-30-three-d",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-30-three-d",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-30-three-d",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-30-three-d",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-31-jpeg",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-31-jpeg",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-31-jpeg",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-31-jpeg",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-32-area-dash",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-32-area-dash",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-32-area-dash",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-32-area-dash",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-33-chart-type",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-33-chart-type",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-33-chart-type",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-33-chart-type",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-34-renderer",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-34-renderer",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-34-renderer",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-34-renderer",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-35-selection-owner",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-35-selection-owner",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-35-selection-owner",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-35-selection-owner",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-36-composition-children",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-36-composition-children",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-36-composition-children",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-36-composition-children",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-37-label-position",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-37-label-position",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-37-label-position",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-37-label-position",
+      "condition": "D",
+      "passed": true
+    },
+    {
+      "task": "final-38-legend-channel",
+      "condition": "A",
+      "passed": true
+    },
+    {
+      "task": "final-38-legend-channel",
+      "condition": "B",
+      "passed": true
+    },
+    {
+      "task": "final-38-legend-channel",
+      "condition": "C",
+      "passed": true
+    },
+    {
+      "task": "final-38-legend-channel",
+      "condition": "D",
+      "passed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "task": "final-01-scatter-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "17fb5d1dadb1876ec9692f2355c55889123e8cbfc61e32d3d88a9bb0fa783cca",
+      "sourceBytes": 582,
+      "outputBytes": 4383,
+      "actions": [
+        "createScatterPlot"
+      ]
+    },
+    {
+      "task": "final-02-line-pdf",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "3b87d5850e0d5ecd5bc4034ed68cf51f44965488a3fd4c28aa6e471799ab3e85",
+      "sourceBytes": 534,
+      "outputBytes": 7718,
+      "actions": [
+        "createLinePlot"
+      ]
+    },
+    {
+      "task": "final-03-bars-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "4c5630664a7ddafcc7aad06f30e9c8cfffb26d35feadeffba7e7118539be669c",
+      "sourceBytes": 769,
+      "outputBytes": 12877,
+      "actions": [
+        "createScale",
+        "createBarPlot"
+      ]
+    },
+    {
+      "task": "final-04-histogram-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "1a22e8a935a9ecd88490f1ba00bc10f3d101cf751ec5b4a672335db899fab813",
+      "sourceBytes": 485,
+      "outputBytes": 6906,
+      "actions": [
+        "createHistogram"
+      ]
+    },
+    {
+      "task": "final-05-heatmap-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "f38317b6430c445d0f804324247c8a893137aa84ff6c4a0707c1dc073474930b",
+      "sourceBytes": 554,
+      "outputBytes": 11673,
+      "actions": [
+        "createHeatmap",
+        "createGrid"
+      ]
+    },
+    {
+      "task": "final-06-parallel-pdf",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "752936134d83644a6ab0a3158c8ded7e4176d464bb02905fb1376307e5056211",
+      "sourceBytes": 560,
+      "outputBytes": 19549,
+      "actions": [
+        "createParallelCoordinates"
+      ]
+    },
+    {
+      "task": "final-07-box-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "d6fc5dcc83581614c0ca5a6e1960cdf707c99384cd8ba82c79e204d85d1323ce",
+      "sourceBytes": 535,
+      "outputBytes": 9531,
+      "actions": [
+        "createBoxPlot"
+      ]
+    },
+    {
+      "task": "final-08-violin-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "5f90dffd2e12f1a6abee0469d57da68753ab68fb77b38fb4b1a523400a97e084",
+      "sourceBytes": 634,
+      "outputBytes": 18818,
+      "actions": [
+        "createDensityData",
+        "createViolinPlot"
+      ]
+    },
+    {
+      "task": "final-09-gradient-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "911e1b1ff744599b716815caca960731aa8f22d9eaf6ff42085d94c345ce837b",
+      "sourceBytes": 663,
+      "outputBytes": 18237,
+      "actions": [
+        "createScale",
+        "createGradientPlot"
+      ]
+    },
+    {
+      "task": "final-10-density-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "e9ff29f5c5029d2b8e6348c7f22da8f51859763ed4205213a4f97998fb483b15",
+      "sourceBytes": 560,
+      "outputBytes": 10197,
+      "actions": [
+        "createAreaMark",
+        "encodeDensity",
+        "createYAxis"
+      ]
+    },
+    {
+      "task": "final-11-tick-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "e307eab9b9bd274eb2294ab57e48ae8e7fd703b20076dd79ba116d853efdd1cd",
+      "sourceBytes": 612,
+      "outputBytes": 4610,
+      "actions": [
+        "createTickMark",
+        "encodeX",
+        "encodeAngle",
+        "createXAxis"
+      ]
+    },
+    {
+      "task": "final-12-rule-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "eaeb776ffaffcd33c475c0a80828479abb1e06217b9d3fef8cfcdb5bde6a5239",
+      "sourceBytes": 717,
+      "outputBytes": 5889,
+      "actions": [
+        "createRuleMark",
+        "encodeY",
+        "encodeX",
+        "encodeStrokeWidth",
+        "createGrid",
+        "createTitle"
+      ]
+    },
+    {
+      "task": "final-13-arc-pdf",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "0c21d6d88ed2283d6f7ca3042b90f16f125ade3960bf2f87ce9c4728b06d395d",
+      "sourceBytes": 632,
+      "outputBytes": 1007,
+      "actions": [
+        "createArcMark",
+        "encodeTheta",
+        "encodeR"
+      ]
+    },
+    {
+      "task": "final-14-bins-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "66b6f212c9cbf28b9693b99c67d7387d05a59ab14ce8a01936b11b6fa91bb962",
+      "sourceBytes": 1294,
+      "outputBytes": 6693,
+      "actions": [
+        "createBin2DData",
+        "createScale",
+        "createRectMark",
+        "encodeX",
+        "encodeX2",
+        "encodeY",
+        "encodeY2",
+        "encodeColor",
+        "createLegend"
+      ]
+    },
+    {
+      "task": "final-15-regression-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "9846bb9855f434339d1dcb4366021c468394ea571c466e1f24dd9b1fe03bbe3b",
+      "sourceBytes": 625,
+      "outputBytes": 5115,
+      "actions": [
+        "createPointMark",
+        "encodeX",
+        "encodeY",
+        "createRegression",
+        "createAxes"
+      ]
+    },
+    {
+      "task": "final-16-window-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "4c392aa6e9dcfeb0798916d7374ee10cb6a518aa2427b7f2a859390552db49ce",
+      "sourceBytes": 960,
+      "outputBytes": 15835,
+      "actions": [
+        "filterData",
+        "createWindowData",
+        "createScale",
+        "createLinePlot"
+      ]
+    },
+    {
+      "task": "final-17-month-bars-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "bcefe0394928e3740fa32cda866931e8b71808f67d73c42b2d7c7a8e6facc274",
+      "sourceBytes": 700,
+      "outputBytes": 5451,
+      "actions": [
+        "createTimeUnitData",
+        "createBarPlot"
+      ]
+    },
+    {
+      "task": "final-18-raw-bars-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "cff5d4e19afdf20751737b689bc1665f10408e0bae5c6aec89706c524c32138e",
+      "sourceBytes": 738,
+      "outputBytes": 4123,
+      "actions": [
+        "createBarMark",
+        "encodeX",
+        "encodeY",
+        "encodeColor",
+        "createGrid",
+        "orderCategories"
+      ]
+    },
+    {
+      "task": "final-19-jitter-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "cf07793901884cf5924f969853cd057ad30e3b548b761b3a6dd0b763a8ae3cc0",
+      "sourceBytes": 783,
+      "outputBytes": 9559,
+      "actions": [
+        "createScatterPlot",
+        "encodeOpacity",
+        "jitterPoints"
+      ]
+    },
+    {
+      "task": "final-20-highlight-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "4c076a663461cdb16e3804c44bd348f141f49455ae76f410de7a43278590f0cc",
+      "sourceBytes": 751,
+      "outputBytes": 4431,
+      "actions": [
+        "createScatterPlot",
+        "selectMarks",
+        "highlightMarks"
+      ]
+    },
+    {
+      "task": "final-21-facet-png",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "d5b8c2ebaf047fd95f28a5d65f8dda0538deeec15b96d57dd16656a1f37c6952",
+      "sourceBytes": 670,
+      "outputBytes": 15460,
+      "actions": [
+        "createScatterPlot",
+        "facet"
+      ]
+    },
+    {
+      "task": "final-22-composition-svg",
+      "role": "supported",
+      "passed": false,
+      "failures": [
+        "action-plan-mismatch:[\"createScatterPlot\"]"
+      ],
+      "sourceSha256": "b9dcf4d30813e28a7f4304bd8ed3c7de010f1e21e0640351b81f4e1c66edf19d",
+      "sourceBytes": 551,
+      "outputBytes": 4383,
+      "actions": [
+        "createScatterPlot"
+      ]
+    },
+    {
+      "task": "final-23-labels-png",
+      "role": "supported",
+      "passed": false,
+      "failures": [
+        "Error: Graphic \"point:0\" requires a finite x property."
+      ],
+      "sourceSha256": "4f05faf7054c615136dda57cd88dfb23498a3b64fcdc26fe13b5953f6b0d7aae"
+    },
+    {
+      "task": "final-24-interval-pdf",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "a24988875db27baf0632800b3dffefae980db1cc687b2bd4c0fa4df729bec027",
+      "sourceBytes": 970,
+      "outputBytes": 19546,
+      "actions": [
+        "createIntervalData",
+        "createBoxPlot",
+        "createErrorBar"
+      ]
+    },
+    {
+      "task": "final-25-point-svg",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "220ae89d4cd366a4f59fad068b442de5b8f13d3cd503d5fe3cc72455b5c7d0ad",
+      "sourceBytes": 710,
+      "outputBytes": 1371,
+      "actions": [
+        "createPointMark",
+        "encodeY",
+        "encodeX",
+        "encodeSize",
+        "encodeShape",
+        "encodeOpacity"
+      ]
+    },
+    {
+      "task": "final-26-density-time-canvas",
+      "role": "supported",
+      "passed": true,
+      "failures": [],
+      "sourceSha256": "5c056093eaa10db72d621586c6ef49008018b8dc5804d64d2edffc7cf442b821",
+      "sourceBytes": 728,
+      "outputBytes": 10909,
+      "actions": [
+        "createTimeUnitData",
+        "createScale",
+        "createAreaMark",
+        "encodeDensity",
+        "createYAxis"
+      ]
+    },
+    {
+      "task": "final-27-geo",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-28-animation",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-29-interaction",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-30-three-d",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-31-jpeg",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-32-area-dash",
+      "role": "unsupported",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-33-chart-type",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-34-renderer",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-35-selection-owner",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-36-composition-children",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-37-label-position",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "task": "final-38-legend-channel",
+      "role": "needs-input",
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

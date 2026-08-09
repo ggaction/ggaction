@@ -97,3 +97,24 @@ channel이 없는 legend는 open decision으로 분류했다. 따라서 개발 c
 
 이 체크포인트는 development set 수리만 완료한다. Fresh final corpus, query/dataset/program overlap 검사와 새 candidate의
 replacement paid-smoke approval checkpoint는 아직 남아 있다.
+
+## Fresh final v1 실행 결과
+
+- Frozen corpus checkpoint: `61e99c06`
+- Product candidate: `ccc8997717a554ee49c45baf089211922609ef0b`
+- Tasks / routes: `38 / 38`, `152 / 152`
+- Roles: supported `26`, terminal unsupported `6`, needs-input `6`
+- Prior overlap: normalized query `0`, dataset contents `0`
+- Oracle SHA-256: `fcddf6ff7b0ac885f65cd68d62827695df27435b2a955b52781e138543671835`
+- Result: `36 / 38` closed, final verdict `failed`
+- Credential reads / external calls / spend: `0 / 0 / $0`
+
+실패 두 건은 동결 코퍼스에서 제품을 바꾸지 않고 그대로 보존한다.
+
+1. `final-22-composition-svg`: canonical evaluator source가 `hconcat` runtime build step을 누락해 실제로는
+   scatter program만 render했다. Product composition 결함이 아니라 evaluator source-composition 결함이다.
+2. `final-23-labels-png`: resolver가 point/text mark를 모두 position encoding보다 먼저 배치해 position이 없는 point를
+   남겼다. Overlay authoring은 `point → x/y → text → text/layout` 의 dependency order가 필요한 제품 결함이다.
+
+Final v1 `corpus.json`, `datasets.json`, `ROUTE_ORACLE.json`, `RESULT.json`은 이후 수정하지 않는다. 두 원인을
+일반 규칙으로 수리한 뒤 query/dataset이 다시 새로운 final v2를 별도 동결해야 한다.
