@@ -1,0 +1,1772 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-final-v2-route-oracle",
+  "packetSchemaVersion": 3,
+  "productCandidateCommit": "04d5c8efd6b350e3ff5ddb82ef1c5494568e4270",
+  "corpusSha256": "402a3e10586d112bf051c38a36d4aa71abc984098873d5508e58be4e29c6a739",
+  "datasetsSha256": "d4b439d7ce353372c55324fd021124ed685c124042516df1139b36b9d2955e37",
+  "overlap": {
+    "normalizedQueries": 0,
+    "datasetContents": 0,
+    "previousProgramSources": 17
+  },
+  "conditions": [
+    {
+      "id": "A",
+      "mode": "public-docs"
+    },
+    {
+      "id": "B",
+      "mode": "compact-direct"
+    },
+    {
+      "id": "C",
+      "mode": "compact-mcp"
+    },
+    {
+      "id": "D",
+      "mode": "mcp-first-explicit-fallback"
+    }
+  ],
+  "roleCounts": {
+    "supported": 26,
+    "unsupported": 6,
+    "needs-input": 6
+  },
+  "tasks": [
+    {
+      "id": "final2-01-scatter-svg",
+      "index": 1,
+      "query": "Please draw a scatter plot with color encoding and axes, and emit SVG output.",
+      "querySha256": "3ac75d96fc0ba3b7c947f8ccc9c94a910a595913f2495339db11c61e88f9f016",
+      "stratum": "simple",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createScatterPlot",
+          "name": "createScatterPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "color",
+            "guides"
+          ]
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "17fb5d1dadb1876ec9692f2355c55889123e8cbfc61e32d3d88a9bb0fa783cca"
+    },
+    {
+      "id": "final2-02-line-pdf",
+      "index": 2,
+      "query": "Author a time series chart with map to opacity, axis guides, and PDF output.",
+      "querySha256": "46f46af60e04b7c06729f526a200933b5bb67877299e3cddab25939db84380bd",
+      "stratum": "simple",
+      "dataset": "temporal-j",
+      "datasetSha256": "41efd4fab13be231b96766b3a02946238fabd5103453b9b9f9b3949bde7c2cd1",
+      "role": "supported",
+      "expectedRenderer": "pdf",
+      "expectedPlan": [
+        {
+          "id": "action.createLinePlot",
+          "name": "createLinePlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "line",
+            "guides"
+          ]
+        },
+        {
+          "id": "runtime.renderToPDF",
+          "name": "renderToPDF",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "3b87d5850e0d5ecd5bc4034ed68cf51f44965488a3fd4c28aa6e471799ab3e85"
+    },
+    {
+      "id": "final2-03-bars-png",
+      "index": 3,
+      "query": "Use a color scale for a bar chart with an encoding key and axes; render PNG.",
+      "querySha256": "b54daa9944198016c2b0d8c16c9c4cdb15698c445022508338606f19c6a96f87",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createColorScale",
+          "name": "createScale",
+          "kind": "action",
+          "options": [
+            "id",
+            "type",
+            "range"
+          ]
+        },
+        {
+          "id": "action.createBarPlot",
+          "name": "createBarPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "guides"
+          ]
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "a174a63be9897360e38d5ed7821e3066e7ac7432e3fef5cb40ddd97fb883c3ef"
+    },
+    {
+      "id": "final2-04-histogram-svg",
+      "index": 4,
+      "query": "Create a binned distribution, show axis guides, and export SVG.",
+      "querySha256": "42fccf6c3c75c99c01486e81cde360b42d592e90335a7020a05376eb55586315",
+      "stratum": "simple",
+      "dataset": "distribution-k",
+      "datasetSha256": "cbcf95dcaee9574dc4fc89ada254bacb05c776c538e2d7148788c7f48b8899a2",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createHistogram",
+          "name": "createHistogram",
+          "kind": "action",
+          "options": [
+            "field",
+            "guides"
+          ]
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "1a22e8a935a9ecd88490f1ba00bc10f3d101cf751ec5b4a672335db899fab813"
+    },
+    {
+      "id": "final2-05-heatmap-png",
+      "index": 5,
+      "query": "Render PNG for a two dimensional distribution with reference grid and axes.",
+      "querySha256": "11c77fd90b07a1fa1a8c2a1c9fcb4b9fcf99e2a33282882987015079c4f545ef",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createHeatmap",
+          "name": "createHeatmap",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "bin",
+            "guides"
+          ]
+        },
+        {
+          "id": "action.createGrid",
+          "name": "createGrid",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "f38317b6430c445d0f804324247c8a893137aa84ff6c4a0707c1dc073474930b"
+    },
+    {
+      "id": "final2-06-parallel-pdf",
+      "index": 6,
+      "query": "Produce parallel coordinates with color encoding, legend, axes, and vector PDF.",
+      "querySha256": "a1f49d9370975c4cf4628810c2d5d5c8110b7799a6b6cbbbd3395d7f430258c4",
+      "stratum": "complex",
+      "dataset": "parallel-l",
+      "datasetSha256": "f137b2c3bae4b22e32aca36ea9f3f5b475cd1f34658d00db6fbf22a3bfee89cc",
+      "role": "supported",
+      "expectedRenderer": "pdf",
+      "expectedPlan": [
+        {
+          "id": "action.createParallelCoordinates",
+          "name": "createParallelCoordinates",
+          "kind": "action",
+          "options": [
+            "dimensions",
+            "color",
+            "guides"
+          ]
+        },
+        {
+          "id": "runtime.renderToPDF",
+          "name": "renderToPDF",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "752936134d83644a6ab0a3158c8ded7e4176d464bb02905fb1376307e5056211"
+    },
+    {
+      "id": "final2-07-box-canvas",
+      "index": 7,
+      "query": "Send a boxplot with axes to the canvas renderer.",
+      "querySha256": "09fea5310365d4abca3ff72d7823453d399938dfcc2c8fa03897cde7510db651",
+      "stratum": "simple",
+      "dataset": "distribution-k",
+      "datasetSha256": "cbcf95dcaee9574dc4fc89ada254bacb05c776c538e2d7148788c7f48b8899a2",
+      "role": "supported",
+      "expectedRenderer": "canvas",
+      "expectedPlan": [
+        {
+          "id": "action.createBoxPlot",
+          "name": "createBoxPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "guides"
+          ]
+        },
+        {
+          "id": "runtime.render",
+          "name": "render",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "d6fc5dcc83581614c0ca5a6e1960cdf707c99384cd8ba82c79e204d85d1323ce"
+    },
+    {
+      "id": "final2-08-violin-canvas",
+      "index": 8,
+      "query": "From KDE data, build a violin plot with color legend and axes on Canvas.",
+      "querySha256": "aaccd7887590d836427d058bdf0c078726ab966cbe31872e314cfae81e9cbacc",
+      "stratum": "complex",
+      "dataset": "distribution-k",
+      "datasetSha256": "cbcf95dcaee9574dc4fc89ada254bacb05c776c538e2d7148788c7f48b8899a2",
+      "role": "supported",
+      "expectedRenderer": "canvas",
+      "expectedPlan": [
+        {
+          "id": "action.createDensityData",
+          "name": "createDensityData",
+          "kind": "action",
+          "options": [
+            "id",
+            "field",
+            "source",
+            "groupBy"
+          ]
+        },
+        {
+          "id": "action.createViolinPlot",
+          "name": "createViolinPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "data",
+            "color",
+            "guides"
+          ]
+        },
+        {
+          "id": "action.encodeColor",
+          "name": "encodeColor",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "776d68c98c9d08ffe1b79c953b29a093e8b5f20900bdf6bc88684c8f28aace70"
+    },
+    {
+      "id": "final2-09-gradient-svg",
+      "index": 9,
+      "query": "Combine log scale, gradient plot, x axis, and SVG output.",
+      "querySha256": "d15241b6bb3102f84411db109a64469d25149c9a76ab9f6163e3843c8e98c853",
+      "stratum": "complex",
+      "dataset": "distribution-k",
+      "datasetSha256": "cbcf95dcaee9574dc4fc89ada254bacb05c776c538e2d7148788c7f48b8899a2",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createLogScale",
+          "name": "createScale",
+          "kind": "action",
+          "options": [
+            "id",
+            "type"
+          ]
+        },
+        {
+          "id": "action.createGradientPlot",
+          "name": "createGradientPlot",
+          "kind": "action",
+          "options": [
+            "data",
+            "x",
+            "y"
+          ]
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "911e1b1ff744599b716815caca960731aa8f22d9eaf6ff42085d94c345ce837b"
+    },
+    {
+      "id": "final2-10-density-canvas",
+      "index": 10,
+      "query": "Draw a kernel density plot plus y axis using browser canvas.",
+      "querySha256": "d95b4b2e5496edb03a3abbb464e4b7e69e23bc163c5aea639067c4d9459784f1",
+      "stratum": "simple",
+      "dataset": "distribution-k",
+      "datasetSha256": "cbcf95dcaee9574dc4fc89ada254bacb05c776c538e2d7148788c7f48b8899a2",
+      "role": "supported",
+      "expectedRenderer": "canvas",
+      "expectedPlan": [
+        {
+          "id": "action.createAreaMark",
+          "name": "createAreaMark",
+          "kind": "action",
+          "options": [
+            "id"
+          ]
+        },
+        {
+          "id": "action.encodeDensity",
+          "name": "encodeDensity",
+          "kind": "action",
+          "options": [
+            "field",
+            "target"
+          ]
+        },
+        {
+          "id": "action.createYAxis",
+          "name": "createYAxis",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "runtime.render",
+          "name": "render",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "8007daa4f5d07c0d87b16ce65caab027567a4ecebb24df6e69843d7e49e1132d"
+    },
+    {
+      "id": "final2-11-tick-png",
+      "index": 11,
+      "query": "Make a tick plot, encode x, encode angle, add horizontal axis, then export PNG.",
+      "querySha256": "f0ff87a63d086f7ee06587a14065d1e54546c5903796555f8d35a124942c530e",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createTickMark",
+          "name": "createTickMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeX",
+          "name": "encodeX",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.encodeAngle",
+          "name": "encodeAngle",
+          "kind": "action",
+          "options": [
+            "value"
+          ]
+        },
+        {
+          "id": "action.createXAxis",
+          "name": "createXAxis",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "e307eab9b9bd274eb2294ab57e48ae8e7fd703b20076dd79ba116d853efdd1cd"
+    },
+    {
+      "id": "final2-12-rule-canvas",
+      "index": 12,
+      "query": "Create rule mark, encode x, encode y, encode stroke width, add grid lines and title and subtitle, on Canvas.",
+      "querySha256": "5ed210c3d7a6c4f7719219b162903b58027c6a04a11da6992b3ff204ac1d0c82",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "canvas",
+      "expectedPlan": [
+        {
+          "id": "action.createRuleMark",
+          "name": "createRuleMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeX",
+          "name": "encodeX",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType"
+          ]
+        },
+        {
+          "id": "action.encodeY",
+          "name": "encodeY",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType"
+          ]
+        },
+        {
+          "id": "action.createGrid",
+          "name": "createGrid",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.createTitle",
+          "name": "createTitle",
+          "kind": "action",
+          "options": [
+            "text"
+          ]
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "35658ebffa52a8280d43d93be49163be67ff5706fea982f05a7aacfeb1952e81"
+    },
+    {
+      "id": "final2-13-arc-pdf",
+      "index": 13,
+      "query": "Create arc mark, encode theta, encode radius, and render PDF.",
+      "querySha256": "14670135da7dbb072eadc1dfa8fc12fe2568b7083099644ae4f4d8721bcc4b53",
+      "stratum": "simple",
+      "dataset": "polar-m",
+      "datasetSha256": "c588b1e688d114e4173525f07467f0948f7ed13e1aa2568db635f556141defda",
+      "role": "supported",
+      "expectedRenderer": "pdf",
+      "expectedPlan": [
+        {
+          "id": "action.createArcMark",
+          "name": "createArcMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeTheta",
+          "name": "encodeTheta",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType"
+          ]
+        },
+        {
+          "id": "action.encodeR",
+          "name": "encodeR",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType"
+          ]
+        },
+        {
+          "id": "runtime.renderToPDF",
+          "name": "renderToPDF",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "0c21d6d88ed2283d6f7ca3042b90f16f125ade3960bf2f87ce9c4728b06d395d"
+    },
+    {
+      "id": "final2-14-bins-png",
+      "index": 14,
+      "query": "Create two dimensional bins and rect mark, encode x, encode y, encode color, add palette scale and encoding key, then PNG output.",
+      "querySha256": "796cf7cc9154080cc105f10b08ccfddbe8b567f6e98aa62a6148b6ed57e2c6aa",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createBin2DData",
+          "name": "createBin2DData",
+          "kind": "action",
+          "options": [
+            "id",
+            "x",
+            "y",
+            "source"
+          ]
+        },
+        {
+          "id": "action.createColorScale",
+          "name": "createScale",
+          "kind": "action",
+          "options": [
+            "id",
+            "type",
+            "range"
+          ]
+        },
+        {
+          "id": "action.createRectMark",
+          "name": "createRectMark",
+          "kind": "action",
+          "options": [
+            "id",
+            "data"
+          ]
+        },
+        {
+          "id": "action.encodeX",
+          "name": "encodeX",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType",
+            "target"
+          ]
+        },
+        {
+          "id": "action.encodeX2",
+          "name": "encodeX2",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType",
+            "target"
+          ]
+        },
+        {
+          "id": "action.encodeY",
+          "name": "encodeY",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType",
+            "target"
+          ]
+        },
+        {
+          "id": "action.encodeY2",
+          "name": "encodeY2",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType",
+            "target"
+          ]
+        },
+        {
+          "id": "action.encodeColor",
+          "name": "encodeColor",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType",
+            "target",
+            "scale"
+          ]
+        },
+        {
+          "id": "action.createLegend",
+          "name": "createLegend",
+          "kind": "action",
+          "options": [
+            "target",
+            "channels"
+          ]
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "66b6f212c9cbf28b9693b99c67d7387d05a59ab14ce8a01936b11b6fa91bb962"
+    },
+    {
+      "id": "final2-15-regression-svg",
+      "index": 15,
+      "query": "Place point marks at x encoding and y encoding, add regression line with uncertainty ribbon and axis guides, then export SVG.",
+      "querySha256": "de0034b3b12556673fd30faa6f45947189a88699479db2dcab857e94e24df910",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createPointMark",
+          "name": "createPointMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeX",
+          "name": "encodeX",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.encodeY",
+          "name": "encodeY",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.createRegression",
+          "name": "createRegression",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.createAxes",
+          "name": "createAxes",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "9846bb9855f434339d1dcb4366021c468394ea571c466e1f24dd9b1fe03bbe3b"
+    },
+    {
+      "id": "final2-16-window-png",
+      "index": 16,
+      "query": "Apply filter rows and window transform, add time scale, then a line chart with axes and render PNG.",
+      "querySha256": "9324bb9c6e0301d927bef1c3a4f2857bb0da220e9835809102b52bafaa86f706",
+      "stratum": "complex",
+      "dataset": "temporal-j",
+      "datasetSha256": "41efd4fab13be231b96766b3a02946238fabd5103453b9b9f9b3949bde7c2cd1",
+      "role": "supported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.filterData",
+          "name": "filterData",
+          "kind": "action",
+          "options": [
+            "id",
+            "field",
+            "predicate"
+          ]
+        },
+        {
+          "id": "action.createWindowData",
+          "name": "createWindowData",
+          "kind": "action",
+          "options": [
+            "id",
+            "operations"
+          ]
+        },
+        {
+          "id": "action.createTimeScale",
+          "name": "createScale",
+          "kind": "action",
+          "options": [
+            "id",
+            "type"
+          ]
+        },
+        {
+          "id": "action.createLinePlot",
+          "name": "createLinePlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "data",
+            "guides"
+          ]
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "4c392aa6e9dcfeb0798916d7374ee10cb6a518aa2427b7f2a859390552db49ce"
+    },
+    {
+      "id": "final2-17-month-bars-svg",
+      "index": 17,
+      "query": "Create a date bucket with month bucket, make a column chart with map to color and axes, then render SVG.",
+      "querySha256": "d8dae402514cfa98de19b6ce4aa3f7ba0a3a0772d47912a562535f5d4d177c43",
+      "stratum": "complex",
+      "dataset": "temporal-j",
+      "datasetSha256": "41efd4fab13be231b96766b3a02946238fabd5103453b9b9f9b3949bde7c2cd1",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createTimeUnitData",
+          "name": "createTimeUnitData",
+          "kind": "action",
+          "options": [
+            "id",
+            "field",
+            "unit",
+            "as"
+          ]
+        },
+        {
+          "id": "action.createBarPlot",
+          "name": "createBarPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "data",
+            "color",
+            "guides"
+          ]
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "bcefe0394928e3740fa32cda866931e8b71808f67d73c42b2d7c7a8e6facc274"
+    },
+    {
+      "id": "final2-18-raw-bars-canvas",
+      "index": 18,
+      "query": "Create bar mark; encode y, encode x, encode color, add chart grid and category order, using canvas renderer.",
+      "querySha256": "f1abc2cecbec7eca26a1dce4da375f6a70bfdf5d9fdbb84295e258bf6a0fc71c",
+      "stratum": "complex",
+      "dataset": "bars-o",
+      "datasetSha256": "1567caa3441557835bb2cb0e196b015f6be1b0d705636aaebf3db237b5351ded",
+      "role": "supported",
+      "expectedRenderer": "canvas",
+      "expectedPlan": [
+        {
+          "id": "action.createBarMark",
+          "name": "createBarMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeY",
+          "name": "encodeY",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType"
+          ]
+        },
+        {
+          "id": "action.encodeX",
+          "name": "encodeX",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType"
+          ]
+        },
+        {
+          "id": "action.encodeColor",
+          "name": "encodeColor",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.createGrid",
+          "name": "createGrid",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.orderCategories",
+          "name": "orderCategories",
+          "kind": "action",
+          "options": [
+            "channel",
+            "by"
+          ]
+        },
+        {
+          "id": "runtime.render",
+          "name": "render",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "0ed63425df5c1d6306a850b524e6d6993e9f208214585e4f5c92a12edc9185c8"
+    },
+    {
+      "id": "final2-19-jitter-png",
+      "index": 19,
+      "query": "Use a scatter chart with a color legend, map to opacity, reduce overplotting, set legend at left, and PNG output.",
+      "querySha256": "d45c6fc5b3cedfda01a8acc5b8994ea4d68dbaef099d7b60d6f675398df6af72",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createScatterPlot",
+          "name": "createScatterPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "color",
+            "guides"
+          ]
+        },
+        {
+          "id": "action.encodeOpacity",
+          "name": "encodeOpacity",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.jitterPoints",
+          "name": "jitterPoints",
+          "kind": "action",
+          "options": [
+            "channel",
+            "maxOffset"
+          ]
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "cf07793901884cf5924f969853cd057ad30e3b548b761b3a6dd0b763a8ae3cc0"
+    },
+    {
+      "id": "final2-20-highlight-svg",
+      "index": 20,
+      "query": "On a point chart, encode color, create reusable selection, apply conditional highlight, and export SVG.",
+      "querySha256": "009be2bc44abecfa0e741f5ec043440600346a2ceb16f336ac7ef03bcd5971a2",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createScatterPlot",
+          "name": "createScatterPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "color"
+          ]
+        },
+        {
+          "id": "action.selectMarks",
+          "name": "selectMarks",
+          "kind": "action",
+          "options": [
+            "id",
+            "field",
+            "op",
+            "value"
+          ]
+        },
+        {
+          "id": "action.highlightMarks",
+          "name": "highlightMarks",
+          "kind": "action",
+          "options": [
+            "selection",
+            "color"
+          ]
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "4c076a663461cdb16e3804c44bd348f141f49455ae76f410de7a43278590f0cc"
+    },
+    {
+      "id": "final2-21-facet-png",
+      "index": 21,
+      "query": "Facet a scatter plot into small multiples, map to color, add an encoding key, and render PNG.",
+      "querySha256": "e22f2183b68f67b95b907999e8aea34bb26bb54f2d5f8a7a902ae5a93527410c",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createScatterPlot",
+          "name": "createScatterPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "color",
+            "guides"
+          ]
+        },
+        {
+          "id": "exact.facet",
+          "name": "facet",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "d5b8c2ebaf047fd95f28a5d65f8dda0538deeec15b96d57dd16656a1f37c6952"
+    },
+    {
+      "id": "final2-22-composition-svg",
+      "index": 22,
+      "query": "Build a scatter chart, horizontally concatenate it beside itself, and export SVG.",
+      "querySha256": "bab4b2b74e0fad86b7cdf00a90971925edd6a9fa725f54f41cc296fb351bcaf1",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createScatterPlot",
+          "name": "createScatterPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y"
+          ]
+        },
+        {
+          "id": "runtime.hconcat",
+          "name": "hconcat",
+          "kind": "runtime",
+          "options": []
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "2057fa46fac24a1211908b9ec9163845d8a1ad9695443d0f7a89ee13d60ded5f"
+    },
+    {
+      "id": "final2-23-labels-png",
+      "index": 23,
+      "query": "Draw circle marks, encode x and encode y, then create data labels from a label field, run layout labels, and export PNG.",
+      "querySha256": "bebc9ec58ea8c2789208e4eb61d5014d5a0d8acbdc3fd80d3971b85336aedd94",
+      "stratum": "complex",
+      "dataset": "labels-n",
+      "datasetSha256": "2a620e7920600e28f363c84923ca893e9c7f9cc99b935432b2ac57a91b63038d",
+      "role": "supported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createPointMark",
+          "name": "createPointMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeX",
+          "name": "encodeX",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.encodeY",
+          "name": "encodeY",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.createTextMark",
+          "name": "createTextMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeText",
+          "name": "encodeText",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.layoutLabels",
+          "name": "layoutLabels",
+          "kind": "action",
+          "options": [
+            "axis"
+          ]
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "8fc0b033d07b28da80a7227d94765b7ee682d39a42cd05b618fe9a0c872b2b89"
+    },
+    {
+      "id": "final2-24-interval-pdf",
+      "index": 24,
+      "query": "Compute summary interval, draw quartile plot with error bar and axis guides, then PDF output.",
+      "querySha256": "1cb906a7fda21dfbea68317f21a12019cb0cef535f36d2d5c511f05ac8c722cb",
+      "stratum": "complex",
+      "dataset": "distribution-k",
+      "datasetSha256": "cbcf95dcaee9574dc4fc89ada254bacb05c776c538e2d7148788c7f48b8899a2",
+      "role": "supported",
+      "expectedRenderer": "pdf",
+      "expectedPlan": [
+        {
+          "id": "action.createIntervalData",
+          "name": "createIntervalData",
+          "kind": "action",
+          "options": [
+            "id",
+            "field",
+            "source",
+            "groupBy"
+          ]
+        },
+        {
+          "id": "action.createBoxPlot",
+          "name": "createBoxPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y",
+            "data",
+            "guides"
+          ]
+        },
+        {
+          "id": "action.createErrorBar",
+          "name": "createErrorBar",
+          "kind": "action",
+          "options": [
+            "data",
+            "x",
+            "y"
+          ]
+        },
+        {
+          "id": "runtime.renderToPDF",
+          "name": "renderToPDF",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "a24988875db27baf0632800b3dffefae980db1cc687b2bd4c0fa4df729bec027"
+    },
+    {
+      "id": "final2-25-point-svg",
+      "index": 25,
+      "query": "Use point mark with map to x, map to y, map to size, map to shape, map to opacity, then render SVG.",
+      "querySha256": "67faa20d1d3b2a075311ba33fa8c23c6b9c2d59cb56db78b23111b4ba90f90be",
+      "stratum": "complex",
+      "dataset": "metrics-i",
+      "datasetSha256": "9044c030eddcc15ebc40c8523e7dc918a3eff6c5b07cda3b87627edc7d616ba6",
+      "role": "supported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createPointMark",
+          "name": "createPointMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeX",
+          "name": "encodeX",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.encodeY",
+          "name": "encodeY",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.encodeSize",
+          "name": "encodeSize",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.encodeShape",
+          "name": "encodeShape",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.encodeOpacity",
+          "name": "encodeOpacity",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "26d50ea38e33f44bc9fe54d40a77f7cd1aba45f2b83deb08b85d99d82033c250"
+    },
+    {
+      "id": "final2-26-density-time-canvas",
+      "index": 26,
+      "query": "Add year bucket and temporal scale before a density curve and y axis on the chart canvas.",
+      "querySha256": "002c4322f7fa7bed409fdb7dd242878dadf73e5ed1942a8303d97d4db84fdb85",
+      "stratum": "complex",
+      "dataset": "temporal-j",
+      "datasetSha256": "41efd4fab13be231b96766b3a02946238fabd5103453b9b9f9b3949bde7c2cd1",
+      "role": "supported",
+      "expectedRenderer": "canvas",
+      "expectedPlan": [
+        {
+          "id": "action.createCanvas",
+          "name": "createCanvas",
+          "kind": "action",
+          "options": [
+            "width",
+            "height",
+            "margin"
+          ]
+        },
+        {
+          "id": "action.createTimeUnitData",
+          "name": "createTimeUnitData",
+          "kind": "action",
+          "options": [
+            "id",
+            "field",
+            "unit",
+            "as"
+          ]
+        },
+        {
+          "id": "action.createTimeScale",
+          "name": "createScale",
+          "kind": "action",
+          "options": [
+            "id",
+            "type"
+          ]
+        },
+        {
+          "id": "action.createAreaMark",
+          "name": "createAreaMark",
+          "kind": "action",
+          "options": [
+            "id"
+          ]
+        },
+        {
+          "id": "action.encodeDensity",
+          "name": "encodeDensity",
+          "kind": "action",
+          "options": [
+            "field",
+            "target"
+          ]
+        },
+        {
+          "id": "action.createYAxis",
+          "name": "createYAxis",
+          "kind": "action",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": "a353687a342b0b8fb0e32222bfb92dfc3239aad52bc80d644c9903ac1e233b74"
+    },
+    {
+      "id": "final2-27-geo",
+      "index": 27,
+      "query": "Export SVG for a geographic chart.",
+      "querySha256": "e02ea25fe76fc3997e298f9b1391c78b02daf04ce0ffa285ecace097daf9e7c0",
+      "stratum": "policy",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "unsupported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [
+        "unsupported.geo"
+      ],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-28-animation",
+      "index": 28,
+      "query": "A line plot with chart animation should render PNG.",
+      "querySha256": "493598ad18ec8f189e79618eaac1bf6641c81f5fc7c6b808e1624577cbd3dc9e",
+      "stratum": "policy",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "unsupported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createLinePlot",
+          "name": "createLinePlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y"
+          ]
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [
+        "unsupported.animation"
+      ],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-29-interaction",
+      "index": 29,
+      "query": "Create point chart with interactive tooltip and browser canvas.",
+      "querySha256": "b4d125256ada11c6aa32f3ee60271600d9a35adc371133a411b454186c855d33",
+      "stratum": "policy",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "unsupported",
+      "expectedRenderer": "canvas",
+      "expectedPlan": [
+        {
+          "id": "action.createScatterPlot",
+          "name": "createScatterPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y"
+          ]
+        },
+        {
+          "id": "runtime.render",
+          "name": "render",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [
+        "unsupported.interaction"
+      ],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-30-three-d",
+      "index": 30,
+      "query": "Output a three dimensional chart as vector PDF.",
+      "querySha256": "7992250664513213d2ea4c9c5218188c368fdc9584928c0cc953a6a3e6a8a115",
+      "stratum": "policy",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "unsupported",
+      "expectedRenderer": "pdf",
+      "expectedPlan": [
+        {
+          "id": "runtime.renderToPDF",
+          "name": "renderToPDF",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [
+        "unsupported.3d"
+      ],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-31-jpeg",
+      "index": 31,
+      "query": "Render PNG for a frequency histogram, but also request JPG image.",
+      "querySha256": "ce6d03fb2aa043a209a08e331d11a066d507d11f57fdb97d06fee53f6a01e379",
+      "stratum": "policy",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "unsupported",
+      "expectedRenderer": "png",
+      "expectedPlan": [
+        {
+          "id": "action.createHistogram",
+          "name": "createHistogram",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "runtime.renderToPNG",
+          "name": "renderToPNG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [
+        "unsupported.jpg"
+      ],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-32-area-dash",
+      "index": 32,
+      "query": "Draw area mark with line style encoding, encode x and encode y, and produce SVG document.",
+      "querySha256": "1fd9bdd288d61cca5dd5f36689a2a0fd548a62646132d9a05fe73fcc3cef1da9",
+      "stratum": "policy",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "unsupported",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "action.createAreaMark",
+          "name": "createAreaMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeX",
+          "name": "encodeX",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType"
+          ]
+        },
+        {
+          "id": "action.encodeY",
+          "name": "encodeY",
+          "kind": "action",
+          "options": [
+            "field",
+            "fieldType"
+          ]
+        },
+        {
+          "id": "action.encodeStrokeDash",
+          "name": "encodeStrokeDash",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [
+        "unsupported.areaStrokeDash"
+      ],
+      "expectedUnresolved": [],
+      "expectedFallbacks": [],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-33-chart-type",
+      "index": 33,
+      "query": "Render SVG for an unspecified plot.",
+      "querySha256": "2614c58b2781407bb2247a4104e519ad7c2b1259d938e4d8848d004c651e157b",
+      "stratum": "decision",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "needs-input",
+      "expectedRenderer": "svg",
+      "expectedPlan": [
+        {
+          "id": "runtime.renderToSVG",
+          "name": "renderToSVG",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [
+        "chart.type"
+      ],
+      "expectedFallbacks": [
+        "ggaction://docs/choose-chart-type"
+      ],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-34-renderer",
+      "index": 34,
+      "query": "Create a column chart, then export it.",
+      "querySha256": "9abf5d24aaa52f4f91db1b9902fc09e443adb08649131aff1ec6e7a65a61a728",
+      "stratum": "decision",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "needs-input",
+      "expectedRenderer": null,
+      "expectedPlan": [
+        {
+          "id": "action.createBarPlot",
+          "name": "createBarPlot",
+          "kind": "action",
+          "options": [
+            "x",
+            "y"
+          ]
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [
+        "renderer.format"
+      ],
+      "expectedFallbacks": [
+        "ggaction://docs/choose-renderer"
+      ],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-35-selection-owner",
+      "index": 35,
+      "query": "Use reusable selection followed by conditional highlight.",
+      "querySha256": "3b58a12e6fdc456d800f2bb6f166054f5f73948e116cbef7c3f7e96762347e4a",
+      "stratum": "decision",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "needs-input",
+      "expectedRenderer": null,
+      "expectedPlan": [
+        {
+          "id": "action.selectMarks",
+          "name": "selectMarks",
+          "kind": "action",
+          "options": [
+            "id",
+            "field",
+            "op",
+            "value"
+          ]
+        },
+        {
+          "id": "action.highlightMarks",
+          "name": "highlightMarks",
+          "kind": "action",
+          "options": [
+            "selection",
+            "color"
+          ]
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [
+        "chart.type"
+      ],
+      "expectedFallbacks": [
+        "ggaction://docs/choose-chart-type"
+      ],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-36-composition-children",
+      "index": 36,
+      "query": "Stack charts vertically.",
+      "querySha256": "6f9d9190f9edcf55c2474eb3743e9d0d745d6f4e16578e451ea04ebc5bf073cd",
+      "stratum": "decision",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "needs-input",
+      "expectedRenderer": null,
+      "expectedPlan": [
+        {
+          "id": "runtime.vconcat",
+          "name": "vconcat",
+          "kind": "runtime",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [
+        "composition.children"
+      ],
+      "expectedFallbacks": [
+        "ggaction://docs/action-reference"
+      ],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-37-label-position",
+      "index": 37,
+      "query": "Add a text mark and label field, then resolve label collision.",
+      "querySha256": "866c06f86530c189ee288191ace8396e0b0d2ffb5259ff7c7d47ac1fd74c91a9",
+      "stratum": "decision",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "needs-input",
+      "expectedRenderer": null,
+      "expectedPlan": [
+        {
+          "id": "action.createTextMark",
+          "name": "createTextMark",
+          "kind": "action",
+          "options": []
+        },
+        {
+          "id": "action.encodeText",
+          "name": "encodeText",
+          "kind": "action",
+          "options": [
+            "field"
+          ]
+        },
+        {
+          "id": "action.layoutLabels",
+          "name": "layoutLabels",
+          "kind": "action",
+          "options": [
+            "axis"
+          ]
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [
+        "encoding.position"
+      ],
+      "expectedFallbacks": [
+        "ggaction://docs/action-reference"
+      ],
+      "sourceSha256": null
+    },
+    {
+      "id": "final2-38-legend-channel",
+      "index": 38,
+      "query": "Place a legend.",
+      "querySha256": "000ba1e750e9133d5c3379afc02ab56335fb5c5316411ac3a17920e6435eeb64",
+      "stratum": "decision",
+      "dataset": "generic-p",
+      "datasetSha256": "b6ab2c80ef4fbed940717d026297f62d418b6f77fbc44dc3ca0f34c511f6dce2",
+      "role": "needs-input",
+      "expectedRenderer": null,
+      "expectedPlan": [
+        {
+          "id": "action.createLegend",
+          "name": "createLegend",
+          "kind": "action",
+          "options": []
+        }
+      ],
+      "expectedUnsupported": [],
+      "expectedUnresolved": [
+        "guide.legend.channel"
+      ],
+      "expectedFallbacks": [
+        "ggaction://docs/action-reference"
+      ],
+      "sourceSha256": null
+    }
+  ]
+}

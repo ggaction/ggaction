@@ -13,8 +13,14 @@ import {
 } from "./compact-runtime-closure-v2.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const evaluationRoot = path.join(root, "evaluation", "compact-authoring-final-v1");
-const artifactRoot = path.join(root, ".artifacts", "evaluation", "compact-authoring-final-v1");
+const versionOption = process.argv.indexOf("--corpus-version");
+const corpusVersion = versionOption === -1 ? "v1" : process.argv[versionOption + 1];
+if (!/^v[1-9][0-9]*$/u.test(corpusVersion ?? "")) {
+  throw new Error("--corpus-version must be a positive vN identifier.");
+}
+const corpusId = `compact-authoring-final-${corpusVersion}`;
+const evaluationRoot = path.join(root, "evaluation", corpusId);
+const artifactRoot = path.join(root, ".artifacts", "evaluation", corpusId);
 const corpusFile = path.join(evaluationRoot, "corpus.json");
 const datasetsFile = path.join(evaluationRoot, "datasets.json");
 const oracleFile = path.join(evaluationRoot, "ROUTE_ORACLE.json");
@@ -143,8 +149,8 @@ async function buildState() {
     readFile(corpusFile),
     readFile(datasetsFile)
   ]);
-  if (corpus.schemaVersion !== 1 || corpus.id !== "compact-authoring-final-v1") {
-    throw new Error("Final corpus must use the compact-authoring-final-v1 contract.");
+  if (corpus.schemaVersion !== 1 || corpus.id !== corpusId) {
+    throw new Error(`Final corpus must use the ${corpusId} contract.`);
   }
   if (datasets.schemaVersion !== 1 || datasets.datasets?.length !== 8) {
     throw new Error("Final corpus must contain exactly eight fresh datasets.");
@@ -230,7 +236,7 @@ async function buildState() {
   const previousProgramOverlaps = sourceHashes.filter(hash => prior.sourceHashes.has(hash));
   const oracle = {
     schemaVersion: 1,
-    id: "compact-authoring-final-v1-route-oracle",
+    id: `${corpusId}-route-oracle`,
     packetSchemaVersion: 3,
     productCandidateCommit: corpus.productCandidateCommit,
     corpusSha256: sha256(corpusSource),
@@ -291,7 +297,7 @@ export async function runCompactFinalEvaluationV1() {
   }
   const result = {
     schemaVersion: 1,
-    id: "compact-authoring-final-v1-result",
+    id: `${corpusId}-result`,
     oracleSha256: sha256(state.oracleBytes),
     productCandidateCommit: state.corpus.productCandidateCommit,
     tasks: state.tasks.length,

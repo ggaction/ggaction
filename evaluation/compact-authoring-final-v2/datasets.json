@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-final-v2-datasets",
+  "datasets": [
+    {
+      "id": "metrics-i",
+      "values": [
+        { "x": 1.15, "y": 3.65, "value": 9.25, "category": "A", "label": "I-1", "a": 4.2, "b": 13.4, "angle": 27, "date": "2029-01-09" },
+        { "x": 2.35, "y": 6.85, "value": 15.75, "category": "B", "label": "I-2", "a": 6.8, "b": 11.7, "angle": 63, "date": "2029-02-16" },
+        { "x": 3.55, "y": 5.45, "value": 12.25, "category": "A", "label": "I-3", "a": 8.9, "b": 10.1, "angle": 104, "date": "2029-03-24" },
+        { "x": 4.85, "y": 10.15, "value": 24.75, "category": "C", "label": "I-4", "a": 11.6, "b": 8.6, "angle": 138, "date": "2029-04-07" },
+        { "x": 6.05, "y": 8.95, "value": 21.25, "category": "B", "label": "I-5", "a": 14.3, "b": 7.2, "angle": 184, "date": "2029-05-18" },
+        { "x": 7.45, "y": 13.35, "value": 33.75, "category": "A", "label": "I-6", "a": 17.8, "b": 5.9, "angle": 229, "date": "2029-06-26" },
+        { "x": 8.65, "y": 12.05, "value": 29.25, "category": "C", "label": "I-7", "a": 19.7, "b": 4.3, "angle": 276, "date": "2029-07-11" },
+        { "x": 9.95, "y": 16.45, "value": 41.75, "category": "B", "label": "I-8", "a": 22.5, "b": 3.1, "angle": 332, "date": "2029-08-22" }
+      ]
+    },
+    {
+      "id": "temporal-j",
+      "values": [
+        { "date": "2030-02-03", "x": 1, "y": 61, "value": 61, "category": "A", "label": "J1" },
+        { "date": "2030-02-19", "x": 2, "y": 68, "value": 68, "category": "B", "label": "J2" },
+        { "date": "2030-03-08", "x": 3, "y": 64, "value": 64, "category": "A", "label": "J3" },
+        { "date": "2030-03-27", "x": 4, "y": 73, "value": 73, "category": "B", "label": "J4" },
+        { "date": "2030-04-12", "x": 5, "y": 70, "value": 70, "category": "A", "label": "J5" },
+        { "date": "2030-04-29", "x": 6, "y": 79, "value": 79, "category": "B", "label": "J6" },
+        { "date": "2030-05-15", "x": 7, "y": 76, "value": 76, "category": "A", "label": "J7" },
+        { "date": "2030-05-31", "x": 8, "y": 84, "value": 84, "category": "B", "label": "J8" }
+      ]
+    },
+    {
+      "id": "distribution-k",
+      "values": [
+        { "category": "A", "value": 2.7, "x": 0.8, "y": 1.9, "label": "K1" },
+        { "category": "A", "value": 4.1, "x": 1.7, "y": 3.3, "label": "K2" },
+        { "category": "A", "value": 6.3, "x": 2.6, "y": 4.8, "label": "K3" },
+        { "category": "A", "value": 7.9, "x": 3.5, "y": 6.4, "label": "K4" },
+        { "category": "B", "value": 9.6, "x": 4.3, "y": 7.7, "label": "K5" },
+        { "category": "B", "value": 11.4, "x": 5.2, "y": 9.2, "label": "K6" },
+        { "category": "B", "value": 12.8, "x": 6.1, "y": 10.8, "label": "K7" },
+        { "category": "B", "value": 15.1, "x": 7.0, "y": 12.3, "label": "K8" },
+        { "category": "C", "value": 16.7, "x": 7.8, "y": 13.5, "label": "K9" },
+        { "category": "C", "value": 18.9, "x": 8.7, "y": 15.0, "label": "K10" },
+        { "category": "C", "value": 20.4, "x": 9.6, "y": 16.6, "label": "K11" },
+        { "category": "C", "value": 22.6, "x": 10.5, "y": 18.1, "label": "K12" }
+      ]
+    },
+    {
+      "id": "parallel-l",
+      "values": [
+        { "a": 2.2, "b": 12.8, "x": 1.4, "y": 9.6, "value": 14, "category": "A", "label": "L1" },
+        { "a": 3.9, "b": 10.9, "x": 2.9, "y": 8.1, "value": 19, "category": "B", "label": "L2" },
+        { "a": 5.7, "b": 9.3, "x": 4.5, "y": 6.7, "value": 25, "category": "C", "label": "L3" },
+        { "a": 7.4, "b": 7.1, "x": 6.0, "y": 5.4, "value": 30, "category": "A", "label": "L4" },
+        { "a": 9.1, "b": 5.6, "x": 7.6, "y": 4.0, "value": 36, "category": "B", "label": "L5" },
+        { "a": 10.8, "b": 3.7, "x": 9.1, "y": 2.6, "value": 43, "category": "C", "label": "L6" }
+      ]
+    },
+    {
+      "id": "polar-m",
+      "values": [
+        { "category": "Spring", "value": 8.3, "angle": 30, "x": 1, "y": 8.3, "label": "M1" },
+        { "category": "Summer", "value": 13.7, "angle": 120, "x": 2, "y": 13.7, "label": "M2" },
+        { "category": "Autumn", "value": 10.2, "angle": 210, "x": 3, "y": 10.2, "label": "M3" },
+        { "category": "Winter", "value": 6.9, "angle": 300, "x": 4, "y": 6.9, "label": "M4" }
+      ]
+    },
+    {
+      "id": "labels-n",
+      "values": [
+        { "x": 1.05, "y": 7.2, "value": 17, "category": "A", "label": "Quartz" },
+        { "x": 2.15, "y": 7.45, "value": 20, "category": "B", "label": "Topaz" },
+        { "x": 3.25, "y": 7.3, "value": 23, "category": "A", "label": "Opal" },
+        { "x": 4.35, "y": 8.05, "value": 26, "category": "B", "label": "Jade" },
+        { "x": 5.45, "y": 8.3, "value": 29, "category": "A", "label": "Onyx" }
+      ]
+    },
+    {
+      "id": "bars-o",
+      "values": [
+        { "category": "Rho", "value": 14.3, "x": 1, "y": 14.3, "label": "O1" },
+        { "category": "Sigma", "value": 9.1, "x": 2, "y": 9.1, "label": "O2" },
+        { "category": "Tau", "value": 19.7, "x": 3, "y": 19.7, "label": "O3" },
+        { "category": "Upsilon", "value": 12.4, "x": 4, "y": 12.4, "label": "O4" }
+      ]
+    },
+    {
+      "id": "generic-p",
+      "values": [
+        { "x": 3.125, "y": 9.875, "value": 7.25, "category": "A", "label": "P-A", "a": 4.75, "b": 12.25, "angle": 51, "date": "2031-06-05" },
+        { "x": 5.625, "y": 12.375, "value": 10.25, "category": "B", "label": "P-B", "a": 7.75, "b": 9.25, "angle": 173, "date": "2031-07-19" },
+        { "x": 8.125, "y": 14.875, "value": 13.25, "category": "C", "label": "P-C", "a": 10.75, "b": 6.25, "angle": 295, "date": "2031-08-27" }
+      ]
+    }
+  ]
+}
