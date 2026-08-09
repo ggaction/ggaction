@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`awaiting-approval`
+`approved`
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.
 
@@ -123,5 +123,9 @@ spend만 연다. Retry, task나 threshold 수정, full paid evaluation, PR, merg
 
 ## Approval record
 
-- Awaiting user decision on Option A or B.
-- 현재 credential reads / external calls / additional spend는 `0 / 0 / $0`다.
+- 사용자가 2026-08-09에 Option A의 exact product candidate, evaluator checkpoint, plan과 route oracle hash, 32 task-runs,
+  expected 74 calls / `$2.304`, calculated maximum `$4.992`, regional maximum `$5.4912`와 hard global stop `< $6` 범위를
+  명시적으로 승인했다.
+- 이 승인은 previously identified single credential file의 1회 read와 v5 paid smoke 단일 실행만 연다.
+- Retry, task나 threshold 수정, full paid evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.
+- 승인 기록 시점의 credential reads / external calls / additional spend는 `0 / 0 / $0`다.

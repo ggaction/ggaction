@@ -33,7 +33,8 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] R54-P5-G Option A runtime repair approval — 2026-08-09
 - [x] Runtime closure final v3 — 38 / 38 tasks, 152 / 152 routes, 38 / 38 strict evaluator, `$0`
 - [x] R54-P5-H exact v5 replacement paid-smoke Gate prepared
-- [ ] R54-P5-H paid-smoke decision
+- [x] R54-P5-H exact v5 paid-smoke authorization — 2026-08-09
+- [ ] v5 paid-smoke execution and immutable result
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion
