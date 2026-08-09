@@ -395,13 +395,25 @@ export async function loadPaidSmokePlanV4() {
     throw new Error("Paid smoke v4 route oracle hash drifted.");
   }
   for (const [relative, expected] of Object.entries(plan.sourceFiles)) {
-    const actual = sha256(await readFile(path.join(root, relative)));
+    let frozen;
+    try {
+      frozen = execFileSync("git", [
+        "show",
+        `${plan.productCandidateCommit}:${relative}`
+      ], { cwd: root, maxBuffer: 20_000_000 });
+    } catch {
+      throw new Error(`Paid smoke v4 source is unavailable: ${relative}`);
+    }
+    const actual = sha256(frozen);
     if (actual !== expected) throw new Error(`Paid smoke v4 source hash drifted: ${relative}`);
   }
   for (const [relative, expected] of Object.entries(plan.sourceTrees)) {
     let actual;
     try {
-      actual = execFileSync("git", ["rev-parse", `HEAD:${relative}`], {
+      actual = execFileSync("git", [
+        "rev-parse",
+        `${plan.productCandidateCommit}:${relative}`
+      ], {
         cwd: root,
         encoding: "utf8"
       }).trim();
@@ -409,12 +421,6 @@ export async function loadPaidSmokePlanV4() {
       throw new Error(`Paid smoke v4 source tree is unavailable: ${relative}`);
     }
     if (actual !== expected) throw new Error(`Paid smoke v4 source tree drifted: ${relative}`);
-    const dirty = execFileSync(
-      "git",
-      ["status", "--porcelain", "--untracked-files=all", "--", relative],
-      { cwd: root, encoding: "utf8" }
-    ).trim();
-    if (dirty.length > 0) throw new Error(`Paid smoke v4 source tree is dirty: ${relative}`);
   }
   try {
     execFileSync("git", ["merge-base", "--is-ancestor", plan.productCandidateCommit, "HEAD"], {

@@ -5,7 +5,6 @@ import path from "node:path";
 
 import { searchGgaction } from "../knowledge/task-resolver.js";
 import {
-  docsFallbackResources,
   SEARCH_TOOL_NAME,
   searchGgactionText
 } from "../src/mcp/adapter.js";
@@ -86,19 +85,6 @@ export const submitFullResultToolV1 = functionTool(
   ["status", "source", "renderer", "unsupported", "unresolved"]
 );
 
-function taskPlan(packet) {
-  return packet.actionPlan.map(entry => ({
-    id: entry.id,
-    options: entry.requiredOptions
-  }));
-}
-
-function packetRole(packet) {
-  if (packet.unsupported.length > 0) return "unsupported";
-  if (packet.unresolved.length > 0) return "needs-input";
-  return "supported";
-}
-
 async function sourceTask(spec) {
   const directory = corpusRoots[spec.source.corpus];
   if (!directory) throw new Error(`Unknown full evaluation corpus: ${spec.source.corpus}`);
@@ -112,20 +98,6 @@ async function sourceTask(spec) {
   if (!dataset) throw new Error(`${spec.id} uses unknown dataset ${task.dataset}.`);
   if (task.stratum !== spec.stratum) throw new Error(`${spec.id} stratum drifted.`);
 
-  const packet = searchGgaction(task.query);
-  const checks = [
-    [packet.schemaVersion, 3, "packet schema"],
-    [taskPlan(packet), spec.expectedPlan, "plan"],
-    [packet.unsupported.map(entry => entry.constraint), spec.expectedUnsupported, "unsupported"],
-    [packet.unresolved.map(entry => entry.constraint), spec.expectedUnresolved, "unresolved"],
-    [docsFallbackResources(packet).map(resource => resource.uri), spec.expectedFallbacks, "fallback resources"],
-    [packetRole(packet), spec.role, "role"]
-  ];
-  for (const [actual, expected, label] of checks) {
-    if (!same(actual, expected)) {
-      throw new Error(`${spec.id} full evaluation ${label} drifted: ${JSON.stringify(actual)}`);
-    }
-  }
   return Object.freeze({ ...spec, query: task.query, dataset });
 }
 

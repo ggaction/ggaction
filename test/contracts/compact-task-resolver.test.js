@@ -26,7 +26,7 @@ const authoringPrerequisites = [
   {
     id: "action.createCanvas",
     signature: "createCanvas(options?: CanvasOptions): ChartProgram;",
-    call: "program = program.createCanvas({})",
+    call: "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
     bindings: []
   },
   {
@@ -176,7 +176,7 @@ test("provides exact executable Canvas and SVG authoring bootstraps", async () =
     initialize: "let program = chart()",
     prerequisites: authoringPrerequisites,
     steps: [
-      'program = program.createScatterPlot({ x: "x", y: "y" })',
+      'program = program.createScatterPlot({ x: { field: "x", fieldType: "quantitative" }, y: { field: "y", fieldType: "quantitative" } })',
       "const output = renderToSVG(program)"
     ]
   });
@@ -434,7 +434,12 @@ test("every supported constraint and fresh-corpus authoring step type-checks", a
     const packet = searchGgaction(task.query);
     assert.equal(packet.schemaVersion, 3, task.id);
     assert.equal(packet.authoring.initialize, "let program = chart()", task.id);
-    assert.deepEqual(packet.authoring.prerequisites, authoringPrerequisites, task.id);
+    const plannedPrerequisites = new Set(packet.actionPlan.map(entry => entry.id));
+    assert.deepEqual(
+      packet.authoring.prerequisites,
+      authoringPrerequisites.filter(entry => !plannedPrerequisites.has(entry.id)),
+      task.id
+    );
     assert.equal(packet.authoring.steps.length, packet.actionPlan.length, task.id);
     assert.equal(packet.authoring.imports[0].includes("chart"), true, task.id);
     freshPacketSizes.push(taskPacketBytes(packet));
@@ -457,6 +462,7 @@ test("every supported constraint and fresh-corpus authoring step type-checks", a
       'import { renderToPDF } from "./pdf.js";',
       "declare let program: ChartProgram;",
       "declare const context: CanvasRenderingContext2D;",
+      "declare const values: readonly Record<string, unknown>[];",
       "async function verifyCompactCalls() {",
       ...[...calls].map(call => `  ${call};`),
       ...[...authoringSteps].flatMap(step => [

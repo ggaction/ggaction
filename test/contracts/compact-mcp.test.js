@@ -92,11 +92,11 @@ test("keeps resource discovery bounded and reads exact cards and recipes", async
   const recipe = readKnowledgeResource("ggaction://recipes/scatter-svg");
   assert.equal(JSON.parse(card.text).name, "createScatterPlot");
   assert.deepEqual(JSON.parse(recipe.text).packet.exactCalls, [
-    "program.createScatterPlot({ x: \"x\", y: \"y\", color: \"category\", guides: { legend: { position: \"bottom\" } } })",
+    "program.createScatterPlot({ x: { field: \"x\", fieldType: \"quantitative\" }, y: { field: \"y\", fieldType: \"quantitative\" }, color: \"category\", guides: { legend: { position: \"bottom\" } } })",
     "renderToSVG(program)"
   ]);
   assert.deepEqual(JSON.parse(recipe.text).packet.authoring.steps, [
-    'program = program.createScatterPlot({ x: "x", y: "y", color: "category", guides: { legend: { position: "bottom" } } })',
+    'program = program.createScatterPlot({ x: { field: "x", fieldType: "quantitative" }, y: { field: "y", fieldType: "quantitative" }, color: "category", guides: { legend: { position: "bottom" } } })',
     "const output = renderToSVG(program)"
   ]);
   for (const resource of [card, recipe]) {

@@ -20,7 +20,11 @@ import { chart } from "ggaction";
 
 export function buildChart(rows) {
   let program = chart()
-  program = program.createCanvas({ width: 640, height: 400, margin: 50 })
+  program = program.createCanvas({
+    width: 800,
+    height: 600,
+    margin: { top: 140, right: 220, bottom: 120, left: 260 }
+  })
   program = program.createData({ values: rows })
   return program
 }
@@ -91,21 +95,27 @@ chart contract:
 - `unsupported.interaction` — interactive runtime behavior
 - `unsupported.3d` — three-dimensional charts
 - `unsupported.jpg` — JPEG output
+- `unsupported.areaStrokeDash` — field-driven dash encoding on an area mark
 
 Do not invent an action or silently substitute another capability. A request
 can still preserve supported parts—for example, PDF plus JPEG retains
 `renderer.pdf` and reports `unsupported.jpg`.
 
-An open decision is different. `chart.type`, `renderer.format`, and conflicting
-`layout.legend.*` constraints require clarification or a bounded documentation
-read before authoring can continue. A compact task packet lists those decisions
-under `unresolved` and attaches the exact `ggaction://docs/...` resource URI.
-Terminal limitations appear under `unsupported` and require no mandatory read.
+An open decision is different. `chart.type`, `renderer.format`,
+`composition.children`, `encoding.position`, `guide.legend.channel`, and
+conflicting `layout.legend.*` constraints require clarification or a bounded
+documentation read before authoring can continue. A compact task packet lists
+those decisions under `unresolved` and attaches the exact
+`ggaction://docs/...` resource URI. Terminal limitations appear under
+`unsupported` and require no mandatory read.
 
 ## Compact knowledge route
 
 When the local MCP server is available, call `search_ggaction` once with only
 the complete user request. Follow `authoring.prerequisites` and
-`authoring.steps` in order. Read documentation only for URIs explicitly listed
-in `unresolved[].resources`. See [Local MCP](./mcp.md) for installation and the
-packet contract.
+`authoring.steps` in order. Explicit Canvas or data actions occur in the steps
+and are omitted from prerequisites so they execute only once. The packet closes
+deterministic target, field-type, scale, and derived-data dependencies; missing
+semantic choices remain unresolved. Read documentation only for URIs explicitly
+listed in `unresolved[].resources`. See [Local MCP](./mcp.md) for installation
+and the packet contract.

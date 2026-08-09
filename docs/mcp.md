@@ -65,8 +65,8 @@ The result is a bounded JSON task packet with:
 - `actionPlan` — actions and runtime operations in execution order
 - `exactCalls` — short calls with current option names
 - `authoring` — exact package imports, `chart()` initialization, reusable
-  Canvas/data prerequisites, immutable reassignment steps, and the selected
-  renderer call
+  non-duplicated Canvas/data prerequisites, immutable reassignment steps with
+  closed target and derived-data handoffs, and the selected renderer call
 - `unsupported` — terminal requirements outside the current contract
 - `unresolved` — conflicting or underspecified decisions, each with the exact
   bounded documentation resource needed to continue
@@ -77,9 +77,11 @@ task packet. A packet is never silently truncated; it fails if it exceeds its
 6,144-byte hard ceiling.
 
 `authoring.prerequisites` gives the exact signatures and calls for the common
-Canvas and data setup. Supply every name listed in a prerequisite's `bindings`
-array—currently the caller-owned `values` array—then run the prerequisite calls
-that the existing program has not already satisfied. Keep every returned
+Canvas and data setup that is not already present in `actionPlan`. Supply every
+name listed in a prerequisite's `bindings` array—currently the caller-owned
+`values` array. If the request explicitly asks to create Canvas or data, the
+corresponding call appears once in `authoring.steps` and is omitted from
+`authoring.prerequisites`. Keep every returned
 `program = ...` assignment because each action returns a new immutable
 `ChartProgram`. Run `authoring.steps` in order after those prerequisites:
 
@@ -88,11 +90,24 @@ import { chart } from "ggaction";
 import { renderToSVG } from "ggaction/svg";
 
 let program = chart()
-program = program.createCanvas({})
+program = program.createCanvas({
+  width: 800,
+  height: 600,
+  margin: { top: 140, right: 220, bottom: 120, left: 260 }
+})
 program = program.createData({ values })
-program = program.createScatterPlot({ x: "x", y: "y" })
+program = program.createScatterPlot({
+  x: { field: "x", fieldType: "quantitative" },
+  y: { field: "y", fieldType: "quantitative" }
+})
 const output = renderToSVG(program)
 ```
+
+The resolver closes only deterministic runtime dependencies. It can add a
+required area owner for density, pass a derived dataset to its consumer, bind a
+unique compatible scale, or name a stable mark target. It does not invent a
+missing chart, label positions, legend channel, or composition children; those
+remain explicit `unresolved` decisions.
 
 Unsupported output and a missing supported renderer are separate decisions.
 For example, `render JPEG` reports terminal `unsupported.jpg` and open

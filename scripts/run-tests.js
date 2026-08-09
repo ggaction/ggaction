@@ -64,7 +64,7 @@ export function classifyTestFile(file, root = testRoot) {
   const [owner] = relative.split(path.sep);
   if (
     file.endsWith(".render.js") &&
-    (owner === "charts" || owner === "gates")
+    (owner === "charts" || owner === "contracts" || owner === "gates")
   ) {
     return "render";
   }

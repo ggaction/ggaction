@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "overview": {
     "title": "ggaction compact authoring overview",
-    "text": "Use search_ggaction once with only the exact user chart request; do not append dataset contents or code scaffolding. The result contains exact authoring imports, chart() initialization, createCanvas and createData prerequisites, immutable executable steps, ordered actionPlan entries, exactCalls, required option names, canonical routes, terminal unsupported constraints, and open unresolved decisions. Do not preload the full documentation. Read an action card when one exact action needs more detail. Read only the resource URIs attached to unresolved entries; unsupported entries are terminal and require no documentation read. The server is read-only and never executes chart code."
+    "text": "Use search_ggaction once with only the exact user chart request; do not append dataset contents or code scaffolding. The result contains exact authoring imports, chart() initialization, non-duplicated createCanvas and createData prerequisites, immutable executable steps with deterministic runtime dependencies closed, ordered actionPlan entries, exactCalls, required option names, canonical routes, terminal unsupported constraints, and open unresolved decisions. Do not preload the full documentation. Read an action card when one exact action needs more detail. Read only the resource URIs attached to unresolved entries; unsupported entries are terminal and require no documentation read. The server is read-only and never executes chart code."
   },
   "recipes": [
     {

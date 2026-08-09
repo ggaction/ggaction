@@ -119,7 +119,8 @@
       "query": "density plot with x axis",
       "constraints": ["chart.density", "guide.xAxis"],
       "plan": [
-        { "id": "action.encodeDensity", "options": ["field"] },
+        { "id": "action.createAreaMark", "options": ["id"] },
+        { "id": "action.encodeDensity", "options": ["field", "target"] },
         { "id": "action.createXAxis", "options": [] }
       ],
       "unresolved": []
@@ -142,7 +143,7 @@
         { "id": "action.createTextMark", "options": [] },
         { "id": "action.layoutLabels", "options": ["axis"] }
       ],
-      "unresolved": []
+      "unresolved": ["encoding.position"]
     },
     {
       "id": "point-jitter",
@@ -172,7 +173,7 @@
         { "id": "action.selectMarks", "options": ["id", "field", "op", "value"] },
         { "id": "action.highlightMarks", "options": ["selection", "color"] }
       ],
-      "unresolved": []
+      "unresolved": ["chart.type"]
     },
     {
       "id": "filter-marks",
@@ -181,7 +182,7 @@
       "plan": [
         { "id": "action.filterMarks", "options": ["field", "op", "value"] }
       ],
-      "unresolved": []
+      "unresolved": ["chart.type"]
     },
     {
       "id": "facet-shared-guides",
@@ -190,7 +191,7 @@
       "plan": [
         { "id": "action.facet", "options": ["field", "guides"] }
       ],
-      "unresolved": []
+      "unresolved": ["chart.type"]
     },
     {
       "id": "horizontal-svg",
@@ -200,7 +201,7 @@
         { "id": "runtime.hconcat", "options": [] },
         { "id": "runtime.renderToSVG", "options": [] }
       ],
-      "unresolved": []
+      "unresolved": ["composition.children"]
     },
     {
       "id": "vertical-pdf",
@@ -210,7 +211,7 @@
         { "id": "runtime.vconcat", "options": [] },
         { "id": "runtime.renderToPDF", "options": [] }
       ],
-      "unresolved": []
+      "unresolved": ["composition.children"]
     },
     {
       "id": "polar-arc-guides",
@@ -218,8 +219,8 @@
       "constraints": ["mark.arc", "encoding.theta", "encoding.radius", "guide.all"],
       "plan": [
         { "id": "action.createArcMark", "options": [] },
-        { "id": "action.encodeTheta", "options": ["field"] },
-        { "id": "action.encodeR", "options": ["field"] },
+        { "id": "action.encodeTheta", "options": ["field", "fieldType"] },
+        { "id": "action.encodeR", "options": ["field", "fieldType"] },
         { "id": "action.createGuides", "options": [] }
       ],
       "unresolved": []
@@ -230,7 +231,6 @@
       "constraints": ["chart.bar", "guide.grid", "guide.title", "renderer.png"],
       "plan": [
         { "id": "action.createBarPlot", "options": ["x", "y"] },
-        { "id": "action.createGrid", "options": [] },
         { "id": "action.createTitle", "options": ["text"] },
         { "id": "runtime.renderToPNG", "options": [] }
       ],
@@ -297,8 +297,7 @@
       "constraints": ["chart.bar", "statistics.errorBar", "guide.yAxis"],
       "plan": [
         { "id": "action.createBarPlot", "options": ["x", "y"] },
-        { "id": "action.createErrorBar", "options": [] },
-        { "id": "action.createYAxis", "options": [] }
+        { "id": "action.createErrorBar", "options": [] }
       ],
       "unresolved": []
     }

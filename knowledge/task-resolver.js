@@ -21,6 +21,27 @@ const rendererImports = Object.freeze({
   renderToPDF: Object.freeze({ entry: "ggaction/pdf", output: "pdf" })
 });
 const authoringPrerequisiteNames = Object.freeze(["createCanvas", "createData"]);
+const authoringCanvasOptions = Object.freeze({
+  width: "800",
+  height: "600",
+  margin: "{ top: 140, right: 220, bottom: 120, left: 260 }"
+});
+const facadeGuideOwners = new Set([
+  "createScatterPlot",
+  "createLinePlot",
+  "createBarPlot",
+  "createBoxPlot",
+  "createGradientPlot",
+  "createViolinPlot"
+]);
+const standaloneGuideNames = new Set([
+  "createAxes",
+  "createXAxis",
+  "createYAxis",
+  "createGrid",
+  "createLegend",
+  "createGuides"
+]);
 const docsResourceByDecision = Object.freeze({
   "chart.type": "ggaction://docs/choose-chart-type",
   "renderer.format": "ggaction://docs/choose-renderer",
@@ -262,10 +283,14 @@ function adaptProviderDependencies(selected) {
       );
       adapted = adapted.filter(entry => entry !== legendLayout).map(entry => {
         if (entry !== owner) return entry;
-        const provider = entry.provider.name === "createLegend"
+      const provider = entry.provider.name === "createLegend"
           ? {
               ...entry.provider,
-              baseOptions: { ...(entry.provider.baseOptions ?? {}), position }
+              baseOptions: {
+                ...(entry.provider.baseOptions ?? {}),
+                position,
+                ...(position === `"left"` ? { offset: "96" } : {})
+              }
             }
           : {
               ...entry.provider,
@@ -273,7 +298,7 @@ function adaptProviderDependencies(selected) {
                 ...(entry.provider.optionsByConstraint ?? {}),
                 "guide.legend": {
                   ...(entry.provider.optionsByConstraint?.["guide.legend"] ?? {}),
-                  guides: `{ legend: { position: ${position} } }`
+                  guides: `{ legend: { position: ${position}${position === `"left"` ? ", offset: 96" : ""} } }`
                 }
               }
             };
@@ -285,6 +310,356 @@ function adaptProviderDependencies(selected) {
     }
   }
   return adapted;
+}
+
+function withBaseOptions(entry, options) {
+  return {
+    ...entry,
+    provider: {
+      ...entry.provider,
+      baseOptions: { ...(entry.provider.baseOptions ?? {}), ...options }
+    }
+  };
+}
+
+function dependencyEntry(name, baseOptions, coverage = []) {
+  const card = cards.get(name);
+  if (!card) throw new Error(`Unknown runtime dependency action ${name}.`);
+  return {
+    provider: {
+      id: `action.${name}`,
+      kind: "action",
+      name,
+      order: orderForCard(card),
+      anchors: [],
+      covers: [],
+      baseOptions
+    },
+    coverage
+  };
+}
+
+function absorbFacadeGuides(entries) {
+  const owner = entries.find(entry =>
+    !entry.provider.id.startsWith("exact.") &&
+    facadeGuideOwners.has(entry.provider.name)
+  );
+  if (!owner) return entries;
+  const guides = entries.filter(entry =>
+    !entry.provider.id.startsWith("exact.") &&
+    standaloneGuideNames.has(entry.provider.name)
+  );
+  if (guides.length === 0) return entries;
+  const guideCoverage = guides.flatMap(entry => entry.coverage);
+  return entries
+    .filter(entry => !guides.includes(entry))
+    .map(entry => entry === owner
+      ? {
+          ...entry,
+          coverage: unique([...entry.coverage, ...guideCoverage])
+        }
+      : entry);
+}
+
+function replaceEntry(entries, target, replacements) {
+  const index = entries.indexOf(target);
+  if (index === -1) return entries;
+  return [
+    ...entries.slice(0, index),
+    ...replacements,
+    ...entries.slice(index + 1)
+  ];
+}
+
+function closeRuntimeDependencies(entries) {
+  let closed = absorbFacadeGuides(entries);
+  const semantic = name => closed.find(entry =>
+    entry.provider.name === name && !entry.provider.id.startsWith("exact.")
+  );
+
+  const explicitData = semantic("createData");
+  if (explicitData) {
+    closed = closed.map(entry => entry === explicitData
+      ? withBaseOptions(entry, { values: "values" })
+      : entry);
+  }
+  const explicitCanvas = semantic("createCanvas");
+  if (explicitCanvas) {
+    closed = closed.map(entry => entry === explicitCanvas
+      ? withBaseOptions(entry, authoringCanvasOptions)
+      : entry);
+  }
+
+  const scatter = semantic("createScatterPlot");
+  if (scatter) {
+    closed = closed.map(entry => entry === scatter
+      ? withBaseOptions(entry, {
+          x: `{ field: "x", fieldType: "quantitative" }`,
+          y: `{ field: "y", fieldType: "quantitative" }`
+        })
+      : entry);
+  }
+
+  const line = semantic("createLinePlot");
+  const lineOpacity = semantic("encodeOpacity");
+  if (line && lineOpacity) {
+    closed = closed
+      .filter(entry => entry !== lineOpacity)
+      .map(entry => entry === line
+        ? {
+            ...withBaseOptions(entry, { line: "{ opacity: 0.8 }" }),
+            coverage: unique([...entry.coverage, ...lineOpacity.coverage])
+          }
+        : entry);
+  }
+
+  const barPlot = semantic("createBarPlot");
+  if (barPlot) {
+    const hasColorScale = semantic("createScale")?.provider.id === "action.createColorScale";
+    closed = closed.map(entry => entry === barPlot
+      ? {
+          ...withBaseOptions(entry, {
+            x: `{ field: "category", fieldType: "nominal" }`,
+            y: `{ field: "value", fieldType: "quantitative" }`
+          }),
+          provider: {
+            ...withBaseOptions(entry, {
+              x: `{ field: "category", fieldType: "nominal" }`,
+              y: `{ field: "value", fieldType: "quantitative" }`
+            }).provider,
+            ...(hasColorScale
+              ? {
+                  optionsByConstraint: {
+                    ...(entry.provider.optionsByConstraint ?? {}),
+                    "encoding.color": {
+                      color: `{ field: "category", scale: { id: "color-scale" } }`
+                    }
+                  }
+                }
+              : {})
+          }
+        }
+      : entry);
+  }
+
+  const intervalData = semantic("createIntervalData");
+  const boxPlot = semantic("createBoxPlot");
+  const errorBar = semantic("createErrorBar");
+  if (intervalData && boxPlot && errorBar) {
+    closed = closed.map(entry => {
+      if (entry === intervalData) {
+        return withBaseOptions(entry, {
+          source: `"data"`,
+          groupBy: `"category"`
+        });
+      }
+      if (entry === boxPlot) {
+        return withBaseOptions(entry, {
+          data: `"data"`,
+          x: `{ field: "category", fieldType: "nominal" }`,
+          y: `{ field: "value", fieldType: "quantitative" }`
+        });
+      }
+      if (entry === errorBar) {
+        return withBaseOptions(entry, {
+          data: `"interval"`,
+          x: `{ field: "category", fieldType: "nominal", scale: { id: "errorBarX" } }`,
+          y: `{ center: "__interval_center", lower: "__interval_lower", upper: "__interval_upper", scale: { id: "errorBarY" } }`
+        });
+      }
+      return entry;
+    });
+  }
+
+  const densityData = semantic("createDensityData");
+  const violinPlot = semantic("createViolinPlot");
+  if (densityData && violinPlot) {
+    closed = closed.map(entry => {
+      if (entry === densityData) {
+        return withBaseOptions(entry, {
+          source: `"data"`,
+          groupBy: `"category"`
+        });
+      }
+      return entry === violinPlot
+        ? withBaseOptions(entry, {
+            data: `"data"`,
+            ...(entry.coverage.includes("guide.legend")
+              ? { color: `{ field: "category" }` }
+              : {})
+          })
+        : entry;
+    });
+  }
+
+  const gradientPlot = semantic("createGradientPlot");
+  const logarithmicScale = semantic("createScale")?.provider.id === "action.createLogScale"
+    ? semantic("createScale")
+    : undefined;
+  if (gradientPlot) {
+    closed = closed.map(entry => entry === gradientPlot
+      ? withBaseOptions(entry, {
+          data: `"data"`,
+          x: `{ field: "value", fieldType: "quantitative"${logarithmicScale ? `, scale: { id: "scale-1" }` : ""} }`,
+          y: `{ field: "category", fieldType: "nominal" }`
+        })
+      : entry);
+  }
+
+  const density = semantic("encodeDensity");
+  const hasArea = semantic("createAreaMark");
+  if (density && !hasArea) {
+    const area = dependencyEntry("createAreaMark", { id: `"densityArea"` });
+    const densityIndex = closed.indexOf(density);
+    closed = [
+      ...closed.slice(0, densityIndex),
+      area,
+      ...closed.slice(densityIndex)
+    ].map(entry => entry === density
+      ? withBaseOptions(entry, { target: `"densityArea"` })
+      : entry);
+  }
+
+  const bin2d = semantic("createBin2DData");
+  const rect = semantic("createRectMark");
+  if (bin2d && rect) {
+    closed = closed.map(entry => {
+      if (entry === bin2d) return withBaseOptions(entry, { source: `"data"` });
+      if (entry === rect) {
+        return withBaseOptions(entry, { id: `"rect"`, data: `"bins"` });
+      }
+      if (entry.provider.id === "action.createColorScale") {
+        return withBaseOptions(entry, {
+          type: `"sequential"`,
+          range: `{ palette: "viridis" }`
+        });
+      }
+      return entry;
+    });
+    const x = semantic("encodeX");
+    const y = semantic("encodeY");
+    if (x) {
+      closed = replaceEntry(closed, x, [
+        withBaseOptions(x, {
+          field: `"__bins_x0"`,
+          fieldType: `"quantitative"`,
+          target: `"rect"`
+        }),
+        dependencyEntry("encodeX2", {
+          field: `"__bins_x1"`,
+          fieldType: `"quantitative"`,
+          target: `"rect"`
+        })
+      ]);
+    }
+    if (y) {
+      closed = replaceEntry(closed, y, [
+        withBaseOptions(y, {
+          field: `"__bins_y0"`,
+          fieldType: `"quantitative"`,
+          target: `"rect"`
+        }),
+        dependencyEntry("encodeY2", {
+          field: `"__bins_y1"`,
+          fieldType: `"quantitative"`,
+          target: `"rect"`
+        })
+      ]);
+    }
+    const color = semantic("encodeColor");
+    if (color) {
+      closed = closed.map(entry => entry === color
+        ? withBaseOptions(entry, {
+            field: `"__bins_count"`,
+            fieldType: `"quantitative"`,
+            target: `"rect"`,
+            scale: `{ id: "color-scale" }`
+          })
+        : entry);
+    }
+    const legend = semantic("createLegend");
+    if (legend) {
+      closed = closed.map(entry => entry === legend
+        ? withBaseOptions(entry, { target: `"rect"`, channels: `["color"]` })
+        : entry);
+    }
+  }
+
+  let currentMark;
+  let currentMarkKind;
+  let pendingScale;
+  const defaultMarkIds = Object.freeze({
+    createPointMark: "point",
+    createLineMark: "line",
+    createAreaMark: "area",
+    createBarMark: "bar",
+    createRuleMark: "rule",
+    createArcMark: "arc",
+    createRectMark: "rect",
+    createTextMark: "text",
+    createScatterPlot: "scatterPlot",
+    createLinePlot: "linePlot",
+    createBarPlot: "barPlot",
+    createBoxPlot: "boxPlot",
+    createGradientPlot: "gradientPlot",
+    createViolinPlot: "violinPlot"
+  });
+  const markKinds = Object.freeze({
+    createPointMark: "point",
+    createLineMark: "line",
+    createAreaMark: "area",
+    createBarMark: "bar",
+    createRuleMark: "rule",
+    createArcMark: "arc",
+    createRectMark: "rect",
+    createTextMark: "text",
+    createScatterPlot: "point",
+    createLinePlot: "line",
+    createBarPlot: "bar",
+    createBoxPlot: "bar",
+    createGradientPlot: "rect",
+    createViolinPlot: "area"
+  });
+  closed = closed.map(entry => {
+    if (entry.provider.id.startsWith("exact.")) return entry;
+    if (entry.provider.name === "createScale") {
+      pendingScale = entry.provider.id === "action.createScale"
+        ? entry.provider.baseOptions?.id
+        : undefined;
+      return entry;
+    }
+    const created = defaultMarkIds[entry.provider.name];
+    if (created !== undefined) {
+      currentMark = entry.provider.baseOptions?.id?.replaceAll('"', "") ?? created;
+      currentMarkKind = markKinds[entry.provider.name];
+      return entry;
+    }
+    if (!currentMark || entry.provider.name === "createErrorBar") return entry;
+    const options = {};
+    if (
+      ["area", "rule", "arc"].includes(currentMarkKind) &&
+      ["encodeX", "encodeY", "encodeR"].includes(entry.provider.name)
+    ) {
+      options.fieldType = `"quantitative"`;
+    }
+    if (entry.provider.name === "encodeTheta" && currentMarkKind === "arc") {
+      options.fieldType = `"ordinal"`;
+    }
+    if (currentMarkKind === "bar" && entry.provider.name === "encodeX") {
+      options.field = `"category"`;
+      options.fieldType = `"nominal"`;
+    }
+    if (currentMarkKind === "bar" && entry.provider.name === "encodeY") {
+      options.field = `"value"`;
+      options.fieldType = `"quantitative"`;
+    }
+    if (pendingScale && ["encodeX", "encodeY"].includes(entry.provider.name)) {
+      options.scale = `{ id: ${pendingScale} }`;
+      pendingScale = undefined;
+    }
+    return Object.keys(options).length === 0 ? entry : withBaseOptions(entry, options);
+  });
+  return closed;
 }
 
 function providerRequestPosition(entry, positions) {
@@ -393,22 +768,85 @@ function authoringSteps(entries) {
 }
 
 function authoringBlock(entries) {
+  const plannedPrerequisites = new Set(entries
+    .map(entry => entry.plan.id)
+    .filter(id => authoringPrerequisiteNames.some(name => id === `action.${name}`)));
   return {
     imports: authoringImports(entries),
     initialize: "let program = chart()",
-    prerequisites: authoringPrerequisiteNames.map(name => {
+    prerequisites: authoringPrerequisiteNames
+      .filter(name => !plannedPrerequisites.has(`action.${name}`))
+      .map(name => {
       const card = cards.get(name);
       return {
         id: `action.${name}`,
         signature: card.signature,
         call: name === "createCanvas"
-          ? "program = program.createCanvas({})"
+          ? "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })"
           : "program = program.createData({ values })",
         bindings: name === "createData" ? ["values"] : []
       };
-    }),
+      }),
     steps: authoringSteps(entries)
   };
+}
+
+function runtimeClosureDecisions(entries) {
+  const names = new Set(entries
+    .filter(entry => !entry.provider.id.startsWith("exact."))
+    .map(entry => entry.provider.name));
+  const unresolved = [];
+  const unsupported = [];
+  const markCreators = [...names].filter(name =>
+    name.startsWith("create") && (name.endsWith("Mark") || name.endsWith("Plot"))
+  );
+  const hasChartOwner = markCreators.length > 0 ||
+    [...names].some(name => ["createHistogram", "createHeatmap", "createParallelCoordinates"].includes(name));
+
+  if (
+    ["selectMarks", "filterMarks", "highlightMarks", "facet"].some(name => names.has(name)) &&
+    !hasChartOwner
+  ) {
+    unresolved.push(unresolvedDecision(
+      "chart.type",
+      "Selection and faceting require one explicit chart or mark owner before those actions can be addressed."
+    ));
+  }
+  if (
+    ["hconcat", "vconcat"].some(name => names.has(name)) &&
+    !hasChartOwner
+  ) {
+    unresolved.push(unresolvedDecision(
+      "composition.children",
+      "Composition requires at least two complete child ChartPrograms; name or provide the child charts first."
+    ));
+  }
+  if (
+    names.has("layoutLabels") && names.has("createTextMark") &&
+    !names.has("encodeX") && !names.has("encodeY")
+  ) {
+    unresolved.push(unresolvedDecision(
+      "encoding.position",
+      "Collision-aware labels require a positioned source layer or explicit x and y encodings."
+    ));
+  }
+  if (
+    names.has("createLegend") &&
+    !["encodeColor", "encodeSize", "encodeShape", "encodeOpacity", "encodeStrokeDash", "encodeStrokeWidth"]
+      .some(name => names.has(name))
+  ) {
+    unresolved.push(unresolvedDecision(
+      "guide.legend.channel",
+      "A legend requires an explicit compatible visual encoding such as color, size, shape, opacity, dash, or width."
+    ));
+  }
+  if (names.has("createAreaMark") && names.has("encodeStrokeDash")) {
+    unsupported.push({
+      constraint: "unsupported.areaStrokeDash",
+      reason: "Field-driven stroke dash is not supported for area marks; use a line or rule mark for dash encoding."
+    });
+  }
+  return { unresolved, unsupported };
 }
 
 function unresolvedDecision(constraint, reason) {
@@ -579,11 +1017,16 @@ export function searchGgaction(query) {
     ));
   }
 
-  const ordered = adaptProviderDependencies(selected).sort((left, right) =>
+  const ordered = closeRuntimeDependencies(adaptProviderDependencies(selected).sort((left, right) =>
     left.provider.order - right.provider.order ||
     providerRequestPosition(left, positions) - providerRequestPosition(right, positions) ||
     left.provider.id.localeCompare(right.provider.id)
-  );
+  ));
+  const closure = runtimeClosureDecisions(ordered);
+  if (unsupported.length === 0 && unresolved.length === 0) {
+    unsupported.push(...closure.unsupported);
+    unresolved.push(...closure.unresolved);
+  }
   const entries = ordered.map((entry, index) => planEntry(entry, index + 1));
   const packet = {
     schemaVersion: 3,
