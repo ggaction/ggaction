@@ -1,3 +1,6 @@
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 import {
@@ -6,10 +9,12 @@ import {
 } from "../src/mcp/adapter.js";
 import { evaluateFullSubmissionV2 } from "./compact-full-evaluator-v2.js";
 import {
-  assertSupportedStrictToolSchema
+  assertSupportedStrictToolSchema,
+  loadApiKey
 } from "./compact-paid-smoke.js";
 import {
   createKnowledgeAdapterV4,
+  createOpenAIResponse,
   root
 } from "./compact-paid-smoke-v4.js";
 import {
@@ -20,6 +25,186 @@ import { runBoundedToolStateMachineV1 } from "./compact-paid-state-machine-v1.js
 import { canonicalRuntimeClosureSource } from "./compact-runtime-closure-v2.js";
 
 export { root };
+
+export { createOpenAIResponse, loadApiKey };
+
+export const paidSmokeRootV6 = path.join(
+  root,
+  "evaluation",
+  "compact-authoring-paid-smoke-v6"
+);
+export const paidSmokePlanFileV6 = path.join(paidSmokeRootV6, "PLAN.json");
+const paidSmokeGateFileV6 = path.join(
+  root,
+  "agent_docs",
+  "impl",
+  "roadmap5.4",
+  "phase5",
+  "GATE_I.md"
+);
+const productPaths = Object.freeze(["src", "types", "knowledge", "docs", "package.json"]);
+
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+function planCost(plan) {
+  const taskRuns = plan.runOrder.length;
+  return {
+    expected: taskRuns * (
+      plan.costProjection.taskRunExpectedInputTokens * plan.pricingPerMillionTokens.uncachedInput +
+      plan.costProjection.taskRunExpectedOutputTokens * plan.pricingPerMillionTokens.output
+    ) / 1_000_000,
+    maximum: taskRuns * (
+      plan.limits.maximumInputTokensPerTask * plan.pricingPerMillionTokens.cacheWrite +
+      plan.limits.maximumOutputTokensPerTask * plan.pricingPerMillionTokens.output
+    ) / 1_000_000
+  };
+}
+
+function assertPlanShapeV6(plan) {
+  if (
+    plan.schemaVersion !== 1 ||
+    plan.id !== "compact-authoring-paid-smoke-v6" ||
+    plan.requiredGate !== "R54-P5-I"
+  ) {
+    throw new Error("Paid smoke v6 plan identity is invalid.");
+  }
+  if (plan.runOrder.length !== 32 || new Set(plan.runOrder).size !== 32) {
+    throw new Error("Paid smoke v6 run order must contain 32 unique task-condition pairs.");
+  }
+  if (
+    !plan.evaluatorSourceFiles ||
+    typeof plan.evaluatorSourceFiles !== "object" ||
+    Array.isArray(plan.evaluatorSourceFiles) ||
+    !plan.productSourceTrees ||
+    typeof plan.productSourceTrees !== "object" ||
+    Array.isArray(plan.productSourceTrees)
+  ) {
+    throw new Error("Paid smoke v6 evaluator files and product trees must be frozen.");
+  }
+  if (
+    plan.limits.maximumModelCallsPerTask !== 4 ||
+    plan.limits.maximumModelCallsTotal !== 128 ||
+    plan.limits.maximumInputTokensPerTask !== 36000 ||
+    plan.limits.maximumOutputTokensPerTask !== 12000 ||
+    plan.limits.projectedInputBytesPerToken !== 1 ||
+    plan.limits.maximumRequestBodyBytesPerCall !== 262144 ||
+    plan.limits.maximumRequestBodyBytesPerTask !== 786432
+  ) {
+    throw new Error("Paid smoke v6 limits are invalid.");
+  }
+  const cost = planCost(plan);
+  if (
+    Math.abs(cost.expected - plan.costProjection.expectedUsd) > 1e-12 ||
+    Math.abs(cost.maximum - plan.costProjection.calculatedMaximumUsd) > 1e-12 ||
+    plan.costProjection.calculatedMaximumWithRegionalUpliftUsd >= plan.limits.hardCostUsd
+  ) {
+    throw new Error("Paid smoke v6 cost projection does not match its envelopes.");
+  }
+}
+
+function commitFile(commit, relative, label) {
+  try {
+    return execFileSync("git", ["show", `${commit}:${relative}`], {
+      cwd: root,
+      maxBuffer: 30_000_000
+    });
+  } catch {
+    throw new Error(`Paid smoke v6 ${label} is unavailable: ${relative}`);
+  }
+}
+
+function commitTree(commit, relative) {
+  try {
+    return execFileSync("git", ["rev-parse", `${commit}:${relative}`], {
+      cwd: root,
+      encoding: "utf8"
+    }).trim();
+  } catch {
+    throw new Error(`Paid smoke v6 product tree is unavailable: ${relative}`);
+  }
+}
+
+function assertAncestor(commit, label) {
+  try {
+    execFileSync("git", ["merge-base", "--is-ancestor", commit, "HEAD"], {
+      cwd: root,
+      stdio: "ignore"
+    });
+  } catch {
+    throw new Error(`Paid smoke v6 ${label} is not an ancestor of the current HEAD.`);
+  }
+}
+
+function assertCurrentProduct(candidate) {
+  try {
+    execFileSync("git", ["diff", "--quiet", candidate, "--", ...productPaths], {
+      cwd: root,
+      stdio: "ignore"
+    });
+    const status = execFileSync("git", ["status", "--porcelain", "--", ...productPaths], {
+      cwd: root,
+      encoding: "utf8"
+    }).trim();
+    if (status !== "") throw new Error("dirty");
+  } catch {
+    throw new Error("Paid smoke v6 current product differs from its frozen candidate.");
+  }
+}
+
+export async function loadPaidSmokePlanV6() {
+  const [planBytes, oracle] = await Promise.all([
+    readFile(paidSmokePlanFileV6),
+    loadRouteOracleV5()
+  ]);
+  const plan = JSON.parse(planBytes);
+  assertPlanShapeV6(plan);
+  if (plan.routeOracleSha256 !== oracle.oracleSha256) {
+    throw new Error("Paid smoke v6 route oracle hash drifted.");
+  }
+  for (const [relative, expected] of Object.entries(plan.evaluatorSourceFiles)) {
+    const frozen = commitFile(plan.evaluatorCheckpointCommit, relative, "evaluator source");
+    if (sha256(frozen) !== expected) {
+      throw new Error(`Paid smoke v6 evaluator source hash drifted: ${relative}`);
+    }
+    const current = await readFile(path.join(root, relative));
+    if (sha256(current) !== expected) {
+      throw new Error(`Paid smoke v6 current evaluator source drifted: ${relative}`);
+    }
+  }
+  for (const [relative, expected] of Object.entries(plan.productSourceTrees)) {
+    if (commitTree(plan.productCandidateCommit, relative) !== expected) {
+      throw new Error(`Paid smoke v6 product tree hash drifted: ${relative}`);
+    }
+  }
+  assertAncestor(plan.productCandidateCommit, "product candidate");
+  assertAncestor(plan.evaluatorCheckpointCommit, "evaluator checkpoint");
+  assertCurrentProduct(plan.productCandidateCommit);
+  return Object.freeze({
+    ...plan,
+    conditions: oracle.conditions,
+    tasks: oracle.tasks,
+    planSha256: sha256(planBytes)
+  });
+}
+
+export async function assertPaidSmokeAuthorizedV6(plan) {
+  const approved = plan ?? await loadPaidSmokePlanV6();
+  const gate = await readFile(paidSmokeGateFileV6, "utf8");
+  const state = gate.match(/^## Gate state\n\n`([^`]+)`$/mu)?.[1];
+  if (state !== "approved") {
+    throw new Error(`${approved.requiredGate} is not approved; credential read and paid calls are blocked.`);
+  }
+  if (
+    !gate.includes(approved.productCandidateCommit) ||
+    !gate.includes(approved.evaluatorCheckpointCommit) ||
+    !gate.includes(approved.planSha256)
+  ) {
+    throw new Error(`${approved.requiredGate} does not authorize this candidate and plan hash.`);
+  }
+  return approved;
+}
 
 export function paidSmokeRouteV6(condition, task) {
   if (condition === "A") return Object.freeze(["search_docs", "read_doc", "submit_result"]);
@@ -224,5 +409,113 @@ export async function runPaidSmokeDryRunV6({
     credentialReads: 0,
     spendUsd: 0,
     details: checks
+  };
+}
+
+function emptyUsage() {
+  return {
+    inputTokens: 0,
+    cachedInputTokens: 0,
+    cacheWriteTokens: 0,
+    outputTokens: 0,
+    reasoningTokens: 0,
+    totalTokens: 0
+  };
+}
+
+function addUsage(target, usage) {
+  for (const key of Object.keys(target)) target[key] += usage[key] ?? 0;
+}
+
+function summarizeResults(results) {
+  const conditions = {};
+  for (const condition of ["A", "B", "C", "D"]) {
+    const entries = results.filter(result => result.condition === condition);
+    const usage = emptyUsage();
+    for (const entry of entries) addUsage(usage, entry.usage);
+    conditions[condition] = {
+      tasks: entries.length,
+      passed: entries.filter(entry => entry.passed).length,
+      modelCalls: entries.reduce((sum, entry) => sum + entry.modelCalls, 0),
+      usage,
+      costUsd: entries.reduce((sum, entry) => sum + entry.costUsd, 0),
+      timeToValidMilliseconds: entries
+        .filter(entry => entry.passed)
+        .reduce((sum, entry) => sum + entry.timeToValidMilliseconds, 0)
+    };
+  }
+  return conditions;
+}
+
+export async function runPaidSmokeV6({
+  plan: suppliedPlan,
+  apiKey,
+  createResponse = createOpenAIResponse,
+  artifactRoot = path.join(root, ".artifacts", "evaluation", "compact-paid-smoke-v6"),
+  now = () => new Date(),
+  onProgress = async () => {}
+} = {}) {
+  const plan = await assertPaidSmokeAuthorizedV6(suppliedPlan ?? await loadPaidSmokePlanV6());
+  await preflightPaidSmokeToolsV6();
+  const taskById = new Map(plan.tasks.map(task => [task.id, task]));
+  const ledger = { usage: emptyUsage(), costUsd: 0, modelCalls: 0 };
+  const results = [];
+  let activeTask = null;
+  const startedAt = now().toISOString();
+  for (const run of plan.runOrder) {
+    const separator = run.lastIndexOf(":");
+    const taskId = run.slice(0, separator);
+    const condition = run.slice(separator + 1);
+    try {
+      const result = await runPaidSmokeTaskV6({
+        plan,
+        task: taskById.get(taskId),
+        condition,
+        apiKey,
+        ledger,
+        artifactRoot: path.join(artifactRoot, `${taskId}-${condition}`),
+        createResponse,
+        onProgress: async progress => {
+          activeTask = progress;
+          await onProgress({ plan, ledger, results: [...results], activeTask });
+        }
+      });
+      results.push(result);
+      activeTask = null;
+      await onProgress({ plan, ledger, results: [...results], activeTask: null });
+    } catch (error) {
+      const failure = {
+        schemaVersion: 1,
+        id: plan.id,
+        planSha256: plan.planSha256,
+        routeOracleSha256: plan.routeOracleSha256,
+        productCandidateCommit: plan.productCandidateCommit,
+        evaluatorCheckpointCommit: plan.evaluatorCheckpointCommit,
+        startedAt,
+        abortedAt: now().toISOString(),
+        abortedRun: run,
+        error: error instanceof Error ? error.message : String(error),
+        ledger,
+        activeTask,
+        results
+      };
+      await onProgress({ plan, ledger, results: [...results], failure });
+      throw Object.assign(new Error(failure.error), { paidSmokeFailure: failure });
+    }
+  }
+  return {
+    schemaVersion: 1,
+    id: plan.id,
+    planSha256: plan.planSha256,
+    routeOracleSha256: plan.routeOracleSha256,
+    productCandidateCommit: plan.productCandidateCommit,
+    evaluatorCheckpointCommit: plan.evaluatorCheckpointCommit,
+    startedAt,
+    completedAt: now().toISOString(),
+    taskRuns: results.length,
+    passedTaskRuns: results.filter(result => result.passed).length,
+    ledger,
+    conditions: summarizeResults(results),
+    results
   };
 }
