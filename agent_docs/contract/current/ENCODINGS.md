@@ -240,8 +240,8 @@ type AggregateOperation =
 - Canonical owner: `src/grammar/positionCompatibility.js`. Generic mark × channel acceptance는 여기서만
   정의하고 bar grain narrowing은 `src/grammar/bars/policy.js`가 소유한다.
 - Point x/y: `"quantitative" | "temporal" | "ordinal" | "nominal"`.
-- Line x: `"quantitative" | "temporal"`; line y는 aggregate policy에 따라
-  `"quantitative" | "temporal" | "ordinal" | "nominal"`을 더 좁힌다.
+- Line x: `"quantitative" | "temporal"`; line y는 direct quantitative pair, regression/interval/window output,
+  또는 temporal x aggregate policy에 따라 `"quantitative" | "temporal" | "ordinal" | "nominal"`을 더 좁힌다.
 - Area x: ranged area는 `"quantitative" | "temporal"`, density area는 `"quantitative"`; area y는
   `"quantitative"`.
 - Bar vertical: `ordinal | temporal x + quantitative aggregate y`.

@@ -181,6 +181,41 @@ test("creates aggregate temporal lines and preserves child validation", () => {
   assert.equal(source.semanticSpec.layers.length, 0);
 });
 
+test("draws a materialized window output directly on a temporal line", () => {
+  const source = base([
+    { date: "2025-01-01", value: 2 },
+    { date: "2025-02-01", value: 4 },
+    { date: "2025-03-01", value: 9 }
+  ]).createWindowData({
+    id: "moving",
+    sortBy: [{ field: "date" }],
+    operations: [{
+      op: "movingMean",
+      field: "value",
+      as: "movingMean",
+      frame: { preceding: 1 }
+    }]
+  });
+  const program = source.createLinePlot({
+    data: "moving",
+    x: { field: "date", fieldType: "temporal" },
+    y: { field: "movingMean", fieldType: "quantitative" },
+    guides: false
+  });
+
+  assert.equal(program.semanticSpec.layers[0].encoding.y.aggregate, undefined);
+  assert.equal(program.graphicSpec.objects.linePlot.items[0].properties.commands.length, 3);
+  assert.throws(
+    () => source.createLinePlot({
+      data: "moving",
+      x: { field: "date", fieldType: "temporal" },
+      y: { field: "value", fieldType: "quantitative" },
+      guides: false
+    }),
+    /Aggregate must be a supported operation/
+  );
+});
+
 test("rejects ambiguous dash shorthand and Polar-only closure before authoring", () => {
   const source = base();
   assert.throws(

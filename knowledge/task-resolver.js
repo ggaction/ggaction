@@ -442,6 +442,43 @@ function closeRuntimeDependencies(entries) {
       : entry);
   }
 
+  const timeUnitData = semantic("createTimeUnitData");
+  const timeUnitBar = semantic("createBarPlot");
+  if (timeUnitData && timeUnitBar) {
+    closed = closed.map(entry => entry === timeUnitBar
+      ? withBaseOptions(entry, {
+          data: `"monthly"`,
+          x: `{ field: "month", fieldType: "ordinal" }`,
+          y: `{ field: "value", fieldType: "quantitative" }`
+        })
+      : entry);
+  }
+
+  const boxOwner = semantic("createBoxPlot");
+  if (boxOwner) {
+    closed = closed.map(entry => entry === boxOwner
+      ? withBaseOptions(entry, {
+          x: `{ field: "category", fieldType: "nominal" }`,
+          y: `{ field: "value", fieldType: "quantitative" }`
+        })
+      : entry);
+  }
+
+  const windowData = semantic("createWindowData");
+  const windowLine = semantic("createLinePlot");
+  if (windowData && windowLine) {
+    const timeScale = semantic("createScale")?.provider.id === "action.createTimeScale";
+    closed = closed.map(entry => entry === windowLine
+      ? withBaseOptions(entry, {
+          data: `"windowed"`,
+          x: timeScale
+            ? `{ field: "date", fieldType: "temporal", scale: { id: "scale-1" } }`
+            : `{ field: "x", fieldType: "quantitative" }`,
+          y: `{ field: "movingMean", fieldType: "quantitative" }`
+        })
+      : entry);
+  }
+
   const intervalData = semantic("createIntervalData");
   const boxPlot = semantic("createBoxPlot");
   const errorBar = semantic("createErrorBar");
