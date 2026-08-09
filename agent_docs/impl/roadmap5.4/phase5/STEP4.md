@@ -14,7 +14,7 @@
 - [x] dry-run routes 32 / 32, canonical evaluator 8 / 8
 - [x] full repository suite 2,136 / 2,136
 - [x] coverage — lines 94.74%, branches 90.26%, functions 98.43%, critical floors 70 / 70
-- [ ] R54-P5-J review package 고정
+- [x] R54-P5-J review package 고정 — `9abd6e31`
 
 ## Attempt 6에서 실제로 멈춘 이유
 

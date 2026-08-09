@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.
 
@@ -14,7 +14,7 @@ Plan SHA-256: `029927744c89a732c4a940fe869c9f3b31cf4cac4015b478dde25d58833d1e77`
 
 Inherited route oracle SHA-256: `27b76486d37c8cbb07ab2753db204f4fbf7dad5ab48ab27f48707eb9ae6bd0f4`.
 
-Review checkpoint: plan package commit 뒤 기록.
+Review checkpoint: `9abd6e31d7e940f851dd4c481ec82a6418542610`.
 
 ## 현재 근거
 
