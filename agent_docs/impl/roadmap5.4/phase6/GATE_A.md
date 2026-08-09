@@ -6,6 +6,9 @@
 
 Option A approved by the user on 2026-08-10.
 
+Authorization consumed by Attempt 9. The run stopped at 8 / 576 task-runs without retry or resume. This Gate does not authorize another
+credential read or external call; see [`ATTEMPT9.md`](./ATTEMPT9.md).
+
 Review checkpoint: `6cfaa3254eb5a3aff95aca303f4ef07dea2ab7d5`.
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.

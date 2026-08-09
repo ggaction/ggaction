@@ -1,0 +1,1638 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-paid-comparison-v9",
+  "planSha256": "86eeb648ab0c91a04148e472d100ad19ca06e7d993e6c3d1353862e8319bdc55",
+  "routeOracleSha256": "8211f33c5a443649def1f72de6f92d943a260f3df89795032d498f5c87819816",
+  "productCandidateCommit": "4e211ba418cd437d7c66c4fb986fcc714cf579ea",
+  "evaluatorCheckpointCommit": "fb6044c4f7ba55a11bbc9e97991ceb3d4f815c7f",
+  "startedAt": "2026-08-09T16:15:18.870Z",
+  "abortedAt": "2026-08-09T16:16:49.407Z",
+  "abortedRun": "final3-01-scatter-svg:r1:gpt-5.4-nano:A",
+  "error": "provider-response-identity-mismatch",
+  "ledger": {
+    "usage": {
+      "inputTokens": 40171,
+      "cachedInputTokens": 8960,
+      "cacheWriteTokens": 21736,
+      "outputTokens": 7528,
+      "reasoningTokens": 4190,
+      "totalTokens": 47699
+    },
+    "standardCostUsd": 0.08262075,
+    "costUsd": 0.09088282500000003,
+    "uncertainCostReserveUsd": 0,
+    "exposureCostUsd": 0.09088282500000003,
+    "modelCalls": 23,
+    "apiRequestAttempts": 23,
+    "providerRetries": 0,
+    "consecutiveProviderFailureTaskRuns": 0
+  },
+  "activeTask": {
+    "id": "final3-01-scatter-svg:A",
+    "task": "final3-01-scatter-svg",
+    "condition": "A",
+    "model": "gpt-5.4-nano",
+    "stratum": "simple",
+    "modelCalls": 1,
+    "requestAttempts": 1,
+    "providerRetries": 0,
+    "submissionAttempts": 0,
+    "usage": {
+      "inputTokens": 1045,
+      "cachedInputTokens": 0,
+      "cacheWriteTokens": 0,
+      "outputTokens": 109,
+      "reasoningTokens": 77,
+      "totalTokens": 1154
+    },
+    "standardCostUsd": 0.00034525,
+    "costUsd": 0.00037977500000000006,
+    "uncertainCostReserveUsd": 0,
+    "exposureCostUsd": 0.00037977500000000006,
+    "requestBodyBytes": 4318,
+    "projectedInputTokens": 4318,
+    "knowledge": {
+      "toolCalls": 0,
+      "searches": 0,
+      "docsReads": 0
+    },
+    "stateMachine": {
+      "route": [
+        "search_docs",
+        "read_doc",
+        "submit_result"
+      ],
+      "routeIndex": 0,
+      "nextTool": "search_docs"
+    },
+    "trace": [
+      {
+        "requestAttempt": 23,
+        "modelCall": 1,
+        "retryIndex": 0,
+        "phase": "knowledge",
+        "forcedTool": "search_docs",
+        "toolChoice": {
+          "type": "function",
+          "name": "search_docs"
+        },
+        "requestBytes": 4318,
+        "projectedInputTokens": 4318,
+        "modelLatencyMilliseconds": 1441.7691670000058,
+        "provider": {
+          "status": "completed",
+          "incompleteDetails": null,
+          "error": null,
+          "outputItems": [
+            {
+              "type": "reasoning",
+              "status": null,
+              "name": null
+            },
+            {
+              "type": "function_call",
+              "status": "completed",
+              "name": "search_docs"
+            }
+          ]
+        },
+        "providerRequestError": null,
+        "functionCallCount": 1,
+        "tool": null,
+        "arguments": null,
+        "usage": {
+          "inputTokens": 1045,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 0,
+          "outputTokens": 109,
+          "reasoningTokens": 77,
+          "totalTokens": 1154
+        },
+        "costUsd": 0.00037977500000000006,
+        "billingUsageComplete": true,
+        "standardCostUsd": 0.00034525
+      }
+    ],
+    "repetition": 1,
+    "run": "final3-01-scatter-svg:r1:gpt-5.4-nano:A"
+  },
+  "results": [
+    {
+      "id": "final3-01-scatter-svg:r1:gpt-5.6-terra:A",
+      "task": "final3-01-scatter-svg",
+      "condition": "A",
+      "model": "gpt-5.6-terra",
+      "stratum": "simple",
+      "passed": false,
+      "modelCalls": 5,
+      "requestAttempts": 5,
+      "providerRetries": 0,
+      "submissionAttempts": 3,
+      "timeToValidMilliseconds": null,
+      "elapsedMilliseconds": 26750.88775,
+      "usage": {
+        "inputTokens": 10002,
+        "cachedInputTokens": 3995,
+        "cacheWriteTokens": 4446,
+        "outputTokens": 2052,
+        "reasoningTokens": 1511,
+        "totalTokens": 12054
+      },
+      "standardCostUsd": 0.03966,
+      "costUsd": 0.043626000000000005,
+      "uncertainCostReserveUsd": 0,
+      "exposureCostUsd": 0.043626000000000005,
+      "requestBodyBytes": 51970,
+      "projectedInputTokens": 39435,
+      "knowledge": {
+        "toolCalls": 2,
+        "searches": 1,
+        "docsReads": 1
+      },
+      "failures": [
+        "generated-program-error:TypeError: program.plot is not a function"
+      ],
+      "trace": [
+        {
+          "requestAttempt": 1,
+          "modelCall": 1,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "search_docs",
+          "toolChoice": {
+            "type": "function",
+            "name": "search_docs"
+          },
+          "requestBytes": 4319,
+          "projectedInputTokens": 4319,
+          "modelLatencyMilliseconds": 2556.2055,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "search_docs"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "search_docs",
+          "arguments": {
+            "query": "ggaction public API scatter chart point mark encode x y color axes Canvas ChartProgram"
+          },
+          "usage": {
+            "inputTokens": 1045,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 33,
+            "reasoningTokens": 0,
+            "totalTokens": 1078
+          },
+          "costUsd": 0.0027346000000000002,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.002486,
+          "toolLatencyMilliseconds": 9.796915999999783,
+          "toolResultBytes": 1641
+        },
+        {
+          "requestAttempt": 2,
+          "modelCall": 2,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "read_doc",
+          "toolChoice": {
+            "type": "function",
+            "name": "read_doc"
+          },
+          "requestBytes": 6443,
+          "projectedInputTokens": 6443,
+          "modelLatencyMilliseconds": 1270.9670839999994,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "read_doc"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "read_doc",
+          "arguments": {
+            "url": "/llm-authoring/#complete-program-bootstrap"
+          },
+          "usage": {
+            "inputTokens": 1448,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1319,
+            "outputTokens": 26,
+            "reasoningTokens": 0,
+            "totalTokens": 1474
+          },
+          "costUsd": 0.00425425,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.0038675,
+          "toolLatencyMilliseconds": 1.1165420000006634,
+          "toolResultBytes": 1105
+        },
+        {
+          "requestAttempt": 3,
+          "modelCall": 3,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 7929,
+          "projectedInputTokens": 7929,
+          "modelLatencyMilliseconds": 7076.087958000001,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 422,
+            "sourceSha256": "155f1540c2a1c5cf131859c7276206b105b88f781a63ad15b584cd5053f578db"
+          },
+          "usage": {
+            "inputTokens": 1775,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1646,
+            "outputTokens": 669,
+            "reasoningTokens": 510,
+            "totalTokens": 2444
+          },
+          "costUsd": 0.0136411,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.012401,
+          "evaluationLatencyMilliseconds": 352.39866599999914,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: program.scatter is not a function"
+            ]
+          }
+        },
+        {
+          "requestAttempt": 4,
+          "modelCall": 4,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 13163,
+          "projectedInputTokens": 9498,
+          "modelLatencyMilliseconds": 8039.086708000001,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 420,
+            "sourceSha256": "9740dab2c5e7ba197f17e11370643bf40d34f8dc9b88821b1f038137ae1ee8c2"
+          },
+          "usage": {
+            "inputTokens": 2478,
+            "cachedInputTokens": 1646,
+            "cacheWriteTokens": 703,
+            "outputTokens": 744,
+            "reasoningTokens": 585,
+            "totalTokens": 3222
+          },
+          "costUsd": 0.012399970000000001,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.0112727,
+          "evaluationLatencyMilliseconds": 351.4438339999979,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: program.point is not a function"
+            ]
+          }
+        },
+        {
+          "requestAttempt": 5,
+          "modelCall": 5,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 20116,
+          "projectedInputTokens": 11246,
+          "modelLatencyMilliseconds": 6731.766,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 434,
+            "sourceSha256": "e6275dae673b451242cec013a51029b9dddc9ac7a4b98f2985f6fa4f5143ea96"
+          },
+          "usage": {
+            "inputTokens": 3256,
+            "cachedInputTokens": 2349,
+            "cacheWriteTokens": 778,
+            "outputTokens": 580,
+            "reasoningTokens": 416,
+            "totalTokens": 3836
+          },
+          "costUsd": 0.01059608,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.009632799999999999,
+          "evaluationLatencyMilliseconds": 350.15870899999936,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: program.plot is not a function"
+            ]
+          }
+        }
+      ],
+      "repetition": 1,
+      "runPosition": 1
+    },
+    {
+      "id": "final3-01-scatter-svg:r1:gpt-5.6-terra:B",
+      "task": "final3-01-scatter-svg",
+      "condition": "B",
+      "model": "gpt-5.6-terra",
+      "stratum": "simple",
+      "passed": true,
+      "modelCalls": 2,
+      "requestAttempts": 2,
+      "providerRetries": 0,
+      "submissionAttempts": 1,
+      "timeToValidMilliseconds": 7009.193333000003,
+      "elapsedMilliseconds": 7009.200250000002,
+      "usage": {
+        "inputTokens": 2780,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 1585,
+        "outputTokens": 412,
+        "reasoningTokens": 138,
+        "totalTokens": 3192
+      },
+      "standardCostUsd": 0.011296500000000001,
+      "costUsd": 0.01242615,
+      "uncertainCostReserveUsd": 0,
+      "exposureCostUsd": 0.01242615,
+      "requestBodyBytes": 12994,
+      "projectedInputTokens": 11640,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "requestAttempt": 6,
+          "modelCall": 1,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "search_ggaction",
+          "toolChoice": {
+            "type": "function",
+            "name": "search_ggaction"
+          },
+          "requestBytes": 4367,
+          "projectedInputTokens": 4367,
+          "modelLatencyMilliseconds": 2074.6240830000024,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "search_ggaction"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Export SVG after making a scatter chart with map to color and x and y axes."
+          },
+          "usage": {
+            "inputTokens": 1066,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 107,
+            "reasoningTokens": 69,
+            "totalTokens": 1173
+          },
+          "costUsd": 0.0037576000000000003,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.003416,
+          "toolLatencyMilliseconds": 9.196708999999828,
+          "toolResultBytes": 2135
+        },
+        {
+          "requestAttempt": 7,
+          "modelCall": 2,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 8627,
+          "projectedInputTokens": 7273,
+          "modelLatencyMilliseconds": 4547.567625000003,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 613,
+            "sourceSha256": "b2aa3794491e4f17894c4f30f8270522e18577b376cc06cd5ebd2289cfd65751"
+          },
+          "usage": {
+            "inputTokens": 1714,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1585,
+            "outputTokens": 305,
+            "reasoningTokens": 69,
+            "totalTokens": 2019
+          },
+          "costUsd": 0.00866855,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.0078805,
+          "evaluationLatencyMilliseconds": 374.4625410000008,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "b2aa3794491e4f17894c4f30f8270522e18577b376cc06cd5ebd2289cfd65751",
+            "sourceBytes": 613,
+            "outputBytes": 5143
+          }
+        }
+      ],
+      "repetition": 1,
+      "runPosition": 2
+    },
+    {
+      "id": "final3-01-scatter-svg:r1:gpt-5.6-terra:C",
+      "task": "final3-01-scatter-svg",
+      "condition": "C",
+      "model": "gpt-5.6-terra",
+      "stratum": "simple",
+      "passed": true,
+      "modelCalls": 2,
+      "requestAttempts": 2,
+      "providerRetries": 0,
+      "submissionAttempts": 1,
+      "timeToValidMilliseconds": 5010.021125000007,
+      "elapsedMilliseconds": 5010.021792000007,
+      "usage": {
+        "inputTokens": 2737,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 1538,
+        "outputTokens": 338,
+        "reasoningTokens": 95,
+        "totalTokens": 3075
+      },
+      "standardCostUsd": 0.010298999999999999,
+      "costUsd": 0.011328900000000001,
+      "uncertainCostReserveUsd": 0,
+      "exposureCostUsd": 0.011328900000000001,
+      "requestBodyBytes": 12648,
+      "projectedInputTokens": 11607,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "requestAttempt": 8,
+          "modelCall": 1,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "search_ggaction",
+          "toolChoice": {
+            "type": "function",
+            "name": "search_ggaction"
+          },
+          "requestBytes": 4376,
+          "projectedInputTokens": 4376,
+          "modelLatencyMilliseconds": 1311.3983750000043,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "search_ggaction"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Export SVG after making a scatter chart with map to color and x and y axes."
+          },
+          "usage": {
+            "inputTokens": 1070,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 56,
+            "reasoningTokens": 18,
+            "totalTokens": 1126
+          },
+          "costUsd": 0.0030932000000000004,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.002812,
+          "toolLatencyMilliseconds": 195.03974999999627,
+          "toolResultBytes": 2135
+        },
+        {
+          "requestAttempt": 9,
+          "modelCall": 2,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 8272,
+          "projectedInputTokens": 7231,
+          "modelLatencyMilliseconds": 3120.9534580000036,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 555,
+            "sourceSha256": "bd959d0706099e8fce7283e1b949e530c5a489ad4bc83b50c4fba944df48c288"
+          },
+          "usage": {
+            "inputTokens": 1667,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1538,
+            "outputTokens": 282,
+            "reasoningTokens": 77,
+            "totalTokens": 1949
+          },
+          "costUsd": 0.0082357,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.007487,
+          "evaluationLatencyMilliseconds": 379.29445799999667,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "bd959d0706099e8fce7283e1b949e530c5a489ad4bc83b50c4fba944df48c288",
+            "sourceBytes": 555,
+            "outputBytes": 5143
+          }
+        }
+      ],
+      "repetition": 1,
+      "runPosition": 3
+    },
+    {
+      "id": "final3-01-scatter-svg:r1:gpt-5.6-terra:D",
+      "task": "final3-01-scatter-svg",
+      "condition": "D",
+      "model": "gpt-5.6-terra",
+      "stratum": "simple",
+      "passed": true,
+      "modelCalls": 2,
+      "requestAttempts": 2,
+      "providerRetries": 0,
+      "submissionAttempts": 1,
+      "timeToValidMilliseconds": 7877.982416999999,
+      "elapsedMilliseconds": 7877.982750000003,
+      "usage": {
+        "inputTokens": 2943,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 2683,
+        "outputTokens": 411,
+        "reasoningTokens": 141,
+        "totalTokens": 3354
+      },
+      "standardCostUsd": 0.0121595,
+      "costUsd": 0.01337545,
+      "uncertainCostReserveUsd": 0,
+      "exposureCostUsd": 0.01337545,
+      "requestBodyBytes": 13928,
+      "projectedInputTokens": 12643,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "requestAttempt": 10,
+          "modelCall": 1,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "search_ggaction",
+          "toolChoice": {
+            "type": "function",
+            "name": "search_ggaction"
+          },
+          "requestBytes": 4876,
+          "projectedInputTokens": 4876,
+          "modelLatencyMilliseconds": 3182.7820829999982,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "search_ggaction"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Export SVG after making a scatter chart with map to color and x and y axes."
+          },
+          "usage": {
+            "inputTokens": 1155,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1024,
+            "outputTokens": 92,
+            "reasoningTokens": 54,
+            "totalTokens": 1247
+          },
+          "costUsd": 0.0043186000000000006,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.003926,
+          "toolLatencyMilliseconds": 176.10325000000012,
+          "toolResultBytes": 2135
+        },
+        {
+          "requestAttempt": 11,
+          "modelCall": 2,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 9052,
+          "projectedInputTokens": 7767,
+          "modelLatencyMilliseconds": 4137.037999999993,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 608,
+            "sourceSha256": "7df12fba1b6295b31d42f6ba90c542a4b754aba480bcaac2922658297fcd8d67"
+          },
+          "usage": {
+            "inputTokens": 1788,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1659,
+            "outputTokens": 319,
+            "reasoningTokens": 87,
+            "totalTokens": 2107
+          },
+          "costUsd": 0.00905685,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.0082335,
+          "evaluationLatencyMilliseconds": 379.2311669999981,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "7df12fba1b6295b31d42f6ba90c542a4b754aba480bcaac2922658297fcd8d67",
+            "sourceBytes": 608,
+            "outputBytes": 5143
+          }
+        }
+      ],
+      "repetition": 1,
+      "runPosition": 4
+    },
+    {
+      "id": "final3-01-scatter-svg:r1:gpt-5.6-luna:A",
+      "task": "final3-01-scatter-svg",
+      "condition": "A",
+      "model": "gpt-5.6-luna",
+      "stratum": "simple",
+      "passed": false,
+      "modelCalls": 5,
+      "requestAttempts": 5,
+      "providerRetries": 0,
+      "submissionAttempts": 3,
+      "timeToValidMilliseconds": null,
+      "elapsedMilliseconds": 25652.824457999996,
+      "usage": {
+        "inputTokens": 11545,
+        "cachedInputTokens": 4965,
+        "cacheWriteTokens": 5019,
+        "outputTokens": 2627,
+        "reasoningTokens": 1813,
+        "totalTokens": 14172
+      },
+      "standardCostUsd": 0.00481865,
+      "costUsd": 0.0053005150000000004,
+      "uncertainCostReserveUsd": 0,
+      "exposureCostUsd": 0.0053005150000000004,
+      "requestBodyBytes": 66555,
+      "projectedInputTokens": 41926,
+      "knowledge": {
+        "toolCalls": 2,
+        "searches": 1,
+        "docsReads": 1
+      },
+      "failures": [
+        "generated-program-error:TypeError: program.createGeometry is not a function"
+      ],
+      "trace": [
+        {
+          "requestAttempt": 12,
+          "modelCall": 1,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "search_docs",
+          "toolChoice": {
+            "type": "function",
+            "name": "search_docs"
+          },
+          "requestBytes": 4318,
+          "projectedInputTokens": 4318,
+          "modelLatencyMilliseconds": 1210.5635000000038,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "search_docs"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "search_docs",
+          "arguments": {
+            "query": "ggaction scatter chart map color x y axes Canvas ChartProgram source dataset SVG"
+          },
+          "usage": {
+            "inputTokens": 1045,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 32,
+            "reasoningTokens": 0,
+            "totalTokens": 1077
+          },
+          "costUsd": 0.00027214000000000003,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.0002474,
+          "toolLatencyMilliseconds": 11.070291999996698,
+          "toolResultBytes": 1515
+        },
+        {
+          "requestAttempt": 13,
+          "modelCall": 2,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "read_doc",
+          "toolChoice": {
+            "type": "function",
+            "name": "read_doc"
+          },
+          "requestBytes": 6290,
+          "projectedInputTokens": 6290,
+          "modelLatencyMilliseconds": 1653.3015410000007,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "read_doc"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "read_doc",
+          "arguments": {
+            "url": "/llm-authoring/#complete-program-bootstrap"
+          },
+          "usage": {
+            "inputTokens": 1410,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1281,
+            "outputTokens": 87,
+            "reasoningTokens": 59,
+            "totalTokens": 1497
+          },
+          "costUsd": 0.000495495,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.00045044999999999997,
+          "toolLatencyMilliseconds": 1.0184579999986454,
+          "toolResultBytes": 1105
+        },
+        {
+          "requestAttempt": 14,
+          "modelCall": 3,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 9263,
+          "projectedInputTokens": 7943,
+          "modelLatencyMilliseconds": 13403.814082999997,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 790,
+            "sourceSha256": "c92fbf09747d2a05a4a3d24b17e3fa4361868b2df6e6863efa81f0e9cffd8a69"
+          },
+          "usage": {
+            "inputTokens": 1798,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1669,
+            "outputTokens": 1591,
+            "reasoningTokens": 1287,
+            "totalTokens": 3389
+          },
+          "costUsd": 0.0025874750000000005,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.00235225,
+          "evaluationLatencyMilliseconds": 353.7363340000011,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: program.createScales is not a function"
+            ]
+          }
+        },
+        {
+          "requestAttempt": 15,
+          "modelCall": 4,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 21648,
+          "projectedInputTokens": 10966,
+          "modelLatencyMilliseconds": 4071.499250000008,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 592,
+            "sourceSha256": "ce7f500d68824bb54bb6105780aad68dda6b1618ab3563db1ea9168507ba7d79"
+          },
+          "usage": {
+            "inputTokens": 3425,
+            "cachedInputTokens": 1669,
+            "cacheWriteTokens": 1627,
+            "outputTokens": 407,
+            "reasoningTokens": 182,
+            "totalTokens": 3832
+          },
+          "costUsd": 0.001049763,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.00095433,
+          "evaluationLatencyMilliseconds": 351.0488750000077,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: program.createMarks is not a function"
+            ]
+          }
+        },
+        {
+          "requestAttempt": 16,
+          "modelCall": 5,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 25036,
+          "projectedInputTokens": 12409,
+          "modelLatencyMilliseconds": 4235.928417000003,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 597,
+            "sourceSha256": "9b16f122030eb6d1ed05656ed0ac7281cba95357470c4c56dcb5dbc93fa594fd"
+          },
+          "usage": {
+            "inputTokens": 3867,
+            "cachedInputTokens": 3296,
+            "cacheWriteTokens": 442,
+            "outputTokens": 510,
+            "reasoningTokens": 285,
+            "totalTokens": 4377
+          },
+          "costUsd": 0.0008956420000000001,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.00081422,
+          "evaluationLatencyMilliseconds": 351.2437079999945,
+          "evaluation": {
+            "passed": false,
+            "failures": [
+              "generated-program-error:TypeError: program.createGeometry is not a function"
+            ]
+          }
+        }
+      ],
+      "repetition": 1,
+      "runPosition": 5
+    },
+    {
+      "id": "final3-01-scatter-svg:r1:gpt-5.6-luna:B",
+      "task": "final3-01-scatter-svg",
+      "condition": "B",
+      "model": "gpt-5.6-luna",
+      "stratum": "simple",
+      "passed": true,
+      "modelCalls": 2,
+      "requestAttempts": 2,
+      "providerRetries": 0,
+      "submissionAttempts": 1,
+      "timeToValidMilliseconds": 5723.796958000006,
+      "elapsedMilliseconds": 5723.797500000001,
+      "usage": {
+        "inputTokens": 3112,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 1917,
+        "outputTokens": 582,
+        "reasoningTokens": 117,
+        "totalTokens": 3694
+      },
+      "standardCostUsd": 0.00141665,
+      "costUsd": 0.001558315,
+      "uncertainCostReserveUsd": 0,
+      "exposureCostUsd": 0.001558315,
+      "requestBodyBytes": 12826,
+      "projectedInputTokens": 12826,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "requestAttempt": 17,
+          "modelCall": 1,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "search_ggaction",
+          "toolChoice": {
+            "type": "function",
+            "name": "search_ggaction"
+          },
+          "requestBytes": 4366,
+          "projectedInputTokens": 4366,
+          "modelLatencyMilliseconds": 1987.9548749999958,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "search_ggaction"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Task: Export SVG after making a scatter chart with map to color and x and y axes.\nDataset (metrics-q): [{\"x\":1.4,\"y\":4.2,\"value\":10.5,\"category\":\"North\",\"label\":\"Q-1\",\"a\":3.6,\"b\":15.2,\"angle\":22,\"date\":\"2032-01-12\"},{\"x\":2.8,\"y\":7.6,\"value\":16.8,\"category\":\"South\",\"label\":\"Q-2\",\"a\":6.1,\"b\":13.1,\"angle\":58,\"date\":\"2032-02-20\"},{\"x\":4.1,\"y\":6.1,\"value\":13.7,\"category\":\"North\",\"label\":\"Q-3\",\"a\":8.7,\"b\":11.4,\"angle\":97,\"date\":\"2032-03-29\"},{\"x\":5.6,\"y\":11.3,\"value\":26.4,\"category\":\"West\",\"label\":\"Q-"
+          },
+          "usage": {
+            "inputTokens": 1066,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 238,
+            "reasoningTokens": 0,
+            "totalTokens": 1304
+          },
+          "costUsd": 0.00054868,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.0004988,
+          "toolLatencyMilliseconds": 2.0815419999998994,
+          "toolResultBytes": 2646
+        },
+        {
+          "requestAttempt": 18,
+          "modelCall": 2,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 8460,
+          "projectedInputTokens": 8460,
+          "modelLatencyMilliseconds": 3350.787458000006,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 594,
+            "sourceSha256": "bda38b314e47d61fa68f8ad09829537e0c28b9cafe5e12979935d45b7e0f852d"
+          },
+          "usage": {
+            "inputTokens": 2046,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1917,
+            "outputTokens": 344,
+            "reasoningTokens": 117,
+            "totalTokens": 2390
+          },
+          "costUsd": 0.001009635,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.00091785,
+          "evaluationLatencyMilliseconds": 378.0922089999949,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "bda38b314e47d61fa68f8ad09829537e0c28b9cafe5e12979935d45b7e0f852d",
+            "sourceBytes": 594,
+            "outputBytes": 5143
+          }
+        }
+      ],
+      "repetition": 1,
+      "runPosition": 6
+    },
+    {
+      "id": "final3-01-scatter-svg:r1:gpt-5.6-luna:C",
+      "task": "final3-01-scatter-svg",
+      "condition": "C",
+      "model": "gpt-5.6-luna",
+      "stratum": "simple",
+      "passed": true,
+      "modelCalls": 2,
+      "requestAttempts": 2,
+      "providerRetries": 0,
+      "submissionAttempts": 1,
+      "timeToValidMilliseconds": 5754.648291000005,
+      "elapsedMilliseconds": 5754.648666000008,
+      "usage": {
+        "inputTokens": 3120,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 1921,
+        "outputTokens": 560,
+        "reasoningTokens": 96,
+        "totalTokens": 3680
+      },
+      "standardCostUsd": 0.00139205,
+      "costUsd": 0.001531255,
+      "uncertainCostReserveUsd": 0,
+      "exposureCostUsd": 0.001531255,
+      "requestBodyBytes": 12843,
+      "projectedInputTokens": 12843,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "requestAttempt": 19,
+          "modelCall": 1,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "search_ggaction",
+          "toolChoice": {
+            "type": "function",
+            "name": "search_ggaction"
+          },
+          "requestBytes": 4375,
+          "projectedInputTokens": 4375,
+          "modelLatencyMilliseconds": 2138.110916999998,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "search_ggaction"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Task: Export SVG after making a scatter chart with map to color and x and y axes.\nDataset (metrics-q): [{\"x\":1.4,\"y\":4.2,\"value\":10.5,\"category\":\"North\",\"label\":\"Q-1\",\"a\":3.6,\"b\":15.2,\"angle\":22,\"date\":\"2032-01-12\"},{\"x\":2.8,\"y\":7.6,\"value\":16.8,\"category\":\"South\",\"label\":\"Q-2\",\"a\":6.1,\"b\":13.1,\"angle\":58,\"date\":\"2032-02-20\"},{\"x\":4.1,\"y\":6.1,\"value\":13.7,\"category\":\"North\",\"label\":\"Q-3\",\"a\":8.7,\"b\":11.4,\"angle\":97,\"date\":\"2032-03-29\"},{\"x\":5.6,\"y\":11.3,\"value\":26.4,\"category\":\"West\",\"label\":\"Q-"
+          },
+          "usage": {
+            "inputTokens": 1070,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 0,
+            "outputTokens": 237,
+            "reasoningTokens": 0,
+            "totalTokens": 1307
+          },
+          "costUsd": 0.00054824,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.0004984,
+          "toolLatencyMilliseconds": 182.5677919999871,
+          "toolResultBytes": 2646
+        },
+        {
+          "requestAttempt": 20,
+          "modelCall": 2,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 8468,
+          "projectedInputTokens": 8468,
+          "modelLatencyMilliseconds": 3042.881083,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 594,
+            "sourceSha256": "bda38b314e47d61fa68f8ad09829537e0c28b9cafe5e12979935d45b7e0f852d"
+          },
+          "usage": {
+            "inputTokens": 2050,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1921,
+            "outputTokens": 323,
+            "reasoningTokens": 96,
+            "totalTokens": 2373
+          },
+          "costUsd": 0.000983015,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.00089365,
+          "evaluationLatencyMilliseconds": 384.75004199999967,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "bda38b314e47d61fa68f8ad09829537e0c28b9cafe5e12979935d45b7e0f852d",
+            "sourceBytes": 594,
+            "outputBytes": 5143
+          }
+        }
+      ],
+      "repetition": 1,
+      "runPosition": 7
+    },
+    {
+      "id": "final3-01-scatter-svg:r1:gpt-5.6-luna:D",
+      "task": "final3-01-scatter-svg",
+      "condition": "D",
+      "model": "gpt-5.6-luna",
+      "stratum": "simple",
+      "passed": true,
+      "modelCalls": 2,
+      "requestAttempts": 2,
+      "providerRetries": 0,
+      "submissionAttempts": 1,
+      "timeToValidMilliseconds": 5289.054791000002,
+      "elapsedMilliseconds": 5289.055124999999,
+      "usage": {
+        "inputTokens": 2887,
+        "cachedInputTokens": 0,
+        "cacheWriteTokens": 2627,
+        "outputTokens": 437,
+        "reasoningTokens": 202,
+        "totalTokens": 3324
+      },
+      "standardCostUsd": 0.0012331500000000001,
+      "costUsd": 0.001356465,
+      "uncertainCostReserveUsd": 0,
+      "exposureCostUsd": 0.001356465,
+      "requestBodyBytes": 12479,
+      "projectedInputTokens": 12479,
+      "knowledge": {
+        "toolCalls": 1,
+        "searches": 1,
+        "docsReadCalls": 0,
+        "docsReads": 0
+      },
+      "trace": [
+        {
+          "requestAttempt": 21,
+          "modelCall": 1,
+          "retryIndex": 0,
+          "phase": "knowledge",
+          "forcedTool": "search_ggaction",
+          "toolChoice": {
+            "type": "function",
+            "name": "search_ggaction"
+          },
+          "requestBytes": 4875,
+          "projectedInputTokens": 4875,
+          "modelLatencyMilliseconds": 1181.0332919999928,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "search_ggaction"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "search_ggaction",
+          "arguments": {
+            "query": "Export SVG after making a scatter chart with map to color and x and y axes."
+          },
+          "usage": {
+            "inputTokens": 1155,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1024,
+            "outputTokens": 36,
+            "reasoningTokens": 0,
+            "totalTokens": 1191
+          },
+          "costUsd": 0.00035794,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.0003254,
+          "toolLatencyMilliseconds": 174.2096659999952,
+          "toolResultBytes": 2135
+        },
+        {
+          "requestAttempt": 22,
+          "modelCall": 2,
+          "retryIndex": 0,
+          "phase": "submission",
+          "forcedTool": "submit_result",
+          "toolChoice": {
+            "type": "function",
+            "name": "submit_result"
+          },
+          "requestBytes": 7604,
+          "projectedInputTokens": 7604,
+          "modelLatencyMilliseconds": 3546.2392919999984,
+          "provider": {
+            "status": "completed",
+            "incompleteDetails": null,
+            "error": null,
+            "outputItems": [
+              {
+                "type": "reasoning",
+                "status": null,
+                "name": null
+              },
+              {
+                "type": "function_call",
+                "status": "completed",
+                "name": "submit_result"
+              }
+            ]
+          },
+          "providerRequestError": null,
+          "functionCallCount": 1,
+          "tool": "submit_result",
+          "arguments": {
+            "status": "program",
+            "renderer": "svg",
+            "unsupported": [],
+            "unresolved": [],
+            "sourceBytes": 538,
+            "sourceSha256": "3b6bb0c0acd8088cd0c026c8ed7e06656b7b8ac8dc67e640d547174fa4391e0b"
+          },
+          "usage": {
+            "inputTokens": 1732,
+            "cachedInputTokens": 0,
+            "cacheWriteTokens": 1603,
+            "outputTokens": 401,
+            "reasoningTokens": 202,
+            "totalTokens": 2133
+          },
+          "costUsd": 0.000998525,
+          "billingUsageComplete": true,
+          "standardCostUsd": 0.00090775,
+          "evaluationLatencyMilliseconds": 383.93920799999614,
+          "evaluation": {
+            "passed": true,
+            "failures": [],
+            "sourceSha256": "3b6bb0c0acd8088cd0c026c8ed7e06656b7b8ac8dc67e640d547174fa4391e0b",
+            "sourceBytes": 538,
+            "outputBytes": 5143
+          }
+        }
+      ],
+      "repetition": 1,
+      "runPosition": 8
+    }
+  ]
+}

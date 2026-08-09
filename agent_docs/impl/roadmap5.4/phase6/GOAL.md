@@ -18,7 +18,11 @@ first-pass, calls, tokens, latency와 cost가 유지되는지를 조건별로 �
 - [x] Focused contracts와 전체 normal suite 분할 검증
 - [x] R54-P6-A review package 준비
 - [x] R54-P6-A exact paid comparison 승인 — Option A, 2026-08-10
-- [ ] Credential read와 576-run external comparison
+- [x] Attempt 9 external comparison — 8 / 576 뒤 provider identity stop, 자동 retry/resume 없음
+- [x] Attempt 9 progress와 ledger byte-for-byte 보존
+- [ ] Provider identity observability와 snapshot pinning 무과금 수리
+- [ ] Replacement plan과 Gate 준비
+- [ ] 새 승인 뒤 576-run external comparison
 - [ ] Result analysis와 integration closeout
 
 ## 차단 범위

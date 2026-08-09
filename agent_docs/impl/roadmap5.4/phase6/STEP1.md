@@ -78,6 +78,13 @@ suite별로 다시 실행해 모두 explicit exit 0을 확인했다. Product `sr
 자동 재실행할 경우 비용과 표본을 중복시킬 수 있다. Transient request당 한 번의 bounded retry, task-local provider failure,
 progress persistence와 3연속 provider failure circuit breaker는 그대로 유지한다.
 
+## Attempt 9 중단
+
+R54-P6-A 실행은 8 / 576 task-runs 뒤 첫 Nano response에서 `provider-response-identity-mismatch`로 중단됐다. Billed response의
+usage와 cost는 장부에 반영됐지만 trace가 실제 returned model/service tier를 보존하지 않아 두 필드 중 원인을 구분할 수 없다.
+결과와 원인 경계는 [`ATTEMPT9.md`](./ATTEMPT9.md)에 고정했다. Attempt 9를 resume하지 않으며 새 snapshot-pinned plan과 replacement
+Gate 없이는 추가 external call을 열지 않는다.
+
 ## 공식 근거
 
 - <https://developers.openai.com/api/docs/models/gpt-5.4-nano>
