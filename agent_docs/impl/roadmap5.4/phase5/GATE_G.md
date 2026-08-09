@@ -118,3 +118,26 @@ replacement paid-smoke approval checkpoint는 아직 남아 있다.
 
 Final v1 `corpus.json`, `datasets.json`, `ROUTE_ORACLE.json`, `RESULT.json`은 이후 수정하지 않는다. 두 원인을
 일반 규칙으로 수리한 뒤 query/dataset이 다시 새로운 final v2를 별도 동결해야 한다.
+
+## Fresh final v2 실행 결과
+
+- Frozen corpus checkpoint: `90bd585d`
+- Product candidate: `04d5c8efd6b350e3ff5ddb82ef1c5494568e4270`
+- Tasks / routes: `38 / 38`, `152 / 152`
+- Roles: supported `26`, terminal unsupported `6`, needs-input `6`
+- Prior overlap: normalized query `0`, dataset contents `0`
+- Oracle SHA-256: `12e570b3988815d03dac521f8be5572da34f66e8c5000132de268a119b63fc27`
+- Result: `35 / 38` closed, final verdict `failed`
+- Credential reads / external calls / spend: `0 / 0 / $0`
+
+두 번째 동결 코퍼스도 제품을 바꾸지 않고 정확히 한 번 실행했으며 실패 세 건을 그대로 보존한다.
+
+1. `final2-03-bars-png`: 독립 color scale 뒤 bar facade가 만든 categorical color owner를 찾을 때 resolver가 legend
+   target을 명시하지 않아, 일반 `createLegend`가 여러 categorical mark 후보를 모호하다고 거부했다.
+2. `final2-12-rule-canvas`: `createGrid`가 x/y encoding으로 생성되는 scale보다 먼저 배치되어 horizontal grid가 아직 없는
+   y scale을 요구했다. 요청 순서가 아니라 scale dependency를 따라야 하는 resolver ordering 결함이다.
+3. `final2-18-raw-bars-canvas`: raw bar의 y aggregate를 x category보다 먼저 적용해, bar position policy가 아직 category
+   grain을 결정할 수 없었다. Bar는 요청 문장 순서와 무관하게 category position이 aggregate position보다 먼저 와야 한다.
+
+Final v2의 네 파일도 이후 수정하지 않는다. 세 결함을 일반 dependency 규칙과 회귀 테스트로 수리한 뒤, 수정 후보는 다시 새로운
+query/dataset의 final v3에서만 검증한다.
