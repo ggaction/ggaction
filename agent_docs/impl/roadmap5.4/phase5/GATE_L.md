@@ -2,9 +2,9 @@
 
 ## Gate state
 
-`planned`
+`ready-for-review`
 
-Review checkpoint: `pending`.
+Review checkpoint: `36b2e4fa8e31bab741169b9fd08d63e1dc8cd7fb`.
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.
 
@@ -109,4 +109,3 @@ rolling exposure만 연다. 중단 뒤 retry, task·threshold·prompt 변경, �
 - External API call, provider retry와 additional spend
 - v8 paid comparison execution
 - PR, merge, publish, deploy와 release
-
