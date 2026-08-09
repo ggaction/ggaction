@@ -45,7 +45,8 @@ function plan() {
       cachedInput: 0.2,
       cacheWrite: 2.5,
       output: 12
-    }
+    },
+    costAccountingMultiplier: 1.1
   };
 }
 
@@ -246,6 +247,7 @@ test("records max-output incompleteness as a bounded task failure and preserves 
   assert.equal(result.modelCalls, 1);
   assert.equal(runLedger.modelCalls, 1);
   assert.equal(runLedger.usage.outputTokens, 4000);
+  assert.ok(Math.abs(runLedger.costUsd - runLedger.standardCostUsd * 1.1) < 1e-12);
   assert.equal(result.trace[0].provider.status, "incomplete");
   assert.deepEqual(result.trace[0].provider.incompleteDetails, { reason: "max_output_tokens" });
   assert.deepEqual(result.trace[0].provider.outputItems, [

@@ -18,7 +18,14 @@ import {
   runPaidSmokeTaskV6,
   taskPromptV6
 } from "../../scripts/compact-paid-smoke-v6.js";
-import { runPaidSmokeTaskV7 } from "../../scripts/compact-paid-smoke-v7.js";
+import {
+  counterbalancedRunOrderV7,
+  loadPaidSmokePlanV7,
+  modelCallEnvelopeV7,
+  preflightPaidSmokeToolsV7,
+  runPaidSmokeDryRunV7,
+  runPaidSmokeTaskV7
+} from "../../scripts/compact-paid-smoke-v7.js";
 import { canonicalRuntimeClosureSource } from "../../scripts/compact-runtime-closure-v2.js";
 
 function planForMocks() {
@@ -33,11 +40,13 @@ function planForMocks() {
       include: ["reasoning.encrypted_content"]
     },
     limits: {
-      maximumModelCallsPerTask: 4,
-      maximumModelCallsTotal: 128,
+      maximumModelCallsPerTask: 5,
+      maximumModelCallsTotal: 138,
+      maximumSubmissionAttemptsPerTask: 3,
       maximumInputTokensPerTask: 120000,
-      maximumOutputTokensPerTask: 16000,
-      maximumOutputTokensPerResponse: 4000,
+      maximumOutputTokensPerTask: 28000,
+      maximumKnowledgeOutputTokensPerResponse: 2000,
+      maximumSubmissionOutputTokensPerResponse: 8000,
       projectedInputBytesPerToken: 1,
       maximumRequestBodyBytesPerCall: 262144,
       maximumRequestBodyBytesPerTask: 786432,
@@ -109,6 +118,29 @@ async function temporaryArtifact(prefix) {
   return mkdtemp(path.join(parent, prefix));
 }
 
+test("counterbalances every condition across the four task-order positions", () => {
+  const tasks = ["one", "two", "three", "four"].map(id => ({ id, expectedFallbacks: [] }));
+  const order = counterbalancedRunOrderV7(tasks);
+  assert.deepEqual(order, [
+    "one:A", "one:B", "one:C", "one:D",
+    "two:B", "two:C", "two:D", "two:A",
+    "three:C", "three:D", "three:A", "three:B",
+    "four:D", "four:A", "four:B", "four:C"
+  ]);
+  for (const position of [0, 1, 2, 3]) {
+    assert.deepEqual(
+      order.filter((_, index) => index % 4 === position).map(entry => entry.split(":")[1]).sort(),
+      ["A", "B", "C", "D"]
+    );
+  }
+  const calls = modelCallEnvelopeV7(
+    tasks,
+    ["A", "B", "C", "D"],
+    3
+  );
+  assert.deepEqual(calls, { expected: 36, maximum: 68 });
+});
+
 test("forces each knowledge and submission phase with the Responses function tool choice", async () => {
   const oracle = await loadRouteOracleV5();
   const task = oracle.tasks.find(entry => entry.id === "final3-03-bars-png");
@@ -174,6 +206,34 @@ test("freezes the repaired evaluator, task matrix, and bounded paid envelope", a
   assert.equal(plan.costProjection.calculatedMaximumWithRegionalUpliftUsd, 8.2368);
   assert.equal(plan.limits.hardCostUsd, 8.3);
   await preflightPaidSmokeToolsV6();
+});
+
+test("freezes the comprehensive response-aware comparison and conservative cost envelope", async () => {
+  const plan = await loadPaidSmokePlanV7();
+  assert.equal(plan.planSha256, "029927744c89a732c4a940fe869c9f3b31cf4cac4015b478dde25d58833d1e77");
+  assert.equal(plan.requiredGate, "R54-P5-J");
+  assert.equal(plan.productCandidateCommit, "4e211ba418cd437d7c66c4fb986fcc714cf579ea");
+  assert.equal(plan.evaluatorCheckpointCommit, "ee47a8c81d04e95f03590d482cc8d5c48f8e71ea");
+  assert.equal(plan.runOrder.length, 32);
+  assert.deepEqual(plan.boundedTaskOutcomes, [
+    "model-output-budget-exhausted:max_output_tokens",
+    "model-incomplete",
+    "model-response-failed",
+    "model-protocol-noncompliance",
+    "strict-evaluator-failure"
+  ]);
+  assert.ok(plan.stopRules.includes("provider-response-status"));
+  assert.equal(plan.limits.maximumSubmissionAttemptsPerTask, 3);
+  assert.equal(plan.limits.maximumModelCallsTotal, 138);
+  assert.equal(plan.limits.maximumKnowledgeOutputTokensPerResponse, 2000);
+  assert.equal(plan.limits.maximumSubmissionOutputTokensPerResponse, 8000);
+  assert.equal(plan.costAccountingMultiplier, 1.1);
+  assert.equal(plan.costProjection.expectedUsd, 2.304);
+  assert.equal(plan.costProjection.expectedWithRegionalUpliftUsd, 2.5344);
+  assert.equal(plan.costProjection.calculatedMaximumUsd, 17.152);
+  assert.equal(plan.costProjection.calculatedMaximumWithRegionalUpliftUsd, 18.8672);
+  assert.equal(plan.limits.hardCostUsd, 19);
+  await preflightPaidSmokeToolsV7();
 });
 
 test("forces the complete public-docs route while preserving the model's selected returned URL", async () => {
@@ -367,7 +427,11 @@ test("states the evaluator wrapper separately from ordinary renderer examples", 
 });
 
 test("dry-runs every state-machine route and strict evaluator without credentials or spend", async () => {
-  const result = await runPaidSmokeDryRunV6();
+  const [v6, result] = await Promise.all([
+    runPaidSmokeDryRunV6(),
+    runPaidSmokeDryRunV7()
+  ]);
+  assert.equal(v6.passed, true);
   assert.equal(result.checks, 32);
   assert.equal(result.evaluatorChecks, 8);
   assert.equal(result.passed, true);
