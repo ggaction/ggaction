@@ -284,8 +284,7 @@ function providerFailureLabel(error) {
   return `provider-request-failure:${error.status ?? error.code ?? error.name ?? "unknown"}`;
 }
 
-async function waitForRetry(error, retryIndex, sleep, random) {
-  const delay = providerRetryDelayV2(error, retryIndex, random);
+async function waitForRetry(delay, sleep) {
   await sleep(delay);
   return delay;
 }
@@ -353,6 +352,12 @@ export async function runBoundedToolStateMachineV3({
       let response;
       let responseTraceEntry;
       for (let retryIndex = 0; ; retryIndex += 1) {
+        if (
+          retryIndex > 0 &&
+          ledger.providerRetries >= plan.limits.maximumProviderRetriesTotal
+        ) {
+          throw new Error("global-provider-retry-cap: approved retry count exhausted");
+        }
         const budget = recordBudgetBeforeRequest({
           plan,
           ledger,
@@ -360,6 +365,10 @@ export async function runBoundedToolStateMachineV3({
           request,
           priorReasoningTokens: usage.reasoningTokens
         });
+        if (retryIndex > 0) {
+          ledger.providerRetries += 1;
+          state.providerRetries += 1;
+        }
         const modelStarted = performance.now();
         try {
           response = await createResponse({
@@ -434,9 +443,22 @@ export async function runBoundedToolStateMachineV3({
           if (ledger.providerRetries >= plan.limits.maximumProviderRetriesTotal) {
             throw new Error("global-provider-retry-cap: approved retry count exhausted");
           }
-          ledger.providerRetries += 1;
-          state.providerRetries += 1;
-          failedAttempt.retryDelayMilliseconds = await waitForRetry(error, retryIndex, sleep, random);
+          const retryDelayMilliseconds = providerRetryDelayV2(error, retryIndex, random);
+          if (retryDelayMilliseconds > plan.limits.maximumProviderRetryDelayMilliseconds) {
+            failedAttempt.retrySkippedReason = "retry-delay-envelope";
+            return failedTaskResult({
+              task,
+              condition,
+              started,
+              usage,
+              state,
+              adapter,
+              trace,
+              submissionAttempts,
+              failures: [...(lastEvaluation?.failures ?? []), providerFailureLabel(providerError)]
+            });
+          }
+          failedAttempt.retryDelayMilliseconds = await waitForRetry(retryDelayMilliseconds, sleep);
           await onProgress(activeTaskSnapshot({
             task, condition, usage, state, adapter, trace, route, routeIndex
           }));

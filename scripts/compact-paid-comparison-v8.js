@@ -157,6 +157,7 @@ function assertPlanShapeV8(plan) {
     plan.limits.maximumApiRequestAttemptsTotal !== 1128 ||
     plan.limits.maximumProviderRetriesPerRequest !== 1 ||
     plan.limits.maximumProviderRetriesTotal !== 32 ||
+    plan.limits.maximumProviderRetryDelayMilliseconds !== 30000 ||
     plan.limits.maximumConsecutiveProviderFailureTaskRuns !== 3 ||
     plan.limits.maximumSubmissionAttemptsPerTask !== 3 ||
     plan.limits.maximumInputTokensPerTask !== 120000 ||

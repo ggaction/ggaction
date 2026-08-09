@@ -37,6 +37,7 @@ function plan() {
       maximumApiRequestAttemptsTotal: 24,
       maximumProviderRetriesPerRequest: 1,
       maximumProviderRetriesTotal: 4,
+      maximumProviderRetryDelayMilliseconds: 30000,
       maximumSubmissionAttemptsPerTask: 3,
       maximumInputTokensPerTask: 80000,
       maximumOutputTokensPerTask: 28000,
@@ -276,6 +277,26 @@ test("charges the uncertainty reserve against the hard cap before retrying", asy
   );
   assert.equal(attempts, 1);
   assert.equal(runLedger.apiRequestAttempts, 1);
-  assert.equal(runLedger.providerRetries, 1);
+  assert.equal(runLedger.providerRetries, 0);
   assert.ok(runLedger.exposureCostUsd > 0);
+});
+
+test("does not violate an excessive Retry-After delay", async () => {
+  const runLedger = ledger();
+  const delays = [];
+  let attempts = 0;
+  const result = await runBoundedToolStateMachineV3(options({
+    runLedger,
+    createResponse: async () => {
+      attempts += 1;
+      throw providerError(429, { retryAfterMilliseconds: 60000 });
+    },
+    sleep: async delay => delays.push(delay)
+  }));
+  assert.equal(result.passed, false);
+  assert.deepEqual(result.failures, ["provider-request-failure:429"]);
+  assert.equal(attempts, 1);
+  assert.deepEqual(delays, []);
+  assert.equal(runLedger.providerRetries, 0);
+  assert.equal(result.trace[0].retrySkippedReason, "retry-delay-envelope");
 });
