@@ -15,8 +15,8 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 Roadmap 5.4 Phase 5다.** Staged paid evaluation의 실패 증거를 보존하고 provider-compatible
-runner와 authoring-bootstrap contract를 분리해 검토한다.
+**현재 활성 Roadmap은 Roadmap 5.4 Phase 6다.** 기존 Terra/Luna 결과를 보존하고 Nano를 포함한 확장 비교의
+정확한 범위·비용·중단 경계를 검토한다.
 실행 순서는 [`impl/roadmap5.4/ROADMAP.md`](impl/roadmap5.4/ROADMAP.md)가 소유한다. Active pointer와 마지막 완료 owner의
 machine-readable source는 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 

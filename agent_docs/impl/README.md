@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 Roadmap 5.4 Phase 5다.** Paid smoke evidence를 보존하고 runner repair, authoring-bootstrap
-  contract와 replacement evaluation을 순서대로 검토한다. 실행 순서는
+- **현재 활성 Roadmap은 Roadmap 5.4 Phase 6다.** Terra/Luna evidence를 보존하고 더 작은 Nano의 capability floor를
+  24-task 확장 비교로 검토한다. 실행 순서는
   [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 

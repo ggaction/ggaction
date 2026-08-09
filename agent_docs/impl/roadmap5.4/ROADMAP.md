@@ -1,6 +1,6 @@
 # Roadmap 5.4 — Compact Knowledge Delivery and Intent Resolution
 
-> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 5다. Exact pointer는
+> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 6다. Exact pointer는
 > [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다. 현재 observable action behavior는
 > [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)과 `contract/current/`가 소유한다.
 
@@ -32,7 +32,8 @@ LLM에게 많은 reference를 전달하는 대신, 한 작업에 필요한 정�
 | CK-08 | Docs fallback | MCP-first, docs-only-when-unresolved routing과 duplicate context 제거 | 3 |
 | CK-09 | Fresh validation | 새 development/validation/held-out corpus와 unpaid hard gates | 4 |
 | CK-10 | Real LLM evaluation | Docs/direct/MCP/fallback 조건의 staged paid comparison | 5 |
-| CK-11 | Integration closeout | Acceptance 통과 candidate만 PR/merge 대상으로 제안 | 5 |
+| CK-11 | Model-size boundary | Terra/Luna/Nano의 조건별 capability floor를 더 넓은 task set에서 비교 | 6 |
+| CK-12 | Integration closeout | Acceptance 통과 candidate만 PR/merge 대상으로 제안 | 6 |
 
 ## 최상위 원칙
 
@@ -70,7 +71,8 @@ Default search는 query를 atomic constraints로 분해해 `matchedConstraints`,
 | 2 | completed | Multi-intent resolver와 one-call closure |
 | 3 | completed | Local MCP, package budget과 docs fallback |
 | 4 | completed | Fresh corpus, unpaid validation, runtime closure와 approved paid proposal |
-| 5 | in-progress | Staged paid evaluation, integration decision과 closeout |
+| 5 | completed | Staged paid evaluation과 Terra/Luna descriptive comparison |
+| 6 | in-progress | Expanded Terra/Luna/Nano comparison과 integration closeout |
 
 ## Approval Gates
 
@@ -95,7 +97,8 @@ commit/push한 뒤에만 승인을 요청한다.
 | R54-P5-F | 5 | Repaired candidate evidence와 exact v4 paid-smoke scope/cost | Replacement v4 paid smoke |
 | R54-P5-G | 5 | Valid v4 smoke result와 complete paid evaluation scope/cost | Full external evaluation |
 | R54-P5-H | 5 | Full result, predeclared acceptance와 integration candidate | PR preparation |
-| R54-Exit | 5 | Passed merged-main evidence 또는 failed non-integration closeout | 완료 선언 |
+| R54-P6-A | 6 | 24-task, 3-model, 576-run exact scope와 비용·중단 경계 | Credential read와 expanded paid comparison |
+| R54-Exit | 6 | Passed merged-main evidence 또는 failed non-integration closeout | 완료 선언 |
 
 R54-P4-C와 runtime-closure replacement R54-P4-D는 첫 paid-smoke authorization을 Phase 4 exact corpus/cost review와
 함께 수행했다. Attempt 1은 provider schema와 authoring-bootstrap gap으로 중단됐고, R54-P5-A부터 repair와 replacement
@@ -137,6 +140,13 @@ program validation을 비용 없이 통과한 뒤 exact paid smoke만 제안한�
 작은 대표 smoke를 먼저 실행하고 통과한 경우에만 full A/B/C/D를 제안한다. A는 docs, B는 compact direct, C는
 byte-equal compact MCP, D는 MCP-first/docs-fallback router다. Simple/complex stratum을 따로 보고 correctness, tokens,
 model calls와 time-to-valid의 predeclared threshold를 통과한 candidate만 PR/merge 대상으로 제안한다.
+
+## Phase 6 — Expanded model-size comparison
+
+Phase 5의 16-task Terra/Luna 결과를 수정하지 않고, 결과 전에 동결된 final-v3 corpus에서 8개 supported task를 추가한다.
+Terra, Luna와 GPT-5.4 Nano를 A/B/C/D 네 조건과 두 repetitions에서 함께 비교한다. 24 tasks × 4 conditions × 3 models ×
+2 repetitions의 576 task-runs를 12-cell cyclic Latin square로 균형화한다. Exact plan, evaluator checkpoint, 공식 가격,
+rolling exposure cap과 provider stop rules를 R54-P6-A에서 별도 승인하기 전에는 credential을 읽거나 외부 호출을 보내지 않는다.
 
 ## Explicit non-goals
 
