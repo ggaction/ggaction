@@ -4,7 +4,7 @@
 
 `pending`
 
-Review checkpoint: pending immutable package commit.
+Review checkpoint: `5d621d692efb3413ec8f26d326956bc9c6c4d152`.
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.
 
