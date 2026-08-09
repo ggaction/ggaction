@@ -37,6 +37,8 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] v5 paid-smoke execution — aborted after 6 calls / `$0.0428280`, immutable Attempt 5 preserved
 - [x] v6 runner/prompt/evaluator 근본 수리와 unpaid validation — evaluator checkpoint `956e969f`
 - [x] R54-P5-I exact v6 paid-smoke authorization — 2026-08-09
+- [x] v6 paid-smoke execution — aborted after 4 calls / `$0.0699451`, immutable Attempt 6 preserved
+- [ ] R54-P5-J incomplete-response classification repair decision or non-integration closeout
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion
@@ -58,5 +60,6 @@ Recommended task-packet schema v2와 대안은 [`GATE_A.md`](./GATE_A.md)가 소
 - Credential 재읽기, external retry와 추가 spend 금지
 - R54-P5-H authorization은 Attempt 5 중단으로 소진됨
 - Attempt 5 retry와 replacement paid smoke는 새 Gate 승인 전 실행 금지
-- v6 credential read와 external call은 R54-P5-I 승인 전 실행 금지
+- R54-P5-I authorization은 Attempt 6 중단으로 소진됨
+- Attempt 6 retry와 replacement paid smoke는 새 Gate 승인 전 실행 금지
 - Complete paid evaluation, PR Ready/merge, publish, deploy와 release 금지

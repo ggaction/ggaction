@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-paid-smoke-v6",
+  "planSha256": "5f8a226e2146843b3fe8875289646871284b3b486c755c333d02bc6a4cf8b561",
+  "routeOracleSha256": "27b76486d37c8cbb07ab2753db204f4fbf7dad5ab48ab27f48707eb9ae6bd0f4",
+  "productCandidateCommit": "4e211ba418cd437d7c66c4fb986fcc714cf579ea",
+  "evaluatorCheckpointCommit": "956e969faf3c127a83850f65e5c78009c070af7d",
+  "startedAt": "2026-08-09T07:21:21.968Z",
+  "abortedAt": "2026-08-09T07:22:37.914Z",
+  "abortedRun": "final3-03-bars-png:A",
+  "error": "provider-protocol-mismatch: forced submit_result, received 0 function calls",
+  "ledger": {
+    "usage": {
+      "inputTokens": 6850,
+      "cachedInputTokens": 1668,
+      "cacheWriteTokens": 3727,
+      "outputTokens": 4782,
+      "reasoningTokens": 4496,
+      "totalTokens": 11632
+    },
+    "costUsd": 0.0699451,
+    "modelCalls": 4
+  },
+  "activeTask": {
+    "id": "final3-03-bars-png:A",
+    "task": "final3-03-bars-png",
+    "condition": "A",
+    "stratum": "complex",
+    "modelCalls": 4,
+    "usage": {
+      "inputTokens": 6850,
+      "cachedInputTokens": 1668,
+      "cacheWriteTokens": 3727,
+      "outputTokens": 4782,
+      "reasoningTokens": 4496,
+      "totalTokens": 11632
+    },
+    "costUsd": 0.0699451,
+    "requestBodyBytes": 34896,
+    "projectedInputTokens": 29007,
+    "knowledge": {
+      "toolCalls": 2,
+      "searches": 1,
+      "docsReads": 1
+    },
+    "stateMachine": {
+      "route": [
+        "search_docs",
+        "read_doc",
+        "submit_result"
+      ],
+      "routeIndex": 2,
+      "nextTool": "submit_result"
+    },
+    "trace": [
+      {
+        "modelCall": 1,
+        "phase": "knowledge",
+        "forcedTool": "search_docs",
+        "toolChoice": {
+          "type": "function",
+          "name": "search_docs"
+        },
+        "requestBytes": 4428,
+        "projectedInputTokens": 4428,
+        "functionCallCount": 1,
+        "tool": "search_docs",
+        "arguments": {
+          "query": "ggaction public API bar chart color scale legend axes Canvas ChartProgram"
+        },
+        "usage": {
+          "inputTokens": 1068,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 0,
+          "outputTokens": 30,
+          "reasoningTokens": 0,
+          "totalTokens": 1098
+        },
+        "costUsd": 0.002496,
+        "billingUsageComplete": true,
+        "toolResultBytes": 1646
+      },
+      {
+        "modelCall": 2,
+        "phase": "knowledge",
+        "forcedTool": "read_doc",
+        "toolChoice": {
+          "type": "function",
+          "name": "read_doc"
+        },
+        "requestBytes": 6532,
+        "projectedInputTokens": 6532,
+        "functionCallCount": 1,
+        "tool": "read_doc",
+        "arguments": {
+          "url": "/llm-authoring/#complete-program-bootstrap"
+        },
+        "usage": {
+          "inputTokens": 1449,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 1320,
+          "outputTokens": 47,
+          "reasoningTokens": 19,
+          "totalTokens": 1496
+        },
+        "costUsd": 0.004122,
+        "billingUsageComplete": true,
+        "toolResultBytes": 1105
+      },
+      {
+        "modelCall": 3,
+        "phase": "submission",
+        "forcedTool": "submit_result",
+        "toolChoice": {
+          "type": "function",
+          "name": "submit_result"
+        },
+        "requestBytes": 9209,
+        "projectedInputTokens": 8145,
+        "functionCallCount": 1,
+        "tool": "submit_result",
+        "arguments": {
+          "status": "program",
+          "renderer": "png",
+          "unsupported": [],
+          "unresolved": [],
+          "sourceBytes": 602,
+          "sourceSha256": "8a8b6da9182ad6c9f1a5f8e96b5f22a889b99066a1aea4aea763d995bb8d4dfc"
+        },
+        "usage": {
+          "inputTokens": 1797,
+          "cachedInputTokens": 0,
+          "cacheWriteTokens": 1668,
+          "outputTokens": 705,
+          "reasoningTokens": 498,
+          "totalTokens": 2502
+        },
+        "costUsd": 0.012888,
+        "billingUsageComplete": true,
+        "evaluation": {
+          "passed": false,
+          "failures": [
+            "generated-program-error:TypeError: program.bar is not a function"
+          ]
+        }
+      },
+      {
+        "modelCall": 4,
+        "phase": "submission",
+        "forcedTool": "submit_result",
+        "toolChoice": {
+          "type": "function",
+          "name": "submit_result"
+        },
+        "requestBytes": 14727,
+        "projectedInputTokens": 9902,
+        "functionCallCount": 0,
+        "tool": null,
+        "arguments": null,
+        "usage": {
+          "inputTokens": 2536,
+          "cachedInputTokens": 1668,
+          "cacheWriteTokens": 739,
+          "outputTokens": 4000,
+          "reasoningTokens": 3979,
+          "totalTokens": 6536
+        },
+        "costUsd": 0.0504391,
+        "billingUsageComplete": true
+      }
+    ]
+  },
+  "results": []
+}

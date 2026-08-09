@@ -106,3 +106,17 @@ Option A 승인은 exact candidate/evaluator/plan에 대한 credential 1회 read
 - 이 승인은 previously identified single credential file의 1회 read와 v6 paid smoke 단일 실행만 연다.
 - Retry, task나 threshold 수정, complete paid evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.
 - 승인 기록 시점의 credential reads / external calls / additional spend는 `0 / 0 / $0`다.
+
+## Execution result
+
+승인된 v6 smoke는 첫 run `final3-03-bars-png:A`의 네 번째 response에서
+`provider-protocol-mismatch: forced submit_result, received 0 function calls` stop rule로 중단됐다. 4 billed model calls,
+6,850 input tokens, 4,782 output tokens와 `$0.0699451`를 사용했다. Credential read는 1회였고 automatic retry는 없었다.
+
+첫 제출은 public-doc route에서 존재하지 않는 `program.bar`를 사용해 strict 실패했다. 교정 response는 4,000 output token
+ceiling을 정확히 사용했고 그중 3,979가 reasoning이었지만 function call을 반환하지 않았다. Runner가 provider status와
+incomplete details를 보존하지 않고 모든 zero-call을 protocol mismatch로 합친 것이 전체 중단의 근본 원인이다. 정확한 immutable
+evidence와 causal analysis는 [`ATTEMPT6.md`](./ATTEMPT6.md)가 소유한다.
+
+이 승인은 해당 중단으로 소진됐다. Retry, replacement smoke, complete paid evaluation, PR, merge, publish, deploy와 release는 별도
+승인 전까지 계속 차단한다.
