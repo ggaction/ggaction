@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Option A approved by the user on 2026-08-09.
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.
 
