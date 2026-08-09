@@ -36,7 +36,7 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] R54-P5-H exact v5 paid-smoke authorization — 2026-08-09
 - [x] v5 paid-smoke execution — aborted after 6 calls / `$0.0428280`, immutable Attempt 5 preserved
 - [x] v6 runner/prompt/evaluator 근본 수리와 unpaid validation — evaluator checkpoint `956e969f`
-- [ ] R54-P5-I exact v6 paid-smoke authorization
+- [x] R54-P5-I exact v6 paid-smoke authorization — 2026-08-09
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion

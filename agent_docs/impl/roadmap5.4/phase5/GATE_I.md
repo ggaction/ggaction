@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.
 
@@ -97,3 +97,12 @@ Option A 승인은 exact candidate/evaluator/plan에 대한 credential 1회 read
 - v6 paid-smoke execution
 - Retry와 complete paid evaluation
 - PR, merge, publish, deploy와 release
+
+## Approval record
+
+- 사용자가 2026-08-09에 Option A의 exact product candidate, evaluator checkpoint, plan과 route oracle hash, 32 task-runs,
+  expected 74 calls / `$2.304`, calculated maximum `$7.488`, regional maximum `$8.2368`와 hard global stop `< $8.30`
+  범위를 명시적으로 승인했다.
+- 이 승인은 previously identified single credential file의 1회 read와 v6 paid smoke 단일 실행만 연다.
+- Retry, task나 threshold 수정, complete paid evaluation, PR, merge, publish, deploy와 release는 계속 차단한다.
+- 승인 기록 시점의 credential reads / external calls / additional spend는 `0 / 0 / $0`다.
