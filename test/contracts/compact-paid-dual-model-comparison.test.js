@@ -140,8 +140,8 @@ test("selects exact model pricing without changing the shared experiment plan", 
 
 test("freezes the dual-model matrix, evaluator checkpoint, and rolling exposure cap", async () => {
   const plan = await loadPaidComparisonPlanV8();
-  assert.equal(plan.planSha256, "1393ef9c19ee32e58591f7459eb1a48eb49af6887bf88f7485013974fb342195");
-  assert.equal(plan.evaluatorCheckpointCommit, "d96ecd6e3a4872639dfdf34f5cd5ae8cc42b4c57");
+  assert.equal(plan.planSha256, "498cbbd01c3618cc5fc39cd57fe40a55c589a0f01f319e08fd1cfca19bd773a2");
+  assert.equal(plan.evaluatorCheckpointCommit, "39d35cefe750c513703e99cb3e088fc7065c401c");
   assert.equal(plan.routeOracleSha256, "dc241f8b717ee2d80a81762e23e870a1fdf57215f15bd3a30e4292dc39dca6a1");
   assert.equal(plan.tasks.length, 16);
   assert.equal(plan.runOrder.length, 256);
@@ -149,6 +149,7 @@ test("freezes the dual-model matrix, evaluator checkpoint, and rolling exposure 
   assert.equal(plan.limits.maximumModelCallsTotal, 1096);
   assert.equal(plan.limits.maximumApiRequestAttemptsTotal, 1128);
   assert.equal(plan.limits.maximumProviderRetriesTotal, 32);
+  assert.equal(plan.limits.maximumProviderRetryDelayMilliseconds, 30000);
   assert.equal(plan.limits.maximumConsecutiveProviderFailureTaskRuns, 3);
   assert.equal(plan.costProjection.expectedWithRegionalUpliftUsd, 11.15136);
   assert.equal(plan.costProjection.theoreticalTokenEnvelopeMaximumWithRegionalUpliftUsd, 98.50368);
