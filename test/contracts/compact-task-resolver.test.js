@@ -314,6 +314,33 @@ test("preserves request order only within one lifecycle priority", () => {
   ]);
 });
 
+test("orders a positioned point before its inherited text overlay", async () => {
+  const packet = searchGgaction(
+    "Create circle marks, map to x, map to y, attach data labels with label field, avoid label overlap, and render SVG."
+  );
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createPointMark",
+    "action.encodeX",
+    "action.encodeY",
+    "action.createTextMark",
+    "action.encodeText",
+    "action.layoutLabels",
+    "runtime.renderToSVG"
+  ]);
+
+  const { program, output } = await executeAuthoring(packet, {
+    rows: [
+      { x: 1, y: 2, label: "one" },
+      { x: 2, y: 3, label: "two" },
+      { x: 3, y: 4, label: "three" }
+    ],
+    renderer: "svg"
+  });
+  assert.equal(output.startsWith("<svg"), true);
+  assert.equal(program.graphicSpec.objects.point.items.length, 3);
+  assert.equal(program.graphicSpec.objects.text.items.length, 3);
+});
+
 test("keeps terminal unsupported output separate from open renderer decisions", () => {
   const unsupportedOnly = searchGgaction("Build a bar plot and render JPEG.");
   assert.deepEqual(

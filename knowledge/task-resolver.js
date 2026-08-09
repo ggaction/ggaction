@@ -371,6 +371,48 @@ function replaceEntry(entries, target, replacements) {
   ];
 }
 
+function orderInheritedTextOverlay(entries) {
+  const semantic = name => entries.find(entry =>
+    entry.provider.name === name && !entry.provider.id.startsWith("exact.")
+  );
+  const point = semantic("createPointMark");
+  const text = semantic("createTextMark");
+  const textEncoding = semantic("encodeText");
+  const pointEncodingNames = new Set([
+    "encodeX",
+    "encodeY",
+    "encodeColor",
+    "encodeSize",
+    "encodeShape",
+    "encodeAngle",
+    "encodeOpacity"
+  ]);
+  const pointEncodings = entries.filter(entry =>
+    !entry.provider.id.startsWith("exact.") &&
+    pointEncodingNames.has(entry.provider.name)
+  );
+  if (
+    !point ||
+    !text ||
+    !textEncoding ||
+    !pointEncodings.some(entry => entry.provider.name === "encodeX") ||
+    !pointEncodings.some(entry => entry.provider.name === "encodeY")
+  ) return entries;
+
+  const ordered = [point, ...pointEncodings, text, textEncoding];
+  const controlled = new Set(ordered);
+  const first = Math.min(...ordered.map(entry => entries.indexOf(entry)));
+  const insertion = entries
+    .slice(0, first)
+    .filter(entry => !controlled.has(entry)).length;
+  const remaining = entries.filter(entry => !controlled.has(entry));
+  return [
+    ...remaining.slice(0, insertion),
+    ...ordered,
+    ...remaining.slice(insertion)
+  ];
+}
+
 function closeRuntimeDependencies(entries) {
   let closed = absorbFacadeGuides(entries);
   const semantic = name => closed.find(entry =>
@@ -696,7 +738,7 @@ function closeRuntimeDependencies(entries) {
     }
     return Object.keys(options).length === 0 ? entry : withBaseOptions(entry, options);
   });
-  return closed;
+  return orderInheritedTextOverlay(closed);
 }
 
 function providerRequestPosition(entry, positions) {

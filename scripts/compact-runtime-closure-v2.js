@@ -30,12 +30,6 @@ const conditions = Object.freeze([
   Object.freeze({ id: "C", mode: "compact-mcp" }),
   Object.freeze({ id: "D", mode: "mcp-first-explicit-fallback" })
 ]);
-const rendererImports = Object.freeze({
-  canvas: 'import { chart, render } from "ggaction";',
-  svg: 'import { chart } from "ggaction";\nimport { renderToSVG } from "ggaction/svg";',
-  png: 'import { chart } from "ggaction";\nimport { renderToPNG } from "ggaction/png";',
-  pdf: 'import { chart } from "ggaction";\nimport { renderToPDF } from "ggaction/pdf";'
-});
 const rendererWrappers = Object.freeze({
   canvas: "export function renderChart(program, context) { render(program, context); }",
   svg: "export function renderChart(program) { return renderToSVG(program); }",
@@ -49,6 +43,15 @@ function sha256(value) {
 
 function same(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function canonicalImports(packet, renderer) {
+  if (renderer !== "canvas") return packet.authoring.imports;
+  return packet.authoring.imports.map(entry =>
+    entry.endsWith('from "ggaction";') && !/\brender\b/u.test(entry)
+      ? entry.replace(/ \} from "ggaction";$/u, ', render } from "ggaction";')
+      : entry
+  );
 }
 
 function expectedRenderer(packet) {
@@ -105,10 +108,12 @@ async function loadSourceTasks() {
 export function canonicalRuntimeClosureSource(task) {
   const packet = searchGgaction(task.query);
   const actionSteps = packet.actionPlan.flatMap((entry, index) =>
-    entry.kind === "action" ? [`  ${packet.authoring.steps[index]};`] : []
+    entry.kind === "action" || ["hconcat", "vconcat"].includes(entry.name)
+      ? [`  ${packet.authoring.steps[index]};`]
+      : []
   );
   return [
-    rendererImports[task.expectedRenderer],
+    ...canonicalImports(packet, task.expectedRenderer),
     "export function buildChart(rows) {",
     "  const values = rows;",
     `  ${packet.authoring.initialize};`,
@@ -143,6 +148,14 @@ function hasGraphicInk(program) {
 function canvasGraphic(program) {
   return Object.values(program.graphicSpec?.objects ?? {})
     .find(graphic => graphic.type === "canvas");
+}
+
+function containsSourceDataset(program, values) {
+  if (program.semanticSpec?.datasets?.some(dataset => same(dataset.values, values))) {
+    return true;
+  }
+  return Object.values(program.children ?? {})
+    .some(child => containsSourceDataset(child, values));
 }
 
 function expectedActionNames(task) {
@@ -215,7 +228,7 @@ export async function evaluateRuntimeClosureTask(
     if (!program?.semanticSpec || !program?.graphicSpec || !program?.trace) {
       throw new Error("buildChart did not return a ChartProgram.");
     }
-    if (!program.semanticSpec.datasets?.some(dataset => same(dataset.values, task.dataset.values))) {
+    if (!containsSourceDataset(program, task.dataset.values)) {
       failures.push("source-dataset-mismatch");
     }
     const actualActions = (program.trace.children ?? [])
