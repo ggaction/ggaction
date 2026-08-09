@@ -102,7 +102,7 @@ async function loadSourceTasks() {
   return tasks;
 }
 
-function canonicalSource(task) {
+export function canonicalRuntimeClosureSource(task) {
   const packet = searchGgaction(task.query);
   const actionSteps = packet.actionPlan.flatMap((entry, index) =>
     entry.kind === "action" ? [`  ${packet.authoring.steps[index]};`] : []
@@ -146,14 +146,18 @@ function canvasGraphic(program) {
 }
 
 function expectedActionNames(task) {
+  const composition = task.expectedPlan.findLast(entry =>
+    entry.kind === "runtime" && ["hconcat", "vconcat"].includes(entry.name)
+  );
+  if (composition) return [composition.name];
   return task.expectedPlan
     .filter(entry => entry.kind === "action")
     .map(entry => entry.name)
     .filter(name => !["createCanvas", "createData"].includes(name));
 }
 
-async function executeProgram(task, source) {
-  const directory = path.join(artifactRoot, task.id);
+async function executeProgram(task, source, artifactDirectory = artifactRoot) {
+  const directory = path.join(artifactDirectory, task.id);
   const programFile = path.join(directory, "program.mjs");
   const datasetFile = path.join(directory, "dataset.json");
   const resultFile = path.join(directory, "execution.json");
@@ -199,11 +203,14 @@ async function executeProgram(task, source) {
   };
 }
 
-async function evaluateSupportedTask(task) {
-  const source = canonicalSource(task);
+export async function evaluateRuntimeClosureTask(
+  task,
+  { artifactDirectory = artifactRoot } = {}
+) {
+  const source = canonicalRuntimeClosureSource(task);
   const failures = [];
   try {
-    const { execution, output } = await executeProgram(task, source);
+    const { execution, output } = await executeProgram(task, source, artifactDirectory);
     const program = execution.program;
     if (!program?.semanticSpec || !program?.graphicSpec || !program?.trace) {
       throw new Error("buildChart did not return a ChartProgram.");
@@ -240,7 +247,7 @@ async function evaluateSupportedTask(task) {
   }
 }
 
-async function checkRoutes(task) {
+export async function checkRuntimeClosureRoutes(task) {
   const checks = [];
   for (const condition of conditions) {
     const adapter = await createKnowledgeAdapterV4(condition.id);
@@ -293,9 +300,9 @@ export async function runRuntimeClosureV2() {
   const routeChecks = [];
   const evaluations = [];
   for (const task of tasks) {
-    routeChecks.push(...await checkRoutes(task));
+    routeChecks.push(...await checkRuntimeClosureRoutes(task));
     const evaluation = task.role === "supported"
-      ? await evaluateSupportedTask(task)
+      ? await evaluateRuntimeClosureTask(task)
       : { passed: true, failures: [] };
     evaluations.push({ task: task.id, role: task.role, ...evaluation });
   }
