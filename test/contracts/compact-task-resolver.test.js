@@ -93,9 +93,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   ]);
   assert.deepEqual(validateResolverKnowledge(), {
     cards: 173,
-    constraints: 79,
+    constraints: 80,
     providers: 74,
-    supported: 74,
+    supported: 75,
     unsupported: 5
   });
   const requiredFamilies = [
@@ -339,6 +339,88 @@ test("orders a positioned point before its inherited text overlay", async () => 
   assert.equal(output.startsWith("<svg"), true);
   assert.equal(program.graphicSpec.objects.point.items.length, 3);
   assert.equal(program.graphicSpec.objects.text.items.length, 3);
+});
+
+test("connects a requested color scale to its facade legend owner", async () => {
+  const packet = searchGgaction(
+    "Use a color scale for a bar chart with an encoding key and axes on Canvas."
+  );
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createColorScale",
+    "action.createBarPlot",
+    "runtime.render"
+  ]);
+  assert.match(packet.exactCalls[1], /color: \{ field: "category", scale: \{ id: "color-scale" \} \}/u);
+
+  const { program } = await executeAuthoring(packet, {
+    rows: [
+      { category: "A", value: 3 },
+      { category: "B", value: 5 },
+      { category: "A", value: 7 }
+    ],
+    renderer: "canvas"
+  });
+  assert.ok(program.graphicSpec.objects.barPlot.items.length > 0);
+  assert.ok(program.graphicSpec.objects.colorLegendSymbols.items.length > 0);
+});
+
+test("orders a raw bar category before its quantitative measure", async () => {
+  const packet = searchGgaction(
+    "Create bar mark; encode y, encode x, encode color, add chart grid and category order, using canvas renderer."
+  );
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createBarMark",
+    "action.encodeX",
+    "action.encodeY",
+    "action.encodeColor",
+    "action.createGrid",
+    "action.orderCategories",
+    "runtime.render"
+  ]);
+
+  const { program } = await executeAuthoring(packet, {
+    rows: [
+      { category: "B", value: 5 },
+      { category: "A", value: 3 },
+      { category: "C", value: 7 }
+    ],
+    renderer: "canvas"
+  });
+  assert.equal(program.graphicSpec.objects.bar.items.length, 3);
+  assert.ok(program.graphicSpec.objects.horizontalGridLines.items.length > 0);
+});
+
+test("keeps incomplete rule endpoints open and preserves requested appearance text", async () => {
+  const incomplete = searchGgaction(
+    "Create rule mark, encode x, encode y, encode stroke width, add grid lines and title and subtitle, on Canvas."
+  );
+  assert.deepEqual(incomplete.matchedConstraints, [
+    "mark.rule",
+    "encoding.x",
+    "encoding.y",
+    "encoding.strokeWidth",
+    "guide.grid",
+    "guide.title",
+    "guide.subtitle",
+    "renderer.canvas"
+  ]);
+  assert.deepEqual(
+    incomplete.unresolved.map(entry => entry.constraint),
+    ["encoding.rule.endpoint"]
+  );
+  assert.match(incomplete.exactCalls.at(-2), /subtitle: "Chart subtitle"/u);
+
+  const complete = searchGgaction(
+    "Create rule mark, encode y, encode stroke width, add grid lines and title and subtitle, on Canvas."
+  );
+  assert.deepEqual(complete.unresolved, []);
+  const { program } = await executeAuthoring(complete, {
+    rows: [{ y: 2 }, { y: 5 }, { y: 7 }],
+    renderer: "canvas"
+  });
+  assert.equal(program.graphicSpec.objects.rule.items.length, 3);
+  assert.ok(program.graphicSpec.objects.horizontalGridLines.items.length > 0);
+  assert.equal(program.semanticSpec.title.subtitle, "Chart subtitle");
 });
 
 test("keeps terminal unsupported output separate from open renderer decisions", () => {

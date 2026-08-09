@@ -413,6 +413,45 @@ function orderInheritedTextOverlay(entries) {
   ];
 }
 
+function orderBarCategoryBeforeMeasure(entries) {
+  const bar = entries.find(entry =>
+    entry.provider.name === "createBarMark" &&
+    !entry.provider.id.startsWith("exact.")
+  );
+  if (!bar) return entries;
+  const barIndex = entries.indexOf(bar);
+  const nextMarkIndex = entries.findIndex((entry, index) =>
+    index > barIndex &&
+    !entry.provider.id.startsWith("exact.") &&
+    entry.provider.name.startsWith("create") &&
+    (entry.provider.name.endsWith("Mark") || entry.provider.name.endsWith("Plot"))
+  );
+  const limit = nextMarkIndex === -1 ? entries.length : nextMarkIndex;
+  const positions = entries.slice(barIndex + 1, limit).filter(entry =>
+    ["encodeX", "encodeY"].includes(entry.provider.name) &&
+    !entry.provider.id.startsWith("exact.")
+  );
+  const categorical = positions.find(entry =>
+    ['"nominal"', '"ordinal"', '"temporal"'].includes(
+      entry.provider.baseOptions?.fieldType
+    )
+  );
+  const quantitative = positions.find(entry =>
+    entry.provider.baseOptions?.fieldType === '"quantitative"'
+  );
+  if (
+    !categorical ||
+    !quantitative ||
+    entries.indexOf(categorical) < entries.indexOf(quantitative)
+  ) return entries;
+  const reordered = [...entries];
+  const categoricalIndex = reordered.indexOf(categorical);
+  const quantitativeIndex = reordered.indexOf(quantitative);
+  reordered[quantitativeIndex] = categorical;
+  reordered[categoricalIndex] = quantitative;
+  return reordered;
+}
+
 function closeRuntimeDependencies(entries) {
   let closed = absorbFacadeGuides(entries);
   const semantic = name => closed.find(entry =>
@@ -458,30 +497,27 @@ function closeRuntimeDependencies(entries) {
   const barPlot = semantic("createBarPlot");
   if (barPlot) {
     const hasColorScale = semantic("createScale")?.provider.id === "action.createColorScale";
-    closed = closed.map(entry => entry === barPlot
-      ? {
-          ...withBaseOptions(entry, {
-            x: `{ field: "category", fieldType: "nominal" }`,
-            y: `{ field: "value", fieldType: "quantitative" }`
-          }),
-          provider: {
-            ...withBaseOptions(entry, {
-              x: `{ field: "category", fieldType: "nominal" }`,
-              y: `{ field: "value", fieldType: "quantitative" }`
-            }).provider,
-            ...(hasColorScale
-              ? {
-                  optionsByConstraint: {
-                    ...(entry.provider.optionsByConstraint ?? {}),
-                    "encoding.color": {
-                      color: `{ field: "category", scale: { id: "color-scale" } }`
-                    }
-                  }
-                }
-              : {})
+    const color = `{ field: "category", scale: { id: "color-scale" } }`;
+    closed = closed.map(entry => {
+      if (entry !== barPlot) return entry;
+      const configured = withBaseOptions(entry, {
+        x: `{ field: "category", fieldType: "nominal" }`,
+        y: `{ field: "value", fieldType: "quantitative" }`,
+        ...(hasColorScale ? { color } : {})
+      });
+      return hasColorScale
+        ? {
+            ...configured,
+            provider: {
+              ...configured.provider,
+              optionsByConstraint: {
+                ...(configured.provider.optionsByConstraint ?? {}),
+                "encoding.color": { color }
+              }
+            }
           }
-        }
-      : entry);
+        : configured;
+    });
   }
 
   const timeUnitData = semantic("createTimeUnitData");
@@ -553,22 +589,19 @@ function closeRuntimeDependencies(entries) {
   const densityData = semantic("createDensityData");
   const violinPlot = semantic("createViolinPlot");
   if (densityData && violinPlot) {
-    closed = closed.map(entry => {
-      if (entry === densityData) {
-        return withBaseOptions(entry, {
-          source: `"data"`,
-          groupBy: `"category"`
-        });
-      }
-      return entry === violinPlot
-        ? withBaseOptions(entry, {
-            data: `"data"`,
-            ...(entry.coverage.includes("guide.legend")
-              ? { color: `{ field: "category" }` }
-              : {})
-          })
-        : entry;
-    });
+    closed = closed
+      .filter(entry => entry !== densityData)
+      .map(entry => entry === violinPlot
+        ? {
+            ...withBaseOptions(entry, {
+              data: `"data"`,
+              ...(entry.coverage.includes("guide.legend")
+                ? { color: `"category"` }
+                : {})
+            }),
+            coverage: unique([...entry.coverage, ...densityData.coverage])
+          }
+        : entry);
   }
 
   const gradientPlot = semantic("createGradientPlot");
@@ -702,9 +735,9 @@ function closeRuntimeDependencies(entries) {
   closed = closed.map(entry => {
     if (entry.provider.id.startsWith("exact.")) return entry;
     if (entry.provider.name === "createScale") {
-      pendingScale = entry.provider.id === "action.createScale"
-        ? entry.provider.baseOptions?.id
-        : undefined;
+      pendingScale = entry.provider.id === "action.createColorScale"
+        ? undefined
+        : entry.provider.baseOptions?.id;
       return entry;
     }
     const created = defaultMarkIds[entry.provider.name];
@@ -738,7 +771,7 @@ function closeRuntimeDependencies(entries) {
     }
     return Object.keys(options).length === 0 ? entry : withBaseOptions(entry, options);
   });
-  return orderInheritedTextOverlay(closed);
+  return orderInheritedTextOverlay(orderBarCategoryBeforeMeasure(closed));
 }
 
 function providerRequestPosition(entry, positions) {
@@ -870,6 +903,56 @@ function authoringBlock(entries) {
   };
 }
 
+function hasIncompleteRulePrimaryPair(entries) {
+  let insideRule = false;
+  let endpoints = new Set();
+  const incomplete = () =>
+    insideRule &&
+    endpoints.has("encodeX") &&
+    endpoints.has("encodeY") &&
+    !endpoints.has("encodeX2") &&
+    !endpoints.has("encodeY2");
+  for (const entry of entries) {
+    if (entry.provider.id.startsWith("exact.")) continue;
+    const name = entry.provider.name;
+    if (
+      name.startsWith("create") &&
+      (name.endsWith("Mark") || name.endsWith("Plot"))
+    ) {
+      if (incomplete()) return true;
+      insideRule = name === "createRuleMark";
+      endpoints = new Set();
+      continue;
+    }
+    if (
+      insideRule &&
+      ["encodeX", "encodeY", "encodeX2", "encodeY2"].includes(name)
+    ) {
+      endpoints.add(name);
+    }
+  }
+  return incomplete();
+}
+
+function unconsumedScaleIds(entries) {
+  const scaleEntries = entries.filter(entry =>
+    entry.provider.name === "createScale" &&
+    !entry.provider.id.startsWith("exact.")
+  );
+  return scaleEntries
+    .filter(scale => {
+      const id = scale.provider.baseOptions?.id;
+      if (id === undefined) return false;
+      const reference = `id: ${id}`;
+      return !entries.some(entry =>
+        entry !== scale &&
+        [...mergeOptionValues(entry.provider, entry.coverage).values()]
+          .some(value => value.includes(reference))
+      );
+    })
+    .map(scale => scale.provider.baseOptions.id.replaceAll('"', ""));
+}
+
 function runtimeClosureDecisions(entries) {
   const names = new Set(entries
     .filter(entry => !entry.provider.id.startsWith("exact."))
@@ -917,6 +1000,18 @@ function runtimeClosureDecisions(entries) {
     unresolved.push(unresolvedDecision(
       "guide.legend.channel",
       "A legend requires an explicit compatible visual encoding such as color, size, shape, opacity, dash, or width."
+    ));
+  }
+  if (hasIncompleteRulePrimaryPair(entries)) {
+    unresolved.push(unresolvedDecision(
+      "encoding.rule.endpoint",
+      "A rule with both x and y primary positions also requires x2 or y2; otherwise choose one primary position for a full-span rule."
+    ));
+  }
+  for (const id of unconsumedScaleIds(entries)) {
+    unresolved.push(unresolvedDecision(
+      "scale.consumer",
+      `Scale "${id}" is not connected to a compatible encoding; choose the channel that should consume it.`
     ));
   }
   if (names.has("createAreaMark") && names.has("encodeStrokeDash")) {

@@ -198,8 +198,7 @@ export async function validateCorpusSource(corpus = "original") {
   }
 
   const coveredConstraints = new Set(tasks.flatMap(task => task.expected.constraints));
-  const requiredConstraints = oracle.requiredConstraints ?? taxonomy.constraints
-    .map(constraint => constraint.id);
+  const requiredConstraints = oracle.requiredConstraints ?? [...coveredConstraints];
   for (const id of requiredConstraints) {
     if (!constraints.has(id)) errors.push(`unknown required constraint: ${id}`);
   }

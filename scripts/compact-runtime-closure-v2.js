@@ -158,6 +158,48 @@ function containsSourceDataset(program, values) {
     .some(child => containsSourceDataset(child, values));
 }
 
+function collectScaleReferences(value, output) {
+  if (Array.isArray(value)) {
+    for (const entry of value) collectScaleReferences(entry, output);
+    return;
+  }
+  if (!value || typeof value !== "object") return;
+  for (const [key, entry] of Object.entries(value)) {
+    if (key === "scale" && typeof entry === "string") output.add(entry);
+    else collectScaleReferences(entry, output);
+  }
+}
+
+function semanticResourceFailures(program, path = "root") {
+  const failures = [];
+  const semantic = program.semanticSpec;
+  if (semantic) {
+    const datasetConsumers = new Set([
+      ...(semantic.layers ?? []).map(layer => layer.data).filter(Boolean),
+      ...(semantic.datasets ?? []).map(dataset => dataset.source).filter(Boolean)
+    ]);
+    for (const dataset of semantic.datasets ?? []) {
+      if (dataset.source !== undefined && !datasetConsumers.has(dataset.id)) {
+        failures.push(`unused-derived-dataset:${path}:${dataset.id}`);
+      }
+    }
+    const scaleReferences = new Set();
+    for (const layer of semantic.layers ?? []) {
+      collectScaleReferences(layer.encoding, scaleReferences);
+    }
+    collectScaleReferences(semantic.guides, scaleReferences);
+    for (const scale of semantic.scales ?? []) {
+      if (!scaleReferences.has(scale.id)) {
+        failures.push(`unused-scale:${path}:${scale.id}`);
+      }
+    }
+  }
+  for (const [id, child] of Object.entries(program.children ?? {})) {
+    failures.push(...semanticResourceFailures(child, `${path}/${id}`));
+  }
+  return failures;
+}
+
 function expectedActionNames(task) {
   const composition = task.expectedPlan.findLast(entry =>
     entry.kind === "runtime" && ["hconcat", "vconcat"].includes(entry.name)
@@ -231,6 +273,7 @@ export async function evaluateRuntimeClosureTask(
     if (!containsSourceDataset(program, task.dataset.values)) {
       failures.push("source-dataset-mismatch");
     }
+    failures.push(...semanticResourceFailures(program));
     const actualActions = (program.trace.children ?? [])
       .map(node => node.op)
       .filter(name => !["createCanvas", "createData"].includes(name));

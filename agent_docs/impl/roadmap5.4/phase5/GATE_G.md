@@ -134,10 +134,26 @@ Final v1 `corpus.json`, `datasets.json`, `ROUTE_ORACLE.json`, `RESULT.json`은 �
 
 1. `final2-03-bars-png`: 독립 color scale 뒤 bar facade가 만든 categorical color owner를 찾을 때 resolver가 legend
    target을 명시하지 않아, 일반 `createLegend`가 여러 categorical mark 후보를 모호하다고 거부했다.
-2. `final2-12-rule-canvas`: `createGrid`가 x/y encoding으로 생성되는 scale보다 먼저 배치되어 horizontal grid가 아직 없는
-   y scale을 요구했다. 요청 순서가 아니라 scale dependency를 따라야 하는 resolver ordering 결함이다.
+2. `final2-12-rule-canvas`: 심층 재현 결과 `createGrid`는 x/y 뒤에 있었다. 실제 원인은 rule이 x와 y primary만 갖고
+   x2/y2가 없어 line graphics와 resolved scales를 만들 수 없었던 것이다. Resolver가 이 불완전 endpoint 조합을
+   supported로 잘못 분류했고, 같은 문장의 `encode stroke width`와 subtitle intent까지 누락했다.
 3. `final2-18-raw-bars-canvas`: raw bar의 y aggregate를 x category보다 먼저 적용해, bar position policy가 아직 category
    grain을 결정할 수 없었다. Bar는 요청 문장 순서와 무관하게 category position이 aggregate position보다 먼저 와야 한다.
 
 Final v2의 네 파일도 이후 수정하지 않는다. 세 결함을 일반 dependency 규칙과 회귀 테스트로 수리한 뒤, 수정 후보는 다시 새로운
 query/dataset의 final v3에서만 검증한다.
+
+## Final v2 이후 수리 기준
+
+- Independent color scale은 bar facade의 실제 color encoding에 연결되어 legend가 고아 scale을 설명하지 않는다.
+- Raw bar는 문장 순서와 무관하게 categorical primary position을 quantitative measure보다 먼저 작성한다.
+- x+y primary만 있는 rule은 억지 endpoint를 만들지 않고 `encoding.rule.endpoint` open decision으로 반환한다.
+- `encode stroke width`, subtitle와 Canvas output 문구를 별도 intent로 보존한다.
+- Violin facade가 이미 소유하는 density derivation과 color encoding은 중복 standalone action을 만들지 않는다.
+- 연결되지 않은 scale과 소비되지 않은 derived dataset은 strict evaluator 실패로 처리한다.
+- Final v3부터 corpus가 expected constraints, ordered plan IDs, unsupported IDs와 unresolved IDs를 독립적으로 소유한다.
+  Resolver가 만든 oracle을 resolver 자신에게 다시 정답으로 주는 self-oracle만으로는 final corpus를 동결할 수 없다.
+
+기존 development set의 현재 의미 분류는 supported `19`, terminal unsupported `12`, needs-input `7`로 교정됐다. 과거
+`21 / 12 / 5` snapshot은 당시 후보의 증거로 보존하되, 두 task를 실행 가능한 것으로 과장하지 않는다. 교정된 38개 closure와
+152개 route는 모두 무비용으로 통과한다.

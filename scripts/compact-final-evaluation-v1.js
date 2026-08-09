@@ -19,6 +19,7 @@ if (!/^v[1-9][0-9]*$/u.test(corpusVersion ?? "")) {
   throw new Error("--corpus-version must be a positive vN identifier.");
 }
 const corpusId = `compact-authoring-final-${corpusVersion}`;
+const corpusNumber = Number(corpusVersion.slice(1));
 const evaluationRoot = path.join(root, "evaluation", corpusId);
 const artifactRoot = path.join(root, ".artifacts", "evaluation", corpusId);
 const corpusFile = path.join(evaluationRoot, "corpus.json");
@@ -77,6 +78,33 @@ function packetPlan(packet) {
     kind: entry.kind,
     options: entry.requiredOptions
   }));
+}
+
+function assertIndependentIntentOracle(seed, packet) {
+  const required = [
+    "expectedConstraints",
+    "expectedPlanIds",
+    "expectedUnsupported",
+    "expectedUnresolved"
+  ];
+  for (const property of required) {
+    if (!Array.isArray(seed[property])) {
+      throw new Error(`${seed.id} requires independent ${property}.`);
+    }
+  }
+  const actual = {
+    expectedConstraints: packet.matchedConstraints,
+    expectedPlanIds: packet.actionPlan.map(entry => entry.id),
+    expectedUnsupported: packet.unsupported.map(entry => entry.constraint),
+    expectedUnresolved: packet.unresolved.map(entry => entry.constraint)
+  };
+  for (const property of required) {
+    if (JSON.stringify(actual[property]) !== JSON.stringify(seed[property])) {
+      throw new Error(
+        `${seed.id} ${property} drifted: expected ${JSON.stringify(seed[property])}, received ${JSON.stringify(actual[property])}.`
+      );
+    }
+  }
 }
 
 async function readJson(file) {
@@ -189,6 +217,7 @@ async function buildState() {
     const dataset = datasetById.get(seed.dataset);
     if (!dataset) throw new Error(`${seed.id} uses unknown dataset ${seed.dataset}.`);
     const packet = searchGgaction(seed.query);
+    if (corpusNumber >= 3) assertIndependentIntentOracle(seed, packet);
     const role = packetRole(packet);
     const expectedRenderer = packetRenderer(packet);
     if (role !== seed.expectedRole) {
@@ -212,7 +241,17 @@ async function buildState() {
       expectedPlan: packetPlan(packet),
       expectedUnsupported: packet.unsupported.map(entry => entry.constraint),
       expectedUnresolved: packet.unresolved.map(entry => entry.constraint),
-      expectedFallbacks: docsFallbackResources(packet).map(resource => resource.uri)
+      expectedFallbacks: docsFallbackResources(packet).map(resource => resource.uri),
+      ...(corpusNumber >= 3
+        ? {
+            intentOracle: {
+              constraints: seed.expectedConstraints,
+              planIds: seed.expectedPlanIds,
+              unsupported: seed.expectedUnsupported,
+              unresolved: seed.expectedUnresolved
+            }
+          }
+        : {})
     });
   });
   const roleCounts = Object.fromEntries(["supported", "unsupported", "needs-input"].map(role => [
@@ -262,6 +301,7 @@ async function buildState() {
       expectedUnsupported: task.expectedUnsupported,
       expectedUnresolved: task.expectedUnresolved,
       expectedFallbacks: task.expectedFallbacks,
+      ...(task.intentOracle === undefined ? {} : { intentOracle: task.intentOracle }),
       sourceSha256: task.role === "supported"
         ? sha256(canonicalRuntimeClosureSource(task))
         : null
