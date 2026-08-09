@@ -6,7 +6,7 @@
 
 Approved by the user on 2026-08-09.
 
-Decision checkpoint: Gate approval record commit 뒤 기록.
+Decision checkpoint: `e29e1396a3e2ac99e09ac83f39f96ddf37d41ec2`.
 
 ## 승인된 목표
 
