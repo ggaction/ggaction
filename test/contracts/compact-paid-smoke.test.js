@@ -154,6 +154,38 @@ test("freezes the failed full-evaluation precheck route set before any repair", 
   );
 });
 
+test("freezes the repaired compact runtime closure without spend", async () => {
+  const directory = path.join(root, "evaluation", "compact-runtime-closure-v2");
+  const [oracleBytes, resultBytes] = await Promise.all([
+    readFile(path.join(directory, "ROUTE_ORACLE.json")),
+    readFile(path.join(directory, "RESULT.json"))
+  ]);
+  const oracle = JSON.parse(oracleBytes);
+  const result = JSON.parse(resultBytes);
+  assert.equal(oracle.id, "compact-runtime-closure-v2");
+  assert.equal(
+    oracle.productCandidateCommit,
+    "5f6a6faaaf98687f10daa5b1b98ed730232cdf10"
+  );
+  assert.equal(
+    sha256(oracleBytes),
+    "129164b77872057694a6cd5d12cea7c12cc510880f3a4cc53e27ab3821a3c20a"
+  );
+  assert.equal(result.oracleSha256, sha256(oracleBytes));
+  assert.deepEqual(result.roles, {
+    supported: 21,
+    unsupported: 12,
+    "needs-input": 5
+  });
+  assert.equal(result.routeChecks, 152);
+  assert.equal(result.evaluatorChecks, 38);
+  assert.equal(result.passed, true);
+  assert.equal(result.externalCalls, 0);
+  assert.equal(result.credentialReads, 0);
+  assert.equal(result.spendUsd, 0);
+  assert.equal(result.evaluations.every(entry => entry.passed), true);
+});
+
 test("freezes the exact v4 paid-smoke candidate, plan, source trees, and cost envelope", async () => {
   const plan = await loadPaidSmokePlanV4();
   assert.equal(plan.id, "compact-authoring-paid-smoke-v4");

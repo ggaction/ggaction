@@ -50,7 +50,7 @@ v4 smoke의 compact 12 / 12 positive signal과 full precheck failure를 함께 �
 - Current v1 precheck oracle/hash와 19 failures immutable
 - Existing v4 plan/progress/result immutable
 - Current 38-task runtime development closure 38 / 38
-- Supported 26 / 26 executable complete programs; unsupported/open 12 / 12 exact decisions
+- 기존 supported 후보 26 / 26 runtime closure: executable 21 / 21, terminal unsupported 1 / 1, open decision 4 / 4
 - Canvas/SVG/PNG/PDF concrete output validation과 renderer immutability
 - Direct/local-MCP byte equality와 explicit-fallback route 유지
 - Fresh final authoring corpus에 current/prior paid query overlap 0
@@ -78,3 +78,22 @@ external model call, additional spend, v4 retry, replacement paid smoke, full pa
 - 이 승인은 product packet composition, strict full evaluator, fresh corpus와 무비용 검증만 연다.
 - Credential read, external model call, additional spend, replacement smoke, full evaluation, PR, merge, publish, deploy와
   release는 계속 차단한다.
+
+## Option A 수리 체크포인트
+
+- Product candidate: `5f6a6faaaf98687f10daa5b1b98ed730232cdf10`
+- Current 38-task development closure: `38 / 38`
+- Knowledge routes: `152 / 152`
+- Current roles: executable supported `21`, terminal unsupported `12`, `needs-input` `5`
+- Strict outputs: Canvas PNG backing output, SVG, PNG와 PDF의 실제 파일 signature 검증
+- Renderer immutability와 top-level public action name 기준 trace 검증 통과
+- Route oracle SHA-256: `129164b77872057694a6cd5d12cea7c12cc510880f3a4cc53e27ab3821a3c20a`
+- Credential reads / external calls / spend: `0 / 0 / $0`
+
+기존 26개 supported 후보 중 5개를 억지로 실행하지 않았다. Area field dash는 현재 mark contract에서 지원하지 않아 terminal
+limitation으로, chart owner가 없는 selection/facet, child program이 없는 composition, 위치가 없는 collision-aware text와 visual
+channel이 없는 legend는 open decision으로 분류했다. 따라서 개발 closure는 supported 프로그램 수를 유지하는 것이 아니라
+`21 / 21` 실제 실행과 `5 / 5` 정확한 비실행 결정을 합쳐 `26 / 26`을 닫는다.
+
+이 체크포인트는 development set 수리만 완료한다. Fresh final corpus, query/dataset/program overlap 검사와 새 candidate의
+replacement paid-smoke approval checkpoint는 아직 남아 있다.
