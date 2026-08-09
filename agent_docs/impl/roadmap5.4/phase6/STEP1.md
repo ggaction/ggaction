@@ -94,6 +94,15 @@ Gate 없이는 추가 external call을 열지 않는다.
 Replacement plan은 [`GATE_B.md`](./GATE_B.md)가 소유한다. Attempt 9의 partial cells를 재사용하지 않고 새 승인 시 같은 576 cells를
 처음부터 실행한다.
 
+## Attempt 10 중단
+
+v10은 214 / 576 task-runs 뒤 provider-failed cells 3연속 circuit breaker로 중단됐다. 620 billed responses의 model/service-tier
+identity는 모두 정확히 일치해 snapshot repair는 실제 provider에서 검증됐다. 마지막 cluster는 timeout 1건과 fetch failures 5건이며,
+같은 시간 구간의 Terra A/B/C에 몰려 model과 temporal transport state를 분리할 수 없다.
+
+원본, 비용과 causal boundary는 [`ATTEMPT10.md`](./ATTEMPT10.md)에 고정한다. R54-P6-B로 resume하지 않는다. 권장 후속안은 214
+results와 전체 ledger를 carry forward하고 run position 215부터 남은 362 cells만 실행하는 별도 append-only plan이다.
+
 ## 공식 근거
 
 - <https://developers.openai.com/api/docs/models/gpt-5.4-nano>

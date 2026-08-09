@@ -6,6 +6,9 @@
 
 Option A approved by the user on 2026-08-10.
 
+Authorization consumed by Attempt 10. The run stopped at 214 / 576 task-runs after three consecutive provider-failed task-runs. This Gate
+does not authorize a resume or another credential read; see [`ATTEMPT10.md`](./ATTEMPT10.md).
+
 Review checkpoint: `8807dced7c195cd1e5411509a8f30ed91a37f170`.
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.

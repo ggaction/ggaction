@@ -22,7 +22,10 @@ first-pass, calls, tokens, latency와 cost가 유지되는지를 조건별로 �
 - [x] Attempt 9 progress와 ledger byte-for-byte 보존
 - [x] Provider identity observability와 snapshot pinning 무과금 수리
 - [x] Replacement v10 plan과 R54-P6-B Gate 준비
-- [ ] 새 승인 뒤 576-run external comparison
+- [x] R54-P6-B 승인과 Attempt 10 external comparison — 214 / 576 뒤 provider circuit stop
+- [x] Attempt 10 progress, identity audit와 ledger byte-for-byte 보존
+- [ ] Append-only continuation plan과 replacement Gate 결정
+- [ ] 새 승인 뒤 remaining 362-run external continuation
 - [ ] Result analysis와 integration closeout
 
 ## 차단 범위
