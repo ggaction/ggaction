@@ -41,6 +41,8 @@ attempt를 성공으로 재분류하지 않는다.
 - [x] Attempt 6 incomplete-response causal diagnosis와 state-machine v2 unpaid repair
 - [x] v7 comprehensive response-aware comparison integration — evaluator checkpoint `ee47a8c8`
 - [x] R54-P5-J Option A comprehensive v7 paid-comparison authorization — 2026-08-09
+- [x] v7 paid-comparison execution — Attempt 7 aborted at 10 / 32 completed, 29 billed responses / `$0.29928613` conservative spend
+- [ ] R54-P5-K provider-failure policy and replacement comparison decision
 - [ ] Complete evaluation proposal or non-integration closeout
 
 ## Attempt 1 conclusion
@@ -64,4 +66,6 @@ Recommended task-packet schema v2와 대안은 [`GATE_A.md`](./GATE_A.md)가 소
 - Attempt 5 retry와 replacement paid smoke는 새 Gate 승인 전 실행 금지
 - R54-P5-I authorization은 Attempt 6 중단으로 소진됨
 - Attempt 6 retry와 replacement paid smoke는 새 Gate 승인 전 실행 금지
+- R54-P5-J authorization은 Attempt 7 중단으로 소진됨
+- Attempt 7 retry와 replacement paid comparison은 새 Gate 승인 전 실행 금지
 - Complete paid evaluation, PR Ready/merge, publish, deploy와 release 금지
