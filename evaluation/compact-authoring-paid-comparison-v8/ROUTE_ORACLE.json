@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "compact-authoring-paid-comparison-route-oracle-v8",
+  "sourceFinalCorpus": "compact-authoring-final-v3",
+  "sourceFinalOracleSha256": "38662943c5d4e1cda1783ab84df724416a5760d9dc95f90cbe3054eee0a66688",
+  "productCandidateCommit": "4e211ba418cd437d7c66c4fb986fcc714cf579ea",
+  "packetSchemaVersion": 3,
+  "conditions": [
+    { "id": "A", "mode": "public-docs" },
+    { "id": "B", "mode": "compact-direct" },
+    { "id": "C", "mode": "compact-mcp" },
+    { "id": "D", "mode": "mcp-first-explicit-fallback" }
+  ],
+  "tasks": [
+    { "id": "final3-01-scatter-svg", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-02-line-pdf", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-03-bars-png", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-05-heatmap-png", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-07-box-canvas", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-08-violin-canvas", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-12-rule-canvas", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-13-arc-pdf", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-15-regression-svg", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-18-raw-bars-canvas", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-22-composition-svg", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-23-labels-png", "role": "supported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-27-geo", "role": "unsupported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-28-animation", "role": "unsupported", "expectedDRoute": ["search_ggaction", "submit_result"] },
+    { "id": "final3-37-rule-endpoint", "role": "needs-input", "expectedDRoute": ["search_ggaction", "read_mcp_resources", "submit_result"] },
+    { "id": "final3-38-scale-consumer", "role": "needs-input", "expectedDRoute": ["search_ggaction", "read_mcp_resources", "submit_result"] }
+  ]
+}
