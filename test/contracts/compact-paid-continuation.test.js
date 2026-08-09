@@ -6,9 +6,27 @@ import { loadPaidComparisonPlanV10 } from "../../scripts/compact-paid-comparison
 import {
   continuationSourceFileV11,
   initializeContinuationV11,
+  loadPaidComparisonPlanV11,
   runPaidComparisonMatrixV11,
   validateContinuationSourceV11
 } from "../../scripts/compact-paid-comparison-v11.js";
+
+test("freezes the append-only continuation plan and cumulative ledger boundary", async () => {
+  const plan = await loadPaidComparisonPlanV11();
+  assert.equal(plan.planSha256, "fec1c8dce0b2adb89e8db7652d74cd59df95727545adcd1e4129c1b33b3df5a6");
+  assert.equal(plan.evaluatorCheckpointCommit, "97029c53689e215a33376f724b41ee0734ca858d");
+  assert.equal(plan.basePlanSha256, "48d8cdebf81bcefedef96148a20836c46fb483ddae8080aef46c013a20f3d950");
+  assert.equal(plan.continuation.sourceSha256, "1fea9ad184df9bb2f0a80cc714e26fba542232bd7856bf3b8ebd268dddcc2381");
+  assert.equal(plan.continuation.completedTaskRuns, 214);
+  assert.equal(plan.continuation.remainingTaskRuns, 362);
+  assert.equal(plan.continuation.nextRunPosition, 215);
+  assert.equal(plan.continuation.nextRun, "final3-09-gradient-svg:r2:gpt-5.6-terra:D");
+  assert.equal(plan.continuation.carryModelCalls, 620);
+  assert.equal(plan.continuation.carryApiRequestAttempts, 634);
+  assert.equal(plan.continuation.carryProviderRetries, 8);
+  assert.equal(plan.continuation.carryExposureCostUsd, 3.269178747999999);
+  assert.equal(plan.limits.hardCostUsd, 50);
+});
 
 function continuation(source) {
   return {

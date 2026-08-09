@@ -103,6 +103,15 @@ identity는 모두 정확히 일치해 snapshot repair는 실제 provider에서 
 원본, 비용과 causal boundary는 [`ATTEMPT10.md`](./ATTEMPT10.md)에 고정한다. R54-P6-B로 resume하지 않는다. 권장 후속안은 214
 results와 전체 ledger를 carry forward하고 run position 215부터 남은 362 cells만 실행하는 별도 append-only plan이다.
 
+## v11 continuation
+
+v11은 Attempt 10의 exact SHA, 214 IDs/order, source ledger와 620 billed identities를 다시 계산한 뒤에만 열린다. Source의 circuit
+count 3은 원본에 남기고 새 execution state만 human-reviewed reset 0으로 시작한다. Calls, attempts, retries, usage, cost, reserve와
+exposure는 누적값 그대로다.
+
+Mock continuation은 run 215부터 362 cells를 추가해 576 unique ordered cells를 복원했고 원본 object를 변경하지 않았다. 96 routes,
+24 canonical submissions와 269 contract tests도 무과금으로 통과했다. Exact authorization은 [`GATE_C.md`](./GATE_C.md)가 소유한다.
+
 ## 공식 근거
 
 - <https://developers.openai.com/api/docs/models/gpt-5.4-nano>
