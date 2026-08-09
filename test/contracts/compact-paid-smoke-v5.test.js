@@ -3,6 +3,7 @@ import path from "node:path";
 import test from "node:test";
 
 import {
+  loadPaidSmokePlanV5,
   loadRouteOracleV5,
   preflightPaidSmokeToolsV5,
   root,
@@ -102,6 +103,28 @@ test("freezes the eight repaired v5 smoke tasks and their exact D routes", async
       ]
     ]
   );
+});
+
+test("freezes the v5 candidate, evaluator, run matrix, and cost envelope", async () => {
+  const plan = await loadPaidSmokePlanV5();
+  assert.equal(plan.planSha256, "490612751a1348fdfa9aa08a39a3915f086e96d48d20c8585ef6c3ccf061c90e");
+  assert.equal(plan.requiredGate, "R54-P5-H");
+  assert.equal(plan.productCandidateCommit, "4e211ba418cd437d7c66c4fb986fcc714cf579ea");
+  assert.equal(plan.evaluatorCheckpointCommit, "57d9bb5f2c4973a21f53908b66f87a0da024c916");
+  assert.equal(plan.runOrder.length, 32);
+  assert.equal(plan.costProjection.expectedModelCallsIfFirstPass, 74);
+  assert.equal(plan.costProjection.expectedUsd, 2.304);
+  assert.equal(plan.costProjection.calculatedMaximumUsd, 4.992);
+  assert.equal(plan.costProjection.calculatedMaximumWithRegionalUpliftUsd, 5.4912);
+  assert.equal(plan.limits.maximumModelCallsTotal, 96);
+  assert.equal(plan.limits.hardCostUsd, 6);
+  assert.deepEqual(plan.productSourceTrees, {
+    src: "e9fbc1d7e15814bea6e6ee2bd0e29d979875cf90",
+    types: "5cc5082ec2000ed8c89abfd4ee2004bccd3c40b1",
+    knowledge: "7820baeb3a92a043df3ea9e61a60d9f1a801ae83",
+    docs: "8bca66cf992bb5fc113fe889a9e2c4dc6c531895",
+    "package.json": "07795580d07bfca1573129338825666a15d811dd"
+  });
 });
 
 test("preflights the v5 decision-aware submission schema", async () => {

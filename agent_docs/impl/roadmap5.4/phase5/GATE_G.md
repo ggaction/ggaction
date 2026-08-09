@@ -183,3 +183,5 @@ runtime authoring closure와 evaluator가 fresh corpus에서 일치한다는 무
 다음 Gate는 product candidate `4e211ba4`에만 적용되는 representative paid smoke의 task 표본, A/B/C/D route, 반복 수,
 expected/max cost와 hard cap을 먼저 동결해야 한다. Credential read, external model call, spend, v4 재사용, full paid evaluation,
 PR, merge, publish, deploy와 release는 새 승인 전까지 계속 차단한다.
+
+Exact replacement 범위와 승인 경계는 [`GATE_H.md`](./GATE_H.md)에 동결했다.
