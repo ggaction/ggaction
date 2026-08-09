@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { loadPaidComparisonPlanV8 } from "../../scripts/compact-paid-comparison-v8.js";
-import { runPaidComparisonTaskV10 } from "../../scripts/compact-paid-comparison-v10.js";
+import {
+  loadPaidComparisonPlanV10,
+  runPaidComparisonTaskV10
+} from "../../scripts/compact-paid-comparison-v10.js";
 
 const nanoAlias = "gpt-5.4-nano";
 const nanoSnapshot = "gpt-5.4-nano-2026-03-17";
@@ -76,6 +79,26 @@ async function fixture() {
     task: v8.tasks.find(entry => entry.id === "final3-27-geo")
   };
 }
+
+test("freezes the snapshot-pinned replacement plan and unchanged paid envelope", async () => {
+  const plan = await loadPaidComparisonPlanV10();
+  assert.equal(plan.planSha256, "48d8cdebf81bcefedef96148a20836c46fb483ddae8080aef46c013a20f3d950");
+  assert.equal(plan.evaluatorCheckpointCommit, "cd65fd8e91481fafddfff90a2a432d32d9821022");
+  assert.equal(plan.routeOracleSha256, "8211f33c5a443649def1f72de6f92d943a260f3df89795032d498f5c87819816");
+  assert.deepEqual(
+    plan.models.map(model => [model.id, model.requestModel]),
+    [
+      ["gpt-5.6-terra", "gpt-5.6-terra"],
+      ["gpt-5.6-luna", "gpt-5.6-luna"],
+      [nanoAlias, nanoSnapshot]
+    ]
+  );
+  assert.equal(plan.runOrder.length, 576);
+  assert.equal(plan.limits.maximumModelCallsTotal, 2460);
+  assert.equal(plan.limits.maximumApiRequestAttemptsTotal, 2532);
+  assert.equal(plan.costProjection.expectedWithRegionalUpliftUsd, 18.28992);
+  assert.equal(plan.limits.hardCostUsd, 50);
+});
 
 test("pins Nano requests to the official snapshot and records both provider identities", async () => {
   const { plan, task } = await fixture();

@@ -85,6 +85,15 @@ usage와 cost는 장부에 반영됐지만 trace가 실제 returned model/servic
 결과와 원인 경계는 [`ATTEMPT9.md`](./ATTEMPT9.md)에 고정했다. Attempt 9를 resume하지 않으며 새 snapshot-pinned plan과 replacement
 Gate 없이는 추가 external call을 열지 않는다.
 
+## v10 replacement
+
+새 state machine은 모든 billed trace에 requested/returned model과 service tier를 보존하고 두 mismatch stop을 분리한다. Nano의
+비교 label은 유지하되 실제 request는 공식 snapshot `gpt-5.4-nano-2026-03-17`로 pin했다. Mock identity contracts, 96 routes,
+24 canonical submissions와 265 contract tests가 모두 무과금으로 통과했다.
+
+Replacement plan은 [`GATE_B.md`](./GATE_B.md)가 소유한다. Attempt 9의 partial cells를 재사용하지 않고 새 승인 시 같은 576 cells를
+처음부터 실행한다.
+
 ## 공식 근거
 
 - <https://developers.openai.com/api/docs/models/gpt-5.4-nano>
