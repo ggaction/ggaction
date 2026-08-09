@@ -12,6 +12,8 @@ import {
   root
 } from "../../scripts/compact-paid-smoke-v5.js";
 import {
+  loadPaidSmokePlanV6,
+  preflightPaidSmokeToolsV6,
   runPaidSmokeDryRunV6,
   runPaidSmokeTaskV6,
   taskPromptV6
@@ -147,6 +149,22 @@ test("forces each knowledge and submission phase with the Responses function too
   } finally {
     await rm(artifactRoot, { recursive: true, force: true });
   }
+});
+
+test("freezes the repaired evaluator, task matrix, and bounded paid envelope", async () => {
+  const plan = await loadPaidSmokePlanV6();
+  assert.equal(plan.planSha256, "5f8a226e2146843b3fe8875289646871284b3b486c755c333d02bc6a4cf8b561");
+  assert.equal(plan.requiredGate, "R54-P5-I");
+  assert.equal(plan.productCandidateCommit, "4e211ba418cd437d7c66c4fb986fcc714cf579ea");
+  assert.equal(plan.evaluatorCheckpointCommit, "956e969faf3c127a83850f65e5c78009c070af7d");
+  assert.equal(plan.runOrder.length, 32);
+  assert.equal(plan.limits.maximumModelCallsPerTask, 4);
+  assert.equal(plan.limits.maximumModelCallsTotal, 128);
+  assert.equal(plan.costProjection.expectedUsd, 2.304);
+  assert.equal(plan.costProjection.calculatedMaximumUsd, 7.488);
+  assert.equal(plan.costProjection.calculatedMaximumWithRegionalUpliftUsd, 8.2368);
+  assert.equal(plan.limits.hardCostUsd, 8.3);
+  await preflightPaidSmokeToolsV6();
 });
 
 test("forces the complete public-docs route while preserving the model's selected returned URL", async () => {
