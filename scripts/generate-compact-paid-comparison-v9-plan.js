@@ -47,6 +47,10 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function money(value) {
+  return Number(value.toFixed(12));
+}
+
 function committedFile(commit, relative) {
   return execFileSync("git", ["show", `${commit}:${relative}`], {
     cwd: root,
@@ -174,10 +178,10 @@ const plan = {
     expectedModelCallsIfFirstPass: callEnvelope.expected,
     taskRunExpectedInputTokens: 12000,
     taskRunExpectedOutputTokens: 4000,
-    expectedUsd: expected.standard,
-    expectedWithRegionalUpliftUsd: expected.conservative,
-    theoreticalTokenEnvelopeMaximumUsd: maximum.standard,
-    theoreticalTokenEnvelopeMaximumWithRegionalUpliftUsd: maximum.conservative
+    expectedUsd: money(expected.standard),
+    expectedWithRegionalUpliftUsd: money(expected.conservative),
+    theoreticalTokenEnvelopeMaximumUsd: money(maximum.standard),
+    theoreticalTokenEnvelopeMaximumWithRegionalUpliftUsd: money(maximum.conservative)
   },
   runOrder,
   evaluatorSourceFiles,
@@ -221,7 +225,7 @@ process.stdout.write(`${JSON.stringify({
   taskRuns: runOrder.length,
   expectedModelCalls: callEnvelope.expected,
   maximumModelCalls: callEnvelope.maximum,
-  expectedUsd: expected.standard,
-  expectedWithRegionalUpliftUsd: expected.conservative,
-  theoreticalTokenEnvelopeMaximumWithRegionalUpliftUsd: maximum.conservative
+  expectedUsd: money(expected.standard),
+  expectedWithRegionalUpliftUsd: money(expected.conservative),
+  theoreticalTokenEnvelopeMaximumWithRegionalUpliftUsd: money(maximum.conservative)
 }, null, 2)}\n`);

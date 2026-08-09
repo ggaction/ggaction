@@ -4,6 +4,7 @@ import test from "node:test";
 import { summarizePaidComparisonV3 } from "../../scripts/compact-paid-comparison-v3.js";
 import { loadPaidComparisonPlanV8 } from "../../scripts/compact-paid-comparison-v8.js";
 import {
+  loadPaidComparisonPlanV9,
   runPaidComparisonDryRunV9,
   runPaidComparisonMatrixV9,
   runPaidComparisonTaskV9
@@ -139,6 +140,27 @@ test("balances all twelve model-condition cells across the expanded matrix", asy
       expectedPerModelRepetition: 218,
       maximumPerModelRepetition: 410
     }
+  );
+});
+
+test("freezes the 576-run matrix, evaluator checkpoint, and cost envelope", async () => {
+  const plan = await loadPaidComparisonPlanV9();
+  assert.equal(plan.planSha256, "86eeb648ab0c91a04148e472d100ad19ca06e7d993e6c3d1353862e8319bdc55");
+  assert.equal(plan.evaluatorCheckpointCommit, "fb6044c4f7ba55a11bbc9e97991ceb3d4f815c7f");
+  assert.equal(plan.routeOracleSha256, "8211f33c5a443649def1f72de6f92d943a260f3df89795032d498f5c87819816");
+  assert.equal(plan.tasks.length, 24);
+  assert.equal(plan.models.length, 3);
+  assert.equal(plan.runOrder.length, 576);
+  assert.equal(plan.limits.maximumModelCallsTotal, 2460);
+  assert.equal(plan.limits.maximumApiRequestAttemptsTotal, 2532);
+  assert.equal(plan.limits.maximumProviderRetriesTotal, 72);
+  assert.equal(plan.costProjection.expectedUsd, 16.6272);
+  assert.equal(plan.costProjection.expectedWithRegionalUpliftUsd, 18.28992);
+  assert.equal(plan.costProjection.theoreticalTokenEnvelopeMaximumWithRegionalUpliftUsd, 160.21632);
+  assert.equal(plan.limits.hardCostUsd, 50);
+  assert.equal(
+    plan.models[2].cacheWriteBillingBasis,
+    "uncached-input-fallback"
   );
 });
 
