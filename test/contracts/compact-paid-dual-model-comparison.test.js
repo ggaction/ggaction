@@ -3,9 +3,11 @@ import test from "node:test";
 
 import { summarizePaidComparisonV2 } from "../../scripts/compact-paid-comparison-v2.js";
 import {
+  loadPaidComparisonPlanV8,
   planForModelV8,
   runPaidComparisonDryRunV8,
-  runPaidComparisonMatrixV8
+  runPaidComparisonMatrixV8,
+  runPaidComparisonTaskV8
 } from "../../scripts/compact-paid-comparison-v8.js";
 import {
   dualModelRunOrderV8,
@@ -134,6 +136,98 @@ test("selects exact model pricing without changing the shared experiment plan", 
   assert.equal(terra.pricingPerMillionTokens.output, 12);
   assert.equal(luna.pricingPerMillionTokens.output, 1.2);
   assert.equal(plan.api.model, undefined);
+});
+
+test("freezes the dual-model matrix, evaluator checkpoint, and rolling exposure cap", async () => {
+  const plan = await loadPaidComparisonPlanV8();
+  assert.equal(plan.planSha256, "1393ef9c19ee32e58591f7459eb1a48eb49af6887bf88f7485013974fb342195");
+  assert.equal(plan.evaluatorCheckpointCommit, "d96ecd6e3a4872639dfdf34f5cd5ae8cc42b4c57");
+  assert.equal(plan.routeOracleSha256, "dc241f8b717ee2d80a81762e23e870a1fdf57215f15bd3a30e4292dc39dca6a1");
+  assert.equal(plan.tasks.length, 16);
+  assert.equal(plan.runOrder.length, 256);
+  assert.equal(plan.limits.repetitions, 2);
+  assert.equal(plan.limits.maximumModelCallsTotal, 1096);
+  assert.equal(plan.limits.maximumApiRequestAttemptsTotal, 1128);
+  assert.equal(plan.limits.maximumProviderRetriesTotal, 32);
+  assert.equal(plan.limits.maximumConsecutiveProviderFailureTaskRuns, 3);
+  assert.equal(plan.costProjection.expectedWithRegionalUpliftUsd, 11.15136);
+  assert.equal(plan.costProjection.theoreticalTokenEnvelopeMaximumWithRegionalUpliftUsd, 98.50368);
+  assert.equal(plan.limits.hardCostUsd, 30);
+});
+
+test("executes the same forced-tool contract with Luna and Luna pricing", async () => {
+  const plan = await loadPaidComparisonPlanV8();
+  const task = plan.tasks.find(entry => entry.id === "final3-27-geo");
+  const requestedModels = [];
+  let index = 0;
+  const tools = [
+    ["search_ggaction", { query: task.query }],
+    ["submit_result", {
+      status: "unsupported",
+      source: null,
+      renderer: "svg",
+      unsupported: ["unsupported.geo"],
+      unresolved: []
+    }]
+  ];
+  const ledger = {
+    usage: {
+      inputTokens: 0,
+      cachedInputTokens: 0,
+      cacheWriteTokens: 0,
+      outputTokens: 0,
+      reasoningTokens: 0,
+      totalTokens: 0
+    },
+    standardCostUsd: 0,
+    costUsd: 0,
+    uncertainCostReserveUsd: 0,
+    exposureCostUsd: 0,
+    modelCalls: 0,
+    apiRequestAttempts: 0,
+    providerRetries: 0
+  };
+  const result = await runPaidComparisonTaskV8({
+    plan,
+    task,
+    model: "gpt-5.6-luna",
+    condition: "B",
+    apiKey: "test-key-with-more-than-twenty-characters",
+    ledger,
+    artifactRoot: "/unused",
+    createResponse: async ({ request }) => {
+      requestedModels.push(request.model);
+      const [name, args] = tools[index];
+      assert.deepEqual(request.tool_choice, { type: "function", name });
+      index += 1;
+      return {
+        model: "gpt-5.6-luna",
+        service_tier: "default",
+        status: "completed",
+        incomplete_details: null,
+        error: null,
+        output: [{
+          type: "function_call",
+          status: "completed",
+          name,
+          call_id: `${name}-${index}`,
+          arguments: JSON.stringify(args)
+        }],
+        usage: {
+          input_tokens: 100,
+          input_tokens_details: { cached_tokens: 0, cache_write_tokens: 0 },
+          output_tokens: 50,
+          output_tokens_details: { reasoning_tokens: 10 },
+          total_tokens: 150
+        }
+      };
+    }
+  });
+  assert.equal(result.passed, true);
+  assert.equal(result.model, "gpt-5.6-luna");
+  assert.deepEqual(requestedModels, ["gpt-5.6-luna", "gpt-5.6-luna"]);
+  assert.equal(result.modelCalls, 2);
+  assert.ok(result.costUsd < 0.001);
 });
 
 test("compares routes within models, models within routes, and route-by-model interactions", () => {
