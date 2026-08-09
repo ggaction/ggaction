@@ -2,7 +2,7 @@
 
 ## Gate state
 
-`changes-requested`
+`approved`
 
 Canonical evidence: [`FULL_PRECHECK.md`](./FULL_PRECHECK.md).
 
@@ -71,3 +71,10 @@ external model call, additional spend, v4 retry, replacement paid smoke, full pa
 - Credential read, external call과 spend
 - Replacement smoke와 full evaluation
 - PR, merge, publish, deploy와 release
+
+## Approval record
+
+- 사용자가 2026-08-09에 Option A runtime-closure repair와 fresh final corpus 준비를 명시적으로 승인했다.
+- 이 승인은 product packet composition, strict full evaluator, fresh corpus와 무비용 검증만 연다.
+- Credential read, external model call, additional spend, replacement smoke, full evaluation, PR, merge, publish, deploy와
+  release는 계속 차단한다.
