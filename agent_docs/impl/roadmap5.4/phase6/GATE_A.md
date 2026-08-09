@@ -2,7 +2,9 @@
 
 ## Gate state
 
-`ready-for-review`
+`approved`
+
+Option A approved by the user on 2026-08-10.
 
 Review checkpoint: `6cfaa3254eb5a3aff95aca303f4ef07dea2ab7d5`.
 

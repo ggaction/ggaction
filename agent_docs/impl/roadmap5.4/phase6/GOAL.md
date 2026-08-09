@@ -17,7 +17,7 @@ first-pass, calls, tokens, latency와 cost가 유지되는지를 조건별로 �
 - [x] 96 routes, 24 canonical submissions와 576-cell dry run
 - [x] Focused contracts와 전체 normal suite 분할 검증
 - [x] R54-P6-A review package 준비
-- [ ] R54-P6-A exact paid comparison 승인
+- [x] R54-P6-A exact paid comparison 승인 — Option A, 2026-08-10
 - [ ] Credential read와 576-run external comparison
 - [ ] Result analysis와 integration closeout
 
