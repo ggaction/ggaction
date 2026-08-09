@@ -4,7 +4,7 @@
 
 `ready-for-review`
 
-Review checkpoint: `pending`.
+Review checkpoint: `6cfaa3254eb5a3aff95aca303f4ef07dea2ab7d5`.
 
 Product candidate: `4e211ba418cd437d7c66c4fb986fcc714cf579ea`.
 
