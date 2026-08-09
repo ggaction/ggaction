@@ -112,6 +112,12 @@ function sanitizedArguments(call) {
 }
 
 function recordBudgetBeforeRequest({ plan, ledger, state, request, priorReasoningTokens }) {
+  if (
+    Number.isInteger(plan.limits.maximumModelCallsTotal) &&
+    ledger.modelCalls >= plan.limits.maximumModelCallsTotal
+  ) {
+    throw new Error("global-call-cap: next request would exceed the approved call count");
+  }
   const bytes = Buffer.byteLength(JSON.stringify(request), "utf8");
   if (bytes > plan.limits.maximumRequestBodyBytesPerCall) {
     throw new Error("request-transport-envelope: request body exceeds the per-call limit");

@@ -31,6 +31,7 @@ function planForMocks() {
     },
     limits: {
       maximumModelCallsPerTask: 4,
+      maximumModelCallsTotal: 128,
       maximumInputTokensPerTask: 120000,
       maximumOutputTokensPerTask: 16000,
       maximumOutputTokensPerResponse: 4000,
@@ -257,6 +258,33 @@ test("classifies a missing forced call as a provider protocol mismatch after per
     type: "function",
     name: "search_ggaction"
   });
+});
+
+test("stops before a request that would exceed the global call cap", async () => {
+  const oracle = await loadRouteOracleV5();
+  const task = oracle.tasks[0];
+  const plan = planForMocks();
+  plan.limits.maximumModelCallsTotal = 1;
+  const currentLedger = ledger();
+  currentLedger.modelCalls = 1;
+  let requests = 0;
+  await assert.rejects(
+    runPaidSmokeTaskV6({
+      plan,
+      task,
+      condition: "B",
+      apiKey: "test-key-with-more-than-twenty-characters",
+      ledger: currentLedger,
+      artifactRoot: path.join(root, ".artifacts", "test", "paid-state-machine-call-cap"),
+      createResponse: async () => {
+        requests += 1;
+        return response(null, 1);
+      }
+    }),
+    /global-call-cap: next request would exceed the approved call count/u
+  );
+  assert.equal(requests, 0);
+  assert.equal(currentLedger.modelCalls, 1);
 });
 
 test("validates renderer adapter structure before isolated chart execution", async () => {
