@@ -18,6 +18,7 @@ import {
   runPaidSmokeTaskV6,
   taskPromptV6
 } from "../../scripts/compact-paid-smoke-v6.js";
+import { runPaidSmokeTaskV7 } from "../../scripts/compact-paid-smoke-v7.js";
 import { canonicalRuntimeClosureSource } from "../../scripts/compact-runtime-closure-v2.js";
 
 function planForMocks() {
@@ -71,6 +72,9 @@ function response(call, index) {
   return {
     model: "gpt-5.6-terra",
     service_tier: "default",
+    status: "completed",
+    incomplete_details: null,
+    error: null,
     output: [
       {
         type: "reasoning",
@@ -115,7 +119,7 @@ test("forces each knowledge and submission phase with the Responses function too
   let index = 0;
   const artifactRoot = await temporaryArtifact("paid-state-machine-repair-");
   try {
-    const result = await runPaidSmokeTaskV6({
+    const result = await runPaidSmokeTaskV7({
       plan: planForMocks(),
       task,
       condition: "B",
@@ -143,6 +147,11 @@ test("forces each knowledge and submission phase with the Responses function too
     assert.equal(result.modelCalls, 3);
     assert.deepEqual(choices, expectedTools.map(name => ({ type: "function", name })));
     assert.deepEqual(result.trace.map(entry => entry.forcedTool), expectedTools);
+    assert.deepEqual(result.trace.map(entry => entry.provider.status), [
+      "completed",
+      "completed",
+      "completed"
+    ]);
     assert.deepEqual(result.trace[1].evaluation.failures, [
       "renderer-wrapper-contract:png:the evaluator-supplied output parameter must be passed as { output }; literal paths are forbidden"
     ]);
