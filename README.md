@@ -51,6 +51,26 @@ const program = chart()
 - **Traceable** — retain high-level actions and the wrapped actions they invoke.
 - **Materialized** — actions create concrete backend-neutral graphics; rendering does not perform hidden semantic compilation.
 
+## MCP server for LLM
+
+ggaction includes a local, read-only MCP server that gives coding assistants
+current action names, exact call shapes, and task-specific authoring steps
+without loading the complete documentation.
+
+<p align="left">
+  <img src="./docs/assets/images/readme-mcp-benefits.svg" width="960" loading="lazy" alt="Across 576 fixed task runs, MCP with bounded fallback improved strict success and reduced tokens and model calls compared with public-documentation browsing for Terra, Luna, and Nano.">
+</p>
+
+Across a fixed 576-run evaluation, MCP-first authoring with bounded fallback
+improved strict task success while using fewer tokens and model calls for all
+three model sizes. The server runs locally over stdio and does not execute chart
+code, access arbitrary files, make network requests, require an account, or
+collect telemetry.
+
+[Set up the local MCP server](https://ggaction.github.io/ggaction/mcp/) ·
+[Inspect the benchmark record](./benchmarks/llm-authoring-v1/) ·
+[Read the complete evaluation report](./agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+
 ## Quick start
 
 Install the current public release:
@@ -136,8 +156,9 @@ automatic undo stack; the application chooses which to retain or render.
 
 Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
 the other basic Cartesian charts. The `ggaction/basic` entry keeps this common
-creation path below a 120,000-byte gzip bundle budget while each facade still
-records its mark, encoding, and guide actions as trace children. Import from
+creation path at or below the current 120,000-byte gzip regression ceiling while
+each facade still records its mark, encoding, and guide actions as trace
+children. Import from
 `ggaction` when you need editing, selection, composition, alternative
 coordinates, or statistical layers. See the
 [Basic Charts API](https://ggaction.github.io/ggaction/api/basic-charts/).
@@ -181,15 +202,22 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
 | `ggaction/pdf` | Render a completed program to a single-page vector PDF file in Node.js |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
+| `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |
 
-All entries include TypeScript declarations. The default, basic, extension, and
-SVG entries are browser-safe; the PNG and PDF adapters are Node-only.
+All module entries include TypeScript declarations. The default, basic,
+extension, and SVG entries are browser-safe; the PNG and PDF adapters are
+Node-only.
+
+The installed package also includes the Node-only `ggaction-mcp` executable. It
+provides one local, read-only chart-authoring search tool and stays outside every
+browser entry. See the [local MCP guide](https://ggaction.github.io/ggaction/mcp/).
 
 ## Documentation
 
 - [Getting Started](https://ggaction.github.io/ggaction/getting-started/)
 - [Tutorials and Examples](https://ggaction.github.io/ggaction/tutorials/)
 - [Action Reference](https://ggaction.github.io/ggaction/reference/actions/)
+- [Local MCP for LLM Chart Authoring](https://ggaction.github.io/ggaction/mcp/)
 - [Concepts](https://ggaction.github.io/ggaction/concepts/chart-program/)
 - [Supported Features](https://ggaction.github.io/ggaction/supported-features/)
 
@@ -201,7 +229,7 @@ the extra discussion required before public API or architecture changes.
 
 ## Status and development
 
-> **Status:** `0.0.8` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+> **Status:** `0.0.9` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ```bash
 npm install

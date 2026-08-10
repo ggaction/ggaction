@@ -165,7 +165,8 @@ editRadialGrid(options: EditPolarGridOptions): ChartProgram;
 
 - direction parameters
   - ✅ Covered: x-scale inference, histogram bin alignment, explicit values/styles and invalid resources.
-  - ⚠️ Partial: temporal vertical grid with calendar ticks.
+  - ✅ Covered: temporal x scales reuse validated calendar tick values and vertical grid materialization through the
+    same scale/axis inference path.
 - No proposal: the current contract remains continuous/time and histogram-bin grid positioning.
 - Evidence: grid and density-guide tests.
 
@@ -205,7 +206,7 @@ editRadialGrid(options: EditPolarGridOptions): ChartProgram;
 
 - 모든 parameter class와 stable-binding rule은 horizontal과 동일하다.
 - ✅ Covered: explicit values, wrapped trace, missing/unknown option과 shared validation classes.
-- ⚠️ Partial: repeated auto→count→values→auto transition과 temporal vertical grid edit.
+- ✅ Covered: repeated auto→count→values→auto mode replacement, immutable prior policies and temporal tick reuse.
 - Evidence: `test/unit/actions/guides/grid-edit-actions.test.js`.
 
 ## `editGrid`

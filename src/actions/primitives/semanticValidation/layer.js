@@ -10,18 +10,13 @@ import {
   validateHistogramBinBoundaries,
   validateHistogramBinStep
 } from "../../../grammar/histogram.js";
-import {
-  validateParallelDimensions,
-  validateParallelKeyField,
-  validateParallelMissingPolicy
-} from "../../../grammar/parallelCoordinates.js";
 import { validatePathOrderDirection } from "../../../grammar/pathOrder.js";
 import { normalizeCategoryOrder } from "../../../grammar/categoryOrder.js";
 import { validateSemanticFieldType } from "../../../grammar/scales/index.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { validateNonEmptySemanticString } from "./shared.js";
 
-function validateLayerSource(program, parsed, value) {
+function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   validateUserId(value, "Layer source id");
   if (value === parsed.id) {
     throw new Error("A layer cannot use itself as its source.");
@@ -30,19 +25,32 @@ function validateLayerSource(program, parsed, value) {
   if (source === undefined) {
     throw new Error(`Unknown source layer "${value}".`);
   }
-  if (!["point", "bar", "rule", "rect"].includes(source.mark?.type)) {
+  if (!sourceMarkTypes.includes(source.mark?.type)) {
+    const sourceLabel = sourceMarkTypes.length === 1
+      ? sourceMarkTypes[0]
+      : `${sourceMarkTypes.slice(0, -1).join(", ")}, or ${sourceMarkTypes.at(-1)}`;
     throw new Error(
-      `Layer source "${value}" must be a point, bar, rule, or rect mark.`
+      `Layer source "${value}" must be a ${sourceLabel} mark.`
     );
   }
 }
 
-export function validateLayerSemanticValue(program, parsed, value) {
+export function validateLayerSemanticValue(
+  program,
+  parsed,
+  value,
+  {
+    sourceMarkTypes = ["point", "bar", "rule", "rect"],
+    validateParallel
+  } = {}
+) {
   const property = parsed.path.join(".");
   if (property === "mark.type" && !MARK_TYPES.includes(value)) {
     throw new Error(`Unknown mark type "${value}".`);
   }
-  if (property === "source") validateLayerSource(program, parsed, value);
+  if (property === "source") {
+    validateLayerSource(program, parsed, value, sourceMarkTypes);
+  }
   if (property.endsWith(".title")) {
     validateNonEmptySemanticString(value, "Encoding title");
   }
@@ -52,12 +60,8 @@ export function validateLayerSemanticValue(program, parsed, value) {
   if (property.endsWith(".fieldType")) validateSemanticFieldType(value);
   if (property === "encoding.pathOrder.order") validatePathOrderDirection(value);
   if (property.endsWith(".categoryOrder")) normalizeCategoryOrder(value);
-  if (property === "encoding.parallel.dimensions") {
-    validateParallelDimensions(value, { normalized: true });
-  }
-  if (property === "encoding.parallel.key") validateParallelKeyField(value);
-  if (property === "encoding.parallel.missing") {
-    validateParallelMissingPolicy(value);
+  if (property.startsWith("encoding.parallel.")) {
+    validateParallel?.(property, value);
   }
   if (property.endsWith(".aggregate")) validateAggregate(value);
   if (property.endsWith(".bin.maxBins")) normalizeHistogramBin({ maxBins: value });

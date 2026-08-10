@@ -160,6 +160,17 @@ test("keeps lifecycle, coverage, and edit gaps machine-readable", () => {
   }
 });
 
+test("keeps every current action contract fully covered", () => {
+  for (const action of index.actions) {
+    assert.deepEqual(action.coverage, {
+      contract: "complete",
+      effects: "complete",
+      tests: "complete"
+    }, action.name);
+  }
+  assert.doesNotMatch(currentCorpus, /⚠️ Partial|❌ Missing/);
+});
+
 test("keeps primitives and internal wrapped actions in separate layers", () => {
   assert.deepEqual(
     index.actions

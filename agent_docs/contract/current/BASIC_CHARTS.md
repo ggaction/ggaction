@@ -77,8 +77,9 @@ createLinePlot({
 - Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeGroup`/`encodeStrokeDash`,
   optional `createGuides`.
 - Plain strokeDash string is rejected because a field name and a named dash style are both strings.
-- Direct, grouped and temporal aggregate line policies remain child-owned. `closed: true` is rejected because this facade
-  is Cartesian; Polar line authoring remains available through the advanced mark/encoding chain.
+- Direct, grouped, temporal aggregate, and direct materialized window-output line policies remain child-owned.
+  `closed: true` is rejected because this facade is Cartesian; Polar line authoring remains available through the
+  advanced mark/encoding chain.
 - Semantic/graphic/render output exactly matches the equivalent explicit action chain and approved Cars line primitive.
 
 ### Formal values — `createLinePlot`
@@ -90,7 +91,7 @@ createLinePlot({
 
 ### Value coverage — `createLinePlot`
 
-- ✅ Covered: shortest direct line, grouped/color/dash series and temporal aggregate line.
+- ✅ Covered: shortest direct line, grouped/color/dash series, temporal aggregate line, and materialized window output.
 - ✅ Covered: curve/width appearance, guide default/disable, invalid aggregate and closed/dash errors.
 - ✅ Covered: x/y order policy, Canvas rendering, Node PNG and primitive equality.
 - Evidence: `test/unit/actions/charts/basic-chart-facades.test.js`,

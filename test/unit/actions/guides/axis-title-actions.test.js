@@ -88,6 +88,18 @@ test("creates mirrored titles and preserves explicit rotation across position ed
   assert.equal(created.guideConfigs.axis.y.title.position, "right");
 });
 
+test("preserves explicit y-title rotation through repeated data-space locations", () => {
+  const created = program().createYAxisTitle({ rotation: 0, at: 5 });
+  const moved = created.editYAxisTitle({ at: 15 });
+  const rotated = moved.editYAxisTitle({ rotation: Math.PI / 4, at: 10 });
+  const final = rotated.editYAxisTitle({ at: "end" });
+
+  assert.equal(moved.graphicSpec.objects.yAxisTitle.properties.rotation, 0);
+  assert.equal(rotated.graphicSpec.objects.yAxisTitle.properties.rotation, Math.PI / 4);
+  assert.equal(final.graphicSpec.objects.yAxisTitle.properties.rotation, Math.PI / 4);
+  assert.equal(created.guideConfigs.axis.y.title.at, 5);
+});
+
 test("rejects mirrored titles when the requested margin is too small", () => {
   assert.throws(
     () => program().createXAxisTitle({ position: "top" }),

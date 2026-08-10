@@ -184,7 +184,7 @@ test("keeps navigation and page order complete", async () => {
   assert.deepEqual(new Set(order), pageUrls);
   for (const url of navigation) assert.equal(pageUrls.has(url), true, url);
   assert.equal(navigation.includes("/api/"), true);
-  assert.equal(navigation.length, 19);
+  assert.equal(navigation.length, 21);
 
   const byUrl = new Map(registry.map(page => [page.url, page]));
   for (const page of registry) {
@@ -817,7 +817,10 @@ test("classifies every declared ChartProgram action in the reference", async () 
     ),
     generated
   );
-  assert.equal((await declaredActionSignatures()).length, methods.length);
+  const signatures = await declaredActionSignatures();
+  assert.equal(signatures.length, methods.length);
+  assert.equal(signatures[0], "createCanvas(options?: CanvasOptions): ChartProgram;");
+  assert.equal(signatures.some(signature => /^(?:constructor|readonly\b)/.test(signature)), false);
 
   assert.equal(new Set(methods).size, methods.length);
   for (const method of methods) {
@@ -898,6 +901,7 @@ test("keeps concise and full LLM documentation synchronized", async () => {
   assert.match(index, /Canvas, SVG, PNG, and PDF rendering/);
   assert.match(index, /Supported features and limitations/);
   assert.match(index, /Exact program and renderer signatures/);
+  assert.match(index, /Local one-tool MCP for compact chart-authoring knowledge/);
   assert.doesNotMatch(index, /^## Current scope$/m);
   assert.equal(index, await buildConciseLlmDocumentation());
   assert.doesNotMatch(

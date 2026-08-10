@@ -17,6 +17,16 @@ const SEARCH_ALIASES = new Map([
   ["/api/error-bands/", ["confidence interval", "uncertainty ribbon"]],
   ["/api/composition/", ["dashboard", "small multiples", "facet"]],
   ["/api/parallel-coordinates/", ["multivariate profile"]],
+  ["/llm-authoring/", [
+    "createCanvas", "createData", "load rows", "inline data",
+    "histogram", "binned distribution", "one dimensional bins",
+    "regression data", "path mark", "trend line", "uncertainty ribbon",
+    "axis guides", "Canvas", "SVG", "PNG", "PDF", "JPG", "JPEG",
+    "3d chart", "geographic chart", "animation", "interaction",
+    "renderer.canvas", "renderer.svg", "renderer.png", "renderer.pdf",
+    "unsupported.geo", "unsupported.animation", "unsupported.interaction",
+    "unsupported.3d", "unsupported.jpg", "renderer.format"
+  ]],
   ["/api/position/offsets/", ["grouped bar", "side by side bars"]],
   ["/tutorials/grouped-bar/", ["grouped bar", "side by side bars"]],
   ["/recipes/bar-chart/", ["grouped bar", "side by side bars"]]

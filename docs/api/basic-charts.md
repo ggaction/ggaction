@@ -111,7 +111,9 @@ const line = chart()
 The stable default mark ID is `linePlot`. A plain `strokeDash` string is not
 accepted because it could mean either a field or a named dash style; use
 `{ field }` or `{ value }`. This facade creates Cartesian lines. Use the
-explicit Polar mark and encoding actions for closed Polar paths.
+explicit Polar mark and encoding actions for closed Polar paths. A field
+materialized by `createWindowData` can be used directly as the quantitative y
+position without applying another aggregate.
 
 ## `createBarPlot`
 

@@ -67,6 +67,18 @@ selector, rendering, and artifact details.
 - Add or update tests that fail without the change and pass with it.
 - Do not mix unrelated refactors into the same contribution.
 
+## AI-assisted contributions
+
+AI-assisted development is welcome. Contributors remain responsible for every submitted line and decision, regardless of
+which tools helped produce it.
+
+- Read and follow the repository instructions that apply to every changed file.
+- Review and understand generated code before submitting it.
+- Keep the contribution focused and run the same tests expected for manually authored changes.
+- Never send credentials, private datasets, unpublished vulnerabilities, or other secrets to an external model.
+- Mention substantial AI assistance in the pull request when it helps reviewers understand how the change was produced.
+- Do not attach prompt transcripts unless they are directly necessary to explain a technical decision.
+
 ## Pull requests
 
 In the description, explain:

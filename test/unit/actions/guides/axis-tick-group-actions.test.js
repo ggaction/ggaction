@@ -32,6 +32,28 @@ test("creates ticks and labels beneath one aggregate trace node", () => {
   assert.equal(before.guideConfigs.axis, undefined);
 });
 
+test("forwards every nested tick and label appearance option on both axes", () => {
+  const options = {
+    values: [5, 10, 15],
+    ticks: { length: 4, color: "#334155", lineWidth: 2 },
+    labels: {
+      offset: 16,
+      format: ".1f",
+      color: "#0f172a",
+      fontSize: 11,
+      fontFamily: "serif",
+      fontWeight: 700
+    }
+  };
+  const y = encodedProgram().createYAxisTicksAndLabels(options);
+
+  assert.equal(y.guideConfigs.axis.y.ticks.length, 4);
+  assert.equal(y.guideConfigs.axis.y.ticks.lineWidth, 2);
+  assert.equal(y.guideConfigs.axis.y.labels.offset, 16);
+  assert.equal(y.guideConfigs.axis.y.labels.fontWeight, 700);
+  assert.equal(y.graphicSpec.objects.yAxisLabels.items[0].properties.fontFamily, "serif");
+});
+
 test("edits shared values atomically through tick then label leaf actions", () => {
   const created = encodedProgram().createXAxisTicksAndLabels({ count: 5 });
   const edited = created.editXAxisTicksAndLabels({

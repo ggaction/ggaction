@@ -80,6 +80,29 @@ test("supports empty and multiple datasets", () => {
   assert.equal(program.editData, undefined);
 });
 
+test("owns deeply nested rows and unusual scalar cells", () => {
+  const values = [{
+    nested: { arrays: [[1], [{ flag: true }]] },
+    nullable: null,
+    missing: undefined,
+    notANumber: Number.NaN,
+    infinity: Number.POSITIVE_INFINITY,
+    large: 12n
+  }];
+  const program = chart().createData({ id: "values", values });
+
+  values[0].nested.arrays[1][0].flag = false;
+
+  const stored = program.semanticSpec.datasets[0].values[0];
+  assert.equal(stored.nested.arrays[1][0].flag, true);
+  assert.equal(stored.nullable, null);
+  assert.equal(stored.missing, undefined);
+  assert.equal(Number.isNaN(stored.notANumber), true);
+  assert.equal(stored.infinity, Number.POSITIVE_INFINITY);
+  assert.equal(stored.large, 12n);
+  assert.equal(Object.isFrozen(stored.nested.arrays[1][0]), true);
+});
+
 test("rejects invalid and duplicate datasets", () => {
   assert.throws(
     () => chart().createData({ id: "cars data", values: [] }),

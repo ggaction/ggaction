@@ -87,7 +87,7 @@ jobs:
       - name: Render PNG regression charts
         run: npm run test:render
       - name: Retain the exact reviewed release artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ggaction-${{ inputs.tag }}
           path: |
@@ -121,7 +121,7 @@ jobs:
       - name: Install a trusted-publishing-capable npm CLI
         run: npm install --global "npm@^11.5.1"
       - name: Download the reviewed release artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: ggaction-${{ inputs.tag }}
           path: .artifacts/release
@@ -191,13 +191,13 @@ jobs:
           ruby-version: "3.2.6"
           bundler-cache: true
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Build the exact release documentation
         run: npm run docs:build
       - name: Check the built documentation
         run: npm run test:docs:built
       - name: Upload the GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -214,4 +214,4 @@ jobs:
     steps:
       - name: Deploy the approved release documentation
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

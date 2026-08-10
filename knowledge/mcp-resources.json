@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 2,
+  "overview": {
+    "title": "ggaction compact authoring overview",
+    "text": "Use search_ggaction once with only the exact user chart request; do not append dataset contents or code scaffolding. The result contains exact authoring imports, chart() initialization, non-duplicated createCanvas and createData prerequisites, immutable executable steps with deterministic runtime dependencies closed, ordered actionPlan entries, exactCalls, required option names, canonical routes, terminal unsupported constraints, and open unresolved decisions. Do not preload the full documentation. Read an action card when one exact action needs more detail. Read only the resource URIs attached to unresolved entries; unsupported entries are terminal and require no documentation read. The server is read-only and never executes chart code."
+  },
+  "recipes": [
+    {
+      "id": "scatter-svg",
+      "title": "Scatterplot with a bottom color legend and SVG output",
+      "summary": "Selects the chart facade, legend layout action, and browser-safe SVG renderer in execution order.",
+      "query": "scatter plot with a color legend at bottom as svg"
+    },
+    {
+      "id": "moving-average-line-png",
+      "title": "Moving-average line chart as PNG",
+      "summary": "Combines a window transform, line facade, guides, and the Node PNG renderer.",
+      "query": "moving average line chart with axes and export png"
+    },
+    {
+      "id": "binned-heatmap",
+      "title": "Binned heatmap with guides",
+      "summary": "Uses the heatmap facade to own 2D binning, position, color, axes, and legend requirements.",
+      "query": "binned heatmap with color legend and axes"
+    },
+    {
+      "id": "regression-scatterplot",
+      "title": "Scatterplot with a regression layer",
+      "summary": "Builds the scatterplot before adding the statistical regression layer.",
+      "query": "scatter plot with a regression line"
+    },
+    {
+      "id": "selection-highlight",
+      "title": "Stored selection and highlight",
+      "summary": "Stores a named mark selection before applying a graphical highlight to that selection.",
+      "query": "store selection then highlight marks"
+    },
+    {
+      "id": "parallel-svg",
+      "title": "Styled parallel coordinates as SVG",
+      "summary": "Combines parallel coordinates, color and dash encodings, guides, and SVG output.",
+      "query": "parallel coordinates with color encoding, stroke dash encoding, axes, and legend as svg"
+    },
+    {
+      "id": "facet-shared-guides",
+      "title": "Small multiples with shared guides",
+      "summary": "Uses the facet action as the owner of the small-multiple layout and shared guides.",
+      "query": "small multiples with shared legend and axes"
+    },
+    {
+      "id": "horizontal-composition-svg",
+      "title": "Horizontal chart composition as SVG",
+      "summary": "Composes complete programs horizontally before serializing the parent program to SVG.",
+      "query": "put charts side by side and export svg"
+    }
+  ],
+  "docs": [
+    {
+      "id": "choose-chart-type",
+      "title": "Choose a chart or mark type",
+      "route": "/api/basic-charts/",
+      "text": "# Choose a chart or mark type\n\nName the intended chart or mark. Common complete chart facades are `createScatterPlot`, `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap`. For lower-level authoring, choose a mark such as point, line, area, bar, rect, rule, tick, text, or arc, then add its required position encodings. Run `search_ggaction` again with the chosen chart type."
+    },
+    {
+      "id": "choose-renderer",
+      "title": "Choose an output renderer",
+      "route": "/api/rendering/",
+      "text": "# Choose an output renderer\n\nUse `render(program, context)` for Browser Canvas, `renderToSVG(program)` for a browser-safe SVG string, `renderToPNG(program, output)` for Node PNG output, or `renderToPDF(program, output)` for a single-page vector PDF. Run `search_ggaction` again with one explicit format. JPEG output is not currently supported."
+    },
+    {
+      "id": "legend-layout",
+      "title": "Resolve legend layout requirements",
+      "route": "/api/legends/",
+      "text": "# Resolve legend layout requirements\n\nA single legend resource can occupy one position at a time. Choose `top`, `bottom`, `left`, or `right`, or give distinct legends explicit IDs and edit each target separately. Run `search_ggaction` again with one position per legend."
+    },
+    {
+      "id": "unsupported-capabilities",
+      "title": "Current static-chart limitations",
+      "route": "/supported-features/",
+      "text": "# Current static-chart limitations\n\nThe current authoring contract does not provide geographic maps, animation, interactive event handling, 3D charts, or JPEG rendering. The compact resolver reports these requirements explicitly instead of substituting a different chart. Consult the supported-features route before redesigning the task with current static actions."
+    },
+    {
+      "id": "getting-started",
+      "title": "Clarify an unrecognized authoring request",
+      "route": "/getting-started/",
+      "text": "# Clarify an authoring request\n\nDescribe the chart or mark, its data/transform needs, position and appearance encodings, guides or layout, and output format in one request. Exact action names are also accepted. Example: `scatter plot with x and y, a bottom color legend, and SVG output`."
+    },
+    {
+      "id": "action-reference",
+      "title": "Resolve a current action gap",
+      "route": "/reference/actions/",
+      "text": "# Resolve a current action gap\n\nUse the complete action reference only for a constraint that the compact resolver recognized but could not cover. Confirm the exact action signature, required resource ID, and supported options, then rerun `search_ggaction` with the exact action name and complete task request."
+    }
+  ]
+}

@@ -19,6 +19,7 @@ import { validateMarkFilterTransform } from "./markFilter.js";
 import { validateRegressionTransform } from "./regression/index.js";
 import { validateWindowTransform } from "./window.js";
 import { validateTimeUnitTransform } from "./timeUnit.js";
+import { findTransformTopology } from "./transformTopology.js";
 
 function requestedDensityTransform(transform) {
   const { resolved: _resolved, ...requested } = transform;
@@ -41,69 +42,69 @@ function facetHorizonTransform(transform, { scales = {} } = {}) {
 
 const TRANSFORM_POLICIES = Object.freeze({
   bin2d: Object.freeze({
+    ...findTransformTopology("bin2d"),
     validate: validateBin2DTransform,
     materializeOp: "materializeBin2DData",
-    facetTopology: "statistical",
     replayTransform: requestedBin2DTransform
   }),
   boxOutlier: Object.freeze({
+    ...findTransformTopology("boxOutlier"),
     validate: validateBoxTransform,
-    materializeOp: "materializeBoxOutlierData",
-    facetTopology: "statistical"
+    materializeOp: "materializeBoxOutlierData"
   }),
   boxSummary: Object.freeze({
+    ...findTransformTopology("boxSummary"),
     validate: validateBoxTransform,
-    materializeOp: "materializeBoxSummaryData",
-    facetTopology: "statistical"
+    materializeOp: "materializeBoxSummaryData"
   }),
   density: Object.freeze({
+    ...findTransformTopology("density"),
     validate: validateDensityTransform,
     materializeOp: "materializeDensityData",
-    facetTopology: "statistical",
     replayTransform: requestedDensityTransform
   }),
   filter: Object.freeze({
+    ...findTransformTopology("filter"),
     validate: validateFilterTransform,
-    materializeOp: "materializeFilteredData",
-    facetTopology: "rowPreserving"
+    materializeOp: "materializeFilteredData"
   }),
   gradientProfile: Object.freeze({
+    ...findTransformTopology("gradientProfile"),
     validate: validateGradientProfileTransform,
     materializeOp: "materializeGradientProfileData",
-    facetTopology: "statistical",
     replayTransform: requestedGradientProfileTransform
   }),
   horizon: Object.freeze({
+    ...findTransformTopology("horizon"),
     validate: validateHorizonTransform,
     materializeOp: "materializeHorizonData",
-    facetTopology: "statistical",
     replayTransform: requestedHorizonTransform,
     facetReplayTransform: facetHorizonTransform
   }),
   interval: Object.freeze({
+    ...findTransformTopology("interval"),
     validate: validateIntervalTransform,
-    materializeOp: "materializeIntervalData",
-    facetTopology: "statistical"
+    materializeOp: "materializeIntervalData"
   }),
   markFilter: Object.freeze({
+    ...findTransformTopology("markFilter"),
     validate: validateMarkFilterTransform,
-    materializeOp: "materializeMarkFilteredData",
-    provenanceTransparent: true
+    materializeOp: "materializeMarkFilteredData"
   }),
   regression: Object.freeze({
+    ...findTransformTopology("regression"),
     validate: validateRegressionTransform,
-    materializeOp: "materializeRegressionData",
-    facetTopology: "statistical"
+    materializeOp: "materializeRegressionData"
   }),
   timeUnit: Object.freeze({
+    ...findTransformTopology("timeUnit"),
     validate: validateTimeUnitTransform,
-    materializeOp: "materializeTimeUnitData",
-    facetTopology: "rowPreserving"
+    materializeOp: "materializeTimeUnitData"
   }),
   window: Object.freeze({
+    ...findTransformTopology("window"),
     validate: validateWindowTransform,
-    materializeOp: "materializeWindowData",
-    facetTopology: "statistical"
+    materializeOp: "materializeWindowData"
   })
 });
 

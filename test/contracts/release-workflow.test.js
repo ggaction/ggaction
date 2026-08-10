@@ -37,7 +37,8 @@ test("qualifies, retains, verifies, and publishes one exact artifact", () => {
   ]) assert.match(workflow, new RegExp(command.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.match(workflow, /node scripts\/release-candidate\.js "\$RELEASE_TAG"/);
   assert.doesNotMatch(workflow, /EFFECTIVE_RELEASE_REF|GITHUB_REF="\$EFFECTIVE/);
-  assert.match(workflow, /actions\/upload-artifact@v4/);
+  assert.match(workflow, /actions\/upload-artifact@v7/);
+  assert.match(workflow, /actions\/download-artifact@v8/);
   assert.match(workflow, /release-candidate\.js --verify/);
   assert.match(workflow, /npm publish "\$TARBALL" --access public --tag latest/);
   assert.ok(
@@ -54,9 +55,9 @@ test("deploys Pages only after the protected release publish", () => {
   assert.match(workflow, /refs\/tags\/\$RELEASE_TAG\^\{commit\}/);
   assert.match(workflow, /npm run docs:build/);
   assert.match(workflow, /npm run test:docs:built/);
-  assert.match(workflow, /actions\/configure-pages@v5/);
-  assert.match(workflow, /actions\/upload-pages-artifact@v4/);
-  assert.match(workflow, /actions\/deploy-pages@v4/);
+  assert.match(workflow, /actions\/configure-pages@v6/);
+  assert.match(workflow, /actions\/upload-pages-artifact@v5/);
+  assert.match(workflow, /actions\/deploy-pages@v5/);
   assert.match(workflow, /environment:\s*\n\s+name: github-pages/);
   assert.match(workflow, /pages: write/);
   assert.ok(workflow.indexOf("gh release create") < workflow.indexOf("pages-build:"));

@@ -6,7 +6,7 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 225_000,
-  "ggaction/basic": 128_000,
+  "ggaction/basic": 120_000,
   "ggaction/svg": 25_000
 });
 
@@ -108,6 +108,17 @@ export async function measureMinimalBrowserBundle(
   }
 
   const modules = new Set(chunks.flatMap(chunk => Object.keys(chunk.modules)));
+  const nodeOnlyModules = [...modules].filter(module => {
+    const normalized = module.split(path.sep).join("/");
+    return normalized.includes("/src/mcp/") ||
+      normalized.includes("/knowledge/") ||
+      normalized.includes("/node_modules/@modelcontextprotocol/");
+  });
+  if (nodeOnlyModules.length > 0) {
+    throw new Error(
+      `${specifier} browser bundle includes Node-only MCP modules: ${nodeOnlyModules.join(", ")}`
+    );
+  }
   const minifiedBytes = chunks.reduce(
     (sum, chunk) => sum + Buffer.byteLength(chunk.code),
     0

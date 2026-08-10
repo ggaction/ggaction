@@ -56,6 +56,19 @@ test("creates and edits outward top and right ticks", () => {
   assert.equal(created.guideConfigs.axis.x.ticks.position, "top");
 });
 
+test("preserves y ticks across repeated count and value mode changes", () => {
+  const created = program().createYAxisTicks({ count: 12 });
+  const values = created.editYAxisTicks({ values: [5, 10, 15] });
+  const counted = values.editYAxisTicks({ count: 7 });
+  const final = counted.editYAxisTicks({ values: [15, 5] });
+
+  assert.equal(created.guideConfigs.axis.y.ticks.mode, "count");
+  assert.equal(values.guideConfigs.axis.y.ticks.mode, "values");
+  assert.equal(counted.guideConfigs.axis.y.ticks.count, 7);
+  assert.deepEqual(final.guideConfigs.axis.y.ticks.values, [15, 5]);
+  assert.equal(final.graphicSpec.objects.yAxisTicks.items.length, 2);
+});
+
 test("rejects mirrored ticks when the requested margin is too small", () => {
   assert.throws(
     () => program().createXAxisTicks({ position: "top", length: 11 }),

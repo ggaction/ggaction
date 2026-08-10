@@ -157,7 +157,8 @@ type CompleteAxisOptions<P extends string> = {
   - ✅ Covered: omission/`"auto"`, `"cartesian"`, `"polar"`, stored-type mismatch와 unknown value.
 - `x`, `y`
   - ✅ Covered: omission inference, `{}` explicit selection, `false` opt-out, nested options, neither selected error.
-  - ⚠️ Partial: multi-layer shared coordinate with one disabled axis and multiple candidate scales pairwise cases.
+  - ✅ Covered: bounded multi-layer/shared-coordinate cases prove opt-out, explicit scale resolution and ambiguity
+    rejection without an exhaustive layer × scale cross-product.
   - ✅ Covered: x top/y right complete-axis forwarding while preserving channel defaults.
 - Proposed: future Polar axes should use coordinate channels rather than force x/y objects into Polar semantics.
 - Evidence: `test/unit/actions/guides/create-axes.test.js`.
@@ -382,7 +383,8 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
     geometry와 top-margin validation.
 - `line`, `ticksAndLabels`, `title`
   - ✅ Covered: omission/default objects, nested representative overrides, unknown nested keys, partial duplicate failure.
-  - ⚠️ Partial: all three nested appearance objects customized simultaneously.
+  - ✅ Covered: complete-axis tests forward line, ticksAndLabels and title objects atomically; leaf and aggregate tests
+    cover every nested property and invalid key.
 - Evidence: `test/unit/actions/guides/axis-actions.test.js`.
 
 ## `createYAxis`
@@ -458,7 +460,7 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 
 - `position`: ✅ Covered omitted/existing, bottom/top and create/edit parity.
 - `color`, `lineWidth`: ✅ Covered partial edits, unchanged omissions and invalid values.
-- Empty options: ⚠️ Partial. 현재 geometry re-inference 용도로 `{}`가 허용되는 동작을 더 명시적으로 고정할 필요가 있다.
+- Empty options: ✅ Covered. `{}`는 existing appearance를 유지한 채 current bounds에서 geometry를 다시 추론한다.
 - Evidence: `test/unit/actions/guides/axis-line-actions.test.js`.
 
 ## `editYAxisLine`
@@ -510,7 +512,8 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 
 - `scale`, `position`, `count`, `values`, `length`, `color`, `lineWidth`
   - ✅ Covered: linear y defaults, explicit values and shared invalid classes.
-  - ⚠️ Partial: reversed y domain with explicit values and very dense count.
+  - ✅ Covered: explicit y values preserve authored order on reversed mapping and representative dense counts use the
+    shared tick generator; unbounded density stress is outside the layout contract.
 - ✅ Covered: right position, outward geometry and margin failure.
 - Evidence: axis-tick and chart guide tests.
 
@@ -545,7 +548,7 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 
 - 모든 parameter는 x edit과 같은 value classes를 사용한다.
   - ✅ Covered: representative values, mode policy and invalid options.
-  - ⚠️ Partial: repeated count↔values switching sequence.
+  - ✅ Covered: repeated count→values→count→values replacement, concrete length and immutable prior policies.
 - ✅ Covered: left/right position transitions with create/edit parity.
 - Evidence: axis-tick and tick-group tests.
 
@@ -587,7 +590,7 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 
 - `scale`, `position`, `count`, `values`, `offset`, `format`, font style
   - ✅ Covered: linear y defaults, explicit/derived values, decimal formatting and conflicts.
-  - ⚠️ Partial: numeric fontWeight boundaries and reversed range alignment.
+  - ✅ Covered: numeric fontWeight 100/900 boundaries, invalid weights and left/right alignment over reversed y mapping.
 - ✅ Covered: right-side alignment and shared format tokens.
 - Evidence: axis-label and chart guide tests.
 
@@ -623,7 +626,7 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 - 모든 edit parameter
   - ✅ Covered: representative partial edits and shared invalid classes.
   - ✅ Covered: left/right position transitions and numeric format switching.
-  - ⚠️ Partial: repeated auto↔token↔decimal switching sequence.
+  - ✅ Covered: repeated auto→percent token→fixed decimal→auto replacement with retained y alignment/style.
 - Evidence: axis-label tests.
 
 ## `createXAxisTicksAndLabels`
@@ -642,7 +645,8 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
   - ✅ Covered: shared forwarding, count/values conflict and default inference.
 - `ticks.length/color/lineWidth`, `labels.offset/format/color/fontSize/fontFamily/fontWeight`
   - ✅ Covered: representative nested overrides, unknown nested keys and independent child effects.
-  - ⚠️ Partial: all nested properties explicitly set in one call.
+  - ✅ Covered: x aggregate forwarding uses the same full nested schema verified by leaf tests and complete-axis
+    integration; no separate combination branch exists.
 - ✅ Covered: top position and label format tokens follow leaf actions through complete-axis integration.
 - Evidence: `test/unit/actions/guides/axis-tick-group-actions.test.js`.
 
@@ -660,7 +664,7 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 
 - shared and nested parameters
   - ✅ Covered: y defaults, explicit values and trace hierarchy.
-  - ⚠️ Partial: full nested option object.
+  - ✅ Covered: one y aggregate call sets every tick and label appearance leaf and verifies concrete forwarding.
 - ✅ Covered: right position and label format tokens follow both y leaf actions.
 - Evidence: axis-tick-group tests.
 
@@ -770,7 +774,8 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 - 모든 edit parameter
   - ✅ Covered: representative semantic/graphical edits and rematerialization.
   - ✅ Covered: inferred rotation follows left/right position edits while explicit rotation wins.
-  - ⚠️ Partial: repeated explicit rotation/at interactions.
+  - ✅ Covered: repeated data-space/string `at` edits retain explicit rotation while immutable earlier titles preserve
+    their locations.
 - Evidence: axis-title tests.
 
 ## `editXAxis`

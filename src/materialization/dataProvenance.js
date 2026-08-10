@@ -1,6 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
-import { findTransformPolicy } from "../grammar/transforms.js";
+import { findTransformTopology } from "../grammar/transformTopology.js";
 import { findDataset, hasDataset } from "../selectors/datasets.js";
 import { requireLayer } from "../selectors/layers.js";
 
@@ -60,7 +60,7 @@ export function findUpstreamTransform(program, dataset, type) {
     if (current.transform?.length !== 1) return undefined;
     const transform = current.transform[0];
     if (transform.type === type) return transform;
-    if (findTransformPolicy(transform.type)?.provenanceTransparent !== true) {
+    if (findTransformTopology(transform.type)?.provenanceTransparent !== true) {
       return undefined;
     }
     current = findDataset(program, current.source);

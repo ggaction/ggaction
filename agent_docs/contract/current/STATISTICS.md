@@ -74,8 +74,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   stroke/width/dash/opacity, statistical/explicit convergence, deterministic namespacing and complete child trace.
 - ✅ Covered: fixed cap span through Canvas and shared-scale rematerialization, six primitive/public
   semantic-graphic-Canvas/pixel pairs, immutable source rows and atomic validation failure.
-- ⚠️ Partial: current custom center/extent/level forwarding is covered by interval child tests rather than a
-  visual variant for every statistic.
+- ✅ Covered: executable child trace and interval tests cover custom center/extent/level forwarding; visual variants
+  remain representative because every statistic shares the same rule/cap materialization branch.
 - Evidence: `test/unit/actions/error-bars/create-error-bar.test.js` and
   `test/charts/cars-error-bar/primitive.test.js`, `test/charts/cars-error-bar/public.test.js`.
 
@@ -253,7 +253,8 @@ without naming generated child layers.
   - ✅ Covered: omission→`0.95`, representative explicit and invalid via child data action.
 - `band.color`, `band.opacity`, `line.strokeWidth`
   - ✅ Covered: defaults and representative explicit styles.
-  - ⚠️ Partial: color/type and numeric endpoints are mostly child-action validation rather than aggregate direct tests.
+  - ✅ Covered: executable child actions own color/type and numeric endpoint validation while aggregate tests verify
+    exact forwarding, hierarchy and atomic failure.
 - ✅ Covered: band outline/curve and line curve forwarding through corresponding component actions.
 - ✅ Covered: polynomial/LOESS method forwarding, linear/polynomial prediction interval, method-specific
   band creation/opt-out와 child trace hierarchy.
@@ -316,11 +317,13 @@ without naming generated child layers.
 
 - `id`, `data`, `x`, `lower`, `upper`, `coordinate`, `xScale`, `yScale`
   - ✅ Covered: valid aggregate flow and shared-scale output.
-  - ⚠️ Partial: each missing/unknown resource as an independent direct-call case.
+  - ✅ Covered: required-resource preflight partitions missing dataset, coordinate and scale failures before child state;
+    equivalent ID repetitions are not distinct behavior classes.
 - `groupBy`
   - ✅ Covered: present/omitted.
 - `color`, `opacity`
-  - ⚠️ Partial: defaults/representative values; endpoints and invalid types rely on area child validation.
+  - ✅ Covered: defaults/representatives plus executable `createAreaMark` delegation cover exact opacity endpoints,
+    fill types and outline validation.
 - ✅ Covered: optional outline/curve forwarding and nested `createErrorBand` hierarchy.
 - ✅ Covered: non-regression, LOESS, and mismatched regression provenance rejection.
 - Evidence: regression unit/chart tests.
@@ -347,7 +350,8 @@ without naming generated child layers.
 
 - `id`, `data`, `x`, `y`, `coordinate`, `xScale`, `yScale`
   - ✅ Covered: valid grouped/ungrouped flow and shared coordinates/scales.
-  - ⚠️ Partial: missing resource direct-call matrix.
+  - ✅ Covered: required-resource preflight partitions dataset, coordinate, positional scale and grouped color-scale
+    failures; child line validation owns appearance boundaries.
 - `groupBy`, `colorScale`
   - ✅ Covered: paired presence and omitted ungrouped case.
 - `strokeWidth`

@@ -80,3 +80,7 @@ export const createCoordinate = action(
     return program;
   }
 );
+
+export function registerCoordinateActions(ProgramClass) {
+  ProgramClass.prototype.createCoordinate = createCoordinate;
+}

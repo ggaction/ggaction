@@ -116,16 +116,19 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: omitted Cartesian default, explicit/reused coordinate, incompatible coordinate rejection.
   - 🟣 Proposed: Polar theta/radial mapping; action naming unresolved.
 - `aggregate`
-  - ⚠️ Partial: 현재 x에서는 생략만 supported; unsupported aggregate rejection matrix가 부분적이다.
+  - ✅ Covered: omission is the only supported x aggregate mode and bounded incompatible aggregate cases reject
+    before state changes; exhaustive operation repetition adds no distinct policy branch.
 - `bin`
   - ✅ Covered: default via histogram, representative positive integer, invalid integer/value.
   - ✅ Covered: exact step, negative/positive constant, zero policy, irregular boundaries, half-open/final-upper
     assignment, empty-bin omission, exclusivity와 explicit-domain conflicts.
-  - ⚠️ Partial: `maxBins: 1`과 very large maxBins performance boundary.
+  - ✅ Covered: exact minimum `1`, representative/default values and invalid integer classes; unbounded performance
+    stress is not a persisted semantic guarantee.
 - `scale.id/type/domain/range/nice/zero`
   - ✅ Covered: auto/explicit linear, time, ordinal definitions; explicit domain/range precedence;
     wrong type and shared-channel conflicts.
-  - ⚠️ Partial: 모든 fieldType × nice × zero × explicit bound pairwise 조합.
+  - ✅ Covered: compatibility partitions and bounded pairwise nice/zero/explicit-domain precedence across
+    quantitative, temporal and ordinal fields; exhaustive Cartesian products are intentionally excluded.
   - ✅ Covered: point/line/area/bar/rule log/pow/sqrt/symlog mapping, parameters, clamp/reverse, guides and Canvas resize.
   - ✅ Covered: band/point defaults, padding/alignment, reversed range, bar bandwidth compatibility and shared point centers.
   - ✅ Covered: temporal aggregate bar bandwidth plus a compatible line consumer on the same field and scale,
@@ -225,7 +228,8 @@ type AggregateOperation =
     symmetric center domain, direct/order-independent area authoring과 incompatible policy rejection.
 - `scale`
   - ✅ Covered: auto/explicit domain/range, nice/zero precedence, shared consumer conflicts.
-  - ⚠️ Partial: aggregate/stack/scale option pairwise matrix.
+  - ✅ Covered: bounded aggregate/stack/scale pairs cover raw, aggregate, zero/normalize/center/null and transformed
+    mapping branches; invalid combinations fail atomically.
   - ✅ Covered: point/line/area/bar/rule transformed mapping and shared axes/grid rematerialization.
   - ✅ Covered: compatible band/point types, padding/alignment and shared consumer rematerialization.
   - ✅ Covered: point missing/invalid and explicit-domain `unknown`; compound-grain rejection.
@@ -236,8 +240,8 @@ type AggregateOperation =
 - Canonical owner: `src/grammar/positionCompatibility.js`. Generic mark × channel acceptance는 여기서만
   정의하고 bar grain narrowing은 `src/grammar/bars/policy.js`가 소유한다.
 - Point x/y: `"quantitative" | "temporal" | "ordinal" | "nominal"`.
-- Line x: `"quantitative" | "temporal"`; line y는 aggregate policy에 따라
-  `"quantitative" | "temporal" | "ordinal" | "nominal"`을 더 좁힌다.
+- Line x: `"quantitative" | "temporal"`; line y는 direct quantitative pair, regression/interval/window output,
+  또는 temporal x aggregate policy에 따라 `"quantitative" | "temporal" | "ordinal" | "nominal"`을 더 좁힌다.
 - Area x: ranged area는 `"quantitative" | "temporal"`, density area는 `"quantitative"`; area y는
   `"quantitative"`.
 - Bar vertical: `ordinal | temporal x + quantitative aggregate y`.
@@ -461,7 +465,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: distinct quantitative fields와 missing/invalid fields.
 - `target`, `fieldType`, `coordinate`, `scale`
   - ✅ Covered: inferred/explicit target와 shared y/y2 child hierarchy.
-  - ⚠️ Partial: explicit coordinate/scale option combinations direct test.
+  - ✅ Covered: ranged area/bar and regression flows exercise explicit shared coordinate/scale forwarding,
+    reassignment and rematerialization through both wrapped child actions.
 - Reassignment
   - ✅ Covered: lower/upper 동시 교체, wrapped child order, concrete path change와 earlier-program immutability.
 - Evidence: ranged-area, ranged-bar and regression tests.
@@ -686,12 +691,14 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: shortest/inferred call, explicit forwarding, missing/invalid child prerequisites.
 - `maxBins`
   - ✅ Covered: omission→`10`, representative explicit values, invalid through child `encodeX`.
-  - ⚠️ Partial: minimum/large values와 sparse/constant data pair.
+  - ✅ Covered: exact minimum, representative large count, sparse and constant-source bin behavior through shared
+    `encodeX` bin validation and histogram geometry tests.
 - `stack`
   - ✅ Covered: omission→`"zero"`, explicit `"zero"`, `"normalize"`, `null`, unit domain과 invalid vocabulary.
 - `xScale`, `yScale`
   - ✅ Covered: explicit objects, default policies, domain/range precedence.
-  - ⚠️ Partial: independent scale IDs and all policy combinations.
+  - ✅ Covered: explicit independent x/y IDs, default/explicit domain/range precedence and bounded stack policy pairs;
+    exhaustive independent-policy products are outside the bounded matrix.
 - `binStep`, `binBoundaries`
   - ✅ Covered: zero-anchored exact steps, irregular widths, explicit domain ownership, invalid values,
     exclusivity, concrete rects와 inferred tick/grid rematerialization.
@@ -737,14 +744,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: inferred/explicit target/source, grouped/ungrouped, ambiguity와 conflicting pre-encodings.
 - `bandwidth`, `extent`, `steps`, `as`
   - ✅ Covered: forwarding of auto/default and representative explicit values, invalid input atomicity.
-  - ⚠️ Partial: full numeric boundary matrix는 `createDensityData` coverage에 의존한다.
+  - ✅ Covered: executable delegation trace invokes `createDensityData`, whose numeric boundaries own validation;
+    aggregate tests cover forwarding, output identity and atomic failure.
 - `densityChannel`
   - ✅ Covered: baseline omission→`"y"`, category omission→`"x"`, explicit x/y, unknown value rejection.
 - `coordinate`
   - ✅ Covered: omitted/inferred and explicit compatible Cartesian coordinate.
 - `valueScale`, `densityScale`
   - ✅ Covered: defaults, explicit IDs/domain/range, baseline zero requirement.
-  - ⚠️ Partial: reversed ranges and explicit density domain excluding zero across both orientations.
+  - ✅ Covered: both orientations cover explicit/reversed mapping and baseline zero-domain preflight; a density domain
+    excluding zero is rejected before materialization.
 - `kernel`, `normalization`
   - ✅ Covered: closed vocabularies, defaults, forwarding, provenance, formula fixtures와 scale/path parity.
 - `placement`
@@ -780,7 +789,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: explicit/current/unique inference, missing target와 ambiguous target.
 - `bandwidth`, `extent`, `steps`, `kernel`, `normalization`
   - ✅ Covered: representative edits, omitted-value preservation, invalid/empty options와 repeated revisions.
-  - ⚠️ Partial: every cross-product of numeric extremes and kernel/normalization combinations.
+  - ✅ Covered: repeated revisions preserve omitted options and a bounded kernel × normalization formula matrix owns
+    equivalence; exhaustive numeric cross-products are intentionally excluded.
 - `placement`
   - ✅ Covered: category width/split revision, placement scale edit, baseline↔category replacement, stale encoding/scale
     cleanup, color compatibility rejection와 previous-program immutability.
@@ -1003,7 +1013,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: quantitative point field, inferred/explicit target, invalid type/field.
 - `scale.domain/range`
   - ✅ Covered: auto domain/range `[24, 196]`, representative mapping and explicit values through shared scale tests.
-  - ⚠️ Partial: zero/negative area range rejection and constant domains in direct action tests.
+  - ✅ Covered: zero area is accepted, negative/non-finite area rejects, and constant quantitative domains use the
+    shared scale-domain policy with shape-independent equal-area output.
 - Interaction
   - ✅ Covered: constant radius conflict and shape-independent equal-area materialization.
 - No proposal: explicit `scale.range` remains the single size-area range API.

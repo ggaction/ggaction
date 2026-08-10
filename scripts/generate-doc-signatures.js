@@ -20,10 +20,22 @@ export async function declaredActionSignatures() {
   const sourceText = await readFile(declarationFile, "utf8");
   const classStart = sourceText.indexOf("export class ChartProgram {");
   if (classStart === -1) throw new Error("ChartProgram declaration was not found.");
-  const classBody = sourceText.slice(classStart);
-  return [...classBody.matchAll(
-    /^\s{2}([A-Za-z][A-Za-z0-9]*)\(([\s\S]*?)\): ChartProgram;$/gm
-  )].map(match => match[0].trim().replace(/\s+/g, " "));
+  const lines = sourceText.slice(classStart).split("\n");
+  const signatures = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const start = lines[index].match(/^  ([A-Za-z][A-Za-z0-9]*)\(/);
+    if (!start || start[1] === "constructor") continue;
+    const declaration = [lines[index]];
+    while (!declaration.at(-1).trimEnd().endsWith("): ChartProgram;")) {
+      index += 1;
+      if (index >= lines.length) {
+        throw new Error(`Unterminated ChartProgram action declaration: ${start[1]}`);
+      }
+      declaration.push(lines[index]);
+    }
+    signatures.push(declaration.join(" ").trim().replace(/\s+/g, " "));
+  }
+  return signatures;
 }
 
 export async function buildSignatureSection() {

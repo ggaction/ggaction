@@ -1,0 +1,61 @@
+# Roadmap 5.4 Phase 4 — Fresh Unpaid Evaluation
+
+## 목표
+
+Roadmap 5.3과 Phase 2 design fixture를 acceptance evidence에서 완전히 분리한 새 corpus를 동결한다. Development,
+validation과 held-out split을 순서대로 검증하고, strict oracle·payload·package·installed MCP gate를 모두 통과한 경우에만
+Phase 5의 작은 paid smoke 범위와 최대 비용을 제안한다.
+
+## 진행 상태
+
+- [x] Fresh tasks 48개: development 18 / validation 15 / held-out 15
+- [x] Simple 23 / complex 25와 supported/unsupported constraint coverage 동결
+- [x] Dataset identity, task file, oracle policy와 SHA-256 manifest 동결
+- [x] Phase 2 design query overlap 0; Roadmap 5.3 corpus read/reuse 0
+- [x] Development split unpaid strict validation — 18 / 18 pass
+- [x] Candidate commit lock 뒤 validation split one-pass validation — 14 / 15 exact-plan pass, strict failure
+- [ ] Validation 통과 뒤 held-out split one-pass final validation — failure protocol에 따라 열지 않음
+- [ ] Closure, exact action/option, payload, fallback와 compile gates 통과 — plan order 1건 불일치
+- [ ] Package/MCP/browser regression budgets 재검증 — full suite/package pass; failed candidate를 Gate로 승격하지 않음
+- [x] Credential reads, external model calls와 spend 0 / 0 / $0
+- [x] Exact paid-smoke proposal and hard cost cap — policy replacement acceptance 통과 뒤 R54-P4-C에 고정
+- [x] R54-P4-A와 R54-P4-B failure record 보존
+- [x] R54-P4-C explicit approval — 2026-08-08
+- [x] R54-P4-D runtime-closure replacement approval — 2026-08-08
+
+## Predeclared unpaid acceptance
+
+- Exact expected constraints/action IDs/required option keys/unresolved IDs: 100%
+- Recognized constraint silent partial: 0
+- Resolved-task docs fallback: 0
+- Unresolved-task expected bounded fallback: 100%
+- Generated call TypeScript errors: 0
+- Task packet maximum ≤ 6,144 bytes; corpus median ≤ 4,096 bytes
+- Package and browser ceilings: Phase 0 values unchanged
+
+## Gate R54-P4-A
+
+Canonical review record는 [`GATE_A.md`](./GATE_A.md)가 소유한다. 승인 전에는 credential read, external model call 또는
+비용 지출을 시작하지 않는다.
+
+## Repair attempt
+
+2026-08-08 사용자가 failed Gate의 원인을 development evidence로 편입하고 새 validation/held-out identity로 다시
+검증하는 시도를 승인했다. 기존 corpus, candidate와 result는 수정하지 않는다. 새 시도의 사전 계획과 진행 기록은
+[`ATTEMPT2.md`](./ATTEMPT2.md)가 소유한다.
+
+Repair attempt의 one-pass result와 정책 결정은 [`GATE_B.md`](./GATE_B.md)가 소유한다.
+
+승인된 dual-signal policy의 작은 fresh acceptance는 [`ATTEMPT3.md`](./ATTEMPT3.md)가 소유한다.
+
+Paid-smoke runner preflight에서 발견한 regression packet runtime closure repair는
+[`ATTEMPT4.md`](./ATTEMPT4.md)가 소유한다. R54-P4-C의 비용 범위는 유지하지만 candidate hash가 바뀌므로 replacement
+Gate R54-P4-D 전까지 외부 호출을 시작하지 않는다. Frozen candidate, runner, plan hash와 새 approval effect는
+[`GATE_D.md`](./GATE_D.md)가 소유한다.
+
+## Replacement acceptance
+
+Candidate 2의 request-order repair는 validation과 held-out의 exact action plan을 모두 통과했다. Held-out strict failure로
+발견한 unsupported JPEG dual-signal 의미는 사용자가 policy A로 결정했고, production behavior를 변경하지 않은 채 별도의
+fresh policy corpus 9개에서 development 1 / 1, validation 4 / 4, held-out 4 / 4 strict pass를 얻었다. Original과 repair
+result는 수정하지 않으며 최종 unpaid evidence와 exact paid-smoke proposal은 [`GATE_C.md`](./GATE_C.md)가 소유한다.

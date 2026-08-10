@@ -95,6 +95,20 @@ test("creates mirrored labels and edits their position and format immutably", ()
   assert.equal(created.guideConfigs.axis.x.labels.position, "top");
 });
 
+test("switches y-label formats repeatedly and preserves font-weight boundaries", () => {
+  const automatic = program().createYAxisLabels({ fontWeight: 100 });
+  const percent = automatic.editYAxisLabels({ format: ".0%", fontWeight: 900 });
+  const decimal = percent.editYAxisLabels({ format: ".1f" });
+  const restored = decimal.editYAxisLabels({ format: "auto" });
+
+  assert.equal(automatic.guideConfigs.axis.y.labels.fontWeight, 100);
+  assert.equal(percent.guideConfigs.axis.y.labels.fontWeight, 900);
+  assert.equal(percent.guideConfigs.axis.y.labels.format, ".0%");
+  assert.equal(decimal.guideConfigs.axis.y.labels.format, ".1f");
+  assert.equal(restored.guideConfigs.axis.y.labels.format, "auto");
+  assert.equal(restored.graphicSpec.objects.yAxisLabels.items[0].properties.textAlign, "right");
+});
+
 test("rejects incompatible formats and insufficient mirrored label margins", () => {
   const temporal = chart()
     .createCanvas({ width: 240, height: 140, margin: 30 })
