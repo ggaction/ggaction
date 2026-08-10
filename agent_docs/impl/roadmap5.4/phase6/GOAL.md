@@ -25,8 +25,8 @@ first-pass, calls, tokens, latency와 cost가 유지되는지를 조건별로 �
 - [x] R54-P6-B 승인과 Attempt 10 external comparison — 214 / 576 뒤 provider circuit stop
 - [x] Attempt 10 progress, identity audit와 ledger byte-for-byte 보존
 - [x] Append-only v11 continuation plan과 R54-P6-C Gate 준비
-- [ ] 새 승인 뒤 remaining 362-run external continuation
-- [ ] Result analysis와 integration closeout
+- [x] 새 승인 뒤 remaining 362-run external continuation
+- [x] Result analysis와 integration closeout
 
 ## 차단 범위
 
