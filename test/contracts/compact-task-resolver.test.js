@@ -508,15 +508,11 @@ test("design fixtures prove bounded one-call task closure without silent partial
   assert.equal(sizes[Math.floor(sizes.length / 2)] <= 4096, true);
 });
 
-test("every supported constraint and fresh-corpus authoring step type-checks", async () => {
-  const [taxonomy, cards, fixtures, ...freshSplits] = await Promise.all([
+test("every supported constraint and design-fixture authoring step type-checks", async () => {
+  const [taxonomy, cards, fixtures] = await Promise.all([
     json("intent-taxonomy.json"),
     json("action-cards.json"),
-    json("task-closure-cases.json"),
-    ...["development", "validation", "held-out"].map(split =>
-      readFile(path.join(root, "evaluation", "compact-authoring", `${split}.json`), "utf8")
-        .then(JSON.parse)
-    )
+    json("task-closure-cases.json")
   ]);
   const calls = new Set(cards.cards.map(card => searchGgaction(card.name).exactCalls[0]));
   const authoringSteps = new Set(cards.cards.flatMap(card =>
@@ -536,28 +532,6 @@ test("every supported constraint and fresh-corpus authoring step type-checks", a
     for (const call of packet.exactCalls) calls.add(call);
     for (const step of packet.authoring.steps) authoringSteps.add(step);
   }
-  const freshPacketSizes = [];
-  const freshTasks = freshSplits.flatMap(split => split.tasks);
-  assert.equal(freshTasks.length, 48);
-  for (const task of freshTasks) {
-    const packet = searchGgaction(task.query);
-    assert.equal(packet.schemaVersion, 3, task.id);
-    assert.equal(packet.authoring.initialize, "let program = chart()", task.id);
-    const plannedPrerequisites = new Set(packet.actionPlan.map(entry => entry.id));
-    assert.deepEqual(
-      packet.authoring.prerequisites,
-      authoringPrerequisites.filter(entry => !plannedPrerequisites.has(entry.id)),
-      task.id
-    );
-    assert.equal(packet.authoring.steps.length, packet.actionPlan.length, task.id);
-    assert.equal(packet.authoring.imports[0].includes("chart"), true, task.id);
-    freshPacketSizes.push(taskPacketBytes(packet));
-    for (const step of packet.authoring.steps) authoringSteps.add(step);
-  }
-  freshPacketSizes.sort((left, right) => left - right);
-  assert.equal(Math.max(...freshPacketSizes) <= 6144, true);
-  assert.equal(freshPacketSizes[Math.floor(freshPacketSizes.length / 2)] <= 4096, true);
-
   const temporary = await mkdtemp(path.join(os.tmpdir(), "ggaction-task-resolver-"));
   try {
     for (const name of ["program.d.ts", "index.d.ts", "svg.d.ts", "png.d.ts", "pdf.d.ts"]) {

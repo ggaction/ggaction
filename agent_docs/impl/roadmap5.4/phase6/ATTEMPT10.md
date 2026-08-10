@@ -22,7 +22,7 @@ model과 service tier가 정확히 일치했고, Nano는 98 billed responses에�
 | Evaluator checkpoint | `cd65fd8e91481fafddfff90a2a432d32d9821022` |
 | Plan SHA-256 | `48d8cdebf81bcefedef96148a20836c46fb483ddae8080aef46c013a20f3d950` |
 | Route oracle SHA-256 | `8211f33c5a443649def1f72de6f92d943a260f3df89795032d498f5c87819816` |
-| Progress | [`IN_PROGRESS.json`](../../../../evaluation/compact-authoring-paid-comparison-v10/results/IN_PROGRESS.json) |
+| Historical progress artifact | `evaluation/compact-authoring-paid-comparison-v10/results/IN_PROGRESS.json` (not shipped in `main`) |
 | Progress SHA-256 | `1fea9ad184df9bb2f0a80cc714e26fba542232bd7856bf3b8ebd268dddcc2381` |
 | Run time | 2026-08-09 16:31:49Z–22:35:01Z |
 | Credential reads | 1 |

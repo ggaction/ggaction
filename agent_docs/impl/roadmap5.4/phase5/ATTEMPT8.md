@@ -20,7 +20,7 @@ elapsed time에서 모두 큰 descriptive improvement를 보였다.
 | Evidence | Exact value |
 | --- | --- |
 | Result checkpoint | `0111681d68616d8da4fc08c28b5e72eafc331aed` |
-| Result | [`RESULT.json`](../../../../evaluation/compact-authoring-paid-comparison-v8/results/RESULT.json) |
+| Historical result artifact | `evaluation/compact-authoring-paid-comparison-v8/results/RESULT.json` (not shipped in `main`) |
 | Result SHA-256 | `3fbac9ac468f4e455207f90da9afad1e1716cf3b634a24566546573651f0e59a` |
 | Final progress snapshot SHA-256 | `9498a7fca375e2644f3689d1b77664d6da9937105b3b76d8068a68a126354824` |
 | Plan SHA-256 | `498cbbd01c3618cc5fc39cd57fe40a55c589a0f01f319e08fd1cfca19bd773a2` |
@@ -159,4 +159,3 @@ LLM authoring의 권장 경로로 문서화하는 것이다. Luna를 반복 benc
 유지한다. Raw row-preserving bars는 integration을 막는 blocker로 보지 말고 별도 후속 recipe audit 대상으로 남긴다.
 
 PR Ready, merge, publish, deploy와 release는 이 Attempt가 승인하지 않는다.
-

@@ -1,5 +1,11 @@
 # Attempt 11 — Complete Append-Only Terra/Luna/Nano Comparison
 
+> Closeout note (2026-08-10): integration cleanup replaced the 22.6 MB raw and
+> intermediate evaluation tree with the capability-owned
+> [`summary.json`](../../../../benchmarks/llm-authoring-v1/summary.json). The
+> original result and checkpoint identities remain below. Per-request traces are
+> intentionally not part of the default branch.
+
 ## 결론
 
 Attempt 11은 Attempt 10의 214개 결과를 수정하거나 재실행하지 않고 남은 362개만 이어서 전체 576-cell matrix를 완성했다.
@@ -26,15 +32,17 @@ failure reserve가 집중돼 전체 exposure가 `$8.08606`으로 커졌다.
 | Base plan SHA-256 | `48d8cdebf81bcefedef96148a20836c46fb483ddae8080aef46c013a20f3d950` |
 | Continuation source SHA-256 | `1fea9ad184df9bb2f0a80cc714e26fba542232bd7856bf3b8ebd268dddcc2381` |
 | Route oracle SHA-256 | `8211f33c5a443649def1f72de6f92d943a260f3df89795032d498f5c87819816` |
-| Final checkpoint | [`IN_PROGRESS.json`](../../../../evaluation/compact-authoring-paid-comparison-v11/results/IN_PROGRESS.json) |
+| Final checkpoint | Not shipped in `main`; identified by the checkpoint SHA-256 below |
 | Checkpoint SHA-256 | `f0c9697391422a3d8aeb4cf2fcd02ab37f2fa5027f8d4e78bdd85ab673827063` |
-| Final result | [`RESULT.json`](../../../../evaluation/compact-authoring-paid-comparison-v11/results/RESULT.json) |
+| Reviewable result | [`summary.json`](../../../../benchmarks/llm-authoring-v1/summary.json) |
+| Raw record commit | `76d5d0b4de6dbddcf98589d26d1d8006ba06d5a8` |
 | Result SHA-256 | `8bd5227ef58da44e0bc57aee7ee4b5b7e53290337c25e862bb1a94a63955a465` |
 | Original run | 2026-08-09 16:31:49Z–22:35:01Z |
 | Continuation | 2026-08-09 22:48:01Z–2026-08-10 01:44:15Z |
 
-`IN_PROGRESS.json`은 576번째 cell까지 기록한 마지막 append-only checkpoint이고 `activeTask`는 `null`이다. `RESULT.json`은 같은
-ledger와 576 observations에 aggregate comparison만 더한 완성본이다.
+원본 `IN_PROGRESS.json`은 576번째 cell까지 기록한 마지막 append-only checkpoint였고 `activeTask`는 `null`이었다. 원본
+`RESULT.json`은 같은 ledger와 576 observations에 aggregate comparison만 더한 완성본이었다. 통합 정리 후에는 제품과 독립적인
+`benchmarks/llm-authoring-v1/summary.json`이 공개 수치의 현재 소유자이며, 원본 파일은 위 해시와 커밋으로 식별한다.
 
 ## 전체 결과
 

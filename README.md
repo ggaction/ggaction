@@ -68,6 +68,7 @@ code, access arbitrary files, make network requests, require an account, or
 collect telemetry.
 
 [Set up the local MCP server](https://ggaction.github.io/ggaction/mcp/) ·
+[Inspect the benchmark record](./benchmarks/llm-authoring-v1/) ·
 [Read the complete evaluation report](./agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 
 ## Quick start

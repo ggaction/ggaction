@@ -17,7 +17,7 @@ model size, A/B/C/D condition, pass rate, latency 또는 cost 우위를 계산�
 | Evaluator checkpoint | `fb6044c4f7ba55a11bbc9e97991ceb3d4f815c7f` |
 | Plan SHA-256 | `86eeb648ab0c91a04148e472d100ad19ca06e7d993e6c3d1353862e8319bdc55` |
 | Route oracle SHA-256 | `8211f33c5a443649def1f72de6f92d943a260f3df89795032d498f5c87819816` |
-| Progress | [`IN_PROGRESS.json`](../../../../evaluation/compact-authoring-paid-comparison-v9/results/IN_PROGRESS.json) |
+| Historical progress artifact | `evaluation/compact-authoring-paid-comparison-v9/results/IN_PROGRESS.json` (not shipped in `main`) |
 | Progress SHA-256 | `8b2eb99eb9006b8de8cb9c3f9a9cc991c1aeba01c57c5df274094ff434ca449e` |
 | Run time | 2026-08-09 16:15:18Z–16:16:49Z |
 | Credential reads | 1 |
