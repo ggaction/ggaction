@@ -27,6 +27,9 @@ first-pass, calls, tokens, latency와 cost가 유지되는지를 조건별로 �
 - [x] Append-only v11 continuation plan과 R54-P6-C Gate 준비
 - [x] 새 승인 뒤 remaining 362-run external continuation
 - [x] Result analysis와 integration closeout
+- [x] Raw/intermediate evaluation artifacts를 compact capability-owned benchmark로 교체
+- [x] PR [#27](https://github.com/ggaction/ggaction/pull/27) strict six checks와 merge — 2026-08-10
+- [x] R54-Exit merged-main evidence와 explicit closeout approval — 2026-08-10
 
 ## 차단 범위
 
@@ -34,3 +37,11 @@ first-pass, calls, tokens, latency와 cost가 유지되는지를 조건별로 �
 - Plan 중단 뒤 자동 resume, retry 범위 확대, task 교체 또는 추가 repetition
 - 결과 확인 뒤 candidate, prompt, evaluator, threshold 또는 task selection 수정
 - PR Ready, merge, package publish, docs deploy와 release
+
+## 완료
+
+사용자는 정리된 PR의 merge와 다음 release preparation을 명시적으로 승인했다. PR #27은 exact head
+`9bd0ac306d9a67616db1a97ce1efd898551c2700`에서 여섯 required checks를 통과했고 merge commit
+`e34c27bf8637de4ec0292f71a85c96d71aeca17b`로 `main`에 병합됐다. Merge commit tree는 PR head tree와
+동일하다. R54-Exit 승인으로 Roadmap 5.4 completed 전환과 active pointer 해제가 허용되었다. Package publish,
+tag push와 documentation deployment는 계속 별도 권한이다.

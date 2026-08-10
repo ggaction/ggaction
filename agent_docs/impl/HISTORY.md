@@ -92,4 +92,15 @@ correctness를 20.6 percentage points 높였지만 task-level median token이 89
 - 요약 기록: [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md)
 - 원격 evidence checkpoint: `23212bf5d4dcdca1e842de889c8258ac662c7945`
 
+## Roadmap 5.4 — Compact Knowledge Delivery and Intent Resolution
+
+Phase 0~6을 완료했다. 173개 action card, deterministic multi-intent resolver, bounded authoring task packet과
+local read-only stdio MCP를 same-package distribution으로 통합했다. Public docs browsing, direct compact packet,
+local MCP와 bounded fallback을 24 tasks × 2 repetitions × Terra/Luna/Nano에서 비교했고, 576-run 결과를 compact
+aggregate benchmark와 원본 provenance hash로 정리했다. PR #27의 strict six checks와 merged-main tree identity를
+확인해 R54-Exit에서 닫았다.
+
+- 기록: [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md)
+- Benchmark: [`../../benchmarks/llm-authoring-v1/`](../../benchmarks/llm-authoring-v1/)
+
 Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.

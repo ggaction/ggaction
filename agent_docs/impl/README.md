@@ -4,8 +4,8 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 Roadmap 5.4 Phase 6다.** Terra/Luna evidence를 보존하고 더 작은 Nano의 capability floor를
-  24-task 확장 비교로 검토한다. 실행 순서는
+- **현재 활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 5.4 Phase 6이며 compact knowledge delivery와
+  local MCP 통합을 R54-Exit에서 닫았다. 기록은
   [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md)가 소유한다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
@@ -23,7 +23,7 @@
 - [`roadmap5.1/ROADMAP.md`](roadmap5.1/ROADMAP.md) — completed, multi-legend layout completion
 - [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md) — completed, repository integrity와 maintainer hardening
 - [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md) — completed, LLM knowledge/MCP 실험과 non-integration 결과
-- [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md) — active, compact knowledge delivery와 intent resolution
+- [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md) — completed, compact knowledge delivery와 local MCP integration
 
 ## 재사용하는 개발 절차
 

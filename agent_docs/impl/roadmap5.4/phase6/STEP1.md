@@ -116,3 +116,15 @@ Mock continuation은 run 215부터 362 cells를 추가해 576 unique ordered cel
 
 - <https://developers.openai.com/api/docs/models/gpt-5.4-nano>
 - <https://developers.openai.com/api/docs/pricing>
+
+## Integration closeout — 2026-08-10
+
+- Per-request traces, `IN_PROGRESS.json`, aborted generations와 obsolete paid runners는 default branch에서 제거했다.
+- Public claims는 `benchmarks/llm-authoring-v1/summary.json`의 balanced 12 cells와 exact raw provenance hash가 소유한다.
+- Final PR head `9bd0ac306d9a67616db1a97ce1efd898551c2700`은 CI run
+  [31356205206](https://github.com/ggaction/ggaction/actions/runs/31356205206)에서 `package (20)`, `package (22)`,
+  `package (24)`, `test`, `coverage`, `documentation`이 모두 success였다.
+- PR [#27](https://github.com/ggaction/ggaction/pull/27)은 merge commit
+  `e34c27bf8637de4ec0292f71a85c96d71aeca17b`로 `main`에 병합됐다. Merge second parent는 exact PR head이고
+  두 tree SHA는 `8a72d532f8985048ca706565520b23e6e6970a16`으로 동일하다.
+- 사용자의 merge와 release preparation 승인으로 R54-Exit closeout을 완료했다. Publish, tag와 docs deploy는 열지 않았다.

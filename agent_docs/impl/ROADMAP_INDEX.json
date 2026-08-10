@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "activeRoadmap": "roadmap5.4",
-  "activePhase": 6,
-  "lastCompletedRoadmap": "roadmap5.3",
+  "activeRoadmap": null,
+  "activePhase": null,
+  "lastCompletedRoadmap": "roadmap5.4",
   "lastCompletedPhase": 6,
   "roadmaps": [
     {
@@ -96,8 +96,8 @@
     {
       "id": "roadmap5.4",
       "title": "Compact Knowledge Delivery and Intent Resolution",
-      "status": "active",
-      "role": "current-execution-plan",
+      "status": "completed",
+      "role": "historical-execution-record",
       "file": "agent_docs/impl/roadmap5.4/ROADMAP.md"
     }
   ]

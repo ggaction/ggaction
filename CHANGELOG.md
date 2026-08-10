@@ -4,6 +4,27 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.9] - 2026-08-10
+
+### Added
+
+- Added a package-local, read-only stdio MCP server with one bounded `search_ggaction` tool, selective resources,
+  executable authoring steps, and no hosted service, account, telemetry, chart execution, or arbitrary file access.
+- Added generated compact knowledge for all 173 current actions, deterministic multi-intent task resolution, explicit
+  unsupported and unresolved decisions, and exact Canvas, SVG, PNG, and PDF authoring bootstraps.
+
+### Changed
+
+- Added task-oriented LLM authoring and MCP documentation, installed-package MCP qualification, and a compact,
+  provenance-locked 576-run Terra/Luna/Nano benchmark record and benefit chart.
+- Kept per-request traces, intermediate checkpoints, aborted experimental generations, and obsolete paid runners out
+  of the default branch while retaining aggregate evidence and exact raw-result hashes.
+
+### Fixed
+
+- Treated materialized window-output fields as direct line values when no aggregate is requested, preserving moving
+  mean and sum results instead of reinterpreting them through the aggregate-line policy.
+
 ## [0.0.8] - 2026-08-04
 
 ### Added
@@ -176,6 +197,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
+[0.0.9]: https://github.com/ggaction/ggaction/releases/tag/v0.0.9
 [0.0.8]: https://github.com/ggaction/ggaction/releases/tag/v0.0.8
 [0.0.7]: https://github.com/ggaction/ggaction/releases/tag/v0.0.7
 [0.0.6]: https://github.com/ggaction/ggaction/releases/tag/v0.0.6
