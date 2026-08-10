@@ -51,6 +51,25 @@ const program = chart()
 - **Traceable** — retain high-level actions and the wrapped actions they invoke.
 - **Materialized** — actions create concrete backend-neutral graphics; rendering does not perform hidden semantic compilation.
 
+## MCP server for LLM
+
+ggaction includes a local, read-only MCP server that gives coding assistants
+current action names, exact call shapes, and task-specific authoring steps
+without loading the complete documentation.
+
+<p align="left">
+  <img src="./docs/assets/images/readme-mcp-benefits.svg" width="960" loading="lazy" alt="Across 576 fixed task runs, MCP with bounded fallback improved strict success and reduced tokens and model calls compared with public-documentation browsing for Terra, Luna, and Nano.">
+</p>
+
+Across a fixed 576-run evaluation, MCP-first authoring with bounded fallback
+improved strict task success while using fewer tokens and model calls for all
+three model sizes. The server runs locally over stdio and does not execute chart
+code, access arbitrary files, make network requests, require an account, or
+collect telemetry.
+
+[Set up the local MCP server](https://ggaction.github.io/ggaction/mcp/) ·
+[Read the complete evaluation report](./agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+
 ## Quick start
 
 Install the current public release:
