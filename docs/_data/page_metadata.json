@@ -8,6 +8,14 @@
     "description": "This walkthrough installs ggaction, creates a complete scatterplot from an inline dataset, and renders it to Browser Canvas.",
     "image": "/assets/images/getting-started.png"
   },
+  "/mcp/": {
+    "title": "Local MCP for LLM Chart Authoring",
+    "description": "The ggaction package includes a local, read only MCP server that helps a language model choose current actions and exact call shapes without preloading the complete documentation."
+  },
+  "/llm-authoring/": {
+    "title": "LLM Chart Authoring Contract",
+    "description": "\"A bounded public contract for complete ggaction programs: exact Canvas and data bootstrap, common histogram and regression tasks, renderers, canonical limitation IDs, and open decisions.\""
+  },
   "/tutorials/": {
     "title": "Tutorials",
     "description": "Tutorials build complete, runnable charts and explain what each action adds. Choose the visual relationship that matches the question you want to answer."

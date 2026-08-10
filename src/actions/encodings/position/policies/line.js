@@ -38,6 +38,10 @@ export function resolveLinePositionPolicy({
   }
   const regression = dataset.transform?.some(item => item.type === "regression");
   const interval = dataset.transform?.some(item => item.type === "interval");
+  const windowOutput = dataset.transform?.some(item =>
+    item.type === "window" &&
+    item.operations?.some(operation => operation.as === args.field)
+  );
 
   if (channel === "x") {
     const directPair =
@@ -73,7 +77,7 @@ export function resolveLinePositionPolicy({
     (fieldType === "temporal" ||
       (fieldType === "quantitative" &&
         (layer.encoding?.x === undefined || quantitativePair)));
-  if (interval || prospectiveDirect) {
+  if (interval || (windowOutput && args.aggregate === undefined) || prospectiveDirect) {
     if (!["quantitative", "temporal"].includes(fieldType)) {
       throw new Error(
         "Direct line y encoding requires a quantitative or temporal field."

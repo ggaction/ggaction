@@ -2,9 +2,11 @@ import { execFileSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 import {
   BROWSER_BUNDLE_GZIP_LIMITS,
@@ -614,6 +616,133 @@ async function testNodeConsumer(directory) {
   }
 }
 
+async function testMcpConsumer(directory) {
+  const installedRoot = path.join(directory, "node_modules", "ggaction");
+  const executable = path.join(
+    directory,
+    "node_modules",
+    ".bin",
+    process.platform === "win32" ? "ggaction-mcp.cmd" : "ggaction-mcp"
+  );
+  const { searchGgactionText } = await import(
+    pathToFileURL(path.join(installedRoot, "src", "mcp", "adapter.js")).href
+  );
+  const taskPacketSchema = JSON.parse(await readFile(
+    path.join(installedRoot, "knowledge", "task-packet.schema.json"),
+    "utf8"
+  ));
+  if (taskPacketSchema.properties?.schemaVersion?.const !== 3) {
+    throw new Error("Installed task packet schema must require schemaVersion 3.");
+  }
+  const transport = new StdioClientTransport({
+    command: executable,
+    cwd: directory,
+    stderr: "pipe"
+  });
+  const client = new Client(
+    { name: "ggaction-installed-consumer", version: "1.0.0" },
+    { capabilities: {} }
+  );
+  const started = performance.now();
+  await client.connect(transport);
+  const coldStartMilliseconds = performance.now() - started;
+  try {
+    const tools = await client.listTools();
+    if (tools.tools.length !== 1 || tools.tools[0].name !== "search_ggaction") {
+      throw new Error("Installed MCP must expose only search_ggaction.");
+    }
+    const query = "scatter plot with a color legend at bottom as svg";
+    const result = await client.callTool({
+      name: "search_ggaction",
+      arguments: { query }
+    });
+    if (result.content[0]?.text !== searchGgactionText(query)) {
+      throw new Error("Installed direct and MCP payloads are not byte-equal.");
+    }
+    const packet = JSON.parse(result.content[0].text);
+    if (
+      packet.schemaVersion !== 3 ||
+      packet.authoring?.initialize !== "let program = chart()" ||
+      packet.authoring?.prerequisites?.length !== 2
+    ) {
+      throw new Error("Installed MCP did not return the task packet v3 authoring bootstrap.");
+    }
+    const authoringSource = [
+      'import assert from "node:assert/strict";',
+      ...packet.authoring.imports,
+      "const values = [",
+      '  { x: 1, y: 4, category: "A" },',
+      '  { x: 2, y: 7, category: "B" },',
+      '  { x: 3, y: 6, category: "A" }',
+      "];",
+      `${packet.authoring.initialize};`,
+      ...packet.authoring.prerequisites.map(entry => `${entry.call};`),
+      ...packet.authoring.steps.map(step => `${step};`),
+      'assert.equal(output.startsWith("<svg"), true);',
+      "assert.ok(program.graphicSpec.objects.scatterPlot.items.length > 0);",
+      ""
+    ].join("\n");
+    const authoringFile = path.join(directory, "mcp-authoring-smoke.mjs");
+    await writeFile(authoringFile, authoringSource);
+    run(process.execPath, [authoringFile], directory);
+    const resources = await client.listResources();
+    if (
+      resources.resources.length !== 9 ||
+      resources.resources.some(resource => resource.uri.startsWith("ggaction://docs/"))
+    ) {
+      throw new Error("Installed MCP resource discovery is not bounded.");
+    }
+    const overview = await client.readResource({ uri: "ggaction://overview" });
+    if (!overview.contents[0]?.text.includes("never executes chart code")) {
+      throw new Error("Installed MCP overview is missing its read-only boundary.");
+    }
+    let deniedResolvedFallback = false;
+    try {
+      await client.readResource({ uri: "ggaction://docs/choose-chart-type" });
+    } catch (error) {
+      deniedResolvedFallback = /available only when recommended/.test(String(error));
+    }
+    if (!deniedResolvedFallback) {
+      throw new Error("Installed MCP exposed docs without an unresolved search result.");
+    }
+    await client.callTool({
+      name: "search_ggaction",
+      arguments: { query: "make a chart" }
+    });
+    const fallback = await client.readResource({
+      uri: "ggaction://docs/choose-chart-type"
+    });
+    if (!fallback.contents[0]?.text.startsWith("# Choose a chart or mark type")) {
+      throw new Error("Installed MCP did not expose the recommended bounded fallback.");
+    }
+    await client.callTool({
+      name: "search_ggaction",
+      arguments: { query: "map chart" }
+    });
+    let deniedTerminalFallback = false;
+    try {
+      await client.readResource({ uri: "ggaction://docs/unsupported-capabilities" });
+    } catch (error) {
+      deniedTerminalFallback = /available only when recommended/.test(String(error));
+    }
+    if (!deniedTerminalFallback) {
+      throw new Error("Installed MCP required documentation for a terminal unsupported result.");
+    }
+    let deniedArbitraryFile = false;
+    try {
+      await client.readResource({ uri: "file:///etc/passwd" });
+    } catch (error) {
+      deniedArbitraryFile = /Unsupported knowledge resource URI/.test(String(error));
+    }
+    if (!deniedArbitraryFile) {
+      throw new Error("Installed MCP accepted an arbitrary file URI.");
+    }
+    return { coldStartMilliseconds };
+  } finally {
+    await client.close();
+  }
+}
+
 async function testTypeScriptConsumer(directory) {
   const extensionAuthoring = await readFile(
     path.join(root, "examples", "extension-typescript", "program.ts"),
@@ -1141,6 +1270,7 @@ export async function testPackageConsumer(options) {
   const consumer = await preparePackageConsumer(options);
   try {
     await testNodeConsumer(consumer.directory);
+    const mcp = await testMcpConsumer(consumer.directory);
     await testTypeScriptConsumer(consumer.directory);
     await testTutorialConsumers(consumer.directory);
     const fullBundle = await measureMinimalBrowserBundle(consumer.directory);
@@ -1160,6 +1290,7 @@ export async function testPackageConsumer(options) {
     }
     return {
       ...consumer,
+      mcp,
       browserBundles: { full: fullBundle, basic: basicBundle, svg: svgBundle }
     };
   } finally {
@@ -1175,6 +1306,9 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     source: result.artifact?.filename ?? result.packageSpec,
     ...(result.artifact ? { sha256: result.artifact.sha256 } : {}),
     browserBundles: result.browserBundles,
+    mcp: {
+      coldStartMilliseconds: Math.round(result.mcp.coldStartMilliseconds)
+    },
     checks: [
       "node",
       "extension",
@@ -1197,7 +1331,12 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "basic-entry-runtime-and-types",
       "tutorial-consumers",
       "minimal-browser-bundle-measurement",
-      "private-export-rejection"
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v3-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
     ]
   }, null, 2)}\n`);
 }

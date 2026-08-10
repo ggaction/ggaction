@@ -33,6 +33,10 @@ one part. The main, basic, extension, SVG, PNG, and PDF entry points include Typ
     <strong>Find an action</strong>
     <span>Look up exact signatures, defaults, inference, and related guides.</span>
   </a>
+  <a href="./mcp/">
+    <strong>Connect an LLM locally</strong>
+    <span>Use one read-only MCP search tool without preloading the full documentation.</span>
+  </a>
 </div>
 
 ## Common chart types
@@ -81,7 +85,7 @@ continue with [action authoring](./extension/action-authoring.md) and the
 [primitive API](./extension/primitives.md). For boundaries and failures, see
 [supported features](./supported-features.md) and
 [troubleshooting](./troubleshooting.md). Language models can use the concise
-[documentation index](./llms.txt) or the generated
+[documentation index](./llms.txt), the local read-only [MCP server](./mcp.md), or the generated
 [full-text bundle](./llms-full.txt).
 
 Source, issues, and development history are available on
