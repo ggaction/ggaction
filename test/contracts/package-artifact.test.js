@@ -31,7 +31,13 @@ test("publishes only the bounded public package artifact", () => {
   assert.ok(manifest.unpackedSize <= PACKAGE_LIMITS.unpackedBytes);
   assert.ok(paths.every(path =>
     ["CHANGELOG.md", "LICENSE", "README.md", "package.json"].includes(path) ||
-    path.startsWith("src/") || path.startsWith("types/")
+    path.startsWith("src/") || path.startsWith("types/") || [
+      "knowledge/action-cards.json",
+      "knowledge/intent-taxonomy.json",
+      "knowledge/mcp-resources.json",
+      "knowledge/task-packet.schema.json",
+      "knowledge/task-resolver.js"
+    ].includes(path)
   ));
   assert.equal(paths.some(path => path.startsWith("test/")), false);
   assert.equal(paths.some(path => path.startsWith("agent_docs/")), false);
@@ -49,9 +55,17 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
       "LICENSE",
       "README.md",
       "package.json",
+      "knowledge/action-cards.json",
+      "knowledge/intent-taxonomy.json",
+      "knowledge/mcp-resources.json",
+      "knowledge/task-packet.schema.json",
+      "knowledge/task-resolver.js",
       "src/index.js",
       "src/basic.js",
       "src/extension.js",
+      "src/mcp/adapter.js",
+      "src/mcp/cli.js",
+      "src/mcp/server.js",
       "src/renderers/pdf.js",
       "src/renderers/png.js",
       "src/renderers/svg.js",

@@ -108,6 +108,17 @@ export async function measureMinimalBrowserBundle(
   }
 
   const modules = new Set(chunks.flatMap(chunk => Object.keys(chunk.modules)));
+  const nodeOnlyModules = [...modules].filter(module => {
+    const normalized = module.split(path.sep).join("/");
+    return normalized.includes("/src/mcp/") ||
+      normalized.includes("/knowledge/") ||
+      normalized.includes("/node_modules/@modelcontextprotocol/");
+  });
+  if (nodeOnlyModules.length > 0) {
+    throw new Error(
+      `${specifier} browser bundle includes Node-only MCP modules: ${nodeOnlyModules.join(", ")}`
+    );
+  }
   const minifiedBytes = chunks.reduce(
     (sum, chunk) => sum + Buffer.byteLength(chunk.code),
     0

@@ -125,6 +125,11 @@ CommonJS entry points. Import `ggaction/png` and `ggaction/pdf` only from Node
 code; the browser-safe entries, including `ggaction/svg`, do not load filesystem
 or native output modules.
 
+The installed package also provides the Node-only `ggaction-mcp` executable for
+local, read-only language-model authoring support. It is not imported by any
+browser entry. See [Local MCP for LLM Chart Authoring](./mcp.md) for setup and
+the one-tool workflow.
+
 The release artifact is tested by installing its exact tarball into fresh
 JavaScript and TypeScript consumer projects. It is also tested in a browser and
 across the supported Node release matrix.

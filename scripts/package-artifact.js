@@ -10,9 +10,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 412,
-  packedBytes: 400_000,
-  unpackedBytes: 1_835_000
+  entries: 430,
+  packedBytes: 450_000,
+  unpackedBytes: 2_400_000
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -20,9 +20,17 @@ const REQUIRED_FILES = Object.freeze([
   "LICENSE",
   "README.md",
   "package.json",
+  "knowledge/action-cards.json",
+  "knowledge/intent-taxonomy.json",
+  "knowledge/mcp-resources.json",
+  "knowledge/task-packet.schema.json",
+  "knowledge/task-resolver.js",
   "src/index.js",
   "src/basic.js",
   "src/extension.js",
+  "src/mcp/adapter.js",
+  "src/mcp/cli.js",
+  "src/mcp/server.js",
   "src/renderers/pdf.js",
   "src/renderers/png.js",
   "src/renderers/svg.js",
@@ -78,7 +86,17 @@ export function validatePackageManifest(manifest) {
       "LICENSE",
       "README.md",
       "package.json"
-    ].includes(file) && !file.startsWith("src/") && !file.startsWith("types/")) {
+    ].includes(file) &&
+      !file.startsWith("src/") &&
+      !file.startsWith("types/") &&
+      ![
+        "knowledge/action-cards.json",
+        "knowledge/intent-taxonomy.json",
+        "knowledge/mcp-resources.json",
+        "knowledge/task-packet.schema.json",
+        "knowledge/task-resolver.js"
+      ].includes(file)
+    ) {
       throw new Error(`Package artifact includes forbidden file "${file}".`);
     }
   }

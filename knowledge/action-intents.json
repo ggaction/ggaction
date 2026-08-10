@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "operationIntents": {
+    "create": ["create", "add"],
+    "edit": ["edit", "change"],
+    "encode": ["encode", "map field"],
+    "remove": ["remove", "delete"],
+    "filter": ["filter", "retain matching"],
+    "select": ["select", "store selection"],
+    "highlight": ["highlight", "emphasize"],
+    "layout": ["layout", "avoid overlap"],
+    "jitter": ["jitter", "separate overlapping points"],
+    "order": ["order", "sort categories"],
+    "replace": ["replace", "swap child"],
+    "compose": ["facet", "repeat chart"]
+  },
+  "domainIntents": {
+    "core": ["chart setup", "data and scales"],
+    "charts": ["complete chart", "chart facade"],
+    "composition": ["chart composition", "small multiples"],
+    "mark-selection": ["mark selection", "conditional emphasis"],
+    "marks": ["graphical mark", "mark appearance"],
+    "encodings": ["visual encoding", "field mapping"],
+    "statistics": ["statistical layer", "statistical transform"],
+    "axes": ["axis guide", "scale annotation"],
+    "grid": ["grid guide", "reference lines"],
+    "legend_and_title": ["legend or title", "chart annotation"],
+    "primitives": ["extension primitive", "low-level authoring"]
+  },
+  "termAliases": {
+    "Canvas": ["canvas", "chart size", "plot bounds"],
+    "Data": ["dataset", "rows"],
+    "DensityData": ["kernel density data", "KDE"],
+    "RegressionData": ["fitted values", "regression transform"],
+    "WindowData": ["moving window", "rank", "lag"],
+    "TimeUnitData": ["date bucket", "UTC time unit"],
+    "Bin2DData": ["two-dimensional bins", "rectangular aggregation"],
+    "IntervalData": ["confidence interval data", "summary interval"],
+    "PointMark": ["point mark", "scatter point"],
+    "TickMark": ["tick mark", "one-dimensional distribution"],
+    "TextMark": ["text label", "annotation mark"],
+    "Text": ["text content", "data-driven labels"],
+    "LineMark": ["line mark", "path"],
+    "BarMark": ["bar mark", "rectangle bar"],
+    "AreaMark": ["area mark", "filled band"],
+    "RuleMark": ["rule mark", "reference line"],
+    "ArcMark": ["arc mark", "polar sector"],
+    "RectMark": ["rectangle mark", "heatmap cell"],
+    "Labels": ["label layout", "collision avoidance"],
+    "LabelLayout": ["label layout", "collision avoidance and leader lines"],
+    "Mark": ["mark resource", "semantic and graphical mark state"],
+    "Points": ["point positions", "overlapping observations"],
+    "Jitter": ["point jitter", "overplotting"],
+    "X": ["x position", "horizontal position"],
+    "Y": ["y position", "vertical position"],
+    "X2": ["secondary x position", "x endpoint"],
+    "Y2": ["secondary y position", "y endpoint"],
+    "XRange": ["x interval", "horizontal range"],
+    "YRange": ["y interval", "vertical range"],
+    "XOffset": ["x offset", "grouped horizontal offset"],
+    "YOffset": ["y offset", "grouped vertical offset"],
+    "Color": ["color", "fill or stroke mapping"],
+    "StrokeDash": ["stroke dash", "line style"],
+    "Stroke": ["stroke color", "outline"],
+    "StrokeWidth": ["stroke width", "line thickness"],
+    "Size": ["size", "quantitative size"],
+    "Shape": ["point shape", "categorical shape"],
+    "Angle": ["angle", "point or tick rotation"],
+    "Opacity": ["opacity", "transparency"],
+    "Radius": ["radius", "polar radius"],
+    "Theta": ["theta", "angular position"],
+    "R": ["radial position", "polar distance"],
+    "PointRadius": ["point radius", "symbol radius"],
+    "Group": ["series grouping", "group field"],
+    "PathOrder": ["path order", "line sorting"],
+    "Categories": ["category order", "ordinal sorting"],
+    "CategoryOrder": ["category order", "explicit ordinal sorting"],
+    "Encoding": ["visual encoding", "one assigned channel"],
+    "ParallelCoordinates": ["parallel coordinates", "multiple dimensions"],
+    "Histogram": ["histogram", "one-dimensional distribution"],
+    "Density": ["density plot", "kernel density estimate"],
+    "Horizon": ["horizon chart", "banded time series"],
+    "BarWidth": ["bar width", "band occupancy"],
+    "Regression": ["regression", "fitted line and band"],
+    "RegressionLine": ["regression line", "fitted curve"],
+    "RegressionBand": ["regression band", "uncertainty interval"],
+    "ErrorBar": ["error bar", "uncertainty whisker"],
+    "ErrorBand": ["error band", "uncertainty ribbon"],
+    "ErrorBandBoundary": ["error band boundary", "ribbon outline"],
+    "BoxPlot": ["box plot", "quartile distribution"],
+    "GradientPlot": ["gradient plot", "density gradient"],
+    "ViolinPlot": ["violin plot", "mirrored density distribution"],
+    "ScatterPlot": ["scatter plot", "two-field relationship"],
+    "LinePlot": ["line chart", "ordered trend"],
+    "BarPlot": ["bar chart", "category comparison"],
+    "Heatmap": ["heatmap", "two-dimensional distribution"],
+    "Axes": ["x and y axes", "Cartesian guides"],
+    "XAxis": ["x axis", "horizontal scale guide"],
+    "YAxis": ["y axis", "vertical scale guide"],
+    "ThetaAxis": ["theta axis", "angular guide"],
+    "RadialAxis": ["radial axis", "polar distance guide"],
+    "XAxisLine": ["x-axis line", "horizontal baseline"],
+    "YAxisLine": ["y-axis line", "vertical baseline"],
+    "ThetaAxisLine": ["theta-axis line", "angular baseline"],
+    "RadialAxisLine": ["radial-axis line", "polar baseline"],
+    "XAxisTicks": ["x-axis ticks", "horizontal tick marks"],
+    "YAxisTicks": ["y-axis ticks", "vertical tick marks"],
+    "ThetaAxisTicks": ["theta-axis ticks", "angular tick marks"],
+    "RadialAxisTicks": ["radial-axis ticks", "radial tick marks"],
+    "XAxisLabels": ["x-axis labels", "horizontal tick text"],
+    "YAxisLabels": ["y-axis labels", "vertical tick text"],
+    "ThetaAxisLabels": ["theta-axis labels", "angular tick text"],
+    "RadialAxisLabels": ["radial-axis labels", "radial tick text"],
+    "XAxisTicksAndLabels": ["x-axis ticks and labels", "coordinated horizontal guide"],
+    "YAxisTicksAndLabels": ["y-axis ticks and labels", "coordinated vertical guide"],
+    "XAxisTitle": ["x-axis title", "horizontal field title"],
+    "YAxisTitle": ["y-axis title", "vertical field title"],
+    "ThetaAxisTitle": ["theta-axis title", "angular field title"],
+    "RadialAxisTitle": ["radial-axis title", "polar field title"],
+    "Grid": ["grid", "Cartesian reference lines"],
+    "HorizontalGrid": ["horizontal grid", "y reference lines"],
+    "VerticalGrid": ["vertical grid", "x reference lines"],
+    "ThetaGrid": ["theta grid", "angular spokes"],
+    "RadialGrid": ["radial grid", "concentric reference lines"],
+    "Legend": ["legend", "encoding key"],
+    "LegendLayout": ["legend layout", "legend position and flow"],
+    "LegendLabels": ["legend labels", "legend text style"],
+    "LegendTitle": ["legend title", "legend heading"],
+    "LegendSymbols": ["legend symbols", "legend glyphs"],
+    "LegendBorder": ["legend border", "legend frame"],
+    "Guides": ["axes and legends", "automatic guides"],
+    "Title": ["chart title", "title and subtitle"],
+    "Coordinate": ["coordinate system", "Cartesian or polar space"],
+    "Scale": ["scale", "domain-to-range mapping"],
+    "DerivedData": ["derived dataset", "stored transform provenance"],
+    "Marks": ["mark items", "selected graphical items"],
+    "MarkSelection": ["stored mark selection", "reusable selector"],
+    "MarkHighlight": ["mark highlight", "conditional emphasis"],
+    "CompositionLayout": ["composition layout", "child spacing and alignment"],
+    "CompositionChild": ["composition child", "nested chart slot"],
+    "facet": ["faceting", "small multiples"],
+    "FacetHeaders": ["facet headers", "small-multiple labels"],
+    "FacetScales": ["facet scale resolution", "shared or independent scales"],
+    "FacetGuides": ["facet guides", "outer axes and shared legends"],
+    "Semantic": ["semantic state", "extension semantic property"],
+    "Graphics": ["graphic state", "concrete graphic resource"]
+  },
+  "summaryOverrides": {
+    "createScatterPlot": "Draws a complete scatter plot that shows the relationship between two fields as points.",
+    "createTickMark": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
+    "encodeAngle": "Maps a constant or quantitative field to point or tick rotation angle.",
+    "editLegendLayout": "Edits one legend's position, alignment, direction, columns, title placement, and item spacing.",
+    "editLegendLabels": "Edits the text style of one legend's item labels.",
+    "editLegendTitle": "Edits one legend's title text and title style.",
+    "editLegendSymbols": "Edits one legend's discrete symbols or continuous gradient.",
+    "editLegendBorder": "Adds, removes, or styles the border around one legend.",
+    "createScale": "Creates a named scale that maps a semantic domain to a graphical range.",
+    "editScale": "Partially edits a named or uniquely resolvable scale and rematerializes its consumers.",
+    "editSemantic": "Sets or removes one semantic property inside an extension action.",
+    "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
+    "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
+  },
+  "sampleOverrides": {
+    "filterData": {
+      "id": "filtered",
+      "field": "value",
+      "predicate": { "op": "gt", "value": 0 }
+    },
+    "createWindowData": {
+      "id": "windowed",
+      "operations": [
+        {
+          "op": "movingMean",
+          "field": "value",
+          "as": "movingMean",
+          "frame": { "preceding": 2 }
+        }
+      ]
+    },
+    "jitterPoints": {
+      "channel": "x",
+      "maxOffset": { "pixels": 4 }
+    },
+    "filterMarks": {
+      "field": "value",
+      "op": "gt",
+      "value": 0
+    },
+    "selectMarks": {
+      "field": "category",
+      "op": "eq",
+      "value": "A"
+    },
+    "editMarkSelection": {
+      "field": "category",
+      "op": "eq",
+      "value": "A"
+    },
+    "createDerivedData": {
+      "id": "filtered",
+      "source": "source",
+      "transform": [
+        {
+          "type": "filter",
+          "field": "value",
+          "predicate": { "op": "gt", "value": 0 }
+        }
+      ]
+    },
+    "createHeatmap": {
+      "x": "x",
+      "y": "y",
+      "color": "value"
+    },
+    "createParallelCoordinates": {
+      "dimensions": ["a", "b"]
+    },
+    "encodeParallelCoordinates": {
+      "dimensions": ["a", "b"]
+    },
+    "replaceCompositionChild": {
+      "target": "child-1",
+      "program": { "$code": "chart().createCanvas({}).createData({ values: [] })" }
+    },
+    "editSemantic": {
+      "property": "annotation",
+      "value": "note"
+    },
+    "createGraphics": {
+      "id": "graphic-1",
+      "type": "collection"
+    },
+    "editGraphics": {
+      "target": "graphic-1",
+      "remove": true
+    },
+    "orderCategories": { "channel": "x", "by": "category" },
+    "editBoxPlot": { "data": "data-1" },
+    "editGradientPlot": { "data": "data-1" },
+    "editScale": { "type": "linear" },
+    "editFacetScales": { "x": "shared" },
+    "layoutLabels": { "axis": "y" },
+    "editPointMark": { "fill": "#f28e2b" },
+    "highlightMarks": {
+      "select": { "field": "category", "op": "eq", "value": "A" },
+      "color": "#f28e2b"
+    },
+    "editXAxisTicksAndLabels": { "position": "bottom" },
+    "editYAxisTicksAndLabels": { "position": "left" },
+    "editXAxis": { "position": "bottom" },
+    "editYAxis": { "position": "left" },
+    "editGrid": { "horizontal": { "color": "#dddddd" } },
+    "editLegendSymbols": { "count": 5 },
+    "editThetaAxis": { "line": { "color": "#222222" } },
+    "editRadialAxis": { "title": { "text": "Radius" } },
+    "encodeX": { "field": "x" },
+    "encodeY": { "field": "y" },
+    "encodeX2": { "field": "x2" },
+    "encodeY2": { "field": "y2" },
+    "encodeAngle": { "value": 45 },
+    "encodeOpacity": { "value": 0.8 },
+    "encodeStrokeDash": { "value": "dashed" },
+    "encodeStroke": { "value": "#222222" },
+    "encodeStrokeWidth": { "value": 2 },
+    "encodeText": { "field": "label" }
+  },
+  "callPatternOverrides": {
+    "filterData": [
+      "filterData({ id, field, predicate })",
+      "filterData({ id, field, oneOf | range })"
+    ],
+    "filterMarks": [
+      "filterMarks({ field | channel | property, op, ...operands })",
+      "filterMarks({ target?, grain?, op: min | max, count?, groupBy? })"
+    ],
+    "selectMarks": [
+      "selectMarks({ id?, field | channel | property, op, ...operands })",
+      "selectMarks({ id?, target?, grain?, op: min | max, count? })"
+    ],
+    "editMarkSelection": [
+      "editMarkSelection({ selection?, field | channel | property, op, ...operands })",
+      "editMarkSelection({ selection?, grain?, op: min | max, count? })"
+    ],
+    "encodeAngle": [
+      "encodeAngle({ target?, value })",
+      "encodeAngle({ target?, field, fieldType? })"
+    ],
+    "createHistogram": [
+      "createHistogram({ field, maxBins? | binStep? | binBoundaries? })",
+      "createHistogram({ field, color?, stack?, guides? })"
+    ],
+    "createHeatmap": [
+      "createHeatmap({ x, y, color })",
+      "createHeatmap({ x, y, bin, color? })"
+    ],
+    "createRegression": [
+      "createRegression({ target?, method: linear | polynomial, confidence? })",
+      "createRegression({ target?, method: loess, span? })"
+    ],
+    "createBarPlot": [
+      "createBarPlot({ x, y, width?, color? })",
+      "createBarPlot({ x, y, stack?, groupBy?, guides? })"
+    ],
+    "createViolinPlot": [
+      "createViolinPlot({ x, y, density?, area? })",
+      "createViolinPlot({ x, y, split, color?, guides? })"
+    ],
+    "editSemantic": [
+      "editSemantic({ property, value })",
+      "editSemantic({ property, remove: true })"
+    ],
+    "editGraphics": [
+      "editGraphics({ target, property, value })",
+      "editGraphics({ target, remove: true })"
+    ]
+  },
+  "errorOverrides": {
+    "filterData": [
+      {
+        "error": "More or fewer than one of oneOf, predicate, and range is supplied.",
+        "fix": "Choose exactly one filter mode."
+      }
+    ],
+    "encodeAngle": [
+      {
+        "error": "Both value and field are supplied.",
+        "fix": "Choose a constant angle or a quantitative field, not both."
+      }
+    ],
+    "createHeatmap": [
+      {
+        "error": "Raw rows are requested without a bin object or pre-gridded rows omit color.",
+        "fix": "Use bin for raw x/y rows, or provide x, y, and color for pre-gridded rows."
+      }
+    ],
+    "removeEncoding": [
+      {
+        "error": "The selected channel is not assigned to the target mark.",
+        "fix": "Pass a currently assigned channel and disambiguate target when needed."
+      }
+    ],
+    "createDerivedData": [
+      {
+        "error": "transform is empty or contains more than one transform.",
+        "fix": "Provide exactly one valid DatasetTransform object."
+      }
+    ],
+    "editSemantic": [
+      {
+        "error": "A removal also supplies value.",
+        "fix": "Use either { property, value } or { property, remove: true }."
+      }
+    ],
+    "editGraphics": [
+      {
+        "error": "A removal also supplies property or value.",
+        "fix": "Use either { target, property, value } or { target, remove: true }."
+      }
+    ]
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "id": "ggaction-llm-authoring-v1",
+  "status": "complete",
+  "completedAt": "2026-08-10T01:44:15.000Z",
+  "design": {
+    "uniqueTasks": 24,
+    "repetitions": 2,
+    "models": [
+      "gpt-5.6-terra",
+      "gpt-5.6-luna",
+      "gpt-5.4-nano"
+    ],
+    "conditions": {
+      "A": "public-docs",
+      "B": "direct-compact-packet",
+      "C": "local-mcp",
+      "D": "local-mcp-with-bounded-fallback"
+    },
+    "taskRuns": 576,
+    "observationsPerModelCondition": 48,
+    "strictExecutableEvaluation": true,
+    "providerFailuresCountAsFailures": true
+  },
+  "provenance": {
+    "productCandidateCommit": "4e211ba418cd437d7c66c4fb986fcc714cf579ea",
+    "evaluatorCheckpointCommit": "97029c53689e215a33376f724b41ee0734ca858d",
+    "rawRecordCommit": "76d5d0b4de6dbddcf98589d26d1d8006ba06d5a8",
+    "planSha256": "fec1c8dce0b2adb89e8db7652d74cd59df95727545adcd1e4129c1b33b3df5a6",
+    "basePlanSha256": "48d8cdebf81bcefedef96148a20836c46fb483ddae8080aef46c013a20f3d950",
+    "continuationSourceSha256": "1fea9ad184df9bb2f0a80cc714e26fba542232bd7856bf3b8ebd268dddcc2381",
+    "routeOracleSha256": "8211f33c5a443649def1f72de6f92d943a260f3df89795032d498f5c87819816",
+    "rawCheckpointSha256": "f0c9697391422a3d8aeb4cf2fcd02ab37f2fa5027f8d4e78bdd85ab673827063",
+    "rawResultSha256": "8bd5227ef58da44e0bc57aee7ee4b5b7e53290337c25e862bb1a94a63955a465"
+  },
+  "totals": {
+    "taskRuns": 576,
+    "passed": 387,
+    "modelCalls": 1769,
+    "apiRequestAttempts": 1798,
+    "providerRetries": 19,
+    "usage": {
+      "inputTokens": 3472338,
+      "cachedInputTokens": 1068343,
+      "cacheWriteTokens": 817581,
+      "outputTokens": 1064808,
+      "reasoningTokens": 764406,
+      "totalTokens": 4537146
+    },
+    "standardCostUsd": 6.22490767,
+    "conservativeCostUsd": 6.847398437,
+    "uncertainCostReserveUsd": 2.7915316,
+    "exposureCostUsd": 9.638930037
+  },
+  "byCondition": {
+    "A": {
+      "taskRuns": 144,
+      "passed": 28,
+      "passRate": 0.19444444444444445,
+      "modelCalls": 647,
+      "totalTokens": 1900753,
+      "exposureCostUsd": 5.175859942,
+      "medianTimeToValidMilliseconds": 10674.522396
+    },
+    "B": {
+      "taskRuns": 144,
+      "passed": 124,
+      "passRate": 0.8611111111111112,
+      "modelCalls": 367,
+      "totalTokens": 854861,
+      "exposureCostUsd": 1.205528115,
+      "medianTimeToValidMilliseconds": 7312.496458
+    },
+    "C": {
+      "taskRuns": 144,
+      "passed": 112,
+      "passRate": 0.7777777777777778,
+      "modelCalls": 377,
+      "totalTokens": 910072,
+      "exposureCostUsd": 2.021199576,
+      "medianTimeToValidMilliseconds": 6893.783625
+    },
+    "D": {
+      "taskRuns": 144,
+      "passed": 123,
+      "passRate": 0.8541666666666666,
+      "modelCalls": 378,
+      "totalTokens": 871460,
+      "exposureCostUsd": 1.236342404,
+      "medianTimeToValidMilliseconds": 7918.879791
+    }
+  },
+  "byModel": {
+    "gpt-5.6-terra": {
+      "taskRuns": 192,
+      "passed": 134,
+      "passRate": 0.6979166666666666,
+      "modelCalls": 555,
+      "totalTokens": 1194006,
+      "exposureCostUsd": 8.08606194,
+      "medianTimeToValidMilliseconds": 6033.0385835
+    },
+    "gpt-5.6-luna": {
+      "taskRuns": 192,
+      "passed": 141,
+      "passRate": 0.734375,
+      "modelCalls": 572,
+      "totalTokens": 1247771,
+      "exposureCostUsd": 0.526447889,
+      "medianTimeToValidMilliseconds": 6615.416875
+    },
+    "gpt-5.4-nano": {
+      "taskRuns": 192,
+      "passed": 112,
+      "passRate": 0.5833333333333334,
+      "modelCalls": 642,
+      "totalTokens": 2095369,
+      "exposureCostUsd": 1.026420208,
+      "medianTimeToValidMilliseconds": 12574.254
+    }
+  },
+  "cells": {
+    "gpt-5.6-terra:A": { "taskRuns": 48, "passed": 10, "passRate": 0.20833333333333334, "modelCalls": 204, "totalTokens": 513006, "exposureCostUsd": 4.49882191, "medianTimeToValidMilliseconds": 8206.501438 },
+    "gpt-5.6-terra:B": { "taskRuns": 48, "passed": 44, "passRate": 0.9166666666666666, "modelCalls": 116, "totalTokens": 206241, "exposureCostUsd": 0.90917695, "medianTimeToValidMilliseconds": 5863.395875 },
+    "gpt-5.6-terra:C": { "taskRuns": 48, "passed": 38, "passRate": 0.7916666666666666, "modelCalls": 115, "totalTokens": 235521, "exposureCostUsd": 1.71770412, "medianTimeToValidMilliseconds": 5784.496938 },
+    "gpt-5.6-terra:D": { "taskRuns": 48, "passed": 42, "passRate": 0.875, "modelCalls": 120, "totalTokens": 239238, "exposureCostUsd": 0.96035896, "medianTimeToValidMilliseconds": 6030.677917 },
+    "gpt-5.6-luna:A": { "taskRuns": 48, "passed": 9, "passRate": 0.1875, "modelCalls": 217, "totalTokens": 508413, "exposureCostUsd": 0.265912295, "medianTimeToValidMilliseconds": 10490.553875 },
+    "gpt-5.6-luna:B": { "taskRuns": 48, "passed": 45, "passRate": 0.9375, "modelCalls": 116, "totalTokens": 234073, "exposureCostUsd": 0.082132237, "medianTimeToValidMilliseconds": 6165.69275 },
+    "gpt-5.6-luna:C": { "taskRuns": 48, "passed": 43, "passRate": 0.8958333333333334, "modelCalls": 117, "totalTokens": 239405, "exposureCostUsd": 0.084852196, "medianTimeToValidMilliseconds": 6397.105375 },
+    "gpt-5.6-luna:D": { "taskRuns": 48, "passed": 44, "passRate": 0.9166666666666666, "modelCalls": 122, "totalTokens": 265880, "exposureCostUsd": 0.093551161, "medianTimeToValidMilliseconds": 6756.571563 },
+    "gpt-5.4-nano:A": { "taskRuns": 48, "passed": 9, "passRate": 0.1875, "modelCalls": 226, "totalTokens": 879334, "exposureCostUsd": 0.411125737, "medianTimeToValidMilliseconds": 12337.367958 },
+    "gpt-5.4-nano:B": { "taskRuns": 48, "passed": 35, "passRate": 0.7291666666666666, "modelCalls": 135, "totalTokens": 414547, "exposureCostUsd": 0.214218928, "medianTimeToValidMilliseconds": 11364.964792 },
+    "gpt-5.4-nano:C": { "taskRuns": 48, "passed": 31, "passRate": 0.6458333333333334, "modelCalls": 145, "totalTokens": 435146, "exposureCostUsd": 0.21864326, "medianTimeToValidMilliseconds": 12762.770833 },
+    "gpt-5.4-nano:D": { "taskRuns": 48, "passed": 37, "passRate": 0.7708333333333334, "modelCalls": 136, "totalTokens": 366342, "exposureCostUsd": 0.182432283, "medianTimeToValidMilliseconds": 13322.30025 }
+  },
+  "directPacketVsMcpPairs": {
+    "gpt-5.6-terra": { "pairedTaskRepetitions": 48, "bothPassed": 38, "directOnlyPassed": 6, "mcpOnlyPassed": 0, "neitherPassed": 4, "exactMcNemarP": 0.03125 },
+    "gpt-5.6-luna": { "pairedTaskRepetitions": 48, "bothPassed": 42, "directOnlyPassed": 3, "mcpOnlyPassed": 1, "neitherPassed": 2, "exactMcNemarP": 0.625 },
+    "gpt-5.4-nano": { "pairedTaskRepetitions": 48, "bothPassed": 24, "directOnlyPassed": 11, "mcpOnlyPassed": 7, "neitherPassed": 6, "exactMcNemarP": 0.480682 }
+  },
+  "provider": {
+    "billedModelResponses": 1769,
+    "apiRequestAttempts": 1798,
+    "providerRetries": 19,
+    "attemptsWithoutUsage": 29,
+    "finalProviderFailedTaskRuns": 10,
+    "modelIdentityMismatches": 0,
+    "serviceTierMismatches": 0
+  },
+  "limitations": [
+    "Results are limited to a fixed set of 24 tasks and two repetitions.",
+    "Provider timing and failures are confounded with run order.",
+    "The comparison does not establish universal model rankings.",
+    "Direct packet and MCP transport parity was not established.",
+    "Exposure includes a conservative reserve and is not identical to ordinary billed spend."
+  ]
+}
