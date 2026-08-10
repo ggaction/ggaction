@@ -1,8 +1,9 @@
 # Roadmap 5.4 — Compact Knowledge Delivery and Intent Resolution
 
-> **문서 상태 — 현재 실행 계획.** Active Phase는 Phase 6다. Exact pointer는
-> [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다. 현재 observable action behavior는
-> [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)과 `contract/current/`가 소유한다.
+> **문서 상태 — 완료된 실행 기록.** 2026-08-10 PR #27의 merged-main evidence와 사용자 closeout 승인으로
+> Phase 0~6과 Roadmap 5.4를 완료했다. 현재 observable action behavior는
+> [`../../contract/ACTION_INDEX.json`](../../contract/ACTION_INDEX.json)과 `contract/current/`가 소유하며,
+> roadmap 상태와 nullable active pointer는 [`../ROADMAP_INDEX.json`](../ROADMAP_INDEX.json)이 소유한다.
 
 ## 목표
 
@@ -72,7 +73,7 @@ Default search는 query를 atomic constraints로 분해해 `matchedConstraints`,
 | 3 | completed | Local MCP, package budget과 docs fallback |
 | 4 | completed | Fresh corpus, unpaid validation, runtime closure와 approved paid proposal |
 | 5 | completed | Staged paid evaluation과 Terra/Luna descriptive comparison |
-| 6 | in-progress | Expanded Terra/Luna/Nano comparison과 integration closeout |
+| 6 | completed | Expanded Terra/Luna/Nano comparison, compact evidence, merged-main integration과 R54-Exit |
 
 ## Approval Gates
 
