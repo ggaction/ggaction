@@ -13,6 +13,27 @@ machine. It does not require a hosted server, account, or authentication.
 The server does not execute chart code, render output, read request-selected
 files, make network requests, or collect telemetry.
 
+## Measured impact
+
+A fixed 576-run evaluation compared public-documentation browsing with
+MCP-first authoring plus bounded fallback across Terra, Luna, and Nano. Each
+model-condition cell contains 48 observations from the same 24 tasks and two
+repetitions.
+
+![Strict success, tokens, and model calls for Docs only and MCP with fallback across Terra, Luna, and Nano](./assets/images/readme-mcp-benefits.svg)
+
+Across all three models, MCP with bounded fallback raised strict task success
+from 19.4% to 85.4%, reduced tokens per task from 13,200 to 6,052, and reduced
+model calls per task from 4.49 to 2.63. Provider failures remain failures in
+these totals rather than being removed after the run.
+
+These results describe one fixed task set and its model and provider conditions;
+they are evidence for the authoring route, not a performance guarantee for every
+request. See the
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+for the condition definitions, paired comparisons, cost boundaries, provider
+failure analysis, and limitations.
+
 ## Install and launch
 
 Install `ggaction` in the project where the MCP client will run:
