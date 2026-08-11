@@ -1,3 +1,5 @@
+import type { RegisteredExtensionActions } from "./extension.js";
+
 export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 export type GraphicType =
   | "canvas"
@@ -2188,6 +2190,8 @@ export interface EditTitleOptions
   text?: string;
   subtitle?: string | false;
 }
+
+export interface ChartProgram extends RegisteredExtensionActions {}
 
 export class ChartProgram {
   constructor(state?: ActionOptions);

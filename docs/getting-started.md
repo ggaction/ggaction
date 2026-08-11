@@ -115,7 +115,7 @@ created in `index.html`.
 | --- | --- | --- |
 | `ggaction` | Modern ESM browsers and Node.js 20+ | Complete chart authoring and Browser Canvas rendering |
 | `ggaction/basic` | Modern ESM browsers and Node.js 20+ | Smaller creation path for scatter, line, bar, histogram, and heatmap charts |
-| `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped actions and public primitive authoring |
+| `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped action registration and public primitive authoring |
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
 | `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
 | `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |

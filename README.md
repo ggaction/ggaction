@@ -198,7 +198,7 @@ The package is ESM-only and requires Node.js 20 or later.
 | --- | --- |
 | `ggaction` | Create chart programs and render them to Browser Canvas |
 | `ggaction/basic` | Create and render scatter, line, bar, histogram, and heatmap charts with a smaller browser bundle |
-| `ggaction/extension` | Author wrapped actions with public low-level primitives |
+| `ggaction/extension` | Author and register wrapped actions with public low-level primitives |
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
 | `ggaction/pdf` | Render a completed program to a single-page vector PDF file in Node.js |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |

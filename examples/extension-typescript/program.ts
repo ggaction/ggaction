@@ -1,4 +1,5 @@
-import { action, ChartProgram } from "ggaction/extension";
+import { chart } from "ggaction";
+import { action, registerExtension } from "ggaction/extension";
 import type { FillPaint } from "ggaction/extension";
 
 const extensionFill: FillPaint = {
@@ -15,8 +16,6 @@ type SetPointOpacityOptions = Record<string, unknown> & {
   target: string;
   value: number;
 };
-
-class MyProgram extends ChartProgram {}
 
 const setPointOpacityAction = action<SetPointOpacityOptions>(
   {
@@ -45,15 +44,22 @@ const markReadyAction = action(
   }
 );
 
-interface MyProgram {
-  setPointOpacity: typeof setPointOpacityAction;
-  markReady: typeof markReadyAction;
+declare module "ggaction/extension" {
+  interface RegisteredExtensionActions {
+    setPointOpacity: typeof setPointOpacityAction;
+    markReady: typeof markReadyAction;
+  }
 }
 
-MyProgram.prototype.setPointOpacity = setPointOpacityAction;
-MyProgram.prototype.markReady = markReadyAction;
+registerExtension({
+  name: "ggaction-example-extension",
+  actions: {
+    setPointOpacity: setPointOpacityAction,
+    markReady: markReadyAction
+  }
+});
 
-export const extensionProgram = new MyProgram()
+export const extensionProgram = chart()
   .setPointOpacity({ target: "points", value: 0.5 })
   .markReady();
 

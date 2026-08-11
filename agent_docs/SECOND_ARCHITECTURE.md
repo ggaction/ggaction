@@ -68,7 +68,8 @@ Public package
 │  └─ render()
 ├─ ggaction/extension
 │  ├─ ChartProgram
-│  └─ action()
+│  ├─ action()
+│  └─ registerExtension()
 ├─ ggaction/svg
 │  └─ renderToSVG()
 ├─ ggaction/png
@@ -149,10 +150,16 @@ import { chart, render } from "ggaction/basic";
 action author를 위한 public extension boundary다.
 
 ```javascript
-import { action, ChartProgram } from "ggaction/extension";
+import { action, ChartProgram, registerExtension } from "ggaction/extension";
 ```
 
 - `action()`으로 새로운 traceable action을 정의한다.
+- installable package는 import 시 `registerExtension({ name, actions })`을 한 번 호출해
+  full `ChartProgram`에 wrapped action batch를 등록한다.
+- 등록 전 전체 batch의 extension/action 이름, wrapped metadata, built-in·internal·state·기등록
+  collision을 검사하므로 실패 시 일부 method만 남지 않는다. 비충돌 package의 import 순서는
+  결과에 영향을 주지 않는다.
+- 이 등록은 default `chart()`에만 적용되고 `ggaction/basic`에는 적용되지 않는다.
 - `ChartProgram`을 subclass하여 extension action을 격리할 수 있다.
 - `editSemantic`, `createGraphics`, `editGraphics`는 extension action 구현에서 사용할
   수 있는 low-level primitive다.
@@ -2115,6 +2122,11 @@ creation action을 등록하며, full entry의 lifecycle action과 op identity�
 따라서 `core/`는 `actions/`를 import하지 않는다. `grammar/`는 core utility와 다른 pure grammar만,
 `materialization/`은 core/grammar/layout/selectors/theme만 의존한다. 이 방향과 local import cycle
 부재는 source-boundary contract test가 검증한다.
+
+External extension registry는 이 built-in registrar assembly와 분리된다. Public
+`registerExtension()`은 완성된 full `ChartProgram` class만 전달받아 검증된 wrapped action을
+prototype에 원자적으로 추가하며 Basic assembly나 `core/`에서 `actions/`로 향하는 dependency를
+만들지 않는다.
 
 서로 다른 closed vocabulary와 reassignment lifecycle을 가진 encoding은 한 파일에 묶지 않는다.
 예를 들어 color와 stroke-dash는 같은 categorical scale 계열을 일부 공유하더라도 각각 독립된

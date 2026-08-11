@@ -15,6 +15,21 @@ export interface ActionMetadata {
   scope?: "unit" | "composition" | "any";
 }
 
+export interface RegisteredExtensionActions {}
+
+export type RegisteredExtensionAction = (
+  this: ChartProgram,
+  ...args: any[]
+) => ChartProgram;
+
+export interface ExtensionDefinition<
+  TActions extends Readonly<Record<string, RegisteredExtensionAction>> =
+    Readonly<Record<string, RegisteredExtensionAction>>
+> {
+  name: string;
+  actions: TActions;
+}
+
 export function action<TOptions extends ActionOptions = ActionOptions>(
   metadata: ActionMetadata,
   implementation: (this: ChartProgram, options: TOptions) => ChartProgram
@@ -22,3 +37,7 @@ export function action<TOptions extends ActionOptions = ActionOptions>(
   this: TProgram,
   options?: TOptions
 ) => TProgram;
+
+export function registerExtension<
+  TActions extends Readonly<Record<string, RegisteredExtensionAction>>
+>(definition: ExtensionDefinition<TActions>): void;

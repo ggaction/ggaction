@@ -78,7 +78,7 @@ async function testNodeConsumer(directory) {
     import assert from "node:assert/strict";
     import { chart, hconcat, render, vconcat } from "ggaction";
     import { chart as basicChart, render as basicRender } from "ggaction/basic";
-    import { action, ChartProgram } from "ggaction/extension";
+    import { action, ChartProgram, registerExtension } from "ggaction/extension";
     import { renderToPDF } from "ggaction/pdf";
     import { renderToPNG } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
@@ -562,15 +562,6 @@ async function testNodeConsumer(directory) {
     });
     assert.deepEqual(directSequentialCount.semanticSpec, nestedSequentialCount.semanticSpec);
 
-    class ConsumerProgram extends ChartProgram {
-      passthrough(options = {}) {
-        return passthrough.call(this, options);
-      }
-
-      finish(options = {}) {
-        return finish.call(this, options);
-      }
-    }
     const passthrough = action(
       { op: "passthrough", description: "Return one extension program." },
       function () { return this; }
@@ -579,13 +570,18 @@ async function testNodeConsumer(directory) {
       { op: "finish", description: "Chain a second extension action." },
       function () { return this; }
     );
-    const extensionResult = new ConsumerProgram().passthrough().finish();
-    assert.equal(extensionResult instanceof ConsumerProgram, true);
+    registerExtension({
+      name: "ggaction-package-consumer-extension",
+      actions: { passthrough, finish }
+    });
+    const extensionResult = chart().passthrough().finish();
+    assert.equal(extensionResult instanceof ChartProgram, true);
     assert.deepEqual(
       extensionResult.trace.children.map(node => node.op),
       ["passthrough", "finish"]
     );
     assert.deepEqual(extensionResult.actionStack, []);
+    assert.equal(basicChart().passthrough, undefined);
 
     await assert.rejects(() => import("ggaction/src/index.js"), /not defined|not exported/);
   `;
