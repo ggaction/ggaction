@@ -36,7 +36,10 @@ test("routes installed extension agents through current package knowledge", asyn
   assert.match(guide, /decoded pixels/);
   assert.match(guide, /submit only the exact user request/);
   assert.match(guide, /known unsupported capability as terminal/);
-  assert.doesNotMatch(guide, /registerExtension/);
+  assert.match(guide, /registerExtension\(\{ name, actions \}\)/);
+  assert.match(guide, /RegisteredExtensionActions/);
+  assert.match(guide, /never changes `ggaction\/basic`/);
+  assert.match(guide, /without partial changes/);
 });
 
 test("keeps every local extension knowledge link resolvable", async () => {

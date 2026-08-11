@@ -144,9 +144,18 @@ visual contract.
 
 ## Current action-authoring boundary
 
-Import `action` and `ChartProgram` from `ggaction/extension`. Isolate an
-extension by subclassing `ChartProgram`; do not assign independent extension
-methods to the shared base prototype.
+Import `action` and `registerExtension` from `ggaction/extension`. An installable
+extension package defines all methods with `action()` and calls
+`registerExtension({ name, actions })` once when its entry module is imported.
+The package must mark that entry as a side effect so bundlers preserve the
+registration import.
+
+Registration adds actions only to the complete `chart()` program from
+`ggaction`; it never changes `ggaction/basic`. Each action key must equal the
+wrapped action's `op`. Extension names, built-in and internal program names, and
+previously registered action names cannot collide. The complete action map is
+validated before any method is installed, and non-conflicting extension
+packages must work in either import order.
 
 Every wrapped action:
 
@@ -156,10 +165,15 @@ Every wrapped action:
 - returns an instance of the same `ChartProgram` subclass; and
 - leaves a successful result with an empty action stack.
 
-For strict TypeScript, connect each prototype method to its wrapped action type
-through interface declaration merging. Confirm the exact generic and return
-types in the installed [`types/extension.d.ts`](../types/extension.d.ts)
-instead of copying a signature from another version.
+For strict TypeScript, augment `RegisteredExtensionActions` in the
+`ggaction/extension` module with each property typed as its exact wrapped action.
+Confirm the exact generic and return types in the installed
+[`types/extension.d.ts`](../types/extension.d.ts) instead of copying a signature
+from another version.
+
+`ChartProgram` remains available for deliberately isolated local subclasses.
+Do not mutate its shared prototype directly; installable packages use
+`registerExtension()` so registration is checked and composable.
 
 The low-level primitives available through `ChartProgram` are:
 
@@ -181,7 +195,7 @@ feature requires any of the following:
 - a new shared graphic primitive or renderer capability;
 - access to a private or internal action;
 - a change to immutable state, trace, materialization, or renderer boundaries;
-- a new public extension registration or composition mechanism; or
+- a change to the public extension registration or composition mechanism; or
 - behavior that would be duplicated inconsistently across extensions.
 
 Keep that core proposal separate from the extension implementation. Do not hide
@@ -208,7 +222,12 @@ renderer-specific state, or copied internal code.
 For each new public extension action, verify at least:
 
 - the public package entry works from an installed-package consumer;
-- strict TypeScript sees the exact action method and preserves its subclass;
+- importing the package registers every declared action on `chart()` but not
+  `ggaction/basic`;
+- registration rejects collisions and invalid batches without partial changes,
+  and non-conflicting packages work in either import order;
+- strict TypeScript sees the exact registered action methods through
+  `RegisteredExtensionActions`;
 - earlier programs and caller-owned input remain unchanged;
 - semantic and graphic state match the feature specification;
 - the trace has the intended root action and wrapped children;

@@ -13,20 +13,18 @@ title: Action Authoring
   <span>trace subtree<strong>record</strong></span>
 </div>
 
-The extension entry point is for developers adding traceable domain actions.
+The extension entry point is for developers adding traceable domain actions and
+installing them on the complete `chart()` program.
 
 ```javascript
-import { action, ChartProgram } from "ggaction/extension";
+import { action, registerExtension } from "ggaction/extension";
 ```
 
-Subclass `ChartProgram` so independent extensions do not overwrite methods on
-the shared base prototype. In JavaScript, a wrapped action can be assigned to
-that subclass prototype directly.
+Define each method with `action()`, then register the complete package in one
+batch. Registration runs when the extension package is imported.
 
 ```javascript
-class MyProgram extends ChartProgram {}
-
-MyProgram.prototype.setPointOpacity = action(
+const setPointOpacityAction = action(
   {
     op: "setPointOpacity",
     description: "Set the opacity of a point mark."
@@ -39,18 +37,45 @@ MyProgram.prototype.setPointOpacity = action(
     });
   }
 );
+
+registerExtension({
+  name: "ggaction-example-extension",
+  actions: {
+    setPointOpacity: setPointOpacityAction
+  }
+});
 ```
+
+An application imports the extension for its registration side effect before
+creating or using a complete chart program.
+
+```javascript
+import { chart } from "ggaction";
+import "ggaction-example-extension";
+
+const program = chart().setPointOpacity({ target: "points", value: 0.5 });
+```
+
+Registration affects `chart()` from `ggaction`, including programs created
+before the import because methods live on the shared full-program prototype. It
+does not add methods to `ggaction/basic`. An extension package must preserve its
+registration module as a package side effect so bundlers do not remove it.
+
+The entire action map is validated before any method is installed. Extension
+names must be unique, action keys must match their wrapped `op`, and built-in,
+internal, program-state, inherited, or previously registered names cannot be
+overwritten. Non-conflicting packages work in either import order.
 
 ## Strict TypeScript authoring
 
-TypeScript cannot discover a method from runtime prototype assignment alone.
-Use declaration merging to connect each runtime method to the exact wrapped
-action type. The wrapped function preserves the concrete subclass passed as
-`this`, so one custom method can chain into another without a cast or duplicated
-option and return signatures.
+TypeScript cannot discover runtime registration alone. Augment
+`RegisteredExtensionActions` in `ggaction/extension` with each exact wrapped
+action type. This makes registered methods visible on `ChartProgram` without
+duplicating their option signatures.
 
 ```typescript
-import { action, ChartProgram } from "ggaction/extension";
+import { chart } from "ggaction";
+import { action, registerExtension } from "ggaction/extension";
 import type { FillPaint } from "ggaction/extension";
 
 const extensionFill: FillPaint = {
@@ -67,8 +92,6 @@ type SetPointOpacityOptions = Record<string, unknown> & {
   target: string;
   value: number;
 };
-
-class MyProgram extends ChartProgram {}
 
 const setPointOpacityAction = action<SetPointOpacityOptions>(
   {
@@ -97,15 +120,22 @@ const markReadyAction = action(
   }
 );
 
-interface MyProgram {
-  setPointOpacity: typeof setPointOpacityAction;
-  markReady: typeof markReadyAction;
+declare module "ggaction/extension" {
+  interface RegisteredExtensionActions {
+    setPointOpacity: typeof setPointOpacityAction;
+    markReady: typeof markReadyAction;
+  }
 }
 
-MyProgram.prototype.setPointOpacity = setPointOpacityAction;
-MyProgram.prototype.markReady = markReadyAction;
+registerExtension({
+  name: "ggaction-example-extension",
+  actions: {
+    setPointOpacity: setPointOpacityAction,
+    markReady: markReadyAction
+  }
+});
 
-export const extensionProgram = new MyProgram()
+export const extensionProgram = chart()
   .setPointOpacity({ target: "points", value: 0.5 })
   .markReady();
 
@@ -114,18 +144,27 @@ export const extensionPaint = extensionFill;
 
 This exact module is compiled in the installed-package test with `strict: true`,
 NodeNext module resolution, and `skipLibCheck: false`. At runtime both methods
-return `MyProgram`; the trace contains `setPointOpacity` and `markReady` as root
-actions, while the primitive calls remain children of `setPointOpacity`.
+return `ChartProgram`; the trace contains `setPointOpacity` and `markReady` as
+root actions, while the primitive calls remain children of `setPointOpacity`.
+
+## Isolated program classes
+
+`ChartProgram` remains public for local or deliberately isolated program
+classes. A subclass may assign wrapped actions to its own prototype. Installable
+extension packages should use `registerExtension()` so multiple packages can
+compose on the standard `chart()` factory with collision checks.
 
 ## Action contract
 
-- Metadata requires a stable non-empty `op` and `description`.
+- Metadata is snapshotted when `action()` is called and requires a stable
+  non-empty `op` and `description`.
 - Every action accepts one plain option object.
 - The implementation runs with the entered immutable program as `this`.
 - It must return an instance of the same `ChartProgram` class.
 - Wrapped actions called inside it become trace children.
 - Successful completion leaves the returned program's action stack empty.
-- The returned wrapped function preserves the concrete subclass used as `this`.
+- The returned wrapped function preserves the concrete program class used as
+  `this`.
 
 Arguments are summarized before storage in the trace. Arrays become counts, so
 large values are not retained twice. Circular plain-object arguments are

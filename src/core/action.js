@@ -1,5 +1,11 @@
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "./immutable.js";
 
+const metadataByWrappedAction = new WeakMap();
+
+export function getWrappedActionMetadata(value) {
+  return metadataByWrappedAction.get(value);
+}
+
 function summarizeObject(value, ancestors = new WeakSet()) {
   if (ancestors.has(value)) {
     throw new TypeError("Action arguments must not contain circular references.");
@@ -107,24 +113,33 @@ export function action(metadata, implementation) {
     throw new Error(`Unknown action scope "${scope}".`);
   }
 
-  return function wrappedAction(args = {}) {
+  const ownedMetadata = freezeOwned({
+    op: metadata.op,
+    description: metadata.description,
+    scope
+  });
+
+  const wrappedAction = function wrappedAction(args = {}) {
     if (!isPlainObject(args)) {
       throw new TypeError("Action arguments must be a plain object.");
     }
 
-    if (scope === "unit") this._assertUnitProgram(metadata.op);
-    if (scope === "composition") this._assertCompositionProgram(metadata.op);
+    if (scope === "unit") this._assertUnitProgram(ownedMetadata.op);
+    if (scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
 
     const entered = this._enterAction({
-      ...metadata,
+      ...ownedMetadata,
       args: summarizeArgs(args)
     });
     const result = implementation.call(entered, args);
 
     if (!(result instanceof this.constructor)) {
-      throw new TypeError(`${metadata.op} must return a ChartProgram.`);
+      throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
     }
 
     return result._exitAction();
   };
+
+  metadataByWrappedAction.set(wrappedAction, ownedMetadata);
+  return wrappedAction;
 }

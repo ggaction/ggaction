@@ -519,7 +519,7 @@
   },
   "/reference/actions/extension/": {
     "title": "Extension Actions",
-    "description": "Use wrapped actions and low-level semantic, graphic, and scale primitives to extend ggaction."
+    "description": "Register wrapped extension actions and use low-level semantic, graphic, and scale primitives."
   },
   "/reference/runtime/": {
     "title": "Program and Rendering Functions",
@@ -531,7 +531,7 @@
   },
   "/extension/action-authoring/": {
     "title": "Action Authoring",
-    "description": "The extension entry point is for developers adding traceable domain actions."
+    "description": "The extension entry point is for developers adding traceable domain actions and installing them on the complete chart() program."
   },
   "/extension/primitives/": {
     "title": "Primitive API",

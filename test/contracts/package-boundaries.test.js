@@ -22,7 +22,7 @@ const PUBLIC_ENTRIES = Object.freeze({
   "./extension": Object.freeze({
     runtime: "./src/extension.js",
     types: "./types/extension.d.ts",
-    values: Object.freeze(["ChartProgram", "action"])
+    values: Object.freeze(["ChartProgram", "action", "registerExtension"])
   }),
   "./png": Object.freeze({
     runtime: "./src/renderers/png.js",

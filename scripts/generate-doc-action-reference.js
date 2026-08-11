@@ -158,8 +158,8 @@ export async function buildDocActionReference() {
   const extension = h2Section(source, "Extension API", "Internal trace operations");
   outputs.set("reference/actions/extension.md", page({
     title: "Extension Actions",
-    description: "Use wrapped actions and low-level semantic, graphic, and scale primitives to extend ggaction.",
-    introduction: "Import extension-authoring APIs from `ggaction/extension`; ordinary chart authors should prefer chart actions.",
+    description: "Register wrapped extension actions and use low-level semantic, graphic, and scale primitives.",
+    introduction: "Import extension-authoring APIs from `ggaction/extension`; installable packages register on the complete chart program, while ordinary chart authors should prefer chart actions.",
     body: extension.replace(/^## Extension API\n+/, "")
   }));
   for (const name of calls(extension)) {
