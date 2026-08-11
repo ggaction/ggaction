@@ -33,6 +33,7 @@ test("publishes only the bounded public package artifact", () => {
     ["CHANGELOG.md", "LICENSE", "README.md", "package.json"].includes(path) ||
     path.startsWith("src/") || path.startsWith("types/") || [
       "knowledge/action-cards.json",
+      "knowledge/extension-authoring.md",
       "knowledge/intent-taxonomy.json",
       "knowledge/mcp-resources.json",
       "knowledge/task-packet.schema.json",
@@ -56,6 +57,7 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
       "README.md",
       "package.json",
       "knowledge/action-cards.json",
+      "knowledge/extension-authoring.md",
       "knowledge/intent-taxonomy.json",
       "knowledge/mcp-resources.json",
       "knowledge/task-packet.schema.json",

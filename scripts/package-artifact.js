@@ -21,6 +21,7 @@ const REQUIRED_FILES = Object.freeze([
   "README.md",
   "package.json",
   "knowledge/action-cards.json",
+  "knowledge/extension-authoring.md",
   "knowledge/intent-taxonomy.json",
   "knowledge/mcp-resources.json",
   "knowledge/task-packet.schema.json",
@@ -91,6 +92,7 @@ export function validatePackageManifest(manifest) {
       !file.startsWith("types/") &&
       ![
         "knowledge/action-cards.json",
+        "knowledge/extension-authoring.md",
         "knowledge/intent-taxonomy.json",
         "knowledge/mcp-resources.json",
         "knowledge/task-packet.schema.json",
