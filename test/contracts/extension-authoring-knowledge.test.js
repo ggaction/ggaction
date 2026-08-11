@@ -14,9 +14,14 @@ test("routes installed extension agents through current package knowledge", asyn
     "Purpose and authority",
     "Minimum intake",
     "Design from the feature, then the actions",
+    "Freeze the executable design before code",
+    "Composition and ownership",
     "Core model",
+    "Lifecycle and atomic failure",
+    "Primitive oracle and visual acceptance",
     "Current action-authoring boundary",
     "Upstream decision boundary",
+    "LLM working discipline",
     "Required evidence"
   ]) {
     assert.match(guide, new RegExp(`^## ${heading}$`, "m"));
@@ -25,6 +30,12 @@ test("routes installed extension agents through current package knowledge", asyn
   assert.match(guide, /installed ggaction version/);
   assert.match(guide, /action-cards\.json/);
   assert.match(guide, /Do not substitute behavior from the mutable\nGitHub default branch/);
+  assert.match(guide, /shortest complete public program/);
+  assert.match(guide, /one canonical resolver and one canonical state owner/);
+  assert.match(guide, /before returning the first changed program/);
+  assert.match(guide, /decoded pixels/);
+  assert.match(guide, /submit only the exact user request/);
+  assert.match(guide, /known unsupported capability as terminal/);
   assert.doesNotMatch(guide, /registerExtension/);
 });
 

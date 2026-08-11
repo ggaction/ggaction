@@ -51,6 +51,45 @@ data. Derive action boundaries only after that feature contract is clear.
 - Require an explicit resource ID when existing state does not identify one
   unique dataset, mark, scale, coordinate, guide, or graphic.
 
+## Freeze the executable design before code
+
+Before implementation, record one complete vertical slice in the extension
+specification:
+
+- the accepted input forms, canonical domain representation, and deterministic
+  conversions between them;
+- the shortest complete public program that demonstrates the feature;
+- an ordered action hierarchy that distinguishes reused public actions from new
+  extension actions and records conditional children;
+- the canonical owner of every semantic value, derived resource, and graphic;
+  and
+- the expected create, repeat, edit, remove, data-change, and relevant
+  Canvas/scale lifecycle.
+
+Do not begin dependent implementation while the slice still requires an
+unresolved core primitive, renderer capability, semantic path, ownership rule,
+or composition mechanism. Keep that requirement as an explicit upstream
+decision instead of inventing a local substitute.
+
+## Composition and ownership
+
+A high-level extension action must call a reusable public action when that
+action owns the required validation, inference, state, or materialization. Do
+not flatten an action hierarchy into copied validators, name matching, or
+parallel state updates. The parent should remain thin and its meaningful child
+calls should appear in deterministic trace order.
+
+Give each capability one canonical resolver and one canonical state owner.
+Store requested, inferred, and default values where downstream consumers can
+trace them; do not duplicate the same semantic fact in several resources.
+Omitted targets may resolve only from an explicit current owner or one unique
+compatible owner. Missing and ambiguous ownership are different errors, and
+neither permits selecting the first candidate.
+
+Type-checking an action hierarchy is not runtime closure. Exercise the complete
+program with representative data so that every prerequisite, target, derived
+resource, guide, and renderer route is real and connected.
+
 ## Core model
 
 - `ChartProgram` is immutable. Return a new program and preserve earlier
@@ -64,6 +103,44 @@ data. Derive action boundaries only after that feature contract is clear.
   renderer-specific objects or commands.
 - A user-visible extension action should form one meaningful trace subtree.
   Lower-level wrapped calls belong beneath it.
+
+## Lifecycle and atomic failure
+
+Validate a normalized complete candidate and every affected downstream
+consumer before returning the first changed program. A rejected action must
+preserve the earlier program, trace, semantic and graphic state, caller-owned
+options, and source rows.
+
+When a supported semantic revision changes graphical output, the owning action
+must rebind every affected consumer, rematerialize each required resource once,
+and remove only resources that are truly orphaned. Repeated calls must not
+accumulate geometry, duplicate resources, or revive state removed by an earlier
+action. Removal must clear owned semantic, graphic, guide, selection, highlight,
+and convenience context that would otherwise become stale.
+
+If the public extension boundary cannot express a required rebind,
+rematerialization, or safe release, stop at the upstream decision boundary.
+Do not reproduce private lifecycle machinery inside the extension.
+
+## Primitive oracle and visual acceptance
+
+For new visual behavior, first build one readable primitive baseline. Reuse
+existing public data, mark, encoding, scale, guide, layout, and renderer actions;
+use extension primitives only for the behavior that is genuinely missing.
+Keep pure geometry or statistical expectations in an independent literal
+oracle rather than copying the production implementation.
+
+The final public extension program and its primitive baseline must converge on
+the same semantic result, concrete `graphicSpec`, drawing order, and applicable
+renderer calls. For one representative contract, compare decoded pixels when
+the renderer permits deterministic raster evidence. A renderer completing
+without throwing is not sufficient: also assert item cardinality, finite
+geometry, topology, bounds, clipping, and value-to-geometry invariants.
+
+When a feature introduces a new appearance or layout, treat representative
+visual review as a separate acceptance gate. Structural tests cannot decide
+whether spacing, alignment, hierarchy, or readability matches the intended
+visual contract.
 
 ## Current action-authoring boundary
 
@@ -111,6 +188,21 @@ Keep that core proposal separate from the extension implementation. Do not hide
 the missing core contract behind monkey-patching, source-relative imports,
 renderer-specific state, or copied internal code.
 
+## LLM working discipline
+
+- Read the installed compact knowledge needed for the current feature; do not
+  preload complete documentation or copy rules from historical roadmaps.
+- When using the task resolver, submit only the exact user request. Do not add
+  dataset contents or code scaffolding to the query.
+- Make specifications and examples executable without guesswork: include exact
+  public imports, program construction, data and Canvas prerequisites,
+  immutable chaining or reassignment, and the requested renderer call.
+- Treat a known unsupported capability as terminal. Keep a decision that needs
+  user input or a bounded reference read explicitly unresolved; never hide
+  either case behind a nearby action or silent partial output.
+- Keep failure feedback bounded and actionable. Preserve the original failure
+  category while reporting the smallest public correction path.
+
 ## Required evidence
 
 For each new public extension action, verify at least:
@@ -120,6 +212,13 @@ For each new public extension action, verify at least:
 - earlier programs and caller-owned input remain unchanged;
 - semantic and graphic state match the feature specification;
 - the trace has the intended root action and wrapped children;
+- the shortest valid call, boundary values, empty or missing input, invalid
+  input, ambiguity, repeated calls, supported lifecycle changes, and recovery
+  after failure behave explicitly;
+- semantic revisions leave no stale binding, graphic, guide, context, or
+  duplicate resource;
+- a primitive baseline and public extension program satisfy their declared
+  semantic, graphic, order, renderer-call, and representative visual parity;
 - failures are deterministic and explain how to correct invalid or ambiguous
   input; and
 - representative rendering succeeds in every renderer the extension claims to
