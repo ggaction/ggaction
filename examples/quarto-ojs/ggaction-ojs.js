@@ -1,9 +1,9 @@
 import {
   chart,
   render
-} from "https://cdn.jsdelivr.net/npm/ggaction@0.0.9/+esm";
+} from "https://cdn.jsdelivr.net/npm/ggaction@0.0.10/+esm";
 
-export const GGActionVersion = "0.0.9";
+export const GGActionVersion = "0.0.10";
 
 export const chartDescription =
   "Scatterplot of horsepower versus miles per gallon for ten illustrative " +
@@ -153,7 +153,7 @@ export function createChartFigure(program) {
   const caption = element(
     "figcaption",
     { id: "ggaction-chart-caption" },
-    "A responsive Browser Canvas rendering produced by ggaction 0.0.9."
+    "A responsive Browser Canvas rendering produced by ggaction 0.0.10."
   );
 
   figure.append(canvas, caption, createDataTable());

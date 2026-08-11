@@ -4,6 +4,23 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.10] - 2026-08-11
+
+### Added
+
+- Added collision-safe import-time extension registration through
+  `registerExtension({ name, actions })`, including strict TypeScript module
+  augmentation for registered actions on the standard `chart()` program.
+- Added installed extension-authoring knowledge that guides LLM agents through
+  feature-first design, current ggaction reuse, lifecycle ownership, primitive
+  parity, and package-consumer verification.
+
+### Changed
+
+- Updated extension documentation and examples to make installable packages
+  compose through registration while retaining `ChartProgram` subclasses for
+  deliberately isolated programs.
+
 ## [0.0.9] - 2026-08-10
 
 ### Added
@@ -197,6 +214,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
+[0.0.10]: https://github.com/ggaction/ggaction/releases/tag/v0.0.10
 [0.0.9]: https://github.com/ggaction/ggaction/releases/tag/v0.0.9
 [0.0.8]: https://github.com/ggaction/ggaction/releases/tag/v0.0.8
 [0.0.7]: https://github.com/ggaction/ggaction/releases/tag/v0.0.7
