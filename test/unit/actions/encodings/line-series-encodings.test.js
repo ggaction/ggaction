@@ -8,6 +8,32 @@ import {
   createMeanLine,
   lineSeriesRows as rows
 } from "./line-series.fixture.js";
+import { linearPathCommands } from "../../../support/path.js";
+
+test("preserves duplicate x rows in direct quantitative line grain", () => {
+  const program = chart()
+    .createCanvas({ width: 240, height: 160, margin: 20 })
+    .createData({
+      values: [
+        { x: 1, y: 10 },
+        { x: 1, y: 20 },
+        { x: 2, y: 30 }
+      ]
+    })
+    .createLineMark({ id: "trends" })
+    .encodeX({ field: "x", fieldType: "quantitative", scale: { zero: false } })
+    .encodeY({ field: "y", fieldType: "quantitative", scale: { zero: false } });
+
+  assert.deepEqual(program.resolvedScales.y.domain, [10, 30]);
+  assert.deepEqual(
+    program.graphicSpec.objects.trends.items[0].properties.commands,
+    linearPathCommands([
+      { x: 20, y: 140 },
+      { x: 20, y: 80 },
+      { x: 220, y: 20 }
+    ])
+  );
+});
 
 test("encodes nominal line color and materializes one stroke per series", () => {
   const before = createMeanLine();

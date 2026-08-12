@@ -53,6 +53,7 @@ function requireLineEncoding(layer) {
     x,
     y,
     isAggregate: aggregateMode,
+    directRows: directTemporal || directQuantitative,
     directTemporal
   };
 }
@@ -88,7 +89,8 @@ function groupKey(values) {
 }
 
 function deriveCartesianLineSeries(rows, layer) {
-  const { x, y, isAggregate, directTemporal } = requireLineEncoding(layer);
+  const { x, y, isAggregate, directRows, directTemporal } =
+    requireLineEncoding(layer);
   if (isAggregate) {
     validateAggregateFieldValues(rows, y.field, y.fieldType);
   }
@@ -147,7 +149,7 @@ function deriveCartesianLineSeries(rows, layer) {
     });
   }
 
-  if (directTemporal) {
+  if (directRows) {
     const groups = new Map();
     for (let index = 0; index < rows.length; index += 1) {
       const dimensions = seriesFields.fields.map(
@@ -163,7 +165,7 @@ function deriveCartesianLineSeries(rows, layer) {
       series.values.push({ x: xValues[index], y: yValues[index] });
       groups.set(key, series);
     }
-    const orderBy = x.fieldType === "temporal" ? "x" : "y";
+    const orderBy = directTemporal && y.fieldType === "temporal" ? "y" : "x";
     const series = [...groups.values()].flatMap(item => {
       const values = item.values.sort(
         (left, right) => left[orderBy] - right[orderBy]

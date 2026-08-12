@@ -192,7 +192,9 @@ type AggregateOperation =
 - Effect: y semantic, scale, final bar/line aggregate grain을 저장하고 mark geometry와
   existing guides를 rematerialize한다.
 - Line order independence: direct quantitative line은 x가 아직 없어도 y semantic과 scale을 저장하고,
-  compatible x가 완성되면 x→y와 동일한 final line을 materialize한다. Aggregate y는 temporal x와 함께만
+  compatible x가 완성되면 x→y와 동일한 final line을 materialize한다. Complete direct quantitative pair는
+  row grain을 보존하고 x ascending/source-order tie로 정렬하며 같은 x의 y를 암묵적으로 합계 내지 않는다.
+  따라서 concrete path와 automatic y domain은 항상 같은 row values를 사용한다. Aggregate y는 temporal x와 함께만
   final grain을 만들며 incompatible quantitative x completion은 명시적 validation error다.
 - Layered rule datum: inherited position provenance가 있는 rule에 datum y를 작성하면 secondary endpoint가
   없는 경우 inherited x branch만 제거해 horizontal full-span을 만든다. Explicit data나 field y는 이 정리를

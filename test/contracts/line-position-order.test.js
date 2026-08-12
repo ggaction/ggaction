@@ -55,7 +55,7 @@ test("converges for quantitative x then y and y then x", () => {
   assert.deepEqual(orderedScales(xThenY), orderedScales(yThenX));
   assert.deepEqual(xThenY.resolvedScales, yThenX.resolvedScales);
   assert.deepEqual(xThenY.graphicSpec, yThenX.graphicSpec);
-  assert.equal(xThenY.graphicSpec.objects.line.items[0].properties.commands.length, 2);
+  assert.equal(xThenY.graphicSpec.objects.line.items[0].properties.commands.length, 4);
   assert.deepEqual(initial.semanticSpec.layers[0].encoding, undefined);
   assert.deepEqual(initial.graphicSpec.objects.line.items, []);
   assert.deepEqual(rows, [

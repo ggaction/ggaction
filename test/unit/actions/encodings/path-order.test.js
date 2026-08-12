@@ -45,7 +45,7 @@ test("stores explicit order and preserves every grouped line row", () => {
     automatic.graphicSpec.objects.paths.items.map(item =>
       item.properties.commands.length
     ),
-    [2, 2]
+    [3, 2]
   );
   assert.deepEqual(
     ordered.graphicSpec.objects.paths.items.map(item =>
