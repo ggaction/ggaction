@@ -1569,6 +1569,10 @@ immutable snapshot으로 고정한다. Equivalent-step 판정은 object key 작�
 
 Encoding planner에서 point는 scale → mark, line/bar/rect/rule은 mark, shared-color area는 같은 scale의
 모든 area mark를 declaration order로 계획하고, 존재하는 legend를 마지막에 계획한다.
+새 position encoding이 기존 automatic scale을 공유하면 새 consumer가 scale domain을 확장할 수 있으므로,
+target mark의 기본 materialization step 뒤에 같은 position scale을 사용하는 모든 기존 complete sibling mark를
+declaration order로 rematerialize한다. 따라서 error band, interval boundary 또는 다른 overlay가 추가되어도 먼저
+그려진 source mark가 이전 scale domain의 concrete 좌표를 유지하지 않는다.
 
 Rect는 bar와 별도 semantic owner다. 두 categorical band position은 observed row마다 full-band cell을 만들고,
 continuous/temporal x/x2 및 y/y2 pair는 두 endpoint를 normalized concrete bounds로 만든다. Aggregate, baseline,

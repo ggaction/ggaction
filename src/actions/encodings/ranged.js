@@ -11,7 +11,8 @@ import {
 import { normalizeRuleDatum } from "../../grammar/rules.js";
 import {
   canMaterializeArea,
-  canMaterializeLine
+  canMaterializeLine,
+  getPositionEncodingMaterializationSteps
 } from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
@@ -150,16 +151,17 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
     .editSemantic({
       property: `layer[${target}].encoding.${channel}.scale`,
       value: primary.scale
-    })
-    .rematerializeScale({ id: primary.scale });
-  if (rule) return next.rematerializeRuleMark({ id: target });
-  return layer.mark.type === "bar"
-    ? next.rematerializeBarMark({ id: target })
-    : layer.mark.type === "rect"
-      ? next.rematerializeRectMark({ id: target })
-      : canMaterializeArea(next, findLayer(next, target))
-        ? next.rematerializeAreaMark({ id: target })
-        : next;
+    });
+
+  const updated = findLayer(next, target);
+  for (const step of getPositionEncodingMaterializationSteps(
+    next,
+    updated,
+    primary.scale
+  )) {
+    next = next[step.op](step.args);
+  }
+  return next;
 }
 
 const encodeX2 = action(

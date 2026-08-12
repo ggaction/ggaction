@@ -97,6 +97,43 @@ test("infers the source layer, channels, scales, coordinate, and grouping", () =
   assert.equal(band.encoding.group.field, "cluster");
 });
 
+test("rematerializes an existing source line after inherited interval bounds expand its shared scale", () => {
+  const base = chart()
+    .createCanvas(canvas)
+    .createData({ values: loadCars() })
+    .createLineMark({ id: "trend" })
+    .encodeX({
+      target: "trend",
+      field: "Year",
+      fieldType: "temporal",
+      scale: { id: "shared-x", type: "time" }
+    })
+    .encodeY({
+      target: "trend",
+      field: "Miles_per_Gallon",
+      aggregate: "mean",
+      scale: { id: "shared-y", zero: false }
+    });
+  const withBand = base.createErrorBand({ target: "trend" });
+  const explicitlyRefreshed = withBand
+    .rematerializeScale({ id: "shared-y", marks: false })
+    .rematerializeAreaMark({ id: "errorBand" })
+    .rematerializeLineMark({ id: "trend" });
+
+  assert.notDeepEqual(
+    withBand.resolvedScales["shared-y"].domain,
+    base.resolvedScales["shared-y"].domain
+  );
+  assert.notDeepEqual(
+    withBand.graphicSpec.objects.trend,
+    base.graphicSpec.objects.trend
+  );
+  assert.deepEqual(
+    withBand.graphicSpec.objects.trend,
+    explicitlyRefreshed.graphicSpec.objects.trend
+  );
+});
+
 test("explicit and statistical rows converge on the same concrete band", () => {
   const statistical = directBand();
   const rows = statistical.semanticSpec.datasets.at(-1).values;

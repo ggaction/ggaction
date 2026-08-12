@@ -121,7 +121,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   defaults. This preserves layered source scales during regression delegation.
 - With omitted channels, source selection is explicit `target` → current eligible encoded layer → unique eligible
   encoded layer → error. The action reuses that layer's data, coordinate, compatible scales, and explicit `group`
-  encoding. Two quantitative source axes are ambiguous until an interval option identifies one axis.
+  encoding. Adding inherited interval bounds to an automatic shared position scale rematerializes the existing
+  source mark and every other complete position consumer after the scale domain expands. Two quantitative source
+  axes are ambiguous until an interval option identifies one axis.
 - Omitted `id` resolves once to `"errorBand"`; statistical data is namespaced as
   `errorBandIntervalData`. The aggregate calls wrapped `createAreaMark`, independent position encoding, atomic
   `encodeYRange` or `encodeXRange`, and optional `encodeGroup`. It does not duplicate field-driven color; call
@@ -156,7 +158,8 @@ without naming generated child layers.
 - ✅ Covered: direct Gapminder temporal-x statistical mode, default mean/CI/0.95, grouped first-appearance paths,
   exact primitive/public semantic-graphic-Canvas/pixel equivalence, and existing color/legend composition.
 - ✅ Covered: source-layer data/coordinate/scale/group inference, vertical and horizontal statistical/explicit
-  rows, horizontal x/x2 overlay-color composition, deterministic ID ownership and ambiguous quantitative roles.
+  rows, source-line rematerialization after inherited shared-domain expansion, horizontal x/x2 overlay-color
+  composition, deterministic ID ownership and ambiguous quantitative roles.
 - ✅ Covered: atomic y/y2 and x/x2 reassignment, temporal area materialization, lower/upper boundary order,
   quantitative/temporal direct boundary positions, basic stroke/width defaults and overrides, Canvas
   rematerialization, validation failure and immutability.

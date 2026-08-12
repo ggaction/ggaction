@@ -42,14 +42,34 @@ export function getSourceDependentMarkSteps(program, sourceId) {
 export function getPositionEncodingMaterializationSteps(program, layer, scaleId) {
   const policy = getMarkMaterializationPolicy(layer);
   if (policy === undefined) return [];
-  const scale = { op: "rematerializeScale", args: { id: scaleId } };
   const complete = policy.canMaterialize(program, layer);
   const mark = getMarkRematerializationStep(layer);
+  const sharedConsumerMarks = (program.semanticSpec.layers ?? [])
+    .filter(candidate =>
+      candidate.id !== layer.id &&
+      POSITION_CHANNELS.some(channel =>
+        candidate.encoding?.[channel]?.scale === scaleId
+      )
+    )
+    .map(candidate => getMarkMaterializationStep(program, candidate))
+    .filter(step => step !== undefined);
+  const scale = {
+    op: "rematerializeScale",
+    args: sharedConsumerMarks.length === 0
+      ? { id: scaleId }
+      : { id: scaleId, marks: false }
+  };
   if (!complete) {
-    if (policy.positionEncoding.incomplete === "scale") return [scale];
-    return policy.positionEncoding.scaleFirst ? [scale, mark] : [mark];
+    if (policy.positionEncoding.incomplete === "scale") {
+      return [scale, ...sharedConsumerMarks];
+    }
+    return policy.positionEncoding.scaleFirst
+      ? [scale, mark, ...sharedConsumerMarks]
+      : [mark, ...sharedConsumerMarks];
   }
-  return policy.positionEncoding.scaleFirst ? [scale, mark] : [mark];
+  return policy.positionEncoding.scaleFirst
+    ? [scale, mark, ...sharedConsumerMarks]
+    : [mark, ...sharedConsumerMarks];
 }
 
 export function getScaleConsumerMaterializationMode(layer, channel) {
