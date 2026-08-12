@@ -76,6 +76,7 @@ export function resolvePositionedLineMaterialization({
   rows,
   layer,
   resolvedScales,
+  xBinBoundaries,
   bounds,
   config,
   existingChildren,
@@ -86,11 +87,12 @@ export function resolvePositionedLineMaterialization({
   const yScaleId = layer.encoding?.y?.scale;
   const thetaScaleId = layer.encoding?.theta?.scale;
   const radiusScaleId = layer.encoding?.radius?.scale;
-  const derived = deriveLineSeries(
-    rows,
-    layer,
-    polar ? { thetaDomain: resolvedScales[thetaScaleId].domain } : undefined
-  );
+  const lineOptions = polar
+    ? { thetaDomain: resolvedScales[thetaScaleId].domain }
+    : layer.encoding?.x?.bin === undefined
+      ? undefined
+      : { xBinBoundaries };
+  const derived = deriveLineSeries(rows, layer, lineOptions);
   const commands = polar
     ? derived.series.map(series => buildPolarLinePathCommands({
         series: series.values,

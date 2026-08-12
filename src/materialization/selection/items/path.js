@@ -3,8 +3,12 @@ import {
   deriveAreaSeries,
   deriveDensityAreaSeries
 } from "../../../grammar/areaSeries.js";
-import { deriveLineSeries } from "../../../grammar/lineSeries.js";
+import {
+  deriveLineSeries,
+  resolveLineBins
+} from "../../../grammar/lineSeries.js";
 import { findUpstreamTransform } from "../../dataProvenance.js";
+import { requireSemanticScale } from "../../../selectors/scales.js";
 import {
   channelMapFromRow,
   finalizeItems,
@@ -61,7 +65,20 @@ export function resolveLineItems(program, layer, dataset) {
     });
     return finalizeItems(program, layer, "row", definitions, "path");
   }
-  const derived = deriveLineSeries(dataset.values, layer);
+  const x = layer.encoding?.x;
+  const derived = deriveLineSeries(
+    dataset.values,
+    layer,
+    x?.bin === undefined
+      ? undefined
+      : {
+          xBinBoundaries: resolveLineBins(
+            dataset.values,
+            layer,
+            requireSemanticScale(program, x.scale)
+          ).boundaries
+        }
+  );
   return finalizeItems(
     program,
     layer,

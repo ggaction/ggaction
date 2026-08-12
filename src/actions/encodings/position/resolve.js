@@ -169,6 +169,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
         : fieldType === "temporal"
           ? { nice: true }
           : { discreteType: "band" }
+      : layer.mark.type === "line" && channel === "x" && policy.bin !== undefined
+        ? { nice: true, zero: false }
       : ["ordinal", "nominal"].includes(fieldType)
         ? {
             discreteType: ["arc", "rect"].includes(layer.mark.type)

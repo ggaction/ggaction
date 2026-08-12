@@ -85,7 +85,7 @@ test("does not reinterpret a quantitative x partial as an aggregate line", () =>
 
   assert.throws(
     () => partial.encodeY({ field: "y", aggregate: "mean", target: "line" }),
-    /requires a temporal x encoding/
+    /requires a temporal or binned quantitative x encoding/
   );
   assert.equal(JSON.stringify(partial), before);
 });

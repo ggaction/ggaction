@@ -176,7 +176,7 @@ test("creates aggregate temporal lines and preserves child validation", () => {
       y: { field: "y", aggregate: "mean" },
       guides: false
     }),
-    /Aggregate line y encoding requires a temporal x encoding/
+    /Aggregate line y encoding requires a temporal or binned quantitative x encoding/
   );
   assert.equal(source.semanticSpec.layers.length, 0);
 });

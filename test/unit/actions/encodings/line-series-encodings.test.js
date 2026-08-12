@@ -35,6 +35,85 @@ test("preserves duplicate x rows in direct quantitative line grain", () => {
   );
 });
 
+test("bins quantitative x and aggregates y at the same line grain", () => {
+  const values = [
+    { x: 0, y: 0 },
+    { x: 1, y: 2 },
+    { x: 2, y: 10 },
+    { x: 3, y: 14 },
+    { x: 4, y: 20 },
+    { x: 5, y: 30 }
+  ];
+  const base = chart()
+    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createData({ values })
+    .createLineMark({ id: "trends" });
+  const xThenY = base
+    .encodeX({
+      target: "trends",
+      field: "x",
+      fieldType: "quantitative",
+      bin: { maxBins: 3 }
+    })
+    .encodeY({
+      target: "trends",
+      field: "y",
+      fieldType: "quantitative",
+      aggregate: "mean"
+    });
+  const yThenX = base
+    .encodeY({
+      target: "trends",
+      field: "y",
+      fieldType: "quantitative",
+      aggregate: "mean"
+    })
+    .encodeX({
+      target: "trends",
+      field: "x",
+      fieldType: "quantitative",
+      bin: { maxBins: 3 }
+    });
+
+  assert.deepEqual(xThenY.semanticSpec.layers, yThenX.semanticSpec.layers);
+  assert.deepEqual(
+    [...xThenY.semanticSpec.scales].sort((left, right) => left.id.localeCompare(right.id)),
+    [...yThenX.semanticSpec.scales].sort((left, right) => left.id.localeCompare(right.id))
+  );
+  assert.deepEqual(xThenY.resolvedScales, yThenX.resolvedScales);
+  assert.deepEqual(xThenY.graphicSpec, yThenX.graphicSpec);
+  assert.deepEqual(xThenY.resolvedScales.x.domain, [0, 6]);
+  assert.deepEqual(xThenY.resolvedScales.y.domain, [1, 25]);
+  assert.deepEqual(
+    xThenY.graphicSpec.objects.trends.items[0].properties.commands,
+    linearPathCommands([
+      { x: 63.33333333333333, y: 180 },
+      { x: 150, y: 106.66666666666667 },
+      { x: 236.66666666666669, y: 20 }
+    ])
+  );
+});
+
+test("rejects incomplete direct and binned line grain combinations", () => {
+  const base = chart()
+    .createCanvas()
+    .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+    .createLineMark({ id: "trends" });
+
+  assert.throws(
+    () => base
+      .encodeX({ target: "trends", field: "x", bin: { maxBins: 5 } })
+      .encodeY({ target: "trends", field: "y" }),
+    /Binned line x encoding requires an aggregate y encoding/
+  );
+  assert.throws(
+    () => base
+      .encodeY({ target: "trends", field: "y" })
+      .encodeX({ target: "trends", field: "x", bin: { maxBins: 5 } }),
+    /Binned line x encoding requires an aggregate y encoding/
+  );
+});
+
 test("encodes nominal line color and materializes one stroke per series", () => {
   const before = createMeanLine();
   const program = before.encodeColor({

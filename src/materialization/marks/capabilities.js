@@ -59,7 +59,10 @@ export function canMaterializeLine(program, layer) {
   return (
     layer.mark?.type === "line" &&
     hasCartesianPositionScales(layer) &&
-    (isAggregate(layer.encoding.y.aggregate) ||
+    ((isAggregate(layer.encoding.y.aggregate) &&
+      (layer.encoding.x.fieldType === "temporal" ||
+        (layer.encoding.x.fieldType === "quantitative" &&
+          layer.encoding.x.bin !== undefined))) ||
       (layer.encoding.x.fieldType === "quantitative" &&
         layer.encoding.y.fieldType === "quantitative") ||
       ((interval || layer.encoding.y.aggregate === undefined) &&

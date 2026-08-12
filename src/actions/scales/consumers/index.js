@@ -35,7 +35,7 @@ export function resolveConsumerValues(program, consumer) {
   if (isDirectCategoricalConsumer(consumer)) {
     return readConsumerFieldValues(program, consumer, dataset, scale);
   }
-  const family = resolveMarkFamilyConsumerValues(consumer, dataset);
+  const family = resolveMarkFamilyConsumerValues(program, consumer, dataset);
   return family.matched
     ? family.values
     : readConsumerFieldValues(program, consumer, dataset, scale);

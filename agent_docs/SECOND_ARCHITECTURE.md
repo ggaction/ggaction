@@ -696,6 +696,12 @@ category band 안의 grouped-bar sub-band를 표현한다. Primary positional en
 field 또는 transform provenance에서 추론되는 guide title을 명시적으로 덮어쓰는 semantic text다.
 Guide materializer는 이 값을 가장 먼저 읽으며 renderer가 title을 다시 추론하지 않는다.
 
+Quantitative-x aggregate line은 `encoding.x.bin`이 final row grain을 소유한다. Scale materialization이
+semantic x scale policy로 하나의 resolved boundary set을 만들고, line grammar는 bin midpoint와 series key로
+rows를 partition한 뒤 y aggregate를 계산한다. Automatic x domain, aggregate y domain, concrete path와
+selection series는 이 동일한 boundary set을 소비한다. Bin 없는 direct quantitative line은 row grain을
+보존하며 repeated x를 암묵적으로 합치지 않는다.
+
 첫 path-order 범위는 raw 또는 row-preserving data를 소비하는 ordinary Cartesian line과 ranged area다. Aggregate
 line, Polar line, density/error/regression 같은 generated path와 non-row-preserving transform은 topology owner가
 다르므로 assignment 전에 거부한다. Action은 x/y가 아직 incomplete일 때 semantic intent만 저장할 수 있으며,
@@ -741,6 +747,9 @@ bandwidth를 resolved state에 저장한다. Channel default ID는 일반적으�
 같은 scale ID를 참조하는 consumer는 domain과 range를 공유한다. 현재 하나의 scale은
 하나의 channel 역할에서만 공유할 수 있으며 x와 y를 동시에 설명할 수 없다. 모든
 consumer의 값이 combined domain 계산에 참여한다.
+Binned x scale은 연결된 bar/line consumer가 모두 binned이고 동일한 bin definition을 가질 때만 공유한다.
+Resolved boundary endpoint가 x domain을, 동일 boundary의 midpoint aggregate가 line geometry와 y domain을
+결정하므로 scale과 mark가 서로 다른 grain을 계산하지 않는다.
 Temporal aggregate bar가 소유하는 bandwidth는 scale identity가 아니라 bar layout policy다. 같은 temporal
 field를 소비하는 compatible line은 bar center range를 공유해 vertex를 정확히 center에 놓되 bandwidth를
 소유하지 않는다. 다른 field meaning이나 incompatible consumer가 같은 scale에 연결되면 materialization

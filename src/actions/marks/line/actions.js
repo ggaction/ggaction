@@ -28,6 +28,8 @@ import {
   resolveParallelLineMaterialization,
   resolvePositionedLineMaterialization
 } from "./materialize.js";
+import { resolveLineBins } from "../../../grammar/lineSeries.js";
+import { requireSemanticScale } from "../../../selectors/scales.js";
 
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
@@ -280,6 +282,13 @@ const rematerializeLineMark = action(
       rows: dataset.values,
       layer,
       resolvedScales: resolved.resolvedScales,
+      xBinBoundaries: layer.encoding?.x?.bin === undefined
+        ? undefined
+        : resolveLineBins(
+            dataset.values,
+            layer,
+            requireSemanticScale(resolved, xScaleId)
+          ).boundaries,
       bounds: resolveGraphicBounds(resolved),
       config,
       existingChildren,

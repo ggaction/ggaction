@@ -2,14 +2,17 @@ import {
   validateAggregate,
   validateAggregateFieldType
 } from "../../../../grammar/aggregate.js";
-import { emptyPositionPolicy } from "./common.js";
+import { emptyPositionPolicy, resolveBin } from "./common.js";
 
-function rejectSharedOptions(args, channel) {
-  if (args.bin !== undefined) {
-    throw new Error(`Line ${channel} encoding does not support bin.`);
-  }
+function rejectStack(args, channel) {
   if (args.stack !== undefined) {
     throw new Error(`Line ${channel} encoding does not support stack.`);
+  }
+}
+
+function rejectBin(args, channel) {
+  if (args.bin !== undefined) {
+    throw new Error(`Line ${channel} encoding does not support bin.`);
   }
 }
 
@@ -27,7 +30,8 @@ export function resolveLinePositionPolicy({
     if (config.curve !== undefined && config.curve !== "linear") {
       throw new Error("Polar line position currently requires curve \"linear\".");
     }
-    rejectSharedOptions(args, channel);
+    rejectBin(args, channel);
+    rejectStack(args, channel);
     if (args.aggregate !== undefined) {
       throw new Error(`Line ${channel} encoding does not support aggregate.`);
     }
@@ -44,6 +48,26 @@ export function resolveLinePositionPolicy({
   );
 
   if (channel === "x") {
+    rejectStack(args, "x");
+    if (args.aggregate !== undefined) {
+      throw new Error("Line x encoding does not support aggregate.");
+    }
+    if (args.bin !== undefined) {
+      if (fieldType !== "quantitative") {
+        throw new Error("Binned line x encoding requires a quantitative field.");
+      }
+      if (
+        layer.encoding?.y !== undefined &&
+        layer.encoding.y.aggregate === undefined
+      ) {
+        throw new Error("Binned line x encoding requires an aggregate y encoding.");
+      }
+      return {
+        bin: resolveBin(args.bin),
+        aggregate: undefined,
+        stack: undefined
+      };
+    }
     const directPair =
       layer.encoding?.y?.aggregate === undefined &&
       ["quantitative", "temporal"].includes(layer.encoding?.y?.fieldType) &&
@@ -61,17 +85,18 @@ export function resolveLinePositionPolicy({
         "Line x encoding requires a temporal field or a compatible derived quantitative field."
       );
     }
-    if (args.aggregate !== undefined) {
-      throw new Error("Line x encoding does not support aggregate.");
-    }
-    rejectSharedOptions(args, "x");
     return emptyPositionPolicy();
   }
 
-  rejectSharedOptions(args, "y");
+  rejectBin(args, "y");
+  rejectStack(args, "y");
+  if (layer.encoding?.x?.bin !== undefined && args.aggregate === undefined) {
+    throw new Error("Binned line x encoding requires an aggregate y encoding.");
+  }
   const quantitativePair =
     fieldType === "quantitative" &&
-    layer.encoding?.x?.fieldType === "quantitative";
+    layer.encoding?.x?.fieldType === "quantitative" &&
+    layer.encoding.x.bin === undefined;
   const prospectiveDirect =
     args.aggregate === undefined &&
     (fieldType === "temporal" ||
@@ -98,11 +123,16 @@ export function resolveLinePositionPolicy({
     return emptyPositionPolicy();
   }
 
-  if (
-    layer.encoding?.x !== undefined &&
-    layer.encoding.x.fieldType !== "temporal"
-  ) {
-    throw new Error("Aggregate line y encoding requires a temporal x encoding.");
+  if (layer.encoding?.x !== undefined) {
+    const compatibleAggregateX =
+      layer.encoding.x.fieldType === "temporal" ||
+      (layer.encoding.x.fieldType === "quantitative" &&
+        layer.encoding.x.bin !== undefined);
+    if (!compatibleAggregateX) {
+      throw new Error(
+        "Aggregate line y encoding requires a temporal or binned quantitative x encoding."
+      );
+    }
   }
 
   const aggregate = validateAggregate(args.aggregate);

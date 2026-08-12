@@ -76,18 +76,19 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `scale`: Implemented. 위 shared contract를 사용한다. 기본 ID는 `x`, auto range는 left-to-right plot bounds다.
 - `coordinate`: Implemented, coordinate ID. 생략 시 positional action이 Cartesian `main` coordinate를
   만들거나 existing compatible coordinate를 사용하고 layer에 저장한다.
-- `bin`: Implemented for quantitative bar x. `{ maxBins?: PositiveInteger }`,
+- `bin`: Implemented for quantitative bar x and quantitative-x aggregate line. `{ maxBins?: PositiveInteger }`,
   `{ step: PositiveFinite }`, `{ boundaries: readonly [Finite, Finite, ...Finite[]] }` 중 하나다.
-  생략된 maxBins default는 `10`; 세 mode는 mutually exclusive이며 bin boundaries와 bar x/width를
-  결정한다.
+  생략된 maxBins default는 `10`; 세 mode는 mutually exclusive이며 bin boundaries와 bar x/width 또는
+  line midpoint/aggregate grain을 결정한다.
 - `aggregate`, `stack`: Horizontal bar의 quantitative x measure에 사용한다. Binned histogram x와
   category x에서는 거부된다.
 - Effect: x encoding과 scale을 semantic state에 저장하고 scale 및 compatible mark/guide consumers를
   rematerialize한다.
 - Line order independence: direct quantitative line은 y가 아직 없어도 x semantic과 scale을 저장한다.
   `encodeY`가 compatible quantitative pair를 완성할 때 materialize하며 y→x와 동일한 final
-  layer/resolved scale/graphic을 만든다. Aggregate y line은 temporal x를 요구하며 incompatible
-  quantitative x completion을 명시적으로 거부한다.
+  layer/resolved scale/graphic을 만든다. Aggregate y line은 temporal x 또는 binned quantitative x를
+  요구한다. Binned x는 각 resolved bin midpoint를 vertex로 사용하고 y aggregate를 bin 및 series grain에서
+  계산하며 path, x domain과 y domain은 하나의 boundary set을 공유한다.
 - Layered rule datum: inherited position provenance가 있는 rule에 datum x를 작성하면 secondary endpoint가
   없는 경우 inherited y branch만 제거해 vertical full-span을 만든다. Explicit data나 field x는 이 정리를
   적용하지 않는다.
@@ -119,7 +120,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   - ✅ Covered: omission is the only supported x aggregate mode and bounded incompatible aggregate cases reject
     before state changes; exhaustive operation repetition adds no distinct policy branch.
 - `bin`
-  - ✅ Covered: default via histogram, representative positive integer, invalid integer/value.
+  - ✅ Covered: default via histogram, representative positive integer, invalid integer/value와
+    quantitative-x line bin/aggregate grain 및 action-order convergence.
   - ✅ Covered: exact step, negative/positive constant, zero policy, irregular boundaries, half-open/final-upper
     assignment, empty-bin omission, exclusivity와 explicit-domain conflicts.
   - ✅ Covered: exact minimum `1`, representative/default values and invalid integer classes; unbounded performance
@@ -194,8 +196,9 @@ type AggregateOperation =
 - Line order independence: direct quantitative line은 x가 아직 없어도 y semantic과 scale을 저장하고,
   compatible x가 완성되면 x→y와 동일한 final line을 materialize한다. Complete direct quantitative pair는
   row grain을 보존하고 x ascending/source-order tie로 정렬하며 같은 x의 y를 암묵적으로 합계 내지 않는다.
-  따라서 concrete path와 automatic y domain은 항상 같은 row values를 사용한다. Aggregate y는 temporal x와 함께만
-  final grain을 만들며 incompatible quantitative x completion은 명시적 validation error다.
+  따라서 concrete path와 automatic y domain은 항상 같은 row values를 사용한다. Aggregate y는 temporal x 또는
+  binned quantitative x와 함께 final grain을 만든다. Latter는 resolved bin별 summary와 midpoint vertex를 만들고,
+  unbinned quantitative x와 aggregate y 조합은 명시적 validation error다.
 - Layered rule datum: inherited position provenance가 있는 rule에 datum y를 작성하면 secondary endpoint가
   없는 경우 inherited x branch만 제거해 horizontal full-span을 만든다. Explicit data나 field y는 이 정리를
   적용하지 않는다.

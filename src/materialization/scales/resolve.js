@@ -28,10 +28,10 @@ import {
 } from "../../grammar/scales/index.js";
 import { resolveArcAutoPositionRange } from "./policies/arc.js";
 import {
-  resolveBinnedBarDomain,
   resolveOffsetScalePolicy,
   resolveTemporalBarBand
 } from "./policies/bar.js";
+import { resolveBinnedPositionDomain } from "./policies/binnedPosition.js";
 import { resolveSeriesLayoutDomain } from "./policies/series.js";
 import { OFFSET_POSITION_CHANNELS } from "../../core/vocabulary.js";
 
@@ -223,7 +223,7 @@ export function resolveScaleMaterialization({
   }
   const binnedDomain = isDiscretizedColor
     ? undefined
-    : resolveBinnedBarDomain({
+    : resolveBinnedPositionDomain({
         valuesByConsumer,
         channel,
         scale,

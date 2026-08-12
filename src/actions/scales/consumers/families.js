@@ -5,14 +5,27 @@ import {
 } from "../../../grammar/bars/policy.js";
 import {
   deriveLineSeries,
-  deriveLineSeriesFieldValues
+  deriveLineSeriesFieldValues,
+  resolveLineBins
 } from "../../../grammar/lineSeries.js";
 import { isAggregate } from "../../../grammar/aggregate.js";
 import {
   resolveRectConsumerValues
 } from "../../../materialization/rect.js";
+import { findScale } from "./common.js";
 
-export function resolveMarkFamilyConsumerValues(consumer, dataset) {
+function lineDerivationOptions(program, consumer, dataset) {
+  const x = consumer.layer.encoding?.x;
+  if (x?.bin === undefined) return undefined;
+  const bins = resolveLineBins(
+    dataset.values,
+    consumer.layer,
+    findScale(program, x.scale)
+  );
+  return { xBinBoundaries: bins.boundaries };
+}
+
+export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {
   if (consumer.layer.mark?.type === "rect") {
     return {
       matched: true,
@@ -25,10 +38,17 @@ export function resolveMarkFamilyConsumerValues(consumer, dataset) {
   }
   if (
     consumer.layer.mark?.type === "line" &&
-    (isAggregate(consumer.layer.encoding?.y?.aggregate) ||
+    ((consumer.layer.encoding?.x !== undefined &&
+      isAggregate(consumer.layer.encoding?.y?.aggregate) &&
+      !(consumer.channel === "x" &&
+        consumer.layer.encoding?.x?.bin !== undefined)) ||
       consumer.channel === "strokeWidth")
   ) {
-    const derived = deriveLineSeries(dataset.values, consumer.layer);
+    const derived = deriveLineSeries(
+      dataset.values,
+      consumer.layer,
+      lineDerivationOptions(program, consumer, dataset)
+    );
     return {
       matched: true,
       values: consumer.channel === "strokeWidth"

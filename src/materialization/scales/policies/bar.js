@@ -4,41 +4,6 @@ import {
   resolveBarChannels,
   resolveBarGrain
 } from "../../../grammar/bars/policy.js";
-import { resolveHistogramBins } from "../../../grammar/histogram.js";
-
-export function resolveBinnedBarDomain({
-  valuesByConsumer,
-  channel,
-  scale,
-  id,
-  allValues
-}) {
-  const binnedBars = valuesByConsumer.filter(
-    ({ consumer }) =>
-      consumer.layer.mark?.type === "bar" &&
-      consumer.encoding.bin !== undefined
-  );
-  if (binnedBars.length === 0) return undefined;
-  if (channel !== "x" || binnedBars.length !== valuesByConsumer.length) {
-    throw new Error(
-      `Binned scale "${id}" cannot be shared with an unbinned consumer.`
-    );
-  }
-  const binDefinitions = new Set(
-    binnedBars.map(({ consumer }) => JSON.stringify(consumer.encoding.bin))
-  );
-  if (binDefinitions.size !== 1) {
-    throw new Error(`Binned scale "${id}" requires one shared bin definition.`);
-  }
-  return resolveHistogramBins({
-    values: allValues,
-    bin: binnedBars[0].consumer.encoding.bin,
-    domain: scale.domain,
-    nice: scale.nice ?? true,
-    zero: scale.zero ?? false
-  }).domain;
-}
-
 export function resolveOffsetScalePolicy({
   consumers,
   resolvedScales,

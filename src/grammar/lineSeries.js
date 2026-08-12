@@ -11,6 +11,10 @@ import {
   validateAggregateFieldValues,
 } from "./aggregate.js";
 import { stableOrderPathValues } from "./pathOrder.js";
+import {
+  findHistogramBinIndex,
+  resolveHistogramBins
+} from "./histogram.js";
 
 const SERIES_CHANNELS = Object.freeze(["group", "color", "strokeDash"]);
 
@@ -26,10 +30,16 @@ function requireLineEncoding(layer) {
     throw new Error(`Line mark "${layer.id}" requires a temporal x encoding.`);
   }
 
+  const binnedAggregate =
+    x?.fieldType === "quantitative" &&
+    x.bin !== undefined &&
+    isAggregate(y?.aggregate);
   const aggregateMode =
-    x?.fieldType === "temporal" && isAggregate(y?.aggregate);
+    (x?.fieldType === "temporal" && isAggregate(y?.aggregate)) ||
+    binnedAggregate;
   const directQuantitative =
     x?.fieldType === "quantitative" &&
+    x.bin === undefined &&
     y?.fieldType === "quantitative" &&
     y.aggregate === undefined;
   const directTemporal =
@@ -53,6 +63,7 @@ function requireLineEncoding(layer) {
     x,
     y,
     isAggregate: aggregateMode,
+    binnedAggregate,
     directRows: directTemporal || directQuantitative,
     directTemporal
   };
@@ -88,8 +99,26 @@ function groupKey(values) {
   return JSON.stringify(values);
 }
 
-function deriveCartesianLineSeries(rows, layer) {
-  const { x, y, isAggregate, directRows, directTemporal } =
+export function resolveLineBins(rows, layer, scale = {}) {
+  const x = layer?.encoding?.x;
+  if (
+    layer?.mark?.type !== "line" ||
+    x?.fieldType !== "quantitative" ||
+    x.bin === undefined
+  ) {
+    return undefined;
+  }
+  return resolveHistogramBins({
+    values: readQuantitativeField(rows, x.field),
+    bin: x.bin,
+    domain: scale.domain ?? "auto",
+    nice: scale.nice ?? true,
+    zero: scale.zero ?? false
+  });
+}
+
+function deriveCartesianLineSeries(rows, layer, options = {}) {
+  const { x, y, isAggregate, binnedAggregate, directRows, directTemporal } =
     requireLineEncoding(layer);
   if (isAggregate) {
     validateAggregateFieldValues(rows, y.field, y.fieldType);
@@ -103,6 +132,9 @@ function deriveCartesianLineSeries(rows, layer) {
       ? readTemporalField(rows, y.field)
       : readQuantitativeField(rows, y.field);
   const seriesFields = readSeriesFields(rows, layer);
+  const binBoundaries = binnedAggregate
+    ? options.xBinBoundaries ?? resolveLineBins(rows, layer).boundaries
+    : undefined;
 
   const pathOrder = layer.encoding?.pathOrder;
   if (pathOrder !== undefined) {
@@ -189,9 +221,16 @@ function deriveCartesianLineSeries(rows, layer) {
     const dimensions = seriesFields.fields.map(
       field => seriesFields.values.get(field)[index]
     );
-    const key = groupKey([xValues[index], ...dimensions]);
+    const binIndex = binnedAggregate
+      ? findHistogramBinIndex(xValues[index], binBoundaries)
+      : undefined;
+    if (binIndex === -1) continue;
+    const position = binnedAggregate
+      ? (binBoundaries[binIndex] + binBoundaries[binIndex + 1]) / 2
+      : xValues[index];
+    const key = groupKey([binnedAggregate ? binIndex : position, ...dimensions]);
     const group = aggregateGroups.get(key) ?? {
-      x: xValues[index],
+      x: position,
       dimensions,
       rows: []
     };
@@ -354,7 +393,7 @@ export function deriveLineSeries(rows, layer, options) {
     layer?.encoding?.radius !== undefined;
   return polar
     ? derivePolarLineSeries(rows, layer, options)
-    : deriveCartesianLineSeries(rows, layer);
+    : deriveCartesianLineSeries(rows, layer, options);
 }
 
 export function deriveLineSeriesFieldValues(rows, layer, derived, field) {

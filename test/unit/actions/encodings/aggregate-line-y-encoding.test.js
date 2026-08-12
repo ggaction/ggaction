@@ -197,13 +197,19 @@ test("validates aggregate line y requirements", () => {
     }),
     /does not support field type "temporal"/
   );
+  const aggregateYPartial = chart()
+    .createCanvas({ width: 240, height: 160, margin: 20 })
+    .createData({ id: "data", values: rows })
+    .createLineMark({ id: "trends" })
+    .encodeY({ field: "value", aggregate: "mean" });
+  assert.equal(
+    aggregateYPartial.semanticSpec.layers[0].encoding.y.aggregate,
+    "mean"
+  );
+  assert.deepEqual(aggregateYPartial.graphicSpec.objects.trends.items, []);
   assert.throws(
-    () => chart()
-      .createCanvas({ width: 240, height: 160, margin: 20 })
-      .createData({ id: "data", values: rows })
-      .createLineMark({ id: "trends" })
-      .encodeY({ field: "value", aggregate: "mean" }),
-    /requires a temporal x encoding/
+    () => aggregateYPartial.encodeX({ field: "year" }),
+    /requires a temporal field or a compatible derived quantitative field/
   );
   assert.throws(
     () => createXEncodedLine([{ year: "2020-01-01", value: 1 }]).encodeY({
