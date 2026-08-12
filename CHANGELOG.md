@@ -4,6 +4,18 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- Added binned quantitative line aggregates with shared position-scale reuse, stable series grouping, path ordering,
+  selection, and rematerialization behavior.
+
+### Fixed
+
+- Rematerialized every complete mark that consumes a shared automatic position scale when a new ranged consumer
+  expands its domain, keeping inherited error bands aligned with existing lines.
+- Preserved direct quantitative line values at their row grain instead of collapsing repeated positions through the
+  aggregate-line path.
+
 ## [0.0.10] - 2026-08-11
 
 ### Added
