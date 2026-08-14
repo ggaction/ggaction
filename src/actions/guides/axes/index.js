@@ -1,17 +1,17 @@
-import { registerAxisCollectionActions } from "./axes.js";
+import { registerCompleteAxisEditActions } from "./edit.js";
 import { registerAxisLabelActions } from "./labels.js";
 import { registerAxisLineActions } from "./lines.js";
 import { registerAxisTickGroupActions } from "./tickGroups.js";
 import { registerAxisTickActions } from "./ticks.js";
 import { registerAxisTitleActions } from "./titles.js";
 import { registerAxisActions } from "./axis.js";
-import { registerCompleteAxisEditActions } from "./edit.js";
 import {
   removeRadialAxis,
   removeThetaAxis,
   removeXAxis,
   removeYAxis
 } from "./remove.js";
+import { registerAxisCollectionActions } from "./axes.js";
 import { registerParallelAxisActions } from "./parallel.js";
 
 export function registerBasicCartesianAxisActions(ProgramClass) {

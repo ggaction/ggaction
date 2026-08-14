@@ -1,10 +1,10 @@
+import { createSemanticValueValidator } from "./semanticValidation/index.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateBin2DTransform } from "../../grammar/bin2d.js";
 import { registerCreateGraphicsAction } from "./createGraphics.js";
 import { registerEditGraphicsAction } from "./editGraphics.js";
-import { registerSemanticPrimitiveAction } from "./semantic.js";
 import { createSemanticPrimitiveAction } from "./semanticAction.js";
-import { createSemanticValueValidator } from "./semanticValidation/index.js";
+import { registerSemanticPrimitiveAction } from "./semantic.js";
 
 function validateBasicDatasetTransforms(value) {
   if (!Array.isArray(value) || value.length !== 1 || !isPlainObject(value[0])) {

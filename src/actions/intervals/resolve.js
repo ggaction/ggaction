@@ -3,37 +3,28 @@ import {
   resolveOptionalUserId,
   validateUserId
 } from "../../core/identifiers.js";
+import {
+  validateNonEmptyString as requireField,
+  validateOptionObject
+} from "../../core/validation.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { hasLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
-const CHANNEL_OPTIONS = Object.freeze([
+const CHANNEL_OPTIONS = [
   "field", "fieldType", "scale", "center", "extent", "level", "lower", "upper"
-]);
-const INTERVAL_PARAMETER_KEYS = Object.freeze([
-  "center", "extent", "level", "lower", "upper"
-]);
-const FIELD_TYPES = Object.freeze([
+];
+const INTERVAL_PARAMETER_KEYS = CHANNEL_OPTIONS.slice(3);
+const POSITION_CHANNELS = ["x", "y"];
+const FIELD_TYPES = [
   "quantitative", "temporal", "ordinal", "nominal"
-]);
+];
 
 function requireObject(value, label) {
-  if (!isPlainObject(value)) {
-    throw new TypeError(`${label} must be a plain object.`);
-  }
-  const unknown = Object.keys(value).find(key => !CHANNEL_OPTIONS.includes(key));
-  if (unknown !== undefined) {
-    throw new Error(`Unknown ${label} option "${unknown}".`);
-  }
-  return value;
-}
-
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
+  return validateOptionObject(value, CHANNEL_OPTIONS, label, {
+    plainObjectMessage: `${label} must be a plain object.`
+  });
 }
 
 function hasCompleteFieldPositions(layer) {
@@ -42,50 +33,12 @@ function hasCompleteFieldPositions(layer) {
   return (
     typeof layer.data === "string" &&
     typeof layer.coordinate === "string" &&
-    typeof x?.field === "string" &&
-    typeof y?.field === "string" &&
-    typeof x.scale === "string" &&
-    typeof y.scale === "string" &&
-    FIELD_TYPES.includes(x.fieldType) &&
-    FIELD_TYPES.includes(y.fieldType)
+    [x, y].every(encoding =>
+      typeof encoding?.field === "string" &&
+      typeof encoding.scale === "string" &&
+      FIELD_TYPES.includes(encoding.fieldType)
+    )
   );
-}
-
-function resolveSourceLayer(program, args, operation) {
-  if (args.target === undefined && args.x !== undefined && args.y !== undefined) {
-    return undefined;
-  }
-  const target = args.target === undefined
-    ? undefined
-    : validateUserId(args.target, `${operation} source layer id`);
-  return resolveEligibleLayer(program, {
-    target,
-    predicate: hasCompleteFieldPositions,
-    label: operation
-  });
-}
-
-function resolveDataset(program, args, sourceLayer, operation, resourceLabel) {
-  const requested = args.data ?? sourceLayer?.data ?? program.context.currentData;
-  let dataset;
-  if (requested !== undefined) {
-    const id = validateUserId(requested, `${resourceLabel} dataset id`);
-    dataset = findDataset(program, id);
-    if (dataset === undefined) {
-      throw new Error(`Unknown ${resourceLabel} dataset "${id}".`);
-    }
-  } else if (program.semanticSpec.datasets.length === 1) {
-    dataset = program.semanticSpec.datasets[0];
-  }
-  if (dataset === undefined) {
-    throw new Error(`${operation} requires data or one uniquely inferable dataset.`);
-  }
-  if (sourceLayer !== undefined && dataset.id !== sourceLayer.data) {
-    throw new Error(
-      `${operation} data must match source layer "${sourceLayer.id}" data "${sourceLayer.data}".`
-    );
-  }
-  return dataset;
 }
 
 function scaleOptions(program, value, inferredId, defaults = {}) {
@@ -93,9 +46,10 @@ function scaleOptions(program, value, inferredId, defaults = {}) {
     throw new TypeError("Interval scale must be a plain object.");
   }
   const id = value?.id ?? inferredId;
-  const usesExisting = id !== undefined && findSemanticScale(program, id) !== undefined;
   return {
-    ...(usesExisting ? {} : defaults),
+    ...(id !== undefined && findSemanticScale(program, id) !== undefined
+      ? {}
+      : defaults),
     ...(value ?? {}),
     ...(value?.id === undefined && inferredId !== undefined
       ? { id: inferredId }
@@ -113,30 +67,28 @@ function resolveIntervalChannel(channels, sourceLayer, {
   defaultIntervalChannel,
   ambiguousMessage
 }) {
-  const explicitBounds = ["x", "y"].filter(channel =>
-    hasAny(channels[channel], ["lower", "upper"])
-  );
-  if (explicitBounds.length > 1) {
-    throw new Error(`${operation} requires exactly one interval channel.`);
+  for (const hints of [
+    ["lower", "upper"],
+    ["center", "extent", "level"]
+  ]) {
+    const hinted = POSITION_CHANNELS.filter(channel =>
+      hasAny(channels[channel], hints)
+    );
+    if (hinted.length > 1) {
+      throw new Error(`${operation} requires exactly one interval channel.`);
+    }
+    if (hinted.length === 1) return hinted[0];
   }
-  if (explicitBounds.length === 1) return explicitBounds[0];
 
-  const statisticalHints = ["x", "y"].filter(channel =>
-    hasAny(channels[channel], ["center", "extent", "level"])
-  );
-  if (statisticalHints.length > 1) {
-    throw new Error(`${operation} requires exactly one interval channel.`);
+  const effectiveTypes = {};
+  for (const channel of POSITION_CHANNELS) {
+    effectiveTypes[channel] = channels[channel]?.fieldType ??
+      sourceLayer?.encoding?.[channel]?.fieldType;
   }
-  if (statisticalHints.length === 1) return statisticalHints[0];
-
-  const effectiveTypes = Object.fromEntries(["x", "y"].map(channel => [
-    channel,
-    channels[channel]?.fieldType ?? sourceLayer?.encoding?.[channel]?.fieldType
-  ]));
-  const quantitative = ["x", "y"].filter(channel =>
+  const quantitative = POSITION_CHANNELS.filter(channel =>
     effectiveTypes[channel] === "quantitative"
   );
-  const positional = ["x", "y"].filter(channel =>
+  const positional = POSITION_CHANNELS.filter(channel =>
     positionTypes.includes(effectiveTypes[channel])
   );
   if (quantitative.length === 1) {
@@ -224,10 +176,11 @@ function resolveInterval(program, channel, explicit, inferred, dataset, {
       lower: requireField(explicit.lower, `${operation} ${channel} lower`),
       upper: requireField(explicit.upper, `${operation} ${channel} upper`)
     };
-    if (new Set(Object.values(fields)).size !== 3) {
+    const fieldValues = Object.values(fields);
+    if (new Set(fieldValues).size !== 3) {
       throw new Error("Explicit interval center, lower, and upper fields must be distinct.");
     }
-    for (const field of Object.values(fields)) {
+    for (const field of fieldValues) {
       readQuantitativeField(dataset.values, field);
     }
     return { channel, mode: "explicit", fields, scale, title: fields.center };
@@ -268,39 +221,46 @@ function resolveGrouping(args, sourceLayer, independentField, mode, {
   };
 }
 
-function resolveOwner(program, requested, {
-  defaultId,
-  ownerLabel,
-  operation
-}) {
-  const defaultOccupied = hasLayer(program, defaultId) ||
-    program.graphicSpec.objects[defaultId] !== undefined ||
-    findDataset(program, `${defaultId}IntervalData`) !== undefined;
-  return resolveOptionalUserId(requested, {
-    defaultId,
-    label: ownerLabel,
-    operation,
-    ambiguous: defaultOccupied
-  });
-}
-
 export function resolveIntervalComposite(program, args, policy) {
+  const { operation, resourceLabel } = policy;
   const channels = {
     x: args.x === undefined
       ? undefined
-      : requireObject(args.x, `${policy.operation} x`),
+      : requireObject(args.x, `${operation} x`),
     y: args.y === undefined
       ? undefined
-      : requireObject(args.y, `${policy.operation} y`)
+      : requireObject(args.y, `${operation} y`)
   };
-  const sourceLayer = resolveSourceLayer(program, args, policy.operation);
-  const dataset = resolveDataset(
-    program,
-    args,
-    sourceLayer,
-    policy.operation,
-    policy.resourceLabel
-  );
+  let sourceLayer;
+  if (!(args.target === undefined && args.x !== undefined && args.y !== undefined)) {
+    const target = args.target === undefined
+      ? undefined
+      : validateUserId(args.target, `${operation} source layer id`);
+    sourceLayer = resolveEligibleLayer(program, {
+      target,
+      predicate: hasCompleteFieldPositions,
+      label: operation
+    });
+  }
+  const requested = args.data ?? sourceLayer?.data ?? program.context.currentData;
+  let dataset;
+  if (requested !== undefined) {
+    const dataId = validateUserId(requested, `${resourceLabel} dataset id`);
+    dataset = findDataset(program, dataId);
+    if (dataset === undefined) {
+      throw new Error(`Unknown ${resourceLabel} dataset "${dataId}".`);
+    }
+  } else if (program.semanticSpec.datasets.length === 1) {
+    dataset = program.semanticSpec.datasets[0];
+  }
+  if (dataset === undefined) {
+    throw new Error(`${operation} requires data or one uniquely inferable dataset.`);
+  }
+  if (sourceLayer !== undefined && dataset.id !== sourceLayer.data) {
+    throw new Error(
+      `${operation} data must match source layer "${sourceLayer.id}" data "${sourceLayer.data}".`
+    );
+  }
   const intervalChannel = resolveIntervalChannel(channels, sourceLayer, policy);
   const positionChannel = intervalChannel === "x" ? "y" : "x";
   const position = resolvePosition(
@@ -318,7 +278,15 @@ export function resolveIntervalComposite(program, args, policy) {
     dataset,
     policy
   );
-  const id = resolveOwner(program, args.id, policy);
+  const defaultId = policy.defaultId;
+  const id = resolveOptionalUserId(args.id, {
+    defaultId,
+    label: policy.ownerLabel,
+    operation,
+    ambiguous: hasLayer(program, defaultId) ||
+      program.graphicSpec.objects[defaultId] !== undefined ||
+      findDataset(program, `${defaultId}IntervalData`) !== undefined
+  });
   const generatedFields = {
     center: `__${id}_center`,
     lower: `__${id}_lower`,
@@ -340,7 +308,7 @@ export function resolveIntervalComposite(program, args, policy) {
     dataId: interval.mode === "statistical" ? `${id}IntervalData` : dataset.id,
     coordinate: validateUserId(
       args.coordinate ?? sourceLayer?.coordinate ?? "main",
-      `${policy.resourceLabel} coordinate id`
+      `${resourceLabel} coordinate id`
     ),
     orientation: intervalChannel === "y" ? "vertical" : "horizontal",
     position,

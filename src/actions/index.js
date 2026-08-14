@@ -7,6 +7,7 @@ import { registerScaleActions } from "./scales/index.js";
 import { registerMarkActions } from "./marks/index.js";
 import { registerCoordinateActions } from "./coordinates/actions.js";
 import { registerFacetActions } from "./facets/index.js";
+import { registerCanvasActions } from "./canvas/index.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerTitleActions } from "./titles/index.js";
 import { registerGuideActions } from "./guides/index.js";
@@ -16,7 +17,6 @@ import { registerErrorBarActions } from "./errorBars/index.js";
 import { registerRegressionActions } from "./regression/index.js";
 import { registerViolinPlotActions } from "./violinPlots/index.js";
 import { registerErrorBandActions } from "./errorBands/index.js";
-import { registerCanvasActions } from "./canvas/index.js";
 import { registerChartActions } from "./charts/index.js";
 
 export function registerActions(ProgramClass) {

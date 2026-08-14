@@ -22,22 +22,22 @@ import {
   SCALE_ROLES,
   validateScalePropertyForType,
   validateScaleTypeForRole,
-  isDiscretePositionScaleType
+  isDiscretePositionScaleType,
+  withScaleUnknown
 } from "../../grammar/scales/index.js";
 import {
   validateRadialRange,
   validateThetaRange
 } from "../../grammar/polar.js";
-import { withScaleUnknown } from "../../grammar/scales/index.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
-const BASE_OPTIONS = Object.freeze(["id", "type", "domain", "range"]);
-const POSITION_OPTIONS = Object.freeze([
+const BASE_OPTIONS = ["id", "type", "domain", "range"];
+const UNKNOWN_OPTIONS = [...BASE_OPTIONS, "unknown"];
+const CLAMP_REVERSE = ["clamp", "reverse"];
+const BOOLEAN_OPTIONS = ["nice", "zero", ...CLAMP_REVERSE];
+const POSITION_OPTIONS = [
   ...BASE_OPTIONS,
-  "nice",
-  "zero",
-  "clamp",
-  "reverse",
+  ...BOOLEAN_OPTIONS,
   "base",
   "exponent",
   "constant",
@@ -46,25 +46,43 @@ const POSITION_OPTIONS = Object.freeze([
   "padding",
   "align",
   "unknown"
-]);
-const COLOR_OPTIONS = Object.freeze([...BASE_OPTIONS, "palette", "unknown"]);
-const SEQUENTIAL_COLOR_OPTIONS = Object.freeze([
+];
+const COLOR_OPTIONS = [...BASE_OPTIONS, "palette", "unknown"];
+const SEQUENTIAL_COLOR_OPTIONS = [
   ...COLOR_OPTIONS,
   "interpolate",
-  "clamp",
-  "reverse"
-]);
-const OPACITY_OPTIONS = Object.freeze([
-  ...POSITION_OPTIONS,
-  "clamp",
-  "reverse"
-]);
+  ...CLAMP_REVERSE
+];
 
 function optionsObject(options) {
   if (!isPlainObject(options)) {
     throw new TypeError("Encoding scale must be a plain object.");
   }
-  return options;
+}
+
+function validateBooleanOptions(options, properties, type) {
+  for (const property of properties) {
+    if (options[property] !== undefined && typeof options[property] !== "boolean") {
+      throw new TypeError(`Scale ${property} must be a boolean.`);
+    }
+    if (type !== undefined && options[property] !== undefined) {
+      validateScalePropertyForType(type, property);
+    }
+  }
+}
+
+function assignOptions(scale, options, existing, properties) {
+  for (const property of properties) {
+    const value = options[property] ?? existing?.[property];
+    if (value !== undefined) scale[property] = value;
+  }
+  return scale;
+}
+
+function validatePaletteRange(options) {
+  if (options.palette !== undefined && options.range !== undefined) {
+    throw new Error("Color scale cannot specify both palette and range.");
+  }
 }
 
 export function resolvePositionScaleDefinition(
@@ -78,14 +96,15 @@ export function resolvePositionScaleDefinition(
   validateKeys(options, POSITION_OPTIONS, "scale");
   const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
+  const discrete = ["ordinal", "nominal"].includes(fieldType);
   const expectedType = fieldType === "temporal"
     ? "time"
-    : ["ordinal", "nominal"].includes(fieldType)
+    : discrete
       ? defaults.discreteType ?? "point"
       : "linear";
   const type = options.type ?? existing?.type ?? expectedType;
   if (fieldType === "temporal") validateTimeScaleType(type);
-  else if (["ordinal", "nominal"].includes(fieldType)) {
+  else if (discrete) {
     if (!isDiscretePositionScaleType(type)) {
       throw new Error(
         `Scale type "${type}" is not valid for discrete position.`
@@ -111,7 +130,7 @@ export function resolvePositionScaleDefinition(
       retainCoreOnTypeChange: true,
       retainCompatibleOnTypeChange: true,
       validateDomain: (_scaleType, value) =>
-        ["ordinal", "nominal"].includes(fieldType)
+        discrete
           ? validateOrdinalDomain(value)
           : validateScaleDomain(value),
       validateRange: (_scaleType, value) => channel === "theta"
@@ -127,9 +146,7 @@ export function resolvePositionScaleDefinition(
 export function resolveColorScaleDefinition(program, options) {
   optionsObject(options);
   validateKeys(options, COLOR_OPTIONS, "scale");
-  if (options.palette !== undefined && options.range !== undefined) {
-    throw new Error("Color scale cannot specify both palette and range.");
-  }
+  validatePaletteRange(options);
   const id = validateUserId(options.id ?? "color", "Scale id");
   const existing = findSemanticScale(program, id);
   const range = options.palette === undefined
@@ -165,20 +182,14 @@ export function resolveSequentialColorScaleDefinition(
 ) {
   optionsObject(options);
   validateKeys(options, SEQUENTIAL_COLOR_OPTIONS, "scale");
-  if (options.palette !== undefined && options.range !== undefined) {
-    throw new Error("Color scale cannot specify both palette and range.");
-  }
+  validatePaletteRange(options);
   const id = validateUserId(options.id ?? "color", "Scale id");
   const existing = findSemanticScale(program, id);
   const type = options.type ?? existing?.type ?? "sequential";
   if (type !== "sequential") {
     throw new Error(`Unsupported continuous color scale type "${type}".`);
   }
-  for (const property of ["clamp", "reverse"]) {
-    if (options[property] !== undefined && typeof options[property] !== "boolean") {
-      throw new TypeError(`Scale ${property} must be a boolean.`);
-    }
-  }
+  validateBooleanOptions(options, CLAMP_REVERSE);
   const requestedRange = options.palette === undefined
     ? options.range
     : { palette: options.palette };
@@ -193,11 +204,11 @@ export function resolveSequentialColorScaleDefinition(
       options.interpolate ?? existing?.interpolate ?? "rgb"
     )
   };
-  const clamp = options.clamp ?? existing?.clamp;
-  const reverse = options.reverse ?? existing?.reverse;
-  if (clamp !== undefined) scale.clamp = clamp;
-  if (reverse !== undefined) scale.reverse = reverse;
-  return withScaleUnknown(scale, { ...existing, ...options }, "color");
+  return withScaleUnknown(
+    assignOptions(scale, options, existing, CLAMP_REVERSE),
+    { ...existing, ...options },
+    "color"
+  );
 }
 
 export function resolveQuantitativeColorScaleDefinition(
@@ -213,26 +224,16 @@ export function resolveQuantitativeColorScaleDefinition(
   if (type === "sequential") {
     return resolveSequentialColorScaleDefinition(program, fieldType, options);
   }
-  validateKeys(options, [
-    ...COLOR_OPTIONS,
-    "clamp",
-    "reverse"
-  ], "scale");
+  validateKeys(options, [...COLOR_OPTIONS, ...CLAMP_REVERSE], "scale");
   if (fieldType !== "quantitative") {
     throw new Error(`Scale type "${type}" requires quantitative color.`);
   }
   validateScaleTypeForRole(type, SCALE_ROLES.discretizedColor);
-  if (options.palette !== undefined && options.range !== undefined) {
-    throw new Error("Color scale cannot specify both palette and range.");
-  }
-  for (const property of ["clamp", "reverse"]) {
-    if (options[property] !== undefined && typeof options[property] !== "boolean") {
-      throw new TypeError(`Scale ${property} must be a boolean.`);
-    }
-    if (options[property] !== undefined) validateScalePropertyForType(type, property);
-  }
+  validatePaletteRange(options);
+  validateBooleanOptions(options, CLAMP_REVERSE, type);
   const id = validateUserId(options.id ?? "color", "Scale id");
   const existing = findSemanticScale(program, id);
+  const previous = existing?.type === type ? existing : undefined;
   const requestedRange = options.palette === undefined
     ? options.range
     : { palette: options.palette };
@@ -241,35 +242,41 @@ export function resolveQuantitativeColorScaleDefinition(
     type,
     domain: validateDiscretizedColorDomain(
       type,
-      options.domain ?? (existing?.type === type ? existing.domain : "auto")
+      options.domain ?? previous?.domain ?? "auto"
     ),
     range: validateDiscretizedColorRange(
-      requestedRange ?? (existing?.type === type ? existing.range : { palette: "viridis" })
+      requestedRange ?? previous?.range ?? { palette: "viridis" }
     )
   };
-  const clamp = options.clamp ?? (existing?.type === type ? existing.clamp : undefined);
-  const reverse = options.reverse ?? (existing?.type === type ? existing.reverse : undefined);
-  if (clamp !== undefined) scale.clamp = clamp;
-  if (reverse !== undefined) scale.reverse = reverse;
-  return withScaleUnknown(scale, { ...existing, ...options }, "color");
+  return withScaleUnknown(
+    assignOptions(scale, options, previous, CLAMP_REVERSE),
+    { ...existing, ...options },
+    "color"
+  );
 }
 
-export function resolveStrokeDashScaleDefinition(program, options) {
+function resolveOrdinalScaleDefinition(program, options, channel, rangeValidator) {
   optionsObject(options);
-  validateKeys(options, [...BASE_OPTIONS, "unknown"], "scale");
-  const id = validateUserId(options.id ?? "strokeDash", "Scale id");
+  validateKeys(options, UNKNOWN_OPTIONS, "scale");
+  const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
   return withScaleUnknown({
     id,
     type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
     domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
-    range: validateStrokeDashRange(options.range ?? existing?.range ?? "auto")
-  }, { ...existing, ...options }, "strokeDash");
+    range: rangeValidator(options.range ?? existing?.range ?? "auto")
+  }, { ...existing, ...options }, channel);
+}
+
+export function resolveStrokeDashScaleDefinition(program, options) {
+  return resolveOrdinalScaleDefinition(
+    program, options, "strokeDash", validateStrokeDashRange
+  );
 }
 
 export function resolveAppearanceScaleDefinition(program, channel, options) {
   optionsObject(options);
-  validateKeys(options, [...BASE_OPTIONS, "unknown"], "scale");
+  validateKeys(options, UNKNOWN_OPTIONS, "scale");
   const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
   const shape = channel === "shape";
@@ -289,44 +296,32 @@ export function resolveAppearanceScaleDefinition(program, channel, options) {
 
 export function resolveOpacityScaleDefinition(program, options) {
   optionsObject(options);
-  validateKeys(options, OPACITY_OPTIONS, "scale");
+  validateKeys(options, POSITION_OPTIONS, "scale");
   const id = validateUserId(options.id ?? "opacity", "Scale id");
   const existing = findSemanticScale(program, id);
   const type = validateLinearScaleType(options.type ?? existing?.type ?? "linear");
-  for (const property of ["nice", "zero", "clamp", "reverse"]) {
-    if (options[property] !== undefined && typeof options[property] !== "boolean") {
-      throw new TypeError(`Scale ${property} must be a boolean.`);
-    }
-  }
+  validateBooleanOptions(options, BOOLEAN_OPTIONS);
   const scale = {
     id,
     type,
     domain: validateScaleDomain(options.domain ?? existing?.domain ?? "auto"),
     range: validateOpacityRange(options.range ?? existing?.range ?? "auto")
   };
-  const nice = options.nice ?? existing?.nice;
-  const zero = options.zero ?? existing?.zero;
-  const clamp = options.clamp ?? existing?.clamp;
-  const reverse = options.reverse ?? existing?.reverse;
-  if (nice !== undefined) scale.nice = nice;
-  if (zero !== undefined) scale.zero = zero;
-  if (clamp !== undefined) scale.clamp = clamp;
-  if (reverse !== undefined) scale.reverse = reverse;
-  return withScaleUnknown(scale, { ...existing, ...options }, "opacity");
+  return withScaleUnknown(
+    assignOptions(scale, options, existing, BOOLEAN_OPTIONS),
+    { ...existing, ...options },
+    "opacity"
+  );
 }
 
 export function resolveStrokeWidthScaleDefinition(program, options) {
   optionsObject(options);
-  validateKeys(options, OPACITY_OPTIONS, "scale");
+  validateKeys(options, POSITION_OPTIONS, "scale");
   const id = validateUserId(options.id ?? "strokeWidth", "Scale id");
   const existing = findSemanticScale(program, id);
   const type = options.type ?? existing?.type ?? "linear";
   validateScaleTypeForRole(type, SCALE_ROLES.quantitativePosition);
-  for (const property of ["nice", "zero", "clamp", "reverse"]) {
-    if (options[property] !== undefined && typeof options[property] !== "boolean") {
-      throw new TypeError(`Scale ${property} must be a boolean.`);
-    }
-  }
+  validateBooleanOptions(options, BOOLEAN_OPTIONS);
   const domain = validateScaleDomain(options.domain ?? existing?.domain ?? "auto");
   if (domain !== "auto" && domain.some(value => value < 0)) {
     throw new RangeError("StrokeWidth scale domain cannot contain negative values.");
@@ -337,22 +332,13 @@ export function resolveStrokeWidthScaleDefinition(program, options) {
     domain,
     range: validateStrokeWidthRange(options.range ?? existing?.range ?? "auto")
   };
-  for (const property of ["nice", "zero", "clamp", "reverse", "base", "exponent", "constant"]) {
-    const value = options[property] ?? existing?.[property];
-    if (value !== undefined) scale[property] = value;
-  }
-  return scale;
+  return assignOptions(
+    scale, options, existing, [...BOOLEAN_OPTIONS, "base", "exponent", "constant"]
+  );
 }
 
 export function resolveOffsetScaleDefinition(program, options, channel = "xOffset") {
-  optionsObject(options);
-  validateKeys(options, [...BASE_OPTIONS, "unknown"], "scale");
-  const id = validateUserId(options.id ?? channel, "Scale id");
-  const existing = findSemanticScale(program, id);
-  return withScaleUnknown({
-    id,
-    type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
-    domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
-    range: validateScaleRange(options.range ?? existing?.range ?? "auto")
-  }, { ...existing, ...options }, channel);
+  return resolveOrdinalScaleDefinition(
+    program, options, channel, validateScaleRange
+  );
 }

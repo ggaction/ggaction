@@ -1,8 +1,8 @@
 import { validateCoordinateType } from "../../../grammar/coordinates.js";
+import { validateScaleSemanticValue } from "./scale.js";
+import { validateLayerSemanticValue } from "./layer.js";
 import { validateDatasetSemanticValue } from "./dataset.js";
 import { validateGuideSemanticValue } from "./guide.js";
-import { validateLayerSemanticValue } from "./layer.js";
-import { validateScaleSemanticValue } from "./scale.js";
 import { validateNonEmptySemanticString } from "./shared.js";
 
 export function createSemanticValueValidator({

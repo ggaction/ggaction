@@ -23,11 +23,16 @@ test("isolates npm pack from the caller's global cache", () => {
 });
 
 test("publishes only the bounded public package artifact", async () => {
-  const actionCardsFile = fileURLToPath(new URL(
-    "../../knowledge/action-cards.json",
-    import.meta.url
-  ));
-  const actionCards = await readFile(actionCardsFile, "utf8");
+  const compactJsonPaths = [
+    "knowledge/action-cards.json",
+    "knowledge/intent-taxonomy.json",
+    "knowledge/mcp-resources.json",
+    "knowledge/task-packet.schema.json"
+  ];
+  const sourceJson = await Promise.all(compactJsonPaths.map(async path => {
+    const file = fileURLToPath(new URL(`../../${path}`, import.meta.url));
+    return { file, path, contents: await readFile(file, "utf8") };
+  }));
   const manifest = inspectPackageArtifact();
   const paths = manifest.files.map(file => file.path);
 
@@ -51,11 +56,13 @@ test("publishes only the bounded public package artifact", async () => {
   assert.equal(paths.some(path => path.startsWith("agent_docs/")), false);
   assert.equal(paths.some(path => path.startsWith(".github/")), false);
   assert.equal(paths.some(path => path.endsWith("/AGENTS.md") || path === "AGENTS.md"), false);
-  assert.equal(
-    manifest.files.find(file => file.path === "knowledge/action-cards.json").size,
-    Buffer.byteLength(JSON.stringify(JSON.parse(actionCards)))
-  );
-  assert.equal(await readFile(actionCardsFile, "utf8"), actionCards);
+  for (const { file, path, contents } of sourceJson) {
+    assert.equal(
+      manifest.files.find(entry => entry.path === path).size,
+      Buffer.byteLength(JSON.stringify(JSON.parse(contents)))
+    );
+    assert.equal(await readFile(file, "utf8"), contents);
+  }
 });
 
 test("rejects missing, forbidden, and oversized package manifests", () => {

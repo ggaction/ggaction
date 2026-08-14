@@ -7,7 +7,6 @@ import {
   removeCategoricalLegend,
   rematerializeLegend
 } from "./actions.js";
-import { editLegend } from "../edit.js";
 import {
   createLegendBackground,
   createLegendLabels,
@@ -16,6 +15,7 @@ import {
   rematerializeLegendLabels,
   rematerializeLegendTitle
 } from "./components.js";
+import { editLegend } from "../edit.js";
 import {
   createLegendSymbolLines,
   createLegendSymbolPoints,

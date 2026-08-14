@@ -1,4 +1,7 @@
-import { createData } from "./create.js";
+import {
+  createTimeUnitData,
+  materializeTimeUnitData
+} from "./timeUnit.js";
 import {
   createDerivedData,
   rebindLayerData,
@@ -10,28 +13,25 @@ import {
   materializeFilteredData,
   materializeMarkFilteredData
 } from "./filter.js";
+import {
+  createGradientProfileData,
+  materializeGradientProfileData
+} from "./gradientProfile.js";
 import { createRegressionData, materializeRegressionData } from "./regression.js";
 import {
   createCategoricalDensityData,
   createDensityData,
   materializeDensityData
 } from "./density.js";
-import {
-  createGradientProfileData,
-  materializeGradientProfileData
-} from "./gradientProfile.js";
 import { createIntervalData, materializeIntervalData } from "./interval.js";
 import { createHorizonData, materializeHorizonData } from "./horizon.js";
-import { createWindowData, materializeWindowData } from "./window.js";
-import {
-  createTimeUnitData,
-  materializeTimeUnitData
-} from "./timeUnit.js";
 import {
   createBin2DData,
   editBin2DData,
   materializeBin2DData
 } from "./bin2d.js";
+import { createData } from "./create.js";
+import { createWindowData, materializeWindowData } from "./window.js";
 import { createBoxSummaryData, createBoxOutlierData, materializeBoxSummaryData, materializeBoxOutlierData } from "./box.js";
 
 export function registerDataActions(ProgramClass) {

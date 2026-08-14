@@ -55,6 +55,12 @@ const REQUIRED_FILES = Object.freeze([
 ]);
 
 const FORBIDDEN_BASENAMES = new Set(["AGENTS.md"]);
+const COMPACT_JSON_FILES = Object.freeze([
+  "knowledge/action-cards.json",
+  "knowledge/intent-taxonomy.json",
+  "knowledge/mcp-resources.json",
+  "knowledge/task-packet.schema.json"
+]);
 
 export function isolatedPackEnvironment(cache, environment = process.env) {
   return {
@@ -91,11 +97,13 @@ function stagePackage(cwd, environment) {
       copyFileSync(source, destination);
       chmodSync(destination, statSync(source).mode);
     }
-    const actionCards = path.join(staging, "knowledge", "action-cards.json");
-    if (existsSync(actionCards)) {
-      writeFileSync(actionCards, JSON.stringify(JSON.parse(
-        readFileSync(actionCards, "utf8")
-      )));
+    for (const file of COMPACT_JSON_FILES) {
+      const stagedFile = path.join(staging, file);
+      if (existsSync(stagedFile)) {
+        writeFileSync(stagedFile, JSON.stringify(JSON.parse(
+          readFileSync(stagedFile, "utf8")
+        )));
+      }
     }
     return staging;
   } catch (error) {

@@ -1,5 +1,5 @@
-import { createBarPlot } from "./bar.js";
 import { createHeatmap } from "./heatmap.js";
+import { createBarPlot } from "./bar.js";
 import { createHistogram } from "./histogram.js";
 import { createLinePlot } from "./line.js";
 import { createScatterPlot } from "./scatter.js";

@@ -1,5 +1,4 @@
-import { validatePositionFieldCompatibility } from
-  "../../../../grammar/positionCompatibility.js";
+import { resolveTickPositionPolicy } from "./tick.js";
 import {
   isCategoricalDensityPosition,
   resolveAreaPositionPolicy
@@ -9,7 +8,8 @@ import { resolveBarPositionPolicy } from "./bar.js";
 import { resolveLinePositionPolicy } from "./line.js";
 import { resolvePointPositionPolicy } from "./point.js";
 import { resolveRulePositionPolicy } from "./rule.js";
-import { resolveTickPositionPolicy } from "./tick.js";
+import { validatePositionFieldCompatibility } from
+  "../../../../grammar/positionCompatibility.js";
 
 const POSITION_POLICIES = Object.freeze({
   area: resolveAreaPositionPolicy,
