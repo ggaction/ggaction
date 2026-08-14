@@ -1,12 +1,12 @@
 import { resolveContinuousPalette } from "../../grammar/palettes.js";
+import { inverseLerp } from "../../grammar/numeric.js";
 import { mapScaleConsumerValues } from "../../materialization/scales/map.js";
 
 function parseHex(value) {
   const match = value.match(/^#([0-9a-f]{6})$/i);
   if (!match) throw new Error(`Gradient plot requires a six-digit hex color, received "${value}".`);
-  return [0, 2, 4].map(offset =>
-    Number.parseInt(match[1].slice(offset, offset + 2), 16)
-  );
+  const color = Number.parseInt(match[1], 16);
+  return [color >> 16, color >> 8 & 255, color & 255];
 }
 
 function interpolate(left, right, amount) {
@@ -23,8 +23,11 @@ function paletteColor(colors, amount) {
   const bounded = Math.max(0, Math.min(1, amount));
   const scaled = bounded * (colors.length - 1);
   const left = Math.floor(scaled);
-  const right = Math.min(colors.length - 1, left + 1);
-  return interpolate(parseHex(colors[left]), parseHex(colors[right]), scaled - left);
+  return interpolate(
+    parseHex(colors[left]),
+    parseHex(colors[Math.min(colors.length - 1, left + 1)]),
+    scaled - left
+  );
 }
 
 function categoricalRamp(base) {
@@ -75,7 +78,7 @@ export function createGradientPlotPaint(profile, {
   const stops = values.map((_, index) => {
     const fraction = intensities[index] / maximum;
     const offset = Number(
-      ((mapped[index] - startPosition) / (endPosition - startPosition)).toFixed(12)
+      inverseLerp(mapped[index], startPosition, endPosition).toFixed(12)
     );
     return {
       offset: Object.is(offset, -0) ? 0 : offset,

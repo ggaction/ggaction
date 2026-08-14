@@ -5,7 +5,11 @@ import { chart } from "../../../../src/index.js";
 
 function encodedProgram({ x = true, y = true } = {}) {
   let program = chart()
-    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createCanvas({
+      width: 400,
+      height: 280,
+      margin: { top: 20, right: 20, bottom: 60, left: 70 }
+    })
     .createData({
       id: "cars",
       values: [
@@ -62,7 +66,11 @@ test("createAxes creates only encoded axes and supports false opt-out", () => {
 
 test("createAxes reuses an explicitly named coordinate", () => {
   const program = chart()
-    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createCanvas({
+      width: 400,
+      height: 280,
+      margin: { top: 20, right: 20, bottom: 60, left: 70 }
+    })
     .createData({
       id: "cars",
       values: [

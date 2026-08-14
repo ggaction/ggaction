@@ -9,6 +9,10 @@ import { findSemanticScale } from "../../selectors/scales.js";
 import { allLegendGraphicIds } from "../guides/resources.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { resolveLegacyCategoricalLegend } from "./legacyCategorical.js";
+import {
+  formatDistinctNumericSamples,
+  sampleNumericRange
+} from "../../grammar/numeric.js";
 
 const LEGEND_SOURCE_CANVAS = Object.freeze({
   width: 640,
@@ -71,10 +75,7 @@ function compactNumber(value) {
 }
 
 function continuousValues(domain, count) {
-  return Array.from(
-    { length: count },
-    (_, index) => domain[0] + index / (count - 1) * (domain[1] - domain[0])
-  );
+  return sampleNumericRange(domain[0], domain[1], count, "Facet legend domain");
 }
 
 function prepareAutoLegendSource(child) {
@@ -123,7 +124,10 @@ function prepareAutoLegendSource(child) {
       .editGraphics({
         target: "colorGradientLabels",
         property: "text",
-        value: continuousValues(resolved.domain, 5).map(compactNumber)
+        value: formatDistinctNumericSamples(
+          continuousValues(resolved.domain, 5),
+          compactNumber
+        )
       })
       .editGraphics({
         target: "colorGradientTitle",

@@ -13,12 +13,13 @@ import {
   findLayer,
   resolveEligibleLayer
 } from "../../selectors/layers.js";
-import { applyMaterializationPlan } from "../../materialization/dependencies.js";
-import { planEncodingRematerialization } from "../../materialization/encodings.js";
 import {
   applyEncodingScale,
+  clearMarkGraphic,
+  rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
+  setEncodingProperties,
   validateOptions
 } from "./shared.js";
 
@@ -64,30 +65,15 @@ function encodeAppearanceField(program, channel, args, operation) {
     readQuantitativeField(dataset.values, args.field);
   }
 
-  let next = program
-    .editSemantic({
-      property: `layer[${target}].encoding.${channel}.field`,
-      value: args.field
-    })
-    .editSemantic({
-      property: `layer[${target}].encoding.${channel}.fieldType`,
-      value: fieldType
-    })
-    .editSemantic({
-      property: `layer[${target}].encoding.${channel}.scale`,
-      value: scale.id
-    });
+  let next = setEncodingProperties(program, target, channel, {
+    field: args.field,
+    fieldType,
+    scale: scale.id
+  });
   next = applyEncodingScale(next, scale, requestedScale, {
     reassignment: previous?.scale === scale.id
   });
-  return applyMaterializationPlan(
-    next,
-    planEncodingRematerialization(next, {
-      target,
-      channel,
-      scale: scale.id
-    })
-  );
+  return rematerializeEncoding(next, target, channel, scale.id);
 }
 
 const encodeRadius = action(
@@ -152,12 +138,7 @@ const removePointRadius = action(
     });
     const next = this
       ._withoutMaterializationConfig(["marks", layer.id, "radius"]);
-    const graphic = next.graphicSpec.objects[layer.id];
-    const baseline = graphic === undefined
-      ? next
-      : graphic.type === "collection"
-        ? next.editGraphics({ target: layer.id, property: "items", value: [] })
-        : next.editGraphics({ target: layer.id, property: "length", value: 0 });
+    const baseline = clearMarkGraphic(next, layer.id);
     return baseline.rematerializePointMark({ id: layer.id });
   }
 );
@@ -249,31 +230,16 @@ const encodeOpacity = action(
     }
     const { opacity, ...config } = this.markConfigs[target] ?? {};
     void opacity;
-    let next = this
-      ._withoutMaterializationConfig(["marks", target, "opacity"])
-      .editSemantic({
-        property: `layer[${target}].encoding.opacity.field`,
-        value: args.field
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.opacity.fieldType`,
-        value: fieldType
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.opacity.scale`,
-        value: scale.id
-      })
+    let next = setEncodingProperties(
+      this._withoutMaterializationConfig(["marks", target, "opacity"]),
+      target,
+      "opacity",
+      { field: args.field, fieldType, scale: scale.id }
+    );
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: previous?.scale === scale.id
     });
-    return applyMaterializationPlan(
-      next,
-      planEncodingRematerialization(next, {
-        target,
-        channel: "opacity",
-        scale: scale.id
-      })
-    );
+    return rematerializeEncoding(next, target, "opacity", scale.id);
   }
 );
 

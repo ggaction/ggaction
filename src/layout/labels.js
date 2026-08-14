@@ -1,8 +1,13 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
-import { resolveTextBounds } from "../core/textMetrics.js";
+import {
+  resolveTextBounds,
+  textBoundsFitCanvas,
+  textBoundsIntersect
+} from "../core/textMetrics.js";
 import {
   validateNonNegativeFinite,
-  validateOptionObject
+  validateOptionObject,
+  validateWorkLimit
 } from "../core/validation.js";
 
 const AXES = new Set(["x", "y", "both"]);
@@ -10,6 +15,10 @@ const BOUNDS = new Set(["plot", "canvas"]);
 const POLICY_OPTIONS = Object.freeze([
   "axis", "padding", "maxDisplacement", "bounds"
 ]);
+const MAX_EXHAUSTIVE_OFFSET_STEPS = 28;
+const MAX_SEARCH_DISPLACEMENT = 1_000_000;
+const DISTANT_RING_COUNT = 16;
+const DISTANT_ANGLE_COUNT = 32;
 
 export const DEFAULT_LABEL_LAYOUT_GEOMETRY = cloneAndFreeze({
   axis: "both",
@@ -98,16 +107,46 @@ function overflow(bounds, boundary) {
 export function enumerateLabelOffsets({ axis, padding, maxDisplacement }) {
   const policy = normalizeLabelLayoutGeometry({ axis, padding, maxDisplacement });
   const step = Math.max(2, policy.padding);
-  const limit = Math.ceil(policy.maxDisplacement / step);
+  const displacement = Math.min(
+    policy.maxDisplacement,
+    MAX_SEARCH_DISPLACEMENT
+  );
+  const limit = Math.ceil(displacement / step);
+  const localLimit = Math.min(limit, MAX_EXHAUSTIVE_OFFSET_STEPS);
   const candidates = [];
-  for (let x = -limit; x <= limit; x += 1) {
-    for (let y = -limit; y <= limit; y += 1) {
+  const addCandidate = (x, y) => {
+    if (![x, y].every(Number.isFinite)) return;
+    const distanceSquared = x ** 2 + y ** 2;
+    if (Math.sqrt(distanceSquared) > displacement + 1e-9) return;
+    candidates.push({ x, y, distanceSquared });
+  };
+  for (let x = -localLimit; x <= localLimit; x += 1) {
+    for (let y = -localLimit; y <= localLimit; y += 1) {
       if (policy.axis === "x" && y !== 0) continue;
       if (policy.axis === "y" && x !== 0) continue;
-      const offset = { x: x * step, y: y * step };
-      const distanceSquared = offset.x ** 2 + offset.y ** 2;
-      if (Math.sqrt(distanceSquared) > policy.maxDisplacement + 1e-9) continue;
-      candidates.push({ ...offset, distanceSquared });
+      addCandidate(x * step, y * step);
+    }
+  }
+  if (limit > localLimit) {
+    const localRadius = localLimit * step;
+    for (let ring = 1; ring <= DISTANT_RING_COUNT; ring += 1) {
+      const radius = localRadius + (displacement - localRadius) *
+        ring / DISTANT_RING_COUNT;
+      if (policy.axis === "x" || policy.axis === "y") {
+        addCandidate(
+          policy.axis === "x" ? radius : 0,
+          policy.axis === "y" ? radius : 0
+        );
+        addCandidate(
+          policy.axis === "x" ? -radius : 0,
+          policy.axis === "y" ? -radius : 0
+        );
+        continue;
+      }
+      for (let angle = 0; angle < DISTANT_ANGLE_COUNT; angle += 1) {
+        const radians = angle / DISTANT_ANGLE_COUNT * Math.PI * 2;
+        addCandidate(radius * Math.cos(radians), radius * Math.sin(radians));
+      }
     }
   }
   candidates.sort((first, second) =>
@@ -125,6 +164,8 @@ function textBounds(item, offset = { x: 0, y: 0 }) {
     y: item.y + offset.y,
     text: item.text,
     fontSize: item.fontSize,
+    fontFamily: item.fontFamily,
+    fontWeight: item.fontWeight,
     textAlign: item.textAlign,
     textBaseline: item.textBaseline,
     rotation: item.rotation
@@ -177,6 +218,10 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}) {
   const ids = new Set();
   for (const item of items) validateItem(item, ids);
   const candidates = enumerateLabelOffsets(policy);
+  validateWorkLimit(
+    items.length ** 2 * candidates.length,
+    "Label layout work"
+  );
   const base = items.map(item => ({
     id: item.id,
     collisionBounds: expanded(textBounds(item), policy.padding)
@@ -231,9 +276,33 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}) {
   });
 }
 
-function contains(bounds, point) {
-  return point.x >= bounds.left && point.x <= bounds.right &&
-    point.y >= bounds.top && point.y <= bounds.bottom;
+export function assertPolarTextLayout({ canvas, items, label }) {
+  const dimensions = canvas?.properties;
+  if (
+    ![dimensions?.width, dimensions?.height].every(Number.isFinite) ||
+    dimensions.width <= 0 || dimensions.height <= 0
+  ) {
+    throw new Error("Polar text layout requires finite Canvas dimensions.");
+  }
+  const bounds = items.map(resolveTextBounds);
+  const outside = bounds.some(item => !textBoundsFitCanvas(item, dimensions));
+  let overlap = false;
+  for (let first = 0; first < bounds.length && !overlap; first += 1) {
+    for (let second = first + 1; second < bounds.length; second += 1) {
+      if (
+        (Math.abs(items[first].x - items[second].x) > 1e-9 ||
+          Math.abs(items[first].y - items[second].y) > 1e-9) &&
+        textBoundsIntersect(bounds[first], bounds[second])
+      ) {
+        overlap = true;
+        break;
+      }
+    }
+  }
+  if (outside || overlap) {
+    const verb = label.endsWith("labels") ? "require" : "requires";
+    throw new Error(`${label} ${verb} sufficient non-overlapping Canvas space.`);
+  }
 }
 
 export function resolveLabelLeader(item) {
@@ -242,10 +311,17 @@ export function resolveLabelLeader(item) {
   }
   if (item.dx === 0 && item.dy === 0) return undefined;
   const source = { x: item.sourceX, y: item.sourceY };
-  if (contains(item.bounds, source)) return undefined;
+  if (
+    source.x >= item.bounds.left && source.x <= item.bounds.right &&
+    source.y >= item.bounds.top && source.y <= item.bounds.bottom
+  ) return undefined;
+  const midpoint = (start, end) => {
+    const sum = start + end;
+    return Number.isFinite(sum) ? sum / 2 : start / 2 + end / 2;
+  };
   const center = {
-    x: (item.bounds.left + item.bounds.right) / 2,
-    y: (item.bounds.top + item.bounds.bottom) / 2
+    x: midpoint(item.bounds.left, item.bounds.right),
+    y: midpoint(item.bounds.top, item.bounds.bottom)
   };
   const dx = center.x - source.x;
   const dy = center.y - source.y;

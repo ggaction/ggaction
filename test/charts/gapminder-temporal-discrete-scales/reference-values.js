@@ -9,7 +9,7 @@ const LINE_COLORS = Object.freeze(["#4c78a8", "#f58518", "#e45756"]);
 export const BAND_POINT_LAYOUT = Object.freeze({
   width: 456,
   height: 312,
-  margin: Object.freeze({ top: 58, right: 22, bottom: 54, left: 70 })
+  margin: Object.freeze({ top: 58, right: 22, bottom: 54, left: 100 })
 });
 
 export const TIME_LAYOUT = Object.freeze({

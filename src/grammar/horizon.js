@@ -1,5 +1,11 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import {
+  validateGeneratedItemLimit,
+  validateNonEmptyString as requireField
+} from "../core/validation.js";
 import { normalizePalette } from "./palettes.js";
+import { interpolateNumber, inverseLerp } from "./numeric.js";
+import { requireFiniteResult } from "./numeric.js";
 import {
   isNominalValue,
   normalizeTemporalValue
@@ -14,13 +20,6 @@ const OUTPUT_PROPERTIES = Object.freeze([
   "x", "lower", "upper", "group", "color", "sign", "band", "segment"
 ]);
 
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
-
 function validateEncoding(value, role) {
   if (!isPlainObject(value)) {
     throw new TypeError(`Horizon ${role} encoding must be a plain object.`);
@@ -32,13 +31,14 @@ function validateEncoding(value, role) {
     throw new Error(`Unknown Horizon ${role} encoding property "${unknown}".`);
   }
   const field = requireField(value.field, `Horizon ${role} field`);
-  const fieldType = value.fieldType ?? (role === "x" ? "quantitative" : "quantitative");
-  const supported = role === "x"
-    ? ["quantitative", "temporal"]
-    : ["quantitative"];
-  if (!supported.includes(fieldType)) {
+  const fieldType = value.fieldType ?? "quantitative";
+  const supportsTemporal = role === "x";
+  if (
+    fieldType !== "quantitative" &&
+    (!supportsTemporal || fieldType !== "temporal")
+  ) {
     throw new Error(
-      `Horizon ${role} fieldType must be ${supported.join(" or ")}.`
+      `Horizon ${role} fieldType must be quantitative${supportsTemporal ? " or temporal" : ""}.`
     );
   }
   return { field, fieldType };
@@ -140,6 +140,7 @@ export function validateHorizonTransform(transform) {
   if (!Number.isInteger(transform.bands) || transform.bands <= 0) {
     throw new RangeError("Horizon bands must be a positive integer.");
   }
+  validateGeneratedItemLimit(transform.bands, "Horizon bands");
   if (!Number.isFinite(transform.baseline)) {
     throw new TypeError("Horizon baseline must be finite.");
   }
@@ -254,7 +255,14 @@ function splitSegments(rows, baseline) {
       flush();
       continue;
     }
-    current.push({ ...row, signed: row.y - baseline, interpolated: false });
+    current.push({
+      ...row,
+      signed: requireFiniteResult(
+        row.y - baseline,
+        "Horizon signed deviation"
+      ),
+      interpolated: false
+    });
   }
   flush();
   return segments;
@@ -267,10 +275,10 @@ function insertCrossings(points, baseline) {
     const left = points[index - 1];
     const right = points[index];
     if (left.signed * right.signed < 0) {
-      const fraction = (baseline - left.y) / (right.y - left.y);
+      const fraction = inverseLerp(baseline, left.y, right.y);
       output.push({
         sourceRowIndex: undefined,
-        x: left.x + (right.x - left.x) * fraction,
+        x: interpolateNumber(left.x, right.x, fraction),
         y: baseline,
         missing: false,
         signed: 0,
@@ -323,21 +331,49 @@ function runsForSign(points, desired) {
 }
 
 function maximumMagnitude(group) {
-  return Math.max(
-    0,
-    ...group.segments.flatMap(segment =>
-      segment.map(point => Math.abs(point.signed))
-    )
-  );
+  let maximum = 0;
+  for (const segment of group.segments ?? [group]) {
+    for (const point of segment) {
+      maximum = Math.max(maximum, Math.abs(point.signed));
+    }
+  }
+  return maximum;
 }
 
 function resolvedExtents(groups, transform) {
   if (transform.extent !== "auto") return groups.map(() => transform.extent);
   if (transform.resolve === "shared") {
-    const shared = Math.max(0, ...groups.map(maximumMagnitude));
+    let shared = 0;
+    for (const group of groups) shared = Math.max(shared, maximumMagnitude(group));
     return groups.map(() => shared);
   }
   return groups.map(maximumMagnitude);
+}
+
+function validateOutputBudget(groups, extents, transform) {
+  let count = 0;
+  for (const [groupIndex, group] of groups.entries()) {
+    const extent = extents[groupIndex];
+    if (extent === 0) continue;
+    const bandHeight = extent / transform.bands;
+    if (!(bandHeight > 0) || !Number.isFinite(bandHeight)) {
+      throw new RangeError(
+        "Horizon band height is outside the positive finite numeric range."
+      );
+    }
+    for (const sign of ["negative", "positive"]) {
+      for (const segment of group.segments) {
+        for (const run of runsForSign(segment, sign)) {
+          const magnitude = maximumMagnitude(run);
+          count += Math.min(
+            transform.bands,
+            Math.ceil(Math.min(magnitude, extent) / bandHeight)
+          ) * run.length;
+          validateGeneratedItemLimit(count, "Horizon generated row count");
+        }
+      }
+    }
+  }
 }
 
 function seriesForGroup(group, extent, transform) {
@@ -437,6 +473,7 @@ export function deriveHorizon(rows, requested) {
     throw new Error("Horizon requires at least one finite y value.");
   }
   const extents = resolvedExtents(grouped, transform);
+  validateOutputBudget(grouped, extents, transform);
   const groups = grouped.map((group, index) => ({
     ...(transform.groupBy === undefined ? {} : { group: group.group }),
     extent: extents[index],

@@ -1,6 +1,10 @@
 import { action } from "../../core/action.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
-import { resolveTarget, validateOptions } from "./shared.js";
+import {
+  resolveTarget,
+  setEncodingProperties,
+  validateOptions
+} from "./shared.js";
 
 const OPTIONS = Object.freeze(["target", "value", "field", "fieldType"]);
 
@@ -58,15 +62,10 @@ export const encodeAngle = action(
         value: args.value
       });
     } else {
-      next = next
-        .editSemantic({
-          property: `layer[${target}].encoding.angle.field`,
-          value: args.field
-        })
-        .editSemantic({
-          property: `layer[${target}].encoding.angle.fieldType`,
-          value: "quantitative"
-        });
+      next = setEncodingProperties(next, target, "angle", {
+        field: args.field,
+        fieldType: "quantitative"
+      });
     }
     return rematerialize(next, layer, target);
   }

@@ -13,6 +13,35 @@ test("measures text with deterministic code-point metrics", () => {
   assert.ok(Math.abs(measureTextWidth("abc", style) - 19.74) < 1e-12);
   assert.equal(measureTextWidth("한글", style), 28);
   assert.equal(measureTextWidth("", style), 0);
+  assert.ok(measureTextWidth("10000000", style) > 68);
+  assert.ok(
+    measureTextWidth("axis", { ...style, fontWeight: 700 }) >
+      measureTextWidth("axis", style)
+  );
+  assert.ok(
+    measureTextWidth("axis", { ...style, fontWeight: "900" }) >
+      measureTextWidth("axis", { ...style, fontWeight: "400" })
+  );
+  assert.ok(
+    measureTextWidth("axis", { ...style, fontWeight: "black" }) >
+      measureTextWidth("axis", { ...style, fontWeight: "lighter" })
+  );
+  assert.equal(
+    measureTextWidth("e\u0301", style),
+    measureTextWidth("e", style)
+  );
+  assert.equal(
+    measureTextWidth("\u2615\ufe0f", style),
+    measureTextWidth("\u2615", style)
+  );
+  assert.equal(
+    measureTextWidth("\ud83d\udc69\u200d\ud83d\udcbb", style),
+    measureTextWidth("\ud83d\udc69", style)
+  );
+  assert.equal(
+    measureTextWidth("\ud83d\udc4d\ud83c\udffd", style),
+    measureTextWidth("\ud83d\udc4d", style)
+  );
 });
 
 test("resolves aligned and rotated bounds from the shared text metrics", () => {
@@ -79,4 +108,14 @@ test("validates text measurement and wrapping inputs", () => {
     mode: "words",
     style
   }), /Unsupported text wrap mode/);
+  assert.throws(
+    () => measureTextWidth("XX", { fontSize: Number.MAX_VALUE }),
+    /finite numeric range/
+  );
+  assert.throws(() => resolveTextBounds({
+    x: Number.MAX_VALUE,
+    y: 0,
+    text: "i",
+    fontSize: 1e308
+  }), /finite numeric range/);
 });

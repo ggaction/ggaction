@@ -26,7 +26,7 @@ test.before(async () => {
     <canvas id="axis" aria-label="Axis component lifecycle chart"></canvas>
     <canvas id="bin2d" aria-label="2D bin lifecycle chart"></canvas>
     <canvas id="basic" aria-label="Basic entry scatterplot"></canvas>
-    <div id="svg"></div><script type="importmap">
+    <div id="svg"></div><div id="svg-resources"></div><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js","ggaction/svg":"/node_modules/ggaction/src/renderers/svg.js"}}
     </script><script type="module">
       import { chart, render } from "ggaction";
@@ -129,6 +129,48 @@ test.before(async () => {
         title: "Packed SVG chart",
         description: "Two concrete points"
       });
+      const resourceProgram = {
+        graphicSpec: {
+          objects: {
+            canvas: {
+              type: "canvas",
+              properties: { width: 20, height: 10 }
+            },
+            strip: {
+              type: "rect",
+              properties: {
+                x: 0,
+                y: 0,
+                width: 20,
+                height: 10,
+                fill: {
+                  type: "linear-gradient",
+                  from: { x: 0, y: 0 },
+                  to: { x: 1, y: 0 },
+                  stops: [
+                    { offset: 0, color: "red" },
+                    { offset: 1, color: "blue" }
+                  ]
+                },
+                stroke: "none",
+                strokeWidth: 0
+              }
+            }
+          },
+          order: ["canvas", "strip"]
+        }
+      };
+      const resourceHost = document.querySelector("#svg-resources");
+      resourceHost.innerHTML = ["ConsumerA", "ConsumerB"].map(
+        resourceNamespace => renderToSVG(resourceProgram, { resourceNamespace })
+      ).join("");
+      const resourceSVGs = [...resourceHost.querySelectorAll("svg")];
+      const resourceIds = resourceSVGs.map(
+        svg => svg.querySelector("linearGradient").id
+      );
+      const resourceReferences = resourceSVGs.map(
+        svg => svg.querySelector("rect").getAttribute("fill")
+      );
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
         width: canvas.width,
@@ -183,7 +225,14 @@ test.before(async () => {
         svgViewBox: svgHost.querySelector("svg").getAttribute("viewBox"),
         svgTitle: svgHost.querySelector("title").textContent,
         svgDescription: svgHost.querySelector("desc").textContent,
-        svgPoints: svgHost.querySelectorAll("circle").length
+        svgPoints: svgHost.querySelectorAll("circle").length,
+        svgResourceIds: resourceIds,
+        svgResourceReferences: resourceReferences,
+        svgResourceTargets: resourceSVGs.every((svg, index) =>
+          svg.querySelector(
+            "#" + resourceReferences[index].slice(5, -1)
+          ) === svg.querySelector("linearGradient")
+        )
       };
     </script></body></html>`);
   server = await startStaticServer(consumer.directory);
@@ -227,7 +276,16 @@ test("imports and renders the packed browser entries", async () => {
     svgViewBox: "0 0 160 120",
     svgTitle: "Packed SVG chart",
     svgDescription: "Two concrete points",
-    svgPoints: 2
+    svgPoints: 2,
+    svgResourceIds: [
+      "ggaction-gradient-ConsumerA-1",
+      "ggaction-gradient-ConsumerB-1"
+    ],
+    svgResourceReferences: [
+      "url(#ggaction-gradient-ConsumerA-1)",
+      "url(#ggaction-gradient-ConsumerB-1)"
+    ],
+    svgResourceTargets: true
   });
   assert.equal(await page.locator("#status").textContent(), "complete");
   assert.equal(

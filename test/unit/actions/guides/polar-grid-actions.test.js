@@ -89,6 +89,23 @@ test("validates Polar grid ownership and option conflicts atomically", () => {
     () => base.createRadialGrid({ values: [100] }),
     /inside the scale domain/
   );
+  assert.throws(
+    () => base.createThetaGrid({ count: 10_001 }),
+    /count must not exceed 10000/
+  );
+  assert.throws(
+    () => base.createThetaGrid({ values: Array(10_001).fill(0) }),
+    /value count must not exceed 10000/
+  );
+  const created = base.createGrid();
+  assert.throws(
+    () => created.editThetaGrid({ count: 10_001 }),
+    /count must not exceed 10000/
+  );
+  assert.throws(
+    () => created.editRadialGrid({ values: Array(10_001).fill(0) }),
+    /value count must not exceed 10000/
+  );
   assert.equal(base.semanticSpec.guides.grid, undefined);
   assert.equal(base.graphicSpec.objects.thetaGridLines, undefined);
 });

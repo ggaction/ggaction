@@ -178,7 +178,11 @@ export function createGapminderBandPointPrimitives(gapminder) {
     .editGraphics({ target: "xAxisTitle", property: "textBaseline", value: "middle" })
     .editGraphics({ target: "xAxisTitle", property: "rotation", value: 0 })
     .createGraphics({ id: "yAxisTitle", parent: "plot-main", type: "text" })
-    .editGraphics({ target: "yAxisTitle", property: "x", value: 18 })
+    .editGraphics({
+      target: "yAxisTitle",
+      property: "x",
+      value: 11.620000000000005
+    })
     .editGraphics({ target: "yAxisTitle", property: "y", value: (plot.top + plot.bottom) / 2 })
     .editGraphics({ target: "yAxisTitle", property: "text", value: "Population" })
     .editGraphics({ target: "yAxisTitle", property: "fill", value: AXIS })
@@ -401,7 +405,7 @@ export function createGapminderTimePrimitives(gapminder) {
       parent: "plot-main",
       type: "text"
     })
-    .editGraphics({ target: "yAxisTitle", property: "x", value: -2 })
+    .editGraphics({ target: "yAxisTitle", property: "x", value: 6.5 })
     .editGraphics({ target: "yAxisTitle", property: "y", value: (plot.top + plot.bottom) / 2 })
     .editGraphics({ target: "yAxisTitle", property: "text", value: "Life expectancy" })
     .editGraphics({ target: "yAxisTitle", property: "fill", value: AXIS })

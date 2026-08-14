@@ -15,7 +15,7 @@ import { planDerivedDataRevision } from
 import { validateOptions } from "./shared.js";
 import { normalizeDensityPlacement } from "../../grammar/density.js";
 import { scaleEditPatch } from "../scales/patch.js";
-import { removeLegendKinds } from "../guides/legends/remove.js";
+import { removeOwnedColorLegends } from "../guides/legends/remove.js";
 import {
   requireDensityField,
   resolveDensityCategoryScaleOptions,
@@ -213,19 +213,6 @@ function assertGroupingSelectionCompatibility(program, layer, changesGroup) {
       `references ${referenced[1].selector.channel}.`
     );
   }
-}
-
-function removeOwnedColorLegends(program, target) {
-  const kinds = Object.entries(program.guideConfigs.legend ?? {})
-    .filter(([kind, config]) =>
-      config?.target === target &&
-      (
-        config.channels?.includes("color") ||
-        ["gradient", "interval"].includes(kind)
-      )
-    )
-    .map(([kind]) => kind);
-  return kinds.length === 0 ? program : removeLegendKinds(program, kinds);
 }
 
 const editDensity = action(
@@ -454,7 +441,6 @@ const editDensity = action(
       }
       return next;
     };
-    applyEdit(this);
     return applyEdit(this);
   }
 );

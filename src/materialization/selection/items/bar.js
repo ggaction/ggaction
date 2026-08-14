@@ -6,6 +6,7 @@ import {
   resolveBarOffsetChannel,
   resolveBarGrain
 } from "../../../grammar/bars/policy.js";
+import { numericExtent } from "../../../grammar/numeric.js";
 import { layoutSeriesPartition } from "../../../grammar/seriesLayout.js";
 import {
   readNominalField,
@@ -215,14 +216,15 @@ function barStackDefinitions(layer, barGrain, definitions) {
         `Bar mark "${layer.id}" stack ${index} has no resolved semantic endpoints.`
       );
     }
+    const [minimum, maximum] = numericExtent(endpoints);
     const members = grouped.flatMap(definition => definition.members);
     return {
       key: itemKey(layer, "stack", index),
       fields: uniqueFields(members),
       channels: {
         ...sharedChannels(grouped),
-        [measure]: Math.min(...endpoints),
-        [secondary]: Math.max(...endpoints)
+        [measure]: minimum,
+        [secondary]: maximum
       },
       members,
       graphicIndices: entries.map(entry => entry.index)

@@ -2,24 +2,21 @@ import {
   cloneAndFreeze,
   isPlainObject
 } from "../core/immutable.js";
+import { validateNonEmptyString as requireField } from "../core/validation.js";
+import { interpolateNumber, numericExtent } from "./numeric.js";
+
+const MAX_AXIS_BINS = 10_000;
+const MAX_CELLS = 1_000_000;
 
 const TRANSFORM_KEYS = Object.freeze([
   "type", "x", "y", "bins", "extent", "includeEmpty", "members", "as",
   "resolved"
 ]);
-const BIN_KEYS = Object.freeze(["x", "y"]);
-const EXTENT_KEYS = Object.freeze(["x", "y"]);
+const AXIS_KEYS = Object.freeze(["x", "y"]);
 const FIELD_KEYS = Object.freeze(["x0", "x1", "y0", "y1", "count", "members"]);
 const RESOLVED_KEYS = Object.freeze([
   "extent", "edges", "eligibleCount", "occupiedCount"
 ]);
-
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 function rejectUnknownKeys(value, supported, label) {
   const unknown = Object.keys(value).find(key => !supported.includes(key));
@@ -43,7 +40,7 @@ function normalizeBins(value) {
       "2D bin bins must be a positive integer or an object with x and y."
     );
   }
-  rejectUnknownKeys(value, BIN_KEYS, "2D bin bins");
+  rejectUnknownKeys(value, AXIS_KEYS, "2D bin bins");
   return { x: value.x, y: value.y };
 }
 
@@ -51,9 +48,15 @@ function validateBins(value) {
   if (!isPlainObject(value)) {
     throw new TypeError("2D bin bins must be an object.");
   }
-  rejectUnknownKeys(value, BIN_KEYS, "2D bin bins");
+  rejectUnknownKeys(value, AXIS_KEYS, "2D bin bins");
   requirePositiveInteger(value.x, "2D bin x bins");
   requirePositiveInteger(value.y, "2D bin y bins");
+  if (value.x > MAX_AXIS_BINS || value.y > MAX_AXIS_BINS) {
+    throw new RangeError(`2D bin axes support at most ${MAX_AXIS_BINS} bins.`);
+  }
+  if (value.x * value.y > MAX_CELLS) {
+    throw new RangeError(`2D bin grids support at most ${MAX_CELLS} cells.`);
+  }
 }
 
 function normalizeRequestedExtent(value) {
@@ -61,7 +64,7 @@ function normalizeRequestedExtent(value) {
   if (!isPlainObject(value)) {
     throw new TypeError("2D bin extent must be an object.");
   }
-  rejectUnknownKeys(value, EXTENT_KEYS, "2D bin extent");
+  rejectUnknownKeys(value, AXIS_KEYS, "2D bin extent");
   return {
     x: value.x ?? "auto",
     y: value.y ?? "auto"
@@ -84,7 +87,7 @@ function validateRequestedExtent(value) {
   if (!isPlainObject(value)) {
     throw new TypeError("2D bin extent must be an object.");
   }
-  rejectUnknownKeys(value, EXTENT_KEYS, "2D bin extent");
+  rejectUnknownKeys(value, AXIS_KEYS, "2D bin extent");
   validateExtentValue(value.x, "2D bin x extent");
   validateExtentValue(value.y, "2D bin y extent");
 }
@@ -152,9 +155,9 @@ function validateResolved(value, bins) {
   if (!isPlainObject(value.extent) || !isPlainObject(value.edges)) {
     throw new TypeError("Resolved 2D bin extent and edges must be objects.");
   }
-  rejectUnknownKeys(value.extent, EXTENT_KEYS, "resolved 2D bin extent");
-  rejectUnknownKeys(value.edges, EXTENT_KEYS, "resolved 2D bin edges");
-  for (const axis of ["x", "y"]) {
+  rejectUnknownKeys(value.extent, AXIS_KEYS, "resolved 2D bin extent");
+  rejectUnknownKeys(value.edges, AXIS_KEYS, "resolved 2D bin edges");
+  for (const axis of AXIS_KEYS) {
     validateExtentValue(
       value.extent[axis],
       `Resolved 2D bin ${axis} extent`,
@@ -223,8 +226,7 @@ export function normalizeBin2DTransform({
 }
 
 function resolveExtent(values, requested, axis) {
-  const minimum = Math.min(...values);
-  const maximum = Math.max(...values);
+  const [minimum, maximum] = numericExtent(values);
   const extent = requested === "auto" ? [minimum, maximum] : requested;
   if (extent[0] > minimum || extent[1] < maximum) {
     throw new RangeError(
@@ -237,12 +239,24 @@ function resolveExtent(values, requested, axis) {
   return [...extent];
 }
 
-function createEdges(extent, count) {
+function createEdges(extent, count, axis) {
   const [minimum, maximum] = extent;
   const step = (maximum - minimum) / count;
-  return Array.from({ length: count + 1 }, (_, index) =>
-    index === count ? maximum : minimum + step * index
+  const edges = Array.from({ length: count + 1 }, (_, index) =>
+    index === count
+      ? maximum
+      : Number.isFinite(step)
+        ? minimum + step * index
+        : interpolateNumber(minimum, maximum, index / count)
   );
+  if (edges.some((edge, index) =>
+    !Number.isFinite(edge) || index > 0 && edge <= edges[index - 1]
+  )) {
+    throw new RangeError(
+      `2D bin ${axis} extent cannot represent ${count} distinct bins.`
+    );
+  }
+  return edges;
 }
 
 function findBinIndex(value, edges) {
@@ -287,8 +301,8 @@ export function deriveBin2DRows(rows, transform) {
     )
   };
   const edges = {
-    x: createEdges(extent.x, transform.bins.x),
-    y: createEdges(extent.y, transform.bins.y)
+    x: createEdges(extent.x, transform.bins.x, "x"),
+    y: createEdges(extent.y, transform.bins.y, "y")
   };
   const buckets = Array.from(
     { length: transform.bins.x * transform.bins.y },

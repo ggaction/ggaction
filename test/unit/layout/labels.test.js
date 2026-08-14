@@ -57,6 +57,62 @@ test("enumerates deterministic bounded offsets for each supported axis", () => {
       .every(offset => offset.x === 0),
     true
   );
+  const extreme = enumerateLabelOffsets({
+    axis: "both",
+    padding: 0,
+    maxDisplacement: Number.MAX_VALUE
+  });
+  assert.equal(extreme.length <= 4_000, true);
+  assert.equal(extreme.every(offset =>
+    [offset.x, offset.y, offset.distanceSquared].every(Number.isFinite)
+  ), true);
+  const farthest = Math.max(...extreme.map(
+    offset => Math.hypot(offset.x, offset.y)
+  ));
+  assert.equal(farthest >= 999_999.999, true);
+  assert.equal(farthest <= 1_000_000.001, true);
+  assert.deepEqual(enumerateLabelOffsets({
+    axis: "x",
+    padding: Number.MAX_VALUE,
+    maxDisplacement: Number.MAX_VALUE
+  }), [{ x: 0, y: 0, distanceSquared: 0 }]);
+});
+
+test("uses complete label font styles when resolving collisions", () => {
+  const normal = resolveLabelLayout({
+    items: [{
+      id: "normal",
+      x: 10,
+      y: 10,
+      sourceX: 10,
+      sourceY: 10,
+      text: "mmmm",
+      fontSize: 10,
+      fontFamily: "sans-serif",
+      fontWeight: 400
+    }],
+    bounds: boundary,
+    maxDisplacement: 0
+  });
+  const styled = resolveLabelLayout({
+    items: [{
+      id: "styled",
+      x: 10,
+      y: 10,
+      sourceX: 10,
+      sourceY: 10,
+      text: "mmmm",
+      fontSize: 10,
+      fontFamily: "monospace",
+      fontWeight: 700
+    }],
+    bounds: boundary,
+    maxDisplacement: 0
+  });
+  assert.ok(
+    styled.items[0].bounds.right - styled.items[0].bounds.left >
+      normal.items[0].bounds.right - normal.items[0].bounds.left
+  );
 });
 
 test("keeps separated labels fixed and resolves a stable overlap", () => {
@@ -149,4 +205,19 @@ test("rejects malformed bounds and item identity", () => {
     }),
     /unique non-empty ids/
   );
+});
+
+test("rejects label layouts above the shared work budget", () => {
+  assert.throws(() => resolveLabelLayout({
+    items: Array.from({ length: 120 }, (_, index) => ({
+      id: `label-${index}`,
+      x: 10,
+      y: 10,
+      sourceX: 10,
+      sourceY: 10,
+      text: "A",
+      fontSize: 10
+    })),
+    bounds: boundary
+  }), /Label layout work must not exceed 10000000/);
 });

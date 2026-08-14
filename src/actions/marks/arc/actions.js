@@ -20,6 +20,7 @@ import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
+  editMarkGraphic,
   materializeInheritedMark,
   resolveLayeredMarkInheritance,
   resolveMarkData,
@@ -27,14 +28,11 @@ import {
   validateMarkOptions
 } from "../shared.js";
 
-const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "innerRadius", "padAngle", "fill", "opacity", "stroke",
-  "strokeWidth"
+const ARC_OPTIONS = Object.freeze([
+  "innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth"
 ]);
-const EDIT_OPTIONS = Object.freeze([
-  "target", "innerRadius", "padAngle", "fill", "opacity", "stroke",
-  "strokeWidth"
-]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", ...ARC_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", ...ARC_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
 function validateInnerRadius(value) {
@@ -170,15 +168,15 @@ const rematerializeArcMark = action(
       resolved = resolved.rematerializeScale({ id: colorScaleId });
     }
     const config = resolved.markConfigs[id] ?? {};
+    const frame = resolvePolarFrame(resolveGraphicBounds(resolved));
     const derived = deriveArcSectors(dataset.values, layer, {
       thetaScale: resolved.resolvedScales[thetaScaleId],
       ...(radiusScaleId === undefined
         ? {}
         : { radiusScale: resolved.resolvedScales[radiusScaleId] }),
-      frame: resolvePolarFrame(resolveGraphicBounds(resolved)),
+      frame,
       innerRadiusRatio: config.innerRadius ?? 0
     });
-    const frame = resolvePolarFrame(resolveGraphicBounds(resolved));
     const commands = derived.sectors.map(sector => buildAnnularSectorCommands({
       frame,
       startTheta: sector.startTheta,
@@ -194,26 +192,15 @@ const rematerializeArcMark = action(
           resolved.resolvedScales[colorScaleId].domain,
           resolved.resolvedScales[colorScaleId].range
         );
-    return resolved
-      .editGraphics({ target: id, property: "length", value: commands.length })
-      .editGraphics({ target: id, property: "commands", value: commands })
-      .editGraphics({ target: id, property: "fill", value: fills })
-      .editGraphics({ target: id, property: "opacity", value: config.opacity ?? 1 })
-      .editGraphics({
-        target: id,
-        property: "stroke",
-        value: config.stroke === false ? "transparent" : config.stroke ?? "#ffffff"
-      })
-      .editGraphics({
-        target: id,
-        property: "strokeWidth",
-        value: config.stroke === false ? 0 : config.strokeWidth ?? 1
-      })
-      .editGraphics({
-        target: id,
-        property: "strokeDash",
-        value: commands.map(() => [])
-      });
+    return editMarkGraphic(resolved, id, {
+      length: commands.length,
+      commands,
+      fill: fills,
+      opacity: config.opacity ?? 1,
+      stroke: config.stroke === false ? "transparent" : config.stroke ?? "#ffffff",
+      strokeWidth: config.stroke === false ? 0 : config.strokeWidth ?? 1,
+      strokeDash: commands.map(() => [])
+    });
   }
 );
 
@@ -265,7 +252,9 @@ const editArcMark = action(
 );
 
 export function registerArcMarkActions(ProgramClass) {
-  ProgramClass.prototype.createArcMark = createArcMark;
-  ProgramClass.prototype.editArcMark = editArcMark;
-  ProgramClass.prototype.rematerializeArcMark = rematerializeArcMark;
+  Object.assign(ProgramClass.prototype, {
+    createArcMark,
+    editArcMark,
+    rematerializeArcMark
+  });
 }

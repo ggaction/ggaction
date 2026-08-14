@@ -12,13 +12,14 @@ import {
 import { rebindGradientPlotProfile } from "./rebind.js";
 
 export function registerGradientPlotActions(ProgramClass) {
-  ProgramClass.prototype.createGradientPlot = createGradientPlot;
-  ProgramClass.prototype.editGradientPlot = editGradientPlot;
-  ProgramClass.prototype.materializeGradientPlot = materializeGradientPlot;
-  ProgramClass.prototype.materializeGradientPlotFill = materializeGradientPlotFill;
-  ProgramClass.prototype.createGradientPlotCenter = createGradientPlotCenter;
-  ProgramClass.prototype.createGradientPlotLegend = createGradientPlotLegend;
-  ProgramClass.prototype.rematerializeGradientPlotLegend =
-    rematerializeGradientPlotLegend;
-  ProgramClass.prototype.rebindGradientPlotProfile = rebindGradientPlotProfile;
+  Object.assign(ProgramClass.prototype, {
+    createGradientPlot,
+    editGradientPlot,
+    materializeGradientPlot,
+    materializeGradientPlotFill,
+    createGradientPlotCenter,
+    createGradientPlotLegend,
+    rematerializeGradientPlotLegend,
+    rebindGradientPlotProfile
+  });
 }

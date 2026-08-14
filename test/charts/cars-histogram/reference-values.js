@@ -1,5 +1,14 @@
 const COLORS = ["#4c78a8", "#f58518", "#e45756"];
 
+function legendTextWidth(text, fontSize = 12) {
+  return [...String(text)].reduce((sum, character) => sum + (
+    /[iIl.,:;!'|]/u.test(character) ? 0.27
+      : /[mwMW@#%&]/u.test(character) ? 0.82
+        : /[A-Z0-9]/u.test(character) ? 0.61
+          : /[-_]/u.test(character) ? 0.34 : 0.47
+  ) * fontSize, 0);
+}
+
 function requireLayout({ width, height, margin }) {
   if (!Number.isFinite(width) || width <= 0) {
     throw new TypeError("Histogram layout requires a positive finite width.");
@@ -256,7 +265,7 @@ export function createCarsHistogramValues(
   const legendLabelGap = 8;
   const legendItemGap = 20;
   const legendItemWidths = origins.map(
-    origin => legendSymbolWidth + legendLabelGap + origin.length * 7
+    origin => legendSymbolWidth + legendLabelGap + legendTextWidth(origin)
   );
   const legendWidth =
     legendItemWidths.reduce((sum, itemWidth) => sum + itemWidth, 0) +

@@ -6,6 +6,7 @@ import {
 } from "../../../../grammar/polarGuides.js";
 import { resolvePlotGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
+import { assertPolarTextLayout } from "../../../../layout/labels.js";
 import {
   formatPolarGuideValues,
   mapPolarGuideValues,
@@ -33,7 +34,7 @@ function labelGeometry(program, kind, config) {
   const frame = resolvePolarFrameForProgram(program);
   const mapped = mapPolarGuideValues(program, config);
   const text = formatPolarGuideValues(program, config, mapped.values);
-  return {
+  const geometry = {
     values: mapped.values,
     text,
     ...(kind === "theta"
@@ -49,6 +50,21 @@ function labelGeometry(program, kind, config) {
           offset: config.offset
         }))
   };
+  assertPolarTextLayout({
+    canvas: program.graphicSpec.objects.canvas,
+    label: `${prefix(kind)} axis labels`,
+    items: text.map((value, index) => ({
+      x: geometry.x[index],
+      y: geometry.y[index],
+      text: value,
+      fontSize: config.fontSize,
+      fontFamily: config.fontFamily,
+      fontWeight: config.fontWeight,
+      textAlign: geometry.textAlign[index],
+      textBaseline: geometry.textBaseline[index]
+    }))
+  });
+  return geometry;
 }
 
 function resolveLabelConfig(program, kind, args, resources, previous) {

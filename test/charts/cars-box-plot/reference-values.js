@@ -215,7 +215,7 @@ export function createCarsHorizontalMinmaxReferenceValues(cars, {
           label: value
         }))),
         title: Object.freeze({
-          x: 28,
+          x: 21.979999999999997,
           y: bounds.y + bounds.height / 2,
           text: "Origin",
           rotation: -Math.PI / 2

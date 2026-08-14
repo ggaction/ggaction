@@ -1,6 +1,7 @@
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
+  validateGeneratedItemLimit,
   validateNonEmptyString,
   validateNonNegativeFinite,
   validateOptionObject
@@ -11,6 +12,7 @@ import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
+import { numericExtent } from "../../../grammar/numeric.js";
 import {
   DEFAULT_TICK_COUNT,
   inferHistogramBoundaries,
@@ -40,11 +42,17 @@ function validateOptions(args, operation, create) {
     operation
   );
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) throw new Error(`${operation} cannot use count and values together.`);
+  if (Array.isArray(args.values)) {
+    validateGeneratedItemLimit(args.values.length, "Tick value count");
+  }
 }
 
 function validateConfig(channel, config) {
   validateAxisPosition(channel, config.position);
-  if (config.mode === "count" && (!Number.isInteger(config.count) || config.count <= 0)) throw new RangeError("Tick count must be a positive integer.");
+  if (config.mode === "count") {
+    if (!Number.isInteger(config.count) || config.count <= 0) throw new RangeError("Tick count must be a positive integer.");
+    validateGeneratedItemLimit(config.count, "Tick count");
+  }
   if (
     config.mode === "values" &&
     (!Array.isArray(config.values) || !config.values.every(value =>
@@ -69,6 +77,7 @@ function geometry(program, channel, config) {
   if (discrete && config.mode !== "values") throw new Error("Discrete axis ticks require explicit or inferred values, not count.");
   const domain = scale.domain;
   const values = valuesFromTickConfig(program, config);
+  validateGeneratedItemLimit(values.length, "Tick value count");
   if (discrete) {
     const domainValues = new Set(domain);
     if (!values.every(value => domainValues.has(value))) throw new RangeError("Tick values must be inside the scale domain.");
@@ -90,16 +99,25 @@ function geometry(program, channel, config) {
     })
   };
   const canvas = findCanvasGraphic(program)?.properties;
-  const coordinates = channel === "x"
-    ? [...resolved.x1, ...resolved.x2, resolved.y1, resolved.y2]
-    : [resolved.x1, resolved.x2, ...resolved.y1, ...resolved.y2];
-  const newEdgeDoesNotFit =
-    (config.position === "top" && resolved.y2 < 0) ||
-    (config.position === "right" && resolved.x2 > canvas?.width);
+  const xCoordinates = channel === "x"
+    ? [...resolved.x1, ...resolved.x2]
+    : [resolved.x1, resolved.x2];
+  const yCoordinates = channel === "x"
+    ? [resolved.y1, resolved.y2]
+    : [...resolved.y1, ...resolved.y2];
+  const coordinates = [...xCoordinates, ...yCoordinates];
+  const [left, right] = numericExtent(xCoordinates);
+  const [top, bottom] = numericExtent(yCoordinates);
+  const strokeExtent = config.lineWidth / 2;
+  const epsilon = 1e-9;
+  const fits = canvas &&
+    left - strokeExtent >= -epsilon &&
+    right + strokeExtent <= canvas.width + epsilon &&
+    top - strokeExtent >= -epsilon &&
+    bottom + strokeExtent <= canvas.height + epsilon;
   if (
-    !canvas ||
     coordinates.some(value => !Number.isFinite(value)) ||
-    newEdgeDoesNotFit
+    !fits
   ) {
     throw new Error(`The ${channel}-axis ticks do not fit the Canvas margin.`);
   }

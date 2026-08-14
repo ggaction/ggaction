@@ -1,4 +1,7 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
+import { validateGeneratedItemLimit } from "../../core/validation.js";
+
+const MAX_POLYNOMIAL_DEGREE = 32;
 
 export function requireRegressionField(field, label) {
   if (typeof field !== "string" || field.length === 0) {
@@ -54,6 +57,11 @@ export function normalizeRegressionParameters({
         "Regression polynomial degree must be a positive integer."
       );
     }
+    validateGeneratedItemLimit(
+      resolvedDegree,
+      "Regression polynomial degree",
+      MAX_POLYNOMIAL_DEGREE
+    );
     return cloneAndFreeze({
       method,
       degree: resolvedDegree,

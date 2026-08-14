@@ -81,6 +81,19 @@ test("normalizes explicit ranges and maps sequential values", () => {
     }),
     ["#000000", "#ffffff"]
   );
+  assert.deepEqual(
+    mapSequentialColors([-1, 0.5, 2], [0, 1], ["#808080", "#c0c0c0"]),
+    ["#404040", "#a0a0a0", "#ffffff"]
+  );
+  assert.deepEqual(
+    mapSequentialColors(
+      [-1, 0.5, 2],
+      [0, 1],
+      ["#808080", "#c0c0c0"],
+      { clamp: true }
+    ),
+    ["#808080", "#a0a0a0", "#c0c0c0"]
+  );
   assert.equal(resolveSequentialColorStops("auto")[0], "#440154");
   assert.equal(resolveSequentialColorStops("auto").at(-1), "#fde725");
 });
@@ -98,6 +111,10 @@ test("rejects invalid continuous color options", () => {
     () => validateSequentialColorRange(["not-a-color", "blue"]),
     /Unsupported continuous color/
   );
+  assert.throws(
+    () => validateSequentialColorRange(Array(10_001).fill("red")),
+    /Sequential color range length must not exceed 10000/
+  );
   assert.deepEqual(
     validateSequentialColorRange({ palette: { name: "viridis", count: 2 } }),
     { palette: { name: "viridis", count: 2 } }
@@ -110,4 +127,18 @@ test("rejects invalid continuous color options", () => {
     () => mapSequentialColors([NaN], [0, 1], ["#000000", "#ffffff"]),
     /finite numbers/
   );
+});
+
+test("maps sequential colors across the complete finite numeric range", () => {
+  for (const interpolation of CONTINUOUS_COLOR_INTERPOLATIONS) {
+    const colors = mapSequentialColors(
+      [-1e308, 0, 1e308],
+      [-1e308, 1e308],
+      ["#000000", "#ffffff"],
+      { interpolation }
+    );
+    assert.equal(colors.every(color => /^#[0-9a-f]{6}$/.test(color)), true);
+    assert.equal(colors[0], "#000000");
+    assert.equal(colors.at(-1), "#ffffff");
+  }
 });

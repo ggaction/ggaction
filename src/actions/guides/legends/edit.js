@@ -1,5 +1,8 @@
 import { action } from "../../../core/action.js";
-import { validateOptionObject } from "../../../core/validation.js";
+import {
+  validateGeneratedItemLimit,
+  validateOptionObject
+} from "../../../core/validation.js";
 import { normalizeOptions } from "./categorical/options.js";
 import { symbolGraphic } from "./categorical/layout.js";
 import {
@@ -170,6 +173,12 @@ function editInterval(program, previous, args) {
   next = reconcileGraphic(next, "colorLegendTitle", titleVisible, {
     type: "text"
   });
+  next = reconcileGraphic(
+    next,
+    "colorLegendBackground",
+    normalized.border !== false,
+    { type: "rect", before: "colorLegendSymbols" }
+  );
   return next.rematerializeLegend();
 }
 
@@ -186,6 +195,7 @@ function editStrokeWidth(program, previous, args) {
       "Stroke-width legend count must be an integer of at least 2."
     );
   }
+  validateGeneratedItemLimit(count, "Stroke-width legend count");
   const layer = findLayer(program, previous.target);
   const titleMode = args.title;
   const inferredTitle = titleMode === "auto"
@@ -309,6 +319,9 @@ function editCategorical(program, kind, previous, size, args) {
   if (size !== undefined) {
     if (args.count !== undefined && (!Number.isInteger(args.count) || args.count < 2)) {
       throw new RangeError("Size legend count must be an integer of at least 2.");
+    }
+    if (args.count !== undefined) {
+      validateGeneratedItemLimit(args.count, "Size legend count");
     }
     next = next._withLegendConfig("size", {
       ...size,

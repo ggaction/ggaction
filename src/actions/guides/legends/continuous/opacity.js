@@ -5,14 +5,15 @@ import { mapLinearValues } from "../../../../grammar/scales/index.js";
 import { measureTextWidth } from "../../../../core/textMetrics.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
 import {
-  assertLegendInsideCanvas,
+  assertLegendBoundsInsideCanvas,
   editLegendBackground,
   formatContinuousValues,
   normalizeContinuousLegend,
   requireResolvedLegendScale,
   resolveContinuousBounds,
   resolveContinuousPoint,
-  resolveLegendBackgroundBounds,
+  resolveLegendBackgroundFromBounds,
+  resolveLegendTextBounds,
   sampleContinuousValues,
   styleContinuousText,
   validateNonNegative,
@@ -170,45 +171,34 @@ function resolveOpacityLayout(program, config, scale) {
       align: "center"
     };
   }
-  const titleWidth = measureTextWidth(config.title, config.titleStyle);
-  const titleEdge = {
-    x: title.x + (title.align === "left" ? titleWidth : -titleWidth),
-    y: title.y
-  };
-  const labelEdges = labels.map((label, index) => {
-    const width = measureTextWidth(texts[index], config.labels);
-    return {
-      x: label.x + (label.align === "left"
-        ? width
-        : label.align === "right" ? -width : width / 2),
-      y: label.y
-    };
-  });
-  assertLegendInsideCanvas(
-    [title, titleEdge, ...symbols, ...labels, ...labelEdges],
+  const strokeExtent = (config.symbol.strokeWidth ?? 0) / 2;
+  const symbolExtent = radius + strokeExtent;
+  const titleBounds = resolveLegendTextBounds(
+    title,
+    config.title,
+    config.titleStyle
+  );
+  const labelBounds = labels.map((label, index) =>
+    resolveLegendTextBounds(label, texts[index], config.labels)
+  );
+  const symbolBounds = symbols.map(symbol => ({
+    left: symbol.x - symbolExtent,
+    right: symbol.x + symbolExtent,
+    top: symbol.y - symbolExtent,
+    bottom: symbol.y + symbolExtent
+  }));
+  const occupiedBounds = [titleBounds, ...labelBounds, ...symbolBounds];
+  assertLegendBoundsInsideCanvas(
+    occupiedBounds,
     canvas,
     "Opacity legend layout"
   );
-  const background = resolveLegendBackgroundBounds([
-    title,
-    ...symbols.map(symbol => ({
-      x: symbol.x + radius,
-      y: symbol.y + radius
-    })),
-    ...symbols.map(symbol => ({
-      x: symbol.x - radius,
-      y: symbol.y - radius
-    })),
-    ...labels.map((label, index) => ({
-      x: label.x + (label.align === "left"
-        ? measureTextWidth(
-            texts[index],
-            config.labels
-          )
-        : label.align === "right" ? -42 : 0),
-      y: label.y
-    }))
-  ], config.border, canvas, "Opacity legend");
+  const background = resolveLegendBackgroundFromBounds(
+    occupiedBounds,
+    config.border,
+    canvas,
+    "Opacity legend"
+  );
   return { values, texts, symbols, labels, title, background };
 }
 

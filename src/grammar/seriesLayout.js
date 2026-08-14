@@ -1,5 +1,10 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { COLOR_LAYOUTS } from "../core/vocabulary.js";
+import {
+  normalizedFiniteSum,
+  restoreFiniteScale,
+  requireFiniteResult
+} from "./numeric.js";
 
 export const DEFAULT_SERIES_BASELINE = 0;
 
@@ -13,6 +18,15 @@ export function validateColorLayout(layout) {
 function validateValues(values) {
   if (!Array.isArray(values) || !values.every(Number.isFinite)) {
     throw new TypeError("Series layout values must be finite numbers.");
+  }
+}
+
+function requireResolvedSegment(start, end, value, layout) {
+  requireFiniteResult(end, `Series ${layout} end`);
+  if (value > 0 ? end <= start : end >= start) {
+    throw new RangeError(
+      `Series ${layout} value cannot resolve a distinct finite segment.`
+    );
   }
 }
 
@@ -35,18 +49,43 @@ export function layoutSeriesPartition(
     ));
   }
 
-  if (["stack", "fill", "center"].includes(layout)) {
+  if (layout === "stack" || layout === "fill" || layout === "center") {
     if (values.some(value => value < 0)) {
       throw new RangeError(`${layout} layout requires non-negative values.`);
     }
     const total = values.reduce((sum, value) => sum + value, 0);
     if (layout === "fill" && total === 0) return cloneAndFreeze([]);
-    let offset = layout === "center" ? -total / 2 : 0;
+    const normalized = Number.isFinite(total)
+      ? undefined
+      : normalizedFiniteSum(values, `Series ${layout} values`);
+    if (layout === "stack" && normalized) {
+      throw new RangeError("Series stack total is outside the finite numeric range.");
+    }
+    let offset = 0;
+    if (layout === "center") {
+      offset = -(normalized
+        ? restoreFiniteScale(
+          normalized.total / 2,
+          normalized.scale,
+          "Series center half-total"
+        )
+        : total / 2);
+    }
+    let positiveIndex = 0;
+    const positiveCount = values.filter(value => value > 0).length;
     return cloneAndFreeze(values.flatMap((value, index) => {
       if (value === 0) return [];
-      const resolvedValue = layout === "fill" ? value / total : value;
+      positiveIndex += 1;
+      const resolvedValue = layout === "fill"
+        ? normalized
+          ? (value / normalized.scale) / normalized.total
+          : value / total
+        : value;
       const start = offset;
-      const end = start + resolvedValue;
+      const end = layout === "fill" && positiveIndex === positiveCount
+        ? 1
+        : start + resolvedValue;
+      requireResolvedSegment(start, end, value, layout);
       offset = end;
       return [{ index, value, start, end }];
     }));
@@ -58,6 +97,7 @@ export function layoutSeriesPartition(
     if (value === 0) return [];
     const start = value > 0 ? positive : negative;
     const end = start + value;
+    requireResolvedSegment(start, end, value, layout);
     if (value > 0) positive = end;
     else negative = end;
     return [{ index, value, start, end }];
@@ -78,18 +118,10 @@ export function resolveSeriesLayoutDomainValues(partitions, layout) {
       ...partition
     ]);
   }
-  if (layout === "center") {
-    return partitions.flatMap(partition => {
-      const segments = layoutSeriesPartition(partition, layout);
-      return segments.length === 0
-        ? [DEFAULT_SERIES_BASELINE]
-        : segments.flatMap(segment => [segment.start, segment.end]);
-    });
-  }
-  return partitions.flatMap(partition =>
-    layoutSeriesPartition(partition, layout).flatMap(segment => [
-      segment.start,
-      segment.end
-    ])
-  );
+  return partitions.flatMap(partition => {
+    const segments = layoutSeriesPartition(partition, layout);
+    return layout === "center" && segments.length === 0
+      ? [DEFAULT_SERIES_BASELINE]
+      : segments.flatMap(segment => [segment.start, segment.end]);
+  });
 }

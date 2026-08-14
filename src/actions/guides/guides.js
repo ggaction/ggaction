@@ -8,6 +8,7 @@ import {
 import { findDataset } from "../../selectors/datasets.js";
 import { findUpstreamTransform } from
   "../../materialization/dataProvenance.js";
+import { sampleNumericRange } from "../../grammar/numeric.js";
 
 const OPTIONS = Object.freeze(["axes", "grid", "legend"]);
 
@@ -60,10 +61,7 @@ function inferAxesOptions(program, applicability) {
       inferred.x = {
         ...(inferred.x ?? {}),
         ticksAndLabels: {
-          values: Array.from(
-            { length: 6 },
-            (_, index) => low + (high - low) * index / 5
-          )
+          values: sampleNumericRange(low, high, 6, "Horizon axis domain")
         }
       };
     }

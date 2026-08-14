@@ -3903,8 +3903,8 @@ encodings.
 
 | Option | Type | Default |
 | --- | --- | --- |
-| `width` | positive integer | `640` |
-| `height` | positive integer | `400` |
+| `width` | positive finite number | `640` |
+| `height` | positive finite number | `400` |
 | `background` | non-empty string | `"white"` |
 | `margin` | non-negative number or side object | `{ top: 30, right: 30, bottom: 60, left: 70 }` |
 
@@ -4216,7 +4216,7 @@ program.createRegressionData({
 | `x`, `y` | finite quantitative field names | required |
 | `groupBy` | nominal field name | one ungrouped model |
 | `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
-| `degree` | positive integer for polynomial | `2` |
+| `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `confidence` | number strictly between `0` and `1`; not accepted by LOESS | `0.95` |
 | `interval` | `"mean"` or `"prediction"`; not accepted by LOESS | `"mean"` |
@@ -4228,6 +4228,10 @@ with source order breaking distance ties. Output follows group first appearance
 and observed unique x order. Linear and polynomial output includes fixed
 `__regression_ci_lower` / `__regression_ci_upper` fields; LOESS is line-only.
 Source values remain unchanged.
+
+Regression output is limited to 10,000 unique group/x rows. Polynomial and
+LOESS fitting reject inputs whose estimated work exceeds 10,000,000 units,
+before allocating or entering the expensive fit.
 
 ## `createIntervalData({ id, source?, field, groupBy?, center?, extent?, level?, as? })` {#create-interval-data}
 
@@ -4257,7 +4261,8 @@ Mean supports standard error, sample standard deviation, and two-sided
 Student-t confidence intervals. Median requires interquartile range, and IQR
 requires median. Group order follows first appearance. Missing group values,
 non-finite measures, and undersized mean groups are omitted; valid source rows
-and the source dataset remain unchanged.
+and the source dataset remain unchanged. A summary whose derived finite center
+or endpoint is not representable throws a `RangeError` atomically.
 
 ## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as? })`
 
@@ -4281,7 +4286,7 @@ program.createDensityData({
 | `groupBy` | nominal field name | one ungrouped density |
 | `bandwidth` | positive number or `"auto"` | automatic Scott-rule estimate |
 | `extent` | ascending finite pair or `"auto"` | observed valid extent |
-| `steps` | integer at least `2` | `100` |
+| `steps` | integer from `2` through `10,000` | `100` |
 | `kernel` | `"gaussian"`, `"epanechnikov"`, `"uniform"`, or `"triangular"` | `"gaussian"` |
 | `normalization` | `"unit"` or `"count"` | `"unit"` |
 | `as` | two distinct output field names | `<field>_value`, `<field>_density` |
@@ -4292,7 +4297,9 @@ and `extent` values—including `"auto"`—and stores the materialized revision'
 concrete values separately as `resolved: { bandwidth, extent }`. Kernel and
 normalization defaults are stored directly. Unit normalization integrates
 each complete group density to one; count normalization scales it by that
-group's valid sample count. Source values remain unchanged.
+group's valid sample count. Density output is limited to 10,000 rows, and
+valid source rows multiplied by `steps` must not exceed the 10,000,000-unit
+work budget. Source values remain unchanged.
 
 ## Related
 
@@ -4512,6 +4519,11 @@ const program = chart()
 | `members` | boolean | `false` |
 | `as` | partial output-field object | namespaced from `id` |
 
+Each axis accepts at most 10,000 bins, and a grid accepts at most 1,000,000
+cells in total. These limits are validated before any cell storage is
+allocated, including when the transform is reached through `createHeatmap` or
+`editBin2DData`.
+
 Only rows with finite values for both fields are eligible. Cells are half-open:
 `[lower, upper)`. The last cell on each axis includes its upper endpoint, so
 every eligible row belongs to exactly one cell. Output rows are ordered from low
@@ -4521,6 +4533,12 @@ The stored transform includes the resolved axis extents and edge arrays. An
 explicit extent must contain every eligible value; the action throws rather
 than silently dropping rows. An automatic axis with no positive span also
 throws instead of guessing a display range.
+
+Every resolved edge is a finite number and edges are strictly increasing. Edge
+generation supports extents whose direct subtraction overflows, such as a grid
+from `-1e308` to `1e308`. If the requested number of distinct bins cannot be
+represented within an extent, the action throws `RangeError`; it never silently
+returns fewer bins.
 
 The default output fields are `__<id>_x0`, `__<id>_x1`, `__<id>_y0`,
 `__<id>_y1`, and `__<id>_count`. Pass `as` to give downstream encodings shorter
@@ -4887,7 +4905,9 @@ program.editLineMark({
 Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 `cardinal`, `monotone`, and `natural`. Smooth curves use cubic commands and
 two-point series fall back to linear. Monotone paths require strictly increasing
-materialized x values.
+or decreasing materialized x values; duplicate or non-monotonic x is rejected.
+Materialization rejects any line or complete area that would expand beyond
+10,000 backend-neutral path commands before allocating that command array.
 
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
@@ -5198,6 +5218,9 @@ position when it already fits. If the requested distance cannot eliminate all
 overlap or overflow, the program retains a deterministic best effort and stores
 `overlap` or `bounds` warnings in the label-layout resolution summary. It never
 expands margins, reduces font size, or searches for an unrelated nearby mark.
+For extreme `maxDisplacement` values, candidate generation remains bounded: it
+searches the local lattice, adds deterministic distant samples, and does not
+search farther than 1,000,000 logical pixels.
 
 Calling `layoutLabels()` again replaces the complete policy and recomputes from
 semantic base text rather than accumulating offsets. Text, data, scale, source
@@ -5390,6 +5413,8 @@ density positions together. It infers a Gaussian kernel, automatic bandwidth
 and extent, 100 samples, and vertical density placement. `groupBy`, `kernel`,
 `normalization`, categorical placement, side, and two-value split remain
 available through its exact action contract.
+`steps` is at most 10,000, the complete grouped output is at most 10,000 rows,
+and density work is limited to 10,000,000 source-row/sample units.
 
 ### Atomic Horizon {#atomic-horizon}
 
@@ -5397,6 +5422,8 @@ available through its exact action contract.
 It accepts existing compatible x/y encodings or explicit `x` and `y`, then
 owns the folded y/y2 positions and positive/negative palettes as one action.
 Horizon charts intentionally keep only the source-facing x guide.
+`bands` is at most 10,000 and the complete run-by-band output is limited to
+10,000 rows; unrepresentable signed deviations or fold extents are rejected.
 
 `editDensity` and `editHorizon` create immutable derived-data revisions and
 rematerialize their connected scales, paths, and guides. Density edits can
@@ -5503,7 +5530,7 @@ program.createRegression({
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `undefined` | unique color/shape field |
 | `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
-| `degree` | positive integer for polynomial | `2` |
+| `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `confidence` | number strictly between `0` and `1` | `0.95` |
 | `interval` | `"mean"` or `"prediction"` | `"mean"` |
@@ -5529,6 +5556,10 @@ and are therefore at least as wide as matching mean intervals. LOESS does not
 accept `confidence`, `interval`, or a band object; its omitted or `false` band
 produces only the fitted line. Linear and polynomial bands can also be disabled
 with `band: false`.
+
+Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
+inputs whose estimated fitting work exceeds 10,000,000 units throw a
+`RangeError` before the expensive fit begins.
 
 The action keeps each fitted dataset, band, and line associated with its target
 point mark, so multiple point layers can add independent regressions in one
@@ -6268,7 +6299,9 @@ createGradientPlot({
 ```
 
 - `density` defaults to Gaussian, automatic bandwidth and extent, `64` steps,
-  and unit normalization.
+  and unit normalization. `steps` is limited to 10,000; all category profiles
+  together are limited to 10,000 generated rows and the shared density work
+  budget.
 - `width.band` defaults to `0.7` of the category band.
 - `gradient` defaults to `blues` with opacity `[0, 1]`.
 - `center` defaults to a median rule with a `1.5` logical-pixel dark stroke;
@@ -6802,6 +6835,13 @@ logical CSS width and height while enlarging the backing store:
 render(program, context, { pixelRatio: 2 });
 ```
 
+Raster backing dimensions are the logical dimension multiplied by
+`pixelRatio`, rounded to the nearest whole pixel with a minimum of one pixel.
+This leaves fractional logical dimensions unchanged in CSS and SVG output.
+Canvas and PNG preflight the complete allocation before changing the backing
+store: each physical side is limited to `32767` pixels and the complete image
+to `16777216` pixels.
+
 ## SVG output
 
 The browser-safe SVG entry returns a complete SVG document string without
@@ -6813,14 +6853,19 @@ import { renderToSVG } from "ggaction/svg";
 
 const svg = renderToSVG(program, {
   title: "Quarterly revenue",
-  description: "Revenue by quarter"
+  description: "Revenue by quarter",
+  resourceNamespace: "quarterlyRevenue"
 });
 ```
 
 The root `width`, `height`, and `viewBox` use the program's logical Canvas
 dimensions. Optional `title` and `description` strings become escaped
 `<title>` and `<desc>` children. Repeated calls with the same program and
-options return the same string.
+options return the same string. Resource IDs use a deterministic hash of
+`graphicSpec` by default. When multiple copies of the same chart will coexist
+in one HTML document, give each call a distinct `resourceNamespace` so their
+gradient and clipping IDs cannot collide. It must start with an ASCII letter
+and contain only ASCII letters, numbers, `_`, or `-`.
 
 For example, a browser application can place the generated document in an
 existing output container:
@@ -6865,7 +6910,10 @@ const result = await renderToPDF(program, {
 ```
 
 Missing output directories are created. The page width and height in PDF points
-use the program's logical Canvas dimensions, and the frozen result contains the
+use the program's logical Canvas dimensions. The native vector backend
+represents page boxes as positive integers, so PDF output requires each logical
+dimension to be an integer no larger than `16777216`; unsupported dimensions
+are rejected before replacing the output file. The frozen result contains the
 absolute `output`, logical `width` and `height`, `pages: 1`, and byte count.
 Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
 strings plus an array of non-empty `keywords`.
@@ -6885,6 +6933,15 @@ path stroke width does not expand that coordinate box. The renderer creates the
 Canvas gradient only for the current draw call and never stores backend objects
 in `graphicSpec`.
 
+Canvas, PNG, and PDF share a native drawing backend. Before creating or changing
+native output, they require every geometry and style number passed to that
+backend—including path controls, nested translations, stroke/dash sizes, text
+size/rotation, and resolved gradient endpoints—to have magnitude no greater
+than `16777216` (`2^24`). Derived rect/circle and nested-clip extents, gradient
+direction lengths, cumulative translations, and pixel-ratio-scaled values use
+the same boundary. SVG remains browser-safe string serialization and preserves
+the complete finite JavaScript number range.
+
 Line curve actions resolve interpolation into those commands before rendering.
 Canvas, SVG, and PDF execute `L` and cubic `C` segments but do not read curve
 names or calculate control points.
@@ -6892,9 +6949,16 @@ names or calculate control points.
 ## Errors and limitations
 
 Rendering never reads `semanticSpec`. Every drawable property must already be
-concrete. Canvas/PNG `pixelRatio` must be a positive finite number; SVG and PDF
-are vector output and do not accept it. PDF options and metadata use closed key
-sets, and invalid input is rejected before writing a new file.
+concrete. Canvas/PNG `pixelRatio` must be positive at native precision, no
+greater than `16777216`, and produce physical dimensions within the raster
+limits above. PDF is vector output and does not accept `pixelRatio`, but its
+page and drawing geometry use the Canvas-backed native limits. Native numeric
+range failures are rejected before Canvas mutation or PNG/PDF file replacement.
+SVG uses neither native nor raster limits. PDF options and metadata use closed
+key sets. SVG `resourceNamespace` follows the identifier form above, and SVG
+text, attributes, titles, and descriptions reject characters that XML 1.0
+cannot represent; emoji, joiners, variation selectors, and right-to-left text
+remain unchanged.
 
 ## Related
 
@@ -7027,7 +7091,9 @@ for the complete data preparation and guide options.
 `facet` uses field values in source first-appearance order. It infers one
 common row-preserving dataset ancestor, then filters and replays supported
 derived data independently inside each cell. Omitted `columns` creates one row;
-a positive value wraps cells row-major.
+a positive value wraps cells row-major. A facet contains at most 100 children,
+and source-row count multiplied by child count must not exceed the shared
+10,000,000-unit work budget.
 
 | Option | Default | Effect |
 | --- | --- | --- |
@@ -7639,7 +7705,7 @@ or validation.
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
 | `bin.maxBins` | positive integer | `10` |
 | `bin.step` | positive finite number | mutually exclusive |
-| `bin.boundaries` | at least two increasing finite numbers | mutually exclusive |
+| `bin.boundaries` | 2–10,001 increasing finite numbers | mutually exclusive |
 | `scale.id` | scale ID | `"x"` |
 | `scale.type` | `"linear"` | `"linear"` |
 | `scale.domain` | `"auto"` or two ascending finite numbers | `"auto"` |
@@ -7652,6 +7718,7 @@ Exact-step bins use zero as their grid anchor and expand an automatic domain
 to step multiples. Explicit boundaries support irregular interval widths and
 own the x-domain endpoints. All intervals are half-open except the final
 interval, which includes its upper endpoint.
+Every policy is limited to 10,000 generated bins.
 The rect collection remains empty until y is encoded.
 
 ## Count/stack bar `encodeY(options?)`
@@ -8647,6 +8714,12 @@ is its fixed exponent-`0.5` specialization, and `symlog` supports values on
 both sides of zero. Point, line, area, bar, and rule materializers use the same
 mapping, and axes and grids read the same resolved scale.
 
+When an automatic transformed domain contains one finite value, ggaction pads
+it to a finite, type-valid pair and places that value at the middle of the
+transformed range whenever both surrounding endpoints are representable. A log
+constant stays entirely positive or entirely negative. Explicit transformed
+domains still require two distinct values.
+
 Temporal field values are normalized while resolving the scale, without
 rewriting the source dataset. Finite timestamps are accepted directly;
 four-digit numbers or strings are UTC years, and validated `YYYY-MM-DD` or
@@ -8773,7 +8846,7 @@ Accepted names are fixed by the ggaction contract:
 | Diverging | `blueorange`, `brownbluegreen`, `purplegreen`, `pinkyellowgreen`, `purpleorange`, `redblue`, `redgrey`, `redyellowblue`, `redyellowgreen`, `spectral` |
 | Cyclical | `rainbow`, `sinebow` |
 
-`count` must be a positive integer. Categorical palettes use a prefix when the
+`count` must be a positive integer no greater than 10,000. Categorical palettes use a prefix when the
 count is shorter and cycle deterministically when it is longer. Other families
 used for an ordinal mapping are sampled to `count`, or to the resolved domain
 size when omitted. On a sequential scale, `count` must be at least `2` and sets
@@ -8794,7 +8867,8 @@ quantitative sequential color with one aggregate value per final rectangle.
 The default palette is
 `viridis`; an explicit palette may use `count` and `extent`, while an explicit
 range needs at least two colors. `count` controls the stored gradient stops;
-the scale still interpolates continuously between them. `interpolate` accepts
+the scale still interpolates continuously between them. Explicit sequential
+color ranges are also limited to 10,000 stops. `interpolate` accepts
 `rgb`, `hsl`, `hsl-long`, `lab`,
 `hcl`, `hcl-long`, `cubehelix`, or `cubehelix-long`. `clamp` and `reverse`
 affect both points and a connected gradient legend.
@@ -8855,6 +8929,12 @@ interval legend with labels such as `< 60`, `60–70`, and `≥ 80`. These
 mappings are available through quantitative point `encodeColor` and the direct
 scale vocabulary. A type-changing `editScale` call validates the complete
 replacement definition before rematerializing its consumers.
+Explicit discretized color ranges contain at most 10,000 colors.
+
+Quantize boundaries and interval labels remain distinct across very large,
+very small, and close finite values. If the numeric extent cannot represent
+the requested number of equal-width classes, resolution throws a `RangeError`
+instead of silently creating duplicate classes.
 
 ## Related
 
@@ -9016,7 +9096,8 @@ Each x/y axis option supports:
 
 Use either `count` or exact data-space `values` for ticks. Ambiguous coordinates
 or scales must be selected explicitly. `createAxes` reads stored coordinates;
-it never creates or repairs them.
+it never creates or repairs them. Tick, label, and grid `count` values and
+explicit `values` arrays are limited to 10,000 generated items.
 
 Linear scales create numeric nice ticks. Time scales choose a UTC calendar
 interval near the requested count and format labels automatically. Automatic
@@ -9024,7 +9105,8 @@ formatting starts from the domain span, then raises precision only when two
 distinct resolved ticks would otherwise share a label. For example, a
 1970–1982 domain produces `1970`, `1972`, ..., `1982`, while sub-month ticks
 include the day needed to distinguish them. Explicit time values are finite
-timestamps.
+timestamps. Exceptionally long valid date domains use a nice multi-year step
+when the fixed calendar interval would grossly oversample the requested count.
 
 A band or point x scale uses its complete domain as the default tick and label
 values. Each value is placed at the shared band or point center and formatted
@@ -9451,7 +9533,7 @@ Every categorical legend uses the same right-side default:
 | `titleStyle` | title style object | default sans-serif title style |
 | `itemGap` | positive number | `28` at either side, `20` at top/bottom |
 | `border` | boolean or border style object | `false` |
-| `count` | size-legend symbol count of at least `2` | `5` for point legends |
+| `count` | size-legend symbol count from `2` through `10,000` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
@@ -9470,6 +9552,9 @@ Top and bottom legends use a general item grid. `columns` caps the column count;
 first. `align` positions the complete title-plus-items block within plot
 bounds. The title appears above the grid by default, or beside it with
 `titlePosition: "left"`.
+
+A categorical legend resolves at most 10,000 domain items. A layered symbol
+recipe contains at most one line, one point, and one swatch layer.
 
 When two or more legend blocks share the top or bottom edge, the lane starts at
 the plot's left edge and keeps 40 logical pixels between complete occupied
@@ -9537,6 +9622,7 @@ Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
 `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
 Gradient and side-positioned opacity legends require `titlePosition: "top"`.
 Both forms require enough requested Canvas margin and never resize the Canvas.
+Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
 creates ordered swatches and concrete interval labels. The current interval
@@ -12226,6 +12312,7 @@ export function render(
 export interface SVGRenderOptions {
   readonly title?: string;
   readonly description?: string;
+  readonly resourceNamespace?: string;
 }
 
 export function renderToSVG(
@@ -12738,9 +12825,10 @@ program.createGraphics({ id: "points", type: "circle", length: 2 });
 ```
 
 Supported types are `canvas`, `collection`, `circle`, `rect`, `line`, `text`,
-and `path`. `length` is a non-negative integer accepted by
+and `path`. `length` is a non-negative integer no greater than 10,000 accepted by
 homogeneous drawable types. A heterogeneous `collection` is populated through
-one `editGraphics({ property: "items" })` call instead. Equivalent repeated
+one `editGraphics({ property: "items" })` call instead; replacement `items`
+arrays are likewise limited to 10,000 entries. Equivalent repeated
 creation is idempotent.
 
 ```javascript
@@ -12823,7 +12911,8 @@ Path graphics use backend-neutral `path.commands` arrays rather than renderer-sp
 path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts
 with one `M`; `L` and `C` draw straight and cubic segments; an optional final `Z`
 closes the path. At least one `L` or `C` segment is required. Coordinates and cubic
-control points must be finite numbers.
+control points must be finite numbers, and one path may contain at most 10,000
+commands. Generated linear and closed paths enforce the same limit before allocation.
 TypeScript users can import the `ConcretePathCommand` union from `ggaction`.
 `path.strokeDash` and `line.strokeDash` accept non-negative finite number arrays;
 an empty array is a solid stroke.
@@ -12894,6 +12983,10 @@ and Canvas-wide user-space coordinates are not supported.
 Only normalized paint data is stored in `graphicSpec`. The Canvas renderer
 resolves the final item-local coordinates and creates the backend gradient while
 drawing; no Canvas gradient object is retained in the immutable program.
+Canvas, PNG, and PDF require resolved native gradient geometry to have magnitude
+no greater than `16777216`, including the direction-vector length, and reject
+the complete render before native output changes. SVG preserves all finite
+JavaScript coordinates.
 
 The complete low-level line-chart example is available in
 [`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).

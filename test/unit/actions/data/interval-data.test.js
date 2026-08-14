@@ -83,3 +83,20 @@ test("validates options and leaves the source program unchanged", () => {
   );
   assert.equal(base.semanticSpec.datasets.length, 1);
 });
+
+test("rejects unrepresentable interval endpoints atomically", () => {
+  const base = chart().createData({
+    values: [{ value: -1e308 }, { value: 1e308 }]
+  });
+  assert.throws(
+    () => base.createIntervalData({
+      id: "summary",
+      field: "value",
+      center: "mean",
+      extent: "ci",
+      level: 0.95
+    }),
+    /Interval (lower|upper) endpoint is outside the finite numeric range/
+  );
+  assert.equal(base.semanticSpec.datasets.length, 1);
+});

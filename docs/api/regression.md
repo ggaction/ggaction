@@ -49,7 +49,7 @@ program.createRegression({
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `undefined` | unique color/shape field |
 | `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
-| `degree` | positive integer for polynomial | `2` |
+| `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `confidence` | number strictly between `0` and `1` | `0.95` |
 | `interval` | `"mean"` or `"prediction"` | `"mean"` |
@@ -75,6 +75,10 @@ and are therefore at least as wide as matching mean intervals. LOESS does not
 accept `confidence`, `interval`, or a band object; its omitted or `false` band
 produces only the fitted line. Linear and polynomial bands can also be disabled
 with `band: false`.
+
+Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
+inputs whose estimated fitting work exceeds 10,000,000 units throw a
+`RangeError` before the expensive fit begins.
 
 The action keeps each fitted dataset, band, and line associated with its target
 point mark, so multiple point layers can add independent regressions in one

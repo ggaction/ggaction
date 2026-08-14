@@ -1,10 +1,11 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { aggregateScalarValues } from "./aggregate.js";
+import { requireFiniteResult, stableDecimal } from "./numeric.js";
 import { studentTCriticalValue } from "./statistics/studentT.js";
 
-const CENTER_VALUES = Object.freeze(["mean", "median"]);
-const EXTENT_VALUES = Object.freeze(["stderr", "stdev", "ci", "iqr"]);
-const TRANSFORM_KEYS = Object.freeze([
+const CENTER_VALUES = ["mean", "median"];
+const EXTENT_VALUES = ["stderr", "stdev", "ci", "iqr"];
+const TRANSFORM_KEYS = [
   "type",
   "field",
   "groupBy",
@@ -12,8 +13,8 @@ const TRANSFORM_KEYS = Object.freeze([
   "extent",
   "level",
   "as"
-]);
-const OUTPUT_KEYS = Object.freeze(["center", "lower", "upper"]);
+];
+const OUTPUT_KEYS = ["center", "lower", "upper"];
 
 function nonEmptyString(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -154,10 +155,6 @@ function isGroupValue(value) {
     (typeof value === "number" && Number.isFinite(value));
 }
 
-function stableNumber(value) {
-  return Number(value.toFixed(12));
-}
-
 function deriveGroup(values, transform) {
   if (transform.center === "median") {
     if (values.length === 0) return undefined;
@@ -175,7 +172,11 @@ function deriveGroup(values, transform) {
       ? aggregateScalarValues(values, "stderr")
       : studentTCritical(values.length - 1, transform.level) *
         aggregateScalarValues(values, "stderr");
-  return { center, lower: center - spread, upper: center + spread };
+  return {
+    center,
+    lower: requireFiniteResult(center - spread, "Interval lower endpoint"),
+    upper: requireFiniteResult(center + spread, "Interval upper endpoint")
+  };
 }
 
 export function deriveInterval(rows, transform) {
@@ -218,9 +219,9 @@ export function deriveInterval(rows, transform) {
     if (result === undefined) continue;
     output.push({
       ...group.fields,
-      [transform.as.center]: stableNumber(result.center),
-      [transform.as.lower]: stableNumber(result.lower),
-      [transform.as.upper]: stableNumber(result.upper)
+      [transform.as.center]: stableDecimal(result.center),
+      [transform.as.lower]: stableDecimal(result.lower),
+      [transform.as.upper]: stableDecimal(result.upper)
     });
   }
   return cloneAndFreeze(output);

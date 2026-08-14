@@ -5,7 +5,7 @@ import { chart } from "../../../../src/ChartProgram.js";
 
 function encodedProgram() {
   return chart()
-    .createCanvas({ width: 240, height: 160, margin: 20 })
+    .createCanvas({ width: 360, height: 280, margin: 70 })
     .createData({ id: "data", values: [{ x: 0, y: 5 }, { x: 10, y: 15 }] })
     .createPointMark({ id: "points" })
     .encodeX({ field: "x" })
@@ -34,7 +34,7 @@ test("creates a complete axis beneath three wrapped child actions", () => {
   assert.deepEqual(program.guideConfigs.axis.x.ticks.values, [0, 5, 10]);
   assert.equal(program.guideConfigs.axis.x.labels.fontSize, 14);
   assert.equal(program.semanticSpec.guides.axis.x.title, "Horizontal");
-  assert.equal(program.graphicSpec.objects.xAxisTitle.properties.x, 20);
+  assert.equal(program.graphicSpec.objects.xAxisTitle.properties.x, 70);
   assert.equal(before.semanticSpec.guides.axis, undefined);
 });
 
@@ -87,6 +87,19 @@ test("validates nested options and rejects partial duplicate axes", () => {
     () => program.createXAxis({ title: { lineWidth: 2 } }),
     /Unknown createXAxis.title option/
   );
+  const values = Array(10_001).fill(0);
+  assert.throws(
+    () => program.createXAxis({ ticksAndLabels: { values } }),
+    /Tick value count must not exceed 10000/
+  );
+  assert.throws(
+    () => program.createXAxisTicks({ count: 10_001 }),
+    /Tick count must not exceed 10000/
+  );
+  assert.throws(
+    () => program.createXAxisLabels({ values }),
+    /Label value count must not exceed 10000/
+  );
   const partial = program.createXAxisLine();
   assert.throws(() => partial.createXAxis(), /missing x-axis line/);
 });
@@ -131,5 +144,13 @@ test("validates complete-axis facade options before leaf edits", () => {
   assert.throws(
     () => program.editYAxis({ line: { unknown: true } }),
     /Unknown editYAxis.line option/
+  );
+  assert.throws(
+    () => program.editXAxisTicks({ count: 10_001 }),
+    /Tick count must not exceed 10000/
+  );
+  assert.throws(
+    () => program.editYAxisLabels({ values: Array(10_001).fill(5) }),
+    /Label value count must not exceed 10000/
   );
 });

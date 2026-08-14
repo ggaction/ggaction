@@ -2,8 +2,10 @@ import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   deriveKernelDensity,
   validateDensityKernel,
-  validateDensityNormalization
+  validateDensityNormalization,
+  validateDensitySteps
 } from "./density.js";
+import { finiteMidpoint, stableFiniteMean } from "./numeric.js";
 
 export const GRADIENT_PROFILE_FIELDS = Object.freeze({
   category: "__gradientPlot_category",
@@ -15,11 +17,11 @@ export const GRADIENT_PROFILE_FIELDS = Object.freeze({
   count: "__gradientPlot_count"
 });
 
-const TRANSFORM_KEYS = Object.freeze([
+const TRANSFORM_KEYS = [
   "type", "category", "field", "bandwidth", "extent", "steps", "kernel",
   "normalization", "center", "as", "resolve", "resolved"
-]);
-const OUTPUT_KEYS = Object.freeze(Object.keys(GRADIENT_PROFILE_FIELDS));
+];
+const OUTPUT_KEYS = Object.keys(GRADIENT_PROFILE_FIELDS);
 
 function requireField(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -92,9 +94,7 @@ export function validateGradientProfileTransform(value) {
   if (value.extent !== "auto") {
     validatePair(value.extent, "Gradient profile extent");
   }
-  if (!Number.isInteger(value.steps) || value.steps < 2) {
-    throw new RangeError("Gradient profile steps must be an integer of at least 2.");
-  }
+  validateDensitySteps(value.steps, "Gradient profile steps");
   validateDensityKernel(value.kernel);
   validateDensityNormalization(value.normalization);
   if (!["mean", "median"].includes(value.center)) {
@@ -148,14 +148,10 @@ export function requestedGradientProfileTransform(transform) {
 }
 
 function centerOf(values, type) {
-  if (type === "mean") {
-    return values.reduce((sum, value) => sum + value, 0) / values.length;
-  }
+  if (type === "mean") return stableFiniteMean(values);
   const sorted = [...values].sort((left, right) => left - right);
   const middle = (sorted.length - 1) / 2;
-  const lower = Math.floor(middle);
-  const upper = Math.ceil(middle);
-  return (sorted[lower] + sorted[upper]) / 2;
+  return finiteMidpoint(sorted[Math.floor(middle)], sorted[Math.ceil(middle)]);
 }
 
 export function deriveGradientProfiles(rows, transform) {
@@ -178,8 +174,9 @@ export function deriveGradientProfiles(rows, transform) {
     row[transform.category] !== undefined && row[transform.category] !== null &&
     row[transform.category] !== "" && Number.isFinite(row[transform.field])
   );
-  const maximumIntensity = Math.max(
-    ...density.values.map(row => row.__gradientProfile_intensity)
+  const maximumIntensity = density.values.reduce(
+    (maximum, row) => Math.max(maximum, row.__gradientProfile_intensity),
+    -Infinity
   );
   if (!Number.isFinite(maximumIntensity) || maximumIntensity <= 0) {
     throw new Error("Gradient profile requires a positive resolved density range.");

@@ -56,40 +56,6 @@ function applySharedHistogramBoundaries(program, layerId, boundaries) {
   });
 }
 
-function replayDatasetId(cell, owner) {
-  return `${cell.id}-${owner}-data`;
-}
-
-function rebindReplayedGradientPlots(child, base, datasets) {
-  let next = child;
-  for (const [id, markConfig] of Object.entries(base.markConfigs)) {
-    const gradientPlot = markConfig.gradientPlot;
-    if (gradientPlot?.materialized !== true) continue;
-    const profile = datasets.get(gradientPlot.profileId);
-    const source = datasets.get(gradientPlot.source);
-    if (profile === undefined || source === undefined) {
-      throw new Error(
-        `Facet gradient plot "${id}" is missing replayed profile dependencies.`
-      );
-    }
-    next = next.rebindGradientPlotProfile({ id, profile, source });
-  }
-  return next;
-}
-
-function cellMaterializationPlan(program) {
-  const scaleIds = [...new Set(program.semanticSpec.layers.flatMap(layer =>
-    Object.values(layer.encoding ?? {})
-      .map(encoding => encoding?.scale)
-      .filter(id => id !== undefined)
-  ))];
-  const scales = scaleIds.map(id => ({
-    op: "rematerializeScale",
-    args: { id, guides: false, marks: false }
-  }));
-  return buildMaterializationPlan({ scales });
-}
-
 function deriveCellProgram(
   base,
   definition,
@@ -111,7 +77,7 @@ function deriveCellProgram(
         `Facet replay source "${replay.source}" is not available in cell "${cell.id}".`
       );
     }
-    const id = replayDatasetId(cell, replay.id);
+    const id = `${cell.id}-${replay.id}-data`;
     const policy = findTransformPolicy(replay.transform.type);
     const transform = policy?.facetReplayTransform?.(
       replay.transform,
@@ -138,8 +104,29 @@ function deriveCellProgram(
       histogramBoundaries.get(layer.id)
     );
   }
-  child = rebindReplayedGradientPlots(child, base, datasets);
-  return applyMaterializationPlan(child, cellMaterializationPlan(child));
+  for (const [id, markConfig] of Object.entries(base.markConfigs)) {
+    const gradientPlot = markConfig.gradientPlot;
+    if (gradientPlot?.materialized !== true) continue;
+    const profile = datasets.get(gradientPlot.profileId);
+    const source = datasets.get(gradientPlot.source);
+    if (profile === undefined || source === undefined) {
+      throw new Error(
+        `Facet gradient plot "${id}" is missing replayed profile dependencies.`
+      );
+    }
+    child = child.rebindGradientPlotProfile({ id, profile, source });
+  }
+  const scaleIds = [...new Set(child.semanticSpec.layers.flatMap(layer =>
+    Object.values(layer.encoding ?? {})
+      .map(encoding => encoding?.scale)
+      .filter(id => id !== undefined)
+  ))];
+  return applyMaterializationPlan(child, buildMaterializationPlan({
+    scales: scaleIds.map(id => ({
+      op: "rematerializeScale",
+      args: { id, guides: false, marks: false }
+    }))
+  }));
 }
 
 function applyResolvedDomains(program, childId, resolution, baseResolved) {
@@ -186,14 +173,14 @@ export function deriveFacetChildren(
   const template = stripTitle && base.semanticSpec.title.text !== undefined
     ? base.removeTitle()
     : base;
-  const resolutionRequest = scales ?? {};
-  const xPolicy = resolutionRequest.x ?? "shared";
+  scales ??= {};
+  const xPolicy = scales.x ?? "shared";
   const bins = xPolicy === "shared"
     ? sharedHistogramBoundaries(template)
     : new Map();
   const independentlyResolved = Object.fromEntries(definition.cells.map(cell => [
     cell.id,
-    deriveCellProgram(template, definition, cell, bins, resolutionRequest)
+    deriveCellProgram(template, definition, cell, bins, scales)
   ]));
   const resolution = resolveFacetScaleDomains(
     template.semanticSpec,
@@ -201,14 +188,19 @@ export function deriveFacetChildren(
       id,
       child.resolvedScales
     ])),
-    resolutionRequest,
+    scales,
     template.resolvedScales
   );
   const resolvedChildren = Object.fromEntries(
-    Object.entries(independentlyResolved).map(([id, child]) => [
-      id,
-      applyResolvedDomains(child, id, resolution, template.resolvedScales)
-    ])
+    Object.entries(independentlyResolved).map(([id, child]) => {
+      const resolved = applyResolvedDomains(
+        child,
+        id,
+        resolution,
+        template.resolvedScales
+      );
+      return [id, closeInheritedAction ? resolved._exitAction() : resolved];
+    })
   );
   const sharedScales = Object.fromEntries(
     Object.entries(resolution.scales)
@@ -216,14 +208,7 @@ export function deriveFacetChildren(
       .map(([id]) => [id, resolvedChildren[definition.cells[0].id].resolvedScales[id]])
   );
   return freezeOwned({
-    children: freezeOwned(Object.fromEntries(
-      Object.entries(resolvedChildren).map(([id, child]) => [
-        id,
-        closeInheritedAction
-          ? child._exitAction()
-          : child
-      ])
-    )),
+    children: freezeOwned(resolvedChildren),
     sharedScales: freezeOwned(sharedScales),
     resolution
   });

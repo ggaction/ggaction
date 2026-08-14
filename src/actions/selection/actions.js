@@ -121,6 +121,57 @@ function selectedKeys(args, resolved) {
   return args.keys;
 }
 
+function selectedGraphicItems(program, resolved, keys) {
+  const selected = new Set(keys);
+  const graphic = program.graphicSpec.objects[resolved.definition.target];
+  const keyByGraphic = new Map(resolved.items.flatMap(item =>
+    item.graphicIds.map(id => [id, item.key])
+  ));
+  return {
+    selected,
+    target: resolved.definition.target,
+    items: graphic.items.map(child => ({
+      key: keyByGraphic.get(child.id),
+      child: { type: child.type ?? graphic.type, properties: child.properties }
+    }))
+  };
+}
+
+function editSelectedItems(
+  program,
+  resolved,
+  keys,
+  transform,
+  complement = false
+) {
+  const { selected, target, items } = selectedGraphicItems(program, resolved, keys);
+  return program.editGraphics({
+    target,
+    property: "items",
+    value: items.map(item => selected.has(item.key) !== complement
+      ? transform(item.child)
+      : item.child)
+  });
+}
+
+function applyHighlight(program, config, keys) {
+  let next = program[requireSelectionPolicy(config.markType).applyHighlightOp]({
+    selection: config.selection,
+    style: config.style,
+    keys
+  });
+  if (config.dimOthers !== false) {
+    next = next.dimUnselectedMarkItems({
+      selection: config.selection,
+      opacity: config.dimOthers.opacity,
+      keys
+    });
+  }
+  return config.bringToFront
+    ? next.placeSelectedMarkItemsLast({ selection: config.selection, keys })
+    : next;
+}
+
 export const selectMarks = action(
   { op: "selectMarks", description: "Create one reusable selection over final mark items." },
   function (args = {}) {
@@ -217,24 +268,9 @@ export const applyPointHighlight = action(
       throw new Error("applyPointHighlight requires a point selection.");
     }
     if (keys.length === 0) return this;
-    const selected = new Set(keys);
-    const graphic = this.graphicSpec.objects[resolved.definition.target];
-    const keyByGraphic = new Map(resolved.items.flatMap(item =>
-      item.graphicIds.map(id => [id, item.key])
-    ));
-    const items = graphic.items.map(child =>
-      selected.has(keyByGraphic.get(child.id))
-        ? transformPointHighlightChild({
-            type: child.type ?? graphic.type,
-            properties: child.properties
-          }, args.style)
-        : { type: child.type ?? graphic.type, properties: child.properties }
+    return editSelectedItems(this, resolved, keys, item =>
+      transformPointHighlightChild(item, args.style)
     );
-    return this.editGraphics({
-      target: resolved.definition.target,
-      property: "items",
-      value: items
-    });
   }
 );
 
@@ -265,21 +301,12 @@ function applyRectangularHighlight(
     throw new Error(`${operation} requires a ${markType} selection.`);
   }
   if (keys.length === 0) return program;
-  const selected = new Set(keys);
-  const graphic = program.graphicSpec.objects[resolved.definition.target];
-  const keyByGraphic = new Map(resolved.items.flatMap(item =>
-    item.graphicIds.map(id => [id, item.key])
-  ));
-  return program.editGraphics({
-    target: resolved.definition.target,
-    property: "items",
-    value: graphic.items.map(child => ({
-      type: child.type ?? graphic.type,
-      properties: selected.has(keyByGraphic.get(child.id))
-        ? transformRectangularProperties(child.properties, args.style, offset)
-        : child.properties
-    }))
-  });
+  return editSelectedItems(program, resolved, keys, item => ({
+    ...item,
+    properties: transformRectangularProperties(
+      item.properties, args.style, offset
+    )
+  }));
 }
 
 export const applyBarHighlight = action(
@@ -316,21 +343,10 @@ export const applyPathHighlight = action(
       throw new Error("applyPathHighlight requires a path selection policy.");
     }
     if (keys.length === 0) return this;
-    const selected = new Set(keys);
-    const graphic = this.graphicSpec.objects[resolved.definition.target];
-    const keyByGraphic = new Map(resolved.items.flatMap(item =>
-      item.graphicIds.map(id => [id, item.key])
-    ));
-    return this.editGraphics({
-      target: resolved.definition.target,
-      property: "items",
-      value: graphic.items.map(child => ({
-        type: child.type ?? graphic.type,
-        properties: selected.has(keyByGraphic.get(child.id))
-          ? transformPathHighlightProperties(child.properties, args.style)
-          : child.properties
-      }))
-    });
+    return editSelectedItems(this, resolved, keys, item => ({
+      ...item,
+      properties: transformPathHighlightProperties(item.properties, args.style)
+    }));
   }
 );
 
@@ -347,21 +363,10 @@ export const applyRuleHighlight = action(
       throw new Error("applyRuleHighlight requires a rule or Tick selection.");
     }
     if (keys.length === 0) return this;
-    const selected = new Set(keys);
-    const graphic = this.graphicSpec.objects[resolved.definition.target];
-    const keyByGraphic = new Map(resolved.items.flatMap(item =>
-      item.graphicIds.map(id => [id, item.key])
-    ));
-    return this.editGraphics({
-      target: resolved.definition.target,
-      property: "items",
-      value: graphic.items.map(child => ({
-        type: child.type ?? graphic.type,
-        properties: selected.has(keyByGraphic.get(child.id))
-          ? transformRuleHighlightProperties(child.properties, args.style)
-          : child.properties
-      }))
-    });
+    return editSelectedItems(this, resolved, keys, item => ({
+      ...item,
+      properties: transformRuleHighlightProperties(item.properties, args.style)
+    }));
   }
 );
 
@@ -371,21 +376,11 @@ export const dimUnselectedMarkItems = action(
     validateKeys(args, INTERNAL_DIM_OPTIONS, "dimUnselectedMarkItems");
     const opacity = validateUnitInterval(args.opacity, "Dim opacity");
     const resolved = resolveStoredSelection(this, args.selection);
-    const selected = new Set(selectedKeys(args, resolved));
-    const graphic = this.graphicSpec.objects[resolved.definition.target];
-    const keyByGraphic = new Map(resolved.items.flatMap(item =>
-      item.graphicIds.map(id => [id, item.key])
-    ));
-    return this.editGraphics({
-      target: resolved.definition.target,
-      property: "items",
-      value: graphic.items.map(child => ({
-        type: child.type ?? graphic.type,
-        properties: selected.has(keyByGraphic.get(child.id))
-          ? child.properties
-          : { ...child.properties, opacity }
-      }))
-    });
+    const keys = selectedKeys(args, resolved);
+    return editSelectedItems(this, resolved, keys, item => ({
+      ...item,
+      properties: { ...item.properties, opacity }
+    }), true);
   }
 );
 
@@ -398,17 +393,9 @@ export const placeSelectedMarkItemsLast = action(
     if (keys.length === 0 || keys.length === resolved.items.length) {
       return this;
     }
-    const selected = new Set(keys);
-    const graphic = this.graphicSpec.objects[resolved.definition.target];
-    const keyByGraphic = new Map(resolved.items.flatMap(item =>
-      item.graphicIds.map(id => [id, item.key])
-    ));
-    const items = graphic.items.map(child => ({
-      key: keyByGraphic.get(child.id),
-      child: { type: child.type ?? graphic.type, properties: child.properties }
-    }));
+    const { selected, target, items } = selectedGraphicItems(this, resolved, keys);
     return this.editGraphics({
-      target: resolved.definition.target,
+      target,
       property: "items",
       value: [
         ...items.filter(item => !selected.has(item.key)),
@@ -433,26 +420,7 @@ export const rematerializeMarkHighlights = action(
     }));
     let next = this;
     for (const { id, config, keys } of prepared) {
-      const policy = requireSelectionPolicy(config.markType);
-      next = next[policy.applyHighlightOp]({
-        selection: config.selection,
-        style: config.style,
-        keys
-      });
-      if (config.dimOthers !== false) {
-        next = next.dimUnselectedMarkItems({
-          selection: config.selection,
-          opacity: config.dimOthers.opacity,
-          keys
-        });
-      }
-      if (config.bringToFront) {
-        next = next.placeSelectedMarkItemsLast({
-          selection: config.selection,
-          keys
-        });
-      }
-      next = next._withHighlightConfig(id, config);
+      next = applyHighlight(next, config, keys)._withHighlightConfig(id, config);
     }
     return prepared.some(({ config }) =>
       hasLegendSelection(next, config.target, config.selection)
@@ -519,26 +487,16 @@ export const highlightMarks = action(
       next = next._withoutMaterializationConfig(["highlights", selection]);
       next = rebuildTargetHighlights(next, resolved.definition.target);
     }
-    const policy = requireSelectionPolicy(layer.mark.type);
-    next = next[policy.applyHighlightOp]({ selection, style, keys });
-    if (dimOthers !== false) {
-      next = next.dimUnselectedMarkItems({
-        selection,
-        opacity: dimOthers.opacity,
-        keys
-      });
-    }
-    if (bringToFront) {
-      next = next.placeSelectedMarkItemsLast({ selection, keys });
-    }
-    next = next._withHighlightConfig(selection, {
+    const config = {
       target: resolved.definition.target,
       selection,
       markType: layer.mark.type,
       style,
       dimOthers,
       bringToFront
-    });
+    };
+    next = applyHighlight(next, config, keys)
+      ._withHighlightConfig(selection, config);
     return hasLegendSelection(next, resolved.definition.target, selection)
       ? next.rematerializeLegendHighlights()
       : next;

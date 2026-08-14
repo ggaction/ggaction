@@ -201,7 +201,9 @@ const editTextMark = action(
 );
 
 export function registerTextMarkActions(ProgramClass) {
-  ProgramClass.prototype.createTextMark = createTextMark;
-  ProgramClass.prototype.editTextMark = editTextMark;
-  ProgramClass.prototype.rematerializeTextMark = rematerializeTextMark;
+  Object.assign(ProgramClass.prototype, {
+    createTextMark,
+    editTextMark,
+    rematerializeTextMark
+  });
 }

@@ -238,7 +238,10 @@ independent assembly and does not inherit position encodings.
 - `strokeWidth`: Implemented, non-negative finite number이며 concrete default는 `2`다. 명시한 값은
   mark materialization config에 저장되어 path 재생성 후에도 유지된다.
 - `curve`: Implemented. `linear | step | step-before | step-after | basis | cardinal | monotone | natural`이며
-  기본값은 `linear`다. Curve는 graphical materialization config이고 semantic field/scale/group을 바꾸지 않는다.
+  기본값은 `linear`다. Monotone은 materialized x가 strictly increasing 또는 decreasing일 때 동작하며
+  duplicate/non-monotonic x는 거부한다. Curve는 graphical materialization config이고 semantic field/scale/group을 바꾸지 않는다.
+- Resource bound: line path 또는 완성된 area path가 10,000개를 초과하는 concrete command로
+  확장되면 command 배열을 만들기 전에 deterministic `RangeError`로 거부한다.
 - `stroke`: Implemented non-empty constant color. Field-driven color encoding과 충돌한다.
 - `opacity`: Implemented `[0, 1]` constant appearance이며 default concrete value는 `1`이다.
 - `closed`: Implemented boolean, 기본값은 `false`다. Polar line에서만 사용할 수 있으며 `true`이면
@@ -598,6 +601,9 @@ independent assembly and does not inherit position encodings.
   text mark, then one unique complete text mark; ambiguity and incomplete targets fail before state changes.
 - Defaults are `axis: "both"`, `padding: 3`, `maxDisplacement: 48`, `bounds: "plot"`, and `leader: false`.
   `bounds: "canvas"` uses the concrete Canvas rectangle. `axis` constrains displacement to x, y, or both axes.
+- Candidate enumeration is bounded for extreme inputs: it exhaustively searches at most 28 lattice steps per axis,
+  then adds deterministic distant samples on 16 rings (32 angles for `both`, both directions for a single axis),
+  and never searches beyond 1,000,000 logical pixels even when `maxDisplacement` is larger.
 - The action rematerializes semantic base text, visits concrete items in stable order, and selects the first in-bounds
   zero-overlap candidate. If no candidate satisfies both constraints, it stores deterministic `overlap` or `bounds`
   warnings and the best-effort result rather than silently claiming success.
@@ -617,8 +623,9 @@ independent assembly and does not inherit position encodings.
 ### Value coverage — `layoutLabels`
 
 - ✅ Covered: target inference, complete-policy replacement, deterministic axis-constrained placement,
-  plot/Canvas bounds, leader geometry, impossible-layout warnings, state/trace ownership, replay, validation, and
-  immutability, including exact public/primitive Canvas and Node PNG parity.
+  bounded extreme-displacement enumeration, plot/Canvas bounds, leader geometry, impossible-layout warnings,
+  state/trace ownership, replay, validation, and immutability, including exact public/primitive Canvas and Node PNG
+  parity.
 - Evidence: `test/unit/layout/labels.test.js`, `test/unit/actions/marks/label-layout.test.js`, and
   `test/charts/gapminder-country-labels/`.
 

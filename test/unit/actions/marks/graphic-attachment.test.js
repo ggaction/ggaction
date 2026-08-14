@@ -89,7 +89,7 @@ test("rejects an incomplete or malformed canonical Canvas hierarchy", () => {
 
 test("inserts a later ordinary mark below existing axes", () => {
   const guided = chart()
-    .createCanvas({ width: 240, height: 160, margin: 20 })
+    .createCanvas({ width: 300, height: 220, margin: 60 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createPointMark()
     .encodeX({ field: "x" })

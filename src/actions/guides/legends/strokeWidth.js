@@ -1,5 +1,8 @@
 import { action } from "../../../core/action.js";
-import { validateKeys } from "../../../core/validation.js";
+import {
+  validateGeneratedItemLimit,
+  validateKeys
+} from "../../../core/validation.js";
 import { mapContinuousScaleValues } from "../../../grammar/scales/index.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { resolveLegendGraphicPlacement } from
@@ -7,6 +10,10 @@ import { resolveLegendGraphicPlacement } from
 import { findLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
+import {
+  formatContinuousValues,
+  sampleContinuousValues
+} from "./continuous/common.js";
 
 const OPTIONS = Object.freeze(["target", "count"]);
 
@@ -93,11 +100,7 @@ export const rematerializeStrokeWidthLegend = action(
     if (plot === undefined) {
       throw new Error("Stroke-width legend requires resolved plot bounds.");
     }
-    const values = Array.from(
-      { length: config.count },
-      (_, index) => scale.domain[0] +
-        index / (config.count - 1) * (scale.domain[1] - scale.domain[0])
-    );
+    const values = sampleContinuousValues(scale.domain, config.count);
     const widths = mapContinuousScaleValues(values, scale);
     const originX = plot.x + plot.width + 30;
     const titleY = plot.y + 28;
@@ -129,7 +132,7 @@ export const rematerializeStrokeWidthLegend = action(
       .editGraphics({
         target: "strokeWidthLegendLabels",
         property: "text",
-        value: values.map(value => String(+value.toPrecision(3)))
+        value: formatContinuousValues(values, scale.domain, "quantitative")
       });
     next = styleText(next, "strokeWidthLegendLabels", config.labels);
     if (config.titleVisible === false) return next;
@@ -157,6 +160,7 @@ export const createStrokeWidthLegend = action(
         "Stroke-width legend count must be an integer of at least 2."
       );
     }
+    validateGeneratedItemLimit(count, "Stroke-width legend count");
     return this
       .editSemantic({ property: "guide.legend.strokeWidth.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.strokeWidth.title", value: encoding.field })

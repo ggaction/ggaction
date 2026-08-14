@@ -6,6 +6,8 @@ import { createCarsOriginHistogramFacet } from
 import { createCarsOriginScatterplotFacet } from
   "../../../examples/cars-origin-scatterplot-facet/program.js";
 import { render } from "../../../src/index.js";
+import { resolveConcreteGraphicBounds } from
+  "../../../src/grammar/schemas/graphicBounds.js";
 import { createMockCanvasContext } from "../../support/canvas.js";
 import { loadCars } from "../../support/data.js";
 import {
@@ -20,6 +22,39 @@ function assertSameConcreteRendering(primitive, publicProgram) {
   render(publicProgram, publicContext);
   assert.deepEqual(publicContext.calls, primitiveContext.calls);
   assert.deepEqual(publicProgram.graphicSpec, primitive.graphicSpec);
+}
+
+function intersects(first, second) {
+  return first.left < second.right && first.right > second.left &&
+    first.top < second.bottom && first.bottom > second.top;
+}
+
+function assertHistogramGuidesFit(program) {
+  for (const child of Object.values(program.children)) {
+    const canvas = child.graphicSpec.objects.canvas.properties;
+    const epsilon = 1e-9;
+    for (const id of [
+      "xAxisLabels", "xAxisTitle", "yAxisLabels", "yAxisTitle"
+    ]) {
+      const bounds = resolveConcreteGraphicBounds(child.graphicSpec, id);
+      assert.ok(bounds.left >= -epsilon, `${id} crossed the left Canvas edge`);
+      assert.ok(
+        bounds.right <= canvas.width + epsilon,
+        `${id} crossed the right Canvas edge`
+      );
+      assert.ok(bounds.top >= -epsilon, `${id} crossed the top Canvas edge`);
+      assert.ok(
+        bounds.bottom <= canvas.height + epsilon,
+        `${id} crossed the bottom Canvas edge`
+      );
+    }
+    const labelBounds = child.graphicSpec.objects.xAxisLabels.items.map(item =>
+      resolveConcreteGraphicBounds(child.graphicSpec, item.id)
+    );
+    assert.equal(labelBounds.some((bounds, index) =>
+      labelBounds.slice(index + 1).some(other => intersects(bounds, other))
+    ), false, "histogram facet x-axis labels overlap");
+  }
 }
 
 test("matches the approved scatterplot facet primitive exactly", () => {
@@ -53,4 +88,5 @@ test("matches the approved wrapped histogram facet primitive exactly", () => {
   assert.deepEqual(program.trace.children.slice(-2).map(node => node.op), [
     "facet", "createTitle"
   ]);
+  assertHistogramGuidesFit(program);
 });

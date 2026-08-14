@@ -80,6 +80,26 @@ test("creates a canvas with explicit and partially specified options", () => {
   });
 });
 
+test("preserves positive fractional Canvas dimensions", () => {
+  const program = chart().createCanvas({
+    width: 100.5,
+    height: 80.25,
+    margin: 10
+  });
+
+  assert.deepEqual(program.graphicSpec.objects.canvas.properties, {
+    width: 100.5,
+    height: 80.25,
+    background: "white"
+  });
+  assert.deepEqual(resolveGraphicBounds(program), {
+    x: 10,
+    y: 10,
+    width: 80.5,
+    height: 60.25
+  });
+});
+
 test("rejects duplicate and invalid createCanvas calls", () => {
   const program = chart().createCanvas();
 
@@ -88,10 +108,12 @@ test("rejects duplicate and invalid createCanvas calls", () => {
     () => chart().createCanvas({ canvasId: "other" }),
     /Unknown createCanvas option/
   );
-  assert.throws(
-    () => chart().createCanvas({ width: -1 }),
-    /width must be a positive integer/
-  );
+  for (const width of [0, -1, Number.NaN, Infinity]) {
+    assert.throws(
+      () => chart().createCanvas({ width }),
+      /width must be a positive finite number/
+    );
+  }
   assert.throws(
     () => chart().createCanvas({ margin: { left: 610 } }),
     /horizontal margins/

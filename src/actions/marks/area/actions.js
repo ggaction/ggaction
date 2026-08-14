@@ -8,6 +8,7 @@ import {
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
+  editMarkGraphic,
   materializeInheritedMark,
   resolveLayeredMarkInheritance,
   resolveMarkId,
@@ -26,12 +27,11 @@ import { resolveMarkGraphicPlacement } from
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { resolveAreaMaterialization } from "./materialize.js";
 
-const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "fill", "opacity", "stroke", "strokeWidth", "curve"
+const AREA_OPTIONS = Object.freeze([
+  "fill", "opacity", "stroke", "strokeWidth", "curve"
 ]);
-const EDIT_OPTIONS = Object.freeze([
-  "target", "fill", "opacity", "stroke", "strokeWidth", "curve"
-]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", ...AREA_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", ...AREA_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 const STROKE_FROM_FILL_OPTIONS = Object.freeze(["id", "strokeWidth"]);
 
@@ -194,29 +194,20 @@ const rematerializeAreaMark = action(
     const removesOutline = !hasOutline && existingChildren.some(
       child => child.properties.stroke !== undefined
     );
-    let next = removesOutline
+    const next = removesOutline
       ? resolved
           .editGraphics({ target: id, property: "length", value: 0 })
-          .editGraphics({ target: id, property: "length", value: paths.length })
-      : resolved.editGraphics({ target: id, property: "length", value: paths.length });
-    next = next
-      .editGraphics({ target: id, property: "commands", value: paths })
-      .editGraphics({ target: id, property: "fill", value: fills })
-      .editGraphics({ target: id, property: "opacity", value: config.opacity });
-    if (hasOutline) {
-      next = next
-        .editGraphics({
-          target: id,
-          property: "stroke",
-          value: config.strokeFromFill === true ? fills : config.stroke
-        })
-        .editGraphics({
-          target: id,
-          property: "strokeWidth",
-          value: config.strokeWidth
-        });
-    }
-    return next;
+      : resolved;
+    return editMarkGraphic(next, id, {
+      length: paths.length,
+      commands: paths,
+      fill: fills,
+      opacity: config.opacity,
+      ...(hasOutline ? {
+        stroke: config.strokeFromFill === true ? fills : config.stroke,
+        strokeWidth: config.strokeWidth
+      } : {})
+    });
   }
 );
 
@@ -300,9 +291,10 @@ const editAreaMark = action(
 );
 
 export function registerAreaMarkActions(ProgramClass) {
-  ProgramClass.prototype.createAreaMark = createAreaMark;
-  ProgramClass.prototype.configureAreaStrokeFromFill =
-    configureAreaStrokeFromFill;
-  ProgramClass.prototype.editAreaMark = editAreaMark;
-  ProgramClass.prototype.rematerializeAreaMark = rematerializeAreaMark;
+  Object.assign(ProgramClass.prototype, {
+    createAreaMark,
+    configureAreaStrokeFromFill,
+    editAreaMark,
+    rematerializeAreaMark
+  });
 }

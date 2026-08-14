@@ -4,6 +4,11 @@ import {
   readQuantitativeField
 } from "../scales/index.js";
 import { fitRegressionGroup, predictRegressionAt } from "./models.js";
+import { requireFiniteResult } from "../numeric.js";
+import {
+  validateGeneratedItemLimit,
+  validateWorkLimit
+} from "../../core/validation.js";
 import {
   normalizeRegressionParameters,
   requireRegressionField
@@ -41,16 +46,34 @@ export function deriveRegression(values, {
   readQuantitativeField(values, y);
   if (groupBy !== undefined) readNominalField(values, groupBy);
 
-  const groups = groupBy === undefined
-    ? [undefined]
-    : [...new Set(values.map(row => row[groupBy]))];
+  const groupedRows = new Map();
+  if (groupBy === undefined) {
+    groupedRows.set(undefined, values);
+  } else {
+    for (const row of values) {
+      const group = row[groupBy];
+      const rows = groupedRows.get(group) ?? [];
+      rows.push(row);
+      groupedRows.set(group, rows);
+    }
+  }
+  const groups = [...groupedRows.keys()];
   const models = [];
   const rows = [];
+  let work = 0;
 
   for (const group of groups) {
-    const groupRows = groupBy === undefined
-      ? values
-      : values.filter(row => row[groupBy] === group);
+    const groupRows = groupedRows.get(group);
+    const xCount = new Set(groupRows.map(row => row[x])).size;
+    validateGeneratedItemLimit(rows.length + xCount, "Regression generated row count");
+    if (parameters.method === "polynomial") {
+      const size = parameters.degree + 1;
+      work += groupRows.length * size ** 2 + size ** 3;
+    } else if (parameters.method === "loess") {
+      work += groupRows.length * xCount *
+        Math.ceil(Math.log2(groupRows.length + 1));
+    }
+    validateWorkLimit(work, "Regression computation");
     const model = fitRegressionGroup(groupRows, {
       x,
       y,
@@ -63,13 +86,29 @@ export function deriveRegression(values, {
 
     for (const xValue of xValues) {
       const prediction = predictRegressionAt(model, xValue, parameters);
+      const fitted = requireFiniteResult(
+        prediction.prediction,
+        `Regression group "${group === undefined ? "all" : String(group)}" prediction`
+      );
+      const lower = parameters.method === "loess"
+        ? undefined
+        : requireFiniteResult(
+            fitted - prediction.margin,
+            `Regression group "${group === undefined ? "all" : String(group)}" lower interval`
+          );
+      const upper = parameters.method === "loess"
+        ? undefined
+        : requireFiniteResult(
+            fitted + prediction.margin,
+            `Regression group "${group === undefined ? "all" : String(group)}" upper interval`
+          );
       rows.push({
         ...(groupBy === undefined ? {} : { [groupBy]: group }),
         [x]: xValue,
-        [y]: prediction.prediction,
+        [y]: fitted,
         ...(parameters.method === "loess" ? {} : {
-          [REGRESSION_LOWER_FIELD]: prediction.prediction - prediction.margin,
-          [REGRESSION_UPPER_FIELD]: prediction.prediction + prediction.margin
+          [REGRESSION_LOWER_FIELD]: lower,
+          [REGRESSION_UPPER_FIELD]: upper
         })
       });
     }

@@ -1,8 +1,8 @@
 import {
   isLinearGradientPaint,
-  resolveLinearGradientCoordinates,
   validateFillPaint
 } from "../../grammar/paint.js";
+import { resolveCanvasGradientCoordinates } from "./native.js";
 
 export function applyCanvasFill(context, fill, bounds, graphicId) {
   validateFillPaint(fill, `${graphicId}.fill`);
@@ -15,7 +15,7 @@ export function applyCanvasFill(context, fill, bounds, graphicId) {
       `Graphic "${graphicId}" requires Canvas context createLinearGradient().`
     );
   }
-  const coordinates = resolveLinearGradientCoordinates(fill, bounds);
+  const coordinates = resolveCanvasGradientCoordinates(fill, bounds, graphicId);
   const gradient = context.createLinearGradient(
     coordinates.from.x,
     coordinates.from.y,

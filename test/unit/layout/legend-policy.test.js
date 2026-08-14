@@ -25,11 +25,11 @@ const config = Object.freeze({
 
 test("measures legend symbols, text, grids, and alignment deterministically", () => {
   assert.equal(measureLegendSymbolHeight(config), 14);
-  assert.equal(measureLegendTextWidth("Long"), 28);
+  assert.ok(Math.abs(measureLegendTextWidth("Long") - 24.24) < 1e-12);
   assert.deepEqual(resolveLegendGrid(config, 12, 2), {
     cells: [{ column: 0, row: 0 }, { column: 1, row: 0 }],
-    columnWidths: [23, 44],
-    gridWidth: 75,
+    columnWidths: [23.32, 40.24],
+    gridWidth: 71.56,
     gridHeight: 14,
     rowHeight: 14
   });

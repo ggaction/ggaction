@@ -52,7 +52,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: 필수 global graphic ID. tree depth와 무관하게 unique하며 equivalent repeated definition과
   attachment는 idempotent하다.
 - `type`: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"`.
-- `length`: non-negative integer. homogeneous drawable type에 지정하면 generated `items`를 만들며
+- `length`: `0..10,000` integer. homogeneous drawable type에 지정하면 generated `items`를 만들며
   생략 시 single graphic, `0`이면 empty collection이다. heterogeneous `collection`은 `items` edit로 채운다.
 - `parent`: optional existing `canvas | collection` ID. 지정하면 새 named graphic을 parent의 direct
   `children` ID list에 붙인다. 생략하면 top-level `order`에 둔다.
@@ -102,11 +102,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - collection + scalar/non-distributed value: compatible items 모두에 broadcast.
   - collection + outer array: item count와 길이가 같으면 index별 distribute. path `commands`처럼 property
     자체가 nested array인 경우 한 item value 단위를 보존한다.
-  - `items`: heterogeneous collection의 typed concrete item array를 원자적으로 교체한다.
+  - `items`: heterogeneous collection의 typed concrete item array를 원자적으로 교체하며 최대 길이는
+    `10,000`이다.
 - `remove`: `true`일 때 property/value 없이 named graphic과 owned named subtree를 삭제하고 parent의
   `children` 또는 top-level `order`에서 detach한다. Canvas root와 generated item의 독립 삭제는 허용하지 않는다.
 - Effect: concrete graphic path만 structural copy한다. semantic state나 automatic compiler는 관여하지 않는다.
-- 오류: unknown target/property, incompatible child type, mismatched distributed length, non-finite geometry,
+- 오류: unknown target/property, incompatible child type, `length`/`items` cardinality `10,000` 초과,
+  mismatched distributed length, non-finite geometry,
   negative dimensions/strokes, opacity 밖의 값과 invalid Canvas text vocabulary를 거부한다.
 - Coverage: `test/unit/actions/primitives/edit-graphics.test.js`와
   `test/contracts/shared-graphic-validation.test.js`가 distribution, broadcast, nested paths,
@@ -128,7 +130,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: type-specific canvas/circle/rect/line/text/path properties, `length`, heterogeneous `items`.
   - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
     broadcast, distributed and heterogeneous application paths.
-  - ✅ Covered: finite `M | L | C | Z` path command arrays and command-order validation.
+  - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 10,000 commands, and command-order validation.
 - `value` distribution
   - ✅ Covered: scalar broadcast, outer array distribution, mismatched length, nested points arrays preserved,
     heterogeneous item replacement and shared compatible-property broadcast.
@@ -136,7 +138,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: finite geometry, non-negative dimensions/strokes, `[0,1]` opacity, non-empty appearance strings,
     Canvas text vocabulary and renderer-shared validation.
   - ✅ Covered: finite/non-negative/unit-interval boundaries and font/text vocabularies are shared with renderers.
-    Exhaustive backend parsing of arbitrary accepted color strings and finite magnitudes is outside library validation.
+    Exhaustive backend parsing of arbitrary accepted color strings is outside library validation. Renderer output
+    capacity is checked separately and atomically: Canvas/PNG enforce physical side and total-pixel limits; all
+    Canvas-backed outputs cap native geometry/style magnitude at `16777216`; PDF additionally requires an exactly
+    representable positive integer page size; SVG retains finite-number geometry and rejects XML-forbidden scalars.
 - Maybe Future: multi-property dictionary/batch edit; current action continues to represent one property change.
 - Evidence: `test/unit/actions/primitives/edit-graphics.test.js`,
-  `test/contracts/shared-graphic-validation.test.js`.
+  `test/contracts/shared-graphic-validation.test.js`, and
+  `test/unit/grammar/path-commands.test.js`.

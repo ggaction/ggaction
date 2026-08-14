@@ -1,5 +1,6 @@
 import { validateUserId } from "../../../core/identifiers.js";
 import {
+  validateGeneratedItemLimit,
   validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite
@@ -58,11 +59,17 @@ function validateStrokeDash(value) {
 
 export function validateGridCreateArgs(args, operation) {
   validateOptionObject(args, GRID_OPTIONS, operation);
+  if (Array.isArray(args.values)) {
+    validateGeneratedItemLimit(args.values.length, "Grid value count");
+  }
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
   }
   if (Object.hasOwn(args, "count") && (!Number.isInteger(args.count) || args.count <= 0)) {
     throw new RangeError("Grid count must be a positive integer.");
+  }
+  if (Number.isInteger(args.count)) {
+    validateGeneratedItemLimit(args.count, "Grid count");
   }
   if (Object.hasOwn(args, "values") && (
     !Array.isArray(args.values) ||
@@ -84,6 +91,9 @@ export function validateGridEditArgs(args, operation) {
   validateOptionObject(args, GRID_EDIT_OPTIONS, operation, {
     allowEmpty: false
   });
+  if (Array.isArray(args.values)) {
+    validateGeneratedItemLimit(args.values.length, "Grid value count");
+  }
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
   }
@@ -91,6 +101,9 @@ export function validateGridEditArgs(args, operation) {
     !Number.isInteger(args.count) || args.count <= 0
   )) {
     throw new RangeError("Grid count must be a positive integer.");
+  }
+  if (Number.isInteger(args.count)) {
+    validateGeneratedItemLimit(args.count, "Grid count");
   }
   if (Object.hasOwn(args, "values") && args.values !== "auto" && (
     !Array.isArray(args.values) ||
@@ -235,6 +248,7 @@ export function resolveGridGeometry(program, config) {
     throw new Error("Grid materialization requires a continuous scale and Canvas bounds.");
   }
   const values = valuesFromTickConfig(program, config);
+  validateGeneratedItemLimit(values.length, "Grid value count");
   const low = Math.min(...scale.domain);
   const high = Math.max(...scale.domain);
   if (!values.every(value => value >= low && value <= high)) {

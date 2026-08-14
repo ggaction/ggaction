@@ -2,6 +2,8 @@ import { validateUserId } from "../../core/identifiers.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { hasMaterializedLegend } from "../../materialization/legends.js";
+import { applyMaterializationPlan } from "../../materialization/dependencies.js";
+import { planEncodingRematerialization } from "../../materialization/encodings.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { validateOptionObject } from "../../core/validation.js";
 import {
@@ -12,6 +14,41 @@ import {
 export function validateOptions(args, supported, operation) {
   validateOptionObject(args, supported, operation);
 }
+
+export function setEncodingProperties(
+  program,
+  target,
+  channel,
+  properties
+) {
+  let next = program;
+  for (const [property, value] of Object.entries(properties)) {
+    next = next.editSemantic({
+      property: `layer[${target}].encoding.${channel}.${property}`,
+      value
+    });
+  }
+  return next;
+}
+
+export function rematerializeEncoding(program, target, channel, scale) {
+  return applyMaterializationPlan(
+    program,
+    planEncodingRematerialization(program, { target, channel, scale })
+  );
+}
+
+export function clearMarkGraphic(program, target) {
+  const graphic = program.graphicSpec.objects[target];
+  if (graphic === undefined) return program;
+  const collection = graphic.type === "collection";
+  return program.editGraphics({
+    target,
+    property: collection ? "items" : "length",
+    value: collection ? [] : 0
+  });
+}
+
 
 export function validateLineSeriesCompatibility(layer, channel, field) {
   if (layer.mark?.type !== "line") return;

@@ -17,27 +17,28 @@ import {
   validateFacadeOptions
 } from "./shared.js";
 
-const OPTIONS = Object.freeze([
+const OPERATION = "createHeatmap";
+const OPTIONS = [
   "id", "data", "coordinate", "x", "y", "bin", "color", "rect", "guides"
-]);
-const RECT_OPTIONS = Object.freeze([
+];
+const RECT_OPTIONS = [
   "opacity", "stroke", "strokeWidth"
-]);
-const BIN_OPTIONS = Object.freeze([
+];
+const BIN_OPTIONS = [
   "bins", "extent", "includeEmpty"
-]);
-const BINNED_POSITION_OPTIONS = Object.freeze([
+];
+const BINNED_POSITION_OPTIONS = [
   "field", "fieldType", "scale"
-]);
-const BINNED_COLOR_OPTIONS = Object.freeze([
+];
+const BINNED_COLOR_OPTIONS = [
   "scale", "palette"
-]);
+];
 
 function normalizeBin(value) {
   if (!isPlainObject(value)) {
-    throw new TypeError("createHeatmap bin must be a plain object.");
+    throw new TypeError(`${OPERATION} bin must be a plain object.`);
   }
-  validateOptionObject(value, BIN_OPTIONS, "createHeatmap bin");
+  validateOptionObject(value, BIN_OPTIONS, `${OPERATION} bin`);
   return {
     ...value,
     includeEmpty: value.includeEmpty ?? true
@@ -45,7 +46,7 @@ function normalizeBin(value) {
 }
 
 function normalizeBinnedPosition(value, channel) {
-  const label = `createHeatmap ${channel}`;
+  const label = `${OPERATION} ${channel}`;
   const encoding = normalizeFieldEncoding(value, label);
   validateOptionObject(encoding, BINNED_POSITION_OPTIONS, label);
   const field = validateNonEmptyString(encoding.field, `${label} field`);
@@ -62,9 +63,9 @@ function normalizeBinnedPosition(value, channel) {
 function normalizeBinnedColor(value) {
   if (value === undefined) return {};
   if (!isPlainObject(value)) {
-    throw new TypeError("createHeatmap binned color must be a plain object.");
+    throw new TypeError(`${OPERATION} binned color must be a plain object.`);
   }
-  validateOptionObject(value, BINNED_COLOR_OPTIONS, "createHeatmap binned color");
+  validateOptionObject(value, BINNED_COLOR_OPTIONS, `${OPERATION} binned color`);
   return { ...value };
 }
 
@@ -88,10 +89,10 @@ function resolvedPosition(encoding, field, extent) {
 function axisWithTitle(value, text) {
   if (value === false) return false;
   if (value !== undefined && !isPlainObject(value)) {
-    throw new TypeError("createHeatmap binned axis must be false or a plain object.");
+    throw new TypeError(`${OPERATION} binned axis must be false or a plain object.`);
   }
   if (value?.title !== undefined && !isPlainObject(value.title)) {
-    throw new TypeError("createHeatmap binned axis title must be a plain object.");
+    throw new TypeError(`${OPERATION} binned axis title must be a plain object.`);
   }
   return {
     ...value,
@@ -111,7 +112,7 @@ function binnedGuides(guides, xTitle, yTitle) {
       !isPlainObject(guides[key])
     ) {
       throw new TypeError(
-        `createHeatmap guides ${key} must be false or a plain object.`
+        `${OPERATION} guides ${key} must be false or a plain object.`
       );
     }
   }
@@ -133,73 +134,61 @@ function binnedGuides(guides, xTitle, yTitle) {
   };
 }
 
-function createPreGriddedHeatmap(program, args, { id, data, rect, guides }) {
-  const x = normalizeFieldEncoding(args.x, "createHeatmap x");
-  const y = normalizeFieldEncoding(args.y, "createHeatmap y");
-  const color = normalizeFieldEncoding(args.color, "createHeatmap color");
-  const next = program
-    .createRectMark({ id, data, ...rect })
-    .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))
-    .encodeY(positionArgs(y, { target: id, coordinate: args.coordinate }))
-    .encodeColor(targetArgs(color, id));
-  return applyFacadeGuides(next, guides);
-}
-
-function createBinnedHeatmap(program, args, { id, data, rect, guides }) {
-  const x = normalizeBinnedPosition(args.x, "x");
-  const y = normalizeBinnedPosition(args.y, "y");
-  const bin = normalizeBin(args.bin);
-  const color = normalizeBinnedColor(args.color);
-  const resolvedGuides = binnedGuides(guides, x.field, y.field);
-  const generatedData = `${id}Bin2DData`;
-  const binned = program.createBin2DData({
-    id: generatedData,
-    source: data,
-    x: x.field,
-    y: y.field,
-    ...bin
-  });
-  const dataset = requireDataset(binned, generatedData);
-  const transform = dataset.transform[0];
-  const resolved = transform.resolved;
-  const xEncoding = resolvedPosition(x, transform.as.x0, resolved.extent.x);
-  const yEncoding = resolvedPosition(y, transform.as.y0, resolved.extent.y);
-
-  const next = binned
-    .createRectMark({ id, data: generatedData, ...rect })
-    .encodeX(positionArgs(xEncoding, { target: id, coordinate: args.coordinate }))
-    .encodeX2({ target: id, field: transform.as.x1, fieldType: "quantitative" })
-    .encodeY(positionArgs(yEncoding, { target: id, coordinate: args.coordinate }))
-    .encodeY2({ target: id, field: transform.as.y1, fieldType: "quantitative" })
-    .encodeColor({
-      target: id,
-      field: transform.as.count,
-      fieldType: "quantitative",
-      ...color
-    });
-  return applyFacadeGuides(
-    next,
-    resolvedGuides
-  );
-}
-
 export const createHeatmap = action(
   {
-    op: "createHeatmap",
+    op: OPERATION,
     description: "Create a pre-gridded or rectangularly binned heatmap."
   },
   function (args = {}) {
-    validateFacadeOptions(args, OPTIONS, "createHeatmap");
+    validateFacadeOptions(args, OPTIONS, OPERATION);
     const id = resolveFacadeId(this, args.id, {
       defaultId: "heatmap",
-      operation: "createHeatmap"
+      operation: OPERATION
     });
-    const data = resolveFacadeData(this, args.data, "createHeatmap");
-    const rect = normalizeAppearance(args.rect, RECT_OPTIONS, "createHeatmap rect");
-    const guides = normalizeGuides(args.guides, "createHeatmap");
-    const shared = { id, data, rect, guides };
-    return args.bin === undefined
-      ? createPreGriddedHeatmap(this, args, shared)
-      : createBinnedHeatmap(this, args, shared);
+    const data = resolveFacadeData(this, args.data, OPERATION);
+    const rect = normalizeAppearance(args.rect, RECT_OPTIONS, `${OPERATION} rect`);
+    const guides = normalizeGuides(args.guides, OPERATION);
+    if (args.bin === undefined) {
+      const x = normalizeFieldEncoding(args.x, `${OPERATION} x`);
+      const y = normalizeFieldEncoding(args.y, `${OPERATION} y`);
+      const color = normalizeFieldEncoding(args.color, `${OPERATION} color`);
+      const next = this
+        .createRectMark({ id, data, ...rect })
+        .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))
+        .encodeY(positionArgs(y, { target: id, coordinate: args.coordinate }))
+        .encodeColor(targetArgs(color, id));
+      return applyFacadeGuides(next, guides);
+    }
+
+    const x = normalizeBinnedPosition(args.x, "x");
+    const y = normalizeBinnedPosition(args.y, "y");
+    const bin = normalizeBin(args.bin);
+    const color = normalizeBinnedColor(args.color);
+    const resolvedGuides = binnedGuides(guides, x.field, y.field);
+    const generatedData = `${id}Bin2DData`;
+    const binned = this.createBin2DData({
+      id: generatedData,
+      source: data,
+      x: x.field,
+      y: y.field,
+      ...bin
+    });
+    const transform = requireDataset(binned, generatedData).transform[0];
+    const resolved = transform.resolved;
+    const xEncoding = resolvedPosition(x, transform.as.x0, resolved.extent.x);
+    const yEncoding = resolvedPosition(y, transform.as.y0, resolved.extent.y);
+    const next = binned
+      .createRectMark({ id, data: generatedData, ...rect })
+      .encodeX(positionArgs(xEncoding, { target: id, coordinate: args.coordinate }))
+      .encodeX2({ target: id, field: transform.as.x1, fieldType: "quantitative" })
+      .encodeY(positionArgs(yEncoding, { target: id, coordinate: args.coordinate }))
+      .encodeY2({ target: id, field: transform.as.y1, fieldType: "quantitative" })
+      .encodeColor({
+        target: id,
+        field: transform.as.count,
+        fieldType: "quantitative",
+        ...color
+      });
+    return applyFacadeGuides(next, resolvedGuides);
   }
 );

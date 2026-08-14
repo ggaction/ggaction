@@ -1,6 +1,23 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { normalizeTemporalValue } from "./scales/fields.js";
 
+export function utcTimestamp(
+  year,
+  month = 0,
+  day = 1,
+  hour = 0,
+  minute = 0
+) {
+  const date = new Date(0);
+  date.setUTCFullYear(year, month, day);
+  date.setUTCHours(hour, minute, 0, 0);
+  return date.getTime();
+}
+
+export function validTimestamp(value) {
+  return Number.isFinite(value) && Number.isFinite(new Date(value).getTime());
+}
+
 export const TIME_UNITS = cloneAndFreeze([
   "year",
   "quarter",
@@ -52,13 +69,6 @@ export function normalizeTimeUnitTransform({ field, unit, as } = {}) {
   return cloneAndFreeze(transform);
 }
 
-function utcTimestamp(year, month = 0, day = 1, hour = 0, minute = 0) {
-  const date = new Date(0);
-  date.setUTCFullYear(year, month, day);
-  date.setUTCHours(hour, minute, 0, 0);
-  return date.getTime();
-}
-
 export function floorUtcTimeUnit(timestamp, unit) {
   if (!Number.isFinite(timestamp)) {
     throw new TypeError("Time-unit timestamp must be finite.");
@@ -67,7 +77,7 @@ export function floorUtcTimeUnit(timestamp, unit) {
     throw new Error(`Unsupported time unit "${unit}".`);
   }
   const date = new Date(timestamp);
-  if (!Number.isFinite(date.getTime())) {
+  if (!validTimestamp(timestamp)) {
     throw new TypeError("Time-unit timestamp must represent a valid date.");
   }
   const year = date.getUTCFullYear();

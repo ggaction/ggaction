@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
+import { validateGeneratedItemLimit } from "../../core/validation.js";
 import {
   isPrimitiveDrawableGraphicType,
   isStructuralGraphicType,
@@ -44,6 +45,7 @@ function validateCollectionItem(item, ownerId, index) {
 
 function replaceCollectionItems(value, id) {
   if (!Array.isArray(value)) throw new TypeError("collection.items must be an array.");
+  validateGeneratedItemLimit(value.length, "collection.items length");
   return freezeOwned(value.map((item, index) => validateCollectionItem(item, id, index)));
 }
 
@@ -82,6 +84,7 @@ function editItems(owner, property, value, id) {
     if (!Number.isInteger(value) || value < 0) {
       throw new TypeError("Graphic collection length must be a non-negative integer.");
     }
+    validateGeneratedItemLimit(value, "Graphic collection length");
     const items = owner.items.slice(0, value);
     for (let index = items.length; index < value; index += 1) {
       if (owner.type === "collection") {
@@ -187,6 +190,7 @@ const editGraphics = action(
       if (!Number.isInteger(value) || value < 0) {
         throw new TypeError("Graphic collection length must be a non-negative integer.");
       }
+      validateGeneratedItemLimit(value, "Graphic collection length");
       updated = freezeOwned({
         type: owner.type,
         items: freezeOwned(Array.from({ length: value }, (_, index) => freezeOwned({

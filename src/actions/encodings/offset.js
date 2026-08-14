@@ -6,8 +6,10 @@ import {
 import { resolveOffsetScaleDefinition } from "../scales/definitions.js";
 import {
   applyEncodingScale,
+  rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
+  setEncodingProperties,
   validateOptions
 } from "./shared.js";
 import {
@@ -16,8 +18,6 @@ import {
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
 import { normalizeOffsetPadding } from "../../grammar/bars/geometry.js";
-import { applyMaterializationPlan } from "../../materialization/dependencies.js";
-import { planEncodingRematerialization } from "../../materialization/encodings.js";
 
 const ENCODING_OPTIONS = Object.freeze([
   "field", "target", "fieldType", "scale", "paddingInner", "paddingOuter"
@@ -76,20 +76,11 @@ function createOffsetEncoding(channel) {
         channel
       );
 
-      let next = this
-        .editSemantic({
-          property: `layer[${target}].encoding.${channel}.field`,
-          value: args.field
-        })
-        .editSemantic({
-          property: `layer[${target}].encoding.${channel}.fieldType`,
-          value: fieldType
-        })
-        .editSemantic({
-          property: `layer[${target}].encoding.${channel}.scale`,
-          value: scale.id
-        })
-        ._withMarkConfig(target, {
+      let next = setEncodingProperties(this, target, channel, {
+        field: args.field,
+        fieldType,
+        scale: scale.id
+      })._withMarkConfig(target, {
           ...this.markConfigs[target],
           [channel]: padding
         });
@@ -101,14 +92,7 @@ function createOffsetEncoding(channel) {
           .rematerializeScale({ id: scale.id })
           .editGraphics({ target, property: "length", value: 0 });
       }
-      return applyMaterializationPlan(
-        next,
-        planEncodingRematerialization(next, {
-          target,
-          channel,
-          scale: scale.id
-        })
-      );
+      return rematerializeEncoding(next, target, channel, scale.id);
     }
   );
 }

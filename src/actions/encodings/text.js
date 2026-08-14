@@ -2,7 +2,11 @@ import { action } from "../../core/action.js";
 import { formatTextValue, validateTextFormat } from "../../grammar/text.js";
 import { canMaterializeText } from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
-import { resolveTarget, validateOptions } from "./shared.js";
+import {
+  resolveTarget,
+  setEncodingProperties,
+  validateOptions
+} from "./shared.js";
 
 const OPTIONS = Object.freeze(["target", "field", "value", "format"]);
 
@@ -52,15 +56,10 @@ export const encodeText = action(
         remove: true
       });
     }
-    next = next
-      .editSemantic({
-        property: `layer[${target}].encoding.text.${hasField ? "field" : "datum"}`,
-        value: hasField ? args.field : args.value
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.text.format`,
-        value: format
-      });
+    next = setEncodingProperties(next, target, "text", {
+      [hasField ? "field" : "datum"]: hasField ? args.field : args.value,
+      format
+    });
     const updated = findLayer(next, target);
     return canMaterializeText(next, updated)
       ? next.rematerializeTextMark({ id: target })

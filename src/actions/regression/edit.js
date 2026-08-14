@@ -12,7 +12,8 @@ import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import { planDerivedDataRevision } from
   "../../materialization/dataProvenance.js";
 import { findLayer } from "../../selectors/layers.js";
-import { removeLegendKinds } from "../guides/legends/remove.js";
+import { removeOwnedMark } from "../marks/remove.js";
+import { removeOwnedColorLegends } from "../guides/legends/remove.js";
 import { requireRegressionField } from "./resolve.js";
 
 const OPTIONS = Object.freeze([
@@ -116,46 +117,6 @@ function resolveParameters(previous, args) {
     }
   }
   return normalizeRegressionParameters(raw);
-}
-
-function removeOwnedColorLegends(program, target) {
-  const kinds = Object.entries(program.guideConfigs.legend ?? {})
-    .filter(([kind, config]) =>
-      config?.target === target &&
-      (
-        config.channels?.includes("color") ||
-        ["gradient", "interval"].includes(kind)
-      )
-    )
-    .map(([kind]) => kind);
-  return kinds.length === 0 ? program : removeLegendKinds(program, kinds);
-}
-
-function removeBand(program, id) {
-  const selectionIds = Object.entries(
-    program.materializationConfigs.selections ?? {}
-  ).filter(([, config]) => config.target === id).map(([selection]) => selection);
-  let next = program;
-  for (const [highlight, config] of Object.entries(
-    program.materializationConfigs.highlights ?? {}
-  )) {
-    if (config.target === id || selectionIds.includes(config.selection)) {
-      next = next._withoutMaterializationConfig(["highlights", highlight]);
-    }
-  }
-  for (const selection of selectionIds) {
-    next = next._withoutMaterializationConfig(["selections", selection]);
-  }
-  return next
-    .editSemantic({ property: `layer[${id}]`, remove: true })
-    .editGraphics({ target: id, remove: true })
-    ._withoutMaterializationConfig(["marks", id])
-    ._withContext({
-      ...(program.context.currentMark === id ? { currentMark: undefined } : {}),
-      ...(selectionIds.includes(program.context.currentSelection)
-        ? { currentSelection: undefined }
-        : {})
-    });
 }
 
 function regressionColorScale(owner, current, groupBy) {
@@ -331,7 +292,7 @@ export const editRegression = action(
 
       let bandId = current.bandId;
       if (hadBand && !wantsBand) {
-        next = removeBand(next, current.bandId);
+        next = removeOwnedMark(next, current.bandId);
         bandId = undefined;
       } else if (!hadBand && wantsBand) {
         bandId = `${owner.id}RegressionBands`;
@@ -400,7 +361,6 @@ export const editRegression = action(
         }
       });
     };
-    if (changesStatistics || hadBand !== wantsBand) applyEdit(this);
     return applyEdit(this);
   }
 );

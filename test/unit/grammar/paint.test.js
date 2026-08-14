@@ -38,6 +38,28 @@ test("resolves normalized endpoints inside final item bounds", () => {
   );
 });
 
+test("resolves finite gradient endpoints across the full numeric range", () => {
+  const maximum = Number.MAX_VALUE;
+  const paint = {
+    ...verticalPaint,
+    from: { x: 0.25, y: 0 },
+    to: { x: 0.75, y: 1 }
+  };
+
+  assert.deepEqual(
+    resolveLinearGradientCoordinates(paint, {
+      left: -maximum,
+      right: maximum,
+      top: -maximum,
+      bottom: maximum
+    }),
+    {
+      from: { x: -maximum / 2, y: -maximum },
+      to: { x: maximum / 2, y: maximum }
+    }
+  );
+});
+
 test("rejects malformed paint shapes before rendering", () => {
   for (const [value, message] of [
     ["", /non-empty string/],

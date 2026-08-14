@@ -1,4 +1,5 @@
 import { createPointShapeGraphic } from "../../grammar/pointShapes.js";
+import { finiteMidpoint } from "../../grammar/numeric.js";
 
 function pointCenterAndArea(child) {
   const properties = child.properties;
@@ -19,17 +20,23 @@ function pointCenterAndArea(child) {
   const points = properties.commands.filter(command =>
     command.op === "M" || command.op === "L"
   );
-  const xs = points.map(point => point.x);
-  const ys = points.map(point => point.y);
+  let left = Infinity;
+  let right = -Infinity;
+  let top = Infinity;
+  let bottom = -Infinity;
   let twiceArea = 0;
   for (let index = 0; index < points.length; index += 1) {
     const current = points[index];
     const next = points[(index + 1) % points.length];
+    left = Math.min(left, current.x);
+    right = Math.max(right, current.x);
+    top = Math.min(top, current.y);
+    bottom = Math.max(bottom, current.y);
     twiceArea += current.x * next.y - next.x * current.y;
   }
   return {
-    x: (Math.min(...xs) + Math.max(...xs)) / 2,
-    y: (Math.min(...ys) + Math.max(...ys)) / 2,
+    x: finiteMidpoint(left, right),
+    y: finiteMidpoint(top, bottom),
     area: Math.abs(twiceArea) / 2
   };
 }

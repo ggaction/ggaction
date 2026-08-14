@@ -278,7 +278,11 @@ export function createJobsGroupedBarPrimitives(
     .editGraphics({ target: "yAxisLabels", property: "textAlign", value: "right" })
     .editGraphics({ target: "yAxisLabels", property: "textBaseline", value: "middle" })
     .createGraphics({ id: "yAxisTitle", parent: "plot-main", type: "text" })
-    .editGraphics({ target: "yAxisTitle", property: "x", value: 28 })
+    .editGraphics({
+      target: "yAxisTitle",
+      property: "x",
+      value: 24.979999999999997
+    })
     .editGraphics({ target: "yAxisTitle", property: "y", value: yAxis.title.y })
     .editGraphics({ target: "yAxisTitle", property: "text", value: yAxis.title.text })
     .editGraphics({ target: "yAxisTitle", property: "fill", value: "#334155" })

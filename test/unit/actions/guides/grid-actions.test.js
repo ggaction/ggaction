@@ -9,7 +9,7 @@ function histogram() {
     .createCanvas({
       width: 300,
       height: 220,
-      margin: { top: 20, right: 30, bottom: 40, left: 50 }
+      margin: { top: 20, right: 30, bottom: 60, left: 50 }
     })
     .createData({
       id: "values",
@@ -176,6 +176,14 @@ test("validates aggregate and directional grid options", () => {
   assert.throws(
     () => program.createGrid({ horizontal: { count: 0 } }),
     /positive integer/
+  );
+  assert.throws(
+    () => program.createGrid({ horizontal: { count: 10_001 } }),
+    /Grid count must not exceed 10000/
+  );
+  assert.throws(
+    () => program.createGrid({ horizontal: { values: Array(10_001).fill(0) } }),
+    /Grid value count must not exceed 10000/
   );
   assert.throws(
     () => program.createGrid({ horizontal: { values: [] } }),

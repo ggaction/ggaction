@@ -21,9 +21,9 @@ function assertTitleScope(program, operation) {
 }
 
 function hasRotation(graphic) {
-  const properties = graphic.items?.map(child => child.properties) ??
-    [graphic.properties];
-  return properties.some(item => Object.hasOwn(item, "rotation"));
+  return (graphic.items ?? [graphic]).some(
+    item => Object.hasOwn(item.properties, "rotation")
+  );
 }
 
 function ensureTextShape(program, id, component) {
@@ -45,14 +45,7 @@ function ensureTextShape(program, id, component) {
         ...placement
       });
   }
-  if (!collection && needsCollection) {
-    return program.editGraphics({
-      target: id,
-      property: "length",
-      value: component.lines.length
-    });
-  }
-  if (collection && graphic.items.length !== component.lines.length) {
+  if (needsCollection && graphic.items?.length !== component.lines.length) {
     return program.editGraphics({
       target: id,
       property: "length",
@@ -68,20 +61,20 @@ function distributed(value, count) {
 
 function editTextGraphic(program, id, component, style) {
   const count = component.lines.length;
-  let next = ensureTextShape(program, id, component)
-    .editGraphics({ target: id, property: "x", value: distributed(component.x, count) })
-    .editGraphics({ target: id, property: "y", value: distributed(component.y, count) })
-    .editGraphics({
-      target: id,
-      property: "text",
-      value: distributed(component.lines, count)
-    })
-    .editGraphics({ target: id, property: "fill", value: style.color })
-    .editGraphics({ target: id, property: "fontSize", value: style.fontSize })
-    .editGraphics({ target: id, property: "fontFamily", value: style.fontFamily })
-    .editGraphics({ target: id, property: "fontWeight", value: style.fontWeight })
-    .editGraphics({ target: id, property: "textAlign", value: component.textAlign })
-    .editGraphics({ target: id, property: "textBaseline", value: "middle" });
+  let next = ensureTextShape(program, id, component);
+  for (const [property, value] of Object.entries({
+    x: distributed(component.x, count),
+    y: distributed(component.y, count),
+    text: distributed(component.lines, count),
+    fill: style.color,
+    fontSize: style.fontSize,
+    fontFamily: style.fontFamily,
+    fontWeight: style.fontWeight,
+    textAlign: component.textAlign,
+    textBaseline: "middle"
+  })) {
+    next = next.editGraphics({ target: id, property, value });
+  }
   if (component.explicitRotation) {
     next = next.editGraphics({
       target: id,
@@ -92,78 +85,39 @@ function editTextGraphic(program, id, component, style) {
   return next;
 }
 
-function createTextGraphic(program, id, component) {
-  return program.createGraphics({
-    id,
-    type: "text",
-    ...(component.lines.length > 1 ? { length: component.lines.length } : {}),
-    ...resolveCanvasGraphicPlacement(program)
+function titleTextAction(kind, create) {
+  const suffix = `${kind[0].toUpperCase()}${kind.slice(1)}Text`;
+  const op = `${create ? "create" : "edit"}${suffix}`;
+  const id = `chart${kind[0].toUpperCase()}${kind.slice(1)}`;
+  return action({
+    op,
+    description: `${create ? "Create" : "Rematerialize"} chart ${kind} text.`
+  }, function (args = {}) {
+    noOptions(args, op);
+    const config = requireTitleConfig(this);
+    if (create && this.graphicSpec.objects[id] !== undefined) {
+      throw new Error(`${op} requires a missing chart ${kind} graphic.`);
+    }
+    const component = resolveTitleLayout(this, config)[kind];
+    if (component === undefined) {
+      throw new Error(`${op} requires semantic subtitle text.`);
+    }
+    if (!create) {
+      return editTextGraphic(this, id, component, config[`${kind}Style`]);
+    }
+    return this.createGraphics({
+      id,
+      type: "text",
+      ...(component.lines.length > 1 ? { length: component.lines.length } : {}),
+      ...resolveCanvasGraphicPlacement(this)
+    })[`edit${suffix}`]();
   });
 }
 
-export const editTitleText = action(
-  { op: "editTitleText", description: "Rematerialize chart title text." },
-  function (args = {}) {
-    noOptions(args, "editTitleText");
-    const config = requireTitleConfig(this);
-    const layout = resolveTitleLayout(this, config);
-    return editTextGraphic(
-      this,
-      "chartTitle",
-      layout.title,
-      config.titleStyle
-    );
-  }
-);
-
-export const createTitleText = action(
-  { op: "createTitleText", description: "Create chart title text." },
-  function (args = {}) {
-    noOptions(args, "createTitleText");
-    const config = requireTitleConfig(this);
-    if (this.graphicSpec.objects.chartTitle !== undefined) {
-      throw new Error("createTitleText requires a missing chart title graphic.");
-    }
-    const layout = resolveTitleLayout(this, config);
-    return createTextGraphic(this, "chartTitle", layout.title)
-      .editTitleText();
-  }
-);
-
-export const editSubtitleText = action(
-  { op: "editSubtitleText", description: "Rematerialize chart subtitle text." },
-  function (args = {}) {
-    noOptions(args, "editSubtitleText");
-    const config = requireTitleConfig(this);
-    const layout = resolveTitleLayout(this, config);
-    if (layout.subtitle === undefined) {
-      throw new Error("editSubtitleText requires semantic subtitle text.");
-    }
-    return editTextGraphic(
-      this,
-      "chartSubtitle",
-      layout.subtitle,
-      config.subtitleStyle
-    );
-  }
-);
-
-export const createSubtitleText = action(
-  { op: "createSubtitleText", description: "Create chart subtitle text." },
-  function (args = {}) {
-    noOptions(args, "createSubtitleText");
-    const config = requireTitleConfig(this);
-    if (this.graphicSpec.objects.chartSubtitle !== undefined) {
-      throw new Error("createSubtitleText requires a missing chart subtitle graphic.");
-    }
-    const layout = resolveTitleLayout(this, config);
-    if (layout.subtitle === undefined) {
-      throw new Error("createSubtitleText requires semantic subtitle text.");
-    }
-    return createTextGraphic(this, "chartSubtitle", layout.subtitle)
-      .editSubtitleText();
-  }
-);
+export const editTitleText = titleTextAction("title", false);
+export const createTitleText = titleTextAction("title", true);
+export const editSubtitleText = titleTextAction("subtitle", false);
+export const createSubtitleText = titleTextAction("subtitle", true);
 
 export const rematerializeTitle = action(
   { op: "rematerializeTitle", description: "Rematerialize chart title graphics." },

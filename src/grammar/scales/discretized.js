@@ -1,4 +1,6 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
+import { validateGeneratedItemLimit } from "../../core/validation.js";
+import { interpolateNumber } from "../numeric.js";
 import { resolveColorRange, validateColorRange } from "./appearance.js";
 import { SCALE_ROLES, validateScaleTypeForRole } from "./types.js";
 
@@ -35,7 +37,7 @@ function quantile(sorted, probability) {
   const position = (sorted.length - 1) * probability;
   const lower = Math.floor(position);
   const upper = Math.ceil(position);
-  return sorted[lower] + (sorted[upper] - sorted[lower]) * (position - lower);
+  return interpolateNumber(sorted[lower], sorted[upper], position - lower);
 }
 
 export function validateDiscretizedColorDomain(type, domain) {
@@ -62,6 +64,12 @@ export function validateDiscretizedColorDomain(type, domain) {
 }
 
 export function validateDiscretizedColorRange(range) {
+  if (Array.isArray(range)) {
+    validateGeneratedItemLimit(
+      range.length,
+      "Discretized color range length"
+    );
+  }
   const validated = validateColorRange(range);
   if (validated === "auto") return validated;
   if (Array.isArray(validated) && validated.length < 2) {
@@ -76,7 +84,7 @@ export function resolveDiscretizedColorScale({ type, domain, range, values }) {
   const requestedDomain = validateDiscretizedColorDomain(type, domain);
   const sample = [...values].sort((left, right) => left - right);
   const validatedRange = validateDiscretizedColorRange(range);
-  const colorCount = type === "threshold" && requestedDomain !== "auto"
+  const colorCount = type === "threshold"
     ? requestedDomain.length + 1
     : Array.isArray(range) ? range.length : 5;
   const colors = resolveColorRange(
@@ -97,9 +105,20 @@ export function resolveDiscretizedColorScale({ type, domain, range, values }) {
     }
     thresholds = Array.from(
       { length: colors.length - 1 },
-      (_, index) => resolvedDomain[0] + (index + 1) / colors.length *
-        (resolvedDomain[1] - resolvedDomain[0])
+      (_, index) => interpolateNumber(
+        resolvedDomain[0],
+        resolvedDomain[1],
+        (index + 1) / colors.length
+      )
     );
+    if (thresholds.some((value, index) =>
+      value <= (index === 0 ? resolvedDomain[0] : thresholds[index - 1]) ||
+      value >= resolvedDomain[1]
+    )) {
+      throw new RangeError(
+        "Quantize color range requests more classes than its numeric domain can represent."
+      );
+    }
   } else if (type === "quantile") {
     const source = requestedDomain === "auto"
       ? sample
@@ -143,17 +162,28 @@ export function mapDiscretizedColors(values, scale) {
   }));
 }
 
-function formatBoundary(value) {
-  return Number.isInteger(value) ? String(value) : value.toFixed(1);
-}
-
 export function formatDiscretizedIntervals(thresholds) {
   nondecreasing(thresholds, "Discretized color thresholds");
+  let resolution = Infinity;
+  for (let index = 1; index < thresholds.length; index += 1) {
+    const gap = thresholds[index] - thresholds[index - 1];
+    if (Number.isFinite(gap) && gap > 0) resolution = Math.min(resolution, gap);
+  }
+  let labels = thresholds.map(value =>
+    Number.isInteger(value) ? String(value) : value.toFixed(1)
+  );
+  if (thresholds.some((value, index) => {
+    const rounded = Number(labels[index]);
+    return value !== 0 && rounded === 0 ||
+      index > 0 && value !== thresholds[index - 1] &&
+        labels[index] === labels[index - 1] ||
+      !Number.isInteger(value) && Math.abs(rounded - value) > resolution / 4;
+  })) labels = thresholds.map(String);
   return cloneAndFreeze([
-    `< ${formatBoundary(thresholds[0])}`,
-    ...thresholds.slice(0, -1).map((value, index) =>
-      `${formatBoundary(value)}–${formatBoundary(thresholds[index + 1])}`
+    `< ${labels[0]}`,
+    ...labels.slice(0, -1).map((value, index) =>
+      `${value}–${labels[index + 1]}`
     ),
-    `≥ ${formatBoundary(thresholds.at(-1))}`
+    `≥ ${labels.at(-1)}`
   ]);
 }

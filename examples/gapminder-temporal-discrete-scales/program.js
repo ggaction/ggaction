@@ -5,7 +5,7 @@ export function createGapminderBandPointChart(gapminder) {
     .createCanvas({
       width: 456,
       height: 312,
-      margin: { top: 58, right: 22, bottom: 54, left: 70 }
+      margin: { top: 58, right: 22, bottom: 54, left: 100 }
     })
     .createData({ values: gapminder })
     .filterData({

@@ -12,7 +12,7 @@ const rows = Object.freeze([
   Object.freeze({ x: 5, y: 10, value: 24.8 })
 ]);
 
-function pointProgram({ position = "right", top = 90, right = 150, bottom = 90, left = 150 } = {}) {
+function pointProgram({ position = "right", top = 100, right = 150, bottom = 100, left = 150 } = {}) {
   return chart()
     .createCanvas({
       width: 760,
@@ -24,6 +24,20 @@ function pointProgram({ position = "right", top = 90, right = 150, bottom = 90, 
     .encodeX({ field: "x" })
     .encodeY({ field: "y" });
 }
+
+test("rejects continuous legend sample counts above the generated item limit", () => {
+  const base = pointProgram()
+    .encodeOpacity({ field: "value" });
+  assert.throws(
+    () => base.createLegend({ channels: ["opacity"], count: 10_001 }),
+    /must not exceed 10000/
+  );
+  const existing = base.createLegend({ channels: ["opacity"], count: 3 });
+  assert.throws(
+    () => existing.editLegend({ count: 10_001 }),
+    /must not exceed 10000/
+  );
+});
 
 test("creates the approved right gradient legend as concrete strips", () => {
   const program = pointProgram({ top: 30, left: 70, bottom: 60 })
@@ -47,6 +61,53 @@ test("creates the approved right gradient legend as concrete strips", () => {
   ]);
   assert.equal(program.semanticSpec.guides.legend.color.scale, "color");
   assert.equal(program.guideConfigs.legend.gradient.position, "right");
+});
+
+test("samples and labels full and close numeric legend domains without collapse", () => {
+  for (const domain of [[-1e308, 1e308], [1e15, 1e15 + 1]]) {
+    const values = [domain[0], domain[1]].map((value, index) => ({
+      x: index,
+      y: index,
+      value
+    }));
+    const program = chart()
+      .createCanvas({
+        width: 760,
+        height: 460,
+        margin: { top: 30, right: 200, bottom: 60, left: 70 }
+      })
+      .createData({ values })
+      .createPointMark()
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .encodeColor({
+        field: "value",
+        fieldType: "quantitative",
+        scale: { domain }
+      })
+      .createLegend({ channels: ["color"] });
+    const labels = program.graphicSpec.objects.colorGradientLabels.items.map(
+      item => item.properties.text
+    );
+    assert.equal(new Set(labels).size, 5);
+  }
+
+  const tiny = chart()
+    .createCanvas({ width: 760, height: 460, margin: { right: 200 } })
+    .createData({
+      values: [
+        { x: 0, y: 0, value: Number.MIN_VALUE },
+        { x: 1, y: 1, value: Number.MIN_VALUE * 2 }
+      ]
+    })
+    .createPointMark()
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "value", fieldType: "quantitative" });
+  assert.throws(
+    () => tiny.createLegend({ channels: ["color"] }),
+    /cannot represent 5 distinct samples/
+  );
 });
 
 test("lays gradient legends out in all four positions", () => {

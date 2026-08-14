@@ -8,15 +8,16 @@ import {
   aggregateRows,
   isAggregate,
   validateAggregateFieldType,
-  validateAggregateFieldValues,
+  validateAggregateFieldValues
 } from "./aggregate.js";
 import { stableOrderPathValues } from "./pathOrder.js";
+import { finiteMidpoint } from "./numeric.js";
 import {
   findHistogramBinIndex,
   resolveHistogramBins
 } from "./histogram.js";
 
-const SERIES_CHANNELS = Object.freeze(["group", "color", "strokeDash"]);
+const SERIES_CHANNELS = ["group", "color", "strokeDash"];
 
 function requireLineEncoding(layer) {
   if (layer?.mark?.type !== "line") {
@@ -99,6 +100,29 @@ function groupKey(values) {
   return JSON.stringify(values);
 }
 
+function groupedSeries(groups, fields, dimensions) {
+  const id = groupKey(dimensions);
+  let series = groups.get(id);
+  if (series === undefined) {
+    series = {
+      key: Object.fromEntries(
+        fields.map((field, index) => [field, dimensions[index]])
+      ),
+      values: []
+    };
+    groups.set(id, series);
+  }
+  return series;
+}
+
+function freezeCartesianSeries(series) {
+  return cloneAndFreeze({
+    xValues: series.flatMap(item => item.values.map(value => value.x)),
+    yValues: series.flatMap(item => item.values.map(value => value.y)),
+    series
+  });
+}
+
 export function resolveLineBins(rows, layer, scale = {}) {
   const x = layer?.encoding?.x;
   if (
@@ -149,17 +173,10 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
       const dimensions = seriesFields.fields.map(
         field => seriesFields.values.get(field)[index]
       );
-      const key = groupKey(dimensions);
-      const series = groups.get(key) ?? {
-        key: Object.fromEntries(
-          seriesFields.fields.map((field, item) => [field, dimensions[item]])
-        ),
-        values: [],
-        orderValues: []
-      };
+      const series = groupedSeries(groups, seriesFields.fields, dimensions);
       series.values.push({ x: xValues[index], y: yValues[index] });
+      series.orderValues ??= [];
       series.orderValues.push(orderValues[index]);
-      groups.set(key, series);
     }
     const series = [...groups.values()].flatMap(item => {
       const values = stableOrderPathValues(
@@ -174,11 +191,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         `Line series on mark "${layer.id}" requires at least two ordered points.`
       );
     }
-    return cloneAndFreeze({
-      xValues: series.flatMap(item => item.values.map(value => value.x)),
-      yValues: series.flatMap(item => item.values.map(value => value.y)),
-      series
-    });
+    return freezeCartesianSeries(series);
   }
 
   if (directRows) {
@@ -187,15 +200,8 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
       const dimensions = seriesFields.fields.map(
         field => seriesFields.values.get(field)[index]
       );
-      const key = groupKey(dimensions);
-      const series = groups.get(key) ?? {
-        key: Object.fromEntries(
-          seriesFields.fields.map((field, item) => [field, dimensions[item]])
-        ),
-        values: []
-      };
+      const series = groupedSeries(groups, seriesFields.fields, dimensions);
       series.values.push({ x: xValues[index], y: yValues[index] });
-      groups.set(key, series);
     }
     const orderBy = directTemporal && y.fieldType === "temporal" ? "y" : "x";
     const series = [...groups.values()].flatMap(item => {
@@ -209,11 +215,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         `Line series on mark "${layer.id}" requires at least two direct points.`
       );
     }
-    return cloneAndFreeze({
-      xValues: series.flatMap(item => item.values.map(value => value.x)),
-      yValues: series.flatMap(item => item.values.map(value => value.y)),
-      series
-    });
+    return freezeCartesianSeries(series);
   }
   const aggregateGroups = new Map();
 
@@ -226,7 +228,10 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
       : undefined;
     if (binIndex === -1) continue;
     const position = binnedAggregate
-      ? (binBoundaries[binIndex] + binBoundaries[binIndex + 1]) / 2
+      ? finiteMidpoint(
+          binBoundaries[binIndex],
+          binBoundaries[binIndex + 1]
+        )
       : xValues[index];
     const key = groupKey([binnedAggregate ? binIndex : position, ...dimensions]);
     const group = aggregateGroups.get(key) ?? {
@@ -246,23 +251,18 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
   const seriesGroups = new Map();
 
   for (const group of aggregateGroups.values()) {
-    const value = isAggregate
-      ? aggregateRows(group.rows, y.field, y.aggregate)
-      : group.rows.reduce((sum, row) => sum + row[y.field], 0);
+    const value = aggregateRows(group.rows, y.field, y.aggregate);
     if (value === undefined) continue;
-    const key = groupKey(group.dimensions);
-    const series = seriesGroups.get(key) ?? {
-      key: Object.fromEntries(
-        seriesFields.fields.map((field, index) => [field, group.dimensions[index]])
-      ),
-      values: []
-    };
+    const series = groupedSeries(
+      seriesGroups,
+      seriesFields.fields,
+      group.dimensions
+    );
 
     series.values.push({
       x: group.x,
       y: value
     });
-    seriesGroups.set(key, series);
   }
 
   const series = [...seriesGroups.values()].flatMap(item => {
@@ -281,11 +281,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     );
   }
 
-  return cloneAndFreeze({
-    xValues: series.flatMap(item => item.values.map(value => value.x)),
-    yValues: series.flatMap(item => item.values.map(value => value.y)),
-    series
-  });
+  return freezeCartesianSeries(series);
 }
 
 function requirePolarLineEncoding(layer) {
@@ -352,20 +348,13 @@ export function derivePolarLineSeries(rows, layer, { thetaDomain } = {}) {
     const dimensions = seriesFields.fields.map(
       field => seriesFields.values.get(field)[index]
     );
-    const key = groupKey(dimensions);
-    const series = groups.get(key) ?? {
-      key: Object.fromEntries(
-        seriesFields.fields.map((field, item) => [field, dimensions[item]])
-      ),
-      values: []
-    };
+    const series = groupedSeries(groups, seriesFields.fields, dimensions);
     series.values.push({
       theta: thetaValues[index],
       radius: radiusValues[index],
       order: sortValues[index],
       sourceIndex: index
     });
-    groups.set(key, series);
   }
 
   const series = [...groups.values()].flatMap(item => {

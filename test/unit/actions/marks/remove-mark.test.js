@@ -83,7 +83,11 @@ test("cleans selection and highlight ownership with the removed mark", () => {
 
 test("removes unreferenced Polar axes and grids with their mark", () => {
   const before = chart()
-    .createCanvas({ width: 300, height: 300, margin: 30 })
+    .createCanvas({
+      width: 300,
+      height: 360,
+      margin: { top: 30, right: 30, bottom: 90, left: 30 }
+    })
     .createData({ values: [
       { angle: 0, distance: 0 },
       { angle: 10, distance: 20 }

@@ -126,6 +126,25 @@ test("retains curve appearance across Canvas and grouping rematerialization", ()
   assert.deepEqual(grouped.markConfigs.trends, curved.markConfigs.trends);
 });
 
+test("keeps monotone curves valid across reversed x-scale authoring order", () => {
+  const base = completeLineProgram();
+  const curveThenReverse = base
+    .editLineMark({ curve: "monotone" })
+    .editScale({ id: "x", reverse: true });
+  const reverseThenCurve = base
+    .editScale({ id: "x", reverse: true })
+    .editLineMark({ curve: "monotone" });
+
+  assert.deepEqual(
+    curveThenReverse.graphicSpec.objects.trends,
+    reverseThenCurve.graphicSpec.objects.trends
+  );
+  const commands = curveThenReverse.graphicSpec.objects.trends.items[0]
+    .properties.commands;
+  assert.equal(commands[0].x > commands.at(-1).x, true);
+  assert.equal(commands.slice(1).every(command => command.op === "C"), true);
+});
+
 test("rejects invalid and ambiguous edits without changing prior programs", () => {
   const base = completeLineProgram();
   assert.throws(

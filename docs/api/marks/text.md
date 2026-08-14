@@ -101,6 +101,9 @@ position when it already fits. If the requested distance cannot eliminate all
 overlap or overflow, the program retains a deterministic best effort and stores
 `overlap` or `bounds` warnings in the label-layout resolution summary. It never
 expands margins, reduces font size, or searches for an unrelated nearby mark.
+For extreme `maxDisplacement` values, candidate generation remains bounded: it
+searches the local lattice, adds deterministic distant samples, and does not
+search farther than 1,000,000 logical pixels.
 
 Calling `layoutLabels()` again replaces the complete policy and recomputes from
 semantic base text rather than accumulating offsets. Text, data, scale, source

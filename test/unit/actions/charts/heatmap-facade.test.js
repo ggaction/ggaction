@@ -16,7 +16,7 @@ function base(values = rows) {
 }
 
 test("creates the shortest pre-gridded heatmap with one rect per observed row", () => {
-  const source = base();
+  const source = base().editCanvas({ margin: { right: 80 } });
   const program = source.createHeatmap({
     x: { field: "x", fieldType: "ordinal" },
     y: { field: "y", fieldType: "nominal" },
@@ -197,6 +197,63 @@ test("creates the shortest binned heatmap through one generated 2D-bin dataset",
     "encodeY2",
     "encodeColor"
   ]);
+  assert.equal(source.semanticSpec.datasets.length, 1);
+  assert.equal(source.semanticSpec.layers.length, 0);
+});
+
+test("renders finite cells when a binned heatmap spans the full finite range", () => {
+  const program = chart()
+    .createCanvas({ width: 400, height: 300, margin: 60 })
+    .createData({ values: [
+      { x: -1e308, y: 0 },
+      { x: 1e308, y: 1 }
+    ] })
+    .createHeatmap({
+      x: "x",
+      y: "y",
+      bin: { bins: { x: 2, y: 1 } },
+      guides: false
+    });
+  const dataset = program.semanticSpec.datasets.at(-1);
+
+  assert.deepEqual(dataset.transform[0].resolved.edges.x, [-1e308, 0, 1e308]);
+  assert.equal(program.graphicSpec.objects.heatmap.items.length, 2);
+  assert.equal(
+    program.graphicSpec.objects.heatmap.items.every(item =>
+      ["x", "y", "width", "height"].every(property =>
+        Number.isFinite(item.properties[property])
+      )
+    ),
+    true
+  );
+});
+
+test("rejects unrepresentable and excessive binned heatmap grids atomically", () => {
+  const source = chart()
+    .createCanvas({ width: 400, height: 300, margin: 60 })
+    .createData({ values: [
+      { x: 1e15, y: 0 },
+      { x: 1e15 + 1, y: 1 }
+    ] });
+
+  assert.throws(
+    () => source.createHeatmap({
+      x: "x",
+      y: "y",
+      bin: { bins: { x: 100, y: 1 } },
+      guides: false
+    }),
+    /x extent cannot represent 100 distinct bins/
+  );
+  assert.throws(
+    () => source.createHeatmap({
+      x: "x",
+      y: "y",
+      bin: { bins: { x: 10_000, y: 101 } },
+      guides: false
+    }),
+    /grids support at most 1000000 cells/
+  );
   assert.equal(source.semanticSpec.datasets.length, 1);
   assert.equal(source.semanticSpec.layers.length, 0);
 });

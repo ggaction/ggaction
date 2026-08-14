@@ -1,5 +1,13 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { POLAR_POSITION_CHANNELS } from "../../core/vocabulary.js";
+import {
+  alignNumericStep,
+  cleanNumericValue,
+  interpolateNumber,
+  inverseLerp,
+  niceNumericStep,
+  normalizeNumericRange
+} from "../numeric.js";
 import { resolvePolarScaleRange } from "../polar.js";
 import { niceTimeDomain } from "./temporal.js";
 import {
@@ -24,29 +32,48 @@ export function resolveScaleDomain(domain, values) {
   return cloneAndFreeze([minimum, maximum]);
 }
 
-function niceLinearStep(span, count = 5) {
-  const rough = span / Math.max(1, count);
-  const power = 10 ** Math.floor(Math.log10(rough));
-  const fraction = rough / power;
-  const factor = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 3 ? 3
-    : fraction <= 5 ? 5 : 10;
-  return factor * power;
-}
-
 export function niceLinearDomain(domain) {
   const [minimum, maximum] = domain;
+  if (minimum === maximum) return cloneAndFreeze([minimum, maximum]);
+
+  const directSpan = maximum - minimum;
   const tolerance = Number.EPSILON * 16 * Math.max(
-    1, Math.abs(minimum), Math.abs(maximum)
+    1,
+    Math.abs(minimum),
+    Math.abs(maximum)
   );
-  if (maximum - minimum <= tolerance) {
-    const midpoint = (minimum + maximum) / 2;
-    return cloneAndFreeze([midpoint, midpoint]);
+  if (Number.isFinite(directSpan) && directSpan > tolerance) {
+    const directStep = niceNumericStep(directSpan);
+    const direct = [
+      Number((Math.floor(minimum / directStep) * directStep).toPrecision(12)),
+      Number((Math.ceil(maximum / directStep) * directStep).toPrecision(12))
+    ];
+    if (
+      direct.every(Number.isFinite) &&
+      direct[0] < direct[1] &&
+      direct[0] <= minimum &&
+      direct[1] >= maximum
+    ) {
+      return cloneAndFreeze(direct);
+    }
   }
-  const step = niceLinearStep(maximum - minimum);
-  return cloneAndFreeze([
-    Number((Math.floor(minimum / step) * step).toPrecision(12)),
-    Number((Math.ceil(maximum / step) * step).toPrecision(12))
-  ]);
+
+  const normalized = normalizeNumericRange(minimum, maximum);
+  const normalizedStep = niceNumericStep(normalized.span);
+  const resolution = normalizedStep * normalized.scale;
+  let lower = cleanNumericValue(
+    alignNumericStep(normalized.start, normalizedStep, "floor") * normalized.scale,
+    resolution
+  );
+  let upper = cleanNumericValue(
+    alignNumericStep(normalized.end, normalizedStep, "ceil") * normalized.scale,
+    resolution
+  );
+
+  if (!Number.isFinite(lower) || lower > minimum) lower = minimum;
+  if (!Number.isFinite(upper) || upper < maximum) upper = maximum;
+  if (lower === upper) return cloneAndFreeze([minimum, maximum]);
+  return cloneAndFreeze([lower, upper]);
 }
 
 export function resolveContinuousDomain({ domain, values, type, nice, zero }) {
@@ -80,9 +107,13 @@ export function resolveScaleRange(range, channel, bounds) {
   ) {
     throw new Error("Automatic position range requires graphical bounds.");
   }
-  return channel === "x"
-    ? cloneAndFreeze([bounds.x, bounds.x + bounds.width])
-    : cloneAndFreeze([bounds.y + bounds.height, bounds.y]);
+  const resolved = channel === "x"
+    ? [bounds.x, bounds.x + bounds.width]
+    : [bounds.y + bounds.height, bounds.y];
+  if (!resolved.every(Number.isFinite)) {
+    throw new RangeError("Automatic position range exceeds the finite numeric range.");
+  }
+  return cloneAndFreeze(resolved);
 }
 
 export function mapLinearValues(values, domain, range, options = {}) {
@@ -97,7 +128,7 @@ export function mapLinearValues(values, domain, range, options = {}) {
     throw new TypeError("Linear scale values must be finite numbers.");
   }
   if (domainStart === domainEnd) {
-    const midpoint = (rangeStart + rangeEnd) / 2;
+    const midpoint = interpolateNumber(rangeStart, rangeEnd, 0.5);
     return cloneAndFreeze(values.map(value =>
       Number.isFinite(value) ? midpoint : options.unknown
     ));
@@ -109,8 +140,24 @@ export function mapLinearValues(values, domain, range, options = {}) {
       if (hasUnknown) return options.unknown;
       throw new TypeError("Linear scale values must be finite numbers.");
     }
-    const proportion = (value - domainStart) / domainSpan;
+    if (value === domainStart) return rangeStart;
+    if (value === domainEnd) return rangeEnd;
+    const directProportion = (value - domainStart) / domainSpan;
+    const directResolved = clamp
+      ? Math.max(0, Math.min(1, directProportion))
+      : directProportion;
+    if (Number.isFinite(domainSpan) && directResolved === 0) return rangeStart;
+    if (Number.isFinite(domainSpan) && directResolved === 1) return rangeEnd;
+    const directValue = rangeStart + directResolved * rangeSpan;
+    if (
+      Number.isFinite(domainSpan) &&
+      Number.isFinite(rangeSpan) &&
+      Number.isFinite(directValue)
+    ) {
+      return directValue;
+    }
+    const proportion = inverseLerp(value, domainStart, domainEnd);
     const resolved = clamp ? Math.max(0, Math.min(1, proportion)) : proportion;
-    return rangeStart + resolved * rangeSpan;
+    return interpolateNumber(rangeStart, rangeEnd, resolved);
   }));
 }

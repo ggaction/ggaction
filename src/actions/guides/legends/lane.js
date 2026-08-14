@@ -4,6 +4,7 @@ import {
   resolveConcreteGraphicBounds,
   unionConcreteGraphicBounds
 } from "../../../grammar/schemas/graphicBounds.js";
+import { finiteMidpoint } from "../../../grammar/numeric.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
   resolveHorizontalLegendLane,
@@ -120,7 +121,7 @@ function blockDescriptor(program, kind, config) {
     bounds,
     title,
     symbol: {
-      centerX: (symbolAnchor.left + symbolAnchor.right) / 2,
+      centerX: finiteMidpoint(symbolAnchor.left, symbolAnchor.right),
       left: symbolBounds.left,
       right: symbolBounds.right,
       bounds: symbolAnchor

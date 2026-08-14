@@ -17,7 +17,7 @@ test("independently resolves the transformed-scale filter and transformed mappin
 
   const afghanistan = values.rows.findIndex(row => row.country === "Afghanistan");
   assert.equal(afghanistan, 0);
-  assert.ok(Math.abs(values.points[afghanistan].x - 201.10461570878223) < 1e-9);
+  assert.ok(Math.abs(values.points[afghanistan].x - 195.37440218373348) < 1e-9);
   assert.ok(Math.abs(values.points[afghanistan].y - 72.51462408014194) < 1e-9);
   assert.equal(values.points[afghanistan].fill, "#433f85");
   assert.deepEqual(values.axes.x.labels, ["100K", "1M", "10M", "100M", "1B", "10B"]);

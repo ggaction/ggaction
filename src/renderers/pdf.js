@@ -8,6 +8,7 @@ import {
   requireProgramGraphicSpec,
   resolveGraphicRenderTarget
 } from "./canvas/index.js";
+import { preflightCanvasGraphicSpec } from "./canvas/native.js";
 
 const PDF_OPTIONS = new Set(["output", "metadata"]);
 const PDF_METADATA = new Set([
@@ -16,6 +17,7 @@ const PDF_METADATA = new Set([
   "subject",
   "keywords"
 ]);
+const MAX_PDF_DIMENSION = 16_777_216;
 
 function requirePlainObject(value, label) {
   if (
@@ -93,10 +95,22 @@ function renderPDFBuffer(target, metadata) {
   return document.close();
 }
 
+function requirePDFPageDimensions(target) {
+  if (![target.width, target.height].every(value =>
+    Number.isSafeInteger(value) && value > 0 && value <= MAX_PDF_DIMENSION
+  )) {
+    throw new RangeError(
+      `PDF page dimensions must be positive integers no larger than ${MAX_PDF_DIMENSION}.`
+    );
+  }
+}
+
 export async function renderToPDF(program, options = {}) {
   const { output, metadata } = requirePDFOptions(options);
   const graphicSpec = requireProgramGraphicSpec(program);
   const target = resolveGraphicRenderTarget(graphicSpec);
+  requirePDFPageDimensions(target);
+  preflightCanvasGraphicSpec(target);
   const buffer = renderPDFBuffer(target, metadata);
 
   await mkdir(dirname(output), { recursive: true });

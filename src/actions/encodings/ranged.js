@@ -17,6 +17,7 @@ import {
 import { findLayer } from "../../selectors/layers.js";
 import {
   resolveTarget,
+  setEncodingProperties,
   validateLineSeriesCompatibility,
   validateOptions
 } from "./shared.js";
@@ -139,19 +140,11 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
       });
     }
   }
-  next = next
-    .editSemantic({
-      property: `layer[${target}].encoding.${channel}.${hasField ? "field" : "datum"}`,
-      value: hasField ? args.field : args.datum
-    })
-    .editSemantic({
-      property: `layer[${target}].encoding.${channel}.fieldType`,
-      value: fieldType
-    })
-    .editSemantic({
-      property: `layer[${target}].encoding.${channel}.scale`,
-      value: primary.scale
-    });
+  next = setEncodingProperties(next, target, channel, {
+    [hasField ? "field" : "datum"]: hasField ? args.field : args.datum,
+    fieldType,
+    scale: primary.scale
+  });
 
   const updated = findLayer(next, target);
   for (const step of getPositionEncodingMaterializationSteps(

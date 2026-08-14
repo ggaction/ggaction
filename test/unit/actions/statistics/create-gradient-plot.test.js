@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
+import { createGradientPlotPaint } from
+  "../../../../src/actions/gradientPlots/paint.js";
 
 const rows = Object.freeze([
   Object.freeze({ group: "A", value: 1 }),
@@ -115,4 +117,24 @@ test("reverses the concrete gradient direction with the value scale", () => {
   assert.deepEqual(reversedFill.from, normalFill.to);
   assert.deepEqual(reversedFill.to, normalFill.from);
   assert.deepEqual(reversedFill.stops, normalFill.stops);
+});
+
+test("normalizes gradient stops across the full finite position range", () => {
+  const maximum = Number.MAX_VALUE;
+  const fill = createGradientPlotPaint({
+    values: [-maximum, 0, maximum],
+    intensities: [1, 2, 1]
+  }, {
+    orientation: "vertical",
+    valueScale: {
+      type: "linear",
+      domain: [-maximum, maximum],
+      range: [-maximum, maximum]
+    },
+    intensityDomain: [0, 2],
+    palette: "viridis",
+    opacity: [0.1, 1]
+  });
+
+  assert.deepEqual(fill.stops.map(stop => stop.offset), [0, 0.5, 1]);
 });

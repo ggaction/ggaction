@@ -156,9 +156,15 @@ function buildLegend(
   const itemGap = 24;
   const titleGap = 20;
   const titleText = "Origin";
-  const titleWidth = titleText.length * 7;
+  const textWidth = (text, fontSize, weightFactor = 1) => [...String(text)]
+    .reduce((sum, character) => sum + (
+      /[iIl1.,:;!'|]/u.test(character) ? 0.27
+        : /[A-Z]/u.test(character) ? 0.61
+          : 0.47
+    ) * fontSize, 0) * weightFactor;
+  const titleWidth = textWidth(titleText, 13, 1.04);
   const itemWidths = groupDomain.map(
-    group => symbolWidth + labelOffset + String(group).length * 7
+    group => symbolWidth + labelOffset + textWidth(group, 12)
   );
   const itemsWidth = itemWidths.reduce((sum, value) => sum + value, 0) +
     itemGap * Math.max(0, groupDomain.length - 1);

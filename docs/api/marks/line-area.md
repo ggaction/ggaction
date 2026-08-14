@@ -68,7 +68,9 @@ program.editLineMark({
 Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 `cardinal`, `monotone`, and `natural`. Smooth curves use cubic commands and
 two-point series fall back to linear. Monotone paths require strictly increasing
-materialized x values.
+or decreasing materialized x values; duplicate or non-monotonic x is rejected.
+Materialization rejects any line or complete area that would expand beyond
+10,000 backend-neutral path commands before allocating that command array.
 
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.

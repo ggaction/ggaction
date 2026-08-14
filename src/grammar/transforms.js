@@ -32,7 +32,10 @@ function facetHorizonTransform(transform, { scales = {} } = {}) {
     (scales.y ?? "shared") !== "shared" ||
     !Array.isArray(transform.resolved?.extents)
   ) return transform;
-  const extent = Math.max(...transform.resolved.extents.map(item => item.extent));
+  let extent = -Infinity;
+  for (const item of transform.resolved.extents) {
+    extent = Math.max(extent, item.extent);
+  }
   if (!(extent > 0)) return transform;
   return {
     ...requestedHorizonTransform(transform),

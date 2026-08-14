@@ -13,8 +13,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   two-sided Student-t `ci`; median supports only `iqr` and does not accept `level`.
 - `as`: optional distinct `{ center, lower, upper }` output fields. Omission namespaces all three from `id`.
 - Effect: wrapped `createDerivedData` records complete interval provenance and wrapped
-  `materializeIntervalData` stores owned concrete rows rounded to a deterministic 12-decimal boundary.
-  It creates no graphics and never changes source values.
+  `materializeIntervalData` stores owned concrete rows at a deterministic 12-decimal boundary. Values below
+  `1e-12` retain 12 significant digits so a finite nonzero interval cannot collapse to zero solely from rounding.
+  Center/lower/upper 중 하나라도 finite number로 표현할 수 없으면 atomic `RangeError`다. It creates no
+  graphics and never changes source values.
 
 ### Formal values — `createIntervalData`
 
@@ -26,7 +28,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - ✅ Covered: grouped/ungrouped output, first-appearance order, default mean/CI/0.95, stderr, sample stdev,
   IQR, custom output fields, missing values, undersized groups, ownership, trace and invalid combinations.
-- ✅ Covered: independent cars Student-t fixtures and interval containment invariants.
+- ✅ Covered: independent cars Student-t fixtures, interval containment invariants, and sub-picounit ordering.
 - Evidence: `test/unit/actions/data/interval-data.test.js`,
   `test/unit/grammar/transforms/interval.test.js`, and
   `test/unit/grammar/transforms/interval-reference.test.js`.
@@ -224,6 +226,7 @@ without naming generated child layers.
 - `groupBy`: nominal field 또는 explicit `undefined`. 생략하면 matching color/shape field가 하나일 때
   추론한다. 후보가 둘 이상이면 오류이며 explicit undefined는 ungrouped regression을 요청한다.
 - `method`, `degree`, `span`: Implemented regression method contract를 child `createRegressionData`에 전달한다.
+  Polynomial degree는 `1..32`이며 derived output/work limits도 child data contract와 동일하다.
 - `confidence`: `(0, 1)` finite number, 기본값 `0.95`.
 - `interval`: Implemented `"mean" | "prediction"`; 기본값은 `"mean"`이며 LOESS에서는 생략해야 한다.
 - `band`: style object 또는 `false`. linear/polynomial은 생략 시 band를 만들고,

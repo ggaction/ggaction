@@ -7,9 +7,10 @@ import {
   validatePositiveFinite
 } from "../../core/validation.js";
 import { resolveFacetDefinition } from "../../grammar/facets/index.js";
-import { normalizeFacetScalePolicies } from
-  "../../grammar/facets/scales.js";
-import { FACET_SCALE_CHANNELS } from "../../grammar/facets/scales.js";
+import {
+  FACET_SCALE_CHANNELS,
+  normalizeFacetScalePolicies
+} from "../../grammar/facets/scales.js";
 import { resolveFacetLayout } from "../../layout/facets.js";
 import { compositionChildDescriptor } from
   "../../materialization/composition.js";
@@ -17,6 +18,7 @@ import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../theme/defaults.js";
 import { deriveFacetChildren } from "./derive.js";
 import { replayDerivedData } from "./replay.js";
 import { composeFacetGuides } from "./guides.js";
+import { applyCompositionState } from "../composition/actions.js";
 
 const FACET_OPTIONS = Object.freeze([
   "id", "field", "data", "columns", "gap", "align", "padding", "scales",
@@ -48,40 +50,11 @@ function normalizeGuides(guides) {
   return { axes, legend };
 }
 
-function normalizeHeaderPatch(args, previous) {
-  validateOptionObject(args, HEADER_OPTIONS, "editFacetHeaders", {
-    allowEmpty: false,
-    emptyMessage: "editFacetHeaders requires at least one change."
-  });
-  const next = { ...previous, ...args };
-  validatePositiveFinite(next.fontSize, "Facet header fontSize");
-  validateNonEmptyString(next.fontFamily, "Facet header fontFamily");
-  validateNonEmptyString(next.color, "Facet header color");
-  validateNonNegativeFinite(next.offset, "Facet header offset");
-  if (!(
-    (typeof next.fontWeight === "string" && next.fontWeight.length > 0) ||
-    Number.isFinite(next.fontWeight)
-  )) {
-    throw new TypeError("Facet header fontWeight must be a non-empty string or number.");
-  }
-  return next;
-}
-
 function requireFacetProgram(program, operation) {
   program._assertCompositionProgram(operation);
   if (program.compositionSpec.type !== "facet") {
     throw new Error(`${operation} requires a facet composition.`);
   }
-}
-
-function currentFacetDefinition(program) {
-  const current = program.compositionSpec;
-  return resolveFacetDefinition(program.semanticSpec, {
-    id: current.id,
-    data: current.facet.data,
-    field: current.facet.field,
-    values: current.facet.values
-  });
 }
 
 function facetUnitTemplate(program) {
@@ -106,20 +79,19 @@ function facetUnitTemplate(program) {
   });
 }
 
-function applicableScaleRequest(program, channels) {
-  return Object.fromEntries(FACET_SCALE_CHANNELS.flatMap(channel =>
-    program.semanticSpec.layers.some(
-      layer => layer.encoding?.[channel]?.scale !== undefined
-    )
-      ? [[channel, channels[channel]]]
-      : []
-  ));
-}
-
 function rederiveFacet(program, { scales, guides }) {
   const current = program.compositionSpec;
-  const definition = currentFacetDefinition(program);
-  const request = applicableScaleRequest(program, scales);
+  const definition = resolveFacetDefinition(program.semanticSpec, {
+    id: current.id,
+    data: current.facet.data,
+    field: current.facet.field,
+    values: current.facet.values
+  });
+  const request = Object.fromEntries(FACET_SCALE_CHANNELS.flatMap(channel =>
+    program.semanticSpec.layers.some(
+      layer => layer.encoding?.[channel]?.scale !== undefined
+    ) ? [[channel, scales[channel]]] : []
+  ));
   const normalized = normalizeFacetScalePolicies(program.semanticSpec, request);
   const derived = deriveFacetChildren(facetUnitTemplate(program), definition, {
     closeInheritedAction: true,
@@ -134,14 +106,10 @@ function rederiveFacet(program, { scales, guides }) {
       guides
     }
   };
-  let next = program._withCompositionState({
+  return applyCompositionState(program, {
     children: derived.children,
     compositionSpec
-  });
-  for (const id of compositionSpec.children) {
-    next = next.useProgram({ id });
-  }
-  return next.materializeComposition();
+  }, compositionSpec.children);
 }
 
 export const facet = action(
@@ -189,18 +157,16 @@ export const facet = action(
         guides
       }
     };
-    let next = this
-      ._withCompositionState({
+    return applyCompositionState(
+      this._withMaterializationConfig(["facets", definition.id], {
+        headers: DEFAULT_HEADERS
+      }),
+      {
         children: derived.children,
         compositionSpec
-      })
-      ._withMaterializationConfig(["facets", definition.id], {
-        headers: DEFAULT_HEADERS
-      });
-    for (const id of compositionSpec.children) {
-      next = next.useProgram({ id });
-    }
-    return next.materializeComposition();
+      },
+      compositionSpec.children
+    );
   }
 );
 
@@ -217,7 +183,23 @@ export const editFacetHeaders = action(
     if (!isPlainObject(config?.headers)) {
       throw new Error(`Facet "${id}" requires header configuration.`);
     }
-    const headers = normalizeHeaderPatch(args, config.headers);
+    validateOptionObject(args, HEADER_OPTIONS, "editFacetHeaders", {
+      allowEmpty: false,
+      emptyMessage: "editFacetHeaders requires at least one change."
+    });
+    const headers = { ...config.headers, ...args };
+    validatePositiveFinite(headers.fontSize, "Facet header fontSize");
+    validateNonEmptyString(headers.fontFamily, "Facet header fontFamily");
+    validateNonEmptyString(headers.color, "Facet header color");
+    validateNonNegativeFinite(headers.offset, "Facet header offset");
+    if (!(
+      (typeof headers.fontWeight === "string" && headers.fontWeight.length > 0) ||
+      Number.isFinite(headers.fontWeight)
+    )) {
+      throw new TypeError(
+        "Facet header fontWeight must be a non-empty string or number."
+      );
+    }
     return this
       ._withMaterializationConfig(["facets", id], { ...config, headers })
       .materializeComposition();
@@ -252,14 +234,10 @@ export const editFacetScales = action(
     )) {
       throw new Error("editFacetScales requires at least one channel policy change.");
     }
-    const request = applicableScaleRequest(this, scales);
-    const normalized = normalizeFacetScalePolicies(this.semanticSpec, request);
-    const applyEdit = program => rederiveFacet(program, {
-      scales: normalized.channels,
+    return rederiveFacet(this, {
+      scales,
       guides: current.guides
     });
-    applyEdit(this);
-    return applyEdit(this);
   }
 );
 
@@ -277,12 +255,10 @@ export const editFacetGuides = action(
     });
     const current = this.compositionSpec.facet;
     const guides = normalizeGuides({ ...current.guides, ...args });
-    const applyEdit = program => rederiveFacet(program, {
+    return rederiveFacet(this, {
       scales: current.scales,
       guides
     });
-    applyEdit(this);
-    return applyEdit(this);
   }
 );
 

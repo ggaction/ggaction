@@ -252,29 +252,20 @@ export function resolveTitleLayout(program, config) {
         )
   }, config);
   const horizontal = ["top", "bottom"].includes(config.position);
-  let title;
-  let subtitle;
+  let component;
   if (horizontal) {
     const x = alignedTextAnchor(plot.x, plot.width, config.align);
     const blockTop = config.position === "top"
       ? 16 + config.offset
       : plot.y + plot.height + config.offset;
-    title = {
-      lines: block.titleLines,
+    component = (lines, centers) => ({
+      lines,
       x,
-      y: block.titleCenters.map(value => blockTop + value),
+      y: centers.map(value => blockTop + value),
       textAlign: config.align,
       rotation: 0,
-      explicitRotation: config.position !== "top" || block.titleLines.length > 1
-    };
-    subtitle = block.subtitleLines.length === 0 ? undefined : {
-      lines: block.subtitleLines,
-      x,
-      y: block.subtitleCenters.map(value => blockTop + value),
-      textAlign: config.align,
-      rotation: 0,
-      explicitRotation: config.position !== "top" || block.subtitleLines.length > 1
-    };
+      explicitRotation: config.position !== "top" || lines.length > 1
+    });
   } else {
     const rotation = config.position === "left" ? -Math.PI / 2 : Math.PI / 2;
     const y = alignedTitleAnchor(plot.y, plot.height, block.width, config.align);
@@ -282,23 +273,19 @@ export function resolveTitleLayout(program, config) {
       ? 16 + config.offset
       : canvas.properties.width - 16 + config.offset;
     const mapX = value => config.position === "left" ? edge + value : edge - value;
-    title = {
-      lines: block.titleLines,
-      x: block.titleCenters.map(mapX),
+    component = (lines, centers) => ({
+      lines,
+      x: centers.map(mapX),
       y,
       textAlign: "center",
       rotation,
       explicitRotation: true
-    };
-    subtitle = block.subtitleLines.length === 0 ? undefined : {
-      lines: block.subtitleLines,
-      x: block.subtitleCenters.map(mapX),
-      y,
-      textAlign: "center",
-      rotation,
-      explicitRotation: true
-    };
+    });
   }
+  const title = component(block.titleLines, block.titleCenters);
+  const subtitle = block.subtitleLines.length === 0
+    ? undefined
+    : component(block.subtitleLines, block.subtitleCenters);
   const titleBounds = unionTitleBounds([
     resolveTitleComponentBounds(title, config.titleStyle),
     ...(subtitle === undefined

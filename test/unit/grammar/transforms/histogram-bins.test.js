@@ -42,6 +42,12 @@ test("owns exact-bin validation", () => {
     () => validateHistogramBinBoundaries([0, 0]),
     /strictly increasing finite/
   );
+  assert.throws(
+    () => validateHistogramBinBoundaries(
+      Array.from({ length: 10_002 }, (_, index) => index)
+    ),
+    /at most 10000 bins/
+  );
 });
 
 test("resolves zero-anchored exact-step bins", () => {
@@ -225,6 +231,51 @@ test("applies zero before nice and expands constant extents", () => {
       step: 1,
       boundaries: [4.5, 5.5]
     }
+  );
+});
+
+test("keeps extreme automatic histogram boundaries finite and increasing", () => {
+  const cases = [
+    [1e15, 1e15 + 1],
+    [0, Number.MIN_VALUE],
+    [-Number.MAX_VALUE, Number.MAX_VALUE],
+    [Number.MAX_VALUE, Number.MAX_VALUE],
+    [-Number.MAX_VALUE, -Number.MAX_VALUE]
+  ];
+
+  for (const values of cases) {
+    const bins = resolveHistogramBins({ values, maxBins: 10, nice: true });
+    assert.equal(Number.isFinite(bins.step) && bins.step > 0, true);
+    assert.equal(bins.boundaries.length >= 2, true);
+    assert.equal(bins.boundaries.length - 1 <= 10, true);
+    assert.equal(bins.boundaries.every(Number.isFinite), true);
+    assert.equal(bins.boundaries.every(
+      (value, index) => index === 0 || value > bins.boundaries[index - 1]
+    ), true);
+    assert.equal(bins.domain[0] <= values[0], true);
+    assert.equal(bins.domain[1] >= values[1], true);
+    assert.equal(
+      countHistogramBins(values, bins.boundaries)
+        .reduce((sum, count) => sum + count, 0),
+      values.length
+    );
+  }
+
+  const bounded = resolveHistogramBins({
+    values: [0, 1],
+    maxBins: Number.MAX_SAFE_INTEGER,
+    nice: false
+  });
+  assert.equal(bounded.boundaries.length <= 10_001, true);
+  assert.equal(bounded.boundaries.every(Number.isFinite), true);
+
+  assert.throws(
+    () => resolveHistogramBins({
+      values: [0, 1],
+      bin: { step: 1e-10 },
+      domain: [0, 1]
+    }),
+    /at most 10000 bins/
   );
 });
 

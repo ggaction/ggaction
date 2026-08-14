@@ -1,5 +1,4 @@
-import { createErrorBarCap } from "./components.js";
-import { createErrorBar } from "./create.js";
+import { createErrorBar, createErrorBarCap } from "./create.js";
 import { editErrorBar, rematerializeErrorBar } from "./edit.js";
 
 export function registerErrorBarActions(ProgramClass) {

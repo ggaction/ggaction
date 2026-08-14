@@ -121,7 +121,8 @@ editGradientPlot({
 `FillPaint = string | LinearGradientPaint` is the concrete `fill` property contract. Structured paint uses item-local
 normalized endpoints and nondecreasing `{ offset, color }` stops. Renderers create backend gradient objects ephemerally;
 program state stores only immutable backend-neutral data. Rect and closed-path fills support structured paint. Open paths,
-text, circles, and strokes reject it.
+text, circles, and strokes reject it. Endpoint interpolation stays finite across any ordered finite item bounds, including
+bounds whose raw span overflows.
 
 ## Consumer boundaries
 

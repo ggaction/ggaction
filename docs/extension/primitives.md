@@ -73,9 +73,10 @@ program.createGraphics({ id: "points", type: "circle", length: 2 });
 ```
 
 Supported types are `canvas`, `collection`, `circle`, `rect`, `line`, `text`,
-and `path`. `length` is a non-negative integer accepted by
+and `path`. `length` is a non-negative integer no greater than 10,000 accepted by
 homogeneous drawable types. A heterogeneous `collection` is populated through
-one `editGraphics({ property: "items" })` call instead. Equivalent repeated
+one `editGraphics({ property: "items" })` call instead; replacement `items`
+arrays are likewise limited to 10,000 entries. Equivalent repeated
 creation is idempotent.
 
 ```javascript
@@ -158,7 +159,8 @@ Path graphics use backend-neutral `path.commands` arrays rather than renderer-sp
 path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts
 with one `M`; `L` and `C` draw straight and cubic segments; an optional final `Z`
 closes the path. At least one `L` or `C` segment is required. Coordinates and cubic
-control points must be finite numbers.
+control points must be finite numbers, and one path may contain at most 10,000
+commands. Generated linear and closed paths enforce the same limit before allocation.
 TypeScript users can import the `ConcretePathCommand` union from `ggaction`.
 `path.strokeDash` and `line.strokeDash` accept non-negative finite number arrays;
 an empty array is a solid stroke.
@@ -229,6 +231,10 @@ and Canvas-wide user-space coordinates are not supported.
 Only normalized paint data is stored in `graphicSpec`. The Canvas renderer
 resolves the final item-local coordinates and creates the backend gradient while
 drawing; no Canvas gradient object is retained in the immutable program.
+Canvas, PNG, and PDF require resolved native gradient geometry to have magnitude
+no greater than `16777216`, including the direction-vector length, and reject
+the complete render before native output changes. SVG preserves all finite
+JavaScript coordinates.
 
 The complete low-level line-chart example is available in
 [`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).

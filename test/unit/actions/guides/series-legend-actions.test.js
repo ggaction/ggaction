@@ -161,6 +161,27 @@ test("supports composite line and point symbol recipes", () => {
   ]);
 });
 
+test("preflights categorical legend cardinality and symbol recipes", () => {
+  assert.throws(
+    () => createSeriesLine().createLegend({
+      symbol: { layers: Array.from({ length: 4 }, () => ({ type: "line" })) }
+    }),
+    /at most one layer per type/
+  );
+  const domain = Array.from({ length: 10_001 }, (_, index) => `group-${index}`);
+  const large = chart()
+    .createCanvas({ width: 400, height: 200, margin: 20 })
+    .createData({ values: [{ x: 0, y: 0, group: domain[0] }] })
+    .createPointMark()
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "group", scale: { domain } });
+  assert.throws(
+    () => large.createLegend(),
+    /Categorical legend item count must not exceed 10000/
+  );
+});
+
 test("lays out bordered bottom composite symbols in a deterministic grid", () => {
   const program = createBottomSeriesLine().createLegend({
     position: "bottom",
@@ -306,9 +327,9 @@ test("creates and renders an optional background before legend content", () => {
     type: "rect",
     properties: {
       x: 276,
-      y: 28,
-      width: 112,
-      height: 84,
+      y: 21.5,
+      width: 73.32,
+      height: 96.5,
       fill: "white",
       stroke: "#94a3b8",
       strokeWidth: 1
@@ -340,7 +361,7 @@ test("rematerializes legend and border layout after Canvas edits", () => {
   );
   assert.equal(
     program.graphicSpec.objects.seriesLegendBackground.properties.width,
-    112
+    73.32
   );
   assert.equal(
     program.trace.children.at(-1).children.filter(

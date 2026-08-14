@@ -1,8 +1,7 @@
-import { isPlainObject } from "../../core/immutable.js";
 import {
-  validateKeys,
   validateNonEmptyString,
   validateNonNegativeFinite,
+  validateOptionObject,
   validateUnitInterval
 } from "../../core/validation.js";
 import { normalizePalette } from "../../grammar/palettes.js";
@@ -14,11 +13,10 @@ export const GRADIENT_PLOT_OPTIONS = Object.freeze([
 
 function plain(value, keys, label, operation) {
   if (value === undefined) return {};
-  if (!isPlainObject(value)) {
-    throw new TypeError(`${operation} ${label} must be a plain object.`);
-  }
-  validateKeys(value, keys, `${operation} ${label}`);
-  return value;
+  const context = `${operation} ${label}`;
+  return validateOptionObject(value, keys, context, {
+    plainObjectMessage: `${context} must be a plain object.`
+  });
 }
 
 export function resolveGradientPosition(value, label, operation = "createGradientPlot") {

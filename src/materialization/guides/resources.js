@@ -44,7 +44,8 @@ const LEGEND_RESOURCE_POLICIES = Object.freeze({
     family: "interval",
     rematerializeOp: "rematerializeIntervalLegend",
     graphicIds: Object.freeze([
-      "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"
+      "colorLegendBackground", "colorLegendSymbols", "colorLegendLabels",
+      "colorLegendTitle"
     ])
   }),
   opacity: Object.freeze({

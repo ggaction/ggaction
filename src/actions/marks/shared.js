@@ -155,10 +155,7 @@ export function resolveCompatibleEncodings(program, source, markType) {
           };
           pending.delete(channel);
           break;
-        } catch {
-          // Try the next target-compatible policy subset. Another channel may
-          // also make a richer subset resolvable on the next pass.
-        }
+        } catch {}
       }
     }
   }
@@ -240,4 +237,11 @@ export function materializeInheritedMark(program, id) {
     ? undefined
     : getMarkMaterializationStep(program, layer);
   return step === undefined ? program : program[step.op](step.args);
+}
+
+export function editMarkGraphic(program, target, properties) {
+  for (const [property, value] of Object.entries(properties)) {
+    program = program.editGraphics({ target, property, value });
+  }
+  return program;
 }

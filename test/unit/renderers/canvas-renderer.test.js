@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import {
@@ -7,6 +8,7 @@ import {
   requireProgramGraphicSpec,
   resolveGraphicRenderTarget
 } from "../../../src/renderers/canvas/index.js";
+import { drawRectGraphic } from "../../../src/renderers/canvas/rect.js";
 import {
   createMockCanvasContext,
   findCanvasCalls
@@ -410,6 +412,76 @@ test("renders a backend-neutral filled and stroked rect", () => {
   assert.equal(findCanvasCalls(context, "stroke")[0].strokeStyle, "gray");
 });
 
+test("draws rect collections with item-local identity and opacity", () => {
+  const context = createMockCanvasContext();
+
+  drawRectGraphic(context, "bars", {
+    items: [
+      {
+        properties: {
+          x: 2,
+          y: 3,
+          width: 4,
+          height: 5,
+          fill: "red",
+          stroke: "black",
+          strokeWidth: 1
+        }
+      },
+      {
+        id: "bars:custom",
+        properties: {
+          x: 8,
+          y: 9,
+          width: 10,
+          height: 11,
+          fill: "blue",
+          stroke: "navy",
+          strokeWidth: 2,
+          opacity: 0.25
+        }
+      }
+    ]
+  });
+
+  assert.deepEqual(findCanvasCalls(context, "fillRect").map(call => call.args), [
+    [2, 3, 4, 5],
+    [8, 9, 10, 11]
+  ]);
+  assert.deepEqual(findCanvasCalls(context, "stroke").map(call => [
+    call.strokeStyle,
+    call.lineWidth,
+    call.globalAlpha
+  ]), [
+    ["black", 1, 1],
+    ["navy", 2, 0.25]
+  ]);
+});
+
+test("rejects missing required rect paint properties", () => {
+  const valid = {
+    x: 2,
+    y: 3,
+    width: 4,
+    height: 5,
+    fill: "red",
+    stroke: "black",
+    strokeWidth: 1
+  };
+
+  for (const [property, message] of [
+    ["fill", /requires a fill property/],
+    ["stroke", /requires a string stroke property/]
+  ]) {
+    const properties = { ...valid };
+    delete properties[property];
+    assert.throws(
+      () => drawRectGraphic(createMockCanvasContext(), "frame", { properties }),
+      message
+    );
+  }
+});
+
 test("rejects incomplete and unsupported concrete graphics", () => {
   const missingRadius = createGraphicSpec();
   delete missingRadius.objects.points.items[0].properties.radius;
@@ -491,4 +563,266 @@ test("rejects invalid pixel ratios", () => {
       }),
     /pixelRatio must be a positive finite number/
   );
+});
+
+test("rejects unsafe raster allocations before mutating the Canvas", () => {
+  const cases = [
+    [Number.MAX_VALUE, 1, 2, /finite safe integers/],
+    [32_768, 1, 1, /must not exceed 32767/],
+    [4_097, 4_096, 1, /pixel count must not exceed 16777216/]
+  ];
+
+  for (const [width, height, pixelRatio, message] of cases) {
+    const graphicSpec = createGraphicSpec();
+    graphicSpec.objects.canvas.properties.width = width;
+    graphicSpec.objects.canvas.properties.height = height;
+    const context = createMockCanvasContext();
+    context.canvas.width = 7;
+    context.canvas.height = 9;
+    context.canvas.style.width = "unchanged";
+
+    assert.throws(
+      () => render({ graphicSpec }, context, { pixelRatio }),
+      message
+    );
+    assert.deepEqual(context.canvas, {
+      width: 7,
+      height: 9,
+      style: { width: "unchanged" }
+    });
+    assert.equal(context.calls.length, 0);
+  }
+});
+
+test("preflights every Canvas-backed native geometry family atomically", () => {
+  const limit = 16_777_216;
+  const graphic = (type, properties) => ({
+    objects: {
+      canvas: {
+        type: "canvas",
+        properties: { width: 10, height: 10 }
+      },
+      native: { type, properties }
+    },
+    order: ["canvas", "native"]
+  });
+  const line = {
+    x1: 0,
+    y1: 0,
+    x2: 1,
+    y2: 1,
+    stroke: "black",
+    strokeWidth: 1
+  };
+  const cases = [
+    graphic("circle", { x: limit, y: 0, radius: 1, fill: "red" }),
+    graphic("rect", {
+      x: limit,
+      y: 0,
+      width: 1,
+      height: 1,
+      fill: "red",
+      stroke: "none",
+      strokeWidth: 0
+    }),
+    graphic("line", { ...line, x1: limit + 1 }),
+    graphic("line", { ...line, strokeWidth: limit + 1 }),
+    graphic("line", { ...line, strokeDash: [1, limit + 1] }),
+    graphic("path", {
+      commands: [
+        { op: "M", x: 0, y: 0 },
+        { op: "C", x1: limit + 1, y1: 0, x2: 1, y2: 1, x: 2, y: 2 }
+      ],
+      stroke: "black",
+      strokeWidth: 1
+    }),
+    graphic("text", {
+      x: 0,
+      y: 0,
+      text: "unsafe",
+      fill: "black",
+      fontFamily: "Arial",
+      fontSize: limit + 1,
+      textAlign: "left",
+      textBaseline: "top"
+    }),
+    graphic("rect", {
+      x: 0,
+      y: 0,
+      width: limit,
+      height: limit,
+      fill: {
+        type: "linear-gradient",
+        from: { x: 0, y: 0 },
+        to: { x: 1, y: 1 },
+        stops: [
+          { offset: 0, color: "red" },
+          { offset: 1, color: "blue" }
+        ]
+      },
+      stroke: "none",
+      strokeWidth: 0
+    }),
+    {
+      objects: {
+        canvas: {
+          type: "canvas",
+          properties: { width: 10, height: 10 },
+          children: ["outer"]
+        },
+        outer: {
+          type: "canvas",
+          properties: { x: limit, y: 0, width: 0, height: 1 },
+          children: ["inner"]
+        },
+        inner: {
+          type: "canvas",
+          properties: { x: 1, y: 0, width: 0, height: 1 }
+        }
+      },
+      order: ["canvas"]
+    },
+    {
+      objects: {
+        canvas: {
+          type: "canvas",
+          properties: { width: 10, height: 10 },
+          children: ["panel"]
+        },
+        panel: {
+          type: "canvas",
+          properties: { x: limit, y: 0, width: 0, height: 1 },
+          children: ["point"]
+        },
+        point: {
+          type: "circle",
+          properties: { x: 1, y: 0, radius: 0.25, fill: "red" }
+        }
+      },
+      order: ["canvas"]
+    },
+    {
+      objects: {
+        canvas: {
+          type: "canvas",
+          properties: { width: 10, height: 10 },
+          children: ["panel"]
+        },
+        panel: {
+          type: "canvas",
+          properties: { x: limit, y: 0, width: 1, height: 1 }
+        }
+      },
+      order: ["canvas"]
+    }
+  ];
+
+  for (const graphicSpec of cases) {
+    const context = createMockCanvasContext();
+    context.canvas.width = 7;
+    context.canvas.height = 9;
+    context.canvas.style.width = "unchanged";
+    assert.throws(
+      () => render({ graphicSpec }, context),
+      /Canvas (?:native geometry|linear gradient geometry|nested translation).*16777216/
+    );
+    assert.deepEqual(context.canvas, {
+      width: 7,
+      height: 9,
+      style: { width: "unchanged" }
+    });
+    assert.equal(context.calls.length, 0);
+  }
+});
+
+test("rejects invalid native scalars before mutating the Canvas", () => {
+  for (const [property, value] of [
+    ["x", NaN],
+    ["x", Infinity],
+    ["x", "1"],
+    ["x", null],
+    ["radius", -1],
+    ["opacity", 2]
+  ]) {
+    const graphicSpec = createGraphicSpec();
+    graphicSpec.objects.points.items[0].properties[property] = value;
+    const context = createMockCanvasContext();
+    context.canvas.width = 7;
+    context.canvas.height = 9;
+
+    assert.throws(
+      () => render({ graphicSpec }, context),
+      /Canvas native geometry must be finite|circle\.(?:radius|opacity)/
+    );
+    assert.equal(context.canvas.width, 7);
+    assert.equal(context.canvas.height, 9);
+    assert.equal(context.calls.length, 0);
+  }
+});
+
+test("rejects native-precision pixel ratios before mutating the Canvas", () => {
+  for (const pixelRatio of [Number.MIN_VALUE, 16_777_217]) {
+    const context = createMockCanvasContext();
+    context.canvas.width = 7;
+    context.canvas.height = 9;
+    assert.throws(
+      () => render({ graphicSpec: createGraphicSpec() }, context, { pixelRatio }),
+      /Canvas pixelRatio/
+    );
+    assert.equal(context.canvas.width, 7);
+    assert.equal(context.canvas.height, 9);
+    assert.equal(context.calls.length, 0);
+  }
+
+  const graphicSpec = createGraphicSpec();
+  graphicSpec.objects.canvas.properties.width = Number.MIN_VALUE;
+  graphicSpec.objects.canvas.properties.height = Number.MIN_VALUE;
+  graphicSpec.objects.points.items = [{
+    id: "points:0",
+    properties: { x: 2, y: 0, radius: 0.25, fill: "red" }
+  }];
+  const context = createMockCanvasContext();
+  context.canvas.width = 7;
+  context.canvas.height = 9;
+  assert.throws(
+    () => render({ graphicSpec }, context, { pixelRatio: 16_777_216 }),
+    /Canvas native geometry/
+  );
+  assert.equal(context.canvas.width, 7);
+  assert.equal(context.canvas.height, 9);
+  assert.equal(context.calls.length, 0);
+});
+
+test("contains native Canvas panic regressions in a subprocess", () => {
+  const source = `
+    import { createCanvas } from "@napi-rs/canvas";
+    import { render } from "./src/renderers/canvas/index.js";
+    const graphicSpec = {
+      objects: {
+        canvas: { type: "canvas", properties: { width: 10, height: 10 } },
+        unsafe: {
+          type: "circle",
+          properties: { x: Number.MAX_VALUE, y: 0, radius: 1, fill: "red" }
+        }
+      },
+      order: ["canvas", "unsafe"]
+    };
+    try {
+      render({ graphicSpec }, createCanvas(1, 1).getContext("2d"));
+    } catch (error) {
+      if (error instanceof RangeError && /16777216/.test(error.message)) {
+        process.stdout.write("bounded");
+        process.exit(0);
+      }
+    }
+    process.exit(2);
+  `;
+  const result = spawnSync(
+    process.execPath,
+    ["--input-type=module", "--eval", source],
+    { cwd: process.cwd(), encoding: "utf8", timeout: 10_000 }
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.stdout, "bounded");
 });

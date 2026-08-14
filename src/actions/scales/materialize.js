@@ -100,6 +100,11 @@ export const rematerializeScale = action(
         continue;
       }
       if (materializationMode === "defer") continue;
+      if (Object.values(this.materializationConfigs.highlights ?? {})
+        .some(config => config.target === consumer.layer.id)) {
+        next = next.rematerializePointMark({ id: consumer.layer.id });
+        continue;
+      }
       next = next.editGraphics({
         target: consumer.layer.id,
         property: channel === "color" ? "fill" : channel,

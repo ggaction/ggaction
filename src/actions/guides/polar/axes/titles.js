@@ -9,6 +9,7 @@ import {
 } from "../../../../grammar/polarGuides.js";
 import { resolvePlotGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
+import { assertPolarTextLayout } from "../../../../layout/labels.js";
 import { inferAxisTitleText } from "../../axes/titles.js";
 import {
   POLAR_AXIS_DEFAULTS,
@@ -37,6 +38,20 @@ function titleGeometry(program, kind, config) {
         offset: config.offset,
         position: config.position
       });
+}
+
+function validateTitleGeometry(program, kind, config, geometry, text) {
+  assertPolarTextLayout({
+    canvas: program.graphicSpec.objects.canvas,
+    label: `${prefix(kind)} axis title`,
+    items: [{
+      ...geometry,
+      text,
+      fontSize: config.fontSize,
+      fontFamily: config.fontFamily,
+      fontWeight: config.fontWeight
+    }]
+  });
 }
 
 function resolveTitleConfig(kind, args, resources, previous) {
@@ -96,6 +111,8 @@ function makeEditTitle(kind) {
       : config.inferredText
         ? inferAxisTitleText(this, polarGuideNames(kind).channel, config.scale)
         : this.semanticSpec.guides.axis?.[kind]?.title;
+    const geometry = titleGeometry(this, kind, config);
+    validateTitleGeometry(this, kind, config, geometry, text);
     let next = this;
     if (text !== this.semanticSpec.guides.axis?.[kind]?.title) {
       next = next.editSemantic({
@@ -103,7 +120,6 @@ function makeEditTitle(kind) {
         value: text
       });
     }
-    const geometry = titleGeometry(next, kind, config);
     next = next._withGuideConfig(kind, "title", config);
     const properties = {
       ...geometry,
@@ -138,7 +154,8 @@ function makeCreateTitle(kind) {
       args.text ?? inferAxisTitleText(this, names.channel, resources.scale),
       "Polar axis title text"
     );
-    titleGeometry(this, kind, config);
+    const geometry = titleGeometry(this, kind, config);
+    validateTitleGeometry(this, kind, config, geometry, text);
     let next = withAxisSemantics(this, kind, resources);
     if (kind === "radius" &&
         next.guideConfigs.axis?.radius?.layout === undefined) {

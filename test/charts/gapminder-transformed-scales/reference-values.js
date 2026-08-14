@@ -19,7 +19,7 @@ export const TRANSFORMED_SCATTER_LAYOUT = Object.freeze({
   height: 312,
   margin: Object.freeze({
     top: 57.6,
-    right: 90,
+    right: 102,
     bottom: 43.2,
     left: 50.4
   })
@@ -75,7 +75,10 @@ function freezeRows(rows) {
   return Object.freeze(rows.map(row => Object.freeze({ ...row })));
 }
 
-export function createGapminderTransformedScaleValues(gapminder) {
+export function createGapminderTransformedScaleValues(
+  gapminder,
+  layout = TRANSFORMED_SCATTER_LAYOUT
+) {
   if (!Array.isArray(gapminder)) {
     throw new TypeError("gapminder must be an array.");
   }
@@ -85,7 +88,7 @@ export function createGapminderTransformedScaleValues(gapminder) {
     Number.isFinite(row.fertility) && row.fertility >= 0 &&
     Number.isFinite(row.life_expect)
   ));
-  const { width, height, margin } = TRANSFORMED_SCATTER_LAYOUT;
+  const { width, height, margin } = layout;
   const bounds = Object.freeze({
     left: margin.left,
     right: width - margin.right,

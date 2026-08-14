@@ -1,4 +1,5 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { interpolateNumber, stableDecimal } from "./numeric.js";
 
 export const BOX_FIELDS = Object.freeze({
   q1: "__boxPlot_q1", median: "__boxPlot_median", q3: "__boxPlot_q3",
@@ -7,10 +8,10 @@ export const BOX_FIELDS = Object.freeze({
   count: "__boxPlot_count"
 });
 
-const TRANSFORM_KEYS = Object.freeze([
+const TRANSFORM_KEYS = [
   "type", "category", "field", "method", "whisker", "factor", "as"
-]);
-const OUTPUT_KEYS = Object.freeze(Object.keys(BOX_FIELDS));
+];
+const OUTPUT_KEYS = Object.keys(BOX_FIELDS);
 
 function field(value, label) {
   if (typeof value !== "string" || value.length === 0) throw new TypeError(`${label} must be a non-empty string.`);
@@ -82,11 +83,7 @@ function quantile(sorted, p) {
   const position = (sorted.length - 1) * p;
   const lower = Math.floor(position);
   const upper = Math.ceil(position);
-  return sorted[lower] + (sorted[upper] - sorted[lower]) * (position - lower);
-}
-
-function stableNumber(value) {
-  return Number(value.toFixed(12));
+  return interpolateNumber(sorted[lower], sorted[upper], position - lower);
 }
 
 export function deriveBoxData(rows, transform) {
@@ -113,15 +110,19 @@ export function deriveBoxData(rows, transform) {
   const outlierSet = new Set();
   for (const group of groups) {
     const sorted = group.rows.map(row => row[measure]).sort((a, b) => a - b);
-    const q1 = stableNumber(quantile(sorted, 0.25));
-    const median = stableNumber(quantile(sorted, 0.5));
-    const q3 = stableNumber(quantile(sorted, 0.75));
+    const [q1, median, q3] = [0.25, 0.5, 0.75].map(probability =>
+      stableDecimal(quantile(sorted, probability))
+    );
+    const spread = q3 - q1;
     const lowerFence = whisker === "minmax"
       ? sorted[0]
-      : stableNumber(q1 - factor * (q3 - q1));
+      : stableDecimal(q1 - factor * spread);
     const upperFence = whisker === "minmax"
       ? sorted.at(-1)
-      : stableNumber(q3 + factor * (q3 - q1));
+      : stableDecimal(q3 + factor * spread);
+    if (![lowerFence, upperFence].every(Number.isFinite)) {
+      throw new RangeError("Box Tukey fences are outside the finite numeric range.");
+    }
     const inliers = sorted.filter(value => value >= lowerFence && value <= upperFence);
     const lowerWhisker = inliers[0];
     const upperWhisker = inliers.at(-1);

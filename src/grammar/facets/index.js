@@ -1,5 +1,9 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
+import {
+  validateGeneratedItemLimit,
+  validateWorkLimit
+} from "../../core/validation.js";
 import { BAR_GRAINS, resolveBarGrain } from "../bars/policy.js";
 import { planFacetDependencies } from "./dependencies.js";
 import { readNominalField } from "../scales/index.js";
@@ -12,6 +16,7 @@ const SUPPORTED_BAR_GRAINS = new Set([
   BAR_GRAINS.aggregate,
   BAR_GRAINS.ranged
 ]);
+const MAX_FACET_CHILDREN = 100;
 
 function requireFacetField(field) {
   if (typeof field !== "string" || field.length === 0) {
@@ -109,6 +114,15 @@ export function resolveFacetDefinition(semanticSpec, options = {}) {
     throw new Error(`facet field "${field}" has no values.`);
   }
   const values = resolveValues(observed, options.values);
+  validateGeneratedItemLimit(
+    values.length,
+    "Facet child count",
+    MAX_FACET_CHILDREN
+  );
+  validateWorkLimit(
+    dataset.values.length * values.length,
+    "Facet partition work"
+  );
   return cloneAndFreeze({
     id,
     data,

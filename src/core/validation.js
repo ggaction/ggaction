@@ -1,5 +1,23 @@
 import { isPlainObject } from "./immutable.js";
 
+export const MAX_GENERATED_ITEMS = 10_000;
+export const MAX_WORK_ITEMS = 10_000_000;
+
+export function validateGeneratedItemLimit(
+  value,
+  label,
+  maximum = MAX_GENERATED_ITEMS
+) {
+  if (value > maximum) {
+    throw new RangeError(`${label} must not exceed ${maximum}.`);
+  }
+  return value;
+}
+
+export function validateWorkLimit(value, label) {
+  return validateGeneratedItemLimit(value, label, MAX_WORK_ITEMS);
+}
+
 export function validateKeys(value, supported, label) {
   for (const key of Object.keys(value)) {
     if (!supported.includes(key)) {

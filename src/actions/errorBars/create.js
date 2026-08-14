@@ -2,8 +2,10 @@ import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
 import { findLayer } from "../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
-import { resolveErrorBarAppearance } from "./options.js";
-import { resolveErrorBar } from "./resolve.js";
+import { createResolvedIntervalData, ownOptions } from
+  "../data/intervalEdit.js";
+import { resolveIntervalComposite } from "../intervals/resolve.js";
+import { errorBarCaps, resolveErrorBarAppearance } from "./edit.js";
 
 const OPTIONS = Object.freeze([
   "id",
@@ -21,13 +23,34 @@ const OPTIONS = Object.freeze([
   "opacity"
 ]);
 
+const ERROR_BAR_POLICY = Object.freeze({
+  operation: "createErrorBar",
+  resourceLabel: "error-bar",
+  defaultId: "errorBar",
+  ownerLabel: "Error-bar id",
+  positionTypes: Object.freeze(["nominal", "ordinal", "temporal"]),
+  defaultPositionType: "nominal",
+  defaultIntervalChannel: "y",
+  scaleDefaults: () => ({}),
+  intervalScaleDefaults: Object.freeze({ nice: true, zero: false }),
+  allowExplicitGrouping: false,
+  ambiguousMessage:
+    "createErrorBar requires one quantitative interval axis and one nominal, ordinal, or temporal position axis."
+});
+
+function resolveErrorBar(program, args) {
+  const resolved = resolveIntervalComposite(program, args, ERROR_BAR_POLICY);
+  return {
+    ...resolved,
+    lowerCapId: `${resolved.id}LowerCap`,
+    upperCapId: `${resolved.id}UpperCap`
+  };
+}
+
 function resolveAppearance(args) {
-  const appearanceArgs = Object.fromEntries(
-    ["caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"]
-      .filter(key => Object.hasOwn(args, key))
-      .map(key => [key, args[key]])
-  );
-  return resolveErrorBarAppearance(appearanceArgs, {
+  return resolveErrorBarAppearance(ownOptions(args, [
+    "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"
+  ]), {
     defaults: {
       caps: true,
       capSize: 8,
@@ -39,6 +62,51 @@ function resolveAppearance(args) {
     operation: "createErrorBar"
   });
 }
+
+export const createErrorBarCap = action(
+  {
+    op: "createErrorBarCap",
+    description: "Create one fixed-pixel error-bar cap."
+  },
+  function (args = {}) {
+    validateKeys(args, [
+      "id", "data", "orientation", "positionField", "positionFieldType",
+      "intervalField", "coordinate", "positionScale", "intervalScale",
+      "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"
+    ], "createErrorBarCap");
+    if (!["vertical", "horizontal"].includes(args.orientation)) {
+      throw new Error(`Unsupported error-bar orientation "${args.orientation}".`);
+    }
+    const vertical = args.orientation === "vertical";
+    const positionAction = vertical ? "encodeX" : "encodeY";
+    const intervalAction = vertical ? "encodeY" : "encodeX";
+    return this
+      .createRuleMark({ id: args.id, data: args.data })
+      [positionAction]({
+        target: args.id,
+        field: args.positionField,
+        fieldType: args.positionFieldType,
+        coordinate: args.coordinate,
+        scale: { id: args.positionScale }
+      })
+      [intervalAction]({
+        target: args.id,
+        field: args.intervalField,
+        fieldType: "quantitative",
+        coordinate: args.coordinate,
+        scale: { id: args.intervalScale }
+      })
+      .encodeStroke({ target: args.id, value: args.stroke })
+      .encodeStrokeWidth({ target: args.id, value: args.strokeWidth })
+      .encodeStrokeDash({ target: args.id, value: args.strokeDash })
+      .encodeOpacity({ target: args.id, value: args.opacity })
+      .materializeRuleSpan({
+        id: args.id,
+        orientation: vertical ? "horizontal" : "vertical",
+        size: args.capSize
+      });
+  }
+);
 
 function positionArgs(resolved) {
   return {
@@ -69,21 +137,7 @@ export const createErrorBar = action(
     validateKeys(args, OPTIONS, "createErrorBar");
     const resolved = resolveErrorBar(this, args);
     const appearance = resolveAppearance(args);
-    let next = this;
-
-    if (resolved.interval.mode === "statistical") {
-      next = next.createIntervalData({
-        id: resolved.dataId,
-        source: resolved.source,
-        field: resolved.interval.field,
-        groupBy: resolved.groupBy,
-        center: resolved.interval.center,
-        extent: resolved.interval.extent,
-        level: resolved.interval.level,
-        as: resolved.fields
-      });
-    }
-
+    let next = createResolvedIntervalData(this, resolved);
     next = next.createRuleMark({ id: resolved.id, data: resolved.dataId });
     const positionAction = resolved.position.channel === "x" ? "encodeX" : "encodeY";
     const intervalAction = resolved.interval.channel === "x" ? "encodeX" : "encodeY";
@@ -108,10 +162,7 @@ export const createErrorBar = action(
 
     const intervalLayer = findLayer(next, resolved.id);
     if (appearance.caps) {
-      for (const [id, field] of [
-        [resolved.lowerCapId, resolved.fields.lower],
-        [resolved.upperCapId, resolved.fields.upper]
-      ]) {
+      for (const [id, field] of errorBarCaps(resolved)) {
         next = next.createErrorBarCap({
           id,
           data: resolved.dataId,

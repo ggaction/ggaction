@@ -29,7 +29,7 @@ Accepted names are fixed by the ggaction contract:
 | Diverging | `blueorange`, `brownbluegreen`, `purplegreen`, `pinkyellowgreen`, `purpleorange`, `redblue`, `redgrey`, `redyellowblue`, `redyellowgreen`, `spectral` |
 | Cyclical | `rainbow`, `sinebow` |
 
-`count` must be a positive integer. Categorical palettes use a prefix when the
+`count` must be a positive integer no greater than 10,000. Categorical palettes use a prefix when the
 count is shorter and cycle deterministically when it is longer. Other families
 used for an ordinal mapping are sampled to `count`, or to the resolved domain
 size when omitted. On a sequential scale, `count` must be at least `2` and sets
@@ -50,7 +50,8 @@ quantitative sequential color with one aggregate value per final rectangle.
 The default palette is
 `viridis`; an explicit palette may use `count` and `extent`, while an explicit
 range needs at least two colors. `count` controls the stored gradient stops;
-the scale still interpolates continuously between them. `interpolate` accepts
+the scale still interpolates continuously between them. Explicit sequential
+color ranges are also limited to 10,000 stops. `interpolate` accepts
 `rgb`, `hsl`, `hsl-long`, `lab`,
 `hcl`, `hcl-long`, `cubehelix`, or `cubehelix-long`. `clamp` and `reverse`
 affect both points and a connected gradient legend.

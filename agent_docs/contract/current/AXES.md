@@ -30,9 +30,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `length?`, `color?`, `lineWidth?`.
 - Edit parameters는 `scale`을 제외하고 동일하다.
-- `count`: positive integer, 기본값 `5`; `values`와 mutually exclusive다.
+- `count`: positive integer, 기본값 `5`, 최대 `10,000`; `values`와 mutually exclusive다.
 - `values`: scale domain 안의 finite number/timestamp 또는 ordinal scalar array. histogram x는 둘 다
-  생략하면 bin boundaries, ordinal x는 domain 전체를 사용한다.
+  생략하면 bin boundaries, ordinal x는 domain 전체를 사용한다. 생성 전 resolved cardinality는 최대
+  `10,000`이다.
 - `length`: non-negative finite number, 기본 `6`.
 - `color`: non-empty string, 기본 `"#64748b"`.
 - `lineWidth`: non-negative finite number, 기본 `1`.
@@ -51,7 +52,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `fontWeight`: string 또는 finite number.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
   Time `auto`는 domain-span precision에서 시작해 distinct resolved ticks가 같은 label이면 최소 한 단계씩
-  precision을 높인다. Explicit format은 그대로 유지한다. ticks와 count/values 정책이 충돌하면 거부한다.
+  precision을 높인다. Empty-string nominal values는 semantic domain에는 그대로 남고 visible label은
+  deterministic `(empty)`로 표시한다. Explicit format은 그대로 유지한다. ticks와 count/values 정책이
+  충돌하면 거부한다. 매우 긴 valid temporal domain은 legacy fixed interval이 requested count를 크게
+  초과할 때만 nice multi-year step으로 전환한다.
 
 ## Shared ticks-and-labels contract
 
@@ -77,8 +81,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - `scale`: optional continuous scale ID; horizontal은 y, vertical은 x에서 유일하게 추론한다.
 - `coordinate`: optional Cartesian coordinate ID; encoded layers에서 추론한다.
-- `count`: positive integer, `values`와 mutually exclusive다.
-- `values`: non-empty finite number array이며 scale domain 안에 있어야 한다.
+- `count`: positive integer, 최대 `10,000`, `values`와 mutually exclusive다.
+- `values`: 최대 `10,000`개의 non-empty finite number array이며 scale domain 안에 있어야 한다.
 - `color`: non-empty string, 기본 `"#e2e8f0"`.
 - `lineWidth`: non-negative finite number, 기본 `1`.
 - `strokeDash`: even-length non-negative finite number array, 기본 `[]`.
@@ -168,6 +172,9 @@ type CompleteAxisOptions<P extends string> = {
 `createThetaAxis`와 `createRadialAxis`는 stored Polar coordinate와 각각 `theta`/`radius` scale을 읽어 complete
 axis를 만든다. Theta axis는 outer circle, outward ticks, perimeter labels와 아래 title을 소유한다. Radial axis는
 기본 `90` degree center-to-edge baseline과 perpendicular ticks, labels, title을 소유한다.
+Polar label/title의 resolved text bounds가 Canvas를 벗어나거나 같은 label collection 안에서 충돌하면
+insufficient-space 오류로 전체 create/edit을 원자적으로 거부한다. Continuous-theta의 같은 anchor를 공유하는
+두 seam endpoint label은 이 collision 검사에서 하나의 의도된 endpoint로 취급한다.
 
 ```typescript
 createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;

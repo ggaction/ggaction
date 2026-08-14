@@ -14,6 +14,7 @@ import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { canMaterializeText } from "../../../materialization/marks/index.js";
 import { resolveTextGraphicEntries } from "../../../materialization/text.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
+import { editMarkGraphic } from "../shared.js";
 
 const LAYOUT_OPTIONS = Object.freeze([
   "target", "axis", "padding", "maxDisplacement", "bounds", "leader"
@@ -170,42 +171,22 @@ function materializeLeaders(program, layer, config, resolved) {
   if (config.leader === false) return { program: next, count: 0 };
   const leaders = resolved.items.map(resolveLabelLeader).filter(Boolean);
   if (leaders.length === 0) return { program: next, count: 0 };
-  next = next
-    .createGraphics({
+  next = next.createGraphics({
       id: config.leaderId,
       type: "line",
       length: leaders.length,
       ...leaderPlacement(next, layer)
-    })
-    .editGraphics({
-      target: config.leaderId,
-      property: "x1",
-      value: leaders.map(line => line.x1)
-    })
-    .editGraphics({
-      target: config.leaderId,
-      property: "y1",
-      value: leaders.map(line => line.y1)
-    })
-    .editGraphics({
-      target: config.leaderId,
-      property: "x2",
-      value: leaders.map(line => line.x2)
-    })
-    .editGraphics({
-      target: config.leaderId,
-      property: "y2",
-      value: leaders.map(line => line.y2)
     });
-  for (const property of ["stroke", "strokeWidth", "strokeDash", "opacity"]) {
-    next = next.editGraphics({
-      target: config.leaderId,
-      property,
-      value: property === "strokeDash"
-        ? leaders.map(() => config.leader.strokeDash)
-        : config.leader[property]
-    });
-  }
+  next = editMarkGraphic(next, config.leaderId, {
+    x1: leaders.map(line => line.x1),
+    y1: leaders.map(line => line.y1),
+    x2: leaders.map(line => line.x2),
+    y2: leaders.map(line => line.y2),
+    stroke: config.leader.stroke,
+    strokeWidth: config.leader.strokeWidth,
+    strokeDash: leaders.map(() => config.leader.strokeDash),
+    opacity: config.leader.opacity
+  });
   return { program: next, count: leaders.length };
 }
 
@@ -237,17 +218,10 @@ const materializeLabelLayout = action(
       padding: config.padding,
       maxDisplacement: config.maxDisplacement
     });
-    next = next
-      .editGraphics({
-        target: id,
-        property: "x",
-        value: resolved.items.map(item => item.x)
-      })
-      .editGraphics({
-        target: id,
-        property: "y",
-        value: resolved.items.map(item => item.y)
-      });
+    next = editMarkGraphic(next, id, {
+      x: resolved.items.map(item => item.x),
+      y: resolved.items.map(item => item.y)
+    });
     const leaders = materializeLeaders(next, layer, config, resolved);
     next = leaders.program;
     return next._withMaterializationConfig(["labelLayouts", id], {
@@ -315,7 +289,9 @@ const removeLabelLayout = action(
 );
 
 export function registerTextLabelLayoutActions(ProgramClass) {
-  ProgramClass.prototype.layoutLabels = layoutLabels;
-  ProgramClass.prototype.removeLabelLayout = removeLabelLayout;
-  ProgramClass.prototype.materializeLabelLayout = materializeLabelLayout;
+  Object.assign(ProgramClass.prototype, {
+    layoutLabels,
+    removeLabelLayout,
+    materializeLabelLayout
+  });
 }

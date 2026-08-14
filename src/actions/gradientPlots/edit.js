@@ -5,15 +5,13 @@ import { validateKeys } from "../../core/validation.js";
 import { planDerivedDataRevision } from "../../materialization/dataProvenance.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
+import { removeOwnedMark } from "../marks/remove.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
 import { removeGradientPlotLegend } from "./components.js";
 import {
-  assertDistributionScaleHandoff,
-  clearCartesianPositions,
-  rebindDistributionGuides,
-  resolveDistributionScalePlan,
+  resolveDistributionRoles,
   setCartesianPosition,
-  setCartesianRange
+  updateDistributionPositions
 } from "../distributions/revision.js";
 import {
   resolveGradientAppearance,
@@ -39,140 +37,20 @@ function patch(value, label) {
 }
 
 function removeCenter(program, id) {
-  let next = program;
-  const selections = Object.entries(
-    program.materializationConfigs.selections ?? {}
-  ).filter(([, config]) => config.target === id).map(([selection]) => selection);
-  for (const [highlight, config] of Object.entries(
-    program.materializationConfigs.highlights ?? {}
-  )) {
-    if (config.target === id || selections.includes(config.selection)) {
-      next = next._withoutMaterializationConfig(["highlights", highlight]);
-    }
-  }
-  for (const selection of selections) {
-    next = next._withoutMaterializationConfig(["selections", selection]);
-  }
-  if (findLayer(next, id) !== undefined) {
-    next = next.editSemantic({ property: `layer[${id}]`, remove: true });
-  }
-  if (next.graphicSpec.objects[id] !== undefined) {
-    next = next.editGraphics({ target: id, remove: true });
-  }
-  return next
-    ._withoutMaterializationConfig(["marks", id])
-    ._withContext({
-      ...(program.context.currentMark === id ? { currentMark: undefined } : {}),
-      ...(selections.includes(program.context.currentSelection)
-        ? { currentSelection: undefined }
-        : {})
-    });
-}
-
-function currentGradientPositions(owner, current) {
-  const categoryChannel = current.orientation === "vertical" ? "x" : "y";
-  const measureChannel = current.orientation === "vertical" ? "y" : "x";
-  const categoryEncoding = owner.encoding[categoryChannel];
-  const measureEncoding = owner.encoding[measureChannel];
-  return {
-    x: current.orientation === "vertical"
-      ? {
-          field: current.category,
-          fieldType: current.categoryType,
-          scale: categoryEncoding.scale
-        }
-      : {
-          field: current.measure,
-          fieldType: "quantitative",
-          scale: measureEncoding.scale
-        },
-    y: current.orientation === "vertical"
-      ? {
-          field: current.measure,
-          fieldType: "quantitative",
-          scale: measureEncoding.scale
-        }
-      : {
-          field: current.category,
-          fieldType: current.categoryType,
-          scale: categoryEncoding.scale
-        },
-    categoryScale: categoryEncoding.scale,
-    measureScale: measureEncoding.scale
-  };
-}
-
-function requirePositionField(position, label) {
-  if (typeof position?.field !== "string" || position.field.length === 0) {
-    throw new TypeError(`${label} field must be a non-empty string.`);
-  }
-  return position;
+  return removeOwnedMark(program, id, true);
 }
 
 function roleCandidate(program, owner, current, args) {
-  const previous = currentGradientPositions(owner, current);
-  const positions = normalizeGradientPositionTypes(
-    requirePositionField(
-      Object.hasOwn(args, "x")
-        ? resolveGradientPosition(args.x, "x", "editGradientPlot")
-        : previous.x,
-      "editGradientPlot x"
-    ),
-    requirePositionField(
-      Object.hasOwn(args, "y")
-        ? resolveGradientPosition(args.y, "y", "editGradientPlot")
-        : previous.y,
-      "editGradientPlot y"
-    )
-  );
-  if (positions.orientation === undefined) {
-    throw new Error(
-      "editGradientPlot requires one categorical axis and one quantitative axis."
-    );
-  }
-  const xRoleScale = positions.orientation === "vertical"
-    ? previous.categoryScale
-    : previous.measureScale;
-  const yRoleScale = positions.orientation === "vertical"
-    ? previous.measureScale
-    : previous.categoryScale;
-  const xScale = resolveDistributionScalePlan(program, {
-    channel: "x",
-    fieldType: positions.x.fieldType,
-    requested: positions.x.scale,
-    fallback: xRoleScale,
-    defaults: ["ordinal", "nominal"].includes(positions.x.fieldType)
-      ? { discreteType: "band" }
-      : {}
-  });
-  const yScale = resolveDistributionScalePlan(program, {
-    channel: "y",
-    fieldType: positions.y.fieldType,
-    requested: positions.y.scale,
-    fallback: yRoleScale,
-    defaults: ["ordinal", "nominal"].includes(positions.y.fieldType)
-      ? { discreteType: "band" }
-      : {}
-  });
   return {
     source: Object.hasOwn(args, "data")
       ? validateUserId(args.data, "Gradient-plot data id")
       : current.source,
-    orientation: positions.orientation,
-    x: { ...positions.x, scale: xScale.id },
-    y: { ...positions.y, scale: yScale.id },
-    xScale,
-    yScale,
-    category: positions.orientation === "vertical"
-      ? positions.x.field
-      : positions.y.field,
-    categoryType: positions.orientation === "vertical"
-      ? positions.x.fieldType
-      : positions.y.fieldType,
-    measure: positions.orientation === "vertical"
-      ? positions.y.field
-      : positions.x.field,
-    previous
+    ...resolveDistributionRoles(program, owner, current, args, {
+      operation: "editGradientPlot",
+      resolvePosition: resolveGradientPosition,
+      normalize: normalizeGradientPositionTypes,
+      quantitativeDefaults: {}
+    })
   };
 }
 
@@ -190,46 +68,27 @@ function sameRoleCandidate(current, candidate) {
 
 function updateGradientPositions(program, owner, current, candidate, hasCenter) {
   const owned = [owner.id, ...(hasCenter ? [current.centerId] : [])];
-  assertDistributionScaleHandoff(program, {
-    owned,
-    oldXScale: candidate.previous.x.scale,
-    oldYScale: candidate.previous.y.scale,
-    newXScale: candidate.xScale.id,
-    newYScale: candidate.yScale.id
-  });
-  let next = program;
-  for (const id of owned) next = clearCartesianPositions(next, id);
-  for (const scale of [candidate.xScale, candidate.yScale]) {
-    if (scale.create) next = next.createScale(scale.definition);
-  }
-  const category = candidate.orientation === "vertical" ? candidate.x : candidate.y;
-  const measure = candidate.orientation === "vertical" ? candidate.y : candidate.x;
-  const categoryChannel = candidate.orientation === "vertical" ? "x" : "y";
-  const measureChannel = candidate.orientation === "vertical" ? "y" : "x";
-  next = setCartesianPosition(next, owner.id, categoryChannel, {
-    field: candidate.category,
-    fieldType: candidate.categoryType,
-    scale: category.scale
-  });
-  next = setCartesianRange(
-    next,
-    owner.id,
-    measureChannel,
-    GRADIENT_PROFILE_FIELDS.lower,
-    GRADIENT_PROFILE_FIELDS.upper,
-    measure.scale
-  );
-  if (hasCenter) {
-    next = setCartesianPosition(next, current.centerId, categoryChannel, {
+  return updateDistributionPositions(
+    program,
+    owner,
+    current,
+    candidate,
+    {
+      owned,
+      lower: GRADIENT_PROFILE_FIELDS.lower,
+      upper: GRADIENT_PROFILE_FIELDS.upper,
+      update(next, { category, measure, categoryChannel, measureChannel }) {
+        if (!hasCenter) return next;
+        next = setCartesianPosition(next, current.centerId, categoryChannel, {
       field: candidate.category,
       fieldType: candidate.categoryType,
       scale: category.scale
     });
-    next = setCartesianPosition(next, current.centerId, measureChannel, {
+        return setCartesianPosition(next, current.centerId, measureChannel, {
       field: GRADIENT_PROFILE_FIELDS.center,
       fieldType: "quantitative",
       scale: measure.scale
-    })._withMarkConfig(current.centerId, {
+        })._withMarkConfig(current.centerId, {
       ...next.markConfigs[current.centerId],
       fixedSpan: {
         ...next.markConfigs[current.centerId].fixedSpan,
@@ -237,27 +96,10 @@ function updateGradientPositions(program, owner, current, candidate, hasCenter) 
           ? "horizontal"
           : "vertical"
       }
-    });
-  }
-  for (const id of new Set([candidate.xScale.id, candidate.yScale.id])) {
-    next = next.rematerializeScale({ id, marks: false, guides: false });
-  }
-  next = rebindDistributionGuides(next, {
-    oldXScale: candidate.previous.x.scale,
-    oldYScale: candidate.previous.y.scale,
-    newXScale: candidate.xScale.id,
-    newYScale: candidate.yScale.id,
-    oldXTitle: candidate.previous.x.field,
-    oldYTitle: candidate.previous.y.field,
-    newXTitle: candidate.x.field,
-    newYTitle: candidate.y.field,
-    oldMeasureChannel: current.orientation === "vertical" ? "y" : "x",
-    newMeasureChannel: candidate.orientation === "vertical" ? "y" : "x"
-  });
-  for (const scale of [candidate.xScale, candidate.yScale]) {
-    if (scale.edit !== undefined) next = next.editScale(scale.edit);
-  }
-  return next;
+        });
+      }
+    }
+  );
 }
 
 export const editGradientPlot = action(
@@ -301,7 +143,10 @@ export const editGradientPlot = action(
       key => Object.hasOwn(args, key)
     );
     const changesRoles = !sameRoleCandidate(current, candidate);
-    if (changesRoles) {
+    const statistical = JSON.stringify(density) !== JSON.stringify(current.density) ||
+      center !== false && current.center !== false &&
+        center.type !== current.center.type;
+    if (changesRoles || statistical) {
       const hadCenter = findLayer(this, current.centerId) !== undefined;
       const revision = planDerivedDataRevision(this, {
         owner: owner.id,
@@ -404,7 +249,6 @@ export const editGradientPlot = action(
           currentData: candidate.source
         });
       };
-      applyEdit(this);
       return applyEdit(this);
     }
     if (roleRequested && !OPTIONS.slice(4).some(
@@ -415,33 +259,8 @@ export const editGradientPlot = action(
         currentData: current.source
       });
     }
-    const densityChanged = JSON.stringify(density) !== JSON.stringify(current.density);
-    const centerTypeChanged = center !== false && current.center !== false &&
-      center.type !== current.center.type;
-    const statistical = densityChanged || centerTypeChanged;
     let next = this;
-    let profileId = current.profileId;
-    if (statistical) {
-      const consumers = [owner.id, ...(findLayer(next, current.centerId) ? [current.centerId] : [])];
-      const revision = planDerivedDataRevision(next, {
-        owner: owner.id,
-        role: "ProfileData",
-        previous: current.profileId,
-        consumers
-      });
-      profileId = revision.id;
-      next = next.createGradientProfileData({
-        id: profileId,
-        source: current.source,
-        category: current.category,
-        field: current.measure,
-        ...density,
-        center: center === false ? "median" : center.type
-      });
-      for (const rebind of revision.rebinds) next = next.rebindLayerData(rebind);
-      next = next.releaseDerivedData(revision.release);
-    }
-    const profile = findDataset(next, profileId);
+    const profile = findDataset(next, current.profileId);
     next = next._withMarkConfig(owner.id, {
       ...next.markConfigs[owner.id],
       gradientPlot: {
@@ -450,7 +269,7 @@ export const editGradientPlot = action(
         width,
         gradient,
         center,
-        profileId,
+        profileId: current.profileId,
         intensityDomain: profile.transform[0].resolved.intensityDomain
       }
     });
@@ -463,7 +282,7 @@ export const editGradientPlot = action(
       next = next.createGradientPlotCenter({
         id: current.centerId,
         owner: owner.id,
-        data: profileId,
+        data: current.profileId,
         category: current.category,
         categoryType: current.categoryType,
         coordinate: owner.coordinate,

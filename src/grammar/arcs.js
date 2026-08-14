@@ -5,6 +5,12 @@ import {
   readNominalField,
   readQuantitativeField
 } from "./scales/index.js";
+import {
+  interpolateNumber,
+  normalizedFiniteSum,
+  requireFiniteResult,
+  stableFiniteSum
+} from "./numeric.js";
 
 function requireArcLayer(layer) {
   if (layer?.mark?.type !== "arc") {
@@ -22,6 +28,9 @@ function requireBandScale(scale, label) {
     scale?.type !== "band" ||
     !Array.isArray(scale.domain) ||
     !Array.isArray(scale.range) ||
+    scale.range.length !== 2 ||
+    !scale.range.every(Number.isFinite) ||
+    scale.range[0] === scale.range[1] ||
     !Number.isFinite(scale.bandwidth) ||
     scale.bandwidth <= 0
   ) {
@@ -73,31 +82,69 @@ function proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
       throw new Error(`Arc theta value "${values[index]}" is outside the scale domain.`);
     }
     group.push({
-      row: rows[index],
       color: colors[index],
       sourceIndex: index,
       weight: weights[index]
     });
   }
-  const total = [...groups.values()].reduce(
-    (sum, group) => sum + group.reduce((groupSum, item) => groupSum + item.weight, 0),
-    0
+  if (!Number.isFinite(frame?.availableRadius) || frame.availableRadius < 0) {
+    throw new RangeError(`Arc mark "${layer.id}" requires a finite available radius.`);
+  }
+  const innerRadius = requireFiniteResult(
+    frame.availableRadius * innerRadiusRatio,
+    `Arc mark "${layer.id}" inner radius`
   );
-  if (total === 0) throw new Error(`Arc mark "${layer.id}" has no positive theta weight.`);
-  const start = thetaScale.range[0];
-  const span = thetaScale.range[1] - thetaScale.range[0];
-  const innerRadius = frame.availableRadius * innerRadiusRatio;
-  let cursor = start;
+  let cursor = thetaScale.range[0];
   const sectors = [];
   const positiveValues = thetaScale.domain.filter(value =>
     groups.get(value).some(item => item.weight > 0)
   );
+  const aggregateValues = positiveValues.map(value => stableFiniteSum(
+    groups.get(value).map(item => item.weight),
+    `Arc theta group "${String(value)}" aggregate`
+  ));
+  const total = aggregateValues.reduce((sum, value) => sum + value, 0);
+  const normalizedTotal = Number.isFinite(total)
+    ? undefined
+    : normalizedFiniteSum(
+        aggregateValues,
+        `Arc mark "${layer.id}" theta aggregates`
+      );
+  if (total === 0 || normalizedTotal?.total <= 0) {
+    throw new Error(`Arc mark "${layer.id}" has no positive theta weight.`);
+  }
+  const span = thetaScale.range[1] - thetaScale.range[0];
+  let cumulative = 0;
+  let cumulativeCorrection = 0;
   for (const [positiveIndex, value] of positiveValues.entries()) {
     const group = groups.get(value);
-    const aggregateValue = group.reduce((sum, item) => sum + item.weight, 0);
+    const aggregateValue = aggregateValues[positiveIndex];
+    const normalizedValue = normalizedTotal === undefined
+      ? aggregateValue
+      : aggregateValue / normalizedTotal.scale;
+    const next = cumulative + normalizedValue;
+    if (normalizedTotal !== undefined) {
+      cumulativeCorrection += Math.abs(cumulative) >= Math.abs(normalizedValue)
+        ? cumulative - next + normalizedValue
+        : normalizedValue - next + cumulative;
+    }
+    cumulative = next;
+    const directEnd = cursor + aggregateValue / total * span;
     const endTheta = positiveIndex === positiveValues.length - 1
       ? thetaScale.range[1]
-      : cursor + aggregateValue / total * span;
+      : normalizedTotal === undefined && Number.isFinite(directEnd)
+        ? directEnd
+        : interpolateNumber(
+            thetaScale.range[0],
+            thetaScale.range[1],
+            (cumulative + cumulativeCorrection) /
+              (normalizedTotal?.total ?? total)
+          );
+    if (!Number.isFinite(endTheta) || endTheta === cursor) {
+      throw new RangeError(
+        `Arc theta group "${String(value)}" cannot resolve a distinct finite sector.`
+      );
+    }
     const distinctColors = [...new Set(group.map(item => item.color))];
     if (distinctColors.length > 1) {
       throw new Error(

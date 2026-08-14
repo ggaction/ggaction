@@ -15,11 +15,12 @@ export const wrappedBottomTitleTarget = Object.freeze({
   }),
   title: Object.freeze({
     lines: Object.freeze([
-      "Distribution of Acceleration",
-      "Across Vehicle Origins"
+      "Distribution of",
+      "Acceleration Across",
+      "Vehicle Origins"
     ]),
     x: 380,
-    y: Object.freeze([501, 527]),
+    y: Object.freeze([501, 527, 553]),
     rotation: 0
   }),
   subtitle: Object.freeze({
@@ -28,10 +29,15 @@ export const wrappedBottomTitleTarget = Object.freeze({
       "grouped by origin in the cars dataset"
     ]),
     x: 380,
-    y: Object.freeze([557, 583]),
+    y: Object.freeze([583, 609]),
     rotation: 0
   }),
-  occupiedBounds: Object.freeze({ x: 245, y: 490, width: 270, height: 100 }),
+  occupiedBounds: Object.freeze({
+    x: 252.1099999999999,
+    y: 490,
+    width: 255.7800000000002,
+    height: 126
+  }),
   longTokenFallback: Object.freeze({
     text: "acceleration-density-estimate",
     maxWidth: 70,

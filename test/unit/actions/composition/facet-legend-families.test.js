@@ -38,6 +38,7 @@ const families = Object.freeze([
     name: "discretized",
     kind: "interval",
     root: "colorLegendSymbols",
+    background: "colorLegendBackground",
     build: program => program
       .encodeColor({
         field: "value",
@@ -48,7 +49,7 @@ const families = Object.freeze([
           range: ["red", "green", "blue"]
         }
       })
-      .createLegend({ channels: ["color"] })
+      .createLegend({ channels: ["color"], border: true })
   },
   {
     name: "size",
@@ -79,6 +80,19 @@ test("promotes every compatible concrete legend family to one parent owner", () 
 
     assert.equal(owner.type, "canvas", family.name);
     assert.equal(owner.children.includes(family.root), true, family.name);
+    if (family.background !== undefined) {
+      assert.equal(
+        owner.children.includes(family.background),
+        true,
+        `${family.name} background`
+      );
+      assert.equal(
+        owner.children.indexOf(family.background) <
+          owner.children.indexOf(family.root),
+        true,
+        `${family.name} background order`
+      );
+    }
     assert.ok(faceted.guideConfigs.legend[family.kind], family.name);
     assert.equal(
       faceted.compositionSpec.children.every(id =>

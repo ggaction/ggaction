@@ -21,6 +21,40 @@ import {
   sameValues
 } from "./resolve.js";
 
+function finishLegend(program) {
+  return hasMultiLegendLane(program) ? program.rematerializeLegend() : program;
+}
+
+function requestedCandidate(program, target, candidates) {
+  if (target === undefined) {
+    return candidates.length === 1 ? candidates[0] : undefined;
+  }
+  const layer = findLayer(program, target);
+  return candidates.includes(layer) ? layer : undefined;
+}
+
+function createStandaloneLegend(program, args, kind) {
+  const { target, count, position, channels: _channels, ...unsupported } = args;
+  const label = kind === "size" ? "size" : "stroke-width";
+  const unsupportedKeys = Object.keys(unsupported);
+  if (unsupportedKeys.length > 0) {
+    throw new Error(
+      `Standalone ${label} legend does not support option "${unsupportedKeys[0]}".`
+    );
+  }
+  if (position !== undefined && position !== "right") {
+    throw new Error(
+      `Standalone ${label} legends currently require position "right".`
+    );
+  }
+  return finishLegend(program[kind === "size"
+    ? "createSizeLegend"
+    : "createStrokeWidthLegend"]({
+    ...(target === undefined ? {} : { target }),
+    ...(count === undefined ? {} : { count })
+  }));
+}
+
 export const rematerializeLegend = action(
   { op: "rematerializeLegend", description: "Rematerialize every existing legend component." },
   function (args = {}) {
@@ -207,27 +241,7 @@ export const createLegend = action(
         !hasNonSizeLegendCandidate)
     );
     if (explicitSize || inferredSize) {
-      const {
-        target,
-        count,
-        position,
-        channels: _channels,
-        ...unsupported
-      } = args;
-      const unsupportedKeys = Object.keys(unsupported);
-      if (unsupportedKeys.length > 0) {
-        throw new Error(
-          `Standalone size legend does not support option "${unsupportedKeys[0]}".`
-        );
-      }
-      if (position !== undefined && position !== "right") {
-        throw new Error('Standalone size legends currently require position "right".');
-      }
-      const next = this.createSizeLegend({
-        ...(target === undefined ? {} : { target }),
-        ...(count === undefined ? {} : { count })
-      });
-      return hasMultiLegendLane(next) ? next.rematerializeLegend() : next;
+      return createStandaloneLegend(this, args, "size");
     }
     const strokeWidthCandidates = this.semanticSpec.layers.filter(
       isStrokeWidthLegendLayer
@@ -248,23 +262,7 @@ export const createLegend = action(
         !hasOtherStrokeWidthLegendCandidate)
     );
     if (explicitStrokeWidth || inferredStrokeWidth) {
-      const { target, count, position, channels: _channels, ...unsupported } = args;
-      const unsupportedKeys = Object.keys(unsupported);
-      if (unsupportedKeys.length > 0) {
-        throw new Error(
-          `Standalone stroke-width legend does not support option "${unsupportedKeys[0]}".`
-        );
-      }
-      if (position !== undefined && position !== "right") {
-        throw new Error(
-          'Standalone stroke-width legends currently require position "right".'
-        );
-      }
-      const next = this.createStrokeWidthLegend({
-        ...(target === undefined ? {} : { target }),
-        ...(count === undefined ? {} : { count })
-      });
-      return hasMultiLegendLane(next) ? next.rematerializeLegend() : next;
+      return createStandaloneLegend(this, args, "strokeWidth");
     }
     const opacityCandidates = this.semanticSpec.layers.filter(layer =>
       layer.mark?.type === "point" && layer.encoding?.opacity?.scale !== undefined
@@ -279,8 +277,7 @@ export const createLegend = action(
       (channels === undefined && opacityCandidates.length === 1 &&
         !hasOtherLegendCandidate)
     ) {
-      const next = this.createOpacityLegend(args);
-      return hasMultiLegendLane(next) ? next.rematerializeLegend() : next;
+      return finishLegend(this.createOpacityLegend(args));
     }
     const continuousColorCandidates = this.semanticSpec.layers.filter(layer => {
       const encoding = ["point", "bar", "rect"].includes(layer.mark?.type)
@@ -289,41 +286,26 @@ export const createLegend = action(
       const scale = findSemanticScale(this, encoding?.scale);
       return scale?.type === "sequential";
     });
-    const continuousColor = args.target === undefined
-      ? continuousColorCandidates.length === 1
-        ? continuousColorCandidates[0]
-        : undefined
-      : (() => {
-          const layer = findLayer(this, args.target);
-          return continuousColorCandidates.includes(layer) ? layer : undefined;
-        })();
+    const continuousColor = requestedCandidate(
+      this, args.target, continuousColorCandidates
+    );
     if (
       (channels?.length === 1 && channels[0] === "color" && continuousColor) ||
       (channels === undefined && continuousColor)
     ) {
-      const next = this.createGradientLegend(args);
-      return hasMultiLegendLane(next) ? next.rematerializeLegend() : next;
+      return finishLegend(this.createGradientLegend(args));
     }
     const intervalColorCandidates = this.semanticSpec.layers.filter(layer => {
       const encoding = layer.mark?.type === "point" ? layer.encoding?.color : undefined;
       const scale = findSemanticScale(this, encoding?.scale);
       return ["quantize", "quantile", "threshold"].includes(scale?.type);
     });
-    const intervalColor = args.target === undefined
-      ? intervalColorCandidates.length === 1
-        ? intervalColorCandidates[0]
-        : undefined
-      : (() => {
-          const layer = findLayer(this, args.target);
-          return intervalColorCandidates.includes(layer) ? layer : undefined;
-        })();
     if (
       (channels?.length === 1 && channels[0] === "color" &&
         intervalColorCandidates.length > 0) ||
       (channels === undefined && intervalColorCandidates.length > 0)
     ) {
-      const next = this.createIntervalLegend(args);
-      return hasMultiLegendLane(next) ? next.rematerializeLegend() : next;
+      return finishLegend(this.createIntervalLegend(args));
     }
     const wantsShape = channels?.includes("shape") === true;
     const pointCandidates = this.semanticSpec.layers.filter(layer =>
@@ -331,12 +313,7 @@ export const createLegend = action(
       layer.encoding?.shape?.scale !== undefined &&
       (wantsShape || layer.encoding?.color?.scale !== undefined)
     );
-    const requestedPoint = args.target === undefined
-      ? pointCandidates.length === 1 ? pointCandidates[0] : undefined
-      : (() => {
-          const layer = findLayer(this, args.target);
-          return pointCandidates.includes(layer) ? layer : undefined;
-        })();
+    const requestedPoint = requestedCandidate(this, args.target, pointCandidates);
     if (requestedPoint !== undefined) {
       const { count, ...categoricalArgs } = args;
       if (
@@ -399,8 +376,7 @@ export const createLegend = action(
       }
       return next;
     }
-    const next = this.createCategoricalLegend(args);
-    return hasMultiLegendLane(next) ? next.rematerializeLegend() : next;
+    return finishLegend(this.createCategoricalLegend(args));
   }
 );
 

@@ -7,7 +7,11 @@ import {
   validateParallelRows
 } from "../../grammar/parallelCoordinates.js";
 import { resolvePositionScaleDefinition } from "../scales/definitions.js";
-import { applyEncodingScale, resolveTarget } from "./shared.js";
+import {
+  applyEncodingScale,
+  resolveTarget,
+  setEncodingProperties
+} from "./shared.js";
 import { resolveParallelCoordinate } from "../coordinates/parallel.js";
 
 const OPTIONS = Object.freeze([
@@ -76,15 +80,10 @@ export const encodeParallelCoordinates = action(
         value: coordinate.id
       });
     }
-    next = next
-      .editSemantic({
-        property: `layer[${target}].encoding.parallel.dimensions`,
-        value: storedDimensions
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.parallel.missing`,
-        value: missing
-      });
+    next = setEncodingProperties(next, target, "parallel", {
+      dimensions: storedDimensions,
+      missing
+    });
     if (key === undefined && layer.encoding?.parallel?.key !== undefined) {
       next = next.editSemantic({
         property: `layer[${target}].encoding.parallel.key`,

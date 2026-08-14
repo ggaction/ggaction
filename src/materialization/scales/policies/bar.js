@@ -4,6 +4,10 @@ import {
   resolveBarChannels,
   resolveBarGrain
 } from "../../../grammar/bars/policy.js";
+import {
+  interpolateNumber,
+  inverseLerp
+} from "../../../grammar/numeric.js";
 export function resolveOffsetScalePolicy({
   consumers,
   resolvedScales,
@@ -71,27 +75,56 @@ export function resolveTemporalBarBand(consumers, domain, range, values) {
   if (ordered.length < 2) {
     throw new Error("Temporal bar position requires at least two distinct values.");
   }
-  const minimumGap = Math.min(
-    ...ordered.slice(1).map((value, index) => value - ordered[index])
-  );
+  let minimumGap = Infinity;
+  for (let index = 1; index < ordered.length; index += 1) {
+    minimumGap = Math.min(minimumGap, ordered[index] - ordered[index - 1]);
+  }
   const domainSpan = Math.abs(domain[1] - domain[0]);
   if (!(minimumGap > 0) || !(domainSpan > 0)) {
     throw new Error("Temporal bar position requires an increasing time domain.");
   }
   const direction = Math.sign(range[1] - range[0]) || 1;
-  const estimatedBandwidth = Math.abs(range[1] - range[0]) * minimumGap /
+  const bandwidthFraction = minimumGap / (domainSpan + minimumGap);
+  const directBandwidth = Math.abs(range[1] - range[0]) * minimumGap /
     (domainSpan + minimumGap);
-  const resolvedRange = [
-    range[0] + direction * estimatedBandwidth / 2,
-    range[1] - direction * estimatedBandwidth / 2
+  const directRange = [
+    range[0] + direction * directBandwidth / 2,
+    range[1] - direction * directBandwidth / 2
   ];
-  const positions = ordered.map(value =>
-    resolvedRange[0] +
-      (value - domain[0]) / (domain[1] - domain[0]) *
-      (resolvedRange[1] - resolvedRange[0])
-  );
-  const bandwidth = Math.min(
-    ...positions.slice(1).map((value, index) => Math.abs(value - positions[index]))
-  );
+  const stable = !Number.isFinite(directBandwidth) ||
+    !directRange.every(Number.isFinite);
+  const estimatedBandwidth = stable
+    ? Math.abs(
+      interpolateNumber(range[0], range[1], bandwidthFraction) - range[0]
+    )
+    : directBandwidth;
+  const resolvedRange = stable
+    ? [
+        interpolateNumber(range[0], range[1], bandwidthFraction / 2),
+        interpolateNumber(range[0], range[1], 1 - bandwidthFraction / 2)
+      ]
+    : directRange;
+  const resolvedSpan = resolvedRange[1] - resolvedRange[0];
+  const positions = ordered.map(value => {
+    const direct = resolvedRange[0] +
+      (value - domain[0]) / (domain[1] - domain[0]) * resolvedSpan;
+    return Number.isFinite(direct)
+      ? direct
+      : interpolateNumber(
+        resolvedRange[0],
+        resolvedRange[1],
+        inverseLerp(value, domain[0], domain[1])
+      );
+  });
+  let bandwidth = Infinity;
+  for (let index = 1; index < positions.length; index += 1) {
+    bandwidth = Math.min(
+      bandwidth,
+      Math.abs(positions[index] - positions[index - 1])
+    );
+  }
+  if (![estimatedBandwidth, bandwidth, ...resolvedRange].every(Number.isFinite)) {
+    throw new RangeError("Temporal bar position exceeds the finite numeric range.");
+  }
   return { bandwidth, range: resolvedRange };
 }

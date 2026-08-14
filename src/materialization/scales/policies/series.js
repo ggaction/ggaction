@@ -3,6 +3,7 @@ import {
   resolveContinuousDomain,
   resolveTransformedDomain
 } from "../../../grammar/scales/index.js";
+import { numericExtent } from "../../../grammar/numeric.js";
 
 export function resolveSeriesLayoutDomain({
   id,
@@ -41,9 +42,9 @@ export function resolveSeriesLayoutDomain({
     ...directConsumers.flatMap(item => item.values)
   ];
   if (layout === "center" && scale.domain !== "auto") {
-    const minimum = Math.min(...values);
-    const maximum = Math.max(...values);
-    if (Math.min(...scale.domain) > minimum || Math.max(...scale.domain) < maximum) {
+    const [minimum, maximum] = numericExtent(values);
+    const [domainMinimum, domainMaximum] = numericExtent(scale.domain);
+    if (domainMinimum > minimum || domainMaximum < maximum) {
       throw new Error(
         `Center layout scale "${id}" explicit domain must contain every centered bound.`
       );
@@ -52,7 +53,7 @@ export function resolveSeriesLayoutDomain({
   if (
     ["group", "overlay"].includes(layout) &&
     scale.domain !== "auto" &&
-    (Math.min(...scale.domain) > 0 || Math.max(...scale.domain) < 0)
+    (numericExtent(scale.domain)[0] > 0 || numericExtent(scale.domain)[1] < 0)
   ) {
     throw new Error(
       `Series layout scale "${id}" requires an explicit domain containing zero.`

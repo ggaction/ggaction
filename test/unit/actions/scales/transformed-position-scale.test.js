@@ -11,7 +11,11 @@ const rows = Object.freeze([
 
 function pointProgram() {
   return chart()
-    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createCanvas({
+      width: 300,
+      height: 200,
+      margin: { top: 20, right: 20, bottom: 60, left: 40 }
+    })
     .createData({ id: "rows", values: rows })
     .createPointMark({ id: "points" });
 }
@@ -26,17 +30,17 @@ test("encodes log and sqrt positions and shares their mappings with guides", () 
   assert.deepEqual(program.resolvedScales.x, {
     type: "log",
     domain: [1, 100],
-    range: [20, 280],
+    range: [40, 280],
     base: 10
   });
   assert.deepEqual(program.resolvedScales.y, {
     type: "sqrt",
     domain: [0, 10],
-    range: [180, 20]
+    range: [140, 20]
   });
   assert.deepEqual(
     program.graphicSpec.objects.points.items.map(child => child.properties.x),
-    [20, 150, 280]
+    [40, 160, 280]
   );
   assert.deepEqual(
     program.graphicSpec.objects.xAxisLabels.items.map(child => child.properties.text),
@@ -46,7 +50,7 @@ test("encodes log and sqrt positions and shares their mappings with guides", () 
     program.graphicSpec.objects.verticalGridLines.items.map(
       child => child.properties.x1
     ),
-    [20, 150, 280]
+    [40, 160, 280]
   );
 });
 
@@ -66,6 +70,36 @@ test("materializes pow and symlog parameters and supports Canvas rematerializati
     resized.graphicSpec.objects.points.items.map(child => child.properties.x),
     symmetric.graphicSpec.objects.points.items.map(child => child.properties.x)
   );
+});
+
+test("centers constant automatic domains for every transformed position type", () => {
+  for (const scale of [
+    { type: "log", base: 10 },
+    { type: "pow", exponent: 2 },
+    { type: "sqrt" },
+    { type: "symlog", constant: 2 }
+  ]) {
+    const program = chart()
+      .createCanvas({
+        width: 300,
+        height: 200,
+        margin: { top: 20, right: 20, bottom: 60, left: 40 }
+      })
+      .createData({
+        id: "constant-rows",
+        values: [{ x: 7, y: 1 }, { x: 7, y: 2 }, { x: 7, y: 3 }]
+      })
+      .createPointMark({ id: "constant-points" })
+      .encodeX({ field: "x", scale })
+      .encodeY({ field: "y" })
+      .encodeRadius({ value: 3 });
+    const domain = program.resolvedScales.x.domain;
+    assert.equal(domain.every(Number.isFinite), true);
+    assert.equal(domain[0] < 7 && domain[1] > 7, true);
+    for (const item of program.graphicSpec.objects["constant-points"].items) {
+      assert.ok(Math.abs(item.properties.x - 160) < 1e-10);
+    }
+  }
 });
 
 test("changes quantitative position types atomically and removes stale parameters", () => {
@@ -100,6 +134,23 @@ test("changes quantitative position types atomically and removes stale parameter
   });
   assert.equal(Object.hasOwn(power.semanticSpec.scales[0], "base"), false);
   assert.equal(linear.semanticSpec.scales[0].type, "linear");
+});
+
+test("rejects overflowing extrapolated positions atomically", () => {
+  const original = chart()
+    .createCanvas({ width: 100, height: 100, margin: 10 })
+    .createData({ values: [{ x: Number.MAX_VALUE }] })
+    .createPointMark();
+  assert.throws(
+    () => original.encodeX({ field: "x", scale: { domain: [0, 1] } }),
+    /finite numeric range/
+  );
+  assert.equal(original.semanticSpec.layers[0].encoding, undefined);
+  assert.equal(original.resolvedScales.x, undefined);
+  assert.equal(
+    original.graphicSpec.objects.point.items[0].properties.x,
+    undefined
+  );
 });
 
 test("converges between direct transformed encoding and a later type edit", () => {

@@ -53,6 +53,12 @@ is its fixed exponent-`0.5` specialization, and `symlog` supports values on
 both sides of zero. Point, line, area, bar, and rule materializers use the same
 mapping, and axes and grids read the same resolved scale.
 
+When an automatic transformed domain contains one finite value, ggaction pads
+it to a finite, type-valid pair and places that value at the middle of the
+transformed range whenever both surrounding endpoints are representable. A log
+constant stays entirely positive or entirely negative. Explicit transformed
+domains still require two distinct values.
+
 Temporal field values are normalized while resolving the scale, without
 rewriting the source dataset. Finite timestamps are accepted directly;
 four-digit numbers or strings are UTC years, and validated `YYYY-MM-DD` or

@@ -83,6 +83,50 @@ test("resolves automatic extents and omits empty cells by default", () => {
   assert.equal(result.resolved.occupiedCount, 2);
 });
 
+test("creates finite increasing edges across the full finite range", () => {
+  const result = deriveBin2DRows([
+    { x: -1e308, y: 0 },
+    { x: 1e308, y: 1 }
+  ], transform({ bins: { x: 2, y: 1 } }));
+
+  assert.deepEqual(result.resolved.edges, {
+    x: [-1e308, 0, 1e308],
+    y: [0, 1]
+  });
+  assert.equal(
+    Object.values(result.resolved.edges).flat().every(Number.isFinite),
+    true
+  );
+});
+
+test("rejects bin counts that the finite extent cannot represent", () => {
+  assert.throws(
+    () => deriveBin2DRows(
+      [{ x: 1e15, y: 0 }, { x: 1e15 + 1, y: 1 }],
+      transform({ bins: { x: 100, y: 1 } })
+    ),
+    /x extent cannot represent 100 distinct bins/
+  );
+  assert.throws(
+    () => deriveBin2DRows(
+      [{ x: 5e-324, y: 0 }, { x: 1e-323, y: 1 }],
+      transform({ bins: { x: 2, y: 1 } })
+    ),
+    /x extent cannot represent 2 distinct bins/
+  );
+});
+
+test("resolves large source extents without variadic numeric calls", () => {
+  const rows = Array.from({ length: 150_000 }, (_, index) => ({
+    x: index % 2,
+    y: index % 3
+  }));
+  const result = deriveBin2DRows(rows, transform({ bins: 1 }));
+
+  assert.deepEqual(result.resolved.extent, { x: [0, 1], y: [0, 2] });
+  assert.equal(result.resolved.eligibleCount, rows.length);
+});
+
 test("removes resolved revision state before replay", () => {
   const definition = transform({ bins: 2 });
   const result = deriveBin2DRows([{ x: 0, y: 0 }, { x: 1, y: 1 }], definition);
@@ -97,6 +141,14 @@ test("rejects invalid bins, extents, fields, and silent data loss", () => {
   assert.throws(
     () => transform({ bins: { x: 2 } }),
     /y bins must be a positive integer/
+  );
+  assert.throws(
+    () => transform({ bins: { x: 10_001, y: 1 } }),
+    /axes support at most 10000 bins/
+  );
+  assert.throws(
+    () => transform({ bins: { x: 10_000, y: 101 } }),
+    /grids support at most 1000000 cells/
   );
   assert.throws(
     () => transform({ extent: { x: [1, 1] } }),

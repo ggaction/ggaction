@@ -1,15 +1,75 @@
 import { studentTCriticalValue } from "../statistics/studentT.js";
+import {
+  maximumMagnitude,
+  requireFiniteResult,
+  restoreFiniteScale,
+  stableFiniteMean,
+  stableFiniteSquareSum
+} from "../numeric.js";
+
+function restoreFiniteRatio(value, numeratorScale, denominatorScale, label) {
+  if (value === 0) return 0;
+  return requireFiniteResult(
+    Math.sign(value) * Math.exp(
+      Math.log(Math.abs(value)) +
+      Math.log(numeratorScale) -
+      Math.log(denominatorScale)
+    ),
+    label
+  );
+}
+
+function normalizedOffset(value, center, scale, byDifference = true) {
+  return byDifference
+    ? (value - center) / scale
+    : value / scale - center / scale;
+}
+
+function normalizedCoordinates(values, center) {
+  const differences = values.map(value => value - center);
+  const byDifference = differences.every(Number.isFinite);
+  const scale = byDifference
+    ? maximumMagnitude(differences)
+    : Math.max(maximumMagnitude(values), Math.abs(center));
+  return [
+    values.map(value => normalizedOffset(value, center, scale, byDifference)),
+    scale,
+    byDifference
+  ];
+}
+
+function normalizedLinearX(model, value) {
+  return normalizedOffset(
+    value, model.meanX, model.xScale, model.normalizedXByDifference !== false
+  );
+}
+
+function linearPrediction(model, xValue) {
+  if (model.normalizedSxx === undefined) {
+    return model.intercept + model.slope * xValue;
+  }
+  return restoreFiniteScale(
+    model.normalizedMeanY +
+      model.normalizedResponseSlope * normalizedLinearX(model, xValue),
+    model.responseScale,
+    "Linear regression prediction"
+  );
+}
 
 function fitLinearGroup(rows, { x, y, group, confidence }) {
   const count = rows.length;
   const groupLabel = group === undefined ? "all" : String(group);
+  const label = `Regression group "${groupLabel}"`;
   if (count < 3) {
     throw new Error(
-      `Regression group "${groupLabel}" requires at least three rows.`
+      `${label} requires at least three rows.`
     );
   }
-  const meanX = rows.reduce((sum, row) => sum + row[x], 0) / count;
-  const meanY = rows.reduce((sum, row) => sum + row[y], 0) / count;
+  const xValues = rows.map(row => row[x]);
+  const yValues = rows.map(row => row[y]);
+  const ordinaryYTotal = yValues.reduce((sum, value) => sum + value, 0);
+  const meanX = stableFiniteMean(xValues, "Linear regression x mean");
+  const meanY = stableFiniteMean(yValues, "Linear regression y mean");
   let sxx = 0;
   let sxy = 0;
   for (const row of rows) {
@@ -19,28 +79,81 @@ function fitLinearGroup(rows, { x, y, group, confidence }) {
   }
   if (sxx === 0) {
     throw new Error(
-      `Regression group "${groupLabel}" requires varying x values.`
+      `${label} requires varying x values.`
     );
   }
-  const slope = sxy / sxx;
-  const intercept = meanY - slope * meanX;
-  const residualSumSquares = rows.reduce((sum, row) => {
-    const residual = row[y] - (intercept + slope * row[x]);
-    return sum + residual ** 2;
-  }, 0);
+  const stableLinear = !Number.isFinite(ordinaryYTotal) ||
+    !Number.isFinite(sxx) || !Number.isFinite(sxy);
+  let normalizedXByDifference = true;
+  let xScale;
+  let responseScale;
+  let normalizedMeanY;
+  let normalizedResponseSlope;
+  let normalizedSxx;
+  if (stableLinear) {
+    let normalizedX;
+    [normalizedX, xScale, normalizedXByDifference] =
+      normalizedCoordinates(xValues, meanX);
+    xScale ||= 1;
+    responseScale = maximumMagnitude(yValues) || 1;
+    normalizedMeanY = meanY / responseScale;
+    normalizedSxx = normalizedX.reduce(
+      (sum, value) => sum + value ** 2,
+      0
+    );
+    if (normalizedSxx === 0) {
+      throw new Error(`${label} requires varying x values.`);
+    }
+    normalizedResponseSlope = rows.reduce(
+      (sum, row, index) => sum + normalizedX[index] * (
+        row[y] / responseScale - normalizedMeanY
+      ),
+      0
+    ) / normalizedSxx;
+  }
+  const slope = stableLinear
+    ? restoreFiniteRatio(
+        normalizedResponseSlope, responseScale, xScale, `${label} slope`
+      )
+    : requireFiniteResult(sxy / sxx, `${label} slope`);
+  let intercept = meanY - slope * meanX;
+  if (!Number.isFinite(intercept) && stableLinear) {
+    intercept = restoreFiniteScale(
+      normalizedMeanY + normalizedResponseSlope * normalizedOffset(
+        0, meanX, xScale, normalizedXByDifference
+      ),
+      responseScale,
+      `${label} intercept`
+    );
+  }
+  requireFiniteResult(intercept, `${label} intercept`);
   const degreesOfFreedom = count - 2;
-  return {
+  const model = {
     count,
     degreesOfFreedom,
     meanX,
     meanY,
-    sxx,
     slope,
-    intercept,
+    intercept
+  };
+  if (Number.isFinite(sxx)) model.sxx = sxx;
+  if (stableLinear) Object.assign(model, {
+    xScale,
+    responseScale,
+    normalizedMeanY,
+    normalizedResponseSlope,
+    normalizedSxx
+  });
+  if (!normalizedXByDifference) model.normalizedXByDifference = false;
+  const residualSumSquares = stableFiniteSquareSum(
+    rows.map(row => row[y] - linearPrediction(model, row[x])),
+    `${label} residual sum of squares`
+  );
+  return Object.assign(model, {
     residualSumSquares,
     residualStandardError: Math.sqrt(residualSumSquares / degreesOfFreedom),
     critical: studentTCriticalValue(confidence, degreesOfFreedom)
-  };
+  });
 }
 
 function solveLinearSystem(matrix, vector) {
@@ -94,11 +207,25 @@ function binomial(n, k) {
 }
 
 function rawPolynomialCoefficients(coefficients, center, scale) {
-  return coefficients.map((_, degree) => coefficients.reduce(
-    (sum, coefficient, power) => power < degree
-      ? sum
-      : sum + coefficient * binomial(power, degree) *
-        (-center) ** (power - degree) / scale ** power,
+  return coefficients.map((_, degree) => {
+    const sum = stable => coefficients.reduce(
+      (total, coefficient, power) => power < degree
+        ? total
+        : total + coefficient * binomial(power, degree) *
+          (stable ? -center / scale : -center) ** (power - degree) /
+          scale ** (stable ? degree : power),
+      0
+    );
+    const direct = sum(false);
+    return requireFiniteResult(Number.isFinite(direct) ? direct :
+      sum(true), `Polynomial regression coefficient ${degree}`);
+  });
+}
+
+function polynomialResponse(design, values, size, scale = 1) {
+  return Array.from({ length: size }, (_, column) => design.reduce(
+    (sum, basis, index) =>
+      sum + basis[column] * (values[index] / scale),
     0
   ));
 }
@@ -107,29 +234,30 @@ function fitPolynomialGroup(rows, { x, y, group, confidence, degree }) {
   const count = rows.length;
   const parameterCount = degree + 1;
   const groupLabel = group === undefined ? "all" : String(group);
+  const label = `Polynomial regression group "${groupLabel}"`;
   if (
     count < degree + 2 ||
     new Set(rows.map(row => row[x])).size < parameterCount
   ) {
     throw new Error(
-      `Polynomial regression group "${groupLabel}" requires at least ` +
+      `${label} requires at least ` +
       `${degree + 2} rows and ${parameterCount} distinct x values.`
     );
   }
-  const center = rows.reduce((sum, row) => sum + row[x], 0) / count;
-  const scale = Math.max(...rows.map(row => Math.abs(row[x] - center)));
-  if (!(scale > 0)) {
+  const xValues = rows.map(row => row[x]);
+  const yValues = rows.map(row => row[y]);
+  const center = stableFiniteMean(xValues, "Polynomial regression x center");
+  const [normalizedX, scale, normalizedXByDifference] =
+    normalizedCoordinates(xValues, center);
+  if (!(scale > 0) || !Number.isFinite(scale)) {
     throw new Error(
-      `Regression group "${groupLabel}" requires varying x values.`
+      `Regression group "${groupLabel}" requires finite varying x values.`
     );
   }
-  const design = rows.map(row => {
-    const normalized = (row[x] - center) / scale;
-    return Array.from(
+  const design = normalizedX.map(normalized => Array.from(
       { length: parameterCount },
       (_, power) => normalized ** power
-    );
-  });
+    ));
   const normal = Array.from({ length: parameterCount }, (_, row) =>
     Array.from({ length: parameterCount }, (_, column) =>
       design.reduce(
@@ -138,22 +266,36 @@ function fitPolynomialGroup(rows, { x, y, group, confidence, degree }) {
       )
     )
   );
-  const response = Array.from({ length: parameterCount }, (_, column) =>
-    design.reduce(
-      (sum, basis, index) => sum + basis[column] * rows[index][y],
-      0
-    )
-  );
-  const normalizedCoefficients = solveLinearSystem(normal, response);
+  const response = polynomialResponse(design, yValues, parameterCount);
+  const stableResponse = response.some(value => !Number.isFinite(value));
+  const responseScale = stableResponse ? maximumMagnitude(yValues) || 1 : undefined;
+  const resolvedResponse = stableResponse
+    ? polynomialResponse(design, yValues, parameterCount, responseScale)
+    : response;
+  const scaledCoefficients = solveLinearSystem(normal, resolvedResponse);
+  const normalizedCoefficients = stableResponse
+    ? scaledCoefficients.map((coefficient, index) => restoreFiniteScale(
+        coefficient,
+        responseScale,
+        `${label} coefficient ${index}`
+      ))
+    : scaledCoefficients;
   const inverse = invertSymmetricMatrix(normal);
-  const fitted = design.map(basis => dot(basis, normalizedCoefficients));
-  const residualSumSquares = fitted.reduce(
-    (sum, value, index) => sum + (rows[index][y] - value) ** 2,
-    0
+  const fitted = design.map(basis => stableResponse
+    ? restoreFiniteScale(
+        dot(basis, scaledCoefficients),
+        responseScale,
+        `${label} prediction`
+      )
+    : dot(basis, normalizedCoefficients)
+  );
+  const residualSumSquares = stableFiniteSquareSum(
+    fitted.map((value, index) => rows[index][y] - value),
+    `${label} residual sum of squares`
   );
   const degreesOfFreedom = count - parameterCount;
   const residualVariance = residualSumSquares / degreesOfFreedom;
-  return {
+  const model = {
     count,
     degreesOfFreedom,
     degree,
@@ -170,36 +312,76 @@ function fitPolynomialGroup(rows, { x, y, group, confidence, degree }) {
     residualStandardError: Math.sqrt(residualVariance),
     critical: studentTCriticalValue(confidence, degreesOfFreedom)
   };
+  if (!normalizedXByDifference) model.normalizedXByDifference = false;
+  if (stableResponse) Object.assign(model, { responseScale, scaledCoefficients });
+  return model;
 }
 
 function evaluatePolynomial(model, xValue) {
-  const normalized = (xValue - model.center) / model.scale;
+  const normalized = normalizedOffset(
+    xValue, model.center, model.scale, model.normalizedXByDifference !== false
+  );
   const basis = model.normalizedCoefficients.map(
     (_, power) => normalized ** power
   );
   return {
-    prediction: dot(basis, model.normalizedCoefficients),
+    prediction: model.responseScale === undefined
+      ? dot(basis, model.normalizedCoefficients)
+      : restoreFiniteScale(
+          dot(basis, model.scaledCoefficients),
+          model.responseScale,
+          "Polynomial regression prediction"
+        ),
     leverage: dot(basis, model.inverse.map(row => dot(row, basis)))
   };
 }
 
+function weightedPrediction(items, x, y, xValue, xScale = 1, yScale = 1) {
+  const difference = item => item.row[x] / xScale - xValue / xScale;
+  let totalWeight = 0;
+  let meanDifference = 0;
+  let meanY = 0;
+  for (const item of items) {
+    totalWeight += item.weight;
+    meanDifference += item.weight * difference(item);
+    meanY += item.weight * item.row[y] / yScale;
+  }
+  meanDifference /= totalWeight;
+  meanY /= totalWeight;
+  let variance = 0;
+  let covariance = 0;
+  for (const item of items) {
+    const centered = difference(item) - meanDifference;
+    variance += item.weight * centered ** 2;
+    covariance += item.weight * centered * (item.row[y] / yScale - meanY);
+  }
+  return meanY - (variance === 0 ? 0 : covariance / variance) * meanDifference;
+}
+
 function fitLoessGroup(rows, { x, y, group, span }) {
   const groupLabel = group === undefined ? "all" : String(group);
+  const label = `LOESS regression group "${groupLabel}"`;
   if (rows.length < 2 || new Set(rows.map(row => row[x])).size < 2) {
     throw new Error(
-      `LOESS regression group "${groupLabel}" requires at least two rows ` +
+      `${label} requires at least two rows ` +
       "and varying x values."
     );
   }
   const neighborCount = Math.max(2, Math.ceil(span * rows.length));
   const xValues = [...new Set(rows.map(row => row[x]))]
     .sort((left, right) => left - right);
+  const xScale = maximumMagnitude(rows.map(row => row[x])) || 1;
+  const yScale = maximumMagnitude(rows.map(row => row[y])) || 1;
   const fits = xValues.map(xValue => {
+    const rawDistances = rows.map(row => Math.abs(row[x] - xValue));
+    const scaledDistances = rawDistances.some(value => !Number.isFinite(value));
     const neighbors = rows
       .map((row, index) => ({
         row,
         index,
-        distance: Math.abs(row[x] - xValue)
+        distance: scaledDistances
+          ? Math.abs(row[x] / xScale - xValue / xScale)
+          : rawDistances[index]
       }))
       .sort((left, right) =>
         left.distance - right.distance || left.index - right.index
@@ -212,29 +394,16 @@ function fitLoessGroup(rows, { x, y, group, span }) {
         ? 1
         : (1 - (neighbor.distance / radius) ** 3) ** 3
     }));
-    const totalWeight = weighted.reduce(
-      (sum, item) => sum + item.weight,
-      0
-    );
-    const meanDifference = weighted.reduce(
-      (sum, item) => sum + item.weight * (item.row[x] - xValue),
-      0
-    ) / totalWeight;
-    const meanY = weighted.reduce(
-      (sum, item) => sum + item.weight * item.row[y],
-      0
-    ) / totalWeight;
-    let variance = 0;
-    let covariance = 0;
-    for (const item of weighted) {
-      const difference = item.row[x] - xValue - meanDifference;
-      variance += item.weight * difference ** 2;
-      covariance += item.weight * difference * (item.row[y] - meanY);
-    }
-    const slope = variance === 0 ? 0 : covariance / variance;
+    const ordinary = weightedPrediction(weighted, x, y, xValue);
     return {
       x: xValue,
-      prediction: meanY - slope * meanDifference,
+      prediction: Number.isFinite(ordinary)
+        ? ordinary
+        : restoreFiniteScale(
+            weightedPrediction(weighted, x, y, xValue, xScale, yScale),
+            yScale,
+            `${label} prediction`
+          ),
       neighborIndices: weighted.map(item => item.index)
     };
   });
@@ -267,16 +436,26 @@ export function predictRegressionAt(model, xValue, parameters) {
     ? evaluatePolynomial(model, xValue)
     : undefined;
   const prediction = parameters.method === "linear"
-    ? model.intercept + model.slope * xValue
+    ? linearPrediction(model, xValue)
     : parameters.method === "polynomial"
       ? polynomial.prediction
       : model.fits.find(fit => fit.x === xValue).prediction;
   if (parameters.method === "loess") return { prediction };
   const leverage = parameters.method === "linear"
-    ? 1 / model.count + (xValue - model.meanX) ** 2 / model.sxx
+    ? model.normalizedSxx !== undefined
+      ? 1 / model.count + (
+          normalizedLinearX(model, xValue)
+        ) ** 2 / model.normalizedSxx
+      : 1 / model.count + (xValue - model.meanX) ** 2 / model.sxx
     : polynomial.leverage;
   const standardError = model.residualStandardError * Math.sqrt(
     leverage + (parameters.interval === "prediction" ? 1 : 0)
   );
-  return { prediction, margin: model.critical * standardError };
+  return {
+    prediction: requireFiniteResult(prediction, "Regression prediction"),
+    margin: requireFiniteResult(
+      model.critical * standardError,
+      "Regression interval margin"
+    )
+  };
 }

@@ -5,7 +5,7 @@ import { chart } from "../../../../src/ChartProgram.js";
 
 function encodedProgram() {
   return chart()
-    .createCanvas({ width: 200, height: 120, margin: 10 })
+    .createCanvas({ width: 300, height: 220, margin: 60 })
     .createData({ id: "data", values: [{ x: 0, y: 5 }, { x: 10, y: 15 }] })
     .createPointMark({ id: "points" })
     .encodeX({ field: "x" })

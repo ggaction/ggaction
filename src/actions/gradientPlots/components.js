@@ -65,6 +65,14 @@ function requireLegendOwner(program, owner) {
   return { layer, config };
 }
 
+function editProperties(program, target, properties) {
+  let next = program;
+  for (const [property, value] of Object.entries(properties)) {
+    next = next.editGraphics({ target, property, value });
+  }
+  return next;
+}
+
 export const rematerializeGradientPlotLegend = action(
   {
     op: "rematerializeGradientPlotLegend",
@@ -82,35 +90,33 @@ export const rematerializeGradientPlotLegend = action(
     const y = bounds.y + 50;
     const width = 22;
     const height = Math.min(170, Math.max(80, bounds.height - 110));
-    return this
-      .editGraphics({ target: ids.strip, property: "x", value: x })
-      .editGraphics({ target: ids.strip, property: "y", value: y })
-      .editGraphics({ target: ids.strip, property: "width", value: width })
-      .editGraphics({ target: ids.strip, property: "height", value: height })
-      .editGraphics({
-        target: ids.strip,
-        property: "fill",
-        value: createDensityLegendPaint(config.gradient.opacity)
-      })
-      .editGraphics({ target: ids.strip, property: "stroke", value: "#cbd5e1" })
-      .editGraphics({ target: ids.strip, property: "strokeWidth", value: 1 })
-      .editGraphics({ target: ids.labels, property: "x", value: x + width + 10 })
-      .editGraphics({ target: ids.labels, property: "y", value: [y + height, y] })
-      .editGraphics({ target: ids.labels, property: "text", value: ["Low", "High"] })
-      .editGraphics({ target: ids.labels, property: "fill", value: "#64748b" })
-      .editGraphics({ target: ids.labels, property: "fontSize", value: 11 })
-      .editGraphics({ target: ids.labels, property: "fontFamily", value: "sans-serif" })
-      .editGraphics({ target: ids.labels, property: "textAlign", value: "left" })
-      .editGraphics({ target: ids.labels, property: "textBaseline", value: "middle" })
-      .editGraphics({ target: ids.title, property: "x", value: x })
-      .editGraphics({ target: ids.title, property: "y", value: y - 18 })
-      .editGraphics({ target: ids.title, property: "text", value: config.guides.legend.title })
-      .editGraphics({ target: ids.title, property: "fill", value: "#334155" })
-      .editGraphics({ target: ids.title, property: "fontSize", value: 12 })
-      .editGraphics({ target: ids.title, property: "fontFamily", value: "sans-serif" })
-      .editGraphics({ target: ids.title, property: "fontWeight", value: 600 })
-      .editGraphics({ target: ids.title, property: "textAlign", value: "left" })
-      .editGraphics({ target: ids.title, property: "textBaseline", value: "middle" });
+    let next = editProperties(this, ids.strip, {
+      x, y, width, height,
+      fill: createDensityLegendPaint(config.gradient.opacity),
+      stroke: "#cbd5e1",
+      strokeWidth: 1
+    });
+    next = editProperties(next, ids.labels, {
+      x: x + width + 10,
+      y: [y + height, y],
+      text: ["Low", "High"],
+      fill: "#64748b",
+      fontSize: 11,
+      fontFamily: "sans-serif",
+      textAlign: "left",
+      textBaseline: "middle"
+    });
+    return editProperties(next, ids.title, {
+      x,
+      y: y - 18,
+      text: config.guides.legend.title,
+      fill: "#334155",
+      fontSize: 12,
+      fontFamily: "sans-serif",
+      fontWeight: 600,
+      textAlign: "left",
+      textBaseline: "middle"
+    });
   }
 );
 
@@ -130,24 +136,29 @@ export const createGradientPlotLegend = action(
     }
     const ids = legendIds(args.owner);
     const densityScale = `${args.owner}Density`;
-    let next = this
-      .editSemantic({ property: `scale[${densityScale}].type`, value: "sequential" })
-      .editSemantic({
-        property: `scale[${densityScale}].domain`,
-        value: this.markConfigs[args.owner].gradientPlot.intensityDomain
-      })
-      .editSemantic({
-        property: `scale[${densityScale}].range`,
-        value: { palette: { name: "greys" } }
-      })
-      .editSemantic({ property: "guide.legend.color.scale", value: densityScale })
-      .editSemantic({
-        property: "guide.legend.color.title",
-        value: args.title ?? "Relative density"
-      })
-      .createGraphics({ id: ids.strip, type: "rect", parent: "canvas" })
-      .createGraphics({ id: ids.labels, type: "text", length: 2, parent: "canvas" })
-      .createGraphics({ id: ids.title, type: "text", parent: "canvas" });
+    const title = args.title ?? "Relative density";
+    let next = this;
+    for (const [property, value] of [
+      [`scale[${densityScale}].type`, "sequential"],
+      [`scale[${densityScale}].domain`, this.markConfigs[args.owner].gradientPlot.intensityDomain],
+      [`scale[${densityScale}].range`, { palette: { name: "greys" } }],
+      ["guide.legend.color.scale", densityScale],
+      ["guide.legend.color.title", title]
+    ]) {
+      next = next.editSemantic({ property, value });
+    }
+    for (const [id, type, length] of [
+      [ids.strip, "rect"],
+      [ids.labels, "text", 2],
+      [ids.title, "text"]
+    ]) {
+      next = next.createGraphics({
+        id,
+        type,
+        ...(length === undefined ? {} : { length }),
+        parent: "canvas"
+      });
+    }
     next = next._withMarkConfig(args.owner, {
       ...next.markConfigs[args.owner],
       gradientPlot: {
@@ -155,7 +166,7 @@ export const createGradientPlotLegend = action(
         guides: {
           ...next.markConfigs[args.owner].gradientPlot.guides,
           legend: {
-            title: args.title ?? "Relative density",
+            title,
             position: args.position ?? "right"
           }
         }

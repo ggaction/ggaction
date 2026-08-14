@@ -54,6 +54,33 @@ test("creates immutable Horizon provenance and generated rows", () => {
   );
 });
 
+test("materializes finite extreme crossings and rejects unrepresentable folds atomically", () => {
+  const crossingSource = chart().createData({
+    id: "source",
+    values: [
+      { x: -1e308, y: -1e308 },
+      { x: 1e308, y: 1e308 }
+    ]
+  });
+  const crossed = horizon(crossingSource);
+  assert.equal(
+    crossed.semanticSpec.datasets[1].values
+      .filter(row => row.areaHorizonUpper === 0)
+      .every(row => row.areaHorizonX === 0),
+    true
+  );
+
+  const overflowSource = chart().createData({
+    id: "source",
+    values: [{ x: 0, y: 1e308 }]
+  });
+  assert.throws(
+    () => horizon(overflowSource, { baseline: -1e308 }),
+    /Horizon signed deviation is outside the finite numeric range/
+  );
+  assert.equal(overflowSource.semanticSpec.datasets.length, 1);
+});
+
 test("does not retain caller-owned Horizon source or option objects", () => {
   const rows = [{ x: 0, y: -2 }, { x: 1, y: 2 }];
   const palette = { positive: "blues", negative: "reds" };

@@ -10,6 +10,7 @@ import {
 } from "./resolve.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
 import { DEFAULT_SERIES_BASELINE } from "../../grammar/seriesLayout.js";
+import { finiteMidpoint } from "../../grammar/numeric.js";
 import {
   BAR_ORIENTATIONS,
   resolveBarChannels,
@@ -58,7 +59,10 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
       colorScale.range[index % colorScale.range.length]
     ])
   );
-  const offsetMidpoint = (offsetScale.range[0] + offsetScale.range[1]) / 2;
+  const offsetMidpoint = finiteMidpoint(
+    offsetScale.range[0],
+    offsetScale.range[1]
+  );
   const categoryDirection = Math.sign(
     categoryScale.step ?? categoryScale.range[1] - categoryScale.range[0]
   ) || 1;

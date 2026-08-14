@@ -1,11 +1,8 @@
-import { action } from "../../core/action.js";
-import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
 import {
   deriveHorizon,
   validateHorizonTransform
 } from "../../grammar/horizon.js";
-import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
+import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "x", "y", "groupBy", "bands", "baseline", "extent",
@@ -29,43 +26,21 @@ function requestedTransform(args) {
   });
 }
 
-export const materializeHorizonData = action(
-  {
-    op: "materializeHorizonData",
-    description: "Materialize one immutable Horizon band dataset."
-  },
-  function (args = {}) {
-    validateKeys(args, MATERIALIZE_OPTIONS, "materializeHorizonData");
-    const { id, source, transform } = requireDerivedDataset(
-      this,
-      args.id,
-      "horizon"
-    );
-    const result = deriveHorizon(source.values, transform);
-    return this
-      .editSemantic({
-        property: `dataset[${id}].transform`,
-        value: [{ ...result.transform, resolved: result.resolved }]
-      })
-      .editSemantic({
-        property: `dataset[${id}].values`,
-        value: result.values
-      });
-  }
+export const materializeHorizonData = derivedMaterializer(
+  "materializeHorizonData",
+  "Materialize one immutable Horizon band dataset.",
+  "horizon",
+  deriveHorizon,
+  result => [{ ...result.transform, resolved: result.resolved }]
 );
 
-export const createHorizonData = action(
-  {
-    op: "createHorizonData",
-    description: "Create one immutable Horizon band dataset."
-  },
-  function (args = {}) {
-    validateKeys(args, OPTIONS, "createHorizonData");
-    const id = validateUserId(args.id, "Horizon dataset id");
-    const source = validateUserId(args.source, "Horizon source dataset id");
-    const transform = requestedTransform(args);
-    return this
-      .createDerivedData({ id, source, transform: [transform] })
-      .materializeHorizonData({ id });
-  }
+export const createHorizonData = derivedCreator(
+  "createHorizonData",
+  "Create one immutable Horizon band dataset.",
+  OPTIONS,
+  "Horizon dataset id",
+  "Horizon source dataset id",
+  requestedTransform,
+  "materializeHorizonData",
+  true
 );

@@ -7,13 +7,13 @@ const LAYOUT = Object.freeze({
 });
 
 const LEGEND = Object.freeze({
-  originX: 34.68000000000001,
+  originX: 31.66720000000001,
   offset: 80,
   padding: 10,
   background: Object.freeze({
-    x: 23.180000000000007,
+    x: 20.16720000000001,
     y: 43,
-    width: 96.82,
+    width: 99.83279999999999,
     height: 325.8986541696686,
     fill: "#f8fafc",
     stroke: "#94a3b8",

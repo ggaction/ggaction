@@ -202,7 +202,7 @@ export function createTemporalBarReference(rows, layout) {
       y: {
         line: { x1: bounds.x, y1: yRange[0], x2: bounds.x, y2: yRange[1] },
         ticks: yTicks,
-        title: { x: bounds.x - 52, y: bounds.y + bounds.height / 2, text: "mean(perc)", rotation: -Math.PI / 2 }
+        title: { x: 24.979999999999997, y: bounds.y + bounds.height / 2, text: "mean(perc)", rotation: -Math.PI / 2 }
       }
     },
     legend: legend(groups, bounds)
@@ -299,7 +299,7 @@ export function createHorizontalBarReference(rows, layout) {
       y: {
         line: { x1: bounds.x, y1: bounds.y, x2: bounds.x, y2: bounds.y + bounds.height },
         ticks: yTicks,
-        title: { x: bounds.x - 52, y: bounds.y + bounds.height / 2, text: "year", rotation: -Math.PI / 2 }
+        title: { x: 28, y: bounds.y + bounds.height / 2, text: "year", rotation: -Math.PI / 2 }
       }
     },
     legend: legend(groups, bounds)

@@ -15,6 +15,7 @@ import {
   canMaterializeLine
 } from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
+import { setEncodingProperties } from "./shared.js";
 
 const ENCODE_OPTIONS = Object.freeze([
   "target", "field", "fieldType", "order"
@@ -92,19 +93,11 @@ const encodePathOrder = action(
     const dataset = assertPathOrderCompatible(this, layer, "encodePathOrder");
     readQuantitativeField(dataset.values, field);
 
-    const next = this
-      .editSemantic({
-        property: `layer[${layer.id}].encoding.pathOrder.field`,
-        value: field
-      })
-      .editSemantic({
-        property: `layer[${layer.id}].encoding.pathOrder.fieldType`,
-        value: fieldType
-      })
-      .editSemantic({
-        property: `layer[${layer.id}].encoding.pathOrder.order`,
-        value: order
-      });
+    const next = setEncodingProperties(this, layer.id, "pathOrder", {
+      field,
+      fieldType,
+      order
+    });
     return rematerializePath(next, findLayer(next, layer.id));
   }
 );

@@ -42,7 +42,7 @@ function pointLifecycleProgram() {
     .createCanvas({
       width: 320,
       height: 380,
-      margin: { top: 20, right: 120, bottom: 40, left: 40 }
+      margin: { top: 20, right: 120, bottom: 60, left: 60 }
     })
     .createData({ id: "rows", values: pointRows })
     .createPointMark({ id: "points" })

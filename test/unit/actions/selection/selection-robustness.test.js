@@ -160,6 +160,39 @@ test("converges across color encoding, scale, Canvas, and filter order", () => {
   assert.equal(highlightThenFilter.graphicSpec.objects.point.items.length, 2);
 });
 
+test("replays homogeneous point highlights after direct appearance scale edits", () => {
+  const base = pointProgram()
+    .encodeColor({ field: "group" })
+    .encodeOpacity({ field: "x" });
+  const editScales = program => program
+    .editScale({ id: "color", range: ["black", "white"] })
+    .editScale({ id: "opacity", range: [0.1, 0.9] });
+  const applyHighlight = program => program.highlightMarks({
+    select: { field: "x", op: "max" },
+    fill: "#dc2626",
+    opacity: 0.8,
+    size: 2,
+    dimOthers: { opacity: 0.15 },
+    bringToFront: false
+  });
+  const expected = applyHighlight(editScales(base));
+  const highlighted = applyHighlight(base);
+  const edited = editScales(highlighted);
+
+  assert.deepEqual(
+    edited.graphicSpec.objects.point,
+    expected.graphicSpec.objects.point
+  );
+  assert.deepEqual(
+    edited.removeMarkHighlight().graphicSpec.objects.point,
+    editScales(base).graphicSpec.objects.point
+  );
+  assert.deepEqual(
+    highlighted.graphicSpec.objects.point.items.map(item => item.properties.opacity),
+    [0.15, 0.15, 0.15, 0.8]
+  );
+});
+
 test("preserves selected-last order and encoded-style precedence after rematerialization", () => {
   const base = pointProgram()
     .encodeColor({ field: "group" })

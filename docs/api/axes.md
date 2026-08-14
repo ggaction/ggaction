@@ -50,7 +50,8 @@ Each x/y axis option supports:
 
 Use either `count` or exact data-space `values` for ticks. Ambiguous coordinates
 or scales must be selected explicitly. `createAxes` reads stored coordinates;
-it never creates or repairs them.
+it never creates or repairs them. Tick, label, and grid `count` values and
+explicit `values` arrays are limited to 10,000 generated items.
 
 Linear scales create numeric nice ticks. Time scales choose a UTC calendar
 interval near the requested count and format labels automatically. Automatic
@@ -58,7 +59,8 @@ formatting starts from the domain span, then raises precision only when two
 distinct resolved ticks would otherwise share a label. For example, a
 1970–1982 domain produces `1970`, `1972`, ..., `1982`, while sub-month ticks
 include the day needed to distinguish them. Explicit time values are finite
-timestamps.
+timestamps. Exceptionally long valid date domains use a nice multi-year step
+when the fixed calendar interval would grossly oversample the requested count.
 
 A band or point x scale uses its complete domain as the default tick and label
 values. Each value is placed at the shared band or point center and formatted

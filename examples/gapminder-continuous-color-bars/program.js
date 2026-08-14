@@ -16,7 +16,7 @@ function baseProgram(gapminder, color) {
     .createCanvas({
       width: 680,
       height: 380,
-      margin: { top: 58, right: 125, bottom: 72, left: 72 }
+      margin: { top: 58, right: 125, bottom: 72, left: 106 }
     })
     .createData({ id: "gapminder", values: gapminder })
     .filterData({
@@ -64,7 +64,7 @@ function addGuides(program, legendTitle) {
         },
         title: {
           text: "sum(pop), 1995–2005",
-          offset: 56,
+          offset: 90,
           fontSize: 12
         }
       }

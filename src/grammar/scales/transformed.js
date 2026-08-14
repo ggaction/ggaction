@@ -1,4 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
+import { MAX_GENERATED_ITEMS } from "../../core/validation.js";
+import { interpolateNumber, inverseLerp, numericExtent } from "../numeric.js";
 import { niceTicks } from "../ticks.js";
 import { niceLinearDomain } from "./continuous.js";
 import {
@@ -51,22 +53,89 @@ export function normalizeTransformParameters(type, options = {}) {
   return cloneAndFreeze({});
 }
 
-function transformValue(value, type, parameters) {
-  if (type === "linear") return value;
-  if (type === "log") {
-    return Math.sign(value) * Math.log10(Math.abs(value)) /
-      Math.log10(parameters.base);
-  }
-  if (type === "sqrt") {
-    return Math.sign(value) * Math.sqrt(Math.abs(value));
-  }
-  const exponent = type === "sqrt" ? 0.5 : parameters.exponent;
-  if (type === "pow" || type === "sqrt") {
-    return Math.sign(value) * Math.abs(value) ** exponent;
-  }
-  return Math.sign(value) * Math.log1p(
-    Math.abs(value) / parameters.constant
+function signedTransformProportion(value, start, end, transform) {
+  const transformed = [start, end, value].map(item =>
+    Math.sign(item) * transform(Math.abs(item))
   );
+  return transformed[0] !== transformed[1] &&
+    transformed.every(Number.isFinite)
+    ? inverseLerp(transformed[2], transformed[0], transformed[1])
+    : undefined;
+}
+
+function powerProportion(value, domain, exponent) {
+  const [start, end] = domain;
+  const direct = signedTransformProportion(
+    value, start, end, magnitude => magnitude ** exponent
+  );
+  if (direct !== undefined) return direct;
+  const scale = Math.max(Math.abs(start), Math.abs(end));
+  const normalized = signedTransformProportion(
+    value,
+    start,
+    end,
+    magnitude => magnitude === 0 ? 0 : Math.exp(exponent * (
+      Math.log(magnitude) - Math.log(scale)
+    ))
+  );
+  if (normalized !== undefined) return normalized;
+
+  if (
+    start !== 0 &&
+    end !== 0 &&
+    value !== 0 &&
+    Math.sign(start) === Math.sign(end)
+  ) {
+    const endLogRatio = Math.log(Math.abs(end)) - Math.log(Math.abs(start));
+    const valueLogRatio = Math.log(Math.abs(value)) - Math.log(Math.abs(start));
+    if (Math.abs(exponent * endLogRatio) < 1e-8) {
+      return valueLogRatio / endLogRatio;
+    }
+    const proportion = Math.expm1(exponent * valueLogRatio) /
+      Math.expm1(exponent * endLogRatio);
+    if (Number.isFinite(proportion)) return proportion;
+  }
+
+  return inverseLerp(value, start, end);
+}
+
+function logOnePlusRatio(value, constant) {
+  if (value === 0) return 0;
+  const ratio = Math.abs(value) / constant;
+  if (Number.isFinite(ratio)) return Math.sign(value) * Math.log1p(ratio);
+  const logRatio = Math.log(Math.abs(value)) - Math.log(constant);
+  return Math.sign(value) * (
+    Math.max(0, logRatio) + Math.log1p(Math.exp(-Math.abs(logRatio)))
+  );
+}
+
+function transformedProportion(value, domain, type, parameters) {
+  const [start, end] = domain;
+  if (type === "linear") return inverseLerp(value, start, end);
+  if (type === "log") {
+    const logarithm = Math.log10(parameters.base);
+    const direct = signedTransformProportion(
+      value, start, end, magnitude => Math.log10(magnitude) / logarithm
+    );
+    return direct ?? signedTransformProportion(
+      value, start, end, Math.log
+    ) ?? inverseLerp(value, start, end);
+  }
+  if (type === "pow" || type === "sqrt") {
+    return powerProportion(value, domain, parameters.exponent);
+  }
+
+  const transformedStart = logOnePlusRatio(start, parameters.constant);
+  const transformedEnd = logOnePlusRatio(end, parameters.constant);
+  if (transformedStart === transformedEnd) {
+    return inverseLerp(value, start, end);
+  }
+  const proportion = inverseLerp(
+    logOnePlusRatio(value, parameters.constant),
+    transformedStart,
+    transformedEnd
+  );
+  return Number.isFinite(proportion) ? proportion : inverseLerp(value, start, end);
 }
 
 export function validateTransformedDomain(type, domain, options = {}) {
@@ -87,23 +156,79 @@ export function validateTransformedDomain(type, domain, options = {}) {
   return validated;
 }
 
-function niceLogDomain(domain, base) {
-  const reversed = domain[0] > domain[1];
+function radixPower(radix, exponent, logarithm) {
+  const direct = Number.isFinite(radix) ? radix ** exponent : Number.NaN;
+  if (Number.isFinite(direct) && direct > 0) return direct;
+  const transformed = exponent * logarithm;
+  if (transformed > Math.log(Number.MAX_VALUE)) return Number.POSITIVE_INFINITY;
+  if (transformed < Math.log(Number.MIN_VALUE)) return 0;
+  return Math.exp(transformed);
+}
+
+function logDomainInfo(domain, base) {
   const low = Math.min(...domain);
   const high = Math.max(...domain);
-  let result;
-  if (low > 0) {
-    result = [
-      base ** Math.floor(Math.log(low) / Math.log(base)),
-      base ** Math.ceil(Math.log(high) / Math.log(base))
-    ];
-  } else {
-    result = [
-      -(base ** Math.ceil(Math.log(Math.abs(low)) / Math.log(base))),
-      -(base ** Math.floor(Math.log(Math.abs(high)) / Math.log(base)))
-    ];
-  }
+  const negative = high < 0;
+  return [
+    base < 1 ? -Math.log(base) : Math.log(base),
+    base < 1 ? 1 / base : base,
+    domain[0] > domain[1],
+    negative,
+    negative ? Math.abs(high) : low,
+    negative ? Math.abs(low) : high
+  ];
+}
+
+function niceLogDomain(domain, base) {
+  const [logarithm, radix, reversed, negative, minimum, maximum] =
+    logDomainInfo(domain, base);
+  let lower = radixPower(
+    radix,
+    Math.floor(Math.log(minimum) / logarithm),
+    logarithm
+  );
+  let upper = radixPower(
+    radix,
+    Math.ceil(Math.log(maximum) / logarithm),
+    logarithm
+  );
+  if (!Number.isFinite(lower) || lower <= 0 || lower > minimum) lower = minimum;
+  if (!Number.isFinite(upper) || upper < maximum) upper = maximum;
+  const result = negative ? [-upper, -lower] : [lower, upper];
   return cloneAndFreeze(reversed ? result.reverse() : result);
+}
+
+function padAutomaticTransformedDomain(type, value, options) {
+  const parameters = normalizeTransformParameters(type, options);
+  if (value === 0) {
+    if (type === "log") {
+      throw new RangeError(
+        "Log scale domain must be strictly positive or strictly negative."
+      );
+    }
+    return [-1, 1];
+  }
+  const magnitude = Math.abs(value);
+  let lower = magnitude / 2;
+  let upper = magnitude * 2;
+  if (type === "pow" || type === "sqrt") {
+    upper = magnitude * (2 - 2 ** -parameters.exponent) **
+      (1 / parameters.exponent);
+  } else if (type === "symlog") {
+    const center = Math.abs(logOnePlusRatio(value, parameters.constant));
+    if (center === 0) return [-1, 1];
+    upper = parameters.constant * Math.expm1(
+      2 * center - logOnePlusRatio(lower, parameters.constant)
+    );
+  }
+  if (!(lower < magnitude && upper > magnitude && Number.isFinite(upper))) {
+    lower = magnitude / 2;
+    upper = Number.isFinite(magnitude * 2) ? magnitude * 2 : magnitude;
+  }
+  if (type === "log" && lower === 0) lower = magnitude;
+  return value > 0
+    ? [lower, upper]
+    : [-upper, lower === 0 ? 0 : -lower];
 }
 
 export function resolveTransformedDomain({
@@ -129,11 +254,11 @@ export function resolveTransformedDomain({
   if (values.length === 0) {
     throw new Error("Cannot infer an automatic scale domain from no values.");
   }
-  let resolved = [Math.min(...values), Math.max(...values)];
-  if (resolved[0] === resolved[1]) {
-    throw new RangeError("Automatic transformed domain requires distinct values.");
-  }
+  let resolved = numericExtent(values);
   if (zero) resolved = [Math.min(0, resolved[0]), Math.max(0, resolved[1])];
+  if (resolved[0] === resolved[1]) {
+    resolved = padAutomaticTransformedDomain(type, resolved[0], options);
+  }
   validateTransformedDomain(type, resolved, options);
   if (nice) {
     resolved = type === "log"
@@ -166,30 +291,34 @@ export function mapTransformedValues(
     throw new TypeError("Scale clamp must be a boolean.");
   }
   const hasUnknown = Object.hasOwn(options, "unknown");
-  const transformOptions = Object.fromEntries(
-    Object.entries(options).filter(([key]) => key !== "unknown")
-  );
+  const { unknown, ...transformOptions } = options;
   const parameters = normalizeTransformParameters(type, transformOptions);
-  const domainOptions = type === "sqrt" ? {} : transformOptions;
-  const validatedDomain = validateTransformedDomain(type, domain, domainOptions);
+  const validatedDomain = validateTransformedDomain(type, domain, transformOptions);
   const resolvedRange = resolveMappingRange(range, { reverse });
-  const transformedDomain = validatedDomain.map(value =>
-    transformValue(value, type, parameters)
-  );
-  const span = transformedDomain[1] - transformedDomain[0];
-
+  const span = resolvedRange[1] - resolvedRange[0];
   return cloneAndFreeze(values.map(value => {
     const valid = Number.isFinite(value) && !(type === "log" && (
       value === 0 || Math.sign(value) !== Math.sign(validatedDomain[0])
     ));
     if (!valid) {
-      if (hasUnknown) return options.unknown;
+      if (hasUnknown) return unknown;
       throw new TypeError(`Scale type "${type}" received an invalid value.`);
     }
-    const transformed = transformValue(value, type, parameters);
-    let proportion = (transformed - transformedDomain[0]) / span;
+    let proportion = transformedProportion(
+      value,
+      validatedDomain,
+      type,
+      parameters
+    );
     if (clamp) proportion = Math.max(0, Math.min(1, proportion));
-    return resolvedRange[0] + proportion * (resolvedRange[1] - resolvedRange[0]);
+    const direct = resolvedRange[0] + proportion * span;
+    return Number.isFinite(span) && Number.isFinite(direct) && (
+      proportion !== 1 ||
+      Math.abs(direct - resolvedRange[1]) <=
+        Number.EPSILON * Math.abs(resolvedRange[1])
+    )
+      ? direct
+      : interpolateNumber(resolvedRange[0], resolvedRange[1], proportion);
   }));
 }
 
@@ -200,21 +329,39 @@ export function transformedTicks(type, domain, count, options = {}) {
   }
   if (type !== "log") return niceTicks(validated, count);
   const { base } = normalizeTransformParameters(type, options);
-  const reversed = validated[0] > validated[1];
-  const low = Math.min(...validated);
-  const high = Math.max(...validated);
-  const negative = high < 0;
-  const minimumMagnitude = negative ? Math.abs(high) : low;
-  const maximumMagnitude = negative ? Math.abs(low) : high;
+  const [
+    logarithm,
+    radix,
+    reversed,
+    negative,
+    minimumMagnitude,
+    maximumMagnitude
+  ] = logDomainInfo(validated, base);
   const start = Math.ceil(
-    Math.log(minimumMagnitude) / Math.log(base) - 1e-12
+    Math.log(minimumMagnitude) / logarithm - 1e-12
   );
   const end = Math.floor(
-    Math.log(maximumMagnitude) / Math.log(base) + 1e-12
+    Math.log(maximumMagnitude) / logarithm + 1e-12
   );
+  const available = end - start + 1;
+  const tickCount = available <= MAX_GENERATED_ITEMS
+    ? available
+    : Math.min(count, MAX_GENERATED_ITEMS);
   const values = [];
-  for (let exponent = start; exponent <= end; exponent += 1) {
-    values.push((negative ? -1 : 1) * base ** exponent);
+  for (let index = 0; index < tickCount; index += 1) {
+    const exponent = available <= MAX_GENERATED_ITEMS
+      ? start + index
+      : Math.round(start + (end - start) * index / Math.max(1, tickCount - 1));
+    const magnitude = radixPower(radix, exponent, logarithm);
+    const value = (negative ? -1 : 1) * magnitude;
+    if (
+      Number.isFinite(value) &&
+      magnitude >= minimumMagnitude &&
+      magnitude <= maximumMagnitude &&
+      (values.length === 0 || value !== values.at(-1))
+    ) {
+      values.push(value);
+    }
   }
   if (negative) values.reverse();
   if (reversed) values.reverse();

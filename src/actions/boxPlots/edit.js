@@ -8,13 +8,12 @@ import { planDerivedDataRevision } from
   "../../materialization/dataProvenance.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
+import { removeOwnedMark } from "../marks/remove.js";
 import {
-  assertDistributionScaleHandoff,
-  clearCartesianPositions,
-  rebindDistributionGuides,
-  resolveDistributionScalePlan,
+  resolveDistributionRoles,
   setCartesianPosition,
-  setCartesianRange
+  setCartesianRange,
+  updateDistributionPositions
 } from "../distributions/revision.js";
 import {
   resolveBoxAppearance,
@@ -73,130 +72,18 @@ function resolveEditedWhisker(current, value) {
   return resolveBoxWhisker(candidate, "editBoxPlot");
 }
 
-function removeOwnedMark(program, id) {
-  const selections = Object.entries(
-    program.materializationConfigs.selections ?? {}
-  ).filter(([, config]) => config.target === id).map(([selection]) => selection);
-  let next = program;
-  for (const [highlight, config] of Object.entries(
-    program.materializationConfigs.highlights ?? {}
-  )) {
-    if (config.target === id || selections.includes(config.selection)) {
-      next = next._withoutMaterializationConfig(["highlights", highlight]);
-    }
-  }
-  for (const selection of selections) {
-    next = next._withoutMaterializationConfig(["selections", selection]);
-  }
-  return next
-    .editSemantic({ property: `layer[${id}]`, remove: true })
-    .editGraphics({ target: id, remove: true })
-    ._withoutMaterializationConfig(["marks", id])
-    ._withContext({
-      ...(program.context.currentMark === id ? { currentMark: undefined } : {}),
-      ...(selections.includes(program.context.currentSelection)
-        ? { currentSelection: undefined }
-        : {})
-    });
-}
-
-function currentBoxPositions(owner, current) {
-  const categoryChannel = current.orientation === "vertical" ? "x" : "y";
-  const measureChannel = current.orientation === "vertical" ? "y" : "x";
-  const categoryEncoding = owner.encoding[categoryChannel];
-  const measureEncoding = owner.encoding[measureChannel];
-  return {
-    x: current.orientation === "vertical"
-      ? {
-          field: current.category,
-          fieldType: categoryEncoding.fieldType,
-          scale: categoryEncoding.scale
-        }
-      : {
-          field: current.measure,
-          fieldType: "quantitative",
-          scale: measureEncoding.scale
-        },
-    y: current.orientation === "vertical"
-      ? {
-          field: current.measure,
-          fieldType: "quantitative",
-          scale: measureEncoding.scale
-        }
-      : {
-          field: current.category,
-          fieldType: categoryEncoding.fieldType,
-          scale: categoryEncoding.scale
-        },
-    categoryScale: categoryEncoding.scale,
-    measureScale: measureEncoding.scale
-  };
-}
-
-function requirePositionField(position, label) {
-  if (typeof position.field !== "string" || position.field.length === 0) {
-    throw new TypeError(`${label} field must be a non-empty string.`);
-  }
-  return { fieldType: position.fieldType ?? "quantitative", ...position };
-}
-
 function roleCandidate(program, owner, current, args) {
-  const previous = currentBoxPositions(owner, current);
-  const x = requirePositionField(
-    Object.hasOwn(args, "x")
-      ? resolveBoxPosition(args.x, "x", "editBoxPlot")
-      : previous.x,
-    "editBoxPlot x"
-  );
-  const y = requirePositionField(
-    Object.hasOwn(args, "y")
-      ? resolveBoxPosition(args.y, "y", "editBoxPlot")
-      : previous.y,
-    "editBoxPlot y"
-  );
-  const orientation = resolveBoxOrientation(x, y);
-  if (orientation === undefined) {
-    throw new Error(
-      "editBoxPlot requires one categorical axis and one quantitative axis."
-    );
-  }
-  const xRoleScale = orientation === "vertical"
-    ? previous.categoryScale
-    : previous.measureScale;
-  const yRoleScale = orientation === "vertical"
-    ? previous.measureScale
-    : previous.categoryScale;
-  const xScale = resolveDistributionScalePlan(program, {
-    channel: "x",
-    fieldType: x.fieldType,
-    requested: x.scale,
-    fallback: xRoleScale,
-    defaults: ["ordinal", "nominal"].includes(x.fieldType)
-      ? { discreteType: "band" }
-      : { nice: true, zero: false }
-  });
-  const yScale = resolveDistributionScalePlan(program, {
-    channel: "y",
-    fieldType: y.fieldType,
-    requested: y.scale,
-    fallback: yRoleScale,
-    defaults: ["ordinal", "nominal"].includes(y.fieldType)
-      ? { discreteType: "band" }
-      : { nice: true, zero: false }
-  });
   return {
     source: Object.hasOwn(args, "data")
       ? validateUserId(args.data, "Box-plot data id")
       : current.source,
-    orientation,
-    x: { ...x, scale: xScale.id },
-    y: { ...y, scale: yScale.id },
-    xScale,
-    yScale,
-    category: orientation === "vertical" ? x.field : y.field,
-    categoryType: orientation === "vertical" ? x.fieldType : y.fieldType,
-    measure: orientation === "vertical" ? y.field : x.field,
-    previous
+    ...resolveDistributionRoles(program, owner, current, args, {
+      operation: "editBoxPlot",
+      resolvePosition: resolveBoxPosition,
+      normalize: (x, y) => ({ x, y, orientation: resolveBoxOrientation(x, y) }),
+      quantitativeDefaults: { nice: true, zero: false },
+      defaultFieldType: true
+    })
   };
 }
 
@@ -223,37 +110,18 @@ function updateBoxPositions(program, owner, current, candidate, {
   ].filter(Boolean);
   const owned = [owner.id, current.whiskerId, ...capIds, current.medianId,
     ...(findLayer(program, current.outlierId) ? [current.outlierId] : [])];
-  assertDistributionScaleHandoff(program, {
-    owned,
-    oldXScale: candidate.previous.x.scale,
-    oldYScale: candidate.previous.y.scale,
-    newXScale: candidate.xScale.id,
-    newYScale: candidate.yScale.id
-  });
-  let next = program;
-  for (const id of owned) next = clearCartesianPositions(next, id);
-  for (const scale of [candidate.xScale, candidate.yScale]) {
-    if (scale.create) next = next.createScale(scale.definition);
-  }
-  const category = candidate.orientation === "vertical" ? candidate.x : candidate.y;
-  const measure = candidate.orientation === "vertical" ? candidate.y : candidate.x;
-  const categoryChannel = candidate.orientation === "vertical" ? "x" : "y";
-  const measureChannel = candidate.orientation === "vertical" ? "y" : "x";
-  next = setCartesianPosition(next, owner.id, categoryChannel, {
-    field: category.field,
-    fieldType: category.fieldType,
-    scale: category.scale
-  });
-  next = setCartesianRange(
-    next,
-    owner.id,
-    measureChannel,
-    BOX_FIELDS.q1,
-    BOX_FIELDS.q3,
-    measure.scale,
-    candidate.measure
-  );
-  next = next._withMarkConfig(current.whiskerId, {
+  let next = updateDistributionPositions(
+    program,
+    owner,
+    current,
+    candidate,
+    {
+      owned,
+      lower: BOX_FIELDS.q1,
+      upper: BOX_FIELDS.q3,
+      title: candidate.measure,
+      update(next, { category, measure, categoryChannel, measureChannel }) {
+        next = next._withMarkConfig(current.whiskerId, {
     ...whiskerConfig,
     errorBar: {
       ...whiskerConfig.errorBar,
@@ -265,13 +133,13 @@ function updateBoxPositions(program, owner, current, candidate, {
       positionScale: category.scale,
       intervalScale: measure.scale
     }
-  });
-  next = setCartesianPosition(next, current.whiskerId, categoryChannel, {
+        });
+        next = setCartesianPosition(next, current.whiskerId, categoryChannel, {
     field: category.field,
     fieldType: category.fieldType,
     scale: category.scale
   });
-  next = setCartesianRange(
+        next = setCartesianRange(
     next,
     current.whiskerId,
     measureChannel,
@@ -279,8 +147,8 @@ function updateBoxPositions(program, owner, current, candidate, {
     BOX_FIELDS.upperWhisker,
     measure.scale,
     candidate.measure
-  );
-  for (const [index, capId] of capIds.entries()) {
+        );
+        for (const [index, capId] of capIds.entries()) {
     const field = index === 0 ? BOX_FIELDS.lowerWhisker : BOX_FIELDS.upperWhisker;
     next = setCartesianPosition(next, capId, categoryChannel, {
       field: category.field,
@@ -300,18 +168,18 @@ function updateBoxPositions(program, owner, current, candidate, {
           : "vertical"
       }
     });
-  }
-  next = setCartesianPosition(next, current.medianId, categoryChannel, {
+        }
+        next = setCartesianPosition(next, current.medianId, categoryChannel, {
     field: category.field,
     fieldType: category.fieldType,
     scale: category.scale
   });
-  next = setCartesianPosition(next, current.medianId, measureChannel, {
+        next = setCartesianPosition(next, current.medianId, measureChannel, {
     field: BOX_FIELDS.median,
     fieldType: "quantitative",
     scale: measure.scale
   });
-  if (hasOutliers && findLayer(next, current.outlierId) !== undefined) {
+        if (hasOutliers && findLayer(next, current.outlierId) !== undefined) {
     next = setCartesianPosition(next, current.outlierId, categoryChannel, {
       field: category.field,
       fieldType: category.fieldType,
@@ -322,25 +190,11 @@ function updateBoxPositions(program, owner, current, candidate, {
       fieldType: "quantitative",
       scale: measure.scale
     });
-  }
-  for (const id of new Set([candidate.xScale.id, candidate.yScale.id])) {
-    next = next.rematerializeScale({ id, marks: false, guides: false });
-  }
-  next = rebindDistributionGuides(next, {
-    oldXScale: candidate.previous.x.scale,
-    oldYScale: candidate.previous.y.scale,
-    newXScale: candidate.xScale.id,
-    newYScale: candidate.yScale.id,
-    oldXTitle: candidate.previous.x.field,
-    oldYTitle: candidate.previous.y.field,
-    newXTitle: candidate.x.field,
-    newYTitle: candidate.y.field,
-    oldMeasureChannel: current.orientation === "vertical" ? "y" : "x",
-    newMeasureChannel: candidate.orientation === "vertical" ? "y" : "x"
-  });
-  for (const scale of [candidate.xScale, candidate.yScale]) {
-    if (scale.edit !== undefined) next = next.editScale(scale.edit);
-  }
+        }
+        return next;
+      }
+    }
+  );
   next = next.rematerializeBarMark({ id: owner.id })
     .rematerializeErrorBar({ id: current.whiskerId });
   for (const capId of capIds) {
@@ -413,7 +267,9 @@ export const editBoxPlot = action(
       key => Object.hasOwn(args, key)
     );
     const changesRoles = !sameRoleCandidate(current, candidate);
-    if (changesRoles) {
+    const revisesData = JSON.stringify(whisker) !== JSON.stringify(current.whisker) ||
+      outliers !== current.outliers;
+    if (changesRoles || revisesData) {
       const derived = deriveBoxData(
         sourceDataset.values,
         normalizeBoxTransform({
@@ -556,7 +412,6 @@ export const editBoxPlot = action(
           currentData: candidate.source
         });
       };
-      applyEdit(this);
       return applyEdit(this);
     }
     if (roleRequested && !OPTIONS.slice(4).some(
@@ -568,109 +423,10 @@ export const editBoxPlot = action(
       });
     }
 
-    const revisesData = JSON.stringify(whisker) !== JSON.stringify(current.whisker) ||
-      outliers !== current.outliers;
-    const changesBox = Object.hasOwn(args, "box") ||
-      Object.hasOwn(args, "width") || revisesData;
-    const changesMedian = Object.hasOwn(args, "median") ||
-      Object.hasOwn(args, "width") || revisesData;
-    const changesOutlier = Object.hasOwn(args, "outlier") || revisesData;
-    const categoryEncoding = current.orientation === "vertical"
-      ? owner.encoding.x
-      : owner.encoding.y;
-    const measureEncoding = current.orientation === "vertical"
-      ? owner.encoding.y
-      : owner.encoding.x;
-    let summaryId = current.summaryId;
-    let outlierDataId = current.outlierDataId;
+    const changesBox = Object.hasOwn(args, "box") || Object.hasOwn(args, "width");
+    const changesMedian = Object.hasOwn(args, "median") || Object.hasOwn(args, "width");
+    const changesOutlier = Object.hasOwn(args, "outlier");
     let next = this;
-
-    const sourceRows = findDataset(this, current.source).values;
-    const derived = deriveBoxData(sourceRows, normalizeBoxTransform({
-      type: "boxSummary",
-      category: current.category,
-      field: current.measure,
-      whisker: whisker.type,
-      ...(whisker.factor === undefined ? {} : { factor: whisker.factor })
-    }));
-    const hasOutliers = outliers && whisker.type === "tukey" &&
-      derived.outliers.length > 0;
-
-    if (revisesData) {
-      const whiskerConfig = next.markConfigs[current.whiskerId];
-      const capIds = [
-        whiskerConfig.errorBar.lowerCapId,
-        whiskerConfig.errorBar.upperCapId
-      ].filter(id => id !== undefined);
-      const summaryRevision = planDerivedDataRevision(this, {
-        owner: owner.id,
-        role: "SummaryData",
-        previous: current.summaryId,
-        consumers: [owner.id, current.whiskerId, ...capIds, current.medianId]
-      });
-      summaryId = summaryRevision.id;
-      next = next.createBoxSummaryData({
-        id: summaryId,
-        source: current.source,
-        category: current.category,
-        field: current.measure,
-        whisker: whisker.type,
-        ...(whisker.factor === undefined ? {} : { factor: whisker.factor })
-      });
-      if (hasOutliers) {
-        const hadOutlierLayer = findLayer(next, current.outlierId) !== undefined;
-        const outlierRevision = planDerivedDataRevision(this, {
-          owner: owner.id,
-          role: "OutlierData",
-          ...(current.outlierDataId === undefined
-            ? {}
-            : { previous: current.outlierDataId }),
-          consumers: hadOutlierLayer ? [current.outlierId] : []
-        });
-        outlierDataId = outlierRevision.id;
-        next = next.createBoxOutlierData({
-          id: outlierDataId,
-          source: current.source,
-          category: current.category,
-          field: current.measure,
-          whisker: whisker.type,
-          factor: whisker.factor
-        });
-        for (const rebind of outlierRevision.rebinds) {
-          next = next.rebindLayerData(rebind);
-        }
-      } else {
-        outlierDataId = undefined;
-      }
-
-      for (const rebind of summaryRevision.rebinds) {
-        next = next.rebindLayerData(rebind);
-      }
-      next = next._withMarkConfig(current.whiskerId, {
-          ...whiskerConfig,
-          errorBar: { ...whiskerConfig.errorBar, data: summaryId }
-        });
-
-      const hadOutlierLayer = findLayer(next, current.outlierId) !== undefined;
-      if (hadOutlierLayer && !hasOutliers) {
-        next = removeOwnedMark(next, current.outlierId);
-      } else if (!hadOutlierLayer && hasOutliers) {
-        next = next.createBoxOutliers({
-          id: current.outlierId,
-          data: outlierDataId,
-          category: current.category,
-          categoryType: categoryEncoding.fieldType,
-          measure: current.measure,
-          orientation: current.orientation,
-          coordinate: owner.coordinate,
-          categoryScale: categoryEncoding.scale,
-          measureScale: measureEncoding.scale,
-          shape: outlier.shape,
-          radius: outlier.radius,
-          opacity: outlier.opacity
-        });
-      }
-    }
 
     next = next._withMarkConfig(owner.id, {
       ...next.markConfigs[owner.id],
@@ -682,8 +438,8 @@ export const editBoxPlot = action(
         box,
         median,
         outlier,
-        summaryId,
-        outlierDataId
+        summaryId: current.summaryId,
+        outlierDataId: current.outlierDataId
       },
       barWidth: { band: width },
       fill: box.fill,
@@ -693,9 +449,6 @@ export const editBoxPlot = action(
     });
 
     if (changesBox) next = next.rematerializeBarMark({ id: owner.id });
-    if (revisesData) {
-      next = next.rematerializeErrorBar({ id: current.whiskerId });
-    }
     if (changesMedian) {
       next = next
         .encodeStroke({ target: current.medianId, value: median.stroke })
@@ -714,12 +467,6 @@ export const editBoxPlot = action(
         .encodeRadius({ target: current.outlierId, value: outlier.radius });
     }
 
-    if (revisesData) {
-      next = next.releaseDerivedData({ id: current.summaryId });
-      if (current.outlierDataId !== undefined) {
-        next = next.releaseDerivedData({ id: current.outlierDataId });
-      }
-    }
     return next._withContext({ currentMark: owner.id, currentData: current.source });
   }
 );

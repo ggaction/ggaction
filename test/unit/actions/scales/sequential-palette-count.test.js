@@ -34,7 +34,11 @@ test("samples sequential top-level and range palette counts identically", () => 
 
 test("uses sequential count as concrete gradient-stop count for connected color", () => {
   const before = chart()
-    .createCanvas({ width: 420, height: 280, margin: 60 })
+    .createCanvas({
+      width: 420,
+      height: 280,
+      margin: { top: 60, right: 100, bottom: 60, left: 60 }
+    })
     .createData({ id: "source", values: VALUES })
     .createPointMark({ id: "points", data: "source" })
     .encodeX({ target: "points", field: "x" })

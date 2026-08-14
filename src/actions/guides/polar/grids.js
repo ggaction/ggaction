@@ -1,6 +1,7 @@
 import { action } from "../../../core/action.js";
 import {
   noOptions,
+  validateGeneratedItemLimit,
   validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite
@@ -54,6 +55,9 @@ function validateOptions(args, operation, create) {
   );
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
+  }
+  if (Array.isArray(args.values)) {
+    validateGeneratedItemLimit(args.values.length, "Polar grid value count");
   }
   if (Object.hasOwn(args, "color")) {
     validateNonEmptyString(args.color, "Polar grid color");

@@ -1,4 +1,9 @@
 import { resolveGraphicBounds } from "../layout/canvas.js";
+import {
+  formatVisibleText,
+  resolveTextBounds,
+  textBoundsIntersect
+} from "../core/textMetrics.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
   alignedTextAnchor,
@@ -12,9 +17,8 @@ import {
   clearCompositionChildren,
   compositionChildDescriptor
 } from "./composition.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../theme/defaults.js";
 
-const ZERO_MARGIN = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
+const ZERO_MARGIN = { top: 0, right: 0, bottom: 0, left: 0 };
 
 function facetConfig(program) {
   const config = program.materializationConfigs.facets?.[program.compositionSpec.id];
@@ -46,27 +50,33 @@ function titleLayout(program) {
   return { config, block, top, height: Math.ceil(top + block.height) };
 }
 
-function textItem(text, x, y, options = {}) {
-  return {
-    type: "text",
-    properties: {
-      x,
-      y,
-      text: String(text),
-      fill: options.color ?? DEFAULT_COLORS.strongText,
-      fontSize: options.fontSize ?? 12,
-      fontFamily: options.fontFamily ?? DEFAULT_FONT_FAMILY,
-      fontWeight: options.fontWeight ?? "normal",
-      textAlign: options.textAlign ?? "left",
-      textBaseline: options.textBaseline ?? "middle"
-    }
-  };
-}
-
 function collection(program, id, items) {
   return program
     .createGraphics({ id, type: "collection", parent: "canvas" })
     .editGraphics({ target: id, property: "items", value: items });
+}
+
+function assertFacetHeadersFit(items, layout, plotById) {
+  const previous = [];
+  for (let index = 0; index < items.length; index += 1) {
+    const bounds = resolveTextBounds(items[index].properties);
+    const cell = layout.children[index];
+    const plot = plotById.get(cell.id);
+    if (bounds.left < 0 || bounds.right > layout.width ||
+      bounds.top < 0 || bounds.bottom > layout.height ||
+      previous.some(item => textBoundsIntersect(item, bounds)) ||
+      textBoundsIntersect(bounds, {
+        left: cell.x + plot.x,
+        right: cell.x + plot.x + plot.width,
+        top: cell.y + plot.y,
+        bottom: cell.y + plot.y + plot.height
+      })) {
+      throw new Error(
+        "Facet headers require sufficient non-overlapping space above every child plot."
+      );
+    }
+    previous.push(bounds);
+  }
 }
 
 function materializeHeaders(program, layout, plots, config) {
@@ -76,20 +86,22 @@ function materializeHeaders(program, layout, plots, config) {
     if (plot === undefined) {
       throw new Error(`Facet header requires plot bounds for "${cell.id}".`);
     }
-    return textItem(
-      cell.value,
-      cell.x + plot.x + plot.width / 2,
-      cell.y + config.offset,
-      {
-        color: config.color,
+    return {
+      type: "text",
+      properties: {
+        x: cell.x + plot.x + plot.width / 2,
+        y: cell.y + config.offset,
+        text: formatVisibleText(cell.value),
+        fill: config.color,
         fontSize: config.fontSize,
         fontFamily: config.fontFamily,
         fontWeight: config.fontWeight,
         textAlign: "center",
-        textBaseline: "top"
+        textBaseline: "middle"
       }
-    );
+    };
   });
+  assertFacetHeadersFit(items, layout, plotById);
   return collection(program, `${program.compositionSpec.id}-headers`, items);
 }
 

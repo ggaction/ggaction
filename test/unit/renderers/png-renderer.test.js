@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -93,4 +93,48 @@ test("rejects a missing or empty output path", async () => {
     () => renderToPNG(pngProgram(), { output: "" }),
     /non-empty output path/
   );
+});
+
+test("rejects unsafe physical dimensions before replacing output", async () => {
+  const output = await outputPath();
+  await renderToPNG(pngProgram(), { output });
+  await writeFile(output, "existing");
+  const program = chart().createCanvas({
+    width: Number.MAX_VALUE,
+    height: 1,
+    margin: 0
+  });
+
+  await assert.rejects(
+    renderToPNG(program, { output, pixelRatio: 2 }),
+    /physical Canvas dimensions must be finite safe integers/
+  );
+  assert.equal(await readFile(output, "utf8"), "existing");
+});
+
+test("rejects unsafe native geometry before replacing output", async () => {
+  const output = await outputPath();
+  await renderToPNG(pngProgram(), { output });
+  await writeFile(output, "existing");
+  const program = {
+    graphicSpec: {
+      objects: {
+        canvas: {
+          type: "canvas",
+          properties: { width: 12, height: 8 }
+        },
+        unsafe: {
+          type: "circle",
+          properties: { x: 16_777_217, y: 0, radius: 1, fill: "red" }
+        }
+      },
+      order: ["canvas", "unsafe"]
+    }
+  };
+
+  await assert.rejects(
+    renderToPNG(program, { output }),
+    /Canvas native geometry.*16777216/
+  );
+  assert.equal(await readFile(output, "utf8"), "existing");
 });

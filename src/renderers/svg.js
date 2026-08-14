@@ -19,7 +19,8 @@ import {
 import { normalizeRendererFontWeight } from "./text.js";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-const SVG_OPTIONS = new Set(["title", "description"]);
+const SVG_OPTIONS = new Set(["title", "description", "resourceNamespace"]);
+const RESOURCE_NAMESPACE = /^[A-Za-z][A-Za-z0-9_-]*$/;
 const TEXT_ANCHORS = Object.freeze({
   left: "start",
   start: "start",
@@ -36,7 +37,28 @@ const DOMINANT_BASELINES = Object.freeze({
   bottom: "text-after-edge"
 });
 
+function resourceNamespace(graphicSpec) {
+  const serialized = JSON.stringify(graphicSpec);
+  let hash = 0xcbf29ce484222325n;
+  for (let index = 0; index < serialized.length; index += 1) {
+    hash ^= BigInt(serialized.charCodeAt(index));
+    hash = BigInt.asUintN(64, hash * 0x100000001b3n);
+  }
+  return hash.toString(36);
+}
+
 function escapeText(value) {
+  for (const character of value) {
+    const point = character.codePointAt(0);
+    if (!(
+      point === 9 || point === 10 || point === 13 ||
+      (point >= 0x20 && point <= 0xd7ff) ||
+      (point >= 0xe000 && point <= 0xfffd) ||
+      (point >= 0x10000 && point <= 0x10ffff)
+    )) {
+      throw new TypeError("SVG output requires XML 1.0-compatible strings.");
+    }
+  }
   return value
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -122,7 +144,8 @@ function requireCanvasBackground(id, canvas) {
 
 function addLinearGradient(state, fill, bounds, graphicId) {
   const coordinates = resolveLinearGradientCoordinates(fill, bounds);
-  const id = `ggaction-gradient-${state.gradientCount}`;
+  const id =
+    `ggaction-gradient-${state.resourceNamespace}-${state.gradientCount}`;
   state.gradientCount += 1;
   const stops = fill.stops.map(stop => element("stop", [
     ["offset", formatNumber(stop.offset)],
@@ -410,7 +433,7 @@ function openNestedCanvas(state, id, canvas) {
     canvas,
     { nested: true }
   );
-  const clipId = `ggaction-clip-${state.clipCount}`;
+  const clipId = `ggaction-clip-${state.resourceNamespace}-${state.clipCount}`;
   state.clipCount += 1;
   state.definitions.push(element("clipPath", [["id", clipId]], element(
     "rect",
@@ -504,6 +527,14 @@ function requireSVGOptions(options) {
       throw new TypeError(`renderToSVG ${key} must be a non-empty string.`);
     }
   }
+  if (
+    options.resourceNamespace !== undefined &&
+    !RESOURCE_NAMESPACE.test(options.resourceNamespace)
+  ) {
+    throw new TypeError(
+      "renderToSVG resourceNamespace must start with a letter and contain only letters, numbers, _ or -."
+    );
+  }
   return options;
 }
 
@@ -529,7 +560,9 @@ export function renderToSVG(program, options = {}) {
   const state = {
     clipCount: 1,
     definitions: [],
-    gradientCount: 1
+    gradientCount: 1,
+    resourceNamespace:
+      resolvedOptions.resourceNamespace ?? resourceNamespace(graphicSpec)
   };
   const body = serializeBody(
     graphicSpec,

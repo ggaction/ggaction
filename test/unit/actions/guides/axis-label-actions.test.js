@@ -4,7 +4,11 @@ import { chart } from "../../../../src/ChartProgram.js";
 
 function program() {
   return chart()
-    .createCanvas({ width: 200, height: 120, margin: 10 })
+    .createCanvas({
+      width: 250,
+      height: 170,
+      margin: { top: 10, right: 10, bottom: 60, left: 60 }
+    })
     .createData({ id: "data", values: [{ x: 0, y: 5 }, { x: 10, y: 15 }] })
     .createPointMark({ id: "points" })
     .encodeX({ field: "x" })
@@ -30,7 +34,11 @@ test("creates x/y labels from shared tick configurations", () => {
 
 test("formats decimals and records nested graphical edits", () => {
   const base = chart()
-    .createCanvas({ width: 200, height: 120, margin: 10 })
+    .createCanvas({
+      width: 250,
+      height: 170,
+      margin: { top: 10, right: 10, bottom: 60, left: 60 }
+    })
     .createData({ id: "data", values: [{ x: 0 }, { x: 1 }] })
     .createPointMark({ id: "points" })
     .encodeX({ field: "x" });
@@ -47,7 +55,10 @@ test("formats decimals and records nested graphical edits", () => {
 test("rejects conflicts and rematerializes after Canvas edits", () => {
   assert.throws(() => program().createXAxisLabels({ count: 5 }), /conflicts with axis ticks/);
   const created = program().createXAxisLabels();
-  const resized = created.editCanvas({ width: 300, margin: 20 });
+  const resized = created.editCanvas({
+    width: 350,
+    margin: { top: 20, right: 20, bottom: 70, left: 60 }
+  });
   assert.equal(resized.graphicSpec.objects.xAxisLabels.items[0].properties.y, 118);
   assert.equal(created.graphicSpec.objects.xAxisLabels.items[0].properties.y, 128);
 });
@@ -57,7 +68,7 @@ test("creates mirrored labels and edits their position and format immutably", ()
     .createCanvas({
       width: 260,
       height: 180,
-      margin: { top: 40, right: 60, bottom: 30, left: 30 }
+      margin: { top: 40, right: 60, bottom: 30, left: 60 }
     })
     .createData({ id: "data", values: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
     .createPointMark({ id: "points" })
@@ -111,7 +122,11 @@ test("switches y-label formats repeatedly and preserves font-weight boundaries",
 
 test("rejects incompatible formats and insufficient mirrored label margins", () => {
   const temporal = chart()
-    .createCanvas({ width: 240, height: 140, margin: 30 })
+    .createCanvas({
+      width: 260,
+      height: 140,
+      margin: { top: 30, right: 40, bottom: 30, left: 40 }
+    })
     .createData({
       id: "data",
       values: [{ date: "2020-01-01" }, { date: "2021-01-01" }]
@@ -136,6 +151,20 @@ test("rejects incompatible formats and insufficient mirrored label margins", () 
   );
   assert.throws(
     () => program().createYAxisLabels({ position: "right" }),
+    /do not fit the Canvas margin/
+  );
+
+  const cramped = program().editCanvas({
+    width: 200,
+    height: 120,
+    margin: 7
+  });
+  assert.throws(
+    () => cramped.createXAxisLabels(),
+    /do not fit the Canvas margin/
+  );
+  assert.throws(
+    () => cramped.createYAxisLabels(),
     /do not fit the Canvas margin/
   );
 });

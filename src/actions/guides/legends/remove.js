@@ -99,6 +99,14 @@ export function removeLegendKinds(program, kinds) {
   return next;
 }
 
+export function removeOwnedColorLegends(program, target) {
+  const kinds = Object.entries(program.guideConfigs.legend ?? {})
+    .filter(([kind, config]) => config?.target === target && (
+      config.channels?.includes("color") || ["gradient", "interval"].includes(kind)
+    )).map(([kind]) => kind);
+  return kinds.length === 0 ? program : removeLegendKinds(program, kinds);
+}
+
 export const removeLegend = action(
   { op: "removeLegend", description: "Remove every legend block owned by one mark." },
   function (args = {}) {

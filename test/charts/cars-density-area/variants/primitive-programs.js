@@ -10,7 +10,11 @@ export function createWrappedBottomTitlePrimitives(cars) {
     .editGraphics({ target: "canvas", property: "height", value: target.height })
     .editSemantic({ property: "title.text", value: target.options.text })
     .editSemantic({ property: "title.subtitle", value: target.options.subtitle })
-    .editGraphics({ target: "chartTitle", property: "length", value: 2 })
+    .editGraphics({
+      target: "chartTitle",
+      property: "length",
+      value: target.title.lines.length
+    })
     .editGraphics({ target: "chartTitle", property: "x", value: target.title.x })
     .editGraphics({ target: "chartTitle", property: "y", value: target.title.y })
     .editGraphics({

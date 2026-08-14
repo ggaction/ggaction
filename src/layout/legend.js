@@ -1,3 +1,8 @@
+import {
+  formatVisibleText,
+  measureTextWidth
+} from "../core/textMetrics.js";
+
 export function measureLegendSymbolHeight(config) {
   return Math.max(...config.symbol.layers.map(layer => {
     if (layer.type === "swatch") return layer.height;
@@ -6,41 +11,38 @@ export function measureLegendSymbolHeight(config) {
   }));
 }
 
-export function measureLegendTextWidth(value) {
-  return String(value).length * 7;
+export function measureLegendTextWidth(value, style = { fontSize: 12 }) {
+  return measureTextWidth(formatVisibleText(value), style);
 }
 
 export function resolveLegendGrid(config, width, count) {
-  const labels = config.domain.map(String);
+  const labels = config.domain.map(formatVisibleText);
   const itemWidths = labels.map(
-    label => width + config.labels.offset + label.length * 7
+    label => width + config.labels.offset +
+      measureLegendTextWidth(label, config.labels)
   );
   const columnCount = Math.min(config.columns ?? count, count);
   const rowCount = Math.ceil(count / columnCount);
+  const columnWidths = [];
   const cells = Array.from({ length: count }, (_, index) => {
-    if (config.direction === "horizontal") {
-      return { column: index % columnCount, row: Math.floor(index / columnCount) };
-    }
-    return {
-      column: Math.floor(index / rowCount),
-      row: index % rowCount
-    };
+    const cell = config.direction === "horizontal"
+      ? { column: index % columnCount, row: Math.floor(index / columnCount) }
+      : { column: Math.floor(index / rowCount), row: index % rowCount };
+    columnWidths[cell.column] = Math.max(
+      columnWidths[cell.column] ?? 0,
+      itemWidths[index]
+    );
+    return cell;
   });
-  const actualColumns = Math.max(...cells.map(cell => cell.column)) + 1;
-  const actualRows = Math.max(...cells.map(cell => cell.row)) + 1;
-  const columnWidths = Array.from({ length: actualColumns }, (_, column) =>
-    Math.max(...cells.map((cell, index) =>
-      cell.column === column ? itemWidths[index] : 0
-    ))
-  );
+  const actualColumns = columnWidths.length;
   const gridWidth = columnWidths.reduce((sum, value) => sum + value, 0) +
     config.itemGap * Math.max(0, actualColumns - 1);
   const rowHeight = Math.max(
     config.labels.fontSize,
     measureLegendSymbolHeight(config)
   );
-  const gridHeight = rowHeight * actualRows +
-    config.itemGap * Math.max(0, actualRows - 1);
+  const gridHeight = rowHeight * rowCount +
+    config.itemGap * Math.max(0, rowCount - 1);
   return { cells, columnWidths, gridWidth, gridHeight, rowHeight };
 }
 

@@ -255,6 +255,47 @@ test("collects grouped bar axes, grid, and right legend", () => {
   );
 });
 
+test("preserves unusual nominal values while making empty labels visible", () => {
+  const program = chart()
+    .createCanvas({
+      width: 900,
+      height: 500,
+      margin: { top: 60, right: 220, bottom: 100, left: 100 }
+    })
+    .createData({
+      id: "categories",
+      values: [
+        { category: "", value: 1 },
+        { category: "  ", value: 2 },
+        { category: "NaN", value: 3 },
+        { category: "Infinity", value: 4 },
+        { category: "undefined", value: 5 }
+      ]
+    })
+    .createBarMark({ id: "bars" })
+    .encodeX({ field: "category", fieldType: "nominal" })
+    .encodeY({ field: "value", aggregate: "sum" })
+    .encodeColor({ field: "category" })
+    .createGuides({ grid: false });
+
+  const domain = ["", "  ", "NaN", "Infinity", "undefined"];
+  const visible = ["(empty)", "  ", "NaN", "Infinity", "undefined"];
+  assert.deepEqual(program.resolvedScales.x.domain, domain);
+  assert.deepEqual(program.resolvedScales.color.domain, domain);
+  assert.deepEqual(
+    program.graphicSpec.objects.xAxisLabels.items.map(
+      item => item.properties.text
+    ),
+    visible
+  );
+  assert.deepEqual(
+    program.graphicSpec.objects.colorLegendLabels.items.map(
+      item => item.properties.text
+    ),
+    visible
+  );
+});
+
 test("forwards grouped guide options, supports opt-out, and rematerializes", () => {
   const configured = createGroupedBars().createGuides({
     axes: {

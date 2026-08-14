@@ -19,9 +19,9 @@ test("locks independent discrete heatmap cells and continuous colors", () => {
     country: "Afghanistan",
     year: 1955,
     value: 43.88,
-    x: 110,
+    x: 109.99999999999999,
     y: 70,
-    width: 48.18181818181818,
+    width: 47.27272727272727,
     height: 49.166666666666664,
     fill: "#365e8d",
     label: "44",
@@ -52,8 +52,8 @@ test("locks explicit ranged rect endpoints independently from discrete mapping",
 
   assert.equal(ranged.length, 4);
   assert.deepEqual(ranged[0], {
-    x: 110,
-    x2: 158.1818181818182,
+    x: 109.99999999999999,
+    x2: 157.27272727272725,
     y: 70,
     y2: 119.16666666666666,
     fill: "#365e8d"

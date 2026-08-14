@@ -192,13 +192,13 @@ test("maps density areas, two-direction grids, axes, and top legend", () => {
     ["top", "vertical", 3, "left"]
   );
   assert.deepEqual(values.legend.title, {
-    x: 243,
+    x: 252.0144,
     y: 116,
     text: "Origin",
     textAlign: "left"
   });
-  assert.equal(values.legend.items[0].x, 305);
-  assert.equal(values.legend.width, 274);
+  assert.equal(values.legend.items[0].x, 306.6256);
+  assert.equal(values.legend.width, 255.9712);
 });
 
 test("keeps top legend titles available as the general default geometry", () => {
@@ -212,7 +212,7 @@ test("keeps top legend titles available as the general default geometry", () => 
     text: "Origin",
     textAlign: "center"
   });
-  assert.equal(values.legend.items[0].x, 274);
+  assert.equal(values.legend.items[0].x, 279.32);
   assert.throws(
     () => createCarsDensityAreaValues(loadCars(), {
       legendTitlePosition: "middle"

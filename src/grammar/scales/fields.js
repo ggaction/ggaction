@@ -55,13 +55,30 @@ export function readQuantitativeField(rows, field) {
 }
 
 function utcDate(year, month = 1, day = 1) {
-  const timestamp = Date.UTC(year, month - 1, day);
-  const date = new Date(timestamp);
+  const date = new Date(0);
+  date.setUTCFullYear(year, month - 1, day);
+  date.setUTCHours(0, 0, 0, 0);
+  const timestamp = date.getTime();
+  if (!Number.isFinite(timestamp)) return undefined;
   return date.getUTCFullYear() === year &&
     date.getUTCMonth() === month - 1 &&
     date.getUTCDate() === day
     ? timestamp
     : undefined;
+}
+
+function parseTemporalString(value) {
+  const isoDateTime =
+    /^(\d{4})[-/](\d{2})[-/](\d{2})[T ](\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?)(Z|[+-]\d{2}:?\d{2})?$/iu
+      .exec(value);
+  if (isoDateTime === null) return Date.parse(value);
+  const [, year, month, day, time, zone] = isoDateTime;
+  const normalized = `${year}-${month}-${day}T${time}${zone ?? "Z"}`;
+  return Date.parse(normalized);
+}
+
+function validTimestamp(value) {
+  return Number.isFinite(value) && Number.isFinite(new Date(value).getTime());
 }
 
 export function normalizeTemporalValue(value, field = "value", index = 0) {
@@ -77,9 +94,9 @@ export function normalizeTemporalValue(value, field = "value", index = 0) {
       ? utcDate(Number(year[1]))
       : date !== null
         ? utcDate(Number(date[1]), Number(date[2]), Number(date[3]))
-        : Date.parse(value);
+        : parseTemporalString(value);
   }
-  if (!Number.isFinite(timestamp)) {
+  if (!validTimestamp(timestamp)) {
     throw new TypeError(
       `Field "${field}" must contain a temporal string or finite timestamp ` +
       `(including a valid date or four-digit year) at row ${index}.`

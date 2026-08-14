@@ -5,23 +5,18 @@ import {
   deriveRegression,
   normalizeRegressionParameters
 } from "../../grammar/regression/index.js";
-import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
+import { derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "x", "y", "groupBy", "method", "degree", "span",
   "confidence", "interval"
 ]);
 
-export const materializeRegressionData = action(
-  { op: "materializeRegressionData", description: "Materialize one regression derived dataset." },
-  function (args = {}) {
-    validateKeys(args, MATERIALIZE_OPTIONS, "materializeRegressionData");
-    const { id, source, transform } = requireDerivedDataset(
-      this,
-      args.id,
-      "regression"
-    );
-    const result = deriveRegression(source.values, {
+export const materializeRegressionData = derivedMaterializer(
+  "materializeRegressionData",
+  "Materialize one regression derived dataset.",
+  "regression",
+  (values, transform) => deriveRegression(values, {
       x: transform.x,
       y: transform.y,
       groupBy: transform.groupBy,
@@ -30,12 +25,7 @@ export const materializeRegressionData = action(
       span: transform.span,
       confidence: transform.confidence,
       interval: transform.interval
-    });
-    return this.editSemantic({
-      property: `dataset[${id}].values`,
-      value: result.values
-    });
-  }
+    })
 );
 
 export const createRegressionData = action(

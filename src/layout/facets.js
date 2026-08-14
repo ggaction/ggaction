@@ -59,24 +59,20 @@ export function resolveFacetLayout({
     "Facet shared legend width"
   );
   const rowCount = Math.ceil(resolvedChildren.length / resolvedColumns);
-  const columnWidths = Array.from({ length: resolvedColumns }, (_, column) =>
-    Math.max(...resolvedChildren
-      .filter((_, index) => index % resolvedColumns === column)
-      .map(child => child.width))
-  );
-  const rowHeights = Array.from({ length: rowCount }, (_, row) =>
-    Math.max(...resolvedChildren
-      .slice(row * resolvedColumns, (row + 1) * resolvedColumns)
-      .map(child => child.height))
-  );
+  const columnWidths = Array(resolvedColumns).fill(-Infinity);
+  const rowHeights = Array(rowCount).fill(-Infinity);
+  resolvedChildren.forEach((child, index) => {
+    const column = index % resolvedColumns;
+    const row = Math.floor(index / resolvedColumns);
+    columnWidths[column] = Math.max(columnWidths[column], child.width);
+    rowHeights[row] = Math.max(rowHeights[row], child.height);
+  });
   const columnStarts = columnWidths.map((_, column) =>
-    resolvedPadding.left + columnWidths
-      .slice(0, column)
+    resolvedPadding.left + columnWidths.slice(0, column)
       .reduce((sum, width) => sum + width, 0) + resolvedGap * column
   );
   const rowStarts = rowHeights.map((_, row) =>
-    resolvedTitleHeight + resolvedPadding.top + rowHeights
-      .slice(0, row)
+    resolvedTitleHeight + resolvedPadding.top + rowHeights.slice(0, row)
       .reduce((sum, height) => sum + height, 0) + resolvedGap * row
   );
   const placements = resolvedChildren.map((child, index) => {

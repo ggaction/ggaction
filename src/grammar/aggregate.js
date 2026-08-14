@@ -1,4 +1,12 @@
 import { isPlainObject } from "../core/immutable.js";
+import {
+  interpolateNumber,
+  numericExtent,
+  requireFiniteResult,
+  stableFiniteDeviation,
+  stableFiniteMean,
+  stableFiniteSum
+} from "./numeric.js";
 
 export const SCALAR_AGGREGATE_OPERATIONS = Object.freeze([
   "count", "sum", "mean", "median", "min", "max",
@@ -8,8 +16,8 @@ export const SCALAR_AGGREGATE_OPERATIONS = Object.freeze([
 ]);
 
 const SCALAR_OPERATIONS = new Set(SCALAR_AGGREGATE_OPERATIONS);
-const NOMINAL_OPERATIONS = new Set(["count", "distinct", "valid", "missing"]);
-const PARAMETERIZED_OPERATIONS = new Set(["quantile", "first", "last"]);
+const NOMINAL_OPERATIONS = ["count", "distinct", "valid", "missing"];
+const PARAMETERIZED_OPERATIONS = ["quantile", "first", "last"];
 
 function nonEmptyString(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -22,7 +30,7 @@ export function isScalarAggregate(value) {
 }
 
 export function isParameterizedAggregate(value) {
-  return isPlainObject(value) && PARAMETERIZED_OPERATIONS.has(value.op);
+  return isPlainObject(value) && PARAMETERIZED_OPERATIONS.includes(value.op);
 }
 
 export function isAggregate(value) {
@@ -95,7 +103,7 @@ export function validateScalarAggregateFieldType(operation, fieldType) {
     throw new Error("Scalar aggregate calculation requires a scalar operation.");
   }
   if (fieldType === "quantitative") return fieldType;
-  if (fieldType === "nominal" && NOMINAL_OPERATIONS.has(operation)) {
+  if (fieldType === "nominal" && NOMINAL_OPERATIONS.includes(operation)) {
     return fieldType;
   }
   throw new Error(
@@ -139,8 +147,11 @@ function quantile(values, probability) {
   const position = (ordered.length - 1) * probability;
   const lower = Math.floor(position);
   const upper = Math.ceil(position);
-  return ordered[lower] +
-    (ordered[upper] - ordered[lower]) * (position - lower);
+  return interpolateNumber(
+    ordered[lower],
+    ordered[upper],
+    position - lower
+  );
 }
 
 function comparableOrderKey(value) {
@@ -179,15 +190,6 @@ function aggregateOrderedRows(rows, field, aggregate) {
     : candidates.at(-1).value;
 }
 
-function moments(values) {
-  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
-  const squared = values.reduce(
-    (sum, value) => sum + (value - mean) ** 2,
-    0
-  );
-  return { mean, squared };
-}
-
 export function aggregateScalarValues(values, operation) {
   if (!Array.isArray(values)) {
     throw new TypeError("Aggregate values must be an array.");
@@ -206,27 +208,45 @@ export function aggregateScalarValues(values, operation) {
   const finite = finiteValues(values);
   if (finite.length === 0) return undefined;
   if (operation === "sum") {
-    return finite.reduce((sum, value) => sum + value, 0);
+    return stableFiniteSum(finite, "Aggregate sum");
   }
-  if (operation === "min") return Math.min(...finite);
-  if (operation === "max") return Math.max(...finite);
+  if (operation === "min") return numericExtent(finite)[0];
+  if (operation === "max") return numericExtent(finite)[1];
   if (operation === "median") return quantile(finite, 0.5);
   if (operation === "q1") return quantile(finite, 0.25);
   if (operation === "q3") return quantile(finite, 0.75);
 
-  const { mean, squared } = moments(finite);
+  const mean = stableFiniteMean(finite, "Aggregate mean");
   if (operation === "mean") return mean;
-  if (operation === "varianceP") return squared / finite.length;
-  if (operation === "stdevP") return Math.sqrt(squared / finite.length);
+  if (["variance", "varianceP", "stdev", "stdevP"].includes(operation)) {
+    const population = operation.endsWith("P");
+    if (!population && finite.length < 2) return undefined;
+    const kind = population ? "population" : "sample";
+    const deviation = stableFiniteDeviation(finite, {
+      sample: !population,
+      label: `Aggregate ${kind} deviation`
+    });
+    if (operation.startsWith("stdev")) return deviation.deviation;
+    return deviation.squared === undefined
+      ? requireFiniteResult(
+          deviation.deviation ** 2,
+          `Aggregate ${kind} variance`
+        )
+      : deviation.squared / (finite.length - (population ? 0 : 1));
+  }
   if (finite.length < 2) return undefined;
-
-  const variance = squared / (finite.length - 1);
-  if (operation === "variance") return variance;
-  if (operation === "stdev") return Math.sqrt(variance);
-  const stderr = Math.sqrt(variance) / Math.sqrt(finite.length);
+  const stderr = stableFiniteDeviation(finite, {
+    sample: true,
+    divisor: Math.sqrt(finite.length),
+    label: "Aggregate standard error"
+  }).deviation;
   if (operation === "stderr") return stderr;
-  if (operation === "ciLower") return mean - 1.96 * stderr;
-  if (operation === "ciUpper") return mean + 1.96 * stderr;
+  if (operation === "ciLower") {
+    return requireFiniteResult(mean - 1.96 * stderr, "Aggregate lower CI");
+  }
+  if (operation === "ciUpper") {
+    return requireFiniteResult(mean + 1.96 * stderr, "Aggregate upper CI");
+  }
   throw new Error(`Unsupported scalar aggregate "${operation}".`);
 }
 

@@ -52,3 +52,24 @@ test("rejects malformed points, commands, sequences, and close options", () => {
     assert.throws(() => validatePathCommands(commands), message);
   }
 });
+
+test("bounds explicit and generated path command arrays", () => {
+  const points = Array.from(
+    { length: 10_000 },
+    (_, index) => ({ x: index, y: index % 2 })
+  );
+  assert.equal(buildLinearPathCommands(points).length, 10_000);
+  assert.throws(
+    () => buildLinearPathCommands(points, { close: true }),
+    /Linear path command count must not exceed 10000/
+  );
+  assert.throws(
+    () => validatePathCommands([
+      { op: "M", x: 0, y: 0 },
+      ...Array.from({ length: 10_000 }, (_, index) => ({
+        op: "L", x: index + 1, y: 0
+      }))
+    ]),
+    /path.commands length must not exceed 10000/
+  );
+});

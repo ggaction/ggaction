@@ -1,5 +1,6 @@
 import { validateUserId } from "../../../core/identifiers.js";
 import {
+  validateGeneratedItemLimit,
   validateNonEmptyString,
   validateNonNegativeFinite,
   validatePositiveFinite
@@ -174,6 +175,7 @@ export function resolvePolarTickValues(program, config) {
     if (config.mode !== "values") {
       throw new Error("Discrete theta guides require explicit or inferred values.");
     }
+    validateGeneratedItemLimit(config.values.length, "Polar guide value count");
     const domain = new Set(scale.domain);
     if (!config.values.every(value => domain.has(value))) {
       throw new RangeError("Polar guide values must be inside the scale domain.");
@@ -181,6 +183,7 @@ export function resolvePolarTickValues(program, config) {
     return config.values;
   }
   const values = valuesFromTickConfig(program, config);
+  validateGeneratedItemLimit(values.length, "Polar guide value count");
   const low = Math.min(...scale.domain);
   const high = Math.max(...scale.domain);
   if (!values.every(value => value >= low && value <= high)) {
@@ -237,6 +240,9 @@ export function validatePolarTickConfig(config, label) {
   if (config.mode === "count" &&
       (!Number.isInteger(config.count) || config.count <= 0)) {
     throw new RangeError(`${label} count must be a positive integer.`);
+  }
+  if (config.mode === "count") {
+    validateGeneratedItemLimit(config.count, `${label} count`);
   }
   if (config.mode === "values" && (
     !Array.isArray(config.values) || config.values.length === 0 ||

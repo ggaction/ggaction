@@ -1,5 +1,8 @@
 import { action } from "../../../core/action.js";
-import { validateKeys } from "../../../core/validation.js";
+import {
+  validateGeneratedItemLimit,
+  validateKeys
+} from "../../../core/validation.js";
 import { mapLinearValues } from "../../../grammar/scales/index.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
@@ -9,6 +12,10 @@ import { resolveLayout as resolveCategoricalLayout } from
 import { findLayer } from "../../../selectors/layers.js";
 import { findCanvasGraphic, resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
+import {
+  formatContinuousValues,
+  sampleContinuousValues
+} from "./continuous/common.js";
 
 const SIZE_OPTIONS = Object.freeze(["target", "count"]);
 
@@ -107,11 +114,7 @@ export const rematerializeSizeLegend = action(
     const originX = leftLayout?.titleX ?? plot.x + plot.width + 30;
     const seriesCount = categorical?.domain.length ?? 0;
     const titleY = leftLayout?.titleY ?? plot.y + 56 + seriesCount * 34 + 22;
-    const values = Array.from(
-      { length: currentConfig.count },
-      (_, index) => scale.domain[0] +
-        index / (currentConfig.count - 1) * (scale.domain[1] - scale.domain[0])
-    );
+    const values = sampleContinuousValues(scale.domain, currentConfig.count);
     const areas = mapLinearValues(values, scale.domain, scale.range, {
       clamp: scale.clamp ?? false
     });
@@ -143,7 +146,7 @@ export const rematerializeSizeLegend = action(
       .editGraphics({
         target: "sizeLegendLabels",
         property: "text",
-        value: values.map(value => String(+value.toPrecision(3)))
+        value: formatContinuousValues(values, scale.domain, "quantitative")
       })
       .editGraphics({ target: "sizeLegendTitle", property: "x", value: originX })
       .editGraphics({ target: "sizeLegendTitle", property: "y", value: titleY })
@@ -179,6 +182,7 @@ export const createSizeLegend = action(
     if (!Number.isInteger(count) || count < 2) {
       throw new RangeError("Size legend count must be an integer of at least 2.");
     }
+    validateGeneratedItemLimit(count, "Size legend count");
     return this
       .editSemantic({ property: "guide.legend.size.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.size.title", value: encoding.field })

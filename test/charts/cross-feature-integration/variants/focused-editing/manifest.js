@@ -150,7 +150,20 @@ const guidesCallChain = `chart()
   .encodeY({ field: "Miles_per_Gallon" })
   .encodeColor({ field: "Origin" })
   .encodeRadius({ value: 3 })
-  .createGuides()
+  .createGuides({
+    axes: {
+      x: {
+        position: "top",
+        ticksAndLabels: { labels: { offset: 12, format: ".1f" } },
+        title: { offset: 62 }
+      },
+      y: {
+        position: "right",
+        ticksAndLabels: { labels: { offset: 12, format: ".1f" } },
+        title: { text: "Miles per Gallon", offset: 70 }
+      }
+    }
+  })
   .editXAxis({
     position: "top",
     ticksAndLabels: { labels: { offset: 12, format: ".1f" } },
@@ -311,7 +324,7 @@ const markRemovalCallChain = `chart()
   .createCanvas({
     width: 456,
     height: 312,
-    margin: { top: 58, right: 22, bottom: 54, left: 70 }
+    margin: { top: 58, right: 22, bottom: 54, left: 100 }
   })
   .createData({ values: gapminder })
   .filterData({
@@ -361,7 +374,7 @@ const markRemovalCallChain = `chart()
     titleStyle: { fontSize: 18, fontWeight: 700 },
     subtitleStyle: { fontSize: 12 }
   })
-  .editYAxis({ labels: { format: ".2e" }, title: { offset: 58 } })
+  .editYAxis({ labels: { format: ".2e" }, title: { offset: 88 } })
   .removeMark({ target: "point" });`;
 
 export const visualVariants = Object.freeze([

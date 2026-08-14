@@ -2,6 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
+import {
+  formatDiscretizedIntervals,
+  resolveDiscretizedColorScale
+} from "../../../../src/grammar/scales/index.js";
+import { graphicDrawOrder } from "../../../support/graphic-tree.js";
 
 const rows = Object.freeze([
   Object.freeze({ x: 1, y: 1, value: 10 }),
@@ -14,7 +19,7 @@ function program(scale) {
     .createCanvas({
       width: 200,
       height: 160,
-      margin: { top: 30, right: 80, bottom: 30, left: 30 }
+      margin: { top: 30, right: 120, bottom: 30, left: 30 }
     })
     .createData({ values: rows })
     .createPointMark()
@@ -93,6 +98,33 @@ test("edits an interval legend through the shared public legend action", () => {
   );
 });
 
+test("creates, edits, and removes interval legend borders", () => {
+  const original = program({
+    type: "threshold",
+    domain: [15, 25],
+    range: ["red", "green", "blue"]
+  }).createLegend({
+    border: { background: "white", color: "navy", padding: 4 },
+    labels: { fontSize: 10 },
+    titleStyle: { fontSize: 10 }
+  });
+  const background = original.graphicSpec.objects.colorLegendBackground;
+  assert.equal(background.properties.fill, "white");
+  assert.equal(background.properties.stroke, "navy");
+  assert.equal(
+    graphicDrawOrder(original).indexOf("colorLegendBackground") <
+      graphicDrawOrder(original).indexOf("colorLegendSymbols"),
+    true
+  );
+
+  const withoutBorder = original.editLegend({ border: false });
+  assert.equal(withoutBorder.graphicSpec.objects.colorLegendBackground, undefined);
+  const restored = withoutBorder.editLegend({ border: true });
+  assert.ok(restored.graphicSpec.objects.colorLegendBackground);
+  const removed = restored.removeLegend({ channels: ["color"] });
+  assert.equal(removed.graphicSpec.objects.colorLegendBackground, undefined);
+});
+
 test("rematerializes a shared discretized scale and interval legend after Canvas edits", () => {
   const scale = {
     type: "threshold",
@@ -155,4 +187,64 @@ test("rejects unsupported and invalid discretized color options atomically", () 
     }
   }), /strictly increasing/);
   assert.equal(base.semanticSpec.scales.some(scale => scale.id === "color"), false);
+});
+
+test("keeps public discretized color classes finite across the full numeric range", () => {
+  const extremeRows = [-1e308, 0, 1e308].map((value, index) => ({
+    x: index,
+    y: index,
+    value
+  }));
+  for (const type of ["quantize", "quantile"]) {
+    const result = chart()
+      .createCanvas({ width: 240, height: 180 })
+      .createData({ values: extremeRows })
+      .createPointMark()
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .encodeColor({
+        field: "value",
+        fieldType: "quantitative",
+        scale: {
+          type,
+          ...(type === "quantize" ? { domain: [-1e308, 1e308] } : {}),
+          range: ["#000000", "#333333", "#777777", "#bbbbbb", "#ffffff"]
+        }
+      });
+    const scale = result.resolvedScales.color;
+    assert.equal(scale.thresholds.every(Number.isFinite), true, type);
+    assert.deepEqual(
+      result.graphicSpec.objects.point.items.map(item => item.properties.fill),
+      ["#000000", "#777777", "#ffffff"]
+    );
+  }
+});
+
+test("rejects unrepresentable quantize classes and preserves tiny interval labels", () => {
+  for (const domain of [
+    [1e308, 1.0000000000000002e308],
+    [Number.MIN_VALUE, Number.MIN_VALUE * 2]
+  ]) {
+    assert.throws(() => resolveDiscretizedColorScale({
+      type: "quantize",
+      domain,
+      range: "auto",
+      values: domain
+    }), /more classes than its numeric domain can represent/);
+  }
+  assert.deepEqual(formatDiscretizedIntervals([Number.MIN_VALUE, 1e-323]), [
+    "< 5e-324",
+    "5e-324–1e-323",
+    "≥ 1e-323"
+  ]);
+  assert.deepEqual(formatDiscretizedIntervals([0.04, 0.05]), [
+    "< 0.04",
+    "0.04–0.05",
+    "≥ 0.05"
+  ]);
+  assert.deepEqual(formatDiscretizedIntervals([15, 25]), [
+    "< 15",
+    "15–25",
+    "≥ 25"
+  ]);
 });

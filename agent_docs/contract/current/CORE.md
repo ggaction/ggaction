@@ -166,7 +166,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   appearance order가 group order다.
 - `method`: Implemented `"linear" | "polynomial" | "loess"`. 기본값은 `"linear"`다.
 - `degree`, `span`: Implemented method-specific parameter다. polynomial degree 기본값은 `2`, LOESS
-  span 기본값은 `0.75`이며 다른 method와 함께 주면 오류다.
+  span 기본값은 `0.75`이며 다른 method와 함께 주면 오류다. Degree는 `1..32`다.
 - `confidence`: Implemented. `(0, 1)`의 finite number이며 기본값은 `0.95`다. Student-t
   mean-response confidence bounds의 폭을 바꾼다.
 - `interval`: Implemented `"mean" | "prediction"`이며 linear/polynomial에서만 허용한다.
@@ -174,7 +174,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Effect: source, fields, grouping과 resolved method defaults를 transform provenance에 저장하고 observed
   unique x별 fitted row를 materialize한다. Polynomial은 normalized basis의 stable least squares를 사용하고
   LOESS는 source-order tie를 가진 tricube local-linear neighbors를 사용한다. Linear/polynomial은
-  lower/upper를 만들고 LOESS는 fitted y만 만든다. graphic은 직접 만들지 않는다.
+  lower/upper를 만들고 LOESS는 fitted y만 만든다. Finite extreme input은 centered/scaled arithmetic으로
+  계산하며 fitted value, model coefficient 또는 interval endpoint가 finite number로 표현될 수 없으면
+  materialization 전에 명확히 거부한다. 전체 unique group/x output은 최대 `10,000` rows다.
+  Polynomial work `sum(n*(degree+1)^2+(degree+1)^3)`와 LOESS work
+  `sum(n*uniqueX*ceil(log2(n+1)))`는 각각 `10,000,000`을 넘기 전에 거부한다. graphic은 직접 만들지 않는다.
 - Coverage: `test/unit/actions/data/regression-data.test.js`와
   `test/charts/cars-regression-scatterplot/reference-values.test.js`가 grouped/ungrouped 값,
   confidence bounds와 invalid/degenerate groups를 검증한다. 여러 confidence 대표값 coverage는 부분적이다.
@@ -198,6 +202,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `interval`
   - ✅ Covered: `"mean"`과 unknown value rejection.
   - ✅ Covered: `"prediction"` for linear/polynomial with residual variance and Student-t bounds.
+- Numeric range
+  - ✅ Covered: overflow-safe linear/polynomial response means, full-range LOESS distance normalization,
+    finite fitted rows와 unrepresentable interval rejection.
 - Evidence: `test/unit/actions/data/regression-data.test.js`,
   `test/charts/cars-regression-scatterplot/reference-values.test.js`.
 
@@ -215,7 +222,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Effect: 모든 group이 공유하는 sample grid의 시작과 끝을 결정한다. requested `"auto"`는 그대로
     보존하고 concrete extent는 `resolved.extent`에 저장한다.
 - `steps`
-  - Status: Implemented. 2 이상의 integer이며 기본값은 `100`이다.
+  - Status: Implemented. `2..10,000` integer이며 기본값은 `100`이다.
   - Effect: inclusive grid의 row 수와 area path resolution을 결정한다.
 - `kernel`
   - Status: Implemented. `"gaussian" | "epanechnikov" | "uniform" | "triangular"`; 기본값은
@@ -231,7 +238,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Effect: derived row와 이후 encoding이 참조할 output field 이름을 결정한다.
 - Effect: grouped KDE provenance와 deterministic values를 저장한다. Requested bandwidth/extent와
   revision-owned resolved bandwidth/extent를 분리하며, resolved kernel과 normalization default도 항상
-  provenance에 기록한다.
+  provenance에 기록한다. Finite extent difference가 overflow해도 convex interpolation으로 sample grid를
+  만들며, requested step 수만큼 strictly increasing finite sample이나 finite density를 표현할 수 없으면
+  derived dataset을 만들기 전에 거부한다.
 - Coverage: `test/unit/actions/data/density-data.test.js`와
   `test/charts/cars-density-area/reference-values.test.js`가 auto/explicit bandwidth, extent,
   grouped/ungrouped, ownership과 오류를 검증한다. steps의 여러 경계/대표 조합은 부분적이다.
@@ -264,6 +273,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: four formulas, Gaussian default, invalid value, provenance와 primitive/public parity.
 - `normalization`
   - ✅ Covered: unit/count formulas, unit default, group-local scaling, invalid value와 provenance.
+- Numeric range
+  - ✅ Covered: full finite-range extent interpolation, large-offset auto bandwidth, finite density invariant와
+    unrepresentable grid/estimate rejection.
+- Resource limits: 실제 non-empty group/split profile의 `steps` 합은 최대 `10,000` rows이며,
+  `validRows * steps` density work는 최대 `10,000,000`이다.
 - Evidence: `test/unit/actions/data/density-data.test.js`,
   `test/charts/cars-density-area/reference-values.test.js`.
 
@@ -352,7 +366,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - `lag`, `lead`: `{ op, field, as, offset?, default? }`; offset 기본은 `1`, default 기본은 `null`이다.
   - `movingMean`, `movingSum`: `{ op, field, as, frame }`; `frame.preceding`은 required non-negative
     integer, `following`은 optional non-negative integer이며 기본 `0`이다. Sorted partition의 current row를
-    포함하고 양쪽 edge에서는 available rows로 truncate한다. Input과 output은 finite number여야 한다.
+    포함하고 양쪽 edge에서는 available rows로 truncate한다. Sum과 mean은 scaled compensated arithmetic을
+    사용하며 input과 모든 materialized output은 finite number여야 한다. 표현 불가능한 prefix/frame output은
+    partial row를 만들기 전에 거부한다.
 - Effect: normalized provenance와 materialized values를 새 dataset에 저장한다. 계산은 partition마다 정렬된
   순서로 수행하지만 최종 rows는 source row order를 보존한다. 모든 input과 output은 구조적으로 복사되고 freeze된다.
 - 오류: duplicate/invalid ID, unknown source, missing field, duplicate sort/output field, output collision,
@@ -373,7 +389,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     stable ties, null/missing placement, invalid fields and mixed comparable types.
 - `operations`
   - ✅ Covered: all eight operations, offset/frame defaults, one/two-sided and zero frames, truncated edges,
-    sequential dependency, output collision, missing fields, invalid values and empty operation list.
+    sequential dependency, output collision, missing fields, invalid values, finite extreme means,
+    unrepresentable sum outputs and empty operation list.
 - Lifecycle and integration
   - ✅ Covered: source inference, duplicate ID rejection, source immutability, trace hierarchy, registry dispatch,
     facet replay, direct `createDerivedData` validation and packaged TypeScript/runtime consumption.
@@ -390,7 +407,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `source`: existing materialized dataset ID다. 첫 호출에서 생략하면 current data를 사용한다. Revision에서
   생략하면 이전 revision의 source를 보존한다.
 - `x`, `y`: finite numeric pair를 읽을 source field다. 한쪽이라도 invalid/missing인 row는 eligible하지 않다.
-- `bins`: positive integer 또는 `{ x, y }`; 기본 `{ x: 10, y: 10 }`이다.
+- `bins`: positive integer 또는 `{ x, y }`; 기본 `{ x: 10, y: 10 }`이다. 각 축은 최대 10,000 bins,
+  전체 grid는 최대 1,000,000 cells다.
 - `extent`: optional `{ x?, y? }` explicit increasing finite endpoints다. 생략 axis는 eligible min/max를 쓴다.
   Explicit extent는 모든 eligible 값을 포함해야 하며 auto extent가 constant면 오류다.
 - `includeEmpty`: 기본 `false`. `true`면 deterministic y-major/x-minor 순서로 빈 cell도 저장한다.
@@ -398,12 +416,15 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `as`: generated `x0/x1/y0/y1/count/members` field 이름을 부분 override한다. Default는 `id` namespace를 쓴다.
 - Effect: normalized request와 resolved extent/edges/count metadata를 transform provenance에 저장하고, 각 cell의
   lower/upper bounds와 count를 immutable values로 저장한다. Cell은 `[lower, upper)`이며 마지막 upper bound만
-  포함한다.
+  포함한다. 모든 edge는 finite strictly increasing number다. Full finite numeric range처럼 raw span이 overflow하는
+  extent도 안정적으로 보간하며, 요청한 bin 수만큼 서로 다른 edge를 표현할 수 없으면 bin 수를 조용히 줄이지 않고
+  materialization 전에 `RangeError`를 던진다.
 - Facet: source partition 뒤 requested transform을 child마다 replay하므로 automatic extent와 counts는 child
   rows에서 다시 계산된다.
-- 오류: invalid field/bin/extent/output contract, eligible row 부재, silent explicit-extent data loss, duplicate output
-  names를 state 생성 전에 거부한다. 현재 direct derived-dataset consumer가 있는 owner revision replacement는
-  dependency를 조용히 stale하게 두지 않고 명확히 거부한다.
+- 오류: invalid field/bin/extent/output contract, per-axis/total grid limit 초과, unrepresentable edge count,
+  eligible row 부재, silent explicit-extent data loss, duplicate output names를 state 생성 전에 거부한다. 현재
+  direct derived-dataset consumer가 있는 owner revision replacement는 dependency를 조용히 stale하게 두지 않고
+  명확히 거부한다.
 
 ### Formal values — `createBin2DData`
 
@@ -415,7 +436,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - Grid and boundaries
   - ✅ Covered: scalar/per-axis counts, automatic/partial/complete explicit extents, interior and final boundaries,
-    row-major order, empty omission/inclusion, constant extent and silent-loss rejection.
+    row-major order, empty omission/inclusion, constant extent, per-axis/total limits, full finite-range interpolation,
+    unrepresentable edge count and silent-loss rejection.
 - Output
   - ✅ Covered: namespaced/partial/custom fields, optional member indexes, unique fields, count conservation and
     independent Cars oracle parity.
@@ -499,8 +521,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: 필수 user-defined scale ID.
 - `type`: `"linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "band" | "point" | "ordinal" | "sequential" | "quantize" | "quantile" | "threshold"`, 기본 linear.
 - `domain`: `"auto"` 또는 type-valid array. Direct continuous/time scale은 두 finite numeric values를
-  사용하며 time 값은 UTC timestamp다. Ordinal은 non-empty unique values를 사용한다. Threshold는
-  strictly increasing explicit boundaries가 필수다.
+  사용하며 time 값은 UTC timestamp다. Quantitative transformed position의 auto domain이 하나의 finite
+  관측값으로 축약되면 type-valid finite pair로 padding하고 양쪽 endpoint가 표현 가능할 때 그 관측값을
+  transformed range 중앙에 둔다. Numeric limit에서는 관측값을 포함하는 가장 가까운 finite pair를 쓴다.
+  Explicit transformed pair는 계속 distinct해야 한다. Ordinal은 non-empty unique values를 사용한다.
+  Threshold는 strictly increasing explicit boundaries가 필수다.
 - `range`: `"auto"` 또는 consumer-compatible array. continuous position은 finite pair, ordinal은
   channel에 따라 colors, shapes 또는 dash patterns가 될 수 있다. Sequential은 최소 두 colors,
   discretized color는 최소 두 colors를 사용하며 threshold는 domain보다 정확히 하나 더 필요하다.
@@ -513,7 +538,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `palette`는 sequential/discretized color range descriptor이며 explicit `range`와 mutually exclusive다.
   Sequential descriptor의 `count`는 2 이상의 gradient-stop count이며 top-level `palette`와
   `range.palette`가 같은 validation과 resolution을 사용한다. `interpolate`는 sequential 전용이고
-  기본은 `"rgb"`다.
+  기본은 `"rgb"`다. Public palette `count`, sequential explicit range와 discretized explicit color
+  range cardinality는 최대 `10,000`이다.
 - `unknown`은 direct unattached scale에서는 channel을 알 수 없으므로 그대로 저장한다. Consumer가 attach될 때
   concrete channel fallback validation과 supported item-grain policy를 적용한다.
 - Effect: semantic definition만 저장한다. equivalent repeated call은 idempotent, conflicting definition은 오류다.
@@ -542,6 +568,8 @@ type ScaleType =
   - ⚪ Maybe Future: `"identity" | "bin-ordinal"`.
 - `domain`
   - ✅ Covered: `"auto"`, continuous pair, ordinal unique array, reversed pair and invalid arrays.
+  - ✅ Covered: log/pow/sqrt/symlog auto constant의 양수·0·음수 type-valid padding, transformed midpoint,
+    numeric limits와 explicit constant rejection. Log zero는 strictly signed domain contract에 따라 거부한다.
   - ✅ Covered: direct `time` scale domain accepts finite UTC timestamp pairs. Date/string normalization belongs to
     temporal field resolution and is tested there rather than expanded into raw scale input.
 - `range`

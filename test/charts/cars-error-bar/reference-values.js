@@ -341,7 +341,10 @@ function createHorizontalAxes(bounds, categories, domain) {
       }),
       values: categories,
       positions: categoryPositions,
-      title: Object.freeze({ x: 28, y: (bounds.top + bounds.bottom) / 2 })
+      title: Object.freeze({
+        x: 21.979999999999997,
+        y: (bounds.top + bounds.bottom) / 2
+      })
     })
   });
 }

@@ -3,7 +3,6 @@ import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import { findTransformPolicy } from "../../grammar/transforms.js";
-import { hasDataset } from "../../selectors/datasets.js";
 
 const REPLAY_OPTIONS = Object.freeze(["id", "source", "transform"]);
 

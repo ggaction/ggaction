@@ -1,6 +1,16 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtempSync, rmSync } from "node:fs";
+import {
+  chmodSync,
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync
+} from "node:fs";
 import { mkdir, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -53,20 +63,56 @@ export function isolatedPackEnvironment(cache, environment = process.env) {
   };
 }
 
+function pack(args, cwd, environment) {
+  const output = execFileSync(npmCommand, ["pack", "--json", ...args], {
+    cwd,
+    encoding: "utf8",
+    env: environment
+  });
+  const parsed = JSON.parse(output);
+  if (!Array.isArray(parsed) || parsed.length !== 1) {
+    throw new Error("npm pack must describe exactly one package artifact.");
+  }
+  return parsed[0];
+}
+
+function stagePackage(cwd, environment) {
+  const staging = mkdtempSync(path.join(tmpdir(), "ggaction-npm-stage-"));
+  try {
+    const manifest = pack(["--dry-run"], cwd, environment);
+    for (const { path: file } of manifest.files ?? []) {
+      const source = path.resolve(cwd, file);
+      const destination = path.resolve(staging, file);
+      if (!source.startsWith(`${path.resolve(cwd)}${path.sep}`) ||
+        !destination.startsWith(`${staging}${path.sep}`)) {
+        throw new Error(`npm pack returned unsafe file path "${file}".`);
+      }
+      mkdirSync(path.dirname(destination), { recursive: true });
+      copyFileSync(source, destination);
+      chmodSync(destination, statSync(source).mode);
+    }
+    const actionCards = path.join(staging, "knowledge", "action-cards.json");
+    if (existsSync(actionCards)) {
+      writeFileSync(actionCards, JSON.stringify(JSON.parse(
+        readFileSync(actionCards, "utf8")
+      )));
+    }
+    return staging;
+  } catch (error) {
+    rmSync(staging, { recursive: true, force: true });
+    throw error;
+  }
+}
+
 function runPack(args, cwd = root) {
   const cache = mkdtempSync(path.join(tmpdir(), "ggaction-npm-pack-"));
+  const environment = isolatedPackEnvironment(cache);
+  let staging;
   try {
-    const output = execFileSync(npmCommand, ["pack", "--json", ...args], {
-      cwd,
-      encoding: "utf8",
-      env: isolatedPackEnvironment(cache)
-    });
-    const parsed = JSON.parse(output);
-    if (!Array.isArray(parsed) || parsed.length !== 1) {
-      throw new Error("npm pack must describe exactly one package artifact.");
-    }
-    return parsed[0];
+    staging = stagePackage(cwd, environment);
+    return pack(args, staging, environment);
   } finally {
+    if (staging !== undefined) rmSync(staging, { recursive: true, force: true });
     rmSync(cache, { recursive: true, force: true });
   }
 }

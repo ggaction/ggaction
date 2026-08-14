@@ -44,7 +44,7 @@ export function buildTitleReadingBlock({ text, subtitle }, config) {
     subtitleLines,
     titleCenters,
     subtitleCenters,
-    width: Math.max(...widths),
+    width: widths.reduce((maximum, width) => Math.max(maximum, width), -Infinity),
     height
   };
 }
@@ -74,12 +74,12 @@ function axisAlignedTextBounds({ x, y, text, style, align, rotation }) {
 }
 
 function unionBounds(bounds) {
-  return {
-    left: Math.min(...bounds.map(item => item.left)),
-    right: Math.max(...bounds.map(item => item.right)),
-    top: Math.min(...bounds.map(item => item.top)),
-    bottom: Math.max(...bounds.map(item => item.bottom))
-  };
+  return bounds.reduce((union, item) => ({
+    left: Math.min(union.left, item.left),
+    right: Math.max(union.right, item.right),
+    top: Math.min(union.top, item.top),
+    bottom: Math.max(union.bottom, item.bottom)
+  }), { left: Infinity, right: -Infinity, top: Infinity, bottom: -Infinity });
 }
 
 export function resolveTitleComponentBounds(component, style) {

@@ -6,7 +6,7 @@ import { chart } from "../../../../src/index.js";
 
 function polarProgram() {
   return chart()
-    .createCanvas({ width: 300, height: 300, margin: 30 })
+    .createCanvas({ width: 300, height: 300, margin: 60 })
     .createData({ values: [
       { a: 0, a2: 5, r: 0 },
       { a: 10, a2: 15, r: 20 }
@@ -38,7 +38,7 @@ test("creates complete theta and radial axes above marks", () => {
   assert.equal(program.graphicSpec.objects.radialAxisLine.type, "line");
   assert.equal(program.graphicSpec.objects.thetaAxisTicks.items.length, 2);
   assert.equal(program.graphicSpec.objects.radialAxisLabels.items.length, 3);
-  assert.equal(program.graphicSpec.objects.radialAxisTitle.properties.x, 210);
+  assert.equal(program.graphicSpec.objects.radialAxisTitle.properties.x, 195);
   assert.equal(program.graphicSpec.objects.radialAxisTitle.properties.y, 158);
   assert.equal(program.guideConfigs.axis.radius.title.position, "inside");
   const order = graphicDrawOrder(program);
@@ -86,7 +86,7 @@ test("supports an arbitrary radial-axis angle from the aggregate action", () => 
   });
   const line = program.graphicSpec.objects.radialAxisLine.properties;
   assert.equal(Math.abs(line.x2 - 150) < 1e-10, true);
-  assert.equal(line.y2, 270);
+  assert.equal(line.y2, 240);
   assert.equal(program.guideConfigs.axis.radius.layout.angle, 180);
 });
 
@@ -132,7 +132,7 @@ test("places radial titles inside by default and outside only when requested", (
   assert.deepEqual(
     outside.graphicSpec.objects.radialAxisTitle.properties,
     {
-      x: 278,
+      x: 248,
       y: 150,
       text: "r",
       fill: "#0f172a",
@@ -143,7 +143,7 @@ test("places radial titles inside by default and outside only when requested", (
       textBaseline: "middle"
     }
   );
-  assert.equal(moved.graphicSpec.objects.radialAxisTitle.properties.x, 282);
+  assert.equal(moved.graphicSpec.objects.radialAxisTitle.properties.x, 252);
   assert.equal(moved.guideConfigs.axis.radius.title.position, "outside");
   assert.deepEqual(
     restored.graphicSpec.objects.radialAxisTitle,
@@ -188,7 +188,7 @@ test("moves every radial-axis component through one aggregate edit", () => {
   const moved = created.editRadialAxis({ angle: 180 });
 
   assert.equal(moved.guideConfigs.axis.radius.layout.angle, 180);
-  assert.equal(moved.graphicSpec.objects.radialAxisLine.properties.y2, 270);
+  assert.equal(moved.graphicSpec.objects.radialAxisLine.properties.y2, 240);
   assert.notDeepEqual(
     moved.graphicSpec.objects.radialAxisTicks,
     created.graphicSpec.objects.radialAxisTicks
@@ -250,6 +250,57 @@ test("converges Polar guides after a position encoding reassignment", () => {
   assert.ok(reassigned.graphicSpec.objects.thetaGridLines);
 });
 
+test("rejects clipped Polar labels and titles before changing the program", () => {
+  const rows = Object.freeze(Array.from({ length: 8 }, (_, index) =>
+    Object.freeze({
+      category: `This is an extremely long category label ${index}`,
+      value: (index + 1) / 8
+    })
+  ));
+  const clippedLabels = chart()
+    .createCanvas({ width: 240, height: 240, margin: 10 })
+    .createData({ values: rows })
+    .createLineMark({ closed: true })
+    .encodeTheta({ field: "category", fieldType: "nominal" })
+    .encodeR({ field: "value", scale: { domain: [0, 1] } });
+  assert.throws(
+    () => clippedLabels.createThetaAxis(),
+    /Theta axis labels require sufficient non-overlapping Canvas space/
+  );
+  assert.equal(clippedLabels.semanticSpec.guides.axis, undefined);
+
+  const clippedTitle = chart()
+    .createCanvas({ width: 240, height: 240, margin: 60 })
+    .createData({ values: [{ angle: 0, value: 0 }, { angle: 1, value: 1 }] })
+    .createPointMark()
+    .encodeTheta({ field: "angle" })
+    .encodeR({ field: "value", scale: { zero: true } });
+  assert.throws(
+    () => clippedTitle.createThetaAxis({
+      title: { text: "A tremendously long angular title that cannot fit" }
+    }),
+    /Theta axis title requires sufficient non-overlapping Canvas space/
+  );
+  assert.equal(clippedTitle.semanticSpec.guides.axis, undefined);
+
+  const created = polarProgram().createThetaAxis();
+  assert.throws(
+    () => created.editThetaAxisLabels({ fontSize: 200 }),
+    /Theta axis labels require sufficient non-overlapping Canvas space/
+  );
+  assert.throws(
+    () => created.editThetaAxisTitle({
+      text: "A tremendously long edited angular title that cannot fit"
+    }),
+    /Theta axis title requires sufficient non-overlapping Canvas space/
+  );
+  assert.equal(
+    created.graphicSpec.objects.thetaAxisLabels.items[0].properties.fontSize,
+    11
+  );
+  assert.equal(created.semanticSpec.guides.axis.theta.title, "a");
+});
+
 test("validates Polar axis conflicts before returning partial state", () => {
   const base = polarProgram();
   assert.throws(
@@ -261,6 +312,23 @@ test("validates Polar axis conflicts before returning partial state", () => {
   assert.throws(
     () => base.createRadialAxis({ angle: Infinity }),
     /angle must be finite/
+  );
+  assert.throws(
+    () => base.createThetaAxisTicks({ count: 10_001 }),
+    /count must not exceed 10000/
+  );
+  assert.throws(
+    () => base.createThetaAxisLabels({ values: Array(10_001).fill(0) }),
+    /value count must not exceed 10000/
+  );
+  const created = base.createAxes();
+  assert.throws(
+    () => created.editThetaAxisTicks({ count: 10_001 }),
+    /count must not exceed 10000/
+  );
+  assert.throws(
+    () => created.editRadialAxisLabels({ values: Array(10_001).fill(0) }),
+    /value count must not exceed 10000/
   );
   assert.equal(base.semanticSpec.guides.axis, undefined);
   assert.equal(base.graphicSpec.objects.thetaAxisLine, undefined);

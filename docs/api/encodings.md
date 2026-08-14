@@ -105,6 +105,8 @@ density positions together. It infers a Gaussian kernel, automatic bandwidth
 and extent, 100 samples, and vertical density placement. `groupBy`, `kernel`,
 `normalization`, categorical placement, side, and two-value split remain
 available through its exact action contract.
+`steps` is at most 10,000, the complete grouped output is at most 10,000 rows,
+and density work is limited to 10,000,000 source-row/sample units.
 
 ### Atomic Horizon {#atomic-horizon}
 
@@ -112,6 +114,8 @@ available through its exact action contract.
 It accepts existing compatible x/y encodings or explicit `x` and `y`, then
 owns the folded y/y2 positions and positive/negative palettes as one action.
 Horizon charts intentionally keep only the source-facing x guide.
+`bands` is at most 10,000 and the complete run-by-band output is limited to
+10,000 rows; unrepresentable signed deviations or fold extents are rejected.
 
 `editDensity` and `editHorizon` create immutable derived-data revisions and
 rematerialize their connected scales, paths, and guides. Density edits can

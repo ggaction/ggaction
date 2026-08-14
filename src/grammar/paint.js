@@ -1,4 +1,5 @@
 import { isPlainObject } from "../core/immutable.js";
+import { interpolateNumber } from "./numeric.js";
 
 const PAINT_KEYS = Object.freeze(["type", "from", "to", "stops"]);
 const POINT_KEYS = Object.freeze(["x", "y"]);
@@ -78,11 +79,9 @@ export function resolveLinearGradientCoordinates(paint, bounds) {
   ) {
     throw new TypeError("Linear gradient bounds must be finite and ordered.");
   }
-  const width = bounds.right - bounds.left;
-  const height = bounds.bottom - bounds.top;
   const point = value => Object.freeze({
-    x: bounds.left + width * value.x,
-    y: bounds.top + height * value.y
+    x: interpolateNumber(bounds.left, bounds.right, value.x),
+    y: interpolateNumber(bounds.top, bounds.bottom, value.y)
   });
   return Object.freeze({ from: point(paint.from), to: point(paint.to) });
 }

@@ -64,7 +64,9 @@ createGradientPlot({
 ```
 
 - `density` defaults to Gaussian, automatic bandwidth and extent, `64` steps,
-  and unit normalization.
+  and unit normalization. `steps` is limited to 10,000; all category profiles
+  together are limited to 10,000 generated rows and the shared density work
+  budget.
 - `width.band` defaults to `0.7` of the category band.
 - `gradient` defaults to `blues` with opacity `[0, 1]`.
 - `center` defaults to a median rule with a `1.5` logical-pixel dark stroke;

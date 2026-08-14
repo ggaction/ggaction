@@ -1,9 +1,9 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 
-const DIRECTIONS = Object.freeze(["horizontal", "vertical"]);
-const ALIGNMENTS = Object.freeze(["start", "center", "end"]);
-const SIZE_MODES = Object.freeze(["auto", "explicit"]);
-const PADDING_KEYS = Object.freeze(["top", "right", "bottom", "left"]);
+const DIRECTIONS = ["horizontal", "vertical"];
+const ALIGNMENTS = ["start", "center", "end"];
+const SIZE_MODES = ["auto", "explicit"];
+const PADDING_KEYS = ["top", "right", "bottom", "left"];
 
 export const DEFAULT_COMPOSITION_LAYOUT = cloneAndFreeze({
   gap: 16,
@@ -124,19 +124,14 @@ export function normalizeCompositionChildren(children) {
 function normalizeAutoCrossSize(children, horizontal) {
   const dimension = horizontal ? "height" : "width";
   const mode = `${dimension}Mode`;
-  const sharedSize = Math.max(...children.map(child => child[dimension]));
+  const sharedSize = children.reduce(
+    (maximum, child) => Math.max(maximum, child[dimension]),
+    -Infinity
+  );
   return children.map(child => cloneAndFreeze({
     ...child,
     [dimension]: child[mode] === "auto" ? sharedSize : child[dimension]
   }));
-}
-
-function placementSize(child) {
-  return {
-    id: child.id,
-    width: child.width,
-    height: child.height
-  };
 }
 
 function crossOffset(remaining, align) {
@@ -162,30 +157,36 @@ export function resolveCompositionLayout({
   const contentWidth = horizontal
     ? sizedChildren.reduce((sum, child) => sum + child.width, 0) +
       resolvedGap * (sizedChildren.length - 1)
-    : Math.max(...sizedChildren.map(child => child.width));
+    : sizedChildren.reduce(
+        (maximum, child) => Math.max(maximum, child.width),
+        -Infinity
+      );
   const contentHeight = horizontal
-    ? Math.max(...sizedChildren.map(child => child.height))
+    ? sizedChildren.reduce(
+        (maximum, child) => Math.max(maximum, child.height),
+        -Infinity
+      )
     : sizedChildren.reduce((sum, child) => sum + child.height, 0) +
       resolvedGap * (sizedChildren.length - 1);
   let cursor = horizontal ? resolvedPadding.left : resolvedPadding.top;
   const placements = sizedChildren.map(child => {
-    const placement = horizontal
-      ? {
-          ...placementSize(child),
-          x: cursor,
-          y: resolvedPadding.top + crossOffset(
-            contentHeight - child.height,
-            resolvedAlign
-          )
-        }
-      : {
-          ...placementSize(child),
-          x: resolvedPadding.left + crossOffset(
+    const placement = {
+      id: child.id,
+      width: child.width,
+      height: child.height,
+      x: horizontal
+        ? cursor
+        : resolvedPadding.left + crossOffset(
             contentWidth - child.width,
             resolvedAlign
           ),
-          y: cursor
-        };
+      y: horizontal
+        ? resolvedPadding.top + crossOffset(
+            contentHeight - child.height,
+            resolvedAlign
+          )
+        : cursor
+    };
     cursor += (horizontal ? child.width : child.height) + resolvedGap;
     return placement;
   });
@@ -264,7 +265,11 @@ export function resolvePlacedPlotBounds({ placements, plots } = {}) {
     }
     plotById.set(plot.id, validatePlacedBounds(plot, `Placed plot "${plot.id}"`));
   }
-  const translated = placements.map((placement, index) => {
+  let left = Infinity;
+  let top = Infinity;
+  let right = -Infinity;
+  let bottom = -Infinity;
+  placements.forEach((placement, index) => {
     if (
       !isPlainObject(placement) ||
       typeof placement.id !== "string" ||
@@ -287,20 +292,14 @@ export function resolvePlacedPlotBounds({ placements, plots } = {}) {
       );
     }
     plotById.delete(placement.id);
-    return {
-      left: placement.x + plot.x,
-      top: placement.y + plot.y,
-      right: placement.x + plot.x + plot.width,
-      bottom: placement.y + plot.y + plot.height
-    };
+    left = Math.min(left, placement.x + plot.x);
+    top = Math.min(top, placement.y + plot.y);
+    right = Math.max(right, placement.x + plot.x + plot.width);
+    bottom = Math.max(bottom, placement.y + plot.y + plot.height);
   });
   if (plotById.size > 0) {
     throw new Error(`Unknown placed plot id "${plotById.keys().next().value}".`);
   }
-  const left = Math.min(...translated.map(bounds => bounds.left));
-  const top = Math.min(...translated.map(bounds => bounds.top));
-  const right = Math.max(...translated.map(bounds => bounds.right));
-  const bottom = Math.max(...translated.map(bounds => bounds.bottom));
   return cloneAndFreeze({
     x: left,
     y: top,

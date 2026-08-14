@@ -52,17 +52,19 @@ type TitleWrap = "word" | "character";
   legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
 - `title`: non-empty string; 생략하면 encoded source field를 사용한다.
 - `symbol`: `"auto"`, mark-specific shorthand, 또는 `{ layers: [...] }`. layer type은 `line | point | swatch`;
-  각 layer는 non-negative size/stroke parameters와 supported point shape를 사용한다.
+  각 layer는 non-negative size/stroke parameters와 supported point shape를 사용한다. Layered recipe는
+  type별 최대 하나, 전체 최대 세 layer다.
 - `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object.
 - `itemGap`: positive finite number; position별 default spacing을 override한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
-- `count`: integer `>= 2`; size, gradient tick-label 또는 opacity sample count이며 default `5`.
+- `count`: integer `2..10,000`; size, stroke-width, gradient tick-label 또는 opacity sample count이며 default `5`.
 - `gradient`: sequential color 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
 - Discretized quantitative color는 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
   swatch width/height/stroke, label/title style을 concrete graphics로 materialize한다.
 - Effect: categorical semantics에는 scale/channel/title만 저장하고 placement, recipe, fonts, border는
-  graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용한다.
+  graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용하며
+  categorical/discretized resolved item cardinality는 최대 `10,000`이다.
 - Composite layers share one item-local origin. Their concrete union bounds determine label placement and
   declared layer order determines rendering order in right, top, and bottom layouts.
 - Two or more right- or left-side legend blocks share one side lane. Every block uses the same title start,
@@ -229,6 +231,7 @@ type TitleWrap = "word" | "character";
 
 - ✅ Covered: partial style merge, shared categorical/size application, trace and invalid option rejection.
 - No proposal: label text는 resolved domain이 소유하며 appearance action으로 교체하지 않는다.
+  Empty-string nominal values는 domain에서는 보존하고 visible label은 deterministic `(empty)`로 표시한다.
 - Evidence: `test/unit/actions/guides/legend-edit-actions.test.js`.
 
 ## `editLegendTitle`

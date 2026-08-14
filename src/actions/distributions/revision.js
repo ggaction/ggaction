@@ -5,6 +5,28 @@ import { resolvePositionScaleDefinition } from "../scales/definitions.js";
 
 const POSITION_CHANNELS = Object.freeze(["x", "y", "x2", "y2"]);
 
+export function currentDistributionPositions(owner, current) {
+  const vertical = current.orientation === "vertical";
+  const categoryEncoding = owner.encoding[vertical ? "x" : "y"];
+  const measureEncoding = owner.encoding[vertical ? "y" : "x"];
+  const category = {
+    field: current.category,
+    fieldType: current.categoryType ?? categoryEncoding.fieldType,
+    scale: categoryEncoding.scale
+  };
+  const measure = {
+    field: current.measure,
+    fieldType: "quantitative",
+    scale: measureEncoding.scale
+  };
+  return {
+    x: vertical ? category : measure,
+    y: vertical ? measure : category,
+    categoryScale: category.scale,
+    measureScale: measure.scale
+  };
+}
+
 export function resolveDistributionScalePlan(program, {
   channel,
   fieldType,
@@ -35,32 +57,81 @@ export function resolveDistributionScalePlan(program, {
   };
 }
 
+export function resolveDistributionRoles(program, owner, current, args, {
+  operation,
+  resolvePosition,
+  normalize,
+  quantitativeDefaults,
+  defaultFieldType = false
+}) {
+  const previous = currentDistributionPositions(owner, current);
+  const position = channel => {
+    let value = Object.hasOwn(args, channel)
+      ? resolvePosition(args[channel], channel, operation)
+      : previous[channel];
+    if (typeof value?.field !== "string" || value.field.length === 0) {
+      throw new TypeError(`${operation} ${channel} field must be a non-empty string.`);
+    }
+    if (defaultFieldType) {
+      value = { fieldType: value.fieldType ?? "quantitative", ...value };
+    }
+    return value;
+  };
+  const positions = normalize(position("x"), position("y"));
+  if (positions.orientation === undefined) {
+    throw new Error(
+      `${operation} requires one categorical axis and one quantitative axis.`
+    );
+  }
+  const vertical = positions.orientation === "vertical";
+  const plan = channel => resolveDistributionScalePlan(program, {
+    channel,
+    fieldType: positions[channel].fieldType,
+    requested: positions[channel].scale,
+    fallback: previous[vertical === (channel === "x")
+      ? "categoryScale"
+      : "measureScale"],
+    defaults: ["ordinal", "nominal"].includes(positions[channel].fieldType)
+      ? { discreteType: "band" }
+      : quantitativeDefaults
+  });
+  const xScale = plan("x");
+  const yScale = plan("y");
+  return {
+    orientation: positions.orientation,
+    x: { ...positions.x, scale: xScale.id },
+    y: { ...positions.y, scale: yScale.id },
+    xScale,
+    yScale,
+    category: vertical ? positions.x.field : positions.y.field,
+    categoryType: vertical ? positions.x.fieldType : positions.y.fieldType,
+    measure: vertical ? positions.y.field : positions.x.field,
+    previous
+  };
+}
+
+function setCartesianProperties(program, id, channel, properties) {
+  for (const [property, value] of Object.entries(properties)) {
+    program = program.editSemantic({
+      property: `layer[${id}].encoding.${channel}.${property}`,
+      value
+    });
+  }
+  return program;
+}
+
 export function setCartesianPosition(program, id, channel, {
   field,
   fieldType,
   scale,
   title
 }) {
-  let next = program
-    .editSemantic({
-      property: `layer[${id}].encoding.${channel}.field`,
-      value: field
-    })
-    .editSemantic({
-      property: `layer[${id}].encoding.${channel}.fieldType`,
-      value: fieldType
-    })
-    .editSemantic({
-      property: `layer[${id}].encoding.${channel}.scale`,
-      value: scale
-    });
-  if (title !== undefined) {
-    next = next.editSemantic({
-      property: `layer[${id}].encoding.${channel}.title`,
-      value: title
-    });
-  }
-  return next;
+  return setCartesianProperties(program, id, channel, {
+    field,
+    fieldType,
+    scale,
+    ...(title === undefined ? {} : { title })
+  });
 }
 
 export function setCartesianRange(
@@ -72,24 +143,73 @@ export function setCartesianRange(
   scale,
   title
 ) {
-  return setCartesianPosition(program, id, channel, {
+  program = setCartesianPosition(program, id, channel, {
     field: lower,
     fieldType: "quantitative",
     scale,
     title
-  })
-    .editSemantic({
-      property: `layer[${id}].encoding.${channel}2.field`,
-      value: upper
-    })
-    .editSemantic({
-      property: `layer[${id}].encoding.${channel}2.fieldType`,
-      value: "quantitative"
-    })
-    .editSemantic({
-      property: `layer[${id}].encoding.${channel}2.scale`,
-      value: scale
-    });
+  });
+  return setCartesianProperties(program, id, `${channel}2`, {
+    field: upper,
+    fieldType: "quantitative",
+    scale
+  });
+}
+
+export function updateDistributionPositions(
+  program,
+  owner,
+  current,
+  candidate,
+  { owned, lower, upper, title, update }
+) {
+  assertDistributionScaleHandoff(program, {
+    owned,
+    oldXScale: candidate.previous.x.scale,
+    oldYScale: candidate.previous.y.scale,
+    newXScale: candidate.xScale.id,
+    newYScale: candidate.yScale.id
+  });
+  let next = program;
+  for (const id of owned) next = clearCartesianPositions(next, id);
+  for (const scale of [candidate.xScale, candidate.yScale]) {
+    if (scale.create) next = next.createScale(scale.definition);
+  }
+  const vertical = candidate.orientation === "vertical";
+  const axes = {
+    category: vertical ? candidate.x : candidate.y,
+    measure: vertical ? candidate.y : candidate.x,
+    categoryChannel: vertical ? "x" : "y",
+    measureChannel: vertical ? "y" : "x"
+  };
+  next = setCartesianPosition(next, owner.id, axes.categoryChannel, {
+    field: candidate.category,
+    fieldType: candidate.categoryType,
+    scale: axes.category.scale
+  });
+  next = setCartesianRange(
+    next, owner.id, axes.measureChannel, lower, upper, axes.measure.scale, title
+  );
+  next = update(next, axes);
+  for (const id of new Set([candidate.xScale.id, candidate.yScale.id])) {
+    next = next.rematerializeScale({ id, marks: false, guides: false });
+  }
+  next = rebindDistributionGuides(next, {
+    oldXScale: candidate.previous.x.scale,
+    oldYScale: candidate.previous.y.scale,
+    newXScale: candidate.xScale.id,
+    newYScale: candidate.yScale.id,
+    oldXTitle: candidate.previous.x.field,
+    oldYTitle: candidate.previous.y.field,
+    newXTitle: candidate.x.field,
+    newYTitle: candidate.y.field,
+    oldMeasureChannel: current.orientation === "vertical" ? "y" : "x",
+    newMeasureChannel: axes.measureChannel
+  });
+  for (const scale of [candidate.xScale, candidate.yScale]) {
+    if (scale.edit !== undefined) next = next.editScale(scale.edit);
+  }
+  return next;
 }
 
 function axisMethods(channel) {

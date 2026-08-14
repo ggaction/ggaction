@@ -1,4 +1,5 @@
 import { freezeOwned, isPlainObject } from "../core/immutable.js";
+import { validateGeneratedItemLimit } from "../core/validation.js";
 import { buildLinearPathCommands } from "./pathCommands.js";
 
 export const CURVE_INTERPOLATIONS = Object.freeze([
@@ -154,11 +155,12 @@ function buildCardinalCommands(points) {
 }
 
 function monotoneTangents(points) {
+  const direction = Math.sign(points[1].x - points[0].x);
   const intervals = points.slice(1).map((point, index) => {
     const previous = points[index];
     const width = point.x - previous.x;
-    if (!(width > 0)) {
-      throw new Error("Monotone curve requires strictly increasing x values.");
+    if (width === 0 || Math.sign(width) !== direction) {
+      throw new Error("Monotone curve requires strictly monotonic x values.");
     }
     return { width, slope: (point.y - previous.y) / width };
   });
@@ -263,26 +265,83 @@ function buildNaturalCommands(points) {
   return ownCommands(commands);
 }
 
+function buildValidatedCurvePathCommands(points, curve) {
+  if (curve === "linear" ||
+      (SMOOTH_CURVES.has(curve) &&
+        curve !== "monotone" &&
+        points.length < 3)) {
+    return buildLinearPathCommands(points);
+  }
+  if (curve.startsWith("step")) {
+    return buildStepCommands(points, curve);
+  }
+  if (curve === "basis") return buildBasisCommands(points);
+  if (curve === "cardinal") {
+    return buildCardinalCommands(points);
+  }
+  if (curve === "monotone") {
+    return buildMonotoneCommands(points);
+  }
+  return buildNaturalCommands(points);
+}
+
+function finiteCommands(commands) {
+  return commands.every(command => Object.values(command).every(value =>
+    typeof value !== "number" || Number.isFinite(value)
+  ));
+}
+
+function curveCommandCount(pointCount, curve) {
+  if (curve === "step") return pointCount * 3 - 2;
+  if (curve === "step-before" || curve === "step-after") {
+    return pointCount * 2 - 1;
+  }
+  return curve === "basis" && pointCount > 2
+    ? pointCount + 2
+    : pointCount;
+}
+
 export function buildCurvePathCommands(points, curve = "linear") {
   const validatedPoints = validatePoints(points);
   const validatedCurve = validateCurveInterpolation(curve);
-  if (validatedCurve === "linear" ||
-      (SMOOTH_CURVES.has(validatedCurve) &&
-        validatedCurve !== "monotone" &&
-        points.length < 3)) {
-    return buildLinearPathCommands(validatedPoints);
+  validateGeneratedItemLimit(
+    curveCommandCount(validatedPoints.length, validatedCurve),
+    "Curve path command count"
+  );
+  const direct = buildValidatedCurvePathCommands(
+    validatedPoints,
+    validatedCurve
+  );
+  if (finiteCommands(direct)) return direct;
+
+  let xScale = 0;
+  let yScale = 0;
+  for (const point of validatedPoints) {
+    xScale = Math.max(xScale, Math.abs(point.x));
+    yScale = Math.max(yScale, Math.abs(point.y));
   }
-  if (validatedCurve.startsWith("step")) {
-    return buildStepCommands(validatedPoints, validatedCurve);
+  xScale ||= 1;
+  yScale ||= 1;
+  const normalized = buildValidatedCurvePathCommands(
+    validatedPoints.map(point => ({
+      x: point.x / xScale,
+      y: point.y / yScale
+    })),
+    validatedCurve
+  );
+  const restored = normalized.map(command => {
+    const copy = {};
+    for (const [key, value] of Object.entries(command)) {
+      copy[key] = typeof value === "number"
+        ? value * (key[0] === "x" ? xScale : yScale)
+        : value;
+    }
+    return copy;
+  });
+  if (!finiteCommands(restored)) {
+    throw new RangeError("Curve interpolation exceeds the finite numeric range.");
   }
-  if (validatedCurve === "basis") return buildBasisCommands(validatedPoints);
-  if (validatedCurve === "cardinal") {
-    return buildCardinalCommands(validatedPoints);
-  }
-  if (validatedCurve === "monotone") {
-    return buildMonotoneCommands(validatedPoints);
-  }
-  return buildNaturalCommands(validatedPoints);
+  return ownCommands(restored);
 }
 
 function reverseOpenPathCommands(commands) {
@@ -341,13 +400,21 @@ export function buildAreaCurvePathCommands(
   curve = "linear",
   { independentAxis = "x" } = {}
 ) {
+  const validatedCurve = validateCurveInterpolation(curve);
+  const validatedLower = validatePoints(lowerPoints);
+  const validatedUpper = validatePoints(upperPoints);
+  validateGeneratedItemLimit(
+    curveCommandCount(validatedLower.length, validatedCurve) +
+      curveCommandCount(validatedUpper.length, validatedCurve) + 1,
+    "Area path command count"
+  );
   const lower = buildOrientedCurvePathCommands(
-    lowerPoints,
-    curve,
+    validatedLower,
+    validatedCurve,
     independentAxis
   );
   const upper = reverseOpenPathCommands(
-    buildOrientedCurvePathCommands(upperPoints, curve, independentAxis)
+    buildOrientedCurvePathCommands(validatedUpper, validatedCurve, independentAxis)
   );
   return ownCommands([
     ...lower,

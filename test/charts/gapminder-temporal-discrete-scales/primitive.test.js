@@ -32,20 +32,20 @@ test("locks band width, padding, and zero-bandwidth point centers", () => {
   const values = createBandPointReference(gapminder);
 
   assert.equal(values.rows.length, 6);
-  assert.ok(Math.abs(values.band.step - 60.666666666666664) < 1e-10);
-  assert.ok(Math.abs(values.band.bandwidth - 48.53333333333333) < 1e-10);
+  assert.ok(Math.abs(values.band.step - 55.666666666666664) < 1e-10);
+  assert.ok(Math.abs(values.band.bandwidth - 44.53333333333333) < 1e-10);
   assert.equal(values.band.paddingInner, 0.2);
   assert.equal(values.band.paddingOuter, 0.1);
   assert.equal(values.point.bandwidth, 0);
   assert.equal(values.point.padding, 0.5);
   assert.equal(values.point.align, 0.5);
   assert.deepEqual(values.centers, [
-    100.33333333333333,
-    161,
-    221.66666666666663,
-    282.3333333333333,
-    343,
-    403.66666666666663
+    127.83333333333333,
+    183.5,
+    239.16666666666663,
+    294.8333333333333,
+    350.5,
+    406.16666666666663
   ]);
   values.bars.forEach((bar, index) => {
     assert.ok(Math.abs(bar.x + bar.width / 2 - values.centers[index]) < 1e-10);

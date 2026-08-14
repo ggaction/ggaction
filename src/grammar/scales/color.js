@@ -1,8 +1,10 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
+import { validateGeneratedItemLimit } from "../../core/validation.js";
 import {
   normalizePalette,
   resolveContinuousPalette
 } from "../palettes.js";
+import { inverseLerp } from "../numeric.js";
 
 export const CONTINUOUS_COLOR_INTERPOLATIONS = cloneAndFreeze([
   "rgb",
@@ -103,6 +105,10 @@ function rgbToHex({ r, g, b }) {
   return `#${[r, g, b].map(channel =>
     Math.round(clamp(channel) * 255).toString(16).padStart(2, "0")
   ).join("")}`;
+}
+
+function byteChannels({ r, g, b }) {
+  return [r, g, b].map(channel => Math.round(channel * 255));
 }
 
 function rgbToHsl({ r, g, b }) {
@@ -213,10 +219,6 @@ function interpolateHue(left, right, amount, long) {
 }
 
 function mix(left, right, amount, method) {
-  const linear = key => left[key] + (right[key] - left[key]) * amount;
-  if (method === "rgb") {
-    return { r: linear("r"), g: linear("g"), b: linear("b") };
-  }
   if (method.startsWith("hsl")) {
     const a = rgbToHsl(left);
     const b = rgbToHsl(right);
@@ -263,6 +265,7 @@ export function validateContinuousColorInterpolation(value) {
 export function validateSequentialColorRange(value) {
   if (value === "auto") return value;
   if (Array.isArray(value)) {
+    validateGeneratedItemLimit(value.length, "Sequential color range length");
     if (value.length < 2) {
       throw new TypeError("Sequential color range requires at least two colors.");
     }
@@ -293,29 +296,33 @@ export function resolveSequentialColorStops(value) {
     : resolveContinuousPalette(range.palette);
 }
 
+function interpolateColors(colors, position, method, shouldClamp) {
+  const bounded = shouldClamp ? clamp(position) : position;
+  const scaled = bounded * (colors.length - 1);
+  const left = Math.max(0, Math.min(colors.length - 2, Math.floor(scaled)));
+  const right = left + 1;
+  const amount = scaled - left;
+  if (method === "rgb") {
+    const leftChannels = byteChannels(colors[left]);
+    const rightChannels = byteChannels(colors[right]);
+    return `#${leftChannels.map((channel, index) =>
+      Math.round(clamp(
+        channel + (rightChannels[index] - channel) * amount,
+        0,
+        255
+      )).toString(16).padStart(2, "0")
+    ).join("")}`;
+  }
+  return rgbToHex(mix(colors[left], colors[right], amount, method));
+}
+
 export function interpolateColorStops(stops, position, interpolation = "rgb") {
   const method = validateContinuousColorInterpolation(interpolation);
   if (!Array.isArray(stops) || stops.length < 2) {
     throw new TypeError("Color interpolation requires at least two stops.");
   }
   const colors = stops.map(parseColor);
-  const bounded = clamp(position);
-  const scaled = bounded * (colors.length - 1);
-  const left = Math.floor(scaled);
-  const right = Math.min(colors.length - 1, left + 1);
-  if (method === "rgb") {
-    const leftHex = rgbToHex(colors[left]);
-    const rightHex = rgbToHex(colors[right]);
-    const amount = scaled - left;
-    return `#${[1, 3, 5].map(offset =>
-      Math.round(
-        Number.parseInt(leftHex.slice(offset, offset + 2), 16) +
-        (Number.parseInt(rightHex.slice(offset, offset + 2), 16) -
-          Number.parseInt(leftHex.slice(offset, offset + 2), 16)) * amount
-      ).toString(16).padStart(2, "0")
-    ).join("")}`;
-  }
-  return rgbToHex(mix(colors[left], colors[right], scaled - left, method));
+  return interpolateColors(colors, position, method, true);
 }
 
 export function mapSequentialColors(
@@ -337,15 +344,17 @@ export function mapSequentialColors(
   }
   const [start, end] = domain;
   const constant = start === end;
+  const method = validateContinuousColorInterpolation(interpolation);
+  if (!Array.isArray(stops) || stops.length < 2) {
+    throw new TypeError("Color interpolation requires at least two stops.");
+  }
+  const colors = stops.map(parseColor);
   return cloneAndFreeze(values.map(value => {
     if (!Number.isFinite(value)) {
       if (hasUnknown) return options.unknown;
       throw new TypeError("Sequential color values must be finite numbers.");
     }
-    const raw = constant ? 0.5 : (value - start) / (end - start);
-    if (!shouldClamp && (raw < 0 || raw > 1)) {
-      return interpolateColorStops(stops, raw < 0 ? 0 : 1, interpolation);
-    }
-    return interpolateColorStops(stops, clamp(raw), interpolation);
+    const raw = constant ? 0.5 : inverseLerp(value, start, end);
+    return interpolateColors(colors, raw, method, shouldClamp);
   }));
 }

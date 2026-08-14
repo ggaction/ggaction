@@ -3,6 +3,7 @@ import type { ChartProgram } from "./program.js";
 export interface SVGRenderOptions {
   readonly title?: string;
   readonly description?: string;
+  readonly resourceNamespace?: string;
 }
 
 export function renderToSVG(

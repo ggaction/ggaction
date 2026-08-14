@@ -94,6 +94,37 @@ test("builds exact monotone and natural cubic command fixtures", () => {
   ]);
 });
 
+test("builds monotone cubics for strictly decreasing x values", () => {
+  assert.deepEqual(buildCurvePathCommands([...points].reverse(), "monotone"), [
+    { op: "M", x: 6, y: 0 },
+    { op: "C", x1: 5, y1: 1, x2: 4, y2: 3, x: 3, y: 3 },
+    { op: "C", x1: 2, y1: 3, x2: 1, y2: 1, x: 0, y: 0 }
+  ]);
+});
+
+test("keeps every curve family finite across the full numeric range", () => {
+  const maximum = Number.MAX_VALUE;
+  const extreme = [
+    { x: maximum / 2, y: -maximum },
+    { x: maximum * 0.75, y: 0 },
+    { x: maximum, y: maximum }
+  ];
+
+  for (const curve of CURVE_INTERPOLATIONS) {
+    const commands = buildCurvePathCommands(extreme, curve);
+    assert.equal(commands.every(command => Object.values(command).every(value =>
+      typeof value !== "number" || Number.isFinite(value)
+    )), true, curve);
+  }
+  assert.equal(buildCurvePathCommands([
+    { x: 0, y: 0 },
+    { x: Number.MIN_VALUE, y: 1 },
+    { x: Number.MIN_VALUE * 2, y: 2 }
+  ], "monotone").every(command => Object.values(command).every(value =>
+    typeof value !== "number" || Number.isFinite(value)
+  )), true);
+});
+
 test("keeps a valid two-point monotone cubic and falls back for other short curves", () => {
   const pair = [{ x: 0, y: 1 }, { x: 2, y: 3 }];
   const linear = buildCurvePathCommands(pair);
@@ -118,7 +149,7 @@ test("keeps a valid two-point monotone cubic and falls back for other short curv
       { x: 0, y: 1 },
       { x: 2, y: 2 }
     ], "monotone"),
-    /strictly increasing x/
+    /strictly monotonic x/
   );
   assert.throws(
     () => buildCurvePathCommands([{ x: 0, y: 0 }], "linear"),
@@ -174,4 +205,25 @@ test("orients monotone area interpolation along a vertical independent axis", ()
 
   assert.equal(commands.some(command => command.op === "C"), true);
   assert.equal(commands.at(-1).op, "Z");
+});
+
+test("rejects curve and area command expansion before oversized allocation", () => {
+  const makePoints = count => Array.from(
+    { length: count },
+    (_, index) => ({ x: index, y: index % 2 })
+  );
+
+  assert.equal(buildCurvePathCommands(makePoints(3_334), "step").length, 10_000);
+  assert.throws(
+    () => buildCurvePathCommands(makePoints(3_335), "step"),
+    /Curve path command count must not exceed 10000/
+  );
+  assert.equal(
+    buildAreaCurvePathCommands(makePoints(4_999), makePoints(4_999)).length,
+    9_999
+  );
+  assert.throws(
+    () => buildAreaCurvePathCommands(makePoints(5_000), makePoints(5_000)),
+    /Area path command count must not exceed 10000/
+  );
 });

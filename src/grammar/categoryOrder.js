@@ -1,8 +1,9 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { isNominalValue, readNominalField } from "./scales/fields.js";
+import { aggregateScalarValues } from "./aggregate.js";
 
-const DIRECTIONS = Object.freeze(["ascending", "descending"]);
-const AGGREGATES = Object.freeze(["sum", "mean", "min", "max"]);
+const DIRECTIONS = ["ascending", "descending"];
+const AGGREGATES = ["sum", "mean", "min", "max"];
 
 function nonEmptyField(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -11,9 +12,7 @@ function nonEmptyField(value, label) {
   return value;
 }
 
-function sameValue(left, right) {
-  return Object.is(left, right);
-}
+const sameValue = Object.is;
 
 export function normalizeCategoryOrder({ values, by, direction } = {}) {
   const hasValues = values !== undefined;
@@ -94,15 +93,10 @@ function summaryValues(rows, categoryField, summary) {
     values.push(value);
     groups.set(category, values);
   }
-  return new Map([...groups].map(([category, values]) => {
-    let value;
-    if (summary.aggregate === "sum") value = values.reduce((sum, item) => sum + item, 0);
-    else if (summary.aggregate === "mean") {
-      value = values.reduce((sum, item) => sum + item, 0) / values.length;
-    } else if (summary.aggregate === "min") value = Math.min(...values);
-    else value = Math.max(...values);
-    return [category, value];
-  }));
+  return new Map([...groups].map(([category, values]) => [
+    category,
+    aggregateScalarValues(values, summary.aggregate)
+  ]));
 }
 
 export function resolveCategoryOrder(rows, categoryField, order) {

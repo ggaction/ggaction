@@ -52,6 +52,11 @@ const program = chart()
 | `members` | boolean | `false` |
 | `as` | partial output-field object | namespaced from `id` |
 
+Each axis accepts at most 10,000 bins, and a grid accepts at most 1,000,000
+cells in total. These limits are validated before any cell storage is
+allocated, including when the transform is reached through `createHeatmap` or
+`editBin2DData`.
+
 Only rows with finite values for both fields are eligible. Cells are half-open:
 `[lower, upper)`. The last cell on each axis includes its upper endpoint, so
 every eligible row belongs to exactly one cell. Output rows are ordered from low
@@ -61,6 +66,12 @@ The stored transform includes the resolved axis extents and edge arrays. An
 explicit extent must contain every eligible value; the action throws rather
 than silently dropping rows. An automatic axis with no positive span also
 throws instead of guessing a display range.
+
+Every resolved edge is a finite number and edges are strictly increasing. Edge
+generation supports extents whose direct subtraction overflows, such as a grid
+from `-1e308` to `1e308`. If the requested number of distinct bins cannot be
+represented within an extent, the action throws `RangeError`; it never silently
+returns fewer bins.
 
 The default output fields are `__<id>_x0`, `__<id>_x1`, `__<id>_y0`,
 `__<id>_y1`, and `__<id>_count`. Pass `as` to give downstream encodings shorter

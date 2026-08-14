@@ -5,8 +5,9 @@ import {
 } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
-import { resolveBoundaryAppearance } from "./options.js";
-import { resolveErrorBand } from "./resolve.js";
+import { createResolvedIntervalData } from "../data/intervalEdit.js";
+import { resolveIntervalComposite } from "../intervals/resolve.js";
+import { errorBandBoundaries, resolveBoundaryAppearance } from "./edit.js";
 
 const OPTIONS = Object.freeze([
   "id",
@@ -21,6 +22,38 @@ const OPTIONS = Object.freeze([
   "curve",
   "boundaries"
 ]);
+
+const ERROR_BAND_POLICY = Object.freeze({
+  operation: "createErrorBand",
+  resourceLabel: "error-band",
+  defaultId: "errorBand",
+  ownerLabel: "Error-band id",
+  positionTypes: Object.freeze(["quantitative", "temporal"]),
+  defaultPositionType: "quantitative",
+  defaultIntervalChannel: "y",
+  scaleDefaults: fieldType => fieldType === "temporal"
+    ? { nice: true }
+    : { nice: true, zero: false },
+  intervalScaleDefaults: Object.freeze({ nice: true, zero: false }),
+  allowExplicitGrouping: true,
+  ambiguousMessage:
+    "createErrorBand cannot infer the interval axis when both positions are quantitative; provide an interval option."
+});
+
+function resolveErrorBand(program, args) {
+  const resolved = resolveIntervalComposite(program, args, ERROR_BAND_POLICY);
+  if (resolved.groupField === resolved.position.field) {
+    throw new Error(
+      "createErrorBand groupBy must differ from the independent position field."
+    );
+  }
+  return {
+    ...resolved,
+    lowerBoundaryId: `${resolved.id}LowerBoundary`,
+    upperBoundaryId: `${resolved.id}UpperBoundary`
+  };
+}
+
 function resolveBoundaries(value, areaCurve) {
   if (value === undefined || value === false) return undefined;
   if (!isPlainObject(value)) {
@@ -37,6 +70,62 @@ function resolveBoundaries(value, areaCurve) {
     operation: "createErrorBand boundaries"
   });
 }
+
+function positionOptions({ target, field, fieldType, coordinate, scale }) {
+  return { target, field, fieldType, coordinate, scale: { id: scale } };
+}
+
+export const createErrorBandBoundary = action(
+  {
+    op: "createErrorBandBoundary",
+    description: "Create one lower or upper error-band boundary line."
+  },
+  function ({
+    id,
+    data,
+    orientation,
+    bound,
+    position,
+    coordinate,
+    intervalScale,
+    positionScale,
+    groupBy,
+    stroke,
+    strokeWidth,
+    strokeDash,
+    opacity,
+    curve
+  } = {}) {
+    const vertical = orientation === "vertical";
+    let next = this
+      .createLineMark({ id, data, strokeWidth, curve })
+      .encodeY(positionOptions({
+        target: id,
+        field: vertical ? bound : position.field,
+        fieldType: vertical ? "quantitative" : position.fieldType,
+        coordinate,
+        scale: vertical ? intervalScale : positionScale
+      }))
+      .encodeX(positionOptions({
+        target: id,
+        field: vertical ? position.field : bound,
+        fieldType: vertical ? position.fieldType : "quantitative",
+        coordinate,
+        scale: vertical ? positionScale : intervalScale
+      }));
+    if (groupBy !== undefined) {
+      next = next.encodeGroup({ target: id, field: groupBy });
+    }
+    return next
+      .editGraphics({ target: id, property: "stroke", value: stroke })
+      .editGraphics({
+        target: id,
+        property: "strokeDash",
+        value: next.graphicSpec.objects[id].items.map(() => strokeDash)
+      })
+      .editGraphics({ target: id, property: "opacity", value: opacity });
+  }
+);
 
 function positionArgs(resolved) {
   return {
@@ -69,21 +158,7 @@ export const createErrorBand = action(
     const resolved = resolveErrorBand(this, args);
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     const boundaries = resolveBoundaries(args.boundaries, curve);
-    let next = this;
-
-    if (resolved.interval.mode === "statistical") {
-      next = next.createIntervalData({
-        id: resolved.dataId,
-        source: resolved.source,
-        field: resolved.interval.field,
-        groupBy: resolved.groupBy,
-        center: resolved.interval.center,
-        extent: resolved.interval.extent,
-        level: resolved.interval.level,
-        as: resolved.fields
-      });
-    }
-
+    let next = createResolvedIntervalData(this, resolved);
     next = next.createAreaMark({
       id: resolved.id,
       data: resolved.dataId,
@@ -91,13 +166,11 @@ export const createErrorBand = action(
       ...(args.opacity === undefined ? {} : { opacity: args.opacity }),
       ...(Object.hasOwn(args, "curve") ? { curve } : {})
     });
-    next = resolved.orientation === "vertical"
-      ? next
-          .encodeX(positionArgs(resolved))
-          .encodeYRange(rangeArgs(resolved))
-      : next
-          .encodeY(positionArgs(resolved))
-          .encodeXRange(rangeArgs(resolved));
+    const vertical = resolved.orientation === "vertical";
+    next = next[vertical ? "encodeX" : "encodeY"](positionArgs(resolved));
+    next = next[vertical ? "encodeYRange" : "encodeXRange"](
+      rangeArgs(resolved)
+    );
 
     if (resolved.interval.mode === "explicit") {
       next = next.editSemantic({
@@ -125,21 +198,14 @@ export const createErrorBand = action(
         groupBy: resolved.groupField,
         ...boundaries
       };
-      next = next
-        .createErrorBandBoundary({
+      for (const [id, field] of errorBandBoundaries(resolved)) {
+        next = next.createErrorBandBoundary({
           ...shared,
-          id: `${resolved.id}LowerBoundary`,
-          bound: resolved.fields.lower
-        })
-        .createErrorBandBoundary({
-          ...shared,
-          id: `${resolved.id}UpperBoundary`,
-          bound: resolved.fields.upper
+          id,
+          bound: field
         });
-      for (const [id, bound] of [
-        [`${resolved.id}LowerBoundary`, "lower"],
-        [`${resolved.id}UpperBoundary`, "upper"]
-      ]) {
+      }
+      for (const [id, , bound] of errorBandBoundaries(resolved)) {
         next = next._withMarkConfig(id, {
           ...next.markConfigs[id],
           ...boundaries,
@@ -159,8 +225,8 @@ export const createErrorBand = action(
         groupBy: resolved.groupField,
         lowerField: resolved.fields.lower,
         upperField: resolved.fields.upper,
-        lowerBoundaryId: `${resolved.id}LowerBoundary`,
-        upperBoundaryId: `${resolved.id}UpperBoundary`
+        lowerBoundaryId: resolved.lowerBoundaryId,
+        upperBoundaryId: resolved.upperBoundaryId
       }
     });
   }

@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import {
   inspectPackageArtifact,
@@ -20,7 +22,12 @@ test("isolates npm pack from the caller's global cache", () => {
   });
 });
 
-test("publishes only the bounded public package artifact", () => {
+test("publishes only the bounded public package artifact", async () => {
+  const actionCardsFile = fileURLToPath(new URL(
+    "../../knowledge/action-cards.json",
+    import.meta.url
+  ));
+  const actionCards = await readFile(actionCardsFile, "utf8");
   const manifest = inspectPackageArtifact();
   const paths = manifest.files.map(file => file.path);
 
@@ -44,6 +51,11 @@ test("publishes only the bounded public package artifact", () => {
   assert.equal(paths.some(path => path.startsWith("agent_docs/")), false);
   assert.equal(paths.some(path => path.startsWith(".github/")), false);
   assert.equal(paths.some(path => path.endsWith("/AGENTS.md") || path === "AGENTS.md"), false);
+  assert.equal(
+    manifest.files.find(file => file.path === "knowledge/action-cards.json").size,
+    Buffer.byteLength(JSON.stringify(JSON.parse(actionCards)))
+  );
+  assert.equal(await readFile(actionCardsFile, "utf8"), actionCards);
 });
 
 test("rejects missing, forbidden, and oversized package manifests", () => {

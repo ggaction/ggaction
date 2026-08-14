@@ -12,7 +12,10 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   `ordinal`, continuous point/aggregate-bar color는 `sequential`, quantitative point color는 추가로
   `quantize | quantile | threshold`, size는 `linear`만 허용한다.
 - `domain`: Implemented. `"auto"` 또는 type에 맞는 explicit array. explicit domain은 data inference,
-  `zero`, `nice`보다 우선한다.
+  `zero`, `nice`보다 우선한다. Quantitative transformed auto domain이 finite constant로 축약되면 log는
+  zero를 건너지 않는 multiplicative pair, pow/sqrt/symlog는 표현 가능한 경우 transform-space 중심을
+  보존하는 distinct finite pair로 padding한다. Numeric limit에서는 관측값을 포함하는 nearest finite pair를
+  사용하고 explicit transformed constant domain은 계속 거부한다.
 - `range`: Implemented. `"auto"` 또는 type/channel에 맞는 explicit array. position auto range는
   Canvas plot bounds를 사용한다.
 - `nice`: Implemented for linear/time position scale. boolean이며 auto domain만 읽기 좋은 경계로
@@ -79,7 +82,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `bin`: Implemented for quantitative bar x and quantitative-x aggregate line. `{ maxBins?: PositiveInteger }`,
   `{ step: PositiveFinite }`, `{ boundaries: readonly [Finite, Finite, ...Finite[]] }` 중 하나다.
   생략된 maxBins default는 `10`; 세 mode는 mutually exclusive이며 bin boundaries와 bar x/width 또는
-  line midpoint/aggregate grain을 결정한다.
+  line midpoint/aggregate grain을 결정한다. 자동 생성은 요청된 maxBins가 더 크더라도 최대 10,000개
+  bin으로 제한하고, 명시적 step이 10,000개를 초과하는 bin을 요구하면 materialization 전에 거부한다.
+  Explicit boundaries는 최대 10,001개, 즉 10,000 bins다.
 - `aggregate`, `stack`: Horizontal bar의 quantitative x measure에 사용한다. Binned histogram x와
   category x에서는 거부된다.
 - Effect: x encoding과 scale을 semantic state에 저장하고 scale 및 compatible mark/guide consumers를
@@ -175,7 +180,8 @@ type AggregateOperation =
   SameValueZero distinct count를 반환한다. 이 네 연산은 nominal input도 허용하되 output scale은 linear다.
 - 나머지 연산은 finite quantitative sample만 사용한다. Sample variance/stdev/stderr와 CI는 `n < 2`,
   다른 quantitative 연산은 finite sample이 없으면 해당 final group을 생략한다. Quartile은 linear
-  interpolation, CI endpoint는 `mean ± 1.96 * stderr`다.
+  interpolation, CI endpoint는 `mean ± 1.96 * stderr`다. Sum, mean, quantile과 moments는 scaled finite
+  arithmetic을 사용하며 최종 statistic 자체가 finite number로 표현될 수 없으면 action을 원자적으로 거부한다.
 - `{ op: "quantile", probability }`는 finite quantitative sample을 정렬해 linear interpolation한다.
   Probability는 필수 `[0, 1]` 값이며 `0`/`1`은 min/max다.
 - `{ op: "first" | "last", orderBy, order? }`는 valid comparable order key를 가진 row를 stable
@@ -190,6 +196,8 @@ type AggregateOperation =
   non-negative raw/density area의 y에서만 허용한다. 모든 group은 같은 x position을 정확히 한 번씩 가져야
   하며 각 partition은 deterministic first-appearance group order로 `-total / 2`부터 쌓인다. Missing position,
   duplicate group/x, ranged area, negative value와 bar center stack은 atomic하게 거부한다.
+  Normalize/fill partition과 representable centered half-total은 normalized sums로 total overflow를 피한다.
+  Absolute stack/diverging endpoint 또는 positive segment 두께를 finite number로 표현할 수 없으면 거부한다.
 - `bin`: 현재 y에서는 지원되지 않는다.
 - Effect: y semantic, scale, final bar/line aggregate grain을 저장하고 mark geometry와
   existing guides를 rematerialize한다.
@@ -227,6 +235,8 @@ type AggregateOperation =
     domain/rematerialization과 incompatible aggregate rejection.
   - ✅ Covered: parameterized quantile boundaries, ordered first/last direction, stable ties, missing/invalid
     candidates, final grain, inferred title, rematerialization과 caller-owned object isolation.
+  - ✅ Covered: finite extreme cancellation/means/deviations, normalized fill/center와 unrepresentable statistic
+    또는 stack endpoint rejection.
   - 🟡 Planned: full-item min/max selection은 scalar aggregate가 아닌 `selectMarks` selector로 제공한다.
 - `stack`
   - ✅ Covered: `"zero"`, `"normalize"`, `"center"`, `null`, positive/zero partition, auto `[0, 1]`,
@@ -734,6 +744,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   category scale과 의미가 겹치므로 거부한다.
 - Effect: density data 생성, layer data rebinding, x/y encoding, optional group encoding, baseline-closed 또는
   category-centered full/half closed area path materialization을 하나의 hierarchy로 수행한다.
+- Limits: `steps <= 10,000`, 전체 non-empty profile output `<= 10,000` rows,
+  `validRows * steps <= 10,000,000` work units다.
 - Coverage: density data/mark/chart/guide tests가 두 orientation, grouped/ungrouped, explicit/auto
   density options와 rematerialization을 검증한다. 여러 steps×bandwidth pair는 부분적이다.
 
@@ -816,7 +828,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `x`, `y`: field string 또는 `{ field, fieldType?, scale? }`. 생략하면 target이나 같은 source의 유일한 compatible
   encoding을 추론한다. x는 quantitative/temporal, y는 quantitative만 허용한다.
 - `groupBy`: optional nominal field. 생략하면 target의 existing group encoding을 추론한다.
-- `bands`: positive integer, 기본 `3`.
+- `bands`: positive integer `<= 10,000`, 기본 `3`.
 - `baseline`: finite number, 기본 `0`.
 - `extent`: `"auto"` 또는 positive finite number, 기본 `"auto"`. Shared auto는 전체 group extent 하나를,
   independent auto는 group별 extent를 사용한다.
@@ -827,6 +839,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Effect: namespaced immutable derived dataset을 만들고 area layer를 rebind한 뒤 x, folded `[0, 1]` y/y2,
   group과 sign/band color encoding을 명시적으로 작성한다. Concrete result는 ordinary closed path collection이며
   renderer는 Horizon 의미를 알지 않는다. y axis와 legend는 만들지 않고 x axis/grid만 guide-compatible하다.
+  전체 run-by-band generated row 수는 최대 `10,000`이며 signed deviation/fold extent가 finite로
+  표현되지 않으면 materialization 전에 `RangeError`다.
 - Facet replay: shared y scale이면 parent auto extent를 모든 cell에 고정하고, independent y scale이면 cell마다
   다시 계산한다.
 
@@ -900,6 +914,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Quantize는 auto 또는 explicit pair를 동일 폭으로 나누고, quantile은 auto 또는 explicit sample에서
   동일 개수에 가까운 class를 만들며, threshold는 strictly increasing explicit domain과 정확히 하나 더
   많은 color를 요구한다. Boundary equality는 upper class에 포함되고 interval legend도 같은 경계를 읽는다.
+  Finite extent가 요청한 quantize class의 distinct boundary를 표현할 수 없으면 `RangeError`를 내며,
+  interval/continuous legend label은 distinct finite sample을 구분할 때까지 precision을 높인다.
 - Rect color는 categorical 또는 continuous fill을 final observed cell grain에 적용하며 layout/aggregate를 받지 않는다.
   Missing color나 incomplete position row는 cell과 automatic domain에서 함께 생략한다.
 - Effect: color semantic, resolved layout과 scale을 저장한다. `group`은 orientation에 따라 wrapped
@@ -1154,7 +1170,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Reassignment는 같은 action과 scale lifecycle을 사용한다.
 - Arc marks use a band scale for categorical theta. `aggregate: "count"` partitions the full theta range by
   category count. `aggregate: "sum"` requires a `weight` field and partitions it by each category's sum of
-  non-negative finite weights. Both modes are arc-only and infer nominal field type when omitted.
+  non-negative finite weights. Cross-category totals use normalized ratios so a finite sector partition remains
+  valid even when the raw grand total overflows; an individual unrepresentable group sum or indistinguishable
+  positive angular sector is rejected. Both modes are arc-only and infer nominal field type when omitted.
 
 ### Formal values — `encodeTheta`
 
@@ -1168,7 +1186,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - ✅ Covered: shortest call, quantitative and discrete mappings, explicit/reversed ranges, invalid span and type.
 - ✅ Covered: order independence, one-channel incomplete state, Cartesian conflict and immutable failure.
 - ✅ Covered: arc count and weighted-sum partition, fractional/repeated categories, strict invalid/all-zero weight
-  rejection, circular categorical bands, larger-first radial overlay and zero-radius omission.
+  rejection, extreme normalized totals, circular categorical bands, larger-first radial overlay and zero-radius omission.
 - Evidence: Polar grammar, encoding, chart, browser and render tests.
 
 ## `encodeR`

@@ -34,7 +34,7 @@ or validation.
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
 | `bin.maxBins` | positive integer | `10` |
 | `bin.step` | positive finite number | mutually exclusive |
-| `bin.boundaries` | at least two increasing finite numbers | mutually exclusive |
+| `bin.boundaries` | 2–10,001 increasing finite numbers | mutually exclusive |
 | `scale.id` | scale ID | `"x"` |
 | `scale.type` | `"linear"` | `"linear"` |
 | `scale.domain` | `"auto"` or two ascending finite numbers | `"auto"` |
@@ -47,6 +47,7 @@ Exact-step bins use zero as their grid anchor and expand an automatic domain
 to step multiples. Explicit boundaries support irregular interval widths and
 own the x-domain endpoints. All intervals are half-open except the final
 interval, which includes its upper endpoint.
+Every policy is limited to 10,000 generated bins.
 The rect collection remains empty until y is encoded.
 
 ## Count/stack bar `encodeY(options?)`

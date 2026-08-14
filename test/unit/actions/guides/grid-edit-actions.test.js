@@ -5,7 +5,11 @@ import { chart } from "../../../../src/index.js";
 
 function pointGrid() {
   return chart()
-    .createCanvas({ width: 240, height: 160, margin: 20 })
+    .createCanvas({
+      width: 280,
+      height: 220,
+      margin: { top: 30, right: 30, bottom: 60, left: 50 }
+    })
     .createData({ id: "data", values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
     .createPointMark({ id: "points" })
     .encodeX({ field: "x" })
@@ -57,8 +61,8 @@ test("merges only requested appearance and matches raw primitive graphics", () =
     strokeDash: [4, 2]
   };
   const edited = before.editHorizontalGrid(options);
-  const bounds = { left: 20, right: 220 };
-  const y = [140, 20];
+  const bounds = { left: 50, right: 250 };
+  const y = [160, 30];
   const primitive = before
     .editGraphics({ target: "horizontalGridLines", property: "length", value: 2 })
     .editGraphics({ target: "horizontalGridLines", property: "x1", value: bounds.left })
@@ -88,7 +92,10 @@ test("merges only requested appearance and matches raw primitive graphics", () =
 test("converges across grid edits, Canvas edits, and scale edits", () => {
   const before = pointGrid();
   const gridOptions = { count: 4, color: "#cbd5e1", strokeDash: [2, 2] };
-  const canvasOptions = { width: 300, margin: 30 };
+  const canvasOptions = {
+    width: 320,
+    margin: { top: 30, right: 30, bottom: 60, left: 50 }
+  };
   const first = before
     .editHorizontalGrid(gridOptions)
     .editCanvas(canvasOptions)
@@ -120,6 +127,14 @@ test("validates existing resources, edit options, and values atomically", () => 
     /cannot use count and values together/
   );
   assert.throws(() => program.editHorizontalGrid({ count: 0 }), /positive integer/);
+  assert.throws(
+    () => program.editHorizontalGrid({ count: 10_001 }),
+    /Grid count must not exceed 10000/
+  );
+  assert.throws(
+    () => program.editHorizontalGrid({ values: Array(10_001).fill(0) }),
+    /Grid value count must not exceed 10000/
+  );
   assert.throws(() => program.editHorizontalGrid({ values: "automatic" }), /must be "auto"/);
   assert.throws(() => program.editHorizontalGrid({ values: [] }), /non-empty finite/);
   assert.throws(() => program.editHorizontalGrid({ values: [20] }), /inside the scale domain/);

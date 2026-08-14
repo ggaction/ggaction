@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "tidyTuesday": {
+    "repository": "https://github.com/rfordatascience/tidytuesday",
+    "commit": "1f5a20eae51d871ec4ac0f95d16e43b9ba3f1dec",
+    "projectLicense": "CC0-1.0",
+    "cacheDirectory": ".artifacts/datasets/tidytuesday"
+  },
+  "datasets": [
+    {
+      "id": "tt-penguins",
+      "corpus": "tidytuesday",
+      "path": "data/2020/2020-07-28/penguins.csv",
+      "sha256": "f204db2c753b0937caac3cb35258562c14f073e4bbc76be24b4c51ce22767a93",
+      "bytes": 15241,
+      "rows": 344,
+      "selection": { "mode": "all" },
+      "fields": {
+        "species": { "type": "nominal" },
+        "island": { "type": "nominal" },
+        "bill_length_mm": { "type": "quantitative", "nullable": true },
+        "bill_depth_mm": { "type": "quantitative", "nullable": true },
+        "flipper_length_mm": { "type": "quantitative", "nullable": true },
+        "body_mass_g": { "type": "quantitative", "nullable": true },
+        "sex": { "type": "nominal", "nullable": true },
+        "year": { "type": "ordinal" }
+      },
+      "missingTokens": ["", "NA"],
+      "profiles": ["missing", "mixed-types", "small-categories", "unequal-groups"],
+      "chartFamilies": ["scatter", "bar", "box", "violin", "facet"]
+    },
+    {
+      "id": "tt-global-temperatures",
+      "corpus": "tidytuesday",
+      "path": "data/2023/2023-07-11/global_temps.csv",
+      "sha256": "e3dd3aadca1ae73333cb3463904ce8dc7d07db0b01179422e12b2b6a09859f46",
+      "bytes": 14924,
+      "rows": 144,
+      "selection": { "mode": "all" },
+      "fields": {
+        "Year": { "type": "temporal-year" },
+        "Jan": { "type": "quantitative", "nullable": true },
+        "Feb": { "type": "quantitative", "nullable": true },
+        "Mar": { "type": "quantitative", "nullable": true },
+        "Apr": { "type": "quantitative", "nullable": true },
+        "May": { "type": "quantitative", "nullable": true },
+        "Jun": { "type": "quantitative", "nullable": true },
+        "Jul": { "type": "quantitative", "nullable": true },
+        "Aug": { "type": "quantitative", "nullable": true },
+        "Sep": { "type": "quantitative", "nullable": true },
+        "Oct": { "type": "quantitative", "nullable": true },
+        "Nov": { "type": "quantitative", "nullable": true },
+        "Dec": { "type": "quantitative", "nullable": true },
+        "J-D": { "type": "quantitative", "nullable": true },
+        "D-N": { "type": "quantitative", "nullable": true },
+        "DJF": { "type": "quantitative", "nullable": true },
+        "MAM": { "type": "quantitative", "nullable": true },
+        "JJA": { "type": "quantitative", "nullable": true },
+        "SON": { "type": "quantitative", "nullable": true }
+      },
+      "missingTokens": ["", "***"],
+      "profiles": ["wide", "diverging", "long-temporal", "zero-crossing"],
+      "chartFamilies": ["line", "area", "heatmap", "parallel"]
+    },
+    {
+      "id": "tt-london-marathon-winners",
+      "corpus": "tidytuesday",
+      "path": "data/2023/2023-04-25/winners.csv",
+      "sha256": "7fa3c2456340d28f7af3872e5c32b8927be6e38e33be44c76aa560270f1bcf0b",
+      "bytes": 8151,
+      "rows": 163,
+      "selection": { "mode": "all" },
+      "fields": {
+        "Category": { "type": "nominal" },
+        "Year": { "type": "temporal-year" },
+        "Athlete": { "type": "nominal" },
+        "Nationality": { "type": "nominal" },
+        "Time": { "type": "duration-hms" }
+      },
+      "missingTokens": ["", "NA"],
+      "profiles": ["unicode", "ties", "duration", "high-cardinality"],
+      "chartFamilies": ["point", "line", "rank", "facet"]
+    },
+    {
+      "id": "tt-himalayan-peaks",
+      "corpus": "tidytuesday",
+      "path": "data/2020/2020-09-22/peaks.csv",
+      "sha256": "8515d9d239647b1912846ddfe1ce61e4901920c621004a40d0d7eb17be5bb890",
+      "bytes": 29251,
+      "rows": 468,
+      "selection": { "mode": "all" },
+      "fields": {
+        "peak_id": { "type": "nominal" },
+        "peak_name": { "type": "nominal" },
+        "peak_alternative_name": { "type": "nominal", "nullable": true },
+        "height_metres": { "type": "quantitative" },
+        "climbing_status": { "type": "nominal" },
+        "first_ascent_year": { "type": "temporal-year", "nullable": true },
+        "first_ascent_country": { "type": "nominal", "nullable": true },
+        "first_ascent_expedition_id": { "type": "nominal", "nullable": true }
+      },
+      "missingTokens": ["", "NA"],
+      "profiles": ["missing", "long-labels", "high-cardinality", "historical"],
+      "chartFamilies": ["bar", "point", "histogram", "text"]
+    },
+    {
+      "id": "tt-us-tornadoes",
+      "corpus": "tidytuesday",
+      "path": "data/2023/2023-05-16/tornados.csv",
+      "sha256": "aa14d5b76953d9b077deb9927059edeca966d9e6dcb25a5aacbc0023768e538c",
+      "bytes": 9525333,
+      "rows": 68693,
+      "selection": {
+        "mode": "stable-sample",
+        "count": 1024,
+        "seed": "ggaction-tornadoes-v1",
+        "witnessFields": ["mag", "inj", "fat", "loss", "len", "wid"]
+      },
+      "fields": {
+        "om": { "type": "quantitative" },
+        "yr": { "type": "temporal-year" },
+        "mo": { "type": "ordinal" },
+        "dy": { "type": "ordinal" },
+        "date": { "type": "temporal-date" },
+        "datetime_utc": { "type": "temporal-datetime" },
+        "st": { "type": "nominal" },
+        "mag": { "type": "quantitative", "nullable": true },
+        "inj": { "type": "quantitative" },
+        "fat": { "type": "quantitative" },
+        "loss": { "type": "quantitative", "nullable": true },
+        "slat": { "type": "quantitative" },
+        "slon": { "type": "quantitative" },
+        "elat": { "type": "quantitative" },
+        "elon": { "type": "quantitative" },
+        "len": { "type": "quantitative" },
+        "wid": { "type": "quantitative" },
+        "fc": { "type": "boolean" }
+      },
+      "missingTokens": ["", "NA"],
+      "profiles": ["large", "extreme-values", "coordinates", "utc", "sparse-events"],
+      "chartFamilies": ["scatter", "line", "histogram", "heatmap", "facet"]
+    },
+    {
+      "id": "zoo-quantitative-extremes",
+      "corpus": "zoo",
+      "generator": "quantitativeExtremes",
+      "profiles": ["tiny", "huge", "signed-zero", "duplicate", "skewed"],
+      "chartFamilies": ["scatter", "line", "histogram", "scale"]
+    },
+    {
+      "id": "zoo-positive-log-decades",
+      "corpus": "zoo",
+      "generator": "positiveLogDecades",
+      "profiles": ["positive", "log-decades", "subunit"],
+      "chartFamilies": ["scatter", "line", "scale"]
+    },
+    {
+      "id": "zoo-constant-domain",
+      "corpus": "zoo",
+      "generator": "constantDomain",
+      "profiles": ["constant", "singleton", "single-category"],
+      "chartFamilies": ["scatter", "bar", "histogram", "scale"]
+    },
+    {
+      "id": "zoo-categorical-cardinality",
+      "corpus": "zoo",
+      "generator": "categoricalCardinality",
+      "profiles": ["high-cardinality", "long-legend", "ordered"],
+      "chartFamilies": ["bar", "point", "facet", "legend"]
+    },
+    {
+      "id": "zoo-numeric-looking-categories",
+      "corpus": "zoo",
+      "generator": "numericLookingCategories",
+      "profiles": ["nominal-numeric", "missing-like-labels", "duplicates"],
+      "chartFamilies": ["bar", "point", "legend"]
+    },
+    {
+      "id": "zoo-unicode-labels",
+      "corpus": "zoo",
+      "generator": "unicodeLabels",
+      "profiles": ["unicode", "combining", "emoji", "rtl", "long-labels"],
+      "chartFamilies": ["bar", "point", "text", "legend"]
+    },
+    {
+      "id": "zoo-temporal-boundaries",
+      "corpus": "zoo",
+      "generator": "temporalBoundaries",
+      "profiles": ["leap-day", "month-end", "year-end", "utc-offset", "duplicate-time"],
+      "chartFamilies": ["line", "bar", "window", "time"]
+    },
+    {
+      "id": "zoo-temporal-irregular",
+      "corpus": "zoo",
+      "generator": "temporalIrregular",
+      "profiles": ["temporal-gaps", "temporal-bursts", "reverse-order"],
+      "chartFamilies": ["line", "area", "window"]
+    },
+    {
+      "id": "zoo-histogram-boundaries",
+      "corpus": "zoo",
+      "generator": "histogramBoundaries",
+      "profiles": ["bin-boundaries", "duplicate", "tiny-span", "large-offset"],
+      "chartFamilies": ["histogram", "density"]
+    },
+    {
+      "id": "zoo-multimodal-density",
+      "corpus": "zoo",
+      "generator": "multimodalDensity",
+      "profiles": ["multimodal", "singleton-group", "unequal-groups"],
+      "chartFamilies": ["density", "violin", "area"]
+    },
+    {
+      "id": "zoo-boxplot-thresholds",
+      "corpus": "zoo",
+      "generator": "boxplotThresholds",
+      "profiles": ["quartile-boundaries", "outlier-thresholds", "tiny-values"],
+      "chartFamilies": ["box", "error"]
+    },
+    {
+      "id": "zoo-diverging-stacks",
+      "corpus": "zoo",
+      "generator": "divergingStacks",
+      "profiles": ["positive-negative", "zero-sum", "zero-values"],
+      "chartFamilies": ["bar", "area", "stack"]
+    },
+    {
+      "id": "zoo-asymmetric-intervals",
+      "corpus": "zoo",
+      "generator": "asymmetricIntervals",
+      "profiles": ["asymmetric", "zero-width", "tiny-values"],
+      "chartFamilies": ["error-bar", "error-band", "rule"]
+    },
+    {
+      "id": "zoo-sparse-grid",
+      "corpus": "zoo",
+      "generator": "sparseGrid",
+      "profiles": ["missing-cells", "duplicate-cells", "unequal-counts"],
+      "chartFamilies": ["heatmap", "bin2d"]
+    },
+    {
+      "id": "zoo-facet-imbalance",
+      "corpus": "zoo",
+      "generator": "facetImbalance",
+      "profiles": ["ragged-facet", "singleton-group", "unequal-groups", "empty-like-group"],
+      "chartFamilies": ["facet", "composition"]
+    },
+    {
+      "id": "zoo-path-order",
+      "corpus": "zoo",
+      "generator": "pathOrder",
+      "profiles": ["reverse-order", "duplicate-position", "missing-measure"],
+      "chartFamilies": ["line", "area", "path"]
+    },
+    {
+      "id": "zoo-polar-wrap",
+      "corpus": "zoo",
+      "generator": "polarWrap",
+      "profiles": ["angular-seam", "zero-weight", "many-sectors"],
+      "chartFamilies": ["arc", "polar-point", "radial"]
+    },
+    {
+      "id": "zoo-label-collision-cloud",
+      "corpus": "zoo",
+      "generator": "labelCollisionCloud",
+      "profiles": ["dense-labels", "edge-labels", "long-labels"],
+      "chartFamilies": ["text", "point", "label-layout"]
+    },
+    {
+      "id": "zoo-multi-encoding-styles",
+      "corpus": "zoo",
+      "generator": "multiEncodingStyles",
+      "profiles": ["multi-legend", "size-extremes", "opacity-extremes", "shape-vocabulary"],
+      "chartFamilies": ["point", "legend", "multi-encoding"]
+    }
+  ]
+}

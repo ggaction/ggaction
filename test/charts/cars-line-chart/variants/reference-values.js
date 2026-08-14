@@ -493,13 +493,23 @@ function alignedStart(bounds, width, align) {
   return bounds.x + (bounds.width - width) / 2;
 }
 
+function compositeLegendTextWidth(text, fontSize, weightFactor = 1) {
+  return [...String(text)].reduce((sum, character) => sum + (
+    /[iIl.,:;!'|]/u.test(character) ? 0.27
+      : /[mwMW@#%&]/u.test(character) ? 0.82
+        : /[A-Z0-9]/u.test(character) ? 0.61
+          : /[-_]/u.test(character) ? 0.34 : 0.47
+  ) * fontSize, 0) * weightFactor;
+}
+
 function createCompositeLegendLayout(baseline, canvas, config) {
   const labels = baseline.origins.map(String);
   const cells = compositeCells(labels.length, config.columns, config.direction);
   const columnCount = Math.max(...cells.map(cell => cell.column)) + 1;
   const rowCount = Math.max(...cells.map(cell => cell.row)) + 1;
   const itemWidths = labels.map(label =>
-    COMPOSITE_SYMBOL.lineLength + COMPOSITE_SYMBOL.labelOffset + label.length * 7
+    COMPOSITE_SYMBOL.lineLength + COMPOSITE_SYMBOL.labelOffset +
+      compositeLegendTextWidth(label, 12)
   );
   const columnWidths = Array.from({ length: columnCount }, (_, column) =>
     Math.max(...cells.map((cell, index) =>
@@ -511,7 +521,7 @@ function createCompositeLegendLayout(baseline, canvas, config) {
     COMPOSITE_SYMBOL.itemGap * Math.max(0, columnCount - 1);
   const gridHeight = rowHeight * rowCount +
     COMPOSITE_SYMBOL.itemGap * Math.max(0, rowCount - 1);
-  const titleWidth = 6 * 7;
+  const titleWidth = compositeLegendTextWidth("Origin", 13, 1.04);
   const titleGap = config.titlePosition === "left" ? 20 : 12;
   const totalWidth = config.titlePosition === "left"
     ? titleWidth + titleGap + gridWidth

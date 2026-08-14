@@ -3,8 +3,7 @@ import { validateUserId } from "../../../core/identifiers.js";
 import {
   validateKeys,
   validateNonEmptyString,
-  validateNonNegativeFinite,
-  validatePositiveFinite
+  validateNonNegativeFinite
 } from "../../../core/validation.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
@@ -16,6 +15,7 @@ import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { formatAggregateTitle } from "../../../grammar/aggregate.js";
+import { finiteMidpoint } from "../../../grammar/numeric.js";
 import {
   defaultAxisPosition,
   defaultAxisTitleRotation,
@@ -24,19 +24,67 @@ import {
 } from "./policy.js";
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
-import { resolveTextBounds } from "../../../core/textMetrics.js";
+import {
+  resolveTextBounds,
+  textBoundsFitCanvas,
+  textBoundsIntersect
+} from "../../../core/textMetrics.js";
+import { resolveConcreteGraphicBounds } from
+  "../../../grammar/schemas/graphicBounds.js";
+import { validateAxisTextStyle } from "./labels.js";
 
-const CREATE_OPTIONS = Object.freeze([
+function titleBounds(geometry, config, text) {
+  return resolveTextBounds({
+    ...geometry,
+    text,
+    fontSize: config.fontSize,
+    fontFamily: config.fontFamily,
+    fontWeight: config.fontWeight,
+    textAlign: "center",
+    textBaseline: "middle",
+    rotation: config.rotation
+  });
+}
+
+function inferredTitleOffset(program, channel, config) {
+  const plot = resolveGraphicBounds(program);
+  const canvas = findCanvasGraphic(program)?.properties;
+  const labels = program.graphicSpec.objects[`${channel}AxisLabels`]
+    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`)
+    : undefined;
+  const preferred = channel === "x" ? 42 : 52;
+  if (!plot || !canvas || !labels) return preferred;
+  const horizontal = channel === "x";
+  const positive = config.position === (horizontal ? "bottom" : "right");
+  const near = horizontal ? "top" : "left";
+  const far = horizontal ? "bottom" : "right";
+  const bounds = titleBounds(resolveAxisTitleGeometry({
+    bounds: plot,
+    channel,
+    position: config.position,
+    along: 0,
+    offset: preferred
+  }), config, program.semanticSpec.guides.axis?.[channel]?.title ?? "");
+  const needed = positive
+    ? labels[far] + 4 - bounds[near]
+    : bounds[far] - labels[near] + 4;
+  const available = positive
+    ? canvas[horizontal ? "height" : "width"] - bounds[far]
+    : bounds[near];
+  return preferred + Math.min(available, Math.max(0, needed));
+}
+
+const CREATE_OPTIONS = [
   "text", "scale", "position", "at", "offset", "rotation", "color",
   "fontSize", "fontFamily", "fontWeight"
-]);
+];
 const EDIT_OPTIONS = CREATE_OPTIONS.filter(key => key !== "scale");
-const DEFAULTS = Object.freeze({
+const DEFAULTS = {
   color: DEFAULT_COLORS.text,
   fontSize: 13,
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: 600
-});
+};
 
 function validateText(text) {
   return validateNonEmptyString(text, "Axis title text");
@@ -47,10 +95,7 @@ function validateConfig(channel, config) {
   if (!["start", "center", "end"].includes(config.at) && !Number.isFinite(config.at)) throw new TypeError("Axis title at must be start, center, end, or a finite number.");
   validateNonNegativeFinite(config.offset, "Axis title offset");
   if (!Number.isFinite(config.rotation)) throw new TypeError("Axis title rotation must be finite radians.");
-  validateNonEmptyString(config.color, "Axis title color");
-  validatePositiveFinite(config.fontSize, "Axis title fontSize");
-  validateNonEmptyString(config.fontFamily, "Axis title fontFamily");
-  if (typeof config.fontWeight !== "string" && !Number.isFinite(config.fontWeight)) throw new TypeError("Axis title fontWeight must be a string or number.");
+  validateAxisTextStyle(config, "Axis title");
 }
 
 export function inferAxisTitleText(program, channel, scaleId) {
@@ -64,34 +109,24 @@ export function inferAxisTitleText(program, channel, scaleId) {
       encoding.field.length
     ) {
       const dataset = findDataset(program, layer.data);
-      const density = dataset?.transform?.length === 1 &&
-        dataset.transform[0].type === "density"
+      const transform = dataset?.transform?.length === 1
         ? dataset.transform[0]
         : undefined;
-      const densityTitle = density === undefined
-        ? undefined
-        : encoding.field === density.as?.[0]
-          ? density.field
-          : encoding.field === density.as?.[1]
+      let derivedTitle;
+      if (transform?.type === "density") {
+        derivedTitle = encoding.field === transform.as?.[0]
+          ? transform.field
+          : encoding.field === transform.as?.[1]
             ? "Density"
             : undefined;
-      const interval = dataset?.transform?.length === 1 &&
-        dataset.transform[0].type === "interval"
-        ? dataset.transform[0]
-        : undefined;
-      const intervalTitle = interval !== undefined &&
-        Object.values(interval.as).includes(encoding.field)
-        ? `${interval.center}(${interval.field})`
-        : undefined;
-      const box = dataset?.transform?.length === 1 &&
-        dataset.transform[0].type === "boxSummary"
-        ? dataset.transform[0]
-        : undefined;
-      const boxTitle = box !== undefined &&
-        Object.values(box.as).includes(encoding.field)
-        ? box.field
-        : undefined;
-      const title = encoding.title ?? densityTitle ?? intervalTitle ?? boxTitle ?? (encoding.aggregate === undefined
+      } else if (transform?.type === "interval" &&
+        Object.values(transform.as).includes(encoding.field)) {
+        derivedTitle = `${transform.center}(${transform.field})`;
+      } else if (transform?.type === "boxSummary" &&
+        Object.values(transform.as).includes(encoding.field)) {
+        derivedTitle = transform.field;
+      }
+      const title = encoding.title ?? derivedTitle ?? (encoding.aggregate === undefined
         ? encoding.field
         : formatAggregateTitle(encoding.aggregate, encoding.field));
       titles.add(title);
@@ -112,10 +147,11 @@ function resolveGeometry(program, channel, config) {
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis title requires a supported resolved scale and Canvas bounds.");
   let along;
-  if (config.at === "start") along = scale.range[0];
-  else if (config.at === "center") along = (scale.range[0] + scale.range[1]) / 2;
-  else if (config.at === "end") along = scale.range[1];
-  else {
+  if (config.at === "center") {
+    along = finiteMidpoint(scale.range[0], scale.range[1]);
+  } else if (config.at === "start" || config.at === "end") {
+    along = scale.range[config.at === "start" ? 0 : 1];
+  } else {
     if (discrete) {
       if (!scale.domain.includes(config.at)) throw new RangeError("Axis title at value must be inside the scale domain.");
       along = mapOrdinalPositionValues([config.at], scale)[0];
@@ -132,23 +168,20 @@ function resolveGeometry(program, channel, config) {
     along,
     offset: config.offset
   });
-  const text = program.semanticSpec.guides.axis?.[channel]?.title ?? "";
-  const titleBounds = resolveTextBounds({
-    ...geometry,
-    text,
-    fontSize: config.fontSize,
-    textAlign: "center",
-    textBaseline: "middle",
-    rotation: config.rotation
-  });
+  const resolvedBounds = titleBounds(
+    geometry,
+    config,
+    program.semanticSpec.guides.axis?.[channel]?.title ?? ""
+  );
   const canvas = findCanvasGraphic(program)?.properties;
-  const newEdgeFits = config.position === "top"
-    ? titleBounds.top >= 0
-    : config.position === "right"
-      ? titleBounds.right <= canvas?.width
-      : true;
-  if (!canvas || !newEdgeFits) {
+  if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
     throw new Error(`The ${channel}-axis title does not fit the Canvas margin.`);
+  }
+  const labelsBounds = program.graphicSpec.objects[`${channel}AxisLabels`]
+    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`)
+    : undefined;
+  if (labelsBounds && textBoundsIntersect(resolvedBounds, labelsBounds)) {
+    throw new Error(`The ${channel}-axis title overlaps the axis labels.`);
   }
   return geometry;
 }
@@ -180,6 +213,9 @@ function makeEdit(channel) {
         ? defaultAxisTitleRotation(channel, position)
         : appearance.rotation ?? previous.rotation,
       inferredRotation,
+      inferredOffset: Object.hasOwn(args, "offset")
+        ? false
+        : previous.inferredOffset === true,
       ...(explicitText ? { inferredText: false } : {})
     };
     validateConfig(channel, config);
@@ -196,6 +232,9 @@ function makeEdit(channel) {
       });
     }
     const resolvedText = validateText(next.semanticSpec.guides.axis?.[channel]?.title);
+    if (config.inferredOffset) {
+      config.offset = inferredTitleOffset(next, channel, config);
+    }
     const geometry = resolveGeometry(next, channel, config);
     next = next._withGuideConfig(channel, "title", config);
     const properties = {
@@ -216,16 +255,24 @@ function makeCreate(channel) {
   const operation = names(channel);
   return action({ op: operation.create, description: `Create the ${channel}-axis title.` }, function (args = {}) {
       validateKeys(args, CREATE_OPTIONS, operation.create);
-    const scale = validateUserId(args.scale ?? channel, "Scale id");
+    const {
+      text: requestedText,
+      scale: requestedScale,
+      position: requestedPosition,
+      rotation: requestedRotation,
+      ...appearance
+    } = args;
+    const scale = validateUserId(requestedScale ?? channel, "Scale id");
     const guideScale = this.semanticSpec.guides.axis?.[channel]?.scale;
     if (guideScale && guideScale !== scale) throw new Error(`${operation.create} conflicts with the existing axis scale.`);
     if (this.graphicSpec.objects[operation.graphic]) throw new Error(`${operation.create} requires a missing axis title.`);
     const inferredText = !Object.hasOwn(args, "text");
     const text = validateText(
-      args.text ?? inferAxisTitleText(this, channel, scale)
+      requestedText ?? inferAxisTitleText(this, channel, scale)
     );
-    const position = args.position ?? defaultAxisPosition(channel);
+    const position = requestedPosition ?? defaultAxisPosition(channel);
     const inferredRotation = !Object.hasOwn(args, "rotation");
+    const inferredOffset = !Object.hasOwn(args, "offset");
     const config = {
       scale,
       inferredText,
@@ -234,21 +281,22 @@ function makeCreate(channel) {
       offset: channel === "x" ? 42 : 52,
       rotation: inferredRotation
         ? defaultAxisTitleRotation(channel, position)
-        : args.rotation,
+        : requestedRotation,
       inferredRotation,
+      inferredOffset,
       color: DEFAULTS.color,
       fontSize: DEFAULTS.fontSize,
       fontFamily: DEFAULTS.fontFamily,
       fontWeight: DEFAULTS.fontWeight,
-      ...Object.fromEntries(Object.entries(args).filter(
-        ([key]) => !["text", "scale", "position", "rotation"].includes(key)
-      ))
+      ...appearance
     };
-    validateConfig(channel, config);
-    resolveGeometry(this, channel, config);
-    return this
+    let next = this
       .editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
-      .editSemantic({ property: `guide.axis.${channel}.title`, value: text })
+      .editSemantic({ property: `guide.axis.${channel}.title`, value: text });
+    if (inferredOffset) config.offset = inferredTitleOffset(next, channel, config);
+    validateConfig(channel, config);
+    resolveGeometry(next, channel, config);
+    return next
       .createGraphics({
         id: operation.graphic,
         type: "text",

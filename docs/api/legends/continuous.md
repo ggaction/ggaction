@@ -50,6 +50,7 @@ Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
 `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
 Gradient and side-positioned opacity legends require `titlePosition: "top"`.
 Both forms require enough requested Canvas margin and never resize the Canvas.
+Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
 creates ordered swatches and concrete interval labels. The current interval

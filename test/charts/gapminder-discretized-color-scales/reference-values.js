@@ -95,7 +95,10 @@ export function createDiscretizedColorReference(gapminder, type) {
   if (!DISCRETIZED_COLOR_TYPES.includes(type)) {
     throw new Error(`Unsupported discretized color reference type "${type}".`);
   }
-  const base = createGapminderTransformedScaleValues(gapminder);
+  const base = createGapminderTransformedScaleValues(
+    gapminder,
+    DISCRETIZED_COLOR_LAYOUT
+  );
   const samples = base.rows.map(row => row.life_expect);
   const thresholds = Object.freeze(
     type === "quantize"

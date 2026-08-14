@@ -43,6 +43,26 @@ test("partially edits a canvas and updates authoring bounds", () => {
   assert.equal(actionNode.children[0].args.property, "width");
 });
 
+test("preserves positive fractional Canvas dimensions when editing", () => {
+  const edited = createConcreteCanvas().editCanvas({
+    width: 120.75,
+    height: 90.5,
+    margin: 10
+  });
+
+  assert.deepEqual(edited.graphicSpec.objects.canvas.properties, {
+    width: 120.75,
+    height: 90.5,
+    background: "white"
+  });
+  assert.deepEqual(resolveGraphicBounds(edited), {
+    x: 10,
+    y: 10,
+    width: 100.75,
+    height: 70.5
+  });
+});
+
 test("updates margin-only materialization state without changing graphicSpec", () => {
   const original = createConcreteCanvas();
   const next = original.editCanvas({ margin: 20 });

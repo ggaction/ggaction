@@ -75,6 +75,37 @@ test("resolves item, path, and subtree bounds through one shared policy", () => 
   });
 });
 
+test("includes every nested Canvas translation in concrete bounds", () => {
+  const spec = {
+    objects: {
+      root: { type: "canvas", properties: {}, children: ["panel"] },
+      panel: {
+        type: "canvas",
+        properties: { x: 120, y: 30, width: 100, height: 80 },
+        children: ["dot"]
+      },
+      dot: {
+        type: "circle",
+        properties: { x: 90, y: 20, radius: 2 }
+      }
+    },
+    order: ["root"]
+  };
+
+  assert.deepEqual(resolveConcreteGraphicBounds(spec, "dot"), {
+    left: 208,
+    right: 212,
+    top: 48,
+    bottom: 52
+  });
+  assert.deepEqual(resolveConcreteGraphicBounds(spec, "root"), {
+    left: 208,
+    right: 212,
+    top: 48,
+    bottom: 52
+  });
+});
+
 test("uses exact cubic extrema instead of conservative control-point bounds", () => {
   const spec = {
     objects: {

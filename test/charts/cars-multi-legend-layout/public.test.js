@@ -81,10 +81,9 @@ test("left-packs inline legend blocks with the approved reading rhythm", () => {
     for (let index = 0; index < objects.opacityLegendSymbols.items.length; index += 1) {
       const symbol = objects.opacityLegendSymbols.items[index].properties;
       const label = objects.opacityLegendLabels.items[index].properties;
-      assert.equal(
-        label.x - symbol.x - symbol.radius,
-        LEGEND_LAYOUT.symbolLabelGap
-      );
+      assert.ok(Math.abs(
+        label.x - symbol.x - symbol.radius - LEGEND_LAYOUT.symbolLabelGap
+      ) < 1e-9);
       if (index > 0) {
         const previousLabel = objects.opacityLegendLabels.items[index - 1].properties;
         assert.ok(Math.abs(

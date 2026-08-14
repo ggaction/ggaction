@@ -323,7 +323,7 @@ export function createGapminderRegressionFacetPrimitives(rows, options = {}) {
       String(cell.cluster),
       cell.x + values.bounds.x + values.bounds.width / 2,
       cell.y + 10,
-      { fontSize: 12.5, fontWeight: 700, textBaseline: "top" }
+      { fontSize: 12.5, fontWeight: 700, textBaseline: "middle" }
     ))
   });
   program = graphic(program, "chartTitle", "text", {
@@ -376,7 +376,7 @@ export function createGapminderOuterGuideFacetPrimitives(rows) {
       String(cell.cluster),
       cell.x + values.bounds.x + values.bounds.width / 2,
       cell.y + 10,
-      { fontSize: 12.5, fontWeight: 700, textBaseline: "top" }
+      { fontSize: 12.5, fontWeight: 700, textBaseline: "middle" }
     ))
   });
   program = addPopulationLegend(program, values);

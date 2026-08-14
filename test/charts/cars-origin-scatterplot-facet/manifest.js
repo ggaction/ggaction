@@ -74,8 +74,11 @@ export const histogramFacetTarget = `chart()
   })
   .createGuides({
     axes: {
-      x: { title: { text: "Displacement" } },
-      y: { title: { text: "Count", offset: 39 } }
+      x: {
+        ticksAndLabels: { values: [50, 162.5, 275, 387.5, 500] },
+        title: { text: "Displacement" }
+      },
+      y: { title: { text: "Count" } }
     },
     legend: false,
     grid: { horizontal: true, vertical: false }

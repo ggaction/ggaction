@@ -1,4 +1,5 @@
 import { action } from "../../../../core/action.js";
+import { formatVisibleText } from "../../../../core/textMetrics.js";
 import { activeConfig, graphic, noOptions, resolveLayout } from "./layout.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
@@ -17,7 +18,11 @@ export const rematerializeLegendLabels = action(
       .editGraphics({ target: id, property: "length", value: config.domain.length })
       .editGraphics({ target: id, property: "x", value: layout.labelX })
       .editGraphics({ target: id, property: "y", value: layout.itemY })
-      .editGraphics({ target: id, property: "text", value: config.domain.map(String) })
+      .editGraphics({
+        target: id,
+        property: "text",
+        value: config.domain.map(formatVisibleText)
+      })
       .editGraphics({ target: id, property: "fill", value: config.labels.color })
       .editGraphics({ target: id, property: "fontSize", value: config.labels.fontSize })
       .editGraphics({ target: id, property: "fontFamily", value: config.labels.fontFamily })

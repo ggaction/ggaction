@@ -16,7 +16,7 @@ export const ORDERED_CATEGORY_LAYOUT = Object.freeze({
   panelHeight: 320,
   gap: 12,
   padding: 6,
-  margin: Object.freeze({ top: 74, right: 18, bottom: 58, left: 42 })
+  margin: Object.freeze({ top: 74, right: 18, bottom: 58, left: 50 })
 });
 
 function categoryBars() {

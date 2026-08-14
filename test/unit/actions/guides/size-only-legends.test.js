@@ -38,6 +38,21 @@ function assertSizeLegend(program, count) {
   );
 }
 
+test("rejects size legend counts above the generated item limit", () => {
+  assert.throws(
+    () => sizeBase().createLegend({ channels: ["size"], count: 10_001 }),
+    /must not exceed 10000/
+  );
+  const existing = sizeBase()
+    .encodeColor({ field: "group" })
+    .encodeShape({ field: "group" })
+    .createLegend({ target: "points", count: 3 });
+  assert.throws(
+    () => existing.editLegend({ count: 10_001 }),
+    /must not exceed 10000/
+  );
+});
+
 test("creates an explicit standalone size legend for a point mark", () => {
   const base = sizeBase();
   const program = base.createLegend({
@@ -51,6 +66,25 @@ test("creates an explicit standalone size legend for a point mark", () => {
   assert.equal(program.semanticSpec.guides.legend.series, undefined);
   assert.equal(program.semanticSpec.guides.legend.color, undefined);
   assert.equal(base.semanticSpec.guides.legend?.size, undefined);
+});
+
+test("keeps extreme size legend samples and close-value labels distinct", () => {
+  for (const domain of [[-1e308, 1e308], [1e15, 1e15 + 1]]) {
+    const extreme = chart()
+      .createCanvas({ width: 760, height: 460, margin: { right: 200 } })
+      .createData({
+        values: domain.map((magnitude, index) => ({ x: index, y: index, magnitude }))
+      })
+      .createPointMark({ id: "points" })
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .encodeSize({ field: "magnitude", scale: { domain, range: [24, 196] } })
+      .createLegend({ channels: ["size"] });
+    const labels = extreme.graphicSpec.objects.sizeLegendLabels.items.map(
+      item => item.properties.text
+    );
+    assert.equal(new Set(labels).size, 5);
+  }
 });
 
 test("infers one standalone size target with createLegend and createGuides", () => {

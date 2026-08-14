@@ -13,7 +13,7 @@ function pointBase(options = {}) {
     .createCanvas({
       width: 360,
       height: 380,
-      margin: { top: 30, right: 150, bottom: 30, left: 30 }
+      margin: { top: 30, right: 150, bottom: 60, left: 60 }
     })
     .createData({ id: "rows", values: rows })
     .createPointMark({ id: "points", ...options })
@@ -23,7 +23,7 @@ function pointBase(options = {}) {
 
 test("removes a primary position, its paired endpoint, and orphaned guides", () => {
   const before = chart()
-    .createCanvas({ width: 240, height: 160, margin: 30 })
+    .createCanvas({ width: 300, height: 220, margin: 60 })
     .createData({ id: "rows", values: rows })
     .createAreaMark({ id: "band" })
     .encodeX({ field: "x" })

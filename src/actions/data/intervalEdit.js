@@ -1,11 +1,66 @@
 import { isPlainObject } from "../../core/immutable.js";
+import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import { normalizeIntervalParameters } from "../../grammar/interval.js";
 import { planDerivedDataRevision } from
   "../../materialization/dataProvenance.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { resolveEligibleLayer } from "../../selectors/layers.js";
 
 const STATISTICS_OPTIONS = Object.freeze(["center", "extent", "level"]);
+
+export function ownOptions(value, options) {
+  return Object.fromEntries(
+    options.filter(key => Object.hasOwn(value, key)).map(key => [key, value[key]])
+  );
+}
+
+export function resolveIntervalOwner(program, requested, {
+  idLabel,
+  label,
+  mark,
+  config
+}) {
+  const target = requested === undefined
+    ? undefined
+    : validateUserId(requested, idLabel);
+  return resolveEligibleLayer(program, {
+    target,
+    label,
+    predicate: layer =>
+      layer.mark?.type === mark &&
+      program.markConfigs[layer.id]?.[config] !== undefined
+  });
+}
+
+export function createResolvedIntervalData(program, resolved) {
+  if (resolved.interval.mode !== "statistical") return program;
+  return program.createIntervalData({
+    id: resolved.dataId,
+    source: resolved.source,
+    field: resolved.interval.field,
+    groupBy: resolved.groupBy,
+    center: resolved.interval.center,
+    extent: resolved.interval.extent,
+    level: resolved.interval.level,
+    as: resolved.fields
+  });
+}
+
+export function applyIntervalRevision(program, interval) {
+  if (!interval.changed) return program;
+  let next = program.createIntervalData(interval.dataArgs);
+  for (const rebind of interval.revision.rebinds) {
+    next = next.rebindLayerData(rebind);
+  }
+  return next;
+}
+
+export function releaseIntervalRevision(program, interval) {
+  return interval.changed
+    ? program.releaseDerivedData(interval.revision.release)
+    : program;
+}
 
 export function planIntervalEdit(program, {
   owner,

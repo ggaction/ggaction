@@ -69,7 +69,7 @@ createBoxPlot({
 ### Value coverage — `createBoxPlot`
 
 - ✅ Covered: direct and deferred position order, unique-data/encoded-source inference, explicit guide opt-in,
-  ambiguity rejection, deterministic IDs, exact Cars primitive
+  ambiguity rejection, deterministic IDs, sub-picounit summary ordering, exact Cars primitive
   equality, missing/outlier ownership, Canvas rematerialization, trace and immutability.
 - ✅ Covered: 1.5px box, median and whisker/cap defaults; opaque colored body and black diamond outliers.
 - ✅ Covered: horizontal x/x2 body, minmax provenance, vertical median/caps, no outlier resources and pixel equality.

@@ -264,7 +264,7 @@ test("creates deterministic wrapped title and subtitle collections", () => {
 
   assert.deepEqual(
     program.graphicSpec.objects.chartTitle.items.map(child => child.properties.text),
-    ["Distribution of Acceleration", "Across Vehicle Origins"]
+    ["Distribution of", "Acceleration Across", "Vehicle Origins"]
   );
   assert.deepEqual(
     program.graphicSpec.objects.chartSubtitle.items.map(child => child.properties.text),
@@ -275,11 +275,11 @@ test("creates deterministic wrapped title and subtitle collections", () => {
   );
   assert.deepEqual(
     program.graphicSpec.objects.chartTitle.items.map(child => child.properties.y),
-    [501, 527]
+    [501, 527, 553]
   );
   assert.deepEqual(
     program.graphicSpec.objects.chartSubtitle.items.map(child => child.properties.y),
-    [557, 583]
+    [583, 609]
   );
 });
 

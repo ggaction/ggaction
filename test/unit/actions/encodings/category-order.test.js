@@ -19,7 +19,7 @@ function barBase({ horizontal = false, values = rows } = {}) {
     .createCanvas({
       width: 420,
       height: 300,
-      margin: { top: 24, right: 24, bottom: 52, left: 54 }
+      margin: { top: 24, right: 24, bottom: 60, left: 70 }
     })
     .createData({ id: "rows", values })
     .createBarMark({ id: "bars" });

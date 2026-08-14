@@ -36,7 +36,7 @@ export function createGapminderLifeExpectancyHeatmap(gapminder) {
     .createCanvas({
       width: 760,
       height: 440,
-      margin: { top: 70, right: 120, bottom: 75, left: 110 }
+      margin: { top: 70, right: 130, bottom: 75, left: 110 }
     })
     .createData({ values: rows })
     .createHeatmap({

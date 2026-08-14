@@ -476,7 +476,8 @@ async function testNodeConsumer(directory) {
     assert.equal(pdf.pages, 1);
     assert.ok(pdf.bytes > 0);
     const svg = renderToSVG(program, {
-      title: "Package consumer chart"
+      title: "Package consumer chart",
+      resourceNamespace: "packageConsumer"
     });
     assert.match(svg, /^<svg /);
     assert.match(svg, /<title>Package consumer chart<\\/title>/);
@@ -1029,7 +1030,10 @@ async function testTypeScriptConsumer(directory) {
       output: "chart.pdf",
       metadata: pdfMetadata
     });
-    const svgOptions: SVGRenderOptions = { title: "Typed SVG" };
+    const svgOptions: SVGRenderOptions = {
+      title: "Typed SVG",
+      resourceNamespace: "typedSvg"
+    };
     const svg: string = renderToSVG(program, svgOptions);
     renderToPDF(program, {
       output: "chart.pdf",

@@ -21,8 +21,8 @@ encodings.
 
 | Option | Type | Default |
 | --- | --- | --- |
-| `width` | positive integer | `640` |
-| `height` | positive integer | `400` |
+| `width` | positive finite number | `640` |
+| `height` | positive finite number | `400` |
 | `background` | non-empty string | `"white"` |
 | `margin` | non-negative number or side object | `{ top: 30, right: 30, bottom: 60, left: 70 }` |
 

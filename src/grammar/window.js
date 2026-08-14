@@ -1,18 +1,23 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import {
+  stableFiniteMean,
+  stableFinitePrefixSums,
+  stableFiniteSum
+} from "./numeric.js";
 
-const TRANSFORM_KEYS = Object.freeze([
+const TRANSFORM_KEYS = [
   "type", "partitionBy", "sortBy", "operations"
-]);
-const SORT_KEYS = Object.freeze(["field", "order"]);
-const ORDER_VALUES = Object.freeze(["ascending", "descending"]);
-const OPERATION_VALUES = Object.freeze([
+];
+const SORT_KEYS = ["field", "order"];
+const ORDER_VALUES = ["ascending", "descending"];
+const OPERATION_VALUES = [
   "rowNumber", "rank", "denseRank", "cumulativeSum", "lag", "lead",
   "movingMean", "movingSum"
-]);
-const POSITION_OPERATIONS = new Set(["rowNumber", "rank", "denseRank"]);
-const OFFSET_OPERATIONS = new Set(["lag", "lead"]);
-const MOVING_OPERATIONS = new Set(["movingMean", "movingSum"]);
-const FRAME_KEYS = Object.freeze(["preceding", "following"]);
+];
+const POSITION_OPERATIONS = new Set(OPERATION_VALUES.slice(0, 3));
+const OFFSET_OPERATIONS = new Set(OPERATION_VALUES.slice(4, 6));
+const MOVING_OPERATIONS = new Set(OPERATION_VALUES.slice(-2));
+const FRAME_KEYS = ["preceding", "following"];
 
 function requireField(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -77,15 +82,12 @@ function validateFrame(frame, operation) {
     throw new TypeError(`Window ${operation} frame must be a plain object.`);
   }
   rejectUnknownKeys(frame, FRAME_KEYS, `window ${operation} frame`);
-  if (!Number.isInteger(frame.preceding) || frame.preceding < 0) {
-    throw new RangeError(
-      `Window ${operation} frame preceding must be a non-negative integer.`
-    );
-  }
-  if (!Number.isInteger(frame.following) || frame.following < 0) {
-    throw new RangeError(
-      `Window ${operation} frame following must be a non-negative integer.`
-    );
+  for (const field of FRAME_KEYS) {
+    if (!Number.isInteger(frame[field]) || frame[field] < 0) {
+      throw new RangeError(
+        `Window ${operation} frame ${field} must be a non-negative integer.`
+      );
+    }
   }
 }
 
@@ -264,12 +266,6 @@ function validateSourceFields(rows, transform) {
 }
 
 function validatePartitionSortValues(partition, transform) {
-  for (const field of transform.partitionBy) {
-    partition.forEach(entry => scalarKey(
-      entry.row[field],
-      `Window partition field "${field}"`
-    ));
-  }
   for (const sort of transform.sortBy) {
     const types = new Set(partition.flatMap(({ row }) => {
       const value = row[sort.field];
@@ -301,10 +297,43 @@ function partitionRows(entries, partitionBy) {
         entry.row[field],
         `Window partition field "${field}"`
       )).join("\0");
-    if (!partitions.has(key)) partitions.set(key, []);
-    partitions.get(key).push(entry);
+    let partition = partitions.get(key);
+    if (partition === undefined) {
+      partition = [];
+      partitions.set(key, partition);
+    }
+    partition.push(entry);
   }
   return [...partitions.values()];
+}
+
+function operationValues(
+  partition,
+  operation,
+  first = 0,
+  last = partition.length - 1
+) {
+  const values = [];
+  for (let index = first; index <= last; index += 1) {
+    const value = partition[index].row[operation.field];
+    if (!Number.isFinite(value)) {
+      throw new TypeError(
+        `Window ${operation.op} field "${operation.field}" must contain finite numbers.`
+      );
+    }
+    values.push(value);
+  }
+  return values;
+}
+
+function stableWindowOutput(operation, calculate) {
+  const label = `Window ${operation.op} output "${operation.as}"`;
+  try {
+    return calculate(label);
+  } catch (error) {
+    if (!(error instanceof RangeError)) throw error;
+    throw new RangeError(`${label} must be finite.`);
+  }
 }
 
 function applyOperation(partition, operation, sortBy) {
@@ -330,44 +359,29 @@ function applyOperation(partition, operation, sortBy) {
     return;
   }
   if (operation.op === "cumulativeSum") {
-    let total = 0;
-    for (const entry of partition) {
-      const value = entry.row[operation.field];
-      if (!Number.isFinite(value)) {
-        throw new TypeError(
-          `Window cumulativeSum field "${operation.field}" must contain finite numbers.`
-        );
-      }
-      total += value;
-      entry.row[operation.as] = total;
-    }
+    const values = operationValues(partition, operation);
+    const totals = stableWindowOutput(operation, label =>
+      stableFinitePrefixSums(values, label)
+    );
+    partition.forEach((entry, index) => {
+      entry.row[operation.as] = totals[index];
+    });
     return;
   }
   if (MOVING_OPERATIONS.has(operation.op)) {
+    const calculate = operation.op === "movingMean"
+      ? stableFiniteMean
+      : stableFiniteSum;
     partition.forEach((entry, index) => {
       const first = Math.max(0, index - operation.frame.preceding);
       const last = Math.min(
         partition.length - 1,
         index + operation.frame.following
       );
-      let total = 0;
-      for (let peerIndex = first; peerIndex <= last; peerIndex += 1) {
-        const value = partition[peerIndex].row[operation.field];
-        if (!Number.isFinite(value)) {
-          throw new TypeError(
-            `Window ${operation.op} field "${operation.field}" must contain finite numbers.`
-          );
-        }
-        total += value;
-        if (!Number.isFinite(total)) {
-          throw new RangeError(
-            `Window ${operation.op} output "${operation.as}" must be finite.`
-          );
-        }
-      }
-      entry.row[operation.as] = operation.op === "movingMean"
-        ? total / (last - first + 1)
-        : total;
+      const values = operationValues(partition, operation, first, last);
+      entry.row[operation.as] = stableWindowOutput(operation, label =>
+        calculate(values, label)
+      );
     });
     return;
   }
@@ -400,6 +414,5 @@ export function deriveWindowRows(rows, transform) {
       applyOperation(partition, operation, transform.sortBy);
     }
   }
-  entries.sort((left, right) => left.index - right.index);
   return cloneAndFreeze(entries.map(entry => entry.row));
 }

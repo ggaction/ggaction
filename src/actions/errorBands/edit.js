@@ -3,17 +3,44 @@ import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
   validateOptionObject,
+  validateKeys,
   validateNonEmptyString,
+  validateNonNegativeFinite,
   validateUnitInterval
 } from "../../core/validation.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
-import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
+import { normalizeStrokeDashPattern } from "../../grammar/scales/index.js";
+import { findLayer } from "../../selectors/layers.js";
+import { removeOwnedMark } from "../marks/remove.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
-import { planIntervalEdit } from "../data/intervalEdit.js";
 import {
-  ERROR_BAND_BOUNDARY_OPTIONS,
-  resolveBoundaryAppearance
-} from "./options.js";
+  applyIntervalRevision,
+  ownOptions,
+  planIntervalEdit,
+  releaseIntervalRevision,
+  resolveIntervalOwner
+} from "../data/intervalEdit.js";
+
+export const ERROR_BAND_BOUNDARY_OPTIONS = Object.freeze([
+  "stroke", "strokeWidth", "strokeDash", "opacity", "curve"
+]);
+
+export function resolveBoundaryAppearance(value, { defaults, operation }) {
+  if (!isPlainObject(value)) {
+    throw new TypeError(`${operation} must be a plain object.`);
+  }
+  validateKeys(value, ERROR_BAND_BOUNDARY_OPTIONS, operation);
+  const stroke = value.stroke ?? defaults.stroke;
+  const strokeWidth = value.strokeWidth ?? defaults.strokeWidth;
+  const strokeDash = value.strokeDash ?? defaults.strokeDash;
+  const opacity = value.opacity ?? defaults.opacity;
+  const curve = validateCurveInterpolation(value.curve ?? defaults.curve);
+  validateNonEmptyString(stroke, `${operation} stroke`);
+  validateNonNegativeFinite(strokeWidth, `${operation} strokeWidth`);
+  const resolvedStrokeDash = normalizeStrokeDashPattern(strokeDash);
+  validateUnitInterval(opacity, `${operation} opacity`);
+  return { stroke, strokeWidth, strokeDash: resolvedStrokeDash, opacity, curve };
+}
 
 const EDIT_OPTIONS = Object.freeze([
   "target", "fill", "opacity", "curve", "statistics", "boundaries"
@@ -25,16 +52,27 @@ const REMATERIALIZE_OPTIONS = Object.freeze([
   "id", ...ERROR_BAND_BOUNDARY_OPTIONS
 ]);
 
+export function errorBandBoundaries(config) {
+  return [
+    [
+      config.lowerBoundaryId,
+      config.fields?.lower ?? config.lowerField,
+      "lower"
+    ],
+    [
+      config.upperBoundaryId,
+      config.fields?.upper ?? config.upperField,
+      "upper"
+    ]
+  ];
+}
+
 function resolveOwner(program, requested) {
-  const target = requested === undefined
-    ? undefined
-    : validateUserId(requested, "Error-band id");
-  return resolveEligibleLayer(program, {
-    target,
+  return resolveIntervalOwner(program, requested, {
+    idLabel: "Error-band id",
     label: "error band",
-    predicate: layer =>
-      layer.mark?.type === "area" &&
-      program.markConfigs[layer.id]?.errorBand !== undefined
+    mark: "area",
+    config: "errorBand"
   });
 }
 
@@ -90,31 +128,7 @@ function createBoundary(program, owner, id, bound, appearance) {
 }
 
 function removeBoundary(program, id) {
-  if (findLayer(program, id) === undefined) return program;
-  const selectionIds = Object.entries(
-    program.materializationConfigs.selections ?? {}
-  ).filter(([, config]) => config.target === id).map(([selection]) => selection);
-  let next = program;
-  for (const [highlight, config] of Object.entries(
-    program.materializationConfigs.highlights ?? {}
-  )) {
-    if (config.target === id || selectionIds.includes(config.selection)) {
-      next = next._withoutMaterializationConfig(["highlights", highlight]);
-    }
-  }
-  for (const selection of selectionIds) {
-    next = next._withoutMaterializationConfig(["selections", selection]);
-  }
-  return next
-    .editSemantic({ property: `layer[${id}]`, remove: true })
-    .editGraphics({ target: id, remove: true })
-    ._withoutMaterializationConfig(["marks", id])
-    ._withContext({
-      ...(program.context.currentMark === id ? { currentMark: undefined } : {}),
-      ...(selectionIds.includes(program.context.currentSelection)
-        ? { currentSelection: undefined }
-        : {})
-    });
+  return removeOwnedMark(program, id);
 }
 
 export const rematerializeErrorBandBoundary = action(
@@ -178,7 +192,8 @@ export const editErrorBand = action(
           data: errorBand.data,
           consumers: [
             owner.id,
-            ...[errorBand.lowerBoundaryId, errorBand.upperBoundaryId]
+            ...errorBandBoundaries(errorBand)
+              .map(([id]) => id)
               .filter(id => findLayer(this, id) !== undefined)
           ],
           statistics: args.statistics,
@@ -195,58 +210,43 @@ export const editErrorBand = action(
       );
     }
 
-    const applyEdit = program => {
-      let next = program;
-      if (interval.changed) {
-        next = next.createIntervalData(interval.dataArgs);
-        for (const rebind of interval.revision.rebinds) {
-          next = next.rebindLayerData(rebind);
+    let next = applyIntervalRevision(this, interval);
+    if (interval.changed) errorBand.data = interval.revision.id;
+    next = next
+      ._withMarkConfig(owner.id, { ...config, errorBand })
+      .rematerializeAreaMark({ id: owner.id });
+    if (Object.hasOwn(args, "boundaries")) {
+      if (args.boundaries === false) {
+        next = removeBoundary(next, errorBand.lowerBoundaryId);
+        next = removeBoundary(next, errorBand.upperBoundaryId);
+      } else if (Object.keys(args.boundaries).length === 0) {
+        for (const [id, bound] of errorBandBoundaries(errorBand)) {
+          next = findLayer(next, id) === undefined
+            ? createBoundary(
+                next,
+                owner.id,
+                id,
+                bound,
+                defaultBoundaryAppearance(next, owner.id)
+              )
+            : interval.changed
+              ? next.rematerializeLineMark({ id })
+              : next;
         }
-        errorBand.data = interval.revision.id;
+      } else {
+        next = next.editErrorBandBoundary({
+          target: owner.id,
+          ...args.boundaries
+        });
       }
-      next = next
-        ._withMarkConfig(owner.id, { ...config, errorBand })
-        .rematerializeAreaMark({ id: owner.id });
-      if (Object.hasOwn(args, "boundaries")) {
-        if (args.boundaries === false) {
-          next = removeBoundary(next, errorBand.lowerBoundaryId);
-          next = removeBoundary(next, errorBand.upperBoundaryId);
-        } else if (Object.keys(args.boundaries).length === 0) {
-          for (const [id, bound] of [
-            [errorBand.lowerBoundaryId, errorBand.lowerField],
-            [errorBand.upperBoundaryId, errorBand.upperField]
-          ]) {
-            next = findLayer(next, id) === undefined
-              ? createBoundary(
-                  next,
-                  owner.id,
-                  id,
-                  bound,
-                  defaultBoundaryAppearance(next, owner.id)
-                )
-              : interval.changed
-                ? next.rematerializeLineMark({ id })
-                : next;
-          }
-        } else {
-          next = next.editErrorBandBoundary({
-            target: owner.id,
-            ...args.boundaries
-          });
-        }
-      } else if (interval.changed) {
-        for (const id of [errorBand.lowerBoundaryId, errorBand.upperBoundaryId]) {
-          if (findLayer(next, id) !== undefined) {
-            next = next.rematerializeLineMark({ id });
-          }
+    } else if (interval.changed) {
+      for (const [id] of errorBandBoundaries(errorBand)) {
+        if (findLayer(next, id) !== undefined) {
+          next = next.rematerializeLineMark({ id });
         }
       }
-      return interval.changed
-        ? next.releaseDerivedData(interval.revision.release)
-        : next;
-    };
-    if (interval.changed || Object.hasOwn(args, "boundaries")) applyEdit(this);
-    return applyEdit(this);
+    }
+    return releaseIntervalRevision(next, interval);
   }
 );
 
@@ -270,13 +270,9 @@ export const editErrorBandBoundary = action(
     }
     const owner = resolveOwner(this, args.target);
     const config = this.markConfigs[owner.id].errorBand;
-    const patch = Object.fromEntries(
-      ERROR_BAND_BOUNDARY_OPTIONS
-        .filter(key => Object.hasOwn(args, key))
-        .map(key => [key, args[key]])
-    );
+    const patch = ownOptions(args, ERROR_BAND_BOUNDARY_OPTIONS);
     const ids = boundary === "both"
-      ? [config.lowerBoundaryId, config.upperBoundaryId]
+      ? errorBandBoundaries(config).map(([id]) => id)
       : [boundary === "lower" ? config.lowerBoundaryId : config.upperBoundaryId];
     const plans = ids.map(id => {
       const existing = findLayer(this, id) !== undefined;

@@ -5,12 +5,12 @@ import {
   validateNominalFieldType
 } from "../../grammar/scales/index.js";
 import { resolveStrokeDashScaleDefinition } from "../scales/definitions.js";
-import { applyMaterializationPlan } from "../../materialization/dependencies.js";
-import { planEncodingRematerialization } from "../../materialization/encodings.js";
 import {
   applyEncodingScale,
+  rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
+  setEncodingProperties,
   validateLineSeriesCompatibility,
   validateOptions
 } from "./shared.js";
@@ -111,31 +111,16 @@ const encodeStrokeDash = action(
     let next = previous === undefined
       ? this
       : this.clearStrokeDashEncoding({ target });
-    next = next
-      .editSemantic({
-        property: `layer[${target}].encoding.strokeDash.field`,
-        value: args.field
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.strokeDash.fieldType`,
-        value: fieldType
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.strokeDash.scale`,
-        value: scale.id
-      });
+    next = setEncodingProperties(next, target, "strokeDash", {
+      field: args.field,
+      fieldType,
+      scale: scale.id
+    });
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: previous?.scale === scale.id
     });
 
-    return applyMaterializationPlan(
-      next,
-      planEncodingRematerialization(next, {
-        target,
-        channel: "strokeDash",
-        scale: scale.id
-      })
-    );
+    return rematerializeEncoding(next, target, "strokeDash", scale.id);
   }
 );
 

@@ -1,26 +1,77 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
-import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
-import { planIntervalEdit } from "../data/intervalEdit.js";
 import {
-  ERROR_BAR_APPEARANCE_OPTIONS,
-  ERROR_BAR_EDIT_OPTIONS,
-  resolveErrorBarAppearance
-} from "./options.js";
+  validateKeys,
+  validatePositiveFinite
+} from "../../core/validation.js";
+import {
+  normalizeStrokeDashPattern,
+  validateOpacityValue
+} from "../../grammar/scales/index.js";
+import {
+  validateRuleStroke,
+  validateRuleStrokeWidth
+} from "../../grammar/ruleAppearance.js";
+import { findLayer } from "../../selectors/layers.js";
+import {
+  applyIntervalRevision,
+  ownOptions,
+  planIntervalEdit,
+  releaseIntervalRevision,
+  resolveIntervalOwner
+} from "../data/intervalEdit.js";
+
+export const ERROR_BAR_EDIT_OPTIONS = Object.freeze([
+  "target", "caps", "capSize", "stroke", "strokeWidth",
+  "strokeDash", "opacity", "statistics"
+]);
+
+export const ERROR_BAR_APPEARANCE_OPTIONS = Object.freeze(
+  ERROR_BAR_EDIT_OPTIONS.filter(option =>
+    option !== "target" && option !== "statistics"
+  )
+);
+
+export function resolveErrorBarAppearance(args, { defaults, operation }) {
+  validateKeys(args, ERROR_BAR_EDIT_OPTIONS, operation);
+  const caps = args.caps ?? defaults.caps;
+  if (typeof caps !== "boolean") {
+    throw new TypeError(`${operation} caps must be a boolean.`);
+  }
+  const capSize = args.capSize ?? defaults.capSize;
+  validatePositiveFinite(capSize, `${operation} capSize`);
+  const stroke = validateRuleStroke(
+    args.stroke ?? defaults.stroke,
+    `${operation} stroke`
+  );
+  const strokeWidth = validateRuleStrokeWidth(
+    args.strokeWidth ?? defaults.strokeWidth,
+    `${operation} strokeWidth`
+  );
+  const strokeDash = args.strokeDash ?? defaults.strokeDash;
+  normalizeStrokeDashPattern(strokeDash);
+  const opacity = validateOpacityValue(
+    args.opacity ?? defaults.opacity,
+    `${operation} opacity`
+  );
+  return { caps, capSize, stroke, strokeWidth, strokeDash, opacity };
+}
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
+export function errorBarCaps(config) {
+  return [
+    [config.lowerCapId, config.fields?.lower ?? config.lowerField],
+    [config.upperCapId, config.fields?.upper ?? config.upperField]
+  ];
+}
+
 function resolveOwner(program, requested) {
-  const target = requested === undefined
-    ? undefined
-    : validateUserId(requested, "Error-bar id");
-  return resolveEligibleLayer(program, {
-    target,
+  return resolveIntervalOwner(program, requested, {
+    idLabel: "Error-bar id",
     label: "error bar",
-    predicate: layer =>
-      layer.mark?.type === "rule" &&
-      program.markConfigs[layer.id]?.errorBar !== undefined
+    mark: "rule",
+    config: "errorBar"
   });
 }
 
@@ -82,10 +133,7 @@ export const rematerializeErrorBar = action(
       throw new Error(`Unknown error bar "${id}".`);
     }
     let next = rematerializeRuleAppearance(this, id, config);
-    const capDefinitions = [
-      [config.lowerCapId, config.lowerField],
-      [config.upperCapId, config.upperField]
-    ];
+    const capDefinitions = errorBarCaps(config);
     if (!config.caps) {
       for (const [capId] of capDefinitions) next = removeCap(next, capId);
       return next;
@@ -118,22 +166,20 @@ export const editErrorBar = action(
     }
     const owner = resolveOwner(this, args.target);
     const current = this.markConfigs[owner.id].errorBar;
-    const appearanceArgs = Object.fromEntries(
-      ERROR_BAR_APPEARANCE_OPTIONS
-        .filter(key => Object.hasOwn(args, key))
-        .map(key => [key, args[key]])
-    );
-    const appearance = resolveErrorBarAppearance(appearanceArgs, {
+    const appearance = resolveErrorBarAppearance(
+      ownOptions(args, ERROR_BAR_APPEARANCE_OPTIONS), {
       defaults: current,
       operation: "editErrorBar"
-    });
+      }
+    );
     const interval = Object.hasOwn(args, "statistics")
       ? planIntervalEdit(this, {
           owner: owner.id,
           data: current.data,
           consumers: [
             owner.id,
-            ...[current.lowerCapId, current.upperCapId]
+            ...errorBarCaps(current)
+              .map(([id]) => id)
               .filter(id => findLayer(this, id) !== undefined)
           ],
           statistics: args.statistics,
@@ -141,27 +187,14 @@ export const editErrorBar = action(
         })
       : { changed: false };
 
-    const applyEdit = program => {
-      let next = program;
-      if (interval.changed) {
-        next = next.createIntervalData(interval.dataArgs);
-        for (const rebind of interval.revision.rebinds) {
-          next = next.rebindLayerData(rebind);
-        }
+    const next = applyIntervalRevision(this, interval);
+    return releaseIntervalRevision(next._withMarkConfig(owner.id, {
+      ...next.markConfigs[owner.id],
+      errorBar: {
+        ...current,
+        ...appearance,
+        ...(interval.changed ? { data: interval.revision.id } : {})
       }
-      next = next._withMarkConfig(owner.id, {
-        ...next.markConfigs[owner.id],
-        errorBar: {
-          ...current,
-          ...appearance,
-          ...(interval.changed ? { data: interval.revision.id } : {})
-        }
-      }).rematerializeErrorBar({ id: owner.id });
-      return interval.changed
-        ? next.releaseDerivedData(interval.revision.release)
-        : next;
-    };
-    if (interval.changed) applyEdit(this);
-    return applyEdit(this);
+    }).rematerializeErrorBar({ id: owner.id }), interval);
   }
 );

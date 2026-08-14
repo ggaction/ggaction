@@ -1,4 +1,6 @@
 import { isPlainObject } from "../../core/immutable.js";
+import { resolveConcreteGraphicBounds } from
+  "../../grammar/schemas/graphicBounds.js";
 import { planFacetGuideOwnership } from "../../grammar/facets/guides.js";
 import {
   axisGraphicIds,
@@ -30,25 +32,14 @@ function removeNamespacedGraphics(program, namespace, ids) {
   return next;
 }
 
-function gradientAnchor(prepared, plot, layout) {
-  const strips = prepared.source.graphicSpec.objects.colorGradientStrips;
-  if (strips?.items?.[0] === undefined) return undefined;
-  const properties = strips.items[0].properties;
-  const length = prepared.source.guideConfigs.legend.gradient.gradient.length;
-  return {
-    sourceX: properties.x,
-    sourceY: properties.y,
-    targetX: layout.legend.x,
-    targetY: plot.y + (plot.height - length) / 2
-  };
-}
-
 function legendTranslation(prepared, plot, layout) {
-  const gradient = gradientAnchor(prepared, plot, layout);
-  if (gradient !== undefined) {
+  const strips = prepared.source.graphicSpec.objects.colorGradientStrips;
+  if (strips?.items?.[0] !== undefined) {
+    const properties = strips.items[0].properties;
+    const length = prepared.source.guideConfigs.legend.gradient.gradient.length;
     return {
-      x: gradient.targetX - gradient.sourceX,
-      y: gradient.targetY - gradient.sourceY
+      x: layout.legend.x - properties.x,
+      y: plot.y + (plot.height - length) / 2 - properties.y
     };
   }
   const height = prepared.bounds.bottom - prepared.bounds.top;
@@ -77,6 +68,25 @@ function attachParentLegend(program, prepared, plot, layout) {
     next = attachSnapshotObject(next, prepared.source.graphicSpec, root, id);
   }
   return next;
+}
+
+function assertSharedLegendFits(program, id, layout, plot) {
+  const bounds = resolveConcreteGraphicBounds(program.graphicSpec, id);
+  if (bounds === undefined) {
+    throw new Error("Facet shared legend requires measurable concrete bounds.");
+  }
+  const outside = bounds.left < 0 || bounds.right > layout.width ||
+    bounds.top < 0 || bounds.bottom > layout.height;
+  const overlapsPlot = Math.min(bounds.right, plot.x + plot.width) >
+      Math.max(bounds.left, plot.x) &&
+    Math.min(bounds.bottom, plot.y + plot.height) >
+      Math.max(bounds.top, plot.y);
+  if (outside || overlapsPlot) {
+    throw new Error(
+      "Facet shared legend requires more space than the composed Canvas provides."
+    );
+  }
+  return program;
 }
 
 export function applyFacetGuideComposition(program, { layout, plot } = {}) {
@@ -119,8 +129,13 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
     }
   }
   if (prepared === undefined) return next;
+  let id;
   if (prepared.mode === "legacyCategorical") {
-    return materializeLegacyCategoricalLegend(next, prepared, layout);
+    id = `${program.compositionSpec.id}-legend`;
+    next = materializeLegacyCategoricalLegend(next, prepared, layout);
+  } else {
+    id = `${program.compositionSpec.id}-shared-legend`;
+    next = attachParentLegend(next, prepared, plot, layout);
   }
-  return attachParentLegend(next, prepared, plot, layout);
+  return assertSharedLegendFits(next, id, layout, plot);
 }

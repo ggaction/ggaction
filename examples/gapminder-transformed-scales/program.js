@@ -5,7 +5,7 @@ export function createGapminderTransformedScaleScatterplot(gapminder) {
     .createCanvas({
       width: 456,
       height: 312,
-      margin: { top: 57.6, right: 90, bottom: 43.2, left: 50.4 }
+      margin: { top: 57.6, right: 102, bottom: 43.2, left: 50.4 }
     })
     .createData({ values: gapminder })
     .filterData({

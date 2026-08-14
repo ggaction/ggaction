@@ -1,5 +1,5 @@
-import { registerCategoricalLegendActions } from "./categorical/index.js";
 import { registerContinuousLegendActions } from "./continuous/index.js";
+import { registerCategoricalLegendActions } from "./categorical/index.js";
 import { registerSizeLegendActions } from "./size.js";
 import { registerStrokeWidthLegendActions } from "./strokeWidth.js";
 import { registerFocusedLegendActions } from "./focused.js";

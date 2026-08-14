@@ -17,8 +17,8 @@ export const CENTERED_AREA_COLORS = Object.freeze([
 export const CENTERED_AREA_LAYOUT = Object.freeze({
   width: 690,
   height: 420,
-  margin: Object.freeze({ top: 92, right: 142, bottom: 70, left: 72 }),
-  plot: Object.freeze({ left: 72, top: 92, right: 548, bottom: 350 }),
+  margin: Object.freeze({ top: 92, right: 142, bottom: 70, left: 96 }),
+  plot: Object.freeze({ left: 96, top: 92, right: 548, bottom: 350 }),
   xDomain: Object.freeze([1850, 2000]),
   yDomain: Object.freeze([-18_000_000, 18_000_000])
 });

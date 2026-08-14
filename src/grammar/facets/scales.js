@@ -131,10 +131,13 @@ function continuousUnion(domains, id) {
   )) {
     throw new TypeError(`Facet shared scale "${id}" requires finite pair domains.`);
   }
-  return [
-    Math.min(...domains.map(domain => Math.min(...domain))),
-    Math.max(...domains.map(domain => Math.max(...domain)))
-  ];
+  let minimum = Infinity;
+  let maximum = -Infinity;
+  for (const domain of domains) {
+    minimum = Math.min(minimum, domain[0], domain[1]);
+    maximum = Math.max(maximum, domain[0], domain[1]);
+  }
+  return [minimum, maximum];
 }
 
 function stableUnion(domains) {

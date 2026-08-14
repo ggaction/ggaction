@@ -225,8 +225,13 @@ test("creates Polar axes through aggregate guide requests", () => {
     .encodeR({ field: "distance" })
     .encodePointRadius({ value: 3 });
 
-  const axes = program.createAxes();
-  const guides = program.createGuides({ axes: {} });
+  const guideReady = program.editCanvas({
+    width: 300,
+    height: 300,
+    margin: 60
+  });
+  const axes = guideReady.createAxes();
+  const guides = guideReady.createGuides({ axes: {} });
   assert.equal(axes.graphicSpec.objects.thetaAxisLine.type, "path");
   assert.equal(axes.graphicSpec.objects.radialAxisLine.type, "line");
   assert.equal(guides.graphicSpec.objects.thetaAxisTitle.properties.text, "angle");

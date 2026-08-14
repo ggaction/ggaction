@@ -167,7 +167,11 @@ export function resolveHorizonPaletteColors(transform) {
   for (const sign of ["negative", "positive"]) {
     const palette = transform.palette[sign];
     const dense = palette.count === undefined && transform.bands > 1
-      ? resolvePalette({ ...palette, count: transform.bands * 2 }, transform.bands * 2)
+      ? resolvePalette(
+          { ...palette, count: transform.bands * 2 },
+          transform.bands * 2,
+          transform.bands * 2
+        )
       : resolvePalette(palette, transform.bands);
     const colors = palette.count === undefined && transform.bands > 1
       ? Array.from({ length: transform.bands }, (_, index) =>

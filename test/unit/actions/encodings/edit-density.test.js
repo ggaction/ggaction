@@ -361,6 +361,7 @@ test("moves category placement and grouping color to a revised group field", () 
 test("removes group-owned color and rejects invalid density provenance atomically", () => {
   const colored = densityProgram()
     .encodeColor({ target: "densities", field: "Origin" })
+    .editCanvas({ margin: { right: 120 } })
     .createLegend({ target: "densities" });
   const ungrouped = colored.editDensity({ groupBy: false });
 

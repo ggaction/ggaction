@@ -85,18 +85,16 @@ export function deriveCategoricalDensitySeries(rows, layer, transform) {
   if (placement.split !== undefined && resolvedSplitDomain === undefined) {
     throw new Error("Categorical density split requires a resolved two-value domain.");
   }
+  const resolvedPlacement = {
+    ...placement,
+    ...(resolvedSplitDomain === undefined ? {} : { resolvedSplitDomain })
+  };
   return cloneAndFreeze({
     mode: placement.channel === "x" ? "category-x" : "category-y",
-    placement: {
-      ...placement,
-      ...(resolvedSplitDomain === undefined ? {} : { resolvedSplitDomain })
-    },
+    placement: resolvedPlacement,
     series: series.map(item => ({
       ...item,
-      side: seriesSide({
-        ...placement,
-        ...(resolvedSplitDomain === undefined ? {} : { resolvedSplitDomain })
-      }, item.split),
+      side: seriesSide(resolvedPlacement, item.split),
       values: item.values.sort((left, right) => left.value - right.value)
     }))
   });
@@ -109,9 +107,12 @@ function maximumFor(derived, series) {
         candidate.category,
         series.category
       ));
-  const maximum = Math.max(...candidates.flatMap(candidate =>
-    candidate.values.map(value => value.density)
-  ));
+  let maximum = -Infinity;
+  for (const candidate of candidates) {
+    for (const value of candidate.values) {
+      maximum = Math.max(maximum, value.density);
+    }
+  }
   if (!Number.isFinite(maximum) || maximum <= 0) {
     throw new Error("Categorical density width requires a positive maximum.");
   }
@@ -163,7 +164,7 @@ export function buildCategoricalDensityPaths(
     derived.series.map(series => series.category),
     categoryScale
   );
-  const commands = derived.series.map((series, index) => {
+  return cloneAndFreeze(derived.series.map((series, index) => {
     const boundaries = pathBoundaries(
       series,
       centers[index],
@@ -187,6 +188,5 @@ export function buildCategoricalDensityPaths(
       ],
       { close: true }
     );
-  });
-  return cloneAndFreeze(commands);
+  }));
 }

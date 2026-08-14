@@ -209,7 +209,7 @@ test("authors a wrapped bottom title as concrete text children", () => {
     target.subtitle.y);
   assert.deepEqual(
     target.title.y.slice(1).map((value, index) => value - target.title.y[index]),
-    [target.options.lineHeight]
+    Array(target.title.y.length - 1).fill(target.options.lineHeight)
   );
   assert.deepEqual(
     target.subtitle.y.slice(1).map(

@@ -11,6 +11,12 @@ import {
 import { stableOrderPathValues } from "./pathOrder.js";
 import { deriveCategoricalDensitySeries } from "./categoricalDensity.js";
 
+function indexSegments(segments) {
+  const indexed = [];
+  for (const segment of segments) indexed[segment.index] = segment;
+  return indexed;
+}
+
 export function deriveAreaSeries(rows, layer) {
   if (layer?.mark?.type !== "area") {
     throw new Error("Area series derivation requires a semantic area mark.");
@@ -187,15 +193,11 @@ export function deriveCenteredAreaSeries(rows, layer) {
   const valuesBySeries = groupOrder.map(() => []);
   for (const position of orderedPositions) {
     const partition = groupOrder.map(key => byGroup.get(key).get(position));
-    const segments = new Map(
-      layoutSeriesPartition(partition, "center").map(segment => [
-        segment.index,
-        segment
-      ])
-    );
-    let endpoint = -partition.reduce((sum, value) => sum + value, 0) / 2;
+    const resolvedSegments = layoutSeriesPartition(partition, "center");
+    const segments = indexSegments(resolvedSegments);
+    let endpoint = resolvedSegments[0]?.start ?? 0;
     for (let index = 0; index < groupOrder.length; index += 1) {
-      const segment = segments.get(index);
+      const segment = segments[index];
       valuesBySeries[index].push({
         x: position,
         y: partition[index],
@@ -331,17 +333,13 @@ export function layoutDensityAreaSeries(derived, layout = "overlay") {
       }
       return series.values[sample].y;
     });
-    const segments = new Map(
-      layoutSeriesPartition(densities, layout).map(segment => [
-        segment.index,
-        segment
-      ])
-    );
+    const resolvedSegments = layoutSeriesPartition(densities, layout);
+    const segments = indexSegments(resolvedSegments);
     let zeroThicknessEndpoint = layout === "center"
-      ? -densities.reduce((sum, value) => sum + value, 0) / 2
+      ? resolvedSegments[0]?.start ?? 0
       : 0;
     for (let index = 0; index < derived.series.length; index += 1) {
-      const segment = segments.get(index);
+      const segment = segments[index];
       valuesBySeries[index].push({
         x,
         lower: segment?.start ?? zeroThicknessEndpoint,

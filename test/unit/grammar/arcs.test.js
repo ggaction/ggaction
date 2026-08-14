@@ -71,6 +71,45 @@ test("derives repeated and fractional weighted theta sectors without expanding r
   assert.equal(rows.length, 4);
 });
 
+test("keeps proportional sectors finite across the full numeric theta range", () => {
+  const range = [-Number.MAX_VALUE, Number.MAX_VALUE];
+  const scale = {
+    ...thetaScale,
+    domain: ["A", "B"],
+    range,
+    step: Number.MAX_VALUE,
+    bandwidth: Number.MAX_VALUE
+  };
+  const layer = {
+    id: "arc",
+    mark: { type: "arc" },
+    encoding: {
+      theta: {
+        field: "category",
+        fieldType: "nominal",
+        aggregate: "count",
+        scale: "theta"
+      }
+    }
+  };
+  const { sectors } = deriveArcSectors(
+    [{ category: "A" }, { category: "B" }],
+    layer,
+    { thetaScale: scale, frame }
+  );
+
+  assert.deepEqual(sectors.map(sector => [sector.startTheta, sector.endTheta]), [
+    [range[0], 0],
+    [0, range[1]]
+  ]);
+  assert.equal(
+    sectors.every(sector =>
+      Number.isFinite(sector.startTheta) && Number.isFinite(sector.endTheta)
+    ),
+    true
+  );
+});
+
 test("rejects invalid weighted theta values and a zero total", () => {
   for (const value of [-1, Infinity, NaN, undefined, "2"]) {
     assert.throws(

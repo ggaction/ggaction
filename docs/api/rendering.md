@@ -71,6 +71,13 @@ logical CSS width and height while enlarging the backing store:
 render(program, context, { pixelRatio: 2 });
 ```
 
+Raster backing dimensions are the logical dimension multiplied by
+`pixelRatio`, rounded to the nearest whole pixel with a minimum of one pixel.
+This leaves fractional logical dimensions unchanged in CSS and SVG output.
+Canvas and PNG preflight the complete allocation before changing the backing
+store: each physical side is limited to `32767` pixels and the complete image
+to `16777216` pixels.
+
 ## SVG output
 
 The browser-safe SVG entry returns a complete SVG document string without
@@ -82,14 +89,19 @@ import { renderToSVG } from "ggaction/svg";
 
 const svg = renderToSVG(program, {
   title: "Quarterly revenue",
-  description: "Revenue by quarter"
+  description: "Revenue by quarter",
+  resourceNamespace: "quarterlyRevenue"
 });
 ```
 
 The root `width`, `height`, and `viewBox` use the program's logical Canvas
 dimensions. Optional `title` and `description` strings become escaped
 `<title>` and `<desc>` children. Repeated calls with the same program and
-options return the same string.
+options return the same string. Resource IDs use a deterministic hash of
+`graphicSpec` by default. When multiple copies of the same chart will coexist
+in one HTML document, give each call a distinct `resourceNamespace` so their
+gradient and clipping IDs cannot collide. It must start with an ASCII letter
+and contain only ASCII letters, numbers, `_`, or `-`.
 
 For example, a browser application can place the generated document in an
 existing output container:
@@ -134,7 +146,10 @@ const result = await renderToPDF(program, {
 ```
 
 Missing output directories are created. The page width and height in PDF points
-use the program's logical Canvas dimensions, and the frozen result contains the
+use the program's logical Canvas dimensions. The native vector backend
+represents page boxes as positive integers, so PDF output requires each logical
+dimension to be an integer no larger than `16777216`; unsupported dimensions
+are rejected before replacing the output file. The frozen result contains the
 absolute `output`, logical `width` and `height`, `pages: 1`, and byte count.
 Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
 strings plus an array of non-empty `keywords`.
@@ -154,6 +169,15 @@ path stroke width does not expand that coordinate box. The renderer creates the
 Canvas gradient only for the current draw call and never stores backend objects
 in `graphicSpec`.
 
+Canvas, PNG, and PDF share a native drawing backend. Before creating or changing
+native output, they require every geometry and style number passed to that
+backend—including path controls, nested translations, stroke/dash sizes, text
+size/rotation, and resolved gradient endpoints—to have magnitude no greater
+than `16777216` (`2^24`). Derived rect/circle and nested-clip extents, gradient
+direction lengths, cumulative translations, and pixel-ratio-scaled values use
+the same boundary. SVG remains browser-safe string serialization and preserves
+the complete finite JavaScript number range.
+
 Line curve actions resolve interpolation into those commands before rendering.
 Canvas, SVG, and PDF execute `L` and cubic `C` segments but do not read curve
 names or calculate control points.
@@ -161,9 +185,16 @@ names or calculate control points.
 ## Errors and limitations
 
 Rendering never reads `semanticSpec`. Every drawable property must already be
-concrete. Canvas/PNG `pixelRatio` must be a positive finite number; SVG and PDF
-are vector output and do not accept it. PDF options and metadata use closed key
-sets, and invalid input is rejected before writing a new file.
+concrete. Canvas/PNG `pixelRatio` must be positive at native precision, no
+greater than `16777216`, and produce physical dimensions within the raster
+limits above. PDF is vector output and does not accept `pixelRatio`, but its
+page and drawing geometry use the Canvas-backed native limits. Native numeric
+range failures are rejected before Canvas mutation or PNG/PDF file replacement.
+SVG uses neither native nor raster limits. PDF options and metadata use closed
+key sets. SVG `resourceNamespace` follows the identifier form above, and SVG
+text, attributes, titles, and descriptions reject characters that XML 1.0
+cannot represent; emoji, joiners, variation selectors, and right-to-left text
+remain unchanged.
 
 ## Related
 

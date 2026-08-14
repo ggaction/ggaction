@@ -103,6 +103,66 @@ function completeGraphicSpec() {
   };
 }
 
+function nestedGraphicSpec() {
+  return {
+    objects: {
+      canvas: {
+        type: "canvas",
+        properties: { width: 200, height: 140 },
+        children: ["panel"]
+      },
+      panel: {
+        type: "canvas",
+        properties: {
+          x: 20,
+          y: 30,
+          width: 80,
+          height: 60,
+          background: "#f8fafc"
+        },
+        children: ["point"]
+      },
+      point: {
+        type: "circle",
+        properties: { x: 10, y: 12, radius: 4, fill: "red" }
+      }
+    },
+    order: ["canvas"]
+  };
+}
+
+function resourceGraphicSpec() {
+  return {
+    objects: {
+      canvas: {
+        type: "canvas",
+        properties: { width: 10, height: 10 }
+      },
+      rect: {
+        type: "rect",
+        properties: {
+          x: 0,
+          y: 0,
+          width: 10,
+          height: 10,
+          fill: {
+            type: "linear-gradient",
+            from: { x: 0, y: 0 },
+            to: { x: 1, y: 0 },
+            stops: [
+              { offset: 0, color: "red" },
+              { offset: 1, color: "blue" }
+            ]
+          },
+          stroke: "none",
+          strokeWidth: 0
+        }
+      }
+    },
+    order: ["canvas", "rect"]
+  };
+}
+
 test("serializes the complete concrete primitive surface deterministically", () => {
   const program = { graphicSpec: completeGraphicSpec() };
   const options = {
@@ -120,7 +180,7 @@ test("serializes the complete concrete primitive surface deterministically", () 
   assert.match(first, /<title>A &lt; chart<\/title><desc>One &amp; two<\/desc>/);
   assert.match(
     first,
-    /<linearGradient id="ggaction-gradient-1" gradientUnits="userSpaceOnUse" x1="10" y1="30" x2="70" y2="30">/
+    /<linearGradient id="ggaction-gradient-[a-z0-9]+-1" gradientUnits="userSpaceOnUse" x1="10" y1="30" x2="70" y2="30">/
   );
   assert.match(first, /<rect x="10" y="12" width="60" height="36"/);
   assert.match(first, /<circle cx="30" cy="40" r="5"/);
@@ -157,41 +217,17 @@ test("normalizes numeric font weights consistently with Canvas-compatible target
 });
 
 test("serializes nested Canvas translation, clipping, and local background", () => {
-  const graphicSpec = {
-    objects: {
-      canvas: {
-        type: "canvas",
-        properties: { width: 200, height: 140 },
-        children: ["panel"]
-      },
-      panel: {
-        type: "canvas",
-        properties: {
-          x: 20,
-          y: 30,
-          width: 80,
-          height: 60,
-          background: "#f8fafc"
-        },
-        children: ["point"]
-      },
-      point: {
-        type: "circle",
-        properties: { x: 10, y: 12, radius: 4, fill: "red" }
-      }
-    },
-    order: ["canvas"]
-  };
+  const graphicSpec = nestedGraphicSpec();
 
   const svg = renderToSVG({ graphicSpec });
 
   assert.match(
     svg,
-    /<clipPath id="ggaction-clip-1"><rect x="0" y="0" width="80" height="60"\/><\/clipPath>/
+    /<clipPath id="ggaction-clip-[a-z0-9]+-1"><rect x="0" y="0" width="80" height="60"\/><\/clipPath>/
   );
   assert.match(
     svg,
-    /<g transform="translate\(20 30\)" clip-path="url\(#ggaction-clip-1\)">/
+    /<g transform="translate\(20 30\)" clip-path="url\(#ggaction-clip-[a-z0-9]+-1\)">/
   );
   assert.match(
     svg,
@@ -199,6 +235,135 @@ test("serializes nested Canvas translation, clipping, and local background", () 
   );
   assert.match(svg, /<\/circle>|<circle[^>]*\/>/);
   assert.match(svg, /<\/g><\/svg>$/);
+});
+
+test("namespaces resource ids across distinct inline SVG documents", () => {
+  const firstGradient = completeGraphicSpec();
+  const secondGradient = completeGraphicSpec();
+  secondGradient.objects.plot.items[0].properties.fill.stops[1].color = "#abcdef";
+  const firstGradientSVG = renderToSVG({ graphicSpec: firstGradient });
+  const secondGradientSVG = renderToSVG({ graphicSpec: secondGradient });
+  const firstGradientId = /<linearGradient id="([^"]+)"/u.exec(
+    firstGradientSVG
+  )[1];
+  const secondGradientId = /<linearGradient id="([^"]+)"/u.exec(
+    secondGradientSVG
+  )[1];
+
+  assert.notEqual(firstGradientId, secondGradientId);
+  assert.ok(firstGradientSVG.includes(`fill="url(#${firstGradientId})"`));
+  assert.ok(secondGradientSVG.includes(`fill="url(#${secondGradientId})"`));
+
+  const firstClip = nestedGraphicSpec();
+  const secondClip = nestedGraphicSpec();
+  secondClip.objects.panel.properties.width = 90;
+  const firstClipSVG = renderToSVG({ graphicSpec: firstClip });
+  const secondClipSVG = renderToSVG({ graphicSpec: secondClip });
+  const firstClipId = /<clipPath id="([^"]+)"/u.exec(firstClipSVG)[1];
+  const secondClipId = /<clipPath id="([^"]+)"/u.exec(secondClipSVG)[1];
+
+  assert.notEqual(firstClipId, secondClipId);
+  assert.ok(firstClipSVG.includes(`clip-path="url(#${firstClipId})"`));
+  assert.ok(secondClipSVG.includes(`clip-path="url(#${secondClipId})"`));
+});
+
+test("accepts explicit resource namespaces without changing the default hash", () => {
+  const graphicSpec = resourceGraphicSpec();
+  const defaultSVG = renderToSVG({ graphicSpec });
+  const first = renderToSVG(
+    { graphicSpec },
+    { resourceNamespace: "Chart_A-1" }
+  );
+  const second = renderToSVG(
+    { graphicSpec },
+    { resourceNamespace: "Chart_B-2" }
+  );
+
+  assert.ok(defaultSVG.includes("ggaction-gradient-2a52g6v0sz4a4-1"));
+  assert.ok(first.includes('id="ggaction-gradient-Chart_A-1-1"'));
+  assert.ok(first.includes('fill="url(#ggaction-gradient-Chart_A-1-1)"'));
+  assert.ok(second.includes('id="ggaction-gradient-Chart_B-2-1"'));
+  assert.ok(second.includes('fill="url(#ggaction-gradient-Chart_B-2-1)"'));
+
+  const clip = renderToSVG(
+    { graphicSpec: nestedGraphicSpec() },
+    { resourceNamespace: "Nested_1" }
+  );
+  assert.ok(clip.includes('id="ggaction-clip-Nested_1-1"'));
+  assert.ok(clip.includes('clip-path="url(#ggaction-clip-Nested_1-1)"'));
+});
+
+test("preserves finite logical dimensions without applying raster limits", () => {
+  const graphicSpec = completeGraphicSpec();
+  graphicSpec.objects.canvas.properties.width = Number.MAX_VALUE;
+
+  const svg = renderToSVG({ graphicSpec });
+
+  assert.ok(svg.includes(`width="${Number.MAX_VALUE}"`));
+  assert.ok(svg.includes(`viewBox="0 0 ${Number.MAX_VALUE} 120"`));
+});
+
+test("preserves extreme finite gradient and primitive geometry", () => {
+  const graphicSpec = resourceGraphicSpec();
+  graphicSpec.objects.rect.properties.x = -Number.MAX_VALUE;
+  graphicSpec.objects.rect.properties.width = Number.MAX_VALUE;
+
+  const svg = renderToSVG({ graphicSpec });
+
+  assert.ok(svg.includes(`x1="${-Number.MAX_VALUE}"`));
+  assert.ok(svg.includes('x2="0"'));
+  assert.ok(svg.includes(`x="${-Number.MAX_VALUE}"`));
+});
+
+test("rejects XML-forbidden scalars across content and attributes", () => {
+  for (const value of ["A\u0000B", "A\ud800B", "A\ufffeB", "A\uffffB"]) {
+    const graphicSpec = completeGraphicSpec();
+    graphicSpec.objects.plot.items.find(
+      item => item.id === "plot:text"
+    ).properties.text = value;
+    const snapshot = structuredClone(graphicSpec);
+
+    assert.throws(
+      () => renderToSVG({ graphicSpec }),
+      /XML 1\.0-compatible strings/
+    );
+    assert.deepEqual(graphicSpec, snapshot);
+  }
+
+  for (const options of [
+    { title: "invalid\u0001title" },
+    { description: "invalid\u0001description" }
+  ]) {
+    assert.throws(
+      () => renderToSVG({ graphicSpec: completeGraphicSpec() }, options),
+      /XML 1\.0-compatible strings/
+    );
+  }
+  const attribute = completeGraphicSpec();
+  attribute.objects.plot.items.find(
+    item => item.id === "plot:text"
+  ).properties.fontFamily = "invalid\u0002font";
+  assert.throws(
+    () => renderToSVG({ graphicSpec: attribute }),
+    /XML 1\.0-compatible strings/
+  );
+});
+
+test("preserves valid emoji, joiners, variation selectors, and RTL text", () => {
+  const graphicSpec = completeGraphicSpec();
+  const text = "مرحبا 👩🏽‍💻️";
+  graphicSpec.objects.plot.items.find(
+    item => item.id === "plot:text"
+  ).properties.text = text;
+
+  const svg = renderToSVG(
+    { graphicSpec },
+    { title: `Chart ${text}`, description: `Description ${text}` }
+  );
+
+  assert.ok(svg.includes(`>${text}</text>`));
+  assert.ok(svg.includes(`<title>Chart ${text}</title>`));
+  assert.ok(svg.includes(`<desc>Description ${text}</desc>`));
 });
 
 test("does not read semantic, context, or trace state", () => {
@@ -236,6 +401,28 @@ test("rejects invalid options and incomplete concrete graphics", () => {
       { pixelRatio: 2 }
     ),
     /does not support option "pixelRatio"/
+  );
+  for (const resourceNamespace of [
+    "",
+    "1chart",
+    "chart space",
+    "chart:one",
+    "échart"
+  ]) {
+    assert.throws(
+      () => renderToSVG(
+        { graphicSpec: completeGraphicSpec() },
+        { resourceNamespace }
+      ),
+      /resourceNamespace must (?:be a non-empty string|start with a letter)/
+    );
+  }
+  assert.throws(
+    () => renderToSVG(
+      { graphicSpec: completeGraphicSpec() },
+      { resourceNamespace: 1 }
+    ),
+    /resourceNamespace must be a non-empty string/
   );
   assert.throws(
     () => renderToSVG({}),

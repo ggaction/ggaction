@@ -1,4 +1,5 @@
 import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
+import { validateGeneratedItemLimit } from "../../../core/validation.js";
 import {
   BAR_GRAINS,
   resolveBarChannels,
@@ -72,6 +73,10 @@ function resolveHistogramPartitions(program, consumer) {
   const colorScale = findScale(program, colorEncoding.scale);
   const colorValues = readNominalField(dataset.values, colorEncoding.field);
   const colorDomain = resolveOrdinalDomain(colorScale.domain, colorValues);
+  validateGeneratedItemLimit(
+    (bins.boundaries.length - 1) * colorDomain.length,
+    "Histogram layout cell count"
+  );
   const colorIndex = new Map(colorDomain.map((value, index) => [value, index]));
   const partitions = bins.boundaries.slice(0, -1).map(() =>
     colorDomain.map(() => 0)
@@ -109,6 +114,10 @@ function resolveAggregatePartitions(program, consumer) {
   const colorScale = findScale(program, colorEncoding.scale);
   const colorValues = readNominalField(dataset.values, colorEncoding.field);
   const colorDomain = resolveOrdinalDomain(colorScale.domain, colorValues);
+  validateGeneratedItemLimit(
+    categoryDomain.length * colorDomain.length,
+    "Aggregate layout cell count"
+  );
   const cells = new Map(derived.values.map(value => [
     JSON.stringify([value[channels.category], value.color]),
     value[channels.measure]
@@ -131,6 +140,10 @@ function resolveAreaPartitions(program, consumer) {
     layer.encoding?.x !== undefined
   ) {
     const derived = deriveCenteredAreaSeries(dataset.values, layer);
+    validateGeneratedItemLimit(
+      derived.series[0].values.length * derived.series.length,
+      "Area layout cell count"
+    );
     return Array.from({ length: derived.series[0].values.length }, (_, index) =>
       derived.series.map(series => series.values[index].y)
     );
@@ -142,6 +155,10 @@ function resolveAreaPartitions(program, consumer) {
   if (derived.series.some(series => series.values.length !== sampleCount)) {
     throw new Error(`Area mark "${layer.id}" requires aligned layout samples.`);
   }
+  validateGeneratedItemLimit(
+    sampleCount * derived.series.length,
+    "Area layout cell count"
+  );
   return Array.from({ length: sampleCount }, (_, index) =>
     derived.series.map(series => series.values[index].y)
   );

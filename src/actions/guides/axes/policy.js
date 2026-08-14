@@ -1,3 +1,5 @@
+import { formatVisibleText } from "../../../core/textMetrics.js";
+
 const AXIS_POSITIONS = Object.freeze({
   x: Object.freeze(["bottom", "top"]),
   y: Object.freeze(["left", "right"])
@@ -133,7 +135,7 @@ function formatTime(value, format) {
 
 export function formatAxisValue(value, scaleType, format, autoFormatter) {
   validateAxisFormat(format);
-  if (format === "auto") return autoFormatter(value);
+  if (format === "auto") return formatVisibleText(autoFormatter(value));
   if (["ordinal", "band", "point"].includes(scaleType)) {
     throw new Error('Discrete axis labels require format "auto".');
   }

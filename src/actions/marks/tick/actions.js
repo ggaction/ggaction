@@ -21,6 +21,7 @@ import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import {
   applyLayeredMarkInheritance,
   assertMarkAvailable,
+  editMarkGraphic,
   materializeInheritedMark,
   resolveLayeredMarkInheritance,
   resolveMarkData,
@@ -28,12 +29,11 @@ import {
   validateMarkOptions
 } from "../shared.js";
 
-const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "length", "stroke", "strokeWidth", "opacity"
+const APPEARANCE_OPTIONS = Object.freeze([
+  "length", "stroke", "strokeWidth", "opacity"
 ]);
-const EDIT_OPTIONS = Object.freeze([
-  "target", "length", "stroke", "strokeWidth", "opacity"
-]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", ...APPEARANCE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", ...APPEARANCE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
 export const DEFAULT_TICK_CONFIG = Object.freeze({
@@ -116,8 +116,7 @@ export const createTickMark = action(
       ._withMarkConfig(id, DEFAULT_TICK_CONFIG);
     const materialized = materializeInheritedMark(created, id);
     const appearance = Object.fromEntries(
-      ["length", "stroke", "strokeWidth", "opacity"]
-        .filter(property => Object.hasOwn(args, property))
+      APPEARANCE_OPTIONS.filter(property => Object.hasOwn(args, property))
         .map(property => [property, config[property]])
     );
     return Object.keys(appearance).length === 0
@@ -133,8 +132,7 @@ export const editTickMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTickMark");
-    const editable = ["length", "stroke", "strokeWidth", "opacity"];
-    if (!editable.some(property => Object.hasOwn(args, property))) {
+    if (!APPEARANCE_OPTIONS.some(property => Object.hasOwn(args, property))) {
       throw new Error(
         "editTickMark requires length, stroke, strokeWidth, or opacity."
       );
@@ -206,20 +204,23 @@ export const rematerializeTickMark = action(
       })
     );
 
-    return this
-      .editGraphics({ target: id, property: "length", value: segments.length })
-      .editGraphics({ target: id, property: "x1", value: segments.map(item => item.x1) })
-      .editGraphics({ target: id, property: "y1", value: segments.map(item => item.y1) })
-      .editGraphics({ target: id, property: "x2", value: segments.map(item => item.x2) })
-      .editGraphics({ target: id, property: "y2", value: segments.map(item => item.y2) })
-      .editGraphics({ target: id, property: "stroke", value: config.stroke })
-      .editGraphics({ target: id, property: "strokeWidth", value: config.strokeWidth })
-      .editGraphics({ target: id, property: "opacity", value: config.opacity });
+    return editMarkGraphic(this, id, {
+      length: segments.length,
+      x1: segments.map(item => item.x1),
+      y1: segments.map(item => item.y1),
+      x2: segments.map(item => item.x2),
+      y2: segments.map(item => item.y2),
+      stroke: config.stroke,
+      strokeWidth: config.strokeWidth,
+      opacity: config.opacity
+    });
   }
 );
 
 export function registerTickMarkActions(ProgramClass) {
-  ProgramClass.prototype.createTickMark = createTickMark;
-  ProgramClass.prototype.editTickMark = editTickMark;
-  ProgramClass.prototype.rematerializeTickMark = rematerializeTickMark;
+  Object.assign(ProgramClass.prototype, {
+    createTickMark,
+    editTickMark,
+    rematerializeTickMark
+  });
 }

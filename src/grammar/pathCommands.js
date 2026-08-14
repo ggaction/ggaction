@@ -1,4 +1,5 @@
 import { freezeOwned, isPlainObject } from "../core/immutable.js";
+import { validateGeneratedItemLimit } from "../core/validation.js";
 
 const COMMAND_KEYS = Object.freeze({
   M: Object.freeze(["op", "x", "y"]),
@@ -37,6 +38,7 @@ export function validatePathCommands(commands) {
   if (!Array.isArray(commands) || commands.length < 2) {
     throw new TypeError("path.commands must contain at least two commands.");
   }
+  validateGeneratedItemLimit(commands.length, "path.commands length");
   commands.forEach(validateCommand);
   if (commands[0].op !== "M") {
     throw new Error("path.commands must start with M.");
@@ -77,6 +79,10 @@ export function buildLinearPathCommands(points, { close = false } = {}) {
   if (typeof close !== "boolean") {
     throw new TypeError("Linear path close must be a boolean.");
   }
+  validateGeneratedItemLimit(
+    points.length + Number(close),
+    "Linear path command count"
+  );
   const commands = [
     { op: "M", x: points[0].x, y: points[0].y },
     ...points.slice(1).map(point => ({ op: "L", x: point.x, y: point.y }))

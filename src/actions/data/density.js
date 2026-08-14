@@ -1,8 +1,5 @@
-import { action } from "../../core/action.js";
-import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
 import { deriveKernelDensity } from "../../grammar/density.js";
-import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
+import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "field", "groupBy", "bandwidth", "extent", "steps",
@@ -26,84 +23,51 @@ function densityTransform(args, placement) {
   };
 }
 
-export const materializeDensityData = action(
-  { op: "materializeDensityData", description: "Materialize one grouped kernel-density dataset." },
-  function (args = {}) {
-    validateKeys(args, MATERIALIZE_OPTIONS, "materializeDensityData");
-    const { id, source, transform } = requireDerivedDataset(
-      this,
-      args.id,
-      "density"
-    );
-    const result = deriveKernelDensity(source.values, transform);
-    return this
-      .editSemantic({
-        property: `dataset[${id}].transform`,
-        value: [{
-          ...transform,
-          resolved: {
-            bandwidth: result.bandwidth,
-            extent: result.extent,
-            ...(result.splitDomain === undefined
-              ? {}
-              : { splitDomain: result.splitDomain })
-          }
-        }]
-      })
-      .editSemantic({
-        property: `dataset[${id}].values`,
-        value: result.values
-      });
+function requestedTransform(args, op, categorical = false) {
+  if (typeof args.field !== "string" || args.field.length === 0) {
+    throw new TypeError(`${op} requires a non-empty field string.`);
   }
+  if (categorical && args.placement?.type !== "category") {
+    throw new Error(
+      "createCategoricalDensityData requires normalized category placement."
+    );
+  }
+  return densityTransform(args, categorical ? args.placement : undefined);
+}
+
+export const materializeDensityData = derivedMaterializer(
+  "materializeDensityData",
+  "Materialize one grouped kernel-density dataset.",
+  "density",
+  deriveKernelDensity,
+  (result, transform) => [{
+    ...transform,
+    resolved: {
+      bandwidth: result.bandwidth,
+      extent: result.extent,
+      ...(result.splitDomain === undefined
+        ? {}
+        : { splitDomain: result.splitDomain })
+    }
+  }]
 );
 
-export const createDensityData = action(
-  { op: "createDensityData", description: "Create grouped kernel-density values." },
-  function (args = {}) {
-    validateKeys(args, OPTIONS, "createDensityData");
-    const id = validateUserId(args.id, "Density dataset id");
-    const source = validateUserId(
-      args.source ?? this.context.currentData,
-      "Source dataset id"
-    );
-    if (typeof args.field !== "string" || args.field.length === 0) {
-      throw new TypeError("createDensityData requires a non-empty field string.");
-    }
-    const transform = densityTransform(args);
-    return this
-      .createDerivedData({ id, source, transform: [transform] })
-      .materializeDensityData({ id });
-  }
+export const createDensityData = derivedCreator(
+  "createDensityData",
+  "Create grouped kernel-density values.",
+  OPTIONS,
+  "Density dataset id",
+  "Source dataset id",
+  args => requestedTransform(args, "createDensityData"),
+  "materializeDensityData"
 );
 
-export const createCategoricalDensityData = action(
-  {
-    op: "createCategoricalDensityData",
-    description: "Create category-placed kernel-density values."
-  },
-  function (args = {}) {
-    validateKeys(args, CATEGORICAL_OPTIONS, "createCategoricalDensityData");
-    const id = validateUserId(args.id, "Density dataset id");
-    const source = validateUserId(
-      args.source ?? this.context.currentData,
-      "Source dataset id"
-    );
-    if (typeof args.field !== "string" || args.field.length === 0) {
-      throw new TypeError(
-        "createCategoricalDensityData requires a non-empty field string."
-      );
-    }
-    if (args.placement?.type !== "category") {
-      throw new Error(
-        "createCategoricalDensityData requires normalized category placement."
-      );
-    }
-    return this
-      .createDerivedData({
-        id,
-        source,
-        transform: [densityTransform(args, args.placement)]
-      })
-      .materializeDensityData({ id });
-  }
+export const createCategoricalDensityData = derivedCreator(
+  "createCategoricalDensityData",
+  "Create category-placed kernel-density values.",
+  CATEGORICAL_OPTIONS,
+  "Density dataset id",
+  "Source dataset id",
+  args => requestedTransform(args, "createCategoricalDensityData", true),
+  "materializeDensityData"
 );

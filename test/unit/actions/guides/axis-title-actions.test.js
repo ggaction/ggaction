@@ -4,7 +4,7 @@ import { chart } from "../../../../src/ChartProgram.js";
 
 function program() {
   return chart()
-    .createCanvas({ width: 200, height: 120, margin: 10 })
+    .createCanvas({ width: 300, height: 220, margin: 60 })
     .createData({ id: "data", values: [{ x: 0, y: 5 }, { x: 10, y: 15 }] })
     .createPointMark({ id: "points" })
     .encodeX({ field: "x" })
@@ -18,12 +18,12 @@ test("infers title text and materializes centered x/y titles", () => {
   assert.equal(result.semanticSpec.guides.axis.x.title, "x");
   assert.equal(result.semanticSpec.guides.axis.y.title, "y");
   assert.deepEqual(result.graphicSpec.objects.xAxisTitle.properties, {
-    x: 100, y: 152, text: "x", fill: "#334155", fontSize: 13,
+    x: 150, y: 202, text: "x", fill: "#334155", fontSize: 13,
     fontFamily: "sans-serif", fontWeight: 600, textAlign: "center",
     textBaseline: "middle", rotation: 0
   });
-  assert.equal(result.graphicSpec.objects.yAxisTitle.properties.x, -42);
-  assert.equal(result.graphicSpec.objects.yAxisTitle.properties.y, 60);
+  assert.equal(result.graphicSpec.objects.yAxisTitle.properties.x, 8);
+  assert.equal(result.graphicSpec.objects.yAxisTitle.properties.y, 110);
   assert.equal(result.graphicSpec.objects.yAxisTitle.properties.rotation, -Math.PI / 2);
   assert.equal(before.semanticSpec.guides.axis, undefined);
 });
@@ -31,11 +31,30 @@ test("infers title text and materializes centered x/y titles", () => {
 test("supports start/end and numeric data-space title locations", () => {
   const result = program()
     .createXAxisTitle({ text: "Start", at: "start" })
-    .createYAxisTitle({ text: "Ten", at: 10, rotation: 0 });
+    .createYAxisTitle({ text: "Ten", at: 10, rotation: 0, offset: 42 });
 
-  assert.equal(result.graphicSpec.objects.xAxisTitle.properties.x, 10);
-  assert.equal(result.graphicSpec.objects.yAxisTitle.properties.y, 60);
+  assert.equal(result.graphicSpec.objects.xAxisTitle.properties.x, 60);
+  assert.equal(result.graphicSpec.objects.yAxisTitle.properties.y, 110);
   assert.equal(result.graphicSpec.objects.yAxisTitle.properties.rotation, 0);
+});
+
+test("centers titles without overflowing a finite same-sign scale range", () => {
+  const maximum = Number.MAX_VALUE;
+  const result = chart()
+    .createCanvas({
+      width: maximum,
+      height: 200,
+      margin: { top: 10, right: 0, bottom: 60, left: maximum / 2 }
+    })
+    .createData({ values: [{ x: 0 }, { x: 1 }] })
+    .createPointMark()
+    .encodeX({ field: "x" })
+    .createXAxisTitle({ text: "x" });
+
+  assert.equal(
+    result.graphicSpec.objects.xAxisTitle.properties.x,
+    maximum / 2 + maximum / 4
+  );
 });
 
 test("edits semantic text and appearance while preserving earlier programs", () => {
@@ -44,7 +63,7 @@ test("edits semantic text and appearance while preserving earlier programs", () 
   const node = edited.trace.children.at(-1);
 
   assert.equal(edited.semanticSpec.guides.axis.x.title, "Horizontal");
-  assert.equal(edited.graphicSpec.objects.xAxisTitle.properties.x, 190);
+  assert.equal(edited.graphicSpec.objects.xAxisTitle.properties.x, 240);
   assert.equal(edited.graphicSpec.objects.xAxisTitle.properties.fill, "black");
   assert.equal(created.semanticSpec.guides.axis.x.title, "x");
   assert.equal(node.children[0].op, "editSemantic");
@@ -52,10 +71,13 @@ test("edits semantic text and appearance while preserving earlier programs", () 
 
 test("rematerializes titles and validates invalid at values", () => {
   const created = program().createXAxisTitle({ at: "center" });
-  const resized = created.editCanvas({ width: 300, margin: 20 });
+  const resized = created.editCanvas({
+    width: 400,
+    margin: { top: 20, right: 20, bottom: 60, left: 60 }
+  });
 
-  assert.equal(resized.graphicSpec.objects.xAxisTitle.properties.x, 150);
-  assert.equal(resized.graphicSpec.objects.xAxisTitle.properties.y, 142);
+  assert.equal(resized.graphicSpec.objects.xAxisTitle.properties.x, 220);
+  assert.equal(resized.graphicSpec.objects.xAxisTitle.properties.y, 202);
   assert.throws(() => program().createXAxisTitle({ at: 20 }), /inside the scale domain/);
   assert.throws(() => program().createXAxisTitle({ at: "middle" }), /start, center, end/);
 });
@@ -65,7 +87,7 @@ test("creates mirrored titles and preserves explicit rotation across position ed
     .createCanvas({
       width: 260,
       height: 180,
-      margin: { top: 60, right: 70, bottom: 30, left: 30 }
+      margin: { top: 60, right: 70, bottom: 30, left: 70 }
     })
     .createData({ id: "data", values: [{ x: 0, y: 5 }, { x: 10, y: 15 }] })
     .createPointMark({ id: "points" })
@@ -101,12 +123,25 @@ test("preserves explicit y-title rotation through repeated data-space locations"
 });
 
 test("rejects mirrored titles when the requested margin is too small", () => {
+  const cramped = program().editCanvas({
+    width: 200,
+    height: 120,
+    margin: 10
+  });
   assert.throws(
-    () => program().createXAxisTitle({ position: "top" }),
+    () => cramped.createXAxisTitle({ position: "top" }),
     /does not fit the Canvas margin/
   );
   assert.throws(
-    () => program().createYAxisTitle({ position: "right" }),
+    () => cramped.createYAxisTitle({ position: "right" }),
+    /does not fit the Canvas margin/
+  );
+  assert.throws(
+    () => cramped.createXAxisTitle(),
+    /does not fit the Canvas margin/
+  );
+  assert.throws(
+    () => cramped.createYAxisTitle(),
     /does not fit the Canvas margin/
   );
 });

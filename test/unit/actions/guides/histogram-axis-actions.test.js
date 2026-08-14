@@ -65,7 +65,10 @@ test("keeps explicit histogram tick values ahead of bin inference", () => {
 
 test("rematerializes inferred histogram axes after Canvas edits", () => {
   const before = histogram().createAxes();
-  const after = before.editCanvas({ width: 500, margin: 30 });
+  const after = before.editCanvas({
+    width: 500,
+    margin: { top: 30, right: 30, bottom: 70, left: 60 }
+  });
 
   assert.notEqual(
     after.graphicSpec.objects.xAxisTicks.items.at(-1).properties.x1,

@@ -1,6 +1,14 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
-
-const NICE_FACTORS = Object.freeze([1, 2, 3, 5]);
+import { MAX_GENERATED_ITEMS } from "../core/validation.js";
+import {
+  alignNumericStep,
+  cleanNumericValue,
+  interpolateNumber,
+  NICE_FACTORS,
+  niceNumericStep,
+  numericExtent,
+  normalizeNumericRange
+} from "./numeric.js";
 
 function validateValues(values) {
   if (!Array.isArray(values) || !values.every(Number.isFinite)) {
@@ -23,19 +31,25 @@ export function validateHistogramBinStep(step) {
 }
 
 export function validateHistogramBinBoundaries(boundaries) {
-  if (
-    !Array.isArray(boundaries) ||
-    boundaries.length < 2 ||
-    !boundaries.every(Number.isFinite) ||
-    boundaries.some(
-      (value, index) => index > 0 && value <= boundaries[index - 1]
-    )
-  ) {
+  if (Array.isArray(boundaries) && boundaries.length > MAX_GENERATED_ITEMS + 1) {
+    throw new RangeError(
+      `Histogram bin boundaries must generate at most ${MAX_GENERATED_ITEMS} bins.`
+    );
+  }
+  if (!validBoundaries(boundaries)) {
     throw new TypeError(
       "Histogram bin boundaries must contain at least two strictly increasing finite numbers."
     );
   }
   return boundaries;
+}
+
+function validBoundaries(boundaries) {
+  return Array.isArray(boundaries) && boundaries.length >= 2 &&
+    boundaries.every(Number.isFinite) &&
+    !boundaries.some(
+      (value, index) => index > 0 && value <= boundaries[index - 1]
+    );
 }
 
 export function normalizeHistogramBin(bin = {}) {
@@ -78,24 +92,6 @@ function validateDomain(domain) {
   return domain;
 }
 
-function firstNiceStep(rough) {
-  const power = 10 ** Math.floor(Math.log10(rough));
-  const fraction = rough / power;
-  const factor = NICE_FACTORS.find(candidate => candidate >= fraction);
-  return (factor ?? 10) * power;
-}
-
-function nextNiceStep(step) {
-  const power = 10 ** Math.floor(Math.log10(step));
-  const fraction = step / power;
-  const factor = NICE_FACTORS.find(candidate => candidate > fraction + 1e-12);
-  return (factor ?? 10) * power;
-}
-
-function normalizeBoundary(value) {
-  return Number(value.toPrecision(15));
-}
-
 function includesExtent(domain, values) {
   return values.every(value => value >= domain[0] && value <= domain[1]);
 }
@@ -122,11 +118,16 @@ function exactStepBoundaries(domain, step) {
     );
   }
   const count = Math.round((domain[1] - domain[0]) / step);
+  if (!Number.isSafeInteger(count) || count > MAX_GENERATED_ITEMS) {
+    throw new RangeError(
+      `Histogram bin step must generate at most ${MAX_GENERATED_ITEMS} bins.`
+    );
+  }
   return Array.from(
     { length: count + 1 },
     (_, index) => index === count
       ? domain[1]
-      : normalizeBoundary(domain[0] + index * step)
+      : cleanNumericValue(domain[0] + index * step, step)
   );
 }
 
@@ -144,17 +145,16 @@ function stepBins(values, step, domain, zero) {
     throw new Error("Cannot infer histogram bins from no values.");
   }
 
-  let minimum = Math.min(...values);
-  let maximum = Math.max(...values);
+  let [minimum, maximum] = numericExtent(values);
   if (zero) {
     minimum = Math.min(0, minimum);
     maximum = Math.max(0, maximum);
   }
-  let start = normalizeBoundary(Math.floor(minimum / step) * step);
-  let stop = normalizeBoundary(Math.ceil(maximum / step) * step);
+  let start = cleanNumericValue(Math.floor(minimum / step) * step, step);
+  let stop = cleanNumericValue(Math.ceil(maximum / step) * step, step);
   if (start === stop) {
-    if (stop <= 0) start = normalizeBoundary(start - step);
-    else stop = normalizeBoundary(stop + step);
+    if (stop <= 0) start = cleanNumericValue(start - step, step);
+    else stop = cleanNumericValue(stop + step, step);
   }
   const resolvedDomain = [start, stop];
   return {
@@ -183,41 +183,120 @@ function boundaryBins(values, boundaries, domain) {
 }
 
 function equalBins(domain, maxBins) {
-  const step = (domain[1] - domain[0]) / maxBins;
-  const boundaries = Array.from(
-    { length: maxBins + 1 },
-    (_, index) =>
-      index === maxBins
-        ? domain[1]
-        : normalizeBoundary(domain[0] + index * step)
-  );
-  return { domain, step, boundaries };
+  const normalized = normalizeNumericRange(domain[0], domain[1]);
+  const candidateStep = normalized.span / maxBins * normalized.scale;
+  const boundaries = [];
+  for (let index = 0; index <= maxBins; index += 1) {
+    const value = index === maxBins
+      ? domain[1]
+      : cleanNumericValue(
+        interpolateNumber(domain[0], domain[1], index / maxBins),
+        candidateStep
+      );
+    if (boundaries.length === 0 || value > boundaries.at(-1)) {
+      boundaries.push(value);
+    }
+  }
+  const step = Number.isFinite(candidateStep) && candidateStep > 0
+    ? candidateStep
+    : firstFiniteBoundaryDifference(boundaries) ?? Number.MAX_VALUE;
+  return {
+    domain: [boundaries[0], boundaries.at(-1)],
+    step,
+    boundaries
+  };
+}
+
+function firstFiniteBoundaryDifference(boundaries) {
+  for (let index = 1; index < boundaries.length; index += 1) {
+    const difference = boundaries[index] - boundaries[index - 1];
+    if (Number.isFinite(difference) && difference > 0) return difference;
+  }
+  return undefined;
+}
+
+function constantBins(value) {
+  const delta = Math.max(0.5, Math.abs(value) * Number.EPSILON);
+  let lower = value - delta;
+  let upper = value + delta;
+  if (!Number.isFinite(lower)) lower = value;
+  if (!Number.isFinite(upper)) upper = value;
+  if (lower === value) upper = value + delta;
+  if (upper === value) lower = value - delta;
+  const step = upper - lower;
+  return {
+    domain: [lower, upper],
+    step,
+    boundaries: [lower, upper]
+  };
 }
 
 function niceBins(extent, maxBins) {
-  const span = extent[1] - extent[0];
-  let step = firstNiceStep(span / maxBins);
+  const normalized = normalizeNumericRange(extent[0], extent[1]);
+  let normalizedStep = niceNumericStep(
+    normalized.span,
+    maxBins,
+    NICE_FACTORS
+  );
 
-  while (true) {
-    const start = normalizeBoundary(Math.floor(extent[0] / step) * step);
-    const stop = normalizeBoundary(Math.ceil(extent[1] / step) * step);
-    const count = Math.round((stop - start) / step);
+  for (let attempt = 0; attempt < 64; attempt += 1) {
+    const start = alignNumericStep(
+      normalized.start,
+      normalizedStep,
+      "floor"
+    );
+    const stop = alignNumericStep(
+      normalized.end,
+      normalizedStep,
+      "ceil"
+    );
+    const count = Math.round((stop - start) / normalizedStep);
 
     if (count > 0 && count <= maxBins) {
-      return {
-        domain: [start, stop],
-        step,
-        boundaries: Array.from(
-          { length: count + 1 },
-          (_, index) =>
-            index === count
-              ? stop
-              : normalizeBoundary(start + index * step)
-        )
-      };
+      const resolution = normalizedStep * normalized.scale;
+      const boundaries = [];
+      for (let index = 0; index <= count; index += 1) {
+        let value = (index === count
+          ? stop
+          : start + index * normalizedStep) * normalized.scale;
+        if (!Number.isFinite(value)) {
+          value = index === 0
+            ? extent[0]
+            : index === count ? extent[1] : value;
+        }
+        value = cleanNumericValue(value, resolution);
+        if (index === 0 && value > extent[0]) value = extent[0];
+        if (index === count && value < extent[1]) value = extent[1];
+        if (
+          Number.isFinite(value) &&
+          (boundaries.length === 0 || value > boundaries.at(-1))
+        ) {
+          boundaries.push(value);
+        }
+      }
+      if (
+        boundaries.length >= 2 &&
+        boundaries[0] <= extent[0] &&
+        boundaries.at(-1) >= extent[1]
+      ) {
+        const step = Number.isFinite(resolution) && resolution > 0
+          ? resolution
+          : firstFiniteBoundaryDifference(boundaries) ?? Number.MAX_VALUE;
+        return {
+          domain: [boundaries[0], boundaries.at(-1)],
+          step,
+          boundaries
+        };
+      }
     }
-    step = nextNiceStep(step);
+    normalizedStep = niceNumericStep(
+      normalizedStep * (1 + 1e-12),
+      1,
+      NICE_FACTORS
+    );
   }
+
+  return equalBins(extent, maxBins);
 }
 
 export function resolveHistogramBins({
@@ -254,7 +333,7 @@ export function resolveHistogramBins({
     );
   }
 
-  maxBins = normalizedBin.maxBins;
+  maxBins = Math.min(normalizedBin.maxBins, MAX_GENERATED_ITEMS);
 
   if (domain !== "auto") {
     return cloneAndFreeze(equalBins(validateDomain(domain), maxBins));
@@ -263,24 +342,14 @@ export function resolveHistogramBins({
     throw new Error("Cannot infer histogram bins from no values.");
   }
 
-  let minimum = values[0];
-  let maximum = values[0];
-
-  for (const value of values.slice(1)) {
-    minimum = Math.min(minimum, value);
-    maximum = Math.max(maximum, value);
-  }
+  let [minimum, maximum] = numericExtent(values);
 
   if (zero) {
     minimum = Math.min(0, minimum);
     maximum = Math.max(0, maximum);
   }
   if (minimum === maximum) {
-    return cloneAndFreeze({
-      domain: [minimum - 0.5, maximum + 0.5],
-      step: 1,
-      boundaries: [minimum - 0.5, maximum + 0.5]
-    });
+    return cloneAndFreeze(constantBins(minimum));
   }
 
   const resolved = nice
@@ -292,14 +361,7 @@ export function resolveHistogramBins({
 export function countHistogramBins(values, boundaries) {
   validateValues(values);
 
-  if (
-    !Array.isArray(boundaries) ||
-    boundaries.length < 2 ||
-    !boundaries.every(Number.isFinite) ||
-    boundaries.some(
-      (value, index) => index > 0 && value <= boundaries[index - 1]
-    )
-  ) {
+  if (!validBoundaries(boundaries)) {
     throw new TypeError(
       "Histogram boundaries must be ascending finite numbers."
     );

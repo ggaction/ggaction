@@ -229,4 +229,31 @@ test("rejects invalid options and metadata before writing output", async t => {
     /does not support "image" yet/
   );
   assert.equal(await readFile(output, "utf8"), "existing");
+
+  for (const width of [12.5, Number.MAX_VALUE]) {
+    const unrepresentable = completeGraphicSpec();
+    unrepresentable.objects.canvas.properties.width = width;
+    await assert.rejects(
+      renderToPDF({ graphicSpec: unrepresentable }, { output }),
+      /page dimensions must be positive integers no larger than 16777216/
+    );
+    assert.equal(await readFile(output, "utf8"), "existing");
+  }
+});
+
+test("rejects unsafe native geometry before replacing PDF output", async t => {
+  const directory = await mkdtemp(join(tmpdir(), "ggaction-pdf-native-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const output = join(directory, "chart.pdf");
+  await writeFile(output, "existing");
+  const graphicSpec = completeGraphicSpec();
+  graphicSpec.objects.plot.items.find(
+    item => item.type === "circle"
+  ).properties.radius = 16_777_217;
+
+  await assert.rejects(
+    renderToPDF({ graphicSpec }, { output }),
+    /Canvas native geometry.*16777216/
+  );
+  assert.equal(await readFile(output, "utf8"), "existing");
 });

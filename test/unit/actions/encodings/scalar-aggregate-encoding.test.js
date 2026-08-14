@@ -70,6 +70,10 @@ test("omits incomplete aggregate groups without synthesizing points", () => {
 test("replaces aggregate semantics and rematerializes inferred guide text atomically", () => {
   const mean = xEncodedLine()
     .encodeY({ field: "value", aggregate: "mean", scale: { nice: true } })
+    .editCanvas({
+      height: 240,
+      margin: { top: 20, right: 30, bottom: 60, left: 50 }
+    })
     .createGuides();
   const median = mean.encodeY({ field: "value", aggregate: "median" });
 
@@ -122,7 +126,12 @@ test("normalizes parameterized aggregates and isolates caller-owned objects", ()
   ];
   const aggregate = { op: "first", orderBy: "rank" };
   const encoded = xEncodedLine(rows).encodeY({ field: "value", aggregate });
-  const program = encoded.createGuides();
+  const program = encoded
+    .editCanvas({
+      height: 240,
+      margin: { top: 20, right: 30, bottom: 60, left: 50 }
+    })
+    .createGuides();
 
   aggregate.op = "last";
   aggregate.orderBy = "other";

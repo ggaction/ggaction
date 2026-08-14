@@ -1,14 +1,34 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import {
+  validateGeneratedItemLimit,
+  validateNonEmptyString as requireField,
+  validateWorkLimit
+} from "../core/validation.js";
 import { isNominalValue } from "./scales/index.js";
+import { interpolateNumber } from "./numeric.js";
+import {
+  requireFiniteResult,
+  stableFiniteDeviation
+} from "./numeric.js";
 
 const SQRT_TWO_PI = Math.sqrt(2 * Math.PI);
 
-export const DENSITY_KERNELS = Object.freeze([
-  "gaussian",
-  "epanechnikov",
-  "uniform",
-  "triangular"
-]);
+const KERNEL_FUNCTIONS = Object.freeze({
+  gaussian(value) {
+    return Math.exp(-0.5 * value ** 2) / SQRT_TWO_PI;
+  },
+  epanechnikov(value) {
+    return Math.abs(value) <= 1 ? 0.75 * (1 - value ** 2) : 0;
+  },
+  uniform(value) {
+    return Math.abs(value) <= 1 ? 0.5 : 0;
+  },
+  triangular(value) {
+    return Math.abs(value) <= 1 ? 1 - Math.abs(value) : 0;
+  }
+});
+
+export const DENSITY_KERNELS = Object.freeze(Object.keys(KERNEL_FUNCTIONS));
 export const DENSITY_NORMALIZATIONS = Object.freeze(["unit", "count"]);
 export const DENSITY_PLACEMENT_SIDES = Object.freeze([
   "both", "left", "right", "top", "bottom"
@@ -16,6 +36,13 @@ export const DENSITY_PLACEMENT_SIDES = Object.freeze([
 export const DENSITY_WIDTH_RESOLUTIONS = Object.freeze([
   "shared", "independent"
 ]);
+
+export function validateDensitySteps(value, label = "Density steps") {
+  if (!Number.isInteger(value) || value < 2) {
+    throw new RangeError(`${label} must be an integer of at least 2.`);
+  }
+  return validateGeneratedItemLimit(value, label);
+}
 
 export function validateDensityKernel(value) {
   if (!DENSITY_KERNELS.includes(value)) {
@@ -31,9 +58,26 @@ export function validateDensityNormalization(value) {
   return value;
 }
 
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
+function validateDensityBandwidth(value) {
+  if (value !== "auto" && (!Number.isFinite(value) || value <= 0)) {
+    throw new RangeError(
+      "Density bandwidth must be a positive finite number or auto."
+    );
+  }
+  return value;
+}
+
+function validateDensityExtent(value) {
+  if (
+    value !== "auto" &&
+    (!Array.isArray(value) ||
+      value.length !== 2 ||
+      !value.every(Number.isFinite) ||
+      value[0] >= value[1])
+  ) {
+    throw new RangeError(
+      "Density extent must be an ascending pair of finite numbers or auto."
+    );
   }
   return value;
 }
@@ -50,6 +94,27 @@ function validateSplitDomain(value) {
     );
   }
   return [...value];
+}
+
+function validateOutputFields(value, field, groupBy, placement) {
+  if (
+    !Array.isArray(value) ||
+    value.length !== 2 ||
+    !value.every(field => typeof field === "string" && field.length > 0) ||
+    value[0] === value[1]
+  ) {
+    throw new TypeError("Density as must contain two distinct non-empty fields.");
+  }
+  const collisions = new Set([
+    field,
+    groupBy,
+    placement?.categoryField,
+    placement?.split?.field
+  ].filter(Boolean));
+  if (value.some(field => collisions.has(field))) {
+    throw new Error("Density output fields must not collide with source or group fields.");
+  }
+  return value;
 }
 
 function validatePlacementWidth(value = {}) {
@@ -183,10 +248,9 @@ function validateStoredDensityPlacement(value, groupBy) {
             )
       );
   if (
-    normalized.type !== value.type ||
-    normalized.channel !== value.channel ||
-    normalized.categoryField !== value.categoryField ||
-    normalized.side !== value.side ||
+    ["type", "channel", "categoryField", "side"].some(
+      property => normalized[property] !== value[property]
+    ) ||
     value.width === undefined ||
     normalized.width.band !== value.width.band ||
     normalized.width.resolve !== value.width.resolve ||
@@ -218,47 +282,15 @@ export function validateDensityTransform(transform) {
   }
   validateDensityKernel(transform.kernel ?? "gaussian");
   validateDensityNormalization(transform.normalization ?? "unit");
-  if (
-    transform.bandwidth !== "auto" &&
-    (!Number.isFinite(transform.bandwidth) || transform.bandwidth <= 0)
-  ) {
-    throw new RangeError(
-      "Density bandwidth must be a positive finite number or auto."
-    );
-  }
-  if (
-    transform.extent !== "auto" &&
-    (!Array.isArray(transform.extent) ||
-      transform.extent.length !== 2 ||
-      !transform.extent.every(Number.isFinite) ||
-      transform.extent[0] >= transform.extent[1])
-  ) {
-    throw new RangeError(
-      "Density extent must be an ascending pair of finite numbers or auto."
-    );
-  }
-  if (!Number.isInteger(transform.steps) || transform.steps < 2) {
-    throw new RangeError("Density steps must be an integer of at least 2.");
-  }
-  if (
-    !Array.isArray(transform.as) ||
-    transform.as.length !== 2 ||
-    !transform.as.every(value => typeof value === "string" && value.length > 0) ||
-    transform.as[0] === transform.as[1]
-  ) {
-    throw new TypeError("Density as must contain two distinct non-empty fields.");
-  }
-  const collisions = new Set([
+  validateDensityBandwidth(transform.bandwidth);
+  validateDensityExtent(transform.extent);
+  validateDensitySteps(transform.steps);
+  validateOutputFields(
+    transform.as,
     transform.field,
     transform.groupBy,
-    transform.placement?.categoryField,
-    transform.placement?.split?.field
-  ].filter(Boolean));
-  if (transform.as.some(value => collisions.has(value))) {
-    throw new Error(
-      "Density output fields must not collide with source or group fields."
-    );
-  }
+    transform.placement
+  );
   if (transform.resolve !== "shared") {
     throw new Error(`Unsupported density resolve "${transform.resolve}".`);
   }
@@ -300,17 +332,11 @@ function quantile(sortedValues, probability) {
   const upper = Math.ceil(index);
   if (lower === upper) return sortedValues[lower];
   const ratio = index - lower;
-  return sortedValues[lower] * (1 - ratio) + sortedValues[upper] * ratio;
-}
-
-function sampleDeviation(values) {
-  if (values.length < 2) return 0;
-  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
-  const sumSquares = values.reduce(
-    (sum, value) => sum + (value - mean) ** 2,
-    0
-  );
-  return Math.sqrt(sumSquares / (values.length - 1));
+  const ordinary = sortedValues[lower] * (1 - ratio) +
+    sortedValues[upper] * ratio;
+  return Number.isFinite(ordinary)
+    ? ordinary
+    : interpolateNumber(sortedValues[lower], sortedValues[upper], ratio);
 }
 
 export function estimateDensityBandwidth(values) {
@@ -321,13 +347,16 @@ export function estimateDensityBandwidth(values) {
     throw new Error("Density auto bandwidth requires at least two values.");
   }
   const sorted = [...values].sort((left, right) => left - right);
-  const deviation = sampleDeviation(sorted);
+  const deviation = stableFiniteDeviation(sorted, {
+    sample: true,
+    label: "Density sample deviation"
+  }).deviation;
   const interquartileRange = quantile(sorted, 0.75) - quantile(sorted, 0.25);
   const robustDeviation = interquartileRange / 1.34;
   const spread = robustDeviation > 0
     ? Math.min(deviation, robustDeviation)
     : deviation;
-  const bandwidth = 1.06 * spread * sorted.length ** -0.2;
+  const bandwidth = spread * (1.06 * sorted.length ** -0.2);
   if (!Number.isFinite(bandwidth) || bandwidth <= 0) {
     throw new Error("Density auto bandwidth requires varying finite values.");
   }
@@ -338,71 +367,25 @@ function resolveBandwidth(value, sourceValues) {
   if (value === undefined || value === "auto") {
     return estimateDensityBandwidth(sourceValues);
   }
-  if (!Number.isFinite(value) || value <= 0) {
-    throw new RangeError(
-      "Density bandwidth must be a positive finite number or auto."
-    );
-  }
-  return value;
+  return validateDensityBandwidth(value);
 }
 
 function resolveExtent(value, sourceValues) {
   if (value === undefined || value === "auto") {
-    const extent = [Math.min(...sourceValues), Math.max(...sourceValues)];
+    let lower = Infinity;
+    let upper = -Infinity;
+    for (const sourceValue of sourceValues) {
+      lower = Math.min(lower, sourceValue);
+      upper = Math.max(upper, sourceValue);
+    }
+    const extent = [lower, upper];
     if (extent[0] === extent[1]) {
       throw new Error("Density observed extent requires varying finite values.");
     }
     return extent;
   }
-  if (
-    !Array.isArray(value) ||
-    value.length !== 2 ||
-    !value.every(Number.isFinite) ||
-    value[0] >= value[1]
-  ) {
-    throw new RangeError(
-      "Density extent must be an ascending pair of finite numbers or auto."
-    );
-  }
-  return [...value];
+  return [...validateDensityExtent(value)];
 }
-
-function resolveOutputFields(as, field, groupBy, placement) {
-  const resolved = as ?? [`${field}_value`, `${field}_density`];
-  if (
-    !Array.isArray(resolved) ||
-    resolved.length !== 2 ||
-    !resolved.every(value => typeof value === "string" && value.length > 0) ||
-    resolved[0] === resolved[1]
-  ) {
-    throw new TypeError("Density as must contain two distinct non-empty fields.");
-  }
-  const collisions = new Set([
-    field,
-    groupBy,
-    placement?.categoryField,
-    placement?.split?.field
-  ].filter(Boolean));
-  if (resolved.some(value => collisions.has(value))) {
-    throw new Error("Density output fields must not collide with source or group fields.");
-  }
-  return [...resolved];
-}
-
-const KERNEL_FUNCTIONS = Object.freeze({
-  gaussian(value) {
-    return Math.exp(-0.5 * value ** 2) / SQRT_TWO_PI;
-  },
-  epanechnikov(value) {
-    return Math.abs(value) <= 1 ? 0.75 * (1 - value ** 2) : 0;
-  },
-  uniform(value) {
-    return Math.abs(value) <= 1 ? 0.5 : 0;
-  },
-  triangular(value) {
-    return Math.abs(value) <= 1 ? 1 - Math.abs(value) : 0;
-  }
-});
 
 function estimateAt(sample, values, bandwidth, kernel, normalization) {
   const sum = values.reduce(
@@ -414,7 +397,14 @@ function estimateAt(sample, values, bandwidth, kernel, normalization) {
   const denominator = normalization === "unit"
     ? values.length * bandwidth
     : bandwidth;
-  return sum / denominator;
+  const ordinary = sum / denominator;
+  if (Number.isFinite(denominator) && Number.isFinite(ordinary)) {
+    return ordinary;
+  }
+  const stable = normalization === "unit"
+    ? (sum / values.length) / bandwidth
+    : sum / bandwidth;
+  return requireFiniteResult(stable, "Density estimate");
 }
 
 export function deriveKernelDensity(values, {
@@ -435,13 +425,16 @@ export function deriveKernelDensity(values, {
   const groupField = groupBy === undefined
     ? undefined
     : requireField(groupBy, "Density groupBy");
-  if (!Number.isInteger(steps) || steps < 2) {
-    throw new RangeError("Density steps must be an integer of at least 2.");
-  }
+  validateDensitySteps(steps);
   if (placement !== undefined) {
     validateStoredDensityPlacement(placement, groupField);
   }
-  const outputFields = resolveOutputFields(as, sourceField, groupField, placement);
+  const outputFields = [...validateOutputFields(
+    as ?? [`${sourceField}_value`, `${sourceField}_density`],
+    sourceField,
+    groupField,
+    placement
+  )];
   const resolvedKernel = validateDensityKernel(kernel);
   const resolvedNormalization = validateDensityNormalization(normalization);
   const validRows = values.filter(row =>
@@ -454,12 +447,23 @@ export function deriveKernelDensity(values, {
   if (validRows.length === 0) {
     throw new Error("Density requires at least one valid field/group row.");
   }
+  validateWorkLimit(validRows.length * steps, "Density computation");
   const sourceValues = validRows.map(row => row[sourceField]);
   const resolvedBandwidth = resolveBandwidth(bandwidth, sourceValues);
   const resolvedExtent = resolveExtent(extent, sourceValues);
-  const groups = groupField === undefined
-    ? [undefined]
-    : [...new Set(validRows.map(row => row[groupField]))];
+  const groupedValues = new Map();
+  for (const row of validRows) {
+    const group = groupField === undefined ? undefined : row[groupField];
+    const split = placement?.split === undefined
+      ? undefined
+      : row[placement.split.field];
+    const bySplit = groupedValues.get(group) ?? new Map();
+    const groupValues = bySplit.get(split) ?? [];
+    groupValues.push(row[sourceField]);
+    bySplit.set(split, groupValues);
+    groupedValues.set(group, bySplit);
+  }
+  const groups = [...groupedValues.keys()];
   const observedSplits = placement?.split === undefined
     ? []
     : [...new Set(validRows.map(row => row[placement.split.field]))];
@@ -477,27 +481,44 @@ export function deriveKernelDensity(values, {
       throw new Error("Density split domain must include every observed split value.");
     }
   }
-  const sampleStep = (resolvedExtent[1] - resolvedExtent[0]) / (steps - 1);
+  const splits = splitDomain ?? [undefined];
+  let outputGroups = 0;
+  for (const group of groups) {
+    for (const split of splits) {
+      if (groupedValues.get(group).has(split)) outputGroups += 1;
+    }
+  }
+  validateGeneratedItemLimit(
+    outputGroups * steps,
+    "Density generated row count"
+  );
+  const extentSpan = resolvedExtent[1] - resolvedExtent[0];
+  const sampleStep = extentSpan / (steps - 1);
   const samples = Array.from(
     { length: steps },
     (_, index) => index === steps - 1
       ? resolvedExtent[1]
-      : placement === undefined
-        ? resolvedExtent[0] + sampleStep * index
-        : resolvedExtent[0] +
-          (resolvedExtent[1] - resolvedExtent[0]) * index / (steps - 1)
+      : Number.isFinite(extentSpan)
+        ? placement === undefined
+          ? resolvedExtent[0] + sampleStep * index
+          : resolvedExtent[0] + extentSpan * index / (steps - 1)
+        : interpolateNumber(
+          resolvedExtent[0],
+          resolvedExtent[1],
+          index / (steps - 1)
+        )
   );
+  if (samples.some((sample, index) =>
+    !Number.isFinite(sample) ||
+    (index > 0 && sample <= samples[index - 1]))) {
+    throw new RangeError(
+      "Density extent cannot represent the requested finite sample grid."
+    );
+  }
   const rows = [];
   for (const group of groups) {
-    const splits = splitDomain ?? [undefined];
     for (const split of splits) {
-      const groupValues = validRows
-        .filter(row =>
-          (groupField === undefined || Object.is(row[groupField], group)) &&
-          (placement?.split === undefined ||
-            Object.is(row[placement.split.field], split))
-        )
-        .map(row => row[sourceField]);
+      const groupValues = groupedValues.get(group).get(split) ?? [];
       if (groupValues.length === 0) continue;
       for (const sample of samples) {
         rows.push({

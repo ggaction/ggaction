@@ -31,7 +31,11 @@ const CENTER_ROWS = Object.freeze([
 
 function rawArea(rows = CENTER_ROWS) {
   return chart()
-    .createCanvas({ width: 120, height: 120, margin: 10 })
+    .createCanvas({
+      width: 120,
+      height: 130,
+      margin: { top: 20, right: 10, bottom: 10, left: 10 }
+    })
     .createData({ id: "series", values: rows })
     .createAreaMark({ id: "stream", opacity: 1 })
     .encodeX({ target: "stream", field: "x" })

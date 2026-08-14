@@ -8,9 +8,15 @@ import { formatDiscretizedIntervals } from "../../../../grammar/scales/index.js"
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
 import {
-  assertLegendInsideCanvas,
+  assertLegendBoundsInsideCanvas,
+  editGraphicProperties,
+  editLegendBackground,
+  normalizeLegendBorder,
+  normalizeLegendTextOptions,
   resolveContinuousBounds,
   resolveContinuousPoint,
+  resolveLegendBackgroundFromBounds,
+  resolveLegendTextBounds,
   styleContinuousText,
   validateNonNegative,
   validatePositive
@@ -18,27 +24,13 @@ import {
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 
-const OPTIONS = Object.freeze([
+const OPTIONS = [
   "target", "channels", "position", "align", "offset", "title",
   "symbol", "labels", "titleStyle", "itemGap", "direction", "border"
-]);
-const SYMBOL_OPTIONS = Object.freeze([
+];
+const SYMBOL_OPTIONS = [
   "width", "height", "stroke", "strokeWidth"
-]);
-const TEXT_OPTIONS = Object.freeze([
-  "offset", "color", "fontSize", "fontFamily", "fontWeight"
-]);
-
-function textOptions(value, label, defaults) {
-  if (value !== undefined && !isPlainObject(value)) {
-    throw new TypeError(`${label} must be a plain object.`);
-  }
-  validateKeys(value ?? {}, TEXT_OPTIONS, label);
-  const result = { ...defaults, ...(value ?? {}) };
-  if (result.offset !== undefined) validateNonNegative(result.offset, `${label} offset`);
-  validatePositive(result.fontSize, `${label} fontSize`);
-  return result;
-}
+];
 
 export function normalizeIntervalLegend(args) {
   validateOptionObject(args, OPTIONS, "createLegend");
@@ -55,18 +47,16 @@ export function normalizeIntervalLegend(args) {
   if ((args.direction ?? "vertical") !== "vertical") {
     throw new Error('Interval legends currently support direction "vertical".');
   }
-  if (args.border !== undefined && args.border !== false) {
-    throw new Error("Interval legend border is not implemented yet.");
-  }
   if (args.symbol !== undefined && !isPlainObject(args.symbol)) {
     throw new TypeError("createLegend.symbol must be a plain object.");
   }
-  validateKeys(args.symbol ?? {}, SYMBOL_OPTIONS, "createLegend.symbol");
+  const source = args.symbol ?? {};
+  validateKeys(source, SYMBOL_OPTIONS, "createLegend.symbol");
   const symbol = {
-    width: args.symbol?.width ?? 14,
-    height: args.symbol?.height ?? 12,
-    stroke: args.symbol?.stroke ?? "white",
-    strokeWidth: args.symbol?.strokeWidth ?? 0.5
+    width: source.width ?? 14,
+    height: source.height ?? 12,
+    stroke: source.stroke ?? "white",
+    strokeWidth: source.strokeWidth ?? 0.5
   };
   validatePositive(symbol.width, "Legend symbol width");
   validatePositive(symbol.height, "Legend symbol height");
@@ -86,20 +76,20 @@ export function normalizeIntervalLegend(args) {
     inferredTitle: args.title === undefined,
     titleVisible: true,
     symbol,
-    labels: textOptions(args.labels, "createLegend.labels", {
+    labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", {
       offset: 8,
       color: DEFAULT_COLORS.text,
       fontSize: 12,
       fontFamily: DEFAULT_FONT_FAMILY,
       fontWeight: "normal"
     }),
-    titleStyle: textOptions(args.titleStyle, "createLegend.titleStyle", {
+    titleStyle: normalizeLegendTextOptions(args.titleStyle, "createLegend.titleStyle", {
       color: DEFAULT_COLORS.text,
       fontSize: 13,
       fontFamily: DEFAULT_FONT_FAMILY,
       fontWeight: 600
     }),
-    border: false
+    border: normalizeLegendBorder(args.border)
   };
 }
 
@@ -113,17 +103,12 @@ function resolveIntervalConfig(program, stored) {
   if (!["quantize", "quantile", "threshold"].includes(scale?.type)) {
     throw new Error(`Interval legend requires a resolved discretized scale "${encoding.scale}".`);
   }
-  return {
-    layer,
-    encoding,
-    scale,
-    config: {
+  return { encoding, scale, config: {
       ...stored,
       target: layer.id,
       scale: encoding.scale,
       title: stored.inferredTitle ? encoding.field : stored.title
-    }
-  };
+    } };
 }
 
 function resolveIntervalLayout(program, config, scale) {
@@ -133,14 +118,37 @@ function resolveIntervalLayout(program, config, scale) {
   const itemY = labels.map((_, index) => plot.y + 52 + index * config.itemGap);
   const labelX = symbolX + config.symbol.width + config.labels.offset;
   const title = { x: symbolX, y: plot.y + 20 };
-  assertLegendInsideCanvas([
-    title,
-    ...itemY.flatMap(y => [
-      { x: symbolX, y },
-      { x: labelX, y }
-    ])
-  ], canvas, "Interval legend layout");
-  return { labels, symbolX, labelX, itemY, title };
+  const strokeExtent = config.symbol.strokeWidth / 2;
+  const occupiedBounds = [
+    resolveLegendTextBounds(
+      { ...title, align: "left" },
+      config.title,
+      config.titleStyle
+    ),
+    ...labels.map((label, index) => resolveLegendTextBounds(
+      { x: labelX, y: itemY[index], align: "left" },
+      label,
+      config.labels
+    )),
+    ...itemY.map(y => ({
+      left: symbolX - strokeExtent,
+      right: symbolX + config.symbol.width + strokeExtent,
+      top: y - config.symbol.height / 2 - strokeExtent,
+      bottom: y + config.symbol.height / 2 + strokeExtent
+    }))
+  ];
+  assertLegendBoundsInsideCanvas(
+    occupiedBounds,
+    canvas,
+    "Interval legend layout"
+  );
+  const background = resolveLegendBackgroundFromBounds(
+    occupiedBounds,
+    config.border,
+    canvas,
+    "Interval legend"
+  );
+  return { labels, symbolX, labelX, itemY, title, background };
 }
 
 export const rematerializeIntervalLegend = action(
@@ -156,36 +164,38 @@ export const rematerializeIntervalLegend = action(
     }
     const { encoding, scale, config } = resolveIntervalConfig(this, stored);
     const layout = resolveIntervalLayout(this, config, scale);
-    let next = this
+    let next = editGraphicProperties(this
       .editSemantic({ property: "guide.legend.color.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.color.title", value: config.title })
-      ._withLegendConfig("interval", config)
-      .editGraphics({
-        target: "colorLegendSymbols",
-        property: "length",
-        value: scale.range.length
-      })
-      .editGraphics({ target: "colorLegendSymbols", property: "x", value: layout.symbolX })
-      .editGraphics({
-        target: "colorLegendSymbols",
-        property: "y",
-        value: layout.itemY.map(value => value - config.symbol.height / 2)
-      })
-      .editGraphics({ target: "colorLegendSymbols", property: "width", value: config.symbol.width })
-      .editGraphics({ target: "colorLegendSymbols", property: "height", value: config.symbol.height })
-      .editGraphics({ target: "colorLegendSymbols", property: "fill", value: scale.range })
-      .editGraphics({ target: "colorLegendSymbols", property: "stroke", value: config.symbol.stroke })
-      .editGraphics({ target: "colorLegendSymbols", property: "strokeWidth", value: config.symbol.strokeWidth })
-      .editGraphics({ target: "colorLegendLabels", property: "length", value: layout.labels.length })
-      .editGraphics({ target: "colorLegendLabels", property: "x", value: layout.labelX })
-      .editGraphics({ target: "colorLegendLabels", property: "y", value: layout.itemY })
-      .editGraphics({ target: "colorLegendLabels", property: "text", value: layout.labels });
+      ._withLegendConfig("interval", config), "colorLegendSymbols", {
+      length: scale.range.length,
+      x: layout.symbolX,
+      y: layout.itemY.map(value => value - config.symbol.height / 2),
+      width: config.symbol.width,
+      height: config.symbol.height,
+      fill: scale.range,
+      stroke: config.symbol.stroke,
+      strokeWidth: config.symbol.strokeWidth
+    });
+    next = editGraphicProperties(next, "colorLegendLabels", {
+      length: layout.labels.length,
+      x: layout.labelX,
+      y: layout.itemY,
+      text: layout.labels
+    });
+    next = editLegendBackground(
+      next,
+      "colorLegendBackground",
+      layout.background,
+      config.border
+    );
     next = styleContinuousText(next, "colorLegendLabels", config.labels);
     if (config.titleVisible === false) return next;
-    next = next
-      .editGraphics({ target: "colorLegendTitle", property: "x", value: layout.title.x })
-      .editGraphics({ target: "colorLegendTitle", property: "y", value: layout.title.y })
-      .editGraphics({ target: "colorLegendTitle", property: "text", value: config.title });
+    next = editGraphicProperties(next, "colorLegendTitle", {
+      x: layout.title.x,
+      y: layout.title.y,
+      text: config.title
+    });
     return styleContinuousText(next, "colorLegendTitle", config.titleStyle);
   }
 );
@@ -202,7 +212,7 @@ export const createIntervalLegend = action(
     if (this.graphicSpec.objects.colorLegendSymbols !== undefined) {
       throw new Error("createIntervalLegend requires a missing interval legend.");
     }
-    return this
+    let next = this
       .editSemantic({
         property: "guide.legend.color.scale",
         value: resolved.encoding.scale
@@ -211,23 +221,34 @@ export const createIntervalLegend = action(
         property: "guide.legend.color.title",
         value: resolved.config.title
       })
-      ._withLegendConfig("interval", resolved.config)
+      ._withLegendConfig("interval", resolved.config);
+    const placement = resolveLegendGraphicPlacement(next);
+    if (resolved.config.border !== false) {
+      next = next.createGraphics({
+        id: "colorLegendBackground",
+        type: "rect",
+        ...placement
+      });
+    }
+    return next
       .createGraphics({
         id: "colorLegendSymbols",
         type: "rect",
         length: 0,
-        ...resolveLegendGraphicPlacement(this)
+        ...resolveLegendGraphicPlacement(next, resolved.config.border === false
+          ? {}
+          : { after: "colorLegendBackground" })
       })
       .createGraphics({
         id: "colorLegendLabels",
         type: "text",
         length: 0,
-        ...resolveLegendGraphicPlacement(this)
+        ...placement
       })
       .createGraphics({
         id: "colorLegendTitle",
         type: "text",
-        ...resolveLegendGraphicPlacement(this)
+        ...placement
       })
       .rematerializeIntervalLegend();
   }

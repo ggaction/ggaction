@@ -4,13 +4,19 @@ export const SIDE_LEGEND_SYMBOL_CENTER = 16;
 export const SIDE_LEGEND_LABEL_START = 44;
 export const HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP = 12;
 
+function midpoint(start, end) {
+  const sum = start + end;
+  const result = Number.isFinite(sum) ? sum / 2 : start / 2 + end / 2;
+  return result === 0 ? 0 : result;
+}
+
 function unionBounds(bounds) {
-  return {
-    left: Math.min(...bounds.map(item => item.left)),
-    right: Math.max(...bounds.map(item => item.right)),
-    top: Math.min(...bounds.map(item => item.top)),
-    bottom: Math.max(...bounds.map(item => item.bottom))
-  };
+  return bounds.reduce((union, item) => ({
+    left: Math.min(union.left, item.left),
+    right: Math.max(union.right, item.right),
+    top: Math.min(union.top, item.top),
+    bottom: Math.max(union.bottom, item.bottom)
+  }), { left: Infinity, right: -Infinity, top: Infinity, bottom: -Infinity });
 }
 
 function decoration(border) {
@@ -20,19 +26,20 @@ function decoration(border) {
 }
 
 function horizontalExtent(blocks) {
-  const left = [0];
-  const right = [0];
+  let left = 0;
+  let right = 0;
   for (const block of blocks) {
-    if (block.title !== undefined) right.push(block.title.width);
-    left.push(
+    if (block.title !== undefined) right = Math.max(right, block.title.width);
+    left = Math.min(left,
       SIDE_LEGEND_SYMBOL_CENTER + block.symbol.left - block.symbol.centerX
     );
-    right.push(
-      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.right - block.symbol.centerX
+    right = Math.max(
+      right,
+      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.right - block.symbol.centerX,
+      SIDE_LEGEND_LABEL_START + block.labels.width
     );
-    right.push(SIDE_LEGEND_LABEL_START + block.labels.width);
   }
-  return { left: Math.min(...left), right: Math.max(...right) };
+  return { left, right };
 }
 
 function placeBlock(block, cursor) {
@@ -81,7 +88,10 @@ export function resolveSideLegendLane({
   const blocks = groups.flatMap(group => group.blocks);
   if (blocks.length < 2) return undefined;
   const laneExtent = horizontalExtent(blocks);
-  const offset = Math.max(...blocks.map(block => block.offset));
+  const offset = blocks.reduce(
+    (maximum, block) => Math.max(maximum, block.offset),
+    -Infinity
+  );
   const titleStartX = side === "right"
     ? plot.x + plot.width + offset
     : plot.x - offset - laneExtent.right;
@@ -160,21 +170,12 @@ export function resolveSideLegendLane({
   };
 }
 
-function translateBounds(bounds, dy) {
-  return {
-    left: bounds.left,
-    right: bounds.right,
-    top: bounds.top + dy,
-    bottom: bounds.bottom + dy
-  };
-}
-
-function translateBoundsX(bounds, dx) {
+function translateBounds(bounds, dx, dy) {
   return {
     left: bounds.left + dx,
     right: bounds.right + dx,
-    top: bounds.top,
-    bottom: bounds.bottom
+    top: bounds.top + dy,
+    bottom: bounds.bottom + dy
   };
 }
 
@@ -198,13 +199,13 @@ function packHorizontalRows(groups, plot) {
       throw new Error("Horizontal legend block requires more plot width.");
     }
     let dx = cursor - interval.left;
-    let placed = translateBoundsX(interval, dx);
+    let placed = translateBounds(interval, dx, 0);
     if (row.length > 0 && placed.right > plot.x + plot.width) {
       rows.push(row);
       row = [];
       cursor = plot.x;
       dx = cursor - interval.left;
-      placed = translateBoundsX(interval, dx);
+      placed = translateBounds(interval, dx, 0);
     }
     row.push({ group, interval: placed, dx });
     cursor = placed.right + HORIZONTAL_LEGEND_BLOCK_GAP;
@@ -220,15 +221,22 @@ function normalizeHorizontalRow(entries) {
   const commonTitleY = stacked[0]?.group.title.y;
   const titleDescent = stacked.length === 0
     ? 0
-    : Math.max(...stacked.map(
-        entry => entry.group.title.bounds.bottom - entry.group.title.y
-      ));
+    : stacked.reduce((maximum, entry) => Math.max(
+        maximum,
+        entry.group.title.bounds.bottom - entry.group.title.y
+      ), -Infinity);
   const elementAnchor = commonTitleY === undefined
-    ? (entries[0].group.element.top + entries[0].group.element.bottom) / 2
+    ? midpoint(
+        entries[0].group.element.top,
+        entries[0].group.element.bottom
+      )
     : commonTitleY + titleDescent + HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP;
   return entries.map(({ group, dx }) => {
     const contentDy = commonTitleY === undefined
-      ? elementAnchor - (group.element.top + group.element.bottom) / 2
+      ? elementAnchor - midpoint(
+          group.element.top,
+          group.element.bottom
+        )
       : elementAnchor - group.element.top;
     const titleDy = group.title === undefined
       ? 0
@@ -238,8 +246,8 @@ function normalizeHorizontalRow(entries) {
     const foreground = unionBounds([
       ...(group.title === undefined
         ? []
-        : [translateBoundsX(translateBounds(group.title.bounds, titleDy), dx)]),
-      translateBoundsX(translateBounds(group.content, contentDy), dx)
+        : [translateBounds(group.title.bounds, dx, titleDy)]),
+      translateBounds(group.content, dx, contentDy)
     ]);
     return {
       id: group.id,
@@ -259,8 +267,8 @@ function translateHorizontalPlacement(placement, dy) {
     ...placement,
     titleDy: placement.titleDy + dy,
     contentDy: placement.contentDy + dy,
-    foreground: translateBounds(placement.foreground, dy),
-    occupied: translateBounds(placement.occupied, dy)
+    foreground: translateBounds(placement.foreground, 0, dy),
+    occupied: translateBounds(placement.occupied, 0, dy)
   };
 }
 
@@ -285,8 +293,14 @@ export function resolveHorizontalLegendLane({
     let dy;
     if (index === 0) {
       const anchor = edge === "top"
-        ? Math.max(...packed[index].map(item => item.group.horizontal.bottom))
-        : Math.min(...packed[index].map(item => item.group.horizontal.top));
+        ? packed[index].reduce((maximum, item) => Math.max(
+            maximum,
+            item.group.horizontal.bottom
+          ), -Infinity)
+        : packed[index].reduce((minimum, item) => Math.min(
+            minimum,
+            item.group.horizontal.top
+          ), Infinity);
       dy = edge === "top"
         ? anchor - rowBounds.bottom
         : anchor - rowBounds.top;

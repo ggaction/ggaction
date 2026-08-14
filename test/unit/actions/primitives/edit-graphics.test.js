@@ -90,6 +90,24 @@ test("distributes arrays and broadcasts scalar values to collection children", (
   assert.deepEqual(points.graphicSpec.objects.points.items[0].properties, {});
 });
 
+test("rejects collection growth above the generated item limit", () => {
+  const singleton = chart().createGraphics({ id: "point", type: "circle" });
+  assert.throws(
+    () => singleton.editGraphics({
+      target: "point",
+      property: "length",
+      value: 10_001
+    }),
+    /must not exceed 10000/
+  );
+  const collection = chart().createGraphics({ id: "items", type: "collection" });
+  const items = Array(10_001).fill({ type: "circle", properties: {} });
+  assert.throws(
+    () => collection.editGraphics({ target: "items", property: "items", value: items }),
+    /must not exceed 10000/
+  );
+});
+
 test("treats one linear gradient paint and its stops as a scalar fill value", () => {
   const paint = {
     type: "linear-gradient",

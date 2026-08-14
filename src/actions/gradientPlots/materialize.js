@@ -23,10 +23,6 @@ function position(values, scale) {
     : mapContinuousScaleValues(values, scale);
 }
 
-function profileValue(row, key) {
-  return row[GRADIENT_PROFILE_FIELDS[key]];
-}
-
 function axisWithTitle(option, text) {
   if (option === false) return false;
   const axis = option ?? {};
@@ -56,20 +52,22 @@ function gradientAxesOptions(config) {
 }
 
 function bodyItems(program, layer, dataset, config) {
-  const categoryChannel = config.orientation === "vertical" ? "x" : "y";
-  const measureChannel = config.orientation === "vertical" ? "y" : "x";
+  const vertical = config.orientation === "vertical";
+  const categoryChannel = vertical ? "x" : "y";
+  const measureChannel = vertical ? "y" : "x";
   const categoryEncoding = layer.encoding[categoryChannel];
   const measureEncoding = layer.encoding[measureChannel];
   const categoryScale = program.resolvedScales[categoryEncoding.scale];
   const measureScale = program.resolvedScales[measureEncoding.scale];
-  const categories = dataset.values.map(row => row[config.category]);
+  const rows = dataset.values;
+  const categories = rows.map(row => row[config.category]);
   const centers = position(categories, categoryScale);
   const lower = position(
-    dataset.values.map(row => profileValue(row, "lower")),
+    rows.map(row => row[GRADIENT_PROFILE_FIELDS.lower]),
     measureScale
   );
   const upper = position(
-    dataset.values.map(row => profileValue(row, "upper")),
+    rows.map(row => row[GRADIENT_PROFILE_FIELDS.upper]),
     measureScale
   );
   const categoryColors = resolveGradientPlotCategoryColors(
@@ -81,10 +79,10 @@ function bodyItems(program, layer, dataset, config) {
   if (!Number.isFinite(thickness) || thickness <= 0) {
     throw new Error(`Gradient plot "${layer.id}" requires a positive band width.`);
   }
-  return dataset.values.map((row, index) => {
+  return rows.map((row, index) => {
     const a = lower[index];
     const b = upper[index];
-    const geometry = config.orientation === "vertical"
+    const geometry = vertical
       ? {
           x: centers[index] - thickness / 2,
           y: Math.min(a, b),
@@ -102,8 +100,8 @@ function bodyItems(program, layer, dataset, config) {
       properties: {
         ...geometry,
         fill: createGradientPlotPaint({
-          values: profileValue(row, "values"),
-          intensities: profileValue(row, "intensities")
+          values: row[GRADIENT_PROFILE_FIELDS.values],
+          intensities: row[GRADIENT_PROFILE_FIELDS.intensities]
         }, {
           orientation: config.orientation,
           valueScale: measureScale,
@@ -223,28 +221,16 @@ export const materializeGradientPlot = action(
         }
       });
     const measureChannel = orientation === "vertical" ? "y" : "x";
-    const secondaryChannel = `${measureChannel}2`;
-    next = next
-      .editSemantic({
-        property: `layer[${owner}].encoding.${measureChannel}.field`,
-        value: GRADIENT_PROFILE_FIELDS.lower
-      })
-      .editSemantic({
-        property: `layer[${owner}].encoding.${measureChannel}.fieldType`,
-        value: "quantitative"
-      })
-      .editSemantic({
-        property: `layer[${owner}].encoding.${secondaryChannel}.field`,
-        value: GRADIENT_PROFILE_FIELDS.upper
-      })
-      .editSemantic({
-        property: `layer[${owner}].encoding.${secondaryChannel}.fieldType`,
-        value: "quantitative"
-      })
-      .editSemantic({
-        property: `layer[${owner}].encoding.${secondaryChannel}.scale`,
-        value: measure.scale
-      });
+    const path = `layer[${owner}].encoding.`;
+    for (const [property, value] of [
+      [`${path}${measureChannel}.field`, GRADIENT_PROFILE_FIELDS.lower],
+      [`${path}${measureChannel}.fieldType`, "quantitative"],
+      [`${path}${measureChannel}2.field`, GRADIENT_PROFILE_FIELDS.upper],
+      [`${path}${measureChannel}2.fieldType`, "quantitative"],
+      [`${path}${measureChannel}2.scale`, measure.scale]
+    ]) {
+      next = next.editSemantic({ property, value });
+    }
     next = next.materializeGradientPlotFill({ id: owner });
     if (config.center !== false) {
       const categoryScale = next.resolvedScales[category.scale];

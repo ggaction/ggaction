@@ -1,23 +1,23 @@
-import { registerCanvasActions } from "./canvas/index.js";
-import { registerChartActions } from "./charts/index.js";
-import { registerCategoryOrderActions } from "./categoryOrder/index.js";
-import { registerCoordinateActions } from "./coordinates/actions.js";
-import { registerCompositionActions } from "./composition/index.js";
+import { registerPrimitiveActions } from "./primitives/index.js";
+import { registerSelectionActions } from "./selection/index.js";
 import { registerDataActions } from "./data/index.js";
+import { registerCategoryOrderActions } from "./categoryOrder/index.js";
 import { registerEncodingActions } from "./encodings/index.js";
-import { registerErrorBandActions } from "./errorBands/index.js";
-import { registerErrorBarActions } from "./errorBars/index.js";
+import { registerScaleActions } from "./scales/index.js";
+import { registerMarkActions } from "./marks/index.js";
+import { registerCoordinateActions } from "./coordinates/actions.js";
 import { registerFacetActions } from "./facets/index.js";
-import { registerBoxPlotActions } from "./boxPlots/index.js";
+import { registerCompositionActions } from "./composition/index.js";
+import { registerTitleActions } from "./titles/index.js";
 import { registerGuideActions } from "./guides/index.js";
 import { registerGradientPlotActions } from "./gradientPlots/index.js";
-import { registerMarkActions } from "./marks/index.js";
-import { registerPrimitiveActions } from "./primitives/index.js";
+import { registerBoxPlotActions } from "./boxPlots/index.js";
+import { registerErrorBarActions } from "./errorBars/index.js";
 import { registerRegressionActions } from "./regression/index.js";
-import { registerScaleActions } from "./scales/index.js";
-import { registerTitleActions } from "./titles/index.js";
-import { registerSelectionActions } from "./selection/index.js";
 import { registerViolinPlotActions } from "./violinPlots/index.js";
+import { registerErrorBandActions } from "./errorBands/index.js";
+import { registerCanvasActions } from "./canvas/index.js";
+import { registerChartActions } from "./charts/index.js";
 
 export function registerActions(ProgramClass) {
   registerPrimitiveActions(ProgramClass);

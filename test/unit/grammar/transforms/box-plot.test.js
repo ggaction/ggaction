@@ -148,3 +148,27 @@ test("validates box transform provenance and finite measures", () => {
     /must not collide/
   );
 });
+
+test("derives finite linear quartiles across the complete numeric range", () => {
+  const extremeRows = [
+    { group: "A", value: -1e308 },
+    { group: "A", value: 1e308 }
+  ];
+  const result = deriveBoxData(extremeRows, normalizeBoxTransform({
+    category: "group",
+    field: "value",
+    whisker: "minmax"
+  }));
+  const summary = result.summaries[0];
+  assert.deepEqual([
+    summary[BOX_FIELDS.q1],
+    summary[BOX_FIELDS.median],
+    summary[BOX_FIELDS.q3]
+  ], [-5e307, 0, 5e307]);
+  assert.equal(Object.values(summary).filter(value => typeof value === "number")
+    .every(Number.isFinite), true);
+  assert.throws(() => deriveBoxData(
+    extremeRows,
+    normalizeBoxTransform({ category: "group", field: "value" })
+  ), /Tukey fences are outside the finite numeric range/);
+});

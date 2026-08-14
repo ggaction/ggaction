@@ -16,23 +16,31 @@ export const LEGEND_LAYOUT = Object.freeze({
   sampleGap: 20,
   colorItems: COLOR_ITEMS,
   opacityItems: OPACITY_ITEMS,
-  opacityLabelWidth: Object.freeze([6.36, 19.2, 22.32]),
+  opacityLabelWidth: Object.freeze([7.32, 25.2, 25.2]),
   top: Object.freeze({
     lineY: 19.5,
     chartGap: 13.5,
-    colorSymbolX: Object.freeze([132, 199, 280]),
-    colorLabelX: Object.freeze([154, 221, 302]),
-    opacityTitleX: 377.52,
-    opacitySymbolX: Object.freeze([474.46, 522.8199999999999, 584.02]),
-    opacityLabelX: Object.freeze([489.46, 537.8199999999999, 599.02])
+    colorSymbolX: Object.freeze([124.6112, 192.5712, 268.4512]),
+    colorLabelX: Object.freeze([146.6112, 214.5712, 290.4512]),
+    opacityTitleX: 365.97119999999995,
+    opacitySymbolX: Object.freeze([
+      465.70879999999994, 515.0288, 582.2288000000001
+    ]),
+    opacityLabelX: Object.freeze([
+      480.70879999999994, 530.0288, 597.2288000000001
+    ])
   }),
   bottom: Object.freeze({
     lineY: 595.5,
     chartGap: 20,
-    colorSymbolX: Object.freeze([132, 195, 272]),
-    colorLabelX: Object.freeze([154, 217, 294]),
-    opacityTitleX: 369.52,
-    opacitySymbolX: Object.freeze([466.46, 514.8199999999999, 576.02]),
-    opacityLabelX: Object.freeze([481.46, 529.8199999999999, 591.02])
+    colorSymbolX: Object.freeze([124.6112, 188.5712, 260.4512]),
+    colorLabelX: Object.freeze([146.6112, 210.5712, 282.4512]),
+    opacityTitleX: 357.97119999999995,
+    opacitySymbolX: Object.freeze([
+      457.70879999999994, 507.0288, 574.2288000000001
+    ]),
+    opacityLabelX: Object.freeze([
+      472.70879999999994, 522.0288, 589.2288000000001
+    ])
   })
 });

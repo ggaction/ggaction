@@ -4,14 +4,15 @@ import { validateKeys } from "../../../../core/validation.js";
 import { interpolateColorStops } from "../../../../grammar/scales/color.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
 import {
-  assertLegendInsideCanvas,
+  assertLegendBoundsInsideCanvas,
   editLegendBackground,
   formatContinuousValues,
   normalizeContinuousLegend,
   requireResolvedLegendScale,
   resolveContinuousBounds,
   resolveContinuousColorLayer,
-  resolveLegendBackgroundBounds,
+  resolveLegendBackgroundFromBounds,
+  resolveLegendTextBounds,
   sampleContinuousValues,
   styleContinuousText,
   validatePositive
@@ -52,6 +53,7 @@ function resolveGradientLayout(program, config, scale) {
         align: "center"
       };
   const values = sampleContinuousValues(scale.domain, config.count);
+  const texts = formatContinuousValues(values, scale.domain, config.fieldType);
   const fractions = values.map((_, index) => index / (values.length - 1));
   const labelOffset = config.labels.offset;
   const labels = vertical
@@ -80,38 +82,41 @@ function resolveGradientLayout(program, config, scale) {
         x2: label.x,
         y2: y + thickness + 6
       }));
-  assertLegendInsideCanvas([
+  const stripBounds = {
+    left: x,
+    right: x + (vertical ? thickness : length),
+    top: y,
+    bottom: y + (vertical ? length : thickness)
+  };
+  const tickBounds = ticks.map(tick => ({
+    left: Math.min(tick.x1, tick.x2) - 0.5,
+    right: Math.max(tick.x1, tick.x2) + 0.5,
+    top: Math.min(tick.y1, tick.y2) - 0.5,
+    bottom: Math.max(tick.y1, tick.y2) + 0.5
+  }));
+  const labelBounds = labels.map((label, index) =>
+    resolveLegendTextBounds(label, texts[index], config.labels)
+  );
+  const titleBounds = resolveLegendTextBounds(
     title,
-    ...labels,
-    ...ticks.flatMap(tick => [
-      { x: tick.x1, y: tick.y1 },
-      { x: tick.x2, y: tick.y2 }
-    ])
-  ], canvas, "Gradient legend layout");
-  if (
-    x < 0 ||
-    y < 0 ||
-    x + (vertical ? thickness : length) > canvas.width ||
-    y + (vertical ? length : thickness) > canvas.height
-  ) {
-    throw new Error("Gradient legend layout requires more Canvas margin space.");
-  }
-  const background = resolveLegendBackgroundBounds([
-    { x, y },
-    {
-      x: x + (vertical ? thickness : length),
-      y: y + (vertical ? length : thickness)
-    },
-    title,
-    ...labels.map(label => ({
-      x: label.x + (
-        label.align === "left" ? 42 : label.align === "right" ? -42 : 0
-      ),
-      y: label.y
-    }))
-  ], config.border, canvas, "Gradient legend");
+    config.title,
+    config.titleStyle
+  );
+  const occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds, titleBounds];
+  assertLegendBoundsInsideCanvas(
+    occupiedBounds,
+    canvas,
+    "Gradient legend layout"
+  );
+  const background = resolveLegendBackgroundFromBounds(
+    occupiedBounds,
+    config.border,
+    canvas,
+    "Gradient legend"
+  );
   return {
-    vertical, x, y, length, thickness, values, labels, ticks, title, background
+    vertical, x, y, length, thickness, values, texts, labels, ticks, title,
+    background
   };
 }
 
@@ -244,11 +249,7 @@ export const rematerializeGradientLegend = action(
       .editGraphics({
         target: "colorGradientLabels",
         property: "text",
-        value: formatContinuousValues(
-          layout.values,
-          scale.domain,
-          config.fieldType
-        )
+        value: layout.texts
       });
     next = styleContinuousText(
       next,

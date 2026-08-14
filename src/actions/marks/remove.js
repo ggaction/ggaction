@@ -138,6 +138,27 @@ function cleanupSelectionState(program, ids) {
   };
 }
 
+export function removeOwnedMark(program, id, partial = false) {
+  const layer = findLayer(program, id);
+  if (!partial && layer === undefined) return program;
+  const cleaned = cleanupSelectionState(program, [id]);
+  let next = cleaned.program;
+  if (layer !== undefined) {
+    next = next.editSemantic({ property: `layer[${id}]`, remove: true });
+  }
+  if (next.graphicSpec.objects[id] !== undefined) {
+    next = next.editGraphics({ target: id, remove: true });
+  }
+  return next
+    ._withoutMaterializationConfig(["marks", id])
+    ._withContext({
+      ...(program.context.currentMark === id ? { currentMark: undefined } : {}),
+      ...(cleaned.selectionIds.includes(program.context.currentSelection)
+        ? { currentSelection: undefined }
+        : {})
+    });
+}
+
 function hasScaleConsumer(program, channel, scale) {
   return program.semanticSpec.layers.some(
     layer => layer.encoding?.[channel]?.scale === scale

@@ -15,6 +15,7 @@ import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
+  editMarkGraphic,
   materializeInheritedMark,
   resolveLayeredMarkInheritance,
   resolveMarkData,
@@ -183,59 +184,59 @@ const rematerializeRuleMark = action(
     const x2 = [];
     const y2 = [];
     for (let index = 0; index < derived.length; index += 1) {
+      let startX;
+      let startY;
+      let endX;
+      let endY;
       if (mode === "vertical-span") {
-        x1.push(mapped.x[index]);
-        y1.push(bounds.y);
-        x2.push(mapped.x[index]);
-        y2.push(bounds.y + bounds.height);
+        startX = endX = mapped.x[index];
+        startY = bounds.y;
+        endY = bounds.y + bounds.height;
       } else if (mode === "horizontal-span") {
-        x1.push(bounds.x);
-        y1.push(mapped.y[index]);
-        x2.push(bounds.x + bounds.width);
-        y2.push(mapped.y[index]);
+        startX = bounds.x;
+        endX = bounds.x + bounds.width;
+        startY = endY = mapped.y[index];
       } else if (mode === "vertical-interval") {
-        x1.push(mapped.x[index]);
-        y1.push(mapped.y[index]);
-        x2.push(mapped.x[index]);
-        y2.push(mapped.y2[index]);
+        startX = endX = mapped.x[index];
+        startY = mapped.y[index];
+        endY = mapped.y2[index];
       } else if (mode === "horizontal-interval") {
-        x1.push(mapped.x[index]);
-        y1.push(mapped.y[index]);
-        x2.push(mapped.x2[index]);
-        y2.push(mapped.y[index]);
+        startX = mapped.x[index];
+        endX = mapped.x2[index];
+        startY = endY = mapped.y[index];
       } else if (mode === "box-span") {
         const owner = resolved.graphicSpec.objects[boxSpan];
         const box = owner?.items?.[index]?.properties;
         if (box === undefined) throw new Error(`Rule mark "${id}" requires box span owner "${boxSpan}".`);
         if (layer.encoding?.x?.fieldType === "quantitative") {
-          x1.push(mapped.x[index]);
-          y1.push(box.y);
-          x2.push(mapped.x[index]);
-          y2.push(box.y + box.height);
+          startX = endX = mapped.x[index];
+          startY = box.y;
+          endY = box.y + box.height;
         } else {
-          x1.push(box.x);
-          y1.push(mapped.y[index]);
-          x2.push(box.x + box.width);
-          y2.push(mapped.y[index]);
+          startX = box.x;
+          endX = box.x + box.width;
+          startY = endY = mapped.y[index];
         }
       } else if (mode === "fixed-span") {
         if (fixedSpan.orientation === "horizontal") {
-          x1.push(mapped.x[index] - fixedSpan.size / 2);
-          y1.push(mapped.y[index]);
-          x2.push(mapped.x[index] + fixedSpan.size / 2);
-          y2.push(mapped.y[index]);
+          startX = mapped.x[index] - fixedSpan.size / 2;
+          endX = mapped.x[index] + fixedSpan.size / 2;
+          startY = endY = mapped.y[index];
         } else {
-          x1.push(mapped.x[index]);
-          y1.push(mapped.y[index] - fixedSpan.size / 2);
-          x2.push(mapped.x[index]);
-          y2.push(mapped.y[index] + fixedSpan.size / 2);
+          startX = endX = mapped.x[index];
+          startY = mapped.y[index] - fixedSpan.size / 2;
+          endY = mapped.y[index] + fixedSpan.size / 2;
         }
       } else {
-        x1.push(mapped.x[index]);
-        y1.push(mapped.y[index]);
-        x2.push(mapped.x2[index]);
-        y2.push(mapped.y2[index]);
+        startX = mapped.x[index];
+        startY = mapped.y[index];
+        endX = mapped.x2[index];
+        endY = mapped.y2[index];
       }
+      x1.push(startX);
+      y1.push(startY);
+      x2.push(endX);
+      y2.push(endY);
     }
 
     const resolvedConfig = {
@@ -270,20 +271,17 @@ const rematerializeRuleMark = action(
           resolved.resolvedScales[strokeWidthEncoding.scale]
         );
 
-    return resolved
-      .editGraphics({ target: id, property: "length", value: derived.length })
-      .editGraphics({ target: id, property: "x1", value: x1 })
-      .editGraphics({ target: id, property: "y1", value: y1 })
-      .editGraphics({ target: id, property: "x2", value: x2 })
-      .editGraphics({ target: id, property: "y2", value: y2 })
-      .editGraphics({ target: id, property: "stroke", value: resolvedConfig.stroke })
-      .editGraphics({
-        target: id,
-        property: "strokeWidth",
-        value: strokeWidth
-      })
-      .editGraphics({ target: id, property: "strokeDash", value: strokeDash })
-      .editGraphics({ target: id, property: "opacity", value: opacity });
+    return editMarkGraphic(resolved, id, {
+      length: derived.length,
+      x1,
+      y1,
+      x2,
+      y2,
+      stroke: resolvedConfig.stroke,
+      strokeWidth,
+      strokeDash,
+      opacity
+    });
   }
 );
 
@@ -312,7 +310,9 @@ export const materializeRuleSpan = action(
 );
 
 export function registerRuleMarkActions(ProgramClass) {
-  ProgramClass.prototype.createRuleMark = createRuleMark;
-  ProgramClass.prototype.rematerializeRuleMark = rematerializeRuleMark;
-  ProgramClass.prototype.materializeRuleSpan = materializeRuleSpan;
+  Object.assign(ProgramClass.prototype, {
+    createRuleMark,
+    rematerializeRuleMark,
+    materializeRuleSpan
+  });
 }

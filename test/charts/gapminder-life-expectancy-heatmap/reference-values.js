@@ -9,7 +9,7 @@ export { HEATMAP_COUNTRIES, HEATMAP_YEARS };
 export const HEATMAP_LAYOUT = Object.freeze({
   width: 760,
   height: 440,
-  margin: Object.freeze({ top: 70, right: 120, bottom: 75, left: 110 })
+  margin: Object.freeze({ top: 70, right: 130, bottom: 75, left: 110 })
 });
 
 const VIRIDIS = Object.freeze([

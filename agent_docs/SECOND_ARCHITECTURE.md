@@ -952,7 +952,8 @@ Line과 area의 pure geometry/appearance 계산은 각각 `actions/marks/line/ma
 Concrete path bounds는 cubic control-point hull을 그대로 쓰지 않는다. 각 `C` segment의
 x/y 도함수 근을 구해 `[0, 1]` 안의 실제 Bézier extrema와 endpoint만 union한다. Selection
 item bounds, guide collision과 layout occupancy는 이 동일한 exact path-bounds policy를
-사용한다.
+사용한다. Full finite numeric range에서 raw derivative coefficient가 overflow하면 좌표와
+coefficient를 정규화하고 de Casteljau interpolation으로 finite extrema를 보존한다.
 
 Text bounds는 `core/textMetrics.js`의 deterministic code-point width policy를 사용한다. 이 module이 alignment,
 baseline과 rotation까지 적용한 concrete bounds를 반환하며 axis label/title, chart title과 `graphicBounds`가 같은
@@ -1971,13 +1972,18 @@ action의 semantic하지 않은 operation default는 그 action 또는 관련 la
 1. Canvas 2D context capability를 검증한다.
 2. `graphicSpec.order`에서 정확히 하나의 ordered Canvas를 찾는다.
 3. Logical width/height와 background를 읽는다.
-4. Physical Canvas 크기를 `logical × pixelRatio`로 설정한다.
-5. Context를 logical coordinate system으로 scale한다.
-6. Top-level order부터 named `children`을 balanced enter/exit event가 있는 재귀
+4. `pixelRatio`는 `<= 16777216` 상한과 float32 positive representability를 검증한다.
+5. `logical × pixelRatio`를 rounded physical size로 preflight한다. 각 side는 `32767`,
+   전체 backing store는 `16777216` pixels 이하이며 두 검증이 모두 끝난 뒤에만 Canvas를 resize한다.
+6. 모든 native geometry/style scalar, derived rect/circle/nested-clip extent,
+   nested translation, gradient direction magnitude 및 pixel-ratio-scaled 결과를
+   `abs(value) <= 16777216`으로 전체 tree preflight한다.
+7. Context를 logical coordinate system으로 scale한다.
+8. Top-level order부터 named `children`을 balanced enter/exit event가 있는 재귀
    depth-first sibling order로 순회한다.
-7. Orphan, unknown child, duplicate attachment와 cycle이 있으면 draw를 건너뛰지 않고 거부한다.
-8. Graphic type dispatch table로 primitive drawer를 호출한다.
-9. Collection enter/exit마다 Canvas state scope를 열고 닫으며, heterogeneous item은
+9. Orphan, unknown child, duplicate attachment와 cycle이 있으면 draw를 건너뛰지 않고 거부한다.
+10. Graphic type dispatch table로 primitive drawer를 호출한다.
+11. Collection enter/exit마다 Canvas state scope를 열고 닫으며, heterogeneous item은
    item type별로 dispatch한다.
 
 Primitive drawer는 `circle`, `rect`, `line`, `text`, `path`별 파일에 분리되어 있다.
@@ -2000,7 +2006,7 @@ vector context가 재사용할 수 있는 internal seam으로 분리되어 있�
 
 ## SVG renderer
 
-`renderToSVG(program, { title, description })`은 `program.graphicSpec`만 읽고
+`renderToSVG(program, { title, description, resourceNamespace })`은 `program.graphicSpec`만 읽고
 complete SVG document string을 반환한다.
 
 - Root canvas logical width/height를 SVG width/height/viewBox에 동일하게 사용한다.
@@ -2010,8 +2016,13 @@ complete SVG document string을 반환한다.
   생성되며 `graphicSpec`에 저장하지 않는다.
 - Text는 authored content, position, alignment, baseline, rotation과 font style을 사용하고
   wrapping이나 layout을 다시 계산하지 않는다.
-- Deterministic traversal counter로 clip/gradient ID를 만들고 raw graphic ID를 document
-  identifier로 노출하지 않는다.
+- Central serializer는 text, attribute, title과 description의 XML 1.0 scalar validity를 먼저
+  검증하므로 invalid control, lone surrogate와 forbidden noncharacter를 partial string 없이 거부한다.
+- 기본 clip/gradient ID namespace는 `graphicSpec`의 deterministic hash다. 동일 spec SVG를 같은
+  DOM에 함께 둘 때는 ASCII letter로 시작하고 letter/digit/`_`/`-`만 쓰는 explicit
+  `resourceNamespace`로 충돌을 피한다. Raw graphic ID는 document identifier로 노출하지 않는다.
+- SVG numeric geometry는 finite JavaScript number 전체를 보존하며 Canvas-backed native cap을
+  적용하지 않는다.
 
 `ggaction/svg` dependency graph에는 DOM, filesystem, Node builtin과 native Canvas가 없다.
 
@@ -2021,7 +2032,9 @@ complete SVG document string을 반환한다.
 page를 만들고 Phase 1의 Canvas-compatible concrete drawing target으로 같은
 `graphicSpec`을 그린다.
 
-- One chart는 exact logical width/height point의 one page다.
+- One chart는 exact logical width/height point의 one page다. Native page box가 조용히
+  반올림하거나 clamp하지 않도록 positive integer `<= 16777216`만 backend 진입 전에 허용한다.
+- Canvas와 공유하는 complete native geometry preflight가 PDF document/page 생성보다 먼저 실행된다.
 - Text는 native PDF text operator로 남고 renderer가 glyph outline이나 raster image로
   바꾸지 않는다.
 - Optional metadata는 title, author, subject와 keyword list만 받는다.
@@ -2048,6 +2061,9 @@ const result = await renderToPNG(program, {
 
 반환값은 absolute output path, physical width/height, pixel ratio, byte length를 가진다.
 Pixel ratio는 renderer option일 뿐 `graphicSpec`의 logical coordinate를 바꾸지 않는다.
+Physical side와 total pixel budget은 Canvas renderer와 동일하므로 oversized PNG는
+directory/file write 전에 거부된다. Complete native geometry preflight도 Canvas resize와
+output file 교체 전에 실행된다.
 
 ## Source ownership
 

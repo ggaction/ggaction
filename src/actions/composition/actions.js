@@ -21,6 +21,10 @@ const LAYOUT_EDIT_OPTIONS = Object.freeze([
 ]);
 const REPLACEMENT_OPTIONS = Object.freeze(["target", "program"]);
 
+function option(args, name, fallback) {
+  return Object.hasOwn(args, name) ? args[name] : fallback;
+}
+
 function normalizeChildEntry(entry, index) {
   const fallbackId = `view-${index + 1}`;
   if (entry instanceof CoreChartProgram) {
@@ -64,7 +68,11 @@ function childDescriptor({ id, program }) {
 }
 
 function normalizeCompositionInput(args, direction) {
-  validateOptionObject(args, CONCAT_OPTIONS, direction === "horizontal" ? "hconcat" : "vconcat");
+  validateOptionObject(
+    args,
+    CONCAT_OPTIONS,
+    direction === "horizontal" ? "hconcat" : "vconcat"
+  );
   if (!Array.isArray(args.programs) || args.programs.length < 2) {
     throw new TypeError("Composition requires at least two programs.");
   }
@@ -96,6 +104,12 @@ function normalizeCompositionInput(args, direction) {
       padding: layout.padding
     }
   };
+}
+
+export function applyCompositionState(program, state, tracedChildren = []) {
+  let next = program._withCompositionState(state);
+  for (const id of tracedChildren) next = next.useProgram({ id });
+  return next.materializeComposition();
 }
 
 const useProgram = action(
@@ -136,11 +150,7 @@ function concatAction(direction, op) {
     },
     function (args = {}) {
       const state = normalizeCompositionInput(args, direction);
-      let next = this._withCompositionState(state);
-      for (const id of state.compositionSpec.children) {
-        next = next.useProgram({ id });
-      }
-      return next.materializeComposition();
+      return applyCompositionState(this, state, state.compositionSpec.children);
     }
   );
 }
@@ -160,34 +170,7 @@ const editCompositionLayout = action(
       throw new TypeError("editCompositionLayout requires at least one layout option.");
     }
     const current = this.compositionSpec;
-    if (current.type === "facet") {
-      const layout = resolveFacetLayout({
-        children: current.children.map((id, index) => ({
-          ...childDescriptor({ id, program: this.children[id] }),
-          value: current.facet.values[index]
-        })),
-        columns: Object.hasOwn(args, "columns")
-          ? args.columns
-          : current.columns,
-        gap: Object.hasOwn(args, "gap") ? args.gap : current.gap,
-        align: Object.hasOwn(args, "align") ? args.align : current.align,
-        padding: Object.hasOwn(args, "padding")
-          ? normalizeCompositionPadding(args.padding, current.padding)
-          : current.padding,
-        sharedLegend: current.facet.guides.legend === "shared"
-      });
-      return this._withCompositionState({
-        children: this.children,
-        compositionSpec: {
-          ...current,
-          columns: layout.columns,
-          gap: layout.gap,
-          align: layout.align,
-          padding: layout.padding
-        }
-      }).materializeComposition();
-    }
-    if (Object.hasOwn(args, "columns")) {
+    if (current.type !== "facet" && Object.hasOwn(args, "columns")) {
       throw new Error(
         "editCompositionLayout columns is available only on a facet composition."
       );
@@ -195,25 +178,41 @@ const editCompositionLayout = action(
     const padding = Object.hasOwn(args, "padding")
       ? normalizeCompositionPadding(args.padding, current.padding)
       : current.padding;
-    const layout = resolveCompositionLayout({
-      direction: current.direction,
-      children: current.children.map(id => childDescriptor({
-        id,
-        program: this.children[id]
-      })),
-      gap: Object.hasOwn(args, "gap") ? args.gap : current.gap,
-      align: Object.hasOwn(args, "align") ? args.align : current.align,
-      padding
-    });
-    return this._withCompositionState({
+    let layout;
+    if (current.type === "facet") {
+      layout = resolveFacetLayout({
+        children: current.children.map((id, index) => ({
+          ...childDescriptor({ id, program: this.children[id] }),
+          value: current.facet.values[index]
+        })),
+        columns: option(args, "columns", current.columns),
+        gap: option(args, "gap", current.gap),
+        align: option(args, "align", current.align),
+        padding,
+        sharedLegend: current.facet.guides.legend === "shared"
+      });
+    } else {
+      layout = resolveCompositionLayout({
+        direction: current.direction,
+        children: current.children.map(id => childDescriptor({
+          id,
+          program: this.children[id]
+        })),
+        gap: option(args, "gap", current.gap),
+        align: option(args, "align", current.align),
+        padding
+      });
+    }
+    return applyCompositionState(this, {
       children: this.children,
       compositionSpec: {
         ...current,
+        ...(current.type === "facet" ? { columns: layout.columns } : {}),
         gap: layout.gap,
         align: layout.align,
         padding: layout.padding
       }
-    }).materializeComposition();
+    });
   }
 );
 
@@ -240,12 +239,10 @@ const replaceCompositionChild = action(
       ...this.children,
       [target]: args.program
     });
-    return this._withCompositionState({
+    return applyCompositionState(this, {
       children,
       compositionSpec: this.compositionSpec
-    })
-      .useProgram({ id: target })
-      .materializeComposition();
+    }, [target]);
   }
 );
 

@@ -1,4 +1,7 @@
-import { validateOptionObject } from "../../../../core/validation.js";
+import {
+  validateGeneratedItemLimit,
+  validateOptionObject
+} from "../../../../core/validation.js";
 import {
   POLAR_AXIS_DEFAULTS,
   resolvePolarGuideResources
@@ -48,6 +51,9 @@ export function validateObject(args, supported, operation) {
 export function validateModeOptions(args, operation) {
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
+  }
+  if (Array.isArray(args.values)) {
+    validateGeneratedItemLimit(args.values.length, "Polar guide value count");
   }
 }
 

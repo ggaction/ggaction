@@ -1,9 +1,12 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
-import { validateKeys } from "../core/validation.js";
+import {
+  validateGeneratedItemLimit,
+  validateKeys
+} from "../core/validation.js";
 
 function colors(encoded) {
   return cloneAndFreeze(
-    encoded.match(/.{6}/g).map(value => `#${value.toLowerCase()}`)
+    encoded.match(/.{6}/g).map(value => `#${value}`)
   );
 }
 
@@ -82,38 +85,21 @@ const CONTINUOUS = Object.freeze({
 });
 
 export const PALETTE_NAMES = cloneAndFreeze([
-  "accent",
-  "category10", "category20", "category20b", "category20c",
-  "observable10",
-  "dark2", "paired", "pastel1", "pastel2",
-  "set1", "set2", "set3",
-  "tableau10", "tableau20",
-  "blues", "tealblues", "teals", "greens", "browns",
-  "oranges", "reds", "purples", "warmgreys", "greys",
-  "viridis", "magma", "inferno", "plasma", "cividis", "turbo",
-  "bluegreen", "bluepurple",
-  "goldgreen", "goldorange", "goldred",
-  "greenblue", "orangered",
-  "purplebluegreen", "purpleblue", "purplered", "redpurple",
-  "yellowgreenblue", "yellowgreen", "yelloworangebrown", "yelloworangered",
-  "darkblue", "darkgold", "darkgreen", "darkmulti", "darkred",
-  "lightgreyred", "lightgreyteal", "lightmulti", "lightorange", "lighttealblue",
-  "blueorange", "brownbluegreen", "purplegreen", "pinkyellowgreen",
-  "purpleorange", "redblue", "redgrey",
-  "redyellowblue", "redyellowgreen", "spectral",
-  "rainbow", "sinebow"
+  ...Object.keys(DISCRETE),
+  ...Object.keys(CONTINUOUS)
 ]);
 
-const PALETTE_SET = new Set(PALETTE_NAMES);
-
 export function validatePaletteName(name) {
-  if (typeof name !== "string" || !PALETTE_SET.has(name)) {
+  if (
+    typeof name !== "string" ||
+    !Object.hasOwn(DISCRETE, name) && !Object.hasOwn(CONTINUOUS, name)
+  ) {
     throw new Error(`Unknown palette "${name}".`);
   }
   return name;
 }
 
-export function normalizePalette(value) {
+export function normalizePalette(value, maximum) {
   if (typeof value === "string") return { name: validatePaletteName(value) };
   if (!isPlainObject(value)) {
     throw new TypeError("Palette must be a name or a plain object.");
@@ -125,6 +111,7 @@ export function normalizePalette(value) {
     if (!Number.isInteger(value.count) || value.count <= 0) {
       throw new RangeError("Palette count must be a positive integer.");
     }
+    validateGeneratedItemLimit(value.count, "Palette count", maximum);
     normalized.count = value.count;
   }
   if (value.extent !== undefined) {
@@ -161,15 +148,14 @@ function interpolateColor(left, right, amount) {
 }
 
 function sample(colorsValue, position) {
-  const bounded = Math.max(0, Math.min(1, position));
-  const scaled = bounded * (colorsValue.length - 1);
+  const scaled = position * (colorsValue.length - 1);
   const left = Math.floor(scaled);
   const right = Math.min(colorsValue.length - 1, left + 1);
   return interpolateColor(colorsValue[left], colorsValue[right], scaled - left);
 }
 
-export function resolvePalette(value, domainCount) {
-  const palette = normalizePalette(value);
+export function resolvePalette(value, domainCount, maximum) {
+  const palette = normalizePalette(value, maximum);
   const discrete = DISCRETE[palette.name];
   if (discrete !== undefined) {
     const count = palette.count ?? discrete.length;
@@ -182,6 +168,7 @@ export function resolvePalette(value, domainCount) {
   }
   const source = CONTINUOUS[palette.name];
   const count = palette.count ?? domainCount;
+  validateGeneratedItemLimit(count, "Palette count", maximum);
   const extent = palette.extent ?? [0, 1];
   return cloneAndFreeze(Array.from({ length: count }, (_, index) => {
     const unit = count === 1 ? 0.5 : index / (count - 1);
@@ -195,12 +182,14 @@ export function resolveContinuousPalette(value, count = 31) {
   if (!Number.isInteger(resolvedCount) || resolvedCount < 2) {
     throw new RangeError("Continuous palette count must be an integer of at least 2.");
   }
+  validateGeneratedItemLimit(resolvedCount, "Continuous palette count");
   const discrete = DISCRETE[palette.name];
   if (discrete !== undefined && palette.count === undefined) return discrete;
   return resolvePalette({ ...palette, count: resolvedCount }, resolvedCount);
 }
 
 export function paletteFamily(name) {
-  const validated = validatePaletteName(name);
-  return DISCRETE[validated] === undefined ? "continuous" : "categorical";
+  return DISCRETE[validatePaletteName(name)] === undefined
+    ? "continuous"
+    : "categorical";
 }

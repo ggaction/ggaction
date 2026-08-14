@@ -7,12 +7,12 @@ import { readQuantitativeField } from "../../grammar/scales/index.js";
 import { resolveStrokeWidthScaleDefinition } from "../scales/definitions.js";
 import {
   applyEncodingScale,
+  rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
+  setEncodingProperties,
   validateOptions
 } from "./shared.js";
-import { applyMaterializationPlan } from "../../materialization/dependencies.js";
-import { planEncodingRematerialization } from "../../materialization/encodings.js";
 import { findLayer } from "../../selectors/layers.js";
 
 const STROKE_OPTIONS = Object.freeze(["target", "value"]);
@@ -91,31 +91,16 @@ const encodeStrokeWidth = action(
     const scale = resolveStrokeWidthScaleDefinition(this, requestedScale);
     const { strokeWidth, ...config } = this.markConfigs[id] ?? {};
     void strokeWidth;
-    let next = this
-      ._withMarkConfig(id, config)
-      .editSemantic({
-        property: `layer[${id}].encoding.strokeWidth.field`,
-        value: args.field
-      })
-      .editSemantic({
-        property: `layer[${id}].encoding.strokeWidth.fieldType`,
-        value: fieldType
-      })
-      .editSemantic({
-        property: `layer[${id}].encoding.strokeWidth.scale`,
-        value: scale.id
-      });
+    let next = setEncodingProperties(
+      this._withMarkConfig(id, config),
+      id,
+      "strokeWidth",
+      { field: args.field, fieldType, scale: scale.id }
+    );
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: previous?.scale === scale.id
     });
-    return applyMaterializationPlan(
-      next,
-      planEncodingRematerialization(next, {
-        target: id,
-        channel: "strokeWidth",
-        scale: scale.id
-      })
-    );
+    return rematerializeEncoding(next, id, "strokeWidth", scale.id);
   }
 );
 

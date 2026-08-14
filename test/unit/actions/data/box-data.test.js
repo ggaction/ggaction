@@ -102,3 +102,32 @@ test("creates minmax summary provenance without classifying outliers", () => {
     /do not accept factor/
   );
 });
+
+test("preserves sub-picounit box statistics instead of rounding them to zero", () => {
+  const tinyRows = [1e-13, 2e-13, 3e-13, 4e-13].map(value => ({
+    group: "A",
+    value
+  }));
+  const program = chart()
+    .createData({ values: tinyRows })
+    .createBoxSummaryData({
+      id: "summary",
+      category: "group",
+      field: "value"
+    });
+  const summary = program.semanticSpec.datasets[1].values[0];
+
+  assert.deepEqual(summary, {
+    group: "A",
+    [BOX_FIELDS.q1]: 1.75e-13,
+    [BOX_FIELDS.median]: 2.5e-13,
+    [BOX_FIELDS.q3]: 3.25e-13,
+    [BOX_FIELDS.lowerWhisker]: 1e-13,
+    [BOX_FIELDS.upperWhisker]: 4e-13,
+    [BOX_FIELDS.lowerFence]: -5e-14,
+    [BOX_FIELDS.upperFence]: 5.5e-13,
+    [BOX_FIELDS.count]: 4
+  });
+  assert.equal(summary[BOX_FIELDS.q1] < summary[BOX_FIELDS.median], true);
+  assert.equal(summary[BOX_FIELDS.median] < summary[BOX_FIELDS.q3], true);
+});

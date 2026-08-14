@@ -1,12 +1,18 @@
 import { isPlainObject } from "../../../../core/immutable.js";
+import { resolveTextBounds } from "../../../../core/textMetrics.js";
 import {
   validateKeys,
   validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite,
-  validatePositiveFinite
+  validatePositiveFinite,
+  validateGeneratedItemLimit
 } from "../../../../core/validation.js";
 import { formatTimeTick } from "../../../../grammar/ticks.js";
+import {
+  formatDistinctNumericSamples,
+  sampleNumericRange
+} from "../../../../grammar/numeric.js";
 import { resolveGraphicBounds } from "../../../../layout/canvas.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
@@ -14,40 +20,47 @@ import { findLayer } from "../../../../selectors/layers.js";
 import { findCanvasGraphic } from
   "../../../../materialization/graphicHierarchy.js";
 
-const OPTIONS = Object.freeze([
+const OPTIONS = [
   "target", "channels", "position", "align", "offset", "title", "count",
   "gradient", "symbol", "labels", "titleStyle", "itemGap", "border",
   "direction", "columns", "titlePosition"
-]);
-const TEXT_OPTIONS = Object.freeze([
+];
+const TEXT_OPTIONS = [
   "offset", "color", "fontSize", "fontFamily", "fontWeight"
-]);
-const BORDER_OPTIONS = Object.freeze([
+];
+const BORDER_OPTIONS = [
   "color", "lineWidth", "padding", "background"
-]);
-const POSITIONS = Object.freeze(["right", "left", "top", "bottom"]);
-const DEFAULT_LABELS = Object.freeze({
+];
+const POSITIONS = ["right", "left", "top", "bottom"];
+const DEFAULT_LABELS = {
   offset: 12,
   color: DEFAULT_COLORS.text,
   fontSize: 12,
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: "normal"
-});
-const DEFAULT_TITLE = Object.freeze({
+};
+const DEFAULT_TITLE = {
   color: DEFAULT_COLORS.text,
   fontSize: 13,
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: 600
-});
-const DEFAULT_BORDER = Object.freeze({
+};
+const DEFAULT_BORDER = {
   color: DEFAULT_COLORS.border,
   lineWidth: 1,
   padding: 12,
   background: "transparent"
-});
+};
 
 export const validatePositive = validatePositiveFinite;
 export const validateNonNegative = validateNonNegativeFinite;
+
+export function editGraphicProperties(program, target, properties) {
+  for (const [property, value] of Object.entries(properties)) {
+    program = program.editGraphics({ target, property, value });
+  }
+  return program;
+}
 
 export function normalizeLegendTextOptions(value, label, defaults) {
   if (value === undefined) return { ...defaults };
@@ -72,7 +85,7 @@ export function normalizeLegendTextOptions(value, label, defaults) {
   return result;
 }
 
-function normalizeBorder(value) {
+export function normalizeLegendBorder(value) {
   if (value === undefined || value === false) return false;
   if (value !== true && !isPlainObject(value)) {
     throw new TypeError("createLegend.border must be a boolean or plain object.");
@@ -103,6 +116,7 @@ export function normalizeContinuousLegend(args, kind) {
       "Continuous legend count must be an integer of at least 2."
     );
   }
+  validateGeneratedItemLimit(count, "Continuous legend count");
   const offset = args.offset ?? 30;
   validateNonNegative(offset, "Legend offset");
   const titlePosition = args.titlePosition ?? "top";
@@ -155,8 +169,16 @@ export function normalizeContinuousLegend(args, kind) {
     ),
     itemGap,
     titlePosition,
-    border: normalizeBorder(args.border)
+    border: normalizeLegendBorder(args.border)
   };
+}
+
+function selectCandidate(program, requested, candidates) {
+  if (requested === undefined) return candidates.length === 1
+    ? candidates[0]
+    : undefined;
+  const candidate = findLayer(program, requested);
+  return candidates.includes(candidate) ? candidate : undefined;
 }
 
 export function resolveContinuousPoint(program, requested, channel) {
@@ -164,12 +186,7 @@ export function resolveContinuousPoint(program, requested, channel) {
     layer.mark?.type === "point" &&
     layer.encoding?.[channel]?.scale !== undefined
   );
-  const layer = requested === undefined
-    ? candidates.length === 1 ? candidates[0] : undefined
-    : (() => {
-        const candidate = findLayer(program, requested);
-        return candidates.includes(candidate) ? candidate : undefined;
-      })();
+  const layer = selectCandidate(program, requested, candidates);
   if (layer === undefined) {
     throw new Error(
       requested === undefined
@@ -185,12 +202,7 @@ export function resolveContinuousColorLayer(program, requested) {
     ["point", "bar", "rect"].includes(layer.mark?.type) &&
     layer.encoding?.color?.scale !== undefined
   );
-  const layer = requested === undefined
-    ? candidates.length === 1 ? candidates[0] : undefined
-    : (() => {
-        const candidate = findLayer(program, requested);
-        return candidates.includes(candidate) ? candidate : undefined;
-      })();
+  const layer = selectCandidate(program, requested, candidates);
   if (layer === undefined) {
     throw new Error(
       requested === undefined
@@ -209,7 +221,10 @@ export function requireResolvedLegendScale(program, id, type) {
   return scale;
 }
 
-export function resolveContinuousBounds(program) {
+export function resolveContinuousBounds(
+  program,
+  message = "Continuous legend layout requires Canvas bounds."
+) {
   const plot = resolveGraphicBounds(program);
   const canvas = findCanvasGraphic(program);
   if (
@@ -219,22 +234,24 @@ export function resolveContinuousBounds(program) {
     !Number.isFinite(canvas.properties.width) ||
     !Number.isFinite(canvas.properties.height)
   ) {
-    throw new Error("Continuous legend layout requires Canvas bounds.");
+    throw new Error(message);
   }
   return { plot, canvas: canvas.properties };
 }
 
 export function sampleContinuousValues(domain, count) {
-  return Array.from({ length: count }, (_, index) =>
-    domain[0] + index / (count - 1) * (domain[1] - domain[0])
+  return sampleNumericRange(
+    domain[0],
+    domain[1],
+    count,
+    "Continuous legend domain"
   );
 }
 
 export function formatContinuousValues(values, domain, fieldType) {
-  return values.map(value => fieldType === "temporal"
-    ? formatTimeTick(value, domain)
-    : String(+value.toPrecision(3))
-  );
+  return fieldType === "temporal"
+    ? values.map(value => formatTimeTick(value, domain))
+    : formatDistinctNumericSamples(values);
 }
 
 export function styleContinuousText(
@@ -243,30 +260,63 @@ export function styleContinuousText(
   style,
   { align = "left" } = {}
 ) {
-  return program
-    .editGraphics({ target: id, property: "fill", value: style.color })
-    .editGraphics({ target: id, property: "fontSize", value: style.fontSize })
-    .editGraphics({ target: id, property: "fontFamily", value: style.fontFamily })
-    .editGraphics({ target: id, property: "fontWeight", value: style.fontWeight })
-    .editGraphics({ target: id, property: "textAlign", value: align })
-    .editGraphics({ target: id, property: "textBaseline", value: "middle" });
+  return editGraphicProperties(program, id, {
+    fill: style.color,
+    fontSize: style.fontSize,
+    fontFamily: style.fontFamily,
+    fontWeight: style.fontWeight,
+    textAlign: align,
+    textBaseline: "middle"
+  });
 }
 
-export function assertLegendInsideCanvas(items, canvas, label) {
-  if (items.some(item =>
-    item.x < 0 || item.y < 0 || item.x > canvas.width || item.y > canvas.height
+export function resolveLegendTextBounds(position, text, style) {
+  return resolveTextBounds({
+    x: position.x,
+    y: position.y,
+    text: String(text),
+    ...style,
+    textAlign: position.align ?? "left",
+    textBaseline: "middle"
+  });
+}
+
+export function assertLegendBoundsInsideCanvas(bounds, canvas, label) {
+  if (bounds.some(item =>
+    item.left < 0 || item.right > canvas.width ||
+    item.top < 0 || item.bottom > canvas.height
   )) {
     throw new Error(`${label} requires more Canvas margin space.`);
   }
 }
 
-export function resolveLegendBackgroundBounds(points, border, canvas, label) {
+export function resolveLegendBackgroundFromBounds(
+  bounds,
+  border,
+  canvas,
+  label
+) {
   if (border === false) return undefined;
-  const x = Math.min(...points.map(point => point.x)) - border.padding;
-  const y = Math.min(...points.map(point => point.y)) - border.padding;
-  const right = Math.max(...points.map(point => point.x)) + border.padding;
-  const bottom = Math.max(...points.map(point => point.y)) + border.padding;
-  if (x < 0 || y < 0 || right > canvas.width || bottom > canvas.height) {
+  const strokeExtent = border.lineWidth / 2;
+  let x = Infinity;
+  let y = Infinity;
+  let right = -Infinity;
+  let bottom = -Infinity;
+  for (const item of bounds) {
+    x = Math.min(x, item.left);
+    y = Math.min(y, item.top);
+    right = Math.max(right, item.right);
+    bottom = Math.max(bottom, item.bottom);
+  }
+  x -= border.padding;
+  y -= border.padding;
+  right += border.padding;
+  bottom += border.padding;
+  if (
+    x - strokeExtent < 0 || y - strokeExtent < 0 ||
+    right + strokeExtent > canvas.width ||
+    bottom + strokeExtent > canvas.height
+  ) {
     throw new Error(`${label} background requires more Canvas margin space.`);
   }
   return { x, y, width: right - x, height: bottom - y };
@@ -274,12 +324,10 @@ export function resolveLegendBackgroundBounds(points, border, canvas, label) {
 
 export function editLegendBackground(program, id, bounds, border) {
   if (bounds === undefined) return program;
-  return program
-    .editGraphics({ target: id, property: "x", value: bounds.x })
-    .editGraphics({ target: id, property: "y", value: bounds.y })
-    .editGraphics({ target: id, property: "width", value: bounds.width })
-    .editGraphics({ target: id, property: "height", value: bounds.height })
-    .editGraphics({ target: id, property: "fill", value: border.background })
-    .editGraphics({ target: id, property: "stroke", value: border.color })
-    .editGraphics({ target: id, property: "strokeWidth", value: border.lineWidth });
+  return editGraphicProperties(program, id, {
+    ...bounds,
+    fill: border.background,
+    stroke: border.color,
+    strokeWidth: border.lineWidth
+  });
 }

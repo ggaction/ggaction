@@ -8,6 +8,10 @@ export function createDivergingLayoutPrimitives(jobs) {
   return createJobsGroupedBarPrimitives(jobs, {
     field: "signedPerc",
     layout: "diverging"
+  }).editGraphics({
+    target: "yAxisTitle",
+    property: "x",
+    value: 20.9
   });
 }
 
@@ -26,5 +30,9 @@ export function createGroupReassignmentPrimitives(jobs) {
   return createJobsGroupedBarPrimitives(jobs, {
     groupField: "job",
     legendTitle: "Occupation"
+  }).editGraphics({
+    target: "yAxisTitle",
+    property: "x",
+    value: 17.659999999999997
   });
 }

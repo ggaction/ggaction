@@ -1,5 +1,8 @@
 import { validateUserId } from "../../../../core/identifiers.js";
-import { sameOrderedValues } from "../../../../core/validation.js";
+import {
+  sameOrderedValues,
+  validateGeneratedItemLimit
+} from "../../../../core/validation.js";
 import { CHANNELS } from "./options.js";
 import { nonEmptyString } from "./validation.js";
 import { findLayer } from "../../../../selectors/layers.js";
@@ -59,6 +62,10 @@ function resolveOrdinalScales(program, scaleIds) {
     if (!Array.isArray(concrete.domain) || concrete.domain.length === 0) {
       throw new Error(`Legend scale "${id}" requires a non-empty domain.`);
     }
+    validateGeneratedItemLimit(
+      concrete.domain.length,
+      "Categorical legend item count"
+    );
     return concrete;
   });
   if (scales.slice(1).some(scale => !sameValues(scale.domain, scales[0].domain))) {

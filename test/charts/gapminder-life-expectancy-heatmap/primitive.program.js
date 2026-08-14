@@ -216,7 +216,7 @@ export function createGapminderHeatmapPrimitives(gapminder) {
   }, { fontSize: 13, fontWeight: 600, rotation: 0 });
   program = program.createGraphics({ id: "yAxisTitle", parent: "plot-main", type: "text" });
   program = editText(program, "yAxisTitle", {
-    x: bounds.left - 52,
+    x: 15.5,
     y: bounds.top + bounds.height / 2,
     text: axes.y.title
   }, { fontSize: 13, fontWeight: 600, rotation: -Math.PI / 2 });

@@ -18,7 +18,7 @@ export const CONTINUOUS_BAR_VARIANTS = Object.freeze([
 export const CONTINUOUS_BAR_LAYOUT = Object.freeze({
   width: 680,
   height: 380,
-  margin: Object.freeze({ top: 58, right: 125, bottom: 72, left: 72 })
+  margin: Object.freeze({ top: 58, right: 125, bottom: 72, left: 106 })
 });
 
 const VIRIDIS = Object.freeze([

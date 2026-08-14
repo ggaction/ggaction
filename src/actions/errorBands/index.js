@@ -1,5 +1,4 @@
-import { createErrorBand } from "./create.js";
-import { createErrorBandBoundary } from "./components.js";
+import { createErrorBand, createErrorBandBoundary } from "./create.js";
 import {
   editErrorBand,
   editErrorBandBoundary,

@@ -229,6 +229,103 @@ test("edits facet headers and layout without changing retained children", () => 
   assert.equal(faceted.compositionSpec.gap, 16);
 });
 
+test("rejects clipped facet headers and shared legends atomically", () => {
+  const headerRows = Object.freeze([
+    Object.freeze({
+      x: 0,
+      y: 0,
+      group: "This is a tremendously long facet header that should overflow far left and right A"
+    }),
+    Object.freeze({
+      x: 1,
+      y: 1,
+      group: "This is a tremendously long facet header that should overlap its neighbour B"
+    })
+  ]);
+  const headerBase = chart()
+    .createCanvas({ width: 120, height: 100, margin: 10 })
+    .createData({ values: headerRows })
+    .createPointMark()
+    .encodeX({ field: "x", scale: { nice: false, zero: false } })
+    .encodeY({ field: "y", scale: { nice: false, zero: false } })
+    .encodeRadius({ value: 2 });
+  assert.throws(
+    () => headerBase.facet({
+      field: "group",
+      gap: 0,
+      padding: 0,
+      guides: { legend: false }
+    }),
+    /Facet headers require sufficient non-overlapping space/
+  );
+  assert.equal(headerBase.compositionSpec, undefined);
+
+  const validFacet = pointBase().facet({ field: "group" });
+  assert.throws(
+    () => validFacet.editFacetHeaders({ fontSize: 100 }),
+    /Facet headers require sufficient non-overlapping space/
+  );
+  assert.equal(
+    validFacet.graphicSpec.objects["facet-headers"].items[0]
+      .properties.fontSize,
+    12
+  );
+
+  const legendRows = Object.freeze(Array.from({ length: 20 }, (_, index) =>
+    Object.freeze({
+      x: index,
+      y: index % 3,
+      facet: index % 2 === 0 ? "A" : "B",
+      kind: `Very long category ${index}`
+    })
+  ));
+  const legendBase = chart()
+    .createCanvas({
+      width: 160,
+      height: 120,
+      margin: { top: 30, right: 15, bottom: 15, left: 15 }
+    })
+    .createData({ values: legendRows })
+    .createPointMark()
+    .encodeX({ field: "x", scale: { nice: false, zero: false } })
+    .encodeY({ field: "y", scale: { nice: false, zero: false } })
+    .encodeRadius({ value: 2 })
+    .encodeColor({ field: "kind", fieldType: "nominal" });
+  assert.throws(
+    () => legendBase.facet({
+      field: "facet",
+      guides: { legend: "shared" }
+    }),
+    /Facet shared legend requires more space/
+  );
+  assert.equal(legendBase.compositionSpec, undefined);
+});
+
+test("renders an empty-string facet value with a stable visible header", () => {
+  const values = Object.freeze([
+    Object.freeze({ x: 0, y: 0, group: "" }),
+    Object.freeze({ x: 1, y: 1, group: "A" })
+  ]);
+  const base = chart()
+    .createCanvas({ width: 180, height: 120, margin: 20 })
+    .createData({ values })
+    .createPointMark()
+    .encodeX({ field: "x", scale: { nice: false, zero: false } })
+    .encodeY({ field: "y", scale: { nice: false, zero: false } })
+    .encodeRadius({ value: 2 });
+
+  const faceted = base.facet({ field: "group" });
+
+  assert.deepEqual(faceted.compositionSpec.facet.values, ["", "A"]);
+  assert.deepEqual(
+    faceted.graphicSpec.objects["facet-headers"].items.map(
+      item => item.properties.text
+    ),
+    ["(empty)", "A"]
+  );
+  assert.equal(base.compositionSpec, undefined);
+});
+
 test("validates facet scope, sources, guides, and structural edits atomically", () => {
   const base = pointBase();
   const graphics = base.graphicSpec;

@@ -184,6 +184,37 @@ test("rejects invalid calls before creating state", () => {
   assert.equal(source.semanticSpec.datasets.length, 1);
 });
 
+test("keeps public create and edit edge generation finite and atomic", () => {
+  const fullRange = chart()
+    .createData({ id: "extremes", values: [
+      { x: -1e308, y: 0 },
+      { x: 1e308, y: 1 }
+    ] })
+    .createBin2DData({
+      id: "fullRangeCells",
+      x: "x",
+      y: "y",
+      bins: { x: 2, y: 1 }
+    });
+  assert.deepEqual(fullRange.semanticSpec.datasets.at(-1).transform[0].resolved.edges, {
+    x: [-1e308, 0, 1e308],
+    y: [0, 1]
+  });
+
+  const before = chart()
+    .createData({ id: "offset", values: [
+      { x: 1e15, y: 0 },
+      { x: 1e15 + 1, y: 1 }
+    ] })
+    .createBin2DData({ id: "offsetCells", x: "x", y: "y", bins: 1 });
+  assert.throws(
+    () => before.editBin2DData({ target: "offsetCells", bins: { x: 100, y: 1 } }),
+    /x extent cannot represent 100 distinct bins/
+  );
+  assert.equal(before.materializationConfigs.data.bin2d.offsetCells.current, "offsetCells");
+  assert.equal(before.semanticSpec.datasets.at(-1).id, "offsetCells");
+});
+
 test("partially edits the unique logical owner and preserves omitted provenance", () => {
   const before = sourceProgram().createBin2DData(binOptions());
   const options = Object.freeze({ bins: 1 });

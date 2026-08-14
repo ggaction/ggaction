@@ -1,7 +1,8 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   validateNonEmptyString,
-  validateNonNegativeFinite
+  validateNonNegativeFinite,
+  validatePositiveFinite
 } from "../core/validation.js";
 
 const MARGIN_KEYS = Object.freeze(["top", "right", "bottom", "left"]);
@@ -63,13 +64,8 @@ export function normalizeMargin(margin, base = DEFAULT_MARGIN) {
 }
 
 export function validateCanvasState({ width, height, background, margin }) {
-  if (!Number.isInteger(width) || width <= 0) {
-    throw new RangeError("Canvas width must be a positive integer.");
-  }
-
-  if (!Number.isInteger(height) || height <= 0) {
-    throw new RangeError("Canvas height must be a positive integer.");
-  }
+  validatePositiveFinite(width, "Canvas width");
+  validatePositiveFinite(height, "Canvas height");
 
   validateNonEmptyString(background, "Canvas background");
 

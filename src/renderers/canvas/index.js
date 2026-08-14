@@ -5,6 +5,10 @@ import { drawRectGraphic } from "./rect.js";
 import { drawTextGraphic } from "./text.js";
 import { requireFiniteProperty } from "./validation.js";
 import {
+  preflightCanvasGraphicSpec,
+  requireCanvasNativeValue
+} from "./native.js";
+import {
   requireSingleOrderedGraphicByType,
   walkGraphicTreeEvents
 } from "../../grammar/schemas/graphicTree.js";
@@ -34,6 +38,8 @@ const DRAWING_CONTEXT_METHODS = Object.freeze([
   "rotate",
   "fillText"
 ]);
+const MAX_RASTER_DIMENSION = 32_767;
+const MAX_RASTER_PIXELS = 16_777_216;
 
 function requireDrawingContext(context) {
   if (context === null || typeof context !== "object") {
@@ -182,12 +188,39 @@ export function render(program, context, { pixelRatio = 1 } = {}) {
   if (!Number.isFinite(pixelRatio) || pixelRatio <= 0) {
     throw new RangeError("render pixelRatio must be a positive finite number.");
   }
+  requireCanvasNativeValue(pixelRatio, "render Canvas pixelRatio");
+  if (Math.fround(pixelRatio) === 0) {
+    throw new RangeError(
+      "render Canvas pixelRatio must remain positive at native precision."
+    );
+  }
 
   const target = resolveGraphicRenderTarget(graphicSpec);
   const { width, height } = target;
+  const physicalWidth = Math.max(1, Math.round(width * pixelRatio));
+  const physicalHeight = Math.max(1, Math.round(height * pixelRatio));
+  if (![physicalWidth, physicalHeight].every(Number.isSafeInteger)) {
+    throw new RangeError(
+      "render physical Canvas dimensions must be finite safe integers."
+    );
+  }
+  if (
+    physicalWidth > MAX_RASTER_DIMENSION ||
+    physicalHeight > MAX_RASTER_DIMENSION
+  ) {
+    throw new RangeError(
+      `render physical Canvas dimensions must not exceed ${MAX_RASTER_DIMENSION}.`
+    );
+  }
+  if (physicalWidth * physicalHeight > MAX_RASTER_PIXELS) {
+    throw new RangeError(
+      `render physical Canvas pixel count must not exceed ${MAX_RASTER_PIXELS}.`
+    );
+  }
+  preflightCanvasGraphicSpec(target, pixelRatio);
 
-  context.canvas.width = Math.round(width * pixelRatio);
-  context.canvas.height = Math.round(height * pixelRatio);
+  context.canvas.width = physicalWidth;
+  context.canvas.height = physicalHeight;
   if (
     context.canvas.style !== null &&
     typeof context.canvas.style === "object"

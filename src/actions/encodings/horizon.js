@@ -5,6 +5,7 @@ import {
   deriveHorizon,
   validateHorizonTransform
 } from "../../grammar/horizon.js";
+import { numericExtent } from "../../grammar/numeric.js";
 import {
   normalizeTemporalValue,
   readQuantitativeField
@@ -217,7 +218,7 @@ const editHorizon = action(
       id: currentX.id,
       ...(emptyXDomain === undefined
         ? {}
-        : { domain: [Math.min(...emptyXDomain), Math.max(...emptyXDomain)] }),
+        : { domain: numericExtent(emptyXDomain) }),
       ...(xTypeChanged && requestedXScale.type === undefined
         ? { type: x.fieldType === "temporal" ? "time" : "linear" }
         : {})
@@ -314,7 +315,7 @@ const encodeHorizon = action(
         : {})
     };
     if (Array.isArray(xScale.domain) && xScale.domain.length > 2) {
-      xScale.domain = [Math.min(...xScale.domain), Math.max(...xScale.domain)];
+      xScale.domain = numericExtent(xScale.domain);
     }
     const yScale = resolveFoldedHorizonScaleOptions(layer.id, y.scale);
     const colors = resolveHorizonPaletteColors(transform);

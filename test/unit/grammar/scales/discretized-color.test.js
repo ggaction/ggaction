@@ -10,6 +10,18 @@ import {
 const range = Object.freeze(["a", "b", "c", "d", "e"]);
 const values = Object.freeze([50, 60, 70, 80, 90]);
 
+test("rejects discretized color ranges above the generated item limit", () => {
+  assert.throws(
+    () => resolveDiscretizedColorScale({
+      type: "quantize",
+      domain: [0, 1],
+      range: Array(10_001).fill("#000000"),
+      values: [0, 1]
+    }),
+    /must not exceed 10000/
+  );
+});
+
 test("resolves independent quantize, quantile, and threshold boundaries", () => {
   assert.deepEqual(resolveDiscretizedColorScale({
     type: "quantize",

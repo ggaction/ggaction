@@ -28,7 +28,7 @@ function createTemporalLine() {
 function labelsFor(dates, axis = {}) {
   const values = dates.map((date, index) => ({ date, value: index + 1 }));
   return chart()
-    .createCanvas({ width: 420, height: 260, margin: 50 })
+    .createCanvas({ width: 780, height: 260, margin: 60 })
     .createData({ values })
     .createLineMark()
     .encodeX({ field: "date", fieldType: "temporal" })
@@ -145,7 +145,7 @@ test("keeps automatic month and day tick labels distinct after rematerialization
   const dayLabels = days.graphicSpec.objects.xAxisLabels.items.map(
     item => item.properties.text
   );
-  const resized = months.editCanvas({ width: 520 });
+  const resized = months.editCanvas({ width: 880 });
 
   assert.equal(new Set(monthLabels).size, monthLabels.length);
   assert.equal(new Set(dayLabels).size, dayLabels.length);

@@ -76,6 +76,27 @@ test("groups by each distinct series field and sorts every series", () => {
   ]);
 });
 
+test("keeps same-sign extreme histogram bin centers finite", () => {
+  const maximum = Number.MAX_VALUE;
+  const layer = lineLayer({
+    x: {
+      field: "x",
+      fieldType: "quantitative",
+      scale: "x",
+      bin: { maxBins: 2 }
+    }
+  });
+  const derived = deriveLineSeries([
+    { x: maximum * 0.6, value: 1 },
+    { x: maximum * 0.9, value: 2 }
+  ], layer, {
+    xBinBoundaries: [maximum / 2, maximum * 0.75, maximum]
+  });
+
+  assert.deepEqual(derived.xValues, [maximum * 0.625, maximum * 0.875]);
+  assert.equal(derived.xValues.every(Number.isFinite), true);
+});
+
 test("rejects incomplete encodings, invalid values, and one-point series", () => {
   assert.throws(
     () => deriveLineSeries(rows, {

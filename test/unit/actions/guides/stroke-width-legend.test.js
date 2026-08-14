@@ -26,6 +26,18 @@ function lineProgram() {
     .encodeStrokeWidth({ field: "weight", scale: { range: [1, 7] } });
 }
 
+test("rejects stroke-width legend counts above the generated item limit", () => {
+  assert.throws(
+    () => lineProgram().createLegend({ channels: ["strokeWidth"], count: 10_001 }),
+    /must not exceed 10000/
+  );
+  const existing = lineProgram().createLegend({ channels: ["strokeWidth"] });
+  assert.throws(
+    () => existing.editLegend({ count: 10_001 }),
+    /must not exceed 10000/
+  );
+});
+
 test("creates and rematerializes a quantitative stroke-width legend", () => {
   const encoded = lineProgram();
   const program = encoded.createLegend({
@@ -68,6 +80,33 @@ test("creates and rematerializes a quantitative stroke-width legend", () => {
     ),
     [1, 4, 7]
   );
+});
+
+test("keeps close stroke-width legend labels distinct", () => {
+  const values = [1e15, 1e15 + 1].flatMap((weight, group) => [
+    { year: 2020, value: group, group: String(group), weight },
+    { year: 2021, value: group + 1, group: String(group), weight }
+  ]);
+  const program = chart()
+    .createCanvas({
+      width: 760,
+      height: 460,
+      margin: { top: 30, right: 200, bottom: 60, left: 70 }
+    })
+    .createData({ values })
+    .createLineMark({ id: "lines" })
+    .encodeX({ field: "year" })
+    .encodeY({ field: "value" })
+    .encodeGroup({ field: "group" })
+    .encodeStrokeWidth({
+      field: "weight",
+      scale: { domain: [1e15, 1e15 + 1], range: [1, 7] }
+    })
+    .createLegend({ channels: ["strokeWidth"] });
+  const labels = program.graphicSpec.objects.strokeWidthLegendLabels.items.map(
+    item => item.properties.text
+  );
+  assert.equal(new Set(labels).size, 5);
 });
 
 test("removes a stroke-width legend by its owning mark", () => {

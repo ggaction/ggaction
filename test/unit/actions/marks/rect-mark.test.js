@@ -151,7 +151,9 @@ test("selects and highlights final rect cells at item grain", () => {
 
 test("rematerializes cells, text, axes, and legends after Canvas and scale edits", () => {
   const original = discreteRect()
-    .editCanvas({ margin: { right: 90 } })
+    .editCanvas({
+      margin: { top: 20, right: 90, bottom: 60, left: 80 }
+    })
     .encodeColor({ field: "value", fieldType: "nominal" })
     .createTextMark()
     .encodeText({ field: "label" })

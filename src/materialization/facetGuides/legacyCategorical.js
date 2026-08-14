@@ -1,6 +1,7 @@
 import {
   resolveSharedFacetLegends
 } from "../../grammar/facets/guides.js";
+import { formatVisibleText } from "../../core/textMetrics.js";
 import { mapOrdinalValues } from "../../grammar/scales/index.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../theme/defaults.js";
 
@@ -10,7 +11,7 @@ function textItem(text, x, y, options = {}) {
     properties: {
       x,
       y,
-      text: String(text),
+      text: formatVisibleText(text),
       fill: options.color ?? DEFAULT_COLORS.strongText,
       fontSize: options.fontSize ?? 12,
       fontFamily: options.fontFamily ?? DEFAULT_FONT_FAMILY,

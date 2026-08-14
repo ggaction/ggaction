@@ -154,6 +154,10 @@ test("rejects invalid and conflicting graphic definitions", () => {
     () => chart().createGraphics({ id: "points", type: "circle", length: -1 }),
     /non-negative integer/
   );
+  assert.throws(
+    () => chart().createGraphics({ id: "points", type: "circle", length: 10_001 }),
+    /must not exceed 10000/
+  );
 
   const program = chart().createGraphics({ id: "shape", type: "circle" });
   assert.throws(

@@ -16,7 +16,11 @@ const rows = [
 
 function encodedPointProgram() {
   return chart()
-    .createCanvas({ width: 400, height: 300, margin: 30 })
+    .createCanvas({
+      width: 400,
+      height: 300,
+      margin: { top: 30, right: 30, bottom: 60, left: 60 }
+    })
     .createData({ id: "rows", values: rows })
     .createPointMark({ id: "points" })
     .encodeX({

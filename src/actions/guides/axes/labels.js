@@ -2,6 +2,7 @@ import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   sameOrderedValues,
+  validateGeneratedItemLimit,
   validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite,
@@ -27,20 +28,36 @@ import {
 } from "./policy.js";
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
-import { resolveTextBounds } from "../../../core/textMetrics.js";
+import {
+  resolveTextBounds,
+  textBoundsFitCanvas,
+  textBoundsIntersect
+} from "../../../core/textMetrics.js";
+import { resolveConcreteGraphicBounds } from
+  "../../../grammar/schemas/graphicBounds.js";
 
-const OPTIONS = Object.freeze([
+const OPTIONS = [
   "scale", "position", "count", "values", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight"
-]);
+];
 
-const DEFAULTS = Object.freeze({
+const DEFAULTS = {
   count: 5,
   color: DEFAULT_COLORS.text,
   fontSize: 12,
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: "normal"
-});
+};
+
+export function validateAxisTextStyle(config, label) {
+  validateNonEmptyString(config.color, `${label} color`);
+  validatePositiveFinite(config.fontSize, `${label} fontSize`);
+  validateNonEmptyString(config.fontFamily, `${label} fontFamily`);
+  if (typeof config.fontWeight !== "string" &&
+    !Number.isFinite(config.fontWeight)) {
+    throw new TypeError(`${label} fontWeight must be a string or number.`);
+  }
+}
 
 function validateOptions(args, operation, create) {
   validateOptionObject(
@@ -55,7 +72,10 @@ function validateOptions(args, operation, create) {
 
 function validateConfig(channel, config) {
   validateAxisPosition(channel, config.position);
-  if (config.mode === "count" && (!Number.isInteger(config.count) || config.count <= 0)) throw new RangeError("Label count must be a positive integer.");
+  if (config.mode === "count") {
+    if (!Number.isInteger(config.count) || config.count <= 0) throw new RangeError("Label count must be a positive integer.");
+    validateGeneratedItemLimit(config.count, "Label count");
+  }
   if (
     config.mode === "values" &&
     (!Array.isArray(config.values) || !config.values.every(value =>
@@ -64,11 +84,11 @@ function validateConfig(channel, config) {
       (typeof value === "number" && Number.isFinite(value))
     ))
   ) throw new TypeError("Label values must be nominal values or finite numbers.");
+  if (config.mode === "values") {
+    validateGeneratedItemLimit(config.values.length, "Label value count");
+  }
   validateNonNegativeFinite(config.offset, "Label offset");
-  validatePositiveFinite(config.fontSize, "Label fontSize");
-  validateNonEmptyString(config.color, "Label color");
-  validateNonEmptyString(config.fontFamily, "Label fontFamily");
-  if ((typeof config.fontWeight !== "string" && !Number.isFinite(config.fontWeight))) throw new TypeError("Label fontWeight must be a string or number.");
+  validateAxisTextStyle(config, "Label");
   validateAxisFormat(config.format);
 }
 
@@ -89,6 +109,7 @@ function resolve(program, channel, config) {
   ) || !bounds) throw new Error("Axis labels require a supported resolved scale and Canvas bounds.");
   if (discrete && config.mode !== "values") throw new Error("Discrete axis labels require explicit or inferred values, not count.");
   const values = valuesFromTickConfig(program, config);
+  validateGeneratedItemLimit(values.length, "Label value count");
   if (discrete) {
     const domainValues = new Set(scale.domain);
     if (!values.every(value => domainValues.has(value))) throw new RangeError("Label values must be inside the scale domain.");
@@ -128,16 +149,28 @@ function resolve(program, channel, config) {
     y: Array.isArray(resolved.y) ? resolved.y[index] : resolved.y,
     text: value,
     fontSize: config.fontSize,
+    fontFamily: config.fontFamily,
+    fontWeight: config.fontWeight,
     textAlign: resolved.textAlign,
     textBaseline: resolved.textBaseline
   }));
-  const fits = config.position === "top"
-    ? labelBounds.every(item => item.top >= 0)
-    : config.position === "right"
-      ? labelBounds.every(item => item.right <= canvas?.width)
-      : true;
-  if (!canvas || !fits) {
+  const orderedBounds = [...labelBounds].sort((left, right) => channel === "x"
+    ? left.left - right.left
+    : left.top - right.top);
+  if (!canvas || !labelBounds.every(item => textBoundsFitCanvas(item, canvas))) {
     throw new Error(`The ${channel}-axis labels do not fit the Canvas margin.`);
+  }
+  if (orderedBounds.some((item, index) => index > 0 &&
+    textBoundsIntersect(orderedBounds[index - 1], item))) {
+    throw new Error(`The ${channel}-axis labels overlap each other.`);
+  }
+  const title = program.graphicSpec.objects[`${channel}AxisTitle`]
+    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisTitle`)
+    : undefined;
+  if (title &&
+    program.guideConfigs.axis?.[channel]?.title?.inferredOffset !== true &&
+    labelBounds.some(item => textBoundsIntersect(item, title))) {
+    throw new Error(`The ${channel}-axis labels overlap the axis title.`);
   }
   return resolved;
 }
@@ -170,16 +203,25 @@ function makeEdit(channel) {
     validateConfig(channel, config);
     assertTickCompatibility(this.guideConfigs.axis?.[channel]?.ticks, config, op);
     const resolved = resolve(this, channel, config);
-    let next = this._withGuideConfig(channel, "labels", config)
-      .editGraphics({ target: id, property: "length", value: resolved.values.length });
-    for (const property of ["x", "y", "text"]) next = next.editGraphics({ target: id, property, value: resolved[property] });
-    return next
-      .editGraphics({ target: id, property: "fill", value: config.color })
-      .editGraphics({ target: id, property: "fontSize", value: config.fontSize })
-      .editGraphics({ target: id, property: "fontFamily", value: config.fontFamily })
-      .editGraphics({ target: id, property: "fontWeight", value: config.fontWeight })
-      .editGraphics({ target: id, property: "textAlign", value: resolved.textAlign })
-      .editGraphics({ target: id, property: "textBaseline", value: resolved.textBaseline });
+    let next = this._withGuideConfig(channel, "labels", config);
+    for (const [property, value] of Object.entries({
+      length: resolved.values.length,
+      x: resolved.x,
+      y: resolved.y,
+      text: resolved.text,
+      fill: config.color,
+      fontSize: config.fontSize,
+      fontFamily: config.fontFamily,
+      fontWeight: config.fontWeight,
+      textAlign: resolved.textAlign,
+      textBaseline: resolved.textBaseline
+    })) next = next.editGraphics({ target: id, property, value });
+    const titleConfig = next.guideConfigs.axis?.[channel]?.title;
+    if (titleConfig?.inferredOffset === true) {
+      const editTitle = channel === "x" ? "editXAxisTitle" : "editYAxisTitle";
+      next = next[editTitle]();
+    }
+    return next;
   });
 }
 

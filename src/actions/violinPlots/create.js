@@ -27,6 +27,8 @@ const AREA_OPTIONS = Object.freeze([
   "fill", "opacity", "stroke", "strokeWidth", "curve"
 ]);
 const CATEGORICAL_TYPES = Object.freeze(["nominal", "ordinal"]);
+const OPERATION = "createViolinPlot";
+const ROLE_ERROR = `${OPERATION} requires one categorical axis and one quantitative axis.`;
 
 function inferFieldType(dataset, encoding, label) {
   if (encoding.fieldType !== undefined) return encoding.fieldType;
@@ -49,29 +51,6 @@ function normalizePosition(dataset, value, label) {
     ...encoding,
     fieldType: inferFieldType(dataset, encoding, label)
   };
-}
-
-function normalizeDensity(value) {
-  if (value === undefined) return { options: {}, width: undefined };
-  validateOptionObject(value, DENSITY_OPTIONS, "createViolinPlot density");
-  if (value.width !== undefined) {
-    validateOptionObject(
-      value.width,
-      WIDTH_OPTIONS,
-      "createViolinPlot density.width"
-    );
-  }
-  const { width, ...options } = value;
-  return { options, width };
-}
-
-function normalizeSplit(value) {
-  if (value === undefined) return undefined;
-  validateOptionObject(value, SPLIT_OPTIONS, "createViolinPlot split");
-  if (typeof value.field !== "string" || value.field.length === 0) {
-    throw new TypeError("createViolinPlot split.field must be a non-empty string.");
-  }
-  return { ...value };
 }
 
 function axisGuideOptions(value, field) {
@@ -109,55 +88,69 @@ export const createViolinPlot = action(
     description: "Create a categorical kernel-density violin plot."
   },
   function (args = {}) {
-    validateFacadeOptions(args, OPTIONS, "createViolinPlot");
+    validateFacadeOptions(args, OPTIONS, OPERATION);
     const id = resolveFacadeId(this, args.id, {
       defaultId: "violinPlot",
-      operation: "createViolinPlot"
+      operation: OPERATION
     });
-    const data = resolveFacadeData(this, args.data, "createViolinPlot");
+    const data = resolveFacadeData(this, args.data, OPERATION);
     const dataset = findDataset(this, data);
-    const x = normalizePosition(dataset, args.x, "createViolinPlot x");
-    const y = normalizePosition(dataset, args.y, "createViolinPlot y");
+    const x = normalizePosition(dataset, args.x, `${OPERATION} x`);
+    const y = normalizePosition(dataset, args.y, `${OPERATION} y`);
     const xCategorical = CATEGORICAL_TYPES.includes(x.fieldType);
     const yCategorical = CATEGORICAL_TYPES.includes(y.fieldType);
     if (xCategorical === yCategorical || (
       x.fieldType !== "quantitative" && y.fieldType !== "quantitative"
     )) {
-      throw new Error(
-        "createViolinPlot requires one categorical axis and one quantitative axis."
-      );
+      throw new Error(ROLE_ERROR);
     }
     const category = xCategorical ? x : y;
     const value = xCategorical ? y : x;
     if (value.fieldType !== "quantitative") {
-      throw new Error(
-        "createViolinPlot requires one categorical axis and one quantitative axis."
-      );
+      throw new Error(ROLE_ERROR);
     }
-    const split = normalizeSplit(args.split);
+    let split = args.split;
+    if (split !== undefined) {
+      validateOptionObject(split, SPLIT_OPTIONS, `${OPERATION} split`);
+      if (typeof split.field !== "string" || split.field.length === 0) {
+        throw new TypeError(`${OPERATION} split.field must be a non-empty string.`);
+      }
+      split = { ...split };
+    }
     if (split?.field === category.field) {
-      throw new Error("createViolinPlot split field must differ from its category field.");
+      throw new Error(`${OPERATION} split field must differ from its category field.`);
     }
-    const color = normalizeEncoding(args.color, "createViolinPlot color");
+    const color = normalizeEncoding(args.color, `${OPERATION} color`);
     if (
       color !== undefined &&
       ![category.field, split?.field].includes(color.field)
     ) {
       throw new Error(
-        "createViolinPlot color must encode its category or split field."
+        `${OPERATION} color must encode its category or split field.`
       );
     }
-    const density = normalizeDensity(args.density);
+    const density = args.density === undefined ? {} : args.density;
+    if (args.density !== undefined) {
+      validateOptionObject(density, DENSITY_OPTIONS, `${OPERATION} density`);
+      if (density.width !== undefined) {
+        validateOptionObject(
+          density.width,
+          WIDTH_OPTIONS,
+          `${OPERATION} density.width`
+        );
+      }
+    }
+    const { width: densityWidth, ...densityOptions } = density;
     const area = normalizeAppearance(
       args.area,
       AREA_OPTIONS,
-      "createViolinPlot area"
+      `${OPERATION} area`
     );
     if (color !== undefined && Object.hasOwn(area, "fill")) {
-      throw new Error("createViolinPlot area.fill cannot be combined with color.");
+      throw new Error(`${OPERATION} area.fill cannot be combined with color.`);
     }
     const guides = guideOptions(
-      normalizeGuides(args.guides, "createViolinPlot"),
+      normalizeGuides(args.guides, OPERATION),
       x,
       y,
       category,
@@ -184,10 +177,10 @@ export const createViolinPlot = action(
       densityChannel: xCategorical ? "x" : "y",
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
       ...(value.scale === undefined ? {} : { valueScale: value.scale }),
-      ...density.options,
+      ...densityOptions,
       placement: {
         type: "category",
-        ...(density.width === undefined ? {} : { width: density.width }),
+        ...(densityWidth === undefined ? {} : { width: densityWidth }),
         ...(split === undefined ? {} : { split }),
         ...(category.scale === undefined ? {} : { scale: category.scale })
       }

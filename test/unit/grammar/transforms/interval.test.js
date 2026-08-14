@@ -59,6 +59,26 @@ test("supports stderr, sample stdev, and deterministic IQR intervals", () => {
   ]);
 });
 
+test("preserves sub-picounit interval ordering instead of rounding to zero", () => {
+  const rows = [1e-13, 2e-13, 3e-13, 4e-13].map(value => ({
+    group: "A",
+    value
+  }));
+  const result = deriveInterval(rows, transform({
+    center: "median",
+    extent: "iqr"
+  }));
+
+  assert.deepEqual(result, [{
+    group: "A",
+    center: 2.5e-13,
+    lower: 1.75e-13,
+    upper: 3.25e-13
+  }]);
+  assert.equal(result[0].lower < result[0].center, true);
+  assert.equal(result[0].center < result[0].upper, true);
+});
+
 test("preserves first group appearance and omits undersized or missing samples", () => {
   const rows = [
     { group: "B", value: 5 },

@@ -22,6 +22,11 @@
 - Canonical title order is `.facet(...).createTitle(...)`. A valid title authored before `facet` is promoted once to the parent.
 - Parent title alignment uses the translated child-plot union. Each facet header is centered on its own translated
   child plot; neither anchor uses the child Canvas, axis-reserved margin, facet padding, or shared legend extent.
+- Empty-string facet values remain semantic values and render with the deterministic visible header `(empty)`.
+- Facet child cardinality는 최대 `100`이며 child derivation 전 `partitionRows * childCount <= 10,000,000`
+  work budget을 검증한다.
+- Facet materialization fails atomically when a header leaves the composed Canvas, intersects another header or its
+  child plot, or when the shared legend leaves the composed Canvas or intersects the translated child-plot union.
 
 ### Formal values — `facet`
 
@@ -36,8 +41,8 @@
   shared/independent continuous domains,
   explicit-domain precedence, shared ordinal order, shared/independent histogram policy, parent categorical legend,
   parent gradient/discretized/size/opacity legends, occupied-edge outer axes, title promotion, child-plot-aligned
-  parent title and headers, renderer isolation, layout rematerialization, immutable base/children, incompatible guide,
-  invalid channel, dependency, and ambiguous-source rejection.
+  parent title and headers, empty-string header display, renderer isolation, layout rematerialization, immutable
+  base/children, incompatible guide, invalid channel, dependency, and ambiguous-source rejection.
 - Evidence: `test/unit/grammar/facets.test.js`, `test/unit/grammar/facet-dependencies.test.js`,
   `test/unit/grammar/facet-scales.test.js`, `test/unit/actions/composition/facet-derivation.test.js`,
   `test/unit/actions/composition/facet.test.js`, `test/unit/actions/composition/facet-derived-families.test.js`,
@@ -51,7 +56,7 @@
 - Requires a facet composition and at least one appearance change.
 - Headers are one parent-owned repeated concrete resource. Each header is centered on its child plot bounds. Editing
   them preserves child identity, semantic facet values, shared scales, and layout order, then rematerializes the
-  parent snapshot.
+  parent snapshot. A header edit that cannot fit above every child plot without clipping or overlap fails atomically.
 
 ### Formal values — `editFacetHeaders`
 

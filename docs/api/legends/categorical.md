@@ -61,7 +61,7 @@ Every categorical legend uses the same right-side default:
 | `titleStyle` | title style object | default sans-serif title style |
 | `itemGap` | positive number | `28` at either side, `20` at top/bottom |
 | `border` | boolean or border style object | `false` |
-| `count` | size-legend symbol count of at least `2` | `5` for point legends |
+| `count` | size-legend symbol count from `2` through `10,000` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
@@ -80,6 +80,9 @@ Top and bottom legends use a general item grid. `columns` caps the column count;
 first. `align` positions the complete title-plus-items block within plot
 bounds. The title appears above the grid by default, or beside it with
 `titlePosition: "left"`.
+
+A categorical legend resolves at most 10,000 domain items. A layered symbol
+recipe contains at most one line, one point, and one swatch layer.
 
 When two or more legend blocks share the top or bottom edge, the lane starts at
 the plot's left edge and keeps 40 logical pixels between complete occupied

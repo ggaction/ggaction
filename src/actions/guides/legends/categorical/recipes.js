@@ -99,6 +99,11 @@ export function normalizeRecipe(symbol, kind) {
     if (!Array.isArray(symbol.layers) || symbol.layers.length === 0) {
       throw new TypeError("Legend symbol layers must be a non-empty array.");
     }
+    if (symbol.layers.length > 3) {
+      throw new Error(
+        "Legend symbol recipe supports at most one layer per type."
+      );
+    }
     layers = symbol.layers.map(normalizeLayer);
   } else if (kind === "series") {
     validateKeys(symbol, ["length", "lineWidth"], "createLegend.symbol");

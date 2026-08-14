@@ -247,14 +247,26 @@ export function createGapminderTransformedScalePrimitives(gapminder) {
     .editGraphics({ target: "colorGradientStrips", property: "stroke", value: legend.gradient.map(item => item.fill) })
     .editGraphics({ target: "colorGradientStrips", property: "strokeWidth", value: 0 })
     .createGraphics({ id: "colorGradientTicks", parent: "canvas", type: "line", length: legend.positions.length })
-    .editGraphics({ target: "colorGradientTicks", property: "x1", value: 387.6 + 9.6 })
+    .editGraphics({
+      target: "colorGradientTicks",
+      property: "x1",
+      value: legend.gradient[0].x + legend.gradient[0].width
+    })
     .editGraphics({ target: "colorGradientTicks", property: "y1", value: legend.positions })
-    .editGraphics({ target: "colorGradientTicks", property: "x2", value: 387.6 + 9.6 + 6 })
+    .editGraphics({
+      target: "colorGradientTicks",
+      property: "x2",
+      value: legend.gradient[0].x + legend.gradient[0].width + 6
+    })
     .editGraphics({ target: "colorGradientTicks", property: "y2", value: legend.positions })
     .editGraphics({ target: "colorGradientTicks", property: "stroke", value: "#64748b" })
     .editGraphics({ target: "colorGradientTicks", property: "strokeWidth", value: 1 })
     .createGraphics({ id: "colorGradientLabels", parent: "canvas", type: "text", length: legend.positions.length })
-    .editGraphics({ target: "colorGradientLabels", property: "x", value: 387.6 + 9.6 + 7.2 })
+    .editGraphics({
+      target: "colorGradientLabels",
+      property: "x",
+      value: legend.gradient[0].x + legend.gradient[0].width + 7.2
+    })
     .editGraphics({ target: "colorGradientLabels", property: "y", value: legend.positions })
     .editGraphics({ target: "colorGradientLabels", property: "text", value: legend.labels })
     .editGraphics({ target: "colorGradientLabels", property: "fill", value: AXIS })
@@ -264,8 +276,16 @@ export function createGapminderTransformedScalePrimitives(gapminder) {
     .editGraphics({ target: "colorGradientLabels", property: "textAlign", value: "left" })
     .editGraphics({ target: "colorGradientLabels", property: "textBaseline", value: "middle" })
     .createGraphics({ id: "colorGradientTitle", parent: "canvas", type: "text" })
-    .editGraphics({ target: "colorGradientTitle", property: "x", value: 387.6 })
-    .editGraphics({ target: "colorGradientTitle", property: "y", value: 77.6 })
+    .editGraphics({
+      target: "colorGradientTitle",
+      property: "x",
+      value: legend.gradient[0].x
+    })
+    .editGraphics({
+      target: "colorGradientTitle",
+      property: "y",
+      value: bounds.top + 20
+    })
     .editGraphics({ target: "colorGradientTitle", property: "text", value: "Life expectancy" })
     .editGraphics({ target: "colorGradientTitle", property: "fill", value: AXIS })
     .editGraphics({ target: "colorGradientTitle", property: "fontSize", value: 10 })

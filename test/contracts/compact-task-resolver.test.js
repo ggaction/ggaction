@@ -273,7 +273,11 @@ test("injects an executable point source for an explicit regression-layer reques
     { x: 4, y: 10 }
   ];
   const program = chart()
-    .createCanvas({ width: 320, height: 220, margin: 40 })
+    .createCanvas({
+      width: 320,
+      height: 220,
+      margin: { top: 40, right: 40, bottom: 60, left: 60 }
+    })
     .createData({ values: rows })
     .createPointMark({})
     .encodeX({ field: "x" })

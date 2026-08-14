@@ -51,6 +51,26 @@ test("keeps shared temporal centers aligned through Canvas and scale edits", () 
   assertAligned(original);
 });
 
+test("keeps temporal bar geometry finite across a full explicit range", () => {
+  const program = chart()
+    .createCanvas({ width: 360, height: 260, margin: 40 })
+    .createData({ values: rows.slice(0, 3) })
+    .createBarMark()
+    .encodeX({
+      field: "year",
+      fieldType: "temporal",
+      scale: { range: [-1e308, 1e308] }
+    })
+    .encodeY({ field: "value", aggregate: "mean" });
+  assert.equal(
+    program.graphicSpec.objects.bar.items.every(item =>
+      [item.properties.x, item.properties.width].every(Number.isFinite)
+    ),
+    true
+  );
+  assert.equal(program.resolvedScales.x.bandwidth, 1e308);
+});
+
 test("preserves explicitly independent temporal and quantitative scales", () => {
   const independent = chart()
     .createCanvas({ width: 360, height: 260, margin: 40 })

@@ -16,6 +16,7 @@ import {
 } from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
 import { removeLegendKinds } from "../guides/legends/remove.js";
+import { clearMarkGraphic } from "./shared.js";
 
 const OPTIONS = Object.freeze(["target", "channel"]);
 const REMOVABLE_CHANNELS = Object.freeze([
@@ -35,6 +36,10 @@ const SPECIALIZED_LEGEND_KIND = Object.freeze({
   opacity: Object.freeze(["opacity"]),
   strokeWidth: Object.freeze(["strokeWidth"])
 });
+const LEGEND_OPTION_KEYS = Object.freeze([
+  "position", "align", "direction", "columns", "offset", "titlePosition",
+  "title", "symbol", "labels", "titleStyle", "itemGap", "border"
+]);
 
 function resolveTarget(program, requested, channel) {
   const candidates = program.semanticSpec.layers.filter(
@@ -178,22 +183,15 @@ function reconcileCategoricalLegend(program, target, channels) {
     return removeLegendKinds(program, [kind]);
   }
   const next = removeLegendKinds(program, [kind]);
-  return next.createLegend({
-    target,
-    channels: remaining,
-    position: config.position,
-    align: config.align,
-    direction: config.direction,
-    ...(config.columns === undefined ? {} : { columns: config.columns }),
-    offset: config.offset,
-    titlePosition: config.titlePosition,
-    ...(config.inferredTitle ? {} : { title: config.title }),
-    symbol: config.symbol,
-    labels: config.labels,
-    titleStyle: config.titleStyle,
-    itemGap: config.itemGap,
-    border: config.border
-  });
+  const options = { target, channels: remaining };
+  for (const property of LEGEND_OPTION_KEYS) {
+    if (
+      (property === "columns" && config[property] === undefined) ||
+      (property === "title" && config.inferredTitle)
+    ) continue;
+    options[property] = config[property];
+  }
+  return next.createLegend(options);
 }
 
 function cleanupLegends(program, target, channels) {
@@ -204,18 +202,10 @@ function cleanupLegends(program, target, channels) {
   return kinds.length === 0 ? next : removeLegendKinds(next, kinds);
 }
 
-function clearGraphic(program, target) {
-  const graphic = program.graphicSpec.objects[target];
-  if (graphic === undefined) return program;
-  return graphic.type === "collection"
-    ? program.editGraphics({ target, property: "items", value: [] })
-    : program.editGraphics({ target, property: "length", value: 0 });
-}
-
 function rematerializeTarget(program, target) {
   const layer = findLayer(program, target);
   const step = getMarkMaterializationStep(program, layer);
-  const baseline = clearGraphic(program, target);
+  const baseline = clearMarkGraphic(program, target);
   let next = step === undefined
     ? baseline
     : baseline[step.op](step.args);

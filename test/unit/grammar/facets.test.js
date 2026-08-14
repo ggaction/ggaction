@@ -156,4 +156,35 @@ test("rejects invalid facet fields, values, and explicit dataset mismatches", ()
     }),
     /partition dataset "missing" does not exist/
   );
+  const largeValues = Array.from({ length: 101 }, (_, index) => ({
+    x: index,
+    y: index,
+    group: `group-${index}`
+  }));
+  const large = {
+    ...program.semanticSpec,
+    datasets: program.semanticSpec.datasets.map(dataset =>
+      dataset.id === "cars" ? { ...dataset, values: largeValues } : dataset
+    )
+  };
+  assert.throws(
+    () => resolveFacetDefinition(large, { field: "group" }),
+    /Facet child count must not exceed 100/
+  );
+
+  const expensiveValues = Array.from({ length: 100_001 }, (_, index) => ({
+    x: index,
+    y: index,
+    group: `group-${index % 100}`
+  }));
+  const expensive = {
+    ...program.semanticSpec,
+    datasets: program.semanticSpec.datasets.map(dataset =>
+      dataset.id === "cars" ? { ...dataset, values: expensiveValues } : dataset
+    )
+  };
+  assert.throws(
+    () => resolveFacetDefinition(expensive, { field: "group" }),
+    /Facet partition work must not exceed 10000000/
+  );
 });

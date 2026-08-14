@@ -126,7 +126,11 @@ test("reassigns color, size, and shape with their existing legends", () => {
 
 test("rejects incompatible shared-guide rebinds without mutating the source", () => {
   const before = chart()
-    .createCanvas({ width: 300, height: 180, margin: 30 })
+    .createCanvas({
+      width: 300,
+      height: 180,
+      margin: { top: 30, right: 30, bottom: 60, left: 30 }
+    })
     .createData({ id: "data", values })
     .createPointMark({ id: "first" })
     .encodeX({ field: "x" })

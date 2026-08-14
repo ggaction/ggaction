@@ -101,7 +101,9 @@ test("preserves direction through Canvas, filter, facet, and highlight replay", 
     op: "eq",
     value: "east"
   });
-  const faceted = encoded.facet({ field: "group", columns: 2 });
+  const faceted = encoded
+    .editCanvas({ height: 110, margin: { top: 20 } })
+    .facet({ field: "group", columns: 2 });
 
   assert.equal(resized.graphicSpec.objects.ticks.items[1].properties.y1,
     resized.graphicSpec.objects.ticks.items[1].properties.y2);

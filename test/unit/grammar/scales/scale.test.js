@@ -32,6 +32,7 @@ import {
   validateStrokeDashRange
 } from "../../../../src/grammar/scales/index.js";
 import { niceTimeDomain } from "../../../../src/grammar/scales/temporal.js";
+import { finiteMidpoint } from "../../../../src/grammar/numeric.js";
 
 test("reads finite quantitative field values", () => {
   const values = readQuantitativeField([{ value: 1 }, { value: 4 }], "value");
@@ -72,6 +73,31 @@ test("normalizes temporal field values to timestamps", () => {
     () => readTemporalField([{ value: "2024-02-31" }], "value"),
     /valid date/
   );
+  assert.throws(
+    () => readTemporalField([{ value: 8.64e15 + 1 }], "value"),
+    /temporal string or finite timestamp/
+  );
+});
+
+test("normalizes early years and timezone-less ISO datetimes in UTC", () => {
+  const originalTimezone = process.env.TZ;
+  try {
+    for (const timezone of ["UTC", "Asia/Seoul", "America/New_York"]) {
+      process.env.TZ = timezone;
+      assert.deepEqual(readTemporalField([
+        { value: "0050" },
+        { value: "0050-06-01" },
+        { value: "2024-01-15T12:00:00" }
+      ], "value"), [
+        Date.parse("0050-01-01T00:00:00Z"),
+        Date.parse("0050-06-01T00:00:00Z"),
+        Date.parse("2024-01-15T12:00:00Z")
+      ]);
+    }
+  } finally {
+    if (originalTimezone === undefined) delete process.env.TZ;
+    else process.env.TZ = originalTimezone;
+  }
 });
 
 test("resolves automatic domains and positional ranges", () => {
@@ -87,12 +113,22 @@ test("resolves automatic domains and positional ranges", () => {
 });
 
 test("maps linear values and centers a constant domain", () => {
+  assert.equal(finiteMidpoint(2, 4), 3);
+  assert.equal(finiteMidpoint(Number.MAX_VALUE, Number.MAX_VALUE), Number.MAX_VALUE);
   assert.deepEqual(mapLinearValues([0, 5, 10], [0, 10], [20, 100]), [
     20,
     60,
     100
   ]);
   assert.deepEqual(mapLinearValues([2, 2], [2, 2], [10, 20]), [15, 15]);
+  assert.deepEqual(
+    mapLinearValues(
+      [2],
+      [2, 2],
+      [Number.MAX_VALUE, Number.MAX_VALUE]
+    ),
+    [Number.MAX_VALUE]
+  );
   assert.throws(
     () => mapLinearValues([NaN], [2, 2], [10, 20]),
     /finite numbers/
@@ -101,23 +137,60 @@ test("maps linear values and centers a constant domain", () => {
     mapLinearValues([-5, 5, 15], [0, 10], [20, 100], { clamp: true }),
     [20, 60, 100]
   );
+  assert.deepEqual(
+    mapLinearValues(
+      [-1e308, -5e307, -1, 1],
+      [-1e308, -1],
+      [-1e100, -1],
+      { clamp: true }
+    ),
+    [-1e100, -5e99, -1, -1]
+  );
   assert.throws(
     () => mapLinearValues([5], [0, 10], [20, 100], { clamp: "yes" }),
     /must be a boolean/
   );
+  assert.deepEqual(
+    mapLinearValues(
+      [-Number.MAX_VALUE, 0, Number.MAX_VALUE],
+      [-Number.MAX_VALUE, Number.MAX_VALUE],
+      [0, 1]
+    ),
+    [0, 0.5, 1]
+  );
+  for (const [values, domain, range] of [
+    [[2], [0, 1], [0, Number.MAX_VALUE]],
+    [[Number.MAX_VALUE], [0, 1], [0, 100]]
+  ]) {
+    assert.throws(
+      () => mapLinearValues(values, domain, range),
+      /finite numeric range/
+    );
+  }
 });
 
-test("stabilizes a near-constant nice domain", () => {
-  const resolved = resolveContinuousDomain({
-    domain: "auto",
-    values: [0.1, 0.1 + Number.EPSILON],
-    type: "linear",
-    nice: true,
-    zero: false
-  });
+test("keeps extreme nice linear domains finite, distinct, and containing", () => {
+  const cases = [
+    [0.1, 0.1 + Number.EPSILON],
+    [1e15, 1e15 + 1],
+    [0, Number.MIN_VALUE],
+    [-Number.MAX_VALUE, Number.MAX_VALUE]
+  ];
 
-  assert.equal(resolved[0], resolved[1]);
-  assert.equal(resolved[0] > 0.1, true);
+  for (const values of cases) {
+    const resolved = resolveContinuousDomain({
+      domain: "auto",
+      values,
+      type: "linear",
+      nice: true,
+      zero: false
+    });
+
+    assert.equal(resolved.every(Number.isFinite), true);
+    assert.equal(resolved[0] < resolved[1], true);
+    assert.equal(resolved[0] <= values[0], true);
+    assert.equal(resolved[1] >= values[1], true);
+  }
 });
 
 test("rounds time domains at calendar boundaries across supported spans", () => {
@@ -154,6 +227,17 @@ test("rounds time domains at calendar boundaries across supported spans", () => 
     niceTimeDomain([Date.UTC(2024, 0, 1), Date.UTC(2025, 0, 1)]),
     [Date.UTC(2024, 0, 1), Date.UTC(2025, 0, 1)]
   );
+  assert.deepEqual(
+    niceTimeDomain([
+      Date.parse("0050-06-01T00:00:00Z"),
+      Date.parse("0052-06-01T00:00:00Z")
+    ]).map(value => new Date(value).toISOString()),
+    ["0050-01-01T00:00:00.000Z", "0053-01-01T00:00:00.000Z"]
+  );
+  assert.throws(
+    () => niceTimeDomain([8.64e15, 8.64e15 + 1]),
+    /valid dates/
+  );
 });
 
 test("validates the continuous scale vocabulary and bounds", () => {
@@ -184,6 +268,15 @@ test("validates the continuous scale vocabulary and bounds", () => {
     () => resolveScaleRange("auto", "x", undefined),
     /requires graphical bounds/
   );
+  assert.throws(
+    () => resolveScaleRange("auto", "x", {
+      x: Number.MAX_VALUE,
+      y: 0,
+      width: Number.MAX_VALUE,
+      height: 1
+    }),
+    /exceeds the finite numeric range/
+  );
 });
 
 test("resolves ordinal position domains, ranges, and band geometry", () => {
@@ -204,6 +297,32 @@ test("resolves ordinal position domains, ranges, and band geometry", () => {
   });
   assert.deepEqual(mapOrdinalPositionValues([1850, 1870], scale), [130, 330]);
   assert.equal(Object.isFrozen(scale), true);
+});
+
+test("keeps ordinal, band, and point coordinates finite across full ranges", () => {
+  const domain = ["A", "B", "C"];
+  const options = {
+    domain,
+    values: domain,
+    range: [-1e308, 1e308],
+    channel: "x"
+  };
+  const scales = [
+    resolveOrdinalPositionScale(options),
+    resolveDiscretePositionScale({ ...options, type: "band" }),
+    resolveDiscretePositionScale({ ...options, type: "point" })
+  ];
+  for (const scale of scales) {
+    const positions = mapOrdinalPositionValues(domain, scale);
+    assert.equal(positions.every(Number.isFinite), true, scale.type);
+    assert.equal(new Set(positions).size, domain.length, scale.type);
+  }
+  assert.throws(() => resolveOrdinalPositionScale({
+    ...options,
+    domain: ["A", "B", "C"],
+    values: ["A", "B", "C"],
+    range: [1e308, 1.0000000000000002e308]
+  }), /cannot represent every domain position/);
 });
 
 test("preserves explicit ordinal order and reversed position ranges", () => {

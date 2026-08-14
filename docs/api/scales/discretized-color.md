@@ -38,6 +38,12 @@ interval legend with labels such as `< 60`, `60–70`, and `≥ 80`. These
 mappings are available through quantitative point `encodeColor` and the direct
 scale vocabulary. A type-changing `editScale` call validates the complete
 replacement definition before rematerializing its consumers.
+Explicit discretized color ranges contain at most 10,000 colors.
+
+Quantize boundaries and interval labels remain distinct across very large,
+very small, and close finite values. If the numeric extent cannot represent
+the requested number of equal-width classes, resolution throws a `RangeError`
+instead of silently creating duplicate classes.
 
 ## Related
 
