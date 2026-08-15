@@ -5,6 +5,7 @@ import {
   assertScenarioFactorValueRequirements,
   scenarioCandidateFailureDiagnostic,
   scenarioFactorDiagnostic,
+  scenarioGenerationFailureDiagnostics,
   scenarioHasVisibleTitle,
   scenarioSelectionPacingTarget,
   validateScenarioFactorEffects
@@ -68,6 +69,92 @@ test("keeps strict candidate diagnostics reproducible without dumping row arrays
     factors,
     message: "intentional failure"
   }), /tt-penguins\/realistic-example factors=.*intentional failure/u);
+});
+
+test("bounds structured preflight diagnostics without raw factors", () => {
+  const recipes = Array.from({ length: 40 }, (_, index) => ({
+    id: `realistic-recipe-${String(index).padStart(2, "0")}`
+  }));
+  const factors = index => ({
+    dataset: "tt-penguins",
+    profile: `profile-${index}`,
+    rows: Array.from({ length: 100 }, (_, row) => ({
+      secretRowValue: `${index}-${row}`
+    }))
+  });
+  const selectedDescriptors = recipes.map((recipe, index) => ({
+    recipe: recipe.id,
+    factors: factors(index),
+    semanticFingerprint: String(index % 10).repeat(64)
+  }));
+  const diagnostics = scenarioGenerationFailureDiagnostics({
+    kind: "preflight",
+    dataset: "tt-penguins",
+    datasetIndex: 0,
+    tier: "advanced",
+    quota: 28,
+    produced: 27,
+    schedulingIterations: 480,
+    eligibleRecipes: recipes,
+    selectedDescriptors,
+    duplicates: recipes.slice(0, 30).map((recipe, index) => ({
+      dataset: "tt-penguins",
+      complexity: "advanced",
+      recipe: recipe.id,
+      factors: factors(index)
+    })),
+    rejections: recipes.slice(0, 12).map((recipe, index) => ({
+      dataset: "tt-penguins",
+      complexity: "advanced",
+      recipe: recipe.id,
+      factors: factors(index),
+      message: `intentional rejection ${index}`
+    })),
+    skips: recipes.slice(0, 20).map((recipe, index) => ({
+      dataset: "tt-penguins",
+      complexity: "advanced",
+      recipe: recipe.id,
+      reason: "factor-candidate-domain-exhausted",
+      eligibleFactorCases: index + 1,
+      attemptedEligibleFactorCases: index + 1,
+      scheduledVariantId: `variant-${index}`
+    }))
+  });
+  assert.deepEqual({
+    kind: diagnostics.kind,
+    dataset: diagnostics.dataset,
+    datasetIndex: diagnostics.datasetIndex,
+    tier: diagnostics.tier,
+    quota: diagnostics.quota,
+    produced: diagnostics.produced,
+    schedulingIterations: diagnostics.schedulingIterations,
+    eligibleRecipeCount: diagnostics.eligibleRecipeCount
+  }, {
+    kind: "preflight",
+    dataset: "tt-penguins",
+    datasetIndex: 0,
+    tier: "advanced",
+    quota: 28,
+    produced: 27,
+    schedulingIterations: 480,
+    eligibleRecipeCount: 40
+  });
+  assert.equal(diagnostics.recipeCounts.entries.length, 24);
+  assert.equal(diagnostics.recipeCounts.omitted, 16);
+  assert.equal(diagnostics.acceptedSamples.length, 8);
+  assert.equal(diagnostics.acceptedSampleOmitted, 32);
+  assert.equal(diagnostics.duplicateCount, 30);
+  assert.equal(diagnostics.rejectionCount, 12);
+  assert.equal(diagnostics.recentRejections.length, 8);
+  assert.equal(diagnostics.exhaustionSkipCount, 20);
+  assert.equal(diagnostics.exhaustionSkips.length, 12);
+  assert.equal(diagnostics.acceptedSamples.every(value =>
+    /^[a-f0-9]{12}$/u.test(value.factorDigest) &&
+    /^[a-f0-9]{12}$/u.test(value.fingerprintPrefix)
+  ), true);
+  const serialized = JSON.stringify(diagnostics);
+  assert.doesNotMatch(serialized, /secretRowValue|profile-39/u);
+  assert.equal(serialized.length < 12_000, true);
 });
 
 test("rejects unknown, duplicate, mismatched, and missing factor-effect claims", () => {

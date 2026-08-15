@@ -103,6 +103,88 @@ test("isolates realistic descriptor generation in a disposable worker", async ()
   assert.equal(descriptors[0].metadata.corpus, "tidytuesday");
 });
 
+test("preserves compact generator diagnostics in a failed audit report", async t => {
+  const root = await mkdtemp(path.join(tmpdir(), "ggaction-realistic-generation-failure-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const options = parseRealisticScenarioArguments(["--no-artifacts"]);
+  const generatedFailure = generateRealisticDescriptorsInWorker({
+    limit: 72,
+    timeout: 120_000,
+    recipeIds: [
+      "realistic-direct-lifecycle-removal-coverage",
+      "realistic-direct-lifecycle-data-mark-coverage",
+      "realistic-direct-lifecycle-selection-coverage",
+      "realistic-direct-lifecycle-statistical-coverage"
+    ]
+  });
+  let failure;
+  await assert.rejects(
+    runRealisticScenarioCorpus(options, {
+      artifactRoot: root,
+      runId: "generation-failure",
+      generated: generatedFailure
+    }),
+    error => {
+      failure = error;
+      return error.name === "ScenarioGenerationError" &&
+        error.diagnostics?.kind === "quota";
+    }
+  );
+  const report = JSON.parse(await readFile(
+    path.join(root, "audits/generation-failure/report.json"),
+    "utf8"
+  ));
+  assert.equal(failure.runOutput, path.join(root, "audits/generation-failure"));
+  assert.deepEqual(report.error.diagnostics, failure.diagnostics);
+  assert.deepEqual({
+    stage: report.stage,
+    dataset: report.error.diagnostics.dataset,
+    datasetIndex: report.error.diagnostics.datasetIndex,
+    tier: report.error.diagnostics.tier,
+    quota: report.error.diagnostics.quota,
+    produced: report.error.diagnostics.produced,
+    schedulingIterations: report.error.diagnostics.schedulingIterations,
+    eligibleRecipeCount: report.error.diagnostics.eligibleRecipeCount
+  }, {
+    stage: "generation",
+    dataset: "tt-penguins",
+    datasetIndex: 0,
+    tier: "simple",
+    quota: 11,
+    produced: 1,
+    schedulingIterations: 3,
+    eligibleRecipeCount: 1
+  });
+  assert.deepEqual(report.error.diagnostics.recipeCounts, {
+    entries: [{
+      recipe: "realistic-direct-lifecycle-removal-coverage",
+      selections: 1,
+      duplicates: 1
+    }],
+    omitted: 0
+  });
+  assert.equal(report.error.diagnostics.acceptedSamples.length, 1);
+  assert.match(
+    report.error.diagnostics.acceptedSamples[0].factorDigest,
+    /^[a-f0-9]{12}$/u
+  );
+  assert.match(
+    report.error.diagnostics.acceptedSamples[0].fingerprintPrefix,
+    /^[a-f0-9]{12}$/u
+  );
+  assert.equal(report.error.diagnostics.duplicateCount, 1);
+  assert.equal(report.error.diagnostics.rejectionCount, 0);
+  assert.deepEqual(report.error.diagnostics.recentRejections, []);
+  assert.equal(report.error.diagnostics.exhaustionSkipCount, 1);
+  assert.deepEqual(report.error.diagnostics.exhaustionSkips, [{
+    recipe: "realistic-direct-lifecycle-removal-coverage",
+    eligibleFactorCases: 1,
+    attemptedEligibleFactorCases: 1,
+    scheduledVariantId: "maximal"
+  }]);
+  assert.doesNotMatch(JSON.stringify(report.error.diagnostics), /"factors"|analysisRows/u);
+});
+
 test("renders every artifact from the exact program credited by scenario evidence", async t => {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-realistic-task-"));
   t.after(() => rm(directory, { recursive: true, force: true }));

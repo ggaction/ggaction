@@ -196,7 +196,8 @@ function requiredEvidence(descriptors, requiredFeatures) {
 
 export function generateRealisticDescriptorsInWorker({
   limit,
-  timeout = 600_000
+  timeout = 600_000,
+  recipeIds
 } = {}) {
   if (!Number.isSafeInteger(timeout) || timeout <= 0 || timeout > MAX_GENERATION_TIMEOUT) {
     throw new RangeError(
@@ -205,7 +206,10 @@ export function generateRealisticDescriptorsInWorker({
   }
   return new Promise((resolve, reject) => {
     const worker = new Worker(generatorWorkerUrl, {
-      workerData: limit === undefined ? {} : { limit }
+      workerData: {
+        ...(limit === undefined ? {} : { limit }),
+        ...(recipeIds === undefined ? {} : { recipeIds })
+      }
     });
     let message;
     let workerError;
@@ -240,6 +244,12 @@ export function generateRealisticDescriptorsInWorker({
         );
         error.name = message?.error?.name ?? "ScenarioGenerationError";
         if (message?.error?.stack !== undefined) error.stack = message.error.stack;
+        if (
+          message?.error?.diagnostics !== null &&
+          typeof message?.error?.diagnostics === "object"
+        ) {
+          error.diagnostics = Object.freeze(message.error.diagnostics);
+        }
         finish(reject, error);
       } else if (
         !Array.isArray(message.descriptors) ||
@@ -645,10 +655,10 @@ export async function runRealisticScenarioCorpus(options, {
   await mkdir(layout.output);
   let resolvedGeneration;
   try {
-    resolvedGeneration = generated ?? await generateRealisticDescriptorsInWorker({
+    resolvedGeneration = await (generated ?? generateRealisticDescriptorsInWorker({
       limit: options.limit,
       timeout: options.generationTimeout
-    });
+    }));
   } catch (error) {
     await writeFile(
       path.join(layout.output, "report.json"),
@@ -662,7 +672,10 @@ export async function runRealisticScenarioCorpus(options, {
         error: {
           name: error?.name ?? "Error",
           message: error?.message ?? String(error),
-          stack: error?.stack
+          stack: error?.stack,
+          ...(error?.diagnostics === undefined
+            ? {}
+            : { diagnostics: error.diagnostics })
         }
       }, null, 2)}\n`,
       "utf8"

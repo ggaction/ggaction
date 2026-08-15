@@ -24,6 +24,11 @@ export const REALISTIC_DATASET_QUOTAS = Object.freeze({
 const REALISTIC_COMPLEXITIES = Object.freeze(Object.keys(REALISTIC_DATASET_QUOTAS));
 const REALISTIC_CANDIDATE_GC_INTERVAL = 8;
 const REALISTIC_FACTOR_VALUE_MINIMUM = 3;
+const GENERATION_FAILURE_RECIPE_LIMIT = 24;
+const GENERATION_FAILURE_SAMPLE_LIMIT = 8;
+const GENERATION_FAILURE_REJECTION_LIMIT = 8;
+const GENERATION_FAILURE_EXHAUSTION_LIMIT = 12;
+const GENERATION_FAILURE_MESSAGE_LIMIT = 240;
 const realisticGenerationDiagnostics = new WeakMap();
 const realisticFactorRequirementCache = new Map();
 
@@ -725,6 +730,130 @@ export function scenarioCandidateFailureDiagnostic(value) {
     `factors=${scenarioFactorDiagnostic(value.factors)}: ${value.message}`;
 }
 
+function compactFactorDigest(factors) {
+  if (factors === undefined) return undefined;
+  return createHash("sha256")
+    .update(stableValue(factors))
+    .digest("hex")
+    .slice(0, 12);
+}
+
+function boundedGenerationFailureMessage(value) {
+  const text = typeof value === "string" ? value : String(value ?? "");
+  return text.length <= GENERATION_FAILURE_MESSAGE_LIMIT
+    ? text
+    : `${text.slice(0, GENERATION_FAILURE_MESSAGE_LIMIT - 3)}...`;
+}
+
+function boundedEdgeSample(values, limit) {
+  if (values.length <= limit) return values;
+  const start = Math.ceil(limit / 2);
+  return [...values.slice(0, start), ...values.slice(-(limit - start))];
+}
+
+export function scenarioGenerationFailureDiagnostics({
+  kind,
+  dataset,
+  datasetIndex,
+  tier,
+  quota,
+  produced,
+  schedulingIterations,
+  eligibleRecipes = [],
+  selectedDescriptors = [],
+  duplicates = [],
+  rejections = [],
+  skips = []
+}) {
+  const localDuplicates = duplicates.filter(value =>
+    value.dataset === dataset && value.complexity === tier
+  );
+  const exhaustion = skips.filter(value =>
+    value.dataset === dataset && value.complexity === tier &&
+    value.reason === "factor-candidate-domain-exhausted"
+  );
+  const recentRejections = rejections.slice(-GENERATION_FAILURE_REJECTION_LIMIT);
+  const implicatedRecipes = new Set([
+    ...recentRejections.filter(value =>
+      value.dataset === dataset && value.complexity === tier
+    ).map(value => value.recipe),
+    ...exhaustion.map(value => value.recipe)
+  ]);
+  const perRecipe = new Map(eligibleRecipes.map(recipe => [
+    typeof recipe === "string" ? recipe : recipe.id,
+    { recipe: typeof recipe === "string" ? recipe : recipe.id, selections: 0, duplicates: 0 }
+  ]));
+  const recipeCount = recipe => {
+    if (!perRecipe.has(recipe)) {
+      perRecipe.set(recipe, { recipe, selections: 0, duplicates: 0 });
+    }
+    return perRecipe.get(recipe);
+  };
+  for (const descriptor of selectedDescriptors) {
+    recipeCount(descriptor.recipe).selections += 1;
+  }
+  for (const duplicate of localDuplicates) {
+    recipeCount(duplicate.recipe).duplicates += 1;
+  }
+  const sortedRecipeCounts = [...perRecipe.values()].sort((left, right) =>
+    Number(implicatedRecipes.has(right.recipe)) -
+      Number(implicatedRecipes.has(left.recipe)) ||
+    right.selections - left.selections ||
+    right.duplicates - left.duplicates ||
+    left.recipe.localeCompare(right.recipe)
+  );
+  const recipeCounts = sortedRecipeCounts.slice(0, GENERATION_FAILURE_RECIPE_LIMIT);
+  const acceptedSamples = boundedEdgeSample(
+    selectedDescriptors,
+    GENERATION_FAILURE_SAMPLE_LIMIT
+  ).map(descriptor => ({
+    recipe: descriptor.recipe,
+    factorDigest: compactFactorDigest(descriptor.factors),
+    fingerprintPrefix: descriptor.semanticFingerprint.slice(0, 12)
+  }));
+  return freezeClone({
+    schemaVersion: 1,
+    kind,
+    dataset,
+    datasetIndex,
+    tier,
+    quota,
+    produced,
+    schedulingIterations,
+    eligibleRecipeCount: eligibleRecipes.length,
+    recipeCounts: {
+      entries: recipeCounts,
+      omitted: sortedRecipeCounts.length - recipeCounts.length
+    },
+    acceptedSamples,
+    acceptedSampleOmitted: selectedDescriptors.length - acceptedSamples.length,
+    duplicateCount: localDuplicates.length,
+    rejectionCount: rejections.length,
+    recentRejections: recentRejections.map(value => ({
+      dataset: value.dataset,
+      tier: value.complexity,
+      recipe: value.recipe,
+      factorDigest: compactFactorDigest(value.factors),
+      message: boundedGenerationFailureMessage(value.message)
+    })),
+    exhaustionSkipCount: exhaustion.length,
+    exhaustionSkips: exhaustion.slice(-GENERATION_FAILURE_EXHAUSTION_LIMIT)
+      .map(value => ({
+        recipe: value.recipe,
+        eligibleFactorCases: value.eligibleFactorCases,
+        attemptedEligibleFactorCases: value.attemptedEligibleFactorCases,
+        scheduledVariantId: value.scheduledVariantId
+      }))
+  });
+}
+
+function scenarioGenerationFailureError(message, context, cause) {
+  const error = new Error(message, cause === undefined ? undefined : { cause });
+  error.name = "ScenarioGenerationError";
+  error.diagnostics = scenarioGenerationFailureDiagnostics(context);
+  return error;
+}
+
 function preflightRealisticCandidate(recipe, factors) {
   const id = descriptorId(recipe.id, factors);
   try {
@@ -1049,12 +1178,29 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
       }));
       return false;
     });
+  let schedulingIterations = 0;
+  const failureContext = kind => ({
+    kind,
+    dataset,
+    datasetIndex,
+    tier: complexity,
+    quota,
+    produced: selected.length,
+    schedulingIterations,
+    eligibleRecipes,
+    selectedDescriptors: selected,
+    duplicates: globalState.duplicates,
+    rejections: globalState.rejections,
+    skips: globalState.skips
+  });
   if (eligibleRecipes.length === 0) {
-    throw new Error(`Dataset "${dataset}" has no realistic ${complexity} recipes.`);
+    throw scenarioGenerationFailureError(
+      `Dataset "${dataset}" has no realistic ${complexity} recipes.`,
+      failureContext("quota")
+    );
   }
   const disabledRecipes = new Set();
   const recipeFailures = new Map();
-  let schedulingIterations = 0;
   const maximumSchedulingIterations = eligibleRecipes.length * 96;
   while (selected.length < quota && schedulingIterations < maximumSchedulingIterations) {
     const ordered = eligibleRecipes.filter(recipe => !disabledRecipes.has(recipe.id))
@@ -1124,9 +1270,10 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
       });
       globalState.rejections.push(rejection);
       if (globalState.strict) {
-        throw new Error(
+        throw scenarioGenerationFailureError(
           `Realistic candidate preflight failed: ${scenarioCandidateFailureDiagnostic(rejection)}`,
-          { cause: error }
+          failureContext("preflight"),
+          error
         );
       }
       const failures = (recipeFailures.get(recipe.id) ?? 0) + 1;
@@ -1151,10 +1298,11 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
   if (selected.length !== quota) {
     const recent = globalState.rejections.slice(-8)
       .map(value => `${value.recipe}: ${value.message}`).join("; ");
-    throw new Error(
+    throw scenarioGenerationFailureError(
       `Dataset "${dataset}" produced ${selected.length}/${quota} ${complexity} charts ` +
       `after ${schedulingIterations} scheduling iterations.` +
-      `${recent.length === 0 ? "" : ` Recent: ${recent}`}`
+      `${recent.length === 0 ? "" : ` Recent: ${recent}`}`,
+      failureContext("quota")
     );
   }
   return selected;

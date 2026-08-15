@@ -13,14 +13,18 @@ function serializedError(error) {
   return Object.freeze({
     name: error?.name ?? "Error",
     message: error?.message ?? String(error),
-    stack: error?.stack ?? String(error)
+    stack: error?.stack ?? String(error),
+    ...(error?.diagnostics === undefined
+      ? {}
+      : { diagnostics: error.diagnostics })
   });
 }
 
 try {
   const descriptors = generateScenarioDescriptors({
     mode: "realistic",
-    ...(workerData.limit === undefined ? {} : { limit: workerData.limit })
+    ...(workerData.limit === undefined ? {} : { limit: workerData.limit }),
+    ...(workerData.recipeIds === undefined ? {} : { recipeIds: workerData.recipeIds })
   });
   parentPort.postMessage({
     ok: true,
