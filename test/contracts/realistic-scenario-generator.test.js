@@ -2,6 +2,11 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
 
+import {
+  generateRealisticDescriptorsIsolated,
+  runRealisticGenerationChild
+} from
+  "../../scripts/run-realistic-scenario-generation-coordinator.js";
 import { assertAnalyticLayerIntegrity } from
   "../oracles/analytic-layer-integrity.js";
 import { PALETTE_NAMES } from "../../src/grammar/palettes.js";
@@ -10,8 +15,14 @@ import { releaseTidyTuesdaySourceCache, tidyTuesdaySourceEntries } from
   "../support/datasets/tidytuesday.js";
 import {
   buildScenario,
+  finalizeRealisticScenarioGenerationState,
   generateScenarioDescriptors,
+  generateRealisticScenarioDataset,
+  initializeRealisticScenarioGenerationState,
+  mergeRealisticScenarioFactorRequirementFragments,
   REALISTIC_DATASET_QUOTAS,
+  realisticScenarioFactorRequirementFragment,
+  realisticScenarioGenerationPlan,
   realisticScenarioDeclaredCapacityReport,
   runScenario,
   scenarioCoverageSchedulePlan,
@@ -59,6 +70,39 @@ const EXPECTED_TIERS = Object.freeze({
   advanced: 28,
   composite: 7
 });
+const MAX_ISOLATED_CHILD_RSS = 440 * 1_024 * 1_024;
+const MAX_ISOLATED_TOTAL_RSS = 512 * 1_024 * 1_024;
+const strictDescriptorCache = new Map();
+
+function stableWireValue(value) {
+  if (Array.isArray(value)) return `[${value.map(stableWireValue).join(",")}]`;
+  if (value !== null && typeof value === "object") {
+    return `{${Object.entries(value).map(([key, child]) =>
+      `${JSON.stringify(key)}:${stableWireValue(child)}`
+    ).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function generationWireDigest(value) {
+  return createHash("sha256").update(stableWireValue(value)).digest("hex");
+}
+
+function resealedState(value) {
+  const { stateId: _stateId, ...payload } = structuredClone(value);
+  return { ...payload, stateId: generationWireDigest(payload) };
+}
+
+function strictDescriptors(limit) {
+  if (!strictDescriptorCache.has(limit)) {
+    strictDescriptorCache.set(limit, generateScenarioDescriptors({
+      mode: "realistic",
+      limit,
+      strictScheduling: true
+    }));
+  }
+  return strictDescriptorCache.get(limit);
+}
 
 function countBy(values, keyFor) {
   const counts = {};
@@ -443,6 +487,134 @@ test("preflights one balanced dataset quota with truthful metadata and replay", 
   }
 });
 
+test("validates serialized scheduler identity, counts, and complete descriptor shards", () => {
+  const plan = realisticScenarioGenerationPlan({ limit: 1 });
+  const fragment = realisticScenarioFactorRequirementFragment(
+    plan,
+    plan.activeDatasets[0]
+  );
+  const manifest = mergeRealisticScenarioFactorRequirementFragments(plan, [fragment]);
+  const forgedUsageFragment = structuredClone(fragment);
+  forgedUsageFragment.factorRequirements[0].value = { forged: true };
+  assert.throws(
+    () => mergeRealisticScenarioFactorRequirementFragments(
+      plan,
+      [forgedUsageFragment]
+    ),
+    /fragment usage is invalid/u
+  );
+  const forgedScheduleFragment = structuredClone(fragment);
+  forgedScheduleFragment.scheduleEligibility.push({
+    recipe: forgedScheduleFragment.eligibleRecipes[0],
+    variantId: "unknown-schedule-variant"
+  });
+  assert.throws(
+    () => mergeRealisticScenarioFactorRequirementFragments(
+      plan,
+      [forgedScheduleFragment]
+    ),
+    /schedule eligibility is invalid/u
+  );
+  const initial = initializeRealisticScenarioGenerationState(plan, manifest);
+  const generated = generateRealisticScenarioDataset(plan, manifest, initial);
+  const roundTripGenerated = generateRealisticScenarioDataset(
+    structuredClone(plan),
+    structuredClone(manifest),
+    structuredClone(initial)
+  );
+  assert.deepEqual(roundTripGenerated, generated);
+  const finalized = finalizeRealisticScenarioGenerationState(
+    plan,
+    manifest,
+    generated.state,
+    generated.descriptors
+  );
+  assert.equal(finalized.descriptors.length, 1);
+  assert.equal(finalized.generation.acceptedCandidates, 72);
+
+  for (const mutate of [
+    state => {
+      state.recipeCounts = [state.recipeCounts[0], state.recipeCounts[0]];
+    },
+    state => {
+      state.recipeCounts[0][0] = "bogus";
+    },
+    state => {
+      state.factorValueCounts = [["not-finite", Number.NaN]];
+    },
+    state => {
+      state.fingerprints[0] = {};
+    }
+  ]) {
+    const malformed = resealedState(generated.state);
+    mutate(malformed);
+    const resealedMalformed = resealedState(malformed);
+    assert.throws(
+      () => finalizeRealisticScenarioGenerationState(
+        plan,
+        manifest,
+        resealedMalformed,
+        generated.descriptors
+      ),
+      /generation state is invalid/u
+    );
+  }
+  assert.throws(
+    () => finalizeRealisticScenarioGenerationState(
+      plan,
+      manifest,
+      generated.state,
+      []
+    ),
+    /descriptor shards are invalid/u
+  );
+  for (const mutate of [
+    descriptors => {
+      descriptors[1] = structuredClone(descriptors[0]);
+    },
+    descriptors => {
+      descriptors[0].factors.dataset = plan.activeDatasets[1] ?? "unplanned";
+    },
+    descriptors => {
+      descriptors[0].recipe = "unknown-recipe";
+    }
+  ]) {
+    const malformedDescriptors = structuredClone(generated.descriptors);
+    mutate(malformedDescriptors);
+    assert.throws(
+      () => finalizeRealisticScenarioGenerationState(
+        plan,
+        manifest,
+        generated.state,
+        malformedDescriptors
+      ),
+      /descriptor shards are invalid/u
+    );
+  }
+
+  const { manifestId: _manifestId, ...manifestPayload } = structuredClone(manifest);
+  manifestPayload.eligibleRecipeDatasets.push(
+    structuredClone(manifestPayload.eligibleRecipeDatasets[0])
+  );
+  const duplicateManifest = {
+    ...manifestPayload,
+    manifestId: generationWireDigest(manifestPayload)
+  };
+  assert.throws(
+    () => initializeRealisticScenarioGenerationState(plan, duplicateManifest),
+    /manifest is invalid/u
+  );
+
+  const incompatiblePlan = realisticScenarioGenerationPlan({
+    limit: 1,
+    strictScheduling: true
+  });
+  assert.throws(
+    () => initializeRealisticScenarioGenerationState(incompatiblePlan, manifest),
+    /manifest is invalid/u
+  );
+});
+
 test("aligns default secondary bindings and actual record eligibility across all fifty sources", () => {
   assert.throws(() => realisticFieldPairDomain("tt-penguins", "typo-capability"));
   for (const dataset of realisticDatasetIds()) {
@@ -544,11 +716,7 @@ test("advances past exhausted factor domains under strict scheduling", () => {
   assert.equal(domain.exhausted, true);
   assert.equal(domain.attemptedEligibleFactorCases, domain.eligibleFactorCases);
 
-  const descriptors = generateScenarioDescriptors({
-    mode: "realistic",
-    limit: 216,
-    strictScheduling: true
-  });
+  const descriptors = strictDescriptors(216);
   const composite = descriptors.filter(descriptor =>
     descriptor.factors.dataset === dataset && descriptor.metadata.complexity === "composite"
   );
@@ -565,6 +733,53 @@ test("advances past exhausted factor domains under strict scheduling", () => {
       diagnostics.duplicateCandidates
   );
 });
+
+for (const limit of [216, 360]) {
+  test(`matches the isolated strict ${limit} descriptor and state boundary`, {
+    timeout: 600_000
+  }, async () => {
+    const reference = await runRealisticGenerationChild({
+      operation: "reference",
+      options: { limit, strictScheduling: true }
+    }, { timeout: 600_000 });
+    const monolith = reference.value.descriptors;
+    const isolated = await generateRealisticDescriptorsIsolated({
+      limit,
+      strictScheduling: true,
+      timeout: 600_000
+    });
+    assert.equal(isolated.descriptors.length, monolith.length);
+    for (let index = 0; index < monolith.length; index += 1) {
+      assert.deepEqual(
+        isolated.descriptors[index],
+        monolith[index],
+        `descriptor ${index}`
+      );
+    }
+    assert.deepEqual(
+      isolated.generation,
+      reference.value.generation
+    );
+    assert.equal(Object.isFrozen(isolated), true);
+    assert.equal(Object.isFrozen(isolated.descriptors), true);
+    assert.equal(Object.isFrozen(isolated.generation), true);
+    assert.equal(
+      isolated.resources.maximumChildRssBytes <= MAX_ISOLATED_CHILD_RSS,
+      true,
+      `${isolated.resources.maximumChildRssBytes} <= ${MAX_ISOLATED_CHILD_RSS}`
+    );
+    assert.equal(
+      isolated.resources.maximumCombinedRssBytes <= MAX_ISOLATED_TOTAL_RSS,
+      true,
+      `${isolated.resources.maximumCombinedRssBytes} <= ${MAX_ISOLATED_TOTAL_RSS}`
+    );
+    assert.equal(
+      reference.resources.maximumRssBytes <= MAX_ISOLATED_CHILD_RSS,
+      true,
+      `${reference.resources.maximumRssBytes} <= ${MAX_ISOLATED_CHILD_RSS}`
+    );
+  });
+}
 
 test("prioritizes a scheduled variant on its last eligible dataset", () => {
   const priorities = scenarioScheduleVariantPriorities([

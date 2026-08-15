@@ -21,10 +21,22 @@
 `runs/<run-id>`만 가리킨다. 생성 실패, renderer 실패, coverage 결손, 중단된 실행은 기존
 `latest`를 변경하지 않는다.
 
-기본 동시성은 최대 4이며 명시값도 4를 넘길 수 없다. 개별 시나리오 timeout 기본값은
-120초, descriptor generation timeout 기본값은 600초다. 두 npm 명령은 `--expose-gc`로
-실행되어 데이터셋 경계에서 source/factor cache를 비운 직후 회수 가능한 메모리를
-반납한다.
+실행 동시성은 1로 고정한다. 개별 시나리오 timeout 기본값은 120초, descriptor generation
+timeout 기본값은 1,800초다. Descriptor generation child는 288MiB, dataset별 chart execution
+child는 224MiB old-space 제한을 사용한다. 실행 child는 각 결과의 IPC 직렬화가 끝난 뒤 GC하고
+dataset 종료 때 source cache를 비운다. Crash·timeout·protocol 오류 뒤에는 이전 child의 종료가
+확인된 경우에만 남은 scenario를 새 child에서 계속한다. SIGTERM과 SIGKILL 뒤에도 종료를 확인할
+수 없으면 프로세스 중첩을 허용하지 않고 전체 실행을 실패로 닫는다.
+
+Execution의 224MiB 상한은 peak dataset의 maximal regression과 maximal histogram을 포함한
+72개를 그대로 완료하는 검증된 guardrail이다. 192MiB 이하는 최신 maximal workload에서 V8 OOM이
+발생했다. Parent는 완료된 dataset outcome을 checksum이 있는 V8 structured-clone binary 임시
+chunk에 기록하고 모든 execution child가 종료한 뒤 다시 읽으므로, `undefined` own property 같은
+wire 의미를 잃지 않으면서 이전 outcome object graph와 다음 child RSS가 동시에 누적되지 않는다.
+
+Resource report는 child high-water, coordinator lifetime high-water, execution-phase sampled
+coordinator RSS와 IPC 시점의 combined sample을 구분한다. `maximumConservativeCombinedRssBytes`는
+서로 다른 시점의 lifetime maxima를 더한 상계이며 실제 동시 process-tree peak가 아니다.
 
 `manifest.json`은 recipe뿐 아니라 실제 factors, semantic/graphic fingerprint, SVG hash,
 renderer와 artifact 검증 결과를 함께 기록한다. 따라서 성공한 chart를 해당 manifest

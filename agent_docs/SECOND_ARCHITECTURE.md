@@ -2236,6 +2236,72 @@ test/
 └─ support/                    여러 suite가 공유하는 test infrastructure
 ```
 
+### Realistic scenario generation boundary
+
+3,600개 realistic descriptor 생성은 dataset source와 파생 view의 native/heap high-water를
+전체 corpus 동안 누적하지 않도록 dataset 단위의 일회성 child process를 사용한다. 동기
+`generateScenarioDescriptors` 경로는 결과 의미를 비교하는 monolithic reference로 남고,
+realistic runner만 다음 두 단계를 직렬 실행한다.
+
+1. Phase A는 active dataset마다 독립 child에서 factor requirement, recipe eligibility와
+   coverage-schedule eligibility fragment를 계산한다. Coordinator는 canonical dataset/recipe
+   순서로 fragment를 하나의 serializable manifest로 병합한 뒤 fragment를 버린다.
+2. Phase B는 dataset마다 새 child가 canonical global scheduler state를 받아
+   `simple → intermediate → advanced → composite` 순서로 정확히 72개를 생성한다. Tier 결과는
+   상태 갱신이 끝난 뒤에만 interleave한다. 성공 응답 전체를 검증한 뒤에만 coordinator가
+   다음 state를 commit하므로 crash와 timeout은 이전 dataset checkpoint를 변경하지 않는다.
+
+Dataset 사이에 전달하는 state는 candidate ordinal, semantic fingerprint, recipe count와
+dataset diversity, baseline/factor case, factor value count와 dataset diversity, factor pair,
+coverage-schedule fulfillment, rejection/duplicate/skip diagnostics다. `factorPools`,
+`attemptedFactorCases`, source/fixture/view module cache는 dataset-local이며 child 종료와 함께
+폐기한다. Map과 Set은 insertion order를 보존하는 entry array로 encode하고 schema version을
+검증한 뒤 hydrate한다. 최종 child만 전체 descriptor와 누적 state를 받아 minimum selection,
+3-dataset diversity, schedule, factor-value gate와 generation diagnostics를 계산한다.
+
+Generation child는 288MiB V8 old-space guardrail과 explicit GC/cache release를 사용한다.
+Coordinator는 자신과 child의 관측 RSS 상한을 함께 보고한다. `maximumCombinedRssBytes`는
+서로 다른 시점일 수 있는 coordinator high-water와 child high-water를 더한 보수적 상계이며,
+동시에 표본화한 process-tree peak를 뜻하지 않는다.
+Generation 실패도 완료된 child의 operation/dataset/RSS/wall-time만 담은 동결된 partial
+resource report를 보존하며 descriptor, scheduler state, factor payload는 포함하지 않는다.
+Runner의 전체 generation timeout 기본값은 30분이고 최대 override는 60분이다. Contract test는
+strict 216/360 monolith-shard deep equality, state checkpoint 원자성, child crash/timeout,
+Node 20/22 memory bound와 typed CSV streaming oracle을 고정한다.
+
+### Realistic scenario execution boundary
+
+Descriptor 생성 뒤의 chart build, deterministic replay와 renderer 검증도 corpus 전체의
+V8/native high-water를 한 process에 누적하지 않는다. Runner는 descriptor를 dataset별로 묶고
+정확히 한 dataset child만 직렬 실행한다. 정상 경로에서 child 하나가 같은 source dataset의
+72개 scenario를 순서대로 처리하고 종료한 뒤 다음 dataset child를 시작한다. Crash, timeout 또는
+protocol 위반이 있으면 이미 직렬화와 descriptor identity 검증이 끝난 결과만 commit하고 실패한
+scenario를 기록한 다음, 남은 scenario는 새 child에서 계속한다. 이전 child의 exit/close가 확인된
+경우에만 새 child를 시작한다. SIGTERM 뒤 SIGKILL까지 bounded escalation했는데도 종료를 확인하지
+못하면 replacement를 만들지 않고 전체 실행을 실패로 닫는다.
+
+Execution child는 224MiB V8 old-space guardrail을 사용한다. 192MiB 이하는 최신 peak dataset의
+maximal workload를 완료하지 못하므로 사용하지 않는다. Coordinator는 완료된 dataset outcome을
+checksum과 descriptor index를 가진 run-local V8 structured-clone binary chunk로 직렬화하고, 해당
+object graph를 해제한 뒤 다음 child를 시작한다. Binary payload는 `undefined` own property를 포함한
+IPC structured-clone 의미를 보존한다. 모든 child가 종료된 뒤에만 canonical order로 chunk를 다시
+읽고 검증하여 coverage와 manifest 입력을 복원한다. 따라서 이전 dataset outcome retention은 child
+process-tree peak와 겹치지 않는다. 각 compact outcome의 IPC
+serialization이 끝난 뒤 program, replay와 SVG temporary가 더 이상 reachable하지 않은 시점에
+explicit GC를 실행한다. Dataset 종료 때 source cache를 release하고 마지막 GC 뒤 resource
+snapshot을 보낸 다음 process가 종료된다. `--no-artifacts` 경로는 native Canvas, PNG와 PDF
+adapter를 import하지 않는다. Artifact run만 이 dependency를 lazy import한다.
+
+Runner는 child별 complete/partial RSS, child/coordinator monotonic wall time, coordinator lifetime
+high-water와 execution-phase sampled RSS를 별도로 보존한다. Snapshot 전에 실패한 child에는 RSS를
+0으로 합성하지 않는다. `maximumConservativeCombinedRssBytes`는 독립적으로 관측한 child maximum과
+coordinator lifetime maximum의 합이고, `maximumExecutionPhaseConservativeCombinedRssBytes`는 child
+maximum과 execution-phase coordinator sample maximum의 합이다. 둘 다 실제 동시 peak가 아니다.
+`maximumIpcSampledCombinedRssBytes`만 outcome/resource IPC 경계에서 가까운 시점의 child current RSS와
+coordinator current RSS를 더한 표본임을 이름으로 드러낸다. Scenario timeout은 outcome마다 다시
+시작되고 child termination을 확인한 뒤에만 다음 process를 만든다. Execution concurrency는 memory
+bound를 위해 1로 고정한다.
+
 Public user program의 canonical owner는 `examples/<chart>/program.js`다. `public.test.js`와
 `png.render.js`는 이를 import하여 실제 example flow를 검증한다. 반대로
 `primitive.program.js`는 extension-level executable oracle이므로 해당 chart test와 함께

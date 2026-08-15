@@ -2,13 +2,9 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { parentPort } from "node:worker_threads";
+import { performance } from "node:perf_hooks";
 import { inflateSync } from "node:zlib";
 
-import { createCanvas, loadImage } from "@napi-rs/canvas";
-
-import { renderToPDF } from "../src/renderers/pdf.js";
-import { renderToPNG } from "../src/renderers/png.js";
 import { renderToSVG } from "../src/renderers/svg.js";
 import { assertGraphicIntegrity } from "../test/oracles/graphic-integrity.js";
 import { assertSvgIntegrity } from "../test/oracles/svg-integrity.js";
@@ -20,6 +16,26 @@ import {
 
 const PNG_SIGNATURE = Object.freeze([137, 80, 78, 71, 13, 10, 26, 10]);
 const SAFE_PATH_COMPONENT = /^[A-Za-z0-9][A-Za-z0-9._-]*$/u;
+
+let pngDependenciesPromise;
+let pdfDependencyPromise;
+
+function pngDependencies() {
+  pngDependenciesPromise ??= Promise.all([
+    import("@napi-rs/canvas"),
+    import("../src/renderers/png.js")
+  ]).then(([canvas, png]) => Object.freeze({
+    createCanvas: canvas.createCanvas,
+    loadImage: canvas.loadImage,
+    renderToPNG: png.renderToPNG
+  }));
+  return pngDependenciesPromise;
+}
+
+function pdfDependency() {
+  pdfDependencyPromise ??= import("../src/renderers/pdf.js");
+  return pdfDependencyPromise;
+}
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -57,19 +73,19 @@ function artifactOutput(task, renderer, extension) {
   return output;
 }
 
-async function decodedPngEvidence(bytes, rendered, label) {
+async function decodedPngEvidence(bytes, rendered, label, dependencies) {
   assert.equal(bytes.length >= 24, true, `${label} PNG header length`);
   assert.deepEqual([...bytes.subarray(0, 8)], PNG_SIGNATURE, label);
   assert.equal(bytes.subarray(12, 16).toString("ascii"), "IHDR", `${label} PNG IHDR`);
   assert.equal(bytes.readUInt32BE(16), rendered.width, `${label} PNG width`);
   assert.equal(bytes.readUInt32BE(20), rendered.height, `${label} PNG height`);
-  const image = await loadImage(bytes);
+  const image = await dependencies.loadImage(bytes);
   assert.equal(image.width, rendered.width, `${label} decoded PNG width`);
   assert.equal(image.height, rendered.height, `${label} decoded PNG height`);
   const scale = Math.min(1, 160 / Math.max(image.width, image.height));
   const width = Math.max(1, Math.round(image.width * scale));
   const height = Math.max(1, Math.round(image.height * scale));
-  const canvas = createCanvas(width, height);
+  const canvas = dependencies.createCanvas(width, height);
   const context = canvas.getContext("2d");
   context.drawImage(image, 0, 0, width, height);
   const pixels = context.getImageData(0, 0, width, height).data;
@@ -153,11 +169,15 @@ async function renderArtifacts(program, descriptor, result, task) {
   const renderers = new Set(["svg"]);
 
   if (task.png) {
+    const dependencies = await pngDependencies();
     const pngOutput = artifactOutput(task, "png", "png");
-    const rendered = await renderToPNG(program, { output: pngOutput, pixelRatio: 1 });
+    const rendered = await dependencies.renderToPNG(program, {
+      output: pngOutput,
+      pixelRatio: 1
+    });
     const bytes = await readFile(pngOutput);
     const validation = task.visualAudit
-      ? await decodedPngEvidence(bytes, rendered, descriptor.id)
+      ? await decodedPngEvidence(bytes, rendered, descriptor.id, dependencies)
       : Object.freeze({
           signature: (() => {
             assert.deepEqual([...bytes.subarray(0, 8)], PNG_SIGNATURE, descriptor.id);
@@ -181,6 +201,7 @@ async function renderArtifacts(program, descriptor, result, task) {
   }
 
   if (task.pdf) {
+    const { renderToPDF } = await pdfDependency();
     const pdfOutput = artifactOutput(task, "pdf", "pdf");
     const rendered = await renderToPDF(program, {
       output: pdfOutput,
@@ -247,8 +268,88 @@ export async function executeRealisticScenarioTask(task) {
   }
 }
 
-if (parentPort !== null) {
-  parentPort.on("message", async task => {
-    parentPort.postMessage(await executeRealisticScenarioTask(task));
+function resourceSnapshot(started, maximumRssBytes) {
+  const rssBytes = process.memoryUsage().rss;
+  return Object.freeze({
+    rssBytes,
+    maximumRssBytes: Math.max(
+      maximumRssBytes,
+      rssBytes,
+      process.resourceUsage().maxRSS * 1_024
+    ),
+    wallTimeMs: performance.now() - started
+  });
+}
+
+function sendToParent(message) {
+  return new Promise((resolve, reject) => {
+    if (typeof process.send !== "function") {
+      reject(new Error("Realistic scenario execution child requires an IPC channel."));
+      return;
+    }
+    process.send(message, error => {
+      if (error === null || error === undefined) resolve();
+      else reject(error);
+    });
+  });
+}
+
+async function executeDatasetMessage(message) {
+  const started = performance.now();
+  let maximumRssBytes = process.memoryUsage().rss;
+  const sampleRss = () => {
+    maximumRssBytes = Math.max(maximumRssBytes, process.memoryUsage().rss);
+  };
+  const sampler = setInterval(sampleRss, 10);
+  sampler.unref?.();
+  try {
+    if (
+      message?.kind !== "dataset" || typeof message.dataset !== "string" ||
+      !Array.isArray(message.tasks) || message.tasks.length === 0 ||
+      message.tasks.some(task =>
+        task?.descriptor?.factors?.dataset !== message.dataset
+      )
+    ) {
+      throw new TypeError("Realistic scenario execution child received invalid tasks.");
+    }
+    for (const task of message.tasks) {
+      let outcome = await executeRealisticScenarioTask(task);
+      sampleRss();
+      await sendToParent({
+        kind: "outcome",
+        dataset: message.dataset,
+        outcome,
+        resources: resourceSnapshot(started, maximumRssBytes)
+      });
+      outcome = undefined;
+      globalThis.gc?.();
+      sampleRss();
+    }
+    if (activeDataset !== undefined) {
+      releaseTidyTuesdaySourceCache(activeDataset);
+      activeDataset = undefined;
+    }
+    globalThis.gc?.();
+    sampleRss();
+    await sendToParent({
+      kind: "resources",
+      dataset: message.dataset,
+      resources: resourceSnapshot(started, maximumRssBytes)
+    });
+  } finally {
+    clearInterval(sampler);
+  }
+}
+
+if (typeof process.send === "function") {
+  process.once("message", async message => {
+    try {
+      await executeDatasetMessage(message);
+    } catch (error) {
+      await sendToParent({ kind: "fatal", error: serializedError(error) }).catch(() => {});
+      process.exitCode = 1;
+    } finally {
+      process.disconnect?.();
+    }
   });
 }

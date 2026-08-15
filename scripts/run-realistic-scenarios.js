@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import {
   lstat,
   mkdir,
@@ -9,12 +9,17 @@ import {
   symlink,
   writeFile
 } from "node:fs/promises";
-import { cpus } from "node:os";
 import path from "node:path";
+import { performance } from "node:perf_hooks";
 import { fileURLToPath } from "node:url";
-import { Worker } from "node:worker_threads";
+import { isDeepStrictEqual } from "node:util";
+import { deserialize as v8Deserialize, serialize as v8Serialize } from "node:v8";
 
 import { DATASET_CORPUS } from "../test/support/datasets/catalog.js";
+import { generateRealisticDescriptorsIsolated } from
+  "./run-realistic-scenario-generation-coordinator.js";
+import { runRealisticScenarioDatasetIsolated } from
+  "./run-realistic-scenario-execution-coordinator.js";
 import {
   assertScenarioFeatureCoverage,
   createScenarioCoverageLedger,
@@ -25,21 +30,18 @@ import { buildPublicOptionInventory } from
   "../test/support/scenarios/coverage-inventory.js";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
-const workerUrl = new URL("./run-realistic-scenario-worker.js", import.meta.url);
-const generatorWorkerUrl = new URL(
-  "./run-realistic-scenario-generator-worker.js",
-  import.meta.url
-);
 const defaultArtifactRoot = path.join(
   repositoryRoot,
   ".artifacts/scenarios/realistic"
 );
-const MAX_CONCURRENCY = 4;
+const MAX_CONCURRENCY = 1;
 const MAX_SCENARIO_TIMEOUT = 30 * 60_000;
 const MAX_GENERATION_TIMEOUT = 60 * 60_000;
+const DEFAULT_GENERATION_TIMEOUT = 30 * 60_000;
 const MAX_SCENARIOS = 3_600;
 const MIN_STRICT_PDF_COUNT = 5;
 const SAFE_RUN_ID = /^[A-Za-z0-9][A-Za-z0-9._-]*$/u;
+const SHA256 = /^[a-f0-9]{64}$/u;
 
 function integer(value, label, { minimum, maximum }) {
   if (typeof value !== "string" || !/^(?:0|[1-9][0-9]*)$/u.test(value)) {
@@ -56,9 +58,9 @@ function integer(value, label, { minimum, maximum }) {
 
 export function parseRealisticScenarioArguments(values) {
   const options = {
-    concurrency: Math.max(1, Math.min(MAX_CONCURRENCY, cpus().length - 1)),
+    concurrency: 1,
     timeout: 120_000,
-    generationTimeout: 600_000,
+    generationTimeout: DEFAULT_GENERATION_TIMEOUT,
     artifacts: true,
     png: true,
     pdfCount: 100,
@@ -169,15 +171,18 @@ function rendererSelection(descriptors, count) {
   return selected;
 }
 
-function partitionByDataset(descriptors, concurrency) {
-  const ids = [...new Set(descriptors.map(descriptor => descriptor.factors.dataset))].sort();
-  const workerCount = Math.min(concurrency, ids.length, descriptors.length);
-  const owner = new Map(ids.map((id, index) => [id, index % workerCount]));
-  const partitions = Array.from({ length: workerCount }, () => []);
+function partitionByDataset(descriptors) {
+  const partitions = new Map();
   descriptors.forEach((descriptor, index) => {
-    partitions[owner.get(descriptor.factors.dataset)].push({ descriptor, index });
+    const dataset = descriptor.factors.dataset;
+    const partition = partitions.get(dataset) ?? [];
+    partition.push({ descriptor, index });
+    partitions.set(dataset, partition);
   });
-  return partitions.filter(partition => partition.length > 0);
+  return [...partitions].map(([dataset, tasks]) => Object.freeze({
+    dataset,
+    tasks: Object.freeze(tasks)
+  }));
 }
 
 function requiredEvidence(descriptors, requiredFeatures) {
@@ -196,217 +201,234 @@ function requiredEvidence(descriptors, requiredFeatures) {
 
 export function generateRealisticDescriptorsInWorker({
   limit,
-  timeout = 600_000,
-  recipeIds
+  timeout = DEFAULT_GENERATION_TIMEOUT,
+  recipeIds,
+  strictScheduling = false
 } = {}) {
   if (!Number.isSafeInteger(timeout) || timeout <= 0 || timeout > MAX_GENERATION_TIMEOUT) {
     throw new RangeError(
       `generation timeout must be between 1 and ${MAX_GENERATION_TIMEOUT}.`
     );
   }
-  return new Promise((resolve, reject) => {
-    const worker = new Worker(generatorWorkerUrl, {
-      workerData: {
-        ...(limit === undefined ? {} : { limit }),
-        ...(recipeIds === undefined ? {} : { recipeIds })
-      }
-    });
-    let message;
-    let workerError;
-    let settled = false;
-    const finish = (callback, value) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      callback(value);
-    };
-    const timer = setTimeout(() => {
-      void worker.terminate();
-      finish(
-        reject,
-        new Error(`Realistic generator worker exceeded ${timeout} ms.`)
-      );
-    }, timeout);
-    worker.once("message", value => {
-      message = value;
-    });
-    worker.once("error", error => {
-      workerError = error;
-    });
-    worker.once("exit", code => {
-      if (workerError !== undefined) {
-        finish(reject, workerError);
-      } else if (code !== 0) {
-        finish(reject, new Error(`Realistic generator worker exited with code ${code}.`));
-      } else if (message?.ok !== true) {
-        const error = new Error(
-          message?.error?.message ?? "Realistic generator worker returned no result."
-        );
-        error.name = message?.error?.name ?? "ScenarioGenerationError";
-        if (message?.error?.stack !== undefined) error.stack = message.error.stack;
-        if (
-          message?.error?.diagnostics !== null &&
-          typeof message?.error?.diagnostics === "object"
-        ) {
-          error.diagnostics = Object.freeze(message.error.diagnostics);
-        }
-        finish(reject, error);
-      } else if (
-        !Array.isArray(message.descriptors) ||
-        message.generation === null || typeof message.generation !== "object" ||
-        !Array.isArray(message.requirements?.features) ||
-        !Array.isArray(message.requirements?.interactions)
-      ) {
-        finish(reject, new Error("Realistic generator worker returned an invalid result."));
-      } else {
-        finish(resolve, Object.freeze({
-          descriptors: Object.freeze(message.descriptors),
-          generation: Object.freeze(message.generation),
-          requirements: Object.freeze({
-            features: Object.freeze(message.requirements.features),
-            interactions: Object.freeze(message.requirements.interactions)
-          })
-        }));
-      }
-    });
+  if (typeof strictScheduling !== "boolean") {
+    throw new TypeError("Scenario strictScheduling must be a boolean.");
+  }
+  return generateRealisticDescriptorsIsolated({
+    limit,
+    timeout,
+    recipeIds,
+    strictScheduling
   });
 }
 
-function timeoutFailure(item, timeout) {
+function maximumObserved(values) {
+  const observed = values.filter(value => Number.isFinite(value) && value >= 0);
+  return observed.length === 0 ? undefined : Math.max(...observed);
+}
+
+function assignedOutcomeCount(outcomes) {
+  let assigned = 0;
+  for (let index = 0; index < outcomes.length; index += 1) {
+    if (Object.hasOwn(outcomes, index) && outcomes[index] !== undefined) assigned += 1;
+  }
+  return assigned;
+}
+
+function deepFreeze(value, visited = new Set()) {
+  if (value === null || typeof value !== "object" || visited.has(value)) return value;
+  visited.add(value);
+  for (const child of Object.values(value)) deepFreeze(child, visited);
+  return Object.freeze(value);
+}
+
+function executionOutcomeMatchesTask(outcome, task) {
+  if (outcome === null || typeof outcome !== "object" ||
+    typeof outcome.ok !== "boolean") {
+    return false;
+  }
+  if (outcome.ok) {
+    return outcome.result?.id === task.descriptor.id &&
+      outcome.result?.recipe === task.descriptor.recipe &&
+      outcome.result?.dataset === task.descriptor.factors.dataset &&
+      outcome.result?.semanticFingerprint === task.descriptor.semanticFingerprint;
+  }
+  return isDeepStrictEqual(outcome.descriptor, task.descriptor) &&
+    outcome.error !== null && typeof outcome.error === "object" &&
+    typeof outcome.error.name === "string" &&
+    typeof outcome.error.message === "string";
+}
+
+function outcomeChunkPayload(partition, outcomes) {
+  if (
+    outcomes.length !== partition.tasks.length ||
+    assignedOutcomeCount(outcomes) !== partition.tasks.length
+  ) {
+    const error = new Error(
+      `Realistic scenario dataset "${partition.dataset}" returned incomplete outcomes.`
+    );
+    error.name = "WorkerProtocolError";
+    throw error;
+  }
+  const entries = outcomes.map((outcome, ordinal) => {
+    const task = partition.tasks[ordinal];
+    if (!executionOutcomeMatchesTask(outcome, task)) {
+      const error = new Error(
+        `Realistic scenario dataset "${partition.dataset}" returned a mismatched outcome.`
+      );
+      error.name = "WorkerProtocolError";
+      throw error;
+    }
+    return { index: task.index, outcome };
+  });
+  return { schemaVersion: 1, dataset: partition.dataset, entries };
+}
+
+function outcomeChunkEntriesMatchPartition(entries, partition) {
+  if (!Array.isArray(entries) || entries.length !== partition.tasks.length) {
+    return false;
+  }
+  for (let ordinal = 0; ordinal < entries.length; ordinal += 1) {
+    if (!Object.hasOwn(entries, ordinal)) return false;
+    const entry = entries[ordinal];
+    if (
+      entry?.index !== partition.tasks[ordinal].index ||
+      !executionOutcomeMatchesTask(entry.outcome, partition.tasks[ordinal])
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function serializeRealisticScenarioOutcomeChunk(partition, outcomes) {
+  const payload = outcomeChunkPayload(partition, outcomes);
+  const payloadBytes = v8Serialize(payload);
+  const payloadSha256 = createHash("sha256").update(payloadBytes).digest("hex");
+  return v8Serialize({
+    schemaVersion: 1,
+    dataset: partition.dataset,
+    payloadSha256,
+    payloadBytes
+  });
+}
+
+export function parseRealisticScenarioOutcomeChunk(source, partition) {
+  let envelope;
+  try {
+    envelope = v8Deserialize(source);
+  } catch {
+    throw new Error(
+      `Realistic scenario dataset "${partition.dataset}" outcome chunk is invalid binary.`
+    );
+  }
+  if (
+    envelope?.schemaVersion !== 1 || envelope.dataset !== partition.dataset ||
+    !SHA256.test(envelope.payloadSha256) ||
+    !ArrayBuffer.isView(envelope.payloadBytes)
+  ) {
+    throw new Error(
+      `Realistic scenario dataset "${partition.dataset}" outcome chunk is invalid.`
+    );
+  }
+  const payloadBytes = Buffer.from(
+    envelope.payloadBytes.buffer,
+    envelope.payloadBytes.byteOffset,
+    envelope.payloadBytes.byteLength
+  );
+  const payloadSha256 = createHash("sha256").update(payloadBytes).digest("hex");
+  if (envelope.payloadSha256 !== payloadSha256) {
+    throw new Error(
+      `Realistic scenario dataset "${partition.dataset}" outcome chunk checksum failed.`
+    );
+  }
+  let payload;
+  try {
+    payload = v8Deserialize(payloadBytes);
+  } catch {
+    throw new Error(
+      `Realistic scenario dataset "${partition.dataset}" outcome chunk payload is invalid.`
+    );
+  }
+  if (
+    payload?.schemaVersion !== 1 || payload.dataset !== partition.dataset ||
+    !outcomeChunkEntriesMatchPartition(payload.entries, partition)
+  ) {
+    throw new Error(
+      `Realistic scenario dataset "${partition.dataset}" outcome chunk is invalid.`
+    );
+  }
+  return deepFreeze(Array.from(payload.entries, entry => entry.outcome));
+}
+
+async function writeOutcomeChunk(directory, index, source) {
+  const name = `${String(index).padStart(3, "0")}.bin`;
+  const output = path.join(directory, name);
+  const temporary = path.join(directory, `.${name}.${randomUUID()}.tmp`);
+  try {
+    await writeFile(temporary, source);
+    await rename(temporary, output);
+  } finally {
+    await rm(temporary, { force: true });
+  }
+  return output;
+}
+
+function executionResourceSummary({
+  children,
+  complete,
+  maximumCoordinatorExecutionSampledRssBytes: intervalSampledCoordinatorRssBytes,
+  started
+}) {
+  const maximumChildRssBytes = maximumObserved(
+    children.map(value => value.maximumRssBytes)
+  );
+  const maximumCoordinatorLifetimeRssBytes =
+    process.resourceUsage().maxRSS * 1_024;
+  const maximumIpcSampledCombinedRssBytes = maximumObserved(
+    children.map(value => value.maximumIpcSampledCombinedRssBytes)
+  );
+  const maximumCoordinatorExecutionSampledRssBytes = Math.max(
+    intervalSampledCoordinatorRssBytes,
+    maximumObserved(children.map(value =>
+      value.maximumCoordinatorIpcSampledRssBytes
+    )) ?? 0
+  );
+  const maximumExecutionPhaseConservativeCombinedRssBytes =
+    maximumChildRssBytes === undefined
+      ? undefined
+      : maximumChildRssBytes + maximumCoordinatorExecutionSampledRssBytes;
+  const maximumConservativeCombinedRssBytes = maximumChildRssBytes === undefined
+    ? undefined
+    : maximumChildRssBytes + maximumCoordinatorLifetimeRssBytes;
   return Object.freeze({
-    ok: false,
-    descriptor: item.descriptor,
-    error: Object.freeze({
-      name: "ScenarioTimeoutError",
-      message: `Scenario exceeded ${timeout} ms.`,
-      stack: undefined
+    complete,
+    children: Object.freeze([...children]),
+    ...(maximumChildRssBytes === undefined ? {} : { maximumChildRssBytes }),
+    maximumCoordinatorLifetimeRssBytes,
+    maximumCoordinatorExecutionSampledRssBytes,
+    ...(maximumIpcSampledCombinedRssBytes === undefined
+      ? {}
+      : { maximumIpcSampledCombinedRssBytes }),
+    ...(maximumExecutionPhaseConservativeCombinedRssBytes === undefined
+      ? {}
+      : { maximumExecutionPhaseConservativeCombinedRssBytes }),
+    ...(maximumConservativeCombinedRssBytes === undefined
+      ? {}
+      : { maximumConservativeCombinedRssBytes }),
+    wallTimeMs: Object.freeze({
+      total: performance.now() - started,
+      observedChildren: children.reduce(
+        (sum, value) => sum + (value.childWallTimeMs ?? 0),
+        0
+      )
     })
   });
 }
 
-async function runPartition(partition, options, pdfIds, outcomes, progress, output) {
-  return new Promise(resolve => {
-    let cursor = 0;
-    let worker;
-    let timer;
-    let current;
-    let restarting = false;
-
-    const finishWorker = () => {
-      clearTimeout(timer);
-      if (worker !== undefined) void worker.terminate();
-      worker = undefined;
-    };
-    const complete = outcome => {
-      outcomes[current.index] = outcome;
-      cursor += 1;
-      progress(outcome, current.index);
-      const next = partition[cursor];
-      if (
-        next !== undefined &&
-        next.descriptor.factors.dataset !== current.descriptor.factors.dataset
-      ) {
-        restarting = true;
-        const terminated = worker?.terminate();
-        worker = undefined;
-        void Promise.resolve(terminated).finally(spawn);
-      } else {
-        dispatch();
-      }
-    };
-    const restart = outcome => {
-      outcomes[current.index] = outcome;
-      cursor += 1;
-      progress(outcome, current.index);
-      restarting = true;
-      const terminated = worker?.terminate();
-      worker = undefined;
-      void Promise.resolve(terminated).finally(spawn);
-    };
-    const spawn = () => {
-      restarting = false;
-      worker = new Worker(workerUrl);
-      worker.on("message", message => {
-        if (restarting) return;
-        clearTimeout(timer);
-        if (message?.index !== current.index) {
-          restart(Object.freeze({
-            ok: false,
-            descriptor: current.descriptor,
-            error: Object.freeze({
-              name: "WorkerProtocolError",
-              message: `Expected scenario index ${current.index}, received ${message?.index}.`,
-              stack: undefined
-            })
-          }));
-          return;
-        }
-        complete(message.ok
-          ? Object.freeze({ ok: true, result: message.result })
-          : Object.freeze({
-              ok: false,
-              descriptor: current.descriptor,
-              error: message.error
-            })
-        );
-      });
-      worker.on("error", error => {
-        if (restarting) return;
-        clearTimeout(timer);
-        restart(Object.freeze({
-          ok: false,
-          descriptor: current.descriptor,
-          error: Object.freeze({
-            name: error.name,
-            message: error.message,
-            stack: error.stack
-          })
-        }));
-      });
-      worker.on("exit", code => {
-        if (restarting || cursor >= partition.length) return;
-        clearTimeout(timer);
-        restart(Object.freeze({
-          ok: false,
-          descriptor: current.descriptor,
-          error: Object.freeze({
-            name: "WorkerExitError",
-            message: `Realistic scenario worker exited with code ${code}.`,
-            stack: undefined
-          })
-        }));
-      });
-      dispatch();
-    };
-    const restartAfterTimeout = () => {
-      restart(timeoutFailure(current, options.timeout));
-    };
-    const dispatch = () => {
-      if (cursor >= partition.length) {
-        finishWorker();
-        resolve();
-        return;
-      }
-      if (worker === undefined) return;
-      current = partition[cursor];
-      worker.postMessage({
-        index: current.index,
-        descriptor: current.descriptor,
-        deterministic: options.deterministic,
-        artifacts: options.artifacts,
-        png: options.png,
-        pdf: pdfIds.has(current.descriptor.id),
-        visualAudit: pdfIds.has(current.descriptor.id),
-        output
-      });
-      timer = setTimeout(restartAfterTimeout, options.timeout);
-    };
-    spawn();
-  });
-}
-
 async function runScenarios(descriptors, options, output) {
+  const started = performance.now();
   const outcomes = Array(descriptors.length);
+  const spoolDirectory = path.join(output, ".execution-outcomes");
   const pdfIds = rendererSelection(
     descriptors,
     options.artifacts ? options.pdfCount : 0
@@ -421,11 +443,97 @@ async function runScenarios(descriptors, options, output) {
       );
     }
   };
-  const partitions = partitionByDataset(descriptors, options.concurrency);
-  await Promise.all(partitions.map(partition =>
-    runPartition(partition, options, pdfIds, outcomes, progress, output)
-  ));
-  return outcomes;
+  const partitions = partitionByDataset(descriptors);
+  const chunks = Array(partitions.length);
+  const children = [];
+  let maximumCoordinatorExecutionSampledRssBytes = process.memoryUsage().rss;
+  let terminalError;
+  const sampleCoordinatorRss = () => {
+    maximumCoordinatorExecutionSampledRssBytes = Math.max(
+      maximumCoordinatorExecutionSampledRssBytes,
+      process.memoryUsage().rss
+    );
+  };
+  const sampler = setInterval(sampleCoordinatorRss, 10);
+  sampler.unref?.();
+  try {
+    await mkdir(spoolDirectory);
+    for (const [partitionIndex, partition] of partitions.entries()) {
+      globalThis.gc?.();
+      sampleCoordinatorRss();
+      let completedPartition = await runRealisticScenarioDatasetIsolated({
+        dataset: partition.dataset,
+        timeout: options.timeout,
+        tasks: partition.tasks.map(item => ({
+          ...item,
+          deterministic: options.deterministic,
+          artifacts: options.artifacts,
+          png: options.png,
+          pdf: pdfIds.has(item.descriptor.id),
+          visualAudit: pdfIds.has(item.descriptor.id),
+          output
+        }))
+      });
+      children.push(...completedPartition.resources);
+      let chunk = serializeRealisticScenarioOutcomeChunk(
+        partition,
+        completedPartition.outcomes
+      );
+      chunks[partitionIndex] = await writeOutcomeChunk(
+        spoolDirectory,
+        partitionIndex,
+        chunk
+      );
+      chunk = undefined;
+      completedPartition.outcomes.forEach((outcome, index) => {
+        const item = partition.tasks[index];
+        progress(outcome, item.index);
+      });
+      completedPartition = undefined;
+      globalThis.gc?.();
+      sampleCoordinatorRss();
+    }
+    for (const [partitionIndex, partition] of partitions.entries()) {
+      const restored = parseRealisticScenarioOutcomeChunk(
+        await readFile(chunks[partitionIndex]),
+        partition
+      );
+      restored.forEach((outcome, ordinal) => {
+        outcomes[partition.tasks[ordinal].index] = outcome;
+      });
+    }
+  } catch (error) {
+    terminalError = error;
+    if (Array.isArray(error?.executionResources)) {
+      children.push(...error.executionResources);
+    }
+  } finally {
+    clearInterval(sampler);
+    sampleCoordinatorRss();
+    try {
+      await rm(spoolDirectory, { recursive: true, force: true });
+    } catch (error) {
+      terminalError ??= error;
+    }
+  }
+  const resources = executionResourceSummary({
+    children,
+    complete: terminalError === undefined &&
+      assignedOutcomeCount(outcomes) === descriptors.length,
+    maximumCoordinatorExecutionSampledRssBytes,
+    started
+  });
+  if (terminalError !== undefined) {
+    if (terminalError !== null && typeof terminalError === "object" &&
+      Object.isExtensible(terminalError)) {
+      terminalError.executionResources = resources;
+    }
+    throw terminalError;
+  }
+  return Object.freeze({
+    outcomes: Object.freeze(outcomes),
+    resources
+  });
 }
 
 function portableRelativePath(root, output) {
@@ -451,13 +559,19 @@ function manifestEntry(root, descriptor, result) {
   if (descriptor?.id !== result.id) {
     throw new Error(`Scenario result ${result.id} has no matching generated descriptor.`);
   }
+  if (
+    result.recipe !== descriptor.recipe ||
+    result.dataset !== descriptor.factors.dataset
+  ) {
+    throw new Error(`Scenario ${result.id} drifted from its dispatched descriptor identity.`);
+  }
   if (descriptor.semanticFingerprint !== result.semanticFingerprint) {
     throw new Error(`Scenario ${result.id} drifted from its generated descriptor fingerprint.`);
   }
   return Object.freeze({
-    id: result.id,
-    dataset: result.dataset,
-    recipe: result.recipe,
+    id: descriptor.id,
+    dataset: descriptor.factors.dataset,
+    recipe: descriptor.recipe,
     chartFamily: result.metadata.chartFamily,
     complexity: result.metadata.complexity,
     title: result.metadata.title,
@@ -669,6 +783,7 @@ export async function runRealisticScenarioCorpus(options, {
         runCategory: layout.category,
         options,
         stage: "generation",
+        generationResources: error?.generationResources,
         error: {
           name: error?.name ?? "Error",
           message: error?.message ?? String(error),
@@ -683,8 +798,43 @@ export async function runRealisticScenarioCorpus(options, {
     error.runOutput = layout.output;
     throw error;
   }
-  const { descriptors, generation, requirements } = resolvedGeneration;
-  const outcomes = await runScenarios(descriptors, options, layout.output);
+  const {
+    descriptors,
+    generation,
+    requirements,
+    resources: generationResources
+  } = resolvedGeneration;
+  resolvedGeneration = undefined;
+  globalThis.gc?.();
+  let executed;
+  try {
+    executed = await runScenarios(descriptors, options, layout.output);
+  } catch (error) {
+    await writeFile(
+      path.join(layout.output, "report.json"),
+      `${JSON.stringify({
+        schemaVersion: 1,
+        generatedAt: new Date().toISOString(),
+        runId: layout.runId,
+        runCategory: layout.category,
+        options,
+        stage: "execution",
+        descriptorCount: descriptors.length,
+        generation,
+        generationResources,
+        executionResources: error?.executionResources,
+        error: {
+          name: error?.name ?? "Error",
+          message: error?.message ?? String(error),
+          stack: error?.stack
+        }
+      }, null, 2)}\n`,
+      "utf8"
+    );
+    error.runOutput = layout.output;
+    throw error;
+  }
+  const { outcomes, resources: executionResources } = executed;
   const successes = outcomes.filter(outcome => outcome.ok).map(outcome => outcome.result);
   const failures = outcomes.filter(outcome => !outcome.ok);
   const coverage = await coverageFor(
@@ -708,6 +858,8 @@ export async function runRealisticScenarioCorpus(options, {
     options,
     descriptorCount: descriptors.length,
     generation,
+    generationResources,
+    executionResources,
     successCount: successes.length,
     failureCount: failures.length,
     coverage,
@@ -746,6 +898,21 @@ export async function runRealisticScenarioCorpus(options, {
     rejectedCandidates: generation.rejectedCandidates,
     duplicateCandidates: generation.duplicateCandidates,
     skippedRecipeDatasets: generation.skippedRecipeDatasets,
+    generationWallTimeMs: generationResources?.wallTimeMs.total,
+    generationMaximumChildRssBytes: generationResources?.maximumChildRssBytes,
+    generationMaximumCombinedRssBytes: generationResources?.maximumCombinedRssBytes,
+    executionWallTimeMs: executionResources.wallTimeMs.total,
+    executionMaximumChildRssBytes: executionResources.maximumChildRssBytes,
+    executionMaximumCoordinatorLifetimeRssBytes:
+      executionResources.maximumCoordinatorLifetimeRssBytes,
+    executionMaximumCoordinatorSampledRssBytes:
+      executionResources.maximumCoordinatorExecutionSampledRssBytes,
+    executionMaximumIpcSampledCombinedRssBytes:
+      executionResources.maximumIpcSampledCombinedRssBytes,
+    executionMaximumPhaseConservativeCombinedRssBytes:
+      executionResources.maximumExecutionPhaseConservativeCombinedRssBytes,
+    executionMaximumConservativeCombinedRssBytes:
+      executionResources.maximumConservativeCombinedRssBytes,
     passed: successes.length,
     failed: failures.length,
     coveragePassed: coverage.passed,

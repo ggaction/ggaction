@@ -1,5 +1,3 @@
-import { parseCsv } from "../csv.js";
-
 function normalizedSource(source, definition) {
   let normalized = source.replace(/^\uFEFF/u, "");
   const csv = definition.csv ?? {};
@@ -18,6 +16,79 @@ function normalizedSource(source, definition) {
     normalized = normalized.replace(/^"",/u, `${emptyHeaderAlias},`);
   }
   return normalized;
+}
+
+function visitCsvRecords(source, visitor) {
+  if (typeof source !== "string") {
+    throw new TypeError("CSV source must be a string.");
+  }
+  let record = [];
+  let field = "";
+  let quoted = false;
+  let recordIndex = 0;
+  const visit = () => {
+    record.push(field);
+    visitor(record, recordIndex);
+    recordIndex += 1;
+    record = [];
+    field = "";
+  };
+  for (let index = 0; index < source.length; index += 1) {
+    const character = source[index];
+    if (quoted) {
+      if (character === '"' && source[index + 1] === '"') {
+        field += '"';
+        index += 1;
+      } else if (character === '"') {
+        quoted = false;
+      } else {
+        field += character;
+      }
+      continue;
+    }
+    if (character === '"') {
+      quoted = true;
+    } else if (character === ",") {
+      record.push(field);
+      field = "";
+    } else if (character === "\n") {
+      visit();
+    } else if (character !== "\r") {
+      field += character;
+    }
+  }
+  if (quoted) throw new Error("CSV source has an unterminated quoted field.");
+  if (field.length > 0 || record.length > 0) visit();
+  return recordIndex;
+}
+
+function validatedCsvHeader(source) {
+  let headers;
+  let firstWidthError;
+  const recordCount = visitCsvRecords(source, (values, recordIndex) => {
+    if (recordIndex === 0) {
+      headers = values;
+      return;
+    }
+    if (firstWidthError === undefined && values.length !== headers.length) {
+      firstWidthError = {
+        row: recordIndex + 1,
+        fields: values.length,
+        expected: headers.length
+      };
+    }
+  });
+  if (recordCount === 0) return undefined;
+  if (headers.some(header => header.length === 0)) {
+    throw new Error("CSV headers must be non-empty.");
+  }
+  if (firstWidthError !== undefined) {
+    throw new Error(
+      `CSV row ${firstWidthError.row} has ${firstWidthError.fields} fields; ` +
+      `expected ${firstWidthError.expected}.`
+    );
+  }
+  return headers;
 }
 
 function missing(value, tokens) {
@@ -68,19 +139,30 @@ function typedValue(value, schema, missingTokens, label) {
 }
 
 export function parseTypedCsv(source, definition) {
-  const rows = parseCsv(normalizedSource(source, definition));
+  const normalized = normalizedSource(source, definition);
+  const headers = validatedCsvHeader(normalized);
+  if (headers === undefined) return [];
   const missingTokens = definition.missingTokens ?? [""];
-  return rows.map((row, rowIndex) => Object.freeze(Object.fromEntries(
-    Object.entries(row).map(([field, value]) => [
+  const rows = [];
+  visitCsvRecords(normalized, (values, recordIndex) => {
+    if (recordIndex === 0) return;
+    const rawRow = Object.fromEntries(headers.map((field, columnIndex) => [
       field,
-      definition.fields[field] === undefined
-        ? value
-        : typedValue(
-            value,
-            definition.fields[field],
-            missingTokens,
-            `${definition.id} row ${rowIndex + 1} field ${field}`
-          )
-    ])
-  )));
+      values[columnIndex]
+    ]));
+    rows.push(Object.freeze(Object.fromEntries(
+      Object.entries(rawRow).map(([field, value]) => [
+        field,
+        definition.fields[field] === undefined
+          ? value
+          : typedValue(
+              value,
+              definition.fields[field],
+              missingTokens,
+              `${definition.id} row ${recordIndex} field ${field}`
+            )
+      ])
+    )));
+  });
+  return rows;
 }
