@@ -22,6 +22,16 @@ const CANVAS = Object.freeze({
   margin: Object.freeze({ top: 900, right: 1_000, bottom: 900, left: 1_000 })
 });
 
+// Facet lays out one complete Canvas per cell. Keep its native text sizes while
+// giving each cell a realistic panel footprint, so a four-cell 3x2 layout also
+// remains a valid pixelRatio=1 raster target.
+const FACET_CANVAS = Object.freeze({
+  width: 1_900,
+  height: 1_300,
+  background: "#ffffff",
+  margin: Object.freeze({ top: 325, right: 400, bottom: 325, left: 400 })
+});
+
 const NUMERIC_FORMAT_VARIANTS = Object.freeze([
   Object.freeze({ id: "automatic", format: "auto", valueField: "value" }),
   Object.freeze({ id: "integer", format: ".0f", valueField: "value" }),
@@ -178,6 +188,10 @@ const INITIAL_FACTOR_DATASET = "tt-penguins";
 
 function canvas() {
   return { ...CANVAS, margin: { ...CANVAS.margin } };
+}
+
+function facetCanvas() {
+  return { ...FACET_CANVAS, margin: { ...FACET_CANVAS.margin } };
 }
 
 function aggregateFor(variant) {
@@ -2158,7 +2172,7 @@ function buildFacetGuides(factors) {
   const firstPolicy = factors.variant.first;
   const secondPolicy = firstPolicy === "independent" ? "shared" : "independent";
   let program = chart()
-    .createCanvas(canvas())
+    .createCanvas(facetCanvas())
     .createData({ id: "analysisRows", values: view.rows })
     .createPointMark({
       id: "facetPoints",

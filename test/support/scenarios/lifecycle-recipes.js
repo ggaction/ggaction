@@ -860,9 +860,13 @@ function buildCompositionLifecycle(factors) {
 function facetLifecycleCanvas(factors) {
   return factors.dataset.startsWith("tt-")
     ? {
-        width: 1400 + factors.columns * 400,
-        height: 1200,
-        margin: { top: 380, right: 420, bottom: 380, left: 500 }
+        // The requested column count still changes the final visual policy,
+        // including when a two-facet dataset clamps both requests to two
+        // materialized columns. These cell sizes retain a 440px-tall plot and
+        // native-size labels while bounding an eight-facet raster.
+        width: 1300 + factors.columns * 200,
+        height: 900,
+        margin: { top: 230, right: 220, bottom: 230, left: 300 }
       }
     : {
         width: 280 + factors.columns * 40,
