@@ -25,6 +25,10 @@ import {
 } from "../support/scenarios/coverage-ledger.js";
 import { runScenario } from "../support/scenarios/engine.js";
 import {
+  realisticDatasetIds,
+  realisticDatasetSupports
+} from "../support/scenarios/realistic-data.js";
+import {
   REALISTIC_DIRECT_LIFECYCLE_COVERAGE_ASSIGNED_LITERAL_FAMILIES,
   REALISTIC_DIRECT_LIFECYCLE_COVERAGE_COUNTS,
   REALISTIC_DIRECT_LIFECYCLE_COVERAGE_EXCLUDED_ACTIONS,
@@ -34,6 +38,7 @@ import {
   REALISTIC_DIRECT_LIFECYCLE_COVERAGE_TARGET_COUNTS,
   REALISTIC_DIRECT_LIFECYCLE_COVERAGE_TARGET_SHA256,
   realisticDirectLifecycleCoverageFactors,
+  realisticDirectLifecycleErrorBandFailure,
   realisticDirectLifecycleReplayCorrectedRequirementIds,
   realisticDirectLifecycleRequirementTargets
 } from "../support/scenarios/realistic-direct-lifecycle-coverage-recipes.js";
@@ -66,6 +71,12 @@ const REGRESSION_SWEEP_TEST_NAME =
 const MAX_DISPOSABLE_SWEEP_RSS_KIB = 512 * 1_024;
 const REGRESSION_ANALYSIS_QUESTION =
   "How does the selected measure vary across stable source-record order within full-source-supported groups?";
+const STATISTICAL_SWEEP_CHILD_ENV = "GGACTION_DIRECT_STATISTICAL_SWEEP_CHILD";
+const STATISTICAL_SWEEP_RESOURCE_PREFIX = "direct-statistical-sweep-resource:";
+const STATISTICAL_SWEEP_TEST_NAME =
+  "preflights the maximal statistical profile on all temporal-eligible TT datasets";
+const STATISTICAL_ANALYSIS_QUESTION =
+  "How do interval estimates and distribution shapes vary across source time and observed categories?";
 let inventoryPromise = buildPublicOptionInventory(JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
   "utf8"
@@ -879,6 +890,242 @@ test("keeps the assigned single-series operation truthful and removal-only", () 
     releaseTidyTuesdaySourceCache(dataset);
   }
   collectGarbage();
+});
+
+test("uses one truthful statistical cohort for sparse Nuclear Explosion bands", () => {
+  const dataset = "tt-nuclear-explosions";
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-statistical-coverage"
+  );
+  const factors = { dataset, profile: { id: "maximal" } };
+  let captured = false;
+  try {
+    const result = runScenario({
+      id: "regression-direct-statistical-nuclear-explosions",
+      recipe: recipe.id,
+      factors
+    }, {
+      deterministic: false,
+      captureProgram(program) {
+        captured = true;
+        const metadata = recipe.describe(factors);
+        const rows = program.semanticSpec.datasets.find(value =>
+          value.id === "analysisRows"
+        ).values;
+        assert.equal(rows.length, 160);
+        assert.deepEqual(
+          Object.fromEntries([...new Set(rows.map(row => row.group))].map(group => [
+            group,
+            rows.filter(row => row.group === group).length
+          ])),
+          {
+            WR: 117,
+            WE: 20,
+            SE: 6,
+            FMS: 3,
+            SAM: 1,
+            "PNE:PLO": 4,
+            PNE: 8,
+            "WR/SE": 1
+          }
+        );
+        assert.deepEqual([...new Set(rows.map(row => row.bandGroup))], [
+          "All observations"
+        ]);
+        assert.deepEqual(
+          metadata.provenance.transformations.find(value =>
+            value.op === "overall-statistical-cohort-projection"
+          ),
+          {
+            op: "overall-statistical-cohort-projection",
+            groupProjection: "all-observations",
+            derivedField: "bandGroup",
+            value: "All observations",
+            purpose:
+              "form one truthful overall bar-and-band cohort without dropping rows or changing source categories"
+          }
+        );
+        assert.equal(metadata.provenance.sourceRowCount, 160);
+        assert.equal(
+          metadata.provenance.sourceSelectionSha256,
+          "2e8226c4924e481312697ea34b8c2b3d0eeb8ec320e2bb1ff6f406b8914c270d"
+        );
+        assert.equal(
+          createHash("sha256")
+            .update(metadata.provenance.sourceRowIndexes.join(","))
+            .digest("hex"),
+          metadata.provenance.sourceSelectionSha256
+        );
+        const bands = program.trace.children.filter(value =>
+          value.op === "createErrorBand"
+        );
+        assert.equal(bands.length, 20);
+        assert.equal(bands.filter(value => value.args.groupBy === "bandGroup").length, 12);
+        assert.equal(bands.filter(value => value.args.groupBy === undefined).length, 8);
+        const intervalBars = program.trace.children.filter(value =>
+          value.op === "createErrorBar" && /error-[xy]-stat-/u.test(value.args.id)
+        );
+        assert.equal(intervalBars.length, 8);
+        assert.ok(intervalBars.every(value =>
+          value.args.x?.field === "bandGroup" || value.args.y?.field === "bandGroup"
+        ));
+        assert.equal(metadata.analysisQuestion, STATISTICAL_ANALYSIS_QUESTION);
+        assert.equal(program.semanticSpec.title.subtitle, STATISTICAL_ANALYSIS_QUESTION);
+        assertGraphicIntegrity(program, dataset);
+        assertAnalyticLayerIntegrity(program, dataset);
+        assertSvgIntegrity(renderToSVG(program), dataset);
+      }
+    });
+    assert.equal(captured, true);
+    assert.deepEqual(result.renderers, ["svg"]);
+    assert.ok(result.directOperations.includes("createErrorBar"));
+    assert.ok(result.directOperations.includes("editErrorBar"));
+    assert.ok(result.directOperations.includes("createErrorBand"));
+    assert.ok(result.directOperations.includes("editErrorBand"));
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
+});
+
+test("preserves a bounded root cause in statistical band diagnostics", () => {
+  const cause = new Error(
+    'Area series on mark "error-band-0" requires at least two points.'
+  );
+  const failure = realisticDirectLifecycleErrorBandFailure(0, cause);
+  assert.equal(
+    failure.message,
+    'Direct lifecycle error-band variant 0 failed: Area series on mark "error-band-0" requires at least two points.'
+  );
+  assert.equal(failure.cause, cause);
+  const bounded = realisticDirectLifecycleErrorBandFailure(
+    19,
+    new Error(`large\n${"factor".repeat(80)}`)
+  );
+  assert.equal(bounded.message.includes("\n"), false);
+  assert.ok(bounded.message.endsWith("…"));
+  assert.ok(bounded.message.length <= 230);
+});
+
+test(STATISTICAL_SWEEP_TEST_NAME, () => {
+  if (process.env[STATISTICAL_SWEEP_CHILD_ENV] !== "1") {
+    runSweepInDisposableProcess({
+      childEnvironmentName: STATISTICAL_SWEEP_CHILD_ENV,
+      expectedResources: {
+        builds: 31,
+        eligibleDatasets: 31,
+        skippedDatasets: 19,
+        minimumRows: 8,
+        maximumRows: 160,
+        maximumGroups: 8
+      },
+      resourcePrefix: STATISTICAL_SWEEP_RESOURCE_PREFIX,
+      testName: STATISTICAL_SWEEP_TEST_NAME
+    });
+    return;
+  }
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-statistical-coverage"
+  );
+  const allDatasets = realisticDatasetIds();
+  const skipped = allDatasets.filter(dataset => !recipe.datasets.includes(dataset));
+  assert.equal(allDatasets.length, 50);
+  assert.equal(recipe.datasets.length, 31);
+  assert.equal(skipped.length, 19);
+  assert.ok(skipped.every(dataset =>
+    realisticDatasetSupports(dataset, "temporal") === false
+  ));
+  let builds = 0;
+  let minimumRows = Number.POSITIVE_INFINITY;
+  let maximumRows = 0;
+  let maximumGroups = 0;
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      const profile = domains?.profile.find(value => value.id === "maximal");
+      assert.notEqual(profile, undefined, `${dataset} maximal statistical eligibility`);
+      const factors = { dataset, profile };
+      let captured = false;
+      const result = runScenario({
+        id: `preflight-direct-statistical-${dataset}`,
+        recipe: recipe.id,
+        factors
+      }, {
+        deterministic: false,
+        captureProgram(program) {
+          captured = true;
+          const metadata = recipe.describe(factors);
+          const rows = program.semanticSpec.datasets.find(value =>
+            value.id === "analysisRows"
+          ).values;
+          const bandGroups = new Map();
+          for (const row of rows) {
+            bandGroups.set(
+              row.bandGroup,
+              (bandGroups.get(row.bandGroup) ?? 0) + 1
+            );
+          }
+          assert.deepEqual([...bandGroups], [["All observations", rows.length]]);
+          assert.ok(rows.length >= 2, `${dataset} error-band cohort points`);
+          const cohort = metadata.provenance.transformations.find(value =>
+            value.op === "overall-statistical-cohort-projection"
+          );
+          assert.notEqual(cohort, undefined, `${dataset} cohort provenance`);
+          const bands = program.trace.children.filter(value =>
+            value.op === "createErrorBand"
+          );
+          assert.equal(bands.length, 20, `${dataset} error bands`);
+          assert.equal(
+            bands.filter(value => value.args.groupBy === "bandGroup").length,
+            12,
+            `${dataset} grouped error bands`
+          );
+          assert.equal(
+            bands.filter(value => value.args.groupBy === undefined).length,
+            8,
+            `${dataset} aggregate error bands`
+          );
+          assert.equal(metadata.provenance.sourceRowCount, rows.length, dataset);
+          assert.equal(
+            createHash("sha256")
+              .update(metadata.provenance.sourceRowIndexes.join(","))
+              .digest("hex"),
+            metadata.provenance.sourceSelectionSha256,
+            dataset
+          );
+          assert.equal(metadata.analysisQuestion, STATISTICAL_ANALYSIS_QUESTION);
+          assertGraphicIntegrity(program, dataset);
+          assertAnalyticLayerIntegrity(program, dataset);
+          assertSvgIntegrity(renderToSVG(program), dataset);
+          minimumRows = Math.min(minimumRows, rows.length);
+          maximumRows = Math.max(maximumRows, rows.length);
+          maximumGroups = Math.max(
+            maximumGroups,
+            new Set(rows.map(row => row.group)).size
+          );
+        }
+      });
+      assert.equal(captured, true, dataset);
+      assert.deepEqual(result.renderers, ["svg"], dataset);
+      builds += 1;
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      collectGarbage();
+    }
+  }
+  assert.equal(builds, 31);
+  collectGarbage();
+  const maxRssKiB = process.resourceUsage().maxRSS;
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  console.log(`${STATISTICAL_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
+    builds,
+    eligibleDatasets: recipe.datasets.length,
+    skippedDatasets: skipped.length,
+    minimumRows,
+    maximumRows,
+    maximumGroups,
+    maxRssKiB
+  })}`);
 });
 
 test(REGRESSION_SWEEP_TEST_NAME, () => {

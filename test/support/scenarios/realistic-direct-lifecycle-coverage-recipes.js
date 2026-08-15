@@ -29,6 +29,8 @@ const DEFAULT_ANALYSIS_QUESTION =
   "Direct lifecycle options are exercised against one truthful TidyTuesday projection.";
 const REGRESSION_ANALYSIS_QUESTION =
   "How does the selected measure vary across stable source-record order within full-source-supported groups?";
+const STATISTICAL_ANALYSIS_QUESTION =
+  "How do interval estimates and distribution shapes vary across source time and observed categories?";
 const SELECTOR_CHANNELS = Object.freeze([
   "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
   "color", "strokeDash", "size", "shape", "group", "opacity"
@@ -235,7 +237,10 @@ function regressionLifecycleView(dataset) {
   });
 }
 
-function extendedView(dataset, kind, { singleSeriesProjection = false } = {}) {
+function extendedView(dataset, kind, {
+  singleSeriesProjection = false,
+  statisticalProjection = false
+} = {}) {
   const base = kind === "regression"
     ? regressionLifecycleView(dataset)
     : realisticLifecycleRows(dataset, kind);
@@ -276,6 +281,7 @@ function extendedView(dataset, kind, { singleSeriesProjection = false } = {}) {
         String(row.group ?? row.series ?? row.category ?? `Series ${index % 3}`),
       series: singleSeriesValue ??
         String(row.series ?? row.group ?? row.category ?? `Series ${index % 3}`),
+      ...(statisticalProjection ? { bandGroup: "All observations" } : {}),
       label: String(row.label ?? row.category ?? row.group ?? row.id ?? index + 1),
       size: Math.abs(Number.isFinite(row.size) ? row.size : first) + 1,
       opacity: Number.isFinite(row.opacity) ? Math.max(0, Math.min(1, row.opacity)) : 0.7,
@@ -301,6 +307,15 @@ function extendedView(dataset, kind, { singleSeriesProjection = false } = {}) {
               derivedField: "group",
               value: singleSeriesValue,
               purpose: "collapse only derived grouping channels while preserving authentic category labels and rows"
+            })]
+          : []),
+        ...(statisticalProjection
+          ? [freeze({
+              op: "overall-statistical-cohort-projection",
+              groupProjection: "all-observations",
+              derivedField: "bandGroup",
+              value: "All observations",
+              purpose: "form one truthful overall bar-and-band cohort without dropping rows or changing source categories"
             })]
           : [])
       ]
@@ -941,8 +956,25 @@ function errorAppearance(index) {
   };
 }
 
+export function realisticDirectLifecycleErrorBandFailure(index, error) {
+  const rawReason = error instanceof Error ? error.message : String(error);
+  const compactReason = rawReason.replace(/\s+/gu, " ").trim();
+  const boundedReason = compactReason.length <= 180
+    ? compactReason
+    : `${compactReason.slice(0, 179)}…`;
+  return new Error(
+    `Direct lifecycle error-band variant ${index} failed: ${boundedReason}`,
+    { cause: error }
+  );
+}
+
 function buildStatisticalCoverage(factors) {
-  const { view, program: initial } = createBase(factors.dataset, "temporal");
+  const { view, program: initial } = createBase(
+    factors.dataset,
+    "temporal",
+    "analysisRows",
+    { statisticalProjection: true }
+  );
   let program = initial;
   const quantitativeTypes = ["linear", "log", "pow", "sqrt", "symlog"];
   const intervalVariants = [
@@ -960,17 +992,17 @@ function buildStatisticalCoverage(factors) {
         scale: scale("linear", `error-x-${errorIndex}`, errorIndex)
       },
       y: {
-        field: "category", fieldType: errorIndex % 2 === 0 ? "nominal" : "ordinal",
+        field: "bandGroup", fieldType: errorIndex % 2 === 0 ? "nominal" : "ordinal",
         scale: categoricalScale(`error-y-${errorIndex}`, errorIndex % 2 ? "point" : "band")
       },
-      ...(errorIndex === 0 ? { groupBy: "group" } : {})
+      ...(errorIndex === 0 ? { groupBy: "bandGroup" } : {})
     });
     errorIndex += 1;
     program = program.createErrorBar({
       id: `error-y-stat-${errorIndex}`,
       ...errorAppearance(errorIndex),
       x: {
-        field: "category", fieldType: errorIndex % 2 === 0 ? "nominal" : "ordinal",
+        field: "bandGroup", fieldType: errorIndex % 2 === 0 ? "nominal" : "ordinal",
         scale: categoricalScale(`error-x-position-${errorIndex}`, errorIndex % 2 ? "point" : "band")
       },
       y: {
@@ -1061,7 +1093,7 @@ function buildStatisticalCoverage(factors) {
         id: `error-band-${bandIndex}`,
         data: "analysisRows",
         coordinate: "main",
-        groupBy: "group",
+        groupBy: "bandGroup",
         fill: "#93c5fd",
         opacity: 0.2,
         curve: "linear",
@@ -1073,9 +1105,7 @@ function buildStatisticalCoverage(factors) {
         ...options
       });
     } catch (error) {
-      throw new Error(`Direct lifecycle error-band variant ${bandIndex} failed.`, {
-        cause: error
-      });
+      throw realisticDirectLifecycleErrorBandFailure(bandIndex, error);
     }
     bandIndex += 1;
   };
@@ -1211,7 +1241,12 @@ function buildStatisticalCoverage(factors) {
     gradientIndex += 1;
   }
 
-  return finish(program, factors.dataset, "Statistical interval and distribution lifecycle coverage");
+  return finish(
+    program,
+    factors.dataset,
+    "Statistical interval and distribution lifecycle coverage",
+    STATISTICAL_ANALYSIS_QUESTION
+  );
 }
 
 function horizonPalette(index, count = 3) {
@@ -1863,7 +1898,8 @@ function buildFacetCoverage(factors) {
 
 function metadataFor(recipe, factors) {
   const view = extendedView(factors.dataset, recipe.kind, {
-    singleSeriesProjection: recipe.singleSeriesProjection
+    singleSeriesProjection: recipe.singleSeriesProjection,
+    statisticalProjection: recipe.statisticalProjection
   });
   const fields = realisticSourceFields(factors.dataset, view.provenance.fieldBindings);
   const titleFamily = TITLE_FAMILY_BY_RECIPE_FAMILY[recipe.family] ?? recipe.family;
@@ -1875,7 +1911,9 @@ function metadataFor(recipe, factors) {
     title: titleFor(factors.dataset, titleFamily),
     analysisQuestion: recipe.kind === "regression"
       ? REGRESSION_ANALYSIS_QUESTION
-      : DEFAULT_ANALYSIS_QUESTION,
+      : recipe.statisticalProjection
+        ? STATISTICAL_ANALYSIS_QUESTION
+        : DEFAULT_ANALYSIS_QUESTION,
     sourceFields: fields,
     ...(view.sample === undefined ? {} : { sampling: view.sample }),
     provenance: view.provenance,
@@ -1906,7 +1944,8 @@ function makeRecipe({
   kind,
   build,
   expectedDirectActions,
-  singleSeriesProjection = false
+  singleSeriesProjection = false,
+  statisticalProjection = false
 }) {
   const datasets = freeze(DATASETS.filter(dataset => realisticDatasetSupports(dataset, kind)));
   const coverageSchedule = schedule();
@@ -1924,6 +1963,7 @@ function makeRecipe({
     kind,
     family,
     singleSeriesProjection,
+    statisticalProjection,
     factorsForDataset(dataset) {
       return datasets.includes(dataset) ? freeze({ profile: PROFILES }) : undefined;
     },
@@ -2077,6 +2117,7 @@ const STATISTICAL_RECIPE = makeRecipe({
   family: "direct-lifecycle-statistical",
   complexity: "composite",
   kind: "temporal",
+  statisticalProjection: true,
   build: buildStatisticalCoverage,
   expectedDirectActions: [
     "createErrorBar", "editErrorBar", "createErrorBand", "editErrorBand",
