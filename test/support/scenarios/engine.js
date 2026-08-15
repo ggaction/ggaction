@@ -70,6 +70,84 @@ function factorValueUsageKey(recipeId, factor, value) {
   return `${recipeId}\0${factor}\0${stableValue(value)}`;
 }
 
+function scheduleRequirementKey(recipeId, variantId) {
+  return `${recipeId}\0${variantId}`;
+}
+
+function scheduledValueId(value) {
+  return typeof value === "string" ? value : value?.id;
+}
+
+function collectCoverageScheduleRequirements(recipes) {
+  const requirements = new Map();
+  const byRecipe = new Map();
+  for (const recipe of recipes) {
+    const schedule = recipe.coverageSchedule;
+    if (schedule === undefined) continue;
+    if (typeof schedule.factor !== "string" || schedule.factor.length === 0) {
+      throw new TypeError(`Scenario recipe "${recipe.id}" schedule requires a factor.`);
+    }
+    if (
+      !Array.isArray(schedule.selectionVariantIds) ||
+      schedule.selectionVariantIds.length === 0
+    ) {
+      throw new TypeError(
+        `Scenario recipe "${recipe.id}" schedule requires selection variant ids.`
+      );
+    }
+    const declaredRequirements = new Map(
+      (schedule.variantRequirements ?? []).map(requirement => [
+        requirement.variantId,
+        requirement
+      ])
+    );
+    const recipeRequirements = [];
+    for (let order = 0; order < schedule.selectionVariantIds.length; order += 1) {
+      const variantId = schedule.selectionVariantIds[order];
+      if (typeof variantId !== "string" || variantId.length === 0) {
+        throw new TypeError(
+          `Scenario recipe "${recipe.id}" schedule variant ids must be strings.`
+        );
+      }
+      const key = scheduleRequirementKey(recipe.id, variantId);
+      let requirement = requirements.get(key);
+      if (requirement === undefined) {
+        requirement = {
+          key,
+          recipe: recipe.id,
+          factor: schedule.factor,
+          variantId,
+          requiredCount: 0,
+          minimumDatasets: 0,
+          order,
+          eligibleDatasets: new Set()
+        };
+        requirements.set(key, requirement);
+        recipeRequirements.push(requirement);
+      }
+      requirement.requiredCount += 1;
+    }
+    for (const requirement of recipeRequirements) {
+      const declared = declaredRequirements.get(requirement.variantId);
+      if (
+        declared?.minimumOccurrences !== undefined &&
+        declared.minimumOccurrences !== requirement.requiredCount
+      ) {
+        throw new Error(
+          `Scenario recipe "${recipe.id}" schedule variant ` +
+          `"${requirement.variantId}" count does not match its requirement.`
+        );
+      }
+      requirement.minimumDatasets = Math.min(
+        requirement.requiredCount,
+        declared?.minimumDatasets ?? schedule.minimumDatasetsPerRequirement ?? 1
+      );
+    }
+    byRecipe.set(recipe.id, recipeRequirements);
+  }
+  return { requirements, byRecipe };
+}
+
 function availableDatasets(recipe, includeTidyTuesday) {
   const eligible = recipe.datasets.filter(id => {
     const definition = datasetDefinition(id);
@@ -154,6 +232,7 @@ function collectFactorValueRequirements(recipes, datasets) {
     new Set(availableDatasets(recipe, true))
   ]));
   const requirements = new Map();
+  const scheduleContract = collectCoverageScheduleRequirements(recipes);
   const eligibleRecipeDatasets = new Map(recipes.map(recipe => [
     recipe.id,
     new Set()
@@ -166,6 +245,23 @@ function collectFactorValueRequirements(recipes, datasets) {
         if (contract === undefined) continue;
         eligibleRecipeDatasets.get(recipe.id).add(dataset);
         const scheduledFactor = recipe.coverageSchedule?.factor;
+        if (scheduledFactor !== undefined) {
+          const scheduledDomain = contract[scheduledFactor];
+          if (!Array.isArray(scheduledDomain) || scheduledDomain.length === 0) {
+            throw new TypeError(
+              `Scenario recipe "${recipe.id}" scheduled factor ` +
+              `"${scheduledFactor}" must have a non-empty domain.`
+            );
+          }
+          const availableVariantIds = new Set(
+            scheduledDomain.map(scheduledValueId).filter(id => typeof id === "string")
+          );
+          for (const requirement of scheduleContract.byRecipe.get(recipe.id) ?? []) {
+            if (availableVariantIds.has(requirement.variantId)) {
+              requirement.eligibleDatasets.add(dataset);
+            }
+          }
+        }
         for (const [factor, domain] of Object.entries(contract)) {
           if (
             factor === "dataset" || factor === "fieldPair" ||
@@ -198,7 +294,12 @@ function collectFactorValueRequirements(recipes, datasets) {
       globalThis.gc?.();
     }
   }
-  const result = Object.freeze({ requirements, eligibleRecipeDatasets });
+  const result = Object.freeze({
+    requirements,
+    eligibleRecipeDatasets,
+    scheduleRequirements: scheduleContract.requirements,
+    scheduleRequirementsByRecipe: scheduleContract.byRecipe
+  });
   realisticFactorRequirementCache.set(cacheKey, result);
   if (realisticFactorRequirementCache.size > 4) {
     realisticFactorRequirementCache.delete(
@@ -236,6 +337,7 @@ function factorRequirementSelectionTargets(recipes, requirementsByRecipe) {
 function assertFactorRequirementFeasibility(
   recipes,
   requirements,
+  scheduleRequirements,
   selectionTargets
 ) {
   const unavailable = [...requirements.values()].filter(requirement =>
@@ -249,6 +351,19 @@ function assertFactorRequirementFeasibility(
           `${value.recipe}.${value.factor}=${stableValue(value.value)} ` +
           `eligible=${value.eligibleDatasets.size}/3`
         ).join("; ")}`
+    );
+  }
+  const unavailableScheduleVariants = [...scheduleRequirements.values()]
+    .filter(requirement =>
+      requirement.eligibleDatasets.size < requirement.minimumDatasets
+    );
+  if (unavailableScheduleVariants.length > 0) {
+    throw new Error(
+      `Realistic coverage schedule variants require eligible datasets: ` +
+      `${unavailableScheduleVariants.slice(0, 20).map(requirement =>
+        `${requirement.recipe}.${requirement.factor}=${requirement.variantId} ` +
+        `eligible=${requirement.eligibleDatasets.size}/${requirement.minimumDatasets}`
+      ).join("; ")}`
     );
   }
   for (const complexity of REALISTIC_COMPLEXITIES) {
@@ -281,6 +396,77 @@ function requirementDatasetPriority(requirement, dataset, globalState) {
     urgent: Number(remaining <= needed),
     deficit: needed
   };
+}
+
+function compareScheduleVariantPriority(left, right) {
+  return right.deadlineUrgency - left.deadlineUrgency ||
+    right.newDatasetDeficit - left.newDatasetDeficit ||
+    right.occurrenceDeficit - left.occurrenceDeficit ||
+    left.order - right.order ||
+    left.variantId.localeCompare(right.variantId);
+}
+
+export function scenarioScheduleVariantPriorities(requirements, {
+  dataset,
+  datasetIndexes,
+  fulfillment = new Map()
+} = {}) {
+  if (!Array.isArray(requirements)) {
+    throw new TypeError("Scenario schedule priorities require an array of requirements.");
+  }
+  if (typeof dataset !== "string" || dataset.length === 0) {
+    throw new TypeError("Scenario schedule priorities require a dataset id.");
+  }
+  if (!(datasetIndexes instanceof Map) || !datasetIndexes.has(dataset)) {
+    throw new TypeError("Scenario schedule priorities require indexed datasets.");
+  }
+  if (!(fulfillment instanceof Map)) {
+    throw new TypeError("Scenario schedule priorities require a fulfillment map.");
+  }
+  const currentIndex = datasetIndexes.get(dataset);
+  return Object.freeze(requirements.flatMap(requirement => {
+    const observed = fulfillment.get(requirement.key);
+    const fulfilledCount = observed?.count ?? 0;
+    const occurrenceDeficit = Math.max(
+      0,
+      requirement.requiredCount - fulfilledCount
+    );
+    if (
+      occurrenceDeficit === 0 ||
+      !requirement.eligibleDatasets.has(dataset)
+    ) return [];
+    const fulfilledDatasets = observed?.datasets ?? new Set();
+    const missingDatasets = Math.max(
+      0,
+      requirement.minimumDatasets - fulfilledDatasets.size
+    );
+    const currentDatasetIsNew = !fulfilledDatasets.has(dataset);
+    const remainingEligibleDatasets = [...requirement.eligibleDatasets].filter(value =>
+      datasetIndexes.get(value) >= currentIndex
+    );
+    const remainingNewEligibleDatasets = remainingEligibleDatasets.filter(value =>
+      !fulfilledDatasets.has(value)
+    );
+    const newDatasetDeficit = currentDatasetIsNew ? missingDatasets : 0;
+    const diversityDeadlineUrgency = newDatasetDeficit > 0 &&
+      remainingNewEligibleDatasets.length <= missingDatasets
+      ? missingDatasets - remainingNewEligibleDatasets.length + 1
+      : 0;
+    const occurrenceDeadlineUrgency = remainingEligibleDatasets.length === 1
+      ? occurrenceDeficit
+      : 0;
+    return [{
+      key: requirement.key,
+      variantId: requirement.variantId,
+      deadlineUrgency: Math.max(
+        diversityDeadlineUrgency,
+        occurrenceDeadlineUrgency
+      ),
+      newDatasetDeficit,
+      occurrenceDeficit,
+      order: requirement.order
+    }];
+  }).sort(compareScheduleVariantPriority).map(Object.freeze));
 }
 
 function factorPairKeys(values) {
@@ -342,6 +528,39 @@ function compareFactorCandidatePriority(left, right) {
     right.tie - left.tie;
 }
 
+function scheduleSelectionState(recipe, dataset, pool, globalState) {
+  const schedule = recipe.coverageSchedule;
+  if (schedule === undefined) {
+    return { hasOutstanding: false, priorities: Object.freeze([]) };
+  }
+  let requirements = globalState.scheduleRequirementsByRecipe?.get(recipe.id);
+  if (requirements === undefined) {
+    const local = collectCoverageScheduleRequirements([recipe]);
+    requirements = local.byRecipe.get(recipe.id) ?? [];
+    const availableVariantIds = new Set(
+      pool.contract[schedule.factor].map(scheduledValueId)
+    );
+    for (const requirement of requirements) {
+      if (availableVariantIds.has(requirement.variantId)) {
+        requirement.eligibleDatasets.add(dataset);
+      }
+    }
+  }
+  const fulfillment = globalState.scheduleFulfillment ?? new Map();
+  const hasOutstanding = requirements.some(requirement =>
+    (fulfillment.get(requirement.key)?.count ?? 0) < requirement.requiredCount
+  );
+  const datasetIndexes = globalState.datasetIndexes ?? new Map([[dataset, 0]]);
+  return {
+    hasOutstanding,
+    priorities: scenarioScheduleVariantPriorities(requirements, {
+      dataset,
+      datasetIndexes,
+      fulfillment
+    })
+  };
+}
+
 function factorVariant(recipe, dataset, variant, globalState) {
   const pool = factorPool(recipe, dataset, globalState);
   if (pool === undefined) return undefined;
@@ -349,111 +568,136 @@ function factorVariant(recipe, dataset, variant, globalState) {
   const attempted = globalState.attemptedFactorCases.get(attemptedKey) ?? new Set();
   globalState.attemptedFactorCases.set(attemptedKey, attempted);
   const schedule = recipe.coverageSchedule;
-  const selectionIds = schedule?.selectionVariantIds;
-  const selectionOrdinal = globalState.recipeCounts.get(recipe.id) ?? 0;
-  const scheduledId = Array.isArray(selectionIds) && selectionIds.length > 0
-    ? selectionIds[selectionOrdinal % selectionIds.length]
-    : undefined;
+  const scheduleState = scheduleSelectionState(recipe, dataset, pool, globalState);
+  if (scheduleState.hasOutstanding && scheduleState.priorities.length === 0) {
+    return Object.freeze({
+      unavailable: true,
+      scheduledVariantIds: Object.freeze(
+        (globalState.scheduleRequirementsByRecipe?.get(recipe.id) ?? [])
+          .filter(requirement =>
+            (globalState.scheduleFulfillment?.get(requirement.key)?.count ?? 0) <
+              requirement.requiredCount
+          )
+          .map(requirement => requirement.variantId)
+      )
+    });
+  }
+  const scheduledIds = scheduleState.priorities.length > 0
+    ? scheduleState.priorities.map(priority => priority.variantId)
+    : [undefined];
+  let baselineFactors;
   if (!globalState.baselineFactorCases.has(recipe.id)) {
     globalState.baselineFactorCases.add(recipe.id);
-    const factors = Object.freeze(Object.fromEntries(Object.entries(pool.contract)
+    baselineFactors = Object.freeze(Object.fromEntries(Object.entries(pool.contract)
       .map(([name, domain]) => [name, domain[0]])));
-    if (scheduledId === undefined || factors[schedule.factor]?.id === scheduledId) {
+  }
+  let firstEligibleIndexes = Object.freeze([]);
+  for (const scheduledId of scheduledIds) {
+    if (
+      baselineFactors !== undefined &&
+      (scheduledId === undefined ||
+        scheduledValueId(baselineFactors[schedule.factor]) === scheduledId)
+    ) {
       return Object.freeze({
+        factors: baselineFactors,
+        factorPairs: Object.freeze(factorPairKeys(baselineFactors)),
+        factorValues: selectedFactorValues(recipe, baselineFactors),
+        caseKey: `${recipe.id}\0${stableValue(baselineFactors)}`
+      });
+    }
+    const eligibleIndexes = [];
+    for (let index = 0; index < pool.cases.length; index += 1) {
+      const candidate = pool.cases[index];
+      if (
+        scheduledId === undefined ||
+        scheduledValueId(candidate[schedule.factor]) === scheduledId
+      ) eligibleIndexes.push(index);
+    }
+    if (firstEligibleIndexes.length === 0) {
+      firstEligibleIndexes = Object.freeze(eligibleIndexes);
+    }
+    if (eligibleIndexes.length === 0) {
+      throw new Error(
+        `Scenario recipe "${recipe.id}" schedule prepass marked unavailable ` +
+        `${schedule.factor} variant "${scheduledId}" eligible for dataset "${dataset}".`
+      );
+    }
+    let best;
+    const searchLimit = globalState.strict
+      ? eligibleIndexes.length
+      : Math.min(96, eligibleIndexes.length);
+    const start = hashOffset(
+      `${attemptedKey}\0${scheduledId ?? "unscheduled"}\0${variant}`
+    ) % eligibleIndexes.length;
+    const consider = index => {
+      if (attempted.has(index)) return;
+      const factors = pool.cases[index];
+      const factorPairs = factorPairKeys(factors);
+      const factorValues = selectedFactorValues(recipe, factors);
+      let urgentDatasetDeficit = 0;
+      let countDeficit = 0;
+      let newDatasetDeficit = 0;
+      let balanceScore = 0;
+      for (const factorValue of factorValues) {
+        const count = globalState.factorValueCounts.get(factorValue.usageKey) ?? 0;
+        balanceScore += 1 / (1 + count);
+        const requirement = globalState.factorRequirements.get(factorValue.usageKey);
+        if (requirement === undefined) continue;
+        countDeficit += Math.max(0, REALISTIC_FACTOR_VALUE_MINIMUM - count);
+        const datasetPriority = requirementDatasetPriority(
+          requirement,
+          dataset,
+          globalState
+        );
+        urgentDatasetDeficit += datasetPriority.urgent;
+        newDatasetDeficit += datasetPriority.deficit;
+      }
+      const newPairs = factorPairs.filter(key =>
+        !globalState.factorPairs.has(`${recipe.id}\0${key}`)
+      ).length;
+      const caseKey = `${recipe.id}\0${stableValue(factors)}`;
+      const caseUse = globalState.factorCaseCounts.get(caseKey) ?? 0;
+      const diversityScore = balanceScore * 1_000 + newPairs * 10 - caseUse;
+      const tie = (index + variant) % pool.cases.length;
+      const candidate = {
+        index,
         factors,
-        factorPairs: Object.freeze(factorPairKeys(factors)),
-        factorValues: selectedFactorValues(recipe, factors),
-        caseKey: `${recipe.id}\0${stableValue(factors)}`
+        factorPairs,
+        factorValues,
+        caseKey,
+        urgentDatasetDeficit,
+        newDatasetDeficit,
+        countDeficit,
+        diversityScore,
+        tie
+      };
+      if (best === undefined || compareFactorCandidatePriority(candidate, best) > 0) {
+        best = candidate;
+      }
+    };
+    for (let ordinal = 0; ordinal < searchLimit; ordinal += 1) {
+      consider(eligibleIndexes[(start + ordinal) % eligibleIndexes.length]);
+    }
+    if (best === undefined) {
+      for (const index of eligibleIndexes) consider(index);
+    }
+    if (best !== undefined) {
+      attempted.add(best.index);
+      return Object.freeze({
+        factors: best.factors,
+        factorPairs: best.factorPairs,
+        factorValues: best.factorValues,
+        caseKey: best.caseKey
       });
     }
   }
-  const eligibleIndexes = [];
-  for (let index = 0; index < pool.cases.length; index += 1) {
-    const candidate = pool.cases[index];
-    if (
-      scheduledId === undefined ||
-      candidate[schedule.factor]?.id === scheduledId
-    ) eligibleIndexes.push(index);
-  }
-  if (eligibleIndexes.length === 0) {
-    throw new Error(
-      `Scenario recipe "${recipe.id}" schedule requests unavailable ` +
-      `${schedule.factor} variant "${scheduledId}" for dataset "${dataset}".`
-    );
-  }
-  let best;
-  const searchLimit = globalState.strict
-    ? eligibleIndexes.length
-    : Math.min(96, eligibleIndexes.length);
-  const start = eligibleIndexes.length === 0
-    ? 0
-    : hashOffset(`${attemptedKey}\0${variant}`) % eligibleIndexes.length;
-  const consider = index => {
-    if (attempted.has(index)) return;
-    const factors = pool.cases[index];
-    const factorPairs = factorPairKeys(factors);
-    const factorValues = selectedFactorValues(recipe, factors);
-    let urgentDatasetDeficit = 0;
-    let countDeficit = 0;
-    let newDatasetDeficit = 0;
-    let balanceScore = 0;
-    for (const factorValue of factorValues) {
-      const count = globalState.factorValueCounts.get(factorValue.usageKey) ?? 0;
-      balanceScore += 1 / (1 + count);
-      const requirement = globalState.factorRequirements.get(factorValue.usageKey);
-      if (requirement === undefined) continue;
-      countDeficit += Math.max(0, REALISTIC_FACTOR_VALUE_MINIMUM - count);
-      const datasetPriority = requirementDatasetPriority(
-        requirement,
-        dataset,
-        globalState
-      );
-      urgentDatasetDeficit += datasetPriority.urgent;
-      newDatasetDeficit += datasetPriority.deficit;
-    }
-    const newPairs = factorPairs.filter(key =>
-      !globalState.factorPairs.has(`${recipe.id}\0${key}`)
-    ).length;
-    const caseKey = `${recipe.id}\0${stableValue(factors)}`;
-    const caseUse = globalState.factorCaseCounts.get(caseKey) ?? 0;
-    const diversityScore = balanceScore * 1_000 + newPairs * 10 - caseUse;
-    const tie = (index + variant) % pool.cases.length;
-    const candidate = {
-      index,
-      factors,
-      factorPairs,
-      factorValues,
-      caseKey,
-      urgentDatasetDeficit,
-      newDatasetDeficit,
-      countDeficit,
-      diversityScore,
-      tie
-    };
-    if (best === undefined || compareFactorCandidatePriority(candidate, best) > 0) {
-      best = candidate;
-    }
-  };
-  for (let ordinal = 0; ordinal < searchLimit; ordinal += 1) {
-    consider(eligibleIndexes[(start + ordinal) % eligibleIndexes.length]);
-  }
-  if (best === undefined) {
-    for (const index of eligibleIndexes) consider(index);
-  }
-  if (best === undefined) {
-    return Object.freeze({
-      exhausted: true,
-      eligibleFactorCases: eligibleIndexes.length,
-      attemptedEligibleFactorCases: eligibleIndexes.filter(index => attempted.has(index)).length,
-      scheduledVariantId: scheduledId
-    });
-  }
-  attempted.add(best.index);
   return Object.freeze({
-    factors: best.factors,
-    factorPairs: best.factorPairs,
-    factorValues: best.factorValues,
-    caseKey: best.caseKey
+    exhausted: true,
+    eligibleFactorCases: firstEligibleIndexes.length,
+    attemptedEligibleFactorCases: firstEligibleIndexes.filter(index =>
+      attempted.has(index)
+    ).length,
+    scheduledVariantId: scheduledIds[0]
   });
 }
 
@@ -468,9 +712,12 @@ export function scenarioFactorCandidateDomainReport(recipeId, { dataset } = {}) 
     baselineFactorCases: new Set([recipe.id]),
     recipeCounts: new Map(),
     factorValueCounts: new Map(),
+    factorValueDatasets: new Map(),
     factorRequirements: new Map(),
     factorPairs: new Set(),
     factorCaseCounts: new Map(),
+    scheduleFulfillment: new Map(),
+    datasetIndexes: new Map([[dataset, 0]]),
     strict: true
   };
   const pool = factorPool(recipe, dataset, globalState);
@@ -492,7 +739,12 @@ export function scenarioFactorCandidateDomainReport(recipeId, { dataset } = {}) 
       exhaustion = selection;
       break;
     }
-    if (selection === undefined) break;
+    if (selection === undefined || selection.unavailable === true) break;
+    recordFactorSelection(recipe, selection, globalState);
+    globalState.recipeCounts.set(
+      recipe.id,
+      (globalState.recipeCounts.get(recipe.id) ?? 0) + 1
+    );
     selectedFactorCases.push(freezeClone(selection.factors));
   }
   return Object.freeze({
@@ -529,13 +781,13 @@ function recordFactorSelection(recipe, selection, globalState) {
   );
   const schedule = recipe.coverageSchedule;
   if (schedule !== undefined) {
-    const variantId = selection.factors[schedule.factor]?.id;
+    const variantId = scheduledValueId(selection.factors[schedule.factor]);
     if (typeof variantId !== "string" || variantId.length === 0) {
       throw new Error(
         `Scenario recipe "${recipe.id}" selected no scheduled ${schedule.factor} id.`
       );
     }
-    const key = `${recipe.id}\0${variantId}`;
+    const key = scheduleRequirementKey(recipe.id, variantId);
     const current = globalState.scheduleFulfillment.get(key) ?? {
       recipe: recipe.id,
       factor: schedule.factor,
@@ -971,11 +1223,14 @@ function coverageScheduleReport(recipes, globalState) {
       required.set(variantId, (required.get(variantId) ?? 0) + 1);
     }
     for (const [variantId, requiredCount] of required) {
+      const key = scheduleRequirementKey(recipe.id, variantId);
+      const requirement = globalState.scheduleRequirements?.get(key);
       const observed = globalState.scheduleFulfillment.get(
-        `${recipe.id}\0${variantId}`
+        key
       );
-      const minimumDatasets = Math.min(
-        requiredCount,
+      const scheduledCount = requirement?.requiredCount ?? requiredCount;
+      const minimumDatasets = requirement?.minimumDatasets ?? Math.min(
+        scheduledCount,
         schedule.minimumDatasetsPerRequirement ?? 1
       );
       const fulfilledCount = observed?.count ?? 0;
@@ -984,16 +1239,153 @@ function coverageScheduleReport(recipes, globalState) {
         recipe: recipe.id,
         factor: schedule.factor,
         variantId,
-        scheduledCount: requiredCount,
+        scheduledCount,
         fulfilledCount,
         minimumDatasets,
         fulfilledDatasets,
-        missingCount: Math.max(0, requiredCount - fulfilledCount),
+        missingCount: Math.max(0, scheduledCount - fulfilledCount),
         missingDatasets: Math.max(0, minimumDatasets - fulfilledDatasets)
       }));
     }
   }
   return Object.freeze(records);
+}
+
+export function scenarioCoverageSchedulePlan(recipeId, {
+  datasets
+} = {}) {
+  const recipe = scenarioRecipe(recipeId);
+  const schedule = recipe.coverageSchedule;
+  if (schedule === undefined) {
+    throw new Error(`Scenario recipe "${recipeId}" has no coverage schedule.`);
+  }
+  const selectedDatasets = datasets === undefined
+    ? [...recipe.datasets]
+    : [...datasets];
+  if (
+    selectedDatasets.length === 0 ||
+    new Set(selectedDatasets).size !== selectedDatasets.length ||
+    selectedDatasets.some(dataset => !recipe.datasets.includes(dataset))
+  ) {
+    throw new Error(
+      `Scenario recipe "${recipeId}" schedule plan requires unique supported datasets.`
+    );
+  }
+  const contract = collectFactorValueRequirements([recipe], selectedDatasets);
+  const requirements = contract.scheduleRequirementsByRecipe.get(recipe.id) ?? [];
+  const datasetIndexes = new Map(
+    selectedDatasets.map((dataset, index) => [dataset, index])
+  );
+  const eligibleRecipeDatasets = contract.eligibleRecipeDatasets.get(recipe.id) ?? new Set();
+  const globalState = {
+    factorPools: new Map(),
+    attemptedFactorCases: new Map(),
+    baselineFactorCases: new Set(),
+    recipeCounts: new Map(),
+    factorValueCounts: new Map(),
+    factorValueDatasets: new Map(),
+    factorRequirements: contract.requirements,
+    factorPairs: new Set(),
+    factorCaseCounts: new Map(),
+    scheduleFulfillment: new Map(),
+    scheduleRequirements: contract.scheduleRequirements,
+    scheduleRequirementsByRecipe: contract.scheduleRequirementsByRecipe,
+    datasetIndexes,
+    strict: true
+  };
+  const assignments = [];
+  const unavailable = [];
+  const exhausted = [];
+  let eligibleOrdinal = 0;
+  for (const dataset of selectedDatasets) {
+    if (!eligibleRecipeDatasets.has(dataset)) continue;
+    eligibleOrdinal += 1;
+    const pacingTarget = scenarioSelectionPacingTarget(
+      schedule.selectionVariantIds.length,
+      eligibleOrdinal,
+      eligibleRecipeDatasets.size
+    );
+    let variant = 0;
+    try {
+      while (assignments.length < schedule.selectionVariantIds.length) {
+        const [priority] = scenarioScheduleVariantPriorities(requirements, {
+          dataset,
+          datasetIndexes,
+          fulfillment: globalState.scheduleFulfillment
+        });
+        if (
+          priority === undefined ||
+          assignments.length >= pacingTarget && priority.deadlineUrgency === 0
+        ) break;
+        const selection = factorVariant(recipe, dataset, variant, globalState);
+        variant += 1;
+        if (selection === undefined) break;
+        if (selection.unavailable === true) {
+          unavailable.push(Object.freeze({
+            dataset,
+            scheduledVariantIds: selection.scheduledVariantIds
+          }));
+          break;
+        }
+        if (selection.exhausted === true) {
+          exhausted.push(Object.freeze({
+            dataset,
+            scheduledVariantId: selection.scheduledVariantId,
+            eligibleFactorCases: selection.eligibleFactorCases
+          }));
+          break;
+        }
+        recordFactorSelection(recipe, selection, globalState);
+        globalState.recipeCounts.set(
+          recipe.id,
+          (globalState.recipeCounts.get(recipe.id) ?? 0) + 1
+        );
+        assignments.push(Object.freeze({
+          recipe: recipe.id,
+          factor: schedule.factor,
+          variantId: scheduledValueId(selection.factors[schedule.factor]),
+          dataset
+        }));
+      }
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      globalState.factorPools.clear();
+      globalState.attemptedFactorCases.clear();
+      globalThis.gc?.();
+    }
+  }
+  const requirementReport = requirements.map(requirement => {
+    const observed = globalState.scheduleFulfillment.get(requirement.key);
+    const fulfilledCount = observed?.count ?? 0;
+    const fulfilledDatasetIds = [...(observed?.datasets ?? [])].sort();
+    return Object.freeze({
+      recipe: recipe.id,
+      factor: requirement.factor,
+      variantId: requirement.variantId,
+      scheduledCount: requirement.requiredCount,
+      fulfilledCount,
+      minimumDatasets: requirement.minimumDatasets,
+      fulfilledDatasets: fulfilledDatasetIds.length,
+      eligibleDatasetCount: requirement.eligibleDatasets.size,
+      fulfilledDatasetIds: Object.freeze(fulfilledDatasetIds),
+      missingCount: Math.max(0, requirement.requiredCount - fulfilledCount),
+      missingDatasets: Math.max(
+        0,
+        requirement.minimumDatasets - fulfilledDatasetIds.length
+      )
+    });
+  });
+  return Object.freeze({
+    recipe: recipe.id,
+    factor: schedule.factor,
+    assignments: Object.freeze(assignments),
+    requirements: Object.freeze(requirementReport),
+    unavailable: Object.freeze(unavailable),
+    exhausted: Object.freeze(exhausted),
+    complete: requirementReport.every(requirement =>
+      requirement.missingCount === 0 && requirement.missingDatasets === 0
+    ) && unavailable.length === 0 && exhausted.length === 0
+  });
 }
 
 function factorValueRequirementReport(globalState, descriptors) {
@@ -1106,6 +1498,23 @@ function recipePacingDeficit(recipe, dataset, count, selectionTarget, globalStat
   return Math.max(0, pacedTarget - count);
 }
 
+function recipeSchedulePriority(recipe, dataset, globalState) {
+  const requirements = globalState.scheduleRequirementsByRecipe.get(recipe.id) ?? [];
+  if (requirements.length === 0) {
+    return { deadlineUrgency: 0, newDatasetDeficit: 0, occurrenceDeficit: 0 };
+  }
+  const [priority] = scenarioScheduleVariantPriorities(requirements, {
+    dataset,
+    datasetIndexes: globalState.datasetIndexes,
+    fulfillment: globalState.scheduleFulfillment
+  });
+  return priority ?? {
+    deadlineUrgency: 0,
+    newDatasetDeficit: 0,
+    occurrenceDeficit: 0
+  };
+}
+
 function recipeSelectionPriority(recipe, dataset, globalState) {
   const count = globalState.recipeCounts.get(recipe.id) ?? 0;
   const minimum = minimumSelections(recipe);
@@ -1121,6 +1530,9 @@ function recipeSelectionPriority(recipe, dataset, globalState) {
     selectionTarget,
     globalState
   );
+  const schedulePriority = globalState.strict
+    ? recipeSchedulePriority(recipe, dataset, globalState)
+    : { deadlineUrgency: 0, newDatasetDeficit: 0, occurrenceDeficit: 0 };
   let urgentFactorDatasets = 0;
   let newFactorDatasetDeficit = 0;
   if (globalState.strict) {
@@ -1134,6 +1546,7 @@ function recipeSelectionPriority(recipe, dataset, globalState) {
   const datasets = globalState.recipeDatasets.get(recipe.id) ?? new Set();
   const needsNewDataset = minimum > 0 && datasets.size < 3 && !datasets.has(dataset);
   return {
+    scheduleDeadlineUrgency: schedulePriority.deadlineUrgency,
     urgentFactorDatasets,
     pacingDeficit,
     newFactorDatasetDeficit,
@@ -1149,7 +1562,8 @@ function recipeSelectionPriority(recipe, dataset, globalState) {
 function compareRecipePriority(left, right, dataset, globalState) {
   const leftPriority = recipeSelectionPriority(left, dataset, globalState);
   const rightPriority = recipeSelectionPriority(right, dataset, globalState);
-  return rightPriority.urgentFactorDatasets - leftPriority.urgentFactorDatasets ||
+  return rightPriority.scheduleDeadlineUrgency - leftPriority.scheduleDeadlineUrgency ||
+    rightPriority.urgentFactorDatasets - leftPriority.urgentFactorDatasets ||
     rightPriority.pacingDeficit - leftPriority.pacingDeficit ||
     rightPriority.newFactorDatasetDeficit - leftPriority.newFactorDatasetDeficit ||
     rightPriority.targetUnmet - leftPriority.targetUnmet ||
@@ -1211,7 +1625,8 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
     );
     if (ordered.length === 0) break;
     const leadingPriority = recipeSelectionPriority(ordered[0], dataset, globalState);
-    const recipe = leadingPriority.urgentFactorDatasets > 0 ||
+    const recipe = leadingPriority.scheduleDeadlineUrgency > 0 ||
+      leadingPriority.urgentFactorDatasets > 0 ||
       leadingPriority.pacingDeficit > 0
       ? ordered[0]
       : ordered[schedulingIterations % Math.min(ordered.length, 4)];
@@ -1222,6 +1637,17 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
     try {
       const selection = factorVariant(recipe, dataset, variant, globalState);
       if (selection === undefined) continue;
+      if (selection.unavailable === true) {
+        disabledRecipes.add(recipe.id);
+        globalState.skips.push(Object.freeze({
+          dataset,
+          complexity,
+          recipe: recipe.id,
+          reason: "scheduled-factor-unavailable-for-dataset",
+          scheduledVariantIds: selection.scheduledVariantIds
+        }));
+        continue;
+      }
       if (selection.exhausted === true) {
         disabledRecipes.add(recipe.id);
         globalState.skips.push(Object.freeze({
@@ -1353,6 +1779,7 @@ function generateRealisticDescriptors(recipeIds, limit, strictScheduling) {
     assertFactorRequirementFeasibility(
       recipes,
       factorRequirements,
+      requirementContract.scheduleRequirements,
       factorSelectionTargets
     );
   }
@@ -1371,6 +1798,8 @@ function generateRealisticDescriptors(recipeIds, limit, strictScheduling) {
     factorRequirementsByRecipe: requirementsByRecipe,
     factorSelectionTargets,
     eligibleRecipeDatasets: requirementContract.eligibleRecipeDatasets,
+    scheduleRequirements: requirementContract.scheduleRequirements,
+    scheduleRequirementsByRecipe: requirementContract.scheduleRequirementsByRecipe,
     datasetIndexes: new Map(datasets.map((dataset, index) => [dataset, index])),
     factorPairs: new Set(),
     factorCaseCounts: new Map(),

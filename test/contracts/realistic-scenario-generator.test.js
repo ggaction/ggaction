@@ -14,8 +14,10 @@ import {
   REALISTIC_DATASET_QUOTAS,
   realisticScenarioDeclaredCapacityReport,
   runScenario,
+  scenarioCoverageSchedulePlan,
   scenarioFactorCandidateDomainReport,
-  scenarioGenerationDiagnostics
+  scenarioGenerationDiagnostics,
+  scenarioScheduleVariantPriorities
 } from "../support/scenarios/engine.js";
 import { REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES } from
   "../support/scenarios/realistic-cartesian-facade-coverage-recipes.js";
@@ -562,6 +564,90 @@ test("advances past exhausted factor domains under strict scheduling", () => {
     diagnostics.acceptedCandidates + diagnostics.rejectedCandidates +
       diagnostics.duplicateCandidates
   );
+});
+
+test("prioritizes a scheduled variant on its last eligible dataset", () => {
+  const priorities = scenarioScheduleVariantPriorities([
+    {
+      key: "flexible",
+      variantId: "flexible",
+      requiredCount: 5,
+      minimumDatasets: 1,
+      order: 0,
+      eligibleDatasets: new Set(["current", "later"])
+    },
+    {
+      key: "last-chance",
+      variantId: "last-chance",
+      requiredCount: 5,
+      minimumDatasets: 1,
+      order: 1,
+      eligibleDatasets: new Set(["current"])
+    }
+  ], {
+    dataset: "current",
+    datasetIndexes: new Map([["current", 0], ["later", 1]]),
+    fulfillment: new Map([["last-chance", {
+      count: 4,
+      datasets: new Set(["earlier"])
+    }]])
+  });
+
+  assert.equal(priorities[0].variantId, "last-chance");
+  assert.equal(priorities[0].deadlineUrgency, 1);
+  assert.equal(priorities[0].occurrenceDeficit, 1);
+  assert.equal(priorities[1].variantId, "flexible");
+  assert.equal(priorities[1].deadlineUrgency, 0);
+  assert.equal(priorities[1].occurrenceDeficit, 5);
+});
+
+test("plans every heatmap schedule variant across eligible real datasets", () => {
+  const plan = scenarioCoverageSchedulePlan(
+    "realistic-statistical-facade-coverage-heatmap",
+    { datasets: realisticDatasetIds() }
+  );
+
+  assert.equal(plan.complete, true);
+  assert.equal(plan.assignments.length, 135);
+  assert.equal(plan.requirements.length, 27);
+  assert.deepEqual(plan.unavailable, []);
+  assert.deepEqual(plan.exhausted, []);
+  assert.equal(plan.requirements.every(requirement =>
+    requirement.scheduledCount === 5 &&
+    requirement.fulfilledCount === 5 &&
+    requirement.minimumDatasets === 3 &&
+    requirement.fulfilledDatasets >= 3 &&
+    requirement.missingCount === 0 &&
+    requirement.missingDatasets === 0
+  ), true);
+
+  const temporalVariantIds = new Set([
+    "heatmap-temporal-color",
+    "heatmap-temporal-soft",
+    "heatmap-temporal-reversed"
+  ]);
+  const temporalRequirements = plan.requirements.filter(requirement =>
+    temporalVariantIds.has(requirement.variantId)
+  );
+  assert.equal(temporalRequirements.length, 3);
+  assert.equal(temporalRequirements.every(requirement =>
+    requirement.eligibleDatasetCount === 31 &&
+    requirement.fulfilledCount === 5 &&
+    requirement.fulfilledDatasets >= 3
+  ), true);
+  for (const assignment of plan.assignments.filter(value =>
+    temporalVariantIds.has(value.variantId)
+  )) {
+    try {
+      assert.equal(
+        realisticDatasetRoles(assignment.dataset).temporal.length > 0,
+        true,
+        `${assignment.variantId}-${assignment.dataset}`
+      );
+    } finally {
+      releaseTidyTuesdaySourceCache(assignment.dataset);
+    }
+  }
 });
 
 test("observes lifecycle features from recipe-specific direct trace signatures", () => {
