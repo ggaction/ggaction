@@ -31,6 +31,8 @@ const REGRESSION_ANALYSIS_QUESTION =
   "How does the selected measure vary across stable source-record order within full-source-supported groups?";
 const STATISTICAL_ANALYSIS_QUESTION =
   "How do interval estimates and distribution shapes vary across source time and observed categories?";
+const DERIVED_ENCODING_ANALYSIS_QUESTION =
+  "How do overall temporal horizon patterns, histograms, and category densities describe the selected measure?";
 const SELECTOR_CHANNELS = Object.freeze([
   "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
   "color", "strokeDash", "size", "shape", "group", "opacity"
@@ -238,6 +240,7 @@ function regressionLifecycleView(dataset) {
 }
 
 function extendedView(dataset, kind, {
+  derivedEncodingProjection = false,
   singleSeriesProjection = false,
   statisticalProjection = false
 } = {}) {
@@ -282,6 +285,7 @@ function extendedView(dataset, kind, {
       series: singleSeriesValue ??
         String(row.series ?? row.group ?? row.category ?? `Series ${index % 3}`),
       ...(statisticalProjection ? { bandGroup: "All observations" } : {}),
+      ...(derivedEncodingProjection ? { horizonGroup: "All observations" } : {}),
       label: String(row.label ?? row.category ?? row.group ?? row.id ?? index + 1),
       size: Math.abs(Number.isFinite(row.size) ? row.size : first) + 1,
       opacity: Number.isFinite(row.opacity) ? Math.max(0, Math.min(1, row.opacity)) : 0.7,
@@ -316,6 +320,15 @@ function extendedView(dataset, kind, {
               derivedField: "bandGroup",
               value: "All observations",
               purpose: "form one truthful overall bar-and-band cohort without dropping rows or changing source categories"
+            })]
+          : []),
+        ...(derivedEncodingProjection
+          ? [freeze({
+              op: "overall-horizon-cohort-projection",
+              groupProjection: "all-observations",
+              derivedField: "horizonGroup",
+              value: "All observations",
+              purpose: "form one truthful overall horizon cohort without dropping rows or changing source categories"
             })]
           : [])
       ]
@@ -1276,15 +1289,22 @@ function horizonYScale(id, index) {
 }
 
 function buildDerivedEncodingCoverage(factors) {
-  const { view, program: initial } = createBase(factors.dataset, "temporal");
+  const { view, program: initial } = createBase(
+    factors.dataset,
+    "temporal",
+    "analysisRows",
+    { derivedEncodingProjection: true }
+  );
   let program = initial;
   const quantitativeTypes = ["linear", "log", "pow", "sqrt", "symlog"];
   const values = view.rows.map(row => row.positiveY).sort((left, right) => left - right);
   const minimum = values[0];
   const maximum = values.at(-1);
-  const boundaries = Array.from({ length: 9 }, (_, index) =>
-    minimum + (maximum - minimum) * index / 8
-  );
+  const boundaries = Array.from({ length: 9 }, (_, index) => {
+    if (index === 0) return minimum;
+    if (index === 8) return maximum;
+    return minimum + (maximum - minimum) * index / 8;
+  });
 
   for (const [index, type] of quantitativeTypes.entries()) {
     const target = index === 0 ? "horizonOwner" : `horizon-${type}`;
@@ -1304,7 +1324,7 @@ function buildDerivedEncodingCoverage(factors) {
         fieldType: "quantitative",
         scale: horizonYScale(`horizon-y-${type}`, index)
       },
-      groupBy: "group",
+      groupBy: "horizonGroup",
       bands: 3,
       baseline: 0,
       extent: "auto",
@@ -1330,7 +1350,7 @@ function buildDerivedEncodingCoverage(factors) {
       fieldType: "quantitative",
       scale: horizonYScale("horizon-y-time", 1)
     },
-    groupBy: "group",
+    groupBy: "horizonGroup",
     bands: 3,
     baseline: 0,
     extent: "auto",
@@ -1375,7 +1395,7 @@ function buildDerivedEncodingCoverage(factors) {
         fieldType: "quantitative",
         scale: horizonYScale("horizon-y-linear", index + 1)
       },
-      groupBy: "group",
+      groupBy: "horizonGroup",
       bands: 3,
       baseline: 0,
       extent: "auto",
@@ -1398,7 +1418,7 @@ function buildDerivedEncodingCoverage(factors) {
       fieldType: "quantitative",
       scale: horizonYScale("horizon-y-linear", 1)
     },
-    groupBy: "group",
+    groupBy: "horizonGroup",
     bands: 3,
     baseline: 0,
     extent: "auto",
@@ -1552,7 +1572,12 @@ function buildDerivedEncodingCoverage(factors) {
       placement
     });
   }
-  return finish(program, factors.dataset, "Horizon, histogram, and density lifecycle coverage");
+  return finish(
+    program,
+    factors.dataset,
+    "Horizon, histogram, and density lifecycle coverage",
+    DERIVED_ENCODING_ANALYSIS_QUESTION
+  );
 }
 
 function addRegressionPoint(program, id, opacity = 0.2) {
@@ -1898,6 +1923,7 @@ function buildFacetCoverage(factors) {
 
 function metadataFor(recipe, factors) {
   const view = extendedView(factors.dataset, recipe.kind, {
+    derivedEncodingProjection: recipe.derivedEncodingProjection,
     singleSeriesProjection: recipe.singleSeriesProjection,
     statisticalProjection: recipe.statisticalProjection
   });
@@ -1913,7 +1939,9 @@ function metadataFor(recipe, factors) {
       ? REGRESSION_ANALYSIS_QUESTION
       : recipe.statisticalProjection
         ? STATISTICAL_ANALYSIS_QUESTION
-        : DEFAULT_ANALYSIS_QUESTION,
+        : recipe.derivedEncodingProjection
+          ? DERIVED_ENCODING_ANALYSIS_QUESTION
+          : DEFAULT_ANALYSIS_QUESTION,
     sourceFields: fields,
     ...(view.sample === undefined ? {} : { sampling: view.sample }),
     provenance: view.provenance,
@@ -1944,6 +1972,7 @@ function makeRecipe({
   kind,
   build,
   expectedDirectActions,
+  derivedEncodingProjection = false,
   singleSeriesProjection = false,
   statisticalProjection = false
 }) {
@@ -1962,6 +1991,7 @@ function makeRecipe({
     minimumSelections: coverageSchedule.minimumSelections,
     kind,
     family,
+    derivedEncodingProjection,
     singleSeriesProjection,
     statisticalProjection,
     factorsForDataset(dataset) {
@@ -2130,6 +2160,7 @@ const DERIVED_ENCODING_RECIPE = makeRecipe({
   family: "direct-lifecycle-derived-encoding",
   complexity: "composite",
   kind: "temporal",
+  derivedEncodingProjection: true,
   build: buildDerivedEncodingCoverage,
   expectedDirectActions: [
     "encodeHorizon", "editHorizon", "encodeHistogram", "encodeDensity", "editDensity"

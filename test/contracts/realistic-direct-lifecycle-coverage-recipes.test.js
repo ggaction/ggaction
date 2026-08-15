@@ -77,6 +77,12 @@ const STATISTICAL_SWEEP_TEST_NAME =
   "preflights the maximal statistical profile on all temporal-eligible TT datasets";
 const STATISTICAL_ANALYSIS_QUESTION =
   "How do interval estimates and distribution shapes vary across source time and observed categories?";
+const DERIVED_SWEEP_CHILD_ENV = "GGACTION_DIRECT_DERIVED_SWEEP_CHILD";
+const DERIVED_SWEEP_RESOURCE_PREFIX = "direct-derived-sweep-resource:";
+const DERIVED_SWEEP_TEST_NAME =
+  "preflights the maximal derived-encoding profile on all temporal-eligible TT datasets";
+const DERIVED_ENCODING_ANALYSIS_QUESTION =
+  "How do overall temporal horizon patterns, histograms, and category densities describe the selected measure?";
 let inventoryPromise = buildPublicOptionInventory(JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
   "utf8"
@@ -890,6 +896,292 @@ test("keeps the assigned single-series operation truthful and removal-only", () 
     releaseTidyTuesdaySourceCache(dataset);
   }
   collectGarbage();
+});
+
+test("uses one truthful horizon cohort for sparse Nuclear Explosion purposes", () => {
+  const dataset = "tt-nuclear-explosions";
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-derived-encoding-coverage"
+  );
+  const factors = { dataset, profile: { id: "maximal" } };
+  let captured = false;
+  try {
+    const result = runScenario({
+      id: "regression-direct-derived-encoding-nuclear-explosions",
+      recipe: recipe.id,
+      factors
+    }, {
+      deterministic: false,
+      captureProgram(program) {
+        captured = true;
+        const metadata = recipe.describe(factors);
+        const rows = program.semanticSpec.datasets.find(value =>
+          value.id === "analysisRows"
+        ).values;
+        const sourceByIndex = new Map(tidyTuesdaySourceEntries(dataset).map(entry => [
+          entry.sourceRowIndex,
+          entry.row
+        ]));
+        assert.equal(rows.length, 160);
+        assert.deepEqual(
+          Object.fromEntries([...new Set(rows.map(row => row.group))].map(group => [
+            group,
+            rows.filter(row => row.group === group).length
+          ])),
+          {
+            WR: 117,
+            WE: 20,
+            SE: 6,
+            FMS: 3,
+            SAM: 1,
+            "PNE:PLO": 4,
+            PNE: 8,
+            "WR/SE": 1
+          }
+        );
+        for (const row of rows) {
+          const source = sourceByIndex.get(row.sourceRowIndex);
+          assert.notEqual(source, undefined);
+          assert.equal(row.group, String(source.purpose));
+          assert.equal(row.category, String(source.purpose));
+        }
+        assert.deepEqual([...new Set(rows.map(row => row.horizonGroup))], [
+          "All observations"
+        ]);
+        assert.deepEqual(
+          metadata.provenance.transformations.find(value =>
+            value.op === "overall-horizon-cohort-projection"
+          ),
+          {
+            op: "overall-horizon-cohort-projection",
+            groupProjection: "all-observations",
+            derivedField: "horizonGroup",
+            value: "All observations",
+            purpose:
+              "form one truthful overall horizon cohort without dropping rows or changing source categories"
+          }
+        );
+        assert.equal(metadata.provenance.sourceRowCount, 160);
+        assert.equal(
+          metadata.provenance.sourceSelectionSha256,
+          "2e8226c4924e481312697ea34b8c2b3d0eeb8ec320e2bb1ff6f406b8914c270d"
+        );
+        assert.equal(
+          createHash("sha256")
+            .update(metadata.provenance.sourceRowIndexes.join(","))
+            .digest("hex"),
+          metadata.provenance.sourceSelectionSha256
+        );
+        const encodedHorizons = program.trace.children.filter(value =>
+          value.op === "encodeHorizon"
+        );
+        const editedHorizons = program.trace.children.filter(value =>
+          value.op === "editHorizon"
+        );
+        assert.equal(encodedHorizons.length, 6);
+        assert.ok(encodedHorizons.every(value =>
+          value.args.groupBy === "horizonGroup"
+        ));
+        assert.equal(editedHorizons.length, 6);
+        assert.equal(
+          editedHorizons.filter(value => value.args.groupBy === "horizonGroup").length,
+          5
+        );
+        assert.equal(
+          editedHorizons.filter(value => value.args.groupBy === false).length,
+          1
+        );
+        assert.equal(metadata.analysisQuestion, DERIVED_ENCODING_ANALYSIS_QUESTION);
+        assert.equal(
+          program.semanticSpec.title.subtitle,
+          DERIVED_ENCODING_ANALYSIS_QUESTION
+        );
+        assert.deepEqual(recipe.observeFactors(program, factors), [{
+          factor: "profile",
+          value: { id: "maximal" },
+          evidence:
+            "direct-root-trace:maximal-lifecycle-actions;final:graphic-program"
+        }]);
+        assert.deepEqual(recipe.observe(program, factors), []);
+        assertGraphicIntegrity(program, dataset);
+        assertAnalyticLayerIntegrity(program, dataset);
+        assertSvgIntegrity(renderToSVG(program), dataset);
+      }
+    });
+    assert.equal(captured, true);
+    assert.deepEqual(result.renderers, ["svg"]);
+    for (const operation of recipe.expectedDirectActions) {
+      assert.ok(result.directOperations.includes(operation), operation);
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
+});
+
+test(DERIVED_SWEEP_TEST_NAME, () => {
+  if (process.env[DERIVED_SWEEP_CHILD_ENV] !== "1") {
+    runSweepInDisposableProcess({
+      childEnvironmentName: DERIVED_SWEEP_CHILD_ENV,
+      expectedResources: {
+        builds: 31,
+        eligibleDatasets: 31,
+        skippedDatasets: 19,
+        minimumRows: 8,
+        maximumRows: 160,
+        maximumGroups: 8
+      },
+      resourcePrefix: DERIVED_SWEEP_RESOURCE_PREFIX,
+      testName: DERIVED_SWEEP_TEST_NAME
+    });
+    return;
+  }
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-derived-encoding-coverage"
+  );
+  const allDatasets = realisticDatasetIds();
+  const skipped = allDatasets.filter(dataset => !recipe.datasets.includes(dataset));
+  assert.equal(allDatasets.length, 50);
+  assert.equal(recipe.datasets.length, 31);
+  assert.equal(skipped.length, 19);
+  assert.ok(skipped.every(dataset =>
+    realisticDatasetSupports(dataset, "temporal") === false
+  ));
+  let builds = 0;
+  let minimumRows = Number.POSITIVE_INFINITY;
+  let maximumRows = 0;
+  let maximumGroups = 0;
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      const profile = domains?.profile.find(value => value.id === "maximal");
+      assert.notEqual(profile, undefined, `${dataset} maximal derived eligibility`);
+      const factors = { dataset, profile };
+      let captured = false;
+      const result = runScenario({
+        id: `preflight-direct-derived-${dataset}`,
+        recipe: recipe.id,
+        factors
+      }, {
+        deterministic: false,
+        captureProgram(program) {
+          captured = true;
+          const metadata = recipe.describe(factors);
+          const rows = program.semanticSpec.datasets.find(value =>
+            value.id === "analysisRows"
+          ).values;
+          const horizonGroups = new Map();
+          for (const row of rows) {
+            horizonGroups.set(
+              row.horizonGroup,
+              (horizonGroups.get(row.horizonGroup) ?? 0) + 1
+            );
+          }
+          assert.deepEqual([...horizonGroups], [["All observations", rows.length]]);
+          assert.ok(rows.length >= 2, `${dataset} horizon cohort points`);
+          assert.ok(
+            new Set(rows.map(row => row.group)).size >= 1,
+            `${dataset} authentic groups remain`
+          );
+          assert.deepEqual(
+            metadata.provenance.transformations.find(value =>
+              value.op === "overall-horizon-cohort-projection"
+            ),
+            {
+              op: "overall-horizon-cohort-projection",
+              groupProjection: "all-observations",
+              derivedField: "horizonGroup",
+              value: "All observations",
+              purpose:
+                "form one truthful overall horizon cohort without dropping rows or changing source categories"
+            },
+            dataset
+          );
+          assert.equal(metadata.provenance.sourceRowCount, rows.length, dataset);
+          assert.equal(
+            createHash("sha256")
+              .update(metadata.provenance.sourceRowIndexes.join(","))
+              .digest("hex"),
+            metadata.provenance.sourceSelectionSha256,
+            dataset
+          );
+          const encodedHorizons = program.trace.children.filter(value =>
+            value.op === "encodeHorizon"
+          );
+          const editedHorizons = program.trace.children.filter(value =>
+            value.op === "editHorizon"
+          );
+          assert.equal(encodedHorizons.length, 6, `${dataset} encoded horizons`);
+          assert.ok(encodedHorizons.every(value =>
+            value.args.groupBy === "horizonGroup"
+          ), `${dataset} encoded overall horizons`);
+          assert.equal(editedHorizons.length, 6, `${dataset} edited horizons`);
+          assert.equal(
+            editedHorizons.filter(value =>
+              value.args.groupBy === "horizonGroup"
+            ).length,
+            5,
+            `${dataset} edited overall horizons`
+          );
+          assert.equal(
+            editedHorizons.filter(value => value.args.groupBy === false).length,
+            1,
+            `${dataset} ungrouped edit witness`
+          );
+          assert.equal(
+            program.trace.children.filter(value =>
+              value.op === "encodeHistogram"
+            ).length,
+            5,
+            `${dataset} histogram variants`
+          );
+          assert.equal(metadata.analysisQuestion, DERIVED_ENCODING_ANALYSIS_QUESTION);
+          assert.equal(
+            program.semanticSpec.title.subtitle,
+            DERIVED_ENCODING_ANALYSIS_QUESTION
+          );
+          assert.deepEqual(recipe.observeFactors(program, factors), [{
+            factor: "profile",
+            value: { id: "maximal" },
+            evidence:
+              "direct-root-trace:maximal-lifecycle-actions;final:graphic-program"
+          }], `${dataset} maximal factor effect`);
+          assert.deepEqual(recipe.observe(program, factors), []);
+          assertGraphicIntegrity(program, dataset);
+          assertAnalyticLayerIntegrity(program, dataset);
+          assertSvgIntegrity(renderToSVG(program), dataset);
+          minimumRows = Math.min(minimumRows, rows.length);
+          maximumRows = Math.max(maximumRows, rows.length);
+          maximumGroups = Math.max(
+            maximumGroups,
+            new Set(rows.map(row => row.group)).size
+          );
+        }
+      });
+      assert.equal(captured, true, dataset);
+      assert.deepEqual(result.renderers, ["svg"], dataset);
+      for (const operation of recipe.expectedDirectActions) {
+        assert.ok(result.directOperations.includes(operation), `${dataset} ${operation}`);
+      }
+      builds += 1;
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      collectGarbage();
+    }
+  }
+  assert.equal(builds, 31);
+  collectGarbage();
+  const maxRssKiB = process.resourceUsage().maxRSS;
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  console.log(`${DERIVED_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
+    builds,
+    eligibleDatasets: recipe.datasets.length,
+    skippedDatasets: skipped.length,
+    minimumRows,
+    maximumRows,
+    maximumGroups,
+    maxRssKiB
+  })}`);
 });
 
 test("uses one truthful statistical cohort for sparse Nuclear Explosion bands", () => {
