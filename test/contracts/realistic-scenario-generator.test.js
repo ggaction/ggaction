@@ -11,9 +11,17 @@ import { releaseTidyTuesdaySourceCache, tidyTuesdaySourceEntries } from
 import {
   buildScenario,
   generateScenarioDescriptors,
+  REALISTIC_DATASET_QUOTAS,
+  realisticScenarioDeclaredCapacityReport,
   runScenario,
   scenarioGenerationDiagnostics
 } from "../support/scenarios/engine.js";
+import { REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES } from
+  "../support/scenarios/realistic-cartesian-facade-coverage-recipes.js";
+import { REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES } from
+  "../support/scenarios/realistic-direct-lifecycle-coverage-recipes.js";
+import { REALISTIC_ENCODING_COVERAGE_RECIPES } from
+  "../support/scenarios/realistic-encoding-coverage-recipes.js";
 import {
   REALISTIC_LIFECYCLE_COUNTS,
   REALISTIC_LIFECYCLE_SCENARIO_RECIPES
@@ -24,6 +32,10 @@ import {
   REALISTIC_SCENARIO_RECIPES,
   scenarioRecipe
 } from "../support/scenarios/recipes.js";
+import { REALISTIC_DATA_MARK_SCENARIO_RECIPES } from
+  "../support/scenarios/realistic-data-mark-recipes.js";
+import { REALISTIC_GUIDE_SCALE_RECIPES } from
+  "../support/scenarios/realistic-guide-scale-recipes.js";
 import {
   realisticDatasetIds,
   realisticDatasetRoles,
@@ -35,12 +47,14 @@ import {
 } from "../support/scenarios/realistic-data.js";
 import { REALISTIC_ANALYSIS_COUNTS, REALISTIC_ANALYSIS_RECIPES } from
   "../support/scenarios/realistic-recipes.js";
+import { REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES } from
+  "../support/scenarios/realistic-statistical-facade-coverage-recipes.js";
 
 const EXPECTED_TIERS = Object.freeze({
-  simple: 14,
-  intermediate: 28,
-  advanced: 22,
-  composite: 8
+  simple: 11,
+  intermediate: 26,
+  advanced: 28,
+  composite: 7
 });
 
 function countBy(values, keyFor) {
@@ -52,14 +66,38 @@ function countBy(values, keyFor) {
   return counts;
 }
 
+function actualFactorTargets(requirements) {
+  const domains = new Map();
+  for (const requirement of requirements) {
+    const key = `${requirement.recipe}\0${requirement.factor}`;
+    if (!domains.has(key)) domains.set(key, new Set());
+    domains.get(key).add(requirement.valueKey);
+  }
+  const byTier = Object.fromEntries(
+    Object.keys(EXPECTED_TIERS).map(complexity => [complexity, 0])
+  );
+  const byRecipe = {};
+  for (const recipe of REALISTIC_SCENARIO_RECIPES) {
+    const minimum = recipe.minimumSelections ??
+      recipe.coverageSchedule?.minimumSelections ?? 5;
+    const largestDomain = Math.max(0, ...[...domains]
+      .filter(([key]) => key.startsWith(`${recipe.id}\0`))
+      .map(([, values]) => values.size));
+    const target = Math.max(minimum, largestDomain * 3);
+    byRecipe[recipe.id] = target;
+    byTier[recipe.complexity] += target;
+  }
+  return { byRecipe, byTier };
+}
+
 test("owns exactly fifty real TidyTuesday sources and the integrated realistic recipe set", () => {
   const datasets = realisticDatasetIds();
   assert.equal(datasets.length, 50);
   assert.equal(new Set(datasets).size, 50);
   assert.equal(datasets.every(id => datasetDefinition(id).corpus === "tidytuesday"), true);
 
-  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 94);
-  assert.equal(new Set(REALISTIC_SCENARIO_RECIPES.map(recipe => recipe.id)).size, 94);
+  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 111);
+  assert.equal(new Set(REALISTIC_SCENARIO_RECIPES.map(recipe => recipe.id)).size, 111);
   assert.deepEqual(REALISTIC_ANALYSIS_COUNTS, {
     simple: 14,
     intermediate: 28,
@@ -70,12 +108,73 @@ test("owns exactly fifty real TidyTuesday sources and the integrated realistic r
   assert.deepEqual(countBy(
     REALISTIC_SCENARIO_RECIPES,
     recipe => recipe.complexity
-  ), { simple: 15, intermediate: 34, advanced: 36, composite: 9 });
+  ), { simple: 16, intermediate: 38, advanced: 41, composite: 16 });
   assert.equal(REALISTIC_SCENARIO_RECIPES.every(recipe =>
     recipe.suite === "realistic" && recipe.datasets.length > 0 &&
     recipe.datasets.every(id => datasets.includes(id))
   ), true);
   assert.equal(REALISTIC_REQUIRED_FEATURES.length > 0, true);
+});
+
+test("integrates every coverage recipe once with bounded tier capacity", () => {
+  const expectedRegistry = [
+    ...REALISTIC_ANALYSIS_RECIPES,
+    ...REALISTIC_LIFECYCLE_SCENARIO_RECIPES,
+    ...REALISTIC_DATA_MARK_SCENARIO_RECIPES,
+    ...REALISTIC_GUIDE_SCALE_RECIPES,
+    ...REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES,
+    ...REALISTIC_ENCODING_COVERAGE_RECIPES,
+    ...REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES,
+    ...REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES
+  ];
+  assert.deepEqual(
+    REALISTIC_SCENARIO_RECIPES.map(recipe => recipe.id),
+    expectedRegistry.map(recipe => recipe.id)
+  );
+  assert.deepEqual(REALISTIC_DATASET_QUOTAS, EXPECTED_TIERS);
+
+  const report = realisticScenarioDeclaredCapacityReport();
+  assert.equal(report.datasetCount, 50);
+  assert.deepEqual(report.recipeCounts, {
+    simple: 16,
+    intermediate: 38,
+    advanced: 41,
+    composite: 16
+  });
+  assert.deepEqual(report.minimumSelections, {
+    simple: 90,
+    intermediate: 1_094,
+    advanced: 1_345,
+    composite: 90
+  });
+  assert.deepEqual(report.declaredFactorSelectionTargets, {
+    simple: 179,
+    intermediate: 1_278,
+    advanced: 1_374,
+    composite: 101
+  });
+  assert.deepEqual(report.capacity, {
+    simple: 550,
+    intermediate: 1_300,
+    advanced: 1_400,
+    composite: 350
+  });
+  assert.equal(Object.values(REALISTIC_DATASET_QUOTAS)
+    .reduce((sum, count) => sum + count, 0), 72);
+  assert.equal(Object.values(report.capacity)
+    .reduce((sum, count) => sum + count, 0), 3_600);
+  for (const complexity of Object.keys(EXPECTED_TIERS)) {
+    assert.equal(
+      report.minimumSelections[complexity] <= report.capacity[complexity],
+      true,
+      `${complexity} minimum-selection capacity`
+    );
+    assert.equal(
+      report.declaredFactorSelectionTargets[complexity] <= report.capacity[complexity],
+      true,
+      `${complexity} factor-target capacity`
+    );
+  }
 });
 
 test("does not advertise impossible outliers for min-max whiskers", () => {
@@ -241,7 +340,7 @@ test("preflights one balanced dataset quota with truthful metadata and replay", 
     assert.equal(diagnostics.factorValueRequirements.some(requirement =>
       requirement.recipe === "realistic-strip-points" &&
       requirement.factor === "titleAlign" && requirement.value === "left" &&
-      requirement.eligibleDatasetCount === 50
+      requirement.eligibleDatasetCount === 1
     ), true);
     assert.equal(REALISTIC_SCENARIO_RECIPES.every(recipe =>
       recipe.coverageSchedule === undefined ||
@@ -410,13 +509,25 @@ test("records unsupported dataset recipes as skips without preflight rejection l
   assert.equal(diagnostics.factorPairCount > 0, true);
   assert.equal(Object.values(diagnostics.factorValueOccurrences)
     .reduce((sum, count) => sum + count, 0) > descriptors.length, true);
+  const actualTargets = actualFactorTargets(diagnostics.factorValueRequirements);
+  const declaredCapacity = realisticScenarioDeclaredCapacityReport();
+  assert.deepEqual(
+    actualTargets.byRecipe,
+    declaredCapacity.declaredFactorSelectionTargetsByRecipe
+  );
+  assert.deepEqual(
+    actualTargets.byTier,
+    declaredCapacity.declaredFactorSelectionTargets
+  );
   assert.throws(() => scenarioGenerationDiagnostics([...descriptors]));
-  const stripFactors = descriptors
-    .filter(descriptor => descriptor.recipe === "realistic-strip-points")
+  const sampledFactors = descriptors
+    .filter(descriptor =>
+      descriptor.recipe === "realistic-guide-scale-vocabulary-primary"
+    )
     .map(descriptor => Object.fromEntries(Object.entries(descriptor.factors)
       .filter(([name]) => !["dataset", "fieldPair"].includes(name))));
-  assert.equal(stripFactors.length >= 2, true);
-  assert.equal(new Set(stripFactors.map(value => JSON.stringify(value))).size >= 2, true);
+  assert.equal(sampledFactors.length >= 2, true);
+  assert.equal(new Set(sampledFactors.map(value => JSON.stringify(value))).size >= 2, true);
 });
 
 test("observes lifecycle features from recipe-specific direct trace signatures", () => {

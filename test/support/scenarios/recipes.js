@@ -20,8 +20,17 @@ import {
   REALISTIC_GUIDE_SCALE_RECIPES
 } from "./realistic-guide-scale-recipes.js";
 import {
-  REALISTIC_FACADE_OPTION_RECIPES
-} from "./realistic-facade-option-recipes.js";
+  REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES
+} from "./realistic-cartesian-facade-coverage-recipes.js";
+import {
+  REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES
+} from "./realistic-direct-lifecycle-coverage-recipes.js";
+import {
+  REALISTIC_ENCODING_COVERAGE_RECIPES
+} from "./realistic-encoding-coverage-recipes.js";
+import {
+  REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES
+} from "./realistic-statistical-facade-coverage-recipes.js";
 import {
   barRows,
   boxRows,
@@ -831,7 +840,10 @@ export const REALISTIC_SCENARIO_RECIPES = Object.freeze([
   ...REALISTIC_LIFECYCLE_SCENARIO_RECIPES,
   ...REALISTIC_DATA_MARK_SCENARIO_RECIPES,
   ...REALISTIC_GUIDE_SCALE_RECIPES,
-  ...REALISTIC_FACADE_OPTION_RECIPES
+  ...REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES,
+  ...REALISTIC_ENCODING_COVERAGE_RECIPES,
+  ...REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES,
+  ...REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES
 ]);
 
 export const REALISTIC_REQUIRED_FEATURES = Object.freeze([...new Set([

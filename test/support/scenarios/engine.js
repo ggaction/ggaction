@@ -15,11 +15,11 @@ import {
   scenarioRecipe
 } from "./recipes.js";
 
-const REALISTIC_DATASET_QUOTAS = Object.freeze({
-  simple: 14,
-  intermediate: 28,
-  advanced: 22,
-  composite: 8
+export const REALISTIC_DATASET_QUOTAS = Object.freeze({
+  simple: 11,
+  intermediate: 26,
+  advanced: 28,
+  composite: 7
 });
 const REALISTIC_COMPLEXITIES = Object.freeze(Object.keys(REALISTIC_DATASET_QUOTAS));
 const REALISTIC_CANDIDATE_GC_INTERVAL = 8;
@@ -97,6 +97,24 @@ function factorContractForDataset(recipe, dataset) {
     ? recipe.factors
     : recipe.factorsForDataset(dataset);
   if (factorValues === undefined) return undefined;
+  const scheduledFactor = recipe.coverageSchedule?.factor;
+  for (const [factor, domain] of Object.entries(factorValues)) {
+    if (["fieldPair", scheduledFactor].includes(factor)) continue;
+    if (!Array.isArray(domain) || domain.length === 0) {
+      throw new TypeError(
+        `Scenario recipe "${recipe.id}" factor "${factor}" must have a non-empty domain.`
+      );
+    }
+    const declared = recipe.factors[factor];
+    const declaredKeys = new Set((declared ?? []).map(stableValue));
+    const undeclared = domain.filter(value => !declaredKeys.has(stableValue(value)));
+    if (undeclared.length > 0) {
+      throw new Error(
+        `Scenario recipe "${recipe.id}" factor "${factor}" returned undeclared values ` +
+        `for dataset "${dataset}".`
+      );
+    }
+  }
   return Object.freeze({ dataset: Object.freeze([dataset]), ...factorValues });
 }
 
@@ -704,6 +722,58 @@ function assertMinimumSelectionCapacity(recipes) {
   }
 }
 
+export function realisticScenarioDeclaredCapacityReport(
+  recipes = REALISTIC_SCENARIO_RECIPES
+) {
+  const datasets = new Set(recipes.flatMap(recipe => recipe.datasets)
+    .filter(id => datasetDefinition(id).corpus === "tidytuesday"));
+  const declaredFactorTarget = recipe => {
+    const scheduledFactor = recipe.coverageSchedule?.factor;
+    const domainSizes = Object.entries(recipe.factors)
+      .filter(([factor]) => !["dataset", "fieldPair", scheduledFactor].includes(factor))
+      .map(([factor, domain]) => {
+        if (!Array.isArray(domain) || domain.length === 0) {
+          throw new TypeError(
+            `Scenario recipe "${recipe.id}" factor "${factor}" must have a non-empty domain.`
+          );
+        }
+        return new Set(domain.map(stableValue)).size;
+      });
+    return Math.max(
+      minimumSelections(recipe),
+      Math.max(0, ...domainSizes) * REALISTIC_FACTOR_VALUE_MINIMUM
+    );
+  };
+  const totals = valueFor => Object.freeze(Object.fromEntries(
+    REALISTIC_COMPLEXITIES.map(complexity => [
+      complexity,
+      recipes.filter(recipe => recipe.complexity === complexity)
+        .reduce((sum, recipe) => sum + valueFor(recipe), 0)
+    ])
+  ));
+  const declaredFactorSelectionTargetsByRecipe = Object.freeze(
+    Object.fromEntries(recipes.map(recipe => [
+      recipe.id,
+      declaredFactorTarget(recipe)
+    ]))
+  );
+  return Object.freeze({
+    datasetCount: datasets.size,
+    recipeCounts: totals(() => 1),
+    minimumSelections: totals(minimumSelections),
+    declaredFactorSelectionTargetsByRecipe,
+    declaredFactorSelectionTargets: totals(recipe =>
+      declaredFactorSelectionTargetsByRecipe[recipe.id]
+    ),
+    capacity: Object.freeze(Object.fromEntries(
+      REALISTIC_COMPLEXITIES.map(complexity => [
+        complexity,
+        REALISTIC_DATASET_QUOTAS[complexity] * datasets.size
+      ])
+    ))
+  });
+}
+
 function coverageScheduleReport(recipes, globalState) {
   const records = [];
   for (const recipe of recipes) {
@@ -1041,7 +1111,18 @@ function generateRealisticDescriptors(recipeIds, limit) {
     throw new Error(`Realistic mode requires exactly 50 TidyTuesday datasets, received ${datasets.length}.`);
   }
   assertMinimumSelectionCapacity(recipes);
-  const requirementContract = collectFactorValueRequirements(recipes, datasets);
+  const chartsPerDataset = Object.values(REALISTIC_DATASET_QUOTAS)
+    .reduce((sum, quota) => sum + quota, 0);
+  const requirementDatasets = limit === undefined
+    ? datasets
+    : datasets.slice(0, Math.min(
+        datasets.length,
+        Math.ceil(limit / chartsPerDataset)
+      ));
+  const requirementContract = collectFactorValueRequirements(
+    recipes,
+    requirementDatasets
+  );
   const factorRequirements = requirementContract.requirements;
   const requirementsByRecipe = factorRequirementsByRecipe(factorRequirements);
   const factorSelectionTargets = factorRequirementSelectionTargets(
