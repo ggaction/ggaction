@@ -1042,7 +1042,10 @@ function categoryPosition(action, profile, channel) {
   return channel === categoryChannel
     ? {
         field: "category",
-        fieldType: "ordinal",
+        fieldType: ["createGradientPlot", "createViolinPlot"].includes(action) &&
+          channel === "y" && profile.ordinal % 2 === 0
+          ? "nominal"
+          : "ordinal",
         scale: bandScale(
           "mainCategory",
           scaleProfile.index,
@@ -1128,7 +1131,7 @@ function buildBox(factors) {
   const profile = factors.variant;
   const feature = profile.featureIndex;
   const resources = guideResources(view, context, profile.orientation);
-  const program = sourceProgram(view, profile, "createBoxPlot").createBoxPlot({
+  let program = sourceProgram(view, profile, "createBoxPlot").createBoxPlot({
     id: "facadeBoxes",
     target: "contextPoints",
     data: "analysisRows",
@@ -1158,6 +1161,14 @@ function buildBox(factors) {
       opacity: feature === 4 ? 0.45 : 0.72
     },
     guides: guideOptions(profile, resources, context, ordinal, "createBoxPlot")
+  });
+  program = program.editBoxPlot({
+    target: "facadeBoxes",
+    outlier: {
+      shape: ordinal % 2 === 0 ? "triangle-left" : "star",
+      radius: feature === 4 ? 5 : 3.2,
+      opacity: feature === 4 ? 0.45 : 0.72
+    }
   });
   return titleProgram(program, context, profile, "distribution box plot");
 }
@@ -1189,7 +1200,7 @@ function buildGradient(factors) {
         stroke: "#0f172a",
         strokeWidth: 1.4
       };
-  const program = sourceProgram(view, profile, "createGradientPlot").createGradientPlot({
+  let program = sourceProgram(view, profile, "createGradientPlot").createGradientPlot({
     id: "facadeGradients",
     target: "contextPoints",
     data: "analysisRows",
@@ -1205,16 +1216,29 @@ function buildGradient(factors) {
     center,
     guides: guideOptions(profile, resources, context, ordinal, "createGradientPlot")
   });
+  const editedPalette = [
+    "reds",
+    "blues",
+    { name: "magma", count: 6, extent: [0.1, 0.9] },
+    { name: "viridis", count: 6, extent: [0.06, 0.94] }
+  ][ordinal % 4];
+  program = program.editGradientPlot({
+    target: "facadeGradients",
+    gradient: { palette: editedPalette }
+  });
   return titleProgram(program, context, profile, "gradient density plot");
 }
 
-function violinColor(ordinal, layout) {
-  return categoricalColor(
-    "createViolinPlot",
-    "distributionHalf",
-    ordinal,
-    layout
-  );
+function violinColor(profile, layout) {
+  return {
+    ...categoricalColor(
+      "createViolinPlot",
+      "distributionHalf",
+      profile.ordinal,
+      layout
+    ),
+    fieldType: profile.ordinal % 2 === 0 ? "nominal" : "ordinal"
+  };
 }
 
 function buildViolin(factors) {
@@ -1226,7 +1250,8 @@ function buildViolin(factors) {
   const resources = guideResources(view, context, profile.orientation);
   const fillOnly = profile.fillOnly === true;
   const curves = [
-    "cardinal", "linear", "monotone", "natural", "step", "step-after", "step-before"
+    "basis", "cardinal", "linear", "monotone", "natural",
+    "step", "step-after", "step-before"
   ];
   const program = sourceProgram(view, profile, "createViolinPlot").createViolinPlot({
     id: "facadeViolins",
@@ -1241,7 +1266,7 @@ function buildViolin(factors) {
         : ["lower-half", "upper-half"]
     },
     ...(fillOnly ? {} : {
-      color: violinColor(ordinal, profile.violinLayout ?? "overlay")
+      color: violinColor(profile, profile.violinLayout ?? "overlay")
     }),
     density: {
       ...densityOptions(profile, ordinal, "createViolinPlot"),
@@ -1272,7 +1297,10 @@ function buildViolin(factors) {
 
 function heatmapColor(profile, ordinal) {
   if (!profile.temporalColor) {
-    return categoricalColor("createHeatmap", "category", ordinal);
+    return {
+      ...categoricalColor("createHeatmap", "category", ordinal),
+      fieldType: ordinal % 2 === 0 ? "nominal" : "ordinal"
+    };
   }
   return {
     field: "time",

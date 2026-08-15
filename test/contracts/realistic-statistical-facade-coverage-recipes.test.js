@@ -82,6 +82,18 @@ const LEGACY_SCALE_INVENTORY_COUNTS = Object.freeze({
   createHeatmap: Object.freeze({ paths: 42, literals: 51, diversity: 2 }),
   createHistogram: Object.freeze({ paths: 32, literals: 32, diversity: 2 })
 });
+const TAIL_LITERAL_REQUIREMENT_IDS = Object.freeze([
+  "option-value:createGradientPlot.y.fieldType=string:nominal",
+  "option-value:createHeatmap.color.fieldType=string:nominal",
+  "option-value:createViolinPlot.area.curve=string:basis",
+  "option-value:createViolinPlot.color.fieldType=string:nominal",
+  "option-value:createViolinPlot.y.fieldType=string:nominal"
+]);
+const TAIL_DIVERSITY_REQUIREMENT_IDS = Object.freeze([
+  "literal-diversity:editBoxPlot.outlier.shape",
+  "literal-diversity:editGradientPlot.gradient.palette",
+  "literal-diversity:editGradientPlot.gradient.palette.name"
+]);
 
 function hashIds(ids) {
   return createHash("sha256").update([...ids].sort().join("\n")).digest("hex");
@@ -174,6 +186,43 @@ function resultFor(recipe, factors, program, metadata, index) {
     metadata,
     effectiveFeatures: Object.freeze([]),
     renderers: Object.freeze([])
+  });
+}
+
+function withoutStatisticalFacadeTailEvidence(result) {
+  const removedActions = new Set(["editBoxPlot", "editGradientPlot"]);
+  const directTrace = result.directTrace.flatMap(entry => {
+    if (removedActions.has(entry.op)) return [];
+    let args = entry.args;
+    if (entry.op === "createGradientPlot" && args.y?.fieldType === "nominal") {
+      args = { ...args, y: { ...args.y, fieldType: "ordinal" } };
+    }
+    if (entry.op === "createHeatmap" && args.color?.fieldType === "nominal") {
+      args = { ...args, color: { ...args.color, fieldType: "ordinal" } };
+    }
+    if (entry.op === "createViolinPlot") {
+      args = {
+        ...args,
+        ...(args.y?.fieldType === "nominal"
+          ? { y: { ...args.y, fieldType: "ordinal" } }
+          : {}),
+        ...(args.color?.fieldType === "nominal"
+          ? { color: { ...args.color, fieldType: "ordinal" } }
+          : {}),
+        ...(args.area?.curve === "basis"
+          ? { area: { ...args.area, curve: "cardinal" } }
+          : {})
+      };
+    }
+    return [{ ...entry, args }];
+  });
+  return Object.freeze({
+    ...result,
+    operations: Object.freeze(result.operations.filter(action => !removedActions.has(action))),
+    directOperations: Object.freeze(
+      result.directOperations.filter(action => !removedActions.has(action))
+    ),
+    directTrace: Object.freeze(directTrace)
   });
 }
 
@@ -482,6 +531,84 @@ contractTest("460 actual direct-root witnesses close every corrected action targ
   assert.deepEqual(
     shapeRequirements.filter(requirement => !details.get(requirement.id)?.meetsMinimum),
     []
+  );
+});
+
+contractTest("the exact 460-chart tail counterfactual fails before and passes after real root evidence", async () => {
+  const projection = await buildProjection();
+  const inventory = await inventoryPromise;
+  const counterfactualResults = projection.results.map(withoutStatisticalFacadeTailEvidence);
+  const counterfactual = summarizeScenarioFeatureCoverage({
+    results: counterfactualResults,
+    datasetCorpus: DATASET_CORPUS,
+    ledger: createScenarioCoverageLedger({
+      publicInventory: inventory,
+      rendererFeatures: []
+    }),
+    policy: COVERAGE_POLICY,
+    includeScenarioIds: false
+  });
+  const counterfactualRequirements = new Map(
+    counterfactual.requirements.map(detail => [detail.id, detail])
+  );
+  const actualRequirements = new Map(
+    projection.report.requirements.map(detail => [detail.id, detail])
+  );
+  const counterfactualDiversity = new Map(
+    counterfactual.literalDiversity.map(detail => [detail.id, detail])
+  );
+  const actualDiversity = new Map(
+    projection.report.literalDiversity.map(detail => [detail.id, detail])
+  );
+
+  assert.deepEqual(
+    TAIL_LITERAL_REQUIREMENT_IDS.filter(id =>
+      counterfactualRequirements.get(id)?.meetsMinimum
+    ),
+    [],
+    "the prior ordinal-only and curve-limited projection leaves all five literals open"
+  );
+  for (const id of TAIL_LITERAL_REQUIREMENT_IDS) {
+    const detail = actualRequirements.get(id);
+    assert.equal(detail?.meetsMinimum, true, id);
+    assert.ok(detail.occurrences >= 5, id);
+    assert.ok(detail.datasetCount >= 3, id);
+  }
+
+  assert.deepEqual(
+    TAIL_DIVERSITY_REQUIREMENT_IDS.filter(id =>
+      counterfactualDiversity.get(id)?.meetsMinimum
+    ),
+    [],
+    "the create-only projection leaves all three edit-value diversity checks open"
+  );
+  for (const id of TAIL_DIVERSITY_REQUIREMENT_IDS) {
+    const detail = actualDiversity.get(id);
+    assert.equal(detail?.meetsMinimum, true, id);
+    assert.ok(detail.qualifyingDistinctValues >= 2, id);
+    assert.ok(detail.values.filter(value => value.meetsMinimum).every(value =>
+      value.occurrences >= 5 && value.datasetCount >= 3
+    ), id);
+  }
+
+  const boxShapes = new Set(projection.results.flatMap(result =>
+    result.directTrace.filter(entry => entry.op === "editBoxPlot")
+      .map(entry => entry.args.outlier?.shape)
+  ));
+  const gradientPalettes = projection.results.flatMap(result =>
+    result.directTrace.filter(entry => entry.op === "editGradientPlot")
+      .map(entry => entry.args.gradient?.palette)
+  );
+  assert.deepEqual(boxShapes, new Set(["star", "triangle-left"]));
+  assert.deepEqual(
+    new Set(gradientPalettes.filter(value => typeof value === "string")),
+    new Set(["blues", "reds"])
+  );
+  assert.deepEqual(
+    new Set(gradientPalettes.flatMap(value =>
+      typeof value === "object" && value !== null ? [value.name] : []
+    )),
+    new Set(["magma", "viridis"])
   );
 });
 
