@@ -1557,17 +1557,40 @@ type FacadePositionChannel<Quantitative, Temporal, Categorical> =
   | string
   | (Omit<PositionEncodingBase, "target" | "coordinate"> &
       PositionScaleBranches<Quantitative, Temporal, Categorical>);
-type BasicPositionChannel = FacadePositionChannel<
-  QuantitativePositionScaleOptions,
-  TemporalPositionScaleOptions,
-  CategoricalPositionScaleOptions
->;
-type NonPointPositionChannel =
+type PointFacadePositionChannel =
   | string
-  | (Omit<PositionEncodingBase, "target" | "coordinate"> & (
+  | ({ field: string } & (
       | {
           fieldType?: "quantitative";
-          aggregate?: never;
+          scale?: QuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          scale?: TemporalPositionScaleOptions;
+        }
+      | {
+          fieldType: "nominal" | "ordinal";
+          scale?: CategoricalPositionScaleOptions;
+        }
+    ));
+type LineXPositionChannel =
+  | string
+  | ({ field: string; bin?: PositionEncodingBase["bin"] } & (
+      | {
+          fieldType?: "quantitative";
+          scale?: NonPointQuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          scale?: NonPointTemporalPositionScaleOptions;
+        }
+    ));
+type LineYPositionChannel =
+  | string
+  | ({ field: string } & (
+      | {
+          fieldType?: "quantitative";
+          aggregate?: AggregateOperation;
           scale?: NonPointQuantitativePositionScaleOptions;
         }
       | {
@@ -1575,17 +1598,31 @@ type NonPointPositionChannel =
           aggregate?: never;
           scale?: NonPointTemporalPositionScaleOptions;
         }
-      | {
-          fieldType?: FieldType;
-          aggregate: AggregateOperation;
-          scale?: NonPointQuantitativePositionScaleOptions;
-        }
     ));
 type BandPositionChannel = FacadePositionChannel<
   NonPointZeroSupportingPositionScaleOptions,
   NonPointTemporalPositionScaleOptions,
   NonPointBandPositionScaleOptions
 >;
+type BarYPositionChannel =
+  | string
+  | ({ field: string; stack?: StackMode } & (
+      | {
+          fieldType?: "quantitative";
+          aggregate?: never;
+          scale?: NonPointZeroSupportingPositionScaleOptions;
+        }
+      | {
+          fieldType: "nominal" | "ordinal";
+          aggregate?: never;
+          scale?: NonPointBandPositionScaleOptions;
+        }
+      | {
+          fieldType?: "quantitative" | "nominal" | "ordinal";
+          aggregate: AggregateOperation;
+          scale?: NonPointZeroSupportingPositionScaleOptions;
+        }
+    ));
 type BasicColorChannel =
   | string
   | {
@@ -1593,23 +1630,18 @@ type BasicColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: CategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: ColorLayout;
     }
   | {
       field: string;
       fieldType: "quantitative";
-      aggregate?: AggregateOperation;
       scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
       palette?: Palette;
-      layout?: never;
     }
   | {
       field: string;
       fieldType: "temporal";
-      aggregate?: never;
       scale?: ContinuousColorScaleOptions;
       palette?: Palette;
-      layout?: never;
     };
 type NonPointCategoricalColorChannel =
   | string
@@ -1638,8 +1670,17 @@ type QuantitativeBarColorChannel = {
   palette?: Palette;
   layout?: never;
 };
+type BarCategoricalColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+      layout?: Exclude<ColorLayout, "center">;
+    };
 type BarColorChannel =
-  | NonPointCategoricalColorChannel
+  | BarCategoricalColorChannel
   | QuantitativeBarColorChannel;
 type RectColorChannel =
   | NonPointCategoricalColorChannel
@@ -1716,8 +1757,8 @@ export interface CreateScatterPlotOptions {
   id?: string;
   data?: string;
   coordinate?: string;
-  x: BasicPositionChannel;
-  y: BasicPositionChannel;
+  x: PointFacadePositionChannel;
+  y: PointFacadePositionChannel;
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
@@ -1735,8 +1776,8 @@ export interface CreateLinePlotOptions {
   id?: string;
   data?: string;
   coordinate?: string;
-  x: NonPointPositionChannel;
-  y: NonPointPositionChannel;
+  x: LineXPositionChannel;
+  y: LineYPositionChannel;
   color?: LineCategoricalColorChannel;
   groupBy?: string;
   strokeDash?: BasicStrokeDashChannel;
@@ -1760,7 +1801,7 @@ export interface CreateBarPlotOptions {
   data?: string;
   coordinate?: string;
   x: BandPositionChannel;
-  y: BandPositionChannel;
+  y: BarYPositionChannel;
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target">;
   bar?: {

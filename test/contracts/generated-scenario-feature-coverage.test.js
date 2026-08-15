@@ -216,16 +216,16 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 167);
   assert.equal(inventory.counts.topLevelOptionPaths, 1_094);
-  assert.equal(inventory.counts.nestedOptionPaths, 4_299);
-  assert.equal(inventory.counts.optionPaths, 5_393);
-  assert.equal(inventory.counts.requiredOptionPaths, 4_693);
-  assert.equal(inventory.counts.excludedOptionPaths, 700);
+  assert.equal(inventory.counts.nestedOptionPaths, 4_254);
+  assert.equal(inventory.counts.optionPaths, 5_348);
+  assert.equal(inventory.counts.requiredOptionPaths, 4_652);
+  assert.equal(inventory.counts.excludedOptionPaths, 696);
   assert.equal(inventory.counts.topLevelCategoricalPaths, 262);
   assert.equal(inventory.counts.topLevelLiteralValues, 1_000);
-  assert.equal(inventory.counts.literalFamilies, 85);
-  assert.equal(inventory.counts.pathLiteralRequirements, 2_221);
+  assert.equal(inventory.counts.literalFamilies, 87);
+  assert.equal(inventory.counts.pathLiteralRequirements, 2_180);
   assert.equal(inventory.counts.familyLiteralRequirements, 175);
-  assert.equal(inventory.counts.pathDiversityRequirements, 143);
+  assert.equal(inventory.counts.pathDiversityRequirements, 139);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
   assert.equal(inventory.optionPaths.some(option => option.id ===
@@ -236,6 +236,21 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createParallelCoordinates.color.layout"), false);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:encodeY.bin"), false);
+  const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
+  for (const id of [
+    "option-path:createScatterPlot.x.aggregate",
+    "option-path:createScatterPlot.x.bin",
+    "option-path:createScatterPlot.x.stack",
+    "option-path:createScatterPlot.color.aggregate",
+    "option-path:createScatterPlot.color.layout",
+    "option-path:createBarPlot.y.bin",
+    "option-path:createLinePlot.x.aggregate",
+    "option-path:createLinePlot.x.stack",
+    "option-path:createLinePlot.y.bin",
+    "option-path:createLinePlot.y.stack"
+  ]) {
+    assert.equal(optionById.has(id), false, id);
+  }
   assert.equal(inventory.optionPaths.some(option =>
     option.path.split(".").includes("resolved")
   ), false);
@@ -247,9 +262,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 700 }
+    { "redacted-array": 696 }
   );
-  const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -265,7 +279,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
   assert.equal(scaleTypePaths.length, 59);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 257);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 256);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -280,7 +294,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 7_261);
+  assert.equal(ledger.requirements.length, 7_179);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],

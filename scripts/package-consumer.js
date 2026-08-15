@@ -843,6 +843,20 @@ async function testTypeScriptConsumer(directory) {
       y: { field: "y", scale: { zero: false } },
       guides: false
     };
+    const invalidScatterPolicies: CreateScatterPlotOptions = {
+      x: {
+        field: "x",
+        // @ts-expect-error Point-facade positions do not aggregate, bin, or stack.
+        aggregate: "mean"
+      },
+      y: "y",
+      color: {
+        field: "group",
+        // @ts-expect-error Point-facade color does not author series layouts.
+        layout: "group"
+      }
+    };
+    void invalidScatterPolicies;
     const opacityScale: OpacityScaleOptions = {
       type: "linear", zero: false, unknown: 0.25
     };
@@ -883,6 +897,31 @@ async function testTypeScriptConsumer(directory) {
         type: "log"
       } }
     };
+    const invalidBarYBin: CreateBarPlotOptions = {
+      x: { field: "category", fieldType: "nominal" },
+      y: {
+        field: "value",
+        // @ts-expect-error Bar y positions do not support binning.
+        bin: { maxBins: 10 }
+      }
+    };
+    const invalidBarHorizontalTime: CreateBarPlotOptions = {
+      x: { field: "value", aggregate: "sum" },
+      y: {
+        field: "time",
+        // @ts-expect-error Horizontal bar categories cannot use temporal scales.
+        fieldType: "temporal"
+      }
+    };
+    const invalidCenteredBars: CreateBarPlotOptions = {
+      x: { field: "category", fieldType: "nominal" },
+      y: { field: "value", aggregate: "sum" },
+      color: {
+        field: "group",
+        // @ts-expect-error Bar layouts do not support centered areas.
+        layout: "center"
+      }
+    };
     const invalidHorizonYScale: HorizonEncodingOptions = {
       x: "x",
       y: { field: "value", scale: {
@@ -894,6 +933,9 @@ async function testTypeScriptConsumer(directory) {
       invalidPositionPalette,
       invalidSizeNice,
       invalidZeroSupportingLog,
+      invalidBarYBin,
+      invalidBarHorizontalTime,
+      invalidCenteredBars,
       invalidHorizonYScale
     ];
     const scatterFacade: ChartProgram = chart()
@@ -948,7 +990,23 @@ async function testTypeScriptConsumer(directory) {
         layout: "overlay"
       }
     };
-    void invalidLineColorLayout;
+    const invalidLineXAggregate: CreateLinePlotOptions = {
+      x: {
+        field: "x",
+        // @ts-expect-error Line x positions cannot aggregate.
+        aggregate: "mean"
+      },
+      y: "y"
+    };
+    const invalidLineYPolicies: CreateLinePlotOptions = {
+      x: "x",
+      y: {
+        field: "y",
+        // @ts-expect-error Line y positions cannot bin or stack.
+        bin: { maxBins: 10 }
+      }
+    };
+    void [invalidLineColorLayout, invalidLineXAggregate, invalidLineYPolicies];
     const lineFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2, group: "A" }] })
