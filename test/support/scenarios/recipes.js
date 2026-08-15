@@ -1,7 +1,15 @@
 import { chart, hconcat, vconcat } from "../../../src/index.js";
 
 import { duplicateRows, shuffleRows } from "../datasets/mutations.js";
-import { LIFECYCLE_SCENARIO_RECIPES } from "./lifecycle-recipes.js";
+import {
+  LIFECYCLE_SCENARIO_RECIPES,
+  REALISTIC_LIFECYCLE_REQUIRED_FEATURES,
+  REALISTIC_LIFECYCLE_SCENARIO_RECIPES
+} from "./lifecycle-recipes.js";
+import {
+  REALISTIC_ANALYSIS_RECIPES,
+  REALISTIC_ANALYSIS_REQUIRED_FEATURES
+} from "./realistic-recipes.js";
 import {
   barRows,
   boxRows,
@@ -806,8 +814,26 @@ export const SCENARIO_RECIPES = Object.freeze([
   ...LIFECYCLE_SCENARIO_RECIPES
 ]);
 
+export const REALISTIC_SCENARIO_RECIPES = Object.freeze([
+  ...REALISTIC_ANALYSIS_RECIPES,
+  ...REALISTIC_LIFECYCLE_SCENARIO_RECIPES
+]);
+
+export const REALISTIC_REQUIRED_FEATURES = Object.freeze([...new Set([
+  ...REALISTIC_ANALYSIS_REQUIRED_FEATURES,
+  ...REALISTIC_LIFECYCLE_REQUIRED_FEATURES
+])].sort());
+
+export const REALISTIC_REQUIRED_INTERACTIONS = Object.freeze([
+  Object.freeze({ members: Object.freeze(["lifecycle:compose", "renderer:svg"]) }),
+  Object.freeze({ members: Object.freeze(["lifecycle:edit", "renderer:svg"]) }),
+  Object.freeze({ members: Object.freeze(["lifecycle:filter", "lifecycle:select"]) }),
+  Object.freeze({ members: Object.freeze(["lifecycle:highlight", "lifecycle:select"]) })
+]);
+
 export function scenarioRecipe(id) {
-  const value = SCENARIO_RECIPES.find(recipeValue => recipeValue.id === id);
+  const value = [...SCENARIO_RECIPES, ...REALISTIC_SCENARIO_RECIPES]
+    .find(recipeValue => recipeValue.id === id);
   if (value === undefined) throw new Error(`Unknown scenario recipe "${id}".`);
   return value;
 }
