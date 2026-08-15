@@ -9,6 +9,7 @@
 | --- | --- |
 | 현재 macro-architecture의 작업별 진입점 | [`architecture/README.md`](architecture/README.md) |
 | 현재 macro-architecture 원문 | [`SECOND_ARCHITECTURE.md`](SECOND_ARCHITECTURE.md) |
+| 현실형 TidyTuesday 시나리오 코퍼스 실행 | [`REALISTIC_SCENARIO_CORPUS.md`](REALISTIC_SCENARIO_CORPUS.md) |
 | 구현된 action의 정확한 계약 찾기 | [`contract/ACTION_INDEX.json`](contract/ACTION_INDEX.json) |
 | action 전체 현황 훑기 | [`contract/ACTION_CATALOG.md`](contract/ACTION_CATALOG.md) |
 | 현재 구현 계약 읽기 | [`contract/current/`](contract/current/) |

@@ -85,6 +85,8 @@
     "datasets:sync": "node scripts/sync-dataset-corpus.js --all",
     "scenarios:smoke": "node scripts/run-generated-scenarios.js --mode=smoke --no-tidytuesday",
     "scenarios:deep": "node scripts/run-generated-scenarios.js --mode=deep",
+    "scenarios:realistic": "node --expose-gc scripts/run-realistic-scenarios.js",
+    "scenarios:realistic:audit": "node --expose-gc scripts/run-realistic-scenarios.js --no-artifacts",
     "docs:images": "node scripts/generate-doc-images.js",
     "docs:llms": "node scripts/generate-llm-docs.js",
     "docs:capabilities": "node scripts/generate-doc-capabilities.js",
