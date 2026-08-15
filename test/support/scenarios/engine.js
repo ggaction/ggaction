@@ -383,9 +383,8 @@ function factorVariant(recipe, dataset, variant, globalState) {
   const start = eligibleIndexes.length === 0
     ? 0
     : hashOffset(`${attemptedKey}\0${variant}`) % eligibleIndexes.length;
-  for (let ordinal = 0; ordinal < searchLimit; ordinal += 1) {
-    const index = eligibleIndexes[(start + ordinal) % eligibleIndexes.length];
-    if (attempted.has(index)) continue;
+  const consider = index => {
+    if (attempted.has(index)) return;
     const factors = pool.cases[index];
     const factorPairs = factorPairKeys(factors);
     const factorValues = selectedFactorValues(recipe, factors);
@@ -429,10 +428,20 @@ function factorVariant(recipe, dataset, variant, globalState) {
     if (best === undefined || compareFactorCandidatePriority(candidate, best) > 0) {
       best = candidate;
     }
+  };
+  for (let ordinal = 0; ordinal < searchLimit; ordinal += 1) {
+    consider(eligibleIndexes[(start + ordinal) % eligibleIndexes.length]);
   }
   if (best === undefined) {
-    for (const index of eligibleIndexes) attempted.delete(index);
-    return factorVariant(recipe, dataset, variant + 1, globalState);
+    for (const index of eligibleIndexes) consider(index);
+  }
+  if (best === undefined) {
+    return Object.freeze({
+      exhausted: true,
+      eligibleFactorCases: eligibleIndexes.length,
+      attemptedEligibleFactorCases: eligibleIndexes.filter(index => attempted.has(index)).length,
+      scheduledVariantId: scheduledId
+    });
   }
   attempted.add(best.index);
   return Object.freeze({
@@ -440,6 +449,55 @@ function factorVariant(recipe, dataset, variant, globalState) {
     factorPairs: best.factorPairs,
     factorValues: best.factorValues,
     caseKey: best.caseKey
+  });
+}
+
+export function scenarioFactorCandidateDomainReport(recipeId, { dataset } = {}) {
+  const recipe = scenarioRecipe(recipeId);
+  if (typeof dataset !== "string" || dataset.length === 0) {
+    throw new TypeError("Scenario factor candidate diagnostics require a dataset id.");
+  }
+  const globalState = {
+    factorPools: new Map(),
+    attemptedFactorCases: new Map(),
+    baselineFactorCases: new Set([recipe.id]),
+    recipeCounts: new Map(),
+    factorValueCounts: new Map(),
+    factorRequirements: new Map(),
+    factorPairs: new Set(),
+    factorCaseCounts: new Map(),
+    strict: true
+  };
+  const pool = factorPool(recipe, dataset, globalState);
+  if (pool === undefined) {
+    return Object.freeze({
+      recipe: recipe.id,
+      dataset,
+      eligibleFactorCases: 0,
+      selectedFactorCases: Object.freeze([]),
+      exhausted: true,
+      attemptedEligibleFactorCases: 0
+    });
+  }
+  const selectedFactorCases = [];
+  let exhaustion;
+  for (let variant = 0; variant <= pool.cases.length; variant += 1) {
+    const selection = factorVariant(recipe, dataset, variant, globalState);
+    if (selection?.exhausted === true) {
+      exhaustion = selection;
+      break;
+    }
+    if (selection === undefined) break;
+    selectedFactorCases.push(freezeClone(selection.factors));
+  }
+  return Object.freeze({
+    recipe: recipe.id,
+    dataset,
+    eligibleFactorCases: exhaustion?.eligibleFactorCases ?? pool.cases.length,
+    selectedFactorCases: Object.freeze(selectedFactorCases),
+    exhausted: exhaustion !== undefined,
+    attemptedEligibleFactorCases: exhaustion?.attemptedEligibleFactorCases ??
+      globalState.attemptedFactorCases.get(`${recipe.id}\0${dataset}`)?.size ?? 0
   });
 }
 
@@ -996,29 +1054,42 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
   }
   const disabledRecipes = new Set();
   const recipeFailures = new Map();
-  let attempts = 0;
-  const maximumAttempts = eligibleRecipes.length * 96;
-  while (selected.length < quota && attempts < maximumAttempts) {
+  let schedulingIterations = 0;
+  const maximumSchedulingIterations = eligibleRecipes.length * 96;
+  while (selected.length < quota && schedulingIterations < maximumSchedulingIterations) {
     const ordered = eligibleRecipes.filter(recipe => !disabledRecipes.has(recipe.id))
       .sort((left, right) =>
       compareRecipePriority(left, right, dataset, globalState) ||
-      (hashOffset(`${left.id}\0${datasetIndex}\0${attempts}`) -
-        hashOffset(`${right.id}\0${datasetIndex}\0${attempts}`))
+      (hashOffset(`${left.id}\0${datasetIndex}\0${schedulingIterations}`) -
+        hashOffset(`${right.id}\0${datasetIndex}\0${schedulingIterations}`))
     );
     if (ordered.length === 0) break;
     const leadingPriority = recipeSelectionPriority(ordered[0], dataset, globalState);
     const recipe = leadingPriority.urgentFactorDatasets > 0 ||
       leadingPriority.pacingDeficit > 0
       ? ordered[0]
-      : ordered[attempts % Math.min(ordered.length, 4)];
-    attempts += 1;
+      : ordered[schedulingIterations % Math.min(ordered.length, 4)];
+    schedulingIterations += 1;
     const variant = variants.get(recipe.id) ?? 0;
     variants.set(recipe.id, variant + 1);
-    globalState.candidateOrdinal += 1;
     let factors;
     try {
       const selection = factorVariant(recipe, dataset, variant, globalState);
       if (selection === undefined) continue;
+      if (selection.exhausted === true) {
+        disabledRecipes.add(recipe.id);
+        globalState.skips.push(Object.freeze({
+          dataset,
+          complexity,
+          recipe: recipe.id,
+          reason: "factor-candidate-domain-exhausted",
+          eligibleFactorCases: selection.eligibleFactorCases,
+          attemptedEligibleFactorCases: selection.attemptedEligibleFactorCases,
+          scheduledVariantId: selection.scheduledVariantId
+        }));
+        continue;
+      }
+      globalState.candidateOrdinal += 1;
       factors = selection.factors;
       const candidate = preflightRealisticCandidate(recipe, factors).descriptor;
       if (globalState.fingerprints.has(candidate.semanticFingerprint)) {
@@ -1082,7 +1153,8 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
       .map(value => `${value.recipe}: ${value.message}`).join("; ");
     throw new Error(
       `Dataset "${dataset}" produced ${selected.length}/${quota} ${complexity} charts ` +
-      `after ${attempts} attempts.${recent.length === 0 ? "" : ` Recent: ${recent}`}`
+      `after ${schedulingIterations} scheduling iterations.` +
+      `${recent.length === 0 ? "" : ` Recent: ${recent}`}`
     );
   }
   return selected;
@@ -1100,7 +1172,7 @@ function interleaveTiers(byTier) {
   return values;
 }
 
-function generateRealisticDescriptors(recipeIds, limit) {
+function generateRealisticDescriptors(recipeIds, limit, strictScheduling) {
   const recipes = recipeIds.map(scenarioRecipe);
   if (recipes.some(recipe => recipe.suite !== "realistic")) {
     throw new Error("Realistic mode accepts only realistic scenario recipes.");
@@ -1158,7 +1230,7 @@ function generateRealisticDescriptors(recipeIds, limit) {
     rejections: [],
     duplicates: [],
     skips: [],
-    strict: limit === undefined
+    strict: limit === undefined || strictScheduling
   };
   for (let datasetIndex = 0; datasetIndex < datasets.length; datasetIndex += 1) {
     const dataset = datasets[datasetIndex];
@@ -1284,13 +1356,20 @@ export function generateScenarioDescriptors({
   mode = "smoke",
   includeTidyTuesday = true,
   recipeIds,
-  limit
+  limit,
+  strictScheduling = false
 } = {}) {
   if (!["smoke", "deep", "realistic"].includes(mode)) {
     throw new Error('Scenario mode must be "smoke", "deep", or "realistic".');
   }
   if (limit !== undefined && (!Number.isInteger(limit) || limit <= 0)) {
     throw new RangeError("Scenario limit must be a positive integer.");
+  }
+  if (typeof strictScheduling !== "boolean") {
+    throw new TypeError("Scenario strictScheduling must be a boolean.");
+  }
+  if (strictScheduling && mode !== "realistic") {
+    throw new Error("Scenario strictScheduling is available only in realistic mode.");
   }
   const selectedRecipeIds = recipeIds ?? (mode === "realistic"
     ? REALISTIC_SCENARIO_RECIPES.map(recipe => recipe.id)
@@ -1301,7 +1380,9 @@ export function generateScenarioDescriptors({
   if (new Set(selectedRecipeIds).size !== selectedRecipeIds.length) {
     throw new Error("Scenario recipe ids must be unique.");
   }
-  if (mode === "realistic") return generateRealisticDescriptors(selectedRecipeIds, limit);
+  if (mode === "realistic") {
+    return generateRealisticDescriptors(selectedRecipeIds, limit, strictScheduling);
+  }
   const descriptors = [];
   for (const recipeId of selectedRecipeIds) {
     const recipe = scenarioRecipe(recipeId);

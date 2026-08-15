@@ -14,6 +14,7 @@ import {
   REALISTIC_DATASET_QUOTAS,
   realisticScenarioDeclaredCapacityReport,
   runScenario,
+  scenarioFactorCandidateDomainReport,
   scenarioGenerationDiagnostics
 } from "../support/scenarios/engine.js";
 import { REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES } from
@@ -528,6 +529,39 @@ test("records unsupported dataset recipes as skips without preflight rejection l
       .filter(([name]) => !["dataset", "fieldPair"].includes(name))));
   assert.equal(sampledFactors.length >= 2, true);
   assert.equal(new Set(sampledFactors.map(value => JSON.stringify(value))).size >= 2, true);
+});
+
+test("advances past exhausted factor domains under strict scheduling", () => {
+  const dataset = "tt-london-marathon-winners";
+  const domain = scenarioFactorCandidateDomainReport(
+    "realistic-direct-position-encoding-options",
+    { dataset }
+  );
+  assert.equal(domain.eligibleFactorCases, 1);
+  assert.equal(domain.selectedFactorCases.length, 1);
+  assert.equal(domain.exhausted, true);
+  assert.equal(domain.attemptedEligibleFactorCases, domain.eligibleFactorCases);
+
+  const descriptors = generateScenarioDescriptors({
+    mode: "realistic",
+    limit: 216,
+    strictScheduling: true
+  });
+  const composite = descriptors.filter(descriptor =>
+    descriptor.factors.dataset === dataset && descriptor.metadata.complexity === "composite"
+  );
+  const diagnostics = scenarioGenerationDiagnostics(descriptors);
+
+  assert.equal(composite.length, EXPECTED_TIERS.composite);
+  assert.equal(new Set(composite.map(value => value.semanticFingerprint)).size, composite.length);
+  assert.equal(diagnostics.rejections.some(value =>
+    value.dataset === dataset && value.complexity === "composite"
+  ), false);
+  assert.equal(
+    diagnostics.attemptedCandidates,
+    diagnostics.acceptedCandidates + diagnostics.rejectedCandidates +
+      diagnostics.duplicateCandidates
+  );
 });
 
 test("observes lifecycle features from recipe-specific direct trace signatures", () => {
