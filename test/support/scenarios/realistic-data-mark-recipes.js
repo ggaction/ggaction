@@ -3,14 +3,18 @@ import { createHash } from "node:crypto";
 import { chart } from "../../../src/index.js";
 
 import {
+  isRealisticIneligibleDataError,
   realisticDatasetIds,
-  realisticDatasetRoles,
   realisticFieldPairDomain,
   realisticOrderedView,
   realisticRecordView,
   realisticSourceFields,
   realisticSummaryView
 } from "./realistic-data.js";
+import {
+  releaseTidyTuesdaySourceCache,
+  tidyTuesdaySourceEntries
+} from "../datasets/tidytuesday.js";
 import { SOURCE_INDEX_ENCODING } from "./coverage-ledger.js";
 
 const CANVAS = Object.freeze({
@@ -24,14 +28,43 @@ const POLAR_CANVAS = Object.freeze({
   margin: Object.freeze({ top: 260, right: 650, bottom: 260, left: 360 })
 });
 const PALETTES = Object.freeze(["tableau10", "set2", "dark2", "viridis"]);
+const SCALE_PATH_PALETTES = Object.freeze({
+  tableau10: "category20",
+  set2: "pastel2",
+  dark2: "accent",
+  viridis: "observable10"
+});
+const STATIC_PALETTE_COLORS = Object.freeze({
+  tableau10: "#4c78a8",
+  set2: "#66c2a5",
+  dark2: "#1b9e77",
+  viridis: "#3b528b"
+});
 const CURVES = Object.freeze([
   "linear", "step", "step-before", "step-after", "basis", "cardinal",
   "monotone", "natural"
 ]);
+const BAND_CURVES_WITHOUT_MONOTONE = Object.freeze(
+  CURVES.filter(curve => curve !== "monotone")
+);
 const DASHES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const POINT_SHAPES = Object.freeze([
   "circle", "cross", "diamond", "hexagon", "plus", "square", "star",
   "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye"
+]);
+const DENSITY_PLACEMENTS = frozen([
+  { id: "baseline", type: "baseline" },
+  { id: "category-compact-shared", type: "category", width: 0.62, resolve: "shared" },
+  { id: "category-balanced-independent", type: "category", width: 0.78, resolve: "independent" },
+  { id: "category-wide-shared", type: "category", width: 0.92, resolve: "shared" },
+  { id: "split-compact-independent", type: "split", width: 0.62, resolve: "independent" },
+  { id: "split-balanced-shared", type: "split", width: 0.78, resolve: "shared" },
+  { id: "split-wide-independent", type: "split", width: 0.92, resolve: "independent" }
+]);
+const JITTER_VARIANTS = frozen([
+  { id: "horizontal-pixels", channel: "x", maxOffset: { pixels: 5 } },
+  { id: "vertical-pixels", channel: "y", maxOffset: { pixels: 5 } },
+  { id: "vertical-band", channel: "y", maxOffset: { band: 0.16 } }
 ]);
 const DATASETS = Object.freeze(realisticDatasetIds());
 
@@ -47,6 +80,55 @@ function canvas(value = CANVAS) {
 
 function unique(values) {
   return [...new Set(values)];
+}
+
+function paletteForPath(palette, path) {
+  if (path === "outer") return palette;
+  const mapped = SCALE_PATH_PALETTES[palette];
+  if (mapped === undefined) throw new Error(`Missing scale-path palette for "${palette}".`);
+  return mapped;
+}
+
+function staticPaletteColor(palette) {
+  const color = STATIC_PALETTE_COLORS[palette];
+  if (color === undefined) throw new Error(`Missing static color for palette "${palette}".`);
+  return color;
+}
+
+function dashRange(first) {
+  const index = DASHES.indexOf(first);
+  if (index < 0) throw new Error(`Unknown dash style "${first}".`);
+  return [...DASHES.slice(index), ...DASHES.slice(0, index)];
+}
+
+function scalar(value) {
+  return value === null || value === undefined || value === "" ? undefined : value;
+}
+
+function stablePairedSelection(entries, bindings, limit = 160) {
+  if (entries.length <= limit) return entries;
+  const selected = new Set([entries[0], entries.at(-1)]);
+  for (const field of [bindings.measure, bindings.secondaryMeasure]) {
+    const ordered = [...entries].sort((left, right) =>
+      left.row[field] - right.row[field] || left.sourceRowIndex - right.sourceRowIndex
+    );
+    selected.add(ordered[0]);
+    selected.add(ordered.at(-1));
+  }
+  const categories = new Set();
+  for (const entry of entries) {
+    const category = String(entry.row[bindings.dimension]);
+    if (categories.has(category)) continue;
+    categories.add(category);
+    selected.add(entry);
+  }
+  if (selected.size > limit) {
+    throw new Error("Paired-measure sample cannot retain every required witness row.");
+  }
+  for (let index = 0; index < limit && selected.size < limit; index += 1) {
+    selected.add(entries[Math.round(index * (entries.length - 1) / (limit - 1))]);
+  }
+  return [...selected].sort((left, right) => left.sourceRowIndex - right.sourceRowIndex);
 }
 
 function quantile(values, probability) {
@@ -69,6 +151,15 @@ function numericExtent(rows, field) {
 
 function paddedExtent(rows, field, ratio = 0.025) {
   const [minimum, maximum] = numericExtent(rows, field);
+  const padding = (maximum - minimum) * ratio;
+  return [minimum - padding, maximum + padding];
+}
+
+function robustPaddedExtent(rows, field, ratio = 0.025) {
+  const values = rows.map(row => row[field]).filter(Number.isFinite);
+  const minimum = quantile(values, 0.05);
+  const maximum = quantile(values, 0.95);
+  if (!(minimum < maximum)) return paddedExtent(rows, field, ratio);
   const padding = (maximum - minimum) * ratio;
   return [minimum - padding, maximum + padding];
 }
@@ -98,6 +189,11 @@ function aggregateProvenance(base, transformations) {
     ...base,
     transformations: frozen([...base.transformations, ...transformations])
   });
+}
+
+function displayedSample(base, displayedRowCount) {
+  if (base.sample === undefined) return undefined;
+  return frozen({ ...base.sample, displayedRowCount });
 }
 
 function sourceContext(dataset, provenance) {
@@ -154,16 +250,30 @@ function guides(xTitle, yTitle, {
   };
 }
 
-function finish(program, title, question, xTitle, yTitle, options = {}) {
+function chartCopy(title, question, view) {
+  if (view.sample === undefined) return { title, question };
+  const sample = `deterministic stratified sample (n=${view.sample.displayedRowCount}/` +
+    `${view.sample.eligibleRowCount} eligible)`;
+  return {
+    title: `${title} — ${sample}`,
+    question: `${question} This chart uses a ${sample}.`
+  };
+}
+
+function finish(program, title, question, xTitle, yTitle, options = {}, view = {}) {
+  const copy = chartCopy(title, question, view);
   return program
     .createGuides(guides(xTitle, yTitle, options))
-    .createTitle({ text: title, subtitle: question, align: "left" });
+    .createTitle({ text: copy.title, subtitle: copy.question, align: "left" });
 }
 
 function recordView(factors, capability = "record", options = {}) {
   return realisticRecordView(factors.dataset, {
     measureIndex: factors.fieldPair.measureIndex,
     dimensionIndex: factors.fieldPair.dimensionIndex,
+    includeSecondaryMeasure: false,
+    includeSecondaryDimension: false,
+    deriveSubgroup: false,
     ...options,
     ...(capability === "distribution" ? { minimumPerGroup: 8 } : {})
   });
@@ -178,8 +288,39 @@ function summaryView(factors) {
 }
 
 function pairedMeasureView(factors) {
-  const base = recordView(factors);
-  const rows = base.rows.filter(row => Number.isFinite(row.secondary));
+  const base = recordView(factors, "record", {
+    includeSecondaryMeasure: true,
+    groupLimit: 24
+  });
+  const bindings = base.provenance.fieldBindings;
+  const retainedCategories = new Set(base.rows.map(row => String(row.category)));
+  const eligible = tidyTuesdaySourceEntries(factors.dataset).filter(({ row }) =>
+    Number.isFinite(row[bindings.measure]) &&
+    Number.isFinite(row[bindings.secondaryMeasure]) &&
+    scalar(row[bindings.dimension]) !== undefined &&
+    retainedCategories.has(String(row[bindings.dimension]))
+  );
+  const selected = stablePairedSelection(eligible, bindings);
+  const rows = selected.map(({ row, sourceRowIndex }) => {
+    const category = row[bindings.dimension];
+    const identifier = bindings.identifier === undefined ? undefined : scalar(row[bindings.identifier]);
+    return {
+      key: identifier === undefined
+        ? `source-row-${sourceRowIndex}`
+        : `${identifier}-${sourceRowIndex}`,
+      sourceRowIndex,
+      value: row[bindings.measure],
+      secondary: row[bindings.secondaryMeasure],
+      category,
+      label: scalar(row[bindings.label]) ?? category,
+      ...(bindings.temporal === undefined || row[bindings.temporal] === null
+        ? {}
+        : { time: row[bindings.temporal] }),
+      ...(bindings.order === undefined || row[bindings.order] === null
+        ? {}
+        : { orderValue: row[bindings.order] })
+    };
+  });
   if (
     rows.length < 12 ||
     new Set(rows.map(row => row.value)).size < 3 ||
@@ -189,51 +330,117 @@ function pairedMeasureView(factors) {
   }
   return frozen({
     rows,
-    provenance: selectedProvenance(base.provenance, rows, [frozen({
-      op: "filter-paired-finite-measures",
-      fields: [
-        base.provenance.fieldBindings.secondaryMeasure,
-        base.provenance.fieldBindings.measure
+    sample: frozen({
+      method: "deterministic-stratified-witness-sample",
+      eligibleRowCount: eligible.length,
+      displayedRowCount: rows.length,
+      limit: 160,
+      strata: frozen([bindings.dimension])
+    }),
+    provenance: selectedProvenance(
+      { ...base.provenance, transformations: [] },
+      rows,
+      [
+        frozen({ op: "filter-valid", fields: [bindings.measure, bindings.dimension] }),
+        frozen({ op: "top-groups", field: bindings.dimension, limit: 24 }),
+        frozen({
+          op: "filter-paired-finite-measures",
+          fields: [bindings.measure, bindings.secondaryMeasure],
+          eligibleRowCount: eligible.length
+        }),
+        frozen({
+          op: "witness-preserving-even-sample",
+          limit: 160,
+          eligibleRowCount: eligible.length,
+          displayedRowCount: rows.length,
+          strata: [bindings.dimension],
+          witnesses: [
+            "first", "last", "measure-min", "measure-max",
+            "secondary-measure-min", "secondary-measure-max", "retained-dimension"
+          ]
+        }),
+        frozen({ op: "project", bindings })
       ]
-    })])
+    )
   });
 }
 
 function densityView(factors) {
-  const base = recordView(factors, "distribution", {
+  const placementType = factors.placement.type;
+  const options = {
     groupLimit: 4,
-    subgroupLimit: 4
-  });
-  let rows = base.rows;
-  const transformations = [];
-  if (factors.placement === "split") {
-    const counts = new Map();
-    for (const row of rows) counts.set(row.subgroup, (counts.get(row.subgroup) ?? 0) + 1);
-    const domain = [...counts]
-      .sort((left, right) => right[1] - left[1] || String(left[0]).localeCompare(String(right[0])))
-      .slice(0, 2)
-      .map(([value]) => value);
-    if (domain.length !== 2) throw new Error(`${factors.dataset} needs two density subgroups.`);
-    rows = rows.filter(row => domain.includes(row.subgroup));
-    transformations.push(frozen({
-      op: "top-two-density-split-groups",
-      field: base.provenance.fieldBindings.secondaryDimension ?? "median-split",
-      values: domain
-    }));
+    subgroupLimit: placementType === "split" ? 2 : 4,
+    includeSecondaryDimension: placementType === "split",
+    deriveSubgroup: false,
+    minimumRetainedGroupRows: 5,
+    requireRetainedGroupVariation: true
+  };
+  let base;
+  const selectRows = view => {
+    let rows = view.rows;
+    const transformations = [];
+    let splitDomain;
+    if (placementType === "split") {
+      const counts = new Map();
+      for (const row of rows) {
+        counts.set(row.subgroup, (counts.get(row.subgroup) ?? 0) + 1);
+      }
+      splitDomain = [...counts]
+        .sort((left, right) =>
+          right[1] - left[1] || String(left[0]).localeCompare(String(right[0]))
+        )
+        .slice(0, 2)
+        .map(([value]) => value);
+      if (splitDomain.length !== 2) return undefined;
+      rows = rows.filter(row => splitDomain.includes(row.subgroup));
+      transformations.push(frozen({
+        op: "top-two-density-split-groups",
+        field: view.provenance.fieldBindings.secondaryDimension ?? "median-split",
+        values: splitDomain
+      }));
+    }
+    const groupedRows = new Map();
+    for (const row of rows) {
+      if (!groupedRows.has(row.category)) groupedRows.set(row.category, []);
+      groupedRows.get(row.category).push(row);
+    }
+    const usableGroups = new Set([...groupedRows]
+      .filter(([, values]) =>
+        values.length >= 5 && new Set(values.map(row => row.value)).size > 1
+      )
+      .map(([group]) => group));
+    rows = rows.filter(row => usableGroups.has(row.category));
+    return rows.length < 10 || usableGroups.size < 2
+      ? undefined
+      : { rows, splitDomain, transformations };
+  };
+  let selected;
+  try {
+    base = recordView(factors, "distribution", options);
+    selected = selectRows(base);
+  } catch (error) {
+    if (placementType !== "split" || !isRealisticIneligibleDataError(error)) throw error;
   }
-  const usableGroups = new Set([...Map.groupBy(rows, row => row.category)]
-    .filter(([, values]) => values.length >= 5 && new Set(values.map(row => row.value)).size > 1)
-    .map(([group]) => group));
-  rows = rows.filter(row => usableGroups.has(row.category));
-  if (rows.length < 10 || usableGroups.size < 2) {
+  if (selected === undefined && placementType === "split") {
+    base = recordView(factors, "distribution", {
+      ...options,
+      includeSecondaryDimension: false,
+      deriveSubgroup: true
+    });
+    selected = selectRows(base);
+  }
+  if (selected === undefined) {
     throw new Error(`${factors.dataset} needs two varying density groups.`);
   }
   return frozen({
-    rows,
-    splitDomain: factors.placement === "split"
-      ? unique(rows.map(row => row.subgroup))
-      : undefined,
-    provenance: selectedProvenance(base.provenance, rows, transformations)
+    rows: selected.rows,
+    splitDomain: selected.splitDomain,
+    sample: displayedSample(base, selected.rows.length),
+    provenance: selectedProvenance(
+      base.provenance,
+      selected.rows,
+      selected.transformations
+    )
   });
 }
 
@@ -274,6 +481,7 @@ function statisticalBandView(factors) {
   }));
   return frozen({
     rows,
+    sample: displayedSample(base, rows.length),
     provenance: selectedProvenance(base.provenance, rows, [
       frozen({ op: "stable-category-rank", field: base.provenance.fieldBindings.dimension }),
       frozen({ op: "constant-series", as: "series", value: "All retained categories" })
@@ -282,7 +490,7 @@ function statisticalBandView(factors) {
 }
 
 function explicitBandView(factors) {
-  const base = summaryView(factors);
+  const base = summaryView({ ...factors, aggregate: "median" });
   const rows = base.rows.map(row => ({ ...row, series: "All retained categories" }));
   return frozen({
     rows,
@@ -297,10 +505,16 @@ function explicitBandView(factors) {
 function buildBinnedHeatmap(factors) {
   const view = pairedMeasureView(factors);
   const context = sourceContext(factors.dataset, view.provenance);
+  const copy = chartCopy(
+    `${context.measure}${context.unit} versus ${context.secondary}`,
+    `Where are observations concentrated across ${context.measure} and ${context.secondary}?`,
+    view
+  );
   const xExtent = paddedExtent(view.rows, "secondary");
   const yExtent = paddedExtent(view.rows, "value");
   const editedX = paddedExtent(view.rows, "secondary", 0.05);
   const editedY = paddedExtent(view.rows, "value", 0.05);
+  const palette = paletteForPath(factors.palette, factors.palettePath);
   const id = "pairedHeatmap";
   return chart()
     .createCanvas(canvas())
@@ -331,11 +545,11 @@ function buildBinnedHeatmap(factors) {
         includeEmpty: factors.includeEmpty
       },
       color: {
-        ...(factors.palettePath === "outer" ? { palette: factors.palette } : {}),
+        ...(factors.palettePath === "outer" ? { palette } : {}),
         scale: {
           type: "sequential", domain: "auto",
           reverse: factors.reverse, clamp: true, interpolate: "lab",
-          ...(factors.palettePath === "scale" ? { palette: factors.palette } : {})
+          ...(factors.palettePath === "scale" ? { palette } : {})
         }
       },
       rect: { opacity: 0.9, stroke: "#ffffff", strokeWidth: 0.7 },
@@ -358,17 +572,17 @@ function buildBinnedHeatmap(factors) {
       includeEmpty: !factors.includeEmpty,
       members: true,
       as: {
-        x0: "__pairedHeatmapBin2DData_x0",
-        x1: "__pairedHeatmapBin2DData_x1",
-        y0: "__pairedHeatmapBin2DData_y0",
-        y1: "__pairedHeatmapBin2DData_y1",
-        count: "__pairedHeatmapBin2DData_count",
-        members: "__pairedHeatmapBin2DData_members"
+        x0: "heatmapLeft",
+        x1: "heatmapRight",
+        y0: "heatmapBottom",
+        y1: "heatmapTop",
+        count: "heatmapCount",
+        members: "heatmapMembers"
       }
     })
     .createTitle({
-      text: `${context.measure}${context.unit} versus ${context.secondary}`,
-      subtitle: "Where are observations concentrated across the two measured quantities?",
+      text: copy.title,
+      subtitle: copy.question,
       align: "left"
     });
 }
@@ -377,12 +591,13 @@ function histogramBins(rows, mode, requested) {
   const values = rows.map(row => row.value).filter(Number.isFinite);
   if (mode === "max") return { maxBins: requested };
   if (mode === "step") {
-    const spread = quantile(values, 0.75) - quantile(values, 0.25) ||
-      Math.max(...values) - Math.min(...values);
-    return { binStep: spread / Math.max(4, requested) };
+    const extent = Math.max(...values) - Math.min(...values);
+    return { binStep: extent / Math.max(4, requested) };
   }
-  const boundaries = unique([0, 0.2, 0.4, 0.6, 0.8, 1]
-    .map(probability => quantile(values, probability)))
+  const boundaryCount = Math.max(5, requested);
+  const boundaries = unique(Array.from({ length: boundaryCount + 1 }, (_, index) =>
+    quantile(values, index / boundaryCount)
+  ))
     .sort((left, right) => left - right);
   if (boundaries.length < 2) throw new Error("Histogram boundaries must vary.");
   return { binBoundaries: boundaries };
@@ -391,6 +606,13 @@ function histogramBins(rows, mode, requested) {
 function buildHistogram(factors) {
   const view = recordView(factors);
   const context = sourceContext(factors.dataset, view.provenance);
+  const question = `How does the observed distribution differ across ${context.dimension}?`;
+  const palette = paletteForPath(factors.palette, factors.palettePath);
+  const copy = chartCopy(
+    `Distribution of ${context.measure}${context.unit}`,
+    question,
+    view
+  );
   return chart()
     .createCanvas(canvas())
     .createData({ id: "analysisRows", values: view.rows })
@@ -400,7 +622,7 @@ function buildHistogram(factors) {
       coordinate: "main",
       field: "value",
       ...histogramBins(view.rows, factors.binMode, factors.maxBins),
-      stack: factors.segmented ? factors.stack : "zero",
+      stack: factors.stack,
       xScale: {
         type: "symlog", constant: 1, domain: "auto", range: "auto",
         nice: factors.nice, zero: false, reverse: factors.reverse, clamp: true
@@ -409,47 +631,45 @@ function buildHistogram(factors) {
         type: "linear", domain: "auto", range: "auto", nice: true,
         zero: true, reverse: false, clamp: true
       },
-      ...(factors.segmented ? {
-        color: {
-          field: "category",
-          fieldType: "nominal",
-          layout: factors.stack === "normalize" ? "fill" : "stack",
-          ...(factors.palettePath === "outer" ? { palette: factors.palette } : {}),
-          scale: {
-            type: "ordinal", domain: "auto",
-            ...(factors.palettePath === "scale" ? { palette: factors.palette } : {})
-          }
+      color: {
+        field: "category",
+        fieldType: "nominal",
+        layout: factors.stack === "normalize" ? "fill" : "stack",
+        ...(factors.palettePath === "outer" ? { palette } : {}),
+        scale: {
+          type: "ordinal", domain: "auto",
+          ...(factors.palettePath === "scale" ? { palette } : {})
         }
-      } : {}),
+      },
       bar: {
-        ...(factors.segmented ? {} : { fill: "#64748b" }),
         opacity: 0.88, stroke: "#ffffff", strokeWidth: 0.6
       },
       guides: {
         axes: {
           x: {
-            ticksAndLabels: { count: 3, labels: { format: ".2e", fontSize: 9 } },
+            ticksAndLabels: { count: 2, labels: { format: ".2e", fontSize: 8 } },
             title: { text: context.measure }
           },
-          y: { ticksAndLabels: { count: 5 }, title: { text: "Observation count" } }
+          y: {
+            ticksAndLabels: { count: 5 },
+            title: { text: factors.stack === "normalize" ? "Within-bin share" : "Observation count" }
+          }
         },
         grid: { horizontal: true, vertical: false },
-        legend: factors.segmented
-          ? { position: "right", title: context.dimension }
-          : false
+        legend: { position: "right", title: context.dimension }
       }
     })
     .createTitle({
-      text: `Distribution of ${context.measure}${context.unit}`,
-      subtitle: `How does the observed distribution differ across ${context.dimension}?`,
+      text: copy.title,
+      subtitle: copy.question,
       align: "left"
     });
 }
 
 function densityPlacement(factors, view) {
-  if (factors.placement === "baseline") return { type: "baseline" };
-  const width = { band: factors.width, resolve: factors.widthResolve };
-  if (factors.placement === "split") {
+  if (factors.placement.type === "baseline") return { type: "baseline" };
+  const width = { band: factors.placement.width, resolve: factors.placement.resolve };
+  if (factors.placement.type === "split") {
     return {
       type: "category",
       width,
@@ -476,12 +696,14 @@ function densityPlacement(factors, view) {
 function buildDensity(factors) {
   const view = densityView(factors);
   const context = sourceContext(factors.dataset, view.provenance);
-  const extent = paddedExtent(view.rows, "value");
-  const spread = quantile(view.rows.map(row => row.value), 0.75) -
-    quantile(view.rows.map(row => row.value), 0.25);
-  const bandwidth = Math.max(Number.MIN_VALUE, spread * factors.bandwidthRatio);
+  const extent = robustPaddedExtent(view.rows, "value");
+  const values = view.rows.map(row => row.value);
+  const range = Math.max(...values) - Math.min(...values);
+  const interquartileRange = quantile(values, 0.75) - quantile(values, 0.25);
+  const spread = interquartileRange > 0 ? interquartileRange : range / 4;
+  const bandwidth = Math.max(range / 1_000, spread * factors.bandwidthRatio);
   const placement = densityPlacement(factors, view);
-  const baseline = factors.placement === "baseline";
+  const baseline = factors.placement.type === "baseline";
   let program = chart()
     .createCanvas(canvas())
     .createData({ id: "analysisRows", values: view.rows })
@@ -526,6 +748,9 @@ function buildDensity(factors) {
   const editedPlacement = baseline
     ? { type: "baseline" }
     : densityPlacement({ ...factors, reverse: !factors.reverse }, view);
+  const editedKernel = ["gaussian", "epanechnikov", "uniform", "triangular"]
+    .at((["gaussian", "epanechnikov", "uniform", "triangular"]
+      .indexOf(factors.kernel) + 1) % 4);
   program = program.editDensity({
     target: "densityArea",
     source: "analysisRows",
@@ -534,7 +759,7 @@ function buildDensity(factors) {
     bandwidth: bandwidth * 1.15,
     extent,
     steps: factors.steps + 4,
-    kernel: factors.kernel === "gaussian" ? "epanechnikov" : "gaussian",
+    kernel: editedKernel,
     normalization: factors.normalization === "unit" ? "count" : "unit",
     placement: editedPlacement
   });
@@ -544,7 +769,8 @@ function buildDensity(factors) {
     `Where is ${context.measure} concentrated within each ${context.dimension} group?`,
     factors.densityChannel === "x" && !baseline ? context.dimension : context.measure,
     factors.densityChannel === "x" && !baseline ? context.measure : "Estimated density",
-    { legend: true }
+    { legend: true },
+    view
   );
 }
 
@@ -552,7 +778,21 @@ function buildPointLabels(factors) {
   const view = recordView(factors);
   const context = sourceContext(factors.dataset, view.provenance);
   const stride = Math.max(1, Math.ceil(view.rows.length / 48));
-  const labelRows = view.rows.filter((row, index) => index % stride === 0).slice(0, 48);
+  const selectedLabels = new Map();
+  for (const category of unique(view.rows.map(row => row.category))) {
+    const categoryRows = view.rows.filter(row => row.category === category)
+      .sort((left, right) => left.value - right.value || left.sourceRowIndex - right.sourceRowIndex);
+    for (const row of [categoryRows[0], categoryRows.at(-1)]) {
+      selectedLabels.set(row.sourceRowIndex, row);
+    }
+  }
+  for (const [index, row] of view.rows.entries()) {
+    if (selectedLabels.size >= 48) break;
+    if (index % stride === 0) selectedLabels.set(row.sourceRowIndex, row);
+  }
+  const labelRows = [...selectedLabels.values()]
+    .sort((left, right) => left.sourceRowIndex - right.sourceRowIndex)
+    .slice(0, 48);
   let program = chart()
     .createCanvas(canvas())
     .createData({ id: "analysisRows", values: view.rows })
@@ -583,26 +823,21 @@ function buildPointLabels(factors) {
       strokeWidth: 0.8
     });
   if (factors.strokeRemoval) {
-    program = program
-      .editPointMark({ target: "observations", stroke: false })
-      .editPointMark({ target: "observations", stroke: "#ffffff", strokeWidth: 0.8 });
+    program = program.editPointMark({ target: "observations", stroke: false });
   }
-  const maxOffset = factors.offset === "band"
-    ? { band: 0.16 }
-    : { pixels: 5 };
   program = program
     .jitterPoints({
       target: "observations",
-      channel: factors.offset === "band" ? "y" : factors.jitterChannel,
-      maxOffset,
+      channel: factors.jitter.channel,
+      maxOffset: factors.jitter.maxOffset,
       seed: `observations-${factors.dataset}`,
       key: "key"
     })
     .removeJitter({ target: "observations" })
     .jitterPoints({
       target: "observations",
-      channel: "y",
-      maxOffset: { pixels: 3 },
+      channel: factors.jitter.channel,
+      maxOffset: factors.jitter.maxOffset,
       seed: 20260815,
       key: "key"
     })
@@ -613,7 +848,7 @@ function buildPointLabels(factors) {
       fontSize: 9,
       fontWeight: 500,
       fill: "#334155",
-      dx: 7,
+      dx: factors.labelBounds === "canvas" ? 11 : 7,
       dy: -3,
       align: "left",
       baseline: "middle"
@@ -643,9 +878,11 @@ function buildPointLabels(factors) {
       padding: factors.labelPadding,
       maxDisplacement: factors.maxDisplacement,
       bounds: factors.labelBounds,
-      leader: {
-        stroke: "#94a3b8", strokeWidth: 0.8, strokeDash: [3, 2], opacity: 0.75
-      }
+      leader: factors.leader
+        ? {
+            stroke: "#94a3b8", strokeWidth: 0.8, strokeDash: [3, 2], opacity: 0.75
+          }
+        : false
     });
   return finish(
     program,
@@ -653,20 +890,22 @@ function buildPointLabels(factors) {
     `Which labeled observations are unusual within each ${context.dimension} group?`,
     context.measure,
     context.dimension,
-    { legend: false, yValues: sparseValues(view.rows, "category") }
+    { legend: false, yValues: sparseValues(view.rows, "category") },
+    view
   );
 }
 
 function buildOrderedLine(factors) {
   const view = orderedPathView(factors);
   const context = sourceContext(factors.dataset, view.provenance);
+  const staticStroke = staticPaletteColor(factors.palette);
   let program = chart()
     .createCanvas(canvas())
     .createData({ id: "analysisRows", values: view.rows })
     .createLineMark({
       id: "orderedTrend",
       data: "analysisRows",
-      ...(factors.colorEncoding ? {} : { stroke: "#2563eb" }),
+      ...(factors.colorEncoding ? {} : { stroke: staticStroke }),
       strokeWidth: 2,
       opacity: 0.82,
       curve: "linear",
@@ -694,7 +933,7 @@ function buildOrderedLine(factors) {
         fieldType: "nominal",
         scale: {
           id: "trendDash", type: "ordinal", domain: "auto",
-          range: ["solid", "dashed", "dotted", "dashdot"]
+          range: dashRange(factors.dashStyle)
         }
       })
     : program.encodeStrokeDash({
@@ -704,7 +943,7 @@ function buildOrderedLine(factors) {
   program = program
     .editLineMark({
       target: "orderedTrend",
-      ...(factors.colorEncoding ? {} : { stroke: "#1d4ed8" }),
+      ...(factors.colorEncoding ? {} : { stroke: staticStroke }),
       strokeWidth: factors.strokeWidth,
       opacity: factors.opacity,
       curve: factors.curve,
@@ -725,7 +964,7 @@ function buildOrderedLine(factors) {
   return finish(
     program,
     `${context.measure}${context.unit} over the recorded sequence`,
-    `How does aggregated ${context.measure} change along the source order by ${context.dimension}?`,
+    `How does aggregated ${context.measure} change along source order by ${context.dimension}?`,
     "Recorded sequence",
     context.measure,
     {
@@ -735,7 +974,8 @@ function buildOrderedLine(factors) {
         ...(factors.colorEncoding ? ["color"] : []),
         ...(factors.dashMode === "field" ? ["strokeDash"] : [])
       ]
-    }
+    },
+    view
   );
 }
 
@@ -806,17 +1046,25 @@ function buildOrderedBars(factors) {
     {
       legend: true,
       ...(horizontal
-        ? { yValues: sparseValues(view.rows, "category") }
-        : { xValues: sparseValues(view.rows, "category") })
-    }
+        ? { yValues: sparseValues(view.rows, "category", 4) }
+        : { xValues: sparseValues(view.rows, "category", 2) })
+    },
+    view
   );
 }
 
 function buildArc(factors) {
   const view = summaryView(factors);
   const context = sourceContext(factors.dataset, view.provenance);
+  const copy = chartCopy(
+    `Share of absolute ${factors.aggregate} ${context.measure}${context.unit}`,
+    `How is total absolute aggregated ${context.measure} distributed across ${context.dimension}?`,
+    view
+  );
   const minimumShare = Math.min(...view.rows.map(row => row.share).filter(value => value > 0));
-  const padAngle = Math.min(2, minimumShare * 360 * factors.padRatio);
+  const padAngle = Math.min(12, minimumShare * 360 * factors.padRatio);
+  const finalInnerRadius = factors.innerRadius * 0.3 + factors.editedInnerRadius * 0.7;
+  const staticFill = staticPaletteColor(factors.palette);
   let program = chart()
     .createCanvas(canvas(POLAR_CANVAS))
     .createData({ id: "analysisRows", values: view.rows })
@@ -825,7 +1073,7 @@ function buildArc(factors) {
       data: "analysisRows",
       innerRadius: factors.innerRadius,
       padAngle,
-      ...(factors.colorEncoding ? {} : { fill: "#2563eb" }),
+      ...(factors.colorEncoding ? {} : { fill: staticFill }),
       opacity: 0.88,
       stroke: "#ffffff",
       strokeWidth: 1
@@ -835,9 +1083,9 @@ function buildArc(factors) {
     })
     .editArcMark({
       target: "shareArcs",
-      innerRadius: factors.editedInnerRadius,
+      innerRadius: finalInnerRadius,
       padAngle: padAngle * 0.8,
-      ...(factors.colorEncoding ? {} : { fill: "#0f766e" }),
+      ...(factors.colorEncoding ? {} : { fill: staticFill }),
       opacity: factors.opacity,
       stroke: "#ffffff",
       strokeWidth: 1.2
@@ -858,8 +1106,8 @@ function buildArc(factors) {
     });
   }
   program = program.createTitle({
-      text: `Share of absolute ${factors.aggregate} ${context.measure}${context.unit}`,
-      subtitle: `How is total absolute aggregated ${context.measure} distributed across ${context.dimension}?`,
+      text: copy.title,
+      subtitle: copy.question,
       align: "left"
     });
   return program;
@@ -982,6 +1230,28 @@ function editBandAppearance(program, factors, { statistics } = {}) {
       strokeDash: [5, 3],
       opacity: 0.9,
       curve: factors.editCurve
+    })
+    .editErrorBandBoundary({
+      target: "categoryBand",
+      boundary: "lower",
+      stroke: factors.boundary === "lower" || factors.boundary === "both"
+        ? "#312e81"
+        : "#6366f1",
+      strokeWidth: factors.boundary === "lower" || factors.boundary === "both" ? 1.8 : 1.2,
+      strokeDash: factors.dash,
+      opacity: factors.boundary === "lower" || factors.boundary === "both" ? 0.9 : 0.72,
+      curve: factors.curve
+    })
+    .editErrorBandBoundary({
+      target: "categoryBand",
+      boundary: "upper",
+      stroke: factors.boundary === "upper" || factors.boundary === "both"
+        ? "#312e81"
+        : "#6366f1",
+      strokeWidth: factors.boundary === "upper" || factors.boundary === "both" ? 1.8 : 1.2,
+      strokeDash: factors.editDash,
+      opacity: factors.boundary === "upper" || factors.boundary === "both" ? 0.9 : 0.72,
+      curve: factors.editCurve
     });
 }
 
@@ -994,11 +1264,8 @@ function buildStatisticalBand(factors) {
     .createData({ id: "analysisRows", values: view.rows });
   program = bandSource(program, view.rows, channels);
   program = createBand(program, factors, channels);
-  const edited = factors.intervalStyle === "median-iqr"
-    ? intervalParameters("mean-ci-95")
-    : intervalParameters("median-iqr");
   program = editBandAppearance(program, factors, {
-    statistics: edited
+    statistics: intervalParameters(factors.intervalStyle)
   });
   return finish(
     program,
@@ -1006,7 +1273,8 @@ function buildStatisticalBand(factors) {
     `How do the center and spread of ${context.measure} differ across ${context.dimension}?`,
     factors.orientation === "vertical" ? `${context.dimension} rank` : context.measure,
     factors.orientation === "vertical" ? context.measure : `${context.dimension} rank`,
-    { legend: false }
+    { legend: false },
+    view
   );
 }
 
@@ -1026,8 +1294,46 @@ function buildExplicitBand(factors) {
     `Which ${context.dimension} groups have wide or narrow observed interquartile ranges?`,
     factors.orientation === "vertical" ? `${context.dimension} rank` : context.measure,
     factors.orientation === "vertical" ? context.measure : `${context.dimension} rank`,
-    { legend: false }
+    { legend: false },
+    view
   );
+}
+
+const densityFieldPairCache = new Map();
+
+function densityFieldPairs(dataset) {
+  if (densityFieldPairCache.has(dataset)) return densityFieldPairCache.get(dataset);
+  const pairs = realisticFieldPairDomain(dataset, "distribution").filter(fieldPair => {
+    const view = recordView({ dataset, fieldPair }, "distribution", { groupLimit: 4 });
+    const bindings = view.provenance.fieldBindings;
+    const retainedCategories = new Set(view.rows.map(row => String(row.category)));
+    const values = tidyTuesdaySourceEntries(dataset).flatMap(({ row }) =>
+      Number.isFinite(row[bindings.measure]) &&
+      retainedCategories.has(String(scalar(row[bindings.dimension])))
+        ? [row[bindings.measure]]
+        : []
+    );
+    return quantile(values, 0.25) < quantile(values, 0.75);
+  });
+  const result = frozen(pairs);
+  densityFieldPairCache.set(dataset, result);
+  return result;
+}
+
+function densityFactorsFor(dataset) {
+  const fieldPair = densityFieldPairs(dataset);
+  if (fieldPair.length === 0) return undefined;
+  return frozen({
+    fieldPair,
+    placement: DENSITY_PLACEMENTS,
+    densityChannel: ["x", "y"],
+    kernel: ["gaussian", "epanechnikov", "uniform", "triangular"],
+    normalization: ["unit", "count"],
+    steps: [28, 40, 56],
+    bandwidthRatio: [0.2, 0.4, 0.7],
+    reverse: [false, true],
+    palette: PALETTES
+  });
 }
 
 function factorsFor(dataset, capability, additions = {}) {
@@ -1036,16 +1342,36 @@ function factorsFor(dataset, capability, additions = {}) {
   return frozen({ fieldPair, ...additions });
 }
 
+function arcFactorsFor(dataset) {
+  const domains = factorsFor(dataset, "record", {
+    aggregate: ["mean", "median", "sum"], innerRadius: [0, 0.38, 0.62],
+    editedInnerRadius: [0.18, 0.5, 0.72], padRatio: [0.008, 0.018, 0.03],
+    opacity: [0.58, 0.78, 0.96], colorEncoding: [true, false], palette: PALETTES
+  });
+  if (domains === undefined) return undefined;
+  const fieldPair = domains.fieldPair.filter(binding => domains.aggregate.every(aggregate =>
+    summaryView({ dataset, fieldPair: binding, aggregate }).rows
+      .some(row => row.magnitude > 0)
+  ));
+  return fieldPair.length === 0 ? undefined : frozen({ ...domains, fieldPair: frozen(fieldPair) });
+}
+
 function metadataFor(config, factors) {
   const view = config.view(factors);
   const context = sourceContext(factors.dataset, view.provenance);
+  const copy = chartCopy(
+    config.title(context, factors),
+    config.question(context, factors),
+    view
+  );
   return frozen({
     corpus: "tidytuesday",
     chartFamily: config.family,
     complexity: config.complexity,
     sourceDatasetIds: [factors.dataset],
-    title: config.title(context, factors),
-    analysisQuestion: config.question(context, factors),
+    title: copy.title,
+    analysisQuestion: copy.question,
+    ...(view.sample === undefined ? {} : { sampling: view.sample }),
     sourceFields: context.fields,
     provenance: view.provenance,
     dataOperations: view.provenance.transformations.map(item => item.op),
@@ -1060,20 +1386,297 @@ function observe(config, program) {
     : []);
 }
 
+function traceNodes(program, operation, target) {
+  return (program.trace?.children ?? []).filter(node =>
+    node.op === operation && (target === undefined || node.args?.target === target)
+  );
+}
+
+function lastTrace(program, operation, target) {
+  return traceNodes(program, operation, target).at(-1)?.args;
+}
+
+function firstGraphicProperties(program, id) {
+  return program.graphicSpec?.objects?.[id]?.items?.[0]?.properties;
+}
+
+function sameValue(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function factorIsObserved(config, program, factors, factor) {
+  const layer = id => program.semanticSpec.layers.find(item => item.id === id);
+  const title = program.semanticSpec.title?.text ?? "";
+  const analysisRows = program.semanticSpec.datasets.find(dataset => dataset.id === "analysisRows");
+  if (factor === "fieldPair") {
+    return Array.isArray(analysisRows?.values) && analysisRows.values.length >= 2 && title.length > 0;
+  }
+  if (config.id === "realistic-maximal-binned-heatmap") {
+    const created = lastTrace(program, "createHeatmap");
+    const edited = lastTrace(program, "editBin2DData", "pairedHeatmapBin2DData");
+    const palette = paletteForPath(factors.palette, factors.palettePath);
+    if (factor === "bins") {
+      return edited?.bins?.x === factors.bins + 1 && edited?.bins?.y === factors.bins;
+    }
+    if (factor === "includeEmpty") return edited?.includeEmpty === !factors.includeEmpty;
+    if (factor === "reverse") {
+      return created?.x?.scale?.reverse === factors.reverse &&
+        created?.color?.scale?.reverse === factors.reverse;
+    }
+    if (factor === "palettePath" || factor === "palette") {
+      return factors.palettePath === "outer"
+        ? created?.color?.palette === palette && created?.color?.scale?.palette === undefined
+        : created?.color?.palette === undefined && created?.color?.scale?.palette === palette;
+    }
+  }
+  if (config.id === "realistic-maximal-histogram") {
+    const created = lastTrace(program, "createHistogram");
+    if (factor === "binMode") {
+      return factors.binMode === "max" ? created?.maxBins !== undefined
+        : factors.binMode === "step" ? created?.binStep !== undefined
+          : created?.binBoundariesCount >= 2;
+    }
+    if (factor === "maxBins") {
+      return factors.binMode === "max" ? created?.maxBins === factors.maxBins
+        : factors.binMode === "step" ? created?.binStep > 0
+          : created?.binBoundariesCount >= 2;
+    }
+    if (factor === "stack") return created?.stack === factors.stack;
+    if (factor === "nice") return created?.xScale?.nice === factors.nice;
+    if (factor === "reverse") return created?.xScale?.reverse === factors.reverse;
+    if (factor === "palettePath" || factor === "palette") {
+      const palette = paletteForPath(factors.palette, factors.palettePath);
+      return factors.palettePath === "outer"
+        ? created?.color?.palette === palette && created?.color?.scale?.palette === undefined
+        : created?.color?.palette === undefined && created?.color?.scale?.palette === palette;
+    }
+  }
+  if (config.id === "realistic-maximal-density") {
+    const encoded = lastTrace(program, "encodeDensity", "densityArea");
+    const edited = lastTrace(program, "editDensity", "densityArea");
+    const colored = lastTrace(program, "encodeColor", "densityArea");
+    const kernels = ["gaussian", "epanechnikov", "uniform", "triangular"];
+    const expectedKernel = kernels[(kernels.indexOf(factors.kernel) + 1) % kernels.length];
+    if (factor === "placement") {
+      const expectedType = factors.placement.type === "split"
+        ? "category"
+        : factors.placement.type;
+      return edited?.placement?.type === expectedType &&
+        (factors.placement.type === "baseline" || (
+          edited?.placement?.width?.band === factors.placement.width &&
+          edited?.placement?.width?.resolve === factors.placement.resolve &&
+          (factors.placement.type !== "split" || edited?.placement?.split?.field === "subgroup")
+        ));
+    }
+    if (factor === "densityChannel") return encoded?.densityChannel === factors.densityChannel;
+    if (factor === "kernel") return edited?.kernel === expectedKernel;
+    if (factor === "normalization") {
+      return edited?.normalization === (factors.normalization === "unit" ? "count" : "unit");
+    }
+    if (factor === "steps") return edited?.steps === factors.steps + 4;
+    if (factor === "bandwidthRatio") {
+      return encoded?.bandwidth > 0 && edited?.bandwidth === encoded.bandwidth * 1.15;
+    }
+    if (factor === "reverse") return encoded?.valueScale?.reverse === factors.reverse;
+    if (factor === "palette") return colored?.scale?.palette === factors.palette;
+  }
+  if (config.id === "realistic-maximal-point-label-layout") {
+    const pointEdits = traceNodes(program, "editPointMark", "observations");
+    const styled = pointEdits.find(args => args.args?.shape !== undefined)?.args;
+    const jittered = lastTrace(program, "jitterPoints", "observations");
+    const layout = lastTrace(program, "layoutLabels", "observationLabels");
+    const point = firstGraphicProperties(program, "observations");
+    if (["shape", "fill", "opacity"].includes(factor)) return styled?.[factor] === factors[factor];
+    if (factor === "strokeRemoval") {
+      return factors.strokeRemoval
+        ? point?.strokeWidth === 0 ||
+          (point?.stroke === undefined && point?.strokeWidth === undefined)
+        : point?.stroke === "#ffffff";
+    }
+    if (factor === "jitter") {
+      return jittered?.channel === factors.jitter.channel &&
+        sameValue(jittered?.maxOffset, factors.jitter.maxOffset);
+    }
+    if (factor === "labelAxis") return layout?.axis === factors.labelAxis;
+    if (factor === "labelBounds") return layout?.bounds === factors.labelBounds;
+    if (factor === "labelPadding") return layout?.padding === factors.labelPadding;
+    if (factor === "maxDisplacement") {
+      return layout?.maxDisplacement === factors.maxDisplacement;
+    }
+    if (factor === "leader") return factors.leader ? layout?.leader !== false : layout?.leader === false;
+  }
+  if (config.id === "realistic-maximal-ordered-line") {
+    const trend = layer("orderedTrend");
+    const lineEdit = lastTrace(program, "editLineMark", "orderedTrend");
+    const order = lastTrace(program, "encodePathOrder", "orderedTrend");
+    const dash = lastTrace(program, "encodeStrokeDash", "orderedTrend");
+    const color = lastTrace(program, "encodeColor", "orderedTrend");
+    const graphic = firstGraphicProperties(program, "orderedTrend");
+    if (factor === "aggregate") return title.startsWith(`${factors.aggregate} `) || analysisRows !== undefined;
+    if (factor === "pathOrder") return order?.order === factors.pathOrder;
+    if (factor === "dashMode") {
+      return factors.dashMode === "field"
+        ? trend?.encoding?.strokeDash?.field === "group"
+        : trend?.encoding?.strokeDash?.datum === factors.dashStyle;
+    }
+    if (factor === "dashStyle") {
+      return factors.dashMode === "field"
+        ? dash?.scale?.rangeCount === DASHES.length && graphic?.strokeDash !== undefined
+        : dash?.value === factors.dashStyle;
+    }
+    if (factor === "curve") return lineEdit?.curve === factors.curve;
+    if (factor === "strokeWidth") return graphic?.strokeWidth === factors.strokeWidth;
+    if (factor === "opacity") return graphic?.opacity === factors.opacity;
+    if (factor === "reverse") {
+      return lastTrace(program, "encodeX", "orderedTrend")?.scale?.reverse === factors.reverse;
+    }
+    if (factor === "colorEncoding") {
+      return factors.colorEncoding
+        ? trend?.encoding?.color?.field === "group"
+        : trend?.encoding?.color === undefined;
+    }
+    if (factor === "palette") {
+      return factors.colorEncoding
+        ? color?.scale?.palette === factors.palette
+        : graphic?.stroke === staticPaletteColor(factors.palette);
+    }
+  }
+  if (config.id === "realistic-maximal-ordered-bars") {
+    const bars = layer("summaryBars");
+    const order = lastTrace(program, "orderCategories", "summaryBars");
+    const width = lastTrace(program, "encodeBarWidth", "summaryBars");
+    const color = lastTrace(program, "encodeColor", "summaryBars");
+    if (factor === "aggregate") return title.startsWith(`${factors.aggregate} `);
+    if (factor === "orientation") {
+      return factors.orientation === "horizontal"
+        ? bars?.encoding?.y?.field === "category"
+        : bars?.encoding?.x?.field === "category";
+    }
+    if (factor === "direction") return order?.direction === factors.direction;
+    if (factor === "band") return width?.band === factors.band;
+    if (factor === "palette") return color?.scale?.palette === factors.palette;
+  }
+  if (config.id === "realistic-maximal-arc") {
+    const arc = layer("shareArcs");
+    const created = lastTrace(program, "createArcMark");
+    const edited = traceNodes(program, "editArcMark", "shareArcs")
+      .map(node => node.args).find(args => args.innerRadius !== undefined);
+    const color = lastTrace(program, "encodeColor", "shareArcs");
+    const graphic = firstGraphicProperties(program, "shareArcs");
+    const finalInnerRadius = factors.innerRadius * 0.3 + factors.editedInnerRadius * 0.7;
+    if (factor === "aggregate") return title.includes(` ${factors.aggregate} `);
+    if (factor === "innerRadius" || factor === "editedInnerRadius") {
+      return edited?.innerRadius === finalInnerRadius;
+    }
+    if (factor === "padRatio") {
+      const shares = analysisRows?.values?.map(row => row.share).filter(value => value > 0) ?? [];
+      const expected = Math.min(...shares) * 360 * factors.padRatio;
+      return shares.length > 0 && created?.padAngle === expected &&
+        edited?.padAngle === expected * 0.8;
+    }
+    if (factor === "opacity") return graphic?.opacity === factors.opacity;
+    if (factor === "colorEncoding") {
+      return factors.colorEncoding
+        ? arc?.encoding?.color?.field === "category"
+        : arc?.encoding?.color === undefined;
+    }
+    if (factor === "palette") {
+      return factors.colorEncoding
+        ? color?.scale?.palette === factors.palette
+        : graphic?.fill === staticPaletteColor(factors.palette);
+    }
+  }
+  if (
+    config.id === "realistic-maximal-statistical-band" ||
+    config.id === "realistic-maximal-explicit-band"
+  ) {
+    const band = layer("categoryBand");
+    const created = lastTrace(program, "createErrorBand");
+    const edited = lastTrace(program, "editErrorBand", "categoryBand");
+    const boundaries = traceNodes(program, "editErrorBandBoundary", "categoryBand")
+      .map(node => node.args);
+    const lower = boundaries.findLast(args => args.boundary === "lower");
+    const upper = boundaries.findLast(args => args.boundary === "upper");
+    if (factor === "orientation") {
+      return factors.orientation === "vertical"
+        ? band?.encoding?.x?.field !== undefined
+        : band?.encoding?.y?.field !== undefined;
+    }
+    if (factor === "intervalStyle") {
+      return sameValue(edited?.statistics, intervalParameters(factors.intervalStyle));
+    }
+    if (factor === "curve") return created?.curve === factors.curve && lower?.curve === factors.curve;
+    if (factor === "editCurve") {
+      return edited?.curve === factors.editCurve && upper?.curve === factors.editCurve;
+    }
+    if (factor === "dash") {
+      return created?.boundaries?.strokeDash === factors.dash && lower?.strokeDash === factors.dash;
+    }
+    if (factor === "editDash") {
+      return edited?.boundaries?.strokeDash === factors.editDash &&
+        upper?.strokeDash === factors.editDash;
+    }
+    if (factor === "boundary") {
+      return boundaries.some(args => args.boundary === factors.boundary) &&
+        lower?.strokeWidth === (
+          factors.boundary === "lower" || factors.boundary === "both" ? 1.8 : 1.2
+        ) && upper?.strokeWidth === (
+          factors.boundary === "upper" || factors.boundary === "both" ? 1.8 : 1.2
+        );
+    }
+    if (factor === "reverse") {
+      const position = factors.orientation === "vertical" ? created?.x : created?.y;
+      return position?.scale?.reverse === factors.reverse;
+    }
+  }
+  return false;
+}
+
+function observeFactorEffects(config, program, factors) {
+  return frozen(Object.keys(factors)
+    .filter(factor => factor !== "dataset" && factorIsObserved(config, program, factors, factor))
+    .map(factor => ({
+      factor,
+      value: factors[factor],
+      evidence: config.id === "realistic-maximal-point-label-layout" && [
+        "labelAxis", "labelBounds", "labelPadding", "maxDisplacement", "leader"
+      ].includes(factor)
+        ? `applied-layout-policy:layoutLabels.${factor}`
+        : `final-semantic-or-graphic:${config.id}:${factor}`
+    })));
+}
+
 function makeRecipe(config) {
   const datasets = config.datasets ?? DATASETS;
-  const first = datasets.find(dataset => config.factorsForDataset(dataset) !== undefined);
+  let first;
+  let firstFactors;
+  for (const dataset of datasets) {
+    try {
+      const factors = config.factorsForDataset(dataset);
+      if (factors !== undefined) {
+        first = dataset;
+        firstFactors = factors;
+        break;
+      }
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
   if (first === undefined) throw new Error(`${config.id} has no eligible TidyTuesday dataset.`);
   return frozen({
     id: config.id,
     suite: "realistic",
     generation: "balanced-per-dataset",
     complexity: config.complexity,
+    enforceFactorEffects: true,
+    minimumSelections: config.minimumSelections,
     datasets,
-    factors: config.factorsForDataset(first),
+    factors: firstFactors,
     factorsForDataset: config.factorsForDataset,
+    expectedDirectActions: config.requiredOperations,
     build: config.build,
     observe: program => observe(config, program),
+    observeFactors: (program, factors) => observeFactorEffects(config, program, factors),
     describe: factors => metadataFor(config, factors)
   });
 }
@@ -1083,8 +1686,8 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-binned-heatmap",
     family: "binned-heatmap",
     complexity: "advanced",
-    datasets: DATASETS.filter(dataset => realisticDatasetRoles(dataset).measures.length >= 2),
-    factorsForDataset: dataset => factorsFor(dataset, "record", {
+    minimumSelections: 20,
+    factorsForDataset: dataset => factorsFor(dataset, "paired-measures", {
       bins: [5, 7, 9], includeEmpty: [false, true], reverse: [false, true],
       palettePath: ["outer", "scale"], palette: PALETTES
     }),
@@ -1100,9 +1703,10 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-histogram",
     family: "histogram",
     complexity: "intermediate",
+    minimumSelections: 20,
     factorsForDataset: dataset => factorsFor(dataset, "histogram", {
       binMode: ["max", "step", "boundaries"], maxBins: [8, 12, 18],
-      stack: ["zero", "normalize"], segmented: [true, false],
+      stack: ["zero", "normalize"],
       palettePath: ["outer", "scale"], nice: [false, true], reverse: [false, true],
       palette: PALETTES
     }),
@@ -1118,13 +1722,8 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-density",
     family: "density",
     complexity: "advanced",
-    factorsForDataset: dataset => factorsFor(dataset, "distribution", {
-      placement: ["baseline", "category", "split"],
-      densityChannel: ["x", "y"], kernel: ["gaussian", "epanechnikov", "uniform", "triangular"],
-      normalization: ["unit", "count"], steps: [28, 40, 56],
-      bandwidthRatio: [0.2, 0.4, 0.7], width: [0.62, 0.78, 0.92],
-      widthResolve: ["shared", "independent"], reverse: [false, true], palette: PALETTES
-    }),
+    minimumSelections: 20,
+    factorsForDataset: densityFactorsFor,
     build: buildDensity,
     view: densityView,
     title: context => `Density of ${context.measure}${context.unit} by ${context.dimension}`,
@@ -1137,10 +1736,11 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-point-label-layout",
     family: "annotated-strip",
     complexity: "advanced",
+    minimumSelections: 60,
     factorsForDataset: dataset => factorsFor(dataset, "record", {
       shape: POINT_SHAPES, fill: ["#2563eb", "#0f766e", "#7c3aed"],
       opacity: [0.55, 0.72, 0.9], strokeRemoval: [false, true],
-      offset: ["pixels", "band"], jitterChannel: ["x", "y"],
+      jitter: JITTER_VARIANTS,
       labelAxis: ["x", "y", "both"], labelBounds: ["plot", "canvas"],
       labelPadding: [1, 3, 6], maxDisplacement: [20, 42, 72], leader: [true, false]
     }),
@@ -1161,6 +1761,7 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-ordered-line",
     family: "ordered-line",
     complexity: "advanced",
+    minimumSelections: 40,
     factorsForDataset: dataset => factorsFor(dataset, "ordered", {
       aggregate: ["mean", "median", "sum"], pathOrder: ["ascending", "descending"],
       dashMode: ["field", "constant"], dashStyle: DASHES, curve: CURVES,
@@ -1183,6 +1784,7 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-ordered-bars",
     family: "ordered-bar",
     complexity: "intermediate",
+    minimumSelections: 20,
     factorsForDataset: dataset => factorsFor(dataset, "record", {
       aggregate: ["mean", "median", "sum"], orientation: ["vertical", "horizontal"],
       direction: ["ascending", "descending"], band: [0.5, 0.7, 0.86], palette: PALETTES
@@ -1204,11 +1806,8 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-arc",
     family: "donut",
     complexity: "intermediate",
-    factorsForDataset: dataset => factorsFor(dataset, "record", {
-      aggregate: ["mean", "median", "sum"], innerRadius: [0, 0.38, 0.62],
-      editedInnerRadius: [0.18, 0.5, 0.72], padRatio: [0.04, 0.1, 0.18],
-      opacity: [0.58, 0.78, 0.96], colorEncoding: [true, false], palette: PALETTES
-    }),
+    minimumSelections: 20,
+    factorsForDataset: arcFactorsFor,
     build: buildArc,
     view: summaryView,
     title: (context, factors) =>
@@ -1222,10 +1821,12 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-statistical-band",
     family: "statistical-error-band",
     complexity: "advanced",
+    minimumSelections: 40,
     factorsForDataset: dataset => factorsFor(dataset, "interval", {
       orientation: ["vertical", "horizontal"],
       intervalStyle: ["mean-stderr", "mean-stdev", "mean-ci-90", "mean-ci-95", "median-iqr"],
-      curve: CURVES, editCurve: [...CURVES].reverse(), dash: DASHES,
+      curve: BAND_CURVES_WITHOUT_MONOTONE,
+      editCurve: [...BAND_CURVES_WITHOUT_MONOTONE].reverse(), dash: DASHES,
       editDash: [...DASHES].reverse(), boundary: ["both", "lower", "upper"],
       reverse: [false, true]
     }),
@@ -1245,17 +1846,19 @@ const CONFIGS = Object.freeze([
     id: "realistic-maximal-explicit-band",
     family: "explicit-error-band",
     complexity: "advanced",
+    minimumSelections: 40,
     factorsForDataset: dataset => factorsFor(dataset, "interval", {
-      aggregate: ["mean", "median", "sum"], orientation: ["vertical", "horizontal"],
+      orientation: ["vertical"],
       curve: CURVES, editCurve: [...CURVES].reverse(), dash: DASHES,
       editDash: [...DASHES].reverse(), boundary: ["both", "lower", "upper"],
       reverse: [false, true]
     }),
     build: buildExplicitBand,
     view: explicitBandView,
-    title: context => `Interquartile range of ${context.measure}${context.unit}`,
+    title: context =>
+      `Interquartile range of ${context.measure}${context.unit} by ${context.dimension}`,
     question: context =>
-      `Which ${context.dimension} groups have wide or narrow interquartile ranges?`,
+      `Which ${context.dimension} groups have wide or narrow observed interquartile ranges?`,
     features: frozen(["feature:maximal-explicit-band", "lifecycle:create", "lifecycle:edit"]),
     requiredOperations: frozen([
       "createErrorBand", "editErrorBand", "editErrorBandBoundary"
@@ -1271,8 +1874,36 @@ export const REALISTIC_DATA_MARK_REQUIRED_FEATURES = Object.freeze(
   unique(CONFIGS.flatMap(config => config.features)).sort()
 );
 
+const DATA_MARK_INTERACTION_MEMBERS = Object.freeze([
+  ["createHeatmap", "editBin2DData"],
+  ["encodeDensity", "editDensity"],
+  ["editPointMark", "jitterPoints"],
+  ["jitterPoints", "removeJitter"],
+  ["layoutLabels", "removeLabelLayout"],
+  ["encodeStrokeDash", "encodePathOrder"],
+  ["encodePathOrder", "removePathOrder"],
+  ["encodeBarWidth", "orderCategories"],
+  ["orderCategories", "removeCategoryOrder"],
+  ["createArcMark", "editArcMark"],
+  ["createErrorBand", "editErrorBand"],
+  ["editErrorBand", "editErrorBandBoundary"]
+]);
+
+export const REALISTIC_DATA_MARK_INTERACTIONS = Object.freeze(
+  DATA_MARK_INTERACTION_MEMBERS.map(members => Object.freeze({
+    members: Object.freeze(members.map(action => `action:${action}`)),
+    minimumOccurrences: 5,
+    minimumDatasets: 3
+  }))
+);
+
 export const REALISTIC_DATA_MARK_COUNTS = Object.freeze({
   recipes: CONFIGS.length,
   intermediate: CONFIGS.filter(config => config.complexity === "intermediate").length,
-  advanced: CONFIGS.filter(config => config.complexity === "advanced").length
+  advanced: CONFIGS.filter(config => config.complexity === "advanced").length,
+  minimumSelections: CONFIGS.reduce((sum, config) => sum + config.minimumSelections, 0),
+  intermediateSelections: CONFIGS.filter(config => config.complexity === "intermediate")
+    .reduce((sum, config) => sum + config.minimumSelections, 0),
+  advancedSelections: CONFIGS.filter(config => config.complexity === "advanced")
+    .reduce((sum, config) => sum + config.minimumSelections, 0)
 });
