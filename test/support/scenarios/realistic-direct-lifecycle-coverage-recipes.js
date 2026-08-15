@@ -33,6 +33,8 @@ const STATISTICAL_ANALYSIS_QUESTION =
   "How do interval estimates and distribution shapes vary across source time and observed categories?";
 const DERIVED_ENCODING_ANALYSIS_QUESTION =
   "How do overall temporal horizon patterns, histograms, and category densities describe the selected measure?";
+const REMOVAL_ANALYSIS_QUESTION =
+  "How does the selected measure vary across stable selected source-record order and authentic source categories?";
 const SELECTOR_CHANNELS = Object.freeze([
   "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
   "color", "strokeDash", "size", "shape", "group", "opacity"
@@ -239,14 +241,84 @@ function regressionLifecycleView(dataset) {
   });
 }
 
+function removalLifecycleView(dataset) {
+  const records = realisticRecordView(dataset, {
+    includeSecondaryDimension: true,
+    deriveSubgroup: true
+  });
+  const selectedRows = [...records.rows].sort((left, right) =>
+    left.sourceRowIndex - right.sourceRowIndex
+  );
+  const minimum = Math.min(...selectedRows.map(row => row.value));
+  const maximum = Math.max(...selectedRows.map(row => row.value));
+  const span = maximum - minimum || 1;
+  const rows = selectedRows.map((row, index) => {
+    const sourceGroup = String(row.subgroup ?? row.category);
+    return {
+      id: row.key,
+      x: index + 1,
+      y: row.value,
+      position: index + 1,
+      value: row.value,
+      label: row.label,
+      category: String(row.category),
+      sourceGroup,
+      group: sourceGroup,
+      series: sourceGroup,
+      opacity: (row.value - minimum) / span,
+      angle: index * 360 / selectedRows.length,
+      sourceRowIndex: row.sourceRowIndex
+    };
+  });
+  return freeze({
+    rows,
+    sample: {
+      ...records.sample,
+      displayedRowCount: rows.length,
+      outputRowCount: rows.length
+    },
+    provenance: {
+      ...records.provenance,
+      transformations: [
+        ...records.provenance.transformations,
+        freeze({
+          op: "stable-selected-source-order-rank",
+          source: "sourceRowIndex",
+          sort: "ascending",
+          as: "x"
+        }),
+        freeze({
+          op: "project-real-analysis-pair",
+          x: "sourceRowIndex",
+          y: records.provenance.fieldBindings.measure
+        }),
+        freeze({
+          op: "min-max-normalize",
+          source: records.provenance.fieldBindings.measure,
+          as: "opacity"
+        }),
+        freeze({
+          op: "stable-angle-rank",
+          source: "sourceRowIndex",
+          as: "angle"
+        }),
+        freeze({ op: "lifecycle-projection", kind: "removal" })
+      ]
+    }
+  });
+}
+
 function extendedView(dataset, kind, {
   derivedEncodingProjection = false,
+  removalProjection = false,
   singleSeriesProjection = false,
   statisticalProjection = false
 } = {}) {
   const base = kind === "regression"
     ? regressionLifecycleView(dataset)
-    : realisticLifecycleRows(dataset, kind);
+    : removalProjection
+      ? removalLifecycleView(dataset)
+      : realisticLifecycleRows(dataset, kind);
   const singleSeriesValue = singleSeriesProjection
     ? "All observations"
     : undefined;
@@ -876,7 +948,7 @@ function buildRemovalCoverage(factors) {
     factors.dataset,
     "style",
     "analysisRows",
-    { singleSeriesProjection: true }
+    { removalProjection: true, singleSeriesProjection: true }
   );
   let program = initial.filterData({
     id: "removalMaterialRows",
@@ -944,7 +1016,12 @@ function buildRemovalCoverage(factors) {
         .encodeBarWidth({ target, band: 0.72 });
     }
   }
-  return finish(program, factors.dataset, "Encoding removal lifecycle coverage");
+  return finish(
+    program,
+    factors.dataset,
+    "Encoding removal lifecycle coverage",
+    REMOVAL_ANALYSIS_QUESTION
+  );
 }
 
 function categoricalScale(id, type = "band") {
@@ -1924,6 +2001,7 @@ function buildFacetCoverage(factors) {
 function metadataFor(recipe, factors) {
   const view = extendedView(factors.dataset, recipe.kind, {
     derivedEncodingProjection: recipe.derivedEncodingProjection,
+    removalProjection: recipe.removalProjection,
     singleSeriesProjection: recipe.singleSeriesProjection,
     statisticalProjection: recipe.statisticalProjection
   });
@@ -1941,7 +2019,9 @@ function metadataFor(recipe, factors) {
         ? STATISTICAL_ANALYSIS_QUESTION
         : recipe.derivedEncodingProjection
           ? DERIVED_ENCODING_ANALYSIS_QUESTION
-          : DEFAULT_ANALYSIS_QUESTION,
+          : recipe.removalProjection
+            ? REMOVAL_ANALYSIS_QUESTION
+            : DEFAULT_ANALYSIS_QUESTION,
     sourceFields: fields,
     ...(view.sample === undefined ? {} : { sampling: view.sample }),
     provenance: view.provenance,
@@ -1973,6 +2053,7 @@ function makeRecipe({
   build,
   expectedDirectActions,
   derivedEncodingProjection = false,
+  removalProjection = false,
   singleSeriesProjection = false,
   statisticalProjection = false
 }) {
@@ -1992,6 +2073,7 @@ function makeRecipe({
     kind,
     family,
     derivedEncodingProjection,
+    removalProjection,
     singleSeriesProjection,
     statisticalProjection,
     factorsForDataset(dataset) {
@@ -2137,6 +2219,7 @@ const REMOVAL_RECIPE = makeRecipe({
   family: "direct-lifecycle-removal",
   complexity: "simple",
   kind: "style",
+  removalProjection: true,
   singleSeriesProjection: true,
   build: buildRemovalCoverage,
   expectedDirectActions: ["removeEncoding"]

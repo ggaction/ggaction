@@ -26,7 +26,9 @@ import {
 import { runScenario } from "../support/scenarios/engine.js";
 import {
   realisticDatasetIds,
-  realisticDatasetSupports
+  realisticDatasetRoles,
+  realisticDatasetSupports,
+  realisticLifecycleEligible
 } from "../support/scenarios/realistic-data.js";
 import {
   REALISTIC_DIRECT_LIFECYCLE_COVERAGE_ASSIGNED_LITERAL_FAMILIES,
@@ -83,6 +85,16 @@ const DERIVED_SWEEP_TEST_NAME =
   "preflights the maximal derived-encoding profile on all temporal-eligible TT datasets";
 const DERIVED_ENCODING_ANALYSIS_QUESTION =
   "How do overall temporal horizon patterns, histograms, and category densities describe the selected measure?";
+const REMOVAL_SWEEP_CHILD_ENV = "GGACTION_DIRECT_REMOVAL_SWEEP_CHILD";
+const REMOVAL_SWEEP_RESOURCE_PREFIX = "direct-removal-sweep-resource:";
+const REMOVAL_SWEEP_TEST_NAME =
+  "preflights the maximal removal profile on all fifty eligible TT datasets";
+const REMOVAL_ANALYSIS_QUESTION =
+  "How does the selected measure vary across stable selected source-record order and authentic source categories?";
+const REMOVAL_CHANNELS = Object.freeze([
+  "color", "group", "opacity", "radius", "size", "strokeDash", "strokeWidth",
+  "text", "theta", "x", "x2", "xOffset", "y", "y2", "yOffset"
+]);
 let inventoryPromise = buildPublicOptionInventory(JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
   "utf8"
@@ -896,6 +908,347 @@ test("keeps the assigned single-series operation truthful and removal-only", () 
     releaseTidyTuesdaySourceCache(dataset);
   }
   collectGarbage();
+});
+
+test("uses stable selected source order for the one-measure Spiders removal view", () => {
+  const dataset = "tt-spiders";
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-removal-coverage"
+  );
+  const factors = { dataset, profile: { id: "maximal" } };
+  const roles = realisticDatasetRoles(dataset);
+  assert.deepEqual(roles.measures, ["year"]);
+  assert.deepEqual(roles.order, ["year"]);
+  assert.equal(realisticDatasetSupports(dataset, "style"), true);
+  assert.equal(realisticLifecycleEligible(dataset, "style"), false);
+  assert.ok(recipe.datasets.includes(dataset));
+  let captured = false;
+  try {
+    const result = runScenario({
+      id: "regression-direct-removal-spiders",
+      recipe: recipe.id,
+      factors
+    }, {
+      deterministic: false,
+      captureProgram(program) {
+        captured = true;
+        const metadata = recipe.describe(factors);
+        const rows = program.semanticSpec.datasets.find(value =>
+          value.id === "analysisRows"
+        ).values;
+        const selectedIndexes = new Set(rows.map(row => row.sourceRowIndex));
+        const sourceByIndex = new Map(tidyTuesdaySourceEntries(dataset)
+          .filter(entry => selectedIndexes.has(entry.sourceRowIndex))
+          .map(entry => [entry.sourceRowIndex, entry.row]));
+        assert.equal(rows.length, 160);
+        assert.deepEqual(metadata.provenance.fieldBindings, {
+          measure: "year",
+          dimension: "parentheses",
+          secondaryDimension: "family",
+          order: "year",
+          identifier: "speciesId",
+          label: "species"
+        });
+        for (const [index, row] of rows.entries()) {
+          const source = sourceByIndex.get(row.sourceRowIndex);
+          assert.notEqual(source, undefined);
+          assert.equal(row.x, index + 1);
+          assert.equal(row.position, index + 1);
+          assert.equal(row.y, source.year);
+          assert.equal(row.value, source.year);
+          assert.equal(row.category, String(source.parentheses));
+          assert.equal(row.sourceGroup, String(source.family));
+          assert.equal(row.label, String(source.species));
+          assert.equal(row.group, "All observations");
+          assert.equal(row.series, "All observations");
+          if (index > 0) {
+            assert.ok(rows[index - 1].sourceRowIndex < row.sourceRowIndex);
+          }
+        }
+        assert.deepEqual(metadata.sampling, {
+          method: "deterministic-stratified-witness-sample",
+          eligibleRowCount: 25_791,
+          displayedRowCount: 160,
+          limit: 160,
+          strata: ["parentheses", "family"],
+          outputRowCount: 160
+        });
+        assert.equal(
+          metadata.provenance.sourceSelectionSha256,
+          "76c3c4bd8e4428fa9b9e2f77f3382459a6737cf7c728bfe7a1abb49d0c4a225b"
+        );
+        assert.equal(
+          createHash("sha256")
+            .update(metadata.provenance.sourceRowIndexes.join(","))
+            .digest("hex"),
+          metadata.provenance.sourceSelectionSha256
+        );
+        const transformations = metadata.provenance.transformations;
+        const sampleIndex = transformations.findIndex(value =>
+          value.op === "witness-preserving-even-sample"
+        );
+        const rankIndex = transformations.findIndex(value =>
+          value.op === "stable-selected-source-order-rank"
+        );
+        assert.ok(sampleIndex >= 0 && sampleIndex < rankIndex);
+        assert.deepEqual(transformations[rankIndex], {
+          op: "stable-selected-source-order-rank",
+          source: "sourceRowIndex",
+          sort: "ascending",
+          as: "x"
+        });
+        assert.deepEqual(
+          transformations.find(value => value.op === "project-real-analysis-pair"),
+          { op: "project-real-analysis-pair", x: "sourceRowIndex", y: "year" }
+        );
+        assert.deepEqual(
+          transformations.find(value =>
+            value.op === "lifecycle-projection" && value.kind === "removal"
+          ),
+          { op: "lifecycle-projection", kind: "removal" }
+        );
+        assert.equal(
+          transformations.some(value => value.op === "filter-valid-analysis-x"),
+          false
+        );
+        assert.deepEqual(
+          transformations.find(value => value.op === "single-series-projection"),
+          {
+            op: "single-series-projection",
+            groupProjection: "all-observations",
+            derivedField: "group",
+            value: "All observations",
+            purpose:
+              "collapse only derived grouping channels while preserving authentic category labels and rows"
+          }
+        );
+        assert.equal(metadata.analysisQuestion, REMOVAL_ANALYSIS_QUESTION);
+        assert.equal(program.semanticSpec.title.subtitle, REMOVAL_ANALYSIS_QUESTION);
+        assert.deepEqual(
+          program.trace.children
+            .filter(value => value.op === "removeEncoding")
+            .map(value => value.args.channel),
+          REMOVAL_CHANNELS
+        );
+        assert.deepEqual(recipe.observeFactors(program, factors), [{
+          factor: "profile",
+          value: { id: "maximal" },
+          evidence:
+            "direct-root-trace:maximal-lifecycle-actions;final:graphic-program"
+        }]);
+        assert.deepEqual(recipe.observe(program, factors), []);
+        assertGraphicIntegrity(program, dataset);
+        assertAnalyticLayerIntegrity(program, dataset);
+        assertSvgIntegrity(renderToSVG(program), dataset);
+      }
+    });
+    assert.equal(captured, true);
+    assert.deepEqual(result.renderers, ["svg"]);
+    assert.ok(result.directOperations.includes("removeEncoding"));
+    assert.deepEqual(result.factorEffects, [{
+      factor: "profile",
+      value: { id: "maximal" },
+      evidence: "direct-root-trace:maximal-lifecycle-actions;final:graphic-program"
+    }]);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
+});
+
+test(REMOVAL_SWEEP_TEST_NAME, () => {
+  if (process.env[REMOVAL_SWEEP_CHILD_ENV] !== "1") {
+    runSweepInDisposableProcess({
+      childEnvironmentName: REMOVAL_SWEEP_CHILD_ENV,
+      expectedResources: {
+        builds: 50,
+        eligibleDatasets: 50,
+        minimumRows: 8,
+        maximumRows: 160,
+        maximumCategories: 8,
+        maximumSourceGroups: 8
+      },
+      resourcePrefix: REMOVAL_SWEEP_RESOURCE_PREFIX,
+      testName: REMOVAL_SWEEP_TEST_NAME
+    });
+    return;
+  }
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-removal-coverage"
+  );
+  const allDatasets = realisticDatasetIds();
+  assert.equal(allDatasets.length, 50);
+  assert.deepEqual(recipe.datasets, allDatasets);
+  assert.ok(recipe.datasets.every(dataset =>
+    realisticDatasetSupports(dataset, "style")
+  ));
+  let builds = 0;
+  let minimumRows = Number.POSITIVE_INFINITY;
+  let maximumRows = 0;
+  let maximumCategories = 0;
+  let maximumSourceGroups = 0;
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      const profile = domains?.profile.find(value => value.id === "maximal");
+      assert.notEqual(profile, undefined, `${dataset} maximal removal eligibility`);
+      const factors = { dataset, profile };
+      let captured = false;
+      const result = runScenario({
+        id: `preflight-direct-removal-${dataset}`,
+        recipe: recipe.id,
+        factors
+      }, {
+        deterministic: false,
+        captureProgram(program) {
+          captured = true;
+          const metadata = recipe.describe(factors);
+          const rows = program.semanticSpec.datasets.find(value =>
+            value.id === "analysisRows"
+          ).values;
+          const bindings = metadata.provenance.fieldBindings;
+          const orderedMeasures = rows.map(row => row.value)
+            .sort((left, right) => left - right);
+          const middle = Math.floor(orderedMeasures.length / 2);
+          const selectedMedian = orderedMeasures.length % 2 === 0
+            ? (orderedMeasures[middle - 1] + orderedMeasures[middle]) / 2
+            : orderedMeasures[middle];
+          const selectedIndexes = new Set(rows.map(row => row.sourceRowIndex));
+          const sourceByIndex = new Map(tidyTuesdaySourceEntries(dataset)
+            .filter(entry => selectedIndexes.has(entry.sourceRowIndex))
+            .map(entry => [entry.sourceRowIndex, entry.row]));
+          assert.ok(rows.length >= 2, `${dataset} removal rows`);
+          for (const [index, row] of rows.entries()) {
+            const source = sourceByIndex.get(row.sourceRowIndex);
+            assert.notEqual(source, undefined, `${dataset} source row ${row.sourceRowIndex}`);
+            assert.equal(row.x, index + 1, `${dataset} stable x rank`);
+            assert.equal(row.position, index + 1, `${dataset} stable position rank`);
+            assert.equal(row.y, source[bindings.measure], `${dataset} source measure`);
+            assert.equal(row.value, source[bindings.measure], `${dataset} source value`);
+            assert.equal(
+              row.category,
+              String(source[bindings.dimension]),
+              `${dataset} authentic category`
+            );
+            assert.equal(
+              row.sourceGroup,
+              bindings.secondaryDimension === undefined
+                ? source[bindings.measure] < selectedMedian
+                  ? "below-median"
+                  : "at-or-above-median"
+                : String(source[bindings.secondaryDimension]),
+              `${dataset} authentic source group`
+            );
+            assert.equal(row.group, "All observations", `${dataset} derived group`);
+            assert.equal(row.series, "All observations", `${dataset} derived series`);
+            if (index > 0) {
+              assert.ok(
+                rows[index - 1].sourceRowIndex < row.sourceRowIndex,
+                `${dataset} ascending source order`
+              );
+            }
+          }
+          assert.equal(metadata.provenance.sourceRowCount, rows.length, dataset);
+          assert.equal(metadata.provenance.sourceRowIndexes.length, rows.length, dataset);
+          assert.equal(
+            createHash("sha256")
+              .update(metadata.provenance.sourceRowIndexes.join(","))
+              .digest("hex"),
+            metadata.provenance.sourceSelectionSha256,
+            dataset
+          );
+          const transformations = metadata.provenance.transformations;
+          assert.equal(
+            transformations.some(value => value.op === "median-split"),
+            bindings.secondaryDimension === undefined,
+            `${dataset} declared derived subgroup`
+          );
+          assert.deepEqual(
+            transformations.find(value =>
+              value.op === "stable-selected-source-order-rank"
+            ),
+            {
+              op: "stable-selected-source-order-rank",
+              source: "sourceRowIndex",
+              sort: "ascending",
+              as: "x"
+            },
+            dataset
+          );
+          assert.deepEqual(
+            transformations.find(value => value.op === "project-real-analysis-pair"),
+            {
+              op: "project-real-analysis-pair",
+              x: "sourceRowIndex",
+              y: bindings.measure
+            },
+            dataset
+          );
+          assert.deepEqual(
+            transformations.find(value =>
+              value.op === "lifecycle-projection" && value.kind === "removal"
+            ),
+            { op: "lifecycle-projection", kind: "removal" },
+            dataset
+          );
+          assert.equal(metadata.analysisQuestion, REMOVAL_ANALYSIS_QUESTION);
+          assert.equal(program.semanticSpec.title.subtitle, REMOVAL_ANALYSIS_QUESTION);
+          assert.deepEqual(
+            program.trace.children
+              .filter(value => value.op === "removeEncoding")
+              .map(value => value.args.channel),
+            REMOVAL_CHANNELS,
+            dataset
+          );
+          assert.deepEqual(recipe.observeFactors(program, factors), [{
+            factor: "profile",
+            value: { id: "maximal" },
+            evidence:
+              "direct-root-trace:maximal-lifecycle-actions;final:graphic-program"
+          }], `${dataset} maximal factor effect`);
+          assert.deepEqual(recipe.observe(program, factors), []);
+          assertGraphicIntegrity(program, dataset);
+          assertAnalyticLayerIntegrity(program, dataset);
+          assertSvgIntegrity(renderToSVG(program), dataset);
+          minimumRows = Math.min(minimumRows, rows.length);
+          maximumRows = Math.max(maximumRows, rows.length);
+          maximumCategories = Math.max(
+            maximumCategories,
+            new Set(rows.map(row => row.category)).size
+          );
+          maximumSourceGroups = Math.max(
+            maximumSourceGroups,
+            new Set(rows.map(row => row.sourceGroup)).size
+          );
+        }
+      });
+      assert.equal(captured, true, dataset);
+      assert.deepEqual(result.renderers, ["svg"], dataset);
+      assert.ok(result.directOperations.includes("removeEncoding"), dataset);
+      assert.deepEqual(result.factorEffects, [{
+        factor: "profile",
+        value: { id: "maximal" },
+        evidence: "direct-root-trace:maximal-lifecycle-actions;final:graphic-program"
+      }], dataset);
+      builds += 1;
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      collectGarbage();
+    }
+  }
+  assert.equal(builds, 50);
+  collectGarbage();
+  const maxRssKiB = process.resourceUsage().maxRSS;
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  console.log(`${REMOVAL_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
+    builds,
+    eligibleDatasets: recipe.datasets.length,
+    minimumRows,
+    maximumRows,
+    maximumCategories,
+    maximumSourceGroups,
+    maxRssKiB
+  })}`);
 });
 
 test("uses one truthful horizon cohort for sparse Nuclear Explosion purposes", () => {
