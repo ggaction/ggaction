@@ -73,7 +73,7 @@ function artifactOutput(task, renderer, extension) {
   return output;
 }
 
-async function decodedPngEvidence(bytes, rendered, label, dependencies) {
+export async function decodedPngEvidence(bytes, rendered, label, dependencies) {
   assert.equal(bytes.length >= 24, true, `${label} PNG header length`);
   assert.deepEqual([...bytes.subarray(0, 8)], PNG_SIGNATURE, label);
   assert.equal(bytes.subarray(12, 16).toString("ascii"), "IHDR", `${label} PNG IHDR`);
@@ -82,20 +82,54 @@ async function decodedPngEvidence(bytes, rendered, label, dependencies) {
   const image = await dependencies.loadImage(bytes);
   assert.equal(image.width, rendered.width, `${label} decoded PNG width`);
   assert.equal(image.height, rendered.height, `${label} decoded PNG height`);
-  const scale = Math.min(1, 160 / Math.max(image.width, image.height));
-  const width = Math.max(1, Math.round(image.width * scale));
-  const height = Math.max(1, Math.round(image.height * scale));
+  const width = Math.min(256, image.width);
+  const height = Math.min(256, image.height);
   const canvas = dependencies.createCanvas(width, height);
   const context = canvas.getContext("2d");
-  context.drawImage(image, 0, 0, width, height);
-  const pixels = context.getImageData(0, 0, width, height).data;
-  const colors = new Set();
-  for (let index = 0; index < pixels.length && colors.size < 2; index += 4) {
-    colors.add(
-      `${pixels[index]},${pixels[index + 1]},${pixels[index + 2]},${pixels[index + 3]}`
-    );
+  context.imageSmoothingEnabled = false;
+  let referenceColor;
+  let nonBlank = false;
+  let scannedPixels = 0;
+  let scannedTiles = 0;
+  scan: for (let y = 0; y < image.height; y += height) {
+    for (let x = 0; x < image.width; x += width) {
+      const tileWidth = Math.min(width, image.width - x);
+      const tileHeight = Math.min(height, image.height - y);
+      context.clearRect(0, 0, width, height);
+      context.drawImage(
+        image,
+        x,
+        y,
+        tileWidth,
+        tileHeight,
+        0,
+        0,
+        tileWidth,
+        tileHeight
+      );
+      const pixels = context.getImageData(0, 0, tileWidth, tileHeight).data;
+      scannedTiles += 1;
+      scannedPixels += tileWidth * tileHeight;
+      for (let index = 0; index < pixels.length; index += 4) {
+        referenceColor ??= Object.freeze([
+          pixels[index],
+          pixels[index + 1],
+          pixels[index + 2],
+          pixels[index + 3]
+        ]);
+        if (
+          pixels[index] !== referenceColor[0] ||
+          pixels[index + 1] !== referenceColor[1] ||
+          pixels[index + 2] !== referenceColor[2] ||
+          pixels[index + 3] !== referenceColor[3]
+        ) {
+          nonBlank = true;
+          break scan;
+        }
+      }
+    }
   }
-  assert.equal(colors.size >= 2, true, `${label} PNG is unexpectedly blank`);
+  assert.equal(nonBlank, true, `${label} PNG is unexpectedly blank`);
   return Object.freeze({
     signature: true,
     dimensions: true,
@@ -103,25 +137,72 @@ async function decodedPngEvidence(bytes, rendered, label, dependencies) {
     nonBlankChecked: true,
     nonBlank: true,
     sampleWidth: width,
-    sampleHeight: height
+    sampleHeight: height,
+    nativePixelScan: true,
+    scannedPixels,
+    scannedTiles
   });
+}
+
+function pdfDictionaryBeforeStream(source, streamIndex) {
+  let dictionaryEnd = streamIndex;
+  while (/\s/u.test(source[dictionaryEnd - 1] ?? "")) dictionaryEnd -= 1;
+  if (source.slice(dictionaryEnd - 2, dictionaryEnd) !== ">>") return undefined;
+  const tokens = [...source.slice(0, dictionaryEnd).matchAll(/<<|>>/gu)];
+  let depth = 0;
+  for (let index = tokens.length - 1; index >= 0; index -= 1) {
+    const token = tokens[index];
+    if (token[0] === ">>") depth += 1;
+    else depth -= 1;
+    if (depth === 0) return source.slice(token.index, dictionaryEnd);
+  }
+  return undefined;
+}
+
+function pdfNumericObjects(source) {
+  const values = new Map();
+  for (const match of source.matchAll(
+    /(?:^|[\r\n])\s*(\d+)\s+(\d+)\s+obj\s+(\d+)\s+endobj\b/gu
+  )) {
+    values.set(`${match[1]}:${match[2]}`, Number(match[3]));
+  }
+  return values;
+}
+
+function pdfStreamLength(dictionary, numericObjects) {
+  const match = dictionary.match(/\/Length\s+(\d+)(?:\s+(\d+)\s+R)?\b/u);
+  if (match === null) return undefined;
+  if (match[2] !== undefined) return numericObjects.get(`${match[1]}:${match[2]}`);
+  return Number(match[1]);
 }
 
 function decodedPdfStreams(bytes) {
   const source = bytes.toString("latin1");
-  return [...source.matchAll(/stream\r?\n([\s\S]*?)\r?\nendstream/gu)]
-    .map(match => {
-      const raw = Buffer.from(match[1], "latin1");
-      try {
-        return inflateSync(raw).toString("latin1");
-      } catch {
-        return raw.toString("latin1");
-      }
-    })
-    .join("\n");
+  const numericObjects = pdfNumericObjects(source);
+  const streams = [];
+  for (const match of source.matchAll(/\bstream(?:\r\n|\n|\r)/gu)) {
+    const dictionary = pdfDictionaryBeforeStream(source, match.index);
+    if (dictionary === undefined) continue;
+    const length = pdfStreamLength(dictionary, numericObjects);
+    if (!Number.isSafeInteger(length) || length < 0) continue;
+    const start = match.index + match[0].length;
+    const end = start + length;
+    if (end > bytes.length) continue;
+    if (!/^(?:\r\n|\n|\r)?endstream\b/u.test(source.slice(end, end + 16))) {
+      continue;
+    }
+    let decoded = bytes.subarray(start, end);
+    const hasFilter = /\/Filter\b/u.test(dictionary);
+    const hasFlateFilter = /\/Filter\s*(?:\/FlateDecode|\[\s*\/FlateDecode\s*\])/u
+      .test(dictionary);
+    if (hasFilter && !hasFlateFilter) continue;
+    if (hasFlateFilter) decoded = inflateSync(decoded);
+    streams.push(decoded.toString("latin1"));
+  }
+  return streams;
 }
 
-function pdfEvidence(bytes, rendered, label) {
+export function pdfEvidence(bytes, rendered, label) {
   const source = bytes.toString("latin1");
   assert.equal(source.startsWith("%PDF-"), true, `${label} PDF signature`);
   assert.match(source, /%%EOF\s*$/u, `${label} PDF trailer`);
@@ -131,8 +212,17 @@ function pdfEvidence(bytes, rendered, label) {
     true,
     `${label} PDF MediaBox`
   );
-  const content = decodedPdfStreams(bytes);
-  assert.match(content, /\bBT\b/u, `${label} PDF text content`);
+  const streams = decodedPdfStreams(bytes);
+  const content = streams.join("\n");
+  const textObjects = [...content.matchAll(/\bBT\b([\s\S]*?)\bET\b/gu)];
+  assert.equal(textObjects.length > 0, true, `${label} PDF text content`);
+  assert.equal(
+    textObjects.some(match =>
+      /(?:\([^)]*\)|<[0-9A-Fa-f\s]+>|\[[^\]]*\])\s*(?:Tj|TJ)\b/u.test(match[1])
+    ),
+    true,
+    `${label} PDF text show content`
+  );
   assert.match(content, /(?:^|\s)(?:m|l|c|re)(?:\s|$)/u, `${label} PDF drawing content`);
   return Object.freeze({
     signature: true,
@@ -140,7 +230,10 @@ function pdfEvidence(bytes, rendered, label) {
     page: true,
     dimensions: true,
     textContent: true,
-    drawingContent: true
+    textShowContent: true,
+    drawingContent: true,
+    decodedStreamCount: streams.length,
+    textObjectCount: textObjects.length
   });
 }
 

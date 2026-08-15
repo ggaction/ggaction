@@ -6,6 +6,9 @@ import path from "node:path";
 import { EventEmitter } from "node:events";
 import test from "node:test";
 import { deserialize as v8Deserialize, serialize as v8Serialize } from "node:v8";
+import { deflateSync } from "node:zlib";
+
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 import {
   generateRealisticDescriptorsIsolated,
@@ -15,7 +18,11 @@ import {
   runRealisticScenarioDatasetIsolated,
   runRealisticScenarioExecutionChild
 } from "../../scripts/run-realistic-scenario-execution-coordinator.js";
-import { executeRealisticScenarioTask } from
+import {
+  decodedPngEvidence,
+  executeRealisticScenarioTask,
+  pdfEvidence
+} from
   "../../scripts/run-realistic-scenario-worker.js";
 import {
   generateRealisticDescriptorsInWorker,
@@ -109,6 +116,25 @@ function executionResult(task, overrides = {}) {
     semanticFingerprint: descriptor.semanticFingerprint,
     ...overrides
   };
+}
+
+function pdfFixture(content, { compressed = false } = {}) {
+  const source = Buffer.from(content, "latin1");
+  const stream = compressed ? deflateSync(source) : source;
+  const filter = compressed ? " /Filter /FlateDecode" : "";
+  return Buffer.concat([
+    Buffer.from(
+      "%PDF-1.4\n" +
+      "1 0 obj\n" +
+      "<< /Type /Page /MediaBox [0 0 100 100] /Contents 2 0 R >>\n" +
+      "endobj\n" +
+      "2 0 obj\n" +
+      `<< /Length ${stream.length}${filter} >> stream\n`,
+      "latin1"
+    ),
+    stream,
+    Buffer.from("\nendstream\nendobj\n%%EOF\n", "latin1")
+  ]);
 }
 
 function stableWireValue(value) {
@@ -1308,6 +1334,179 @@ test("preserves compact generator diagnostics in a failed audit report", async t
     scheduledVariantId: "maximal"
   }]);
   assert.doesNotMatch(JSON.stringify(report.error.diagnostics), /"factors"|analysisRows/u);
+});
+
+test("keeps thin PNG content visible to native-resolution audit evidence", async () => {
+  const width = 1_025;
+  const height = 769;
+  const canvas = createCanvas(width, height);
+  const context = canvas.getContext("2d");
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, width, height);
+  context.fillStyle = "#000000";
+  context.fillRect(width - 1, height - 1, 1, 1);
+  const evidence = await decodedPngEvidence(
+    canvas.toBuffer("image/png"),
+    { width, height },
+    "thin-content",
+    { createCanvas, loadImage }
+  );
+  assert.deepEqual({
+    nonBlank: evidence.nonBlank,
+    nativePixelScan: evidence.nativePixelScan,
+    scannedPixels: evidence.scannedPixels,
+    scannedTiles: evidence.scannedTiles
+  }, {
+    nonBlank: true,
+    nativePixelScan: true,
+    scannedPixels: width * height,
+    scannedTiles: 20
+  });
+
+  const blank = createCanvas(257, 257);
+  const blankContext = blank.getContext("2d");
+  blankContext.fillStyle = "#ffffff";
+  blankContext.fillRect(0, 0, 257, 257);
+  await assert.rejects(
+    decodedPngEvidence(
+      blank.toBuffer("image/png"),
+      { width: 257, height: 257 },
+      "blank-content",
+      { createCanvas, loadImage }
+    ),
+    /blank-content PNG is unexpectedly blank/u
+  );
+});
+
+test("reads length-bounded compressed PDF text and rejects drawing-only streams", () => {
+  const textAndDrawing =
+    "BT /F1 12 Tf 10 90 Td (Visible 0) Tj ET\n" +
+    "0 0 m 10 10 l S\n%\u0004";
+  assert.equal(deflateSync(Buffer.from(textAndDrawing, "latin1")).at(-1), 13);
+  const evidence = pdfEvidence(
+    pdfFixture(textAndDrawing, { compressed: true }),
+    { width: 100, height: 100 },
+    "compressed-text"
+  );
+  assert.deepEqual({
+    textContent: evidence.textContent,
+    textShowContent: evidence.textShowContent,
+    drawingContent: evidence.drawingContent,
+    decodedStreamCount: evidence.decodedStreamCount
+  }, {
+    textContent: true,
+    textShowContent: true,
+    drawingContent: true,
+    decodedStreamCount: 1
+  });
+  assert.throws(
+    () => pdfEvidence(
+      pdfFixture("0 0 m 10 10 l S\n"),
+      { width: 100, height: 100 },
+      "drawing-only"
+    ),
+    /drawing-only PDF text content/u
+  );
+  assert.throws(
+    () => pdfEvidence(
+      pdfFixture("BT /F1 12 Tf ET\n0 0 m 10 10 l S\n"),
+      { width: 100, height: 100 },
+      "empty-text-object"
+    ),
+    /empty-text-object PDF text show content/u
+  );
+});
+
+test("accepts the exact thin PNG and compressed PDF artifact regressions", async t => {
+  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-realistic-evidence-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const tuition = Object.freeze({
+    id: "realistic-direct-lifecycle-cartesian-guide-coverage-457771c64a26",
+    recipe: "realistic-direct-lifecycle-cartesian-guide-coverage",
+    factors: Object.freeze({
+      dataset: "tt-tuition-costs",
+      profile: Object.freeze({ id: "decimal-object" })
+    }),
+    semanticFingerprint:
+      "67d31643644ef2ddee978bc5bb7336d043715bfb33b311c9b3cb98953596b468"
+  });
+  const outerSpace = Object.freeze({
+    id: "realistic-ranked-dots-1c891ae5f0d9",
+    recipe: "realistic-ranked-dots",
+    factors: Object.freeze({
+      dataset: "tt-outer-space-objects",
+      fieldPair: Object.freeze({
+        measureIndex: 0,
+        dimensionIndex: 0,
+        bindingId: "curated:primary"
+      }),
+      titleAlign: "center",
+      aggregate: "median",
+      palette: "pastel2",
+      legendPosition: "bottom",
+      shape: "diamond",
+      opacity: 0.7,
+      radius: 4
+    }),
+    semanticFingerprint:
+      "e6d4b576c36f84ef3ac9b8ddbc1ae212269e4bbd6f85337ca08b5da432b310e7"
+  });
+  t.after(() => {
+    releaseTidyTuesdaySourceCache(tuition.factors.dataset);
+    releaseTidyTuesdaySourceCache(outerSpace.factors.dataset);
+  });
+
+  const pngOutcome = await executeRealisticScenarioTask({
+    index: 0,
+    descriptor: tuition,
+    deterministic: true,
+    artifacts: true,
+    png: true,
+    pdf: false,
+    visualAudit: true,
+    output: directory
+  });
+  assert.equal(pngOutcome.ok, true, pngOutcome.error?.stack);
+  assert.deepEqual({
+    width: pngOutcome.result.artifacts.png.width,
+    height: pngOutcome.result.artifacts.png.height,
+    sha256: pngOutcome.result.artifacts.png.sha256,
+    nonBlank: pngOutcome.result.artifacts.png.validation.nonBlank,
+    nativePixelScan: pngOutcome.result.artifacts.png.validation.nativePixelScan
+  }, {
+    width: 4_400,
+    height: 3_200,
+    sha256: "335ee3fe785d8aeb296a5e7c4013eb5247350c0dd1db67f459bb9843ed7cf180",
+    nonBlank: true,
+    nativePixelScan: true
+  });
+
+  const pdfOutcome = await executeRealisticScenarioTask({
+    index: 1,
+    descriptor: outerSpace,
+    deterministic: true,
+    artifacts: true,
+    png: false,
+    pdf: true,
+    visualAudit: true,
+    output: directory
+  });
+  assert.equal(pdfOutcome.ok, true, pdfOutcome.error?.stack);
+  assert.deepEqual({
+    width: pdfOutcome.result.artifacts.pdf.width,
+    height: pdfOutcome.result.artifacts.pdf.height,
+    sha256: pdfOutcome.result.artifacts.pdf.sha256,
+    textContent: pdfOutcome.result.artifacts.pdf.validation.textContent,
+    textShowContent: pdfOutcome.result.artifacts.pdf.validation.textShowContent,
+    drawingContent: pdfOutcome.result.artifacts.pdf.validation.drawingContent
+  }, {
+    width: 2_600,
+    height: 1_120,
+    sha256: "d6d11ecd9a803655d386e82508634221117c58d6545071e65dae5d640b5d419a",
+    textContent: true,
+    textShowContent: true,
+    drawingContent: true
+  });
 });
 
 test("renders every artifact from the exact program credited by scenario evidence", async t => {
