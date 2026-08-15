@@ -414,6 +414,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `includeEmpty`: 기본 `false`. `true`면 deterministic y-major/x-minor 순서로 빈 cell도 저장한다.
 - `members`: 기본 `false`. `true`면 source row object가 아니라 source row index array를 cell에 저장한다.
 - `as`: generated `x0/x1/y0/y1/count/members` field 이름을 부분 override한다. Default는 `id` namespace를 쓴다.
+- Revision에서 output 이름이 바뀌면 direct visual consumer의 같은 output role을 참조하던 encoding field,
+  category-order summary, theta weight, Parallel dimension field/key, stored field selection과 jitter key도 새 이름으로
+  rebind한다. Parallel dimension의 stored title label은 보존한다. Scale, mark와 inferred guide title은 그 semantic
+  binding에서 다시 materialize된다. Optional members
+  output을 제거할 때 남은 direct consumer binding이 이를 참조하면 revision을 원자적으로 거부한다.
 - Effect: normalized request와 resolved extent/edges/count metadata를 transform provenance에 저장하고, 각 cell의
   lower/upper bounds와 count를 immutable values로 저장한다. Cell은 `[lower, upper)`이며 마지막 upper bound만
   포함한다. 모든 edge는 finite strictly increasing number다. Full finite numeric range처럼 raw span이 overflow하는
@@ -462,8 +467,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   output을 제거한다. 다른 output field는 보존한다.
 - Atomic effect: complete source rows와 transform을 계산하고 derived-dataset dependency 및 모든 direct visual
   consumer의 rematerialization을 speculative immutable branch에서 먼저 검증한다. 성공하면 deterministic revision ID로
-  새 dataset을 만들고 wrapped `rebindLayerData` 뒤 scale/mark/guide materialization plan을 적용하며, 참조가 없어진 prior
-  revision만 `releaseDerivedData`로 정리한다. Logical owner ID와 consumer layer/scale/coordinate/guide identity는 유지한다.
+  새 dataset을 만들고 wrapped `rebindLayerData` 뒤 output role에 연결된 downstream semantic/config field를 새 output
+  이름으로 옮긴 다음 scale/mark/guide materialization plan을 적용하며, 참조가 없어진 prior revision만
+  `releaseDerivedData`로 정리한다. Logical owner ID와 consumer layer/scale/coordinate/guide/selection identity는 유지한다.
 - Compatibility: `createBin2DData({ id: existing, ...completeTransform })`의 full reauthor/revision 동작은 유지한다.
   Partial intent에는 `editBin2DData`를 사용한다. Derived dataset이 current revision을 직접 소비하면 silent cascade 대신
   edit를 state 생성 전에 거부한다.
@@ -482,7 +488,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     option, omission preservation, complete output map and members output transition.
 - Revision and dependencies
   - ✅ Covered: deterministic immutable revision, every direct layer rebind, scale/mark/guide rematerialization, prior release,
-    derived-consumer rejection, downstream failure preflight and exact trace uniqueness.
+    derived-consumer rejection, output-role rename across Cartesian/category/Polar/Parallel bindings and stored selection/jitter,
+    referenced optional-output removal rejection, downstream failure preflight and exact trace uniqueness.
 - Compatibility and immutability
   - ✅ Covered: repeated-create behavior, earlier program, source rows and caller option preservation, runtime/types/contracts,
     packed Node/TypeScript/Browser and representative Canvas/PNG consumers.

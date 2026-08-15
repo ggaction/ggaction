@@ -410,8 +410,10 @@ requested `bins`, per-axis automatic/explicit `extent`, output fields와 empty/m
 `resolved`는 해당 revision의 concrete extent, edges, eligible count와 occupied count를 저장한다. 동일 logical
 owner를 다시 author하거나 `editBin2DData`로 partial edit하면
 `materializationConfigs.data.bin2d[owner].current`가 current immutable revision ID를 가리키고 direct layer consumer는
-wrapped rebind와 materialization plan으로 갱신된다. Edit facade는 omitted requested provenance를 보존하고 complete
-consumer transition을 speculative immutable branch에서 검증한다. Earlier program은 기존 revision을 유지한다. Facet
+wrapped rebind와 materialization plan으로 갱신된다. Output 이름을 바꾸는 revision은 transform role을 기준으로 direct
+consumer의 semantic encoding과 stored selection/jitter field binding을 함께 옮긴 뒤 scale, mark와 guide를 다시
+materialize하되 stored display title은 보존한다. 제거되는 optional output을 참조하는 binding은 transition 전에 거부한다. Edit facade는 omitted
+requested provenance를 보존하고 complete consumer transition을 speculative immutable branch에서 검증한다. Earlier program은 기존 revision을 유지한다. Facet
 replay에서는 `resolved`를 제거하고 child partition에서 다시 계산한다. Exact option과 owner inference는
 [`CORE.md`](contract/current/CORE.md#editbin2ddata)가 소유한다.
 

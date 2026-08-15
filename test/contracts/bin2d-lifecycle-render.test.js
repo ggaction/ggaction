@@ -42,7 +42,14 @@ function bin2DLifecycleProgram() {
     .encodeY2({ target: "cellRects", field: "y1" })
     .encodeColor({ target: "cellRects", field: "count", fieldType: "quantitative" })
     .createLegend({ target: "cellRects", channels: ["color"], count: 3 })
-    .editBin2DData({ target: "cells", bins: 1, includeEmpty: false });
+    .editBin2DData({
+      target: "cells",
+      bins: 1,
+      includeEmpty: false,
+      as: {
+        x0: "left", x1: "right", y0: "bottom", y1: "top", count: "n"
+      }
+    });
 }
 
 test("publishes the logical Bin2D edit facade as current behavior", () => {
@@ -70,6 +77,12 @@ test("renders the rebound Bin2D revision in Canvas and Node PNG", async () => {
 
   assert.equal(current, "cellsBin2DDataRevision1");
   assert.equal(program.semanticSpec.layers[0].data, current);
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(program.semanticSpec.layers[0].encoding)
+      .map(([channel, encoding]) => [channel, encoding.field])),
+    { x: "left", x2: "right", y: "bottom", y2: "top", color: "n" }
+  );
+  assert.equal(program.semanticSpec.guides.legend.color.title, "n");
   assert.equal(program.graphicSpec.objects.cellRects.items.length, 1);
   assert.equal(program.graphicSpec.objects.cellRects.items[0].properties.fill.length > 0, true);
   assert.equal(findCanvasCalls(context, "fillRect").length > 1, true);

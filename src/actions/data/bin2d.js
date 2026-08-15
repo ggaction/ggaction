@@ -14,6 +14,7 @@ import {
   findDataset,
   findDatasetConsumer
 } from "../../selectors/datasets.js";
+import { requireLayer } from "../../selectors/layers.js";
 export { materializeBin2DData } from "./bin2dMaterialize.js";
 
 const OPTIONS = Object.freeze([
@@ -24,7 +25,7 @@ const EDIT_OPTIONS = Object.freeze([
 ]);
 const EDITABLE = Object.freeze(EDIT_OPTIONS.slice(1));
 const OUTPUT_FIELDS = Object.freeze([
-  "x0", "x1", "y0", "y1", "count"
+  "x0", "x1", "y0", "y1", "count", "members"
 ]);
 
 function ownerConfig(program, id) {
@@ -74,6 +75,106 @@ function directLayerConsumers(program, data) {
     .map(layer => layer.id);
 }
 
+function outputFieldChanges(previous, next) {
+  return new Map(OUTPUT_FIELDS.flatMap(role => {
+    const from = previous.as[role];
+    const to = next.as[role];
+    return from !== undefined && from !== to
+      ? [[from, [role, to]]]
+      : [];
+  }));
+}
+
+function changedConsumerField(field, changes) {
+  const change = changes.get(field);
+  if (change === undefined) return field;
+  const [role, next] = change;
+  if (next === undefined) {
+    throw new Error(
+      `Cannot remove referenced 2D bin ${role} output field "${field}".`
+    );
+  }
+  return next;
+}
+
+function rebindLayerOutputFields(program, id, changes) {
+  const layer = requireLayer(program, id);
+  let next = program;
+  const changed = field => changedConsumerField(field, changes);
+  const editField = (property, field) => {
+    if (field === undefined) return;
+    const value = changed(field);
+    if (value !== field) next = next.editSemantic({ property, value });
+  };
+  for (const [channel, encoding] of Object.entries(layer.encoding ?? {})) {
+    editField(
+      `layer[${id}].encoding.${channel}.field`,
+      encoding?.field
+    );
+    const summary = encoding?.categoryOrder?.by;
+    if (summary?.field !== undefined) {
+      const field = changed(summary.field);
+      if (field !== summary.field) {
+        next = next.editSemantic({
+          property: `layer[${id}].encoding.${channel}.categoryOrder`,
+          value: { ...encoding.categoryOrder, by: { ...summary, field } }
+        });
+      }
+    }
+  }
+  editField(
+    `layer[${id}].encoding.theta.weight`,
+    layer.encoding?.theta?.weight
+  );
+
+  const parallel = layer.encoding?.parallel;
+  if (parallel?.dimensions !== undefined) {
+    const dimensions = parallel.dimensions.map(dimension => {
+      const field = changed(dimension.field);
+      return { ...dimension, field };
+    });
+    if (dimensions.some((dimension, index) =>
+      dimension.field !== parallel.dimensions[index].field
+    )) {
+      next = next.editSemantic({
+        property: `layer[${id}].encoding.parallel.dimensions`,
+        value: dimensions
+      });
+    }
+  }
+  editField(
+    `layer[${id}].encoding.parallel.key`,
+    parallel?.key
+  );
+
+  for (const [selectionId, config] of Object.entries(
+    program.materializationConfigs.selections ?? {}
+  )) {
+    if (config.target !== id) continue;
+    const selector = { ...config.selector };
+    if (selector.field !== undefined) {
+      selector.field = changed(selector.field);
+    }
+    if (selector.groupBy !== undefined) {
+      selector.groupBy = selector.groupBy.map(changed);
+    }
+    if (JSON.stringify(selector) !== JSON.stringify(config.selector)) {
+      next = next._withSelectionConfig(selectionId, { ...config, selector });
+    }
+  }
+
+  const jitter = program.materializationConfigs.jitters?.[id];
+  const key = jitter?.key === undefined
+    ? undefined
+    : changed(jitter.key);
+  if (key !== undefined && key !== jitter.key) {
+    next = next._withMaterializationConfig(
+      ["jitters", id], { ...jitter, key }
+    );
+  }
+  return next;
+}
+
 function rejectDerivedConsumers(program, data) {
   const dependent = findDatasetConsumer(program, data);
   if (dependent !== undefined) {
@@ -93,7 +194,7 @@ function preflight(program, sourceId, transform) {
 }
 
 function requireCompleteEditOutputFields(value, members) {
-  const required = [...OUTPUT_FIELDS, ...(members ? ["members"] : [])];
+  const required = OUTPUT_FIELDS.filter(field => field !== "members" || members);
   const missing = required.find(field => !Object.hasOwn(value, field));
   if (missing !== undefined) {
     throw new Error(
@@ -140,6 +241,7 @@ function sameRequestedTransform(left, right) {
 function applyBin2DRevision(program, { owner, previous, source, transform }) {
   rejectDerivedConsumers(program, previous.id);
   const consumers = directLayerConsumers(program, previous.id);
+  const changes = outputFieldChanges(previous.transform[0], transform);
   const revision = planDerivedDataRevision(program, {
     owner,
     role: "Bin2DData",
@@ -151,6 +253,7 @@ function applyBin2DRevision(program, { owner, previous, source, transform }) {
     .materializeBin2DData({ id: revision.id });
   for (const rebind of revision.rebinds) {
     next = next.rebindLayerData(rebind);
+    next = rebindLayerOutputFields(next, rebind.id, changes);
     next = applyLayerDataRematerialization(next, rebind.id);
   }
   next = next.releaseDerivedData(revision.release);

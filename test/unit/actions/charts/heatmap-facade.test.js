@@ -358,13 +358,12 @@ test("rematerializes a binned facade after Canvas, scale, and data revision chan
     });
   const resized = program.editCanvas({ width: 500 });
   const reversed = resized.editScale({ id: "color", reverse: true });
-  const revised = reversed.createBin2DData({
-    id: "heatmapBin2DData",
-    x: "x",
-    y: "y",
-    bins: 2,
-    extent: { x: [0, 1], y: [0, 1] },
-    includeEmpty: false
+  const revised = reversed.editBin2DData({
+    target: "heatmapBin2DData",
+    includeEmpty: false,
+    as: {
+      x0: "left", x1: "right", y0: "bottom", y1: "top", count: "n"
+    }
   });
 
   assert.notEqual(
@@ -379,7 +378,17 @@ test("rematerializes a binned facade after Canvas, scale, and data revision chan
     revised.semanticSpec.layers[0].data,
     "heatmapBin2DDataBin2DDataRevision1"
   );
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(revised.semanticSpec.layers[0].encoding)
+      .map(([channel, encoding]) => [channel, encoding.field])),
+    { x: "left", x2: "right", y: "bottom", y2: "top", color: "n" }
+  );
   assert.equal(revised.graphicSpec.objects.heatmap.items.length, 2);
+  assert.equal(revised.graphicSpec.objects.heatmap.items.every(item =>
+    ["x", "y", "width", "height"].every(property =>
+      Number.isFinite(item.properties[property])
+    )
+  ), true);
   assert.equal(program.semanticSpec.layers[0].data, "heatmapBin2DData");
   assert.equal(program.graphicSpec.objects.heatmap.items.length, 4);
 });

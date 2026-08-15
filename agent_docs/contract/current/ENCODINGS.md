@@ -573,7 +573,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeParallelCoordinates({ dimensions, target?, coordinate?, key?, missing? })`
 - `dimensions`: 최소 두 개의 ordered unique field. String은 field shorthand이고 object는
   `{ field, fieldType?, title?, scale? }`다. Finite numeric values는 quantitative, consistent string values는
-  ordinal로 추론하며 numeric categories는 `fieldType: "ordinal"`을 명시한다.
+  ordinal로 추론하며 numeric categories는 `fieldType: "ordinal"`을 명시한다. Normalized `title`은 display label이며
+  이후 field binding이 바뀌어도 보존한다.
 - `scale`: dimension-local position-scale options. Scale ID는 `<target>-parallel-<index>`가 소유하므로 nested
   `id`는 허용하지 않는다. Existing type/domain/range/nice/zero/reverse와 transformed-scale vocabulary를 재사용한다.
 - `key`: optional dataset field. 생략하면 source lineage row identity를 사용하고 임의의 field를 추론하지 않는다.

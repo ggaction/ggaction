@@ -133,6 +133,16 @@ test("accepts a filtered source and rejects unsupported dependent replacement", 
     })),
     /while derived dataset "occupiedCells" depends on it/
   );
+  const densityDependent = binned.createDensityData({
+    id: "cellDensity",
+    source: "cells",
+    field: "count",
+    steps: 8
+  });
+  assert.throws(
+    () => densityDependent.editBin2DData({ target: "cells", bins: 1 }),
+    /while derived dataset "cellDensity" depends on it/
+  );
   assert.equal(dependent.semanticSpec.datasets.at(-1).id, "occupiedCells");
 });
 
@@ -385,12 +395,230 @@ test("rebinds and rematerializes every direct consumer exactly once", () => {
     action.children.filter(({ op }) => op === "releaseDerivedData").length,
     1
   );
+  assert.equal(action.children.some(({ op }) => op === "editSemantic"), false);
   assert.equal(after.semanticSpec.layers.every(layer => layer.data === current), true);
   assert.equal(after.graphicSpec.objects.lower.items.length, 1);
   assert.equal(after.graphicSpec.objects.upper.items.length, 1);
   assert.equal(after.semanticSpec.datasets.some(({ id }) => id === "cells"), false);
   assert.equal(before.semanticSpec.layers.every(layer => layer.data === "cells"), true);
   assert.equal(before.graphicSpec.objects.lower.items.length, 4);
+});
+
+test("tracks output-role renames through consumers, guides, selections, and jitter", () => {
+  const before = chart()
+    .createCanvas({
+      width: 520,
+      height: 360,
+      margin: { top: 30, right: 130, bottom: 70, left: 80 }
+    })
+    .createData({ id: "source", values: rows })
+    .createBin2DData(binOptions({ includeEmpty: false }))
+    .createRectMark({ id: "rects", data: "cells" })
+    .encodeX({ target: "rects", field: "x0" })
+    .encodeX2({ target: "rects", field: "x1" })
+    .encodeY({ target: "rects", field: "y0" })
+    .encodeY2({ target: "rects", field: "y1" })
+    .encodeColor({
+      target: "rects",
+      field: "count",
+      fieldType: "quantitative"
+    })
+    .createGuides()
+    .selectMarks({
+      id: "occupied",
+      target: "rects",
+      field: "count",
+      op: "max",
+      count: 1,
+      groupBy: ["x0"]
+    })
+    .highlightMarks({
+      selection: "occupied",
+      target: "rects",
+      fill: "#ff0000",
+      dimOthers: { opacity: 0.2 }
+    })
+    .createPointMark({ id: "points", data: "cells" })
+    .encodeX({ target: "points", field: "x0", scale: { id: "x" } })
+    .encodeY({ target: "points", field: "y0", scale: { id: "y" } })
+    .jitterPoints({
+      target: "points",
+      channel: "x",
+      maxOffset: { pixels: 3 },
+      seed: 2,
+      key: "x0"
+    });
+  const as = Object.freeze({
+    x0: "left",
+    x1: "right",
+    y0: "bottom",
+    y1: "top",
+    count: "n",
+    members: "indexes"
+  });
+  const edited = before.editBin2DData({ target: "cells", as });
+  const reauthored = before.createBin2DData(binOptions({
+    includeEmpty: false,
+    as
+  }));
+  const current = edited.materializationConfigs.data.bin2d.cells.current;
+  const dataset = edited.semanticSpec.datasets.find(item => item.id === current);
+  const rect = edited.semanticSpec.layers.find(item => item.id === "rects");
+  const point = edited.semanticSpec.layers.find(item => item.id === "points");
+
+  assert.equal(current, "cellsBin2DDataRevision1");
+  assert.deepEqual(dataset.transform[0].as, as);
+  assert.equal(edited.semanticSpec.datasets.some(item => item.id === "cells"), false);
+  assert.equal(edited.semanticSpec.layers.every(layer => layer.data === current), true);
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(rect.encoding).map(([channel, encoding]) =>
+      [channel, encoding.field]
+    )),
+    { x: "left", x2: "right", y: "bottom", y2: "top", color: "n" }
+  );
+  assert.equal(point.encoding.x.field, "left");
+  assert.equal(point.encoding.y.field, "bottom");
+  assert.equal(edited.semanticSpec.guides.axis.x.title, "left");
+  assert.equal(edited.semanticSpec.guides.axis.y.title, "bottom");
+  assert.equal(edited.semanticSpec.guides.legend.color.title, "n");
+  assert.deepEqual(edited.materializationConfigs.selections.occupied.selector, {
+    grain: "item",
+    field: "n",
+    op: "max",
+    count: 1,
+    groupBy: ["left"],
+    ties: "first"
+  });
+  assert.equal(edited.materializationConfigs.jitters.points.key, "left");
+  assert.equal(edited.materializationConfigs.highlights.occupied.target, "rects");
+  assert.equal(edited.graphicSpec.objects.rects.items.length, 2);
+  assert.equal(edited.graphicSpec.objects.points.items.length, 2);
+  assert.equal(edited.graphicSpec.objects.rects.items.every(item =>
+    ["x", "y", "width", "height"].every(property =>
+      Number.isFinite(item.properties[property])
+    )
+  ), true);
+  assert.deepEqual(edited.semanticSpec, reauthored.semanticSpec);
+  assert.deepEqual(edited.graphicSpec, reauthored.graphicSpec);
+  assert.deepEqual(edited.resolvedScales, reauthored.resolvedScales);
+  assert.deepEqual(
+    edited.materializationConfigs,
+    reauthored.materializationConfigs
+  );
+  assert.deepEqual(as, {
+    x0: "left", x1: "right", y0: "bottom", y1: "top",
+    count: "n", members: "indexes"
+  });
+  assert.equal(before.semanticSpec.layers[0].encoding.x.field, "x0");
+  assert.equal(before.materializationConfigs.selections.occupied.selector.field, "count");
+  assert.equal(before.materializationConfigs.jitters.points.key, "x0");
+
+  const outputFieldEdits = edited.trace.children.at(-1).children
+    .filter(node => node.op === "editSemantic")
+    .map(node => node.args.property);
+  assert.deepEqual(outputFieldEdits, [
+    "layer[rects].encoding.x.field",
+    "layer[rects].encoding.x2.field",
+    "layer[rects].encoding.y.field",
+    "layer[rects].encoding.y2.field",
+    "layer[rects].encoding.color.field",
+    "layer[points].encoding.x.field",
+    "layer[points].encoding.y.field"
+  ]);
+});
+
+test("tracks renamed outputs in category, weighted arc, and Parallel bindings", () => {
+  const before = chart()
+    .createCanvas({ width: 520, height: 360, margin: 50 })
+    .createData({ id: "source", values: rows })
+    .createBin2DData(binOptions({
+      includeEmpty: false,
+      members: false,
+      as: { x0: "x0", x1: "x1", y0: "y0", y1: "y1", count: "count" }
+    }))
+    .createBarMark({ id: "bars", data: "cells" })
+    .encodeX({ target: "bars", field: "x0", fieldType: "nominal" })
+    .encodeY({
+      target: "bars",
+      field: "count",
+      fieldType: "quantitative",
+      aggregate: "sum"
+    })
+    .orderCategories({
+      target: "bars",
+      channel: "x",
+      by: { field: "x1", aggregate: "mean" },
+      direction: "descending"
+    })
+    .createArcMark({ id: "arcs", data: "cells" })
+    .encodeTheta({
+      target: "arcs",
+      field: "x0",
+      fieldType: "nominal",
+      aggregate: "sum",
+      weight: "count"
+    })
+    .createParallelCoordinates({
+      id: "parallel",
+      data: "cells",
+      dimensions: [
+        { field: "x0", title: "x0" },
+        { field: "x1", title: "Right edge" },
+        { field: "y0", title: "Lower edge" }
+      ],
+      key: "x0",
+      guides: false
+    });
+  const after = before.editBin2DData({
+    target: "cells",
+    as: { x0: "left", x1: "right", y0: "bottom", y1: "top", count: "n" }
+  });
+  const bars = after.semanticSpec.layers.find(layer => layer.id === "bars");
+  const arcs = after.semanticSpec.layers.find(layer => layer.id === "arcs");
+  const parallel = after.semanticSpec.layers.find(layer => layer.id === "parallel");
+
+  assert.equal(bars.encoding.x.field, "left");
+  assert.deepEqual(bars.encoding.x.categoryOrder, {
+    by: { field: "right", aggregate: "mean" },
+    direction: "descending"
+  });
+  assert.equal(bars.encoding.y.field, "n");
+  assert.equal(arcs.encoding.theta.field, "left");
+  assert.equal(arcs.encoding.theta.weight, "n");
+  assert.deepEqual(
+    parallel.encoding.parallel.dimensions.map(dimension => [
+      dimension.field,
+      dimension.title
+    ]),
+    [["left", "x0"], ["right", "Right edge"], ["bottom", "Lower edge"]]
+  );
+  assert.equal(parallel.encoding.parallel.key, "left");
+  assert.equal(after.graphicSpec.objects.bars.items.length, 2);
+  assert.equal(after.graphicSpec.objects.arcs.items.length, 2);
+  assert.equal(after.graphicSpec.objects.parallel.items.length, 2);
+});
+
+test("rejects removing a referenced optional output before revising state", () => {
+  const before = sourceProgram()
+    .createBin2DData(binOptions())
+    .createTextMark({ id: "labels", data: "cells" })
+    .encodeX({ target: "labels", field: "x0" })
+    .encodeY({ target: "labels", field: "y0" })
+    .encodeText({ target: "labels", field: "members" });
+  const datasets = before.semanticSpec.datasets;
+  const layers = before.semanticSpec.layers;
+  const graphics = before.graphicSpec;
+  const config = before.materializationConfigs.data.bin2d;
+
+  assert.throws(
+    () => before.editBin2DData({ target: "cells", members: false }),
+    /Cannot remove referenced 2D bin members output field "members"/
+  );
+  assert.equal(before.semanticSpec.datasets, datasets);
+  assert.equal(before.semanticSpec.layers, layers);
+  assert.equal(before.graphicSpec, graphics);
+  assert.equal(before.materializationConfigs.data.bin2d, config);
+  assert.equal(before.materializationConfigs.data.bin2d.cells.current, "cells");
 });
 
 test("rejects empty, no-op, incomplete-output and invalid edits atomically", () => {
@@ -430,14 +658,6 @@ test("rejects empty, no-op, incomplete-output and invalid edits atomically", () 
   assert.throws(
     () => before.editBin2DData({ target: "cells", extra: true }),
     /Unknown editBin2DData option "extra"/
-  );
-  assert.throws(
-    () => before.editBin2DData({
-      target: "cells",
-      as: { x0: "u0", x1: "u1", y0: "v0", y1: "v1", count: "n", members: "m" },
-      members: true
-    }),
-    /[Ff]ield "x0"/
   );
 
   assert.equal(before.semanticSpec.datasets, datasets);
