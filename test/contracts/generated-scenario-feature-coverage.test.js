@@ -327,6 +327,48 @@ test("passes only trace-backed action and recursive option evidence plus observe
   });
 });
 
+test("observes nested collection parents through recursive trace count aliases", async () => {
+  const inventory = await buildPublicOptionInventory(actionCards);
+  const ledger = createScenarioCoverageLedger({
+    publicInventory: inventory,
+    rendererFeatures: ["renderer:svg"],
+    requiredFeatures: ["chart-family:scatter", "data-operation:aggregate"]
+  });
+  const base = result(0, {
+    dataset: "tt-a",
+    complexity: "simple",
+    activeFeatures: []
+  });
+  const traced = Object.freeze({
+    ...base,
+    operations: Object.freeze(["createLegend"]),
+    directOperations: Object.freeze(["createLegend"]),
+    directTrace: Object.freeze([Object.freeze({
+      op: "createLegend",
+      args: Object.freeze({
+        symbol: Object.freeze({ layersCount: 2 })
+      })
+    })])
+  });
+  const report = summarizeScenarioFeatureCoverage({
+    results: [traced],
+    datasetCorpus: corpus(["tt-a"]),
+    ledger,
+    policy: smallPolicy({
+      minimumSuccessfulScenarios: 1,
+      exactTidyTuesdayDatasets: 1,
+      maximumRecipeShare: 1
+    })
+  });
+  const parent = report.requirements.find(requirement =>
+    requirement.id === "option-path:createLegend.symbol.layers"
+  );
+  assert.equal(parent.occurrences, 1);
+  assert.equal(ledger.requirements.some(requirement =>
+    requirement.id === "option-path:createLegend.symbol.layers[]"
+  ), false);
+});
+
 test("hard-gates explicit distribution minima and reports exact scoped waivers", () => {
   const results = [0, 1, 2, 3].map(index => result(index, {
     dataset: index % 2 === 0 ? "tt-a" : "tt-b",

@@ -449,25 +449,32 @@ function traceHasOption(entry, option) {
 }
 
 function nestedTraceValues(args, optionPath) {
+  const presence = Object.freeze({ summarized: true });
   let values = [args];
   for (const segment of optionPath.split(".")) {
     const array = segment.endsWith("[]");
     const name = array ? segment.slice(0, -2) : segment;
     const next = [];
     for (const value of values) {
-      if (
-        value === null || typeof value !== "object" || Array.isArray(value) ||
-        !Object.hasOwn(value, name) || value[name] === undefined
-      ) {
+      if (value === null || typeof value !== "object" || Array.isArray(value)) continue;
+      if (Object.hasOwn(value, name) && value[name] !== undefined) {
+        if (array) {
+          if (Array.isArray(value[name]) && value[name].length > 0) {
+            next.push(...value[name]);
+          }
+        } else {
+          next.push(value[name]);
+        }
         continue;
       }
-      if (array) {
-        if (Array.isArray(value[name]) && value[name].length > 0) {
-          next.push(...value[name]);
-        }
-      } else {
-        next.push(value[name]);
-      }
+      const count = value[`${name}Count`];
+      const type = value[`${name}Type`];
+      if (
+        !array && (
+          Number.isInteger(count) && count > 0 ||
+          typeof type === "string" && type.length > 0
+        )
+      ) next.push(presence);
     }
     values = next;
     if (values.length === 0) break;
