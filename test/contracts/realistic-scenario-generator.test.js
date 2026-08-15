@@ -147,7 +147,7 @@ test("integrates every coverage recipe once with bounded tier capacity", () => {
   assert.deepEqual(report.minimumSelections, {
     simple: 90,
     intermediate: 1_094,
-    advanced: 1_360,
+    advanced: 1_365,
     composite: 90
   });
   assert.deepEqual(report.declaredFactorSelectionTargets, {
@@ -711,6 +711,45 @@ test("plans every heatmap schedule variant across eligible real datasets", () =>
       releaseTidyTuesdaySourceCache(assignment.dataset);
     }
   }
+});
+
+test("plans both facet axis policies five times across real datasets", () => {
+  const plan = scenarioCoverageSchedulePlan("realistic-faceted-distribution", {
+    datasets: realisticDatasetIds()
+  });
+
+  assert.equal(plan.complete, true);
+  assert.equal(plan.assignments.length, 10);
+  assert.deepEqual(plan.unavailable, []);
+  assert.deepEqual(plan.exhausted, []);
+  assert.deepEqual(plan.requirements.map(requirement => ({
+    variantId: requirement.variantId,
+    scheduledCount: requirement.scheduledCount,
+    fulfilledCount: requirement.fulfilledCount,
+    minimumDatasets: requirement.minimumDatasets,
+    fulfilledDatasets: requirement.fulfilledDatasets,
+    missingCount: requirement.missingCount,
+    missingDatasets: requirement.missingDatasets
+  })), [
+    {
+      variantId: "each",
+      scheduledCount: 5,
+      fulfilledCount: 5,
+      minimumDatasets: 3,
+      fulfilledDatasets: 5,
+      missingCount: 0,
+      missingDatasets: 0
+    },
+    {
+      variantId: "outer",
+      scheduledCount: 5,
+      fulfilledCount: 5,
+      minimumDatasets: 3,
+      fulfilledDatasets: 5,
+      missingCount: 0,
+      missingDatasets: 0
+    }
+  ]);
 });
 
 test("observes lifecycle features from recipe-specific direct trace signatures", () => {

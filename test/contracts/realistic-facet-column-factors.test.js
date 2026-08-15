@@ -90,6 +90,65 @@ function assertFacetGuideGeometry(program, label) {
   return childGuides;
 }
 
+test("schedules each facet axis policy five times across real datasets", () => {
+  const schedule = analysisRecipe.coverageSchedule;
+  assert.equal(schedule.factor, "facetAxes");
+  assert.equal(schedule.minimumSelections, 10);
+  assert.deepEqual(schedule.variantRequirements, [
+    { variantId: "each", minimumOccurrences: 5, minimumDatasets: 3 },
+    { variantId: "outer", minimumOccurrences: 5, minimumDatasets: 3 }
+  ]);
+
+  const datasets = Object.freeze([
+    "tt-penguins",
+    "tt-us-births",
+    "tt-space-launches",
+    "tt-nuclear-explosions",
+    "tt-christmas-songs"
+  ]);
+  const assignments = datasets.flatMap(dataset => ["each", "outer"].map(variantId =>
+    Object.freeze({ dataset, variantId })
+  ));
+
+  const literalEvidence = new Map();
+  for (const assignment of assignments) {
+    const dataset = assignment.dataset;
+    let factors;
+    try {
+      const domains = analysisRecipe.factorsForDataset(dataset);
+      factors = baselineFactors(dataset, domains, {
+        facetAxes: assignment.variantId
+      });
+      const program = analysisRecipe.build(factors);
+      const label = `${dataset}/${assignment.variantId}`;
+      assertGraphicIntegrity(program, label);
+      assertAnalyticLayerIntegrity(program, label);
+      assert.equal(program.compositionSpec.facet.guides.axes, assignment.variantId);
+      assert.equal(
+        analysisRecipe.observeFactors(program, factors).find(effect =>
+          effect.factor === "facetAxes"
+        )?.evidence,
+        "trace.facet.guides.axes+final-semantic:composition.facet.guides.axes"
+      );
+      assertSvgIntegrity(renderToSVG(program), label);
+      const evidence = literalEvidence.get(assignment.variantId) ?? {
+        occurrences: 0,
+        datasets: new Set()
+      };
+      evidence.occurrences += 1;
+      evidence.datasets.add(dataset);
+      literalEvidence.set(assignment.variantId, evidence);
+    } finally {
+      if (factors !== undefined) analysisRecipe.releaseResolution(factors);
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
+  for (const variantId of ["each", "outer"]) {
+    assert.equal(literalEvidence.get(variantId)?.occurrences, 5, variantId);
+    assert.equal(literalEvidence.get(variantId)?.datasets.size, 5, variantId);
+  }
+});
+
 test("reserves data-aware facet guide space for the exact Christmas-song case", () => {
   const dataset = "tt-christmas-songs";
   let factors;

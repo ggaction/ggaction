@@ -23,6 +23,26 @@ const CANVAS = Object.freeze({
 
 const PALETTES = Object.freeze([...PALETTE_NAMES]);
 const LEGEND_POSITIONS = Object.freeze(["right", "bottom", "left", "top"]);
+const FACET_AXES_COVERAGE_SCHEDULE = Object.freeze({
+  factor: "facetAxes",
+  selectionVariantIds: Object.freeze([
+    "each", "outer",
+    "each", "outer",
+    "each", "outer",
+    "each", "outer",
+    "each", "outer"
+  ]),
+  minimumSelections: 10,
+  assignment: "round-robin-datasets",
+  variantRequirements: Object.freeze(["each", "outer"].map(variantId =>
+    Object.freeze({
+      variantId,
+      minimumOccurrences: 5,
+      minimumDatasets: 3
+    })
+  )),
+  minimumDatasetsPerRequirement: 3
+});
 
 const SIMPLE_SPECS = Object.freeze([
   { id: "strip-points", kind: "point", family: "strip", variant: "plain" },
@@ -1393,6 +1413,9 @@ function makeRecipe(spec, complexity) {
     generation: "balanced-per-dataset",
     complexity,
     enforceFactorEffects: true,
+    ...(spec.kind === "facet"
+      ? { coverageSchedule: FACET_AXES_COVERAGE_SCHEDULE }
+      : {}),
     datasets,
     factors,
     factorsForDataset(dataset) {
