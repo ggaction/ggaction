@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -11,6 +12,7 @@ import { datasetDefinition } from "../support/datasets/catalog.js";
 import { releaseTidyTuesdaySourceCache } from "../support/datasets/tidytuesday.js";
 import { buildPublicOptionInventory } from "../support/scenarios/coverage-inventory.js";
 import { literalValueKey } from "../support/scenarios/coverage-ledger.js";
+import { runScenario } from "../support/scenarios/engine.js";
 import {
   REALISTIC_GUIDE_SCALE_COUNTS,
   REALISTIC_GUIDE_SCALE_COVERAGE_SELECTIONS,
@@ -25,6 +27,11 @@ const WITNESS_DATASETS = Object.freeze([
   "tt-london-marathon-winners",
   "tt-penguins"
 ]);
+const SCALE_VOCABULARY_RECIPES = Object.freeze(
+  REALISTIC_GUIDE_SCALE_RECIPES.filter(recipe =>
+    recipe.id.startsWith("realistic-guide-scale-vocabulary-")
+  )
+);
 const BASELINE_GAP_ACTIONS = Object.freeze([
   "editFacetHeaders",
   "editScale",
@@ -37,13 +44,14 @@ const EXPECTED_SELECTIONS = Object.freeze({
   "realistic-guide-scale-cartesian-lifecycle": 50,
   "realistic-guide-scale-temporal-lifecycle": 30,
   "realistic-guide-scale-parallel-profiles": 10,
-  "realistic-guide-scale-vocabulary": 395,
+  "realistic-guide-scale-vocabulary-primary": 327,
+  "realistic-guide-scale-vocabulary-secondary": 272,
   "realistic-guide-scale-polar-lifecycle": 15,
   "realistic-guide-scale-facet-policies": 15
 });
 const EXPECTED_TIER_SELECTIONS = Object.freeze({
   simple: 15,
-  intermediate: 395,
+  intermediate: 599,
   advanced: 105,
   composite: 15
 });
@@ -140,6 +148,19 @@ function recordStats(stats, dataset) {
   stats.datasets.add(dataset);
 }
 
+function finalProgramFingerprint(program) {
+  return createHash("sha256")
+    .update(JSON.stringify({
+      semanticSpec: program.semanticSpec,
+      graphicSpec: program.graphicSpec
+    }))
+    .digest("hex");
+}
+
+function directEntries(program, operation) {
+  return (program.trace.children ?? []).filter(entry => entry.op === operation);
+}
+
 function buildCoverageProjection(inventory) {
   const selectionPlans = REALISTIC_GUIDE_SCALE_RECIPES.flatMap(recipe =>
     projectedFactors(recipe).map((factors, selectionIndex) => Object.freeze({
@@ -181,6 +202,30 @@ function buildCoverageProjection(inventory) {
     values.push(requirement);
     literalsByOption.set(requirement.optionPath, values);
   }
+  const summarizeDirectEvidence = program => {
+    const actions = new Set();
+    const optionIds = new Set();
+    const literalIds = new Set();
+    for (const entry of program.trace.children ?? []) {
+      actions.add(entry.op);
+      for (const option of optionsByAction.get(entry.op) ?? []) {
+        const values = nestedTraceValues(entry.args, option.path);
+        if (values.length === 0) continue;
+        optionIds.add(option.id);
+        const valueKeys = new Set(values.map(literalValueKey).filter(value =>
+          value !== undefined
+        ));
+        for (const requirement of literalsByOption.get(option.id) ?? []) {
+          if (valueKeys.has(requirement.valueKey)) literalIds.add(requirement.id);
+        }
+      }
+    }
+    return Object.freeze({
+      actions: Object.freeze([...actions]),
+      optionIds: Object.freeze([...optionIds]),
+      literalIds: Object.freeze([...literalIds])
+    });
+  };
   const actionStats = new Map(REALISTIC_GUIDE_SCALE_EXPECTED_ACTIONS.map(action =>
     [action, emptyStats()]
   ));
@@ -198,7 +243,9 @@ function buildCoverageProjection(inventory) {
       projectedFactors(recipe).map(factors => [factors.variant.id, factors.variant])
     ).values()];
     uniqueVariants.forEach((variant, variantIndex) => {
-      const dataset = WITNESS_DATASETS[variantIndex % WITNESS_DATASETS.length];
+      // Keep every variant on an identical source/factor baseline. This makes
+      // the final fingerprint comparison a genuine one-at-a-time variant test.
+      const dataset = WITNESS_DATASETS[2];
       const domains = recipe.factorsForDataset(dataset);
       assert.notEqual(domains, undefined, `${recipe.id} ${dataset} eligibility`);
       const key = `${recipe.id}\0${variant.id}\0${dataset}`;
@@ -206,7 +253,7 @@ function buildCoverageProjection(inventory) {
         recipe,
         factors: Object.freeze({
           dataset,
-          fieldPair: domains.fieldPair[variantIndex % domains.fieldPair.length],
+          fieldPair: domains.fieldPair[0],
           variant
         }),
         selectionIndex: variantIndex,
@@ -243,6 +290,12 @@ function buildCoverageProjection(inventory) {
           const program = recipe.build(factors);
           const metadata = recipe.describe(factors);
           assertTruthfulMetadata(recipe, factors, program, metadata, label);
+          const factorEffects = recipe.observeFactors(program, factors);
+          assert.deepEqual(
+            new Set(factorEffects.map(effect => effect.factor)),
+            new Set(["fieldPair", "variant"]),
+            `${label} actual factor effects`
+          );
           if (qualityWitness) {
             assertGraphicIntegrity(program, label);
             assertAnalyticLayerIntegrity(program, label);
@@ -256,12 +309,11 @@ function buildCoverageProjection(inventory) {
           actualChartCount += 1;
           const variantKey = `${recipe.id}\0${factors.variant.id}`;
           if (!evidenceByVariant.has(variantKey)) {
-            evidenceByVariant.set(variantKey, Object.freeze(
-              (program.trace.children ?? []).map(entry => Object.freeze({
-                op: entry.op,
-                args: entry.args
-              }))
-            ));
+            evidenceByVariant.set(variantKey, Object.freeze({
+              ...summarizeDirectEvidence(program),
+              fingerprint: finalProgramFingerprint(program),
+              factorEffects
+            }));
           }
         }
       } finally {
@@ -271,42 +323,26 @@ function buildCoverageProjection(inventory) {
   } finally {
     for (const dataset of byDataset.keys()) releaseTidyTuesdaySourceCache(dataset);
   }
-  const actualActions = new Set([...evidenceByVariant.values()].flatMap(entries =>
-    entries.map(entry => entry.op)
+  const actualActions = new Set([...evidenceByVariant.values()].flatMap(evidence =>
+    evidence.actions
   ));
   for (const { recipe, factors } of selectionPlans) {
-    const entries = evidenceByVariant.get(`${recipe.id}\0${factors.variant.id}`);
-    assert.notEqual(entries, undefined, `${recipe.id} ${factors.variant.id} evidence`);
-    const entriesByAction = new Map();
-    for (const entry of entries) {
-      const values = entriesByAction.get(entry.op) ?? [];
-      values.push(entry);
-      entriesByAction.set(entry.op, values);
-    }
-    for (const action of entriesByAction.keys()) {
+    const evidence = evidenceByVariant.get(`${recipe.id}\0${factors.variant.id}`);
+    assert.notEqual(evidence, undefined, `${recipe.id} ${factors.variant.id} evidence`);
+    const actions = new Set(evidence.actions);
+    for (const action of actions) {
       const stats = actionStats.get(action);
       if (stats !== undefined) recordStats(stats, factors.dataset);
     }
-    for (const [action, actionEntries] of entriesByAction) {
-      for (const option of optionsByAction.get(action) ?? []) {
-        const optionTraceValues = actionEntries.flatMap(entry =>
-          nestedTraceValues(entry.args, option.path)
-        );
-        if (optionTraceValues.length === 0) continue;
-        recordStats(optionStats.get(option.id), factors.dataset);
-        const valueKeys = new Set(optionTraceValues.map(literalValueKey).filter(value =>
-          value !== undefined
-        ));
-        for (const requirement of literalsByOption.get(option.id) ?? []) {
-          if (valueKeys.has(requirement.valueKey)) {
-            recordStats(literalStats.get(requirement.id), factors.dataset);
-          }
-        }
-      }
+    for (const optionId of evidence.optionIds) {
+      recordStats(optionStats.get(optionId), factors.dataset);
+    }
+    for (const literalId of evidence.literalIds) {
+      recordStats(literalStats.get(literalId), factors.dataset);
     }
     for (const interaction of REALISTIC_GUIDE_SCALE_INTERACTIONS) {
       const actions = interaction.members.map(member => member.slice("action:".length));
-      if (actions.every(action => entriesByAction.has(action))) {
+      if (actions.every(action => evidence.actions.includes(action))) {
         recordStats(interactionStats.get(interaction.members.join("+")), factors.dataset);
       }
     }
@@ -316,6 +352,12 @@ function buildCoverageProjection(inventory) {
     projectedChartCount: selectionPlans.length,
     uniqueVariantCount: evidenceByVariant.size,
     qualityChartCount,
+    finalFingerprintsByRecipe: new Map(REALISTIC_GUIDE_SCALE_RECIPES.map(recipe => [
+      recipe.id,
+      new Set([...evidenceByVariant]
+        .filter(([key]) => key.startsWith(`${recipe.id}\0`))
+        .map(([, evidence]) => evidence.fingerprint))
+    ])),
     actualActions,
     actionStats,
     optionStats,
@@ -365,15 +407,15 @@ function meetsMinimum(stats, occurrences = 5, datasets = 3) {
   return stats.occurrences >= occurrences && stats.datasets.size >= datasets;
 }
 
-test("defines a feasible 530-selection guide/scale coverage schedule", () => {
+test("defines a feasible 734-selection guide/scale coverage schedule", () => {
   assert.deepEqual(REALISTIC_GUIDE_SCALE_COUNTS, {
     simple: 1,
-    intermediate: 1,
+    intermediate: 2,
     advanced: 4,
     composite: 1
   });
-  assert.equal(REALISTIC_GUIDE_SCALE_RECIPES.length, 7);
-  assert.equal(new Set(REALISTIC_GUIDE_SCALE_RECIPES.map(recipe => recipe.id)).size, 7);
+  assert.equal(REALISTIC_GUIDE_SCALE_RECIPES.length, 8);
+  assert.equal(new Set(REALISTIC_GUIDE_SCALE_RECIPES.map(recipe => recipe.id)).size, 8);
   assert.deepEqual(
     Object.fromEntries(REALISTIC_GUIDE_SCALE_RECIPES.map(recipe => [
       recipe.id,
@@ -390,8 +432,9 @@ test("defines a feasible 530-selection guide/scale coverage schedule", () => {
     ])),
     EXPECTED_TIER_SELECTIONS
   );
-  assert.equal(Object.values(EXPECTED_SELECTIONS).reduce((sum, value) => sum + value, 0), 530);
-  assert.ok(Math.max(...Object.values(EXPECTED_SELECTIONS)) <= 540);
+  assert.equal(Object.values(EXPECTED_SELECTIONS).reduce((sum, value) => sum + value, 0), 734);
+  assert.ok(EXPECTED_TIER_SELECTIONS.intermediate <= Math.floor(3_600 * 0.45));
+  assert.ok(Math.max(...Object.values(EXPECTED_SELECTIONS)) <= Math.floor(3_600 * 0.15));
   assert.equal(
     new Set(REALISTIC_GUIDE_SCALE_RECIPES.flatMap(recipe => recipe.datasets)).size,
     50
@@ -407,8 +450,32 @@ test("defines a feasible 530-selection guide/scale coverage schedule", () => {
       recipe.coverageSchedule.minimumSelections,
       recipe.id
     );
-    assert.equal(recipe.coverageSchedule.minimumOccurrencesPerRequirement, 5, recipe.id);
-    assert.equal(recipe.coverageSchedule.minimumDatasetsPerRequirement, 3, recipe.id);
+    assert.equal(recipe.coverageSchedule.assignment, "round-robin-datasets", recipe.id);
+    assert.equal(
+      Object.hasOwn(recipe.coverageSchedule, "minimumOccurrencesPerRequirement"),
+      false,
+      `${recipe.id} has no misleading global occurrence claim`
+    );
+    const scheduledCounts = new Map();
+    for (const variantId of recipe.coverageSchedule.selectionVariantIds) {
+      scheduledCounts.set(variantId, (scheduledCounts.get(variantId) ?? 0) + 1);
+    }
+    assert.deepEqual(
+      recipe.coverageSchedule.variantRequirements,
+      [...scheduledCounts].map(([variantId, minimumOccurrences]) => ({
+        variantId,
+        minimumOccurrences,
+        minimumDatasets: Math.min(minimumOccurrences, 3)
+      })),
+      `${recipe.id} explicit per-variant schedule requirements`
+    );
+    assert.equal(
+      recipe.coverageSchedule.minimumDatasetsPerRequirement,
+      Math.max(...recipe.coverageSchedule.variantRequirements.map(value =>
+        value.minimumDatasets
+      )),
+      `${recipe.id} engine dataset ceiling`
+    );
     assert.equal(
       REALISTIC_GUIDE_SCALE_COVERAGE_SELECTIONS[recipe.id],
       recipe.coverageSchedule
@@ -418,35 +485,344 @@ test("defines a feasible 530-selection guide/scale coverage schedule", () => {
     assert.ok(recipe.coverageSchedule.selectionVariantIds.every(id => variantIds.has(id)));
   }
 
-  const scaleRecipe = REALISTIC_GUIDE_SCALE_RECIPES.find(recipe =>
-    recipe.id.endsWith("vocabulary")
-  );
-  assert.equal(scaleRecipe.factors.variant.length, 555);
-  const variants = new Map(scaleRecipe.factors.variant.map(variant => [variant.id, variant]));
-  const scheduled = scaleRecipe.coverageSchedule.selectionVariantIds.map(id => variants.get(id));
+  const scaleRecipes = SCALE_VOCABULARY_RECIPES;
+  assert.deepEqual(scaleRecipes.map(recipe => recipe.factors.variant.length), [283, 272]);
+  assert.deepEqual(scaleRecipes.map(recipe => recipe.coverageSchedule.minimumSelections), [327, 272]);
+  const variants = new Map(scaleRecipes.flatMap(recipe =>
+    recipe.factors.variant.map(variant => [variant.id, variant])
+  ));
+  assert.equal(variants.size, 555);
+  const scheduledAssignments = scaleRecipes.flatMap(recipe => {
+    const recipeVariants = new Map(recipe.factors.variant.map(variant => [variant.id, variant]));
+    return recipe.coverageSchedule.selectionVariantIds.map((id, index) => Object.freeze({
+      variant: recipeVariants.get(id),
+      dataset: WITNESS_DATASETS[index % WITNESS_DATASETS.length]
+    }));
+  });
+  const scheduled = scheduledAssignments.map(assignment => assignment.variant);
+  assert.equal(scheduled.length, 599);
+  assert.equal(new Set(scheduled.map(variant => variant.id)).size, 555);
   const paletteCounts = Object.fromEntries(PALETTE_NAMES.map(name => [name, 0]));
   const paletteDatasets = new Map(PALETTE_NAMES.map(name => [name, new Set()]));
-  scheduled.forEach((variant, index) => {
+  scheduledAssignments.forEach(({ variant, dataset }) => {
     if (variant.palette === undefined) return;
     paletteCounts[variant.palette] += 1;
-    paletteDatasets.get(variant.palette).add(WITNESS_DATASETS[index % WITNESS_DATASETS.length]);
+    paletteDatasets.get(variant.palette).add(dataset);
   });
-  assert.ok(Object.values(paletteCounts).every(count => count === 5));
+  assert.ok(Object.values(paletteCounts).every(count => count === 8));
   assert.ok([...paletteDatasets.values()].every(datasets => datasets.size === 3));
   for (const interpolate of [
     "rgb", "hsl", "hsl-long", "lab", "hcl", "hcl-long", "cubehelix", "cubehelix-long"
   ]) {
-    assert.ok(scheduled.filter(variant => variant.interpolate === interpolate).length >= 40);
+    assert.equal(scheduled.filter(variant => variant.interpolate === interpolate).length, 68);
+  }
+  for (const variant of variants.values()) {
+    if (variant.palette !== undefined) continue;
+    assert.equal(scheduled.filter(value => value.id === variant.id).length, 5, variant.id);
+  }
+  const scaleRequirements = scaleRecipes.flatMap(recipe =>
+    recipe.coverageSchedule.variantRequirements
+  );
+  assert.equal(scaleRequirements.length, 555);
+  assert.equal(scaleRequirements.filter(requirement =>
+    requirement.minimumOccurrences === 1 && requirement.minimumDatasets === 1
+  ).length, 544);
+  assert.equal(scaleRequirements.filter(requirement =>
+    requirement.minimumOccurrences === 5 && requirement.minimumDatasets === 3
+  ).length, 11);
+});
+
+test("observes field-pair and variant factors with independent direct and final evidence", () => {
+  const dataset = "tt-penguins";
+  try {
+    for (const recipe of REALISTIC_GUIDE_SCALE_RECIPES) {
+      const domains = recipe.factorsForDataset(dataset);
+      assert.notEqual(domains, undefined, `${recipe.id} eligibility`);
+      assert.ok(domains.fieldPair.length >= 2, `${recipe.id} field-pair OAT domain`);
+      const variant = domains.variant[0];
+      const programs = domains.fieldPair.slice(0, 2).map(fieldPair => {
+        const factors = Object.freeze({ dataset, fieldPair, variant });
+        const program = recipe.build(factors);
+        const effects = recipe.observeFactors(program, factors);
+        assert.deepEqual(effects.map(effect => effect.factor).sort(), ["fieldPair", "variant"]);
+        assert.ok(effects.every(effect =>
+          effect.evidence.includes("direct:") && effect.evidence.includes("final:")
+        ));
+        assert.deepEqual(
+          effects.map(effect => effect.value),
+          [fieldPair, variant]
+        );
+        return program;
+      });
+      assert.notEqual(
+        finalProgramFingerprint(programs[0]),
+        finalProgramFingerprint(programs[1]),
+        `${recipe.id} fieldPair is not inert`
+      );
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("keeps known video-game facets and complete-case parallel profiles nonempty", () => {
+  const cases = [
+    Object.freeze({
+      dataset: "tt-transit-costs",
+      recipe: REALISTIC_GUIDE_SCALE_RECIPES.find(recipe =>
+        recipe.id.endsWith("parallel-profiles")
+      ),
+      variants: domains => domains.variant
+    }),
+    Object.freeze({
+      dataset: "tt-us-tornadoes",
+      recipe: REALISTIC_GUIDE_SCALE_RECIPES.find(recipe =>
+        recipe.id.endsWith("parallel-profiles")
+      ),
+      variants: domains => domains.variant.filter(variant =>
+        variant.id === "parallel-drop-row"
+      )
+    }),
+    Object.freeze({
+      dataset: "tt-video-games",
+      recipe: REALISTIC_GUIDE_SCALE_RECIPES.find(recipe =>
+        recipe.id.endsWith("facet-policies")
+      ),
+      variants: domains => domains.variant
+    })
+  ];
+  for (const { dataset, recipe, variants } of cases) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      assert.notEqual(domains, undefined, `${dataset} eligibility`);
+      const materialFingerprints = new Set();
+      for (const fieldPair of domains.fieldPair) {
+        for (const variant of variants(domains)) {
+          const factors = Object.freeze({ dataset, fieldPair, variant });
+          const label = `${dataset}-${fieldPair.bindingId}-${variant.id}`;
+          const program = recipe.build(factors);
+          assertGraphicIntegrity(program, label);
+          assertAnalyticLayerIntegrity(program, label);
+          assert.equal(recipe.observeFactors(program, factors).length, 2, label);
+          if (fieldPair === domains.fieldPair[0] && program.compositionSpec?.type === "facet") {
+            const { children: _children, ...materialFacet } = program.compositionSpec;
+            materialFingerprints.add(JSON.stringify(materialFacet));
+          }
+        }
+      }
+      if (recipe.id.endsWith("facet-policies")) {
+        assert.equal(
+          materialFingerprints.size,
+          domains.variant.length,
+          "facet variants have materially distinct final layout/resolution policies"
+        );
+      }
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
+});
+
+test("filters transit parallel dimensions before its deterministic sample", () => {
+  const dataset = "tt-transit-costs";
+  const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>
+    value.id.endsWith("parallel-profiles")
+  );
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const factors = Object.freeze({
+      dataset,
+      fieldPair: domains.fieldPair[0],
+      variant: domains.variant.find(value => value.id === "parallel-drop-row")
+    });
+    const program = recipe.build(factors);
+    const metadata = recipe.describe(factors);
+    const rows = program.semanticSpec.datasets.find(value =>
+      value.id === "analysisRows"
+    ).values;
+    const completeCases = metadata.provenance.transformations.find(value =>
+      value.op === "filter-parallel-complete-cases"
+    );
+    const sample = metadata.provenance.transformations.find(value =>
+      value.op === "witness-preserving-even-sample"
+    );
+    assert.equal(completeCases.eligibleRowCount, 71);
+    assert.deepEqual(
+      completeCases.fields,
+      ["sourceRowIndex", "cost_km_millions", "country", "start_year"]
+    );
+    assert.equal(sample.eligibleRowCount, 71);
+    assert.equal(sample.displayedRowCount, 71);
+    assert.equal(rows.length, 71);
+    assert.ok(rows.every(row =>
+      Number.isFinite(row.sourceRowIndex) && Number.isFinite(row.value) &&
+      Number.isFinite(row.orderNumeric) && typeof row.category === "string" &&
+      row.category.length > 0
+    ));
+    assert.equal(program.graphicSpec.objects.profileLines.items.length, 71);
+    assert.equal(metadata.provenance.sourceRowCount, 71);
+    assert.equal(metadata.provenance.sourceRowIndexes.length, 71);
+    assert.equal(
+      metadata.provenance.sourceSelectionSha256,
+      "9b67415db947e6a23d9ef5d51348e36a205bc7fa5d46c5957cfda4f78ff47565"
+    );
+    assert.match(metadata.title, /\(n=71\/71 eligible\)/u);
+    assert.match(metadata.analysisQuestion, /\(n=71\/71 eligible\)/u);
+    assertTruthfulMetadata(recipe, factors, program, metadata, "tt-transit-parallel-drop-row");
+    assertGraphicIntegrity(program, "tt-transit-parallel-drop-row");
+    assertAnalyticLayerIntegrity(program, "tt-transit-parallel-drop-row");
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("preflights every temporal display policy on every eligible TT dataset", () => {
+  const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>
+    value.id.endsWith("temporal-lifecycle")
+  );
+  let builds = 0;
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      if (domains === undefined) continue;
+      domains.variant.forEach((variant, index) => {
+        const factors = Object.freeze({
+          dataset,
+          fieldPair: domains.fieldPair[index % domains.fieldPair.length],
+          variant
+        });
+        assert.doesNotThrow(() => runScenario({
+          id: `temporal-preflight-${dataset}-${variant.id}`,
+          recipe: recipe.id,
+          factors
+        }, { deterministic: false }));
+        builds += 1;
+      });
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
+  assert.equal(builds, 30 * 6);
+});
+
+test("keeps the meteorites long day labels sparse and non-overlapping", () => {
+  const dataset = "tt-meteorites";
+  const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>
+    value.id.endsWith("temporal-lifecycle")
+  );
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const factors = Object.freeze({
+      dataset,
+      fieldPair: domains.fieldPair.find(value =>
+        value.bindingId === "eligible:mass-by-name_type"
+      ),
+      variant: domains.variant.find(value => value.id === "day-on-x")
+    });
+    const result = runScenario({
+      id: "tt-meteorites-mass-name-type-day-on-x",
+      recipe: recipe.id,
+      factors
+    }, { deterministic: false, captureProgram(program) {
+      const labels = program.graphicSpec.objects.xAxisLabels.items;
+      assert.equal(labels.length, 2);
+      assert.ok(labels.every(item => /^\d{4}-\d{2}-\d{2}$/u.test(item.properties.text)));
+    } });
+    assert.ok(result.directOperations.includes("editXAxisLabels"));
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("runs every non-sequential scale profile with branch-exact direct actions", () => {
+  const recipe = SCALE_VOCABULARY_RECIPES.find(value => value.id.endsWith("primary"));
+  const excluded = ["createGuides", "editLegend", "editLegendSymbols", "removeLegend"];
+  let builds = 0;
+  for (const dataset of WITNESS_DATASETS) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      const variants = domains.variant.filter(value => value.type !== "sequential");
+      assert.equal(variants.length, 11);
+      variants.forEach((variant, index) => {
+        const factors = Object.freeze({
+          dataset,
+          fieldPair: domains.fieldPair[index % domains.fieldPair.length],
+          variant
+        });
+        const expected = recipe.expectedDirectActionsFor(factors);
+        assert.deepEqual(excluded.filter(action => expected.includes(action)), []);
+        const result = runScenario({
+          id: `non-sequential-${dataset}-${variant.id}`,
+          recipe: recipe.id,
+          factors
+        }, { deterministic: false });
+        assert.deepEqual(excluded.filter(action => result.directOperations.includes(action)), []);
+        builds += 1;
+      });
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
+  assert.equal(builds, 3 * 11);
+});
+
+test("preserves whitespace through a realistic long wrapped title block", () => {
+  const dataset = "tt-nurses";
+  const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>
+    value.id.endsWith("cartesian-lifecycle")
+  );
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const variant = domains.variant.find(value => value.id === "decimal-object");
+    const candidates = domains.fieldPair.map(fieldPair => {
+      const factors = Object.freeze({ dataset, fieldPair, variant });
+      return Object.freeze({ factors, metadata: recipe.describe(factors) });
+    });
+    const selected = candidates.sort((left, right) =>
+      right.metadata.title.length - left.metadata.title.length
+    )[0];
+    const program = recipe.build(selected.factors);
+    const subtitle = program.graphicSpec.objects.chartSubtitle;
+    const lines = subtitle.items.map(item => item.properties.text);
+    const titleTrace = [...directEntries(program, "createTitle")].at(-1);
+    const reconstructed = titleTrace.args.wrap === "character"
+      ? lines.join("")
+      : lines.join(" ");
+    const normalize = value => value.replace(/\p{White_Space}+/gu, " ").trim();
+    assert.ok(selected.metadata.title.length >= 40);
+    assert.ok(selected.metadata.analysisQuestion.length >= 120);
+    assert.ok(lines.length >= 2, "long subtitle is actually wrapped");
+    assert.equal(normalize(reconstructed), normalize(selected.metadata.analysisQuestion));
+    assert.equal(program.semanticSpec.title.text, selected.metadata.title);
+    assertGraphicIntegrity(program, "tt-nurses-long-wrapped-title");
+    assertAnalyticLayerIntegrity(program, "tt-nurses-long-wrapped-title");
+    assertSvgIntegrity(renderToSVG(program, {
+      title: selected.metadata.title,
+      description: selected.metadata.analysisQuestion
+    }), "tt-nurses-long-wrapped-title");
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
   }
 });
 
 test("builds every reserved witness and directly satisfies guide/scale coverage", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
   const projection = buildCoverageProjection(inventory);
-  assert.equal(projection.projectedChartCount, 530);
-  assert.equal(projection.uniqueVariantCount, 106);
-  assert.equal(projection.actualChartCount, 120);
-  assert.equal(projection.qualityChartCount, 21);
+  assert.equal(projection.projectedChartCount, 734);
+  assert.equal(projection.uniqueVariantCount, 582);
+  assert.equal(projection.actualChartCount, 598);
+  assert.equal(projection.qualityChartCount, 24);
+  for (const recipe of REALISTIC_GUIDE_SCALE_RECIPES) {
+    assert.equal(
+      projection.finalFingerprintsByRecipe.get(recipe.id).size,
+      recipe.factors.variant.length,
+      `${recipe.id} advertised variants have distinct actual final fingerprints`
+    );
+  }
+  const scaleFingerprintUnion = new Set(SCALE_VOCABULARY_RECIPES.flatMap(recipe =>
+    [...projection.finalFingerprintsByRecipe.get(recipe.id)]
+  ));
+  assert.equal(scaleFingerprintUnion.size, 555, "all scale variants have unique actual finals");
 
   for (const action of REALISTIC_GUIDE_SCALE_EXPECTED_ACTIONS) {
     assert.ok(projection.actualActions.has(action), `${action} actual witness`);

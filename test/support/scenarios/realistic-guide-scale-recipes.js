@@ -1,8 +1,13 @@
+import { createHash } from "node:crypto";
+
 import { chart } from "../../../src/index.js";
 import { PALETTE_NAMES } from "../../../src/grammar/palettes.js";
 
+import { tidyTuesdaySourceEntries } from "../datasets/tidytuesday.js";
+
 import {
   realisticDatasetIds,
+  realisticDatasetRoles,
   realisticFieldPairDomain,
   realisticOrderedView,
   realisticRecordView,
@@ -121,23 +126,52 @@ const SEQUENTIAL_SCALE_VARIANTS = Object.freeze(
   ).flat()
 );
 
-// The explicit schedule repeats one round-robin palette/interpolation vocabulary
-// and every non-sequential profile five times. This keeps 395 reserved selections
-// while requiring only 79 distinct programs during focused preflight.
-const SCALE_COVERAGE_VARIANTS = Object.freeze([
-  ...sequentialScaleRound(0),
-  ...nonSequentialScaleVariants()
-]);
+const NON_SEQUENTIAL_SCALE_VARIANTS = Object.freeze(nonSequentialScaleVariants());
 
-const SCALE_VARIANTS = Object.freeze([
-  ...SEQUENTIAL_SCALE_VARIANTS,
-  ...nonSequentialScaleVariants()
+const SCALE_SEQUENTIAL_SPLIT = SEQUENTIAL_SCALE_VARIANTS.length / 2;
+const SCALE_PRIMARY_VARIANTS = Object.freeze([
+  ...SEQUENTIAL_SCALE_VARIANTS.slice(0, SCALE_SEQUENTIAL_SPLIT),
+  ...NON_SEQUENTIAL_SCALE_VARIANTS
 ]);
+const SCALE_SECONDARY_VARIANTS = Object.freeze(
+  SEQUENTIAL_SCALE_VARIANTS.slice(SCALE_SEQUENTIAL_SPLIT)
+);
+
+// Every advertised sequential palette/interpolation pair is selected once. The
+// eleven non-sequential profiles repeat five times so their type-specific options
+// meet the same five-occurrence, three-dataset distribution requirement. Splitting
+// this vocabulary keeps each recipe under the 15% diversity ceiling at 3,600.
+const SCALE_PRIMARY_COVERAGE_VARIANTS = Object.freeze([
+  ...SEQUENTIAL_SCALE_VARIANTS.slice(0, SCALE_SEQUENTIAL_SPLIT),
+  ...Array.from({ length: 5 }, () => NON_SEQUENTIAL_SCALE_VARIANTS).flat()
+]);
+const SCALE_SECONDARY_COVERAGE_VARIANTS = SCALE_SECONDARY_VARIANTS;
 
 const FACET_VARIANTS = Object.freeze([
-  Object.freeze({ id: "independent-then-shared-start", first: "independent", align: "start" }),
-  Object.freeze({ id: "shared-then-independent-center", first: "shared", align: "center" }),
-  Object.freeze({ id: "independent-then-shared-end", first: "independent", align: "end" })
+  Object.freeze({
+    id: "independent-then-shared-start",
+    first: "independent",
+    align: "start",
+    columns: 2,
+    gap: 16,
+    padding: 12
+  }),
+  Object.freeze({
+    id: "shared-then-independent-center",
+    first: "shared",
+    align: "center",
+    columns: 3,
+    gap: 24,
+    padding: 16
+  }),
+  Object.freeze({
+    id: "independent-then-shared-end",
+    first: "independent",
+    align: "end",
+    columns: 2,
+    gap: 32,
+    padding: 20
+  })
 ]);
 
 const INITIAL_FACTOR_DATASET = "tt-penguins";
@@ -181,14 +215,235 @@ function facetView(factors) {
   });
 }
 
+function parallelScalar(value) {
+  return value === null || value === undefined || value === "" ? undefined : value;
+}
+
+function parallelOrderNumeric(value, ranks) {
+  if (Number.isFinite(value)) return value;
+  if (value instanceof Date && Number.isFinite(value.getTime())) return value.getTime();
+  if (typeof value !== "string" || value.length === 0) return undefined;
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) ? timestamp : ranks.get(value);
+}
+
+function parallelRowKey(row, sourceRowIndex, identifier) {
+  const value = identifier === undefined ? undefined : row[identifier];
+  return parallelScalar(value) === undefined
+    ? `source-row-${sourceRowIndex}`
+    : `${value}-${sourceRowIndex}`;
+}
+
+function parallelStableSample(entries, limit, { hasSecondary, hasSubgroup }) {
+  if (entries.length <= limit) return entries;
+  const selected = new Set([entries[0], entries.at(-1)]);
+  for (const field of ["value", ...(hasSecondary ? ["secondary"] : [])]) {
+    const finite = entries.filter(entry => Number.isFinite(entry[field]));
+    if (finite.length === 0) continue;
+    finite.sort((left, right) =>
+      left[field] - right[field] || left.sourceRowIndex - right.sourceRowIndex
+    );
+    selected.add(finite[0]);
+    selected.add(finite.at(-1));
+  }
+  for (const field of ["category", ...(hasSubgroup ? ["subgroup"] : [])]) {
+    const witnessed = new Set();
+    for (const entry of entries) {
+      const value = parallelScalar(entry[field]);
+      if (value === undefined || witnessed.has(String(value))) continue;
+      witnessed.add(String(value));
+      selected.add(entry);
+    }
+  }
+  const strata = [
+    ["category"],
+    ...(hasSubgroup ? [["subgroup"], ["category", "subgroup"]] : [])
+  ];
+  for (const fields of strata) {
+    const witnessed = new Set();
+    for (const entry of entries) {
+      const values = fields.map(field => parallelScalar(entry[field]));
+      if (values.some(value => value === undefined)) continue;
+      const key = values.map(String).join("\0");
+      if (witnessed.has(key)) continue;
+      witnessed.add(key);
+      selected.add(entry);
+    }
+  }
+  for (let index = 0; index < limit; index += 1) {
+    if (selected.size >= limit) break;
+    selected.add(entries[Math.round(index * (entries.length - 1) / (limit - 1))]);
+  }
+  if (selected.size > limit) {
+    throw new Error("Parallel row limit cannot retain all required witness rows.");
+  }
+  return [...selected].sort((left, right) => left.sourceRowIndex - right.sourceRowIndex);
+}
+
+function parallelProvenance(dataset, bindings, rows, transformations) {
+  const indexes = [...new Set(rows.map(row => row.sourceRowIndex))]
+    .sort((left, right) => left - right);
+  if (indexes.length < 2) {
+    throw new Error(`Dataset "${dataset}" needs two complete parallel rows.`);
+  }
+  return Object.freeze({
+    sourceDataset: dataset,
+    sourceRowIndexBasis: "zero-based-data-row-in-pinned-csv",
+    sourceRowCount: indexes.length,
+    minimumSourceRow: indexes[0],
+    maximumSourceRow: indexes.at(-1),
+    sourceSelectionSha256: createHash("sha256").update(indexes.join(",")).digest("hex"),
+    indexEncoding: "sorted-zero-based-indexes-sha256-v1",
+    sourceRowIndexes: Object.freeze(indexes),
+    fieldBindings: Object.freeze(bindings),
+    transformations: Object.freeze(transformations.map(value => Object.freeze(value)))
+  });
+}
+
 function parallelView(factors) {
-  return realisticRecordView(factors.dataset, {
-    measureIndex: factors.fieldPair.measureIndex,
-    dimensionIndex: factors.fieldPair.dimensionIndex,
-    witnessCross: true,
-    rowLimit: 80,
-    groupLimit: 6,
-    subgroupLimit: 4
+  const roles = realisticDatasetRoles(factors.dataset);
+  const measure = roles.measures[factors.fieldPair.measureIndex % roles.measures.length];
+  const secondaryMeasure = roles.measures.find(field => field !== measure);
+  const dimension = roles.dimensions[
+    factors.fieldPair.dimensionIndex % roles.dimensions.length
+  ];
+  const secondaryDimension = roles.dimensions.find(field => field !== dimension);
+  const temporal = roles.temporal[0];
+  const order = roles.order[0];
+  const identifier = roles.identifiers[0];
+  const label = roles.labels[0] ?? dimension;
+  const sourceEntries = tidyTuesdaySourceEntries(factors.dataset);
+  const groupStats = new Map();
+  for (const { row, sourceRowIndex } of sourceEntries) {
+    const category = parallelScalar(row[dimension]);
+    if (!Number.isFinite(row[measure]) || category === undefined) continue;
+    const key = String(category);
+    const current = groupStats.get(key) ?? { count: 0, first: sourceRowIndex };
+    current.count += 1;
+    current.first = Math.min(current.first, sourceRowIndex);
+    groupStats.set(key, current);
+  }
+  const retainedGroups = new Set([...groupStats]
+    .sort((left, right) =>
+      right[1].count - left[1].count || left[1].first - right[1].first ||
+      left[0].localeCompare(right[0])
+    )
+    .slice(0, 6)
+    .map(([category]) => category));
+  let eligible = sourceEntries.filter(({ row }) =>
+    Number.isFinite(row[measure]) &&
+    retainedGroups.has(String(parallelScalar(row[dimension])))
+  );
+  let retainedSubgroups;
+  if (secondaryDimension !== undefined) {
+    const subgroupCounts = new Map();
+    for (const { row } of eligible) {
+      const subgroup = parallelScalar(row[secondaryDimension]);
+      if (subgroup === undefined) continue;
+      const key = String(subgroup);
+      subgroupCounts.set(key, (subgroupCounts.get(key) ?? 0) + 1);
+    }
+    retainedSubgroups = new Set([...subgroupCounts]
+      .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+      .slice(0, 4)
+      .map(([subgroup]) => subgroup));
+    eligible = eligible.filter(({ row }) =>
+      retainedSubgroups.has(String(parallelScalar(row[secondaryDimension])))
+    );
+  }
+  const rawOrderValues = [...new Set(eligible.flatMap(({ row, sourceRowIndex }) => {
+    const value = order === undefined ? sourceRowIndex : parallelScalar(row[order]);
+    return value === undefined ? [] : [value];
+  }))];
+  rawOrderValues.sort((left, right) => {
+    if (Number.isFinite(left) && Number.isFinite(right)) return left - right;
+    const leftTime = typeof left === "string" ? Date.parse(left) : Number.NaN;
+    const rightTime = typeof right === "string" ? Date.parse(right) : Number.NaN;
+    if (Number.isFinite(leftTime) && Number.isFinite(rightTime)) return leftTime - rightTime;
+    return String(left).localeCompare(String(right));
+  });
+  const orderRanks = new Map(rawOrderValues.map((value, index) => [value, index + 1]));
+  const complete = eligible.flatMap(({ row, sourceRowIndex }) => {
+    const category = parallelScalar(row[dimension]);
+    const orderValue = order === undefined ? sourceRowIndex : parallelScalar(row[order]);
+    const orderNumeric = parallelOrderNumeric(orderValue, orderRanks);
+    if (
+      !Number.isInteger(sourceRowIndex) || !Number.isFinite(row[measure]) ||
+      category === undefined || !Number.isFinite(orderNumeric)
+    ) return [];
+    const subgroup = secondaryDimension === undefined
+      ? undefined
+      : parallelScalar(row[secondaryDimension]);
+    return [Object.freeze({
+      key: parallelRowKey(row, sourceRowIndex, identifier),
+      sourceRowIndex,
+      value: row[measure],
+      ...(secondaryMeasure === undefined || !Number.isFinite(row[secondaryMeasure])
+        ? {}
+        : { secondary: row[secondaryMeasure] }),
+      category: String(category),
+      ...(subgroup === undefined ? {} : { subgroup: String(subgroup) }),
+      label: parallelScalar(row[label]) ?? category,
+      ...(temporal === undefined || row[temporal] === null
+        ? {}
+        : { time: row[temporal] }),
+      ...(order === undefined ? {} : { orderValue }),
+      orderNumeric
+    })];
+  });
+  const rows = Object.freeze(parallelStableSample(complete, 80, {
+    hasSecondary: secondaryMeasure !== undefined,
+    hasSubgroup: secondaryDimension !== undefined
+  }));
+  const bindings = {
+    measure,
+    ...(secondaryMeasure === undefined ? {} : { secondaryMeasure }),
+    dimension,
+    ...(secondaryDimension === undefined ? {} : { secondaryDimension }),
+    ...(temporal === undefined ? {} : { temporal }),
+    ...(order === undefined ? {} : { order }),
+    ...(identifier === undefined ? {} : { identifier }),
+    label
+  };
+  const sample = Object.freeze({
+    method: "deterministic-stratified-witness-sample",
+    eligibleRowCount: complete.length,
+    displayedRowCount: rows.length,
+    limit: 80,
+    strata: Object.freeze([
+      dimension,
+      ...(secondaryDimension === undefined ? [] : [secondaryDimension])
+    ])
+  });
+  const transformations = [
+    { op: "filter-valid", fields: [measure, dimension] },
+    { op: "top-groups", field: dimension, limit: 6 },
+    ...(secondaryDimension === undefined
+      ? []
+      : [{ op: "top-subgroups", field: secondaryDimension, limit: 4 }]),
+    {
+      op: "filter-parallel-complete-cases",
+      fields: ["sourceRowIndex", measure, dimension, order ?? "sourceRowIndex"],
+      eligibleRowCount: complete.length,
+      purpose: "filter every parallel dimension before deterministic sampling"
+    },
+    {
+      op: "witness-preserving-even-sample",
+      limit: 80,
+      eligibleRowCount: complete.length,
+      displayedRowCount: rows.length,
+      strata: [dimension, ...(secondaryDimension === undefined ? [] : [secondaryDimension])],
+      witnesses: ["first", "last", "measure-min", "measure-max", "retained-dimension"]
+    },
+    ...(order === undefined
+      ? [{ op: "source-row-index-order-projection", as: "orderNumeric" }]
+      : [{ op: "source-order-numeric-projection", field: order }]),
+    { op: "project", bindings }
+  ];
+  return Object.freeze({
+    rows,
+    sample,
+    provenance: parallelProvenance(factors.dataset, bindings, rows, transformations)
   });
 }
 
@@ -400,6 +655,49 @@ function editableLegendOptions(variant, title, options) {
   return editable;
 }
 
+function variantNarrative(variant) {
+  if (variant.palette !== undefined) {
+    return `${variant.palette} sequential color with ${variant.interpolate} interpolation`;
+  }
+  if (variant.kind !== undefined) {
+    const role = {
+      position: "quantitative position",
+      category: "categorical position",
+      "category-shape": "categorical shape",
+      color: "quantitative color"
+    }[variant.kind];
+    return `${variant.type} ${role} scale`;
+  }
+  if (variant.valueField !== undefined) {
+    const axis = variant.valueAxis ?? "y";
+    const format = typeof variant.format === "string"
+      ? variant.format
+      : `${variant.format.decimals}-decimal labels`;
+    return `${axis}-axis ${variant.valueField} values formatted as ${format}`;
+  }
+  if (variant.timeAxis !== undefined) {
+    return `${variant.timeAxis}-axis time labels formatted as ${variant.format}`;
+  }
+  if (variant.missing !== undefined) {
+    return `${variant.missing} missing-value handling with ${variant.reverse ? "reversed" : "forward"} measure direction`;
+  }
+  if (variant.tickPolicy !== undefined) {
+    return `${variant.tickPolicy}-based polar ticks with ${variant.titlePosition === false ? "restored inside" : `${variant.titlePosition} radial`} title placement`;
+  }
+  if (variant.first !== undefined) {
+    const second = variant.first === "independent" ? "shared" : "independent";
+    return `${variant.first}-then-${second} facet scales in a ${variant.columns}-column ${variant.align}-aligned layout with ${variant.gap}px gaps and ${variant.padding}px padding`;
+  }
+  if (variant.nice !== undefined) {
+    return `${variant.reverse ? "reversed" : "forward"} linear rank scale with nice=${variant.nice} and zero=${variant.zero}`;
+  }
+  throw new Error(`Unknown guide/scale variant "${variant.id}".`);
+}
+
+function analysisQuestion(context, variant) {
+  return `${context.question} Display policy: ${variantNarrative(variant)}.`;
+}
+
 function titleOptions(context, variant, { final = false } = {}) {
   const ordinal = Math.abs(variant.id.split("").reduce((sum, value) => sum + value.charCodeAt(0), 0));
   const positions = ["top", "bottom", "left", "right"];
@@ -407,7 +705,7 @@ function titleOptions(context, variant, { final = false } = {}) {
   const position = final ? "top" : positions[ordinal % positions.length];
   return {
     text: context.title,
-    subtitle: context.question,
+    subtitle: analysisQuestion(context, variant),
     position,
     align: final ? "left" : aligns[ordinal % aligns.length],
     offset: position === "bottom" ? 400 : position === "right" ? -28 : 28,
@@ -485,6 +783,12 @@ function exerciseCartesianGuides(factors, base) {
   const at = atValues[Math.abs(ordinal) % atValues.length];
   const policy = ordinal % 2 === 0 ? "count" : "values";
   const alternatePolicy = policy === "count" ? "values" : "count";
+  // Long temporal labels need an explicit sparse set at every lifecycle stage;
+  // an automatic count can still expand to colliding calendar boundaries.
+  const xPolicy = variant.timeAxis === "x" ? "values" : policy;
+  const yPolicy = variant.timeAxis === "y" ? "values" : policy;
+  const xAlternatePolicy = variant.timeAxis === "x" ? "values" : alternatePolicy;
+  const yAlternatePolicy = variant.timeAxis === "y" ? "values" : alternatePolicy;
   const xCoverageFormat = typeof base.xFormat === "string" && base.xFormat.startsWith("%")
     ? base.xFormat
     : { decimals: 3 };
@@ -495,7 +799,7 @@ function exerciseCartesianGuides(factors, base) {
     channel: "x",
     position: xPosition,
     format: base.xFormat,
-    policy,
+    policy: xPolicy,
     values: base.xValues,
     title: base.xTitle,
     at
@@ -504,7 +808,7 @@ function exerciseCartesianGuides(factors, base) {
     channel: "y",
     position: yPosition,
     format: base.yFormat,
-    policy,
+    policy: yPolicy,
     values: base.yValues,
     title: base.yTitle,
     at
@@ -535,7 +839,7 @@ function exerciseCartesianGuides(factors, base) {
       horizontal: {
         scale: "y",
         coordinate: "main",
-        ...tickPolicy(policy, base.yValues, 5),
+        ...tickPolicy(yPolicy, base.yValues, 5),
         color: "#dbeafe",
         lineWidth: 0.8,
         strokeDash: [4, 3]
@@ -543,7 +847,7 @@ function exerciseCartesianGuides(factors, base) {
       vertical: {
         scale: "x",
         coordinate: "main",
-        ...tickPolicy(policy, base.xValues, 5),
+        ...tickPolicy(xPolicy, base.xValues, 5),
         color: "#f1f5f9",
         lineWidth: 0.8,
         strokeDash: [2, 3]
@@ -560,43 +864,43 @@ function exerciseCartesianGuides(factors, base) {
     .editYAxisLine({ position: oppositeY, color: "#334155", lineWidth: 1.4 })
     .editXAxisTicks({
       position: oppositeX,
-      ...tickPolicy(alternatePolicy, base.xValues, 4),
+      ...tickPolicy(xAlternatePolicy, base.xValues, 4),
       ...axisTickStyle(7)
     })
     .editYAxisTicks({
       position: oppositeY,
-      ...tickPolicy(alternatePolicy, base.yValues, 4),
+      ...tickPolicy(yAlternatePolicy, base.yValues, 4),
       ...axisTickStyle(7)
     })
     .editXAxisLabels({
       position: oppositeX,
-      ...tickPolicy(alternatePolicy, base.xValues, 4),
+      ...tickPolicy(xAlternatePolicy, base.xValues, 4),
       ...axisLabelStyle(base.xFormat, 21)
     })
     .editYAxisLabels({
       position: oppositeY,
-      ...tickPolicy(alternatePolicy, base.yValues, 4),
+      ...tickPolicy(yAlternatePolicy, base.yValues, 4),
       ...axisLabelStyle(base.yFormat, 17)
     })
     .editXAxisLabels({
       position: oppositeX,
-      ...tickPolicy(alternatePolicy, base.xValues, 4),
+      ...tickPolicy(xAlternatePolicy, base.xValues, 4),
       ...axisLabelStyle(xCoverageFormat, 21)
     })
     .editYAxisLabels({
       position: oppositeY,
-      ...tickPolicy(alternatePolicy, base.yValues, 4),
+      ...tickPolicy(yAlternatePolicy, base.yValues, 4),
       ...axisLabelStyle(yCoverageFormat, 17)
     })
     .editXAxisTicksAndLabels({
       position: xPosition,
-      ...tickPolicy(policy, base.xValues, 5),
+      ...tickPolicy(xPolicy, base.xValues, 5),
       ticks: axisTickStyle(8),
       labels: axisLabelStyle(base.xFormat, 22)
     })
     .editYAxisTicksAndLabels({
       position: yPosition,
-      ...tickPolicy(policy, base.yValues, 5),
+      ...tickPolicy(yPolicy, base.yValues, 5),
       ticks: axisTickStyle(8),
       labels: axisLabelStyle(base.yFormat, 18)
     })
@@ -606,11 +910,11 @@ function exerciseCartesianGuides(factors, base) {
       position: oppositeX,
       line: { color: "#475569", lineWidth: 1.1 },
       ticks: {
-        ...tickPolicy(alternatePolicy, base.xValues, 4),
+        ...tickPolicy(xAlternatePolicy, base.xValues, 4),
         ...axisTickStyle(6)
       },
       labels: {
-        ...tickPolicy(alternatePolicy, base.xValues, 4),
+        ...tickPolicy(xAlternatePolicy, base.xValues, 4),
         ...axisLabelStyle(base.xFormat, 20)
       },
       title: nestedAxisTitle(base.xTitle, oppositeX, at)
@@ -619,7 +923,7 @@ function exerciseCartesianGuides(factors, base) {
       position: oppositeY,
       line: { color: "#475569", lineWidth: 1.1 },
       ticksAndLabels: {
-        ...tickPolicy(alternatePolicy, base.yValues, 4),
+        ...tickPolicy(yAlternatePolicy, base.yValues, 4),
         ticks: axisTickStyle(6),
         labels: axisLabelStyle(base.yFormat, 16)
       },
@@ -629,7 +933,7 @@ function exerciseCartesianGuides(factors, base) {
       position: oppositeX,
       line: { color: "#475569", lineWidth: 1.1 },
       ticksAndLabels: {
-        ...tickPolicy(alternatePolicy, base.xValues, 4),
+        ...tickPolicy(xAlternatePolicy, base.xValues, 4),
         ticks: axisTickStyle(6),
         labels: axisLabelStyle(xCoverageFormat, 20)
       },
@@ -639,11 +943,11 @@ function exerciseCartesianGuides(factors, base) {
       position: oppositeY,
       line: { color: "#475569", lineWidth: 1.1 },
       ticks: {
-        ...tickPolicy(alternatePolicy, base.yValues, 4),
+        ...tickPolicy(yAlternatePolicy, base.yValues, 4),
         ...axisTickStyle(6)
       },
       labels: {
-        ...tickPolicy(alternatePolicy, base.yValues, 4),
+        ...tickPolicy(yAlternatePolicy, base.yValues, 4),
         ...axisLabelStyle(yCoverageFormat, 16)
       },
       title: nestedAxisTitle(base.yTitle, oppositeY, at)
@@ -656,13 +960,13 @@ function exerciseCartesianGuides(factors, base) {
     })
     .editGrid({
       horizontal: {
-        ...tickPolicy(alternatePolicy, base.yValues, 4),
+        ...tickPolicy(yAlternatePolicy, base.yValues, 4),
         color: "#e2e8f0",
         lineWidth: 0.9,
         strokeDash: [4, 2]
       },
       vertical: {
-        ...tickPolicy(alternatePolicy, base.xValues, 4),
+        ...tickPolicy(xAlternatePolicy, base.xValues, 4),
         color: "#f8fafc",
         lineWidth: 0.9,
         strokeDash: [2, 4]
@@ -771,10 +1075,10 @@ function exerciseCartesianGuides(factors, base) {
   program = program
     .createXAxisLine({ scale: "x", position: xPosition, color: "#475569", lineWidth: 1.2 })
     .createYAxisLine({ scale: "y", position: yPosition, color: "#475569", lineWidth: 1.2 })
-    .createXAxisTicks(directTickOptions("x", xPosition, policy, base.xValues))
-    .createYAxisTicks(directTickOptions("y", yPosition, policy, base.yValues))
-    .createXAxisLabels(directLabelOptions("x", xPosition, policy, base.xValues, base.xFormat))
-    .createYAxisLabels(directLabelOptions("y", yPosition, policy, base.yValues, base.yFormat))
+    .createXAxisTicks(directTickOptions("x", xPosition, xPolicy, base.xValues))
+    .createYAxisTicks(directTickOptions("y", yPosition, yPolicy, base.yValues))
+    .createXAxisLabels(directLabelOptions("x", xPosition, xPolicy, base.xValues, base.xFormat))
+    .createYAxisLabels(directLabelOptions("y", yPosition, yPolicy, base.yValues, base.yFormat))
     .createXAxisTitle({ ...axisTitle(base.xTitle, xPosition, at), scale: "x" })
     .createYAxisTitle({ ...axisTitle(base.yTitle, yPosition, at), scale: "y" })
     .removeXAxis({ scale: "x" })
@@ -784,14 +1088,14 @@ function exerciseCartesianGuides(factors, base) {
     .createXAxisLabels(directLabelOptions(
       "x",
       xPosition,
-      alternatePolicy,
+      xAlternatePolicy,
       base.xValues,
       xCoverageFormat
     ))
     .createYAxisLabels(directLabelOptions(
       "y",
       yPosition,
-      alternatePolicy,
+      yAlternatePolicy,
       base.yValues,
       yCoverageFormat
     ))
@@ -800,10 +1104,10 @@ function exerciseCartesianGuides(factors, base) {
 
   program = program
     .createXAxisTicksAndLabels(
-      directTicksAndLabelsOptions("x", xPosition, alternatePolicy, base.xValues, base.xFormat)
+      directTicksAndLabelsOptions("x", xPosition, xAlternatePolicy, base.xValues, base.xFormat)
     )
     .createYAxisTicksAndLabels(
-      directTicksAndLabelsOptions("y", yPosition, alternatePolicy, base.yValues, base.yFormat)
+      directTicksAndLabelsOptions("y", yPosition, yAlternatePolicy, base.yValues, base.yFormat)
     )
     .removeXAxis({ scale: "x" })
     .removeYAxis({ scale: "y" });
@@ -813,7 +1117,7 @@ function exerciseCartesianGuides(factors, base) {
       horizontal: {
         scale: "y",
         coordinate: "main",
-        ...tickPolicy(policy, base.yValues, 5),
+        ...tickPolicy(yPolicy, base.yValues, 5),
         color: "#dbeafe",
         lineWidth: 0.8,
         strokeDash: [4, 3]
@@ -821,7 +1125,7 @@ function exerciseCartesianGuides(factors, base) {
       vertical: {
         scale: "x",
         coordinate: "main",
-        ...tickPolicy(policy, base.xValues, 5),
+        ...tickPolicy(xPolicy, base.xValues, 5),
         color: "#f1f5f9",
         lineWidth: 0.8,
         strokeDash: [2, 3]
@@ -837,7 +1141,7 @@ function exerciseCartesianGuides(factors, base) {
     .createHorizontalGrid({
       scale: "y",
       coordinate: "main",
-      ...tickPolicy(policy, base.yValues, 5),
+      ...tickPolicy(yPolicy, base.yValues, 5),
       color: "#dbeafe",
       lineWidth: 0.8,
       strokeDash: [4, 3]
@@ -845,19 +1149,19 @@ function exerciseCartesianGuides(factors, base) {
     .createVerticalGrid({
       scale: "x",
       coordinate: "main",
-      ...tickPolicy(policy, base.xValues, 5),
+      ...tickPolicy(xPolicy, base.xValues, 5),
       color: "#f1f5f9",
       lineWidth: 0.8,
       strokeDash: [2, 3]
     })
     .editHorizontalGrid({
-      ...tickPolicy(alternatePolicy, base.yValues, 4),
+      ...tickPolicy(yAlternatePolicy, base.yValues, 4),
       color: "#dbeafe",
       lineWidth: 0.7,
       strokeDash: [3, 3]
     })
     .editVerticalGrid({
-      ...tickPolicy(alternatePolicy, base.xValues, 4),
+      ...tickPolicy(xAlternatePolicy, base.xValues, 4),
       color: "#f1f5f9",
       lineWidth: 0.7,
       strokeDash: []
@@ -1877,9 +2181,9 @@ function buildFacetGuides(factors) {
     })
     .encodeY({
       target: "xOffsetBars",
-      field: "value",
+      field: "sourceRowIndex",
       fieldType: "quantitative",
-      aggregate: "sum",
+      aggregate: "count",
       scale: { id: "barY", type: "linear", nice: true, zero: true }
     })
     .encodeXOffset({
@@ -1904,9 +2208,9 @@ function buildFacetGuides(factors) {
     })
     .encodeX({
       target: "yOffsetBars",
-      field: "value",
+      field: "sourceRowIndex",
       fieldType: "quantitative",
-      aggregate: "sum",
+      aggregate: "count",
       scale: { id: "horizontalX", type: "linear", nice: true, zero: true }
     })
     .encodeY({
@@ -1979,9 +2283,9 @@ function buildFacetGuides(factors) {
     })
     .facet({
       field: "subgroup",
-      columns: 2,
-      gap: 20,
-      padding: 16,
+      columns: factors.variant.columns,
+      gap: factors.variant.gap,
+      padding: factors.variant.padding,
       scales: {
         x: secondPolicy,
         y: secondPolicy,
@@ -2014,7 +2318,10 @@ function buildFacetGuides(factors) {
       opacity: firstPolicy,
       strokeDash: firstPolicy
     })
-    .editFacetGuides({ axes: "outer", legend: false })
+    .editFacetGuides({
+      axes: "outer",
+      legend: false
+    })
     .editFacetScales({
       x: secondPolicy,
       y: secondPolicy,
@@ -2025,25 +2332,11 @@ function buildFacetGuides(factors) {
       size: secondPolicy,
       opacity: secondPolicy,
       strokeDash: secondPolicy
+    })
+    .editFacetGuides({
+      axes: "each",
+      legend: secondPolicy === "shared" ? "shared" : false
     });
-  if (secondPolicy === "shared") {
-    program = program.editFacetGuides({ axes: "each", legend: "shared" });
-  } else {
-    program = program
-      .editFacetGuides({ axes: "each", legend: false })
-      .editFacetScales({
-        x: "shared",
-        y: "shared",
-        xOffset: "shared",
-        yOffset: "shared",
-        color: "shared",
-        shape: "shared",
-        size: "shared",
-        opacity: "shared",
-        strokeDash: "shared"
-      })
-      .editFacetGuides({ axes: "each", legend: "shared" });
-  }
   return program.createTitle(titleOptions(context, factors.variant, { final: true }));
 }
 
@@ -2073,14 +2366,144 @@ function coverageSchedule(variants, repeats = 5) {
   const selectionVariantIds = Array.from({ length: repeats }, () => variants)
     .flat()
     .map(variant => variant.id);
+  const scheduledCounts = new Map();
+  for (const variantId of selectionVariantIds) {
+    scheduledCounts.set(variantId, (scheduledCounts.get(variantId) ?? 0) + 1);
+  }
+  const variantRequirements = Object.freeze([...scheduledCounts].map(([
+    variantId,
+    minimumOccurrences
+  ]) => Object.freeze({
+    variantId,
+    minimumOccurrences,
+    minimumDatasets: Math.min(minimumOccurrences, 3)
+  })));
   return Object.freeze({
     factor: "variant",
     selectionVariantIds: Object.freeze(selectionVariantIds),
     minimumSelections: selectionVariantIds.length,
     assignment: "round-robin-datasets",
-    minimumOccurrencesPerRequirement: 5,
-    minimumDatasetsPerRequirement: 3
+    variantRequirements,
+    // Engine compatibility: coverageScheduleReport clamps this maximum to each
+    // ID's repeated selection count. variantRequirements is the canonical,
+    // explicit per-ID contract exposed to audits and humans.
+    minimumDatasetsPerRequirement: Math.max(...variantRequirements.map(value =>
+      value.minimumDatasets
+    ))
   });
+}
+
+function sameValue(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function directTraceEntries(program, operation) {
+  return (program.trace.children ?? []).filter(entry => entry.op === operation);
+}
+
+function containsValue(value, expected) {
+  if (sameValue(value, expected)) return true;
+  if (value === null || typeof value !== "object") return false;
+  return Object.values(value).some(child => containsValue(child, expected));
+}
+
+function scalePaletteName(value) {
+  return typeof value === "string" ? value : value?.name;
+}
+
+function variantHasDirectActionEvidence(program, variant) {
+  if (variant.palette !== undefined) {
+    return directTraceEntries(program, "createScale").some(({ args }) =>
+      args.type === "sequential" &&
+      scalePaletteName(args.palette) === variant.palette &&
+      args.interpolate === variant.interpolate
+    );
+  }
+  if (variant.kind !== undefined) {
+    return directTraceEntries(program, "createScale").some(({ args }) =>
+      args.type === variant.type
+    );
+  }
+  if (variant.valueField !== undefined) {
+    const axis = variant.valueAxis ?? "y";
+    const encoding = directTraceEntries(program, axis === "x" ? "encodeX" : "encodeY")
+      .some(({ args }) => args.target === "points" && args.field === variant.valueField);
+    const formatting = (program.trace.children ?? []).some(entry =>
+      /Axis|Guides/u.test(entry.op) && containsValue(entry.args, variant.format)
+    );
+    return encoding && formatting;
+  }
+  if (variant.timeAxis !== undefined) {
+    const scale = directTraceEntries(program, "createScale").some(({ args }) =>
+      args.id === variant.timeAxis && args.type === "time"
+    );
+    const formatting = (program.trace.children ?? []).some(entry =>
+      /Axis|Guides/u.test(entry.op) && containsValue(entry.args, variant.format)
+    );
+    return scale && formatting;
+  }
+  if (variant.missing !== undefined) {
+    return directTraceEntries(program, "encodeParallelCoordinates").some(({ args }) =>
+      args.missing === variant.missing
+    );
+  }
+  if (variant.tickPolicy !== undefined) {
+    const angle = variant.id === "values-outside" ? 180
+      : variant.id === "title-opt-out" ? 270 : 90;
+    return directTraceEntries(program, "createGuides").some(({ args }) => {
+      const radial = args.axes?.radius;
+      const ticks = radial?.ticksAndLabels;
+      return radial?.angle === angle && (
+        variant.tickPolicy === "count" ? ticks?.count === 5 : ticks?.valuesCount > 0
+      );
+    });
+  }
+  if (variant.first !== undefined) {
+    const facet = directTraceEntries(program, "facet").some(({ args }) =>
+      args.columns === variant.columns && args.gap === variant.gap &&
+      args.padding === variant.padding && args.align === variant.align
+    );
+    const firstResolution = directTraceEntries(program, "editFacetScales")
+      .some(({ args }) => args.x === variant.first && args.y === variant.first);
+    return facet && firstResolution;
+  }
+  if (variant.nice !== undefined) {
+    return directTraceEntries(program, "createScale").some(({ args }) =>
+      args.type === "linear" && args.nice === variant.nice &&
+      args.zero === variant.zero && args.reverse === variant.reverse
+    );
+  }
+  return false;
+}
+
+function observeFactorEffects(program, values, view, context) {
+  const title = titleOptions(context, values.variant, { final: true });
+  const createdData = directTraceEntries(program, "createData").some(({ args }) =>
+    args.id === "analysisRows" && args.valuesCount === view.rows.length
+  );
+  const createdTitle = directTraceEntries(program, "createTitle").some(({ args }) =>
+    args.text === title.text && args.subtitle === title.subtitle
+  );
+  const finalData = program.semanticSpec.datasets.find(dataset =>
+    dataset.id === "analysisRows"
+  );
+  const finalTitle = program.semanticSpec.title;
+  const fieldPairObserved = createdData && createdTitle &&
+    sameValue(finalData?.values, view.rows) && finalTitle?.text === context.title;
+  const variantObserved = createdTitle && variantHasDirectActionEvidence(program, values.variant) &&
+    finalTitle?.subtitle === analysisQuestion(context, values.variant);
+  return Object.freeze([
+    ...(fieldPairObserved ? [Object.freeze({
+      factor: "fieldPair",
+      value: values.fieldPair,
+      evidence: "direct:createData+createTitle;final:analysisRows+visible-title"
+    })] : []),
+    ...(variantObserved ? [Object.freeze({
+      factor: "variant",
+      value: values.variant,
+      evidence: "direct:variant-action+createTitle;final:visible-policy-subtitle"
+    })] : [])
+  ]);
 }
 
 function makeRecipe({
@@ -2092,6 +2515,7 @@ function makeRecipe({
   build,
   view,
   actions,
+  actionsFor,
   schedule = coverageSchedule(variants)
 }) {
   const datasets = realisticDatasetIds();
@@ -2106,9 +2530,11 @@ function makeRecipe({
     suite: "realistic",
     generation: "balanced-per-dataset",
     complexity,
+    enforceFactorEffects: true,
     datasets: Object.freeze(datasets),
     factors,
     expectedDirectActions: actions,
+    ...(actionsFor === undefined ? {} : { expectedDirectActionsFor: actionsFor }),
     coverageSchedule: schedule,
     factorsForDataset(dataset) {
       return factorContract(dataset, capability, variants);
@@ -2116,6 +2542,11 @@ function makeRecipe({
     build,
     observe() {
       return Object.freeze([]);
+    },
+    observeFactors(program, values) {
+      const selectedView = view(values);
+      const context = contextFor(values.dataset, selectedView, family);
+      return observeFactorEffects(program, values, selectedView, context);
     },
     describe(values) {
       const selectedView = view(values);
@@ -2126,7 +2557,7 @@ function makeRecipe({
         complexity,
         sourceDatasetIds: Object.freeze([values.dataset]),
         title: context.title,
-        analysisQuestion: context.question,
+        analysisQuestion: analysisQuestion(context, values.variant),
         sourceFields: context.fields,
         provenance: selectedView.provenance,
         dataOperations: Object.freeze(
@@ -2211,18 +2642,40 @@ const SCALE_ACTIONS = Object.freeze([
   "removeLegend",
   "createTitle"
 ]);
+const SCALE_NON_SEQUENTIAL_ACTIONS = Object.freeze(SCALE_ACTIONS.filter(action =>
+  !["createGuides", "editLegend", "editLegendSymbols", "removeLegend"].includes(action)
+));
+const scaleActionsFor = factors => factors.variant.type === "sequential"
+  ? SCALE_ACTIONS
+  : SCALE_NON_SEQUENTIAL_ACTIONS;
 
-const SCALE_RECIPE = makeRecipe({
-  id: "realistic-guide-scale-vocabulary",
+const SCALE_PRIMARY_RECIPE = makeRecipe({
+  id: "realistic-guide-scale-vocabulary-primary",
   complexity: "intermediate",
   family: "guide-scale-vocabulary",
   capability: "record",
-  variants: SCALE_VARIANTS,
+  variants: SCALE_PRIMARY_VARIANTS,
   build: buildScaleVocabulary,
   view: summaryView,
   actions: SCALE_ACTIONS,
-  schedule: coverageSchedule(SCALE_COVERAGE_VARIANTS)
+  actionsFor: scaleActionsFor,
+  schedule: coverageSchedule(SCALE_PRIMARY_COVERAGE_VARIANTS, 1)
 });
+
+const SCALE_SECONDARY_RECIPE = makeRecipe({
+  id: "realistic-guide-scale-vocabulary-secondary",
+  complexity: "intermediate",
+  family: "guide-scale-vocabulary",
+  capability: "record",
+  variants: SCALE_SECONDARY_VARIANTS,
+  build: buildScaleVocabulary,
+  view: summaryView,
+  actions: SCALE_ACTIONS,
+  actionsFor: scaleActionsFor,
+  schedule: coverageSchedule(SCALE_SECONDARY_COVERAGE_VARIANTS, 1)
+});
+
+const SCALE_RECIPES = Object.freeze([SCALE_PRIMARY_RECIPE, SCALE_SECONDARY_RECIPE]);
 
 const POLAR_ACTIONS = Object.freeze([
   "createGuides",
@@ -2288,14 +2741,14 @@ export const REALISTIC_GUIDE_SCALE_RECIPES = Object.freeze([
   CARTESIAN_RECIPE,
   TEMPORAL_RECIPE,
   PARALLEL_RECIPE,
-  SCALE_RECIPE,
+  ...SCALE_RECIPES,
   POLAR_RECIPE,
   FACET_RECIPE
 ]);
 
 export const REALISTIC_GUIDE_SCALE_COUNTS = Object.freeze({
   simple: 1,
-  intermediate: 1,
+  intermediate: 2,
   advanced: 4,
   composite: 1
 });
@@ -2365,7 +2818,7 @@ export const REALISTIC_GUIDE_SCALE_EXPECTED_ACTIONS = Object.freeze([
         ? TEMPORAL_ACTIONS
         : recipe === PARALLEL_RECIPE
           ? PARALLEL_ACTIONS
-        : recipe === SCALE_RECIPE
+        : SCALE_RECIPES.includes(recipe)
           ? SCALE_ACTIONS
           : recipe === POLAR_RECIPE ? POLAR_ACTIONS : FACET_ACTIONS
   ))
