@@ -197,6 +197,34 @@ function assertVisibleFacadeTitle(program, metadata, label) {
   }
 }
 
+function assertDiscretizedHeatmapCounts(program, colorType, label) {
+  const dataset = program.semanticSpec.datasets.find(candidate =>
+    candidate.id === "facadeHeatmapBin2DData"
+  );
+  assert.notEqual(dataset, undefined, label);
+  const transform = dataset.transform[0];
+  assert.deepEqual(transform.bins, { x: 12, y: 12 }, label);
+  assert.equal(transform.includeEmpty, true, label);
+  assert.equal(dataset.values.length, 144, label);
+  const counts = dataset.values.map(row => row[transform.as.count]);
+  const uniqueCounts = new Set(counts);
+  assert.ok(uniqueCounts.has(0), `${label} empty cells`);
+  assert.ok([...uniqueCounts].some(value => value > 0), `${label} occupied cells`);
+  assert.ok(uniqueCounts.size >= 2, `${label} varying count domain`);
+  const scale = Object.values(program.resolvedScales).find(candidate =>
+    candidate.type === colorType
+  );
+  assert.notEqual(scale, undefined, label);
+  if (colorType === "quantize") {
+    assert.ok(scale.domain[0] < scale.domain[1], label);
+  } else if (colorType === "quantile") {
+    assert.ok(new Set(scale.domain).size >= 2, label);
+  } else {
+    assert.deepEqual(scale.domain, [0.5, 1.5, 2.5], label);
+  }
+  return { counts, scale, transform };
+}
+
 function assertResolvedScaleEvidence(program, action, direct, label) {
   const semanticById = new Map(program.semanticSpec.scales.map(scale => [scale.id, scale]));
   const scales = configuredScales(action, direct.args);
@@ -429,6 +457,105 @@ test("keeps the authentic volcano population violin title visible with exact pro
   } finally {
     releaseTidyTuesdaySourceCache(dataset);
   }
+});
+
+test("uses truthful empty and occupied bins for the cats-and-dogs quantize heatmap", () => {
+  const recipe = REALISTIC_FACADE_OPTION_RECIPES.find(candidate =>
+    candidate.id === "realistic-facade-options-heatmap"
+  );
+  const dataset = "tt-cats-vs-dogs";
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const factors = Object.freeze({
+      dataset,
+      fieldPair: domains.fieldPair.find(candidate =>
+        candidate.bindingId === "eligible:n_pet_households-by-state"
+      ),
+      variant: domains.variant.find(candidate => candidate.id === "quantize-bins")
+    });
+    assert.notEqual(factors.fieldPair, undefined);
+    assert.notEqual(factors.variant, undefined);
+    const program = recipe.build(factors);
+    const metadata = recipe.describe(factors);
+    const label = `${dataset}-${recipe.id}-${factors.variant.id}`;
+    const evidence = assertDiscretizedHeatmapCounts(program, "quantize", label);
+    assert.deepEqual([...new Set(evidence.counts)].sort((left, right) => left - right), [0, 1]);
+    assert.deepEqual(evidence.scale.domain, [0, 1]);
+    assert.equal(evidence.transform.resolved.eligibleCount, 6);
+    assert.equal(evidence.transform.resolved.occupiedCount, 6);
+    assertVisibleFacadeTitle(program, metadata, label);
+    assertMetadata(recipe, factors, program, metadata, label);
+    assert.deepEqual(
+      new Set(recipe.observeFactors(program, factors).map(effect => effect.factor)),
+      new Set(["fieldPair", "variant"]),
+      label
+    );
+    assert.deepEqual(metadata.provenance.fieldBindings, {
+      measure: "n_pet_households",
+      dimension: "state",
+      order: "percent_pet_households",
+      identifier: "source_row",
+      label: "state"
+    });
+    assert.equal(metadata.provenance.sourceRowCount, 6);
+    assert.equal(
+      metadata.provenance.sourceSelectionSha256,
+      "d008f104b61f771ce8edf31ce2fa56119ae701fee4fb824d93f6157b4cb1bac6"
+    );
+    assert.deepEqual(metadata.dataOperations, [
+      "filter-valid",
+      "top-groups",
+      "witness-preserving-even-sample",
+      "median-split",
+      "source-order-numeric-projection",
+      "project",
+      "positive-domain-shift",
+      "source-selection-order-rank"
+    ]);
+    assertGraphicIntegrity(program, label);
+    assertAnalyticLayerIntegrity(program, label);
+    assertSvgIntegrity(renderToSVG(program, {
+      title: metadata.title,
+      description: metadata.analysisQuestion
+    }), label);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("keeps every TT heatmap field pair valid for each discretized color variant", () => {
+  const recipe = REALISTIC_FACADE_OPTION_RECIPES.find(candidate =>
+    candidate.id === "realistic-facade-options-heatmap"
+  );
+  const variants = recipe.factors.variant.filter(variant =>
+    ["quantize", "quantile", "threshold"].includes(variant.colorType)
+  );
+  let fieldPairCount = 0;
+  let chartCount = 0;
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      assert.notEqual(domains, undefined, dataset);
+      fieldPairCount += domains.fieldPair.length;
+      for (const fieldPair of domains.fieldPair) {
+        for (const variant of variants) {
+          const label = `${dataset}-${fieldPair.bindingId}-${variant.id}`;
+          const factors = { dataset, fieldPair, variant };
+          const program = recipe.build(factors);
+          const metadata = recipe.describe(factors);
+          assertDiscretizedHeatmapCounts(program, variant.colorType, label);
+          assertMetadata(recipe, factors, program, metadata, label);
+          assertGraphicIntegrity(program, label);
+          chartCount += 1;
+        }
+      }
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
+  assert.equal(recipe.datasets.length, 50);
+  assert.equal(fieldPairCount, 753);
+  assert.equal(chartCount, 2_259);
 });
 
 test("fits baseline and longest authentic titles across every eligible TT facade pairing", () => {

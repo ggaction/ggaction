@@ -13,6 +13,7 @@ const ZERO_SUPPORTING_TYPES = Object.freeze(["linear", "pow", "sqrt", "symlog"])
 const INTERPOLATIONS = Object.freeze([
   "rgb", "hsl", "hsl-long", "lab", "hcl", "hcl-long", "cubehelix", "cubehelix-long"
 ]);
+const DISCRETIZED_COLOR_TYPES = Object.freeze(["quantize", "quantile", "threshold"]);
 const TARGET_ACTIONS = Object.freeze([
   "createBoxPlot",
   "createGradientPlot",
@@ -445,7 +446,8 @@ function heatmapColorScale(variant) {
   }
   if (variant.colorType === "threshold") {
     return {
-      id, type: "threshold", domain: [3, 8, 16], palette: { name: "greens", count: 4 },
+      id, type: "threshold", domain: [0.5, 1.5, 2.5],
+      palette: { name: "greens", count: 4 },
       reverse: true
     };
   }
@@ -495,6 +497,7 @@ function buildHeatmap(factors) {
       guides: false
     }), context, variant, family);
   }
+  const discretizedColor = DISCRETIZED_COLOR_TYPES.includes(variant.colorType);
   return finish(sourceProgram(view).createHeatmap({
     id: "facadeHeatmap",
     data: "analysisRows",
@@ -512,7 +515,9 @@ function buildHeatmap(factors) {
         "createHeatmap", "y", variant.id, variant.positionType, variant.profileIndex + 2
       )
     },
-    bin: { bins: { x: 10, y: 8 }, includeEmpty: false },
+    bin: discretizedColor
+      ? { bins: { x: 12, y: 12 }, includeEmpty: true }
+      : { bins: { x: 10, y: 8 }, includeEmpty: false },
     color: { scale: colorScale },
     rect: { opacity: 0.9, stroke: "#ffffff", strokeWidth: 0.7 },
     guides: false
