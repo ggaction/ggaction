@@ -1094,6 +1094,12 @@ async function testTypeScriptConsumer(directory) {
       maxBins: 5,
       guides: false
     };
+    const invalidCenteredHistogramFacade: CreateHistogramOptions = {
+      field: "value",
+      // @ts-expect-error Histogram facades do not support centered area layouts.
+      stack: "center"
+    };
+    void invalidCenteredHistogramFacade;
     const histogramFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ value: 2 }] })
@@ -1105,6 +1111,17 @@ async function testTypeScriptConsumer(directory) {
       rect: { stroke: false, opacity: 0.8 },
       guides: false
     };
+    const invalidHeatmapColorPolicy: CreateHeatmapOptions = {
+      x: "x",
+      y: "y",
+      color: {
+        field: "value",
+        fieldType: "quantitative",
+        // @ts-expect-error Pre-gridded rect color does not aggregate or lay out series.
+        aggregate: "mean"
+      }
+    };
+    void invalidHeatmapColorPolicy;
     const heatmapFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ x: "A", y: "one", value: 2 }] })
@@ -1130,6 +1147,21 @@ async function testTypeScriptConsumer(directory) {
       density: { bandwidth: 0.5, steps: 8 },
       guides: false
     };
+    const invalidGradientGuides: GradientPlotOptions = {
+      x: { field: "group", fieldType: "nominal" },
+      y: { field: "value" },
+      guides: {
+        axes: { coordinate: {
+          // @ts-expect-error Gradient facades own Cartesian axes.
+          type: "polar"
+        } },
+        legend: {
+          // @ts-expect-error Density legends are currently right-positioned.
+          position: "top"
+        }
+      }
+    };
+    void invalidGradientGuides;
     const gradientFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [
@@ -1148,6 +1180,16 @@ async function testTypeScriptConsumer(directory) {
       },
       guides: false
     };
+    const invalidViolinLayout: ViolinPlotOptions = {
+      x: { field: "group", fieldType: "nominal" },
+      y: { field: "value", fieldType: "quantitative" },
+      color: {
+        field: "group",
+        // @ts-expect-error Category-density violin color only supports overlay.
+        layout: "stack"
+      }
+    };
+    void invalidViolinLayout;
     const violinFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [

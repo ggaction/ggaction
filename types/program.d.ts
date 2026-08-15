@@ -887,6 +887,26 @@ export interface CreateGuidesOptions {
   legend?: false | LegendOptions;
 }
 
+type CartesianAxesOptions = Omit<
+  CreateAxesOptions,
+  "coordinate" | "theta" | "radius"
+> & {
+  coordinate?: { id?: string; type?: "auto" | "cartesian" };
+};
+type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
+type CartesianGuideOptions = {
+  axes?: false | CartesianAxesOptions;
+  grid?: false | CartesianGridOptions;
+  legend?: false | LegendOptions;
+};
+type GradientPlotDensityLegendOptions = {
+  title?: string;
+  position?: "right";
+};
+type GradientPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | GradientPlotDensityLegendOptions;
+};
+
 export interface CreateCoordinateOptions {
   id?: string;
   type?: "cartesian" | "polar" | "parallel";
@@ -1422,7 +1442,7 @@ export interface BoxPlotOptions {
     radius?: number;
     opacity?: number;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianGuideOptions;
 }
 
 export interface EditBoxPlotOptions {
@@ -1482,7 +1502,7 @@ export interface GradientPlotOptions {
   width?: { band?: number };
   gradient?: GradientPlotAppearanceOptions;
   center?: false | GradientPlotCenterOptions;
-  guides?: false | CreateGuidesOptions;
+  guides?: false | GradientPlotGuideOptions;
 }
 
 export type ViolinPlotPositionChannel =
@@ -1517,9 +1537,13 @@ export interface ViolinPlotSplitOptions {
 
 export type ViolinPlotColorOptions =
   | string
-  | (Omit<CategoricalEncodingOptions, "target" | "scale"> & {
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
-    });
+      palette?: Palette;
+      layout?: "overlay";
+    };
 
 export interface ViolinPlotAreaOptions {
   fill?: string;
@@ -1539,7 +1563,7 @@ export interface ViolinPlotOptions {
   color?: ViolinPlotColorOptions;
   density?: ViolinPlotDensityOptions;
   area?: ViolinPlotAreaOptions;
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianGuideOptions;
 }
 
 export interface EditGradientPlotOptions {
@@ -1652,6 +1676,15 @@ type NonPointCategoricalColorChannel =
       palette?: Palette;
       layout?: ColorLayout;
     };
+type HistogramCategoricalColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+      layout?: Exclude<ColorLayout, "center">;
+    };
 type LineCategoricalColorChannel =
   | string
   | {
@@ -1683,14 +1716,20 @@ type BarColorChannel =
   | BarCategoricalColorChannel
   | QuantitativeBarColorChannel;
 type RectColorChannel =
-  | NonPointCategoricalColorChannel
-  | QuantitativeBarColorChannel
+  | LineCategoricalColorChannel
+  | {
+      field: string;
+      fieldType: "quantitative";
+      scale?:
+        | NonPointContinuousColorScaleOptions
+        | NonPointDiscretizedColorScaleOptions;
+      palette?: Palette;
+    }
   | {
       field: string;
       fieldType: "temporal";
       scale?: NonPointContinuousColorScaleOptions;
       palette?: Palette;
-      layout?: never;
     };
 export type BasicSizeChannel = string | {
   field: string;
@@ -1793,7 +1832,11 @@ export interface CreateLinePlotOptions {
 
 type BasicHistogramEncoding =
   HistogramEncodingOptions extends infer T
-    ? T extends unknown ? Omit<T, "field" | "target" | "coordinate"> : never
+    ? T extends unknown
+      ? Omit<T, "field" | "target" | "coordinate" | "stack"> & {
+          stack?: Exclude<StackMode, "center">;
+        }
+      : never
     : never;
 
 export interface CreateBarPlotOptions {
@@ -1818,7 +1861,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   data?: string;
   coordinate?: string;
   field: string;
-  color?: NonPointCategoricalColorChannel;
+  color?: HistogramCategoricalColorChannel;
   bar?: {
     fill?: string;
     opacity?: number;
@@ -1837,7 +1880,7 @@ export interface HeatmapBaseOptions {
     stroke?: string | false;
     strokeWidth?: number;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianGuideOptions;
 }
 
 export type HeatmapCategoryPositionChannel =
