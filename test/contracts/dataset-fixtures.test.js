@@ -39,6 +39,10 @@ import {
   zooFixtureRows,
   zooGeneratorNames
 } from "../support/datasets/zoo.js";
+import {
+  referenceStableSelectionIndices,
+  stableSelectionIndexDigest
+} from "../oracles/stable-sample-selection.js";
 
 test("loads only the dataset requested by a test", () => {
   assert.deepEqual(loadedDatasetIds(), []);
@@ -258,6 +262,70 @@ test("selects deterministic samples with endpoint and numeric extrema witnesses"
   );
 });
 
+test("matches the independent full-sort stable-sample oracle", () => {
+  const rows = Array.from({ length: 4_097 }, (_, index) => ({
+    value: index === 117 || index === 311 ? -50 :
+      index === 3_707 || index === 3_902 ? 50 : index % 97,
+    secondary: index % 43 === 0 ? null : (index * 37) % 211,
+    category: `group-${index % 23}`
+  }));
+  const selection = {
+    mode: "stable-sample",
+    count: 257,
+    seed: "stable-selection-reference",
+    witnessFields: ["value", "secondary"],
+    witnessDimensions: ["category"]
+  };
+  const expected = referenceStableSelectionIndices(rows, selection);
+  const actual = selectStableEntries(rows, selection)
+    .map(({ sourceRowIndex }) => sourceRowIndex);
+  assert.deepEqual(actual, expected);
+  assert.equal(stableSelectionIndexDigest(actual), stableSelectionIndexDigest(expected));
+
+  const witnessFilledSelection = {
+    mode: "stable-sample",
+    count: 4,
+    seed: "witness-filled-selection",
+    witnessFields: ["value"],
+    witnessDimensions: []
+  };
+  const witnessFilledRows = [
+    { value: 0 },
+    { value: 4 },
+    { value: -10 },
+    { value: 2 },
+    { value: 10 },
+    { value: 1 }
+  ];
+  assert.deepEqual(
+    selectStableEntries(witnessFilledRows, witnessFilledSelection)
+      .map(({ sourceRowIndex }) => sourceRowIndex),
+    [0, 2, 4, 5]
+  );
+});
+
+test("preserves the pinned large-source stable-sample index digest", () => {
+  const id = "tt-us-tornadoes";
+  try {
+    const indexes = tidyTuesdayFixtureEntries(id)
+      .map(({ sourceRowIndex }) => sourceRowIndex);
+    assert.equal(indexes.length, 1_024);
+    assert.deepEqual(indexes.slice(0, 12), [
+      0, 8, 40, 47, 104, 105, 218, 224, 366, 381, 431, 468
+    ]);
+    assert.deepEqual(indexes.slice(-12), [
+      68_200, 68_252, 68_307, 68_312, 68_319, 68_453,
+      68_454, 68_455, 68_468, 68_513, 68_553, 68_692
+    ]);
+    assert.equal(
+      stableSelectionIndexDigest(indexes),
+      "6f29658c90ffe1e4541af252ed494ae4907fec187f06f81019a1d860086478ab"
+    );
+  } finally {
+    releaseTidyTuesdaySourceCache(id);
+  }
+});
+
 test("keeps TidyTuesday URLs commit-pinned and reports optional local caches", () => {
   for (const id of corpusDatasetIds("tidytuesday")) {
     const definition = datasetDefinition(id);
@@ -285,6 +353,7 @@ test("keeps TidyTuesday URLs commit-pinned and reports optional local caches", (
       assert.equal(first[0].sourceRowIndex, entries[0].sourceRowIndex, id);
       assert.notStrictEqual(first[0].row, entries[0].row, id);
     }
+    releaseTidyTuesdaySourceCache(id);
   }
 });
 

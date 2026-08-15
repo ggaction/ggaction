@@ -43,13 +43,21 @@ function stableRank(seed, index) {
 function witnessIndices(rows, fields, dimensions = []) {
   const indices = new Set([0, rows.length - 1]);
   for (const field of fields) {
-    const finite = rows
-      .map((row, index) => ({ index, value: row[field] }))
-      .filter(entry => Number.isFinite(entry.value));
-    if (finite.length === 0) continue;
-    finite.sort((left, right) => left.value - right.value || left.index - right.index);
-    indices.add(finite[0].index);
-    indices.add(finite[finite.length - 1].index);
+    let minimum;
+    let maximum;
+    for (const [index, row] of rows.entries()) {
+      const value = row[field];
+      if (!Number.isFinite(value)) continue;
+      if (minimum === undefined || value < minimum.value) {
+        minimum = { index, value };
+      }
+      if (maximum === undefined || value >= maximum.value) {
+        maximum = { index, value };
+      }
+    }
+    if (minimum === undefined) continue;
+    indices.add(minimum.index);
+    indices.add(maximum.index);
   }
   for (const field of dimensions) {
     const firstByValue = new Map();
@@ -60,6 +68,51 @@ function witnessIndices(rows, fields, dimensions = []) {
     for (const index of firstByValue.values()) indices.add(index);
   }
   return indices;
+}
+
+function compareRankedIndices(left, right) {
+  return left.rank.localeCompare(right.rank) || left.index - right.index;
+}
+
+function siftRankedIndexUp(heap, index) {
+  let current = index;
+  while (current > 0) {
+    const parent = Math.floor((current - 1) / 2);
+    if (compareRankedIndices(heap[parent], heap[current]) >= 0) break;
+    [heap[parent], heap[current]] = [heap[current], heap[parent]];
+    current = parent;
+  }
+}
+
+function siftRankedIndexDown(heap, index) {
+  let current = index;
+  while (true) {
+    const left = current * 2 + 1;
+    const right = left + 1;
+    let largest = current;
+    if (
+      left < heap.length &&
+      compareRankedIndices(heap[left], heap[largest]) > 0
+    ) largest = left;
+    if (
+      right < heap.length &&
+      compareRankedIndices(heap[right], heap[largest]) > 0
+    ) largest = right;
+    if (largest === current) return;
+    [heap[current], heap[largest]] = [heap[largest], heap[current]];
+    current = largest;
+  }
+}
+
+function retainLowestRankedIndex(heap, candidate, limit) {
+  if (heap.length < limit) {
+    heap.push(candidate);
+    siftRankedIndexUp(heap, heap.length - 1);
+    return;
+  }
+  if (compareRankedIndices(candidate, heap[0]) >= 0) return;
+  heap[0] = candidate;
+  siftRankedIndexDown(heap, 0);
 }
 
 function stableSelectionIndices(rows, selection) {
@@ -85,15 +138,19 @@ function stableSelectionIndices(rows, selection) {
       "TidyTuesday stable-sample count cannot hold every required witness row."
     );
   }
-  const candidates = rows
-    .map((_, index) => index)
-    .filter(index => !selected.has(index))
-    .map(index => ({ index, rank: stableRank(selection.seed, index) }))
-    .sort((left, right) => left.rank.localeCompare(right.rank) || left.index - right.index);
-  for (const { index } of candidates) {
-    if (selected.size >= selection.count) break;
-    selected.add(index);
+  const remaining = selection.count - selected.size;
+  if (remaining === 0) {
+    return [...selected].sort((left, right) => left - right);
   }
+  const ranked = [];
+  for (let index = 0; index < rows.length; index += 1) {
+    if (selected.has(index)) continue;
+    retainLowestRankedIndex(ranked, {
+      index,
+      rank: stableRank(selection.seed, index)
+    }, remaining);
+  }
+  for (const { index } of ranked) selected.add(index);
   return [...selected].sort((left, right) => left - right);
 }
 
@@ -142,14 +199,18 @@ export function verifyTidyTuesdaySource(id, source) {
       `Dataset "${id}" has ${rows.length} rows; expected ${definition.rows}.`
     );
   }
-  const selected = selectStableEntries(rows, definition.selection);
-  if (selected.length !== definition.selectedRows) {
+  const frozenRows = deepFreeze(rows);
+  const selectedEntries = deepFreeze(selectStableEntries(
+    frozenRows,
+    definition.selection
+  ));
+  if (selectedEntries.length !== definition.selectedRows) {
     throw new Error(
-      `Dataset "${id}" selects ${selected.length} rows; ` +
+      `Dataset "${id}" selects ${selectedEntries.length} rows; ` +
       `expected ${definition.selectedRows}.`
     );
   }
-  return Object.freeze({ report, rows: deepFreeze(rows) });
+  return Object.freeze({ report, rows: frozenRows, selectedEntries });
 }
 
 export function tidyTuesdayFixtureReport(id) {
@@ -173,12 +234,15 @@ function cacheTidyTuesdaySource(id) {
       `Dataset "${id}" is not cached. Run npm run datasets:sync first.`
     );
   }
-  const { rows } = verifyTidyTuesdaySource(id, readFileSync(sourcePath, "utf8"));
+  const { rows, selectedEntries } = verifyTidyTuesdaySource(
+    id,
+    readFileSync(sourcePath, "utf8")
+  );
   sourceCache.set(id, rows);
-  sourceEntryCache.set(id, deepFreeze(rows.map((row, sourceRowIndex) => ({
-    row,
-    sourceRowIndex
-  }))));
+  if (!fixtureCache.has(id)) {
+    fixtureEntryCache.set(id, selectedEntries);
+    fixtureCache.set(id, deepFreeze(selectedEntries.map(({ row }) => row)));
+  }
 }
 
 export function tidyTuesdaySourceRows(id) {
@@ -188,6 +252,11 @@ export function tidyTuesdaySourceRows(id) {
 
 export function tidyTuesdaySourceEntries(id) {
   cacheTidyTuesdaySource(id);
+  if (!sourceEntryCache.has(id)) {
+    sourceEntryCache.set(id, deepFreeze(
+      sourceCache.get(id).map((row, sourceRowIndex) => ({ row, sourceRowIndex }))
+    ));
+  }
   return sourceEntryCache.get(id);
 }
 
@@ -199,11 +268,7 @@ export function releaseTidyTuesdaySourceCache(id) {
 
 export function tidyTuesdayFixtureRows(id) {
   if (!fixtureCache.has(id)) {
-    const definition = requireTidyTuesdayDefinition(id);
-    const rows = tidyTuesdaySourceRows(id);
-    const entries = deepFreeze(selectStableEntries(rows, definition.selection));
-    fixtureEntryCache.set(id, entries);
-    fixtureCache.set(id, deepFreeze(entries.map(({ row }) => row)));
+    cacheTidyTuesdaySource(id);
   }
   return fixtureCache.get(id);
 }
