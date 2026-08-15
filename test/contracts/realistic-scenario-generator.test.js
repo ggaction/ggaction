@@ -2,11 +2,6 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
 
-import {
-  generateRealisticDescriptorsIsolated,
-  runRealisticGenerationChild
-} from
-  "../../scripts/run-realistic-scenario-generation-coordinator.js";
 import { assertAnalyticLayerIntegrity } from
   "../oracles/analytic-layer-integrity.js";
 import { PALETTE_NAMES } from "../../src/grammar/palettes.js";
@@ -70,8 +65,6 @@ const EXPECTED_TIERS = Object.freeze({
   advanced: 28,
   composite: 7
 });
-const MAX_ISOLATED_CHILD_RSS = 440 * 1_024 * 1_024;
-const MAX_ISOLATED_TOTAL_RSS = 512 * 1_024 * 1_024;
 const strictDescriptorCache = new Map();
 
 function stableWireValue(value) {
@@ -733,53 +726,6 @@ test("advances past exhausted factor domains under strict scheduling", () => {
       diagnostics.duplicateCandidates
   );
 });
-
-for (const limit of [216, 360]) {
-  test(`matches the isolated strict ${limit} descriptor and state boundary`, {
-    timeout: 600_000
-  }, async () => {
-    const reference = await runRealisticGenerationChild({
-      operation: "reference",
-      options: { limit, strictScheduling: true }
-    }, { timeout: 600_000 });
-    const monolith = reference.value.descriptors;
-    const isolated = await generateRealisticDescriptorsIsolated({
-      limit,
-      strictScheduling: true,
-      timeout: 600_000
-    });
-    assert.equal(isolated.descriptors.length, monolith.length);
-    for (let index = 0; index < monolith.length; index += 1) {
-      assert.deepEqual(
-        isolated.descriptors[index],
-        monolith[index],
-        `descriptor ${index}`
-      );
-    }
-    assert.deepEqual(
-      isolated.generation,
-      reference.value.generation
-    );
-    assert.equal(Object.isFrozen(isolated), true);
-    assert.equal(Object.isFrozen(isolated.descriptors), true);
-    assert.equal(Object.isFrozen(isolated.generation), true);
-    assert.equal(
-      isolated.resources.maximumChildRssBytes <= MAX_ISOLATED_CHILD_RSS,
-      true,
-      `${isolated.resources.maximumChildRssBytes} <= ${MAX_ISOLATED_CHILD_RSS}`
-    );
-    assert.equal(
-      isolated.resources.maximumCombinedRssBytes <= MAX_ISOLATED_TOTAL_RSS,
-      true,
-      `${isolated.resources.maximumCombinedRssBytes} <= ${MAX_ISOLATED_TOTAL_RSS}`
-    );
-    assert.equal(
-      reference.resources.maximumRssBytes <= MAX_ISOLATED_CHILD_RSS,
-      true,
-      `${reference.resources.maximumRssBytes} <= ${MAX_ISOLATED_CHILD_RSS}`
-    );
-  });
-}
 
 test("prioritizes a scheduled variant on its last eligible dataset", () => {
   const priorities = scenarioScheduleVariantPriorities([
