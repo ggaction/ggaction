@@ -3,6 +3,9 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
+import { createCanvas } from "@napi-rs/canvas";
+
+import { render } from "../../src/renderers/canvas/index.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
 import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrity.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
@@ -173,6 +176,7 @@ const OTHER_RECIPE_DIVERSITY_IDS = new Set([
   "literal-diversity:createParallelCoordinates.color.scale.palette",
   "literal-diversity:createScatterPlot.color.scale.palette"
 ]);
+const PNG_SIGNATURE = Object.freeze([137, 80, 78, 71, 13, 10, 26, 10]);
 
 function digest(ids) {
   return createHash("sha256")
@@ -464,6 +468,122 @@ test("defines four bounded facade recipes and a 720-chart schedule", () => {
     "ciLower", "ciUpper", "distinct", "max", "median", "min", "missing",
     "q1", "q3", "stderr", "stdev", "stdevP", "valid", "variance", "varianceP"
   ]);
+});
+
+test("normalizes exact continuous-color facade bars before native rendering", {
+  timeout: 30_000
+}, () => {
+  const recipe = REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES.find(candidate =>
+    candidate.id === "realistic-cartesian-facade-coverage-bar"
+  );
+  const cases = [
+    {
+      factors: {
+        dataset: "tt-meteorites",
+        fieldPair: {
+          measureIndex: 2,
+          dimensionIndex: 0,
+          bindingId: "eligible:mass-by-fall"
+        },
+        variant: {
+          id: "createbarplot-orthogonal-12",
+          ordinal: 11,
+          guide: { id: "polar-grid-booleans", kind: "polar-grid-booleans" }
+        }
+      },
+      measure: "x",
+      start: 620,
+      span: 1_260
+    },
+    {
+      factors: {
+        dataset: "tt-nurses",
+        fieldPair: {
+          measureIndex: 10,
+          dimensionIndex: 0,
+          bindingId: "eligible:Annual 25th Percentile-by-State"
+        },
+        variant: {
+          id: "createbarplot-orthogonal-11",
+          ordinal: 10,
+          guide: { id: "polar-title-disabled", kind: "polar-title-disabled" }
+        }
+      },
+      measure: "y",
+      start: 250,
+      span: 820
+    },
+    {
+      factors: {
+        dataset: "tt-nurses",
+        fieldPair: {
+          measureIndex: 11,
+          dimensionIndex: 0,
+          bindingId: "eligible:Annual 75th Percentile-by-State"
+        },
+        variant: {
+          id: "createbarplot-orthogonal-12",
+          ordinal: 11,
+          guide: { id: "polar-grid-booleans", kind: "polar-grid-booleans" }
+        }
+      },
+      measure: "x",
+      start: 620,
+      span: 1_260
+    }
+  ];
+
+  assert.ok(recipe !== undefined);
+  try {
+    for (const scenario of cases) {
+      const { factors, measure, start, span } = scenario;
+      const label = `${factors.dataset}/${factors.variant.id}`;
+      const program = recipe.build(factors);
+      const bars = program.graphicSpec.objects.mainBars.items;
+      const measureScale = program.resolvedScales[`main${measure.toUpperCase()}`];
+
+      assert.deepEqual(measureScale.domain, [0, 1], label);
+      assert.ok(bars.length > 0, label);
+      for (const bar of bars) {
+        assert.equal(bar.properties[measure], start, label);
+        assert.equal(
+          bar.properties[measure === "x" ? "width" : "height"],
+          span,
+          label
+        );
+        assert.ok(["x", "y", "width", "height"].every(property =>
+          Number.isFinite(bar.properties[property]) &&
+          Math.abs(bar.properties[property]) <= 2_300
+        ), label);
+      }
+      assertGraphicIntegrity(program, label);
+      assertSvgIntegrity(renderToSVG(program), label);
+
+      const canvas = createCanvas(1, 1);
+      const context = canvas.getContext("2d");
+      render(program, context);
+      assert.deepEqual([canvas.width, canvas.height], [2_300, 1_220], label);
+      for (const bar of bars) {
+        const { x, y, width, height } = bar.properties;
+        const pixel = [...context.getImageData(
+          Math.round(x + width / 2),
+          Math.round(y + height / 2),
+          1,
+          1
+        ).data];
+        assert.notDeepEqual(pixel, [255, 255, 255, 255], label);
+      }
+      assert.deepEqual(
+        [...canvas.toBuffer("image/png").subarray(0, 8)],
+        PNG_SIGNATURE,
+        label
+      );
+    }
+  } finally {
+    for (const dataset of new Set(cases.map(scenario => scenario.factors.dataset))) {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
 });
 
 test("locks the exact assigned option, literal, aggregate, and diversity target set", async () => {

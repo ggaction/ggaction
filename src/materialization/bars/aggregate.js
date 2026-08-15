@@ -91,8 +91,14 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
             [categoryValue],
             categoryScale
           )[0];
+      const [segment] = layoutSeriesPartition(
+        [cell[channels.measure]],
+        layout,
+        { baseline }
+      );
+      if (segment === undefined) return [];
       const [start, end] = mapContinuousScaleValues(
-        [baseline, cell[channels.measure]],
+        [segment.start, segment.end],
         measureScale
       );
       return [{

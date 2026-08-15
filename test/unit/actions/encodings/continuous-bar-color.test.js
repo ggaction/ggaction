@@ -61,6 +61,71 @@ test("aggregates a different bar color field at the final rect grain", () => {
   assert.deepEqual(options, snapshot);
 });
 
+test("normalizes continuous-color aggregate bars before mapping geometry", () => {
+  const largeValues = Object.freeze([
+    { group: "a", value: 406_131.09, alternate: 10 },
+    { group: "b", value: 1_517.72, alternate: 60 }
+  ]);
+  const source = () => chart()
+    .createCanvas({
+      width: 320,
+      height: 240,
+      margin: { top: 30, right: 100, bottom: 30, left: 30 }
+    })
+    .createData({ values: largeValues })
+    .createBarMark();
+  const vertical = source()
+    .encodeX({ field: "group", fieldType: "nominal" })
+    .encodeY({ field: "value", aggregate: "sum", stack: "normalize" })
+    .encodeColor({
+      field: "alternate",
+      fieldType: "quantitative",
+      aggregate: "mean"
+    });
+  const horizontal = source()
+    .encodeX({ field: "value", aggregate: "sum", stack: "normalize" })
+    .encodeY({ field: "group", fieldType: "nominal" })
+    .encodeColor({
+      field: "alternate",
+      fieldType: "quantitative",
+      aggregate: "mean"
+    });
+
+  assert.deepEqual(vertical.resolvedScales.y.domain, [0, 1]);
+  assert.deepEqual(horizontal.resolvedScales.x.domain, [0, 1]);
+  assert.deepEqual(
+    vertical.graphicSpec.objects.bar.items.map(item => ({
+      y: item.properties.y,
+      height: item.properties.height
+    })),
+    [
+      { y: 30, height: 180 },
+      { y: 30, height: 180 }
+    ]
+  );
+  assert.deepEqual(
+    horizontal.graphicSpec.objects.bar.items.map(item => ({
+      x: item.properties.x,
+      width: item.properties.width
+    })),
+    [
+      { x: 30, width: 190 },
+      { x: 30, width: 190 }
+    ]
+  );
+  for (const program of [vertical, horizontal]) {
+    for (const item of program.graphicSpec.objects.bar.items) {
+      assert.ok(["x", "y", "width", "height"].every(property =>
+        Number.isFinite(item.properties[property]) &&
+        Math.abs(item.properties[property]) <= 320
+      ));
+    }
+    assert.equal(new Set(program.graphicSpec.objects.bar.items.map(
+      item => item.properties.fill
+    )).size, 2);
+  }
+});
+
 test("rejects ambiguous or incompatible aggregate bar color atomically", () => {
   const before = aggregateBars();
 
