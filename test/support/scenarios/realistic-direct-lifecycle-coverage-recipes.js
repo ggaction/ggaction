@@ -1,4 +1,5 @@
 import { chart } from "../../../src/index.js";
+import { measureTextWidth } from "../../../src/core/textMetrics.js";
 
 import {
   realisticDatasetIds,
@@ -20,6 +21,7 @@ const CURVES = Object.freeze([
 ]);
 const KERNELS = Object.freeze(["epanechnikov", "gaussian", "triangular", "uniform"]);
 const NORMALIZATIONS = Object.freeze(["unit", "count"]);
+const FACET_LEGEND_SAFETY_GUTTER = 12;
 const SELECTOR_CHANNELS = Object.freeze([
   "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
   "color", "strokeDash", "size", "shape", "group", "opacity"
@@ -1618,9 +1620,57 @@ function buildMiscellaneousCoverage(factors) {
   return finish(program, factors.dataset, "Derived data, ordering, and parallel lifecycle coverage");
 }
 
+function facetCoverageLayout(rows) {
+  const labelStyle = { fontSize: 10.5, fontFamily: "sans-serif", fontWeight: "normal" };
+  const titleStyle = { fontSize: 12, fontFamily: "sans-serif", fontWeight: 700 };
+  const seriesLabels = [...new Set(rows.map(row => row.group))];
+  const facetLabels = [...new Set(rows.map(row => row.category))];
+  const maximumSeriesWidth = Math.max(...seriesLabels.map(value =>
+    measureTextWidth(String(value) || "(empty)", labelStyle)
+  ));
+  const maximumFacetWidth = Math.max(...facetLabels.map(value =>
+    measureTextWidth(String(value) || "(empty)", titleStyle)
+  ));
+  const symbolWidth = 12;
+  const labelOffset = 8;
+  const legendOffset = 10;
+  const legendWidth = Math.ceil(Math.max(
+    symbolWidth + labelOffset + maximumSeriesWidth,
+    measureTextWidth("Series", titleStyle)
+  ));
+  const rightMargin = legendOffset + legendWidth + 24;
+  const plotWidth = Math.max(900, Math.ceil(maximumFacetWidth + 96));
+  const plotHeight = Math.max(380, 92 + Math.max(0, seriesLabels.length - 1) * 26);
+  return freeze({
+    canvas: {
+      width: 220 + plotWidth + rightMargin,
+      height: 150 + plotHeight + 160,
+      background: "#ffffff",
+      margin: { top: 150, right: rightMargin, bottom: 160, left: 220 }
+    },
+    legend: {
+      target: "facetPoints",
+      channels: ["color"],
+      position: "right",
+      offset: legendOffset,
+      title: "Series",
+      symbol: { width: symbolWidth, height: 12, strokeWidth: 0.5 },
+      labels: { ...labelStyle, offset: labelOffset },
+      titleStyle,
+      itemGap: 26,
+      border: false
+    },
+    seriesLabels,
+    facetLabels,
+    maximumSeriesWidth,
+    legendWidth
+  });
+}
+
 function buildFacetCoverage(factors) {
-  const { program: initial } = createBase(factors.dataset, "style");
-  const program = initial.createPointMark({
+  const { view, program: initial } = createBase(factors.dataset, "facet");
+  const layout = facetCoverageLayout(view.rows);
+  const program = initial.editCanvas(layout.canvas).createPointMark({
     id: "facetPoints", data: "analysisRows", opacity: 0.7
   }).encodeX({
     target: "facetPoints", field: "positiveX", fieldType: "quantitative",
@@ -1631,7 +1681,7 @@ function buildFacetCoverage(factors) {
   }).encodeColor({
     target: "facetPoints", field: "group", fieldType: "nominal",
     scale: { id: "facet-color", type: "ordinal", palette: "tableau10" }
-  }).createGuides({ legend: false })
+  }).createGuides({ legend: layout.legend })
     .facet({
       id: "facetedCoverage",
       data: "analysisRows",
@@ -1648,7 +1698,17 @@ function buildFacetCoverage(factors) {
       align: "end",
       padding: { top: 18, right: 20, bottom: 22, left: 24 }
     });
-  return finish(program, factors.dataset, "Facet and composition layout lifecycle coverage");
+  const finished = finish(
+    program,
+    factors.dataset,
+    "Facet and composition layout lifecycle coverage"
+  );
+  const composedWidth = finished.graphicSpec.objects.canvas.properties.width;
+  return finished.editGraphics({
+    target: "canvas",
+    property: "width",
+    value: composedWidth + FACET_LEGEND_SAFETY_GUTTER
+  });
 }
 
 function metadataFor(recipe, factors) {
@@ -1901,7 +1961,7 @@ const FACET_RECIPE = makeRecipe({
   id: "realistic-direct-lifecycle-facet-coverage",
   family: "direct-lifecycle-facet",
   complexity: "composite",
-  kind: "style",
+  kind: "facet",
   build: buildFacetCoverage,
   expectedDirectActions: ["facet", "editCompositionLayout"]
 });

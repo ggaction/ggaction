@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { runInNewContext } from "node:vm";
 import { setFlagsFromString } from "node:v8";
 
+import { resolveConcreteGraphicBounds } from
+  "../../src/grammar/schemas/graphicBounds.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
 import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrity.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
@@ -16,6 +20,7 @@ import {
   SOURCE_INDEX_ENCODING,
   literalValueKey
 } from "../support/scenarios/coverage-ledger.js";
+import { runScenario } from "../support/scenarios/engine.js";
 import {
   REALISTIC_DIRECT_LIFECYCLE_COVERAGE_ASSIGNED_LITERAL_FAMILIES,
   REALISTIC_DIRECT_LIFECYCLE_COVERAGE_COUNTS,
@@ -47,6 +52,11 @@ const AUTO_REPLAY_FAMILY_REQUIREMENT =
   "literal-value:literal-1984130ce594=string:auto";
 const REPLAY_CORRECTED_SHA256 =
   "e58f38f8c129884aa7ea3d364b52d67e5927593052ff39cc3b8199c7dca20059";
+const FACET_SWEEP_CHILD_ENV = "GGACTION_DIRECT_FACET_SWEEP_CHILD";
+const FACET_SWEEP_RESOURCE_PREFIX = "direct-facet-sweep-resource:";
+const MAX_FACET_SWEEP_RSS_KIB = 512 * 1_024;
+const FACET_SWEEP_TEST_NAME =
+  "preflights the maximal facet profile on all fifty eligible TT datasets";
 let inventoryPromise = buildPublicOptionInventory(JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
   "utf8"
@@ -90,6 +100,38 @@ function createGarbageCollector() {
 }
 
 const collectGarbage = createGarbageCollector();
+
+function runFacetSweepInDisposableProcess() {
+  const childEnvironment = {
+    ...process.env,
+    [FACET_SWEEP_CHILD_ENV]: "1"
+  };
+  delete childEnvironment.NODE_TEST_CONTEXT;
+  const child = spawnSync(process.execPath, [
+    "--test",
+    `--test-name-pattern=^${FACET_SWEEP_TEST_NAME}$`,
+    fileURLToPath(import.meta.url)
+  ], {
+    encoding: "utf8",
+    env: childEnvironment,
+    maxBuffer: 2 * 1_024 * 1_024
+  });
+  assert.equal(child.error, undefined, child.error?.message);
+  assert.equal(child.signal, null, child.stderr);
+  assert.equal(child.status, 0, `${child.stdout}\n${child.stderr}`);
+  const resourceLine = child.stdout.split("\n").find(line =>
+    line.includes(FACET_SWEEP_RESOURCE_PREFIX)
+  );
+  assert.notEqual(resourceLine, undefined, child.stdout);
+  const resources = JSON.parse(
+    resourceLine.slice(resourceLine.indexOf(FACET_SWEEP_RESOURCE_PREFIX) +
+      FACET_SWEEP_RESOURCE_PREFIX.length)
+  );
+  assert.equal(resources.builds, 50);
+  assert.equal(resources.maximumWidth, 4_648);
+  assert.equal(resources.maximumHeight, 2_210);
+  assert.ok(resources.maxRssKiB < MAX_FACET_SWEEP_RSS_KIB, resources);
+}
 
 function hashIds(ids) {
   return createHash("sha256").update([...ids].sort().join("\n")).digest("hex");
@@ -497,6 +539,135 @@ test("locks the disjoint corrected hard-requirement partition at 918", async () 
     ).length,
     total: partial.length
   }, { density: 17, errorBand: 8, dataOperation: 1, total: 26 });
+});
+
+test("keeps every authentic TV-ratings series label inside the shared facet legend", () => {
+  const dataset = "tt-tv-ratings";
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-facet-coverage"
+  );
+  const expectedLabels = [
+    "Bones",
+    "CSI: Crime Scene Investigation",
+    "Criminal Minds",
+    "ER",
+    "Grey's Anatomy",
+    "Law & Order",
+    "Law & Order: Special Victims Unit",
+    "Midsomer Murders"
+  ];
+  let captured = false;
+  try {
+    const result = runScenario({
+      id: "regression-direct-facet-tv-ratings",
+      recipe: recipe.id,
+      factors: { dataset, profile: { id: "maximal" } }
+    }, {
+      deterministic: false,
+      captureProgram(program) {
+        captured = true;
+        const labelItems = program.graphicSpec.objects.colorLegendLabels.items;
+        const labels = labelItems.map(item => item.properties.text);
+        const rows = program.semanticSpec.datasets.find(value =>
+          value.id === "analysisRows"
+        ).values;
+        assert.deepEqual(labels, expectedLabels);
+        assert.deepEqual(labels, [...new Set(rows.map(row => row.group))]);
+        assert.deepEqual(
+          program.compositionSpec.facet.values,
+          [...new Set(rows.map(row => row.category))]
+        );
+        assert.ok(labelItems.every(item => item.properties.fontSize === 10.5));
+        const canvas = program.graphicSpec.objects.canvas.properties;
+        const legendBounds = resolveConcreteGraphicBounds(
+          program.graphicSpec,
+          "facetedCoverage-shared-legend"
+        );
+        assert.notEqual(legendBounds, undefined);
+        assert.ok(canvas.width - legendBounds.right >= 8);
+        assert.ok(legendBounds.right - legendBounds.left > 132);
+        assert.ok(canvas.width < 4_500);
+        assertGraphicIntegrity(program, dataset);
+        assertAnalyticLayerIntegrity(program, dataset);
+        assertSvgIntegrity(renderToSVG(program), dataset);
+      }
+    });
+    assert.equal(captured, true);
+    assert.ok(result.directOperations.includes("facet"));
+    assert.ok(result.directOperations.includes("editCompositionLayout"));
+    assert.deepEqual(result.renderers, ["svg"]);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
+});
+
+test(FACET_SWEEP_TEST_NAME, () => {
+  if (process.env[FACET_SWEEP_CHILD_ENV] !== "1") {
+    runFacetSweepInDisposableProcess();
+    return;
+  }
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-facet-coverage"
+  );
+  let builds = 0;
+  let maximumWidth = 0;
+  let maximumHeight = 0;
+  assert.equal(recipe.datasets.length, 50);
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      const profile = domains?.profile.find(value => value.id === "maximal");
+      assert.notEqual(profile, undefined, `${dataset} maximal facet eligibility`);
+      const program = recipe.build({ dataset, profile });
+      const rows = program.semanticSpec.datasets.find(value =>
+        value.id === "analysisRows"
+      ).values;
+      const expectedSeries = [...new Set(rows.map(row => row.group))];
+      const expectedFacets = [...new Set(rows.map(row => row.category))];
+      assert.deepEqual(
+        program.graphicSpec.objects.colorLegendLabels.items.map(item =>
+          item.properties.text
+        ),
+        expectedSeries,
+        `${dataset} complete legend labels`
+      );
+      assert.deepEqual(
+        program.compositionSpec.facet.values,
+        expectedFacets,
+        `${dataset} complete facet labels`
+      );
+      const canvas = program.graphicSpec.objects.canvas.properties;
+      const legendBounds = resolveConcreteGraphicBounds(
+        program.graphicSpec,
+        "facetedCoverage-shared-legend"
+      );
+      assert.ok(canvas.width - legendBounds.right >= 8, `${dataset} legend safety`);
+      assert.ok(canvas.width <= 5_000, `${dataset} bounded facet width`);
+      assert.ok(canvas.height <= 2_500, `${dataset} bounded facet height`);
+      maximumWidth = Math.max(maximumWidth, canvas.width);
+      maximumHeight = Math.max(maximumHeight, canvas.height);
+      assertGraphicIntegrity(program, dataset);
+      assertAnalyticLayerIntegrity(program, dataset);
+      assertSvgIntegrity(renderToSVG(program), dataset);
+      builds += 1;
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      collectGarbage();
+    }
+  }
+  assert.equal(builds, 50);
+  assert.equal(maximumWidth, 4_648);
+  assert.equal(maximumHeight, 2_210);
+  collectGarbage();
+  const maxRssKiB = process.resourceUsage().maxRSS;
+  assert.ok(maxRssKiB < MAX_FACET_SWEEP_RSS_KIB, { maxRssKiB });
+  console.log(`${FACET_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
+    builds,
+    maximumWidth,
+    maximumHeight,
+    maxRssKiB
+  })}`);
 });
 
 test("fifty direct-root builds close every assigned gap with material graphics", async () => {
