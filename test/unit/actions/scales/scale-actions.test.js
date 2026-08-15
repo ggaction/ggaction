@@ -39,6 +39,25 @@ test("creates an immutable semantic scale through nested primitives", () => {
   );
 });
 
+test("creates a sqrt scale with an explicit domain and no authorable exponent", () => {
+  assert.deepEqual(chart().createScale({
+    id: "sqrt",
+    type: "sqrt",
+    domain: [1, 3]
+  }).semanticSpec.scales, [{
+    id: "sqrt",
+    type: "sqrt",
+    domain: [1, 3],
+    range: "auto"
+  }]);
+  assert.throws(() => chart().createScale({
+    id: "sqrt",
+    type: "sqrt",
+    domain: [1, 3],
+    exponent: 0.5
+  }), /does not support exponent/u);
+});
+
 test("treats equivalent scale creation as idempotent and rejects conflicts", () => {
   const program = chart().createScale({ id: "x", domain: [0, 10] });
   const repeated = program.createScale({ id: "x", domain: [0, 10] });

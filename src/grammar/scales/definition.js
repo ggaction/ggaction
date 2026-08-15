@@ -118,7 +118,7 @@ export function normalizeScaleDefinition({
     if (type === "pow") definition.exponent = parameters.exponent;
     if (type === "symlog") definition.constant = parameters.constant;
     if (definition.domain !== "auto") {
-      validateTransformedDomain(type, definition.domain, parameters);
+      validateTransformedDomain(type, definition.domain, requested);
     }
   } else {
     for (const property of Object.keys(requested)) {

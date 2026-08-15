@@ -62,3 +62,22 @@ test("normalizes shared scale policies without retaining stale type state", () =
     /paddingInner/
   );
 });
+
+test("validates an explicit sqrt domain without reinterpreting its fixed exponent", () => {
+  assert.deepEqual(normalizeScaleDefinition({
+    type: "sqrt",
+    patch: { domain: [1, 3] },
+    validateDomain: (_type, value) => validateScaleDomain(value),
+    validateRange: (_type, value) => validateScaleRange(value)
+  }), {
+    type: "sqrt",
+    domain: [1, 3],
+    range: "auto"
+  });
+  assert.throws(() => normalizeScaleDefinition({
+    type: "sqrt",
+    patch: { domain: [1, 3], exponent: 0.5 },
+    validateDomain: (_type, value) => validateScaleDomain(value),
+    validateRange: (_type, value) => validateScaleRange(value)
+  }), /does not support exponent/u);
+});
