@@ -1,4 +1,5 @@
 import { action } from "../../../../core/action.js";
+import { editLegend } from "../edit.js";
 import { resolveStoredSelection } from
   "../../../../materialization/selection/state.js";
 import {
@@ -15,7 +16,6 @@ import {
   rematerializeLegendLabels,
   rematerializeLegendTitle
 } from "./components.js";
-import { editLegend } from "../edit.js";
 import {
   createLegendSymbolLines,
   createLegendSymbolPoints,

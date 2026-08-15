@@ -1,7 +1,7 @@
+import { registerAxisTickGroupActions } from "./tickGroups.js";
 import { registerCompleteAxisEditActions } from "./edit.js";
 import { registerAxisLabelActions } from "./labels.js";
 import { registerAxisLineActions } from "./lines.js";
-import { registerAxisTickGroupActions } from "./tickGroups.js";
 import { registerAxisTickActions } from "./ticks.js";
 import { registerAxisTitleActions } from "./titles.js";
 import { registerAxisActions } from "./axis.js";

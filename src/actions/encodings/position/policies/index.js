@@ -3,11 +3,11 @@ import {
   isCategoricalDensityPosition,
   resolveAreaPositionPolicy
 } from "./area.js";
-import { resolveArcPositionPolicy } from "./arc.js";
 import { resolveBarPositionPolicy } from "./bar.js";
 import { resolveLinePositionPolicy } from "./line.js";
 import { resolvePointPositionPolicy } from "./point.js";
 import { resolveRulePositionPolicy } from "./rule.js";
+import { resolveArcPositionPolicy } from "./arc.js";
 import { validatePositionFieldCompatibility } from
   "../../../../grammar/positionCompatibility.js";
 
