@@ -27,8 +27,10 @@ import {
   selectStableRows,
   selectStableEntries,
   loadTidyTuesdayDatasetEntries,
+  loadTidyTuesdaySourceEntries,
   tidyTuesdayFixtureEntries,
   tidyTuesdayFixtureReport,
+  tidyTuesdaySourceEntries,
   tidyTuesdaySourceUrl
 } from "../support/datasets/tidytuesday.js";
 import {
@@ -283,6 +285,31 @@ test("keeps TidyTuesday URLs commit-pinned and reports optional local caches", (
       assert.notStrictEqual(first[0].row, entries[0].row, id);
     }
   }
+});
+
+test("exposes every verified source row with immutable original lineage", () => {
+  const id = corpusDatasetIds("tidytuesday")
+    .find(candidate => datasetDefinition(candidate).selection.mode === "stable-sample");
+  const definition = datasetDefinition(id);
+  const source = tidyTuesdaySourceEntries(id);
+  const fixture = tidyTuesdayFixtureEntries(id);
+  const first = loadTidyTuesdaySourceEntries(id);
+  const second = loadTidyTuesdaySourceEntries(id);
+
+  assert.equal(source.length, definition.rows);
+  assert.equal(fixture.length, definition.selectedRows);
+  assert.equal(source.length > fixture.length, true);
+  assert.equal(Object.isFrozen(source), true);
+  assert.equal(Object.isFrozen(source[0]), true);
+  assert.equal(Object.isFrozen(source[0].row), true);
+  assert.deepEqual(
+    source.map(({ sourceRowIndex }) => sourceRowIndex),
+    Array.from({ length: definition.rows }, (_, index) => index)
+  );
+  assert.notStrictEqual(first, source);
+  assert.notStrictEqual(first, second);
+  assert.notStrictEqual(first[0].row, source[0].row);
+  assert.deepEqual(first, second);
 });
 
 test("keeps optional raw caches outside git and the published package", () => {

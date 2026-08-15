@@ -13,6 +13,8 @@ const cacheRoot = path.resolve(
 );
 const fixtureCache = new Map();
 const fixtureEntryCache = new Map();
+const sourceCache = new Map();
+const sourceEntryCache = new Map();
 
 function deepFreeze(value) {
   if (value === null || typeof value !== "object" || Object.isFrozen(value)) {
@@ -163,16 +165,36 @@ export function tidyTuesdayCached(id) {
   return existsSync(tidyTuesdayCachePath(id));
 }
 
+function cacheTidyTuesdaySource(id) {
+  if (sourceCache.has(id)) return;
+  const sourcePath = tidyTuesdayCachePath(id);
+  if (!existsSync(sourcePath)) {
+    throw new Error(
+      `Dataset "${id}" is not cached. Run npm run datasets:sync first.`
+    );
+  }
+  const { rows } = verifyTidyTuesdaySource(id, readFileSync(sourcePath, "utf8"));
+  sourceCache.set(id, rows);
+  sourceEntryCache.set(id, deepFreeze(rows.map((row, sourceRowIndex) => ({
+    row,
+    sourceRowIndex
+  }))));
+}
+
+export function tidyTuesdaySourceRows(id) {
+  cacheTidyTuesdaySource(id);
+  return sourceCache.get(id);
+}
+
+export function tidyTuesdaySourceEntries(id) {
+  cacheTidyTuesdaySource(id);
+  return sourceEntryCache.get(id);
+}
+
 export function tidyTuesdayFixtureRows(id) {
   if (!fixtureCache.has(id)) {
-    const sourcePath = tidyTuesdayCachePath(id);
-    if (!existsSync(sourcePath)) {
-      throw new Error(
-        `Dataset "${id}" is not cached. Run npm run datasets:sync first.`
-      );
-    }
     const definition = requireTidyTuesdayDefinition(id);
-    const { rows } = verifyTidyTuesdaySource(id, readFileSync(sourcePath, "utf8"));
+    const rows = tidyTuesdaySourceRows(id);
     const entries = deepFreeze(selectStableEntries(rows, definition.selection));
     fixtureEntryCache.set(id, entries);
     fixtureCache.set(id, deepFreeze(entries.map(({ row }) => row)));
@@ -191,4 +213,8 @@ export function loadTidyTuesdayDataset(id) {
 
 export function loadTidyTuesdayDatasetEntries(id) {
   return structuredClone(tidyTuesdayFixtureEntries(id));
+}
+
+export function loadTidyTuesdaySourceEntries(id) {
+  return structuredClone(tidyTuesdaySourceEntries(id));
 }
