@@ -1,5 +1,25 @@
 import { parseCsv } from "../csv.js";
 
+function normalizedSource(source, definition) {
+  let normalized = source.replace(/^\uFEFF/u, "");
+  const csv = definition.csv ?? {};
+  if (csv.lineEnding === "cr") {
+    normalized = normalized.replace(/\r/gu, "\n");
+  }
+  const emptyHeaderAlias = csv.headerAliases?.[""];
+  if (emptyHeaderAlias !== undefined) {
+    if (
+      typeof emptyHeaderAlias !== "string" ||
+      !/^[A-Za-z_][A-Za-z0-9_]*$/u.test(emptyHeaderAlias) ||
+      !/^"",/u.test(normalized)
+    ) {
+      throw new TypeError(`${definition.id} has an invalid empty-header alias.`);
+    }
+    normalized = normalized.replace(/^"",/u, `${emptyHeaderAlias},`);
+  }
+  return normalized;
+}
+
 function missing(value, tokens) {
   return tokens.includes(value);
 }
@@ -48,7 +68,7 @@ function typedValue(value, schema, missingTokens, label) {
 }
 
 export function parseTypedCsv(source, definition) {
-  const rows = parseCsv(source);
+  const rows = parseCsv(normalizedSource(source, definition));
   const missingTokens = definition.missingTokens ?? [""];
   return rows.map((row, rowIndex) => Object.freeze(Object.fromEntries(
     Object.entries(row).map(([field, value]) => [

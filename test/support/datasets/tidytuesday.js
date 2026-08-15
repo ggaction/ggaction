@@ -12,6 +12,7 @@ const cacheRoot = path.resolve(
   DATASET_CORPUS.tidyTuesday.cacheDirectory
 );
 const fixtureCache = new Map();
+const fixtureEntryCache = new Map();
 
 function deepFreeze(value) {
   if (value === null || typeof value !== "object" || Object.isFrozen(value)) {
@@ -37,7 +38,7 @@ function stableRank(seed, index) {
     .digest("hex");
 }
 
-function witnessIndices(rows, fields) {
+function witnessIndices(rows, fields, dimensions = []) {
   const indices = new Set([0, rows.length - 1]);
   for (const field of fields) {
     const finite = rows
@@ -48,22 +49,35 @@ function witnessIndices(rows, fields) {
     indices.add(finite[0].index);
     indices.add(finite[finite.length - 1].index);
   }
+  for (const field of dimensions) {
+    const firstByValue = new Map();
+    for (const [index, row] of rows.entries()) {
+      const value = row[field];
+      if (value !== null && !firstByValue.has(value)) firstByValue.set(value, index);
+    }
+    for (const index of firstByValue.values()) indices.add(index);
+  }
   return indices;
 }
 
-export function selectStableRows(rows, selection) {
-  if (selection?.mode === "all") return rows;
+function stableSelectionIndices(rows, selection) {
+  if (selection?.mode === "all") return rows.map((_, index) => index);
   if (
     selection?.mode !== "stable-sample" ||
     !Number.isInteger(selection.count) || selection.count <= 0 ||
     typeof selection.seed !== "string" || selection.seed.length === 0 ||
-    !Array.isArray(selection.witnessFields)
+    !Array.isArray(selection.witnessFields) ||
+    !Array.isArray(selection.witnessDimensions ?? [])
   ) {
     throw new TypeError("TidyTuesday selection contract is invalid.");
   }
-  if (rows.length <= selection.count) return rows;
+  if (rows.length <= selection.count) return rows.map((_, index) => index);
 
-  const selected = witnessIndices(rows, selection.witnessFields);
+  const selected = witnessIndices(
+    rows,
+    selection.witnessFields,
+    selection.witnessDimensions
+  );
   if (selected.size > selection.count) {
     throw new RangeError(
       "TidyTuesday stable-sample count cannot hold every required witness row."
@@ -78,9 +92,19 @@ export function selectStableRows(rows, selection) {
     if (selected.size >= selection.count) break;
     selected.add(index);
   }
-  return [...selected]
-    .sort((left, right) => left - right)
-    .map(index => rows[index]);
+  return [...selected].sort((left, right) => left - right);
+}
+
+export function selectStableEntries(rows, selection) {
+  return stableSelectionIndices(rows, selection).map(sourceRowIndex => Object.freeze({
+    row: rows[sourceRowIndex],
+    sourceRowIndex
+  }));
+}
+
+export function selectStableRows(rows, selection) {
+  if (selection?.mode === "all") return rows;
+  return selectStableEntries(rows, selection).map(({ row }) => row);
 }
 
 export function tidyTuesdayCachePath(id) {
@@ -116,6 +140,13 @@ export function verifyTidyTuesdaySource(id, source) {
       `Dataset "${id}" has ${rows.length} rows; expected ${definition.rows}.`
     );
   }
+  const selected = selectStableEntries(rows, definition.selection);
+  if (selected.length !== definition.selectedRows) {
+    throw new Error(
+      `Dataset "${id}" selects ${selected.length} rows; ` +
+      `expected ${definition.selectedRows}.`
+    );
+  }
   return Object.freeze({ report, rows: deepFreeze(rows) });
 }
 
@@ -142,11 +173,22 @@ export function tidyTuesdayFixtureRows(id) {
     }
     const definition = requireTidyTuesdayDefinition(id);
     const { rows } = verifyTidyTuesdaySource(id, readFileSync(sourcePath, "utf8"));
-    fixtureCache.set(id, deepFreeze(selectStableRows(rows, definition.selection)));
+    const entries = deepFreeze(selectStableEntries(rows, definition.selection));
+    fixtureEntryCache.set(id, entries);
+    fixtureCache.set(id, deepFreeze(entries.map(({ row }) => row)));
   }
   return fixtureCache.get(id);
 }
 
+export function tidyTuesdayFixtureEntries(id) {
+  tidyTuesdayFixtureRows(id);
+  return fixtureEntryCache.get(id);
+}
+
 export function loadTidyTuesdayDataset(id) {
   return structuredClone(tidyTuesdayFixtureRows(id));
+}
+
+export function loadTidyTuesdayDatasetEntries(id) {
+  return structuredClone(tidyTuesdayFixtureEntries(id));
 }

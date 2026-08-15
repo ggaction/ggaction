@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
@@ -24,6 +25,9 @@ import {
 } from "../support/datasets/mutations.js";
 import {
   selectStableRows,
+  selectStableEntries,
+  loadTidyTuesdayDatasetEntries,
+  tidyTuesdayFixtureEntries,
   tidyTuesdayFixtureReport,
   tidyTuesdaySourceUrl
 } from "../support/datasets/tidytuesday.js";
@@ -67,9 +71,9 @@ test("locks every reference dataset by row count, bytes, and sha256", () => {
 
 test("registers a frozen, uniquely identified real-data and edge-case corpus", () => {
   assert.equal(Object.isFrozen(DATASET_CORPUS), true);
-  assert.equal(corpusDatasetIds("tidytuesday").length, 5);
+  assert.equal(corpusDatasetIds("tidytuesday").length, 50);
   assert.equal(corpusDatasetIds("zoo").length, 19);
-  assert.equal(new Set(corpusDatasetIds()).size, 24);
+  assert.equal(new Set(corpusDatasetIds()).size, 69);
   assert.deepEqual(
     [...zooGeneratorNames()].sort(),
     corpusDatasetIds("zoo")
@@ -77,6 +81,88 @@ test("registers a frozen, uniquely identified real-data and edge-case corpus", (
       .sort()
   );
   assert.match(DATASET_CORPUS.tidyTuesday.commit, /^[a-f0-9]{40}$/u);
+  assert.deepEqual(
+    {
+      datasets: DATASET_CORPUS.tidyTuesday.datasetCount,
+      bytes: DATASET_CORPUS.tidyTuesday.totalBytes,
+      rows: DATASET_CORPUS.tidyTuesday.totalRows,
+      selectedRows: DATASET_CORPUS.tidyTuesday.selectedRows
+    },
+    { datasets: 50, bytes: 52_694_271, rows: 466_483, selectedRows: 54_877 }
+  );
+});
+
+test("describes every real source with typed fields, roles, mappings, and provenance", () => {
+  const definitions = corpusDatasetIds("tidytuesday").map(datasetDefinition);
+  assert.equal(new Set(definitions.map(({ path }) => path)).size, 50);
+  assert.equal(new Set(definitions.map(({ provenance }) => provenance.week)).size, 50);
+  assert.equal(
+    new Set(definitions.map(({ provenance }) => provenance.upstreamUrl)).size,
+    50
+  );
+  assert.equal(
+    new Set(definitions.map(({ provenance }) =>
+      `${provenance.sourceName}\0${provenance.upstreamUrl}`
+    )).size,
+    50
+  );
+  for (const definition of definitions) {
+    const fields = new Set(Object.keys(definition.fields));
+    assert.equal(definition.blobUrl.includes(DATASET_CORPUS.tidyTuesday.commit), true);
+    assert.equal(definition.provenance.readmeUrl.includes(
+      DATASET_CORPUS.tidyTuesday.commit
+    ), true);
+    assert.match(definition.provenance.upstreamUrl, /^https?:\/\//u);
+    assert.equal(definition.fieldRoles.measure.length > 0, true, definition.id);
+    assert.equal(definition.fieldRoles.dimension.length > 0, true, definition.id);
+    assert.equal(
+      definition.fieldRoles.measure.every(field =>
+        ["quantitative", "duration-hms"].includes(definition.fields[field].type)
+      ),
+      true,
+      definition.id
+    );
+    assert.equal(
+      definition.fieldRoles.dimension.every(field =>
+        definition.fields[field].profile.distinct >= 2
+      ),
+      true,
+      definition.id
+    );
+    assert.equal(
+      definition.fieldRoles.temporal.every(field =>
+        definition.fields[field].type.startsWith("temporal-")
+      ),
+      true,
+      definition.id
+    );
+    assert.equal(
+      definition.fieldRoles.weight.every(field =>
+        ["quantitative", "duration-hms"].includes(definition.fields[field].type)
+      ),
+      true,
+      definition.id
+    );
+    for (const roleFields of Object.values(definition.fieldRoles)) {
+      assert.equal(roleFields.every(field => fields.has(field)), true, definition.id);
+    }
+    for (const mapping of definition.chartMappings) {
+      assert.equal(fields.has(mapping.x), true, definition.id);
+      assert.equal(fields.has(mapping.y), true, definition.id);
+      assert.equal(
+        definition.fieldRoles.measure.includes(mapping.y),
+        true,
+        definition.id
+      );
+      assert.equal(mapping.description.length > 20, true, definition.id);
+    }
+    assert.equal(
+      new Set(definition.chartMappings.map(({ id }) => id)).size,
+      definition.chartMappings.length,
+      definition.id
+    );
+    assert.equal(definition.sourceProfile.fieldCount, fields.size, definition.id);
+  }
 });
 
 test("loads zoo datasets through immutable fixtures and isolated clones", () => {
@@ -122,23 +208,50 @@ test("coerces pinned CSV fields only through explicit schemas", () => {
   );
 });
 
+test("normalizes only explicitly declared upstream CSV quirks", () => {
+  const definition = {
+    id: "quirky",
+    csv: { lineEnding: "cr", headerAliases: { "": "source_row" } },
+    fields: {
+      source_row: { type: "quantitative" },
+      value: { type: "quantitative" }
+    }
+  };
+  assert.deepEqual(parseTypedCsv('"",value\r1,2\r2,3\r', definition), [
+    { source_row: 1, value: 2 },
+    { source_row: 2, value: 3 }
+  ]);
+  assert.throws(
+    () => parseTypedCsv("source,value\n1,2\n", definition),
+    /invalid empty-header alias/
+  );
+});
+
 test("selects deterministic samples with endpoint and numeric extrema witnesses", () => {
   const rows = Array.from({ length: 30 }, (_, index) => ({
     id: index,
-    value: index === 17 ? 1_000 : index === 9 ? -1_000 : index
+    value: index === 17 ? 1_000 : index === 9 ? -1_000 : index,
+    category: index === 14 ? "rare" : index % 2 === 0 ? "even" : "odd"
   }));
   const selection = {
     mode: "stable-sample",
     count: 8,
     seed: "fixture-seed",
-    witnessFields: ["value"]
+    witnessFields: ["value"],
+    witnessDimensions: ["category"]
   };
   const selected = selectStableRows(rows, selection);
+  const entries = selectStableEntries(rows, selection);
   assert.equal(selected.length, 8);
   assert.deepEqual(selectStableRows(rows, selection), selected);
   assert.deepEqual(
-    [0, 9, 17, 29].every(index => selected.includes(rows[index])),
+    [0, 9, 14, 17, 29].every(index => selected.includes(rows[index])),
     true
+  );
+  assert.deepEqual(entries.map(({ row }) => row), selected);
+  assert.deepEqual(
+    entries.map(({ sourceRowIndex }) => sourceRowIndex),
+    entries.map(({ row }) => rows.indexOf(row))
   );
 });
 
@@ -154,8 +267,32 @@ test("keeps TidyTuesday URLs commit-pinned and reports optional local caches", (
     if (report.cached) {
       assert.equal(report.bytes, definition.bytes, id);
       assert.equal(report.sha256, definition.sha256, id);
+      const entries = tidyTuesdayFixtureEntries(id);
+      assert.equal(entries.length, definition.selectedRows, id);
+      assert.equal(Object.isFrozen(entries), true, id);
+      assert.equal(entries.every(({ sourceRowIndex }) =>
+        Number.isInteger(sourceRowIndex) && sourceRowIndex >= 0 &&
+        sourceRowIndex < definition.rows
+      ), true, id);
+      const first = loadTidyTuesdayDatasetEntries(id);
+      const second = loadTidyTuesdayDatasetEntries(id);
+      assert.notStrictEqual(first, entries, id);
+      assert.notStrictEqual(first, second, id);
+      assert.deepEqual(first, second, id);
+      assert.equal(first[0].sourceRowIndex, entries[0].sourceRowIndex, id);
+      assert.notStrictEqual(first[0].row, entries[0].row, id);
     }
   }
+});
+
+test("keeps optional raw caches outside git and the published package", () => {
+  const gitignore = readFileSync(new URL("../../.gitignore", import.meta.url), "utf8");
+  const packageJson = JSON.parse(readFileSync(
+    new URL("../../package.json", import.meta.url),
+    "utf8"
+  ));
+  assert.match(gitignore, /^\.artifacts\/$/mu);
+  assert.equal(packageJson.files.some(file => file.startsWith("data/")), false);
 });
 
 test("rejects unknown or ambiguous dataset sync arguments before downloading", () => {

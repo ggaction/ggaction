@@ -10,6 +10,7 @@ import {
 } from "../test/support/datasets/tidytuesday.js";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
+const DOWNLOAD_CONCURRENCY = 6;
 
 function requestedIds(arguments_) {
   const available = corpusDatasetIds("tidytuesday");
@@ -62,8 +63,22 @@ async function download(id) {
 }
 
 const ids = requestedIds(process.argv.slice(2));
-for (const id of ids) {
-  const report = await download(id);
+const reports = new Array(ids.length);
+let cursor = 0;
+async function worker() {
+  while (cursor < ids.length) {
+    const index = cursor;
+    cursor += 1;
+    reports[index] = await download(ids[index]);
+  }
+}
+await Promise.all(
+  Array.from(
+    { length: Math.min(DOWNLOAD_CONCURRENCY, ids.length) },
+    () => worker()
+  )
+);
+for (const report of reports) {
   process.stdout.write(
     `${report.id}: ${report.bytes} bytes, ${report.sha256}, ${report.target}\n`
   );
