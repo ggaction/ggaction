@@ -11,6 +11,18 @@ import {
   REALISTIC_ANALYSIS_REQUIRED_FEATURES
 } from "./realistic-recipes.js";
 import {
+  REALISTIC_DATA_MARK_INTERACTIONS,
+  REALISTIC_DATA_MARK_REQUIRED_FEATURES,
+  REALISTIC_DATA_MARK_SCENARIO_RECIPES
+} from "./realistic-data-mark-recipes.js";
+import {
+  REALISTIC_GUIDE_SCALE_INTERACTIONS,
+  REALISTIC_GUIDE_SCALE_RECIPES
+} from "./realistic-guide-scale-recipes.js";
+import {
+  REALISTIC_FACADE_OPTION_RECIPES
+} from "./realistic-facade-option-recipes.js";
+import {
   barRows,
   boxRows,
   categoricalStressRows,
@@ -816,19 +828,25 @@ export const SCENARIO_RECIPES = Object.freeze([
 
 export const REALISTIC_SCENARIO_RECIPES = Object.freeze([
   ...REALISTIC_ANALYSIS_RECIPES,
-  ...REALISTIC_LIFECYCLE_SCENARIO_RECIPES
+  ...REALISTIC_LIFECYCLE_SCENARIO_RECIPES,
+  ...REALISTIC_DATA_MARK_SCENARIO_RECIPES,
+  ...REALISTIC_GUIDE_SCALE_RECIPES,
+  ...REALISTIC_FACADE_OPTION_RECIPES
 ]);
 
 export const REALISTIC_REQUIRED_FEATURES = Object.freeze([...new Set([
   ...REALISTIC_ANALYSIS_REQUIRED_FEATURES,
-  ...REALISTIC_LIFECYCLE_REQUIRED_FEATURES
+  ...REALISTIC_LIFECYCLE_REQUIRED_FEATURES,
+  ...REALISTIC_DATA_MARK_REQUIRED_FEATURES
 ])].sort());
 
 export const REALISTIC_REQUIRED_INTERACTIONS = Object.freeze([
   Object.freeze({ members: Object.freeze(["lifecycle:compose", "renderer:svg"]) }),
   Object.freeze({ members: Object.freeze(["lifecycle:edit", "renderer:svg"]) }),
   Object.freeze({ members: Object.freeze(["lifecycle:filter", "lifecycle:select"]) }),
-  Object.freeze({ members: Object.freeze(["lifecycle:highlight", "lifecycle:select"]) })
+  Object.freeze({ members: Object.freeze(["lifecycle:highlight", "lifecycle:select"]) }),
+  ...REALISTIC_DATA_MARK_INTERACTIONS,
+  ...REALISTIC_GUIDE_SCALE_INTERACTIONS
 ]);
 
 export function scenarioRecipe(id) {

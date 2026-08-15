@@ -22,7 +22,10 @@ const REALISTIC_DATASET_QUOTAS = Object.freeze({
   composite: 8
 });
 const REALISTIC_COMPLEXITIES = Object.freeze(Object.keys(REALISTIC_DATASET_QUOTAS));
+const REALISTIC_CANDIDATE_GC_INTERVAL = 8;
+const REALISTIC_FACTOR_VALUE_MINIMUM = 3;
 const realisticGenerationDiagnostics = new WeakMap();
+const realisticFactorRequirementCache = new Map();
 
 function stableValue(value) {
   if (Array.isArray(value)) return `[${value.map(stableValue).join(",")}]`;
@@ -58,6 +61,10 @@ function hashOffset(value) {
   return Number.parseInt(createHash("sha256").update(value).digest("hex").slice(0, 8), 16);
 }
 
+function factorValueUsageKey(recipeId, factor, value) {
+  return `${recipeId}\0${factor}\0${stableValue(value)}`;
+}
+
 function availableDatasets(recipe, includeTidyTuesday) {
   const eligible = recipe.datasets.filter(id => {
     const definition = datasetDefinition(id);
@@ -85,6 +92,14 @@ function smokeCases(recipe, datasets) {
   );
 }
 
+function factorContractForDataset(recipe, dataset) {
+  const factorValues = recipe.factorsForDataset === undefined
+    ? recipe.factors
+    : recipe.factorsForDataset(dataset);
+  if (factorValues === undefined) return undefined;
+  return Object.freeze({ dataset: Object.freeze([dataset]), ...factorValues });
+}
+
 export function scenarioFactorContract(recipeId, {
   includeTidyTuesday = true,
   dataset
@@ -98,13 +113,151 @@ export function scenarioFactorContract(recipeId, {
     if (!datasets.includes(dataset)) {
       throw new Error(`Scenario recipe "${recipeId}" does not support dataset "${dataset}".`);
     }
-    const factorValues = recipe.factorsForDataset === undefined
-      ? recipe.factors
-      : recipe.factorsForDataset(dataset);
-    if (factorValues === undefined) return undefined;
-    return Object.freeze({ dataset: Object.freeze([dataset]), ...factorValues });
+    return factorContractForDataset(recipe, dataset);
   }
   return Object.freeze({ dataset: Object.freeze(datasets), ...recipe.factors });
+}
+
+function collectFactorValueRequirements(recipes, datasets) {
+  const cacheKey = `${recipes.map(recipe => recipe.id).join("\0")}\u0001${datasets.join("\0")}`;
+  if (realisticFactorRequirementCache.has(cacheKey)) {
+    const cached = realisticFactorRequirementCache.get(cacheKey);
+    realisticFactorRequirementCache.delete(cacheKey);
+    realisticFactorRequirementCache.set(cacheKey, cached);
+    return cached;
+  }
+  const availableByRecipe = new Map(recipes.map(recipe => [
+    recipe.id,
+    new Set(availableDatasets(recipe, true))
+  ]));
+  const requirements = new Map();
+  const eligibleRecipeDatasets = new Map(recipes.map(recipe => [
+    recipe.id,
+    new Set()
+  ]));
+  for (const dataset of datasets) {
+    try {
+      for (const recipe of recipes) {
+        if (!availableByRecipe.get(recipe.id).has(dataset)) continue;
+        const contract = factorContractForDataset(recipe, dataset);
+        if (contract === undefined) continue;
+        eligibleRecipeDatasets.get(recipe.id).add(dataset);
+        const scheduledFactor = recipe.coverageSchedule?.factor;
+        for (const [factor, domain] of Object.entries(contract)) {
+          if (
+            factor === "dataset" || factor === "fieldPair" ||
+            factor === scheduledFactor
+          ) continue;
+          if (!Array.isArray(domain) || domain.length === 0) {
+            throw new TypeError(
+              `Scenario recipe "${recipe.id}" factor "${factor}" must have a non-empty domain.`
+            );
+          }
+          const seen = new Set();
+          for (const value of domain) {
+            const usageKey = factorValueUsageKey(recipe.id, factor, value);
+            if (seen.has(usageKey)) continue;
+            seen.add(usageKey);
+            const requirement = requirements.get(usageKey) ?? {
+              usageKey,
+              recipe: recipe.id,
+              factor,
+              value,
+              eligibleDatasets: new Set()
+            };
+            requirement.eligibleDatasets.add(dataset);
+            requirements.set(usageKey, requirement);
+          }
+        }
+      }
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      globalThis.gc?.();
+    }
+  }
+  const result = Object.freeze({ requirements, eligibleRecipeDatasets });
+  realisticFactorRequirementCache.set(cacheKey, result);
+  if (realisticFactorRequirementCache.size > 4) {
+    realisticFactorRequirementCache.delete(
+      realisticFactorRequirementCache.keys().next().value
+    );
+  }
+  return result;
+}
+
+function factorRequirementsByRecipe(requirements) {
+  const byRecipe = new Map();
+  for (const requirement of requirements.values()) {
+    const values = byRecipe.get(requirement.recipe) ?? [];
+    values.push(requirement);
+    byRecipe.set(requirement.recipe, values);
+  }
+  return byRecipe;
+}
+
+function factorRequirementSelectionTargets(recipes, requirementsByRecipe) {
+  return new Map(recipes.map(recipe => {
+    const valueCounts = new Map();
+    for (const requirement of requirementsByRecipe.get(recipe.id) ?? []) {
+      valueCounts.set(
+        requirement.factor,
+        (valueCounts.get(requirement.factor) ?? 0) + 1
+      );
+    }
+    const factorTarget = Math.max(0, ...valueCounts.values()) *
+      REALISTIC_FACTOR_VALUE_MINIMUM;
+    return [recipe.id, Math.max(minimumSelections(recipe), factorTarget)];
+  }));
+}
+
+function assertFactorRequirementFeasibility(
+  recipes,
+  requirements,
+  selectionTargets
+) {
+  const unavailable = [...requirements.values()].filter(requirement =>
+    requirement.eligibleDatasets.size < REALISTIC_FACTOR_VALUE_MINIMUM
+  );
+  if (unavailable.length > 0) {
+    throw new Error(
+      `Realistic factor values require three eligible datasets: ${unavailable
+        .slice(0, 20)
+        .map(value =>
+          `${value.recipe}.${value.factor}=${stableValue(value.value)} ` +
+          `eligible=${value.eligibleDatasets.size}/3`
+        ).join("; ")}`
+    );
+  }
+  for (const complexity of REALISTIC_COMPLEXITIES) {
+    const required = recipes.filter(recipe => recipe.complexity === complexity)
+      .reduce((sum, recipe) => sum + selectionTargets.get(recipe.id), 0);
+    const capacity = REALISTIC_DATASET_QUOTAS[complexity] * 50;
+    if (required > capacity) {
+      throw new Error(
+        `Realistic ${complexity} factor value requirements need ` +
+        `${required}/${capacity} slots.`
+      );
+    }
+  }
+}
+
+function requirementDatasetPriority(requirement, dataset, globalState) {
+  const selectedDatasets = globalState.factorValueDatasets.get(
+    requirement.usageKey
+  ) ?? new Set();
+  if (
+    selectedDatasets.size >= REALISTIC_FACTOR_VALUE_MINIMUM ||
+    selectedDatasets.has(dataset)
+  ) return { urgent: 0, deficit: 0 };
+  const needed = REALISTIC_FACTOR_VALUE_MINIMUM - selectedDatasets.size;
+  const currentIndex = globalState.datasetIndexes.get(dataset);
+  const remaining = [...requirement.eligibleDatasets].filter(value =>
+    globalState.datasetIndexes.get(value) >= currentIndex
+  ).length;
+  return {
+    urgent: Number(remaining <= needed),
+    deficit: needed
+  };
 }
 
 function factorPairKeys(values) {
@@ -119,6 +272,15 @@ function factorPairKeys(values) {
     }
   }
   return keys;
+}
+
+function selectedFactorValues(recipe, factors) {
+  return Object.freeze(Object.entries(factors)
+    .filter(([name]) => name !== "dataset")
+    .map(([name, value]) => Object.freeze({
+      name,
+      usageKey: factorValueUsageKey(recipe.id, name, value)
+    })));
 }
 
 function factorPool(recipe, dataset, globalState) {
@@ -149,6 +311,14 @@ function factorPool(recipe, dataset, globalState) {
   return value;
 }
 
+function compareFactorCandidatePriority(left, right) {
+  return left.urgentDatasetDeficit - right.urgentDatasetDeficit ||
+    left.newDatasetDeficit - right.newDatasetDeficit ||
+    left.countDeficit - right.countDeficit ||
+    left.diversityScore - right.diversityScore ||
+    right.tie - left.tie;
+}
+
 function factorVariant(recipe, dataset, variant, globalState) {
   const pool = factorPool(recipe, dataset, globalState);
   if (pool === undefined) return undefined;
@@ -161,20 +331,15 @@ function factorVariant(recipe, dataset, variant, globalState) {
   const scheduledId = Array.isArray(selectionIds) && selectionIds.length > 0
     ? selectionIds[selectionOrdinal % selectionIds.length]
     : undefined;
-  if (!globalState.baselineFactorCases.has(attemptedKey)) {
-    globalState.baselineFactorCases.add(attemptedKey);
+  if (!globalState.baselineFactorCases.has(recipe.id)) {
+    globalState.baselineFactorCases.add(recipe.id);
     const factors = Object.freeze(Object.fromEntries(Object.entries(pool.contract)
       .map(([name, domain]) => [name, domain[0]])));
     if (scheduledId === undefined || factors[schedule.factor]?.id === scheduledId) {
       return Object.freeze({
         factors,
         factorPairs: Object.freeze(factorPairKeys(factors)),
-        factorValues: Object.freeze(Object.entries(factors)
-          .filter(([name]) => name !== "dataset")
-          .map(([name, child]) => Object.freeze({
-            name,
-            usageKey: `${recipe.id}\0${name}\0${stableValue(child)}`
-          }))),
+        factorValues: selectedFactorValues(recipe, factors),
         caseKey: `${recipe.id}\0${stableValue(factors)}`
       });
     }
@@ -194,7 +359,9 @@ function factorVariant(recipe, dataset, variant, globalState) {
     );
   }
   let best;
-  const searchLimit = Math.min(96, eligibleIndexes.length);
+  const searchLimit = globalState.strict
+    ? eligibleIndexes.length
+    : Math.min(96, eligibleIndexes.length);
   const start = eligibleIndexes.length === 0
     ? 0
     : hashOffset(`${attemptedKey}\0${variant}`) % eligibleIndexes.length;
@@ -203,28 +370,47 @@ function factorVariant(recipe, dataset, variant, globalState) {
     if (attempted.has(index)) continue;
     const factors = pool.cases[index];
     const factorPairs = factorPairKeys(factors);
-    const factorValues = Object.entries(factors)
-      .filter(([name]) => name !== "dataset")
-      .map(([name, child]) => ({
-        name,
-        usageKey: `${recipe.id}\0${name}\0${stableValue(child)}`
-      }));
+    const factorValues = selectedFactorValues(recipe, factors);
+    let urgentDatasetDeficit = 0;
+    let countDeficit = 0;
+    let newDatasetDeficit = 0;
     let balanceScore = 0;
     for (const factorValue of factorValues) {
-      balanceScore += 1 /
-        (1 + (globalState.factorValueCounts.get(factorValue.usageKey) ?? 0));
+      const count = globalState.factorValueCounts.get(factorValue.usageKey) ?? 0;
+      balanceScore += 1 / (1 + count);
+      const requirement = globalState.factorRequirements.get(factorValue.usageKey);
+      if (requirement === undefined) continue;
+      countDeficit += Math.max(0, REALISTIC_FACTOR_VALUE_MINIMUM - count);
+      const datasetPriority = requirementDatasetPriority(
+        requirement,
+        dataset,
+        globalState
+      );
+      urgentDatasetDeficit += datasetPriority.urgent;
+      newDatasetDeficit += datasetPriority.deficit;
     }
     const newPairs = factorPairs.filter(key =>
       !globalState.factorPairs.has(`${recipe.id}\0${key}`)
     ).length;
     const caseKey = `${recipe.id}\0${stableValue(factors)}`;
     const caseUse = globalState.factorCaseCounts.get(caseKey) ?? 0;
-    const score = balanceScore * 1_000 + newPairs * 10 - caseUse;
+    const diversityScore = balanceScore * 1_000 + newPairs * 10 - caseUse;
     const tie = (index + variant) % pool.cases.length;
-    if (
-      best === undefined || score > best.score ||
-      score === best.score && tie < best.tie
-    ) best = { index, factors, factorPairs, factorValues, caseKey, score, tie };
+    const candidate = {
+      index,
+      factors,
+      factorPairs,
+      factorValues,
+      caseKey,
+      urgentDatasetDeficit,
+      newDatasetDeficit,
+      countDeficit,
+      diversityScore,
+      tie
+    };
+    if (best === undefined || compareFactorCandidatePriority(candidate, best) > 0) {
+      best = candidate;
+    }
   }
   if (best === undefined) {
     for (const index of eligibleIndexes) attempted.delete(index);
@@ -245,6 +431,13 @@ function recordFactorSelection(recipe, selection, globalState) {
       factorValue.usageKey,
       (globalState.factorValueCounts.get(factorValue.usageKey) ?? 0) + 1
     );
+    if (globalState.factorRequirements.has(factorValue.usageKey)) {
+      if (!globalState.factorValueDatasets.has(factorValue.usageKey)) {
+        globalState.factorValueDatasets.set(factorValue.usageKey, new Set());
+      }
+      globalState.factorValueDatasets.get(factorValue.usageKey)
+        .add(selection.factors.dataset);
+    }
   }
   for (const pair of selection.factorPairs) {
     globalState.factorPairs.add(`${recipe.id}\0${pair}`);
@@ -315,14 +508,44 @@ function assertRecipeEvidence(recipe, program, factors, metadata, label) {
   return effective;
 }
 
-function observedFactorEffects(recipe, program, factors) {
-  const values = recipe.observeFactors?.(program, factors) ?? [];
+export function validateScenarioFactorEffects(recipe, factors, values) {
   if (!Array.isArray(values) || values.some(value =>
     value === null || typeof value !== "object" ||
     typeof value.factor !== "string" || value.factor.length === 0 ||
+    !Object.hasOwn(value, "value") ||
     typeof value.evidence !== "string" || value.evidence.length === 0
   )) {
     throw new TypeError(`Scenario recipe "${recipe.id}" returned invalid factor effects.`);
+  }
+  const expected = new Set(Object.keys(factors).filter(name => name !== "dataset"));
+  const unknown = [...new Set(values.map(value => value.factor))]
+    .filter(factor => !expected.has(factor));
+  if (unknown.length > 0) {
+    throw new Error(
+      `Scenario recipe "${recipe.id}" returned unknown factor effects: ${unknown.join(", ")}.`
+    );
+  }
+  const seen = new Set();
+  const duplicates = new Set();
+  for (const value of values) {
+    if (seen.has(value.factor)) duplicates.add(value.factor);
+    seen.add(value.factor);
+  }
+  if (duplicates.size > 0) {
+    throw new Error(
+      `Scenario recipe "${recipe.id}" returned duplicate factor effects: ` +
+      `${[...duplicates].join(", ")}.`
+    );
+  }
+  for (const value of values) {
+    try {
+      assert.deepEqual(value.value, factors[value.factor]);
+    } catch {
+      throw new Error(
+        `Scenario recipe "${recipe.id}" returned a mismatched value for factor ` +
+        `"${value.factor}".`
+      );
+    }
   }
   const effects = freezeClone(values);
   if (recipe.enforceFactorEffects === true) {
@@ -337,28 +560,48 @@ function observedFactorEffects(recipe, program, factors) {
   return effects;
 }
 
+function observedFactorEffects(recipe, program, factors) {
+  const values = recipe.observeFactors?.(program, factors) ?? [];
+  return validateScenarioFactorEffects(recipe, factors, values);
+}
+
 function metadataFor(recipe, factors) {
   const described = recipe.describe?.(factors);
   if (described === undefined) return undefined;
   return freezeClone(described);
 }
 
-function hasVisibleTitle(program, title, visited = new Set()) {
+function normalizedVisibleText(value) {
+  return typeof value === "string" ? value.replace(/\p{White_Space}+/gu, "") : "";
+}
+
+export function scenarioHasVisibleTitle(program, title, visited = new Set()) {
   if (program === null || typeof program !== "object" || visited.has(program)) return false;
   visited.add(program);
+  const expected = normalizedVisibleText(title);
+  if (expected.length === 0) return false;
   if (Object.values(program.graphicSpec?.objects ?? {}).some(object =>
-    object?.type === "text" && object.properties?.text === title
+    object?.type === "text" && (
+      normalizedVisibleText(object.properties?.text) === expected ||
+      Array.isArray(object.items) && object.items.length > 0 &&
+        object.items.every(item => typeof item?.properties?.text === "string") &&
+        normalizedVisibleText(object.items.map(item => item.properties.text).join("")) === expected
+    )
   )) return true;
   return Object.values(program.children ?? {}).some(child =>
-    hasVisibleTitle(child, title, visited)
+    scenarioHasVisibleTitle(child, title, visited)
   );
 }
 
 function assertVisibleMetadataTitle(program, metadata, label) {
   assert.equal(typeof metadata?.title, "string", `${label} metadata.title must be a string.`);
-  assert.notEqual(metadata.title.length, 0, `${label} metadata.title must not be empty.`);
+  assert.notEqual(
+    normalizedVisibleText(metadata.title).length,
+    0,
+    `${label} metadata.title must not be empty.`
+  );
   assert.equal(
-    hasVisibleTitle(program, metadata.title),
+    scenarioHasVisibleTitle(program, metadata.title),
     true,
     `${label} must render metadata.title as a visible chart title.`
   );
@@ -370,6 +613,40 @@ function semanticFingerprint(program) {
     .update("\0")
     .update(stableValue(program.graphicSpec))
     .digest("hex");
+}
+
+export function scenarioFactorDiagnostic(factors) {
+  if (factors === undefined) return "unresolved";
+  const full = stableValue(factors);
+  const summarize = (value, depth = 0) => {
+    if (Array.isArray(value)) {
+      return value.length <= 8 && value.every(child =>
+        child === null || !["object", "function"].includes(typeof child)
+      )
+        ? value.map(child => summarize(child, depth + 1))
+        : `<array length=${value.length}>`;
+    }
+    if (value !== null && typeof value === "object") {
+      const entries = Object.entries(value);
+      if (depth >= 3) return `<object keys=${entries.length}>`;
+      return Object.fromEntries(entries.slice(0, 16).map(([key, child]) =>
+        [key, summarize(child, depth + 1)]
+      ));
+    }
+    return value;
+  };
+  const serialized = stableValue(summarize(factors));
+  const digest = createHash("sha256").update(full).digest("hex").slice(0, 12);
+  const maximumLength = 320;
+  const compact = serialized.length <= maximumLength
+    ? serialized
+    : `${serialized.slice(0, maximumLength - 3)}...`;
+  return `${compact}#${digest}`;
+}
+
+export function scenarioCandidateFailureDiagnostic(value) {
+  return `${value.dataset}/${value.recipe} ` +
+    `factors=${scenarioFactorDiagnostic(value.factors)}: ${value.message}`;
 }
 
 function preflightRealisticCandidate(recipe, factors) {
@@ -462,13 +739,149 @@ function coverageScheduleReport(recipes, globalState) {
   return Object.freeze(records);
 }
 
+function factorValueRequirementReport(globalState, descriptors) {
+  const selectedCounts = new Map();
+  const selectedDatasets = new Map();
+  for (const descriptor of descriptors) {
+    for (const [factor, value] of Object.entries(descriptor.factors)) {
+      if (factor === "dataset") continue;
+      const usageKey = factorValueUsageKey(descriptor.recipe, factor, value);
+      if (!globalState.factorRequirements.has(usageKey)) continue;
+      selectedCounts.set(usageKey, (selectedCounts.get(usageKey) ?? 0) + 1);
+      if (!selectedDatasets.has(usageKey)) selectedDatasets.set(usageKey, new Set());
+      selectedDatasets.get(usageKey).add(descriptor.factors.dataset);
+    }
+  }
+  return Object.freeze([...globalState.factorRequirements.values()]
+    .map(requirement => {
+      const fulfilledCount = selectedCounts.get(requirement.usageKey) ?? 0;
+      const selectedDatasetIds = [...(selectedDatasets.get(requirement.usageKey) ?? [])]
+        .sort();
+      const fulfilledDatasets = selectedDatasetIds.length;
+      return Object.freeze({
+        recipe: requirement.recipe,
+        factor: requirement.factor,
+        value: freezeClone(requirement.value),
+        valueKey: stableValue(requirement.value),
+        requiredCount: REALISTIC_FACTOR_VALUE_MINIMUM,
+        fulfilledCount,
+        minimumDatasets: REALISTIC_FACTOR_VALUE_MINIMUM,
+        fulfilledDatasets,
+        eligibleDatasetCount: requirement.eligibleDatasets.size,
+        selectedDatasetIds: Object.freeze(selectedDatasetIds),
+        missingCount: Math.max(0, REALISTIC_FACTOR_VALUE_MINIMUM - fulfilledCount),
+        missingDatasets: Math.max(
+          0,
+          REALISTIC_FACTOR_VALUE_MINIMUM - fulfilledDatasets
+        )
+      });
+    })
+    .sort((left, right) =>
+      left.recipe.localeCompare(right.recipe) ||
+      left.factor.localeCompare(right.factor) ||
+      left.valueKey.localeCompare(right.valueKey)
+    ));
+}
+
+export function assertScenarioFactorValueRequirements(requirements) {
+  if (!Array.isArray(requirements) || requirements.some(value =>
+    value === null || typeof value !== "object" ||
+    typeof value.recipe !== "string" || value.recipe.length === 0 ||
+    typeof value.factor !== "string" || value.factor.length === 0 ||
+    typeof value.valueKey !== "string" || value.valueKey.length === 0 ||
+    !Number.isInteger(value.requiredCount) || value.requiredCount < 1 ||
+    !Number.isInteger(value.fulfilledCount) || value.fulfilledCount < 0 ||
+    !Number.isInteger(value.minimumDatasets) || value.minimumDatasets < 1 ||
+    !Number.isInteger(value.fulfilledDatasets) || value.fulfilledDatasets < 0 ||
+    !Number.isInteger(value.eligibleDatasetCount) || value.eligibleDatasetCount < 0
+  )) {
+    throw new TypeError("Scenario factor value requirements must be valid records.");
+  }
+  const missing = requirements.filter(value =>
+    value.fulfilledCount < value.requiredCount ||
+    value.fulfilledDatasets < value.minimumDatasets
+  );
+  if (missing.length > 0) {
+    throw new Error(
+      `Realistic factor value requirements were not met: ` +
+      `${missing.slice(0, 20).map(value =>
+        `${value.recipe}.${value.factor}=${value.valueKey} ` +
+        `count=${value.fulfilledCount}/${value.requiredCount},` +
+        `datasets=${value.fulfilledDatasets}/${value.minimumDatasets},` +
+        `eligible=${value.eligibleDatasetCount}`
+      ).join("; ")}`
+    );
+  }
+}
+
+export function scenarioSelectionPacingTarget(
+  selectionTarget,
+  eligibleOrdinal,
+  eligibleTotal
+) {
+  if (
+    !Number.isSafeInteger(selectionTarget) || selectionTarget < 0 ||
+    !Number.isSafeInteger(eligibleOrdinal) || eligibleOrdinal < 0 ||
+    !Number.isSafeInteger(eligibleTotal) || eligibleTotal < 1 ||
+    eligibleOrdinal > eligibleTotal
+  ) {
+    throw new RangeError(
+      "Scenario selection pacing requires a nonnegative target and a valid eligible ordinal."
+    );
+  }
+  return Math.ceil(selectionTarget * eligibleOrdinal / eligibleTotal);
+}
+
+function recipePacingDeficit(recipe, dataset, count, selectionTarget, globalState) {
+  if (!globalState.strict || selectionTarget === 0) return 0;
+  const eligible = globalState.eligibleRecipeDatasets.get(recipe.id) ?? new Set();
+  if (!eligible.has(dataset)) return 0;
+  const currentIndex = globalState.datasetIndexes.get(dataset);
+  let eligibleOrdinal = 0;
+  for (const value of eligible) {
+    if (globalState.datasetIndexes.get(value) <= currentIndex) eligibleOrdinal += 1;
+  }
+  const pacedTarget = scenarioSelectionPacingTarget(
+    selectionTarget,
+    eligibleOrdinal,
+    eligible.size
+  );
+  return Math.max(0, pacedTarget - count);
+}
+
 function recipeSelectionPriority(recipe, dataset, globalState) {
   const count = globalState.recipeCounts.get(recipe.id) ?? 0;
   const minimum = minimumSelections(recipe);
   const deficit = Math.max(0, minimum - count);
+  const selectionTarget = globalState.strict
+    ? globalState.factorSelectionTargets.get(recipe.id) ?? minimum
+    : minimum;
+  const targetDeficit = Math.max(0, selectionTarget - count);
+  const pacingDeficit = recipePacingDeficit(
+    recipe,
+    dataset,
+    count,
+    selectionTarget,
+    globalState
+  );
+  let urgentFactorDatasets = 0;
+  let newFactorDatasetDeficit = 0;
+  if (globalState.strict) {
+    for (const requirement of globalState.factorRequirementsByRecipe.get(recipe.id) ?? []) {
+      if (!requirement.eligibleDatasets.has(dataset)) continue;
+      const priority = requirementDatasetPriority(requirement, dataset, globalState);
+      urgentFactorDatasets += priority.urgent;
+      newFactorDatasetDeficit += priority.deficit;
+    }
+  }
   const datasets = globalState.recipeDatasets.get(recipe.id) ?? new Set();
   const needsNewDataset = minimum > 0 && datasets.size < 3 && !datasets.has(dataset);
   return {
+    urgentFactorDatasets,
+    pacingDeficit,
+    newFactorDatasetDeficit,
+    targetUnmet: Number(targetDeficit > 0),
+    targetDeficitRatio: selectionTarget === 0 ? 0 : targetDeficit / selectionTarget,
     needsNewDataset: Number(needsNewDataset),
     unmet: Number(deficit > 0),
     deficitRatio: minimum === 0 ? 0 : deficit / minimum,
@@ -479,7 +892,12 @@ function recipeSelectionPriority(recipe, dataset, globalState) {
 function compareRecipePriority(left, right, dataset, globalState) {
   const leftPriority = recipeSelectionPriority(left, dataset, globalState);
   const rightPriority = recipeSelectionPriority(right, dataset, globalState);
-  return rightPriority.needsNewDataset - leftPriority.needsNewDataset ||
+  return rightPriority.urgentFactorDatasets - leftPriority.urgentFactorDatasets ||
+    rightPriority.pacingDeficit - leftPriority.pacingDeficit ||
+    rightPriority.newFactorDatasetDeficit - leftPriority.newFactorDatasetDeficit ||
+    rightPriority.targetUnmet - leftPriority.targetUnmet ||
+    rightPriority.targetDeficitRatio - leftPriority.targetDeficitRatio ||
+    rightPriority.needsNewDataset - leftPriority.needsNewDataset ||
     rightPriority.unmet - leftPriority.unmet ||
     rightPriority.deficitRatio - leftPriority.deficitRatio ||
     leftPriority.count - rightPriority.count ||
@@ -493,25 +911,15 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
   const eligibleRecipes = [...recipes]
     .filter(recipe => recipe.complexity === complexity && recipe.datasets.includes(dataset))
     .filter(recipe => {
-      try {
-        const contract = scenarioFactorContract(recipe.id, { dataset });
-        if (contract !== undefined) return true;
-        globalState.skips.push(Object.freeze({
-          dataset,
-          complexity,
-          recipe: recipe.id,
-          reason: "no-eligible-factor-domain"
-        }));
-        return false;
-      } catch (error) {
-        globalState.skips.push(Object.freeze({
-          dataset,
-          complexity,
-          recipe: recipe.id,
-          reason: error.message
-        }));
-        return false;
-      }
+      const contract = scenarioFactorContract(recipe.id, { dataset });
+      if (contract !== undefined) return true;
+      globalState.skips.push(Object.freeze({
+        dataset,
+        complexity,
+        recipe: recipe.id,
+        reason: "no-eligible-factor-domain"
+      }));
+      return false;
     });
   if (eligibleRecipes.length === 0) {
     throw new Error(`Dataset "${dataset}" has no realistic ${complexity} recipes.`);
@@ -528,7 +936,11 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
         hashOffset(`${right.id}\0${datasetIndex}\0${attempts}`))
     );
     if (ordered.length === 0) break;
-    const recipe = ordered[attempts % Math.min(ordered.length, 4)];
+    const leadingPriority = recipeSelectionPriority(ordered[0], dataset, globalState);
+    const recipe = leadingPriority.urgentFactorDatasets > 0 ||
+      leadingPriority.pacingDeficit > 0
+      ? ordered[0]
+      : ordered[attempts % Math.min(ordered.length, 4)];
     attempts += 1;
     const variant = variants.get(recipe.id) ?? 0;
     variants.set(recipe.id, variant + 1);
@@ -540,7 +952,7 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
       factors = selection.factors;
       const candidate = preflightRealisticCandidate(recipe, factors).descriptor;
       if (globalState.fingerprints.has(candidate.semanticFingerprint)) {
-        globalState.rejections.push(Object.freeze({
+        globalState.duplicates.push(Object.freeze({
           dataset,
           complexity,
           recipe: recipe.id,
@@ -562,13 +974,20 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
       globalState.recipeDatasets.get(recipe.id).add(dataset);
       selected.push(candidate);
     } catch (error) {
-      globalState.rejections.push(Object.freeze({
+      const rejection = Object.freeze({
         dataset,
         complexity,
         recipe: recipe.id,
         factors,
         message: error.message
-      }));
+      });
+      globalState.rejections.push(rejection);
+      if (globalState.strict) {
+        throw new Error(
+          `Realistic candidate preflight failed: ${scenarioCandidateFailureDiagnostic(rejection)}`,
+          { cause: error }
+        );
+      }
       const failures = (recipeFailures.get(recipe.id) ?? 0) + 1;
       recipeFailures.set(recipe.id, failures);
       const quarantineThreshold = 3;
@@ -582,6 +1001,10 @@ function realisticTierDescriptors(dataset, datasetIndex, complexity, recipes, gl
           lastMessage: error.message
         }));
       }
+    } finally {
+      if (
+        globalState.candidateOrdinal % REALISTIC_CANDIDATE_GC_INTERVAL === 0
+      ) globalThis.gc?.();
     }
   }
   if (selected.length !== quota) {
@@ -618,6 +1041,20 @@ function generateRealisticDescriptors(recipeIds, limit) {
     throw new Error(`Realistic mode requires exactly 50 TidyTuesday datasets, received ${datasets.length}.`);
   }
   assertMinimumSelectionCapacity(recipes);
+  const requirementContract = collectFactorValueRequirements(recipes, datasets);
+  const factorRequirements = requirementContract.requirements;
+  const requirementsByRecipe = factorRequirementsByRecipe(factorRequirements);
+  const factorSelectionTargets = factorRequirementSelectionTargets(
+    recipes,
+    requirementsByRecipe
+  );
+  if (limit === undefined) {
+    assertFactorRequirementFeasibility(
+      recipes,
+      factorRequirements,
+      factorSelectionTargets
+    );
+  }
   const descriptors = [];
   const globalState = {
     candidateOrdinal: 0,
@@ -628,11 +1065,19 @@ function generateRealisticDescriptors(recipeIds, limit) {
     attemptedFactorCases: new Map(),
     baselineFactorCases: new Set(),
     factorValueCounts: new Map(),
+    factorValueDatasets: new Map(),
+    factorRequirements,
+    factorRequirementsByRecipe: requirementsByRecipe,
+    factorSelectionTargets,
+    eligibleRecipeDatasets: requirementContract.eligibleRecipeDatasets,
+    datasetIndexes: new Map(datasets.map((dataset, index) => [dataset, index])),
     factorPairs: new Set(),
     factorCaseCounts: new Map(),
     scheduleFulfillment: new Map(),
     rejections: [],
-    skips: []
+    duplicates: [],
+    skips: [],
+    strict: limit === undefined
   };
   for (let datasetIndex = 0; datasetIndex < datasets.length; datasetIndex += 1) {
     const dataset = datasets[datasetIndex];
@@ -646,15 +1091,27 @@ function generateRealisticDescriptors(recipeIds, limit) {
       releaseTidyTuesdaySourceCache(dataset);
       globalState.factorPools.clear();
       globalState.attemptedFactorCases.clear();
-      globalState.baselineFactorCases.clear();
+      globalThis.gc?.();
     }
     if (limit !== undefined && descriptors.length >= limit) break;
   }
   const selected = limit === undefined ? descriptors : descriptors.slice(0, limit);
+  const factorValueRequirements = factorValueRequirementReport(globalState, selected);
+  const missingFactorValueRequirements = factorValueRequirements.filter(value =>
+    value.missingCount > 0 || value.missingDatasets > 0
+  );
   if (limit === undefined && selected.length !== 3_600) {
     throw new Error(`Realistic mode requires exactly 3,600 descriptors, received ${selected.length}.`);
   }
   if (limit === undefined) {
+    if (globalState.rejections.length > 0) {
+      throw new Error(
+        `Realistic candidate preflight failures must be fixed: ${globalState.rejections
+          .slice(0, 20)
+          .map(scenarioCandidateFailureDiagnostic)
+          .join("; ")}`
+      );
+    }
     const failures = recipes.flatMap(recipe => {
       const count = globalState.recipeCounts.get(recipe.id) ?? 0;
       const datasetsUsed = globalState.recipeDatasets.get(recipe.id)?.size ?? 0;
@@ -681,20 +1138,26 @@ function generateRealisticDescriptors(recipeIds, limit) {
         ).join(", ")}.`
       );
     }
+    assertScenarioFactorValueRequirements(factorValueRequirements);
   }
   const schedules = coverageScheduleReport(recipes, globalState);
   const acceptedCandidates = [...globalState.recipeCounts.values()]
     .reduce((sum, count) => sum + count, 0);
   realisticGenerationDiagnostics.set(selected, freezeClone({
+    known: true,
     attemptedCandidates: globalState.candidateOrdinal,
     acceptedCandidates,
     selectedDescriptors: selected.length,
     rejectedCandidates: globalState.rejections.length,
+    duplicateCandidates: globalState.duplicates.length,
     skippedRecipeDatasets: globalState.skips.length,
     rejections: globalState.rejections,
+    duplicates: globalState.duplicates,
     skips: globalState.skips,
     factorPairCount: globalState.factorPairs.size,
     factorValueOccurrences: Object.fromEntries([...globalState.factorValueCounts].sort()),
+    factorValueRequirements,
+    missingFactorValueRequirements,
     coverageSchedules: schedules,
     missingCoverageSchedules: schedules.filter(value =>
       value.missingCount > 0 || value.missingDatasets > 0
@@ -707,16 +1170,28 @@ function generateRealisticDescriptors(recipeIds, limit) {
 }
 
 export function scenarioGenerationDiagnostics(descriptors) {
-  return realisticGenerationDiagnostics.get(descriptors) ?? Object.freeze({
+  const diagnostics = realisticGenerationDiagnostics.get(descriptors);
+  if (diagnostics !== undefined) return diagnostics;
+  if (descriptors.some(descriptor => descriptor?.metadata?.corpus === "tidytuesday")) {
+    throw new Error(
+      "Realistic generation diagnostics require the original generated descriptor array."
+    );
+  }
+  return Object.freeze({
+    known: false,
     attemptedCandidates: descriptors.length,
     acceptedCandidates: descriptors.length,
     selectedDescriptors: descriptors.length,
     rejectedCandidates: 0,
+    duplicateCandidates: 0,
     skippedRecipeDatasets: 0,
     rejections: Object.freeze([]),
+    duplicates: Object.freeze([]),
     skips: Object.freeze([]),
     factorPairCount: 0,
     factorValueOccurrences: Object.freeze({}),
+    factorValueRequirements: Object.freeze([]),
+    missingFactorValueRequirements: Object.freeze([]),
     coverageSchedules: Object.freeze([]),
     missingCoverageSchedules: Object.freeze([]),
     recipeSelections: Object.freeze({}),
@@ -814,7 +1289,13 @@ export function buildScenario(descriptor) {
   return scenarioRecipe(descriptor.recipe).build(descriptor.factors);
 }
 
-export function runScenario(descriptor, { deterministic = true } = {}) {
+export function runScenario(descriptor, {
+  deterministic = true,
+  captureProgram
+} = {}) {
+  if (captureProgram !== undefined && typeof captureProgram !== "function") {
+    throw new TypeError("runScenario captureProgram must be a function.");
+  }
   const recipe = scenarioRecipe(descriptor.recipe);
   try {
     const program = buildScenario(descriptor);
@@ -834,6 +1315,14 @@ export function runScenario(descriptor, { deterministic = true } = {}) {
       description: metadata?.analysisQuestion ?? `Generated ${descriptor.recipe} scenario.`
     });
     assertSvgIntegrity(svg, descriptor.id);
+    const fingerprint = semanticFingerprint(program);
+    if (descriptor.semanticFingerprint !== undefined) {
+      assert.equal(
+        fingerprint,
+        descriptor.semanticFingerprint,
+        `${descriptor.id} generated descriptor fingerprint`
+      );
+    }
     if (deterministic) {
       const replay = buildScenario(descriptor);
       assert.deepEqual(replay.semanticSpec, program.semanticSpec, `${descriptor.id} semantic replay`);
@@ -846,7 +1335,7 @@ export function runScenario(descriptor, { deterministic = true } = {}) {
     const operations = collectTraceOperations(program.trace);
     const directOperations = collectDirectTraceOperations(program.trace);
     const factorEffects = observedFactorEffects(recipe, program, descriptor.factors);
-    return Object.freeze({
+    const result = Object.freeze({
       id: descriptor.id,
       recipe: descriptor.recipe,
       dataset: descriptor.factors.dataset,
@@ -862,8 +1351,11 @@ export function runScenario(descriptor, { deterministic = true } = {}) {
       layerCount: program.semanticSpec.layers.length,
       datasetCount: program.semanticSpec.datasets.length,
       svgBytes: Buffer.byteLength(svg),
-      svgSha256: createHash("sha256").update(svg).digest("hex")
+      svgSha256: createHash("sha256").update(svg).digest("hex"),
+      semanticFingerprint: fingerprint
     });
+    captureProgram?.(program);
+    return result;
   } finally {
     recipe.releaseResolution?.(descriptor.factors);
   }

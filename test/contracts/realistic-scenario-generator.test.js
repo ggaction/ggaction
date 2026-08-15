@@ -4,6 +4,7 @@ import test from "node:test";
 
 import { assertAnalyticLayerIntegrity } from
   "../oracles/analytic-layer-integrity.js";
+import { PALETTE_NAMES } from "../../src/grammar/palettes.js";
 import { datasetDefinition } from "../support/datasets/catalog.js";
 import { releaseTidyTuesdaySourceCache, tidyTuesdaySourceEntries } from
   "../support/datasets/tidytuesday.js";
@@ -28,6 +29,7 @@ import {
   realisticDatasetRoles,
   realisticFieldPairDomain,
   realisticGroupedView,
+  realisticLifecycleRows,
   realisticRecordView,
   realisticSummaryView
 } from "../support/scenarios/realistic-data.js";
@@ -50,14 +52,14 @@ function countBy(values, keyFor) {
   return counts;
 }
 
-test("owns exactly fifty real TidyTuesday sources and seventy-two realistic recipes", () => {
+test("owns exactly fifty real TidyTuesday sources and the integrated realistic recipe set", () => {
   const datasets = realisticDatasetIds();
   assert.equal(datasets.length, 50);
   assert.equal(new Set(datasets).size, 50);
   assert.equal(datasets.every(id => datasetDefinition(id).corpus === "tidytuesday"), true);
 
-  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 72);
-  assert.equal(new Set(REALISTIC_SCENARIO_RECIPES.map(recipe => recipe.id)).size, 72);
+  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 94);
+  assert.equal(new Set(REALISTIC_SCENARIO_RECIPES.map(recipe => recipe.id)).size, 94);
   assert.deepEqual(REALISTIC_ANALYSIS_COUNTS, {
     simple: 14,
     intermediate: 28,
@@ -68,12 +70,152 @@ test("owns exactly fifty real TidyTuesday sources and seventy-two realistic reci
   assert.deepEqual(countBy(
     REALISTIC_SCENARIO_RECIPES,
     recipe => recipe.complexity
-  ), EXPECTED_TIERS);
+  ), { simple: 15, intermediate: 34, advanced: 36, composite: 9 });
   assert.equal(REALISTIC_SCENARIO_RECIPES.every(recipe =>
     recipe.suite === "realistic" && recipe.datasets.length > 0 &&
     recipe.datasets.every(id => datasets.includes(id))
   ), true);
   assert.equal(REALISTIC_REQUIRED_FEATURES.length > 0, true);
+});
+
+test("does not advertise impossible outliers for min-max whiskers", () => {
+  const dataset = "tt-penguins";
+  try {
+    const minmax = REALISTIC_ANALYSIS_RECIPES.find(recipe =>
+      recipe.id === "realistic-minmax-boxes"
+    );
+    const tukey = REALISTIC_ANALYSIS_RECIPES.find(recipe =>
+      recipe.id === "realistic-category-boxes"
+    );
+    assert.equal(minmax.factorsForDataset(dataset).outliers, undefined);
+    assert.deepEqual(tukey.factorsForDataset(dataset).outliers, [false, true]);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("distributes the full palette vocabulary across bounded recipe domains", () => {
+  const palettes = new Set();
+  for (const recipe of REALISTIC_ANALYSIS_RECIPES) {
+    if (recipe.factors.palette === undefined) continue;
+    assert.equal(recipe.factors.palette.length, 4, recipe.id);
+    recipe.factors.palette.forEach(value => palettes.add(value));
+  }
+  assert.deepEqual([...palettes].sort(), [...PALETTE_NAMES].sort());
+});
+
+test("composition alignment moves deliberately unequal child canvases", () => {
+  const recipe = REALISTIC_ANALYSIS_RECIPES.find(candidate =>
+    candidate.id === "realistic-paired-summary-dashboard"
+  );
+  const dataset = "tt-penguins";
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const baseline = { dataset };
+    for (const [factor, domain] of Object.entries(domains)) baseline[factor] = domain[0];
+    for (const compositionDirection of domains.compositionDirection) {
+      const fingerprints = domains.compositionAlign.map(compositionAlign => {
+        const factors = Object.freeze({ ...baseline, compositionDirection, compositionAlign });
+        const program = recipe.build(factors);
+        recipe.releaseResolution(factors);
+        return createHash("sha256")
+          .update(JSON.stringify(program.semanticSpec))
+          .update("\0")
+          .update(JSON.stringify(program.graphicSpec))
+          .digest("hex");
+      });
+      assert.equal(new Set(fingerprints).size, domains.compositionAlign.length);
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("composition children reserve room for long authentic titles", () => {
+  const recipe = REALISTIC_ANALYSIS_RECIPES.find(candidate =>
+    candidate.id === "realistic-paired-summary-dashboard"
+  );
+  const dataset = "tt-dog-breed-traits";
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const baseline = { dataset };
+    for (const [factor, domain] of Object.entries(domains)) baseline[factor] = domain[0];
+    const factors = Object.freeze({
+      ...baseline,
+      fieldPair: domains.fieldPair.find(value =>
+        value.bindingId === "eligible:Affectionate With Family-by-Coat Length"
+      ),
+      aggregate: "median",
+      gap: 16,
+      padding: 4,
+      compositionDirection: "vertical",
+      compositionAlign: "start"
+    });
+    assertAnalyticLayerIntegrity(recipe.build(factors), `${dataset}-long-dashboard-title`);
+    recipe.releaseResolution(factors);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("only advertises positive-weight field bindings for base arc recipes", () => {
+  const dataset = "tt-video-games";
+  try {
+    for (const recipeId of ["realistic-solid-pie", "realistic-padded-donut"]) {
+      const recipe = REALISTIC_ANALYSIS_RECIPES.find(candidate => candidate.id === recipeId);
+      const domains = recipe.factorsForDataset(dataset);
+      assert.equal(domains.fieldPair.some(value =>
+        value.bindingId === "eligible:average_playtime-by-developer"
+      ), false, recipeId);
+      const baseline = { dataset };
+      for (const [factor, domain] of Object.entries(domains)) baseline[factor] = domain[0];
+      for (const fieldPair of domains.fieldPair) {
+        for (const aggregate of domains.aggregate) {
+          const factors = Object.freeze({ ...baseline, fieldPair, aggregate });
+          assertAnalyticLayerIntegrity(recipe.build(factors), `${recipeId}-${aggregate}`);
+          recipe.releaseResolution(factors);
+        }
+      }
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("only advertises materially varying bindings for summary comparisons", () => {
+  const dataset = "tt-plastics";
+  try {
+    for (const recipeId of [
+      "realistic-horizontal-summary-bars",
+      "realistic-vertical-summary-bars",
+      "realistic-bubble-summary",
+      "realistic-reversed-summary-points",
+      "realistic-ranked-labels",
+      "realistic-laid-out-labels",
+      "realistic-paired-summary-dashboard"
+    ]) {
+      const recipe = REALISTIC_ANALYSIS_RECIPES.find(candidate => candidate.id === recipeId);
+      const domains = recipe.factorsForDataset(dataset);
+      assert.equal(domains?.fieldPair.some(value =>
+        value.bindingId === "eligible:hdpe-by-country"
+      ) ?? false, false, recipeId);
+    }
+    const recipe = REALISTIC_ANALYSIS_RECIPES.find(candidate =>
+      candidate.id === "realistic-horizontal-summary-bars"
+    );
+    const domains = recipe.factorsForDataset(dataset);
+    const baseline = { dataset };
+    for (const [factor, domain] of Object.entries(domains)) baseline[factor] = domain[0];
+    for (const fieldPair of domains.fieldPair) {
+      for (const aggregate of domains.aggregate) {
+        const factors = Object.freeze({ ...baseline, fieldPair, aggregate });
+        assertAnalyticLayerIntegrity(recipe.build(factors), `${fieldPair.bindingId}-${aggregate}`);
+        recipe.releaseResolution(factors);
+      }
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
 });
 
 test("preflights one balanced dataset quota with truthful metadata and replay", () => {
@@ -88,8 +230,41 @@ test("preflights one balanced dataset quota with truthful metadata and replay", 
       descriptors,
       descriptor => descriptor.metadata.complexity
     ), EXPECTED_TIERS);
-    assert.equal(scenarioGenerationDiagnostics(descriptors).acceptedCandidates, 72);
-    assert.equal(scenarioGenerationDiagnostics(descriptors).selectedDescriptors, 72);
+    const diagnostics = scenarioGenerationDiagnostics(descriptors);
+    assert.equal(diagnostics.acceptedCandidates, 72);
+    assert.equal(diagnostics.selectedDescriptors, 72);
+    assert.equal(diagnostics.factorValueRequirements.length > 0, true);
+    assert.equal(diagnostics.factorValueRequirements.every(requirement =>
+      requirement.factor !== "fieldPair" &&
+      requirement.requiredCount === 3 && requirement.minimumDatasets === 3
+    ), true);
+    assert.equal(diagnostics.factorValueRequirements.some(requirement =>
+      requirement.recipe === "realistic-strip-points" &&
+      requirement.factor === "titleAlign" && requirement.value === "left" &&
+      requirement.eligibleDatasetCount === 50
+    ), true);
+    assert.equal(REALISTIC_SCENARIO_RECIPES.every(recipe =>
+      recipe.coverageSchedule === undefined ||
+      diagnostics.factorValueRequirements.every(requirement =>
+        requirement.recipe !== recipe.id ||
+        requirement.factor !== recipe.coverageSchedule.factor
+      )
+    ), true);
+    assert.equal(diagnostics.missingFactorValueRequirements.length > 0, true);
+    const requirement = diagnostics.factorValueRequirements.find(value =>
+      value.fulfilledCount > 0 &&
+      ["string", "number", "boolean"].includes(typeof value.value)
+    );
+    assert.notEqual(requirement, undefined);
+    const matching = descriptors.filter(descriptor =>
+      descriptor.recipe === requirement.recipe &&
+      descriptor.factors[requirement.factor] === requirement.value
+    );
+    assert.equal(requirement.fulfilledCount, matching.length);
+    assert.deepEqual(
+      requirement.selectedDatasetIds,
+      [...new Set(matching.map(descriptor => descriptor.factors.dataset))].sort()
+    );
 
     const definition = datasetDefinition(dataset);
     for (const descriptor of descriptors) {
@@ -167,6 +342,7 @@ test("preflights one balanced dataset quota with truthful metadata and replay", 
 });
 
 test("aligns default secondary bindings and actual record eligibility across all fifty sources", () => {
+  assert.throws(() => realisticFieldPairDomain("tt-penguins", "typo-capability"));
   for (const dataset of realisticDatasetIds()) {
     try {
       const roles = realisticDatasetRoles(dataset);
@@ -212,9 +388,35 @@ test("records unsupported dataset recipes as skips without preflight rejection l
   assert.equal(diagnostics.rejections.some(value =>
     value.dataset === dataset && value.recipe === recipe
   ), false);
+  assert.equal(diagnostics.rejectedCandidates, 0);
+  assert.equal(diagnostics.acceptedCandidates, descriptors.length);
+  assert.equal(
+    diagnostics.attemptedCandidates,
+    diagnostics.acceptedCandidates + diagnostics.rejectedCandidates +
+      diagnostics.duplicateCandidates
+  );
+  for (const integratedRecipe of [
+    "realistic-maximal-ordered-bars",
+    "realistic-maximal-binned-heatmap",
+    "realistic-guide-scale-parallel-profiles",
+    "realistic-action-bar-facade"
+  ]) {
+    assert.equal(
+      descriptors.some(descriptor => descriptor.recipe === integratedRecipe),
+      true,
+      `${integratedRecipe} must survive two-dataset preflight`
+    );
+  }
   assert.equal(diagnostics.factorPairCount > 0, true);
   assert.equal(Object.values(diagnostics.factorValueOccurrences)
     .reduce((sum, count) => sum + count, 0) > descriptors.length, true);
+  assert.throws(() => scenarioGenerationDiagnostics([...descriptors]));
+  const stripFactors = descriptors
+    .filter(descriptor => descriptor.recipe === "realistic-strip-points")
+    .map(descriptor => Object.fromEntries(Object.entries(descriptor.factors)
+      .filter(([name]) => !["dataset", "fieldPair"].includes(name))));
+  assert.equal(stripFactors.length >= 2, true);
+  assert.equal(new Set(stripFactors.map(value => JSON.stringify(value))).size >= 2, true);
 });
 
 test("observes lifecycle features from recipe-specific direct trace signatures", () => {
@@ -252,6 +454,48 @@ test("observes lifecycle features from recipe-specific direct trace signatures",
         `${recipe.id} must not self-confirm without ${missingOperation}`
       );
     }
+    const sampled = REALISTIC_LIFECYCLE_SCENARIO_RECIPES.find(recipe =>
+      recipe.id === "realistic-action-scatter-facade"
+    );
+    const sampledFactors = Object.freeze({
+      dataset,
+      ...Object.fromEntries(Object.entries(sampled.factors)
+        .map(([name, values]) => [name, values[0]]))
+    });
+    const metadata = sampled.describe(sampledFactors);
+    assert.equal(metadata.sampling.method, "deterministic-stratified-witness-sample");
+    assert.match(metadata.analysisQuestion, /deterministic stratified sample/u);
+    assert.equal(
+      Object.values(sampled.build(sampledFactors).graphicSpec.objects).some(object =>
+        object.type === "text" && object.properties?.text === metadata.title
+      ),
+      true
+    );
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("keeps derived-data regression viable after realistic subgroup filtering", () => {
+  const dataset = "tt-london-marathon-winners";
+  const recipe = REALISTIC_LIFECYCLE_SCENARIO_RECIPES.find(value =>
+    value.id === "realistic-action-derived-data"
+  );
+  const factors = Object.freeze({
+    dataset,
+    filter: "oneOf",
+    order: "ascending",
+    frame: 2,
+    unit: "month",
+    interval: "mean-stderr",
+    regression: "polynomial"
+  });
+  try {
+    assert.doesNotThrow(() => runScenario({
+      id: "realistic-derived-data-filtered-regression",
+      recipe: recipe.id,
+      factors
+    }, { deterministic: false }));
   } finally {
     releaseTidyTuesdaySourceCache(dataset);
   }
@@ -304,5 +548,95 @@ test("uses full-source grouped aggregates, truthful samples, and median IQR inte
     ), true);
   } finally {
     releaseTidyTuesdaySourceCache(dataset);
+  }
+
+  const countDataset = "tt-us-tornadoes";
+  try {
+    const first = realisticGroupedView(countDataset, {
+      aggregate: "count",
+      measureIndex: 0,
+      dimensionIndex: 0
+    });
+    const second = realisticGroupedView(countDataset, {
+      aggregate: "count",
+      measureIndex: 1,
+      dimensionIndex: 0
+    });
+    assert.deepEqual(first.rows, second.rows);
+    assert.deepEqual(
+      first.provenance.transformations[0].fields,
+      [first.provenance.fieldBindings.dimension, first.provenance.fieldBindings.secondaryDimension]
+    );
+  } finally {
+    releaseTidyTuesdaySourceCache(countDataset);
+  }
+});
+
+test("preserves exact lifecycle contributor lineage and sampling disclosures", () => {
+  const dataset = "tt-penguins";
+  try {
+    const records = realisticRecordView(dataset, {
+      includeSecondaryDimension: true,
+      deriveSubgroup: true
+    });
+    const path = realisticLifecycleRows(dataset, "path");
+    assert.equal(path.rows.some(row => Object.hasOwn(row, "sourceRowIndex")), false);
+    assert.equal(path.provenance.sourceRowIndexes.length, path.provenance.sourceRowCount);
+    assert.equal(path.provenance.transformations.some(operation =>
+      operation.op === "duplicate-position-mean"
+    ), true);
+    assert.equal(path.sample.outputRowCount, path.rows.length);
+    assert.equal(path.sample.displayedRowCount, path.provenance.sourceRowCount);
+
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+
+  const temporalDataset = "tt-meteorites";
+  try {
+    const records = realisticRecordView(temporalDataset, {
+      includeSecondaryDimension: true,
+      deriveSubgroup: true
+    });
+    const temporal = realisticLifecycleRows(temporalDataset, "temporal");
+    const expectedTemporalIndexes = records.rows.filter(row =>
+      row.time !== undefined && Number.isFinite(Date.parse(row.time))
+    ).map(row => row.sourceRowIndex).sort((left, right) => left - right);
+    assert.deepEqual(temporal.provenance.sourceRowIndexes, expectedTemporalIndexes);
+    assert.equal(temporal.provenance.sourceRowCount, 159);
+    assert.equal(temporal.provenance.sourceRowIndexes.includes(37), false);
+    assert.equal(temporal.provenance.transformations.some(operation =>
+      operation.op === "filter-valid-temporal"
+    ), true);
+  } finally {
+    releaseTidyTuesdaySourceCache(temporalDataset);
+  }
+
+  const mixedSourceDataset = "tt-video-games";
+  try {
+    const source = new Map(tidyTuesdaySourceEntries(mixedSourceDataset).map(entry => [
+      entry.sourceRowIndex,
+      entry.row
+    ]));
+    for (const kind of ["path", "style"]) {
+      const view = realisticLifecycleRows(mixedSourceDataset, kind);
+      const projection = view.provenance.transformations.find(operation =>
+        operation.op === "project-real-analysis-pair"
+      );
+      const filter = view.provenance.transformations.find(operation =>
+        operation.op === "filter-valid-analysis-x"
+      );
+      const xField = projection?.x ?? filter?.field;
+      assert.equal(xField, "price");
+      const sourceValues = new Set(view.provenance.sourceRowIndexes.map(index =>
+        source.get(index)[xField]
+      ));
+      assert.equal(view.rows.every(row => sourceValues.has(row.x)), true, kind);
+      if (kind === "path") {
+        assert.equal(view.rows.every(row => row.id.startsWith("path-aggregate-")), true);
+      }
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(mixedSourceDataset);
   }
 });
