@@ -4,6 +4,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
+  compactPackageJavaScript,
   inspectPackageArtifact,
   isolatedPackEnvironment,
   PACKAGE_LIMITS,
@@ -33,6 +34,11 @@ test("publishes only the bounded public package artifact", async () => {
     const file = fileURLToPath(new URL(`../../${path}`, import.meta.url));
     return { file, path, contents: await readFile(file, "utf8") };
   }));
+  const resolverFile = fileURLToPath(new URL(
+    "../../knowledge/task-resolver.js",
+    import.meta.url
+  ));
+  const resolverSource = await readFile(resolverFile, "utf8");
   const manifest = inspectPackageArtifact();
   const paths = manifest.files.map(file => file.path);
 
@@ -63,6 +69,11 @@ test("publishes only the bounded public package artifact", async () => {
     );
     assert.equal(await readFile(file, "utf8"), contents);
   }
+  assert.equal(
+    manifest.files.find(entry => entry.path === "knowledge/task-resolver.js").size,
+    Buffer.byteLength(compactPackageJavaScript(resolverSource))
+  );
+  assert.equal(await readFile(resolverFile, "utf8"), resolverSource);
 });
 
 test("rejects missing, forbidden, and oversized package manifests", () => {

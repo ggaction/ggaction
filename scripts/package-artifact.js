@@ -16,6 +16,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { transformSync } from "esbuild";
+
 const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
@@ -61,6 +63,22 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/mcp-resources.json",
   "knowledge/task-packet.schema.json"
 ]);
+const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "knowledge/task-resolver.js"
+]);
+
+export function compactPackageJavaScript(source) {
+  return transformSync(source, {
+    format: "esm",
+    keepNames: true,
+    legalComments: "inline",
+    loader: "js",
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    target: "node20"
+  }).code;
+}
 
 export function isolatedPackEnvironment(cache, environment = process.env) {
   return {
@@ -103,6 +121,14 @@ function stagePackage(cwd, environment) {
         writeFileSync(stagedFile, JSON.stringify(JSON.parse(
           readFileSync(stagedFile, "utf8")
         )));
+      }
+    }
+    for (const file of COMPACT_JAVASCRIPT_FILES) {
+      const stagedFile = path.join(staging, file);
+      if (existsSync(stagedFile)) {
+        writeFileSync(stagedFile, compactPackageJavaScript(
+          readFileSync(stagedFile, "utf8")
+        ));
       }
     }
     return staging;
