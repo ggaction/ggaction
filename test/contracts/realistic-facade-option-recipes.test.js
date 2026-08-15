@@ -169,6 +169,34 @@ function assertMetadata(recipe, factors, program, metadata, label) {
   assert.equal(program.semanticSpec.title?.subtitle, metadata.analysisQuestion, label);
 }
 
+function graphicTextItems(object) {
+  if (object?.type !== "text") return [];
+  if (Array.isArray(object.items)) return object.items.map(item => item.properties);
+  return object.properties === undefined ? [] : [object.properties];
+}
+
+function assertVisibleFacadeTitle(program, metadata, label) {
+  assert.deepEqual({
+    maxWidth: program.titleConfig?.maxWidth,
+    wrap: program.titleConfig?.wrap,
+    lineHeight: program.titleConfig?.lineHeight
+  }, { maxWidth: 880, wrap: "word", lineHeight: 26 }, label);
+  const titleItems = graphicTextItems(program.graphicSpec.objects.chartTitle);
+  const subtitleItems = graphicTextItems(program.graphicSpec.objects.chartSubtitle);
+  assert.ok(titleItems.length >= 1, `${label} visible title`);
+  assert.ok(subtitleItems.length >= 1, `${label} visible subtitle`);
+  assert.equal(titleItems.map(item => item.text).join(" "), metadata.title, label);
+  assert.equal(
+    subtitleItems.map(item => item.text).join(" "),
+    metadata.analysisQuestion,
+    label
+  );
+  for (const item of [...titleItems, ...subtitleItems]) {
+    assert.ok(Number.isFinite(item.x) && item.x >= 0 && item.x <= 1_200, label);
+    assert.ok(Number.isFinite(item.y) && item.y >= 0 && item.y < 110, label);
+  }
+}
+
 function assertResolvedScaleEvidence(program, action, direct, label) {
   const semanticById = new Map(program.semanticSpec.scales.map(scale => [scale.id, scale]));
   const scales = configuredScales(action, direct.args);
@@ -338,6 +366,120 @@ test("bounds facade data caches while preserving deterministic recomputation", (
     for (const dataset of churnDatasets) releaseTidyTuesdaySourceCache(dataset);
     releaseTidyTuesdaySourceCache(factors.dataset);
   }
+});
+
+test("keeps the authentic volcano population violin title visible with exact provenance", () => {
+  const recipe = REALISTIC_FACADE_OPTION_RECIPES.find(candidate =>
+    candidate.id === "realistic-facade-options-violin-plot"
+  );
+  const dataset = "tt-volcanoes";
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const factors = Object.freeze({
+      dataset,
+      fieldPair: domains.fieldPair.find(candidate =>
+        candidate.bindingId ===
+          "eligible:population_within_100_km-by-tectonic_settings"
+      ),
+      variant: domains.variant.find(candidate => candidate.id === "vertical-linear")
+    });
+    assert.notEqual(factors.fieldPair, undefined);
+    assert.notEqual(factors.variant, undefined);
+    const program = recipe.build(factors);
+    const metadata = recipe.describe(factors);
+    const label = `${dataset}-${recipe.id}-${factors.variant.id}`;
+    assertVisibleFacadeTitle(program, metadata, label);
+    assertMetadata(recipe, factors, program, metadata, label);
+    assert.deepEqual(
+      new Set(recipe.observeFactors(program, factors).map(effect => effect.factor)),
+      new Set(["fieldPair", "variant"]),
+      label
+    );
+    assert.deepEqual(metadata.provenance.fieldBindings, {
+      measure: "population_within_100_km",
+      dimension: "tectonic_settings",
+      order: "elevation",
+      identifier: "volcano_number",
+      label: "volcano_name"
+    });
+    assert.equal(metadata.provenance.sourceRowCount, 120);
+    assert.equal(
+      metadata.provenance.sourceSelectionSha256,
+      "7631ca7bd51db988f0626e283281eda9373d8637cda2d144679758c3dd7420f8"
+    );
+    assert.deepEqual(metadata.dataOperations, [
+      "filter-valid",
+      "top-groups",
+      "filter-supported-groups",
+      "witness-preserving-even-sample",
+      "median-split",
+      "source-order-numeric-projection",
+      "project",
+      "positive-domain-shift",
+      "source-selection-order-rank"
+    ]);
+    assertGraphicIntegrity(program, label);
+    assertAnalyticLayerIntegrity(program, label);
+    const svg = renderToSVG(program, {
+      title: metadata.title,
+      description: metadata.analysisQuestion
+    });
+    assertSvgIntegrity(svg, label);
+    assert.match(svg, /Population Within 100 Km/u);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("fits baseline and longest authentic titles across every eligible TT facade pairing", () => {
+  const datasets = REALISTIC_FACADE_OPTION_RECIPES[0].datasets;
+  let recipeDatasetCount = 0;
+  let chartCount = 0;
+  for (const dataset of datasets) {
+    try {
+      for (const recipe of REALISTIC_FACADE_OPTION_RECIPES) {
+        const domains = recipe.factorsForDataset(dataset);
+        if (domains === undefined) continue;
+        recipeDatasetCount += 1;
+        const baseline = {
+          dataset,
+          fieldPair: domains.fieldPair[0],
+          variant: domains.variant[0]
+        };
+        let longest = baseline;
+        let longestLength = -1;
+        for (const fieldPair of domains.fieldPair) {
+          for (const variant of domains.variant) {
+            const factors = { dataset, fieldPair, variant };
+            const metadata = recipe.describe(factors);
+            const length = metadata.title.length + metadata.analysisQuestion.length;
+            if (length > longestLength) {
+              longest = factors;
+              longestLength = length;
+            }
+          }
+        }
+        for (const [kind, factors] of [["baseline", baseline], ["longest", longest]]) {
+          const label = `${dataset}-${recipe.id}-${kind}`;
+          const program = recipe.build(factors);
+          const metadata = recipe.describe(factors);
+          assertVisibleFacadeTitle(program, metadata, label);
+          assertMetadata(recipe, factors, program, metadata, label);
+          assertGraphicIntegrity(program, label);
+          assertSvgIntegrity(renderToSVG(program, {
+            title: metadata.title,
+            description: metadata.analysisQuestion
+          }), label);
+          chartCount += 1;
+        }
+      }
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
+  assert.equal(datasets.length, 50);
+  assert.equal(recipeDatasetCount, 235);
+  assert.equal(chartCount, 470);
 });
 
 test("locks the role-valid facade scale inventory at 173 paths and 182 literals", async () => {

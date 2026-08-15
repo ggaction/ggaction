@@ -350,7 +350,10 @@ function finish(program, context, variant, family) {
   return program.createTitle({
     text: context.title,
     subtitle: questionFor(context, variant, family),
-    align: "left"
+    align: "left",
+    maxWidth: CANVAS.width - CANVAS.margin.left - CANVAS.margin.right,
+    wrap: "word",
+    lineHeight: 26
   });
 }
 
