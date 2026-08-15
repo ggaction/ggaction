@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -155,6 +156,13 @@ function finalProgramFingerprint(program) {
       graphicSpec: program.graphicSpec
     }))
     .digest("hex");
+}
+
+function programSpecs(program) {
+  return Object.freeze({
+    semanticSpec: program.semanticSpec,
+    graphicSpec: program.graphicSpec
+  });
 }
 
 function directEntries(program, operation) {
@@ -910,6 +918,138 @@ test("preflights every quantitative non-sequential scale on every eligible field
   assert.equal(fieldPairs, 753);
   assert.equal(builds, 753 * 3);
   assert.equal(countFallbacks, 68 * 2);
+});
+
+test("replays the automatic cartesian guide identically after cloning, reordering, and a process boundary", () => {
+  const dataset = "tt-global-temperatures";
+  const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>
+    value.id.endsWith("cartesian-lifecycle")
+  );
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const factors = Object.freeze({
+      dataset,
+      fieldPair: domains.fieldPair.find(value => value.bindingId === "curated:primary"),
+      variant: domains.variant.find(value => value.id === "automatic")
+    });
+    assert.notEqual(factors.fieldPair, undefined, "global temperatures primary binding");
+    assert.notEqual(factors.variant, undefined, "automatic cartesian variant");
+
+    const baseline = recipe.build(factors);
+    const clonedReplay = recipe.build(structuredClone(factors));
+    assert.deepEqual(programSpecs(clonedReplay), programSpecs(baseline));
+
+    for (const variant of [...domains.variant].reverse()) {
+      recipe.build(structuredClone({ ...factors, variant }));
+    }
+    const reorderedReplay = recipe.build(structuredClone(factors));
+    assert.deepEqual(programSpecs(reorderedReplay), programSpecs(baseline));
+
+    const recipeModule = new URL(
+      "../support/scenarios/realistic-guide-scale-recipes.js",
+      import.meta.url
+    ).href;
+    const childSource = `
+      import { readFileSync } from "node:fs";
+      import { REALISTIC_GUIDE_SCALE_RECIPES } from ${JSON.stringify(recipeModule)};
+      const factors = JSON.parse(readFileSync(0, "utf8"));
+      const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>
+        value.id.endsWith("cartesian-lifecycle")
+      );
+      const program = recipe.build(factors);
+      process.stdout.write(JSON.stringify({
+        semanticSpec: program.semanticSpec,
+        graphicSpec: program.graphicSpec
+      }));
+    `;
+    const child = spawnSync(
+      process.execPath,
+      ["--input-type=module", "--eval", childSource],
+      {
+        input: JSON.stringify(factors),
+        encoding: "utf8",
+        maxBuffer: 16 * 1024 * 1024
+      }
+    );
+    assert.equal(child.status, 0, child.stderr);
+    assert.deepEqual(
+      JSON.parse(child.stdout),
+      JSON.parse(JSON.stringify(programSpecs(baseline)))
+    );
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("keeps every cartesian guide variant stable after structured-clone replay across all 50 datasets", () => {
+  const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>
+    value.id.endsWith("cartesian-lifecycle")
+  );
+  let datasets = 0;
+  let replayedVariants = 0;
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      assert.notEqual(domains, undefined, `${dataset} cartesian eligibility`);
+      assert.equal(domains.variant.length, 10, `${dataset} cartesian variants`);
+      for (const variant of [...domains.variant].reverse()) {
+        const index = domains.variant.findIndex(value => value.id === variant.id);
+        const factors = structuredClone({
+          dataset,
+          fieldPair: domains.fieldPair[index % domains.fieldPair.length],
+          variant
+        });
+        const label = `${dataset} ${variant.id} structured-clone replay`;
+        const program = recipe.build(factors);
+        const createCanvas = directEntries(program, "createCanvas")[0].args;
+        const plot = Object.freeze({
+          left: createCanvas.margin.left,
+          right: createCanvas.width - createCanvas.margin.right,
+          top: createCanvas.margin.top,
+          bottom: createCanvas.height - createCanvas.margin.bottom
+        });
+        const atValues = ["start", "center", "end"];
+        const at = atValues[index % atValues.length];
+        const expectedXTitle = at === "start"
+          ? plot.left
+          : at === "center" ? (plot.left + plot.right) / 2 : plot.right;
+        const expectedYTitle = at === "start"
+          ? plot.bottom
+          : at === "center" ? (plot.top + plot.bottom) / 2 : plot.top;
+        assert.equal(
+          program.graphicSpec.objects.xAxisLine.properties.y1,
+          index % 2 === 0 ? plot.top : plot.bottom,
+          `${label} x position`
+        );
+        assert.equal(
+          program.graphicSpec.objects.yAxisLine.properties.x1,
+          index % 2 === 0 ? plot.right : plot.left,
+          `${label} y position`
+        );
+        assert.equal(
+          program.graphicSpec.objects.xAxisTitle.properties.x,
+          expectedXTitle,
+          `${label} x title alignment`
+        );
+        assert.equal(
+          program.graphicSpec.objects.yAxisTitle.properties.y,
+          expectedYTitle,
+          `${label} y title alignment`
+        );
+        assert.deepEqual(
+          recipe.observeFactors(program, factors).map(effect => effect.factor),
+          ["fieldPair", "variant"],
+          `${label} factor evidence`
+        );
+        replayedVariants += 1;
+      }
+      datasets += 1;
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
+  assert.equal(datasets, 50);
+  assert.equal(replayedVariants, 50 * 10);
 });
 
 test("preserves whitespace through a realistic long wrapped title block", () => {

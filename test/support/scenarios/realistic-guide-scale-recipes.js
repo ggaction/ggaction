@@ -774,7 +774,18 @@ function pointSummaryBase(factors, family) {
 
 function exerciseCartesianGuides(factors, base) {
   const variant = factors.variant;
-  const ordinal = NUMERIC_FORMAT_VARIANTS.indexOf(variant);
+  const numericOrdinal = NUMERIC_FORMAT_VARIANTS.findIndex(candidate =>
+    candidate.id === variant.id
+  );
+  const temporalVariant = TIME_FORMAT_VARIANTS.some(candidate =>
+    candidate.id === variant.id
+  );
+  if (numericOrdinal < 0 && !temporalVariant) {
+    throw new Error(`Unknown cartesian guide variant "${variant.id}".`);
+  }
+  // Temporal variants historically share the same lifecycle geometry. Resolve
+  // that policy by value as well so worker structured clones cannot alter it.
+  const ordinal = temporalVariant ? -1 : numericOrdinal;
   const xPosition = ordinal % 2 === 0 ? "top" : "bottom";
   const yPosition = ordinal % 2 === 0 ? "right" : "left";
   const oppositeX = xPosition === "top" ? "bottom" : "top";
