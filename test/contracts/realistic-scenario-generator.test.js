@@ -601,6 +601,69 @@ test("prioritizes a scheduled variant on its last eligible dataset", () => {
   assert.equal(priorities[1].occurrenceDeficit, 5);
 });
 
+test("keeps no-slack encoding schedules urgent through their full-plan deadline", () => {
+  const recipeIds = [
+    "realistic-direct-position-encoding-options",
+    "realistic-direct-appearance-encoding-options",
+    "realistic-direct-polar-encoding-options"
+  ];
+  const datasetIndexes = new Map(
+    realisticDatasetIds().map((dataset, index) => [dataset, index])
+  );
+  const requirements = recipeIds.map((recipeId, order) => {
+    const recipe = scenarioRecipe(recipeId);
+    const [variantId] = new Set(recipe.coverageSchedule.selectionVariantIds);
+    return {
+      key: `${recipeId}\0${variantId}`,
+      variantId,
+      requiredCount: recipe.coverageSchedule.selectionVariantIds.length,
+      minimumDatasets: recipe.coverageSchedule.minimumDatasetsPerRequirement,
+      order,
+      eligibleDatasets: new Set(recipe.datasets)
+    };
+  });
+  const fulfillment = new Map();
+  const lastEligibleIndex = Math.max(...requirements.flatMap(requirement =>
+    [...requirement.eligibleDatasets].map(dataset => datasetIndexes.get(dataset))
+  ));
+
+  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 111);
+  assert.equal(lastEligibleIndex < realisticDatasetIds().length - 1, true);
+  for (const dataset of realisticDatasetIds().slice(0, lastEligibleIndex + 1)) {
+    const priorities = scenarioScheduleVariantPriorities(requirements, {
+      dataset,
+      datasetIndexes,
+      fulfillment
+    });
+    if (priorities.length === 0) continue;
+    assert.equal(
+      priorities.every(priority => priority.deadlineUrgency > 0),
+      true,
+      `${dataset} no-slack urgency`
+    );
+    assert.equal(
+      priorities.length <= REALISTIC_DATASET_QUOTAS.composite,
+      true,
+      `${dataset} composite deadline capacity`
+    );
+    for (const priority of priorities) {
+      const observed = fulfillment.get(priority.key) ?? {
+        count: 0,
+        datasets: new Set()
+      };
+      observed.count += 1;
+      observed.datasets.add(dataset);
+      fulfillment.set(priority.key, observed);
+    }
+  }
+
+  for (const requirement of requirements) {
+    const observed = fulfillment.get(requirement.key);
+    assert.equal(observed.count, 5, requirement.key);
+    assert.equal(observed.datasets.size, 5, requirement.key);
+  }
+});
+
 test("plans every heatmap schedule variant across eligible real datasets", () => {
   const plan = scenarioCoverageSchedulePlan(
     "realistic-statistical-facade-coverage-heatmap",

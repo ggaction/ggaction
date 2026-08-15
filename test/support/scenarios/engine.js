@@ -452,9 +452,14 @@ export function scenarioScheduleVariantPriorities(requirements, {
       remainingNewEligibleDatasets.length <= missingDatasets
       ? missingDatasets - remainingNewEligibleDatasets.length + 1
       : 0;
-    const occurrenceDeadlineUrgency = remainingEligibleDatasets.length === 1
-      ? occurrenceDeficit
-      : 0;
+    const occurrencesCanRemainDatasetDistinct = requirement.requiredCount <=
+      requirement.eligibleDatasets.size;
+    const occurrenceDeadlineUrgency = occurrencesCanRemainDatasetDistinct &&
+      remainingEligibleDatasets.length <= occurrenceDeficit
+      ? occurrenceDeficit - remainingEligibleDatasets.length + 1
+      : remainingEligibleDatasets.length === 1
+        ? occurrenceDeficit
+        : 0;
     return [{
       key: requirement.key,
       variantId: requirement.variantId,
