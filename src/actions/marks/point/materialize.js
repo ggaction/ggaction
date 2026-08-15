@@ -78,8 +78,8 @@ function existingArea(child, parentType) {
   }
   if (
     type === "rect" &&
-    Number.isFinite(child.properties?.width) &&
-    Number.isFinite(child.properties?.height)
+    Number.isFinite(child?.properties?.width) &&
+    Number.isFinite(child?.properties?.height)
   ) {
     return child.properties.width * child.properties.height;
   }

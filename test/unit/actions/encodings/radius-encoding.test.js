@@ -125,18 +125,24 @@ test("keeps an explicit radius through point-shape edit and reassignment", () =>
   const square = circle.editPointMark({ target: "points", shape: "square" });
   const resizedSquare = square.encodeRadius({ target: "points", value: 5 });
   const diamond = resizedSquare.editPointMark({ target: "points", shape: "diamond" });
+  const restoredSquare = resizedSquare.removePointRadius({ target: "points" });
+  const restoredDiamond = diamond.removePointRadius({ target: "points" });
 
   for (const [label, program, radius] of [
     ["circle", circle, 3],
     ["square", square, 3],
     ["resized square", resizedSquare, 5],
-    ["diamond", diamond, 5]
+    ["diamond", diamond, 5],
+    ["restored square", restoredSquare, 3],
+    ["restored diamond", restoredDiamond, 3]
   ]) {
     const graphic = program.graphicSpec.objects.points;
     assert.equal(graphic.items.every(child =>
       Math.abs(pointArea(child, graphic.type) - Math.PI * radius ** 2) < 1e-9
     ), true, label);
   }
+  assert.equal(restoredSquare.markConfigs.points.radius, undefined);
+  assert.equal(restoredDiamond.markConfigs.points.radius, undefined);
 });
 
 test("validates radius values, options, and targets", () => {
